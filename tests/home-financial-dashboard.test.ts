@@ -70,10 +70,12 @@ describe("home overview — coherent contractual ratios in status", () => {
     const headroom = presentFigure(bundle.load.totalHeadroom, "totalHeadroom");
     expect(headroom.kind).toBe("VERIFIED_POPULATED");
     if (headroom.kind === "VERIFIED_POPULATED") {
-      expect(headroom.display).toBe("$5,129M");
+      // Package secured binding is Indenture mila_secured $4,041M (MODELED),
+      // not CA TNL $5,129M (pre-fix false-favorable solver headline).
+      expect(headroom.display).toBe("$4,041M");
     }
 
-    expect(overview.securedCapacity.remainingCapacity).toBe(5129);
+    expect(overview.securedCapacity.remainingCapacity).toBe(4041);
 
     const risk = presentRisk(bundle.load.covenantsAtRisk);
     // Coherent maintenance covenants are healthy; risk slot may be empty or list locked baskets.

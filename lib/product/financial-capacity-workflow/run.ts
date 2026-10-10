@@ -270,9 +270,9 @@ async function buildCompanyPosition(companyId: string): Promise<CompanyFinancial
     })),
     unknownUtilization,
     // Package-wide binding from computeCovenantPosition cross-document
-    // (matches golden Q1/Q2). Do NOT use dashboard solver-native remaining
-    // for secured — it currently reports CA TNL $5,129M and is FALSE FAVORABLE
-    // vs Indenture mila_secured $4,041M.
+    // (matches golden Q1/Q2). Solver-native remaining is
+    // NON_AUTHORITATIVE_DIAGNOSTIC — customer path uses MODELED_CROSS_DOCUMENT
+    // (Indenture mila_secured $4,041M secured / CA §6.11 $5,129M unsecured).
     remainingCapacity: {
       secured:
         position?.crossDocumentSecured.status === "modeled"

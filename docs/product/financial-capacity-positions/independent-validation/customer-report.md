@@ -1,7 +1,7 @@
 # Independent validation — Coherent financial capacity
 
-Generated: 2026-10-09T22:53:24.544Z
-SHA: 3f1e6c5feb377cab68b8277be128037e44aa3b4b
+Generated: 2026-10-10T00:13:05.458Z
+SHA: 7124c121649622c5b3e78d1030350a4c5080f947
 paidInferenceCalls: 0
 promotedToLegalTruth: 0
 
@@ -26,7 +26,28 @@ Is universal secured+unsecured capacity: **false**
 | Secured | $4041M | 2029 Senior Notes Indenture §3.3(b)(i)(C) — SSNL ≤ 3.00x | $4041M |
 | Unsecured | $5129M | Credit Agreement (2022, as amended) §6.11 — TNL ≤ 4.25x | $5129M |
 
-**FALSE FAVORABLE:** dashboard solver-native reported secured=$5129M; package-wide secured binding is $4041M.
+### Solver divergence / authority
+
+- Package authoritative secured: $4041M (MODELED / EVALUATION_SEED_NOT_NS4_APPROVED)
+- Solver-native secured (diagnostic): $1700M — NON_AUTHORITATIVE_DIAGNOSTIC
+- False favorable: **false**
+- PRE-FIX: Indenture secured election ratio-fccr+scf-flat under CONCURRENT_DISREGARDED inherited SCF Permitted Liens cl.(6) auto-lien onto Ratio Debt → indenture max ≈ $11,933M (FCCR room + SCF flat).
+- PRE-FIX: CA secured cleared via coh-ca-d-permitted-601p (§6.01(p) TNL ≤ 4.25x) without a Permitted Lien path → $5,129M.
+- PRE-FIX: Package min(CA $5,129, Indenture $11,933) = $5,129M — Indenture mila_secured / SSNL ≤ 3.00x ($4,041M) never became binding.
+- FIX: evaluateElection requires each secured DEBT_INCURRENCE leg to have its own auto-lien or independent LIEN member; CONCURRENT_COUNTED maxCapacity is not the sum of standalones.
+- FIX: computeRemainingCapacityAfterDebtIncurrence clamps solver>legacy per document and quarantines false-favorable package figures; packageAuthoritative = MODELED_CROSS_DOCUMENT.
+- POST-FIX: Customer/package secured = Indenture mila_secured $4,041M (MODELED). Solver-native package min is NON_AUTHORITATIVE_DIAGNOSTIC and must not exceed $4,041M.
+
+Solver-native remaining is NON_AUTHORITATIVE_DIAGNOSTIC. Customer headlines and package binding use MODELED_CROSS_DOCUMENT (Indenture mila_secured $4,041M secured / CA §6.11 $5,129M unsecured). Do not present solver figures as verified remaining capacity.
+
+### Borrowing proceeds treatment
+
+Engine convention: IMMEDIATELY_SPENT_CASH_UNCHANGED
+- Cash retained: Debt +$50M secured and cash +$50M (proceeds retained). Net debt unchanged → TNL/SSNL rooms unchanged at day-0 levels.
+  → TNL room $5129M · SSNL room $4041M
+- Immediately spent: Debt +$50M secured, cash unchanged (engine simulateDebtIncurrence / leverage convention). Net debt +$50M → TNL room $5,079M, SSNL/mila room $3,991M.
+  → TNL room $5079M · SSNL room $3991M
+- Label: MODELED / EVALUATION_SEED_NOT_NS4_APPROVED
 
 ## 3–5. Sequential transaction economics
 
@@ -149,20 +170,21 @@ S2–S5 each start from the prior step's post financial/ledger overlay. Neon ACT
 {
   "correctExecutable": 5,
   "correctRefusals": 1,
-  "falseFavorable": 1,
+  "falseFavorable": 0,
   "incorrect": 0,
   "limitations": [
-    "Debt-incurrence cash proceeds not modeled in leverage convention",
-    "No NS-4 APPROVED financials — not Phase-4 REQUIRE",
-    "Unknown DEBT_INCUR historical utilization",
-    "Solver-native dashboard secured remaining diverges from cross-document binding (false favorable if used as secured capacity)",
+    "Debt-incurrence engine convention = immediately-spent (cash unchanged); cash-retained proceeds documented separately as MODELED dual treatment",
+    "No NS-4 APPROVED financials — not Phase-4 REQUIRE; figures labeled MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
+    "Unknown DEBT_INCUR historical utilization (#234)",
+    "Solver-native package min is NON_AUTHORITATIVE_DIAGNOSTIC; customer binding is MODELED_CROSS_DOCUMENT mila_secured $4,041M (#218)",
+    "Financial approval still open (#220)",
     "No officer/compliance certificate Document rows for Coherent in Neon"
   ]
 }
 
 ## Equity builder legal authority
 
-Indenture Available Amount §3.4(a)(C)(3)-(4): 100% of net cash proceeds from Capital Stock (other than Disqualified Stock) and equity contributions since Issue Date, to the extent not otherwise applied. Seed param includeEquityProceeds=true implements this prong.
+Indenture Available Amount §3.4(a)(C)(3)-(4): 100% of net cash proceeds from Capital Stock (other than Disqualified Stock) and equity contributions since Issue Date, to the extent Not Otherwise Applied. Exclusions: Disqualified Stock; amounts otherwise applied. Seed equityProceedsSinceIssue=$2,150M is historical attribution since Issue Date under evaluation-seed financials (includeEquityProceeds=true). Issue-date eligibility: only post-Issue-Date contributions credit the builder — pre-issue equity is out of scope. MODELED / EVALUATION_SEED_NOT_NS4_APPROVED — not verified remaining capacity.
 Formula: max($330M, 25% EBITDA) + 50% CNI + 100% equity proceeds/contributions since issue
 Starter $425M + CNI $260M + equity $2150M = $2835M
 
@@ -173,8 +195,14 @@ Next: Reuse document onboarding + legal-review pipeline to extract/review Covena
 
 ## Product convergence
 
-- Position: getCompanyDashboard / computeCovenantPosition — must label MODELED cross-document vs SOLVER_NATIVE and must not present solver secured=$5,129M as package binding
+- Position: getCompanyDashboard / computeCovenantPosition — packageAuthoritative MODELED_CROSS_DOCUMENT for customer headlines; solver-native is NON_AUTHORITATIVE_DIAGNOSTIC
 - Simulate: runCompanyScenario + simulateDebtIncurrence / simulateRestrictedPayment — same CompanyCovenantData financials + ledger; sequential overlays for multi-step drafts
 - Ask: Covenant Ask / research summaries are DISCOVERED ≠ capacity; must not answer dollar capacity without the same position engine + authority label
 - Shared state: Single as-of FinancialState/Snapshot + ACTIVE ledger + capacityFormulas/provisions; transaction draft is a pure overlay (StateDelta / scenario actions) never mutating Neon until an authorized commit path exists
-- MODELED capacity (capacityFormulas + golden-reviewed) ≠ VERIFIED Phase-4 permission under REQUIRE. Coherent today: modeled + evaluation seed; Phase-4 REQUIRE: unavailable (no NS-4 APPROVED).
+- MODELED / EVALUATION_SEED_NOT_NS4_APPROVED capacity ≠ verified remaining capacity / Phase-4 REQUIRE. Coherent today: modeled + evaluation seed; Phase-4 REQUIRE: unavailable (no NS-4 APPROVED).
+
+## Coordination
+
+- #220 — Financial figures remain EVALUATION_SEED_NOT_NS4_APPROVED (zero NS-4 APPROVED ContractInputSnapshot). No certification bypass; financial approval still required before any verified-capacity claim.
+- #234 — DEBT_INCUR / lien grant / investment debit utilization incomplete in Neon ledger (only DIVIDEND $150M known against shared Available Amount). Capacity figures are modeled gross of unknown historical draws.
+- #218 — Cross-document binding is MODELED_CROSS_DOCUMENT min across capacityFormulas. Solver-native elections are NON_AUTHORITATIVE_DIAGNOSTIC after lien-coverage + CONCURRENT_COUNTED fixes; package secured binding remains Indenture mila_secured, not CA TNL.

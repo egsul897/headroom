@@ -38,9 +38,20 @@ describe("financial capacity independent validation", () => {
       );
 
       expect(report.capacityBreakdown.dashboardSolverDivergence.securedIsFalseFavorable).toBe(
-        true,
+        false,
       );
-      expect(report.outcomeSummary.falseFavorable).toBe(1);
+      expect(report.capacityBreakdown.dashboardSolverDivergence.solverAuthority).toBe(
+        "NON_AUTHORITATIVE_DIAGNOSTIC",
+      );
+      expect(report.capacityBreakdown.dashboardSolverDivergence.packageAuthoritativeSecured).toBe(
+        4041,
+      );
+      expect(report.outcomeSummary.falseFavorable).toBe(0);
+      expect(report.borrowingProceedsTreatment.immediatelySpent.ssnlRoom).toBe(3991);
+      expect(report.borrowingProceedsTreatment.cashRetained.ssnlRoom).toBe(4041);
+      expect(report.borrowingProceedsTreatment.label).toBe(
+        "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
+      );
 
       expect(report.sequentialTransactions).toHaveLength(5);
       expect(report.sequentialIntegrity.eachUsesPriorPostState).toBe(true);

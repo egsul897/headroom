@@ -69,6 +69,9 @@ const PERM_R = permission("perm-r", {
   thresholdValue: 3.0,
   params: { debtBasis: "secured" },
 });
+// Secured debt legs require a Permitted Lien path (evaluateElection debt+lien gate).
+const PERM_F_LIEN = permission("perm-f-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
+const PERM_R_LIEN = permission("perm-r-lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
 
 const FIN: FinancialSnapshotInput = {
   ebitda: 500,
@@ -94,12 +97,32 @@ function fixtureData(): CompanyCovenantData {
 function fixtureSolverContext(): SolverNativeCompanyContext {
   const activationState: ActivationState = { asOfDate: AS_OF, series: {}, events: [], usageCounts: {}, unknownKeys: new Set() };
   return {
-    permissions: [PERM_F, PERM_R],
-    relationships: [],
+    permissions: [PERM_F, PERM_R, PERM_F_LIEN, PERM_R_LIEN],
+    relationships: [
+      {
+        id: "rel-f-lien",
+        companyId: "flip-co",
+        fromPermissionId: "perm-f",
+        toPermissionId: "perm-f-lien",
+        relationshipType: "AUTOMATIC_LINKED_PERMISSION",
+        sourceProvision: { documentId: DOC, sectionRef: "§lien-f" },
+      },
+      {
+        id: "rel-r-lien",
+        companyId: "flip-co",
+        fromPermissionId: "perm-r",
+        toPermissionId: "perm-r-lien",
+        relationshipType: "AUTOMATIC_LINKED_PERMISSION",
+        sourceProvision: { documentId: DOC, sectionRef: "§lien-r" },
+      },
+    ],
     sharedConstraints: [],
     collateralScopes: [],
     ruleActivationConditions: [],
-    coverageDeclarations: [{ documentId: DOC, side: "secured", grantType: "DEBT_INCURRENCE", isComplete: true }],
+    coverageDeclarations: [
+      { documentId: DOC, side: "secured", grantType: "DEBT_INCURRENCE", isComplete: true },
+      { documentId: DOC, side: "secured", grantType: "LIEN", isComplete: true },
+    ],
     activationState,
     asOfDate: AS_OF,
     entityClasses: ["BORROWER"],

@@ -609,6 +609,44 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     }
   }
 
+  // Secured transactions: every DEBT_INCURRENCE leg must have its own Permitted
+  // Lien path. An AUTOMATIC_LINKED_PERMISSION lien covers ONLY the debt
+  // permission it is linked from — it does not blanket-cover other debt legs
+  // in the same election. Without this gate, Ratio Debt (§3.3(a)) stacked with
+  // SCF under CONCURRENT_DISREGARDED inherited SCF's cl.(6) auto-lien and
+  // produced a false-favorable Indenture secured maximum (~$11,933M = FCCR
+  // ratio room + SCF flat) that omitted SSNL / Permitted Liens cl. (24) and
+  // treated Ratio Debt as secured even though cl. (6) reaches only
+  // §3.3(b)(i)/(b)(iv). Independent LIEN election members (e.g. cl. (24)/(25))
+  // remain a valid covering path for debt that has no auto-link.
+  if (eligibilityContext.transaction.secured) {
+    const independentLienMembers = members.filter((m) => m.grantType === "LIEN");
+    for (const debtLeg of legs.filter((l) => l.grantType === "DEBT_INCURRENCE")) {
+      const autoCovered = legs.some((l) => l.grantType === "LIEN" && l.linkedFrom === debtLeg.permissionId);
+      if (autoCovered) continue;
+      if (independentLienMembers.length > 0) {
+        requirements.push({
+          class: "LIEN_PERMISSION",
+          scope: { permissionId: debtLeg.permissionId },
+          status: "SATISFIED",
+          detail:
+            `Secured debt leg ${debtLeg.permissionId} relies on independent LIEN election member(s) ` +
+            `[${independentLienMembers.map((m) => m.id).join(", ")}] (no automatic linked lien on this debt permission).`,
+        });
+        continue;
+      }
+      requirements.push({
+        class: "LIEN_PERMISSION",
+        scope: { permissionId: debtLeg.permissionId },
+        status: "FAILED",
+        detail:
+          `Secured debt leg ${debtLeg.permissionId} has no Permitted Lien path: no AUTOMATIC_LINKED_PERMISSION ` +
+          `lien for this permission and no independent LIEN permission in this election. An auto-lien attached to a ` +
+          `different debt leg does not cover this leg.`,
+      });
+    }
+  }
+
   // Independently-eligible LIEN elections (not auto-linked) are evaluated
   // exactly like a FIXED/INCURRENCE_BASED debt member above (their own
   // amountKind governs), and are covered by `fixed`/`incurrenceBased`
@@ -691,7 +729,33 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   // legs are excluded because an automatically-linked lien leg has no
   // standalone capacity of its own; it is parasitic on its linked debt leg
   // (task §6), so including it would double-count.
-  const standaloneMaxCapacity = legs.filter((l) => l.grantType === "DEBT_INCURRENCE").reduce((sum, l) => sum + (l.standaloneCapacity ?? 0), 0);
+  //
+  // Exception — single INCURRENCE_BASED + FIXED with CONCURRENT_COUNTED:
+  // summing standalones double-counts shared leverage headroom (e.g. SCF flat
+  // $1,779 + MILA secured $4,041 = $5,820). COUNTED fixed usage is given pro
+  // forma effect in the ratio test, so fixed+ratio total cannot exceed the
+  // ratio room; DISREGARDED fixed may still stack outside that room. Take
+  // max(fixed-only, disregardedFixed + ratioRoom).
+  const debtLegsForMax = legs.filter((l) => l.grantType === "DEBT_INCURRENCE");
+  const standaloneMaxCapacity = debtLegsForMax.reduce((sum, l) => sum + (l.standaloneCapacity ?? 0), 0);
+
+  let singleRatioWithFixedMaxCapacity: number | undefined;
+  if (incurrenceBased.length === 1 && fixed.length > 0) {
+    const ratioId = incurrenceBased[0]!.id;
+    const ratioCap = debtLegsForMax.find((l) => l.permissionId === ratioId)?.standaloneCapacity;
+    if (ratioCap !== undefined) {
+      let countedFixedCap = 0;
+      let disregardedFixedCap = 0;
+      for (const f of fixed) {
+        const cap = debtLegsForMax.find((l) => l.permissionId === f.id)?.standaloneCapacity ?? 0;
+        if (concurrentTreatmentByFixedId.get(f.id) === "COUNTED") countedFixedCap += cap;
+        else disregardedFixedCap += cap;
+      }
+      const fixedOnly = countedFixedCap + disregardedFixedCap;
+      const withRatio = disregardedFixedCap + ratioCap;
+      singleRatioWithFixedMaxCapacity = Math.max(fixedOnly, withRatio);
+    }
+  }
 
   return {
     election,
@@ -701,7 +765,10 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     parameterAdjustmentsTriggered,
     sharedConstraintsConsumed: sharedConsumption,
     totalAllocated,
-    maxCapacity: incurrenceBased.length > 1 ? multiRatioMaxCapacity : standaloneMaxCapacity,
+    maxCapacity:
+      incurrenceBased.length > 1
+        ? multiRatioMaxCapacity
+        : (singleRatioWithFixedMaxCapacity ?? standaloneMaxCapacity),
     status: "EVALUATED",
   };
 }

@@ -96,7 +96,32 @@ export interface CapacityBreakdown {
     securedReported: number | null;
     unsecuredReported: number | null;
     securedIsFalseFavorable: boolean;
+    solverAuthority: "NON_AUTHORITATIVE_DIAGNOSTIC";
+    packageAuthoritativeSecured: number | null;
+    packageAuthoritativeLabel: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED";
+    rootCauseTrace: string[];
     note: string;
+  };
+  borrowingProceedsTreatment: {
+    engineConvention: "IMMEDIATELY_SPENT_CASH_UNCHANGED";
+    cashRetained: {
+      description: string;
+      netDebtDelta: number;
+      tnlRoom: number;
+      ssnlRoom: number;
+    };
+    immediatelySpent: {
+      description: string;
+      netDebtDelta: number;
+      tnlRoom: number;
+      ssnlRoom: number;
+    };
+    label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED";
+  };
+  coordination: {
+    issue220FinancialApproval: string;
+    issue234UtilizationCompleteness: string;
+    issue218CrossDocumentRestrictions: string;
   };
 }
 
@@ -319,10 +344,36 @@ function renderReport(r: IndependentValidationReport): string {
     `| Unsecured | $${r.capacityBreakdown.packageWideUnsecuredCapacity.amount}M | ${r.capacityBreakdown.packageWideUnsecuredCapacity.document} ${r.capacityBreakdown.packageWideUnsecuredCapacity.section} | $${r.capacityBreakdown.packageWideUnsecuredCapacity.independent}M |`,
   );
   lines.push("");
-  if (r.capacityBreakdown.dashboardSolverDivergence.securedIsFalseFavorable) {
+  lines.push("### Solver divergence / authority");
+  lines.push("");
+  lines.push(
+    `- Package authoritative secured: $${r.capacityBreakdown.dashboardSolverDivergence.packageAuthoritativeSecured}M (${r.capacityBreakdown.dashboardSolverDivergence.packageAuthoritativeLabel})`,
+  );
+  lines.push(
+    `- Solver-native secured (diagnostic): $${r.capacityBreakdown.dashboardSolverDivergence.securedReported}M — ${r.capacityBreakdown.dashboardSolverDivergence.solverAuthority}`,
+  );
+  lines.push(
+    `- False favorable: **${r.capacityBreakdown.dashboardSolverDivergence.securedIsFalseFavorable}**`,
+  );
+  for (const t of r.capacityBreakdown.dashboardSolverDivergence.rootCauseTrace) {
+    lines.push(`- ${t}`);
+  }
+  lines.push("");
+  lines.push(r.capacityBreakdown.dashboardSolverDivergence.note);
+  lines.push("");
+  if (r.borrowingProceedsTreatment) {
+    lines.push("### Borrowing proceeds treatment");
+    lines.push("");
+    lines.push(`Engine convention: ${r.borrowingProceedsTreatment.engineConvention}`);
+    lines.push(`- Cash retained: ${r.borrowingProceedsTreatment.cashRetained.description}`);
     lines.push(
-      `**FALSE FAVORABLE:** dashboard solver-native reported secured=$${r.capacityBreakdown.dashboardSolverDivergence.securedReported}M; package-wide secured binding is $${r.capacityBreakdown.packageWideSecuredCapacity.amount}M.`,
+      `  → TNL room $${r.borrowingProceedsTreatment.cashRetained.tnlRoom}M · SSNL room $${r.borrowingProceedsTreatment.cashRetained.ssnlRoom}M`,
     );
+    lines.push(`- Immediately spent: ${r.borrowingProceedsTreatment.immediatelySpent.description}`);
+    lines.push(
+      `  → TNL room $${r.borrowingProceedsTreatment.immediatelySpent.tnlRoom}M · SSNL room $${r.borrowingProceedsTreatment.immediatelySpent.ssnlRoom}M`,
+    );
+    lines.push(`- Label: ${r.borrowingProceedsTreatment.label}`);
     lines.push("");
   }
   lines.push("## 3–5. Sequential transaction economics");
@@ -391,6 +442,14 @@ function renderReport(r: IndependentValidationReport): string {
   lines.push(`- Shared state: ${r.productConvergence.sharedState}`);
   lines.push(`- ${r.productConvergence.modeledVsVerified}`);
   lines.push("");
+  if (r.coordination) {
+    lines.push("## Coordination");
+    lines.push("");
+    lines.push(`- ${r.coordination.issue220FinancialApproval}`);
+    lines.push(`- ${r.coordination.issue234UtilizationCompleteness}`);
+    lines.push(`- ${r.coordination.issue218CrossDocumentRestrictions}`);
+    lines.push("");
+  }
   return lines.join("\n");
 }
 
@@ -498,11 +557,31 @@ export async function runIndependentValidation(args?: {
       "Both documents always apply; capacity is the minimum across governing documents per side",
     ],
     dashboardSolverDivergence: {
-      securedReported: dash.capacity.secured.remainingCapacity ?? null,
-      unsecuredReported: dash.capacity.unsecured.remainingCapacity ?? null,
+      securedReported:
+        dash.capacity.secured.packageAuthoritative?.solverNativeRemaining ??
+        dash.capacity.secured.remainingCapacity ??
+        null,
+      unsecuredReported:
+        dash.capacity.unsecured.packageAuthoritative?.solverNativeRemaining ??
+        dash.capacity.unsecured.remainingCapacity ??
+        null,
       securedIsFalseFavorable:
+        dash.capacity.secured.packageAuthoritative?.solverIsFalseFavorable ??
         (dash.capacity.secured.remainingCapacity ?? 0) > independentMila + 0.5,
-      note: "getCompanyDashboard uses solver-native computeRemainingCapacityAfterDebtIncurrence(amount=0). For Coherent secured, solver reports CA TNL room ($5,129M) while capacityFormulas cross-document binding is Indenture mila_secured ($4,041M). Treating $5,129M as secured capacity is FALSE FAVORABLE.",
+      solverAuthority: "NON_AUTHORITATIVE_DIAGNOSTIC",
+      packageAuthoritativeSecured:
+        dash.capacity.secured.packageAuthoritative?.remainingCapacity ?? caps.secured,
+      packageAuthoritativeLabel: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
+      rootCauseTrace: [
+        "PRE-FIX: Indenture secured election ratio-fccr+scf-flat under CONCURRENT_DISREGARDED inherited SCF Permitted Liens cl.(6) auto-lien onto Ratio Debt → indenture max ≈ $11,933M (FCCR room + SCF flat).",
+        "PRE-FIX: CA secured cleared via coh-ca-d-permitted-601p (§6.01(p) TNL ≤ 4.25x) without a Permitted Lien path → $5,129M.",
+        "PRE-FIX: Package min(CA $5,129, Indenture $11,933) = $5,129M — Indenture mila_secured / SSNL ≤ 3.00x ($4,041M) never became binding.",
+        "FIX: evaluateElection requires each secured DEBT_INCURRENCE leg to have its own auto-lien or independent LIEN member; CONCURRENT_COUNTED maxCapacity is not the sum of standalones.",
+        "FIX: computeRemainingCapacityAfterDebtIncurrence clamps solver>legacy per document and quarantines false-favorable package figures; packageAuthoritative = MODELED_CROSS_DOCUMENT.",
+        "POST-FIX: Customer/package secured = Indenture mila_secured $4,041M (MODELED). Solver-native package min is NON_AUTHORITATIVE_DIAGNOSTIC and must not exceed $4,041M.",
+      ],
+      note:
+        "Solver-native remaining is NON_AUTHORITATIVE_DIAGNOSTIC. Customer headlines and package binding use MODELED_CROSS_DOCUMENT (Indenture mila_secured $4,041M secured / CA §6.11 $5,129M unsecured). Do not present solver figures as verified remaining capacity.",
     },
   };
   capacityBreakdown.lienCapacity.sum =
@@ -965,7 +1044,6 @@ export async function runIndependentValidation(args?: {
     : 0;
   const correctExec = sequential.filter((s) => s.outcome === "CORRECT_EXECUTABLE").length;
   const incorrect = sequential.filter((s) => s.outcome === "INCORRECT").length;
-
   const report: IndependentValidationReport = {
     schemaVersion: "product.financial-capacity-independent-validation.v1",
     generatedAt: new Date().toISOString(),
@@ -1021,8 +1099,42 @@ export async function runIndependentValidation(args?: {
       equityContribution,
       headline: builder,
       equityLegalAuthority:
-        "Indenture Available Amount §3.4(a)(C)(3)-(4): 100% of net cash proceeds from Capital Stock (other than Disqualified Stock) and equity contributions since Issue Date, to the extent not otherwise applied. Seed param includeEquityProceeds=true implements this prong.",
+        "Indenture Available Amount §3.4(a)(C)(3)-(4): 100% of net cash proceeds from Capital Stock (other than Disqualified Stock) and equity contributions since Issue Date, to the extent Not Otherwise Applied. Exclusions: Disqualified Stock; amounts otherwise applied. Seed equityProceedsSinceIssue=$2,150M is historical attribution since Issue Date under evaluation-seed financials (includeEquityProceeds=true). Issue-date eligibility: only post-Issue-Date contributions credit the builder — pre-issue equity is out of scope. MODELED / EVALUATION_SEED_NOT_NS4_APPROVED — not verified remaining capacity.",
       includeEquityProceedsParam: true,
+    },
+    borrowingProceedsTreatment: {
+      engineConvention: "IMMEDIATELY_SPENT_CASH_UNCHANGED",
+      cashRetained: {
+        description:
+          "Debt +$50M secured and cash +$50M (proceeds retained). Net debt unchanged → TNL/SSNL rooms unchanged at day-0 levels.",
+        netDebtDelta: 0,
+        tnlRoom: independentTnl,
+        ssnlRoom: independentMila,
+      },
+      immediatelySpent: {
+        description:
+          "Debt +$50M secured, cash unchanged (engine simulateDebtIncurrence / leverage convention). Net debt +$50M → TNL room $5,079M, SSNL/mila room $3,991M.",
+        netDebtDelta: 50,
+        tnlRoom: expectedTnlRoom({
+          ebitda: fin.ebitda,
+          totalDebt: fin.totalDebt + 50,
+          cash: fin.cash,
+        }),
+        ssnlRoom: expectedMilaSecuredRoom({
+          ebitda: fin.ebitda,
+          securedDebt: fin.securedDebt + 50,
+          cash: fin.cash,
+        }),
+      },
+      label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
+    },
+    coordination: {
+      issue220FinancialApproval:
+        "#220 — Financial figures remain EVALUATION_SEED_NOT_NS4_APPROVED (zero NS-4 APPROVED ContractInputSnapshot). No certification bypass; financial approval still required before any verified-capacity claim.",
+      issue234UtilizationCompleteness:
+        "#234 — DEBT_INCUR / lien grant / investment debit utilization incomplete in Neon ledger (only DIVIDEND $150M known against shared Available Amount). Capacity figures are modeled gross of unknown historical draws.",
+      issue218CrossDocumentRestrictions:
+        "#218 — Cross-document binding is MODELED_CROSS_DOCUMENT min across capacityFormulas. Solver-native elections are NON_AUTHORITATIVE_DIAGNOSTIC after lien-coverage + CONCURRENT_COUNTED fixes; package secured binding remains Indenture mila_secured, not CA TNL.",
     },
     sequentialTransactions: sequential,
     sequentialIntegrity: {
@@ -1044,7 +1156,7 @@ export async function runIndependentValidation(args?: {
     },
     productConvergence: {
       positionSurface:
-        "getCompanyDashboard / computeCovenantPosition — must label MODELED cross-document vs SOLVER_NATIVE and must not present solver secured=$5,129M as package binding",
+        "getCompanyDashboard / computeCovenantPosition — packageAuthoritative MODELED_CROSS_DOCUMENT for customer headlines; solver-native is NON_AUTHORITATIVE_DIAGNOSTIC",
       simulateSurface:
         "runCompanyScenario + simulateDebtIncurrence / simulateRestrictedPayment — same CompanyCovenantData financials + ledger; sequential overlays for multi-step drafts",
       askSurface:
@@ -1052,7 +1164,7 @@ export async function runIndependentValidation(args?: {
       sharedState:
         "Single as-of FinancialState/Snapshot + ACTIVE ledger + capacityFormulas/provisions; transaction draft is a pure overlay (StateDelta / scenario actions) never mutating Neon until an authorized commit path exists",
       modeledVsVerified:
-        "MODELED capacity (capacityFormulas + golden-reviewed) ≠ VERIFIED Phase-4 permission under REQUIRE. Coherent today: modeled + evaluation seed; Phase-4 REQUIRE: unavailable (no NS-4 APPROVED).",
+        "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED capacity ≠ verified remaining capacity / Phase-4 REQUIRE. Coherent today: modeled + evaluation seed; Phase-4 REQUIRE: unavailable (no NS-4 APPROVED).",
     },
     outcomeSummary: {
       correctExecutable: correctExec,
@@ -1060,10 +1172,11 @@ export async function runIndependentValidation(args?: {
       falseFavorable,
       incorrect,
       limitations: [
-        "Debt-incurrence cash proceeds not modeled in leverage convention",
-        "No NS-4 APPROVED financials — not Phase-4 REQUIRE",
-        "Unknown DEBT_INCUR historical utilization",
-        "Solver-native dashboard secured remaining diverges from cross-document binding (false favorable if used as secured capacity)",
+        "Debt-incurrence engine convention = immediately-spent (cash unchanged); cash-retained proceeds documented separately as MODELED dual treatment",
+        "No NS-4 APPROVED financials — not Phase-4 REQUIRE; figures labeled MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
+        "Unknown DEBT_INCUR historical utilization (#234)",
+        "Solver-native package min is NON_AUTHORITATIVE_DIAGNOSTIC; customer binding is MODELED_CROSS_DOCUMENT mila_secured $4,041M (#218)",
+        "Financial approval still open (#220)",
         "No officer/compliance certificate Document rows for Coherent in Neon",
       ],
     },
