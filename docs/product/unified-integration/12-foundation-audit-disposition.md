@@ -1,12 +1,14 @@
 # Foundation-audit disposition (PR #253 semantic safety)
 
-**Source disclosure:** `docs/product/unified-integration/06-stage6-independent-acceptance.md`  
-reported **14 failures** — all 5s timeouts or cache-spy env flakes.
+**Superseded for inventory detail by:** `13-foundation-audit-failure-inventory.md`  
+(exact 14 test names + classifications at tip `e46dd9ea`) and  
+`14-tracked-merge-blockers-and-limitations.md` (owners / acceptance criteria).
 
-**Scope of this remediation:** semantic safety of EXECUTABLE / path identity / amount
-validation. Foundation-audit suites are **not** on the certified-path CI gate and
-were not re-run against Neon (no production Neon writes). Classification below is
-from the Stage 6 disclosure, suite inventory, and prior integration notes.
+**Source disclosure:** `docs/product/unified-integration/06-stage6-independent-acceptance.md`  
+reported **14 failures**. Re-run at tip confirmed **14 failed tests** — predominantly
+Neon unreachable in this environment, plus one 5s concurrency timeout. Several test
+titles encode **known product/schema findings** (not “harmless” merely because they
+omit the simulation bridge).
 
 ## Classification matrix
 
