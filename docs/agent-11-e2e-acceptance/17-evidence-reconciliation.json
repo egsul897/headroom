@@ -147,7 +147,7 @@
     }
   },
   "archiveStatus": "SAFE_TO_ARCHIVE",
-  "finalSha": "c7645941cf2cf0d104dfc1754bc7dda10f07a93b",
+  "finalSha": "a7a1c1e510ece5d64cc7938d39eaef99b1b58670",
   "finalHarnessRerunTip": "e43d5c2061d45d11ac900a537d68dea6616a1da2",
   "postCommitRerun": {
     "tip": "e43d5c2061d45d11ac900a537d68dea6616a1da2",
@@ -155,9 +155,28 @@
     "scorecardMetricsUnchangedVsF2c67456": true,
     "handoffsPreserved": true
   },
-  "finalEvidenceReconciliationAtUtc": "2026-10-10T14:09:27.150325+00:00",
+  "finalEvidenceReconciliationAtUtc": "2026-10-10T14:10:16.907689+00:00",
   "exactHarnessTip": "c53afbf6c4ac360569cb25324d8bb405110fa91a",
-  "branchTipAfterEvidenceCommit": "c7645941cf2cf0d104dfc1754bc7dda10f07a93b",
+  "branchTipAfterEvidenceCommit": "a7a1c1e510ece5d64cc7938d39eaef99b1b58670",
   "tipDeltaNote": "The commit that records this re-run advances HEAD by one docs-only commit; metrics/classifications/handoffs are for exactHarnessTip.",
-  "discrepancies": []
+  "discrepancies": [],
+  "evidenceCommitRecordingRerun": "c7645941cf2cf0d104dfc1754bc7dda10f07a93b",
+  "tipIdentityDiscrepancy": {
+    "kind": "DOCS_ONLY_TIP_DELTA",
+    "exactHarnessTip": "c53afbf6c4ac360569cb25324d8bb405110fa91a",
+    "finalBranchTip": "a7a1c1e510ece5d64cc7938d39eaef99b1b58670",
+    "commitsAfterHarness": [
+      {
+        "sha": "c7645941cf2cf0d104dfc1754bc7dda10f07a93b",
+        "subject": "exact-tip harness re-run and SAFE_TO_ARCHIVE closeout"
+      },
+      {
+        "sha": "a7a1c1e510ece5d64cc7938d39eaef99b1b58670",
+        "subject": "record finalSha after exact-tip evidence commit"
+      }
+    ],
+    "metricsAffected": false,
+    "classificationsAffected": false,
+    "handoffsAffected": false
+  }
 }
