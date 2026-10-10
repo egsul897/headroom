@@ -48,7 +48,7 @@
 
 | path | A6 since MB | #253 since MB | agent6_status | merge guidance |
 |---|---|---|---|---|
-| `instrument-grouping.ts` | +160/−45 PROVISIONAL_FAMILY | +1/−1 FINANCIAL_STATEMENT in NON_INSTRUMENT_TYPES | **CONFLICTING** | Take A6 logic; re-insert `FINANCIAL_STATEMENT` into NON_INSTRUMENT_TYPES; keep defense-in-depth that RESOLVED+SUPPORTING never trusted-confirms (section8 P1-7). Associative path is REVIEW_REQUIRED-only. |
+| `instrument-grouping.ts` | +160/−45 PROVISIONAL_FAMILY | +1/−1 FINANCIAL_STATEMENT in NON_INSTRUMENT_TYPES | **CONFLICTING** | Take A6 provisional-family logic; **FINANCIAL_STATEMENT already re-inserted on Agent 6 this gate**. Keep RESOLVED+SUPPORTING never trusted-confirm. Associative path REVIEW_REQUIRED-only. Do not overwrite #253 semantic-safety remediation elsewhere. |
 | `types.ts` | +20 associationKind fields | unchanged | ADDITIVE_AGENT6 | Apply A6; required by grouping merge. |
 | `pipeline.ts` | version bump v1.1-provisional-family | unchanged | ADDITIVE_AGENT6 | Apply with grouping merge. |
 | other package-graph/* | unchanged on A6 | unchanged | — | No further conflicts. |
@@ -56,9 +56,10 @@
 ### Conflict mechanics
 
 1. #253 one-liner sits on the same `NON_INSTRUMENT_TYPES` initializer A6 reformatted/extended around — `git apply` fails both directions.
-2. A6 tip **lacks** `FINANCIAL_STATEMENT` exclusion → merging A6 onto #253 without the FCE line would let financial statements enter instrument clustering.
-3. #253 tip **lacks** PROVISIONAL_FAMILY → loses A6-D4 discovery association + `mayConsolidateOperativeAgreement` safety gate.
+2. **This gate:** Agent 6 now includes `FINANCIAL_STATEMENT` in NON_INSTRUMENT_TYPES (pre-merge adaptation). Remaining merge work is mechanical combine of A6 body onto #253 tip.
+3. #253 tip **lacks** PROVISIONAL_FAMILY → loses A6-D4 discovery association + `mayConsolidateOperativeAgreement` safety gate until ported.
 4. Expected post-merge: NON_INSTRUMENT includes FINANCIAL_STATEMENT; associative REVIEW_REQUIRED edges yield `associationKind=PROVISIONAL_FAMILY` + `reviewStatus=REVIEW_REQUIRED`; RESOLVED+STRONG remains CONFIRMED; RESOLVED+SUPPORTING still does not trusted-union (section8).
+5. **Do not independently merge Agent 6 into main** — coordinate selective integration through #253 after compatibility + adversarial gates.
 
 ## File-by-file matrix (Agent 6 changed paths)
 
