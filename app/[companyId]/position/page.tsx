@@ -100,9 +100,15 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
   }
 
   // Engine-backed companies (e.g. Coherent): reuse dashboard client / capacity.
+  // Numeric remaining here is MODELED gross-contractual — never production-
+  // authoritative utilization-adjusted AVAILABLE without trusted completeness.
   const dash = await getCompanyDashboard(companyId);
   const secured = dash.capacity.secured.remainingCapacity;
   const unsecured = dash.capacity.unsecured.remainingCapacity;
+  const securedAuth = dash.capacity.secured.utilizationRemainingAuthority;
+  const unsecuredAuth = dash.capacity.unsecured.utilizationRemainingAuthority;
+  const modeledOnly =
+    securedAuth !== "PRODUCTION_AUTHORITATIVE" && unsecuredAuth !== "PRODUCTION_AUTHORITATIVE";
 
   return (
     <div className="stack">
@@ -110,17 +116,42 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
         <div className="card-title">Position</div>
         <div className="card-subtitle">
           Evaluated by the shared capacity engine — not hardcoded arithmetic.
+          {modeledOnly ? (
+            <>
+              {" "}
+              Figures below are <strong>MODELED / not utilization-verified</strong> — not
+              production-authoritative remaining (completeness + trusted issuer required).
+            </>
+          ) : null}
         </div>
         <div className="row">
           <div className="row-label">Secured remaining</div>
           <div className="row-value">
-            {secured !== undefined ? fmtM(secured) : <Chip tone="tight">Not evaluated</Chip>}
+            {secured !== undefined ? (
+              <>
+                {fmtM(secured)}{" "}
+                {securedAuth !== "PRODUCTION_AUTHORITATIVE" ? (
+                  <Chip tone="tight">MODELED · not utilization-authoritative</Chip>
+                ) : null}
+              </>
+            ) : (
+              <Chip tone="tight">Not evaluated</Chip>
+            )}
           </div>
         </div>
         <div className="row" style={{ borderBottom: "none" }}>
           <div className="row-label">Unsecured remaining</div>
           <div className="row-value">
-            {unsecured !== undefined ? fmtM(unsecured) : <Chip tone="tight">Not evaluated</Chip>}
+            {unsecured !== undefined ? (
+              <>
+                {fmtM(unsecured)}{" "}
+                {unsecuredAuth !== "PRODUCTION_AUTHORITATIVE" ? (
+                  <Chip tone="tight">MODELED · not utilization-authoritative</Chip>
+                ) : null}
+              </>
+            ) : (
+              <Chip tone="tight">Not evaluated</Chip>
+            )}
           </div>
         </div>
         <div className="button-row" style={{ marginTop: 12 }}>

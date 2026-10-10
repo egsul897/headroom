@@ -23,6 +23,7 @@ export {
   toProductCapacityView,
   buildSharedProductCapacityViews,
   assertProductCapacityConsistency,
+  refuseAuthoritativeRemaining,
   type ProductSurface,
   type ProductCapacityView,
 } from "./product-capacity-view";
@@ -30,6 +31,8 @@ export {
   decideSolverUtilizationAuthority,
   authorityFromUtilizationResolution,
   assertMayPublishRemaining,
+  evaluateCompletenessForRemainingClaim,
+  productionAuthorityOk,
   type UtilizationAuthorityKind,
   type UtilizationAuthorityDecision,
   type SolverUsageObservation,

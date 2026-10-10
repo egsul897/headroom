@@ -55,15 +55,19 @@ describe("utilization resolver — never invent zero", () => {
       capacityRuleId: "rule-flat",
       asOf: AS_OF_D,
       records: [],
-      verifiedEmptyCertificate: {
+      allowSyntheticRemaining: true,
+      completenessCertificate: {
         capacityRuleId: "rule-flat",
         asOf: AS_OF_D,
         approvalState: "APPROVED",
         sourceLabel: "approved-empty-path-cert",
+        kind: "VERIFIED_EMPTY",
+        authenticity: "SYNTHETIC_LABELED",
       },
     });
     expect(r.knowledge).toBe("VERIFIED_ZERO");
     expect(r.supportsRemainingClaim).toBe(true);
+    expect(r.productionAuthoritative).toBe(false);
     expect(r.attributedAmount).toBe(0);
   });
 
@@ -109,18 +113,21 @@ describe("utilization resolver — never invent zero", () => {
           authenticity: "SYNTHETIC_LABELED",
         }),
       ],
+      allowSyntheticRemaining: true,
       completenessCertificate: {
         capacityRuleId: "rule-flat",
         asOf: AS_OF_D,
         approvalState: "APPROVED",
         sourceLabel: "SYNTHETIC_LABELED completeness cert",
         kind: "VERIFIED_COMPLETE",
+        authenticity: "SYNTHETIC_LABELED",
       },
     });
     expect(r.knowledge).toBe("KNOWN_ATTRIBUTED");
     expect(r.attributedAmount).toBe(25);
     expect(r.supportsRemainingClaim).toBe(true);
     expect(r.completenessCertified).toBe(true);
+    expect(r.productionAuthoritative).toBe(false);
   });
 
   it("unattributed legacy basket → UNATTRIBUTED_LEGACY_BASKET", () => {
@@ -258,12 +265,14 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
             authenticity: "SYNTHETIC_LABELED",
           }),
         ],
+        allowSyntheticRemaining: true,
         completenessCertificate: {
           capacityRuleId: "basket-a",
           asOf: AS_OF_D,
           approvalState: "APPROVED",
           sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE certificate",
           kind: "VERIFIED_COMPLETE",
+          authenticity: "SYNTHETIC_LABELED",
         },
       },
       sourceCitations: ["§6.01(a) synthetic demo"],
@@ -280,6 +289,8 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
 
 describe("Position / Simulate / Ask consistency", () => {
   it("three surfaces share one verified result — no parallel engine", () => {
+    // Product surfaces strip non-production (synthetic) remaining even when the
+    // underlying demo hatch computes remaining — all three must agree.
     const views = buildSharedProductCapacityViews({
       gross: {
         amount: 80,
@@ -303,12 +314,14 @@ describe("Position / Simulate / Ask consistency", () => {
             authenticity: "SYNTHETIC_LABELED",
           }),
         ],
+        allowSyntheticRemaining: true,
         completenessCertificate: {
           capacityRuleId: "shared-rule",
           asOf: AS_OF_D,
           approvalState: "APPROVED",
           sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE",
           kind: "VERIFIED_COMPLETE",
+          authenticity: "SYNTHETIC_LABELED",
         },
       },
       governingConditions: ["Payment Conditions satisfied"],
@@ -316,13 +329,14 @@ describe("Position / Simulate / Ask consistency", () => {
       sourceCitations: ["§6.01", "§6.04"],
       allowSyntheticRemaining: true,
     });
-    expect(views.POSITION.supportedRemainingCapacity).toBe(60);
-    expect(views.SIMULATE.supportedRemainingCapacity).toBe(60);
-    expect(views.ASK.supportedRemainingCapacity).toBe(60);
+    // Synthetic demo remaining is stripped on Position/Simulate/Ask publication.
+    expect(views.POSITION.supportedRemainingCapacity).toBeNull();
+    expect(views.SIMULATE.supportedRemainingCapacity).toBeNull();
+    expect(views.ASK.supportedRemainingCapacity).toBeNull();
+    expect(views.POSITION.mayPublishAvailable).toBe(false);
     expect(assertProductCapacityConsistency(views)).toEqual({ ok: true });
     expect(views.POSITION.grossCapacity).toBe(80);
     expect(views.POSITION.knownUtilization).toBe(20);
-    expect(views.POSITION.unknownUtilization).toBe(false);
     expect(views.POSITION.governingConditions).toContain("Payment Conditions satisfied");
     expect(views.POSITION.crossDocumentConstraints.length).toBe(1);
     expect(views.POSITION.sourceCitations).toContain("§6.01");
