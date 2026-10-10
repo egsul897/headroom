@@ -1,0 +1,965 @@
+{
+  "schema": "kf-premerge-audit.v1",
+  "generatedAt": "2026-10-10T00:30:33.368Z",
+  "tipShaExpected": "79f8be362667415dc7f9b5fe1c41d000bf35e9d7",
+  "neonMutations": false,
+  "paidInferenceUsd": 0,
+  "population": {
+    "rawRows": 48226,
+    "uniqueDiscoveryIds": 29242,
+    "excessDuplicateRows": 18984,
+    "agreementSelfLoops": 93,
+    "provisionSameDocumentUnique": 26026,
+    "explicitlyUnresolvedUntilAuthorizedMigration": true
+  },
+  "concurrentRace": {
+    "uniqueIdentities": 50,
+    "sequentialInsertsAcrossTwoPasses": 50,
+    "concurrentToctouInsertAttempts": 100,
+    "amplificationFactorWithoutUnique": 2,
+    "skipDuplicatesWithoutUniqueConstraint": "NO_OP",
+    "verdict": "APPLICATION_SIDE_SCAN_ALONE_IS_NOT_CONCURRENT_SAFE — UNIQUE(discoveryKey) required before production graph promotion / concurrent expand.",
+    "raceWindow": "loadExistingProvisionDiscoveryIds() → createMany; no transaction/lock; no unique index yet"
+  },
+  "discoveryIdBenchmark": {
+    "iterations": 5,
+    "distinctIds": 29016,
+    "timingsMs": [
+      644.84,
+      190.45,
+      134.27,
+      128.97,
+      131.21
+    ],
+    "meanMs": 245.95,
+    "p50Ms": 134.27,
+    "scalabilityLimitations": [
+      "Lookup is O(N) table scan over JSON metadata->>'discoveryId' — no index on discoveryKey until authorized migration.",
+      "Full DISTINCT materializes all unique IDs in application memory (Set) — grows with unique edge population.",
+      "Concurrent writers each scan then insert; without UNIQUE(discoveryKey), TOCTOU races can still amplify rows.",
+      "Prisma createMany({ skipDuplicates: true }) is a no-op without a matching unique constraint.",
+      "8000-row write cap per persist call means large corpora need multiple calls; race window multiplies with callers."
+    ]
+  },
+  "evidenceSampling": {
+    "sampled": 56,
+    "byVerdict": {
+      "FACTUALLY_SUPPORTED": 50,
+      "WEAK_OR_OPAQUE": 1,
+      "SELF_LOOP_INVALID": 5
+    },
+    "note": "Factual correctness is independent of confidence scores. DISCOVERED ≠ CERTIFIED legal authority.",
+    "samples": [
+      {
+        "discoveryId": "b9052a9fe907a9ca4f212115",
+        "kind": "PROVISION_DEFINITION",
+        "confidence": 0.7,
+        "fromTitle": "CREDIT AGREEMENT dated as of June 23, 2026",
+        "toTitle": "CREDIT AGREEMENT dated as of June 23, 2026",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Meaning controlled by definition of \"Credit Agreement Refinancing Indebtedness\"",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-doc definition term \"Credit Agreement Refinancing Indebtedness\" with section 1.01(2)"
+        ]
+      },
+      {
+        "discoveryId": "b16010a681a972dcf36ce89f",
+        "kind": "PROVISION_DEFINITION",
+        "confidence": 0.7,
+        "fromTitle": "GoDaddy selection",
+        "toTitle": "GoDaddy selection",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Meaning controlled by definition of \"Administrative Agent\"",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-doc definition term \"Administrative Agent\" with section 2.4"
+        ]
+      },
+      {
+        "discoveryId": "9e4d3d5a33485aab716be1ad",
+        "kind": "PROVISION_DEFINITION",
+        "confidence": 0.7,
+        "fromTitle": "Maravai LifeSciences",
+        "toTitle": "Maravai LifeSciences",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Meaning controlled by definition of \"Administrative Agent\"",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-doc definition term \"Administrative Agent\" with section 7.01(c)"
+        ]
+      },
+      {
+        "discoveryId": "8bee0a62e82eee4f30a95d8e",
+        "kind": "PROVISION_DEFINITION",
+        "confidence": 0.7,
+        "fromTitle": "Peloton Interactive",
+        "toTitle": "Peloton Interactive",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Meaning controlled by definition of \"Secured Net Leverage Ratio\"",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-doc definition term \"Secured Net Leverage Ratio\" with section 1.07"
+        ]
+      },
+      {
+        "discoveryId": "5f949d4de5cf1f903ffdd2fb",
+        "kind": "PROVISION_DEFINITION",
+        "confidence": 0.7,
+        "fromTitle": "CREDIT AGREEMENT",
+        "toTitle": "CREDIT AGREEMENT",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Meaning controlled by definition of \"MFN Provision\"",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-doc definition term \"MFN Provision\" with section 10.01(c)"
+        ]
+      },
+      {
+        "discoveryId": "595055b600bce2ffee4d39b0",
+        "kind": "PROVISION_DEFINITION",
+        "confidence": 0.7,
+        "fromTitle": "GoDaddy selection",
+        "toTitle": "GoDaddy selection",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Meaning controlled by definition of \"Holdings\"",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-doc definition term \"Holdings\" with section 13.23"
+        ]
+      },
+      {
+        "discoveryId": "2af4325201b56de0c3cd687c",
+        "kind": "PROVISION_DEFINITION",
+        "confidence": 0.7,
+        "fromTitle": "Suja Life",
+        "toTitle": "Suja Life",
+        "fromClass": "RESTATEMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Meaning controlled by definition of \"Participant\"",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-doc definition term \"Participant\" with section 10.8"
+        ]
+      },
+      {
+        "discoveryId": "c6e0184602fdb3c36fd0a4b3",
+        "kind": "PROVISION_DEFINITION",
+        "confidence": 0.7,
+        "fromTitle": "GoDaddy selection",
+        "toTitle": "GoDaddy selection",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Meaning controlled by definition of \"Obligations\"",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-doc definition term \"Obligations\" with section 2.16"
+        ]
+      },
+      {
+        "discoveryId": "49c6044775627cabab33d052",
+        "kind": "PROVISION_CROSS_REFERENCE",
+        "confidence": 0.75,
+        "fromTitle": "d424570dex101.htm",
+        "toTitle": "d424570dex101.htm",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Cross-reference: Section 2.04(c).",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Cross-ref from section 9.24(c)"
+        ]
+      },
+      {
+        "discoveryId": "53db5633a94234d6998e5e0e",
+        "kind": "PROVISION_CROSS_REFERENCE",
+        "confidence": 0.75,
+        "fromTitle": "exhibit102amendedandrestat.htm",
+        "toTitle": "exhibit102amendedandrestat.htm",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Cross-reference: Section 4.01(a)(iii)",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Cross-ref from section 4.01(i)"
+        ]
+      },
+      {
+        "discoveryId": "c2036f2ad00933b25e312e55",
+        "kind": "PROVISION_CROSS_REFERENCE",
+        "confidence": 0.45,
+        "fromTitle": "Maravai LifeSciences",
+        "toTitle": "Maravai LifeSciences",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Cross-reference: Section 163(i)(1)",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Cross-ref from section 6.06(b)"
+        ]
+      },
+      {
+        "discoveryId": "7d311870d930060dd78f896f",
+        "kind": "PROVISION_CROSS_REFERENCE",
+        "confidence": 0.75,
+        "fromTitle": "Maravai LifeSciences",
+        "toTitle": "Maravai LifeSciences",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Cross-reference: Section 7.01(d)(ii)",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Cross-ref from section 1.01(vii)"
+        ]
+      },
+      {
+        "discoveryId": "9ac515c181a8b10236869d43",
+        "kind": "PROVISION_CROSS_REFERENCE",
+        "confidence": 0.75,
+        "fromTitle": "exhibit102amendedandrestat.htm",
+        "toTitle": "SECOND AMENDMENT TO CREDIT AGREEMENT",
+        "fromClass": "UNKNOWN",
+        "toClass": "AMENDMENT",
+        "rationale": "Cross-reference: Section 2.14",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": []
+      },
+      {
+        "discoveryId": "8fefe0212cac6f96d9052074",
+        "kind": "PROVISION_CROSS_REFERENCE",
+        "confidence": 0.75,
+        "fromTitle": "CREDIT AGREEMENT",
+        "toTitle": "EX-10.1",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Cross-reference: Section 3.06",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": []
+      },
+      {
+        "discoveryId": "2acddae86c6998d08a203408",
+        "kind": "PROVISION_CROSS_REFERENCE",
+        "confidence": 0.75,
+        "fromTitle": "RBC selection",
+        "toTitle": "EX-10.1",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Cross-reference: Section 4.01",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": []
+      },
+      {
+        "discoveryId": "c4a6763924cf33b831103309",
+        "kind": "PROVISION_CROSS_REFERENCE",
+        "confidence": 0.75,
+        "fromTitle": "Alkermes plc",
+        "toTitle": "FIFTH AMENDED &amp; RESTATED CREDIT AGREEMENT",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Cross-reference: Section 2.23",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": []
+      },
+      {
+        "discoveryId": "439d1a5368b007e463818d2d",
+        "kind": "PROVISION_EXCEPTION",
+        "confidence": 0.65,
+        "fromTitle": "CREDIT AGREEMENT",
+        "toTitle": "CREDIT AGREEMENT",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Exception/carve-out: except_as: except that, (other than in the case of clause (e) below) so long as no Event of Default would result therefrom: (a) the Borrower or any Guarantor ma",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "f8a30d8891e8fadcdea36d2b",
+        "kind": "PROVISION_EXCEPTION",
+        "confidence": 0.65,
+        "fromTitle": "exhibit102amendmentno3tote.htm",
+        "toTitle": "exhibit102amendmentno3tote.htm",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Exception/carve-out: except_as: except that the Borrower may not assign or otherwise transfer any of its rights or obligations hereunder without the prior written consent of the Len",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "887d90510794f97e2f3c9239",
+        "kind": "PROVISION_EXCEPTION",
+        "confidence": 0.65,
+        "fromTitle": "Maravai LifeSciences",
+        "toTitle": "Maravai LifeSciences",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Exception/carve-out: other_than: other than under the Bankruptcy Code) the sole purpose of which is to effect a transaction permitted under Section 6.03(a) that is not otherwise pro",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "0bf430afceb2deda3cc2f76a",
+        "kind": "PROVISION_EXCEPTION",
+        "confidence": 0.65,
+        "fromTitle": "d424570dex101.htm",
+        "toTitle": "d424570dex101.htm",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Exception/carve-out: other_than: other than the assets that secured such Original Indebtedness (or would have been required to secure such Original Indebtedness pursuant to the term",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "6fd8e16327cadbb68c2a6dad",
+        "kind": "PROVISION_EXCEPTION",
+        "confidence": 0.65,
+        "fromTitle": "dsgr-2022-2025-credit-facility",
+        "toTitle": "dsgr-2022-2025-credit-facility",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Exception/carve-out: notwithstanding: Notwithstanding anything to the contrary contained in this Section 1.04 or in the definition of “Capital Lease Obligations,” any change in acco",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "cab097258bb881e64f19ceb0",
+        "kind": "PROVISION_EXCEPTION",
+        "confidence": 0.65,
+        "fromTitle": "Maravai LifeSciences",
+        "toTitle": "Maravai LifeSciences",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Exception/carve-out: other_than: other than any natural person) that agrees to provide any portion of any (a) Incremental Revolving Commitment Increase or Additional/Replacement Rev",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "e8892e5de1cee97b2060d9f7",
+        "kind": "PROVISION_EXCEPTION",
+        "confidence": 0.65,
+        "fromTitle": "CREDIT AGREEMENT",
+        "toTitle": "CREDIT AGREEMENT",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Exception/carve-out: except_as: except as to enforcement, as may be limited by applicable domestic or foreign bankruptcy, winding-up, insolvency, fraudulent conveyance, reorganizati",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "63d870ab0bb014730a3c3af8",
+        "kind": "PROVISION_EXCEPTION",
+        "confidence": 0.65,
+        "fromTitle": "final-lightweight-unseen-sup",
+        "toTitle": "final-lightweight-unseen-sup",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Exception/carve-out: other_than: other than U.S. Dollars will be converted to U.S. Dollars for the purposes of (A) testing the Financial Covenant, at the Exchange Rate as of the las",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "3545327bc946ce30fec10dcb",
+        "kind": "PROVISION_CONDITION",
+        "confidence": 0.65,
+        "fromTitle": "ex10-1.htm",
+        "toTitle": "ex10-1.htm",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Condition/proviso: subject_to: subject to regulation under, the Investment Company Act of 1940 or (b) subject to regulation under the Federal Power Act or (except as contemplated ",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "388b7409680d29cd8fb1f0cf",
+        "kind": "PROVISION_CONDITION",
+        "confidence": 0.65,
+        "fromTitle": "conmed-2025-credit-facility",
+        "toTitle": "conmed-2025-credit-facility",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Condition/proviso: provided_that: provided that the respective Borrower shall not be required to compensate a Lender pursuant to this paragraph for any amounts incurred more than ",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "c3bfe93c0fdeeb4451557b48",
+        "kind": "PROVISION_CONDITION",
+        "confidence": 0.65,
+        "fromTitle": "CREDIT AGREEMENT dated as of June 23, 2026",
+        "toTitle": "CREDIT AGREEMENT dated as of June 23, 2026",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Condition/proviso: provided_that: provided that the Net Proceeds of such Credit Agreement Refinancing Indebtedness shall be applied, substantially concurrently with the incurrence",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "536887d2090587a25fc6daa5",
+        "kind": "PROVISION_CONDITION",
+        "confidence": 0.65,
+        "fromTitle": "exhibit101termloanagreemen.htm",
+        "toTitle": "exhibit101termloanagreemen.htm",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Condition/proviso: no_default: no Default or Event of Default shall arise as a result of any limitation set forth in dollars in Section 6.01 , 6.02 or 6.05 being exceeded solely a",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "4503b2c76d7491eeab9a876d",
+        "kind": "PROVISION_CONDITION",
+        "confidence": 0.65,
+        "fromTitle": "final-lightweight-unseen-sup",
+        "toTitle": "final-lightweight-unseen-sup",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Condition/proviso: subject_to: subject to Liens permitted by Section 7.01, and in each case subject to exceptions and limitations otherwise set forth in this Agreement and the Col",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "8d870e669a98491385e6a145",
+        "kind": "PROVISION_CONDITION",
+        "confidence": 0.65,
+        "fromTitle": "American Eagle Outfitters",
+        "toTitle": "American Eagle Outfitters",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Condition/proviso: subject_to: subject to avoidance under applicable law, and no U.S. Loan Party nor any other Person or entity shall have any right or claim under this Section wi",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "3607f429d2e88dca3bbf4a53",
+        "kind": "PROVISION_CONDITION",
+        "confidence": 0.65,
+        "fromTitle": "BrightView Holdings, Inc.",
+        "toTitle": "BrightView Holdings, Inc.",
+        "fromClass": "CREDIT_AGREEMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Condition/proviso: so_long_as: so long as such letter of credit is otherwise permitted to be incurred pursuant to this Section 10.1 or (ii) obligations in respect of letters of su",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "54172ccfe26d27a12f254482",
+        "kind": "PROVISION_CONDITION",
+        "confidence": 0.65,
+        "fromTitle": "Chewy alt exhibit ref",
+        "toTitle": "Chewy alt exhibit ref",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Condition/proviso: provided_that: provided , however , that endorsements of negotiable instruments and documents in the ordinary course of business or consistent with past practic",
+        "sameDocument": true,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Same-document exception/condition/shared-capacity structural edge"
+        ]
+      },
+      {
+        "discoveryId": "1778a4021a8dd47bd9cc",
+        "kind": "AGREEMENT_AMENDMENT",
+        "confidence": 0.7,
+        "fromTitle": "SIXTH AMENDMENT TO CREDIT AGREEMENT",
+        "toTitle": "CREDIT AGREEMENT",
+        "fromClass": "AMENDMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "6f118d9e32ceeca87ff2",
+        "kind": "AGREEMENT_AMENDMENT",
+        "confidence": 0.7,
+        "fromTitle": "FIRST AMENDMENT AND INCREMENTAL TERM LOAN AGREEMENT",
+        "toTitle": "FOURTH AMENDMENT AND INCREMENTAL TERM LOAN AGREEMENT, DATED JUNE 1, 2021.",
+        "fromClass": "AMENDMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "052a5c1e3bac358d1d55",
+        "kind": "AGREEMENT_AMENDMENT",
+        "confidence": 0.7,
+        "fromTitle": "EX-10.1 SIXTH AMENDMENT TO CREDIT AGREEMENT",
+        "toTitle": "EXHIBIT 4.1 CREDIT AGREEMENT",
+        "fromClass": "AMENDMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "bef2ad7ac1b377b637f8",
+        "kind": "AGREEMENT_AMENDMENT",
+        "confidence": 0.7,
+        "fromTitle": "SEVENTH AMENDMENT TO CREDIT AGREEMENT",
+        "toTitle": "CREDIT AGREEMENT",
+        "fromClass": "AMENDMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "0848e90c46dcc4eb3022",
+        "kind": "AGREEMENT_AMENDMENT",
+        "confidence": 0.7,
+        "fromTitle": "THIRD AMENDMENT TO CREDIT AGREEMENT",
+        "toTitle": "CREDIT AGREEMENT",
+        "fromClass": "AMENDMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "ce7d2a954e73ad57caf5",
+        "kind": "AGREEMENT_AMENDMENT",
+        "confidence": 0.7,
+        "fromTitle": "finding7-doc-b.txt",
+        "toTitle": "finding7-doc-a.txt",
+        "fromClass": "AMENDMENT",
+        "toClass": "CREDIT_AGREEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "WEAK_OR_OPAQUE",
+        "reasons": [
+          "Cross-document link without strong shared instrument tokens"
+        ]
+      },
+      {
+        "discoveryId": "5edbec91fdde35754a0b",
+        "kind": "AGREEMENT_AMENDMENT",
+        "confidence": 0.7,
+        "fromTitle": "FOURTH AMENDMENT TO CREDIT AGREEMENT",
+        "toTitle": "SECOND AMENDED AND RESTATED REVOLVING CREDIT PROMISSORY NOTE",
+        "fromClass": "AMENDMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "43670d95791dcb08b147",
+        "kind": "AGREEMENT_AMENDMENT",
+        "confidence": 0.7,
+        "fromTitle": "EXHIBIT 10.1 AMENDMENT TO CREDIT AGREEMENT",
+        "toTitle": "FIRST AMENDMENT TO CREDIT AGREEMENT DATED MARCH 27, 2012",
+        "fromClass": "AMENDMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "949771094ca4fa2291d5",
+        "kind": "AGREEMENT_RESTATEMENT",
+        "confidence": 0.7,
+        "fromTitle": "lyv-20251231xex1019amended.htm",
+        "toTitle": "lyv-20251231xex1019amended.htm",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": true,
+        "factualVerdict": "SELF_LOOP_INVALID",
+        "reasons": [
+          "Agreement self-loop — invalid self-amendment"
+        ]
+      },
+      {
+        "discoveryId": "10ccb1cf829a40a97f92",
+        "kind": "AGREEMENT_RESTATEMENT",
+        "confidence": 0.7,
+        "fromTitle": "FIRST AMENDMENT TO SECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+        "toTitle": "EXHIBIT 4A - SECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+        "fromClass": "RESTATEMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "f1da3d29db20878623e5",
+        "kind": "AGREEMENT_RESTATEMENT",
+        "confidence": 0.7,
+        "fromTitle": "EX-10.1 NINTH AMENDMENT TO CREDIT AGREEMENT",
+        "toTitle": "EX-10.1 NINTH AMENDMENT TO CREDIT AGREEMENT",
+        "fromClass": "RESTATEMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": true,
+        "factualVerdict": "SELF_LOOP_INVALID",
+        "reasons": [
+          "Agreement self-loop — invalid self-amendment"
+        ]
+      },
+      {
+        "discoveryId": "4eb38c748c6cc2c2860b",
+        "kind": "AGREEMENT_RESTATEMENT",
+        "confidence": 0.7,
+        "fromTitle": "SECOND AMENDED AND RESTATED CREDIT FACILITY AGREEMENT, DATED JULY 7, 2021",
+        "toTitle": "SECOND AMENDED AND RESTATED CREDIT FACILITY AGREEMENT, DATED JULY 7, 2021",
+        "fromClass": "RESTATEMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": true,
+        "factualVerdict": "SELF_LOOP_INVALID",
+        "reasons": [
+          "Agreement self-loop — invalid self-amendment"
+        ]
+      },
+      {
+        "discoveryId": "2dbd4857fcf6fe7801e5",
+        "kind": "AGREEMENT_RESTATEMENT",
+        "confidence": 0.7,
+        "fromTitle": "exhibit102amendedandrestat.htm",
+        "toTitle": "exhibit102amendedandrestat.htm",
+        "fromClass": "UNKNOWN",
+        "toClass": "UNKNOWN",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": true,
+        "factualVerdict": "SELF_LOOP_INVALID",
+        "reasons": [
+          "Agreement self-loop — invalid self-amendment"
+        ]
+      },
+      {
+        "discoveryId": "1eca24131e54068b7f8d",
+        "kind": "AGREEMENT_RESTATEMENT",
+        "confidence": 0.7,
+        "fromTitle": "EX-10.2 AMENDED AND RESTATED PLEDGE AND SECURITY AGREEMENT",
+        "toTitle": "EX-10.2 AMENDED AND RESTATED PLEDGE AND SECURITY AGREEMENT",
+        "fromClass": "RESTATEMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": true,
+        "factualVerdict": "SELF_LOOP_INVALID",
+        "reasons": [
+          "Agreement self-loop — invalid self-amendment"
+        ]
+      },
+      {
+        "discoveryId": "0d0356dcbe93421eee2f",
+        "kind": "AGREEMENT_RESTATEMENT",
+        "confidence": 0.7,
+        "fromTitle": "EX-10.4 THIRD AMENDED AND RESTATED CREDIT AGREEMENT (3Y)",
+        "toTitle": "EX-10.7 THIRD AMENDED AND RESTATED CREDIT AGREEMENT (5Y)",
+        "fromClass": "RESTATEMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "1f3b74f1e2b46c341d85",
+        "kind": "AGREEMENT_RESTATEMENT",
+        "confidence": 0.7,
+        "fromTitle": "SECOND AMENDED AND RESTATED TERM LOAN CREDIT AGREEMENT",
+        "toTitle": "AMENDED AND RESTATED TERM LOAN CREDIT AGREEMENT DATED SEPTEMBER 25, 2018",
+        "fromClass": "RESTATEMENT",
+        "toClass": "RESTATEMENT",
+        "rationale": "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "23c62caeee0932749109",
+        "kind": "INDENTURE_SUPPLEMENTAL",
+        "confidence": 0.7,
+        "fromTitle": "Forty-Fourth Supplemental Indenture, dated as of June 5, 2025, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee (including the form of 2.779% Senior Note due 2040) &#8211;",
+        "toTitle": "Indenture, dated as of May 21, 2009, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee &#8211;",
+        "fromClass": "SUPPLEMENTAL_INDENTURE",
+        "toClass": "INDENTURE",
+        "rationale": "Supplemental indenture metadata references indenture family.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "5fe7bb7c33b66429e3f4",
+        "kind": "INDENTURE_SUPPLEMENTAL",
+        "confidence": 0.7,
+        "fromTitle": "Eighteenth Supplemental Indenture, dated as of October 31, 2018, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee (including the form of 4.750% Senior Note due 2049) &#8211;",
+        "toTitle": "Indenture, dated as of May 21, 2009, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee &#8211;",
+        "fromClass": "SUPPLEMENTAL_INDENTURE",
+        "toClass": "INDENTURE",
+        "rationale": "Supplemental indenture metadata references indenture family.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "bbf152b254dab4d52ee8",
+        "kind": "INDENTURE_SUPPLEMENTAL",
+        "confidence": 0.7,
+        "fromTitle": "SECOND SUPPLEMENTAL INDENTURE",
+        "toTitle": "INDENTURE",
+        "fromClass": "SUPPLEMENTAL_INDENTURE",
+        "toClass": "INDENTURE",
+        "rationale": "Supplemental indenture metadata references indenture family.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "e4601c8c663d782422b3",
+        "kind": "INDENTURE_SUPPLEMENTAL",
+        "confidence": 0.7,
+        "fromTitle": "Forty-Second Supplemental Indenture, dated as of June 5, 2025, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee (including the form of 2.003% Senior Note due 2032) &#8211;",
+        "toTitle": "Indenture, dated as of May 21, 2009, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee &#8211;",
+        "fromClass": "SUPPLEMENTAL_INDENTURE",
+        "toClass": "INDENTURE",
+        "rationale": "Supplemental indenture metadata references indenture family.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "991edd5b7b69f5408d2a",
+        "kind": "INDENTURE_SUPPLEMENTAL",
+        "confidence": 0.7,
+        "fromTitle": "FORTY-FIFTH SUPPLEMENTAL INDENTURE",
+        "toTitle": "TRUST INDENTURE",
+        "fromClass": "SUPPLEMENTAL_INDENTURE",
+        "toClass": "INDENTURE",
+        "rationale": "Supplemental indenture metadata references indenture family.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "c1a566b8546534270928",
+        "kind": "INDENTURE_SUPPLEMENTAL",
+        "confidence": 0.7,
+        "fromTitle": "Thirty-Fourth Supplemental Indenture, dated as of September 14, 2022, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee (including the form of 1.075% Senior Note due 2029) &#8211;",
+        "toTitle": "Indenture, dated as of May 21, 2009, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee &#8211;",
+        "fromClass": "SUPPLEMENTAL_INDENTURE",
+        "toClass": "INDENTURE",
+        "rationale": "Supplemental indenture metadata references indenture family.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "eefb791b7698fbad3113",
+        "kind": "INDENTURE_SUPPLEMENTAL",
+        "confidence": 0.7,
+        "fromTitle": "Twelfth Supplemental Indenture, dated as of September 19, 2016, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee (including the form of 2.875% Senior Note due 2026) &#8211;",
+        "toTitle": "Indenture, dated as of May 21, 2009, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee &#8211;",
+        "fromClass": "SUPPLEMENTAL_INDENTURE",
+        "toClass": "INDENTURE",
+        "rationale": "Supplemental indenture metadata references indenture family.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      },
+      {
+        "discoveryId": "8e3b475e6e695f2ee286",
+        "kind": "INDENTURE_SUPPLEMENTAL",
+        "confidence": 0.7,
+        "fromTitle": "Thirteenth Supplemental Indenture, dated as of September 19, 2016, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee (including the form of 4.000% Senior Note due 2046) &#8211;",
+        "toTitle": "Indenture, dated as of May 21, 2009, between Aflac Incorporated and The Bank of New York Mellon Trust Company, N.A., as trustee &#8211;",
+        "fromClass": "SUPPLEMENTAL_INDENTURE",
+        "toClass": "INDENTURE",
+        "rationale": "Supplemental indenture metadata references indenture family.",
+        "sameDocument": false,
+        "factualVerdict": "FACTUALLY_SUPPORTED",
+        "reasons": [
+          "Title/metadata family tokens support DISCOVERED linkage (not legal effectiveness)"
+        ]
+      }
+    ]
+  },
+  "operative": {
+    "passCount": 7,
+    "total": 7,
+    "cases": [
+      {
+        "id": "son-opaque-ex-10-1",
+        "status": "UNRESOLVED_PRECEDENCE",
+        "pass": true,
+        "note": "Exhibit label + RESTATEMENT class + later filing must not resolve"
+      },
+      {
+        "id": "substantive-restatement",
+        "status": "RESOLVED",
+        "pass": true,
+        "note": "Substantive title evidence may resolve"
+      },
+      {
+        "id": "exhibit-10-2-gate",
+        "status": "REFUSE",
+        "pass": true,
+        "note": "Opaque exhibit gate"
+      },
+      {
+        "id": "empty-title-restatement-class",
+        "status": "REFUSE",
+        "pass": true,
+        "note": "RESTATEMENT class alone insufficient"
+      },
+      {
+        "id": "discover-no-self-loop",
+        "status": "0",
+        "pass": true,
+        "note": "Solo restatement must not self-link"
+      },
+      {
+        "id": "missing-base",
+        "status": "SINGLE_DOCUMENT",
+        "pass": true,
+        "note": "No base → must not RESOLVED"
+      },
+      {
+        "id": "duplicate-restatements",
+        "status": "UNRESOLVED_PRECEDENCE",
+        "pass": true,
+        "note": "Multiple restatements → fail closed (no filing-order pick)"
+      }
+    ]
+  },
+  "selfLoopSplit": {
+    "invalidAgreementSelfLoopsEmitted": 0,
+    "restatementToDistinctBase": true,
+    "note": "PROVISION_* same-document endpoints remain intentionally emitted by discoverProvisionEdgesFromItems (unit-tested). Agreement self-loops rejected in discover.ts."
+  },
+  "migrationAudit": {
+    "executedOnProduction": false,
+    "isolatedRollbackTested": false,
+    "isolatedRollbackBlocker": "Neon managed Postgres does not expose createdb for disposable headroom_test_* DBs in this environment; rollback SQL reviewed but not executed against an isolated snapshot.",
+    "archivesDisplacedRows": true,
+    "preservesProvenanceFields": [
+      "rationale",
+      "confidence",
+      "metadata",
+      "evidence_status",
+      "original_created_at"
+    ],
+    "conflictingDuplicateMetadata": "Earliest createdAt kept live; later duplicate rows archived with full metadata JSON — conflicting source evidence retained in archive, not merged/destroyed.",
+    "rollbackDoc": "docs/knowledge-factory/quality-gate/remediation/MIGRATION-ROLLBACK.md",
+    "forwardSql": "docs/knowledge-factory/quality-gate/remediation/MIGRATION-dedupe-discovery-key.sql",
+    "residualRisk": "Until UNIQUE(discoveryKey) is authorized and applied, concurrent persistProvisionGraph callers can still race and amplify rows despite full-scan skip logic."
+  },
+  "unresolvedHistorical": {
+    "excessDuplicateRows": 18984,
+    "agreementSelfLoops": 93,
+    "expectedExcess": 18984,
+    "expectedSelfLoops": 93,
+    "matchesExpected": true,
+    "status": "EXPLICITLY_UNRESOLVED_UNTIL_AUTHORIZED_PRODUCTION_MIGRATION"
+  }
+}
