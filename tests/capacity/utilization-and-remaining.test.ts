@@ -55,15 +55,19 @@ describe("utilization resolver — never invent zero", () => {
       capacityRuleId: "rule-flat",
       asOf: AS_OF_D,
       records: [],
-      verifiedEmptyCertificate: {
+      allowSyntheticRemaining: true,
+      completenessCertificate: {
         capacityRuleId: "rule-flat",
         asOf: AS_OF_D,
         approvalState: "APPROVED",
         sourceLabel: "approved-empty-path-cert",
+        kind: "VERIFIED_EMPTY",
+        authenticity: "SYNTHETIC_LABELED",
       },
     });
     expect(r.knowledge).toBe("VERIFIED_ZERO");
     expect(r.supportsRemainingClaim).toBe(true);
+    expect(r.productionAuthoritative).toBe(false);
     expect(r.attributedAmount).toBe(0);
   });
 
@@ -109,18 +113,21 @@ describe("utilization resolver — never invent zero", () => {
           authenticity: "SYNTHETIC_LABELED",
         }),
       ],
+      allowSyntheticRemaining: true,
       completenessCertificate: {
         capacityRuleId: "rule-flat",
         asOf: AS_OF_D,
         approvalState: "APPROVED",
         sourceLabel: "SYNTHETIC_LABELED completeness cert",
         kind: "VERIFIED_COMPLETE",
+        authenticity: "SYNTHETIC_LABELED",
       },
     });
     expect(r.knowledge).toBe("KNOWN_ATTRIBUTED");
     expect(r.attributedAmount).toBe(25);
     expect(r.supportsRemainingClaim).toBe(true);
     expect(r.completenessCertified).toBe(true);
+    expect(r.productionAuthoritative).toBe(false);
   });
 
   it("unattributed legacy basket → UNATTRIBUTED_LEGACY_BASKET", () => {
@@ -258,12 +265,14 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
             authenticity: "SYNTHETIC_LABELED",
           }),
         ],
+        allowSyntheticRemaining: true,
         completenessCertificate: {
           capacityRuleId: "basket-a",
           asOf: AS_OF_D,
           approvalState: "APPROVED",
           sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE certificate",
           kind: "VERIFIED_COMPLETE",
+          authenticity: "SYNTHETIC_LABELED",
         },
       },
       sourceCitations: ["§6.01(a) synthetic demo"],
@@ -303,12 +312,14 @@ describe("Position / Simulate / Ask consistency", () => {
             authenticity: "SYNTHETIC_LABELED",
           }),
         ],
+        allowSyntheticRemaining: true,
         completenessCertificate: {
           capacityRuleId: "shared-rule",
           asOf: AS_OF_D,
           approvalState: "APPROVED",
           sourceLabel: "SYNTHETIC_LABELED VERIFIED_COMPLETE",
           kind: "VERIFIED_COMPLETE",
+          authenticity: "SYNTHETIC_LABELED",
         },
       },
       governingConditions: ["Payment Conditions satisfied"],

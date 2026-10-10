@@ -120,7 +120,7 @@ function certOk(
  * trusted-issuer authorization for the certificate's issuer.actorId.
  * Caller-supplied issuer.role alone never suffices (#244 selective port).
  */
-function productionAuthorityOk(
+export function productionAuthorityOk(
   cert: SolverCompletenessCertInput,
   trustedIssuerAuth: TrustedIssuerAuthorizationContext | null | undefined,
 ): { ok: boolean; blockers: string[] } {
@@ -156,6 +156,67 @@ function productionAuthorityOk(
     }
   }
   return { ok: blockers.length === 0, blockers };
+}
+
+/**
+ * Single completeness → remaining-claim evaluation for Solver and product surfaces.
+ * APPROVED alone never returns ok. Synthetic only via allowSyntheticRemaining.
+ */
+export function evaluateCompletenessForRemainingClaim(args: {
+  cert: SolverCompletenessCertInput | null | undefined;
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
+  allowSyntheticRemaining?: boolean;
+}): {
+  supportsRemainingClaim: boolean;
+  productionAuthoritative: boolean;
+  demoSynthetic: boolean;
+  blockers: string[];
+} {
+  const cert = args.cert ?? null;
+  if (!cert || cert.approvalState !== "APPROVED") {
+    return {
+      supportsRemainingClaim: false,
+      productionAuthoritative: false,
+      demoSynthetic: false,
+      blockers:
+        cert == null
+          ? ["no completeness certificate presented"]
+          : ["certificate approvalState is not APPROVED"],
+    };
+  }
+  if (cert.authenticity !== "AUTHENTIC" && cert.authenticity !== "SYNTHETIC_LABELED") {
+    return {
+      supportsRemainingClaim: false,
+      productionAuthoritative: false,
+      demoSynthetic: false,
+      blockers: [
+        "APPROVED certificate missing authenticity — cannot establish production-authoritative remaining",
+      ],
+    };
+  }
+  if (cert.authenticity === "SYNTHETIC_LABELED") {
+    if (args.allowSyntheticRemaining === true) {
+      return {
+        supportsRemainingClaim: true,
+        productionAuthoritative: false,
+        demoSynthetic: true,
+        blockers: [],
+      };
+    }
+    return {
+      supportsRemainingClaim: false,
+      productionAuthoritative: false,
+      demoSynthetic: false,
+      blockers: ["synthetic completeness evidence cannot publish authoritative remaining"],
+    };
+  }
+  const production = productionAuthorityOk(cert, args.trustedIssuerAuth);
+  return {
+    supportsRemainingClaim: production.ok,
+    productionAuthoritative: production.ok,
+    demoSynthetic: false,
+    blockers: production.blockers,
+  };
 }
 
 function refuseAttributedIncomplete(
@@ -352,7 +413,7 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
 export function authorityFromUtilizationResolution(r: UtilizationResolution): UtilizationAuthorityDecision {
   const syntheticOnly = r.recordsApplied.some((x) => x.authenticity === "SYNTHETIC_LABELED")
     && r.recordsApplied.every((x) => x.authenticity === "SYNTHETIC_LABELED");
-  if (syntheticOnly && r.supportsRemainingClaim) {
+  if (syntheticOnly && r.supportsRemainingClaim && r.productionAuthoritative !== true) {
     // Defensive: product should never mark synthetic as remaining-supporting without allow flag.
     return {
       kind: "SYNTHETIC_ONLY",
@@ -381,15 +442,26 @@ export function authorityFromUtilizationResolution(r: UtilizationResolution): Ut
   else if (kind === "KNOWN_ATTRIBUTED") solverStatus = "ATTRIBUTED_INCOMPLETE";
   else solverStatus = "ZERO_NO_ATTRIBUTED_USAGE";
 
+  const productionOk = r.productionAuthoritative === true && r.supportsRemainingClaim;
+
   return {
     kind,
     attributedAmount: r.attributedAmount,
-    supportsRemainingClaim: r.supportsRemainingClaim,
-    completenessCertified: r.completenessCertified,
-    authoritativeForRemaining: r.supportsRemainingClaim,
-    blockers: r.blockers,
+    supportsRemainingClaim: productionOk,
+    completenessCertified: productionOk ? r.completenessCertified : false,
+    authoritativeForRemaining: productionOk,
+    blockers: [
+      ...r.blockers,
+      ...(r.supportsRemainingClaim && r.productionAuthoritative !== true
+        ? ["remaining claim is not production-authoritative (synthetic/demo or missing trusted issuer)"]
+        : []),
+    ],
     note: r.note,
-    solverStatus,
+    solverStatus: productionOk
+      ? solverStatus
+      : kind === "VERIFIED_ZERO" || kind === "KNOWN_ATTRIBUTED"
+        ? "ATTRIBUTED_INCOMPLETE"
+        : solverStatus,
   };
 }
 

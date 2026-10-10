@@ -86,7 +86,12 @@ function isResolution(u: ResolveUtilizationArgs | UtilizationResolution): u is U
 export function computeVerifiedRemaining(args: ComputeVerifiedRemainingArgs): VerifiedRemainingResult {
   const utilization = isResolution(args.utilization)
     ? args.utilization
-    : resolveUtilization(args.utilization);
+    : resolveUtilization({
+        ...args.utilization,
+        // Propagate demo hatch into resolver so SYNTHETIC_LABELED completeness can resolve.
+        allowSyntheticRemaining:
+          args.utilization.allowSyntheticRemaining ?? args.allowSyntheticRemaining,
+      });
   const gross = args.gross;
   const blockers = [...utilization.blockers];
   const governingConditions = args.governingConditions ?? [];
@@ -94,16 +99,39 @@ export function computeVerifiedRemaining(args: ComputeVerifiedRemainingArgs): Ve
   const sourceCitations = args.sourceCitations ?? [];
   const certificationStatus = args.certificationStatus ?? "NOT_CERTIFIED";
 
-  // Synthetic-only evidence never publishes customer AVAILABLE / remaining unless
-  // explicitly allowed for labeled demos/tests (never set by production loaders).
+  // Synthetic-only or mixed authentic/synthetic evidence never publishes customer
+  // AVAILABLE / remaining unless explicitly allowed for labeled demos/tests
+  // (never set by production Position / Simulate / Ask loaders).
   const applied = utilization.recordsApplied ?? [];
+  const authenticityKinds = new Set(applied.map((r) => r.authenticity));
   const syntheticOnly =
     applied.length > 0 && applied.every((r) => r.authenticity === "SYNTHETIC_LABELED");
+  const mixedAuthenticity =
+    authenticityKinds.has("AUTHENTIC") && authenticityKinds.has("SYNTHETIC_LABELED");
   const blockSynthetic =
-    syntheticOnly && utilization.supportsRemainingClaim && !args.allowSyntheticRemaining;
-  const supportsRemaining = utilization.supportsRemainingClaim && !blockSynthetic;
+    (syntheticOnly || mixedAuthenticity) &&
+    utilization.supportsRemainingClaim &&
+    !args.allowSyntheticRemaining;
+  // Production surfaces refuse remaining unless productionAuthoritative (or demo hatch).
+  const supportsRemaining =
+    utilization.supportsRemainingClaim &&
+    !blockSynthetic &&
+    (utilization.productionAuthoritative === true || args.allowSyntheticRemaining === true);
   if (blockSynthetic) {
-    blockers.push("synthetic-labeled utilization evidence cannot publish authoritative remaining");
+    blockers.push(
+      mixedAuthenticity
+        ? "mixed authentic and synthetic utilization evidence cannot establish production-authoritative remaining"
+        : "synthetic-labeled utilization evidence cannot publish authoritative remaining",
+    );
+  }
+  if (
+    utilization.supportsRemainingClaim &&
+    utilization.productionAuthoritative !== true &&
+    !args.allowSyntheticRemaining
+  ) {
+    blockers.push(
+      "remaining claim lacks production-authoritative completeness (authenticity + trusted issuer)",
+    );
   }
 
   if (gross.refusalReason) {

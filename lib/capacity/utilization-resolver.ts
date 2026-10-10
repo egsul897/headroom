@@ -8,8 +8,12 @@
  * table is UNKNOWN, not VERIFIED_ZERO.
  *
  * Approved individual ledger records do NOT establish completeness of historical
- * usage. Remaining = gross − usage requires a completeness certificate.
+ * usage. Remaining = gross − usage requires a completeness certificate with
+ * authenticity + trusted issuer authorization (same production gate as the
+ * solver bridge — APPROVED alone never suffices).
  */
+import type { TrustedIssuerAuthorizationContext } from "./completeness-issuer-auth";
+import { evaluateCompletenessForRemainingClaim } from "./utilization-authority";
 import type {
   UtilizationCompletenessCertificate,
   UtilizationEvidenceRecord,
@@ -26,8 +30,19 @@ export interface ResolveUtilizationArgs {
   /**
    * Affirmative certificate that the attributed ledger for this path is complete
    * as of `asOf`. Required for any remaining-capacity claim.
+   * Production remaining also requires authenticity AUTHENTIC + trustedIssuerAuth.
    */
   completenessCertificate?: UtilizationCompletenessCertificate | null;
+  /**
+   * Trusted identity/authorization for the certificate issuer.
+   * Required for production-authoritative remaining. Missing context fails closed.
+   */
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
+  /**
+   * Test/demo only — permits SYNTHETIC_LABELED completeness. Never set by
+   * production Position / Simulate / Ask / debt-intelligence loaders.
+   */
+  allowSyntheticRemaining?: boolean;
   /**
    * @deprecated Prefer completenessCertificate with kind VERIFIED_EMPTY.
    * Kept as a thin alias for call sites that only certify emptiness.
@@ -141,9 +156,38 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
   );
 
   const cert = resolveCompletenessCert(args);
-  const completenessCertified = certApplies(cert, args.capacityRuleId, asOf);
+  const structuralCertApplies = certApplies(cert, args.capacityRuleId, asOf);
+  // Production authority gate — shared with solver decideSolverUtilizationAuthority.
+  // APPROVED alone never sets supportsRemainingClaim.
+  const authorityEval = evaluateCompletenessForRemainingClaim({
+    cert: structuralCertApplies ? cert : null,
+    trustedIssuerAuth: args.trustedIssuerAuth,
+    allowSyntheticRemaining: args.allowSyntheticRemaining,
+  });
+  const authorityOk = authorityEval.supportsRemainingClaim;
+  if (structuralCertApplies && !authorityOk) {
+    blockers.push(...authorityEval.blockers);
+  }
+  const completenessCertified = authorityOk;
   const emptyCertified = completenessCertified && cert!.kind === "VERIFIED_EMPTY";
   const recordsComplete = completenessCertified && cert!.kind === "VERIFIED_COMPLETE";
+
+  // Mixed authentic + synthetic attributed usage cannot establish production remaining.
+  const authenticityKinds = new Set(attributedToRule.map((r) => r.authenticity));
+  const mixedAuthenticity =
+    authenticityKinds.has("AUTHENTIC") && authenticityKinds.has("SYNTHETIC_LABELED");
+  if (mixedAuthenticity && !args.allowSyntheticRemaining) {
+    blockers.push(
+      "mixed authentic and synthetic utilization evidence cannot establish production-authoritative remaining",
+    );
+  }
+
+  // Duplicate usage ids among applied attributed records — refuse remaining.
+  const usageIds = attributedToRule.map((r) => r.usageId);
+  const duplicateUsage = usageIds.length !== new Set(usageIds).size;
+  if (duplicateUsage) {
+    blockers.push("duplicate ledger usage ids on capacity path — remaining not supported");
+  }
 
   let knowledge: UtilizationKnowledgeKind;
   let attributedAmount: number | null = null;
@@ -169,14 +213,16 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
       } else {
         knowledge = "KNOWN_ATTRIBUTED";
       }
-      if (recordsComplete) {
+      if (recordsComplete && !mixedAuthenticity && !duplicateUsage) {
         supportsRemainingClaim = true;
-        note = `Attributed utilization ${attributedAmount} ${currency ?? ""} as of ${asOfCutoff(asOf)} (${knowledge}); completeness certified (${cert!.sourceLabel}).`;
+        note = `Attributed utilization ${attributedAmount} ${currency ?? ""} as of ${asOfCutoff(asOf)} (${knowledge}); completeness certified (${cert!.sourceLabel}${authorityEval.productionAuthoritative ? ", production-authoritative" : ", demo-only"}).`;
       } else {
         supportsRemainingClaim = false;
-        blockers.push(
-          "approved attributed ledger records do not establish completeness of historical usage — remaining claim requires a VERIFIED_COMPLETE certificate",
-        );
+        if (!recordsComplete && structuralCertApplies === false) {
+          blockers.push(
+            "approved attributed ledger records do not establish completeness of historical usage — remaining claim requires a VERIFIED_COMPLETE certificate",
+          );
+        }
         note = `Known attributed utilization ${attributedAmount} ${currency ?? ""} (${knowledge}), but completeness not certified — remaining capacity cannot be claimed.`;
       }
     }
@@ -206,7 +252,7 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
     knowledge = "VERIFIED_ZERO";
     attributedAmount = 0;
     supportsRemainingClaim = true;
-    note = `Verified zero utilization per approved empty completeness certificate (${cert!.sourceLabel}) as of ${asOfCutoff(asOf)}.`;
+    note = `Verified zero utilization per approved empty completeness certificate (${cert!.sourceLabel}) as of ${asOfCutoff(asOf)}${authorityEval.productionAuthoritative ? " (production-authoritative)" : " (demo-only)"}.`;
   } else if (considered.length === 0) {
     knowledge = "UNKNOWN";
     attributedAmount = null;
@@ -233,14 +279,14 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
   }
 
   // Completeness KIND must match evidence shape — refuse mismatched certificates.
-  if (completenessCertified && cert!.kind === "VERIFIED_EMPTY" && attributedToRule.length > 0) {
+  if (structuralCertApplies && cert!.kind === "VERIFIED_EMPTY" && attributedToRule.length > 0) {
     supportsRemainingClaim = false;
     blockers.push(
       "VERIFIED_EMPTY completeness certificate conflicts with attributed usage records — remaining claim blocked",
     );
     note = `${note} Completeness certificate kind mismatch (EMPTY vs records present).`;
   }
-  if (completenessCertified && cert!.kind === "VERIFIED_COMPLETE" && attributedToRule.length === 0) {
+  if (structuralCertApplies && cert!.kind === "VERIFIED_COMPLETE" && attributedToRule.length === 0) {
     supportsRemainingClaim = false;
     blockers.push(
       "VERIFIED_COMPLETE completeness certificate requires attributed records — use VERIFIED_EMPTY for zero usage",
@@ -249,6 +295,17 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
       knowledge = "PARTIALLY_KNOWN";
     }
     note = `${note} Completeness certificate kind mismatch (COMPLETE vs no records).`;
+  }
+
+  // Final production gate: mixed authenticity, duplicates, or failed authority evaluation strips remaining.
+  if (supportsRemainingClaim && mixedAuthenticity && !args.allowSyntheticRemaining) {
+    supportsRemainingClaim = false;
+  }
+  if (supportsRemainingClaim && duplicateUsage) {
+    supportsRemainingClaim = false;
+  }
+  if (supportsRemainingClaim && !authorityOk) {
+    supportsRemainingClaim = false;
   }
 
   return {
@@ -260,10 +317,11 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
     recordsConsidered: considered,
     recordsApplied: attributedToRule,
     recordsExcluded: excluded,
-    blockers,
+    blockers: [...new Set(blockers)],
     note,
     supportsRemainingClaim,
-    completenessCertified: supportsRemainingClaim ? completenessCertified : false,
+    completenessCertified: supportsRemainingClaim,
+    productionAuthoritative: supportsRemainingClaim && authorityEval.productionAuthoritative,
   };
 }
 
