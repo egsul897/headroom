@@ -1,22 +1,22 @@
 # P0 — Persistence / Canonical Reconciliation Report
 
-Tip under test: `dcd4d5a2c4cea39f6908f0805757a2e587255b85` (#294 head).
+Tip under test: production accept on `eb16e0e1` (identical product+persistence tree to tip aside from docs merges); branch tip below.
 
 ```
 MAIN_SHA: 4f1a0b81207364373d9a4cb9fe515d4a1a002e56
 
-PR_293_SHA: 66d00a97e4d2787fb29c6758b316294d189685a6
-  state: OPEN, MERGEABLE (mergeStateStatus UNSTABLE while checks in flight at report time)
+PR_293_SHA: 59af93201de9d5db20eccadbf990feaba176638b
+  state: OPEN, MERGEABLE
   base: main @ 4f1a0b81
-  last-observed earlier: 8a4beb52 → advanced to 66d00a97 (operative→retrieval binding)
+  note: tip advanced during mission (force-updated past 66d00a97 → 74526ead rebase of binding,
+        then 59c3c4b3 wrong-document production promotion guard, then docs pins through 59af9320)
 
-PR_294_SHA: dcd4d5a2c4cea39f6908f0805757a2e587255b85
-  state: OPEN, MERGEABLE, CLEAN
+PR_294_SHA: 42b57312417a9018058207142ca14acc550570d3
+  state: OPEN, MERGEABLE
   base: main @ 4f1a0b81
-  last-observed earlier: cde9cd3e → advanced through Agent #9 + merge absorb of #293 tip
   contains origin/pr-293 tip: YES (git merge-base --is-ancestor; empty `git log origin/pr-293 --not HEAD`)
 
-INTERVENING_COMMITS (ba39ab11d638f1d98c441d9d0389bdb2275bdde8..dcd4d5a2):
+INTERVENING_COMMITS (ba39ab11d638f1d98c441d9d0389bdb2275bdde8..42b57312 on #294):
   703291d5 docs(acceptance): execute Round 2 on #293 tip; record merge gate
   8a4beb52 fix(product): correct inverted production-promotion authority summary
   beee23f5 docs(persistence): record CI SUCCESS for P5/P6 tip ba39ab11
@@ -28,38 +28,47 @@ INTERVENING_COMMITS (ba39ab11d638f1d98c441d9d0389bdb2275bdde8..dcd4d5a2):
   66d00a97 fix(canonical): restore operative→retrieval binding from #283
   867e72c0 docs(persistence): pin Agent #9 report to tip 2d098703
   dcd4d5a2 merge(persistence): absorb #293 tip 66d00a97 (operative→retrieval binding fix)
+  857f9d6d docs(persistence): P0 canonical reconciliation report on tip dcd4d5a2
+  eb16e0e1 merge(persistence): absorb current #293 tip 59c3c4b3 (wrong-document production guard)
+  b6ae195b docs(persistence): refresh P0 report after absorbing #293 tip 59c3c4b3
+  b43503e9 merge(persistence): absorb #293 docs tip d2b4d8e9 (wrong-document guard pin)
+  42b57312 merge(persistence): absorb #293 tip 59af9320 (readable wrong-document pin)
+  (+ via merge) 74526ead rebased binding; 59c3c4b3 wrong-document guard; d2b4d8e9/59af9320 docs pins
 
 CANONICAL_FEATURE_PARITY:
-  #293 commits missing from #294: NONE
-  8a4beb52 authority-summary correction: PRESENT (ancestor of tip)
-  66d00a97 operative→retrieval binding: PRESENT (ancestor of tip; also merge dcd4d5a2)
+  #293 commits missing from #294 tip: NONE (after 42b57312 absorb)
+  8a4beb52 authority-summary correction: PRESENT
+  operative→retrieval binding (66d00a97 / rebased 74526ead): PRESENT
+  59c3c4b3 wrong-document production promotion refusal: PRESENT (absorbed; not reimplemented)
+  docs pins for that guard (d2b4d8e9 / 59af9320): PRESENT
   Production delta #293...#294 (excl. docs): persistence layer only
     lib/persistence/**, persist-execution.ts, durable-capacity-identities.ts,
     prisma/schema + migration 20261010160000_institutional_intelligence_persistence
-  Do not assume older #294 heads had every #293 fix — tip dcd4d5a2 does.
+  Do not assume older #294 heads had every #293 fix — tip 42b57312 does.
 
 AUTHORITY_SUMMARY_TEST:
   Command: npx vitest run tests/product/unified-transaction-execution.test.ts -t 'authority summary'
-  Result: 3 passed / 0 failed / 19 skipped in file filter
+  Result: 3 passed / 0 failed
+  Full product suites: unified-transaction-execution 22 + canonical-adversarial 13 = 35 passed
   Inactive operative production promotion:
-    blocker text = "incomplete operative production promotion — caveats/CP refuse PRODUCTION_AUTHORITY"
+    blocker = "incomplete operative production promotion — caveats/CP refuse PRODUCTION_AUTHORITY"
     productionAuthorityActive=false → PRODUCTION_AUTHORITY_BLOCKED
     Position / Ask / Simulate handoffs share traceId and agree on blockers
-  Classification/refusal logic: not weakened (8a4beb52 only inverted summary ternary)
+  Classification/refusal logic: not weakened
 
 OPERATIVE_RETRIEVAL_BINDING_STATUS:
   PRESENT AND WIRED on tip
   resolveOperativeSource → bindCandidateToOperativeRetrievalSource → buildCovenantContextBundle
-    - retrieval-source.ts restored
+    - retrieval-source.ts present
     - offline-package-compile.ts binds before retrieval (OPERATIVE_RETRIEVAL_SOURCE_BLOCKED)
-    - buildCovenantContextBundle still resolves via resolveOperativeSource
-  Tests: tests/operative-restatement-authority/retrieval-source-binding.test.ts — 3 passed
-  Persistence: OperativeAuthoritySnapshot stores sourceDocumentId / authorityClassification /
-    provisionalIdentity from the governing claim used at execution; provisional never promoted
-    to confirmed in persist-execution.ts
+    - buildCovenantContextBundle resolves via resolveOperativeSource
+  Tests: retrieval-source-binding.test.ts — 3 passed
+  Wrong-document guard: wrong-document-production-guard.test.ts — 2 passed
+  Persistence stores governing sourceDocumentId / authorityClassification / provisionalIdentity
+    from the claim used at execution; provisional never promoted to confirmed
 
 PERSISTENCE_TEST_RESULTS:
-  SHA: dcd4d5a2c4cea39f6908f0805757a2e587255b85
+  SHA: eb16e0e1008912cc2771bad2eb58164d797fd71f (post-59c3c4b3 absorb; later tip commits are docs/merges only)
   Command: DATABASE_URL=postgresql://postgres:***@127.0.0.1:5432/postgres npm run test:persistence
   DB: local disposable headroom_test_* via createEphemeralDatabase (NOT Neon)
   PRODUCTION_DB_TOUCHED: NO
@@ -104,16 +113,17 @@ PRODUCTION_AUTHORITY_INVARIANTS:
   No PRODUCTION_AUTHORITATIVE persistence while activation blocked
   Simulation never mutates ContractLedgerUsage
   Provisional identity never persisted as confirmed operative
+  Wrong-document / REVIEW_REQUIRED successors cannot keep base as CONFIRMED_OPERATIVE
   Stored results are not treated as current authority without re-check
   No duplicate solver or ledger introduced
   No production Neon writes; no paid inference; no self-merge
 
 RECOMMENDED_MERGE_ORDER:
   Prefer Option A (smallest auditable risk):
-    1) Human-approve and merge corrected #293 (66d00a97) first — product/canonical surface only
+    1) Human-approve and merge corrected #293 (59af9320) first — product/canonical surface only
     2) Rebase/reconcile #294 onto post-#293 main — persistence delta becomes reviewable in isolation
     3) Human-approve #294 after CI on the rebased tip; do not self-merge
-  Option B (#294 as sole vehicle) is technically ready (already contains #293 tip) but
+  Option B (#294 as sole vehicle) is technically ready (contains #293 tip) but
   mixes product + persistence + migrations in one review surface — higher regression risk.
   Do NOT choose B merely because #294 has more commits.
   Do NOT re-merge #282/#283/#285/#287 individually.
@@ -124,9 +134,11 @@ REMAINING_BLOCKERS:
   - Production activation remains BLOCKED by design
   - Durable IdP membership / ContextRetrievalManifest auto-write from VTE still open gaps
     (see 07-p5-p6 report)
+  - #293 tip moved during mission; future tip advances require re-absorb before merge
 
 FINAL_VERDICT: PERSISTENCE_CANONICAL_PARITY_PARTIAL
-  Rationale: #294 tip has full canonical parity with #293 (including 8a4beb52 + 66d00a97),
-  disposable Postgres acceptance is green (47/47), authority summary + retrieval binding verified;
-  live SSR Position/Ask/Simulate remain disconnected from the persisted execution path.
+  Rationale: #294 tip has full canonical parity with current #293 (including 8a4beb52,
+  operative→retrieval binding, and 59c3c4b3 wrong-document guard); disposable Postgres
+  acceptance is green (47/47); live SSR Position/Ask/Simulate remain disconnected from
+  the persisted execution path.
 ```
