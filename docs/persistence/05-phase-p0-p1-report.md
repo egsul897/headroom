@@ -56,3 +56,4 @@ NEXT_PHASE_DEPENDENCIES:
 MERGE_DISPOSITION: DO_NOT_SELF_MERGE — human review required
 VERDICT: NEON_FIRST_PERSISTENCE_ARCHITECTURE_VERIFIED (foundation scope; gaps listed)
 ```
+ENDING_SHA note: report file may lag one docs commit; authoritative tip is 5ec9c38814be202448f83c7b5c0be173948f7e43
