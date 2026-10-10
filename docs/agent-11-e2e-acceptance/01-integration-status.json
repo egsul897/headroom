@@ -1,0 +1,123 @@
+{
+  "artifact": "AGENT11_INTEGRATION_STATUS",
+  "asOfMainSha": "b23e312afedb53ea6771c2ead1afbcdd758edd86",
+  "asOfUtc": "2026-10-10T13:51:21Z",
+  "methodology": "Recorded from git log origin/main + gh pr view before any Agent #11 evaluation execution. Proposed workstreams are NOT treated as available unless merged or explicitly exercised on an isolated integration tip.",
+  "mergedOnMain": [
+    {
+      "pr": 274,
+      "title": "HEADROOM-3: package graph identity + operative amendment handoff",
+      "component": "Package graph identity confirmation + buildOperativeHandoffBundle",
+      "status": "MERGED",
+      "availableToAgent11": true
+    },
+    {
+      "pr": 276,
+      "title": "HEADROOM-5: independent WOR unseen-holdout evaluation",
+      "component": "WOR sealed holdout evaluation artifacts + offline script (docs/scripts only)",
+      "status": "MERGED",
+      "availableToAgent11": true,
+      "note": "WOR is PREVIOUSLY_EXPOSED; Agent #11 does not claim it unseen."
+    },
+    {
+      "pr": 268,
+      "title": "P0 cross-surface authenticity + trusted-issuer onto main",
+      "component": "Utilization authenticity + trusted issuer authorization on product capacity views",
+      "status": "MERGED",
+      "availableToAgent11": true
+    },
+    {
+      "pr": 237,
+      "title": "Utilization reconcile #232/#234 into one fail-closed authority",
+      "component": "lib/capacity utilization authority / verified remaining",
+      "status": "MERGED",
+      "availableToAgent11": true
+    },
+    {
+      "pr": 250,
+      "title": "Unified Stage 5 Position/Ask (via stacked #247–#250)",
+      "component": "Verified sequential + FCE integrate + unified position path portions on main",
+      "status": "MERGED",
+      "availableToAgent11": true,
+      "note": "Customer UI status contract from HEADROOM-4 (#275) is NOT in this merge."
+    },
+    {
+      "pr": 269,
+      "title": "Selective #239 debt multi-constraint shared-cap conservation",
+      "component": "Solver shared-capacity conservation fix",
+      "status": "MERGED",
+      "availableToAgent11": true
+    }
+  ],
+  "proposedOpenNotMerged": [
+    {
+      "pr": 266,
+      "alias": "HEADROOM-1 / PP002",
+      "title": "greater-of assets vertical slice",
+      "component": "Authentic clause→IR compilation vertical slice",
+      "status": "OPEN",
+      "availableToAgent11": false
+    },
+    {
+      "pr": 273,
+      "alias": "HEADROOM-2",
+      "title": "authenticated financial-evidence contract",
+      "component": "lib/capacity/financial-evidence.ts + verified-input-contract",
+      "status": "OPEN",
+      "availableToAgent11": false,
+      "note": "Main tip lacks financial-evidence.ts; Agent #11 tests only what main exports."
+    },
+    {
+      "pr": 275,
+      "alias": "HEADROOM-4",
+      "title": "truthful CFO status contract across Position/Ask/Simulate/Evidence",
+      "component": "lib/customer-workflow/* + route wiring",
+      "status": "OPEN",
+      "availableToAgent11": false,
+      "note": "lib/customer-workflow absent on main; surface consistency tested via buildSharedProductCapacityViews only."
+    },
+    {
+      "pr": 278,
+      "alias": "FIVE-AGENT INTEGRATION",
+      "title": "integrate five-agent Headroom product readiness",
+      "component": "Integration tip reconciling #266/#268/#273/#274/#275/#276",
+      "status": "OPEN",
+      "availableToAgent11": false,
+      "note": "Not assumed available. Main-tip evaluation is authoritative for this report."
+    },
+    {
+      "pr": 253,
+      "title": "canonical integrated Headroom candidate",
+      "status": "OPEN",
+      "availableToAgent11": false
+    },
+    {
+      "pr": 258,
+      "title": "Finish product: canonical Headroom from #250 + authentic workflow proof",
+      "status": "OPEN",
+      "availableToAgent11": false
+    },
+    {
+      "pr": 226,
+      "alias": "Agent 6",
+      "title": "CI recovery, independent discovery GT, A6-D6 structural fix",
+      "status": "OPEN",
+      "availableToAgent11": false
+    },
+    {
+      "pr": 260,
+      "alias": "Agent 6 selective port",
+      "title": "Selective Agent 6 → canonical",
+      "status": "OPEN",
+      "availableToAgent11": false
+    },
+    {
+      "pr": 245,
+      "alias": "Agent 8 continuation",
+      "title": "adversarial continuation + DEFECT-A8-03",
+      "status": "OPEN",
+      "availableToAgent11": false
+    }
+  ],
+  "evaluationPolicy": "Agent #11 scores main tip only. Open PR capabilities may be noted as PROPOSED_UNSUPPORTED when a stage requires them."
+}
