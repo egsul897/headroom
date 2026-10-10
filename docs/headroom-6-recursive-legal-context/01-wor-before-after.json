@@ -1,0 +1,43 @@
+{
+  "artifact": "HEADROOM-6_WOR_CONTEXT_BEFORE_AFTER",
+  "holdoutId": "WOR-2023-2026-FIFTH-AR-CREDIT-FACILITY",
+  "startingSha": "6abe42bae6dfe69bb72467daa7f460b727200d1b",
+  "retrievalAlgorithmBefore": "phase-2d-context-retrieval.v5",
+  "retrievalAlgorithmAfter": "phase-2d-context-retrieval.v6",
+  "denominator": 10,
+  "before": {
+    "source": "docs/headroom-5-independent-holdout/11-scorecard.json layers.C",
+    "sufficiencySufficient": 0,
+    "sufficiencyBudgetExceeded": 9,
+    "sufficiencyIncomplete": 1,
+    "sufficiencyReviewRequired": 0,
+    "naiveFirstMatchCompleteOperativeSpans": 0,
+    "tocCollisionCount": 10
+  },
+  "after": {
+    "source": "scripts/headroom-6/diagnose-wor-context.ts on HEADROOM-6 tip",
+    "sufficiencySufficient": 1,
+    "sufficiencyBudgetExceeded": 0,
+    "sufficiencyIncomplete": 0,
+    "sufficiencyReviewRequired": 9,
+    "sufficientClauseIds": ["WOR-B-6.01"],
+    "reviewRequiredClauseIds": [
+      "WOR-A-6.01-SPINOFF",
+      "WOR-B-6.02",
+      "WOR-B-PERM-LIENS",
+      "WOR-B-6.03",
+      "WOR-B-6.13",
+      "WOR-B-DEF-ICR",
+      "WOR-B-DEF-EBITDA",
+      "WOR-B-11.01",
+      "WOR-B-FACILITY"
+    ],
+    "falseSufficient": 0,
+    "note": "REVIEW_REQUIRED is driven by missing schedules, nested continuation, and undeclared Equivalent Amount morphology — never silent SUFFICIENT after truncation."
+  },
+  "delta": {
+    "sufficientDelta": 1,
+    "budgetExceededDelta": -9,
+    "incompleteDelta": -1
+  }
+}

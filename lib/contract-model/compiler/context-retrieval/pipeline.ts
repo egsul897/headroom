@@ -28,6 +28,8 @@ import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionT
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
 import { addEdge, addItem, makeItemInput, withinBudget } from "./state";
 import { computeBundleId, computeContentIdentity } from "./identity";
+import { extractDefinedTermHints, isDefinitionsSectionNode, narrowDefinitionsSectionOperativeText } from "./body-anchor";
+import { buildContextCompletenessManifest } from "./manifest";
 import { DEFAULT_RETRIEVAL_BUDGET, RETRIEVAL_ALGORITHM_VERSION, type BuildContextBundleInput, type CovenantContextBundle, type SufficiencyState } from "./types";
 
 /** Reserved, never called in this V1 (see header) - present so a future addition does not have to invent the version-identity convention from scratch. */
@@ -249,10 +251,46 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
     return finalize(input, state, documentId, start);
   }
 
-  const operativeItem = retrieveOperativeSource(state, access.index, documentId, primaryNodeId);
+  // HEADROOM-6: when Pass A/B (or a GT probe) anchors on a definitions dump
+  // (e.g. Section 1.01) but names a specific defined term, retrieve that
+  // definition unit as OPERATIVE_SOURCE — never burn the text budget on the
+  // entire article before any typed DEFINITION items can be added.
+  const termHints = extractDefinedTermHints({
+    evidenceSignals: candidate.evidenceSignals,
+    description: candidate.description,
+    sourceCitation: candidate.sourceCitation,
+    normalizedSourceRef: candidate.normalizedSourceRef,
+  });
+  const narrowed = narrowDefinitionsSectionOperativeText(access.index, documentId, primaryNodeId, termHints);
+  const definitionsDump =
+    !narrowed &&
+    isDefinitionsSectionNode(access.index, primaryNodeId) &&
+    access.index.getNodeText(primaryNodeId, "DESCENDANTS").length > state.budget.maxTextBudgetChars;
+
+  // Un-narrowed definitions dumps: keep only the section heading (OWN) so the
+  // text budget is not silently exhausted before any dependency can be typed.
+  const ownHeadingOnly = definitionsDump ? access.index.getNodeText(primaryNodeId, "OWN") : null;
+
+  const operativeItem = retrieveOperativeSource(state, access.index, documentId, primaryNodeId, {
+    narrowedOperativeText: narrowed?.text ?? ownHeadingOnly,
+    narrowedTerm: narrowed?.term ?? null,
+  });
   if (!operativeItem) {
     state.unresolved.push({ originatingNodeKey: primaryNodeId, dependencyType: "OTHER", sourceText: candidate.normalizedSourceRef, attemptedResolution: `Looked up nodeId "${primaryNodeId}" in the structural index.`, reason: "The candidate's own structural node does not exist in the supplied index.", candidateTargets: [], citation: candidate.sourceCitation, severity: "HIGH" });
     return finalize(input, state, documentId, start);
+  }
+  if (definitionsDump) {
+    state.stopReasons.add("CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached");
+    state.unresolved.push({
+      originatingNodeKey: primaryNodeId,
+      dependencyType: "BUDGET_EXCEEDED_DEPENDENCY",
+      sourceText: candidate.normalizedSourceRef,
+      attemptedResolution: "Operative anchor is a definitions-section-scale span larger than maxTextBudgetChars and no DEFINED_TERM hint was available to narrow it.",
+      reason: "Cannot assemble complete context for an un-narrowed definitions dump within budget — supply a defined-term focus (evidenceSignals DEFINED_TERM:…) or continue from a specific definition unit. Heading retained; full dump not silently truncated into a false SUFFICIENT bundle.",
+      candidateTargets: [...termHints],
+      citation: candidate.sourceCitation,
+      severity: "HIGH",
+    });
   }
 
   // F1 - LINKED CONTEXT SOURCE-TYPING. The nodes after the anchor are Pass C's neighborhood LINKS
@@ -264,14 +302,19 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   // their text and citation unchanged, under the contextual type that describes what they actually
   // are: PARENT_SCOPE for a containing node, SIBLING_CONTEXT for a linked neighbour that is not an
   // ancestor. Nothing is dropped; only the ownership label changes.
-  const ancestorIds = new Set(access.index.getAncestors(primaryNodeId).map((n) => n.nodeId));
-  for (const extraNodeId of candidate.structuralNodeIds.slice(1)) {
-    retrieveLinkedStructuralContext(state, access.index, documentId, extraNodeId, operativeItem.itemId, ancestorIds.has(extraNodeId));
-  }
+  // HEADROOM-6: when the operative source was narrowed to a single definition unit inside a
+  // definitions dump, skip section-level child/sibling expansion of the dump itself (those
+  // children are other defined terms, not sub-rules of this unit).
+  if (!narrowed) {
+    const ancestorIds = new Set(access.index.getAncestors(primaryNodeId).map((n) => n.nodeId));
+    for (const extraNodeId of candidate.structuralNodeIds.slice(1)) {
+      retrieveLinkedStructuralContext(state, access.index, documentId, extraNodeId, operativeItem.itemId, ancestorIds.has(extraNodeId));
+    }
 
-  retrieveParentScope(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
-  retrieveChildRules(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
-  retrieveSiblingContext(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+    retrieveParentScope(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+    retrieveChildRules(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+    retrieveSiblingContext(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+  }
 
   // IPV-04: definition / undeclared-term scans must use the same amendment-aware
   // operative text already bound on OPERATIVE_SOURCE (resolveOperativeSource),
@@ -280,10 +323,16 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   // only candidate-span.ts derives operative text from the anchor span).
   const operativeText = operativeItem.excerptText.trim();
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
-  retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
-  // INV-04 / main: inbound notwithstanding + article-level override leads.
-  retrieveInboundOverrideReferences(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
-  retrieveArticleOverrideLeads(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+  if (narrowed) {
+    // Definition-unit focus: follow refs inside the definition prose, not every
+    // reference emitted anywhere under the packed Section 1.01 dump.
+    retrieveCrossReferencesFromDefinitionText(state, access.index, documentId, operativeText, operativeItem.itemId, 1, access.packageGraph);
+  } else {
+    retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
+    // INV-04 / main: inbound notwithstanding + article-level override leads.
+    retrieveInboundOverrideReferences(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+    retrieveArticleOverrideLeads(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+  }
 
   // Definition-fallback and reference-detection-within-definitions run
   // regardless of whether a package graph is available - an undeclared
@@ -379,7 +428,7 @@ function finalize(input: BuildContextBundleInput, state: RetrievalState, documen
     readSpans: state.readSpans,
   });
 
-  return {
+  const bundle: CovenantContextBundle = {
     bundleId: computeBundleId(packageKey, documentId, candidate.normalizedSourceRef),
     packageKey,
     companyId,
@@ -419,4 +468,11 @@ function finalize(input: BuildContextBundleInput, state: RetrievalState, documen
       outputTokens: 0,
     },
   };
+  const manifest = buildContextCompletenessManifest(bundle);
+  manifest.budgetAccounting.maxItems = state.budget.maxItems;
+  manifest.budgetAccounting.maxTextBudgetChars = state.budget.maxTextBudgetChars;
+  manifest.budgetAccounting.maxDefinitionDepth = state.budget.maxDefinitionDepth;
+  manifest.budgetAccounting.maxCrossReferenceDepth = state.budget.maxCrossReferenceDepth;
+  bundle.contextManifest = manifest;
+  return bundle;
 }
