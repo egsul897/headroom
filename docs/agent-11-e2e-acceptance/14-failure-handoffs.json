@@ -1,0 +1,49 @@
+{
+  "artifact": "AGENT11_FAILURE_HANDOFFS",
+  "policy": "Do not fix in Agent #11. Hand to owning workstream.",
+  "failures": [
+    {
+      "id": "A11-F01",
+      "owner": "HEADROOM-3 / package-graph-authority (follow-on) + HEADROOM-1 compiler consumer",
+      "severity": "CRITICAL",
+      "summary": "Operative document not resolved to doc-b (Fifth A&R) as of 2026-09-15",
+      "evidence": "10d-operative-state.json",
+      "observed": {
+        "operativeDocumentId": null,
+        "status": "REVIEW_REQUIRED",
+        "reviewReason": "3 restatement effect(s) relevant to this instrument have an unresolved target document - which whole document currently governs cannot be determined without guessing (effect(s): dfe541660dafd664ae9f1a76b148ec2fded3c162252cf6c0e9c0b121198ae370, 07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641, 07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641)."
+      },
+      "expected": "doc-b"
+    },
+    {
+      "id": "A11-F02",
+      "owner": "context-retrieval / HEADROOM-1",
+      "severity": "HIGH",
+      "summary": "Context retrieval SUFFICIENT rate below 80% on GT-anchored probes",
+      "evidence": "10-clause-coverage.json",
+      "observed": "SUFFICIENT 1/10"
+    },
+    {
+      "id": "A11-F03",
+      "owner": "HEADROOM-1 (#266 PP002) — authentic clause→IR compilation",
+      "severity": "HIGH",
+      "summary": "No independently verified executable IR under offline no-paid-inference policy",
+      "evidence": "10-clause-coverage.json",
+      "note": "Expected under current constraints; blocks END_TO_END_PRODUCT_READY"
+    },
+    {
+      "id": "A11-F04",
+      "owner": "HEADROOM-2 (#273)",
+      "severity": "HIGH",
+      "summary": "Authenticated financial-evidence contract not merged to main",
+      "evidence": "01-integration-status.json"
+    },
+    {
+      "id": "A11-F05",
+      "owner": "HEADROOM-4 (#275)",
+      "severity": "MEDIUM",
+      "summary": "Customer workflow truthful status contract module not on main; live UI NOT_TESTED",
+      "evidence": "01-integration-status.json"
+    }
+  ]
+}

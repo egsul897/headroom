@@ -1,0 +1,186 @@
+{
+  "artifact": "AGENT11_EVIDENCE_RECONCILIATION",
+  "mission": "FINAL EVIDENCE RECONCILIATION \u2014 PR #286",
+  "reconciledAtUtc": "2026-10-10T14:07:30Z",
+  "priorReportedHarnessTip": "1cb1523ef1d20ce39c58869c4ebd48cbc0321347",
+  "prHeadAtReconciliationStart": "f2c674563b0b0cd43c30c0c0f497cf5ec761b179",
+  "harnessRerunTip": "f2c674563b0b0cd43c30c0c0f497cf5ec761b179",
+  "commitsBetweenEvaluatedTipAndPrHead": [
+    {
+      "sha": "f0403f25",
+      "subject": "docs(agent-11): record offline acceptance evidence and scorecard",
+      "nature": "Evidence artifacts from prior run + honesty gate in harness (stage-5 SUFFICIENT threshold \u226580%; A11-F02 trigger). Does not improve coverage numerators."
+    },
+    {
+      "sha": "c48b9117",
+      "subject": "docs(agent-11): pin closeout ending tip SHA",
+      "nature": "Docs-only tip pin"
+    },
+    {
+      "sha": "c7b9742e",
+      "subject": "docs(agent-11): align final report tip with closeout SHA",
+      "nature": "Docs-only tip pin"
+    },
+    {
+      "sha": "9130f22b",
+      "subject": "docs(agent-11): finalize closeout tip identity",
+      "nature": "Docs-only tip pin"
+    },
+    {
+      "sha": "14caf6b9",
+      "subject": "docs(agent-11): pin final tip SHA into report and closeout",
+      "nature": "Docs-only tip pin"
+    },
+    {
+      "sha": "26cf94af",
+      "subject": "docs(agent-11): record evaluationRunTip vs branch tip",
+      "nature": "Docs-only tip identity clarification"
+    },
+    {
+      "sha": "f2c67456",
+      "subject": "docs(agent-11): repair final report tip line",
+      "nature": "Docs-only tip line repair"
+    }
+  ],
+  "legalReferenceAnswersSha256": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
+  "legalReferenceUnchangedPreAndPostRerun": true,
+  "sealCommit": "ca667446df228984bb5d6b50b44c3c98b45f0730",
+  "comparisonToPriorReportedScorecard": {
+    "denominatorsIdentical": true,
+    "metricDiffCount": 0,
+    "stageClassDiffCount": 0,
+    "adversarialPassClassificationDiffCount": 0,
+    "handoffIdsPreserved": [
+      "A11-F01",
+      "A11-F02",
+      "A11-F03",
+      "A11-F04",
+      "A11-F05"
+    ],
+    "discrepancies": [],
+    "note": "Re-run at f2c67456 reproduced the previously committed scorecard/classifications/adversarial/handoffs byte-for-byte on measured fields. Tip SHA field updated to f2c67456."
+  },
+  "reproducedScorecard": {
+    "structuralRecall": "10/10",
+    "operativeDocumentAccuracy": "0/1",
+    "discoveryPassARecall": "10/10",
+    "contextSufficiency": "1/10",
+    "completeOperativeSpan": "7/10",
+    "verifiedExecutableCoverage": "0/10",
+    "financialEvidenceCompleteness": "0/1",
+    "utilizationCompletenessCorrectRefusal": "1/1",
+    "correctRefusal": "5/5",
+    "falseFavorableOutcomes": "0/12",
+    "customerSurfaceConsistency": "1/1"
+  },
+  "stageClassifications": {
+    "1_UPLOAD": "VERIFIED",
+    "2_IDENTIFY_DOCUMENTS": "VERIFIED",
+    "3_RESOLVE_OPERATIVE": "BLOCKED",
+    "4_DISCOVER_COVENANTS": "VERIFIED",
+    "5_RETRIEVE_CONTEXT": "BLOCKED",
+    "6_COMPILE_VERIFIED_IR": "BLOCKED",
+    "7_ATTACH_FINANCIAL_EVIDENCE": "UNSUPPORTED",
+    "8_RECONSTRUCT_UTILIZATION": "VERIFIED",
+    "9_EVIDENCE_REVIEWER_AUTHORITY": "VERIFIED",
+    "10_HYPOTHETICAL_TRANSACTION": "HYPOTHETICAL_ONLY",
+    "11_PRODUCTION_AUTHORITY": "VERIFIED",
+    "12_SURFACE_DISPLAY": "VERIFIED"
+  },
+  "failureHandoffsPreserved": [
+    {
+      "id": "A11-F01",
+      "owner": "HEADROOM-3 / package-graph-authority (follow-on) + HEADROOM-1 compiler consumer",
+      "severity": "CRITICAL"
+    },
+    {
+      "id": "A11-F02",
+      "owner": "context-retrieval / HEADROOM-1",
+      "severity": "HIGH"
+    },
+    {
+      "id": "A11-F03",
+      "owner": "HEADROOM-1 (#266 PP002)",
+      "severity": "HIGH"
+    },
+    {
+      "id": "A11-F04",
+      "owner": "HEADROOM-2 (#273)",
+      "severity": "HIGH"
+    },
+    {
+      "id": "A11-F05",
+      "owner": "HEADROOM-4 (#275)",
+      "severity": "MEDIUM"
+    }
+  ],
+  "guards": {
+    "productionCodeChanges": false,
+    "paidInferenceUsd": 0,
+    "productionNeonWrites": false,
+    "harnessUsesPrismaOrNeonClient": false,
+    "selfMerge": false,
+    "acceptanceResultsAlteredToImproveCoverage": false,
+    "note": "DATABASE_URL may be present in the agent environment; harness performs no DB reads/writes."
+  },
+  "exactTipCiAtHarnessRerun": {
+    "commit": "f2c674563b0b0cd43c30c0c0f497cf5ec761b179",
+    "githubActionsCheckRuns": [],
+    "githubCommitStatuses": [
+      {
+        "context": "Vercel",
+        "state": "success"
+      }
+    ],
+    "checkRuns": [
+      {
+        "name": "Vercel Preview Comments",
+        "conclusion": "success"
+      }
+    ],
+    "rollup": "SUCCESS (Vercel only)",
+    "githubActionsNote": "Path-filtered workflows (canonical-compiler, stratified-cert, etc.) did not register check-runs on this tip; Agent #11 changes are docs/scripts/fixtures only and did not match those path filters on the tip commit.",
+    "localExactTipVerification": {
+      "tscNoEmit": "PASS",
+      "offlineAcceptanceHarness": "PASS (exit 0)",
+      "paidInferenceUsd": 0
+    }
+  },
+  "archiveStatus": "SAFE_TO_ARCHIVE",
+  "finalSha": "c1e7a3f362dcfd4972479af5114b27b4abb93ef6",
+  "finalHarnessRerunTip": "e43d5c2061d45d11ac900a537d68dea6616a1da2",
+  "postCommitRerun": {
+    "tip": "e43d5c2061d45d11ac900a537d68dea6616a1da2",
+    "legalUnchanged": true,
+    "scorecardMetricsUnchangedVsF2c67456": true,
+    "handoffsPreserved": true
+  },
+  "finalEvidenceReconciliationAtUtc": "2026-10-10T14:10:16.907689+00:00",
+  "exactHarnessTip": "c53afbf6c4ac360569cb25324d8bb405110fa91a",
+  "branchTipAfterEvidenceCommit": "c1e7a3f362dcfd4972479af5114b27b4abb93ef6",
+  "tipDeltaNote": "The commit that records this re-run advances HEAD by one docs-only commit; metrics/classifications/handoffs are for exactHarnessTip.",
+  "discrepancies": [],
+  "evidenceCommitRecordingRerun": "c7645941cf2cf0d104dfc1754bc7dda10f07a93b",
+  "tipIdentityDiscrepancy": {
+    "kind": "DOCS_ONLY_TIP_DELTA",
+    "exactHarnessTip": "c53afbf6c4ac360569cb25324d8bb405110fa91a",
+    "finalBranchTip": "c1e7a3f362dcfd4972479af5114b27b4abb93ef6",
+    "commitsAfterHarness": [
+      {
+        "sha": "c7645941cf2cf0d104dfc1754bc7dda10f07a93b",
+        "subject": "exact-tip harness re-run and SAFE_TO_ARCHIVE closeout"
+      },
+      {
+        "sha": "a7a1c1e510ece5d64cc7938d39eaef99b1b58670",
+        "subject": "record finalSha after exact-tip evidence commit"
+      },
+      {
+        "sha": "c1e7a3f362dcfd4972479af5114b27b4abb93ef6",
+        "subject": "clarify exactHarnessTip vs finalSha for archive"
+      }
+    ],
+    "metricsAffected": false,
+    "classificationsAffected": false,
+    "handoffsAffected": false
+  }
+}

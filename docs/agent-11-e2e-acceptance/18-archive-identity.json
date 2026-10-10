@@ -1,0 +1,30 @@
+{
+  "artifact": "AGENT11_ARCHIVE_IDENTITY",
+  "createdAtUtc": "2026-10-10T14:11:26.638219+00:00",
+  "pr": "https://github.com/egsul897/headroom/pull/286",
+  "finalSha": "6970e50dd5e308fe6201b14564b3ea46b3dc8575",
+  "exactHarnessTip": "c53afbf6c4ac360569cb25324d8bb405110fa91a",
+  "scorecardMainShaEvaluated": "c53afbf6c4ac360569cb25324d8bb405110fa91a",
+  "legalReferenceAnswersSha256": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
+  "legalReferenceUnchanged": true,
+  "tipIdentityDiscrepancy": {
+    "kind": "DOCS_ONLY_TIP_DELTA",
+    "description": "PR head advances by docs-only closeout/pin commits after exact harness execution. Scorecard/classifications/handoffs bind to exactHarnessTip.",
+    "metricsAffected": false
+  },
+  "archiveStatus": "SAFE_TO_ARCHIVE",
+  "workstreamStatus": "CLOSED",
+  "handoffs": [
+    "A11-F01",
+    "A11-F02",
+    "A11-F03",
+    "A11-F04",
+    "A11-F05"
+  ],
+  "guards": {
+    "productionCodeChanges": false,
+    "paidInferenceUsd": 0,
+    "productionNeonWrites": false,
+    "selfMerge": false
+  }
+}

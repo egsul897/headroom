@@ -1,0 +1,53 @@
+{
+  "artifact": "AGENT11_FIXTURE_CLASSIFICATION",
+  "methodology": "Reuse HEADROOM-5 classification for known fixtures; select a new authentic package absent from those buckets.",
+  "DEVELOPMENT_FIXTURES": [
+    "conmed-2025-credit-facility",
+    "chwy-2026-credit-agreement",
+    "dsgr-2022-2025-credit-facility",
+    "riot-2025-2026-credit-facility",
+    "gibraltar-2026-credit-agreement",
+    "matthews / MTN product-proof path"
+  ],
+  "REGRESSION_FIXTURES": [
+    "fwrg-2021-credit-agreement",
+    "lsb-2023-abl-credit-agreement",
+    "final-lightweight-unseen-sup"
+  ],
+  "PREVIOUSLY_EXPOSED_HOLDOUT": {
+    "packageKey": "wor-2023-2026-credit-facility",
+    "note": "Sealed and evaluated by HEADROOM-5 (#276). May be used for regression comparison only. Must NOT be claimed as unseen by Agent #11."
+  },
+  "AGENT11_AUTHENTIC_EVALUATION_PACKAGE": {
+    "packageKey": "an-2020-2026-credit-facility",
+    "issuer": "AutoNation, Inc.",
+    "ticker": "AN",
+    "cik": "0000350698",
+    "documents": [
+      "Third A&R Credit Agreement 2020-03-26",
+      "Fifth A&R Credit Agreement 2026-09-14"
+    ],
+    "contaminationCheck": {
+      "fixturePathAbsentBeforeAcquisition": true,
+      "notInHeadroom5DevelopmentOrRegression": true,
+      "notWorHoldout": true,
+      "phase3fSelectionLogMention": "Franklin Electric / LGI Homes appeared as candidate names; AutoNation did not.",
+      "repoGrepBeforeSelection": "No AutoNation / CIK 0000350698 debt-package fixture or Agent evaluation path on main tip."
+    },
+    "unseenClaim": "NOT_CLAIMED_AS_SEALED_UNSEEN_HOLDOUT — labeled AGENT11_AUTHENTIC_EVALUATION_PACKAGE (authentic, distinct from compiler tuning fixtures; first Agent #11 use)."
+  },
+  "REJECTED_CANDIDATES": [
+    {
+      "ticker": "MHK",
+      "reason": "No recent credit-agreement exhibit located in EDGAR 8-K/10-K scan (80 filings)."
+    },
+    {
+      "ticker": "WOR",
+      "reason": "Already exposed by HEADROOM-5; excluded as primary evaluation package."
+    },
+    {
+      "ticker": "FELE",
+      "reason": "Named in phase-3f package selection log candidate list — higher contamination risk than AN."
+    }
+  ]
+}
