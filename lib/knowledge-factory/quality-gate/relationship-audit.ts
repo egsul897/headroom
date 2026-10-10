@@ -284,8 +284,18 @@ export async function runRelationshipAudit(params?: {
     endpoints.set(ep, set);
   }
   const exactTripleDuplicates = [...triple.values()].filter((n) => n > 1).reduce((a, b) => a + (b - 1), 0);
-  // discoveryId collision count deferred — metadata JSON on large edge sets can exceed napi limits
-  const discoveryIdCollisions = -1;
+  // discoveryId excess via SQL (avoids loading full metadata JSON through napi)
+  const discoveryIdDupRows = await prisma.$queryRaw<Array<{ excess: bigint }>>`
+    SELECT COALESCE(SUM(cnt - 1), 0)::bigint AS excess
+    FROM (
+      SELECT metadata->>'discoveryId' AS did, COUNT(*)::bigint AS cnt
+      FROM knowledge_relationship_edges
+      WHERE metadata->>'discoveryId' IS NOT NULL
+      GROUP BY 1
+      HAVING COUNT(*) > 1
+    ) d
+  `;
+  const discoveryIdCollisions = Number(discoveryIdDupRows[0]?.excess ?? 0);
   const sameEndpointsMultiKind = [...endpoints.values()].filter((s) => s.size > 1).length;
 
   const kindsToSample = [
@@ -540,7 +550,7 @@ export async function runRelationshipAudit(params?: {
       exactTripleDuplicates,
       discoveryIdCollisions,
       sameEndpointsMultiKind,
-      note: "Exact triple = (sourceRecordId, targetSourceId, kind). Multi-kind on same endpoints may be legitimate. discoveryIdCollisions=-1 means skipped (metadata JSON not loaded for safety).",
+      note: "Exact triple = (sourceRecordId, targetSourceId, kind). Multi-kind on same endpoints may be legitimate. discoveryIdCollisions = excess rows sharing a discoveryId (true provision identity).",
     },
     missingRelationshipHints,
     samples,

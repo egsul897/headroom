@@ -1,0 +1,155 @@
+{
+  "schema": "kf-quality-gate-double-run.v1",
+  "generatedAt": "2026-10-10T00:12:34.502Z",
+  "neonMutations": false,
+  "paidInferenceUsd": 0,
+  "isolatedSnapshotNote": "Read-only double-run against the connected database. No migration applied. Graph persist idempotence is covered by unit tests + persistProvisionGraph full discoveryId scan (see REMEDIATION-PLAN.md). A disposable Neon branch apply of the pending migration remains OWNER-AUTHORIZED only.",
+  "pass1": {
+    "label": "pass1",
+    "before": {
+      "edges": 48226,
+      "sources": 769,
+      "uniqueDiscoveryIds": 29242
+    },
+    "after": {
+      "edges": 48226,
+      "sources": 769,
+      "uniqueDiscoveryIds": 29242
+    },
+    "countsUnchanged": true,
+    "relationship": {
+      "totalEdges": 48226,
+      "exactTripleDuplicates": 46810,
+      "supportedOrWeakRate": 0.7
+    },
+    "operative": {
+      "passRate": 1,
+      "cases": [
+        {
+          "caseId": "gpk-multi-amendment-ambiguous",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        },
+        {
+          "caseId": "wynn-indenture-family",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        },
+        {
+          "caseId": "son-credit-restatement-candidate",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        },
+        {
+          "caseId": "luv-revolving-amendment",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        },
+        {
+          "caseId": "hlt-supplemental-indentures",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        }
+      ]
+    },
+    "uniqueEdges": {
+      "totalRawRows": 48226,
+      "uniqueDiscoveryIds": 29242,
+      "excessDuplicateRows": 18984,
+      "agreementSelfLoops": 93,
+      "provisionSameDocumentEndpoints": 26026
+    },
+    "representationLevels": {
+      "STRUCTURALLY_INDEXED": 64,
+      "DETERMINISTICALLY_VALIDATED": 3,
+      "DISCOVERED_CANDIDATE": 702
+    },
+    "certifiedCount": 0,
+    "reviewerVerifiedCount": 0
+  },
+  "pass2": {
+    "label": "pass2",
+    "before": {
+      "edges": 48226,
+      "sources": 769,
+      "uniqueDiscoveryIds": 29242
+    },
+    "after": {
+      "edges": 48226,
+      "sources": 769,
+      "uniqueDiscoveryIds": 29242
+    },
+    "countsUnchanged": true,
+    "relationship": {
+      "totalEdges": 48226,
+      "exactTripleDuplicates": 46810,
+      "supportedOrWeakRate": 0.7
+    },
+    "operative": {
+      "passRate": 1,
+      "cases": [
+        {
+          "caseId": "gpk-multi-amendment-ambiguous",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        },
+        {
+          "caseId": "wynn-indenture-family",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        },
+        {
+          "caseId": "son-credit-restatement-candidate",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        },
+        {
+          "caseId": "luv-revolving-amendment",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        },
+        {
+          "caseId": "hlt-supplemental-indentures",
+          "pass": true,
+          "engineStatus": "UNRESOLVED_PRECEDENCE",
+          "engineOperativeTitle": null
+        }
+      ]
+    },
+    "uniqueEdges": {
+      "totalRawRows": 48226,
+      "uniqueDiscoveryIds": 29242,
+      "excessDuplicateRows": 18984,
+      "agreementSelfLoops": 93,
+      "provisionSameDocumentEndpoints": 26026
+    },
+    "representationLevels": {
+      "STRUCTURALLY_INDEXED": 64,
+      "DETERMINISTICALLY_VALIDATED": 3,
+      "DISCOVERED_CANDIDATE": 702
+    },
+    "certifiedCount": 0,
+    "reviewerVerifiedCount": 0
+  },
+  "idempotence": {
+    "eachPassCountsUnchanged": true,
+    "noDuplicateGrowthAcrossPasses": true,
+    "uniqueDiscoveryIdsStable": true,
+    "authorityLabelsPreserved": true
+  },
+  "diversityGapsStillVisible": true,
+  "blockers": [
+    "Pending discoveryKey unique-index migration not applied (requires explicit authorization)",
+    "Historical excess duplicate rows (~18,984 by discoveryId) remain until authorized dedupe migration",
+    "ABL / intercreditor / guarantee diversity gaps remain — corpus incomplete"
+  ]
+}

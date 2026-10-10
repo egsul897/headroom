@@ -1,0 +1,248 @@
+{
+  "schema": "kf-unique-edge-metrics.v1",
+  "generatedAt": "2026-10-10T00:12:01.813Z",
+  "readOnly": true,
+  "population": {
+    "totalRawRows": 48226,
+    "uniqueDiscoveryIds": 29242,
+    "excessDuplicateRows": 18984,
+    "agreementSelfLoops": 93,
+    "provisionSameDocumentEndpoints": 26026
+  },
+  "byKind": [
+    {
+      "kind": "PROVISION_DEFINITION",
+      "rawRows": 34652,
+      "uniqueDiscoveryIds": 18183,
+      "excessDuplicateRows": 16469,
+      "meanConfidence": 0.7000000000004385,
+      "highConfidenceRate": 1,
+      "highConfidenceWilson95": {
+        "low": 0.9997887703602146,
+        "high": 1
+      },
+      "byEvidenceStatus": {
+        "DISCOVERED": 18183
+      },
+      "distinctSourceRecords": 38,
+      "distinctTargetSources": 38
+    },
+    {
+      "kind": "PROVISION_CROSS_REFERENCE",
+      "rawRows": 8529,
+      "uniqueDiscoveryIds": 6942,
+      "excessDuplicateRows": 1587,
+      "meanConfidence": 0.7192226521280232,
+      "highConfidenceRate": 0.9004609622587151,
+      "highConfidenceWilson95": {
+        "low": 0.8931951800079649,
+        "high": 0.9072837713116275
+      },
+      "byEvidenceStatus": {
+        "DISCOVERED": 6942
+      },
+      "distinctSourceRecords": 59,
+      "distinctTargetSources": 167
+    },
+    {
+      "kind": "PROVISION_CONDITION",
+      "rawRows": 2395,
+      "uniqueDiscoveryIds": 2039,
+      "excessDuplicateRows": 356,
+      "meanConfidence": 0.6500000000000206,
+      "highConfidenceRate": 1,
+      "highConfidenceWilson95": {
+        "low": 0.9981194821957805,
+        "high": 0.9999999999999998
+      },
+      "byEvidenceStatus": {
+        "DISCOVERED": 2039
+      },
+      "distinctSourceRecords": 58,
+      "distinctTargetSources": 58
+    },
+    {
+      "kind": "PROVISION_EXCEPTION",
+      "rawRows": 1997,
+      "uniqueDiscoveryIds": 1646,
+      "excessDuplicateRows": 351,
+      "meanConfidence": 0.6500000000000066,
+      "highConfidenceRate": 1,
+      "highConfidenceWilson95": {
+        "low": 0.9976715340430258,
+        "high": 1
+      },
+      "byEvidenceStatus": {
+        "DISCOVERED": 1646
+      },
+      "distinctSourceRecords": 53,
+      "distinctTargetSources": 53
+    },
+    {
+      "kind": "PROVISION_SHARED_CAPACITY",
+      "rawRows": 427,
+      "uniqueDiscoveryIds": 206,
+      "excessDuplicateRows": 221,
+      "meanConfidence": 0.5500000000000042,
+      "highConfidenceRate": 0,
+      "highConfidenceWilson95": {
+        "low": 0,
+        "high": 0.018307142149125814
+      },
+      "byEvidenceStatus": {
+        "DISCOVERED": 206
+      },
+      "distinctSourceRecords": 33,
+      "distinctTargetSources": 33
+    },
+    {
+      "kind": "AGREEMENT_RESTATEMENT",
+      "rawRows": 116,
+      "uniqueDiscoveryIds": 116,
+      "excessDuplicateRows": 0,
+      "meanConfidence": 0.7000000000000015,
+      "highConfidenceRate": 1,
+      "highConfidenceWilson95": {
+        "low": 0.9679443532129076,
+        "high": 0.9999999999999998
+      },
+      "byEvidenceStatus": {
+        "DISCOVERED": 116
+      },
+      "distinctSourceRecords": 98,
+      "distinctTargetSources": 94
+    },
+    {
+      "kind": "INDENTURE_SUPPLEMENTAL",
+      "rawRows": 75,
+      "uniqueDiscoveryIds": 75,
+      "excessDuplicateRows": 0,
+      "meanConfidence": 0.7000000000000008,
+      "highConfidenceRate": 1,
+      "highConfidenceWilson95": {
+        "low": 0.9512744540953,
+        "high": 1
+      },
+      "byEvidenceStatus": {
+        "DISCOVERED": 75
+      },
+      "distinctSourceRecords": 75,
+      "distinctTargetSources": 21
+    },
+    {
+      "kind": "AGREEMENT_AMENDMENT",
+      "rawRows": 35,
+      "uniqueDiscoveryIds": 35,
+      "excessDuplicateRows": 0,
+      "meanConfidence": 0.6999999999999996,
+      "highConfidenceRate": 1,
+      "highConfidenceWilson95": {
+        "low": 0.9010957324106112,
+        "high": 1
+      },
+      "byEvidenceStatus": {
+        "DISCOVERED": 35
+      },
+      "distinctSourceRecords": 30,
+      "distinctTargetSources": 23
+    }
+  ],
+  "stratifiedConfidence": {
+    "note": "Wilson 95% CI on unique-edge high-confidence rate (confidence >= 0.6). Stratified by relationship kind.",
+    "overallHighConfidenceRate": 0.9693249435743109,
+    "overallWilson95": {
+      "low": 0.9672860406441239,
+      "high": 0.971240549748132
+    },
+    "byKind": [
+      {
+        "kind": "PROVISION_DEFINITION",
+        "n": 18183,
+        "highConfidenceRate": 1,
+        "wilson95": {
+          "low": 0.9997887703602146,
+          "high": 1
+        }
+      },
+      {
+        "kind": "PROVISION_CROSS_REFERENCE",
+        "n": 6942,
+        "highConfidenceRate": 0.9004609622587151,
+        "wilson95": {
+          "low": 0.8931951800079649,
+          "high": 0.9072837713116275
+        }
+      },
+      {
+        "kind": "PROVISION_CONDITION",
+        "n": 2039,
+        "highConfidenceRate": 1,
+        "wilson95": {
+          "low": 0.9981194821957805,
+          "high": 0.9999999999999998
+        }
+      },
+      {
+        "kind": "PROVISION_EXCEPTION",
+        "n": 1646,
+        "highConfidenceRate": 1,
+        "wilson95": {
+          "low": 0.9976715340430258,
+          "high": 1
+        }
+      },
+      {
+        "kind": "PROVISION_SHARED_CAPACITY",
+        "n": 206,
+        "highConfidenceRate": 0,
+        "wilson95": {
+          "low": 0,
+          "high": 0.018307142149125814
+        }
+      },
+      {
+        "kind": "AGREEMENT_RESTATEMENT",
+        "n": 116,
+        "highConfidenceRate": 1,
+        "wilson95": {
+          "low": 0.9679443532129076,
+          "high": 0.9999999999999998
+        }
+      },
+      {
+        "kind": "INDENTURE_SUPPLEMENTAL",
+        "n": 75,
+        "highConfidenceRate": 1,
+        "wilson95": {
+          "low": 0.9512744540953,
+          "high": 1
+        }
+      },
+      {
+        "kind": "AGREEMENT_AMENDMENT",
+        "n": 35,
+        "highConfidenceRate": 1,
+        "wilson95": {
+          "low": 0.9010957324106112,
+          "high": 1
+        }
+      }
+    ]
+  },
+  "authoritySeparation": {
+    "note": "DISCOVERED / STRUCTURALLY_INDEXED edges are not CERTIFIED / REVIEWER_VERIFIED legal authority.",
+    "evidenceStatusOnUniqueEdges": {
+      "DISCOVERED": 29242
+    },
+    "neverTreatDiscoveredAsCertified": true
+  },
+  "diversityGapsStillVisible": {
+    "note": "ABL, intercreditor, and guarantee coverage remain incomplete — corpus must not be represented as complete.",
+    "ablIntercreditorGuarantee": "See diversity-dry-run.json — ABL / INTERCREDITOR / GUARANTEE families remain under-represented relative to credit agreements and amendments."
+  },
+  "limitations": [
+    "Metrics are computed on DISTINCT discoveryId (earliest createdAt wins) — raw row quality overstates support.",
+    "Confidence scores are discovery heuristics, not counsel-verified precision.",
+    "Independent source support = distinct Neo sourceRecordId / targetSourceId endpoints, not independent counsel reviews."
+  ]
+}

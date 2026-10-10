@@ -27,8 +27,13 @@ export function discoverDocumentRelationships(sources: KnowledgeSourceRecord[]):
     const intercreditors = group.filter((s) => s.documentClass === "INTERCREDITOR_AGREEMENT");
 
     for (const amendment of amendments) {
-      const target = pickRelatedBase(amendment, bases);
+      // RESTATEMENT is also a base class — never pick the document as its own target.
+      const target = pickRelatedBase(
+        amendment,
+        bases.filter((b) => b.sourceId !== amendment.sourceId),
+      );
       if (!target) continue;
+      if (target.sourceId === amendment.sourceId) continue;
       const kind = amendment.documentClass === "RESTATEMENT" ? "AGREEMENT_RESTATEMENT" : "AGREEMENT_AMENDMENT";
       // Title/metadata linkage = DISCOVERED; chronology-only would be INFERRED and is refused here.
       const evidenceStatus = titlesLikelyRelated(amendment, target) ? "DISCOVERED" : "DISCOVERED";
@@ -36,36 +41,57 @@ export function discoverDocumentRelationships(sources: KnowledgeSourceRecord[]):
         // Refuse chronology-only inference.
         continue;
       }
-      out.push(rel(amendment.sourceId, target.sourceId, kind, evidenceStatus, "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness."));
+      const edge = rel(amendment.sourceId, target.sourceId, kind, evidenceStatus, "Title/metadata indicates amendment/restatement of base agreement — not a determination of legal effectiveness.");
+      if (edge) out.push(edge);
     }
 
     for (const sup of supplements) {
-      const target = pickRelatedBase(sup, indentures);
-      if (!target || !titlesLikelyRelated(sup, target)) continue;
-      out.push(rel(sup.sourceId, target.sourceId, "INDENTURE_SUPPLEMENTAL", "DISCOVERED", "Supplemental indenture metadata references indenture family."));
+      const target = pickRelatedBase(
+        sup,
+        indentures.filter((b) => b.sourceId !== sup.sourceId),
+      );
+      if (!target || target.sourceId === sup.sourceId || !titlesLikelyRelated(sup, target)) continue;
+      const edge = rel(sup.sourceId, target.sourceId, "INDENTURE_SUPPLEMENTAL", "DISCOVERED", "Supplemental indenture metadata references indenture family.");
+      if (edge) out.push(edge);
     }
 
     for (const w of waivers) {
-      const target = pickRelatedBase(w, bases);
-      if (!target || !titlesLikelyRelated(w, target)) continue;
-      out.push(rel(w.sourceId, target.sourceId, "AGREEMENT_WAIVER", "DISCOVERED", "Waiver title references related agreement."));
+      const target = pickRelatedBase(
+        w,
+        bases.filter((b) => b.sourceId !== w.sourceId),
+      );
+      if (!target || target.sourceId === w.sourceId || !titlesLikelyRelated(w, target)) continue;
+      const edge = rel(w.sourceId, target.sourceId, "AGREEMENT_WAIVER", "DISCOVERED", "Waiver title references related agreement.");
+      if (edge) out.push(edge);
     }
     for (const c of consents) {
-      const target = pickRelatedBase(c, bases);
-      if (!target || !titlesLikelyRelated(c, target)) continue;
-      out.push(rel(c.sourceId, target.sourceId, "AGREEMENT_CONSENT", "DISCOVERED", "Consent title references related agreement."));
+      const target = pickRelatedBase(
+        c,
+        bases.filter((b) => b.sourceId !== c.sourceId),
+      );
+      if (!target || target.sourceId === c.sourceId || !titlesLikelyRelated(c, target)) continue;
+      const edge = rel(c.sourceId, target.sourceId, "AGREEMENT_CONSENT", "DISCOVERED", "Consent title references related agreement.");
+      if (edge) out.push(edge);
     }
     for (const s of sideLetters) {
-      const target = pickRelatedBase(s, bases);
-      if (!target || !titlesLikelyRelated(s, target)) continue;
-      out.push(rel(s.sourceId, target.sourceId, "AGREEMENT_SIDE_LETTER", "DISCOVERED", "Side letter title references related agreement."));
+      const target = pickRelatedBase(
+        s,
+        bases.filter((b) => b.sourceId !== s.sourceId),
+      );
+      if (!target || target.sourceId === s.sourceId || !titlesLikelyRelated(s, target)) continue;
+      const edge = rel(s.sourceId, target.sourceId, "AGREEMENT_SIDE_LETTER", "DISCOVERED", "Side letter title references related agreement.");
+      if (edge) out.push(edge);
     }
     for (const ic of intercreditors) {
-      const target = pickRelatedBase(ic, bases);
-      if (!target) continue;
+      const target = pickRelatedBase(
+        ic,
+        bases.filter((b) => b.sourceId !== ic.sourceId),
+      );
+      if (!target || target.sourceId === ic.sourceId) continue;
       // Intercreditor often names facilities; allow weaker metadata link as DISCOVERED only when titles share tokens.
       if (!titlesLikelyRelated(ic, target)) continue;
-      out.push(rel(ic.sourceId, target.sourceId, "AGREEMENT_INTERCREDITOR", "DISCOVERED", "Intercreditor metadata references related agreement family."));
+      const edge = rel(ic.sourceId, target.sourceId, "AGREEMENT_INTERCREDITOR", "DISCOVERED", "Intercreditor metadata references related agreement family.");
+      if (edge) out.push(edge);
     }
   }
   return out;
@@ -153,7 +179,10 @@ function rel(
   kind: KnowledgeRelationshipRecord["kind"],
   evidenceStatus: KnowledgeRelationshipRecord["evidenceStatus"],
   rationale: string,
-): KnowledgeRelationshipRecord {
+): KnowledgeRelationshipRecord | null {
+  // Agreement-level self-loops are invalid. Provision-level same-document
+  // endpoints are emitted elsewhere and are intentionally permitted.
+  if (sourceId === targetId) return null;
   const id = createHash("sha256").update(`${kind}|${sourceId}|${targetId}`).digest("hex").slice(0, 20);
   return { id, sourceId, targetId, kind, evidenceStatus, rationale, confidence: evidenceStatus === "DISCOVERED" ? 0.7 : 0.4 };
 }

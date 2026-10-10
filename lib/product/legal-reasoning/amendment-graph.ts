@@ -178,6 +178,11 @@ export async function persistAmendmentGraph(params?: {
 
   if (!params?.dryRun) {
     for (const r of discovered) {
+      // Never persist agreement-level self-loops (invalid self-amendments).
+      if (r.sourceId === r.targetId) {
+        skippedExisting += 1;
+        continue;
+      }
       const sourceRecordId = idBySourceId.get(r.sourceId);
       if (!sourceRecordId || !idBySourceId.has(r.targetId)) continue;
 

@@ -36,6 +36,52 @@ function filingDateOf(sources: KnowledgeSourceRecord[], sourceId: string): strin
   return s?.filingDate?.slice(0, 10) ?? null;
 }
 
+/**
+ * Opaque SEC exhibit labels (EX-10.1, Exhibit 10.2(a), etc.) must never alone
+ * establish operative authority — even when documentClass is RESTATEMENT.
+ */
+export function isOpaqueExhibitLabel(title: string): boolean {
+  const t = (title || "").replace(/\s+/g, " ").trim();
+  if (!t) return true;
+  // Pure exhibit tokens: EX-10.1, Exhibit 10.1, EX 10.2(a)
+  if (/^(?:ex(?:hibit)?[\s._-]*)?\d+(?:\.\d+)*[a-z]?(?:\([a-z0-9]+\))?$/i.test(t)) return true;
+  if (/^ex(?:hibit)?[\s._-]*\d+/i.test(t) && !hasSubstantiveInstrumentLanguage(t)) return true;
+  return false;
+}
+
+/** Title carries instrument / restatement language beyond class or exhibit label. */
+export function hasSubstantiveInstrumentLanguage(title: string): boolean {
+  return /\b(?:amended\s+and\s+restated|restatement|credit\s+agreement|indenture|term\s+loan|revolving(?:\s+credit)?|facility\s+agreement|loan\s+agreement|abl\s+agreement)\b/i.test(
+    title || "",
+  );
+}
+
+/**
+ * Restatement supersession requires substantive title evidence.
+ * Exhibit label, RESTATEMENT class, or filing-order/filing-date alone → fail closed.
+ */
+export function canResolveRestatementSupersession(restatement: {
+  documentTitle?: string;
+  documentClass?: string;
+}): { ok: true } | { ok: false; reason: string } {
+  const title = restatement.documentTitle || "";
+  if (isOpaqueExhibitLabel(title)) {
+    return {
+      ok: false,
+      reason:
+        "Restatement title is an opaque exhibit label — class/filing order alone cannot establish operative authority.",
+    };
+  }
+  if (!hasSubstantiveInstrumentLanguage(title)) {
+    return {
+      ok: false,
+      reason:
+        "Restatement lacks substantive instrument/restatement language in title — RESTATEMENT classification alone is insufficient.",
+    };
+  }
+  return { ok: true };
+}
+
 /** Parse dates like "as of March 15, 2024" / "dated as of 2024-03-15" / ISO from titles. */
 export function extractEffectiveDateHint(text: string): string | null {
   const iso = text.match(/\b(20\d{2}-\d{2}-\d{2})\b/);
@@ -99,11 +145,24 @@ export function resolveOperativePrecedence(params: {
   if (restatementSources.length === 1 && nonRestatementBases.length === 1) {
     const baseId = nonRestatementBases[0]!.sourceId;
     const restatement = restatementSources[0]!;
+    const gate = canResolveRestatementSupersession(restatement);
+    if (!gate.ok) {
+      unresolved.push(gate.reason);
+      return {
+        status: "UNRESOLVED_PRECEDENCE",
+        operativeDocumentSourceId: null,
+        baseDocumentSourceId: baseId,
+        effectiveDate: null,
+        asOfDate: params.asOfDate ?? null,
+        bindings: [],
+        unresolvedReasons: unresolved,
+        note: "Fail-closed: exhibit label, filing order, or RESTATEMENT class alone never establishes operative authority.",
+      };
+    }
     const baseDate = filingDateOf(params.sources, baseId);
-    const eff =
-      extractEffectiveDateHint(restatement.documentTitle || "") ||
-      restatement.filingDate?.slice(0, 10) ||
-      null;
+    const titleEff = extractEffectiveDateHint(restatement.documentTitle || "");
+    // Filing date may support chronology checks once title is substantive; it must not be the sole authority signal.
+    const eff = titleEff || restatement.filingDate?.slice(0, 10) || null;
     if (baseDate && eff && eff < baseDate) {
       unresolved.push("Restatement effective/filing date precedes base — chronology inconsistent.");
       return {
@@ -146,6 +205,23 @@ export function resolveOperativePrecedence(params: {
   const baseId = nonRestatementBases[0]!.sourceId;
   const baseDate = filingDateOf(params.sources, baseId);
 
+  // Multiple restatement candidates → fail closed (do not pick by filing order).
+  if (restatementSources.length > 1) {
+    unresolved.push(
+      `Multiple restatement candidates (${restatementSources.length}) — cannot select controlling restatement without authenticated supersession evidence.`,
+    );
+    return {
+      status: "UNRESOLVED_PRECEDENCE",
+      operativeDocumentSourceId: null,
+      baseDocumentSourceId: baseId,
+      effectiveDate: null,
+      asOfDate: params.asOfDate ?? null,
+      bindings: [],
+      unresolvedReasons: unresolved,
+      note: "Ambiguous restatement package — filing-order heuristics refused.",
+    };
+  }
+
   // Additional restatement path when restatement is not classified as base candidate
   const restatement = params.sources.find(
     (s) =>
@@ -154,10 +230,22 @@ export function resolveOperativePrecedence(params: {
         /\bamended and restated\b|\brestate/i.test(s.documentTitle || "")),
   );
   if (restatement) {
-    const eff =
-      extractEffectiveDateHint(restatement.documentTitle || "") ||
-      restatement.filingDate?.slice(0, 10) ||
-      null;
+    const gate = canResolveRestatementSupersession(restatement);
+    if (!gate.ok) {
+      unresolved.push(gate.reason);
+      return {
+        status: "UNRESOLVED_PRECEDENCE",
+        operativeDocumentSourceId: null,
+        baseDocumentSourceId: baseId,
+        effectiveDate: null,
+        asOfDate: params.asOfDate ?? null,
+        bindings: [],
+        unresolvedReasons: unresolved,
+        note: "Fail-closed: exhibit label, filing order, or RESTATEMENT class alone never establishes operative authority.",
+      };
+    }
+    const titleEff = extractEffectiveDateHint(restatement.documentTitle || "");
+    const eff = titleEff || restatement.filingDate?.slice(0, 10) || null;
     if (baseDate && eff && eff < baseDate) {
       unresolved.push("Restatement effective/filing date precedes base — chronology inconsistent.");
       return {
