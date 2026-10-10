@@ -1,0 +1,54 @@
+{
+  "instrumentKey": "instrument:doc-b",
+  "asOfDate": "2026-09-15",
+  "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+  "summary": "0 amended provision(s) tracked for this instrument as of 2026-09-15: none. 2 additional effect(s) reference this instrument's amendment activity but could not be attached to any specific provision (unresolved target).",
+  "provisionViewCount": 0,
+  "unattachedEffects": 2,
+  "operativeDocument": {
+    "status": "REVIEW_REQUIRED",
+    "operativeDocumentId": null,
+    "predecessorDocumentIds": [],
+    "relationshipChain": [],
+    "reviewReason": "3 restatement effect(s) relevant to this instrument have an unresolved target document - which whole document currently governs cannot be determined without guessing (effect(s): dfe541660dafd664ae9f1a76b148ec2fded3c162252cf6c0e9c0b121198ae370, 07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641, 07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641)."
+  },
+  "handoff": {
+    "packageKey": "an-2020-2026-credit-facility",
+    "asOfDate": "2026-09-15",
+    "instrumentCount": 2,
+    "documentRoles": [
+      {
+        "documentId": "doc-a",
+        "role": "RESTATEMENT",
+        "confidence": "PROVISIONAL",
+        "effectiveDate": null,
+        "executionDate": null,
+        "evidenceCitations": [
+          "AN Third AR Credit Agreement 2020-03-26"
+        ],
+        "reason": "Classified as amended-and-restated without a RESOLVED RESTATES edge."
+      },
+      {
+        "documentId": "doc-b",
+        "role": "RESTATEMENT",
+        "confidence": "PROVISIONAL",
+        "effectiveDate": null,
+        "executionDate": null,
+        "evidenceCitations": [
+          "AN Fifth AR Credit Agreement 2026-09-14"
+        ],
+        "reason": "Classified as amended-and-restated without a RESOLVED RESTATES edge."
+      }
+    ],
+    "blocked": false,
+    "summaryKeys": [
+      "companyId",
+      "packageKey",
+      "asOfDate",
+      "documentRoles",
+      "instruments",
+      "provisions",
+      "unsupportedCases"
+    ]
+  }
+}

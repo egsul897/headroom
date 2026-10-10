@@ -1,0 +1,140 @@
+{
+  "artifact": "AGENT11_ROUND1_VS_ROUND2_SCORECARD",
+  "denominatorsUnchanged": true,
+  "legalReferenceAnswersSha256": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
+  "round1MainSha": "c53afbf6c4ac360569cb25324d8bb405110fa91a",
+  "round2MainSha": "6601e7c2163c9c01962b602539900730c885f695",
+  "headline": {
+    "operativeAccuracy": {
+      "r1": "0/1",
+      "r2": "0/1",
+      "delta": 0
+    },
+    "contextSufficient": {
+      "r1": "1/10",
+      "r2": "0/10",
+      "delta": -1
+    },
+    "verifiedExecutableIR": {
+      "r1": "0/10",
+      "r2": "0/10",
+      "delta": 0
+    },
+    "financialCompleteness": {
+      "r1": "0/1",
+      "r2": "0/1",
+      "delta": 0
+    },
+    "falseFavorables": {
+      "r1": "0/12",
+      "r2": "0/12",
+      "delta": 0
+    }
+  },
+  "stageDelta": [
+    {
+      "stage": "1_UPLOAD",
+      "round1": "VERIFIED",
+      "round2": "VERIFIED",
+      "integrationState": "TESTED_AND_VERIFIED",
+      "changed": false
+    },
+    {
+      "stage": "2_IDENTIFY_DOCUMENTS",
+      "round1": "VERIFIED",
+      "round2": "VERIFIED",
+      "integrationState": "TESTED_AND_VERIFIED",
+      "changed": false
+    },
+    {
+      "stage": "3_RESOLVE_OPERATIVE",
+      "round1": "BLOCKED",
+      "round2": "BLOCKED",
+      "integrationState": "TESTED_AND_BLOCKED",
+      "changed": false
+    },
+    {
+      "stage": "4_DISCOVER_COVENANTS",
+      "round1": "VERIFIED",
+      "round2": "VERIFIED",
+      "integrationState": "TESTED_AND_VERIFIED",
+      "changed": false
+    },
+    {
+      "stage": "5_RETRIEVE_CONTEXT",
+      "round1": "BLOCKED",
+      "round2": "BLOCKED",
+      "integrationState": "TESTED_AND_BLOCKED",
+      "changed": false
+    },
+    {
+      "stage": "6_COMPILE_VERIFIED_IR",
+      "round1": "BLOCKED",
+      "round2": "BLOCKED",
+      "integrationState": "TESTED_AND_BLOCKED",
+      "changed": false
+    },
+    {
+      "stage": "7_ATTACH_FINANCIAL_EVIDENCE",
+      "round1": "UNSUPPORTED",
+      "round2": "BLOCKED",
+      "integrationState": "TESTED_AND_BLOCKED",
+      "changed": true
+    },
+    {
+      "stage": "8_RECONSTRUCT_UTILIZATION",
+      "round1": "VERIFIED",
+      "round2": "VERIFIED",
+      "integrationState": "TESTED_AND_VERIFIED",
+      "changed": false
+    },
+    {
+      "stage": "9_EVIDENCE_REVIEWER_AUTHORITY",
+      "round1": "VERIFIED",
+      "round2": "VERIFIED",
+      "integrationState": "TESTED_AND_VERIFIED",
+      "changed": false
+    },
+    {
+      "stage": "10_HYPOTHETICAL_TRANSACTION",
+      "round1": "HYPOTHETICAL_ONLY",
+      "round2": "HYPOTHETICAL_ONLY",
+      "integrationState": "TESTED_AND_VERIFIED",
+      "changed": false
+    },
+    {
+      "stage": "11_PRODUCTION_AUTHORITY",
+      "round1": "VERIFIED",
+      "round2": "VERIFIED",
+      "integrationState": "TESTED_AND_VERIFIED",
+      "changed": false
+    },
+    {
+      "stage": "12_SURFACE_DISPLAY",
+      "round1": "VERIFIED",
+      "round2": "VERIFIED",
+      "integrationState": "TESTED_AND_VERIFIED",
+      "changed": false
+    }
+  ],
+  "integrationDisposition": {
+    "278": "TESTED_ON_TIP",
+    "281": "IMPLEMENTED_BUT_UNMERGED",
+    "282": "IMPLEMENTED_BUT_UNMERGED",
+    "283": "IMPLEMENTED_BUT_UNMERGED",
+    "285": "IMPLEMENTED_BUT_UNMERGED",
+    "287": "IMPLEMENTED_BUT_UNMERGED",
+    "279_financial_evidence": "TESTED_AND_BLOCKED — module present; AN financial package absent",
+    "280_customer_workflow": "TESTED_AND_VERIFIED — offline status contract honest; live UI untested"
+  },
+  "materialE2EImprovement": false,
+  "materialE2EImprovementReason": "Merged #278/#279/#280 add fail-closed financial-evidence and customer-workflow gates that Round 1 lacked as modules, but authentic-package operative accuracy, verified IR, and financial completeness remain 0. Context SUFFICIENT regressed 1/10→0/10 (AN-B-RESTATE now BUDGET_EXCEEDED). OPEN #281/#282/#283/#285/#287 are not on tip.",
+  "regressions": [
+    {
+      "metric": "contextSufficiency",
+      "from": "1/10",
+      "to": "0/10",
+      "detail": "AN-B-RESTATE: Round1 SUFFICIENT (unresolvedCount=0) → Round2 BUDGET_EXCEEDED (unresolvedCount=22, DEFINITION/CHILD_RULE inflation under same retrievalAlgorithmVersion phase-2d-context-retrieval.v5). Observed on tip after #278 integration; #287 recursive-context PR still unmerged."
+    }
+  ]
+}

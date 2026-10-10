@@ -1,0 +1,72 @@
+{
+  "version": "offline-package-compile.v1",
+  "paidInferenceUsed": false,
+  "stages": {
+    "structural": {
+      "nodeCount": 1010,
+      "definitionCount": 496,
+      "referenceCount": 626
+    },
+    "packageGraph": {
+      "documentCount": 2,
+      "relationshipCount": 2,
+      "classifications": [
+        {
+          "documentId": "doc-a",
+          "type": "AMENDED_AND_RESTATED_AGREEMENT"
+        },
+        {
+          "documentId": "doc-b",
+          "type": "AMENDED_AND_RESTATED_AGREEMENT"
+        }
+      ]
+    },
+    "amendment": {
+      "effectCount": 2
+    },
+    "discovery": {
+      "passACount": 533,
+      "pipelineCandidateCount": 172,
+      "exceptionCatalogCount": 0,
+      "exceptionClauseCount": 0,
+      "prohibitionLinkCount": 2,
+      "totalCandidates": 171,
+      "syntheticDiscovery": true
+    },
+    "context": {
+      "bundlesBuilt": 171
+    },
+    "coverageAudit": {
+      "findingCount": 2420,
+      "regionCount": 607
+    },
+    "capacityHandoff": {
+      "attempted": true,
+      "outcome": "REFUSED_NO_VEP",
+      "detail": "No verified IR units available; numerical capacity claims refused."
+    },
+    "operativeHandoff": {
+      "instrumentKey": "instrument:doc-a",
+      "identityConfirmed": true,
+      "mayConsolidateOperative": true,
+      "provisionCount": 2,
+      "confirmedOperativeCount": 0,
+      "provisionalBlockedCount": 0,
+      "authorityGate": "CONFIRMED_OPERATIVE_IDENTITY"
+    },
+    "fixedDollarVerticalSlice": {
+      "attempted": 0,
+      "verifiedExecutable": 0,
+      "productionCapacityRefused": 0
+    },
+    "greaterOfVerticalSlice": {
+      "attempted": 0,
+      "verifiedExecutable": 0,
+      "productionCapacityRefused": 0,
+      "sharedCapacityPairs": 0
+    }
+  },
+  "unitCount": 171,
+  "verifiedExecutableUnits": 0,
+  "note": "Deterministic offline compile; VERIFIED_EXECUTABLE only from fixed-dollar/greater-of vertical slices with fidelity PASS — not counted as independently compiled IR for GT clauses under Round-1 denominator policy."
+}

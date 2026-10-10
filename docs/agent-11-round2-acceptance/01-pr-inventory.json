@@ -1,0 +1,72 @@
+{
+  "artifact": "AGENT11_ROUND2_PR_INVENTORY",
+  "evaluatedMainSha": "6601e7c2163c9c01962b602539900730c885f695",
+  "originMainSha": "4f1a0b81207364373d9a4cb9fe515d4a1a002e56",
+  "note": "Inventory is tip-of-main only. OPEN PRs are NOT credited as present.",
+  "targetPrs": {
+    "281": {
+      "title": "feat(capacity): financial statement & utilization evidence pathway (HEADROOM-9)",
+      "state": "OPEN",
+      "mergedToMain": false,
+      "creditedOnTip": false
+    },
+    "282": {
+      "title": "feat(capacity): trusted identity boundary — fail-closed IdP adapter (HEADROOM-8)",
+      "state": "OPEN",
+      "mergedToMain": false,
+      "creditedOnTip": false
+    },
+    "283": {
+      "title": "HEADROOM-7: operative restatement authority",
+      "state": "OPEN",
+      "mergedToMain": false,
+      "creditedOnTip": false
+    },
+    "285": {
+      "title": "feat(product): canonical unified verified transaction execution (Agent #10)",
+      "state": "OPEN",
+      "mergedToMain": false,
+      "creditedOnTip": false
+    },
+    "287": {
+      "title": "HEADROOM-6: recursive legal context retrieval",
+      "state": "OPEN",
+      "mergedToMain": false,
+      "creditedOnTip": false
+    }
+  },
+  "mergedSinceRound1Relevant": {
+    "278": {
+      "title": "integrate: five-agent Headroom product readiness",
+      "state": "MERGED",
+      "mergedToMain": true,
+      "creditedOnTip": true,
+      "mergeCommit": "a397529c97938aa1fdcf8d2f598721b3de77e350"
+    },
+    "279": {
+      "title": "feat(capacity): reconcile #273 financial-evidence onto post-#268 main",
+      "state": "MERGED",
+      "mergedToMain": true,
+      "creditedOnTip": true
+    },
+    "280": {
+      "title": "feat(customer-workflow): reconcile #275 truthful status onto post-#268 main",
+      "state": "MERGED",
+      "mergedToMain": true,
+      "creditedOnTip": true
+    },
+    "289": {
+      "title": "fix(ci): restore certified-path typecheck after #278",
+      "state": "MERGED",
+      "mergedToMain": true,
+      "creditedOnTip": true,
+      "mergeCommit": "4f1a0b81207364373d9a4cb9fe515d4a1a002e56"
+    }
+  },
+  "modulesOnTip": {
+    "financialEvidence": true,
+    "customerWorkflow": true,
+    "offlinePackageCompile": true,
+    "verifiedInputContract": true
+  }
+}

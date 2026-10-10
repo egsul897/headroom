@@ -1,0 +1,40 @@
+{
+  "discoveryPipelineVersion": "phase-2b-discovery-pipeline.v4",
+  "note": "Pass B uses synthetic caller (no paid inference). Pass A is the offline discovery signal.",
+  "passACounts": {
+    "doc-a": 277,
+    "doc-b": 256
+  },
+  "discoverySummaries": {
+    "doc-a": {
+      "documentId": "doc-a",
+      "nodesInspected": 532,
+      "deterministicCandidatesGenerated": 277,
+      "semanticCandidatesEvaluated": 0,
+      "duplicatesBeforeReconciliation": 0,
+      "finalCandidateCount": 93,
+      "wallClockMs": 12.606353000000013,
+      "modelCalls": 93,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "sectionsAttempted": 93,
+      "sectionFailures": [],
+      "documentDiscoveryHealth": "DISCOVERY_HEALTHY"
+    },
+    "doc-b": {
+      "documentId": "doc-b",
+      "nodesInspected": 478,
+      "deterministicCandidatesGenerated": 256,
+      "semanticCandidatesEvaluated": 0,
+      "duplicatesBeforeReconciliation": 0,
+      "finalCandidateCount": 79,
+      "wallClockMs": 10.805506000000037,
+      "modelCalls": 79,
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "sectionsAttempted": 79,
+      "sectionFailures": [],
+      "documentDiscoveryHealth": "DISCOVERY_HEALTHY"
+    }
+  }
+}
