@@ -321,6 +321,7 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   const legs: PermissionPathLeg[] = [];
   let remaining = requestedAmount;
   let totalAllocated = 0;
+  const EPS = 1e-6;
   // Populated only by the incurrenceBased.length > 1 branch below: the
   // election's own request-amount-independent ceiling is the MIN across
   // every concurrently-drawn member's own standalone capacity (never a sum -
@@ -638,38 +639,155 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     }
   }
 
-  // Secured transactions: every DEBT_INCURRENCE leg must have its own Permitted
-  // Lien path. An AUTOMATIC_LINKED_PERMISSION lien covers ONLY the debt
-  // permission it is linked from — it does not blanket-cover other debt legs
-  // in the same election. Without this gate, Ratio Debt stacked with SCF under
-  // CONCURRENT_DISREGARDED inherited SCF's auto-lien and produced a
-  // false-favorable Indenture secured maximum that omitted SSNL / Permitted
-  // Liens cl. (24). Independent LIEN election members remain a valid covering
-  // path for debt that has no auto-link. (#231 remediation; adopted onto #250)
+  // Secured transactions: every DEBT_INCURRENCE leg must have a Permitted Lien
+  // path that actually *covers* the allocated amount. Existence of a LIEN
+  // member is not enough — capacity, entity scope, eligibility, and shared
+  // headroom must clear. An AUTOMATIC_LINKED_PERMISSION lien covers ONLY the
+  // debt permission it is linked from (never another leg). Independent LIEN
+  // members share a coverage pool measured by their own modeled capacity
+  // (not by debt-request waterfall allocation). (#231 + merge-gate hardening)
   if (eligibilityContext.transaction.secured) {
     const independentLienMembers = members.filter((m) => m.grantType === "LIEN");
+    const metricsForLien = computeLeverageMetrics(financials);
+    let independentCoveragePool = 0;
+    let independentCoverageUnknown = false;
+    const independentClearedIds: string[] = [];
+
+    for (const lien of independentLienMembers) {
+      const eligFailed = requirements.some(
+        (r) => r.scope.permissionId === lien.id && r.status === "FAILED",
+      );
+      if (eligFailed) continue;
+      const eligUnknown = requirements.some(
+        (r) => r.scope.permissionId === lien.id && r.status === "UNKNOWN",
+      );
+      if (eligUnknown) {
+        independentCoverageUnknown = true;
+        continue;
+      }
+      const evaluated = evaluateProvision(permissionAsProvision(lien), financials, metricsForLien);
+      if (evaluated.status !== "modeled" || evaluated.capacity == null) {
+        independentCoverageUnknown = true;
+        requirements.push({
+          class: "LIEN_PERMISSION",
+          scope: { permissionId: lien.id },
+          status: "UNKNOWN",
+          detail: `Independent lien ${lien.id} capacity is not determinable — cannot support secured coverage.`,
+          reasonCategory: "EXTERNAL_INPUT",
+        });
+        continue;
+      }
+      let cap = evaluated.capacity;
+      const constraint = constraintFor(lien.id);
+      if (constraint) {
+        if (constraint.currentUsageAuthoritative !== true) {
+          independentCoverageUnknown = true;
+          requirements.push({
+            class: "LIEN_PERMISSION",
+            scope: { permissionId: lien.id },
+            status: "UNKNOWN",
+            detail:
+              `Independent lien ${lien.id} shares constraint ${constraint.id} with non-authoritative utilization — ` +
+              `remaining lien capacity cannot support a favorable secured conclusion.`,
+            reasonCategory: "EXTERNAL_INPUT",
+          });
+          continue;
+        }
+        const constraintCap =
+          "amount" in constraint.cap
+            ? constraint.cap.amount
+            : evaluateProvision(
+                {
+                  ...permissionAsProvision(lien),
+                  formulaType: constraint.cap.formulaType,
+                  thresholdValue: constraint.cap.thresholdValue,
+                  params: constraint.cap.params,
+                },
+                financials,
+                metricsForLien,
+              ).capacity ?? 0;
+        const headroom = Math.max(0, constraintCap - constraint.currentUsage);
+        // Subtract consumption already recorded on this constraint in this election.
+        const already = sharedConsumption
+          .filter((c) => c.constraintId === constraint.id)
+          .reduce((s, c) => s + c.amountConsumed, 0);
+        cap = Math.min(cap, Math.max(0, headroom - already));
+      }
+      independentCoveragePool += Math.max(0, cap);
+      independentClearedIds.push(lien.id);
+    }
+
     for (const debtLeg of legs.filter((l) => l.grantType === "DEBT_INCURRENCE")) {
-      const autoCovered = legs.some((l) => l.grantType === "LIEN" && l.linkedFrom === debtLeg.permissionId);
-      if (autoCovered) continue;
-      if (independentLienMembers.length > 0) {
+      if (debtLeg.amountAllocated <= EPS) continue;
+
+      const autoLienLegs = legs.filter(
+        (l) => l.grantType === "LIEN" && l.linkedFrom === debtLeg.permissionId,
+      );
+      if (autoLienLegs.length > 0) {
+        const autoFailed = autoLienLegs.some((al) =>
+          requirements.some(
+            (r) => r.scope.permissionId === al.permissionId && r.status === "FAILED",
+          ),
+        );
+        if (autoFailed) {
+          requirements.push({
+            class: "LIEN_PERMISSION",
+            scope: { permissionId: debtLeg.permissionId },
+            status: "FAILED",
+            detail:
+              `Secured debt leg ${debtLeg.permissionId} has an automatic linked lien that fails eligibility ` +
+              `(entity scope, security scope, or other condition) — auto-lien presence is not coverage.`,
+          });
+          continue;
+        }
         requirements.push({
           class: "LIEN_PERMISSION",
           scope: { permissionId: debtLeg.permissionId },
           status: "SATISFIED",
           detail:
-            `Secured debt leg ${debtLeg.permissionId} relies on independent LIEN election member(s) ` +
-            `[${independentLienMembers.map((m) => m.id).join(", ")}] (no automatic linked lien on this debt permission).`,
+            `Secured debt leg ${debtLeg.permissionId} covered by AUTOMATIC_LINKED_PERMISSION lien(s) ` +
+            `[${autoLienLegs.map((l) => l.permissionId).join(", ")}] for allocated ${debtLeg.amountAllocated}.`,
         });
         continue;
       }
+
+      if (independentClearedIds.length === 0) {
+        requirements.push({
+          class: "LIEN_PERMISSION",
+          scope: { permissionId: debtLeg.permissionId },
+          status: independentCoverageUnknown ? "UNKNOWN" : "FAILED",
+          detail:
+            independentCoverageUnknown
+              ? `Secured debt leg ${debtLeg.permissionId} has no cleared independent lien coverage (capacity/eligibility UNKNOWN).`
+              : `Secured debt leg ${debtLeg.permissionId} has no Permitted Lien path: no AUTOMATIC_LINKED_PERMISSION ` +
+                `lien for this permission and no eligibility-cleared independent LIEN permission. An auto-lien on a ` +
+                `different debt leg does not cover this leg.`,
+          reasonCategory: independentCoverageUnknown ? "EXTERNAL_INPUT" : undefined,
+        });
+        continue;
+      }
+
+      if (independentCoveragePool + EPS < debtLeg.amountAllocated) {
+        requirements.push({
+          class: "LIEN_PERMISSION",
+          scope: { permissionId: debtLeg.permissionId },
+          status: "FAILED",
+          detail:
+            `Secured debt leg ${debtLeg.permissionId} allocates ${debtLeg.amountAllocated} but independent lien ` +
+            `coverage remaining is only ${independentCoveragePool} from [${independentClearedIds.join(", ")}] ` +
+            `(insufficient capacity, consumed shared headroom, or prior debt legs exhausted the lien pool).`,
+        });
+        continue;
+      }
+
+      independentCoveragePool -= debtLeg.amountAllocated;
       requirements.push({
         class: "LIEN_PERMISSION",
         scope: { permissionId: debtLeg.permissionId },
-        status: "FAILED",
+        status: "SATISFIED",
         detail:
-          `Secured debt leg ${debtLeg.permissionId} has no Permitted Lien path: no AUTOMATIC_LINKED_PERMISSION ` +
-          `lien for this permission and no independent LIEN permission in this election. An auto-lien attached to a ` +
-          `different debt leg does not cover this leg.`,
+          `Secured debt leg ${debtLeg.permissionId} covered by independent LIEN member(s) ` +
+          `[${independentClearedIds.join(", ")}] for allocated ${debtLeg.amountAllocated}.`,
       });
     }
   }
@@ -725,7 +843,6 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   // absorb) and pathStatus would incorrectly resolve to CLEAR - the same
   // class of false-affirmative bug the joint-feasibility fix above targets,
   // generalized to any election (not only the 2+-concurrent-ratio case).
-  const EPS = 1e-6;
   if (remaining > EPS && !requirements.some((r) => r.status === "UNKNOWN")) {
     requirements.push({
       class: "DEBT_PERMISSION",

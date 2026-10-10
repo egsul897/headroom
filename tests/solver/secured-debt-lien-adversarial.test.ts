@@ -97,6 +97,236 @@ function syntheticPackage(): CompanyCovenantData {
   };
 }
 
+import { buildPermissionGraph } from "../../lib/solver/graph";
+import { evaluateElection, buildPermissionPaths } from "../../lib/solver/election";
+import type {
+  ActivationState,
+  Permission,
+  PermissionRelationship,
+  SharedConstraint,
+  Transaction,
+} from "../../lib/solver/types";
+
+const emptyActivationState: ActivationState = {
+  asOfDate: new Date("2026-06-30T12:00:00.000Z"),
+  series: {},
+  events: [],
+  usageCounts: {},
+  unknownKeys: new Set(),
+};
+
+const FIN = {
+  ebitda: 500,
+  cash: 50,
+  interestExpense: 25,
+  cumulativeNetIncome: 100,
+  equityProceedsSinceIssue: 0,
+  assumedNewDebtRatePct: 5,
+  totalDebt: 800,
+  securedDebt: 400,
+};
+
+function permission(id: string, overrides: Partial<Permission> = {}): Permission {
+  return {
+    id,
+    documentId: "doc-1",
+    companyId: "co-1",
+    grantType: "DEBT_INCURRENCE",
+    amountKind: "FIXED",
+    action: `permission ${id}`,
+    entityScope: [],
+    formulaType: "FLAT_AMOUNT",
+    thresholdValue: 100,
+    eligibilityConditions: [],
+    termConditions: [],
+    measurementBasis: "CUMULATIVE_INCURRED",
+    sourceProvision: { documentId: "doc-1", sectionRef: `§${id}` },
+    modelingStatus: "MODELED",
+    ...overrides,
+  };
+}
+
+function rel(overrides: Partial<PermissionRelationship>): PermissionRelationship {
+  return {
+    id: overrides.id ?? `${overrides.fromPermissionId}-${overrides.toPermissionId}`,
+    companyId: "co-1",
+    fromPermissionId: "a",
+    toPermissionId: "b",
+    relationshipType: "CONCURRENT_DISREGARDED",
+    sourceProvision: { documentId: "doc-1", sectionRef: "§rel" },
+    ...overrides,
+  };
+}
+
+const baseTransaction: Transaction = {
+  transactionType: "DEBT_INCURRENCE",
+  amount: 100,
+  currency: { code: "USD" },
+  incurringEntity: { id: "borrower", name: "Borrower" },
+  guarantorStatus: "GUARANTOR",
+  secured: false,
+  collateralPools: [],
+  requestedLienPriority: [],
+  useOfProceeds: "GENERAL_CORPORATE",
+  acquisitionRelated: false,
+  transactionDate: new Date("2026-06-30"),
+};
+
+describe("secured lien sufficiency (fail-closed adversarial)", () => {
+  it("blocks when independent lien exists but capacity is insufficient for the debt allocation", () => {
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
+    const lien = permission("lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 50 });
+    const graph = buildPermissionGraph([debt, lien], []);
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien", lien],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 200,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 200 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("BLOCKED");
+    expect(
+      evalResult.requirements.some(
+        (r) =>
+          r.class === "LIEN_PERMISSION" &&
+          r.scope.permissionId === "debt" &&
+          r.status === "FAILED" &&
+          /insufficient capacity/i.test(r.detail),
+      ),
+    ).toBe(true);
+  });
+
+  it("blocks when lien path exists but entity scope excludes the obligor", () => {
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const lien = permission("lien", {
+      grantType: "LIEN",
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: 100,
+      entityScope: ["GUARANTOR_RS"],
+    });
+    const graph = buildPermissionGraph([debt, lien], []);
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien", lien],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 80,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 80 },
+        entityClasses: ["NON_GUARANTOR_RS"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("BLOCKED");
+    expect(evalResult.requirements.some((r) => r.class === "GUARANTOR_CONDITION" && r.status === "FAILED")).toBe(true);
+    expect(
+      evalResult.requirements.some(
+        (r) => r.class === "LIEN_PERMISSION" && r.scope.permissionId === "debt" && r.status === "FAILED",
+      ),
+    ).toBe(true);
+  });
+
+  it("blocks when lien shares exhausted authoritative capacity", () => {
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const lien = permission("lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const graph = buildPermissionGraph([debt, lien], []);
+    const shared: SharedConstraint = {
+      id: "lien-pool",
+      companyId: "co-1",
+      name: "Lien shared pool",
+      cap: { amount: 100 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 100,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "COMPUTED",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+    };
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien", lien],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 50,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 50 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("BLOCKED");
+    expect(
+      evalResult.requirements.some(
+        (r) => r.class === "LIEN_PERMISSION" && r.scope.permissionId === "debt" && r.status === "FAILED",
+      ),
+    ).toBe(true);
+  });
+
+  it("blocks wrong collateral priority even when lien capacity exists", () => {
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const lien = permission("lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
+    const graph = buildPermissionGraph(
+      [debt, lien],
+      [rel({ fromPermissionId: "debt", toPermissionId: "lien", relationshipType: "AUTOMATIC_LINKED_PERMISSION" })],
+    );
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien", lien],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 50,
+      eligibilityContext: {
+        transaction: {
+          ...baseTransaction,
+          secured: true,
+          amount: 50,
+          collateralPools: [{ id: "pool-a", name: "Pool A" }],
+          requestedLienPriority: [{ poolId: "pool-a", priorityTier: "FIRST" }],
+        },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [],
+      collateralScopes: [{ permissionId: "lien", collateralPoolId: "pool-a", priorityTier: "SECOND" }],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("BLOCKED");
+    expect(evalResult.requirements.some((r) => r.class === "PRIORITY_CONDITION" && r.status === "FAILED")).toBe(true);
+  });
+});
+
 describe("secured debt package binding (adversarial synthetic)", () => {
   it("MODELED package secured binds to Indenture SSNL $4041, not CA TNL-shaped $5129", () => {
     const data = syntheticPackage();
