@@ -25,6 +25,7 @@ import {
 } from "./multi-path-analysis";
 import {
   computeVerifiedRemaining,
+  refuseAuthoritativeRemaining,
   resolveUtilization,
   type UtilizationEvidenceRecord,
 } from "@/lib/capacity";
@@ -693,14 +694,16 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
             `Gross contractual capacity ${fmtM(evaluated.capacity)} (${matchedPerm.code ?? matchedPerm.id})`,
             verified.note,
           );
-          if (verified.mayPublishAvailable && verified.supportedRemaining != null) {
-            remaining = fmtM(verified.supportedRemaining);
+          // Same production-authority gate as Position / Simulate / Ask / verified-execution.
+          const gated = refuseAuthoritativeRemaining(verified);
+          if (gated.mayPublishAvailable && gated.remaining != null) {
+            remaining = fmtM(gated.remaining);
             basketStatus = "COMPUTED";
           } else if (verified.remainingStatus === "GATE_FAILED") {
             remaining = null;
             basketStatus = "CONDITIONAL";
             calcExtra.push("Gate not satisfied — refused to publish AVAILABLE (A8-01)");
-          } else if (verified.remainingStatus === "GROSS_ONLY") {
+          } else if (verified.remainingStatus === "GROSS_ONLY" || !utilResolution.supportsRemainingClaim) {
             // Publish gross as contractualCapacity context only; remaining stays null.
             remaining = null;
             basketStatus = "CONDITIONAL";
@@ -710,6 +713,9 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
           } else {
             remaining = null;
             basketStatus = "CONDITIONAL";
+            calcExtra.push(
+              ...gated.blockers.filter((b) => /authoritative remaining refused|production/i.test(b)),
+            );
           }
         } else {
           basketStatus = "CONDITIONAL";
