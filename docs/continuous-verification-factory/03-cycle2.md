@@ -125,5 +125,5 @@ Registered detectors: incorrect favorable, incorrect refusal, missing evidence (
 | False favorables | **1 known standing**: `gnd-conmed-76-above-45m` (engine PERMITTED vs GT PROHIBITED on §7.6); **0 unexpected** |
 | Soft gates | unchanged hardness; fail only on unexpected incorrect favorables |
 | Hard gate | canonical-compiler preserved |
-| Unresolved blockers | (1) #238 depends on unmerged Agent 5 / #218; (2) standing §7.6 overflow false favorable; (3) truly blind holdout keys not yet externalized |
+| Unresolved blockers | (1) #238 depends on unmerged Agent 5 / #218; (2) standing §7.6 overflow false favorable; (3) truly blind holdout keys not yet externalized; (4) Ask/DB product tests skip without DATABASE_URL (soft-gate stays provider-free) |
 | Cost / safety | $0 inference; no Neon writes; no auto-merge |
