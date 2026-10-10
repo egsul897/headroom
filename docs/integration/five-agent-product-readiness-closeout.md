@@ -10,10 +10,10 @@
 | Marker | SHA |
 | --- | --- |
 | Reported baseline at mission launch | `342a6b059e3385fb14d605b8d1593e878a221578` |
-| Final `origin/main` at closeout | `93857be59214c7410de9f005ff87870a47bf10ce` |
+| Final `origin/main` at closeout | `c6fbd2a7626244f2bca86c980f966b36b9c8f92d` |
 | Integration branch tip | branch HEAD after this closeout pin commit (see PR #278) |
 
-Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266` landed on `main` before integration closeout.
+Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266`, `#273` (via #279) landed on `main` before integration closeout.
 
 ## PR-by-PR disposition
 
@@ -22,7 +22,7 @@ Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266` landed 
 | #276 WOR holdout | `83ec8854` | **SUPERSEDED** (merged upstream) | `6abe42ba` | Docs/eval only; Vercel failed historically; seal preserved |
 | #268 authenticity + trusted-issuer | `d7cb0c6b` | **SUPERSEDED** (merged upstream) | `89802b23` | Capacity overlaps reconciled with #273 on integration tip |
 | #274 package graph + handoff | `48950c80` | **SUPERSEDED** (merged upstream) | `b23e312a` | Absorbed into integration + main |
-| #273 financial evidence | `61c037dc` | **TARGETED_RECONCILIATION** | _(unmerged)_ | Draft; **CONFLICTING** vs current main; content on #278 |
+| #273 financial evidence | `61c037dc` | **SUPERSEDED** (merged via #279) | `c9d62321` / PR merge `c6fbd2a7` | Reconciled onto post-#268 main as #279; integration tip prefers main refusal wording |
 | #275 customer workflow | `deaa977e` | **TARGETED_RECONCILIATION** | _(unmerged)_ | Draft; **CONFLICTING** vs current main; content on #278 |
 | #266 fixed-dollar / greater-of | `628eefa4` | **SUPERSEDED** (merged upstream) | `93857be5` | Landed on main during closeout; integration tip retains contract A wire atop it |
 | #246 graph expansion | — | **BLOCKED / DO NOT MERGE** | — | Explicitly excluded; not reactivated |
@@ -35,6 +35,7 @@ Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266` landed 
 3. `#277` (typecheck fix after #276) → `9895b253…` (parent of #274 merge)
 4. `#274` → `b23e312afedb53ea6771c2ead1afbcdd758edd86`
 5. `#266` → `93857be59214c7410de9f005ff87870a47bf10ce`
+6. `#273` (via #279) → `c6fbd2a7626244f2bca86c980f966b36b9c8f92d` (content tip `c9d62321`)
 
 ### Human actions required to land remaining work
 
@@ -121,8 +122,7 @@ Authentic debt package → confirmed operative document → complete clause/cont
 
 ## Unmerged PR queue
 
-- **#278** — integration tip (preferred merge vehicle) — draft, awaiting human review; carries #273/#275 reconcile + contract A + capacity marker cleanup
-- **#273** — draft, CONFLICTING vs main; content reconciled in #278
+- **#278** — integration tip (preferred merge vehicle) — draft, awaiting human review; carries #275 reconcile + contract A + capacity marker cleanup atop post-#273 main
 - **#275** — draft, CONFLICTING vs main; content reconciled in #278
 - **#246** — OPEN; **do not merge**
 
