@@ -176,6 +176,11 @@ export interface BundleProductionAuthoritySummary {
 /**
  * Summarize production-authority disposition across an operative-authority
  * handoff bundle. Never strips caveats, source identity, or effective dates.
+ *
+ * Package-wide guard: when any restatement authority is REVIEW_REQUIRED or
+ * AMBIGUOUS and no OPERATIVE_AUTHORITY_CONFIRMED restatement exists, refuse
+ * allProvisionsProductionActive even if a provision row was mis-labeled
+ * CONFIRMED_OPERATIVE (wrong-document promotion belt-and-suspenders).
  */
 export function summarizeBundleProductionAuthority(
   bundle: OperativeAuthorityHandoffBundle,
@@ -195,9 +200,40 @@ export function summarizeBundleProductionAuthority(
     };
   });
 
+  const hasConfirmedRestatement = bundle.restatementAuthorities.some(
+    (a) => a.status === "OPERATIVE_AUTHORITY_CONFIRMED",
+  );
+  const hasUnresolvedPackageRestatement = bundle.restatementAuthorities.some(
+    (a) => a.status === "REVIEW_REQUIRED" || a.status === "AMBIGUOUS",
+  );
+  const packageSuccessionBlocksProduction =
+    hasUnresolvedPackageRestatement && !hasConfirmedRestatement;
+
+  let allProvisionsProductionActive =
+    byProvision.length > 0 && byProvision.every((x) => x.evaluation.productionAuthorityActive);
+  let anyProductionRefused = byProvision.some((x) => !x.evaluation.productionAuthorityActive);
+
+  if (packageSuccessionBlocksProduction && allProvisionsProductionActive) {
+    allProvisionsProductionActive = false;
+    anyProductionRefused = true;
+    for (const row of byProvision) {
+      if (row.evaluation.productionAuthorityActive) {
+        row.evaluation = {
+          ...row.evaluation,
+          disposition: "PRODUCTION_AUTHORITY_REFUSED",
+          productionAuthorityActive: false,
+          refusalReasons: [
+            ...row.evaluation.refusalReasons,
+            "Package-wide restatement succession is REVIEW_REQUIRED/AMBIGUOUS with no OPERATIVE_AUTHORITY_CONFIRMED restatement — refuse PRODUCTION_AUTHORITY_ACTIVE on local provision rows.",
+          ],
+        };
+      }
+    }
+  }
+
   return {
-    allProvisionsProductionActive: byProvision.length > 0 && byProvision.every((x) => x.evaluation.productionAuthorityActive),
-    anyProductionRefused: byProvision.some((x) => !x.evaluation.productionAuthorityActive),
+    allProvisionsProductionActive,
+    anyProductionRefused,
     anyCaveatedDisclosedOnly: byProvision.some((x) => x.evaluation.disposition === "HYPOTHETICAL_OR_DISCLOSED_ONLY"),
     byProvision,
     restatementAuthorities: bundle.restatementAuthorities.map((a) => ({

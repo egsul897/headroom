@@ -1,0 +1,103 @@
+{
+  "artifact": "AGENT11_ROUND1_VS_ROUND2_SCORECARD",
+  "sealedLegalReferenceAnswersSha256": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
+  "legalReferenceUnchanged": true,
+  "round1MainSha": "c53afbf6c4ac360569cb25324d8bb405110fa91a",
+  "round2TipSha": "66d00a97e4d2787fb29c6758b316294d189685a6",
+  "metrics": {
+    "structuralRecall": {
+      "r1": {
+        "numerator": 10,
+        "denominator": 10,
+        "rate": 1
+      },
+      "r2": {
+        "numerator": 10,
+        "denominator": 10,
+        "rate": 1
+      }
+    },
+    "operativeDocumentAccuracy": {
+      "r1": {
+        "numerator": 0,
+        "denominator": 1,
+        "expected": "doc-b",
+        "observed": null,
+        "operativeDocStatus": "REVIEW_REQUIRED",
+        "correct": false
+      },
+      "r2": {
+        "numerator": 0,
+        "denominator": 1,
+        "expected": "doc-b",
+        "observed": null,
+        "operativeDocStatus": "REVIEW_REQUIRED",
+        "correct": false
+      }
+    },
+    "contextSufficiency": {
+      "r1": {
+        "numerator": 1,
+        "denominator": 10,
+        "rate": 0.1
+      },
+      "r2": {
+        "numerator": 0,
+        "denominator": 10,
+        "rate": 0
+      }
+    },
+    "verifiedExecutableCoverage": {
+      "r1": {
+        "numerator": 0,
+        "denominator": 10,
+        "rate": 0,
+        "note": "Zero expected under no-paid-inference DETERMINISTIC_ONLY policy"
+      },
+      "r2": {
+        "numerator": 0,
+        "denominator": 10,
+        "rate": 0,
+        "note": "Zero expected under no-paid-inference DETERMINISTIC_ONLY policy"
+      }
+    },
+    "financialEvidenceCompleteness": {
+      "r1": {
+        "numerator": 0,
+        "denominator": 1,
+        "rate": 0,
+        "note": "HEADROOM-2 module absent on main"
+      },
+      "r2": {
+        "numerator": 0,
+        "denominator": 1,
+        "rate": 0,
+        "note": "financial-evidence + #290 ingestion present on tip, but no authenticated AutoNation financial package attached — completeness remains 0/1"
+      }
+    },
+    "correctRefusal": {
+      "r1": {
+        "numerator": 5,
+        "denominator": 5,
+        "productionTrackRefusal": true,
+        "forgedIssuerRefusal": true
+      },
+      "r2": {
+        "numerator": 5,
+        "denominator": 5,
+        "productionTrackRefusal": true,
+        "forgedIssuerRefusal": true
+      }
+    },
+    "falseFavorableOutcomes": {
+      "r1": {
+        "numerator": 0,
+        "denominator": 12
+      },
+      "r2": {
+        "numerator": 0,
+        "denominator": 12
+      }
+    }
+  }
+}

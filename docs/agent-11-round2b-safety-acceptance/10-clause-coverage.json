@@ -1,0 +1,1015 @@
+{
+  "clauses": [
+    {
+      "clauseId": "AN-B-RESTATE",
+      "documentId": "doc-b",
+      "sectionRef": "preamble",
+      "family": "AMENDMENT",
+      "title": "Fifth A&R restatement of Existing Credit Agreement",
+      "expectedExecution": "Identify doc-b as operative after Closing Date. Do not treat doc-a §8.1(b) capitalization covenant as currently operative.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": null,
+      "anchorCheck": {
+        "hit": 2,
+        "miss": []
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 0,
+      "tocCollision": false,
+      "selectedNodeId": null,
+      "naiveFirstMatchNodeId": null,
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": true,
+      "missingAnchors": [],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Existing Credit Agreement",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Closing Date",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 4,
+          "DEFINITION": 3,
+          "DEFINITION_DEPENDENCY": 1
+        },
+        "unresolvedCount": 23,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "originatingDocumentId": "doc-b",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 2,
+        "definitionsPresentInBundleText": 1,
+        "missingDefinitions": [
+          "Existing Credit Agreement"
+        ],
+        "anchorsInBundle": {
+          "hit": 2,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 263,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    },
+    {
+      "clauseId": "AN-B-8.1",
+      "documentId": "doc-b",
+      "sectionRef": "8.1",
+      "family": "FINANCIAL_COVENANTS",
+      "title": "Financial Covenants",
+      "expectedExecution": "Production capacity/compliance claims require authenticated financial inputs for ratio components. Refuse production authority without them.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": "structural-node:86620dae374053bdf5535872",
+      "anchorCheck": {
+        "hit": 3,
+        "miss": []
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 1,
+      "tocCollision": false,
+      "selectedNodeId": "structural-node:86620dae374053bdf5535872",
+      "naiveFirstMatchNodeId": "structural-node:86620dae374053bdf5535872",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": true,
+      "missingAnchors": [],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Consolidated Leverage Ratio",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated Interest Coverage Ratio",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Adjusted Consolidated EBITDA",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated Funded Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Material Step-Up Acquisition",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Four-Quarter Period",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "REVIEW_REQUIRED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 2,
+          "UNVERIFIED_SIBLING_SIGNAL": 3,
+          "EXCEPTION": 1,
+          "PROVISO": 1,
+          "DEFINITION": 1,
+          "DEFINITION_DEPENDENCY": 44,
+          "CROSS_DOCUMENT_REFERENCE": 1
+        },
+        "unresolvedCount": 43,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [],
+        "originatingDocumentId": "doc-b",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 6,
+        "definitionsPresentInBundleText": 4,
+        "missingDefinitions": [
+          "Adjusted Consolidated EBITDA",
+          "Consolidated Funded Indebtedness"
+        ],
+        "anchorsInBundle": {
+          "hit": 3,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 39,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": true,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    },
+    {
+      "clauseId": "AN-A-8.1-CAPITALIZATION",
+      "documentId": "doc-a",
+      "sectionRef": "8.1",
+      "family": "FINANCIAL_COVENANTS",
+      "title": "Third A&R capitalization covenant (historical)",
+      "expectedExecution": "As of 2026-09-14 Closing Date, REFUSE any production claim based on the 0.70 capitalization covenant.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": "structural-node:e30c7fcfd23559199fbff029",
+      "anchorCheck": {
+        "hit": 0,
+        "miss": [
+          "Permit at any time the Consolidated Capitalization Ratio to be greater than 0.70 to 1.00"
+        ]
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 2,
+      "tocCollision": true,
+      "selectedNodeId": "structural-node:e30c7fcfd23559199fbff029",
+      "naiveFirstMatchNodeId": "structural-node:34936a31ffb87cf1f264d616",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": false,
+      "naiveFirstMatchCompleteOperativeSpan": true,
+      "missingAnchors": [
+        "Permit at any time the Consolidated Capitalization Ratio to be greater than 0.70 to 1.00"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Consolidated Capitalization Ratio",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1
+        },
+        "unresolvedCount": 233,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-a",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 1,
+        "definitionsPresentInBundleText": 1,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 0,
+          "miss": [
+            "Permit at any time the Consolidated Capitalization Ratio to be greater than 0.70 to 1.00"
+          ]
+        }
+      },
+      "deterministicFactCount": 239,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": true,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    },
+    {
+      "clauseId": "AN-B-8.2",
+      "documentId": "doc-b",
+      "sectionRef": "8.2",
+      "family": "INDEBTEDNESS",
+      "title": "Indebtedness incurrence gate",
+      "expectedExecution": "Hypothetical illustration may apply caller-stipulated ratios if labeled. Production authority requires authenticated inputs + completeness + trusted approval.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": "structural-node:cc6a2200579be563df5e0ddd",
+      "anchorCheck": {
+        "hit": 2,
+        "miss": []
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 1,
+      "tocCollision": false,
+      "selectedNodeId": "structural-node:cc6a2200579be563df5e0ddd",
+      "naiveFirstMatchNodeId": "structural-node:cc6a2200579be563df5e0ddd",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": true,
+      "missingAnchors": [],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Funded Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Permitted Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Consolidated EBITDA",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Material Step-Up Acquisition",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "REVIEW_REQUIRED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "EXCEPTION": 1,
+          "PROVISO": 1,
+          "UNVERIFIED_SIBLING_SIGNAL": 2,
+          "DEFINITION": 1,
+          "DEFINITION_DEPENDENCY": 45,
+          "CROSS_DOCUMENT_REFERENCE": 1
+        },
+        "unresolvedCount": 49,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [],
+        "originatingDocumentId": "doc-b",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 4,
+        "definitionsPresentInBundleText": 4,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 2,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 15,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    },
+    {
+      "clauseId": "AN-B-8.3",
+      "documentId": "doc-b",
+      "sectionRef": "8.3",
+      "family": "LIENS",
+      "title": "Restriction on Liens securing Indebtedness",
+      "expectedExecution": "Refuse production remaining on (xix) without CTA evidence and utilization completeness across secured Indebtedness in the basket.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": "structural-node:19262a7469130e8b6d79add4",
+      "anchorCheck": {
+        "hit": 3,
+        "miss": []
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 1,
+      "tocCollision": false,
+      "selectedNodeId": "structural-node:19262a7469130e8b6d79add4",
+      "naiveFirstMatchNodeId": "structural-node:19262a7469130e8b6d79add4",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": true,
+      "missingAnchors": [],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Consolidated Tangible Assets",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Mortgage Facilities",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Vehicle Secured Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Escrow Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Permitted Acquisition",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "REVIEW_REQUIRED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 20,
+          "UNVERIFIED_SIBLING_SIGNAL": 3,
+          "PROVISO": 1,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 29,
+          "CROSS_DOCUMENT_REFERENCE": 3
+        },
+        "unresolvedCount": 45,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [],
+        "originatingDocumentId": "doc-b",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 5,
+        "definitionsPresentInBundleText": 5,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 3,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 109,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": true,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    },
+    {
+      "clauseId": "AN-B-PERM-INDEBTEDNESS",
+      "documentId": "doc-b",
+      "sectionRef": "1.1",
+      "family": "DEFINITION",
+      "title": "Permitted Indebtedness",
+      "expectedExecution": "Missing this definition blocks complete legal context for §8.2.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "anchorCheck": {
+        "hit": 0,
+        "miss": [
+          "“ Permitted Indebtedness ” means (i) the endorsement of negotiable instruments",
+          "Indebtedness owing to the Borrower or a Subsidiary"
+        ]
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 1,
+      "tocCollision": false,
+      "selectedNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "naiveFirstMatchNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": false,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [
+        "“ Permitted Indebtedness ” means (i) the endorsement of negotiable instruments",
+        "Indebtedness owing to the Borrower or a Subsidiary"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Subsidiary",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 4,
+          "DEFINITION": 3,
+          "DEFINITION_DEPENDENCY": 1
+        },
+        "unresolvedCount": 23,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "originatingDocumentId": "doc-b",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 2,
+        "definitionsPresentInBundleText": 1,
+        "missingDefinitions": [
+          "Subsidiary"
+        ],
+        "anchorsInBundle": {
+          "hit": 0,
+          "miss": [
+            "“ Permitted Indebtedness ” means (i) the endorsement of negotiable instruments",
+            "Indebtedness owing to the Borrower or a Subsidiary"
+          ]
+        }
+      },
+      "deterministicFactCount": 114,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    },
+    {
+      "clauseId": "AN-B-DEF-LEVERAGE",
+      "documentId": "doc-b",
+      "sectionRef": "1.1",
+      "family": "DEFINITION",
+      "title": "Consolidated Leverage Ratio",
+      "expectedExecution": "Required for any executable leverage representation.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "anchorCheck": {
+        "hit": 1,
+        "miss": []
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 1,
+      "tocCollision": false,
+      "selectedNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "naiveFirstMatchNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": true,
+      "missingAnchors": [],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Consolidated Funded Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Adjusted Consolidated EBITDA",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Four-Quarter Period",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 4,
+          "DEFINITION": 3,
+          "DEFINITION_DEPENDENCY": 1
+        },
+        "unresolvedCount": 23,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "originatingDocumentId": "doc-b",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 3,
+        "definitionsPresentInBundleText": 3,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 1,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 115,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    },
+    {
+      "clauseId": "AN-B-FACILITY",
+      "documentId": "doc-b",
+      "sectionRef": "1.1",
+      "family": "DEFINITION",
+      "title": "Total Revolving Credit Commitment",
+      "expectedExecution": "Using $1.8B after Closing Date is wrong-amendment / stale evidence.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "anchorCheck": {
+        "hit": 0,
+        "miss": [
+          "“ Total Revolving Credit Commitment ” means $2,000,000,000"
+        ]
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 1,
+      "tocCollision": false,
+      "selectedNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "naiveFirstMatchNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": false,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [
+        "“ Total Revolving Credit Commitment ” means $2,000,000,000"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Revolving Credit Commitment",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Stated Termination Date",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 4,
+          "DEFINITION": 3,
+          "DEFINITION_DEPENDENCY": 1
+        },
+        "unresolvedCount": 23,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "originatingDocumentId": "doc-b",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 2,
+        "definitionsPresentInBundleText": 1,
+        "missingDefinitions": [
+          "Stated Termination Date"
+        ],
+        "anchorsInBundle": {
+          "hit": 0,
+          "miss": [
+            "“ Total Revolving Credit Commitment ” means $2,000,000,000"
+          ]
+        }
+      },
+      "deterministicFactCount": 114,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    },
+    {
+      "clauseId": "AN-B-FUNDED-LC",
+      "documentId": "doc-b",
+      "sectionRef": "1.1",
+      "family": "DEFINITION",
+      "title": "Funded Indebtedness LC inclusion threshold",
+      "expectedExecution": "Wrong threshold ($150mm from doc-a) is a wrong-amendment fidelity failure.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "anchorCheck": {
+        "hit": 0,
+        "miss": [
+          "all undrawn amounts of letters of credit in excess of $175,000,000 in the aggregate"
+        ]
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 1,
+      "tocCollision": false,
+      "selectedNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "naiveFirstMatchNodeId": "structural-node:adf77c2428b4188343530ac0",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": false,
+      "naiveFirstMatchCompleteOperativeSpan": false,
+      "missingAnchors": [
+        "all undrawn amounts of letters of credit in excess of $175,000,000 in the aggregate"
+      ],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Vehicle Secured Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Vehicle Receivables Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Escrow Indebtedness",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Guaranty Obligations",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 4,
+          "DEFINITION": 3,
+          "DEFINITION_DEPENDENCY": 1
+        },
+        "unresolvedCount": 23,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "originatingDocumentId": "doc-b",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 4,
+        "definitionsPresentInBundleText": 2,
+        "missingDefinitions": [
+          "Escrow Indebtedness",
+          "Guaranty Obligations"
+        ],
+        "anchorsInBundle": {
+          "hit": 0,
+          "miss": [
+            "all undrawn amounts of letters of credit in excess of $175,000,000 in the aggregate"
+          ]
+        }
+      },
+      "deterministicFactCount": 116,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": [
+          "A numerical threshold was observed; permission/prohibition remains unresolved pending semantic compilation and verification.",
+          "Covenant-family/signal recognition is not a verified operative prohibition or permission; semantic compilation and independent verification are required."
+        ]
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    },
+    {
+      "clauseId": "AN-B-8.4",
+      "documentId": "doc-b",
+      "sectionRef": "8.4",
+      "family": "MERGER",
+      "title": "Merger, Consolidation or Fundamental Changes",
+      "expectedExecution": "Qualitative restriction — production 'capacity' numeric claims unsupported.",
+      "verifiedExecutable": false,
+      "localCompileStatus": "UNVERIFIED",
+      "primaryNodeId": "structural-node:86bb711942948a2b4215f411",
+      "anchorCheck": {
+        "hit": 2,
+        "miss": []
+      },
+      "foundStructurally": true,
+      "sectionNodeCount": 1,
+      "tocCollision": false,
+      "selectedNodeId": "structural-node:86bb711942948a2b4215f411",
+      "naiveFirstMatchNodeId": "structural-node:86bb711942948a2b4215f411",
+      "discoveredByPassA": true,
+      "completeOperativeSpan": true,
+      "naiveFirstMatchCompleteOperativeSpan": true,
+      "missingAnchors": [],
+      "definitionsResolvedStructural": [
+        {
+          "term": "Subsidiary",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Margin Stock",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Default",
+          "foundInStructuralDefinitions": true
+        },
+        {
+          "term": "Event of Default",
+          "foundInStructuralDefinitions": true
+        }
+      ],
+      "contextBundle": {
+        "sufficiencyState": "REVIEW_REQUIRED",
+        "itemCounts": {
+          "OPERATIVE_SOURCE": 1,
+          "UNVERIFIED_SIBLING_SIGNAL": 3,
+          "EXCEPTION": 1,
+          "DEFINITION": 4,
+          "DEFINITION_DEPENDENCY": 38,
+          "CROSS_DOCUMENT_REFERENCE": 7
+        },
+        "unresolvedCount": 43,
+        "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+        "stopReasons": [],
+        "originatingDocumentId": "doc-b",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": null,
+          "remapped": false,
+          "retrievalAuthorized": false,
+          "authorityClassification": "REVIEW_REQUIRED",
+          "refusalReason": "Authority REVIEW_REQUIRED has null governingDocumentId — refuse silent operative-source consolidation."
+        }
+      },
+      "contextCompleteness": {
+        "requiredDefinitions": 4,
+        "definitionsPresentInBundleText": 4,
+        "missingDefinitions": [],
+        "anchorsInBundle": {
+          "hit": 2,
+          "miss": []
+        }
+      },
+      "deterministicFactCount": 18,
+      "localCompile": {
+        "mode": "DETERMINISTIC_ONLY",
+        "verificationStatus": "UNVERIFIED",
+        "compilerVersion": "local-semantic-compiler.v1",
+        "hasOutput": true,
+        "ruleCount": 0,
+        "unsupportedSemantics": []
+      },
+      "independentVerification": "NOT_RUN_PAID_BLOCKED",
+      "executableIr": "NOT_CLAIMED — local path UNVERIFIED / not production-authoritative",
+      "productionAuthoritativeCapacity": "REFUSED_NO_EVIDENCE",
+      "correctRefusal": null,
+      "falseExecutable": false,
+      "falseFavorableCapacity": false,
+      "fidelity": {
+        "capitalizationAbsentFromDocB": true,
+        "interestCoveragePresentInDocB": true,
+        "facilitySizeDocB": true,
+        "facilitySizeDocA": true,
+        "lcThresholdDocB": true,
+        "lcThresholdDocA": true
+      }
+    }
+  ],
+  "denominators": {
+    "clauseCount": 10
+  }
+}

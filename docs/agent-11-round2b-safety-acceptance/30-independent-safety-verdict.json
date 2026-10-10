@@ -1,0 +1,101 @@
+{
+  "artifact": "AGENT11_ROUND2B_INDEPENDENT_SAFETY_VERDICT",
+  "evaluatedSha": "59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3",
+  "legalReferenceSeal": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
+  "legalReferenceUnchanged": true,
+  "wrongDocumentProductionPromotion": false,
+  "unjustifiedDocAConfirmed": false,
+  "allProvisionsProductionActive": false,
+  "fabricatedFourthPredecessor": false,
+  "unresolvedRestatementStatuses": [
+    {
+      "successorDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "predecessorDocumentId": null
+    },
+    {
+      "successorDocumentId": "doc-b",
+      "status": "REVIEW_REQUIRED",
+      "predecessorDocumentId": null
+    }
+  ],
+  "operativeRetrievalBinding": {
+    "presentInClauseCoverage": true,
+    "neverPromotesUnresolvedAuthority": true
+  },
+  "falseFavorableCount": 0,
+  "scorecardMetrics": {
+    "structuralRecall": {
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1
+    },
+    "operativeDocumentAccuracy": {
+      "numerator": 0,
+      "denominator": 1,
+      "expected": "doc-b",
+      "observed": null,
+      "operativeDocStatus": "REVIEW_REQUIRED",
+      "agent7Status": "REVIEW_REQUIRED",
+      "confirmedWithCaveats": false,
+      "unconditionalOperativeAuthority": false,
+      "productionPromotionDisposition": "PRODUCTION_AUTHORITY_REFUSED",
+      "correct": false
+    },
+    "discoveryPassARecall": {
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1
+    },
+    "contextSufficiency": {
+      "numerator": 0,
+      "denominator": 10,
+      "rate": 0
+    },
+    "completeOperativeSpan": {
+      "numerator": 6,
+      "denominator": 10,
+      "rate": 0.6
+    },
+    "legalFidelityAnchors": {
+      "numerator": 6,
+      "denominator": 10
+    },
+    "verifiedExecutableCoverage": {
+      "numerator": 0,
+      "denominator": 10,
+      "rate": 0,
+      "note": "DETERMINISTIC_ONLY UNVERIFIED never counted as VERIFIED_EXECUTABLE; fixture IR not counted"
+    },
+    "financialEvidenceCompleteness": {
+      "numerator": 0,
+      "denominator": 1,
+      "rate": 0,
+      "note": "Module functional on #293; no authenticated AN financial package — completeness 0/1"
+    },
+    "utilizationCompleteness": {
+      "numerator": 1,
+      "denominator": 1,
+      "correctRefusalOfIncomplete": true,
+      "note": "Correct refusal of incomplete history — not historical completeness credit"
+    },
+    "correctRefusal": {
+      "numerator": 5,
+      "denominator": 5,
+      "productionTrackRefusal": true,
+      "forgedIssuerRefusal": true
+    },
+    "falseFavorableOutcomes": {
+      "numerator": 0,
+      "denominator": 12
+    },
+    "customerSurfaceConsistency": {
+      "numerator": 1,
+      "denominator": 1,
+      "via": "buildSharedProductCapacityViews + presentCapacityClaim/presentAskAnswer",
+      "liveUiStatusContract": "MODULE_EXERCISED_OFFLINE"
+    }
+  },
+  "priorRound2bAuthenticVerdict": "CANONICAL_293_AUTHENTIC_ACCEPTANCE_UNCHANGED",
+  "independentSafetyVerdict": "CANONICAL_293_INDEPENDENT_SAFETY_ACCEPTED"
+}
