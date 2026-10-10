@@ -40,7 +40,7 @@ HISTORICAL_REPLAY_RESULTS: PASS — operative supersession history + ledger USAG
 TENANT_ISOLATION_RESULTS: PASS — cross-tenant read/write refused (TenantIsolationError)
 INVALIDATION_RESULTS: PASS — capacity calc marked STALE; latest authorized getter returns null
 TEST_COUNTS: 16 passed / 0 failed / 0 skipped (tests/persistence/)
-CI_STATUS: pending on PR #294
+CI_STATUS: SUCCESS (6/6 checks green on 30fd75b8)
 DATA_LOSS_RISK: NONE (additive migration, zero backfill)
 PRODUCTION_DB_TOUCHED: NO
 DATABASE_IDENTITY: disposable local Postgres via createEphemeralDatabase (headroom_test_*); Neon production host not written
