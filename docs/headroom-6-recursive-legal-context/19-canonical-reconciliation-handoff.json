@@ -1,0 +1,50 @@
+{
+  "artifact": "HEADROOM-6_CANONICAL_RECONCILIATION_HANDOFF",
+  "verdict": "AGENT_6_ABSORBED_IN_CANONICAL_293",
+  "mainSha": "4f1a0b81207364373d9a4cb9fe515d4a1a002e56",
+  "pr287Sha": "603426c3e59b2f16b5c7b26a7e373c98de45c4cf",
+  "pr283Sha": "50ab46adb298d60a2630d995a9506f5c3598dc5d",
+  "pr293Sha": "8a4beb52712a6e31e5458fe2a005026fadedd4f1",
+  "verifiedFeatureSha": "b2bff75e931e90b3fe2a4608be052718a3ace8d4",
+  "absorption": {
+    "productionContextRetrievalBlobsIdentical287vs293": true,
+    "testsIdentical": true,
+    "diagnoseAndOfflineEvalScriptsIdentical": true,
+    "docsOnlyMissingFrom293": [
+      "docs/headroom-6-recursive-legal-context/16-closeout.json",
+      "docs/headroom-6-recursive-legal-context/17-final-disposition.json",
+      "docs/headroom-6-recursive-legal-context/18-next-legal-context-handoff.md",
+      "docs/integration/handoffs/03-context-retrieval-sufficiency.md (Agent #6 completion note)"
+    ],
+    "ancestry": "293 contains verified tip b2bff75e but not later 603426c3 (main-reconcile + disposition docs)"
+  },
+  "operativeBindingOn293": {
+    "resolveOperativeSource": "PRESENT",
+    "bindCandidateToOperativeRetrievalSource": "ABSENT",
+    "buildCovenantContextBundle": "PRESENT (called with unbound discovery candidates)",
+    "missingFilesFrom283": [
+      "lib/contract-model/compiler/operative-authority/retrieval-source.ts",
+      "tests/operative-restatement-authority/retrieval-source-binding.test.ts"
+    ],
+    "smallestCorrection": "Restore retrieval-source.ts + index export + offline-package-compile binding loop + binding test from #283 tip 50ab46ad (commit 0dcb4a17 lineage). Do not merge #287 independently."
+  },
+  "worOn293": {
+    "SUFFICIENT": 1,
+    "REVIEW_REQUIRED": 9,
+    "BUDGET_EXCEEDED": 0,
+    "INCOMPLETE": 0,
+    "falseSufficient": 0
+  },
+  "autonationRound2ObservedArtifacts": {
+    "evalTip": "2e8c9973ac05f729ec5096599c66dd7243d5dba8",
+    "contextSufficient": "0/10",
+    "clauseCoverageBreakdown": "6 BUDGET_EXCEEDED + 4 REVIEW_REQUIRED (from 10-clause-coverage.json; not WOR)",
+    "anBRestate": "BUDGET_EXCEEDED; sectionRef=preamble; selectedNodeId=null",
+    "frozenLegalRefSha256": "393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd",
+    "doNotEquateWithWor": true,
+    "round2NotReRunOn8a4beb52": true
+  },
+  "recommendedMergeDisposition": "Human-review and merge #293; close #287 as superseded once #293 lands. Restore #283 retrieval binding into #293 before claiming operative\u2192retrieval integration. Do not independently merge #287 or #283.",
+  "selfMerge": false,
+  "stopIndependentDevelopment": true
+}
