@@ -2,7 +2,9 @@
 
 **Verdict:** `OPERATIVE_RESTATEMENT_AUTHORITY_VERIFIED`  
 **Branch:** `cursor/operative-restatement-authority-2670`  
-**Starting main SHA:** `6abe42bae6dfe69bb72467daa7f460b727200d1b` (post-#276)
+**PR:** https://github.com/egsul897/headroom/pull/283  
+**Starting main SHA:** `6abe42bae6dfe69bb72467daa7f460b727200d1b` (post-#276)  
+**Ending tip SHA:** `2dd7e6d785cc4bfc59ccd563b76a1cc40a29b4d2`
 
 ## Dependencies recorded
 
