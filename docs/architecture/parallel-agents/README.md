@@ -3,7 +3,7 @@
 **Workstream:** `WS-PAR` / `WS-AEC` — Parallel Agent Operating Rules + Autonomous Engineering Coordinator  
 **Owner agents:** `bc-01a11d87-7950-77b8-8141-e448c7e00e3f` (PAR bootstrap) · `bc-01a122be-22d2-7ace-bfd2-863f2b0110ff` (AEC 2026-10-09)  
 **Branch (current):** `cursor/engineering-coordinator-10ff`  
-**Base:** `origin/main` @ `bae24ced33fdd6963d0615265a1e67cb181233e8` (fetched 2026-10-09)  
+**Base:** `origin/main` @ `7f1dd3a202b026b9a862ef727480a1a9f284523a` (fetched 2026-10-10; post-#229+#237)  
 **Status:** ACTIVE coordination contract — does not auto-merge; does not certify product readiness
 
 ## Purpose
@@ -31,8 +31,9 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | `22-usage-zero-regression-matrix.md` | Customer-reachable unknown≠zero path matrix |
 | `23-integration-plan-v2.md` | Specialist assignments + merge recommendations |
 | `24-e2e-benchmark-plan.md` | Shared Coherent/CONMED E2E benchmark plan |
-| `25-reconciliation-v3-2026-10-09.md` | **Controlling** V3 batches, collisions, A8/TE/activation |
-| `26-first-integration-batch.md` | V3 acceptance return — first human-merge batches (SHAs/CI/deps) |
+| `25-reconciliation-v3-2026-10-09.md` | V3 batches (historical; superseded for merge sequencing) |
+| `26-first-integration-batch.md` | V3 acceptance batch — **SUPERSEDED** (stale #229 merge ask) |
+| `27-reconciliation-v4-acceptance.md` | **Controlling** V4 acceptance — post-#229/#237 truth |
 | `daily/` | Daily integration summaries + session reports |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |

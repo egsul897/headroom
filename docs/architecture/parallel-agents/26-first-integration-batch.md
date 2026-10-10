@@ -1,10 +1,14 @@
 # First integration-ready batch (V3 acceptance corrections)
 
+> **SUPERSEDED (2026-10-10):** V3 Batch-1 recommendation to merge #229 is **withdrawn**.  
+> #229 and the #232/#234 combined authority landed via **#237** on main `7f1dd3a2`.  
+> Controlling document: **`27-reconciliation-v4-acceptance.md`**.
+
 **Published:** 2026-10-09T22:52:00Z  
-**Main SHA (refresh):** `bae24ced33fdd6963d0615265a1e67cb181233e8`  
+**Main SHA (refresh):** `bae24ced33fdd6963d0615265a1e67cb181233e8` *(stale — see V4)*  
 **Auto-merge:** no · **Paid inference:** $0 · **Neon writes:** none  
 
-This document is the **required next return** under V3 acceptance. It does **not** authorize merges.
+This document was the V3 acceptance return. **Do not use it for merge decisions.**
 
 ---
 

@@ -328,3 +328,19 @@
 - Optional Batch 0 companion (#216) remains MERGEABLE for human merge after #208 or same docs wave
 - No production merges by coordinator; Batch 1 human ask unchanged (#229 @ `b33f86554e39`)
 
+---
+
+## 2026-10-10T00:06:00Z — V4 ACCEPTANCE (V3 Batch-1 SUPERSEDED)
+
+- Founder: stop stale merge plan; #229 already merged; prioritize #232/#234 combine
+- Refreshed main → **`7f1dd3a2`** already contains **#237** (reconciled #232+#234 fail-closed authority) after #229
+- **WITHDRAWN:** merge #229 recommendation in doc 26
+- Published `27-reconciliation-v4-acceptance.md` as controlling
+- Regressions on main `7f1dd3a2`: tsc PASS · phase3 **481/481** · capacity/A8/solver/IF **284/284** · probe NOT_SATISFIED · product 3/3 · FP 0 in those suites
+- A8 `state.ts`/`types.ts` byte-identical to #229 tip
+- BLK-USAGE-ZERO **OPEN** (`run-package-path` ledger=0; Neon completeness evidence unset)
+- #217: DISCOVERED ≠ authoritative executable (unchanged)
+- #208: optional docs only — must not delay
+- Close as superseded (human): #232, #234, #239, #241; do not merge coordinator verify branch `cursor/v4-232-234-integration-10ff`
+- actualExternalCostsUsd: 0 · coordinator merges: 0 · Neon writes: 0
+
