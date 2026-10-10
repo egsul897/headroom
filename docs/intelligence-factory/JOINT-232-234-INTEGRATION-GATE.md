@@ -59,7 +59,7 @@ to `origin/main` (`CAPACITY_EQ_MAIN=yes`). Do not close or supersede #229.
 
 | Item | Value |
 |---|---|
-| Combined tip | `fb7c580c64fc64bc9e11fe18053a86981ba34417` |
+| Combined tip | `a2e2343e7edce5467c3f24a5523ba4eae35d9fda` |
 | Joint PR | #239 |
 | #232 tip CI | green on `5b208705` |
 | Local TypeScript | green after `prisma generate` |
