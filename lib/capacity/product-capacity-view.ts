@@ -41,11 +41,57 @@ function utilizationAuthenticity(result: VerifiedRemainingResult): ProductCapaci
   return "MIXED";
 }
 
+/**
+ * Product surfaces refuse authoritative remaining unless completeness is
+ * production-authoritative. Demo/synthetic remaining is stripped for
+ * POSITION / SIMULATE / ASK publication (same rule on all three).
+ */
+export function refuseAuthoritativeRemaining(
+  result: VerifiedRemainingResult,
+): {
+  remaining: number | null;
+  mayPublishAvailable: boolean;
+  publicationLabel: string;
+  remainingStatus: string;
+  blockers: string[];
+} {
+  const productionOk =
+    result.utilization.productionAuthoritative === true &&
+    result.utilization.supportsRemainingClaim === true &&
+    result.mayPublishAvailable &&
+    result.supportedRemaining != null;
+  if (productionOk) {
+    return {
+      remaining: result.supportedRemaining,
+      mayPublishAvailable: true,
+      publicationLabel: result.publicationLabel,
+      remainingStatus: result.remainingStatus,
+      blockers: result.blockers,
+    };
+  }
+  const blockers = [...result.blockers];
+  if (result.utilization.supportsRemainingClaim && result.utilization.productionAuthoritative !== true) {
+    blockers.push(
+      "authoritative remaining refused — completeness not production-authoritative (synthetic/demo certificates are not accepted on Position/Simulate/Ask)",
+    );
+  }
+  return {
+    remaining: null,
+    mayPublishAvailable: false,
+    publicationLabel:
+      result.grossCapacity != null || result.grossUnlimited ? "GROSS_CONTRACTUAL" : result.publicationLabel,
+    remainingStatus: "GROSS_ONLY",
+    blockers: [...new Set(blockers)],
+  };
+}
+
 /** Build the shared product view from a verified-remaining result. */
 export function toProductCapacityView(
   surface: ProductSurface,
   result: VerifiedRemainingResult,
 ): ProductCapacityView {
+  const gated = refuseAuthoritativeRemaining(result);
+  const authenticity = utilizationAuthenticity(result);
   return {
     surface,
     capacityRuleId: result.capacityRuleId,
@@ -53,19 +99,22 @@ export function toProductCapacityView(
     grossCapacity: result.grossCapacity,
     grossUnlimited: result.grossUnlimited,
     knownUtilization: result.knownUtilization,
-    unknownUtilization: result.unknownUtilization,
+    unknownUtilization: result.unknownUtilization || result.utilization.productionAuthoritative !== true,
     utilizationKnowledge: result.utilization.knowledge,
-    supportedRemainingCapacity: result.supportedRemaining,
+    supportedRemainingCapacity: gated.remaining,
     governingConditions: result.governingConditions,
     crossDocumentConstraints: result.crossDocumentConstraints,
     sourceCitations: result.sourceCitations,
     certificationStatus: result.certificationStatus,
-    publicationLabel: result.publicationLabel,
-    remainingStatus: result.remainingStatus,
-    mayPublishAvailable: result.mayPublishAvailable,
-    blockers: result.blockers,
-    note: result.note,
-    authenticityOfUtilization: utilizationAuthenticity(result),
+    publicationLabel: gated.publicationLabel,
+    remainingStatus: gated.remainingStatus,
+    mayPublishAvailable: gated.mayPublishAvailable,
+    blockers: gated.blockers,
+    note:
+      gated.remaining != null
+        ? result.note
+        : `${result.note} [${surface}] authoritative remaining refused without production completeness.`,
+    authenticityOfUtilization: authenticity,
   };
 }
 

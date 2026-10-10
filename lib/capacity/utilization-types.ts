@@ -104,7 +104,10 @@ export interface UtilizationResolution {
    * True only when utilization knowledge supports subtracting from gross:
    * VERIFIED_ZERO, or attributed knowledge plus VERIFIED_COMPLETE certificate.
    * Approved individual records alone never set this true.
+   * Requires authenticity + trusted issuer (or allowSyntheticRemaining demo hatch).
    */
   supportsRemainingClaim: boolean;
   completenessCertified: boolean;
+  /** True only when remaining is backed by AUTHENTIC + trusted issuer (never synthetic/demo). */
+  productionAuthoritative?: boolean;
 }

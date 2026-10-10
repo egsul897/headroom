@@ -35,6 +35,16 @@ An `APPROVED` certificate alone is **not** enough. Production-authoritative rema
 
 **Activation requirement (documented, not wired here):** production identity-provider → `TrustedIssuerAuthorizationContext` host wiring remains outstanding until real attestations are enabled. No broad utilization refactor; #237 authority bridge preserved; #244 is a source of improvements, not a merge candidate (#250 remains canonical product integration).
 
+### Identity-provider activation status (cross-surface gate)
+
+| Host path | Supplies `trustedIssuerAuth`? | Production remaining today |
+|---|---|---|
+| `loadCompanySolverStaticData` / `buildSolverContext` | **No** — option exists; prod callers omit | Fail-closed (`currentUsageAuthoritative=false`) |
+| Position / Simulate / Ask via `buildSharedProductCapacityViews` | Caller must supply; app pages currently unwired to shared views | Refuse via `refuseAuthoritativeRemaining` |
+| `resolveUtilization` / debt-intelligence | Option exists; production passes null certs + no auth | Fail-closed |
+
+**Smallest future activation requirement:** host session / service-account lookup that builds `productionTrustedIssuerAuth([{ actorId, authorizedRoles, identityAssurance: "SESSION_AUTHENTICATED"|"SERVICE_ACCOUNT", status: "ACTIVE" }])` from independently authenticated identity — never from the certificate blob's `issuer.role`. Fixture identities (`TEST_FIXTURE_REGISTRY`, `SYSTEM_FIXTURE`) must not enable production authority.
+
 ## Solver status mapping
 
 | Solver `currentUsageStatus` | Authority | `currentUsageAuthoritative` |

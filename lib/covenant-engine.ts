@@ -1962,8 +1962,19 @@ export interface LoadCompanySolverStaticOptions {
       sourceLabel: string;
       kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
       authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+      issuer?: {
+        role: "COUNSEL_REVIEWER" | "LEDGER_CUSTODIAN" | "SYSTEM_FIXTURE";
+        actorId: string;
+        attestedAt?: string;
+      };
     }
   >;
+  /**
+   * Trusted issuer authorization — required for currentUsageAuthoritative=true.
+   * Production identity-provider wiring is an activation requirement; omitting
+   * this fails closed (APPROVED cert alone never authorizes remaining).
+   */
+  trustedIssuerAuth?: import("./capacity/completeness-issuer-auth").TrustedIssuerAuthorizationContext | null;
 }
 
 /**
@@ -2072,6 +2083,7 @@ export async function loadCompanySolverStaticData(
         })),
         basketUsage: options?.basketUsage ?? [],
         completenessCertificate: options?.completenessCertificatesByConstraintId?.[c.id] ?? null,
+        trustedIssuerAuth: options?.trustedIssuerAuth ?? null,
       });
       return {
         currentUsage: computed.usage,
