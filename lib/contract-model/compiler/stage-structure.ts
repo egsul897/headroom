@@ -1076,8 +1076,24 @@ interface RawNode {
   nestRank: number;
 }
 
-function isDefinitionsSectionHeading(heading: string): boolean {
-  return /defin/i.test(heading);
+/**
+ * True when a SECTION heading names a defined-terms inventory (the place where
+ * top-level `"Term" means …` bodies are expected), not merely any title that
+ * happens to contain the substring "defin".
+ *
+ * Rejects incorporation / schedule / cross-reference / "other definitional
+ * provisions" headings so definition-body segmentation and soft-clip intervals
+ * cannot activate from false context. Affirms "Defined Terms", "Definitions",
+ * "Additional Definitions", and similar inventory titles.
+ */
+export function isDefinitionsSectionHeading(heading: string): boolean {
+  const h = heading.trim();
+  if (h.length === 0) return false;
+  if (/\bother\s+definitional\b/i.test(h)) return false;
+  if (/\b(?:incorporat\w*|cross[-\s]?referenc\w*|by\s+reference|schedule|table|index|list)\b/i.test(h)) {
+    return false;
+  }
+  return /\bdefined\s+terms?\b/i.test(h) || /\bdefinitions?\b/i.test(h);
 }
 
 /**
@@ -1335,43 +1351,49 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
   });
   while (stack.length > 0) charEndByIndex.set(stack.pop()!, doc.text.length);
 
-  // Soft-clip clause nodes inside definitions sections to the next top-level
-  // definition declaration. Per-body clause parsing prevents false nesting;
-  // this clip closes the last limb of a term that has no later same-rank
-  // sibling before the next SECTION.
-  const definitionBodyEndByStart = new Map<number, number>();
+  // Explicit definition-boundary intervals keyed to each physical definitions
+  // SECTION span [section.charStart, regionEnd). Includes the preamble gap
+  // before the first top-level declaration so enumerators that precede any
+  // `"Term" means` cannot inherit charEnd from limbs inside the next body
+  // (stack pop across per-body segments). Intervals never extend past the
+  // next top-level ARTICLE/SECTION, so a boundary from one section cannot
+  // clip clauses in another.
+  const definitionContainmentIntervals: Array<{ start: number; end: number }> = [];
   for (let i = 0; i < topLevel.length; i++) {
     const node = topLevel[i]!;
     if (node.nodeType !== "SECTION" || !isDefinitionsSectionHeading(node.heading)) continue;
     const regionEnd = topLevel[i + 1]?.charStart ?? doc.text.length;
     const starts = findTopLevelDefinitionStarts(doc.text, node.charStart, regionEnd);
+    if (starts.length === 0) continue;
+    if (starts[0]! > node.charStart) {
+      definitionContainmentIntervals.push({ start: node.charStart, end: starts[0]! });
+    }
     for (let j = 0; j < starts.length; j++) {
-      definitionBodyEndByStart.set(starts[j]!, starts[j + 1] ?? regionEnd);
+      definitionContainmentIntervals.push({ start: starts[j]!, end: starts[j + 1] ?? regionEnd });
     }
   }
-  const defStartsAsc = [...definitionBodyEndByStart.keys()].sort((a, b) => a - b);
+  definitionContainmentIntervals.sort((a, b) => a.start - b.start);
 
   return raws
     .map((r, i) => {
       let charEnd = charEndByIndex.get(i) ?? doc.text.length;
-      if (r.nestRank > RANK.SECTION && defStartsAsc.length > 0) {
+      if (r.nestRank > RANK.SECTION && definitionContainmentIntervals.length > 0) {
         let lo = 0;
-        let hi = defStartsAsc.length - 1;
-        let enclosing: number | null = null;
+        let hi = definitionContainmentIntervals.length - 1;
+        let containing: { start: number; end: number } | null = null;
         while (lo <= hi) {
           const mid = (lo + hi) >> 1;
-          const s = defStartsAsc[mid]!;
-          if (s <= r.charStart) {
-            enclosing = s;
+          const iv = definitionContainmentIntervals[mid]!;
+          if (r.charStart < iv.start) {
+            hi = mid - 1;
+          } else if (r.charStart >= iv.end) {
             lo = mid + 1;
           } else {
-            hi = mid - 1;
+            containing = iv;
+            break;
           }
         }
-        if (enclosing !== null) {
-          const bodyEnd = definitionBodyEndByStart.get(enclosing)!;
-          if (r.charStart < bodyEnd) charEnd = Math.min(charEnd, bodyEnd);
-        }
+        if (containing !== null) charEnd = Math.min(charEnd, containing.end);
       }
       return {
         documentId: doc.documentId,
