@@ -1,0 +1,32 @@
+{"stage":"SOURCE_DOCUMENTS","status":"SUCCESS","wallClockMs":12,"notes":["Frozen authentic SEC package for MTN Tenth A&R + two senior-notes indentures + FY2026 10-K.","No intercreditor / security agreement exhibit filed with the Tenth A&R 8-K.","Hashes recorded in stage-00-source-inventory.json."]}
+{"stage":"STRUCTURAL_INDEX","status":"SUCCESS","wallClockMs":110,"notes":["Deterministic Phase 2A structural index built over all four frozen texts.","KF extractStructure also run on Doc A for family candidate discovery."]}
+{"stage":"COVENANT_DISCOVERY","status":"PARTIAL","wallClockMs":53,"notes":["No AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY — Pass B semantic classification ran as synthetic empty defaults (not a competitive discovery).","Pass A deterministic candidates: 810.","KF family candidates on Doc A: 25; debt/lien/financial family hits: 7."]}
+{"stage":"MULTI_DOCUMENT_GRAPH","status":"SUCCESS","wallClockMs":52,"notes":["Deterministic Phase 2C package graph over CA + two indentures + 10-K.","Relationships resolved: 0; unresolved: 0.","No Security Documents / intercreditor agreement in the frozen package — graph cannot invent them."]}
+{"stage":"DEFINITION_RESOLUTION","status":"SUCCESS","wallClockMs":0,"notes":["Literal definition anchors found for 9/9 key terms.","All probed terms have literal means-anchors in Doc A.","Product recursive definition-graph retrieval (Phase 2D) has no issuer-agnostic CLI on main for this package."]}
+{"stage":"AMENDMENT_PRECEDENCE","status":"PARTIAL","wallClockMs":1,"notes":["Amendment effects discovered: 0; unattached: 0.","Tenth A&R is a restatement; prior CA versions are not in the frozen package.","Senior-notes indentures are separate instruments, not CA amendments."]}
+{"stage":"GENERALIZED_RULE_REPRESENTATION","status":"BLOCKED","wallClockMs":0,"notes":["No sealed CERTIFIED IR / VerifiedExecutionPackage exists for MTN.","Live semantic compile requires paid inference (not authorized) and Pass B candidates (synthetic empty).","Hand-authoring an IR/rulebook for MTN would violate the no-silent-hand-modeling constraint and is labeled BYPASSED if done — not done here."]}
+{"stage":"VERIFICATION","status":"BLOCKED","wallClockMs":0,"notes":["No compiled candidate to verify for MTN.","verified-execution REQUIRE boundary cannot be satisfied without a VerifiedExecutionPackage."]}
+{"stage":"FINANCIAL_UTILIZATION_BINDING","status":"PARTIAL","wallClockMs":0,"notes":["Exercised utilization authority APIs with empty ledger + missing completeness certificate.","Authority kind=UNKNOWN; supportsRemainingClaim=false.","Unmodeled gross publicationLabel=REFUSED."]}
+{"stage":"CAPACITY_ENGINE","status":"BLOCKED","wallClockMs":1,"notes":["No authentic VEP / legacy capacityFormulas / promoted Permissions for MTN on main.","Capacity engine cannot produce verified gross/remaining capacity from source documents alone on this path.","Fail-closed refusal observed for empty VEP (safety success, not product capacity proof)."]}
+{"stage":"TRANSACTION_SIMULATION","status":"BLOCKED","wallClockMs":0,"notes":["$50M and $100M secured debt simulations attempted against empty VEP — expected REFUSED.","Boundary / shared-basket sequential sims require an executable rulebook — not available for MTN without hand-modeling (refused).","Separately labeled HYPOTHETICAL arithmetic scenario documented in 07-transaction-results.md using independent legal reference numbers, not product engine output."]}
+{"stage":"CUSTOMER_FACING_ANSWER","status":"UNSUPPORTED","wallClockMs":0,"notes":["DATABASE_URL points at Neon (ep-*.neon.tech). Mission forbids production Neon writes.","No local Postgres provisioned in this environment.","Therefore Position / Simulate / Ask UI were not populated for MTN."]}
+
+=== PIPELINE SUMMARY ===
+{
+  "firstSuccessfulStage": "SOURCE_DOCUMENTS",
+  "firstFailedOrUnsupportedStage": "GENERALIZED_RULE_REPRESENTATION",
+  "stages": [
+    "SOURCE_DOCUMENTS:SUCCESS",
+    "STRUCTURAL_INDEX:SUCCESS",
+    "COVENANT_DISCOVERY:PARTIAL",
+    "MULTI_DOCUMENT_GRAPH:SUCCESS",
+    "DEFINITION_RESOLUTION:SUCCESS",
+    "AMENDMENT_PRECEDENCE:PARTIAL",
+    "GENERALIZED_RULE_REPRESENTATION:BLOCKED",
+    "VERIFICATION:BLOCKED",
+    "FINANCIAL_UTILIZATION_BINDING:PARTIAL",
+    "CAPACITY_ENGINE:BLOCKED",
+    "TRANSACTION_SIMULATION:BLOCKED",
+    "CUSTOMER_FACING_ANSWER:UNSUPPORTED"
+  ]
+}
