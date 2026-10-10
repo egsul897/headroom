@@ -1,0 +1,205 @@
+{
+  "artifact": "HEADROOM-5_LEGAL_REFERENCE_ANSWERS",
+  "createdBeforeCompilerRun": true,
+  "createdAtUtc": "2026-10-10T13:10:30Z",
+  "createdFrom": "Independent human reading of sealed extracted texts only. No compiler output consulted.",
+  "sourceHashesAtCreation": {
+    "doc-a-extractedSha256": "29751da8c5ee22c84facccf0d643312b2fa8c485b612f92970bdbff05a4df5b2",
+    "doc-b-extractedSha256": "e5ce81017e3635960bcd519af513b480ca48a297cf97ba72e485ecb023399d3b"
+  },
+  "freezePolicy": "IMMUTABLE after seal. Do not edit after observing compiler output.",
+  "clauses": [
+    {
+      "clauseId": "WOR-B-6.01",
+      "documentId": "doc-b",
+      "sectionRef": "6.01",
+      "family": "INDEBTEDNESS",
+      "title": "Limitation on Indebtedness of Restricted Subsidiaries",
+      "operativeSummary": "Company will not cause or permit any Restricted Subsidiary to incur/create/assume/permit Indebtedness except four baskets: (i) acquisition/existing-at-join Indebtedness not incurred in contemplation; (ii) Indebtedness owing to Company, Restricted Subsidiary, or Worthington Receivables; (iii) non-facility LCs capped at $30,000,000 aggregate face; (iv) other Restricted Subsidiary Indebtedness ≤ 10% of Consolidated Net Tangible Assets.",
+      "entityScope": "Restricted Subsidiaries (not a Company-level general debt negative covenant)",
+      "conditions": ["Basket (i) anti-contemplation proviso"],
+      "formula": {
+        "basket_iii": { "type": "FIXED_USD", "cap": 30000000, "metric": "aggregate face amount of LCs not issued under the Agreement" },
+        "basket_iv": { "type": "PERCENT_OF_METRIC", "percent": 10, "metric": "Consolidated Net Tangible Assets", "basis": "aggregate principal amount at any time outstanding" }
+      },
+      "requiredDefinitions": ["Indebtedness", "Restricted Subsidiary", "Consolidated Net Tangible Assets", "Worthington Receivables"],
+      "residuals": ["No general Company Indebtedness negative covenant in §6.01", "No builder basket", "No reclassification mechanic stated in §6.01"],
+      "expectedExecution": "REFUSE production capacity without CNTA evidence (iv) and without LC utilization evidence (iii). Hypothetical capacity may illustrate formulas only if labeled non-authoritative.",
+      "citationAnchors": [
+        "The Company will not cause or permit any Restricted Subsidiary to, directly or indirectly, incur, create, assume or permit to exist any Indebtedness except:",
+        "shall not exceed $30,000,000 in the aggregate at any time",
+        "not in excess of 10% of Consolidated Net Tangible Assets"
+      ]
+    },
+    {
+      "clauseId": "WOR-A-6.01-SPINOFF",
+      "documentId": "doc-a",
+      "sectionRef": "6.01",
+      "family": "INDEBTEDNESS",
+      "title": "Fourth AR Permitted Spinoff debt carveout (historical)",
+      "operativeSummary": "Fourth AR §6.01 expressly did not prohibit Permitted Spinoff / Permitted Spinoff Transaction Indebtedness by a Restricted Subsidiary prior to the spinoff up to $550,000,000, with additional conditions if Company/Subsidiary remains obligor/guarantor.",
+      "entityScope": "Restricted Subsidiaries (historical)",
+      "conditions": ["Permitted Spinoff / Permitted Spinoff Transaction context", "additional conditions if Company/Subsidiary remains borrower/obligor/guarantor/credit support"],
+      "formula": { "type": "FIXED_USD", "cap": 550000000 },
+      "requiredDefinitions": ["Permitted Spinoff", "Permitted Spinoff Transaction", "Restricted Subsidiary", "Indebtedness", "Guaranty Obligation"],
+      "residuals": ["This carveout is ABSENT from doc-b §6.01 operative text — must not be treated as currently operative after Fifth AR restatement"],
+      "expectedExecution": "As of 2026-08-31, REFUSE any capacity credit based on the $550mm spinoff carveout. Correct behavior is to identify doc-b as operative and treat doc-a §6.01 spinoff language as superseded.",
+      "citationAnchors": [
+        "It is understood and agreed that this Section 6.01 shall not prohibit the Permitted Spinoff",
+        "not to exceed $550,000,000 at any time"
+      ]
+    },
+    {
+      "clauseId": "WOR-B-6.02",
+      "documentId": "doc-b",
+      "sectionRef": "6.02",
+      "family": "LIENS",
+      "title": "Restriction on Liens",
+      "operativeSummary": "Company will not, and will not cause or permit any Restricted Subsidiary to, incur/create/assume/suffer any mortgage/pledge/lien/charge/encumbrance on any assets other than Permitted Liens.",
+      "entityScope": "Company and Restricted Subsidiaries",
+      "conditions": ["Exception set is entirely by reference to definition Permitted Liens"],
+      "formula": null,
+      "requiredDefinitions": ["Permitted Liens", "Restricted Subsidiary"],
+      "residuals": ["No standalone % CNTA general lien basket in Permitted Liens; clause (xvii) only secures Indebtedness permitted under §6.01(iii); clause (x) has $50,000,000 incidental non-debt lien subcap"],
+      "expectedExecution": "Representation must resolve Permitted Liens definition. Production capacity for 'general lien basket' should REFUSE if seeking a % grower that is not in the text.",
+      "citationAnchors": [
+        "The Company will not, and will not cause or permit any Restricted Subsidiary to, incur, create, assume, become or be liable in any way, or suffer to exist any mortgage, pledge, lien, charge, or other encumbrance",
+        "other than Permitted Liens"
+      ]
+    },
+    {
+      "clauseId": "WOR-B-PERM-LIENS",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "family": "DEFINITION",
+      "title": "Permitted Liens",
+      "operativeSummary": "Enumerated Permitted Liens (i)–(xvii), including existing Schedule 1.02 liens, acquisition liens, refinance of certain prior liens without increase/additional collateral, incidental non-Indebtedness liens ≤ $50,000,000 per obligation/series, receivables-sale liens to Unrestricted Subsidiary/bankruptcy-remote purchaser, and liens securing §6.01(iii) LC Indebtedness.",
+      "entityScope": "Definitional",
+      "conditions": ["Multiple clause-specific conditions (contestation, non-contemplation, no increase on refinance, etc.)"],
+      "formula": { "clause_x_cap": 50000000 },
+      "requiredDefinitions": ["Indebtedness", "Capital Lease Obligation", "Unrestricted Subsidiary", "Subsidiary"],
+      "residuals": ["No general equal-and-ratable or % CNTA lien basket"],
+      "expectedExecution": "Context retrieval for §6.02 must pull this definition. Incomplete if only §6.02 chapeau retrieved.",
+      "citationAnchors": [
+        "Permitted Liens ” means:",
+        "do not secure any obligation, or related series of obligations, in an amount exceeding $50,000,000",
+        "Liens to secure Indebtedness permitted pursuant to Section 6.01(iii)"
+      ]
+    },
+    {
+      "clauseId": "WOR-B-6.03",
+      "documentId": "doc-b",
+      "sectionRef": "6.03",
+      "family": "INVESTMENTS",
+      "title": "Investments / Permitted Investments",
+      "operativeSummary": "Company and Restricted Subsidiaries may not make/acquire Investments except Permitted Investments (i)–(xii). Quantitative: (x) non-Controlled Person Investments with pro forma §6.13 compliance and initial amount after Effective Date ≤ $150,000,000 aggregate; (xii) additional Investments ≤ $150,000,000 aggregate in any fiscal year.",
+      "entityScope": "Company and Restricted Subsidiaries",
+      "conditions": ["(x) requires pro forma compliance with §6.13 as of prior fiscal quarter end before and after", "(iii) Sarbanes-Oxley §402 constraint on officer/director advances"],
+      "formula": {
+        "basket_x": { "type": "FIXED_USD_PLUS_RATIO_GATE", "cap": 150000000, "ratioGate": "Section 6.13 financial covenants pro forma" },
+        "basket_xii": { "type": "FIXED_USD_PER_FISCAL_YEAR", "cap": 150000000 }
+      },
+      "requiredDefinitions": ["Investment", "Permitted Investments", "Cash Equivalents", "Permitted Acquisitions", "Restricted Subsidiary", "Controlling Person"],
+      "residuals": ["Schedule 6.03 existing investments; shared/aggregate interaction between (x) and (xii) not expressly stated as a combined cap"],
+      "expectedExecution": "Must preserve §6.13 condition on (x). Production capacity for (x)/(xii) REFUSE without utilization + (for x) financial covenant evidence.",
+      "citationAnchors": [
+        "the initial amount (determined at the time made) of such Investments which are made after the Effective Date shall not exceed $150,000,000 in the aggregate",
+        "additional Investments not exceeding $150,000,000 in the aggregate in any fiscal year of the Company",
+        "the Company is in pro forma compliance with the financial covenants set forth in Section 6.13"
+      ]
+    },
+    {
+      "clauseId": "WOR-B-6.13",
+      "documentId": "doc-b",
+      "sectionRef": "6.13",
+      "family": "FINANCIAL_COVENANT",
+      "title": "Financial Covenants",
+      "operativeSummary": "(a) Interest Coverage Ratio for any four consecutive fiscal quarters ≥ 3.25:1.00, tested quarterly. (b) Consolidated Indebtedness / Capitalization ≤ 55%, tested quarterly.",
+      "entityScope": "Company (consolidated metrics)",
+      "conditions": ["Quarter-end calculation", "four-quarter period for Interest Coverage Ratio"],
+      "formula": {
+        "interest_coverage_min": "3.25:1.00",
+        "indebtedness_to_capitalization_max": 0.55
+      },
+      "requiredDefinitions": ["Interest Coverage Ratio", "Consolidated EBITDA", "Consolidated Interest Expense", "Consolidated Indebtedness", "Capitalization", "Consolidated Net Worth"],
+      "residuals": ["Leverage Ratio is defined in Art I but is NOT the §6.13 tested covenant; tested leverage-style metric is Indebtedness to Capitalization"],
+      "expectedExecution": "Hypothetical ratio computation only with labeled inputs. Production-authoritative pass/fail REFUSE without authenticated financial evidence.",
+      "citationAnchors": [
+        "to be less than 3.25:1.00",
+        "to be greater than 55%"
+      ]
+    },
+    {
+      "clauseId": "WOR-B-DEF-ICR",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "family": "DEFINITION",
+      "title": "Interest Coverage Ratio",
+      "operativeSummary": "Consolidated EBITDA / Consolidated Interest Expense for the period.",
+      "entityScope": "Definitional",
+      "conditions": [],
+      "formula": "Consolidated EBITDA / Consolidated Interest Expense",
+      "requiredDefinitions": ["Consolidated EBITDA", "Consolidated Interest Expense"],
+      "residuals": [],
+      "expectedExecution": "Must be retrieved when compiling §6.13(a).",
+      "citationAnchors": [
+        "Interest Coverage Ratio ” means, for any period, the ratio of (i) Consolidated EBITDA of the Company and its Subsidiaries for such period to (ii) Consolidated Interest Expense of the Company and its Subsidiaries for such period."
+      ]
+    },
+    {
+      "clauseId": "WOR-B-DEF-EBITDA",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "family": "DEFINITION",
+      "title": "Consolidated EBITDA",
+      "operativeSummary": "Consolidated Net Income + interest/tax/D&A/non-cash expense items − interest income/non-cash income/gains, GAAP. Material acquisition/divestiture: for Interest Coverage Ratio, adjust pre-deal period by adding acquired historical results (no cost savings/synergies unless Required Lenders approve) or deleting divested results.",
+      "entityScope": "Definitional",
+      "conditions": ["Acquisition/divestiture adjustment limited to Interest Coverage Ratio measurement context", "synergies require Required Lenders approval"],
+      "formula": "CNI + Interest + Taxes + D&A/impairment/non-cash expense − interest income − non-cash income/gains (+/− acquisition/divestiture hist. adjust for ICR)",
+      "requiredDefinitions": ["Consolidated Net Income", "Consolidated Interest Expense", "GAAP"],
+      "residuals": [],
+      "expectedExecution": "Nested definition completeness required for §6.13 fidelity.",
+      "citationAnchors": [
+        "Consolidated EBITDA ” means, for any period, the sum of (i) Consolidated Net Income for such period plus",
+        "If the Company or any Subsidiary makes a material acquisition or divestiture"
+      ]
+    },
+    {
+      "clauseId": "WOR-B-11.01",
+      "documentId": "doc-b",
+      "sectionRef": "11.01",
+      "family": "AMENDMENT_RESTATEMENT",
+      "title": "Amendment and Restatement of Existing Credit Agreement",
+      "operativeSummary": "Upon execution/delivery and §4.01 conditions, Existing Credit Agreement (Fourth AR dated 2023-09-27) terms are amended, superseded and restated in their entirety by this Agreement. Not a novation. Prior loans/LCs continue under this Agreement.",
+      "entityScope": "Package relationship",
+      "conditions": ["§4.01 conditions precedent (or waiver)"],
+      "formula": null,
+      "requiredDefinitions": ["Existing Credit Agreement", "Effective Date"],
+      "residuals": [],
+      "expectedExecution": "Package graph must classify doc-b as amended-and-restated and relate it to doc-a. doc-a must not be treated as current operative negative-covenant authority after Effective Date.",
+      "citationAnchors": [
+        "the terms and provisions of the Existing Credit Agreement shall be and hereby are amended, superseded and restated in their entirety by the terms and provisions of this Agreement",
+        "This Agreement is not intended to and shall not constitute a novation of the Existing Credit Agreement"
+      ]
+    },
+    {
+      "clauseId": "WOR-B-FACILITY",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "family": "FACILITY",
+      "title": "Aggregate Commitment / Foreign Currency Sublimit",
+      "operativeSummary": "Aggregate Commitment $500,000,000 as of Effective Date. Agreed Currencies initially Dollars only. Foreign Currency Sublimit $0 as of Effective Date.",
+      "entityScope": "Facility",
+      "conditions": [],
+      "formula": { "aggregateCommitment": 500000000, "foreignCurrencySublimit": 0 },
+      "requiredDefinitions": ["Aggregate Commitment", "Agreed Currencies", "Foreign Currency Sublimit"],
+      "residuals": [],
+      "expectedExecution": "Currency-mismatch capacity claims in non-Dollar without conversion authority should REFUSE.",
+      "citationAnchors": [
+        "As of the Effective Date, the Aggregate Commitment is $500,000,000",
+        "Foreign Currency Sublimit ” means $0 as of the Effective Date",
+        "As of the Effective Date the only Agreed Currency shall be Dollars"
+      ]
+    }
+  ]
+}

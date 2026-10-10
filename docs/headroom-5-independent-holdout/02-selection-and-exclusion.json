@@ -1,0 +1,46 @@
+{
+  "artifact": "HEADROOM-5_SELECTION_AND_EXCLUSION",
+  "selectionDiscipline": "Structural/topological EDGAR search only; title-block confirmation before body read for fit; no compiler run before seal + legal-reference freeze.",
+  "exclusionListAtSelection": [
+    "Coherent / COHR",
+    "Matthews / MATW",
+    "CONMED / CNMD",
+    "Chewy / CHWY",
+    "DSGR / Lawson",
+    "FWRG",
+    "LSB / LXU",
+    "RIOT",
+    "Gibraltar / ROCK",
+    "SUP (Superior Industries)",
+    "MTN (Vail — PP001)",
+    "Knife River / KNF (Gibraltar lane marked BLIND metadata interest)"
+  ],
+  "search": {
+    "api": "https://efts.sec.gov/LATEST/search-index",
+    "query": "\"Amended and Restated Credit Agreement\"",
+    "forms": "8-K",
+    "dateRange": "2025-01-01 to 2026-10-01",
+    "userAgent": "Headroom-IndependentEval/1.0 (contact: engineering@headroom-app.example)"
+  },
+  "selected": {
+    "issuer": "Worthington Enterprises, Inc.",
+    "ticker": "WOR",
+    "cik": "0000108516",
+    "reason": "Clean contamination check; multi-document Fourth→Fifth amended-and-restated credit agreement chain; TOC confirms defined terms, debt baskets (§6.01), lien restriction (§6.02 + Permitted Liens), investment baskets (§6.03), ratio financial covenants (§6.13), cross-document restatement (§11.01), foreign-currency facility features.",
+    "documentsFromTitleBlocksOnly": [
+      {
+        "documentId": "doc-a",
+        "titleBlock": "FOURTH AMENDED AND RESTATED CREDIT AGREEMENT dated as of September 27, 2023",
+        "accession": "0000950170-23-050472",
+        "exhibit": "EX-4.1"
+      },
+      {
+        "documentId": "doc-b",
+        "titleBlock": "FIFTH AMENDED AND RESTATED CREDIT AGREEMENT dated as of August 31, 2026",
+        "accession": "0001193125-26-376705",
+        "exhibit": "EX-4.1"
+      }
+    ]
+  },
+  "interimAmendmentsBetweenFourthAndFifth": "Index/title review of WOR 8-Ks between 2023-09-28 and 2026-08-31 did not surface a separate interim credit-agreement amendment exhibit that must be ingested for operative-text evaluation; the Fifth AR restates the Fourth AR Existing Credit Agreement in full (doc-b recitals + §11.01)."
+}
