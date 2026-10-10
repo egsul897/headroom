@@ -20,6 +20,7 @@ describe("MHK structural heading + fixed-dollar slice (authentic holdout)", () =
     expect(text).toMatch(/^[ \t\u00a0\u202f]*7\.01[\t \u00a0\u202f]+Liens/m);
     const nodes = parseDocumentStructure({
       documentId: "mhk-doc-a-credit-agreement",
+      label: "MHK credit agreement",
       text,
     });
     expect(nodes.length).toBeGreaterThan(100);
