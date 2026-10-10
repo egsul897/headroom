@@ -2,6 +2,7 @@
 
 **Base main:** `2f608e1a6634007b95feb8c29cb3ad74b30dcf97` (PR #237 already landed #232+#234 reconcile)  
 **Integration branch:** `cursor/utilization-neon-canonical-a9e4`  
+**Integration tip:** `272c6f066096ab12f83aaa388da1e67f5d1eea45`  
 **Combined PR:** https://github.com/egsul897/headroom/pull/241 (draft — no auto-merge)  
 **Auto-merge:** **no** · Neon writes: **none** · Certification bypass: **none**
 

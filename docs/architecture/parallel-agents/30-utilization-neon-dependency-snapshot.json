@@ -5,8 +5,14 @@
   "mainSha": "7f1dd3a202b026b9a862ef727480a1a9f284523a",
   "priorMainSha": "b99f934b1d94b2631fb40ba3ca131a914bef2370",
   "landedOnMain": [
-    { "pr": 229, "role": "A8 capacity status floor" },
-    { "pr": 237, "role": "first #232+#234 utilization reconcile" }
+    {
+      "pr": 229,
+      "role": "A8 capacity status floor"
+    },
+    {
+      "pr": 237,
+      "role": "first #232+#234 utilization reconcile"
+    }
   ],
   "integrationBranch": "cursor/utilization-neon-canonical-a9e4",
   "combinedPr": 241,
@@ -14,7 +20,10 @@
     "canonicalPr": 236,
     "duplicateDocsPr": 235,
     "duplicateDisposition": "SUPERSEDED_DO_NOT_LAND_SEPARATELY",
-    "defectsClosed": ["DEFECT-A8-01", "DEFECT-A8-02"]
+    "defectsClosed": [
+      "DEFECT-A8-01",
+      "DEFECT-A8-02"
+    ]
   },
   "sourceTipsHardenedFrom": {
     "pr232": "5b208705d3dc64e489dc092f36e1b03be62ff1c7",
@@ -41,5 +50,21 @@
   "autoMerge": false,
   "neonWrites": false,
   "certificationBypass": false,
-  "detailDoc": "29-utilization-neon-canonical-integration.md"
+  "detailDoc": "29-utilization-neon-canonical-integration.md",
+  "integrationTip": "272c6f066096ab12f83aaa388da1e67f5d1eea45",
+  "verification": {
+    "capacityStateTypesIdenticalToMain": true,
+    "probeStatus": "NOT_SATISFIED",
+    "agent8Matrix": {
+      "total": 32,
+      "passed": 32,
+      "incorrectFavorable": 0,
+      "incorrectRefusal": 0
+    },
+    "integratedPlusUtilization": {
+      "files": 31,
+      "passed": 515,
+      "failed": 0
+    }
+  }
 }
