@@ -24,9 +24,9 @@
     "NO_SILENT_PROVISIONAL_IDENTITY_CONSOLIDATION",
     "NO_PRODUCTION_AUTHORITY_FROM_CAVEATED_RESTATEMENT"
   ],
-  "endingTipSha": "ef2421304b39b2a87738fb7b922018ad2e4a5261",
+  "endingTipSha": "201507de26b333e32f19fab4126ce5b73e055c99",
   "exactTipCi": "PENDING_POST_PUSH",
-  "ciNote": "Local tip regressions 91/91 + tsc green on 1d868a39; awaiting GitHub CI.",
+  "ciNote": "Local tip regressions 91/91 + tsc green on f87470b0 (code-equivalent tip; docs evidence at 201507de26b333e32f19fab4126ce5b73e055c99). Awaiting GitHub CI on 201507de26b333e32f19fab4126ce5b73e055c99.",
   "integrationCommitSha": "d505e3763eae362686d5ad9a46e9c2c0202ebdfa",
   "headroom6Pr": "https://github.com/egsul897/headroom/pull/287",
   "legalAuthorityVerdict": "OPERATIVE_RESTATEMENT_AUTHORITY_VERIFIED",
@@ -41,5 +41,6 @@
     "Production capacity activation remains refused (financial/utilization gates separate)"
   ],
   "retrievalBindingTipSha": "1d868a39e8cd3c15fefbfd3ebfbad12fd9695a1b",
-  "note": "endingTipSha is branch tip before this metadata alignment commit when applicable; verify with git rev-parse origin/cursor/operative-restatement-authority-2670. Prior 7db1c80a..dee2545d docs-only. Agent #6 (#287) merged; retrieval bound to governingDocumentId."
+  "note": "endingTipSha is branch tip before this metadata alignment commit when applicable; verify with git rev-parse origin/cursor/operative-restatement-authority-2670. Prior 7db1c80a..dee2545d docs-only. Agent #6 (#287) merged; retrieval bound to governingDocumentId.",
+  "localTipRegressionEvidence": "docs/operative-restatement-authority/07-tip-regression-evidence.txt"
 }
