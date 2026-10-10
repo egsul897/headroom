@@ -103,7 +103,7 @@ describe("integration gate — fixture secured-borrowing-100m labeling", () => {
     expect(exercise).toBeDefined();
     const pkg = buildFixtureVerifiedPackage(exercise!);
     expect("blocked" in pkg && pkg.blocked).toBe(false);
-    if ("blocked" in pkg && pkg.blocked) return;
+    if ("blocked" in pkg) return;
     expect(pkg.companyId).toBe(DEMO_COMPANY_ID);
     expect(pkg.companyId).not.toBe("coherent");
     expect(pkg.label).toMatch(/FIXTURE|SYNTHETIC/i);
