@@ -158,6 +158,18 @@ model Company {
   // promotion so recoverable failures cannot strand NS-4 behind legacy state.
   ns4FinancialSyncs Ns4FinancialSync[]
 
+  // --- Neon-first institutional intelligence persistence (docs/persistence/) ---
+  // Additive only. Zero rows at migrate time. Wraps — does not replace —
+  // SemanticTruthRecord / NS-4 / ContractLedgerUsage / package-graph projections.
+  operativeAuthoritySnapshots      OperativeAuthoritySnapshot[]
+  contextRetrievalManifests        ContextRetrievalManifest[]
+  financialEvidenceBundles         FinancialEvidenceBundle[]
+  utilizationCompletenessRecords   UtilizationCompletenessRecord[]
+  capacityCalculationRecords       CapacityCalculationRecord[]
+  transactionSimulationRecords     TransactionSimulationRecord[]
+  institutionalAuditEvents         InstitutionalAuditEvent[]
+  dependencyInvalidationRecords    DependencyInvalidationRecord[]
+
   @@map("companies")
 }
 
@@ -4055,5 +4067,281 @@ model ContractLedgerUsageEvent {
   @@index([companyId, at])
   @@index([usageId])
   @@map("contract_ledger_usage_events")
+}
+
+// =============================================================================
+// Neon-first institutional intelligence persistence
+// (docs/persistence/01-persistence-completeness-matrix.md)
+//
+// Additive only. Provides durable homes for operative-authority handoffs,
+// recursive context manifests, financial evidence bundles, completeness
+// certificates, capacity calculation snapshots, hypothetical simulations,
+// append-only institutional audit events, and dependency invalidation.
+//
+// Does NOT replace SemanticTruthRecord, ContractInputSnapshot,
+// ContractLedgerUsage, or package-graph projections. Does NOT store secrets
+// or unbounded prompt transcripts. Hypothetical simulations never mutate
+// the actual ledger (enforced in lib/persistence/**).
+// =============================================================================
+
+enum IntelligenceLifecycleStatus {
+  ACTIVE
+  STALE
+  SUPERSEDED
+  REVOKED
+  INVALIDATED
+
+  @@map("intelligence_lifecycle_status")
+}
+
+enum IntelligenceAuthorityClass {
+  HYPOTHETICAL
+  COMPILED_UNVERIFIED
+  PROVISIONAL
+  REVIEW_REQUIRED
+  REFUSED
+  VERIFIED_CALCULATION
+  PRODUCTION_AUTHORITATIVE
+
+  @@map("intelligence_authority_class")
+}
+
+enum InstitutionalAuditAction {
+  SUBMISSION
+  REVIEW
+  APPROVAL
+  REJECTION
+  SUPERSESSION
+  REVOCATION
+  RECLASSIFICATION
+  AUTHORITY_ACTIVATION
+  AUTHORITY_REFUSAL
+  DOCUMENT_REPLACEMENT
+  FINANCIAL_EVIDENCE_REVISION
+  CAPACITY_RECALCULATION
+  TRANSACTION_CONFIRMATION
+  PERSISTENCE_WRITE
+  INVALIDATION
+
+  @@map("institutional_audit_action")
+}
+
+/// Durable OperativeHandoffBundle. Preserves provisional identity and caveats.
+/// Historical rows are never silently rewritten — supersession creates a new row.
+model OperativeAuthoritySnapshot {
+  id                       String                      @id @default(cuid())
+  companyId                String
+  packageKey               String
+  asOfDate                 String
+  contentHash              String
+  /// Worst-case authority classification across provisions in the payload.
+  authorityClassification  String
+  instrumentKey            String?
+  provisionalIdentity      Boolean                     @default(false)
+  engineVersion            String
+  payload                  Json
+  sourceFingerprint        Json
+  status                   IntelligenceLifecycleStatus @default(ACTIVE)
+  supersededById           String?
+  createdAt                DateTime                    @default(now())
+  updatedAt                DateTime                    @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, packageKey, asOfDate, contentHash])
+  @@index([companyId, packageKey, asOfDate, status])
+  @@index([companyId, status])
+  @@map("operative_authority_snapshots")
+}
+
+/// Durable CovenantContextBundle / recursive context manifest.
+model ContextRetrievalManifest {
+  id                         String                      @id @default(cuid())
+  companyId                  String
+  packageKey                 String
+  bundleId                   String
+  instrumentKey              String?
+  originatingDocumentId      String
+  originatingDiscoveryId     String
+  contentHash                String
+  sufficiencyState           String
+  retrievalAlgorithmVersion  String
+  payload                    Json
+  sourceFingerprint          Json
+  status                     IntelligenceLifecycleStatus @default(ACTIVE)
+  supersededById             String?
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, bundleId, retrievalAlgorithmVersion, contentHash])
+  @@index([companyId, packageKey, status])
+  @@index([companyId, contentHash])
+  @@index([companyId, originatingDocumentId])
+  @@map("context_retrieval_manifests")
+}
+
+/// Durable FinancialMetricEvidence set. GAAP vs covenant definitions retained in payload.
+model FinancialEvidenceBundle {
+  id                   String                      @id @default(cuid())
+  companyId            String
+  bundleKey            String
+  asOfDate             String
+  contentHash          String
+  verificationStatus   String
+  authenticity         String
+  payload              Json
+  sourceFingerprint    Json
+  status               IntelligenceLifecycleStatus @default(ACTIVE)
+  supersededById       String?
+  /// Claimed reviewer label — never authenticated identity.
+  claimedReviewerLabel String?
+  approvedAt           DateTime?
+  createdAt            DateTime                    @default(now())
+  updatedAt            DateTime                    @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, bundleKey, contentHash])
+  @@index([companyId, asOfDate, status])
+  @@index([companyId, verificationStatus, status])
+  @@map("financial_evidence_bundles")
+}
+
+/// Durable utilization completeness certificate. Revocation blocks production authority.
+model UtilizationCompletenessRecord {
+  id               String                      @id @default(cuid())
+  companyId        String
+  capacityRuleId   String
+  asOfDate         String
+  certificateKind  String
+  authenticity     String?
+  contentHash      String
+  payload          Json
+  status           IntelligenceLifecycleStatus @default(ACTIVE)
+  supersededById   String?
+  revokedAt        DateTime?
+  createdAt        DateTime                    @default(now())
+  updatedAt        DateTime                    @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, capacityRuleId, asOfDate, contentHash])
+  @@index([companyId, capacityRuleId, status])
+  @@index([companyId, asOfDate, status])
+  @@map("utilization_completeness_records")
+}
+
+/// Versioned capacity calculation inputs/outputs/refusals. Never promotes stale rows to current.
+model CapacityCalculationRecord {
+  id                           String                      @id @default(cuid())
+  companyId                    String
+  instrumentKey                String?
+  asOfDate                     String
+  calculationId                String
+  contentHash                  String
+  inputHash                    String
+  engineVersion                String
+  authorityClass               IntelligenceAuthorityClass
+  calculationStatus            String
+  operativeAuthoritySnapshotId String?
+  verifiedIrIdentity           String?
+  financialSnapshotIdentity    String?
+  utilizationSnapshotIdentity  String?
+  capacityOutput               Json?
+  missingInputs                Json?
+  refusalReasons               Json?
+  reviewConditions             Json?
+  trace                        Json?
+  payload                      Json
+  status                       IntelligenceLifecycleStatus @default(ACTIVE)
+  supersededById               String?
+  createdAt                    DateTime                    @default(now())
+  updatedAt                    DateTime                    @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, calculationId, contentHash])
+  @@index([companyId, asOfDate, authorityClass, status])
+  @@index([companyId, inputHash])
+  @@index([companyId, status])
+  @@map("capacity_calculation_records")
+}
+
+/// Hypothetical transaction simulation archive. mutatesActualLedger is always false.
+model TransactionSimulationRecord {
+  id                           String                      @id @default(cuid())
+  companyId                    String
+  simulationId                 String
+  simulationHash               String
+  transactionId                String
+  transactionHash              String
+  contentHash                  String
+  simulationStatus             String
+  authorityClass               IntelligenceAuthorityClass  @default(HYPOTHETICAL)
+  mutatesActualLedger          Boolean                     @default(false)
+  capacityCalculationRecordId  String?
+  payload                      Json
+  proposedEffects              Json?
+  postStateIdentity            Json?
+  status                       IntelligenceLifecycleStatus @default(ACTIVE)
+  createdAt                    DateTime                    @default(now())
+  updatedAt                    DateTime                    @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, simulationId, simulationHash])
+  @@index([companyId, transactionId])
+  @@index([companyId, status])
+  @@map("transaction_simulation_records")
+}
+
+/// Append-only institutional audit trail. Application code must never update/delete rows.
+model InstitutionalAuditEvent {
+  id              String                   @id @default(cuid())
+  eventId         String                   @unique
+  companyId       String
+  action          InstitutionalAuditAction
+  entityType      String
+  entityId        String
+  occurredAt      DateTime
+  /// UNAUTHENTICATED | SYSTEM | TRUSTED_ISSUER:<id> — never client-supplied auth.
+  actorProvenance String
+  /// Optional display label; never used as authenticated identity.
+  actorLabel      String?
+  priorState      Json?
+  newState        Json?
+  evidenceRefs    Json?
+  payload         Json?
+  createdAt       DateTime                 @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, occurredAt])
+  @@index([companyId, entityType, entityId])
+  @@index([action])
+  @@map("institutional_audit_events")
+}
+
+/// Records that a source fingerprint change invalidated a dependent artifact.
+model DependencyInvalidationRecord {
+  id                      String   @id @default(cuid())
+  companyId               String
+  sourceEntityType        String
+  sourceEntityId          String
+  dependentEntityType     String
+  dependentEntityId       String
+  sourceFingerprintBefore String?
+  sourceFingerprintAfter  String?
+  reason                  String
+  invalidatedAt           DateTime @default(now())
+  createdAt               DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, dependentEntityType, dependentEntityId])
+  @@index([companyId, sourceEntityType, sourceEntityId])
+  @@map("dependency_invalidation_records")
 }
 

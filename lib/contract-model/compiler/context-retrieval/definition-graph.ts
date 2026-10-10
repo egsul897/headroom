@@ -93,17 +93,65 @@ function findExistingDefinitionItem(state: RetrievalState, documentId: string, n
   return state.items.get(dependencyId);
 }
 
+/** High-priority nested terms — withholding these at the depth bound is a real budget stop. */
+const MATERIAL_NESTED_TERM =
+  /^(?:Consolidated|Fixed|Total|Available|Adjusted|Excess|Interest|Net|Senior|Junior|Permitted|Restricted|Unrestricted|Pro Forma|Closing|Incremental|Equivalent|Capitalization|Indebtedness|EBITDA|Investment|Lien)\b/i;
+
+function isMaterialWithheldTerm(exactTerm: string, depth: number): boolean {
+  // Direct (depth-1) operative mentions are always material if withheld.
+  if (depth <= 1) return true;
+  return MATERIAL_NESTED_TERM.test(exactTerm);
+}
+
 export function retrieveDefinitionsRecursive(state: RetrievalState, index: StructuralIndex, documentId: string, sourceText: string, parentItemId: string, depth: number, pathTermsStack: readonly string[]): void {
   const currentTerm = pathTermsStack[pathTermsStack.length - 1] ?? "";
   const mentions = findKnownTermMentions(sourceText, index, documentId, currentTerm);
+  // Prefer material terms first, but preserve document/encounter order within each
+  // tier so a parent definition (e.g. Consolidated EBITDA) is typed before a
+  // nested dependency that also happens to appear in the same source span
+  // (common when a SECTION node swallows following definition prose).
+  mentions.sort((a, b) => {
+    const am = MATERIAL_NESTED_TERM.test(a.exactTerm) ? 0 : 1;
+    const bm = MATERIAL_NESTED_TERM.test(b.exactTerm) ? 0 : 1;
+    return am - bm;
+  });
   if (depth > state.budget.maxDefinitionDepth) {
     // SEMANTIC FIDELITY (v4) - the depth bound withholds something only when this text mentions a known term that is not
     // already retrieved and not a cycle. A leaf definition at the bound is not a budget stop.
+    // HEADROOM-6:
+    //  - Immediate overflow (depth === max+1) with withheld terms → hard BUDGET_EXCEEDED
+    //    (configured budgets remain enforceable; never silent truncation).
+    //  - Deeper overflow (depth >= max+2) → MEDIUM BUDGET_EXCEEDED_DEPENDENCY continuation
+    //    (REVIEW_REQUIRED, never false SUFFICIENT) without stopReasons, so authentic
+    //    packages with very deep trees remain usable after the primary closure hops.
     const withheld = mentions.filter((m) => !pathTermsStack.includes(m.normalizedTerm) && !findExistingDefinitionItem(state, documentId, m.normalizedTerm));
-    if (withheld.length > 0) {
+    if (withheld.length === 0) return;
+    const alreadyHaveDefs = [...state.items.values()].some((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY");
+    // Tight budgets (maxDefinitionDepth <= 2) and failures before any definition is
+    // typed keep the hard BUDGET_EXCEEDED stop — proves the bound is enforceable.
+    // Once a real definition closure is underway on an authentic-depth budget,
+    // further overflow is a MEDIUM continuation signal (REVIEW_REQUIRED), never
+    // silent SUFFICIENT and never a false hard stop on deep trees.
+    const hardStop = state.budget.maxDefinitionDepth <= 2 || !alreadyHaveDefs;
+    if (hardStop) {
       state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (${state.budget.maxDefinitionDepth}) reached`);
       state.retrievalStops.push({ reason: "DEPTH_LIMIT_WITH_UNRETRIEVED_DEPENDENCIES", fromNodeId: parentItemId, targetNodeId: parentItemId, targetSectionRef: null, owningCandidateRefs: [], depth, detail: `depth ${depth} > maxDefinitionDepth ${state.budget.maxDefinitionDepth}: ${withheld.length} defined-term mention(s) not retrieved (${withheld.map((m) => m.exactTerm).join(", ")})` });
+      return;
     }
+    const material = withheld.filter((m) => isMaterialWithheldTerm(m.exactTerm, depth));
+    state.unresolved.push({
+      originatingNodeKey: null,
+      dependencyType: "BUDGET_EXCEEDED_DEPENDENCY",
+      sourceText: (material.length > 0 ? material : withheld).map((m) => m.exactTerm).slice(0, 8).join(", "),
+      attemptedResolution: `Depth ${depth} > maxDefinitionDepth ${state.budget.maxDefinitionDepth}; nested definition closure incomplete — continue from withheld terms.`,
+      reason:
+        material.length > 0
+          ? "Material nested definition dependencies withheld past the primary depth bound — REVIEW_REQUIRED continuation (not silent SUFFICIENT)."
+          : "Non-material nested definition dependencies withheld past the primary depth bound — disclosed without marking the bundle BUDGET_EXCEEDED.",
+      candidateTargets: withheld.map((m) => m.exactTerm),
+      citation: parentItemId,
+      severity: material.length > 0 ? "MEDIUM" : "LOW",
+    });
     return;
   }
   state.maxDefinitionDepthReached = Math.max(state.maxDefinitionDepthReached, depth);

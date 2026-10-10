@@ -1,0 +1,143 @@
+{
+  "artifact": "AGENT7_WOR_OPERATIVE_RESTATEMENT_RESOLUTION",
+  "startingMainSha": "6abe42bae6dfe69bb72467daa7f460b727200d1b",
+  "dependencies": {
+    "pr274": {
+      "url": "https://github.com/egsul897/headroom/pull/274",
+      "state": "OPEN",
+      "headSha": "48950c804ff55001972ea7aa5a4812658becdd86",
+      "note": "Consumed as optional confirmed-identity contract only; package-graph edges not rewritten."
+    },
+    "pr276": {
+      "url": "https://github.com/egsul897/headroom/pull/276",
+      "state": "MERGED",
+      "mergeSha": "6abe42bae6dfe69bb72467daa7f460b727200d1b",
+      "holdout": "wor-2023-2026-credit-facility"
+    }
+  },
+  "sourceHashes": {
+    "doc-a": "29751da8c5ee22c84facccf0d643312b2fa8c485b612f92970bdbff05a4df5b2",
+    "doc-b": "e5ce81017e3635960bcd519af513b480ca48a297cf97ba72e485ecb023399d3b"
+  },
+  "packageGraphRestatesUnchanged": {
+    "status": "REVIEW_REQUIRED",
+    "evidenceClass": "SUPPORTING_TARGET_EVIDENCE",
+    "targetDocumentId": "doc-a"
+  },
+  "restatementAuthorities": [
+    {
+      "successorDocumentId": "doc-a",
+      "predecessorDocumentId": null,
+      "status": "REVIEW_REQUIRED",
+      "effectiveDateIso": "2023-09-27",
+      "effectivenessInference": "INFERRED_FROM_DATED_AS_OF_WITH_EXECUTION",
+      "conditionsPrecedentSatisfaction": "NOT_INDEPENDENTLY_PROVEN",
+      "caveats": [],
+      "operativeLanguageLocation": "BOTH",
+      "packageGraphRelationshipStatus": "UNRESOLVED"
+    },
+    {
+      "successorDocumentId": "doc-b",
+      "predecessorDocumentId": "doc-a",
+      "status": "OPERATIVE_AUTHORITY_CONFIRMED",
+      "effectiveDateIso": "2026-08-31",
+      "effectivenessInference": "INFERRED_FROM_DATED_AS_OF_WITH_EXECUTION",
+      "conditionsPrecedentSatisfaction": "NOT_INDEPENDENTLY_PROVEN",
+      "caveats": [
+        "PACKAGE_GRAPH_RESTATES_NOT_RESOLVED",
+        "ADDITIVE_AUTHORITY_DOES_NOT_REWRITE_PACKAGE_GRAPH",
+        "CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN"
+      ],
+      "operativeLanguageLocation": "BOTH",
+      "packageGraphRelationshipStatus": "REVIEW_REQUIRED"
+    }
+  ],
+  "asOf2026_08_30": {
+    "governingDocumentId": "doc-a",
+    "authorityClassification": "NOT_YET_EFFECTIVE"
+  },
+  "asOf2026_08_31": {
+    "verdict": "OPERATIVE_RESTATEMENT_AUTHORITY_VERIFIED",
+    "verdictReasons": [
+      "All requested provisions resolve under source-backed restatement authority.",
+      "CP satisfaction remains a disclosed caveat — not independently proven from package artifacts.",
+      "1 historical restatement(s) correctly remain REVIEW_REQUIRED because their prior agreement is out of package."
+    ],
+    "unsupportedCases": [
+      "PACKAGE_GRAPH_RESTATES_UNCHANGED:doc-a:UNRESOLVED",
+      "CP_SATISFACTION_NOT_INDEPENDENTLY_PROVEN:doc-b",
+      "PACKAGE_GRAPH_RESTATES_UNCHANGED:doc-b:REVIEW_REQUIRED",
+      "HISTORICAL_PRIOR_OUT_OF_PACKAGE:doc-a",
+      "NO_PACKAGE_GRAPH_EDGE_MUTATION",
+      "NO_PRODUCTION_NEON_WRITES",
+      "NO_PAID_INFERENCE"
+    ],
+    "provisions": [
+      {
+        "sectionRef": "6.01",
+        "governingDocumentId": "doc-b",
+        "authorityClassification": "CONFIRMED_OPERATIVE_WITH_CAVEATS",
+        "supersededDocumentIds": [
+          "doc-a"
+        ],
+        "caveats": [
+          "doc-b:PACKAGE_GRAPH_RESTATES_NOT_RESOLVED",
+          "doc-b:ADDITIVE_AUTHORITY_DOES_NOT_REWRITE_PACKAGE_GRAPH",
+          "doc-b:CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN"
+        ]
+      },
+      {
+        "sectionRef": "6.02",
+        "governingDocumentId": "doc-b",
+        "authorityClassification": "CONFIRMED_OPERATIVE_WITH_CAVEATS",
+        "supersededDocumentIds": [
+          "doc-a"
+        ],
+        "caveats": [
+          "doc-b:PACKAGE_GRAPH_RESTATES_NOT_RESOLVED",
+          "doc-b:ADDITIVE_AUTHORITY_DOES_NOT_REWRITE_PACKAGE_GRAPH",
+          "doc-b:CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN"
+        ]
+      },
+      {
+        "sectionRef": "6.03",
+        "governingDocumentId": "doc-b",
+        "authorityClassification": "CONFIRMED_OPERATIVE_WITH_CAVEATS",
+        "supersededDocumentIds": [
+          "doc-a"
+        ],
+        "caveats": [
+          "doc-b:PACKAGE_GRAPH_RESTATES_NOT_RESOLVED",
+          "doc-b:ADDITIVE_AUTHORITY_DOES_NOT_REWRITE_PACKAGE_GRAPH",
+          "doc-b:CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN"
+        ]
+      },
+      {
+        "sectionRef": "6.13",
+        "governingDocumentId": "doc-b",
+        "authorityClassification": "CONFIRMED_OPERATIVE_WITH_CAVEATS",
+        "supersededDocumentIds": [
+          "doc-a"
+        ],
+        "caveats": [
+          "doc-b:PACKAGE_GRAPH_RESTATES_NOT_RESOLVED",
+          "doc-b:ADDITIVE_AUTHORITY_DOES_NOT_REWRITE_PACKAGE_GRAPH",
+          "doc-b:CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN"
+        ]
+      },
+      {
+        "sectionRef": "11.01",
+        "governingDocumentId": "doc-b",
+        "authorityClassification": "CONFIRMED_OPERATIVE_WITH_CAVEATS",
+        "supersededDocumentIds": [
+          "doc-a"
+        ],
+        "caveats": [
+          "doc-b:PACKAGE_GRAPH_RESTATES_NOT_RESOLVED",
+          "doc-b:ADDITIVE_AUTHORITY_DOES_NOT_REWRITE_PACKAGE_GRAPH",
+          "doc-b:CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN"
+        ]
+      }
+    ]
+  }
+}

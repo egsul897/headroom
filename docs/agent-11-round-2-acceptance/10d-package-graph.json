@@ -1,0 +1,161 @@
+{
+  "packageGraphPipelineVersion": "phase-2c-package-graph-pipeline.v1",
+  "classifications": [
+    {
+      "documentId": "doc-a",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "AMENDED AND RESTATED CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "doc-b",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "AMENDED AND RESTATED\nCREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    }
+  ],
+  "relationships": [
+    {
+      "sourceDocumentId": "doc-a",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "relationshipType": "RESTATES",
+      "sourceCitation": "AN Third AR Credit Agreement 2020-03-26",
+      "confidence": 0,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+      "resolutionMethod": "DETERMINISTIC_NO_SIGNAL"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "relationshipType": "RESTATES",
+      "sourceCitation": "AN Fifth AR Credit Agreement 2026-09-14",
+      "confidence": 0,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+      "resolutionMethod": "DETERMINISTIC_NO_SIGNAL"
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "name": "THIRD AMENDED AND RESTATED CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-a"
+      ],
+      "baseDocumentId": "doc-a",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED",
+      "associationKind": "CONFIRMED",
+      "provisionalDocumentIds": [],
+      "provisionalBridgeBlockers": []
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "name": "CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-b"
+      ],
+      "baseDocumentId": "doc-b",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED",
+      "associationKind": "CONFIRMED",
+      "provisionalDocumentIds": [],
+      "provisionalBridgeBlockers": []
+    }
+  ],
+  "identities": [
+    {
+      "documentId": "doc-a",
+      "title": "THIRD AMENDED AND RESTATED CREDIT AGREEMENT",
+      "agreementTypeLabel": "THIRD AMENDED AND RESTATED CREDIT AGREEMENT",
+      "executionDate": null,
+      "effectiveDate": null,
+      "parties": [
+        "AUTONATION, INC."
+      ],
+      "borrowerOrIssuer": "AUTONATION, INC.",
+      "administrativeAgentOrTrustee": "JPMORGAN CHASE BANK, N.A.",
+      "facilityOrInstrumentName": "THIRD AMENDED AND RESTATED CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "\nTHIRD AMENDED AND RESTATED CREDIT AGREEMENT",
+          "charStart": 90
+        },
+        "borrowerOrIssuer": {
+          "text": "AUTONATION, INC.,\nas Borrower",
+          "charStart": 148
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "JPMORGAN CHASE BANK, N.A.,\nas Administrative Agent",
+          "charStart": 179
+        }
+      }
+    },
+    {
+      "documentId": "doc-b",
+      "title": "CREDIT AGREEMENT",
+      "agreementTypeLabel": "CREDIT AGREEMENT",
+      "executionDate": null,
+      "effectiveDate": null,
+      "parties": [
+        "AUTONATION, INC."
+      ],
+      "borrowerOrIssuer": "AUTONATION, INC.",
+      "administrativeAgentOrTrustee": "JPMORGAN CHASE BANK, N.A.",
+      "facilityOrInstrumentName": "CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "CREDIT AGREEMENT",
+          "charStart": 105
+        },
+        "borrowerOrIssuer": {
+          "text": "AUTONATION, INC.,\nas Borrower",
+          "charStart": 136
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "JPMORGAN CHASE BANK, N.A.,\n\nas Administrative Agent",
+          "charStart": 168
+        }
+      }
+    }
+  ],
+  "documentRoles": [
+    {
+      "documentId": "doc-a",
+      "role": "RESTATEMENT",
+      "confidence": "PROVISIONAL",
+      "effectiveDate": null,
+      "executionDate": null,
+      "evidenceCitations": [
+        "AN Third AR Credit Agreement 2020-03-26"
+      ],
+      "reason": "Classified as amended-and-restated without a RESOLVED RESTATES edge."
+    },
+    {
+      "documentId": "doc-b",
+      "role": "RESTATEMENT",
+      "confidence": "PROVISIONAL",
+      "effectiveDate": null,
+      "executionDate": null,
+      "evidenceCitations": [
+        "AN Fifth AR Credit Agreement 2026-09-14"
+      ],
+      "reason": "Classified as amended-and-restated without a RESOLVED RESTATES edge."
+    }
+  ]
+}

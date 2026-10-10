@@ -1,0 +1,57 @@
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v2.1.9 /workspace
+
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > records disposable database identity
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > records disposable database identity for the report
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 1+2+3+4: operative authority + provisional caveats survive restart-equivalent reload
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 1: Financial evidence write/read/restart — Matthews snapshot + sidecar intact
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 5: recursive context manifests are reproducible and durable
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 6+7: SemanticTruthRecord retains provenance; unverified cannot become verified via persistence
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 8: financial snapshots retain source identity and covenant accounting definition
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 9: unknown historical utilization remains unknown (empty ledger ≠ zero)
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 10+11: ledger replay / reclassification preserve history via supersession
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 12+13: simulation does not mutate actual capacity; refused mutatesActualLedger
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > records disposable database identity
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 2: Historical utilization write/read/restart via ContractLedgerUsage
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 14: revoked evidence cannot authorize new production calculations
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 15: cross-tenant reads and writes are rejected
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 16: duplicate ingestion is idempotent
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 3: UNKNOWN utilization preservation — empty/partial ≠ zero
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 17: source changes invalidate dependent results
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 4: Incomplete evidence refusal after reload
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 18: historical as-of reconstruction remains correct after supersession
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 5: Cross-tenant isolation
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 6: Duplicate event idempotency
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 7: Historical correction / supersession — revised financial marks prior SUPERSEDED
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 19: process restart does not lose approvals / audit trail
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > 20: production activation remains BLOCKED without both trusted gates
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > write → fresh PrismaClient read-back reconstructs authority + evidence + sim isolation
+ ✓ tests/persistence/neon-first-acceptance.test.ts > Neon-first persistence acceptance (disposable PostgreSQL) > refused calculation persists without mutating ledger
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 8: Dependency invalidation — financial revision / cert revoke → STALE/INVALIDATED
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 9: Source-provenance reconstruction from durable rows alone
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > 10: Hypothetical simulation without ledger mutation
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > adversarial: Stored APPROVED certificate with untrusted issuer does not activate production
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > adversarial: Cross-tenant provenance substitution refused
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > adversarial: Missing utilization events remain UNKNOWN
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > adversarial: Duplicate event replay does not double-count
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > idempotent duplicate execution does not fork authoritative rows
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > adversarial: Stale calculation reuse refused
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > adversarial: GAAP/covenant metric confusion refused on ingest + preserved in store
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > adversarial: Hypothetical transaction does not mutate ledger
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > adversarial: Reconstructed evidence with missing source document keeps empty documentId refused on revalidation path
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > product wiring slice: Position/Ask/Simulate share durable identities
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts > Agent #9 financial/utilization durable persistence (disposable PostgreSQL) > production activation remains BLOCKED
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > concurrent duplicate writes stay idempotent
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > refused provisional path persists refusal without ledger mutation
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > cross-tenant read of persisted operative snapshot is refused
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > dependency invalidation + evidence revocation blocks current reuse
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > historical supersession preserves prior operative claim as-of
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > production mode cannot persist PRODUCTION_AUTHORITATIVE while activation BLOCKED
+ ✓ tests/persistence/product-execution-persistence.test.ts > Product execution persistence (canonical VTE → Neon) > Position/Ask/Simulate handoff traceIds are durable in audit payload
+
+ Test Files  3 passed (3)
+      Tests  47 passed (47)
+   Start at  16:42:04
+   Duration  3.33s (transform 766ms, setup 0ms, collect 1.44s, tests 7.72s, environment 0ms, prepare 147ms)
+

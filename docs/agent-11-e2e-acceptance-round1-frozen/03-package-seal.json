@@ -1,0 +1,36 @@
+{
+  "artifact": "AGENT11_PACKAGE_SEAL",
+  "packageKey": "an-2020-2026-credit-facility",
+  "issuer": "AutoNation, Inc.",
+  "ticker": "AN",
+  "cik": "0000350698",
+  "role": "AGENT11_AUTHENTIC_EVALUATION_PACKAGE",
+  "sealedAtUtc": "2026-10-10T13:51:21Z",
+  "sealedBeforeCompilerRun": true,
+  "mainShaAtSeal": "b23e312afedb53ea6771c2ead1afbcdd758edd86",
+  "fixturePath": "tests/fixtures/unseen-packages/an-2020-2026-credit-facility",
+  "documents": [
+    {
+      "documentId": "doc-a",
+      "label": "AutoNation, Inc. Third Amended and Restated Credit Agreement (2020-03-26)",
+      "agreementDate": "2020-03-26",
+      "accession": "0000350698-20-000060",
+      "exhibit": "EX-10.1",
+      "url": "https://www.sec.gov/Archives/edgar/data/350698/000035069820000060/ex101creditagreement.htm",
+      "rawSha256": "f8be9fcb1d7fbdc8bf04b8cd1c16e5cc15d4650ce2d2c66709d9338ed9fb49a0",
+      "extractedSha256": "3b40cf207df8970a384fa70fba766550bcacc40f52d4d611c4eb80fc039fdcdc"
+    },
+    {
+      "documentId": "doc-b",
+      "label": "AutoNation, Inc. Fifth Amended and Restated Credit Agreement (2026-09-14)",
+      "agreementDate": "2026-09-14",
+      "accession": "0001193125-26-391953",
+      "exhibit": "EX-10.1",
+      "url": "https://www.sec.gov/Archives/edgar/data/350698/000119312526391953/d83423dex101.htm",
+      "rawSha256": "72ffe55dabd3247b1bc87888433237f603d9ca80e2cd0ba23b38264fa5c0f162",
+      "extractedSha256": "5c932a0f1f2eeccab12627e36a5ee87e6dada826b7ffd55cbbba887ec3d8aa26"
+    }
+  ],
+  "intermediateGap": "Fourth A&R (Existing Credit Agreement dated 2023-07-18 per doc-b definition) was not acquired as a full-agreement exhibit; package uses Third A&R + Fifth A&R. Operative resolution must still identify doc-b as governing after 2026-09-14 Closing Date.",
+  "integrityRule": "If extractedSha256 for either document changes after seal, or if 05-legal-reference-answers.json is edited after compiler execution begins, the evaluation is INVALIDATED."
+}

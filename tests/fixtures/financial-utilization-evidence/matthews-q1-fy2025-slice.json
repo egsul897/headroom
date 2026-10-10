@@ -1,0 +1,203 @@
+{
+  "label": "AUTHENTIC_SOURCE_BACKED",
+  "companyId": "matthews-international",
+  "entityName": "Matthews International Corporation",
+  "sliceNote": "Bounded HEADROOM-9 vertical slice. Figures from in-repo Matthews Q1 FY2025 provenance (docs/matthews-international-onboarding.md; EDGAR accession 0000063296-25-000006). Not synthetic placeholders. Completeness is NOT reviewer-confirmed.",
+  "edgarAccession": "0000063296-25-000006",
+  "reportingPeriod": "FY2025-Q1",
+  "asOf": "2024-12-31",
+  "measurementDate": "2024-12-31",
+  "currency": "USD",
+  "units": "USD_MILLIONS",
+  "provenanceId": "matw-q1fy2025-10q-indenture-ebitda-slice-v1",
+  "statementLines": [
+    {
+      "lineId": "bs-total-assets",
+      "statementFamily": "BALANCE_SHEET",
+      "label": "Total assets",
+      "amount": 1791.719,
+      "currency": "USD",
+      "units": "USD_MILLIONS",
+      "reportingPeriod": "FY2025-Q1",
+      "measurementDate": "2024-12-31",
+      "consolidationPerimeter": "Matthews International Corporation and consolidated subsidiaries (GAAP)",
+      "definitionBasis": "GAAP_STATEMENT",
+      "accountingDefinition": "Total assets per Consolidated Balance Sheet (GAAP)",
+      "sourceDocumentId": "edgar:0000063296-25-000006:10-Q",
+      "exactLocation": "Consolidated Balance Sheet / Total assets",
+      "excerpt": "Total assets $1,791.719 million",
+      "restatementStatus": "ORIGINAL"
+    },
+    {
+      "lineId": "bs-cash",
+      "statementFamily": "BALANCE_SHEET",
+      "label": "Cash and cash equivalents",
+      "amount": 33.513,
+      "currency": "USD",
+      "units": "USD_MILLIONS",
+      "reportingPeriod": "FY2025-Q1",
+      "measurementDate": "2024-12-31",
+      "consolidationPerimeter": "Matthews International Corporation and consolidated subsidiaries (GAAP)",
+      "definitionBasis": "GAAP_STATEMENT",
+      "accountingDefinition": "Cash and cash equivalents per Consolidated Balance Sheet",
+      "sourceDocumentId": "edgar:0000063296-25-000006:10-Q",
+      "exactLocation": "Consolidated Balance Sheet / Cash and cash equivalents",
+      "excerpt": "Cash and cash equivalents $33.513 million",
+      "restatementStatus": "ORIGINAL"
+    },
+    {
+      "lineId": "is-interest-expense",
+      "statementFamily": "INCOME_STATEMENT",
+      "label": "Interest expense",
+      "amount": 54.64,
+      "currency": "USD",
+      "units": "USD_MILLIONS",
+      "reportingPeriod": "FY2025-Q1",
+      "measurementDate": "2024-12-31",
+      "consolidationPerimeter": "Matthews International Corporation and consolidated subsidiaries (GAAP)",
+      "definitionBasis": "GAAP_STATEMENT",
+      "accountingDefinition": "Interest expense (TTM / certificate pack as used in onboarding financial snapshot)",
+      "sourceDocumentId": "edgar:0000063296-25-000006:10-Q",
+      "exactLocation": "Interest expense (onboarding financial snapshot provenance)",
+      "excerpt": "Interest expense $54.64 million",
+      "restatementStatus": "ORIGINAL"
+    },
+    {
+      "lineId": "debt-total",
+      "statementFamily": "DEBT_SCHEDULE",
+      "label": "Total debt",
+      "amount": 809.211,
+      "currency": "USD",
+      "units": "USD_MILLIONS",
+      "reportingPeriod": "FY2025-Q1",
+      "measurementDate": "2024-12-31",
+      "consolidationPerimeter": "Matthews International Corporation and consolidated subsidiaries",
+      "definitionBasis": "GAAP_STATEMENT",
+      "accountingDefinition": "Revolver + 2027 Notes net + other borrowings + finance leases (Note 7 roll-up)",
+      "sourceDocumentId": "edgar:0000063296-25-000006:10-Q",
+      "exactLocation": "Note 7 / Debt / Total debt roll-up",
+      "excerpt": "Total debt $809.211 million",
+      "restatementStatus": "ORIGINAL"
+    },
+    {
+      "lineId": "debt-secured",
+      "statementFamily": "DEBT_SCHEDULE",
+      "label": "Secured debt",
+      "amount": 778.882,
+      "currency": "USD",
+      "units": "USD_MILLIONS",
+      "reportingPeriod": "FY2025-Q1",
+      "measurementDate": "2024-12-31",
+      "consolidationPerimeter": "Matthews International Corporation — revolver + 2027 Notes (conservative secured)",
+      "definitionBasis": "CONTRACT_ADJUSTED",
+      "accountingDefinition": "Secured debt on Common Collateral pool (revolver + Notes; other borrowings and finance leases excluded — disclosed simplification)",
+      "sourceDocumentId": "edgar:0000063296-25-000006:10-Q",
+      "exactLocation": "Note 7 / Debt / Secured components",
+      "excerpt": "Secured debt $778.882 million",
+      "restatementStatus": "ORIGINAL",
+      "adjustments": [
+        {
+          "label": "Exclude other borrowings / finance leases from secured pool",
+          "amount": -30.329,
+          "sourceCitation": "docs/matthews-international-onboarding.md § financial inputs"
+        }
+      ]
+    },
+    {
+      "lineId": "cert-consolidated-ebitda",
+      "statementFamily": "CONTRACT_CERTIFICATE",
+      "label": "Consolidated EBITDA (Indenture-defined, TTM)",
+      "amount": 128.313,
+      "currency": "USD",
+      "units": "USD_MILLIONS",
+      "reportingPeriod": "FY2025-Q1",
+      "measurementDate": "2024-12-31",
+      "consolidationPerimeter": "Issuer and Restricted Subsidiaries (Indenture)",
+      "definitionBasis": "CONTRACT_ADJUSTED",
+      "accountingDefinition": "Consolidated EBITDA as defined in Matthews Indenture (not GAAP operating income)",
+      "sourceDocumentId": "edgar:0000063296-25-000006:indenture-ebitda-buildup",
+      "exactLocation": "Indenture Consolidated EBITDA build-up / TTM",
+      "excerpt": "Consolidated EBITDA (Indenture-defined, TTM) $128.313 million",
+      "restatementStatus": "ORIGINAL",
+      "adjustments": [
+        {
+          "label": "Indenture add-backs / adjustments per Consolidated EBITDA definition",
+          "amount": 0,
+          "sourceCitation": "docs/matthews-international-onboarding.md Consolidated EBITDA table"
+        }
+      ]
+    },
+    {
+      "lineId": "bs-total-assets-gaap-only",
+      "statementFamily": "BALANCE_SHEET",
+      "label": "Total assets (GAAP face — not auto-mapped to Consolidated Total Assets)",
+      "amount": 1791.719,
+      "currency": "USD",
+      "units": "USD_MILLIONS",
+      "reportingPeriod": "FY2025-Q1",
+      "measurementDate": "2024-12-31",
+      "consolidationPerimeter": "Matthews International Corporation and consolidated subsidiaries (GAAP)",
+      "definitionBasis": "GAAP_STATEMENT",
+      "accountingDefinition": "GAAP Total assets — distinct from Indenture Consolidated Total Assets unless separately defined and mapped",
+      "sourceDocumentId": "edgar:0000063296-25-000006:10-Q",
+      "exactLocation": "Consolidated Balance Sheet / Total assets",
+      "excerpt": "Total assets $1,791.719 million",
+      "restatementStatus": "ORIGINAL"
+    }
+  ],
+  "metricMappings": [
+    { "lineId": "bs-total-assets", "metricKey": "TOTAL_ASSETS" },
+    { "lineId": "bs-cash", "metricKey": "CASH_BALANCES" },
+    { "lineId": "is-interest-expense", "metricKey": "INTEREST_EXPENSE" },
+    { "lineId": "debt-total", "metricKey": "TOTAL_DEBT" },
+    { "lineId": "debt-secured", "metricKey": "SECURED_DEBT" },
+    { "lineId": "cert-consolidated-ebitda", "metricKey": "CONSOLIDATED_EBITDA" }
+  ],
+  "utilizationEvents": [
+    {
+      "eventId": "matw-revolver-outstanding-2024-12-31",
+      "kind": "DEBT_ISSUANCE",
+      "amount": 484.083,
+      "currency": "USD",
+      "effectiveDate": "2024-12-31",
+      "applicableProvisionId": "ind_permitted_debt_1a_flat",
+      "entityKey": "matthews-international",
+      "sourceLabel": "edgar:0000063296-25-000006 Note 7 / Revolving credit facility outstanding",
+      "authenticity": "AUTHENTIC",
+      "approvalState": "APPROVED",
+      "supersession": "NONE",
+      "notes": "Revolver outstanding attributed to Indenture Debt Facilities basket. Point-in-time balance — not a complete historical issuance ledger."
+    },
+    {
+      "eventId": "matw-2027-notes-outstanding-2024-12-31",
+      "kind": "DEBT_ISSUANCE",
+      "amount": 294.799,
+      "currency": "USD",
+      "effectiveDate": "2024-12-31",
+      "applicableProvisionId": "ind_permitted_debt_1a_flat",
+      "entityKey": "matthews-international",
+      "sourceLabel": "edgar:0000063296-25-000006 Note 7 / 2027 Notes net of discount",
+      "authenticity": "AUTHENTIC",
+      "approvalState": "APPROVED",
+      "supersession": "NONE",
+      "notes": "2027 Notes outstanding. Shared facilities capacity path for demonstration; legal attribution may differ by instrument — retained as observed attributed usage for this slice."
+    }
+  ],
+  "capacityRuleId": "ind_permitted_debt_1a_flat",
+  "requiredFinancialMetrics": [
+    "CONSOLIDATED_EBITDA",
+    "TOTAL_DEBT",
+    "SECURED_DEBT",
+    "CASH_BALANCES",
+    "INTEREST_EXPENSE",
+    "TOTAL_ASSETS"
+  ],
+  "completenessLimitations": [
+    "No reviewer-confirmed completeness certificate is included.",
+    "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+    "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+    "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+    "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+    "Production trusted-issuer activation remains BLOCKED."
+  ]
+}
