@@ -28,15 +28,26 @@
         "sufficiencyState": "BUDGET_EXCEEDED",
         "itemCounts": {
           "OPERATIVE_SOURCE": 1,
-          "CHILD_RULE": 4,
-          "DEFINITION": 3,
-          "DEFINITION_DEPENDENCY": 1
+          "CHILD_RULE": 13,
+          "PROVISO": 1,
+          "UNVERIFIED_SIBLING_SIGNAL": 1,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 41
         },
-        "unresolvedCount": 23,
+        "unresolvedCount": 61,
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
         "stopReasons": [
           "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
-        ]
+        ],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": "doc-a",
+          "remapped": true,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 2,
@@ -117,27 +128,32 @@
         }
       ],
       "contextBundle": {
-        "sufficiencyState": "REVIEW_REQUIRED",
+        "sufficiencyState": "BUDGET_EXCEEDED",
         "itemCounts": {
-          "OPERATIVE_SOURCE": 1,
-          "CHILD_RULE": 2,
-          "UNVERIFIED_SIBLING_SIGNAL": 3,
-          "EXCEPTION": 1,
-          "PROVISO": 1,
-          "DEFINITION": 1,
-          "DEFINITION_DEPENDENCY": 44,
-          "CROSS_DOCUMENT_REFERENCE": 1
+          "OPERATIVE_SOURCE": 1
         },
-        "unresolvedCount": 43,
+        "unresolvedCount": 233,
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
-        "stopReasons": []
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": "doc-a",
+          "remapped": true,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 6,
-        "definitionsPresentInBundleText": 4,
+        "definitionsPresentInBundleText": 3,
         "missingDefinitions": [
-          "Adjusted Consolidated EBITDA",
-          "Consolidated Funded Indebtedness"
+          "Consolidated Interest Coverage Ratio",
+          "Material Step-Up Acquisition",
+          "Four-Quarter Period"
         ],
         "anchorsInBundle": {
           "hit": 3,
@@ -202,7 +218,16 @@
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
         "stopReasons": [
           "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
-        ]
+        ],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-a",
+          "governingDocumentId": "doc-a",
+          "remapped": false,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 1,
@@ -279,20 +304,31 @@
         "itemCounts": {
           "OPERATIVE_SOURCE": 1,
           "EXCEPTION": 1,
-          "PROVISO": 1,
-          "UNVERIFIED_SIBLING_SIGNAL": 2,
-          "DEFINITION": 1,
-          "DEFINITION_DEPENDENCY": 45,
-          "CROSS_DOCUMENT_REFERENCE": 1
+          "UNVERIFIED_SIBLING_SIGNAL": 1,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 42,
+          "CROSS_REFERENCE": 1,
+          "CROSS_DOCUMENT_REFERENCE": 9
         },
-        "unresolvedCount": 49,
+        "unresolvedCount": 53,
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
-        "stopReasons": []
+        "stopReasons": [],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": "doc-a",
+          "remapped": true,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 4,
-        "definitionsPresentInBundleText": 4,
-        "missingDefinitions": [],
+        "definitionsPresentInBundleText": 3,
+        "missingDefinitions": [
+          "Material Step-Up Acquisition"
+        ],
         "anchorsInBundle": {
           "hit": 2,
           "miss": []
@@ -361,24 +397,35 @@
         }
       ],
       "contextBundle": {
-        "sufficiencyState": "REVIEW_REQUIRED",
+        "sufficiencyState": "INCOMPLETE",
         "itemCounts": {
           "OPERATIVE_SOURCE": 1,
-          "CHILD_RULE": 20,
-          "UNVERIFIED_SIBLING_SIGNAL": 3,
-          "PROVISO": 1,
+          "CHILD_RULE": 19,
+          "UNVERIFIED_SIBLING_SIGNAL": 2,
           "DEFINITION": 2,
-          "DEFINITION_DEPENDENCY": 29,
-          "CROSS_DOCUMENT_REFERENCE": 3
+          "DEFINITION_DEPENDENCY": 41,
+          "CROSS_REFERENCE": 1,
+          "CROSS_DOCUMENT_REFERENCE": 1
         },
-        "unresolvedCount": 45,
+        "unresolvedCount": 55,
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
-        "stopReasons": []
+        "stopReasons": [],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": "doc-a",
+          "remapped": true,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 5,
-        "definitionsPresentInBundleText": 5,
-        "missingDefinitions": [],
+        "definitionsPresentInBundleText": 4,
+        "missingDefinitions": [
+          "Permitted Acquisition"
+        ],
         "anchorsInBundle": {
           "hit": 3,
           "miss": []
@@ -442,22 +489,31 @@
         "sufficiencyState": "BUDGET_EXCEEDED",
         "itemCounts": {
           "OPERATIVE_SOURCE": 1,
-          "CHILD_RULE": 4,
-          "DEFINITION": 3,
-          "DEFINITION_DEPENDENCY": 1
+          "CHILD_RULE": 13,
+          "PROVISO": 1,
+          "UNVERIFIED_SIBLING_SIGNAL": 1,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 41
         },
-        "unresolvedCount": 23,
+        "unresolvedCount": 61,
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
         "stopReasons": [
           "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
-        ]
+        ],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": "doc-a",
+          "remapped": true,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 2,
-        "definitionsPresentInBundleText": 1,
-        "missingDefinitions": [
-          "Subsidiary"
-        ],
+        "definitionsPresentInBundleText": 2,
+        "missingDefinitions": [],
         "anchorsInBundle": {
           "hit": 0,
           "miss": [
@@ -525,20 +581,34 @@
         "sufficiencyState": "BUDGET_EXCEEDED",
         "itemCounts": {
           "OPERATIVE_SOURCE": 1,
-          "CHILD_RULE": 4,
-          "DEFINITION": 3,
-          "DEFINITION_DEPENDENCY": 1
+          "CHILD_RULE": 13,
+          "PROVISO": 1,
+          "UNVERIFIED_SIBLING_SIGNAL": 1,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 41
         },
-        "unresolvedCount": 23,
+        "unresolvedCount": 61,
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
         "stopReasons": [
           "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
-        ]
+        ],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": "doc-a",
+          "remapped": true,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 3,
-        "definitionsPresentInBundleText": 3,
-        "missingDefinitions": [],
+        "definitionsPresentInBundleText": 1,
+        "missingDefinitions": [
+          "Consolidated Funded Indebtedness",
+          "Four-Quarter Period"
+        ],
         "anchorsInBundle": {
           "hit": 1,
           "miss": []
@@ -601,22 +671,31 @@
         "sufficiencyState": "BUDGET_EXCEEDED",
         "itemCounts": {
           "OPERATIVE_SOURCE": 1,
-          "CHILD_RULE": 4,
-          "DEFINITION": 3,
-          "DEFINITION_DEPENDENCY": 1
+          "CHILD_RULE": 13,
+          "PROVISO": 1,
+          "UNVERIFIED_SIBLING_SIGNAL": 1,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 41
         },
-        "unresolvedCount": 23,
+        "unresolvedCount": 61,
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
         "stopReasons": [
           "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
-        ]
+        ],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": "doc-a",
+          "remapped": true,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 2,
-        "definitionsPresentInBundleText": 1,
-        "missingDefinitions": [
-          "Stated Termination Date"
-        ],
+        "definitionsPresentInBundleText": 2,
+        "missingDefinitions": [],
         "anchorsInBundle": {
           "hit": 0,
           "miss": [
@@ -689,23 +768,31 @@
         "sufficiencyState": "BUDGET_EXCEEDED",
         "itemCounts": {
           "OPERATIVE_SOURCE": 1,
-          "CHILD_RULE": 4,
-          "DEFINITION": 3,
-          "DEFINITION_DEPENDENCY": 1
+          "CHILD_RULE": 13,
+          "PROVISO": 1,
+          "UNVERIFIED_SIBLING_SIGNAL": 1,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 41
         },
-        "unresolvedCount": 23,
+        "unresolvedCount": 61,
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
         "stopReasons": [
           "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
-        ]
+        ],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": "doc-a",
+          "remapped": true,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 4,
-        "definitionsPresentInBundleText": 2,
-        "missingDefinitions": [
-          "Escrow Indebtedness",
-          "Guaranty Obligations"
-        ],
+        "definitionsPresentInBundleText": 4,
+        "missingDefinitions": [],
         "anchorsInBundle": {
           "hit": 0,
           "miss": [
@@ -776,15 +863,26 @@
         "sufficiencyState": "REVIEW_REQUIRED",
         "itemCounts": {
           "OPERATIVE_SOURCE": 1,
-          "UNVERIFIED_SIBLING_SIGNAL": 3,
+          "CHILD_RULE": 1,
+          "UNVERIFIED_SIBLING_SIGNAL": 2,
           "EXCEPTION": 1,
-          "DEFINITION": 4,
-          "DEFINITION_DEPENDENCY": 38,
-          "CROSS_DOCUMENT_REFERENCE": 7
+          "DEFINITION": 3,
+          "DEFINITION_DEPENDENCY": 43,
+          "CROSS_REFERENCE": 1,
+          "CROSS_DOCUMENT_REFERENCE": 9
         },
-        "unresolvedCount": 43,
+        "unresolvedCount": 61,
         "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
-        "stopReasons": []
+        "stopReasons": [],
+        "originatingDocumentId": "doc-a",
+        "retrievalBinding": {
+          "originalDocumentId": "doc-b",
+          "governingDocumentId": "doc-a",
+          "remapped": true,
+          "retrievalAuthorized": true,
+          "authorityClassification": "CONFIRMED_OPERATIVE",
+          "refusalReason": null
+        }
       },
       "contextCompleteness": {
         "requiredDefinitions": 4,

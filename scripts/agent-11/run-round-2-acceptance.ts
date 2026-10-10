@@ -39,6 +39,7 @@ import type { PackageDocumentInput } from "../../lib/contract-model/compiler/pac
 import { assignPackageDocumentRoles } from "../../lib/contract-model/compiler/package-graph/document-roles";
 import { buildOperativeHandoffBundle } from "../../lib/contract-model/compiler/package-graph/operative-handoff";
 import {
+  bindCandidateToOperativeRetrievalSource,
   buildOperativeAuthorityHandoffBundle,
   resolvePackageRestatementAuthorities,
 } from "../../lib/contract-model/compiler/operative-authority";
@@ -546,6 +547,13 @@ async function main() {
           probeNode,
           family === "DEFINITION" || family === "AMENDMENT" || family === "MERGER" ? "OTHER" : family,
         );
+        // P0 binding: retrieve from Agent #7 governingDocumentId when authorized;
+        // never silently consolidate provisional / null governing designations.
+        const retrievalBinding = bindCandidateToOperativeRetrievalSource({
+          candidate,
+          authority: agent7Bundle,
+          index,
+        });
         const exactTermsByDocument = new Map<string, Map<string, string>>();
         for (const d of documents) {
           const m = new Map<string, string>();
@@ -556,7 +564,7 @@ async function main() {
         }
         const bundle = buildCovenantContextBundle(
           {
-            candidate,
+            candidate: retrievalBinding.retrievalCandidate,
             packageKey: "an-2020-2026-credit-facility",
             companyId: "agent-11-an-eval",
             instrumentKey: "an-revolving-facility",
@@ -578,6 +586,15 @@ async function main() {
           unresolvedCount: bundle.unresolvedDependencies.length,
           retrievalAlgorithmVersion: RETRIEVAL_ALGORITHM_VERSION,
           stopReasons: bundle.stopReasons,
+          originatingDocumentId: bundle.originatingDocumentId,
+          retrievalBinding: {
+            originalDocumentId: retrievalBinding.originalDocumentId,
+            governingDocumentId: retrievalBinding.governingDocumentId,
+            remapped: retrievalBinding.remapped,
+            retrievalAuthorized: retrievalBinding.retrievalAuthorized,
+            authorityClassification: retrievalBinding.authorityClassification,
+            refusalReason: retrievalBinding.refusalReason,
+          },
         };
         if (bundle.sufficiencyState === "SUFFICIENT") contextSufficient++;
         const bundleText = bundle.items.map((i) => `${i.excerptText ?? ""}\n${i.sourceCitation ?? ""}`).join("\n");
