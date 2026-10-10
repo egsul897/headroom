@@ -30,6 +30,15 @@ export {
   type ExtractRestatementEvidenceInput,
 } from "./restatement-evidence";
 
+export {
+  confirmedIdentityFromInstrumentGrouping,
+  evaluateProductionAuthorityPromotion,
+  summarizeBundleProductionAuthority,
+  type BundleProductionAuthoritySummary,
+  type ProductionAuthorityDisposition,
+  type ProductionAuthorityEvaluation,
+} from "./production-authority-gate";
+
 export type {
   ConditionsPrecedentSatisfaction,
   ConfirmedInstrumentIdentityView,

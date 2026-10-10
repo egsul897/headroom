@@ -36,7 +36,8 @@ const bundle = buildOperativeAuthorityHandoffBundle({
 | `restatementAuthorities[].status` | Only `OPERATIVE_AUTHORITY_CONFIRMED` authorizes successor governance (after as-of). |
 | `restatementAuthorities[].caveats` | Must be surfaced; especially `CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN`. |
 | `provisions[].governingDocumentId` | Source document for retrieval (#6) / execution (#10). Null ⇒ refuse. |
-| `provisions[].authorityClassification` | `CONFIRMED_OPERATIVE_WITH_CAVEATS` is usable with disclosure; `REVIEW_REQUIRED` / `AMBIGUOUS` / `PROVISIONAL_IDENTITY_BLOCKED` / `UNSUPPORTED` ⇒ fail closed. |
+| `provisions[].authorityClassification` | `CONFIRMED_OPERATIVE` may authorize unconditional operative-text authority. `CONFIRMED_OPERATIVE_WITH_CAVEATS` is **HYPOTHETICAL_OR_DISCLOSED_ONLY** — usable for retrieval/disclosure, **never** `PRODUCTION_AUTHORITY_ACTIVE`. `REVIEW_REQUIRED` / `AMBIGUOUS` / `PROVISIONAL_IDENTITY_BLOCKED` / `UNSUPPORTED` / `NOT_YET_EFFECTIVE` ⇒ fail closed. |
+| Production gate | Call `evaluateProductionAuthorityPromotion` / `summarizeBundleProductionAuthority({ attemptPromotionToProduction: true })` before elevating. Caveated / unproven-CP authority always refuses ACTIVE. |
 | `unsupportedCases` | Explicit refusals / non-mutations preserved for audit. |
 | `doesNotMutatePackageGraphRelationship` | Always `true` on authority rows — package-graph identity remains #274’s job. |
 
