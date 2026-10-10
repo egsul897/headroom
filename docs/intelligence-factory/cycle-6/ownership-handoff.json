@@ -1,12 +1,23 @@
 {
   "schemaVersion": "intelligence-factory.cycle-6-ownership.v1",
+  "researchStatus": "FROZEN",
+  "acceptedVerdict": "CYCLE6_RESEARCH_IMPROVEMENT_ACCEPTED",
+  "acceptedSha": "6808fad1622df59089a30933bf16d3fa3c13f115",
+  "productProof002Handoff": "docs/intelligence-factory/cycle-6/PRODUCT-PROOF-002-HANDOFF.md",
+  "sealedHoldout0xc6a1": {
+    "status": "BLOCKED_BY_NEON_CONNECTIVITY",
+    "path": "docs/intelligence-factory/cycle-6/acceptance-sealed-holdout.json",
+    "doNotSubstituteSyntheticTests": true,
+    "doNotClaimUnseenReliability": true
+  },
   "agent1": {
+    "status": "CLOSED",
     "owns": [
-      "FLAT_AMOUNT / GREATER_OF EBITDA / GREATER_OF TOTAL_ASSETS formula-executable path",
+      "FLAT_AMOUNT / GREATER_OF EBITDA / GREATER_OF TOTAL_ASSETS formula-executable path (handed to Product Proof 002)",
       "operative completeness + non-permission threshold gates",
       "promotion ladder (never PRODUCTION_AUTHORITATIVE)"
     ],
-    "doesNotOwn": ["builder recovery", "leverage recovery", "conditions[] structuring", "Neon Permission writes"]
+    "doesNotOwn": ["builder recovery", "leverage recovery", "conditions[] structuring", "Neon Permission writes", "Product Proof 002 execution"]
   },
   "agent2": {
     "owns": [
@@ -38,5 +49,6 @@
     "neonCapacity": "https://github.com/egsul897/headroom/pull/227",
     "durableLifecycle": "https://github.com/egsul897/headroom/pull/232",
     "utilizationAuthorityMain": "https://github.com/egsul897/headroom/pull/237"
-  }
+  },
+  "reopenPolicy": "No new Agent 1 research cycle unless Product Proof 002 identifies a specific extraction or discovery defect that prevents authentic compilation."
 }

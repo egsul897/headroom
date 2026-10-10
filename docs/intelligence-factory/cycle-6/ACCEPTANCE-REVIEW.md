@@ -78,10 +78,10 @@ Audited tip `daa4fb1e`: previously **7/7 green**, MERGEABLE/CLEAN. Acceptance fo
 
 ## Verdict
 
-### `CYCLE6_RESEARCH_IMPROVEMENT_ACCEPTED`
+### `CYCLE6_RESEARCH_IMPROVEMENT_ACCEPTED` — **FINAL** at `6808fad1622df59089a30933bf16d3fa3c13f115`
 
-Cycle 6 remains accepted as a **research / safety-preserving recall improvement** (frozen FP=0, 32/32 demotions held, recall 0→5, promotion ladder clarified, generalized structural/formula-shape corrections + consumer boolean gates).
+See `FINAL-ACCEPTANCE.md`. Research scope frozen. Handoff: `PRODUCT-PROOF-002-HANDOFF.md`.
 
 ### `UNSEEN_FORMULA_RELIABILITY_VALIDATED` — **NOT claimed**
 
-No independent unseen sealed-cohort evidence is available (Neon blocked; prior `0xc6c6` holdout is now exposed and must not be used as the validation set after inspection).
+Sealed `0xc6a1` remains `BLOCKED_BY_NEON_CONNECTIVITY`. Synthetic tests do not waive independent evidence.
