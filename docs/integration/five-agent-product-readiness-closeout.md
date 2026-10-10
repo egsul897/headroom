@@ -1,7 +1,7 @@
 # Five-agent integration — product readiness closeout
 
 **Integration PR:** https://github.com/egsul897/headroom/pull/278  
-**Integration tip:** `5ac4d59d4d4af5316e3b2b185ab3de1924349092` (`cursor/five-agent-integration-e920`)  
+**Integration tip:** see final tip after this closeout refresh (`cursor/five-agent-integration-e920`)  
 **Verdict:** `INTEGRATED_PRODUCT_READY_FOR_HUMAN_REVIEW`  
 **Not claimed:** production-certified capacity
 
@@ -10,10 +10,10 @@
 | Marker | SHA |
 | --- | --- |
 | Reported baseline at mission launch | `342a6b059e3385fb14d605b8d1593e878a221578` |
-| Final `origin/main` at closeout | `b23e312afedb53ea6771c2ead1afbcdd758edd86` |
-| Integration branch tip | `5ac4d59d4d4af5316e3b2b185ab3de1924349092` |
+| Final `origin/main` at closeout | `93857be59214c7410de9f005ff87870a47bf10ce` |
+| Integration branch tip | _(pinned in following commit)_ |
 
-Main advanced during the mission: `#268`, `#276`, `#277`, `#274` landed on `main` before integration closeout.
+Main advanced during the mission: `#268`, `#276`, `#277`, `#274`, `#266` landed on `main` before integration closeout.
 
 ## PR-by-PR disposition
 
@@ -24,7 +24,7 @@ Main advanced during the mission: `#268`, `#276`, `#277`, `#274` landed on `main
 | #274 package graph + handoff | `48950c80` | **SUPERSEDED** (merged upstream) | `b23e312a` | Absorbed into integration + main |
 | #273 financial evidence | `61c037dc` | **TARGETED_RECONCILIATION** | _(unmerged)_ | Draft; **CONFLICTING** vs current main; content on #278 |
 | #275 customer workflow | `deaa977e` | **TARGETED_RECONCILIATION** | _(unmerged)_ | Draft; **CONFLICTING** vs current main; content on #278 |
-| #266 fixed-dollar / greater-of | `628eefa4` | **MERGE_READY** (via #278) | _(unmerged)_ | Draft; tip CI green; land via #278 after human undraft+approve |
+| #266 fixed-dollar / greater-of | `628eefa4` | **SUPERSEDED** (merged upstream) | `93857be5` | Landed on main during closeout; integration tip retains contract A wire atop it |
 | #246 graph expansion | — | **BLOCKED / DO NOT MERGE** | — | Explicitly excluded; not reactivated |
 | #278 integration | tip of branch | **MERGE_READY for human review** | _(unmerged)_ | Draft; carries reconciled #266/#273/#275 + contract A wire |
 
@@ -34,6 +34,7 @@ Main advanced during the mission: `#268`, `#276`, `#277`, `#274` landed on `main
 2. `#276` → `6abe42bae6dfe69bb72467daa7f460b727200d1b`
 3. `#277` (typecheck fix after #276) → `9895b253…` (parent of #274 merge)
 4. `#274` → `b23e312afedb53ea6771c2ead1afbcdd758edd86`
+5. `#266` → `93857be59214c7410de9f005ff87870a47bf10ce`
 
 ### Human actions required to land remaining work
 
@@ -120,8 +121,7 @@ Authentic debt package → confirmed operative document → complete clause/cont
 
 ## Unmerged PR queue
 
-- **#278** — integration tip (preferred merge vehicle) — draft, awaiting human review
-- **#266** — draft, MERGEABLE; content included in #278
+- **#278** — integration tip (preferred merge vehicle) — draft, awaiting human review; carries #273/#275 reconcile + contract A + capacity marker cleanup
 - **#273** — draft, CONFLICTING vs main; content reconciled in #278
 - **#275** — draft, CONFLICTING vs main; content reconciled in #278
 - **#246** — OPEN; **do not merge**
