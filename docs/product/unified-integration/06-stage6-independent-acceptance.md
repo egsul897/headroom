@@ -33,6 +33,17 @@
 
 Expectations were **not** rewritten to match engine outputs.
 
+
+## CI (GitHub)
+
+| PR / tip | Result |
+|----------|--------|
+| #247 Stage 2 `0838455d` | **All 8 checks SUCCESS** |
+| #248 Stage 3 `dd727d2b` | **All checks SUCCESS** |
+| #249 Stage 4 `f6322ed7` | **All checks SUCCESS** |
+| #250 functional tip `23050570` | **All 10 checks SUCCESS** |
+| #250 docs tip `1dbec5d1` | in flight after acceptance-doc push |
+
 ## Product readiness
 
 **Not declared.** Tests pass on the integrated tree; customer-grade / legal certification still require human review and authentic package promotion. Synthetic demos remain labeled `SYNTHETIC_LABELED_TECHNICAL_DEMO`.

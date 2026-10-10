@@ -45,14 +45,22 @@ Hot overlaps: `verified-execution.ts` (#243/#218/#233); `capacity/state|types` (
 
 ## 6. Tests and CI results
 
-Local on tip `23050570`:
+Local on tip `23050570` / docs tip `1dbec5d1`:
 
 - `tsc` pass  
 - phase3-certification **481/481**  
 - Product/financial/sequential/utilization/cross-doc/Stage D/unified-position: **pass**  
 - Foundation-audit: 14 env timeout/flake failures (not integration regressions)  
 
-CI: subscribed on Stage 2 + Stage 5 branches; human merge only after green.
+GitHub CI:
+
+- #247 `0838455d` — **8/8 SUCCESS**
+- #248 `dd727d2b` — **SUCCESS**
+- #249 `f6322ed7` — **SUCCESS**
+- #250 functional `23050570` — **10/10 SUCCESS**
+- #250 docs tip `1dbec5d1` — CI in flight after acceptance-doc push
+
+Human merge only; no automatic merge.
 
 ## 7. Verified execution call graph
 
