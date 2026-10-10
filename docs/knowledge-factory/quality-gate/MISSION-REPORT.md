@@ -147,4 +147,4 @@ npx vitest run tests/knowledge-factory/quality-gate.test.ts
 ## SHAs
 
 - Base (prior expand tip): `c8d11b7bcb595ce01cfcd3b47217b72f48b7aefe`
-- Quality-gate tip: *(this commit)*
+- Quality-gate tip: `d29ae12d80f6604185330eef8ffc3004cc4c4f0d`
