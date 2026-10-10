@@ -1,0 +1,278 @@
+{
+  "hasFinancialEvidenceModuleOnMain": true,
+  "hasCustomerWorkflowModuleOnMain": true,
+  "round2FinancialEvidenceProbes": {
+    "anFinancialPackageAttached": false,
+    "stipulatedValidation": {
+      "ok": false,
+      "productionAuthoritative": false,
+      "blockers": [
+        "verificationStatus UNVERIFIED_EXTRACTION — extracted values are not verified merely because they came from a document",
+        "CALLER_STIPULATED_HYPOTHETICAL financial values cannot establish production authority"
+      ],
+      "refusalReasons": [
+        "UNVERIFIED_EXTRACTION",
+        "CALLER_STIPULATED"
+      ]
+    },
+    "unverifiedValidation": {
+      "ok": false,
+      "productionAuthoritative": false,
+      "blockers": [
+        "verificationStatus UNVERIFIED_EXTRACTION — extracted values are not verified merely because they came from a document"
+      ],
+      "refusalReasons": [
+        "UNVERIFIED_EXTRACTION"
+      ]
+    },
+    "emptySnapshotValidation": {
+      "ok": false,
+      "productionAuthoritative": false,
+      "metricResults": {
+        "CONSOLIDATED_EBITDA": {
+          "ok": false,
+          "productionAuthoritative": false,
+          "blockers": [
+            "required financial metric CONSOLIDATED_EBITDA missing from snapshot"
+          ],
+          "refusalReasons": [
+            "MISSING_REQUIRED_FIELD"
+          ]
+        },
+        "TOTAL_ASSETS": {
+          "ok": false,
+          "productionAuthoritative": false,
+          "blockers": [
+            "required financial metric TOTAL_ASSETS missing from snapshot"
+          ],
+          "refusalReasons": [
+            "MISSING_REQUIRED_FIELD"
+          ]
+        },
+        "TOTAL_DEBT": {
+          "ok": false,
+          "productionAuthoritative": false,
+          "blockers": [
+            "required financial metric TOTAL_DEBT missing from snapshot"
+          ],
+          "refusalReasons": [
+            "MISSING_REQUIRED_FIELD"
+          ]
+        }
+      },
+      "blockers": [
+        "required financial metric CONSOLIDATED_EBITDA missing from snapshot",
+        "required financial metric TOTAL_ASSETS missing from snapshot",
+        "required financial metric TOTAL_DEBT missing from snapshot"
+      ]
+    },
+    "verifiedHandoff": {
+      "productionAuthority": "REFUSED",
+      "productionActivation": "BLOCKED",
+      "mayUseAsProductionCapacityInput": false,
+      "blockersSample": [
+        "trusted issuer authorization context missing",
+        "required financial metric CONSOLIDATED_EBITDA missing from snapshot",
+        "required financial metric TOTAL_ASSETS missing from snapshot",
+        "required financial metric TOTAL_DEBT missing from snapshot",
+        "no attributed utilization evidence; empty ledger table is not verified zero",
+        "no completeness certificate presented",
+        "No production HostIdentityProvider is registered — session/service-account identity cannot be verified in this repository surface. Production trusted-issuer authority remains fail-closed."
+      ],
+      "trustClasses": [
+        "INCOMPLETE",
+        "UNKNOWN"
+      ]
+    },
+    "financialEvidenceCompletenessNumerator": 0
+  },
+  "round2CustomerWorkflowProbes": {
+    "capacityClaimRemaining": {
+      "claimKind": "REMAINING",
+      "status": "NOT_PRODUCTION_AUTHORITATIVE",
+      "amountMillions": 100,
+      "displayValue": "$100M",
+      "claimLabel": "MODELED / NOT VERIFIED",
+      "guidance": "Legacy or modeled figures may appear for evaluation. They are not production-authoritative available capacity."
+    },
+    "capacityClaimUnavailable": {
+      "claimKind": "UNAVAILABLE",
+      "status": "NEEDS_INPUT",
+      "amountMillions": null,
+      "displayValue": "—",
+      "claimLabel": "NEEDS_INPUT",
+      "guidance": "Missing authenticated financials + utilization completeness"
+    },
+    "falseFavorableProbe": true,
+    "honestStatus": "REVIEW_REQUIRED",
+    "askPresentation": {
+      "answerStatus": "NEEDS_INPUT",
+      "answerStatusLabel": "Needs input",
+      "permissionNotEstablished": true,
+      "missingFinancialInputs": [
+        "authenticated financial snapshot",
+        "utilization completeness certificate",
+        "confirmed operative document identity"
+      ]
+    },
+    "customerWorkflowHonest": true
+  },
+  "track1_hypothetical": {
+    "track": "HYPOTHETICAL",
+    "label": "HYPOTHETICAL_ONLY — caller-stipulated assumptions; not production-authoritative",
+    "assumptions": {
+      "consolidatedTangibleAssetsUsd": 8000000000,
+      "adjustedConsolidatedEbitdaUsd": 2500000000,
+      "consolidatedFundedIndebtednessUsd": 6000000000,
+      "proposedFundedIndebtednessUsd": 100000000,
+      "materialStepUpAcquisition": false
+    },
+    "derived": {
+      "leveragePre": 2.4,
+      "leveragePost": 2.44,
+      "leverageMax": 3.75,
+      "section82GateWouldPassUnderAssumptions": true,
+      "lienBasketXixGrossUnderAssumptions": 1200000000,
+      "note": "Illustration only. Requires authenticated financials + utilization completeness for production."
+    },
+    "financialEvidenceGate": {
+      "stipulatedValidationOk": false,
+      "stipulatedProductionAuthoritative": false,
+      "stipulatedRefusalReasons": [
+        "UNVERIFIED_EXTRACTION",
+        "CALLER_STIPULATED"
+      ]
+    }
+  },
+  "track2_production": {
+    "views": {
+      "POSITION": {
+        "surface": "POSITION",
+        "capacityRuleId": "an-b-total-revolving-commitment",
+        "asOf": "2026-09-15",
+        "grossCapacity": null,
+        "grossUnlimited": false,
+        "knownUtilization": null,
+        "unknownUtilization": true,
+        "utilizationKnowledge": "UNKNOWN",
+        "supportedRemainingCapacity": null,
+        "governingConditions": [],
+        "crossDocumentConstraints": [],
+        "sourceCitations": [
+          "doc-b Total Revolving Credit Commitment $2,000,000,000"
+        ],
+        "certificationStatus": "NOT_CERTIFIED",
+        "publicationLabel": "REFUSED",
+        "remainingStatus": "GROSS_ONLY",
+        "mayPublishAvailable": false,
+        "blockers": [
+          "no attributed utilization evidence; empty ledger table is not verified zero",
+          "No authenticated financial evidence / utilization completeness / trusted reviewer approval on main tip"
+        ],
+        "note": "No authenticated financial evidence / utilization completeness / trusted reviewer approval on main tip [POSITION] authoritative remaining refused without production completeness.",
+        "authenticityOfUtilization": "NONE"
+      },
+      "SIMULATE": {
+        "surface": "SIMULATE",
+        "capacityRuleId": "an-b-total-revolving-commitment",
+        "asOf": "2026-09-15",
+        "grossCapacity": null,
+        "grossUnlimited": false,
+        "knownUtilization": null,
+        "unknownUtilization": true,
+        "utilizationKnowledge": "UNKNOWN",
+        "supportedRemainingCapacity": null,
+        "governingConditions": [],
+        "crossDocumentConstraints": [],
+        "sourceCitations": [
+          "doc-b Total Revolving Credit Commitment $2,000,000,000"
+        ],
+        "certificationStatus": "NOT_CERTIFIED",
+        "publicationLabel": "REFUSED",
+        "remainingStatus": "GROSS_ONLY",
+        "mayPublishAvailable": false,
+        "blockers": [
+          "no attributed utilization evidence; empty ledger table is not verified zero",
+          "No authenticated financial evidence / utilization completeness / trusted reviewer approval on main tip"
+        ],
+        "note": "No authenticated financial evidence / utilization completeness / trusted reviewer approval on main tip [SIMULATE] authoritative remaining refused without production completeness.",
+        "authenticityOfUtilization": "NONE"
+      },
+      "ASK": {
+        "surface": "ASK",
+        "capacityRuleId": "an-b-total-revolving-commitment",
+        "asOf": "2026-09-15",
+        "grossCapacity": null,
+        "grossUnlimited": false,
+        "knownUtilization": null,
+        "unknownUtilization": true,
+        "utilizationKnowledge": "UNKNOWN",
+        "supportedRemainingCapacity": null,
+        "governingConditions": [],
+        "crossDocumentConstraints": [],
+        "sourceCitations": [
+          "doc-b Total Revolving Credit Commitment $2,000,000,000"
+        ],
+        "certificationStatus": "NOT_CERTIFIED",
+        "publicationLabel": "REFUSED",
+        "remainingStatus": "GROSS_ONLY",
+        "mayPublishAvailable": false,
+        "blockers": [
+          "no attributed utilization evidence; empty ledger table is not verified zero",
+          "No authenticated financial evidence / utilization completeness / trusted reviewer approval on main tip"
+        ],
+        "note": "No authenticated financial evidence / utilization completeness / trusted reviewer approval on main tip [ASK] authoritative remaining refused without production completeness.",
+        "authenticityOfUtilization": "NONE"
+      }
+    },
+    "consistency": {
+      "ok": true
+    },
+    "mayPublishAvailableAnySurface": false,
+    "supportedRemainingBySurface": {
+      "POSITION": null,
+      "ASK": null,
+      "SIMULATE": null
+    },
+    "publicationLabels": {
+      "POSITION": "REFUSED",
+      "ASK": "REFUSED",
+      "SIMULATE": "REFUSED"
+    },
+    "correctRefusal": true
+  },
+  "adversarial": {
+    "forgedIssuerMayPublish": false,
+    "forgedViewsPublication": {
+      "POSITION": "GROSS_CONTRACTUAL",
+      "ASK": "GROSS_CONTRACTUAL",
+      "SIMULATE": "GROSS_CONTRACTUAL"
+    },
+    "forgedBlockersSample": [
+      "issuer actorId \"not-in-registry\" not found in trusted identity/authorization registry — forged or unauthorized issuer"
+    ],
+    "staleGrossAmountUsed": null,
+    "staleNote": "Harness deliberately fed superseded $1.8B; production path still refuses AVAILABLE without completeness — but stale gross is not independently rejected by capacity layer alone (legal operative-resolution dependency).",
+    "incompleteUtilization": {
+      "knowledge": "KNOWN_ATTRIBUTED",
+      "supportsRemainingClaim": false,
+      "productionAuthoritative": false,
+      "blockers": [
+        "approved attributed ledger records do not establish completeness of historical usage — remaining claim requires a VERIFIED_COMPLETE certificate"
+      ]
+    },
+    "sharedCapacityProbe": {
+      "baskets": [
+        "8.3(vi) Mortgage Facilities $1B",
+        "8.3(ix) Vehicle Secured",
+        "8.3(xix) 15% CTA"
+      ],
+      "observation": "Without attributed utilization spanning overlapping collateral/Indebtedness, publishing remaining on multiple Lien baskets risks double-count. Main tip correctly leaves utilization UNKNOWN without completeness certificate.",
+      "incompleteUtilizationKnowledge": "KNOWN_ATTRIBUTED",
+      "supportsRemainingClaim": false,
+      "productionAuthoritative": false
+    },
+    "surfaceConsistencyOk": true,
+    "surfaceAnswersEqual": true
+  }
+}
