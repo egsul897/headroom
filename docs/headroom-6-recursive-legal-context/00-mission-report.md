@@ -7,7 +7,7 @@
 | Agent | #6 |
 | Starting SHA | `6abe42bae6dfe69bb72467daa7f460b727200d1b` (`origin/main` tip incl. #276) |
 | Feature SHA | `3b1e2b48c15aab1750b88a9200abcab47d54afb3` |
-| Ending tip | `aa8a2d2746a4c82d9f090e202dfa2fe086ba0893` (exact-tip CI green) |
+| Ending tip | see `16-closeout.json` (`lastFullyGreenTipSha` + branch HEAD) |
 | PR | https://github.com/egsul897/headroom/pull/287 |
 | Algorithm | `phase-2d-context-retrieval.v6` |
 | Holdout | WOR sealed package (diagnostic fixture; legal-reference answers untouched) |
