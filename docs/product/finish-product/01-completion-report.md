@@ -3,7 +3,7 @@
 **Verdict:** `CANONICAL_PRODUCT_WORKING_WITH_DOCUMENTED_LIMITATIONS`  
 **Canonical branch:** `cursor/finish-product-canonical-a9e4` (from PR #250 tip `37fc3ee5`)  
 **Base main:** `7f1dd3a202b026b9a862ef727480a1a9f284523a`  
-**Tip:** `58b5c4df50accd1a32eac719d086c4a2130313b1`  
+**Tip:** `023d7fb6074492d7624df726c45b0dd7b4f97b08`  
 **Prior CI-green content tip:** `72991f256b6ef78facb815b469a981ef53769ffb` (6/6 before #250 lien refresh)  
 **Auto-merge:** **no**
 
