@@ -1,0 +1,46 @@
+{
+  "artifact": "AGENT11_ROUND2B_CONTEXT_REGRESSION",
+  "clauseId": "AN-B-RESTATE",
+  "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v6",
+  "budgetsUnchanged": true,
+  "thresholdsUnchanged": true,
+  "rounds": {
+    "ROUND_1_MAIN": {
+      "sufficiencyState": "SUFFICIENT",
+      "unresolvedCount": 0
+    },
+    "ROUND_2_MAIN": {
+      "sufficiencyState": "BUDGET_EXCEEDED",
+      "unresolvedCount": 22,
+      "itemCounts": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 4,
+        "DEFINITION": 4,
+        "DEFINITION_DEPENDENCY": 2,
+        "CROSS_DOCUMENT_REFERENCE": 1
+      },
+      "stopReasons": [
+        "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+      ]
+    },
+    "ROUND_2B_CANONICAL_293": {
+      "sufficiencyState": "BUDGET_EXCEEDED",
+      "unresolvedCount": 23,
+      "itemCounts": {
+        "OPERATIVE_SOURCE": 1,
+        "CHILD_RULE": 4,
+        "DEFINITION": 3,
+        "DEFINITION_DEPENDENCY": 1
+      },
+      "stopReasons": [
+        "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+      ],
+      "contextManifest": null
+    }
+  },
+  "analysis": {
+    "regressionFixed": false,
+    "stillBudgetExceeded": true,
+    "rootCauseHypothesis": "Recursive definition/child-rule expansion on #293 tip still exhausts maxTextBudgetChars / depth / items before closure for preamble restatement probes; #287 integration does not restore Round-1 SUFFICIENT for AN-B-RESTATE under frozen budgets. Do not raise budgets to force SUFFICIENT."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "artifact": "AGENT11_REMAINING_AUTHENTIC_EVIDENCE_GAPS",
+  "evaluatedSha": "59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3",
+  "gaps": [
+    {
+      "id": "FOURTH_AR_ABSENT",
+      "kind": "MISSING_AUTHENTIC_LEGAL_EVIDENCE",
+      "detail": "Fifth A&R names Existing Credit Agreement = Fourth A&R dated 2023-07-18; sealed package contains only Third+Fifth. Restatement succession correctly remains REVIEW_REQUIRED with predecessorDocumentId=null. Not an engineering failure.",
+      "scoreImpact": "operativeDocumentAccuracy remains 0/1 by design under fail-closed unresolved succession"
+    },
+    {
+      "id": "AN_FINANCIAL_PACKAGE_ABSENT",
+      "kind": "MISSING_AUTHENTIC_FINANCIAL_EVIDENCE",
+      "detail": "No authenticated AutoNation financial package attached; financialEvidenceCompleteness 0/1; capacity AVAILABLE correctly refused."
+    },
+    {
+      "id": "CONTEXT_BUDGET_AND_PAID_INFERENCE",
+      "kind": "EVALUATION_CONSTRAINT",
+      "detail": "Context sufficiency 0/10 (BUDGET_EXCEEDED); verifiedExecutable 0/10 under DETERMINISTIC_ONLY / no paid inference. Not scored as false favorables."
+    }
+  ],
+  "engineeringDefectsNotCountedAsEvidenceGaps": [
+    "unified-product-adversarial-gate disagreeing-remaining expectation vs refuseAuthoritativeRemaining (pre-existing)."
+  ]
+}

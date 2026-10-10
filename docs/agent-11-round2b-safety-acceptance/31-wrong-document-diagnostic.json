@@ -1,0 +1,63 @@
+{
+  "artifact": "AGENT11_WRONG_DOCUMENT_DIAGNOSTIC",
+  "evaluatedSha": "59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3",
+  "reproduction": {
+    "method": "AutoNation-shaped REVIEW_REQUIRED authorities (predecessorDocumentId=null for doc-a and doc-b) via resolveGoverningProvision + summarizeBundleProductionAuthority(attemptPromotionToProduction=true)",
+    "preFixSha": "74526ead16d04ecf6a8c338af79e49920ecf4546",
+    "preFix": {
+      "evaluatedPreFixSha": "74526ead16d04ecf6a8c338af79e49920ecf4546",
+      "authorityClassification": "CONFIRMED_OPERATIVE",
+      "governingDocumentId": "doc-a",
+      "caveats": [],
+      "allProvisionsProductionActive": true,
+      "anyProductionRefused": false,
+      "wrongDocumentDiagnostic": true
+    },
+    "correctedSha": "59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3",
+    "corrected": {
+      "evaluatedCorrectedSha": "59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3",
+      "authorityClassification": "REVIEW_REQUIRED",
+      "governingDocumentId": null,
+      "caveats": [
+        "BASE_RESTATEMENT_REVIEW_REQUIRED:doc-a",
+        "PACKAGE_RESTATEMENT_SUCCESSION_UNRESOLVED",
+        "LOCAL_BASE_CANDIDATE_NOT_PACKAGE_OPERATIVE:doc-a"
+      ],
+      "allProvisionsProductionActive": false,
+      "anyProductionRefused": true,
+      "wrongDocumentDiagnostic": false
+    }
+  },
+  "packageRunEvidence": {
+    "wrongDocumentProductionPromotion": false,
+    "allProvisionsProductionActive": false,
+    "unjustifiedDocAConfirmedOperative": false,
+    "restatementAuthorities": [
+      {
+        "successorDocumentId": "doc-a",
+        "predecessorDocumentId": null,
+        "status": "REVIEW_REQUIRED",
+        "effectiveDateIso": "2020-03-26",
+        "conditionsPrecedentSatisfaction": "NOT_STATED",
+        "caveats": [],
+        "effectivenessInference": "INFERRED_FROM_DATED_AS_OF_WITH_EXECUTION",
+        "doesNotMutatePackageGraphRelationship": true
+      },
+      {
+        "successorDocumentId": "doc-b",
+        "predecessorDocumentId": null,
+        "status": "REVIEW_REQUIRED",
+        "effectiveDateIso": "2026-09-14",
+        "conditionsPrecedentSatisfaction": "NOT_STATED",
+        "caveats": [],
+        "effectivenessInference": "INFERRED_FROM_DATED_AS_OF_WITH_EXECUTION",
+        "doesNotMutatePackageGraphRelationship": true
+      }
+    ],
+    "selectedOperativeDocumentId": null,
+    "fabricatedFourthPredecessor": false,
+    "falseProductionAvailable": false
+  },
+  "WRONG_DOCUMENT_DIAGNOSTIC": false,
+  "clearedOnCorrectedSha": true
+}

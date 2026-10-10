@@ -1,0 +1,74 @@
+{
+  "1_UPLOAD": {
+    "class": "VERIFIED",
+    "evidence": "10-01-upload.json",
+    "integrationState": "TESTED_AND_VERIFIED",
+    "notes": "Offline sealed load of authentic EDGAR exhibits; not a live SaaS upload path."
+  },
+  "2_IDENTIFY_DOCUMENTS": {
+    "class": "VERIFIED",
+    "evidence": "10d-package-graph.json",
+    "integrationState": "TESTED_AND_VERIFIED",
+    "notes": "classifications=[{\"id\":\"doc-a\",\"type\":\"AMENDED_AND_RESTATED_AGREEMENT\"},{\"id\":\"doc-b\",\"type\":\"AMENDED_AND_RESTATED_AGREEMENT\"}]"
+  },
+  "3_RESOLVE_OPERATIVE": {
+    "class": "BLOCKED",
+    "evidence": "10d-operative-state.json",
+    "integrationState": "TESTED_AND_BLOCKED",
+    "notes": "operativeDocumentId=null; operativeDocStatus=REVIEW_REQUIRED; stateStatus=OPERATIVE_STATE_REVIEW_REQUIRED; handoffBlocked=false; #283 not on tip"
+  },
+  "4_DISCOVER_COVENANTS": {
+    "class": "VERIFIED",
+    "evidence": "10b-discovery.json + 10-clause-coverage.json",
+    "integrationState": "TESTED_AND_VERIFIED",
+    "notes": "passAHits=10/10"
+  },
+  "5_RETRIEVE_CONTEXT": {
+    "class": "BLOCKED",
+    "evidence": "10-clause-coverage.json",
+    "integrationState": "TESTED_AND_BLOCKED",
+    "notes": "SUFFICIENT=0/10 (threshold for VERIFIED: ≥80%); #287 not on tip"
+  },
+  "6_COMPILE_VERIFIED_IR": {
+    "class": "BLOCKED",
+    "evidence": "10-clause-coverage.json + 10e-offline-package-compile.json",
+    "integrationState": "TESTED_AND_BLOCKED",
+    "notes": "verifiedExecutable=0/10; paid inference blocked; local DETERMINISTIC_ONLY is UNVERIFIED; fixture IR not counted"
+  },
+  "7_ATTACH_FINANCIAL_EVIDENCE": {
+    "class": "BLOCKED",
+    "evidence": "10-capacity-tracks.json",
+    "integrationState": "TESTED_AND_BLOCKED",
+    "notes": "financial-evidence module on tip via #278/#279; exercised validateFinancialMetricEvidence + verified handoff; AN authenticated financial package attached=false; completeness=0/1; stipulated refused productionAuthoritative=false"
+  },
+  "8_RECONSTRUCT_UTILIZATION": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "integrationState": "TESTED_AND_VERIFIED",
+    "notes": "Empty/partial history correctly yields knowledge=KNOWN_ATTRIBUTED; supportsRemainingClaim=false"
+  },
+  "9_EVIDENCE_REVIEWER_AUTHORITY": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "integrationState": "TESTED_AND_VERIFIED",
+    "notes": "Forged issuer actorId not-in-registry mayPublish=false"
+  },
+  "10_HYPOTHETICAL_TRANSACTION": {
+    "class": "HYPOTHETICAL_ONLY",
+    "evidence": "10-capacity-tracks.json",
+    "integrationState": "TESTED_AND_VERIFIED",
+    "notes": "Caller-stipulated leverage illustration labeled HYPOTHETICAL_ONLY; financial-evidence gate refuses production authority for stipulated metrics"
+  },
+  "11_PRODUCTION_AUTHORITY": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "integrationState": "TESTED_AND_VERIFIED",
+    "notes": "Production remaining refused; mayUseAsProductionCapacityInput=false; handoff.productionAuthority=REFUSED"
+  },
+  "12_SURFACE_DISPLAY": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "integrationState": "TESTED_AND_VERIFIED",
+    "notes": "customer-workflow on tip via #278/#280; presentCapacityClaim/presentAskAnswer/wouldBeFalseFavorableAvailable exercised; honest=true; shared Position/Ask/Simulate consistency=true; live SaaS UI route NOT browser-tested"
+  }
+}

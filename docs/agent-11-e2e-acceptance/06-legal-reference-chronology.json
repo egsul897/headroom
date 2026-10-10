@@ -1,0 +1,42 @@
+{
+  "artifact": "AGENT11_LEGAL_REFERENCE_CHRONOLOGY",
+  "integrityRule": "If any clause in 05-legal-reference-answers.json changes after seq 7 begins, the evaluation is INVALIDATED.",
+  "events": [
+    {
+      "seq": 1,
+      "atUtc": "2026-10-10T13:46:12Z",
+      "event": "Fetched origin/main to b23e312a; created branch cursor/agent11-e2e-acceptance-509f."
+    },
+    {
+      "seq": 2,
+      "atUtc": "2026-10-10T13:47:00Z",
+      "event": "Recorded merged vs open integration status (01-integration-status.json draft basis)."
+    },
+    {
+      "seq": 3,
+      "atUtc": "2026-10-10T13:48:30Z",
+      "event": "Selected AutoNation (AN) after MHK exhibit absence and WOR previously-exposed exclusion; contamination check passed."
+    },
+    {
+      "seq": 4,
+      "atUtc": "2026-10-10T13:50:14Z",
+      "event": "Acquired and hashed EDGAR exhibits via scripts/agent-11/acquire-an-package.py — no compiler run."
+    },
+    {
+      "seq": 5,
+      "atUtc": "2026-10-10T13:51:21Z",
+      "event": "Sealed package identity (03-package-seal.json) and frozen legal-reference answers (05) + questions (04) from independent reading of extracted texts only."
+    },
+    {
+      "seq": 6,
+      "atUtc": "2026-10-10T13:51:21Z",
+      "event": "COMMIT SEAL — freeze files committed before offline acceptance harness execution."
+    },
+    {
+      "seq": 7,
+      "atUtc": null,
+      "event": "BEGIN offline acceptance harness execution (compiler + capacity + surfaces). Legal references must remain byte-identical to seal commit."
+    }
+  ],
+  "verification": "After run: sha256 of 05-legal-reference-answers.json must equal seal-commit blob hash."
+}
