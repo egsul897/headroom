@@ -9,7 +9,7 @@
 |---|---|
 | Starting main SHA | `b23e312afedb53ea6771c2ead1afbcdd758edd86` |
 | Seal commit | `ca667446df228984bb5d6b50b44c3c98b45f0730` |
-| Evaluation tip | `66d00a97e4d2787fb29c6758b316294d189685a6` |
+| Evaluation tip | `cbdc63b5963eb5c5c01a16d3ad7b7b95ac9e3e2c` |
 | Package | AutoNation (AN) Third→Fifth A&R (`an-2020-2026-credit-facility`) |
 | Unseen claim | **NOT claimed** (authentic evaluation package distinct from tuning fixtures) |
 | Paid inference | $0 |
@@ -83,4 +83,4 @@ npx tsx scripts/agent-11/run-round-2-acceptance.ts
 # Artifacts: docs/agent-11-round-2-acceptance/
 ```
 
-Elapsed: 938 ms.
+Elapsed: 783 ms.

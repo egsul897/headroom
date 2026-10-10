@@ -1,8 +1,9 @@
 # Wrong-document production promotion guard
 
-**Code tip (fix):** 59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3  
-**Agent #11 retest SHA:** 59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3  
-**Branch HEAD after docs pin:** see git rev-parse origin/cursor/canonical-product-integration-5a28  
+**Code tip (wrong-document fix):** 59c3c4b36cd31d21e1c2deeff25ef0fb1f4cfab3  
+**Corrected tip (adversarial fixture + authority closure):** 60dbdeeeb1e067e1823972f2ea79ea5f3ba19f72  
+**Agent #11 retest SHA:** 60dbdeeeb1e067e1823972f2ea79ea5f3ba19f72  
+**Branch tip (artifacts/docs):** see `git rev-parse origin/cursor/canonical-product-integration-5a28`  
 **Verdict target:** OPERATIVE_INTEGRATION_SAFETY_VERIFIED
 
 ## Binding status
@@ -39,10 +40,18 @@ Local base candidacy may be disclosed via caveat; it is not package-wide operati
 ## Live reproduction on tip (authentic AN fixtures)
 
 - wrongDocumentProductionPromotion: false
-- allProvisionsProductionActive: false
+- allProvisionsProductionActive: false (inferred: 0 CONFIRMED_OPERATIVE; all REVIEW_REQUIRED)
 - provision classes: REVIEW_REQUIRED
 - restatement preds: doc-a/doc-b REVIEW_REQUIRED, predecessorDocumentId null
+- Offline acceptance tip SHA recorded in docs/agent-11-round-2-acceptance/
+
+## Adversarial-gate closure
+
+- Root cause: stale harness expected remaining=150M from APPROVED completeness without authenticity/trusted issuer.
+- Classification: test/harness defect (fail-closed product behavior correct; same null on 8a4beb52/74526ead baselines).
+- Fix: authentic cert + productionTrustedIssuerAuth for consistency path; incomplete-cert refusal regression.
 
 ## Regression
 
-tests/operative-restatement-authority/wrong-document-production-guard.test.ts
+tests/operative-restatement-authority/wrong-document-production-guard.test.ts  
+tests/product/unified-product-adversarial-gate.test.ts
