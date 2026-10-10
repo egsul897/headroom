@@ -182,6 +182,13 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
     );
   }
 
+  // Duplicate usage ids among applied attributed records — refuse remaining.
+  const usageIds = attributedToRule.map((r) => r.usageId);
+  const duplicateUsage = usageIds.length !== new Set(usageIds).size;
+  if (duplicateUsage) {
+    blockers.push("duplicate ledger usage ids on capacity path — remaining not supported");
+  }
+
   let knowledge: UtilizationKnowledgeKind;
   let attributedAmount: number | null = null;
   let currency: string | null = currencyHint;
@@ -206,7 +213,7 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
       } else {
         knowledge = "KNOWN_ATTRIBUTED";
       }
-      if (recordsComplete && !mixedAuthenticity) {
+      if (recordsComplete && !mixedAuthenticity && !duplicateUsage) {
         supportsRemainingClaim = true;
         note = `Attributed utilization ${attributedAmount} ${currency ?? ""} as of ${asOfCutoff(asOf)} (${knowledge}); completeness certified (${cert!.sourceLabel}${authorityEval.productionAuthoritative ? ", production-authoritative" : ", demo-only"}).`;
       } else {
@@ -290,8 +297,11 @@ export function resolveUtilization(args: ResolveUtilizationArgs): UtilizationRes
     note = `${note} Completeness certificate kind mismatch (COMPLETE vs no records).`;
   }
 
-  // Final production gate: mixed authenticity or failed authority evaluation strips remaining.
+  // Final production gate: mixed authenticity, duplicates, or failed authority evaluation strips remaining.
   if (supportsRemainingClaim && mixedAuthenticity && !args.allowSyntheticRemaining) {
+    supportsRemainingClaim = false;
+  }
+  if (supportsRemainingClaim && duplicateUsage) {
     supportsRemainingClaim = false;
   }
   if (supportsRemainingClaim && !authorityOk) {
