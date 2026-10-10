@@ -6,7 +6,9 @@
 |---|---|
 | Agent | #6 |
 | Starting SHA | `6abe42bae6dfe69bb72467daa7f460b727200d1b` (`origin/main` tip incl. #276) |
-| Ending SHA | `aafe016a2cb87432c57304a4d24aa1a14ce8549b` |
+| Feature SHA | `3b1e2b48c15aab1750b88a9200abcab47d54afb3` |
+| Branch tip | see `16-closeout.json` (exact-tip CI target) |
+| PR | https://github.com/egsul897/headroom/pull/287 |
 | Algorithm | `phase-2d-context-retrieval.v6` |
 | Holdout | WOR sealed package (diagnostic fixture; legal-reference answers untouched) |
 
@@ -45,6 +47,7 @@ WOR Layer C (denom=10, body anchors):
 | REVIEW_REQUIRED | **9/10** |
 | BUDGET_EXCEEDED | **0/10** |
 | INCOMPLETE | **0/10** |
+| False SUFFICIENT | **0** |
 
 Remaining REVIEW_REQUIRED causes (honest, not false SUFFICIENT):
 
