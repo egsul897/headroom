@@ -33,7 +33,9 @@ An `APPROVED` certificate alone is **not** enough. Production-authoritative rema
 2. Trusted issuer authorization via `TrustedIssuerAuthorizationContext` (`lib/capacity/completeness-issuer-auth.ts`, selective port from #244) — caller-supplied `issuer.role` alone never suffices.
 3. Demo/synthetic remaining only via explicit `allowSyntheticRemaining` + `SYNTHETIC_LABELED` (never production).
 
-**Activation requirement (documented, not wired here):** production identity-provider → `TrustedIssuerAuthorizationContext` host wiring remains outstanding until real attestations are enabled. Bounded host interface: `lib/capacity/trusted-issuer-host.ts` (`HostIdentityProvider` / `HostVerifiedIdentity`); repository `TRUSTED_ISSUER_ACTIVATION` is **BLOCKED**. Product-path `resolveUtilization` shares `evaluateCompletenessForRemainingClaim` with the solver bridge (HEADROOM-2). No broad utilization refactor; #237 authority bridge preserved; #244 is a source of improvements, not a merge candidate (#250 remains canonical product integration). PR #268 product UI labeling remains a separate open surface.
+**Activation requirement (documented, not wired here):** production identity-provider → `TrustedIssuerAuthorizationContext` host wiring remains outstanding until real attestations are enabled. Bounded host interface: `lib/capacity/trusted-issuer-host.ts` (`HostIdentityProvider` / `HostVerifiedIdentity`); repository `TRUSTED_ISSUER_ACTIVATION` is **BLOCKED**. Product-path `resolveUtilization` shares `evaluateCompletenessForRemainingClaim` with the solver bridge (HEADROOM-2 / #279). Historical utilization reconstruction (HEADROOM-9 `utilization-evidence-reconstruction.ts`) feeds attributed records into this gate and never treats `UNKNOWN_HISTORICAL_ACTIVITY` as zero usage. No broad utilization refactor; #237 authority bridge preserved; #244 is a source of improvements, not a merge candidate (#250 remains canonical product integration). PR #268 product UI labeling remains a separate open surface.
+
+**Agent #8 trusted-identity boundary:** `lib/capacity/identity/*` + `docs/intelligence-factory/TRUSTED-IDENTITY-BOUNDARY.md` define the server-verified adapter contract, discrete permissions, audit records, and fail-closed `TRUSTED_IDENTITY_PRODUCTION_ACTIVATION = BLOCKED`. A WeakSet/brand alone does not establish identity. No production IdP is invented.
 
 ### Identity-provider activation status (cross-surface gate)
 
@@ -43,7 +45,7 @@ An `APPROVED` certificate alone is **not** enough. Production-authoritative rema
 | Position / Simulate / Ask via `buildSharedProductCapacityViews` | Caller must supply; app pages currently unwired to shared views | Refuse via `refuseAuthoritativeRemaining` |
 | `resolveUtilization` / debt-intelligence | Option exists; production passes null certs + no auth | Fail-closed |
 
-**Smallest future activation requirement:** host session / service-account lookup that builds `productionTrustedIssuerAuth([{ actorId, authorizedRoles, identityAssurance: "SESSION_AUTHENTICATED"|"SERVICE_ACCOUNT", status: "ACTIVE" }])` from independently authenticated identity — never from the certificate blob's `issuer.role`. Fixture identities (`TEST_FIXTURE_REGISTRY`, `SYSTEM_FIXTURE`) must not enable production authority.
+**Smallest future activation requirement:** implement `ServerIdentityProvider` (real IdP) → `verifyAndMintPrincipal` → `authorizeDecision` / `mintTrustedIssuerAuthorizationContext` → `productionTrustedIssuerAuth([{ actorId, authorizedRoles, identityAssurance: "SESSION_AUTHENTICATED"|"SERVICE_ACCOUNT", status: "ACTIVE" }])` from independently authenticated identity — never from the certificate blob's `issuer.role`. Fixture identities (`TEST_FIXTURE_REGISTRY`, `SYSTEM_FIXTURE`) must not enable production authority. Repository activation remains BLOCKED until that IdP is wired and ops-approved.
 
 ### Live Position / Simulate / Ask routes (not only shared helpers)
 

@@ -1,0 +1,23 @@
+{
+  "title": "Production-authority refusal \u2014 trusted identity activation BLOCKED",
+  "entrypoint": "executeUnifiedVerifiedTransaction",
+  "mode": "PRODUCTION_AUTHORITY",
+  "expected": {
+    "productionAuthority": "PRODUCTION_AUTHORITY_BLOCKED",
+    "identityGate": "authorizeDecision / isTrustedIdentityProductionActive \u2192 refuse",
+    "operativeCaveatGate": "evaluateProductionAuthorityPromotion refuses CONFIRMED_OPERATIVE_WITH_CAVEATS / unproven CP",
+    "utilizationGate": "UNKNOWN_HISTORICAL_ACTIVITY \u2260 zero; missing completeness refuses remaining"
+  },
+  "illustrativeBlockers": [
+    "trusted identity production activation BLOCKED \u2014 no production IdP; refuse PRODUCTION_AUTHORITY",
+    "identity authorization refused: principal is not a server-minted VerifiedServerPrincipal \u2014 forged, JSON-cloned, or client-injected identity refused",
+    "operative production promotion refused: CONFIRMED_OPERATIVE_WITH_CAVEATS (or unproven conditions-precedent satisfaction) cannot become unconditional PRODUCTION_AUTHORITY_ACTIVE.",
+    "UNKNOWN utilization \u2014 missing completeness cannot be treated as zero usage"
+  ],
+  "evidenceTests": [
+    "tests/product/unified-transaction-execution.test.ts (forged approval / incomplete authority)",
+    "tests/product/canonical-product-integration-adversarial.test.ts",
+    "tests/capacity/trusted-identity-boundary-adversarial.test.ts",
+    "tests/operative-restatement-authority/production-authority-gate.test.ts"
+  ]
+}

@@ -68,6 +68,15 @@ import {
   isLegallyConfirmedAmendmentChain,
   mayConsolidateOperativeAgreement,
 } from "../compiler/package-graph/instrument-grouping";
+import {
+  bindCandidateToOperativeRetrievalSource,
+  buildOperativeAuthorityHandoffBundle,
+  confirmedIdentityFromInstrumentGrouping,
+  summarizeBundleProductionAuthority,
+  type BundleProductionAuthoritySummary,
+  type OperativeAuthorityHandoffBundle,
+  type OperativeRetrievalSourceBinding,
+} from "../compiler/operative-authority";
 
 export const OFFLINE_PACKAGE_COMPILE_VERSION = "offline-package-compile.v1";
 
@@ -177,7 +186,15 @@ export interface OfflinePackageCompileResult {
       totalCandidates: number;
       syntheticDiscovery: boolean;
     };
-    context: { bundlesBuilt: number };
+    context: {
+      bundlesBuilt: number;
+      /** Agent #7 → #6: candidates remapped onto governingDocumentId for retrieval. */
+      operativeSourceRemapped: number;
+      /** Candidates kept on discovery document because authority refused consolidation. */
+      operativeSourceRemapRefused: number;
+      /** Candidates already on the governing document (no remap needed). */
+      operativeSourceAlreadyGoverning: number;
+    };
     coverageAudit: { findingCount: number; regionCount: number } | null;
     capacityHandoff: { attempted: boolean; outcome: string; detail: string };
     operativeHandoff: {
@@ -188,6 +205,18 @@ export interface OfflinePackageCompileResult {
       confirmedOperativeCount: number;
       provisionalBlockedCount: number;
       authorityGate: "CONFIRMED_OPERATIVE_IDENTITY" | "PROVISIONAL_IDENTITY_BLOCKED" | "NO_OPERATIVE_STATE";
+    };
+    /** Agent #7 restatement / governing-document authority (additive; never mutates package graph). */
+    operativeRestatementAuthority: {
+      verdict: OperativeAuthorityHandoffBundle["verdict"] | "NOT_BUILT";
+      provisionCount: number;
+      restatementAuthorityCount: number;
+      packageGraphRelationshipsUnchanged: boolean;
+      productionAuthorityActive: boolean;
+      anyCaveatedDisclosedOnly: boolean;
+      anyProductionRefused: boolean;
+      effectivenessInference: string | null;
+      conditionsPrecedentSatisfaction: string | null;
     };
     fixedDollarVerticalSlice: {
       attempted: number;
@@ -223,6 +252,14 @@ export interface OfflinePackageCompileResult {
   }[];
   /** HEADROOM-3 → HEADROOM-1 operative identity handoff (confirmed vs provisional). */
   operativeHandoff: OperativeHandoffBundle | null;
+  /**
+   * Agent #7 → Agent #6 / unified execution: governing-document + restatement
+   * authority with caveats. Never strips source identity, effective dates, or
+   * CP-satisfaction disclosures. Never mutates package-graph edges.
+   */
+  operativeAuthorityHandoff: OperativeAuthorityHandoffBundle | null;
+  /** Production-authority disposition derived from operativeAuthorityHandoff. */
+  productionAuthorityFromRestatement: BundleProductionAuthoritySummary | null;
   humanInterventions: { kind: string; detail: string }[];
   summary: {
     supportedStructureUnits: number;
@@ -399,6 +436,10 @@ export async function compileFrozenDebtPackage(
   const supersessionIndex: NodeSupersessionIndex =
     operativeState ? buildNodeSupersessionIndex([{ baseDocumentId, state: operativeState }]) : EMPTY_SUPERSESSION_INDEX;
 
+  // Snapshot package-graph relationships BEFORE Agent #7 authority evaluation —
+  // Agent #7 must never silently rewrite edges (check #7).
+  const packageGraphRelationshipsBeforeAuthority = JSON.stringify(packageGraph.relationshipCandidates);
+
   // --- HEADROOM-3 operative handoff (confirmed vs provisional identity) ---
   // Agent #1 compiler consumes confirmed operative document identity rather than
   // provisional identity. Provisional associations fail closed for executable claims.
@@ -435,6 +476,12 @@ export async function compileFrozenDebtPackage(
         "Canonical instrument identity is not confirmed (or provisions are PROVISIONAL_IDENTITY_BLOCKED); executable vertical-slice authority refused.",
     });
   }
+
+  // --- Agent #7 restatement / governing-document authority (additive) ---
+  // Consumes #274 confirmed identity when available. Does not rewrite package graph.
+  const confirmedInstrumentIdentity = instrumentGrouping
+    ? confirmedIdentityFromInstrumentGrouping(instrumentGrouping)
+    : null;
 
   // --- discovery ---
   const discoveryCaller = options.discoveryCaller ?? getStageCaller();
@@ -484,7 +531,82 @@ export async function compileFrozenDebtPackage(
   }
   const candidates = [...byId.values()].filter((c) => isEligibleForSemanticCompilation(c).eligible);
 
-  // --- context bundles ---
+  // Build Agent #7 handoff for discovered section/definition refs (Agent #6 / execution consumers).
+  const provisionQueries: Array<{ sectionRef?: string | null; definedTermRef?: string | null }> = [];
+  const seenProvisionKeys = new Set<string>();
+  for (const c of candidates) {
+    const defMatch = /^def:([^(]+)/i.exec(c.normalizedSourceRef);
+    if (defMatch) {
+      const term = defMatch[1]!.trim();
+      const key = `DEFINITION::${term}`;
+      if (!seenProvisionKeys.has(key)) {
+        seenProvisionKeys.add(key);
+        provisionQueries.push({ definedTermRef: term });
+      }
+      continue;
+    }
+    const secMatch = /^(\d+\.\d+)/.exec(c.normalizedSourceRef);
+    if (secMatch) {
+      const sectionRef = secMatch[1]!;
+      const key = `SECTION::${sectionRef}`;
+      if (!seenProvisionKeys.has(key)) {
+        seenProvisionKeys.add(key);
+        provisionQueries.push({ sectionRef });
+      }
+    }
+  }
+  // Always include a whole-agreement probe so restatement succession is visible even when discovery is empty.
+  if (provisionQueries.length === 0) {
+    provisionQueries.push({});
+  }
+
+  const familyIds =
+    confirmedInstrumentIdentity?.confirmedDocumentIds ??
+    instrumentGrouping?.documentIds ??
+    documents.map((d) => d.documentId);
+
+  const operativeAuthorityHandoff: OperativeAuthorityHandoffBundle = buildOperativeAuthorityHandoffBundle({
+    companyId: options.companyId,
+    packageKey: options.packageKey,
+    asOfDate,
+    documents: documents.map((d) => ({ documentId: d.documentId, label: d.label, text: d.text })),
+    packageGraph,
+    provisions: provisionQueries,
+    confirmedInstrumentIdentity,
+    instrumentDocumentIds: familyIds,
+    baseDocumentId,
+  });
+
+  const packageGraphRelationshipsUnchanged =
+    JSON.stringify(packageGraph.relationshipCandidates) === packageGraphRelationshipsBeforeAuthority;
+
+  // Attempted production promotion — caveated / provisional / conflicting authorities must refuse.
+  const productionAuthorityFromRestatement = summarizeBundleProductionAuthority(operativeAuthorityHandoff, {
+    attemptPromotionToProduction: true,
+  });
+
+  if (!packageGraphRelationshipsUnchanged) {
+    humanInterventions.push({
+      kind: "PACKAGE_GRAPH_MUTATION_GUARD",
+      detail: "FATAL: package-graph relationshipCandidates changed during operative-authority evaluation — refusing production authority.",
+    });
+  }
+  if (productionAuthorityFromRestatement.anyCaveatedDisclosedOnly) {
+    humanInterventions.push({
+      kind: "OPERATIVE_RESTATEMENT_CAVEAT",
+      detail:
+        "Restatement authority is CONFIRMED_OPERATIVE_WITH_CAVEATS or carries unproven conditions-precedent satisfaction — PRODUCTION_AUTHORITY_ACTIVE refused. Effectiveness is supported by contractual language + execution evidence only; CP satisfaction is not independently established.",
+    });
+  }
+  if (productionAuthorityFromRestatement.anyProductionRefused && !productionAuthorityFromRestatement.allProvisionsProductionActive) {
+    humanInterventions.push({
+      kind: "OPERATIVE_RESTATEMENT_PRODUCTION_GATE",
+      detail:
+        "One or more provisions cannot authorize PRODUCTION_AUTHORITY_ACTIVE (provisional identity, conflict, review-required, not-yet-effective, unsupported, or caveated).",
+    });
+  }
+
+  // --- context bundles (Agent #6 retrieval bound to Agent #7 governingDocumentId) ---
   const access: PackageAccess = {
     index,
     packageGraph,
@@ -492,13 +614,37 @@ export async function compileFrozenDebtPackage(
     operativeState,
     supersessionIndex,
   };
+  const retrievalBindings = new Map<string, OperativeRetrievalSourceBinding>();
+  let operativeSourceRemapped = 0;
+  let operativeSourceRemapRefused = 0;
+  let operativeSourceAlreadyGoverning = 0;
+  for (const candidate of candidates) {
+    const binding = bindCandidateToOperativeRetrievalSource({
+      candidate,
+      authority: operativeAuthorityHandoff,
+      index,
+    });
+    retrievalBindings.set(candidate.discoveryId, binding);
+    if (binding.remapped) operativeSourceRemapped += 1;
+    else if (binding.refusalReason) operativeSourceRemapRefused += 1;
+    else if (binding.retrievalAuthorized && binding.governingDocumentId === binding.originalDocumentId) {
+      operativeSourceAlreadyGoverning += 1;
+    }
+  }
+  if (operativeSourceRemapRefused > 0) {
+    humanInterventions.push({
+      kind: "OPERATIVE_RETRIEVAL_SOURCE_BLOCKED",
+      detail: `${operativeSourceRemapRefused} candidate(s) were not remapped onto a successor governing document (provisional identity, null governingDocumentId, or unresolved authority). Discovery document preserved; no silent consolidation.`,
+    });
+  }
   const bundles = new Map<string, CovenantContextBundle>();
   for (const candidate of candidates) {
+    const binding = retrievalBindings.get(candidate.discoveryId)!;
     bundles.set(
       candidate.discoveryId,
       buildCovenantContextBundle(
         {
-          candidate,
+          candidate: binding.retrievalCandidate,
           packageKey: options.packageKey,
           companyId: options.companyId,
           instrumentKey,
@@ -552,7 +698,10 @@ export async function compileFrozenDebtPackage(
   }[] = [];
   for (const candidate of candidates) {
     const bundle = bundles.get(candidate.discoveryId) ?? null;
-    let operativeText = operativeSourceTextFor(candidate, index, operativeState);
+    const retrievalBinding = retrievalBindings.get(candidate.discoveryId)!;
+    const operativeCandidate = retrievalBinding.retrievalCandidate;
+    const operativeDocumentId = operativeCandidate.documentId;
+    let operativeText = operativeSourceTextFor(operativeCandidate, index, operativeState);
     // For definition catalog clauses, operativeSourceTextFor may be empty if no node ids —
     // fall back to candidate description's catalog clause text from exception catalogs.
     if (!operativeText.trim()) {
@@ -599,10 +748,10 @@ export async function compileFrozenDebtPackage(
       operativeText = candidate.description;
     }
 
-    const knownDefs = [...(exactTermsByDocument.get(candidate.documentId)?.values() ?? [])];
+    const knownDefs = [...(exactTermsByDocument.get(operativeDocumentId)?.values() ?? [])];
     const facts = extractDeterministicCovenantFacts({
       text: operativeText,
-      documentId: candidate.documentId,
+      documentId: operativeDocumentId,
       candidateRef: candidate.discoveryId,
       citation: candidate.normalizedSourceRef,
       knownFamilies: candidate.families,
@@ -676,7 +825,14 @@ export async function compileFrozenDebtPackage(
     const isCatalogClause =
       /\([a-z0-9]+\)$/i.test(candidate.normalizedSourceRef) &&
       (candidate.normalizedSourceRef.startsWith("def:") || /^\d+\.\d+\(/i.test(candidate.normalizedSourceRef));
-    if (isCatalogClause && operativeAuthorityGate !== "PROVISIONAL_IDENTITY_BLOCKED") {
+    // Fail closed on provisional identity OR when restatement authority refuses
+    // unconditional production promotion for caveated / blocked governing docs.
+    // Hypothetical vertical-slice compile may still run when identity is confirmed
+    // and authority is merely caveated (disclosed) — production capacity stays refused.
+    const restatementBlocksAllExecutable =
+      !packageGraphRelationshipsUnchanged ||
+      operativeAuthorityGate === "PROVISIONAL_IDENTITY_BLOCKED";
+    if (isCatalogClause && !restatementBlocksAllExecutable) {
       const fdCompile = compileFixedDollarBasket({
         companyId: options.companyId,
         instrumentKey,
@@ -853,12 +1009,25 @@ export async function compileFrozenDebtPackage(
     (u) => u.fixedDollarSlice?.productionRefusal || u.greaterOfSlice?.productionRefusal,
   ).length;
 
+  // Hard rule: caveated restatement authority never yields PRODUCTION_AUTHORITY_ACTIVE.
+  const productionAuthorityActive =
+    packageGraphRelationshipsUnchanged &&
+    productionAuthorityFromRestatement.allProvisionsProductionActive &&
+    !productionAuthorityFromRestatement.anyCaveatedDisclosedOnly &&
+    operativeAuthorityGate !== "PROVISIONAL_IDENTITY_BLOCKED";
+
   let capacityHandoff: OfflinePackageCompileResult["stages"]["capacityHandoff"];
   if (verifiedExecutableUnits.length === 0) {
     capacityHandoff = {
       attempted: true,
       outcome: "REFUSED_NO_VEP",
       detail: "No verified IR units available; numerical capacity claims refused.",
+    };
+  } else if (!productionAuthorityActive) {
+    capacityHandoff = {
+      attempted: true,
+      outcome: "VERTICAL_SLICE_PASSED_PRODUCTION_AUTHORITY_REFUSED",
+      detail: `${verifiedExecutableUnits.length} unit(s) verified executable (fixed-dollar and/or greater-of); PRODUCTION_AUTHORITY_ACTIVE refused (restatement caveats, unproven CP satisfaction, provisional identity, and/or missing authenticated financial/utilization evidence). Caveated operative authority remains HYPOTHETICAL_OR_DISCLOSED_ONLY.`,
     };
   } else {
     capacityHandoff = {
@@ -918,7 +1087,12 @@ export async function compileFrozenDebtPackage(
         totalCandidates: candidates.length,
         syntheticDiscovery,
       },
-      context: { bundlesBuilt: bundles.size },
+      context: {
+        bundlesBuilt: bundles.size,
+        operativeSourceRemapped,
+        operativeSourceRemapRefused,
+        operativeSourceAlreadyGoverning,
+      },
       coverageAudit,
       capacityHandoff,
       operativeHandoff: {
@@ -929,6 +1103,25 @@ export async function compileFrozenDebtPackage(
         confirmedOperativeCount,
         provisionalBlockedCount,
         authorityGate: operativeAuthorityGate,
+      },
+      operativeRestatementAuthority: {
+        verdict: operativeAuthorityHandoff.verdict,
+        provisionCount: operativeAuthorityHandoff.provisions.length,
+        restatementAuthorityCount: operativeAuthorityHandoff.restatementAuthorities.length,
+        packageGraphRelationshipsUnchanged,
+        productionAuthorityActive,
+        anyCaveatedDisclosedOnly: productionAuthorityFromRestatement.anyCaveatedDisclosedOnly,
+        anyProductionRefused: productionAuthorityFromRestatement.anyProductionRefused,
+        effectivenessInference:
+          operativeAuthorityHandoff.restatementAuthorities.find((a) => a.status === "OPERATIVE_AUTHORITY_CONFIRMED")
+            ?.effectivenessInference ??
+          operativeAuthorityHandoff.restatementAuthorities[0]?.effectivenessInference ??
+          null,
+        conditionsPrecedentSatisfaction:
+          operativeAuthorityHandoff.restatementAuthorities.find((a) => a.status === "OPERATIVE_AUTHORITY_CONFIRMED")
+            ?.conditionsPrecedentSatisfaction ??
+          operativeAuthorityHandoff.restatementAuthorities[0]?.conditionsPrecedentSatisfaction ??
+          null,
       },
       fixedDollarVerticalSlice: {
         attempted: fixedDollarResults.length,
@@ -949,6 +1142,8 @@ export async function compileFrozenDebtPackage(
     greaterOfResults,
     greaterOfSharedPairs,
     operativeHandoff,
+    operativeAuthorityHandoff,
+    productionAuthorityFromRestatement,
     humanInterventions,
     summary,
   };
