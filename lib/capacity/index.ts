@@ -23,6 +23,7 @@ export {
   toProductCapacityView,
   buildSharedProductCapacityViews,
   assertProductCapacityConsistency,
+  refuseAuthoritativeRemaining,
   type ProductSurface,
   type ProductCapacityView,
 } from "./product-capacity-view";

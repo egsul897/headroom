@@ -35,6 +35,27 @@ An `APPROVED` certificate alone is **not** enough. Production-authoritative rema
 
 **Activation requirement (documented, not wired here):** production identity-provider → `TrustedIssuerAuthorizationContext` host wiring remains outstanding until real attestations are enabled. Bounded host interface: `lib/capacity/trusted-issuer-host.ts` (`HostIdentityProvider` / `HostVerifiedIdentity`); repository `TRUSTED_ISSUER_ACTIVATION` is **BLOCKED**. Product-path `resolveUtilization` shares `evaluateCompletenessForRemainingClaim` with the solver bridge (HEADROOM-2). No broad utilization refactor; #237 authority bridge preserved; #244 is a source of improvements, not a merge candidate (#250 remains canonical product integration). PR #268 product UI labeling remains a separate open surface.
 
+### Identity-provider activation status (cross-surface gate)
+
+| Host path | Supplies `trustedIssuerAuth`? | Production remaining today |
+|---|---|---|
+| `loadCompanySolverStaticData` / `buildSolverContext` | **No** — option exists; prod callers omit | Fail-closed (`currentUsageAuthoritative=false`) |
+| Position / Simulate / Ask via `buildSharedProductCapacityViews` | Caller must supply; app pages currently unwired to shared views | Refuse via `refuseAuthoritativeRemaining` |
+| `resolveUtilization` / debt-intelligence | Option exists; production passes null certs + no auth | Fail-closed |
+
+**Smallest future activation requirement:** host session / service-account lookup that builds `productionTrustedIssuerAuth([{ actorId, authorizedRoles, identityAssurance: "SESSION_AUTHENTICATED"|"SERVICE_ACCOUNT", status: "ACTIVE" }])` from independently authenticated identity — never from the certificate blob's `issuer.role`. Fixture identities (`TEST_FIXTURE_REGISTRY`, `SYSTEM_FIXTURE`) must not enable production authority.
+
+### Live Position / Simulate / Ask routes (not only shared helpers)
+
+| Route | Calculator | Production-authoritative utilization remaining? |
+|---|---|---|
+| Position (`getCompanyDashboard` → `computeRemainingCapacityAfterDebtIncurrence`) | LEGACY / modeled gross − amount | **No** — `utilizationRemainingAuthority: NOT_PRODUCTION_AUTHORITATIVE`; UI labeled MODELED |
+| Simulate (`simulateDebtIncurrence`) | LEGACY clear vs gross capacity | **No** — clear is contractual vs modeled capacity; Ask bridge labels `LEGACY_ENGINE · NOT_CERTIFIED_4E` |
+| Ask (`analyzeContemplatedTransaction` / legacy-simulate-bridge) | Same LEGACY path | **No** — `authority: LEGACY_ENGINE` |
+| Shared views (`buildSharedProductCapacityViews`) | Completeness + trusted issuer | Only when AUTHENTIC + trusted issuer; else `refuseAuthoritativeRemaining` |
+
+Do not treat an unused shared-view helper as production protection for pages that still call LEGACY calculators.
+
 ## Solver status mapping
 
 | Solver `currentUsageStatus` | Authority | `currentUsageAuthoritative` |

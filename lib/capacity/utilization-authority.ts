@@ -119,6 +119,7 @@ function certOk(
  * Production-authoritative remaining requires AUTHENTIC authenticity and a
  * trusted-issuer authorization for the certificate's issuer.actorId.
  * Caller-supplied issuer.role alone never suffices (#244 selective port).
+ * Shared by solver bridge and product resolveUtilization / verified-remaining.
  */
 export function productionAuthorityOk(
   cert: SolverCompletenessCertInput,
@@ -181,7 +182,7 @@ export function evaluateCompletenessForRemainingClaim(args: {
       blockers:
         cert == null
           ? ["no completeness certificate presented"]
-          : ["certificate approvalState is not APPROVED"],
+          : ["certificate approvalState is not APPROVED"],>>>>>>> refs/pr/268
     };
   }
   if (cert.authenticity !== "AUTHENTIC" && cert.authenticity !== "SYNTHETIC_LABELED") {
@@ -443,7 +444,7 @@ export function authorityFromUtilizationResolution(r: UtilizationResolution): Ut
   else solverStatus = "ZERO_NO_ATTRIBUTED_USAGE";
 
   const productionOk = r.productionAuthoritative === true && r.supportsRemainingClaim;
-
+>>>>>>> refs/pr/268
   return {
     kind,
     attributedAmount: r.attributedAmount,
@@ -461,7 +462,7 @@ export function authorityFromUtilizationResolution(r: UtilizationResolution): Ut
       ? solverStatus
       : kind === "VERIFIED_ZERO" || kind === "KNOWN_ATTRIBUTED"
         ? "ATTRIBUTED_INCOMPLETE"
-        : solverStatus,
+        : solverStatus,>>>>>>> refs/pr/268
   };
 }
 

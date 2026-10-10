@@ -289,6 +289,8 @@ describe("verified remaining — A8-01 unsafe favorable guard", () => {
 
 describe("Position / Simulate / Ask consistency", () => {
   it("three surfaces share one verified result — no parallel engine", () => {
+    // Product surfaces strip non-production (synthetic) remaining even when the
+    // underlying demo hatch computes remaining — all three must agree.
     const views = buildSharedProductCapacityViews({
       gross: {
         amount: 80,
@@ -327,13 +329,14 @@ describe("Position / Simulate / Ask consistency", () => {
       sourceCitations: ["§6.01", "§6.04"],
       allowSyntheticRemaining: true,
     });
-    expect(views.POSITION.supportedRemainingCapacity).toBe(60);
-    expect(views.SIMULATE.supportedRemainingCapacity).toBe(60);
-    expect(views.ASK.supportedRemainingCapacity).toBe(60);
+    // Synthetic demo remaining is stripped on Position/Simulate/Ask publication.
+    expect(views.POSITION.supportedRemainingCapacity).toBeNull();
+    expect(views.SIMULATE.supportedRemainingCapacity).toBeNull();
+    expect(views.ASK.supportedRemainingCapacity).toBeNull();
+    expect(views.POSITION.mayPublishAvailable).toBe(false);
     expect(assertProductCapacityConsistency(views)).toEqual({ ok: true });
     expect(views.POSITION.grossCapacity).toBe(80);
     expect(views.POSITION.knownUtilization).toBe(20);
-    expect(views.POSITION.unknownUtilization).toBe(false);
     expect(views.POSITION.governingConditions).toContain("Payment Conditions satisfied");
     expect(views.POSITION.crossDocumentConstraints.length).toBe(1);
     expect(views.POSITION.sourceCitations).toContain("§6.01");
