@@ -290,6 +290,114 @@ describe("secured lien sufficiency (fail-closed adversarial)", () => {
     ).toBe(true);
   });
 
+  it("P0: $100M lien gross + $80M authoritative shared util + $50M borrow must not CLEAR", () => {
+    // Independent expectation: remaining lien authorization = 100 − 80 = 20 < 50.
+    expect(100 - 80).toBe(20);
+    expect(20).toBeLessThan(50);
+
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
+    const lien = permission("lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const graph = buildPermissionGraph(
+      [debt, lien],
+      [rel({ fromPermissionId: "debt", toPermissionId: "lien", relationshipType: "CONCURRENT_DISREGARDED" })],
+    );
+    const shared: SharedConstraint = {
+      id: "lien-pool-partial",
+      companyId: "co-1",
+      name: "Lien shared pool with historical usage",
+      cap: { amount: 100 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 80,
+      currentUsageAuthoritative: true,
+      currentUsageStatus: "COMPUTED",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+    };
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien", lien],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 50,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 50 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    expect(buildPermissionPaths([evalResult])[0]!.status).not.toBe("CLEAR");
+    expect(buildPermissionPaths([evalResult])[0]!.status).toBe("BLOCKED");
+    expect(
+      evalResult.requirements.some(
+        (r) =>
+          r.class === "LIEN_PERMISSION" &&
+          (r.status === "FAILED" || r.status === "UNKNOWN") &&
+          (r.scope.permissionId === "debt" || r.scope.permissionId === "lien"),
+      ),
+    ).toBe(true);
+  });
+
+  it("P0: unknown historical lien utilization cannot support affirmative CLEAR", () => {
+    const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 200 });
+    const lien = permission("lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
+    const graph = buildPermissionGraph(
+      [debt, lien],
+      [rel({ fromPermissionId: "debt", toPermissionId: "lien", relationshipType: "CONCURRENT_DISREGARDED" })],
+    );
+    const shared: SharedConstraint = {
+      id: "lien-pool-unknown",
+      companyId: "co-1",
+      name: "Lien pool unknown utilization",
+      cap: { amount: 100 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "lien" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      currentUsageAuthoritative: false,
+      currentUsageStatus: "ATTRIBUTED_INCOMPLETE",
+      sourceProvision: { documentId: "doc-1", sectionRef: "§shared" },
+    };
+    const evalResult = evaluateElection({
+      election: { id: "e", memberPermissionIds: ["debt", "lien"], rationale: "" },
+      permissionsById: new Map([
+        ["debt", debt],
+        ["lien", lien],
+      ]),
+      graph,
+      financials: FIN,
+      requestedAmount: 50,
+      eligibilityContext: {
+        transaction: { ...baseTransaction, secured: true, amount: 50 },
+        entityClasses: ["BORROWER"],
+        ruleActivationConditions: [],
+        activationState: emptyActivationState,
+        asOfDate: emptyActivationState.asOfDate,
+      },
+      sharedConstraints: [shared],
+      collateralScopes: [],
+    });
+    const status = buildPermissionPaths([evalResult])[0]!.status;
+    expect(status).not.toBe("CLEAR");
+    expect(["BLOCKED", "ASSUMPTION_REQUIRED", "REVIEW_REQUIRED"]).toContain(status);
+    expect(
+      evalResult.requirements.some(
+        (r) =>
+          (r.class === "LIEN_PERMISSION" || r.class === "SHARED_CAP") &&
+          (r.status === "UNKNOWN" || r.status === "FAILED"),
+      ),
+    ).toBe(true);
+  });
+
   it("blocks wrong collateral priority even when lien capacity exists", () => {
     const debt = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 100 });
     const lien = permission("lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });

@@ -214,22 +214,20 @@ export function assessIndependentLienCoverageForDebtLeg(args: {
       rejections.push({ lienId: lien.id, reason: "not a LIEN grantType / wrong debt class coverage target", hardFail: true });
       continue;
     }
-    // Currency / FX: if the lien declares a currency distinct from the
-    // transaction currency, coverage requires an authorized FX assumption.
-    // Absent that assumption, fail closed (UNKNOWN) — never invent conversion.
+    // Currency / FX: a numeric authorizedFxRate alone is not proof of conversion.
+    // Require a positive finite rate and apply it to capacity (txn = lien * rate).
     const rawParams =
       lien.params != null && typeof lien.params === "object" && !Array.isArray(lien.params)
         ? (lien.params as Record<string, unknown>)
         : null;
     const lienCurrency = typeof rawParams?.currency === "string" ? rawParams.currency : null;
+    const rawFx = rawParams?.authorizedFxRate;
     const authorizedFx =
-      typeof rawParams?.authorizedFxRate === "number" && Number.isFinite(rawParams.authorizedFxRate)
-        ? rawParams.authorizedFxRate
-        : null;
+      typeof rawFx === "number" && Number.isFinite(rawFx) && rawFx > 0 ? rawFx : null;
     if (lienCurrency && lienCurrency !== transaction.currency.code && authorizedFx == null) {
       rejections.push({
         lienId: lien.id,
-        reason: `currency mismatch (${lienCurrency} ≠ ${transaction.currency.code}) without authorizedFxRate`,
+        reason: `currency mismatch (${lienCurrency} ≠ ${transaction.currency.code}) without positive finite authorizedFxRate`,
         hardFail: false,
       });
       anyUnknown = true;
@@ -282,9 +280,8 @@ export function assessIndependentLienCoverageForDebtLeg(args: {
       continue;
     }
 
-    // Collateral / priority: if the transaction requests pools, the lien must
-    // cover at least one requested pool at the requested tier (or the lien
-    // must be unrestricted — no collateralScopes rows).
+    // Collateral / priority: every requested pool+tier must be covered
+    // (complete coverage — not merely one matching pool via `.some()`).
     const lienScopes = collateralScopes.filter((s) => s.permissionId === lien.id);
     if (transaction.requestedLienPriority.length > 0) {
       if (lienScopes.length === 0) {
@@ -296,11 +293,15 @@ export function assessIndependentLienCoverageForDebtLeg(args: {
         anyUnknown = true;
         continue;
       }
-      const matchesRequest = transaction.requestedLienPriority.some((req) =>
+      const coversAll = transaction.requestedLienPriority.every((req) =>
         lienScopes.some((s) => s.collateralPoolId === req.poolId && s.priorityTier === req.priorityTier),
       );
-      if (!matchesRequest) {
-        rejections.push({ lienId: lien.id, reason: "lien collateral/priority does not match requestedLienPriority", hardFail: true });
+      if (!coversAll) {
+        rejections.push({
+          lienId: lien.id,
+          reason: "lien collateral/priority does not completely cover every requestedLienPriority entry",
+          hardFail: true,
+        });
         continue;
       }
     } else if (lienScopes.length > 0 && transaction.collateralPools.length > 0) {
@@ -325,18 +326,23 @@ export function assessIndependentLienCoverageForDebtLeg(args: {
       anyUnknown = true;
       continue;
     }
+    // Apply FX when currencies differ — rate presence alone is insufficient.
+    const capacityTxn =
+      lienCurrency && lienCurrency !== transaction.currency.code && authorizedFx != null
+        ? evaluated.capacity * authorizedFx
+        : evaluated.capacity;
     // Parasitic auto-style liens (threshold 0 / capacity 0) cannot independently
     // cover a positive secured allocation — they only work via AUTOMATIC_LINKED_PERMISSION.
     const need = debtLeg.amountAllocated;
-    if (need > 1e-9 && evaluated.capacity + 1e-9 < need) {
+    if (need > 1e-9 && capacityTxn + 1e-9 < need) {
       rejections.push({
         lienId: lien.id,
-        reason: `insufficient lien capacity ${evaluated.capacity} < debt allocation ${need}`,
+        reason: `insufficient lien capacity ${capacityTxn} < debt allocation ${need}`,
         hardFail: true,
       });
       continue;
     }
-    if (need > 1e-9 && evaluated.capacity <= 1e-9 && lien.thresholdValue === 0) {
+    if (need > 1e-9 && capacityTxn <= 1e-9 && lien.thresholdValue === 0) {
       rejections.push({
         lienId: lien.id,
         reason: "zero-threshold lien has no independent ceiling — cannot cover positive secured allocation without AUTOMATIC_LINKED_PERMISSION",
@@ -352,7 +358,7 @@ export function assessIndependentLienCoverageForDebtLeg(args: {
       status: "SATISFIED",
       detail:
         `Secured debt leg ${debtId} covered by independent LIEN ${lien.id} ` +
-        `(same document, entity/collateral/eligibility/capacity checks passed; capacity ${evaluated.capacity}).`,
+        `(same document, entity/collateral/eligibility/capacity checks passed; txn-currency capacity ${capacityTxn}).`,
       sourceProvision: { documentId: lien.documentId, sectionRef: lien.sourceProvision.sectionRef },
     };
   }
@@ -901,6 +907,41 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
         independentCoverageUnknown = true;
         continue;
       }
+      // Operative date / modeling — fail closed (preserve #250 eligibility posture).
+      if (lien.modelingStatus !== "MODELED") {
+        independentCoverageUnknown = true;
+        continue;
+      }
+      if (lien.effectiveFrom && eligibilityContext.asOfDate < lien.effectiveFrom) continue;
+      if (lien.effectiveTo && eligibilityContext.asOfDate > lien.effectiveTo) continue;
+      if (
+        lien.entityScope.length > 0 &&
+        !lien.entityScope.some((c) => eligibilityContext.entityClasses.includes(c))
+      ) {
+        continue;
+      }
+
+      // Complete collateral coverage for every requested pool+tier (#256).
+      const lienScopes = collateralScopes.filter((s) => s.permissionId === lien.id);
+      const requested = eligibilityContext.transaction.requestedLienPriority;
+      if (requested.length > 0) {
+        if (lienScopes.length === 0) {
+          independentCoverageUnknown = true;
+          requirements.push({
+            class: "LIEN_PERMISSION",
+            scope: { permissionId: lien.id },
+            status: "UNKNOWN",
+            detail: `Independent lien ${lien.id} has no collateral scope rows for requested priorities.`,
+            reasonCategory: "MISSING_ASSUMPTION",
+          });
+          continue;
+        }
+        const coversAll = requested.every((req) =>
+          lienScopes.some((s) => s.collateralPoolId === req.poolId && s.priorityTier === req.priorityTier),
+        );
+        if (!coversAll) continue;
+      }
+
       const evaluated = evaluateProvision(permissionAsProvision(lien), financials, metricsForLien);
       if (evaluated.status !== "modeled" || evaluated.capacity == null) {
         independentCoverageUnknown = true;
@@ -913,7 +954,32 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
         });
         continue;
       }
-      let cap = evaluated.capacity;
+
+      // FX: apply positive finite authorizedFxRate; reject missing/zero/negative/nonfinite.
+      const rawParams =
+        lien.params != null && typeof lien.params === "object" && !Array.isArray(lien.params)
+          ? (lien.params as Record<string, unknown>)
+          : null;
+      const lienCurrency = typeof rawParams?.currency === "string" ? rawParams.currency : null;
+      const rawFx = rawParams?.authorizedFxRate;
+      const authorizedFx =
+        typeof rawFx === "number" && Number.isFinite(rawFx) && rawFx > 0 ? rawFx : null;
+      const txnCurrency = eligibilityContext.transaction.currency.code;
+      if (lienCurrency && lienCurrency !== txnCurrency && authorizedFx == null) {
+        independentCoverageUnknown = true;
+        requirements.push({
+          class: "LIEN_PERMISSION",
+          scope: { permissionId: lien.id },
+          status: "UNKNOWN",
+          detail: `Independent lien ${lien.id}: currency mismatch (${lienCurrency} ≠ ${txnCurrency}) without positive finite authorizedFxRate.`,
+          reasonCategory: "EXTERNAL_INPUT",
+        });
+        continue;
+      }
+      let cap =
+        lienCurrency && lienCurrency !== txnCurrency && authorizedFx != null
+          ? evaluated.capacity * authorizedFx
+          : evaluated.capacity;
       const constraint = constraintFor(lien.id);
       if (constraint) {
         if (constraint.currentUsageAuthoritative !== true) {
