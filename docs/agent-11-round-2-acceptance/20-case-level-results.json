@@ -1,0 +1,311 @@
+{
+  "artifact": "AGENT11_ROUND2_CASE_LEVEL_RESULTS_V2",
+  "tipSha": "2e8c9973ac05f729ec5096599c66dd7243d5dba8",
+  "falseFavorableCount": 0,
+  "cases": [
+    {
+      "caseId": "AN-B-RESTATE",
+      "governingDocumentExpected": "doc-b",
+      "provision": "preamble",
+      "title": "Fifth A&R restatement of Existing Credit Agreement",
+      "expectedAnswer": "Identify doc-b as operative after Closing Date. Do not treat doc-a \u00a78.1(b) capitalization covenant as currently operative.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": true,
+        "contextSufficiency": "BUDGET_EXCEEDED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "unresolvedDependencyCount": 23
+      },
+      "missingDependencies": [
+        "Existing Credit Agreement"
+      ],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "PASS",
+      "affirmativeOrRefusal": "AFFIRMATIVE_ATTEMPT",
+      "resultKind": "MISSING_EVIDENCE"
+    },
+    {
+      "caseId": "AN-B-8.1",
+      "governingDocumentExpected": "doc-b",
+      "provision": "8.1",
+      "title": "Financial Covenants",
+      "expectedAnswer": "Production capacity/compliance claims require authenticated financial inputs for ratio components. Refuse production authority without them.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": true,
+        "contextSufficiency": "REVIEW_REQUIRED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [],
+        "unresolvedDependencyCount": 43
+      },
+      "missingDependencies": [
+        "Adjusted Consolidated EBITDA",
+        "Consolidated Funded Indebtedness"
+      ],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "PASS",
+      "affirmativeOrRefusal": "REFUSAL",
+      "resultKind": "SAFE_REFUSAL"
+    },
+    {
+      "caseId": "AN-A-8.1-CAPITALIZATION",
+      "governingDocumentExpected": "doc-a",
+      "provision": "8.1",
+      "title": "Third A&R capitalization covenant (historical)",
+      "expectedAnswer": "As of 2026-09-14 Closing Date, REFUSE any production claim based on the 0.70 capitalization covenant.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": false,
+        "contextSufficiency": "BUDGET_EXCEEDED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "unresolvedDependencyCount": 233
+      },
+      "missingDependencies": [],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "PASS",
+      "affirmativeOrRefusal": "REFUSAL",
+      "resultKind": "SAFE_REFUSAL"
+    },
+    {
+      "caseId": "AN-B-8.2",
+      "governingDocumentExpected": "doc-b",
+      "provision": "8.2",
+      "title": "Indebtedness incurrence gate",
+      "expectedAnswer": "Hypothetical illustration may apply caller-stipulated ratios if labeled. Production authority requires authenticated inputs + completeness + trusted approval.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": true,
+        "contextSufficiency": "REVIEW_REQUIRED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [],
+        "unresolvedDependencyCount": 49
+      },
+      "missingDependencies": [],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "PASS",
+      "affirmativeOrRefusal": "AFFIRMATIVE_ATTEMPT",
+      "resultKind": "MISSING_EVIDENCE"
+    },
+    {
+      "caseId": "AN-B-8.3",
+      "governingDocumentExpected": "doc-b",
+      "provision": "8.3",
+      "title": "Restriction on Liens securing Indebtedness",
+      "expectedAnswer": "Refuse production remaining on (xix) without CTA evidence and utilization completeness across secured Indebtedness in the basket.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": true,
+        "contextSufficiency": "REVIEW_REQUIRED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [],
+        "unresolvedDependencyCount": 45
+      },
+      "missingDependencies": [],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "PASS",
+      "affirmativeOrRefusal": "REFUSAL",
+      "resultKind": "SAFE_REFUSAL"
+    },
+    {
+      "caseId": "AN-B-PERM-INDEBTEDNESS",
+      "governingDocumentExpected": "doc-b",
+      "provision": "1.1",
+      "title": "Permitted Indebtedness",
+      "expectedAnswer": "Missing this definition blocks complete legal context for \u00a78.2.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": false,
+        "contextSufficiency": "BUDGET_EXCEEDED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "unresolvedDependencyCount": 23
+      },
+      "missingDependencies": [
+        "Subsidiary"
+      ],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "FAIL",
+      "affirmativeOrRefusal": "AFFIRMATIVE_ATTEMPT",
+      "resultKind": "MISSING_EVIDENCE"
+    },
+    {
+      "caseId": "AN-B-DEF-LEVERAGE",
+      "governingDocumentExpected": "doc-b",
+      "provision": "1.1",
+      "title": "Consolidated Leverage Ratio",
+      "expectedAnswer": "Required for any executable leverage representation.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": true,
+        "contextSufficiency": "BUDGET_EXCEEDED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "unresolvedDependencyCount": 23
+      },
+      "missingDependencies": [],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "PASS",
+      "affirmativeOrRefusal": "AFFIRMATIVE_ATTEMPT",
+      "resultKind": "MISSING_EVIDENCE"
+    },
+    {
+      "caseId": "AN-B-FACILITY",
+      "governingDocumentExpected": "doc-b",
+      "provision": "1.1",
+      "title": "Total Revolving Credit Commitment",
+      "expectedAnswer": "Using $1.8B after Closing Date is wrong-amendment / stale evidence.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": false,
+        "contextSufficiency": "BUDGET_EXCEEDED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "unresolvedDependencyCount": 23
+      },
+      "missingDependencies": [
+        "Stated Termination Date"
+      ],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "FAIL",
+      "affirmativeOrRefusal": "AFFIRMATIVE_ATTEMPT",
+      "resultKind": "MISSING_EVIDENCE"
+    },
+    {
+      "caseId": "AN-B-FUNDED-LC",
+      "governingDocumentExpected": "doc-b",
+      "provision": "1.1",
+      "title": "Funded Indebtedness LC inclusion threshold",
+      "expectedAnswer": "Wrong threshold ($150mm from doc-a) is a wrong-amendment fidelity failure.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": false,
+        "contextSufficiency": "BUDGET_EXCEEDED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached"
+        ],
+        "unresolvedDependencyCount": 23
+      },
+      "missingDependencies": [
+        "Escrow Indebtedness",
+        "Guaranty Obligations"
+      ],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "FAIL",
+      "affirmativeOrRefusal": "AFFIRMATIVE_ATTEMPT",
+      "resultKind": "MISSING_EVIDENCE"
+    },
+    {
+      "caseId": "AN-B-8.4",
+      "governingDocumentExpected": "doc-b",
+      "provision": "8.4",
+      "title": "Merger, Consolidation or Fundamental Changes",
+      "expectedAnswer": "Qualitative restriction \u2014 production 'capacity' numeric claims unsupported.",
+      "actualAnswer": {
+        "structuralFound": true,
+        "completeOperativeSpan": true,
+        "contextSufficiency": "REVIEW_REQUIRED",
+        "verifiedExecutable": false,
+        "falseFavorableCapacity": false
+      },
+      "sourceEvidence": {
+        "primaryNodeId": null,
+        "stopReasons": [],
+        "unresolvedDependencyCount": 43
+      },
+      "missingDependencies": [],
+      "authorityStatus": {
+        "operativeDocumentId": null,
+        "agent7DocBAuthority": "REVIEW_REQUIRED",
+        "productionAuthority": "BLOCKED"
+      },
+      "passFail": "PASS",
+      "affirmativeOrRefusal": "AFFIRMATIVE_ATTEMPT",
+      "resultKind": "MISSING_EVIDENCE"
+    }
+  ]
+}
