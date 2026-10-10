@@ -140,6 +140,10 @@ describe("Phase 7 - service layer (lib/solver/service.ts)", () => {
       measurementBasis: "CURRENTLY_OUTSTANDING",
       followsRefinancing: false,
       currentUsage: 0,
+      currentUsageStatus: "VERIFIED_ZERO",
+      currentUsageAuthoritative: true,
+      currentUsageSupportsRemainingClaim: true,
+      currentUsageCompletenessCertified: true,
       sourceProvision: { documentId: "doc-1", sectionRef: "§sc" },
     };
     const result = runSolver({
@@ -178,6 +182,10 @@ describe("Phase 7 - service layer (lib/solver/service.ts)", () => {
       measurementBasis: "CURRENTLY_OUTSTANDING",
       followsRefinancing: false,
       currentUsage: 0,
+      currentUsageStatus: "VERIFIED_ZERO",
+      currentUsageAuthoritative: true,
+      currentUsageSupportsRemainingClaim: true,
+      currentUsageCompletenessCertified: true,
       sourceProvision: { documentId: "doc-1", sectionRef: "§sc" },
     };
     const result = runSolver({

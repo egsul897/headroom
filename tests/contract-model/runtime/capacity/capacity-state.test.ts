@@ -81,6 +81,11 @@ describe("unlimited is its own state, never a very large number", () => {
     const c = one(state);
     expect(c.grossCapacity).toEqual({ kind: "GATE_NOT_SATISFIED" });
     expect(c.remaining).toEqual({ kind: "GATE_NOT_SATISFIED" });
+    // A8-01 (merged via #229 on main): domain status is NOT_SATISFIED.
+    expect(c.status).toBe("NOT_SATISFIED");
+    expect(c.status).not.toBe("AVAILABLE");
+    expect(c.status).not.toBe("REVIEW_REQUIRED");
+    expect(c.provisional).toBeNull();
   });
 
   it("unlimited minus recorded usage is still unlimited", () => {

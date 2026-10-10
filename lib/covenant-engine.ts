@@ -43,6 +43,7 @@ import { runSolver } from "./solver/service";
 import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "./financial-identity";
 import type {
   ActivationState,
+  BasketUsageRecord,
   CollateralPoolRef,
   CoverageDeclaration,
   CoverageResult,
@@ -60,6 +61,7 @@ import type {
   SourceCitation,
   Transaction,
 } from "./solver/types";
+import { computeSharedConstraintCurrentUsage } from "./solver/shared-usage";
 
 // ---------------------------------------------------------------------------
 // Types mirroring the Prisma schema (decimal fields as `number`)
@@ -1834,6 +1836,31 @@ export interface SolverNativePrismaClient {
   solverCoverageDeclaration: { findMany(args: any): Promise<DbSolverCoverageDeclarationRow[]> };
 }
 
+export interface LoadCompanySolverStaticOptions {
+  /**
+   * Optional permission-attributed basket usage. When omitted or empty,
+   * NAMED_MEMBER_CLAUSES shared constraints keep currentUsage 0 with status
+   * ZERO_NO_ATTRIBUTED_USAGE and supportsRemainingClaim=false.
+   * Approved attributed records alone do NOT enable remaining claims (#234).
+   */
+  basketUsage?: BasketUsageRecord[];
+  /**
+   * Optional completeness certificates keyed by shared-constraint id (#234).
+   * Required for any remaining-capacity claim on that constraint.
+   */
+  completenessCertificates?: Record<
+    string,
+    {
+      kind: "VERIFIED_EMPTY" | "VERIFIED_COMPLETE";
+      approvalState: "APPROVED";
+      asOf: string;
+      sourceLabel: string;
+      authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+    }
+  >;
+  asOf?: string;
+}
+
 /**
  * Loads a company's solver-native graph rows (Permission/PermissionRelationship/
  * SharedCapacityConstraint/PermissionCollateralScope/RuleActivationCondition/
@@ -1842,11 +1869,17 @@ export interface SolverNativePrismaClient {
  * to legacy rows. Zero rows for a company (true for Coherent today) yields
  * empty arrays, which is exactly what makes every document/side for that
  * company resolve LEGACY/NOT_TESTED in `resolveDocumentSideCoverage`.
+ *
+ * SharedConstraint.currentUsage is computed for NAMED_MEMBER_CLAUSES from
+ * optional `options.basketUsage` only. Status/authoritative flags are always
+ * attached. EXTERNAL_INSTRUMENT_BALANCE and ENTITY_CLASS_FILTER remain 0 with
+ * non-authoritative status (fail-closed — do not invent balances).
  */
 export async function loadCompanySolverStaticData(
   prisma: SolverNativePrismaClient,
   companyId: string,
-  asOfDate: Date = new Date()
+  asOfDate: Date = new Date(),
+  options?: LoadCompanySolverStaticOptions,
 ): Promise<SolverNativeStaticData> {
   const dateFilter = effectiveDateFilter(asOfDate);
   const [permissionRows, relationshipRows, constraintRows, constraintMemberRows, collateralScopeRows, activationRows, declarationRows] = await Promise.all([
@@ -1922,7 +1955,33 @@ export async function loadCompanySolverStaticData(
     })),
     measurementBasis: c.measurementBasis,
     followsRefinancing: c.followsRefinancing,
-    currentUsage: 0, // computed from ledger/historicalState by the caller when that's wired up; see report §O/M for this scoped follow-up
+    ...(() => {
+      const cert = options?.completenessCertificates?.[c.id];
+      const computed = computeSharedConstraintCurrentUsage({
+        aggregationRule: c.aggregationRule,
+        measurementBasis: c.measurementBasis,
+        members: (membersByConstraintId.get(c.id) ?? []).map((m) => ({
+          permissionId: m.permissionId ?? undefined,
+          namedInstrument: m.namedInstrument ?? undefined,
+          entityClass: m.entityClass ?? undefined,
+          externalInstrumentRef: m.externalInstrumentRef ?? undefined,
+        })),
+        basketUsage: options?.basketUsage ?? [],
+        constraintId: c.id,
+        asOf: options?.asOf,
+        completenessCertificate: cert
+          ? { ...cert, constraintId: c.id }
+          : null,
+      });
+      return {
+        currentUsage: computed.usage,
+        currentUsageStatus: computed.status,
+        currentUsageAuthoritative: computed.supportsRemainingClaim,
+        currentUsageSupportsRemainingClaim: computed.supportsRemainingClaim,
+        currentUsageAttributedKnown: computed.attributedKnown,
+        currentUsageCompletenessCertified: computed.completenessCertified,
+      };
+    })(),
     sourceProvision: { documentId: companyId, sectionRef: c.sourceSectionRef },
   }));
 
