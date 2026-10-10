@@ -51,6 +51,12 @@
 # then runs the R0 suites, the P3-FFC1 financial-fact conflict suite, the
 # P3-FFC1b provenance-wrapper carry suite, the P3-FFC2 suites, the
 # P3-FFC2b write-side identity suite, and the P3-FFC2c Snapshot-unique suite.
+#
+# Unlimited carve-out qualitative gates run here as their own invocation.
+# Soft gate only. IMPLEMENTED ≠ CERTIFIED. invent-absence forever.
+# A green run is not certification credit and does not advance certification.
+# Path filters include the honesty module, the normalizer, the compiler
+# version constant, and the qualitative-gates test.
 
 name: p3-r0-soft-gate
 
@@ -78,6 +84,10 @@ on:
       - "prisma/seed-data.ts"
       - "prisma/migrations/**"
       - "docs/autonomous-information-retrieval-v1.md"
+      - "lib/contract-model/compiler/semantic/unlimited-carveout-honesty.ts"
+      - "lib/contract-model/compiler/semantic/normalize.ts"
+      - "lib/contract-model/compiler/semantic/types.ts"
+      - "tests/contract-model/semantic-compiler/unlimited-carveout-qualitative-gates.test.ts"
       - ".github/workflows/p3-r0-soft-gate.yml"
       - "package.json"
       - "package-lock.json"
@@ -104,6 +114,10 @@ on:
       - "prisma/seed-data.ts"
       - "prisma/migrations/**"
       - "docs/autonomous-information-retrieval-v1.md"
+      - "lib/contract-model/compiler/semantic/unlimited-carveout-honesty.ts"
+      - "lib/contract-model/compiler/semantic/normalize.ts"
+      - "lib/contract-model/compiler/semantic/types.ts"
+      - "tests/contract-model/semantic-compiler/unlimited-carveout-qualitative-gates.test.ts"
       - ".github/workflows/p3-r0-soft-gate.yml"
       - "package.json"
       - "package-lock.json"
@@ -142,6 +156,8 @@ jobs:
       - run: npm ci
       - name: typecheck
         run: npx tsc --noEmit -p .
+      - name: unlimited carve-out qualitative gates (soft gate)
+        run: npx vitest run tests/contract-model/semantic-compiler/unlimited-carveout-qualitative-gates.test.ts
       - name: apply migrations to the ephemeral Postgres service
         run: npx prisma migrate deploy
       - name: P3-R0, financial-fact conflict, provenance-carry, FFC2, FFC2b, and FFC2c suites

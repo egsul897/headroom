@@ -82,7 +82,13 @@ import type { SemanticInventoryMode } from "../semantic-accountability/dual-pass
 // be uniquely attributed leaves sufficiency AMBIGUOUS rather than COMPLETE. A v11-era cached compilation may delete an
 // independent qualifier or claim COMPLETE on an unattributed pair; it must not be served as this compiler's output.
 // Prompt wording is unchanged. IMPLEMENTED ≠ CERTIFIED.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v12";
+// v13 (qualitative condition-loss remediation): an UNSUPPORTED condition is not dropped as exact gate redundancy
+// while expression, referencesDefinitionId, referencesRuleTargets, evaluationBasis, or a non-gate rawModelExcerpt
+// still carries a restriction. A clause excerpt with an independent restriction does not suppress the manner gate.
+// A selected pair whose source slice cannot be bound does not stay COMPLETE. A v12 cache may drop those carriers
+// or leave COMPLETE on an unbound pair; it must not be served as this compiler's output. Prompt wording is unchanged.
+// IMPLEMENTED ≠ CERTIFIED.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v13";
 export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v9";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 

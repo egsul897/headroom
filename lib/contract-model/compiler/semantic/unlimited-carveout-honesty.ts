@@ -21,12 +21,21 @@
  * dependency edges.
  *
  * A pre-existing condition is removed only when exact semantic redundancy with
- * those gates is proven. Substring containment is not equivalence: an
- * UNSUPPORTED condition that also states an independent qualifier is kept.
+ * those gates is proven. Substring containment is not equivalence. Excerpt and
+ * description are the surfaces compared to the gate strings. expression,
+ * referencesDefinitionId, referencesRuleTargets, evaluationBasis, and a
+ * rawModelExcerpt that is not itself an exact gate are retention carriers:
+ * if any of them is present, redundancy is not proven and the condition stays.
+ *
+ * A clause-sized excerpt is not the manner gate when one of those carriers,
+ * or the description, states an independent restriction. The manner gate is
+ * still emitted.
  *
  * When the operative window states the pair but this unlimited rule cannot be
  * uniquely attributed it, the gates are not copied by guess and sufficiency
- * is AMBIGUOUS. Unknown attribution is not COMPLETE.
+ * is AMBIGUOUS. Unknown attribution is not COMPLETE. When the pair is
+ * selected and the source slice cannot be bound, the gates are not emitted
+ * and sufficiency is not left COMPLETE.
  *
  * Soft gate. invent-absence forever. IMPLEMENTED ≠ CERTIFIED.
  */
@@ -38,6 +47,9 @@ export const UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON =
 
 export const UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON =
   "QUALITATIVE_GATE_ATTRIBUTION_AMBIGUOUS: the operative window states a property-character object class and an ordinary-course manner, but this unlimited rule cannot be uniquely attributed that clause; the gates are not copied onto a sibling by guess, and unknown attribution is AMBIGUOUS rather than COMPLETE (invent-absence; not a certification)";
+
+export const UNLIMITED_CARVEOUT_UNBOUND_PAIR_REASON =
+  "QUALITATIVE_GATE_SOURCE_UNBOUND: this unlimited rule is the unique attribution of a property-character object class and an ordinary-course manner, but the source slice could not be bound; the gates are not emitted unbound, and sufficiency is not COMPLETE (invent-absence; not a certification)";
 
 const FUNCTION_WORDS = new Set(["a", "an", "the", "any", "its", "such", "other", "all", "of", "or", "and", "to", "for", "by", "with", "from", "on", "in", "at", "as"]);
 
@@ -65,6 +77,8 @@ export interface UnlimitedCarveOutHonestyResult {
   applied: boolean;
   /** True when the operative pair exists and this rule cannot be uniquely attributed it. Sufficiency must not stay COMPLETE. */
   ambiguousAttribution: boolean;
+  /** True when the pair was selected and the source slice did not bind. Gates stay uncopied. Sufficiency must not stay COMPLETE. */
+  unboundPair: boolean;
   reason: string | null;
 }
 
@@ -127,8 +141,51 @@ function isExactGate(condition: IRCondition, excerpt: string): boolean {
   return condition.conditionType === "UNSUPPORTED" && excerptOf(condition) !== null && norm(excerptOf(condition)!) === norm(excerpt);
 }
 
-function hasMannerGate(conditions: readonly IRCondition[], pair: QualitativePair): boolean {
-  return conditions.some((condition) => isExactGate(condition, pair.mannerExcerpt) || isExactGate(condition, pair.clauseExcerpt));
+function gateExactSet(objectExcerpt: string, mannerExcerpt: string): Set<string> {
+  const objectN = norm(objectExcerpt);
+  const mannerN = norm(mannerExcerpt);
+  return new Set([objectN, mannerN, `${objectN} ${mannerN}`, `${mannerN} ${objectN}`]);
+}
+
+/**
+ * Carriers that can state a restriction this pass does not prove redundant.
+ * Excerpt and description are compared separately, as exact gate strings.
+ * rawModelExcerpt is not authoritative source evidence; it still blocks
+ * deletion when it is not itself an exact gate or the authoritative excerpt.
+ */
+function unprovenCarrier(condition: IRCondition, objectExcerpt: string, mannerExcerpt: string): boolean {
+  if (condition.expression != null) return true;
+  if (condition.referencesDefinitionId != null) return true;
+  if ((condition.referencesRuleTargets?.length ?? 0) > 0) return true;
+  if (condition.evaluationBasis != null) return true;
+  const raw = condition.provenance?.rawModelExcerpt;
+  if (typeof raw !== "string" || norm(raw).length === 0) return false;
+  const rawN = norm(raw);
+  const exact = gateExactSet(objectExcerpt, mannerExcerpt);
+  if (exact.has(rawN)) return false;
+  const authoritative = norm(excerptOf(condition) ?? "");
+  return authoritative.length === 0 || rawN !== authoritative;
+}
+
+function hasMannerGate(conditions: readonly IRCondition[], pair: QualitativePair, operativeText: string): boolean {
+  return conditions.some((condition) => isExactGate(condition, pair.mannerExcerpt) || clauseCountsAsMannerGate(condition, pair, operativeText));
+}
+
+/**
+ * A clause excerpt (object through manner) is the manner gate only when no
+ * unproven carrier and no description word beyond the pair is present.
+ * The deterministic gate descriptions this pass writes are not qualifiers.
+ */
+function clauseCountsAsMannerGate(condition: IRCondition, pair: QualitativePair, operativeText: string): boolean {
+  if (!isExactGate(condition, pair.clauseExcerpt)) return false;
+  if (unprovenCarrier(condition, pair.objectExcerpt, pair.mannerExcerpt)) return false;
+  const description = condition.description ?? "";
+  if (description.length === 0) return true;
+  const descriptionN = norm(description);
+  if (gateExactSet(pair.objectExcerpt, pair.mannerExcerpt).has(descriptionN)) return true;
+  if (descriptionN === norm(objectDescription(pair.objectExcerpt)) || descriptionN === norm(mannerDescription(pair.mannerExcerpt))) return true;
+  const act = actTokenBefore(operativeText, pair.objectExcerpt);
+  return qualifiersBeyondPair(description, pair.objectExcerpt, pair.mannerExcerpt, act).length === 0;
 }
 
 /** True when needle occurs once in haystack after whitespace and case folding. */
@@ -158,17 +215,15 @@ function bindGate(input: UnlimitedCarveOutHonestyInput, excerpt: string, clauseE
 }
 
 /**
- * Exact redundancy is equality of every non-empty surface (authoritative
- * excerpt, description) with one gate or with both gates in either order.
- * A surface that merely contains a gate phrase is not redundant: the extra
- * words may be an independent qualifier, and substring overlap must not
- * delete them.
+ * Exact redundancy is equality of every non-empty authoritative excerpt and
+ * description with one gate or with both gates in either order, and no
+ * unproven carrier. A surface that merely contains a gate phrase is not
+ * redundant. Substring overlap must not delete an independent qualifier.
  */
 function isExactlyRedundant(condition: IRCondition, objectExcerpt: string, mannerExcerpt: string): boolean {
   if (condition.conditionType !== "UNSUPPORTED") return false;
-  const objectN = norm(objectExcerpt);
-  const mannerN = norm(mannerExcerpt);
-  const exact = new Set([objectN, mannerN, `${objectN} ${mannerN}`, `${mannerN} ${objectN}`]);
+  if (unprovenCarrier(condition, objectExcerpt, mannerExcerpt)) return false;
+  const exact = gateExactSet(objectExcerpt, mannerExcerpt);
   const surfaces = [norm(excerptOf(condition) ?? ""), norm(condition.description ?? "")].filter((surface) => surface.length > 0);
   if (surfaces.length === 0) return false;
   return surfaces.every((surface) => exact.has(surface));
@@ -279,20 +334,26 @@ function composeGate(existing: IRExpression | null, objectLeaf: IRExpression, ma
 }
 
 function unchanged(input: UnlimitedCarveOutHonestyInput): UnlimitedCarveOutHonestyResult {
-  return { capacity: input.capacity, conditions: input.conditions, applied: false, ambiguousAttribution: false, reason: null };
+  return { capacity: input.capacity, conditions: input.conditions, applied: false, ambiguousAttribution: false, unboundPair: false, reason: null };
 }
 
 function ambiguousAttribution(input: UnlimitedCarveOutHonestyInput): UnlimitedCarveOutHonestyResult {
-  return { capacity: input.capacity, conditions: input.conditions, applied: false, ambiguousAttribution: true, reason: UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON };
+  return { capacity: input.capacity, conditions: input.conditions, applied: false, ambiguousAttribution: true, unboundPair: false, reason: UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON };
+}
+
+function unboundSelectedPair(input: UnlimitedCarveOutHonestyInput): UnlimitedCarveOutHonestyResult {
+  return { capacity: input.capacity, conditions: input.conditions, applied: false, ambiguousAttribution: false, unboundPair: true, reason: UNLIMITED_CARVEOUT_UNBOUND_PAIR_REASON };
 }
 
 /**
  * Materializes both qualitative gates on an unlimited carve-out when the
  * operative clause states them and the compiled rule does not already carry
  * each one as its own UNSUPPORTED condition and as an operand of gatedBy AND.
- * Returns the input unchanged when the pattern is absent or the source slice
- * cannot be bound. An unattributable pair leaves the gates uncopied and sets
- * ambiguousAttribution so sufficiency cannot stay COMPLETE.
+ * Returns the input unchanged when the pattern is absent. An unattributable
+ * pair leaves the gates uncopied and sets ambiguousAttribution so sufficiency
+ * cannot stay COMPLETE. A selected pair whose source slice cannot be bound
+ * leaves the gates uncopied and sets unboundPair so sufficiency cannot stay
+ * COMPLETE.
  */
 export function applyUnlimitedCarveOutQualitativeGates(input: UnlimitedCarveOutHonestyInput): UnlimitedCarveOutHonestyResult {
   const capacity = input.capacity;
@@ -304,14 +365,14 @@ export function applyUnlimitedCarveOutQualitativeGates(input: UnlimitedCarveOutH
 
   const redundant = input.conditions.some((condition) => isExactlyRedundant(condition, pair.objectExcerpt, pair.mannerExcerpt));
   const hasObjectCondition = input.conditions.some((condition) => isExactGate(condition, pair.objectExcerpt));
-  const hasMannerCondition = hasMannerGate(input.conditions, pair);
+  const hasMannerCondition = hasMannerGate(input.conditions, pair, input.operativeText);
   const gated = capacity.gatedBy ?? null;
   const composed = gated?.kind === "AND" && hasEvidence(gated, pair.objectExcerpt) && hasEvidence(gated, pair.mannerExcerpt);
   if (!redundant && hasObjectCondition && hasMannerCondition && composed) return unchanged(input);
 
   const objectProvenance = bindGate(input, pair.objectExcerpt, pair.clauseExcerpt);
   const mannerProvenance = bindGate(input, pair.mannerExcerpt, pair.clauseExcerpt);
-  if (!objectProvenance?.excerpt || !mannerProvenance?.excerpt) return unchanged(input);
+  if (!objectProvenance?.excerpt || !mannerProvenance?.excerpt) return unboundSelectedPair(input);
 
   const kept = input.conditions
     .filter((condition) => !isExactlyRedundant(condition, pair.objectExcerpt, pair.mannerExcerpt))
@@ -327,7 +388,7 @@ export function applyUnlimitedCarveOutQualitativeGates(input: UnlimitedCarveOutH
       provenance: objectProvenance,
     });
   }
-  if (!hasMannerGate(next, pair)) {
+  if (!hasMannerGate(next, pair, input.operativeText)) {
     next.push({
       conditionId: "",
       conditionType: "UNSUPPORTED",
@@ -352,6 +413,7 @@ export function applyUnlimitedCarveOutQualitativeGates(input: UnlimitedCarveOutH
     conditions,
     applied: true,
     ambiguousAttribution: false,
+    unboundPair: false,
     reason: UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON,
   };
 }

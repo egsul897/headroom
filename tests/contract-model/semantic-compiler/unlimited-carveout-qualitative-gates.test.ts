@@ -9,12 +9,12 @@ import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { normalizeSubmission } from "../../../lib/contract-model/compiler/semantic/normalize";
 import { buildFewShotExamplesBlock, buildSystemPrompt } from "../../../lib/contract-model/compiler/semantic/prompt";
-import { applyUnlimitedCarveOutQualitativeGates, UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON, UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON } from "../../../lib/contract-model/compiler/semantic/unlimited-carveout-honesty";
+import { applyUnlimitedCarveOutQualitativeGates, UNLIMITED_CARVEOUT_AMBIGUOUS_ATTRIBUTION_REASON, UNLIMITED_CARVEOUT_QUALITATIVE_GATE_REASON, UNLIMITED_CARVEOUT_UNBOUND_PAIR_REASON } from "../../../lib/contract-model/compiler/semantic/unlimited-carveout-honesty";
 import { SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION } from "../../../lib/contract-model/compiler/semantic/types";
 import type { SubmitCompilationInput, WireExpression, WireRule } from "../../../lib/contract-model/compiler/semantic/wire-schema";
 import { validateRule } from "../../../lib/contract-model/ir/validate";
 import { inferType } from "../../../lib/contract-model/ir/type-check";
-import { UNSUPPORTED_TYPE, type IRExpression, type IRRule, type UnlimitedCapacity } from "../../../lib/contract-model/ir/types";
+import { UNSUPPORTED_TYPE, type IRCondition, type IRExpression, type IRRule, type UnlimitedCapacity } from "../../../lib/contract-model/ir/types";
 import { CONTRACT_CONDITION_TYPES } from "../../../lib/contract-model/types";
 import { testCompilerInput } from "./test-helpers";
 
@@ -254,7 +254,7 @@ describe("unlimited carve-out dual qualitative gates", () => {
     expect(examples).not.toMatch(/CONMED|Chewy/);
     expect(CONTRACT_CONDITION_TYPES).toContain("UNSUPPORTED");
     expect(CONTRACT_CONDITION_TYPES).not.toContain("ORDINARY_COURSE_OF_BUSINESS" as never);
-    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v12");
+    expect(SEMANTIC_COMPILER_ALGORITHM_VERSION).toBe("semantic-accountability-compiler.v13");
     expect(SEMANTIC_COMPILER_PROMPT_VERSION).toBe("semantic-accountability-compiler-prompt.v9");
     const src = fs.readFileSync("lib/contract-model/compiler/semantic/unlimited-carveout-honesty.ts", "utf8");
     expect(src).not.toMatch(/CONMED|Chewy|OBSOLETE_OR_WORN_OUT|PROPERTY_CHARACTER/);
@@ -466,5 +466,156 @@ describe("unlimited carve-out dual qualitative gates", () => {
     const again = gate(twice).gatedBy;
     expect(again?.kind).toBe("AND");
     if (again?.kind === "AND") expect(unsupportedOperands(again)).toHaveLength(unsupportedOperands(gate(once).gatedBy!).length);
+  });
+
+  const EXACT_PAIR = "surplus or damaged equipment in the ordinary course of business";
+
+  function keptCarrier(out: IRRule, marker: string): IRCondition | undefined {
+    return out.conditions.find((condition) => JSON.stringify(condition).includes(marker));
+  }
+
+  it("keeps an exact gate pair when expression states an independent restriction", () => {
+    const [out] = compile(SURPLUS, [rule({
+      conditions: [{
+        conditionType: "UNSUPPORTED",
+        expression: { kind: "UNSUPPORTED", semanticDescription: THIRD, reason: "independent restriction", sourceEvidence: THIRD, citation: "§9.07(a)", excerpt: THIRD },
+        referencesDefinitionId: null,
+        description: EXACT_PAIR,
+        citation: "§9.07(a)",
+        excerpt: EXACT_PAIR,
+      }],
+    })]);
+    const kept = out!.conditions.find((condition) => condition.expression !== null);
+    expect(kept?.expression && "sourceEvidence" in kept.expression ? kept.expression.sourceEvidence : null).toBe(THIRD);
+    expect(out!.conditions.map((condition) => condition.provenance?.excerpt)).toEqual(expect.arrayContaining([EXACT_PAIR, "surplus or damaged equipment", "in the ordinary course of business"]));
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+  });
+
+  it("keeps an exact gate pair when referencesDefinitionId names another restriction", () => {
+    const [out] = compile(SURPLUS, [rule({
+      conditions: [{
+        conditionType: "UNSUPPORTED",
+        expression: null,
+        referencesDefinitionId: "def-cash-only",
+        description: EXACT_PAIR,
+        citation: "§9.07(a)",
+        excerpt: EXACT_PAIR,
+      }],
+    })]);
+    expect(out!.conditions.some((condition) => condition.referencesDefinitionId === "def-cash-only")).toBe(true);
+    expect(out!.conditions.map((condition) => condition.provenance?.excerpt)).toEqual(expect.arrayContaining(["surplus or damaged equipment", "in the ordinary course of business"]));
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+  });
+
+  it("keeps an exact gate pair when evaluationBasis states an independent timing restriction", () => {
+    const [out] = compile(SURPLUS, [rule({
+      conditions: [{
+        conditionType: "UNSUPPORTED",
+        expression: null,
+        referencesDefinitionId: null,
+        evaluationBasis: { proForma: true, transactionEffect: "the transfer", asOfSelector: null, deemedEffectiveAt: null, testingPeriod: null },
+        description: EXACT_PAIR,
+        citation: "§9.07(a)",
+        excerpt: EXACT_PAIR,
+      }],
+    })]);
+    const kept = out!.conditions.find((condition) => condition.evaluationBasis?.proForma === true);
+    expect(kept?.evaluationBasis?.transactionEffect).toBe("the transfer");
+    expect(out!.conditions.map((condition) => condition.provenance?.excerpt)).toEqual(expect.arrayContaining([EXACT_PAIR, "surplus or damaged equipment", "in the ordinary course of business"]));
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+  });
+
+  it("keeps an exact gate pair when a source-stated referencesRuleTargets entry is present", () => {
+    const operative = `${SURPLUS} subject to Section 9.07.`;
+    const [out] = compile(operative, [rule({
+      conditions: [{
+        conditionType: "UNSUPPORTED",
+        expression: null,
+        referencesDefinitionId: null,
+        referencesRuleTargets: [{ targetRef: "Section 9.07" }],
+        description: EXACT_PAIR,
+        citation: "§9.07(a)",
+        excerpt: EXACT_PAIR,
+      }],
+    })]);
+    const kept = out!.conditions.find((condition) => (condition.referencesRuleTargets?.length ?? 0) > 0);
+    expect(kept?.referencesRuleTargets?.map((target) => target.exactSourceTargetRef)).toContain("Section 9.07");
+    expect(out!.conditions.map((condition) => condition.provenance?.excerpt)).toEqual(expect.arrayContaining(["surplus or damaged equipment", "in the ordinary course of business"]));
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+  });
+
+  it("keeps a non-binding model excerpt that states an independent restriction when the description is exactly the gates", () => {
+    const richer = `${EXACT_PAIR} ${THIRD}`;
+    const [out] = compile(SURPLUS, [rule({
+      conditions: [{
+        conditionType: "UNSUPPORTED",
+        expression: null,
+        referencesDefinitionId: null,
+        description: EXACT_PAIR,
+        citation: "§9.07(a)",
+        excerpt: richer,
+      }],
+    })]);
+    const kept = out!.conditions.find((condition) => condition.provenance?.rawModelExcerpt === richer);
+    expect(kept?.provenance?.excerpt).toBeNull();
+    expect(kept?.description).toBe(EXACT_PAIR);
+    expect(out!.conditions.map((condition) => condition.provenance?.excerpt)).toEqual(expect.arrayContaining(["surplus or damaged equipment", "in the ordinary course of business"]));
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+  });
+
+  it("keeps an authoritative exact excerpt when rawModelExcerpt states an independent restriction", () => {
+    const richer = `${EXACT_PAIR} ${THIRD}`;
+    const condition: IRCondition = {
+      conditionId: "c0",
+      conditionType: "UNSUPPORTED",
+      expression: null,
+      referencesDefinitionId: null,
+      description: EXACT_PAIR,
+      provenance: { documentId: "sem-test-doc", sourceNodeKey: null, sourceCitation: "§9.07", excerpt: EXACT_PAIR, rawModelExcerpt: richer },
+    };
+    const result = applyUnlimitedCarveOutQualitativeGates({
+      operativeText: SURPLUS,
+      anchors: [],
+      scopePath: "rule[r1]",
+      soleUnlimited: true,
+      capacity: { kind: "UNLIMITED_CAPACITY", type: "CAPACITY", gatedBy: null },
+      conditions: [condition],
+      bindExcerpt: (excerpt) => ({ documentId: "sem-test-doc", sourceNodeKey: null, sourceCitation: "§9.07", excerpt }),
+    });
+    expect(result.conditions.some((item) => item.provenance?.rawModelExcerpt === richer)).toBe(true);
+    expect(result.conditions.map((item) => item.provenance?.excerpt)).toEqual(expect.arrayContaining([EXACT_PAIR, "surplus or damaged equipment", "in the ordinary course of business"]));
+  });
+
+  it("still emits the manner gate when a clause excerpt matches and the description states an independent restriction", () => {
+    const [out] = compile(SURPLUS, [rule({
+      conditions: [{
+        conditionType: "UNSUPPORTED",
+        expression: null,
+        referencesDefinitionId: null,
+        description: `The carve-out applies only to ${EXACT_PAIR} ${THIRD}`,
+        citation: "§9.07(a)",
+        excerpt: EXACT_PAIR,
+      }],
+    })]);
+    const excerpts = out!.conditions.map((condition) => condition.provenance?.excerpt ?? "");
+    expect(excerpts).toContain(EXACT_PAIR);
+    expect(excerpts).toContain("surplus or damaged equipment");
+    expect(excerpts).toContain("in the ordinary course of business");
+    expect(keptCarrier(out!, THIRD)?.description).toContain(THIRD);
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+    expect(gate(out!).gatedBy?.kind).toBe("AND");
+  });
+
+  it("does not leave COMPLETE when the selected qualitative pair cannot be bound", () => {
+    const [out] = normalizeSubmission(
+      { rules: [rule({ citation: null, conditions: [] })], definitions: [], sharedCapacities: [], irExtensionCandidates: [], overallNotes: [] },
+      testCompilerInput({ operativeSourceText: SURPLUS, sourceSectionRef: null }),
+    ).rules;
+    expect(out!.sufficiency).toBe("PARTIAL");
+    expect(out!.sufficiency).not.toBe("COMPLETE");
+    expect(out!.sufficiencyReasons.join("\n")).toContain(UNLIMITED_CARVEOUT_UNBOUND_PAIR_REASON);
+    expect(gate(out!).gatedBy).toBeNull();
+    expect(out!.conditions).toHaveLength(0);
+    expect(out!.sufficiencyReasons.join("\n")).not.toMatch(/\bCERTIFIED\b/);
   });
 });
