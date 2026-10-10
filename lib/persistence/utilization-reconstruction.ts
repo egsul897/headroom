@@ -8,8 +8,10 @@
  * UNKNOWN_HISTORICAL_ACTIVITY must survive reload. Empty ledger ≠ zero usage.
  */
 import type { IntelligenceAuthorityClass, PrismaClient } from "@prisma/client";
-import { PrismaContractLedgerStore } from "@/lib/contract-model/runtime/capacity/store/prisma-store";
-import type { LedgerUsageRecord } from "@/lib/contract-model/runtime/capacity/types";
+import {
+  PrismaContractLedgerStore,
+  type LedgerUsageRecord,
+} from "@/lib/contract-model/north-star-bridge";
 import type {
   AttributedUtilizationUsage,
   HistoricalUtilizationEvent,
