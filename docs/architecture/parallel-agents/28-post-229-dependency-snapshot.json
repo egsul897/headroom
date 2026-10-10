@@ -1,0 +1,40 @@
+{
+  "artifact": "post-229-dependency-snapshot",
+  "version": 1,
+  "updatedAt": "2026-10-09T23:12:00Z",
+  "mainSha": "b99f934b1d94b2631fb40ba3ca131a914bef2370",
+  "landed": [
+    {
+      "pr": 229,
+      "role": "A8-01/A8-02 capacity status floor + shared withhold",
+      "tip": "b33f86554e398af4eb3204120b5f5046e21ffe7d",
+      "mergeCommit": "b99f934b1d94b2631fb40ba3ca131a914bef2370",
+      "defectsClosed": ["DEFECT-A8-01", "DEFECT-A8-02"]
+    }
+  ],
+  "nextSafeBatch": {
+    "priority": [
+      "silent-zero utilization elimination",
+      "rebase and reconcile PR #232 onto main as canonical Neon activation vehicle"
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "pr": 232,
+        "action": "REBASE_ONTO_MAIN",
+        "mustNot": "reintroduce competing capacity state/types edits",
+        "uniqueValue": "Neon activation matrix + solver fail-closed when currentUsageAuthoritative !== true"
+      },
+      {
+        "order": 2,
+        "pr": 234,
+        "action": "RECONCILE_UTILIZATION_CONTRACT_WITH_232",
+        "mustNot": "land a second incompatible utilization model without coordinator sign-off"
+      }
+    ],
+    "hold": [217, 230, 214, 223],
+    "autoMerge": false
+  },
+  "detailDoc": "27-post-229-integration-batch.md",
+  "closeDoc": "docs/agent8-independent-adversarial/07-post-merge-close.md"
+}

@@ -3,6 +3,8 @@
   "mission": "HEADROOM AGENT 8 — INDEPENDENT CORRECTNESS AND ADVERSARIAL TESTING",
   "productionCodeModified": true,
   "remediationBranch": "cursor/a8-gate-status-remediation-4f52",
+  "mergedVia": "https://github.com/egsul897/headroom/pull/229",
+  "mainSha": "b99f934b1d94b2631fb40ba3ca131a914bef2370",
   "releaseBlocking": [],
   "closed": [
     {
@@ -13,7 +15,8 @@
       "severity": "CRITICAL_FALSE_PERMISSION",
       "fix": "CapacityStatus.NOT_SATISFIED + statusForAmount floor on GATE_NOT_SATISFIED in evaluateCapacityState",
       "afterStatus": "NOT_SATISFIED",
-      "releaseBlocking": false
+      "releaseBlocking": false,
+      "closedAfter": "post-merge verification on main b99f934b"
     },
     {
       "id": "DEFECT-A8-02",
@@ -22,7 +25,8 @@
       "title": "Shared pool publishes negative remaining under REVIEW_REQUIRED",
       "severity": "MATERIAL_OVERSTATEMENT",
       "fix": "SharedConstraintState withholds remaining as NOT_DETERMINED on OVER_CONSUMPTION; deficit in overConsumption/provisional",
-      "releaseBlocking": false
+      "releaseBlocking": false,
+      "closedAfter": "post-merge verification on main b99f934b"
     }
   ],
   "materialObservations": [],
@@ -31,5 +35,13 @@
     "passed": 32,
     "incorrectFavorable": 0,
     "releaseBlockingCount": 0
+  },
+  "postMergeVerification": {
+    "mainSha": "b99f934b1d94b2631fb40ba3ca131a914bef2370",
+    "statusForAmountPresent": true,
+    "notSatisfiedEnumPresent": true,
+    "probeStatus": "NOT_SATISFIED",
+    "targetedTestsPassed": 35,
+    "verifiedAt": "2026-10-09T23:10:32Z"
   }
 }
