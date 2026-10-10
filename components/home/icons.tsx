@@ -79,6 +79,10 @@ export function CovenantsIcon() {
   return strokeIcon("M5 6h14M5 12h14M5 18h9M16 16l2 2 3-4");
 }
 
+export function RulebookIcon() {
+  return strokeIcon("M6 4h9l3 3v13H6zM9 10h6M9 14h4M12 4v4h4");
+}
+
 export function PositionIcon() {
   return strokeIcon("M4 18V6M4 18h16M7 14l3-4 3 2 4-6");
 }
