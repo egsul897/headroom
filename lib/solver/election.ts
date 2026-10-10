@@ -892,6 +892,11 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     let independentCoveragePool = 0;
     let independentCoverageUnknown = false;
     const independentClearedIds: string[] = [];
+    // Remaining shared-constraint headroom available to independent liens in
+    // this election. Without this, two LIEN members naming the same $100
+    // SharedConstraint would each contribute min(lienCap, 100) and sum to
+    // $200 — a false-favorable double-count (CLEAR at $150 / maxCapacity 200).
+    const lienSharedRemaining = new Map<string, number>();
 
     for (const lien of independentLienMembers) {
       // Re-check eligibility even for election members (member pass already ran;
@@ -1009,10 +1014,33 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
                 metricsForLien,
               ).capacity ?? 0;
         const headroom = Math.max(0, constraintCap - constraint.currentUsage);
-        const already = sharedConsumption
+        const alreadyFromDebt = sharedConsumption
           .filter((c) => c.constraintId === constraint.id)
           .reduce((s, c) => s + c.amountConsumed, 0);
-        cap = Math.min(cap, Math.max(0, headroom - already));
+        if (!lienSharedRemaining.has(constraint.id)) {
+          lienSharedRemaining.set(constraint.id, Math.max(0, headroom - alreadyFromDebt));
+        }
+        const sharedLeft = lienSharedRemaining.get(constraint.id)!;
+        const usableFromShared = Math.min(cap, sharedLeft);
+        lienSharedRemaining.set(constraint.id, sharedLeft - usableFromShared);
+        if (usableFromShared + 1e-9 < cap && usableFromShared + 1e-9 < headroom) {
+          // Record consumption so the election trace shows shared-pool drawdown.
+          sharedConsumption.push({
+            constraintId: constraint.id,
+            amountConsumed: usableFromShared,
+            headroomBefore: sharedLeft,
+            headroomAfter: sharedLeft - usableFromShared,
+          });
+          requirements.push({
+            class: "SHARED_CAP",
+            scope: { permissionId: lien.id, constraintId: constraint.id },
+            status: usableFromShared > 0 || cap === 0 ? "SATISFIED" : "FAILED",
+            detail:
+              `Independent lien ${lien.id} draws ${usableFromShared} from shared constraint ${constraint.id} ` +
+              `(election-wide conservation; not re-credited to sibling liens).`,
+          });
+        }
+        cap = usableFromShared;
       }
       independentCoveragePool += Math.max(0, cap);
       independentClearedIds.push(lien.id);
