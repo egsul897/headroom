@@ -92,22 +92,45 @@ export function SimulateClient({
   documents,
   definedTermsByProvision,
   solverContext,
+  initialHandoff = null,
 }: {
   companyId: string;
   data: CompanyCovenantData;
   documents: DocumentRow[];
   definedTermsByProvision: DefinedTermsMap;
   solverContext: SerializableSolverContext;
+  /** Optional Ask/demo seed — same engine; does not invent financials. */
+  initialHandoff?: {
+    action?: ActionType;
+    amountMillions?: number;
+    secured?: boolean | null;
+    evaluationDate?: string | null;
+    source?: "ask" | "demo";
+  } | null;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const [actionType, setActionType] = useState<ActionType>("debt");
-  const [simAmt, setSimAmt] = useState(1000);
-  const [simSecured, setSimSecured] = useState(true);
-  const [rpAmt, setRpAmt] = useState(200);
-  const [invAmt, setInvAmt] = useState(200);
-  const [saleAmt, setSaleAmt] = useState(300);
+  const seededAction = initialHandoff?.action ?? "debt";
+  const seededAmount = initialHandoff?.amountMillions;
+  const seededSecured = initialHandoff?.secured;
+
+  const [actionType, setActionType] = useState<ActionType>(seededAction);
+  const [simAmt, setSimAmt] = useState(
+    seededAction === "debt" && seededAmount != null ? seededAmount : 1000,
+  );
+  const [simSecured, setSimSecured] = useState(
+    seededSecured != null ? seededSecured : true,
+  );
+  const [rpAmt, setRpAmt] = useState(
+    seededAction === "rp" && seededAmount != null ? seededAmount : 200,
+  );
+  const [invAmt, setInvAmt] = useState(
+    seededAction === "investment" && seededAmount != null ? seededAmount : 200,
+  );
+  const [saleAmt, setSaleAmt] = useState(
+    seededAction === "assetSale" && seededAmount != null ? seededAmount : 300,
+  );
   const [saleReinvest, setSaleReinvest] = useState(true);
 
   // Pure, deterministic - safe to recompute on every keystroke/drag with no server round trip.
@@ -127,11 +150,24 @@ export function SimulateClient({
 
   return (
     <div className="stack">
+      {initialHandoff?.source === "ask" && (
+        <Banner tone="amber">
+          Seeded from Ask Headroom
+          {initialHandoff.amountMillions != null ? ` · $${initialHandoff.amountMillions}M` : ""}
+          {initialHandoff.evaluationDate ? ` · as-of hint ${initialHandoff.evaluationDate}` : ""}.
+          Sliders invoke the same LEGACY_ENGINE simulation — hypothetical results never post to the ledger.
+        </Banner>
+      )}
+      <Banner tone="amber">
+        LEGACY_ENGINE slider analysis — NOT CERTIFIED / NOT Phase 4E. Matching LEGACY status with Ask is
+        consistency of the shared engine, not legal verification. Verified execution requires VEP + NS-4 +
+        REQUIRE (see panel above).
+      </Banner>
       <Card>
         <div className="card-title">What are you testing?</div>
         <div className="card-subtitle">
           Every action type below is tested against whatever documents and basket configuration exist for this
-          company in the database.
+          company in the database. Slider movements re-run the shared covenant-engine (deterministic).
         </div>
         <div className="button-row">
           {(

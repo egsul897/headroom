@@ -212,3 +212,26 @@
 - **C1 BLOCKED:** depends on A2.
 - Verdict: **END_TO_END_NOT_YET_PROVEN**. Board: `15-e2e-product-proof-execution-board.json`. Probe: `scripts/parallel-agents/e2e-product-proof-status.ts`.
 
+
+---
+
+## 2026-10-10T00:40:00Z — CANONICAL INTEGRATED PRODUCT CANDIDATE
+
+- Started from #250 `ac0ff925` (Stages 2–5 on main `7f1dd3a2`)
+- Absorbed #231 solver debt+lien + packageAuthoritative; preserved #237 util UNKNOWN fail-closed
+- #251 sequential superseded (overlap with #247); LedgerWriteResult typing retained
+- PR #253 `cursor/canonical-integrated-product-10ff` tip `abe093659a893501112a8c2cd2d02ed27ae22b54`
+- Local: tsc PASS · phase3 481/481 · core 283+cycle6 17 · probe NOT_SATISFIED
+- Neon-dependent suites require CI (no unauthorized Neon writes locally)
+- Verdict pending CI green on tip → INTEGRATED_PRODUCT_READY_FOR_HUMAN_REVIEW
+
+---
+
+## 2026-10-10T10:20:00Z — PR #253 CLOSEOUT + PRODUCT PROOF 001 BASELINE
+
+- Disposition: **SEMANTIC_SAFETY_ACCEPTED_INTEGRATION_REVIEW_PENDING** at audited SHA `4ff3374a` — no auto-merge
+- TX-engine shared-lien 4/4 proves Phase 4D aggregation only; solver independent-lien conservation from #258 reconciled onto #253
+- Cross-layer boundary suite green — no false CLEAR / EXECUTABLE / inflated EXACT max
+- PRODUCT PROOF 001: Kennametal 2026 term-loan CA (genuinely unseen); freeze + first offline run; first unsupported stage **PASS_B_SEMANTIC**; customer-usable capacity answer **not** yet producible
+- FA-P1/P2 + concurrency proofs remain tracked; green CI ≠ resolution
+- Artifacts: `docs/product/unified-integration/16-shared-lien-scope-and-258-reconciliation.md`, `docs/product/product-proof-001/`

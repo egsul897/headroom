@@ -318,9 +318,19 @@ describe("R8 - legal-state dominance over every Phase-3 sufficiency value and un
   });
 
   it("a confirmed, safe scope with a COMPLETE rule is the only combination that publishes an authoritative amount", () => {
-    const { state } = run([rule("r", MONEY(100), scopeAudit("SOURCE_MATCH_CONFIRMED", true))]);
+    // Confirmation requires status + safeToRely + non-empty entityScope (Cycle 6 / #233).
+    const { state } = run([
+      rule("r", MONEY(100), { ...scopeAudit("SOURCE_MATCH_CONFIRMED", true), entityScope: ["BORROWER"] }),
+    ]);
     expect(cap(state, "r").status).toBe("AVAILABLE");
     expect(amountString(cap(state, "r").grossCapacity)).toBe("100");
+  });
+
+  it("SOURCE_MATCH_CONFIRMED + safeToRely with empty entityScope does not publish AVAILABLE", () => {
+    const { state } = run([rule("r", MONEY(100), scopeAudit("SOURCE_MATCH_CONFIRMED", true))]);
+    expect(cap(state, "r").status).toBe("REVIEW_REQUIRED");
+    expect(cap(state, "r").entityScope!.applicability).toBe("SCOPE_NOT_SAFE_TO_RELY_ON");
+    expect(cap(state, "r").grossCapacity.kind).toBe("NOT_DETERMINED");
   });
 
   it("legal and arithmetic causes compose: the worse of the two wins and both limitations are carried", () => {

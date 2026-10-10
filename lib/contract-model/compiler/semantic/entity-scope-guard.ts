@@ -29,16 +29,21 @@ import type { EntityAtom, EntityScopeReasonCode, IREntityScopeAudit, IREntitySco
 import type { SourceContextRegion } from "../semantic-accountability/types";
 import type { GoverningSemanticContext } from "./governing-scope";
 
-export const ENTITY_SCOPE_GUARD_VERSION = "entity-scope-consistency-guard.v4";
+export const ENTITY_SCOPE_GUARD_VERSION = "entity-scope-consistency-guard.v6";
 
 // ---------------------------------------------------------------------------
-// v3 - governing-scope precedence (Phase 3 governing scope closure). The
+// v3/v6 - governing-scope precedence (Phase 3 governing scope closure). The
 // authoritative scope is decided by, in order:
 //   1. the candidate's OWN operative actor language (the lead-in of the unit
 //      it cites, or its verbatim excerpt) when it binds an obligor class;
 //   2. the authenticated GOVERNING ancestor chain (governing-scope.ts) when
 //      the own text binds no obligor class and the chain establishes the
 //      applicability exactly;
+//   2b. v6: the source-witnessed PARENT section chapeau (parentScopeLeadIn)
+//      when the own text binds no obligor, the structural governing chain did
+//      not establish a scope (e.g. section-level candidate with lettered child),
+//      and the parent lead-in phrases map exactly onto EntityClassTag values —
+//      never inventing BORROWER / ALL_SUBSIDIARIES without source words;
 //   3. the model-emitted scope, which may corroborate but never override
 //      contradictory authenticated source.
 // A source-derived scope outranks an unrecognized or contradictory model
@@ -205,14 +210,25 @@ const GROUP_TAIL = /^\s+and\s+(?:its|their)\s+(?:Restricted\s+|Unrestricted\s+)?
 // not the actor the provision binds or permits; applicability comes from the provision's own actor language or its
 // governing chain. Generic vocabulary only.
 const CONDITION_SUBJECT_FOLLOW = /^(?:\s+and\s+(?:its|their)\s+(?:Restricted\s+|Unrestricted\s+)?Subsidiar(?:y|ies))?\s+(?:shall|will|would|must|is|are|has|have|had|shall\s+have|will\s+have)\s+(?:be\s+|been\s+)?(?:in\s+(?:pro\s+forma\s+)?compliance|in\s+full\s+compliance|able\s+to|delivered|certif(?:y|ied|ies)|demonstrat(?:e|ed|es)|satisf(?:y|ied|ies))\b/;
+// v5: "Indebtedness owed to the Borrower by any Subsidiary" — Borrower is the creditor/payee, not the obligor who incurs.
+const COUNTERPARTY_LEAD = /(?:owed|owing|payable|due)\s+to\s+(?:the\s+)?(?:[A-Z][\w-]*\s+){0,2}$/i;
 
-/** Classifies one mention by its immediate context: measurement context when it sits inside a metric/period/statements phrase, otherwise an obligor binding. */
-export function classifyEntityMentionRole(text: string, index: number, phraseLength: number): "OBLIGOR" | "MEASUREMENT_CONTEXT" | "CONDITION_SUBJECT" {
+function isNonObligorRole(role: IREntityScopeSignal["role"] | undefined): boolean {
+  return role === "MEASUREMENT_CONTEXT" || role === "CONDITION_SUBJECT" || role === "COUNTERPARTY";
+}
+
+/** Classifies one mention by its immediate context: measurement / condition-subject / counterparty, otherwise an obligor binding. */
+export function classifyEntityMentionRole(
+  text: string,
+  index: number,
+  phraseLength: number,
+): "OBLIGOR" | "MEASUREMENT_CONTEXT" | "CONDITION_SUBJECT" | "COUNTERPARTY" {
   const before = text.slice(Math.max(0, index - 90), index);
   const after = text.slice(index + phraseLength, index + phraseLength + 120);
   if (MEASUREMENT_LEAD.test(before)) return "MEASUREMENT_CONTEXT";
   if (MEASUREMENT_FOLLOW.test(after)) return "MEASUREMENT_CONTEXT";
   if (CONDITION_SUBJECT_FOLLOW.test(after)) return "CONDITION_SUBJECT";
+  if (COUNTERPARTY_LEAD.test(before)) return "COUNTERPARTY";
   // "<Entity> and its Subsidiaries" immediately followed by a measurement tail: the group is the measurement group; the
   // Subsidiaries mention inside that group is measurement context as well
   const groupBefore = text.slice(Math.max(0, index - 40), index);
@@ -313,9 +329,35 @@ export interface EntityScopeWitness {
   operativeText?: string | null;
 }
 
-/** Picks the source region bound to the rule by citation (longest matching sectionRef prefix, OPERATIVE preferred) and derives the cited-unit lead-in. `parentScopeTexts` (PARENT_SCOPE context items) supply the governing provision's lead-in as an INHERITED witness. */
+/**
+ * Section chapeau before the first lettered enumerator inside a region that owns the parent
+ * section of a lettered rule (e.g. 7.02 lead-in when the rule cites 7.02(b)). Source-witnessed
+ * only — null when the rule is not lettered or the chapeau cannot be located.
+ */
+export function parentSectionLeadIn(regionText: string, regionSectionRef: string | null, ruleSectionRef: string | null): string | null {
+  if (!ruleSectionRef) return null;
+  const rule = refTokens(ruleSectionRef);
+  if (rule.path.length === 0) return null;
+  const region = regionSectionRef ? refTokens(regionSectionRef) : { section: rule.section, path: [] as string[] };
+  if (rule.section !== region.section) return null;
+  // Region must be the parent section (or an ancestor path prefix), not the lettered child itself.
+  if (region.path.length >= rule.path.length) return null;
+  if (region.path.some((p, i) => rule.path[i] !== p)) return null;
+  ENUM_MARKER.lastIndex = 0;
+  const m = ENUM_MARKER.exec(regionText);
+  const cut = (m ? regionText.slice(0, m.index) : regionText.slice(0, 1500)).trim();
+  return cut.length > 0 ? cut : null;
+}
+
+/** Picks the source region bound to the rule by citation (longest matching sectionRef prefix, OPERATIVE preferred) and derives the cited-unit lead-in. `parentScopeTexts` (PARENT_SCOPE context items) supply the governing provision's lead-in as an INHERITED witness; when absent, the section chapeau is recovered from operative regions / governing PARENT_SCOPE text. */
 export function entityScopeWitnessFor(rule: Pick<IRRule, "sourceSectionRef" | "provenance">, regions: readonly SourceContextRegion[] | null | undefined, parentScopeTexts?: readonly string[] | null, governingScope?: GoverningSemanticContext | null, operativeText?: string | null): EntityScopeWitness {
-  const parentScopeLeadIn = (() => { const t = parentScopeTexts?.find((x) => x && x.trim().length > 0) ?? null; if (!t) return null; ENUM_MARKER.lastIndex = 0; const m = ENUM_MARKER.exec(t); return (m ? t.slice(0, m.index) : t.slice(0, 1500)).trim() || null; })();
+  let parentScopeLeadIn = (() => {
+    const t = parentScopeTexts?.find((x) => x && x.trim().length > 0) ?? null;
+    if (!t) return null;
+    ENUM_MARKER.lastIndex = 0;
+    const m = ENUM_MARKER.exec(t);
+    return (m ? t.slice(0, m.index) : t.slice(0, 1500)).trim() || null;
+  })();
   const ownExcerpt = rule.provenance?.excerpt?.trim() || null;
   let leadIn: string | null = null;
   if (regions && rule.sourceSectionRef) {
@@ -323,7 +365,26 @@ export function entityScopeWitnessFor(rule: Pick<IRRule, "sourceSectionRef" | "p
     const candidates = regions
       .filter((r) => r.sectionRef && refTokens(r.sectionRef).section === rt.section)
       .sort((a, b) => (b.kind === "OPERATIVE" ? 1 : 0) - (a.kind === "OPERATIVE" ? 1 : 0) || refTokens(b.sectionRef!).path.length - refTokens(a.sectionRef!).path.length);
-    for (const r of candidates) { leadIn = citedUnitLeadIn(r.text, r.sectionRef, rule.sourceSectionRef); if (leadIn) break; }
+    for (const r of candidates) {
+      leadIn = citedUnitLeadIn(r.text, r.sectionRef, rule.sourceSectionRef);
+      if (leadIn) break;
+    }
+    if (!parentScopeLeadIn) {
+      for (const r of candidates) {
+        const parent = parentSectionLeadIn(r.text, r.sectionRef, rule.sourceSectionRef);
+        if (parent) {
+          parentScopeLeadIn = parent;
+          break;
+        }
+      }
+    }
+  }
+  if (!parentScopeLeadIn && governingScope) {
+    const parentRegion = governingScope.ancestorRegions.find((r) => r.role === "PARENT_SCOPE");
+    if (parentRegion?.text?.trim()) parentScopeLeadIn = parentRegion.text.trim().slice(0, 1500);
+  }
+  if (!parentScopeLeadIn && operativeText && rule.sourceSectionRef) {
+    parentScopeLeadIn = parentSectionLeadIn(operativeText, refTokens(rule.sourceSectionRef).section, rule.sourceSectionRef);
   }
   return { ownExcerpt, citedUnitLeadIn: leadIn, parentScopeLeadIn, governingScope: governingScope ?? null, operativeText: operativeText ?? null };
 }
@@ -368,31 +429,41 @@ export function applyEntityScopeGuard(rule: IRRule, witness: EntityScopeWitness,
   const relationOf = (model: EntityClassTag[], source: EntityClassTag[]): NonNullable<IREntityScopeAudit["modelDiscrepancy"]>["relation"] => sameSet(model, source) ? "AGREES" : model.every((t) => source.includes(t)) ? "MODEL_NARROWER" : source.every((t) => model.includes(t)) ? "MODEL_WIDER" : "MODEL_DIFFERENT";
 
   // The rule's OWN bound texts are evaluated against the (pre-guard) model scope. Only OBLIGOR mentions bind
-  // applicability; MEASUREMENT_CONTEXT and CONDITION_SUBJECT mentions are recorded but never widen, narrow or contradict it.
+  // applicability; MEASUREMENT_CONTEXT, CONDITION_SUBJECT and COUNTERPARTY mentions are recorded but never
+  // widen, narrow or contradict it.
   const scopeForSignals = entityScope;
   const ownSignals = [
     ...(witness.ownExcerpt ? evaluateSignals("OWN_EXCERPT", witness.ownExcerpt, scopeForSignals) : []),
     ...(witness.citedUnitLeadIn ? evaluateSignals("CITED_UNIT_LEAD_IN", witness.citedUnitLeadIn, scopeForSignals) : []),
   ];
-  const binding = ownSignals.filter((s) => !s.excludedContext && s.role !== "MEASUREMENT_CONTEXT" && s.role !== "CONDITION_SUBJECT");
+  const binding = ownSignals.filter((s) => !s.excludedContext && !isNonObligorRole(s.role));
   // v3 derivation from OWN source: the cited unit's lead-in is deterministic source; the excerpt is admitted only when it is verbatim operative text.
   const excerptVerbatim = !!witness.ownExcerpt && !!witness.operativeText && normWs(witness.operativeText).includes(normWs(witness.ownExcerpt));
   const ownDerivable = binding.filter((s) => s.tier === "CITED_UNIT_LEAD_IN" || (s.tier === "OWN_EXCERPT" && excerptVerbatim));
   const ownDerived = binding.length > 0 && ownDerivable.length === binding.length ? deriveScopeFromSignals(binding) : null;
-  const parentSignals = witness.parentScopeLeadIn ? evaluateSignals("PARENT_SCOPE", witness.parentScopeLeadIn, scopeForSignals).filter((s) => !s.excludedContext && s.role !== "MEASUREMENT_CONTEXT" && s.role !== "CONDITION_SUBJECT") : [];
-  const governingSignals: IREntityScopeSignal[] = govRegion && govRegion.role !== "PARENT_SCOPE" ? evaluateSignals("GOVERNING_SCOPE", govRegion.text, scopeForSignals).filter((s) => !s.excludedContext && s.role !== "MEASUREMENT_CONTEXT" && s.role !== "CONDITION_SUBJECT") : [];
+  const parentSignals = witness.parentScopeLeadIn
+    ? evaluateSignals("PARENT_SCOPE", witness.parentScopeLeadIn, scopeForSignals).filter((s) => !s.excludedContext && !isNonObligorRole(s.role))
+    : [];
+  const governingSignals: IREntityScopeSignal[] =
+    govRegion && govRegion.role !== "PARENT_SCOPE"
+      ? evaluateSignals("GOVERNING_SCOPE", govRegion.text, scopeForSignals).filter((s) => !s.excludedContext && !isNonObligorRole(s.role))
+      : [];
   witnessOut = { ...witnessOut, signals: [...ownSignals, ...parentSignals, ...governingSignals] };
   const govTier: IREntityScopeAudit["witness"]["decidedBy"] = govBasis?.role === "PARENT_SCOPE" ? "PARENT_SCOPE" : "GOVERNING_SCOPE";
+  // v6: parent chapeau phrases may establish applicability when the structural governing chain did not
+  // (lettered child under a section-level candidate). Fail closed when any phrase is not exactly nameable.
+  const parentDerived = parentSignals.length > 0 ? deriveScopeFromSignals(parentSignals) : null;
 
   const unrecognized = tags.tagNormalization.filter((t) => t.outcome === "UNRECOGNIZED_ENTITY_TAG");
   const rawEmitted = [...(tags.rawEmitted.entityScope ?? []), ...(tags.rawEmitted.entityScopeExcluded ?? [])];
   const inInclude = unrecognized.some((u) => u.field !== "entityScopeExcluded" && u.field !== "ENTITY_SCOPE_REFERENCE.exclude");
   const inExclude = unrecognized.some((u) => u.field === "entityScopeExcluded" || u.field === "ENTITY_SCOPE_REFERENCE.exclude");
 
-  // v3 precedence: a mechanically established source scope (own actor language, else governing chain) decides.
+  // v3/v6 precedence: a mechanically established source scope (own actor language, else governing chain / parent chapeau) decides.
   const sourceDerived: { scope: EntityClassTag[]; precedence: "OWN_OPERATIVE_LANGUAGE" | "GOVERNING_SCOPE_SOURCE"; decidedBy: IREntityScopeAudit["witness"]["decidedBy"]; detail: string } | null =
     ownDerived ? { scope: ownDerived, precedence: "OWN_OPERATIVE_LANGUAGE", decidedBy: tiersOf(binding), detail: `the rule's own actor language (${[...new Set(binding.map((s) => `"${s.phrase}"`))].join(", ")}) establishes the applicability exactly` }
     : binding.length === 0 && governingDerived && govBasis ? { scope: governingDerived, precedence: "GOVERNING_SCOPE_SOURCE", decidedBy: govTier, detail: `the rule's own text binds no obligor class; the authenticated governing ${govBasis.role === "PARENT_SCOPE" ? "parent provision" : "ancestor scope"} ${govBasis.sectionRef} (${govBasis.phrases.map((p) => `"${p}"`).join(", ")}) establishes the applicability exactly` }
+    : binding.length === 0 && parentDerived ? { scope: parentDerived, precedence: "GOVERNING_SCOPE_SOURCE", decidedBy: "PARENT_SCOPE", detail: `the rule's own text binds no obligor class; the parent provision's lead-in (${[...new Set(parentSignals.map((s) => `"${s.phrase}"`))].join(", ")}) establishes the applicability exactly` }
     : null;
 
   if (unrecognized.length > 0 && inInclude && !inExclude && sourceDerived) {
@@ -482,6 +553,22 @@ export function applyEntityScopeGuard(rule: IRRule, witness: EntityScopeWitness,
         "ENTITY_SCOPE_OVERINCLUSIVE_VS_SOURCE",
         `model entityScope ${JSON.stringify(before.entityScope)} is wider than the clause's own actor language (${JSON.stringify(ownDerived)}); narrowed and limited`,
       );
+    } else if (unmet.length > 0 && ownDerived && relationOf(entityScope, ownDerived) === "MODEL_DIFFERENT") {
+      // v5: model names a disjoint class from the clause's exact own-derived obligor scope
+      // (e.g. BORROWER vs Subsidiary-only "owed to the Borrower by any Subsidiary"). This is not
+      // widening BORROWER→Borrower+Subsidiaries; it replaces a wrong class with the source-exact set.
+      status = "SOURCE_SCOPE_DERIVED";
+      precedence = "OWN_OPERATIVE_LANGUAGE";
+      modelDiscrepancy = { modelScope: [...before.entityScope], rawEmitted, governingScope: [...ownDerived], relation: "MODEL_DIFFERENT" };
+      entityScope = [...ownDerived];
+      witnessOut.decidedBy = tiersOf(binding);
+      codes.push("ENTITY_SCOPE_SOURCE_DERIVED", "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED");
+      reasons.push(
+        reasonText(
+          "ENTITY_SCOPE_SOURCE_DERIVED",
+          `entityScope ${JSON.stringify(entityScope)} - the rule's own actor language establishes the applicability exactly; the model's disjoint scope ${JSON.stringify(before.entityScope)} is recorded as a discrepancy and did not control the result`,
+        ),
+      );
     } else if (unmet.length > 0) {
       // §6 + frozen-blocker discipline: provable under-inclusion. Remove the false precision;
       // never widen by guess even when ownDerived names a larger exact set (SOURCE_SCOPE_DERIVED
@@ -519,6 +606,31 @@ export function applyEntityScopeGuard(rule: IRRule, witness: EntityScopeWitness,
       limit(
         "ENTITY_SCOPE_OVERINCLUSIVE_VS_SOURCE",
         `model entityScope ${JSON.stringify(before.entityScope)} is wider than the clause's own actor language, which establishes exactly ${JSON.stringify(ownDerived)}; scope narrowed to the source-derived set and rule limited — never certified as the wider governing lead-in scope`,
+      );
+    } else if (
+      ownDerived &&
+      relationOf(entityScope, ownDerived) === "MODEL_DIFFERENT" &&
+      // Child-specific exact class (e.g. Unrestricted Subsidiary) when model carries a covering
+      // parent-wide tag set (ANY_SUBSIDIARY). Only replace when ownDerived is denotationally
+      // ⊆ model — never widen a specific model class to a coarser ownDerived (xref NON_GUARANTOR_RS).
+      [...scopeCoverage(ownDerived).full].every((a) => scopeCoverage(entityScope).full.has(a))
+    ) {
+      status = "SOURCE_SCOPE_DERIVED";
+      precedence = "OWN_OPERATIVE_LANGUAGE";
+      modelDiscrepancy = {
+        modelScope: [...before.entityScope],
+        rawEmitted,
+        governingScope: [...ownDerived],
+        relation: "MODEL_DIFFERENT",
+      };
+      entityScope = [...ownDerived];
+      witnessOut.decidedBy = tiersOf(binding);
+      codes.push("ENTITY_SCOPE_SOURCE_DERIVED", "ENTITY_SCOPE_MODEL_DISCREPANCY_RECORDED");
+      reasons.push(
+        reasonText(
+          "ENTITY_SCOPE_SOURCE_DERIVED",
+          `entityScope ${JSON.stringify(entityScope)} - the rule's own actor language establishes the applicability exactly; the model's covering/discrepant scope ${JSON.stringify(before.entityScope)} is recorded as a discrepancy and did not control the result`,
+        ),
       );
     } else {
       status = "SOURCE_MATCH_CONFIRMED";

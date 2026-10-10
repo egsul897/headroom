@@ -1,0 +1,108 @@
+{
+  "artifact": "PRODUCT_PROOF_001_FREEZE",
+  "version": 1,
+  "frozenAt": "2026-10-10T10:18:00Z",
+  "workstream": "PRODUCT_PROOF_001",
+  "readOnly": true,
+  "paidInference": false,
+  "neonWrites": false,
+  "certificationPromotion": false,
+  "autoMerge": false,
+  "baselineBranch": "cursor/canonical-integrated-product-10ff",
+  "package": {
+    "packageId": "kennametal-2026-term-loan-credit-agreement",
+    "path": "tests/fixtures/product-proof-001/kennametal-2026-term-loan-credit-agreement",
+    "issuer": "KENNAMETAL INC.",
+    "cik": "0000055242",
+    "ticker": "KMT",
+    "accession": "0001193125-26-253476",
+    "exhibit": "EX-10.2",
+    "agreementDate": "2026-05-28",
+    "rawHtmlRelative": "raw-html/d136977dex102.htm",
+    "extractedTextRelative": "extracted-text/credit-agreement.txt",
+    "bodySha256": "4827a5cfc56740a5d1311677c4fc0cacb574272b20ba4c0a544ab9a44fdd4df7",
+    "extractedTextSha256": "4ac7dab7b8833d7986efea1299572c797e966ec4ca52f49dbc58ce4b92442455",
+    "sourceUrl": "https://www.sec.gov/Archives/edgar/data/55242/000119312526253476/d136977dex102.htm"
+  },
+  "challengeQuestionsFrozenBeforeExecution": true,
+  "challengeQuestions": [
+    {
+      "id": "PP001-Q1",
+      "kind": "SOURCE_FACT",
+      "question": "Under Section 6.1 (Financial Condition Covenant), what Consolidated Leverage Ratio level must the Borrower not exceed as of the last day of any four consecutive fiscal quarters (before any Qualified Acquisition step-up)?",
+      "sourceAnchors": [
+        "Section 6.1",
+        "Consolidated Leverage Ratio",
+        "3.75 to 1.00"
+      ],
+      "expectedSourceBackedAnswer": "3.75 to 1.00 (with conditional Qualified Acquisition increase to 4.25 to 1.00 for a Leverage Increase Period under stated provisos)",
+      "requiresModeledCovenants": false,
+      "requiresApprovedFinancials": false,
+      "requiresVEP": false
+    },
+    {
+      "id": "PP001-Q2",
+      "kind": "SOURCE_FACT",
+      "question": "What aggregate principal cap applies to Capital Lease Obligations and purchase-money Indebtedness under Section 6.2(e)?",
+      "sourceAnchors": [
+        "Section 6.2(e)",
+        "$150,000,000"
+      ],
+      "expectedSourceBackedAnswer": "$150,000,000 (or currency equivalent) outstanding at any time",
+      "requiresModeledCovenants": false,
+      "requiresApprovedFinancials": false,
+      "requiresVEP": false
+    },
+    {
+      "id": "PP001-Q3",
+      "kind": "SOURCE_FACT",
+      "question": "What aggregate principal cap applies to additional Indebtedness under Section 6.2(i), including Attributable Debt in respect of Qualified Receivables Transactions?",
+      "sourceAnchors": [
+        "Section 6.2(i)",
+        "$350,000,000"
+      ],
+      "expectedSourceBackedAnswer": "$350,000,000 at any one time outstanding (Borrower and Subsidiaries aggregate, together with Attributable Debt in Qualified Receivables Transactions)",
+      "requiresModeledCovenants": false,
+      "requiresApprovedFinancials": false,
+      "requiresVEP": false
+    },
+    {
+      "id": "PP001-Q4",
+      "kind": "CAPACITY_TRANSACTION",
+      "question": "Can the product produce a defensible remaining-capacity or EXECUTABLE answer for a $100,000,000 unsecured incremental borrowing by the Borrower relying on Section 6.2(h) and/or 6.2(i), using only the frozen package and the existing runnable pipeline (no manually modeled covenants, no invented financials, no fixture VEP)?",
+      "sourceAnchors": [
+        "Section 6.2(h)",
+        "Section 6.2(i)"
+      ],
+      "expectedSourceBackedAnswer": null,
+      "successCriterion": "Defensible capacity or transaction answer with source citations, or explicit fail-closed refusal without false CLEAR/EXECUTABLE/inflated EXACT max",
+      "requiresModeledCovenants": true,
+      "requiresApprovedFinancials": true,
+      "requiresVEP": true,
+      "manualModelingForbidden": true
+    },
+    {
+      "id": "PP001-Q5",
+      "kind": "SECURED_DUAL_PATH",
+      "question": "For a contemplated $75,000,000 purchase-money financing drawing Section 6.2(e) Indebtedness together with Section 6.3(g) purchase-money Liens, can the product produce a secured dual-path clearance (solver + simulation) that is neither false CLEAR nor EXECUTABLE without authentic modeled permissions, shared constraints, approved financials, and VEP?",
+      "sourceAnchors": [
+        "Section 6.2(e)",
+        "Section 6.3(g)"
+      ],
+      "expectedSourceBackedAnswer": null,
+      "successCriterion": "Fail closed without false CLEAR / EXECUTABLE / inflated EXACT maximum; or produce source-backed clearance only if authentic modeled path exists",
+      "requiresModeledCovenants": true,
+      "requiresApprovedFinancials": true,
+      "requiresVEP": true,
+      "manualModelingForbidden": true
+    }
+  ],
+  "guardrails": [
+    "Do not supply manually modeled covenants to manufacture a successful demonstration",
+    "Do not open Knife River BLIND body",
+    "Do not wait for unrelated PRs to merge before establishing this baseline",
+    "Do not represent green CI as resolution of FA-P1/P2 or concurrency proof gaps",
+    "No auto-merge, paid inference, certification promotion, or production Neon writes"
+  ],
+  "baselineSha": "42e47d6785e6d73b4fb28ee7a63af22d00ff3d06"
+}
