@@ -321,7 +321,7 @@ describe("provision rediscovery identity is stable (idempotent key)", () => {
       {
         sourceId: "s1",
         sectionRef: "1.01",
-        category: "DEFINITIONS",
+        category: "OTHER",
         plainEnglish: "Definitions.",
         materialBasketsThresholds: [],
         applicableDefinitions: [

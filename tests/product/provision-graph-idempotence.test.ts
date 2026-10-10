@@ -17,10 +17,10 @@ function item(partial: {
   return {
     sourceId: partial.sourceId,
     sectionRef: partial.sectionRef,
-    category: "DEFINITIONS",
-    categoryLabel: "Definitions",
+    category: "OTHER",
+    categoryLabel: "Other provisions",
     heading: partial.sectionRef,
-    posture: "RESTRICTIVE",
+    posture: "GENERAL_PROHIBITION",
     plainEnglish: "x",
     restriction: null,
     permissions: [],
