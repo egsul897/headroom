@@ -344,3 +344,15 @@
 - Close as superseded (human): #232, #234, #239, #241; do not merge coordinator verify branch `cursor/v4-232-234-integration-10ff`
 - actualExternalCostsUsd: 0 · coordinator merges: 0 · Neon writes: 0
 
+
+---
+
+## 2026-10-10T00:20:00Z — POST-#237 INTEGRATION MISSION
+
+- Starting main: `7f1dd3a2` (#229+#237)
+- Opened draft **#251** `cursor/post-237-certified-sequential-10ff` tip `887d7011`
+- Contents: #223+#243 sequential on main (verified-only, LedgerWriteResult fix, pool identity + A8 preserved) + Coherent secured cross-document floor ($4041 not $5129)
+- #213 tip `4ea51390` on main but CI FAIL — hold; #218/#221 scope unresolved
+- Secured discrepancy: corrected in generalized `computeRemainingCapacityAfterDebtIncurrence` (not presentation-only)
+- Verdict direction: PRODUCT_E2E_DEMONSTRATED_WITH_LIMITATIONS; #251 INTEGRATION_READY_FOR_HUMAN_REVIEW pending CI
+- actualExternalCostsUsd: 0 · merges: 0

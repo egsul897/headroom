@@ -34,6 +34,7 @@ Publish exclusive ownership, soft gates, and interface contracts so concurrent C
 | `25-reconciliation-v3-2026-10-09.md` | V3 batches (historical; superseded for merge sequencing) |
 | `26-first-integration-batch.md` | V3 acceptance batch — **SUPERSEDED** (stale #229 merge ask) |
 | `27-reconciliation-v4-acceptance.md` | **Controlling** V4 acceptance — post-#229/#237 truth |
+| `28-post-237-integration-mission.md` | Post-#237 sequential+#secured floor mission (#251) |
 | `daily/` | Daily integration summaries + session reports |
 | `02-interface-contracts.md` | Published contracts peers may depend on before unfinished work lands |
 | `03-progress-ledger.md` | Append-only progress ledger for WS-PAR |
