@@ -23,6 +23,11 @@ import {
   analyzeMultiPathTransaction,
   type MultiPathAnalysis,
 } from "./multi-path-analysis";
+import {
+  computeVerifiedRemaining,
+  resolveUtilization,
+  type UtilizationEvidenceRecord,
+} from "@/lib/capacity";
 
 export type MetricNumericStatus =
   | "COMPUTED"
@@ -632,11 +637,22 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
       const metricId = `basket:${item.sourceId}:${item.sectionRef}`;
       const approval = approvalByKey.get(`${item.sourceId}|${item.sectionRef}`);
       const utilTotal = [...ledgerByBasket.values()].reduce((a, b) => a + b, 0);
-      const utilization =
+      const utilizationDisplay =
         ledger.length > 0
-          ? `${fmtM(utilTotal)} recorded ledger usage (basket mapping may be approximate)`
+          ? `${fmtM(utilTotal)} recorded ledger usage (basket mapping may be approximate; not Permission-attributed)`
           : null;
       const matchedPerm = permissionBySection.get(item.sectionRef);
+      // Legacy LedgerEntry rows are basket-family only — never treat empty table as verified zero.
+      const utilEvidence: UtilizationEvidenceRecord[] = [];
+      const utilResolution = resolveUtilization({
+        companyId,
+        capacityRuleId: matchedPerm?.id ?? `section:${item.sectionRef}`,
+        asOf: asOfDate ?? new Date().toISOString().slice(0, 10),
+        records: utilEvidence,
+        unattributedLegacyBasketPresent: ledger.length > 0,
+        completenessCertificate: null,
+        executionMode: "PRODUCTION",
+      });
       let remaining: string | null = null;
       let basketStatus: MetricNumericStatus = approval
         ? "AI_SURFACED"
@@ -660,13 +676,41 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
           leverageMetrics,
         );
         if (evaluated.status === "modeled" && evaluated.capacity != null) {
-          const used = utilTotal;
-          const rem = Math.max(0, evaluated.capacity - used);
-          remaining = fmtM(rem);
-          basketStatus = "COMPUTED";
+          const gateOpen = evaluated.gate ? evaluated.gate.open : true;
+          const verified = computeVerifiedRemaining({
+            gross: {
+              amount: Number.isFinite(evaluated.capacity) ? evaluated.capacity : null,
+              unlimited: evaluated.capacity === Infinity,
+              gateSatisfied: gateOpen,
+              modeled: true,
+              capacityRuleId: matchedPerm.id,
+            },
+            utilization: utilResolution,
+            sourceCitations: [`§${matchedPerm.sectionRef}`],
+            certificationStatus: "NOT_CERTIFIED",
+          });
           calcExtra.push(
-            `Executable Permission ${matchedPerm.code ?? matchedPerm.id}: capacity ${fmtM(evaluated.capacity)} − ledger ${fmtM(used)} = ${fmtM(rem)}`,
+            `Gross contractual capacity ${fmtM(evaluated.capacity)} (${matchedPerm.code ?? matchedPerm.id})`,
+            verified.note,
           );
+          if (verified.mayPublishAvailable && verified.supportedRemaining != null) {
+            remaining = fmtM(verified.supportedRemaining);
+            basketStatus = "COMPUTED";
+          } else if (verified.remainingStatus === "GATE_FAILED") {
+            remaining = null;
+            basketStatus = "CONDITIONAL";
+            calcExtra.push("Gate not satisfied — refused to publish AVAILABLE (A8-01)");
+          } else if (verified.remainingStatus === "GROSS_ONLY") {
+            // Publish gross as contractualCapacity context only; remaining stays null.
+            remaining = null;
+            basketStatus = "CONDITIONAL";
+            calcExtra.push(
+              `Utilization ${utilResolution.knowledge} — remaining not supported; empty/unattributed ledger is not zero`,
+            );
+          } else {
+            remaining = null;
+            basketStatus = "CONDITIONAL";
+          }
         } else {
           basketStatus = "CONDITIONAL";
           calcExtra.push(evaluated.reason ?? "Permission present but evaluation conditional");
@@ -684,7 +728,7 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
         sectionRef: item.sectionRef,
         heading: item.heading,
         contractualCapacity: basketLines[0] ?? null,
-        utilization,
+        utilization: utilizationDisplay,
         remaining,
         status: basketStatus,
         reviewDecision: approval?.decision ?? null,
@@ -702,14 +746,17 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
           missing: [
             ...(matchedPerm ? [] : ["Counsel-reviewed executable Permission"]),
             ...(finForEval ? [] : ["Financial inputs for growers/ratios"]),
-            ...(utilization || matchedPerm ? [] : ["Ledger utilization for this basket"]),
+            ...(!utilResolution.supportsRemainingClaim
+              ? ["Attributed utilization (Permission/Provision-scoped) — empty ledger is not verified zero"]
+              : []),
           ],
           calcHistory: [
             approval
               ? `Counsel ${approval.decision} ${approval.reviewedAt}`
               : "AI draft — awaiting counsel review",
             ...calcExtra,
-            utilization ?? "No ledger utilization attributed",
+            utilizationDisplay ?? "No ledger utilization attributed",
+            utilResolution.note,
           ],
         }),
       });
