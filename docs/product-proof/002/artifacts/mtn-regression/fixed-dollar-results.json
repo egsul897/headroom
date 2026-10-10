@@ -1,0 +1,67 @@
+[
+  {
+    "sourceRef": "def:Permitted Debt(n)",
+    "executableClass": "VERIFIED_EXECUTABLE_CANDIDATE",
+    "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+    "amountUsd": 100000000,
+    "residuals": [
+      {
+        "kind": "OBJECT_RESTRICTION",
+        "excerpt": "in connection with the acquisition of assets or a new Restricted Subsidiary (in",
+        "gateInputName": "qualitative_gate:object_restriction_satisfied"
+      },
+      {
+        "kind": "PROVISO_OR_CONDITIONAL",
+        "excerpt": "provided , that",
+        "gateInputName": "qualitative_gate:proviso_satisfied"
+      }
+    ],
+    "fidelityVerdict": "PASS",
+    "outcomeLabel": "VERIFIED_EXECUTABLE",
+    "availableAmountUsd": 100000000,
+    "productionRefusal": null,
+    "capacityOutcome": "EXECUTED",
+    "ruleId": "ir-rule:99c46d821b1ea121daff083c",
+    "sufficiency": "COMPLETE"
+  },
+  {
+    "sourceRef": "def:Permitted Debt(o)",
+    "executableClass": "VERIFIED_EXECUTABLE_CANDIDATE",
+    "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+    "amountUsd": 50000000,
+    "residuals": [
+      {
+        "kind": "GEOGRAPHIC_SCOPE",
+        "excerpt": "organized outside the United States",
+        "gateInputName": "qualitative_gate:foreign_organization"
+      }
+    ],
+    "fidelityVerdict": "PASS",
+    "outcomeLabel": "VERIFIED_EXECUTABLE",
+    "availableAmountUsd": 50000000,
+    "productionRefusal": null,
+    "capacityOutcome": "EXECUTED",
+    "ruleId": "ir-rule:3a9af0ef886a5f6e93241b80",
+    "sufficiency": "COMPLETE"
+  },
+  {
+    "sourceRef": "def:Permitted Liens(p)",
+    "executableClass": "VERIFIED_EXECUTABLE_CANDIDATE",
+    "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+    "amountUsd": 250000,
+    "residuals": [
+      {
+        "kind": "OBJECT_RESTRICTION",
+        "excerpt": "on cash accounts not to exceed $250,000 in the aggregate ",
+        "gateInputName": "qualitative_gate:object_restriction_satisfied"
+      }
+    ],
+    "fidelityVerdict": "PASS",
+    "outcomeLabel": "VERIFIED_EXECUTABLE",
+    "availableAmountUsd": 250000,
+    "productionRefusal": null,
+    "capacityOutcome": "EXECUTED",
+    "ruleId": "ir-rule:26b844110ecf32a93a1e29ec",
+    "sufficiency": "COMPLETE"
+  }
+]
