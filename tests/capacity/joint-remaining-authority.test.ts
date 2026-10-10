@@ -19,10 +19,52 @@ import {
 import { computeSharedConstraintCurrentUsage } from "@/lib/solver/shared-usage";
 import { evaluateElection } from "@/lib/solver/election";
 import { buildPermissionGraph } from "@/lib/solver/graph";
-import type { SharedConstraint } from "@/lib/solver/types";
+import type { ActivationState, Permission, SharedConstraint, Transaction } from "@/lib/solver/types";
 
 const AS_OF = "2026-10-09";
 const CO = "co-joint";
+
+function permission(id: string, overrides: Partial<Permission> = {}): Permission {
+  return {
+    id,
+    documentId: "doc-1",
+    companyId: "co-1",
+    grantType: "DEBT_INCURRENCE",
+    amountKind: "FIXED",
+    action: `permission ${id}`,
+    entityScope: [],
+    formulaType: "FLAT_AMOUNT",
+    thresholdValue: 500,
+    eligibilityConditions: [],
+    termConditions: [],
+    measurementBasis: "CURRENTLY_OUTSTANDING",
+    sourceProvision: { documentId: "doc-1", sectionRef: `§${id}` },
+    modelingStatus: "MODELED",
+    ...overrides,
+  };
+}
+
+const emptyActivationState: ActivationState = {
+  asOfDate: new Date(AS_OF),
+  series: {},
+  events: [],
+  usageCounts: {},
+  unknownKeys: new Set(),
+};
+
+const baseTransaction: Transaction = {
+  transactionType: "DEBT_INCURRENCE",
+  amount: 50,
+  currency: { code: "USD" },
+  incurringEntity: { id: "borrower", name: "Borrower" },
+  guarantorStatus: "GUARANTOR",
+  secured: true,
+  collateralPools: [],
+  requestedLienPriority: [],
+  useOfProceeds: "GENERAL_CORPORATE",
+  acquisitionRelated: false,
+  transactionDate: new Date(AS_OF),
+};
 
 function attributed(amount: number, ruleId = "rule-a"): UtilizationEvidenceRecord {
   return {
@@ -284,29 +326,11 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
   });
 
   it("solver election refuses favorable shared remaining without completeness", () => {
-    const p = {
-      id: "a",
-      companyId: "co",
-      documentId: "d",
-      grantType: "DEBT_INCURRENCE" as const,
-      amountKind: "FIXED" as const,
-      action: "test",
-      entityScope: [] as string[],
-      formulaType: "FLAT_AMOUNT" as const,
-      thresholdValue: 500,
-      params: null,
-      eligibilityConditions: [],
-      termConditions: [],
-      measurementBasis: "CURRENTLY_OUTSTANDING" as const,
-      sourceProvision: { documentId: "d", sectionRef: "§1" },
-      effectiveFrom: null,
-      effectiveTo: null,
-      modelingStatus: "MODELED" as const,
-    };
+    const p = permission("a");
     const graph = buildPermissionGraph([p], []);
     const constraint: SharedConstraint = {
       id: "sc1",
-      companyId: "co",
+      companyId: "co-1",
       name: "shared",
       cap: { amount: 100 },
       aggregationRule: "NAMED_MEMBER_CLAUSES",
@@ -319,7 +343,7 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
       currentUsageSupportsRemainingClaim: false,
       currentUsageAttributedKnown: true,
       currentUsageCompletenessCertified: false,
-      sourceProvision: { documentId: "d", sectionRef: "§s" },
+      sourceProvision: { documentId: "doc-1", sectionRef: "§s" },
     };
     const evalResult = evaluateElection({
       election: { id: "e", memberPermissionIds: ["a"], rationale: "" },
@@ -337,17 +361,10 @@ describe("joint remaining authority (#232 solver + #234 product)", () => {
       },
       requestedAmount: 50,
       eligibilityContext: {
-        transaction: {
-          id: "t",
-          companyId: "co",
-          amount: 50,
-          secured: true,
-          asOfDate: new Date(AS_OF),
-          incurringEntity: { id: "b", name: "Borrower" },
-        },
+        transaction: baseTransaction,
         entityClasses: [],
         ruleActivationConditions: [],
-        activationState: { activatedConditionIds: [], inactiveConditionIds: [], unknownConditionIds: [] },
+        activationState: emptyActivationState,
         asOfDate: new Date(AS_OF),
       },
       sharedConstraints: [constraint],
