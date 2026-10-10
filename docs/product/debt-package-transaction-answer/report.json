@@ -1,0 +1,370 @@
+{
+  "schemaVersion": "product.debt-package-transaction-answer.v1",
+  "generatedAt": "2026-10-09T22:00:52.161Z",
+  "startingSha": "bae24ced33fdd6963d0615265a1e67cb181233e8",
+  "packageKey": "conmed-2025-credit-facility",
+  "companyId": "conmed-demo",
+  "paidInferenceCalls": 0,
+  "promotedToLegalTruth": 0,
+  "documentManifest": [
+    {
+      "id": "conmed-demo-doc-a",
+      "name": "Eighth Amended and Restated Credit Agreement (June 10, 2025)",
+      "role": "BASE_CREDIT_AGREEMENT",
+      "accession": "0001174947-25-000941",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000117494725000941/ex10-1.htm",
+      "curatedPresent": true,
+      "rawPresent": true
+    },
+    {
+      "id": "conmed-demo-doc-b",
+      "name": "Amended and Restated Guarantee and Collateral Agreement (June 10, 2025)",
+      "role": "GUARANTEE_AND_COLLATERAL",
+      "accession": "0001174947-25-000941",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000117494725000941/ex10-2.htm",
+      "curatedPresent": true,
+      "rawPresent": true
+    },
+    {
+      "id": "conmed-demo-doc-c",
+      "name": "Second Amendment to Seventh A&R Credit Agreement (August 1, 2022)",
+      "role": "OUT_OF_PACKAGE_AMENDMENT",
+      "accession": "0001193125-22-209154",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000119312522209154/d220699dex102.htm",
+      "curatedPresent": true,
+      "rawPresent": true,
+      "unresolvedNote": "Amends the Seventh A&R (July 16, 2021), which is not in this package. Do not attach to Document A."
+    },
+    {
+      "id": "conmed-demo-doc-d",
+      "name": "First Omnibus Amendment and Increased Facility Activation Notice (May 27, 2026)",
+      "role": "IN_PACKAGE_OMNIBUS_AMENDMENT",
+      "accession": "0002077096-26-000190",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/816956/000207709626000190/ea029246401ex10-1.htm",
+      "curatedPresent": true,
+      "rawPresent": true
+    }
+  ],
+  "missingDocuments": [
+    "Seventh Amended and Restated Credit Agreement dated July 16, 2021 (target of Document C)",
+    "Document D Exhibit A blackline (excluded as duplicate reprint)",
+    "Document D Exhibit B blackline (excluded)",
+    "Fee Letter dated May 1, 2026 (referenced by Doc D §2)",
+    "APPROVED North Star financial snapshots for CONMED",
+    "Attributed basket utilization ledger for CONMED",
+    "Independently CERTIFIED companion units for §7.1 and §7.3(g) (cross-rule gate)"
+  ],
+  "pipeline": {
+    "structural": {
+      "nodes": 18,
+      "definitions": 1,
+      "crossReferences": 81
+    },
+    "covenantIntelligence": {
+      "candidates": 15,
+      "summaryItems": 15
+    },
+    "legalIntelligence": {
+      "conclusions": 56,
+      "blockerChallenges": 2,
+      "survivingExecutable": 0,
+      "blockedReasons": [
+        "Amendment/target outside governing package: Doc C Second Amendment amends Seventh A&R (not in package). Operative precedence cannot be fully determined.",
+        "No Phase-3 verified IR package is loaded for CONMED — evaluateVerifiedCapacity cannot execute under REQUIRE."
+      ]
+    },
+    "authenticatedVep": {
+      "present": true,
+      "path": "docs/product/customer-workflow/authenticated-vep/verified-execution-package.json",
+      "capacityRequireOutcome": "REFUSED",
+      "capacityRefuseCodes": [
+        "CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed"
+      ]
+    },
+    "phase4e": {
+      "unsecured": {
+        "authority": "CERTIFIED_4E",
+        "pathCount": 1,
+        "unsupportedReasons": [
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda"
+        ]
+      },
+      "secured": {
+        "authority": "CERTIFIED_4E",
+        "pathCount": 1,
+        "unsupportedReasons": [
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda"
+        ]
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "id": "S1-unsecured-debt",
+      "title": "Unsecured debt incurrence",
+      "transactionRequested": "Parent Borrower incurs $25,000,000 of unsecured Indebtedness on 2026-08-01.",
+      "independent": {
+        "pathway": "§7.2(o) general unsecured basket and/or §7.2(l) Permitted Unsecured Indebtedness",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A)",
+        "section": "7.2(o) / 7.2(l)",
+        "sourceCitation": "human-ground-truth a-7.2-o / a-7.2-l; Article VII curated text",
+        "expectedStatus": "NEEDS_INPUT",
+        "rationale": "§7.2(o) is greater of $60,000,000 and 3.25% of Consolidated Total Assets — dollar ceiling structure is clear, but remaining capacity requires CTA and utilization. §7.2(l) additionally requires no-default and pro forma §7.1(b) compliance. No APPROVED financial snapshot or ledger in package → capacity not executable.",
+        "capacityClaimable": "structure_only"
+      },
+      "headroom": {
+        "status": "NEEDS_INPUT",
+        "pathway": "7.2(c) · INCUR_DEBT",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A) / authenticated VEP when present",
+        "section": "7.2(c)",
+        "sourceCitation": [
+          "7.2",
+          "7.3",
+          "7.13",
+          "7.9",
+          "7.14",
+          "4E:path:ir-rule:29309c463e06b77b4b243eda",
+          "blocker:NO_APPROVED_SNAPSHOT",
+          "blocker:CUTOFF_UNRESOLVED"
+        ],
+        "financialInputs": [
+          "APPROVED_NorthStar_snapshot"
+        ],
+        "ledgerInputs": [],
+        "availableCapacity": null,
+        "conditionsLimitations": [
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda",
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+          "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+        ],
+        "detail": "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+      },
+      "assessment": "CORRECT_REFUSAL"
+    },
+    {
+      "id": "S2-secured-debt",
+      "title": "Secured debt requiring debt + lien authority",
+      "transactionRequested": "Parent Borrower incurs $40,000,000 of Indebtedness secured by Liens on 2026-08-01.",
+      "independent": {
+        "pathway": "Debt basket (§7.2, e.g. 7.2(c)/(o)/(s)) PLUS Lien basket (§7.3, e.g. 7.3(m) or 7.3(g))",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A)",
+        "section": "7.2 + 7.3",
+        "sourceCitation": "human-ground-truth a-7.2 / a-7.3-m / a-7.2-c",
+        "expectedStatus": "UNSUPPORTED",
+        "rationale": "Secured debt requires simultaneous Indebtedness and Liens permission. Authentic VEP covers §7.2(c) (debt secured by Liens under 7.3(g), pro forma 7.1) but cross-rule satisfaction is not executable (PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE). Companion §7.1 / §7.3 CERTIFIED units and APPROVED financials missing. Correct product outcome is fail-closed UNSUPPORTED / REFUSED — not a green permission.",
+        "capacityClaimable": false
+      },
+      "headroom": {
+        "status": "UNSUPPORTED",
+        "pathway": "7.2(c) · INCUR_DEBT",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A) / authenticated VEP when present",
+        "section": "7.2(c)",
+        "sourceCitation": [
+          "7.2",
+          "7.3",
+          "7.13",
+          "7.9",
+          "7.14",
+          "4E:path:ir-rule:29309c463e06b77b4b243eda",
+          "blocker:NO_APPROVED_SNAPSHOT",
+          "blocker:CUTOFF_UNRESOLVED"
+        ],
+        "financialInputs": [
+          "APPROVED_NorthStar_snapshot"
+        ],
+        "ledgerInputs": [],
+        "availableCapacity": null,
+        "conditionsLimitations": [
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda",
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+          "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+        ],
+        "detail": "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+      },
+      "assessment": "CORRECT_REFUSAL"
+    },
+    {
+      "id": "S3-restricted-payment",
+      "title": "Restricted payment / investment",
+      "transactionRequested": "Parent Borrower makes a $30,000,000 dividend on 2026-08-01.",
+      "independent": {
+        "pathway": "§7.6(d) $40,000,000 per fiscal year general RP basket (and/or §7.6(e) ratio-gated unlimited)",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A)",
+        "section": "7.6(d)",
+        "sourceCitation": "human-ground-truth a-7.6-d",
+        "expectedStatus": "NEEDS_INPUT",
+        "rationale": "§7.6(d) is a flat $40M/fiscal-year basket with no ratio gate — structure supports a $30M dividend if YTD utilization leaves ≥$30M. Utilization ledger and fiscal-year YTD usage are not in the package. Capacity must be NEEDS_INPUT, not invented as $40M remaining.",
+        "capacityClaimable": "structure_only"
+      },
+      "headroom": {
+        "status": "NEEDS_INPUT",
+        "pathway": "7.6, 7.8, 7.17",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A) / authenticated VEP when present",
+        "section": "7.6",
+        "sourceCitation": [
+          "7.6",
+          "7.8",
+          "7.17",
+          "7.14",
+          "7.9",
+          "blocker:NO_APPROVED_SNAPSHOT",
+          "blocker:CUTOFF_UNRESOLVED"
+        ],
+        "financialInputs": [
+          "APPROVED_NorthStar_snapshot"
+        ],
+        "ledgerInputs": [],
+        "availableCapacity": null,
+        "conditionsLimitations": [
+          "NO_MATCHING_PRIMARY_RULES_FOR_RESTRICTED_PAYMENT",
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+          "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+        ],
+        "detail": "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+      },
+      "assessment": "CORRECT_REFUSAL"
+    },
+    {
+      "id": "S4-ratio-gated",
+      "title": "Transaction requiring a financial ratio",
+      "transactionRequested": "Unlimited Restricted Payment under §7.6(e) requiring pro forma Consolidated Senior Secured Leverage Ratio ≤ 3.50x on 2026-08-01.",
+      "independent": {
+        "pathway": "§7.6(e) ratio-gated unlimited RP (CSSLR ≤ 3.50x Pro Forma; no Event of Default)",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A)",
+        "section": "7.6(e)",
+        "sourceCitation": "human-ground-truth a-7.6-e",
+        "expectedStatus": "NEEDS_INPUT",
+        "rationale": "Pathway is clear from source. Execution requires APPROVED financial snapshot with Consolidated Senior Secured Leverage Ratio (or components) and pro forma treatment. Absent that, refuse numeric clearance.",
+        "capacityClaimable": false
+      },
+      "headroom": {
+        "status": "NEEDS_INPUT",
+        "pathway": "7.6, 7.8, 7.17",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A) / authenticated VEP when present",
+        "section": "7.6",
+        "sourceCitation": [
+          "7.6",
+          "7.8",
+          "7.17",
+          "7.10",
+          "7.14",
+          "blocker:NO_APPROVED_SNAPSHOT",
+          "blocker:CUTOFF_UNRESOLVED"
+        ],
+        "financialInputs": [
+          "APPROVED_NorthStar_snapshot"
+        ],
+        "ledgerInputs": [],
+        "availableCapacity": null,
+        "conditionsLimitations": [
+          "NO_MATCHING_PRIMARY_RULES_FOR_RESTRICTED_PAYMENT",
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+          "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+        ],
+        "detail": "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+      },
+      "assessment": "CORRECT_REFUSAL"
+    },
+    {
+      "id": "S5-amendment",
+      "title": "Transaction affected by an amendment",
+      "transactionRequested": "Rely on Document D ($450M Term A-2 activation) and Document C (2022 Second Amendment leverage schedule) for current debt capacity on 2026-08-01.",
+      "independent": {
+        "pathway": "Doc D amends Documents A+B in-package (§2 Increased Facility Activation $450M Term A-2). Doc C amends the Seventh A&R (OUT OF PACKAGE) — must not be treated as amending Document A.",
+        "governingDocument": "Document D (in-package) + Document C (target missing)",
+        "section": "Doc D §2; Doc C §2(b) → Seventh A&R §7.1(b) [absent]",
+        "sourceCitation": "PACKAGE_FACTS pkg-3, pkg-4, pkg-5; DOCUMENT_C_UNITS c-2b; DOCUMENT_D_UNITS d-2",
+        "expectedStatus": "REVIEW_REQUIRED",
+        "rationale": "In-package Omnibus effect is identifiable. Second Amendment's stepped leverage schedule targets a document not in the package — operative precedence for that schedule cannot be fully determined. Correct outcome: record Doc D; leave Doc C UNRESOLVED; do not attach Doc C to Eighth A&R.",
+        "capacityClaimable": false
+      },
+      "headroom": {
+        "status": "REVIEW_REQUIRED",
+        "pathway": "7.2(c) · INCUR_DEBT",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A) / authenticated VEP when present",
+        "section": "7.2(c)",
+        "sourceCitation": [
+          "7.2",
+          "7.8",
+          "7.14",
+          "7.3",
+          "7.6",
+          "4E:path:ir-rule:29309c463e06b77b4b243eda",
+          "blocker:NO_APPROVED_SNAPSHOT",
+          "blocker:CUTOFF_UNRESOLVED"
+        ],
+        "financialInputs": [
+          "APPROVED_NorthStar_snapshot"
+        ],
+        "ledgerInputs": [],
+        "availableCapacity": null,
+        "conditionsLimitations": [
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda",
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+          "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+        ],
+        "detail": "Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED"
+      },
+      "assessment": "CORRECT_REFUSAL"
+    },
+    {
+      "id": "S6-insufficient-evidence",
+      "title": "Insufficient evidence must be refused",
+      "transactionRequested": "Execute verified capacity REQUIRE and commit a $10M secured draw with no financial snapshot, no ledger, and no complete cross-rule companions.",
+      "independent": {
+        "pathway": "None executable under REQUIRE",
+        "governingDocument": "N/A — missing APPROVED snapshot + cross-rule evaluator + companion CERTIFIED units",
+        "section": "n/a",
+        "sourceCitation": "authenticated-vep blocker report; North Star fail-closed",
+        "expectedStatus": "INSUFFICIENT_EVIDENCE",
+        "rationale": "evaluateVerifiedCapacity(REQUIRE) must REFUSE. Inventing $0 utilization or assuming latest quarter would be a false permission. Refusal is the successful outcome.",
+        "capacityClaimable": false
+      },
+      "headroom": {
+        "status": "INSUFFICIENT_EVIDENCE",
+        "pathway": "7.2(c) · INCUR_DEBT",
+        "governingDocument": "Eighth A&R Credit Agreement (Document A) / authenticated VEP when present",
+        "section": "7.2(c)",
+        "sourceCitation": [
+          "7.2",
+          "7.9",
+          "7.1",
+          "7.3",
+          "7.6",
+          "4E:path:ir-rule:29309c463e06b77b4b243eda",
+          "blocker:NO_APPROVED_SNAPSHOT",
+          "blocker:CUTOFF_UNRESOLVED"
+        ],
+        "financialInputs": [
+          "APPROVED_NorthStar_snapshot"
+        ],
+        "ledgerInputs": [],
+        "availableCapacity": null,
+        "conditionsLimitations": [
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda",
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+          "Cutoff: NEEDS_INPUT · Missing: evaluationDate · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: MISSING_EVALUATION_DATE"
+        ],
+        "detail": "Cutoff: NEEDS_INPUT · Missing: evaluationDate · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: MISSING_EVALUATION_DATE"
+      },
+      "assessment": "CORRECT_REFUSAL"
+    }
+  ],
+  "correctnessSummary": {
+    "CORRECT_EXECUTABLE": 0,
+    "CORRECT_REFUSAL": 6,
+    "INCORRECT": 0,
+    "MISSING_CAPABILITY": 0,
+    "UNVERIFIED": 0
+  },
+  "remainingBlockers": [
+    "CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed",
+    "Amendment/target outside governing package: Doc C Second Amendment amends Seventh A&R (not in package). Operative precedence cannot be fully determined.",
+    "No Phase-3 verified IR package is loaded for CONMED — evaluateVerifiedCapacity cannot execute under REQUIRE.",
+    "PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE — companion rule satisfaction not certified",
+    "No APPROVED NS-4 financial snapshot for conmed-demo",
+    "No attributed utilization ledger for conmed-demo",
+    "Package-level certifyPackage remains PARTIAL (not full-package CERTIFIED)"
+  ],
+  "customerReportMarkdown": "# CONMED Corporation — Transaction Answer Report\n\n**Audience:** CFO / Treasurer / financing counsel\n**Package:** Eighth A&R Credit Agreement (June 10, 2025) + Guarantee & Collateral + amendments\n**Authority:** Source-backed structure and certified-path enumeration where available. **Numeric capacity is not certified** without APPROVED financials, ledger, and executable cross-rule gates.\n**promotedToLegalTruth:** 0\n\n## Financing documents in scope\n- **Eighth Amended and Restated Credit Agreement (June 10, 2025)** (`BASE_CREDIT_AGREEMENT`) — curated:yes raw:yes — https://www.sec.gov/Archives/edgar/data/816956/000117494725000941/ex10-1.htm\n- **Amended and Restated Guarantee and Collateral Agreement (June 10, 2025)** (`GUARANTEE_AND_COLLATERAL`) — curated:yes raw:yes — https://www.sec.gov/Archives/edgar/data/816956/000117494725000941/ex10-2.htm\n- **Second Amendment to Seventh A&R Credit Agreement (August 1, 2022)** (`OUT_OF_PACKAGE_AMENDMENT`) — curated:yes raw:yes — https://www.sec.gov/Archives/edgar/data/816956/000119312522209154/d220699dex102.htm\n  - ⚠️ Amends the Seventh A&R (July 16, 2021), which is not in this package. Do not attach to Document A.\n- **First Omnibus Amendment and Increased Facility Activation Notice (May 27, 2026)** (`IN_PACKAGE_OMNIBUS_AMENDMENT`) — curated:yes raw:yes — https://www.sec.gov/Archives/edgar/data/816956/000207709626000190/ea029246401ex10-1.htm\n\n## Missing information (explicit)\n- Seventh Amended and Restated Credit Agreement dated July 16, 2021 (target of Document C)\n- Document D Exhibit A blackline (excluded as duplicate reprint)\n- Document D Exhibit B blackline (excluded)\n- Fee Letter dated May 1, 2026 (referenced by Doc D §2)\n- APPROVED North Star financial snapshots for CONMED\n- Attributed basket utilization ledger for CONMED\n- Independently CERTIFIED companion units for §7.1 and §7.3(g) (cross-rule gate)\n\n## Pipeline status\n- Structural / covenant intelligence: 15 summary items; 48 explorer rows; 8 package facts (49 ground-truth units).\n- Authenticated VEP: present; evaluateVerifiedCapacity(REQUIRE) → **REFUSED**.\n- Phase 4E: unsecured CERTIFIED_4E; secured CERTIFIED_4E.\n- Legal-intelligence surviving executable conclusions: **0** (fail-closed expected without full IR + financials).\n\n## Contemplated transactions\n### S1-unsecured-debt — Unsecured debt incurrence\n- **Requested:** Parent Borrower incurs $25,000,000 of unsecured Indebtedness on 2026-08-01.\n- **Independent pathway:** §7.2(o) general unsecured basket and/or §7.2(l) Permitted Unsecured Indebtedness\n- **Governing document / section:** Eighth A&R Credit Agreement (Document A) §7.2(o) / 7.2(l)\n- **Source:** human-ground-truth a-7.2-o / a-7.2-l; Article VII curated text\n- **Headroom status:** **NEEDS_INPUT** (assessment: CORRECT_REFUSAL)\n- **Available capacity:** Not independently supportable — withheld\n- **Conditions / limitations:** CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda; CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed; Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED\n- **Independent rationale:** §7.2(o) is greater of $60,000,000 and 3.25% of Consolidated Total Assets — dollar ceiling structure is clear, but remaining capacity requires CTA and utilization. §7.2(l) additionally requires no-default and pro forma §7.1(b) compliance. No APPROVED financial snapshot or ledger in package → capacity not executable.\n\n### S2-secured-debt — Secured debt requiring debt + lien authority\n- **Requested:** Parent Borrower incurs $40,000,000 of Indebtedness secured by Liens on 2026-08-01.\n- **Independent pathway:** Debt basket (§7.2, e.g. 7.2(c)/(o)/(s)) PLUS Lien basket (§7.3, e.g. 7.3(m) or 7.3(g))\n- **Governing document / section:** Eighth A&R Credit Agreement (Document A) §7.2 + 7.3\n- **Source:** human-ground-truth a-7.2 / a-7.3-m / a-7.2-c\n- **Headroom status:** **UNSUPPORTED** (assessment: CORRECT_REFUSAL)\n- **Available capacity:** Not independently supportable — withheld\n- **Conditions / limitations:** CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda; CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed; Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED\n- **Independent rationale:** Secured debt requires simultaneous Indebtedness and Liens permission. Authentic VEP covers §7.2(c) (debt secured by Liens under 7.3(g), pro forma 7.1) but cross-rule satisfaction is not executable (PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE). Companion §7.1 / §7.3 CERTIFIED units and APPROVED financials missing. Correct product outcome is fail-closed UNSUPPORTED / REFUSED — not a green permission.\n\n### S3-restricted-payment — Restricted payment / investment\n- **Requested:** Parent Borrower makes a $30,000,000 dividend on 2026-08-01.\n- **Independent pathway:** §7.6(d) $40,000,000 per fiscal year general RP basket (and/or §7.6(e) ratio-gated unlimited)\n- **Governing document / section:** Eighth A&R Credit Agreement (Document A) §7.6(d)\n- **Source:** human-ground-truth a-7.6-d\n- **Headroom status:** **NEEDS_INPUT** (assessment: CORRECT_REFUSAL)\n- **Available capacity:** Not independently supportable — withheld\n- **Conditions / limitations:** NO_MATCHING_PRIMARY_RULES_FOR_RESTRICTED_PAYMENT; CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed; Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED\n- **Independent rationale:** §7.6(d) is a flat $40M/fiscal-year basket with no ratio gate — structure supports a $30M dividend if YTD utilization leaves ≥$30M. Utilization ledger and fiscal-year YTD usage are not in the package. Capacity must be NEEDS_INPUT, not invented as $40M remaining.\n\n### S4-ratio-gated — Transaction requiring a financial ratio\n- **Requested:** Unlimited Restricted Payment under §7.6(e) requiring pro forma Consolidated Senior Secured Leverage Ratio ≤ 3.50x on 2026-08-01.\n- **Independent pathway:** §7.6(e) ratio-gated unlimited RP (CSSLR ≤ 3.50x Pro Forma; no Event of Default)\n- **Governing document / section:** Eighth A&R Credit Agreement (Document A) §7.6(e)\n- **Source:** human-ground-truth a-7.6-e\n- **Headroom status:** **NEEDS_INPUT** (assessment: CORRECT_REFUSAL)\n- **Available capacity:** Not independently supportable — withheld\n- **Conditions / limitations:** NO_MATCHING_PRIMARY_RULES_FOR_RESTRICTED_PAYMENT; CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed; Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED\n- **Independent rationale:** Pathway is clear from source. Execution requires APPROVED financial snapshot with Consolidated Senior Secured Leverage Ratio (or components) and pro forma treatment. Absent that, refuse numeric clearance.\n\n### S5-amendment — Transaction affected by an amendment\n- **Requested:** Rely on Document D ($450M Term A-2 activation) and Document C (2022 Second Amendment leverage schedule) for current debt capacity on 2026-08-01.\n- **Independent pathway:** Doc D amends Documents A+B in-package (§2 Increased Facility Activation $450M Term A-2). Doc C amends the Seventh A&R (OUT OF PACKAGE) — must not be treated as amending Document A.\n- **Governing document / section:** Document D (in-package) + Document C (target missing) §Doc D §2; Doc C §2(b) → Seventh A&R §7.1(b) [absent]\n- **Source:** PACKAGE_FACTS pkg-3, pkg-4, pkg-5; DOCUMENT_C_UNITS c-2b; DOCUMENT_D_UNITS d-2\n- **Headroom status:** **REVIEW_REQUIRED** (assessment: CORRECT_REFUSAL)\n- **Available capacity:** Not independently supportable — withheld\n- **Conditions / limitations:** CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda; CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed; Cutoff: NEEDS_INPUT · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: NO_APPROVED_SNAPSHOT · Certified blocker: CUTOFF_UNRESOLVED\n- **Independent rationale:** In-package Omnibus effect is identifiable. Second Amendment's stepped leverage schedule targets a document not in the package — operative precedence for that schedule cannot be fully determined. Correct outcome: record Doc D; leave Doc C UNRESOLVED; do not attach Doc C to Eighth A&R.\n\n### S6-insufficient-evidence — Insufficient evidence must be refused\n- **Requested:** Execute verified capacity REQUIRE and commit a $10M secured draw with no financial snapshot, no ledger, and no complete cross-rule companions.\n- **Independent pathway:** None executable under REQUIRE\n- **Governing document / section:** N/A — missing APPROVED snapshot + cross-rule evaluator + companion CERTIFIED units §n/a\n- **Source:** authenticated-vep blocker report; North Star fail-closed\n- **Headroom status:** **INSUFFICIENT_EVIDENCE** (assessment: CORRECT_REFUSAL)\n- **Available capacity:** Not independently supportable — withheld\n- **Conditions / limitations:** CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda; CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed; Cutoff: NEEDS_INPUT · Missing: evaluationDate · Missing: APPROVED_NorthStar_snapshot · Missing: contractual_cutoff · Certified blocker: MISSING_EVALUATION_DATE\n- **Independent rationale:** evaluateVerifiedCapacity(REQUIRE) must REFUSE. Inventing $0 utilization or assuming latest quarter would be a false permission. Refusal is the successful outcome.\n\n## Remaining blockers to executable clearance\n- CROSS_RULE_GATE_NOT_EXECUTABLE:PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE: rule(s) are gated on another rule's satisfaction; the runtime has no certified cross-rule satisfaction evaluator, so the gate is never treated as satisfied and the package fails closed\n- Amendment/target outside governing package: Doc C Second Amendment amends Seventh A&R (not in package). Operative precedence cannot be fully determined.\n- No Phase-3 verified IR package is loaded for CONMED — evaluateVerifiedCapacity cannot execute under REQUIRE.\n- PHASE4_CROSS_RULE_GATE_NOT_YET_EXECUTABLE — companion rule satisfaction not certified\n- No APPROVED NS-4 financial snapshot for conmed-demo\n- No attributed utilization ledger for conmed-demo\n- Package-level certifyPackage remains PARTIAL (not full-package CERTIFIED)\n\n## Bottom line\nHeadroom correctly identifies CONMED’s debt, lien, RP, and amendment pathways from authentic documents and fails closed where financial snapshots, utilization ledger, or cross-rule certification are missing. A refusal under REQUIRE is a successful control — not a product defect.\n"
+}
