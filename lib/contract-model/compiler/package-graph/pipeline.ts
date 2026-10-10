@@ -32,7 +32,8 @@ import { groupPackageIntoInstruments } from "./instrument-grouping";
 import type { PackageDocumentInput, PackageGraphResult } from "./types";
 
 /** Bump on any change to classification/relationship-resolution/instrument-grouping logic - a future semantic-resolution addition must invalidate any cached package-graph output keyed on this version, exactly as DISCOVERY_RUN_VERSION does for Phase 2B. */
-export const PACKAGE_GRAPH_PIPELINE_VERSION = "phase-2c-package-graph-pipeline.v1";
+/** Bumped for Agent 6 identity-risk remediation: provisional edges are discovery associations only; canonical clusters use trusted edges alone. */
+export const PACKAGE_GRAPH_PIPELINE_VERSION = "phase-2c-package-graph-pipeline.v1.2-confirmed-identity";
 /** Reserved for the semantic-resolution prompt this phase does not yet use (see header) - present now so a later phase adding one does not have to invent the version-identity convention from scratch. */
 export const PACKAGE_GRAPH_SEMANTIC_PROMPT_VERSION = "phase-2c-package-graph-semantic.v1";
 

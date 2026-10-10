@@ -166,14 +166,46 @@ export interface CrossDocumentReferenceLead {
 // §7 - instrument grouping
 // ---------------------------------------------------------------------------
 
+/**
+ * How instrument family membership was established.
+ * - CONFIRMED: every *canonical* membership edge used was RESOLVED +
+ *   STRONG_TARGET_EVIDENCE (or pre-taxonomy RESOLVED). `documentIds` is the
+ *   confirmed cluster; only these may receive Document.instrumentId.
+ * - PROVISIONAL_FAMILY: at least one REVIEW_REQUIRED (SUPPORTING/STRONG) edge
+ *   is recorded as a discovery/review association (`provisionalDocumentIds`).
+ *   Those ids are NOT canonical members and must NOT receive Document.instrumentId
+ *   from this association alone (Agent 6 A6-D4 + identity-risk remediation).
+ */
+export type InstrumentAssociationKind = "CONFIRMED" | "PROVISIONAL_FAMILY";
+
+/** REVIEW_REQUIRED associative edge that was refused as a canonical merge. */
+export interface ProvisionalBridgeBlocker {
+  sourceDocumentId: string;
+  targetDocumentId: string;
+  reason: "BRIDGES_CONFIRMED_INSTRUMENTS" | "AMBIGUOUS_MULTI_TARGET";
+}
+
 export interface InstrumentGroupingResult {
   /** Stable, content-derived key for this instrument within the package - not a DB id (assigned at persistence time). */
   instrumentKey: string;
   name: string;
+  /**
+   * Confirmed (trusted-edge) members only. Persistence assigns Document.instrumentId
+   * from this set — never from provisionalDocumentIds.
+   */
   documentIds: string[];
   baseDocumentId: string | null;
   confidence: number;
   reviewStatus: "RESOLVED" | "REVIEW_REQUIRED";
+  /** Agent 6 A6-D4 — see InstrumentAssociationKind. Absent on historical callers that predate the field; treat missing as CONFIRMED when reviewStatus is RESOLVED. */
+  associationKind?: InstrumentAssociationKind;
+  /**
+   * Discovery/review associations via REVIEW_REQUIRED associative edges.
+   * Not canonical instrument members; must not drive Document.instrumentId.
+   */
+  provisionalDocumentIds?: string[];
+  /** Associative edges refused because they would merge or ambiguously bridge confirmed instruments. */
+  provisionalBridgeBlockers?: ProvisionalBridgeBlocker[];
 }
 
 // ---------------------------------------------------------------------------
