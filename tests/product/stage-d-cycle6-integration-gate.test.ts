@@ -24,10 +24,13 @@ import {
   simulateVerifiedTransaction,
   type VerifiedExecutionPackage,
 } from "../../lib/contract-model/verified-execution";
+import { fixtureInputResolver } from "../../lib/contract-model/runtime/input-resolver";
 import { snapshotInputResolver } from "../../lib/contract-model/runtime/input/snapshot-resolver";
 import { enumerateCertifiedPaths } from "../../lib/product/north-star-workflow/verified-path-enumeration";
 import type { IRRule } from "../../lib/contract-model/ir/types";
 import { TEST_DOCUMENT_ID } from "../contract-model/semantic-compiler/test-helpers";
+
+const NO_INPUTS = fixtureInputResolver({ metrics: [] });
 
 const VEP_PATH = "docs/product/customer-workflow/stage-d-pkgi-entity-scope/verified-execution-package.json";
 const AS_OF = "2026-12-31";
@@ -173,7 +176,18 @@ describe("Cycle 6 integration gate — resolveGoverningScopeForCitedUnit", () =>
     const idx = buildTestIndex([{ documentId: DOC, label: "dup", text: dupText }]);
     const matches = idx.findNodesByRef(DOC, "7.02(b)");
     expect(matches.length).toBeGreaterThan(1);
-    const fallback = { version: "t", anchorSectionRef: "7.02", contentHash: "x", ancestorRegions: [], inheritedEntityScope: null, inheritedEntityScopeBasis: null, inheritedAction: null, inheritedActionBasis: null, governingProhibition: null, notes: ["fallback"] } as ReturnType<typeof resolveGoverningScope>;
+    const fallback = {
+      version: "t",
+      anchorSectionRef: "7.02",
+      contentHash: "x",
+      ancestorRegions: [],
+      inheritedEntityScope: null,
+      inheritedEntityScopeBasis: null,
+      inheritedAction: null,
+      inheritedActionBasis: null,
+      governingProhibition: null,
+      notes: ["fallback"],
+    } as unknown as NonNullable<ReturnType<typeof resolveGoverningScope>>;
     const out = resolveGoverningScopeForCitedUnit({
       candidateRef: "cand",
       documentId: DOC,
@@ -365,7 +379,7 @@ describe("Cycle 6 integration gate — SOURCE_SCOPE_DERIVED → SCOPE_CONFIRMED_
     expect(g.entityScopeAudit!.status).toBe("SOURCE_SCOPE_DERIVED");
     expect(g.entityScopeAudit!.safeToRely).toBe(true);
     expect(g.entityScope).toEqual(["BORROWER", "ANY_SUBSIDIARY"]);
-    const shell = evaluateRule(g, () => null);
+    const shell = evaluateRule(g, NO_INPUTS);
     expect(shell.entityScope.applicability).toBe("SCOPE_CONFIRMED_BY_SOURCE");
     const graph = buildCapacityGraph({
       companyId: "c",
@@ -395,7 +409,7 @@ describe("Cycle 6 integration gate — SOURCE_SCOPE_DERIVED → SCOPE_CONFIRMED_
         modelDiscrepancy: null,
       },
     });
-    expect(evaluateRule(r, () => null).entityScope.applicability).toBe("SCOPE_NOT_SAFE_TO_RELY_ON");
+    expect(evaluateRule(r, NO_INPUTS).entityScope.applicability).toBe("SCOPE_NOT_SAFE_TO_RELY_ON");
   });
 
   it("SOURCE_SCOPE_DERIVED with empty entityScope does not confirm", () => {
@@ -414,7 +428,7 @@ describe("Cycle 6 integration gate — SOURCE_SCOPE_DERIVED → SCOPE_CONFIRMED_
         modelDiscrepancy: null,
       },
     });
-    expect(evaluateRule(r, () => null).entityScope.applicability).toBe("SCOPE_NOT_SAFE_TO_RELY_ON");
+    expect(evaluateRule(r, NO_INPUTS).entityScope.applicability).toBe("SCOPE_NOT_SAFE_TO_RELY_ON");
   });
 
   it("UNWITNESSED never confirms", () => {
@@ -433,7 +447,7 @@ describe("Cycle 6 integration gate — SOURCE_SCOPE_DERIVED → SCOPE_CONFIRMED_
         modelDiscrepancy: null,
       },
     });
-    expect(evaluateRule(r, () => null).entityScope.applicability).toBe("SCOPE_NOT_SAFE_TO_RELY_ON");
+    expect(evaluateRule(r, NO_INPUTS).entityScope.applicability).toBe("SCOPE_NOT_SAFE_TO_RELY_ON");
   });
 });
 
