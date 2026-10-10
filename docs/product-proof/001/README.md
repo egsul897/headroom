@@ -6,6 +6,12 @@ Authentic unseen debt-package end-to-end challenge (Vail Resorts / MTN).
 
 **PARTIAL_PRODUCT_CAPABILITY_PROVEN** — see `11-final-verdict.md`.
 
+## Investigation status
+
+**CLOSED.** First hard failure accepted at `GENERALIZED_RULE_REPRESENTATION`.  
+**Handoff to Product Proof 002:** `13-handoff-to-002.md` (pointer: `../002/00-handoff-from-001.md`).  
+Do not expand PR #264 or continue PP001 engineering from this directory.
+
 ## Reproduce
 
 ```bash
@@ -33,5 +39,7 @@ Sources are already frozen under `sources/mtn-2026-tenth-ar-credit-agreement/`.
 | `09-failure-register.md` | Failures |
 | `10-remediation-roadmap.md` | Ranked blockers |
 | `11-final-verdict.md` | Single verdict |
+| `12-first-pipeline-failure.md` | First hard failure pin |
+| `13-handoff-to-002.md` | **Frozen handoff to PP002** |
 | `artifacts/` | Machine-readable stage outputs |
 | `logs/` | Console / JSONL |
