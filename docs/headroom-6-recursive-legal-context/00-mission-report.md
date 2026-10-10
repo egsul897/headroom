@@ -6,7 +6,7 @@
 |---|---|
 | Agent | #6 |
 | Starting SHA | `6abe42bae6dfe69bb72467daa7f460b727200d1b` (`origin/main` tip incl. #276) |
-| Ending SHA | `3b1e2b48c15aab1750b88a9200abcab47d54afb3` |
+| Ending SHA | `aafe016a2cb87432c57304a4d24aa1a14ce8549b` |
 | Algorithm | `phase-2d-context-retrieval.v6` |
 | Holdout | WOR sealed package (diagnostic fixture; legal-reference answers untouched) |
 
