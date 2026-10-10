@@ -9,7 +9,7 @@
 |---|---|
 | Round 1 tip (baseline) | `c53afbf6c4ac360569cb25324d8bb405110fa91a` |
 | Round 2 origin/main SHA | `4f1a0b81207364373d9a4cb9fe515d4a1a002e56` |
-| Round 2 evaluation tip | `6601e7c2163c9c01962b602539900730c885f695` |
+| Round 2 evaluation tip | `815858620779e18af28d37e6118ac9851d80bf1e` |
 | Seal commit | `ca667446df228984bb5d6b50b44c3c98b45f0730` |
 | Legal reference SHA256 | `393facc432182df08dae690e3fc0e751a4c3a410b71c0e7b93a54122915fa1bd` (unchanged: **true**) |
 | Package | AutoNation (AN) Third→Fifth A&R (`an-2020-2026-credit-facility`) |
@@ -112,4 +112,4 @@ npx tsx scripts/agent-11/run-round2-acceptance.ts
 # Legal freeze (read-only): docs/agent-11-e2e-acceptance/05-legal-reference-answers.json
 ```
 
-Elapsed: 8476 ms.
+Elapsed: 8762 ms.
