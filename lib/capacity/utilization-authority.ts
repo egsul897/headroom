@@ -2,7 +2,7 @@
  * Authoritative utilization contract — single source of truth for remaining-capacity claims.
  *
  * Reconciles:
- * - Solver shared-usage statuses (#232)
+ * - Solver shared-usage statuses (#232 / #237)
  * - Completeness-certificate model (#234 `resolveUtilization` / `computeVerifiedRemaining`)
  *
  * Rules (non-negotiable):
@@ -13,8 +13,17 @@
  * 4. Synthetic evidence may not publish customer AVAILABLE / remaining unless
  *    explicitly labeled and never as AUTHENTIC completeness.
  * 5. Failed gates never publish AVAILABLE (A8-01).
+ * 6. Production-authoritative remaining requires explicit authenticity AUTHENTIC
+ *    and trusted-issuer authorization — APPROVED alone, missing authenticity, or
+ *    a caller-supplied issuer.role without registry verification never suffice.
+ *    (Selective port from #244; coordinates with #241 authenticity gate. Does not
+ *    replace this #237 authority bridge with #244's shared-usage rewrite.)
  */
 
+import {
+  authorizeCompletenessIssuer,
+  type TrustedIssuerAuthorizationContext,
+} from "./completeness-issuer-auth";
 import type {
   UtilizationCompletenessCertificate,
   UtilizationKnowledgeKind,
@@ -55,6 +64,11 @@ export type UtilizationAuthorityDecision = {
     | "ENTITY_CLASS_USAGE_UNAVAILABLE";
 };
 
+/** Solver-path completeness input — authenticity required for production authority. */
+export type SolverCompletenessCertInput = UtilizationCompletenessCertificate & {
+  authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
+};
+
 export type SolverUsageObservation = {
   /** Number of named members on the constraint. */
   namedMemberCount: number;
@@ -72,20 +86,94 @@ export type SolverUsageObservation = {
    * Synthetic certificates must set authenticity SYNTHETIC_LABELED and are refused
    * for authoritative remaining unless allowSyntheticRemaining is true (tests only).
    */
-  completenessCertificate?: (UtilizationCompletenessCertificate & {
-    authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED";
-  }) | null;
+  completenessCertificate?: SolverCompletenessCertInput | null;
+  /**
+   * Trusted identity/authorization registry for certificate issuers.
+   * Required for production-authoritative remaining (not for allowSyntheticRemaining demos).
+   * Host identity-provider wiring is an activation requirement until real attestations land.
+   */
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
   /** Test-only escape hatch — never set in production loaders. */
   allowSyntheticRemaining?: boolean;
 };
 
+/**
+ * Structural cert gate: APPROVED + authenticity present.
+ * Missing authenticity refuses. SYNTHETIC_LABELED only with allowSynthetic.
+ * Does not alone establish production-authoritative remaining — see productionAuthorityOk.
+ */
 function certOk(
-  cert: SolverUsageObservation["completenessCertificate"],
+  cert: SolverCompletenessCertInput | null | undefined,
   allowSynthetic: boolean | undefined,
-): cert is UtilizationCompletenessCertificate & { authenticity?: "AUTHENTIC" | "SYNTHETIC_LABELED" } {
+): cert is SolverCompletenessCertInput {
   if (!cert || cert.approvalState !== "APPROVED") return false;
+  // Missing authenticity must not establish production (or any) remaining authority.
+  if (cert.authenticity !== "AUTHENTIC" && cert.authenticity !== "SYNTHETIC_LABELED") {
+    return false;
+  }
   if (cert.authenticity === "SYNTHETIC_LABELED" && !allowSynthetic) return false;
   return true;
+}
+
+/**
+ * Production-authoritative remaining requires AUTHENTIC authenticity and a
+ * trusted-issuer authorization for the certificate's issuer.actorId.
+ * Caller-supplied issuer.role alone never suffices (#244 selective port).
+ */
+function productionAuthorityOk(
+  cert: SolverCompletenessCertInput,
+  trustedIssuerAuth: TrustedIssuerAuthorizationContext | null | undefined,
+): { ok: boolean; blockers: string[] } {
+  const blockers: string[] = [];
+  if (cert.authenticity !== "AUTHENTIC") {
+    blockers.push(
+      "production-authoritative remaining requires authenticity AUTHENTIC — missing or synthetic authenticity refused",
+    );
+  }
+  if (!cert.issuer?.actorId || !cert.issuer?.role) {
+    blockers.push(
+      "production-authoritative remaining requires certificate issuer (actorId + role) — unverified issuer authority refused",
+    );
+  } else {
+    const auth = authorizeCompletenessIssuer(
+      { actorId: cert.issuer.actorId, role: cert.issuer.role },
+      trustedIssuerAuth,
+    );
+    if (!auth.ok) {
+      blockers.push(...auth.blockers);
+    } else if (!trustedIssuerAuth?.requireNonFixtureIdentity) {
+      blockers.push(
+        "production-authoritative remaining requires trustedIssuerAuth.requireNonFixtureIdentity",
+      );
+    } else if (
+      auth.matchedPrincipal &&
+      auth.matchedPrincipal.identityAssurance !== "SESSION_AUTHENTICATED" &&
+      auth.matchedPrincipal.identityAssurance !== "SERVICE_ACCOUNT"
+    ) {
+      blockers.push(
+        "production-authoritative remaining requires SESSION_AUTHENTICATED or SERVICE_ACCOUNT issuer identity",
+      );
+    }
+  }
+  return { ok: blockers.length === 0, blockers };
+}
+
+function refuseAttributedIncomplete(
+  usage: number | null,
+  blockers: string[],
+  note: string,
+  solverStatus: UtilizationAuthorityDecision["solverStatus"] = "ATTRIBUTED_INCOMPLETE",
+): UtilizationAuthorityDecision {
+  return {
+    kind: usage == null ? "UNKNOWN" : usage === 0 ? "KNOWN_ATTRIBUTED" : "KNOWN_ATTRIBUTED",
+    attributedAmount: usage,
+    supportsRemainingClaim: false,
+    completenessCertified: false,
+    authoritativeForRemaining: false,
+    blockers,
+    note,
+    solverStatus,
+  };
 }
 
 /**
@@ -146,10 +234,23 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
 
   const usage = Math.max(0, obs.measuredUsage);
   const cert = obs.completenessCertificate ?? null;
-  const certified = certOk(cert, obs.allowSyntheticRemaining);
+  const structuralOk = certOk(cert, obs.allowSyntheticRemaining);
+
+  // Demo / test synthetic path — labeled SYNTHETIC_LABELED + allowSyntheticRemaining.
+  // Never production-authoritative; does not require trusted issuer.
+  const demoSyntheticOk =
+    structuralOk &&
+    obs.allowSyntheticRemaining === true &&
+    cert!.authenticity === "SYNTHETIC_LABELED";
+
+  const production = structuralOk && cert!.authenticity === "AUTHENTIC"
+    ? productionAuthorityOk(cert!, obs.trustedIssuerAuth)
+    : { ok: false, blockers: structuralOk ? [] as string[] : ["completeness certificate not structurally valid for remaining"] };
+
+  const certifiedForRemaining = demoSyntheticOk || production.ok;
 
   if (usage === 0) {
-    if (certified && cert!.kind === "VERIFIED_EMPTY") {
+    if (certifiedForRemaining && cert!.kind === "VERIFIED_EMPTY") {
       return {
         kind: "VERIFIED_ZERO",
         attributedAmount: 0,
@@ -157,11 +258,13 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
         completenessCertified: true,
         authoritativeForRemaining: true,
         blockers: [],
-        note: `Verified zero utilization per APPROVED VERIFIED_EMPTY certificate (${cert!.sourceLabel}).`,
+        note: demoSyntheticOk
+          ? `Demo synthetic verified zero (${cert!.sourceLabel}) — not production-authoritative.`
+          : `Verified zero utilization per APPROVED VERIFIED_EMPTY certificate (${cert!.sourceLabel}).`,
         solverStatus: "VERIFIED_ZERO",
       };
     }
-    if (certified && cert!.kind === "VERIFIED_COMPLETE") {
+    if (structuralOk && cert!.kind === "VERIFIED_COMPLETE") {
       return {
         kind: "PARTIALLY_KNOWN",
         attributedAmount: 0,
@@ -173,46 +276,43 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
         solverStatus: "ATTRIBUTED_INCOMPLETE",
       };
     }
-    return {
-      kind: "KNOWN_ATTRIBUTED",
-      attributedAmount: 0,
-      supportsRemainingClaim: false,
-      completenessCertified: false,
-      authoritativeForRemaining: false,
-      blockers: [
+    const authBlockers = cert && cert.approvalState === "APPROVED" && !certifiedForRemaining
+      ? [
+          ...(cert.authenticity !== "AUTHENTIC" && cert.authenticity !== "SYNTHETIC_LABELED"
+            ? ["APPROVED certificate missing authenticity — cannot establish production-authoritative remaining"]
+            : []),
+          ...(cert.authenticity === "AUTHENTIC" ? production.blockers : []),
+          ...(cert.authenticity === "SYNTHETIC_LABELED" && !obs.allowSyntheticRemaining
+            ? ["synthetic completeness evidence cannot publish authoritative remaining"]
+            : []),
+        ]
+      : [];
+    return refuseAttributedIncomplete(
+      0,
+      [
         "attributed zero rows do not establish completeness of historical usage — remaining requires VERIFIED_EMPTY certificate",
+        ...authBlockers,
       ],
-      note: "Attributed members report zero outstanding, but completeness is not certified — remaining not supported.",
-      solverStatus: "ATTRIBUTED_INCOMPLETE",
-    };
+      "Attributed members report zero outstanding, but completeness is not certified — remaining not supported.",
+    );
   }
 
   // usage > 0, all members attributed
-  if (certified && cert!.kind === "VERIFIED_COMPLETE") {
-    if (cert!.authenticity === "SYNTHETIC_LABELED" && !obs.allowSyntheticRemaining) {
-      return {
-        kind: "SYNTHETIC_ONLY",
-        attributedAmount: usage,
-        supportsRemainingClaim: false,
-        completenessCertified: false,
-        authoritativeForRemaining: false,
-        blockers: ["synthetic completeness evidence cannot publish authoritative remaining"],
-        note: "Synthetic utilization evidence — remaining not published as AUTHENTIC AVAILABLE.",
-        solverStatus: "ATTRIBUTED_INCOMPLETE",
-      };
-    }
+  if (certifiedForRemaining && cert!.kind === "VERIFIED_COMPLETE") {
     return {
-      kind: "KNOWN_ATTRIBUTED",
+      kind: demoSyntheticOk ? "SYNTHETIC_ONLY" : "KNOWN_ATTRIBUTED",
       attributedAmount: usage,
       supportsRemainingClaim: true,
       completenessCertified: true,
       authoritativeForRemaining: true,
       blockers: [],
-      note: `Attributed utilization ${usage} with VERIFIED_COMPLETE certificate (${cert!.sourceLabel}).`,
+      note: demoSyntheticOk
+        ? `Demo synthetic attributed utilization ${usage} (${cert!.sourceLabel}) — not production-authoritative.`
+        : `Attributed utilization ${usage} with VERIFIED_COMPLETE certificate (${cert!.sourceLabel}).`,
       solverStatus: "COMPUTED",
     };
   }
-  if (certified && cert!.kind === "VERIFIED_EMPTY") {
+  if (structuralOk && cert!.kind === "VERIFIED_EMPTY") {
     return {
       kind: "PARTIALLY_KNOWN",
       attributedAmount: usage,
@@ -224,18 +324,28 @@ export function decideSolverUtilizationAuthority(obs: SolverUsageObservation): U
       solverStatus: "ATTRIBUTED_INCOMPLETE",
     };
   }
-  return {
-    kind: "KNOWN_ATTRIBUTED",
-    attributedAmount: usage,
-    supportsRemainingClaim: false,
-    completenessCertified: false,
-    authoritativeForRemaining: false,
-    blockers: [
+
+  const authBlockers =
+    cert && cert.approvalState === "APPROVED"
+      ? [
+          ...(cert.authenticity !== "AUTHENTIC" && cert.authenticity !== "SYNTHETIC_LABELED"
+            ? ["APPROVED certificate missing authenticity — cannot establish production-authoritative remaining"]
+            : []),
+          ...(cert.authenticity === "AUTHENTIC" ? production.blockers : []),
+          ...(cert.authenticity === "SYNTHETIC_LABELED" && !obs.allowSyntheticRemaining
+            ? ["synthetic completeness evidence cannot publish authoritative remaining"]
+            : []),
+        ]
+      : [];
+
+  return refuseAttributedIncomplete(
+    usage,
+    [
       "approved attributed records do not establish completeness — remaining requires VERIFIED_COMPLETE certificate",
+      ...authBlockers,
     ],
-    note: `Known attributed utilization ${usage}, completeness not certified — remaining not supported.`,
-    solverStatus: "ATTRIBUTED_INCOMPLETE",
-  };
+    `Known attributed utilization ${usage}, completeness not certified — remaining not supported.`,
+  );
 }
 
 /** Map a #234 UtilizationResolution onto the authority decision (product path). */
