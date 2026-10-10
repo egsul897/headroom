@@ -104,9 +104,26 @@ export interface ReviewerAuthorization {
    * claimed role alone.
    */
   trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
-}
-
-export interface UtilizationCompletenessInput {
+  /**
+   * Optional #282 branded VerifiedServerPrincipal (or unknown client payload).
+   * Never trust raw reviewer-name strings as identity proof.
+   */
+  verifiedServerPrincipal?: unknown;
+  /**
+   * When true, `authorizeDecision` (#282) must grant before reviewer gate passes.
+   * PRODUCTION_AUTHORITY mode always requires identity authorization and refuses
+   * while TRUSTED_IDENTITY_PRODUCTION_ACTIVATION remains BLOCKED.
+   */
+  requireIdentityAuthorization?: boolean;
+  /** Decision kind for authorizeDecision (default AUTHORIZE_PRODUCTION_CAPACITY). */
+  identityDecision?:
+    | "UPLOAD_DOCUMENT"
+    | "SUBMIT_EVIDENCE"
+    | "REVIEW_EVIDENCE"
+    | "APPROVE_FINANCIAL_METRIC"
+    | "CERTIFY_UTILIZATION_COMPLETENESS"
+    | "AUTHORIZE_PRODUCTION_CAPACITY";
+}export interface UtilizationCompletenessInput {
   capacityRuleId: string;
   records: readonly UtilizationEvidenceRecord[];
   completenessCertificate?: UtilizationCompletenessCertificate | null;

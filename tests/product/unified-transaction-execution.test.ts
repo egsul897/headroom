@@ -423,7 +423,7 @@ function baseRequest(
 }
 
 describe("architecture: orchestration does not import runtime engines or solver", () => {
-  it("verified-transaction-execution never imports runtime capacity/simulate or runSolver", () => {
+  it("verified-transaction-execution never imports runtime capacity/simulate or runSolver", async () => {
     const dir = "lib/product/verified-transaction-execution";
     const files = fs
       .readdirSync(dir, { recursive: true })
@@ -442,7 +442,7 @@ describe("architecture: orchestration does not import runtime engines or solver"
     expect(exec).toMatch(/simulateVerifiedTransaction/);
   });
 
-  it("exports stable contract version", () => {
+  it("exports stable contract version", async () => {
     expect(UNIFIED_TRANSACTION_EXECUTION_VERSION).toBe(
       "unified-transaction-execution.v1",
     );
@@ -450,7 +450,7 @@ describe("architecture: orchestration does not import runtime engines or solver"
 });
 
 describe("Scope F — unified transaction execution", () => {
-  it("fixed-dollar permission: CONMED-form §7.02(d) $25mm basket SATISFIED hypothetically", () => {
+  it("fixed-dollar permission: CONMED-form §7.02(d) $25mm basket SATISFIED hypothetically", async () => {
     const r = ruleOf("p-fixed", MONEY(25_000_000) as IRCapacityExpression, {
       sourceSectionRef: "7.02(d)",
       provenance: {
@@ -462,7 +462,7 @@ describe("Scope F — unified transaction execution", () => {
       },
     });
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-fixed", {
         transaction: {
           type: "FINANCE_LEASE",
@@ -510,7 +510,7 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.sourceCitations.join(" ")).toMatch(/7\.02\(d\)/);
   });
 
-  it("greater-of permission: MAX($50mm, 10% EBITDA) evaluates via existing engine", () => {
+  it("greater-of permission: MAX($50mm, 10% EBITDA) evaluates via existing engine", async () => {
     const cap = MAX(MONEY(50_000_000), MUL(PCT(0.1), FIGURE("Consolidated EBITDA")));
     const r = ruleOf("p-greater", cap, {
       sourceSectionRef: "7.02(q)",
@@ -523,7 +523,7 @@ describe("Scope F — unified transaction execution", () => {
       },
     });
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-greater", {
         verifiedExecutableRule: ruleIdentity("p-greater", {
           sourceSectionRef: "7.02(q)",
@@ -585,10 +585,10 @@ describe("Scope F — unified transaction execution", () => {
     }
   });
 
-  it("missing financials: required metric absent → REFUSED, no favorable result", () => {
+  it("missing financials: required metric absent → REFUSED, no favorable result", async () => {
     const r = ruleOf("p-fin", MAX(MONEY(1), MUL(PCT(0.1), FIGURE("Consolidated EBITDA"))));
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-fin", {
         financialEvidence: { metrics: [], requiredMetricKeys: ["CONSOLIDATED_EBITDA"] },
         allowHypotheticalFinancials: true,
@@ -601,10 +601,10 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.verified.simulation).toBeNull();
   });
 
-  it("missing utilization: UNKNOWN ≠ zero; remaining publication refused", () => {
+  it("missing utilization: UNKNOWN ≠ zero; remaining publication refused", async () => {
     const r = ruleOf("p-util", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-util", {
         utilization: {
           capacityRuleId: "p-util",
@@ -631,10 +631,10 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.missingInputs).toContain("utilization completeness certificate");
   });
 
-  it("wrong entity: package / evidence company mismatch refuses", () => {
+  it("wrong entity: package / evidence company mismatch refuses", async () => {
     const r = ruleOf("p-ent", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-ent", {
         companyId: "other-co",
         reviewerAuthorization: { required: false, actorId: null, role: null },
@@ -660,10 +660,10 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.blockers.some((b) => /wrong entity/i.test(b))).toBe(true);
   });
 
-  it("wrong currency: evidence currency ≠ transaction currency refuses", () => {
+  it("wrong currency: evidence currency ≠ transaction currency refuses", async () => {
     const r = ruleOf("p-ccy", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-ccy", {
         transaction: {
           type: "UNSECURED_DEBT",
@@ -691,10 +691,10 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.blockers.some((b) => /wrong currency/i.test(b))).toBe(true);
   });
 
-  it("provisional document: never promotes to operative", () => {
+  it("provisional document: never promotes to operative", async () => {
     const r = ruleOf("p-prov", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-prov", {
         operativeSourceAuthority: operative({
           authorityClassification: "PROVISIONAL_IDENTITY_BLOCKED",
@@ -722,10 +722,10 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.blockers.join(" ")).toMatch(/provisional/i);
   });
 
-  it("conflicting amendment: refuses unique operative selection", () => {
+  it("conflicting amendment: refuses unique operative selection", async () => {
     const r = ruleOf("p-conf", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-conf", {
         operativeSourceAuthority: operative({
           authorityClassification: "CONFLICTED",
@@ -750,7 +750,7 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.blockers.join(" ")).toMatch(/conflict/i);
   });
 
-  it("shared debt/lien capacity: members are not additive independent pools", () => {
+  it("shared debt/lien capacity: members are not additive independent pools", async () => {
     const a = ruleOf("prov-a", MONEY(100_000_000) as IRCapacityExpression, {
       sourceSectionRef: "7.02(a)",
     });
@@ -768,7 +768,7 @@ describe("Scope F — unified transaction execution", () => {
       ...STRONG,
     };
     const pkg = pkgOf([a, b], [pool]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "prov-a", {
         verifiedExecutableRule: ruleIdentity("prov-a", {
           sourceSectionRef: "7.02(a)",
@@ -826,10 +826,10 @@ describe("Scope F — unified transaction execution", () => {
     }
   });
 
-  it("unsupported path: shared pool id not in package refuses", () => {
+  it("unsupported path: shared pool id not in package refuses", async () => {
     const r = ruleOf("p-unsup", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-unsup", {
         selectedLegalPath: {
           pathId: "path:bad-pool",
@@ -857,10 +857,10 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.blockers.join(" ")).toMatch(/shared capacity ghost-pool/i);
   });
 
-  it("hypothetical simulation: HYPOTHETICAL must not promote to PRODUCTION_AUTHORITY", () => {
+  it("hypothetical simulation: HYPOTHETICAL must not promote to PRODUCTION_AUTHORITY", async () => {
     const r = ruleOf("p-hyp", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-hyp", {
         mode: "HYPOTHETICAL",
         allowHypotheticalFinancials: true,
@@ -893,10 +893,10 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.note).toMatch(/BLOCKED|Hypothetical/i);
   });
 
-  it("forged approval: certificate role alone / unknown actor refuses", () => {
+  it("forged approval: certificate role alone / unknown actor refuses", async () => {
     const r = ruleOf("p-forge", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-forge", {
         mode: "PRODUCTION_AUTHORITY",
         reviewerAuthorization: {
@@ -921,7 +921,7 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.productionAuthority).toBe("PRODUCTION_AUTHORITY_BLOCKED");
   });
 
-  it("replay determinism: identical requests → identical packageHash / stateHash / status", () => {
+  it("replay determinism: identical requests → identical packageHash / stateHash / status", async () => {
     const r = ruleOf("p-replay", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
     const req = baseRequest(pkg, "p-replay", {
@@ -955,8 +955,8 @@ describe("Scope F — unified transaction execution", () => {
         allowSyntheticRemaining: true,
       },
     });
-    const a = executeUnifiedVerifiedTransaction(req);
-    const b = executeUnifiedVerifiedTransaction(req);
+    const a = await executeUnifiedVerifiedTransaction(req);
+    const b = await executeUnifiedVerifiedTransaction(req);
     expect(a.executionStatus).toBe(b.executionStatus);
     expect(a.postStateIdentity.packageHash).toBe(b.postStateIdentity.packageHash);
     expect(a.postStateIdentity.stateHash).toBe(b.postStateIdentity.stateHash);
@@ -966,10 +966,10 @@ describe("Scope F — unified transaction execution", () => {
     );
   });
 
-  it("DISCOVERED lifecycle never promotes to VERIFIED_EXECUTABLE", () => {
+  it("DISCOVERED lifecycle never promotes to VERIFIED_EXECUTABLE", async () => {
     const r = ruleOf("p-disc", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-disc", {
         verifiedExecutableRule: ruleIdentity("p-disc", {
           lifecycle: "DISCOVERED",
@@ -992,10 +992,10 @@ describe("Scope F — unified transaction execution", () => {
     expect(result.blockers.join(" ")).toMatch(/DISCOVERED/);
   });
 
-  it("no favorable PRODUCTION_AUTHORITY result from incomplete authority", () => {
+  it("no favorable PRODUCTION_AUTHORITY result from incomplete authority", async () => {
     const r = ruleOf("p-inc", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-inc", {
         mode: "PRODUCTION_AUTHORITY",
         // APPROVED completeness without authenticity
@@ -1029,10 +1029,10 @@ describe("Scope F — unified transaction execution", () => {
     ).toBe(true);
   });
 
-  it("product handoff: Position / Ask / Simulate share additive contract", () => {
+  it("product handoff: Position / Ask / Simulate share additive contract", async () => {
     const r = ruleOf("p-hand", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
-    const result = executeUnifiedVerifiedTransaction(
+    const result = await executeUnifiedVerifiedTransaction(
       baseRequest(pkg, "p-hand", {
         allowHypotheticalFinancials: true,
         financialEvidence: {
@@ -1067,7 +1067,7 @@ describe("Scope F — unified transaction execution", () => {
     expect(one.selectedPathId).toBe("path:p-hand");
   });
 
-  it("capacity arithmetic matches direct evaluateVerifiedCapacity (no duplicate solver)", () => {
+  it("capacity arithmetic matches direct evaluateVerifiedCapacity (no duplicate solver)", async () => {
     const r = ruleOf("p-parity", MONEY(25_000_000) as IRCapacityExpression);
     const pkg = pkgOf([r]);
     const req = baseRequest(pkg, "p-parity", {
@@ -1094,7 +1094,7 @@ describe("Scope F — unified transaction execution", () => {
         allowSyntheticRemaining: true,
       },
     });
-    const orch = executeUnifiedVerifiedTransaction(req);
+    const orch = await executeUnifiedVerifiedTransaction(req);
     const direct = evaluateVerifiedCapacity({
       package: pkg,
       inputs: req.inputs,

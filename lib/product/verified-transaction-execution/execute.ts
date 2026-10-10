@@ -4,10 +4,11 @@
  * Call graph (product → verified-execution → runtime):
  *
  *   executeUnifiedVerifiedTransaction
- *     → evaluateOperativeSourceAuthority          (adapter / #274)
- *     → validateFinancialEvidenceBundle           (adapter / #273)
- *     → evaluateUtilizationAuthorityGate          (lib/capacity)
- *     → authorizeCompletenessIssuer               (reviewer gate)
+ *     → evaluateOperativeSourceAuthority          (adapter / #274 + #283 gate)
+ *     → validateFinancialEvidenceBundle           (adapter / #273 + #290 feed)
+ *     → evaluateUtilizationAuthorityGate          (lib/capacity / #290 records)
+ *     → authorizeDecision                         (#282 identity boundary)
+ *     → authorizeCompletenessIssuer               (#268/#279 trusted-issuer)
  *     → evaluateVerifiedCapacity                  (REQUIRE)
  *          → bind → resolveRuntimeVerificationEnvelope
  *          → buildCapacityGraph → evaluateCapacityState
@@ -17,11 +18,13 @@
  *
  * Does NOT import runtime/*, the legacy solver service, or duplicate basket arithmetic.
  * Does NOT write production DB. Does NOT promote DISCOVERED → VERIFIED_EXECUTABLE
- * or HYPOTHETICAL → PRODUCTION_AUTHORITY.
+ * or HYPOTHETICAL → PRODUCTION_AUTHORITY. Does NOT invent a production IdP.
  */
 
 import {
   authorizeCompletenessIssuer,
+  authorizeDecision,
+  isTrustedIdentityProductionActive,
   type CompletenessIssuerRole,
 } from "@/lib/capacity";
 import {
@@ -134,9 +137,11 @@ function capacityExpressionKind(
 function classifyProductionAuthority(args: {
   mode: ExecutionMode;
   operativeOk: boolean;
+  operativeProductionPromotionActive: boolean;
   financialProduction: boolean;
   utilizationProduction: boolean;
   reviewerOk: boolean;
+  identityOk: boolean;
   ruleLifecycleOk: boolean;
   capacityExecuted: boolean;
   simulationSatisfied: boolean;
@@ -144,15 +149,18 @@ function classifyProductionAuthority(args: {
   if (args.mode === "HYPOTHETICAL") return "HYPOTHETICAL_ONLY";
   const all =
     args.operativeOk &&
+    args.operativeProductionPromotionActive &&
     args.financialProduction &&
     args.utilizationProduction &&
     args.reviewerOk &&
+    args.identityOk &&
     args.ruleLifecycleOk &&
     args.capacityExecuted &&
-    args.simulationSatisfied;
-  // Host trusted-issuer activation remains BLOCKED on repository wiring today
-  // (#268/#273). Even a fully authenticated fixture path stays blocked until
-  // a real HostIdentityProvider is registered — mirror that here.
+    args.simulationSatisfied &&
+    isTrustedIdentityProductionActive();
+  // Host trusted-issuer + #282 identity activation remain BLOCKED on repository
+  // wiring today. Even a fully authenticated fixture path stays blocked until a
+  // real production IdP / HostIdentityProvider is registered — never invent one.
   if (!all) return "PRODUCTION_AUTHORITY_BLOCKED";
   return "PRODUCTION_AUTHORITY_BLOCKED";
 }
@@ -190,9 +198,9 @@ function executionStatusOf(args: {
  * Canonical server-side orchestration entrypoint.
  * Pure / in-memory — no production DB writes, no paid inference, no new solver.
  */
-export function executeUnifiedVerifiedTransaction(
+export async function executeUnifiedVerifiedTransaction(
   request: UnifiedTransactionExecutionRequest,
-): UnifiedTransactionExecutionResult {
+): Promise<UnifiedTransactionExecutionResult> {
   const mode: ExecutionMode = request.mode ?? "HYPOTHETICAL";
   const trace: ExecutionTraceStep[] = [];
   const blockers: string[] = [];
@@ -360,13 +368,66 @@ export function executeUnifiedVerifiedTransaction(
     refs: [operative.sourceDocumentId, operative.sourceCitation],
   });
 
+  // --- Trusted identity authorization (#282) — before evidence gates --------
+  let identityOk = true;
+  let trustedIssuerAuth = request.reviewerAuthorization.trustedIssuerAuth ?? null;
+  const requireIdentity =
+    Boolean(request.reviewerAuthorization.requireIdentityAuthorization) ||
+    mode === "PRODUCTION_AUTHORITY" ||
+    request.reviewerAuthorization.verifiedServerPrincipal !== undefined;
+  if (requireIdentity) {
+    if (mode === "PRODUCTION_AUTHORITY" && !isTrustedIdentityProductionActive()) {
+      identityOk = false;
+      blockers.push(
+        "trusted identity production activation BLOCKED — no production IdP; refuse PRODUCTION_AUTHORITY",
+      );
+      push("identity.authorization", "REFUSE", blockers[blockers.length - 1]!);
+    }
+    const decision =
+      request.reviewerAuthorization.identityDecision ??
+      "AUTHORIZE_PRODUCTION_CAPACITY";
+    const idAuth = await authorizeDecision({
+      principal: request.reviewerAuthorization.verifiedServerPrincipal,
+      companyId: request.companyId,
+      decision,
+      evidenceId: ruleClaim.verificationArtifactId,
+      consumeOnGrant: mode === "PRODUCTION_AUTHORITY",
+    });
+    if (!idAuth.granted) {
+      identityOk = false;
+      blockers.push(
+        ...idAuth.blockers.map((b) => `identity authorization refused: ${b}`),
+      );
+      push(
+        "identity.authorization",
+        "REFUSE",
+        idAuth.blockers.join("; ") || "authorizeDecision denied",
+      );
+    } else if (identityOk) {
+      push(
+        "identity.authorization",
+        "PASS",
+        `authorizeDecision granted decision=${decision}`,
+      );
+      if (idAuth.trustedIssuerAuth && trustedIssuerAuth == null) {
+        trustedIssuerAuth = idAuth.trustedIssuerAuth;
+      }
+    }
+  } else {
+    push(
+      "identity.authorization",
+      "INFO",
+      "identity authorization not required for this hypothetical request",
+    );
+  }
+
   // --- Financial evidence ---------------------------------------------------
   const financial = validateFinancialEvidenceBundle({
     evidence: request.financialEvidence,
     expectedCompanyId: request.companyId,
     expectedCurrency: request.transaction.currency,
     evaluationAsOf: request.transaction.date,
-    trustedIssuerAuth: request.reviewerAuthorization.trustedIssuerAuth,
+    trustedIssuerAuth,
     allowHypotheticalFinancials:
       mode === "HYPOTHETICAL" && Boolean(request.allowHypotheticalFinancials),
   });
@@ -409,7 +470,7 @@ export function executeUnifiedVerifiedTransaction(
     records: request.utilization.records,
     completenessCertificate: request.utilization.completenessCertificate,
     sharedCapacityId: request.utilization.sharedCapacityId,
-    trustedIssuerAuth: request.reviewerAuthorization.trustedIssuerAuth,
+    trustedIssuerAuth,
     allowSyntheticRemaining:
       mode === "HYPOTHETICAL" &&
       Boolean(request.utilization.allowSyntheticRemaining),
@@ -447,7 +508,7 @@ export function executeUnifiedVerifiedTransaction(
     refs: [request.utilization.capacityRuleId || ruleClaim.ruleId],
   });
 
-  // --- Reviewer authorization -----------------------------------------------
+  // --- Reviewer authorization (#268/#279 trusted-issuer) --------------------
   let reviewerOk = true;
   if (request.reviewerAuthorization.required) {
     const role = request.reviewerAuthorization.role;
@@ -459,7 +520,7 @@ export function executeUnifiedVerifiedTransaction(
     } else {
       const auth = authorizeCompletenessIssuer(
         { actorId, role: role as CompletenessIssuerRole },
-        request.reviewerAuthorization.trustedIssuerAuth,
+        trustedIssuerAuth,
       );
       if (!auth.ok) {
         reviewerOk = false;
@@ -471,6 +532,37 @@ export function executeUnifiedVerifiedTransaction(
     }
   } else {
     push("reviewer.authorization", "INFO", "reviewer authorization not required for this request");
+  }
+
+  // --- #283 production-promotion caveats (CP / WITH_CAVEATS) -----------------
+  if (
+    mode === "PRODUCTION_AUTHORITY" &&
+    !operative.productionPromotion.productionAuthorityActive
+  ) {
+    blockers.push(
+      ...operative.productionPromotion.refusalReasons.map(
+        (r) => `operative production promotion refused: ${r}`,
+      ),
+    );
+    push(
+      "operative.productionPromotion",
+      "REFUSE",
+      operative.productionPromotion.refusalReasons.join("; ") ||
+        "CONFIRMED_OPERATIVE_WITH_CAVEATS / unproven CP cannot activate production",
+    );
+  } else if (!operative.productionPromotion.productionAuthorityActive) {
+    limitations.push(
+      ...operative.productionPromotion.refusalReasons.map(
+        (r) => `operative production promotion blocked: ${r}`,
+      ),
+    );
+    push(
+      "operative.productionPromotion",
+      "INFO",
+      "disclosed caveats / unproven CP — hypothetical only; not PRODUCTION_AUTHORITY_ACTIVE",
+    );
+  } else {
+    push("operative.productionPromotion", "PASS", "unconditional production promotion eligible");
   }
 
   // Currency / amount preflight
@@ -600,7 +692,9 @@ export function executeUnifiedVerifiedTransaction(
     (!financial.productionAuthoritative ||
       !util.productionAuthoritative ||
       !operative.ok ||
-      !reviewerOk)
+      !operative.productionPromotion.productionAuthorityActive ||
+      !reviewerOk ||
+      !identityOk)
   ) {
     for (const msg of [
       !financial.productionAuthoritative
@@ -610,7 +704,11 @@ export function executeUnifiedVerifiedTransaction(
         ? "incomplete utilization authority — no favorable PRODUCTION_AUTHORITY result"
         : null,
       !operative.ok ? "incomplete operative authority — no favorable PRODUCTION_AUTHORITY result" : null,
+      !operative.productionPromotion.productionAuthorityActive
+        ? null
+        : "incomplete operative production promotion — caveats/CP refuse PRODUCTION_AUTHORITY",
       !reviewerOk ? "incomplete reviewer authorization — no favorable PRODUCTION_AUTHORITY result" : null,
+      !identityOk ? "incomplete identity authorization — no favorable PRODUCTION_AUTHORITY result" : null,
     ]) {
       if (msg && !blockers.includes(msg)) blockers.push(msg);
     }
@@ -619,9 +717,12 @@ export function executeUnifiedVerifiedTransaction(
   const productionAuthority = classifyProductionAuthority({
     mode,
     operativeOk: operative.ok,
+    operativeProductionPromotionActive:
+      operative.productionPromotion.productionAuthorityActive,
     financialProduction: financial.productionAuthoritative,
     utilizationProduction: util.productionAuthoritative,
     reviewerOk,
+    identityOk,
     ruleLifecycleOk: ruleClaim.lifecycle === "VERIFIED_EXECUTABLE",
     capacityExecuted: Boolean(capacityExecuted),
     simulationSatisfied: Boolean(simulationSatisfied),

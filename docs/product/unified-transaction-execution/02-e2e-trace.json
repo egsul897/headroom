@@ -81,7 +81,15 @@
       "authority": "CONFIRMED_OPERATIVE",
       "blockers": [],
       "sourceCitation": "CONMED Corporation Fourth Amended and Restated Credit Agreement §7.02(d) — Finance Leases and purchase money Indebtedness in an aggregate principal amount not exceeding $25,000,000",
-      "sourceDocumentId": "conmed-2025-fourth-ar-credit-agreement"
+      "sourceDocumentId": "conmed-2025-fourth-ar-credit-agreement",
+      "productionPromotion": {
+        "disposition": "PRODUCTION_AUTHORITY_ACTIVE",
+        "productionAuthorityActive": true,
+        "refusalReasons": [],
+        "authorityClassification": "CONFIRMED_OPERATIVE",
+        "conditionsPrecedentSatisfaction": null,
+        "caveats": []
+      }
     },
     "postStateIdentity": {
       "packageHash": "d1c78e120b2f2340999f5d486ca8c087559d4b74a4cd7beb288d0bca92cff221",
@@ -130,6 +138,11 @@
         ]
       },
       {
+        "step": "identity.authorization",
+        "outcome": "INFO",
+        "detail": "identity authorization not required for this hypothetical request"
+      },
+      {
         "step": "financial.evidence",
         "outcome": "PASS",
         "detail": "hypothetical/synthetic financials accepted for HYPOTHETICAL mode only"
@@ -143,6 +156,11 @@
         "step": "reviewer.authorization",
         "outcome": "INFO",
         "detail": "reviewer authorization not required for this request"
+      },
+      {
+        "step": "operative.productionPromotion",
+        "outcome": "PASS",
+        "detail": "unconditional production promotion eligible"
       },
       {
         "step": "transaction.amount",
