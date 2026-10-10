@@ -1,0 +1,96 @@
+[
+  {
+    "sourceRef": "7.01(u)",
+    "executableClass": "VERIFIED_EXECUTABLE_CANDIDATE",
+    "classification": "GREATER_OF_FIXED_OR_PCT_ASSETS_WITH_QUALITATIVE_GATES",
+    "fixedAmountUsd": 1500000000,
+    "percentFraction": 0.1,
+    "metricName": "Total Consolidated Assets",
+    "residuals": [
+      {
+        "kind": "SHARED_CAP_COMBINE",
+        "excerpt": "at the time of incurrence, when combined (without duplication) with the aggregate principal amount of all Indebtedness i",
+        "gateInputName": "qualitative_gate:shared_cap_combine_satisfied"
+      },
+      {
+        "kind": "CROSS_SECTION_LINK",
+        "excerpt": "pursuant to Section 7.03(g)",
+        "gateInputName": "qualitative_gate:cross_section_condition_satisfied"
+      },
+      {
+        "kind": "PROVISO_OR_CONDITIONAL",
+        "excerpt": "provided , that",
+        "gateInputName": "qualitative_gate:proviso_satisfied"
+      },
+      {
+        "kind": "PRO_FORMA_ADJUSTMENT",
+        "excerpt": "pro forma basis",
+        "gateInputName": "qualitative_gate:pro_forma_election_acknowledged"
+      },
+      {
+        "kind": "AS_OF_MEASUREMENT",
+        "excerpt": "as of the last day of the fiscal quarter or fiscal year",
+        "gateInputName": "qualitative_gate:as_of_measurement_satisfied"
+      },
+      {
+        "kind": "OBJECT_RESTRICTION",
+        "excerpt": "additional Liens securing obligations",
+        "gateInputName": "qualitative_gate:object_restriction_satisfied"
+      }
+    ],
+    "fidelityVerdict": "PASS",
+    "outcomeLabel": "NEEDS_METRIC_INPUT",
+    "availableAmountUsd": null,
+    "productionRefusal": null,
+    "capacityOutcome": "EXECUTED",
+    "ruleId": "ir-rule:8e652450b65e10e52b69b90f",
+    "sufficiency": "PARTIAL"
+  },
+  {
+    "sourceRef": "7.03(g)",
+    "executableClass": "VERIFIED_EXECUTABLE_CANDIDATE",
+    "classification": "GREATER_OF_FIXED_OR_PCT_ASSETS_WITH_QUALITATIVE_GATES",
+    "fixedAmountUsd": 1500000000,
+    "percentFraction": 0.1,
+    "metricName": "Total Consolidated Assets",
+    "residuals": [
+      {
+        "kind": "SHARED_CAP_COMBINE",
+        "excerpt": "at the time of incurrence that, when combined (without duplication) with the amount of all other Indebtedness incurred p",
+        "gateInputName": "qualitative_gate:shared_cap_combine_satisfied"
+      },
+      {
+        "kind": "CROSS_SECTION_LINK",
+        "excerpt": "permitted under Section 7.01(u)",
+        "gateInputName": "qualitative_gate:cross_section_condition_satisfied"
+      },
+      {
+        "kind": "PROVISO_OR_CONDITIONAL",
+        "excerpt": "so long as",
+        "gateInputName": "qualitative_gate:proviso_satisfied"
+      },
+      {
+        "kind": "PRO_FORMA_ADJUSTMENT",
+        "excerpt": "pro forma effect",
+        "gateInputName": "qualitative_gate:pro_forma_election_acknowledged"
+      },
+      {
+        "kind": "AS_OF_MEASUREMENT",
+        "excerpt": "as of the last day of the fiscal quarter or fiscal year",
+        "gateInputName": "qualitative_gate:as_of_measurement_satisfied"
+      },
+      {
+        "kind": "OBJECT_RESTRICTION",
+        "excerpt": "additional Indebtedness in an aggregate",
+        "gateInputName": "qualitative_gate:object_restriction_satisfied"
+      }
+    ],
+    "fidelityVerdict": "PASS",
+    "outcomeLabel": "NEEDS_METRIC_INPUT",
+    "availableAmountUsd": null,
+    "productionRefusal": null,
+    "capacityOutcome": "EXECUTED",
+    "ruleId": "ir-rule:0b4790bd331ff56d5ffeff01",
+    "sufficiency": "PARTIAL"
+  }
+]

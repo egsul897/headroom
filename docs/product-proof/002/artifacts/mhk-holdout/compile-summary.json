@@ -1,0 +1,167 @@
+{
+  "wallMs": 6449,
+  "version": "offline-package-compile.v1",
+  "companyId": "product-proof-002-mhk-holdout",
+  "packageKey": "mhk-2026-credit-agreement",
+  "instrumentKey": "instrument:mhk-doc-a-credit-agreement",
+  "paidInferenceUsed": false,
+  "stages": {
+    "structural": {
+      "nodeCount": 910,
+      "definitionCount": 368,
+      "referenceCount": 636
+    },
+    "packageGraph": {
+      "documentCount": 1,
+      "relationshipCount": 0,
+      "classifications": [
+        {
+          "documentId": "mhk-doc-a-credit-agreement",
+          "type": "CREDIT_AGREEMENT"
+        }
+      ]
+    },
+    "amendment": {
+      "effectCount": 0
+    },
+    "discovery": {
+      "passACount": 392,
+      "pipelineCandidateCount": 118,
+      "exceptionCatalogCount": 2,
+      "exceptionClauseCount": 35,
+      "prohibitionLinkCount": 0,
+      "totalCandidates": 142,
+      "syntheticDiscovery": true
+    },
+    "context": {
+      "bundlesBuilt": 142
+    },
+    "coverageAudit": {
+      "findingCount": 3009,
+      "regionCount": 467
+    },
+    "capacityHandoff": {
+      "attempted": true,
+      "outcome": "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
+      "detail": "4 unit(s) verified executable (fixed-dollar and/or greater-of); production capacity refused for all (4) pending authenticated financial/utilization evidence. Greater-of units require stipulated Total Assets for hypothetical numeric capacity."
+    },
+    "fixedDollarVerticalSlice": {
+      "attempted": 2,
+      "verifiedExecutable": 2,
+      "productionCapacityRefused": 2
+    },
+    "greaterOfVerticalSlice": {
+      "attempted": 2,
+      "verifiedExecutable": 2,
+      "productionCapacityRefused": 2,
+      "sharedCapacityPairs": 1
+    }
+  },
+  "summary": {
+    "supportedStructureUnits": 0,
+    "partialUnits": 142,
+    "unsupportedUnits": 0,
+    "unverifiedUnits": 0,
+    "refusedExecutableUnits": 138,
+    "verifiedExecutableUnits": 4,
+    "falseExecutableClassifications": 0
+  },
+  "humanInterventions": [
+    {
+      "kind": "DISCOVERY_MODE",
+      "detail": "Pass B semantic discovery running synthetic/unpaid — definition-exception catalog + Pass A supply deterministic candidates"
+    }
+  ],
+  "exceptionCatalogTerms": [
+    {
+      "term": "Section 7.01 Exceptions",
+      "clauses": 23,
+      "supportStatus": "SUPPORTED_STRUCTURE",
+      "prohibitionRefs": [
+        "§7.01"
+      ],
+      "crossLinks": 4
+    },
+    {
+      "term": "Section 7.03 Exceptions",
+      "clauses": 12,
+      "supportStatus": "SUPPORTED_STRUCTURE",
+      "prohibitionRefs": [
+        "§7.03"
+      ],
+      "crossLinks": 5
+    }
+  ],
+  "unitSupportBreakdown": {
+    "PARTIAL": 142
+  },
+  "fixedDollarVerticalSlice": {
+    "attempted": 2,
+    "verifiedExecutable": 2,
+    "productionCapacityRefused": 2,
+    "units": [
+      {
+        "sourceRef": "7.01(i)",
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+        "fidelityVerdict": "PASS",
+        "capacityOutcome": "EXECUTED",
+        "availableAmountUsd": 100000000,
+        "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package"
+      },
+      {
+        "sourceRef": "7.03(f)",
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+        "fidelityVerdict": "PASS",
+        "capacityOutcome": "EXECUTED",
+        "availableAmountUsd": 700000000,
+        "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package"
+      }
+    ]
+  },
+  "greaterOfVerticalSlice": {
+    "attempted": 2,
+    "verifiedExecutable": 2,
+    "productionCapacityRefused": 2,
+    "sharedCapacityPairs": 1,
+    "units": [
+      {
+        "sourceRef": "7.01(u)",
+        "classification": "GREATER_OF_FIXED_OR_PCT_ASSETS_WITH_QUALITATIVE_GATES",
+        "fidelityVerdict": "PASS",
+        "capacityOutcome": "NEEDS_METRIC_INPUT",
+        "availableAmountUsd": null,
+        "metricName": "Total Consolidated Assets",
+        "fixedAmountUsd": 1500000000,
+        "percentFraction": 0.1,
+        "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
+        "sharedCapacity": true
+      },
+      {
+        "sourceRef": "7.03(g)",
+        "classification": "GREATER_OF_FIXED_OR_PCT_ASSETS_WITH_QUALITATIVE_GATES",
+        "fidelityVerdict": "PASS",
+        "capacityOutcome": "NEEDS_METRIC_INPUT",
+        "availableAmountUsd": null,
+        "metricName": "Total Consolidated Assets",
+        "fixedAmountUsd": 1500000000,
+        "percentFraction": 0.1,
+        "productionRefusal": "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
+        "sharedCapacity": true
+      }
+    ],
+    "sharedPairs": [
+      {
+        "refA": "7.01(u)",
+        "refB": "7.03(g)",
+        "shared": true,
+        "evidence": [
+          "7.01(u): when combined (without duplication)",
+          "7.03(g): when combined (without duplication)",
+          "7.01(u) cites 7.03(g)",
+          "7.03(g) cites 7.01(u)"
+        ],
+        "sharedCapId": "ir-sharedcap:6b87d697abdb8f174322722f"
+      }
+    ]
+  }
+}

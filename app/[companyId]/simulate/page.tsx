@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { VerifiedSimulatePanel } from "@/components/VerifiedSimulatePanel";
+import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
+import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { getDocuments, getDefinedTermsByProvision } from "@/lib/coherent";
 import { buildSolverContext } from "@/lib/dashboard-service";
 import { loadCovenantDataOrEmpty } from "@/lib/covenant-overview-service";
@@ -64,11 +66,20 @@ export default async function SimulatePage({
     <div className="stack">
       <Card>
         <div className="card-title">Simulation readiness</div>
-        <div className="card-subtitle">{readiness.headline}</div>
+        <WorkflowJourney companyId={companyId} current="simulate" />
+        <div className="card-subtitle" style={{ marginTop: 8 }}>
+          {readiness.headline}
+        </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Status</div>
           <div className="row-value">
             <Chip tone={readiness.canEvaluateExecutableCapacity ? "pass" : "tight"}>{readiness.status}</Chip>
+          </div>
+        </div>
+        <div className="row">
+          <div className="row-label">Result authority</div>
+          <div className="row-value">
+            <StatusChip code="HYPOTHETICAL" /> unless verified path is executable
           </div>
         </div>
         {!readiness.canEvaluateExecutableCapacity && (

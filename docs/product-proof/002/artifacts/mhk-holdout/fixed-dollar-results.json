@@ -1,0 +1,57 @@
+[
+  {
+    "sourceRef": "7.01(i)",
+    "executableClass": "VERIFIED_EXECUTABLE_CANDIDATE",
+    "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+    "amountUsd": 100000000,
+    "residuals": [
+      {
+        "kind": "OBJECT_RESTRICTION",
+        "excerpt": "in respect of capital leases, Synthetic Lease Obligations and purchase mon",
+        "gateInputName": "qualitative_gate:object_restriction_satisfied"
+      },
+      {
+        "kind": "CROSS_SECTION_LINK",
+        "excerpt": "Section 7.01(i)",
+        "gateInputName": "qualitative_gate:cross_section_condition_satisfied"
+      },
+      {
+        "kind": "PROVISO_OR_CONDITIONAL",
+        "excerpt": "provided , that",
+        "gateInputName": "qualitative_gate:proviso_satisfied"
+      }
+    ],
+    "fidelityVerdict": "PASS",
+    "outcomeLabel": "VERIFIED_EXECUTABLE",
+    "availableAmountUsd": 100000000,
+    "productionRefusal": null,
+    "capacityOutcome": "EXECUTED",
+    "ruleId": "ir-rule:b7c56879dbb9105ee3d4bddb",
+    "sufficiency": "COMPLETE"
+  },
+  {
+    "sourceRef": "7.03(f)",
+    "executableClass": "VERIFIED_EXECUTABLE_CANDIDATE",
+    "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES",
+    "amountUsd": 700000000,
+    "residuals": [
+      {
+        "kind": "OBJECT_RESTRICTION",
+        "excerpt": "in respect of Permitted Receivables Financings of the Company and/or its R",
+        "gateInputName": "qualitative_gate:object_restriction_satisfied"
+      },
+      {
+        "kind": "PROVISO_OR_CONDITIONAL",
+        "excerpt": "so long as",
+        "gateInputName": "qualitative_gate:proviso_satisfied"
+      }
+    ],
+    "fidelityVerdict": "PASS",
+    "outcomeLabel": "VERIFIED_EXECUTABLE",
+    "availableAmountUsd": 700000000,
+    "productionRefusal": null,
+    "capacityOutcome": "EXECUTED",
+    "ruleId": "ir-rule:831358d396bbece40a6000e0",
+    "sufficiency": "COMPLETE"
+  }
+]

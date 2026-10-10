@@ -190,7 +190,10 @@ const SECTION_PATTERNS = [
   /^§\s?(\d+\.[\dA-Za-z]+)\.?\s*([^\n]*)$/gim,
   // Bare decimal: require a real digit-only major.minor so "7.0l Title" is not
   // truncated to "7.0"; OCR-garbled bare forms are recovered via the keyword patterns.
-  /^(\d+\.\d+)(?![A-Za-z])\s+([A-Z][^\n]*)$/gm,
+  // Leading horizontal whitespace + EDGAR NNBSP/NBSP between number and title are
+  // common in HTML→text extracts (e.g. " 7.01    Liens .") and must not zero out
+  // the structural index for an otherwise well-formed agreement.
+  /^[ \t\u00a0\u202f]*(\d+\.\d+)(?![A-Za-z])[\t \u00a0\u202f]+([A-Z][^\n]*)$/gm,
 ];
 
 /**

@@ -1,0 +1,147 @@
+{
+  "mtn_regression": {
+    "package": "mtn-2026-tenth-ar (PP001 freeze regression)",
+    "structural_nodes": 1998,
+    "checks": {
+      "section_10_4_prohibition_ref": true,
+      "permitted_debt_definition": true,
+      "permitted_debt_clause_count": 16,
+      "permitted_debt_markers": "abcdefghijklmnop",
+      "secured_debt_basket_l": true,
+      "section_10_5_prohibition_ref": true,
+      "permitted_liens_definition": true,
+      "permitted_liens_clause_count": 17,
+      "lien_d_to_debt_l": true,
+      "facility_deps_on_debt_l_unit": true,
+      "false_executable": 0,
+      "verified_executable_units": 3,
+      "capacity_outcome": "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
+      "paid_inference": false,
+      "greater_of_attempted": 0,
+      "greater_of_shared_pairs": 0
+    },
+    "fixed_dollar_verified": [
+      {
+        "sourceRef": "def:Permitted Debt(n)",
+        "amountUsd": 100000000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      },
+      {
+        "sourceRef": "def:Permitted Debt(o)",
+        "amountUsd": 50000000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      },
+      {
+        "sourceRef": "def:Permitted Liens(p)",
+        "amountUsd": 250000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      }
+    ]
+  },
+  "mhk_holdout": {
+    "package": "mhk-2026-credit-agreement (unseen holdout)",
+    "freeze_sha256_html": "6ee4abf323f03c509df295d82601baaeb3d40956105f2c18fd94add7af5f9784",
+    "provision_recall": 1.0,
+    "provision_precision": 1.0,
+    "clause_markers_7_01": {
+      "expected": "abcdefghijklmnopqrstuvw",
+      "found": "abcdefghijklmnopqrstuvw",
+      "exact": true
+    },
+    "clause_markers_7_03": {
+      "expected": "abcdefghijkl",
+      "found": "abcdefghijkl",
+      "exact": true
+    },
+    "clause_tp_fp_fn": {
+      "tp": 35,
+      "fp": 0,
+      "fn": 0
+    },
+    "material_baskets": {
+      "7.01(i)_cap_100m": true,
+      "7.01(u)_shared_basket": true,
+      "7.03(f)_receivables_700m": true,
+      "7.03(g)_shared_basket": true,
+      "cross_u_g": true,
+      "cross_g_u": true
+    },
+    "false_executable": 0,
+    "verified_executable_units": 4,
+    "capacity_outcome": "VERTICAL_SLICE_PASSED_PRODUCTION_CAPACITY_REFUSED",
+    "structural_nodes": 910,
+    "structural_nodes_diagnosis": "Leading horizontal whitespace + EDGAR NNBSP between bare-decimal section number and title previously failed SECTION_PATTERNS; generalized regex now accepts [ \\t\\u00a0\\u202f]. Not a reporting bug — material structural representation was missing; now 910 nodes.",
+    "fixed_dollar_verified": [
+      {
+        "sourceRef": "7.01(i)",
+        "amountUsd": 100000000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      },
+      {
+        "sourceRef": "7.03(f)",
+        "amountUsd": 700000000,
+        "classification": "FIXED_DOLLAR_WITH_QUALITATIVE_GATES"
+      }
+    ],
+    "greater_of_verified": [
+      {
+        "sourceRef": "7.01(u)",
+        "fixedAmountUsd": 1500000000,
+        "percentFraction": 0.1,
+        "metricName": "Total Consolidated Assets",
+        "classification": "GREATER_OF_FIXED_OR_PCT_ASSETS_WITH_QUALITATIVE_GATES",
+        "sharedCapacity": true,
+        "packageCompileOutcome": "NEEDS_METRIC_INPUT"
+      },
+      {
+        "sourceRef": "7.03(g)",
+        "fixedAmountUsd": 1500000000,
+        "percentFraction": 0.1,
+        "metricName": "Total Consolidated Assets",
+        "classification": "GREATER_OF_FIXED_OR_PCT_ASSETS_WITH_QUALITATIVE_GATES",
+        "sharedCapacity": true,
+        "packageCompileOutcome": "NEEDS_METRIC_INPUT"
+      }
+    ],
+    "greater_of_shared_pairs": 1,
+    "human_interventions": [
+      {
+        "kind": "DISCOVERY_MODE",
+        "detail": "Pass B semantic discovery running synthetic/unpaid — definition-exception catalog + Pass A supply deterministic candidates"
+      }
+    ],
+    "unsupported_affirmative_permissions": 0
+  },
+  "metrics_separated": {
+    "A_clause_discovery_mhk": {
+      "tp": 35,
+      "fp": 0,
+      "fn": 0,
+      "note": "catalog markers only; sealed reference unchanged"
+    },
+    "B_legal_classification_fixed_dollar": {
+      "mtn_attempted": 3,
+      "mtn_verified_executable": 3,
+      "mhk_attempted": 2,
+      "mhk_verified_executable": 2,
+      "mhk_failed_fidelity": 0
+    },
+    "B2_legal_classification_greater_of_assets": {
+      "mtn_attempted": 0,
+      "mtn_verified_executable": 0,
+      "mhk_attempted": 2,
+      "mhk_verified_executable": 2,
+      "mhk_shared_capacity_pairs": 1,
+      "mhk_failed_fidelity": 0
+    },
+    "F_verified_executable_authority": {
+      "mtn": 3,
+      "mhk": 4
+    },
+    "G_production_authoritative_capacity": {
+      "mtn": "REFUSED",
+      "mhk": "REFUSED",
+      "note": "GREATER_OF_VERTICAL_SLICE_PASSED — PRODUCTION_CAPACITY_REFUSED"
+    }
+  }
+}

@@ -8,7 +8,6 @@
  * This repository ships NO production IdP adapter. Production activation is BLOCKED.
  */
 
-import { randomUUID } from "node:crypto";
 import {
   TRUSTED_IDENTITY_PRODUCTION_ACTIVATION,
   isTrustedIdentityProductionActive,
@@ -17,6 +16,15 @@ import type {
   AuthorizationPermission,
   TrustedCompletenessRole,
 } from "./permissions";
+
+/** Opaque jti — avoids node:crypto so the capacity barrel stays Edge/client-safe. */
+function newAuthorizationJti(): string {
+  const c = globalThis.crypto;
+  if (c && typeof c.randomUUID === "function") {
+    return c.randomUUID();
+  }
+  return `jti:${Date.now().toString(36)}:${Math.random().toString(36).slice(2)}${Math.random().toString(36).slice(2)}`;
+}
 
 export type IdentityAssuranceChannel =
   | "SESSION_AUTHENTICATED"
@@ -151,7 +159,7 @@ export function mintVerifiedServerPrincipalFromIdpResult(
   // Belt-and-suspenders: even a PRODUCTION_IDP class mint in this repo cannot
   // override TRUSTED_IDENTITY_PRODUCTION_ACTIVATION (const BLOCKED).
   void opts.providerClass;
-  const jti = randomUUID();
+  const jti = newAuthorizationJti();
   const principal: VerifiedServerPrincipal = {
     brand: VERIFIED_SERVER_PRINCIPAL_BRAND,
     principalId: result.principalId,

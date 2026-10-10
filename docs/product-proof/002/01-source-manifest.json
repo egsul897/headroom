@@ -1,0 +1,28 @@
+{
+  "productProof": "002",
+  "baseline": {
+    "productProof": "001",
+    "pr": 263,
+    "path": "docs/product-proof/001",
+    "package": "mtn-2026-tenth-ar-credit-agreement",
+    "docATextSha256": "a7d281818d70c085076dd612bb1fe8b3965bd452f61ad3d413c57e3f2879a58e",
+    "note": "PP001 freeze kept intact; used only as MTN regression fixture"
+  },
+  "holdout": {
+    "packageId": "mhk-2026-credit-agreement",
+    "company": "Mohawk Industries, Inc.",
+    "ticker": "MHK",
+    "cik": "0000851968",
+    "accession": "0001104659-26-060295",
+    "url": "https://www.sec.gov/Archives/edgar/data/851968/000110465926060295/tm2614381d1_ex10-1.htm",
+    "rawHtmlSha256": "6ee4abf323f03c509df295d82601baaeb3d40956105f2c18fd94add7af5f9784",
+    "extractedTextSha256": "f0210a431fef015a008e8821e1655407d618ec5984cb9899ced83a8679ddb12c",
+    "frozenAt": "2026-10-10T12:00:00Z",
+    "freezeBeforeLegalReference": true,
+    "path": "docs/product-proof/002/sources/mhk-2026-credit-agreement"
+  },
+  "manifests": {
+    "mtnRegression": "docs/product-proof/002/manifests/mtn-regression.json",
+    "mhkHoldout": "docs/product-proof/002/manifests/mhk-holdout.json"
+  }
+}

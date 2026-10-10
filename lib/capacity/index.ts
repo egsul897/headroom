@@ -55,7 +55,46 @@ export {
   mayPublishRemainingCapacity,
   type RemainingRefusalReason,
 } from "./remaining-authority";
-/** Trusted identity boundary — fail-closed until a real IdP adapter is activated. */
+export {
+  validateFinancialMetricEvidence,
+  validateAuthenticatedFinancialSnapshot,
+  type FinancialMetricKey,
+  type FinancialMetricEvidence,
+  type AuthenticatedFinancialSnapshotEvidence,
+  type FinancialEvidenceValidationResult,
+  type FinancialVerificationStatus,
+  type AmendmentRestatementStatus,
+  type FinancialEvidenceAuthenticity,
+  type FinancialEvidenceRefusalReason,
+} from "./financial-evidence";
+export {
+  TRUSTED_ISSUER_ACTIVATION,
+  registerHostIdentityProvider,
+  getRegisteredHostIdentityProvider,
+  mintHostVerifiedIdentityForTests,
+  refuseUntrustedIssuerClaim,
+  trustedIssuerAuthFromHostIdentities,
+  resolveTrustedIssuerAuthFromHost,
+  type HostVerifiedIdentity,
+  type HostIdentityProvider,
+  type TrustedIssuerActivationStatus,
+  type ResolveTrustedIssuerAuthResult,
+} from "./trusted-issuer-host";
+export {
+  VERIFIED_INPUT_CONTRACT_VERSION,
+  buildVerifiedCapacityInputHandoff,
+  mayUseAsProductionCapacityInput,
+  type VerifiedInputTrustClass,
+  type VerifiedCapacityInputHandoff,
+  type BuildVerifiedCapacityInputArgs,
+  type VerifiedUtilizationHandoffInput,
+} from "./verified-input-contract";
+/**
+ * Trusted identity boundary (Agent #8) — fail-closed until a real IdP adapter
+ * is activated. Stronger than WeakSet-only host minting: requires
+ * ServerIdentityProvider.verifyCredentials + discrete permissions + audit.
+ * Does not weaken TRUSTED_ISSUER_ACTIVATION / evaluateCompletenessForRemainingClaim.
+ */
 export {
   TRUSTED_IDENTITY_BOUNDARY_VERIFIED,
   TRUSTED_IDENTITY_PRODUCTION_ACTIVATION,

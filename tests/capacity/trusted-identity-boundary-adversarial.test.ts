@@ -24,6 +24,9 @@ import {
   authorizeCompletenessIssuer,
   evaluateCompletenessForRemainingClaim,
   PERMISSION_BUNDLES,
+  TRUSTED_ISSUER_ACTIVATION,
+  resolveTrustedIssuerAuthFromHost,
+  mayUseAsProductionCapacityInput,
   type IdpVerificationResult,
 } from "@/lib/capacity";
 
@@ -513,5 +516,90 @@ describe("trusted identity boundary — bridge into TrustedIssuerAuthorizationCo
     });
     expect(without.productionAuthoritative).toBe(false);
     expect(without.supportsRemainingClaim).toBe(false);
+  });
+
+  it("untrusted reviewer strings / client credentials / test identities cannot activate production", async () => {
+    // Free-text reviewer label — never a VerifiedServerPrincipal
+    const reviewerString = await authorizeDecision({
+      principal: { reviewedBy: "human-reviewer@example.com", role: "admin" },
+      companyId: COMPANY_A,
+      decision: "AUTHORIZE_PRODUCTION_CAPACITY",
+      nowMs: DECISION_NOW,
+    });
+    expect(reviewerString.granted).toBe(false);
+    expect(TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status).toBe("BLOCKED");
+    expect(TRUSTED_ISSUER_ACTIVATION.status).toBe("BLOCKED");
+
+    // Client credential-shaped object
+    const clientCreds = await authorizeDecision({
+      principal: {
+        kind: "SESSION",
+        sessionHandle: "cookie-value",
+        permissions: ["AUTHORIZE_PRODUCTION_CAPACITY"],
+      },
+      companyId: COMPANY_A,
+      decision: "AUTHORIZE_PRODUCTION_CAPACITY",
+      nowMs: DECISION_NOW,
+    });
+    expect(clientCreds.granted).toBe(false);
+
+    // Test harness mint still cannot flip production activation
+    registerServerIdentityProvider(
+      createTestIdentityHarness({
+        allowTestHarness: true,
+        principalsByHandle: {
+          "sess-test": productionCapable({
+            identityAssurance: "SERVICE_ACCOUNT",
+            authorizationBasis: "service-account:verified:test",
+          }),
+        },
+      }),
+    );
+    const { principal } = await verifyAndMintPrincipal({
+      kind: "SERVICE_ACCOUNT",
+      credentialHandle: "sess-test",
+    });
+    expect(principal).not.toBeNull();
+    const prod = await authorizeDecision({
+      principal,
+      companyId: COMPANY_A,
+      decision: "AUTHORIZE_PRODUCTION_CAPACITY",
+      nowMs: DECISION_NOW,
+    });
+    expect(prod.granted).toBe(false);
+    expect(prod.productionActivation).toBe("BLOCKED");
+    expect(isTrustedIdentityProductionActive()).toBe(false);
+    expect(mayUseAsProductionCapacityInput({
+      contractVersion: "verified-input-contract.v1",
+      companyId: COMPANY_A,
+      evaluationAsOf: "2026-10-10",
+      trustClasses: ["AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE"],
+      financial: {
+        trustClass: "AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE",
+        productionAuthoritative: true,
+        snapshot: {} as never,
+        blockers: [],
+      },
+      utilization: {
+        trustClass: "VERIFIED_UTILIZATION_COMPLETE",
+        productionAuthoritative: true,
+        knowledge: "KNOWN_ATTRIBUTED",
+        resolution: {} as never,
+        supportsRemainingClaim: true,
+        blockers: [],
+      },
+      productionAuthority: "ACTIVE",
+      productionActivation: "ACTIVE",
+      blockers: [],
+      note: "forged-handoff",
+    })).toBe(false);
+  });
+
+  it("dual activation with #273/#279 host mint remains fail-closed for production", () => {
+    expect(TRUSTED_ISSUER_ACTIVATION.status).toBe("BLOCKED");
+    expect(TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status).toBe("BLOCKED");
+    const host = resolveTrustedIssuerAuthFromHost();
+    expect(host.auth).toBeNull();
+    expect(host.activation).toBe("BLOCKED");
   });
 });

@@ -76,6 +76,71 @@ export function assembleCompilerInput(candidate: DiscoveredCandidate, bundle: Co
   };
 }
 
+/**
+ * Sole assembler for offline / deterministic slices that already hold stipulated
+ * operative text (e.g. fixed-dollar basket vertical slice). Preserves the
+ * architecture invariant that SemanticCompilerInput construction lives only here —
+ * callers must not build `toolAccess` + `operativeSourceText` + `toolPolicyVersion`
+ * literals themselves.
+ */
+export function assembleStipulatedOperativeCompilerInput(args: {
+  companyId: string;
+  instrumentKey: string;
+  sourceDocumentId: string;
+  candidateRef: string;
+  sourceSectionRef: string;
+  operativeSourceText: string;
+  contextBundle: CovenantContextBundle;
+  compilerAlgorithmVersion?: string;
+}): SemanticCompilerInput {
+  const stipulatedText = args.operativeSourceText;
+  const stubIndex = {
+    getNodeById: () => undefined,
+    resolveUniqueNodeByRef: () => ({ status: "NOT_FOUND" as const }),
+    findNodesByRef: () => [],
+    getNode: () => undefined,
+    getNodeByRef: () => undefined,
+    getChildren: () => [],
+    getParent: () => undefined,
+    getAncestors: () => [],
+    getSiblings: () => [],
+    getDescendants: () => [],
+    getNodeText: () => "",
+    roots: () => [],
+    orphans: () => [],
+    healthDiagnostics: () => [],
+    getDefinition: () => undefined,
+    getDefinitionFullText: () => undefined,
+    allDefinitions: () => [],
+    findReferencesFrom: () => [],
+    findReferencesTo: () => [],
+    searchStructuralNodes: () => [],
+    allNodes: () => [],
+    getDocumentText: () => stipulatedText,
+  } as unknown as StructuralIndex;
+  return {
+    companyId: args.companyId,
+    instrumentKey: args.instrumentKey,
+    sourceDocumentId: args.sourceDocumentId,
+    candidateRef: args.candidateRef,
+    sourceSectionRef: args.sourceSectionRef,
+    operativeSourceText: stipulatedText,
+    contextBundle: args.contextBundle,
+    operativeLineage: null,
+    toolAccess: {
+      structuralIndex: stubIndex,
+      operativeState: null,
+      packageGraph: null,
+      amendmentEffects: null,
+      contextBundle: args.contextBundle,
+    },
+    irSchemaVersion: IR_SCHEMA_VERSION,
+    compilerAlgorithmVersion: args.compilerAlgorithmVersion ?? SEMANTIC_COMPILER_ALGORITHM_VERSION,
+    compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION,
+    toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION,
+  };
+}
+
 export function buildCandidateCompilerInput(candidate: DiscoveredCandidate, pkg: CandidateInputPackage): CandidateCompilerInputBuild {
   const bundle = buildCovenantContextBundle(
     { candidate, packageKey: pkg.packageKey, companyId: pkg.companyId, instrumentKey: pkg.instrumentKey, budget: pkg.retrievalBudget },

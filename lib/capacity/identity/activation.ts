@@ -46,7 +46,7 @@ export function isTrustedIdentityProductionActive(): boolean {
 /** Machine-readable inventory of what actually exists today. */
 export const TRUSTED_IDENTITY_INVENTORY = {
   contractVersion: "trusted-identity-boundary.v1",
-  inspectedAtCommitHint: "post-#268 main",
+  inspectedAtCommitHint: "post-#268/#273/#279 main (Agent #8 remediation)",
   loginSessionProvider: {
     present: false,
     detail:

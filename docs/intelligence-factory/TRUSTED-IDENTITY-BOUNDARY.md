@@ -84,10 +84,19 @@ See `TRUSTED_IDENTITY_DEPLOYMENT_REQUIREMENTS` in `lib/capacity/identity/activat
 | Synthetic fixture activation | Production activation const remains BLOCKED |
 | Confused-deputy | Provider must verify credentials; callers cannot pass raw IdP JSON into context mint |
 
-## Relation to PR #268 / #273
+## Relation to PR #268 / #273 / #279
 
-- **#268 (merged):** authenticity + trusted-issuer *evaluation* on main. Identity-provider *activation* left outstanding.
-- **#273 (open):** financial-evidence contract + WeakSet `trusted-issuer-host`. This boundary is stronger: IdP verification + permissions + audit + tenant/replay/revocation. Does not merge or replace #273; does not invent a fake production IdP.
+- **#268 (merged):** authenticity + trusted-issuer *evaluation* on main.
+- **#273 / #279 (merged):** financial-evidence contract + WeakSet `trusted-issuer-host` + `verified-input-contract`. `TRUSTED_ISSUER_ACTIVATION = BLOCKED`.
+- **This boundary (Agent #8 / #282):** stronger IdP verification + discrete permissions + audit + tenant/replay/revocation. Coexists with `trusted-issuer-host`; production capacity input requires **both** activations ACTIVE. Does not invent a fake production IdP.
+
+## Separate workstream
+
+Real IdP / membership / session wiring is **out of scope** here. See:
+
+`docs/intelligence-factory/PRODUCTION-IDP-INTEGRATION-WORKSTREAM.md`
+
+(also extends `docs/integration/handoffs/05-production-identity-provider.md`).
 
 ## Explicit non-claims
 
