@@ -116,7 +116,11 @@ export {
 /** Additive unified orchestration — see lib/product/verified-transaction-execution. */
 export {
   executeUnifiedVerifiedTransaction,
+  executeAndPersistUnifiedVerifiedTransaction,
+  persistUnifiedTransactionExecution,
+  loadPersistedUnifiedExecution,
   toProductExecutionHandoff,
   toAllProductExecutionHandoffs,
   UNIFIED_TRANSACTION_EXECUTION_VERSION,
+  PRODUCT_EXECUTION_PERSISTENCE_VERSION,
 } from "@/lib/product/verified-transaction-execution";

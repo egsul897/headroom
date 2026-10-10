@@ -1,0 +1,13 @@
+P5/P6 product execution persistence acceptance
+
+Commands:
+  DATABASE_URL=<local disposable postgres> npm run test:persistence
+  npx vitest run tests/product/unified-transaction-execution.test.ts tests/product/canonical-product-integration-adversarial.test.ts
+
+Results:
+  tests/persistence/                 26 passed (16 foundation + 10 product)
+  tests/product VTE + adversarial    32 passed
+
+PRODUCTION_DB_TOUCHED: NO
+Disposable DB: headroom_test_* via createEphemeralDatabase / prisma migrate deploy
+Neon host was not targeted for writes.
