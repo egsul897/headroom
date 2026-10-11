@@ -98,6 +98,38 @@ export function matthewsVerifiedExecutableCandidates(): OperativeClauseCandidate
 }
 
 /**
+ * Overlay hand-encoded CovenantProvisionInput thresholds with SOURCE_BACKED
+ * compiled gross from operative text when the VE bridge feeds Position for that
+ * relatedLeafCode. Refused VE candidates never invent thresholds.
+ *
+ * Advances fixed-dollar leaf binding toward authentic compile without claiming
+ * full AUTONOMOUS_COVENANT_COMPILATION_PROVEN (ratio/structural rows unchanged).
+ */
+export function bindMatthewsProvisionsFromVerifiedExecutable<
+  T extends { code: string; thresholdValue?: number | null; formulaType: string },
+>(provisions: readonly T[], asOfDate = "2024-12-31"): T[] {
+  const bridge = compileMatthewsVerifiedExecutableBridge(asOfDate);
+  const byLeaf = new Map(
+    bridge.verifiedExecutableUnits
+      .filter(
+        (u) =>
+          u.feedsPosition &&
+          u.relatedLeafCode != null &&
+          u.sourceBackedGrossCapacityMm != null &&
+          u.valueClass === "SOURCE_BACKED_COMPILED_GROSS",
+      )
+      .map((u) => [u.relatedLeafCode!, u.sourceBackedGrossCapacityMm!] as const),
+  );
+  return provisions.map((p) => {
+    const compiledMm = byLeaf.get(p.code);
+    if (compiledMm == null) return p;
+    // Only bind flat / flat-net thresholds — never overwrite ratio rooms.
+    if (p.formulaType !== "FLAT_AMOUNT" && p.formulaType !== "FLAT_NET_OF_DEBT") return p;
+    return { ...p, thresholdValue: compiledMm };
+  });
+}
+
+/**
  * Compile Matthews operative candidates through the shared verified fixed-dollar path.
  * Provider-free; no Neon writes; production capacity never published.
  */

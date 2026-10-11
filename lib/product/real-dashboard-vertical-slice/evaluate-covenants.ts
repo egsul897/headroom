@@ -29,6 +29,7 @@ import {
   matthewsFinancialSnapshot,
   type MatthewsSliceFixture,
 } from "./package-matthews";
+import { bindMatthewsProvisionsFromVerifiedExecutable } from "./verified-executable-compile-bridge";
 
 export type CovenantAuthorityStatus =
   | "MODELED_AUTHENTIC_EVIDENCE"
@@ -285,7 +286,9 @@ export function evaluateMatthewsVerticalSlice(
   const baseFin = matthewsFinancialSnapshot(fixture);
   const fin: FinancialSnapshotInput = { ...baseFin, ...financialOverride };
   const leverage = computeLeverageMetrics(fin);
-  const provisions = matthewsCovenantProvisions();
+  // Fixed-dollar leaf thresholds bound from operative-text VE compile when available
+  // (Matthews 1a $1300). Ratio/structural rows stay hand-encoded — AUTONOMOUS not proven.
+  const provisions = bindMatthewsProvisionsFromVerifiedExecutable(matthewsCovenantProvisions());
 
   const statements = normalizeFinancialStatementEvidence({
     companyId: fixture.companyId,

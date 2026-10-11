@@ -393,7 +393,16 @@ export function connectSliceToPosition(slice: VerticalSliceEvaluation): Authenti
   };
 }
 
-/** Registry: only packages with authentic evidence may return a slice for Position. */
+/**
+ * @deprecated Prefer `hasAuthenticPositionSlice` from `./run-slice` (Matthews leaf
+ * + multipackage VE registry). Kept as Matthews-only predicate for callers that
+ * specifically mean the full leaf dashboard path.
+ */
+export function hasMatthewsLeafPositionSlice(companyId: string): boolean {
+  return companyId === MATTHEWS_POSITION_COMPANY_ID;
+}
+
+/** @deprecated Use run-slice.hasAuthenticPositionSlice (includes MHK VE feed). */
 export function hasAuthenticPositionSlice(companyId: string): boolean {
   return companyId === MATTHEWS_POSITION_COMPANY_ID;
 }

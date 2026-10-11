@@ -214,14 +214,23 @@ describe("PR #304 acceptance — secured composition (Check 4)", () => {
 });
 
 describe("PR #304 acceptance — second package / generalization (Check 6)", () => {
-  it("same pathway returns null for every non-Matthews companyId", () => {
-    for (const id of ["coherent", "conmed", "autonation", "wor", "mhk", "mtn", "acme"]) {
+  it("full leaf dashboard pathway returns null for non-Matthews / non-VE packages", () => {
+    for (const id of ["coherent", "conmed", "autonation", "wor", "mtn", "acme"]) {
       expect(hasAuthenticPositionSlice(id)).toBe(false);
       expect(loadAuthenticDashboardSlice(id)).toBeNull();
     }
   });
 
-  it("evaluator is company-named and code-switched (not generalized)", () => {
+  it("MHK registers for shared VE→Position feed (not full leaf dashboard)", () => {
+    expect(hasAuthenticPositionSlice("mhk")).toBe(true);
+    const mhk = loadAuthenticDashboardSlice("mhk");
+    expect(mhk).not.toBeNull();
+    expect(mhk!.connectedMetrics).toHaveLength(0); // no evaluateProvision leaf path
+    expect(mhk!.verifiedExecutableUnitsFeedingPosition).toBeGreaterThanOrEqual(1);
+    expect(mhk!.productionRemainingPublished).toBe(false);
+  });
+
+  it("leaf evaluator remains company-named (full GENERALIZED pipeline still NOT_PROVEN)", () => {
     expect(EVAL_SRC).toMatch(/export function evaluateMatthewsVerticalSlice/);
     expect((EVAL_SRC.match(/p\.code === "/g) ?? []).length).toBeGreaterThanOrEqual(5);
   });

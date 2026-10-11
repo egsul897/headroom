@@ -21,12 +21,13 @@ import {
 } from "./evaluate-covenants";
 import {
   connectSliceToPosition,
-  hasAuthenticPositionSlice,
   type AuthenticPositionSlice,
 } from "./position-bridge";
 import type { Phase3CompileBridgeResult } from "./phase3-compile-bridge";
 import type { VerifiedExecutableCompileBridgeResult } from "./verified-executable-compile-bridge";
 import { MATTHEWS_POSITION_COMPANY_ID } from "./package-matthews";
+import { MHK_VE_COMPANY_ID } from "./package-mhk-ve-candidates";
+import { hasVePositionPackage, loadVePositionSlice } from "./ve-position-feed";
 
 export type AcceptanceMilestoneVerdict = "PROVEN" | "PROVEN_WITH_DEFECTS" | "NOT_PROVEN";
 
@@ -101,11 +102,24 @@ function decideVerdict(milestones: AcceptanceMilestones): RealDashboardVerticalS
 /**
  * Load authentic slice for a Position companyId, or null when unsupported.
  * Pure / fixture-backed — does not query Neon.
+ *
+ * - Matthews: full leaf evaluateProvision dashboard + VE compile feed
+ * - MHK (and other VE registry packages): shared VE→Position feed only
  */
 export function loadAuthenticDashboardSlice(companyId: string): AuthenticPositionSlice | null {
-  if (!hasAuthenticPositionSlice(companyId)) return null;
-  const evaluation = evaluateMatthewsVerticalSlice();
-  return connectSliceToPosition(evaluation);
+  if (companyId === MATTHEWS_POSITION_COMPANY_ID) {
+    return connectSliceToPosition(evaluateMatthewsVerticalSlice());
+  }
+  // Second authentic package: MHK fixed-dollar VE → Position via shared pipeline.
+  if (companyId === MHK_VE_COMPANY_ID || hasVePositionPackage(companyId)) {
+    return loadVePositionSlice(companyId);
+  }
+  return null;
+}
+
+/** True when Position can load either full Matthews slice or VE-only multipackage feed. */
+export function hasAuthenticPositionSlice(companyId: string): boolean {
+  return companyId === MATTHEWS_POSITION_COMPANY_ID || hasVePositionPackage(companyId);
 }
 
 export function runRealDashboardVerticalSlice(): RealDashboardVerticalSliceResult {
@@ -125,8 +139,8 @@ export function runRealDashboardVerticalSlice(): RealDashboardVerticalSliceResul
     "D3c: REMEDIATED — rulebook stage INTERPRETED; reviewed/executable counts not fabricated.",
     "D4: Indenture secured composition is HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION (CA lien companion blocks NEW secured).",
     "D5: independentExpectedRemaining mirrors fixture thresholds — not independent legal proof.",
-    "D6: Full leaf dashboard pathway is Matthews-only; fixed-dollar VE core + autonomous pipeline also proven on MHK.",
-    "Fixed-dollar VE compile feeds Position as SOURCE_BACKED_COMPILED_GROSS only; ratio/structural rows still leaf evaluateProvision.",
+    "D6: Full leaf dashboard pathway is Matthews-only; MHK loads Position via shared VE feed only (loadAuthenticDashboardSlice).",
+    "Fixed-dollar VE compile feeds Position as SOURCE_BACKED_COMPILED_GROSS; Matthews 1a leaf threshold binds from VE; ratio/structural rows still leaf evaluateProvision.",
     "Production IdP / trusted-issuer activation BLOCKED by design.",
   ];
 

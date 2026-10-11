@@ -25,18 +25,26 @@ export {
 
 export {
   connectSliceToPosition,
-  hasAuthenticPositionSlice,
+  hasMatthewsLeafPositionSlice,
   type AuthenticPositionSlice,
   type DashboardConnectedMetric,
 } from "./position-bridge";
 
 export {
   loadAuthenticDashboardSlice,
+  hasAuthenticPositionSlice,
   runRealDashboardVerticalSlice,
   type RealDashboardVerticalSliceResult,
   type AcceptanceMilestones,
   type AcceptanceMilestoneVerdict,
 } from "./run-slice";
+
+export {
+  loadVePositionSlice,
+  connectVePipelineToPosition,
+  hasVePositionPackage,
+  VE_POSITION_PACKAGES,
+} from "./ve-position-feed";
 
 export {
   compileMatthewsPhase3DashboardBridge,
@@ -47,6 +55,7 @@ export {
 export {
   compileMatthewsVerifiedExecutableBridge,
   matthewsVerifiedExecutableCandidates,
+  bindMatthewsProvisionsFromVerifiedExecutable,
   type VerifiedExecutableCompileBridgeResult,
   type VerifiedExecutableCompileUnit,
   type OperativeClauseCandidate,
