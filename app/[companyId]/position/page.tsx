@@ -354,14 +354,14 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           <div className="card-subtitle">
             Authentic EDGAR-backed package ({authenticSlice.packageKey}) via shared covenant-engine —
             not a second capacity engine. Production remaining refused without completeness + trusted
-            issuer.
+            issuer. Publication labels are MODELED / GROSS_CONTRACTUAL — never AVAILABLE.
           </div>
           {authenticSlice.connectedMetrics.map((m) => (
             <div className="row" key={m.code}>
               <div>
                 <div className="row-label">{m.label}</div>
                 <div className="row-note">
-                  {m.operativeSection} · {m.authorityStatus}
+                  {m.operativeSection} · {m.authorityStatus} · {m.claim.claimLabel}
                   {m.refusalReason ? ` — ${m.refusalReason}` : ""}
                 </div>
               </div>
@@ -373,6 +373,39 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           <div className="row-note" style={{ marginTop: 8 }}>
             Production remaining published: {authenticSlice.productionRemainingPublished ? "yes" : "no"} ·
             Missing evidence rows: {authenticSlice.missingInputs.length}
+          </div>
+        </Card>
+      ) : null}
+
+      {authenticSlice?.phase3Compile ? (
+        <Card>
+          <div className="card-title">Autonomous Phase 3 compile → dashboard</div>
+          <div className="card-subtitle">
+            Source excerpt → structure → package-graph → operative authority → deterministic
+            extraction. Displayed: {authenticSlice.autonomouslyCompiledDisplayedCount}. Not package
+            CERTIFIED; not production AVAILABLE.
+          </div>
+          {authenticSlice.phase3Compile.compiledCovenants.map((c, i) => (
+            <div className="row" key={`${c.documentId}-${i}`}>
+              <div>
+                <div className="row-label">
+                  {c.documentId}
+                  {c.sectionHint ? ` · §${c.sectionHint}` : ""}
+                </div>
+                <div className="row-note">
+                  families: {c.familySignals.join(", ") || "—"} · thresholds:{" "}
+                  {c.thresholdSignals.slice(0, 3).join(", ") || "—"} · OA:{" "}
+                  {c.operativeAuthorityClassification ?? "—"} · governing:{" "}
+                  {c.governingDocumentId ?? "null"}
+                </div>
+              </div>
+              <Chip tone="navy">COMPILED</Chip>
+            </div>
+          ))}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            Path: {authenticSlice.phase3Compile.path.join(" → ")} · productionAuthorityActive={" "}
+            {String(authenticSlice.phase3Compile.productionAuthorityActive)} · trustedIdentity={" "}
+            {authenticSlice.phase3Compile.trustedIdentityActivation}
           </div>
         </Card>
       ) : null}

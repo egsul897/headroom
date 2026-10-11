@@ -13,6 +13,10 @@ import type { RulebookReadiness } from "@/lib/product/customer-intelligence/rule
 import type { CompanyDashboard } from "@/lib/dashboard-service";
 import type { PostTransactionCapacitySimulation } from "@/lib/covenant-engine";
 import type { VerticalSliceEvaluation, VerifiedCovenantCalculation } from "./evaluate-covenants";
+import {
+  compileMatthewsPhase3DashboardBridge,
+  type Phase3CompileBridgeResult,
+} from "./phase3-compile-bridge";
 import { MATTHEWS_POSITION_COMPANY_ID } from "./package-matthews";
 
 export interface DashboardConnectedMetric {
@@ -23,6 +27,8 @@ export interface DashboardConnectedMetric {
   operativeSection: string;
   authorityStatus: VerifiedCovenantCalculation["authorityStatus"];
   refusalReason: string | null;
+  /** True when claim is gross/modeled — never customer AVAILABLE. */
+  mayPublishAvailable: boolean;
 }
 
 export interface AuthenticPositionSlice {
@@ -33,6 +39,9 @@ export interface AuthenticPositionSlice {
   connectedMetrics: DashboardConnectedMetric[];
   missingInputs: string[];
   productionRemainingPublished: boolean;
+  /** Autonomous Phase 3 compile (source → OA → deterministic extraction). */
+  phase3Compile: Phase3CompileBridgeResult;
+  autonomouslyCompiledDisplayedCount: number;
 }
 
 function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
@@ -205,13 +214,17 @@ function metricFromCovenant(c: VerifiedCovenantCalculation): DashboardConnectedM
     c.authorityStatus === "GROSS_ONLY_UTILIZATION_INCOMPLETE" ||
     c.authorityStatus === "PRODUCTION_REMAINING_REFUSED";
 
-  // For 1a flat: show modeled capacity (engine net-of-debt) as MODELED, not AVAILABLE remaining.
+  // Publication honesty:
+  // - GROSS_ONLY / utilization incomplete → GROSS_CONTRACTUAL (never REMAINING/AVAILABLE)
+  // - Modeled ratio/structural figures → REMAINING with remainingIsAuthoritative=false
+  //   → presentCapacityClaim labels MODELED / NOT VERIFIED (mayPublishAvailable=false)
   const amount =
     c.code === "ind_permitted_debt_1a_flat"
       ? c.modeledCapacityMm
       : (c.remainingCapacityMm ?? c.modeledCapacityMm);
 
-  // D3a: GROSS_ONLY / modeled gross must not use claimKind REMAINING.
+  // D3a: GROSS_ONLY / structural-zero / modeled gross must not use claimKind REMAINING
+  // in a way that could be read as authoritative available capacity.
   const claimKind =
     amount == null
       ? ("UNAVAILABLE" as const)
@@ -222,7 +235,7 @@ function metricFromCovenant(c: VerifiedCovenantCalculation): DashboardConnectedM
           : ("UNAVAILABLE" as const);
 
   const claim = presentCapacityClaim({
-    claimKind: claimKind === "GROSS_CONTRACTUAL" ? "GROSS_CONTRACTUAL" : claimKind,
+    claimKind,
     amountMillions: amount,
     remainingIsAuthoritative: false,
     publicationLabel: "NOT_PRODUCTION_AUTHORITATIVE",
@@ -239,6 +252,7 @@ function metricFromCovenant(c: VerifiedCovenantCalculation): DashboardConnectedM
     refusalReason: isProductionRefused
       ? "Production remaining refused — incomplete utilization completeness / trusted-issuer BLOCKED."
       : null,
+    mayPublishAvailable: false, // authentic slice never publishes customer AVAILABLE
   };
 }
 
@@ -249,6 +263,7 @@ export function connectSliceToPosition(slice: VerticalSliceEvaluation): Authenti
   const readiness = readinessFromSlice(slice);
   const rulebook = rulebookFromSlice(slice);
   const dashboard = dashboardStubFromSlice(slice);
+  const phase3Compile = compileMatthewsPhase3DashboardBridge(slice.asOf);
 
   const positionView = buildPositionView({
     companyId: MATTHEWS_POSITION_COMPANY_ID,
@@ -258,14 +273,24 @@ export function connectSliceToPosition(slice: VerticalSliceEvaluation): Authenti
     dashboardError: null,
   });
 
+  const connectedMetrics = slice.covenants.map(metricFromCovenant);
+  // Harden: no metric on this authentic slice may publish AVAILABLE.
+  for (const m of connectedMetrics) {
+    if (m.claim.claimLabel.includes("AVAILABLE") || m.mayPublishAvailable) {
+      throw new Error(`False favorable AVAILABLE publication blocked for ${m.code}`);
+    }
+  }
+
   return {
     companyId: MATTHEWS_POSITION_COMPANY_ID,
     packageKey: slice.packageKey,
     asOf: slice.asOf,
     positionView,
-    connectedMetrics: slice.covenants.map(metricFromCovenant),
+    connectedMetrics,
     missingInputs: [...positionView.missingInputs, ...slice.missingEvidence],
     productionRemainingPublished: false,
+    phase3Compile,
+    autonomouslyCompiledDisplayedCount: phase3Compile.autonomouslyCompiledDisplayedCount,
   };
 }
 

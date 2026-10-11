@@ -27,4 +27,15 @@ describe("deterministic covenant extraction", () => {
     expect(result.facts.every((f) => f.kind !== ("PERMISSION" as never))).toBe(true);
     expect(result.facts.filter((f) => f.kind === "NUMERICAL_THRESHOLD").every((f) => f.value.interpretation === "THRESHOLD_FACT_ONLY")).toBe(true);
   });
+
+  it("maps authentic Debt/Incur Debt language to INDEBTEDNESS family signal", () => {
+    const result = extractDeterministicCovenantFacts({
+      text: "SECTION 4.09 Limitation on Incurrence of Debt. The Company will not Incur any Debt; provided that Permitted Debt is allowed.",
+      documentId: "indenture",
+    });
+    const families = result.facts
+      .filter((f) => f.kind === "COVENANT_FAMILY_SIGNAL")
+      .map((f) => String((f.value as { family?: string }).family ?? ""));
+    expect(families).toContain("INDEBTEDNESS");
+  });
 });

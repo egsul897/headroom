@@ -121,9 +121,38 @@ describe("REAL covenant intelligence + dashboard vertical slice (Matthews)", () 
     expect(connected!.positionView.instruments.length).toBe(2);
     expect(connected!.positionView.overallStatus).not.toBe("VERIFIED_EXECUTABLE");
 
+    // Publication honesty: no AVAILABLE / mayPublishAvailable on authentic slice.
+    for (const m of connected!.connectedMetrics) {
+      expect(m.mayPublishAvailable).toBe(false);
+      expect(m.claim.claimLabel).not.toMatch(/AVAILABLE/);
+      expect(m.claim.status).not.toBe("VERIFIED_EXECUTABLE");
+    }
+    const flat = connected!.connectedMetrics.find((m) => m.code === "ind_permitted_debt_1a_flat")!;
+    expect(flat.claim.claimKind).toBe("GROSS_CONTRACTUAL");
+    expect(flat.claim.status).toBe("GROSS_CONTRACTUAL");
+
     // Non-registered company → null (no invented package).
     expect(loadAuthenticDashboardSlice("autonation")).toBeNull();
     expect(loadAuthenticDashboardSlice("coherent")).toBeNull();
+  });
+
+  it("autonomous Phase 3 compile flows source → OA → extraction → dashboard display", () => {
+    const connected = loadAuthenticDashboardSlice("matthews")!;
+    expect(connected.autonomouslyCompiledDisplayedCount).toBeGreaterThanOrEqual(1);
+    expect(connected.phase3Compile.documentsCompiled).toBe(2);
+    expect(connected.phase3Compile.deterministicFactCount).toBeGreaterThan(0);
+    expect(connected.phase3Compile.productionAuthorityActive).toBe(false);
+    expect(connected.phase3Compile.trustedIdentityActivation).toBe("BLOCKED");
+    expect(connected.phase3Compile.path.join("→")).toMatch(/structure/);
+    expect(connected.phase3Compile.path.join("→")).toMatch(/operative-authority/);
+    expect(connected.phase3Compile.path.join("→")).toMatch(/deterministic-extraction/);
+
+    const indenture = connected.phase3Compile.compiledCovenants.find(
+      (c) => c.documentId === "matw-2027-second-lien-notes-indenture",
+    );
+    expect(indenture).toBeTruthy();
+    expect(indenture!.familySignals).toEqual(expect.arrayContaining(["INDEBTEDNESS"]));
+    expect(indenture!.displayedOnDashboard).toBe(true);
   });
 
   it("demonstrates deterministic change propagation without mutating the ledger", () => {
@@ -166,6 +195,10 @@ describe("REAL covenant intelligence + dashboard vertical slice (Matthews)", () 
     expect(result.evaluation.utilization.attributedEventCount).toBe(2);
     expect(result.position.connectedMetrics.length).toBe(5);
     expect(result.changePropagation.financialDeltas.length).toBe(5);
+    expect(result.autonomouslyCompiledDisplayedCount).toBeGreaterThanOrEqual(1);
+    expect(result.phase3Compile.compiledCovenants.length).toBe(
+      result.autonomouslyCompiledDisplayedCount,
+    );
     // PR #304 independent acceptance: withdraw REAL_DASHBOARD_VERTICAL_SLICE_PROVEN.
     expect(result.verdict).not.toBe("REAL_DASHBOARD_VERTICAL_SLICE_PROVEN" as never);
     expect(result.verdict).toBe("FIXTURE_MODELED_DASHBOARD_PARTIAL");

@@ -37,3 +37,11 @@ export {
   type AcceptanceMilestones,
   type AcceptanceMilestoneVerdict,
 } from "./run-slice";
+
+export {
+  compileMatthewsPhase3DashboardBridge,
+  type Phase3CompileBridgeResult,
+  type CompiledCovenantCandidate,
+} from "./phase3-compile-bridge";
+
+export { matthewsCompilerPackageDocuments } from "./source-excerpts-matthews";
