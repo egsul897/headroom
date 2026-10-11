@@ -5,7 +5,8 @@
 **CURRENT_CANONICAL_SHA:** `440dd65d42c2e9f6b92978fa4f04a92658de190c`  
 **Package:** Matthews International Q1 FY2025 (AUTHENTIC_SOURCE_BACKED)  
 **Paid inference:** $0 · **Production Neon writes:** none  
-**Final verdict:** `REAL_DASHBOARD_VERTICAL_SLICE_PROVEN`
+**Final verdict (superseded by PR #304 independent acceptance):** see `04-independent-acceptance-pr304.md`  
+**Milestone verdicts:** FIXTURE_MODELED_DASHBOARD_PROVEN=`PROVEN_WITH_DEFECTS`; GENERALIZED / AUTONOMOUS / PRODUCTION = `NOT_PROVEN`
 
 ## Required return
 
@@ -107,6 +108,11 @@ Independent arithmetic matches engine within 0.05 (see e2e test).
 
 ## Final verdict
 
-**REAL_DASHBOARD_VERTICAL_SLICE_PROVEN**
+**WITHDRAWN as product acceptance:** `REAL_DASHBOARD_VERTICAL_SLICE_PROVEN`
 
-Not claimed: production-authoritative remaining, IdP activation, Neon durability, or AutoNation Round-2 affirmative execution.
+Independent acceptance (`04-independent-acceptance-pr304.md`):
+
+- FIXTURE_MODELED_DASHBOARD_PROVEN = **PROVEN_WITH_DEFECTS**
+- GENERALIZED_CALCULATION_PIPELINE_PROVEN = **NOT_PROVEN**
+- AUTONOMOUS_COVENANT_COMPILATION_PROVEN = **NOT_PROVEN**
+- PRODUCTION_AUTHORITY_PROVEN = **NOT_PROVEN**

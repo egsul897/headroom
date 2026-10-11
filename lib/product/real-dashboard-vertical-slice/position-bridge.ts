@@ -85,13 +85,17 @@ function capacitySide(
   secured: boolean,
   bindingName: string | null,
   bindingCode: string | null,
+  opts?: { publishRemaining?: boolean },
 ): PostTransactionCapacitySimulation {
+  // Secured Indenture composition must not be posted as remainingCapacity when
+  // acceptance labels it HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION (PR #304 D4).
+  const publish = opts?.publishRemaining !== false;
   return {
     amount: 0,
     secured,
-    remainingCapacity: remaining ?? undefined,
+    remainingCapacity: publish ? remaining ?? undefined : undefined,
     packageAuthoritative: {
-      remainingCapacity: remaining ?? null,
+      remainingCapacity: publish ? remaining ?? null : null,
       bindingDocumentName: bindingName,
       bindingProvisionCode: bindingCode,
       authority: "MODELED_CROSS_DOCUMENT",
@@ -156,11 +160,16 @@ function dashboardStubFromSlice(slice: VerticalSliceEvaluation): CompanyDashboar
       },
     } as CompanyDashboard["financialPosition"],
     capacity: {
+      // D4: do not publish hypothetical secured composition as remainingCapacity.
       secured: capacitySide(
         modeledSecured,
         true,
         flat?.governingDocumentName ?? null,
         flat?.code ?? null,
+        {
+          publishRemaining:
+            slice.securedCompositionAuthority !== "HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION",
+        },
       ),
       unsecured: capacitySide(undefined, false, null, null),
     },
@@ -202,8 +211,18 @@ function metricFromCovenant(c: VerifiedCovenantCalculation): DashboardConnectedM
       ? c.modeledCapacityMm
       : (c.remainingCapacityMm ?? c.modeledCapacityMm);
 
+  // D3a: GROSS_ONLY / modeled gross must not use claimKind REMAINING.
+  const claimKind =
+    amount == null
+      ? ("UNAVAILABLE" as const)
+      : isProductionRefused || c.authorityStatus === "STRUCTURAL_ZERO"
+        ? ("GROSS_CONTRACTUAL" as const)
+        : c.authorityStatus === "MODELED_AUTHENTIC_EVIDENCE"
+          ? ("REMAINING" as const)
+          : ("UNAVAILABLE" as const);
+
   const claim = presentCapacityClaim({
-    claimKind: amount == null ? "UNAVAILABLE" : "REMAINING",
+    claimKind: claimKind === "GROSS_CONTRACTUAL" ? "GROSS_CONTRACTUAL" : claimKind,
     amountMillions: amount,
     remainingIsAuthoritative: false,
     publicationLabel: "NOT_PRODUCTION_AUTHORITATIVE",

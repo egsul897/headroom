@@ -96,6 +96,13 @@ export interface VerticalSliceEvaluation {
   productionHandoffReasons: string[];
   missingEvidence: string[];
   indentureSecuredCompositionMm: number | null;
+  /**
+   * Secured composition of Debt Facilities flat room + FCCR room is a solver-native
+   * Indenture debt-incurrence stacking figure only. It is NOT verified secured remaining:
+   * CA §6.01(j) blocks NEW Loan-Party secured liens, and Indenture lien links for
+   * first priority attach to Debt Facilities — not Ratio Debt. See PR #304 acceptance.
+   */
+  securedCompositionAuthority: "HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION";
 }
 
 function docName(documentId: string): string {
@@ -389,5 +396,6 @@ export function evaluateMatthewsVerticalSlice(
       : ["capacity input handoff unavailable"],
     missingEvidence,
     indentureSecuredCompositionMm,
+    securedCompositionAuthority: "HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION",
   };
 }

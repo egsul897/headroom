@@ -149,7 +149,7 @@ describe("REAL covenant intelligence + dashboard vertical slice (Matthews)", () 
     expect(again.financials.securedDebt).toBeCloseTo(778.882, 3);
   });
 
-  it("end-to-end run produces required mission artifacts and honest verdict", () => {
+  it("end-to-end run produces required mission artifacts without overstated acceptance", () => {
     const result = runRealDashboardVerticalSlice();
 
     expect(result.evaluation.financialEvidence.metricsPresent).toEqual(
@@ -166,7 +166,14 @@ describe("REAL covenant intelligence + dashboard vertical slice (Matthews)", () 
     expect(result.evaluation.utilization.attributedEventCount).toBe(2);
     expect(result.position.connectedMetrics.length).toBe(5);
     expect(result.changePropagation.financialDeltas.length).toBe(5);
-    expect(result.verdict).toBe("REAL_DASHBOARD_VERTICAL_SLICE_PROVEN");
+    // PR #304 independent acceptance: withdraw REAL_DASHBOARD_VERTICAL_SLICE_PROVEN.
+    expect(result.verdict).not.toBe("REAL_DASHBOARD_VERTICAL_SLICE_PROVEN" as never);
+    expect(result.verdict).toBe("FIXTURE_MODELED_DASHBOARD_PARTIAL");
+    expect(result.milestones.AUTONOMOUS_COVENANT_COMPILATION_PROVEN).toBe("NOT_PROVEN");
+    expect(result.milestones.PRODUCTION_AUTHORITY_PROVEN).toBe("NOT_PROVEN");
+    expect(result.evaluation.securedCompositionAuthority).toBe(
+      "HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION",
+    );
 
     // Sanity: mayUseAsProductionCapacityInput stays false on this path.
     expect(mayUseAsProductionCapacityInput).toBeTypeOf("function");

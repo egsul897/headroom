@@ -34,4 +34,6 @@ export {
   loadAuthenticDashboardSlice,
   runRealDashboardVerticalSlice,
   type RealDashboardVerticalSliceResult,
+  type AcceptanceMilestones,
+  type AcceptanceMilestoneVerdict,
 } from "./run-slice";

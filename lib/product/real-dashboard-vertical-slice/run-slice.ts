@@ -1,5 +1,8 @@
 /**
  * End-to-end authentic vertical slice orchestration (no Neon writes, no paid inference).
+ *
+ * Acceptance milestones (PR #304 independent review) are reported separately —
+ * do not collapse them into a single REAL_DASHBOARD_VERTICAL_SLICE_PROVEN claim.
  */
 
 import {
@@ -17,44 +20,57 @@ import {
 } from "./position-bridge";
 import { MATTHEWS_POSITION_COMPANY_ID } from "./package-matthews";
 
+export type AcceptanceMilestoneVerdict = "PROVEN" | "PROVEN_WITH_DEFECTS" | "NOT_PROVEN";
+
+export interface AcceptanceMilestones {
+  FIXTURE_MODELED_DASHBOARD_PROVEN: AcceptanceMilestoneVerdict;
+  GENERALIZED_CALCULATION_PIPELINE_PROVEN: AcceptanceMilestoneVerdict;
+  AUTONOMOUS_COVENANT_COMPILATION_PROVEN: AcceptanceMilestoneVerdict;
+  PRODUCTION_AUTHORITY_PROVEN: AcceptanceMilestoneVerdict;
+}
+
 export interface RealDashboardVerticalSliceResult {
   canonicalBaseNote: string;
   evaluation: VerticalSliceEvaluation;
   position: AuthenticPositionSlice;
   changePropagation: ChangePropagationResult;
-  verdict: "REAL_DASHBOARD_VERTICAL_SLICE_PROVEN" | "PARTIALLY_PROVEN" | "NOT_YET_PROVEN";
+  /**
+   * Legacy aggregate label — after PR #304 independent acceptance this is at most
+   * FIXTURE_MODELED_DASHBOARD_PARTIAL. Prefer `milestones`.
+   */
+  verdict: "FIXTURE_MODELED_DASHBOARD_PARTIAL" | "PARTIALLY_PROVEN" | "NOT_YET_PROVEN";
+  milestones: AcceptanceMilestones;
   blockers: string[];
 }
 
-function decideVerdict(
+function decideMilestones(
   evaluation: VerticalSliceEvaluation,
   position: AuthenticPositionSlice,
-): RealDashboardVerticalSliceResult["verdict"] {
-  const numericOk =
+): AcceptanceMilestones {
+  const fixtureModeled =
     evaluation.verifiedCovenantsCount >= 5 &&
-    evaluation.covenants.every((c) => {
-      if (c.independentExpectedMm == null) return true;
-      // Notes grandfather: independent expectation is NEW remaining ($0), not FLAT_AMOUNT gross.
-      if (c.code === "ind_permitted_debt_2_notes") {
-        return c.remainingCapacityMm === c.independentExpectedMm;
-      }
-      if (c.modeledCapacityMm == null) return false;
-      return Math.abs(c.modeledCapacityMm - c.independentExpectedMm) < 0.05;
-    });
-  const positionOk =
     position.connectedMetrics.length >= 5 &&
     position.productionRemainingPublished === false &&
-    position.positionView.remainingAuthoritative === false;
-  const evidenceOk =
-    evaluation.financialEvidence.metricsPresent.length >= 5 &&
-    evaluation.utilization.attributedEventCount >= 1 &&
-    evaluation.utilization.supportsRemainingClaim === false;
+    evaluation.productionHandoffRefused &&
+    evaluation.securedCompositionAuthority === "HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION";
 
-  if (numericOk && positionOk && evidenceOk && evaluation.productionHandoffRefused) {
-    return "REAL_DASHBOARD_VERTICAL_SLICE_PROVEN";
+  return {
+    FIXTURE_MODELED_DASHBOARD_PROVEN: fixtureModeled ? "PROVEN_WITH_DEFECTS" : "NOT_PROVEN",
+    // Registry + evaluator are Matthews-only (see hasAuthenticPositionSlice / evaluateMatthews*).
+    GENERALIZED_CALCULATION_PIPELINE_PROVEN: "NOT_PROVEN",
+    // Provisions are hand-encoded literals; no compileFrozenDebtPackage / verified IR.
+    AUTONOMOUS_COVENANT_COMPILATION_PROVEN: "NOT_PROVEN",
+    // Trusted-issuer BLOCKED; completeness absent.
+    PRODUCTION_AUTHORITY_PROVEN: "NOT_PROVEN",
+  };
+}
+
+function decideVerdict(milestones: AcceptanceMilestones): RealDashboardVerticalSliceResult["verdict"] {
+  if (milestones.FIXTURE_MODELED_DASHBOARD_PROVEN === "PROVEN_WITH_DEFECTS") {
+    return "FIXTURE_MODELED_DASHBOARD_PARTIAL";
   }
-  if (evaluation.verifiedCovenantsCount >= 3 && position.connectedMetrics.length >= 3) {
-    return "PARTIALLY_PROVEN";
+  if (milestones.FIXTURE_MODELED_DASHBOARD_PROVEN === "PROVEN") {
+    return "FIXTURE_MODELED_DASHBOARD_PARTIAL";
   }
   return "NOT_YET_PROVEN";
 }
@@ -73,11 +89,15 @@ export function runRealDashboardVerticalSlice(): RealDashboardVerticalSliceResul
   const evaluation = evaluateMatthewsVerticalSlice();
   const position = connectSliceToPosition(evaluation);
   const changePropagation = demonstrateChangePropagation();
+  const milestones = decideMilestones(evaluation, position);
   const blockers = [
     ...evaluation.missingEvidence,
+    "D1: CovenantProvisionInput rows are manually encoded — not autonomously compiled.",
+    "D4: Indenture secured composition is HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION (CA lien companion blocks NEW secured).",
+    "D5: independentExpectedRemaining mirrors fixture thresholds — not independent legal proof.",
+    "D6: Pathway is Matthews-only; second authentic package returns null.",
     "Verified IR / Phase-3 VEP path not bound to Position for this package (leaf evaluateProvision used).",
     "Production IdP / trusted-issuer activation BLOCKED by design.",
-    "AutoNation / WOR / CONMED authentic packages lack financial+utilization corpus for a parallel 5-covenant demo.",
   ];
 
   return {
@@ -85,7 +105,8 @@ export function runRealDashboardVerticalSlice(): RealDashboardVerticalSliceResul
     evaluation,
     position,
     changePropagation,
-    verdict: decideVerdict(evaluation, position),
+    milestones,
+    verdict: decideVerdict(milestones),
     blockers,
   };
 }
