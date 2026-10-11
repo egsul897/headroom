@@ -114,7 +114,7 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
     <div className="stack">
       <Card>
         <div className="card-title">Evidence & review</div>
-        <WorkflowJourney companyId={companyId} current="evidence" />
+        <WorkflowJourney companyId={companyId} current="audit" />
         <div className="card-subtitle" style={{ marginTop: 8 }}>
           Navigable path back to supporting sources. Distinguishes source-backed facts from unresolved items.
           A simulation or discovery label is not a legal approval.

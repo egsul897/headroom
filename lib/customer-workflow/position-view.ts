@@ -56,6 +56,14 @@ export interface PositionViewModel {
   authorityNote: string;
   /** True only when a side has #268 PRODUCTION_AUTHORITATIVE utilization remaining. */
   remainingAuthoritative: boolean;
+  /**
+   * Separated capacity claims for the CFO Position surface.
+   * Populated when callers pass shared capacity state; never invents figures.
+   */
+  separatedClaims?: {
+    secured: import("./capacity-state").SeparatedCapacityClaims;
+    unsecured: import("./capacity-state").SeparatedCapacityClaims;
+  };
 }
 
 function facilityAmountMillions(amount: number | null | undefined): number | null {
@@ -73,6 +81,8 @@ export function buildPositionView(args: {
   readiness: CapacityReadiness;
   rulebook: RulebookReadiness;
   dashboardError?: string | null;
+  /** Optional issuer-neutral separated claims from shared ProductCapacityView. */
+  separatedClaims?: PositionViewModel["separatedClaims"];
 }): PositionViewModel {
   const { readiness, rulebook, dashboard } = args;
   const missingInputs = [...readiness.blockers];
@@ -189,5 +199,6 @@ export function buildPositionView(args: {
     authorityNote:
       "Position remaining figures from the legacy shared capacity engine are MODELED / NOT VERIFIED / NOT_PRODUCTION_AUTHORITATIVE unless utilizationRemainingAuthority is PRODUCTION_AUTHORITATIVE (#268 completeness + trusted issuer). Gross contractual ceilings are never labeled AVAILABLE. Unknown utilization is never zero.",
     remainingAuthoritative: sides.some((s) => s.remaining.status === "VERIFIED_EXECUTABLE"),
+    separatedClaims: args.separatedClaims,
   };
 }

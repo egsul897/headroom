@@ -51,7 +51,7 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
     <div className="stack">
       <Card>
         <div className="card-title">AI interpretations — lawyer review</div>
-        <WorkflowJourney companyId={companyId} current="rulebook" />
+        <WorkflowJourney companyId={companyId} current="review" />
         <div className="card-subtitle" style={{ marginTop: 8 }}>
           {rulebook.headline}
         </div>

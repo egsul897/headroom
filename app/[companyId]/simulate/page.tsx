@@ -12,6 +12,8 @@ import {
   attemptVerifiedSimulate,
   summarizeVerifiedSimulate,
 } from "@/lib/product/unified-position/certified-simulate-bridge";
+import { assembleCfoWorkflow } from "@/lib/customer-workflow/assemble-cfo-workflow";
+import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
@@ -45,35 +47,61 @@ export default async function SimulatePage({
           ? "UNSECURED_DEBT"
           : "SECURED_DEBT";
 
-  const [readiness, data, documents, definedTermsByProvision, solverContext, verified] = await Promise.all([
-    loadCapacityReadiness(companyId),
-    loadCovenantDataOrEmpty(companyId, asOfDate),
-    getDocuments(companyId),
-    getDefinedTermsByProvision(companyId),
-    buildSolverContext(companyId, asOfDate),
-    attemptVerifiedSimulate({
-      companyId,
-      evaluationDate,
-      amountMillions,
-      kind,
-      secured: handoff.secured,
-      verifiedPackage: null,
-    }),
-  ]);
+  const [readiness, data, documents, definedTermsByProvision, solverContext, verified, workflow] =
+    await Promise.all([
+      loadCapacityReadiness(companyId),
+      loadCovenantDataOrEmpty(companyId, asOfDate),
+      getDocuments(companyId),
+      getDefinedTermsByProvision(companyId),
+      buildSolverContext(companyId, asOfDate),
+      attemptVerifiedSimulate({
+        companyId,
+        evaluationDate,
+        amountMillions,
+        kind,
+        secured: handoff.secured,
+        verifiedPackage: null,
+      }),
+      assembleCfoWorkflow({
+        companyId,
+        simulateAmountMillions: amountMillions,
+        simulateKind: kind,
+        evaluationDate,
+      }),
+    ]);
   const verifiedSummary = summarizeVerifiedSimulate(verified);
+  const simView = workflow.simulate;
 
   return (
     <div className="stack">
       <Card>
-        <div className="card-title">Simulation readiness</div>
+        <div className="card-title">Simulate</div>
         <WorkflowJourney companyId={companyId} current="simulate" />
         <div className="card-subtitle" style={{ marginTop: 8 }}>
-          {readiness.headline}
+          {readiness.headline} Uses the <strong>same capacity state</strong> as Position. Simulations never
+          modify the live customer ledger.
         </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Status</div>
           <div className="row-value">
-            <Chip tone={readiness.canEvaluateExecutableCapacity ? "pass" : "tight"}>{readiness.status}</Chip>
+            <Chip tone={readiness.canEvaluateExecutableCapacity ? "pass" : "tight"}>{readiness.status}</Chip>{" "}
+            <StatusChip code={simView.overallStatus} />
+          </div>
+        </div>
+        <div className="row">
+          <div className="row-label">Selected transaction path</div>
+          <div className="row-value">{simView.selectedTransactionPath ?? "— (none selected)"}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">Amount / currency</div>
+          <div className="row-value">
+            {simView.amountMillions != null ? `${simView.amountMillions} ${simView.currency}` : "—"}
+          </div>
+        </div>
+        <div className="row">
+          <div className="row-label">Posts to ledger</div>
+          <div className="row-value">
+            <Chip tone="pass">false</Chip>
           </div>
         </div>
         <div className="row">
@@ -92,21 +120,65 @@ export default async function SimulatePage({
             <div className="row-note" style={{ marginTop: 8 }}>
               The form below still runs the <strong>real</strong> shared simulation engine. Without capacity formulas and
               an approved financial snapshot, expect <Chip tone="tight">NOT DETERMINABLE</Chip> / unmet input results —
-              not a fabricated pass. Simulations never modify the live transaction ledger.
+              not a fabricated pass.
             </div>
           </>
         )}
         <div className="button-row" style={{ marginTop: 12 }}>
-          <Link className="button" href={`/${companyId}/covenants`}>
-            Covenant review
+          <Link className="button" href={`/${companyId}/position`}>
+            Position
           </Link>
-          <Link className="button" href={`/${companyId}/capacity`}>
-            Capacity status
+          <Link className="button" href={`/${companyId}/audit`}>
+            Audit
           </Link>
-          <Link className="button" href={`/${companyId}/ask`}>
-            Ask Headroom
+          <Link className="button" href={`/${companyId}/review`}>
+            Review
           </Link>
         </div>
+      </Card>
+
+      <Card>
+        <div className="card-title">Pre-transaction capacity (shared with Position)</div>
+        {simView.preTransactionCapacity ? (
+          <SeparatedCapacityPanel title="Secured path capacity state" claims={simView.preTransactionCapacity} />
+        ) : (
+          <div className="row-note">Capacity state unavailable — not invented.</div>
+        )}
+      </Card>
+
+      <Card>
+        <div className="card-title">Preconditions / missing inputs / unsupported effects</div>
+        {simView.preconditions.map((p, i) => (
+          <div key={`p-${i}`} className="row-note">
+            · precondition: {p}
+          </div>
+        ))}
+        {simView.missingInputs.map((m, i) => (
+          <div key={`m-${i}`} className="row-note">
+            · <StatusChip code="NEEDS_INPUT" compact /> {m}
+          </div>
+        ))}
+        {simView.unsupportedEffects.map((u, i) => (
+          <div key={`u-${i}`} className="row-note">
+            · <StatusChip code="UNSUPPORTED" compact /> {u}
+          </div>
+        ))}
+        {simView.capacityConsumed && (
+          <div className="row-note">· {simView.capacityConsumed}</div>
+        )}
+      </Card>
+
+      <Card>
+        <div className="card-title">Trace & provenance</div>
+        {simView.traceAndProvenance.length === 0 ? (
+          <div className="row-note">No verified-path trace (package not supplied).</div>
+        ) : (
+          simView.traceAndProvenance.map((t, i) => (
+            <div key={i} className="row-note">
+              · {t}
+            </div>
+          ))
+        )}
       </Card>
 
       <VerifiedSimulatePanel summary={verifiedSummary} evaluationDate={evaluationDate} />

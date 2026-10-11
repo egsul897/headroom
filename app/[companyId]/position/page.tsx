@@ -12,6 +12,8 @@ import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capac
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 import { buildPositionView } from "@/lib/customer-workflow/position-view";
 import { presentCapacityClaim } from "@/lib/customer-workflow/status-contract";
+import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
+import { separateCapacityClaimsFromProductView } from "@/lib/customer-workflow/capacity-state";
 
 export const metadata = { title: "Headroom — Position" };
 
@@ -123,12 +125,34 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     }
   }
 
+  const missingForClaims = [
+    ...readiness.blockers,
+    ...(dashboardError ? [dashboardError] : []),
+  ];
+  const securedSeparated = separateCapacityClaimsFromProductView(null, {
+    modeledAmountMillions: dashboard?.capacity.secured.remainingCapacity ?? null,
+    bindingRestrictions: [
+      dashboard?.capacity.secured.packageAuthoritative?.bindingProvisionCode,
+      dashboard?.capacity.secured.binding?.documentName,
+    ].filter((x): x is string => Boolean(x)),
+    missingInputs: missingForClaims,
+  });
+  const unsecuredSeparated = separateCapacityClaimsFromProductView(null, {
+    modeledAmountMillions: dashboard?.capacity.unsecured.remainingCapacity ?? null,
+    bindingRestrictions: [
+      dashboard?.capacity.unsecured.packageAuthoritative?.bindingProvisionCode,
+      dashboard?.capacity.unsecured.binding?.documentName,
+    ].filter((x): x is string => Boolean(x)),
+    missingInputs: missingForClaims,
+  });
+
   const view = buildPositionView({
     companyId,
     dashboard,
     readiness,
     rulebook,
     dashboardError,
+    separatedClaims: { secured: securedSeparated, unsecured: unsecuredSeparated },
   });
 
   // Legacy package figures at amount=0 are modeled capacity — not verified AVAILABLE,
@@ -203,8 +227,8 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           <Link className="button" href={`/${companyId}/simulate`}>
             Simulate
           </Link>
-          <Link className="button" href={`/${companyId}/evidence`}>
-            Evidence
+          <Link className="button" href={`/${companyId}/audit`}>
+            Audit
           </Link>
         </div>
       </Card>
@@ -265,23 +289,41 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
       <Card>
         <div className="card-title">Capacity claims by side</div>
         <div className="card-subtitle">
-          Gross contractual ≠ remaining available. Legacy modeled figures are MODELED / NOT VERIFIED —
-          never labeled AVAILABLE.
+          Separated claims from the shared capacity result. Gross ≠ modeled ≠ verified remaining.
+          Null remaining is never converted into a modeled number. Legacy figures are MODELED / NOT
+          VERIFIED — never labeled AVAILABLE.
         </div>
-        <CapacityClaimRow label="Secured — gross contractual" claim={grossUnavailable} />
-        <CapacityClaimRow label="Secured — modeled package capacity" claim={securedModeled} />
-        <CapacityClaimRow
-          label="Secured — remaining (authoritative only when certified)"
-          claim={view.sides[0]!.remaining}
-          citations={view.sides[0]!.sourceCitations}
+        <SeparatedCapacityPanel
+          title="Secured"
+          claims={
+            view.separatedClaims?.secured ??
+            separateCapacityClaimsFromProductView(null, {
+              modeledAmountMillions: dashboard?.capacity.secured.remainingCapacity ?? null,
+              bindingRestrictions: view.sides[0]?.sourceCitations ?? [],
+              missingInputs: view.missingInputs,
+            })
+          }
         />
-        <CapacityClaimRow label="Unsecured — gross contractual" claim={grossUnavailable} />
-        <CapacityClaimRow label="Unsecured — modeled package capacity" claim={unsecuredModeled} />
-        <CapacityClaimRow
-          label="Unsecured — remaining (authoritative only when certified)"
-          claim={view.sides[1]!.remaining}
-          citations={view.sides[1]!.sourceCitations}
+        <div style={{ marginTop: 16 }} />
+        <SeparatedCapacityPanel
+          title="Unsecured"
+          claims={
+            view.separatedClaims?.unsecured ??
+            separateCapacityClaimsFromProductView(null, {
+              modeledAmountMillions: dashboard?.capacity.unsecured.remainingCapacity ?? null,
+              bindingRestrictions: view.sides[1]?.sourceCitations ?? [],
+              missingInputs: view.missingInputs,
+            })
+          }
         />
+        <div style={{ marginTop: 12 }}>
+          <CapacityClaimRow label="Gross contractual (engine field absent)" claim={grossUnavailable} />
+          <CapacityClaimRow label="Secured — legacy side remaining (non-authoritative)" claim={securedModeled} />
+          <CapacityClaimRow
+            label="Unsecured — legacy side remaining (non-authoritative)"
+            claim={unsecuredModeled}
+          />
+        </div>
         {view.sides.flatMap((s) => s.methodNotes).slice(0, 6).map((note, i) => (
           <div key={i} className="row-note">
             · {note}
