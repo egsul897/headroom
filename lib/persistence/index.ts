@@ -39,12 +39,14 @@ export {
   type FinancialIngestionAuditSidecar,
   type FinancialEvidenceBundlePayload,
   type PersistFinancialEvidenceInput,
+  type FinancialEvidenceApprovalEvent,
 } from "./financial-evidence";
 export {
   persistUtilizationCompletenessRecord,
   getActiveCompletenessRecord,
   getProductionEligibleCompletenessRecord,
   revokeCompletenessRecord,
+  type ProductionEligibleCompletenessOptions,
 } from "./utilization-completeness";
 export {
   persistCapacityCalculation,

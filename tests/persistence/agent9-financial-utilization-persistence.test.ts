@@ -517,14 +517,16 @@ describeDb("Agent #9 financial/utilization durable persistence (disposable Postg
         issuer: { role: "COUNSEL_REVIEWER", actorId: "untrusted-label", attestedAt: "2024-12-31T00:00:00Z" },
       },
     });
-    // Persistence may store ACTIVE AUTHENTIC rows for audit — production eligibility is structural only.
-    const eligible = await getProductionEligibleCompletenessRecord(
+    // Persistence may store ACTIVE AUTHENTIC rows for audit — production eligibility
+    // requires trustedIssuerAuth. Caller-claimed issuer alone must fail closed.
+    const eligibleWithoutAuth = await getProductionEligibleCompletenessRecord(
       prisma,
       COMPANY_A,
       "rule-untrusted-issuer",
       fixture.asOf,
     );
-    expect(eligible?.id).toBe(cert.id);
+    expect(eligibleWithoutAuth).toBeNull();
+    expect(cert.created).toBe(true);
     // Host trusted-issuer gates still BLOCKED — handoff must refuse production.
     const handoff = buildVerifiedCapacityInputHandoff({
       companyId: COMPANY_A,

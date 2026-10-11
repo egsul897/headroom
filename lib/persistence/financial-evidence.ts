@@ -51,6 +51,17 @@ export interface FinancialEvidenceBundlePayload {
   ingestionAudit?: FinancialIngestionAuditSidecar;
 }
 
+/**
+ * Authenticated, auditable approval event. Never derived from verificationStatus
+ * alone — must carry a non-UNAUTHENTICATED actor and an explicit approvedAt.
+ */
+export interface FinancialEvidenceApprovalEvent {
+  approvedAt: Date;
+  actor: ActorProvenance;
+  /** Optional evidence that an authorization check already passed for this actor. */
+  authorizationNote?: string;
+}
+
 export interface PersistFinancialEvidenceInput {
   companyId: string;
   bundleKey: string;
@@ -62,6 +73,11 @@ export interface PersistFinancialEvidenceInput {
   ingestionAudit?: FinancialIngestionAuditSidecar;
   claimedReviewerLabel?: string | null;
   actor?: ActorProvenance;
+  /**
+   * Optional authenticated approval event. When absent, approvedAt stays null
+   * even if metrics claim verificationStatus=VERIFIED.
+   */
+  approvalEvent?: FinancialEvidenceApprovalEvent | null;
 }
 
 function worstVerification(metrics: FinancialMetricEvidence[]): string {
@@ -89,6 +105,13 @@ function worstAuthenticity(metrics: FinancialMetricEvidence[]): string {
     return "CALLER_STIPULATED_HYPOTHETICAL";
   }
   return "AUTHENTIC";
+}
+
+function resolveApprovedAt(event: FinancialEvidenceApprovalEvent | null | undefined): Date | null {
+  if (!event) return null;
+  if (!event.approvedAt || Number.isNaN(event.approvedAt.getTime())) return null;
+  if (!event.actor || event.actor.kind === "UNAUTHENTICATED") return null;
+  return event.approvedAt;
 }
 
 function buildPayload(input: PersistFinancialEvidenceInput): FinancialEvidenceBundlePayload {
@@ -180,8 +203,9 @@ export async function persistFinancialEvidenceBundle(
           payload: payload as object,
           sourceFingerprint: sourceFingerprint as object,
           claimedReviewerLabel: input.claimedReviewerLabel ?? null,
-          // VERIFIED metrics do not mint production trust — approvedAt is audit-only.
-          approvedAt: verificationStatus === "VERIFIED" ? new Date() : null,
+          // Never mint approvedAt from verificationStatus alone. Only an
+          // authenticated, authorized approval event may set the timestamp.
+          approvedAt: resolveApprovedAt(input.approvalEvent),
           status: "ACTIVE",
         },
       });

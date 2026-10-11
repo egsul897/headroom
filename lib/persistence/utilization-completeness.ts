@@ -1,9 +1,17 @@
 /**
  * Durable utilization completeness certificates.
  * Revoked certificates must not authorize new production calculations.
+ *
+ * Stored ACTIVE + AUTHENTIC rows are audit/history only. Production eligibility
+ * requires the host TrustedIssuerAuthorizationContext contract — caller-supplied
+ * authenticity/issuer fields alone never establish production authority.
  */
 import { Prisma, type IntelligenceLifecycleStatus, type PrismaClient } from "@prisma/client";
 import type { UtilizationCompletenessCertificate } from "@/lib/capacity/utilization-types";
+import {
+  authorizeCompletenessIssuer,
+  type TrustedIssuerAuthorizationContext,
+} from "@/lib/capacity/completeness-issuer-auth";
 import { contentHashOf, fingerprintParts } from "./hash";
 import { appendInstitutionalAuditEvent } from "./audit";
 import { assertSameTenant, requireCompanyId } from "./tenant";
@@ -121,17 +129,48 @@ export async function getActiveCompletenessRecord(
   });
 }
 
-/** ACTIVE certificates only — revoked/stale rows never authorize production. */
+export interface ProductionEligibleCompletenessOptions {
+  /**
+   * Host-supplied trusted issuer context. Required for production eligibility.
+   * Caller-claimed certificate authenticity/issuer alone is never sufficient.
+   */
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
+}
+
+/**
+ * Production-eligible completeness: ACTIVE + AUTHENTIC + issuer authorized via
+ * the existing TrustedIssuerAuthorizationContext contract.
+ *
+ * Fail-closed: missing auth context, forged issuer, revoked principal, role
+ * mismatch, or fixture identity under production requirements all return null.
+ */
 export async function getProductionEligibleCompletenessRecord(
   prisma: PrismaClient,
   companyId: string,
   capacityRuleId: string,
   asOfDate: string,
+  opts?: ProductionEligibleCompletenessOptions,
 ) {
   const row = await getActiveCompletenessRecord(prisma, companyId, capacityRuleId, asOfDate);
   if (!row) return null;
   if (row.status !== "ACTIVE") return null;
   if (row.authenticity !== "AUTHENTIC") return null;
+
+  const payload = row.payload as { certificate?: UtilizationCompletenessCertificate } | null;
+  const cert = payload?.certificate;
+  if (!cert) return null;
+  if (cert.approvalState !== "APPROVED") return null;
+  if (!cert.issuer?.actorId || !cert.issuer.role) return null;
+
+  const auth = opts?.trustedIssuerAuth;
+  if (auth == null) return null;
+
+  const authorization = authorizeCompletenessIssuer(
+    { actorId: cert.issuer.actorId, role: cert.issuer.role },
+    auth,
+  );
+  if (!authorization.ok) return null;
+
   return row;
 }
 

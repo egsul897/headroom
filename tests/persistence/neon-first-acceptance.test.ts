@@ -22,6 +22,7 @@ import {
   getLatestFinancialEvidenceBundle,
   revokeFinancialEvidenceBundle,
   persistUtilizationCompletenessRecord,
+  getActiveCompletenessRecord,
   getProductionEligibleCompletenessRecord,
   revokeCompletenessRecord,
   persistCapacityCalculation,
@@ -451,10 +452,14 @@ describeDb("Neon-first persistence acceptance (disposable PostgreSQL)", () => {
       issuer: { role: "COUNSEL_REVIEWER", actorId: "claimed-but-untrusted", attestedAt: "2024-12-31T00:00:00Z" },
     };
     const persisted = await persistUtilizationCompletenessRecord(prisma, { companyId: COMPANY_A, certificate: cert });
-    expect(await getProductionEligibleCompletenessRecord(prisma, COMPANY_A, "rule-6.01", "2024-12-31")).not.toBeNull();
+    // Caller-claimed AUTHENTIC without trustedIssuerAuth is never production-eligible.
+    expect(await getProductionEligibleCompletenessRecord(prisma, COMPANY_A, "rule-6.01", "2024-12-31")).toBeNull();
+    // ACTIVE row still exists for audit/history.
+    expect(await getActiveCompletenessRecord(prisma, COMPANY_A, "rule-6.01", "2024-12-31")).not.toBeNull();
 
     await revokeCompletenessRecord(prisma, COMPANY_A, persisted.id);
     expect(await getProductionEligibleCompletenessRecord(prisma, COMPANY_A, "rule-6.01", "2024-12-31")).toBeNull();
+    expect(await getActiveCompletenessRecord(prisma, COMPANY_A, "rule-6.01", "2024-12-31")).toBeNull();
 
     const fin = await getLatestFinancialEvidenceBundle(prisma, COMPANY_A, "fin-q3-2024");
     await revokeFinancialEvidenceBundle(prisma, COMPANY_A, fin!.id);

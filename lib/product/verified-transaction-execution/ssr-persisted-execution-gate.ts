@@ -1,18 +1,22 @@
 /**
- * SSR → executeAndPersist integration gate.
+ * SSR → executeAndPersist structural preflight gate.
  *
- * Position / Ask / Simulate must not call executeAndPersistUnifiedVerifiedTransaction
- * until every dependency below is present. This module enumerates exact blockers and
- * refuses — it never fabricates VerifiedExecutionPackage, trusted identity, or tenant auth.
+ * This module enumerates exact structural blockers for Position / Ask / Simulate.
+ * It is NOT an authorization grant:
+ *   - structuralRequestAssemblyComplete=true means only that declared fields are
+ *     present enough to call executeAndPersist without inventing VEP/identity.
+ *   - It does NOT authorize production publication, Neon writes as authority,
+ *     or trusted-identity activation.
  *
  * Production activation remains BLOCKED in TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.
+ * Live SSR routes must not call executeAndPersist until tenant auth and full
+ * validated request assembly are server-established — see assessCurrentSsrEntrypointShape.
  */
-
 import { TRUSTED_IDENTITY_PRODUCTION_ACTIVATION } from "@/lib/capacity/identity/activation";
 import type { UnifiedTransactionExecutionRequest } from "./types";
 
 export const SSR_PERSISTED_EXECUTION_GATE_VERSION =
-  "ssr-persisted-execution-gate.v1" as const;
+  "ssr-persisted-execution-gate.v2" as const;
 
 export type ProductSurface = "POSITION" | "ASK" | "SIMULATE";
 
@@ -28,11 +32,16 @@ export type SsrPersistedExecutionBlocker =
   | "MISSING_INPUT_RESOLVER"
   | "MISSING_PRISMA_CLIENT"
   | "TRUSTED_IDENTITY_PRODUCTION_BLOCKED"
-  | "PROVISIONAL_IDENTITY_NOT_CONFIRMED";
+  | "PROVISIONAL_IDENTITY_NOT_CONFIRMED"
+  | "EMPTY_EVIDENCE_OBJECT"
+  | "INCOMPLETE_OPERATIVE_AUTHORITY";
 
 export interface SsrPersistedExecutionDependencies {
   surface: ProductSurface;
-  /** Authenticated principal with companyScope containing companyId. */
+  /**
+   * Server-established tenant authentication (session/IdP). URL companyId alone
+   * is never sufficient — pass false unless the host verified company scope.
+   */
   tenantAuthenticated: boolean;
   companyId: string | null | undefined;
   /** Server Prisma client bound for durable writes (not optional ambient). */
@@ -44,19 +53,34 @@ export interface SsrPersistedExecutionDependencies {
 export interface SsrPersistedExecutionAssessment {
   surface: ProductSurface;
   /**
-   * True only when tenant auth + full request assembly + Prisma are present.
-   * Does NOT authorize production-authority publication.
+   * Structural preflight only: declared dependencies appear present.
+   * NOT production authorization. NOT permission to publish AVAILABLE capacity.
+   * NOT permission to treat persistence as current authority.
+   *
+   * @deprecated Alias retained for one release — prefer structuralRequestAssemblyComplete.
    */
   mayCallExecuteAndPersist: boolean;
-  /** True only when mayCallExecuteAndPersist and trusted-identity production is ACTIVE. */
+  /** Canonical name for the structural preflight bit (see mayCallExecuteAndPersist). */
+  structuralRequestAssemblyComplete: boolean;
+  /**
+   * True only when structural assembly is complete AND trusted-identity production
+   * activation is ACTIVE AND provisional identity is not present. Still subject to
+   * downstream legal/financial authorization inside executeUnifiedVerifiedTransaction.
+   */
   mayPublishProductionAuthority: boolean;
   blockers: SsrPersistedExecutionBlocker[];
   /** Human-readable contract for the integration owner — not a bypass. */
   implementationContract: readonly string[];
   trustedIdentityProductionActivation: typeof TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status;
+  /**
+   * Explicit semantic tag so consumers cannot mistake this gate for an
+   * authorization decision.
+   */
+  gateSemantics: "STRUCTURAL_PREFLIGHT_ONLY";
 }
 
 const SHARED_CONTRACT = [
+  "This gate is STRUCTURAL_PREFLIGHT_ONLY — not an authorization grant.",
   "Assemble complete UnifiedTransactionExecutionRequest (never invent VEP / operative / financials).",
   "Authenticate company/tenant scope before any Prisma write (companyId from URL alone is insufficient).",
   "Pass server PrismaClient into executeAndPersistUnifiedVerifiedTransaction.",
@@ -83,9 +107,19 @@ const SURFACE_CONTRACT: Record<ProductSurface, readonly string[]> = {
   ],
 };
 
+function isEmptyObject(value: unknown): boolean {
+  return (
+    value != null &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    Object.keys(value as object).length === 0
+  );
+}
+
 /**
- * Assess whether a surface may safely invoke executeAndPersist.
- * Fail-closed: any missing dependency yields mayCallExecuteAndPersist=false.
+ * Assess structural readiness for invoke executeAndPersist.
+ * Fail-closed: any missing dependency yields structuralRequestAssemblyComplete=false.
+ * Does not authorize production publication.
  */
 export function assessSsrPersistedExecutionReadiness(
   deps: SsrPersistedExecutionDependencies,
@@ -101,17 +135,32 @@ export function assessSsrPersistedExecutionReadiness(
   }
   if (!req?.verifiedPackage) {
     blockers.push("MISSING_VERIFIED_EXECUTION_PACKAGE");
+  } else if (isEmptyObject(req.verifiedPackage)) {
+    blockers.push("EMPTY_EVIDENCE_OBJECT");
   }
   if (!req?.operativeSourceAuthority) {
     blockers.push("MISSING_OPERATIVE_SOURCE_AUTHORITY");
+  } else if (isEmptyObject(req.operativeSourceAuthority)) {
+    blockers.push("EMPTY_EVIDENCE_OBJECT");
   } else if (req.operativeSourceAuthority.provisionalIdentity === true) {
     blockers.push("PROVISIONAL_IDENTITY_NOT_CONFIRMED");
+  } else if (
+    req.operativeSourceAuthority.authorityClassification === "REVIEW_REQUIRED" ||
+    req.operativeSourceAuthority.authorityClassification === "AMBIGUOUS" ||
+    req.operativeSourceAuthority.authorityClassification === "UNSUPPORTED" ||
+    req.operativeSourceAuthority.authorityClassification === "PROVISIONAL_IDENTITY_BLOCKED"
+  ) {
+    blockers.push("INCOMPLETE_OPERATIVE_AUTHORITY");
   }
   if (!req?.financialEvidence) {
     blockers.push("MISSING_FINANCIAL_EVIDENCE");
+  } else if (isEmptyObject(req.financialEvidence)) {
+    blockers.push("EMPTY_EVIDENCE_OBJECT");
   }
   if (!req?.utilization) {
     blockers.push("MISSING_UTILIZATION_COMPLETENESS");
+  } else if (isEmptyObject(req.utilization)) {
+    blockers.push("EMPTY_EVIDENCE_OBJECT");
   }
   if (!req?.selectedLegalPath) {
     blockers.push("MISSING_SELECTED_LEGAL_PATH");
@@ -129,7 +178,7 @@ export function assessSsrPersistedExecutionReadiness(
   const structuralBlockers = blockers.filter(
     (b) => b !== "TRUSTED_IDENTITY_PRODUCTION_BLOCKED",
   );
-  const mayCallExecuteAndPersist = structuralBlockers.length === 0;
+  const structuralRequestAssemblyComplete = structuralBlockers.length === 0;
 
   if (TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status === "BLOCKED") {
     blockers.push("TRUSTED_IDENTITY_PRODUCTION_BLOCKED");
@@ -137,14 +186,17 @@ export function assessSsrPersistedExecutionReadiness(
 
   return {
     surface: deps.surface,
-    mayCallExecuteAndPersist,
+    mayCallExecuteAndPersist: structuralRequestAssemblyComplete,
+    structuralRequestAssemblyComplete,
     mayPublishProductionAuthority:
-      mayCallExecuteAndPersist &&
+      structuralRequestAssemblyComplete &&
       TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status === "ACTIVE" &&
-      !blockers.includes("PROVISIONAL_IDENTITY_NOT_CONFIRMED"),
+      !blockers.includes("PROVISIONAL_IDENTITY_NOT_CONFIRMED") &&
+      !blockers.includes("INCOMPLETE_OPERATIVE_AUTHORITY"),
     blockers,
     implementationContract: [...SHARED_CONTRACT, ...SURFACE_CONTRACT[deps.surface]],
     trustedIdentityProductionActivation: TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status,
+    gateSemantics: "STRUCTURAL_PREFLIGHT_ONLY",
   };
 }
 

@@ -66,5 +66,5 @@ export const REMAINING_PRODUCT_DURABLE_WIRING_CALL_SITES = [
   "app/[companyId]/position/page.tsx — still getCompanyDashboard/buildPositionView",
   "lib/ask/shell-runner.ts + app/api/ask/route.ts — attemptCertifiedTransaction only",
   "app/[companyId]/simulate/page.tsx — attemptVerifiedSimulate(verifiedPackage:null)",
-  "Assemble UnifiedTransactionExecutionRequest then executeAndPersist only when gate.mayCallExecuteAndPersist",
+  "Assemble UnifiedTransactionExecutionRequest then executeAndPersist only when gate.structuralRequestAssemblyComplete (STRUCTURAL_PREFLIGHT_ONLY — not an authorization grant)",
 ] as const;
