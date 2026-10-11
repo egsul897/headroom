@@ -11,7 +11,7 @@
 | Prior #293 tip (acceptance) | `40d26d308a00b18f8d01d8f020df6cca92a4d0ac` |
 | #293 tip before this consolidation | `038fa626ab5f32b4e0c7481c69fa98f52841e822` |
 | #298 tip (P0 absorption) | `0f589f833d7350b9dd194987b2f8dee5a43c27ef` |
-| **Consolidation tip (#293 + #298)** | see `git rev-parse origin/cursor/canonical-product-integration-5a28` |
+| **Consolidation tip (#293 + #298)** | `66b0f769360d63b43c06d22682f059e0212517d8` |
 | Production safety code (adversarial fixture) | `60dbdeeeb1e067e1823972f2ea79ea5f3ba19f72` |
 
 ## #298 status
