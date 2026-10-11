@@ -1,0 +1,107 @@
+TIP_SHA_PROBE_START
+TRUSTED_IDENTITY BLOCKED
+MATTHEWS_FIXTURE_TOP_KEYS [
+  'label',
+  'companyId',
+  'entityName',
+  'sliceNote',
+  'edgarAccession',
+  'reportingPeriod',
+  'asOf',
+  'measurementDate',
+  'currency',
+  'units',
+  'provenanceId',
+  'statementLines'
+]
+MATTHEWS_ACCESSION_HITS 11
+MATTHEWS_COVENANT_COUNT 5
+MATTHEWS_FIN_METRICS_PRESENT 6
+MATTHEWS_UTIL_SUPPORTS_REMAINING false
+MATTHEWS_UTIL_UNKNOWN_HIST true
+MATTHEWS_TRUSTED_ISSUER BLOCKED
+CROSS_DOC_CA_LIEN {
+  code: 'ca_lien_601j_2024notes',
+  modeled: 0,
+  remaining: null,
+  authority: 'STRUCTURAL_ZERO'
+}
+POSITION_READINESS undefined
+PRODUCTION_REMAINING_PUBLISHED false
+CONNECTED_METRICS [
+  {
+    code: 'ind_permitted_debt_1a_flat',
+    claimKind: 'GROSS_CONTRACTUAL',
+    label: 'Gross contractual',
+    mayPublish: false,
+    provenance: 'MODELED_LEAF'
+  },
+  {
+    code: 'ind_ratio_debt_fccr',
+    claimKind: 'GROSS_CONTRACTUAL',
+    label: 'Gross contractual',
+    mayPublish: false,
+    provenance: 'MODELED_LEAF'
+  },
+  {
+    code: 'ind_permitted_debt_1b_ratio_secured',
+    claimKind: 'GROSS_CONTRACTUAL',
+    label: 'Gross contractual',
+    mayPublish: false,
+    provenance: 'MODELED_LEAF'
+  },
+  {
+    code: 'ind_permitted_debt_2_notes',
+    claimKind: 'GROSS_CONTRACTUAL',
+    label: 'Gross contractual',
+    mayPublish: false,
+    provenance: 'MODELED_LEAF'
+  },
+  {
+    code: 'ca_lien_601j_2024notes',
+    claimKind: 'GROSS_CONTRACTUAL',
+    label: 'Gross contractual',
+    mayPublish: false,
+    provenance: 'MODELED_LEAF'
+  }
+]
+VE_METRICS [
+  {
+    code: 've:matw-permitted-debt-1a-fixed-dollar',
+    claimKind: 'GROSS_CONTRACTUAL',
+    label: 'Gross contractual',
+    provenance: 'SOURCE_BACKED_COMPILED_GROSS'
+  }
+]
+ANY_AVAILABLE_CLAIM false
+MHK_SOURCE_EXISTS true
+MHK_HAS_700M true
+MHK_HAS_703f_LANG true
+MHK_VE_UNIT_COUNT 0
+MHK_FIRST_UNIT undefined
+TIP_SHA_PROBE_DONE
+{
+  companyId: 'mhk',
+  production: false,
+  feedCount: 1,
+  first: {
+    id: 'mhk-7-03f-receivables-fixed-dollar',
+    valueClass: 'SOURCE_BACKED_COMPILED_GROSS',
+    gross: 700,
+    outcome: 'PRODUCTION_CAPACITY_REFUSED'
+  }
+}
+readiness [
+  "companyId",
+  "packageKey",
+  "asOf",
+  "positionView",
+  "connectedMetrics",
+  "verifiedExecutableMetrics",
+  "missingInputs",
+  "productionRemainingPublished",
+  "phase3Compile",
+  "autonomouslyCompiledDisplayedCount",
+  "verifiedExecutableCompile",
+  "verifiedExecutableUnitsFeedingPosition"
+]

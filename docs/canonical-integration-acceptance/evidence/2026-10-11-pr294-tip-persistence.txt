@@ -1,0 +1,32 @@
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v2.1.9 /tmp/hr-294
+
+ ✓ tests/operative-restatement-authority/later-unresolved-successor-guard.test.ts (6 tests) 8ms
+ ✓ tests/persistence/ssr-persisted-execution-gate.test.ts (11 tests) 7ms
+ ❯ tests/persistence/authorization-adversarial.test.ts (11 tests | 11 skipped) 11ms
+ ✓ tests/product/canonical-product-integration-adversarial.test.ts (13 tests) 21ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/persistence/authorization-adversarial.test.ts > persistence authorization adversarial
+Error: spawn createdb ENOENT
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/persistence/authorization-adversarial.test.ts > persistence authorization adversarial
+TypeError: Cannot read properties of undefined (reading '$disconnect')
+ ❯ tests/persistence/authorization-adversarial.test.ts:123:18
+    121| 
+    122|   afterAll(async () => {
+    123|     await prisma.$disconnect();
+       |                  ^
+    124|     await destroyEphemeralDatabase(db);
+    125|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  30 passed | 11 skipped (41)
+   Start at  23:40:37
+   Duration  884ms (transform 828ms, setup 0ms, collect 1.45s, tests 47ms, environment 1ms, prepare 212ms)
+

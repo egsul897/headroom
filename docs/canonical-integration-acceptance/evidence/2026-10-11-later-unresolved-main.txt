@@ -1,0 +1,16 @@
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v2.1.9 /workspace
+
+ ✓ tests/operative-restatement-authority/later-unresolved-successor-guard.test.ts > P0 later/undated unresolved competing successor guard > PROVEN regression: confirmed 2022 + REVIEW_REQUIRED 2024 (as-of 2025) refuses CONFIRMED_OPERATIVE / ACTIVE
+ ✓ tests/operative-restatement-authority/later-unresolved-successor-guard.test.ts > P0 later/undated unresolved competing successor guard > confirmed 2022 + UNSUPPORTED 2024 also refuses earlier CONFIRMED_OPERATIVE / ACTIVE
+ ✓ tests/operative-restatement-authority/later-unresolved-successor-guard.test.ts > P0 later/undated unresolved competing successor guard > undated competing REVIEW_REQUIRED successor also refuses earlier CONFIRMED_OPERATIVE
+ ✓ tests/operative-restatement-authority/later-unresolved-successor-guard.test.ts > P0 later/undated unresolved competing successor guard > future-effective REVIEW_REQUIRED successor does not demote confirmed 2022
+ ✓ tests/operative-restatement-authority/later-unresolved-successor-guard.test.ts > P0 later/undated unresolved competing successor guard > historical earlier REVIEW_REQUIRED prior behind confirmed successor stays non-blocking
+ ✓ tests/operative-restatement-authority/later-unresolved-successor-guard.test.ts > P0 later/undated unresolved competing successor guard > unrelated-document unresolved successor outside instrument family does not demote
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  23:41:25
+   Duration  309ms (transform 104ms, setup 0ms, collect 133ms, tests 5ms, environment 0ms, prepare 41ms)
+
