@@ -108,6 +108,7 @@ function dashboardStubVeOnly(
       tenantKind: "EVALUATION",
     },
     asOfDate,
+    // buildPositionView only reads capitalStructure.facilities (+ asOfDate/capacity).
     financialPosition: {
       companyId,
       asOfDate,
