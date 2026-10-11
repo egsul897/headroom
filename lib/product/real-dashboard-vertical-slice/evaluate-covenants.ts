@@ -203,9 +203,9 @@ function buildCovenantRow(
     remainingCapacityMm = 0;
     authorityStatus = "STRUCTURAL_ZERO";
   } else if (p.code === "ind_ratio_debt_fccr" || p.code === "ind_permitted_debt_1b_ratio_secured") {
-    // Ratio rooms are incremental headroom from financials; no basket ledger required for the room figure.
-    // Still not PRODUCTION_AUTHORITATIVE remaining (trusted-issuer BLOCKED).
-    remainingCapacityMm = modeled;
+    // D3b: modeled ratio room is HYPOTHETICAL_MODELED capacity — never publish as remaining.
+    // Completeness / trusted-issuer absent → remainingCapacityMm stays null.
+    remainingCapacityMm = null;
     utilizationKnowledge = "NOT_APPLICABLE";
     authorityStatus = "MODELED_AUTHENTIC_EVIDENCE";
   }
@@ -219,6 +219,10 @@ function buildCovenantRow(
   }
   if (p.code === "ind_permitted_debt_1b_ratio_secured") {
     caveats.push("First Lien Net Leverage ≤ 2.50x sub-test (cl. (1)(b)(y)) is not separately modeled.");
+    caveats.push("D3b: modeled Secured Net Leverage room is not published as remainingCapacityMm.");
+  }
+  if (p.code === "ind_ratio_debt_fccr") {
+    caveats.push("D3b: modeled FCCR dollar-converted room is not published as remainingCapacityMm.");
   }
   if (p.code === "ind_permitted_debt_2_notes") {
     caveats.push("Grandfather for Issue-Date Notes — zero NEW capacity while Notes remain outstanding.");

@@ -120,9 +120,12 @@ export function runRealDashboardVerticalSlice(): RealDashboardVerticalSliceResul
     ...phase3Compile.limitations,
     ...verifiedExecutableCompile.limitations,
     "D1: Five CovenantProvisionInput rows remain manually encoded for leaf modeled capacity.",
+    "D2: CONSOLIDATED_EBITDA is PUBLIC_FILING_RECONSTRUCTION / UNVERIFIED; legal assumptions remain.",
+    "D3b: REMEDIATED — ratio modeled rooms keep remainingCapacityMm null (no modeled→remaining fallback).",
+    "D3c: REMEDIATED — rulebook stage INTERPRETED; reviewed/executable counts not fabricated.",
     "D4: Indenture secured composition is HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION (CA lien companion blocks NEW secured).",
     "D5: independentExpectedRemaining mirrors fixture thresholds — not independent legal proof.",
-    "D6: Pathway is Matthews-only; second authentic package returns null.",
+    "D6: Full leaf dashboard pathway is Matthews-only; fixed-dollar VE core + autonomous pipeline also proven on MHK.",
     "Fixed-dollar VE compile feeds Position as SOURCE_BACKED_COMPILED_GROSS only; ratio/structural rows still leaf evaluateProvision.",
     "Production IdP / trusted-issuer activation BLOCKED by design.",
   ];

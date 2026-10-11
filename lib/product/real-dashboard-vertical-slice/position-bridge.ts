@@ -92,19 +92,23 @@ function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
 }
 
 function rulebookFromSlice(slice: VerticalSliceEvaluation): RulebookReadiness {
+  // D3c: do not fabricate REVIEWED / executable counts — leaf modeled rows are
+  // INTERPRETED engineering artifacts, not counsel-reviewed permissions.
   return {
     companyId: slice.companyId,
-    stage: "REVIEWED",
+    stage: "INTERPRETED",
     discoveredSummaries: slice.covenants.length,
     interpretedProvisions: slice.covenants.length,
-    reviewedPermissions: slice.covenants.length,
-    executablePermissions: slice.covenants.length,
+    reviewedPermissions: 0,
+    executablePermissions: 0,
     provisionRows: slice.covenants.length,
     blockers: [
-      "Phase-3 certified executable IR not bound for this package — leaf evaluateProvision path only.",
+      "No counsel REVIEWED permissions — leaf evaluateProvision path only.",
+      "Phase-3 certified executable IR not bound for this package.",
+      "Fixed-dollar VE compile feeds GROSS only; ratio/structural rows remain modeled leaves.",
     ],
-    headline: "Engineering-verified Matthews permissions (not outside-counsel certified)",
-    note: "PROVISIONAL — ENGINEERING-VERIFIED ONLY per populate-matthews-solver-native.ts.",
+    headline: "Engineering-interpreted Matthews permissions (not counsel-reviewed)",
+    note: "PROVISIONAL — ENGINEERING-INTERPRETED ONLY; stage is INTERPRETED not REVIEWED.",
   };
 }
 
@@ -223,7 +227,8 @@ function dashboardStubFromSlice(slice: VerticalSliceEvaluation): CompanyDashboar
       goldenTestsTotal: 18,
       goldenTestsVerified: 0,
       permissionsTotal: slice.covenants.length,
-      permissionsVerified: slice.covenants.length,
+      // D3c: do not claim permissionsVerified without counsel review evidence.
+      permissionsVerified: 0,
     },
   };
 }
@@ -233,24 +238,23 @@ function metricFromCovenant(c: VerifiedCovenantCalculation): DashboardConnectedM
     c.authorityStatus === "GROSS_ONLY_UTILIZATION_INCOMPLETE" ||
     c.authorityStatus === "PRODUCTION_REMAINING_REFUSED";
 
-  // Publication honesty:
-  // - GROSS_ONLY / utilization incomplete → GROSS_CONTRACTUAL (never REMAINING/AVAILABLE)
-  // - Modeled ratio/structural figures → REMAINING with remainingIsAuthoritative=false
-  //   → presentCapacityClaim labels MODELED / NOT VERIFIED (mayPublishAvailable=false)
-  const amount =
-    c.code === "ind_permitted_debt_1a_flat"
-      ? c.modeledCapacityMm
-      : (c.remainingCapacityMm ?? c.modeledCapacityMm);
+  // Publication honesty (D3a/D3b):
+  // - Never fallback modeledCapacityMm → remaining when remaining is unknown/null.
+  // - Publish remainingCapacityMm only when explicitly set (structural/attributed NEW=0).
+  // - Otherwise publish modeledCapacityMm as GROSS_CONTRACTUAL / MODELED — never as
+  //   authoritative REMAINING / AVAILABLE.
+  const hasExplicitRemaining = c.remainingCapacityMm != null;
+  const amount = hasExplicitRemaining ? c.remainingCapacityMm : c.modeledCapacityMm;
 
-  // D3a: GROSS_ONLY / structural-zero / modeled gross must not use claimKind REMAINING
-  // in a way that could be read as authoritative available capacity.
   const claimKind =
     amount == null
       ? ("UNAVAILABLE" as const)
-      : isProductionRefused || c.authorityStatus === "STRUCTURAL_ZERO"
-        ? ("GROSS_CONTRACTUAL" as const)
-        : c.authorityStatus === "MODELED_AUTHENTIC_EVIDENCE"
-          ? ("REMAINING" as const)
+      : hasExplicitRemaining &&
+          (c.authorityStatus === "STRUCTURAL_ZERO" ||
+            c.code === "ind_permitted_debt_2_notes")
+        ? ("GROSS_CONTRACTUAL" as const) // structural NEW=0 / grandfather — not AVAILABLE remaining
+        : isProductionRefused || !hasExplicitRemaining
+          ? ("GROSS_CONTRACTUAL" as const)
           : ("UNAVAILABLE" as const);
 
   const claim = presentCapacityClaim({
@@ -270,7 +274,9 @@ function metricFromCovenant(c: VerifiedCovenantCalculation): DashboardConnectedM
     authorityStatus: c.authorityStatus,
     refusalReason: isProductionRefused
       ? "Production remaining refused — incomplete utilization completeness / trusted-issuer BLOCKED."
-      : null,
+      : !hasExplicitRemaining
+        ? "Modeled capacity published as GROSS/MODELED only — remaining unknown (no modeled→remaining fallback)."
+        : null,
     mayPublishAvailable: false, // authentic slice never publishes customer AVAILABLE
     valueProvenance: "MODELED_LEAF",
   };

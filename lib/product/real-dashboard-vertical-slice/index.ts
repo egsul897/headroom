@@ -61,4 +61,13 @@ export {
   MHK_VE_COMPANY_ID,
 } from "./package-mhk-ve-candidates";
 
+export {
+  runAutonomousCompilationPipeline,
+  runMatthewsAutonomousPipeline,
+  runMhkAutonomousPipeline,
+  type AutonomousCompilationPipelineResult,
+  type PipelinePublicationClass,
+  type PipelinePositionMetric,
+} from "./autonomous-compilation-pipeline";
+
 export { matthewsCompilerPackageDocuments } from "./source-excerpts-matthews";

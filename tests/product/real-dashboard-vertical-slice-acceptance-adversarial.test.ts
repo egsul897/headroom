@@ -124,6 +124,8 @@ describe("PR #304 acceptance — Position publication honesty (Check 3)", () => 
       expect(
         /MODELED|NOT VERIFIED|NOT_PRODUCTION|UNKNOWN|NEEDS_INPUT|GROSS/i.test(m.claim.claimLabel),
       ).toBe(true);
+      // D3b: no claimKind REMAINING for leaf modeled rows (modeled≠remaining).
+      expect(m.claim.claimKind).not.toBe("REMAINING");
     }
   });
 
@@ -132,6 +134,31 @@ describe("PR #304 acceptance — Position publication honesty (Check 3)", () => 
     expect(flat.modeledCapacityMm).toBeCloseTo(521.118, 3);
     expect(flat.remainingCapacityMm).toBeNull();
     expect(flat.authorityStatus).toBe("GROSS_ONLY_UTILIZATION_INCOMPLETE");
+  });
+
+  it("D3b: ratio modeled rooms keep remainingCapacityMm null (no modeled→remaining fallback)", () => {
+    const slice = evaluateMatthewsVerticalSlice();
+    const fccr = slice.covenants.find((c) => c.code === "ind_ratio_debt_fccr")!;
+    const ratio1b = slice.covenants.find((c) => c.code === "ind_permitted_debt_1b_ratio_secured")!;
+    expect(fccr.modeledCapacityMm).not.toBeNull();
+    expect(ratio1b.modeledCapacityMm).not.toBeNull();
+    expect(fccr.remainingCapacityMm).toBeNull();
+    expect(ratio1b.remainingCapacityMm).toBeNull();
+    const pos = connectSliceToPosition(slice);
+    for (const code of ["ind_ratio_debt_fccr", "ind_permitted_debt_1b_ratio_secured"]) {
+      const m = pos.connectedMetrics.find((x) => x.code === code)!;
+      expect(m.claim.claimKind).toBe("GROSS_CONTRACTUAL");
+      expect(m.claim.claimKind).not.toBe("REMAINING");
+    }
+  });
+
+  it("D3c: rulebook stage is INTERPRETED — not fabricated REVIEWED", () => {
+    const pos = connectSliceToPosition(evaluateMatthewsVerticalSlice());
+    expect(BRIDGE_SRC).toMatch(/stage:\s*"INTERPRETED"/);
+    expect(BRIDGE_SRC).not.toMatch(/stage:\s*"REVIEWED"/);
+    expect(pos.positionView.permissions.executableReported).toBe(0);
+    expect(pos.positionView.permissions.verified).toBe(0);
+    expect(pos.positionView.reviewBlockers.some((b) => /INTERPRETED/i.test(b))).toBe(true);
   });
 
   it("separates SOURCE_BACKED_COMPILED_GROSS ($1300) from MODELED_LEAF room ($521.118)", () => {
