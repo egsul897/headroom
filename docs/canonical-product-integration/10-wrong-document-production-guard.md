@@ -23,7 +23,7 @@ When restatement authorities were REVIEW_REQUIRED with null predecessorDocumentI
 
 ## Fix (package vs provision semantics)
 
-1. Competing in-family REVIEW_REQUIRED successors dated on/before as-of block unconditional base promotion even when predecessorDocumentId is null.
+1. Competing in-family REVIEW_REQUIRED / UNSUPPORTED successors dated on/before as-of **or undated** (`effectiveDateIso == null`) block unconditional base promotion even when predecessorDocumentId is null.
 2. Downgrade mis-promoted CONFIRMED_OPERATIVE to REVIEW_REQUIRED with governingDocumentId=null plus caveats PACKAGE_RESTATEMENT_SUCCESSION_UNRESOLVED / LOCAL_BASE_CANDIDATE_NOT_PACKAGE_OPERATIVE.
 3. Bundle summary belt-and-suspenders: unresolved package restatements with no OPERATIVE_AUTHORITY_CONFIRMED refuse allProvisionsProductionActive.
 
@@ -55,3 +55,10 @@ Local base candidacy may be disclosed via caveat; it is not package-wide operati
 
 tests/operative-restatement-authority/wrong-document-production-guard.test.ts  
 tests/product/unified-product-adversarial-gate.test.ts
+
+## P0 absorption (#296 → #293)
+
+- #293 already carried alternate wrong-document guard at 59c3c4b3 (package-wide REVIEW_REQUIRED downgrade + summary refuse).
+- Selective absorption from #296 (1f094583): undated (`effectiveDateIso == null`) and `UNSUPPORTED` competing successors also block base CONFIRMED_OPERATIVE; binder left intact (no duplication).
+- Unified-product adversarial gate: closed on tip by 60dbdeee; absorption PR does not re-touch that file.
+- Agent #11 absorption retest: `docs/agent-11-p0-absorption-retest/`.
