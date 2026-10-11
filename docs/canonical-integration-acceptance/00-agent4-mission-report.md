@@ -5,7 +5,7 @@
 **Production activation remains BLOCKED.** No production Neon writes performed by this agent.  
 **Agent completion reports are not evidence.** All verdicts below cite code, diffs, tests, or GitHub CI.
 
-**Inspected at (UTC):** 2026-10-11T23:42:42Z  
+**Inspected at (UTC):** 2026-10-11T23:42:42Z (initial); follow-up refresh 2026-10-11T23:46Z  
 **Agent run:** https://cursor.com/agents/bc-01a12d52-bbcc-767d-99e3-0518a77ee3ce
 
 ---
@@ -31,12 +31,14 @@ Local VM checkout was stale at `440dd65d` until `git fetch origin main`.
 | PR | Tip | Base | Mergeable | #306 ancestry | Role | CI (exact tip) |
 | --- | --- | --- | --- | --- | --- | --- |
 | **#294** | `9a46595d668d` | main | MERGEABLE | YES | Neon-first persistence foundation | certified SUCCESS `38184616188`; soft gates SUCCESS |
-| **#304** | `9505ea66f205` | main | MERGEABLE | YES | Matthews restricted slice + fixed-dollar VE Position | certified SUCCESS `38185091567`; home-overview SUCCESS |
-| **#307** | `55668a95d0b8` | **#304 branch** | MERGEABLE | YES (via #304) | Autonomous fixed-dollar candidate discovery | stacks on #304 — merge only after #304 |
-| **#308** | `58af9a2ff7dd` | main | MERGEABLE | YES | Agent 2 verified remaining capacity integration | Vercel pending at inspect; local tests 33/33 |
+| **#304** | `61a61d17f698` | main | MERGEABLE | YES | Matthews restricted slice + VE→Position (advanced past `9505ea66`) | certified SUCCESS on prior tip `9505ea66`; tip still moving |
+| **#307** | `55668a95d0b8` | **#304 branch** | UNKNOWN/MERGEABLE | YES (via older #304) | Autonomous fixed-dollar candidate discovery | stacks on #304 — rebase after #304 tip stabilizes |
+| **#308** | `58af9a2ff7dd` | main | MERGEABLE | YES | Agent 2 verified remaining capacity integration | Vercel SUCCESS; local tests 33/33 |
+| **#310** | `6d64cfed84c2` | **#304 @ `26d04084` (STALE)** | UNKNOWN | YES (via stale #304) | Agent 1 autonomous operative package compile | **Behind current #304 by 4 commits** — rebase required |
 | **#305** | `6bdf3e78aac8` | pre-#306 main | **CONFLICTING** | **NO** | Title already `SUPERSEDED by #306` | Do not merge |
-| **#303** | `011ee05fc287` | main | MERGEABLE | n/a (older offline slice) | Superseded by #304 product path | certified FAILURE historically; close as superseded |
+| **#303** | `011ee05fc287` | main | MERGEABLE | n/a | Offline Matthews matrix (complementary to #304 Position; **not** product path) | Keep closed-as-non-product or archive; do not merge as dashboard |
 | **#301** | docs | #293 tip | MERGEABLE | n/a | Docs-only consolidation inventory | Non-blocking; do not treat as product merge |
+| **#309** | this PR | main | MERGEABLE | YES | Agent 4 acceptance evidence | docs-only |
 
 Stale / stacked / conflicting open PRs (`#246`, `#251`–`#264`, `#220`/`#221`/`#230`/`#231`, etc.) remain **non-candidates** relative to post-#293/#306 main. Do not revive without full rebase onto `67027b8f` and re-acceptance.
 
@@ -44,11 +46,11 @@ Stale / stacked / conflicting open PRs (`#246`, `#251`–`#264`, `#220`/`#221`/`
 
 | Agent | Cloud id | PR / branch | Status |
 | --- | --- | --- | --- |
-| Agent 1 — Autonomous covenant compilation | `bc-01a12d52-3442-7efc-95be-1487d3dcb53f` | **No PR / no branch tip published at inspect** | RUNNING — not mergeable |
-| Agent 2 — Verified remaining capacity | `bc-01a12d52-6435-709a-9d04-3c82c8359f27` | **#308** `cursor/verified-remaining-capacity-integration-9f27` | OPEN, MERGEABLE, based on main+#306 |
-| Agent 3 — E2E CFO product workflow | `bc-01a12d52-8ffe-7042-84b0-77339008d829` | **No PR / no branch tip published at inspect** | RUNNING — not mergeable |
-| Persistence consolidation | `bc-01a12cbc-cde9-70a0-bd69-4074292fb2b0` | **#294** | OPEN |
-| Dashboard slice | `bc-01a12cc4-222d-79f6-ba85-4b2bbc302ca3` | **#304** (+ #307 child) | OPEN / still pushing |
+| Agent 1 — Autonomous covenant compilation | [Autonomous covenant compilation](bc-01a12d52-3442-7efc-95be-1487d3dcb53f) | **#310** `cursor/autonomous-covenant-compilation-b53f` | OPEN on **stale** #304 tip `26d04084`; local compile suites 13/13; **rebase onto #304 `61a61d17+` before merge** |
+| Agent 2 — Verified remaining capacity | [Verified remaining capacity](bc-01a12d52-6435-709a-9d04-3c82c8359f27) | **#308** `cursor/verified-remaining-capacity-integration-9f27` | OPEN, MERGEABLE, based on main+#306 |
+| Agent 3 — E2E CFO product workflow | [End-to-end CFO product workflow](bc-01a12d52-8ffe-7042-84b0-77339008d829) | Local WIP `cursor/cfo-product-workflow-d829` — **not on origin / no PR** | Incomplete scaffolding only; stop any completion claims |
+| Persistence consolidation | [Archived work consolidation](bc-01a12cbc-cde9-70a0-bd69-4074292fb2b0) | **#294** | OPEN |
+| Dashboard slice | [Real covenant dashboard slice](bc-01a12cc4-222d-79f6-ba85-4b2bbc302ca3) | **#304** (+ #307 child) | OPEN / tip advanced to `61a61d17` |
 
 ---
 
@@ -72,11 +74,11 @@ Already on main (via #293 merge tree + #306):
 | Surface | Branch-only | Notes |
 | --- | --- | --- |
 | Institutional memory Prisma models + `lib/persistence/*` + VTE persist bridge | **#294** | Disposable Postgres acceptance; production writes refused |
-| Matthews Position vertical slice + VE fixed-dollar bridge + MHK §7.03(f) | **#304** | Fixture-modeled leaf capacity + bounded source-backed gross VE |
-| Autonomous FD candidate discovery | **#307** | Child of #304; not independently main-based for merge |
+| Matthews Position vertical slice + VE fixed-dollar bridge + MHK §7.03(f) + shared VE→Position feed | **#304** (`61a61d17`) | Fixture-modeled leaf capacity + bounded source-backed gross VE |
+| Autonomous FD candidate discovery | **#307** | Child of #304; rebase after #304 tip stabilizes |
 | `evaluateVerifiedRemainingCapacity` orchestrator + completeness ladder | **#308** | Reuses `evaluateCapacityState` / `computeVerifiedRemaining`; demo remaining only |
-| Agent 1 autonomous compilation productization | **none published** | In flight |
-| Agent 3 CFO E2E workflow productization | **none published** | In flight |
+| `compileOperativeCovenantPackage` + numbered definition catalog + product contexts | **#310** | Wraps `compileFrozenDebtPackage`; self-labels `AUTONOMOUS_…=PARTIAL`; **stale vs #304 tip** |
+| Agent 3 CFO journey scaffolding | **unpublished** | `journey.ts` / view assemblers only; routes unwired |
 
 ---
 
@@ -85,13 +87,16 @@ Already on main (via #293 merge tree + #306):
 | Conflict | Severity | Action |
 | --- | --- | --- |
 | **#305 vs #306** | P0 process | #305 CONFLICTING and lacks `b33710cf`. Already titled SUPERSEDED. **Close; do not merge.** |
-| **#303 vs #304** | P1 redundancy | Older offline Matthews slice superseded by #304 post-#306 tip. **Close #303.** |
-| **#307 base = #304 branch** | P1 sequencing | Must land after #304 (or fold into #304). Rebase onto main after #304 merges. |
+| **#310 base stale vs #304 tip** | **P0 integration** | #310 rooted at #304 `26d04084`; current #304 is `61a61d17` (+ Priority A locks, shared VE→Position feed, typecheck fixes). **Rebase #310 onto current #304 before any merge.** |
+| **#310 vs #304 dual compile surfaces** | P1 abstraction | #310 adds `lib/product/autonomous-covenant-compilation/*` wrapping offline `compileFrozenDebtPackage`; #304 VE path uses `compileVerifiedFixedDollarBridge`. Acceptable only if #310 feeds the same VE/Position publication contract — not a second dashboard math path. |
+| **#303 vs #304** | P2 process | Complementary offline matrix (not Position supersession). **Do not merge #303 as product**; archive or leave open as offline evidence only. |
+| **#307 base = #304 branch** | P1 sequencing | Must land after #304 tip stabilizes (or fold into #304). Rebase onto main after #304 merges. |
 | **#304 leaf capacity vs certified VTE** | P1 abstraction | Leaf `evaluateProvision` path remains Matthews-hardcoded; VE bridge is separate and honest about GROSS. Do not promote leaf path as autonomous IR. |
 | **#308 new orchestrator vs VTE `evaluateVerifiedCapacity`** | P2 watch | #308 reuses Phase 4C + `computeVerifiedRemaining` (not a second solver). Require Agent 3 / product surfaces to call this **or** VTE — not both with divergent remaining semantics. |
+| **Agent 3 vs #304 Position** | P1 (latent) | Unpublished `capacity-state.ts` / journey rewrite risks Position clash; residual risk of `claimKind:"REMAINING"` for modeled figures. Hold until #304+#308 land. |
 | **#294 vs #304 / #308 file overlap** | None | Zero shared paths — safe parallel human merges after #306. |
 | **Stale stacked PRs (#220/#221/#230/#253/#258…)** | P2 noise | Do not merge; conflict with consolidated main. |
-| **Agents 1 & 3 unpublished** | P1 process | Block any claim of compiler/workflow completion until tip SHA + PR exist on post-#306 main. |
+| **Requested `*_PROVEN` gate names** | Info | Exact strings absent on main; Agent 4 verdicts in §10 are independent labels, not repo constants. |
 
 ### #306 retention (mandatory)
 
