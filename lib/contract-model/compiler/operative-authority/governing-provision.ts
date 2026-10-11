@@ -221,6 +221,12 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
   // block promoting the base/predecessor document to CONFIRMED_OPERATIVE / production-active.
   // Uncertain dating (effectiveDateIso == null) is treated as current/blocking — same as
   // #296 fail-closed — so undated REVIEW_REQUIRED successors cannot leave base confirmed.
+  //
+  // Later (or undated) unresolved successors must also block an *earlier* confirmed
+  // restatement from retaining CONFIRMED_OPERATIVE — a 2022 confirmed AR cannot stay
+  // production-active when a 2024 competing successor remains REVIEW_REQUIRED/UNSUPPORTED.
+  // Strictly earlier historical REVIEW_REQUIRED items (e.g. WOR Fourth behind confirmed
+  // Fifth) remain non-blocking disclosures.
   for (const r of datedRestatements) {
     if (r.status === "AMBIGUOUS") {
       unresolvedConflicts.push(`Restatement authority AMBIGUOUS for ${r.successorDocumentId}: ${r.reasons.join(" ")}`);
@@ -229,13 +235,31 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
       (r.status === "REVIEW_REQUIRED" || r.status === "UNSUPPORTED") &&
       familyIds.has(r.successorDocumentId)
     ) {
-      if (governingRestatement) {
+      const datedOnOrBeforeAsOf =
+        r.effectiveDateIso == null || compareIsoDates(r.effectiveDateIso, asOf) <= 0;
+      const isSelectedGoverning =
+        governingRestatement?.successorDocumentId === r.successorDocumentId;
+      const isLaterOrUndatedThanGoverning =
+        !governingRestatement ||
+        r.effectiveDateIso == null ||
+        (governingRestatement.effectiveDateIso != null &&
+          compareIsoDates(r.effectiveDateIso, governingRestatement.effectiveDateIso) >= 0);
+      const isPotentiallyOperativeCompetitor =
+        !isSelectedGoverning &&
+        r.successorDocumentId !== input.baseDocumentId &&
+        datedOnOrBeforeAsOf &&
+        isLaterOrUndatedThanGoverning;
+
+      if (isPotentiallyOperativeCompetitor) {
+        unresolvedConflicts.push(
+          `Restatement authority ${r.status} for ${r.successorDocumentId}: ${r.reasons.join(" ") || "prior agreement / RESTATES identity not independently established"}`,
+        );
+      } else if (governingRestatement && !isSelectedGoverning) {
+        // Historical / earlier unresolved item behind a later confirmed governing restatement.
         caveats.push(`NON_BLOCKING_REVIEW_ITEM:${r.successorDocumentId}`);
       } else if (
-        // Competing successor (not the local base): dated on/before as-of, OR undated
-        // (uncertain dating → block). Package-wide succession remains unresolved.
         r.successorDocumentId !== input.baseDocumentId &&
-        (r.effectiveDateIso == null || compareIsoDates(r.effectiveDateIso, asOf) <= 0)
+        datedOnOrBeforeAsOf
       ) {
         unresolvedConflicts.push(
           `Restatement authority ${r.status} for ${r.successorDocumentId}: ${r.reasons.join(" ") || "prior agreement / RESTATES identity not independently established"}`,
@@ -389,24 +413,30 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
     governingDocumentId = null;
   }
 
-  // Package-wide vs local provision semantics: a local baseDocumentId candidate must
-  // not be exposed as CONFIRMED_OPERATIVE / production-active when a competing
-  // restatement successor remains REVIEW_REQUIRED / UNSUPPORTED (wrong-document guard).
+  // Package-wide vs local provision semantics: a local base / earlier confirmed
+  // restatement must not remain CONFIRMED_OPERATIVE / production-active when a
+  // potentially operative competing successor remains REVIEW_REQUIRED / UNSUPPORTED
+  // (wrong-document + later-unresolved-successor guard).
   if (
-    !governingRestatement &&
     unresolvedConflicts.some((c) => /Restatement authority (REVIEW_REQUIRED|UNSUPPORTED)/.test(c)) &&
     (authorityClassification === "CONFIRMED_OPERATIVE" ||
       authorityClassification === "CONFIRMED_OPERATIVE_WITH_CAVEATS")
   ) {
-    const localBaseCandidate = governingDocumentId;
+    const localCandidate = governingDocumentId;
     authorityClassification = "REVIEW_REQUIRED";
     governingDocumentId = null;
     reasons.push(
-      "Package-wide restatement succession is REVIEW_REQUIRED — refuse to promote local base/predecessor provisions to unconditional operative production authority.",
+      governingRestatement
+        ? "A later or undated competing restatement successor remains REVIEW_REQUIRED/UNSUPPORTED — refuse to retain earlier confirmed restatement as unconditional operative production authority."
+        : "Package-wide restatement succession is REVIEW_REQUIRED — refuse to promote local base/predecessor provisions to unconditional operative production authority.",
     );
     caveats.push("PACKAGE_RESTATEMENT_SUCCESSION_UNRESOLVED");
-    if (localBaseCandidate) {
-      caveats.push(`LOCAL_BASE_CANDIDATE_NOT_PACKAGE_OPERATIVE:${localBaseCandidate}`);
+    if (localCandidate) {
+      caveats.push(
+        governingRestatement
+          ? `EARLIER_CONFIRMED_RESTATEMENT_NOT_PACKAGE_OPERATIVE:${localCandidate}`
+          : `LOCAL_BASE_CANDIDATE_NOT_PACKAGE_OPERATIVE:${localCandidate}`,
+      );
     }
   }
 

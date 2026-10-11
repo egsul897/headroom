@@ -15,6 +15,7 @@ import {
   mayConsolidateOperativeAgreement,
 } from "../package-graph/instrument-grouping";
 import type { InstrumentAssociationKind, InstrumentGroupingResult } from "../package-graph/types";
+import { compareIsoDates } from "./date-utils";
 import type {
   ConditionsPrecedentSatisfaction,
   ConfirmedInstrumentIdentityView,
@@ -23,6 +24,47 @@ import type {
   OperativeAuthorityHandoffBundle,
   RestatementAuthorityResolution,
 } from "./types";
+
+function isUnresolvedRestatementStatus(
+  status: RestatementAuthorityResolution["status"],
+): boolean {
+  return status === "REVIEW_REQUIRED" || status === "AMBIGUOUS" || status === "UNSUPPORTED";
+}
+
+/**
+ * True when an unresolved restatement successor is potentially operative as of
+ * the bundle date and is not strictly earlier than the latest confirmed restatement.
+ * Preserves historical REVIEW_REQUIRED priors behind a later confirmed successor
+ * (e.g. WOR Fourth behind Fifth) while blocking later/undated competitors.
+ */
+function hasBlockingUnresolvedRestatementSuccessor(
+  authorities: readonly RestatementAuthorityResolution[],
+  asOfDate: string,
+): boolean {
+  const confirmedDated = authorities.filter(
+    (a) => a.status === "OPERATIVE_AUTHORITY_CONFIRMED" && a.effectiveDateIso != null,
+  );
+  const latestConfirmedIso =
+    confirmedDated.length === 0
+      ? null
+      : [...confirmedDated]
+          .map((a) => a.effectiveDateIso!)
+          .sort((a, b) => compareIsoDates(b, a))[0]!;
+
+  return authorities.some((a) => {
+    if (!isUnresolvedRestatementStatus(a.status)) return false;
+    // Future-effective unresolved successors do not block current production.
+    if (a.effectiveDateIso != null && compareIsoDates(a.effectiveDateIso, asOfDate) > 0) {
+      return false;
+    }
+    // No confirmed restatement → any potentially operative unresolved blocks.
+    if (latestConfirmedIso == null) return true;
+    // Undated competitor → uncertain dating blocks.
+    if (a.effectiveDateIso == null) return true;
+    // Later or same-date unresolved vs latest confirmed → block.
+    return compareIsoDates(a.effectiveDateIso, latestConfirmedIso) >= 0;
+  });
+}
 
 /** Explicit production disposition — never inferred from silence. */
 export type ProductionAuthorityDisposition =
@@ -177,10 +219,11 @@ export interface BundleProductionAuthoritySummary {
  * Summarize production-authority disposition across an operative-authority
  * handoff bundle. Never strips caveats, source identity, or effective dates.
  *
- * Package-wide guard: when any restatement authority is REVIEW_REQUIRED or
- * AMBIGUOUS and no OPERATIVE_AUTHORITY_CONFIRMED restatement exists, refuse
- * allProvisionsProductionActive even if a provision row was mis-labeled
- * CONFIRMED_OPERATIVE (wrong-document promotion belt-and-suspenders).
+ * Package-wide guard: when any potentially operative restatement successor is
+ * REVIEW_REQUIRED, AMBIGUOUS, or UNSUPPORTED — including later/undated
+ * competitors that outrank an earlier OPERATIVE_AUTHORITY_CONFIRMED row —
+ * refuse allProvisionsProductionActive even if a provision row was mis-labeled
+ * CONFIRMED_OPERATIVE (wrong-document + later-unresolved belt-and-suspenders).
  */
 export function summarizeBundleProductionAuthority(
   bundle: OperativeAuthorityHandoffBundle,
@@ -200,14 +243,10 @@ export function summarizeBundleProductionAuthority(
     };
   });
 
-  const hasConfirmedRestatement = bundle.restatementAuthorities.some(
-    (a) => a.status === "OPERATIVE_AUTHORITY_CONFIRMED",
+  const packageSuccessionBlocksProduction = hasBlockingUnresolvedRestatementSuccessor(
+    bundle.restatementAuthorities,
+    bundle.asOfDate,
   );
-  const hasUnresolvedPackageRestatement = bundle.restatementAuthorities.some(
-    (a) => a.status === "REVIEW_REQUIRED" || a.status === "AMBIGUOUS",
-  );
-  const packageSuccessionBlocksProduction =
-    hasUnresolvedPackageRestatement && !hasConfirmedRestatement;
 
   let allProvisionsProductionActive =
     byProvision.length > 0 && byProvision.every((x) => x.evaluation.productionAuthorityActive);
@@ -224,7 +263,7 @@ export function summarizeBundleProductionAuthority(
           productionAuthorityActive: false,
           refusalReasons: [
             ...row.evaluation.refusalReasons,
-            "Package-wide restatement succession is REVIEW_REQUIRED/AMBIGUOUS with no OPERATIVE_AUTHORITY_CONFIRMED restatement — refuse PRODUCTION_AUTHORITY_ACTIVE on local provision rows.",
+            "Package-wide restatement succession has a potentially operative REVIEW_REQUIRED/AMBIGUOUS/UNSUPPORTED successor — refuse PRODUCTION_AUTHORITY_ACTIVE on local provision rows.",
           ],
         };
       }
