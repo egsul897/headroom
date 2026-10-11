@@ -8,6 +8,7 @@
 | `origin/main` at start | `67027b8f499921a12cee7b9b9f04d832898b6384` |
 | Integration base | PR #304 tip `26d04084777f25acf139922d9909639f3347b19f` (VE core branch-only; merge-base = main) |
 | Feature branch | `cursor/autonomous-covenant-compilation-b53f` (does not overwrite #304) |
+| Ending SHA | `1c48210954b4cc804bf56b2c95fa94a9726f6a65` |
 | Working tree at start | clean |
 
 ### Merged vs branch-only (verified)
