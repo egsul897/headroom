@@ -1,0 +1,598 @@
+{
+  "schema": "vertical-slice-covenant-intelligence.v1",
+  "tipSha": "2ab1ac78c2df257963f583144ff904f1e5918c90",
+  "mainShaAtRun": "4f1a0b81207364373d9a4cb9fe515d4a1a002e56",
+  "neonReachable": false,
+  "paidInferenceUsd": 0,
+  "productionNeonWrites": false,
+  "package": {
+    "companyId": "matthews",
+    "financialEvidence": "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",
+    "legalSource": "Matthews Indenture provisions via prior VERIFIED_POPULATION authentic-execution matrix",
+    "matrixSource": "docs/covenant-capacity-mathematics/02-authentic-execution-matrix.json"
+  },
+  "counts": {
+    "authenticCovenantsCompiledThisRun": 8,
+    "matrixExecutableCorrect": 5,
+    "matrixCorrectRefusal": 3,
+    "sourceVerifiedNumericalCapacityResults": 5,
+    "offlineReplayExactMatches": 5,
+    "realDashboardMetricsPopulatedThisRun": 0,
+    "targetFiveDistinctCalculations": 5,
+    "distinctFormulaTypesExecutable": [
+      "COVERAGE_RATIO_ROOM",
+      "FLAT_NET_OF_DEBT",
+      "LEVERAGE_RATIO_ROOM",
+      "FLAT_AMOUNT"
+    ],
+    "corpusWidePriorMatrixExecutableCorrect": 45
+  },
+  "cases": [
+    {
+      "caseId": "matthews:ind_ratio_debt_fccr",
+      "section": "§4.09(a)",
+      "formulaType": "COVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, (EBITDA/2 − interest) / assumedNewDebtRate)",
+      "authenticity": "VERIFIED_POPULATION",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "provisionSpecSource": "scripts/populate-matthews-solver-native.ts",
+      "thresholdValueUsed": 2,
+      "paramsUsed": null,
+      "matrixOutcome": "EXECUTABLE_CORRECT",
+      "matrixVerificationStatus": "MATCH",
+      "matrixEngine": {
+        "status": "modeled",
+        "capacityMillions": 110.33623188405791,
+        "unlimited": false,
+        "reason": null
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 110.33623188405791
+      },
+      "offlineEngine": {
+        "status": "modeled",
+        "capacity": 110.33623188405791,
+        "reason": null
+      },
+      "offlineError": null,
+      "offlineReplayMatchesMatrix": true,
+      "offlineReplayStatus": "MATCH",
+      "publicationAuthority": {
+        "remainingClaimAllowed": false,
+        "reason": "No attributed utilization completeness certificate; TRUSTED_IDENTITY_PRODUCTION_ACTIVATION BLOCKED",
+        "completenessLimitations": [
+          "No reviewer-confirmed completeness certificate is included.",
+          "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+          "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+          "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+          "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+          "Production trusted-issuer activation remains BLOCKED."
+        ]
+      }
+    },
+    {
+      "caseId": "matthews:ind_permitted_debt_1a_flat",
+      "section": "Permitted Debt def., cl. (1)(a)",
+      "formulaType": "FLAT_NET_OF_DEBT",
+      "formulaNarrative": "max(0, 1300 − secured debt)",
+      "authenticity": "VERIFIED_POPULATION",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "provisionSpecSource": "scripts/populate-matthews-solver-native.ts",
+      "thresholdValueUsed": 1300,
+      "paramsUsed": {
+        "netOfBasis": "secured"
+      },
+      "matrixOutcome": "EXECUTABLE_CORRECT",
+      "matrixVerificationStatus": "MATCH",
+      "matrixEngine": {
+        "status": "modeled",
+        "capacityMillions": 521.118,
+        "unlimited": false,
+        "reason": null
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 521.118
+      },
+      "offlineEngine": {
+        "status": "modeled",
+        "capacity": 521.118,
+        "reason": null
+      },
+      "offlineError": null,
+      "offlineReplayMatchesMatrix": true,
+      "offlineReplayStatus": "MATCH",
+      "publicationAuthority": {
+        "remainingClaimAllowed": false,
+        "reason": "No attributed utilization completeness certificate; TRUSTED_IDENTITY_PRODUCTION_ACTIVATION BLOCKED",
+        "completenessLimitations": [
+          "No reviewer-confirmed completeness certificate is included.",
+          "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+          "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+          "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+          "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+          "Production trusted-issuer activation remains BLOCKED."
+        ]
+      }
+    },
+    {
+      "caseId": "matthews:ind_permitted_debt_1b_ratio_secured",
+      "section": "Permitted Debt def., cl. (1)(b)(x)",
+      "formulaType": "LEVERAGE_RATIO_ROOM",
+      "formulaNarrative": "max(0, 3.5×EBITDA − net secured debt)",
+      "authenticity": "VERIFIED_POPULATION",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "provisionSpecSource": "scripts/populate-matthews-solver-native.ts",
+      "thresholdValueUsed": 3.5,
+      "paramsUsed": {
+        "debtBasis": "secured"
+      },
+      "matrixOutcome": "EXECUTABLE_CORRECT",
+      "matrixVerificationStatus": "MATCH",
+      "matrixEngine": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 0
+      },
+      "offlineEngine": {
+        "status": "modeled",
+        "capacity": 0,
+        "reason": null
+      },
+      "offlineError": null,
+      "offlineReplayMatchesMatrix": true,
+      "offlineReplayStatus": "MATCH",
+      "publicationAuthority": {
+        "remainingClaimAllowed": false,
+        "reason": "No attributed utilization completeness certificate; TRUSTED_IDENTITY_PRODUCTION_ACTIVATION BLOCKED",
+        "completenessLimitations": [
+          "No reviewer-confirmed completeness certificate is included.",
+          "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+          "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+          "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+          "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+          "Production trusted-issuer activation remains BLOCKED."
+        ]
+      }
+    },
+    {
+      "caseId": "matthews:ind_permitted_debt_2_notes",
+      "section": "Permitted Debt def., cl. (2)",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "flat 300",
+      "authenticity": "VERIFIED_POPULATION",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "provisionSpecSource": "scripts/populate-matthews-solver-native.ts",
+      "thresholdValueUsed": 300,
+      "paramsUsed": null,
+      "matrixOutcome": "EXECUTABLE_CORRECT",
+      "matrixVerificationStatus": "MATCH",
+      "matrixEngine": {
+        "status": "modeled",
+        "capacityMillions": 300,
+        "unlimited": false,
+        "reason": null
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 300
+      },
+      "offlineEngine": {
+        "status": "modeled",
+        "capacity": 300,
+        "reason": null
+      },
+      "offlineError": null,
+      "offlineReplayMatchesMatrix": true,
+      "offlineReplayStatus": "MATCH",
+      "publicationAuthority": {
+        "remainingClaimAllowed": false,
+        "reason": "No attributed utilization completeness certificate; TRUSTED_IDENTITY_PRODUCTION_ACTIVATION BLOCKED",
+        "completenessLimitations": [
+          "No reviewer-confirmed completeness certificate is included.",
+          "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+          "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+          "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+          "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+          "Production trusted-issuer activation remains BLOCKED."
+        ]
+      }
+    },
+    {
+      "caseId": "matthews:ind_lien_permitted_cl2_creditfacility",
+      "section": "§4.10 / Permitted Liens def., cl. (2)",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "automatic linked capacity; independent ceiling = 0",
+      "authenticity": "VERIFIED_POPULATION",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "provisionSpecSource": "scripts/populate-matthews-solver-native.ts",
+      "thresholdValueUsed": 0,
+      "paramsUsed": {
+        "automaticLinkOnly": true
+      },
+      "matrixOutcome": "CORRECT_REFUSAL",
+      "matrixVerificationStatus": "REFUSAL_ALIGNED",
+      "matrixEngine": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "independentExpected": {
+        "status": "zero_linked",
+        "capacityMillions": 0,
+        "reason": "automatic-link lien: no independent ceiling (threshold modeled as 0)"
+      },
+      "offlineEngine": {
+        "status": "modeled",
+        "capacity": 0,
+        "reason": null
+      },
+      "offlineError": null,
+      "offlineReplayMatchesMatrix": false,
+      "offlineReplayStatus": "REFUSAL_CASE",
+      "publicationAuthority": {
+        "remainingClaimAllowed": false,
+        "reason": "No attributed utilization completeness certificate; TRUSTED_IDENTITY_PRODUCTION_ACTIVATION BLOCKED",
+        "completenessLimitations": [
+          "No reviewer-confirmed completeness certificate is included.",
+          "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+          "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+          "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+          "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+          "Production trusted-issuer activation remains BLOCKED."
+        ]
+      }
+    },
+    {
+      "caseId": "matthews:ind_lien_second_priority_notes",
+      "section": "8-K Item 1.01 (accession 0001193125-24-228450) / §4.10",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "automatic linked capacity; independent ceiling = 0",
+      "authenticity": "VERIFIED_POPULATION",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "provisionSpecSource": "scripts/populate-matthews-solver-native.ts",
+      "thresholdValueUsed": 0,
+      "paramsUsed": null,
+      "matrixOutcome": "CORRECT_REFUSAL",
+      "matrixVerificationStatus": "REFUSAL_ALIGNED",
+      "matrixEngine": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "independentExpected": {
+        "status": "zero_linked",
+        "capacityMillions": 0,
+        "reason": "automatic-link lien: no independent ceiling (threshold modeled as 0)"
+      },
+      "offlineEngine": {
+        "status": "modeled",
+        "capacity": 0,
+        "reason": null
+      },
+      "offlineError": null,
+      "offlineReplayMatchesMatrix": false,
+      "offlineReplayStatus": "REFUSAL_CASE",
+      "publicationAuthority": {
+        "remainingClaimAllowed": false,
+        "reason": "No attributed utilization completeness certificate; TRUSTED_IDENTITY_PRODUCTION_ACTIVATION BLOCKED",
+        "completenessLimitations": [
+          "No reviewer-confirmed completeness certificate is included.",
+          "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+          "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+          "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+          "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+          "Production trusted-issuer activation remains BLOCKED."
+        ]
+      }
+    },
+    {
+      "caseId": "matthews:ca_lien_601j_2024notes",
+      "section": "§6.01(j), as restated by the Sixth Amendment (9/23/2024)",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "automatic linked capacity; independent ceiling = 0",
+      "authenticity": "VERIFIED_POPULATION",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown",
+        "ledgerBasketRows": 0
+      },
+      "provisionSpecSource": "scripts/populate-matthews-solver-native.ts",
+      "thresholdValueUsed": 0,
+      "paramsUsed": null,
+      "matrixOutcome": "CORRECT_REFUSAL",
+      "matrixVerificationStatus": "REFUSAL_ALIGNED",
+      "matrixEngine": {
+        "status": "modeled",
+        "capacityMillions": 0,
+        "unlimited": false,
+        "reason": null
+      },
+      "independentExpected": {
+        "status": "zero_linked",
+        "capacityMillions": 0,
+        "reason": "automatic-link lien: no independent ceiling (threshold modeled as 0)"
+      },
+      "offlineEngine": {
+        "status": "modeled",
+        "capacity": 0,
+        "reason": null
+      },
+      "offlineError": null,
+      "offlineReplayMatchesMatrix": false,
+      "offlineReplayStatus": "REFUSAL_CASE",
+      "publicationAuthority": {
+        "remainingClaimAllowed": false,
+        "reason": "No attributed utilization completeness certificate; TRUSTED_IDENTITY_PRODUCTION_ACTIVATION BLOCKED",
+        "completenessLimitations": [
+          "No reviewer-confirmed completeness certificate is included.",
+          "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+          "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+          "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+          "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+          "Production trusted-issuer activation remains BLOCKED."
+        ]
+      }
+    },
+    {
+      "caseId": "matthews:matw-scc-nonguarantor-ratiodebt",
+      "section": "§4.09(a) proviso — cap is the greater of $125.0M or 7.0% of Total Assets ($1,791.719M as of 12/31/2024 -> ~$125.4M); modeled at the $125.0M FLAT FLOOR only (capFormulaType left null — GREATER_OF_FLAT_OR_PCT_EBITDA has no Total-Assets-percentage grower; see script header item 5). Numerically minor at Matthews' current asset base; the underlying formula-type gap is general.",
+      "formulaType": "FLAT_AMOUNT",
+      "formulaNarrative": "flat 125",
+      "authenticity": "VERIFIED_POPULATION",
+      "financialInputs": {
+        "ebitda": 128.313,
+        "cash": 33.513,
+        "interestExpense": 54.64,
+        "cumulativeNetIncome": -3.472,
+        "equityProceedsSinceIssue": 0,
+        "assumedNewDebtRatePct": 8.625,
+        "totalDebt": 809.211,
+        "securedDebt": 778.882,
+        "totalAssets": 1791.719
+      },
+      "utilization": {
+        "attributed": false,
+        "note": "no ACTIVE ledger rows — attributed basket utilization unknown; SharedCapacityConstraint.currentUsage is hardcoded 0 in loadCompanySolverStaticData until attributed ledger wiring exists",
+        "ledgerBasketRows": 0
+      },
+      "provisionSpecSource": "scripts/populate-matthews-solver-native.ts",
+      "thresholdValueUsed": 125,
+      "paramsUsed": null,
+      "matrixOutcome": "EXECUTABLE_CORRECT",
+      "matrixVerificationStatus": "MATCH",
+      "matrixEngine": {
+        "status": "modeled",
+        "capacityMillions": 125,
+        "unlimited": false,
+        "reason": null
+      },
+      "independentExpected": {
+        "status": "modeled",
+        "capacityMillions": 125
+      },
+      "offlineEngine": {
+        "status": "modeled",
+        "capacity": 125,
+        "reason": null
+      },
+      "offlineError": null,
+      "offlineReplayMatchesMatrix": true,
+      "offlineReplayStatus": "MATCH",
+      "publicationAuthority": {
+        "remainingClaimAllowed": false,
+        "reason": "No attributed utilization completeness certificate; TRUSTED_IDENTITY_PRODUCTION_ACTIVATION BLOCKED",
+        "completenessLimitations": [
+          "No reviewer-confirmed completeness certificate is included.",
+          "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+          "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+          "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+          "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+          "Production trusted-issuer activation remains BLOCKED."
+        ]
+      }
+    }
+  ],
+  "recalculation": {
+    "caseId": "matthews:ind_ratio_debt_fccr",
+    "change": "EBITDA +10%",
+    "ebitdaBefore": 128.313,
+    "ebitdaAfter": 141.1443,
+    "capacityBefore": 110.33623188405791,
+    "capacityAfter": 184.72057971014485,
+    "statusBefore": "modeled",
+    "statusAfter": "modeled",
+    "deltaCapacity": 74.38434782608694,
+    "note": "Offline recalculation via evaluateProvision + populate-matthews thresholds"
+  },
+  "hypotheticalTransaction": {
+    "note": "Shared Position/Simulate/Ask views refuse remaining without production completeness",
+    "consistency": {
+      "ok": true
+    },
+    "surfaces": {
+      "POSITION": {
+        "supportedRemainingCapacity": null,
+        "mayPublishAvailable": false,
+        "publicationLabel": "GROSS_CONTRACTUAL",
+        "blockers": [
+          "no attributed utilization evidence; empty ledger table is not verified zero"
+        ]
+      },
+      "SIMULATE": {
+        "supportedRemainingCapacity": null,
+        "mayPublishAvailable": false,
+        "publicationLabel": "GROSS_CONTRACTUAL",
+        "blockers": [
+          "no attributed utilization evidence; empty ledger table is not verified zero"
+        ]
+      },
+      "ASK": {
+        "supportedRemainingCapacity": null,
+        "mayPublishAvailable": false,
+        "publicationLabel": "GROSS_CONTRACTUAL",
+        "blockers": [
+          "no attributed utilization evidence; empty ledger table is not verified zero"
+        ]
+      }
+    }
+  },
+  "positionView": {
+    "overallStatus": "NEEDS_INPUT",
+    "missingInputs": [
+      "No NS-4 APPROVED financial snapshot in this offline vertical slice",
+      "No active attributed utilization ledger rows",
+      "Production trusted-identity activation BLOCKED",
+      "Neon unreachable — live dashboard not loaded this run",
+      "No NS-4 APPROVED financial snapshot — North-Star remaining claims unavailable.",
+      "No active attributed utilization ledger rows — utilization completeness unknown."
+    ],
+    "reviewBlockers": [
+      "Offline slice — live rulebook not loaded (Neon unreachable)",
+      "Rulebook stage is REVIEW_REQUIRED — not a verified executable rulebook."
+    ],
+    "remainingAuthoritative": false,
+    "instrumentsLoaded": 0
+  },
+  "missingEvidence": {
+    "legal": [
+      "Live Neon Permission rows unreachable — matrix stores results but not full threshold/params for offline reconstruct",
+      "First-lien-specific 2.50x test unmodeled (onboarding §F.1)"
+    ],
+    "financial": [
+      "No reviewer-confirmed completeness certificate is included.",
+      "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+      "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+      "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+      "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+      "Production trusted-issuer activation remains BLOCKED."
+    ],
+    "utilization": [
+      "No attributed utilization to Permission/Provision ids",
+      "No VERIFIED_COMPLETE completeness certificate",
+      "Point-in-time debt ≠ full historical ledger"
+    ]
+  },
+  "topBlockersToCustomerReadyDashboard": [
+    "Live DB path for company rulebook + dashboard (Neon unreachable here; disposable Postgres for tests only)",
+    "Utilization completeness + trusted issuer before AVAILABLE remaining",
+    "NS-4 approved financials + operative authority for production-authoritative Position metrics"
+  ],
+  "nextImplementationPr": {
+    "title": "Vertical slice: wire Matthews offline proof → Position missing-dependency UX",
+    "scope": [
+      "Export matrix threshold/params alongside results for offline replay",
+      "Wire Position to show exact missing deps from buildPositionView (already partial)",
+      "Disposable-Postgres fixture company for local dashboard proof without Neon"
+    ]
+  }
+}
