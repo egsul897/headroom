@@ -116,7 +116,7 @@ function dashboardStubVeOnly(
         asOfDate,
         facilities: [],
       },
-    } as CompanyDashboard["financialPosition"],
+    } as unknown as CompanyDashboard["financialPosition"],
     capacity: {
       secured: {
         amount: 0,
@@ -126,7 +126,7 @@ function dashboardStubVeOnly(
           bindingDocumentName: null,
           bindingProvisionCode: null,
           authority: "MODELED_CROSS_DOCUMENT",
-          label: "VE_GROSS_ONLY_NO_REMAINING",
+          label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
           solverNativeRemaining: null,
           solverAuthority: "NON_AUTHORITATIVE_DIAGNOSTIC",
           solverIsFalseFavorable: false,
@@ -142,7 +142,7 @@ function dashboardStubVeOnly(
           bindingDocumentName: null,
           bindingProvisionCode: null,
           authority: "MODELED_CROSS_DOCUMENT",
-          label: "VE_GROSS_ONLY_NO_REMAINING",
+          label: "MODELED / EVALUATION_SEED_NOT_NS4_APPROVED",
           solverNativeRemaining: null,
           solverAuthority: "NON_AUTHORITATIVE_DIAGNOSTIC",
           solverIsFalseFavorable: false,
