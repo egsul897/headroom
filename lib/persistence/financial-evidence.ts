@@ -19,6 +19,7 @@ import type {
   StatementIngestionRefusalReason,
   StatementNormalizationTraceEntry,
 } from "@/lib/capacity/financial-statement-ingestion";
+import { authorizeDecision } from "@/lib/capacity/identity/authorize-decision";
 import { contentHashOf, fingerprintParts } from "./hash";
 import { appendInstitutionalAuditEvent } from "./audit";
 import { assertSameTenant, requireCompanyId } from "./tenant";
@@ -52,13 +53,13 @@ export interface FinancialEvidenceBundlePayload {
 }
 
 /**
- * Authenticated, auditable approval event. Never derived from verificationStatus
- * alone — must carry a non-UNAUTHENTICATED actor and an explicit approvedAt.
+ * @deprecated Ignored for approvedAt. ActorProvenance labels (including
+ * TRUSTED_ISSUER) are not IdP proof — use approveFinancialEvidenceBundle.
+ * Retained only so callers that still pass approvalEvent fail closed (null).
  */
 export interface FinancialEvidenceApprovalEvent {
   approvedAt: Date;
   actor: ActorProvenance;
-  /** Optional evidence that an authorization check already passed for this actor. */
   authorizationNote?: string;
 }
 
@@ -74,8 +75,8 @@ export interface PersistFinancialEvidenceInput {
   claimedReviewerLabel?: string | null;
   actor?: ActorProvenance;
   /**
-   * Optional authenticated approval event. When absent, approvedAt stays null
-   * even if metrics claim verificationStatus=VERIFIED.
+   * @deprecated Never sets approvedAt. Caller-supplied ActorProvenance is not
+   * authorization. Use approveFinancialEvidenceBundle after persist.
    */
   approvalEvent?: FinancialEvidenceApprovalEvent | null;
 }
@@ -105,13 +106,6 @@ function worstAuthenticity(metrics: FinancialMetricEvidence[]): string {
     return "CALLER_STIPULATED_HYPOTHETICAL";
   }
   return "AUTHENTIC";
-}
-
-function resolveApprovedAt(event: FinancialEvidenceApprovalEvent | null | undefined): Date | null {
-  if (!event) return null;
-  if (!event.approvedAt || Number.isNaN(event.approvedAt.getTime())) return null;
-  if (!event.actor || event.actor.kind === "UNAUTHENTICATED") return null;
-  return event.approvedAt;
 }
 
 function buildPayload(input: PersistFinancialEvidenceInput): FinancialEvidenceBundlePayload {
@@ -203,9 +197,9 @@ export async function persistFinancialEvidenceBundle(
           payload: payload as object,
           sourceFingerprint: sourceFingerprint as object,
           claimedReviewerLabel: input.claimedReviewerLabel ?? null,
-          // Never mint approvedAt from verificationStatus alone. Only an
-          // authenticated, authorized approval event may set the timestamp.
-          approvedAt: resolveApprovedAt(input.approvalEvent),
+          // Never mint approvedAt from verificationStatus or approvalEvent.
+          // approvedAt is set only via approveFinancialEvidenceBundle.
+          approvedAt: null,
           status: "ACTIVE",
         },
       });
@@ -376,4 +370,103 @@ export async function revokeFinancialEvidenceBundle(
     newState: { status: "REVOKED" },
   });
   return updated;
+}
+
+export interface ApproveFinancialEvidenceInput {
+  companyId: string;
+  bundleId: string;
+  /** Server-minted VerifiedServerPrincipal — forged labels/objects refused. */
+  principal: unknown;
+  claimedReviewerLabel?: string | null;
+  nowMs?: number;
+}
+
+export interface ApproveFinancialEvidenceResult {
+  ok: boolean;
+  blockers: string[];
+  approvedAt: Date | null;
+  bundleId: string;
+}
+
+/**
+ * Separate authenticated approval transition.
+ * VERIFIED status, claimedReviewerLabel, and approvalEvent ActorProvenance
+ * never set approvedAt — authorizeDecision(APPROVE_FINANCIAL_METRIC) must grant.
+ */
+export async function approveFinancialEvidenceBundle(
+  prisma: PrismaClient,
+  input: ApproveFinancialEvidenceInput,
+): Promise<ApproveFinancialEvidenceResult> {
+  const companyId = requireCompanyId(input.companyId, "approveFinancialEvidenceBundle");
+  const row = await getFinancialEvidenceBundleById(prisma, companyId, input.bundleId);
+  if (!row) {
+    return {
+      ok: false,
+      blockers: [`FinancialEvidenceBundle ${input.bundleId} not found for tenant`],
+      approvedAt: null,
+      bundleId: input.bundleId,
+    };
+  }
+  if (row.status !== "ACTIVE") {
+    return {
+      ok: false,
+      blockers: [`FinancialEvidenceBundle status ${row.status} cannot be approved`],
+      approvedAt: row.approvedAt,
+      bundleId: row.id,
+    };
+  }
+
+  const decision = await authorizeDecision({
+    principal: input.principal,
+    companyId,
+    decision: "APPROVE_FINANCIAL_METRIC",
+    evidenceId: row.id,
+    nowMs: input.nowMs,
+    checkLiveRevocation: true,
+  });
+
+  if (!decision.granted) {
+    await appendInstitutionalAuditEvent(prisma, {
+      companyId,
+      action: "AUTHORITY_REFUSAL",
+      entityType: "FinancialEvidenceBundle",
+      entityId: row.id,
+      actor: { kind: "UNAUTHENTICATED" },
+      actorLabel: input.claimedReviewerLabel ?? null,
+      priorState: { approvedAt: row.approvedAt, status: row.status },
+      newState: { approvedAt: row.approvedAt, blockers: decision.blockers },
+    });
+    return {
+      ok: false,
+      blockers: decision.blockers,
+      approvedAt: row.approvedAt,
+      bundleId: row.id,
+    };
+  }
+
+  const approvedAt = new Date(input.nowMs ?? Date.now());
+  const updated = await prisma.financialEvidenceBundle.update({
+    where: { id: row.id },
+    data: {
+      approvedAt,
+      claimedReviewerLabel: input.claimedReviewerLabel ?? row.claimedReviewerLabel,
+    },
+  });
+
+  await appendInstitutionalAuditEvent(prisma, {
+    companyId,
+    action: "APPROVAL",
+    entityType: "FinancialEvidenceBundle",
+    entityId: row.id,
+    actor: { kind: "TRUSTED_ISSUER", actorId: decision.audit.principalId },
+    actorLabel: input.claimedReviewerLabel ?? null,
+    priorState: { approvedAt: row.approvedAt },
+    newState: {
+      approvedAt: updated.approvedAt,
+      principalId: decision.audit.principalId,
+      authorizationBasis: decision.audit.authorizationBasis,
+    },
+  });
+
+  return { ok: true, blockers: [], approvedAt: updated.approvedAt, bundleId: row.id };
 }

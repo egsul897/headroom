@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 import {
   assessCurrentSsrEntrypointShape,
   assessSsrPersistedExecutionReadiness,
+  SSR_GATE_SEMANTICS,
   SSR_PERSISTED_EXECUTION_GATE_VERSION,
 } from "@/lib/product/verified-transaction-execution/ssr-persisted-execution-gate";
 import { TRUSTED_IDENTITY_PRODUCTION_ACTIVATION } from "@/lib/capacity/identity/activation";
@@ -19,7 +20,7 @@ function src(rel: string): string {
   return readFileSync(join(ROOT, rel), "utf8");
 }
 
-function structurallyCompleteRequest() {
+function structurallyCompleteRequest(): Record<string, unknown> {
   return {
     companyId: "co-1",
     operativeSourceAuthority: { provisionalIdentity: false, authorityClassification: "CONFIRMED_OPERATIVE" },
@@ -30,21 +31,25 @@ function structurallyCompleteRequest() {
     verifiedExecutableRule: { ruleId: "r1" },
     reviewerAuthorization: { trustedIssuerAuth: { principals: [], requireNonFixtureIdentity: true } },
     inputs: { asOf: "2024-12-31" },
-  } as never;
+  };
 }
 
 describe("SSR persisted-execution gate", () => {
-  it("exposes a stable gate version with structural-preflight semantics", () => {
-    expect(SSR_PERSISTED_EXECUTION_GATE_VERSION).toBe("ssr-persisted-execution-gate.v2");
+  it("exposes diagnostics-only gate version and semantics", () => {
+    expect(SSR_PERSISTED_EXECUTION_GATE_VERSION).toBe(
+      "ssr-persisted-execution-gate.v2-diagnostics-only",
+    );
+    expect(SSR_GATE_SEMANTICS).toBe("STRUCTURAL_DIAGNOSTICS_ONLY");
   });
 
   it("refuses current Position/Ask/Simulate shapes with exact blockers", () => {
     for (const surface of ["POSITION", "ASK", "SIMULATE"] as const) {
       const a = assessCurrentSsrEntrypointShape(surface);
-      expect(a.gateSemantics).toBe("STRUCTURAL_PREFLIGHT_ONLY");
+      expect(a.gateSemantics).toBe("STRUCTURAL_DIAGNOSTICS_ONLY");
       expect(a.structuralRequestAssemblyComplete, surface).toBe(false);
       expect(a.mayCallExecuteAndPersist, surface).toBe(false);
       expect(a.mayPublishProductionAuthority, surface).toBe(false);
+      expect(a.blockers).toContain("SSR_GATE_DIAGNOSTICS_ONLY");
       expect(a.blockers).toContain("MISSING_TENANT_AUTH");
       expect(a.blockers).toContain("MISSING_VERIFIED_EXECUTION_PACKAGE");
       expect(a.blockers).toContain("MISSING_OPERATIVE_SOURCE_AUTHORITY");
@@ -56,7 +61,7 @@ describe("SSR persisted-execution gate", () => {
       expect(a.blockers).toContain("MISSING_INPUT_RESOLVER");
       expect(a.blockers).toContain("TRUSTED_IDENTITY_PRODUCTION_BLOCKED");
       expect(a.trustedIdentityProductionActivation).toBe("BLOCKED");
-      expect(a.implementationContract.some((c) => /STRUCTURAL_PREFLIGHT_ONLY/.test(c))).toBe(true);
+      expect(a.implementationContract.some((c) => /STRUCTURAL_DIAGNOSTICS_ONLY/.test(c))).toBe(true);
     }
   });
 
@@ -71,8 +76,8 @@ describe("SSR persisted-execution gate", () => {
         operativeSourceAuthority: {
           provisionalIdentity: true,
           authorityClassification: "PROVISIONAL_IDENTITY_BLOCKED",
-        } as never,
-      },
+        },
+      } as never,
     });
     expect(a.structuralRequestAssemblyComplete).toBe(false);
     expect(a.mayPublishProductionAuthority).toBe(false);
@@ -92,8 +97,8 @@ describe("SSR persisted-execution gate", () => {
           operativeSourceAuthority: {
             provisionalIdentity: false,
             authorityClassification: classification,
-          } as never,
-        },
+          },
+        } as never,
       });
       expect(a.structuralRequestAssemblyComplete, classification).toBe(false);
       expect(a.blockers, classification).toContain("INCOMPLETE_OPERATIVE_AUTHORITY");
@@ -109,27 +114,30 @@ describe("SSR persisted-execution gate", () => {
       prismaClientPresent: true,
       request: {
         ...structurallyCompleteRequest(),
-        verifiedPackage: {} as never,
-        financialEvidence: {} as never,
-      },
+        verifiedPackage: {},
+        financialEvidence: {},
+      } as never,
     });
     expect(a.structuralRequestAssemblyComplete).toBe(false);
     expect(a.blockers).toContain("EMPTY_EVIDENCE_OBJECT");
   });
 
-  it("structural assembly alone cannot publish production authority while activation BLOCKED", () => {
+  it("structural field assembly never grants executeAndPersist; caller auth is not proof", () => {
     const a = assessSsrPersistedExecutionReadiness({
       surface: "SIMULATE",
       tenantAuthenticated: true,
       companyId: "co-1",
       prismaClientPresent: true,
-      request: structurallyCompleteRequest(),
+      request: structurallyCompleteRequest() as never,
     });
     expect(a.structuralRequestAssemblyComplete).toBe(true);
-    expect(a.mayCallExecuteAndPersist).toBe(true); // deprecated alias
-    expect(a.gateSemantics).toBe("STRUCTURAL_PREFLIGHT_ONLY");
+    expect(a.mayCallExecuteAndPersist).toBe(false);
     expect(a.mayPublishProductionAuthority).toBe(false);
-    expect(a.blockers).toEqual(["TRUSTED_IDENTITY_PRODUCTION_BLOCKED"]);
+    expect(a.gateSemantics).toBe("STRUCTURAL_DIAGNOSTICS_ONLY");
+    expect(a.blockers).toContain("SSR_GATE_DIAGNOSTICS_ONLY");
+    expect(a.blockers).toContain("MISSING_TENANT_AUTH");
+    expect(a.blockers).toContain("CALLER_SUPPLIED_AUTH_NOT_PROOF");
+    expect(a.blockers).toContain("TRUSTED_IDENTITY_PRODUCTION_BLOCKED");
   });
 
   it("URL companyId without tenantAuthenticated fails closed", () => {
@@ -138,9 +146,9 @@ describe("SSR persisted-execution gate", () => {
       tenantAuthenticated: false,
       companyId: "co-from-url",
       prismaClientPresent: true,
-      request: structurallyCompleteRequest(),
+      request: structurallyCompleteRequest() as never,
     });
-    expect(a.structuralRequestAssemblyComplete).toBe(false);
+    expect(a.mayCallExecuteAndPersist).toBe(false);
     expect(a.blockers).toContain("MISSING_TENANT_AUTH");
     expect(a.mayPublishProductionAuthority).toBe(false);
   });

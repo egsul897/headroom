@@ -3,7 +3,7 @@
  * Disposable Postgres only. PRODUCTION_DB_TOUCHED: NO.
  * No test may bless an unsafe state.
  */
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { PrismaClient } from "@prisma/client";
 import { createEphemeralDatabase, destroyEphemeralDatabase, type EphemeralDatabase } from "@/lib/testing/ephemeral-db";
 import { assertDisposableDatabase } from "@/lib/testing/disposable-db";
@@ -14,7 +14,16 @@ import {
   sessionCounselPrincipal,
 } from "@/lib/capacity/completeness-issuer-auth";
 import {
+  PERMISSION_BUNDLES,
+  createTestIdentityHarness,
+  registerServerIdentityProvider,
+  resetTrustedIdentityRuntimeForTests,
+  verifyAndMintPrincipal,
+  clearAuthorizationAuditLogForTests,
+} from "@/lib/capacity";
+import {
   persistFinancialEvidenceBundle,
+  approveFinancialEvidenceBundle,
   getLatestFinancialEvidenceBundle,
   persistUtilizationCompletenessRecord,
   getActiveCompletenessRecord,
@@ -35,18 +44,51 @@ const COMPANY_B = "auth-adv-co-b";
 function metric(companyId: string, overrides?: Partial<FinancialMetricEvidence>): FinancialMetricEvidence {
   return {
     metricKey: "TOTAL_ASSETS",
-    amount: 1_000_000_000,
+    value: 1_000_000_000,
     currency: "USD",
-    asOf: "2024-12-31",
+    units: "USD",
+    entity: {
+      companyId,
+      entityName: "Auth Adv Co",
+      consolidationPerimeter: "Borrower and Restricted Subsidiaries",
+    },
+    accountingDefinition: "Total Consolidated Assets (covenant) — NOT GAAP Total Assets",
+    sourceDocument: {
+      documentId: "doc-10k",
+      exactLocation: "p.42",
+      excerpt: "Total assets",
+    },
     reportingPeriod: "FY2024",
-    entity: { companyId, legalName: "Auth Adv Co" },
-    accountingDefinition: "Total Consolidated Assets (covenant)",
-    sourceDocument: { documentId: "doc-10k", exactLocation: "p.42" },
+    measurementDate: "2024-12-31",
+    amendmentRestatementStatus: "ORIGINAL",
     provenanceId: "prov-auth-1",
     verificationStatus: "VERIFIED",
     authenticity: "AUTHENTIC",
     ...overrides,
   };
+}
+
+async function mintApprover(companyId: string) {
+  const handle = `sess-fin-${companyId}`;
+  registerServerIdentityProvider(
+    createTestIdentityHarness({
+      allowTestHarness: true,
+      principalsByHandle: {
+        [handle]: {
+          principalId: `fin-approver-${companyId}`,
+          companyScope: [companyId],
+          permissions: [...PERMISSION_BUNDLES.FINANCIAL_METRIC_APPROVER],
+          completenessRoles: [],
+          identityAssurance: "SESSION_AUTHENTICATED",
+          expiresAtMs: Date.now() + 60 * 60 * 1000,
+          authorizationBasis: "session:verified:test",
+        },
+      },
+    }),
+  );
+  const minted = await verifyAndMintPrincipal({ kind: "SESSION", sessionHandle: handle });
+  expect(minted.principal).not.toBeNull();
+  return minted.principal!;
 }
 
 function authenticCert(ruleId: string, actorId: string): UtilizationCompletenessCertificate {
@@ -80,6 +122,16 @@ describeDb("persistence authorization adversarial", () => {
   afterAll(async () => {
     await prisma.$disconnect();
     await destroyEphemeralDatabase(db);
+  });
+
+  beforeEach(() => {
+    resetTrustedIdentityRuntimeForTests({ allowTestReset: true });
+    clearAuthorizationAuditLogForTests({ allowTestReset: true });
+  });
+
+  afterEach(() => {
+    resetTrustedIdentityRuntimeForTests({ allowTestReset: true });
+    clearAuthorizationAuditLogForTests({ allowTestReset: true });
   });
 
   it("forged issuer: ACTIVE AUTHENTIC cert is not production-eligible without trustedIssuerAuth", async () => {
@@ -153,28 +205,30 @@ describeDb("persistence authorization adversarial", () => {
     expect(loaded!.approvedAt).toBeNull();
   });
 
-  it("authenticated approval event may set approvedAt; UNAUTHENTICATED actor may not", async () => {
+  it("forged TRUSTED_ISSUER approvalEvent / claimed label never sets approvedAt on persist", async () => {
     const when = new Date("2024-12-31T15:00:00.000Z");
     await persistFinancialEvidenceBundle(prisma, {
       companyId: COMPANY_A,
-      bundleKey: "fin-auth-approval",
+      bundleKey: "fin-forged-approval-event",
       asOfDate: "2024-12-31",
       metrics: [metric(COMPANY_A)],
+      claimedReviewerLabel: "forged-counsel-label",
       approvalEvent: {
         approvedAt: when,
         actor: { kind: "TRUSTED_ISSUER", actorId: "counsel-alice" },
-        authorizationNote: "session-authenticated approval",
+        authorizationNote: "forged — not IdP-verified",
       },
     });
-    expect((await getLatestFinancialEvidenceBundle(prisma, COMPANY_A, "fin-auth-approval"))!.approvedAt).toEqual(
-      when,
-    );
+    expect(
+      (await getLatestFinancialEvidenceBundle(prisma, COMPANY_A, "fin-forged-approval-event"))!
+        .approvedAt,
+    ).toBeNull();
 
     await persistFinancialEvidenceBundle(prisma, {
       companyId: COMPANY_A,
       bundleKey: "fin-unauth-approval",
       asOfDate: "2024-12-31",
-      metrics: [metric(COMPANY_A, { provenanceId: "prov-auth-2", amount: 2 })],
+      metrics: [metric(COMPANY_A, { provenanceId: "prov-auth-2", value: 2 })],
       approvalEvent: {
         approvedAt: when,
         actor: { kind: "UNAUTHENTICATED" },
@@ -185,7 +239,39 @@ describeDb("persistence authorization adversarial", () => {
     ).toBeNull();
   });
 
-  it("missing trusted identity: structural preflight refuses missing reviewer trustedIssuerAuth", () => {
+  it("unauthenticated / forged principal cannot approve; VerifiedServerPrincipal can", async () => {
+    const r = await persistFinancialEvidenceBundle(prisma, {
+      companyId: COMPANY_A,
+      bundleKey: "fin-approve-transition",
+      asOfDate: "2024-12-31",
+      metrics: [metric(COMPANY_A, { provenanceId: "prov-approve-1" })],
+      claimedReviewerLabel: "I-am-counsel",
+    });
+    const forged = await approveFinancialEvidenceBundle(prisma, {
+      companyId: COMPANY_A,
+      bundleId: r.id,
+      principal: {
+        principalId: "attacker",
+        permissions: ["APPROVE_FINANCIAL_METRICS"],
+        companyScope: [COMPANY_A],
+      },
+      claimedReviewerLabel: "I-am-counsel",
+    });
+    expect(forged.ok).toBe(false);
+    expect(forged.approvedAt).toBeNull();
+
+    const principal = await mintApprover(COMPANY_A);
+    const approved = await approveFinancialEvidenceBundle(prisma, {
+      companyId: COMPANY_A,
+      bundleId: r.id,
+      principal,
+    });
+    expect(approved.ok).toBe(true);
+    expect(approved.approvedAt).not.toBeNull();
+    expect((await getFinancialEvidenceBundleById(prisma, COMPANY_A, r.id))!.approvedAt).not.toBeNull();
+  });
+
+  it("missing trusted identity: diagnostics refuse missing reviewer trustedIssuerAuth; never grants execution", () => {
     const a = assessSsrPersistedExecutionReadiness({
       surface: "ASK",
       tenantAuthenticated: true,
@@ -206,13 +292,14 @@ describeDb("persistence authorization adversarial", () => {
         inputs: {} as never,
       },
     });
-    expect(a.structuralRequestAssemblyComplete).toBe(false);
+    expect(a.mayCallExecuteAndPersist).toBe(false);
     expect(a.blockers).toContain("MISSING_REVIEWER_TRUSTED_ISSUER");
+    expect(a.blockers).toContain("CALLER_SUPPLIED_AUTH_NOT_PROOF");
     expect(a.mayPublishProductionAuthority).toBe(false);
-    expect(a.gateSemantics).toBe("STRUCTURAL_PREFLIGHT_ONLY");
+    expect(a.gateSemantics).toBe("STRUCTURAL_DIAGNOSTICS_ONLY");
   });
 
-  it("unauthorized execution attempt: tenantAuthenticated=false never structural-complete", () => {
+  it("unauthorized execution attempt: tenantAuthenticated=false never grants executeAndPersist", () => {
     const a = assessSsrPersistedExecutionReadiness({
       surface: "POSITION",
       tenantAuthenticated: false,
@@ -233,7 +320,7 @@ describeDb("persistence authorization adversarial", () => {
         inputs: {} as never,
       },
     });
-    expect(a.structuralRequestAssemblyComplete).toBe(false);
+    expect(a.mayCallExecuteAndPersist).toBe(false);
     expect(a.blockers).toContain("MISSING_TENANT_AUTH");
     expect(a.mayPublishProductionAuthority).toBe(false);
   });
@@ -260,6 +347,7 @@ describeDb("persistence authorization adversarial", () => {
       },
     });
     expect(a.blockers).toContain("INCOMPLETE_OPERATIVE_AUTHORITY");
+    expect(a.mayCallExecuteAndPersist).toBe(false);
     expect(a.mayPublishProductionAuthority).toBe(false);
   });
 

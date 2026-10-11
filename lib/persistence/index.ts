@@ -33,6 +33,7 @@ export {
   getLatestFinancialEvidenceBundle,
   getFinancialEvidenceBundleById,
   revokeFinancialEvidenceBundle,
+  approveFinancialEvidenceBundle,
   loadFinancialEvidenceSnapshot,
   rehydrateFinancialSnapshotFromBundle,
   revalidatePersistedFinancialEvidence,
@@ -40,6 +41,8 @@ export {
   type FinancialEvidenceBundlePayload,
   type PersistFinancialEvidenceInput,
   type FinancialEvidenceApprovalEvent,
+  type ApproveFinancialEvidenceInput,
+  type ApproveFinancialEvidenceResult,
 } from "./financial-evidence";
 export {
   persistUtilizationCompletenessRecord,

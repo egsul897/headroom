@@ -16,7 +16,10 @@ import { TRUSTED_IDENTITY_PRODUCTION_ACTIVATION } from "@/lib/capacity/identity/
 import type { UnifiedTransactionExecutionRequest } from "./types";
 
 export const SSR_PERSISTED_EXECUTION_GATE_VERSION =
-  "ssr-persisted-execution-gate.v2" as const;
+  "ssr-persisted-execution-gate.v2-diagnostics-only" as const;
+
+/** Explicit: this module never grants executeAndPersist or production publication. */
+export const SSR_GATE_SEMANTICS = "STRUCTURAL_DIAGNOSTICS_ONLY" as const;
 
 export type ProductSurface = "POSITION" | "ASK" | "SIMULATE";
 
@@ -34,56 +37,56 @@ export type SsrPersistedExecutionBlocker =
   | "TRUSTED_IDENTITY_PRODUCTION_BLOCKED"
   | "PROVISIONAL_IDENTITY_NOT_CONFIRMED"
   | "EMPTY_EVIDENCE_OBJECT"
-  | "INCOMPLETE_OPERATIVE_AUTHORITY";
+  | "INCOMPLETE_OPERATIVE_AUTHORITY"
+  | "CALLER_SUPPLIED_AUTH_NOT_PROOF"
+  | "SSR_GATE_DIAGNOSTICS_ONLY";
 
 export interface SsrPersistedExecutionDependencies {
   surface: ProductSurface;
   /**
-   * Server-established tenant authentication (session/IdP). URL companyId alone
-   * is never sufficient — pass false unless the host verified company scope.
+   * Caller-declared flag — NEVER treated as proof of tenant authorization.
+   * When true, CALLER_SUPPLIED_AUTH_NOT_PROOF is listed; MISSING_TENANT_AUTH
+   * remains until server-established IdP auth exists.
    */
   tenantAuthenticated: boolean;
   companyId: string | null | undefined;
   /** Server Prisma client bound for durable writes (not optional ambient). */
   prismaClientPresent: boolean;
-  /** Full request fields — pass null/undefined when the surface has not assembled them. */
+  /** Partial / placeholder request for gap listing — not a validated contract. */
   request: Partial<UnifiedTransactionExecutionRequest> | null;
 }
 
 export interface SsrPersistedExecutionAssessment {
   surface: ProductSurface;
   /**
-   * Structural preflight only: declared dependencies appear present.
-   * NOT production authorization. NOT permission to publish AVAILABLE capacity.
-   * NOT permission to treat persistence as current authority.
-   *
-   * @deprecated Alias retained for one release — prefer structuralRequestAssemblyComplete.
+   * Always false. This module never grants executeAndPersist permission.
+   * @deprecated Prefer structuralRequestAssemblyComplete for diagnostics only.
    */
-  mayCallExecuteAndPersist: boolean;
-  /** Canonical name for the structural preflight bit (see mayCallExecuteAndPersist). */
-  structuralRequestAssemblyComplete: boolean;
+  mayCallExecuteAndPersist: false;
   /**
-   * True only when structural assembly is complete AND trusted-identity production
-   * activation is ACTIVE AND provisional identity is not present. Still subject to
-   * downstream legal/financial authorization inside executeUnifiedVerifiedTransaction.
+   * Diagnostics only: declared fields appear non-empty. Does NOT authorize
+   * execution, Neon writes as authority, or production publication.
    */
-  mayPublishProductionAuthority: boolean;
+  structuralRequestAssemblyComplete: boolean;
+  /** Always false — production publication never granted here. */
+  mayPublishProductionAuthority: false;
   blockers: SsrPersistedExecutionBlocker[];
   /** Human-readable contract for the integration owner — not a bypass. */
   implementationContract: readonly string[];
   trustedIdentityProductionActivation: typeof TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status;
-  /**
-   * Explicit semantic tag so consumers cannot mistake this gate for an
-   * authorization decision.
-   */
-  gateSemantics: "STRUCTURAL_PREFLIGHT_ONLY";
+  /** Explicit semantic tag — structural diagnostics only. */
+  gateSemantics: typeof SSR_GATE_SEMANTICS;
+  /** Alias of gateSemantics for consumers. */
+  semantics: typeof SSR_GATE_SEMANTICS;
 }
 
 const SHARED_CONTRACT = [
-  "This gate is STRUCTURAL_PREFLIGHT_ONLY — not an authorization grant.",
+  "This gate is STRUCTURAL_DIAGNOSTICS_ONLY — it never grants executeAndPersist.",
+  "Caller-supplied tenantAuthenticated boolean is not proof of tenant authorization.",
+  "Truthy / partial request objects are not a validated UnifiedTransactionExecutionRequest.",
   "Assemble complete UnifiedTransactionExecutionRequest (never invent VEP / operative / financials).",
-  "Authenticate company/tenant scope before any Prisma write (companyId from URL alone is insufficient).",
-  "Pass server PrismaClient into executeAndPersistUnifiedVerifiedTransaction.",
+  "Authenticate company/tenant scope via server IdP before any Prisma write (URL companyId insufficient).",
+  "Pass server PrismaClient into executeAndPersistUnifiedVerifiedTransaction only after validated auth.",
   "Persist governing sourceDocumentId actually used for retrieval; provisionalIdentity must stay provisional.",
   "On source change, invalidate dependent CapacityCalculationRecord / OperativeAuthoritySnapshot rows.",
   "Replay must be idempotent on calculationId/inputHash; do not fork authoritative ACTIVE rows.",
@@ -124,11 +127,13 @@ function isEmptyObject(value: unknown): boolean {
 export function assessSsrPersistedExecutionReadiness(
   deps: SsrPersistedExecutionDependencies,
 ): SsrPersistedExecutionAssessment {
-  const blockers: SsrPersistedExecutionBlocker[] = [];
+  const blockers: SsrPersistedExecutionBlocker[] = ["SSR_GATE_DIAGNOSTICS_ONLY"];
   const req = deps.request;
 
-  if (!deps.tenantAuthenticated || !deps.companyId?.trim()) {
-    blockers.push("MISSING_TENANT_AUTH");
+  // Caller boolean is never proof — always require server-established tenant auth.
+  blockers.push("MISSING_TENANT_AUTH");
+  if (deps.tenantAuthenticated) {
+    blockers.push("CALLER_SUPPLIED_AUTH_NOT_PROOF");
   }
   if (!deps.prismaClientPresent) {
     blockers.push("MISSING_PRISMA_CLIENT");
@@ -175,10 +180,15 @@ export function assessSsrPersistedExecutionReadiness(
     blockers.push("MISSING_INPUT_RESOLVER");
   }
 
-  const structuralBlockers = blockers.filter(
-    (b) => b !== "TRUSTED_IDENTITY_PRODUCTION_BLOCKED",
+  // Diagnostics-only structural completeness ignores auth (always MISSING_TENANT_AUTH above).
+  const structuralFieldBlockers = blockers.filter(
+    (b) =>
+      b !== "TRUSTED_IDENTITY_PRODUCTION_BLOCKED" &&
+      b !== "SSR_GATE_DIAGNOSTICS_ONLY" &&
+      b !== "MISSING_TENANT_AUTH" &&
+      b !== "CALLER_SUPPLIED_AUTH_NOT_PROOF",
   );
-  const structuralRequestAssemblyComplete = structuralBlockers.length === 0;
+  const structuralRequestAssemblyComplete = structuralFieldBlockers.length === 0;
 
   if (TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status === "BLOCKED") {
     blockers.push("TRUSTED_IDENTITY_PRODUCTION_BLOCKED");
@@ -186,17 +196,14 @@ export function assessSsrPersistedExecutionReadiness(
 
   return {
     surface: deps.surface,
-    mayCallExecuteAndPersist: structuralRequestAssemblyComplete,
+    mayCallExecuteAndPersist: false,
     structuralRequestAssemblyComplete,
-    mayPublishProductionAuthority:
-      structuralRequestAssemblyComplete &&
-      TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status === "ACTIVE" &&
-      !blockers.includes("PROVISIONAL_IDENTITY_NOT_CONFIRMED") &&
-      !blockers.includes("INCOMPLETE_OPERATIVE_AUTHORITY"),
+    mayPublishProductionAuthority: false,
     blockers,
     implementationContract: [...SHARED_CONTRACT, ...SURFACE_CONTRACT[deps.surface]],
     trustedIdentityProductionActivation: TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status,
-    gateSemantics: "STRUCTURAL_PREFLIGHT_ONLY",
+    gateSemantics: SSR_GATE_SEMANTICS,
+    semantics: SSR_GATE_SEMANTICS,
   };
 }
 

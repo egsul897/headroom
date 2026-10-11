@@ -69,6 +69,7 @@ export {
 
 export {
   SSR_PERSISTED_EXECUTION_GATE_VERSION,
+  SSR_GATE_SEMANTICS,
   assessSsrPersistedExecutionReadiness,
   assessCurrentSsrEntrypointShape,
   type ProductSurface,
