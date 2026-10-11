@@ -47,6 +47,13 @@ const VE_SRC = readFileSync(
   ),
   "utf8",
 );
+const VE_CORE_SRC = readFileSync(
+  join(
+    process.cwd(),
+    "lib/product/real-dashboard-vertical-slice/verified-executable-compile-core.ts",
+  ),
+  "utf8",
+);
 
 describe("PR #304 acceptance — provision origin (Check 1)", () => {
   it("all five CovenantProvisionInput objects are manually encoded literals", () => {
@@ -69,10 +76,13 @@ describe("PR #304 acceptance — provision origin (Check 1)", () => {
   });
 
   it("verified-executable bridge uses fixed-dollar compile and refuses production", () => {
-    expect(VE_SRC).toMatch(/compileFixedDollarBasket/);
-    expect(VE_SRC).toMatch(/evaluateFixedDollarCapacity/);
-    expect(VE_SRC).toMatch(/SOURCE_BACKED_COMPILED_GROSS/);
-    expect(VE_SRC).toMatch(/PRODUCTION_CAPACITY_REFUSED/);
+    // Compile/evaluate live in the package-agnostic core; Matthews bridge supplies candidates.
+    expect(VE_CORE_SRC).toMatch(/compileFixedDollarBasket/);
+    expect(VE_CORE_SRC).toMatch(/evaluateFixedDollarCapacity/);
+    expect(VE_CORE_SRC).toMatch(/SOURCE_BACKED_COMPILED_GROSS/);
+    expect(VE_CORE_SRC).toMatch(/PRODUCTION_CAPACITY_REFUSED/);
+    expect(VE_SRC).toMatch(/compileVerifiedFixedDollarBridge/);
+    expect(VE_SRC).toMatch(/matthewsVerifiedExecutableCandidates/);
     expect(BRIDGE_SRC).toMatch(/compileMatthewsVerifiedExecutableBridge/);
     expect(INDEX_SRC).toMatch(/verified-executable-compile-bridge/);
   });

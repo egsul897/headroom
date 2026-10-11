@@ -63,9 +63,22 @@ supporting clauses. It does **not** replace leaf capacity for the full permissio
 | CA §6.01(j) | REFUSED_NOT_FIXED_DOLLAR |
 | Any PRODUCTION authorityMode | PRODUCTION_CAPACITY_REFUSED |
 
+## Multi-package fixed-dollar VE (bounded)
+
+Shared core: `verified-executable-compile-core.ts` → `compileVerifiedFixedDollarBridge`.
+
+| Package | Candidate | Gross ($M) | Same compile core? |
+|---|---|---:|---|
+| Matthews | Permitted Debt (1)(a) | **1300** | yes |
+| MHK (authentic holdout CA) | §7.03(f) receivables | **700** | yes |
+
+Candidate discovery remains package-specific. Full leaf dashboard / financial
+fixture path is still Matthews-only → `GENERALIZED_CALCULATION_PIPELINE_PROVEN`
+stays **NOT_PROVEN**.
+
 ## Remaining blockers
 
 1. Replace leaf `matthewsCovenantProvisions()` capacity path with compiled IR for ratio/structural rows (FCCR, leverage) — fixed-dollar VE does not cover them.
-2. Second authentic package on the same loader (generalization).
+2. Generalize full Position leaf dashboard (financials + utilization + OA) beyond Matthews — VE-only multi-package is not enough.
 3. Utilization completeness certificate + trusted-issuer activation before any AVAILABLE remaining.
 4. Full-exhibit / package CERTIFIED IR (excerpts are reconstructed).

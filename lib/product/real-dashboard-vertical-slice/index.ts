@@ -52,4 +52,13 @@ export {
   type OperativeClauseCandidate,
 } from "./verified-executable-compile-bridge";
 
+export { compileVerifiedFixedDollarBridge } from "./verified-executable-compile-core";
+
+export {
+  compileMhkVerifiedExecutableBridge,
+  mhkVerifiedExecutableCandidates,
+  extractMhk703fReceivablesCandidate,
+  MHK_VE_COMPANY_ID,
+} from "./package-mhk-ve-candidates";
+
 export { matthewsCompilerPackageDocuments } from "./source-excerpts-matthews";
