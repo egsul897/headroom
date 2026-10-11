@@ -9,7 +9,7 @@
 | Marker | SHA |
 | --- | --- |
 | Starting `origin/main` | `67027b8f499921a12cee7b9b9f04d832898b6384` |
-| Ending tip | _(this PR tip)_ |
+| Ending tip | `1d973160f958f035b8aa5945eee7077ff7d59f09` |
 
 ## Existing components reused
 
