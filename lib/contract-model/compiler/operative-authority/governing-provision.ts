@@ -231,19 +231,17 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
     ) {
       if (governingRestatement) {
         caveats.push(`NON_BLOCKING_REVIEW_ITEM:${r.successorDocumentId}`);
-      } else if (
-        // Competing successor (not the local base): dated on/before as-of, OR undated
-        // (uncertain dating → block). Package-wide succession remains unresolved.
-        r.successorDocumentId !== input.baseDocumentId &&
-        (r.effectiveDateIso == null || compareIsoDates(r.effectiveDateIso, asOf) <= 0)
-      ) {
+      } else if (r.successorDocumentId !== input.baseDocumentId) {
+        // Competing successor (not the local base): block unconditional base confirmation
+        // for undated, on/before as-of, AND future-dated unresolved later restatements.
+        // A REVIEW_REQUIRED/UNSUPPORTED later restatement is not NOT_YET_EFFECTIVE — succession
+        // is unproven, so leaving base CONFIRMED_OPERATIVE is wrong even when effectiveDateIso > asOf.
         unresolvedConflicts.push(
           `Restatement authority ${r.status} for ${r.successorDocumentId}: ${r.reasons.join(" ") || "prior agreement / RESTATES identity not independently established"}`,
         );
       } else {
         // Base itself REVIEW_REQUIRED/UNSUPPORTED (e.g. its own prior out of package)
         // without a competing in-family successor — disclose as non-blocking caveat.
-        // Future-dated competitors fall here too (effectiveDateIso > asOf).
         caveats.push(`BASE_RESTATEMENT_REVIEW_REQUIRED:${r.successorDocumentId}`);
       }
     }

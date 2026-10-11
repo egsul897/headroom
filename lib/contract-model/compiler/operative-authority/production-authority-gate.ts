@@ -177,10 +177,10 @@ export interface BundleProductionAuthoritySummary {
  * Summarize production-authority disposition across an operative-authority
  * handoff bundle. Never strips caveats, source identity, or effective dates.
  *
- * Package-wide guard: when any restatement authority is REVIEW_REQUIRED or
- * AMBIGUOUS and no OPERATIVE_AUTHORITY_CONFIRMED restatement exists, refuse
- * allProvisionsProductionActive even if a provision row was mis-labeled
- * CONFIRMED_OPERATIVE (wrong-document promotion belt-and-suspenders).
+ * Package-wide guard: when any restatement authority is REVIEW_REQUIRED,
+ * AMBIGUOUS, or UNSUPPORTED and no OPERATIVE_AUTHORITY_CONFIRMED restatement
+ * exists, refuse allProvisionsProductionActive even if a provision row was
+ * mis-labeled CONFIRMED_OPERATIVE (wrong-document promotion belt-and-suspenders).
  */
 export function summarizeBundleProductionAuthority(
   bundle: OperativeAuthorityHandoffBundle,
@@ -204,7 +204,10 @@ export function summarizeBundleProductionAuthority(
     (a) => a.status === "OPERATIVE_AUTHORITY_CONFIRMED",
   );
   const hasUnresolvedPackageRestatement = bundle.restatementAuthorities.some(
-    (a) => a.status === "REVIEW_REQUIRED" || a.status === "AMBIGUOUS",
+    (a) =>
+      a.status === "REVIEW_REQUIRED" ||
+      a.status === "AMBIGUOUS" ||
+      a.status === "UNSUPPORTED",
   );
   const packageSuccessionBlocksProduction =
     hasUnresolvedPackageRestatement && !hasConfirmedRestatement;
@@ -224,7 +227,7 @@ export function summarizeBundleProductionAuthority(
           productionAuthorityActive: false,
           refusalReasons: [
             ...row.evaluation.refusalReasons,
-            "Package-wide restatement succession is REVIEW_REQUIRED/AMBIGUOUS with no OPERATIVE_AUTHORITY_CONFIRMED restatement — refuse PRODUCTION_AUTHORITY_ACTIVE on local provision rows.",
+            "Package-wide restatement succession is REVIEW_REQUIRED/AMBIGUOUS/UNSUPPORTED with no OPERATIVE_AUTHORITY_CONFIRMED restatement — refuse PRODUCTION_AUTHORITY_ACTIVE on local provision rows.",
           ],
         };
       }

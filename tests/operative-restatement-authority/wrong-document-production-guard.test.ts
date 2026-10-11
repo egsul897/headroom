@@ -268,6 +268,85 @@ describe("wrong-document production promotion guard", () => {
     expect(gov.unresolvedConflicts.join(" ")).toMatch(/doc-b/);
   });
 
+  it("future-dated REVIEW_REQUIRED later restatement also refuses base CONFIRMED_OPERATIVE", () => {
+    // Regression: unresolved later restatement (effectiveDateIso > asOf) must not leave
+    // base CONFIRMED_OPERATIVE — succession is unproven, unlike NOT_YET_EFFECTIVE.
+    const authorities: RestatementAuthorityResolution[] = [
+      reviewRequiredAuthority("doc-a", "2020-03-26"),
+      reviewRequiredAuthority("doc-b", "2027-01-01"),
+    ];
+    const gov = resolveGoverningProvision({
+      asOfDate: "2026-09-15",
+      sectionRef: "8.1",
+      instrumentDocumentIds: ["doc-a", "doc-b"],
+      baseDocumentId: "doc-a",
+      restatementAuthorities: authorities,
+    });
+    expect(gov.authorityClassification).toBe("REVIEW_REQUIRED");
+    expect(gov.governingDocumentId).toBeNull();
+    expect(gov.unresolvedConflicts.join(" ")).toMatch(/doc-b/);
+    expect(gov.authorityClassification).not.toBe("CONFIRMED_OPERATIVE");
+  });
+
+  it("future-dated UNSUPPORTED later restatement also refuses base CONFIRMED_OPERATIVE", () => {
+    const futureUnsupported = reviewRequiredAuthority("doc-b", "2027-06-01");
+    const authorities: RestatementAuthorityResolution[] = [
+      reviewRequiredAuthority("doc-a", "2020-03-26"),
+      {
+        ...futureUnsupported,
+        status: "UNSUPPORTED",
+        reasons: ["Later restatement unsupported — succession unproven"],
+      },
+    ];
+    const gov = resolveGoverningProvision({
+      asOfDate: "2026-09-15",
+      sectionRef: "8.1",
+      instrumentDocumentIds: ["doc-a", "doc-b"],
+      baseDocumentId: "doc-a",
+      restatementAuthorities: authorities,
+    });
+    expect(gov.authorityClassification).toBe("REVIEW_REQUIRED");
+    expect(gov.governingDocumentId).toBeNull();
+    expect(gov.unresolvedConflicts.join(" ")).toMatch(/UNSUPPORTED/);
+  });
+
+  it("package summary refuses ACTIVE when only UNSUPPORTED package restatement exists", () => {
+    const unsupportedOnly = [
+      {
+        ...reviewRequiredAuthority("doc-b", "2026-09-14"),
+        status: "UNSUPPORTED" as const,
+        reasons: ["unsupported succession"],
+      },
+    ];
+    const staleProvision = resolveGoverningProvision({
+      asOfDate: "2026-09-15",
+      sectionRef: "8.1",
+      instrumentDocumentIds: ["doc-a"],
+      baseDocumentId: "doc-a",
+      restatementAuthorities: [],
+    });
+    expect(staleProvision.authorityClassification).toBe("CONFIRMED_OPERATIVE");
+    const summary = summarizeBundleProductionAuthority(
+      {
+        companyId: "x",
+        packageKey: "x",
+        asOfDate: "2026-09-15",
+        startingMainSha: "test",
+        packageGraphAuthorityPr: "https://github.com/egsul897/headroom/pull/274",
+        worHoldoutPr: "https://github.com/egsul897/headroom/pull/276",
+        restatementAuthorities: unsupportedOnly,
+        provisions: [staleProvision],
+        unsupportedCases: [],
+        verdict: "OPERATIVE_RESTATEMENT_AUTHORITY_PARTIAL",
+        verdictReasons: [],
+      },
+      { attemptPromotionToProduction: true },
+    );
+    expect(summary.allProvisionsProductionActive).toBe(false);
+    expect(summary.anyProductionRefused).toBe(true);
+    expect(summary.byProvision[0]?.evaluation.refusalReasons.join(" ")).toMatch(/UNSUPPORTED/);
+  });
+
   it("package-level summary refuses ACTIVE when provisions mis-label CONFIRMED_OPERATIVE under unresolved restatements", () => {
     const authorities = [
       reviewRequiredAuthority("doc-a", "2020-03-26"),
