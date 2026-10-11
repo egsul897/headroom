@@ -105,3 +105,16 @@ readiness [
   "verifiedExecutableCompile",
   "verifiedExecutableUnitsFeedingPosition"
 ]
+
+--- corrected MHK VE property names (verifiedExecutableUnits) ---
+{
+  companyId: 'mhk',
+  production: false,
+  feedCount: 1,
+  first: {
+    id: 'mhk-7-03f-receivables-fixed-dollar',
+    valueClass: 'SOURCE_BACKED_COMPILED_GROSS',
+    gross: 700,
+    outcome: 'PRODUCTION_CAPACITY_REFUSED'
+  }
+}
