@@ -70,4 +70,14 @@ export {
   type PipelinePositionMetric,
 } from "./autonomous-compilation-pipeline";
 
-export { matthewsCompilerPackageDocuments } from "./source-excerpts-matthews";
+export {
+  discoverFixedDollarCandidatesFromText,
+  discoverFixedDollarCandidatesFromDocuments,
+  type DiscoveredFixedDollarCandidate,
+} from "./fixed-dollar-candidate-discovery";
+
+export {
+  matthewsCompilerPackageDocuments,
+  MATTHEWS_INDENTURE_SOURCE,
+  MATTHEWS_CREDIT_AGREEMENT_SOURCE,
+} from "./source-excerpts-matthews";
