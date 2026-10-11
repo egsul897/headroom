@@ -220,7 +220,7 @@ describe("wrong-document production promotion guard", () => {
   });
 
   it("undated REVIEW_REQUIRED competitor (null effectiveDateIso) also refuses base CONFIRMED_OPERATIVE", () => {
-    // Absorbed from #296 fail-closed: uncertain dating must not leave doc-a confirmed.
+    // Absorbed from #296/#298 fail-closed: uncertain dating must not leave doc-a confirmed.
     const undatedB = reviewRequiredAuthority("doc-b", "2026-09-14");
     const authorities: RestatementAuthorityResolution[] = [
       reviewRequiredAuthority("doc-a", "2020-03-26"),
@@ -242,6 +242,29 @@ describe("wrong-document production promotion guard", () => {
     });
     expect(gov.authorityClassification).toBe("REVIEW_REQUIRED");
     expect(gov.governingDocumentId).toBeNull();
+    expect(gov.unresolvedConflicts.join(" ")).toMatch(/doc-b/);
+  });
+
+  it("UNSUPPORTED competing successor also refuses base CONFIRMED_OPERATIVE", () => {
+    const unsupportedB = reviewRequiredAuthority("doc-b", "2026-09-14");
+    const authorities: RestatementAuthorityResolution[] = [
+      reviewRequiredAuthority("doc-a", "2020-03-26"),
+      {
+        ...unsupportedB,
+        status: "UNSUPPORTED",
+        reasons: ["No restatement evidence sufficient to establish successor authority"],
+      },
+    ];
+    const gov = resolveGoverningProvision({
+      asOfDate: "2026-09-15",
+      sectionRef: "8.1",
+      instrumentDocumentIds: ["doc-a", "doc-b"],
+      baseDocumentId: "doc-a",
+      restatementAuthorities: authorities,
+    });
+    expect(gov.authorityClassification).toBe("REVIEW_REQUIRED");
+    expect(gov.governingDocumentId).toBeNull();
+    expect(gov.unresolvedConflicts.join(" ")).toMatch(/UNSUPPORTED/);
     expect(gov.unresolvedConflicts.join(" ")).toMatch(/doc-b/);
   });
 
