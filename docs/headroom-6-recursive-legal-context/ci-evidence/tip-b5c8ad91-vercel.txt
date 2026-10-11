@@ -1,0 +1,6 @@
+Vercel check: FAILURE
+deployment: dpl_3jqGKL8b8KHXtX1Ad73sLnZTMQdn
+url: https://vercel.com/debt-compass/headroom/3jqGKL8b8KHXtX1Ad73sLnZTMQdn
+status description: Deployment has failed — run this Vercel CLI command: npx vercel inspect dpl_3jqGKL8b8KHXtX1Ad73sLnZTMQdn --logs
+auth: no VERCEL_TOKEN in agent environment; `npx vercel inspect --logs` requires interactive OAuth (hung previously; killed).
+attribution hypothesis: Next.js production build typechecks by default; same TS2322 OTHER→CovenantFamily errors that failed certified path are the most likely root cause. Re-verify on remediated tip.

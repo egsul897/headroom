@@ -1,0 +1,62 @@
+{
+  "1_UPLOAD": {
+    "class": "VERIFIED",
+    "evidence": "10-01-upload.json",
+    "notes": "Offline sealed load of authentic EDGAR exhibits; not a live SaaS upload path."
+  },
+  "2_IDENTIFY_DOCUMENTS": {
+    "class": "VERIFIED",
+    "evidence": "10d-package-graph.json",
+    "notes": "classifications=[{\"id\":\"doc-a\",\"type\":\"AMENDED_AND_RESTATED_AGREEMENT\"},{\"id\":\"doc-b\",\"type\":\"AMENDED_AND_RESTATED_AGREEMENT\"}]"
+  },
+  "3_RESOLVE_OPERATIVE": {
+    "class": "BLOCKED",
+    "evidence": "10d-operative-state.json",
+    "notes": "operativeDocumentId=null; agent7=null; amendmentPipeline=null; docBAuthority=REVIEW_REQUIRED; cp=NOT_STATED; operativeDocStatus=REVIEW_REQUIRED; stateStatus=OPERATIVE_STATE_REVIEW_REQUIRED"
+  },
+  "4_DISCOVER_COVENANTS": {
+    "class": "VERIFIED",
+    "evidence": "10b-discovery.json + 10-clause-coverage.json",
+    "notes": "passAHits=10/10"
+  },
+  "5_RETRIEVE_CONTEXT": {
+    "class": "BLOCKED",
+    "evidence": "10-clause-coverage.json",
+    "notes": "SUFFICIENT=0/10 (threshold for VERIFIED: ≥80%)"
+  },
+  "6_COMPILE_VERIFIED_IR": {
+    "class": "BLOCKED",
+    "evidence": "10-clause-coverage.json",
+    "notes": "verifiedExecutable=0/10; paid inference blocked; local DETERMINISTIC_ONLY is UNVERIFIED"
+  },
+  "7_ATTACH_FINANCIAL_EVIDENCE": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "financial-evidence module present on tip"
+  },
+  "8_RECONSTRUCT_UTILIZATION": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "Empty/partial history correctly yields knowledge=KNOWN_ATTRIBUTED; supportsRemainingClaim=false"
+  },
+  "9_EVIDENCE_REVIEWER_AUTHORITY": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "Forged issuer actorId not-in-registry mayPublish=false"
+  },
+  "10_HYPOTHETICAL_TRANSACTION": {
+    "class": "HYPOTHETICAL_ONLY",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "Caller-stipulated leverage illustration labeled HYPOTHETICAL_ONLY"
+  },
+  "11_PRODUCTION_AUTHORITY": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "Production remaining correctly refused without authenticated complete evidence"
+  },
+  "12_SURFACE_DISPLAY": {
+    "class": "VERIFIED",
+    "evidence": "10-capacity-tracks.json",
+    "notes": "customer-workflow module present"
+  }
+}

@@ -192,9 +192,11 @@ export interface RetrievalBudget {
 }
 
 export const DEFAULT_RETRIEVAL_BUDGET: RetrievalBudget = {
-  maxDefinitionDepth: 5,
+  /** Raised from 5→6 for authentic multi-hop financial definition trees (HEADROOM-6); callers may still override. */
+  maxDefinitionDepth: 6,
   maxCrossReferenceDepth: 3,
-  maxItems: 60,
+  /** Raised from 60→100 so authentic packages can retain direct defs + material nested deps without silent item thrash. */
+  maxItems: 100,
   maxTextBudgetChars: 40_000,
 };
 
@@ -232,7 +234,14 @@ export interface ContextRetrievalPerformance {
  * resumed as-is, since compile.ts's own inputHasUnresolvedOperativeEvidence
  * gate depends on it.
  */
-export const RETRIEVAL_ALGORITHM_VERSION = "phase-2d-context-retrieval.v5";
+/**
+ * Bumped to v6 by HEADROOM-6 recursive legal context remediation:
+ * canonical body-anchor selection for TOC/furniture vs operative duplicates,
+ * definition-section operative narrowing, priority-aware budget stops, and
+ * machine-readable ContextCompletenessManifest. Bundles built under v5 or
+ * earlier must be treated as stale and recomputed.
+ */
+export const RETRIEVAL_ALGORITHM_VERSION = "phase-2d-context-retrieval.v6";
 
 export interface CovenantContextBundle {
   /** Deterministic, content-derived (never random) - see identity.ts. */
@@ -274,6 +283,14 @@ export interface CovenantContextBundle {
 
   sufficiencyState: SufficiencyState;
   stopReasons: string[];
+
+  /**
+   * HEADROOM-6 — machine-readable completeness proof (root provision, source
+   * spans, definition dependency graph, missing/ambiguous deps, operative
+   * authority, budget accounting, sufficiency, provenance). Always populated
+   * by buildCovenantContextBundle; optional only for pre-v6 fixtures.
+   */
+  contextManifest?: import("./manifest").ContextCompletenessManifest;
 
   performance: ContextRetrievalPerformance;
 

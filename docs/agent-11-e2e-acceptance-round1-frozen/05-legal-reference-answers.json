@@ -1,0 +1,204 @@
+{
+  "artifact": "AGENT11_LEGAL_REFERENCE_ANSWERS",
+  "createdBeforeCompilerRun": true,
+  "createdAtUtc": "2026-10-10T13:51:21Z",
+  "createdFrom": "Independent reading of sealed extracted texts only. No compiler output consulted.",
+  "sourceHashesAtCreation": {
+    "doc-a-extractedSha256": "3b40cf207df8970a384fa70fba766550bcacc40f52d4d611c4eb80fc039fdcdc",
+    "doc-b-extractedSha256": "5c932a0f1f2eeccab12627e36a5ee87e6dada826b7ffd55cbbba887ec3d8aa26"
+  },
+  "freezePolicy": "IMMUTABLE after seal. Do not edit after observing compiler output.",
+  "clauses": [
+    {
+      "clauseId": "AN-B-RESTATE",
+      "documentId": "doc-b",
+      "sectionRef": "preamble",
+      "family": "AMENDMENT",
+      "title": "Fifth A&R restatement of Existing Credit Agreement",
+      "operativeSummary": "On the Closing Date, the Existing Credit Agreement is amended and restated as set forth in this Agreement. Existing Credit Agreement is defined as the Fourth Amended and Restated Credit Agreement dated as of July 18, 2023.",
+      "entityScope": "Borrower, Lenders, Administrative Agent",
+      "conditions": ["Article V conditions precedent / Closing Date effectiveness"],
+      "formula": null,
+      "requiredDefinitions": ["Existing Credit Agreement", "Closing Date"],
+      "residuals": ["Fourth A&R full text not in this package; Third A&R (doc-a) is prior chain evidence only"],
+      "expectedExecution": "Identify doc-b as operative after Closing Date. Do not treat doc-a §8.1(b) capitalization covenant as currently operative.",
+      "citationAnchors": [
+        "the Existing Credit Agreement shall be amended and restated as follows",
+        "Fourth Amended and Restated Credit Agreement, dated as of July 18, 2023"
+      ]
+    },
+    {
+      "clauseId": "AN-B-8.1",
+      "documentId": "doc-b",
+      "sectionRef": "8.1",
+      "family": "FINANCIAL_COVENANTS",
+      "title": "Financial Covenants",
+      "operativeSummary": "(a) Consolidated Leverage Ratio must not exceed 3.75 to 1.00, with elective Material Step-Up Acquisition increase to 4.25 to 1.00 for the acquisition quarter and three succeeding quarters, at most twice during the term, with two consecutive 3.75 quarter-ends before a second step-up. (b) Consolidated Interest Coverage Ratio must not be less than 3.00 to 1.00.",
+      "entityScope": "Borrower (will not, nor permit any Subsidiary to)",
+      "conditions": ["Material Step-Up Acquisition written notice within 30 days", "step-up frequency and reversion conditions"],
+      "formula": {
+        "leverage_max": { "type": "RATIO", "max": 3.75, "stepUpMax": 4.25, "metric": "Consolidated Leverage Ratio" },
+        "interest_coverage_min": { "type": "RATIO", "min": 3.0, "metric": "Consolidated Interest Coverage Ratio" }
+      },
+      "requiredDefinitions": [
+        "Consolidated Leverage Ratio",
+        "Consolidated Interest Coverage Ratio",
+        "Adjusted Consolidated EBITDA",
+        "Consolidated Funded Indebtedness",
+        "Material Step-Up Acquisition",
+        "Four-Quarter Period"
+      ],
+      "residuals": ["No Consolidated Total Capitalization Ratio in operative §8.1"],
+      "expectedExecution": "Production capacity/compliance claims require authenticated financial inputs for ratio components. Refuse production authority without them.",
+      "citationAnchors": [
+        "Permit the Consolidated Leverage Ratio as at the last day of any Four-Quarter Period to be greater than 3.75 to 1.00",
+        "shall increase to 4.25 to 1.00",
+        "Consolidated Interest Coverage Ratio as at the last day of any Four-Quarter Period to be less than 3.00 to 1.00"
+      ]
+    },
+    {
+      "clauseId": "AN-A-8.1-CAPITALIZATION",
+      "documentId": "doc-a",
+      "sectionRef": "8.1",
+      "family": "FINANCIAL_COVENANTS",
+      "title": "Third A&R capitalization covenant (historical)",
+      "operativeSummary": "Third A&R §8.1(b) required Consolidated Capitalization Ratio not greater than 0.70 to 1.00. Operative Fifth A&R replaces this with Consolidated Interest Coverage Ratio.",
+      "entityScope": "Borrower / Subsidiaries (historical)",
+      "conditions": [],
+      "formula": { "type": "RATIO", "max": 0.7, "metric": "Consolidated Capitalization Ratio" },
+      "requiredDefinitions": ["Consolidated Capitalization Ratio"],
+      "residuals": ["ABSENT from doc-b §8.1 — must not be treated as currently operative"],
+      "expectedExecution": "As of 2026-09-14 Closing Date, REFUSE any production claim based on the 0.70 capitalization covenant.",
+      "citationAnchors": [
+        "Permit at any time the Consolidated Capitalization Ratio to be greater than 0.70 to 1.00"
+      ]
+    },
+    {
+      "clauseId": "AN-B-8.2",
+      "documentId": "doc-b",
+      "sectionRef": "8.2",
+      "family": "INDEBTEDNESS",
+      "title": "Indebtedness incurrence gate",
+      "operativeSummary": "Borrower will not incur/create/assume Funded Indebtedness other than Permitted Indebtedness unless after pro forma effect (including any §8.1(a) leverage step-up from a Material Step-Up Acquisition) Borrower is in compliance with §8.1.",
+      "entityScope": "Borrower and Subsidiaries",
+      "conditions": ["pro forma §8.1 compliance", "Material Step-Up Acquisition leverage step-up interaction"],
+      "formula": { "type": "RATIO_GATE", "dependsOn": "Section 8.1" },
+      "requiredDefinitions": ["Funded Indebtedness", "Permitted Indebtedness", "Consolidated EBITDA", "Material Step-Up Acquisition"],
+      "residuals": ["No fixed-dollar general debt basket; Permitted Indebtedness is narrow"],
+      "expectedExecution": "Hypothetical illustration may apply caller-stipulated ratios if labeled. Production authority requires authenticated inputs + completeness + trusted approval.",
+      "citationAnchors": [
+        "Incur, create or assume any Funded Indebtedness (other than Permitted Indebtedness)",
+        "the Borrower shall be in compliance with Section  8.1"
+      ]
+    },
+    {
+      "clauseId": "AN-B-8.3",
+      "documentId": "doc-b",
+      "sectionRef": "8.3",
+      "family": "LIENS",
+      "title": "Restriction on Liens securing Indebtedness",
+      "operativeSummary": "No Liens securing Indebtedness except enumerated (i)–(xx), including Mortgage Facilities ≤ $1,000,000,000 with 85% FMV cap, and general basket (xix) ≤ 15% of Consolidated Tangible Assets plus refinancing of that basket.",
+      "entityScope": "Borrower and Subsidiaries",
+      "conditions": ["clause-specific conditions including FMV and CTA tests"],
+      "formula": {
+        "mortgage_facilities_cap": 1000000000,
+        "general_lien_basket": { "type": "PERCENT_OF_METRIC", "percent": 15, "metric": "Consolidated Tangible Assets" }
+      },
+      "requiredDefinitions": ["Consolidated Tangible Assets", "Mortgage Facilities", "Vehicle Secured Indebtedness", "Escrow Indebtedness", "Permitted Acquisition"],
+      "residuals": ["Shared-capacity double-count risk across (vi)/(ix)/(xix) if utilization incomplete"],
+      "expectedExecution": "Refuse production remaining on (xix) without CTA evidence and utilization completeness across secured Indebtedness in the basket.",
+      "citationAnchors": [
+        "Incur, create or permit to exist any Lien of any nature whatsoever",
+        "shall not exceed 15% of Consolidated Tangible Assets",
+        "Mortgage Facilities of the Borrower or any Subsidiary in an aggregate principal amount not to exceed $1,000,000,000"
+      ]
+    },
+    {
+      "clauseId": "AN-B-PERM-INDEBTEDNESS",
+      "documentId": "doc-b",
+      "sectionRef": "1.1",
+      "family": "DEFINITION",
+      "title": "Permitted Indebtedness",
+      "operativeSummary": "Permitted Indebtedness means (i) endorsement of negotiable instruments for deposit/collection or similar ordinary-course transactions and (ii) Indebtedness owing to the Borrower or a Subsidiary.",
+      "entityScope": "Definitional",
+      "conditions": [],
+      "formula": null,
+      "requiredDefinitions": ["Indebtedness", "Subsidiary"],
+      "residuals": ["Extremely narrow — most Funded Indebtedness must clear §8.2 ratio gate"],
+      "expectedExecution": "Missing this definition blocks complete legal context for §8.2.",
+      "citationAnchors": [
+        "“ Permitted Indebtedness ” means (i) the endorsement of negotiable instruments",
+        "Indebtedness owing to the Borrower or a Subsidiary"
+      ]
+    },
+    {
+      "clauseId": "AN-B-DEF-LEVERAGE",
+      "documentId": "doc-b",
+      "sectionRef": "1.1",
+      "family": "DEFINITION",
+      "title": "Consolidated Leverage Ratio",
+      "operativeSummary": "Ratio of Consolidated Funded Indebtedness to Adjusted Consolidated EBITDA for the Four-Quarter Period.",
+      "entityScope": "Definitional",
+      "conditions": [],
+      "formula": { "type": "RATIO", "numerator": "Consolidated Funded Indebtedness", "denominator": "Adjusted Consolidated EBITDA" },
+      "requiredDefinitions": ["Consolidated Funded Indebtedness", "Adjusted Consolidated EBITDA", "Four-Quarter Period"],
+      "residuals": [],
+      "expectedExecution": "Required for any executable leverage representation.",
+      "citationAnchors": [
+        "“ Consolidated Leverage Ratio ” means, as at the date of computation thereof, the ratio of (a) Consolidated Funded Indebtedness"
+      ]
+    },
+    {
+      "clauseId": "AN-B-FACILITY",
+      "documentId": "doc-b",
+      "sectionRef": "1.1",
+      "family": "DEFINITION",
+      "title": "Total Revolving Credit Commitment",
+      "operativeSummary": "Total Revolving Credit Commitment means $2,000,000,000 as may be increased or decreased.",
+      "entityScope": "Facility",
+      "conditions": [],
+      "formula": { "type": "FIXED_USD", "cap": 2000000000 },
+      "requiredDefinitions": ["Revolving Credit Commitment", "Stated Termination Date"],
+      "residuals": ["doc-a commitment was $1,800,000,000 — stale if used after restatement"],
+      "expectedExecution": "Using $1.8B after Closing Date is wrong-amendment / stale evidence.",
+      "citationAnchors": [
+        "“ Total Revolving Credit Commitment ” means $2,000,000,000"
+      ]
+    },
+    {
+      "clauseId": "AN-B-FUNDED-LC",
+      "documentId": "doc-b",
+      "sectionRef": "1.1",
+      "family": "DEFINITION",
+      "title": "Funded Indebtedness LC inclusion threshold",
+      "operativeSummary": "Funded Indebtedness includes undrawn amounts of letters of credit in excess of $175,000,000 in the aggregate (doc-a threshold was $150,000,000). Vehicle Secured / Vehicle Receivables / Escrow Indebtedness excluded while they qualify.",
+      "entityScope": "Definitional",
+      "conditions": ["Escrow Indebtedness exclusion only while it constitutes Escrow Indebtedness"],
+      "formula": { "lc_undrawn_inclusion_threshold": 175000000 },
+      "requiredDefinitions": ["Vehicle Secured Indebtedness", "Vehicle Receivables Indebtedness", "Escrow Indebtedness", "Guaranty Obligations"],
+      "residuals": [],
+      "expectedExecution": "Wrong threshold ($150mm from doc-a) is a wrong-amendment fidelity failure.",
+      "citationAnchors": [
+        "all undrawn amounts of letters of credit in excess of $175,000,000 in the aggregate"
+      ]
+    },
+    {
+      "clauseId": "AN-B-8.4",
+      "documentId": "doc-b",
+      "sectionRef": "8.4",
+      "family": "MERGER",
+      "title": "Merger, Consolidation or Fundamental Changes",
+      "operativeSummary": "Restrictions on sale of all/substantially all assets, consolidation/merger, and Borrower liquidation, with listed exceptions for Subsidiary mergers and Borrower-survival mergers.",
+      "entityScope": "Borrower and Subsidiaries",
+      "conditions": ["exception conditions including Default/Event of Default absence for Borrower-survival mergers"],
+      "formula": null,
+      "requiredDefinitions": ["Subsidiary", "Margin Stock", "Default", "Event of Default"],
+      "residuals": [],
+      "expectedExecution": "Qualitative restriction — production 'capacity' numeric claims unsupported.",
+      "citationAnchors": [
+        "Sell, lease, transfer or otherwise dispose",
+        "all or substantially all of the assets of the Borrower and its Subsidiaries"
+      ]
+    }
+  ]
+}

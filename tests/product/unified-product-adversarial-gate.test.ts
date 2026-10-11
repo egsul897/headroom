@@ -25,6 +25,9 @@ import {
 import {
   assertProductCapacityConsistency,
   buildSharedProductCapacityViews,
+  productionTrustedIssuerAuth,
+  sessionCounselPrincipal,
+  sessionCustodianPrincipal,
   type ProductCapacityView,
 } from "@/lib/capacity";
 import { VERIFIED_EXECUTION_POLICY } from "@/lib/contract-model/verified-execution";
@@ -34,6 +37,11 @@ import path from "node:path";
 const AS_OF = "2026-06-30";
 const hasDb = Boolean(process.env.DATABASE_URL);
 const describeDb = hasDb ? describe : describe.skip;
+
+const ADV_TRUSTED_ISSUER = productionTrustedIssuerAuth([
+  sessionCounselPrincipal("counsel-alice"),
+  sessionCustodianPrincipal("custodian-bob"),
+]);
 
 function attributedEvidence(amount: number, ruleId = "GEN") {
   return {
@@ -50,6 +58,34 @@ function attributedEvidence(amount: number, ruleId = "GEN") {
     approvalState: "APPROVED" as const,
     sourceLabel: "adversarial",
     authenticity: "AUTHENTIC" as const,
+  };
+}
+
+/** APPROVED completeness without authenticity/issuer — must never publish remaining. */
+function incompleteCompletenessCert(ruleId = "GEN") {
+  return {
+    capacityRuleId: ruleId,
+    asOf: AS_OF,
+    approvalState: "APPROVED" as const,
+    sourceLabel: "adv-cert",
+    kind: "VERIFIED_COMPLETE" as const,
+  };
+}
+
+/** Production-shaped completeness: AUTHENTIC + issuer bound to trusted identity. */
+function authenticCompletenessCert(ruleId = "GEN") {
+  return {
+    capacityRuleId: ruleId,
+    asOf: AS_OF,
+    approvalState: "APPROVED" as const,
+    sourceLabel: "adv-cert",
+    kind: "VERIFIED_COMPLETE" as const,
+    authenticity: "AUTHENTIC" as const,
+    issuer: {
+      role: "COUNSEL_REVIEWER" as const,
+      actorId: "counsel-alice",
+      attestedAt: `${AS_OF}T12:00:00.000Z`,
+    },
   };
 }
 
@@ -151,6 +187,37 @@ describe("unified product adversarial — REQUIRE + surfaces (pure)", () => {
     expect(d2.evaluationDate).not.toBe(d.evaluationDate);
   });
 
+  it("APPROVED completeness missing authenticity/issuer refuses remaining on all surfaces", () => {
+    // Pre-existing harness used this shape and expected 150_000_000; after
+    // authenticity+trusted-issuer authority, fail-closed null is correct.
+    const views = buildSharedProductCapacityViews({
+      gross: {
+        amount: 200_000_000,
+        gateSatisfied: true,
+        modeled: true,
+        capacityRuleId: "GEN",
+      },
+      utilization: {
+        capacityRuleId: "GEN",
+        asOf: AS_OF,
+        records: [attributedEvidence(50_000_000)],
+        completenessCertificate: incompleteCompletenessCert(),
+      },
+    });
+    expect(assertProductCapacityConsistency(views)).toEqual({ ok: true });
+    for (const surface of ["POSITION", "SIMULATE", "ASK"] as const) {
+      expect(views[surface].supportedRemainingCapacity, surface).toBeNull();
+      expect(views[surface].mayPublishAvailable, surface).toBe(false);
+      expect(views[surface].publicationLabel, surface).not.toBe("AVAILABLE");
+      expect(
+        views[surface].blockers.some((b) =>
+          /missing authenticity|not production-authoritative|authoritative remaining refused/i.test(b),
+        ),
+        `${surface} diagnostic`,
+      ).toBe(true);
+    }
+  });
+
   it("Position / Simulate / Ask disagreeing remaining is rejected by shared-view consistency", () => {
     const views = buildSharedProductCapacityViews({
       gross: {
@@ -163,17 +230,14 @@ describe("unified product adversarial — REQUIRE + surfaces (pure)", () => {
         capacityRuleId: "GEN",
         asOf: AS_OF,
         records: [attributedEvidence(50_000_000)],
-        completenessCertificate: {
-          capacityRuleId: "GEN",
-          asOf: AS_OF,
-          approvalState: "APPROVED",
-          sourceLabel: "adv-cert",
-          kind: "VERIFIED_COMPLETE",
-        },
+        completenessCertificate: authenticCompletenessCert(),
+        trustedIssuerAuth: ADV_TRUSTED_ISSUER,
       },
     });
     expect(assertProductCapacityConsistency(views)).toEqual({ ok: true });
     expect(views.POSITION.supportedRemainingCapacity).toBe(150_000_000);
+    expect(views.SIMULATE.supportedRemainingCapacity).toBe(150_000_000);
+    expect(views.ASK.supportedRemainingCapacity).toBe(150_000_000);
 
     const tampered: Record<"POSITION" | "SIMULATE" | "ASK", ProductCapacityView> = {
       ...views,

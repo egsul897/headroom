@@ -1,0 +1,170 @@
+{
+  "cases": [
+    {
+      "id": "missing_document",
+      "applicable": true,
+      "expected": "Fourth A&R (2023-07-18) absent from package; system must not invent its text",
+      "observation": {
+        "documentsPresent": [
+          "doc-a",
+          "doc-b"
+        ],
+        "existingCreditAgreementDefinedAs": "Fourth A&R dated July 18, 2023",
+        "fourthArTextInPackage": false
+      },
+      "pass": true,
+      "classification": "VERIFIED"
+    },
+    {
+      "id": "wrong_amendment",
+      "applicable": true,
+      "expected": "Must not apply doc-a §8.1(b) 0.70 capitalization as operative; must use doc-b interest coverage",
+      "observation": {
+        "capitalizationInDocA": true,
+        "capitalizationInDocBNegative": false,
+        "interestCoverageInDocB": true,
+        "operativeDocument": {
+          "status": "REVIEW_REQUIRED",
+          "operativeDocumentId": null,
+          "predecessorDocumentIds": [],
+          "relationshipChain": [],
+          "reviewReason": "3 restatement effect(s) relevant to this instrument have an unresolved target document - which whole document currently governs cannot be determined without guessing (effect(s): dfe541660dafd664ae9f1a76b148ec2fded3c162252cf6c0e9c0b121198ae370, 07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641, 07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641)."
+        }
+      },
+      "pass": true,
+      "systemOperativeCorrect": false,
+      "classification": "BLOCKED"
+    },
+    {
+      "id": "wrong_entity",
+      "applicable": true,
+      "expected": "§8 covenants bind Borrower and Subsidiaries — not a third-party issuer",
+      "observation": {
+        "preamble": "the Borrower will not, nor will it permit any Subsidiary to",
+        "found": true
+      },
+      "pass": true,
+      "classification": "VERIFIED"
+    },
+    {
+      "id": "missing_definition",
+      "applicable": true,
+      "expected": "Permitted Indebtedness must be resolved for §8.2 completeness",
+      "observation": {
+        "structuralDefHits": 2
+      },
+      "pass": true,
+      "classification": "VERIFIED"
+    },
+    {
+      "id": "wrong_formula",
+      "applicable": true,
+      "expected": "Leverage max 3.75 (not inventing other thresholds); LC threshold $175mm not $150mm",
+      "observation": {
+        "leverage375": true,
+        "stepUp425": true,
+        "lc175": true,
+        "staleLc150InDocAOnly": true
+      },
+      "pass": true,
+      "classification": "VERIFIED"
+    },
+    {
+      "id": "incomplete_utilization",
+      "applicable": true,
+      "expected": "Refuse remaining without completeness certificate",
+      "observation": {
+        "supportsRemainingClaim": false,
+        "knowledge": "KNOWN_ATTRIBUTED"
+      },
+      "pass": true,
+      "classification": "VERIFIED"
+    },
+    {
+      "id": "forged_issuer",
+      "applicable": true,
+      "expected": "Refuse production authority for issuer not in trusted registry",
+      "observation": {
+        "forgedMayPublish": false
+      },
+      "pass": true,
+      "classification": "VERIFIED"
+    },
+    {
+      "id": "shared_capacity_double_count",
+      "applicable": true,
+      "expected": "Do not publish multi-basket remaining that double-counts overlapping secured Indebtedness",
+      "observation": {
+        "baskets": [
+          "8.3(vi) Mortgage Facilities $1B",
+          "8.3(ix) Vehicle Secured",
+          "8.3(xix) 15% CTA"
+        ],
+        "observation": "Without attributed utilization spanning overlapping collateral/Indebtedness, publishing remaining on multiple Lien baskets risks double-count. Main tip correctly leaves utilization UNKNOWN without completeness certificate.",
+        "incompleteUtilizationKnowledge": "KNOWN_ATTRIBUTED",
+        "supportsRemainingClaim": false,
+        "productionAuthoritative": false
+      },
+      "pass": true,
+      "classification": "VERIFIED"
+    },
+    {
+      "id": "stale_financial_evidence",
+      "applicable": true,
+      "expected": "doc-a $1.8B commitment must not silently become operative facility size",
+      "observation": {
+        "docACommitment": 1800000000,
+        "docBCommitment": 2000000000,
+        "capacityLayerRejectsStaleGrossAlone": false,
+        "note": "Capacity math layer accepts caller gross; operative-document resolution must prevent stale gross selection. Operative resolution status recorded separately.",
+        "operativeDocumentId": null
+      },
+      "pass": true,
+      "classification": "BLOCKED"
+    },
+    {
+      "id": "unsupported_covenant",
+      "applicable": true,
+      "expected": "Refuse treating removed capitalization covenant as operative",
+      "observation": {
+        "removedFromDocBNegative": true
+      },
+      "pass": true,
+      "classification": "VERIFIED"
+    },
+    {
+      "id": "misleading_ui_status",
+      "applicable": true,
+      "expected": "Surfaces must not show AVAILABLE when production authority absent",
+      "observation": {
+        "labels": {
+          "POSITION": "REFUSED",
+          "ASK": "REFUSED",
+          "SIMULATE": "REFUSED"
+        },
+        "mayPublish": {
+          "POSITION": false,
+          "ASK": false,
+          "SIMULATE": false
+        },
+        "customerWorkflowModulePresent": false
+      },
+      "pass": true,
+      "classification": "VERIFIED",
+      "note": "Shared capacity view honest; live UI status chips from #275 NOT_TESTED"
+    },
+    {
+      "id": "different_ask_position_simulate_answers",
+      "applicable": true,
+      "expected": "Position/Ask/Simulate identical on shared verified numbers",
+      "observation": {
+        "consistency": {
+          "ok": true
+        },
+        "labelsEqual": true
+      },
+      "pass": true,
+      "classification": "VERIFIED"
+    }
+  ]
+}

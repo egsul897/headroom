@@ -43,3 +43,12 @@ mayUseAsProductionCapacityInput(...) === false
 ```
 
 Verdict `FINANCIAL_EVIDENCE_CONTRACT_VERIFIED` does **not** imply production activation.
+
+## Downstream ingestion (HEADROOM-9)
+
+Statement normalization and utilization reconstruction feed this contract via:
+
+- `lib/capacity/financial-statement-ingestion.ts`
+- `lib/capacity/utilization-evidence-reconstruction.ts`
+
+See `FINANCIAL-AND-UTILIZATION-EVIDENCE-SLICE.md`. Those modules do **not** create a second evidence contract and do **not** replace the Agent #2 modules above.

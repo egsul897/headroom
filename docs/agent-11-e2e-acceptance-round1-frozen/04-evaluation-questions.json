@@ -1,0 +1,92 @@
+{
+  "artifact": "AGENT11_EVALUATION_QUESTIONS",
+  "createdBeforeCompilerRun": true,
+  "createdAtUtc": "2026-10-10T13:51:21Z",
+  "sourceBasis": "Independent reading of sealed AN extracted texts (doc-a, doc-b) before any Headroom compiler invocation.",
+  "customerWorkflowStages": [
+    "1_UPLOAD",
+    "2_IDENTIFY_DOCUMENTS",
+    "3_RESOLVE_OPERATIVE",
+    "4_DISCOVER_COVENANTS",
+    "5_RETRIEVE_CONTEXT",
+    "6_COMPILE_VERIFIED_IR",
+    "7_ATTACH_FINANCIAL_EVIDENCE",
+    "8_RECONSTRUCT_UTILIZATION",
+    "9_EVIDENCE_REVIEWER_AUTHORITY",
+    "10_HYPOTHETICAL_TRANSACTION",
+    "11_PRODUCTION_AUTHORITY",
+    "12_SURFACE_DISPLAY"
+  ],
+  "questions": [
+    {
+      "id": "Q-OPERATIVE-DOC",
+      "stages": ["2_IDENTIFY_DOCUMENTS", "3_RESOLVE_OPERATIVE"],
+      "question": "As of 2026-09-15, which credit agreement is the operative governing document for AutoNation's revolving facility?",
+      "expectedCitation": "doc-b (Fifth A&R); Existing Credit Agreement defined as Fourth A&R dated 2023-07-18, restated by doc-b",
+      "adversarialTags": ["wrong_amendment", "missing_document"]
+    },
+    {
+      "id": "Q-FINCOV-81",
+      "stages": ["4_DISCOVER_COVENANTS", "5_RETRIEVE_CONTEXT", "6_COMPILE_VERIFIED_IR"],
+      "question": "What are the §8.1 financial covenant thresholds under the operative agreement?",
+      "expectedCitation": "doc-b §8.1(a) leverage ≤ 3.75x (step-up 4.25x); §8.1(b) interest coverage ≥ 3.00x",
+      "adversarialTags": ["wrong_formula", "wrong_amendment"]
+    },
+    {
+      "id": "Q-REMOVED-CAPITALIZATION",
+      "stages": ["3_RESOLVE_OPERATIVE", "4_DISCOVER_COVENANTS"],
+      "question": "Does the operative agreement still contain the Third A&R §8.1(b) Consolidated Total Capitalization Ratio ≤ 0.70?",
+      "expectedCitation": "Present in doc-a §8.1(b); ABSENT from doc-b §8.1 (replaced by interest coverage)",
+      "adversarialTags": ["wrong_amendment", "unsupported_covenant"]
+    },
+    {
+      "id": "Q-DEBT-82",
+      "stages": ["4_DISCOVER_COVENANTS", "5_RETRIEVE_CONTEXT", "10_HYPOTHETICAL_TRANSACTION"],
+      "question": "When may the Borrower incur Funded Indebtedness other than Permitted Indebtedness?",
+      "expectedCitation": "doc-b §8.2 — only if pro forma compliant with §8.1 (with Material Step-Up Acquisition leverage step-up mechanics)",
+      "adversarialTags": ["missing_definition", "wrong_entity"]
+    },
+    {
+      "id": "Q-LIEN-83-BASKET",
+      "stages": ["4_DISCOVER_COVENANTS", "5_RETRIEVE_CONTEXT", "10_HYPOTHETICAL_TRANSACTION"],
+      "question": "What is the general Lien basket under §8.3(xix)?",
+      "expectedCitation": "doc-b §8.3(xix) — ≤ 15% of Consolidated Tangible Assets",
+      "adversarialTags": ["wrong_formula", "shared_capacity_double_count"]
+    },
+    {
+      "id": "Q-DEF-PERMITTED-INDEBTEDNESS",
+      "stages": ["5_RETRIEVE_CONTEXT", "6_COMPILE_VERIFIED_IR"],
+      "question": "What is Permitted Indebtedness under the operative agreement?",
+      "expectedCitation": "doc-b Art I — endorsement of negotiable instruments + Indebtedness owing to Borrower or a Subsidiary",
+      "adversarialTags": ["missing_definition"]
+    },
+    {
+      "id": "Q-FACILITY-SIZE",
+      "stages": ["2_IDENTIFY_DOCUMENTS", "7_ATTACH_FINANCIAL_EVIDENCE"],
+      "question": "What is the Total Revolving Credit Commitment under the operative agreement?",
+      "expectedCitation": "doc-b $2,000,000,000 (doc-a was $1,800,000,000)",
+      "adversarialTags": ["wrong_amendment", "stale_financial_evidence"]
+    },
+    {
+      "id": "Q-FUNDED-LC-THRESHOLD",
+      "stages": ["5_RETRIEVE_CONTEXT", "6_COMPILE_VERIFIED_IR"],
+      "question": "At what aggregate undrawn LC amount does Funded Indebtedness begin including undrawn letters of credit?",
+      "expectedCitation": "doc-b $175,000,000 (doc-a was $150,000,000)",
+      "adversarialTags": ["wrong_amendment", "wrong_formula"]
+    },
+    {
+      "id": "Q-PROD-CAPACITY-WITHOUT-EVIDENCE",
+      "stages": ["7_ATTACH_FINANCIAL_EVIDENCE", "8_RECONSTRUCT_UTILIZATION", "11_PRODUCTION_AUTHORITY", "12_SURFACE_DISPLAY"],
+      "question": "Without authenticated financial evidence, utilization completeness, and trusted reviewer approval, may production-authoritative remaining capacity be published on Position/Ask/Simulate?",
+      "expectedCitation": "Policy: correct refusal on all three surfaces",
+      "adversarialTags": ["forged_issuer", "incomplete_utilization", "misleading_ui_status", "surface_inconsistency"]
+    },
+    {
+      "id": "Q-HYPOTHETICAL-LABELED",
+      "stages": ["10_HYPOTHETICAL_TRANSACTION", "12_SURFACE_DISPLAY"],
+      "question": "May a hypothetical $100mm Funded Indebtedness incurrence be illustrated under caller-stipulated CNTA/EBITDA assumptions if clearly labeled non-authoritative?",
+      "expectedCitation": "Track 1 HYPOTHETICAL_ONLY — allowed when labeled; must not equal production authority",
+      "adversarialTags": ["misleading_ui_status", "surface_inconsistency"]
+    }
+  ]
+}

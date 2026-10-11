@@ -1,0 +1,95 @@
+{
+  "title": "Source-backed hypothetical finance-lease under CONMED-form \u00a77.02(d)",
+  "classification": "HYPOTHETICAL_FIXTURE_IR",
+  "entrypoint": "executeUnifiedVerifiedTransaction",
+  "executionStatus": "EXECUTED_HYPOTHETICAL",
+  "productionAuthority": "HYPOTHETICAL_ONLY",
+  "sourceCitations": [
+    "CONMED Corporation Fourth Amended and Restated Credit Agreement \u00a77.02(d) \u2014 Finance Leases and purchase money Indebtedness in an aggregate principal amount not exceeding $25,000,000"
+  ],
+  "trace": [
+    {
+      "step": "identity.company",
+      "outcome": "PASS",
+      "detail": "companyId=conmed-corp"
+    },
+    {
+      "step": "identity.instrument",
+      "outcome": "PASS",
+      "detail": "instrumentKey=conmed-2025-credit-facility"
+    },
+    {
+      "step": "rule.lifecycle",
+      "outcome": "PASS",
+      "detail": "VERIFIED_EXECUTABLE"
+    },
+    {
+      "step": "rule.verification",
+      "outcome": "PASS",
+      "detail": "artifact=va-conmed-7.02d-ute-e2e",
+      "refs": [
+        "CONMED Corporation Fourth Amended and Restated Credit Agreement \u00a77.02(d) \u2014 Finance Leases and purchase money Indebtedness in an aggregate principal amount not exceeding $25,000,000"
+      ]
+    },
+    {
+      "step": "path.rule",
+      "outcome": "PASS",
+      "detail": "pathId=path:conmed-7.02d"
+    },
+    {
+      "step": "operative.authority",
+      "outcome": "PASS",
+      "detail": "CONFIRMED_OPERATIVE conmed-2025-fourth-ar-credit-agreement",
+      "refs": [
+        "CONMED Corporation Fourth Amended and Restated Credit Agreement \u00a77.02(d) \u2014 Finance Leases and purchase money Indebtedness in an aggregate principal amount not exceeding $25,000,000"
+      ]
+    },
+    {
+      "step": "identity.authorization",
+      "outcome": "INFO",
+      "detail": "identity authorization not required for this hypothetical request"
+    },
+    {
+      "step": "financial.evidence",
+      "outcome": "PASS",
+      "detail": "hypothetical/synthetic financials accepted for HYPOTHETICAL mode only"
+    },
+    {
+      "step": "utilization.completeness",
+      "outcome": "PASS",
+      "detail": "demo/hypothetical utilization completeness"
+    },
+    {
+      "step": "reviewer.authorization",
+      "outcome": "INFO",
+      "detail": "reviewer authorization not required for this request"
+    },
+    {
+      "step": "operative.productionPromotion",
+      "outcome": "PASS",
+      "detail": "unconditional production promotion eligible"
+    },
+    {
+      "step": "transaction.amount",
+      "outcome": "PASS",
+      "detail": "10000000 USD"
+    },
+    {
+      "step": "verified.capacity",
+      "outcome": "PASS",
+      "detail": "EXECUTED packageHash=d1c78e120b2f\u2026"
+    },
+    {
+      "step": "verified.simulation",
+      "outcome": "PASS",
+      "detail": "status=SIMULATED path=SATISFIED"
+    },
+    {
+      "step": "production.authority",
+      "outcome": "INFO",
+      "detail": "HYPOTHETICAL_ONLY \u2014 host trusted-issuer activation remains BLOCKED; HYPOTHETICAL must not promote"
+    }
+  ],
+  "selectedPathResult": "SATISFIED",
+  "note": "Fixture IR + synthetic/demo financials \u2014 must not be presented as PRODUCTION_AUTHORITY_ACTIVE."
+}

@@ -2,11 +2,12 @@
 
 **Priority:** 5  
 **Owner:** next bounded remediation agent (platform / security)  
-**Source:** `lib/capacity/trusted-issuer-host.ts` — production trusted-issuer authority BLOCKED until a real `HostIdentityProvider` is registered.
+**Source:** `lib/capacity/trusted-issuer-host.ts` + Agent #8 `lib/capacity/identity/*` — both `TRUSTED_ISSUER_ACTIVATION` and `TRUSTED_IDENTITY_PRODUCTION_ACTIVATION` are BLOCKED until a real IdP is registered.  
+**Expanded workstream doc:** `docs/intelligence-factory/PRODUCTION-IDP-INTEGRATION-WORKSTREAM.md`
 
 ## Problem
 
-Financial evidence and utilization remaining can never become `PRODUCTION_AUTHORITATIVE` without host-verified session/service-account identity. Mint surface is WeakSet-gated; structural clones are refused; no production provider is registered.
+Financial evidence and utilization remaining can never become `PRODUCTION_AUTHORITATIVE` without host-verified session/service-account identity. WeakSet host mint alone is insufficient; Agent #8 requires `ServerIdentityProvider.verifyCredentials` + discrete permissions + tenant scope. No production provider is registered.
 
 ## In scope
 

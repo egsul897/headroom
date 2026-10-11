@@ -31,6 +31,8 @@ export interface RetrievalState {
   duplicatePathsDeduplicated: number;
   /** documentId::normalizedPhrase already recorded as an UNRESOLVED_DEFINED_TERM - the fallback pass runs once per retrieved item's own text (operative node, every structural sibling/parent/child, every definition), so the same real undeclared term can legitimately surface from more than one item's text; this prevents the same term being reported as a separate unresolved dependency more than once. */
   seenUnresolvedTermPhrases: Set<string>;
+  /** HEADROOM-6: soft text-budget continuation already disclosed (MEDIUM unresolved, no stopReasons). */
+  softTextBudgetDisclosed: boolean;
   /**
    * Phase 3F.1 FIX-2 - this instrument's own already-computed
    * OperativeContractState (Phase 2G), threaded through PackageAccess so
@@ -66,6 +68,7 @@ export function createRetrievalState(budget: RetrievalBudget, operativeState?: O
     crossDocumentLeads: 0,
     duplicatePathsDeduplicated: 0,
     seenUnresolvedTermPhrases: new Set(),
+    softTextBudgetDisclosed: false,
     operativeState: operativeState ?? null,
     supersessionIndex: supersessionIndex ?? EMPTY_SUPERSESSION_INDEX,
   };
@@ -109,6 +112,29 @@ export function withinBudget(state: RetrievalState, additionalChars: number): bo
     return false;
   }
   if (state.textBudgetUsed + additionalChars > state.budget.maxTextBudgetChars) {
+    // HEADROOM-6: once an operative source + at least one typed definition are
+    // already in the bundle, further text-budget exhaustion is a continuation
+    // boundary (MEDIUM → REVIEW_REQUIRED), not a hard BUDGET_EXCEEDED stop.
+    // Still refuses the add — never silently truncates into SUFFICIENT.
+    const closureStarted =
+      [...state.items.values()].some((i) => i.type === "OPERATIVE_SOURCE") &&
+      [...state.items.values()].some((i) => i.type === "DEFINITION" || i.type === "DEFINITION_DEPENDENCY");
+    if (closureStarted) {
+      if (!state.softTextBudgetDisclosed) {
+        state.softTextBudgetDisclosed = true;
+        state.unresolved.push({
+          originatingNodeKey: null,
+          dependencyType: "BUDGET_EXCEEDED_DEPENDENCY",
+          sourceText: `textBudgetUsed=${state.textBudgetUsed}+${additionalChars} > maxTextBudgetChars=${state.budget.maxTextBudgetChars}`,
+          attemptedResolution: "Refused to add further context items once the character budget was exhausted after operative + definition closure had already started.",
+          reason: "Text budget exhausted after a real definition closure began — REVIEW_REQUIRED continuation (not silent SUFFICIENT; not hard BUDGET_EXCEEDED).",
+          candidateTargets: [],
+          citation: "maxTextBudgetChars",
+          severity: "MEDIUM",
+        });
+      }
+      return false;
+    }
     state.stopReasons.add("CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached");
     return false;
   }

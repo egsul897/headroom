@@ -8,10 +8,12 @@
  */
 import type { StructuralIndex } from "../structural-index";
 import type { PackageGraphResult } from "../package-graph/types";
+import type { StructuralNode } from "../types";
 import { detectAbsoluteReferenceMentions } from "../structural-references";
 import { addEdge, addItem, makeItemInput, resolveSectionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import { expandReferencedRegion } from "./region-expansion";
 import { retrieveAmendmentLeadsForSection } from "./cross-document-context";
+import { resolveCanonicalBodyAnchor } from "./body-anchor";
 
 // Phase 2E.1 §8 audit: a covenant can depend on calculation mechanics
 // through language that never uses the word "calculat" itself - "giving
@@ -29,6 +31,86 @@ function classifyReferencedProvision(text: string): "CALCULATION_PROVISION" | "C
 
 function targetKindToUnresolvedType(targetKind: string): "AMBIGUOUS_RELATIVE_REFERENCE" | "MISSING_SCHEDULE" {
   return targetKind === "SCHEDULE" || targetKind === "EXHIBIT" ? "MISSING_SCHEDULE" : "AMBIGUOUS_RELATIVE_REFERENCE";
+}
+
+function normalizeSectionLabel(ref: string): string {
+  return ref.replace(/\s+/g, "").replace(/^§/, "").replace(/^Sections?/i, "");
+}
+
+/** True when an ambiguous reference names the current node or one of its ancestors — already covered by OPERATIVE_SOURCE / PARENT_SCOPE. */
+function ambiguousTargetIsSelfOrAncestor(index: StructuralIndex, nodeId: string, normalizedTarget: string): boolean {
+  const want = normalizeSectionLabel(normalizedTarget);
+  const self = index.getNodeById(nodeId);
+  if (self && normalizeSectionLabel(self.sectionRef) === want) return true;
+  return index.getAncestors(nodeId).some((a) => normalizeSectionLabel(a.sectionRef) === want);
+}
+
+/**
+ * HEADROOM-6: when Phase 2A reports targetAmbiguous (TOC stub + body), try
+ * canonical body-anchor selection. Preserve every candidate as ambiguity
+ * evidence. Never first-match. Returns the selected body node, or null when
+ * still genuinely ambiguous.
+ */
+function resolveAmbiguousSectionTarget(
+  state: RetrievalState,
+  index: StructuralIndex,
+  documentId: string,
+  fromNodeId: string | null,
+  referenceText: string,
+  normalizedTarget: string,
+  severityIfUnresolved: "HIGH" | "MEDIUM",
+): StructuralNode | null {
+  if (fromNodeId && ambiguousTargetIsSelfOrAncestor(index, fromNodeId, normalizedTarget)) {
+    // Self / ancestor citation via a colliding TOC stub — not a missing dependency.
+    state.unresolved.push({
+      originatingNodeKey: fromNodeId,
+      dependencyType: "AMBIGUOUS_RELATIVE_REFERENCE",
+      sourceText: referenceText,
+      attemptedResolution: `Reference "${referenceText}" matched multiple physical occurrences of "${normalizedTarget}", including the current provision / an ancestor already retrieved as operative or parent scope.`,
+      reason: "Duplicate sectionRef (likely TOC stub vs body) names this provision itself or its enclosing scope — already covered; disclosed as LOW ambiguity evidence, not incompleteness.",
+      candidateTargets: index.findNodesByRef(documentId, normalizedTarget).map((n) => n.nodeId),
+      citation: `${referenceText} [${normalizedTarget}]`,
+      severity: "LOW",
+    });
+    return null;
+  }
+
+  const resolution = resolveCanonicalBodyAnchor(index, documentId, normalizedTarget);
+  if ((resolution.status === "SELECTED_BODY" || resolution.status === "UNIQUE") && resolution.selected) {
+    state.unresolved.push({
+      originatingNodeKey: fromNodeId,
+      dependencyType: "AMBIGUOUS_RELATIVE_REFERENCE",
+      sourceText: referenceText,
+      attemptedResolution: resolution.reason,
+      reason: `Canonical body-anchor selected operative occurrence ${resolution.selected.nodeId} (confidence ${resolution.confidence}); ${resolution.candidates.length} physical candidate(s) preserved as evidence — never emission-order first-match.`,
+      candidateTargets: resolution.candidates.map((c) => c.nodeId),
+      citation: `${referenceText} [${normalizedTarget}]`,
+      severity: resolution.confidence === "HIGH" ? "LOW" : "MEDIUM",
+    });
+    return resolution.selected;
+  }
+
+  state.unresolved.push({
+    originatingNodeKey: fromNodeId,
+    dependencyType: "AMBIGUOUS_RELATIVE_REFERENCE",
+    sourceText: referenceText,
+    attemptedResolution: resolution.reason,
+    reason: "Ambiguous target - more than one physical location shares this reference's normalized target; body-anchor ranking could not distinguish TOC stub from operative body with sufficient confidence; never guessed.",
+    candidateTargets: resolution.candidates.map((c) => c.nodeId),
+    citation: `${referenceText} [${normalizedTarget}]`,
+    severity: severityIfUnresolved,
+  });
+  return null;
+}
+
+/** True when a definition-text section mention is laundry-list / non-material for recursive expansion. */
+function isLaundryListDefinitionMention(definitionText: string, mentionOffset: number): boolean {
+  const windowStart = Math.max(0, mentionOffset - 80);
+  const windowEnd = Math.min(definitionText.length, mentionOffset + 80);
+  const window = definitionText.slice(windowStart, windowEnd);
+  // Enumerated permitted-lien / basket style: "pursuant to Section 6.01(iii)" inside a list.
+  if (/\b(?:pursuant\s+to|under|of)\s+(?:Sections?\s+)?\d+\.\d+/i.test(window) && !CALCULATION_SIGNAL.test(window)) return true;
+  return false;
 }
 
 /**
@@ -91,23 +173,13 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
 
   const references = index.findReferencesFrom(nodeId, includeDescendants);
   for (const ref of references) {
+    let targetNode: StructuralNode | undefined;
     if (ref.targetAmbiguous) {
-      // Phase 3F.1.2 (task §11): a reference that matched more than one
-      // physical occurrence is reported as its own explicit unresolved
-      // category, never silently resolved to an arbitrary candidate.
-      state.unresolved.push({
-        originatingNodeKey: nodeId,
-        dependencyType: "AMBIGUOUS_RELATIVE_REFERENCE",
-        sourceText: ref.referenceText,
-        attemptedResolution: `Reference "${ref.referenceText}" matched more than one physical structural occurrence with ref "${ref.normalizedTarget}" in this document.`,
-        reason: "Ambiguous target - more than one physical location shares this reference's normalized target; never guessed.",
-        candidateTargets: [ref.normalizedTarget],
-        citation: `${ref.referenceText} [${ref.normalizedTarget}]`,
-        severity: "HIGH",
-      });
-      continue;
-    }
-    if (!ref.resolved || !ref.targetNodeId) {
+      // HEADROOM-6: preserve ambiguity evidence, but prefer canonical body over TOC stub.
+      const selected = resolveAmbiguousSectionTarget(state, index, documentId, nodeId, ref.referenceText, ref.normalizedTarget, "HIGH");
+      if (!selected) continue;
+      targetNode = selected;
+    } else if (!ref.resolved || !ref.targetNodeId) {
       state.unresolved.push({
         originatingNodeKey: nodeId,
         dependencyType: targetKindToUnresolvedType(ref.targetKind),
@@ -124,8 +196,9 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
         severity: ref.targetKind === "SCHEDULE" || ref.targetKind === "EXHIBIT" ? "MEDIUM" : "HIGH",
       });
       continue;
+    } else {
+      targetNode = index.getNodeById(ref.targetNodeId);
     }
-    const targetNode = index.getNodeById(ref.targetNodeId);
     if (!targetNode) continue;
 
     // Referenced-region expansion (Phase 2E.1 §5/§7): a reference's own
@@ -138,16 +211,17 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     // ancestors ("this Article VII") is not a dependency - that text is already the operative source / its parent
     // scope. Expanding it duplicated the operative text as a CROSS_REFERENCE region (14 of 104 preserved CONMED
     // bundles carried a self cross-reference) and made every such candidate look multi-region to the shard planner.
-    if (ref.targetNodeId === nodeId || index.getAncestors(nodeId).some((a) => a.nodeId === ref.targetNodeId)) continue;
+    const targetNodeId = targetNode.nodeId;
+    if (targetNodeId === nodeId || index.getAncestors(nodeId).some((a) => a.nodeId === targetNodeId)) continue;
 
-    const expansion = expandReferencedRegion(index, ref.targetNodeId);
+    const expansion = expandReferencedRegion(index, targetNodeId);
     const targetText = expansion.text;
     if (targetText.trim().length === 0) continue;
     if (!withinBudget(state, targetText.length)) return;
 
     const itemType = classifyReferencedProvision(targetText);
     const targetEvidenceState = resolveSectionEvidenceState(state, targetNode.documentId, { nodeId: targetNode.nodeId, sectionRef: targetNode.sectionRef });
-    const item = addItem(state, makeItemInput(itemType, documentId, ref.targetNodeKey, ref.targetNodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Explicitly cross-referenced by "${ref.referenceText}".${expansion.includedNodeIds.length > 0 ? ` Expanded to include ${expansion.includedNodeIds.length} descendant clause(s) whose own text carried real operative content.` : ""}`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1, targetEvidenceState));
+    const item = addItem(state, makeItemInput(itemType, documentId, targetNode.nodeKey, targetNodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Explicitly cross-referenced by "${ref.referenceText}".${expansion.includedNodeIds.length > 0 ? ` Expanded to include ${expansion.includedNodeIds.length} descendant clause(s) whose own text carried real operative content.` : ""}`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1, targetEvidenceState));
     addEdge(state, parentItemId, item.itemId, "REFERENCES", `"${ref.referenceText}"`);
 
     // CTX-01 fix: this cross-referenced target's own retrieved text is
@@ -171,7 +245,7 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
         const excludedNode = index.getNodeById(excludedId);
         if (!excludedNode) continue;
         state.unresolved.push({
-          originatingNodeKey: ref.targetNodeId,
+          originatingNodeKey: targetNodeId,
           dependencyType: "OTHER",
           sourceText: excludedNode.sectionRef,
           attemptedResolution: `${targetNode.sectionRef} has multiple child clauses; ${excludedNode.sectionRef}'s own text showed no operative/economic signal and was excluded from the retrieved region.`,
@@ -198,13 +272,13 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     // tree is that candidate's job. Stop here, deterministically, without touching the budget or sufficiency: this is
     // delegation to a separately-owned certified semantic unit, not missing context. Recorded for every owned target,
     // whatever its classification, so the package graph can see the boundary.
-    const owners = ownersOf(state, index, ref.targetNodeId);
+    const owners = ownersOf(state, index, targetNodeId);
     if (owners.length > 0) {
-      state.retrievalStops.push({ reason: "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT", fromNodeId: nodeId, targetNodeId: ref.targetNodeId, targetSectionRef: targetNode.sectionRef, owningCandidateRefs: owners, depth, detail: `${targetNode.sectionRef} is owned by candidate(s) ${owners.join(", ")}; its dependency tree is delegated to that unit` });
+      state.retrievalStops.push({ reason: "STOP_AT_SEPARATELY_OWNED_SEMANTIC_UNIT", fromNodeId: nodeId, targetNodeId, targetSectionRef: targetNode.sectionRef, owningCandidateRefs: owners, depth, detail: `${targetNode.sectionRef} is owned by candidate(s) ${owners.join(", ")}; its dependency tree is delegated to that unit` });
       continue;
     }
     if (itemType === "CALCULATION_PROVISION") {
-      retrieveCrossReferencesFromNode(state, index, documentId, ref.targetNodeId, item.itemId, depth + 1, false, packageGraph, expandedFromHere);
+      retrieveCrossReferencesFromNode(state, index, documentId, targetNodeId, item.itemId, depth + 1, false, packageGraph, expandedFromHere);
     }
   }
 }
@@ -220,34 +294,84 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
 export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState, index: StructuralIndex, documentId: string, definitionText: string, parentItemId: string, depth: number, packageGraph: PackageGraphResult | null = null): void {
   const mentions = detectAbsoluteReferenceMentions(definitionText);
   if (depth > state.budget.maxCrossReferenceDepth) {
-    // SEMANTIC FIDELITY (v4) - a definition at the depth bound whose text mentions no Section/Article withholds nothing:
-    // no stop, no sufficiency effect. Only a real unretrieved mention is a budget stop (and says exactly what was withheld).
-    if (mentions.length > 0) {
-      state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (${state.budget.maxCrossReferenceDepth}) reached`);
-      state.retrievalStops.push({ reason: "DEPTH_LIMIT_WITH_UNRETRIEVED_DEPENDENCIES", fromNodeId: parentItemId, targetNodeId: parentItemId, targetSectionRef: null, owningCandidateRefs: [], depth, detail: `depth ${depth} > maxCrossReferenceDepth ${state.budget.maxCrossReferenceDepth}: ${mentions.length} section/article mention(s) inside a definition's text not retrieved (${mentions.map((m) => m.normalizedTarget).join(", ")})` });
+    // HEADROOM-6: at a definition-text depth bound the definition prose itself
+    // is already in the bundle. Remaining Section/Article mentions are
+    // secondary (LOW). Schedule/Exhibit mentions are disclosed as
+    // MISSING_SCHEDULE (MEDIUM → REVIEW_REQUIRED) — the same outcome as an
+    // in-budget lookup that found no structural node — never a hard
+    // BUDGET_EXCEEDED stopReasons flip.
+    for (const m of mentions) {
+      if (m.targetKind === "SCHEDULE" || m.targetKind === "EXHIBIT") {
+        state.unresolved.push({
+          originatingNodeKey: null,
+          dependencyType: "MISSING_SCHEDULE",
+          sourceText: m.referenceText,
+          attemptedResolution: `Depth ${depth} > maxCrossReferenceDepth ${state.budget.maxCrossReferenceDepth}; schedule/exhibit mention inside a definition was not retrieved as a structural node.`,
+          reason: "Schedule/exhibit referenced inside a definition's own text is not present as a structural node in this package (surfaced at depth bound; definition text itself was already retrieved).",
+          candidateTargets: [m.normalizedTarget],
+          citation: m.referenceText,
+          severity: "MEDIUM",
+        });
+      }
+    }
+    const sectionMentions = mentions.filter((m) => m.targetKind === "SECTION" || m.targetKind === "ARTICLE");
+    if (sectionMentions.length > 0) {
+      state.unresolved.push({
+        originatingNodeKey: null,
+        dependencyType: "BUDGET_EXCEEDED_DEPENDENCY",
+        sourceText: sectionMentions.map((m) => m.referenceText).slice(0, 5).join("; "),
+        attemptedResolution: `Depth ${depth} > maxCrossReferenceDepth ${state.budget.maxCrossReferenceDepth}; remaining Section/Article mentions inside a definition are secondary to the already-retrieved definition text.`,
+        reason: "Secondary definition-text cross-references withheld at depth bound — disclosed without marking the bundle BUDGET_EXCEEDED.",
+        candidateTargets: sectionMentions.map((m) => m.normalizedTarget),
+        citation: parentItemId,
+        severity: "LOW",
+      });
     }
     return;
   }
   for (const mention of mentions) {
-    // Phase 3F.1.2: cardinality-aware resolution - a mention matching more
-    // than one physical occurrence is reported as ambiguous, never guessed.
-    const resolution = mention.targetKind === "SECTION" || mention.targetKind === "ARTICLE" ? index.resolveUniqueNodeByRef(documentId, mention.normalizedTarget) : { status: "NOT_FOUND" as const };
-    if (resolution.status !== "UNIQUE") {
-      if (mention.targetKind === "SECTION" || mention.targetKind === "ARTICLE") {
+    if (mention.targetKind !== "SECTION" && mention.targetKind !== "ARTICLE") {
+      if (mention.targetKind === "SCHEDULE" || mention.targetKind === "EXHIBIT") {
         state.unresolved.push({
           originatingNodeKey: null,
-          dependencyType: targetKindToUnresolvedType(mention.targetKind),
+          dependencyType: "MISSING_SCHEDULE",
           sourceText: mention.referenceText,
           attemptedResolution: `Looked for a ${mention.targetKind} node with ref "${mention.normalizedTarget}" in this document's own structural index.`,
-          reason: resolution.status === "AMBIGUOUS" ? `Ambiguous - ${resolution.candidates.length} physical occurrences share this reference; never guessed.` : "Reference inside a definition's own text could not be resolved to a real structural node.",
-          candidateTargets: [],
+          reason: "Schedule/exhibit referenced inside a definition's own text is not present as a structural node in this package.",
+          candidateTargets: [mention.normalizedTarget],
           citation: mention.referenceText,
           severity: "MEDIUM",
         });
       }
       continue;
     }
-    const targetNode = resolution.node;
+
+    // Skip non-material laundry-list citations inside definitions (still
+    // retrieve calculation / methodology targets).
+    if (isLaundryListDefinitionMention(definitionText, mention.charStart)) {
+      continue;
+    }
+
+    let targetNode: StructuralNode | null = null;
+    const unique = index.resolveUniqueNodeByRef(documentId, mention.normalizedTarget);
+    if (unique.status === "UNIQUE") {
+      targetNode = unique.node;
+    } else if (unique.status === "AMBIGUOUS") {
+      targetNode = resolveAmbiguousSectionTarget(state, index, documentId, null, mention.referenceText, mention.normalizedTarget, "MEDIUM");
+    } else {
+      state.unresolved.push({
+        originatingNodeKey: null,
+        dependencyType: targetKindToUnresolvedType(mention.targetKind),
+        sourceText: mention.referenceText,
+        attemptedResolution: `Looked for a ${mention.targetKind} node with ref "${mention.normalizedTarget}" in this document's own structural index.`,
+        reason: "Reference inside a definition's own text could not be resolved to a real structural node.",
+        candidateTargets: [],
+        citation: mention.referenceText,
+        severity: "MEDIUM",
+      });
+      continue;
+    }
+    if (!targetNode) continue;
     const targetText = index.getNodeText(targetNode.nodeId, "OWN");
     if (targetText.trim().length === 0) continue;
     if (!withinBudget(state, targetText.length)) return;
