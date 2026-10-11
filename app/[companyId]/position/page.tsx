@@ -12,6 +12,7 @@ import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capac
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 import { buildPositionView } from "@/lib/customer-workflow/position-view";
 import { presentCapacityClaim } from "@/lib/customer-workflow/status-contract";
+import { loadAuthenticDashboardSlice } from "@/lib/product/real-dashboard-vertical-slice";
 
 export const metadata = { title: "Headroom — Position" };
 
@@ -103,13 +104,23 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     );
   }
 
-  const [readiness, rulebook] = await Promise.all([
-    loadCapacityReadiness(companyId),
-    loadRulebookReadiness(companyId),
-  ]);
+  // Authentic evidence → Position bridge (fixture-backed; no Neon writes).
+  // Returns null unless the company has a registered authentic package.
+  const authenticSlice = loadAuthenticDashboardSlice(companyId);
 
+  let readiness: Awaited<ReturnType<typeof loadCapacityReadiness>> | null = null;
+  let rulebook: Awaited<ReturnType<typeof loadRulebookReadiness>> | null = null;
   let dashboard = null;
   let dashboardError: string | null = null;
+  try {
+    [readiness, rulebook] = await Promise.all([
+      loadCapacityReadiness(companyId),
+      loadRulebookReadiness(companyId),
+    ]);
+  } catch {
+    dashboardError =
+      "Live readiness loaders unavailable — fail closed on Neon path; authentic slice used when registered.";
+  }
   try {
     dashboard = await getCompanyDashboard(companyId);
   } catch (err) {
@@ -119,17 +130,59 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           ? "Financial identity AMBIGUOUS — competing same-date snapshots; capacity withheld."
           : "No authenticated financial snapshot — engine position unavailable (not zero).";
     } else {
-      dashboardError = "Position dashboard unavailable — fail closed; no invented figures.";
+      dashboardError =
+        dashboardError ?? "Position dashboard unavailable — fail closed; no invented figures.";
     }
   }
 
-  const view = buildPositionView({
-    companyId,
-    dashboard,
-    readiness,
-    rulebook,
-    dashboardError,
-  });
+  // Prefer live dashboard when present; otherwise authentic slice Position view.
+  const view =
+    readiness && rulebook && (dashboard != null || !authenticSlice)
+      ? buildPositionView({
+          companyId,
+          dashboard,
+          readiness,
+          rulebook,
+          dashboardError,
+        })
+      : authenticSlice?.positionView ??
+        buildPositionView({
+          companyId,
+          dashboard: null,
+          readiness: readiness ?? {
+            companyId,
+            status: "NO_FINANCIAL_SNAPSHOT",
+            canEvaluateExecutableCapacity: false,
+            capacityAuthority: "NONE",
+            analyzedDocumentCount: 0,
+            summaryCount: 0,
+            permissionCount: 0,
+            unverifiedPermissionCount: 0,
+            provisionCount: 0,
+            hasFinancialSnapshot: false,
+            ns4ApprovedSnapshotCount: 0,
+            approvedNorthStarSnapshotCount: 0,
+            contractLedgerActiveCount: 0,
+            phase3TrustedUnitCount: 0,
+            phase3TrustedRuleCount: 0,
+            headline: "No capacity path available",
+            blockers: [dashboardError ?? "No financial snapshot"],
+            guidance: "Provide authenticated evidence before publishing capacity.",
+          },
+          rulebook: rulebook ?? {
+            companyId,
+            stage: "DISCOVERED",
+            discoveredSummaries: 0,
+            interpretedProvisions: 0,
+            reviewedPermissions: 0,
+            executablePermissions: 0,
+            provisionRows: 0,
+            blockers: ["Rulebook readiness unavailable"],
+            headline: "Rulebook unavailable",
+            note: "Fail closed",
+          },
+          dashboardError,
+        });
 
   // Legacy package figures at amount=0 are modeled capacity — not verified AVAILABLE,
   // and not re-labeled as GROSS_CONTRACTUAL unless the engine publication says so.
@@ -137,9 +190,15 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     dashboard?.capacity.secured.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
   const unsecuredAuth =
     dashboard?.capacity.unsecured.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
+  const securedModeledAmount =
+    dashboard?.capacity.secured.packageAuthoritative?.remainingCapacity ??
+    authenticSlice?.positionView.sides[0]?.remaining.amountMillions ??
+    null;
+  const unsecuredModeledAmount =
+    dashboard?.capacity.unsecured.packageAuthoritative?.remainingCapacity ?? null;
   const securedModeled = presentCapacityClaim({
     claimKind: "REMAINING",
-    amountMillions: dashboard?.capacity.secured.packageAuthoritative?.remainingCapacity ?? null,
+    amountMillions: securedModeledAmount,
     remainingIsAuthoritative: securedAuth,
     publicationLabel: securedAuth
       ? "AVAILABLE"
@@ -148,7 +207,7 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
   });
   const unsecuredModeled = presentCapacityClaim({
     claimKind: "REMAINING",
-    amountMillions: dashboard?.capacity.unsecured.packageAuthoritative?.remainingCapacity ?? null,
+    amountMillions: unsecuredModeledAmount,
     remainingIsAuthoritative: unsecuredAuth,
     publicationLabel: unsecuredAuth
       ? "AVAILABLE"
@@ -288,6 +347,35 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           </div>
         ))}
       </Card>
+
+      {authenticSlice ? (
+        <Card>
+          <div className="card-title">Source-backed covenant calculations</div>
+          <div className="card-subtitle">
+            Authentic EDGAR-backed package ({authenticSlice.packageKey}) via shared covenant-engine —
+            not a second capacity engine. Production remaining refused without completeness + trusted
+            issuer.
+          </div>
+          {authenticSlice.connectedMetrics.map((m) => (
+            <div className="row" key={m.code}>
+              <div>
+                <div className="row-label">{m.label}</div>
+                <div className="row-note">
+                  {m.operativeSection} · {m.authorityStatus}
+                  {m.refusalReason ? ` — ${m.refusalReason}` : ""}
+                </div>
+              </div>
+              <div className="row-value">
+                {m.amountMillions != null ? fmtM(m.amountMillions) : <StatusChip code="UNKNOWN" compact />}
+              </div>
+            </div>
+          ))}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            Production remaining published: {authenticSlice.productionRemainingPublished ? "yes" : "no"} ·
+            Missing evidence rows: {authenticSlice.missingInputs.length}
+          </div>
+        </Card>
+      ) : null}
 
       <Card>
         <div className="card-title">Missing inputs</div>
