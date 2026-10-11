@@ -4,9 +4,9 @@
 **Mission:** HEADROOM — CONTROLLED MERGE AND ARCHIVED WORK CONSOLIDATION  
 **Work branch:** `cursor/controlled-merge-audit-b2b0`  
 **Consolidation PR:** https://github.com/egsul897/headroom/pull/300 (draft → `#293` branch)  
-**Live `#293` tip:** `038fa626ab5f32b4e0c7481c69fa98f52841e822` (adds positive-confirmation operative identity gate)  
-**Live `#298` tip:** `425a177a698819cc582c1dcf6346a89f22874c4c` (`#293` + undated/UNSUPPORTED P0 absorption)  
-**Consolidation tip (this PR):** branch `cursor/controlled-merge-audit-b2b0` HEAD (includes live `#298` + selective archived recovery)
+**Live `#293` tip:** `4a336bb1744f293d2d09ce2a5bab6e6aff9fa45f` (identity-gate fix + **#298 absorbed** via `e291848d`)  
+**Live `#298` tip:** `425a177a698819cc582c1dcf6346a89f22874c4c` (superseded for merge — content on `#293`)  
+**Consolidation tip (this PR):** branch `cursor/controlled-merge-audit-b2b0` HEAD (= live `#293` + selective archived recovery)
 
 **Do not self-merge. Do not claim main advanced without GitHub confirmation.**
 
@@ -25,8 +25,8 @@
 
 | PR | Head SHA | Base | State | Mergeable | Disposition | Reason |
 |---|---|---|---|---|---|---|
-| **#293** | `038fa626ab5f` | `main` | OPEN (ready) | MERGEABLE/CLEAN | **BLOCKED_ON_HUMAN_APPROVAL** (canonical merge candidate) | Absorbs #283/#287/#282/#285/#290/#291 production; wrong-document guard `59c3c4b3`; adversarial fixture `60dbdeee`; retrieval binder `74526ead`; **+** positive-confirmation operative identity gate `038fa626`. **0 reviews.** Must not merge without recorded human approval. |
-| **#298** | `425a177a6988` | `#293` tip `038fa626` | OPEN draft | MERGEABLE/CLEAN | **SAFE_UNIQUE_IMPROVEMENT — READY_FOR_HUMAN_APPROVAL into #293** | Selective absorb of #296 undated (`effectiveDateIso==null`) + `UNSUPPORTED` competing-successor fail-closed (rebased onto `038fa626`). Binder not duplicated. Agent #11 absorption retest: `wrongDocumentProductionPromotion=false`, legal seal preserved. **0 reviews.** |
+| **#293** | `4a336bb1744f` | `main` | OPEN (ready) | MERGEABLE/CLEAN | **BLOCKED_ON_HUMAN_APPROVAL** (canonical merge candidate) | Absorbs #283/#287/#282/#285/#290/#291 + **#298** (`e291848d`); wrong-document guard; undated/UNSUPPORTED edges; identity-gate positive confirmation `038fa626`. **0 reviews.** |
+| **#298** | `425a177a6988` | stale vs `#293` | OPEN draft | — | **ALREADY_ABSORBED into #293** | Production absorb landed on `#293` via `e291848d`. PR tip lagged; close after owner confirms. |
 | **#296** | `7db74ba83c61` | stale `#293` | OPEN draft | CONFLICTING | **SUPERSEDED** (production) / selective test ported | Production P0 edges absorbed by #298. Alternate large acceptance artifacts not revived wholesale. Unique adversarial test selectively ported in this consolidation PR (see below). |
 | **#297** | `40d26d308a00` | `main` | OPEN draft | MERGEABLE | **ALREADY_ABSORBED** (content) / tip lag | Former identical tip to pre-`038fa626` #293; adversarial fixture closure content remains on #293. Do not merge independently. |
 | **#283** | `3643763a91b0` | `main` | OPEN | MERGEABLE/CLEAN | **ALREADY_ABSORBED** (production) | Operative authority + retrieval-source binding present on #293 (blob-identical `retrieval-source.ts`). Tip commits after absorption are docs reconciliation. Disposition docs selectively ported here. |
@@ -125,6 +125,6 @@ ALREADY_ABSORBED_PRS: #282, #283(prod), #285, #287(prod), #290, #291, #297, #261
 BLOCKED_PRS: #293 (await human approval), #298 (await human approval into #293), #294 (persistence remediation), #253/#258/#260/#263/#264/#246
 EXACT_TIP_CI: #293 038fa626 (identity-gate fix); #298 425a177a (rebased absorb); consolidation PR #300 on #298+ports — re-verify after rebase
 NORTH_STAR_COMPLIANCE: PASS on prepared tip (fail-closed authority, no ERP/continuous-sync invent, no production activation, Phase 3 cert intact)
-REMAINING_HUMAN_APPROVALS: (1) approve+merge #298 (or #300) into #293 at exact tips 425a177a → 038fa626; (2) approve+merge resulting #293 into main; (3) do not approve #294 until SSR/tenant/trusted-issuer remediation
-NEXT_INTEGRATION_ACTION: Human reviewer approve #298 absorption into #293 (or merge this consolidation tip which already includes #298 + selective ports), then approve #293→main; afterward rebase #294 and re-run disposable-Postgres acceptance
+REMAINING_HUMAN_APPROVALS: (1) approve+merge #300 selective recovery into #293 (optional docs/tests); (2) approve+merge #293 tip `4a336bb1`(+optional #300) into main; (3) do not approve #294 until SSR/tenant/trusted-issuer remediation. #298 content already on #293.
+NEXT_INTEGRATION_ACTION: Human approve #293→main (tip already includes #298). Optionally merge #300 first for selective #296 test + provenance docs. Afterward rebase #294 and re-run disposable-Postgres acceptance.
 ```
