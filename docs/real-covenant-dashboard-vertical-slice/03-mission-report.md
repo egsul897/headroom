@@ -1,8 +1,8 @@
 # Mission report — Real covenant intelligence & dashboard vertical slice
 
 **Branch:** `cursor/real-covenant-dashboard-vertical-slice-2ca3`  
-**Base:** `origin/cursor/canonical-product-integration-5a28` (#293 canonical tip)  
-**CURRENT_CANONICAL_SHA:** `0094463df3515c7b1371eeabc10dcbb7ce840f05`  
+**Base:** `origin/main` (after #293 merge)  
+**CURRENT_CANONICAL_SHA:** `440dd65d42c2e9f6b92978fa4f04a92658de190c`  
 **Package:** Matthews International Q1 FY2025 (AUTHENTIC_SOURCE_BACKED)  
 **Paid inference:** $0 · **Production Neon writes:** none  
 **Final verdict:** `REAL_DASHBOARD_VERTICAL_SLICE_PROVEN`
@@ -11,7 +11,7 @@
 
 ### CURRENT_CANONICAL_SHA
 
-`0094463df3515c7b1371eeabc10dcbb7ce840f05` (`cursor/canonical-product-integration-5a28` tip after docs merge-readiness pin; prior authority tip `2ab1ac78`; #298 absorbed; #293 pending human merge — this work is a separate branch)
+`440dd65d42c2e9f6b92978fa4f04a92658de190c` (`cursor/canonical-product-integration-5a28` tip after docs merge-readiness pin; prior authority tip `2ab1ac78`; #298 absorbed; #293 pending human merge — this work is a separate branch)
 
 ### END_TO_END_DATA_FLOW
 

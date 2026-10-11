@@ -1,7 +1,7 @@
 # Capability audit — debt docs → Position (canonical #293 tip)
 
 **Branch:** `cursor/real-covenant-dashboard-vertical-slice-2ca3`  
-**Base tip:** `origin/cursor/canonical-product-integration-5a28` (#293 @ `0094463d`)  
+**Base tip:** `origin/main` (`440dd65d` after #293 merge)  
 **Classification:** IMPLEMENTED · CONNECTED · VERIFIED · PARTIAL · BLOCKED
 
 ## Dual stack (actual)
