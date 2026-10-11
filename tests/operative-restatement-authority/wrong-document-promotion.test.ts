@@ -3,8 +3,10 @@
  *
  * Selectively ported from archived/superseded PR #296
  * (commit 1f094583 / tip 7db74ba8) onto the #298 absorption tip.
- * Production undated/UNSUPPORTED edges already absorbed via #298 (df23bc71).
+ * Production undated/UNSUPPORTED edges already absorbed via #298.
  * Assertion regex for case 6 aligned to #293/#298 reason wording (no behavior change).
+ * Handcrafted authorities remodeled via mkAuthority() for tip type completeness
+   (REQUIRES_REMEDIATION resolved; behavior assertions unchanged).
  *
  * Asserts provision authorityClassification + governingDocumentId (not merely
  * downstream capacity publication refusal).
@@ -22,6 +24,11 @@ import {
   resolvePackageRestatementAuthorities,
   summarizeBundleProductionAuthority,
 } from "@/lib/contract-model/compiler/operative-authority";
+import type {
+  OperativeAuthorityHandoffBundle,
+  OperativeAuthorityStatus,
+  RestatementAuthorityResolution,
+} from "@/lib/contract-model/compiler/operative-authority";
 import { buildStructuralIndex } from "@/lib/contract-model/compiler/structural-index";
 import { parseDocumentStructure } from "@/lib/contract-model/compiler/stage-structure";
 import { detectStructuralDefinitions } from "@/lib/contract-model/compiler/structural-definitions";
@@ -31,6 +38,81 @@ import {
   assertProductCapacityConsistency,
   buildSharedProductCapacityViews,
 } from "@/lib/capacity";
+
+/** Complete RestatementAuthorityResolution fixture — types aligned to #293/#298 tip. */
+function mkAuthority(opts: {
+  status: OperativeAuthorityStatus;
+  successorDocumentId: string;
+  predecessorDocumentId: string | null;
+  effectiveDateIso: string | null;
+  conditionsPrecedentSatisfaction?: RestatementAuthorityResolution["conditionsPrecedentSatisfaction"];
+  reasons?: string[];
+  caveats?: string[];
+  packageGraphRelationshipStatus?: RestatementAuthorityResolution["evidence"]["packageGraphRelationshipStatus"];
+  packageGraphEvidenceClass?: RestatementAuthorityResolution["evidence"]["packageGraphEvidenceClass"];
+}): RestatementAuthorityResolution {
+  const effectiveDateIso = opts.effectiveDateIso;
+  return {
+    status: opts.status,
+    successorDocumentId: opts.successorDocumentId,
+    predecessorDocumentId: opts.predecessorDocumentId,
+    effectiveDateIso,
+    effectivenessInference: "INFERRED_FROM_DATED_AS_OF_WITH_EXECUTION",
+    conditionsPrecedentSatisfaction: opts.conditionsPrecedentSatisfaction ?? "NOT_STATED",
+    caveats: opts.caveats ?? [],
+    reasons: opts.reasons ?? ["synthetic"],
+    doesNotMutatePackageGraphRelationship: true,
+    evidence: {
+      successorDocumentId: opts.successorDocumentId,
+      predecessorDocumentId: opts.predecessorDocumentId,
+      captionRestatement: {
+        present: true,
+        excerpt: "AMENDED AND RESTATED",
+        charStart: 0,
+        ordinalLabel: null,
+      },
+      executionDate: {
+        value: effectiveDateIso,
+        isoDate: effectiveDateIso,
+        excerpt: effectiveDateIso,
+      },
+      priorAgreementRecital: {
+        present: opts.predecessorDocumentId != null || opts.status === "REVIEW_REQUIRED",
+        excerpt: "Existing Credit Agreement",
+        charStart: 10,
+        namedAgreementLabel: "Prior Credit Agreement",
+        namedExecutionDate: "March 26, 2020",
+        definedTerm: "Existing Credit Agreement",
+      },
+      operativeRestatementLanguage: {
+        present: true,
+        excerpt: "amended and restated",
+        charStart: 20,
+        location: "NOW_THEREFORE",
+        supersedesEntirety: true,
+        novationDisclaimed: true,
+      },
+      conditionsPrecedent: {
+        present: opts.conditionsPrecedentSatisfaction === "NOT_INDEPENDENTLY_PROVEN",
+        excerpt: opts.conditionsPrecedentSatisfaction === "NOT_INDEPENDENTLY_PROVEN" ? "4.01" : null,
+        charStart: opts.conditionsPrecedentSatisfaction === "NOT_INDEPENDENTLY_PROVEN" ? 40 : null,
+        sectionRef: opts.conditionsPrecedentSatisfaction === "NOT_INDEPENDENTLY_PROVEN" ? "4.01" : null,
+      },
+      signatureEvidence: { present: true, excerpt: "signature", charStart: 30 },
+      facilityIdentity: {
+        administrativeAgentMatch: null,
+        revolvingFacilityContinuity: null,
+        borrowerContinuitySignals: [],
+        mismatchReasons: [],
+      },
+      restatementScope: "FULL_AGREEMENT",
+      partialProvisionRefs: [],
+      packageGraphRelationshipStatus: opts.packageGraphRelationshipStatus ?? null,
+      packageGraphEvidenceClass: opts.packageGraphEvidenceClass ?? null,
+      packageGraphUnresolvedReason: null,
+    },
+  };
+}
 
 function syntheticRestatementPair(opts: {
   priorNamed: boolean;
@@ -173,66 +255,24 @@ describe("P0 wrong-document operative-authority promotion", () => {
     // use two successors matching same prior — package graph may not both classify as A&R;
     // resolveGoverningProvision with injected authorities.
     const authorities = [
-      {
-        status: "OPERATIVE_AUTHORITY_CONFIRMED" as const,
+      mkAuthority({
+        status: "OPERATIVE_AUTHORITY_CONFIRMED",
         successorDocumentId: "doc-b",
         predecessorDocumentId: "doc-a",
         effectiveDateIso: "2026-09-14",
-        effectivenessInference: "INFERRED_FROM_DATED_AS_OF_WITH_EXECUTION" as const,
-        conditionsPrecedentSatisfaction: "NOT_INDEPENDENTLY_PROVEN" as const,
-        evidence: {
-          successorDocumentId: "doc-b",
-          predecessorDocumentId: "doc-a",
-          restatementScope: "FULL_AGREEMENT" as const,
-          partialProvisionRefs: [] as string[],
-          priorAgreementRecital: { present: true, excerpt: "x", charStart: 0 },
-          operativeRestatementLanguage: {
-            present: true,
-            supersedesEntirety: true,
-            novationDisclaimed: true,
-            excerpt: "x",
-            charStart: 0,
-          },
-          executionDate: { isoDate: "2026-09-14", excerpt: "x", charStart: 0 },
-          signatureEvidence: { present: true, excerpt: "x", charStart: 0 },
-          conditionsPrecedent: { present: true, sectionRef: "4.01", excerpt: "x", charStart: 0 },
-          packageGraphRelationshipStatus: "RESOLVED" as const,
-          packageGraphEvidenceClass: null,
-        },
-        reasons: ["synthetic"],
+        conditionsPrecedentSatisfaction: "NOT_INDEPENDENTLY_PROVEN",
         caveats: ["CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN"],
-        doesNotMutatePackageGraphRelationship: true as const,
-      },
-      {
-        status: "OPERATIVE_AUTHORITY_CONFIRMED" as const,
+        packageGraphRelationshipStatus: "RESOLVED",
+      }),
+      mkAuthority({
+        status: "OPERATIVE_AUTHORITY_CONFIRMED",
         successorDocumentId: "doc-c",
         predecessorDocumentId: "doc-a",
         effectiveDateIso: "2026-09-14",
-        effectivenessInference: "INFERRED_FROM_DATED_AS_OF_WITH_EXECUTION" as const,
-        conditionsPrecedentSatisfaction: "NOT_INDEPENDENTLY_PROVEN" as const,
-        evidence: {
-          successorDocumentId: "doc-c",
-          predecessorDocumentId: "doc-a",
-          restatementScope: "FULL_AGREEMENT" as const,
-          partialProvisionRefs: [] as string[],
-          priorAgreementRecital: { present: true, excerpt: "x", charStart: 0 },
-          operativeRestatementLanguage: {
-            present: true,
-            supersedesEntirety: true,
-            novationDisclaimed: true,
-            excerpt: "x",
-            charStart: 0,
-          },
-          executionDate: { isoDate: "2026-09-14", excerpt: "x", charStart: 0 },
-          signatureEvidence: { present: true, excerpt: "x", charStart: 0 },
-          conditionsPrecedent: { present: true, sectionRef: "4.01", excerpt: "x", charStart: 0 },
-          packageGraphRelationshipStatus: "RESOLVED" as const,
-          packageGraphEvidenceClass: null,
-        },
-        reasons: ["synthetic"],
+        conditionsPrecedentSatisfaction: "NOT_INDEPENDENTLY_PROVEN",
         caveats: ["CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN"],
-        doesNotMutatePackageGraphRelationship: true as const,
-      },
+        packageGraphRelationshipStatus: "RESOLVED",
+      }),
     ];
     const gov = resolveGoverningProvision({
       asOfDate: "2026-09-15",
@@ -354,36 +394,13 @@ describe("P0 wrong-document operative-authority promotion", () => {
       instrumentDocumentIds: ["doc-a"],
       baseDocumentId: null,
       restatementAuthorities: [
-        {
+        mkAuthority({
           status: "REVIEW_REQUIRED",
           successorDocumentId: "doc-missing",
           predecessorDocumentId: null,
           effectiveDateIso: "2026-09-14",
-          effectivenessInference: "UNKNOWN",
-          conditionsPrecedentSatisfaction: "NOT_STATED",
-          evidence: {
-            successorDocumentId: "doc-missing",
-            predecessorDocumentId: null,
-            restatementScope: "FULL_AGREEMENT",
-            partialProvisionRefs: [],
-            priorAgreementRecital: { present: false, excerpt: null, charStart: null },
-            operativeRestatementLanguage: {
-              present: false,
-              supersedesEntirety: false,
-              novationDisclaimed: false,
-              excerpt: null,
-              charStart: null,
-            },
-            executionDate: { isoDate: "2026-09-14", excerpt: "x", charStart: 0 },
-            signatureEvidence: { present: false, excerpt: null, charStart: null },
-            conditionsPrecedent: { present: false, sectionRef: null, excerpt: null, charStart: null },
-            packageGraphRelationshipStatus: null,
-            packageGraphEvidenceClass: null,
-          },
           reasons: ["missing"],
-          caveats: [],
-          doesNotMutatePackageGraphRelationship: true,
-        },
+        }),
       ],
     });
     // doc-missing not in familyIds — family is only doc-a; no restatement in family → may fall through
@@ -394,36 +411,16 @@ describe("P0 wrong-document operative-authority promotion", () => {
 
   it("6. wrong-document provision promotion — REVIEW_REQUIRED successor with null predecessor must NOT confirm base", () => {
     const authorities = [
-      {
-        status: "REVIEW_REQUIRED" as const,
+      mkAuthority({
+        status: "REVIEW_REQUIRED",
         successorDocumentId: "doc-b",
-        predecessorDocumentId: null as string | null,
+        predecessorDocumentId: null,
         effectiveDateIso: "2026-09-14",
-        effectivenessInference: "INFERRED_FROM_DATED_AS_OF_WITH_EXECUTION" as const,
-        conditionsPrecedentSatisfaction: "NOT_STATED" as const,
-        evidence: {
-          successorDocumentId: "doc-b",
-          predecessorDocumentId: null,
-          restatementScope: "FULL_AGREEMENT" as const,
-          partialProvisionRefs: [] as string[],
-          priorAgreementRecital: { present: true, excerpt: "Fourth A&R", charStart: 0 },
-          operativeRestatementLanguage: {
-            present: true,
-            supersedesEntirety: true,
-            novationDisclaimed: true,
-            excerpt: "restated",
-            charStart: 0,
-          },
-          executionDate: { isoDate: "2026-09-14", excerpt: "x", charStart: 0 },
-          signatureEvidence: { present: true, excerpt: "x", charStart: 0 },
-          conditionsPrecedent: { present: false, sectionRef: null, excerpt: null, charStart: null },
-          packageGraphRelationshipStatus: "REVIEW_REQUIRED" as const,
-          packageGraphEvidenceClass: "SUPPORTING_TARGET_EVIDENCE" as const,
-        },
         reasons: ["prior agreement Fourth A&R not in package"],
         caveats: ["PACKAGE_GRAPH_RESTATES_NOT_RESOLVED"],
-        doesNotMutatePackageGraphRelationship: true as const,
-      },
+        packageGraphRelationshipStatus: "REVIEW_REQUIRED",
+        packageGraphEvidenceClass: "SUPPORTING_TARGET_EVIDENCE",
+      }),
     ];
     const gov = resolveGoverningProvision({
       asOfDate: "2026-09-15",
@@ -436,17 +433,17 @@ describe("P0 wrong-document operative-authority promotion", () => {
     expect(gov.governingDocumentId).toBeNull();
     expect(gov.reasons.join(" ")).toMatch(/succession is (unresolved|REVIEW_REQUIRED)|refuse (to promote|CONFIRMED_OPERATIVE)/i);
 
-    const bundle = {
+    const bundle: OperativeAuthorityHandoffBundle = {
       companyId: "co",
       packageKey: "pkg",
       asOfDate: "2026-09-15",
       startingMainSha: "test",
-      packageGraphAuthorityPr: "test",
-      worHoldoutPr: "test",
+      packageGraphAuthorityPr: "https://github.com/egsul897/headroom/pull/274",
+      worHoldoutPr: "https://github.com/egsul897/headroom/pull/276",
       restatementAuthorities: authorities,
       provisions: [gov],
       unsupportedCases: [],
-      verdict: "OPERATIVE_RESTATEMENT_AUTHORITY_BLOCKED" as const,
+      verdict: "OPERATIVE_RESTATEMENT_AUTHORITY_BLOCKED",
       verdictReasons: ["test"],
     };
     const summary = summarizeBundleProductionAuthority(bundle, { attemptPromotionToProduction: true });
@@ -468,36 +465,16 @@ describe("P0 wrong-document operative-authority promotion", () => {
 
   it("8. confirmed successor with caveats → CONFIRMED_OPERATIVE_WITH_CAVEATS; production refused", () => {
     const authorities = [
-      {
-        status: "OPERATIVE_AUTHORITY_CONFIRMED" as const,
+      mkAuthority({
+        status: "OPERATIVE_AUTHORITY_CONFIRMED",
         successorDocumentId: "doc-b",
         predecessorDocumentId: "doc-a",
         effectiveDateIso: "2026-09-14",
-        effectivenessInference: "INFERRED_FROM_DATED_AS_OF_WITH_EXECUTION" as const,
-        conditionsPrecedentSatisfaction: "NOT_INDEPENDENTLY_PROVEN" as const,
-        evidence: {
-          successorDocumentId: "doc-b",
-          predecessorDocumentId: "doc-a",
-          restatementScope: "FULL_AGREEMENT" as const,
-          partialProvisionRefs: [] as string[],
-          priorAgreementRecital: { present: true, excerpt: "x", charStart: 0 },
-          operativeRestatementLanguage: {
-            present: true,
-            supersedesEntirety: true,
-            novationDisclaimed: true,
-            excerpt: "x",
-            charStart: 0,
-          },
-          executionDate: { isoDate: "2026-09-14", excerpt: "x", charStart: 0 },
-          signatureEvidence: { present: true, excerpt: "x", charStart: 0 },
-          conditionsPrecedent: { present: true, sectionRef: "4.01", excerpt: "x", charStart: 0 },
-          packageGraphRelationshipStatus: "RESOLVED" as const,
-          packageGraphEvidenceClass: null,
-        },
+        conditionsPrecedentSatisfaction: "NOT_INDEPENDENTLY_PROVEN",
         reasons: ["confirmed with CP"],
         caveats: ["CONDITIONS_PRECEDENT_SATISFACTION_NOT_INDEPENDENTLY_PROVEN"],
-        doesNotMutatePackageGraphRelationship: true as const,
-      },
+        packageGraphRelationshipStatus: "RESOLVED",
+      }),
     ];
     const gov = resolveGoverningProvision({
       asOfDate: "2026-09-15",
