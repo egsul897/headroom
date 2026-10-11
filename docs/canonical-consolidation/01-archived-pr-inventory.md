@@ -16,8 +16,8 @@ Inventory refreshed against GitHub at consolidation time. Dispositions are relat
 
 | PR | Title (abbrev) | Disposition |
 |---|---|---|
-| #293 | Canonical product integration | **MERGE_CANDIDATE → main** (human) |
-| #298 | Absorb #296 P0 authority edges | **ABSORBED** into #293 tip via consolidation |
+| #293 | Canonical product integration | **MERGE_CANDIDATE → main** (human) — tip `2ab1ac78`, exact-tip CI green |
+| #298 | Absorb #296 P0 authority edges | **ABSORBED** into #293 tip; close as absorbed (do not re-merge) |
 | #296 | P0 fail-closed operative authority | **SUPERSEDED** by #298 selective absorption (do not wholesale resurrect alternate `governing-provision` shape) |
 | #297 | P0 adversarial fixture + authority closure | **ABSORBED** (code at `60dbdeee` on #293; PR may be closed as duplicate of tip) |
 | #295 / #299 / #292 / #286 | Agent #11 acceptance docs | **DOCS_ONLY** — leave open or close; no production recovery |
