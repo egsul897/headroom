@@ -9,7 +9,8 @@ Connect Headroom’s existing product interfaces into Upload → Analyze → Rev
 | | SHA |
 |---|---|
 | Starting (main) | `67027b8f499921a12cee7b9b9f04d832898b6384` |
-| Ending | `48c88b22b48f1b97e25887720fdf092c0965ca83` |
+| Feature commit | `92cd753909ace357fa0745bd8c77ea339f0dd40c` |
+| Branch tip | see `git rev-parse origin/cursor/cfo-product-workflow-d829` |
 
 ## Coordination
 
