@@ -352,16 +352,21 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
         <Card>
           <div className="card-title">Source-backed covenant calculations</div>
           <div className="card-subtitle">
-            Authentic EDGAR-backed package ({authenticSlice.packageKey}) via shared covenant-engine —
-            not a second capacity engine. Leaf rows below are MODELED_LEAF (evaluateProvision).
-            Production remaining refused without completeness + trusted issuer. Never AVAILABLE.
+            Authentic EDGAR-backed package ({authenticSlice.packageKey}). Leaf rows are MODELED_LEAF
+            fixtures quarantined from production calculation. Modeled vs remaining are distinct; null
+            remaining is UNKNOWN (not zero). Hypothetical secured composition unpublished. Never AVAILABLE.
           </div>
           {authenticSlice.connectedMetrics.map((m) => (
             <div className="row" key={m.code}>
               <div>
                 <div className="row-label">{m.label}</div>
                 <div className="row-note">
-                  {m.operativeSection} · {m.valueProvenance} · {m.authorityStatus} · {m.claim.claimLabel}
+                  {m.operativeSection} · {m.valueProvenance}
+                  {m.quarantinedFromProductionCalculation ? " · QUARANTINED" : ""} ·{" "}
+                  {m.authorityStatus} · modeled {m.claim.claimLabel}
+                  {m.modeledCapacityMm != null ? ` ${fmtM(m.modeledCapacityMm)}` : " —"} · remaining{" "}
+                  {m.remainingClaim.claimLabel}
+                  {m.remainingCapacityMm != null ? ` ${fmtM(m.remainingCapacityMm)}` : " —"}
                   {m.refusalReason ? ` — ${m.refusalReason}` : ""}
                 </div>
               </div>

@@ -84,13 +84,15 @@ describe("REAL covenant intelligence + dashboard vertical slice (Matthews)", () 
     expect(snlrIndep).toBe(0);
     expect(slice.covenants[2]!.modeledCapacityMm).toBe(0);
 
-    // Notes grandfather NEW remaining = $0
+    // Notes grandfather: modeled gross 300; remaining null (not AVAILABLE zero)
     expect(independentExpectedRemaining("ind_permitted_debt_2_notes", fin, metrics)).toBe(0);
-    expect(slice.covenants[3]!.remainingCapacityMm).toBe(0);
+    expect(slice.covenants[3]!.modeledCapacityMm).toBe(300);
+    expect(slice.covenants[3]!.remainingCapacityMm).toBeNull();
 
-    // CA §6.01(j) structural zero
+    // CA §6.01(j) structural zero modeled; remaining null
     expect(independentExpectedRemaining("ca_lien_601j_2024notes", fin, metrics)).toBe(0);
-    expect(slice.covenants[4]!.remainingCapacityMm).toBe(0);
+    expect(slice.covenants[4]!.modeledCapacityMm).toBe(0);
+    expect(slice.covenants[4]!.remainingCapacityMm).toBeNull();
 
     // Indenture secured composition ≈ 631.45
     expect(slice.indentureSecuredCompositionMm).toBeCloseTo(521.118 + fccrIndep, 2);

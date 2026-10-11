@@ -194,13 +194,15 @@ function buildCovenantRow(
   } else if (p.code === "ind_permitted_debt_2_notes") {
     historicalUtilizationMm = MATTHEWS_NOTES_OUTSTANDING_MM;
     utilizationKnowledge = "ATTRIBUTED";
-    // NEW incremental = 0 with attributed outstanding; not UNKNOWN→zero.
-    remainingCapacityMm = 0;
+    // Priority A: attributed grandfather modeled gross stays on modeledCapacityMm;
+    // remaining stays null (not published as AVAILABLE zero). NEW=0 is the modeled leaf.
+    remainingCapacityMm = null;
     authorityStatus = "MODELED_AUTHENTIC_EVIDENCE";
   } else if (p.code === "ca_lien_601j_2024notes") {
     historicalUtilizationMm = null;
     utilizationKnowledge = "NOT_APPLICABLE";
-    remainingCapacityMm = 0;
+    // Structural zero expressed via modeledCapacityMm=0; remaining null (not AVAILABLE).
+    remainingCapacityMm = null;
     authorityStatus = "STRUCTURAL_ZERO";
   } else if (p.code === "ind_ratio_debt_fccr" || p.code === "ind_permitted_debt_1b_ratio_secured") {
     // D3b: modeled ratio room is HYPOTHETICAL_MODELED capacity — never publish as remaining.

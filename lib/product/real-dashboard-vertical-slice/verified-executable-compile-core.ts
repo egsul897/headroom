@@ -28,6 +28,7 @@ export type OperativeClauseCandidate = {
 
 export type VerifiedExecutableValueClass =
   | "SOURCE_BACKED_COMPILED_GROSS"
+  | "UNSUPPORTED"
   | "REFUSED_NOT_FIXED_DOLLAR"
   | "REFUSED_COMPILE_OR_FIDELITY"
   | "REFUSED_PRODUCTION";
@@ -37,7 +38,7 @@ export type VerifiedExecutableCompileUnit = {
   documentId: string;
   sourceSectionRef: string;
   relatedLeafCode: string | null;
-  compileClass: FixedDollarExecutableClass | "NOT_ATTEMPTED";
+  compileClass: FixedDollarExecutableClass | "NOT_ATTEMPTED" | "UNSUPPORTED";
   classificationClass: string;
   fidelityVerdict: FidelityVerdict | null;
   hypotheticalOutcome: string;
@@ -47,6 +48,8 @@ export type VerifiedExecutableCompileUnit = {
   feedsPosition: boolean;
   displayedOnDashboard: boolean;
   limitations: string[];
+  /** Missing legal structure / classification reason when valueClass is UNSUPPORTED. */
+  missingLegalStructure: string | null;
 };
 
 export type VerifiedExecutableCompileBridgeResult = {
@@ -85,24 +88,26 @@ function compileOne(
   ];
 
   if (classification.class === "NOT_FIXED_DOLLAR" || classification.amountUsd == null) {
+    const missing =
+      classification.reasons.join("; ") ||
+      "Clause is not a fixed-dollar sole/gated cap (ratio, structural, or non-cap dollar language).";
     return {
       candidateId: candidate.candidateId,
       documentId: candidate.documentId,
       sourceSectionRef: candidate.sourceSectionRef,
       relatedLeafCode: candidate.relatedLeafCode,
-      compileClass: "NOT_ATTEMPTED",
+      compileClass: "UNSUPPORTED",
       classificationClass: classification.class,
       fidelityVerdict: null,
       hypotheticalOutcome: "NOT_ATTEMPTED",
       productionOutcome: "NOT_ATTEMPTED",
       sourceBackedGrossCapacityMm: null,
+      // Keep REFUSED_NOT_FIXED_DOLLAR for multipackage locks; UNSUPPORTED is the product label.
       valueClass: "REFUSED_NOT_FIXED_DOLLAR",
       feedsPosition: false,
       displayedOnDashboard: true,
-      limitations: [
-        ...baseLimitations,
-        `Refuse VE compile: ${classification.reasons.join(", ") || "not_fixed_dollar"}.`,
-      ],
+      limitations: [...baseLimitations, `UNSUPPORTED: ${missing}`],
+      missingLegalStructure: missing,
     };
   }
 
@@ -122,6 +127,7 @@ function compileOne(
     compiled.executableClass === "FAILED" ||
     !compiled.rule
   ) {
+    const missing = `Fixed-dollar compile returned ${compiled.executableClass}.`;
     return {
       candidateId: candidate.candidateId,
       documentId: candidate.documentId,
@@ -133,10 +139,11 @@ function compileOne(
       hypotheticalOutcome: "FAILED",
       productionOutcome: "NOT_ATTEMPTED",
       sourceBackedGrossCapacityMm: null,
-      valueClass: "REFUSED_COMPILE_OR_FIDELITY",
+      valueClass: "UNSUPPORTED",
       feedsPosition: false,
       displayedOnDashboard: true,
-      limitations: [...baseLimitations, `Compile refused: ${compiled.executableClass}.`],
+      limitations: [...baseLimitations, `UNSUPPORTED: ${missing}`],
+      missingLegalStructure: missing,
     };
   }
 
@@ -158,6 +165,7 @@ function compileOne(
   const productionRefused = prod.outcomeLabel === "PRODUCTION_CAPACITY_REFUSED";
 
   if (!fidelityOk || !hypoOk) {
+    const missing = `Fidelity or hypothetical evaluation failed (${hypo.fidelity.verdict}/${hypo.outcomeLabel}).`;
     return {
       candidateId: candidate.candidateId,
       documentId: candidate.documentId,
@@ -172,10 +180,8 @@ function compileOne(
       valueClass: "REFUSED_COMPILE_OR_FIDELITY",
       feedsPosition: false,
       displayedOnDashboard: true,
-      limitations: [
-        ...baseLimitations,
-        `Fidelity=${hypo.fidelity.verdict}; hypo=${hypo.outcomeLabel}.`,
-      ],
+      limitations: [...baseLimitations, missing],
+      missingLegalStructure: missing,
     };
   }
 
@@ -201,6 +207,7 @@ function compileOne(
         ? "PRODUCTION_CAPACITY_REFUSED preserved."
         : "Unexpected production success — refused Position feed.",
     ],
+    missingLegalStructure: null,
   };
 }
 

@@ -28,7 +28,12 @@ export interface DashboardConnectedMetric {
   label: string;
   code: string;
   amountMillions: number | null;
+  /** Explicit modeled capacity — never coalesced from remaining. */
+  modeledCapacityMm: number | null;
+  /** Explicit remaining — null means UNKNOWN/NOT_VERIFIED, never invent zero. */
+  remainingCapacityMm: number | null;
   claim: CapacityClaimView;
+  remainingClaim: CapacityClaimView;
   operativeSection: string;
   authorityStatus: VerifiedCovenantCalculation["authorityStatus"];
   refusalReason: string | null;
@@ -36,10 +41,12 @@ export interface DashboardConnectedMetric {
   mayPublishAvailable: boolean;
   /**
    * Provenance of the numeric figure:
-   * - MODELED_LEAF: evaluateProvision over hand-encoded CovenantProvisionInput
+   * - MODELED_LEAF: evaluateProvision over hand-encoded CovenantProvisionInput (quarantined)
    * - SOURCE_BACKED_COMPILED_GROSS: verified fixed-dollar IR gross from operative text
    */
   valueProvenance: "MODELED_LEAF" | "SOURCE_BACKED_COMPILED_GROSS";
+  /** Leaf fixtures are quarantined from production calculation / publication authority. */
+  quarantinedFromProductionCalculation: boolean;
 }
 
 export interface AuthenticPositionSlice {
@@ -121,15 +128,15 @@ function capacitySide(
   bindingCode: string | null,
   opts?: { publishRemaining?: boolean },
 ): PostTransactionCapacitySimulation {
-  // Secured Indenture composition must not be posted as remainingCapacity when
-  // acceptance labels it HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION (PR #304 D4).
-  const publish = opts?.publishRemaining !== false;
+  // Priority A: remaining is published only when explicitly opted in.
+  // Null/undefined never becomes zero or modeled remaining.
+  const publish = opts?.publishRemaining === true && remaining != null;
   return {
     amount: 0,
     secured,
-    remainingCapacity: publish ? remaining ?? undefined : undefined,
+    remainingCapacity: publish ? remaining : undefined,
     packageAuthoritative: {
-      remainingCapacity: publish ? remaining ?? null : null,
+      remainingCapacity: publish ? remaining : null,
       bindingDocumentName: bindingName,
       bindingProvisionCode: bindingCode,
       authority: "MODELED_CROSS_DOCUMENT",
@@ -194,18 +201,11 @@ function dashboardStubFromSlice(slice: VerticalSliceEvaluation): CompanyDashboar
       },
     } as CompanyDashboard["financialPosition"],
     capacity: {
-      // D4: do not publish hypothetical secured composition as remainingCapacity.
-      secured: capacitySide(
-        modeledSecured,
-        true,
-        flat?.governingDocumentName ?? null,
-        flat?.code ?? null,
-        {
-          publishRemaining:
-            slice.securedCompositionAuthority !== "HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION",
-        },
-      ),
-      unsecured: capacitySide(undefined, false, null, null),
+      // D4 / Priority A.5: hypothetical secured composition never published as remaining.
+      secured: capacitySide(modeledSecured, true, flat?.governingDocumentName ?? null, flat?.code ?? null, {
+        publishRemaining: false,
+      }),
+      unsecured: capacitySide(null, false, null, null, { publishRemaining: false }),
     },
     documents: [
       {
@@ -240,41 +240,46 @@ function metricFromCovenant(c: VerifiedCovenantCalculation): DashboardConnectedM
     c.authorityStatus === "GROSS_ONLY_UTILIZATION_INCOMPLETE" ||
     c.authorityStatus === "PRODUCTION_REMAINING_REFUSED";
 
-  // Publication honesty (D3a/D3b):
-  // - Never convert null remaining into a REMAINING/AVAILABLE claim via modeledCapacityMm.
-  // - When remaining is null, publish modeledCapacityMm only as GROSS_CONTRACTUAL.
-  // - When remaining is explicit (structural NEW=0 / attributed), still never AVAILABLE —
-  //   publish GROSS_CONTRACTUAL / MODELED. Ratio modeled rooms are gross/modeled, not remaining.
-  const hasExplicitRemaining = c.remainingCapacityMm != null;
-  const amount = hasExplicitRemaining ? c.remainingCapacityMm : c.modeledCapacityMm;
-
-  const claimKind =
-    amount == null
-      ? ("UNAVAILABLE" as const)
-      : ("GROSS_CONTRACTUAL" as const); // restricted slice: never REMAINING/AVAILABLE
+  // Priority A: never coalesce null remaining into modeled remaining.
+  // Primary display uses modeledCapacityMm as GROSS_CONTRACTUAL; remaining stays separate.
+  const modeled = c.modeledCapacityMm;
+  const remaining = c.remainingCapacityMm;
 
   const claim = presentCapacityClaim({
-    claimKind,
-    amountMillions: amount,
+    claimKind: modeled == null ? "UNAVAILABLE" : "GROSS_CONTRACTUAL",
+    amountMillions: modeled,
     remainingIsAuthoritative: false,
     publicationLabel: "NOT_PRODUCTION_AUTHORITATIVE",
-    unavailableReason: amount == null ? c.confidenceNote : null,
+    unavailableReason: modeled == null ? c.confidenceNote : null,
+  });
+
+  const remainingClaim = presentCapacityClaim({
+    claimKind: remaining == null ? "UNAVAILABLE" : "GROSS_CONTRACTUAL",
+    amountMillions: remaining,
+    remainingIsAuthoritative: false,
+    publicationLabel: "NOT_PRODUCTION_AUTHORITATIVE",
+    unavailableReason:
+      remaining == null
+        ? "Remaining capacity UNKNOWN / NOT_VERIFIED — missing utilization completeness, financial approval, or trusted-issuer (not zero)."
+        : null,
   });
 
   return {
     label: c.basketName,
     code: c.code,
-    amountMillions: amount,
+    amountMillions: modeled,
+    modeledCapacityMm: modeled,
+    remainingCapacityMm: remaining,
     claim,
+    remainingClaim,
     operativeSection: c.operativeSection,
     authorityStatus: c.authorityStatus,
-    refusalReason: isProductionRefused
-      ? "Production remaining refused — incomplete utilization completeness / trusted-issuer BLOCKED."
-      : !hasExplicitRemaining
-        ? "Modeled capacity published as GROSS/MODELED only — remaining unknown (no modeled→remaining fallback)."
-        : null,
-    mayPublishAvailable: false, // authentic slice never publishes customer AVAILABLE
+    refusalReason: isProductionRefused || remaining == null
+      ? "Remaining UNKNOWN/NOT_VERIFIED — incomplete utilization / trusted-issuer BLOCKED (leaf quarantined)."
+      : null,
+    mayPublishAvailable: false,
     valueProvenance: "MODELED_LEAF",
+    quarantinedFromProductionCalculation: true,
   };
 }
 
@@ -287,21 +292,37 @@ function metricFromVerifiedExecutable(u: VerifiedExecutableCompileUnit): Dashboa
     publicationLabel: "NOT_PRODUCTION_AUTHORITATIVE",
     unavailableReason:
       amount == null
-        ? `Verified executable compile refused (${u.valueClass}).`
+        ? u.missingLegalStructure
+          ? `UNSUPPORTED: ${u.missingLegalStructure}`
+          : `Verified executable compile refused (${u.valueClass}).`
         : null,
+  });
+  const remainingClaim = presentCapacityClaim({
+    claimKind: "UNAVAILABLE",
+    amountMillions: null,
+    remainingIsAuthoritative: false,
+    publicationLabel: "NOT_PRODUCTION_AUTHORITATIVE",
+    unavailableReason:
+      "VE path publishes GROSS only — remaining requires completeness + trusted-issuer (UNKNOWN, not zero).",
   });
 
   return {
     label: `VE compiled gross — ${u.sourceSectionRef}`,
     code: `ve:${u.candidateId}`,
     amountMillions: amount,
+    modeledCapacityMm: amount,
+    remainingCapacityMm: null,
     claim,
+    remainingClaim,
     operativeSection: u.sourceSectionRef,
     authorityStatus: "GROSS_ONLY_UTILIZATION_INCOMPLETE",
     refusalReason:
-      "SOURCE_BACKED_COMPILED_GROSS via fixed-dollar VE IR — production remaining refused; not netted modeled room.",
+      u.missingLegalStructure != null
+        ? `UNSUPPORTED — ${u.missingLegalStructure}`
+        : "SOURCE_BACKED_COMPILED_GROSS via fixed-dollar VE IR — production remaining refused; not netted modeled room.",
     mayPublishAvailable: false,
     valueProvenance: "SOURCE_BACKED_COMPILED_GROSS",
+    quarantinedFromProductionCalculation: false,
   };
 }
 
@@ -328,18 +349,27 @@ export function connectSliceToPosition(slice: VerticalSliceEvaluation): Authenti
     .filter((u) => u.feedsPosition)
     .map(metricFromVerifiedExecutable);
 
-  // Harden: no metric on this authentic slice may publish AVAILABLE.
   for (const m of [...connectedMetrics, ...verifiedExecutableMetrics]) {
-    if (m.claim.claimLabel.includes("AVAILABLE") || m.mayPublishAvailable) {
+    if (m.claim.claimLabel.toLowerCase().includes("available (verified)") || m.mayPublishAvailable) {
       throw new Error(`False favorable AVAILABLE publication blocked for ${m.code}`);
     }
     if (m.claim.status === "VERIFIED_EXECUTABLE") {
       throw new Error(`Customer VERIFIED_EXECUTABLE status blocked for ${m.code} (gross/modeled only)`);
     }
+    if (m.claim.claimKind === "REMAINING") {
+      throw new Error(`REMAINING claimKind blocked on restricted slice for ${m.code}`);
+    }
+    // Priority A.1: null remaining must not appear as a numeric remainingClaim.
+    if (m.remainingCapacityMm == null && m.remainingClaim.amountMillions != null) {
+      throw new Error(`Null remaining coalesced into remainingClaim for ${m.code}`);
+    }
   }
 
   if (verifiedExecutableCompile.productionCapacityPublished) {
     throw new Error("Production capacity publication blocked on authentic Matthews slice");
+  }
+  if (rulebook.stage === "REVIEWED" || rulebook.stage === "EXECUTABLE") {
+    throw new Error("Fabricated REVIEWED/EXECUTABLE rulebook stage blocked");
   }
 
   return {

@@ -109,6 +109,38 @@ describe("PR #304 acceptance — independentExpectedRemaining circularity (Check
   });
 });
 
+describe("Priority A — semantic boundaries", () => {
+  it("A1: never coalesces null remainingCapacityMm into modeled remaining", () => {
+    expect(BRIDGE_SRC).not.toMatch(/remainingCapacityMm\s*\?\?\s*c\.modeledCapacityMm/);
+    const pos = connectSliceToPosition(evaluateMatthewsVerticalSlice());
+    for (const m of pos.connectedMetrics) {
+      expect(m.remainingCapacityMm).toBeNull();
+      expect(m.remainingClaim.amountMillions).toBeNull();
+      expect(m.quarantinedFromProductionCalculation).toBe(true);
+    }
+  });
+
+  it("A5: hypothetical secured composition unpublished as remaining", () => {
+    const slice = evaluateMatthewsVerticalSlice();
+    expect(slice.securedCompositionAuthority).toBe("HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION");
+    const pos = connectSliceToPosition(slice);
+    const secured = pos.positionView.sides.find((s) => s.side === "secured")!;
+    expect(secured.remaining.amountMillions).toBeNull();
+  });
+
+  it("UNSUPPORTED refusals carry missingLegalStructure provenance", () => {
+    const pos = connectSliceToPosition(evaluateMatthewsVerticalSlice());
+    const refused = pos.verifiedExecutableCompile.verifiedExecutableUnits.filter(
+      (u) => !u.feedsPosition,
+    );
+    expect(refused.length).toBeGreaterThanOrEqual(1);
+    for (const u of refused) {
+      expect(u.missingLegalStructure).toBeTruthy();
+      expect(u.sourceBackedGrossCapacityMm).toBeNull();
+    }
+  });
+});
+
 describe("PR #304 acceptance — Position publication honesty (Check 3)", () => {
   it("never labels AVAILABLE / production-authoritative remaining", () => {
     const slice = evaluateMatthewsVerticalSlice();
