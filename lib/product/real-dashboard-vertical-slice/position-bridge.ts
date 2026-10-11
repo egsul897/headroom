@@ -239,23 +239,17 @@ function metricFromCovenant(c: VerifiedCovenantCalculation): DashboardConnectedM
     c.authorityStatus === "PRODUCTION_REMAINING_REFUSED";
 
   // Publication honesty (D3a/D3b):
-  // - Never fallback modeledCapacityMm → remaining when remaining is unknown/null.
-  // - Publish remainingCapacityMm only when explicitly set (structural/attributed NEW=0).
-  // - Otherwise publish modeledCapacityMm as GROSS_CONTRACTUAL / MODELED — never as
-  //   authoritative REMAINING / AVAILABLE.
+  // - Never convert null remaining into a REMAINING/AVAILABLE claim via modeledCapacityMm.
+  // - When remaining is null, publish modeledCapacityMm only as GROSS_CONTRACTUAL.
+  // - When remaining is explicit (structural NEW=0 / attributed), still never AVAILABLE —
+  //   publish GROSS_CONTRACTUAL / MODELED. Ratio modeled rooms are gross/modeled, not remaining.
   const hasExplicitRemaining = c.remainingCapacityMm != null;
   const amount = hasExplicitRemaining ? c.remainingCapacityMm : c.modeledCapacityMm;
 
   const claimKind =
     amount == null
       ? ("UNAVAILABLE" as const)
-      : hasExplicitRemaining &&
-          (c.authorityStatus === "STRUCTURAL_ZERO" ||
-            c.code === "ind_permitted_debt_2_notes")
-        ? ("GROSS_CONTRACTUAL" as const) // structural NEW=0 / grandfather — not AVAILABLE remaining
-        : isProductionRefused || !hasExplicitRemaining
-          ? ("GROSS_CONTRACTUAL" as const)
-          : ("UNAVAILABLE" as const);
+      : ("GROSS_CONTRACTUAL" as const); // restricted slice: never REMAINING/AVAILABLE
 
   const claim = presentCapacityClaim({
     claimKind,
