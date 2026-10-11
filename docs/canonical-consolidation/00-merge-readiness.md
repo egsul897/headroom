@@ -16,9 +16,10 @@
 
 ## #298 status
 
-- **Merged into #293 via GitHub merge button:** NO (was OPEN / MERGEABLE / CLEAN).
-- **Incorporated onto #293 tip by consolidation merge commit:** YES (local `integrate: absorb #298` onto `038fa626`).
+- **Merged into #293 via GitHub merge button:** NO.
+- **Incorporated onto #293 tip by consolidation merge commit:** YES (`e291848d` absorb of prior #298 tip `0f589f83` onto `038fa626`).
 - Unique production delta absorbed: undated / `UNSUPPORTED` competitor fail-closed in `governing-provision.ts` + regression test + Agent #11 absorption retest artifacts.
+- **Later #298 rebase** onto `038fa626` produced tip `425a177a` and GitHub status CONFLICTING vs advanced #293 tip — production `governing-provision` / wrong-document guard match consolidation tip; close #298 as absorbed (do not re-merge).
 
 ## #293 status
 
