@@ -2,10 +2,12 @@
  * PR #304 independent acceptance — adversarial locks.
  *
  * These tests document what the Matthews vertical slice actually is:
- * fixture-modeled dashboard rendering, NOT autonomous compilation,
- * NOT a generalized multi-package pipeline, NOT production authority.
+ * fixture-modeled dashboard rendering + a bounded fixed-dollar VE compile
+ * bridge for supporting clauses — NOT full autonomous compilation of all
+ * permissions, NOT a generalized multi-package pipeline, NOT production authority.
  *
- * Do not weaken these assertions to restore REAL_DASHBOARD_VERTICAL_SLICE_PROVEN.
+ * Do not weaken these assertions to restore REAL_DASHBOARD_VERTICAL_SLICE_PROVEN
+ * or flip AUTONOMOUS_COVENANT_COMPILATION_PROVEN without replacing leaf capacity.
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -38,6 +40,13 @@ const INDEX_SRC = readFileSync(
   join(process.cwd(), "lib/product/real-dashboard-vertical-slice/index.ts"),
   "utf8",
 );
+const VE_SRC = readFileSync(
+  join(
+    process.cwd(),
+    "lib/product/real-dashboard-vertical-slice/verified-executable-compile-bridge.ts",
+  ),
+  "utf8",
+);
 
 describe("PR #304 acceptance — provision origin (Check 1)", () => {
   it("all five CovenantProvisionInput objects are manually encoded literals", () => {
@@ -49,13 +58,23 @@ describe("PR #304 acceptance — provision origin (Check 1)", () => {
     expect(PKG_SRC).toMatch(/Codes\/thresholds\/sectionRefs match populate-matthews/);
   });
 
-  it("vertical-slice modules do not import autonomous compile / verified IR paths", () => {
-    const corpus = EVAL_SRC + PKG_SRC + BRIDGE_SRC + INDEX_SRC;
-    expect(corpus).not.toMatch(/compileFrozenDebtPackage/);
-    expect(corpus).not.toMatch(/compileFixedDollarBasket/);
-    expect(corpus).not.toMatch(/compileGreaterOfAssetsBasket/);
-    expect(corpus).not.toMatch(/evaluateVerifiedCapacity/);
-    expect(corpus).not.toMatch(/executeUnifiedVerifiedTransaction/);
+  it("leaf capacity path modules do not import compileFrozenDebtPackage / UTE", () => {
+    // evaluate-covenants + package-matthews remain leaf-only; VE compile lives in its own bridge.
+    const leafCorpus = EVAL_SRC + PKG_SRC;
+    expect(leafCorpus).not.toMatch(/compileFrozenDebtPackage/);
+    expect(leafCorpus).not.toMatch(/compileFixedDollarBasket/);
+    expect(leafCorpus).not.toMatch(/compileGreaterOfAssetsBasket/);
+    expect(leafCorpus).not.toMatch(/evaluateVerifiedCapacity/);
+    expect(leafCorpus).not.toMatch(/executeUnifiedVerifiedTransaction/);
+  });
+
+  it("verified-executable bridge uses fixed-dollar compile and refuses production", () => {
+    expect(VE_SRC).toMatch(/compileFixedDollarBasket/);
+    expect(VE_SRC).toMatch(/evaluateFixedDollarCapacity/);
+    expect(VE_SRC).toMatch(/SOURCE_BACKED_COMPILED_GROSS/);
+    expect(VE_SRC).toMatch(/PRODUCTION_CAPACITY_REFUSED/);
+    expect(BRIDGE_SRC).toMatch(/compileMatthewsVerifiedExecutableBridge/);
+    expect(INDEX_SRC).toMatch(/verified-executable-compile-bridge/);
   });
 });
 
@@ -86,7 +105,8 @@ describe("PR #304 acceptance — Position publication honesty (Check 3)", () => 
     const pos = connectSliceToPosition(slice);
     expect(pos.productionRemainingPublished).toBe(false);
     expect(pos.positionView.remainingAuthoritative).toBe(false);
-    for (const m of pos.connectedMetrics) {
+    expect(pos.verifiedExecutableCompile.productionCapacityPublished).toBe(false);
+    for (const m of [...pos.connectedMetrics, ...pos.verifiedExecutableMetrics]) {
       expect(m.claim.status).not.toBe("VERIFIED_EXECUTABLE");
       expect(m.claim.claimLabel).not.toMatch(/AVAILABLE(?!\s*\()/i);
       expect(m.claim.claimLabel.toLowerCase()).not.toContain("available (verified)");
@@ -102,6 +122,16 @@ describe("PR #304 acceptance — Position publication honesty (Check 3)", () => 
     expect(flat.modeledCapacityMm).toBeCloseTo(521.118, 3);
     expect(flat.remainingCapacityMm).toBeNull();
     expect(flat.authorityStatus).toBe("GROSS_ONLY_UTILIZATION_INCOMPLETE");
+  });
+
+  it("separates SOURCE_BACKED_COMPILED_GROSS ($1300) from MODELED_LEAF room ($521.118)", () => {
+    const pos = connectSliceToPosition(evaluateMatthewsVerticalSlice());
+    const ve = pos.verifiedExecutableMetrics.find((m) => m.code.includes("1a"))!;
+    const leaf = pos.connectedMetrics.find((m) => m.code === "ind_permitted_debt_1a_flat")!;
+    expect(ve.amountMillions).toBeCloseTo(1300, 6);
+    expect(leaf.amountMillions).toBeCloseTo(521.118, 3);
+    expect(ve.valueProvenance).toBe("SOURCE_BACKED_COMPILED_GROSS");
+    expect(leaf.valueProvenance).toBe("MODELED_LEAF");
   });
 });
 

@@ -155,6 +155,48 @@ describe("REAL covenant intelligence + dashboard vertical slice (Matthews)", () 
     expect(indenture!.displayedOnDashboard).toBe(true);
   });
 
+  it("verified executable fixed-dollar compile feeds Position as SOURCE_BACKED_COMPILED_GROSS", () => {
+    const connected = loadAuthenticDashboardSlice("matthews")!;
+    expect(connected.verifiedExecutableUnitsFeedingPosition).toBeGreaterThanOrEqual(1);
+    expect(connected.verifiedExecutableCompile.productionCapacityPublished).toBe(false);
+    expect(connected.verifiedExecutableCompile.trustedIdentityActivation).toBe("BLOCKED");
+
+    const ve1a = connected.verifiedExecutableCompile.verifiedExecutableUnits.find(
+      (u) => u.relatedLeafCode === "ind_permitted_debt_1a_flat",
+    );
+    expect(ve1a).toBeTruthy();
+    expect(ve1a!.feedsPosition).toBe(true);
+    expect(ve1a!.valueClass).toBe("SOURCE_BACKED_COMPILED_GROSS");
+    expect(ve1a!.fidelityVerdict).toBe("PASS");
+    expect(ve1a!.hypotheticalOutcome).toBe("VERIFIED_EXECUTABLE");
+    expect(ve1a!.productionOutcome).toBe("PRODUCTION_CAPACITY_REFUSED");
+    // Source-backed gross ceiling from Indenture text — NOT the modeled $521.118 room.
+    expect(ve1a!.sourceBackedGrossCapacityMm).toBeCloseTo(1300, 6);
+
+    const veMetric = connected.verifiedExecutableMetrics.find((m) =>
+      m.code.includes("matw-permitted-debt-1a"),
+    )!;
+    expect(veMetric.valueProvenance).toBe("SOURCE_BACKED_COMPILED_GROSS");
+    expect(veMetric.amountMillions).toBeCloseTo(1300, 6);
+    expect(veMetric.claim.claimKind).toBe("GROSS_CONTRACTUAL");
+    expect(veMetric.claim.status).not.toBe("VERIFIED_EXECUTABLE");
+    expect(veMetric.claim.claimLabel).not.toMatch(/AVAILABLE/);
+    expect(veMetric.mayPublishAvailable).toBe(false);
+
+    // Fail-closed: Notes grandfather (dollar present, not cap-role) does not feed Position.
+    const notes = connected.verifiedExecutableCompile.verifiedExecutableUnits.find(
+      (u) => u.relatedLeafCode === "ind_permitted_debt_2_notes",
+    );
+    expect(notes).toBeTruthy();
+    expect(notes!.feedsPosition).toBe(false);
+    expect(notes!.valueClass).toBe("REFUSED_NOT_FIXED_DOLLAR");
+
+    // Leaf modeled 1a room remains distinct and labeled MODELED_LEAF.
+    const leaf1a = connected.connectedMetrics.find((m) => m.code === "ind_permitted_debt_1a_flat")!;
+    expect(leaf1a.valueProvenance).toBe("MODELED_LEAF");
+    expect(leaf1a.amountMillions).toBeCloseTo(521.118, 3);
+  });
+
   it("demonstrates deterministic change propagation without mutating the ledger", () => {
     const prop = demonstrateChangePropagation({
       ebitdaOverride: 140,
@@ -199,6 +241,7 @@ describe("REAL covenant intelligence + dashboard vertical slice (Matthews)", () 
     expect(result.phase3Compile.compiledCovenants.length).toBe(
       result.autonomouslyCompiledDisplayedCount,
     );
+    expect(result.verifiedExecutableUnitsFeedingPosition).toBeGreaterThanOrEqual(1);
     // PR #304 independent acceptance: withdraw REAL_DASHBOARD_VERTICAL_SLICE_PROVEN.
     expect(result.verdict).not.toBe("REAL_DASHBOARD_VERTICAL_SLICE_PROVEN" as never);
     expect(result.verdict).toBe("FIXTURE_MODELED_DASHBOARD_PARTIAL");
@@ -206,6 +249,21 @@ describe("REAL covenant intelligence + dashboard vertical slice (Matthews)", () 
     expect(result.milestones.PRODUCTION_AUTHORITY_PROVEN).toBe("NOT_PROVEN");
     expect(result.evaluation.securedCompositionAuthority).toBe(
       "HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION",
+    );
+
+    // Numerical honesty: source-backed compiled gross ≠ modeled leaf room ≠ hypo secured composition.
+    expect(result.numericalHonesty.sourceBackedCompiledGrossMm).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ amountMm: 1300 }),
+      ]),
+    );
+    const modeled1a = result.numericalHonesty.modeledLeafCapacityMm.find(
+      (r) => r.code === "ind_permitted_debt_1a_flat",
+    )!;
+    expect(modeled1a.amountMm).toBeCloseTo(521.118, 3);
+    expect(result.numericalHonesty.hypotheticalUnverifiedSecuredCompositionMm).toBeCloseTo(
+      631.45,
+      1,
     );
 
     // Sanity: mayUseAsProductionCapacityInput stays false on this path.

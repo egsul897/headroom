@@ -17,6 +17,11 @@ import {
   compileMatthewsPhase3DashboardBridge,
   type Phase3CompileBridgeResult,
 } from "./phase3-compile-bridge";
+import {
+  compileMatthewsVerifiedExecutableBridge,
+  type VerifiedExecutableCompileBridgeResult,
+  type VerifiedExecutableCompileUnit,
+} from "./verified-executable-compile-bridge";
 import { MATTHEWS_POSITION_COMPANY_ID } from "./package-matthews";
 
 export interface DashboardConnectedMetric {
@@ -29,6 +34,12 @@ export interface DashboardConnectedMetric {
   refusalReason: string | null;
   /** True when claim is gross/modeled — never customer AVAILABLE. */
   mayPublishAvailable: boolean;
+  /**
+   * Provenance of the numeric figure:
+   * - MODELED_LEAF: evaluateProvision over hand-encoded CovenantProvisionInput
+   * - SOURCE_BACKED_COMPILED_GROSS: verified fixed-dollar IR gross from operative text
+   */
+  valueProvenance: "MODELED_LEAF" | "SOURCE_BACKED_COMPILED_GROSS";
 }
 
 export interface AuthenticPositionSlice {
@@ -37,11 +48,19 @@ export interface AuthenticPositionSlice {
   asOf: string;
   positionView: PositionViewModel;
   connectedMetrics: DashboardConnectedMetric[];
+  /**
+   * Verified-executable compiled gross metrics feeding Position (subset).
+   * Separate from leaf-modeled connectedMetrics for honesty labeling.
+   */
+  verifiedExecutableMetrics: DashboardConnectedMetric[];
   missingInputs: string[];
   productionRemainingPublished: boolean;
   /** Autonomous Phase 3 compile (source → OA → deterministic extraction). */
   phase3Compile: Phase3CompileBridgeResult;
   autonomouslyCompiledDisplayedCount: number;
+  /** Verified fixed-dollar compile → evaluateVerifiedCapacity → Position (gross only). */
+  verifiedExecutableCompile: VerifiedExecutableCompileBridgeResult;
+  verifiedExecutableUnitsFeedingPosition: number;
 }
 
 function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
@@ -253,6 +272,34 @@ function metricFromCovenant(c: VerifiedCovenantCalculation): DashboardConnectedM
       ? "Production remaining refused — incomplete utilization completeness / trusted-issuer BLOCKED."
       : null,
     mayPublishAvailable: false, // authentic slice never publishes customer AVAILABLE
+    valueProvenance: "MODELED_LEAF",
+  };
+}
+
+function metricFromVerifiedExecutable(u: VerifiedExecutableCompileUnit): DashboardConnectedMetric {
+  const amount = u.sourceBackedGrossCapacityMm;
+  const claim = presentCapacityClaim({
+    claimKind: amount != null ? "GROSS_CONTRACTUAL" : "UNAVAILABLE",
+    amountMillions: amount,
+    remainingIsAuthoritative: false,
+    publicationLabel: "NOT_PRODUCTION_AUTHORITATIVE",
+    unavailableReason:
+      amount == null
+        ? `Verified executable compile refused (${u.valueClass}).`
+        : null,
+  });
+
+  return {
+    label: `VE compiled gross — ${u.sourceSectionRef}`,
+    code: `ve:${u.candidateId}`,
+    amountMillions: amount,
+    claim,
+    operativeSection: u.sourceSectionRef,
+    authorityStatus: "GROSS_ONLY_UTILIZATION_INCOMPLETE",
+    refusalReason:
+      "SOURCE_BACKED_COMPILED_GROSS via fixed-dollar VE IR — production remaining refused; not netted modeled room.",
+    mayPublishAvailable: false,
+    valueProvenance: "SOURCE_BACKED_COMPILED_GROSS",
   };
 }
 
@@ -264,6 +311,7 @@ export function connectSliceToPosition(slice: VerticalSliceEvaluation): Authenti
   const rulebook = rulebookFromSlice(slice);
   const dashboard = dashboardStubFromSlice(slice);
   const phase3Compile = compileMatthewsPhase3DashboardBridge(slice.asOf);
+  const verifiedExecutableCompile = compileMatthewsVerifiedExecutableBridge(slice.asOf);
 
   const positionView = buildPositionView({
     companyId: MATTHEWS_POSITION_COMPANY_ID,
@@ -274,11 +322,22 @@ export function connectSliceToPosition(slice: VerticalSliceEvaluation): Authenti
   });
 
   const connectedMetrics = slice.covenants.map(metricFromCovenant);
+  const verifiedExecutableMetrics = verifiedExecutableCompile.verifiedExecutableUnits
+    .filter((u) => u.feedsPosition)
+    .map(metricFromVerifiedExecutable);
+
   // Harden: no metric on this authentic slice may publish AVAILABLE.
-  for (const m of connectedMetrics) {
+  for (const m of [...connectedMetrics, ...verifiedExecutableMetrics]) {
     if (m.claim.claimLabel.includes("AVAILABLE") || m.mayPublishAvailable) {
       throw new Error(`False favorable AVAILABLE publication blocked for ${m.code}`);
     }
+    if (m.claim.status === "VERIFIED_EXECUTABLE") {
+      throw new Error(`Customer VERIFIED_EXECUTABLE status blocked for ${m.code} (gross/modeled only)`);
+    }
+  }
+
+  if (verifiedExecutableCompile.productionCapacityPublished) {
+    throw new Error("Production capacity publication blocked on authentic Matthews slice");
   }
 
   return {
@@ -287,10 +346,18 @@ export function connectSliceToPosition(slice: VerticalSliceEvaluation): Authenti
     asOf: slice.asOf,
     positionView,
     connectedMetrics,
-    missingInputs: [...positionView.missingInputs, ...slice.missingEvidence],
+    verifiedExecutableMetrics,
+    missingInputs: [
+      ...positionView.missingInputs,
+      ...slice.missingEvidence,
+      ...verifiedExecutableCompile.limitations,
+    ],
     productionRemainingPublished: false,
     phase3Compile,
     autonomouslyCompiledDisplayedCount: phase3Compile.autonomouslyCompiledDisplayedCount,
+    verifiedExecutableCompile,
+    verifiedExecutableUnitsFeedingPosition:
+      verifiedExecutableCompile.verifiedExecutableUnitsFeedingPosition,
   };
 }
 

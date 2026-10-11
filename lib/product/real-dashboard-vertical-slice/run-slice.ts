@@ -5,9 +5,10 @@
  * do not collapse them into a single REAL_DASHBOARD_VERTICAL_SLICE_PROVEN claim.
  *
  * Phase 3 compile is connected for dashboard display (source → OA → extraction).
- * Capacity arithmetic still uses evaluateProvision leaf formulas on authentic
- * financials — AUTONOMOUS_COVENANT_COMPILATION_PROVEN remains NOT_PROVEN until
- * verified IR binds capacity (see acceptance adversarial locks).
+ * Verified fixed-dollar compile feeds Position as SOURCE_BACKED_COMPILED_GROSS when
+ * evidence supports it (fail-closed otherwise). Leaf evaluateProvision still drives
+ * the five modeled covenant rows — AUTONOMOUS_COVENANT_COMPILATION_PROVEN remains
+ * NOT_PROVEN until all Position capacity leaves hand-encoded CovenantProvisionInput.
  */
 
 import {
@@ -24,6 +25,7 @@ import {
   type AuthenticPositionSlice,
 } from "./position-bridge";
 import type { Phase3CompileBridgeResult } from "./phase3-compile-bridge";
+import type { VerifiedExecutableCompileBridgeResult } from "./verified-executable-compile-bridge";
 import { MATTHEWS_POSITION_COMPANY_ID } from "./package-matthews";
 
 export type AcceptanceMilestoneVerdict = "PROVEN" | "PROVEN_WITH_DEFECTS" | "NOT_PROVEN";
@@ -42,6 +44,8 @@ export interface RealDashboardVerticalSliceResult {
   changePropagation: ChangePropagationResult;
   phase3Compile: Phase3CompileBridgeResult;
   autonomouslyCompiledDisplayedCount: number;
+  verifiedExecutableCompile: VerifiedExecutableCompileBridgeResult;
+  verifiedExecutableUnitsFeedingPosition: number;
   /**
    * Legacy aggregate label — after PR #304 independent acceptance this is at most
    * FIXTURE_MODELED_DASHBOARD_PARTIAL. Prefer `milestones`.
@@ -49,6 +53,15 @@ export interface RealDashboardVerticalSliceResult {
   verdict: "FIXTURE_MODELED_DASHBOARD_PARTIAL" | "PARTIALLY_PROVEN" | "NOT_YET_PROVEN";
   milestones: AcceptanceMilestones;
   blockers: string[];
+  /**
+   * Numerical honesty partition — source-backed compiled gross vs modeled leaf.
+   * Never conflate these in reports.
+   */
+  numericalHonesty: {
+    sourceBackedCompiledGrossMm: Array<{ code: string; amountMm: number }>;
+    modeledLeafCapacityMm: Array<{ code: string; amountMm: number | null; authorityStatus: string }>;
+    hypotheticalUnverifiedSecuredCompositionMm: number | null;
+  };
 }
 
 function decideMilestones(
@@ -66,8 +79,9 @@ function decideMilestones(
     FIXTURE_MODELED_DASHBOARD_PROVEN: fixtureModeled ? "PROVEN_WITH_DEFECTS" : "NOT_PROVEN",
     // Registry + evaluator are Matthews-only (see hasAuthenticPositionSlice / evaluateMatthews*).
     GENERALIZED_CALCULATION_PIPELINE_PROVEN: "NOT_PROVEN",
-    // Phase 3 structure/OA/extraction is wired for display, but capacity still uses
-    // hand-encoded CovenantProvisionInput literals — not compileFrozenDebtPackage / VEP.
+    // Fixed-dollar VE compile feeds Position for supporting clauses, but the five
+    // dashboard covenant rows still use hand-encoded CovenantProvisionInput /
+    // evaluateProvision — not full autonomous IR→capacity replacement.
     AUTONOMOUS_COVENANT_COMPILATION_PROVEN: "NOT_PROVEN",
     // Trusted-issuer BLOCKED; completeness absent.
     PRODUCTION_AUTHORITY_PROVEN: "NOT_PROVEN",
@@ -99,28 +113,42 @@ export function runRealDashboardVerticalSlice(): RealDashboardVerticalSliceResul
   const position = connectSliceToPosition(evaluation);
   const changePropagation = demonstrateChangePropagation();
   const phase3Compile = position.phase3Compile;
+  const verifiedExecutableCompile = position.verifiedExecutableCompile;
   const milestones = decideMilestones(evaluation, position);
   const blockers = [
     ...evaluation.missingEvidence,
     ...phase3Compile.limitations,
-    "D1: CovenantProvisionInput rows are manually encoded — not autonomously compiled into capacity.",
+    ...verifiedExecutableCompile.limitations,
+    "D1: Five CovenantProvisionInput rows remain manually encoded for leaf modeled capacity.",
     "D4: Indenture secured composition is HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION (CA lien companion blocks NEW secured).",
     "D5: independentExpectedRemaining mirrors fixture thresholds — not independent legal proof.",
     "D6: Pathway is Matthews-only; second authentic package returns null.",
-    "Verified IR / Phase-3 VEP path not bound to Position for this package (leaf evaluateProvision used).",
-    "Capacity arithmetic uses evaluateProvision leaf formulas bound to authentic financials (not package CERTIFIED IR).",
+    "Fixed-dollar VE compile feeds Position as SOURCE_BACKED_COMPILED_GROSS only; ratio/structural rows still leaf evaluateProvision.",
     "Production IdP / trusted-issuer activation BLOCKED by design.",
   ];
 
   return {
-    canonicalBaseNote: `Post-#293 main; companyId=${MATTHEWS_POSITION_COMPANY_ID}; phase3CompileDisplayed=${phase3Compile.autonomouslyCompiledDisplayedCount}`,
+    canonicalBaseNote: `Post-#293 main; companyId=${MATTHEWS_POSITION_COMPANY_ID}; phase3CompileDisplayed=${phase3Compile.autonomouslyCompiledDisplayedCount}; veFeedingPosition=${position.verifiedExecutableUnitsFeedingPosition}`,
     evaluation,
     position,
     changePropagation,
     phase3Compile,
     autonomouslyCompiledDisplayedCount: position.autonomouslyCompiledDisplayedCount,
+    verifiedExecutableCompile,
+    verifiedExecutableUnitsFeedingPosition: position.verifiedExecutableUnitsFeedingPosition,
     milestones,
     verdict: decideVerdict(milestones),
     blockers,
+    numericalHonesty: {
+      sourceBackedCompiledGrossMm: position.verifiedExecutableMetrics
+        .filter((m) => m.amountMillions != null)
+        .map((m) => ({ code: m.code, amountMm: m.amountMillions! })),
+      modeledLeafCapacityMm: evaluation.covenants.map((c) => ({
+        code: c.code,
+        amountMm: c.modeledCapacityMm,
+        authorityStatus: c.authorityStatus,
+      })),
+      hypotheticalUnverifiedSecuredCompositionMm: evaluation.indentureSecuredCompositionMm,
+    },
   };
 }

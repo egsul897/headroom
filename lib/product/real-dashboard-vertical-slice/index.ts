@@ -44,4 +44,12 @@ export {
   type CompiledCovenantCandidate,
 } from "./phase3-compile-bridge";
 
+export {
+  compileMatthewsVerifiedExecutableBridge,
+  matthewsVerifiedExecutableCandidates,
+  type VerifiedExecutableCompileBridgeResult,
+  type VerifiedExecutableCompileUnit,
+  type OperativeClauseCandidate,
+} from "./verified-executable-compile-bridge";
+
 export { matthewsCompilerPackageDocuments } from "./source-excerpts-matthews";

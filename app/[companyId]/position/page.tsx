@@ -353,15 +353,15 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           <div className="card-title">Source-backed covenant calculations</div>
           <div className="card-subtitle">
             Authentic EDGAR-backed package ({authenticSlice.packageKey}) via shared covenant-engine —
-            not a second capacity engine. Production remaining refused without completeness + trusted
-            issuer. Publication labels are MODELED / GROSS_CONTRACTUAL — never AVAILABLE.
+            not a second capacity engine. Leaf rows below are MODELED_LEAF (evaluateProvision).
+            Production remaining refused without completeness + trusted issuer. Never AVAILABLE.
           </div>
           {authenticSlice.connectedMetrics.map((m) => (
             <div className="row" key={m.code}>
               <div>
                 <div className="row-label">{m.label}</div>
                 <div className="row-note">
-                  {m.operativeSection} · {m.authorityStatus} · {m.claim.claimLabel}
+                  {m.operativeSection} · {m.valueProvenance} · {m.authorityStatus} · {m.claim.claimLabel}
                   {m.refusalReason ? ` — ${m.refusalReason}` : ""}
                 </div>
               </div>
@@ -377,13 +377,65 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
         </Card>
       ) : null}
 
+      {authenticSlice?.verifiedExecutableCompile ? (
+        <Card>
+          <div className="card-title">Verified executable compile → Position (gross)</div>
+          <div className="card-subtitle">
+            Operative clause → compileFixedDollarBasket → evaluateVerifiedCapacity. Feeding Position:{" "}
+            {authenticSlice.verifiedExecutableUnitsFeedingPosition}. Figures are
+            SOURCE_BACKED_COMPILED_GROSS (not netted remaining; not customer AVAILABLE). Production
+            capacity published:{" "}
+            {authenticSlice.verifiedExecutableCompile.productionCapacityPublished ? "yes" : "no"}.
+          </div>
+          {authenticSlice.verifiedExecutableCompile.verifiedExecutableUnits.map((u) => (
+            <div className="row" key={u.candidateId}>
+              <div>
+                <div className="row-label">
+                  {u.sourceSectionRef} · {u.valueClass}
+                </div>
+                <div className="row-note">
+                  {u.documentId} · fidelity={u.fidelityVerdict ?? "—"} · hypo={u.hypotheticalOutcome} ·
+                  prod={u.productionOutcome}
+                  {u.feedsPosition ? " · feeds Position" : " · refuse Position feed"}
+                </div>
+              </div>
+              <div className="row-value">
+                {u.sourceBackedGrossCapacityMm != null ? (
+                  fmtM(u.sourceBackedGrossCapacityMm)
+                ) : (
+                  <Chip tone="navy">REFUSED</Chip>
+                )}
+              </div>
+            </div>
+          ))}
+          {authenticSlice.verifiedExecutableMetrics.map((m) => (
+            <div className="row" key={`ve-metric-${m.code}`}>
+              <div>
+                <div className="row-label">{m.label}</div>
+                <div className="row-note">
+                  {m.valueProvenance} · {m.claim.claimLabel}
+                </div>
+              </div>
+              <div className="row-value">
+                {m.amountMillions != null ? fmtM(m.amountMillions) : <StatusChip code="UNKNOWN" compact />}
+              </div>
+            </div>
+          ))}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            Path: {authenticSlice.verifiedExecutableCompile.path.join(" → ")} · trustedIdentity={" "}
+            {authenticSlice.verifiedExecutableCompile.trustedIdentityActivation}
+          </div>
+        </Card>
+      ) : null}
+
       {authenticSlice?.phase3Compile ? (
         <Card>
           <div className="card-title">Autonomous Phase 3 compile → dashboard</div>
           <div className="card-subtitle">
             Source excerpt → structure → package-graph → operative authority → deterministic
-            extraction. Displayed: {authenticSlice.autonomouslyCompiledDisplayedCount}. Not package
-            CERTIFIED; not production AVAILABLE.
+            extraction. Displayed: {authenticSlice.autonomouslyCompiledDisplayedCount}. Fact
+            extraction only — not verified executable capacity IR. Not package CERTIFIED; not
+            production AVAILABLE.
           </div>
           {authenticSlice.phase3Compile.compiledCovenants.map((c, i) => (
             <div className="row" key={`${c.documentId}-${i}`}>

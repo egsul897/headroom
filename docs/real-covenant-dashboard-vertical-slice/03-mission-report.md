@@ -19,12 +19,17 @@
 ```
 Authentic Matthews fixture (EDGAR 0000063296-25-000006 + Indenture formulas)
   → normalizeFinancialStatementEvidence / reconstructUtilizationEvidence (#290)
-  → evaluateProvision (lib/covenant-engine) × 5 permissions
+  → evaluateProvision (lib/covenant-engine) × 5 permissions  [MODELED_LEAF]
   → computeVerifiedRemaining / buildVerifiedCapacityInputHandoff (production REFUSED)
   → connectSliceToPosition → buildPositionView / presentCapacityClaim
-  → Position page section "Source-backed covenant calculations"
+  → Position "Source-backed covenant calculations" (MODELED_LEAF)
+  → Phase 3: structure → OA → deterministic extraction (fact display)
+  → VE bridge: operative clause → compileFixedDollarBasket → evaluateVerifiedCapacity
+       → Position "Verified executable compile → Position (gross)" [SOURCE_BACKED_COMPILED_GROSS]
   → change propagation via financial/pro forma overrides (ledger untouched)
 ```
+
+See also `05-verified-executable-compile-bridge.md` for source-backed vs modeled partitions.
 
 | Stage | Classification |
 |---|---|
@@ -42,6 +47,8 @@ Authentic Matthews fixture (EDGAR 0000063296-25-000006 + Indenture formulas)
 
 ### NUMERIC_CAPACITY_RESULTS
 
+**Modeled leaf** (`evaluateProvision` / MODELED_LEAF):
+
 | Code | Section | Modeled ($M) | Remaining claim | Authority |
 |---|---|---:|---:|---|
 | `ind_permitted_debt_1a_flat` | Permitted Debt cl. (1)(a) | **521.118** | null (refused) | GROSS_ONLY_UTILIZATION_INCOMPLETE |
@@ -49,9 +56,20 @@ Authentic Matthews fixture (EDGAR 0000063296-25-000006 + Indenture formulas)
 | `ind_permitted_debt_1b_ratio_secured` | cl. (1)(b)(x) | **0** | 0 | MODELED_AUTHENTIC_EVIDENCE |
 | `ind_permitted_debt_2_notes` | cl. (2) | 300 gross | **0 NEW** | MODELED_AUTHENTIC_EVIDENCE |
 | `ca_lien_601j_2024notes` | CA §6.01(j) | **0** | 0 | STRUCTURAL_ZERO |
-| Indenture secured composition | 1a + FCCR | **631.454** | — | MODELED (not PRODUCTION) |
 
-Independent arithmetic matches engine within 0.05 (see e2e test).
+**Source-backed compiled gross** (VE fixed-dollar IR → Position):
+
+| Unit | Section | Amount ($M) | Label |
+|---|---|---:|---|
+| `matw-permitted-debt-1a-fixed-dollar` | `def:Permitted Debt(1)(a)` | **1300** | SOURCE_BACKED_COMPILED_GROSS (≠ remaining) |
+
+**Hypothetical / unverified:**
+
+| Figure | Amount ($M) | Label |
+|---|---:|---|
+| Indenture secured composition (1a room + FCCR) | **631.454** | HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION |
+
+Independent arithmetic matches engine within 0.05 (see e2e test). Do not conflate $1300 / $521.118 / $631.454.
 
 ### DASHBOARD_CONNECTED_METRICS
 
@@ -77,13 +95,15 @@ Independent arithmetic matches engine within 0.05 (see e2e test).
 ### BLOCKED_HANDOFFS
 
 1. Production remaining publication (completeness + IdP)
-2. Verified IR / VEP → Position (bridge uses shared leaf evaluator, not IR VEP)
+2. Full autonomous IR→capacity for all five permissions (ratio/structural still leaf; AUTONOMOUS=NOT_PROVEN)
 3. Offline compile → Neon product DB (no production writes)
 4. AutoNation / WOR / CONMED 5-covenant numeric demos (missing financial/utilization corpus)
 
+Fixed-dollar VE → Position **gross** is connected for Permitted Debt (1)(a); production VE capacity still refused.
+
 ### INDEPENDENT_TEST_RESULTS
 
-`npx vitest run tests/product/real-dashboard-vertical-slice.e2e.test.ts` → **7/7 passed**
+`npx vitest run tests/product/real-dashboard-vertical-slice*.test.ts` (see tip CI)
 
 - Authentic fixture gate
 - ≥5 covenants with provenance
