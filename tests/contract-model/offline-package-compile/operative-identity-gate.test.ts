@@ -270,6 +270,26 @@ describe("offline compile operative identity gate (contract A)", () => {
     expect(conf.provisions.every((p) => p.authorityClassification !== "CONFIRMED_OPERATIVE")).toBe(true);
   });
 
+  it("absence of provisional identity alone does not establish CONFIRMED_OPERATIVE_IDENTITY", async () => {
+    // Force a missing instrument grouping via a non-matching instrumentKey while
+    // operative state still resolves for the package. Gate must be NO_OPERATIVE_STATE
+    // (or PROVISIONAL), never CONFIRMED — positive confirmation is required.
+    const result = await compileFrozenDebtPackage({
+      companyId: "hr278-no-group",
+      packageKey: "no-group-fd",
+      documents: [{ documentId: "ca", label: "CA", text: FIXED_DOLLAR_CA }],
+      authorizePaidInference: false,
+      asOfDate: "2024-06-01",
+      instrumentKey: "instrument:does-not-exist-in-graph",
+    });
+    expect(result.stages.operativeHandoff.authorityGate).not.toBe("CONFIRMED_OPERATIVE_IDENTITY");
+    expect(["NO_OPERATIVE_STATE", "PROVISIONAL_IDENTITY_BLOCKED"]).toContain(
+      result.stages.operativeHandoff.authorityGate,
+    );
+    expect(result.stages.operativeHandoff.identityConfirmed).toBe(false);
+    expect(result.stages.operativeRestatementAuthority.productionAuthorityActive).toBe(false);
+  });
+
   it("missing effective date fails closed as REVIEW_REQUIRED (not CONFIRMED_OPERATIVE)", () => {
     const classifications = [cls("ca", "CREDIT_AGREEMENT"), cls("am1", "AMENDMENT")];
     const rels = [trustedAmends("am1", "ca")];

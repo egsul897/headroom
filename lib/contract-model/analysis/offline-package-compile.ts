@@ -460,20 +460,28 @@ export async function compileFrozenDebtPackage(
     operativeHandoff?.provisions.filter((p) => p.authorityClassification === "PROVISIONAL_IDENTITY_BLOCKED").length ?? 0;
   const confirmedOperativeCount =
     operativeHandoff?.provisions.filter((p) => p.authorityClassification === "CONFIRMED_OPERATIVE").length ?? 0;
-  // Fail closed only when the package graph marks the instrument provisional or the
-  // handoff explicitly blocks provisions. A missing instrument grouping (single-doc
-  // edge) does not by itself invent provisional identity.
+  // Confirmed operative identity requires positive confirmation (confirmed chain +
+  // mayConsolidate + zero provisional docs). Absence of provisional flags alone must
+  // NEVER establish CONFIRMED_OPERATIVE_IDENTITY — missing instrument grouping falls
+  // to NO_OPERATIVE_STATE, not confirmed.
   const operativeAuthorityGate: OfflinePackageCompileResult["stages"]["operativeHandoff"]["authorityGate"] =
     !operativeState
       ? "NO_OPERATIVE_STATE"
-      : provisionalBlockedCount > 0 || (instrumentGrouping != null && !identityConfirmed)
-        ? "PROVISIONAL_IDENTITY_BLOCKED"
-        : "CONFIRMED_OPERATIVE_IDENTITY";
-  if (operativeAuthorityGate === "PROVISIONAL_IDENTITY_BLOCKED") {
+      : identityConfirmed && provisionalBlockedCount === 0
+        ? "CONFIRMED_OPERATIVE_IDENTITY"
+        : provisionalBlockedCount > 0 || (instrumentGrouping != null && !identityConfirmed)
+          ? "PROVISIONAL_IDENTITY_BLOCKED"
+          : "NO_OPERATIVE_STATE";
+  if (
+    operativeAuthorityGate === "PROVISIONAL_IDENTITY_BLOCKED" ||
+    operativeAuthorityGate === "NO_OPERATIVE_STATE"
+  ) {
     humanInterventions.push({
       kind: "OPERATIVE_IDENTITY_GATE",
       detail:
-        "Canonical instrument identity is not confirmed (or provisions are PROVISIONAL_IDENTITY_BLOCKED); executable vertical-slice authority refused.",
+        operativeAuthorityGate === "NO_OPERATIVE_STATE"
+          ? "Operative identity is not positively confirmed; absence of provisional flags does not establish confirmed operative authority — executable vertical-slice authority refused."
+          : "Canonical instrument identity is not confirmed (or provisions are PROVISIONAL_IDENTITY_BLOCKED); executable vertical-slice authority refused.",
     });
   }
 
@@ -1010,11 +1018,13 @@ export async function compileFrozenDebtPackage(
   ).length;
 
   // Hard rule: caveated restatement authority never yields PRODUCTION_AUTHORITY_ACTIVE.
+  // Only positively confirmed operative identity may participate — NO_OPERATIVE_STATE
+  // and PROVISIONAL_IDENTITY_BLOCKED both refuse.
   const productionAuthorityActive =
     packageGraphRelationshipsUnchanged &&
     productionAuthorityFromRestatement.allProvisionsProductionActive &&
     !productionAuthorityFromRestatement.anyCaveatedDisclosedOnly &&
-    operativeAuthorityGate !== "PROVISIONAL_IDENTITY_BLOCKED";
+    operativeAuthorityGate === "CONFIRMED_OPERATIVE_IDENTITY";
 
   let capacityHandoff: OfflinePackageCompileResult["stages"]["capacityHandoff"];
   if (verifiedExecutableUnits.length === 0) {
