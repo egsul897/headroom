@@ -66,12 +66,13 @@ export interface AuthenticPositionSlice {
 function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
   return {
     companyId: slice.companyId,
-    status: "EXECUTABLE_PATH_AVAILABLE",
-    canEvaluateExecutableCapacity: true,
+    // Restricted fixture slice: modeled/gross arithmetic only — not production-executable.
+    status: "DISCOVERY_ONLY",
+    canEvaluateExecutableCapacity: false,
     capacityAuthority: "LEGACY_ENGINE",
     analyzedDocumentCount: 2,
     summaryCount: slice.covenants.length,
-    permissionCount: slice.covenants.length,
+    permissionCount: 0,
     unverifiedPermissionCount: 0,
     provisionCount: slice.covenants.length,
     hasFinancialSnapshot: slice.financialEvidence.metricsPresent.length > 0,
@@ -80,14 +81,15 @@ function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
     contractLedgerActiveCount: 0,
     phase3TrustedUnitCount: 0,
     phase3TrustedRuleCount: 0,
-    headline: "Authentic Matthews evidence — modeled capacity via shared covenant-engine",
+    headline: "Authentic Matthews evidence — modeled/gross fixture capacity (not production-executable)",
     blockers: [
       "No NS-4 APPROVED financial snapshot — production remaining unavailable.",
       "No reviewer-confirmed utilization completeness certificate.",
+      "No Permission / executable compiler rows for this restricted slice.",
       `Trusted-issuer activation: ${slice.utilization.trustedIssuerActivation}.`,
     ],
     guidance:
-      "Show modeled authentic numbers with MODELED / NOT_PRODUCTION_AUTHORITATIVE labels. Refuse AVAILABLE remaining.",
+      "Show modeled authentic numbers with MODELED / GROSS_CONTRACTUAL labels. Refuse AVAILABLE remaining.",
   };
 }
 
