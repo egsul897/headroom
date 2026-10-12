@@ -2,8 +2,9 @@
  * Bounded autonomous compilation pipeline (source → IR → capacity → Position feed).
  *
  * Reuses the existing fixed-dollar compiler / capacity evaluator. Does NOT create
- * a parallel covenant engine. Candidate discovery remains package-supplied;
- * compilation and classification are package-agnostic.
+ * a parallel covenant engine. Candidates may be package-supplied or discovered via
+ * discoverFixedDollarCandidatesFromDocuments (single discovery→compile path —
+ * no duplicate engines). Compilation and classification are package-agnostic.
  *
  * Honesty partitions (never interchangeable):
  * - EXTRACTED_COVENANT_FACT
@@ -26,6 +27,7 @@ import {
 } from "./verified-executable-compile-core";
 import { matthewsVerifiedExecutableCandidates } from "./verified-executable-compile-bridge";
 import { mhkVerifiedExecutableCandidates } from "./package-mhk-ve-candidates";
+import { discoverFixedDollarCandidatesFromDocuments } from "./fixed-dollar-candidate-discovery";
 import { presentCapacityClaim, type CapacityClaimView } from "@/lib/customer-workflow/status-contract";
 
 export type PipelinePublicationClass =
@@ -80,6 +82,14 @@ export type RunAutonomousPipelineArgs = {
   instrumentKey: string;
   asOfDate: string;
   candidates: readonly OperativeClauseCandidate[];
+  packageLabel?: string;
+};
+
+export type RunAutonomousPipelineFromDocumentsArgs = {
+  companyId: string;
+  instrumentKey: string;
+  asOfDate: string;
+  documents: ReadonlyArray<{ documentId: string; text: string }>;
   packageLabel?: string;
 };
 
@@ -192,6 +202,26 @@ export function runAutonomousCompilationPipeline(
       `Trusted-identity activation: ${TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status}.`,
     ],
   };
+}
+
+/**
+ * Discover fixed-dollar candidates from authentic document text, then compile
+ * through the shared pipeline. Preferred autonomous entry — absorbs #307
+ * discovery into #310's generalized compile path (one pipeline, not two).
+ */
+export function runAutonomousCompilationPipelineFromDocuments(
+  args: RunAutonomousPipelineFromDocumentsArgs,
+): AutonomousCompilationPipelineResult {
+  const candidates = discoverFixedDollarCandidatesFromDocuments(args.documents);
+  return runAutonomousCompilationPipeline({
+    companyId: args.companyId,
+    instrumentKey: args.instrumentKey,
+    asOfDate: args.asOfDate,
+    candidates,
+    packageLabel:
+      args.packageLabel ??
+      `autonomous discovery (${args.documents.length} docs → ${candidates.length} candidates)`,
+  });
 }
 
 /** Convenience: Matthews candidates through the shared pipeline. */

@@ -1,32 +1,55 @@
 # Canonical product integration — merge sequence & pipelines
 
-**Integration tip branch:** `cursor/canonical-product-integration-2670`  
+**Authoritative integration PR:** #312 `cursor/canonical-product-integration-2670`  
 **Base main:** post-#306 `67027b8f`  
 **Does not authorize self-merge.** Production activation BLOCKED. No production Neon writes.
 
-## Exact merge sequence (human)
+## Exact tips (reconcile)
 
-1. **#294** — persistence foundation (tenant isolation, IdP approval, SSR diagnostics-only). Independent of product slice.
-2. **#304** — restricted Matthews leaf + VE honesty contracts (or absorb via this integration PR).
-3. **This integration PR** (`cursor/canonical-product-integration-2670`) — #304 tip + #310 `compileOperativeCovenantPackage` + VE feed wired to generalized compiler + canonical capacity contract.
-4. **#311** — CFO workflow UI **only after** Agent 3 security remediation (no anonymous CUSTOMER protected reads; auth before data load; no synthetic COMPLETE/AVAILABLE; home-overview nav test update). Do not merge while UNSTABLE / soft-gate failing.
+| PR | Role | Tip (refresh at merge time) |
+|---|---|---|
+| #310 | Compiler + discovery + provision-identity + VE provider-free | `57adade3` (absorbed into this PR) |
+| #312 | **Authoritative** operative package → canonical capacity → Position | *(this tip)* |
+| #313 | Competing canonical pipeline | **SUPERSEDED by #312** — close without merge |
+| #307 | Fixed-dollar discovery | **SUPERSEDED** via #310/`57adade3` absorb |
+| #311 | CFO workflow + access gates | Merge after #312; preserve auth |
+| #308 | Verified remaining + financial approval provenance | Independent; keep APPROVED provenance gate |
+| #294 | Persistence | Independent / parallel-safe vs product slice |
+| #304 | Restricted slice honesty | Ancestor / absorbed via #310 stack |
 
-## Competing pipelines identified
+## Minimal human merge order
 
-| Pipeline | Status |
-|---|---|
-| #304 regex candidate extractors → `compileVerifiedFixedDollarBridge` | **Deprecated for Position feed** — retained for regression locks only |
-| #310 `compileOperativeCovenantPackage` | **Canonical discovery→VE path** — Position feed now uses this |
-| #307 autonomous fixed-dollar discovery | Competing with #310 — do not maintain as second production path |
-| #311 `assembleCfoWorkflow` / capacity-state | Must consume canonical capacity contract; security remediation required |
+1. **#304** → main (if not already absorbed)
+2. **#310** → main (or land via #312 which absorbs `57adade3`)
+3. **#312** → main (**authoritative** discovery→compile→Position path)
+4. **#308** → main (financial approval provenance; capacity CI paths)
+5. **#294** → main (persistence; parallel-safe)
+6. **#311** → main last (CFO UI + access; resolve Position page vs #312)
+7. **Close #307 and #313** as superseded — do not dual-merge
 
-## Remediations landed here (#310 gaps)
+## Authoritative execution path (one)
 
-- Process-wide `delete process.env.AI_GATEWAY_API_KEY` removed; unpaid path uses `createSyntheticStageCaller()`.
-- Position feed replaced package-specific candidates with operative package compile.
-- Canonical capacity contract preserves GROSS / MODELED / remaining(null) / AVAILABLE(blocked).
+```
+authentic documents
+  → discoverFixedDollarCandidates* / compileOperativeCovenantPackage (#310)
+  → canonicalCapacityFromOperativePackage (#312)
+  → operative-package-position-feed (#312)
+  → Position / Simulate via SeparatedCapacityClaims (#311 capacity-state)
+```
 
-## Still required (Agent 1 / Agent 3)
+Publication partitions (fail-closed):
 
-- #310: fuller independent omission coverage + OA adversarial + conditional-basket fidelity (beyond this bounded wire-up).
-- #311: refuse anonymous CUSTOMER protected reads; authorize before load; no fabricated ProductCapacityView COMPLETE/AUTHENTIC/AVAILABLE; genuine server-side integration tests; fix home-overview nav soft gate.
+- `SOURCE_BACKED_GROSS_CONTRACTUAL` → claimKind `GROSS_CONTRACTUAL`
+- `MODELED_HYPOTHETICAL` → claimKind `HYPOTHETICAL` (never GROSS)
+- Verified remaining / AVAILABLE → blocked without completeness + trusted issuer
+
+## Remediations absorbed into #312 tip
+
+- #310 `57adade3`: provision-identity-only `authorityForUnit`; VE no `process.env` mutation
+- #310 `95cbfbc0`: #307 fixed-dollar discovery → single pipeline
+- #312 `83a2ee00`: MODELED_HYPOTHETICAL ≠ GROSS_CONTRACTUAL
+
+## Not done
+
+- Self-merge / production Neon / trusted-identity activation
+- #311 Position page conflict resolution at human merge time
