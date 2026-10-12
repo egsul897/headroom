@@ -3,6 +3,7 @@ import { Card, Chip } from "@/components/ui";
 import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { CapacityClaimRow } from "@/components/customer-workflow/CapacityClaimRow";
+import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
 import { getCompanyDashboard } from "@/lib/dashboard-service";
 import { FinancialIdentityError } from "@/lib/financial-identity";
 import { fmtM } from "@/lib/format";
@@ -12,9 +13,9 @@ import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capac
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 import { buildPositionView } from "@/lib/customer-workflow/position-view";
 import { presentCapacityClaim } from "@/lib/customer-workflow/status-contract";
-import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
 import { separateCapacityClaimsFromProductView } from "@/lib/customer-workflow/capacity-state";
 import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
+import { loadAuthenticDashboardSlice } from "@/lib/product/real-dashboard-vertical-slice";
 
 export const metadata = { title: "Headroom — Position" };
 
@@ -22,7 +23,8 @@ export const metadata = { title: "Headroom — Position" };
  * Position — debt / covenant capacity workspace.
  * Consumes the shared capacity engine + readiness loaders. Never hardcodes
  * issuer arithmetic. Dashboard authority flags alone never publish AVAILABLE.
- * Access-gated before sensitive loaders.
+ * Access-gated before sensitive loaders. Authentic VE slice supplies
+ * SOURCE_BACKED_COMPILED_GROSS presentation when registered (#304/#310).
  */
 export default async function PositionPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
@@ -107,13 +109,24 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     );
   }
 
-  const [readiness, rulebook] = await Promise.all([
-    loadCapacityReadiness(companyId),
-    loadRulebookReadiness(companyId),
-  ]);
+  // Authentic evidence → Position bridge (fixture-backed; no Neon writes).
+  // Returns null unless the company has a registered authentic package.
+  // Safe after access gate — package registry lookup only, no tenant DB scrape.
+  const authenticSlice = loadAuthenticDashboardSlice(companyId);
 
+  let readiness: Awaited<ReturnType<typeof loadCapacityReadiness>> | null = null;
+  let rulebook: Awaited<ReturnType<typeof loadRulebookReadiness>> | null = null;
   let dashboard = null;
   let dashboardError: string | null = null;
+  try {
+    [readiness, rulebook] = await Promise.all([
+      loadCapacityReadiness(companyId),
+      loadRulebookReadiness(companyId),
+    ]);
+  } catch {
+    dashboardError =
+      "Live readiness loaders unavailable — fail closed on Neon path; authentic slice used when registered.";
+  }
   try {
     dashboard = await getCompanyDashboard(companyId);
   } catch (err) {
@@ -123,15 +136,26 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           ? "Financial identity AMBIGUOUS — competing same-date snapshots; capacity withheld."
           : "No authenticated financial snapshot — engine position unavailable (not zero).";
     } else {
-      dashboardError = "Position dashboard unavailable — fail closed; no invented figures.";
+      dashboardError =
+        dashboardError ?? "Position dashboard unavailable — fail closed; no invented figures.";
     }
   }
 
   const missingForClaims = [
-    ...readiness.blockers,
+    ...(readiness?.blockers ?? []),
     ...(dashboardError ? [dashboardError] : []),
+    ...(authenticSlice?.missingInputs ?? []),
   ];
-  const securedSeparated = separateCapacityClaimsFromProductView(null, {
+
+  // Source-backed compiled GROSS from VE feed (when registered) — not remaining AVAILABLE.
+  const sourceBackedGrossMm =
+    authenticSlice?.verifiedExecutableMetrics.find((m) => m.amountMillions != null)?.amountMillions ??
+    authenticSlice?.verifiedExecutableCompile?.verifiedExecutableUnits.find(
+      (u) => u.feedsPosition && u.sourceBackedGrossCapacityMm != null,
+    )?.sourceBackedGrossCapacityMm ??
+    null;
+
+  const securedSeparatedBase = separateCapacityClaimsFromProductView(null, {
     modeledAmountMillions: dashboard?.capacity.secured.remainingCapacity ?? null,
     bindingRestrictions: [
       dashboard?.capacity.secured.packageAuthoritative?.bindingProvisionCode,
@@ -139,6 +163,30 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     ].filter((x): x is string => Boolean(x)),
     missingInputs: missingForClaims,
   });
+  // Overlay SOURCE_BACKED_COMPILED_GROSS from the authentic VE feed when present.
+  // Never promotes verified remaining / AVAILABLE from dashboard flags alone.
+  const securedSeparated =
+    sourceBackedGrossMm != null
+      ? {
+          ...securedSeparatedBase,
+          grossContractual: presentCapacityClaim({
+            claimKind: "GROSS_CONTRACTUAL",
+            amountMillions: sourceBackedGrossMm,
+            publicationLabel: "SOURCE_BACKED_COMPILED_GROSS",
+          }),
+          sourceEvidence: [
+            ...securedSeparatedBase.sourceEvidence,
+            ...(authenticSlice?.verifiedExecutableMetrics
+              .map((m) => m.operativeSection)
+              .filter((x): x is string => Boolean(x)) ?? []),
+          ],
+          missingInputs: [
+            ...securedSeparatedBase.missingInputs,
+            "SOURCE_BACKED_COMPILED_GROSS from authentic VE Position feed — verified remaining refused.",
+          ],
+          remainingAuthoritative: false,
+        }
+      : securedSeparatedBase;
   const unsecuredSeparated = separateCapacityClaimsFromProductView(null, {
     modeledAmountMillions: dashboard?.capacity.unsecured.remainingCapacity ?? null,
     bindingRestrictions: [
@@ -148,20 +196,76 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     missingInputs: missingForClaims,
   });
 
-  const view = buildPositionView({
+  const fallbackReadiness = {
     companyId,
-    dashboard,
-    readiness,
-    rulebook,
-    dashboardError,
-    separatedClaims: { secured: securedSeparated, unsecured: unsecuredSeparated },
-  });
+    status: "NO_FINANCIAL_SNAPSHOT" as const,
+    canEvaluateExecutableCapacity: false,
+    capacityAuthority: "NONE" as const,
+    analyzedDocumentCount: 0,
+    summaryCount: 0,
+    permissionCount: 0,
+    unverifiedPermissionCount: 0,
+    provisionCount: 0,
+    hasFinancialSnapshot: false,
+    ns4ApprovedSnapshotCount: 0,
+    approvedNorthStarSnapshotCount: 0,
+    contractLedgerActiveCount: 0,
+    phase3TrustedUnitCount: 0,
+    phase3TrustedRuleCount: 0,
+    headline: "No capacity path available",
+    blockers: [dashboardError ?? "No financial snapshot"],
+    guidance: "Provide authenticated evidence before publishing capacity.",
+  };
+  const fallbackRulebook = {
+    companyId,
+    stage: "DISCOVERED" as const,
+    discoveredSummaries: 0,
+    interpretedProvisions: 0,
+    reviewedPermissions: 0,
+    executablePermissions: 0,
+    provisionRows: 0,
+    blockers: ["Rulebook readiness unavailable"],
+    headline: "Rulebook unavailable",
+    note: "Fail closed",
+  };
 
-  // Legacy package figures at amount=0 are modeled capacity — not verified AVAILABLE.
-  // Dashboard utilizationRemainingAuthority alone must NEVER publish AVAILABLE.
+  // Prefer live dashboard + separated claims; otherwise authentic slice Position view;
+  // always attach #311 separated claims when we build the live view.
+  const view =
+    readiness && rulebook && (dashboard != null || !authenticSlice)
+      ? buildPositionView({
+          companyId,
+          dashboard,
+          readiness,
+          rulebook,
+          dashboardError,
+          separatedClaims: { secured: securedSeparated, unsecured: unsecuredSeparated },
+        })
+      : authenticSlice?.positionView
+        ? {
+            ...authenticSlice.positionView,
+            separatedClaims: { secured: securedSeparated, unsecured: unsecuredSeparated },
+          }
+        : buildPositionView({
+            companyId,
+            dashboard: null,
+            readiness: readiness ?? fallbackReadiness,
+            rulebook: rulebook ?? fallbackRulebook,
+            dashboardError,
+            separatedClaims: { secured: securedSeparated, unsecured: unsecuredSeparated },
+          });
+
+  // Legacy package figures — MODELED / NOT VERIFIED. Dashboard utilizationRemainingAuthority
+  // alone must NEVER publish AVAILABLE (#311 security remediation).
+  const securedModeledAmount =
+    dashboard?.capacity.secured.packageAuthoritative?.remainingCapacity ??
+    authenticSlice?.positionView.sides[0]?.remaining.amountMillions ??
+    null;
+  const unsecuredModeledAmount =
+    dashboard?.capacity.unsecured.packageAuthoritative?.remainingCapacity ?? null;
   const securedModeled = presentCapacityClaim({
     claimKind: "REMAINING",
-    amountMillions: dashboard?.capacity.secured.packageAuthoritative?.remainingCapacity ?? null,
+    amountMillions: securedModeledAmount,
     remainingIsAuthoritative: false,
     publicationLabel:
       dashboard?.capacity.secured.packageAuthoritative?.label ?? "NOT_PRODUCTION_AUTHORITATIVE",
@@ -169,7 +273,7 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
   });
   const unsecuredModeled = presentCapacityClaim({
     claimKind: "REMAINING",
-    amountMillions: dashboard?.capacity.unsecured.packageAuthoritative?.remainingCapacity ?? null,
+    amountMillions: unsecuredModeledAmount,
     remainingIsAuthoritative: false,
     publicationLabel:
       dashboard?.capacity.unsecured.packageAuthoritative?.label ?? "NOT_PRODUCTION_AUTHORITATIVE",
@@ -177,10 +281,13 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
   });
   const grossUnavailable = presentCapacityClaim({
     claimKind: "GROSS_CONTRACTUAL",
-    amountMillions: null,
-    publicationLabel: "GROSS_CONTRACTUAL",
+    amountMillions: sourceBackedGrossMm,
+    publicationLabel:
+      sourceBackedGrossMm != null ? "SOURCE_BACKED_COMPILED_GROSS" : "GROSS_CONTRACTUAL",
     unavailableReason:
-      "Backend dependency: Position dashboard does not yet expose a separate gross-contractual field distinct from modeled remaining. Until that API exists, gross is shown as unavailable — never invented.",
+      sourceBackedGrossMm == null
+        ? "Backend dependency: Position dashboard does not yet expose a separate gross-contractual field distinct from modeled remaining. Until that API exists, gross is shown as unavailable — never invented."
+        : null,
   });
 
   return (
@@ -287,7 +394,8 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
         <div className="card-subtitle">
           Separated claims from the shared capacity result. Gross ≠ modeled ≠ verified remaining.
           Null remaining is never converted into a modeled number. Legacy figures are MODELED / NOT
-          VERIFIED — never labeled AVAILABLE.
+          VERIFIED — never labeled AVAILABLE. Source-backed VE GROSS (when registered) is
+          SOURCE_BACKED_COMPILED_GROSS only.
         </div>
         <SeparatedCapacityPanel
           title="Secured"
@@ -313,7 +421,14 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           }
         />
         <div style={{ marginTop: 12 }}>
-          <CapacityClaimRow label="Gross contractual (engine field absent)" claim={grossUnavailable} />
+          <CapacityClaimRow
+            label={
+              sourceBackedGrossMm != null
+                ? "Gross contractual (SOURCE_BACKED_COMPILED_GROSS)"
+                : "Gross contractual (engine field absent)"
+            }
+            claim={grossUnavailable}
+          />
           <CapacityClaimRow label="Secured — legacy side remaining (non-authoritative)" claim={securedModeled} />
           <CapacityClaimRow
             label="Unsecured — legacy side remaining (non-authoritative)"
@@ -326,6 +441,125 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           </div>
         ))}
       </Card>
+
+      {authenticSlice ? (
+        <Card>
+          <div className="card-title">Source-backed covenant calculations</div>
+          <div className="card-subtitle">
+            Authentic EDGAR-backed package ({authenticSlice.packageKey}). Leaf rows are MODELED_LEAF
+            fixtures quarantined from production calculation. Modeled vs remaining are distinct; null
+            remaining is UNKNOWN (not zero). Hypothetical secured composition unpublished. Never AVAILABLE.
+          </div>
+          {authenticSlice.connectedMetrics.map((m) => (
+            <div className="row" key={m.code}>
+              <div>
+                <div className="row-label">{m.label}</div>
+                <div className="row-note">
+                  {m.operativeSection} · {m.valueProvenance}
+                  {m.quarantinedFromProductionCalculation ? " · QUARANTINED" : ""} ·{" "}
+                  {m.authorityStatus} · modeled {m.claim.claimLabel}
+                  {m.modeledCapacityMm != null ? ` ${fmtM(m.modeledCapacityMm)}` : " —"} · remaining{" "}
+                  {m.remainingClaim.claimLabel}
+                  {m.remainingCapacityMm != null ? ` ${fmtM(m.remainingCapacityMm)}` : " —"}
+                  {m.refusalReason ? ` — ${m.refusalReason}` : ""}
+                </div>
+              </div>
+              <div className="row-value">
+                {m.amountMillions != null ? fmtM(m.amountMillions) : <StatusChip code="UNKNOWN" compact />}
+              </div>
+            </div>
+          ))}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            Production remaining published: {authenticSlice.productionRemainingPublished ? "yes" : "no"} ·
+            Missing evidence rows: {authenticSlice.missingInputs.length}
+          </div>
+        </Card>
+      ) : null}
+
+      {authenticSlice?.verifiedExecutableCompile ? (
+        <Card>
+          <div className="card-title">Verified executable compile → Position (gross)</div>
+          <div className="card-subtitle">
+            Operative clause → compileFixedDollarBasket → evaluateVerifiedCapacity. Feeding Position:{" "}
+            {authenticSlice.verifiedExecutableUnitsFeedingPosition}. Figures are
+            SOURCE_BACKED_COMPILED_GROSS (not netted remaining; not customer AVAILABLE). Production
+            capacity published:{" "}
+            {authenticSlice.verifiedExecutableCompile.productionCapacityPublished ? "yes" : "no"}.
+          </div>
+          {authenticSlice.verifiedExecutableCompile.verifiedExecutableUnits.map((u) => (
+            <div className="row" key={u.candidateId}>
+              <div>
+                <div className="row-label">
+                  {u.sourceSectionRef} · {u.valueClass}
+                </div>
+                <div className="row-note">
+                  {u.documentId} · fidelity={u.fidelityVerdict ?? "—"} · hypo={u.hypotheticalOutcome} ·
+                  prod={u.productionOutcome}
+                  {u.feedsPosition ? " · feeds Position" : " · refuse Position feed"}
+                </div>
+              </div>
+              <div className="row-value">
+                {u.sourceBackedGrossCapacityMm != null ? (
+                  fmtM(u.sourceBackedGrossCapacityMm)
+                ) : (
+                  <Chip tone="navy">REFUSED</Chip>
+                )}
+              </div>
+            </div>
+          ))}
+          {authenticSlice.verifiedExecutableMetrics.map((m) => (
+            <div className="row" key={`ve-metric-${m.code}`}>
+              <div>
+                <div className="row-label">{m.label}</div>
+                <div className="row-note">
+                  {m.valueProvenance} · {m.claim.claimLabel}
+                </div>
+              </div>
+              <div className="row-value">
+                {m.amountMillions != null ? fmtM(m.amountMillions) : <StatusChip code="UNKNOWN" compact />}
+              </div>
+            </div>
+          ))}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            Path: {authenticSlice.verifiedExecutableCompile.path.join(" → ")} · trustedIdentity={" "}
+            {authenticSlice.verifiedExecutableCompile.trustedIdentityActivation}
+          </div>
+        </Card>
+      ) : null}
+
+      {authenticSlice?.phase3Compile ? (
+        <Card>
+          <div className="card-title">Autonomous Phase 3 compile → dashboard</div>
+          <div className="card-subtitle">
+            Source excerpt → structure → package-graph → operative authority → deterministic
+            extraction. Displayed: {authenticSlice.autonomouslyCompiledDisplayedCount}. Fact
+            extraction only — not verified executable capacity IR. Not package CERTIFIED; not
+            production AVAILABLE.
+          </div>
+          {authenticSlice.phase3Compile.compiledCovenants.map((c, i) => (
+            <div className="row" key={`${c.documentId}-${i}`}>
+              <div>
+                <div className="row-label">
+                  {c.documentId}
+                  {c.sectionHint ? ` · §${c.sectionHint}` : ""}
+                </div>
+                <div className="row-note">
+                  families: {c.familySignals.join(", ") || "—"} · thresholds:{" "}
+                  {c.thresholdSignals.slice(0, 3).join(", ") || "—"} · OA:{" "}
+                  {c.operativeAuthorityClassification ?? "—"} · governing:{" "}
+                  {c.governingDocumentId ?? "null"}
+                </div>
+              </div>
+              <Chip tone="navy">COMPILED</Chip>
+            </div>
+          ))}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            Path: {authenticSlice.phase3Compile.path.join(" → ")} · productionAuthorityActive={" "}
+            {String(authenticSlice.phase3Compile.productionAuthorityActive)} · trustedIdentity={" "}
+            {authenticSlice.phase3Compile.trustedIdentityActivation}
+          </div>
+        </Card>
+      ) : null}
 
       <Card>
         <div className="card-title">Missing inputs</div>

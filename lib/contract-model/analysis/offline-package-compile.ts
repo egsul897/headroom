@@ -31,6 +31,7 @@ import { runPassADeterministicSignals } from "../compiler/discovery/pass-a-signa
 import {
   discoverDefinitionExceptionCatalogs,
   discoverProhibitionToPermittedLinks,
+  discoverRatioBasedSectionPermissions,
   discoverSectionExceptionCatalogs,
   type ExceptionCatalogDiscovery,
 } from "../compiler/discovery/definition-exception-catalog";
@@ -530,11 +531,15 @@ export async function compileFrozenDebtPackage(
     index,
     documents.map((d) => d.documentId),
   );
+  const ratioPermissions = discoverRatioBasedSectionPermissions(
+    index,
+    documents.map((d) => d.documentId),
+  );
   const catalogCandidates = exceptionCatalogs.flatMap((c) => c.candidates);
 
-  // Merge candidates by discoveryId (catalog + prohibition + pipeline).
+  // Merge candidates by discoveryId (catalog + prohibition + ratio + pipeline).
   const byId = new Map<string, DiscoveredCandidate>();
-  for (const c of [...pipelineCandidates, ...prohibitionLinks, ...catalogCandidates]) {
+  for (const c of [...pipelineCandidates, ...prohibitionLinks, ...ratioPermissions, ...catalogCandidates]) {
     if (!byId.has(c.discoveryId)) byId.set(c.discoveryId, c);
   }
   const candidates = [...byId.values()].filter((c) => isEligibleForSemanticCompilation(c).eligible);
@@ -710,49 +715,48 @@ export async function compileFrozenDebtPackage(
     const operativeCandidate = retrievalBinding.retrievalCandidate;
     const operativeDocumentId = operativeCandidate.documentId;
     let operativeText = operativeSourceTextFor(operativeCandidate, index, operativeState);
-    // For definition catalog clauses, operativeSourceTextFor may be empty if no node ids —
-    // fall back to candidate description's catalog clause text from exception catalogs.
-    if (!operativeText.trim()) {
-      const sectionTerm = (term: string) => term.replace(/^Section\s+/i, "");
+
+    // Prefer exact catalog-clause text over section-level OWN/FULL spans.
+    // Indenture Permitted* catalogs often hang every lettered limb on the parent
+    // §1.01 node — using that span pollutes fixed-dollar classification with
+    // sibling dollars / ratio limbs. Composite markers: "1)(a" → def:Term(1)(a).
+    const sectionTerm = (term: string) => term.replace(/^Section\s+/i, "");
+    const catalogClauseText = (() => {
       for (const cat of exceptionCatalogs) {
-        // Exact clause refs only — never match across catalogs by marker alone
-        // (previously Liens(d) incorrectly bound to Debt(d)).
-        const markerMatch = candidate.normalizedSourceRef.match(/\(([a-z0-9]+)\)$/i);
-        const marker = markerMatch?.[1]?.toLowerCase() ?? null;
-        const isExactClause =
-          marker != null &&
-          (candidate.normalizedSourceRef === `def:${cat.termExact}(${marker})` ||
-            candidate.normalizedSourceRef === `${sectionTerm(cat.termExact)}(${marker})`);
-        if (isExactClause) {
-          const clause = cat.clauses.find((cl) => cl.marker === marker);
-          if (clause) {
-            operativeText = `${cat.termExact} (${clause.marker}): ${clause.text}`;
-            break;
+        for (const clause of cat.clauses) {
+          const defRef = `def:${cat.termExact}(${clause.marker})`;
+          const secRef = `${sectionTerm(cat.termExact)}(${clause.marker})`;
+          if (
+            candidate.normalizedSourceRef === defRef ||
+            candidate.normalizedSourceRef === secRef
+          ) {
+            return candidate.normalizedSourceRef.startsWith("def:")
+              ? `${cat.termExact} (${clause.marker}): ${clause.text}`
+              : `§${sectionTerm(cat.termExact)}(${clause.marker}): ${clause.text}`;
           }
         }
         if (
           candidate.normalizedSourceRef === `def:${cat.termExact}` ||
           candidate.normalizedSourceRef === sectionTerm(cat.termExact)
         ) {
-          operativeText = cat.chapeauText + "\n" + cat.clauses.map((cl) => `(${cl.marker}) ${cl.text}`).join("\n");
-          break;
+          return cat.chapeauText + "\n" + cat.clauses.map((cl) => `(${cl.marker}) ${cl.text}`).join("\n");
         }
       }
-      // Direct section-clause ref: "7.03(g)"
-      if (!operativeText.trim()) {
-        const secClause = candidate.normalizedSourceRef.match(/^(\d+\.\d+)\(([a-z0-9]+)\)$/i);
-        if (secClause) {
-          const cat = exceptionCatalogs.find(
-            (c) =>
-              sectionTerm(c.termExact) === secClause[1] ||
-              c.referencedFromProhibitionRefs.includes(`§${secClause[1]}`),
-          );
-          const clause = cat?.clauses.find((cl) => cl.marker === secClause[2]!.toLowerCase());
-          if (cat && clause) operativeText = `§${secClause[1]}(${clause.marker}): ${clause.text}`;
-        }
+      const secClause = candidate.normalizedSourceRef.match(/^(\d+\.\d+)\(([a-z0-9]+)\)$/i);
+      if (secClause) {
+        const cat = exceptionCatalogs.find(
+          (c) =>
+            sectionTerm(c.termExact) === secClause[1] ||
+            c.referencedFromProhibitionRefs.includes(`§${secClause[1]}`),
+        );
+        const clause = cat?.clauses.find((cl) => cl.marker === secClause[2]!.toLowerCase());
+        if (cat && clause) return `§${secClause[1]}(${clause.marker}): ${clause.text}`;
       }
-    }
-    if (!operativeText.trim()) {
+      return null;
+    })();
+    if (catalogClauseText?.trim()) {
+      operativeText = catalogClauseText;
+    } else if (!operativeText.trim()) {
       operativeText = candidate.description;
     }
 
@@ -812,12 +816,15 @@ export async function compileFrozenDebtPackage(
     let charStart: number | null = null;
     let charEnd: number | null = null;
     for (const cat of exceptionCatalogs) {
-      const sectionTerm = cat.termExact.replace(/^Section\s+/i, "");
-      const clause = cat.clauses.find(
-        (cl) =>
-          candidate.normalizedSourceRef === `def:${cat.termExact}(${cl.marker})` ||
-          candidate.normalizedSourceRef === `${sectionTerm}(${cl.marker})`,
-      );
+      // Definition catalogs: def:Permitted Debt(a) / def:Permitted Debt(1)(a)
+      // Section catalogs use termExact "Section 7.01 Exceptions" but refs are "7.01(i)".
+      const sectionRefMatch = cat.termExact.match(/^Section\s+(\d+\.\d+)\b/i);
+      const sectionRef = sectionRefMatch?.[1] ?? null;
+      const clause = cat.clauses.find((cl) => {
+        if (candidate.normalizedSourceRef === `def:${cat.termExact}(${cl.marker})`) return true;
+        if (sectionRef && candidate.normalizedSourceRef === `${sectionRef}(${cl.marker})`) return true;
+        return false;
+      });
       if (clause) {
         charStart = clause.documentCharStart;
         charEnd = clause.documentCharEnd;
@@ -830,8 +837,10 @@ export async function compileFrozenDebtPackage(
     let executableAuthority: CompileUnitRepresentation["executableAuthority"] = "REFUSED";
     let fixedDollarSlice: CompileUnitRepresentation["fixedDollarSlice"] = null;
     let greaterOfSlice: CompileUnitRepresentation["greaterOfSlice"] = null;
+    // Accept lettered `(a)`, numbered `(2)`, and nested indenture `(1)(a)` refs.
     const isCatalogClause =
-      /\([a-z0-9]+\)$/i.test(candidate.normalizedSourceRef) &&
+      (/\([a-z0-9]+\)$/i.test(candidate.normalizedSourceRef) ||
+        /\(\d{1,2}\)\([a-z0-9]+\)$/i.test(candidate.normalizedSourceRef)) &&
       (candidate.normalizedSourceRef.startsWith("def:") || /^\d+\.\d+\(/i.test(candidate.normalizedSourceRef));
     // Fail closed on provisional identity OR when restatement authority refuses
     // unconditional production promotion for caveated / blocked governing docs.

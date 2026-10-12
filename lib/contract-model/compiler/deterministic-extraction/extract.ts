@@ -22,7 +22,8 @@ export interface DeterministicExtractionInput {
 }
 
 const FAMILY_PATTERNS: { family: string; re: RegExp }[] = [
-  { family: "INDEBTEDNESS", re: /\b(?:Indebtedness|incur\s+any\s+Indebtedness)\b/gi },
+  // Indentures often define "Debt" (not "Indebtedness"); both are family signals only.
+  { family: "INDEBTEDNESS", re: /\b(?:Indebtedness|Incur(?:rence)?\s+of\s+Debt|incur\s+any\s+(?:Indebtedness|Debt)|Permitted\s+Debt)\b/gi },
   { family: "LIENS", re: /\b(?:Liens?|encumber)\b/gi },
   { family: "INVESTMENTS", re: /\bInvestments?\b/gi },
   { family: "RESTRICTED_PAYMENTS", re: /\bRestricted\s+Payments?\b/gi },
