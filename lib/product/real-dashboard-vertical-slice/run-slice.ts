@@ -26,8 +26,10 @@ import {
 import type { Phase3CompileBridgeResult } from "./phase3-compile-bridge";
 import type { VerifiedExecutableCompileBridgeResult } from "./verified-executable-compile-bridge";
 import { MATTHEWS_POSITION_COMPANY_ID } from "./package-matthews";
-import { MHK_VE_COMPANY_ID } from "./package-mhk-ve-candidates";
-import { hasVePositionPackage, loadVePositionSlice } from "./ve-position-feed";
+import {
+  hasOperativePositionPackage,
+  loadOperativePackagePositionSlice,
+} from "./operative-package-position-feed";
 
 export type AcceptanceMilestoneVerdict = "PROVEN" | "PROVEN_WITH_DEFECTS" | "NOT_PROVEN";
 
@@ -103,23 +105,37 @@ function decideVerdict(milestones: AcceptanceMilestones): RealDashboardVerticalS
  * Load authentic slice for a Position companyId, or null when unsupported.
  * Pure / fixture-backed — does not query Neon.
  *
- * - Matthews: full leaf evaluateProvision dashboard + VE compile feed
- * - MHK (and other VE registry packages): shared VE→Position feed only
+ * VE metrics come from compileOperativeCovenantPackage (generic discovery),
+ * not package-specific regex candidate extractors.
+ *
+ * - Matthews: full leaf evaluateProvision dashboard + operative-package VE overlay
+ * - MHK: operative-package VE→Position only
  */
-export function loadAuthenticDashboardSlice(companyId: string): AuthenticPositionSlice | null {
+export async function loadAuthenticDashboardSlice(
+  companyId: string,
+): Promise<AuthenticPositionSlice | null> {
   if (companyId === MATTHEWS_POSITION_COMPANY_ID) {
-    return connectSliceToPosition(evaluateMatthewsVerticalSlice());
+    const leaf = connectSliceToPosition(evaluateMatthewsVerticalSlice());
+    const op = await loadOperativePackagePositionSlice(companyId);
+    if (!op) return leaf;
+    return {
+      ...leaf,
+      verifiedExecutableMetrics: op.slice.verifiedExecutableMetrics,
+      verifiedExecutableCompile: op.slice.verifiedExecutableCompile,
+      verifiedExecutableUnitsFeedingPosition: op.slice.verifiedExecutableUnitsFeedingPosition,
+      missingInputs: [...new Set([...leaf.missingInputs, ...op.canonical.sharedConstraints])],
+    };
   }
-  // Second authentic package: MHK fixed-dollar VE → Position via shared pipeline.
-  if (companyId === MHK_VE_COMPANY_ID || hasVePositionPackage(companyId)) {
-    return loadVePositionSlice(companyId);
+  if (hasOperativePositionPackage(companyId)) {
+    const op = await loadOperativePackagePositionSlice(companyId);
+    return op?.slice ?? null;
   }
   return null;
 }
 
-/** True when Position can load either full Matthews slice or VE-only multipackage feed. */
+/** True when Position can load Matthews leaf and/or operative-package VE feed. */
 export function hasAuthenticPositionSlice(companyId: string): boolean {
-  return companyId === MATTHEWS_POSITION_COMPANY_ID || hasVePositionPackage(companyId);
+  return companyId === MATTHEWS_POSITION_COMPANY_ID || hasOperativePositionPackage(companyId);
 }
 
 export function runRealDashboardVerticalSlice(): RealDashboardVerticalSliceResult {

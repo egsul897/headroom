@@ -161,7 +161,7 @@ describe("PR #304 acceptance — Position publication honesty (Check 3)", () => 
     }
   });
 
-  it("1a flat refuses remainingCapacityMm when completeness incomplete", () => {
+  it("1a flat refuses remainingCapacityMm when completeness incomplete", async () => {
     const flat = evaluateMatthewsVerticalSlice().covenants.find((c) => c.code === "ind_permitted_debt_1a_flat")!;
     expect(flat.modeledCapacityMm).toBeCloseTo(521.118, 3);
     expect(flat.remainingCapacityMm).toBeNull();
@@ -184,7 +184,7 @@ describe("PR #304 acceptance — Position publication honesty (Check 3)", () => 
     }
   });
 
-  it("D3c: rulebook stage is INTERPRETED — not fabricated REVIEWED", () => {
+  it("D3c: rulebook stage is INTERPRETED — not fabricated REVIEWED", async () => {
     const pos = connectSliceToPosition(evaluateMatthewsVerticalSlice());
     expect(BRIDGE_SRC).toMatch(/stage:\s*"INTERPRETED"/);
     expect(BRIDGE_SRC).not.toMatch(/stage:\s*"REVIEWED"/);
@@ -205,7 +205,7 @@ describe("PR #304 acceptance — Position publication honesty (Check 3)", () => 
 });
 
 describe("PR #304 acceptance — secured composition (Check 4)", () => {
-  it("labels $631.45 composition as hypothetical/unverified for secured capacity", () => {
+  it("labels $631.45 composition as hypothetical/unverified for secured capacity", async () => {
     const slice = evaluateMatthewsVerticalSlice();
     expect(slice.indentureSecuredCompositionMm).toBeCloseTo(631.45, 1);
     // Composition must carry an explicit non-verified secured label after acceptance remediation.
@@ -214,16 +214,16 @@ describe("PR #304 acceptance — secured composition (Check 4)", () => {
 });
 
 describe("PR #304 acceptance — second package / generalization (Check 6)", () => {
-  it("full leaf dashboard pathway returns null for non-Matthews / non-VE packages", () => {
+  it("full leaf dashboard pathway returns null for non-Matthews / non-VE packages", async () => {
     for (const id of ["coherent", "conmed", "autonation", "wor", "mtn", "acme"]) {
       expect(hasAuthenticPositionSlice(id)).toBe(false);
-      expect(loadAuthenticDashboardSlice(id)).toBeNull();
+      expect(await loadAuthenticDashboardSlice(id)).toBeNull();
     }
   });
 
-  it("MHK registers for shared VE→Position feed (not full leaf dashboard)", () => {
+  it("MHK registers for shared VE→Position feed (not full leaf dashboard)", async () => {
     expect(hasAuthenticPositionSlice("mhk")).toBe(true);
-    const mhk = loadAuthenticDashboardSlice("mhk");
+    const mhk = await loadAuthenticDashboardSlice("mhk");
     expect(mhk).not.toBeNull();
     expect(mhk!.connectedMetrics).toHaveLength(0); // no evaluateProvision leaf path
     expect(mhk!.verifiedExecutableUnitsFeedingPosition).toBeGreaterThanOrEqual(1);

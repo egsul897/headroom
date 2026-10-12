@@ -105,8 +105,8 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
   }
 
   // Authentic evidence → Position bridge (fixture-backed; no Neon writes).
-  // Returns null unless the company has a registered authentic package.
-  const authenticSlice = loadAuthenticDashboardSlice(companyId);
+  // VE feed uses compileOperativeCovenantPackage (generic discovery).
+  const authenticSlice = await loadAuthenticDashboardSlice(companyId);
 
   let readiness: Awaited<ReturnType<typeof loadCapacityReadiness>> | null = null;
   let rulebook: Awaited<ReturnType<typeof loadRulebookReadiness>> | null = null;

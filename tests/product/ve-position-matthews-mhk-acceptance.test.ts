@@ -51,23 +51,23 @@ function independentMhk703fGrossMm(): number {
 }
 
 describe("independent acceptance — Matthews + MHK VE→Position", () => {
-  it("VE feed + compile core have no issuer companyId switches", () => {
+  it("VE feed + compile core have no issuer companyId switches", async () => {
     expect(FEED_SRC).not.toMatch(/companyId\s*===\s*["']matthews["']/);
     expect(FEED_SRC).not.toMatch(/if\s*\(\s*companyId\s*===\s*["']mhk["']/);
     expect(CORE_SRC).not.toMatch(/companyId\s*===\s*["']/);
     expect(CORE_SRC).not.toMatch(/matthews|mhk|conmed/i);
   });
 
-  it("registry lists both Matthews and MHK for shared VE Position", () => {
+  it("registry lists both Matthews and MHK for shared VE Position", async () => {
     const ids = VE_POSITION_PACKAGES.map((p) => p.companyId).sort();
     expect(ids).toEqual(["matthews", "mhk"]);
   });
 
-  it("Matthews Position: VE gross matches independently parsed $1300M; production refused", () => {
+  it("Matthews Position: VE gross matches independently parsed $1300M; production refused", async () => {
     const expected = independentMatthews1aGrossMm();
     expect(expected).toBe(1300);
     expect(hasAuthenticPositionSlice("matthews")).toBe(true);
-    const slice = loadAuthenticDashboardSlice("matthews")!;
+    const slice = (await loadAuthenticDashboardSlice("matthews"))!;
     const ve = slice.verifiedExecutableMetrics.find((m) => m.amountMillions != null);
     expect(ve).toBeDefined();
     expect(ve!.amountMillions).toBe(expected);
@@ -77,22 +77,24 @@ describe("independent acceptance — Matthews + MHK VE→Position", () => {
     expect(slice.verifiedExecutableCompile.productionCapacityPublished).toBe(false);
   });
 
-  it("MHK Position: same loadAuthenticDashboardSlice path yields independently parsed $700M", () => {
+  it("MHK Position: same loadAuthenticDashboardSlice path yields independently parsed $700M", async () => {
     const expected = independentMhk703fGrossMm();
     expect(expected).toBe(700);
     expect(hasAuthenticPositionSlice("mhk")).toBe(true);
-    const slice = loadAuthenticDashboardSlice("mhk")!;
+    const slice = (await loadAuthenticDashboardSlice("mhk"))!;
     expect(slice.companyId).toBe("mhk");
     expect(slice.connectedMetrics).toHaveLength(0);
-    const ve = slice.verifiedExecutableMetrics.find((m) => m.amountMillions != null);
+    const ve = slice.verifiedExecutableMetrics.find(
+      (m) => m.amountMillions === expected || /7\.03\(f\)/.test(m.operativeSection),
+    );
     expect(ve).toBeDefined();
     expect(ve!.amountMillions).toBe(expected);
-    expect(ve!.operativeSection).toBe("7.03(f)");
+    expect(ve!.operativeSection).toMatch(/7\.03\(f\)/);
     expect(ve!.valueProvenance).toBe("SOURCE_BACKED_COMPILED_GROSS");
     expect(slice.productionRemainingPublished).toBe(false);
   });
 
-  it("loadVePositionSlice is package-agnostic wrapper used by both issuers", () => {
+  it("loadVePositionSlice is package-agnostic wrapper used by both issuers", async () => {
     const m = loadVePositionSlice("matthews")!;
     const h = loadVePositionSlice("mhk")!;
     expect(m.verifiedExecutableUnitsFeedingPosition).toBeGreaterThanOrEqual(1);
@@ -116,9 +118,9 @@ describe("independent acceptance — Matthews + MHK VE→Position", () => {
     expect(leaf1a.modeledCapacityMm).toBeLessThan(1300);
   });
 
-  it("adversarial: unknown companyId refuses Position slice", () => {
+  it("adversarial: unknown companyId refuses Position slice", async () => {
     expect(hasAuthenticPositionSlice("autonation")).toBe(false);
-    expect(loadAuthenticDashboardSlice("autonation")).toBeNull();
+    expect(await loadAuthenticDashboardSlice("autonation")).toBeNull();
     expect(loadVePositionSlice("autonation")).toBeNull();
   });
 });

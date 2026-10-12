@@ -218,8 +218,7 @@ function compileOne(
 export function compileVerifiedFixedDollarBridge(
   args: CompileVerifiedFixedDollarArgs,
 ): VerifiedExecutableCompileBridgeResult {
-  delete process.env.AI_GATEWAY_API_KEY;
-  delete process.env.ANTHROPIC_API_KEY;
+  // Fixed-dollar compile is deterministic — do not mutate process.env credentials.
 
   const path: string[] = [
     "operative-clause-candidates",

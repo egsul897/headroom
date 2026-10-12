@@ -13,6 +13,7 @@
  */
 
 import { TRUSTED_IDENTITY_PRODUCTION_ACTIVATION } from "@/lib/capacity";
+import { createSyntheticStageCaller } from "@/lib/contract-model/compiler/llm-caller";
 import {
   compileFrozenDebtPackage,
   type CompileUnitRepresentation,
@@ -371,8 +372,10 @@ function autonomousVerdict(
 export async function compileOperativeCovenantPackage(
   packageContext: OperativePackageContext,
 ): Promise<OperativeCovenantPackageResult> {
-  delete process.env.AI_GATEWAY_API_KEY;
-  delete process.env.ANTHROPIC_API_KEY;
+  // Never mutate process.env credentials. Unpaid path uses an explicit synthetic
+  // caller; paid path requires authorizePaidInference + real caller from env.
+  const authorizePaid = packageContext.authorizePaidInference === true;
+  const discoveryCaller = authorizePaid ? undefined : createSyntheticStageCaller();
 
   const asOfDate = packageContext.asOfDate ?? new Date().toISOString().slice(0, 10);
   const path: string[] = [
@@ -388,9 +391,10 @@ export async function compileOperativeCovenantPackage(
     packageKey: packageContext.packageKey,
     instrumentKey: packageContext.instrumentKey,
     documents: packageContext.documents,
-    authorizePaidInference: packageContext.authorizePaidInference ?? false,
+    authorizePaidInference: authorizePaid,
     authorizationRef: packageContext.authorizationRef,
     asOfDate,
+    discoveryCaller,
   });
 
   path.push(`catalogs:${offline.stages.discovery.exceptionCatalogCount}`);

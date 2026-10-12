@@ -74,6 +74,14 @@ class SyntheticStageCaller implements StageCaller {
   }
 }
 
+/**
+ * Explicit unpaid/synthetic stage caller. Prefer this over mutating
+ * `process.env` (never delete AI_GATEWAY_API_KEY / ANTHROPIC_API_KEY process-wide).
+ */
+export function createSyntheticStageCaller(): StageCaller {
+  return new SyntheticStageCaller();
+}
+
 export class MissingCompilerCredentialError extends Error {
   constructor() {
     super("Neither AI_GATEWAY_API_KEY nor ANTHROPIC_API_KEY is set in this Vercel deployment, so the Phase C compiler has no real LLM credential for its staged LLM calls. Set one in the Vercel dashboard and redeploy.");

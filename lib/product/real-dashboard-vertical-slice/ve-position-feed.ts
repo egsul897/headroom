@@ -280,7 +280,11 @@ export function hasVePositionPackage(companyId: string): boolean {
   return VE_POSITION_PACKAGES.some((p) => p.companyId === companyId);
 }
 
-/** Load VE-only Position slice for a registered package (shared compile path). */
+/**
+ * @deprecated Prefer `loadOperativePackagePositionSlice` — generalized
+ * compileOperativeCovenantPackage path. This sync regex-candidate path remains
+ * for regression locks only; Position production feed does not use it.
+ */
 export function loadVePositionSlice(companyId: string): AuthenticPositionSlice | null {
   const pkg = VE_POSITION_PACKAGES.find((p) => p.companyId === companyId);
   if (!pkg) return null;

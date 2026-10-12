@@ -47,6 +47,18 @@ export {
 } from "./ve-position-feed";
 
 export {
+  loadOperativePackagePositionSlice,
+  hasOperativePositionPackage,
+  OPERATIVE_POSITION_PACKAGES,
+} from "./operative-package-position-feed";
+
+export {
+  canonicalCapacityFromOperativePackage,
+  CANONICAL_CAPACITY_CONTRACT_VERSION,
+  type CanonicalCapacityContract,
+} from "@/lib/product/canonical-capacity-contract";
+
+export {
   compileMatthewsPhase3DashboardBridge,
   type Phase3CompileBridgeResult,
   type CompiledCovenantCandidate,

@@ -58,8 +58,7 @@ export type Phase3CompileBridgeResult = {
 export function compileMatthewsPhase3DashboardBridge(
   asOfDate = "2024-12-31",
 ): Phase3CompileBridgeResult {
-  delete process.env.AI_GATEWAY_API_KEY;
-  delete process.env.ANTHROPIC_API_KEY;
+  // Structure/OA/deterministic extraction — do not mutate process.env credentials.
 
   const docs = matthewsCompilerPackageDocuments();
   const path: string[] = ["source-excerpts"];
