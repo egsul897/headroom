@@ -9,3 +9,21 @@ export { getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailur
 export type { AnalysisReadiness, AnalysisReadinessReason } from "./service";
 export { getTrustedSemanticTruth, getAllSemanticTruthForInstrument, getSemanticTruthForRun } from "./semantic-truth/service";
 export * from "./types";
+export {
+  compileFrozenDebtPackage,
+  OFFLINE_PACKAGE_COMPILE_VERSION,
+  type OfflinePackageCompileOptions,
+  type OfflinePackageCompileResult,
+  type OfflinePackageDocument,
+  type CompileUnitRepresentation,
+} from "./offline-package-compile";
+export {
+  compileOperativeCovenantPackage,
+  OPERATIVE_COVENANT_PACKAGE_VERSION,
+  type OperativePackageContext,
+  type OperativeCovenantPackageResult,
+  type ExecutableOperativeUnit,
+  type RejectedOperativeUnit,
+  type CapacityPublicationClass,
+  type OperativeCoverageReport,
+} from "./operative-covenant-package";
