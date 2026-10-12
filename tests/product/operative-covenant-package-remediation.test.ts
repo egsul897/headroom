@@ -43,6 +43,13 @@ const VE_CORE_SRC = readFileSync(
   ),
   "utf8",
 );
+const PHASE3_BRIDGE_SRC = readFileSync(
+  join(
+    process.cwd(),
+    "lib/product/real-dashboard-vertical-slice/phase3-compile-bridge.ts",
+  ),
+  "utf8",
+);
 
 describe("P0 — no global environment mutation", () => {
   it("source does not delete AI_GATEWAY_API_KEY or ANTHROPIC_API_KEY", () => {
@@ -229,6 +236,11 @@ describe("P0 — VE compileVerifiedFixedDollarBridge provider-free (no env mutat
     expect(VE_CORE_SRC).not.toMatch(/delete\s+process\.env\.AI_GATEWAY_API_KEY/);
     expect(VE_CORE_SRC).not.toMatch(/delete\s+process\.env\.ANTHROPIC_API_KEY/);
     expect(VE_CORE_SRC).toMatch(/provider-free:fixed-dollar-ir-local/);
+  });
+
+  it("phase3 compile bridge does not delete process.env credentials", () => {
+    expect(PHASE3_BRIDGE_SRC).not.toMatch(/delete\s+process\.env\.AI_GATEWAY_API_KEY/);
+    expect(PHASE3_BRIDGE_SRC).not.toMatch(/delete\s+process\.env\.ANTHROPIC_API_KEY/);
   });
 
   it("concurrent VE compiles leave env credentials unchanged", async () => {
