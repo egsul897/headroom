@@ -18,6 +18,7 @@ import {
   assertPositionSimulateCapacityConsistency,
   separateCapacityClaimsFromProductView,
   type WorkspaceCompanyIdentity,
+  type CfoWorkflowSensitiveLoaders,
 } from "@/lib/customer-workflow";
 import type { ProductCapacityView } from "@/lib/capacity/product-capacity-view";
 import type { CapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
@@ -107,14 +108,23 @@ function stubLoaders(counters: { n: number }) {
     attemptVerifiedSimulate: async () =>
       touch({
         certified: { status: "REFUSED", blockers: ["NO_VEP"] } as never,
-        pathEnumeration: { paths: [], incompleteReasons: [], authority: "INCOMPLETE_PACKAGE", transactionKind: "SECURED_DEBT", secured: true, stackingAssumed: false as const },
+        pathEnumeration: {
+          paths: [],
+          incompleteReasons: ["NO_VEP"],
+          unsupportedReasons: [],
+          authority: "INCOMPLETE_PACKAGE",
+          transactionKind: "SECURED_DEBT",
+          secured: true,
+          stackingAssumed: false as const,
+          note: "test stub — no VEP",
+        },
         selectedPathId: null,
         selectedPath: null,
         transaction: null,
         executable: false,
         refusalSummary: ["NO_VEP"],
         pathAutoSelected: false,
-      }),
+      } as Awaited<ReturnType<CfoWorkflowSensitiveLoaders["attemptVerifiedSimulate"]>>),
   };
 }
 
