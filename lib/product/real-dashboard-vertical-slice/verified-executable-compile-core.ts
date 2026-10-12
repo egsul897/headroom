@@ -214,15 +214,16 @@ function compileOne(
 /**
  * Compile any package's operative clause candidates through the shared
  * fixed-dollar VE path. No issuer-specific branches in this function.
+ *
+ * Provider-free by construction: classify/compile/evaluateFixedDollarBasket are
+ * local IR paths — never mutates process.env credentials.
  */
 export function compileVerifiedFixedDollarBridge(
   args: CompileVerifiedFixedDollarArgs,
 ): VerifiedExecutableCompileBridgeResult {
-  delete process.env.AI_GATEWAY_API_KEY;
-  delete process.env.ANTHROPIC_API_KEY;
-
   const path: string[] = [
     "operative-clause-candidates",
+    "provider-free:fixed-dollar-ir-local",
     `package:${args.companyId}:${args.instrumentKey}`,
   ];
   path.push(`candidates:${args.candidates.length}`);
@@ -254,6 +255,7 @@ export function compileVerifiedFixedDollarBridge(
       "Ratio / structural / greater-of formulations refuse or stay outside this bridge.",
       "VE figures are SOURCE_BACKED_COMPILED_GROSS — never customer AVAILABLE remaining.",
       "Compile path is package-agnostic; candidate discovery may still be package-specific.",
+      "Provider-free: does not mutate process.env credentials.",
       "AUTONOMOUS_COVENANT_COMPILATION_PROVEN remains NOT_PROVEN until all Position capacity leaves hand-encoded CovenantProvisionInput.",
       "Production IdP / trusted-issuer BLOCKED; no Neon writes; no paid inference.",
       ...(args.extraLimitations ?? []),

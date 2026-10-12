@@ -2,11 +2,15 @@
 
 ## Tip
 
-Combined SHA: `2a1e7a3ea86a353704de531b1c8e8a3cb59d9c51` on
-`cursor/cfo-product-workflow-d829` after merging
-`origin/cursor/autonomous-covenant-compilation-b53f` (`95cbfbc0`, PR #310 tip
-including #304 VE Position feed). Parents: `e94b5f2f` (#311 remediation) +
-`95cbfbc0` (#310).
+P0 drift correction on `cursor/cfo-product-workflow-d829` after absorbing
+#310 tip `57adade3377cc975e6c2543f80d6661fc753e163`.
+
+| Layer | SHA | Notes |
+|---|---|---|
+| Prior combined merge | `2a1e7a3e` | Merged stale #310 tip `95cbfbc0` only |
+| Docs pin of prior merge | `773bea16` | Recorded suites before drift correction |
+| **#310 safety tip absorbed** | `57adade3` | Provision-identity authority + VE provider-free |
+| **#311 tip after correction** | *(git HEAD of this branch)* | Three safety files byte-match #310 `57adade3` |
 
 ## Position page resolution
 
@@ -19,7 +23,7 @@ File: `app/[companyId]/position/page.tsx`
 | `remainingIsAuthoritative: false` (dashboard flags alone never AVAILABLE) | SOURCE_BACKED_COMPILED_GROSS overlay when VE metrics feed Position |
 | Audit CTA / WorkflowJourney | Offline readiness try/catch + authentic slice fallback |
 
-## Security invariants retained
+## Security invariants retained (#311)
 
 - Anonymous CUSTOMER denial
 - Explicit EVALUATION anonymous-read grants only
@@ -28,29 +32,37 @@ File: `app/[companyId]/position/page.tsx`
 - Real `ProductCapacityView` required for AVAILABLE; synthetic manufacture deleted
 - Shared Position/Simulate capacity semantics
 
+## P0 drift correction (absorb #310 `57adade3`)
+
+Independent audit: #311 had merged stale #310 `95cbfbc0`, omitting `57adade3`.
+
+| File | Correction | Match to #310 `57adade3` |
+|---|---|---|
+| `lib/contract-model/analysis/operative-covenant-package.ts` | `provisionIdentityMatchesUnit` — section/defined-term only; no document-only authority inheritance | byte-identical |
+| `lib/product/real-dashboard-vertical-slice/verified-executable-compile-core.ts` | No `process.env` credential deletion; provider-free local IR path | byte-identical |
+| `tests/product/operative-covenant-package-remediation.test.ts` | Adversarial provision-identity + concurrent VE env tests | byte-identical |
+
+`lib/customer-workflow/**` authorization / CFO workflow files were **not** rewritten by this correction.
+
 ## Local combined regressions (this tip)
 
 | Suite | Result |
 |---|---|
 | `cfo-workflow-access-integration` | 12/12 |
-| `cfo-workflow-e2e` (presentation honesty) | 19/19 |
-| `ve-position-matthews-mhk-acceptance` | 7/7 |
-| `fixed-dollar-candidate-discovery` | 5/5 |
-| `autonomous-compilation-pipeline` | 5/5 |
+| `cfo-workflow-e2e` | 19/19 |
+| `operative-covenant-package-remediation` | 19/19 (includes new P0 identity + VE concurrency) |
 | `compile-operative-covenant-package` | 5/5 |
-| `operative-covenant-package-remediation` | 14/14 |
+| `autonomous-compilation-pipeline` | 5/5 |
+| `fixed-dollar-candidate-discovery` | 5/5 |
+| `ve-position-matthews-mhk-acceptance` | 7/7 |
 | `real-dashboard-vertical-slice-acceptance-adversarial` | 17/17 |
-| `real-dashboard-vertical-slice.e2e` | 9/9 |
-| `verified-executable-multipackage` | 4/4 |
-| `home-overview-empty` | 10/10 |
-| **Total (combined run)** | **98/98** (+9 e2e in follow-up = 107 unique) |
-| `tsc --noEmit` | clean |
+| **Total** | **89/89** |
 
-## Not done in this commit
+## Exact-tip CI
+
+See GitHub checks on the tip SHA after push (certified path / home overview as path filters allow).
+
+## Not done
 
 - Self-merge / production Neon writes / trusted-identity activation
-- Genuine DB-backed or deployed-route acceptance: `DATABASE_URL` points at
-  Neon `ep-shiny-rice-…-pooler` (production-class). No isolated DB/deployed
-  route available in this environment — acceptance not added (would risk
-  production Neon writes). Access integration tests continue to use injectable
-  `companyIdentityLoader` stubs.
+- Genuine DB-backed or deployed-route acceptance against production Neon

@@ -244,6 +244,53 @@ function missingDepsFor(unit: CompileUnitRepresentation): string[] {
   return out;
 }
 
+/**
+ * Match a handoff provision to a compile unit by provision identity only
+ * (sectionRef / definedTermRef). Same-document governingDocumentId alone is
+ * NEVER sufficient — distinct sections must not inherit one another's authority.
+ *
+ * Exported for adversarial regression tests.
+ */
+export function provisionIdentityMatchesUnit(
+  provision: {
+    kind: string;
+    sectionRef: string | null;
+    definedTermRef: string | null;
+  },
+  unit: Pick<CompileUnitRepresentation, "sourceRef" | "documentId">,
+): boolean {
+  const sourceRef = unit.sourceRef.trim();
+  if (!sourceRef) return false;
+
+  if (provision.sectionRef) {
+    const section = provision.sectionRef.trim();
+    if (!section) return false;
+    // Exact section identity, or unit sourceRef scoped under that section
+    // (e.g. provision "7.03" matches unit "7.03(f)"). Never document-wide.
+    if (sourceRef === section) return true;
+    if (sourceRef.startsWith(`${section}(`) || sourceRef.startsWith(`${section}.`)) return true;
+    return false;
+  }
+
+  if (provision.definedTermRef) {
+    const term = provision.definedTermRef.trim();
+    if (!term) return false;
+    const lower = sourceRef.toLowerCase();
+    const termLower = term.toLowerCase();
+    if (lower === `def:${termLower}`) return true;
+    if (lower.startsWith(`def:${termLower}(`) || lower.startsWith(`def:${termLower}/`)) return true;
+    // Permit "def:Permitted Debt(2)" style when definedTermRef is "Permitted Debt"
+    if (lower.startsWith("def:") && lower.slice(4).startsWith(termLower)) {
+      const after = lower.slice(4 + termLower.length);
+      return after.length === 0 || after.startsWith("(") || after.startsWith("/");
+    }
+    return false;
+  }
+
+  // WHOLE_AGREEMENT / empty identity — refuse to bind a unit-level authority claim.
+  return false;
+}
+
 function authorityForUnit(
   unit: CompileUnitRepresentation,
   offline: OfflinePackageCompileResult,
@@ -253,18 +300,18 @@ function authorityForUnit(
   governingAuthorityConfirmed: boolean;
 } {
   const handoff = offline.operativeAuthorityHandoff;
-  const provision = handoff?.provisions.find((p) => {
-    if (p.governingDocumentId && p.governingDocumentId === unit.documentId) return true;
-    if (p.sectionRef && unit.sourceRef.startsWith(p.sectionRef)) return true;
-    if (p.definedTermRef && unit.sourceRef.toLowerCase().includes(p.definedTermRef.toLowerCase())) return true;
-    return false;
-  });
+  const provision = handoff?.provisions.find((p) => provisionIdentityMatchesUnit(p, unit)) ?? null;
+
+  // Without a provision-identity match, do not inherit another section's
+  // governingDocumentId or authorityClassification — fall back to the unit's
+  // own discovery document and the package gate (unconfirmed).
   const governingDocumentId = provision?.governingDocumentId ?? unit.documentId;
   const classification =
     provision?.authorityClassification ??
     offline.stages.operativeHandoff.authorityGate ??
     "NO_OPERATIVE_STATE";
   const confirmed =
+    provision != null &&
     offline.stages.operativeHandoff.authorityGate === "CONFIRMED_OPERATIVE_IDENTITY" &&
     classification === "CONFIRMED_OPERATIVE";
   return {
