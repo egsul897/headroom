@@ -1,0 +1,45 @@
+name: capacity-path
+
+# Agent 2 / verified-remaining capacity suites. Provider-free. Separate from
+# canonical-compiler certified path so capacity coverage runs even while #308
+# still has a raw-runtime boundary blocker (evaluate-verified-remaining-capacity
+# / ledger-utilization-bridge import contract-model/runtime directly).
+on:
+  workflow_dispatch:
+  push:
+    branches: ["**"]
+    paths:
+      - "lib/capacity/**"
+      - "tests/capacity/**"
+      - ".github/workflows/capacity-path.yml"
+  pull_request:
+    paths:
+      - "lib/capacity/**"
+      - "tests/capacity/**"
+      - ".github/workflows/capacity-path.yml"
+
+concurrency:
+  group: capacity-path-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  capacity:
+    name: capacity path (provider-free)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: verified remaining + financial approval provenance
+        run: >-
+          npx vitest run
+          tests/capacity/verified-remaining-capacity-integration.test.ts
+          tests/capacity/financial-evidence-adversarial.test.ts
+          tests/capacity/utilization-and-remaining.test.ts
