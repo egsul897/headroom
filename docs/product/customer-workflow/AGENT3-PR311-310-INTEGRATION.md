@@ -10,7 +10,8 @@ P0 drift correction on `cursor/cfo-product-workflow-d829` after absorbing
 | Prior combined merge | `2a1e7a3e` | Merged stale #310 tip `95cbfbc0` only |
 | Docs pin of prior merge | `773bea16` | Recorded suites before drift correction |
 | **#310 safety tip absorbed** | `57adade3` | Provision-identity authority + VE provider-free |
-| **#311 tip after correction** | `ca5b7ddcc88d19561d049e4766da9231ec4339c7` | Three safety files byte-match #310 `57adade3` |
+| **#311 code absorb** | `ca5b7ddcc88d19561d049e4766da9231ec4339c7` | Three safety files byte-match #310 `57adade3` |
+| **#311 tip (docs pin)** | `27a7686c626e8a9be1e0480d55d753fae73cbf51` | Pins absorb SHA + 89/89 evidence |
 
 ## Position page resolution
 
