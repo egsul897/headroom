@@ -63,7 +63,16 @@ Independent audit: #311 had merged stale #310 `95cbfbc0`, omitting `57adade3`.
 
 See GitHub checks on the tip SHA after push (certified path / home overview as path filters allow).
 
+## Reconcile with #312 (authoritative Position compile path)
+
+- `status-contract` gains `claimKind: "HYPOTHETICAL"` so MODELED_HYPOTHETICAL
+  cannot be presented as GROSS_CONTRACTUAL when #312 operative-package feed lands.
+- #311 retains `capacity-state` / workspace-access / assemble-cfo-workflow.
+- Authoritative discovery→compile→Position path remains **#312** (absorbs #310
+  `57adade3`); #313 is superseded. Human merge: #312 before #311.
+
 ## Not done
 
 - Self-merge / production Neon writes / trusted-identity activation
 - Genuine DB-backed or deployed-route acceptance against production Neon
+- Position page conflict resolution vs #312 at human merge time

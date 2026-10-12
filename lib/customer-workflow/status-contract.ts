@@ -297,7 +297,12 @@ export function formatCustomerAmountMillions(amount: number | null | undefined):
 
 export interface CapacityClaimView {
   /** What the figure represents. */
-  claimKind: "GROSS_CONTRACTUAL" | "ATTRIBUTED_USAGE" | "REMAINING" | "UNAVAILABLE";
+  claimKind:
+    | "GROSS_CONTRACTUAL"
+    | "HYPOTHETICAL"
+    | "ATTRIBUTED_USAGE"
+    | "REMAINING"
+    | "UNAVAILABLE";
   status: CustomerStatusCode;
   amountMillions: number | null;
   /** Ready-to-render value (never invents zero for unknown). */
@@ -311,6 +316,7 @@ export interface CapacityClaimView {
  * Build a capacity claim presentation from already-computed engine outputs.
  * Does not perform arithmetic. remainingIsAuthoritative must come from the
  * canonical authority path (`utilizationRemainingAuthority === PRODUCTION_AUTHORITATIVE`).
+ * MODELED_HYPOTHETICAL must use claimKind HYPOTHETICAL — never GROSS_CONTRACTUAL.
  */
 export function presentCapacityClaim(args: {
   claimKind: CapacityClaimView["claimKind"];
@@ -342,6 +348,19 @@ export function presentCapacityClaim(args: {
     return {
       claimKind: "GROSS_CONTRACTUAL",
       status: "GROSS_CONTRACTUAL",
+      amountMillions: args.amountMillions,
+      displayValue: formatCustomerAmountMillions(args.amountMillions),
+      claimLabel: presented.label,
+      guidance: presented.customerGuidance,
+    };
+  }
+
+
+  if (args.claimKind === "HYPOTHETICAL") {
+    const presented = presentCustomerStatus("HYPOTHETICAL");
+    return {
+      claimKind: "HYPOTHETICAL",
+      status: "HYPOTHETICAL",
       amountMillions: args.amountMillions,
       displayValue: formatCustomerAmountMillions(args.amountMillions),
       claimLabel: presented.label,
