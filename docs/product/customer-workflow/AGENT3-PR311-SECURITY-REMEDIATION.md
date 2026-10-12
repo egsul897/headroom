@@ -10,7 +10,7 @@
 | --- | --- |
 | Remediation start (PR tip before fix) | `12611f30b7209e825052be74e1a2bde662594eae` |
 | Feature baseline | `92cd753909ace357fa0745bd8c77ea339f0dd40c` |
-| Ending tip | *(branch tip after this remediation)* |
+| Ending tip | `23be07babb8f78af980fc8e1fd16dcccb0232d1a` |
 
 ## P0 — authorization
 
