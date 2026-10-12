@@ -158,16 +158,55 @@ function dashboardStub(companyId: string, displayName: string, asOf: string): Co
   };
 }
 
-function metricFromCanonical(u: CanonicalCapacityContract["units"][number]): DashboardConnectedMetric {
-  const amount = u.grossContractualMm ?? u.modeledHypotheticalMm;
-  const claim = presentCapacityClaim({
-    claimKind: amount != null ? "GROSS_CONTRACTUAL" : "UNAVAILABLE",
-    amountMillions: amount,
-    remainingIsAuthoritative: false,
-    publicationLabel: "NOT_PRODUCTION_AUTHORITATIVE",
-    unavailableReason:
-      amount == null ? `UNSUPPORTED / refused: ${u.publicationStatus}` : null,
-  });
+/** Exported for acceptance tests — MODELED_HYPOTHETICAL must not become GROSS. */
+export function metricFromCanonical(
+  u: CanonicalCapacityContract["units"][number],
+): DashboardConnectedMetric {
+  const hasGross =
+    u.grossContractualMm != null &&
+    (u.publicationStatus === "GROSS_CONTRACTUAL_ONLY" ||
+      u.capacityClass === "SOURCE_BACKED_GROSS_CONTRACTUAL");
+  const hasModeledOnly =
+    !hasGross &&
+    u.modeledHypotheticalMm != null &&
+    (u.publicationStatus === "MODELED_HYPOTHETICAL_ONLY" ||
+      u.capacityClass === "MODELED_HYPOTHETICAL");
+
+  // MODELED_HYPOTHETICAL must never be published as GROSS_CONTRACTUAL.
+  const claim = hasGross
+    ? presentCapacityClaim({
+        claimKind: "GROSS_CONTRACTUAL",
+        amountMillions: u.grossContractualMm,
+        remainingIsAuthoritative: false,
+        publicationLabel: "GROSS_CONTRACTUAL",
+        unavailableReason: null,
+      })
+    : hasModeledOnly
+      ? presentCapacityClaim({
+          claimKind: "HYPOTHETICAL",
+          amountMillions: u.modeledHypotheticalMm,
+          remainingIsAuthoritative: false,
+          publicationLabel: "HYPOTHETICAL",
+          unavailableReason: null,
+        })
+      : presentCapacityClaim({
+          claimKind: "UNAVAILABLE",
+          amountMillions: null,
+          remainingIsAuthoritative: false,
+          publicationLabel: "NOT_PRODUCTION_AUTHORITATIVE",
+          unavailableReason: `UNSUPPORTED / refused: ${u.publicationStatus}`,
+        });
+
+  if (
+    (u.capacityClass === "MODELED_HYPOTHETICAL" ||
+      u.publicationStatus === "MODELED_HYPOTHETICAL_ONLY") &&
+    claim.claimKind === "GROSS_CONTRACTUAL"
+  ) {
+    throw new Error(
+      `MODELED_HYPOTHETICAL unit ${u.unitId} refused publication as GROSS_CONTRACTUAL`,
+    );
+  }
+
   const remainingClaim = presentCapacityClaim({
     claimKind: "UNAVAILABLE",
     amountMillions: null,
@@ -176,21 +215,32 @@ function metricFromCanonical(u: CanonicalCapacityContract["units"][number]): Das
     unavailableReason:
       "Verified remaining null — utilization completeness + trusted issuer required.",
   });
+
+  const amountMillions = hasGross
+    ? u.grossContractualMm
+    : hasModeledOnly
+      ? u.modeledHypotheticalMm
+      : null;
+
   return {
     label: `Operative VE — ${u.sourceSectionRef}`,
     code: u.unitId,
-    amountMillions: amount,
-    modeledCapacityMm: u.modeledHypotheticalMm ?? u.grossContractualMm,
+    amountMillions,
+    // Modeled column is modeled-only — never coalesce GROSS into modeledCapacityMm.
+    modeledCapacityMm: u.modeledHypotheticalMm,
     remainingCapacityMm: null,
     claim,
     remainingClaim,
     operativeSection: u.sourceSectionRef,
-    authorityStatus: "GROSS_ONLY_UTILIZATION_INCOMPLETE",
+    authorityStatus: hasGross
+      ? "GROSS_ONLY_UTILIZATION_INCOMPLETE"
+      : hasModeledOnly
+        ? "MODELED_AUTHENTIC_EVIDENCE"
+        : "PRODUCTION_REMAINING_REFUSED",
     refusalReason: u.missingInputs.join(" | ") || null,
     mayPublishAvailable: false,
-    valueProvenance:
-      u.grossContractualMm != null ? "SOURCE_BACKED_COMPILED_GROSS" : "MODELED_LEAF",
-    quarantinedFromProductionCalculation: u.grossContractualMm == null,
+    valueProvenance: hasGross ? "SOURCE_BACKED_COMPILED_GROSS" : "MODELED_LEAF",
+    quarantinedFromProductionCalculation: !hasGross,
   };
 }
 

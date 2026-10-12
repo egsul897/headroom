@@ -118,4 +118,81 @@ describe("canonical integration — two-issuer source→Position", () => {
       else process.env.ANTHROPIC_API_KEY = prevAnthropic;
     }
   });
+
+  it("P1: MODELED_HYPOTHETICAL never published as GROSS_CONTRACTUAL on Position", async () => {
+    const { metricFromCanonical } = await import(
+      "@/lib/product/real-dashboard-vertical-slice/operative-package-position-feed"
+    );
+
+    // Synthetic MODELED_HYPOTHETICAL unit with a numeric modeled amount — the
+    // prior defect coalesced this into claimKind GROSS_CONTRACTUAL.
+    const modeledUnit = {
+      unitId: "mhk:7.03(g)",
+      governingDocumentId: "mhk-ca",
+      sourceSectionRef: "7.03(g)",
+      sourceSpan: { charStart: 0, charEnd: 10 },
+      operativeTextExcerpt: "greater of $1,500,000,000 and 10% of Total Consolidated Assets",
+      executableRuleIdentity: "ve:mhk:7.03(g)",
+      provisionKind: "GREATER_OF_BASKET",
+      capacityClass: "MODELED_HYPOTHETICAL" as const,
+      grossContractualMm: null,
+      modeledHypotheticalMm: 1500,
+      verifiedRemainingMm: null,
+      productionAvailableMm: null,
+      publicationStatus: "MODELED_HYPOTHETICAL_ONLY" as const,
+      fidelityVerdict: "PASS",
+      missingInputs: ["financial_metric:Total Assets"],
+      exceptionsAndConditions: [],
+      definedTermDependencies: ["Total Consolidated Assets"],
+    };
+    const hypoMetric = metricFromCanonical(modeledUnit);
+    expect(hypoMetric.claim.claimKind).toBe("HYPOTHETICAL");
+    expect(hypoMetric.claim.status).toBe("HYPOTHETICAL");
+    expect(hypoMetric.claim.claimKind).not.toBe("GROSS_CONTRACTUAL");
+    expect(hypoMetric.amountMillions).toBe(1500);
+    expect(hypoMetric.modeledCapacityMm).toBe(1500);
+    expect(hypoMetric.valueProvenance).toBe("MODELED_LEAF");
+    expect(hypoMetric.authorityStatus).toBe("MODELED_AUTHENTIC_EVIDENCE");
+    expect(hypoMetric.mayPublishAvailable).toBe(false);
+
+    const grossUnit = {
+      ...modeledUnit,
+      unitId: "mhk:7.03(f)",
+      sourceSectionRef: "7.03(f)",
+      capacityClass: "SOURCE_BACKED_GROSS_CONTRACTUAL" as const,
+      grossContractualMm: 700,
+      modeledHypotheticalMm: null,
+      publicationStatus: "GROSS_CONTRACTUAL_ONLY" as const,
+      missingInputs: [],
+    };
+    const grossMetric = metricFromCanonical(grossUnit);
+    expect(grossMetric.claim.claimKind).toBe("GROSS_CONTRACTUAL");
+    expect(grossMetric.valueProvenance).toBe("SOURCE_BACKED_COMPILED_GROSS");
+
+    // Live MHK path: every MODELED_HYPOTHETICAL canonical unit stays non-GROSS on Position.
+    const result = await compileOperativeCovenantPackage(mhkOperativePackageContext());
+    const modeled = result.executableUnits.filter((u) => u.capacityClass === "MODELED_HYPOTHETICAL");
+    expect(modeled.length).toBeGreaterThanOrEqual(1);
+    const canonical = canonicalCapacityFromOperativePackage(result);
+    for (const u of canonical.units.filter((x) => x.capacityClass === "MODELED_HYPOTHETICAL")) {
+      expect(u.publicationStatus).toBe("MODELED_HYPOTHETICAL_ONLY");
+      expect(u.grossContractualMm).toBeNull();
+      const m = metricFromCanonical(u);
+      expect(m.claim.claimKind).not.toBe("GROSS_CONTRACTUAL");
+      if (u.modeledHypotheticalMm != null) {
+        expect(m.claim.claimKind).toBe("HYPOTHETICAL");
+      }
+    }
+
+    const sliceLoad = await loadOperativePackagePositionSlice("mhk");
+    expect(sliceLoad).not.toBeNull();
+    for (const m of sliceLoad!.slice.verifiedExecutableMetrics) {
+      if (m.valueProvenance === "MODELED_LEAF") {
+        expect(m.claim.claimKind).not.toBe("GROSS_CONTRACTUAL");
+      }
+      if (m.claim.claimKind === "GROSS_CONTRACTUAL") {
+        expect(m.valueProvenance).toBe("SOURCE_BACKED_COMPILED_GROSS");
+      }
+    }
+  });
 });
