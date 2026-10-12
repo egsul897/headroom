@@ -15,6 +15,7 @@ import {
   matthewsOperativePackageContext,
   mhkOperativePackageContext,
 } from "@/lib/product/autonomous-covenant-compilation";
+import { provisionIdentityMatchesUnit } from "@/lib/contract-model/analysis/operative-covenant-package";
 import { createProviderFreeStageCaller } from "@/lib/contract-model/compiler/llm-caller";
 import { classifyFixedDollarBasket } from "@/lib/contract-model/compiler/fixed-dollar-basket";
 import {
@@ -29,9 +30,17 @@ import type {
   OperativeAuthorityHandoffBundle,
   RestatementAuthorityResolution,
 } from "@/lib/contract-model/compiler/operative-authority";
+import { compileVerifiedFixedDollarBridge } from "@/lib/product/real-dashboard-vertical-slice/verified-executable-compile-core";
 
 const OPERATIVE_SRC = readFileSync(
   join(process.cwd(), "lib/contract-model/analysis/operative-covenant-package.ts"),
+  "utf8",
+);
+const VE_CORE_SRC = readFileSync(
+  join(
+    process.cwd(),
+    "lib/product/real-dashboard-vertical-slice/verified-executable-compile-core.ts",
+  ),
   "utf8",
 );
 
@@ -134,6 +143,132 @@ describe("P1 — independent omission coverage", () => {
     expect(cov.discoveredAndExecutable).toBeGreaterThanOrEqual(4);
     expect(cov.expectedButNotDiscovered).toBe(0);
     expect(cov.omissionCoverageComplete).toBe(true);
+  });
+});
+
+describe("P0 — provision identity required for operative authority", () => {
+  it("source never matches authority on governingDocumentId alone", () => {
+    expect(OPERATIVE_SRC).not.toMatch(
+      /governingDocumentId\s*&&\s*[^=\n]*governingDocumentId\s*===\s*unit\.documentId\s*\)\s*return\s*true/,
+    );
+    expect(OPERATIVE_SRC).toMatch(/provisionIdentityMatchesUnit/);
+  });
+
+  it("adversarial: same-document different-section provisions do not inherit authority", () => {
+    const doc = "credit-agreement-2026";
+    const section703 = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: doc,
+    };
+    const section701 = {
+      kind: "SECTION",
+      sectionRef: "7.01",
+      definedTermRef: null,
+      governingDocumentId: doc,
+    };
+    const unit703f = { sourceRef: "7.03(f)", documentId: doc };
+    const unit701i = { sourceRef: "7.01(i)", documentId: doc };
+    const unitOtherDoc = { sourceRef: "7.03(f)", documentId: "other-doc" };
+
+    // Matching section identity binds; sibling section on same document does not.
+    expect(provisionIdentityMatchesUnit(section703, unit703f)).toBe(true);
+    expect(provisionIdentityMatchesUnit(section703, unit701i)).toBe(false);
+    expect(provisionIdentityMatchesUnit(section701, unit703f)).toBe(false);
+    expect(provisionIdentityMatchesUnit(section701, unit701i)).toBe(true);
+
+    // Document id alone never binds — even when governingDocumentId equals unit.documentId.
+    const docOnly = {
+      kind: "SECTION",
+      sectionRef: null,
+      definedTermRef: null,
+      governingDocumentId: doc,
+    };
+    expect(provisionIdentityMatchesUnit(docOnly, unit703f)).toBe(false);
+    expect(provisionIdentityMatchesUnit(docOnly, unitOtherDoc)).toBe(false);
+  });
+
+  it("adversarial: defined-term identity binds; unrelated term on same document does not", () => {
+    const doc = "indenture";
+    const permittedDebt = {
+      kind: "DEFINITION",
+      sectionRef: null,
+      definedTermRef: "Permitted Debt",
+      governingDocumentId: doc,
+    };
+    const permittedLiens = {
+      kind: "DEFINITION",
+      sectionRef: null,
+      definedTermRef: "Permitted Liens",
+      governingDocumentId: doc,
+    };
+    expect(
+      provisionIdentityMatchesUnit(permittedDebt, {
+        sourceRef: "def:Permitted Debt(1)(a)",
+        documentId: doc,
+      }),
+    ).toBe(true);
+    expect(
+      provisionIdentityMatchesUnit(permittedDebt, {
+        sourceRef: "def:Permitted Liens(1)",
+        documentId: doc,
+      }),
+    ).toBe(false);
+    expect(
+      provisionIdentityMatchesUnit(permittedLiens, {
+        sourceRef: "def:Permitted Debt(2)",
+        documentId: doc,
+      }),
+    ).toBe(false);
+  });
+});
+
+describe("P0 — VE compileVerifiedFixedDollarBridge provider-free (no env mutation)", () => {
+  it("VE core source does not delete process.env credentials", () => {
+    expect(VE_CORE_SRC).not.toMatch(/delete\s+process\.env\.AI_GATEWAY_API_KEY/);
+    expect(VE_CORE_SRC).not.toMatch(/delete\s+process\.env\.ANTHROPIC_API_KEY/);
+    expect(VE_CORE_SRC).toMatch(/provider-free:fixed-dollar-ir-local/);
+  });
+
+  it("concurrent VE compiles leave env credentials unchanged", async () => {
+    const sentinelGw = `ve-gw-${Date.now()}`;
+    const sentinelAnth = `ve-anth-${Date.now()}`;
+    const prevGw = process.env.AI_GATEWAY_API_KEY;
+    const prevAnth = process.env.ANTHROPIC_API_KEY;
+    process.env.AI_GATEWAY_API_KEY = sentinelGw;
+    process.env.ANTHROPIC_API_KEY = sentinelAnth;
+    try {
+      const candidate = {
+        candidateId: "c1",
+        documentId: "doc-a",
+        sourceSectionRef: "4.09",
+        operativeSourceText:
+          "Debt under Debt Facilities in an aggregate principal amount outstanding not to exceed $100,000,000.",
+        relatedLeafCode: null,
+      };
+      const runs = await Promise.all(
+        Array.from({ length: 8 }, (_, i) =>
+          Promise.resolve(
+            compileVerifiedFixedDollarBridge({
+              companyId: `co-${i}`,
+              instrumentKey: `inst-${i}`,
+              asOfDate: "2024-12-31",
+              candidates: [candidate],
+            }),
+          ),
+        ),
+      );
+      expect(process.env.AI_GATEWAY_API_KEY).toBe(sentinelGw);
+      expect(process.env.ANTHROPIC_API_KEY).toBe(sentinelAnth);
+      expect(runs.every((r) => r.productionCapacityPublished === false)).toBe(true);
+      expect(runs.some((r) => r.path.includes("provider-free:fixed-dollar-ir-local"))).toBe(true);
+    } finally {
+      if (prevGw === undefined) delete process.env.AI_GATEWAY_API_KEY;
+      else process.env.AI_GATEWAY_API_KEY = prevGw;
+      if (prevAnth === undefined) delete process.env.ANTHROPIC_API_KEY;
+      else process.env.ANTHROPIC_API_KEY = prevAnth;
+    }
   });
 });
 
