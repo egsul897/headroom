@@ -12,4 +12,10 @@ export {
   type RejectedOperativeUnit,
   type CapacityPublicationClass,
   type OperativeCoverageReport,
+  type OperativeExecutionMode,
 } from "@/lib/contract-model/analysis/operative-covenant-package";
+export {
+  auditIndependentSourceCoverage,
+  type IndependentExpectedProvision,
+  type IndependentSourceCoverageReport,
+} from "@/lib/contract-model/analysis/independent-source-coverage";

@@ -3,16 +3,29 @@
  *
  * Connects existing components — structural index, package graph, operative
  * authority, definition/section exception catalogs, fixed-dollar / greater-of
- * verified IR, and evaluateVerifiedCapacity — into one issuer-agnostic API:
+ * verified IR, ratio-incurrence structure compile, and evaluateVerifiedCapacity —
+ * into one issuer-agnostic API:
  *
  *   compileOperativeCovenantPackage(packageContext)
  *
  * Does NOT recreate a parallel evaluator. Does NOT branch on companyId for
- * discovery or compilation. Unsupported / ambiguous structures fail closed.
+ * discovery or compilation. Does NOT mutate process.env credentials.
+ * Unsupported / ambiguous structures fail closed.
  * Never publishes AVAILABLE without authority + utilization + financial gates.
  */
 
 import { TRUSTED_IDENTITY_PRODUCTION_ACTIVATION } from "@/lib/capacity";
+import {
+  createProviderFreeStageCaller,
+  type StageCaller,
+} from "@/lib/contract-model/compiler/llm-caller";
+import { classifyFixedDollarBasket } from "@/lib/contract-model/compiler/fixed-dollar-basket";
+import { compileRatioIncurrencePermission } from "@/lib/contract-model/compiler/ratio-incurrence";
+import {
+  auditIndependentSourceCoverage,
+  type IndependentExpectedProvision,
+  type IndependentSourceCoverageReport,
+} from "./independent-source-coverage";
 import {
   compileFrozenDebtPackage,
   type CompileUnitRepresentation,
@@ -20,7 +33,7 @@ import {
   type OfflinePackageDocument,
 } from "./offline-package-compile";
 
-export const OPERATIVE_COVENANT_PACKAGE_VERSION = "operative-covenant-package.v1";
+export const OPERATIVE_COVENANT_PACKAGE_VERSION = "operative-covenant-package.v2";
 
 export type CapacityPublicationClass =
   | "SOURCE_BACKED_GROSS_CONTRACTUAL"
@@ -41,30 +54,51 @@ export type OperativeProvisionKind =
   | "DEFINITION_DEPENDENCY"
   | "OTHER_OR_UNKNOWN";
 
+/** Request-scoped execution — never mutates process-wide credentials. */
+export type OperativeExecutionMode = "PROVIDER_FREE" | "AUTHORIZED_PAID";
+
 export interface OperativePackageContext {
   companyId: string;
   packageKey: string;
   instrumentKey?: string;
   asOfDate?: string;
   documents: OfflinePackageDocument[];
-  /** Default false — Pass B / paid inference stay off unless explicitly authorized. */
+  /**
+   * Default PROVIDER_FREE. Injects synthetic StageCallers and forces
+   * authorizePaidInference=false. AUTHORIZED_PAID requires authorizationRef
+   * and still respects existing founder-paid gates inside the offline compiler.
+   */
+  executionMode?: OperativeExecutionMode;
+  /** @deprecated Prefer executionMode. Kept for callers; ignored when executionMode=PROVIDER_FREE. */
   authorizePaidInference?: boolean;
   authorizationRef?: string | null;
+  /** Optional injectable callers (tests). When omitted, PROVIDER_FREE uses createProviderFreeStageCaller(). */
+  discoveryCaller?: StageCaller;
+  amendmentCaller?: StageCaller;
+  /** Independently authored expected inventory for omission-coverage audit. */
+  independentExpectedInventory?: readonly IndependentExpectedProvision[];
 }
 
 export interface ExecutableOperativeUnit {
   unitId: string;
   sourceRef: string;
   documentId: string;
+  /** Governing document from operative-authority handoff when remapped; else discovery document. */
+  governingDocumentId: string;
+  operativeAuthorityClassification: string;
+  governingAuthorityConfirmed: boolean;
   provisionKind: OperativeProvisionKind;
   role: string;
   families: string[];
   executableAuthority: "VERIFIED_EXECUTABLE" | "REFUSED";
   capacityClass: CapacityPublicationClass;
+  /** Gross contractual ceiling — NOT unconditional permission when residualConditions nonempty. */
   sourceBackedGrossCapacityUsd: number | null;
   modeledHypotheticalCapacityUsd: number | null;
-  verifiedRemainingCapacityUsd: null; // always null until utilization + trusted issuer
+  verifiedRemainingCapacityUsd: null;
   productionAvailableCapacityUsd: null;
+  unconditionalPermission: false;
+  residualConditions: Array<{ kind: string; excerpt: string }>;
   currency: "USD" | null;
   sourceSpan: { charStart: number | null; charEnd: number | null };
   operativeText: string;
@@ -74,6 +108,11 @@ export interface ExecutableOperativeUnit {
   fidelityVerdict: string | null;
   productionRefusal: string | null;
   missingDependencies: string[];
+  ratioCompile: {
+    executableClass: string;
+    definitionClosureComplete: boolean;
+    missingDependencies: string[];
+  } | null;
   provenance: {
     discoveryMethods: string[];
     evidenceSignals: string[];
@@ -86,6 +125,8 @@ export interface RejectedOperativeUnit {
   unitId: string;
   sourceRef: string;
   documentId: string;
+  governingDocumentId: string | null;
+  operativeAuthorityClassification: string | null;
   provisionKind: OperativeProvisionKind;
   reason: string;
   supportStatus: string;
@@ -101,13 +142,15 @@ export interface OperativeCoverageReport {
   executableFixedDollarCount: number;
   executableGreaterOfCount: number;
   rejectedCount: number;
-  /** Honest inventory of provision kinds seen but not compiled to VE IR. */
+  /** Inventory of discovered-but-not-executable units (NOT omission coverage). */
   missedOrUnsupportedRelevant: Array<{
     sourceRef: string;
     documentId: string;
     provisionKind: OperativeProvisionKind;
     why: string;
   }>;
+  /** Present when caller supplied independentExpectedInventory. */
+  independentSourceCoverage: IndependentSourceCoverageReport | null;
 }
 
 export interface OperativeCovenantPackageResult {
@@ -116,6 +159,7 @@ export interface OperativeCovenantPackageResult {
   packageKey: string;
   instrumentKey: string;
   asOfDate: string;
+  executionMode: OperativeExecutionMode;
   executableUnits: ExecutableOperativeUnit[];
   rejectedUnits: RejectedOperativeUnit[];
   coverage: OperativeCoverageReport;
@@ -126,12 +170,13 @@ export interface OperativeCovenantPackageResult {
     verifiedRemainingPublished: boolean;
     trustedIdentityActivation: string;
     paidInferenceUsed: boolean;
+    providerFreeEnforced: boolean;
+    envCredentialsMutated: false;
     falseExecutableClassifications: number;
     autonomousCompilationProven: "NOT_PROVEN" | "PARTIAL" | "PROVEN";
     autonomousCompilationRationale: string;
     humanInterventions: { kind: string; detail: string }[];
   };
-  /** Full offline compile result for forensic consumers — same engine, not a fork. */
   offlineCompile: OfflinePackageCompileResult;
 }
 
@@ -171,12 +216,9 @@ function classifyProvisionKind(unit: CompileUnitRepresentation): OperativeProvis
 
 function capacityClassFor(unit: CompileUnitRepresentation): CapacityPublicationClass {
   if (unit.executableAuthority === "VERIFIED_EXECUTABLE" && unit.fixedDollarSlice?.fidelityVerdict === "PASS") {
-    // Gross contractual from source-backed IR — not remaining, not AVAILABLE.
     return "SOURCE_BACKED_GROSS_CONTRACTUAL";
   }
   if (unit.executableAuthority === "VERIFIED_EXECUTABLE" && unit.greaterOfSlice?.fidelityVerdict === "PASS") {
-    // Greater-of may be VE for structure but numeric capacity needs metric input.
-    if (unit.greaterOfSlice.availableAmountUsd != null) return "MODELED_HYPOTHETICAL";
     return "MODELED_HYPOTHETICAL";
   }
   return "UNSUPPORTED_OR_UNKNOWN";
@@ -202,7 +244,45 @@ function missingDepsFor(unit: CompileUnitRepresentation): string[] {
   return out;
 }
 
-function toExecutable(unit: CompileUnitRepresentation): ExecutableOperativeUnit {
+function authorityForUnit(
+  unit: CompileUnitRepresentation,
+  offline: OfflinePackageCompileResult,
+): {
+  governingDocumentId: string;
+  operativeAuthorityClassification: string;
+  governingAuthorityConfirmed: boolean;
+} {
+  const handoff = offline.operativeAuthorityHandoff;
+  const provision = handoff?.provisions.find((p) => {
+    if (p.governingDocumentId && p.governingDocumentId === unit.documentId) return true;
+    if (p.sectionRef && unit.sourceRef.startsWith(p.sectionRef)) return true;
+    if (p.definedTermRef && unit.sourceRef.toLowerCase().includes(p.definedTermRef.toLowerCase())) return true;
+    return false;
+  });
+  const governingDocumentId = provision?.governingDocumentId ?? unit.documentId;
+  const classification =
+    provision?.authorityClassification ??
+    offline.stages.operativeHandoff.authorityGate ??
+    "NO_OPERATIVE_STATE";
+  const confirmed =
+    offline.stages.operativeHandoff.authorityGate === "CONFIRMED_OPERATIVE_IDENTITY" &&
+    classification === "CONFIRMED_OPERATIVE";
+  return {
+    governingDocumentId,
+    operativeAuthorityClassification: classification,
+    governingAuthorityConfirmed: confirmed,
+  };
+}
+
+function residualConditionsFor(unit: CompileUnitRepresentation): Array<{ kind: string; excerpt: string }> {
+  const fd = classifyFixedDollarBasket(unit.operativeText);
+  return fd.residuals.map((r) => ({ kind: r.kind, excerpt: r.excerpt }));
+}
+
+function toExecutable(
+  unit: CompileUnitRepresentation,
+  offline: OfflinePackageCompileResult,
+): ExecutableOperativeUnit {
   const kind = classifyProvisionKind(unit);
   const capacityClass = capacityClassFor(unit);
   const fdUsd =
@@ -213,11 +293,33 @@ function toExecutable(unit: CompileUnitRepresentation): ExecutableOperativeUnit 
     capacityClass === "MODELED_HYPOTHETICAL"
       ? unit.greaterOfSlice?.availableAmountUsd ?? null
       : null;
+  const authority = authorityForUnit(unit, offline);
+  const residuals = residualConditionsFor(unit);
+
+  let ratioCompile: ExecutableOperativeUnit["ratioCompile"] = null;
+  if (kind === "RATIO_BASED_PERMISSION") {
+    const compiled = compileRatioIncurrencePermission({
+      companyId: offline.companyId,
+      instrumentKey: offline.instrumentKey,
+      sourceDocumentId: unit.documentId,
+      candidateRef: unit.discoveryId,
+      sourceSectionRef: unit.sourceRef,
+      operativeSourceText: unit.operativeText,
+    });
+    ratioCompile = {
+      executableClass: compiled.executableClass,
+      definitionClosureComplete: compiled.definitionClosureComplete,
+      missingDependencies: compiled.missingDependencies,
+    };
+  }
 
   return {
     unitId: unit.unitId,
     sourceRef: unit.sourceRef,
     documentId: unit.documentId,
+    governingDocumentId: authority.governingDocumentId,
+    operativeAuthorityClassification: authority.operativeAuthorityClassification,
+    governingAuthorityConfirmed: authority.governingAuthorityConfirmed,
     provisionKind: kind,
     role: unit.role,
     families: unit.families,
@@ -227,6 +329,8 @@ function toExecutable(unit: CompileUnitRepresentation): ExecutableOperativeUnit 
     modeledHypotheticalCapacityUsd: modeledUsd,
     verifiedRemainingCapacityUsd: null,
     productionAvailableCapacityUsd: null,
+    unconditionalPermission: false,
+    residualConditions: residuals,
     currency: fdUsd != null || modeledUsd != null ? "USD" : null,
     sourceSpan: unit.sourceSpan,
     operativeText: unit.operativeText,
@@ -234,11 +338,17 @@ function toExecutable(unit: CompileUnitRepresentation): ExecutableOperativeUnit 
     exceptionsAndConditions: [
       ...unit.capsAndThresholds.map((c) => `${c.kind}:${c.excerpt}`),
       ...unit.ratioMentions.map((r) => `RATIO:${r}`),
-    ].slice(0, 16),
+      ...residuals.map((r) => `RESIDUAL:${r.kind}:${r.excerpt}`),
+    ].slice(0, 24),
     crossReferences: unit.crossReferences,
     fidelityVerdict: unit.fixedDollarSlice?.fidelityVerdict ?? unit.greaterOfSlice?.fidelityVerdict ?? null,
     productionRefusal: unit.fixedDollarSlice?.productionRefusal ?? unit.greaterOfSlice?.productionRefusal ?? null,
-    missingDependencies: missingDepsFor(unit),
+    missingDependencies: [
+      ...missingDepsFor(unit),
+      ...(ratioCompile?.missingDependencies ?? []),
+      ...(authority.governingAuthorityConfirmed ? [] : ["governing_authority_not_confirmed_for_production"]),
+    ],
+    ratioCompile,
     provenance: {
       ...unit.provenance,
       operativePackageVersion: OPERATIVE_COVENANT_PACKAGE_VERSION,
@@ -246,11 +356,23 @@ function toExecutable(unit: CompileUnitRepresentation): ExecutableOperativeUnit 
   };
 }
 
-function toRejected(unit: CompileUnitRepresentation): RejectedOperativeUnit {
+function toRejected(
+  unit: CompileUnitRepresentation,
+  offline: OfflinePackageCompileResult,
+): RejectedOperativeUnit {
   const kind = classifyProvisionKind(unit);
+  const authority = authorityForUnit(unit, offline);
   let reason = `supportStatus=${unit.supportStatus}; executableAuthority=REFUSED`;
   if (kind === "RATIO_BASED_PERMISSION") {
-    reason = "Ratio baskets refuse until definition closure + financial dependencies are modeled";
+    const compiled = compileRatioIncurrencePermission({
+      companyId: offline.companyId,
+      instrumentKey: offline.instrumentKey,
+      sourceDocumentId: unit.documentId,
+      candidateRef: unit.discoveryId,
+      sourceSectionRef: unit.sourceRef,
+      operativeSourceText: unit.operativeText,
+    });
+    reason = `Ratio refuse: ${compiled.executableClass}; missing=${compiled.missingDependencies.join(",")}`;
   } else if (kind === "GRANDFATHERED_OR_NON_CAP") {
     reason = "Dollar amount present without cap-role (grandfathered / stated amount) — not new-incurrence ceiling";
   } else if (kind === "GREATER_OF_BASKET" && unit.greaterOfSlice == null) {
@@ -262,6 +384,8 @@ function toRejected(unit: CompileUnitRepresentation): RejectedOperativeUnit {
     unitId: unit.unitId,
     sourceRef: unit.sourceRef,
     documentId: unit.documentId,
+    governingDocumentId: authority.governingDocumentId,
+    operativeAuthorityClassification: authority.operativeAuthorityClassification,
     provisionKind: kind,
     reason,
     supportStatus: unit.supportStatus,
@@ -269,7 +393,10 @@ function toRejected(unit: CompileUnitRepresentation): RejectedOperativeUnit {
   };
 }
 
-function buildCoverage(units: CompileUnitRepresentation[]): OperativeCoverageReport {
+function buildCoverage(
+  units: CompileUnitRepresentation[],
+  independent: IndependentSourceCoverageReport | null,
+): OperativeCoverageReport {
   const kinds = units.map((u) => ({ u, kind: classifyProvisionKind(u) }));
   const missedOrUnsupportedRelevant = kinds
     .filter(({ u, kind }) => {
@@ -291,7 +418,7 @@ function buildCoverage(units: CompileUnitRepresentation[]): OperativeCoverageRep
       provisionKind: kind,
       why:
         kind === "RATIO_BASED_PERMISSION"
-          ? "Ratio permission discovered; executable IR refused pending financial definition closure"
+          ? "Discovered but unsupported/incomplete — not an omission gap"
           : kind === "GRANDFATHERED_OR_NON_CAP"
             ? "Grandfathered / non-cap dollar discovered; not compiled as new-incurrence ceiling"
             : u.executableAuthority === "REFUSED"
@@ -322,6 +449,7 @@ function buildCoverage(units: CompileUnitRepresentation[]): OperativeCoverageRep
     ).length,
     rejectedCount: units.filter((u) => u.executableAuthority === "REFUSED").length,
     missedOrUnsupportedRelevant,
+    independentSourceCoverage: independent,
   };
 }
 
@@ -346,19 +474,58 @@ function autonomousVerdict(
       rationale: "No source-backed verified executable units from generic catalog discovery.",
     };
   }
-  // Full PROVEN requires ratio + utilization + no hand-encoded leaf path elsewhere.
-  // This API proves the generalized source→discovery→VE path for supported families.
-  if (coverage.discoveredRatioPermissionCount > 0 && coverage.executableFixedDollarCount > 0) {
+  const omissionOk = coverage.independentSourceCoverage?.omissionCoverageComplete !== false;
+  if (coverage.discoveredRatioPermissionCount > 0 && coverage.executableFixedDollarCount > 0 && omissionOk) {
     return {
       verdict: "PARTIAL",
       rationale:
-        "Generic discovery + fixed-dollar/greater-of VE compile proven across packages; ratio permissions discovered but not executable; production AVAILABLE refused.",
+        "Generic discovery + fixed-dollar/greater-of VE compile proven; ratio structure compile present but numeric VE refused; production AVAILABLE refused; P0 provider-free enforced.",
     };
   }
   return {
     verdict: "PARTIAL",
     rationale:
-      "Generic discovery + verified fixed-dollar/greater-of compile proven; remaining/AVAILABLE and full ratio closure not proven.",
+      "Generic discovery + verified fixed-dollar/greater-of compile proven; remaining/AVAILABLE and full ratio numeric closure not proven.",
+  };
+}
+
+function resolveExecution(packageContext: OperativePackageContext): {
+  mode: OperativeExecutionMode;
+  authorizePaidInference: boolean;
+  discoveryCaller: StageCaller;
+  amendmentCaller: StageCaller;
+  providerFreeEnforced: boolean;
+} {
+  const mode: OperativeExecutionMode = packageContext.executionMode ?? "PROVIDER_FREE";
+  if (mode === "PROVIDER_FREE") {
+    const free = packageContext.discoveryCaller ?? createProviderFreeStageCaller();
+    const freeAmd = packageContext.amendmentCaller ?? createProviderFreeStageCaller();
+    if (!free.isSynthetic || !freeAmd.isSynthetic) {
+      throw new Error(
+        "PROVIDER_FREE execution requires synthetic StageCallers — refuse non-synthetic injection",
+      );
+    }
+    return {
+      mode,
+      authorizePaidInference: false,
+      discoveryCaller: free,
+      amendmentCaller: freeAmd,
+      providerFreeEnforced: true,
+    };
+  }
+  // AUTHORIZED_PAID — still requires explicit authorizationRef; offline compiler
+  // and inference policy enforce founder-paid gates. Never deletes env credentials.
+  if (!packageContext.authorizationRef || packageContext.authorizationRef.trim().length === 0) {
+    throw new Error(
+      "AUTHORIZED_PAID execution requires a non-empty authorizationRef (existing founder-paid gate)",
+    );
+  }
+  return {
+    mode,
+    authorizePaidInference: true,
+    discoveryCaller: packageContext.discoveryCaller ?? createProviderFreeStageCaller(),
+    amendmentCaller: packageContext.amendmentCaller ?? createProviderFreeStageCaller(),
+    providerFreeEnforced: false,
   };
 }
 
@@ -367,20 +534,21 @@ function autonomousVerdict(
  * operative covenant units with capacity publication classes.
  *
  * Issuer-agnostic: discovery and compile paths do not branch on companyId.
+ * Never mutates process.env.
  */
 export async function compileOperativeCovenantPackage(
   packageContext: OperativePackageContext,
 ): Promise<OperativeCovenantPackageResult> {
-  delete process.env.AI_GATEWAY_API_KEY;
-  delete process.env.ANTHROPIC_API_KEY;
-
   const asOfDate = packageContext.asOfDate ?? new Date().toISOString().slice(0, 10);
+  const execution = resolveExecution(packageContext);
   const path: string[] = [
     "package-context",
+    `executionMode:${execution.mode}`,
     "structure→package-graph→amendment→operative-authority",
     "generic-discovery(pass-a+exception-catalogs+ratio-sections)",
-    "fixed-dollar|greater-of→evaluateVerifiedCapacity",
+    "fixed-dollar|greater-of|ratio-structure→evaluateVerifiedCapacity",
     "capacity-publication-classes",
+    "independent-source-coverage",
   ];
 
   const offline = await compileFrozenDebtPackage({
@@ -388,24 +556,44 @@ export async function compileOperativeCovenantPackage(
     packageKey: packageContext.packageKey,
     instrumentKey: packageContext.instrumentKey,
     documents: packageContext.documents,
-    authorizePaidInference: packageContext.authorizePaidInference ?? false,
+    authorizePaidInference: execution.authorizePaidInference,
     authorizationRef: packageContext.authorizationRef,
     asOfDate,
+    discoveryCaller: execution.discoveryCaller,
+    amendmentCaller: execution.amendmentCaller,
   });
 
   path.push(`catalogs:${offline.stages.discovery.exceptionCatalogCount}`);
   path.push(`clauses:${offline.stages.discovery.exceptionClauseCount}`);
   path.push(`units:${offline.units.length}`);
   path.push(`ve:${offline.summary.verifiedExecutableUnits}`);
+  path.push(`oaGate:${offline.stages.operativeHandoff.authorityGate}`);
 
+  // Refuse executable elevation when provisional identity blocks (preserve #306 path).
+  // Units already refused inside offline compile for PROVISIONAL_IDENTITY_BLOCKED.
   const executableUnits = offline.units
     .filter((u) => u.executableAuthority === "VERIFIED_EXECUTABLE")
-    .map(toExecutable);
-  const rejectedUnits = offline.units.filter((u) => u.executableAuthority === "REFUSED").map(toRejected);
-  const coverage = buildCoverage(offline.units);
+    .map((u) => toExecutable(u, offline));
+  const rejectedUnits = offline.units
+    .filter((u) => u.executableAuthority === "REFUSED")
+    .map((u) => toRejected(u, offline));
+
+  const independent =
+    packageContext.independentExpectedInventory && packageContext.independentExpectedInventory.length > 0
+      ? auditIndependentSourceCoverage({
+          expected: packageContext.independentExpectedInventory,
+          units: offline.units.map((u) => ({
+            sourceRef: u.sourceRef,
+            documentId: u.documentId,
+            executableAuthority: u.executableAuthority,
+            provisionKind: classifyProvisionKind(u),
+          })),
+        })
+      : null;
+
+  const coverage = buildCoverage(offline.units, independent);
   const { verdict, rationale } = autonomousVerdict(coverage, offline);
 
-  // Hard honesty: never emit AVAILABLE / verified remaining from this path.
   for (const u of executableUnits) {
     if (u.capacityClass === "PRODUCTION_AVAILABLE" || u.productionAvailableCapacityUsd != null) {
       throw new Error(`compileOperativeCovenantPackage refused AVAILABLE for ${u.unitId}`);
@@ -413,9 +601,25 @@ export async function compileOperativeCovenantPackage(
     if (u.verifiedRemainingCapacityUsd != null) {
       throw new Error(`compileOperativeCovenantPackage refused verified remaining for ${u.unitId}`);
     }
+    if (u.unconditionalPermission !== false) {
+      throw new Error(`GROSS must never claim unconditionalPermission for ${u.unitId}`);
+    }
     if (u.capacityClass === "SOURCE_BACKED_GROSS_CONTRACTUAL" && u.sourceBackedGrossCapacityUsd == null) {
       throw new Error(`GROSS unit missing amount: ${u.unitId}`);
     }
+    if (!u.governingDocumentId) {
+      throw new Error(`Executable unit missing governingDocumentId: ${u.unitId}`);
+    }
+    if (u.sourceSpan.charStart == null || u.sourceSpan.charEnd == null) {
+      // Soft: catalog parents may lack spans; leaf VE clauses must have spans.
+      if (/\([a-z0-9]+\)$/i.test(u.sourceRef) || /\(\d{1,2}\)\([a-z0-9]+\)$/i.test(u.sourceRef)) {
+        throw new Error(`Executable catalog clause missing source span: ${u.unitId} ${u.sourceRef}`);
+      }
+    }
+  }
+
+  if (execution.mode === "PROVIDER_FREE" && offline.paidInferenceUsed) {
+    throw new Error("PROVIDER_FREE execution must not report paidInferenceUsed=true");
   }
 
   return {
@@ -424,6 +628,7 @@ export async function compileOperativeCovenantPackage(
     packageKey: packageContext.packageKey,
     instrumentKey: offline.instrumentKey,
     asOfDate,
+    executionMode: execution.mode,
     executableUnits,
     rejectedUnits,
     coverage,
@@ -434,6 +639,8 @@ export async function compileOperativeCovenantPackage(
       verifiedRemainingPublished: false,
       trustedIdentityActivation: TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status,
       paidInferenceUsed: offline.paidInferenceUsed,
+      providerFreeEnforced: execution.providerFreeEnforced,
+      envCredentialsMutated: false,
       falseExecutableClassifications: offline.summary.falseExecutableClassifications,
       autonomousCompilationProven: verdict,
       autonomousCompilationRationale: rationale,
@@ -442,3 +649,5 @@ export async function compileOperativeCovenantPackage(
     offlineCompile: offline,
   };
 }
+
+export type { IndependentExpectedProvision, IndependentSourceCoverageReport };

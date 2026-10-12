@@ -816,12 +816,15 @@ export async function compileFrozenDebtPackage(
     let charStart: number | null = null;
     let charEnd: number | null = null;
     for (const cat of exceptionCatalogs) {
-      const sectionTerm = cat.termExact.replace(/^Section\s+/i, "");
-      const clause = cat.clauses.find(
-        (cl) =>
-          candidate.normalizedSourceRef === `def:${cat.termExact}(${cl.marker})` ||
-          candidate.normalizedSourceRef === `${sectionTerm}(${cl.marker})`,
-      );
+      // Definition catalogs: def:Permitted Debt(a) / def:Permitted Debt(1)(a)
+      // Section catalogs use termExact "Section 7.01 Exceptions" but refs are "7.01(i)".
+      const sectionRefMatch = cat.termExact.match(/^Section\s+(\d+\.\d+)\b/i);
+      const sectionRef = sectionRefMatch?.[1] ?? null;
+      const clause = cat.clauses.find((cl) => {
+        if (candidate.normalizedSourceRef === `def:${cat.termExact}(${cl.marker})`) return true;
+        if (sectionRef && candidate.normalizedSourceRef === `${sectionRef}(${cl.marker})`) return true;
+        return false;
+      });
       if (clause) {
         charStart = clause.documentCharStart;
         charEnd = clause.documentCharEnd;

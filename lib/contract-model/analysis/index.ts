@@ -26,4 +26,11 @@ export {
   type RejectedOperativeUnit,
   type CapacityPublicationClass,
   type OperativeCoverageReport,
+  type OperativeExecutionMode,
 } from "./operative-covenant-package";
+export {
+  auditIndependentSourceCoverage,
+  type IndependentExpectedProvision,
+  type IndependentCoverageDisposition,
+  type IndependentSourceCoverageReport,
+} from "./independent-source-coverage";

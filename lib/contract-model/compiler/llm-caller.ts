@@ -94,3 +94,16 @@ export function getStageCaller(maxTokens?: number): StageCaller {
   }
   return new SyntheticStageCaller();
 }
+
+/**
+ * Explicit request-scoped provider-free caller. Does not read or mutate
+ * process.env — safe for concurrent compilation while credentials remain set.
+ */
+export function createProviderFreeStageCaller(): StageCaller {
+  return new SyntheticStageCaller();
+}
+
+/** True when a StageCaller is the zero-cost synthetic path (no paid provider). */
+export function isProviderFreeStageCaller(caller: StageCaller): boolean {
+  return caller.isSynthetic === true;
+}
