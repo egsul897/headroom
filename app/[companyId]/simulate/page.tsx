@@ -12,7 +12,7 @@ import {
   attemptVerifiedSimulate,
   summarizeVerifiedSimulate,
 } from "@/lib/product/unified-position/certified-simulate-bridge";
-import { assembleCfoWorkflow } from "@/lib/customer-workflow/assemble-cfo-workflow";
+import { requireAssembledCfoWorkflow } from "@/lib/customer-workflow/require-workflow-access";
 import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
 import { SimulateClient } from "./SimulateClient";
 
@@ -23,6 +23,7 @@ export const metadata = { title: "Headroom — Simulate" };
  * Without an executable rulebook and financial snapshot, expect NOT DETERMINABLE —
  * never a fabricated pass. Optional ?action=&amount=&secured=&asOf= seeds from Ask.
  * Verified path is attempted via existing gates (no VEP invented); blockers shown precisely.
+ * Access-gated before sensitive loaders; capacity state matches Position.
  */
 export default async function SimulatePage({
   params,
@@ -47,7 +48,15 @@ export default async function SimulatePage({
           ? "UNSECURED_DEBT"
           : "SECURED_DEBT";
 
-  const [readiness, data, documents, definedTermsByProvision, solverContext, verified, workflow] =
+  // Authorize before any parallel sensitive loads (assembler also gates).
+  const workflow = await requireAssembledCfoWorkflow({
+    companyId,
+    simulateAmountMillions: amountMillions,
+    simulateKind: kind,
+    evaluationDate,
+  });
+
+  const [readiness, data, documents, definedTermsByProvision, solverContext, verified] =
     await Promise.all([
       loadCapacityReadiness(companyId),
       loadCovenantDataOrEmpty(companyId, asOfDate),
@@ -61,12 +70,6 @@ export default async function SimulatePage({
         kind,
         secured: handoff.secured,
         verifiedPackage: null,
-      }),
-      assembleCfoWorkflow({
-        companyId,
-        simulateAmountMillions: amountMillions,
-        simulateKind: kind,
-        evaluationDate,
       }),
     ]);
   const verifiedSummary = summarizeVerifiedSimulate(verified);

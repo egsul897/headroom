@@ -2,17 +2,18 @@ import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
-import { assembleCfoWorkflow } from "@/lib/customer-workflow/assemble-cfo-workflow";
+import { requireAssembledCfoWorkflow } from "@/lib/customer-workflow/require-workflow-access";
 
 export const metadata = { title: "Headroom — Analyze" };
 
 /**
  * Analyze — extraction / operative-authority status.
  * Never implies analysis succeeded merely because a file uploaded.
+ * Access-gated before any sensitive assembler loads.
  */
 export default async function AnalyzePage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const wf = await assembleCfoWorkflow({ companyId });
+  const wf = await requireAssembledCfoWorkflow({ companyId });
   const { analyze, upload } = wf;
 
   return (

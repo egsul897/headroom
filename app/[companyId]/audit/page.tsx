@@ -2,17 +2,18 @@ import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
-import { assembleCfoWorkflow } from "@/lib/customer-workflow/assemble-cfo-workflow";
+import { requireAssembledCfoWorkflow } from "@/lib/customer-workflow/require-workflow-access";
 
 export const metadata = { title: "Headroom — Audit" };
 
 /**
  * Audit — why a result is or is not publishable.
- * Never claims production readiness while trusted identity / evidence gates remain blocked.
+ * Access-gated before sensitive loads. Never claims production readiness while
+ * trusted identity / evidence gates remain blocked.
  */
 export default async function AuditPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const wf = await assembleCfoWorkflow({ companyId });
+  const wf = await requireAssembledCfoWorkflow({ companyId });
   const { audit, workflow } = wf;
 
   return (

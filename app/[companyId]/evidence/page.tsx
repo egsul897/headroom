@@ -17,15 +17,18 @@ import {
   buildEvidenceReviewView,
   explainRuleExecutability,
 } from "@/lib/customer-workflow/evidence-view";
+import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
 
 export const metadata = { title: "Headroom — Evidence" };
 
 /**
  * Evidence / review journey — uploaded docs, clauses, definitions, amendments,
  * verification evidence, reviewer decisions, missing inputs.
+ * Access-gated before sensitive loaders.
  */
 export default async function EvidencePage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
+  await assertCfoPageAccessOrNotFound({ companyId });
 
   const [candidates, documents, intelligence, amendment, review, approvals, readiness] = await Promise.all([
     prisma.extractionCandidate.findMany({

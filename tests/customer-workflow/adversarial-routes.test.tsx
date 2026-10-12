@@ -372,10 +372,10 @@ describe("journey navigation", () => {
 });
 
 describe("route source guards", () => {
-  it("Position page labels remaining non-authoritative and references PR #268 gap", () => {
+  it("Position page labels remaining non-authoritative and refuses dashboard-flag AVAILABLE", () => {
     const src = readFileSync(path.join(process.cwd(), "app/[companyId]/position/page.tsx"), "utf8");
     expect(src).toMatch(/MODELED \/ NOT VERIFIED|NOT_PRODUCTION_AUTHORITATIVE|remainingIsAuthoritative: false/);
-    expect(src).toMatch(/#268|PR #268/);
+    expect(src).toMatch(/Dashboard authority flags alone never publish AVAILABLE|remainingIsAuthoritative: false/);
     expect(src).toMatch(/buildPositionView/);
     expect(src).not.toMatch(/remainingCapacity.*AVAILABLE/);
   });

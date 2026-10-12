@@ -1,9 +1,14 @@
 /**
- * Agent 3 — End-to-end CFO product workflow acceptance.
+ * Agent 3 — CFO product workflow presentation / honesty acceptance.
  *
- * Covers Upload → Analyze → Review → Position → Simulate → Audit honesty gates
- * on issuer-neutral assemblers. Demonstrates Matthews + CONMED (second authentic
- * issuer) without companyId branches in generic product code.
+ * These cases exercise issuer-neutral presentation assemblers with constructed
+ * inputs. They are NOT full browser or database-backed end-to-end acceptance.
+ *
+ * Server-side access gating + authority integration coverage lives in
+ * `tests/product/cfo-workflow-access-integration.test.ts`.
+ *
+ * Demonstrates Matthews + CONMED (second authentic issuer) without companyId
+ * branches in generic product code.
  */
 import { describe, expect, it } from "vitest";
 import { readFileSync, existsSync } from "node:fs";
@@ -350,7 +355,7 @@ describe("E. Audit publishability", () => {
   });
 });
 
-describe("F. Cross-tenant access refusal", () => {
+describe("F. Cross-tenant / forged identity refusal (unit)", () => {
   it("refuseCrossTenantCompanyId blocks out-of-scope company", () => {
     const ok = refuseCrossTenantCompanyId({
       requestedCompanyId: "tenant-b",
@@ -360,10 +365,11 @@ describe("F. Cross-tenant access refusal", () => {
     if (!ok.ok) expect(ok.blockers.join(" ")).toMatch(/cross-tenant/i);
   });
 
-  it("gateWorkspaceAccess refuses forged principal / cross-tenant", async () => {
+  it("forged principal is refused (DB-backed gate coverage in access-integration)", async () => {
     const forged = await gateWorkspaceAccess({
       companyId: "tenant-b",
       principal: { role: "admin", companyId: "tenant-a" },
+      companyIdentity: { id: "tenant-b", tenantKind: "CUSTOMER" },
     });
     expect(forged.allowed).toBe(false);
     const denied = await authorizeDecision({
@@ -372,7 +378,6 @@ describe("F. Cross-tenant access refusal", () => {
       decision: "AUTHORIZE_PRODUCTION_CAPACITY",
     });
     expect(denied.granted).toBe(false);
-    // Bundle constant remains available for adapters — not auto-granted here.
     expect(PERMISSION_BUNDLES.PRODUCTION_CAPACITY_AUTHORIZER).toContain("AUTHORIZE_PRODUCTION_CAPACITY");
   });
 });

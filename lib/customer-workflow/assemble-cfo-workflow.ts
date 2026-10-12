@@ -1,7 +1,12 @@
 /**
  * Server-side assembler for the CFO product workflow.
- * Loads existing services and projects truthful presentation models.
- * No issuer-specific companyId branches. No fixture fill for missing capacity.
+ *
+ * Authorization runs BEFORE any sensitive loader. On denial, returns immediately
+ * without loading documents, financials, approvals, or covenant intelligence.
+ *
+ * Capacity: consumes a real ProductCapacityView (or VerifiedRemainingResult →
+ * toProductCapacityView) when supplied. Never manufactures PRODUCTION_AUTHORITATIVE /
+ * AVAILABLE / COMPLETE / AUTHENTIC from a dashboard boolean.
  */
 
 import { getCompanyDashboard, getDocumentDetails } from "@/lib/dashboard-service";
@@ -19,6 +24,11 @@ import {
   type UnifiedTxnKind,
 } from "@/lib/product/unified-position/certified-simulate-bridge";
 import { TRUSTED_IDENTITY_PRODUCTION_ACTIVATION } from "@/lib/capacity/identity/activation";
+import {
+  toProductCapacityView,
+  type ProductCapacityView,
+} from "@/lib/capacity/product-capacity-view";
+import type { VerifiedRemainingResult } from "@/lib/capacity/verified-remaining";
 import { buildUploadPackageView, type UploadPackageView } from "./upload-view";
 import { buildAnalyzeView, type AnalyzeViewModel } from "./analyze-view";
 import { buildEvidenceReviewView } from "./evidence-view";
@@ -31,13 +41,17 @@ import {
   type SeparatedCapacityClaims,
 } from "./capacity-state";
 import { buildCfoWorkflowState, type CfoWorkflowState } from "./workflow-state";
-import { gateWorkspaceAccess } from "./workspace-access";
-import type { ProductCapacityView } from "@/lib/capacity/product-capacity-view";
+import {
+  gateWorkspaceAccess,
+  loadWorkspaceCompanyIdentity,
+  type WorkspaceCompanyIdentityLoader,
+} from "./workspace-access";
 
-export interface AssembledCfoWorkflow {
+export interface AssembledCfoWorkflowOk {
+  ok: true;
+  accessAllowed: true;
   companyId: string;
-  accessAllowed: boolean;
-  accessBlockers: string[];
+  accessBlockers: [];
   upload: UploadPackageView;
   analyze: AnalyzeViewModel;
   review: ReviewViewModel;
@@ -48,54 +62,70 @@ export interface AssembledCfoWorkflow {
     secured: SeparatedCapacityClaims;
     unsecured: SeparatedCapacityClaims;
   };
+  /** Shared capacity identity used by Position and Simulate. */
+  sharedCapacityIdentity: {
+    securedProductView: ProductCapacityView | null;
+    unsecuredProductView: ProductCapacityView | null;
+  };
   workflow: CfoWorkflowState;
   trustedIdentityStatus: typeof TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status;
 }
 
-function claimsFromDashboardSide(args: {
+export interface AssembledCfoWorkflowDenied {
+  ok: false;
+  accessAllowed: false;
+  companyId: string;
+  accessBlockers: string[];
+  trustedIdentityStatus: typeof TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status;
+}
+
+export type AssembledCfoWorkflow = AssembledCfoWorkflowOk | AssembledCfoWorkflowDenied;
+
+/** Injectable loaders — used to prove denial prevents invocation. */
+export interface CfoWorkflowSensitiveLoaders {
+  loadCapacityReadiness: typeof loadCapacityReadiness;
+  loadRulebookReadiness: typeof loadRulebookReadiness;
+  getDocumentDetails: typeof getDocumentDetails;
+  listCustomerDocumentIntelligence: typeof listCustomerDocumentIntelligence;
+  getLatestAmendmentPackage: typeof getLatestAmendmentPackage;
+  loadCovenantReviewWorkspace: typeof loadCovenantReviewWorkspace;
+  listReviewerApprovals: typeof listReviewerApprovals;
+  getCompanyDashboard: typeof getCompanyDashboard;
+  attemptVerifiedSimulate: typeof attemptVerifiedSimulate;
+}
+
+const defaultLoaders: CfoWorkflowSensitiveLoaders = {
+  loadCapacityReadiness,
+  loadRulebookReadiness,
+  getDocumentDetails,
+  listCustomerDocumentIntelligence,
+  getLatestAmendmentPackage,
+  loadCovenantReviewWorkspace,
+  listReviewerApprovals,
+  getCompanyDashboard,
+  attemptVerifiedSimulate,
+};
+
+/**
+ * Project dashboard modeled figures without upgrading authority.
+ * Dashboard `utilizationRemainingAuthority` alone never certifies AVAILABLE.
+ */
+export function claimsFromDashboardSide(args: {
   modeledRemaining: number | null | undefined;
-  productionAuthoritative: boolean;
   binding: string[];
   missing: string[];
+  /** Real shared product view only — never synthesized from dashboard flags. */
   productView?: ProductCapacityView | null;
+  /**
+   * @deprecated Ignored. Kept so call-sites that previously passed a dashboard
+   * boolean cannot accidentally restore synthetic authority via typo reuse.
+   */
+  productionAuthoritative?: boolean;
 }): SeparatedCapacityClaims {
+  void args.productionAuthoritative;
   if (args.productView) {
     return separateCapacityClaimsFromProductView(args.productView, {
       modeledAmountMillions: args.modeledRemaining ?? null,
-      bindingRestrictions: args.binding,
-      missingInputs: args.missing,
-    });
-  }
-  // Synthesize a minimal product view only when production-authoritative remaining
-  // is already stamped by the shared engine — never invent figures from null.
-  if (
-    args.productionAuthoritative &&
-    args.modeledRemaining != null &&
-    Number.isFinite(args.modeledRemaining)
-  ) {
-    const synthetic: ProductCapacityView = {
-      surface: "POSITION",
-      capacityRuleId: "dashboard-shared-engine",
-      asOf: "",
-      grossCapacity: null,
-      grossUnlimited: false,
-      knownUtilization: null,
-      unknownUtilization: false,
-      utilizationKnowledge: "COMPLETE",
-      supportedRemainingCapacity: args.modeledRemaining,
-      governingConditions: args.binding,
-      crossDocumentConstraints: [],
-      sourceCitations: [],
-      certificationStatus: "PRODUCTION_AUTHORITATIVE",
-      publicationLabel: "AVAILABLE",
-      remainingStatus: "REMAINING_SUPPORTED",
-      mayPublishAvailable: true,
-      blockers: args.missing,
-      note: "Production-authoritative remaining from shared dashboard engine.",
-      authenticityOfUtilization: "AUTHENTIC",
-    };
-    return separateCapacityClaimsFromProductView(synthetic, {
-      modeledAmountMillions: args.modeledRemaining,
       bindingRestrictions: args.binding,
       missingInputs: args.missing,
     });
@@ -105,9 +135,21 @@ function claimsFromDashboardSide(args: {
     bindingRestrictions: args.binding,
     missingInputs: [
       ...args.missing,
-      "Shared ProductCapacityView not supplied — verified remaining withheld (not invented).",
+      "No verified ProductCapacityView supplied — verified remaining refused. Dashboard authority flags do not certify AVAILABLE.",
     ],
   });
+}
+
+/** True when a dashboard-looking flag alone must not publish AVAILABLE. */
+export function dashboardFlagAloneCannotPublishAvailable(args: {
+  utilizationRemainingAuthority?: string | null;
+  productView?: ProductCapacityView | null;
+}): boolean {
+  const flagLooksAuthoritative = args.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
+  if (!flagLooksAuthoritative) return true;
+  // Even with the flag, without a real product view that mayPublishAvailable, refuse.
+  if (!args.productView || args.productView.mayPublishAvailable !== true) return true;
+  return false;
 }
 
 export async function assembleCfoWorkflow(args: {
@@ -116,12 +158,50 @@ export async function assembleCfoWorkflow(args: {
   simulateAmountMillions?: number;
   simulateKind?: UnifiedTxnKind;
   evaluationDate?: string;
+  /**
+   * Optional real capacity views from the shared verified-remaining path
+   * (Agent 2 / product-capacity-view). Never invented here.
+   */
+  productCapacityBySide?: {
+    secured?: ProductCapacityView | null;
+    unsecured?: ProductCapacityView | null;
+  };
+  /** Optional raw verified-remaining results — projected via toProductCapacityView. */
+  verifiedRemainingBySide?: {
+    secured?: VerifiedRemainingResult | null;
+    unsecured?: VerifiedRemainingResult | null;
+  };
+  loaders?: Partial<CfoWorkflowSensitiveLoaders>;
+  /** Injectable company identity loader (tests / offline). */
+  companyIdentityLoader?: WorkspaceCompanyIdentityLoader;
+  /** Test hook: incremented only when sensitive loaders are about to run. */
+  onSensitiveLoad?: () => void;
 }): Promise<AssembledCfoWorkflow> {
   const companyId = args.companyId;
+  const loaders = { ...defaultLoaders, ...args.loaders };
+  const identityLoader = args.companyIdentityLoader ?? loadWorkspaceCompanyIdentity;
+
+  // 1) Minimal identity for the gate (id + tenantKind only).
+  const identity = await identityLoader(companyId);
   const access = await gateWorkspaceAccess({
     companyId,
     principal: args.principal,
+    companyIdentity: identity,
+    companyIdentityLoader: identityLoader,
   });
+
+  // 2) Stop immediately — no documents / financials / approvals / intelligence.
+  if (!access.allowed) {
+    return {
+      ok: false,
+      accessAllowed: false,
+      companyId,
+      accessBlockers: access.blockers,
+      trustedIdentityStatus: TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status,
+    };
+  }
+
+  args.onSensitiveLoad?.();
 
   const [
     readiness,
@@ -132,13 +212,13 @@ export async function assembleCfoWorkflow(args: {
     reviewWs,
     approvals,
   ] = await Promise.all([
-    loadCapacityReadiness(companyId),
-    loadRulebookReadiness(companyId),
-    getDocumentDetails(companyId),
-    listCustomerDocumentIntelligence(companyId),
-    getLatestAmendmentPackage(companyId),
-    loadCovenantReviewWorkspace(companyId).catch(() => null),
-    listReviewerApprovals(companyId).catch(() => []),
+    loaders.loadCapacityReadiness(companyId),
+    loaders.loadRulebookReadiness(companyId),
+    loaders.getDocumentDetails(companyId),
+    loaders.listCustomerDocumentIntelligence(companyId),
+    loaders.getLatestAmendmentPackage(companyId),
+    loaders.loadCovenantReviewWorkspace(companyId).catch(() => null),
+    loaders.listReviewerApprovals(companyId).catch(() => []),
   ]);
 
   const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
@@ -237,7 +317,7 @@ export async function assembleCfoWorkflow(args: {
   let dashboard = null;
   let dashboardError: string | null = null;
   try {
-    dashboard = await getCompanyDashboard(companyId);
+    dashboard = await loaders.getCompanyDashboard(companyId);
   } catch (err) {
     if (err instanceof FinancialIdentityError) {
       dashboardError =
@@ -254,26 +334,35 @@ export async function assembleCfoWorkflow(args: {
     ...(dashboardError ? [dashboardError] : []),
   ];
 
+  const securedProductView =
+    args.productCapacityBySide?.secured ??
+    (args.verifiedRemainingBySide?.secured
+      ? toProductCapacityView("POSITION", args.verifiedRemainingBySide.secured)
+      : null);
+  const unsecuredProductView =
+    args.productCapacityBySide?.unsecured ??
+    (args.verifiedRemainingBySide?.unsecured
+      ? toProductCapacityView("POSITION", args.verifiedRemainingBySide.unsecured)
+      : null);
+
   const securedClaims = claimsFromDashboardSide({
     modeledRemaining: dashboard?.capacity.secured.remainingCapacity,
-    productionAuthoritative:
-      dashboard?.capacity.secured.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE",
     binding: [
       dashboard?.capacity.secured.packageAuthoritative?.bindingProvisionCode,
       dashboard?.capacity.secured.binding?.documentName,
     ].filter((x): x is string => Boolean(x)),
     missing: missingBase,
+    productView: securedProductView,
   });
 
   const unsecuredClaims = claimsFromDashboardSide({
     modeledRemaining: dashboard?.capacity.unsecured.remainingCapacity,
-    productionAuthoritative:
-      dashboard?.capacity.unsecured.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE",
     binding: [
       dashboard?.capacity.unsecured.packageAuthoritative?.bindingProvisionCode,
       dashboard?.capacity.unsecured.binding?.documentName,
     ].filter((x): x is string => Boolean(x)),
     missing: missingBase,
+    productView: unsecuredProductView,
   });
 
   const position = buildPositionView({
@@ -291,7 +380,7 @@ export async function assembleCfoWorkflow(args: {
   const amountMillions = args.simulateAmountMillions ?? 0;
   const kind = args.simulateKind ?? "SECURED_DEBT";
 
-  const verified = await attemptVerifiedSimulate({
+  const verified = await loaders.attemptVerifiedSimulate({
     companyId,
     evaluationDate,
     amountMillions,
@@ -299,6 +388,7 @@ export async function assembleCfoWorkflow(args: {
     verifiedPackage: null,
   });
 
+  // Simulate uses the same secured capacity claims identity as Position.
   const simulate = buildSimulateView({
     companyId,
     amountMillions,
@@ -330,9 +420,10 @@ export async function assembleCfoWorkflow(args: {
   });
 
   return {
+    ok: true,
+    accessAllowed: true,
     companyId,
-    accessAllowed: access.allowed,
-    accessBlockers: access.allowed ? [] : access.blockers,
+    accessBlockers: [],
     upload,
     analyze,
     review,
@@ -340,6 +431,10 @@ export async function assembleCfoWorkflow(args: {
     simulate,
     audit,
     capacityBySide: { secured: securedClaims, unsecured: unsecuredClaims },
+    sharedCapacityIdentity: {
+      securedProductView,
+      unsecuredProductView,
+    },
     workflow,
     trustedIdentityStatus: TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status,
   };

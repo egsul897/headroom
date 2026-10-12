@@ -14,17 +14,19 @@ import { buildPositionView } from "@/lib/customer-workflow/position-view";
 import { presentCapacityClaim } from "@/lib/customer-workflow/status-contract";
 import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
 import { separateCapacityClaimsFromProductView } from "@/lib/customer-workflow/capacity-state";
+import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
 
 export const metadata = { title: "Headroom — Position" };
 
 /**
  * Position — debt / covenant capacity workspace.
  * Consumes the shared capacity engine + readiness loaders. Never hardcodes
- * issuer arithmetic. Remaining from the legacy path is MODELED / NOT VERIFIED
- * unless utilizationRemainingAuthority is PRODUCTION_AUTHORITATIVE (#268).
+ * issuer arithmetic. Dashboard authority flags alone never publish AVAILABLE.
+ * Access-gated before sensitive loaders.
  */
 export default async function PositionPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
+  await assertCfoPageAccessOrNotFound({ companyId });
   const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
 
   if (isConmed) {
@@ -155,28 +157,22 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     separatedClaims: { secured: securedSeparated, unsecured: unsecuredSeparated },
   });
 
-  // Legacy package figures at amount=0 are modeled capacity — not verified AVAILABLE,
-  // and not re-labeled as GROSS_CONTRACTUAL unless the engine publication says so.
-  const securedAuth =
-    dashboard?.capacity.secured.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
-  const unsecuredAuth =
-    dashboard?.capacity.unsecured.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
+  // Legacy package figures at amount=0 are modeled capacity — not verified AVAILABLE.
+  // Dashboard utilizationRemainingAuthority alone must NEVER publish AVAILABLE.
   const securedModeled = presentCapacityClaim({
     claimKind: "REMAINING",
     amountMillions: dashboard?.capacity.secured.packageAuthoritative?.remainingCapacity ?? null,
-    remainingIsAuthoritative: securedAuth,
-    publicationLabel: securedAuth
-      ? "AVAILABLE"
-      : dashboard?.capacity.secured.packageAuthoritative?.label ?? "NOT_PRODUCTION_AUTHORITATIVE",
+    remainingIsAuthoritative: false,
+    publicationLabel:
+      dashboard?.capacity.secured.packageAuthoritative?.label ?? "NOT_PRODUCTION_AUTHORITATIVE",
     unavailableReason: "Modeled package capacity not published for secured side.",
   });
   const unsecuredModeled = presentCapacityClaim({
     claimKind: "REMAINING",
     amountMillions: dashboard?.capacity.unsecured.packageAuthoritative?.remainingCapacity ?? null,
-    remainingIsAuthoritative: unsecuredAuth,
-    publicationLabel: unsecuredAuth
-      ? "AVAILABLE"
-      : dashboard?.capacity.unsecured.packageAuthoritative?.label ?? "NOT_PRODUCTION_AUTHORITATIVE",
+    remainingIsAuthoritative: false,
+    publicationLabel:
+      dashboard?.capacity.unsecured.packageAuthoritative?.label ?? "NOT_PRODUCTION_AUTHORITATIVE",
     unavailableReason: "Modeled package capacity not published for unsecured side.",
   });
   const grossUnavailable = presentCapacityClaim({

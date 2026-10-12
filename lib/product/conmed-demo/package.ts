@@ -4,8 +4,21 @@
  * No capacity formulas — capacity remains NOT_DETERMINABLE until financials + IR exist.
  */
 
+import { registerEvaluationAnonymousReadGrant } from "@/lib/customer-workflow/evaluation-anonymous-read-policy";
+
 export const CONMED_DEMO_COMPANY_ID = "conmed-demo";
 export const CONMED_DEMO_PACKAGE_KEY = "conmed-2025-credit-facility";
+
+/**
+ * Explicit EVALUATION anonymous-read grant for the CONMED demo workspace.
+ * Access still requires tenantKind === EVALUATION in persistence — this grant
+ * alone is insufficient for CUSTOMER workspaces.
+ */
+registerEvaluationAnonymousReadGrant({
+  companyId: CONMED_DEMO_COMPANY_ID,
+  policyBasis: "code:conmed-demo-package-explicit-evaluation-anonymous-read",
+  allowAnonymousRead: true,
+});
 
 export const CONMED_DEMO_COMPANY = {
   id: CONMED_DEMO_COMPANY_ID,

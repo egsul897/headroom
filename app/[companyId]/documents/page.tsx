@@ -12,14 +12,17 @@ import {
 } from "@/lib/product/customer-intelligence/load";
 import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
+import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
 
 export const metadata = { title: "Headroom — Documents" };
 
 /**
  * Documents workspace — upload, status, covenant intelligence, amendment package.
+ * Access-gated before document / intelligence loaders.
  */
 export default async function DocumentsPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
+  await assertCfoPageAccessOrNotFound({ companyId });
   const documents = await getDocumentDetails(companyId);
   const intelligence = await listCustomerDocumentIntelligence(companyId);
   const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
