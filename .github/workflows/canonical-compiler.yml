@@ -8,6 +8,8 @@ on:
     branches: ["**"]
     paths:
       - "lib/contract-model/**"
+      - "lib/capacity/**"
+      - "tests/capacity/**"
       - "scripts/p3-conmed-pilot/**"
       - "scripts/canonical-map/**"
       - "tests/contract-model/**"
@@ -22,6 +24,8 @@ on:
   pull_request:
     paths:
       - "lib/contract-model/**"
+      - "lib/capacity/**"
+      - "tests/capacity/**"
       - "scripts/p3-conmed-pilot/**"
       - "tests/contract-model/**"
       - "tests/phase-3-conmed-pilot/**"
@@ -77,6 +81,12 @@ jobs:
           tests/phase-3-conmed-pilot/verified-unit-persistence.test.ts
           tests/phase-3-conmed-pilot/pilot-integrity.test.ts
           tests/phase-3-conmed-pilot/benchmark-recovery-preflight.test.ts
+      - name: capacity path (financial approval provenance + verified remaining)
+        run: >-
+          npx vitest run
+          tests/capacity/verified-remaining-capacity-integration.test.ts
+          tests/capacity/financial-evidence-adversarial.test.ts
+          tests/capacity/utilization-and-remaining.test.ts
       - name: secret scan of committed artifacts
         run: |
           set -euo pipefail
