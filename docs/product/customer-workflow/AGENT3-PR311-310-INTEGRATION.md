@@ -12,6 +12,7 @@ P0 drift correction on `cursor/cfo-product-workflow-d829` after absorbing
 | **#310 safety tip absorbed** | `57adade3` | Provision-identity authority + VE provider-free |
 | **#311 code absorb** | `ca5b7ddcc88d19561d049e4766da9231ec4339c7` | Three safety files byte-match #310 `57adade3` |
 | **#311 tip (docs pin)** | `27a7686c626e8a9be1e0480d55d753fae73cbf51` | Pins absorb SHA + 89/89 evidence |
+| **#311 tip (+ #312 claimKind)** | `02fb139623ff64780c0c438a8ce3636084562aea` | Safety blobs still match `57adade3`; CI green |
 
 ## Position page resolution
 
@@ -59,9 +60,23 @@ Independent audit: #311 had merged stale #310 `95cbfbc0`, omitting `57adade3`.
 | `real-dashboard-vertical-slice-acceptance-adversarial` | 17/17 |
 | **Total** | **89/89** |
 
-## Exact-tip CI
+## Exact-tip CI (`02fb1396`)
 
-See GitHub checks on the tip SHA after push (certified path / home overview as path filters allow).
+| Check | Conclusion | Run |
+|---|---|---|
+| canonical-compiler / certified path (provider-free) | SUCCESS | 38303135124 |
+| home-overview / home overview (soft gate) | SUCCESS | 38303135223 |
+
+### Independent re-verification (final compiler reconciliation)
+
+Against #310 `57adade3` and tip `02fb1396`:
+
+- `operative-covenant-package.ts` blob **identical** — `provisionIdentityMatchesUnit` only; no `governingDocumentId === unit.documentId` document-only match
+- `verified-executable-compile-core.ts` blob **identical** — no `delete process.env.*`
+- Remediation test file blob **identical** (adversarial provision-identity + VE credential concurrency)
+- Targeted suite this turn: **86/86** (access 12 + e2e 19 + remediation 19 + compile 5 + pipeline 5 + discovery 5 + VE Position 7 + VE multipackage 4 + home-overview 10)
+
+Residual (also on #310 tip, out of scope for the two named regressions): `phase3-compile-bridge.ts` still deletes `AI_GATEWAY_API_KEY` / `ANTHROPIC_API_KEY`.
 
 ## Reconcile with #312 (authoritative Position compile path)
 
