@@ -121,6 +121,7 @@ export {
   selectFinancialState,
   approvalStatusFromVerification,
   type FinancialApprovalStatus,
+  type FinancialApprovalProvenance,
   type FinancialEvidenceCandidate,
   type FinancialEvidenceCatalog,
   type FinancialStateSelectionQuery,
@@ -143,6 +144,7 @@ export {
 } from "./ledger-utilization-bridge";
 export {
   evaluateVerifiedRemainingCapacity,
+  projectFinancialSnapshotsFromSelection,
   VERIFIED_REMAINING_CAPACITY_CONTRACT_VERSION,
   type ExecutableRuleHandoff,
   type CapacityConfidenceAuthority,

@@ -247,7 +247,11 @@ function stableHash(value: unknown): string {
   return createHash("sha256").update(JSON.stringify(value)).digest("hex").slice(0, 32);
 }
 
-function snapshotsFromSelection(
+/**
+ * Project selected financial evidence into Phase-4B FinancialSnapshot rows.
+ * Exported for adversarial tests — selection completeness must not mint APPROVED.
+ */
+export function projectFinancialSnapshotsFromSelection(
   selection: FinancialStateSelectionResult,
   instrumentKey: string,
   currency: string,
@@ -293,13 +297,47 @@ function snapshotsFromSelection(
     }
   }
 
-  // Only mark APPROVED when selection was under APPROVED filter and complete for provided metrics.
-  // Persistence alone never establishes approval — selection already enforced approvalStatus.
-  const approvedStatus: SnapshotStatus = selection.complete
-    ? "APPROVED"
-    : allowUnapproved
-      ? "DRAFT"
-      : "REVIEW_REQUIRED";
+  // Selection completeness NEVER manufactures APPROVED financial evidence.
+  // Require every selected candidate to carry authentic approval provenance
+  // (reviewedBy / reviewedAt / approvalRef) plus APPROVED status. Do not invent
+  // reviewedBy from this module name or mint approvalRef from selection provenance.
+  const selectedCandidates = Object.values(selection.metrics)
+    .filter((m) => m?.outcome === "SELECTED" && m.candidate != null)
+    .map((m) => m!.candidate!);
+
+  const authenticApproval = selectedCandidates.length > 0 && selectedCandidates.every((c) => {
+    const p = c.approvalProvenance;
+    if (c.approvalStatus !== "APPROVED") return false;
+    if (!p) return false;
+    const reviewedBy = p.reviewedBy?.trim() ?? "";
+    const reviewedAt = p.reviewedAt?.trim() ?? "";
+    const approvalRef = p.approvalRef?.trim() ?? "";
+    if (!reviewedBy || !reviewedAt || !approvalRef) return false;
+    // Refuse self-minted / selection-module labels as "approval".
+    if (/^financial-state-selection$/i.test(reviewedBy)) return false;
+    if (approvalRef === selection.snapshot!.provenanceId) return false;
+    return true;
+  });
+
+  // Authorization: production-authoritative selection (trusted-issuer validation)
+  // is required to project APPROVED. Completeness alone is insufficient.
+  const authorizationOk = selection.productionAuthoritative === true;
+
+  const approvedStatus: SnapshotStatus =
+    selection.complete && authenticApproval && authorizationOk
+      ? "APPROVED"
+      : allowUnapproved
+        ? "DRAFT"
+        : "REVIEW_REQUIRED";
+
+  const review =
+    approvedStatus === "APPROVED"
+      ? {
+          reviewedBy: selectedCandidates[0]!.approvalProvenance!.reviewedBy.trim(),
+          reviewedAt: selectedCandidates[0]!.approvalProvenance!.reviewedAt.trim(),
+          approvalRef: selectedCandidates[0]!.approvalProvenance!.approvalRef.trim(),
+        }
+      : { reviewedBy: null, reviewedAt: null, approvalRef: null };
 
   return [
     {
@@ -313,15 +351,14 @@ function snapshotsFromSelection(
       provenance: {
         source: "financial-state-selection",
         sourceVersion: selection.snapshot.provenanceId,
+        note:
+          approvedStatus === "APPROVED"
+            ? "APPROVED projected from authentic candidate approval provenance + trusted-issuer authorization."
+            : selection.complete
+              ? "Selection complete but APPROVED refused — missing authentic approval provenance and/or trusted-issuer authorization."
+              : "Incomplete financial selection — not APPROVED.",
       },
-      review:
-        approvedStatus === "APPROVED"
-          ? {
-              reviewedBy: "financial-state-selection",
-              reviewedAt: `${selection.asOf}T00:00:00Z`,
-              approvalRef: selection.snapshot.provenanceId,
-            }
-          : { reviewedBy: null, reviewedAt: null, approvalRef: null },
+      review,
       inputs,
     },
   ];
@@ -536,7 +573,7 @@ export function evaluateVerifiedRemainingCapacity(
   // Phase-4B snapshots
   const snapshots =
     args.financialSnapshots ??
-    snapshotsFromSelection(
+    projectFinancialSnapshotsFromSelection(
       financialSelection,
       args.instrumentKey,
       args.currency,

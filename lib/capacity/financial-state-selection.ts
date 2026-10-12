@@ -29,6 +29,17 @@ export type FinancialApprovalStatus =
   | "REVOKED"
   | "UNKNOWN";
 
+/**
+ * Authentic approval-event provenance for a catalogued financial row.
+ * Selection completeness alone never manufactures this — callers must supply
+ * the real reviewer / approval reference when projecting APPROVED snapshots.
+ */
+export interface FinancialApprovalProvenance {
+  reviewedBy: string;
+  reviewedAt: string;
+  approvalRef: string;
+}
+
 /** One selectable financial evidence candidate in a catalog. */
 export interface FinancialEvidenceCandidate {
   evidenceId: string;
@@ -38,6 +49,11 @@ export interface FinancialEvidenceCandidate {
    * Must not be inferred from verificationStatus alone.
    */
   approvalStatus: FinancialApprovalStatus;
+  /**
+   * Authentic approval provenance. Required to project an APPROVED
+   * FinancialSnapshot — never invented by selectFinancialState.
+   */
+  approvalProvenance?: FinancialApprovalProvenance | null;
   /** When this candidate was superseded by a later restatement / amendment. */
   supersededByEvidenceId?: string | null;
   /** When this candidate supersedes a prior row. */

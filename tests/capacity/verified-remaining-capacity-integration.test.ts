@@ -7,6 +7,7 @@
 import { describe, expect, it } from "vitest";
 import {
   evaluateVerifiedRemainingCapacity,
+  projectFinancialSnapshotsFromSelection,
   selectFinancialState,
   TRUSTED_ISSUER_ACTIVATION,
   type FinancialEvidenceCandidate,
@@ -642,5 +643,94 @@ describe("Agent 2 verified remaining capacity integration", () => {
     expect(result.confidenceAuthority).not.toBe("PRODUCTION_AUTHORITATIVE");
     expect(TRUSTED_ISSUER_ACTIVATION.status).toBe("BLOCKED");
     expect(TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status).toBe("BLOCKED");
+  });
+
+  it("P0: selection completeness never manufactures APPROVED financial evidence", () => {
+    const approvedRow = candidate(
+      "fin-ebitda-approved-label-only",
+      metric({ metricKey: "CONSOLIDATED_EBITDA", value: 200 }),
+      { approvalStatus: "APPROVED" }, // status label without authentic provenance
+    );
+    const selected = selectFinancialState(catalog(approvedRow), {
+      companyId: CO,
+      asOf: AS_OF,
+      currency: CURRENCY,
+      metricKeys: ["CONSOLIDATED_EBITDA"],
+      allowSynthetic: true,
+    });
+    expect(selected.complete).toBe(true);
+
+    // Completeness + APPROVED status label alone → must NOT mint APPROVED snapshot.
+    const minted = projectFinancialSnapshotsFromSelection(selected, INST, CURRENCY, false);
+    expect(minted).toHaveLength(1);
+    expect(minted[0]!.status).not.toBe("APPROVED");
+    expect(minted[0]!.status).toBe("REVIEW_REQUIRED");
+    expect(minted[0]!.review.reviewedBy).toBeNull();
+    expect(minted[0]!.review.approvalRef).toBeNull();
+    expect(minted[0]!.provenance.note ?? "").toMatch(/APPROVED refused|missing authentic approval/i);
+
+    // allowSynthetic projects DRAFT — still not APPROVED.
+    const draft = projectFinancialSnapshotsFromSelection(selected, INST, CURRENCY, true);
+    expect(draft[0]!.status).toBe("DRAFT");
+    expect(draft[0]!.review.reviewedBy).toBeNull();
+  });
+
+  it("P0: APPROVED snapshot requires authentic provenance + trusted-issuer authorization", () => {
+    // Provenance present but productionAuthoritative false (no trustedIssuerAuth /
+    // synthetic path) → selection may be complete, APPROVED snapshot still refused.
+    const withProvenance = candidate(
+      "fin-ebitda-with-prov",
+      metric({
+        metricKey: "CONSOLIDATED_EBITDA",
+        value: 200,
+        authenticity: "SYNTHETIC_LABELED",
+        verificationStatus: "VERIFIED",
+      }),
+      {
+        approvalStatus: "APPROVED",
+        approvalProvenance: {
+          reviewedBy: "idp:reviewer-1",
+          reviewedAt: `${AS_OF}T12:00:00Z`,
+          approvalRef: "approval-event:evt-1",
+        },
+      },
+    );
+    const selected = selectFinancialState(catalog(withProvenance), {
+      companyId: CO,
+      asOf: AS_OF,
+      currency: CURRENCY,
+      metricKeys: ["CONSOLIDATED_EBITDA"],
+      allowSynthetic: true,
+    });
+    expect(selected.complete).toBe(true);
+    expect(selected.productionAuthoritative).toBe(false);
+    const refused = projectFinancialSnapshotsFromSelection(selected, INST, CURRENCY, false);
+    expect(refused[0]!.status).not.toBe("APPROVED");
+    expect(refused[0]!.status).toBe("REVIEW_REQUIRED");
+    expect(refused[0]!.review.reviewedBy).toBeNull();
+
+    // Self-minted selection-module labels are refused even when present.
+    const selfMinted = candidate(
+      "fin-self-mint",
+      metric({ metricKey: "CONSOLIDATED_EBITDA", value: 200 }),
+      {
+        approvalStatus: "APPROVED",
+        approvalProvenance: {
+          reviewedBy: "financial-state-selection",
+          reviewedAt: `${AS_OF}T00:00:00Z`,
+          approvalRef: "approval-event:forged-self-mint",
+        },
+      },
+    );
+    const forgedSel = selectFinancialState(catalog(selfMinted), {
+      companyId: CO,
+      asOf: AS_OF,
+      currency: CURRENCY,
+      metricKeys: ["CONSOLIDATED_EBITDA"],
+      allowSynthetic: true,
+    });
+    const forgedSnap = projectFinancialSnapshotsFromSelection(forgedSel, INST, CURRENCY, false);
+    expect(forgedSnap[0]!.status).not.toBe("APPROVED");
+    expect(forgedSnap[0]!.review.reviewedBy).toBeNull();
   });
 });
