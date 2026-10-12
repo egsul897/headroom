@@ -204,7 +204,7 @@ function compileBridgeFromResult(
     candidatesAttempted: result.executableUnits.length + result.rejectedUnits.length,
     verifiedExecutableUnits: result.executableUnits.map((u) => ({
       candidateId: u.unitId,
-      documentId: u.documentId,
+      documentId: u.governingDocumentId || u.documentId,
       sourceSectionRef: u.sourceRef,
       relatedLeafCode: null,
       compileClass:

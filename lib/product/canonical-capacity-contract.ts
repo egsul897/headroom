@@ -83,7 +83,7 @@ function publicationStatusFor(u: ExecutableOperativeUnit): CanonicalPublicationS
 function unitFromExecutable(u: ExecutableOperativeUnit): CanonicalCapacityUnit {
   return {
     unitId: u.unitId,
-    governingDocumentId: u.documentId,
+    governingDocumentId: u.governingDocumentId || u.documentId,
     sourceSectionRef: u.sourceRef,
     sourceSpan: u.sourceSpan,
     operativeTextExcerpt: u.operativeText.slice(0, 280),
@@ -110,7 +110,7 @@ function unitFromExecutable(u: ExecutableOperativeUnit): CanonicalCapacityUnit {
 function rejectedFrom(u: RejectedOperativeUnit) {
   return {
     unitId: u.unitId,
-    governingDocumentId: u.documentId,
+    governingDocumentId: u.governingDocumentId ?? u.documentId,
     sourceSectionRef: u.sourceRef,
     reason: u.reason,
     publicationStatus: "UNSUPPORTED_OR_UNKNOWN" as const,
