@@ -43,6 +43,23 @@ describe("compileOperativeCovenantPackage — issuer-agnostic integrity", () => 
     expect(CONTEXT_SRC).not.toMatch(/7\.03\(f\)/);
     expect(CONTEXT_SRC).not.toMatch(/Permitted Receivables Financings[\s\S]{0,80}700/);
   });
+
+  it("does not mutate process.env credentials (no delete AI_GATEWAY/ANTHROPIC)", () => {
+    expect(OPERATIVE_SRC).not.toMatch(/delete\s+process\.env\.AI_GATEWAY_API_KEY/);
+    expect(OPERATIVE_SRC).not.toMatch(/delete\s+process\.env\.ANTHROPIC_API_KEY/);
+    const prevGateway = process.env.AI_GATEWAY_API_KEY;
+    const prevAnthropic = process.env.ANTHROPIC_API_KEY;
+    process.env.AI_GATEWAY_API_KEY = "sentinel-gateway-must-survive";
+    process.env.ANTHROPIC_API_KEY = "sentinel-anthropic-must-survive";
+    return compileOperativeCovenantPackage(matthewsOperativePackageContext()).finally(() => {
+      expect(process.env.AI_GATEWAY_API_KEY).toBe("sentinel-gateway-must-survive");
+      expect(process.env.ANTHROPIC_API_KEY).toBe("sentinel-anthropic-must-survive");
+      if (prevGateway === undefined) delete process.env.AI_GATEWAY_API_KEY;
+      else process.env.AI_GATEWAY_API_KEY = prevGateway;
+      if (prevAnthropic === undefined) delete process.env.ANTHROPIC_API_KEY;
+      else process.env.ANTHROPIC_API_KEY = prevAnthropic;
+    });
+  });
 });
 
 describe("Matthews authentic package — generic discovery → VE", () => {

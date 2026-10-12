@@ -25,9 +25,27 @@ import type {
 } from "./position-bridge";
 import type { Phase3CompileBridgeResult } from "./phase3-compile-bridge";
 import type { VerifiedExecutableCompileBridgeResult } from "./verified-executable-compile-core";
-import { MHK_VE_COMPANY_ID, mhkVerifiedExecutableCandidates } from "./package-mhk-ve-candidates";
-import { matthewsVerifiedExecutableCandidates } from "./verified-executable-compile-bridge";
+import { MHK_VE_COMPANY_ID, loadMhkCreditAgreementText } from "./package-mhk-ve-candidates";
+import {
+  MATTHEWS_CREDIT_AGREEMENT_SOURCE,
+  MATTHEWS_INDENTURE_SOURCE,
+} from "./source-excerpts-matthews";
+import {
+  discoverFixedDollarCandidatesFromDocuments,
+  selectSoleCapDiscoveryCandidates,
+} from "./fixed-dollar-candidate-discovery";
 import { MATTHEWS_POSITION_COMPANY_ID } from "./package-matthews";
+import type { OperativeClauseCandidate } from "./verified-executable-compile-core";
+
+/**
+ * Generic Position candidates: deterministic threshold-window discovery first.
+ * Discovery alone never establishes capacity — compile/fidelity still gate VE.
+ */
+function discoveredSoleCapCandidates(
+  documents: ReadonlyArray<{ documentId: string; text: string }>,
+): OperativeClauseCandidate[] {
+  return selectSoleCapDiscoveryCandidates(discoverFixedDollarCandidatesFromDocuments(documents));
+}
 
 const EMPTY_PHASE3 = (asOfDate: string): Phase3CompileBridgeResult => ({
   asOfDate,
@@ -258,8 +276,17 @@ export const VE_POSITION_PACKAGES: readonly VePositionPackage[] = [
       companyId: MATTHEWS_POSITION_COMPANY_ID,
       instrumentKey: "matthews-international-q1-fy2025",
       asOfDate: "2024-12-31",
-      candidates: matthewsVerifiedExecutableCandidates(),
-      packageLabel: "Matthews Indenture + CA excerpts",
+      candidates: discoveredSoleCapCandidates([
+        {
+          documentId: MATTHEWS_INDENTURE_SOURCE.documentId,
+          text: MATTHEWS_INDENTURE_SOURCE.text,
+        },
+        {
+          documentId: MATTHEWS_CREDIT_AGREEMENT_SOURCE.documentId,
+          text: MATTHEWS_CREDIT_AGREEMENT_SOURCE.text,
+        },
+      ]),
+      packageLabel: "Matthews Indenture + CA excerpts (discovery→VE)",
     }),
   },
   {
@@ -270,8 +297,13 @@ export const VE_POSITION_PACKAGES: readonly VePositionPackage[] = [
       companyId: MHK_VE_COMPANY_ID,
       instrumentKey: "mhk-2026-credit-agreement",
       asOfDate: "2025-06-30",
-      candidates: mhkVerifiedExecutableCandidates(),
-      packageLabel: "MHK 2026 Credit Agreement (product-proof/002)",
+      candidates: discoveredSoleCapCandidates([
+        {
+          documentId: "mhk-doc-a-credit-agreement",
+          text: loadMhkCreditAgreementText(),
+        },
+      ]),
+      packageLabel: "MHK 2026 Credit Agreement (discovery→VE)",
     }),
   },
 ];

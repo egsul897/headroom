@@ -83,6 +83,7 @@ export {
 export {
   discoverFixedDollarCandidatesFromText,
   discoverFixedDollarCandidatesFromDocuments,
+  selectSoleCapDiscoveryCandidates,
   type DiscoveredFixedDollarCandidate,
 } from "./fixed-dollar-candidate-discovery";
 
