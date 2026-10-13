@@ -20,6 +20,7 @@ import {
   selectSourceBackedGrossMm,
 } from "@/lib/customer-workflow/select-source-backed-gross";
 import { loadAuthenticDashboardSlice } from "@/lib/product/real-dashboard-vertical-slice";
+import { loadApprovedFinancialInputBundle } from "@/lib/product/north-star-workflow";
 
 export const metadata = { title: "Headroom — Position" };
 
@@ -29,9 +30,18 @@ export const metadata = { title: "Headroom — Position" };
  * issuer arithmetic. Dashboard authority flags alone never publish AVAILABLE.
  * Access-gated before sensitive loaders. Authentic VE slice supplies
  * SOURCE_BACKED_COMPILED_GROSS presentation when registered (#304/#310).
+ * APPROVED NS-4 financials (when cutoff-bound) are the reusable input identity
+ * for capacity/simulation — never Dashboard-only leverage.
  */
-export default async function PositionPage({ params }: { params: Promise<{ companyId: string }> }) {
+export default async function PositionPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ companyId: string }>;
+  searchParams?: Promise<{ evaluationDate?: string }>;
+}) {
   const { companyId } = await params;
+  const sp = searchParams ? await searchParams : {};
   await assertCfoPageAccessOrNotFound({ companyId });
   const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
 
@@ -311,6 +321,13 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           : null,
   });
 
+  // Shared APPROVED NS-4 financial identity (same binder as capacity / simulation / Dashboard).
+  const evaluationDate = sp.evaluationDate?.trim() || view.asOfDate || undefined;
+  const ns4Financial = await loadApprovedFinancialInputBundle({
+    companyId,
+    evaluationDate,
+  });
+
   return (
     <div className="stack">
       <Card>
@@ -354,6 +371,49 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           <Link className="button" href={`/${companyId}/audit`}>
             Audit
           </Link>
+          <Link className="button" href={`/${companyId}/certificates`}>
+            Certificates
+          </Link>
+        </div>
+      </Card>
+
+      <Card>
+        <div className="card-title" data-slot="ns4-approved-financial-inputs">
+          APPROVED NS-4 financial inputs (shared)
+        </div>
+        <div className="card-subtitle">
+          Cutoff-bound certificate facts reused by debt/liens/investments/RP capacity and transaction
+          simulation — not a Dashboard-only leverage tile. Gross IR ratio ≠ verified remaining.
+        </div>
+        <div className="row" style={{ marginTop: 8 }}>
+          <div className="row-label">Binder status</div>
+          <div className="row-value">
+            <Chip tone={ns4Financial.status === "APPROVED_BOUND" ? "pass" : "tight"}>{ns4Financial.status}</Chip>
+          </div>
+        </div>
+        <div className="row">
+          <div className="row-label">Authority</div>
+          <div className="row-value" style={{ fontSize: 12 }}>
+            {ns4Financial.authority.kind}
+          </div>
+        </div>
+        <div className="row-note">{ns4Financial.authority.disclosure}</div>
+        <div className="row-note">
+          Bound snapshot: {ns4Financial.boundSnapshotId ?? "—"}
+          {ns4Financial.financialInputFingerprint
+            ? ` · fingerprint ${ns4Financial.financialInputFingerprint.slice(0, 16)}…`
+            : ""}
+          {ns4Financial.leverageIr.computedRatio
+            ? ` · IR TNL ${ns4Financial.leverageIr.computedRatio}`
+            : ""}
+        </div>
+        {ns4Financial.missingInputs.slice(0, 4).map((m) => (
+          <div className="row-note" key={m}>
+            • Missing: {m}
+          </div>
+        ))}
+        <div className="row-note" style={{ marginTop: 8 }}>
+          Reusable for: {ns4Financial.reusableFor.join(", ")}
         </div>
       </Card>
 

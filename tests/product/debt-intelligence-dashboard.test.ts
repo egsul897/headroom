@@ -32,6 +32,7 @@ describe("debt intelligence dashboard model", () => {
       monitoring: [],
       transactions: [],
       contractualComputation: null,
+      crossDomainScenarios: [],
     } as unknown as DebtIntelligenceDashboard;
 
     expect(findDashboardMetric(stub, "capital:facility:1")?.title).toBe("RCF");

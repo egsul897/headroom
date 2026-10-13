@@ -45,6 +45,12 @@ export {
   type ProposeCertificateTextResult,
 } from "./fce-certificate-actions";
 export {
+  loadApprovedFinancialInputBundle,
+  NS4_PRODUCT_CUTOFF_SELECTOR,
+  type ApprovedFinancialInputBundle,
+  type ApprovedFinancialInputBundleStatus,
+} from "./approved-financial-inputs";
+export {
   parseTransactionDraft,
   analyzeContemplatedTransaction,
   type TransactionDraft,
@@ -141,3 +147,18 @@ export {
   toAllProductExecutionHandoffs,
   UNIFIED_TRANSACTION_EXECUTION_VERSION,
 } from "@/lib/product/verified-transaction-execution";
+export {
+  evaluateCrossDomainTransaction,
+  covenantDomainCoverage,
+  CROSS_DOMAIN_EVALUATION_VERSION,
+  type CrossDomainTransactionEvaluation,
+  type CovenantDomain,
+  type ContemplatedCrossDomainTransaction,
+} from "@/lib/product/cross-domain-transaction";
+export {
+  evaluateDefaultCrossDomainScenarios,
+  defaultCrossDomainScenarioTemplates,
+  evaluateCoherentScenario,
+  evaluateMatthewsScenario,
+  listCoherentCrossDomainScenarios,
+} from "@/lib/product/cross-domain-scenarios";
