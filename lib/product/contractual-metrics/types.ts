@@ -3,7 +3,7 @@
  * Status vocabulary is fail-closed: never invent a number when evidence is incomplete.
  */
 
-import type { EvaluationResult } from "@/lib/contract-model/runtime/types";
+import type { EvaluationResult } from "@/lib/contract-model/definition-execution";
 import type { IRDefinition } from "@/lib/contract-model/ir/types";
 import type { FinancialInputReadiness } from "@/lib/contract-model/financial-definitions/types";
 

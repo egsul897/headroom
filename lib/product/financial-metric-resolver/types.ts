@@ -8,7 +8,7 @@
 import type { FinancialSnapshotInput } from "@/lib/covenant-engine";
 import type { ContractualEbitdaDerivation } from "@/lib/financial-certificate-engine/contractual-ebitda-buildup";
 import type { ContractualMetricsBundle } from "@/lib/product/contractual-metrics/types";
-import type { MetricInput } from "@/lib/contract-model/runtime/types";
+import type { MetricInput } from "@/lib/contract-model/definition-execution";
 
 /** How trustworthy the bound financial facts are for product authority. */
 export type FinancialEvidenceAuthority =

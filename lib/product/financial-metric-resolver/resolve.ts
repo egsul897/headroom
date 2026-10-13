@@ -6,10 +6,7 @@ import { createHash } from "crypto";
 import type { FinancialSnapshotInput } from "@/lib/covenant-engine";
 import { resolveContractualEbitdaDerivation } from "@/lib/financial-certificate-engine/contractual-ebitda-buildup";
 import { computeContractualMetricsPure } from "@/lib/product/contractual-metrics/service";
-import { metricInput } from "@/lib/contract-model/runtime/input-resolver";
-import { rationalFromString } from "@/lib/contract-model/runtime/decimal";
-import { money } from "@/lib/contract-model/runtime/values";
-import type { MetricInput } from "@/lib/contract-model/runtime/types";
+import { moneyMetricInput, type MetricInput } from "@/lib/contract-model/definition-execution";
 import { resolveRegisteredPackage, type RegisteredFinancialPackage } from "./registry";
 import type {
   CanonicalFinancialInputBundle,
@@ -32,13 +29,7 @@ function publicationFor(auth: FinancialEvidenceAuthority): CapacityPublicationAu
 }
 
 function moneyMetric(key: string, millions: number, period: string, asOf: string, note: string): MetricInput {
-  return metricInput(
-    key,
-    money(rationalFromString(String(millions)), "USD", { exprId: null, inputKeys: [key], rawSource: millions }),
-    { source: note, sourceVersion: asOf, note },
-    period,
-    asOf,
-  );
+  return moneyMetricInput(key, millions, period, asOf, note);
 }
 
 function fingerprint(parts: unknown[]): string {

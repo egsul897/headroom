@@ -7,8 +7,8 @@
 
 import type { PrismaClient } from "@prisma/client";
 import type { IRDefinition, IRExpression } from "@/lib/contract-model/ir/types";
-import type { MetricInput } from "@/lib/contract-model/runtime/types";
-import { executeContractualExpression, numericFromEvaluation } from "./execute";
+import type { MetricInput } from "@/lib/contract-model/definition-execution";
+import { executeContractualExpression, numericFromEvaluation } from "@/lib/contract-model/definition-execution";
 import { persistCalculationResult, persistContractualDefinition } from "./persist";
 import type { ContractualMetricLineItem, ContractualMetricResult, ContractualMetricsBundle } from "./types";
 import {

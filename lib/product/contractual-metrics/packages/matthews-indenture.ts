@@ -10,10 +10,12 @@
  */
 
 import type { IRDefinition, IRExpression } from "@/lib/contract-model/ir/types";
-import type { MetricInput } from "@/lib/contract-model/runtime/types";
-import { metricInput } from "@/lib/contract-model/runtime/input-resolver";
-import { rationalFromString } from "@/lib/contract-model/runtime/decimal";
-import { money } from "@/lib/contract-model/runtime/values";
+import {
+  metricInput,
+  money,
+  rationalFromString,
+  type MetricInput,
+} from "@/lib/contract-model/definition-execution";
 import {
   add,
   divRatio,
