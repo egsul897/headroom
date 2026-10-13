@@ -42,15 +42,15 @@ describe("CFO secured-debt product entry (#351)", () => {
     expect(entry.outputs!.auditTrail!.sources.length).toBeGreaterThan(0);
 
     expect(entry.result).not.toBe("PERMITTED");
+    expect(entry.result).toBe("NEEDS_INPUT");
+    expect(entry.result).not.toBe("NOT_PERMITTED");
     expect(entry.verifiedRemainingUsd).toBeNull();
     expect(entry.certifiedSimulationAvailable).toBe(false);
-
-    if (entry.result === "NOT_PERMITTED") {
-      expect(entry.resultAuthority).toBe("MODELED_NOT_CERTIFIED_4E");
-      expect(entry.resultAuthorityLabel).toMatch(/not a CERTIFIED_4E/);
-    } else {
-      expect(entry.resultAuthority).toBe("NEEDS_AUTHENTIC_EVIDENCE");
-    }
+    expect(entry.resultAuthority).toBe("NEEDS_AUTHENTIC_EVIDENCE");
+    expect(entry.workflow?.subsidiaryFindings.some((f) => f.status === "MODELED_SSNL_PATH_BLOCKED")).toBe(
+      true,
+    );
+    expect(entry.workflow?.financialEvidenceBinding.status).toBe("BOUND");
   });
 
   it("labels modeled NOT_PERMITTED distinctly from certified determination", () => {
@@ -136,5 +136,23 @@ describe("CFO secured-debt product entry (#351)", () => {
     expect(entry.routeEligible).toBe(false);
     expect(entry.workflow).toBeNull();
     expect(entry.auditExportJson).toBeNull();
+  });
+
+  it("fail-closes product entry on unsupported evaluation dates", async () => {
+    const entry = await loadCfoSecuredDebtProductEntry({
+      companyId: "matthews",
+      evaluationDate: "2023-01-01",
+      amountMillions: 50,
+      ask: "As of 2023-01-01, is $50 million secured debt permitted?",
+    });
+    expect(entry.routeEligible).toBe(true);
+    expect(entry.result).toBe("NEEDS_INPUT");
+    expect(entry.workflow?.financialEvidenceBinding.status).toBe("UNSUPPORTED_DATE");
+    expect(entry.evidenceBlockers).toContain("FINANCIAL_EVIDENCE_PERIOD_MISMATCH");
+    const audit = JSON.parse(entry.auditExportJson!);
+    expect(audit.financialEvidenceBinding.matched).toBe(false);
+    expect(audit.subsidiaryFindings.some((f: { code: string }) => f.code === "FINANCIAL_EVIDENCE_PERIOD_MISMATCH")).toBe(
+      true,
+    );
   });
 });

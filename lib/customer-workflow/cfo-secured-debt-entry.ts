@@ -156,6 +156,8 @@ export async function loadCfoSecuredDebtProductEntry(args: {
     approvedFinancialInputs: workflow.approvedFinancialInputs,
     utilizationAndRemaining: workflow.utilizationAndRemaining,
     pathAndSimulation: workflow.pathAndSimulation,
+    subsidiaryFindings: workflow.subsidiaryFindings,
+    financialEvidenceBinding: workflow.financialEvidenceBinding,
     requiredExternalEvidence: workflow.requiredExternalEvidence,
     constraintsHonored: workflow.constraintsHonored,
     gitSha: workflow.gitSha,

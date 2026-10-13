@@ -73,9 +73,16 @@
     "CA_LIEN_601J_STRUCTURAL_ZERO_BLOCKS_NEW_LOAN_PARTY_SECURED_LIENS",
     "SECURED_COMPOSITION_HYPOTHETICAL_UNVERIFIED",
     "NS4_APPROVED_SNAPSHOT_ABSENT_FOR_MATTHEWS_OFFLINE_SLICE",
-    "DUAL_PATH_DEBT_PLUS_LIEN_NOT_CERTIFIED_4E"
+    "DUAL_PATH_DEBT_PLUS_LIEN_NOT_CERTIFIED_4E",
+    "ALTERNATIVE_DEBT_LIEN_PATHS_NOT_FULLY_CERTIFIED",
+    "SUBSIDIARY_MODELED_SSNL_PATH_BLOCKED"
   ],
   "gates": [
+    {
+      "gate": "FINANCIAL_EVIDENCE_DATE_BINDING",
+      "status": "BOUND",
+      "detail": "requested=2024-12-31; supported=2024-12-31"
+    },
     {
       "gate": "CERTIFIED_4E_PATH_ENUMERATION",
       "status": "NOT_CERTIFIED_4E",
@@ -105,6 +112,11 @@
       "gate": "VE_FIXED_DOLLAR_GROSS",
       "status": "PARTIAL",
       "detail": "Bridge compile present for discovery candidates; feeds SOURCE_BACKED_COMPILED_GROSS only (units=3)"
+    },
+    {
+      "gate": "MODELED_SSNL_SUBSIDIARY",
+      "status": "BLOCKED_SUBSIDIARY_ONLY",
+      "detail": "Does not alone decide overall NOT_PERMITTED"
     }
   ]
 }

@@ -61,9 +61,15 @@ describe("CFO secured-debt workflow (Matthews authentic)", () => {
     expect(r.pathAndSimulation.selectedPathId).toBeNull();
     expect(r.pathAndSimulation.refusalSummary.length).toBeGreaterThan(0);
 
-    // 7. Defensible result — never false PERMITTED
+    // 7. Defensible result — never false PERMITTED; SSNL alone ≠ overall NOT_PERMITTED
     expect(r.result).not.toBe("PERMITTED");
-    expect(["NOT_PERMITTED", "NEEDS_INPUT", "REVIEW_REQUIRED"]).toContain(r.result);
+    expect(r.result).toBe("NEEDS_INPUT");
+    expect(r.financialEvidenceBinding.matched).toBe(true);
+    expect(r.financialEvidenceBinding.status).toBe("BOUND");
+    expect(r.subsidiaryFindings.some((f) => f.code === "MODELED_SSNL_REFINANCING_SCENARIO")).toBe(
+      true,
+    );
+    expect(r.subsidiaryFindings.length).toBeGreaterThanOrEqual(5);
 
     // 8. Audit trail
     expect(r.auditTrail.sources.length).toBeGreaterThanOrEqual(3);
@@ -72,6 +78,7 @@ describe("CFO secured-debt workflow (Matthews authentic)", () => {
 
     expect(r.workflowVerdict).toBe("CUSTOMER_WORKFLOW_PARTIAL");
     expect(r.constraintsHonored).toContain("no PERMITTED without genuine gates");
+    expect(r.constraintsHonored).toContain("no overall NOT_PERMITTED from modeled SSNL alone");
   });
 
   it("fail-closes to UNSUPPORTED when authentic package is omitted", async () => {
@@ -111,5 +118,69 @@ describe("CFO secured-debt workflow (Matthews authentic)", () => {
     expect(
       r.requiredExternalEvidence.every((e) => e.status !== "ABSENT" || e.whyRequired.length > 0),
     ).toBe(true);
+  });
+
+  it("does not report overall NOT_PERMITTED solely from modeled SSNL blockage", async () => {
+    const r = await evaluateCfoSecuredDebtWorkflow({
+      ask: ASK,
+      amountMillions: 50,
+      evaluationDate: "2024-12-31",
+    });
+    expect(r.pathAndSimulation.modeledScenarioOverall).toBe("blocked");
+    const ssnl = r.subsidiaryFindings.find(
+      (f) => f.code === "MODELED_SSNL_REFINANCING_SCENARIO",
+    );
+    expect(ssnl?.status).toBe("MODELED_SSNL_PATH_BLOCKED");
+    expect(r.result).toBe("NEEDS_INPUT");
+    expect(r.result).not.toBe("NOT_PERMITTED");
+    expect(r.auditTrail.unresolvedConditions).toContain(
+      "ALTERNATIVE_DEBT_LIEN_PATHS_NOT_FULLY_CERTIFIED",
+    );
+    expect(r.auditTrail.unresolvedConditions).toContain("SUBSIDIARY_MODELED_SSNL_PATH_BLOCKED");
+    // Alternative debt/lien leaves are present as subsidiary findings
+    const debtAlts = r.subsidiaryFindings.filter((f) => f.kind === "DEBT_ALTERNATIVE");
+    const lienAlts = r.subsidiaryFindings.filter((f) => f.kind === "LIEN_COMPANION");
+    expect(debtAlts.length).toBeGreaterThanOrEqual(3);
+    expect(lienAlts.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("binds the supported fixture date and evaluates alternative permission paths", async () => {
+    const r = await evaluateCfoSecuredDebtWorkflow({
+      ask: ASK,
+      evaluationDate: "2024-12-31",
+    });
+    expect(r.financialEvidenceBinding.supportedFixtureAsOf).toBe("2024-12-31");
+    expect(r.financialEvidenceBinding.requestedEvaluationDate).toBe("2024-12-31");
+    expect(r.financialEvidenceBinding.matched).toBe(true);
+    expect(r.applicableCovenants.map((c) => c.code)).toEqual(
+      expect.arrayContaining([
+        "ind_permitted_debt_1a_flat",
+        "ind_ratio_debt_fccr",
+        "ind_permitted_debt_1b_ratio_secured",
+        "ind_permitted_debt_2_notes",
+        "ca_lien_601j_2024notes",
+      ]),
+    );
+    expect(r.approvedFinancialInputs.lines.length).toBeGreaterThan(0);
+  });
+
+  it("fail-closes on unsupported evaluation dates without reusing 2024-12-31 inputs", async () => {
+    const r = await evaluateCfoSecuredDebtWorkflow({
+      ask: "As of 2025-06-30, is a proposed $50 million secured debt transaction permitted?",
+      amountMillions: 50,
+      evaluationDate: "2025-06-30",
+    });
+    expect(r.result).toBe("NEEDS_INPUT");
+    expect(r.financialEvidenceBinding.status).toBe("UNSUPPORTED_DATE");
+    expect(r.financialEvidenceBinding.matched).toBe(false);
+    expect(r.financialEvidenceBinding.requestedEvaluationDate).toBe("2025-06-30");
+    expect(r.financialEvidenceBinding.supportedFixtureAsOf).toBe("2024-12-31");
+    expect(r.applicableCovenants).toHaveLength(0);
+    expect(r.debtBasketsAndRatioConditions).toHaveLength(0);
+    expect(r.approvedFinancialInputs.lines).toHaveLength(0);
+    expect(r.approvedFinancialInputs.note).toMatch(/Fail closed/i);
+    expect(r.auditTrail.unresolvedConditions).toContain("FINANCIAL_EVIDENCE_PERIOD_MISMATCH");
+    expect(r.workflowVerdict).toBe("CUSTOMER_WORKFLOW_BLOCKED_BY_EVIDENCE");
+    expect(r.utilizationAndRemaining.verifiedRemainingUsd).toBeNull();
   });
 });

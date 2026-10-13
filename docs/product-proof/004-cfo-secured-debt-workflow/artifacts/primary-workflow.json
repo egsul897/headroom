@@ -1,7 +1,7 @@
 {
   "schema": "cfo-secured-debt-workflow.v1",
-  "evaluatedAt": "2026-10-13T13:00:07.936Z",
-  "gitSha": "d08e23bf9e57e6383624aae3294da9417f4c0087",
+  "evaluatedAt": "2026-10-13T14:57:22.216Z",
+  "gitSha": "0fe8c6c281a6db9eefbb46010d3f79c8234511ed",
   "package": {
     "key": "matthews-international-q1-fy2025",
     "companyId": "matthews",
@@ -112,9 +112,16 @@
       "CA_LIEN_601J_STRUCTURAL_ZERO_BLOCKS_NEW_LOAN_PARTY_SECURED_LIENS",
       "SECURED_COMPOSITION_HYPOTHETICAL_UNVERIFIED",
       "NS4_APPROVED_SNAPSHOT_ABSENT_FOR_MATTHEWS_OFFLINE_SLICE",
-      "DUAL_PATH_DEBT_PLUS_LIEN_NOT_CERTIFIED_4E"
+      "DUAL_PATH_DEBT_PLUS_LIEN_NOT_CERTIFIED_4E",
+      "ALTERNATIVE_DEBT_LIEN_PATHS_NOT_FULLY_CERTIFIED",
+      "SUBSIDIARY_MODELED_SSNL_PATH_BLOCKED"
     ],
     "gates": [
+      {
+        "gate": "FINANCIAL_EVIDENCE_DATE_BINDING",
+        "status": "BOUND",
+        "detail": "requested=2024-12-31; supported=2024-12-31"
+      },
       {
         "gate": "CERTIFIED_4E_PATH_ENUMERATION",
         "status": "NOT_CERTIFIED_4E",
@@ -144,6 +151,11 @@
         "gate": "VE_FIXED_DOLLAR_GROSS",
         "status": "PARTIAL",
         "detail": "Bridge compile present for discovery candidates; feeds SOURCE_BACKED_COMPILED_GROSS only (units=3)"
+      },
+      {
+        "gate": "MODELED_SSNL_SUBSIDIARY",
+        "status": "BLOCKED_SUBSIDIARY_ONLY",
+        "detail": "Does not alone decide overall NOT_PERMITTED"
       }
     ]
   },
@@ -355,8 +367,52 @@
     ],
     "modeledScenarioOverall": "blocked"
   },
-  "result": "NOT_PERMITTED",
-  "resultRationale": "Modeled Indenture secured-net-leverage room is $0 for this package as-of (SSNL already above 3.50x). This is a modeled NOT_PERMITTED signal — not a CERTIFIED_4E / production-authoritative refusal. Verified simulate also REFUSED (no VEP).",
+  "subsidiaryFindings": [
+    {
+      "code": "ind_permitted_debt_1a_flat",
+      "kind": "DEBT_ALTERNATIVE",
+      "status": "MODELED_LEAF_PRESENT_NOT_CERTIFIED",
+      "detail": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(a) · modeledCapacityMm=521.118 · remaining=null · GROSS_ONLY_UTILIZATION_INCOMPLETE"
+    },
+    {
+      "code": "ind_ratio_debt_fccr",
+      "kind": "DEBT_ALTERNATIVE",
+      "status": "MODELED_LEAF_PRESENT_NOT_CERTIFIED",
+      "detail": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — §4.09(a) · modeledCapacityMm=110.33623188405791 · remaining=null · MODELED_AUTHENTIC_EVIDENCE"
+    },
+    {
+      "code": "ind_permitted_debt_1b_ratio_secured",
+      "kind": "DEBT_ALTERNATIVE",
+      "status": "MODELED_ROOM_ZERO_NOT_OVERALL_REFUSAL",
+      "detail": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(b)(x) · modeledCapacityMm=0 · remaining=null · MODELED_AUTHENTIC_EVIDENCE"
+    },
+    {
+      "code": "ind_permitted_debt_2_notes",
+      "kind": "DEBT_ALTERNATIVE",
+      "status": "GRANDFATHER_NO_NEW_CAPACITY_NOT_CERTIFIED",
+      "detail": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (2) · modeledCapacityMm=300 · remaining=null · MODELED_AUTHENTIC_EVIDENCE"
+    },
+    {
+      "code": "ca_lien_601j_2024notes",
+      "kind": "LIEN_COMPANION",
+      "status": "GRANDFATHER_NO_NEW_CAPACITY_NOT_CERTIFIED",
+      "detail": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment) — §6.01(j), as restated by Sixth Amendment · modeledCapacityMm=0 · remaining=null · STRUCTURAL_ZERO"
+    },
+    {
+      "code": "MODELED_SSNL_REFINANCING_SCENARIO",
+      "kind": "MODELED_SCENARIO",
+      "status": "MODELED_SSNL_PATH_BLOCKED",
+      "detail": "Modeled Indenture secured-net-leverage room is $0 for $50M as-of (SSNL already above 3.50x). Subsidiary finding only — not overall NOT_PERMITTED while other debt/lien alternatives remain incompletely certified."
+    }
+  ],
+  "financialEvidenceBinding": {
+    "requestedEvaluationDate": "2024-12-31",
+    "supportedFixtureAsOf": "2024-12-31",
+    "matched": true,
+    "status": "BOUND"
+  },
+  "result": "NEEDS_INPUT",
+  "resultRationale": "Overall permission is NEEDS_INPUT: relevant debt and lien alternatives have not been fully evaluated under CERTIFIED_4E / verified simulate. Modeled SSNL blockage (if any) is a subsidiary finding only — not an overall NOT_PERMITTED determination. Verified remaining stays null; certified simulation unavailable.",
   "customerCanDoToday": [
     "Select the authentic Matthews package and ask a dated $50M secured-debt question with structured draft parsing.",
     "Receive every applicable modeled covenant with document name + section citation + formula + authority label.",
@@ -366,7 +422,8 @@
     "See utilization completeness absent and verified remaining null — UNKNOWN not treated as zero.",
     "Run verified simulate (REQUIRE bridge) and get an explicit REFUSED outcome with blockers — no silent path invent.",
     "Export a single audit trail JSON covering sources, assumptions, calculations, gates, and unresolved conditions.",
-    "Receive a defensible NOT_PERMITTED (modeled SSNL) or NEEDS_INPUT result — never false PERMITTED."
+    "Receive NEEDS_INPUT overall until debt/lien alternatives are CERTIFIED — modeled SSNL blockage is subsidiary only; never false PERMITTED.",
+    "See fail-closed NEEDS_INPUT when the requested evaluation date is not the supported fixture as-of."
   ],
   "requiredExternalEvidence": [
     {
@@ -394,6 +451,8 @@
   "constraintsHonored": [
     "no fabricated Phase-3 / VEP / CERTIFIED_4E",
     "no PERMITTED without genuine gates",
+    "no overall NOT_PERMITTED from modeled SSNL alone",
+    "financial evidence date bound — unsupported dates fail closed",
     "verified remaining forced null",
     "no competing engine — reused vertical slice, VE bridge, path enum, verified simulate, recipes, cross-domain modeled scenario",
     "no Neon writes / no paid inference",

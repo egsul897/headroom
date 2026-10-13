@@ -155,6 +155,26 @@ export function CfoSecuredDebtWorkflowPanel({
         </div>
       ))}
 
+      {(w.subsidiaryFindings ?? []).length > 0 && (
+        <>
+          <div className="card-subtitle" style={{ marginTop: 12 }}>
+            Subsidiary path findings (not overall determination)
+          </div>
+          {w.subsidiaryFindings.map((f) => (
+            <div key={f.code} className="row-note" data-testid="cfo-secured-debt-subsidiary">
+              · [{f.kind}] {f.code}: {f.status} — {f.detail}
+            </div>
+          ))}
+        </>
+      )}
+      {w.financialEvidenceBinding && (
+        <div className="row-note" data-testid="cfo-secured-debt-date-binding">
+          Financial evidence binding: requested={w.financialEvidenceBinding.requestedEvaluationDate} ·
+          supported={w.financialEvidenceBinding.supportedFixtureAsOf} ·{" "}
+          {w.financialEvidenceBinding.status}
+        </div>
+      )}
+
       {/* 7. Result (already above) + 8. Audit */}
       <div className="card-subtitle" style={{ marginTop: 12 }}>
         7–8. Defensible result &amp; exportable audit trail

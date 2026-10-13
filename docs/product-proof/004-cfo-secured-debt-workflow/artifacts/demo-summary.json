@@ -1,10 +1,10 @@
 {
   "schema": "cfo-secured-debt-workflow-demo.v1",
-  "gitSha": "d08e23bf9e57e6383624aae3294da9417f4c0087",
-  "evaluatedAt": "2026-10-13T13:00:07.936Z",
+  "gitSha": "0fe8c6c281a6db9eefbb46010d3f79c8234511ed",
+  "evaluatedAt": "2026-10-13T14:57:22.216Z",
   "primary": {
-    "result": "NOT_PERMITTED",
-    "resultRationale": "Modeled Indenture secured-net-leverage room is $0 for this package as-of (SSNL already above 3.50x). This is a modeled NOT_PERMITTED signal — not a CERTIFIED_4E / production-authoritative refusal. Verified simulate also REFUSED (no VEP).",
+    "result": "NEEDS_INPUT",
+    "resultRationale": "Overall permission is NEEDS_INPUT: relevant debt and lien alternatives have not been fully evaluated under CERTIFIED_4E / verified simulate. Modeled SSNL blockage (if any) is a subsidiary finding only — not an overall NOT_PERMITTED determination. Verified remaining stays null; certified simulation unavailable.",
     "workflowVerdict": "CUSTOMER_WORKFLOW_PARTIAL",
     "packageKey": "matthews-international-q1-fy2025",
     "covenantCount": 5,
@@ -43,11 +43,14 @@
       "See utilization completeness absent and verified remaining null — UNKNOWN not treated as zero.",
       "Run verified simulate (REQUIRE bridge) and get an explicit REFUSED outcome with blockers — no silent path invent.",
       "Export a single audit trail JSON covering sources, assumptions, calculations, gates, and unresolved conditions.",
-      "Receive a defensible NOT_PERMITTED (modeled SSNL) or NEEDS_INPUT result — never false PERMITTED."
+      "Receive NEEDS_INPUT overall until debt/lien alternatives are CERTIFIED — modeled SSNL blockage is subsidiary only; never false PERMITTED.",
+      "See fail-closed NEEDS_INPUT when the requested evaluation date is not the supported fixture as-of."
     ],
     "constraintsHonored": [
       "no fabricated Phase-3 / VEP / CERTIFIED_4E",
       "no PERMITTED without genuine gates",
+      "no overall NOT_PERMITTED from modeled SSNL alone",
+      "financial evidence date bound — unsupported dates fail closed",
       "verified remaining forced null",
       "no competing engine — reused vertical slice, VE bridge, path enum, verified simulate, recipes, cross-domain modeled scenario",
       "no Neon writes / no paid inference",

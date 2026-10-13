@@ -49,6 +49,20 @@ export type CfoWorkflowResult =
   | "REVIEW_REQUIRED"
   | "UNSUPPORTED";
 
+/**
+ * Only Matthews authentic financial fixture period supported for this offline
+ * workflow. Other evaluation dates must fail closed — never silently reuse
+ * 2024-12-31 inputs.
+ */
+export const MATTHEWS_CFO_SUPPORTED_FINANCIAL_AS_OF = "2024-12-31";
+
+export type CfoSubsidiaryFinding = {
+  code: string;
+  kind: "DEBT_ALTERNATIVE" | "LIEN_COMPANION" | "MODELED_SCENARIO" | "DATE_BINDING";
+  status: string;
+  detail: string;
+};
+
 export type CfoSecuredDebtWorkflowArgs = {
   ask: string;
   amountMillions?: number;
@@ -134,6 +148,18 @@ export type CfoSecuredDebtWorkflowResult = {
     recipeLimitations: Array<{ code: string; message: string }>;
     modeledScenarioOverall: string | null;
   };
+  /**
+   * Subsidiary path findings (e.g. modeled SSNL blocked). Never alone decide
+   * overall NOT_PERMITTED while other debt/lien alternatives remain unevaluated
+   * under certified gates.
+   */
+  subsidiaryFindings: CfoSubsidiaryFinding[];
+  financialEvidenceBinding: {
+    requestedEvaluationDate: string;
+    supportedFixtureAsOf: string;
+    matched: boolean;
+    status: "BOUND" | "UNSUPPORTED_DATE" | "NO_PACKAGE";
+  };
   /** Mission item 7 — defensible result (never PERMITTED without genuine gates). */
   result: CfoWorkflowResult;
   resultRationale: string;
@@ -169,15 +195,22 @@ function classifyBasket(code: string): "FIXED_DOLLAR" | "RATIO" | "STRUCTURAL" |
 
 function decideResult(args: {
   verified: VerifiedSimulateResult;
-  modeledScenarioBlocked: boolean;
   hasPackage: boolean;
   draftComplete: boolean;
+  financialDateMatched: boolean;
+  alternativesFullyCertified: boolean;
 }): { result: CfoWorkflowResult; rationale: string } {
   if (!args.hasPackage) {
     return {
       result: "UNSUPPORTED",
       rationale:
         "No authentic debt-document package bound — cannot evaluate secured debt permission.",
+    };
+  }
+  if (!args.financialDateMatched) {
+    return {
+      result: "NEEDS_INPUT",
+      rationale: `Requested evaluation date is not bound to authentic Matthews financial evidence (supported as-of ${MATTHEWS_CFO_SUPPORTED_FINANCIAL_AS_OF} only). Headroom will not silently reuse another period's inputs.`,
     };
   }
   if (!args.draftComplete) {
@@ -196,18 +229,59 @@ function decideResult(args: {
         "Unexpected verified executable without authenticated Matthews VEP — treat as REVIEW_REQUIRED pending human verification.",
     };
   }
-  if (args.modeledScenarioBlocked) {
+  // Do NOT promote overall NOT_PERMITTED from a single modeled SSNL blockage.
+  // Debt Facilities (1)(a), FCCR, Notes grandfather, CA lien companion, and
+  // certified dual-path remain unevaluated under CERTIFIED_4E gates.
+  if (!args.alternativesFullyCertified) {
     return {
-      result: "NOT_PERMITTED",
+      result: "NEEDS_INPUT",
       rationale:
-        "Modeled Indenture secured-net-leverage room is $0 for this package as-of (SSNL already above 3.50x). This is a modeled NOT_PERMITTED signal — not a CERTIFIED_4E / production-authoritative refusal. Verified simulate also REFUSED (no VEP).",
+        "Overall permission is NEEDS_INPUT: relevant debt and lien alternatives have not been fully evaluated under CERTIFIED_4E / verified simulate. Modeled SSNL blockage (if any) is a subsidiary finding only — not an overall NOT_PERMITTED determination. Verified remaining stays null; certified simulation unavailable.",
     };
   }
   return {
-    result: "NEEDS_INPUT",
+    result: "REVIEW_REQUIRED",
     rationale:
-      "Verified execution REFUSED: no Matthews VerifiedExecutionPackage, no utilization completeness certificate, trusted issuer BLOCKED, CA §6.01(j) structural lien companion, dual-path not CERTIFIED_4E. Modeled leaf arithmetic is available but is not production permission.",
+      "All alternative path gates unexpectedly reported certified without production authority — REVIEW_REQUIRED pending human verification. Never auto-PERMITTED.",
   };
+}
+
+function buildAlternativePathFindings(args: {
+  covenants: ApplicableCovenantRow[];
+  modeledScenarioBlocked: boolean;
+  modeledScenarioOverall: string | null;
+  amountMillions: number;
+}): CfoSubsidiaryFinding[] {
+  const findings: CfoSubsidiaryFinding[] = args.covenants.map((c) => {
+    const isLien = c.family === "LIENS";
+    let status = "MODELED_LEAF_PRESENT_NOT_CERTIFIED";
+    if (c.code.includes("1b_ratio_secured") && (c.modeledCapacityMm ?? 0) <= 0) {
+      status = "MODELED_ROOM_ZERO_NOT_OVERALL_REFUSAL";
+    }
+    if (c.code.includes("601j") && (c.modeledCapacityMm ?? 0) <= 0) {
+      status = "STRUCTURAL_ZERO_LIEN_COMPANION_NOT_CERTIFIED";
+    }
+    if (c.code.includes("_2_notes") || c.code.includes("notes")) {
+      status = "GRANDFATHER_NO_NEW_CAPACITY_NOT_CERTIFIED";
+    }
+    return {
+      code: c.code,
+      kind: isLien ? "LIEN_COMPANION" : "DEBT_ALTERNATIVE",
+      status,
+      detail: `${c.sourceCitation} · modeledCapacityMm=${c.modeledCapacityMm} · remaining=null · ${c.authorityStatus}`,
+    };
+  });
+  findings.push({
+    code: "MODELED_SSNL_REFINANCING_SCENARIO",
+    kind: "MODELED_SCENARIO",
+    status: args.modeledScenarioBlocked
+      ? "MODELED_SSNL_PATH_BLOCKED"
+      : `MODELED_SCENARIO_${(args.modeledScenarioOverall ?? "UNKNOWN").toUpperCase()}`,
+    detail: args.modeledScenarioBlocked
+      ? `Modeled Indenture secured-net-leverage room is $0 for $${args.amountMillions}M as-of (SSNL already above 3.50x). Subsidiary finding only — not overall NOT_PERMITTED while other debt/lien alternatives remain incompletely certified.`
+      : `Modeled refinancing scenario overall=${args.modeledScenarioOverall} — subsidiary; not CERTIFIED_4E.`,
+  });
+  return findings;
 }
 
 /**
@@ -219,7 +293,9 @@ export async function evaluateCfoSecuredDebtWorkflow(
   const ask = args.ask;
   const draft = parseTransactionDraft(ask);
   const amountMillions = args.amountMillions ?? draft.amountMillions ?? 50;
-  const evaluationDate = args.evaluationDate ?? draft.evaluationDate ?? "2024-12-31";
+  // Default only to the supported fixture period — never invent another as-of.
+  const evaluationDate =
+    args.evaluationDate ?? draft.evaluationDate ?? MATTHEWS_CFO_SUPPORTED_FINANCIAL_AS_OF;
   const draftComplete =
     draft.evaluationDate != null &&
     draft.amountMillions != null &&
@@ -242,9 +318,10 @@ export async function evaluateCfoSecuredDebtWorkflow(
     });
     const decision = decideResult({
       verified,
-      modeledScenarioBlocked: false,
       hasPackage: false,
       draftComplete,
+      financialDateMatched: false,
+      alternativesFullyCertified: false,
     });
     return {
       schema: "cfo-secured-debt-workflow.v1",
@@ -308,6 +385,13 @@ export async function evaluateCfoSecuredDebtWorkflow(
         recipeLimitations: [],
         modeledScenarioOverall: null,
       },
+      subsidiaryFindings: [],
+      financialEvidenceBinding: {
+        requestedEvaluationDate: evaluationDate,
+        supportedFixtureAsOf: MATTHEWS_CFO_SUPPORTED_FINANCIAL_AS_OF,
+        matched: false,
+        status: "NO_PACKAGE",
+      },
       result: decision.result,
       resultRationale: decision.rationale,
       customerCanDoToday: [
@@ -331,6 +415,151 @@ export async function evaluateCfoSecuredDebtWorkflow(
   }
 
   const fixture = loadMatthewsAuthenticFixture();
+  const supportedAsOf = fixture.asOf || MATTHEWS_CFO_SUPPORTED_FINANCIAL_AS_OF;
+  const financialDateMatched = evaluationDate === supportedAsOf;
+
+  // Fail closed on unsupported dates BEFORE treating fixture figures as bound.
+  if (!financialDateMatched) {
+    const verified = await attemptVerifiedSimulate({
+      companyId: MATTHEWS_COMPANY_ID,
+      evaluationDate,
+      amountMillions,
+      kind: "SECURED_DEBT",
+      secured: true,
+      verifiedPackage: null,
+    });
+    const pathEnum = enumerateCertifiedPaths({
+      verifiedPackage: null,
+      transactionKind: "SECURED_DEBT",
+      secured: true,
+    });
+    const decision = decideResult({
+      verified,
+      hasPackage: true,
+      draftComplete,
+      financialDateMatched: false,
+      alternativesFullyCertified: false,
+    });
+    return {
+      schema: "cfo-secured-debt-workflow.v1",
+      evaluatedAt: new Date().toISOString(),
+      gitSha: gitSha(),
+      package: {
+        key: MATTHEWS_PACKAGE_KEY,
+        companyId: MATTHEWS_COMPANY_ID,
+        authenticity: "AUTHENTIC_SOURCE_BACKED",
+        asOf: supportedAsOf,
+        governingDocuments: MATTHEWS_GOVERNING_DOCUMENTS,
+      },
+      ask,
+      draft,
+      auditTrail: {
+        sources: MATTHEWS_GOVERNING_DOCUMENTS.map((d) => ({
+          id: d.id,
+          label: d.name,
+          accession: d.accession,
+        })),
+        assumptions: [
+          `Requested evaluationDate=${evaluationDate} does not match fixture asOf=${supportedAsOf}.`,
+          "Fail closed — December 31, 2024 financial inputs were NOT silently reused.",
+        ],
+        calculations: [],
+        unresolvedConditions: [
+          "FINANCIAL_EVIDENCE_PERIOD_MISMATCH",
+          `REQUESTED_EVALUATION_DATE=${evaluationDate}`,
+          `SUPPORTED_FIXTURE_AS_OF=${supportedAsOf}`,
+        ],
+        gates: [
+          {
+            gate: "FINANCIAL_EVIDENCE_DATE_BINDING",
+            status: "FAIL",
+            detail: `requested=${evaluationDate}; supported=${supportedAsOf}`,
+          },
+          {
+            gate: "CERTIFIED_4E_PATH_ENUMERATION",
+            status: pathEnum.authority,
+            detail: pathEnum.incompleteReasons.join("; ") || pathEnum.note,
+          },
+        ],
+      },
+      applicableCovenants: [],
+      operativeAndAmendmentState: {
+        documents: MATTHEWS_GOVERNING_DOCUMENTS.map((d) => ({
+          id: d.id,
+          name: d.name,
+          role: d.role,
+          accession: d.accession,
+        })),
+        amendmentNotes: [
+          "Financial period mismatch — covenant arithmetic not evaluated against unbound date.",
+        ],
+        operativeStateStatus: "PARTIAL_LEAF_ENCODED",
+      },
+      debtBasketsAndRatioConditions: [],
+      approvedFinancialInputs: {
+        ns4ApprovedPresent: false,
+        fixtureProvenance: `${fixture.label} · accession ${fixture.edgarAccession} · period ${fixture.reportingPeriod} · asOf ${supportedAsOf}`,
+        lines: [],
+        note: `Fail closed: requested ${evaluationDate} ≠ supported fixture asOf ${supportedAsOf}. Inputs for another period were not applied.`,
+      },
+      utilizationAndRemaining: {
+        attributedEventCount: 0,
+        attributedAmountMm: null,
+        supportsRemainingClaim: false,
+        completenessCertificatePresent: false,
+        unknownHistoricalActivity: true,
+        trustedIssuerActivation: TRUSTED_ISSUER_ACTIVATION.status,
+        verifiedRemainingUsd: null,
+        productionHandoffRefused: true,
+      },
+      pathAndSimulation: {
+        pathEnumerationAuthority: pathEnum.authority,
+        pathCount: 0,
+        selectedPathId: null,
+        verifiedSimulateExecutable: false,
+        verifiedSimulateInvoked: true,
+        simulationOutcome: null,
+        refusalSummary: verified.refusalSummary,
+        certifiedBlockers: verified.certified.blockers,
+        recipeLimitations: [],
+        modeledScenarioOverall: null,
+      },
+      subsidiaryFindings: [
+        {
+          code: "FINANCIAL_EVIDENCE_PERIOD_MISMATCH",
+          kind: "DATE_BINDING",
+          status: "UNSUPPORTED_DATE",
+          detail: `requested=${evaluationDate}; supportedFixtureAsOf=${supportedAsOf}`,
+        },
+      ],
+      financialEvidenceBinding: {
+        requestedEvaluationDate: evaluationDate,
+        supportedFixtureAsOf: supportedAsOf,
+        matched: false,
+        status: "UNSUPPORTED_DATE",
+      },
+      result: decision.result,
+      resultRationale: decision.rationale,
+      customerCanDoToday: [
+        "See fail-closed NEEDS_INPUT when the requested evaluation date is not the supported Matthews financial evidence period.",
+      ],
+      requiredExternalEvidence: [
+        {
+          evidence: `Authentic APPROVED / fixture financial evidence for evaluation date ${evaluationDate}`,
+          whyRequired: "Cannot bind covenant arithmetic to an unsupported period",
+          status: "ABSENT",
+        },
+      ],
+      workflowVerdict: "CUSTOMER_WORKFLOW_BLOCKED_BY_EVIDENCE",
+      constraintsHonored: [
+        "no silent reuse of 2024-12-31 inputs for other dates",
+        "no PERMITTED without genuine gates",
+        "verified remaining forced null",
+        "no fabricated Phase-3 / VEP / CERTIFIED_4E",
+      ],
+    };
+  }
+
   const slice: VerticalSliceEvaluation = evaluateMatthewsVerticalSlice();
   const run = runRealDashboardVerticalSlice();
   const veCandidates = matthewsVerifiedExecutableCandidates();
@@ -382,11 +611,22 @@ export async function evaluateCfoSecuredDebtWorkflow(
     caveats: c.exceptionsOrCaveats ?? [],
   }));
 
+  const subsidiaryFindings = buildAlternativePathFindings({
+    covenants: applicableCovenants,
+    modeledScenarioBlocked,
+    modeledScenarioOverall: scenario.overallStatus,
+    amountMillions,
+  });
+
+  // Alternatives are never fully CERTIFIED_4E on this package today.
+  const alternativesFullyCertified = false;
+
   const decision = decideResult({
     verified,
-    modeledScenarioBlocked,
     hasPackage: true,
     draftComplete,
+    financialDateMatched: true,
+    alternativesFullyCertified,
   });
 
   const unresolvedConditions = [
@@ -398,6 +638,8 @@ export async function evaluateCfoSecuredDebtWorkflow(
     "SECURED_COMPOSITION_HYPOTHETICAL_UNVERIFIED",
     "NS4_APPROVED_SNAPSHOT_ABSENT_FOR_MATTHEWS_OFFLINE_SLICE",
     "DUAL_PATH_DEBT_PLUS_LIEN_NOT_CERTIFIED_4E",
+    "ALTERNATIVE_DEBT_LIEN_PATHS_NOT_FULLY_CERTIFIED",
+    ...(modeledScenarioBlocked ? ["SUBSIDIARY_MODELED_SSNL_PATH_BLOCKED"] : []),
     ...draft.missingConfirmations.map((m) => `DRAFT_MISSING:${m}`),
   ];
 
@@ -481,6 +723,11 @@ export async function evaluateCfoSecuredDebtWorkflow(
       unresolvedConditions,
       gates: [
         {
+          gate: "FINANCIAL_EVIDENCE_DATE_BINDING",
+          status: "BOUND",
+          detail: `requested=${evaluationDate}; supported=${supportedAsOf}`,
+        },
+        {
           gate: "CERTIFIED_4E_PATH_ENUMERATION",
           status: pathEnum.authority,
           detail: pathEnum.incompleteReasons.join("; ") || pathEnum.note,
@@ -509,6 +756,11 @@ export async function evaluateCfoSecuredDebtWorkflow(
           gate: "VE_FIXED_DOLLAR_GROSS",
           status: "PARTIAL",
           detail: `Bridge compile present for discovery candidates; feeds SOURCE_BACKED_COMPILED_GROSS only (units=${veBridge.verifiedExecutableUnits.length})`,
+        },
+        {
+          gate: "MODELED_SSNL_SUBSIDIARY",
+          status: modeledScenarioBlocked ? "BLOCKED_SUBSIDIARY_ONLY" : String(scenario.overallStatus),
+          detail: "Does not alone decide overall NOT_PERMITTED",
         },
       ],
     },
@@ -566,6 +818,13 @@ export async function evaluateCfoSecuredDebtWorkflow(
       recipeLimitations: recipe.limitations.map((l) => ({ code: l.code, message: l.message })),
       modeledScenarioOverall: scenario.overallStatus,
     },
+    subsidiaryFindings,
+    financialEvidenceBinding: {
+      requestedEvaluationDate: evaluationDate,
+      supportedFixtureAsOf: supportedAsOf,
+      matched: true,
+      status: "BOUND",
+    },
     result: decision.result,
     resultRationale: decision.rationale,
     customerCanDoToday: [
@@ -577,13 +836,16 @@ export async function evaluateCfoSecuredDebtWorkflow(
       "See utilization completeness absent and verified remaining null — UNKNOWN not treated as zero.",
       "Run verified simulate (REQUIRE bridge) and get an explicit REFUSED outcome with blockers — no silent path invent.",
       "Export a single audit trail JSON covering sources, assumptions, calculations, gates, and unresolved conditions.",
-      "Receive a defensible NOT_PERMITTED (modeled SSNL) or NEEDS_INPUT result — never false PERMITTED.",
+      "Receive NEEDS_INPUT overall until debt/lien alternatives are CERTIFIED — modeled SSNL blockage is subsidiary only; never false PERMITTED.",
+      "See fail-closed NEEDS_INPUT when the requested evaluation date is not the supported fixture as-of.",
     ],
     requiredExternalEvidence,
     workflowVerdict: "CUSTOMER_WORKFLOW_PARTIAL",
     constraintsHonored: [
       "no fabricated Phase-3 / VEP / CERTIFIED_4E",
       "no PERMITTED without genuine gates",
+      "no overall NOT_PERMITTED from modeled SSNL alone",
+      "financial evidence date bound — unsupported dates fail closed",
       "verified remaining forced null",
       "no competing engine — reused vertical slice, VE bridge, path enum, verified simulate, recipes, cross-domain modeled scenario",
       "no Neon writes / no paid inference",
