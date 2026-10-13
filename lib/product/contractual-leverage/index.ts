@@ -26,6 +26,19 @@ export {
   compileMatthewsEbitdaBuildup,
   type EbitdaBuildupCompileResult,
 } from "./ebitda-buildup";
+export {
+  bindApprovedMetrics,
+  buildMetricDependencyExpression,
+  boundFactsToInputLines,
+  type BoundMetricFact,
+  type Ns4BindIdentity,
+  type Ns4MetricBindResult,
+} from "./ns4-bind";
+export {
+  runCanonicalContractualFinancialPath,
+  snapshotInvalidatesPriorResults,
+  type CanonicalFinancialPathResult,
+} from "./canonical-integration";
 export { loadContractualLeverageForCompany, type ContractualLeverageDashboardPayload } from "./service";
 export {
   COHERENT_FINANCIALS,

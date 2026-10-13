@@ -26,6 +26,7 @@ export type DebtMetricBasis = "total" | "secured";
 /** Minimal serializable information-request summary for dashboard display. */
 export interface FinancialInformationRequestSummary {
   executable: boolean;
+  executionMode: "EXACT" | "SAFE_BOUND" | "NOT_EXECUTABLE";
   blockingKeys: string[];
   summary: Partial<Record<FulfillmentState, number>>;
 }
