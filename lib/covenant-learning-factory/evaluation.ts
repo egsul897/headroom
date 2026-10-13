@@ -16,14 +16,24 @@ function eid(parts: string[]): string {
   return createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 24);
 }
 
+export const METRIC_DEFINITIONS = {
+  supportedStructureUnits:
+    "Count of compile units with supportStatus===SUPPORTED_STRUCTURE (exception-catalog support and no unresolved context). Independent of executableAuthority.",
+  verifiedExecutableUnits:
+    "Count of units elevated to executableAuthority===VERIFIED_EXECUTABLE by fixed-dollar / greater-of / percent-of-assets vertical slices after independent fidelity PASS. May be >0 while supportedStructureUnits===0 when supportStatus is PARTIAL due to unresolved context bundles.",
+  dangerousOmissions:
+    "NOT_MEASURED unless an independently adjudicated completeness oracle exists for the package. Heuristic discovery gaps are recorded as DISCOVERY_GAP / COVERAGE_GAP errors — never reported as measured dangerousOmissions=0.",
+} as const;
+
 /**
  * Score coverage / fidelity from compile stages without trusting unverified IR.
- * Dangerous omissions: Pass A found candidates but zero exception catalogs / units.
  */
 export function evaluateCompileIndependently(args: {
   spec: LearningPackageSpec;
   runId: string;
   result: OfflinePackageCompileResult;
+  /** When true and an oracle is supplied elsewhere, dangerous omissions may be MEASURED. */
+  completenessOracle?: { dangerousOmissionCount: number } | null;
 }): { evaluation: LearningEvaluationRecord; errors: LearningErrorRecord[] } {
   const { spec, runId, result } = args;
   const notes: string[] = [];
@@ -38,22 +48,29 @@ export function evaluateCompileIndependently(args: {
   const refused = result.summary.refusedExecutableUnits;
   const supported = result.summary.supportedStructureUnits;
 
-  let dangerousOmissionCount = 0;
+  // Discovery gap heuristic — NOT a completeness-oracle measurement.
   if (passA > 20 && catalogs === 0 && units === 0) {
-    dangerousOmissionCount += 1;
     errors.push({
-      errorId: eid([runId, "DANGEROUS_OMISSION", "no-catalogs"]),
+      errorId: eid([runId, "DISCOVERY_GAP", "no-catalogs"]),
       packageKey: spec.packageKey,
       runId,
-      class: "DANGEROUS_OMISSION",
+      class: "DISCOVERY_GAP",
       severity: "HIGH",
-      message: `Pass A found ${passA} signals but zero exception catalogs and zero units`,
+      message: `Pass A found ${passA} signals but zero exception catalogs and zero units (heuristic gap; not an adjudicated dangerous-omission oracle)`,
       stage: "INDEPENDENT_EVAL",
       evidence: { passA, catalogs, units },
       createdAt: now,
       correctiveHistory: [],
     });
-    notes.push("DANGEROUS_OMISSION: discovery signals without catalog/unit materialization");
+    notes.push("DISCOVERY_GAP heuristic fired; dangerousOmissions remain NOT_MEASURED");
+  }
+
+  const dangerousOmissionsStatus = args.completenessOracle ? ("MEASURED" as const) : ("NOT_MEASURED" as const);
+  const dangerousOmissionCount = args.completenessOracle
+    ? args.completenessOracle.dangerousOmissionCount
+    : null;
+  if (dangerousOmissionsStatus === "NOT_MEASURED") {
+    notes.push("dangerousOmissions=NOT_MEASURED (no independently adjudicated completeness oracle)");
   }
 
   if (result.stages.operativeHandoff.authorityGate !== "CONFIRMED_OPERATIVE_IDENTITY") {
@@ -72,7 +89,6 @@ export function evaluateCompileIndependently(args: {
     });
   }
 
-  // Fidelity: only score when verified-executable units exist; otherwise unknown (null).
   let sourceFidelityPass: boolean | null = null;
   if (verified > 0) {
     const fidelityFails = result.units.filter(
@@ -99,6 +115,12 @@ export function evaluateCompileIndependently(args: {
     notes.push("sourceFidelity unknown — no VERIFIED_EXECUTABLE units (not treated as pass)");
   }
 
+  if (supported === 0 && verified > 0) {
+    notes.push(
+      `metric note: supportedStructureUnits=0 while verifiedExecutableUnits=${verified} — VE vertical slices can elevate under PARTIAL supportStatus`,
+    );
+  }
+
   const coverageDenom = Math.max(passA, units, 1);
   const coverageScore = Math.min(1, (supported + verified) / coverageDenom);
 
@@ -110,7 +132,6 @@ export function evaluateCompileIndependently(args: {
     refused +
     result.units.filter((u) => u.supportStatus === "AMBIGUOUS" || u.supportStatus === "UNVERIFIED").length;
 
-  // High refusal with zero verified-executable is an explicit coverage gap, not silent success.
   if (units >= 20 && verified === 0 && refused >= Math.floor(units * 0.8)) {
     errors.push({
       errorId: eid([runId, "COVERAGE_GAP", "high-refusal"]),
@@ -135,12 +156,14 @@ export function evaluateCompileIndependently(args: {
     sourceFidelityPass,
     coverageScore,
     calculationCorrectness: verified > 0 ? sourceFidelityPass : null,
+    dangerousOmissionsStatus,
     dangerousOmissionCount,
     abstentionCount,
     supportedStructureUnits: supported,
     verifiedExecutableUnits: verified,
     unsupportedUnits: unsupported,
     refusedExecutableUnits: refused,
+    metricDefinitions: { ...METRIC_DEFINITIONS },
     independent: true,
     notes,
     createdAt: now,

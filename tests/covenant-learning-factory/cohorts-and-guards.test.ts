@@ -111,12 +111,18 @@ describe("covenant learning factory — inventory + registry", () => {
           sourceFidelityPass: true,
           coverageScore: 0.3,
           calculationCorrectness: true,
-          dangerousOmissionCount: 0,
+          dangerousOmissionsStatus: "NOT_MEASURED",
+          dangerousOmissionCount: null,
           abstentionCount: 2,
           supportedStructureUnits: 3,
           verifiedExecutableUnits: 1,
           unsupportedUnits: 4,
           refusedExecutableUnits: 2,
+          metricDefinitions: {
+            supportedStructureUnits: "test",
+            verifiedExecutableUnits: "test",
+            dangerousOmissions: "NOT_MEASURED",
+          },
           independent: true,
           notes: [],
           createdAt: "2026-10-13T00:01:00.000Z",
@@ -129,6 +135,7 @@ describe("covenant learning factory — inventory + registry", () => {
     const dash = buildDashboardReport({ manifests, neonLive: false });
     expect(dash.packages.trainDev).toBe(1);
     expect(dash.coverage.verifiedExecutableUnits).toBe(1);
+    expect(dash.correctness.dangerousOmissions).toBe("NOT_MEASURED");
     expect(dash.honesty.productionReady).toBe(false);
     expect(dash.errorLedger[0]?.class).toBe("OPERATIVE_IDENTITY_UNRESOLVED");
   });

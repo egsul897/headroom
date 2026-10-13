@@ -8,6 +8,7 @@ import {
   type LearningErrorClass,
   type PackageAuditManifest,
 } from "./types";
+import { METRIC_DEFINITIONS } from "./evaluation";
 import { defaultHonestyClaims } from "./promotion-guards";
 
 export function buildDashboardReport(args: {
@@ -25,7 +26,8 @@ export function buildDashboardReport(args: {
   let sourceFidelityPass = 0;
   let sourceFidelityFail = 0;
   let sourceFidelityUnknown = 0;
-  let dangerousOmissions = 0;
+  let dangerousOmissionsMeasured = 0;
+  let anyDangerousMeasured = false;
   let abstentions = 0;
   let wallMs = 0;
 
@@ -35,7 +37,10 @@ export function buildDashboardReport(args: {
     verifiedExecutableUnits += m.compileSummary?.verifiedExecutableUnits ?? 0;
     unsupportedUnits += m.compileSummary?.unsupportedUnits ?? 0;
     refusedExecutableUnits += m.compileSummary?.refusedExecutableUnits ?? 0;
-    dangerousOmissions += m.evaluation?.dangerousOmissionCount ?? 0;
+    if (m.evaluation?.dangerousOmissionsStatus === "MEASURED") {
+      anyDangerousMeasured = true;
+      dangerousOmissionsMeasured += m.evaluation.dangerousOmissionCount ?? 0;
+    }
     abstentions += m.evaluation?.abstentionCount ?? 0;
     if (m.evaluation?.sourceFidelityPass === true) sourceFidelityPass += 1;
     else if (m.evaluation?.sourceFidelityPass === false) sourceFidelityFail += 1;
@@ -73,9 +78,11 @@ export function buildDashboardReport(args: {
       sourceFidelityPass,
       sourceFidelityFail,
       sourceFidelityUnknown,
-      dangerousOmissions,
+      dangerousOmissions: anyDangerousMeasured ? dangerousOmissionsMeasured : "NOT_MEASURED",
+      dangerousOmissionsStatus: anyDangerousMeasured ? "MEASURED" : "NOT_MEASURED",
       abstentions,
     },
+    metricDefinitions: { ...METRIC_DEFINITIONS },
     costs: { estimatedUsd: 0, wallMs },
     errorLedger: [...errorCounts.entries()]
       .map(([className, count]) => ({ class: className, count }))
@@ -89,8 +96,12 @@ export function buildDashboardReport(args: {
         cohort: m.cohort,
         status: m.status,
         verifiedExecutableUnits: m.compileSummary?.verifiedExecutableUnits ?? 0,
+        supportedStructureUnits: m.compileSummary?.supportedStructureUnits ?? 0,
         unsupportedUnits: m.compileSummary?.unsupportedUnits ?? 0,
-        dangerousOmissions: m.evaluation?.dangerousOmissionCount ?? 0,
+        dangerousOmissions:
+          m.evaluation?.dangerousOmissionsStatus === "MEASURED"
+            ? (m.evaluation.dangerousOmissionCount ?? 0)
+            : "NOT_MEASURED",
       })),
     honesty: defaultHonestyClaims(),
   };

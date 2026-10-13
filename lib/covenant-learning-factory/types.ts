@@ -138,12 +138,26 @@ export interface LearningEvaluationRecord {
   sourceFidelityPass: boolean | null;
   coverageScore: number | null;
   calculationCorrectness: boolean | null;
-  dangerousOmissionCount: number;
+  /**
+   * Completeness dangerous-omissions are NOT_MEASURED unless an independently
+   * adjudicated completeness oracle exists for the package. Measured zero ≠ unknown.
+   */
+  dangerousOmissionsStatus: "NOT_MEASURED" | "MEASURED";
+  dangerousOmissionCount: number | null;
   abstentionCount: number;
   supportedStructureUnits: number;
+  /**
+   * Distinct from verifiedExecutableUnits: catalog supportStatus===SUPPORTED_STRUCTURE
+   * with no unresolved context. Vertical-slice VE can be >0 while this is 0 (PARTIAL support).
+   */
   verifiedExecutableUnits: number;
   unsupportedUnits: number;
   refusedExecutableUnits: number;
+  metricDefinitions: {
+    supportedStructureUnits: string;
+    verifiedExecutableUnits: string;
+    dangerousOmissions: string;
+  };
   independent: true;
   notes: string[];
   createdAt: string;
@@ -251,8 +265,15 @@ export interface DashboardReport {
     sourceFidelityPass: number;
     sourceFidelityFail: number;
     sourceFidelityUnknown: number;
-    dangerousOmissions: number;
+    /** Aggregated only over packages with MEASURED status; else NOT_MEASURED. */
+    dangerousOmissions: number | "NOT_MEASURED";
+    dangerousOmissionsStatus: "NOT_MEASURED" | "MEASURED";
     abstentions: number;
+  };
+  metricDefinitions: {
+    supportedStructureUnits: string;
+    verifiedExecutableUnits: string;
+    dangerousOmissions: string;
   };
   costs: { estimatedUsd: number; wallMs: number };
   errorLedger: { class: LearningErrorClass; count: number }[];
@@ -261,8 +282,9 @@ export interface DashboardReport {
     cohort: LearningCohort;
     status: LearningRunStatus;
     verifiedExecutableUnits: number;
+    supportedStructureUnits: number;
     unsupportedUnits: number;
-    dangerousOmissions: number;
+    dangerousOmissions: number | "NOT_MEASURED";
   }[];
   honesty: PackageAuditManifest["claims"];
 }

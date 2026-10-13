@@ -164,6 +164,7 @@ export async function persistPackageManifestToNeon(
 
       if (manifest.evaluation) {
         const ev = manifest.evaluation;
+        // notesJson carries dangerousOmissionsStatus + metricDefinitions until a follow-on migration.
         await client.$executeRawUnsafe(
           `INSERT INTO learning_evaluation_outcomes
             (id, "evaluationId", "packageKey", "runId", cohort, "sourceFidelityPass", "coverageScore",
@@ -174,7 +175,8 @@ export async function persistPackageManifestToNeon(
            ON CONFLICT ("evaluationId") DO UPDATE SET
              "sourceFidelityPass" = EXCLUDED."sourceFidelityPass",
              "coverageScore" = EXCLUDED."coverageScore",
-             "dangerousOmissionCount" = EXCLUDED."dangerousOmissionCount"`,
+             "dangerousOmissionCount" = EXCLUDED."dangerousOmissionCount",
+             "notesJson" = EXCLUDED."notesJson"`,
           ev.evaluationId,
           ev.evaluationId,
           ev.packageKey,
@@ -189,7 +191,11 @@ export async function persistPackageManifestToNeon(
           ev.verifiedExecutableUnits,
           ev.unsupportedUnits,
           ev.refusedExecutableUnits,
-          JSON.stringify(ev.notes),
+          JSON.stringify({
+            notes: ev.notes,
+            dangerousOmissionsStatus: ev.dangerousOmissionsStatus,
+            metricDefinitions: ev.metricDefinitions,
+          }),
           new Date(ev.createdAt),
         );
       }

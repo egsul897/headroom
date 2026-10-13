@@ -5,7 +5,7 @@
 
 import { createHash } from "node:crypto";
 import { execSync } from "node:child_process";
-import { readFileSync, statSync } from "node:fs";
+import { mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import {
   compileFrozenDebtPackage,
@@ -208,6 +208,25 @@ export async function processLearningPackage(
       paidInferenceUsed: result.paidInferenceUsed,
     };
 
+    // Persist unit dump for refusal audits (git-safe under docs/).
+    const dumpDir = path.join(repoRoot, "docs/covenant-learning-factory/unit-dumps");
+    mkdirSync(dumpDir, { recursive: true });
+    writeFileSync(
+      path.join(dumpDir, `${spec.packageKey}.units.json`),
+      JSON.stringify(
+        {
+          packageKey: spec.packageKey,
+          cohort: spec.cohort,
+          compilerVersion: OFFLINE_PACKAGE_COMPILE_VERSION,
+          greaterOfCompilerVersion: "greater-of-assets-basket.v1.1",
+          generatedAt: new Date().toISOString(),
+          units: result.units,
+        },
+        null,
+        2,
+      ) + "\n",
+    );
+
     // Artifacts — PROPOSED / REVIEW_REQUIRED only
     for (const u of result.units) {
       const state =
@@ -251,16 +270,20 @@ export async function processLearningPackage(
       result,
     });
     errors.push(...evalErrors);
+    const discoveryGap = errors.some((e) => e.class === "DISCOVERY_GAP");
     stages.push({
       stage: "INDEPENDENT_EVAL",
-      status: evaluation.dangerousOmissionCount > 0 ? "ABSTAINED" : "OK",
+      status: discoveryGap ? "ABSTAINED" : "OK",
       startedAt: tEval,
       finishedAt: new Date().toISOString(),
       diagnostics: evaluation.notes.join("; ") || "independent eval complete",
       metrics: {
         coverageScore: evaluation.coverageScore,
+        dangerousOmissionsStatus: evaluation.dangerousOmissionsStatus,
         dangerousOmissionCount: evaluation.dangerousOmissionCount,
         abstentionCount: evaluation.abstentionCount,
+        supportedStructureUnits: evaluation.supportedStructureUnits,
+        verifiedExecutableUnits: evaluation.verifiedExecutableUnits,
       },
     });
 
@@ -278,7 +301,7 @@ export async function processLearningPackage(
       compilerVersion: OFFLINE_PACKAGE_COMPILE_VERSION,
       startedAt,
       finishedAt,
-      status: evaluation.dangerousOmissionCount > 0 ? "ABSTAINED" : "OK",
+      status: discoveryGap ? "ABSTAINED" : "OK",
       documentHashes,
       stages,
       compileSummary,
