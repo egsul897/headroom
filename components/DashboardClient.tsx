@@ -24,6 +24,7 @@ import type { FinancialPosition } from "@/lib/financial-core/types";
 import { fmtDate, fmtM } from "@/lib/format";
 import { ContractualMetricsPanel } from "@/components/ContractualMetricsPanel";
 import type { ContractualMetricsView } from "@/lib/product/contractual-metrics/serialize";
+import { isProvisionalContractualAuthority } from "@/lib/product/contractual-metrics/serialize";
 
 /**
  * The Dashboard tab (task "MAKE THE UI MATCH THE PROTOTYPE EXACTLY" -
@@ -233,35 +234,71 @@ export function DashboardClient(props: DashboardClientProps) {
         <div className="headline-metric-strip">
           {overview.headlineMetrics.map((m) => {
             const contractualEbitda = props.contractualMetrics?.metrics.find((x) => x.metricKey === "consolidated_ebitda");
-            const override =
-              m.key === "ebitda" && contractualEbitda?.status === "CALCULATED" && contractualEbitda.valueMillions != null
-                ? `$${contractualEbitda.valueMillions.toLocaleString(undefined, { maximumFractionDigits: 3 })}M`
-                : null;
             const contractualRatio = props.contractualMetrics?.metrics.find(
               (x) =>
                 (m.key === "totalNetLeverage" && x.metricKey === "total_net_leverage") ||
                 (m.key === "seniorSecuredNetLeverage" && x.metricKey === "secured_net_leverage") ||
                 (m.key === "fixedChargeCoverage" && x.metricKey === "interest_coverage"),
             );
+            const candidate =
+              m.key === "ebitda"
+                ? contractualEbitda
+                : contractualRatio ?? null;
+            const candidateProvisional =
+              candidate != null &&
+              (candidate.isProvisional || isProvisionalContractualAuthority(candidate.authorityLabel));
+            // Never replace an AVAILABLE (approved/authoritative snapshot) headline with provisional reconstruction.
+            const maySurfaceContractual =
+              candidate?.status === "CALCULATED" &&
+              candidate.valueMillions != null &&
+              !(candidateProvisional && m.state === "AVAILABLE");
+            const override =
+              maySurfaceContractual && m.key === "ebitda" && candidate
+                ? `$${candidate.valueMillions!.toLocaleString(undefined, { maximumFractionDigits: 3 })}M`
+                : null;
             const ratioOverride =
-              contractualRatio?.status === "CALCULATED" && contractualRatio.valueMillions != null
-                ? `${contractualRatio.valueMillions.toFixed(2)}x`
+              maySurfaceContractual && m.key !== "ebitda" && candidate
+                ? `${candidate.valueMillions!.toFixed(2)}x`
                 : null;
             const display = override ?? ratioOverride ?? m.value ?? (m.state === "NOT_AVAILABLE" ? "Not available" : "Review required");
+            const showingProvisionalContractual =
+              (override != null || ratioOverride != null) && candidateProvisional;
             const label =
               override != null
-                ? "Consolidated EBITDA (contractual)"
+                ? showingProvisionalContractual
+                  ? "Consolidated EBITDA (contractual · provisional)"
+                  : "Consolidated EBITDA (contractual)"
                 : ratioOverride != null && m.key === "totalNetLeverage"
-                  ? "Total net leverage (contractual)"
+                  ? showingProvisionalContractual
+                    ? "Total net leverage (contractual · provisional)"
+                    : "Total net leverage (contractual)"
                   : ratioOverride != null && m.key === "seniorSecuredNetLeverage"
-                    ? "Secured net leverage (contractual)"
+                    ? showingProvisionalContractual
+                      ? "Secured net leverage (contractual · provisional)"
+                      : "Secured net leverage (contractual)"
                     : ratioOverride != null && m.key === "fixedChargeCoverage"
-                      ? "Interest coverage (contractual)"
+                      ? showingProvisionalContractual
+                        ? "Interest coverage (contractual · provisional)"
+                        : "Interest coverage (contractual)"
                       : m.label;
             return (
               <div className="headline-metric-tile" key={m.key}>
                 <div className={`headline-metric-value ${display === "Not available" || display === "Review required" ? "na" : ""}`}>{display}</div>
                 <div className="headline-metric-label">{label}</div>
+                {showingProvisionalContractual ? (
+                  <div className="headline-metric-note" style={{ fontSize: 11, opacity: 0.75, marginTop: 2 }}>
+                    Provisional reconstruction — not approved NS-4 / certificate authority
+                  </div>
+                ) : null}
+                {candidateProvisional && m.state === "AVAILABLE" && candidate?.status === "CALCULATED" ? (
+                  <div className="headline-metric-note" style={{ fontSize: 11, opacity: 0.75, marginTop: 2 }}>
+                    Approved/snapshot headline retained — provisional contractual{" "}
+                    {candidate.unit === "RATIO"
+                      ? `${candidate.valueMillions!.toFixed(2)}x`
+                      : `$${candidate.valueMillions!.toLocaleString(undefined, { maximumFractionDigits: 3 })}M`}{" "}
+                    shown in panel only
+                  </div>
+                ) : null}
               </div>
             );
           })}

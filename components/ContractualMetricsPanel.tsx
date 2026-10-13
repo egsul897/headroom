@@ -31,7 +31,8 @@ export function ContractualMetricsPanel({ view }: { view: ContractualMetricsView
       <div className="card-title">Contractual financial metrics</div>
       <div className="card-subtitle">
         Definition-executed via Phase 4A from operative instrument IR — not generic FinancialSnapshot fields.
-        Authority: provisional (public-filing reconstruction / modeled certificate inputs). Unsupported add-backs are listed explicitly.
+        Authority: <strong>provisional</strong> (public-filing reconstruction / modeled certificate inputs) —
+        never replaces an approved authoritative headline metric. Unsupported add-backs are listed explicitly.
       </div>
 
       {view.metrics.map((m) => (

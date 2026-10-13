@@ -25,6 +25,7 @@ export {
 
 export {
   resolveCanonicalFinancialInputs,
+  resolveEffectiveEvidenceAuthority,
   mayEvaluateGrossCapacity,
   mayClaimVerifiedRemaining,
 } from "./resolve";

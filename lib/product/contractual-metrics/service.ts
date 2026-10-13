@@ -188,7 +188,7 @@ function packageFor(companyId: string): InstrumentPackage | null {
 export async function computeContractualMetricsForCompany(
   prisma: PrismaClient | null,
   companyId: string,
-  opts: { persist?: boolean } = {},
+  opts: { persist?: boolean; allowNeonWrite?: boolean } = {},
 ): Promise<ContractualMetricsBundle> {
   const pkg = packageFor(companyId);
   if (!pkg) {
@@ -206,7 +206,14 @@ export async function computeContractualMetricsForCompany(
 
   const definition = pkg.ebitdaDefinition();
   const metrics = pkg.componentMetrics();
-  const persist = opts.persist === true && prisma != null;
+  // Defense in depth: persist requires an explicit write grant. Dashboard/GET
+  // paths must use loadContractualMetricsForDashboard / persist:false.
+  if (opts.persist === true && opts.allowNeonWrite !== true) {
+    throw new Error(
+      "computeContractualMetricsForCompany: persist:true requires allowNeonWrite:true — Dashboard/GET paths must remain read-only",
+    );
+  }
+  const persist = opts.persist === true && opts.allowNeonWrite === true && prisma != null;
 
   let defPersistNote = "not requested";
   let defPersisted = false;
@@ -330,9 +337,22 @@ export async function computeContractualMetricsForCompany(
   };
 }
 
-/** Pure (no DB) compute — used by tests and dashboard when persistence is optional. */
+/** Pure (no DB) compute — used by tests and non-write callers. */
 export function computeContractualMetricsPure(companyId: string): Promise<ContractualMetricsBundle> {
   return computeContractualMetricsForCompany(null, companyId, { persist: false });
+}
+
+/**
+ * Dashboard GET/render entry — always read-only.
+ * Never writes SemanticTruthRecord, ExternalInputRecord, approvals, or certificates.
+ */
+export function loadContractualMetricsForDashboard(
+  companyId: string,
+): Promise<ContractualMetricsBundle> {
+  return computeContractualMetricsForCompany(null, companyId, {
+    persist: false,
+    allowNeonWrite: false,
+  });
 }
 
 export function supportedContractualMetricCompanies(): string[] {

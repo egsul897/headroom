@@ -28,6 +28,28 @@ function publicationFor(auth: FinancialEvidenceAuthority): CapacityPublicationAu
   }
 }
 
+const AUTHORITY_RANK: Record<FinancialEvidenceAuthority, number> = {
+  NONE: 0,
+  SYNTHETIC_LABELED: 1,
+  PROVISIONAL_RECONSTRUCTION: 2,
+  APPROVED_SNAPSHOT: 3,
+};
+
+/**
+ * forceEvidenceAuthority may demote or leave authority unchanged — never promote
+ * synthetic/provisional package facts to APPROVED_SNAPSHOT (or any higher rank).
+ */
+export function resolveEffectiveEvidenceAuthority(
+  packageAuthority: FinancialEvidenceAuthority,
+  forced?: FinancialEvidenceAuthority | null,
+): { authority: FinancialEvidenceAuthority; refusedPromotion: boolean } {
+  if (forced == null) return { authority: packageAuthority, refusedPromotion: false };
+  if (AUTHORITY_RANK[forced] > AUTHORITY_RANK[packageAuthority]) {
+    return { authority: packageAuthority, refusedPromotion: true };
+  }
+  return { authority: forced, refusedPromotion: false };
+}
+
 function moneyMetric(key: string, millions: number, period: string, asOf: string, note: string): MetricInput {
   return moneyMetricInput(key, millions, period, asOf, note);
 }
@@ -108,13 +130,19 @@ export async function resolveCanonicalFinancialInputs(args: {
   companyId?: string | null;
   /** Optional override ledger fingerprint for dependency invalidation tests. */
   ledgerFingerprint?: string;
-  /** Optional override to simulate APPROVED snapshot authority (tests only). */
+  /**
+   * Optional authority override. May demote only — never promotes synthetic or
+   * provisional package facts to APPROVED_SNAPSHOT / verified readiness.
+   */
   forceEvidenceAuthority?: FinancialEvidenceAuthority;
 }): Promise<CanonicalFinancialInputBundle | null> {
   const pkg = resolveRegisteredPackage(args);
   if (!pkg) return null;
 
-  const evidenceAuthority = args.forceEvidenceAuthority ?? pkg.evidenceAuthority;
+  const { authority: evidenceAuthority, refusedPromotion } = resolveEffectiveEvidenceAuthority(
+    pkg.evidenceAuthority,
+    args.forceEvidenceAuthority,
+  );
   const ebitdaDerivation = resolveContractualEbitdaDerivation(pkg.ebitdaEvidence);
 
   // Phase 4A definition execution when a contractual-metrics package exists.
@@ -162,6 +190,11 @@ export async function resolveCanonicalFinancialInputs(args: {
     `EBITDA derivation kind: ${ebitdaDerivation.kind}`,
     ...(ebitdaDerivation.methodologyDisclosure ? [ebitdaDerivation.methodologyDisclosure] : []),
     ...ebitdaDerivation.notes,
+    ...(refusedPromotion
+      ? [
+          `forceEvidenceAuthority=${args.forceEvidenceAuthority} refused — cannot promote package authority ${pkg.evidenceAuthority}.`,
+        ]
+      : []),
   ];
 
   const dependencyFingerprint = fingerprint([
@@ -175,6 +208,8 @@ export async function resolveCanonicalFinancialInputs(args: {
     pkg.interestExpense,
     ebitdaDerivation.kind,
     evidenceAuthority,
+    args.forceEvidenceAuthority ?? null,
+    refusedPromotion,
     args.ledgerFingerprint ?? "ledger:absent",
     contractualMetrics?.consolidatedEbitda?.definition?.definitionId ?? null,
   ]);

@@ -1,9 +1,8 @@
 import { DashboardClient } from "@/components/DashboardClient";
 import { facilitiesQueryFromPosition, maturitiesQueryFromPosition } from "@/lib/dashboard/load-state";
 import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
-import { computeContractualMetricsForCompany } from "@/lib/product/contractual-metrics/service";
+import { loadContractualMetricsForDashboard } from "@/lib/product/contractual-metrics/service";
 import { toContractualMetricsView } from "@/lib/product/contractual-metrics/serialize";
-import { prisma } from "@/lib/prisma";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
@@ -11,6 +10,9 @@ export const metadata = { title: "Headroom — Dashboard" };
  * The Dashboard tab. Loads covenant overview inputs and definition-executed
  * contractual metrics (Phase 4A). Capacity numbers still come from the real
  * covenant engine via DashboardClient → buildCovenantOverview.
+ *
+ * Contractual metrics are read-only on GET/render — never persist to Neon or
+ * customer DBs from this path. Provisional reconstructions are labeled at display.
  */
 export default async function DashboardPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
@@ -27,9 +29,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
     attributedUtilizationSerialized,
   } = inputs;
 
-  // Persist definition + calculation identities to Neon when DB is available.
-  // Failures degrade to in-memory results (persistNote explains).
-  const contractualBundle = await computeContractualMetricsForCompany(prisma, companyId, { persist: true });
+  // Read-only compute — no SemanticTruthRecord / ExternalInputRecord / certificate writes.
+  const contractualBundle = await loadContractualMetricsForDashboard(companyId);
   const contractualMetrics = toContractualMetricsView(contractualBundle);
 
   // Verified-empty maturities/facilities are minted only after this load returned.

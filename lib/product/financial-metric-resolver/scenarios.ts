@@ -359,6 +359,7 @@ export async function demonstrateDependencyPropagation(packageKey: string): Prom
 }> {
   const a = await resolveCanonicalFinancialInputs({ packageKey, ledgerFingerprint: "ledger:v0" });
   const b = await resolveCanonicalFinancialInputs({ packageKey, ledgerFingerprint: "ledger:v1-usage-posted" });
+  // Demotion is allowed; promotion to APPROVED is refused and still fingerprints.
   const c = await resolveCanonicalFinancialInputs({
     packageKey,
     ledgerFingerprint: "ledger:v0",

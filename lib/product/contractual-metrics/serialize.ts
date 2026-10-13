@@ -19,10 +19,23 @@ export interface ContractualMetricView {
   missingInputs: string[];
   definitionExecuted: boolean;
   authorityLabel: ContractualMetricResult["authorityLabel"];
+  /** True when authority is provisional / not approved snapshot. */
+  isProvisional: boolean;
   persistNote: string;
   evaluationStatus: string | null;
   sourceCitations: string[];
   inputsUsed: string[];
+}
+
+export function isProvisionalContractualAuthority(
+  authorityLabel: ContractualMetricResult["authorityLabel"] | string | null | undefined,
+): boolean {
+  const label = String(authorityLabel ?? "");
+  return (
+    label.includes("PROVISIONAL") ||
+    label === "DEFINITION_EXECUTED_PROVISIONAL" ||
+    label === "NOT_CALCULATED"
+  );
 }
 
 export interface ContractualMetricsView {
@@ -54,6 +67,7 @@ export function toContractualMetricsView(bundle: ContractualMetricsBundle): Cont
       missingInputs: m.missingInputs,
       definitionExecuted: m.definitionExecuted,
       authorityLabel: m.authorityLabel,
+      isProvisional: isProvisionalContractualAuthority(m.authorityLabel),
       persistNote: m.persistNote,
       evaluationStatus: m.evaluation?.status ?? null,
       sourceCitations: m.evaluation?.provenance.sourceCitations ?? [],

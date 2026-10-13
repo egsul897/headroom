@@ -199,12 +199,24 @@ describe("dependency propagation", () => {
     expect(a!.dependencyFingerprint).not.toBe(b!.dependencyFingerprint);
   });
 
-  it("force APPROVED still does not unlock VERIFIED_REMAINING without utilization certificate", async () => {
-    const bundle = await resolveCanonicalFinancialInputs({
+  it("force APPROVED cannot promote provisional/synthetic package facts", async () => {
+    const matthews = await resolveCanonicalFinancialInputs({
       packageKey: MATTHEWS_PKG_KEY,
       forceEvidenceAuthority: "APPROVED_SNAPSHOT",
     });
-    expect(bundle!.capacityPublication).toBe("GROSS_FROM_APPROVED_SNAPSHOT");
-    expect(mayClaimVerifiedRemaining(bundle!)).toBe(false);
+    expect(matthews!.evidenceAuthority).toBe("PROVISIONAL_RECONSTRUCTION");
+    expect(matthews!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
+    expect(matthews!.facts.every((f) => f.evidenceAuthority !== "APPROVED_SNAPSHOT")).toBe(true);
+    expect(matthews!.facts.every((f) => f.readiness !== "AVAILABLE_VERIFIED")).toBe(true);
+    expect(mayClaimVerifiedRemaining(matthews!)).toBe(false);
+    expect(matthews!.notes.some((n) => /refused/.test(n))).toBe(true);
+
+    const synthetic = await resolveCanonicalFinancialInputs({
+      packageKey: SYNTHETIC_PKG_KEY,
+      forceEvidenceAuthority: "APPROVED_SNAPSHOT",
+    });
+    expect(synthetic!.evidenceAuthority).toBe("SYNTHETIC_LABELED");
+    expect(synthetic!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
+    expect(mayClaimVerifiedRemaining(synthetic!)).toBe(false);
   });
 });
