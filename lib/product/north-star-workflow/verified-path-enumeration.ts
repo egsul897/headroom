@@ -27,6 +27,7 @@ export type ContemplatedTxnKind =
   | "RESTRICTED_PAYMENT"
   | "INVESTMENT"
   | "ACQUISITION"
+  | "ASSET_SALE"
   | "UNKNOWN";
 
 export type EnumeratedPathStatus =
@@ -86,6 +87,7 @@ const DEBT_ACTIONS = new Set<ContractAction>(["INCUR_DEBT", "INCUR_SECURED_DEBT"
 const LIEN_ACTIONS = new Set<ContractAction>(["CREATE_LIEN", "GRANT_COLLATERAL"]);
 const RP_ACTIONS = new Set<ContractAction>(["PAY_DIVIDEND", "REPURCHASE_EQUITY", "PAY_JUNIOR_DEBT", "PREPAY_DEBT"]);
 const INV_ACTIONS = new Set<ContractAction>(["MAKE_INVESTMENT", "ACQUIRE_BUSINESS"]);
+const ASSET_SALE_ACTIONS = new Set<ContractAction>(["SELL_ASSET", "TRANSFER_ASSET"]);
 
 function actionsForKind(kind: ContemplatedTxnKind, secured: boolean | null): {
   primary: Set<ContractAction>;
@@ -104,9 +106,17 @@ function actionsForKind(kind: ContemplatedTxnKind, secured: boolean | null): {
       return { primary: RP_ACTIONS, companions: new Set() };
     case "INVESTMENT":
       return { primary: INV_ACTIONS, companions: new Set() };
+    case "ASSET_SALE":
+      return { primary: ASSET_SALE_ACTIONS, companions: new Set() };
     default:
       return {
-        primary: new Set<ContractAction>([...DEBT_ACTIONS, ...LIEN_ACTIONS, ...RP_ACTIONS, ...INV_ACTIONS]),
+        primary: new Set<ContractAction>([
+          ...DEBT_ACTIONS,
+          ...LIEN_ACTIONS,
+          ...RP_ACTIONS,
+          ...INV_ACTIONS,
+          ...ASSET_SALE_ACTIONS,
+        ]),
         companions: new Set(),
       };
   }

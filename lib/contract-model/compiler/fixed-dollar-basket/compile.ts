@@ -66,12 +66,34 @@ export interface FixedDollarCompileArgs {
   sourceSectionRef: string;
   operativeSourceText: string;
   covenantFamily?: string;
+  /**
+   * Canonical ContractAction values preferred. Caller aliases
+   * MAKE_RESTRICTED_PAYMENT → PAY_DIVIDEND and DISPOSE_ASSET → SELL_ASSET
+   * are accepted then normalized before IR wire emission.
+   */
   action?:
     | "INCUR_DEBT"
     | "CREATE_LIEN"
     | "MAKE_INVESTMENT"
+    | "PAY_DIVIDEND"
+    | "SELL_ASSET"
     | "MAKE_RESTRICTED_PAYMENT"
     | "DISPOSE_ASSET";
+}
+
+type CanonicalBasketAction =
+  | "INCUR_DEBT"
+  | "CREATE_LIEN"
+  | "MAKE_INVESTMENT"
+  | "PAY_DIVIDEND"
+  | "SELL_ASSET";
+
+function normalizeBasketAction(
+  action: NonNullable<FixedDollarCompileArgs["action"]>,
+): CanonicalBasketAction {
+  if (action === "MAKE_RESTRICTED_PAYMENT") return "PAY_DIVIDEND";
+  if (action === "DISPOSE_ASSET") return "SELL_ASSET";
+  return action;
 }
 
 export type FixedDollarExecutableClass =
@@ -129,8 +151,8 @@ function capacityFor(classification: FixedDollarClassification, citation: string
 function inferAction(
   text: string,
   explicit?: FixedDollarCompileArgs["action"],
-): NonNullable<FixedDollarCompileArgs["action"]> | null {
-  if (explicit) return explicit;
+): CanonicalBasketAction | null {
+  if (explicit) return normalizeBasketAction(explicit);
   // Without an explicit provision-context action, do not assume indebtedness.
   if (/\bLiens?\b/i.test(text) && !/\b(?:Debt|Indebtedness)\b/i.test(text)) return "CREATE_LIEN";
   if (/\b(?:Indebtedness|Debt)\b/i.test(text)) return "INCUR_DEBT";

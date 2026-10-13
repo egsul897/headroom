@@ -1,0 +1,76 @@
+{
+  "milestones": {
+    "FIXTURE_MODELED_DASHBOARD_PROVEN": "PROVEN_WITH_DEFECTS",
+    "GENERALIZED_CALCULATION_PIPELINE_PROVEN": "NOT_PROVEN",
+    "AUTONOMOUS_COVENANT_COMPILATION_PROVEN": "NOT_PROVEN",
+    "PRODUCTION_AUTHORITY_PROVEN": "NOT_PROVEN"
+  },
+  "verdict": "FIXTURE_MODELED_DASHBOARD_PARTIAL",
+  "blockers": [
+    "No reviewer-confirmed completeness certificate is included.",
+    "Point-in-time debt balances are not a full historical issuance/repayment ledger.",
+    "Unobserved pre-snapshot activity is UNKNOWN, not zero.",
+    "TOTAL_CONSOLIDATED_ASSETS is intentionally unmapped — GAAP Total Assets is not substituted.",
+    "Statement balances do not establish basket attribution without explicit applicableProvisionId on utilization events.",
+    "Production trusted-issuer activation remains BLOCKED.",
+    "Production HostIdentityProvider / trusted-issuer activation BLOCKED.",
+    "EDGAR-reconstructed excerpts — not the full Indenture exhibit.",
+    "Deterministic structure/package-graph/OA/extraction only — no paid inference.",
+    "Capacity arithmetic still via evaluateProvision leaf formulas on authentic financials.",
+    "Not package CERTIFIED; not Phase 4E; not PRODUCTION_AUTHORITATIVE remaining.",
+    "Only FIXED_DOLLAR_SOLE_CAP / gated fixed-dollar clauses become VE units.",
+    "Ratio / structural / greater-of formulations refuse or stay outside this bridge.",
+    "VE figures are SOURCE_BACKED_COMPILED_GROSS — never customer AVAILABLE remaining.",
+    "Compile path is package-agnostic; candidate discovery may still be package-specific.",
+    "Provider-free: does not mutate process.env credentials.",
+    "AUTONOMOUS_COVENANT_COMPILATION_PROVEN remains NOT_PROVEN until all Position capacity leaves hand-encoded CovenantProvisionInput.",
+    "Production IdP / trusted-issuer BLOCKED; no Neon writes; no paid inference.",
+    "Matthews leaf evaluateProvision modeled room (e.g. $521.118M) remains a separate path.",
+    "EDGAR-reconstructed operative excerpts — not package CERTIFIED IR.",
+    "D1: Five CovenantProvisionInput rows remain manually encoded for leaf modeled capacity.",
+    "D2: CONSOLIDATED_EBITDA is PUBLIC_FILING_RECONSTRUCTION / UNVERIFIED; legal assumptions remain.",
+    "D3b: REMEDIATED — ratio modeled rooms keep remainingCapacityMm null (no modeled→remaining fallback).",
+    "D3c: REMEDIATED — rulebook stage INTERPRETED; reviewed/executable counts not fabricated.",
+    "D4: Indenture secured composition is HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION (CA lien companion blocks NEW secured).",
+    "D5: independentExpectedRemaining mirrors fixture thresholds — not independent legal proof.",
+    "D6: Full leaf dashboard pathway is Matthews-only; MHK loads Position via shared VE feed only (loadAuthenticDashboardSlice).",
+    "Fixed-dollar VE compile feeds Position as SOURCE_BACKED_COMPILED_GROSS; Matthews 1a leaf threshold binds from VE; ratio/structural rows still leaf evaluateProvision.",
+    "Production IdP / trusted-issuer activation BLOCKED by design."
+  ],
+  "numericalHonesty": {
+    "sourceBackedCompiledGrossMm": [
+      {
+        "code": "ve:matw-permitted-debt-1a-fixed-dollar",
+        "amountMm": 1300
+      }
+    ],
+    "modeledLeafCapacityMm": [
+      {
+        "code": "ind_permitted_debt_1a_flat",
+        "amountMm": 521.118,
+        "authorityStatus": "GROSS_ONLY_UTILIZATION_INCOMPLETE"
+      },
+      {
+        "code": "ind_ratio_debt_fccr",
+        "amountMm": 110.33623188405791,
+        "authorityStatus": "MODELED_AUTHENTIC_EVIDENCE"
+      },
+      {
+        "code": "ind_permitted_debt_1b_ratio_secured",
+        "amountMm": 0,
+        "authorityStatus": "MODELED_AUTHENTIC_EVIDENCE"
+      },
+      {
+        "code": "ind_permitted_debt_2_notes",
+        "amountMm": 300,
+        "authorityStatus": "MODELED_AUTHENTIC_EVIDENCE"
+      },
+      {
+        "code": "ca_lien_601j_2024notes",
+        "amountMm": 0,
+        "authorityStatus": "STRUCTURAL_ZERO"
+      }
+    ],
+    "hypotheticalUnverifiedSecuredCompositionMm": 631.454231884058
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "baselinePr": 346,
+  "baselineSha": "046161e78dc206c50ee951d71a18dfa4befd3206",
+  "absorbed": [
+    {
+      "number": 345,
+      "tip": "d91b0a977ef6c92c9224b096306f7dfc8695cdbc",
+      "how": "Merged origin/main (includes Merge PR #345) into this branch — NS-4 absorb + no-write gates + contractual-metrics modules."
+    }
+  ],
+  "notFullMergedAvoidingDuplicateEngines": [
+    {
+      "number": 340,
+      "tip": "7e3974fcdd1a54c0f8762e41873ed2be045a8a14",
+      "reason": "Cross-domain Simulate v2 would land a second permissibility surface. Verified-execution REQUIRE spine owns transaction evaluation here; #340 remains human tip / supporting."
+    },
+    {
+      "number": 341,
+      "tip": "1dc10c4c301257a578ac9758b3f232396020e1c4",
+      "reason": "Corrected AFC/conditional-authority tip still open; main already carries overlapping financial-metric-resolver via #345/#332. Full tip not merged — no competing contractual-leverage engine."
+    }
+  ],
+  "doNotSelfMerge": true
+}
