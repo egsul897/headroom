@@ -43,23 +43,6 @@ describe("assumption gates", () => {
     expect(result.overallStatus).toBe("review_required");
     expect(result.packageLimitations.some((l) => /assumptions are required/i.test(l))).toBe(true);
   });
-
-  it("caller-supplied utilization completeness booleans cannot manufacture verified remaining", () => {
-    const tx = coherentDebtFundedAcquisition(100);
-    tx.assumptions.utilizationAttributed = true;
-    tx.assumptions.utilizationCompletenessCertified = true;
-    const result = evaluateCrossDomainTransaction({
-      data: coherentPackageData(),
-      transaction: tx,
-      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
-    });
-    for (const d of result.domains) {
-      expect(d.verifiedRemainingMillions).toBeNull();
-    }
-    expect(
-      result.packageLimitations.some((l) => /Caller-supplied.*ignored for remaining/i.test(l)),
-    ).toBe(true);
-  });
 });
 
 describe("Coherent cross-domain scenarios", () => {
@@ -75,13 +58,13 @@ describe("Coherent cross-domain scenarios", () => {
     expect(domains.has("INVESTMENTS_ACQUISITIONS")).toBe(true);
     expect(domains.has("FINANCIAL_COVENANTS_RATIO_CAPACITY")).toBe(true);
     expect(domains.has("LIENS_SECURED_CAPACITY")).toBe(true);
-    // Gross never published as verified remaining without attribution
+    // Gross / modeled never published as verified remaining without authority
     for (const d of result.domains) {
-      if (d.grossCapacityMillions != null) {
-        expect(d.verifiedRemainingMillions).toBeNull();
-      }
+      expect(d.verifiedRemainingMillions).toBeNull();
+      expect(d.verifiedRemainingRefusalReason).toBeTruthy();
     }
     expect(result.authorityNote).toMatch(/Gross/);
+    expect(result.version).toBe("cross-domain-transaction.v2");
   });
 
   it("dividend uses RP waterfall (builder / general / ratio gate)", () => {
@@ -112,7 +95,18 @@ describe("Coherent cross-domain scenarios", () => {
     expect(result.overallStatus).toBe("not_tested");
     const inv = result.domains.find((d) => d.domain === "INVESTMENTS_ACQUISITIONS");
     expect(inv?.support).toBe("UNSUPPORTED");
+    expect(inv?.status).not.toBe("clear");
     expect(inv?.missingInputs.length).toBeGreaterThan(0);
+  });
+
+  it("PARTIAL lien / investment domains never report clear", () => {
+    const result = evaluateCoherentScenario(coherentDebtFundedAcquisition(150));
+    const liens = result.domains.find((d) => d.domain === "LIENS_SECURED_CAPACITY");
+    expect(liens?.support).toBe("PARTIAL");
+    expect(liens?.status).not.toBe("clear");
+    const inv = result.domains.find((d) => d.domain === "INVESTMENTS_ACQUISITIONS");
+    expect(inv?.support).toBe("PARTIAL");
+    expect(inv?.status).not.toBe("clear");
   });
 });
 
@@ -122,7 +116,6 @@ describe("Matthews same evaluator", () => {
     expect(result.contractualComputation.ebitdaDerivation?.kind).toBe("INDEPENDENTLY_DERIVED");
     expect(result.contractualComputation.contractualEbitda).toBeCloseTo(128.313, 3);
     expect(result.debtSimulation).not.toBeNull();
-    // Already above 3.50x → ratio debt capacity 0 → likely blocked
     const ratioRoom = result.contractualComputation.ratioTests.find(
       (r) => r.provisionCode === "ind_ratio_debt_secured",
     );

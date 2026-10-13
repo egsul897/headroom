@@ -3,7 +3,13 @@
  *
  * Composes the existing covenant-engine simulations (debt, RP waterfall,
  * asset sale) with contractual EBITDA/ratio computation — no parallel engine.
- * Gross mathematical capacity is never labeled as verified available capacity.
+ *
+ * Verified remaining capacity is authorized ONLY via the canonical
+ * resolveUtilization + computeVerifiedRemaining path (attributed ledger
+ * evidence + trusted completeness certificate + identity match). Caller-supplied
+ * utilizationAttributed / utilizationCompletenessCertified booleans NEVER
+ * authorize verifiedRemainingMillions. Gross / modeled remaining are never
+ * relabeled as verified.
  */
 
 import {
@@ -16,15 +22,26 @@ import {
   type DebtIncurrenceSimulation,
   type RestrictedPaymentSimulation,
   type AssetSaleSimulation,
+  type FinancialSnapshotInput,
   type TransactionStatus,
 } from "@/lib/covenant-engine";
+import {
+  computeVerifiedRemaining,
+  type VerifiedRemainingResult,
+} from "@/lib/capacity/verified-remaining";
+import { resolveUtilization } from "@/lib/capacity/utilization-resolver";
+import type { TrustedIssuerAuthorizationContext } from "@/lib/capacity/completeness-issuer-auth";
+import type {
+  UtilizationCompletenessCertificate,
+  UtilizationEvidenceRecord,
+} from "@/lib/capacity/utilization-types";
 import {
   computeContractualCovenantMetrics,
   type ContractualComputationResult,
 } from "@/lib/product/contractual-computation";
 import type { ContractualEbitdaDerivation } from "@/lib/financial-certificate-engine/contractual-ebitda-buildup";
 
-export const CROSS_DOMAIN_EVALUATION_VERSION = "cross-domain-transaction.v1" as const;
+export const CROSS_DOMAIN_EVALUATION_VERSION = "cross-domain-transaction.v2" as const;
 
 /** Covenant families the product tracks for package-wide coverage. */
 export type CovenantDomain =
@@ -53,24 +70,54 @@ export interface TransactionAssumptions {
   statements: string[];
   entityScope: string[];
   evaluationDate: string;
-  /** When false, remaining capacity is never claimed from empty ledger. */
-  utilizationAttributed: boolean;
-  utilizationCompletenessCertified: boolean;
+  /**
+   * Caller-supplied flags. Kept for API compatibility / disclosure only.
+   * They NEVER authorize verifiedRemainingMillions — that requires
+   * CrossDomainUtilizationAuthority through the canonical capacity path.
+   */
+  utilizationAttributed?: boolean;
+  utilizationCompletenessCertified?: boolean;
 }
 
-export interface ContemplatedCrossDomainTransaction {
-  kind: CrossDomainScenarioKind;
-  label: string;
-  amountMillions: number;
-  /** Debt / lien leg securedness when applicable. */
-  secured: boolean;
-  /** Optional RP document id; defaults to first document with rpWaterfall. */
-  rpDocumentId?: string;
-  /** Optional asset-sale document id; defaults to first with assetSale config. */
-  assetSaleDocumentId?: string;
-  /** When true for asset sale, proceeds assumed reinvested within window. */
-  reinvestProceeds?: boolean;
-  assumptions: TransactionAssumptions;
+/**
+ * Canonical utilization / capacity authority for verified remaining.
+ * Must carry attributed evidence + trusted completeness + identity.
+ */
+export interface CrossDomainUtilizationAuthority {
+  capacityRuleId: string;
+  asOf: string;
+  companyId: string;
+  documentId?: string | null;
+  provisionId?: string | null;
+  periodKey?: string | null;
+  records: readonly UtilizationEvidenceRecord[];
+  completenessCertificate?: UtilizationCompletenessCertificate | null;
+  trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
+  sharedCapacityId?: string | null;
+  crossDocumentConstraints?: string[];
+  /**
+   * Test/demo only. Never set by production Simulate / Position loaders.
+   * Propagates into resolveUtilization / computeVerifiedRemaining.
+   */
+  allowSyntheticRemaining?: boolean;
+}
+
+/** Approved financial identity consumed by Position / Simulate. */
+export interface ApprovedFinancialIdentity {
+  companyId: string;
+  snapshotId: string | null;
+  asOf: string;
+  /** Fingerprint of numeric inputs used for ratio / capacity math. */
+  inputFingerprint: string;
+}
+
+export interface DomainInputIdentity {
+  companyId: string;
+  documentId: string | null;
+  provisionId: string | null;
+  periodKey: string | null;
+  asOf: string;
+  financialFingerprint: string | null;
 }
 
 export interface DomainEvaluationSlice {
@@ -79,8 +126,17 @@ export interface DomainEvaluationSlice {
   status: TransactionStatus | "not_applicable";
   summary: string;
   grossCapacityMillions: number | null;
-  /** Always null unless utilization attributed AND completeness certified. */
+  /** Engine-modeled remaining — never labeled verified. */
+  modeledRemainingMillions: number | null;
+  /**
+   * Only non-null when computeVerifiedRemaining supports the claim via
+   * attributed evidence + trusted completeness certificate.
+   */
   verifiedRemainingMillions: number | null;
+  /** Explicit reason when verified remaining is null. */
+  verifiedRemainingRefusalReason: string | null;
+  sourceProvision: string | null;
+  inputIdentity: DomainInputIdentity;
   citations: string[];
   missingInputs: string[];
   notes: string[];
@@ -100,9 +156,26 @@ export interface CrossDomainTransactionEvaluation {
     seniorSecuredNetLeverage: number | null;
     interestCoverage: number | null;
   };
+  approvedFinancialIdentity: ApprovedFinancialIdentity | null;
+  financialIdentityValid: boolean;
   /** Package-wide narrative limitations — never invent permissions. */
   packageLimitations: string[];
   authorityNote: string;
+}
+
+export interface ContemplatedCrossDomainTransaction {
+  kind: CrossDomainScenarioKind;
+  label: string;
+  amountMillions: number;
+  /** Debt / lien leg securedness when applicable. */
+  secured: boolean;
+  /** Optional RP document id; defaults to first document with rpWaterfall. */
+  rpDocumentId?: string;
+  /** Optional asset-sale document id; defaults to first with assetSale config. */
+  assetSaleDocumentId?: string;
+  /** When true for asset sale, proceeds assumed reinvested within window. */
+  reinvestProceeds?: boolean;
+  assumptions: TransactionAssumptions;
 }
 
 export interface CovenantDomainCoverageRow {
@@ -191,6 +264,34 @@ export function covenantDomainCoverage(): CovenantDomainCoverageRow[] {
   ];
 }
 
+/** Fingerprint of approved financial inputs used by Position / Simulate. */
+export function fingerprintFinancialInputs(fin: FinancialSnapshotInput | null | undefined): string {
+  if (fin == null) return "missing";
+  return [
+    fin.ebitda,
+    fin.cash,
+    fin.totalDebt,
+    fin.securedDebt,
+    fin.interestExpense,
+    fin.cumulativeNetIncome ?? "",
+    fin.equityProceedsSinceIssue ?? "",
+  ].join("|");
+}
+
+export function buildApprovedFinancialIdentity(params: {
+  companyId: string;
+  asOf: string;
+  financials: FinancialSnapshotInput | null | undefined;
+  snapshotId?: string | null;
+}): ApprovedFinancialIdentity {
+  return {
+    companyId: params.companyId,
+    snapshotId: params.snapshotId ?? null,
+    asOf: params.asOf,
+    inputFingerprint: fingerprintFinancialInputs(params.financials),
+  };
+}
+
 function refuseWithoutAssumptions(
   tx: ContemplatedCrossDomainTransaction,
 ): string | null {
@@ -206,22 +307,168 @@ function refuseWithoutAssumptions(
   return null;
 }
 
-/**
- * Verified remaining must never be manufactured from caller-supplied booleans.
- * TransactionAssumptions.utilizationAttributed / utilizationCompletenessCertified
- * are disclosure flags only — remaining requires store-backed attributed ledger
- * usage AND a validated UtilizationCompletenessCertificate (Phase 4C/4E), which
- * this LEGACY cross-domain evaluator does not load. Always withhold.
- */
-function remainingAllowed(_assumptions: TransactionAssumptions): boolean {
-  return false;
-}
-
 function worstTxnStatus(statuses: TransactionStatus[]): TransactionStatus {
   if (statuses.includes("blocked")) return "blocked";
   if (statuses.includes("review_required")) return "review_required";
   if (statuses.includes("not_tested")) return "not_tested";
   return "clear";
+}
+
+/** PARTIAL / UNSUPPORTED domains must not report fully-evaluated clear. */
+function statusForSupport(
+  support: DomainSupportLevel,
+  candidate: TransactionStatus | "not_applicable",
+): TransactionStatus | "not_applicable" {
+  if (candidate === "not_applicable") return candidate;
+  if (support === "UNSUPPORTED") {
+    return candidate === "blocked" ? "blocked" : "not_tested";
+  }
+  if (support === "PARTIAL" && candidate === "clear") {
+    return "review_required";
+  }
+  return candidate;
+}
+
+type RemainingClaim = {
+  verifiedRemainingMillions: number | null;
+  verifiedRemainingRefusalReason: string | null;
+  modeledRemainingMillions: number | null;
+  verifiedResult: VerifiedRemainingResult | null;
+};
+
+/**
+ * Resolve verified remaining exclusively through the canonical capacity path.
+ * Caller-supplied assumption booleans are ignored for authorization.
+ */
+export function resolveCanonicalVerifiedRemaining(params: {
+  grossCapacityMillions: number | null;
+  modeledRemainingMillions: number | null;
+  gateSatisfied: boolean;
+  utilizationAuthority: CrossDomainUtilizationAuthority | null | undefined;
+  /** Shared-pool ids already used to publish remaining in this evaluation. */
+  claimedSharedPools: Set<string>;
+  sourceCitations?: string[];
+}): RemainingClaim {
+  const modeled = params.modeledRemainingMillions;
+  const auth = params.utilizationAuthority;
+
+  if (!auth) {
+    return {
+      verifiedRemainingMillions: null,
+      verifiedRemainingRefusalReason:
+        "Verified remaining unavailable — no canonical utilization/capacity authority supplied (caller flags cannot authorize remaining).",
+      modeledRemainingMillions: modeled,
+      verifiedResult: null,
+    };
+  }
+
+  if (auth.sharedCapacityId && params.claimedSharedPools.has(auth.sharedCapacityId)) {
+    return {
+      verifiedRemainingMillions: null,
+      verifiedRemainingRefusalReason: `Shared capacity ${auth.sharedCapacityId} remaining already claimed — refuse double-count across baskets.`,
+      modeledRemainingMillions: modeled,
+      verifiedResult: null,
+    };
+  }
+
+  const cert = auth.completenessCertificate ?? null;
+  if (cert) {
+    if (cert.capacityRuleId !== auth.capacityRuleId) {
+      return {
+        verifiedRemainingMillions: null,
+        verifiedRemainingRefusalReason:
+          "Verified remaining unavailable — completeness certificate capacityRuleId does not match authority identity.",
+        modeledRemainingMillions: modeled,
+        verifiedResult: null,
+      };
+    }
+    if (cert.asOf.slice(0, 10) !== auth.asOf.slice(0, 10)) {
+      return {
+        verifiedRemainingMillions: null,
+        verifiedRemainingRefusalReason:
+          "Verified remaining unavailable — completeness certificate as-of does not match authority as-of.",
+        modeledRemainingMillions: modeled,
+        verifiedResult: null,
+      };
+    }
+  }
+
+  const utilization = resolveUtilization({
+    capacityRuleId: auth.capacityRuleId,
+    asOf: auth.asOf,
+    records: auth.records,
+    completenessCertificate: cert,
+    trustedIssuerAuth: auth.trustedIssuerAuth ?? null,
+    sharedCapacityId: auth.sharedCapacityId ?? null,
+    allowSyntheticRemaining: auth.allowSyntheticRemaining,
+  });
+
+  const verified = computeVerifiedRemaining({
+    gross: {
+      amount: params.grossCapacityMillions,
+      gateSatisfied: params.gateSatisfied,
+      modeled: params.grossCapacityMillions != null && Number.isFinite(params.grossCapacityMillions),
+      capacityRuleId: auth.capacityRuleId,
+    },
+    utilization,
+    crossDocumentConstraints: auth.crossDocumentConstraints ?? [],
+    sourceCitations: params.sourceCitations ?? [],
+    certificationStatus: utilization.completenessCertified ? "PARTIAL_ADAPTER" : "NOT_CERTIFIED",
+    allowSyntheticRemaining: auth.allowSyntheticRemaining,
+  });
+
+  if (verified.supportedRemaining == null || !verified.mayPublishAvailable) {
+    const reason =
+      verified.blockers[0] ??
+      verified.note ??
+      "Verified remaining unavailable — utilization knowledge does not support a remaining claim.";
+    return {
+      verifiedRemainingMillions: null,
+      verifiedRemainingRefusalReason: reason,
+      modeledRemainingMillions: modeled,
+      verifiedResult: verified,
+    };
+  }
+
+  if (auth.sharedCapacityId) {
+    params.claimedSharedPools.add(auth.sharedCapacityId);
+  }
+
+  return {
+    verifiedRemainingMillions: verified.supportedRemaining,
+    verifiedRemainingRefusalReason: null,
+    modeledRemainingMillions: modeled,
+    verifiedResult: verified,
+  };
+}
+
+function baseInputIdentity(
+  data: CompanyCovenantData,
+  asOf: string,
+  financialFingerprint: string | null,
+  over?: Partial<DomainInputIdentity>,
+): DomainInputIdentity {
+  return {
+    companyId: data.companyId,
+    documentId: over?.documentId ?? null,
+    provisionId: over?.provisionId ?? null,
+    periodKey: over?.periodKey ?? null,
+    asOf,
+    financialFingerprint,
+  };
+}
+
+function emptyRemainingNotes(claim: RemainingClaim): string[] {
+  const notes: string[] = [];
+  if (claim.modeledRemainingMillions != null) {
+    notes.push(
+      `Modeled remaining $${claim.modeledRemainingMillions.toFixed(1)}M is not verified remaining.`,
+    );
+  }
+  if (claim.verifiedRemainingRefusalReason) {
+    notes.push(claim.verifiedRemainingRefusalReason);
+  }
+  return notes;
 }
 
 /**
@@ -232,10 +479,31 @@ export function evaluateCrossDomainTransaction(params: {
   data: CompanyCovenantData;
   transaction: ContemplatedCrossDomainTransaction;
   ebitdaDerivation?: ContractualEbitdaDerivation | null;
+  /** Sole path that may authorize verifiedRemainingMillions. */
+  utilizationAuthority?: CrossDomainUtilizationAuthority | null;
+  /**
+   * Expected approved financial identity (from Position / approved snapshot).
+   * When supplied and mismatched vs current data, ratio/debt domains invalidate.
+   */
+  expectedFinancialIdentity?: ApprovedFinancialIdentity | null;
 }): CrossDomainTransactionEvaluation {
   const { data, transaction: tx } = params;
   const assumptionBlock = refuseWithoutAssumptions(tx);
   const position = computeCovenantPosition(data);
+  const asOf = tx.assumptions.evaluationDate;
+  const financialFingerprint = fingerprintFinancialInputs(data.financials);
+  const currentIdentity = buildApprovedFinancialIdentity({
+    companyId: data.companyId,
+    asOf,
+    financials: data.financials,
+    snapshotId: params.expectedFinancialIdentity?.snapshotId ?? null,
+  });
+  const financialIdentityValid =
+    !params.expectedFinancialIdentity ||
+    (params.expectedFinancialIdentity.companyId === currentIdentity.companyId &&
+      params.expectedFinancialIdentity.inputFingerprint === currentIdentity.inputFingerprint &&
+      params.expectedFinancialIdentity.asOf.slice(0, 10) === currentIdentity.asOf.slice(0, 10));
+
   const contractualComputation = computeContractualCovenantMetrics({
     financials: data.financials,
     provisions: data.provisions,
@@ -244,38 +512,74 @@ export function evaluateCrossDomainTransaction(params: {
 
   const packageLimitations: string[] = [
     "Gross capacity is never described as verified available capacity.",
+    "Modeled remaining is never relabeled as verified remaining.",
+    "Caller-supplied utilizationAttributed / utilizationCompletenessCertified flags never authorize verified remaining.",
     "No contractual permissions or historical utilization are invented.",
   ];
   if (assumptionBlock) packageLimitations.push(assumptionBlock);
+  if (!financialIdentityValid) {
+    packageLimitations.push(
+      "Approved financial inputs changed or mismatch Position identity — affected ratio/debt simulations invalidated.",
+    );
+  }
+  if (
+    tx.assumptions.utilizationAttributed === true ||
+    tx.assumptions.utilizationCompletenessCertified === true
+  ) {
+    packageLimitations.push(
+      "Caller set utilizationAttributed and/or utilizationCompletenessCertified — ignored for verified remaining authorization.",
+    );
+  }
+  if (!params.utilizationAuthority) {
+    packageLimitations.push(
+      "Verified remaining capacity withheld — canonical utilization authority not supplied.",
+    );
+  }
 
   const domains: DomainEvaluationSlice[] = [];
   let debtSim: DebtIncurrenceSimulation | null = null;
   let rpSim: RestrictedPaymentSimulation | null = null;
   let assetSaleSim: AssetSaleSimulation | null = null;
   const statusAcc: TransactionStatus[] = [];
+  const claimedSharedPools = new Set<string>();
 
-  const allowRemaining = remainingAllowed(tx.assumptions);
-  if (!allowRemaining) {
-    packageLimitations.push(
-      "Verified remaining capacity withheld — LEGACY cross-domain path never publishes remaining from caller flags; requires store-backed attributed utilization + completeness certificate.",
-    );
-  }
-  if (
-    tx.assumptions.utilizationAttributed ||
-    tx.assumptions.utilizationCompletenessCertified
-  ) {
-    packageLimitations.push(
-      "Caller-supplied utilizationAttributed / utilizationCompletenessCertified flags are ignored for remaining publication (fail-closed).",
-    );
-  }
+  const applyRemaining = (
+    slice: Omit<
+      DomainEvaluationSlice,
+      "verifiedRemainingMillions" | "verifiedRemainingRefusalReason" | "modeledRemainingMillions"
+    > & { modeledRemainingMillions?: number | null; gateSatisfied?: boolean },
+  ): DomainEvaluationSlice => {
+    const claim = resolveCanonicalVerifiedRemaining({
+      grossCapacityMillions: slice.grossCapacityMillions,
+      modeledRemainingMillions: slice.modeledRemainingMillions ?? null,
+      gateSatisfied: slice.gateSatisfied ?? slice.status !== "blocked",
+      utilizationAuthority: params.utilizationAuthority,
+      claimedSharedPools,
+      sourceCitations: slice.citations,
+    });
+    return {
+      ...slice,
+      status: statusForSupport(slice.support, slice.status),
+      modeledRemainingMillions: claim.modeledRemainingMillions,
+      verifiedRemainingMillions: claim.verifiedRemainingMillions,
+      verifiedRemainingRefusalReason: claim.verifiedRemainingRefusalReason,
+      notes: [...slice.notes, ...emptyRemainingNotes(claim)],
+    };
+  };
 
-  // --- Financial covenants / ratios (always when financials present) ---
-  const ratioSlice: DomainEvaluationSlice = {
+  // --- Financial covenants / ratios ---
+  const ratioInvalid = !financialIdentityValid;
+  const ratioSlice = applyRemaining({
     domain: "FINANCIAL_COVENANTS_RATIO_CAPACITY",
-    support: contractualComputation.status === "OK" ? "EXECUTABLE" : "PARTIAL",
-    status: contractualComputation.status === "OK" ? "clear" : "review_required",
-    summary:
-      contractualComputation.contractualEbitda != null
+    support: contractualComputation.status === "OK" && !ratioInvalid ? "EXECUTABLE" : "PARTIAL",
+    status: ratioInvalid
+      ? "review_required"
+      : contractualComputation.status === "OK"
+        ? "clear"
+        : "review_required",
+    summary: ratioInvalid
+      ? "Financial identity mismatch — ratio capacity invalidated"
+      : contractualComputation.contractualEbitda != null
         ? `Contractual EBITDA $${contractualComputation.contractualEbitda}M · TNL ${
             contractualComputation.leverage.totalNetLeverage?.toFixed(2) ?? "n/a"
           }x · derivation ${contractualComputation.ebitdaDerivation?.kind ?? "not attached"}`
@@ -283,15 +587,26 @@ export function evaluateCrossDomainTransaction(params: {
     grossCapacityMillions:
       contractualComputation.ratioTests.find((r) => r.formulaType === "LEVERAGE_RATIO_ROOM")
         ?.ratioDebtCapacityMillions ?? null,
-    verifiedRemainingMillions: null,
+    modeledRemainingMillions: null,
+    sourceProvision:
+      contractualComputation.ratioTests[0]?.sectionRef ??
+      contractualComputation.ratioTests[0]?.provisionCode ??
+      null,
+    inputIdentity: baseInputIdentity(data, asOf, financialFingerprint, {
+      periodKey: params.ebitdaDerivation?.measurementPeriod ?? null,
+    }),
     citations: contractualComputation.ratioTests.map((r) => r.sectionRef),
-    missingInputs: contractualComputation.missingInputs,
+    missingInputs: [
+      ...contractualComputation.missingInputs,
+      ...(ratioInvalid ? ["approved financial identity match"] : []),
+    ],
     notes: [
       ...contractualComputation.notes,
       ...(contractualComputation.ebitdaDerivation?.unresolvedAdjustments ?? []),
     ],
-  };
+  });
   domains.push(ratioSlice);
+  if (ratioInvalid) statusAcc.push("review_required");
 
   const runDebt = (
     amount: number,
@@ -299,36 +614,50 @@ export function evaluateCrossDomainTransaction(params: {
     label: string,
   ): { slice: DomainEvaluationSlice; sim: DebtIncurrenceSimulation } => {
     const sim = simulateDebtIncurrence(data, position, amount, secured);
-    statusAcc.push(sim.status);
+    const invalidated = !financialIdentityValid;
+    const status: TransactionStatus = invalidated ? "review_required" : sim.status;
+    statusAcc.push(status);
+    const gross =
+      sim.overallCapacity != null && Number.isFinite(sim.overallCapacity)
+        ? sim.overallCapacity
+        : null;
+    const bindingRef = sim.binding?.bindingProvision?.sectionRef ?? null;
     return {
       sim,
-      slice: {
+      slice: applyRemaining({
         domain: "DEBT_INCURRENCE_REFINANCING",
         support: "EXECUTABLE",
-        status: sim.status,
-        summary: `${label}: ${sim.status} · binding ${
-          sim.binding?.documentName ?? "n/a"
-        } · overall gross capacity ${
-          sim.overallCapacity != null && Number.isFinite(sim.overallCapacity)
-            ? `$${sim.overallCapacity.toFixed(1)}M`
-            : "n/a"
-        }`,
-        grossCapacityMillions:
-          sim.overallCapacity != null && Number.isFinite(sim.overallCapacity)
-            ? sim.overallCapacity
-            : null,
-        verifiedRemainingMillions: null,
+        status,
+        summary: invalidated
+          ? `${label}: invalidated — approved financial inputs changed`
+          : `${label}: ${sim.status} · binding ${
+              sim.binding?.documentName ?? "n/a"
+            } · overall gross capacity ${
+              gross != null ? `$${gross.toFixed(1)}M` : "n/a"
+            }`,
+        grossCapacityMillions: gross,
+        modeledRemainingMillions: gross,
+        gateSatisfied: sim.status === "clear",
+        sourceProvision: bindingRef,
+        inputIdentity: baseInputIdentity(data, asOf, financialFingerprint, {
+          documentId: sim.binding?.documentId ?? null,
+          provisionId: sim.binding?.bindingProvision?.code ?? null,
+        }),
         citations: sim.perDocument.map(
-          (d) => `${d.documentName}${d.bindingProvision ? ` · ${d.bindingProvision.sectionRef}` : ""}`,
+          (d) =>
+            `${d.documentName}${d.bindingProvision ? ` · ${d.bindingProvision.sectionRef}` : ""}`,
         ),
-        missingInputs: sim.reason ? [sim.reason] : [],
+        missingInputs: [
+          ...(sim.reason ? [sim.reason] : []),
+          ...(invalidated ? ["approved financial identity match"] : []),
+        ],
         notes: sim.ratioTests
           .filter((r) => r.applies)
           .map(
             (r) =>
               `${r.metricName} ${r.preTransactionRatio?.toFixed(2)}x → ${r.postTransactionRatio?.toFixed(2) ?? "n/a"}x vs ${r.threshold}x (${r.status})`,
           ),
-      },
+      }),
     };
   };
 
@@ -336,63 +665,71 @@ export function evaluateCrossDomainTransaction(params: {
     amount: number,
     kind: "dividend" | "investment",
   ): { slice: DomainEvaluationSlice; sim: RestrictedPaymentSimulation | null } => {
-    const docId =
-      tx.rpDocumentId ??
-      data.documents.find((d) => d.rpWaterfall)?.id;
+    const docId = tx.rpDocumentId ?? data.documents.find((d) => d.rpWaterfall)?.id;
     if (!docId) {
       return {
         sim: null,
-        slice: {
-          domain: "RESTRICTED_PAYMENTS_BUILDER",
+        slice: applyRemaining({
+          domain: kind === "dividend" ? "RESTRICTED_PAYMENTS_BUILDER" : "INVESTMENTS_ACQUISITIONS",
           support: "UNSUPPORTED",
           status: "not_tested",
           summary: "No document with rpWaterfall configuration",
           grossCapacityMillions: null,
-          verifiedRemainingMillions: null,
+          modeledRemainingMillions: null,
+          sourceProvision: null,
+          inputIdentity: baseInputIdentity(data, asOf, financialFingerprint),
           citations: [],
           missingInputs: ["rpWaterfall"],
-          notes: [],
-        },
+          notes: ["UNSUPPORTED — not represented as fully evaluated."],
+        }),
       };
     }
     const sim = simulateRestrictedPayment(data, position, docId, amount, kind);
     statusAcc.push(sim.status);
     const stepGross = Object.values(sim.stepCapacitiesRemaining).reduce((a, b) => a + b, 0);
+    const support: DomainSupportLevel =
+      kind === "dividend" ? "EXECUTABLE" : "PARTIAL";
     return {
       sim,
-      slice: {
+      slice: applyRemaining({
         domain: kind === "dividend" ? "RESTRICTED_PAYMENTS_BUILDER" : "INVESTMENTS_ACQUISITIONS",
-        support: "EXECUTABLE",
+        support,
         status: sim.status,
-        summary: `${kind} $${amount}M · ${sim.status} · remaining unallocated $${sim.remaining.toFixed(1)}M`,
+        summary: `${kind} $${amount}M · ${sim.status} · modeled unallocated $${sim.remaining.toFixed(1)}M`,
         grossCapacityMillions: stepGross,
-        verifiedRemainingMillions: allowRemaining ? stepGross : null,
+        modeledRemainingMillions: sim.remaining,
+        gateSatisfied: sim.status === "clear",
+        sourceProvision: sim.steps[0]?.sectionRef ?? null,
+        inputIdentity: baseInputIdentity(data, asOf, financialFingerprint, {
+          documentId: docId,
+        }),
         citations: sim.steps.map((s) => `${s.sectionRef} · ${s.basketName}`),
         missingInputs: sim.reason ? [sim.reason] : [],
         notes: [`Ledger RP pool used before sim: $${sim.poolUsed.toFixed(1)}M`],
-      },
+      }),
     };
   };
 
   const runAssetSale = (
     netProceeds: number,
   ): { slice: DomainEvaluationSlice; sim: AssetSaleSimulation | null } => {
-    const docId =
-      tx.assetSaleDocumentId ?? documentsWithAssetSale(data)[0]?.id;
+    const docId = tx.assetSaleDocumentId ?? documentsWithAssetSale(data)[0]?.id;
     if (!docId) {
       return {
         sim: null,
-        slice: {
+        slice: applyRemaining({
           domain: "ASSET_SALES_PROCEEDS",
           support: "UNSUPPORTED",
           status: "not_tested",
           summary: "No document with assetSale configuration",
           grossCapacityMillions: null,
-          verifiedRemainingMillions: null,
+          modeledRemainingMillions: null,
+          sourceProvision: null,
+          inputIdentity: baseInputIdentity(data, asOf, financialFingerprint),
           citations: [],
           missingInputs: ["assetSale"],
-          notes: [],
-        },
+          notes: ["UNSUPPORTED — not represented as fully evaluated."],
+        }),
       };
     }
     const sim = simulateAssetSale(
@@ -402,85 +739,137 @@ export function evaluateCrossDomainTransaction(params: {
       netProceeds,
       Boolean(tx.reinvestProceeds),
     );
-    statusAcc.push(
+    const mapped: TransactionStatus =
       sim.status === "clear"
         ? "clear"
         : sim.status === "review_required"
           ? "review_required"
-          : "not_tested",
-    );
+          : "not_tested";
+    statusAcc.push(mapped);
     return {
       sim,
-      slice: {
+      slice: applyRemaining({
         domain: "ASSET_SALES_PROCEEDS",
         support: "PARTIAL",
-        status: sim.status,
+        status: mapped,
         summary: `Net proceeds $${netProceeds}M · offerTriggered=${sim.offerTriggered ?? false} · reinvest=${tx.reinvestProceeds ?? false}`,
         grossCapacityMillions: sim.excessProceedsThreshold ?? null,
-        verifiedRemainingMillions: null,
+        modeledRemainingMillions: null,
+        sourceProvision: sim.documentName ?? docId,
+        inputIdentity: baseInputIdentity(data, asOf, financialFingerprint, {
+          documentId: docId,
+        }),
         citations: [sim.documentName ?? docId],
         missingInputs: sim.reason ? [sim.reason] : [],
         notes: [
           "Capacity restore from repayment of debt with proceeds requires explicit contractualAuthorityRef (not inferred).",
         ],
-      },
+      }),
     };
   };
 
-  // Lien / secured capacity slice from position metrics
+  // Lien / secured capacity — PARTIAL must not report clear
   const securedDoc = position.documents.find((d) => d.securedStatus === "modeled");
-  domains.push({
-    domain: "LIENS_SECURED_CAPACITY",
-    support: securedDoc ? "PARTIAL" : "UNSUPPORTED",
-    status: securedDoc ? "clear" : "not_tested",
-    summary: securedDoc
-      ? `Secured-side gross capacity $${securedDoc.securedCapacity?.toFixed(1) ?? "n/a"}M on ${securedDoc.documentName}`
-      : "No modeled secured capacity formula",
-    grossCapacityMillions: securedDoc?.securedCapacity ?? null,
-    verifiedRemainingMillions: null,
-    citations: securedDoc?.securedBindingProvision
-      ? [securedDoc.securedBindingProvision.sectionRef]
-      : [],
-    missingInputs: securedDoc ? [] : ["secured capacityFormulas"],
-    notes: ["Lien capacity leaves participate via capacityFormulas; not a separate lien engine."],
-  });
+  domains.push(
+    applyRemaining({
+      domain: "LIENS_SECURED_CAPACITY",
+      support: securedDoc ? "PARTIAL" : "UNSUPPORTED",
+      status: securedDoc ? "review_required" : "not_tested",
+      summary: securedDoc
+        ? `Secured-side gross capacity $${securedDoc.securedCapacity?.toFixed(1) ?? "n/a"}M on ${securedDoc.documentName} (PARTIAL — not fully evaluated)`
+        : "No modeled secured capacity formula",
+      grossCapacityMillions: securedDoc?.securedCapacity ?? null,
+      modeledRemainingMillions: securedDoc?.securedCapacity ?? null,
+      sourceProvision: securedDoc?.securedBindingProvision?.sectionRef ?? null,
+      inputIdentity: baseInputIdentity(data, asOf, financialFingerprint, {
+        documentId: securedDoc?.documentId ?? null,
+        provisionId: securedDoc?.securedBindingProvision?.code ?? null,
+      }),
+      citations: securedDoc?.securedBindingProvision
+        ? [securedDoc.securedBindingProvision.sectionRef]
+        : [],
+      missingInputs: securedDoc
+        ? ["independent lien priority / collateral scope evaluation"]
+        : ["secured capacityFormulas"],
+      notes: [
+        "Lien capacity leaves participate via capacityFormulas; not a separate lien engine.",
+        "PARTIAL — must not be treated as fully evaluated clear permission.",
+      ],
+    }),
+  );
 
-  domains.push({
-    domain: "CROSS_DOCUMENT_SHARED_CAPACITY",
-    support: "PARTIAL",
-    status: "clear",
-    summary: `${position.documents.length} document(s) in package; binding selected as tightest modeled capacity on debt sims`,
+  domains.push(
+    applyRemaining({
+      domain: "CROSS_DOCUMENT_SHARED_CAPACITY",
+      support: "PARTIAL",
+      status: "review_required",
+      summary: `${position.documents.length} document(s) in package; binding selected as tightest modeled capacity on debt sims (PARTIAL)`,
+      grossCapacityMillions: null,
+      modeledRemainingMillions: null,
+      sourceProvision: null,
+      inputIdentity: baseInputIdentity(data, asOf, financialFingerprint),
+      citations: position.documents.map((d) => d.documentName),
+      missingInputs: params.utilizationAuthority?.sharedCapacityId
+        ? []
+        : ["express SharedCapacityConstraint for cross-document pool"],
+      notes: [
+        "Stacking across documents is not assumed without express shared constraints.",
+        "Shared-pool utilization is attributed once — baskets sharing one cap cannot double-count.",
+      ],
+    }),
+  );
+
+  domains.push(
+    applyRemaining({
+      domain: "AMENDMENT_VERSION_EFFECTIVE_DATE",
+      support: "PARTIAL",
+      status: "not_applicable",
+      summary: `Evaluation date ${tx.assumptions.evaluationDate} — provisions must be date-scoped by loader`,
+      grossCapacityMillions: null,
+      modeledRemainingMillions: null,
+      sourceProvision: null,
+      inputIdentity: baseInputIdentity(data, asOf, financialFingerprint, {
+        periodKey: tx.assumptions.evaluationDate,
+      }),
+      citations: [],
+      missingInputs: [],
+      notes: ["Amendment graph mutation refused without new capacity graph (recipe gate)."],
+    }),
+  );
+
+  const ledgerClaim = resolveCanonicalVerifiedRemaining({
     grossCapacityMillions: null,
-    verifiedRemainingMillions: null,
-    citations: position.documents.map((d) => d.documentName),
-    missingInputs: [],
-    notes: ["Stacking across documents is not assumed without express shared constraints."],
+    modeledRemainingMillions: null,
+    gateSatisfied: false,
+    utilizationAuthority: params.utilizationAuthority,
+    claimedSharedPools,
   });
-
-  domains.push({
-    domain: "AMENDMENT_VERSION_EFFECTIVE_DATE",
-    support: "PARTIAL",
-    status: "not_applicable",
-    summary: `Evaluation date ${tx.assumptions.evaluationDate} — provisions must be date-scoped by loader`,
-    grossCapacityMillions: null,
-    verifiedRemainingMillions: null,
-    citations: [],
-    missingInputs: [],
-    notes: ["Amendment graph mutation refused without new capacity graph (recipe gate)."],
-  });
-
   domains.push({
     domain: "LEDGER_UTILIZATION_RECLASSIFICATION",
-    support: data.ledger.length > 0 ? "PARTIAL" : "PARTIAL",
+    support: "PARTIAL",
     status: "not_applicable",
-    summary: `${data.ledger.length} ledger entr(y/ies) in RP pool math; attributed remaining ${
-      allowRemaining ? "permitted" : "refused"
+    summary: `${data.ledger.length} ledger entr(y/ies) in RP pool math; verified remaining ${
+      ledgerClaim.verifiedRemainingMillions != null ? "supported on authority path" : "refused"
     }`,
     grossCapacityMillions: null,
-    verifiedRemainingMillions: null,
+    modeledRemainingMillions: null,
+    verifiedRemainingMillions: ledgerClaim.verifiedRemainingMillions,
+    verifiedRemainingRefusalReason: ledgerClaim.verifiedRemainingRefusalReason,
+    sourceProvision: params.utilizationAuthority?.provisionId ?? null,
+    inputIdentity: baseInputIdentity(data, asOf, financialFingerprint, {
+      provisionId: params.utilizationAuthority?.provisionId ?? null,
+      documentId: params.utilizationAuthority?.documentId ?? null,
+    }),
     citations: [],
-    missingInputs: allowRemaining ? [] : ["attributed utilization", "completeness certificate"],
-    notes: [],
+    missingInputs: ledgerClaim.verifiedRemainingMillions != null
+      ? []
+      : ["attributed utilization evidence", "trusted completeness certificate"],
+    notes: [
+      "Caller utilizationAttributed / utilizationCompletenessCertified flags ignored for remaining.",
+      ...(ledgerClaim.verifiedRemainingRefusalReason
+        ? [ledgerClaim.verifiedRemainingRefusalReason]
+        : []),
+    ],
   });
 
   // Scenario-specific composition
@@ -519,38 +908,61 @@ export function evaluateCrossDomainTransaction(params: {
       break;
     }
     case "INTERCOMPANY_TRANSFER": {
-      domains.push({
-        domain: "INVESTMENTS_ACQUISITIONS",
-        support: "UNSUPPORTED",
-        status: "not_tested",
-        summary: "Intercompany transfer / guarantee chain requires entity-scope facts not present in legacy snapshot",
-        grossCapacityMillions: null,
-        verifiedRemainingMillions: null,
-        citations: [],
-        missingInputs: ["restricted-group entity graph", "intercompany investment basket attribution"],
-        notes: ["Fail-closed — permissions not invented."],
-      });
+      domains.push(
+        applyRemaining({
+          domain: "INVESTMENTS_ACQUISITIONS",
+          support: "UNSUPPORTED",
+          status: "not_tested",
+          summary:
+            "Intercompany transfer / guarantee chain requires entity-scope facts not present in legacy snapshot",
+          grossCapacityMillions: null,
+          modeledRemainingMillions: null,
+          sourceProvision: null,
+          inputIdentity: baseInputIdentity(data, asOf, financialFingerprint),
+          citations: [],
+          missingInputs: [
+            "restricted-group entity graph",
+            "intercompany investment basket attribution",
+          ],
+          notes: ["Fail-closed — permissions not invented. UNSUPPORTED ≠ clear."],
+        }),
+      );
       statusAcc.push("not_tested");
-      packageLimitations.push("INTERCOMPANY_TRANSFER is unsupported without entity/guarantee facts.");
+      packageLimitations.push(
+        "INTERCOMPANY_TRANSFER is unsupported without entity/guarantee facts.",
+      );
       break;
     }
   }
 
-  domains.push({
-    domain: "MULTI_CONDITION_SIMULATION",
-    support: "PARTIAL",
-    status: assumptionBlock ? "review_required" : worstTxnStatus(statusAcc.length ? statusAcc : ["clear"]),
-    summary: `Scenario ${tx.kind} composed across ${domains.length} domain slices`,
-    grossCapacityMillions: null,
-    verifiedRemainingMillions: null,
-    citations: tx.assumptions.statements,
-    missingInputs: assumptionBlock ? [assumptionBlock] : [],
-    notes: [`Entity scope: ${tx.assumptions.entityScope.join(", ")}`],
-  });
-
-  const overallStatus = assumptionBlock
+  const multiStatus = assumptionBlock
     ? "review_required"
     : worstTxnStatus(statusAcc.length ? statusAcc : ["review_required"]);
+  domains.push(
+    applyRemaining({
+      domain: "MULTI_CONDITION_SIMULATION",
+      support: "PARTIAL",
+      status: multiStatus,
+      summary: `Scenario ${tx.kind} composed across ${domains.length} domain slices`,
+      grossCapacityMillions: null,
+      modeledRemainingMillions: null,
+      sourceProvision: null,
+      inputIdentity: baseInputIdentity(data, asOf, financialFingerprint),
+      citations: tx.assumptions.statements,
+      missingInputs: assumptionBlock ? [assumptionBlock] : [],
+      notes: [`Entity scope: ${tx.assumptions.entityScope.join(", ")}`],
+    }),
+  );
+
+  // Overall follows scenario-executed statuses. Any blocked domain blocks
+  // package permission. Static PARTIAL slices stay review_required locally
+  // without forcing every scenario to review_required.
+  const blockedDomain = domains.some((d) => d.status === "blocked");
+  const overallStatus: TransactionStatus = assumptionBlock
+    ? "review_required"
+    : blockedDomain
+      ? "blocked"
+      : worstTxnStatus(statusAcc.length ? statusAcc : ["review_required"]);
 
   const proForma = {
     totalNetLeverage:
@@ -577,8 +989,10 @@ export function evaluateCrossDomainTransaction(params: {
     rpSimulation: rpSim,
     assetSaleSimulation: assetSaleSim,
     proForma,
+    approvedFinancialIdentity: currentIdentity,
+    financialIdentityValid,
     packageLimitations,
     authorityNote:
-      "LEGACY_ENGINE package composition + contractual computation — NOT_CERTIFIED_4E. Gross ≠ verified remaining.",
+      "LEGACY_ENGINE package composition + contractual computation — NOT_CERTIFIED_4E. Gross ≠ modeled ≠ verified remaining. Verified remaining only via resolveUtilization + computeVerifiedRemaining.",
   };
 }

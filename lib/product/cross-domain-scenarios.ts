@@ -22,6 +22,7 @@ function baseAssumptions(
     Pick<ContemplatedCrossDomainTransaction["assumptions"], "statements" | "entityScope" | "evaluationDate">,
 ): ContemplatedCrossDomainTransaction["assumptions"] {
   return {
+    // Caller flags are disclosure-only — they never authorize verified remaining.
     utilizationAttributed: false,
     utilizationCompletenessCertified: false,
     ...over,

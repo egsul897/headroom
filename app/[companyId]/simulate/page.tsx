@@ -17,6 +17,8 @@ import {
 import { requireAssembledCfoWorkflow } from "@/lib/customer-workflow/require-workflow-access";
 import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
 import { loadApprovedFinancialInputBundle } from "@/lib/product/north-star-workflow";
+import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
+import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
@@ -89,6 +91,12 @@ export default async function SimulatePage({
     ]);
   const verifiedSummary = summarizeVerifiedSimulate(verified);
   const simView = workflow.simulate;
+  const crossDomainAcquisition = evaluateSimulateCrossDomainAcquisition({
+    data,
+    amountMillions: amountMillions > 0 ? amountMillions : 150,
+    evaluationDate,
+    utilizationAuthority: null,
+  });
 
   return (
     <div className="stack">
@@ -231,6 +239,8 @@ export default async function SimulatePage({
       </Card>
 
       <VerifiedSimulatePanel summary={verifiedSummary} evaluationDate={evaluationDate} />
+
+      <CrossDomainSimulatePanel evaluation={crossDomainAcquisition} />
 
       <SimulateClient
         companyId={companyId}
