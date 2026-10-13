@@ -20,6 +20,9 @@ export {
 export {
   compileOperativeCovenantPackage,
   OPERATIVE_COVENANT_PACKAGE_VERSION,
+  provisionIdentityMatchesUnit,
+  documentsShareOperativeAuthority,
+  type DocumentRelationshipEvidence,
   type OperativePackageContext,
   type OperativeCovenantPackageResult,
   type ExecutableOperativeUnit,

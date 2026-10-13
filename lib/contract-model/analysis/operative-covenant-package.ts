@@ -245,9 +245,59 @@ function missingDepsFor(unit: CompileUnitRepresentation): string[] {
 }
 
 /**
- * Match a handoff provision to a compile unit by provision identity only
- * (sectionRef / definedTermRef). Same-document governingDocumentId alone is
- * NEVER sufficient — distinct sections must not inherit one another's authority.
+ * Narrow document-relationship evidence for provision↔unit authority binding.
+ * Only OPERATIVE_AUTHORITY_CONFIRMED restatement edges with both endpoints
+ * may authorize cross-document section/term identity. Unverified / ambiguous
+ * / unsupported succession never binds. No issuer-specific exceptions.
+ */
+export interface DocumentRelationshipEvidence {
+  restatementAuthorities?: ReadonlyArray<{
+    status: string;
+    successorDocumentId: string;
+    predecessorDocumentId: string | null;
+  }>;
+}
+
+/**
+ * True when the provision's governing document is the unit's source document
+ * or a verified operative restatement successor/predecessor of it.
+ * Fail closed on missing ids, null predecessors, or non-confirmed status.
+ *
+ * Exported for adversarial regression tests.
+ */
+export function documentsShareOperativeAuthority(
+  provisionGoverningDocumentId: string | null | undefined,
+  unitDocumentId: string | null | undefined,
+  relationship?: DocumentRelationshipEvidence | null,
+): boolean {
+  const gov = provisionGoverningDocumentId?.trim() ?? "";
+  const unitDoc = unitDocumentId?.trim() ?? "";
+  if (!gov || !unitDoc) return false;
+  if (gov === unitDoc) return true;
+
+  const authorities = relationship?.restatementAuthorities ?? [];
+  for (const a of authorities) {
+    if (a.status !== "OPERATIVE_AUTHORITY_CONFIRMED") continue;
+    const succ = a.successorDocumentId?.trim() ?? "";
+    const pred = a.predecessorDocumentId?.trim() ?? "";
+    // Null / empty predecessor — refuse silent cross-document bind.
+    if (!succ || !pred) continue;
+    if ((gov === succ && unitDoc === pred) || (gov === pred && unitDoc === succ)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Match a handoff provision to a compile unit by provision identity
+ * (sectionRef / definedTermRef) AND document relationship.
+ *
+ * - Same-document governingDocumentId alone is NEVER sufficient — distinct
+ *   sections must not inherit one another's authority.
+ * - Section / defined-term identity across unrelated documents REFUSES.
+ * - Verified OPERATIVE_AUTHORITY_CONFIRMED restatement succession may bind
+ *   when both endpoints are present; unverified/ambiguous succession REFUSES.
  *
  * Exported for adversarial regression tests.
  */
@@ -256,9 +306,22 @@ export function provisionIdentityMatchesUnit(
     kind: string;
     sectionRef: string | null;
     definedTermRef: string | null;
+    governingDocumentId?: string | null;
   },
   unit: Pick<CompileUnitRepresentation, "sourceRef" | "documentId">,
+  relationship?: DocumentRelationshipEvidence | null,
 ): boolean {
+  // Document-relationship gate first — never bind on section/term alone across docs.
+  if (
+    !documentsShareOperativeAuthority(
+      provision.governingDocumentId,
+      unit.documentId,
+      relationship,
+    )
+  ) {
+    return false;
+  }
+
   const sourceRef = unit.sourceRef.trim();
   if (!sourceRef) return false;
 
@@ -300,7 +363,11 @@ function authorityForUnit(
   governingAuthorityConfirmed: boolean;
 } {
   const handoff = offline.operativeAuthorityHandoff;
-  const provision = handoff?.provisions.find((p) => provisionIdentityMatchesUnit(p, unit)) ?? null;
+  const relationship: DocumentRelationshipEvidence = {
+    restatementAuthorities: handoff?.restatementAuthorities ?? [],
+  };
+  const provision =
+    handoff?.provisions.find((p) => provisionIdentityMatchesUnit(p, unit, relationship)) ?? null;
 
   // Without a provision-identity match, do not inherit another section's
   // governingDocumentId or authorityClassification — fall back to the unit's
