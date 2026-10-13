@@ -4,7 +4,7 @@
 
 | Item | Value |
 |---|---|
-| **SHA** | `abdcdb55d8af93bcec02e7000aaa8431c4e100db` |
+| **SHA** | `f3b5c586bf6e7ff32f2b6e7b60c0a14244ca247a` |
 | **Branch / PR** | `cursor/covenant-learning-factory-c387` / #356 |
 | **Compiler** | `offline-package-compile.v1` + `greater-of-assets-basket.v1.1` |
 
