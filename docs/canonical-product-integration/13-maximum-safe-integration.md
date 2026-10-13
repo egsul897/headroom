@@ -13,7 +13,7 @@
 | #317 / #316 | Restatement as-of precedence | In #319 / #311 tips |
 | #314 / #315 | Cross-document relationship gate | In #311 tip + #312 align commits |
 | #311 | CFO Upload→Analyze→Review→Position→Simulate→Audit | Merge commit on #319 tip |
-| #326 | APPROVED NS-4 Neon dashboard band | Merge |
+| #326 | APPROVED NS-4 Neon dashboard band + certificate→IR leverage vertical slice | Merge through tip `a5695c2e` (north-star-bridge §17) |
 | #325 | Contractual leverage dashboard panel | Merge (coexists with #326); local arithmetic — no raw Phase-4 runtime import (§17) |
 | #324 | Contractual EBITDA derivation (intelligence) | Merge (intelligence surface; not a second dashboard compiler) |
 | #322 | Financial computation audit oracles | Merge |
@@ -27,6 +27,8 @@
 | #318 | Same operative-source fix as #319 on #310 stack — close after #319 path lands |
 | #310 / #304 / #307 | Absorbed into #312/#311 stack — do not dual-merge |
 | #327 | **Hold** — certified-path boundary failure (raw Phase-4 imports from `lib/product/contractual-metrics/*`). Competing dashboard compiler vs #325 |
+| #322 tip after `b8074d3f` | **Hold** — reintroduces raw runtime into product leverage calculate; certified-path red. Prior audit/oracles already absorbed |
+| #324 tip after `5fab349d` | **Hold** — cross-domain transaction eval; home-overview CI red. Prior EBITDA derivation already absorbed |
 
 ## Single authoritative execution path
 
