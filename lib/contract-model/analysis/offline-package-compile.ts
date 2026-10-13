@@ -108,6 +108,12 @@ export interface OfflinePackageCompileOptions {
   discoveryCaller?: StageCaller;
   amendmentCaller?: StageCaller;
   asOfDate?: string;
+  /**
+   * In-memory compile only — never persist ContractRule / production authority rows.
+   * Learning factory always passes true so a configured DATABASE_URL cannot turn
+   * precedent processing into production legal writes. Default false for other callers.
+   */
+  compileOnly?: boolean;
 }
 
 /** Where operative text / IR amounts were actually compiled from. */
@@ -414,6 +420,17 @@ export async function compileFrozenDebtPackage(
     label: d.label,
     text: d.text,
   }));
+
+  // compileOnly: refuse any production-authority persistence side effects.
+  // Offline compile is already in-memory; this flag makes the contract explicit
+  // for learning-factory callers when DATABASE_URL is set.
+  if (options.compileOnly) {
+    humanInterventions.push({
+      kind: "COMPILE_ONLY",
+      detail:
+        "compileOnly=true: in-memory representation only; ContractRule / Permission / SharedCapacity / production authority writes are forbidden for this invocation",
+    });
+  }
 
   // --- structural ---
   const nodesByDocument = new Map<string, { text: string; nodes: ReturnType<typeof parseDocumentStructure> }>();

@@ -60,6 +60,8 @@ export interface ProcessPackageOptions {
   store?: LearningFileStore;
   /** When true, attempt Neon persist (never required for local success). */
   persistNeon?: boolean;
+  /** Injected Neon writer for offline tests (mocked HTTPS). */
+  neonExecutor?: import("./store/neon-transport").NeonHttpsExecutor;
   authorizePaidInference?: boolean;
   /** Skip if identical document hashes already processed OK. */
   skipIfUnchanged?: boolean;
@@ -138,12 +140,14 @@ export async function processLearningPackage(
   try {
     const documents = loadPackageDocuments(spec, repoRoot);
     const tCompile = new Date().toISOString();
+    // Always compile-only in the factory: DATABASE_URL must not enable ContractRule writes.
     const result = await compileFrozenDebtPackage({
       companyId: spec.companyId,
       packageKey: spec.packageKey,
       instrumentKey: spec.instrumentKey,
       documents,
       authorizePaidInference: Boolean(options.authorizePaidInference),
+      compileOnly: true,
     });
 
     stages.push({
@@ -340,12 +344,15 @@ export async function processLearningPackage(
       metrics: { proposalCount: manifest.improvementProposals.length },
     });
 
-    // Persist
+    // Persist (file always; Neon when requested — including non-OK statuses below)
     const tPersist = new Date().toISOString();
     store.writePackageManifest(manifest);
     let neon = { attempted: false, ok: false, detail: "not requested" };
     if (options.persistNeon) {
-      const neonResult = await persistPackageManifestToNeon(manifest);
+      const neonResult = await persistPackageManifestToNeon(manifest, {
+        executor: options.neonExecutor,
+        skipProbe: Boolean(options.neonExecutor),
+      });
       neon = {
         attempted: neonResult.attempted,
         ok: neonResult.ok,
@@ -354,7 +361,7 @@ export async function processLearningPackage(
     }
     stages.push({
       stage: "PERSIST",
-      status: "OK",
+      status: neon.attempted && !neon.ok ? "FAILED" : "OK",
       startedAt: tPersist,
       finishedAt: new Date().toISOString(),
       diagnostics: `file-store ok; neon=${neon.ok ? "ok" : neon.detail}`,
@@ -367,6 +374,10 @@ export async function processLearningPackage(
   } catch (err) {
     const finishedAt = new Date().toISOString();
     const message = err instanceof Error ? err.message : String(err);
+    const failedStage: StageCheckpoint["stage"] =
+      stages.length > 0 && stages[stages.length - 1]!.stage !== "COMPILE"
+        ? "COMPILE"
+        : "COMPILE";
     errors.push({
       errorId: artifactId([runId, "FAILED", message.slice(0, 80)]),
       packageKey: spec.packageKey,
@@ -374,18 +385,18 @@ export async function processLearningPackage(
       class: "UNKNOWN",
       severity: "HIGH",
       message,
-      stage: "COMPILE",
+      stage: failedStage,
       createdAt: finishedAt,
       correctiveHistory: [],
     });
     stages.push({
-      stage: "COMPILE",
+      stage: failedStage,
       status: "FAILED",
       startedAt,
       finishedAt,
       diagnostics: message.slice(0, 500),
     });
-    const manifest: PackageAuditManifest = {
+    let manifest: PackageAuditManifest = {
       schemaVersion: "covenant-learning-factory.package-audit.v1",
       packageKey: spec.packageKey,
       companyId: spec.companyId,
@@ -417,6 +428,30 @@ export async function processLearningPackage(
     };
     manifest.improvementProposals = proposeBoundedImprovements({ manifest, errors });
     store.writePackageManifest(manifest);
-    return { manifest, neon: { attempted: false, ok: false, detail: "failed before neon" } };
+
+    // Failures are the learning signal — persist packages/runs/errors/proposals to Neon too.
+    let neon = { attempted: false, ok: false, detail: "not requested" };
+    if (options.persistNeon) {
+      const neonResult = await persistPackageManifestToNeon(manifest, {
+        executor: options.neonExecutor,
+        skipProbe: Boolean(options.neonExecutor),
+      });
+      neon = {
+        attempted: neonResult.attempted,
+        ok: neonResult.ok,
+        detail: neonResult.detail,
+      };
+      const tPersist = new Date().toISOString();
+      stages.push({
+        stage: "PERSIST",
+        status: neon.ok ? "OK" : "FAILED",
+        startedAt: tPersist,
+        finishedAt: new Date().toISOString(),
+        diagnostics: `file-store ok; neon=${neon.ok ? "ok" : neon.detail}`,
+      });
+      manifest = { ...manifest, stages: [...stages], finishedAt: new Date().toISOString() };
+      store.writePackageManifest(manifest);
+    }
+    return { manifest, neon };
   }
 }
