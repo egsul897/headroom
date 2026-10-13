@@ -66,6 +66,7 @@ export function discoverFixedDollarCandidatesFromText(input: {
     seen.add(dedupe);
 
     const sectionMatch = SECTION_HINT_RE.exec(input.text.slice(Math.max(0, start - 80), start + excerpt.length));
+    // FULL_DOCUMENT means attribution incomplete — VE/Position must refuse executable claims.
     const sectionRef = sectionMatch?.[1] ?? "FULL_DOCUMENT";
     const prefix = input.candidateIdPrefix ?? input.documentId;
 

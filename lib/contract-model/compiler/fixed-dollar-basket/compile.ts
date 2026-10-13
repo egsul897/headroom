@@ -66,7 +66,12 @@ export interface FixedDollarCompileArgs {
   sourceSectionRef: string;
   operativeSourceText: string;
   covenantFamily?: string;
-  action?: "INCUR_DEBT" | "CREATE_LIEN";
+  action?:
+    | "INCUR_DEBT"
+    | "CREATE_LIEN"
+    | "MAKE_INVESTMENT"
+    | "MAKE_RESTRICTED_PAYMENT"
+    | "DISPOSE_ASSET";
 }
 
 export type FixedDollarExecutableClass =
@@ -121,16 +126,23 @@ function capacityFor(classification: FixedDollarClassification, citation: string
   return expr;
 }
 
-function inferAction(text: string, explicit?: FixedDollarCompileArgs["action"]): "INCUR_DEBT" | "CREATE_LIEN" {
+function inferAction(
+  text: string,
+  explicit?: FixedDollarCompileArgs["action"],
+): NonNullable<FixedDollarCompileArgs["action"]> | null {
   if (explicit) return explicit;
+  // Without an explicit provision-context action, do not assume indebtedness.
   if (/\bLiens?\b/i.test(text) && !/\b(?:Debt|Indebtedness)\b/i.test(text)) return "CREATE_LIEN";
-  return "INCUR_DEBT";
+  if (/\b(?:Indebtedness|Debt)\b/i.test(text)) return "INCUR_DEBT";
+  return null;
 }
 
-function inferFamily(text: string, explicit?: string): string {
+function inferFamily(text: string, explicit?: string): string | null {
   if (explicit) return explicit;
+  // Without an explicit provision-context family, do not assume indebtedness.
   if (/\bLiens?\b/i.test(text) && !/\b(?:Debt|Indebtedness)\b/i.test(text)) return "LIENS";
-  return "INDEBTEDNESS";
+  if (/\b(?:Indebtedness|Debt)\b/i.test(text)) return "INDEBTEDNESS";
+  return null;
 }
 
 export function compileFixedDollarBasket(args: FixedDollarCompileArgs): FixedDollarCompileResult {
@@ -167,6 +179,19 @@ export function compileFixedDollarBasket(args: FixedDollarCompileArgs): FixedDol
 
   const family = inferFamily(args.operativeSourceText, args.covenantFamily);
   const action = inferAction(args.operativeSourceText, args.action);
+  if (!family || !action) {
+    return {
+      classification,
+      executableClass: "UNSUPPORTED",
+      rule: null,
+      warnings: [
+        ...warnings,
+        "covenant_family_or_action_unresolved — refuse rather than assume indebtedness",
+      ],
+      compilerVersion: FIXED_DOLLAR_BASKET_COMPILER_VERSION,
+      sourceContentVersion,
+    };
+  }
   const wire: SubmitCompilationInput = SubmitCompilationSchema.parse({
     rules: [
       {

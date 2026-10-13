@@ -185,6 +185,7 @@ function classifyProvisionKind(unit: CompileUnitRepresentation): OperativeProvis
   const role = unit.role;
   const families = unit.families;
   const text = unit.operativeText;
+  const head = text.slice(0, 240);
 
   if (unit.greaterOfSlice) return "GREATER_OF_BASKET";
   if (unit.fixedDollarSlice?.classification?.startsWith("FIXED_DOLLAR")) return "FIXED_DOLLAR_BASKET";
@@ -196,21 +197,27 @@ function classifyProvisionKind(unit: CompileUnitRepresentation): OperativeProvis
     return "RATIO_BASED_PERMISSION";
   }
   if (role === "GENERAL_PROHIBITION") {
-    if (families.includes("LIENS") || /\bLiens?\b/i.test(text.slice(0, 200))) return "LIEN_RESTRICTION";
-    if (families.includes("INDEBTEDNESS") || /\b(?:Indebtedness|Debt)\b/i.test(text.slice(0, 200))) {
+    if (families.includes("LIENS") || /\bLiens?\b/i.test(head)) return "LIEN_RESTRICTION";
+    if (families.includes("INDEBTEDNESS") || /\b(?:Indebtedness|Debt)\b/i.test(head)) {
       return "DEBT_INCURRENCE_PROHIBITION";
     }
-    return "DEBT_INCURRENCE_PROHIBITION";
+    // Do not assume indebtedness for unclassified prohibitions.
+    return "OTHER_OR_UNKNOWN";
   }
   if (role === "BASKET" || role === "SHARED_CAP" || role === "PERMISSION") {
-    if (families.includes("LIENS")) return "PERMITTED_LIEN_BASKET";
+    if (families.includes("LIENS") || /\bLiens?\b/i.test(head)) return "PERMITTED_LIEN_BASKET";
     if (/\$[\d,]+/.test(text) && !/\bnot\s+to\s+exceed\b|\bshall\s+not\s+exceed\b|\bdoes\s+not\s+exceed\b/i.test(text)) {
       return "GRANDFATHERED_OR_NON_CAP";
     }
-    return families.includes("LIENS") ? "PERMITTED_LIEN_BASKET" : "PERMITTED_DEBT_BASKET";
+    if (families.includes("INDEBTEDNESS") || /\b(?:Indebtedness|Debt)\b/i.test(head)) {
+      return "PERMITTED_DEBT_BASKET";
+    }
+    // Investment / RP / asset-sale baskets stay unknown until family is resolved.
+    return "OTHER_OR_UNKNOWN";
   }
   if (ref.startsWith("def:") && /Lien/i.test(ref)) return "PERMITTED_LIEN_BASKET";
-  if (ref.startsWith("def:")) return "PERMITTED_DEBT_BASKET";
+  if (ref.startsWith("def:") && /(?:Debt|Indebtedness)/i.test(ref)) return "PERMITTED_DEBT_BASKET";
+  if (ref.startsWith("def:")) return "OTHER_OR_UNKNOWN";
   return "OTHER_OR_UNKNOWN";
 }
 
@@ -244,24 +251,26 @@ function missingDepsFor(unit: CompileUnitRepresentation): string[] {
   return out;
 }
 
-/**
- * Match a handoff provision to a compile unit by provision identity only
- * (sectionRef / definedTermRef). Same-document governingDocumentId alone is
- * NEVER sufficient — distinct sections must not inherit one another's authority.
- *
- * Exported for adversarial regression tests.
- */
-export function provisionIdentityMatchesUnit(
-  provision: {
-    kind: string;
-    sectionRef: string | null;
-    definedTermRef: string | null;
-  },
-  unit: Pick<CompileUnitRepresentation, "sourceRef" | "documentId">,
-): boolean {
-  const sourceRef = unit.sourceRef.trim();
-  if (!sourceRef) return false;
+export type ProvisionIdentityMatchInput = {
+  kind: string;
+  sectionRef: string | null;
+  definedTermRef: string | null;
+  /** Required — section/term match across unrelated documents is refused. */
+  governingDocumentId?: string | null;
+  /** Verified restatement/amendment predecessors of the governing document. */
+  supersededDocumentIds?: readonly string[] | null;
+  /** Confirmed operative succession links (predecessor → successor). */
+  applicableAuthorityChain?: ReadonlyArray<{
+    status: string;
+    successorDocumentId: string;
+    predecessorDocumentId: string | null;
+  }> | null;
+};
 
+function sectionOrDefinedTermMatches(
+  provision: Pick<ProvisionIdentityMatchInput, "sectionRef" | "definedTermRef">,
+  sourceRef: string,
+): boolean {
   if (provision.sectionRef) {
     const section = provision.sectionRef.trim();
     if (!section) return false;
@@ -289,6 +298,58 @@ export function provisionIdentityMatchesUnit(
 
   // WHOLE_AGREEMENT / empty identity — refuse to bind a unit-level authority claim.
   return false;
+}
+
+/**
+ * True when the unit's source document is the governing document or a verified
+ * amendment/restatement predecessor of that governing document.
+ */
+export function documentIdentityOrSuccessionMatches(
+  provision: Pick<
+    ProvisionIdentityMatchInput,
+    "governingDocumentId" | "supersededDocumentIds" | "applicableAuthorityChain"
+  >,
+  unitDocumentId: string,
+): boolean {
+  const unitDoc = unitDocumentId.trim();
+  if (!unitDoc) return false;
+  const governing = provision.governingDocumentId?.trim() ?? "";
+  if (!governing) return false;
+
+  if (unitDoc === governing) return true;
+
+  const superseded = provision.supersededDocumentIds ?? [];
+  if (superseded.includes(unitDoc)) {
+    // OA-populated superseded list is verified succession evidence.
+    return true;
+  }
+
+  const chain = provision.applicableAuthorityChain ?? [];
+  return chain.some(
+    (a) =>
+      a.status === "OPERATIVE_AUTHORITY_CONFIRMED" &&
+      a.successorDocumentId === governing &&
+      a.predecessorDocumentId === unitDoc,
+  );
+}
+
+/**
+ * Match a handoff provision to a compile unit by provision identity
+ * (sectionRef / definedTermRef) AND verified source-document identity or
+ * operative succession. Same-section matches across unrelated documents are
+ * refused. Same-document governingDocumentId alone is NEVER sufficient —
+ * distinct sections must not inherit one another's authority.
+ *
+ * Exported for adversarial regression tests.
+ */
+export function provisionIdentityMatchesUnit(
+  provision: ProvisionIdentityMatchInput,
+  unit: Pick<CompileUnitRepresentation, "sourceRef" | "documentId">,
+): boolean {
+  const sourceRef = unit.sourceRef.trim();
+  if (!sourceRef) return false;
+  if (!sectionOrDefinedTermMatches(provision, sourceRef)) return false;
+  return documentIdentityOrSuccessionMatches(provision, unit.documentId);
 }
 
 function authorityForUnit(

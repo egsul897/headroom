@@ -99,6 +99,14 @@ export {
 } from "./fixed-dollar-candidate-discovery";
 
 export {
+  classifyProvisionLegalContext,
+  isProvisionScopedAttribution,
+  type CovenantFamilyId,
+  type TransactionActionId,
+  type ProvisionLegalContext,
+} from "./provision-legal-context";
+
+export {
   matthewsCompilerPackageDocuments,
   MATTHEWS_INDENTURE_SOURCE,
 } from "./source-excerpts-matthews";
