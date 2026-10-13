@@ -48,6 +48,16 @@ export {
 } from "./sequential-financial";
 export { deriveContractualMetrics } from "./derived-metrics";
 export {
+  resolveContractualEbitdaDerivation,
+  deriveContractualEbitdaFromEngineRun,
+  mergeEbitdaDerivationWithEvidence,
+  type EbitdaDerivationKind,
+  type EbitdaComponentApproval,
+  type EbitdaBuildupComponent,
+  type ContractualEbitdaDerivation,
+  type ContractualEbitdaEvidencePackage,
+} from "./contractual-ebitda-buildup";
+export {
   SHARED_FINANCIAL_SURFACES,
   buildSharedFinancialViewFromEngineRun,
   buildSharedFinancialViewFromVerified,

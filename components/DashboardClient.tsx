@@ -22,6 +22,8 @@ import {
 import type { CompanyCovenantData, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
 import { fmtDate, fmtM } from "@/lib/format";
+import { ContractualMetricsPanel } from "@/components/ContractualMetricsPanel";
+import type { ContractualMetricsView } from "@/lib/product/contractual-metrics/serialize";
 
 /**
  * The Dashboard tab (task "MAKE THE UI MATCH THE PROTOTYPE EXACTLY" -
@@ -62,6 +64,8 @@ export interface DashboardClientProps {
   maturitiesQuery: MaturitiesQuery;
   /** Phase 4C attributed utilization (serializable). Absent ⇒ all rows NOT_TRACKED. */
   attributedUtilizationSerialized?: AttributedUtilizationSerialized | null;
+  /** Definition-executed contractual metrics (Phase 4A). Null when unavailable. */
+  contractualMetrics?: ContractualMetricsView | null;
 }
 
 /** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
@@ -227,14 +231,44 @@ export function DashboardClient(props: DashboardClientProps) {
       <Card>
         <div className="card-title">Position as of {fmtDate(new Date(props.asOfDate))}</div>
         <div className="headline-metric-strip">
-          {overview.headlineMetrics.map((m) => (
-            <div className="headline-metric-tile" key={m.key}>
-              <div className={`headline-metric-value ${m.value === null ? "na" : ""}`}>{m.value ?? (m.state === "NOT_AVAILABLE" ? "Not available" : "Review required")}</div>
-              <div className="headline-metric-label">{m.label}</div>
-            </div>
-          ))}
+          {overview.headlineMetrics.map((m) => {
+            const contractualEbitda = props.contractualMetrics?.metrics.find((x) => x.metricKey === "consolidated_ebitda");
+            const override =
+              m.key === "ebitda" && contractualEbitda?.status === "CALCULATED" && contractualEbitda.valueMillions != null
+                ? `$${contractualEbitda.valueMillions.toLocaleString(undefined, { maximumFractionDigits: 3 })}M`
+                : null;
+            const contractualRatio = props.contractualMetrics?.metrics.find(
+              (x) =>
+                (m.key === "totalNetLeverage" && x.metricKey === "total_net_leverage") ||
+                (m.key === "seniorSecuredNetLeverage" && x.metricKey === "secured_net_leverage") ||
+                (m.key === "fixedChargeCoverage" && x.metricKey === "interest_coverage"),
+            );
+            const ratioOverride =
+              contractualRatio?.status === "CALCULATED" && contractualRatio.valueMillions != null
+                ? `${contractualRatio.valueMillions.toFixed(2)}x`
+                : null;
+            const display = override ?? ratioOverride ?? m.value ?? (m.state === "NOT_AVAILABLE" ? "Not available" : "Review required");
+            const label =
+              override != null
+                ? "Consolidated EBITDA (contractual)"
+                : ratioOverride != null && m.key === "totalNetLeverage"
+                  ? "Total net leverage (contractual)"
+                  : ratioOverride != null && m.key === "seniorSecuredNetLeverage"
+                    ? "Secured net leverage (contractual)"
+                    : ratioOverride != null && m.key === "fixedChargeCoverage"
+                      ? "Interest coverage (contractual)"
+                      : m.label;
+            return (
+              <div className="headline-metric-tile" key={m.key}>
+                <div className={`headline-metric-value ${display === "Not available" || display === "Review required" ? "na" : ""}`}>{display}</div>
+                <div className="headline-metric-label">{label}</div>
+              </div>
+            );
+          })}
         </div>
       </Card>
+
+      <ContractualMetricsPanel view={props.contractualMetrics ?? null} />
 
       {/* 2. Headline capacity (§12). */}
       <div className="summary-band">
