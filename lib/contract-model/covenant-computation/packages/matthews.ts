@@ -16,7 +16,8 @@ import {
   MATTHEWS_FINANCIAL_STATEMENT_Q1_FY2025,
 } from "@/lib/financial-certificate-engine/fixtures/authentic-matthews-q1-fy2025";
 import { MATTHEWS_PACKAGE_KEY } from "@/lib/product/real-dashboard-vertical-slice/package-matthews";
-import { extractBasketClauses, supersededSectionNumbers } from "../extract-baskets";
+import { supersededClauseMarkers } from "../covenant-sections";
+import { readCovenantSource, supersededSectionNumbers } from "../extract-baskets";
 import type { BasketClause, ComputationPackage } from "../types";
 import { norm } from "../text";
 
@@ -109,11 +110,16 @@ export function matthewsCovenantPackage(): ComputationPackage {
   const creditAgreement = loadOperative("credit-agreement-fifth-amendment.operative.txt");
   const sixth = loadOperative("credit-agreement-sixth-amendment.txt");
   const replaced = supersededSectionNumbers(sixth);
-  const baskets = [
-    ...extractBasketClauses({ documentId: INDENTURE_ID, text: indenture }),
-    ...extractBasketClauses({ documentId: CA_ID, text: creditAgreement, skipSectionNumbers: replaced }),
-    ...extractBasketClauses({ documentId: SIXTH_ID, text: sixth }),
-  ].map(aliasMatthews);
+  const replacedClauses = supersededClauseMarkers(sixth);
+  const indentureSource = readCovenantSource({ documentId: INDENTURE_ID, text: indenture });
+  const creditSource = readCovenantSource({
+    documentId: CA_ID,
+    text: creditAgreement,
+    skipSectionNumbers: replaced,
+    skipClauses: replacedClauses,
+  });
+  const sixthSource = readCovenantSource({ documentId: SIXTH_ID, text: sixth });
+  const baskets = [...indentureSource.clauses, ...creditSource.clauses, ...sixthSource.clauses].map(aliasMatthews);
   return {
     packageKey: MATTHEWS_PACKAGE_KEY,
     companyId: "matthews",
@@ -127,6 +133,7 @@ export function matthewsCovenantPackage(): ComputationPackage {
       { documentId: "matw-compliance-certificate-q1-fy2025", role: "COMPLIANCE_CERTIFICATE", text: MATTHEWS_COMPLIANCE_CERTIFICATE_Q1_FY2025 },
     ],
     baskets,
+    sections: [...indentureSource.sections, ...creditSource.sections, ...sixthSource.sections],
     omissions: [
       {
         stableKey: "matw-omit-compliance-certificate",

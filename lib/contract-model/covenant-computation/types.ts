@@ -39,6 +39,8 @@ export type BasketCategory =
   | "UNLIMITED"
   | "UNLIMITED_BY_PURPOSE"
   | "RECLASS"
+  | "STATED_PERIOD"
+  | "STATED_PERCENT"
   | "UNKNOWN";
 
 export type BasketScope = "GENERAL" | "PURPOSE_SPECIFIC";
@@ -71,6 +73,35 @@ export interface CovenantOmission {
   reason: string;
 }
 
+/** One covenant section in a source document. Superseded sections stay in the inventory. */
+export interface CovenantSection {
+  documentId: string;
+  sectionNumber: string;
+  title: string;
+  article: string;
+  /** Operative text of the section. Empty when the section was replaced and the replacement is a separate row. */
+  body: string;
+  superseded: boolean;
+  note: string;
+}
+
+export type SectionCoverageStatus =
+  | "COMPUTED"
+  | "NEEDS_INPUT"
+  | "UNLIMITED_BY_PURPOSE"
+  | "NO_NUMERIC_TERM"
+  | "SUPERSEDED";
+
+export interface CovenantSectionCoverage {
+  documentId: string;
+  sectionNumber: string;
+  title: string;
+  article: string;
+  status: SectionCoverageStatus;
+  clauseCount: number;
+  note: string;
+}
+
 export interface ComputationPackage {
   packageKey: string;
   companyId: string;
@@ -78,6 +109,8 @@ export interface ComputationPackage {
   asOf: string;
   documents: PackageDocument[];
   baskets: BasketClause[];
+  /** Every covenant section in the bound documents. Absent only on synthetic mini-packages. */
+  sections?: CovenantSection[];
   /** Named in research; no operative excerpt in `documents`. Never given a number. */
   omissions?: CovenantOmission[];
 }
@@ -181,6 +214,8 @@ export interface ComputationResult {
   certification: typeof CERTIFICATION;
   ratios: ComputedRatio[];
   baskets: ComputedBasket[];
+  /** One row per covenant section. A section with a numeric term is never dropped from this list. */
+  coverage: CovenantSectionCoverage[];
   correctionsApplied: AppliedCorrection[];
   correctionsRefused: RefusedCorrection[];
   mistakes: ComputationMistake[];

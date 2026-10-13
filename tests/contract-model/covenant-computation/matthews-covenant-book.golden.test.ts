@@ -190,12 +190,12 @@ describe("Matthews covenant book", () => {
     for (const key of ["matw-409a", "matw-409a-proviso", "matw-pd-1a", "matw-pd-13", "matw-pd-16", "matw-pd-9"]) {
       expect(computedKeys, key).toContain(key);
     }
-    expect(computedKeys).toHaveLength(19);
+    expect(computedKeys).toHaveLength(69);
     const amountKeys = book.baskets.filter((b) => b.capKind === "AMOUNT" && b.capStatus === "COMPUTED").map((b) => b.stableKey);
     for (const key of ["matw-409a-proviso", "matw-pd-1a", "matw-pd-13", "matw-pd-16", "matw-pd-9"]) {
       expect(amountKeys, key).toContain(key);
     }
-    expect(amountKeys).toHaveLength(18);
+    expect(amountKeys).toHaveLength(30);
   });
 
   it("leaves only the missing compliance-certificate amounts as an omission", () => {

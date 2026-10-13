@@ -7,8 +7,8 @@
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { extractBasketClauses } from "../extract-baskets";
-import type { ComputationPackage, PackageDocument } from "../types";
+import { readCovenantSource } from "../extract-baskets";
+import type { ComputationPackage, CovenantSection, PackageDocument } from "../types";
 import { norm } from "../text";
 
 interface SourceFile {
@@ -33,13 +33,16 @@ function fromFiles(args: {
   files: SourceFile[];
 }): ComputationPackage {
   const documents = args.files.map(load);
+  const sources = documents.map((doc) => readCovenantSource({ documentId: doc.documentId, text: doc.text }));
+  const sections: CovenantSection[] = sources.flatMap((source) => source.sections);
   return {
     packageKey: args.packageKey,
     companyId: args.companyId,
     instrumentKey: args.instrumentKey,
     asOf: args.asOf,
     documents,
-    baskets: documents.flatMap((doc) => extractBasketClauses({ documentId: doc.documentId, text: doc.text })),
+    baskets: sources.flatMap((source) => source.clauses),
+    sections,
   };
 }
 

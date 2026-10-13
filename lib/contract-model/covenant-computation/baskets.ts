@@ -18,8 +18,9 @@ import { evaluateExpression } from "../runtime/evaluate-expression";
 import type { MetricInput } from "../runtime/types";
 import type { BasketCategory, BasketClause, BasketScope, ComputationPackage, ComputationStatus, ComputedBasket, ComputedRatio } from "./types";
 import { CERTIFICATION } from "./types";
+import { rationalFromString, toCanonicalString } from "../runtime/decimal";
 import { canonicalOf } from "./ratios";
-import { dollarAmountIsMillions, dollarToken, millionsToUsd, norm } from "./text";
+import { dollarAmountIsMillions, dollarToken, millionsToUsd, norm, percentOfPhrase } from "./text";
 
 const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKind> = {
   FIXED_DOLLAR: "FIXED_DOLLAR_CEILING",
@@ -30,6 +31,8 @@ const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKin
   UNLIMITED: "UNLIMITED_SUBJECT_TO_GATE",
   UNLIMITED_BY_PURPOSE: "UNLIMITED_SUBJECT_TO_GATE",
   RECLASS: "REALLOCATION_TRANSFER",
+  STATED_PERIOD: "NON_CAPACITY_APPROVAL_OR_DEFAULT_TRIGGER",
+  STATED_PERCENT: "NON_CAPACITY_COMPARATOR",
 };
 
 export function evaluateBaskets(
@@ -79,7 +82,11 @@ export function evaluateBasket(
                 ? evalUnlimited(pkg, clause, metrics)
                 : category === "UNLIMITED_BY_PURPOSE"
                   ? purposeUnlimited(clause)
-                  : category === "RECLASS"
+                  : category === "STATED_PERIOD"
+                    ? evalStatedPeriod(clause)
+                    : category === "STATED_PERCENT"
+                      ? evalStatedPercent(clause)
+                      : category === "RECLASS"
                     ? {
                         ...capShell("NEEDS_INPUT", "NONE", null, null, ["source basket unused", "reclassification election"], null),
                         note: "Reclassification is named. No election record is bound, so no amount is transferred.",
@@ -110,8 +117,77 @@ export function categorize(operativeText: string): BasketCategory {
   if (unlimited && (dollarCap || /\$\s?[\d,]+/.test(text) || /\d+(?:\.\d+)?\s*%/.test(text))) return "UNKNOWN";
   if (unlimited) return "UNLIMITED";
   if (dollarCap) return "FIXED_DOLLAR";
+  if (text.length < 240 && statedPeriod(text) && !/\$\s*[\d,]+/.test(text) && !/\d+(?:\.\d+)?\s*%/.test(text)) return "STATED_PERIOD";
+  if (text.length < 240 && statedPercent(text) && !/\$\s*[\d,]+/.test(text) && !percentOfMetric(text)) return "STATED_PERCENT";
   if (numeric) return "UNKNOWN";
   return "UNLIMITED_BY_PURPOSE";
+}
+
+const DAY_WORDS: Record<string, string> = {
+  one: "1",
+  two: "2",
+  three: "3",
+  four: "4",
+  five: "5",
+  six: "6",
+  seven: "7",
+  eight: "8",
+  nine: "9",
+  ten: "10",
+  fifteen: "15",
+  twenty: "20",
+  thirty: "30",
+  forty: "40",
+  "forty-five": "45",
+  sixty: "60",
+  ninety: "90",
+};
+
+const DAY_TRIGGER = String.raw`(?:within|no later than|not later than|no fewer than|at least|for a period of|prior to|after receipt|following|that is|more than|not exceeding|not to exceed|given)`;
+
+export interface StatedPeriod {
+  count: string;
+  unit: "DAYS" | "BUSINESS_DAYS" | "MONTHS";
+}
+
+/** A deadline written as a day or month count. Null when the clause does not state one. */
+export function statedPeriod(text: string): StatedPeriod | null {
+  const src = norm(text);
+  const paren = src.match(
+    new RegExp(
+      `${DAY_TRIGGER}[^.]{0,80}?\\(\\s*(\\d+)\\s*\\)\\s*(consecutive\\s+)?(Business\\s+)?days?\\b|\\(\\s*(\\d+)\\s*\\)\\s*(consecutive\\s+)?(Business\\s+)?days?\\s+prior\\b`,
+      "i",
+    ),
+  );
+  const parenCount = paren?.[1] ?? paren?.[4];
+  if (parenCount) return { count: parenCount, unit: (paren?.[3] ?? paren?.[6]) ? "BUSINESS_DAYS" : "DAYS" };
+  const digits = src.match(
+    new RegExp(`${DAY_TRIGGER}[^.]{0,60}?\\b(\\d+)\\s*(consecutive\\s+)?(Business\\s+)?days?\\b|\\b(\\d+)\\s*(consecutive\\s+)?(Business\\s+)?days?\\s+prior\\b`, "i"),
+  );
+  const digitCount = digits?.[1] ?? digits?.[4];
+  if (digitCount) return { count: digitCount, unit: (digits?.[3] ?? digits?.[6]) ? "BUSINESS_DAYS" : "DAYS" };
+  const word = src.match(
+    new RegExp(
+      `${DAY_TRIGGER}[^.]{0,40}?\\b(forty-five|one|two|three|four|five|six|seven|eight|nine|ten|fifteen|twenty|thirty|forty|sixty|ninety)\\b\\s*(consecutive\\s+)?(Business\\s+)?days?\\b`,
+      "i",
+    ),
+  );
+  if (word?.[1] && DAY_WORDS[word[1].toLowerCase()]) {
+    return { count: DAY_WORDS[word[1].toLowerCase()]!, unit: word[3] ? "BUSINESS_DAYS" : "DAYS" };
+  }
+  const months = src.match(
+    new RegExp(`${DAY_TRIGGER}[^.]{0,40}?(?:\\(\\s*(\\d+)\\s*\\)|\\b(\\d+)\\b)\\s+months?\\b`, "i"),
+  );
+  const monthCount = months?.[1] ?? months?.[2];
+  if (monthCount) return { count: monthCount, unit: "MONTHS" };
+  return null;
+}
+
+function statedPercent(text: string): string | null {
+  const paren = text.match(/percent\s*\(\s*(\d+(?:\.\d+)?)\s*%\s*\)/i);
+  if (paren?.[1]) return paren[1];
+  const bare = text.match(/(\d+(?:\.\d+)?)\s*%/);
+  return bare?.[1] ?? null;
 }
 
 /** "including, without limitation" is an idiom. It does not grant unlimited capacity. */
@@ -135,7 +211,7 @@ function hasClosedCap(text: string): boolean {
 }
 
 function percentOfMetric(text: string): boolean {
-  return /(?:\d+(?:\.\d+)?\s*%|[a-z]+\s+percent\s*\(\s*\d+(?:\.\d+)?\s*%\s*\))\s+of\b/i.test(text);
+  return percentOfPhrase(text) != null;
 }
 
 function evalFixed(
@@ -271,10 +347,13 @@ function evalRatioBasket(
   });
   const missing = ["contractual dollar conversion of ratio room"];
   if (!ratio?.expression || ratio.status !== "COMPUTED" || !ratio.canonical || !classified.comparator || classified.thresholdNumerator == null || classified.thresholdDenominator == null) {
+    const compared = classified.ratioName ?? "the named ratio";
     return {
-      ...capShell("NEEDS_INPUT", "RATIO_TEST", null, null, ["contract ratio definition", ...missing], null),
+      ...capShell("NEEDS_INPUT", "RATIO_TEST", null, null, [compared, ...missing], null),
       dollarRoomStatus: "NEEDS_INPUT",
-      note: "Ratio basket has no computed contract ratio. No dollar room was inferred.",
+      note: classified.thresholdRaw
+        ? "Ratio basket has no computed contract ratio. No dollar room was inferred."
+        : `No numeric threshold. The clause compares ${compared} with a figure that is not stated as a number.`,
     };
   }
   const limit = classified.thresholdNumerator / classified.thresholdDenominator;
@@ -420,8 +499,9 @@ function soleFixedDollar(text: string): string | null {
   const tokens = [...normed.matchAll(/\$\s*([\d,]+(?:\.\d+)?)/g)].map((m) => m[1]!.replace(/,/g, ""));
   const distinct = [...new Set(tokens)];
   if (distinct.length !== 1) return null;
+  if (distinct[0] === "1" || distinct[0] === "1.00") return null;
   const capRole =
-    /\b(?:not\s+to\s+exceed|does\s+not\s+exceed|shall\s+not\s+exceed|not\s+in\s+excess\s+of|in\s+a\s+maximum\s+aggregate\s+amount\s+not\s+to\s+exceed|up\s+to\s+an\s+aggregate\s+amount\s+of)\b/i.test(
+    /\b(?:not\s+to\s+exceed|does\s+not\s+exceed|shall\s+not\s+exceed|not\s+in\s+excess\s+of|in\s+excess\s+of|in\s+a\s+maximum\s+aggregate\s+amount\s+not\s+to\s+exceed|up\s+to\s+an\s+aggregate\s+amount\s+of)\b/i.test(
       normed,
     ) ||
     /\bDollars\s*\(\s*\$\s*[\d,]+\.\d{2}/i.test(normed) ||
@@ -435,18 +515,16 @@ function evalPercentOfMetric(
   metrics: readonly MetricInput[],
 ): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
   const text = norm(clause.operativeText);
-  const match = text.match(
-    /(?:(\d+(?:\.\d+)?)\s*%|percent\s*\(\s*(\d+(?:\.\d+)?)\s*%\s*\))\s+of\s+(?:the\s+)?([^.;]{3,180})/i,
-  );
-  const pct = match?.[1] ?? match?.[2];
-  const metricName = (match?.[3] ?? "").split(/\bprovided\b/i)[0]!.trim().replace(/[,:]$/, "");
+  const read = percentOfPhrase(text);
+  const pct = read?.pct;
+  const metricName = read?.base ?? "";
   if (!pct || !metricName) {
     return {
       ...capShell("NEEDS_INPUT", "NONE", null, null, ["percent limb", "metric"], null),
       note: "A percent is present. The base it applies to could not be read, so no product was returned.",
     };
   }
-  const metric = metrics.find((item) => item.metricKey.toLowerCase() === metricName.toLowerCase());
+  const metric = metricNamedIn(metricName, metrics);
   if (!metric || metric.value.type !== "MONEY") {
     return {
       ...capShell("NEEDS_INPUT", "NONE", null, null, [metricName], null),
@@ -486,6 +564,45 @@ function evalPercentOfMetric(
     remainingStatus: "NEEDS_INPUT",
     missingInputs: ["ledger usage"],
     note: "Percent of a bound metric from evaluateExpression. Remaining usage is not bound.",
+  };
+}
+
+function metricNamedIn(phrase: string, metrics: readonly MetricInput[]): MetricInput | undefined {
+  const exact = metrics.find((item) => item.metricKey.toLowerCase() === phrase.toLowerCase());
+  if (exact) return exact;
+  const lead = phrase.replace(/^(?:the\s+)?/i, "");
+  const contained = metrics
+    .filter((item) => item.value.type === "MONEY")
+    .filter((item) => new RegExp(`^${item.metricKey.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(lead))
+    .sort((a, b) => b.metricKey.length - a.metricKey.length);
+  return contained[0];
+}
+
+function evalStatedPeriod(
+  clause: BasketClause,
+): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
+  const period = statedPeriod(clause.operativeText);
+  if (!period) {
+    return { ...capShell("NEEDS_INPUT", "NONE", null, null, ["day count"], null), note: "A deadline is indicated. The day count could not be read." };
+  }
+  return {
+    ...capShell("COMPUTED", "NONE", period.count, period.unit, [], null),
+    remainingStatus: "NEEDS_INPUT",
+    note: "Stated deadline. Whether it has been met is not computed.",
+  };
+}
+
+function evalStatedPercent(
+  clause: BasketClause,
+): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
+  const pct = statedPercent(norm(clause.operativeText));
+  if (!pct) {
+    return { ...capShell("NEEDS_INPUT", "NONE", null, null, ["percent"], null), note: "A percent is indicated. The figure could not be read." };
+  }
+  return {
+    ...capShell("COMPUTED", "NONE", toCanonicalString(rationalFromString(pct)), "PERCENT", [], null),
+    remainingStatus: "NEEDS_INPUT",
+    note: "Stated percent threshold. The measured base is not a bound dollar metric.",
   };
 }
 
@@ -545,8 +662,8 @@ function capFormulaOf(category: BasketCategory, text: string): string | null {
     return match?.[0]?.replace(/\s+/g, " ") ?? null;
   }
   if (category === "PCT_OF_METRIC") {
-    const match = t.match(/(?:\d+(?:\.\d+)?\s*%|[a-z]+\s+percent\s*\([^)]+\))\s+of\s+(?:the\s+)?[^.;]{3,100}/i);
-    return match?.[0] ?? null;
+    const read = percentOfPhrase(t);
+    return read ? `${read.pct}% of ${read.base}` : null;
   }
   if (category === "RATIO_BASED") {
     const classified = classifyRatioIncurrencePermission(t);
@@ -554,6 +671,17 @@ function capFormulaOf(category: BasketCategory, text: string): string | null {
     return classified.ratioName;
   }
   if (category === "BUILDER_AVAILABLE_AMOUNT") return "sum of stated builder components";
+  if (category === "STATED_PERIOD") {
+    const period = statedPeriod(t);
+    if (!period) return null;
+    if (period.unit === "BUSINESS_DAYS") return period.count === "1" ? "1 Business Day" : `${period.count} Business Days`;
+    if (period.unit === "MONTHS") return `${period.count} months`;
+    return `${period.count} days`;
+  }
+  if (category === "STATED_PERCENT") {
+    const pct = statedPercent(t);
+    return pct ? `${pct}%` : null;
+  }
   return null;
 }
 
@@ -635,9 +763,11 @@ function formulaLabel(kind: FormulaKind): string {
 }
 
 function parseEbitdaGrower(text: string): { fixedToken: string; fraction: number; metricName: string } | null {
-  const m = norm(text).match(/\$\s*([\d,]+(?:\.\d+)?)[\s\S]{0,80}?(\d+(?:\.\d+)?)\s*%\s+of\s+((?:Consolidated\s+)?EBITDA)\b/i);
+  const m = norm(text).match(
+    /\$\s*([\d,]+(?:\.\d+)?)[\s\S]{0,120}?(\d+(?:\.\d+)?)\s*%\s+of\s+(?:the\s+)?([A-Za-z][A-Za-z0-9][A-Za-z0-9 ]{1,48}?)(?=\s*(?:$|[,;.]|\bprovided\b|\bas\b|\bimmediately\b|\bfor\b|\bin\b))/i,
+  );
   if (!m?.[1] || !m[2] || !m[3]) return null;
-  return { fixedToken: m[1].replace(/,/g, ""), fraction: Number(m[2]) / 100, metricName: m[3].replace(/\s+/g, " ") };
+  return { fixedToken: m[1].replace(/,/g, ""), fraction: Number(m[2]) / 100, metricName: m[3].replace(/\s+/g, " ").trim() };
 }
 
 function dollarMatching(text: string, amount: number | null): string | null {

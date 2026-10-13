@@ -9,6 +9,7 @@
 import { createHash } from "node:crypto";
 import { bindFinancialInputs } from "./bind-inputs";
 import { evaluateBaskets, categorize } from "./baskets";
+import { buildSectionCoverage } from "./covenant-sections";
 import { learningRecords, type LearningRecordSink } from "./learning-records";
 import { computeRatios } from "./ratios";
 import type {
@@ -45,6 +46,7 @@ export function runCovenantComputation(
     certification: CERTIFICATION,
     ratios,
     baskets,
+    coverage: buildSectionCoverage(pkg.sections ?? [], baskets),
     correctionsApplied: applied,
     correctionsRefused: refused,
     mistakes: [],

@@ -44,6 +44,21 @@ export function dollarAmountIsMillions(text: string, token: string): boolean {
   return false;
 }
 
+/**
+ * "15%", "fifteen percent (15%)", or "one hundred five percent (105%)", then "of …".
+ * The parenthetical figure is the percent. The words are kept so the phrase is not cut at "five".
+ */
+export function percentOfPhrase(text: string): { pct: string; base: string; phrase: string } | null {
+  const match = norm(text).match(
+    /(?:(\d+(?:\.\d+)?)\s*%|(?:[a-z]+(?:-[a-z]+)?(?:\s+[a-z]+){0,5}\s+)?percent\s*\(\s*(\d+(?:\.\d+)?)\s*%\s*\))\s+of\s+(?:the\s+)?([^.;]{3,180})/i,
+  );
+  const pct = match?.[1] ?? match?.[2];
+  if (!pct || !match?.[3] || match.index == null) return null;
+  const base = match[3].split(/\bprovided\b|,|\band the\b|\sas\b/i)[0]!.trim().replace(/[,:]$/, "");
+  if (base.length < 3) return null;
+  return { pct, base, phrase: match[0].slice(0, match[0].length - (match[3].length - base.length)).trim() };
+}
+
 /** "$1,300.0 million" → "1300000000". The scale is the word in the citation, not an assumed unit conversion. */
 export function millionsToUsd(token: string): string {
   const [whole, frac = ""] = token.split(".");

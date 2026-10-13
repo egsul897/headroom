@@ -27,12 +27,12 @@ const CREATED_AT = "2026-10-13T00:00:00.000Z";
 
 /** Clauses, then COMPUTED / UNLIMITED_BY_PURPOSE / NEEDS_INPUT / UNKNOWN, then amount caps. */
 const PACKAGE_COUNTS: Record<string, [number, number, number, number, number, number]> = {
-  "matthews-international-q1-fy2025": [192, 19, 149, 24, 0, 18],
-  "chwy-2026-credit-agreement": [70, 0, 54, 16, 0, 0],
-  "gibraltar-2026-credit-agreement": [132, 0, 101, 31, 0, 0],
-  "mtn-2026-tenth-ar": [31, 5, 25, 1, 0, 5],
-  "wor-2026-fifth-ar-credit-agreement": [5, 0, 4, 1, 0, 0],
-  "mhk-2026-credit-agreement": [25, 2, 18, 5, 0, 2],
+  "matthews-international-q1-fy2025": [245, 69, 145, 31, 0, 30],
+  "chwy-2026-credit-agreement": [133, 22, 54, 57, 0, 0],
+  "gibraltar-2026-credit-agreement": [155, 14, 101, 40, 0, 3],
+  "mtn-2026-tenth-ar": [151, 71, 27, 53, 0, 12],
+  "wor-2026-fifth-ar-credit-agreement": [19, 10, 4, 5, 0, 3],
+  "mhk-2026-credit-agreement": [43, 9, 17, 17, 0, 2],
 };
 
 const NUMERIC = /\$\s*[\d,]|\d+(?:\.\d+)?\s*%|\d+(?:\.\d+)?\s+to\s+\d+(?:\.\d+)?/;
@@ -51,6 +51,11 @@ function expectedFromQuote(citation: string): string {
   if (grower?.[1] && grower[2] && grower[3]) {
     const base = /ebitda/i.test(grower[3]) ? EBITDA : TOTAL_ASSETS;
     return greaterOf(grower[1].replace(/,/g, ""), grower[2], base);
+  }
+  const product = citation.match(/(\d+(?:\.\d+)?)\s*%\s+of\s+(?:the\s+)?(Total Assets|Consolidated EBITDA)\b/i);
+  if (product?.[1] && product?.[2] && !/\$\s*[\d,]/.test(citation)) {
+    const base = /ebitda/i.test(product[2]) ? EBITDA : TOTAL_ASSETS;
+    return toCanonicalString(multiply(rationalFromString(base), divide(rationalFromString(product[1]), rationalFromString("100"))));
   }
   const millions = citation.match(/\$\s*([\d,]+(?:\.\d+)?)\s+million\b/i);
   if (millions?.[1] && !/greater of/i.test(citation)) {
@@ -155,15 +160,27 @@ describe("basket inventory", () => {
         "Permitted Investment (17)",
         "Permitted Investment (6)",
         "Permitted Liens (23)",
+        "§4.06 Reports and Other Information",
         "§4.08 Limitation on Restricted Payments (10)",
         "§4.08 Limitation on Restricted Payments (9)",
         "§4.09(a) non-guarantor proviso",
+        "§4.14 Transactions with Affiliates",
+        "§4.14 Transactions with Affiliates",
         "§4.16 Limitation on Asset Sales (2)",
         "§4.16 Limitation on Asset Sales (2)",
         "§4.16 Limitation on Asset Sales (a)",
+        "§5.15 Subsidiary Guaranty Agreements and Security Agreements",
+        "§5.15 Subsidiary Guaranty Agreements and Security Agreements",
+        "§6.01 Events of Default",
+        "§6.01 Events of Default",
         "§6.06 Partnerships; Mergers or Consolidation; Acquisitions(i)",
         "§6.06 Partnerships; Mergers or Consolidation; Acquisitions(ii)",
         "§6.08 Dividends and Distributions",
+        "§7.01 Events of Default",
+        "§7.01 Events of Default",
+        "§7.01 Events of Default",
+        "§7.01(h) clause (h) inserted",
+        "§7.06 Application of Proceeds",
       ].sort(),
     );
     const builder = book.baskets.find((basket) => basket.sectionRef === "§4.08 Limitation on Restricted Payments (a)");
@@ -192,7 +209,7 @@ describe("basket inventory", () => {
       for (const basket of book.baskets) assertBasket(pkg, basket, false);
     }
     const mtn = books.get("mtn-2026-tenth-ar")!;
-    expect(mtn.baskets.some((basket) => basket.capCanonical === "10000000")).toBe(false);
+    expect(mtn.baskets.some((basket) => /1,791\.719|128\.313/.test(basket.citationExcerpt))).toBe(false);
     const chwy = books.get("chwy-2026-credit-agreement")!;
     const grower = chwy.baskets.find((basket) => /greater of \(i\) \$108\.0 million and \(ii\) 15% of Consolidated EBITDA/.test(basket.citationExcerpt));
     expect(grower?.capStatus).toBe("NEEDS_INPUT");
@@ -221,5 +238,50 @@ describe("basket inventory", () => {
         expect(row[5], basket!.stableKey).toBe(basketDisposition(basket!));
       }
     }
+  });
+
+  it("covers every covenant section so a heading cannot disappear", () => {
+    const coverage = readFileSync(join(process.cwd(), "docs/ops/covenant-coverage.md"), "utf8");
+    const countRows = tableRows(sectionBody(coverage, "Counts")).filter((row) => row[0] !== "package");
+    expect(countRows.map((row) => row[0])).toEqual(Object.keys(PACKAGE_COUNTS));
+    for (const pkg of packages) {
+      const book = books.get(pkg.packageKey)!;
+      const rows = tableRows(sectionBody(coverage, pkg.packageKey)).filter((row) => row[0] !== "document");
+      expect(rows, pkg.packageKey).toHaveLength(book.coverage.length);
+      book.coverage.forEach((section, index) => {
+        const row = rows[index]!;
+        expect(row[0], section.sectionNumber).toBe(section.documentId);
+        expect(row[1], section.documentId).toBe(section.sectionNumber);
+        expect(row[3], section.sectionNumber).toBe(section.status);
+        expect(section.note.startsWith("Uncovered"), section.sectionNumber).toBe(false);
+      });
+    }
+    const matthewsBook = books.get(matthews.packageKey)!;
+    const indenture = matthewsBook.coverage.filter((section) => section.documentId === "matw-indenture-2024-ex4-1");
+    for (const number of ["4.01", "4.14", "4.15", "5.01", "6.01", "6.02", "6.14"]) {
+      expect(indenture.map((section) => section.sectionNumber), number).toContain(number);
+    }
+    expect(indenture.find((section) => section.sectionNumber === "6.01")?.status).toBe("COMPUTED");
+    const fifth = matthewsBook.coverage.filter((section) => section.documentId === "matw-ca-fifth-amendment");
+    for (const number of ["5.01", "5.14", "5.17", "6.03", "6.06", "6.08", "7.01", "2.20"]) {
+      expect(fifth.map((section) => section.sectionNumber), number).toContain(number);
+    }
+    for (const number of ["5.03", "5.12", "5.15", "6.01", "6.02", "6.04", "6.07", "7.03"]) {
+      expect(fifth.find((section) => section.sectionNumber === number)?.status, number).toBe("SUPERSEDED");
+    }
+    const sixth = matthewsBook.coverage.filter((section) => section.documentId === "matw-ca-sixth-amendment");
+    for (const number of ["5.03", "5.15", "6.01", "6.04", "7.01(h)", "7.07", "7.08"]) {
+      expect(sixth.map((section) => section.sectionNumber), number).toContain(number);
+    }
+    expect(books.get("chwy-2026-credit-agreement")!.coverage.some((section) => section.sectionNumber === "5.16")).toBe(true);
+    expect(books.get("chwy-2026-credit-agreement")!.coverage.some((section) => section.sectionNumber === "7.01")).toBe(true);
+    expect(books.get("gibraltar-2026-credit-agreement")!.coverage.some((section) => section.sectionNumber === "6.18")).toBe(true);
+    expect(books.get("wor-2026-fifth-ar-credit-agreement")!.coverage.some((section) => section.sectionNumber === "VII")).toBe(true);
+    expect(books.get("mhk-2026-credit-agreement")!.coverage.some((section) => section.sectionNumber === "7.01")).toBe(true);
+    const mtnCoverage = books.get("mtn-2026-tenth-ar")!.coverage;
+    expect(mtnCoverage.some((section) => section.sectionNumber === "10.6")).toBe(true);
+    expect(mtnCoverage.some((section) => section.sectionNumber === "11.1")).toBe(true);
+    expect(mtnCoverage.some((section) => section.sectionNumber === "12.4")).toBe(true);
+    expect(mtnCoverage.some((section) => section.sectionNumber === "13.2")).toBe(false);
   });
 });

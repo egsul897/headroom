@@ -7,7 +7,8 @@
  * ceiling. Clauses with no numeric cap stay in the list as purpose permissions.
  */
 
-import type { BasketClause } from "./types";
+import { annotateSkippedClauses, listCovenantSections, uncoveredNumericClauses } from "./covenant-sections";
+import type { BasketClause, CovenantSection } from "./types";
 import { norm } from "./text";
 
 export interface ExtractBasketsArgs {
@@ -15,6 +16,16 @@ export interface ExtractBasketsArgs {
   text: string;
   /** Section numbers replaced by a later amendment, e.g. "6.01". */
   skipSectionNumbers?: readonly string[];
+  /** Letters deleted inside a section that was not replaced in full, e.g. 7.01(h). */
+  skipClauses?: readonly { sectionNumber: string; marker: string }[];
+}
+
+export function readCovenantSource(args: ExtractBasketsArgs): { clauses: BasketClause[]; sections: CovenantSection[] } {
+  const clauses = extractListedClauses(args);
+  const sections = annotateSkippedClauses(listCovenantSections(args), args.skipClauses ?? []);
+  const covered = clauses.map((clause) => norm(clause.operativeText));
+  const extra = sections.flatMap((section) => uncoveredNumericClauses(section, covered));
+  return { clauses: uniqueKeys(dropContainedNumericLimbs([...clauses, ...extra])), sections };
 }
 
 const QUOTED_DEF = /[“"]\s*([^”"]{2,120}?)\s*[”"]\s+(?:shall\s+mean|means)\b/g;
@@ -36,7 +47,7 @@ interface Region {
 export function supersededSectionNumbers(amendmentText: string): string[] {
   const found = new Set<string>();
   for (const match of amendmentText.matchAll(
-    /Section\s+(\d+\.\d+)\s+of the (?:Loan Agreement|Credit Agreement|this Agreement) is hereby deleted in its entirety/gi,
+    /(?<!of )Section\s+(\d+\.\d+)\s+of the (?:Loan Agreement|Credit Agreement|this Agreement) is hereby deleted in its entirety/gi,
   )) {
     if (match[1]) found.add(match[1]);
   }
@@ -44,6 +55,10 @@ export function supersededSectionNumbers(amendmentText: string): string[] {
 }
 
 export function extractBasketClauses(args: ExtractBasketsArgs): BasketClause[] {
+  return readCovenantSource(args).clauses;
+}
+
+function extractListedClauses(args: ExtractBasketsArgs): BasketClause[] {
   const text = norm(args.text);
   const skip = new Set(args.skipSectionNumbers ?? []);
   const regions = findRegions(text).filter((region) => region.sectionNumber == null || !skip.has(region.sectionNumber));
@@ -67,6 +82,11 @@ function dropContainedNumericLimbs(clauses: BasketClause[]): BasketClause[] {
     if (!/\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(text)) return true;
     return !clauses.some((other) => {
       if (other === clause || other.documentId !== clause.documentId) return false;
+      const sameSection =
+        other.sectionRef === clause.sectionRef ||
+        other.sectionRef.startsWith(clause.sectionRef) ||
+        clause.sectionRef.startsWith(other.sectionRef);
+      if (!sameSection) return false;
       const outer = norm(other.operativeText);
       return outer.length > text.length && outer.includes(text);
     });
@@ -170,6 +190,11 @@ function sectionBoundaries(text: string): number[] {
     at.add(match.index + lead);
   }
   for (const match of text.matchAll(/\bARTICLE\s+[IVXLC]+\b/g)) if (match.index != null) at.add(match.index);
+  for (const match of text.matchAll(
+    /(?<![\d.])\d{1,2}\.\d{2}\s+(?:(?:[A-Z][A-Za-z0-9'’\-/]*,?|of|and|or|the|to|for|in|on|with|upon|a|by|other)\s+){0,18}(?:[A-Z][A-Za-z0-9'’\-/]*,?|of|and|or|the|to|for|in|on|with|upon|a|by|other)\.\s+/g,
+  )) {
+    if (match.index != null) at.add(match.index);
+  }
   return [...at].sort((a, b) => a - b);
 }
 

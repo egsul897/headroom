@@ -156,6 +156,6 @@ function capCited(excerpt: string, canonical: string): boolean {
     const token = match[1]!.replace(/,/g, "");
     if (millionsToUsd(token) === digits) return true;
   }
-  // A greater-of product is not written out; the limbs are. The golden test checks the product.
-  return /\bgreater\s+of\b/i.test(excerpt) && /\d+(?:\.\d+)?\s*%/.test(excerpt);
+  // A percent product is not written out; the limbs are. The golden test checks the product.
+  return (/\bgreater\s+of\b/i.test(excerpt) || /\bof\b/i.test(excerpt)) && /\d+(?:\.\d+)?\s*%/.test(excerpt);
 }
