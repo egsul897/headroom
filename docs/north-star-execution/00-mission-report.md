@@ -25,7 +25,15 @@ Phase 2F/2G/Agent #7 gates (not rewritten).
 
 ## Exact tip CI
 
-Ending SHA: `3a4bd4c0a190c42a32ea969228ab04f4ffd33ec0` (CI after push).
+| | |
+|---|---|
+| Feature tip (code + docs pin) | `013e42a0b9e6035fc18f6c224c42331d1b60eb0d` |
+| Docs CI-record tip | *(updated after this commit)* |
+| PR | https://github.com/egsul897/headroom/pull/320 |
+| canonical-compiler @ `013e42a0` | SUCCESS — https://github.com/egsul897/headroom/actions/runs/38347847958 |
+| Vercel @ `013e42a0` | SUCCESS |
+
+Local targeted suites before push: remediation 36 + pipeline audit 2 + harness 4 + compile 5 + VE Position 7 = **54/54**; `tsc --noEmit` clean.
 
 ## Next bounded task
 
