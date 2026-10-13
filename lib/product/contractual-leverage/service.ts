@@ -8,7 +8,7 @@
 
 import { loadApprovedSnapshotsFromPrisma } from "@/lib/contract-model/north-star-bridge";
 import { prisma } from "@/lib/prisma";
-import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "@/lib/financial-identity";
+import { FinancialIdentityError } from "@/lib/financial-identity";
 import type { FormulaParams } from "@/lib/covenant-engine";
 import type { CovenantEbitdaAddback } from "@/lib/financial-core/types";
 import { resolveCanonicalFinancialAsOf } from "@/lib/product/canonical-financial-asof";
