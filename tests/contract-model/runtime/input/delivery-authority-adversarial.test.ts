@@ -303,6 +303,75 @@ describe("P0 delivery authority adversarial", () => {
     expect(fiscalQ3.state).toBe("NEEDS_INPUT");
   });
 
+  it("APPROVED + asOf without deliveredAt must not establish delivery", () => {
+    const snap = approvedSnap({
+      snapshotId: "snap-asof-only",
+      asOf: "2026-06-30",
+      reportingPeriod: "FY2026-Q2",
+      review: {
+        reviewedBy: null,
+        reviewedAt: null,
+        approvalRef: "apr-no-review-no-delivery",
+      },
+    });
+    expect(snap.asOf).toBe("2026-06-30");
+    expect(persistedDeliveryDateFromSnapshot(snap)).toBeNull();
+    expect(authoritativeDeliveriesFromSnapshots(CO, [snap])).toEqual([]);
+
+    // Forbidden #344-style reconstruction: reviewedAt ?? asOf
+    const inventedFromAsOf = (snap.review.reviewedAt ?? snap.asOf)?.slice(0, 10) ?? null;
+    expect(inventedFromAsOf).toBe("2026-06-30");
+
+    const cutoff = resolveAuthoritativeCutoff({
+      companyId: CO,
+      evaluationDate: "2026-08-01",
+      approved: [snap],
+    });
+    expect(cutoff.state).toBe("NEEDS_INPUT");
+    expect(cutoff.snapshotId).toBeNull();
+  });
+
+  it("wrong-company delivery evidence never binds another company's cutoff", () => {
+    const otherCo = "other-company-id";
+    const foreignDelivered = approvedSnap({
+      snapshotId: "snap-foreign-delivered",
+      companyId: otherCo,
+      provenance: {
+        source: "doc-foreign",
+        sourceVersion: "sha256:foreign",
+        deliveredAtIsoDate: "2026-07-10",
+      },
+      review: {
+        reviewedBy: "counsel",
+        reviewedAt: "2026-07-20T18:00:00Z",
+        approvalRef: encodeDeliveredAtInApprovalRef("apr-foreign", "2026-07-10"),
+      },
+    });
+    const localApprovedNoDelivery = approvedSnap({
+      snapshotId: "snap-local-no-delivery",
+      companyId: CO,
+      review: {
+        reviewedBy: "counsel",
+        reviewedAt: "2026-07-20T18:00:00Z",
+        approvalRef: "apr-local",
+      },
+    });
+
+    // Foreign company's persisted delivery must not appear in local company's pool.
+    expect(authoritativeDeliveriesFromSnapshots(CO, [foreignDelivered, localApprovedNoDelivery])).toEqual(
+      [],
+    );
+    expect(authoritativeDeliveriesFromSnapshots(otherCo, [foreignDelivered])).toHaveLength(1);
+
+    const cutoff = resolveAuthoritativeCutoff({
+      companyId: CO,
+      evaluationDate: "2026-08-01",
+      approved: [foreignDelivered, localApprovedNoDelivery],
+    });
+    expect(cutoff.state).toBe("NEEDS_INPUT");
+    expect(cutoff.snapshotId).toBeNull();
+  });
+
   it("transaction-readiness and certified-transaction entrypoints use resolveAuthoritativeCutoff", () => {
     const readinessSrc = readFileSync(
       path.join(process.cwd(), "lib/product/north-star-workflow/transaction-readiness.ts"),
@@ -316,8 +385,14 @@ describe("P0 delivery authority adversarial", () => {
     expect(certifiedSrc).toMatch(/resolveAuthoritativeCutoff/);
     expect(readinessSrc).not.toMatch(/ALLOW_REVIEWED_AT_FALLBACK/);
     expect(certifiedSrc).not.toMatch(/ALLOW_REVIEWED_AT_FALLBACK/);
-    // Must not import #334's competing product-local deliveries helper.
+    // Must not import competing product-local deliveries helper.
     expect(readinessSrc).not.toMatch(/certificate-deliveries/);
     expect(certifiedSrc).not.toMatch(/certificate-deliveries/);
+    // Block #344 anti-patterns: inventing delivery from reviewedAt / asOf.
+    expect(readinessSrc).not.toMatch(/reviewedAt\.slice\(0,\s*10\)/);
+    expect(certifiedSrc).not.toMatch(/reviewedAt\s*\?\?\s*s\.asOf/);
+    expect(certifiedSrc).not.toMatch(/reviewedAt\s*\?\?\s*.*asOf/);
+    expect(readinessSrc).not.toMatch(/deliveriesFromSnapshots/);
+    expect(certifiedSrc).not.toMatch(/deliveriesFromSnapshots/);
   });
 });
