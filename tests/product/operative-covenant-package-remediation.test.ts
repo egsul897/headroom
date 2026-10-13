@@ -15,7 +15,10 @@ import {
   matthewsOperativePackageContext,
   mhkOperativePackageContext,
 } from "@/lib/product/autonomous-covenant-compilation";
-import { provisionIdentityMatchesUnit } from "@/lib/contract-model/analysis/operative-covenant-package";
+import {
+  documentsShareOperativeAuthority,
+  provisionIdentityMatchesUnit,
+} from "@/lib/contract-model/analysis/operative-covenant-package";
 import { createProviderFreeStageCaller } from "@/lib/contract-model/compiler/llm-caller";
 import { classifyFixedDollarBasket } from "@/lib/contract-model/compiler/fixed-dollar-basket";
 import {
@@ -40,6 +43,13 @@ const VE_CORE_SRC = readFileSync(
   join(
     process.cwd(),
     "lib/product/real-dashboard-vertical-slice/verified-executable-compile-core.ts",
+  ),
+  "utf8",
+);
+const PHASE3_BRIDGE_SRC = readFileSync(
+  join(
+    process.cwd(),
+    "lib/product/real-dashboard-vertical-slice/phase3-compile-bridge.ts",
   ),
   "utf8",
 );
@@ -178,9 +188,6 @@ describe("P0 — provision identity required for operative authority", () => {
     expect(provisionIdentityMatchesUnit(section701, unit703f)).toBe(false);
     expect(provisionIdentityMatchesUnit(section701, unit701i)).toBe(true);
 
-    // Same section on an unrelated document refuses — document identity required.
-    expect(provisionIdentityMatchesUnit(section703, unitOtherDoc)).toBe(false);
-
     // Document id alone never binds — even when governingDocumentId equals unit.documentId.
     const docOnly = {
       kind: "SECTION",
@@ -224,63 +231,124 @@ describe("P0 — provision identity required for operative authority", () => {
         documentId: doc,
       }),
     ).toBe(false);
-    // Same defined term on an unrelated document refuses.
+  });
+
+  it("adversarial: identical section refs in unrelated documents REFUSE", () => {
+    const creditSection = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: "credit-agreement-2020",
+    };
+    const indentureUnit = {
+      sourceRef: "7.03(f)",
+      documentId: "notes-indenture-2021",
+    };
+    // Same section label across unrelated instruments must never bind authority.
+    expect(provisionIdentityMatchesUnit(creditSection, indentureUnit)).toBe(false);
     expect(
-      provisionIdentityMatchesUnit(permittedDebt, {
-        sourceRef: "def:Permitted Debt(1)(a)",
-        documentId: "other-indenture",
-      }),
+      documentsShareOperativeAuthority(
+        creditSection.governingDocumentId,
+        indentureUnit.documentId,
+        { restatementAuthorities: [] },
+      ),
     ).toBe(false);
   });
 
-  it("adversarial: verified amendment/restatement succession preserves match; unrelated docs refuse", () => {
-    const restated = "credit-agreement-restated-2024";
-    const original = "credit-agreement-original-2020";
-    const unrelated = "different-issuer-credit-agreement";
+  it("adversarial: same document + matching section permitted subject to existing gates", () => {
+    const doc = "credit-agreement-2020";
     const provision = {
       kind: "SECTION",
       sectionRef: "7.03",
       definedTermRef: null,
+      governingDocumentId: doc,
+    };
+    expect(
+      provisionIdentityMatchesUnit(provision, { sourceRef: "7.03(f)", documentId: doc }),
+    ).toBe(true);
+    expect(documentsShareOperativeAuthority(doc, doc, null)).toBe(true);
+  });
+
+  it("adversarial: verified amendment/restatement successor permitted where legally supported", () => {
+    const original = "credit-agreement-2020";
+    const restated = "amended-restated-credit-agreement-2022";
+    const provisionOnSuccessor = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
       governingDocumentId: restated,
-      supersededDocumentIds: [original],
-      applicableAuthorityChain: [
+    };
+    const unitOnPredecessor = { sourceRef: "7.03(f)", documentId: original };
+    const confirmed = {
+      restatementAuthorities: [
         {
-          status: "OPERATIVE_AUTHORITY_CONFIRMED",
+          status: "OPERATIVE_AUTHORITY_CONFIRMED" as const,
           successorDocumentId: restated,
           predecessorDocumentId: original,
         },
       ],
     };
+    // Without verified succession evidence, identical section labels across docs REFUSE.
+    expect(provisionIdentityMatchesUnit(provisionOnSuccessor, unitOnPredecessor)).toBe(false);
+    expect(provisionIdentityMatchesUnit(provisionOnSuccessor, unitOnPredecessor, confirmed)).toBe(
+      true,
+    );
+    // Unit remapped onto successor; provision still cites predecessor identity edge.
+    expect(
+      provisionIdentityMatchesUnit(
+        { ...provisionOnSuccessor, governingDocumentId: original },
+        { sourceRef: "7.03(f)", documentId: restated },
+        confirmed,
+      ),
+    ).toBe(true);
+  });
 
+  it("adversarial: unverified or ambiguous succession REFUSE", () => {
+    const original = "credit-agreement-2020";
+    const competitor = "purported-restatement-2024";
+    const provision = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: competitor,
+    };
+    const unit = { sourceRef: "7.03(f)", documentId: original };
+
+    for (const status of ["REVIEW_REQUIRED", "AMBIGUOUS", "UNSUPPORTED", "PROVISIONAL_IDENTITY_BLOCKED"] as const) {
+      const evidence = {
+        restatementAuthorities: [
+          {
+            status,
+            successorDocumentId: competitor,
+            predecessorDocumentId: original,
+          },
+        ],
+      };
+      expect(provisionIdentityMatchesUnit(provision, unit, evidence)).toBe(false);
+      expect(
+        documentsShareOperativeAuthority(competitor, original, evidence),
+      ).toBe(false);
+    }
+
+    // Confirmed status but missing predecessor — fail closed (no silent cross-doc bind).
     expect(
-      provisionIdentityMatchesUnit(provision, {
-        sourceRef: "7.03(f)",
-        documentId: restated,
-      }),
-    ).toBe(true);
-    expect(
-      provisionIdentityMatchesUnit(provision, {
-        sourceRef: "7.03(f)",
-        documentId: original,
-      }),
-    ).toBe(true);
-    expect(
-      provisionIdentityMatchesUnit(provision, {
-        sourceRef: "7.03(f)",
-        documentId: unrelated,
+      provisionIdentityMatchesUnit(provision, unit, {
+        restatementAuthorities: [
+          {
+            status: "OPERATIVE_AUTHORITY_CONFIRMED",
+            successorDocumentId: competitor,
+            predecessorDocumentId: null,
+          },
+        ],
       }),
     ).toBe(false);
 
-    // Missing governingDocumentId refuses even with matching section.
+    // Missing governingDocumentId — fail closed even with matching section.
     expect(
       provisionIdentityMatchesUnit(
-        {
-          kind: "SECTION",
-          sectionRef: "7.03",
-          definedTermRef: null,
-          governingDocumentId: null,
-        },
-        { sourceRef: "7.03(f)", documentId: restated },
+        { kind: "SECTION", sectionRef: "7.03", definedTermRef: null, governingDocumentId: null },
+        unit,
+        null,
       ),
     ).toBe(false);
   });
@@ -291,6 +359,11 @@ describe("P0 — VE compileVerifiedFixedDollarBridge provider-free (no env mutat
     expect(VE_CORE_SRC).not.toMatch(/delete\s+process\.env\.AI_GATEWAY_API_KEY/);
     expect(VE_CORE_SRC).not.toMatch(/delete\s+process\.env\.ANTHROPIC_API_KEY/);
     expect(VE_CORE_SRC).toMatch(/provider-free:fixed-dollar-ir-local/);
+  });
+
+  it("phase3 compile bridge does not delete process.env credentials", () => {
+    expect(PHASE3_BRIDGE_SRC).not.toMatch(/delete\s+process\.env\.AI_GATEWAY_API_KEY/);
+    expect(PHASE3_BRIDGE_SRC).not.toMatch(/delete\s+process\.env\.ANTHROPIC_API_KEY/);
   });
 
   it("concurrent VE compiles leave env credentials unchanged", async () => {
