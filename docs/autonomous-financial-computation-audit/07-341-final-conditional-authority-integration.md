@@ -1,9 +1,9 @@
 # #341 Final Conditional-Authority Integration
 
-**Corrected tip SHA:** `4720b3fac7e53d8f5e7ac3c294fddb919faf8e18`  
+**Corrected tip SHA:** `070521a72a5b659f8a9d360e1e44abd2de4ad1e8`  
 **Integration target:** `main` @ `d924f5b6c47f1d63982bb4385579d6858cdaf067` (merge of #332; includes #334 + #345)  
 **PR:** https://github.com/egsul897/headroom/pull/341  
-**Mergeable (GitHub at push):** `true` / `unstable` (exact-tip CI pending)
+**Mergeable (GitHub at push):** `true` / `unstable` (exact-tip CI pending on this SHA)
 
 ## Non-mergeable root cause (resolved)
 
