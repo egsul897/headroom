@@ -4,8 +4,14 @@
  * No-ops cleanly when DATABASE_URL is unreachable.
  */
 
+import { PrismaClient } from "@prisma/client";
 import type { PackageAuditManifest } from "../types";
 import { assertAutomatedKnowledgeState, assertLearningFactoryCannotWriteProductionAuthority } from "../promotion-guards";
+import {
+  classifyNeonProbeError,
+  resolveNeonDatabaseUrlForPrisma,
+  type NeonProbeClass,
+} from "./neon-database-url";
 
 export interface NeonPersistResult {
   attempted: boolean;
@@ -15,19 +21,67 @@ export interface NeonPersistResult {
   insertedErrors: number;
 }
 
-export async function probeNeonLive(): Promise<{ live: boolean; detail: string }> {
-  if (!process.env.DATABASE_URL) {
-    return { live: false, detail: "DATABASE_URL unset" };
+export interface NeonProbeResult {
+  live: boolean;
+  detail: string;
+  class: NeonProbeClass;
+  originalHost?: string;
+  ipv4?: string | null;
+}
+
+/** Ephemeral client aimed at Neon over IPv4 (see neon-database-url.ts). */
+async function neonPrismaClient(): Promise<{
+  client: PrismaClient;
+  meta: { originalHost: string; ipv4: string | null };
+}> {
+  const raw = process.env.DATABASE_URL;
+  if (!raw) {
+    throw new Error("DATABASE_URL unset");
   }
+  const resolved = await resolveNeonDatabaseUrlForPrisma(raw);
+  const client = new PrismaClient({
+    datasources: { db: { url: resolved.url } },
+  });
+  return {
+    client,
+    meta: { originalHost: resolved.originalHost, ipv4: resolved.ipv4 },
+  };
+}
+
+export async function probeNeonLive(): Promise<NeonProbeResult> {
+  if (!process.env.DATABASE_URL) {
+    return { live: false, detail: "DATABASE_URL unset", class: "unset" };
+  }
+  let client: PrismaClient | undefined;
+  let meta: { originalHost: string; ipv4: string | null } | undefined;
   try {
-    const { prisma } = await import("../../prisma");
-    await prisma.$queryRaw`SELECT 1 as ok`;
-    return { live: true, detail: "reachable" };
+    const opened = await neonPrismaClient();
+    client = opened.client;
+    meta = opened.meta;
+    await client.$queryRaw`SELECT 1 as ok`;
+    return {
+      live: true,
+      detail: "reachable",
+      class: "live",
+      originalHost: meta.originalHost,
+      ipv4: meta.ipv4,
+    };
   } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    const cls = classifyNeonProbeError(message);
+    const detail =
+      cls === "auth_failed"
+        ? `Neon auth failed (${cls}): credentials rejected for configured user/database. ${message.slice(0, 180)}`
+        : message.slice(0, 240);
     return {
       live: false,
-      detail: err instanceof Error ? err.message.slice(0, 240) : String(err).slice(0, 240),
+      detail,
+      class: cls,
+      originalHost: meta?.originalHost,
+      ipv4: meta?.ipv4,
     };
+  } finally {
+    await client?.$disconnect().catch(() => undefined);
   }
 }
 
@@ -48,16 +102,18 @@ export async function persistPackageManifestToNeon(
     return {
       attempted: true,
       ok: false,
-      detail: `Neon unavailable: ${probe.detail}`,
+      detail: `Neon unavailable (${probe.class}): ${probe.detail}`,
       insertedArtifacts: 0,
       insertedErrors: 0,
     };
   }
 
+  let owned: PrismaClient | undefined;
   try {
-    const { prisma } = await import("../../prisma");
+    const opened = await neonPrismaClient();
+    owned = opened.client;
     // Dynamic access — tables arrive via additive migration.
-    const client = prisma as unknown as {
+    const client = owned as unknown as {
       learningPackage?: {
         upsert: (args: unknown) => Promise<unknown>;
       };
@@ -224,5 +280,7 @@ export async function persistPackageManifestToNeon(
       insertedArtifacts: 0,
       insertedErrors: 0,
     };
+  } finally {
+    await owned?.$disconnect().catch(() => undefined);
   }
 }

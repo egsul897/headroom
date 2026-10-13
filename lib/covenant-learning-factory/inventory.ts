@@ -117,7 +117,7 @@ export const BASELINE_CAPABILITY_INVENTORY: CapabilityInventoryItem[] = [
     canonicalPath: "prisma/schema.prisma → KnowledgeSource, DocumentByteObject, KnowledgeImportBatch",
     summary: "KF source registry, BYTEA store, import batch checkpoints.",
     status: "reusable",
-    notes: "Live Neon currently blocked on credentials/connectivity in this environment. Bulk write needs owner token.",
+    notes: "Live Neon blocked on auth (28P01/P1010 for neondb_owner); host TCP/TLS open over IPv4. Bulk write needs a working owner password.",
   },
   {
     id: "neon-learning-tables",
@@ -125,7 +125,7 @@ export const BASELINE_CAPABILITY_INVENTORY: CapabilityInventoryItem[] = [
     canonicalPath: "prisma/migrations/20261013180000_covenant_learning_factory/",
     summary: "Learning packages, runs, artifacts, error ledger, evaluations, cohorts.",
     status: "incomplete",
-    notes: "Additive migration shipped; apply when Neon is reachable. File store works offline. PROPOSED is LearningKnowledgeState, not KnowledgeRepresentationLevel.",
+    notes: "Additive migration shipped; apply when Neon auth succeeds. File store works offline. PROPOSED is LearningKnowledgeState, not KnowledgeRepresentationLevel.",
   },
   {
     id: "covenant-summary-prisma",

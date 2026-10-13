@@ -16,7 +16,7 @@ Cross-check of shipped `BASELINE-INVENTORY.md` against parallel deep inventories
 | Mass-precedent Neon bulk write needs owner approval | Noted on `kf-mass-precedent` |
 | No Prisma `CovenantSummary` model | Added as **missing** (`covenant-summary-prisma`) — out of MVP |
 | Unified TRAIN_DEV/HELD_OUT registry was a gap | Partially filled by `lib/covenant-learning-factory/cohorts.ts` |
-| Live Neon inventory historically auth-blocked | Still blocked this run (`DATABASE_URL` unreachable) |
+| Live Neon inventory historically auth-blocked | Still blocked this run: host reachable, **`28P01` auth failed** for `neondb_owner` (see `neon-connect-status.json`) |
 
 ## Explicit non-goals (both inventories)
 

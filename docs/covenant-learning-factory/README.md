@@ -14,7 +14,13 @@ npm run clf:dashboard
 npm run test:clf
 ```
 
-Live Neon persist (optional; requires reachable `DATABASE_URL` + applied migration):
+Neon connect probe (no secrets printed):
+
+```bash
+npm run clf:neon-connect
+```
+
+Live Neon persist (optional; requires authenticated `DATABASE_URL` + applied migration):
 
 ```bash
 npm run clf:batch -- --persist-neon --max=2

@@ -4,7 +4,7 @@
 
 **PARTIAL_LIVE_BLOCKED_NEON — OFFLINE_FACTORY_OPERATIONAL**
 
-Headroom can now run a resumable, issuer-agnostic precedent learning loop over authentic packages using the canonical offline compiler. File-backed knowledge, evaluation, error ledger, improvement proposals, and dashboard are working. Live Neon inventory/persist remains blocked on `DATABASE_URL` connectivity (secret refresh requested).
+Headroom can now run a resumable, issuer-agnostic precedent learning loop over authentic packages using the canonical offline compiler. File-backed knowledge, evaluation, error ledger, improvement proposals, and dashboard are working. Live Neon inventory/persist remains blocked on **credential auth** (`28P01` / `P1010` for `neondb_owner`); the pooler host is network-reachable over TCP/TLS/IPv4 (secret refresh required).
 
 This run did **not** train a model, certify a rulebook, or grant production authority.
 

@@ -1,9 +1,12 @@
 {
   "schemaVersion": "covenant-learning-factory.inventory.v1",
-  "generatedAt": "2026-10-13T18:32:04.440Z",
+  "generatedAt": "2026-10-13T19:48:47.770Z",
   "neon": {
     "live": false,
-    "detail": "\nInvalid `prisma.$queryRaw()` invocation:\n\n\nCan't reach database server at `ep-shiny-rice-aw903tjv-pooler.c-12.us-east-1.aws.neon.tech:5432`\n\nPlease make sure your database server is running at `ep-shiny-rice-aw903tjv-pooler.c-12.us-east-1."
+    "detail": "Neon auth failed (auth_failed): credentials rejected for configured user/database. \nInvalid `prisma.$queryRaw()` invocation:\n\n\nUser `neondb_owner` was denied access on the database `neondb.public`",
+    "class": "auth_failed",
+    "originalHost": "ep-shiny-rice-aw903tjv-pooler.c-12.us-east-1.aws.neon.tech",
+    "ipv4": "52.204.15.108"
   },
   "capabilityCounts": {
     "reusable": 18,

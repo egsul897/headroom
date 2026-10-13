@@ -43,8 +43,8 @@ Generated for `covenant-learning-factory.v1`. Classifications: reusable | incomp
 - **offline-package-compile**: Canonical entry for learning factory; fixed-dollar/greater-of VE slices.
 - **live-analysis-orchestrator**: Prefer over quarantined Phase C compiler/orchestrator.ts. CLF uses offline compile for batch precedents.
 - **capacity-runtime**: Learning factory must not write production Permission/SharedCapacity rows.
-- **neon-knowledge-source**: Live Neon currently blocked on credentials/connectivity in this environment. Bulk write needs owner token.
-- **neon-learning-tables**: Additive migration shipped; apply when Neon is reachable. File store works offline. PROPOSED is LearningKnowledgeState, not KnowledgeRepresentationLevel.
+- **neon-knowledge-source**: Live Neon blocked on auth (28P01/P1010 for neondb_owner); host TCP/TLS open over IPv4. Bulk write needs a working owner password.
+- **neon-learning-tables**: Additive migration shipped; apply when Neon auth succeeds. File store works offline. PROPOSED is LearningKnowledgeState, not KnowledgeRepresentationLevel.
 - **covenant-summary-prisma**: Do not invent a summary table in this PR; mass-precedent embeds summary JSON. Out of CLF MVP scope.
 - **eval-source-to-covenant**: Do not contaminate held-out or mutate goldens to pass.
 - **eval-v2**: Heavy; learning factory uses lighter independent compile eval first.
