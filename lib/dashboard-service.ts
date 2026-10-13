@@ -37,7 +37,7 @@ import { getFinancialPosition } from "./financial-core/position-service";
 import { evaluateContractualCapacity, projectToLegacySnapshot } from "./financial-core/solver-adapter";
 import type { FinancialPosition, ScenarioAction, ScenarioResult } from "./financial-core/types";
 import type { ActivationState, EntityClass, GuarantorStatus } from "./solver/types";
-import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "./financial-identity";
+import { resolveCanonicalFinancialAsOf } from "./product/canonical-financial-asof";
 import { hasCompletedQualifiedLegalReview } from "./legal-review";
 import { runScenarioWithInputs, type ScenarioInputs } from "./scenario-runner";
 export { deriveContractualTestParams, runScenarioWithInputs, type ScenarioInputs } from "./scenario-runner";
@@ -169,19 +169,7 @@ export interface CompanyDashboard {
  * (queries whichever company's latest state, never a hardcoded date).
  */
 async function resolveDefaultAsOfDate(companyId: string): Promise<Date> {
-  const resolution = await resolveCanonicalFinancialIdentity(
-    (args) => prisma.financialState.findMany(args),
-    { where: { companyId }, selection: "latest-cohort" },
-  );
-  if (resolution.status === "UNIQUE") return resolution.row.asOfDate;
-  if (resolution.status === "AMBIGUOUS") {
-    throw new FinancialIdentityError(
-      "AMBIGUOUS",
-      resolution.matchCount,
-      `${resolution.matchCount} FinancialState rows claim the latest identity for company ${companyId}`,
-    );
-  }
-  throw new FinancialIdentityError("UNKNOWN", 0, `No FinancialState found for company ${companyId}`);
+  return resolveCanonicalFinancialAsOf(companyId);
 }
 
 /**

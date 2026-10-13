@@ -86,11 +86,12 @@ describe("authority — never verify merely because resolver received inputs", (
     expect(result.limitations.some((l) => /indicative/i.test(l))).toBe(true);
   });
 
-  it("reaches CONTRACTUAL_EXECUTABLE only with approved period-matched inputs and supported mechanics", () => {
+  it("approved financials alone never reach CONTRACTUAL_EXECUTABLE without contractual eligibility", () => {
     const result = calculateContractualLeverage({
       ...matthewsSecuredNetLeverageRequest(),
       financialAuthority: "APPROVED_PERIOD_MATCHED",
       ebitdaLineItems: MATTHEWS_EBITDA_LINE_ITEMS_APPROVED,
+      contractualEligibilityBound: true,
       definitions: [
         MATTHEWS_INDENTURE_DEFINITIONS[0]!,
         {
@@ -101,7 +102,8 @@ describe("authority — never verify merely because resolver received inputs", (
       ],
     });
     expect(result.status).toBe("COMPUTED");
-    expect(result.computationAuthority).toBe("CONTRACTUAL_EXECUTABLE");
+    // Financial approval ≠ contractual eligibility: NOT_APPROVED resolve / heuristics block EXECUTABLE.
+    expect(result.computationAuthority).toBe("INDICATIVE");
     expect(result.capacityDisclaimer).toMatch(/not legally available debt-incurrence capacity/i);
   });
 

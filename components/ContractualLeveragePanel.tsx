@@ -42,6 +42,7 @@ function ResultCard({ result }: { result: ContractualLeverageResult }) {
             {result.documentName ? `${result.documentName} · ` : ""}
             {result.sectionRef}
             {indicative ? " · INDICATIVE" : " · CONTRACTUAL_EXECUTABLE (ratio math)"}
+            {` · eligibility ${result.contractualEligibility}`}
           </div>
         </div>
         <div className={`row-value tone-${statusTone(result)}`}>
@@ -179,10 +180,12 @@ export function ContractualLeveragePanel({
               runtimeStatus: null,
               inputAuthority: "CALLER_SUPPLIED" as const,
               computationAuthority: "INDICATIVE" as const,
+              contractualEligibility: "UNRESOLVED" as const,
               headroomPresentation: "NOT_PRESENTED_AS_CAPACITY" as const,
               capacityDisclaimer:
                 "Mathematical ratio / dollar room only — not legally available debt-incurrence capacity without the governing permission, eligibility conditions, and any required pro forma adjustments.",
               ebitdaBuildup: null,
+              ns4SnapshotId: null,
             },
           ];
 

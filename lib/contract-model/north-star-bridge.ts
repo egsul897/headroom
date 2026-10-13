@@ -58,9 +58,24 @@ export { snapshotInputResolver } from "./runtime/input/snapshot-resolver";
 export type { SnapshotResolverArgs, SnapshotInputResolver } from "./runtime/input/snapshot-resolver";
 
 /** Exact decimal constructor for APPROVED metric figures — product must not import runtime/decimal. */
-export { rationalFromString } from "./runtime/decimal";
-export type { InputResolver } from "./runtime/types";
-export type { FinancialInput, FinancialSnapshot } from "./runtime/input/types";
+export { rational, rationalFromNumber, rationalFromString, toApproximateNumber } from "./runtime/decimal";
+export type { InputResolver, InputProvenance } from "./runtime/types";
+export type { FinancialInput, FinancialSnapshot, SnapshotStatus } from "./runtime/input/types";
+
+/** Phase 4A expression evaluation — product must not import runtime/evaluate-expression. */
+export { evaluateExpression } from "./runtime/evaluate-expression";
+export type { EvaluationResult } from "./runtime/types";
+
+/** Fixture/reference InputResolver builders — product must not import runtime/input-resolver. */
+export { fixtureInputResolver, metricInput, EMPTY_RESOLVER } from "./runtime/input-resolver";
+
+/** Runtime money values — product must not import runtime/values. */
+export { money } from "./runtime/values";
+
+/** Phase 4B identity resolver — product must not import runtime/input/resolve. */
+export { resolveInput } from "./runtime/input/resolve";
+export type { ResolveArgs } from "./runtime/input/resolve";
+export type { ResolutionResult } from "./runtime/input/types";
 
 /** Synthetic certificate fixtures — engineering only; not authentic customer data. */
 export { CONMED_FORM_INSPIRED_CERT, CHEWY_FORM_INSPIRED_CERT, INVENTED_TABULAR_CERT } from "./runtime/input/store/certificate/fixtures";

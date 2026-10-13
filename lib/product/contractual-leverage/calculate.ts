@@ -7,17 +7,23 @@
  * Mathematical headroom is never presented as legal debt-incurrence capacity.
  */
 
-import { evaluateExpression } from "@/lib/contract-model/runtime/evaluate-expression";
-import { fixtureInputResolver, metricInput } from "@/lib/contract-model/runtime/input-resolver";
-import { rational, rationalFromNumber, toApproximateNumber } from "@/lib/contract-model/runtime/decimal";
-import { money } from "@/lib/contract-model/runtime/values";
-import type { InputProvenance } from "@/lib/contract-model/runtime/types";
+import {
+  evaluateExpression,
+  fixtureInputResolver,
+  metricInput,
+  money,
+  rational,
+  rationalFromNumber,
+  toApproximateNumber,
+  type InputProvenance,
+} from "@/lib/contract-model/north-star-bridge";
 import { compileLeverageExpressions } from "./compile";
 import { CAPACITY_DISCLAIMER } from "./disclaimer";
 import { calculateEbitdaBuildup } from "./ebitda-buildup";
 import { identifyLeverageComponents } from "./identify";
 import type {
   ComputationAuthority,
+  ContractualEligibility,
   ContractualLeverageResult,
   FinancialInputAuthority,
   HeadroomPresentation,
@@ -116,8 +122,13 @@ function resolveComputationAuthority(args: {
   hasUnresolvedProForma: boolean;
   thresholdKnown: boolean;
   debtBasisKnown: boolean;
+  contractualEligibility: ContractualEligibility;
+  unresolvedEbitdaComponents: string[];
 }): ComputationAuthority {
+  // Financial approval and contractual eligibility are separate gates.
   if (args.hasUnsupportedCashCap || args.hasUnresolvedProForma) return "INDICATIVE";
+  if (args.unresolvedEbitdaComponents.length > 0) return "INDICATIVE";
+  if (args.contractualEligibility !== "DEFINITION_BOUND") return "INDICATIVE";
   if (!args.thresholdKnown || !args.debtBasisKnown) return "INDICATIVE";
   if (args.inputAuthority !== "APPROVED_PERIOD_MATCHED") return "INDICATIVE";
   if (args.ebitdaAuthority !== "APPROVED_PERIOD_MATCHED") return "INDICATIVE";
@@ -140,9 +151,11 @@ function emptyResult(partial: Partial<ContractualLeverageResult> & Pick<Contract
     runtimeStatus: null,
     inputAuthority: "CALLER_SUPPLIED",
     computationAuthority: "INDICATIVE",
+    contractualEligibility: "UNRESOLVED",
     headroomPresentation: "NOT_PRESENTED_AS_CAPACITY",
     capacityDisclaimer: CAPACITY_DISCLAIMER,
     ebitdaBuildup: null,
+    ns4SnapshotId: null,
     ...partial,
   };
 }
@@ -187,9 +200,11 @@ export function calculateContractualLeverage(req: LeverageCalculationRequest): C
       ebitdaDefinition: identified.ebitdaTerm,
       lineItems: req.ebitdaLineItems,
       expectedPeriod: req.expectedPeriod,
-      // Seeded / public-filing reconstructions are never silently APPROVED.
-      evidenceSnapshotStatus:
-        req.financialAuthority === "APPROVED_PERIOD_MATCHED" ? "APPROVED" : "REVIEW_REQUIRED",
+      // Never manufacture APPROVED — only real NS-4 snapshots can satisfy APPROVED-only resolve.
+      evidenceSnapshotStatus: "REVIEW_REQUIRED",
+      ns4SnapshotId: req.ns4SnapshotId,
+      ns4Snapshots: req.ns4Snapshots,
+      contractualEligibilityBound: req.contractualEligibilityBound,
     });
     if (ebitdaBuildup.status === "COMPUTED" && ebitdaBuildup.valueMillions != null) {
       financials = { ...financials, ebitda: ebitdaBuildup.valueMillions };
@@ -324,6 +339,14 @@ export function calculateContractualLeverage(req: LeverageCalculationRequest): C
     limitations.push("No ratio threshold supplied — mathematical dollar room not computed.");
   }
 
+  const contractualEligibility: ContractualEligibility =
+    ebitdaBuildup?.contractualEligibility ??
+    (identified.hasUnsupportedCashCap || identified.hasUnresolvedProForma
+      ? "UNRESOLVED"
+      : req.contractualEligibilityBound
+        ? "DEFINITION_BOUND"
+        : "PROVISIONAL_HEURISTIC");
+
   const computationAuthority = resolveComputationAuthority({
     inputAuthority: baseAuthority,
     ebitdaAuthority,
@@ -331,11 +354,18 @@ export function calculateContractualLeverage(req: LeverageCalculationRequest): C
     hasUnresolvedProForma: identified.hasUnresolvedProForma,
     thresholdKnown: req.threshold != null,
     debtBasisKnown: identified.debtBasis != null,
+    contractualEligibility,
+    unresolvedEbitdaComponents: ebitdaBuildup?.unresolvedComponents ?? [],
   });
 
   if (computationAuthority === "INDICATIVE") {
     limitations.unshift(
-      "Displayed as indicative leverage and mathematical ratio headroom until operative definitions, debt basis, cash-netting mechanics, threshold, and financial inputs are sufficiently verified (approved, period-matched).",
+      "Displayed as indicative leverage and mathematical ratio headroom until operative definitions, debt basis, cash-netting mechanics, threshold, financial approval, AND contractual eligibility are cleared. Financial approval alone never grants CONTRACTUAL_EXECUTABLE.",
+    );
+  }
+  if (contractualEligibility === "PROVISIONAL_HEURISTIC") {
+    limitations.unshift(
+      "Contractual eligibility is PROVISIONAL_HEURISTIC — keyword matching is not verified legal interpretation.",
     );
   }
 
@@ -366,9 +396,11 @@ export function calculateContractualLeverage(req: LeverageCalculationRequest): C
     runtimeStatus: ratioEval.status,
     inputAuthority: baseAuthority,
     computationAuthority,
+    contractualEligibility,
     headroomPresentation,
     capacityDisclaimer: CAPACITY_DISCLAIMER,
     ebitdaBuildup,
+    ns4SnapshotId: req.ns4SnapshotId ?? ebitdaBuildup?.ns4SnapshotId ?? null,
   };
 }
 

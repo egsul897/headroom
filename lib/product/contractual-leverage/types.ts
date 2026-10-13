@@ -23,8 +23,30 @@ export type FinancialInputAuthority =
 export type ComputationAuthority =
   /** Math succeeded; definitions/inputs/mechanics not fully verified for contractual reliance. */
   | "INDICATIVE"
-  /** Operative defs + approved period-matched inputs + supported mechanics — still not legal capacity. */
+  /**
+   * Operative defs + approved period-matched inputs + supported mechanics +
+   * contractual eligibility cleared — still not legal capacity.
+   * Financial approval alone never grants this status.
+   */
   | "CONTRACTUAL_EXECUTABLE";
+
+/**
+ * Separate from financial approval: whether adjustment classification is
+ * contractually eligible. Keyword heuristics are always provisional.
+ */
+export type ContractualEligibility =
+  /** Keyword / heuristic match only — not verified legal interpretation. */
+  | "PROVISIONAL_HEURISTIC"
+  /** Explicit definition binding with no unresolved adjustment prongs. */
+  | "DEFINITION_BOUND"
+  /** Unresolved gains, impairment, caps, pro forma, or period mismatch. */
+  | "UNRESOLVED";
+
+export type ClassificationMethod =
+  /** Keyword matching against definition text — provisional, not legal interpretation. */
+  | "HEURISTIC_KEYWORD"
+  /** Explicit caller-supplied role binding (tests / future structured IR). */
+  | "EXPLICIT_BINDING";
 
 export type HeadroomPresentation =
   /** threshold − current ratio (x). Not legal incurrence capacity. */
@@ -88,6 +110,9 @@ export interface EbitdaBuildupLineTrace {
   role: "BASE" | "ADD" | "SUBTRACT";
   /** Definition category matched, when recognized. */
   definitionMatch: string | null;
+  classificationMethod: ClassificationMethod;
+  /** NS-4 APPROVED snapshot id when this component fact was bound; null if unbound. */
+  ns4SnapshotId: string | null;
 }
 
 export interface EbitdaBuildupSummary {
@@ -105,10 +130,16 @@ export interface EbitdaBuildupSummary {
   missingRequirements: string[];
   limitations: string[];
   authority: FinancialInputAuthority;
+  /** Contractual eligibility — independent of financial approval. */
+  contractualEligibility: ContractualEligibility;
+  /** True when any line used HEURISTIC_KEYWORD classification. */
+  heuristicClassification: boolean;
   runtimeStatus: string | null;
   /** Period identity used for the build-up. */
   period: string | null;
   definitionIdentity: string | null;
+  /** Persisted NS-4 snapshot identity when component facts were bound. */
+  ns4SnapshotId: string | null;
 }
 
 export interface ContractualLeverageResult {
@@ -136,13 +167,17 @@ export interface ContractualLeverageResult {
   runtimeStatus: string | null;
   /** How inputs were sourced. */
   inputAuthority: FinancialInputAuthority;
-  /** INDICATIVE until defs + approved inputs + supported mechanics clear. */
+  /** INDICATIVE until defs + approved inputs + contractual eligibility + supported mechanics clear. */
   computationAuthority: ComputationAuthority;
+  /** Contractual eligibility gate — never inferred from financial approval alone. */
+  contractualEligibility: ContractualEligibility;
   headroomPresentation: HeadroomPresentation;
   /** Explicit disclaimer always shown with headroom figures. */
   capacityDisclaimer: string;
   /** Optional Consolidated EBITDA build-up attached to this result. */
   ebitdaBuildup: EbitdaBuildupSummary | null;
+  /** Persisted NS-4 APPROVED snapshot id when financial identity was bound. */
+  ns4SnapshotId: string | null;
 }
 
 export interface ApprovedFinancialLineItem {
@@ -154,6 +189,13 @@ export interface ApprovedFinancialLineItem {
   asOf: string;
   authority: FinancialInputAuthority;
   sourceCitation?: string;
+  /**
+   * Optional explicit role — when set, classificationMethod is EXPLICIT_BINDING.
+   * Absent → heuristic keyword match (provisional).
+   */
+  explicitRole?: "BASE" | "ADD" | "SUBTRACT";
+  /** NS-4 snapshot id when bound to a persisted APPROVED fact. */
+  ns4SnapshotId?: string | null;
 }
 
 export interface LeverageCalculationRequest {
@@ -177,4 +219,16 @@ export interface LeverageCalculationRequest {
   ebitdaLineItems?: ApprovedFinancialLineItem[];
   /** Period expected for period-matched approved evidence. */
   expectedPeriod?: string | null;
+  /** Persisted NS-4 APPROVED snapshot identity when available. */
+  ns4SnapshotId?: string | null;
+  /**
+   * When true, caller asserts definition-bound contractual eligibility
+   * (structured IR / legal review). Default false — heuristics stay provisional.
+   */
+  contractualEligibilityBound?: boolean;
+  /**
+   * Server-only: APPROVED NS-4 snapshots for component binding / resolve.
+   * Omit from client request packages — not required for indicative reflow.
+   */
+  ns4Snapshots?: import("@/lib/contract-model/north-star-bridge").FinancialSnapshot[];
 }

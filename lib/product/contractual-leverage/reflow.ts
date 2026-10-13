@@ -41,9 +41,11 @@ export function reflowIndicativeLeverage(
     runtimeStatus: null,
     inputAuthority: "CALLER_SUPPLIED",
     computationAuthority: "INDICATIVE",
+    contractualEligibility: "PROVISIONAL_HEURISTIC",
     headroomPresentation: "NOT_PRESENTED_AS_CAPACITY",
     capacityDisclaimer: CAPACITY_DISCLAIMER,
     ebitdaBuildup: null,
+    ns4SnapshotId: null,
   };
 
   const identified = identifyLeverageComponents({
@@ -142,8 +144,10 @@ export function reflowIndicativeLeverage(
     runtimeStatus: "EXECUTABLE",
     inputAuthority: "CALLER_SUPPLIED",
     computationAuthority: "INDICATIVE",
+    contractualEligibility: "PROVISIONAL_HEURISTIC",
     headroomPresentation: ratioHeadroom != null || debtHeadroomMillions != null ? "MATHEMATICAL_RATIO_HEADROOM" : "NOT_PRESENTED_AS_CAPACITY",
     capacityDisclaimer: CAPACITY_DISCLAIMER,
     ebitdaBuildup: null,
+    ns4SnapshotId: null,
   };
 }

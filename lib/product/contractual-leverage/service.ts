@@ -6,12 +6,15 @@
  * because they were loaded. No companyId branching in computation.
  */
 
+import { loadApprovedSnapshotsFromPrisma } from "@/lib/contract-model/north-star-bridge";
 import { prisma } from "@/lib/prisma";
 import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "@/lib/financial-identity";
 import type { FormulaParams } from "@/lib/covenant-engine";
 import type { CovenantEbitdaAddback } from "@/lib/financial-core/types";
+import { resolveCanonicalFinancialAsOf } from "@/lib/product/canonical-financial-asof";
 import { calculateContractualLeverage } from "./calculate";
 import { CAPACITY_DISCLAIMER } from "./disclaimer";
+import { bindLineItemsToNs4Snapshots } from "./evidence";
 import {
   DEFAULT_SECURED_LEVERAGE_TERMS,
   DEFAULT_TOTAL_LEVERAGE_TERMS,
@@ -27,6 +30,8 @@ import type {
 export interface ContractualLeverageDashboardPayload {
   companyId: string;
   asOfDate: string | null;
+  /** Persisted NS-4 APPROVED snapshot ids considered for this load. */
+  ns4SnapshotIds: string[];
   results: ContractualLeverageResult[];
   requests: LeverageCalculationRequest[];
 }
@@ -48,23 +53,17 @@ function num(v: { toNumber(): number } | number | null | undefined): number | nu
 
 async function resolveAsOf(companyId: string, asOfDateParam?: Date): Promise<Date | null> {
   if (asOfDateParam) return asOfDateParam;
-  const resolution = await resolveCanonicalFinancialIdentity(
-    (args) => prisma.financialState.findMany(args),
-    { where: { companyId }, selection: "latest-cohort" },
-  );
-  if (resolution.status === "UNIQUE") return resolution.row.asOfDate;
-  if (resolution.status === "AMBIGUOUS") {
-    throw new FinancialIdentityError(
-      "AMBIGUOUS",
-      resolution.matchCount,
-      `${resolution.matchCount} FinancialState rows claim the latest identity for company ${companyId}`,
-    );
+  try {
+    return await resolveCanonicalFinancialAsOf(companyId);
+  } catch (err) {
+    if (err instanceof FinancialIdentityError && err.code === "AMBIGUOUS") throw err;
+    // Fall back to legacy FinancialSnapshot date only when no FinancialState exists.
+    const snap = await prisma.financialSnapshot.findFirst({
+      where: { companyId },
+      orderBy: { asOfDate: "desc" },
+    });
+    return snap?.asOfDate ?? null;
   }
-  const snap = await prisma.financialSnapshot.findFirst({
-    where: { companyId },
-    orderBy: { asOfDate: "desc" },
-  });
-  return snap?.asOfDate ?? null;
 }
 
 function candidatesForBasis(basis: "total" | "secured"): string[] {
@@ -162,9 +161,11 @@ function emptyMissing(message: string): ContractualLeverageResult {
     runtimeStatus: null,
     inputAuthority: "SEEDED_SNAPSHOT",
     computationAuthority: "INDICATIVE",
+    contractualEligibility: "UNRESOLVED",
     headroomPresentation: "NOT_PRESENTED_AS_CAPACITY",
     capacityDisclaimer: CAPACITY_DISCLAIMER,
     ebitdaBuildup: null,
+    ns4SnapshotId: null,
   };
 }
 
@@ -300,6 +301,22 @@ export async function loadContractualLeverageForCompany(
     }
   }
 
+  // Bind component facts to persisted NS-4 APPROVED snapshots when available.
+  // Missing components remain missing — never zero-filled.
+  const ns4Snapshots = await loadApprovedSnapshotsFromPrisma(prisma, companyId).catch(() => []);
+  const ns4SnapshotIds = ns4Snapshots.map((s) => s.snapshotId);
+  let ns4SnapshotId: string | null = null;
+  let financialAuthority: "SEEDED_SNAPSHOT" | "APPROVED_PERIOD_MATCHED" = "SEEDED_SNAPSHOT";
+  if (ebitdaLineItems.length && ns4Snapshots.length) {
+    const bound = bindLineItemsToNs4Snapshots({ lineItems: ebitdaLineItems, snapshots: ns4Snapshots });
+    ebitdaLineItems = bound.bound;
+    ns4SnapshotId = bound.ns4SnapshotId;
+    // Only upgrade leaf authority when EVERY required component bound to NS-4.
+    if (bound.missingKeys.length === 0 && bound.ns4SnapshotId) {
+      financialAuthority = "APPROVED_PERIOD_MATCHED";
+    }
+  }
+
   const requests: LeverageCalculationRequest[] = [];
   const results: ContractualLeverageResult[] = [];
 
@@ -308,6 +325,7 @@ export async function loadContractualLeverageForCompany(
     return {
       companyId,
       asOfDate: asOfDate?.toISOString() ?? snapshot?.asOfDate.toISOString() ?? null,
+      ns4SnapshotIds,
       results,
       requests,
     };
@@ -339,17 +357,22 @@ export async function loadContractualLeverageForCompany(
       threshold: src.thresholdValue,
       debtBasisHint: src.debtBasis,
       financials,
-      financialAuthority: "SEEDED_SNAPSHOT",
+      financialAuthority,
       ebitdaLineItems: ebitdaLineItems.length ? ebitdaLineItems : undefined,
       expectedPeriod,
+      ns4SnapshotId,
+      // Heuristic classification remains provisional — never auto-bound.
+      contractualEligibilityBound: false,
     };
+    // Server evaluation may use NS-4 snapshots; client package omits them.
+    results.push(calculateContractualLeverage({ ...req, ns4Snapshots }));
     requests.push(req);
-    results.push(calculateContractualLeverage(req));
   }
 
   return {
     companyId,
     asOfDate: (asOfDate ?? snapshot?.asOfDate)?.toISOString() ?? null,
+    ns4SnapshotIds,
     results,
     requests,
   };

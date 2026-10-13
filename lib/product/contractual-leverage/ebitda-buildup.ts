@@ -6,17 +6,25 @@
  * Does not treat a pre-collapsed EBITDA leaf as a build-up.
  */
 
-import { evaluateExpression } from "@/lib/contract-model/runtime/evaluate-expression";
-import { fixtureInputResolver, metricInput } from "@/lib/contract-model/runtime/input-resolver";
-import { rational, rationalFromNumber, toApproximateNumber } from "@/lib/contract-model/runtime/decimal";
-import { money } from "@/lib/contract-model/runtime/values";
-import type { InputProvenance } from "@/lib/contract-model/runtime/types";
 import type { IRExpression } from "@/lib/contract-model/ir/types";
+import {
+  evaluateExpression,
+  fixtureInputResolver,
+  metricInput,
+  money,
+  rational,
+  rationalFromNumber,
+  toApproximateNumber,
+  type FinancialSnapshot,
+  type InputProvenance,
+} from "@/lib/contract-model/north-star-bridge";
 import { CAPACITY_DISCLAIMER } from "./disclaimer";
 import { resolveEbitdaLineApproval } from "./evidence";
 import { withLeverageExprId } from "./expr-id";
 import type {
   ApprovedFinancialLineItem,
+  ClassificationMethod,
+  ContractualEligibility,
   DefinitionText,
   EbitdaBuildupSummary,
   FinancialInputAuthority,
@@ -33,6 +41,11 @@ export interface EbitdaBuildupRequest {
    * Reconstructions must be DRAFT or REVIEW_REQUIRED — never silently APPROVED.
    */
   evidenceSnapshotStatus?: "DRAFT" | "REVIEW_REQUIRED" | "APPROVED";
+  /** Persisted NS-4 APPROVED snapshots for binding / resolve. */
+  ns4Snapshots?: FinancialSnapshot[];
+  ns4SnapshotId?: string | null;
+  /** Caller asserts definition-bound eligibility (default false). */
+  contractualEligibilityBound?: boolean;
 }
 
 function parseNumeric(serialized: { type: string; amount?: string; value?: string } | null): number | null {
@@ -70,7 +83,14 @@ function detectDefinitionCategories(text: string): Set<DefCategory> {
   if (/depreciation|amortization/.test(t)) cats.add("DA");
   if (/stock-based|share-based|stock\s+based|share\s+based/.test(t)) cats.add("SBC");
   if (/restructuring|integration|transaction\s+cost/.test(t)) cats.add("RESTRUCTURING");
-  if (/non-cash/.test(t)) cats.add("NON_CASH");
+  // General non-cash / impairment prongs — not the narrow "non-cash stock-based" SBC clause.
+  if (
+    /non-cash\s+(expenses?|charges?|losses?|items?|write)/.test(t) ||
+    /\bimpairment\b/.test(t) ||
+    /other\s+non-cash/.test(t)
+  ) {
+    cats.add("NON_CASH");
+  }
   if (/minus\s+non-cash|minus\s+.*gain|less\s+.*gain|non-cash\s+items\s+increasing/.test(t)) cats.add("GAIN_SUBTRACT");
   return cats;
 }
@@ -97,6 +117,7 @@ function categorizeLine(item: ApprovedFinancialLineItem): DefCategory {
 }
 
 function roleForCategory(cat: DefCategory, item: ApprovedFinancialLineItem, definitionText: string): "BASE" | "ADD" | "SUBTRACT" | "UNKNOWN" {
+  if (item.explicitRole) return item.explicitRole;
   if (cat === "CNI") return "BASE";
   if (cat === "GAIN_SUBTRACT") return "SUBTRACT";
   if (cat === "TAX") {
@@ -104,13 +125,15 @@ function roleForCategory(cat: DefCategory, item: ApprovedFinancialLineItem, defi
     return "ADD";
   }
   if (cat === "OTHER") return "UNKNOWN";
-  // Supported add categories
   if (["INTEREST", "DA", "SBC", "RESTRUCTURING", "NON_CASH"].includes(cat)) return "ADD";
-  // If definition mentions subtracting gains but category not matched
   if (/minus\s+non-cash\s+items\s+increasing/i.test(definitionText) && /gain/.test(item.label.toLowerCase())) {
     return "SUBTRACT";
   }
   return "UNKNOWN";
+}
+
+function classificationMethodFor(item: ApprovedFinancialLineItem): ClassificationMethod {
+  return item.explicitRole ? "EXPLICIT_BINDING" : "HEURISTIC_KEYWORD";
 }
 
 /**
@@ -192,11 +215,26 @@ function emptySummary(partial: Partial<EbitdaBuildupSummary> & Pick<EbitdaBuildu
     missingRequirements: [],
     limitations: [],
     authority: "CALLER_SUPPLIED",
+    contractualEligibility: "UNRESOLVED",
+    heuristicClassification: true,
     runtimeStatus: null,
     period: null,
     definitionIdentity: null,
+    ns4SnapshotId: null,
     ...partial,
   };
+}
+
+function resolveContractualEligibility(args: {
+  unresolved: string[];
+  heuristic: boolean;
+  bound: boolean;
+}): ContractualEligibility {
+  if (args.unresolved.length > 0) return "UNRESOLVED";
+  if (args.heuristic && !args.bound) return "PROVISIONAL_HEURISTIC";
+  if (args.bound && !args.heuristic) return "DEFINITION_BOUND";
+  if (args.bound && args.heuristic) return "PROVISIONAL_HEURISTIC";
+  return "PROVISIONAL_HEURISTIC";
 }
 
 /**
@@ -236,9 +274,13 @@ export function calculateEbitdaBuildup(req: EbitdaBuildupRequest): EbitdaBuildup
 
   if (capPct != null) {
     unresolved.push(
-      `Restructuring/integration add-back is subject to a ${capPct}% of Consolidated EBITDA cap — cap mechanics disclosed; amount included only when under the pre-cap base (non-authoritative until approved)`,
+      `Restructuring/integration add-back is subject to a ${capPct}% of Consolidated EBITDA cap — contractual cap eligibility unresolved (heuristic application is provisional)`,
     );
   }
+
+  limitations.push(
+    "Adjustment classification uses HEURISTIC_KEYWORD matching unless explicitRole is supplied — keyword matching is not verified legal interpretation.",
+  );
 
   // Gains: include when evidence supplies them (common reconstruction), even if CA text is silent —
   // but mark unresolved vs definition when definition lacks an explicit subtract-gains prong.
@@ -257,15 +299,18 @@ export function calculateEbitdaBuildup(req: EbitdaBuildupRequest): EbitdaBuildup
     item: ApprovedFinancialLineItem;
     role: "BASE" | "ADD" | "SUBTRACT";
     category: DefCategory;
+    classificationMethod: ClassificationMethod;
   }> = [];
 
   for (const item of req.lineItems) {
     if (req.expectedPeriod && item.period !== req.expectedPeriod) {
       missing.push(`Period mismatch for ${item.label}: got ${item.period}, expected ${req.expectedPeriod}`);
+      unresolved.push(`Period mismatch for ${item.label}: got ${item.period}, expected ${req.expectedPeriod}`);
       continue;
     }
     const category = categorizeLine(item);
     let role = roleForCategory(category, item, def.fullText);
+    const method = classificationMethodFor(item);
 
     // Allow reconstruction schedule items (gains / impairment) when evidence is the public-filing schedule
     if (role === "UNKNOWN" && (category === "GAIN_SUBTRACT" || category === "NON_CASH")) {
@@ -276,12 +321,14 @@ export function calculateEbitdaBuildup(req: EbitdaBuildupRequest): EbitdaBuildup
       missing.push(`Unrecognized line item role for "${item.label}" under the EBITDA definition`);
       continue;
     }
-    classified.push({ item, role, category });
+    classified.push({ item, role, category, classificationMethod: method });
   }
 
   if (!classified.some((c) => c.role === "BASE")) {
     missing.push("Consolidated Net Income (BASE)");
   }
+
+  const heuristicClassification = classified.some((c) => c.classificationMethod === "HEURISTIC_KEYWORD");
 
   // Phase 4B approval resolution — never invent APPROVED
   const evidenceStatus = req.evidenceSnapshotStatus ?? "REVIEW_REQUIRED";
@@ -291,33 +338,46 @@ export function calculateEbitdaBuildup(req: EbitdaBuildupRequest): EbitdaBuildup
         instrumentKey: req.instrumentKey,
         lineItems: req.lineItems,
         snapshotStatus: evidenceStatus,
+        ns4Snapshots: req.ns4Snapshots,
       })
     : { approvals: [], anyApproved: false, authority: "CALLER_SUPPLIED" as const };
 
   if (!approval.anyApproved && req.lineItems.length > 0) {
     unresolved.push(
-      `Phase 4B resolve (APPROVED-only): evidence snapshot status is ${evidenceStatus} — inputs are NOT_APPROVED for contractual reliance`,
+      `Phase 4B resolve (APPROVED-only): evidence snapshot status is ${evidenceStatus} — financial inputs are NOT_APPROVED`,
     );
   }
 
+  const toTrace = (c: (typeof classified)[number]) => ({
+    key: c.item.key,
+    label: c.item.label,
+    amountMillions: c.item.amountMillions,
+    role: c.role,
+    definitionMatch: c.category,
+    classificationMethod: c.classificationMethod,
+    ns4SnapshotId: c.item.ns4SnapshotId ?? req.ns4SnapshotId ?? null,
+  });
+
   if (missing.length > 0) {
+    const eligibility = resolveContractualEligibility({
+      unresolved,
+      heuristic: heuristicClassification,
+      bound: Boolean(req.contractualEligibilityBound),
+    });
     return emptySummary({
       status: "MISSING_INPUTS",
-      lineItems: classified.map((c) => ({
-        key: c.item.key,
-        label: c.item.label,
-        amountMillions: c.item.amountMillions,
-        role: c.role,
-        definitionMatch: c.category,
-      })),
+      lineItems: classified.map(toTrace),
       unresolvedComponents: unresolved,
       approvalResolution: approval.approvals,
       citations: [`${def.sectionRef} — ${def.termName}`],
       missingRequirements: missing,
       limitations,
       authority: req.lineItems.length ? weakestAuthority(req.lineItems) : "CALLER_SUPPLIED",
+      contractualEligibility: eligibility,
+      heuristicClassification,
       period,
       definitionIdentity,
+      ns4SnapshotId: req.ns4SnapshotId ?? null,
     });
   }
 
@@ -382,13 +442,12 @@ export function calculateEbitdaBuildup(req: EbitdaBuildupRequest): EbitdaBuildup
     context: { companyId: req.companyId, instrumentKey: req.instrumentKey },
   });
 
-  const lineItems = working.map((c) => ({
-    key: c.item.key,
-    label: c.item.label,
-    amountMillions: c.item.amountMillions,
-    role: c.role,
-    definitionMatch: c.category,
-  }));
+  const lineItems = working.map(toTrace);
+  const eligibility = resolveContractualEligibility({
+    unresolved,
+    heuristic: heuristicClassification,
+    bound: Boolean(req.contractualEligibilityBound),
+  });
 
   if (ev.status !== "EXECUTABLE" || !ev.value) {
     return emptySummary({
@@ -401,9 +460,12 @@ export function calculateEbitdaBuildup(req: EbitdaBuildupRequest): EbitdaBuildup
       missingRequirements: ev.missingInputKeys.length ? ev.missingInputKeys : ev.diagnostics.map((d) => d.message),
       limitations,
       authority,
+      contractualEligibility: eligibility,
+      heuristicClassification,
       runtimeStatus: ev.status,
       period,
       definitionIdentity,
+      ns4SnapshotId: req.ns4SnapshotId ?? null,
     });
   }
 
@@ -433,8 +495,11 @@ export function calculateEbitdaBuildup(req: EbitdaBuildupRequest): EbitdaBuildup
     missingRequirements: [],
     limitations,
     authority,
+    contractualEligibility: eligibility,
+    heuristicClassification,
     runtimeStatus: ev.status,
     period,
     definitionIdentity,
+    ns4SnapshotId: req.ns4SnapshotId ?? null,
   };
 }

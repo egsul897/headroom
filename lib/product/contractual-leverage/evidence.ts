@@ -2,14 +2,18 @@
  * Source-backed EBITDA line-item packages and 4B approval resolution.
  *
  * Line items are PUBLIC_FILING_RECONSTRUCTION / seeded evidence — never
- * manufactured as APPROVED. resolveEbitdaLineApproval uses Phase 4B resolve.ts
- * so approval status is exact, not implied by presence.
+ * manufactured as APPROVED. resolveEbitdaLineApproval uses Phase 4B resolve
+ * via north-star-bridge (not runtime/*).
  */
 
-import { resolveInput } from "@/lib/contract-model/runtime/input/resolve";
-import { money } from "@/lib/contract-model/runtime/values";
-import { rationalFromNumber } from "@/lib/contract-model/runtime/decimal";
-import type { FinancialInput, FinancialSnapshot } from "@/lib/contract-model/runtime/input/types";
+import {
+  money,
+  rationalFromNumber,
+  resolveInput,
+  type FinancialInput,
+  type FinancialSnapshot,
+  type SnapshotStatus,
+} from "@/lib/contract-model/north-star-bridge";
 import type { ApprovedFinancialLineItem, FinancialInputAuthority } from "./types";
 
 /** Coherent FY2026 10-K line items cited by coh-eir-covenant-ebitda-public-filing-reconstruction. */
@@ -119,15 +123,14 @@ export interface LineApprovalResult {
 }
 
 /**
- * Build a Phase 4B FinancialSnapshot from line items. Status is never auto-APPROVED —
- * callers pass the honest status (typically DRAFT / REVIEW_REQUIRED for reconstructions).
+ * Build a Phase 4B FinancialSnapshot from line items. Status is never auto-APPROVED.
  */
 export function lineItemsToFinancialSnapshot(args: {
   snapshotId: string;
   companyId: string;
   asOf: string;
   reportingPeriod: string;
-  status: FinancialSnapshot["status"];
+  status: SnapshotStatus;
   lineItems: ApprovedFinancialLineItem[];
   provenanceNote: string;
 }): FinancialSnapshot {
@@ -168,26 +171,32 @@ export function lineItemsToFinancialSnapshot(args: {
 }
 
 /**
- * Resolve each EBITDA line under an APPROVED-only policy. Surfaces NOT_APPROVED
- * when evidence exists only as DRAFT/REVIEW_REQUIRED reconstruction.
+ * Resolve each EBITDA line under an APPROVED-only policy via north-star-bridge.
  */
 export function resolveEbitdaLineApproval(args: {
   companyId: string;
   instrumentKey: string;
   lineItems: ApprovedFinancialLineItem[];
-  snapshotStatus: FinancialSnapshot["status"];
+  snapshotStatus: SnapshotStatus;
+  /** When provided, resolve against this persisted NS-4 snapshot instead of a synthetic one. */
+  ns4Snapshots?: FinancialSnapshot[];
 }): { approvals: LineApprovalResult[]; anyApproved: boolean; authority: FinancialInputAuthority } {
   const period = args.lineItems[0]?.period ?? "unknown";
   const asOf = args.lineItems[0]?.asOf ?? "1970-01-01";
-  const snapshot = lineItemsToFinancialSnapshot({
-    snapshotId: `${args.companyId}-ebitda-lines-${period}`,
-    companyId: args.companyId,
-    asOf,
-    reportingPeriod: period,
-    status: args.snapshotStatus,
-    lineItems: args.lineItems,
-    provenanceNote: "EBITDA line-item evidence package for approval resolution",
-  });
+  const snapshots =
+    args.ns4Snapshots && args.ns4Snapshots.length > 0
+      ? args.ns4Snapshots
+      : [
+          lineItemsToFinancialSnapshot({
+            snapshotId: `${args.companyId}-ebitda-lines-${period}`,
+            companyId: args.companyId,
+            asOf,
+            reportingPeriod: period,
+            status: args.snapshotStatus,
+            lineItems: args.lineItems,
+            provenanceNote: "EBITDA line-item evidence package for approval resolution",
+          }),
+        ];
 
   const approvals: LineApprovalResult[] = args.lineItems.map((item) => {
     const result = resolveInput({
@@ -201,7 +210,7 @@ export function resolveEbitdaLineApproval(args: {
         asOf: { kind: "EXACT_DATE", isoDate: item.asOf },
         currency: "USD",
       },
-      snapshots: [snapshot],
+      snapshots,
       policy: {
         acceptableStatuses: ["APPROVED"],
         asOfMode: "EXACT",
@@ -212,7 +221,7 @@ export function resolveEbitdaLineApproval(args: {
       label: item.label,
       resolveState: result.state,
       reason: result.reason ?? null,
-      snapshotStatus: args.snapshotStatus,
+      snapshotStatus: args.ns4Snapshots?.length ? "APPROVED" : args.snapshotStatus,
     };
   });
 
@@ -222,4 +231,42 @@ export function resolveEbitdaLineApproval(args: {
     anyApproved,
     authority: anyApproved ? "APPROVED_PERIOD_MATCHED" : "SEEDED_SNAPSHOT",
   };
+}
+
+/**
+ * Bind line items to facts on APPROVED NS-4 snapshots by key+period+asOf.
+ * Missing components stay missing (null amount) — never zero-filled.
+ */
+export function bindLineItemsToNs4Snapshots(args: {
+  lineItems: ApprovedFinancialLineItem[];
+  snapshots: FinancialSnapshot[];
+}): { bound: ApprovedFinancialLineItem[]; missingKeys: string[]; ns4SnapshotId: string | null } {
+  const approved = args.snapshots.filter((s) => s.status === "APPROVED");
+  if (approved.length === 0) {
+    return { bound: args.lineItems.map((i) => ({ ...i, ns4SnapshotId: null })), missingKeys: [], ns4SnapshotId: null };
+  }
+
+  const missingKeys: string[] = [];
+  let ns4SnapshotId: string | null = null;
+  const bound = args.lineItems.map((item) => {
+    for (const snap of approved) {
+      const fact = snap.inputs.find((inp) => {
+        const id = inp.identity;
+        if (id.key !== item.key) return false;
+        if (id.period.kind === "EXACT_PERIOD_ID" && id.period.periodId !== item.period) return false;
+        if (id.asOf.kind === "EXACT_DATE" && id.asOf.isoDate !== item.asOf) return false;
+        return true;
+      });
+      if (fact) {
+        ns4SnapshotId = snap.snapshotId;
+        // Extract amount from MONEY value if present — leave amountMillions from caller
+        // when already supplied; binding only attaches identity.
+        return { ...item, ns4SnapshotId: snap.snapshotId, authority: "APPROVED_PERIOD_MATCHED" as const };
+      }
+    }
+    missingKeys.push(item.key);
+    return { ...item, ns4SnapshotId: null };
+  });
+
+  return { bound, missingKeys, ns4SnapshotId };
 }

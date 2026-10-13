@@ -11,7 +11,8 @@
  * instead (so the Dashboard tab's editable-financials reflow can call the
  * exact same logic client-side with zero server round-trip).
  */
-import { FinancialIdentityError, resolveCanonicalFinancialIdentity } from "./financial-identity";
+import { FinancialIdentityError } from "./financial-identity";
+import { resolveCanonicalFinancialAsOf } from "./product/canonical-financial-asof";
 import { prisma } from "./prisma";
 import { computeLeverageMetrics, loadCompanyCovenantData, type CompanyCovenantData, type FormulaParams } from "./covenant-engine";
 import { getFinancialPosition } from "./financial-core/position-service";
@@ -67,19 +68,7 @@ export async function loadCovenantDataOrEmpty(companyId: string, asOfDate: Date)
 }
 
 async function resolveDefaultAsOfDate(companyId: string): Promise<Date> {
-  const resolution = await resolveCanonicalFinancialIdentity(
-    (args) => prisma.financialState.findMany(args),
-    { where: { companyId }, selection: "latest-cohort" },
-  );
-  if (resolution.status === "UNIQUE") return resolution.row.asOfDate;
-  if (resolution.status === "AMBIGUOUS") {
-    throw new FinancialIdentityError(
-      "AMBIGUOUS",
-      resolution.matchCount,
-      `${resolution.matchCount} FinancialState rows claim the latest identity for company ${companyId}`,
-    );
-  }
-  throw new FinancialIdentityError("UNKNOWN", 0, `No FinancialState found for company ${companyId}`);
+  return resolveCanonicalFinancialAsOf(companyId);
 }
 
 /**

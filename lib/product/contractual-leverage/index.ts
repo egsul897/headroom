@@ -7,7 +7,9 @@
 
 export type {
   ApprovedFinancialLineItem,
+  ClassificationMethod,
   ComputationAuthority,
+  ContractualEligibility,
   ContractualLeverageResult,
   ContractualLeverageStatus,
   DefinitionText,
@@ -31,6 +33,7 @@ export {
   COHERENT_FY2026_EBITDA_BUILDUP_SUM,
   resolveEbitdaLineApproval,
   lineItemsToFinancialSnapshot,
+  bindLineItemsToNs4Snapshots,
 } from "./evidence";
 export { reflowIndicativeLeverage } from "./reflow";
 export { loadContractualLeverageForCompany, type ContractualLeverageDashboardPayload } from "./service";
