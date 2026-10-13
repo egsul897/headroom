@@ -1,7 +1,7 @@
 # Absorb #322 into post-#333 / post-#334 canonical main
 
-**Integration target:** current `main` after #345 (`db0f2fd3…` post-#334 absorb of no-write metrics + NS-4 gates).  
-**Do not integrate against pre-#333 / pre-#334 / pre-#345 main.**
+**Integration target:** current `main` after #332 (`d924f5b6…` cross-layer delivery/cutoff authority on post-#345).  
+**Do not integrate against pre-#333 / pre-#334 / pre-#345 / pre-#332 main.**
 
 ## Ported from #322 (selective)
 - `FIXED_POINT_ADDBACK_CAP` IR + exact closed-form runtime
