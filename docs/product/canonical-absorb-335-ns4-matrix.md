@@ -1,9 +1,11 @@
 # Canonical absorption matrix — #335 + NS-4 (#334 vs #336)
 
 **Landing tip branch:** `cursor/canonical-absorb-335-ns4-d829`  
-**Base choice:** **#334** (`0923f657`) as canonical NS-4 integration  
+**Landing tip SHA:** `002fedcb` (post-main reconcile after #334 landed)  
+**Base choice:** **#334** (`0923f657` → merged to main as `8374fa2a`) as canonical NS-4 integration  
 **Absorbed:** #335 (`20dbac50`) full stack + #336 unique additive modules  
-**Not independently merged:** duplicate Dashboard / Simulate / financial-input stacks from #336
+**Not independently merged:** duplicate Dashboard / Simulate / financial-input stacks from #336  
+**Unresolved conflicts:** none (ort merge of `origin/main` clean)
 
 ## Why #334 over #336
 
@@ -45,4 +47,4 @@
 
 ## Superseded PRs after human merge of landing tip
 
-#334, #335, #336 (do not merge separately). Prior product stacks already closed: #311–#320, #329, #331.
+#334 already on main (`8374fa2a`). After #343 lands, close #335 and #336 (do not merge separately). Prior product stacks already closed: #311–#320, #329, #331.
