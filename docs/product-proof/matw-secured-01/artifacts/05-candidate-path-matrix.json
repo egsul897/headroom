@@ -1,0 +1,64 @@
+[
+  {
+    "leafCode": "ind_permitted_debt_1a_flat",
+    "pathRole": "DEBT_ALTERNATIVE",
+    "debtIncurrenceAuthority": "Indenture Permitted Debt (1)(a) — Debt Facilities / QRT flat $1,300M",
+    "separateLienAuthority": "Indenture Permitted Liens (2) ties to (1)(a); CA NEW Loan-Party liens post-Am6 do NOT provide a general companion",
+    "companionStatus": "INDENTURE_LIEN_LINKED",
+    "ratioOrFixedConditions": "FLAT_NET_OF_DEBT 1300 vs secured debt outstanding",
+    "validForNew50mSecured": "DEBT_ONLY_UNRESOLVED_LIEN",
+    "notes": [
+      "Debt basket ≠ permission to grant a new CA lien",
+      "Incremental draw under existing first-lien Credit Facility liens is a distinct unresolved path"
+    ]
+  },
+  {
+    "leafCode": "ind_ratio_debt_fccr",
+    "pathRole": "DEBT_ALTERNATIVE",
+    "debtIncurrenceAuthority": "Indenture §4.09(a) FCCR ≥ 2.00x",
+    "separateLienAuthority": "No Debt Facilities / first-lien automatic companion for Ratio Debt",
+    "companionStatus": "NO_INDENTURE_LIEN_COMPANION",
+    "ratioOrFixedConditions": "COVERAGE_RATIO_ROOM threshold 2.0",
+    "validForNew50mSecured": "NO",
+    "notes": [
+      "Secured composition with FCCR room is HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION"
+    ]
+  },
+  {
+    "leafCode": "ind_permitted_debt_1b_ratio_secured",
+    "pathRole": "DEBT_ADDON",
+    "debtIncurrenceAuthority": "Indenture Permitted Debt (1)(b)(x) SNLR ≤ 3.50x",
+    "separateLienAuthority": "EDGAR Permitted Liens (2) cites (1)(a) only — package auto-link to first-lien for (1)(b) is overstated",
+    "companionStatus": "FALSE_OR_OVERSTATED_LIEN_LINK",
+    "ratioOrFixedConditions": "LEVERAGE_RATIO_ROOM 3.5×EBITDA − netSecured; (1)(b)(y) First Lien 2.50x NOT modeled",
+    "validForNew50mSecured": "NO",
+    "notes": [
+      "At 2024-12-31 SNLR already above 3.50x → modeled $0 room"
+    ]
+  },
+  {
+    "leafCode": "ind_permitted_debt_2_notes",
+    "pathRole": "DEBT_GRANDFATHER",
+    "debtIncurrenceAuthority": "Indenture Permitted Debt (2) — Issue-Date Notes",
+    "separateLienAuthority": "Notes second lien + CA §6.01(j) for 2024 Note Offering only",
+    "companionStatus": "CA_NOTES_ONLY",
+    "ratioOrFixedConditions": "FLAT_AMOUNT 300 grandfather; NEW capacity 0",
+    "validForNew50mSecured": "NO",
+    "notes": [
+      "Not a growth path for additional $50M"
+    ]
+  },
+  {
+    "leafCode": "ca_lien_601j_2024notes",
+    "pathRole": "LIEN_COMPANION",
+    "debtIncurrenceAuthority": "None — lien exception only",
+    "separateLienAuthority": "CA §6.01(j) as restated by Sixth Amendment — 2024 Note Offering only (y)/(z) conditions",
+    "companionStatus": "CA_NOTES_ONLY",
+    "ratioOrFixedConditions": "Structural zero for NEW general Loan-Party secured liens (pre-Am6 $50M basket deleted)",
+    "validForNew50mSecured": "NO",
+    "notes": [
+      "Customer '$50M' echoes superseded Permitted Amount definition — must not be answered from pre-Am6 (j)",
+      "Package leaf threshold 0 / STRUCTURAL_ZERO is directionally correct; excerpt fidelity FAIL"
+    ]
+  }
+]

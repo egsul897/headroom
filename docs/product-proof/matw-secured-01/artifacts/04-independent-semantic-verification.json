@@ -1,0 +1,66 @@
+{
+  "reviewer": "SECOND_AGENT_ADVERSARIAL",
+  "disagreementsResolvedBy": "SOURCE_EVIDENCE",
+  "checks": [
+    {
+      "id": "WRONG_DOCUMENT",
+      "label": "Wrong document",
+      "result": "FAIL",
+      "evidence": "CA package accession is base 2020; operative (j) is Am6. Notes grant historically cited from 8-K Item 1.01 not Indenture granting clause."
+    },
+    {
+      "id": "WRONG_AMENDMENT_VERSION",
+      "label": "Wrong amendment version",
+      "result": "PASS",
+      "evidence": "Eval 2024-12-31 is after Am6 (2024-09-23) and Notes (2024-09-27). Treating pre-Am6 $50M basket as live would FAIL."
+    },
+    {
+      "id": "SECTION_NUMBER_COLLISION",
+      "label": "Same section number in unrelated documents",
+      "result": "FAIL",
+      "evidence": "Indenture Article 6 ≠ CA Article 6; instrument-scoped companion validation incomplete for FCCR/(1)(b)."
+    },
+    {
+      "id": "MISSING_DEFINITIONS",
+      "label": "Missing incorporated definitions",
+      "result": "FAIL",
+      "evidence": "Package excerpts omit full FCCR / Consolidated EBITDA / 2024 Note Offering / Prior Security Interest / Refinancing Debt (17)."
+    },
+    {
+      "id": "SUPERSEDED_PROVISION",
+      "label": "Superseded provision",
+      "result": "PASS",
+      "evidence": "Research SOURCE_BACKED PERMISSION_NARROWING correctly identifies Am6 restatement deleting general $50M lien basket (VC-004)."
+    },
+    {
+      "id": "DEBT_WITHOUT_LIEN",
+      "label": "Debt basket without valid lien companion",
+      "result": "FAIL",
+      "evidence": "FCCR has no PL companion; (1)(b) lien auto-link overstated vs EDGAR PL(2)→(1)(a) only; CA NEW liens Notes-only."
+    },
+    {
+      "id": "WRONG_ENTITY",
+      "label": "Wrong entity or guarantor",
+      "result": "UNCERTAIN",
+      "evidence": "Leaves use empty entityScope; Non-Guarantor sub-cap / Loan Party vs Restricted Subsidiary mapping incomplete."
+    },
+    {
+      "id": "STALE_FINANCIALS",
+      "label": "Stale financial period",
+      "result": "PASS",
+      "evidence": "Fixture asOf 2024-12-31 matches evaluationDate 2024-12-31; accession 0000063296-25-000006."
+    },
+    {
+      "id": "MISSING_UTILIZATION",
+      "label": "Missing historical utilization",
+      "result": "FAIL",
+      "evidence": "No completeness certificate; Notes $294.799M event mis-tagged to ind_permitted_debt_1a_flat in fixture."
+    },
+    {
+      "id": "UNSUPPORTED_CLASSIFICATION",
+      "label": "Unsupported classification election",
+      "result": "FAIL",
+      "evidence": "Indenture §4.10 classify/reclassify and Refinancing Debt (17) not among five leaves; secured-capacity election unsupported."
+    }
+  ]
+}

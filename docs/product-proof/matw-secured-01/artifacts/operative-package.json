@@ -1,0 +1,408 @@
+{
+  "schema": "matw-secured-01.operative-package.v1",
+  "mission": "MATW-SECURED-01",
+  "evaluatedAt": "2026-10-13T13:24:48.563Z",
+  "startingMainSha": "14c805c6412ca36bfe753112abac78fa6c3736fa",
+  "endingSha": "14c805c6412ca36bfe753112abac78fa6c3736fa",
+  "evaluationDate": "2024-12-31",
+  "customerQuestion": "Can Matthews incur or refinance $50 million of additional secured debt as of the selected evaluation date, and under which operative indebtedness and lien provisions?",
+  "companyId": "matthews",
+  "packageKey": "matthews-international-q1-fy2025",
+  "documentManifest": [
+    {
+      "docId": "matw-2027-second-lien-notes-indenture",
+      "role": "OPERATIVE_INDENTURE",
+      "title": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+      "accession": "0001193125-24-228450",
+      "exhibit": "EX-4.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000119312524228450/d873825dex41.htm",
+      "localFixturePath": null,
+      "authenticity": "AUTHENTIC_EDGAR_RECONSTRUCTED_EXCERPT",
+      "completeness": "RECONSTRUCTED_EXCERPT_NOT_FULL_EXHIBIT",
+      "effectiveDateNote": "Indenture dated 2024-09-27; Issue Date Notes"
+    },
+    {
+      "docId": "matw-credit-agreement-2020",
+      "role": "OPERATIVE_CREDIT_AGREEMENT_BASE",
+      "title": "Third Amended and Restated Loan Agreement",
+      "accession": "0000063296-20-000040",
+      "exhibit": "EX-10.1",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329620000040/ex101loanagreement.htm",
+      "localFixturePath": null,
+      "authenticity": "EDGAR_FILED_BASE_RESTATEMENT",
+      "completeness": "FULL_TEXT_NOT_IN_GIT",
+      "effectiveDateNote": "Execution 2020-03-27; pre-Am6 §6.01(j) used Permitted Amount $50M"
+    },
+    {
+      "docId": "matw-am6",
+      "role": "OPERATIVE_AMENDMENT_LIEN_RESTATEMENT",
+      "title": "Sixth Amendment to Third A&R Loan Agreement",
+      "accession": "0001193125-24-224129",
+      "exhibit": "EX-10.2",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000119312524224129/d872508dex102.htm",
+      "localFixturePath": null,
+      "authenticity": "SOURCE_BACKED_BEFORE_AFTER_QUOTES",
+      "completeness": "FULL_TEXT_NOT_IN_GIT",
+      "effectiveDateNote": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "docId": "matw-10q-2024-12-31",
+      "role": "FINANCIAL_EVIDENCE",
+      "title": "Form 10-Q quarter ended 2024-12-31",
+      "accession": "0000063296-25-000006",
+      "exhibit": null,
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329625000006/matw-20241231.htm",
+      "localFixturePath": "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",
+      "authenticity": "AUTHENTIC_SOURCE_BACKED",
+      "completeness": "AUTHENTIC_FIXTURE_COMPLETENESS_NOT_REVIEWER_CONFIRMED",
+      "effectiveDateNote": "Measurement period / asOf 2024-12-31"
+    },
+    {
+      "docId": "matw-am1",
+      "role": "AMENDMENT",
+      "title": "First Amendment to Third A&R Loan Agreement",
+      "accession": "0000063296-21-000048",
+      "exhibit": "firstamendmenttothirdamend.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329621000048/firstamendmenttothirdamend.htm",
+      "localFixturePath": null,
+      "authenticity": "CHAIN_MANIFEST_RETRIEVED_NOT_IN_GIT",
+      "completeness": "FULL_TEXT_NOT_IN_GIT",
+      "effectiveDateNote": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "docId": "matw-am2",
+      "role": "AMENDMENT",
+      "title": "Second Amendment to Third A&R Loan Agreement",
+      "accession": "0000063296-22-000060",
+      "exhibit": "secondamendmenttothirdamen.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329622000060/secondamendmenttothirdamen.htm",
+      "localFixturePath": null,
+      "authenticity": "CHAIN_MANIFEST_RETRIEVED_NOT_IN_GIT",
+      "completeness": "FULL_TEXT_NOT_IN_GIT",
+      "effectiveDateNote": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "docId": "matw-am3",
+      "role": "AMENDMENT",
+      "title": "Third Amendment to Third A&R Loan Agreement",
+      "accession": "0000063296-22-000099",
+      "exhibit": "thirdamendmenttothirdamend.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329622000099/thirdamendmenttothirdamend.htm",
+      "localFixturePath": null,
+      "authenticity": "CHAIN_MANIFEST_RETRIEVED_NOT_IN_GIT",
+      "completeness": "FULL_TEXT_NOT_IN_GIT",
+      "effectiveDateNote": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "docId": "matw-am4",
+      "role": "AMENDMENT",
+      "title": "Fourth Amendment to Third A&R Loan Agreement",
+      "accession": "0000063296-23-000044",
+      "exhibit": "fourthamendmenttothirdamen.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329623000044/fourthamendmenttothirdamen.htm",
+      "localFixturePath": null,
+      "authenticity": "CHAIN_MANIFEST_RETRIEVED_NOT_IN_GIT",
+      "completeness": "FULL_TEXT_NOT_IN_GIT",
+      "effectiveDateNote": "CONDITIONAL_UNRESOLVED"
+    },
+    {
+      "docId": "matw-am5",
+      "role": "AMENDMENT",
+      "title": "Fifth Amendment to Third A&R Loan Agreement",
+      "accession": "0000063296-24-000010",
+      "exhibit": "fifthamendmenttothirdamend.htm",
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/63296/000006329624000010/fifthamendmenttothirdamend.htm",
+      "localFixturePath": null,
+      "authenticity": "CHAIN_MANIFEST_RETRIEVED_NOT_IN_GIT",
+      "completeness": "FULL_TEXT_NOT_IN_GIT",
+      "effectiveDateNote": "CONDITIONAL_UNRESOLVED"
+    }
+  ],
+  "amendmentPrecedence": {
+    "chainId": "matw-2020-03-27-third-ar-loan",
+    "operativeCaVersionClaim": "Third A&R as amended through Sixth Amendment (product hardcode; not live graph resolution)",
+    "sixthAmendment": {
+      "accession": "0001193125-24-224129",
+      "exhibit": "EX-10.2",
+      "changeClass": "PERMISSION_NARROWING",
+      "beforeText": "(j) Liens of any Loan Party securing Indebtedness; provided, however, that such Liens shall be limited to Liens on equipment, fixtures, real property and/or proceeds thereof; and provided, further, that the aggregate book value of the assets securing such Indebtedness shall not at any time exceed the Permitted Amount;",
+      "afterText": "(j) Liens securing Indebtedness under the 2024 Note Offering to the extent both (y) the Agent has received the fully executed applicable Security Agreement and has a Prior Security Interest in the Collateral and (z) such Liens are subordinate to the Agent’s Liens on the applicable Collateral pursuant to and in accordance with the terms and provisions of the 2024 Note Intercreditor Agreement;",
+      "authorityStatus": "SOURCE_BACKED",
+      "permittedAmountDefinitionFate": "Whether Sixth Amendment deleted or retained the unused Permitted Amount definition was not independently re-confirmed in the Sixth Amendment full text this pass; only the §6.01(j) operative replacement is SOURCE_BACKED."
+    },
+    "am6EffectiveDateStatus": "CONDITIONAL_UNRESOLVED",
+    "postEvalAmendmentsExcluded": [
+      "Seventh Amendment (post eval; recital-only closing 2025-05-01 per onboarding)",
+      "Eighth Amendment accession 0001193125-26-052745 (post eval; not wired)"
+    ],
+    "packageCaExcerptFidelity": "FAIL",
+    "packageCaExcerptDefects": [
+      "Package CA excerpt omits Am6 condition (y) Prior Security Interest / Security Agreement",
+      "Package CA excerpt omits Am6 condition (z) ICA subordination",
+      "Package CA excerpt inserts non-operative commentary ('and no other general basket…')",
+      "Package CA accession is base 2020 restatement; operative §6.01(j) text lives in Am6 0001193125-24-224129"
+    ]
+  },
+  "sourceCitations": [
+    {
+      "leafCode": "ind_permitted_debt_1a_flat",
+      "instrument": "matw-2027-second-lien-notes-indenture",
+      "sectionRef": "Permitted Debt def., cl. (1)(a)",
+      "accession": "0001193125-24-228450",
+      "formulaEncoding": "FLAT_NET_OF_DEBT:1300",
+      "exactSourceQuoteOrGap": "Indenture excerpt includes (1)(a) $1,300,000,000 — authenticity AUTHENTIC_EDGAR_RECONSTRUCTED_EXCERPT (not full exhibit)"
+    },
+    {
+      "leafCode": "ind_ratio_debt_fccr",
+      "instrument": "matw-2027-second-lien-notes-indenture",
+      "sectionRef": "§4.09(a)",
+      "accession": "0001193125-24-228450",
+      "formulaEncoding": "COVERAGE_RATIO_ROOM:2",
+      "exactSourceQuoteOrGap": "Encoded from docs/matthews-international-onboarding.md / package-matthews; reconstructed excerpt — not full EDGAR"
+    },
+    {
+      "leafCode": "ind_permitted_debt_1b_ratio_secured",
+      "instrument": "matw-2027-second-lien-notes-indenture",
+      "sectionRef": "Permitted Debt def., cl. (1)(b)(x)",
+      "accession": "0001193125-24-228450",
+      "formulaEncoding": "LEVERAGE_RATIO_ROOM:3.5",
+      "exactSourceQuoteOrGap": "Encoded from docs/matthews-international-onboarding.md / package-matthews; reconstructed excerpt — not full EDGAR"
+    },
+    {
+      "leafCode": "ind_permitted_debt_2_notes",
+      "instrument": "matw-2027-second-lien-notes-indenture",
+      "sectionRef": "Permitted Debt def., cl. (2)",
+      "accession": "0001193125-24-228450",
+      "formulaEncoding": "FLAT_AMOUNT:300",
+      "exactSourceQuoteOrGap": "Encoded from docs/matthews-international-onboarding.md / package-matthews; reconstructed excerpt — not full EDGAR"
+    },
+    {
+      "leafCode": "ca_lien_601j_2024notes",
+      "instrument": "matw-credit-agreement-2020",
+      "sectionRef": "§6.01(j), as restated by Sixth Amendment",
+      "accession": "0000063296-20-000040",
+      "formulaEncoding": "FLAT_AMOUNT:0",
+      "exactSourceQuoteOrGap": "SOURCE_BACKED Am6 after-text available in docs/amendment-chain-research/before-after/matw-am6-lien-601j.json; package excerpt fidelity=FAIL"
+    }
+  ],
+  "candidatePathMatrix": [
+    {
+      "leafCode": "ind_permitted_debt_1a_flat",
+      "pathRole": "DEBT_ALTERNATIVE",
+      "debtIncurrenceAuthority": "Indenture Permitted Debt (1)(a) — Debt Facilities / QRT flat $1,300M",
+      "separateLienAuthority": "Indenture Permitted Liens (2) ties to (1)(a); CA NEW Loan-Party liens post-Am6 do NOT provide a general companion",
+      "companionStatus": "INDENTURE_LIEN_LINKED",
+      "ratioOrFixedConditions": "FLAT_NET_OF_DEBT 1300 vs secured debt outstanding",
+      "validForNew50mSecured": "DEBT_ONLY_UNRESOLVED_LIEN",
+      "notes": [
+        "Debt basket ≠ permission to grant a new CA lien",
+        "Incremental draw under existing first-lien Credit Facility liens is a distinct unresolved path"
+      ]
+    },
+    {
+      "leafCode": "ind_ratio_debt_fccr",
+      "pathRole": "DEBT_ALTERNATIVE",
+      "debtIncurrenceAuthority": "Indenture §4.09(a) FCCR ≥ 2.00x",
+      "separateLienAuthority": "No Debt Facilities / first-lien automatic companion for Ratio Debt",
+      "companionStatus": "NO_INDENTURE_LIEN_COMPANION",
+      "ratioOrFixedConditions": "COVERAGE_RATIO_ROOM threshold 2.0",
+      "validForNew50mSecured": "NO",
+      "notes": [
+        "Secured composition with FCCR room is HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION"
+      ]
+    },
+    {
+      "leafCode": "ind_permitted_debt_1b_ratio_secured",
+      "pathRole": "DEBT_ADDON",
+      "debtIncurrenceAuthority": "Indenture Permitted Debt (1)(b)(x) SNLR ≤ 3.50x",
+      "separateLienAuthority": "EDGAR Permitted Liens (2) cites (1)(a) only — package auto-link to first-lien for (1)(b) is overstated",
+      "companionStatus": "FALSE_OR_OVERSTATED_LIEN_LINK",
+      "ratioOrFixedConditions": "LEVERAGE_RATIO_ROOM 3.5×EBITDA − netSecured; (1)(b)(y) First Lien 2.50x NOT modeled",
+      "validForNew50mSecured": "NO",
+      "notes": [
+        "At 2024-12-31 SNLR already above 3.50x → modeled $0 room"
+      ]
+    },
+    {
+      "leafCode": "ind_permitted_debt_2_notes",
+      "pathRole": "DEBT_GRANDFATHER",
+      "debtIncurrenceAuthority": "Indenture Permitted Debt (2) — Issue-Date Notes",
+      "separateLienAuthority": "Notes second lien + CA §6.01(j) for 2024 Note Offering only",
+      "companionStatus": "CA_NOTES_ONLY",
+      "ratioOrFixedConditions": "FLAT_AMOUNT 300 grandfather; NEW capacity 0",
+      "validForNew50mSecured": "NO",
+      "notes": [
+        "Not a growth path for additional $50M"
+      ]
+    },
+    {
+      "leafCode": "ca_lien_601j_2024notes",
+      "pathRole": "LIEN_COMPANION",
+      "debtIncurrenceAuthority": "None — lien exception only",
+      "separateLienAuthority": "CA §6.01(j) as restated by Sixth Amendment — 2024 Note Offering only (y)/(z) conditions",
+      "companionStatus": "CA_NOTES_ONLY",
+      "ratioOrFixedConditions": "Structural zero for NEW general Loan-Party secured liens (pre-Am6 $50M basket deleted)",
+      "validForNew50mSecured": "NO",
+      "notes": [
+        "Customer '$50M' echoes superseded Permitted Amount definition — must not be answered from pre-Am6 (j)",
+        "Package leaf threshold 0 / STRUCTURAL_ZERO is directionally correct; excerpt fidelity FAIL"
+      ]
+    }
+  ],
+  "financialUtilizationDependencies": {
+    "fixturePath": "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",
+    "authenticity": "AUTHENTIC_SOURCE_BACKED",
+    "asOf": "2024-12-31",
+    "accession": "0000063296-25-000006",
+    "ns4ApprovedPresent": false,
+    "completenessCertificatePresent": false,
+    "unknownHistoricalActivity": true,
+    "trustedIssuerActivation": "BLOCKED",
+    "verifiedRemainingClaimable": false,
+    "attributionDefects": [
+      "2027 Notes outstanding event tagged applicableProvisionId=ind_permitted_debt_1a_flat but Notes are Permitted Debt (2)",
+      "Point-in-time balances ≠ attributed issuance/repayment ledger"
+    ]
+  },
+  "independentSemanticVerification": {
+    "reviewer": "SECOND_AGENT_ADVERSARIAL",
+    "disagreementsResolvedBy": "SOURCE_EVIDENCE",
+    "checks": [
+      {
+        "id": "WRONG_DOCUMENT",
+        "label": "Wrong document",
+        "result": "FAIL",
+        "evidence": "CA package accession is base 2020; operative (j) is Am6. Notes grant historically cited from 8-K Item 1.01 not Indenture granting clause."
+      },
+      {
+        "id": "WRONG_AMENDMENT_VERSION",
+        "label": "Wrong amendment version",
+        "result": "PASS",
+        "evidence": "Eval 2024-12-31 is after Am6 (2024-09-23) and Notes (2024-09-27). Treating pre-Am6 $50M basket as live would FAIL."
+      },
+      {
+        "id": "SECTION_NUMBER_COLLISION",
+        "label": "Same section number in unrelated documents",
+        "result": "FAIL",
+        "evidence": "Indenture Article 6 ≠ CA Article 6; instrument-scoped companion validation incomplete for FCCR/(1)(b)."
+      },
+      {
+        "id": "MISSING_DEFINITIONS",
+        "label": "Missing incorporated definitions",
+        "result": "FAIL",
+        "evidence": "Package excerpts omit full FCCR / Consolidated EBITDA / 2024 Note Offering / Prior Security Interest / Refinancing Debt (17)."
+      },
+      {
+        "id": "SUPERSEDED_PROVISION",
+        "label": "Superseded provision",
+        "result": "PASS",
+        "evidence": "Research SOURCE_BACKED PERMISSION_NARROWING correctly identifies Am6 restatement deleting general $50M lien basket (VC-004)."
+      },
+      {
+        "id": "DEBT_WITHOUT_LIEN",
+        "label": "Debt basket without valid lien companion",
+        "result": "FAIL",
+        "evidence": "FCCR has no PL companion; (1)(b) lien auto-link overstated vs EDGAR PL(2)→(1)(a) only; CA NEW liens Notes-only."
+      },
+      {
+        "id": "WRONG_ENTITY",
+        "label": "Wrong entity or guarantor",
+        "result": "UNCERTAIN",
+        "evidence": "Leaves use empty entityScope; Non-Guarantor sub-cap / Loan Party vs Restricted Subsidiary mapping incomplete."
+      },
+      {
+        "id": "STALE_FINANCIALS",
+        "label": "Stale financial period",
+        "result": "PASS",
+        "evidence": "Fixture asOf 2024-12-31 matches evaluationDate 2024-12-31; accession 0000063296-25-000006."
+      },
+      {
+        "id": "MISSING_UTILIZATION",
+        "label": "Missing historical utilization",
+        "result": "FAIL",
+        "evidence": "No completeness certificate; Notes $294.799M event mis-tagged to ind_permitted_debt_1a_flat in fixture."
+      },
+      {
+        "id": "UNSUPPORTED_CLASSIFICATION",
+        "label": "Unsupported classification election",
+        "result": "FAIL",
+        "evidence": "Indenture §4.10 classify/reclassify and Refinancing Debt (17) not among five leaves; secured-capacity election unsupported."
+      }
+    ]
+  },
+  "missingInputsAndLimitations": [
+    {
+      "code": "FULL_EDGAR_EXHIBITS_NOT_IN_GIT",
+      "severity": "BLOCKING",
+      "detail": "allLocalFixturePathNull=true; Indenture/CA/Am6 full HTML not committed"
+    },
+    {
+      "code": "PACKAGE_CA_EXCERPT_FIDELITY_FAIL",
+      "severity": "BLOCKING",
+      "detail": "Package CA excerpt omits Am6 condition (y) Prior Security Interest / Security Agreement; Package CA excerpt omits Am6 condition (z) ICA subordination; Package CA excerpt inserts non-operative commentary ('and no other general basket…'); Package CA accession is base 2020 restatement; operative §6.01(j) text lives in Am6 0001193125-24-224129"
+    },
+    {
+      "code": "AM6_EFFECTIVE_DATE_CONDITIONAL_UNRESOLVED",
+      "severity": "MATERIAL",
+      "detail": "Closing conditions (Security Agreement / Note Offering) not proven from calendar alone"
+    },
+    {
+      "code": "DEBT_LIEN_COMPANION_GAPS",
+      "severity": "BLOCKING",
+      "detail": "FCCR/(1)(b) lack valid secured companions; CA NEW liens Notes-only after Am6"
+    },
+    {
+      "code": "REFINANCING_DEBT_17_UNMODELED",
+      "severity": "MATERIAL",
+      "detail": "Indenture Permitted Debt (17) Refinancing Debt exists in EDGAR and is not among the five leaves"
+    },
+    {
+      "code": "NO_NS4_APPROVED_OR_UTIL_COMPLETENESS",
+      "severity": "MATERIAL",
+      "detail": "Blocks verified remaining — not required to refuse false PERMITTED on lien grounds"
+    },
+    {
+      "code": "SECURED_COMPOSITION_HYPOTHETICAL",
+      "severity": "INFORMATIONAL",
+      "detail": "Indenture debt rooms must not be published as verified secured remaining"
+    }
+  ],
+  "readinessVerdict": "BLOCKED_BY_SOURCE_EVIDENCE",
+  "readinessRationale": "Full EDGAR exhibits for Indenture/CA/Am6 are not in-repo; package CA §6.01(j) excerpt fails SOURCE_BACKED fidelity; debt baskets are not valid alternatives for NEW $50M secured without matching lien authority. Independent adversarial review fails multiple required checks. Do not claim Phase-3-ready operative package, CERTIFIED_4E, verified remaining, or PERMITTED.",
+  "nextStageRecommendation": {
+    "proposePhase3Compile": false,
+    "reason": "Operative package not independently verified — Phase E compile proposal withheld per mission gate",
+    "reusableComponents": [
+      "lib/contract-model/compiler (semantic compile / discovery)",
+      "lib/contract-model/phase3-certification (certifyCandidate, phase4-adapter)",
+      "lib/product/real-dashboard-vertical-slice/verified-executable-compile-bridge (fixed-dollar GROSS only)",
+      "lib/product/north-star-workflow/verified-path-enumeration",
+      "lib/product/unified-position/certified-simulate-bridge",
+      "docs/amendment-chain-research/* (SOURCE_BACKED before/after)"
+    ],
+    "minimumWorkIfSourceUnblocked": [
+      "Commit hashed full EDGAR fixtures: Indenture Ex 4.1 + Am6 Ex 10.2 (+ governing CA restatement body)",
+      "Replace package CA §6.01(j) excerpt with verbatim Am6 after-text including (y)/(z) — separate future mission; not done here (permission-semantics freeze)",
+      "Correct debt/lien companions to EDGAR (PL(2)↔(1)(a) only; no false 1b/FCCR secured companions)",
+      "Evidence Am6 effectiveness or carry CONDITIONAL_UNRESOLVED explicitly into IR",
+      "Fix utilization attribution (Notes ≠ (1)(a)); include or explicitly refuse Refinancing Debt (17)",
+      "Only then: Phase-3 compile authentic debt + lien units → VEP (reuse existing compiler/adapter; no new engine)"
+    ]
+  },
+  "constraintsHonored": [
+    "no modification of production financial resolver / simulation engine / UI / permission semantics",
+    "no synthetic fixture results used as authentic EDGAR exhibits",
+    "no CERTIFIED_4E / verified remaining / PERMITTED claim",
+    "hand-encoded excerpts not treated as automatically verified source text",
+    "no self-merge / no production-authority activation / no parallel architecture",
+    "evidence hashes: indentureExcerpt=d2531f4f102a6600… caExcerpt=d93e0e91a49cddfc… am6After=accc2568208ecac4…",
+    "onboardingPresent=true"
+  ],
+  "claimsRefused": [
+    "CERTIFIED_4E",
+    "verified remaining",
+    "transaction PERMITTED",
+    "AUTHENTIC_OPERATIVE_PACKAGE_READY_FOR_PHASE3",
+    "pre-Am6 $50M Permitted Amount lien basket still available"
+  ]
+}
