@@ -56,7 +56,23 @@ export interface ContractualEbitdaDerivation {
   notes: string[];
 }
 
-/** Structured evidence package — caller-supplied; no company-id branching inside the resolver. */
+/**
+ * Authenticated binding identity for an evidence package.
+ * Product surfaces must match these fields — never bind by numeric EBITDA alone.
+ */
+export interface ContractualEbitdaEvidenceBindingIdentity {
+  companyId: string;
+  /** Document / package ids eligible to consume this evidence. */
+  documentIds: readonly string[];
+  measurementPeriod: string;
+  asOfDate: string;
+  /** Stable source-version / fixture identity (not an EBITDA figure). */
+  sourceVersionId: string;
+  /** Optional approved financial snapshot id when the package is snapshot-bound. */
+  financialSnapshotId?: string | null;
+}
+
+/** Structured evidence package — caller-supplied; derivation arithmetic is company-agnostic. */
 export interface ContractualEbitdaEvidencePackage {
   bindingContractualEbitdaMillions: number;
   asOfDate: string;
@@ -74,6 +90,11 @@ export interface ContractualEbitdaEvidencePackage {
   unresolvedAdjustments: string[];
   methodologyDisclosure: string | null;
   notes?: string[];
+  /**
+   * Required for product-surface binding (Simulate). Absent identity → fail closed.
+   * Numeric EBITDA equality alone never selects a package.
+   */
+  bindingIdentity?: ContractualEbitdaEvidenceBindingIdentity;
 }
 
 const SUM_TOLERANCE = 0.05; // $M — allow minor rounding between $K→$M

@@ -49,10 +49,21 @@ export const MATTHEWS_CONTRACTUAL_EBITDA_BUILDUP = {
   interestExpenseMillions: 54.64,
 } as const;
 
+export const MATTHEWS_EBITDA_EVIDENCE_SOURCE_VERSION =
+  "fixture:matthews-ebitda-evidence.v1" as const;
+
 export const MATTHEWS_EBITDA_EVIDENCE: ContractualEbitdaEvidencePackage = {
   bindingContractualEbitdaMillions: MATTHEWS_CONTRACTUAL_EBITDA_BUILDUP.consolidatedEbitdaMillions,
   asOfDate: MATTHEWS_CONTRACTUAL_EBITDA_BUILDUP.asOf,
   measurementPeriod: "TTM through 2024-12-31 (FY2024 + Q1FY25 − Q1FY24)",
+  bindingIdentity: {
+    companyId: "matthews",
+    documentIds: ["matw-indenture"],
+    measurementPeriod: "TTM through 2024-12-31 (FY2024 + Q1FY25 − Q1FY24)",
+    asOfDate: MATTHEWS_CONTRACTUAL_EBITDA_BUILDUP.asOf,
+    sourceVersionId: MATTHEWS_EBITDA_EVIDENCE_SOURCE_VERSION,
+    financialSnapshotId: null,
+  },
   definitionTerm: "Consolidated EBITDA",
   definitionExcerpt:
     '"Consolidated EBITDA" means Consolidated Net Income for such period plus, without duplication, income tax expense, Consolidated Interest Expense, depreciation and amortization, and other add-backs as defined in the Indenture.',
