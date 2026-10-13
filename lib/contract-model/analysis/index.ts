@@ -9,3 +9,36 @@ export { getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailur
 export type { AnalysisReadiness, AnalysisReadinessReason } from "./service";
 export { getTrustedSemanticTruth, getAllSemanticTruthForInstrument, getSemanticTruthForRun } from "./semantic-truth/service";
 export * from "./types";
+export {
+  compileFrozenDebtPackage,
+  OFFLINE_PACKAGE_COMPILE_VERSION,
+  type OfflinePackageCompileOptions,
+  type OfflinePackageCompileResult,
+  type OfflinePackageDocument,
+  type CompileUnitRepresentation,
+} from "./offline-package-compile";
+export {
+  compileOperativeCovenantPackage,
+  OPERATIVE_COVENANT_PACKAGE_VERSION,
+  provisionIdentityMatchesUnit,
+  documentsShareOperativeAuthority,
+  resolveOperativeGoverningDocumentId,
+  operativeSourceBoundToGoverning,
+  applyOperativeSourcePublicationGate,
+  type DocumentRelationshipEvidence,
+  type ProvisionIdentityRefs,
+  type HistoricalPredecessorEvidence,
+  type OperativePackageContext,
+  type OperativeCovenantPackageResult,
+  type ExecutableOperativeUnit,
+  type RejectedOperativeUnit,
+  type CapacityPublicationClass,
+  type OperativeCoverageReport,
+  type OperativeExecutionMode,
+} from "./operative-covenant-package";
+export {
+  auditIndependentSourceCoverage,
+  type IndependentExpectedProvision,
+  type IndependentCoverageDisposition,
+  type IndependentSourceCoverageReport,
+} from "./independent-source-coverage";

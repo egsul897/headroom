@@ -151,6 +151,8 @@ export function evaluateFixedDollarCapacity(args: {
   Object.assign(gates, args.qualitativeGates ?? {});
 
   const pkg = packageForFixedDollarRule(compile.rule);
+  // Empty ledger: PAI-04 defaults utilization to UNKNOWN (never silent zero remaining).
+  // This path extracts GROSS contractual only — never publishes AVAILABLE remaining.
   const capacity = evaluateVerifiedCapacity({
     package: pkg,
     inputs: gatesResolver(gates),
@@ -161,14 +163,21 @@ export function evaluateFixedDollarCapacity(args: {
   let availableAmountUsd: number | null = null;
   if (capacity.outcome === "EXECUTED") {
     const entry = capacity.state.capacities.find((c) => c.ruleId === compile.rule!.ruleId);
-    if (entry?.status === "AVAILABLE") {
-      const amt = entry.effectiveRemaining ?? entry.remaining ?? entry.grossCapacity;
-      if (amt && amt.kind === "AMOUNT") {
-        const v = amt.value as { type?: string; amount?: string | number };
-        const n = typeof v.amount === "number" ? v.amount : Number(v.amount);
-        availableAmountUsd = Number.isFinite(n) ? n : null;
-      }
-    }
+    // Prefer grossCapacity: utilization UNKNOWN withholds remaining under provisional.
+    // REVIEW_REQUIRED from empty-ledger utilization must not erase source-backed GROSS.
+    const amountOf = (amt: unknown): number | null => {
+      if (!amt || typeof amt !== "object") return null;
+      const a = amt as { kind?: string; value?: { amount?: string | number } };
+      if (a.kind !== "AMOUNT" || a.value == null) return null;
+      const n = typeof a.value.amount === "number" ? a.value.amount : Number(a.value.amount);
+      return Number.isFinite(n) ? n : null;
+    };
+    availableAmountUsd =
+      amountOf(entry?.grossCapacity) ??
+      amountOf(entry?.provisional?.grossCapacity) ??
+      (entry?.status === "AVAILABLE"
+        ? amountOf(entry.effectiveRemaining) ?? amountOf(entry.remaining)
+        : null);
   }
 
   return {

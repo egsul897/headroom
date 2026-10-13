@@ -59,7 +59,7 @@ function roundTrip(rules: IRRule[], definitions: IRDefinition[], verification: S
   const reloaded = parseVerifiedUnitPackage(serializeVerifiedUnitPackage(pkg));
   const execution = toVerifiedExecutionPackage([reloaded]);
   const inputs = tx.resolverFor(FACTS, [...execution.definitions ?? []], [...execution.rules]);
-  return { pkg, reloaded, execution, capacity: evaluateVerifiedCapacity({ package: execution, inputs, asOf: tx.WHEN }), inputs };
+  return { pkg, reloaded, execution, capacity: evaluateVerifiedCapacity({ package: execution, inputs, asOf: tx.WHEN, utilizationCompleteness: "VERIFIED_EMPTY" }), inputs };
 }
 const entry = (r: ReturnType<typeof evaluateVerifiedCapacity>, ruleId: string) => { if (r.outcome !== "EXECUTED") throw new Error(r.outcome); return r.state.capacities.find((c) => c.ruleId === ruleId)!; };
 const codes = (ls: readonly { code: string }[]) => ls.map((l) => l.code).sort();
@@ -273,7 +273,7 @@ describe("strict-boundary round trips: persisted output is sufficient as-is (§1
     expect(tx.amountOf(e.provisional!.effectiveRemaining)).toBe("200");
     if (capacity.outcome === "EXECUTED") expect(capacity.coverage).toMatchObject({ unitsIncompletelyVerified: ["p-clean"], unitsMissingVerification: [], complete: false });
     // versus genuinely missing: the boundary REFUSES
-    const missing = evaluateVerifiedCapacity({ package: { ...roundTrip([cleanRule()], [], result()).execution, verifications: [] }, inputs: tx.resolverFor(FACTS), asOf: tx.WHEN });
+    const missing = evaluateVerifiedCapacity({ package: { ...roundTrip([cleanRule()], [], result()).execution, verifications: [] }, inputs: tx.resolverFor(FACTS), asOf: tx.WHEN, utilizationCompleteness: "VERIFIED_EMPTY" });
     expect(missing.outcome).toBe("REFUSED");
   });
   it("IDENTITY MISMATCH: an artifact persisted for one compile, executed against a recompile with a different version, fails closed through the existing gate", () => {
@@ -281,7 +281,7 @@ describe("strict-boundary round trips: persisted output is sufficient as-is (§1
     const persisted = parseVerifiedUnitPackage(serializeVerifiedUnitPackage(build([original], [], result())));
     const recompiled = { ...original, compilerVersion: "c2" } as IRRule;
     const execution: VerifiedExecutionPackage = { ...toVerifiedExecutionPackage([persisted]), rules: [recompiled] };
-    const capacity = evaluateVerifiedCapacity({ package: execution, inputs: tx.resolverFor(FACTS, [], [recompiled]), asOf: tx.WHEN });
+    const capacity = evaluateVerifiedCapacity({ package: execution, inputs: tx.resolverFor(FACTS, [], [recompiled]), asOf: tx.WHEN, utilizationCompleteness: "VERIFIED_EMPTY" });
     const e = entry(capacity, "p-clean");
     expect(e.status).toBe("REVIEW_REQUIRED");
     expect(e.limitations[0]!.message).toMatch(/^\[IDENTITY_MISMATCH\].*compilerVersion/);
@@ -289,7 +289,7 @@ describe("strict-boundary round trips: persisted output is sufficient as-is (§1
   });
   it("a blocked transaction through the round-tripped package stays REVIEW_REQUIRED, non-committable and mutation-free", () => {
     const { execution, inputs } = roundTrip([cleanRule()], [], result([finding("p-clean", "rules[0].capacityExpression.operands[0]")]));
-    const r = simulateVerifiedTransaction({ package: execution, inputs, asOf: tx.WHEN, transaction: tx.proposal("tx-1", [tx.consume("e1", tx.nodeOf("p-clean"), tx.cash("20"))]), selectedPath: tx.route({ capacityNodeIds: [tx.nodeOf("p-clean")], ruleIds: ["p-clean"] }) });
+    const r = simulateVerifiedTransaction({ package: execution, inputs, asOf: tx.WHEN, transaction: tx.proposal("tx-1", [tx.consume("e1", tx.nodeOf("p-clean"), tx.cash("20"))]), selectedPath: tx.route({ capacityNodeIds: [tx.nodeOf("p-clean")], ruleIds: ["p-clean"] }), utilizationCompleteness: "VERIFIED_EMPTY" });
     expect(r.outcome).toBe("EXECUTED");
     if (r.outcome !== "EXECUTED") return;
     expect(r.simulation.selectedPathResult).toBe("REVIEW_REQUIRED");

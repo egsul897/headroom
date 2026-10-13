@@ -56,7 +56,8 @@ function runCapacity(opts: {
       || JSON.stringify(r.capacityExpression ?? null).includes("DEFINED_TERM_REFERENCE")
       || JSON.stringify(r.capacityExpression ?? null).includes("METRIC_REFERENCE"));
   const inputs = needsResolver ? resolver(opts.facts ?? [], definitions, rules) : EMPTY_RESOLVER;
-  const state = evaluateCapacityState({ graph, rules, sharedCapacities: pools, definitions, inputs, ledger, asOf: opts.asOf ?? AS_OF });
+  const state = evaluateCapacityState({ graph, rules, sharedCapacities: pools, definitions, inputs, ledger, asOf: opts.asOf ?? AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
   return { graph, state };
 }
 
@@ -509,7 +510,8 @@ describe("reclassification", () => {
     const rules = withEdge();
     const ledger = [usage("u1", "40", onRule("src"))];
     const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-    const before = evaluateCapacityState({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF });
+    const before = evaluateCapacityState({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     const result = applyCapacityStateTransition({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF, before, elections: [el(move)] });
     expect(result.allExecuted).toBe(ok);
     if (ok) {

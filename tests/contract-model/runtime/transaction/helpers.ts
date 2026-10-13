@@ -121,8 +121,16 @@ export function world(opts: { rules: IRRule[]; pools?: IRSharedCapacity[]; ledge
   const definitions = opts.definitions ?? [];
   const inputs = resolverFor(opts.facts ?? [], definitions, rules, opts.snapshotId ?? "pack-1");
   const graph = buildCapacityGraph({ rules, sharedCapacities: pools, definitions, companyId: ORG, instrumentKey: FACILITY, asOf: WHEN });
-  const state = evaluateCapacityState({ graph, rules, sharedCapacities: pools, definitions, inputs, ledger, asOf: WHEN });
-  return { graph, state, inputs, context: { rules, sharedCapacities: pools, definitions, ledger, asOf: WHEN } };
+  // Arithmetic / path-composition fixtures attest VERIFIED_EMPTY explicitly so empty
+  // ledgers exercise capacity math. Product paths omit this and default to UNKNOWN (PAI-04).
+  const state = evaluateCapacityState({
+    graph, rules, sharedCapacities: pools, definitions, inputs, ledger, asOf: WHEN,
+    utilizationCompleteness: "VERIFIED_EMPTY",
+  });
+  return {
+    graph, state, inputs,
+    context: { rules, sharedCapacities: pools, definitions, ledger, asOf: WHEN, utilizationCompleteness: "VERIFIED_EMPTY" },
+  };
 }
 
 // --- transaction builders --------------------------------------------------

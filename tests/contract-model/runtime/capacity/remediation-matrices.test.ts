@@ -19,7 +19,8 @@ beforeEach(resetIds);
 
 const run = (rules: IRRule[], caps: IRSharedCapacity[] = [], ledger: ReturnType<typeof usage>[] = [], inputs = EMPTY_RESOLVER) => {
   const graph = buildCapacityGraph({ rules, sharedCapacities: caps, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-  const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs, ledger, asOf: AS_OF });
+  const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
   return { graph, state };
 };
 const cap = (state: ReturnType<typeof run>["state"], ruleId: string) => state.capacities.find((c) => c.ruleId === ruleId)!;
@@ -28,7 +29,8 @@ const el = (electionId: string, sourceRuleId: string, destinationRuleId: string,
 const reclass = (from: string, to: string[]) => ({ dependsOn: to.map((t) => ({ relationshipType: "RECLASSIFIABLE_TO" as const, targetRuleId: t, description: `${from} may reclassify into ${t}` })) });
 const transition = (rules: IRRule[], ledger: ReturnType<typeof usage>[], elections: ReclassificationElection[]) => {
   const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-  const before = evaluateCapacityState({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF });
+  const before = evaluateCapacityState({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
   return { graph, before, result: applyCapacityStateTransition({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF, before, elections }) };
 };
 /** Total usage across every capacity: the economic quantity conservation preserves. */
@@ -224,7 +226,8 @@ describe("R7 - duplicate rule and pool identity never resolve by array order", (
   it("a rule id duplicated among the resources handed to the state, but not the graph, is refused at the entry", () => {
     const one = [rule("r", MONEY(100))];
     const graph = buildCapacityGraph({ rules: one, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-    const state = evaluateCapacityState({ graph, rules: [rule("r", MONEY(100)), rule("r", MONEY(500))], inputs: EMPTY_RESOLVER, asOf: AS_OF });
+    const state = evaluateCapacityState({ graph, rules: [rule("r", MONEY(100)), rule("r", MONEY(500))], inputs: EMPTY_RESOLVER, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     expect(state.capacities[0]!.status).toBe("UNSUPPORTED");
     expect(state.capacities[0]!.limitations.map((l) => l.code)).toEqual(["DUPLICATE_RULE_IDENTITY"]);
     expect(state.capacities[0]!.grossCapacity.kind).toBe("NOT_DETERMINED");
@@ -567,7 +570,8 @@ describe("R13 - operation counters are the complexity proof", () => {
     const caps = Array.from({ length: pools }, (_, p) => sharedCap(`p-${pad(p)}`, MONEY(100000), rules.filter((_, i) => i % pools === p).map((r) => r.ruleId)));
     const ledger = rules.flatMap((r, i) => [usage(`u-${pad(i)}-a`, "1", onRule(r.ruleId)), usage(`u-${pad(i)}-b`, "2", onRule(r.ruleId))]);
     const graph = buildCapacityGraph({ rules, sharedCapacities: caps, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-    const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF });
+    const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     return state.complexity;
   };
 

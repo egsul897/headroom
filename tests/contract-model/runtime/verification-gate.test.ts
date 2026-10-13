@@ -102,7 +102,8 @@ const NO_INPUTS = fixtureInputResolver({ metrics: [] });
 
 function state(rules: IRRule[], definitions: IRDefinition[], inputs = inputsFor(definitions, rules), verification?: RuntimeVerificationEnvelope, policy?: "ALLOW_MISSING" | "REQUIRE", ledger: Parameters<typeof evaluateCapacityState>[0]["ledger"] = []) {
   const graph = buildCapacityGraph({ companyId: "gate-co", instrumentKey: "gate-inst", rules, definitions, asOf: "2026-01-01", verification });
-  return evaluateCapacityState({ graph, rules, definitions, inputs, asOf: "2026-01-01", ledger, verification, policy });
+  return evaluateCapacityState({ graph, rules, definitions, inputs, asOf: "2026-01-01", ledger, verification, policy,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
 }
 const codes = (ls: readonly { code: string }[]) => ls.map((l) => l.code).sort();
 
@@ -619,7 +620,8 @@ describe("4C VERIFICATION_DOMINANCE (§15-§16): a verification floor dominates 
     const r = tx.provision("p-led", tx.MONEY(100));
     const env = resolve([disputedAt(r, "rules[0].capacityExpression")], tx.ORG, tx.FACILITY);
     const graph = buildCapacityGraph({ rules: [r], companyId: tx.ORG, instrumentKey: tx.FACILITY, asOf: tx.WHEN });
-    const withLedger = evaluateCapacityState({ graph, rules: [r], inputs: tx.resolverFor([]), ledger: [tx.usage("u1", "10", tx.onProvision("p-led"))], asOf: tx.WHEN, verification: env });
+    const withLedger = evaluateCapacityState({ graph, rules: [r], inputs: tx.resolverFor([]), ledger: [tx.usage("u1", "10", tx.onProvision("p-led"))], asOf: tx.WHEN, verification: env,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     expect(withLedger.capacities[0]!.status).toBe("UNSUPPORTED");
     expect(withLedger.capacities[0]!.remaining.kind).toBe("NOT_DETERMINED");
     const r2 = rule({ capacityExpression: MAX(MONEY(1), MONEY(2)) as never });
@@ -654,7 +656,8 @@ describe("4C VERIFICATION_DOMINANCE (§15-§16): a verification floor dominates 
 describe("4D verification legal floor (§17, case K): REVIEW_REQUIRED, limitation recorded, nothing mutated", () => {
   function gatedWorld(r: IRRule, env: RuntimeVerificationEnvelope, ledger: ReturnType<typeof tx.usage>[] = []) {
     const w = tx.world({ rules: [r], ledger });
-    const stateWithGate = evaluateCapacityState({ graph: w.graph, rules: [r], inputs: w.inputs, ledger, asOf: tx.WHEN, verification: env });
+    const stateWithGate = evaluateCapacityState({ graph: w.graph, rules: [r], inputs: w.inputs, ledger, asOf: tx.WHEN, verification: env,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     return { ...w, state: stateWithGate, context: { ...w.context, verification: env } };
   }
 

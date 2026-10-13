@@ -119,6 +119,11 @@ export interface VerifiedCapacityArgs {
   ledger?: readonly LedgerUsageRecord[];
   ledgerPolicy?: LedgerPolicy;
   asOf?: string | null;
+  /**
+   * PAI-04: empty / undetermined utilization completeness.
+   * Defaults to UNKNOWN (fail-closed). Arithmetic fixtures may pass VERIFIED_EMPTY.
+   */
+  utilizationCompleteness?: "UNKNOWN" | "VERIFIED_EMPTY";
 }
 
 export interface VerifiedTransactionArgs extends VerifiedCapacityArgs {
@@ -398,7 +403,17 @@ export function evaluateVerifiedCapacity(args: VerifiedCapacityArgs): VerifiedCa
   if (!bound.envelope) return { outcome: "REFUSED", policy: VERIFIED_EXECUTION_POLICY, packageHash, refusals: bound.refusals };
   const common = { companyId: pkg.companyId, instrumentKey: pkg.instrumentKey, rules: pkg.rules, sharedCapacities: pkg.sharedCapacities, definitions: pkg.definitions, asOf: args.asOf ?? null };
   const graph = buildCapacityGraph({ ...common, verification: bound.envelope });
-  const state = evaluateCapacityState({ ...common, graph, inputs: args.inputs, ledger: args.ledger, ledgerPolicy: args.ledgerPolicy, verification: bound.envelope, policy: VERIFIED_EXECUTION_POLICY });
+  const utilizationCompleteness = args.utilizationCompleteness ?? "UNKNOWN";
+  const state = evaluateCapacityState({
+    ...common,
+    graph,
+    inputs: args.inputs,
+    ledger: args.ledger,
+    ledgerPolicy: args.ledgerPolicy,
+    verification: bound.envelope,
+    policy: VERIFIED_EXECUTION_POLICY,
+    utilizationCompleteness,
+  });
   return { outcome: "EXECUTED", policy: VERIFIED_EXECUTION_POLICY, packageHash, envelope: bound.envelope, coverage: coverageOf(bound.units, bound.envelope), graph, state };
 }
 
@@ -426,7 +441,17 @@ export function simulateVerifiedTransaction(args: VerifiedTransactionArgs): Veri
   const pkg = args.package;
   const simulation = simulateTransaction({
     transaction: args.transaction, currentState: capacity.state, capacityGraph: capacity.graph, selectedPath: args.selectedPath, inputs: args.inputs,
-    context: { rules: pkg.rules, sharedCapacities: pkg.sharedCapacities, definitions: pkg.definitions, ledger: args.ledger, ledgerPolicy: args.ledgerPolicy, asOf: args.asOf ?? null, verification: capacity.envelope, policy: VERIFIED_EXECUTION_POLICY },
+    context: {
+      rules: pkg.rules,
+      sharedCapacities: pkg.sharedCapacities,
+      definitions: pkg.definitions,
+      ledger: args.ledger,
+      ledgerPolicy: args.ledgerPolicy,
+      asOf: args.asOf ?? null,
+      verification: capacity.envelope,
+      policy: VERIFIED_EXECUTION_POLICY,
+      utilizationCompleteness: args.utilizationCompleteness ?? "UNKNOWN",
+    },
   });
   return { outcome: "EXECUTED", policy: VERIFIED_EXECUTION_POLICY, packageHash: capacity.packageHash, envelope: capacity.envelope, coverage: capacity.coverage, capacity: capacity.state, simulation };
 }

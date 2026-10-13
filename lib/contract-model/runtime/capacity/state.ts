@@ -54,6 +54,13 @@ export interface EvaluateCapacityStateArgs {
   verification?: RuntimeVerificationEnvelope;
   /** PHASE-4 VERIFICATION GATE: ALLOW_MISSING (default) or REQUIRE. */
   policy?: VerificationGatePolicy;
+  /**
+   * PAI-04 utilization completeness for empty / undetermined usage.
+   * - `UNKNOWN` (default): empty ledger never establishes zero usage; remaining withheld.
+   * - `VERIFIED_EMPTY`: explicit caller attestation that zero usage is complete (tests /
+   *   certified completeness path only — never implied by a missing ledger).
+   */
+  utilizationCompleteness?: "UNKNOWN" | "VERIFIED_EMPTY";
 }
 
 // ---------------------------------------------------------------------------
@@ -167,15 +174,34 @@ const blockLimitation = (b: NonNullable<UsageResult["blocked"]>): CapacityLimita
  * Unlimited minus a finite usage is still unlimited: a pool with no contractual ceiling is not
  * reduced by drawing on it. Over-consumption is reported, never clamped to zero.
  */
-function computeRemaining(gross: CapacityAmount, usage: CapacityAmount, usageBlocked: boolean): { remaining: CapacityAmount; over: { deficit: SerializedRuntimeValue } | null; failure: string | null } {
+function computeRemaining(
+  gross: CapacityAmount,
+  usage: CapacityAmount,
+  usageBlocked: boolean,
+  utilizationCompleteness: "UNKNOWN" | "VERIFIED_EMPTY" = "UNKNOWN",
+): { remaining: CapacityAmount; over: { deficit: SerializedRuntimeValue } | null; failure: string | null } {
   if (gross.kind === "UNLIMITED") return { remaining: gross, over: null, failure: null };
   if (gross.kind === "GATE_NOT_SATISFIED") return { remaining: gross, over: null, failure: null };
   if (gross.kind === "NOT_DETERMINED") return { remaining: gross, over: null, failure: null };
-  // No applicable usage record is a determined zero: nothing was consumed. That is a different
-  // fact from usage that could not be counted, which leaves remaining undetermined.
-  if (usage.kind === "NOT_DETERMINED") return usageBlocked
-    ? { remaining: { kind: "NOT_DETERMINED", reason: usage.reason }, over: null, failure: null }
-    : { remaining: gross, over: null, failure: null };
+  // PAI-04: undetermined usage is UNKNOWN by default — never silent zero.
+  // VERIFIED_EMPTY is an explicit caller attestation only.
+  if (usage.kind === "NOT_DETERMINED") {
+    if (usageBlocked) {
+      return { remaining: { kind: "NOT_DETERMINED", reason: usage.reason }, over: null, failure: null };
+    }
+    if (utilizationCompleteness === "VERIFIED_EMPTY") {
+      return { remaining: gross, over: null, failure: null };
+    }
+    return {
+      remaining: {
+        kind: "NOT_DETERMINED",
+        reason:
+          "utilization not determined — empty or incomplete ledger evidence never establishes zero usage; remaining withheld (gross remains separately evaluable)",
+      },
+      over: null,
+      failure: null,
+    };
+  }
   const g = runtimeValueOf(gross);
   const u = runtimeValueOf(usage);
   if (!g) return { remaining: { kind: "NOT_DETERMINED", reason: "gross capacity is not a money amount, so it cannot be reduced by usage" }, over: null, failure: null };
@@ -217,6 +243,7 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
   const { graph, inputs } = args;
   const asOf = args.asOf ?? null;
   const policy = args.ledgerPolicy ?? DEFAULT_LEDGER_POLICY;
+  const utilizationCompleteness = args.utilizationCompleteness ?? "UNKNOWN";
   const { companyId, instrumentKey } = graph;
   const gateActive = gateIsActive(args.verification, args.policy);
 
@@ -379,14 +406,33 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
       else usage = { kind: "AMOUNT", value: serializeValue(summed.value) };
     }
 
-    const { remaining, over } = computeRemaining(gross, usage, blocked !== null);
+    const { remaining, over } = computeRemaining(gross, usage, blocked !== null, utilizationCompleteness);
     if (over) limitations.push({ code: "OVER_CONSUMPTION", message: `recorded usage exceeds the shared capacity`, refs: [node.capacityNodeId, ...contributingIds] });
     const overConsumption: OverConsumption | null = over
       ? { gross, usage, deficit: over.deficit, usageIds: [...contributingIds].sort() }
       : null;
+    // PAI-04 (shared): undetermined pool utilization must not leave status AVAILABLE
+    // when gross is known. Do not override NEEDS_INPUT / UNSUPPORTED when the pool
+    // itself is not determined (missing metric, etc.).
+    const poolUtilUnknown =
+      usage.kind === "NOT_DETERMINED" &&
+      !blocked &&
+      utilizationCompleteness === "UNKNOWN" &&
+      (gross.kind === "AMOUNT" || gross.kind === "UNLIMITED");
+    if (poolUtilUnknown) {
+      limitations.push({
+        code: "ALLOCATION_INFORMATION_MISSING",
+        message: "shared-capacity utilization not determined — empty or incomplete ledger evidence never establishes zero usage; remaining withheld",
+        refs: [node.capacityNodeId],
+      });
+    }
     const status = statusForAmount(
       remaining,
-      worst([statusFromEvaluation(evaluation), ...limitations.map((l) => LIMITATION_STATUS_FLOOR[l.code])]),
+      worst([
+        statusFromEvaluation(evaluation),
+        ...limitations.map((l) => LIMITATION_STATUS_FLOOR[l.code]),
+        ...(poolUtilUnknown ? ["REVIEW_REQUIRED" as CapacityStatus] : []),
+      ]),
     );
     // Align with member-capacity withholding: OVER_CONSUMPTION / REVIEW_REQUIRED / AMBIGUOUS must
     // not publish a negative (or otherwise non-authoritative) money remaining as usable headroom.
@@ -485,7 +531,7 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
     if (usageResult.blocked) limitations.push(blockLimitation(usageResult.blocked));
     const usage: CapacityAmount = usageResult.total ? { kind: "AMOUNT", value: usageResult.total } : { kind: "NOT_DETERMINED", reason: usageResult.blocked ? usageResult.blocked.message : "no usage recorded against this capacity" };
 
-    const { remaining, over } = computeRemaining(gross, usage, usageResult.blocked !== null);
+    const { remaining, over } = computeRemaining(gross, usage, usageResult.blocked !== null, utilizationCompleteness);
     const overConsumption: OverConsumption | null = over ? { gross, usage, deficit: over.deficit, usageIds: usageResult.applied.map((u) => u.usageId) } : null;
     if (over) limitations.push({ code: "OVER_CONSUMPTION", message: "recorded usage exceeds the contractual capacity; the remaining figure is negative and is not clamped", refs: [node.capacityNodeId] });
 
@@ -508,9 +554,31 @@ export function evaluateCapacityState(args: EvaluateCapacityStateArgs): Capacity
     for (const s of myShared) for (const l of s.limitations) if (!limitations.some((x) => x.code === l.code && x.message === l.message)) limitations.push(l);
 
     const bounds: CapacityBounds | null = evaluation.bounds ?? null;
+    // PAI-04: undetermined utilization must not leave status AVAILABLE when gross is known.
+    // Do not override NEEDS_INPUT / UNSUPPORTED / etc. when capacity itself is not determined.
+    const utilizationUnknownFloor: CapacityStatus | null =
+      usage.kind === "NOT_DETERMINED" &&
+      !usageResult.blocked &&
+      utilizationCompleteness === "UNKNOWN" &&
+      (gross.kind === "AMOUNT" || gross.kind === "UNLIMITED")
+        ? "REVIEW_REQUIRED"
+        : null;
+    if (utilizationUnknownFloor) {
+      limitations.push({
+        code: "ALLOCATION_INFORMATION_MISSING",
+        message: "utilization not determined — empty or incomplete ledger evidence never establishes zero usage; remaining withheld",
+        refs: [node.capacityNodeId],
+      });
+    }
     const status = statusForAmount(
       localEffective.kind === "GATE_NOT_SATISFIED" ? localEffective : remaining.kind === "GATE_NOT_SATISFIED" ? remaining : gross,
-      worst([statusFromEvaluation(evaluation), ...legalFloor, ...limitations.map((l) => LIMITATION_STATUS_FLOOR[l.code]), ...myShared.map((s) => s.status)]),
+      worst([
+        statusFromEvaluation(evaluation),
+        ...legalFloor,
+        ...limitations.map((l) => LIMITATION_STATUS_FLOOR[l.code]),
+        ...myShared.map((s) => s.status),
+        ...(utilizationUnknownFloor ? [utilizationUnknownFloor] : []),
+      ]),
     );
 
     // A capacity whose legal state is not safe to rely on keeps its arithmetic, but separately, so

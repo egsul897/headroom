@@ -39,7 +39,8 @@ describe("determinism under permutation (§41)", () => {
     const sharedCaps = caps(opts.memberOrder ?? ["rule-a", "rule-b", "rule-c"]);
     const graph = buildCapacityGraph({ rules: ordered, sharedCapacities: sharedCaps, companyId: CO, instrumentKey: INST, asOf: AS_OF });
     const inputs = snapshotInputResolver({ snapshots: [snapshot(fo)], companyId: CO, instrumentKey: INST });
-    const state = evaluateCapacityState({ graph, rules: ordered, sharedCapacities: sharedCaps, inputs, ledger: lo, asOf: AS_OF });
+    const state = evaluateCapacityState({ graph, rules: ordered, sharedCapacities: sharedCaps, inputs, ledger: lo, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     return { graphHash: graph.graphHash, stateHash: state.stateHash };
   };
 
@@ -66,7 +67,8 @@ describe("determinism under permutation (§41)", () => {
 
   it("the state hash covers meaning, not measurement, so it excludes the complexity counters", () => {
     const graph = buildCapacityGraph({ rules: RULES, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-    const a = evaluateCapacityState({ graph, rules: RULES, inputs: resolver(FACTS), asOf: AS_OF });
+    const a = evaluateCapacityState({ graph, rules: RULES, inputs: resolver(FACTS), asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     expect(a.complexity.nodesVisited).toBeGreaterThan(0);
     expect(JSON.stringify({ ...a, complexity: undefined })).not.toContain("nodesVisited");
   });
@@ -141,7 +143,8 @@ describe("anti-enumeration scans (§40)", () => {
       const caps = [sharedCap(`p1${suffix}`, MONEY(250), [`r1${suffix}`, `r2${suffix}`])];
       const facts: FinancialInput[] = [fact(`m1${suffix}`, "500")];
       const graph = buildCapacityGraph({ rules, sharedCapacities: caps, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-      const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: resolver(facts), ledger: [usage(`u1${suffix}`, "40", onRule(`r1${suffix}`))], asOf: AS_OF });
+      const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: resolver(facts), ledger: [usage(`u1${suffix}`, "40", onRule(`r1${suffix}`))], asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
       return { graph, state };
     };
     const a = mk("-alpha");
@@ -161,7 +164,8 @@ describe("complexity diagnostics (§42)", () => {
     const caps = [sharedCap("pool-s", MONEY(100000), rules.map((r) => r.ruleId))];
     const ledger = rules.map((r, i) => usage(`u-${String(i).padStart(4, "0")}`, "1", onRule(r.ruleId)));
     const graph = buildCapacityGraph({ rules, sharedCapacities: caps, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-    const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF });
+    const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     return { n, nodes: graph.nodes.length, edges: graph.edges.length, ...state.complexity };
   };
 

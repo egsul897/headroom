@@ -55,7 +55,8 @@ function evalWithRatio(ratio: string | null, rules = [gatedUnlimited()], shared:
     ratio === null
       ? EMPTY_RESOLVER
       : resolver([fact(GATE_METRIC, ratio, { type: "RATIO", currency: null })]);
-  const state = evaluateCapacityState({ graph, rules, sharedCapacities: shared, inputs, ledger: [], asOf: AS_OF });
+  const state = evaluateCapacityState({ graph, rules, sharedCapacities: shared, inputs, ledger: [], asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
   return { graph, state, inputs, rules, shared };
 }
 
@@ -117,6 +118,7 @@ describe("A8-01 gate status regression — never AVAILABLE on unsatisfied gate",
       inputs: resolver([fact(GATE_METRIC, "3.0", { type: "RATIO", currency: null })]),
       ledger: [],
       asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY",
     });
     expect(state.capacities[0]!.status).not.toBe("AVAILABLE");
   });
@@ -132,6 +134,7 @@ describe("A8-01 gate status regression — never AVAILABLE on unsatisfied gate",
       inputs: resolver([fact(GATE_METRIC, "3.5", { type: "RATIO", currency: null })]),
       ledger: [],
       asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY",
     });
     const a = state.capacities.find((c) => c.ruleId === "ratio-a")!;
     const b = state.capacities.find((c) => c.ruleId === "ratio-b")!;
@@ -171,6 +174,7 @@ describe("A8-01 gate status regression — never AVAILABLE on unsatisfied gate",
       inputs: resolver([fact(GATE_METRIC, "4.1", { type: "RATIO", currency: null })]),
       ledger: [],
       asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY",
     });
     expect(state.capacities.find((c) => c.ruleId === "rp")!.status).toBe("NOT_SATISFIED");
     expect(state.capacities.find((c) => c.ruleId === "rp")!.status).not.toBe("AVAILABLE");
@@ -246,6 +250,7 @@ describe("A8-02 shared over-consumption publication", () => {
       inputs: EMPTY_RESOLVER,
       ledger: [usage("u1", "20000000", onRule("p")), usage("u2", "15000000", onRule("g"))],
       asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY",
     });
     const pool = state.sharedConstraints[0]!;
     expect(pool.status).toBe("REVIEW_REQUIRED");
@@ -270,6 +275,7 @@ describe("A8-02 shared over-consumption publication", () => {
       inputs: EMPTY_RESOLVER,
       ledger: [usage("u1", "10000000", onRule("p"))],
       asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY",
     });
     const pool = state.sharedConstraints[0]!;
     expect(pool.status).toBe("AVAILABLE");

@@ -93,6 +93,9 @@ export function snapshot(inputs: FinancialInput[], over: Partial<FinancialSnapsh
 export const resolver = (inputs: FinancialInput[], definitions: IRDefinition[] = [], rules: IRRule[] = []) =>
   snapshotInputResolver({ snapshots: [snapshot(inputs)], definitions, rules, companyId: CO, instrumentKey: INST });
 
+/** Explicit attestation for Phase-4C arithmetic fixtures (not the product default). */
+export const VERIFIED_EMPTY = "VERIFIED_EMPTY" as const;
+
 // --- ledger ---------------------------------------------------------------
 export function usage(usageId: string, amount: string, path: CapacityPathRef, over: Partial<LedgerUsageRecord> = {}): LedgerUsageRecord {
   return {

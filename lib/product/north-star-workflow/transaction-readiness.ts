@@ -75,10 +75,11 @@ export async function loadTransactionWorkflowReadiness(
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
+  // PAI-11: never invent delivery from period asOf. Missing reviewedAt → no delivery record.
   const deliveries = opts?.deliveries ?? approved.flatMap((s) => {
     if (!s.reportingPeriod || !s.asOf) return [];
-    // Delivery evidence = approval/review date when present. Never backdate silently.
-    const deliveredAtIsoDate = (s.review.reviewedAt ?? s.asOf).slice(0, 10);
+    if (!s.review.reviewedAt) return [];
+    const deliveredAtIsoDate = s.review.reviewedAt.slice(0, 10);
     const d: DeliveryRecord = {
       companyId,
       kind: "COMPLIANCE_CERTIFICATE",

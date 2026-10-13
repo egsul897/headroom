@@ -117,6 +117,23 @@ export function resolveOperativePrecedence(params: {
         note: "Chronology conflict blocks automatic supersession.",
       };
     }
+    // PAI-06: as-of before restatement effectiveness → predecessor remains operative.
+    const asOf = params.asOfDate?.slice(0, 10) ?? null;
+    if (asOf && eff && asOf < eff) {
+      return {
+        status: "UNRESOLVED_PRECEDENCE",
+        operativeDocumentSourceId: baseId,
+        baseDocumentSourceId: baseId,
+        effectiveDate: eff,
+        asOfDate: asOf,
+        bindings: [],
+        unresolvedReasons: [
+          ...unresolved,
+          `Restatement effective/filing ${eff} is not yet effective as of ${asOf} — predecessor remains governing.`,
+        ],
+        note: `As-of ${asOf} precedes restatement effectiveness ${eff}; base retained.`,
+      };
+    }
     return {
       status: "RESOLVED",
       operativeDocumentSourceId: restatement.sourceId,
@@ -169,6 +186,23 @@ export function resolveOperativePrecedence(params: {
         bindings: [],
         unresolvedReasons: unresolved,
         note: "Chronology conflict blocks automatic supersession.",
+      };
+    }
+    // PAI-06 (second path): as-of before restatement effectiveness.
+    const asOf = params.asOfDate?.slice(0, 10) ?? null;
+    if (asOf && eff && asOf < eff) {
+      return {
+        status: "UNRESOLVED_PRECEDENCE",
+        operativeDocumentSourceId: baseId,
+        baseDocumentSourceId: baseId,
+        effectiveDate: eff,
+        asOfDate: asOf,
+        bindings: [],
+        unresolvedReasons: [
+          ...unresolved,
+          `Restatement effective/filing ${eff} is not yet effective as of ${asOf} — predecessor remains governing.`,
+        ],
+        note: `As-of ${asOf} precedes restatement effectiveness ${eff}; base retained.`,
       };
     }
     return {

@@ -56,6 +56,14 @@ export interface PositionViewModel {
   authorityNote: string;
   /** True only when a side has #268 PRODUCTION_AUTHORITATIVE utilization remaining. */
   remainingAuthoritative: boolean;
+  /**
+   * Separated capacity claims for the CFO Position surface.
+   * Populated when callers pass shared capacity state; never invents figures.
+   */
+  separatedClaims?: {
+    secured: import("./capacity-state").SeparatedCapacityClaims;
+    unsecured: import("./capacity-state").SeparatedCapacityClaims;
+  };
 }
 
 function facilityAmountMillions(amount: number | null | undefined): number | null {
@@ -73,6 +81,8 @@ export function buildPositionView(args: {
   readiness: CapacityReadiness;
   rulebook: RulebookReadiness;
   dashboardError?: string | null;
+  /** Optional issuer-neutral separated claims from shared ProductCapacityView. */
+  separatedClaims?: PositionViewModel["separatedClaims"];
 }): PositionViewModel {
   const { readiness, rulebook, dashboard } = args;
   const missingInputs = [...readiness.blockers];
@@ -117,22 +127,49 @@ export function buildPositionView(args: {
 
   const sides: PositionSideClaim[] = (["secured", "unsecured"] as const).map((side) => {
     const sim = dashboard?.capacity[side];
-    const remainingAmount = sim?.remainingCapacity;
     const packageAuth = sim?.packageAuthoritative;
-    // #268: production-authoritative remaining requires completeness + trusted issuer.
-    // Live covenant-engine path currently stamps NOT_PRODUCTION_AUTHORITATIVE; honor the field.
-    const productionAuthoritative = sim?.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
+    // #328: dashboard utilizationRemainingAuthority / remainingCapacity alone must NEVER
+    // publish AVAILABLE remaining. Authoritative remaining requires separatedClaims.
+    // PAI-08 refinement: legacy remainingCapacity is NOT source-backed gross — never
+    // auto-relabel it GROSS_CONTRACTUAL. Publish GROSS only from separatedClaims.grossContractual
+    // (ProductCapacityView.grossCapacity); otherwise UNAVAILABLE / UNKNOWN.
+    const separated = args.separatedClaims?.[side];
+    const productionAuthoritative = separated?.remainingAuthoritative === true;
+    const sourceBackedGrossMm =
+      separated?.grossContractual.claimKind === "GROSS_CONTRACTUAL" &&
+      separated.grossContractual.amountMillions != null &&
+      Number.isFinite(separated.grossContractual.amountMillions)
+        ? separated.grossContractual.amountMillions
+        : null;
+
+    let claimKind: "REMAINING" | "GROSS_CONTRACTUAL" | "UNAVAILABLE";
+    let amountMillions: number | null;
+    let publicationLabel: string;
+    let unavailableReason: string | null;
+    if (productionAuthoritative) {
+      claimKind = "REMAINING";
+      amountMillions = separated!.verifiedRemaining.amountMillions ?? null;
+      publicationLabel = "AVAILABLE";
+      unavailableReason = null;
+    } else if (sourceBackedGrossMm != null) {
+      claimKind = "GROSS_CONTRACTUAL";
+      amountMillions = sourceBackedGrossMm;
+      publicationLabel = "GROSS_CONTRACTUAL";
+      unavailableReason = null;
+    } else {
+      claimKind = "UNAVAILABLE";
+      amountMillions = null;
+      publicationLabel = "UNKNOWN";
+      unavailableReason =
+        "No source-backed gross contractual amount and no production-authoritative remaining for this side — legacy remainingCapacity is withheld (not published as GROSS).";
+    }
+
     const remaining = presentCapacityClaim({
-      claimKind: remainingAmount === undefined ? "UNAVAILABLE" : "REMAINING",
-      amountMillions: remainingAmount ?? null,
+      claimKind,
+      amountMillions,
       remainingIsAuthoritative: productionAuthoritative,
-      publicationLabel: productionAuthoritative
-        ? "AVAILABLE"
-        : packageAuth?.label ?? readiness.capacityAuthority ?? "NOT_PRODUCTION_AUTHORITATIVE",
-      unavailableReason:
-        remainingAmount === undefined
-          ? "Remaining capacity not determinable from the shared engine for this side."
-          : null,
+      publicationLabel,
+      unavailableReason,
     });
 
     const citations: string[] = [];
@@ -189,5 +226,6 @@ export function buildPositionView(args: {
     authorityNote:
       "Position remaining figures from the legacy shared capacity engine are MODELED / NOT VERIFIED / NOT_PRODUCTION_AUTHORITATIVE unless utilizationRemainingAuthority is PRODUCTION_AUTHORITATIVE (#268 completeness + trusted issuer). Gross contractual ceilings are never labeled AVAILABLE. Unknown utilization is never zero.",
     remainingAuthoritative: sides.some((s) => s.remaining.status === "VERIFIED_EXECUTABLE"),
+    separatedClaims: args.separatedClaims,
   };
 }

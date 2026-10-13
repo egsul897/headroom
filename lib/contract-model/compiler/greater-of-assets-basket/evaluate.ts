@@ -209,27 +209,25 @@ function extractAvailable(capacity: VerifiedCapacityResult, ruleId: string): num
   if (capacity.outcome !== "EXECUTED") return null;
   const entry = capacity.state.capacities.find((c) => c.ruleId === ruleId);
   if (!entry) return null;
+  // Prefer GROSS: PAI-04 empty-ledger utilization withholds remaining and may
+  // floor status to REVIEW_REQUIRED without erasing source-backed contractual gross.
+  const fromGross =
+    amountFromCapacityValue(entry.grossCapacity) ??
+    amountFromCapacityValue(entry.provisional?.grossCapacity);
+  if (fromGross != null) return fromGross;
   if (entry.status === "AVAILABLE") {
     return (
       amountFromCapacityValue(entry.effectiveRemaining) ??
-      amountFromCapacityValue(entry.remaining) ??
-      amountFromCapacityValue(entry.grossCapacity)
+      amountFromCapacityValue(entry.remaining)
     );
   }
   // PARTIAL Phase-3 sufficiency can mark REVIEW_REQUIRED while still computing
   // a provisional amount — expose it for CALLER_STIPULATED_HYPOTHETICAL only.
-  const provisional = (entry as {
-    provisional?: {
-      effectiveRemaining?: unknown;
-      remaining?: unknown;
-      grossCapacity?: unknown;
-    };
-  }).provisional;
+  const provisional = entry.provisional;
   if (!provisional) return null;
   return (
     amountFromCapacityValue(provisional.effectiveRemaining) ??
-    amountFromCapacityValue(provisional.remaining) ??
-    amountFromCapacityValue(provisional.grossCapacity)
+    amountFromCapacityValue(provisional.remaining)
   );
 }
 

@@ -150,16 +150,16 @@ function findProhibitionRefs(documentText: string, termExact: string): string[] 
   return [...new Set(refs)];
 }
 
+type CatalogSplitItem = { marker: string; start: number; end: number; text: string };
+type CatalogSplit = { chapeauText: string; items: CatalogSplitItem[] };
+
 /**
  * Split a Permitted* definition body into top-level lettered clauses only.
  * Markers must sit at a line start (after newline) as `(a)` / `(b)` / …
  * Mid-line nested markers such as "provided that (i)" are ignored — those
  * caused catastrophic over-splitting when reusing generic enumerated splitters.
  */
-function splitTopLevelLetteredClauses(text: string): {
-  chapeauText: string;
-  items: { marker: string; start: number; end: number; text: string }[];
-} | null {
+function splitTopLevelLetteredClauses(text: string): CatalogSplit | null {
   // Allow unicode spaces (NBSP / NNBSP) common in EDGAR HTML→text extracts.
   const markerRe = /\n[\s\u00a0\u202f]*\(([a-z])\)[\s\u00a0\u202f]+/gi;
   const markers: { marker: string; start: number; contentStart: number }[] = [];
@@ -218,6 +218,137 @@ function splitTopLevelLetteredClauses(text: string): {
     };
   });
   return { chapeauText: text.slice(0, topLevel[0]!.start), items };
+}
+
+/**
+ * Indenture-style numbered catalogs with optional nested lettered baskets:
+ *   (1) (a) … not to exceed $X, plus
+ *   (b) ratio limb …
+ *   (2) grandfathered Notes …
+ *
+ * Issuer-agnostic. Does not invent permissions — only splits authentic enumerated
+ * markers. Nested romanettes `(x)/(y)/(i)` inside a lettered limb are kept as
+ * limb body text (not separate catalog units).
+ */
+function splitNumberedWithNestedLetters(text: string): CatalogSplit | null {
+  const markerRe = /\n[\s\u00a0\u202f]*\((\d{1,2})\)[\s\u00a0\u202f]+/g;
+  const markers: { num: string; start: number; contentStart: number }[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = markerRe.exec(text)) !== null) {
+    markers.push({
+      num: m[1]!,
+      start: m.index + 1,
+      contentStart: m.index + m[0].length,
+    });
+  }
+  const head = text.match(/^[ \t\u00a0\u202f]*\((\d{1,2})\)[ \t\u00a0\u202f]+/);
+  if (head && head.index === 0) {
+    markers.unshift({
+      num: head[1]!,
+      start: 0,
+      contentStart: head[0].length,
+    });
+  }
+  markers.sort((a, b) => a.start - b.start);
+  const dedup: typeof markers = [];
+  const seen = new Set<number>();
+  for (const mk of markers) {
+    if (seen.has(mk.start)) continue;
+    seen.add(mk.start);
+    dedup.push(mk);
+  }
+  // Keep ascending (1)(2)(3)… only.
+  const topLevel: typeof dedup = [];
+  let expected = 1;
+  for (const mk of dedup) {
+    const n = Number(mk.num);
+    if (n === expected) {
+      topLevel.push(mk);
+      expected += 1;
+    }
+  }
+  if (topLevel.length < 2) return null;
+
+  const items: CatalogSplitItem[] = [];
+  for (let i = 0; i < topLevel.length; i++) {
+    const mk = topLevel[i]!;
+    const nextStart = i + 1 < topLevel.length ? topLevel[i + 1]!.start : text.length;
+    const chunk = text.slice(mk.contentStart, nextStart);
+    const nested = splitNestedLetteredInsideNumberedChunk(chunk, mk.contentStart);
+    if (nested.length >= 1) {
+      for (const n of nested) {
+        items.push({
+          // Composite marker → normalizedSourceRef `def:Term(1)(a)`.
+          marker: `${mk.num})(${n.letter}`,
+          start: n.start,
+          end: n.end,
+          text: n.text,
+        });
+      }
+    } else {
+      items.push({
+        marker: mk.num,
+        start: mk.start,
+        end: nextStart,
+        text: chunk.trim(),
+      });
+    }
+  }
+  if (items.length < 2) return null;
+  return { chapeauText: text.slice(0, topLevel[0]!.start), items };
+}
+
+/** Split `(a)/(b)/…` limbs inside one numbered parent chunk (same-line or newline). */
+function splitNestedLetteredInsideNumberedChunk(
+  chunk: string,
+  absoluteContentStart: number,
+): { letter: string; start: number; end: number; text: string }[] {
+  const markers: { letter: string; startInChunk: number; contentStartInChunk: number }[] = [];
+  // Same-line opener immediately after "(1)": " (a) Debt…"
+  const head = chunk.match(/^[ \t\u00a0\u202f]*\(([a-z])\)[ \t\u00a0\u202f]+/i);
+  if (head) {
+    markers.push({
+      letter: head[1]!.toLowerCase(),
+      startInChunk: head.index ?? 0,
+      contentStartInChunk: head[0].length,
+    });
+  }
+  const markerRe = /\n[\s\u00a0\u202f]*\(([a-z])\)[\s\u00a0\u202f]+/gi;
+  let m: RegExpExecArray | null;
+  while ((m = markerRe.exec(chunk)) !== null) {
+    markers.push({
+      letter: m[1]!.toLowerCase(),
+      startInChunk: m.index + 1,
+      contentStartInChunk: m.index + m[0].length,
+    });
+  }
+  markers.sort((a, b) => a.startInChunk - b.startInChunk);
+  const top: typeof markers = [];
+  let expected = "a".charCodeAt(0);
+  const seenStarts = new Set<number>();
+  for (const mk of markers) {
+    if (seenStarts.has(mk.startInChunk)) continue;
+    seenStarts.add(mk.startInChunk);
+    if (mk.letter.charCodeAt(0) === expected) {
+      top.push(mk);
+      expected += 1;
+    }
+  }
+  if (top.length < 1) return [];
+  return top.map((mk, i) => {
+    const nextStart = i + 1 < top.length ? top[i + 1]!.startInChunk : chunk.length;
+    return {
+      letter: mk.letter,
+      start: absoluteContentStart + mk.startInChunk,
+      end: absoluteContentStart + nextStart,
+      text: chunk.slice(mk.contentStartInChunk, nextStart).trim(),
+    };
+  });
+}
+
+/** Prefer lettered catalogs; fall back to numbered(+nested) indenture style. */
+function splitCatalogClauses(text: string): CatalogSplit | null {
+  return splitTopLevelLetteredClauses(text) ?? splitNumberedWithNestedLetters(text);
 }
 
 function locateDefinitionBody(
@@ -322,7 +453,7 @@ export function discoverDefinitionExceptionCatalogs(
     const nextPermitted = bodyText.slice(20).search(/\n\s*Permitted\s+[A-Z][A-Za-z ]{0,40}\s+means\b/);
     if (nextPermitted >= 0) bodyText = bodyText.slice(0, 20 + nextPermitted);
 
-    const split = splitTopLevelLetteredClauses(bodyText);
+    const split = splitCatalogClauses(bodyText);
     if (!split || split.items.length < 2) continue;
 
     const docText = index.getDocumentText(def.documentId) ?? "";
@@ -331,6 +462,7 @@ export function discoverDefinitionExceptionCatalogs(
 
     const clauses: ExceptionCatalogClause[] = split.items.map((item) => ({
       marker: item.marker,
+      // For nested markers like "1)(a", start may already be absolute within bodyText.
       charStartInDefinition: item.start,
       charEndInDefinition: item.end,
       text: item.text.trim(),
@@ -583,6 +715,63 @@ export function discoverSectionExceptionCatalogs(
     }
   }
   return out;
+}
+
+/**
+ * Discover ratio-based debt/lien incurrence permissions from lettered
+ * subsections under Limitation / Indebtedness / Liens sections.
+ * Deterministic and issuer-agnostic — no company IDs or hard-coded refs.
+ */
+export function discoverRatioBasedSectionPermissions(
+  index: StructuralIndex,
+  documentIds: string[],
+): DiscoveredCandidate[] {
+  const out: DiscoveredCandidate[] = [];
+  const RATIO_LIMB =
+    /\b(?:would be|is)\s+(?:no\s+)?(?:greater|less)\s+than\b|\bat\s+least\s+\d+(?:\.\d+)?\s+to\s+1|\bLeverage\s+Ratio\b|\bCoverage\s+Ratio\b|\bFixed\s+Charge\b/i;
+  const PARENT_HEADING =
+    /\b(?:Limitation on Incurrence|Limitation on Liens|Indebtedness|Liens|Incur(?:rence)? of Debt)\b/i;
+
+  for (const documentId of documentIds) {
+    const nodes = index.allNodes().filter((n) => n.documentId === documentId);
+    const sections = nodes.filter((n) => n.nodeType === "SECTION" && PARENT_HEADING.test(n.heading));
+    for (const section of sections) {
+      const children = nodes.filter(
+        (n) =>
+          (n.nodeType === "SUBSECTION" || n.nodeType === "CLAUSE") &&
+          n.sectionRef.startsWith(section.sectionRef + "(") &&
+          n.charStart >= section.charStart,
+      );
+      for (const child of children) {
+        const text = index.getNodeText(child.nodeId, "OWN") || index.getNodeText(child.nodeId, "DESCENDANTS") || "";
+        if (!RATIO_LIMB.test(text)) continue;
+        if (text.length < 40) continue;
+        const families = familyForTerm(section.heading + " " + text.slice(0, 120));
+        out.push(
+          makeCandidate({
+            documentId,
+            discoveryKey: `ratio-section|${documentId}|${child.sectionRef}|${text.slice(0, 80)}`,
+            structuralNodeIds: [child.nodeId],
+            structuralNodeKeys: [child.nodeKey],
+            normalizedSourceRef: child.sectionRef,
+            families: families.length ? families : ["INDEBTEDNESS"],
+            role: "RATIO_BASED_PERMISSION",
+            description: `Ratio-based permission at §${child.sectionRef}: ${text.slice(0, 160).replace(/\s+/g, " ")}`,
+            evidenceSignals: ["ratio_based_section_permission", "ratio_condition", `section:${child.sectionRef}`],
+            multipleRulesLikely: false,
+            definedTermDependencyLikely: true,
+            sourceCitation: `${documentId} §${child.sectionRef}`,
+          }),
+        );
+      }
+    }
+  }
+  const seen = new Set<string>();
+  return out.filter((c) => {
+    if (seen.has(c.discoveryId)) return false;
+    seen.add(c.discoveryId);
+    return true;
+  });
 }
 
 /**

@@ -326,6 +326,85 @@ describe("legacy gross capacity", () => {
     expect(html).toMatch(/MODELED \/ NOT VERIFIED/);
     expect(html).not.toMatch(/>AVAILABLE</);
   });
+
+  it("Position sides never auto-relabel legacy remainingCapacity as GROSS_CONTRACTUAL", () => {
+    const dashboard = {
+      asOfDate: new Date("2025-06-30T00:00:00Z"),
+      capacity: {
+        secured: {
+          remainingCapacity: 84,
+          utilizationRemainingAuthority: "NOT_PRODUCTION_AUTHORITATIVE",
+          packageAuthoritative: null,
+          perDocument: [],
+          binding: null,
+        },
+        unsecured: {
+          remainingCapacity: 40,
+          utilizationRemainingAuthority: "NOT_PRODUCTION_AUTHORITATIVE",
+          packageAuthoritative: null,
+          perDocument: [],
+          binding: null,
+        },
+      },
+      financialPosition: { capitalStructure: { facilities: [] } },
+      legalReview: { permissionsVerified: 0 },
+    } as unknown as Parameters<typeof buildPositionView>[0]["dashboard"];
+
+    const withoutGross = buildPositionView({
+      companyId: "adv-co",
+      dashboard,
+      readiness: { ...readinessBase, canEvaluateExecutableCapacity: true, hasFinancialSnapshot: true },
+      rulebook: rulebookBase,
+    });
+    for (const side of withoutGross.sides) {
+      expect(side.remaining.claimKind).toBe("UNAVAILABLE");
+      expect(side.remaining.status).not.toBe("GROSS_CONTRACTUAL");
+      expect(side.remaining.amountMillions).toBeNull();
+    }
+
+    const sourceBackedGross = presentCapacityClaim({
+      claimKind: "GROSS_CONTRACTUAL",
+      amountMillions: 1300,
+      publicationLabel: "GROSS_CONTRACTUAL",
+    });
+    const unavailable = presentCapacityClaim({
+      claimKind: "UNAVAILABLE",
+      amountMillions: null,
+      publicationLabel: "UNKNOWN",
+      unavailableReason: "test",
+    });
+    const withGross = buildPositionView({
+      companyId: "adv-co",
+      dashboard,
+      readiness: { ...readinessBase, canEvaluateExecutableCapacity: true, hasFinancialSnapshot: true },
+      rulebook: rulebookBase,
+      separatedClaims: {
+        secured: {
+          grossContractual: sourceBackedGross,
+          hypotheticalModeled: unavailable,
+          verifiedRemaining: unavailable,
+          unknownUnsupported: unavailable,
+          bindingRestrictions: [],
+          sourceEvidence: [],
+          missingInputs: [],
+          remainingAuthoritative: false,
+        },
+        unsecured: {
+          grossContractual: unavailable,
+          hypotheticalModeled: unavailable,
+          verifiedRemaining: unavailable,
+          unknownUnsupported: unavailable,
+          bindingRestrictions: [],
+          sourceEvidence: [],
+          missingInputs: [],
+          remainingAuthoritative: false,
+        },
+      },
+    });
+    expect(withGross.sides.find((s) => s.side === "secured")!.remaining.claimKind).toBe("GROSS_CONTRACTUAL");
+    expect(withGross.sides.find((s) => s.side === "secured")!.remaining.amountMillions).toBe(1300);
+    expect(withGross.sides.find((s) => s.side === "unsecured")!.remaining.claimKind).toBe("UNAVAILABLE");
+  });
 });
 
 describe("shared-capacity uncertainty", () => {
@@ -351,28 +430,31 @@ describe("shared-capacity uncertainty", () => {
 describe("journey navigation", () => {
   it("renders the CFO workflow without inventing numbers", () => {
     const html = renderToStaticMarkup(<WorkflowJourney companyId="adv-co" current="position" />);
-    expect(html).toMatch(/Documents/);
-    expect(html).toMatch(/Verified rulebook|Rulebook/);
+    expect(html).toMatch(/Upload/);
+    expect(html).toMatch(/Analyze/);
+    expect(html).toMatch(/Review/);
     expect(html).toMatch(/Position/);
-    expect(html).toMatch(/Ask/);
     expect(html).toMatch(/Simulate/);
-    expect(html).toMatch(/Evidence/);
+    expect(html).toMatch(/Audit/);
     expect(html).not.toMatch(/\$\d/);
   });
 
-  it("primary nav includes Rulebook between Covenants and Position", async () => {
+  it("primary nav orders CFO journey before legacy tools", async () => {
     const { companyNavItems } = await import("@/lib/home/nav");
     const labels = companyNavItems("adv-co", "ACTIVE").map((i) => i.label);
-    expect(labels.indexOf("Rulebook")).toBeGreaterThan(labels.indexOf("Covenants"));
-    expect(labels.indexOf("Rulebook")).toBeLessThan(labels.indexOf("Position"));
+    expect(labels.indexOf("Upload")).toBeLessThan(labels.indexOf("Analyze"));
+    expect(labels.indexOf("Analyze")).toBeLessThan(labels.indexOf("Review"));
+    expect(labels.indexOf("Review")).toBeLessThan(labels.indexOf("Position"));
+    expect(labels.indexOf("Position")).toBeLessThan(labels.indexOf("Simulate"));
+    expect(labels.indexOf("Simulate")).toBeLessThan(labels.indexOf("Audit"));
   });
 });
 
 describe("route source guards", () => {
-  it("Position page labels remaining non-authoritative and references PR #268 gap", () => {
+  it("Position page labels remaining non-authoritative and refuses dashboard-flag AVAILABLE", () => {
     const src = readFileSync(path.join(process.cwd(), "app/[companyId]/position/page.tsx"), "utf8");
     expect(src).toMatch(/MODELED \/ NOT VERIFIED|NOT_PRODUCTION_AUTHORITATIVE|remainingIsAuthoritative: false/);
-    expect(src).toMatch(/#268|PR #268/);
+    expect(src).toMatch(/Dashboard authority flags alone never publish AVAILABLE|remainingIsAuthoritative: false/);
     expect(src).toMatch(/buildPositionView/);
     expect(src).not.toMatch(/remainingCapacity.*AVAILABLE/);
   });

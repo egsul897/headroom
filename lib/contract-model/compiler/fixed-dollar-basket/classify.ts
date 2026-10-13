@@ -20,6 +20,10 @@ export interface ResidualCondition {
     | "PROVISO_OR_CONDITIONAL"
     | "GROWER_OR_FORMULA"
     | "SHARED_CAP_COMBINE"
+    | "NO_DEFAULT_CONDITION"
+    | "ENTITY_SCOPE"
+    | "ELIGIBILITY_RESTRICTION"
+    | "CROSS_DOCUMENT_RESTRICTION"
     | "OTHER_MATERIAL";
   excerpt: string;
   /** Stable input name used when encoding as TRANSACTION_INPUT_REFERENCE gate. */
@@ -50,6 +54,15 @@ const RATIO_RE = /\b(?:Leverage|Coverage)\s+Ratio\b|\bfinancial\s+covenants?\b|\
 const CROSS_SEC_RE = /\bSection\s+\d+\.\d+(?:\([a-z0-9]+\))?/i;
 const PROVISO_RE = /\b(?:provided\s*,?\s*that|so\s+long\s+as|subject\s+to)\b/i;
 const SHARED_RE = /\b(?:when\s+combined|without\s+duplication|together\s+with)\b/i;
+const NO_DEFAULT_RE =
+  /\b(?:no\s+(?:Event\s+of\s+)?Default(?:\s+or\s+Event\s+of\s+Default)?\s+(?:shall\s+have\s+occurred|exists?|has\s+occurred)|so\s+long\s+as\s+no\s+(?:Event\s+of\s+)?Default)\b/i;
+/** Material entity-scope gates — not bare "the Company" obligor chapeau. */
+const ENTITY_SCOPE_RE =
+  /\b(?:of\s+(?:any\s+)?(?:Restricted|Foreign)\s+Subsidiar(?:y|ies)|by\s+(?:any\s+)?(?:Restricted|Foreign)\s+Subsidiar(?:y|ies)|Loan\s+Part(?:y|ies)\s+other\s+than|Guarantors?\s+other\s+than)\b/i;
+const ELIGIBILITY_RE =
+  /\b(?:in\s+the\s+form\s+of\s+a\s+term\s+loan|not\s+(?:constitute|be)\s+in\s+the\s+form|eligible\s+(?:assets?|receivables?))\b/i;
+const CROSS_DOC_RE =
+  /\b(?:pursuant\s+to\s+(?:the\s+)?(?:Credit\s+Agreement|Indenture|Intercreditor\s+Agreement)|under\s+(?:the\s+)?(?:Credit\s+Agreement|Indenture)\s+and\s+not\s+under\s+this)\b/i;
 
 function parseUsd(raw: string): number {
   return Number(raw.replace(/,/g, ""));
@@ -120,8 +133,13 @@ export function classifyFixedDollarBasket(operativeText: string): FixedDollarCla
   push("CROSS_SECTION_LINK", CROSS_SEC_RE, "qualitative_gate:cross_section_condition_satisfied");
   push("PROVISO_OR_CONDITIONAL", PROVISO_RE, "qualitative_gate:proviso_satisfied");
   push("SHARED_CAP_COMBINE", SHARED_RE, "qualitative_gate:shared_cap_combine_satisfied");
+  push("NO_DEFAULT_CONDITION", NO_DEFAULT_RE, "qualitative_gate:no_default_satisfied");
+  push("ENTITY_SCOPE", ENTITY_SCOPE_RE, "qualitative_gate:entity_scope_satisfied");
+  push("ELIGIBILITY_RESTRICTION", ELIGIBILITY_RE, "qualitative_gate:eligibility_restriction_satisfied");
+  push("CROSS_DOCUMENT_RESTRICTION", CROSS_DOC_RE, "qualitative_gate:cross_document_restriction_satisfied");
 
   // "Restricted Compan(y|ies)" alone is standard obligor language, not a residual gate.
+  // ENTITY_SCOPE above catches Restricted Subsidiaries / Loan Parties as material scope gates.
   if (residuals.length === 0) {
     reasons.push("sole_fixed_dollar_cap");
     return {

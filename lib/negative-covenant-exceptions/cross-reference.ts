@@ -74,8 +74,8 @@ export function resolveCrossReferences(input: {
       if (superseded.has(norm) || superseded.has(sectionNum)) {
         resolution = "SUPERSEDED";
       } else if (known.size === 0) {
-        // Structural presence in same instrument text without full atlas → controlling but atlas-unjoined
-        resolution = "RESOLVED_CONTROLLING";
+        // PAI-10: empty atlas ≠ resolved controlling — incomplete join must not look complete.
+        resolution = "AMBIGUOUS";
       } else if (
         known.has(norm) ||
         known.has(sectionNum) ||
