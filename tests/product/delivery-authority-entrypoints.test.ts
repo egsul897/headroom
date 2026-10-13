@@ -235,4 +235,59 @@ describe("authoritative entrypoints — delivery authority", () => {
     expect(binder.boundSnapshotId).toBe(readiness.cutoff?.snapshotId);
     expect(binder.boundSnapshotId).toBe(certified.approvedSnapshotId);
   });
+  it("APPROVED + asOf only (no reviewedAt, no deliveredAt) → fail closed at both entrypoints", async () => {
+    const asOfOnly: FinancialSnapshot = {
+      snapshotId: "snap-asof-only",
+      version: "v1",
+      companyId: CO,
+      asOf: "2026-06-30",
+      reportingPeriod: "FY2026-Q2",
+      status: "APPROVED",
+      supersedesSnapshotId: null,
+      inputs: [],
+      provenance: { source: "doc-1", sourceVersion: "sha256:v1" },
+      review: { reviewedBy: null, reviewedAt: null, approvalRef: "apr-asof-only" },
+    };
+    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([asOfOnly]);
+    mocks.loadCutoffEligibleSnapshotsFromPrisma.mockResolvedValue([asOfOnly]);
+
+    const readiness = await loadTransactionWorkflowReadiness(CO, {
+      evaluationDate: "2026-08-01",
+    });
+    expect(readiness.cutoff?.state).toBe("NEEDS_INPUT");
+    expect(readiness.canRunTransactionWorkflow).toBe(false);
+
+    const attempt = await attemptCertifiedTransaction({
+      companyId: CO,
+      evaluationDate: "2026-08-01",
+      verifiedPackage: null,
+    });
+    expect(attempt.cutoffState).toBe("NEEDS_INPUT");
+    expect(attempt.blockers).toContain("CUTOFF_UNRESOLVED");
+  });
+
+  it("wrong-company delivered snapshot cannot authorize this company's readiness/certified cutoff", async () => {
+    const foreign: FinancialSnapshot = {
+      ...approvedWithDelivery(),
+      snapshotId: "snap-foreign",
+      companyId: "other-co",
+    };
+    const localNoDelivery = approvedNoDelivery();
+    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([foreign, localNoDelivery]);
+    mocks.loadCutoffEligibleSnapshotsFromPrisma.mockResolvedValue([foreign, localNoDelivery]);
+
+    const readiness = await loadTransactionWorkflowReadiness(CO, {
+      evaluationDate: "2026-08-01",
+    });
+    expect(readiness.cutoff?.state).toBe("NEEDS_INPUT");
+
+    const attempt = await attemptCertifiedTransaction({
+      companyId: CO,
+      evaluationDate: "2026-08-01",
+      verifiedPackage: null,
+    });
+    expect(attempt.cutoffState).toBe("NEEDS_INPUT");
+    expect(attempt.approvedSnapshotId).toBeNull();
+    expect(attempt.blockers).toContain("CUTOFF_UNRESOLVED");
+  });
 });
