@@ -96,7 +96,8 @@ export default async function SimulatePage({
   const verifiedSummary = summarizeVerifiedSimulate(verified);
   const simView = workflow.simulate;
   const ns4Financial = ns4Identity.bundle;
-  // PRODUCTION surface — utilizationAuthority null; synthetic remaining stripped inside #340.
+  // Same CompanyCovenantData as Position; utilizationAuthority null → verified remaining withheld.
+  // PRODUCTION surface — synthetic remaining stripped inside #340 sanitizer.
   const crossDomainAcquisition = evaluateSimulateCrossDomainAcquisition({
     data,
     amountMillions: amountMillions > 0 ? amountMillions : 150,

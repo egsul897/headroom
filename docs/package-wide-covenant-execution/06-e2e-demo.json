@@ -1,0 +1,268 @@
+{
+  "version": "package-transaction-execution.v1",
+  "crossDomainVersion": "cross-domain-transaction.v2",
+  "packageIdentity": {
+    "companyId": "coherent",
+    "evaluationDate": "2026-06-30",
+    "documentIds": [
+      "coherent-credit-agreement-2022",
+      "coherent-2029-notes-indenture"
+    ],
+    "approvedSnapshotId": null
+  },
+  "scenario": "Debt-funded acquisition — $150M secured financing + investment capacity",
+  "overallStatus": "not_tested",
+  "packagePermitted": false,
+  "financialInputs": {
+    "contractualEbitda": 1700,
+    "ebitdaDerivation": "SUPPORTING_RECONSTRUCTION",
+    "leverage": {
+      "netDebt": 2096,
+      "netSecured": 1059,
+      "totalNetLeverage": 1.2329411764705882,
+      "seniorSecuredNetLeverage": 0.6229411764705882,
+      "interestCoverage": 8.947368421052632
+    },
+    "fingerprint": "1700|1162|3258|2221|190|520|2150"
+  },
+  "utilization": {
+    "authoritySupplied": false,
+    "verifiedRemainingPublished": false,
+    "note": "Verified remaining withheld — no canonical utilization authority"
+  },
+  "applicableDomains": [
+    "DEBT_INCURRENCE_REFINANCING",
+    "LIENS_SECURED_CAPACITY",
+    "INVESTMENTS_ACQUISITIONS",
+    "GUARANTEES",
+    "FINANCIAL_COVENANTS_RATIO_CAPACITY",
+    "CROSS_DOCUMENT_SHARED_CAPACITY",
+    "AMENDMENT_VERSION_EFFECTIVE_DATE",
+    "LEDGER_UTILIZATION_RECLASSIFICATION",
+    "SUBSIDIARY_DESIGNATION_STRUCTURAL",
+    "MULTI_CONDITION_SIMULATION"
+  ],
+  "irrelevantDomains": [
+    "RESTRICTED_PAYMENTS_BUILDER",
+    "ASSET_SALES_PROCEEDS",
+    "AFFILIATE_TRANSACTIONS"
+  ],
+  "perCovenant": [
+    {
+      "domain": "DEBT_INCURRENCE_REFINANCING",
+      "support": "PARTIAL",
+      "status": "review_required",
+      "applicable": true
+    },
+    {
+      "domain": "LIENS_SECURED_CAPACITY",
+      "support": "PARTIAL",
+      "status": "review_required",
+      "applicable": true
+    },
+    {
+      "domain": "INVESTMENTS_ACQUISITIONS",
+      "support": "PARTIAL",
+      "status": "review_required",
+      "applicable": true
+    },
+    {
+      "domain": "GUARANTEES",
+      "support": "PARTIAL",
+      "status": "review_required",
+      "applicable": true
+    },
+    {
+      "domain": "FINANCIAL_COVENANTS_RATIO_CAPACITY",
+      "support": "PARTIAL",
+      "status": "review_required",
+      "applicable": true
+    },
+    {
+      "domain": "SUBSIDIARY_DESIGNATION_STRUCTURAL",
+      "support": "UNSUPPORTED",
+      "status": "not_tested",
+      "applicable": true
+    },
+    {
+      "domain": "CROSS_DOCUMENT_SHARED_CAPACITY",
+      "support": "PARTIAL",
+      "status": "review_required",
+      "applicable": true
+    },
+    {
+      "domain": "AMENDMENT_VERSION_EFFECTIVE_DATE",
+      "support": "PARTIAL",
+      "status": "not_applicable",
+      "applicable": true
+    },
+    {
+      "domain": "LEDGER_UTILIZATION_RECLASSIFICATION",
+      "support": "PARTIAL",
+      "status": "not_applicable",
+      "applicable": true
+    },
+    {
+      "domain": "MULTI_CONDITION_SIMULATION",
+      "support": "PARTIAL",
+      "status": "review_required",
+      "applicable": true
+    }
+  ],
+  "citations": [
+    "Credit Agreement (2022, as amended) · §6.11 — TNL ≤ 4.25x",
+    "2029 Senior Notes Indenture · §3.3(b)(i)(C) — SSNL ≤ 3.00x",
+    "§6.11 — TNL ≤ 4.25x",
+    "§3.4(a)(C) · Builder Basket (Available Amount)",
+    "§6.11 — IC ≥ 2.50x",
+    "§3.3(a) — FCCR ≥ 2.00x",
+    "§3.3(b)(i)(C) — SSNL ≤ 3.00x",
+    "§3.3(b)(i)(C) — TNL ≤ 5.00x",
+    "Permitted Liens cl. (24) — SSNL ≤ 3.00x",
+    "Credit Agreement (2022, as amended)",
+    "2029 Senior Notes Indenture",
+    "Target joins restricted group; no unrestricted subsidiary election.",
+    "Financing is secured incremental debt tested under Credit Agreement + Indenture capacityFormulas.",
+    "Investment leg tested via Indenture RP waterfall kind=investment (not a separate PA basket).",
+    "No attributed historical utilization; remaining capacity not claimed."
+  ],
+  "missingInputs": [
+    "independent lien priority / collateral scope evaluation",
+    "guarantee agreement operative version",
+    "guarantor / non-guarantor subsidiary roster",
+    "express SharedCapacityConstraint for cross-document pool",
+    "attributed utilization evidence",
+    "trusted completeness certificate",
+    "subsidiary designation election records",
+    "restricted-group membership as-of"
+  ],
+  "assumptions": [
+    "Target joins restricted group; no unrestricted subsidiary election.",
+    "Financing is secured incremental debt tested under Credit Agreement + Indenture capacityFormulas.",
+    "Investment leg tested via Indenture RP waterfall kind=investment (not a separate PA basket).",
+    "No attributed historical utilization; remaining capacity not claimed."
+  ],
+  "limitations": [
+    "Gross capacity is never described as verified available capacity.",
+    "Modeled remaining is never relabeled as verified remaining.",
+    "Caller-supplied utilizationAttributed / utilizationCompletenessCertified flags never authorize verified remaining.",
+    "No contractual permissions or historical utilization are invented.",
+    "Verified remaining capacity withheld — canonical utilization authority not supplied.",
+    "Acquisition target guarantee / restricted-group admission not simulated — entity scope stated in assumptions only."
+  ],
+  "unresolvedBlockers": [
+    "DEBT_INCURRENCE_REFINANCING: PARTIAL — cannot publish package-wide PERMITTED",
+    "LIENS_SECURED_CAPACITY: PARTIAL — cannot publish package-wide PERMITTED",
+    "INVESTMENTS_ACQUISITIONS: PARTIAL — cannot publish package-wide PERMITTED",
+    "GUARANTEES: PARTIAL — cannot publish package-wide PERMITTED",
+    "FINANCIAL_COVENANTS_RATIO_CAPACITY: PARTIAL — cannot publish package-wide PERMITTED",
+    "CROSS_DOCUMENT_SHARED_CAPACITY: PARTIAL — cannot publish package-wide PERMITTED",
+    "SUBSIDIARY_DESIGNATION_STRUCTURAL: UNSUPPORTED — Unrestricted/restricted subsidiary designation is not executable — redesignation never applied",
+    "MULTI_CONDITION_SIMULATION: PARTIAL — cannot publish package-wide PERMITTED",
+    "Verified remaining unpublished — canonical utilization authority absent"
+  ],
+  "hypotheticalPostState": {
+    "totalNetLeverage": 1.3211764705882354,
+    "seniorSecuredNetLeverage": 0.7111764705882353,
+    "interestCoverage": 8.51063829787234,
+    "postsToLedger": false,
+    "authority": "HYPOTHETICAL"
+  },
+  "steps": [
+    {
+      "index": 1,
+      "id": "ACCEPT_TRANSACTION_AND_PACKAGE",
+      "status": "OK",
+      "detail": "company=coherent asOf=2026-06-30 docs=2 snapshot=— kind=DEBT_FUNDED_ACQUISITION amount=$150M"
+    },
+    {
+      "index": 2,
+      "id": "IDENTIFY_APPLICABLE_COVENANTS",
+      "status": "OK",
+      "detail": "10 applicable · 3 irrelevant for DEBT_FUNDED_ACQUISITION"
+    },
+    {
+      "index": 3,
+      "id": "CLASSIFY_RELEVANCE",
+      "status": "OK",
+      "detail": "Irrelevant (disclosed, not evaluated as gating): RESTRICTED_PAYMENTS_BUILDER, ASSET_SALES_PROCEEDS, AFFILIATE_TRANSACTIONS"
+    },
+    {
+      "index": 4,
+      "id": "RESOLVE_PERMISSIBLE_PATHS",
+      "status": "REFUSED",
+      "detail": "Paths follow capacityFormulas / waterfall order; no silent basket election. Solver-native elections require declarations."
+    },
+    {
+      "index": 5,
+      "id": "COMPUTE_GROSS_CAPACITY",
+      "status": "OK",
+      "detail": "DEBT_INCURRENCE_REFINANCING gross=$4041.0M modeled=$4041.0M verified=withheld · LIENS_SECURED_CAPACITY gross=$5129.0M modeled=$5129.0M verified=withheld · INVESTMENTS_ACQUISITIONS gross=$3450.0M modeled=$0.0M verified=withheld · FINANCIAL_COVENANTS_RATIO_CAPACITY gross=$5129.0M modeled=n/a verified=withheld"
+    },
+    {
+      "index": 6,
+      "id": "APPLY_SHARED_CAPACITY",
+      "status": "PARTIAL",
+      "detail": "Stacking across documents is not assumed without express shared constraints."
+    },
+    {
+      "index": 7,
+      "id": "REQUIRE_UTILIZATION_COMPLETENESS",
+      "status": "REFUSED",
+      "detail": "No utilization authority — verified remaining withheld (caller flags ignored)"
+    },
+    {
+      "index": 8,
+      "id": "EVALUATE_CONDITIONS",
+      "status": "PARTIAL",
+      "detail": "entityScope=[BORROWER, RESTRICTED_SUBSIDIARY] asOf=2026-06-30 financialIdentityValid=true"
+    },
+    {
+      "index": 9,
+      "id": "HYPOTHETICAL_POST_STATE",
+      "status": "OK",
+      "detail": "TNL=1.32 SSNL=0.71 coverage=8.51 · postsToLedger=false"
+    },
+    {
+      "index": 10,
+      "id": "RETURN_RESULTS_WITH_TRACE",
+      "status": "PARTIAL",
+      "detail": "overall=not_tested packagePermitted=false (requires all applicable EXECUTABLE+clear)"
+    }
+  ],
+  "coverageCounts": {
+    "PARTIAL": 11,
+    "UNSUPPORTED": 2,
+    "EXECUTABLE": 0
+  },
+  "debtBinding": {
+    "document": "2029 Senior Notes Indenture",
+    "provision": "§3.3(b)(i)(C) — SSNL ≤ 3.00x",
+    "status": "clear",
+    "grossCapacity": 4041
+  },
+  "rpSteps": [
+    {
+      "sectionRef": "§3.4(a)(C)",
+      "basketName": "Builder Basket (Available Amount)",
+      "allocated": 150
+    }
+  ],
+  "trace": [
+    "package-transaction-execution.v1 via cross-domain-transaction.v2",
+    "owner=package-wide-covenant-execution (absorbs #340 authority)",
+    "scenario=DEBT_FUNDED_ACQUISITION amount=150 secured=true",
+    "overall=not_tested packagePermitted=false",
+    "step1:ACCEPT_TRANSACTION_AND_PACKAGE:OK",
+    "step2:IDENTIFY_APPLICABLE_COVENANTS:OK",
+    "step3:CLASSIFY_RELEVANCE:OK",
+    "step4:RESOLVE_PERMISSIBLE_PATHS:REFUSED",
+    "step5:COMPUTE_GROSS_CAPACITY:OK",
+    "step6:APPLY_SHARED_CAPACITY:PARTIAL",
+    "step7:REQUIRE_UTILIZATION_COMPLETENESS:REFUSED",
+    "step8:EVALUATE_CONDITIONS:PARTIAL",
+    "step9:HYPOTHETICAL_POST_STATE:OK",
+    "step10:RETURN_RESULTS_WITH_TRACE:PARTIAL",
+    "LEGACY_ENGINE package composition + contractual computation — NOT_CERTIFIED_4E. Gross ≠ modeled ≠ verified remaining. Verified remaining only via resolveUtilization + computeVerifiedRemaining."
+  ]
+}
