@@ -6,12 +6,12 @@ North Star v2 §§10–11 is the acceptance test: a real package, a real financi
 
 Status: this change.
 
-- Package: Matthews International, the authentic excerpt and Q1 FY2025 figures already used by the secured-debt workflow.
+- Package: Matthews International. Operative text is the pinned EDGAR indenture, Fifth Amendment (strikethrough removed), and Sixth Amendment (`tests/fixtures/edgar/matthews/`, source URL + sha256). As-of 2024-12-31; the 2026 Eighth Amendment is not operative.
 - Spine: Phase-4A `evaluateLeverageOrCoverageRatio` / `evaluateExpression`. Not `lib/covenant-engine.ts`.
-- Ratios: only from a bound “means the ratio of … to …” sentence. FCCR uses Consolidated Fixed Charges, never Interest Expense. First-lien, secured net leverage, and interest coverage stay `NEEDS_INPUT` or `UNKNOWN` until their definitions are in the excerpt.
-- Baskets in the excerpt: typed (fixed-dollar, ratio, or unknown) with gross cap only when the cap role is in the text. Remaining capacity stays `NEEDS_INPUT` (no usage ledger).
-- Omissions, with no numbers: CA §5.14(a)/(b), §4.09(a) non-guarantor proviso, Permitted Debt (3)–(22).
-- Golden test cites the excerpt lines. Emits a `CALCULATION` artifact and `CALCULATION_MISMATCH` errors for the #356 loop. No Neon write.
+- Ratios: only from a bound “means / shall mean the ratio of … to …” sentence. FCCR uses Consolidated Fixed Charges. Secured net leverage, first lien, CA leverage, senior leverage, and interest coverage stay `NEEDS_INPUT` where Eligible Cash Equivalents, First Lien Debt, Net Indebtedness, Senior Indebtedness, or CA EBITDA is unbound. Total Net Leverage is not defined in those exhibits.
+- Baskets: Permitted Debt (1)(a) and (2)–(22), §4.09(a) and its non-guarantor proviso, §4.10, §5.14, §6.01(j). Gross caps only from the clause. Remaining capacity stays `NEEDS_INPUT`.
+- Omission: no filed compliance certificate. The in-repo certificate is a reconstruction, not an EDGAR exhibit.
+- Golden test cites the exhibit lines. Emits a `CALCULATION` artifact and `CALCULATION_MISMATCH` errors for the #356 loop. No Neon write.
 
 ## M2 — Neon flywheel persist (#356)
 

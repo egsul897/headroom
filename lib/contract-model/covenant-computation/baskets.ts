@@ -19,7 +19,7 @@ import type { MetricInput } from "../runtime/types";
 import type { BasketCategory, BasketClause, ComputationPackage, ComputationStatus, ComputedBasket, ComputedRatio } from "./types";
 import { CERTIFICATION } from "./types";
 import { canonicalOf } from "./ratios";
-import { dollarToken, norm } from "./text";
+import { dollarAmountIsMillions, dollarToken, millionsToUsd, norm } from "./text";
 
 const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKind> = {
   FIXED_DOLLAR: "FIXED_DOLLAR_CEILING",
@@ -112,10 +112,12 @@ function evalFixed(
   if (!token || fixed.class === "NOT_FIXED_DOLLAR") {
     return { ...capShell("NEEDS_INPUT", "NONE", null, null, ["fixed-dollar cap token"], null), note: "Classifier did not yield a single cap-role dollar." };
   }
+  const millions = dollarAmountIsMillions(clause.operativeText, token);
+  const amount = millions ? Number(millionsToUsd(token)) : Number(token);
   const expression: IRExpression = {
     kind: "MONEY",
     type: "MONEY",
-    amount: Number(token),
+    amount,
     currency: "USD",
     exprId: `cc:${clause.stableKey}:cap`,
     provenance: prov(clause),
@@ -160,12 +162,18 @@ function evalGrower(
       note: "Greater-of metric is not bound. The fixed limb is not reported as the cap.",
     };
   }
-  if (metric.value.currency !== "USD") {
+  const statedMillions = dollarAmountIsMillions(clause.operativeText, fixedToken);
+  const aligned =
+    (statedMillions && metric.value.currency === "USD_MILLIONS") ||
+    (!statedMillions && metric.value.currency === "USD");
+  if (!aligned) {
     return {
       ...capShell("NEEDS_INPUT", "NONE", null, null, ["currency alignment between the fixed-dollar limb (USD) and the metric"], null),
       note: "Fixed dollars and the metric are in different units. No scale factor was assumed.",
     };
   }
+  const currency = metric.value.currency;
+  const fixedAmount = Number(fixedToken);
   const p = prov(clause);
   const expression: IRExpression = {
     kind: "MAX",
@@ -173,7 +181,7 @@ function evalGrower(
     exprId: `cc:${clause.stableKey}:grower`,
     provenance: p,
     operands: [
-      { kind: "MONEY", type: "MONEY", amount: Number(fixedToken), currency: "USD", exprId: `cc:${clause.stableKey}:fixed`, provenance: p },
+      { kind: "MONEY", type: "MONEY", amount: fixedAmount, currency, exprId: `cc:${clause.stableKey}:fixed`, provenance: p },
       {
         kind: "MULTIPLY",
         type: "MONEY",
@@ -204,10 +212,12 @@ function evalGrower(
     };
   }
   return {
-    ...capShell("COMPUTED", "AMOUNT", canonical, "USD", [], null),
+    ...capShell("COMPUTED", "AMOUNT", canonical, currency, [], null),
     remainingStatus: "NEEDS_INPUT",
     missingInputs: ["ledger usage"],
-    note: "Greater-of cap from evaluateExpression. Remaining usage is not bound.",
+    note: statedMillions
+      ? "Greater-of cap from evaluateExpression. The fixed limb is written in millions, the same unit as the bound metric. Remaining usage is not bound."
+      : "Greater-of cap from evaluateExpression. Remaining usage is not bound.",
   };
 }
 

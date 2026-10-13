@@ -23,7 +23,9 @@ export type RatioKey =
   | "FIRST_LIEN_NET_LEVERAGE"
   | "FIRST_LIEN_GROSS_LEVERAGE"
   | "FIXED_CHARGE_COVERAGE"
-  | "INTEREST_COVERAGE";
+  | "INTEREST_COVERAGE"
+  | "LEVERAGE"
+  | "SENIOR_LEVERAGE";
 
 export type RatioDirection = "MAX" | "MIN";
 

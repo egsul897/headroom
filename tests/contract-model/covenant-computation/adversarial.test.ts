@@ -33,8 +33,9 @@ describe("covenant computation adversarial", () => {
     expect(fccr?.status).toBe("NEEDS_INPUT");
     expect(fccr?.canonical).toBeNull();
     expect(fccr?.missingInputs.join(" ")).toMatch(/Fixed Charges/i);
-    expect(interest?.status).toBe("UNKNOWN");
+    expect(interest?.status).toBe("NEEDS_INPUT");
     expect(interest?.canonical).toBeNull();
+    expect(interest?.missingInputs).toContain("EBITDA");
     expect(book.mistakes).toEqual([]);
   });
 
@@ -49,7 +50,7 @@ describe("covenant computation adversarial", () => {
           field: "basket.category",
           corrected: "FIXED_DOLLAR",
           rationale: "treat the 2.00x test as a dollar cap",
-          citationExcerpt: "Consolidated Fixed Charge Coverage Ratio would be at least 2.00 to 1.00",
+          citationExcerpt: "would be at least 2.00 to 1.00",
         },
       ],
     });

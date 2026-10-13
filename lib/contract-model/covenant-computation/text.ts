@@ -34,3 +34,23 @@ export function dollarToken(excerpt: string): string | null {
 export function statedAsMillions(excerpt: string): boolean {
   return /\bmillion\b/i.test(excerpt);
 }
+
+/** True when this dollar token is written as "$N million", not as a full dollar figure. */
+export function dollarAmountIsMillions(text: string, token: string): boolean {
+  const re = /\$\s*([\d,]+(?:\.\d+)?)\s+million\b/gi;
+  for (const match of text.matchAll(re)) {
+    if (match[1]!.replace(/,/g, "") === token) return true;
+  }
+  return false;
+}
+
+/** "$1,300.0 million" → "1300000000". The scale is the word in the citation, not an assumed unit conversion. */
+export function millionsToUsd(token: string): string {
+  const [whole, frac = ""] = token.split(".");
+  if (!whole || !/^\d+$/.test(whole) || (frac !== "" && !/^\d+$/.test(frac))) {
+    throw new Error(`covenant computation: bad million token: ${token}`);
+  }
+  const scale = 6 - frac.length;
+  if (scale < 0) throw new Error(`covenant computation: million token has more than 6 decimals: ${token}`);
+  return (BigInt(whole + frac) * 10n ** BigInt(scale)).toString();
+}

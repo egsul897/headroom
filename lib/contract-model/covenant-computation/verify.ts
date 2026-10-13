@@ -10,7 +10,7 @@ import { subtract, toCanonicalString } from "../runtime/decimal";
 import type { MetricInput } from "../runtime/types";
 import type { ComputationMistake, ComputationPackage, ComputationResult } from "./types";
 import { canonicalOf, parseCanonical } from "./ratios";
-import { citedIn } from "./text";
+import { citedIn, millionsToUsd } from "./text";
 
 export function verifyComputation(args: {
   pkg: ComputationPackage;
@@ -124,9 +124,7 @@ export function verifyComputation(args: {
       });
     }
     if (basket.capStatus === "COMPUTED" && basket.capCanonical && basket.citationExcerpt) {
-      const digits = basket.capCanonical.replace(/[^0-9]/g, "");
-      const citedDigits = basket.citationExcerpt.replace(/[^0-9]/g, "");
-      if (basket.capKind === "AMOUNT" && digits && !citedDigits.includes(digits)) {
+      if (basket.capKind === "AMOUNT" && !capCited(basket.citationExcerpt, basket.capCanonical)) {
         mistakes.push({
           stableKey: basket.stableKey,
           message: "Gross cap digits are not in the operative text.",
@@ -147,4 +145,17 @@ export function verifyComputation(args: {
   }
 
   return mistakes;
+}
+
+function capCited(excerpt: string, canonical: string): boolean {
+  const digits = canonical.replace(/[^0-9]/g, "");
+  if (!digits) return true;
+  if (excerpt.replace(/[^0-9]/g, "").includes(digits)) return true;
+  const millions = excerpt.matchAll(/\$\s*([\d,]+(?:\.\d+)?)\s+million\b/gi);
+  for (const match of millions) {
+    const token = match[1]!.replace(/,/g, "");
+    if (millionsToUsd(token) === digits) return true;
+  }
+  // A greater-of product is not written out; the limbs are. The golden test checks the product.
+  return /\bgreater\s+of\b/i.test(excerpt) && /\d+(?:\.\d+)?\s*%/.test(excerpt);
 }
