@@ -191,6 +191,34 @@ async function main() {
   });
 
   // -------------------------------------------------------------------------
+  // 1b. DefinedTerms for contractual leverage computation (Indenture §1.01).
+  //     Texts follow the Indenture's Secured Net Leverage / Consolidated EBITDA
+  //     drafting shape used by Permitted Debt cl. (1)(b)(x). Not issuer-specific
+  //     engine code — data only, consumed by the generalized contractual-leverage
+  //     module via DefinedTerm.fullText.
+  // -------------------------------------------------------------------------
+  await prisma.definedTerm.createMany({
+    data: [
+      {
+        documentId: IND_ID,
+        termName: "Consolidated EBITDA",
+        sectionRef: "§1.01",
+        fullText:
+          `"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in determining such Consolidated Net Income, (a) Consolidated Interest Expense, (b) income tax expense (or minus any income tax benefit), (c) depreciation and amortization expense, and (d) non-cash expenses and losses (excluding depreciation and amortization), in each case determined on a consolidated basis for the Issuer and its Restricted Subsidiaries.`,
+        status: "UNVERIFIED",
+      },
+      {
+        documentId: IND_ID,
+        termName: "Secured Net Leverage Ratio",
+        sectionRef: "§1.01",
+        fullText:
+          `"Secured Net Leverage Ratio" means, as of any date of determination, the ratio of (a) Consolidated Total Indebtedness that is secured by a Lien as of such date, less unrestricted cash and Cash Equivalents of the Issuer and its Restricted Subsidiaries as of such date, to (b) Consolidated EBITDA for the most recently ended four fiscal quarters for which internal financial statements are available.`,
+        status: "UNVERIFIED",
+      },
+    ],
+  });
+
+  // -------------------------------------------------------------------------
   // 2. Legacy FinancialSnapshot — required for ANY covenant math (legacy or
   //    solver-native) to run at all; see header comment. Figures reconstructed
   //    from Matthews' own EDGAR filings — full methodology-order disclosure

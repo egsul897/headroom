@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Card, Chip, WarningList } from "@/components/ui";
 import { AttentionList, CovenantFamiliesView } from "@/components/CovenantOverview";
+import { ContractualLeveragePanel } from "@/components/ContractualLeveragePanel";
 import { buildCovenantOverview, type CoverageDeclarationInput, type PermissionRowInput } from "@/lib/covenant-overview-builder";
 import {
   deserializeAttributedUtilization,
@@ -23,6 +24,7 @@ import {
 import type { Ns4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-panel";
 import type { CompanyCovenantData, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
+import type { LeverageCalculationRequest } from "@/lib/product/contractual-leverage";
 import { fmtDate, fmtM } from "@/lib/format";
 
 /**
@@ -70,6 +72,8 @@ export interface DashboardClientProps {
    */
   ns4Financial?: Ns4DashboardFinancialState | null;
   companyId?: string;
+  /** Contractual leverage packages (definition-backed). Empty ⇒ panel shows missing requirements. */
+  contractualLeverageRequests?: LeverageCalculationRequest[];
 }
 
 /** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
@@ -375,6 +379,16 @@ export function DashboardClient(props: DashboardClientProps) {
           ))}
         </div>
       </Card>
+
+      <ContractualLeveragePanel
+        requests={props.contractualLeverageRequests ?? []}
+        financials={{
+          ebitda: financials.ebitda,
+          totalDebt: financials.totalDebt,
+          securedDebt: financials.securedDebt,
+          cash: financials.cash,
+        }}
+      />
 
       {/* 3. Needs attention (§13). */}
       <AttentionList items={overview.attentionItems} />
