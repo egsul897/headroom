@@ -82,6 +82,7 @@ describeIso("NS-4 secured-debt acquisition — Dashboard/Position/Simulate ident
       reviewedBy: "counsel-acq@test.local",
       approvalRef: "apr-acq-coherent",
       reviewedAt: `${EVAL}T12:00:00Z`,
+      deliveredAsOfDate: EVAL,
     });
     expect(approved.ok).toBe(true);
 

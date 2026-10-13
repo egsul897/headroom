@@ -76,6 +76,7 @@ describeDb("Dashboard NS-4 Neon financial band", () => {
       reviewedBy: "dash-ns4-counsel",
       approvalRef: "apr-dash-ns4-1",
       reviewedAt: "2026-07-20T18:00:00Z",
+      deliveredAsOfDate: "2026-07-10",
     });
     expect(approved.ok).toBe(true);
 

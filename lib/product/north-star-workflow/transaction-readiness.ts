@@ -87,11 +87,12 @@ export async function loadTransactionWorkflowReadiness(
   } else if (opts?.selector || approved.length > 0 || cutoffEligible.length > 0) {
     // P0: persisted-delivery-only — approval never establishes delivery.
     // Cutoff-eligible includes SUPERSEDED for historical delivery binding.
+    // Default selector matches NS4_PRODUCT_CUTOFF_SELECTOR (Dashboard/Position/Simulate/certified).
     cutoff = resolveAuthoritativeCutoff({
       companyId,
       evaluationDate: opts.evaluationDate,
       approved: cutoffEligible,
-      selector: opts?.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+      selector: opts?.selector ?? "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
       fiscalCalendar,
       deliveries: opts?.deliveries,
     });

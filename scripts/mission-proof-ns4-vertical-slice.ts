@@ -41,6 +41,7 @@ async function prove(args: {
     reviewedBy: `proof-${args.issuer}@test.local`,
     approvalRef: `apr-proof-${args.issuer}`,
     reviewedAt: `${args.evaluationDate}T12:00:00Z`,
+    deliveredAsOfDate: args.evaluationDate,
   });
   const dash = await loadNs4DashboardFinancialState({
     companyId: args.companyId,
