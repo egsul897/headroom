@@ -159,7 +159,6 @@ function companyData(bundle: CanonicalFinancialInputBundle, fin: FinancialSnapsh
   const docId = bundle.identity.sourceDocumentId;
   return {
     companyId: bundle.identity.companyId,
-    asOfDate: new Date(bundle.identity.asOf),
     financials: fin,
     documents: [demoDocument(docId, bundle.identity.operativeVersionLabel)],
     provisions: demoProvisions(docId),
