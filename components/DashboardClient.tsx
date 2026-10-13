@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Card, WarningList } from "@/components/ui";
 import { AttentionList, CovenantFamiliesView } from "@/components/CovenantOverview";
+import { ContractualLeveragePanel } from "@/components/ContractualLeveragePanel";
 import { buildCovenantOverview, type CoverageDeclarationInput, type PermissionRowInput } from "@/lib/covenant-overview-builder";
 import {
   deserializeAttributedUtilization,
@@ -21,6 +22,7 @@ import {
 } from "@/lib/dashboard/load-state";
 import type { CompanyCovenantData, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
+import type { LeverageCalculationRequest } from "@/lib/product/contractual-leverage";
 import { fmtDate, fmtM } from "@/lib/format";
 
 /**
@@ -62,6 +64,8 @@ export interface DashboardClientProps {
   maturitiesQuery: MaturitiesQuery;
   /** Phase 4C attributed utilization (serializable). Absent ⇒ all rows NOT_TRACKED. */
   attributedUtilizationSerialized?: AttributedUtilizationSerialized | null;
+  /** Contractual leverage packages (definition-backed). Empty ⇒ panel shows missing requirements. */
+  contractualLeverageRequests?: LeverageCalculationRequest[];
 }
 
 /** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
@@ -264,6 +268,16 @@ export function DashboardClient(props: DashboardClientProps) {
           ))}
         </div>
       </Card>
+
+      <ContractualLeveragePanel
+        requests={props.contractualLeverageRequests ?? []}
+        financials={{
+          ebitda: financials.ebitda,
+          totalDebt: financials.totalDebt,
+          securedDebt: financials.securedDebt,
+          cash: financials.cash,
+        }}
+      />
 
       {/* 3. Needs attention (§13). */}
       <AttentionList items={overview.attentionItems} />
