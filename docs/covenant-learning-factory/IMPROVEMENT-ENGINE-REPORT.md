@@ -2,79 +2,78 @@
 
 ## Exact tip
 
-- **SHA:** see git tip at report generation (`git rev-parse HEAD`)
-- **Branch / PR:** `cursor/covenant-learning-factory-c387` / #356
+| Item | Value |
+|---|---|
+| **SHA** | `abdcdb55d8af93bcec02e7000aaa8431c4e100db` |
+| **Branch / PR** | `cursor/covenant-learning-factory-c387` / #356 |
+| **Compiler** | `offline-package-compile.v1` + `greater-of-assets-basket.v1.1` |
 
-## 1. Refusal root-cause distribution (856 units across 4 packages)
+## 1. Refusal root-cause distribution (856 units, 4 packages)
 
-Source: `docs/covenant-learning-factory/unit-dumps/*.units.json` + `refusal-audit.json`.
+Source: `docs/covenant-learning-factory/unit-dumps/*.units.json` → `refusal-audit.json`.
 
 | Root cause | Count | Legal structure |
 |---|---:|---|
-| `NOT_EXCEPTION_CATALOG_CLAUSE` | ~1071→**646** on dumps-only* | General prohibition / section chapeau / non-clause discovery noise |
-| `QUALITATIVE_PERMISSION_NO_NUMERIC_CAP` | dominant among catalog limbs | Qualitative exception (loan-doc liens, tax liens, ordinary-course, etc.) |
-| `VERIFIED_EXECUTABLE` | **8** after improvement (was 7) | Fixed-dollar / greater-of / **percent-of-assets sole-cap** |
-| `RATIO_GATED_CAPACITY` | low | Ratio-incurrence without fixed dollar |
-| `FIXED_DOLLAR_COMPLEX_FORMULA_HANDOFF` | residual | Facility-difference / other growers (correctly refused) |
-| `BUILDER_OR_AVAILABLE_AMOUNT` | residual | Available Amount / builder baskets |
-| `FIXED_DOLLAR_MULTI_AMOUNT` / `CAP_ROLE_MISSED` | residual | Multi-dollar or non-cap dollar mentions |
+| `NOT_EXCEPTION_CATALOG_CLAUSE` | **646** | General prohibition / section chapeau / non-clause discovery |
+| `QUALITATIVE_PERMISSION_NO_NUMERIC_CAP` | **185** | Qualitative exception (no $ / % capacity) |
+| `FIXED_DOLLAR_COMPLEX_FORMULA_HANDOFF` | **10** | Facility-difference / other growers (correct refuse) |
+| `VERIFIED_EXECUTABLE` | **8** | Fixed-dollar / greater-of / **percent-of-assets sole-cap** |
+| `RATIO_GATED_CAPACITY` | **3** | Ratio-incurrence, no fixed dollar |
+| `FIXED_DOLLAR_CAP_ROLE_MISSED` | **2** | Dollar present, not cap-role phrasing |
+| `BUILDER_OR_AVAILABLE_AMOUNT` | **1** | Available Amount / builder |
+| `FIXED_DOLLAR_MULTI_AMOUNT` | **1** | Multiple distinct dollar figures |
 
-\*Exact dump-only totals are in `refusal-audit.json` after `npm run clf:audit-refusals`.
+**Why 848 refused:** vertical slices only attempt lettered/numbered **exception-catalog limbs**. 646/856 units are not catalog limbs. Of the remainder, most are qualitative permissions. Only fixed-dollar, greater-of-assets, and percent-of-assets sole-cap can elevate to `VERIFIED_EXECUTABLE`.
 
-**Why ~849 refused:** executable vertical slices only attempt lettered/numbered **exception-catalog limbs**. Most discovery units are general prohibitions / TOC / non-basket text (`NOT_EXCEPTION_CATALOG_CLAUSE`). Among catalog limbs, most are qualitative permissions with no numeric capacity pattern. Only fixed-dollar, greater-of-assets, and (now) percent-of-assets sole-cap elevate to `VERIFIED_EXECUTABLE`.
+## 2. supportedStructureUnits=0 vs verifiedExecutableUnits=8
 
-## 2. supportedStructureUnits=0 vs verifiedExecutableUnits>0
-
-| Metric | Meaning |
+| Metric | What it measures |
 |---|---|
-| `supportedStructureUnits` | `supportStatus === SUPPORTED_STRUCTURE` (catalog support **and** no unresolved context). All four demo packages currently yield **PARTIAL** support because context bundles report unresolved deps → **0**. |
-| `verifiedExecutableUnits` | Vertical-slice elevation after independent fidelity PASS (fixed-dollar / greater-of / percent-of-assets). Independent of `supportStatus`. |
+| `supportedStructureUnits` | `supportStatus === SUPPORTED_STRUCTURE` (catalog support **and** no unresolved context). All four packages are **PARTIAL** → **0**. |
+| `verifiedExecutableUnits` | Vertical-slice elevation after fidelity PASS. **Independent** of `supportStatus`. |
 
-These are **not** contradictory. Dashboard now includes `metricDefinitions` stating this explicitly.
+Dashboard `metricDefinitions` document this; they are not contradictory.
 
 ## 3. dangerousOmissions
 
-Replaced misleading `0` success signal with **`NOT_MEASURED`** unless an independently adjudicated completeness oracle is supplied. Heuristic discovery gaps are `DISCOVERY_GAP` / `COVERAGE_GAP` errors — never reported as measured dangerousOmissions=0.
+**`NOT_MEASURED`** unless an independently adjudicated completeness oracle is supplied. Heuristic gaps → `DISCOVERY_GAP` / `COVERAGE_GAP` errors. Measured zero ≠ unknown.
 
 ## 4. Bounded improvement
 
-**Structure:** sole `% of Total Assets` capacity (`PERCENT_OF_ASSETS_SOLE_CAP`) — e.g. MTN Permitted Debt (k): *“maximum aggregate amount not to exceed 5% of Total Assets …”*
+**Structure selected:** sole `% of Total Assets` capacity (`PERCENT_OF_ASSETS_SOLE_CAP`).
 
-**Implementation:** `lib/contract-model/compiler/greater-of-assets-basket/` → compiler version **`greater-of-assets-basket.v1.1`**
+**Canonical change:** `lib/contract-model/compiler/greater-of-assets-basket/{classify,compile,verify-fidelity}.ts` → **`greater-of-assets-basket.v1.1`**
 
-- Classify NTE + % of Total Assets when no “greater of” and no dollar limb
-- Compile `MULTIPLY(PERCENT, METRIC)` (+ qualitative gates)
-- Fidelity requires no fabricated fixed limb / no MAX
-- Production capacity still refused without authenticated financial evidence
+Authentic exemplar: MTN Permitted Debt (k) — *“maximum aggregate amount not to exceed 5% of Total Assets …”*
 
 ## 5. Before / after evidence
 
 | Case | Result |
 |---|---|
-| Authentic MTN Permitted Debt (k) | **failing-before** (NOT_GREATER_OF / complex_formula handoff) → **passing-after** (VE + fidelity PASS) |
-| Adversarial: facility-diff, EBITDA%, no cap-role, dollar hybrid | Still **NOT_GREATER_OF_ASSETS** (refused) |
-| Existing greater-of MHK §7.01(u)/§7.03(g) | Unchanged regression green |
+| MTN Permitted Debt (k) authentic text | failing-before → **VE + fidelity PASS** |
+| Facility-diff / EBITDA% / no cap-role / $ hybrid | still refused |
+| MHK greater-of §7.01(u)/§7.03(g) | regression green |
 
-Tests: `tests/contract-model/greater-of-assets-basket/percent-of-assets-sole-cap.test.ts`
+Tests: `tests/contract-model/greater-of-assets-basket/percent-of-assets-sole-cap.test.ts` (+ existing greater-of adversarial suite).
 
-## 6. Coverage measurement (same packages, force reprocess)
+## 6. Coverage (force reprocess, same packages)
 
 | Package | Cohort | VE before | VE after | Δ |
 |---|---|---:|---:|---:|
-| MTN | TRAIN_DEV | 3 | **4** | +1 |
-| MHK | HELD_OUT | 4 | **4** | 0 (no held-out golden changes) |
+| MTN | TRAIN_DEV | 3 | **4** | **+1** |
+| MHK | HELD_OUT | 4 | **4** | 0 |
 | ROCK | TRAIN_DEV | 0 | 0 | 0 |
 | CHWY | TRAIN_DEV | 0 | 0 | 0 |
 | **Total** | | **7** | **8** | **+1** |
 
-Refused: 849 → **848**. Held-out MHK fidelity still PASS; no weakening of refusal on unsupported structures.
+Refused: 849 → **848**. Held-out MHK fidelity PASS; no golden edits; refusal on unsupported structures unchanged.
 
 ## 7. Persistence / Neon
 
-- File-backed: package audit manifests, unit dumps, `refusal-audit.json`, `dashboard.json`, `demo-unseen.json`
-- Neon migration prepared: `prisma/migrations/20261013180000_covenant_learning_factory/`
-- **Neon live:** unreachable (`DATABASE_URL` host not reachable) — **do not claim live Neon success**
+- File-backed: audit manifests, unit dumps, `refusal-audit.json`, `dashboard.json`, `demo-unseen.json`
+- Migration ready: `prisma/migrations/20261013180000_covenant_learning_factory/`
+- **Neon live: NO** — host unreachable; do not claim live Neon success
 
-## 8. Authority gates preserved
+## 8. Authority
 
-No auto-promotion to `Permission` / ledger / APPROVED snapshots. Production capacity refused. Honesty flags all false.
+No auto-promotion. Production capacity refused. Honesty flags all false. No self-merge.
