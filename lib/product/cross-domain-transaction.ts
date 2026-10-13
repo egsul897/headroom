@@ -17,15 +17,14 @@
  * relabeled as verified.
  *
  * Field trust model for CrossDomainUtilizationAuthority:
- * - CALLER-SUPPLIED (untrusted alone): capacityRuleId, asOf, companyId,
+ * - CALLER-SUPPLIED (untrusted alone on PRODUCTION): capacityRuleId, asOf, companyId,
  *   documentId, provisionId, periodKey, records[], completenessCertificate blob
- *   (including issuer.role / actorId strings), sharedCapacityId, crossDocumentConstraints,
- *   allowSyntheticRemaining.
- * - INDEPENDENTLY AUTHENTICATED (host / company-state): expectedIdentity from
- *   CompanyCovenantData + evaluation date; TrustedIssuerAuthorizationContext
- *   principals registry (never derived from the certificate); record approval /
- *   authenticity semantics enforced inside resolveUtilization; production gate
- *   via authorizeCompletenessIssuer + requireNonFixtureIdentity.
+ *   (including issuer.role / actorId strings), sharedCapacityId, crossDocumentConstraints.
+ * - PRODUCTION surface: allowSyntheticRemaining forced false; trustedIssuerAuth taken
+ *   ONLY from resolveTrustedIssuerAuthFromHost() — caller JSON never activates.
+ * - TEST_DEMO surface: explicit opt-in for isolated harnesses only.
+ * - INDEPENDENTLY AUTHENTICATED: expectedIdentity from CompanyCovenantData + evaluation
+ *   date; record approval / authenticity inside resolveUtilization.
  */
 
 import {
@@ -59,23 +58,42 @@ import {
 import type { ContractualEbitdaDerivation } from "@/lib/financial-certificate-engine/contractual-ebitda-buildup";
 
 export const CROSS_DOMAIN_EVALUATION_VERSION = "cross-domain-transaction.v2" as const;
-/** Sole canonical owner — do not land competing v1 copies from #334/#336. */
-export const CROSS_DOMAIN_CANONICAL_OWNER = "PR#340" as const;
+/**
+ * Canonical owner on tip main after selective absorb of #340 authority path.
+ * Competing v1 remaining-authorization shortcuts must not land.
+ */
+export const CROSS_DOMAIN_CANONICAL_OWNER =
+  "package-wide-covenant-execution (absorbs #340 authority)" as const;
 
-/** Covenant families the product tracks for package-wide coverage. */
+/**
+ * Covenant families tracked for package-wide coverage.
+ * Aligns with mandate domains + composition slice (MULTI_CONDITION_SIMULATION).
+ */
 export type CovenantDomain =
   | "DEBT_INCURRENCE_REFINANCING"
   | "LIENS_SECURED_CAPACITY"
   | "RESTRICTED_PAYMENTS_BUILDER"
   | "INVESTMENTS_ACQUISITIONS"
   | "ASSET_SALES_PROCEEDS"
+  | "AFFILIATE_TRANSACTIONS"
+  | "GUARANTEES"
   | "FINANCIAL_COVENANTS_RATIO_CAPACITY"
+  | "SUBSIDIARY_DESIGNATION_STRUCTURAL"
   | "CROSS_DOCUMENT_SHARED_CAPACITY"
   | "AMENDMENT_VERSION_EFFECTIVE_DATE"
   | "LEDGER_UTILIZATION_RECLASSIFICATION"
   | "MULTI_CONDITION_SIMULATION";
 
-export type DomainSupportLevel = "EXECUTABLE" | "PARTIAL" | "UNSUPPORTED";
+/**
+ * Support vocabulary for runtime slices + inventory.
+ * Inventory may also use EVIDENCE_BLOCKED / NOT_IMPLEMENTED (see audit matrix).
+ */
+export type DomainSupportLevel =
+  | "EXECUTABLE"
+  | "PARTIAL"
+  | "EVIDENCE_BLOCKED"
+  | "UNSUPPORTED"
+  | "NOT_IMPLEMENTED";
 
 export type CrossDomainScenarioKind =
   | "DEBT_FUNDED_ACQUISITION"
@@ -156,7 +174,11 @@ export function sanitizeUtilizationAuthorityForSurface(
     return { auth: null, surface, disclosures: [] };
   }
   if (surface === "TEST_DEMO") {
-    return { auth, surface, disclosures: ["TEST_DEMO authority surface — not production-authoritative."] };
+    return {
+      auth,
+      surface,
+      disclosures: ["TEST_DEMO authority surface — not production-authoritative."],
+    };
   }
 
   const disclosures: string[] = [
@@ -169,7 +191,7 @@ export function sanitizeUtilizationAuthorityForSurface(
   }
   if (auth.trustedIssuerAuth != null) {
     disclosures.push(
-      "Caller-supplied trustedIssuerAuth ignored at PRODUCTION boundary — host-authenticated resolution required (user JSON refused).",
+      "Caller-supplied trustedIssuerAuth ignored at PRODUCTION boundary — host-authenticated resolution required (request JSON refused).",
     );
   }
   const host = resolveTrustedIssuerAuthFromHost();
@@ -283,35 +305,39 @@ export interface CovenantDomainCoverageRow {
   unsupported: string;
 }
 
-/** Static coverage map — code-backed inventory, not a separate audit product. */
+/**
+ * Static coverage map — honest inventory aligned with
+ * docs/package-wide-covenant-execution/02-coverage-matrix.md.
+ * Never upgrades to EXECUTABLE on synthetic fixtures alone.
+ */
 export function covenantDomainCoverage(): CovenantDomainCoverageRow[] {
   return [
     {
       domain: "DEBT_INCURRENCE_REFINANCING",
-      support: "EXECUTABLE",
+      support: "PARTIAL",
       executableToday:
-        "simulateDebtIncurrence + capacityFormulas + LEVERAGE/COVERAGE/FLAT/GREATER_OF provisions",
-      partial: "Refinancing continuity / maturity walls not modeled as first-class effects",
-      unsupported: "First-lien-only debtBasis; instrument-specific netting bases",
+        "simulateDebtIncurrence + capacityFormulas + LEVERAGE/COVERAGE/FLAT/GREATER_OF; solver-native when declared",
+      partial: "Refinancing continuity / maturity walls not first-class; LIVE remaining not production-authoritative",
+      unsupported: "First-lien-only debtBasis; instrument-specific netting; ratings/MFN/LCA eligibility kinds",
     },
     {
       domain: "LIENS_SECURED_CAPACITY",
       support: "PARTIAL",
-      executableToday: "Secured-side capacityFormulas and LEVERAGE_RATIO_ROOM(debtBasis=secured)",
-      partial: "Lien baskets evaluated as capacity leaves; priority tiers via solver-native only when declared",
-      unsupported: "Automatic-link-only liens without independent ceiling still review_required",
+      executableToday: "Secured-side capacityFormulas and LEVERAGE_RATIO_ROOM(debtBasis=secured); solver lien coverage proof",
+      partial: "Lien baskets as capacity leaves; priority tiers only when solver-native declared",
+      unsupported: "Automatic-link-only liens without independent ceiling; intercreditor joinder",
     },
     {
       domain: "RESTRICTED_PAYMENTS_BUILDER",
-      support: "EXECUTABLE",
-      executableToday: "simulateRestrictedPayment waterfall + BUILDER_BASKET + RATIO_GATE",
-      partial: "Ledger pool shared across dividend/investment; not Permission-attributed",
-      unsupported: "Builder builder-basket elections beyond configured CNI/equity params",
+      support: "PARTIAL",
+      executableToday: "simulateRestrictedPayment waterfall + BUILDER_BASKET + RATIO_GATE on configured docs",
+      partial: "Ledger pool shared across dividend/investment; not Permission-attributed; remaining gated",
+      unsupported: "Builder elections beyond configured CNI/equity params; Chewy builder pin held incomplete",
     },
     {
       domain: "INVESTMENTS_ACQUISITIONS",
       support: "PARTIAL",
-      executableToday: "RP waterfall kind=investment; acquisition treated as debt+investment composition here",
+      executableToday: "RP waterfall kind=investment; acquisition = debt+investment composition",
       partial: "No separate Permitted Acquisition basket engine beyond provision leaves",
       unsupported: "Unrestricted subsidiary redesignation; guarantee scoping for targets",
     },
@@ -319,44 +345,65 @@ export function covenantDomainCoverage(): CovenantDomainCoverageRow[] {
       domain: "ASSET_SALES_PROCEEDS",
       support: "PARTIAL",
       executableToday: "simulateAssetSale excess-proceeds / offer trigger when assetSale config present",
-      partial: "Debt repayment / capacity restore from proceeds requires contractualAuthorityRef (recipes)",
+      partial: "Debt repayment / capacity restore from proceeds requires contractualAuthorityRef",
       unsupported: "Proceeds application waterfalls not configured on all packages",
     },
     {
+      domain: "AFFILIATE_TRANSACTIONS",
+      support: "UNSUPPORTED",
+      executableToday: "Discovery / action ontology (ENTER_AFFILIATE_TRANSACTION) only",
+      partial: "Ask/retrieval tagging",
+      unsupported: "No solver grant, simulation, or capacity-consume path — fail closed",
+    },
+    {
+      domain: "GUARANTEES",
+      support: "PARTIAL",
+      executableToday: "Guarantor entity-scope / GUARANTOR_CONDITION on debt permission eligibility",
+      partial: "Standalone guarantee covenants not transaction-executable",
+      unsupported: "Guarantee chains / non-guarantor subsidiary guarantee simulation",
+    },
+    {
       domain: "FINANCIAL_COVENANTS_RATIO_CAPACITY",
-      support: "EXECUTABLE",
+      support: "PARTIAL",
       executableToday:
-        "computeContractualCovenantMetrics + buildDebtRatioTests; EBITDA derivation kinds (reported vs independent)",
-      partial: "Maintenance springing covenants without financial inputs stay missing",
-      unsupported: "Independent Coherent $1,700M build-up (reported/supporting only)",
+        "computeContractualCovenantMetrics + buildDebtRatioTests; EBITDA derivation kinds",
+      partial: "Maintenance springing covenants without financial inputs stay missing; NS-4 bind optional",
+      unsupported: "Certificate-driven springing tests without approved inputs",
+    },
+    {
+      domain: "SUBSIDIARY_DESIGNATION_STRUCTURAL",
+      support: "UNSUPPORTED",
+      executableToday: "IR actions / exercise labels (DESIGNATE_UNRESTRICTED_SUBSIDIARY)",
+      partial: "None executable",
+      unsupported: "Redesignation records never applied; no designation simulator",
     },
     {
       domain: "CROSS_DOCUMENT_SHARED_CAPACITY",
       support: "PARTIAL",
-      executableToday: "Per-document min/max capacityFormulas; binding document selection on debt sim",
-      partial: "SharedCapacityConstraint / solver-native when declarations present",
+      executableToday: "Per-document min/max capacityFormulas; SharedCapacityConstraint / claimedSharedPools anti-double-count",
+      partial: "Solver-native shared constraints when declarations present",
       unsupported: "Implicit stacking across documents without express shared cap",
     },
     {
       domain: "AMENDMENT_VERSION_EFFECTIVE_DATE",
       support: "PARTIAL",
-      executableToday: "loadCompanyCovenantData date-scopes provisions; amendment recipes refuse silent graph mutate",
+      executableToday: "loadCompanyCovenantData date-scopes provisions; PAI operative tip honesty",
       partial: "Operative resolution surfaces on review workspace",
       unsupported: "Auto-recompile of IR from amendment text in product path",
     },
     {
       domain: "LEDGER_UTILIZATION_RECLASSIFICATION",
       support: "PARTIAL",
-      executableToday: "RP pool from ledger; reclassification recipe with explicit election",
-      partial: "Attributed utilization + completeness cert required for remaining claims",
-      unsupported: "Empty ledger never treated as verified zero utilization",
+      executableToday: "RP pool from ledger; resolveUtilization + computeVerifiedRemaining; reclass with explicit election",
+      partial: "Attributed utilization + trusted completeness required for remaining claims",
+      unsupported: "Empty ledger ≠ verified zero; production issuer activation blocked",
     },
     {
       domain: "MULTI_CONDITION_SIMULATION",
       support: "PARTIAL",
-      executableToday: "This module composes debt + RP + asset-sale + ratios for multi-family scenarios",
-      partial: "Sequential Phase 4D recipes for certified worlds",
-      unsupported: "Intercompany / guarantee chains without entity-scope facts",
+      executableToday: "This module + executePackageTransaction compose debt + RP + asset-sale + ratios",
+      partial: "Sequential Phase 4D recipes for certified worlds; VTE REQUIRE path separate",
+      unsupported: "Intercompany / affiliate / designation chains without entity-scope facts",
     },
   ];
 }
@@ -411,13 +458,17 @@ function worstTxnStatus(statuses: TransactionStatus[]): TransactionStatus {
   return "clear";
 }
 
-/** PARTIAL / UNSUPPORTED domains must not report fully-evaluated clear. */
+/** PARTIAL / UNSUPPORTED / EVIDENCE_BLOCKED / NOT_IMPLEMENTED must not report fully-evaluated clear. */
 function statusForSupport(
   support: DomainSupportLevel,
   candidate: TransactionStatus | "not_applicable",
 ): TransactionStatus | "not_applicable" {
   if (candidate === "not_applicable") return candidate;
-  if (support === "UNSUPPORTED") {
+  if (
+    support === "UNSUPPORTED" ||
+    support === "NOT_IMPLEMENTED" ||
+    support === "EVIDENCE_BLOCKED"
+  ) {
     return candidate === "blocked" ? "blocked" : "not_tested";
   }
   if (support === "PARTIAL" && candidate === "clear") {
@@ -656,12 +707,13 @@ export function evaluateCrossDomainTransaction(params: {
   expectedFinancialIdentity?: ApprovedFinancialIdentity | null;
   /**
    * Defaults to PRODUCTION. TEST_DEMO only for isolated test harnesses —
-   * never set by Simulate / debt-intelligence loaders.
+   * never set by Simulate / Position / debt-intelligence loaders.
    */
   authoritySurface?: CrossDomainAuthoritySurface;
 }): CrossDomainTransactionEvaluation {
   const { data, transaction: tx } = params;
-  const authoritySurface: CrossDomainAuthoritySurface = params.authoritySurface ?? "PRODUCTION";
+  const authoritySurface: CrossDomainAuthoritySurface =
+    params.authoritySurface ?? "PRODUCTION";
   const sanitizedAuthority = sanitizeUtilizationAuthorityForSurface(
     params.utilizationAuthority,
     authoritySurface,
@@ -694,8 +746,8 @@ export function evaluateCrossDomainTransaction(params: {
     "Caller-supplied utilizationAttributed / utilizationCompletenessCertified flags never authorize verified remaining.",
     "No contractual permissions or historical utilization are invented.",
     `Authority surface: ${authoritySurface}.`,
+    ...sanitizedAuthority.disclosures,
   ];
-  packageLimitations.push(...sanitizedAuthority.disclosures);
   if (assumptionBlock) packageLimitations.push(assumptionBlock);
   if (!financialIdentityValid) {
     packageLimitations.push(
@@ -761,7 +813,8 @@ export function evaluateCrossDomainTransaction(params: {
   const ratioInvalid = !financialIdentityValid;
   const ratioSlice = applyRemaining({
     domain: "FINANCIAL_COVENANTS_RATIO_CAPACITY",
-    support: contractualComputation.status === "OK" && !ratioInvalid ? "EXECUTABLE" : "PARTIAL",
+    // Honest: ratio room executes when inputs present, but springing/certificate gaps remain.
+    support: "PARTIAL",
     status: ratioInvalid
       ? "review_required"
       : contractualComputation.status === "OK"
@@ -816,7 +869,7 @@ export function evaluateCrossDomainTransaction(params: {
       sim,
       slice: applyRemaining({
         domain: "DEBT_INCURRENCE_REFINANCING",
-        support: "EXECUTABLE",
+        support: "PARTIAL",
         status,
         summary: invalidated
           ? `${label}: invalidated — approved financial inputs changed`
@@ -824,7 +877,7 @@ export function evaluateCrossDomainTransaction(params: {
               sim.binding?.documentName ?? "n/a"
             } · overall gross capacity ${
               gross != null ? `$${gross.toFixed(1)}M` : "n/a"
-            }`,
+            } (PARTIAL — refinancing continuity not first-class)`,
         grossCapacityMillions: gross,
         modeledRemainingMillions: gross,
         gateSatisfied: sim.status === "clear",
@@ -841,12 +894,15 @@ export function evaluateCrossDomainTransaction(params: {
           ...(sim.reason ? [sim.reason] : []),
           ...(invalidated ? ["approved financial identity match"] : []),
         ],
-        notes: sim.ratioTests
-          .filter((r) => r.applies)
-          .map(
-            (r) =>
-              `${r.metricName} ${r.preTransactionRatio?.toFixed(2)}x → ${r.postTransactionRatio?.toFixed(2) ?? "n/a"}x vs ${r.threshold}x (${r.status})`,
-          ),
+        notes: [
+          ...sim.ratioTests
+            .filter((r) => r.applies)
+            .map(
+              (r) =>
+                `${r.metricName} ${r.preTransactionRatio?.toFixed(2)}x → ${r.postTransactionRatio?.toFixed(2) ?? "n/a"}x vs ${r.threshold}x (${r.status})`,
+            ),
+          "PARTIAL — maturity walls / permitted-refinancing identity not separately enforced.",
+        ],
       }),
     };
   };
@@ -877,15 +933,13 @@ export function evaluateCrossDomainTransaction(params: {
     const sim = simulateRestrictedPayment(data, position, docId, amount, kind);
     statusAcc.push(sim.status);
     const stepGross = Object.values(sim.stepCapacitiesRemaining).reduce((a, b) => a + b, 0);
-    const support: DomainSupportLevel =
-      kind === "dividend" ? "EXECUTABLE" : "PARTIAL";
     return {
       sim,
       slice: applyRemaining({
         domain: kind === "dividend" ? "RESTRICTED_PAYMENTS_BUILDER" : "INVESTMENTS_ACQUISITIONS",
-        support,
+        support: "PARTIAL",
         status: sim.status,
-        summary: `${kind} $${amount}M · ${sim.status} · modeled unallocated $${sim.remaining.toFixed(1)}M`,
+        summary: `${kind} $${amount}M · ${sim.status} · modeled unallocated $${sim.remaining.toFixed(1)}M (PARTIAL)`,
         grossCapacityMillions: stepGross,
         modeledRemainingMillions: sim.remaining,
         gateSatisfied: sim.status === "clear",
@@ -895,7 +949,10 @@ export function evaluateCrossDomainTransaction(params: {
         }),
         citations: sim.steps.map((s) => `${s.sectionRef} · ${s.basketName}`),
         missingInputs: sim.reason ? [sim.reason] : [],
-        notes: [`Ledger RP pool used before sim: $${sim.poolUsed.toFixed(1)}M`],
+        notes: [
+          `Ledger RP pool used before sim: $${sim.poolUsed.toFixed(1)}M`,
+          "PARTIAL — pool not Permission-attributed; verified remaining requires canonical authority.",
+        ],
       }),
     };
   };
@@ -1063,6 +1120,67 @@ export function evaluateCrossDomainTransaction(params: {
         : []),
     ],
   });
+
+  // Mandate domains without executable simulation — always disclosed, never invented clear.
+  domains.push(
+    applyRemaining({
+      domain: "AFFILIATE_TRANSACTIONS",
+      support: "UNSUPPORTED",
+      status: "not_tested",
+      summary:
+        "Affiliate-transaction covenants are discovered/tagged only — no executable simulation path",
+      grossCapacityMillions: null,
+      modeledRemainingMillions: null,
+      sourceProvision: null,
+      inputIdentity: baseInputIdentity(data, asOf, financialFingerprint),
+      citations: [],
+      missingInputs: [
+        "affiliate-transaction basket / fairness conditions",
+        "related-party entity graph",
+      ],
+      notes: ["Fail-closed — permissions not invented from discovery tags."],
+    }),
+  );
+  domains.push(
+    applyRemaining({
+      domain: "GUARANTEES",
+      support: "PARTIAL",
+      status: "review_required",
+      summary:
+        "Guarantor entity-scope may constrain debt paths; standalone guarantee covenants not simulated",
+      grossCapacityMillions: null,
+      modeledRemainingMillions: null,
+      sourceProvision: null,
+      inputIdentity: baseInputIdentity(data, asOf, financialFingerprint),
+      citations: [],
+      missingInputs: [
+        "guarantee agreement operative version",
+        "guarantor / non-guarantor subsidiary roster",
+      ],
+      notes: [
+        "PARTIAL — GUARANTOR_CONDITION on solver Permissions when declared; no guarantee-chain simulator.",
+      ],
+    }),
+  );
+  domains.push(
+    applyRemaining({
+      domain: "SUBSIDIARY_DESIGNATION_STRUCTURAL",
+      support: "UNSUPPORTED",
+      status: "not_tested",
+      summary:
+        "Unrestricted/restricted subsidiary designation is not executable — redesignation never applied",
+      grossCapacityMillions: null,
+      modeledRemainingMillions: null,
+      sourceProvision: null,
+      inputIdentity: baseInputIdentity(data, asOf, financialFingerprint),
+      citations: [],
+      missingInputs: [
+        "subsidiary designation election records",
+        "restricted-group membership as-of",
+      ],
+      notes: ["Fail-closed — structural redesignation effects not invented."],
+    }),
+  );
 
   // Scenario-specific composition
   switch (tx.kind) {

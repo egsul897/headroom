@@ -19,6 +19,7 @@ import {
 import * as resolverIndex from "@/lib/product/financial-metric-resolver";
 
 const DASHBOARD_PAGE = join(process.cwd(), "app/[companyId]/dashboard/page.tsx");
+const DASHBOARD_CLIENT = join(process.cwd(), "components/DashboardClient.tsx");
 
 describe("Dashboard contractual metrics — no-write GET path", () => {
   beforeEach(() => {
@@ -74,6 +75,16 @@ describe("Dashboard contractual metrics — no-write GET path", () => {
         (m) => m.authorityLabel === "DEFINITION_EXECUTED_PROVISIONAL" || m.authorityLabel === "NOT_CALCULATED",
       ),
     ).toBe(true);
+  });
+
+  it("provisional headlines cannot override AVAILABLE or NS-4 APPROVED_BOUND (#343 selective)", () => {
+    const src = readFileSync(DASHBOARD_CLIENT, "utf8");
+    expect(src).toMatch(/ns4ApprovedBound/);
+    expect(src).toMatch(/status === ["']APPROVED_BOUND["']/);
+    expect(src).toMatch(
+      /!\(candidateProvisional && \(m\.state === ["']AVAILABLE["'] \|\| ns4ApprovedBound\)\)/,
+    );
+    expect(src).toMatch(/Approved\/NS-4 headline retained/);
   });
 });
 

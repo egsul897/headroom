@@ -6,9 +6,9 @@
  * Uses the same CompanyCovenantData loader path as Position. Does not invent
  * VEP / production remaining authority.
  *
- * Contractual EBITDA evidence is bound by authenticated company / document /
- * measurement-period / as-of / source-version identity — never by numeric
- * EBITDA equality alone.
+ * Contractual EBITDA evidence is resolved by company / package / document /
+ * source-version / approved-snapshot / measurement-period / as-of identity —
+ * NEVER by matching EBITDA dollar values across companies.
  */
 
 import type { CompanyCovenantData } from "@/lib/covenant-engine";
@@ -31,7 +31,7 @@ import {
 } from "@/lib/product/cross-domain-transaction";
 import { coherentDebtFundedAcquisition } from "@/lib/product/cross-domain-scenarios";
 
-/** Catalog of identity-bearing evidence packages for Simulate binding. */
+/** Catalog of identity-bearing evidence packages for Simulate / debt-intelligence binding. */
 export const SIMULATE_EBITDA_EVIDENCE_CATALOG: readonly ContractualEbitdaEvidencePackage[] = [
   COHERENT_EBITDA_EVIDENCE,
   MATTHEWS_EBITDA_EVIDENCE,
@@ -60,6 +60,8 @@ export interface EbitdaEvidenceBindingResult {
  * Bind contractual EBITDA evidence by authenticated identity fields only.
  * Numeric bindingContractualEbitdaMillions is never used as a selector.
  * Fail closed when request or package identity cannot be established / matched.
+ *
+ * Used by debt-intelligence and identity-binding tests (#340/#341).
  */
 export function bindContractualEbitdaEvidenceByIdentity(
   request: EbitdaEvidenceBindingRequest,
@@ -149,21 +151,115 @@ export function bindContractualEbitdaEvidenceByIdentity(
   };
 }
 
-function attachEbitdaDerivation(params: {
-  data: CompanyCovenantData;
+/** Identity keys required to bind an evidence package — never EBITDA amount. */
+export interface ContractualEbitdaEvidenceIdentity {
+  companyId: string;
   evaluationDate: string;
-  financialSnapshotId?: string | null;
-}): {
-  derivation: ContractualEbitdaDerivation | null;
-  refusalReason: string | null;
-} {
-  const bound = bindContractualEbitdaEvidenceByIdentity({
-    companyId: params.data.companyId,
-    documentIds: params.data.documents.map((d) => d.id),
-    evaluationDate: params.evaluationDate,
-    financialSnapshotId: params.financialSnapshotId ?? null,
+  /** Operative document ids in the financing package (optional tighten). */
+  documentIds?: readonly string[] | null;
+  /** Approved NS-4 / financial snapshot id when bound (optional tighten). */
+  approvedSnapshotId?: string | null;
+  /** Explicit package / source-version key when known (e.g. coherent_fy2026). */
+  packageKey?: string | null;
+}
+
+interface RegisteredEbitdaEvidence {
+  companyId: string;
+  packageKey: string;
+  /** asOf / evaluation dates accepted for this package. */
+  asOfDates: readonly string[];
+  /** Optional document-id fragments that confirm package membership. */
+  documentIdHints?: readonly string[];
+  evidence: ContractualEbitdaEvidencePackage;
+}
+
+/**
+ * Registry keyed by company + package identity. Dollar amounts are never
+ * used as join keys — two companies with identical EBITDA cannot swap evidence.
+ */
+const CONTRACTUAL_EBITDA_EVIDENCE_REGISTRY: readonly RegisteredEbitdaEvidence[] = [
+  {
+    companyId: "coherent",
+    packageKey: "coherent_fy2026",
+    asOfDates: ["2026-06-30"],
+    documentIdHints: ["coherent-credit-agreement", "coherent-2029-notes"],
+    evidence: COHERENT_EBITDA_EVIDENCE,
+  },
+  {
+    companyId: "matthews",
+    packageKey: "matthews_q1_fy2025",
+    asOfDates: ["2024-12-31", "2025-03-31"],
+    documentIdHints: ["matw-indenture", "matthews"],
+    evidence: MATTHEWS_EBITDA_EVIDENCE,
+  },
+];
+
+/**
+ * Resolve contractual EBITDA evidence by package identity only.
+ * Returns null when company/asOf/package identity does not bind — never
+ * falls back to matching bindingContractualEbitdaMillions across companies.
+ *
+ * Explicit packageKey that does not bind this company → refuse (no asOf fallback).
+ */
+export function resolveContractualEbitdaEvidenceForPackage(
+  identity: ContractualEbitdaEvidenceIdentity,
+): ContractualEbitdaDerivation | null {
+  const companyId = identity.companyId.trim().toLowerCase();
+  if (!companyId) return null;
+  const asOf = identity.evaluationDate.slice(0, 10);
+  const packageKey = identity.packageKey?.trim().toLowerCase() ?? null;
+  const docIds = (identity.documentIds ?? []).map((d) => d.toLowerCase());
+
+  const candidates = CONTRACTUAL_EBITDA_EVIDENCE_REGISTRY.filter(
+    (row) => row.companyId === companyId,
+  );
+  if (candidates.length === 0) return null;
+
+  let matched: RegisteredEbitdaEvidence | undefined;
+  if (packageKey) {
+    matched = candidates.find((r) => r.packageKey === packageKey);
+    // Explicit packageKey that does not bind this company → refuse (no asOf fallback).
+    if (!matched) return null;
+  } else {
+    // asOf is required to bind when packageKey is absent — never fall back to
+    // document hints alone (prevents wrong-period / cross-company date tricks).
+    matched = candidates.find((r) => r.asOfDates.includes(asOf));
+  }
+  if (!matched) return null;
+
+  // Optional document tighten: when docs are supplied and none hint-match, refuse.
+  if (docIds.length > 0 && (matched.documentIdHints?.length ?? 0) > 0) {
+    const docOk = matched.documentIdHints!.some((hint) =>
+      docIds.some((d) => d.includes(hint.toLowerCase())),
+    );
+    if (!docOk) return null;
+  }
+
+  // Snapshot identity: refuse when the snapshot label names a different company.
+  if (identity.approvedSnapshotId) {
+    const snap = identity.approvedSnapshotId.toLowerCase();
+    for (const other of CONTRACTUAL_EBITDA_EVIDENCE_REGISTRY) {
+      if (other.companyId !== matched.companyId && snap.includes(other.companyId)) {
+        return null;
+      }
+    }
+  }
+
+  return resolveContractualEbitdaDerivation(matched.evidence);
+}
+
+/** @deprecated Use resolveContractualEbitdaEvidenceForPackage — value matching removed. */
+export function attachEbitdaDerivationByIdentity(
+  data: CompanyCovenantData,
+  evaluationDate: string,
+  approvedSnapshotId?: string | null,
+): ContractualEbitdaDerivation | null {
+  return resolveContractualEbitdaEvidenceForPackage({
+    companyId: data.companyId,
+    evaluationDate,
+    documentIds: data.documents.map((d) => d.id),
+    approvedSnapshotId: approvedSnapshotId ?? null,
   });
-  return { derivation: bound.derivation, refusalReason: bound.refusalReason };
 }
 
 /** Secured debt-funded acquisition template for Simulate (same evaluator for all companies). */
@@ -193,38 +289,56 @@ export function evaluateSimulateCrossDomainAcquisition(params: {
   evaluationDate: string;
   utilizationAuthority?: CrossDomainUtilizationAuthority | null;
   expectedFinancialIdentity?: ApprovedFinancialIdentity | null;
-  /** Optional authenticated snapshot id for evidence binding. */
+  /** Approved NS-4 / financial snapshot id (HEAD identity path). */
+  approvedSnapshotId?: string | null;
+  /** Alias accepted from #340 simulate wiring. */
   financialSnapshotId?: string | null;
+  /** Explicit package key — wrong key refuses (no asOf fallback). */
+  packageKey?: string | null;
 }): CrossDomainTransactionEvaluation {
   const amount = params.amountMillions ?? 150;
   const tx = securedDebtFundedAcquisitionTransaction({
     amountMillions: amount,
     evaluationDate: params.evaluationDate,
   });
+  const snapshotId =
+    params.approvedSnapshotId ?? params.financialSnapshotId ?? null;
   const expected =
     params.expectedFinancialIdentity ??
     buildApprovedFinancialIdentity({
       companyId: params.data.companyId,
       asOf: params.evaluationDate,
       financials: params.data.financials,
-      snapshotId: params.financialSnapshotId ?? null,
+      snapshotId,
     });
-  const ebitda = attachEbitdaDerivation({
-    data: params.data,
+  const ebitdaDerivation = resolveContractualEbitdaEvidenceForPackage({
+    companyId: params.data.companyId,
     evaluationDate: params.evaluationDate,
-    financialSnapshotId: params.financialSnapshotId ?? expected.snapshotId,
+    documentIds: params.data.documents.map((d) => d.id),
+    approvedSnapshotId: snapshotId ?? expected.snapshotId ?? null,
+    packageKey: params.packageKey ?? null,
   });
+  // Also surface #340 binder refusal when registry path did not bind but docs are present.
+  const binderRefusal =
+    ebitdaDerivation == null
+      ? bindContractualEbitdaEvidenceByIdentity({
+          companyId: params.data.companyId,
+          documentIds: params.data.documents.map((d) => d.id),
+          evaluationDate: params.evaluationDate,
+          financialSnapshotId: snapshotId ?? expected.snapshotId,
+        }).refusalReason
+      : null;
   const evaluation = evaluateCrossDomainTransaction({
     data: params.data,
     transaction: tx,
-    ebitdaDerivation: ebitda.derivation,
+    ebitdaDerivation,
     utilizationAuthority: params.utilizationAuthority ?? null,
     expectedFinancialIdentity: expected,
     // Production Simulate boundary — never TEST_DEMO.
     authoritySurface: "PRODUCTION",
   });
-  if (ebitda.refusalReason) {
-    evaluation.packageLimitations.push(ebitda.refusalReason);
+  if (binderRefusal && ebitdaDerivation == null) {
+    evaluation.packageLimitations.push(binderRefusal);
   }
   return evaluation;
 }

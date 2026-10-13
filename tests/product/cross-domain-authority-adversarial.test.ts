@@ -106,9 +106,9 @@ function baseAuth(
 }
 
 describe("canonical owner / version", () => {
-  it("retains only PR#340 v2 as the canonical cross-domain implementation", () => {
+  it("retains cross-domain-transaction.v2 with selective #340 authority absorb", () => {
     expect(CROSS_DOMAIN_EVALUATION_VERSION).toBe("cross-domain-transaction.v2");
-    expect(CROSS_DOMAIN_CANONICAL_OWNER).toBe("PR#340");
+    expect(CROSS_DOMAIN_CANONICAL_OWNER).toMatch(/#340|package-wide-covenant-execution/);
   });
 });
 
@@ -735,5 +735,109 @@ describe("9 — modeled/gross never silently becomes verified remaining", () => 
       utilizationAuthority: null,
     });
     expect(viaSimulate.domains.every((d) => d.verifiedRemainingMillions == null)).toBe(true);
+  });
+});
+
+describe("11 — cross-company identical EBITDA never selects foreign evidence", () => {
+  it("Matthews company with Coherent $1700 EBITDA figure does not attach Coherent derivation", async () => {
+    const { resolveContractualEbitdaEvidenceForPackage } = await import(
+      "@/lib/product/cross-domain-simulate"
+    );
+    // Same dollar amount as Coherent binding figure — must not bind Coherent evidence.
+    const derivation = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "matthews",
+      evaluationDate: "2026-06-30", // Coherent asOf — wrong for Matthews
+      documentIds: ["matw-indenture"],
+    });
+    expect(derivation).toBeNull();
+  });
+
+  it("unknown company with Coherent EBITDA amount gets no evidence", async () => {
+    const { resolveContractualEbitdaEvidenceForPackage } = await import(
+      "@/lib/product/cross-domain-simulate"
+    );
+    const derivation = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "acme-unseen-co",
+      evaluationDate: "2026-06-30",
+      documentIds: [],
+    });
+    expect(derivation).toBeNull();
+  });
+
+  it("Simulate on Matthews data never attaches Coherent SUPPORTING_RECONSTRUCTION via value match", () => {
+    const matthews = matthewsMinimalPackageData();
+    // Force financials.ebitda to Coherent's 1700 — identity must still win.
+    const mutated = {
+      ...matthews,
+      financials: { ...matthews.financials, ebitda: 1700 },
+    };
+    const result = evaluateSimulateCrossDomainAcquisition({
+      data: mutated,
+      amountMillions: 50,
+      evaluationDate: "2024-12-31",
+    });
+    // Matthews asOf binds Matthews evidence (INDEPENDENTLY_DERIVED), not Coherent reconstruction.
+    expect(result.contractualComputation.ebitdaDerivation?.kind).not.toBe(
+      "SUPPORTING_RECONSTRUCTION",
+    );
+    expect(result.contractualComputation.ebitdaDerivation?.kind).toBe(
+      "INDEPENDENTLY_DERIVED",
+    );
+  });
+
+  it("foreign approvedSnapshotId naming another company refuses evidence", async () => {
+    const { resolveContractualEbitdaEvidenceForPackage } = await import(
+      "@/lib/product/cross-domain-simulate"
+    );
+    const derivation = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "coherent",
+      evaluationDate: "2026-06-30",
+      approvedSnapshotId: "ns4:matthews:evil-swap",
+    });
+    expect(derivation).toBeNull();
+  });
+});
+
+describe("12 — EBITDA identity rejects wrong company/package/period/snapshot", () => {
+  it("wrong packageKey for company refuses", async () => {
+    const { resolveContractualEbitdaEvidenceForPackage } = await import(
+      "@/lib/product/cross-domain-simulate"
+    );
+    const derivation = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "coherent",
+      evaluationDate: "2026-06-30",
+      packageKey: "matthews_q1_fy2025", // foreign package key
+    });
+    expect(derivation).toBeNull();
+  });
+
+  it("wrong period (asOf) for company refuses even with matching docs", async () => {
+    const { resolveContractualEbitdaEvidenceForPackage } = await import(
+      "@/lib/product/cross-domain-simulate"
+    );
+    const derivation = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "coherent",
+      evaluationDate: "2024-12-31", // Matthews period
+      documentIds: ["coherent-credit-agreement-2022"],
+    });
+    expect(derivation).toBeNull();
+  });
+
+  it("equal EBITDA amounts across companies never cross-bind", async () => {
+    const { resolveContractualEbitdaEvidenceForPackage } = await import(
+      "@/lib/product/cross-domain-simulate"
+    );
+    // Company unknown; amount coincidence irrelevant — no company row → null
+    const a = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "twin-ebitda-co",
+      evaluationDate: "2026-06-30",
+    });
+    // Matthews company on Coherent period → null (period gate)
+    const b = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "matthews",
+      evaluationDate: "2026-06-30",
+    });
+    expect(a).toBeNull();
+    expect(b).toBeNull();
   });
 });

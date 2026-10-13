@@ -3,7 +3,9 @@ import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import type { CrossDomainTransactionEvaluation } from "@/lib/product/cross-domain-transaction";
 import { mapSimulateStatusToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 
-function supportTone(support: "EXECUTABLE" | "PARTIAL" | "UNSUPPORTED"): "pass" | "idle" | "tight" {
+function supportTone(
+  support: "EXECUTABLE" | "PARTIAL" | "EVIDENCE_BLOCKED" | "UNSUPPORTED" | "NOT_IMPLEMENTED",
+): "pass" | "idle" | "tight" {
   if (support === "EXECUTABLE") return "pass";
   if (support === "PARTIAL") return "idle";
   return "tight";

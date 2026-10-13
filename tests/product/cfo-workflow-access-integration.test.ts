@@ -13,6 +13,7 @@ import {
   claimsFromDashboardSide,
   dashboardFlagAloneCannotPublishAvailable,
   gateWorkspaceAccess,
+  ns4EvidenceLines,
   registerEvaluationAnonymousReadGrant,
   clearEvaluationAnonymousReadGrantsForTests,
   assertPositionSimulateCapacityConsistency,
@@ -125,6 +126,36 @@ function stubLoaders(counters: { n: number }) {
         refusalSummary: ["NO_VEP"],
         pathAutoSelected: false,
       } as Awaited<ReturnType<CfoWorkflowSensitiveLoaders["attemptVerifiedSimulate"]>>),
+    loadAuthoritativeCapacity: async ({ companyId }: { companyId: string }) =>
+      touch({
+        companyId,
+        evaluationDate: null,
+        status: "NEEDS_INPUT" as const,
+        authority: "NONE" as const,
+        cutoff: {
+          state: "NEEDS_INPUT",
+          reportingPeriodKey: null,
+          asOf: null,
+          approvedSnapshotId: null,
+        },
+        approvedSnapshotCount: 0,
+        activeLedgerUsageCount: 0,
+        ledgerUsages: [],
+        snapshotFactKeys: [],
+        certified: {
+          packagePresent: false,
+          capacityOutcome: null,
+          blockers: ["VerifiedExecutionPackage"],
+          authorityNote: "test stub — no VEP",
+        },
+        legacy: {
+          capacityAuthority: "NONE",
+          canEvaluateExecutableCapacity: false,
+          note: "LEGACY_ENGINE / NOT_CERTIFIED_4E",
+        },
+        missingInputs: ["APPROVED_NorthStar_snapshot", "VerifiedExecutionPackage"],
+        evidence: ["No APPROVED NS-4 snapshot in test stub."],
+      } as Awaited<ReturnType<CfoWorkflowSensitiveLoaders["loadAuthoritativeCapacity"]>>),
   };
 }
 
@@ -301,6 +332,35 @@ describe("P0 — assembler access gating (injectable identity; Neon unreachable 
       expect(allowed.simulate.preTransactionCapacity).toEqual(allowed.capacityBySide.secured);
     }
     expect(sensitiveHook).toBe(1);
+    expect(counters.n).toBeGreaterThan(0);
+  });
+
+  it("NS-4 APPROVED evidence is shared by Position/Simulate without upgrading remaining", async () => {
+    const counters = { n: 0 };
+    const allowed = await assembleCfoWorkflow({
+      companyId: EVAL_CO,
+      companyIdentityLoader: identityLoader,
+      simulateAmountMillions: 25,
+      simulateKind: "RESTRICTED_PAYMENT",
+      evaluationDate: "2026-08-01",
+      loaders: stubLoaders(counters),
+    });
+    expect(allowed.ok).toBe(true);
+    if (!allowed.ok) return;
+
+    expect(allowed.authoritativeCapacity.approvedSnapshotCount).toBe(0);
+    expect(allowed.authoritativeCapacity.status).toBe("NEEDS_INPUT");
+    expect(allowed.capacityBySide.secured.remainingAuthoritative).toBe(false);
+    expect(allowed.simulate.preTransactionCapacity?.remainingAuthoritative).toBe(false);
+
+    const lines = ns4EvidenceLines(allowed.authoritativeCapacity);
+    expect(lines.some((l) => /NS-4\/NS APPROVED snapshots: 0/.test(l))).toBe(true);
+    expect(allowed.simulate.traceAndProvenance.some((t) => /NS-4\/NS APPROVED/.test(t))).toBe(true);
+    expect(allowed.simulate.missingInputs.some((m) => /NS-4\/NS:/.test(m))).toBe(true);
+    expect(allowed.position.missingInputs.some((m) => /NS-4\/NS:/.test(m))).toBe(true);
+    expect(allowed.position.authorityNote).toMatch(/NS-4 evidence:/);
+    expect(allowed.simulate.overallStatus).not.toBe("VERIFIED_EXECUTABLE");
+    expect(allowed.capacityBySide.secured.verifiedRemaining.amountMillions).toBeNull();
     expect(counters.n).toBeGreaterThan(0);
   });
 
