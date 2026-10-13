@@ -2,33 +2,37 @@
 
 import { Card } from "@/components/ui";
 import { fmtM } from "@/lib/format";
-import {
-  recalculateWithFinancials,
-  type ContractualLeverageResult,
-  type LeverageCalculationRequest,
-  type LeverageFinancialInputs,
-} from "@/lib/product/contractual-leverage";
+import { reflowIndicativeLeverage } from "@/lib/product/contractual-leverage/reflow";
+import type {
+  ContractualLeverageResult,
+  LeverageCalculationRequest,
+  LeverageFinancialInputs,
+} from "@/lib/product/contractual-leverage/types";
 
 export interface ContractualLeveragePanelProps {
   requests: LeverageCalculationRequest[];
   financials: LeverageFinancialInputs;
+  /** Server IR + EBITDA build-up results; shown until the user edits financials. */
+  serverResults?: ContractualLeverageResult[];
+  /** Snapshot financials from the server load — detects live edits. */
+  baselineFinancials?: LeverageFinancialInputs;
 }
 
-function statusTone(status: ContractualLeverageResult["status"]): string {
-  switch (status) {
-    case "COMPUTED":
-      return "modeled";
-    case "MISSING_INPUTS":
-    case "MISSING_DEFINITIONS":
-      return "review";
-    default:
-      return "unmodeled";
-  }
+function statusTone(result: ContractualLeverageResult): string {
+  if (result.status !== "COMPUTED") return "review";
+  return result.computationAuthority === "CONTRACTUAL_EXECUTABLE" ? "modeled" : "review";
 }
 
 function ResultCard({ result }: { result: ContractualLeverageResult }) {
+  const indicative = result.computationAuthority === "INDICATIVE";
   return (
-    <div className="covenant-row" data-leverage-status={result.status} style={{ display: "block", padding: "12px 0", borderBottom: "1px solid var(--border, #e5e7eb)" }}>
+    <div
+      className="covenant-row"
+      data-leverage-status={result.status}
+      data-computation-authority={result.computationAuthority}
+      data-input-authority={result.inputAuthority}
+      style={{ display: "block", padding: "12px 0", borderBottom: "1px solid var(--border, #e5e7eb)" }}
+    >
       <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "baseline" }}>
         <div>
           <div className="row-label" style={{ fontWeight: 600 }}>
@@ -37,9 +41,10 @@ function ResultCard({ result }: { result: ContractualLeverageResult }) {
           <div className="row-note">
             {result.documentName ? `${result.documentName} · ` : ""}
             {result.sectionRef}
+            {indicative ? " · INDICATIVE" : " · CONTRACTUAL_EXECUTABLE (ratio math)"}
           </div>
         </div>
-        <div className={`row-value tone-${statusTone(result.status)}`}>
+        <div className={`row-value tone-${statusTone(result)}`}>
           {result.status === "COMPUTED" && result.currentRatio != null
             ? `${result.currentRatio.toFixed(2)}x`
             : result.status.replace(/_/g, " ")}
@@ -56,10 +61,24 @@ function ResultCard({ result }: { result: ContractualLeverageResult }) {
       {result.status === "COMPUTED" ? (
         <div className="row-note" style={{ marginTop: 6 }}>
           {result.threshold != null ? `Limit ${result.threshold.toFixed(2)}x` : "No threshold"}
-          {result.ratioHeadroom != null ? ` · ratio headroom ${result.ratioHeadroom.toFixed(2)}x` : ""}
-          {result.debtHeadroomMillions != null
-            ? ` · debt headroom ${fmtM(result.debtHeadroomMillions)}`
+          {result.ratioHeadroom != null
+            ? ` · mathematical ratio headroom ${result.ratioHeadroom.toFixed(2)}x`
             : ""}
+          {result.debtHeadroomMillions != null
+            ? ` · mathematical dollar room ${fmtM(result.debtHeadroomMillions)}`
+            : ""}
+        </div>
+      ) : null}
+
+      <div className="row-note" style={{ marginTop: 6, fontStyle: "italic" }}>
+        {result.capacityDisclaimer}
+      </div>
+
+      {result.ebitdaBuildup?.status === "COMPUTED" ? (
+        <div className="row-note" style={{ marginTop: 8 }}>
+          Consolidated EBITDA build-up ({result.ebitdaBuildup.authority}):{" "}
+          {result.ebitdaBuildup.valueMillions != null ? fmtM(result.ebitdaBuildup.valueMillions) : "—"}
+          {result.ebitdaBuildup.formulaDisplay ? ` = ${result.ebitdaBuildup.formulaDisplay}` : ""}
         </div>
       ) : null}
 
@@ -69,6 +88,8 @@ function ResultCard({ result }: { result: ContractualLeverageResult }) {
             <li key={input.key}>
               {input.label}:{" "}
               {input.status === "RESOLVED" && input.valueMillions != null ? fmtM(input.valueMillions) : "MISSING"}
+              {" "}
+              <span>({input.authority})</span>
             </li>
           ))}
         </ul>
@@ -98,37 +119,60 @@ function ResultCard({ result }: { result: ContractualLeverageResult }) {
 /**
  * Universal contractual leverage panel — same component for every company.
  * Recalculates from request packages + current financial inputs (no company branches).
+ * Imports only browser-safe calculate/types modules (no Prisma / node:crypto).
  */
-export function ContractualLeveragePanel({ requests, financials }: ContractualLeveragePanelProps) {
+function financialsEdited(a: LeverageFinancialInputs | undefined, b: LeverageFinancialInputs): boolean {
+  if (!a) return false;
+  return a.ebitda !== b.ebitda || a.totalDebt !== b.totalDebt || a.securedDebt !== b.securedDebt || a.cash !== b.cash;
+}
+
+export function ContractualLeveragePanel({
+  requests,
+  financials,
+  serverResults,
+  baselineFinancials,
+}: ContractualLeveragePanelProps) {
+  // Prefer server IR + EBITDA build-up until the user edits covenant financials;
+  // then browser-safe indicative reflow (no IR runtime / node:crypto).
+  const edited = financialsEdited(baselineFinancials, financials);
   const results =
-    requests.length > 0
-      ? requests.map((req) => recalculateWithFinancials(req, financials))
-      : [
-          {
-            status: "MISSING_DEFINITIONS" as const,
-            name: "Contractual leverage",
-            sectionRef: "—",
-            documentName: null,
-            debtBasis: null,
-            formulaDisplay: null,
-            citations: [],
-            limitations: [],
-            inputs: [],
-            missingRequirements: ["No leverage-ratio calculation packages loaded for this company"],
-            currentRatio: null,
-            threshold: null,
-            ratioHeadroom: null,
-            debtHeadroomMillions: null,
-            runtimeStatus: null,
-          },
-        ];
+    !edited && serverResults && serverResults.length > 0
+      ? serverResults
+      : requests.length > 0
+        ? requests.map((req) => reflowIndicativeLeverage(req, financials))
+        : [
+            {
+              status: "MISSING_DEFINITIONS" as const,
+              name: "Contractual leverage",
+              sectionRef: "—",
+              documentName: null,
+              debtBasis: null,
+              formulaDisplay: null,
+              citations: [],
+              limitations: [],
+              inputs: [],
+              missingRequirements: ["No leverage-ratio calculation packages loaded for this company"],
+              currentRatio: null,
+              threshold: null,
+              ratioHeadroom: null,
+              debtHeadroomMillions: null,
+              runtimeStatus: null,
+              inputAuthority: "CALLER_SUPPLIED" as const,
+              computationAuthority: "INDICATIVE" as const,
+              headroomPresentation: "NOT_PRESENTED_AS_CAPACITY" as const,
+              capacityDisclaimer:
+                "Mathematical ratio / dollar room only — not legally available debt-incurrence capacity without the governing permission, eligibility conditions, and any required pro forma adjustments.",
+              ebitdaBuildup: null,
+            },
+          ];
 
   return (
     <Card>
       <div className="card-title">Contractual leverage ratios</div>
       <div className="card-subtitle">
-        Source-backed ratio computation from operative EBITDA and debt-metric definitions. Missing critical
-        inputs are listed — values are never invented.
+        Indicative leverage and mathematical ratio headroom from operative definitions until inputs and
+        mechanics are sufficiently verified. Never invents missing values; never claims legal incurrence
+        capacity from ratio math alone.
       </div>
       <div data-slot="contractual-leverage">
         {results.map((result, i) => (

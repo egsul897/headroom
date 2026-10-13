@@ -1,20 +1,21 @@
 /**
  * Compile identified leverage-ratio definitions into reusable IR expressions.
  *
- * Reuses the same METRIC_REFERENCE / SUBTRACT / DIVIDE / MULTIPLY shapes as
+ * Reuses METRIC_REFERENCE / SUBTRACT / DIVIDE / MULTIPLY shapes isomorphic to
  * lib/contract-model/ir/legacy-adapter.ts — no issuer-specific trees.
+ * Uses browser-safe expr ids (no node:crypto).
  */
 
 import type { IRCapacityExpression, IRExpression, SourceProvenance } from "@/lib/contract-model/ir/types";
-import { withExpressionId } from "@/lib/contract-model/ir/identity";
+import { withLeverageExprId } from "./expr-id";
 import type { IdentifiedLeverageComponents } from "./types";
 
 export interface CompiledLeverageExpressions {
   /** (Debt [− Cash]) / EBITDA → RATIO */
   ratioExpression: IRExpression;
   /**
-   * max(0, threshold × EBITDA − netDebt) → MONEY capacity room.
-   * Null when no threshold supplied.
+   * max(0, threshold × EBITDA − netDebt) → MONEY mathematical dollar room.
+   * Null when no threshold supplied or dollar room is unsupported.
    */
   debtHeadroomExpression: IRCapacityExpression | null;
   debtMetricKey: string;
@@ -38,7 +39,7 @@ function metricRef(
   instrumentKey: string,
   prov: SourceProvenance | undefined,
 ): IRExpression {
-  return withExpressionId({
+  return withLeverageExprId({
     kind: "METRIC_REFERENCE",
     type: "MONEY",
     metricName,
@@ -51,13 +52,15 @@ function metricRef(
 
 /**
  * Compile a net (or gross) leverage ratio into executable IR.
- * Metric keys are stable engine names so any company's verified inputs can bind.
+ * Metric keys are stable engine names so any company's inputs can bind.
  */
 export function compileLeverageExpressions(args: {
   components: IdentifiedLeverageComponents;
   companyId: string;
   instrumentKey: string;
   threshold?: number | null;
+  /** When true, refuse to emit dollar-room expression (unsupported cash cap etc.). */
+  refuseDollarRoom?: boolean;
 }): CompiledLeverageExpressions {
   const { components, companyId, instrumentKey } = args;
   const prov = provenance(components);
@@ -74,7 +77,7 @@ export function compileLeverageExpressions(args: {
   });
 
   const numerator: IRExpression = cashMetricKey
-    ? withExpressionId({
+    ? withLeverageExprId({
         kind: "SUBTRACT",
         type: "MONEY",
         left: grossDebt,
@@ -83,7 +86,7 @@ export function compileLeverageExpressions(args: {
       })
     : grossDebt;
 
-  const ratioExpression = withExpressionId({
+  const ratioExpression = withLeverageExprId({
     kind: "DIVIDE",
     type: "RATIO",
     numerator,
@@ -92,34 +95,39 @@ export function compileLeverageExpressions(args: {
   });
 
   let debtHeadroomExpression: IRCapacityExpression | null = null;
-  if (args.threshold != null && Number.isFinite(args.threshold) && args.threshold > 0) {
-    const multiple = withExpressionId({
+  if (
+    !args.refuseDollarRoom &&
+    args.threshold != null &&
+    Number.isFinite(args.threshold) &&
+    args.threshold > 0
+  ) {
+    const multiple = withLeverageExprId({
       kind: "NUMBER",
       type: "NUMBER",
       value: args.threshold,
       provenance: prov,
     });
-    const maxDebt = withExpressionId({
+    const maxDebt = withLeverageExprId({
       kind: "MULTIPLY",
       type: "MONEY",
       operands: [multiple, ebitda],
       provenance: prov,
     });
-    const room = withExpressionId({
+    const room = withLeverageExprId({
       kind: "SUBTRACT",
       type: "MONEY",
       left: maxDebt,
       right: numerator,
       provenance: prov,
     });
-    const zero = withExpressionId({
+    const zero = withLeverageExprId({
       kind: "MONEY",
       type: "MONEY",
       amount: 0,
       currency: "USD",
       provenance: prov,
     });
-    debtHeadroomExpression = withExpressionId({
+    debtHeadroomExpression = withLeverageExprId({
       kind: "MAX",
       type: "MONEY",
       operands: [zero, room],

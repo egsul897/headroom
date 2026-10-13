@@ -22,7 +22,7 @@ import {
 } from "@/lib/dashboard/load-state";
 import type { CompanyCovenantData, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
-import type { LeverageCalculationRequest } from "@/lib/product/contractual-leverage";
+import type { ContractualLeverageResult, LeverageCalculationRequest } from "@/lib/product/contractual-leverage/types";
 import { fmtDate, fmtM } from "@/lib/format";
 
 /**
@@ -66,6 +66,8 @@ export interface DashboardClientProps {
   attributedUtilizationSerialized?: AttributedUtilizationSerialized | null;
   /** Contractual leverage packages (definition-backed). Empty ⇒ panel shows missing requirements. */
   contractualLeverageRequests?: LeverageCalculationRequest[];
+  /** Server-computed IR + EBITDA build-up results for the unedited snapshot. */
+  contractualLeverageResults?: ContractualLeverageResult[];
 }
 
 /** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
@@ -271,6 +273,13 @@ export function DashboardClient(props: DashboardClientProps) {
 
       <ContractualLeveragePanel
         requests={props.contractualLeverageRequests ?? []}
+        serverResults={props.contractualLeverageResults}
+        baselineFinancials={{
+          ebitda: covenantData.financials.ebitda,
+          totalDebt: covenantData.financials.totalDebt,
+          securedDebt: covenantData.financials.securedDebt,
+          cash: covenantData.financials.cash,
+        }}
         financials={{
           ebitda: financials.ebitda,
           totalDebt: financials.totalDebt,

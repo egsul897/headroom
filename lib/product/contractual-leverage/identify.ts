@@ -1,9 +1,9 @@
 /**
  * Identify operative EBITDA + debt-metric roles from contractual definition text.
  *
- * Pattern-based and issuer-agnostic: recognizes the common net-leverage drafting
- * shape (debt ± cash netting) / Consolidated EBITDA. Refuses unrecognized shapes
- * rather than guessing.
+ * Pattern-based and issuer-agnostic. Refuses unrecognized shapes rather than guessing.
+ * Surfaces unsupported cash-cap / pro-forma mechanics so callers cannot silently
+ * treat a partial model as an authoritative contractual answer.
  */
 
 import type { DebtMetricBasis, DefinitionText, IdentifiedLeverageComponents } from "./types";
@@ -18,7 +18,6 @@ function findByName(definitions: DefinitionText[], candidates: string[]): Defini
     const hit = definitions.find((d) => normalize(d.termName) === want);
     if (hit) return hit;
   }
-  // Fallback: substring match on term name (e.g. "Total Net Leverage Ratio" in a longer title).
   for (const candidate of candidates) {
     const want = normalize(candidate);
     const hit = definitions.find((d) => normalize(d.termName).includes(want));
@@ -40,8 +39,6 @@ function detectDebtBasis(text: string, hint: DebtMetricBasis | null | undefined)
   if (secured && !total) return "secured";
   if (total && !secured) return "total";
   if (secured && total) {
-    // Secured leverage defs often mention Consolidated Total Indebtedness that is secured —
-    // prefer secured when "secured" qualifies the indebtedness numerator.
     if (/\b(that\s+is\s+secured|secured\s+by\s+a\s+lien|senior\s+secured)\b/.test(t)) return "secured";
   }
   if (hint) return hint;
@@ -54,12 +51,28 @@ function detectCashNetting(text: string): boolean {
   );
 }
 
+/** Capped / lesser-of cash netting — we do not execute these mechanics. */
+export function detectUnsupportedCashCap(text: string): boolean {
+  return (
+    /\blesser\s+of\b[\s\S]{0,120}\bcash\b/i.test(text) ||
+    /\bcash\b[\s\S]{0,80}\blesser\s+of\b/i.test(text) ||
+    /\bnot\s+to\s+exceed\b[\s\S]{0,80}\bcash\b/i.test(text) ||
+    /\bcash\b[\s\S]{0,60}\b(capped|cap\s+of|maximum\s+netting)\b/i.test(text) ||
+    /\b\d+(?:\.\d+)?\s*%\s+of\b[\s\S]{0,40}\b(total\s+assets|consolidated\s+total\s+assets)\b[\s\S]{0,40}\bcash\b/i.test(
+      text,
+    )
+  );
+}
+
+export function detectUnresolvedProForma(text: string): boolean {
+  return /\bpro\s*forma\b|\bmaterial\s+acquisition\b|\brun[- ]rate\b|\bsynerg(?:y|ies)\b/i.test(text);
+}
+
 function detectDebtMetricName(text: string, basis: DebtMetricBasis): string {
-  const t = text;
-  const securedMatch = t.match(
+  const securedMatch = text.match(
     /\b(Consolidated\s+(?:Senior\s+)?Secured\s+(?:Net\s+)?(?:Debt|Indebtedness)|Consolidated\s+Total\s+Indebtedness\s+that\s+is\s+secured(?:\s+by\s+a\s+Lien)?)/i,
   );
-  const totalMatch = t.match(/\b(Consolidated\s+Total\s+(?:Debt|Indebtedness)|Consolidated\s+Total\s+Net\s+Debt)/i);
+  const totalMatch = text.match(/\b(Consolidated\s+Total\s+(?:Debt|Indebtedness)|Consolidated\s+Total\s+Net\s+Debt)/i);
   if (basis === "secured") return securedMatch?.[1] ?? "Secured Debt";
   return totalMatch?.[1] ?? "Total Debt";
 }
@@ -69,10 +82,6 @@ function detectEbitdaReference(text: string): string | null {
   return m?.[1] ?? null;
 }
 
-/**
- * Identify the operative contractual components of a leverage-ratio definition.
- * Returns null when the shape is not a supported net/gross debt ÷ EBITDA ratio.
- */
 export function identifyLeverageComponents(args: {
   definitions: DefinitionText[];
   leverageTermCandidates: string[];
@@ -114,7 +123,6 @@ export function identifyLeverageComponents(args: {
     };
   }
 
-  // Require an explicit ratio-of drafting cue so we do not compile unrelated defs.
   if (!/\bratio\s+of\b/i.test(leverageTerm.fullText) && !/\bmeans,?\s+as\s+of\b/i.test(leverageTerm.fullText)) {
     return {
       error: "UNSUPPORTED_DEFINITION_SHAPE",
@@ -132,23 +140,28 @@ export function identifyLeverageComponents(args: {
   }
 
   const netsCash = detectCashNetting(leverageTerm.fullText);
+  const hasUnsupportedCashCap = detectUnsupportedCashCap(leverageTerm.fullText);
+  const combinedText = `${leverageTerm.fullText}\n${ebitdaTerm.fullText}`;
+  const hasUnresolvedProForma = detectUnresolvedProForma(combinedText);
   const debtMetricName = detectDebtMetricName(leverageTerm.fullText, debtBasis);
   const formulaDisplay = netsCash
     ? `(${debtMetricName} − unrestricted cash & Cash Equivalents) / ${ebitdaTerm.termName}`
     : `${debtMetricName} / ${ebitdaTerm.termName}`;
 
-  const limitations: string[] = [
-    "Leaf metric values are resolved from verified financial inputs; EBITDA add-back line items are not re-expanded here.",
-    "Pro forma / acquisition adjustments named in the definition are not applied unless supplied as explicit inputs.",
-  ];
-  if (netsCash) {
-    limitations.push("Cash netting uses unrestricted cash & Cash Equivalents as supplied; capped-cash netting mechanics are not modeled.");
+  const limitations: string[] = [];
+  if (hasUnsupportedCashCap) {
+    limitations.push(
+      "Cash-netting cap / lesser-of mechanics appear in the definition and are not executed — result cannot be an authoritative contractual answer.",
+    );
   }
-
-  const citations = [
-    `${leverageTerm.sectionRef} — ${leverageTerm.termName}`,
-    `${ebitdaTerm.sectionRef} — ${ebitdaTerm.termName}`,
-  ];
+  if (hasUnresolvedProForma) {
+    limitations.push(
+      "Pro forma / acquisition / run-rate adjustments are referenced but not bound as approved inputs — not applied; result is not authoritative contractual.",
+    );
+  }
+  if (netsCash && !hasUnsupportedCashCap) {
+    limitations.push("Cash netting uses unrestricted cash & Cash Equivalents as supplied; no cash-cap mechanics detected in definition text.");
+  }
 
   return {
     leverageTerm,
@@ -156,8 +169,13 @@ export function identifyLeverageComponents(args: {
     debtBasis,
     debtMetricName,
     netsCash,
+    hasUnsupportedCashCap,
+    hasUnresolvedProForma,
     formulaDisplay,
-    citations,
+    citations: [
+      `${leverageTerm.sectionRef} — ${leverageTerm.termName}`,
+      `${ebitdaTerm.sectionRef} — ${ebitdaTerm.termName}`,
+    ],
     limitations,
   };
 }

@@ -7,6 +7,33 @@
 
 export type DebtMetricBasis = "total" | "secured";
 
+/**
+ * How financial inputs were obtained. Caller-supplied / seeded values are never
+ * labeled as authenticated approved evidence merely because they reached the resolver.
+ */
+export type FinancialInputAuthority =
+  /** Dashboard edit, test fixture, or other caller-passed scalars. */
+  | "CALLER_SUPPLIED"
+  /** Legacy FinancialSnapshot / seed population — not an APPROVED certificate. */
+  | "SEEDED_SNAPSHOT"
+  /** Authenticated, approved, period-matched financial evidence (4B APPROVED path). */
+  | "APPROVED_PERIOD_MATCHED";
+
+/** Honesty level of the computed ratio — never silently "authoritative contractual". */
+export type ComputationAuthority =
+  /** Math succeeded; definitions/inputs/mechanics not fully verified for contractual reliance. */
+  | "INDICATIVE"
+  /** Operative defs + approved period-matched inputs + supported mechanics — still not legal capacity. */
+  | "CONTRACTUAL_EXECUTABLE";
+
+export type HeadroomPresentation =
+  /** threshold − current ratio (x). Not legal incurrence capacity. */
+  | "MATHEMATICAL_RATIO_HEADROOM"
+  /** threshold × EBITDA − net debt ($M). Not legal incurrence capacity. */
+  | "MATHEMATICAL_DOLLAR_ROOM"
+  /** Explicitly refused — would be misleading as capacity. */
+  | "NOT_PRESENTED_AS_CAPACITY";
+
 export interface DefinitionText {
   termName: string;
   sectionRef: string;
@@ -16,31 +43,24 @@ export interface DefinitionText {
 }
 
 export interface IdentifiedLeverageComponents {
-  /** Operative leverage-ratio defined term. */
   leverageTerm: DefinitionText;
-  /** Operative EBITDA defined term. */
   ebitdaTerm: DefinitionText;
   debtBasis: DebtMetricBasis;
-  /** Contractual debt metric name as named in the leverage definition. */
   debtMetricName: string;
-  /** True when the definition nets unrestricted cash / Cash Equivalents. */
   netsCash: boolean;
-  /** Human-readable formula skeleton derived from the definition text. */
+  /** Definition uses capped / lesser-of cash netting we do not execute. */
+  hasUnsupportedCashCap: boolean;
+  /** Definition references pro forma / acquisition adjustments without bound inputs. */
+  hasUnresolvedProForma: boolean;
   formulaDisplay: string;
-  /** Source citations (section refs + term names). */
   citations: string[];
-  /** Structural limitations detected at identification time. */
   limitations: string[];
 }
 
 export interface LeverageFinancialInputs {
-  /** Contractual / covenant EBITDA ($M). */
   ebitda: number | null;
-  /** Gross total indebtedness ($M). */
   totalDebt: number | null;
-  /** Gross secured indebtedness ($M). */
   securedDebt: number | null;
-  /** Unrestricted cash & cash equivalents ($M). */
   cash: number | null;
 }
 
@@ -50,6 +70,8 @@ export interface ResolvedInputLine {
   valueMillions: number | null;
   required: boolean;
   status: "RESOLVED" | "MISSING";
+  /** Provenance authority for this input line. */
+  authority: FinancialInputAuthority;
 }
 
 export type ContractualLeverageStatus =
@@ -59,9 +81,20 @@ export type ContractualLeverageStatus =
   | "MISSING_INPUTS"
   | "EVALUATION_ERROR";
 
+export interface EbitdaBuildupSummary {
+  status: "COMPUTED" | "MISSING_INPUTS" | "UNSUPPORTED_DEFINITION_SHAPE";
+  valueMillions: number | null;
+  formulaDisplay: string | null;
+  lineItems: Array<{ key: string; label: string; amountMillions: number | null; role: "BASE" | "ADD" | "SUBTRACT" }>;
+  citations: string[];
+  missingRequirements: string[];
+  limitations: string[];
+  authority: FinancialInputAuthority;
+  runtimeStatus: string | null;
+}
+
 export interface ContractualLeverageResult {
   status: ContractualLeverageStatus;
-  /** Provision / basket label when computed against a threshold covenant. */
   name: string;
   sectionRef: string;
   documentName: string | null;
@@ -71,38 +104,59 @@ export interface ContractualLeverageResult {
   limitations: string[];
   inputs: ResolvedInputLine[];
   missingRequirements: string[];
-  /** Current contractual leverage ratio (x), when computed. */
   currentRatio: number | null;
-  /** Covenant / basket threshold (x), when supplied. */
   threshold: number | null;
-  /** Ratio headroom (threshold − current) for at-or-below tests. */
+  /**
+   * Mathematical ratio headroom (threshold − current). Never legal incurrence capacity.
+   */
   ratioHeadroom: number | null;
   /**
-   * Dollar headroom under threshold × EBITDA − net debt ($M), when the
-   * definition nets cash (or uses gross debt) and a threshold is known.
-   * Null when legally/mathematically unsupported or inputs missing.
+   * Mathematical dollar room under threshold × EBITDA − net debt ($M).
+   * Null when unsupported or inputs missing. Never legal incurrence capacity.
    */
   debtHeadroomMillions: number | null;
-  /** Runtime evaluation status for the ratio expression, when attempted. */
   runtimeStatus: string | null;
+  /** How inputs were sourced. */
+  inputAuthority: FinancialInputAuthority;
+  /** INDICATIVE until defs + approved inputs + supported mechanics clear. */
+  computationAuthority: ComputationAuthority;
+  headroomPresentation: HeadroomPresentation;
+  /** Explicit disclaimer always shown with headroom figures. */
+  capacityDisclaimer: string;
+  /** Optional Consolidated EBITDA build-up attached to this result. */
+  ebitdaBuildup: EbitdaBuildupSummary | null;
+}
+
+export interface ApprovedFinancialLineItem {
+  key: string;
+  label: string;
+  amountMillions: number;
+  /** Period key the fact is stated for (e.g. TTM ending 2024-12-31). */
+  period: string;
+  asOf: string;
+  authority: FinancialInputAuthority;
+  sourceCitation?: string;
 }
 
 export interface LeverageCalculationRequest {
-  /** Display name for the covenant / basket. */
   name: string;
   sectionRef: string;
   documentName?: string | null;
   companyId: string;
   instrumentKey: string;
-  /** All defined-term texts available for the instrument (EBITDA + leverage + peers). */
   definitions: DefinitionText[];
-  /** Preferred leverage term name(s), most specific first. */
   leverageTermCandidates: string[];
-  /** Preferred EBITDA term name(s). */
   ebitdaTermCandidates?: string[];
-  /** Threshold for headroom (e.g. 4.25). Omit → ratio only. */
   threshold?: number | null;
-  /** Hint when definition text does not itself establish secured vs total. */
   debtBasisHint?: DebtMetricBasis | null;
   financials: LeverageFinancialInputs;
+  /** Default authority for scalar financials when not overridden per line. */
+  financialAuthority?: FinancialInputAuthority;
+  /**
+   * Optional approved line items for Consolidated EBITDA build-up.
+   * When present and complete, used as the EBITDA input with their authority.
+   */
+  ebitdaLineItems?: ApprovedFinancialLineItem[];
+  /** Period expected for period-matched approved evidence. */
+  expectedPeriod?: string | null;
 }

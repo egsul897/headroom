@@ -51,6 +51,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
       maturitiesQuery={maturitiesQuery}
       attributedUtilizationSerialized={attributedUtilizationSerialized}
       contractualLeverageRequests={leverage.requests}
+      contractualLeverageResults={leverage.results}
     />
   );
 }

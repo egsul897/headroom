@@ -1,18 +1,22 @@
 /**
  * Source-backed definition + financial fixtures for focused tests.
  *
- * Coherent: Credit Agreement Total Net Leverage Ratio (seed definition text +
- * seed FinancialSnapshot figures).
- * Matthews: Indenture Secured Net Leverage Ratio drafting shape documented in
- * docs/matthews-international-onboarding.md + AUTHENTIC_SOURCE_BACKED Q1 FY2025
- * figures from scripts/populate-matthews-solver-native.ts.
+ * Coherent: CA Total Net Leverage (seed definition text + seed snapshot figures).
+ * Matthews: Indenture Secured Net Leverage + Indenture Consolidated EBITDA
+ * build-up line items from PUBLIC_FILING_RECONSTRUCTION provenance
+ * (scripts/populate-matthews-financial-provenance.ts).
  *
- * Not production company branches — test/demo data only.
+ * Test/demo data only — authority labeled honestly (not APPROVED by default).
  */
 
-import type { DefinitionText, LeverageCalculationRequest, LeverageFinancialInputs } from "./types";
+import type {
+  ApprovedFinancialLineItem,
+  DefinitionText,
+  LeverageCalculationRequest,
+  LeverageFinancialInputs,
+} from "./types";
 
-/** Coherent CA §6.11(a) — seed FinancialSnapshot ($M): 1141+1080+990+47 total; 1141+1080 secured. */
+/** Coherent CA §6.11(a) — seed FinancialSnapshot ($M). */
 export const COHERENT_FINANCIALS: LeverageFinancialInputs = {
   ebitda: 1700,
   totalDebt: 3258,
@@ -20,8 +24,6 @@ export const COHERENT_FINANCIALS: LeverageFinancialInputs = {
   cash: 1162,
 };
 
-// Seed total/secured from prisma/seed-data.ts (TOTAL_DEBT / SECURED_DEBT).
-// Re-read exact constants below when building the request.
 export const COHERENT_CA_DEFINITIONS: DefinitionText[] = [
   {
     termName: "Consolidated EBITDA",
@@ -49,12 +51,6 @@ export const MATTHEWS_FINANCIALS: LeverageFinancialInputs = {
   cash: 33.513,
 };
 
-/**
- * Secured Net Leverage Ratio drafting consistent with Matthews Indenture
- * Permitted Debt cl. (1)(b)(x) / defined-term structure described in
- * docs/matthews-international-onboarding.md (ratio of secured indebtedness
- * less unrestricted cash to Consolidated EBITDA).
- */
 export const MATTHEWS_INDENTURE_DEFINITIONS: DefinitionText[] = [
   {
     termName: "Consolidated EBITDA",
@@ -74,6 +70,76 @@ export const MATTHEWS_INDENTURE_DEFINITIONS: DefinitionText[] = [
   },
 ];
 
+/**
+ * Matthews Indenture Consolidated EBITDA TTM line items
+ * (PUBLIC_FILING_RECONSTRUCTION — not a reviewer-APPROVED certificate).
+ * Sum: -60.829 + 54.640 - 11.629 + 93.751 + 16.727 + 16.847 + 18.806 = 128.313
+ */
+export const MATTHEWS_EBITDA_LINE_ITEMS: ApprovedFinancialLineItem[] = [
+  {
+    key: "cni",
+    label: "Consolidated Net Income",
+    amountMillions: -60.829,
+    period: "TTM-2024-12-31",
+    asOf: "2024-12-31",
+    authority: "SEEDED_SNAPSHOT",
+    sourceCitation: "FY2024 10-K + Q1 FY2025 10-Q TTM net income",
+  },
+  {
+    key: "interest",
+    label: "Consolidated Interest Expense",
+    amountMillions: 54.64,
+    period: "TTM-2024-12-31",
+    asOf: "2024-12-31",
+    authority: "SEEDED_SNAPSHOT",
+  },
+  {
+    key: "tax_benefit",
+    label: "Income tax benefit",
+    amountMillions: 11.629,
+    period: "TTM-2024-12-31",
+    asOf: "2024-12-31",
+    authority: "SEEDED_SNAPSHOT",
+  },
+  {
+    key: "da",
+    label: "Depreciation and amortization",
+    amountMillions: 93.751,
+    period: "TTM-2024-12-31",
+    asOf: "2024-12-31",
+    authority: "SEEDED_SNAPSHOT",
+  },
+  {
+    key: "goodwill",
+    label: "Goodwill write-downs (non-cash)",
+    amountMillions: 16.727,
+    period: "TTM-2024-12-31",
+    asOf: "2024-12-31",
+    authority: "SEEDED_SNAPSHOT",
+  },
+  {
+    key: "asset_wd",
+    label: "Asset write-downs (non-cash)",
+    amountMillions: 16.847,
+    period: "TTM-2024-12-31",
+    asOf: "2024-12-31",
+    authority: "SEEDED_SNAPSHOT",
+  },
+  {
+    key: "sbc",
+    label: "Stock-based compensation (non-cash)",
+    amountMillions: 18.806,
+    period: "TTM-2024-12-31",
+    asOf: "2024-12-31",
+    authority: "SEEDED_SNAPSHOT",
+  },
+];
+
+/** Same line items labeled APPROVED_PERIOD_MATCHED for authority-gate tests. */
+export const MATTHEWS_EBITDA_LINE_ITEMS_APPROVED: ApprovedFinancialLineItem[] = MATTHEWS_EBITDA_LINE_ITEMS.map(
+  (i) => ({ ...i, authority: "APPROVED_PERIOD_MATCHED" as const }),
+);
+
 export function coherentTotalNetLeverageRequest(
   financials: LeverageFinancialInputs = COHERENT_FINANCIALS,
 ): LeverageCalculationRequest {
@@ -89,6 +155,7 @@ export function coherentTotalNetLeverageRequest(
     threshold: 4.25,
     debtBasisHint: "total",
     financials,
+    financialAuthority: "SEEDED_SNAPSHOT",
   };
 }
 
@@ -107,5 +174,8 @@ export function matthewsSecuredNetLeverageRequest(
     threshold: 3.5,
     debtBasisHint: "secured",
     financials,
+    financialAuthority: "SEEDED_SNAPSHOT",
+    ebitdaLineItems: MATTHEWS_EBITDA_LINE_ITEMS,
+    expectedPeriod: "TTM-2024-12-31",
   };
 }
