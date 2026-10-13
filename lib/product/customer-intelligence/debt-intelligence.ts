@@ -44,6 +44,11 @@ import {
   COHERENT_EBITDA_EVIDENCE,
   MATTHEWS_EBITDA_EVIDENCE,
 } from "@/lib/financial-certificate-engine/fixtures";
+import {
+  evaluateDefaultCrossDomainScenarios,
+} from "@/lib/product/cross-domain-scenarios";
+import type { CrossDomainTransactionEvaluation } from "@/lib/product/cross-domain-transaction";
+import type { CompanyCovenantData } from "@/lib/covenant-engine";
 
 /**
  * Evidence packages keyed by as-of + binding EBITDA — not by company id.
@@ -243,6 +248,8 @@ export interface DebtIntelligenceDashboard {
    * Company-agnostic; null when no usable verified financial snapshot.
    */
   contractualComputation: ContractualComputationResult | null;
+  /** Package-wide multi-family scenario evaluations (gross ≠ verified remaining). */
+  crossDomainScenarios: CrossDomainTransactionEvaluation[];
   rulebookStage: string;
   capacityStatus: string;
   amendmentResolution: string;
@@ -529,16 +536,21 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     securedDebt,
     totalAssets,
   });
-  const covenantDataForContractual = finForContractual
-    ? await loadCompanyCovenantData(
+  let covenantDataForContractual: CompanyCovenantData | null = null;
+  if (finForContractual) {
+    try {
+      covenantDataForContractual = await loadCompanyCovenantData(
         prisma,
         companyId,
         asOfDate ? new Date(`${asOfDate}T12:00:00.000Z`) : new Date(),
-      )
-    : null;
+      );
+    } catch {
+      covenantDataForContractual = null;
+    }
+  }
 
   // Contractual EBITDA derivation: FinancialState addbacks → evidence package match by as-of+value.
-  let ebitdaDerivation =
+  const ebitdaDerivation =
     derivationFromFinancialStateCovenantEbitda(financialState?.covenantMetricFacts, asOfDate) ??
     (() => {
       const matched = matchEbitdaEvidencePackage(asOfDate, ebitda);
@@ -550,6 +562,21 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     provisions: covenantDataForContractual?.provisions ?? [],
     ebitdaDerivation,
   });
+
+  const crossDomainScenarios: CrossDomainTransactionEvaluation[] =
+    finForContractual && covenantDataForContractual
+      ? evaluateDefaultCrossDomainScenarios({
+          data: {
+            companyId,
+            documents: covenantDataForContractual.documents,
+            provisions: covenantDataForContractual.provisions,
+            financials: finForContractual,
+            ledger: covenantDataForContractual.ledger,
+          } satisfies CompanyCovenantData,
+          evaluationDate: asOfDate ?? new Date().toISOString().slice(0, 10),
+          ebitdaDerivation,
+        })
+      : [];
 
   // --- Ratios ---
   const ratioDefs: Array<{
@@ -1312,6 +1339,7 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
       contractualComputation.status === "OK" || contractualComputation.contractualEbitda != null
         ? contractualComputation
         : null,
+    crossDomainScenarios,
     rulebookStage: rulebook.stage,
     capacityStatus: capacity.status,
     amendmentResolution: review.amendmentCompare.operativeResolution,

@@ -352,6 +352,74 @@ export default async function DebtIntelligencePage({
         )}
       </Card>
 
+      {/* Cross-domain package scenarios */}
+      {d.crossDomainScenarios?.length ? (
+        <Card>
+          <div className="card-title">Cross-domain package scenarios</div>
+          <div className="card-subtitle">
+            Multi-family evaluations over the same covenant engine + contractual computation. Gross capacity is never
+            labeled as verified available. Explicit assumptions and entity scope required.
+          </div>
+          {d.crossDomainScenarios.map((sc) => (
+            <div key={sc.scenario.kind} style={{ marginTop: 12 }}>
+              <div className="row">
+                <div className="row-label">{sc.scenario.label}</div>
+                <div className="row-value">
+                  <Chip
+                    tone={
+                      sc.overallStatus === "clear"
+                        ? "pass"
+                        : sc.overallStatus === "blocked"
+                          ? "tight"
+                          : "navy"
+                    }
+                  >
+                    {sc.overallStatus}
+                  </Chip>
+                </div>
+              </div>
+              <div className="row-note">
+                PF TNL {sc.proForma.totalNetLeverage != null ? `${sc.proForma.totalNetLeverage.toFixed(2)}x` : "—"}
+                {" · "}
+                SSNL{" "}
+                {sc.proForma.seniorSecuredNetLeverage != null
+                  ? `${sc.proForma.seniorSecuredNetLeverage.toFixed(2)}x`
+                  : "—"}
+                {" · "}
+                Domains:{" "}
+                {sc.domains
+                  .filter((x) => x.status !== "not_applicable")
+                  .map((x) => `${x.domain}:${x.status}`)
+                  .slice(0, 6)
+                  .join(" · ")}
+              </div>
+              {sc.packageLimitations.slice(0, 3).map((lim, i) => (
+                <div className="row-note" key={`${sc.scenario.kind}-lim-${i}`}>
+                  {lim}
+                </div>
+              ))}
+              <div className="button-row" style={{ marginTop: 6 }}>
+                <Link
+                  className="button"
+                  href={`/${companyId}/simulate?action=${
+                    sc.scenario.kind === "DIVIDEND_AVAILABLE_AMOUNT"
+                      ? "rp"
+                      : sc.scenario.kind === "ASSET_SALE_PROCEEDS"
+                        ? "assetSale"
+                        : "debt"
+                  }&amount=${sc.scenario.amountMillions}&secured=${sc.scenario.secured ? "1" : "0"}&from=ask`}
+                >
+                  Open in Simulate
+                </Link>
+              </div>
+            </div>
+          ))}
+          <div className="row-note" style={{ marginTop: 10 }}>
+            {d.crossDomainScenarios[0]?.authorityNote}
+          </div>
+        </Card>
+      ) : null}
+
       {/* 5. Pro forma transaction effects */}
       <Card>
         <div className="card-title">5. Pro forma transaction effects</div>
