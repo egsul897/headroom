@@ -51,6 +51,6 @@ Integration readiness ≠ production certification.
 
 ## Open PR dependency subgraph (do not duplicate)
 
-Active concurrent work (inspect, don’t fork): `#334` NS-4 Dashboard/Position/Simulate binder (must consume shared delivery-evidence after `#332`); `#328` canonical path verify; `#311`/`#312`/`#319` CFO + operative binding; `#308` verified remaining; `#320` OA/calc consistency; `#323` adversarial intel.
+Active concurrent work (inspect, don’t fork): `#334` merged (NS-4 binder absorbed); `#328` canonical path verify; `#311`/`#312`/`#319` CFO + operative binding; `#308` verified remaining; `#320` OA/calc consistency; `#323` adversarial intel.
 
 This tip owns delivery authority + cross-layer contract tests + figure semantics. No competing dashboard/EBITDA engine; no unverified remaining-capacity publication.

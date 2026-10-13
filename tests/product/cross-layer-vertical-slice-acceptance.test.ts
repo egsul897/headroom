@@ -363,17 +363,24 @@ describe("cross-layer vertical-slice acceptance (SYNTHETIC)", () => {
   it("fail-closed: persisted-delivery-only without marker does not resolve via asOf", () => {
     const store = new InMemoryApprovedSnapshotStore();
     const ledger = new LedgerProposalRecorder();
-    proposeFromCertificate(store, CONMED_FORM_INSPIRED_CERT, ledger);
+    // CONMED fixture carries propose-time delivery (#334) — strip it for this fail-closed case.
+    const certNoDelivery = {
+      ...CONMED_FORM_INSPIRED_CERT,
+      snapshotId: "snap-synth-conmed-no-delivery",
+      deliveredAtIsoDate: undefined,
+    };
+    proposeFromCertificate(store, certNoDelivery, ledger);
     // Manually approve through store API without delivery marker (bypass certificate approve helper).
     const hand = store.approveSnapshot({
-      snapshotId: CONMED_FORM_INSPIRED_CERT.snapshotId,
+      snapshotId: certNoDelivery.snapshotId,
       reviewedBy: "counsel",
       reviewedAt: "2026-07-20T18:00:00Z",
       approvalRef: "apr-no-delivery-marker",
     });
     expect(hand.ok).toBe(true);
-    const snap = store.getSnapshot(CONMED_FORM_INSPIRED_CERT.snapshotId)!;
+    const snap = store.getSnapshot(certNoDelivery.snapshotId)!;
     expect(extractDeliveredAtFromApprovalRef(snap.review.approvalRef)).toBeNull();
+    expect(snap.provenance.deliveredAtIsoDate).toBeUndefined();
 
     const deliveries = deliveriesFromApprovedSnapshots(
       CONMED_FORM_INSPIRED_CERT.companyId,

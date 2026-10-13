@@ -120,12 +120,21 @@ describe("P0 delivery authority adversarial", () => {
     expect(bridge).not.toMatch(/ALLOW_REVIEWED_AT_FALLBACK/);
   });
 
-  it("approve without deliveredAsOfDate does not persist delivery (approval ≠ delivery)", () => {
+  it("approve without deliveredAsOfDate does not invent delivery from reviewedAt", () => {
+    // Fixture CONMED includes propose-time deliveredAtIsoDate (#334). Use a cert without it.
     const store = new InMemoryApprovedSnapshotStore();
     const ledger = new LedgerProposalRecorder();
-    proposeFromCertificate(store, CONMED_FORM_INSPIRED_CERT, ledger);
+    const certNoDelivery = {
+      ...CONMED_FORM_INSPIRED_CERT,
+      snapshotId: "snap-approval-only-no-delivery",
+      deliveredAtIsoDate: undefined,
+    };
+    proposeFromCertificate(store, certNoDelivery, ledger);
+    const draft = store.getSnapshot(certNoDelivery.snapshotId)!;
+    expect(draft.provenance.deliveredAtIsoDate).toBeUndefined();
+
     const approved = approveCertificateProposal(store, {
-      snapshotId: CONMED_FORM_INSPIRED_CERT.snapshotId,
+      snapshotId: certNoDelivery.snapshotId,
       reviewedBy: "counsel",
       reviewedAt: "2026-07-20T18:00:00Z",
       approvalRef: "apr-approval-only",
@@ -133,7 +142,7 @@ describe("P0 delivery authority adversarial", () => {
       proposerKind: "human",
     });
     expect(approved.ok).toBe(true);
-    const snap = store.getSnapshot(CONMED_FORM_INSPIRED_CERT.snapshotId)!;
+    const snap = store.getSnapshot(certNoDelivery.snapshotId)!;
     expect(snap.status).toBe("APPROVED");
     expect(snap.review.reviewedAt?.slice(0, 10)).toBe("2026-07-20");
     expect(extractDeliveredAtFromApprovalRef(snap.review.approvalRef)).toBeNull();
