@@ -82,6 +82,7 @@ describeIso("NS-4 secured-debt acquisition — Dashboard/Position/Simulate ident
       reviewedBy: "counsel-acq@test.local",
       approvalRef: "apr-acq-coherent",
       reviewedAt: `${EVAL}T12:00:00Z`,
+      deliveredAsOfDate: EVAL,
     });
     expect(approved.ok).toBe(true);
 
@@ -132,7 +133,9 @@ describeIso("NS-4 secured-debt acquisition — Dashboard/Position/Simulate ident
     const byDomain = Object.fromEntries(xd.domains.map((d) => [d.domain, d]));
     expect(byDomain.DEBT_INCURRENCE_REFINANCING?.support).toBe("EXECUTABLE");
     expect(byDomain.LIENS_SECURED_CAPACITY?.support).toBe("PARTIAL");
-    expect(byDomain.INVESTMENTS_ACQUISITIONS?.support).toBe("EXECUTABLE");
+    // Acquisition investment leg uses RP waterfall kind=investment — PARTIAL until a
+    // dedicated Permitted Acquisition basket engine exists (#340 honest support matrix).
+    expect(byDomain.INVESTMENTS_ACQUISITIONS?.support).toBe("PARTIAL");
     expect(byDomain.FINANCIAL_COVENANTS_RATIO_CAPACITY?.support).toBe("EXECUTABLE");
     expect(byDomain.LEDGER_UTILIZATION_RECLASSIFICATION?.support).toBe("PARTIAL");
 
@@ -143,7 +146,14 @@ describeIso("NS-4 secured-debt acquisition — Dashboard/Position/Simulate ident
     for (const d of xd.domains) {
       expect(d.verifiedRemainingMillions).toBeNull();
     }
-    expect(xd.packageLimitations.some((l) => /Caller-supplied.*ignored/i.test(l))).toBe(true);
+    expect(
+      xd.packageLimitations.some(
+        (l) =>
+          /Caller-supplied utilizationAttributed|never authorize verified remaining|ignored for verified remaining/i.test(
+            l,
+          ),
+      ),
+    ).toBe(true);
     expect(xd.packageLimitations.some((l) => /Gross capacity is never described as verified/i.test(l))).toBe(
       true,
     );

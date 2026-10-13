@@ -151,6 +151,11 @@ function walkExpression(ctx: WalkCtx, expr: IRExpression | null, path: string, i
     case "EVENT_ACTIVE":
       if (expr.triggerCondition) walkExpression(ctx, expr.triggerCondition, `${path}.triggerCondition`, isAlternative);
       return;
+    case "FIXED_POINT_ADDBACK_CAP":
+      walkExpression(ctx, expr.base, `${path}.base`, isAlternative);
+      walkExpression(ctx, expr.addbacks, `${path}.addbacks`, isAlternative);
+      if (expr.eligibility) walkExpression(ctx, expr.eligibility, `${path}.eligibility`, isAlternative);
+      return;
     case "UNSUPPORTED":
       pushItem(ctx, "UNSUPPORTED_MARKER", path, null, expr.semanticDescription, isAlternative, citation, excerpt);
       return;

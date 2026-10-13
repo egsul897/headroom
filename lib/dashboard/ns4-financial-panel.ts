@@ -18,6 +18,7 @@ import {
   type RuntimeValue,
 } from "@/lib/contract-model/north-star-bridge";
 import { loadTransactionWorkflowReadiness } from "@/lib/product/north-star-workflow/transaction-readiness";
+import { NS4_PRODUCT_CUTOFF_SELECTOR } from "@/lib/product/north-star-workflow/approved-financial-inputs";
 import {
   computeNs4ContractualNetLeverage,
   type Ns4LeverageIrTrace,
@@ -142,7 +143,8 @@ export async function loadNs4DashboardFinancialState(args: {
     loadCutoffEligibleSnapshotsFromPrisma(prisma, companyId),
     loadTransactionWorkflowReadiness(companyId, {
       evaluationDate: args.evaluationDate,
-      selector: args.selector ?? "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
+      // Same cutoff selector as Position / Simulate (#334 loadApprovedFinancialInputBundle).
+      selector: args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR,
     }),
   ]);
 

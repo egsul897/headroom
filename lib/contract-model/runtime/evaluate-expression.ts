@@ -11,7 +11,7 @@ import * as R from "./decimal";
 import type { EvaluationContext, EvaluationResult, InputResolver, MetricInput, MissingInput, MissingInputKind, ResolvedInputRecord, RuntimeDiagnostic, RuntimeDiagnosticCode, RuntimeStatus, RuntimeValue, SerializedRuntimeValue, TraceNode } from "./types";
 import { STATUS_PRECEDENCE } from "./types";
 import { addAll, compareWith, divideValues, extreme, multiplyAll, subtractValues } from "./units";
-import { boolean, capacity, date, entitySet, isIsoDate, lineage, money, number, percent, ratio, serializeValue, withLineage } from "./values";
+import { boolean, capacity, date, entitySet, isIsoDate, lineage, money, number, numericOf, percent, ratio, serializeValue, withLineage } from "./values";
 import { CONTRACT_RUNTIME_VERSION } from "./version";
 import { resolutionToMetricInput } from "./input/snapshot-resolver";
 import type { RuntimeVerificationEnvelope, VerificationBlock, VerificationGatePolicy } from "./verification-envelope";
@@ -422,6 +422,61 @@ class Evaluator {
           return this.done(expr, boolean(t.value!.value, this.opLineage(id, [t])), [t], { note: "event activity taken from its trigger condition (no bounded duration stated)" });
         }
         return this.needsInput(expr, "EVENT", expr.eventDescription, env, "BOOLEAN", `whether event "${expr.eventDescription}" is active was not supplied`);
+      }
+
+      case "FIXED_POINT_ADDBACK_CAP": {
+        // E = B + min(A, c·E). Closed form when B≥0, A≥0, 0≤c<1, capBase=RESULT.
+        // Ordinary DEFINED_TERM self-reference cycles remain ERROR via CYCLE — this node is the
+        // only supported encoding of that contractual pattern.
+        if (expr.capBase !== "RESULT") {
+          return this.fail(expr, "UNSUPPORTED", "FIXED_POINT_CAP_UNSUPPORTED", `FIXED_POINT_ADDBACK_CAP capBase "${String(expr.capBase)}" is not modeled; only RESULT is supported`);
+        }
+        if (!(Number.isFinite(expr.capFraction) && expr.capFraction >= 0 && expr.capFraction < 1)) {
+          return this.fail(expr, "ERROR", "FIXED_POINT_CAP_UNSUPPORTED", `FIXED_POINT_ADDBACK_CAP capFraction ${expr.capFraction} must satisfy 0 ≤ c < 1`);
+        }
+        const children: NodeResult[] = [];
+        if (expr.eligibility) {
+          const elig = this.evaluate(expr.eligibility, child);
+          children.push(elig);
+          if (elig.status !== "EXECUTABLE") return this.propagate(expr, children, { note: "FIXED_POINT_ADDBACK_CAP eligibility not executable" });
+          if (elig.value!.type !== "BOOLEAN") return this.fail(expr, "ERROR", "TYPE_CONTRACT_VIOLATION", `FIXED_POINT_ADDBACK_CAP eligibility evaluated to ${elig.value!.type}, expected BOOLEAN`, children);
+          if (!elig.value!.value) {
+            const baseOnly = this.evaluate(expr.base, child);
+            children.push(baseOnly);
+            if (baseOnly.status !== "EXECUTABLE") return this.propagate(expr, children);
+            if (baseOnly.value!.type !== "MONEY") return this.fail(expr, "ERROR", "TYPE_CONTRACT_VIOLATION", `FIXED_POINT_ADDBACK_CAP base evaluated to ${baseOnly.value!.type}, expected MONEY`, children);
+            return this.done(expr, withLineage(baseOnly.value!, this.opLineage(id, children)), children, { note: "eligibility false: addbacks contribute 0" });
+          }
+        }
+        const baseRes = this.evaluate(expr.base, child);
+        const addRes = this.evaluate(expr.addbacks, child);
+        children.push(baseRes, addRes);
+        if (baseRes.status !== "EXECUTABLE" || addRes.status !== "EXECUTABLE") return this.propagate(expr, children);
+        if (baseRes.value!.type !== "MONEY" || addRes.value!.type !== "MONEY") {
+          return this.fail(expr, "ERROR", "TYPE_CONTRACT_VIOLATION", `FIXED_POINT_ADDBACK_CAP requires MONEY base and addbacks (got ${baseRes.value!.type}, ${addRes.value!.type})`, children);
+        }
+        if (baseRes.value!.currency !== addRes.value!.currency) {
+          return this.fail(expr, "ERROR", "CURRENCY_MISMATCH_NO_CONVERSION_MODELED", `FIXED_POINT_ADDBACK_CAP currency mismatch ${baseRes.value!.currency} vs ${addRes.value!.currency}`, children);
+        }
+        const B = numericOf(baseRes.value!)!;
+        const A = numericOf(addRes.value!)!;
+        if (R.compare(B, R.ZERO) < 0 || R.compare(A, R.ZERO) < 0) {
+          return this.fail(expr, "ERROR", "FIXED_POINT_CAP_UNSUPPORTED", "FIXED_POINT_ADDBACK_CAP closed form requires non-negative base and addbacks; refuse rather than invent a sign convention", children);
+        }
+        const c = R.rationalFromNumber(expr.capFraction);
+        const uncapped = R.add(B, A);
+        // Case 1: A ≤ c·(B+A) → E = B+A
+        const cTimesUncapped = R.multiply(c, uncapped);
+        if (R.compare(A, cTimesUncapped) <= 0) {
+          return this.done(expr, money(uncapped, baseRes.value!.currency, this.opLineage(id, children)), children, { note: "uncapped: A ≤ c·(B+A)" });
+        }
+        // Case 2: E = B / (1 − c)
+        const oneMinusC = R.subtract(R.ONE, c);
+        if (R.isZero(oneMinusC)) {
+          return this.fail(expr, "ERROR", "FIXED_POINT_CAP_UNSUPPORTED", "FIXED_POINT_ADDBACK_CAP capFraction leaves zero (1−c) divisor", children);
+        }
+        const E = R.divide(B, oneMinusC);
+        return this.done(expr, money(E, baseRes.value!.currency, this.opLineage(id, children)), children, { note: "capped: E = B/(1−c)" });
       }
 
       // ---- escape hatch ----

@@ -60,6 +60,7 @@ export type {
   EbitdaBuildupComponent,
   ContractualEbitdaDerivation,
   ContractualEbitdaEvidencePackage,
+  ContractualEbitdaEvidenceBindingIdentity,
 } from "./contractual-ebitda-buildup";
 export {
   SHARED_FINANCIAL_SURFACES,

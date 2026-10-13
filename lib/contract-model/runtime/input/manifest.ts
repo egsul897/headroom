@@ -43,6 +43,8 @@ function needsNoInput(expr: IRCapacityExpression): boolean {
     case "AS_OF": return needsNoInput(expr.value) && (typeof expr.asOfDate === "string" || needsNoInput(expr.asOfDate));
     case "DURING_PERIOD": return needsNoInput(expr.value);
     case "SCHEDULE": return false; // a schedule always needs an as-of to select a case
+    case "FIXED_POINT_ADDBACK_CAP":
+      return needsNoInput(expr.base) && needsNoInput(expr.addbacks) && (expr.eligibility ? needsNoInput(expr.eligibility) : true);
     default: return false;
   }
 }
@@ -169,6 +171,12 @@ export function buildFinancialDependencyManifest(args: ManifestArgs): FinancialD
       case "SCHEDULE": {
         for (const [i, c] of expr.cases.entries()) walk(c.value, { ...env, status: env.status === "REQUIRED" ? "CONDITIONAL" : env.status, conditionalOn: env.conditionalOn ?? `SCHEDULE ${expr.exprId ?? ""} case ${i} (${c.from ?? "-"} to ${c.to ?? "-"})` });
         if (expr.defaultValue) walk(expr.defaultValue, { ...env, status: env.status === "REQUIRED" ? "CONDITIONAL" : env.status, conditionalOn: env.conditionalOn ?? `SCHEDULE ${expr.exprId ?? ""} default` });
+        return;
+      }
+      case "FIXED_POINT_ADDBACK_CAP": {
+        walk(expr.base, env);
+        walk(expr.addbacks, env);
+        if (expr.eligibility) walk(expr.eligibility, env);
         return;
       }
     }

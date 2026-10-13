@@ -321,6 +321,7 @@ describe("SYNTHETIC certified-vs-legacy CONMED-form demo harness", () => {
       reviewedBy: "synth-shared-pkg",
       reviewedAt: "2026-07-20T12:00:00Z",
       approvalRef: "apr-synth-shared-pkg",
+      deliveredAsOfDate: "2026-07-10",
       sourceDocumentId: CONMED_FORM_INSPIRED_CERT.documentId,
       sourceVersionHash: CONMED_FORM_INSPIRED_CERT.versionHash,
       proposerKind: "human",

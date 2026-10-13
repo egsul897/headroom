@@ -215,6 +215,7 @@ describeIso("NS-4 APPROVED financial change invalidates capacity + simulation", 
       reviewedBy: "counsel-matthews@test.local",
       approvalRef: "apr-matthews-e2e",
       reviewedAt: `${EVAL_MAT}T12:00:00Z`,
+      deliveredAsOfDate: EVAL_MAT,
     });
     expect(matthewsApprove.ok).toBe(true);
 
@@ -310,6 +311,7 @@ describeIso("NS-4 APPROVED financial change invalidates capacity + simulation", 
       reviewedBy: "counsel-coherent@test.local",
       approvalRef: "apr-coherent-e2e",
       reviewedAt: `${EVAL_COH}T12:00:00Z`,
+      deliveredAsOfDate: EVAL_COH,
     });
     expect(coherentApprove.ok).toBe(true);
 
@@ -405,6 +407,7 @@ describeIso("NS-4 APPROVED financial change invalidates capacity + simulation", 
       reviewedBy: "counsel-restatement@test.local",
       approvalRef: "apr-restatement-e2e",
       reviewedAt: `${EVAL_COH}T18:00:00Z`,
+      deliveredAsOfDate: EVAL_COH,
     });
     expect(restatementApprove.ok).toBe(true);
     const binderAfterRestatement = await loadApprovedFinancialInputBundle({
