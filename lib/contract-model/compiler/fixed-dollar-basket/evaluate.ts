@@ -165,9 +165,11 @@ export function evaluateFixedDollarCapacity(args: {
     const entry = capacity.state.capacities.find((c) => c.ruleId === compile.rule!.ruleId);
     // Prefer grossCapacity: utilization UNKNOWN withholds remaining under provisional.
     // REVIEW_REQUIRED from empty-ledger utilization must not erase source-backed GROSS.
-    const amountOf = (amt: { kind?: string; value?: { amount?: string | number } } | null | undefined): number | null => {
-      if (!amt || amt.kind !== "AMOUNT" || amt.value == null) return null;
-      const n = typeof amt.value.amount === "number" ? amt.value.amount : Number(amt.value.amount);
+    const amountOf = (amt: unknown): number | null => {
+      if (!amt || typeof amt !== "object") return null;
+      const a = amt as { kind?: string; value?: { amount?: string | number } };
+      if (a.kind !== "AMOUNT" || a.value == null) return null;
+      const n = typeof a.value.amount === "number" ? a.value.amount : Number(a.value.amount);
       return Number.isFinite(n) ? n : null;
     };
     availableAmountUsd =
