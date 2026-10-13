@@ -117,12 +117,15 @@ Full table: `03-blockers-and-pr-sequence.json`.
 
 ## 8. Exact-tip CI evidence
 
-Populated in `05-ci-evidence.json` after push/PR checks. Local focused runs at authorship:
+**Audited tip:** `e08f59984312cf7f4d242bd1d81ea81ca7a3884f` — GitHub checks **success** (2/2 Vercel; no failing required checks).  
+Repo workflows on this path are Vercel preview + path-filtered soft gates; unit evidence is local focused vitest:
 
 ```
 vitest tests/autonomous-financial-computation/held-out-oracles.test.ts  → 13/13 pass
 vitest expression-runtime + dependency-graph + decimal + term-and-manifest → 90/90 pass
 ```
+
+Full record: `05-ci-evidence.json`.
 
 ---
 
