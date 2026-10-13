@@ -90,6 +90,12 @@ function walkExpression(expr: IRExpression, acc: WalkAccumulator): void {
     case "EVENT_ACTIVE":
       if (expr.triggerCondition) walkExpression(expr.triggerCondition, acc);
       return;
+    case "FIXED_POINT_ADDBACK_CAP":
+      acc.operatorKinds.add("FIXED_POINT_ADDBACK_CAP");
+      walkExpression(expr.base, acc);
+      walkExpression(expr.addbacks, acc);
+      if (expr.eligibility) walkExpression(expr.eligibility, acc);
+      return;
     default: {
       const exhaustive: never = expr;
       throw new Error(`signature.ts walkExpression: unhandled IRExpression kind ${JSON.stringify(exhaustive)}`);
