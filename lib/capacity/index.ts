@@ -116,6 +116,43 @@ export {
   type AttributedUtilizationUsage,
   type UtilizationReconstructionTraceEntry,
 } from "./utilization-evidence-reconstruction";
+/** Agent 2 — financial/utilization → capacity integration (verified remaining). */
+export {
+  selectFinancialState,
+  approvalStatusFromVerification,
+  type FinancialApprovalStatus,
+  type FinancialApprovalProvenance,
+  type FinancialEvidenceCandidate,
+  type FinancialEvidenceCatalog,
+  type FinancialStateSelectionQuery,
+  type FinancialSelectionOutcome,
+  type FinancialMetricSelection,
+  type FinancialStateSelectionResult,
+} from "./financial-state-selection";
+export {
+  classifyUtilizationCompletenessAuthority,
+  UTILIZATION_COMPLETENESS_AUTHORITY_VERSION,
+  type UtilizationCompletenessAuthorityStatus,
+  type ClassifyUtilizationCompletenessArgs,
+  type UtilizationCompletenessAuthorityResult,
+} from "./utilization-completeness-status";
+export {
+  historicalEventsToLedgerUsage,
+  utilizationRecordsToLedgerUsage,
+  reconstructionToLedgerUsage,
+  type LedgerBridgeContext,
+} from "./ledger-utilization-bridge";
+export {
+  evaluateVerifiedRemainingCapacity,
+  projectFinancialSnapshotsFromSelection,
+  VERIFIED_REMAINING_CAPACITY_CONTRACT_VERSION,
+  type ExecutableRuleHandoff,
+  type CapacityConfidenceAuthority,
+  type BindingRestriction,
+  type CapacityCalculationTraceEntry,
+  type VerifiedRemainingCapacityResult,
+  type EvaluateVerifiedRemainingCapacityArgs,
+} from "./evaluate-verified-remaining-capacity";
 /**
  * Trusted identity boundary (Agent #8) — fail-closed until a real IdP adapter
  * is activated. Stronger than WeakSet-only host minting: requires
