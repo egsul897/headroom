@@ -23,6 +23,34 @@ export {
   type AuthoritativeCapacityResult,
   type AuthoritativeCapacityStatus,
 } from "./authoritative-capacity";
+/** Dashboard / product read of APPROVED Neon NS-4 financial evidence. */
+export {
+  loadNs4DashboardFinancialState,
+  type Ns4DashboardFinancialState,
+  type Ns4DashboardFinancialStatus,
+  type Ns4DashboardFact,
+} from "@/lib/dashboard/ns4-financial-panel";
+export {
+  computeNs4ContractualNetLeverage,
+  type Ns4LeverageIrTrace,
+  type Ns4LeverageIrStatus,
+} from "@/lib/dashboard/ns4-leverage-ir";
+export {
+  proposeCertificateTextForCompany,
+  proposeAuthenticCertificateFixtureForCompany,
+  approveFceProposedCertificate,
+  MATTHEWS_FIXTURE_AUTHORITY,
+  COHERENT_FIXTURE_AUTHORITY,
+  type CertificateFixtureIssuer,
+  type ProposeCertificateTextResult,
+} from "./fce-certificate-actions";
+export {
+  loadSharedNs4FinancialIdentity,
+  sharedIdentityFromNs4Band,
+  type SharedNs4FinancialIdentity,
+} from "@/lib/product/ns4-shared-financial-identity";
+
+
 export {
   parseTransactionDraft,
   analyzeContemplatedTransaction,
@@ -120,3 +148,19 @@ export {
   toAllProductExecutionHandoffs,
   UNIFIED_TRANSACTION_EXECUTION_VERSION,
 } from "@/lib/product/verified-transaction-execution";
+
+export {
+  evaluateCrossDomainTransaction,
+  covenantDomainCoverage,
+  CROSS_DOMAIN_EVALUATION_VERSION,
+  type CrossDomainTransactionEvaluation,
+  type CovenantDomain,
+  type ContemplatedCrossDomainTransaction,
+} from "@/lib/product/cross-domain-transaction";
+export {
+  evaluateDefaultCrossDomainScenarios,
+  defaultCrossDomainScenarioTemplates,
+  evaluateCoherentScenario,
+  evaluateMatthewsScenario,
+  listCoherentCrossDomainScenarios,
+} from "@/lib/product/cross-domain-scenarios";

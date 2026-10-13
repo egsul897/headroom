@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Card, WarningList } from "@/components/ui";
+import Link from "next/link";
+import { Card, Chip, WarningList } from "@/components/ui";
 import { AttentionList, CovenantFamiliesView } from "@/components/CovenantOverview";
 import { buildCovenantOverview, type CoverageDeclarationInput, type PermissionRowInput } from "@/lib/covenant-overview-builder";
 import {
@@ -19,6 +20,7 @@ import {
   type MaturitiesLoadState,
   type MaturitiesQuery,
 } from "@/lib/dashboard/load-state";
+import type { Ns4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-panel";
 import type { CompanyCovenantData, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
 import { fmtDate, fmtM } from "@/lib/format";
@@ -62,6 +64,12 @@ export interface DashboardClientProps {
   maturitiesQuery: MaturitiesQuery;
   /** Phase 4C attributed utilization (serializable). Absent ⇒ all rows NOT_TRACKED. */
   attributedUtilizationSerialized?: AttributedUtilizationSerialized | null;
+  /**
+   * North-Star NS-4 financial band from Neon. Optional so invent-absence /
+   * fixture renders stay honest when the loader is not wired.
+   */
+  ns4Financial?: Ns4DashboardFinancialState | null;
+  companyId?: string;
 }
 
 /** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
@@ -153,6 +161,138 @@ function MaturitiesSection({ query }: { query: MaturitiesQuery }) {
   );
 }
 
+function Ns4FinancialBand({
+  state,
+  companyId,
+}: {
+  state: Ns4DashboardFinancialState;
+  companyId?: string;
+}) {
+  const tone = state.status === "APPROVED_BOUND" ? "pass" : "tight";
+  return (
+    <Card>
+      <div className="card-title" data-slot="ns4-financial">
+        North-Star financial evidence (Neon NS-4)
+      </div>
+      <div className="card-subtitle">
+        APPROVED compliance-certificate / delivered-reporting snapshots from Neon. Not legacy FinancialSnapshot
+        arithmetic and not certified Phase 4A–4E capacity.
+      </div>
+      <div className="row" style={{ marginTop: 8 }}>
+        <div className="row-label">Status</div>
+        <div className="row-value">
+          <Chip tone={tone}>{state.status}</Chip>
+        </div>
+      </div>
+      <div className="row">
+        <div className="row-label">Authority</div>
+        <div className="row-value">{state.authority}</div>
+      </div>
+      <div className="row-note" style={{ marginTop: 8 }}>
+        Cutoff: {state.cutoff.state}
+        {state.cutoff.reportingPeriodKey ? ` · ${state.cutoff.reportingPeriodKey}` : ""}
+        {state.cutoff.approvedSnapshotId ? ` · snapshot ${state.cutoff.approvedSnapshotId}` : ""} · APPROVED
+        snapshots: {state.approvedSnapshotCount}
+        {state.evaluationDate ? ` · evaluationDate ${state.evaluationDate}` : ""}
+      </div>
+      {state.boundSnapshot && (
+        <>
+          <div className="row-note" style={{ marginTop: 8 }}>
+            Bound snapshot {state.boundSnapshot.snapshotId}
+            {state.boundSnapshot.reportingPeriod ? ` · ${state.boundSnapshot.reportingPeriod}` : ""}
+            {state.boundSnapshot.asOf ? ` · asOf ${state.boundSnapshot.asOf}` : ""}
+            {state.boundSnapshot.approvalRef ? ` · approval ${state.boundSnapshot.approvalRef}` : ""}
+            {state.boundSnapshot.reviewedBy ? ` · reviewedBy ${state.boundSnapshot.reviewedBy}` : ""}
+          </div>
+          {state.boundSnapshot.facts.map((f) => (
+            <div className="row" key={`${f.key}:${f.valueType}`}>
+              <div>
+                <div className="row-label">{f.displayName ?? f.key}</div>
+                <div className="row-note">
+                  {f.key} · {f.valueType}
+                  {f.currency ? ` · ${f.currency}` : ""}
+                </div>
+              </div>
+              <div className="row-value mono">
+                {f.displayValue}
+                {f.currency && f.valueType === "MONEY" ? ` ${f.currency}` : ""}
+              </div>
+            </div>
+          ))}
+        </>
+      )}
+
+      <div className="card-title" data-slot="ns4-leverage-ir" style={{ marginTop: 16 }}>
+        Contractual Total Net Leverage (Phase 4A IR)
+      </div>
+      <div className="row">
+        <div className="row-label">IR status</div>
+        <div className="row-value">
+          <Chip tone={state.leverageIr.status === "EXECUTABLE" ? "pass" : "tight"}>{state.leverageIr.status}</Chip>
+        </div>
+      </div>
+      <div className="row">
+        <div className="row-label">Computed ratio</div>
+        <div className="row-value mono" data-testid="ns4-computed-leverage">
+          {state.leverageIr.computedRatio ?? "Not determinable"}
+        </div>
+      </div>
+      <div className="row-note">Formula: {state.leverageIr.formula}</div>
+      <div className="row-note">
+        Components: EBITDA {state.leverageIr.components.ebitdaDisplay ?? "—"} (
+        {state.leverageIr.components.ebitdaKey ?? "missing"}) · Debt{" "}
+        {state.leverageIr.components.debtDisplay ?? "—"} ({state.leverageIr.components.debtKey ?? "missing"}) · Cash{" "}
+        {state.leverageIr.components.cashDisplay ?? "—"} ({state.leverageIr.components.cashKey ?? "missing"})
+      </div>
+      {state.leverageIr.reportedRatioDisplay && (
+        <div className="row-note">
+          Certificate-reported Total Net Leverage Ratio (display only, not IR result):{" "}
+          {state.leverageIr.reportedRatioDisplay}
+        </div>
+      )}
+      {state.leverageIr.calculationSteps.map((step, i) => (
+        <div key={`step-${i}`} className="row-note">
+          • {step}
+        </div>
+      ))}
+      <div className="row-note" style={{ marginTop: 8 }}>
+        {state.leverageIr.capacitySeparationNote}
+      </div>
+      {state.status === "APPROVED_INVENTORY" &&
+        state.inventory.map((s) => (
+          <div className="row-note" key={s.snapshotId}>
+            • Inventory: {s.snapshotId}
+            {s.reportingPeriod ? ` · ${s.reportingPeriod}` : ""}
+            {s.asOf ? ` · asOf ${s.asOf}` : ""} · {s.factCount} fact(s) — not bound without evaluation date
+          </div>
+        ))}
+      {state.missingInputs.map((m, i) => (
+        <div key={`m-${i}`} className="row-note">
+          • Missing: {m}
+        </div>
+      ))}
+      {state.evidence.map((e, i) => (
+        <div key={`e-${i}`} className="row-note">
+          • {e}
+        </div>
+      ))}
+      <div className="row-note" style={{ marginTop: 8 }}>
+        {state.legacyNote}
+      </div>
+      {companyId && (
+        <div className="button-row" style={{ marginTop: 12 }}>
+          <Link className="button" href={`/${companyId}/certificates`}>
+            Certificates
+          </Link>
+          <Link className="button" href={`/${companyId}/capacity`}>
+            Capacity
+          </Link>
+        </div>
+      )}
+    </Card>
+  );
+}
+
 function FacilitiesSection({ query }: { query: FacilitiesQuery }) {
   const presented: FacilitiesLoadState = presentFacilities(facilitiesStateFromQuery(query));
   const copy = resolveDashboardCopy("facilities", presented);
@@ -223,9 +363,18 @@ export function DashboardClient(props: DashboardClientProps) {
     <div className="stack">
       <WarningList warnings={overview.warnings} />
 
+      {props.ns4Financial && (
+        <Ns4FinancialBand state={props.ns4Financial} companyId={props.companyId} />
+      )}
+
       {/* 1. Headline financial position (task "UNIVERSAL HEADROOM PRODUCT EXPERIENCE" §10 - business answer first). */}
       <Card>
-        <div className="card-title">Position as of {fmtDate(new Date(props.asOfDate))}</div>
+        <div className="card-title">
+          Position as of {fmtDate(new Date(props.asOfDate))}
+          <span className="row-note" style={{ marginLeft: 8 }}>
+            (LEGACY_ENGINE / reported FinancialState — not NS-4 APPROVED)
+          </span>
+        </div>
         <div className="headline-metric-strip">
           {overview.headlineMetrics.map((m) => (
             <div className="headline-metric-tile" key={m.key}>

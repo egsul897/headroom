@@ -22,6 +22,7 @@ import {
 } from "@/lib/customer-workflow/select-source-backed-gross";
 import { loadAuthenticDashboardSlice } from "@/lib/product/real-dashboard-vertical-slice";
 import { loadAuthoritativeCapacity } from "@/lib/product/north-star-workflow/authoritative-capacity";
+import { loadSharedNs4FinancialIdentity } from "@/lib/product/ns4-shared-financial-identity";
 
 export const metadata = { title: "Headroom — Position" };
 
@@ -120,11 +121,23 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
   // Access-gated above — package registry lookup only, no tenant DB scrape.
   const authenticSlice = await loadAuthenticDashboardSlice(companyId);
 
-  // NS-4 / North-Star APPROVED snapshots + cutoff + 4C ledger — shared identity with Simulate.
+  // NS-4 / North-Star APPROVED snapshots + cutoff + 4C ledger — shared identity with
+  // Dashboard and Simulate via loadSharedNs4FinancialIdentity / loadAuthoritativeCapacity.
   // Never upgrades production remaining by itself.
   const authoritative = await loadAuthoritativeCapacity({ companyId });
-  const ns4Lines = ns4EvidenceLines(authoritative);
-  const ns4Missing = authoritative.missingInputs.map((m) => `NS-4/NS: ${m}`);
+  const ns4Identity = await loadSharedNs4FinancialIdentity({
+    companyId,
+    evaluationDate: authoritative.cutoff.asOf ?? undefined,
+    authoritative,
+  });
+  const ns4Lines = [
+    ...ns4EvidenceLines(authoritative),
+    ...ns4Identity.evidenceLines.filter((l) => !/NS-4\/NS APPROVED|Cutoff:/.test(l)),
+  ];
+  const ns4Missing = [
+    ...authoritative.missingInputs.map((m) => `NS-4/NS: ${m}`),
+    ...ns4Identity.missingInputs.map((m) => `NS-4/band: ${m}`),
+  ];
 
   let readiness: Awaited<ReturnType<typeof loadCapacityReadiness>> | null = null;
   let rulebook: Awaited<ReturnType<typeof loadRulebookReadiness>> | null = null;
@@ -622,6 +635,22 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           <div className="row-label">APPROVED snapshots</div>
           <div className="row-value">{authoritative.approvedSnapshotCount}</div>
         </div>
+        <div className="row">
+          <div className="row-label">Bound snapshot identity</div>
+          <div className="row-value" style={{ fontSize: 12 }}>
+            {ns4Identity.boundSnapshotId ?? "—"}
+            {ns4Identity.reportingPeriod ? ` · ${ns4Identity.reportingPeriod}` : ""}
+            {ns4Identity.asOf ? ` · asOf ${ns4Identity.asOf}` : ""}
+          </div>
+        </div>
+        <div className="row">
+          <div className="row-label">Dashboard band status</div>
+          <div className="row-value">
+            <Chip tone={ns4Identity.dashboard.status === "APPROVED_BOUND" ? "pass" : "tight"}>
+              {ns4Identity.dashboard.status}
+            </Chip>
+          </div>
+        </div>
         <div className="row" style={{ borderBottom: "none" }}>
           <div className="row-label">Active 4C ledger usages</div>
           <div className="row-value">{authoritative.activeLedgerUsageCount}</div>
@@ -632,6 +661,9 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           </div>
         ))}
         <div className="button-row" style={{ marginTop: 12 }}>
+          <Link className="button" href={`/${companyId}/dashboard`}>
+            Dashboard (same NS-4 identity)
+          </Link>
           <Link className="button" href={`/${companyId}/capacity`}>
             Capacity / North-Star
           </Link>
