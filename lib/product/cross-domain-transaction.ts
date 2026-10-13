@@ -1,6 +1,11 @@
 /**
  * Package-wide cross-domain transaction evaluation.
  *
+ * CANONICAL implementation (PR #340 · cross-domain-transaction.v2).
+ * Competing v1 modules on #334/#336 must not land: #336 still gates remaining on
+ * caller booleans; #334 always-withholds but never routes through
+ * resolveUtilization / computeVerifiedRemaining. Retain this module only.
+ *
  * Composes the existing covenant-engine simulations (debt, RP waterfall,
  * asset sale) with contractual EBITDA/ratio computation — no parallel engine.
  *
@@ -10,6 +15,17 @@
  * utilizationAttributed / utilizationCompletenessCertified booleans NEVER
  * authorize verifiedRemainingMillions. Gross / modeled remaining are never
  * relabeled as verified.
+ *
+ * Field trust model for CrossDomainUtilizationAuthority:
+ * - CALLER-SUPPLIED (untrusted alone): capacityRuleId, asOf, companyId,
+ *   documentId, provisionId, periodKey, records[], completenessCertificate blob
+ *   (including issuer.role / actorId strings), sharedCapacityId, crossDocumentConstraints,
+ *   allowSyntheticRemaining.
+ * - INDEPENDENTLY AUTHENTICATED (host / company-state): expectedIdentity from
+ *   CompanyCovenantData + evaluation date; TrustedIssuerAuthorizationContext
+ *   principals registry (never derived from the certificate); record approval /
+ *   authenticity semantics enforced inside resolveUtilization; production gate
+ *   via authorizeCompletenessIssuer + requireNonFixtureIdentity.
  */
 
 import {
@@ -42,6 +58,8 @@ import {
 import type { ContractualEbitdaDerivation } from "@/lib/financial-certificate-engine/contractual-ebitda-buildup";
 
 export const CROSS_DOMAIN_EVALUATION_VERSION = "cross-domain-transaction.v2" as const;
+/** Sole canonical owner — do not land competing v1 copies from #334/#336. */
+export const CROSS_DOMAIN_CANONICAL_OWNER = "PR#340" as const;
 
 /** Covenant families the product tracks for package-wide coverage. */
 export type CovenantDomain =
@@ -82,6 +100,9 @@ export interface TransactionAssumptions {
 /**
  * Canonical utilization / capacity authority for verified remaining.
  * Must carry attributed evidence + trusted completeness + identity.
+ * Every field on this object is caller-constructed; authorization still
+ * requires expectedIdentity binding + host trustedIssuerAuth (or explicit
+ * allowSyntheticRemaining demo hatch that never runs in production loaders).
  */
 export interface CrossDomainUtilizationAuthority {
   capacityRuleId: string;
@@ -92,6 +113,10 @@ export interface CrossDomainUtilizationAuthority {
   periodKey?: string | null;
   records: readonly UtilizationEvidenceRecord[];
   completenessCertificate?: UtilizationCompletenessCertificate | null;
+  /**
+   * Host-supplied issuer registry — independently authenticated.
+   * Certificate issuer.role / actorId strings alone never suffice.
+   */
   trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
   sharedCapacityId?: string | null;
   crossDocumentConstraints?: string[];
@@ -100,6 +125,18 @@ export interface CrossDomainUtilizationAuthority {
    * Propagates into resolveUtilization / computeVerifiedRemaining.
    */
   allowSyntheticRemaining?: boolean;
+}
+
+/**
+ * Independently authenticated evaluation identity from company-state / loader.
+ * Bound against CrossDomainUtilizationAuthority before any remaining claim.
+ */
+export interface UtilizationAuthorityExpectedIdentity {
+  companyId: string;
+  asOf: string;
+  knownDocumentIds: readonly string[];
+  /** Provision ids and codes accepted for provisionId binding. */
+  knownProvisionIds: readonly string[];
 }
 
 /** Approved financial identity consumed by Position / Simulate. */
@@ -336,8 +373,60 @@ type RemainingClaim = {
   verifiedResult: VerifiedRemainingResult | null;
 };
 
+function refuseRemaining(
+  modeled: number | null,
+  reason: string,
+  verifiedResult: VerifiedRemainingResult | null = null,
+): RemainingClaim {
+  return {
+    verifiedRemainingMillions: null,
+    verifiedRemainingRefusalReason: reason,
+    modeledRemainingMillions: modeled,
+    verifiedResult,
+  };
+}
+
+/**
+ * Bind caller-supplied authority identity to independently authenticated
+ * company-state / evaluation identity. Mismatch → no verified remaining.
+ */
+export function bindUtilizationAuthorityIdentity(
+  auth: CrossDomainUtilizationAuthority,
+  expected: UtilizationAuthorityExpectedIdentity | null | undefined,
+): string | null {
+  if (!expected) {
+    return "Verified remaining unavailable — expected evaluation identity not supplied for authority binding.";
+  }
+  if (auth.companyId !== expected.companyId) {
+    return `Verified remaining unavailable — authority companyId "${auth.companyId}" does not match evaluation company "${expected.companyId}".`;
+  }
+  if (auth.asOf.slice(0, 10) !== expected.asOf.slice(0, 10)) {
+    return `Verified remaining unavailable — authority as-of ${auth.asOf.slice(0, 10)} does not match evaluation as-of ${expected.asOf.slice(0, 10)}.`;
+  }
+  if (auth.documentId != null && auth.documentId !== "") {
+    if (!expected.knownDocumentIds.includes(auth.documentId)) {
+      return `Verified remaining unavailable — authority documentId "${auth.documentId}" is not in the evaluated company package.`;
+    }
+  }
+  if (auth.provisionId != null && auth.provisionId !== "") {
+    if (!expected.knownProvisionIds.includes(auth.provisionId)) {
+      return `Verified remaining unavailable — authority provisionId "${auth.provisionId}" is not in the evaluated company package.`;
+    }
+  }
+  return null;
+}
+
 /**
  * Resolve verified remaining exclusively through the canonical capacity path.
+ *
+ * Trace:
+ *   CrossDomainUtilizationAuthority
+ *     → bindUtilizationAuthorityIdentity(expectedIdentity)
+ *     → resolveUtilization({ records, completenessCertificate, trustedIssuerAuth })
+ *     → computeVerifiedRemaining({ gross, utilization })
+ *     → verifiedRemainingMillions ONLY from verified.supportedRemaining when
+ *       verified.mayPublishAvailable (never from modeled/gross, never from caller flags)
+ *
  * Caller-supplied assumption booleans are ignored for authorization.
  */
 export function resolveCanonicalVerifiedRemaining(params: {
@@ -345,6 +434,8 @@ export function resolveCanonicalVerifiedRemaining(params: {
   modeledRemainingMillions: number | null;
   gateSatisfied: boolean;
   utilizationAuthority: CrossDomainUtilizationAuthority | null | undefined;
+  /** Independently authenticated company-state / evaluation identity. */
+  expectedIdentity?: UtilizationAuthorityExpectedIdentity | null;
   /** Shared-pool ids already used to publish remaining in this evaluation. */
   claimedSharedPools: Set<string>;
   sourceCitations?: string[];
@@ -353,43 +444,54 @@ export function resolveCanonicalVerifiedRemaining(params: {
   const auth = params.utilizationAuthority;
 
   if (!auth) {
-    return {
-      verifiedRemainingMillions: null,
-      verifiedRemainingRefusalReason:
-        "Verified remaining unavailable — no canonical utilization/capacity authority supplied (caller flags cannot authorize remaining).",
-      modeledRemainingMillions: modeled,
-      verifiedResult: null,
-    };
+    return refuseRemaining(
+      modeled,
+      "Verified remaining unavailable — no canonical utilization/capacity authority supplied (caller flags cannot authorize remaining).",
+    );
+  }
+
+  const identityBlock = bindUtilizationAuthorityIdentity(auth, params.expectedIdentity);
+  if (identityBlock) {
+    return refuseRemaining(modeled, identityBlock);
   }
 
   if (auth.sharedCapacityId && params.claimedSharedPools.has(auth.sharedCapacityId)) {
-    return {
-      verifiedRemainingMillions: null,
-      verifiedRemainingRefusalReason: `Shared capacity ${auth.sharedCapacityId} remaining already claimed — refuse double-count across baskets.`,
-      modeledRemainingMillions: modeled,
-      verifiedResult: null,
-    };
+    return refuseRemaining(
+      modeled,
+      `Shared capacity ${auth.sharedCapacityId} remaining already claimed — refuse double-count across baskets.`,
+    );
   }
 
   const cert = auth.completenessCertificate ?? null;
   if (cert) {
     if (cert.capacityRuleId !== auth.capacityRuleId) {
-      return {
-        verifiedRemainingMillions: null,
-        verifiedRemainingRefusalReason:
-          "Verified remaining unavailable — completeness certificate capacityRuleId does not match authority identity.",
-        modeledRemainingMillions: modeled,
-        verifiedResult: null,
-      };
+      return refuseRemaining(
+        modeled,
+        "Verified remaining unavailable — completeness certificate capacityRuleId does not match authority identity.",
+      );
     }
     if (cert.asOf.slice(0, 10) !== auth.asOf.slice(0, 10)) {
-      return {
-        verifiedRemainingMillions: null,
-        verifiedRemainingRefusalReason:
-          "Verified remaining unavailable — completeness certificate as-of does not match authority as-of.",
-        modeledRemainingMillions: modeled,
-        verifiedResult: null,
-      };
+      return refuseRemaining(
+        modeled,
+        "Verified remaining unavailable — completeness certificate as-of does not match authority as-of.",
+      );
+    }
+  }
+
+  // Reject records that attribute to a different rule when not on a shared pool.
+  if (!auth.sharedCapacityId) {
+    const foreign = auth.records.filter(
+      (r) =>
+        r.capacityRuleId != null &&
+        r.capacityRuleId !== auth.capacityRuleId &&
+        r.status !== "SUPERSEDED" &&
+        r.status !== "REVERSED",
+    );
+    if (foreign.length > 0) {
+      return refuseRemaining(
+        modeled,
+        "Verified remaining unavailable — ledger records attribute to a different capacityRuleId than the authority identity.",
+      );
     }
   }
 
@@ -417,17 +519,14 @@ export function resolveCanonicalVerifiedRemaining(params: {
     allowSyntheticRemaining: auth.allowSyntheticRemaining,
   });
 
+  // Hard guard: never copy modeled/gross into verified — only supportedRemaining
+  // from computeVerifiedRemaining when mayPublishAvailable.
   if (verified.supportedRemaining == null || !verified.mayPublishAvailable) {
     const reason =
       verified.blockers[0] ??
       verified.note ??
       "Verified remaining unavailable — utilization knowledge does not support a remaining claim.";
-    return {
-      verifiedRemainingMillions: null,
-      verifiedRemainingRefusalReason: reason,
-      modeledRemainingMillions: modeled,
-      verifiedResult: verified,
-    };
+    return refuseRemaining(modeled, reason, verified);
   }
 
   if (auth.sharedCapacityId) {
@@ -542,6 +641,14 @@ export function evaluateCrossDomainTransaction(params: {
   let assetSaleSim: AssetSaleSimulation | null = null;
   const statusAcc: TransactionStatus[] = [];
   const claimedSharedPools = new Set<string>();
+  const expectedIdentity: UtilizationAuthorityExpectedIdentity = {
+    companyId: data.companyId,
+    asOf,
+    knownDocumentIds: data.documents.map((d) => d.id),
+    knownProvisionIds: data.provisions.flatMap((p) =>
+      [p.id, p.code].filter((x): x is string => typeof x === "string" && x.length > 0),
+    ),
+  };
 
   const applyRemaining = (
     slice: Omit<
@@ -554,6 +661,7 @@ export function evaluateCrossDomainTransaction(params: {
       modeledRemainingMillions: slice.modeledRemainingMillions ?? null,
       gateSatisfied: slice.gateSatisfied ?? slice.status !== "blocked",
       utilizationAuthority: params.utilizationAuthority,
+      expectedIdentity,
       claimedSharedPools,
       sourceCitations: slice.citations,
     });
@@ -842,6 +950,7 @@ export function evaluateCrossDomainTransaction(params: {
     modeledRemainingMillions: null,
     gateSatisfied: false,
     utilizationAuthority: params.utilizationAuthority,
+    expectedIdentity,
     claimedSharedPools,
   });
   domains.push({
