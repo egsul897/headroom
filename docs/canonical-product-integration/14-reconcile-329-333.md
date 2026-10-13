@@ -1,8 +1,9 @@
 # Reconcile #329 + #333 (+ #334 NS-4 binder) — canonical landing
 
 **Branch:** `cursor/reconcile-329-333-landing-daaa`  
-**Base tip:** #333 `9120de1e` (PAI-01–12 + Position)  
+**Base tip:** #333 `9120de1e` (PAI-01–12 + Position) — **merged to main** as `1fb258d2`  
 **Absorbs:** #329 `621a066f` unique surfaces + #334 `9281dabc` APPROVED binder  
+**Current main:** `1fb258d2` (includes #333)
 **Does not self-merge. Production authority BLOCKED.**
 
 ## Preserved from #333
