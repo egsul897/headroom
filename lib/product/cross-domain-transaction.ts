@@ -206,8 +206,15 @@ function refuseWithoutAssumptions(
   return null;
 }
 
-function remainingAllowed(assumptions: TransactionAssumptions): boolean {
-  return assumptions.utilizationAttributed && assumptions.utilizationCompletenessCertified;
+/**
+ * Verified remaining must never be manufactured from caller-supplied booleans.
+ * TransactionAssumptions.utilizationAttributed / utilizationCompletenessCertified
+ * are disclosure flags only — remaining requires store-backed attributed ledger
+ * usage AND a validated UtilizationCompletenessCertificate (Phase 4C/4E), which
+ * this LEGACY cross-domain evaluator does not load. Always withhold.
+ */
+function remainingAllowed(_assumptions: TransactionAssumptions): boolean {
+  return false;
 }
 
 function worstTxnStatus(statuses: TransactionStatus[]): TransactionStatus {
@@ -250,7 +257,15 @@ export function evaluateCrossDomainTransaction(params: {
   const allowRemaining = remainingAllowed(tx.assumptions);
   if (!allowRemaining) {
     packageLimitations.push(
-      "Verified remaining capacity withheld — utilization not attributed and/or completeness not certified.",
+      "Verified remaining capacity withheld — LEGACY cross-domain path never publishes remaining from caller flags; requires store-backed attributed utilization + completeness certificate.",
+    );
+  }
+  if (
+    tx.assumptions.utilizationAttributed ||
+    tx.assumptions.utilizationCompletenessCertified
+  ) {
+    packageLimitations.push(
+      "Caller-supplied utilizationAttributed / utilizationCompletenessCertified flags are ignored for remaining publication (fail-closed).",
     );
   }
 

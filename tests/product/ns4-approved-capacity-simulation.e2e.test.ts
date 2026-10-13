@@ -7,6 +7,7 @@
  * Authority remains TEST_ATTRIBUTED_APPROVAL / fixture-labeled.
  */
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { randomBytes } from "node:crypto";
 import { PrismaClient } from "@prisma/client";
 import type { IRExpression, IRRule } from "@/lib/contract-model/ir/types";
 import type {
@@ -19,6 +20,8 @@ import type { SemanticVerificationResult } from "@/lib/contract-model/compiler/s
 import {
   proposeAuthenticCertificateFixtureForCompany,
   approveFceProposedCertificate,
+  approveWorkspaceCertificate,
+  proposeCertificateRestatement,
   loadApprovedFinancialInputBundle,
   loadAuthoritativeCapacity,
   attemptCertifiedTransaction,
@@ -171,7 +174,7 @@ async function teardown(prisma: PrismaClient, companyId: string) {
 
 describeIso("NS-4 APPROVED financial change invalidates capacity + simulation", () => {
   const prisma = new PrismaClient();
-  const COMPANY = "ns4-cap-sim-e2e-co";
+  const COMPANY = `ns4-cap-sim-${randomBytes(4).toString("hex")}`;
   const EVAL_MAT = "2025-02-01";
   const EVAL_COH = "2026-08-01";
 
@@ -377,6 +380,40 @@ describeIso("NS-4 APPROVED financial change invalidates capacity + simulation", 
       evaluationDate: EVAL_MAT,
     });
     expect(binderMatthewsStill.boundSnapshotId).toBe(matthewsPropose.snapshotId);
+
+    // DRAFT restatement must not alter currently approved Coherent binding.
+    const restatement = await proposeCertificateRestatement({
+      companyId: COMPANY,
+      predecessorSnapshotId: coherentPropose.snapshotId!,
+      reviewedByNote: "draft correction — must not invalidate until approved",
+    });
+    expect(restatement.ok).toBe(true);
+    expect(restatement.status).toBe("DRAFT");
+    const binderWhileDraft = await loadApprovedFinancialInputBundle({
+      companyId: COMPANY,
+      evaluationDate: EVAL_COH,
+    });
+    expect(binderWhileDraft.boundSnapshotId).toBe(coherentPropose.snapshotId);
+    expect(binderWhileDraft.financialInputFingerprint).toBe(binder2.financialInputFingerprint);
+
+    // Approving restatement supersedes predecessor and invalidates fingerprint.
+    const restatementApprove = await approveWorkspaceCertificate({
+      companyId: COMPANY,
+      snapshotId: restatement.snapshotId,
+      reviewedBy: "counsel-restatement@test.local",
+      approvalRef: "apr-restatement-e2e",
+      reviewedAt: `${EVAL_COH}T18:00:00Z`,
+    });
+    expect(restatementApprove.ok).toBe(true);
+    const binderAfterRestatement = await loadApprovedFinancialInputBundle({
+      companyId: COMPANY,
+      evaluationDate: EVAL_COH,
+    });
+    expect(binderAfterRestatement.boundSnapshotId).toBe(restatement.snapshotId);
+    expect(binderAfterRestatement.boundSnapshotId).not.toBe(coherentPropose.snapshotId);
+    expect(binderAfterRestatement.financialInputFingerprint).not.toBe(
+      binder2.financialInputFingerprint,
+    );
   });
 });
 

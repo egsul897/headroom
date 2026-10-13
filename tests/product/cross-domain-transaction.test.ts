@@ -43,6 +43,23 @@ describe("assumption gates", () => {
     expect(result.overallStatus).toBe("review_required");
     expect(result.packageLimitations.some((l) => /assumptions are required/i.test(l))).toBe(true);
   });
+
+  it("caller-supplied utilization completeness booleans cannot manufacture verified remaining", () => {
+    const tx = coherentDebtFundedAcquisition(100);
+    tx.assumptions.utilizationAttributed = true;
+    tx.assumptions.utilizationCompletenessCertified = true;
+    const result = evaluateCrossDomainTransaction({
+      data: coherentPackageData(),
+      transaction: tx,
+      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
+    });
+    for (const d of result.domains) {
+      expect(d.verifiedRemainingMillions).toBeNull();
+    }
+    expect(
+      result.packageLimitations.some((l) => /Caller-supplied.*ignored for remaining/i.test(l)),
+    ).toBe(true);
+  });
 });
 
 describe("Coherent cross-domain scenarios", () => {
