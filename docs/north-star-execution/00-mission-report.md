@@ -28,7 +28,7 @@ Phase 2F/2G/Agent #7 gates (not rewritten).
 | | |
 |---|---|
 | Feature tip (code + docs pin) | `013e42a0b9e6035fc18f6c224c42331d1b60eb0d` |
-| Docs CI-record tip | *(updated after this commit)* |
+| Docs CI-record tip | `c763c0d028f9716f8eaab8af3b438208df457054` |
 | PR | https://github.com/egsul897/headroom/pull/320 |
 | canonical-compiler @ `013e42a0` | SUCCESS — https://github.com/egsul897/headroom/actions/runs/38347847958 |
 | Vercel @ `013e42a0` | SUCCESS |
