@@ -54,9 +54,11 @@ function deliveriesFromSnapshots(
   companyId: string,
   approved: Awaited<ReturnType<typeof loadApprovedSnapshotsFromPrisma>>,
 ): DeliveryRecord[] {
+  // PAI-11: never invent delivery from period asOf. Missing reviewedAt → no delivery.
   return approved.flatMap((s) => {
     if (!s.reportingPeriod || !s.asOf) return [];
-    const deliveredAtIsoDate = (s.review.reviewedAt ?? s.asOf).slice(0, 10);
+    if (!s.review.reviewedAt) return [];
+    const deliveredAtIsoDate = s.review.reviewedAt.slice(0, 10);
     return [
       {
         companyId,
