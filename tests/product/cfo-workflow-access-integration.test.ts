@@ -126,7 +126,7 @@ function stubLoaders(counters: { n: number }) {
         refusalSummary: ["NO_VEP"],
         pathAutoSelected: false,
       } as Awaited<ReturnType<CfoWorkflowSensitiveLoaders["attemptVerifiedSimulate"]>>),
-    loadAuthoritativeCapacity: async ({ companyId }) =>
+    loadAuthoritativeCapacity: async ({ companyId }: { companyId: string }) =>
       touch({
         companyId,
         evaluationDate: null,
