@@ -29,10 +29,21 @@ export const COHERENT_REPORTED_COVENANT_EBITDA_MILLIONS = 1700;
  * Public-filing reconstruction components ($M) from FY2026 10-K line items
  * (thousand-dollar figures ÷ 1000). Sum ≈ 1694.140 — supporting only.
  */
+export const COHERENT_EBITDA_EVIDENCE_SOURCE_VERSION =
+  "fixture:coherent-ebitda-evidence.v1" as const;
+
 export const COHERENT_EBITDA_EVIDENCE: ContractualEbitdaEvidencePackage = {
   bindingContractualEbitdaMillions: COHERENT_REPORTED_COVENANT_EBITDA_MILLIONS,
   asOfDate: COHERENT_AS_OF,
   measurementPeriod: "FY2026 (year ended 2026-06-30)",
+  bindingIdentity: {
+    companyId: "coherent",
+    documentIds: ["coherent-credit-agreement-2022", "coherent-2029-notes-indenture"],
+    measurementPeriod: "FY2026 (year ended 2026-06-30)",
+    asOfDate: COHERENT_AS_OF,
+    sourceVersionId: COHERENT_EBITDA_EVIDENCE_SOURCE_VERSION,
+    financialSnapshotId: null,
+  },
   definitionTerm: "Consolidated EBITDA",
   definitionExcerpt:
     '"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in determining such Consolidated Net Income, (a) income tax expense, (b) Consolidated Interest Expense, (c) depreciation and amortization expense, (d) non-cash stock-based compensation expense, (e) restructuring, integration, and transaction costs, and (f) other non-recurring or non-cash charges reasonably identified by the Issuer, minus non-cash items increasing Consolidated Net Income for such period.',
