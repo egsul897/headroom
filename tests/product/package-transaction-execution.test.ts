@@ -142,3 +142,76 @@ describe("executePackageTransaction — 10-step workflow", () => {
     expect(result.packagePermitted).toBe(false);
   });
 });
+
+describe("verified permission — REQUIRE gates", () => {
+  it("clear modeled domains without verified execution → packagePermitted false", () => {
+    const data = coherentPackageData();
+    // Even if we imagined all domains clear/EXECUTABLE, missing VTE handoff refuses.
+    const result = executePackageTransaction({
+      packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
+      data,
+      transaction: coherentDividend(10),
+      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
+      verifiedExecution: null,
+    });
+    expect(result.packagePermitted).toBe(false);
+    expect(result.verifiedExecutionHandoff).toBeNull();
+    expect(
+      result.unresolvedBlockers.some((b) => /verified transaction execution/i.test(b)),
+    ).toBe(true);
+  });
+
+  it("EXECUTED_HYPOTHETICAL without PRODUCTION_AUTHORITY_ACTIVE → packagePermitted false", () => {
+    const data = coherentPackageData();
+    const result = executePackageTransaction({
+      packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
+      data,
+      transaction: coherentDebtFundedAcquisition(50),
+      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
+      verifiedExecution: {
+        executionStatus: "EXECUTED_HYPOTHETICAL",
+        productionAuthority: "PRODUCTION_AUTHORITY_BLOCKED",
+        contractVersion: "unified-transaction-execution.v1",
+      },
+    });
+    expect(result.packagePermitted).toBe(false);
+    expect(result.verifiedExecutionHandoff?.executionStatus).toBe("EXECUTED_HYPOTHETICAL");
+    expect(
+      result.unresolvedBlockers.some((b) => /EXECUTED_SATISFIED|production authority/i.test(b)),
+    ).toBe(true);
+  });
+
+  it("only EXECUTED_SATISFIED + PRODUCTION_AUTHORITY_ACTIVE permits", () => {
+    const data = coherentPackageData();
+    const refused = executePackageTransaction({
+      packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
+      data,
+      transaction: coherentDebtFundedAcquisition(50),
+      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
+      verifiedExecution: {
+        executionStatus: "EXECUTED_SATISFIED",
+        productionAuthority: "HYPOTHETICAL_ONLY",
+        contractVersion: "unified-transaction-execution.v1",
+      },
+    });
+    expect(refused.packagePermitted).toBe(false);
+
+    const permitted = executePackageTransaction({
+      packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
+      data,
+      transaction: coherentDebtFundedAcquisition(50),
+      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
+      verifiedExecution: {
+        executionStatus: "EXECUTED_SATISFIED",
+        productionAuthority: "PRODUCTION_AUTHORITY_ACTIVE",
+        contractVersion: "unified-transaction-execution.v1",
+      },
+    });
+    // Identity ok + REQUIRE satisfied + production active → permitted
+    // (modeling status may still be not_tested / review_required — kept separate)
+    expect(permitted.packagePermitted).toBe(true);
+    expect(permitted.verifiedExecutionHandoff?.productionAuthority).toBe(
+      "PRODUCTION_AUTHORITY_ACTIVE",
+    );
+  });
+});

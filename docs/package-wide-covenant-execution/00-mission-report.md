@@ -141,3 +141,7 @@ tsc --noEmit                                           clean for changed surface
 - Absorbs #340 remaining-authority path without dual engines  
 - Honest 0-EXECUTABLE coverage; fail-closed package permission  
 - No self-merge · no manufactured approval · no production writes · no trusted-issuer activation
+
+## Pre-merge P0 correction
+
+See [`10-pre-merge-p0-correction.md`](./10-pre-merge-p0-correction.md): host-only trusted issuer on PRODUCTION, identity-bound EBITDA evidence, and `packagePermitted` gated on REQUIRE `EXECUTED_SATISFIED` + `PRODUCTION_AUTHORITY_ACTIVE`.

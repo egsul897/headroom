@@ -25,6 +25,11 @@ import {
   type DomainEvaluationSlice,
   type DomainSupportLevel,
 } from "@/lib/product/cross-domain-transaction";
+import type {
+  ExecutionStatus,
+  ProductionAuthorityClassification,
+  UnifiedTransactionExecutionResult,
+} from "@/lib/product/verified-transaction-execution";
 
 export const PACKAGE_TRANSACTION_EXECUTION_VERSION =
   "package-transaction-execution.v1" as const;
@@ -118,6 +123,17 @@ function domainById(
   return domains.find((d) => d.domain === id);
 }
 
+/**
+ * Minimal verified-execution handoff consumed for customer permission.
+ * Callers supply the result of executeUnifiedVerifiedTransaction (REQUIRE).
+ * Descriptive modeling statuses never alone authorize packagePermitted.
+ */
+export interface VerifiedExecutionPermissionHandoff {
+  executionStatus: ExecutionStatus;
+  productionAuthority: ProductionAuthorityClassification;
+  contractVersion: string;
+}
+
 export interface PackageTransactionRequest {
   /** Operative financing-package identity (company + as-of + optional snapshot). */
   packageIdentity: {
@@ -131,6 +147,17 @@ export interface PackageTransactionRequest {
   ebitdaDerivation?: ContractualEbitdaDerivation | null;
   utilizationAuthority?: CrossDomainUtilizationAuthority | null;
   expectedFinancialIdentity?: ApprovedFinancialIdentity | null;
+  /**
+   * Result of canonical executeUnifiedVerifiedTransaction under REQUIRE gates.
+   * Required for packagePermitted=true. Modeling-only clear/EXECUTABLE is insufficient.
+   */
+  verifiedExecution?:
+    | VerifiedExecutionPermissionHandoff
+    | Pick<
+        UnifiedTransactionExecutionResult,
+        "executionStatus" | "productionAuthority" | "contractVersion"
+      >
+    | null;
 }
 
 export interface PackageTransactionResult {
@@ -150,12 +177,18 @@ export interface PackageTransactionResult {
     applicable: boolean;
   }>;
   /**
-   * Overall from applicable domains only.
-   * Never PERMITTED (clear) if any applicable domain is blocked / not_tested / review_required.
+   * Descriptive modeling overall from applicable domains only.
+   * Never upgraded to customer permission without verified REQUIRE execution.
    */
   overallStatus: TransactionStatus;
-  /** True only when every applicable domain is clear AND support is EXECUTABLE. */
+  /**
+   * Customer permission. True only when canonical verified transaction execution
+   * under REQUIRE gates returns EXECUTED_SATISFIED with PRODUCTION_AUTHORITY_ACTIVE.
+   * Clear modeled domains / EXECUTABLE coverage labels alone never suffice.
+   */
   packagePermitted: boolean;
+  /** Echo of verified-execution handoff used for permission (null when absent). */
+  verifiedExecutionHandoff: VerifiedExecutionPermissionHandoff | null;
   steps: PackageTransactionStep[];
   evaluation: CrossDomainTransactionEvaluation;
   citations: string[];
@@ -208,6 +241,7 @@ export function executePackageTransaction(
     ebitdaDerivation: request.ebitdaDerivation ?? null,
     utilizationAuthority: request.utilizationAuthority ?? null,
     expectedFinancialIdentity: request.expectedFinancialIdentity ?? null,
+    authoritySurface: "PRODUCTION",
   });
 
   const coverage = covenantDomainCoverage();
@@ -238,7 +272,7 @@ export function executePackageTransaction(
     .map((s) => s.status)
     .filter((s): s is TransactionStatus => s !== "not_applicable");
 
-  // One clear domain never permits the package.
+  // Descriptive modeling status — separate from customer permission.
   const overallStatus: TransactionStatus = identityMismatch
     ? "review_required"
     : worstStatus(
@@ -247,14 +281,22 @@ export function executePackageTransaction(
           : [evaluation.overallStatus],
       );
 
+  const verifiedHandoff: VerifiedExecutionPermissionHandoff | null =
+    request.verifiedExecution
+      ? {
+          executionStatus: request.verifiedExecution.executionStatus,
+          productionAuthority: request.verifiedExecution.productionAuthority,
+          contractVersion: request.verifiedExecution.contractVersion,
+        }
+      : null;
+
+  // Customer permission requires successful REQUIRE verified execution with
+  // production authority active — never modeled clear / EXECUTABLE labels alone.
   const packagePermitted =
     !identityMismatch &&
-    overallStatus === "clear" &&
-    applicableSlices.every(
-      (s) =>
-        s.status === "not_applicable" ||
-        (s.status === "clear" && s.support === "EXECUTABLE"),
-    );
+    verifiedHandoff != null &&
+    verifiedHandoff.executionStatus === "EXECUTED_SATISFIED" &&
+    verifiedHandoff.productionAuthority === "PRODUCTION_AUTHORITY_ACTIVE";
 
   const citations = [
     ...new Set(applicableSlices.flatMap((s) => s.citations).filter(Boolean)),
@@ -269,6 +311,19 @@ export function executePackageTransaction(
   const limitations = [...evaluation.packageLimitations];
   const unresolvedBlockers: string[] = [];
   if (identityMismatch) unresolvedBlockers.push(identityMismatch);
+  if (!verifiedHandoff) {
+    unresolvedBlockers.push(
+      "packagePermitted=false — canonical verified transaction execution (REQUIRE) not supplied; modeled clear/EXECUTABLE labels are insufficient",
+    );
+  } else if (verifiedHandoff.executionStatus !== "EXECUTED_SATISFIED") {
+    unresolvedBlockers.push(
+      `packagePermitted=false — verified execution status ${verifiedHandoff.executionStatus} (REQUIRE must EXECUTED_SATISFIED)`,
+    );
+  } else if (verifiedHandoff.productionAuthority !== "PRODUCTION_AUTHORITY_ACTIVE") {
+    unresolvedBlockers.push(
+      `packagePermitted=false — production authority ${verifiedHandoff.productionAuthority} (host trusted-issuer not ACTIVE)`,
+    );
+  }
   for (const s of applicableSlices) {
     if (s.support === "UNSUPPORTED" || s.support === "NOT_IMPLEMENTED") {
       unresolvedBlockers.push(`${s.domain}: ${s.support} — ${s.summary}`);
@@ -420,12 +475,13 @@ export function executePackageTransaction(
       title:
         "Return per-covenant and overall results with citations, missing inputs, assumptions, limitations and trace",
       status: packagePermitted ? "OK" : "PARTIAL",
-      detail: `overall=${overallStatus} packagePermitted=${packagePermitted} (requires all applicable EXECUTABLE+clear)`,
+      detail: `overall(modeled)=${overallStatus} packagePermitted=${packagePermitted} (requires REQUIRE EXECUTED_SATISFIED + PRODUCTION_AUTHORITY_ACTIVE; verified=${verifiedHandoff?.executionStatus ?? "absent"})`,
       evidence: [
         `citations=${citations.length}`,
         `missingInputs=${missingInputs.length}`,
         `limitations=${limitations.length}`,
         `blockers=${unresolvedBlockers.length}`,
+        `verifiedExecution=${verifiedHandoff?.executionStatus ?? "absent"}/${verifiedHandoff?.productionAuthority ?? "n/a"}`,
       ],
     },
   ];
@@ -434,7 +490,8 @@ export function executePackageTransaction(
     `${PACKAGE_TRANSACTION_EXECUTION_VERSION} via ${CROSS_DOMAIN_EVALUATION_VERSION}`,
     `owner=${CROSS_DOMAIN_CANONICAL_OWNER}`,
     `scenario=${tx.kind} amount=${tx.amountMillions} secured=${tx.secured}`,
-    `overall=${overallStatus} packagePermitted=${packagePermitted}`,
+    `overall(modeled)=${overallStatus} packagePermitted=${packagePermitted}`,
+    `verifiedExecution=${verifiedHandoff?.executionStatus ?? "absent"} productionAuthority=${verifiedHandoff?.productionAuthority ?? "n/a"}`,
     ...steps.map((s) => `step${s.index}:${s.id}:${s.status}`),
     evaluation.authorityNote,
   ];
@@ -449,6 +506,7 @@ export function executePackageTransaction(
     supportByDomain,
     overallStatus,
     packagePermitted,
+    verifiedExecutionHandoff: verifiedHandoff,
     steps,
     evaluation,
     citations,

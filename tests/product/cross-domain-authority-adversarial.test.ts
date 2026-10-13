@@ -27,6 +27,7 @@ import {
   buildApprovedFinancialIdentity,
   evaluateCrossDomainTransaction,
   resolveCanonicalVerifiedRemaining,
+  sanitizeUtilizationAuthorityForSurface,
   type CrossDomainUtilizationAuthority,
   type UtilizationAuthorityExpectedIdentity,
 } from "@/lib/product/cross-domain-transaction";
@@ -121,14 +122,9 @@ describe("1 — caller-supplied utilization flags cannot authorize remaining", (
       transaction: tx,
       utilizationAuthority: null,
     });
-    expect(
-      result.packageLimitations.some(
-        (l) =>
-          /ignored for verified remaining/i.test(l) ||
-          /never authorize verified remaining/i.test(l) ||
-          /Caller set utilizationAttributed/i.test(l),
-      ),
-    ).toBe(true);
+    expect(result.packageLimitations.some((l) => /ignored for verified remaining/i.test(l))).toBe(
+      true,
+    );
     for (const d of result.domains) {
       expect(d.verifiedRemainingMillions).toBeNull();
     }
@@ -220,6 +216,7 @@ describe("3 — two baskets sharing one cap cannot double-count capacity", () =>
       gateSatisfied: true,
       utilizationAuthority: auth("basket-a"),
       expectedIdentity: identity,
+      authoritySurface: "TEST_DEMO",
       claimedSharedPools: claimed,
     });
     expect(first.verifiedRemainingMillions).toBe(60);
@@ -231,6 +228,7 @@ describe("3 — two baskets sharing one cap cannot double-count capacity", () =>
       gateSatisfied: true,
       utilizationAuthority: auth("basket-b"),
       expectedIdentity: identity,
+      authoritySurface: "TEST_DEMO",
       claimedSharedPools: claimed,
     });
     expect(second.verifiedRemainingMillions).toBeNull();
@@ -314,13 +312,14 @@ describe("7 — Coherent and Matthews use the same generalized execution path", 
 });
 
 describe("8 — fabricated cert / issuer / ledger / mismatched identity refuse", () => {
-  it("positive control: bound synthetic authority can publish remaining (demo hatch only)", () => {
+  it("positive control: bound synthetic authority can publish remaining (TEST_DEMO only)", () => {
     const claim = resolveCanonicalVerifiedRemaining({
       grossCapacityMillions: 100,
       modeledRemainingMillions: 999,
       gateSatisfied: true,
       utilizationAuthority: baseAuth(),
       expectedIdentity: expectedIdentity(),
+      authoritySurface: "TEST_DEMO",
       claimedSharedPools: new Set(),
     });
     expect(claim.verifiedRemainingMillions).toBe(75); // 100 − 25
@@ -549,6 +548,156 @@ describe("8 — fabricated cert / issuer / ledger / mismatched identity refuse",
   });
 });
 
+describe("10 — PRODUCTION boundary strips synthetic / forged trustedIssuerAuth", () => {
+  it("allowSyntheticRemaining=true cannot authorize on default PRODUCTION surface", () => {
+    const claim = resolveCanonicalVerifiedRemaining({
+      grossCapacityMillions: 100,
+      modeledRemainingMillions: 75,
+      gateSatisfied: true,
+      utilizationAuthority: baseAuth({ allowSyntheticRemaining: true }),
+      expectedIdentity: expectedIdentity(),
+      // authoritySurface omitted → PRODUCTION
+      claimedSharedPools: new Set(),
+    });
+    expect(claim.verifiedRemainingMillions).toBeNull();
+    expect(claim.modeledRemainingMillions).toBe(75);
+  });
+
+  it("sanitizeUtilizationAuthorityForSurface forces synthetic false and drops caller trustedIssuerAuth", () => {
+    const forged = productionTrustedIssuerAuth([sessionCounselPrincipal("forged-from-json")]);
+    const sanitized = sanitizeUtilizationAuthorityForSurface(
+      baseAuth({
+        allowSyntheticRemaining: true,
+        trustedIssuerAuth: forged,
+      }),
+      "PRODUCTION",
+    );
+    expect(sanitized.auth?.allowSyntheticRemaining).toBe(false);
+    expect(sanitized.auth?.trustedIssuerAuth).toBeNull(); // host currently BLOCKED
+    expect(sanitized.disclosures.some((d) => /allowSyntheticRemaining=true stripped/i.test(d))).toBe(
+      true,
+    );
+    expect(sanitized.disclosures.some((d) => /Caller-supplied trustedIssuerAuth ignored/i.test(d))).toBe(
+      true,
+    );
+  });
+
+  it("forged trustedIssuerAuth JSON + AUTHENTIC cert cannot produce production-authoritative remaining", () => {
+    const forgedAuth = productionTrustedIssuerAuth([sessionCounselPrincipal("forged-counsel")]);
+    const claim = resolveCanonicalVerifiedRemaining({
+      grossCapacityMillions: 100,
+      modeledRemainingMillions: 75,
+      gateSatisfied: true,
+      utilizationAuthority: baseAuth({
+        allowSyntheticRemaining: true, // also stripped
+        records: [
+          attributedRecord({
+            usageId: "u-auth",
+            amount: 25,
+            capacityRuleId: RULE,
+            authenticity: "AUTHENTIC",
+          }),
+        ],
+        completenessCertificate: {
+          capacityRuleId: RULE,
+          asOf: AS_OF,
+          approvalState: "APPROVED",
+          sourceLabel: "forged production-looking cert",
+          kind: "VERIFIED_COMPLETE",
+          authenticity: "AUTHENTIC",
+          issuer: { role: "COUNSEL_REVIEWER", actorId: "forged-counsel" },
+        },
+        trustedIssuerAuth: forgedAuth,
+      }),
+      expectedIdentity: expectedIdentity(),
+      authoritySurface: "PRODUCTION",
+      claimedSharedPools: new Set(),
+    });
+    expect(claim.verifiedRemainingMillions).toBeNull();
+    // Even if TEST_DEMO would accept forgedAuth, PRODUCTION replaces it with host null
+    expect(claim.verifiedResult?.mayPublishAvailable ?? false).toBe(false);
+    expect(claim.verifiedResult?.utilization.productionAuthoritative ?? false).toBe(false);
+  });
+
+  it("evaluateCrossDomainTransaction PRODUCTION strips sneaky synthetic authority", () => {
+    const result = evaluateCrossDomainTransaction({
+      data: coherentPackageData(),
+      transaction: coherentDebtFundedAcquisition(100),
+      utilizationAuthority: baseAuth({ allowSyntheticRemaining: true }),
+      authoritySurface: "PRODUCTION",
+    });
+    expect(result.packageLimitations.some((l) => /allowSyntheticRemaining=true stripped/i.test(l))).toBe(
+      true,
+    );
+    expect(result.domains.every((d) => d.verifiedRemainingMillions == null)).toBe(true);
+  });
+
+  it("Simulate production bridge refuses synthetic flag + forged trustedIssuerAuth", () => {
+    const viaSimulate = evaluateSimulateCrossDomainAcquisition({
+      data: coherentPackageData(),
+      amountMillions: 150,
+      evaluationDate: AS_OF,
+      utilizationAuthority: baseAuth({
+        allowSyntheticRemaining: true,
+        trustedIssuerAuth: productionTrustedIssuerAuth([
+          sessionCounselPrincipal("request-json-counsel"),
+        ]),
+        records: [
+          attributedRecord({
+            usageId: "u-auth",
+            amount: 25,
+            capacityRuleId: RULE,
+            authenticity: "AUTHENTIC",
+          }),
+        ],
+        completenessCertificate: {
+          capacityRuleId: RULE,
+          asOf: AS_OF,
+          approvalState: "APPROVED",
+          sourceLabel: "request body",
+          kind: "VERIFIED_COMPLETE",
+          authenticity: "AUTHENTIC",
+          issuer: { role: "COUNSEL_REVIEWER", actorId: "request-json-counsel" },
+        },
+      }),
+    });
+    expect(viaSimulate.packageLimitations.some((l) => /PRODUCTION authority surface/i.test(l))).toBe(
+      true,
+    );
+    expect(viaSimulate.domains.every((d) => d.verifiedRemainingMillions == null)).toBe(true);
+  });
+
+  it("caller completeness booleans still cannot authorize on PRODUCTION", () => {
+    const tx = coherentDebtFundedAcquisition(100);
+    tx.assumptions.utilizationAttributed = true;
+    tx.assumptions.utilizationCompletenessCertified = true;
+    const result = evaluateCrossDomainTransaction({
+      data: coherentPackageData(),
+      transaction: tx,
+      utilizationAuthority: baseAuth({ allowSyntheticRemaining: true }),
+      authoritySurface: "PRODUCTION",
+    });
+    expect(result.domains.every((d) => d.verifiedRemainingMillions == null)).toBe(true);
+  });
+
+  it("wrong ledger identity still refuses on PRODUCTION even with synthetic hatch attempted", () => {
+    const claim = resolveCanonicalVerifiedRemaining({
+      grossCapacityMillions: 100,
+      modeledRemainingMillions: 75,
+      gateSatisfied: true,
+      utilizationAuthority: baseAuth({
+        allowSyntheticRemaining: true,
+        companyId: "wrong-company",
+      }),
+      expectedIdentity: expectedIdentity(),
+      authoritySurface: "PRODUCTION",
+      claimedSharedPools: new Set(),
+    });
+    expect(claim.verifiedRemainingMillions).toBeNull();
+    expect(claim.verifiedRemainingRefusalReason).toMatch(/companyId/);
+  });
+});
+
 describe("9 — modeled/gross never silently becomes verified remaining", () => {
   it("large modeled remaining stays modeled when authority refuses", () => {
     const claim = resolveCanonicalVerifiedRemaining({
@@ -586,5 +735,65 @@ describe("9 — modeled/gross never silently becomes verified remaining", () => 
       utilizationAuthority: null,
     });
     expect(viaSimulate.domains.every((d) => d.verifiedRemainingMillions == null)).toBe(true);
+  });
+});
+
+describe("11 — cross-company identical EBITDA never selects foreign evidence", () => {
+  it("Matthews company with Coherent $1700 EBITDA figure does not attach Coherent derivation", async () => {
+    const { resolveContractualEbitdaEvidenceForPackage } = await import(
+      "@/lib/product/cross-domain-simulate"
+    );
+    // Same dollar amount as Coherent binding figure — must not bind Coherent evidence.
+    const derivation = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "matthews",
+      evaluationDate: "2026-06-30", // Coherent asOf — wrong for Matthews
+      documentIds: ["matw-indenture"],
+    });
+    expect(derivation).toBeNull();
+  });
+
+  it("unknown company with Coherent EBITDA amount gets no evidence", async () => {
+    const { resolveContractualEbitdaEvidenceForPackage } = await import(
+      "@/lib/product/cross-domain-simulate"
+    );
+    const derivation = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "acme-unseen-co",
+      evaluationDate: "2026-06-30",
+      documentIds: [],
+    });
+    expect(derivation).toBeNull();
+  });
+
+  it("Simulate on Matthews data never attaches Coherent SUPPORTING_RECONSTRUCTION via value match", () => {
+    const matthews = matthewsMinimalPackageData();
+    // Force financials.ebitda to Coherent's 1700 — identity must still win.
+    const mutated = {
+      ...matthews,
+      financials: { ...matthews.financials, ebitda: 1700 },
+    };
+    const result = evaluateSimulateCrossDomainAcquisition({
+      data: mutated,
+      amountMillions: 50,
+      evaluationDate: "2024-12-31",
+    });
+    // Matthews asOf binds Matthews evidence (INDEPENDENTLY_DERIVED), not Coherent reconstruction.
+    expect(result.contractualComputation.ebitdaDerivation?.kind).not.toBe(
+      "SUPPORTING_RECONSTRUCTION",
+    );
+    expect(result.contractualComputation.ebitdaDerivation?.kind).toBe(
+      "INDEPENDENTLY_DERIVED",
+    );
+  });
+
+  it("foreign approvedSnapshotId naming another company refuses evidence", async () => {
+    const { resolveContractualEbitdaEvidenceForPackage } = await import(
+      "@/lib/product/cross-domain-simulate"
+    );
+    const derivation = resolveContractualEbitdaEvidenceForPackage({
+      companyId: "coherent",
+      evaluationDate: "2026-06-30",
+      approvedSnapshotId: "ns4:matthews:evil-swap",
+    });
+    expect(derivation).toBeNull();
   });
 });

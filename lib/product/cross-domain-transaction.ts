@@ -17,15 +17,14 @@
  * relabeled as verified.
  *
  * Field trust model for CrossDomainUtilizationAuthority:
- * - CALLER-SUPPLIED (untrusted alone): capacityRuleId, asOf, companyId,
+ * - CALLER-SUPPLIED (untrusted alone on PRODUCTION): capacityRuleId, asOf, companyId,
  *   documentId, provisionId, periodKey, records[], completenessCertificate blob
- *   (including issuer.role / actorId strings), sharedCapacityId, crossDocumentConstraints,
- *   allowSyntheticRemaining.
- * - INDEPENDENTLY AUTHENTICATED (host / company-state): expectedIdentity from
- *   CompanyCovenantData + evaluation date; TrustedIssuerAuthorizationContext
- *   principals registry (never derived from the certificate); record approval /
- *   authenticity semantics enforced inside resolveUtilization; production gate
- *   via authorizeCompletenessIssuer + requireNonFixtureIdentity.
+ *   (including issuer.role / actorId strings), sharedCapacityId, crossDocumentConstraints.
+ * - PRODUCTION surface: allowSyntheticRemaining forced false; trustedIssuerAuth taken
+ *   ONLY from resolveTrustedIssuerAuthFromHost() — caller JSON never activates.
+ * - TEST_DEMO surface: explicit opt-in for isolated harnesses only.
+ * - INDEPENDENTLY AUTHENTICATED: expectedIdentity from CompanyCovenantData + evaluation
+ *   date; record approval / authenticity inside resolveUtilization.
  */
 
 import {
@@ -47,6 +46,7 @@ import {
 } from "@/lib/capacity/verified-remaining";
 import { resolveUtilization } from "@/lib/capacity/utilization-resolver";
 import type { TrustedIssuerAuthorizationContext } from "@/lib/capacity/completeness-issuer-auth";
+import { resolveTrustedIssuerAuthFromHost } from "@/lib/capacity/trusted-issuer-host";
 import type {
   UtilizationCompletenessCertificate,
   UtilizationEvidenceRecord,
@@ -117,11 +117,21 @@ export interface TransactionAssumptions {
 }
 
 /**
+ * PRODUCTION — default for all product surfaces (Simulate, debt-intelligence).
+ * Strips allowSyntheticRemaining and ignores caller-supplied trustedIssuerAuth
+ * JSON, substituting host-resolved auth only.
+ *
+ * TEST_DEMO — explicit opt-in for isolated unit/adversarial tests. Never set
+ * by production loaders / page.tsx / debt-intelligence.
+ */
+export type CrossDomainAuthoritySurface = "PRODUCTION" | "TEST_DEMO";
+
+/**
  * Canonical utilization / capacity authority for verified remaining.
  * Must carry attributed evidence + trusted completeness + identity.
- * Every field on this object is caller-constructed; authorization still
- * requires expectedIdentity binding + host trustedIssuerAuth (or explicit
- * allowSyntheticRemaining demo hatch that never runs in production loaders).
+ * Every field on this object is caller-constructed; on PRODUCTION surfaces
+ * allowSyntheticRemaining is forced false and trustedIssuerAuth is taken only
+ * from resolveTrustedIssuerAuthFromHost (never from user/request JSON).
  */
 export interface CrossDomainUtilizationAuthority {
   capacityRuleId: string;
@@ -133,17 +143,70 @@ export interface CrossDomainUtilizationAuthority {
   records: readonly UtilizationEvidenceRecord[];
   completenessCertificate?: UtilizationCompletenessCertificate | null;
   /**
-   * Host-supplied issuer registry — independently authenticated.
+   * On PRODUCTION: ignored — replaced by resolveTrustedIssuerAuthFromHost().
+   * On TEST_DEMO: may be supplied for isolated harnesses.
    * Certificate issuer.role / actorId strings alone never suffice.
    */
   trustedIssuerAuth?: TrustedIssuerAuthorizationContext | null;
   sharedCapacityId?: string | null;
   crossDocumentConstraints?: string[];
   /**
-   * Test/demo only. Never set by production Simulate / Position loaders.
-   * Propagates into resolveUtilization / computeVerifiedRemaining.
+   * TEST_DEMO only. Forced false on PRODUCTION surfaces — cannot authorize
+   * verifiedRemainingMillions on Simulate / Position / debt-intelligence paths.
    */
   allowSyntheticRemaining?: boolean;
+}
+
+/**
+ * Sanitize caller authority for the active surface.
+ * PRODUCTION: force allowSyntheticRemaining false; replace trustedIssuerAuth
+ * with host resolution (caller JSON never activates production remaining).
+ */
+export function sanitizeUtilizationAuthorityForSurface(
+  auth: CrossDomainUtilizationAuthority | null | undefined,
+  surface: CrossDomainAuthoritySurface,
+): {
+  auth: CrossDomainUtilizationAuthority | null;
+  surface: CrossDomainAuthoritySurface;
+  disclosures: string[];
+} {
+  if (auth == null) {
+    return { auth: null, surface, disclosures: [] };
+  }
+  if (surface === "TEST_DEMO") {
+    return {
+      auth,
+      surface,
+      disclosures: ["TEST_DEMO authority surface — not production-authoritative."],
+    };
+  }
+
+  const disclosures: string[] = [
+    "PRODUCTION authority surface — allowSyntheticRemaining forced false; trustedIssuerAuth from host only.",
+  ];
+  if (auth.allowSyntheticRemaining === true) {
+    disclosures.push(
+      "Caller allowSyntheticRemaining=true stripped at PRODUCTION boundary — cannot authorize verified remaining.",
+    );
+  }
+  if (auth.trustedIssuerAuth != null) {
+    disclosures.push(
+      "Caller-supplied trustedIssuerAuth ignored at PRODUCTION boundary — host-authenticated resolution required (request JSON refused).",
+    );
+  }
+  const host = resolveTrustedIssuerAuthFromHost();
+  if (host.blockers.length > 0) {
+    disclosures.push(...host.blockers);
+  }
+  return {
+    surface: "PRODUCTION",
+    disclosures,
+    auth: {
+      ...auth,
+      allowSyntheticRemaining: false,
+      trustedIssuerAuth: host.auth,
+    },
+  };
 }
 
 /**
@@ -484,12 +547,21 @@ export function resolveCanonicalVerifiedRemaining(params: {
   utilizationAuthority: CrossDomainUtilizationAuthority | null | undefined;
   /** Independently authenticated company-state / evaluation identity. */
   expectedIdentity?: UtilizationAuthorityExpectedIdentity | null;
+  /**
+   * Defaults to PRODUCTION. Pass TEST_DEMO only from isolated test harnesses.
+   */
+  authoritySurface?: CrossDomainAuthoritySurface;
   /** Shared-pool ids already used to publish remaining in this evaluation. */
   claimedSharedPools: Set<string>;
   sourceCitations?: string[];
 }): RemainingClaim {
   const modeled = params.modeledRemainingMillions;
-  const auth = params.utilizationAuthority;
+  const surface = params.authoritySurface ?? "PRODUCTION";
+  const sanitized = sanitizeUtilizationAuthorityForSurface(
+    params.utilizationAuthority,
+    surface,
+  );
+  const auth = sanitized.auth;
 
   if (!auth) {
     return refuseRemaining(
@@ -633,8 +705,15 @@ export function evaluateCrossDomainTransaction(params: {
    * When supplied and mismatched vs current data, ratio/debt domains invalidate.
    */
   expectedFinancialIdentity?: ApprovedFinancialIdentity | null;
+  /**
+   * Defaults to PRODUCTION. TEST_DEMO only for isolated test harnesses —
+   * never set by Simulate / Position / debt-intelligence loaders.
+   */
+  authoritySurface?: CrossDomainAuthoritySurface;
 }): CrossDomainTransactionEvaluation {
   const { data, transaction: tx } = params;
+  const authoritySurface: CrossDomainAuthoritySurface =
+    params.authoritySurface ?? "PRODUCTION";
   const assumptionBlock = refuseWithoutAssumptions(tx);
   const position = computeCovenantPosition(data);
   const asOf = tx.assumptions.evaluationDate;
@@ -657,11 +736,17 @@ export function evaluateCrossDomainTransaction(params: {
     ebitdaDerivation: params.ebitdaDerivation ?? null,
   });
 
+  const surfaceSanitize = sanitizeUtilizationAuthorityForSurface(
+    params.utilizationAuthority,
+    authoritySurface,
+  );
+
   const packageLimitations: string[] = [
     "Gross capacity is never described as verified available capacity.",
     "Modeled remaining is never relabeled as verified remaining.",
     "Caller-supplied utilizationAttributed / utilizationCompletenessCertified flags never authorize verified remaining.",
     "No contractual permissions or historical utilization are invented.",
+    ...surfaceSanitize.disclosures,
   ];
   if (assumptionBlock) packageLimitations.push(assumptionBlock);
   if (!financialIdentityValid) {
@@ -710,6 +795,7 @@ export function evaluateCrossDomainTransaction(params: {
       gateSatisfied: slice.gateSatisfied ?? slice.status !== "blocked",
       utilizationAuthority: params.utilizationAuthority,
       expectedIdentity,
+      authoritySurface,
       claimedSharedPools,
       sourceCitations: slice.citations,
     });
@@ -1004,6 +1090,7 @@ export function evaluateCrossDomainTransaction(params: {
     gateSatisfied: false,
     utilizationAuthority: params.utilizationAuthority,
     expectedIdentity,
+    authoritySurface,
     claimedSharedPools,
   });
   domains.push({
