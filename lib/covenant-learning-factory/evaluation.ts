@@ -110,6 +110,23 @@ export function evaluateCompileIndependently(args: {
     refused +
     result.units.filter((u) => u.supportStatus === "AMBIGUOUS" || u.supportStatus === "UNVERIFIED").length;
 
+  // High refusal with zero verified-executable is an explicit coverage gap, not silent success.
+  if (units >= 20 && verified === 0 && refused >= Math.floor(units * 0.8)) {
+    errors.push({
+      errorId: eid([runId, "COVERAGE_GAP", "high-refusal"]),
+      packageKey: spec.packageKey,
+      runId,
+      class: "COVERAGE_GAP",
+      severity: "MEDIUM",
+      message: `${refused}/${units} units refused executable with zero verified-executable — record for bounded compiler expansion (not auto-applied)`,
+      stage: "INDEPENDENT_EVAL",
+      evidence: { units, refused, verified, supported },
+      createdAt: now,
+      correctiveHistory: [],
+    });
+    notes.push("COVERAGE_GAP: high executable refusal; improvement proposal required");
+  }
+
   const evaluation: LearningEvaluationRecord = {
     evaluationId: eid([runId, "eval", spec.packageKey]),
     packageKey: spec.packageKey,

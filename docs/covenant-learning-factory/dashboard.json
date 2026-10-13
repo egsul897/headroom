@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "covenant-learning-factory.dashboard.v1",
+  "generatedAt": "2026-10-13T18:29:59.025Z",
+  "factoryVersion": "covenant-learning-factory.v1",
+  "neonLive": false,
+  "packages": {
+    "total": 4,
+    "trainDev": 3,
+    "heldOut": 1,
+    "processedOk": 4,
+    "failed": 0,
+    "unsupported": 0,
+    "abstained": 0
+  },
+  "coverage": {
+    "totalCandidates": 856,
+    "supportedStructureUnits": 0,
+    "verifiedExecutableUnits": 7,
+    "unsupportedUnits": 0,
+    "refusedExecutableUnits": 849
+  },
+  "correctness": {
+    "sourceFidelityPass": 2,
+    "sourceFidelityFail": 0,
+    "sourceFidelityUnknown": 2,
+    "dangerousOmissions": 0,
+    "abstentions": 849
+  },
+  "costs": {
+    "estimatedUsd": 0,
+    "wallMs": 62405
+  },
+  "errorLedger": [
+    {
+      "class": "COVERAGE_GAP",
+      "count": 2
+    }
+  ],
+  "recentPackages": [
+    {
+      "packageKey": "mhk-2026-credit-agreement",
+      "cohort": "HELD_OUT",
+      "status": "OK",
+      "verifiedExecutableUnits": 4,
+      "unsupportedUnits": 0,
+      "dangerousOmissions": 0
+    },
+    {
+      "packageKey": "mtn-2026-tenth-ar-credit-agreement",
+      "cohort": "TRAIN_DEV",
+      "status": "OK",
+      "verifiedExecutableUnits": 3,
+      "unsupportedUnits": 0,
+      "dangerousOmissions": 0
+    },
+    {
+      "packageKey": "gibraltar-2026-credit-agreement",
+      "cohort": "TRAIN_DEV",
+      "status": "OK",
+      "verifiedExecutableUnits": 0,
+      "unsupportedUnits": 0,
+      "dangerousOmissions": 0
+    },
+    {
+      "packageKey": "chwy-2026-credit-agreement",
+      "cohort": "TRAIN_DEV",
+      "status": "OK",
+      "verifiedExecutableUnits": 0,
+      "unsupportedUnits": 0,
+      "dangerousOmissions": 0
+    }
+  ],
+  "honesty": {
+    "trained": false,
+    "certified": false,
+    "generalized": false,
+    "productionReady": false,
+    "autoPromotedLegalAuthority": false
+  }
+}

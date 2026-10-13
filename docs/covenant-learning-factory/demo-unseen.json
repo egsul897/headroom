@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "covenant-learning-factory.demo-unseen.v1",
+  "generatedAt": "2026-10-13T18:29:59.029Z",
+  "packageKeys": [
+    "mtn-2026-tenth-ar-credit-agreement",
+    "mhk-2026-credit-agreement",
+    "gibraltar-2026-credit-agreement",
+    "chwy-2026-credit-agreement"
+  ],
+  "issuers": [
+    {
+      "packageKey": "mtn-2026-tenth-ar-credit-agreement",
+      "issuerCik": "0000812011",
+      "issuerTicker": "MTN",
+      "cohort": "TRAIN_DEV"
+    },
+    {
+      "packageKey": "mhk-2026-credit-agreement",
+      "issuerCik": "0000851968",
+      "issuerTicker": "MHK",
+      "cohort": "HELD_OUT"
+    },
+    {
+      "packageKey": "gibraltar-2026-credit-agreement",
+      "issuerCik": "0000912562",
+      "issuerTicker": "ROCK",
+      "cohort": "TRAIN_DEV"
+    },
+    {
+      "packageKey": "chwy-2026-credit-agreement",
+      "issuerCik": "0001766502",
+      "issuerTicker": "CHWY",
+      "cohort": "TRAIN_DEV"
+    }
+  ],
+  "results": [
+    {
+      "packageKey": "chwy-2026-credit-agreement",
+      "cohort": "TRAIN_DEV",
+      "status": "OK",
+      "compilerVersion": "offline-package-compile.v1",
+      "compileSummary": {
+        "nodeCount": 1210,
+        "definitionCount": 486,
+        "passACount": 601,
+        "totalCandidates": 165,
+        "exceptionCatalogCount": 3,
+        "supportedStructureUnits": 0,
+        "verifiedExecutableUnits": 0,
+        "unsupportedUnits": 0,
+        "refusedExecutableUnits": 165,
+        "authorityGate": "CONFIRMED_OPERATIVE_IDENTITY",
+        "paidInferenceUsed": false
+      },
+      "evaluation": {
+        "sourceFidelityPass": null,
+        "coverageScore": 0,
+        "dangerousOmissionCount": 0,
+        "abstentionCount": 165,
+        "verifiedExecutableUnits": 0,
+        "unsupportedUnits": 0
+      },
+      "errorClasses": [
+        "COVERAGE_GAP"
+      ],
+      "improvementProposals": 1,
+      "claims": {
+        "trained": false,
+        "certified": false,
+        "generalized": false,
+        "productionReady": false,
+        "autoPromotedLegalAuthority": false
+      }
+    },
+    {
+      "packageKey": "gibraltar-2026-credit-agreement",
+      "cohort": "TRAIN_DEV",
+      "status": "OK",
+      "compilerVersion": "offline-package-compile.v1",
+      "compileSummary": {
+        "nodeCount": 1519,
+        "definitionCount": 564,
+        "passACount": 697,
+        "totalCandidates": 205,
+        "exceptionCatalogCount": 2,
+        "supportedStructureUnits": 0,
+        "verifiedExecutableUnits": 0,
+        "unsupportedUnits": 0,
+        "refusedExecutableUnits": 205,
+        "authorityGate": "CONFIRMED_OPERATIVE_IDENTITY",
+        "paidInferenceUsed": false
+      },
+      "evaluation": {
+        "sourceFidelityPass": null,
+        "coverageScore": 0,
+        "dangerousOmissionCount": 0,
+        "abstentionCount": 205,
+        "verifiedExecutableUnits": 0,
+        "unsupportedUnits": 0
+      },
+      "errorClasses": [
+        "COVERAGE_GAP"
+      ],
+      "improvementProposals": 1,
+      "claims": {
+        "trained": false,
+        "certified": false,
+        "generalized": false,
+        "productionReady": false,
+        "autoPromotedLegalAuthority": false
+      }
+    },
+    {
+      "packageKey": "mhk-2026-credit-agreement",
+      "cohort": "HELD_OUT",
+      "status": "OK",
+      "compilerVersion": "offline-package-compile.v1",
+      "compileSummary": {
+        "nodeCount": 910,
+        "definitionCount": 368,
+        "passACount": 392,
+        "totalCandidates": 142,
+        "exceptionCatalogCount": 2,
+        "supportedStructureUnits": 0,
+        "verifiedExecutableUnits": 4,
+        "unsupportedUnits": 0,
+        "refusedExecutableUnits": 138,
+        "authorityGate": "CONFIRMED_OPERATIVE_IDENTITY",
+        "paidInferenceUsed": false
+      },
+      "evaluation": {
+        "sourceFidelityPass": true,
+        "coverageScore": 0.01020408163265306,
+        "dangerousOmissionCount": 0,
+        "abstentionCount": 138,
+        "verifiedExecutableUnits": 4,
+        "unsupportedUnits": 0
+      },
+      "errorClasses": [],
+      "improvementProposals": 0,
+      "claims": {
+        "trained": false,
+        "certified": false,
+        "generalized": false,
+        "productionReady": false,
+        "autoPromotedLegalAuthority": false
+      }
+    },
+    {
+      "packageKey": "mtn-2026-tenth-ar-credit-agreement",
+      "cohort": "TRAIN_DEV",
+      "status": "OK",
+      "compilerVersion": "offline-package-compile.v1",
+      "compileSummary": {
+        "nodeCount": 1976,
+        "definitionCount": 251,
+        "passACount": 951,
+        "totalCandidates": 344,
+        "exceptionCatalogCount": 2,
+        "supportedStructureUnits": 0,
+        "verifiedExecutableUnits": 3,
+        "unsupportedUnits": 0,
+        "refusedExecutableUnits": 341,
+        "authorityGate": "CONFIRMED_OPERATIVE_IDENTITY",
+        "paidInferenceUsed": false
+      },
+      "evaluation": {
+        "sourceFidelityPass": true,
+        "coverageScore": 0.0031545741324921135,
+        "dangerousOmissionCount": 0,
+        "abstentionCount": 341,
+        "verifiedExecutableUnits": 3,
+        "unsupportedUnits": 0
+      },
+      "errorClasses": [],
+      "improvementProposals": 0,
+      "claims": {
+        "trained": false,
+        "certified": false,
+        "generalized": false,
+        "productionReady": false,
+        "autoPromotedLegalAuthority": false
+      }
+    }
+  ],
+  "sameCanonicalCompiler": true,
+  "paidInferenceUsed": false,
+  "honesty": {
+    "trained": false,
+    "certified": false,
+    "generalized": false,
+    "productionReady": false,
+    "note": "Precedent processing ≠ training/certification/production authority"
+  }
+}
