@@ -1,8 +1,10 @@
 /**
  * Canonical Simulate bridge for cross-domain package evaluation.
  *
- * Uses the same CompanyCovenantData loader path as Position (caller supplies
- * loadCovenantDataOrEmpty result). Does not invent VEP / production authority.
+ * PRODUCTION surface only — allowSyntheticRemaining is forced false and
+ * caller-supplied trustedIssuerAuth JSON is ignored (host resolution only).
+ * Uses the same CompanyCovenantData loader path as Position. Does not invent
+ * VEP / production remaining authority.
  */
 
 import type { CompanyCovenantData } from "@/lib/covenant-engine";
@@ -83,5 +85,7 @@ export function evaluateSimulateCrossDomainAcquisition(params: {
     ebitdaDerivation: attachEbitdaDerivation(params.data),
     utilizationAuthority: params.utilizationAuthority ?? null,
     expectedFinancialIdentity: expected,
+    // Production Simulate boundary — never TEST_DEMO.
+    authoritySurface: "PRODUCTION",
   });
 }

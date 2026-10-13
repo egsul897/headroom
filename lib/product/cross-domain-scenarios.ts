@@ -300,6 +300,7 @@ export function defaultCrossDomainScenarioTemplates(evaluationDate: string): Con
   ];
 }
 
+/** Production debt-intelligence / product surface — never TEST_DEMO. */
 export function evaluateDefaultCrossDomainScenarios(params: {
   data: CompanyCovenantData;
   evaluationDate: string;
@@ -310,6 +311,7 @@ export function evaluateDefaultCrossDomainScenarios(params: {
       data: params.data,
       transaction: tx,
       ebitdaDerivation: params.ebitdaDerivation ?? null,
+      authoritySurface: "PRODUCTION",
     }),
   );
 }
