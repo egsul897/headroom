@@ -17,6 +17,10 @@ import {
   type RuntimeValue,
 } from "@/lib/contract-model/north-star-bridge";
 import { loadTransactionWorkflowReadiness } from "@/lib/product/north-star-workflow/transaction-readiness";
+import {
+  computeNs4ContractualNetLeverage,
+  type Ns4LeverageIrTrace,
+} from "@/lib/dashboard/ns4-leverage-ir";
 
 export type Ns4DashboardFinancialStatus =
   | "NEEDS_INPUT"
@@ -63,6 +67,11 @@ export interface Ns4DashboardFinancialState {
   missingInputs: string[];
   evidence: string[];
   legacyNote: string;
+  /**
+   * Phase 4A IR-computed Total Net Leverage from bound MONEY facts.
+   * Absent computation when not APPROVED_BOUND / missing components.
+   */
+  leverageIr: Ns4LeverageIrTrace;
 }
 
 function formatRuntimeValue(value: RuntimeValue): string {
@@ -124,11 +133,14 @@ export async function loadNs4DashboardFinancialState(args: {
   selector?: NamedContractualSelector;
 }): Promise<Ns4DashboardFinancialState> {
   const companyId = args.companyId;
+  // Prefer delivered-certificate cutoff: issuer fiscal labels (e.g. Matthews FY2025-Q1
+  // ending 2024-12-31) often disagree with a calendar MOST_RECENTLY_ENDED_FISCAL_QUARTER
+  // period key. Delivery evidence is built from APPROVED snapshot rows.
   const [approved, readiness] = await Promise.all([
     loadApprovedSnapshotsFromPrisma(prisma, companyId),
     loadTransactionWorkflowReadiness(companyId, {
       evaluationDate: args.evaluationDate,
-      selector: args.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+      selector: args.selector ?? "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
     }),
   ]);
 
@@ -168,6 +180,7 @@ export async function loadNs4DashboardFinancialState(args: {
       missingInputs,
       evidence,
       legacyNote,
+      leverageIr: computeNs4ContractualNetLeverage({ companyId, boundSnapshot: null }),
     };
   }
 
@@ -180,9 +193,15 @@ export async function loadNs4DashboardFinancialState(args: {
 
   if (bound) {
     const facts = factsFromSnapshot(bound);
+    const leverageIr = computeNs4ContractualNetLeverage({ companyId, boundSnapshot: bound });
     evidence.push(
       `Cutoff-bound snapshot ${bound.snapshotId} (${bound.reportingPeriod ?? "no-period"} asOf ${bound.asOf ?? "—"}) with ${facts.length} fact(s).`,
     );
+    evidence.push(...leverageIr.evidence);
+    const mergedMissing = [
+      ...missingInputs.filter((m) => m !== "APPROVED_NorthStar_snapshot" && m !== "contractual_cutoff"),
+      ...leverageIr.missingInputs,
+    ];
     return {
       companyId,
       status: "APPROVED_BOUND",
@@ -200,9 +219,10 @@ export async function loadNs4DashboardFinancialState(args: {
         facts,
       },
       inventory,
-      missingInputs: missingInputs.filter((m) => m !== "APPROVED_NorthStar_snapshot" && m !== "contractual_cutoff"),
+      missingInputs: [...new Set(mergedMissing)],
       evidence,
       legacyNote,
+      leverageIr,
     };
   }
 
@@ -222,5 +242,6 @@ export async function loadNs4DashboardFinancialState(args: {
     missingInputs,
     evidence,
     legacyNote,
+    leverageIr: computeNs4ContractualNetLeverage({ companyId, boundSnapshot: null }),
   };
 }

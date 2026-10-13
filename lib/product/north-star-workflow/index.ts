@@ -31,6 +31,20 @@ export {
   type Ns4DashboardFact,
 } from "@/lib/dashboard/ns4-financial-panel";
 export {
+  computeNs4ContractualNetLeverage,
+  type Ns4LeverageIrTrace,
+  type Ns4LeverageIrStatus,
+} from "@/lib/dashboard/ns4-leverage-ir";
+export {
+  proposeCertificateTextForCompany,
+  proposeAuthenticCertificateFixtureForCompany,
+  approveFceProposedCertificate,
+  MATTHEWS_FIXTURE_AUTHORITY,
+  COHERENT_FIXTURE_AUTHORITY,
+  type CertificateFixtureIssuer,
+  type ProposeCertificateTextResult,
+} from "./fce-certificate-actions";
+export {
   parseTransactionDraft,
   analyzeContemplatedTransaction,
   type TransactionDraft,
