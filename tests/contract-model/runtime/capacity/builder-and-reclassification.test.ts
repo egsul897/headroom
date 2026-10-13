@@ -16,7 +16,8 @@ beforeEach(resetIds);
 const build = (rules: ReturnType<typeof rule>[], facts: ReturnType<typeof fact>[] = [], ledger: ReturnType<typeof usage>[] = []) => {
   const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
   const inputs = facts.length ? resolver(facts) : EMPTY_RESOLVER;
-  return { graph, rules, inputs, ledger, state: evaluateCapacityState({ graph, rules, inputs, ledger, asOf: AS_OF }) };
+  return { graph, rules, inputs, ledger, state: evaluateCapacityState({ graph, rules, inputs, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", }) };
 };
 const one = (s: ReturnType<typeof build>["state"]) => s.capacities[0]!;
 
@@ -64,7 +65,8 @@ describe("builder and grower matrix (§9, §37)", () => {
     const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
     const mk = (id: string, amount: string) => ({ snapshotId: id, version: "1", companyId: CO, asOf: AS_OF, reportingPeriod: "p", status: "APPROVED" as const, supersedesSnapshotId: null, provenance: { source: "s", sourceVersion: null }, review: { reviewedBy: null, reviewedAt: null, approvalRef: null }, inputs: [fact("metric-alpha", amount)] });
     const inputs = snapshotInputResolver({ snapshots: [mk("s1", "5"), mk("s2", "9")], companyId: CO, instrumentKey: INST });
-    const state = evaluateCapacityState({ graph, rules, inputs, asOf: AS_OF });
+    const state = evaluateCapacityState({ graph, rules, inputs, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     expect(state.capacities[0]!.status).toBe("AMBIGUOUS");
   });
 
@@ -86,7 +88,8 @@ describe("reclassification matrix (§39)", () => {
   });
   const apply = (rules: ReturnType<typeof rule>[], ledger: ReturnType<typeof usage>[], elections: ReclassificationElection[]) => {
     const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-    const before = evaluateCapacityState({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF });
+    const before = evaluateCapacityState({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     return applyCapacityStateTransition({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF, before, elections });
   };
 

@@ -129,19 +129,24 @@ export function buildPositionView(args: {
     const sim = dashboard?.capacity[side];
     const remainingAmount = sim?.remainingCapacity;
     const packageAuth = sim?.packageAuthoritative;
-    // Dashboard utilizationRemainingAuthority alone must NEVER publish AVAILABLE.
+    // #328: dashboard utilizationRemainingAuthority alone must NEVER publish AVAILABLE.
     // Authoritative remaining requires a real ProductCapacityView / separatedClaims path.
+    // PAI-08: non-authoritative modeled dollars are GROSS_CONTRACTUAL, never claimKind REMAINING.
     const separated = args.separatedClaims?.[side];
     const productionAuthoritative = separated?.remainingAuthoritative === true;
+    const claimKind =
+      productionAuthoritative
+        ? "REMAINING"
+        : remainingAmount === undefined
+          ? "UNAVAILABLE"
+          : "GROSS_CONTRACTUAL";
     const remaining = presentCapacityClaim({
-      claimKind: remainingAmount === undefined && !productionAuthoritative ? "UNAVAILABLE" : "REMAINING",
+      claimKind,
       amountMillions: productionAuthoritative
         ? separated!.verifiedRemaining.amountMillions
         : remainingAmount ?? null,
       remainingIsAuthoritative: productionAuthoritative,
-      publicationLabel: productionAuthoritative
-        ? "AVAILABLE"
-        : packageAuth?.label ?? readiness.capacityAuthority ?? "NOT_PRODUCTION_AUTHORITATIVE",
+      publicationLabel: productionAuthoritative ? "AVAILABLE" : "GROSS_CONTRACTUAL",
       unavailableReason:
         remainingAmount === undefined && !productionAuthoritative
           ? "Remaining capacity not determinable from the shared engine for this side."

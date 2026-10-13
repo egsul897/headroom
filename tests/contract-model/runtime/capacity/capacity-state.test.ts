@@ -5,19 +5,38 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { buildCapacityGraph, evaluateCapacityState } from "@/lib/contract-model/runtime/capacity";
 import { EMPTY_RESOLVER } from "@/lib/contract-model/runtime/input-resolver";
-import { AS_OF, CO, INST, MAX, METRIC, MONEY, MUL, PCT, RATIO, CMP, UNLIMITED, UNSUPPORTED, amountString, fact, onRule, resetIds, resolver, rule, usage } from "./helpers";
+import { AS_OF, CO, INST, MAX, METRIC, MONEY, MUL, PCT, RATIO, CMP, UNLIMITED, UNSUPPORTED, VERIFIED_EMPTY, amountString, fact, onRule, resetIds, resolver, rule, usage } from "./helpers";
 
 beforeEach(resetIds);
 
-const stateFor = (rules: ReturnType<typeof rule>[], opts: { facts?: ReturnType<typeof fact>[]; ledger?: ReturnType<typeof usage>[]; inputs?: unknown } = {}) => {
+const stateFor = (
+  rules: ReturnType<typeof rule>[],
+  opts: {
+    facts?: ReturnType<typeof fact>[];
+    ledger?: ReturnType<typeof usage>[];
+    inputs?: unknown;
+    /** Default VERIFIED_EMPTY for arithmetic fixtures; pass UNKNOWN for PAI-04. */
+    utilizationCompleteness?: "UNKNOWN" | "VERIFIED_EMPTY";
+  } = {},
+) => {
   const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
   const inputs = (opts.inputs as never) ?? (opts.facts ? resolver(opts.facts) : EMPTY_RESOLVER);
-  return { graph, state: evaluateCapacityState({ graph, rules, inputs, ledger: opts.ledger ?? [], asOf: AS_OF }) };
+  return {
+    graph,
+    state: evaluateCapacityState({
+      graph,
+      rules,
+      inputs,
+      ledger: opts.ledger ?? [],
+      asOf: AS_OF,
+      utilizationCompleteness: opts.utilizationCompleteness ?? VERIFIED_EMPTY,
+    }),
+  };
 };
 const one = (s: ReturnType<typeof stateFor>["state"]) => s.capacities[0]!;
 
 describe("gross capacity comes from the Phase-4A evaluator, never a second implementation", () => {
-  it("a flat basket is available at its contractual amount with no usage recorded", () => {
+  it("a flat basket is available at its contractual amount when utilization is VERIFIED_EMPTY", () => {
     const { state } = stateFor([rule("rule-flat", MONEY(100_000_000))]);
     const c = one(state);
     expect(c.status).toBe("AVAILABLE");
@@ -25,6 +44,18 @@ describe("gross capacity comes from the Phase-4A evaluator, never a second imple
     expect(c.usage.kind).toBe("NOT_DETERMINED");
     expect(amountString(c.remaining)).toBe("100000000");
     expect(amountString(c.effectiveRemaining)).toBe("100000000");
+  });
+
+  it("PAI-04: UNKNOWN utilization withholds remaining and floors status away from AVAILABLE", () => {
+    const { state } = stateFor([rule("rule-flat", MONEY(100_000_000))], { utilizationCompleteness: "UNKNOWN" });
+    const c = one(state);
+    expect(c.status).not.toBe("AVAILABLE");
+    const gross =
+      amountString(c.grossCapacity) ??
+      (c.provisional ? amountString(c.provisional.grossCapacity) : null);
+    expect(gross).toBe("100000000");
+    expect(c.usage.kind).toBe("NOT_DETERMINED");
+    expect(amountString(c.remaining)).toBeNull();
   });
 
   it("a percentage of a supplied metric evaluates exactly", () => {

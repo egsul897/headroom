@@ -62,8 +62,9 @@ const definitions = frozen.definitions.map(retarget);
 const sharedCapacities = (frozen.sharedCapacities ?? []).map(retarget);
 const graph = buildCapacityGraph({ rules, definitions, sharedCapacities, companyId: CO, instrumentKey: INST, asOf: AS_OF });
 const inputs = snapshotInputResolver({ snapshots: [snapshotFromManifest(graph.dependencyManifest.dependencies)], definitions, rules, companyId: CO, instrumentKey: INST });
-const state = evaluateCapacityState({ graph, rules, definitions, sharedCapacities, inputs, ledger: [], asOf: AS_OF });
-const context = { rules, definitions, sharedCapacities, ledger: [], asOf: AS_OF };
+const state = evaluateCapacityState({ graph, rules, definitions, sharedCapacities, inputs, ledger: [], asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
+const context = { rules, definitions, sharedCapacities, ledger: [], asOf: AS_OF, utilizationCompleteness: "VERIFIED_EMPTY" as const };
 
 const run = (transaction: HypotheticalTransaction, selectedPath: SelectedPath) =>
   simulateTransaction({ transaction, currentState: state, capacityGraph: graph, selectedPath, inputs, context });

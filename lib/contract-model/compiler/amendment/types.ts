@@ -293,9 +293,11 @@ export interface OperativeContractState {
    * cannot answer even when it is non-empty (provisions are per-section/
    * per-definition; a full restatement's own effect is DOCUMENT-kind and
    * never attaches to a ProvisionGroup - see chain.ts's own
-   * provisionKeyFor). Derived exclusively from resolved RESTATE_AGREEMENT
-   * effects via computeOperativeDocument (chain.ts) - never a second,
-   * independent source of truth. Undefined only for a hand-built
+   * provisionKeyFor). Derived exclusively from RESOLVED RESTATE_AGREEMENT
+   * effects via computeOperativeDocument (chain.ts), filtered by as-of —
+   * never a second, independent source of truth. REVIEW_REQUIRED /
+   * non-RESOLVED restatement edges force operativeDocument.status =
+   * REVIEW_REQUIRED (never a confident tip). Undefined only for a hand-built
    * OperativeContractState fixture that predates this remediation;
    * present (status NOT_APPLICABLE when this instrument never had any
    * restatement activity at all) on every real computeOperativeContractState

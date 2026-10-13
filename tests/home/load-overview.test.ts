@@ -1,6 +1,7 @@
 /**
  * Overview loader wiring — fail-closed when engine path unavailable;
  * populates figure/ledger slots only through invent-absence constructors.
+ * PAI-05: non-authoritative remaining never publishes as headroom.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -9,6 +10,8 @@ const mocks = vi.hoisted(() => ({
   getCompanyDashboard: vi.fn(),
   getCovenantOverview: vi.fn(),
   loadCapacityReadiness: vi.fn(),
+  loadMonitoringFeed: vi.fn(),
+  getCompanySetupStatus: vi.fn(),
   ledgerFindMany: vi.fn(),
   facilityFindMany: vi.fn(),
 }));
@@ -24,6 +27,15 @@ vi.mock("@/lib/covenant-overview-service", () => ({
 
 vi.mock("@/lib/product/customer-intelligence/capacity-readiness", () => ({
   loadCapacityReadiness: mocks.loadCapacityReadiness,
+}));
+
+vi.mock("@/lib/product/customer-intelligence/monitoring", () => ({
+  loadMonitoringFeed: mocks.loadMonitoringFeed,
+}));
+
+vi.mock("@/lib/onboarding/setup-status", () => ({
+  getCompanySetupStatus: mocks.getCompanySetupStatus,
+  nextSetupStep: () => null,
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -43,6 +55,13 @@ describe("loadCompanyOverview", () => {
     mocks.ledgerFindMany.mockResolvedValue([]);
     mocks.facilityFindMany.mockResolvedValue([]);
     mocks.getCovenantOverview.mockRejectedValue(new Error("no overview in unit fixture"));
+    mocks.loadMonitoringFeed.mockResolvedValue({
+      companyId: "co-1",
+      generatedAt: "2025-06-30T00:00:00Z",
+      alerts: [],
+      note: "fixture",
+    });
+    mocks.getCompanySetupStatus.mockResolvedValue(null);
     mocks.loadCapacityReadiness.mockResolvedValue({
       canEvaluateExecutableCapacity: false,
       headline: "Discovery only — no figures.",
@@ -58,7 +77,7 @@ describe("loadCompanyOverview", () => {
     expect(mocks.getCompanyDashboard).not.toHaveBeenCalled();
   });
 
-  it("populates headroom from engine when readiness allows and remaining > 0", async () => {
+  it("PAI-05: withholds headroom when utilization remaining is not production-authoritative", async () => {
     mocks.loadCapacityReadiness.mockResolvedValue({
       canEvaluateExecutableCapacity: true,
       headline: "Executable path available.",
@@ -69,6 +88,7 @@ describe("loadCompanyOverview", () => {
       capacity: {
         secured: {
           remainingCapacity: 84,
+          utilizationRemainingAuthority: "NOT_PRODUCTION_AUTHORITATIVE",
           perDocument: [
             {
               documentId: "d1",
@@ -78,7 +98,11 @@ describe("loadCompanyOverview", () => {
             },
           ],
         },
-        unsecured: { remainingCapacity: 84, perDocument: [] },
+        unsecured: {
+          remainingCapacity: 84,
+          utilizationRemainingAuthority: "NOT_PRODUCTION_AUTHORITATIVE",
+          perDocument: [],
+        },
       },
       financialPosition: {
         capitalStructure: { grossDebt: 750 },
@@ -101,15 +125,62 @@ describe("loadCompanyOverview", () => {
 
     const bundle = await loadCompanyOverview("co-1");
     const headroom = presentFigure(bundle.load.totalHeadroom, "totalHeadroom");
-    expect(headroom.kind).toBe("VERIFIED_POPULATED");
-    if (headroom.kind === "VERIFIED_POPULATED") {
-      expect(headroom.display).toBe("$84M");
-    }
+    expect(headroom.kind).toBe("UNKNOWN");
     const util = presentFigure(bundle.load.utilization, "utilization");
     expect(util.kind).toBe("VERIFIED_POPULATED");
     const tx = presentTransactions(bundle.load.transactions);
     expect(tx.kind).toBe("VERIFIED_POPULATED");
     expect(bundle.load.statusTable.kind).toBe("VERIFIED_POPULATED");
+    // Gross modeled amounts must not be labeled as healthy remaining headroom.
+    const statusRows =
+      bundle.load.statusTable.kind === "VERIFIED_POPULATED" ? bundle.load.statusTable.rows : [];
+    expect(statusRows.some((r) => r.status === "Healthy")).toBe(false);
+    expect(statusRows.some((r) => String(r.headroom).includes("gross") || r.headroom === "—")).toBe(true);
+  });
+
+  it("publishes headroom only when utilization remaining authority is PRODUCTION_AUTHORITATIVE", async () => {
+    mocks.loadCapacityReadiness.mockResolvedValue({
+      canEvaluateExecutableCapacity: true,
+      headline: "Executable path available.",
+      guidance: "engine-backed",
+    });
+    mocks.getCompanyDashboard.mockResolvedValue({
+      asOfDate: new Date("2025-06-30T00:00:00Z"),
+      capacity: {
+        secured: {
+          remainingCapacity: 84,
+          utilizationRemainingAuthority: "PRODUCTION_AUTHORITATIVE",
+          perDocument: [
+            {
+              documentId: "d1",
+              documentName: "Credit Agreement",
+              method: "SOLVER_NATIVE_RECOMPUTED",
+              remainingCapacity: 84,
+            },
+          ],
+        },
+        unsecured: {
+          remainingCapacity: 84,
+          utilizationRemainingAuthority: "PRODUCTION_AUTHORITATIVE",
+          perDocument: [],
+        },
+      },
+      financialPosition: {
+        capitalStructure: { grossDebt: 750 },
+        metrics: { genericNetLeverage: { value: 2.1, status: "AVAILABLE" } },
+      },
+    });
+    mocks.facilityFindMany.mockResolvedValue([
+      { name: "Revolver", commitmentAmount: 600, originalPrincipal: 600 },
+    ]);
+    mocks.ledgerFindMany.mockResolvedValue([]);
+
+    const bundle = await loadCompanyOverview("co-1");
+    const headroom = presentFigure(bundle.load.totalHeadroom, "totalHeadroom");
+    expect(headroom.kind).toBe("VERIFIED_POPULATED");
+    if (headroom.kind === "VERIFIED_POPULATED") {
+      expect(headroom.display).toBe("$84M");
+    }
   });
 
   it("refuses invented zero headroom when engine returns undefined remaining", async () => {
@@ -121,8 +192,16 @@ describe("loadCompanyOverview", () => {
     mocks.getCompanyDashboard.mockResolvedValue({
       asOfDate: new Date("2025-06-30T00:00:00Z"),
       capacity: {
-        secured: { remainingCapacity: undefined, perDocument: [] },
-        unsecured: { remainingCapacity: undefined, perDocument: [] },
+        secured: {
+          remainingCapacity: undefined,
+          utilizationRemainingAuthority: "PRODUCTION_AUTHORITATIVE",
+          perDocument: [],
+        },
+        unsecured: {
+          remainingCapacity: undefined,
+          utilizationRemainingAuthority: "PRODUCTION_AUTHORITATIVE",
+          perDocument: [],
+        },
       },
       financialPosition: {
         capitalStructure: { grossDebt: 0 },

@@ -208,8 +208,16 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
       getCovenantOverview(companyId).catch(() => null),
     ]);
 
-    const securedRem = covenantOverview?.securedCapacity.remainingCapacity ?? dashboard.capacity.secured.remainingCapacity;
-    const unsecuredRem = covenantOverview?.unsecuredCapacity.remainingCapacity ?? dashboard.capacity.unsecured.remainingCapacity;
+    // PAI-05: never publish gross modeled capacity as "headroom" / remaining without
+    // production-authoritative utilization. Live dashboard stamps NOT_PRODUCTION_AUTHORITATIVE.
+    const securedAuth = dashboard.capacity.secured.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
+    const unsecuredAuth = dashboard.capacity.unsecured.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
+    const securedRem = securedAuth
+      ? (covenantOverview?.securedCapacity.remainingCapacity ?? dashboard.capacity.secured.remainingCapacity)
+      : undefined;
+    const unsecuredRem = unsecuredAuth
+      ? (covenantOverview?.unsecuredCapacity.remainingCapacity ?? dashboard.capacity.unsecured.remainingCapacity)
+      : undefined;
     const headroom = primaryHeadroomDisplay(securedRem, unsecuredRem);
     load.totalHeadroom = headroom
       ? totalHeadroomStateFromQuery({ outcome: "populated", display: headroom })
@@ -248,21 +256,31 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
     const rows: StatusRow[] = covenantOverview ? statusRowsFromOverview(covenantOverview) : [];
     if (rows.length === 0) {
       // Fallback: per-document secured capacity (prior wiring).
+      // PAI-05: without production-authoritative utilization, show gross as modeled — never "Healthy" headroom.
+      const securedAuthoritative =
+        dashboard.capacity.secured.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
       for (const doc of dashboard.capacity.secured.perDocument) {
         const rem = doc.remainingCapacity;
         let status: string;
-        if (rem === undefined) {
+        let headroomCell: string;
+        if (!securedAuthoritative) {
+          status = rem !== undefined ? "Gross (not verified remaining)" : doc.method === "NOT_DETERMINABLE" ? "Not determinable" : "Needs review";
+          headroomCell = rem !== undefined && rem > 0 ? `${fmtM(rem)} gross` : "—";
+        } else if (rem === undefined) {
           status = doc.method === "NOT_DETERMINABLE" ? "Not determinable" : "Needs review";
+          headroomCell = "—";
         } else if (rem > 0) {
           status = "Healthy";
+          headroomCell = fmtM(rem);
         } else {
           status = "At Risk";
+          headroomCell = "—";
         }
         rows.push({
           covenant: `${doc.documentName} (secured debt capacity)`,
           facility: doc.documentName,
           status,
-          headroom: rem !== undefined && rem > 0 ? fmtM(rem) : "—",
+          headroom: headroomCell,
           trend: "—",
           nextTest: "—",
         });

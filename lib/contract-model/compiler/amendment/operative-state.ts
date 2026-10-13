@@ -664,7 +664,12 @@ export function computeOperativeContractState(input: OperativeStateInput): Opera
   // instrument's own document set at the call site (runAmendmentPipeline
   // is only ever given this instrument's own documents), so no additional
   // filtering is needed or correct here.
-  const operativeDocument = computeOperativeDocument(input.baseDocumentId, input.allEffects, input.unresolvedTargetEffectsForThisInstrument ?? []);
+  const operativeDocument = computeOperativeDocument(
+    input.baseDocumentId,
+    input.allEffects,
+    input.unresolvedTargetEffectsForThisInstrument ?? [],
+    { asOfDate: input.asOfDate },
+  );
 
   return { instrumentKey: input.instrumentKey, asOfDate: input.asOfDate, provisions, status, summary, unattachedEffects, operativeDocument };
 }
