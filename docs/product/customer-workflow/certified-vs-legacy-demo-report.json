@@ -2,7 +2,7 @@
   "schema": "product.certified-vs-legacy-demo.v1",
   "label": "SYNTHETIC",
   "irLabel": "FIXTURE_IR",
-  "generatedAt": "2026-10-10T00:10:05.502Z",
+  "generatedAt": "2026-10-13T06:02:41.691Z",
   "companyId": "synthetic-conmed-form-co",
   "instrumentKey": "synthetic-term-loan-a",
   "note": "SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Legacy multipath remains LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E. This report does NOT certify Phase 3 customer IR.",
@@ -45,9 +45,9 @@
         "capacities": [
           {
             "ruleId": "rule:synth-7.01(b)",
-            "status": "AVAILABLE",
-            "grossUsd": 50000000,
-            "remainingUsd": 50000000,
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": null
           },
           {
@@ -59,9 +59,9 @@
           },
           {
             "ruleId": "rule:synth-7.02(a)",
-            "status": "AVAILABLE",
-            "grossUsd": 50000000,
-            "remainingUsd": 50000000,
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": null
           }
         ],
@@ -73,16 +73,16 @@
           "pathOrRule": "7.01(b):GENERAL_DEBT",
           "field": "remainingCapacity",
           "legacyValue": 84,
-          "certifiedValue": 50000000,
-          "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
         },
         {
           "exerciseId": "secured-borrowing-100m",
           "pathOrRule": "7.02(a):GENERAL_LIEN",
           "field": "remainingCapacity",
           "legacyValue": 84,
-          "certifiedValue": 50000000,
-          "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
         },
         {
           "exerciseId": "secured-borrowing-100m",
@@ -141,9 +141,9 @@
           },
           {
             "ruleId": "rule:synth-7.06(b)",
-            "status": "AVAILABLE",
-            "grossUsd": 40000000,
-            "remainingUsd": 40000000,
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": null
           }
         ],
@@ -226,29 +226,45 @@
         "capacities": [
           {
             "ruleId": "rule:synth-7.01(b)-acq",
-            "status": "AVAILABLE",
-            "grossUsd": 50000000,
-            "remainingUsd": 50000000,
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": null
           },
           {
             "ruleId": "rule:synth-7.01(d)",
-            "status": "AVAILABLE",
-            "grossUsd": 100000000,
-            "remainingUsd": 100000000,
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": null
           },
           {
             "ruleId": "rule:synth-7.08(a)",
-            "status": "AVAILABLE",
-            "grossUsd": 50000000,
-            "remainingUsd": 50000000,
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": null
           }
         ],
         "coverageComplete": true
       },
       "discrepancies": [
+        {
+          "exerciseId": "acquisition-financing-150m",
+          "pathOrRule": "7.01(d):ACQUISITION_DEBT",
+          "field": "remainingCapacity",
+          "legacyValue": 100,
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+        },
+        {
+          "exerciseId": "acquisition-financing-150m",
+          "pathOrRule": "7.08(a):FIXED_INVESTMENT",
+          "field": "remainingCapacity",
+          "legacyValue": 50,
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+        },
         {
           "exerciseId": "acquisition-financing-150m",
           "pathOrRule": "7.02(a):GENERAL_LIEN",
@@ -316,9 +332,9 @@
         "capacities": [
           {
             "ruleId": "rule:synth-stress-7.01(b)",
-            "status": "AVAILABLE",
-            "grossUsd": 50000000,
-            "remainingUsd": 50000000,
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": null
           },
           {
@@ -337,8 +353,8 @@
           "pathOrRule": "7.01(b):GENERAL_DEBT",
           "field": "remainingCapacity",
           "legacyValue": 84,
-          "certifiedValue": 50000000,
-          "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
         },
         {
           "exerciseId": "ebitda-decline",
@@ -412,15 +428,23 @@
         "capacities": [
           {
             "ruleId": "rule:synth-amended-7.01(b)",
-            "status": "AVAILABLE",
-            "grossUsd": 120000000,
-            "remainingUsd": 120000000,
+            "status": "REVIEW_REQUIRED",
+            "grossUsd": null,
+            "remainingUsd": null,
             "usageUsd": null
           }
         ],
         "coverageComplete": true
       },
       "discrepancies": [
+        {
+          "exerciseId": "amendment-basket-capacity",
+          "pathOrRule": "7.01(b):GENERAL_DEBT",
+          "field": "remainingCapacity",
+          "legacyValue": 120,
+          "certifiedValue": null,
+          "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+        },
         {
           "exerciseId": "amendment-basket-capacity",
           "pathOrRule": "7.02(a):GENERAL_LIEN",
@@ -592,16 +616,16 @@
       "pathOrRule": "7.01(b):GENERAL_DEBT",
       "field": "remainingCapacity",
       "legacyValue": 84,
-      "certifiedValue": 50000000,
-      "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
     },
     {
       "exerciseId": "secured-borrowing-100m",
       "pathOrRule": "7.02(a):GENERAL_LIEN",
       "field": "remainingCapacity",
       "legacyValue": 84,
-      "certifiedValue": 50000000,
-      "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
     },
     {
       "exerciseId": "secured-borrowing-100m",
@@ -637,6 +661,22 @@
     },
     {
       "exerciseId": "acquisition-financing-150m",
+      "pathOrRule": "7.01(d):ACQUISITION_DEBT",
+      "field": "remainingCapacity",
+      "legacyValue": 100,
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+    },
+    {
+      "exerciseId": "acquisition-financing-150m",
+      "pathOrRule": "7.08(a):FIXED_INVESTMENT",
+      "field": "remainingCapacity",
+      "legacyValue": 50,
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
+    },
+    {
+      "exerciseId": "acquisition-financing-150m",
       "pathOrRule": "7.02(a):GENERAL_LIEN",
       "field": "remainingCapacity",
       "legacyValue": 84,
@@ -656,8 +696,8 @@
       "pathOrRule": "7.01(b):GENERAL_DEBT",
       "field": "remainingCapacity",
       "legacyValue": 84,
-      "certifiedValue": 50000000,
-      "note": "Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)"
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
     },
     {
       "exerciseId": "ebitda-decline",
@@ -682,6 +722,14 @@
       "legacyValue": "LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E",
       "certifiedValue": "FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)",
       "note": "Authority surfaces differ by design — legacy must not be presented as certified Phase 4E"
+    },
+    {
+      "exerciseId": "amendment-basket-capacity",
+      "pathOrRule": "7.01(b):GENERAL_DEBT",
+      "field": "remainingCapacity",
+      "legacyValue": 120,
+      "certifiedValue": null,
+      "note": "Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)"
     },
     {
       "exerciseId": "amendment-basket-capacity",
@@ -742,7 +790,7 @@
   ],
   "summary": {
     "exerciseCount": 7,
-    "discrepancyCount": 19,
+    "discrepancyCount": 22,
     "verifiedExecutionRan": 6,
     "verifiedExecutionBlocked": 1,
     "legacyAlwaysNotCertified4E": true

@@ -331,6 +331,54 @@ export class PrismaApprovedSnapshotStore {
   }
 }
 
+function materializeSnapshotRow(row: {
+  snapshotId: string;
+  version: string;
+  companyId: string;
+  asOf: string | null;
+  reportingPeriod: string | null;
+  status: string;
+  supersedesSnapshotId: string | null;
+  provenanceJson: unknown;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
+  approvalRef: string | null;
+  facts: Array<{
+    identityJson: unknown;
+    valueJson: unknown;
+    displayName: string | null;
+    sourceVersion: string | null;
+    overridesDefinitionId: string | null;
+    note: string | null;
+  }>;
+}): FinancialSnapshot {
+  return {
+    snapshotId: row.snapshotId,
+    version: row.version,
+    companyId: row.companyId,
+    asOf: row.asOf,
+    reportingPeriod: row.reportingPeriod,
+    status: row.status as FinancialSnapshot["status"],
+    supersedesSnapshotId: row.supersedesSnapshotId,
+    inputs: row.facts.map(
+      (f): FinancialInput => ({
+        identity: f.identityJson as unknown as FinancialInput["identity"],
+        value: deserializeRuntimeValue(f.valueJson as unknown as SerializedRuntimeValue),
+        displayName: f.displayName ?? undefined,
+        sourceVersion: f.sourceVersion ?? null,
+        overridesDefinitionId: f.overridesDefinitionId ?? undefined,
+        note: f.note ?? undefined,
+      }),
+    ),
+    provenance: row.provenanceJson as unknown as FinancialSnapshot["provenance"],
+    review: {
+      reviewedBy: row.reviewedBy,
+      reviewedAt: row.reviewedAt,
+      approvalRef: row.approvalRef,
+    },
+  };
+}
+
 /** Load APPROVED snapshots for a company directly from materialization tables (4B resolver feed). */
 export async function loadApprovedSnapshotsFromPrisma(
   prisma: Ns4Db,
@@ -341,27 +389,22 @@ export async function loadApprovedSnapshotsFromPrisma(
     include: { facts: { include: { locators: true } } },
     orderBy: { snapshotId: "asc" },
   });
-  return rows.map((row): FinancialSnapshot => ({
-    snapshotId: row.snapshotId,
-    version: row.version,
-    companyId: row.companyId,
-    asOf: row.asOf,
-    reportingPeriod: row.reportingPeriod,
-    status: "APPROVED",
-    supersedesSnapshotId: row.supersedesSnapshotId,
-    inputs: row.facts.map((f): FinancialInput => ({
-      identity: f.identityJson as unknown as FinancialInput["identity"],
-      value: deserializeRuntimeValue(f.valueJson as unknown as SerializedRuntimeValue),
-      displayName: f.displayName ?? undefined,
-      sourceVersion: f.sourceVersion ?? null,
-      overridesDefinitionId: f.overridesDefinitionId ?? undefined,
-      note: f.note ?? undefined,
-    })),
-    provenance: row.provenanceJson as unknown as FinancialSnapshot["provenance"],
-    review: {
-      reviewedBy: row.reviewedBy,
-      reviewedAt: row.reviewedAt,
-      approvalRef: row.approvalRef,
-    },
-  }));
+  return rows.map((row) => materializeSnapshotRow(row));
+}
+
+/**
+ * APPROVED + SUPERSEDED for cutoff binding / historical evaluation.
+ * SUPERSEDED rows retain delivery provenance so eval dates before a restatement
+ * delivery still bind the prior certificate identity.
+ */
+export async function loadCutoffEligibleSnapshotsFromPrisma(
+  prisma: Ns4Db,
+  companyId: string,
+): Promise<FinancialSnapshot[]> {
+  const rows = await prisma.contractInputSnapshot.findMany({
+    where: { companyId, status: { in: ["APPROVED", "SUPERSEDED"] } },
+    include: { facts: { include: { locators: true } } },
+    orderBy: { snapshotId: "asc" },
+  });
+  return rows.map((row) => materializeSnapshotRow(row));
 }

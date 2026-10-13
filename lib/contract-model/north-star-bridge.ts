@@ -15,6 +15,7 @@
 export {
   PrismaApprovedSnapshotStore,
   loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
   InMemoryApprovedSnapshotStore,
   LedgerProposalRecorder,
   proposeFromCertificate,
@@ -52,9 +53,9 @@ export {
   authoritativeDeliveriesFromSnapshots,
   encodeDeliveredAtInApprovalRef,
   extractDeliveredAtFromApprovalRef,
+  persistedDeliveryDateFromSnapshot,
   temporalAxesFromSnapshot,
 } from "./runtime/input/delivery-evidence";
-export type { DeliveryReconstructionMode } from "./runtime/input/delivery-evidence";
 
 export { resolveAuthoritativeCutoff } from "./runtime/input/authoritative-cutoff";
 export type { AuthoritativeCutoffResult } from "./runtime/input/authoritative-cutoff";
@@ -74,7 +75,7 @@ export type { SnapshotResolverArgs, SnapshotInputResolver } from "./runtime/inpu
 /** Exact decimal helpers for APPROVED metric figures — product must not import runtime/decimal. */
 export { rationalFromString, toCanonicalString } from "./runtime/decimal";
 export type { InputResolver, RuntimeValue } from "./runtime/types";
-export type { FinancialInput, FinancialSnapshot } from "./runtime/input/types";
+export type { FinancialInput, FinancialSnapshot, InputScope } from "./runtime/input/types";
 
 /**
  * Phase 4A expression evaluation over APPROVED snapshot inputs.

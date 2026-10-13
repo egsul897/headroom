@@ -30,7 +30,10 @@ export type AuthenticCapacityBlockReason =
   | "NO_APPROVED_SNAPSHOT"
   | "NOT_AUTHORITATIVE"
   | "MISSING_CAPACITY_INPUTS"
-  | "NO_PROVISIONS";
+  | "NO_PROVISIONS"
+  | "NEEDS_SNAPSHOT_IDENTITY"
+  | "AMBIGUOUS_SNAPSHOT"
+  | "MISSING_AS_OF";
 
 export interface AuthenticProvisionCapacityRow {
   provisionCode: string;
@@ -130,6 +133,16 @@ export async function evaluateAuthenticCapacityWithApprovedFinancials(
       missingInputs: loaded.missingInputs,
     };
   }
+  if (loaded.status === "NEEDS_INPUT" || loaded.status === "AMBIGUOUS") {
+    return {
+      status: "BLOCKED",
+      reason: loaded.status === "AMBIGUOUS" ? "AMBIGUOUS_SNAPSHOT" : "NEEDS_SNAPSHOT_IDENTITY",
+      missingInputs:
+        loaded.status === "AMBIGUOUS"
+          ? ["AMBIGUOUS_APPROVED_SNAPSHOT", ...loaded.snapshotIds]
+          : loaded.missingInputs,
+    };
+  }
 
   const financial = loaded.input;
   const view = buildSharedFinancialViewFromVerified(financial);
@@ -149,9 +162,16 @@ export async function evaluateAuthenticCapacityWithApprovedFinancials(
     };
   }
 
-  const asOf = financial.asOfDate
-    ? new Date(`${financial.asOfDate}T12:00:00.000Z`)
-    : new Date();
+  // Refuse wall-clock "today" when period-end asOf is missing — that reintroduces latest/today.
+  if (!financial.asOfDate) {
+    return {
+      status: "BLOCKED",
+      reason: "MISSING_AS_OF",
+      missingInputs: ["snapshot.asOf"],
+      view,
+    };
+  }
+  const asOf = new Date(`${financial.asOfDate}T12:00:00.000Z`);
   const covenantData = await loadCompanyCovenantData(prisma, companyId, asOf);
   const provisions = covenantData.provisions;
   if (provisions.length === 0) {
@@ -174,7 +194,7 @@ export async function evaluateAuthenticCapacityWithApprovedFinancials(
   let reviewRequired = 0;
   let incorrectFavorableClaims = 0;
 
-  const asOfIso = financial.asOfDate ?? asOf.toISOString().slice(0, 10);
+  const asOfIso = financial.asOfDate;
 
   for (const p of provisions) {
     const evaluated = evaluateProvision(p, fin, metrics);

@@ -7,7 +7,7 @@
  */
 import { prisma } from "@/lib/prisma";
 import {
-  loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
   snapshotInputResolver,
   resolveAuthoritativeCutoff,
@@ -68,11 +68,12 @@ export async function attemptCertifiedTransaction(args: {
 }): Promise<CertifiedTransactionAttempt> {
   const companyId = args.companyId;
   const blockers: CertifiedTransactionBlocker[] = [];
-  const [approvedAll, ledger] = await Promise.all([
-    loadApprovedSnapshotsFromPrisma(prisma, companyId),
+  const [cutoffEligible, ledger] = await Promise.all([
+    loadCutoffEligibleSnapshotsFromPrisma(prisma, companyId),
     loadLedgerUsagesFromPrisma(prisma, companyId),
   ]);
   const activeLedger = ledger.filter((u) => u.status !== "SUPERSEDED");
+  const approvedAll = cutoffEligible.filter((s) => s.status === "APPROVED");
 
   if (!args.evaluationDate) {
     blockers.push("MISSING_EVALUATION_DATE");
@@ -92,7 +93,7 @@ export async function attemptCertifiedTransaction(args: {
     };
   }
 
-  if (approvedAll.length === 0) {
+  if (approvedAll.length === 0 && cutoffEligible.length === 0) {
     blockers.push("NO_APPROVED_SNAPSHOT");
   }
 
@@ -101,12 +102,13 @@ export async function attemptCertifiedTransaction(args: {
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
-  // PAI-11: REQUIRE_PERSISTED_DELIVERY — approval / reviewedAt / asOf never establish delivery.
+  // P0: persisted-delivery-only — approval never establishes delivery.
+  // Pass cutoff-eligible (APPROVED + SUPERSEDED) so historical deliveries bind.
   const cutoff = resolveAuthoritativeCutoff({
     companyId,
     evaluationDate: args.evaluationDate,
-    approved: approvedAll,
-    // Same canonical delivered-certificate selector as Dashboard / Position / Simulate.
+    approved: cutoffEligible,
+    // Align with Dashboard NS-4 band — delivered certificate, not calendar FY label alone.
     selector: args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR,
     fiscalCalendar,
   });
@@ -141,7 +143,7 @@ export async function attemptCertifiedTransaction(args: {
     };
   }
 
-  const boundSnap = approvedAll.find((s) => s.snapshotId === approvedSnapshotId);
+  const boundSnap = cutoffEligible.find((s) => s.snapshotId === approvedSnapshotId);
   // Cutoff already selected the reporting period. Neutralize period identity for
   // METRIC_REFERENCE resolution so certificate facts (VERBATIM period keys) bind
   // — same pattern as Dashboard IR leverage. Neon rows are not mutated.

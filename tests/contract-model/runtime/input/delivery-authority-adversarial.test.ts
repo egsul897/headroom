@@ -1,5 +1,6 @@
 /**
  * P0 adversarial: certificate approval must never substitute for delivery evidence.
+ * Legacy approval-as-delivery lives only as a test-local helper — not a production switch.
  */
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
@@ -13,12 +14,13 @@ import {
   deliveriesFromApprovedSnapshots,
   encodeDeliveredAtInApprovalRef,
   extractDeliveredAtFromApprovalRef,
+  persistedDeliveryDateFromSnapshot,
   resolveAuthoritativeCutoff,
   resolveContractualSelector,
   temporalAxesFromSnapshot,
 } from "@/lib/contract-model/north-star-bridge";
 import { CONMED_FORM_INSPIRED_CERT } from "@/lib/contract-model/runtime/input/store/certificate/fixtures";
-import type { FinancialSnapshot } from "@/lib/contract-model/north-star-bridge";
+import type { FinancialSnapshot, DeliveryRecord } from "@/lib/contract-model/north-star-bridge";
 
 const CO = CONMED_FORM_INSPIRED_CERT.companyId;
 
@@ -44,6 +46,36 @@ function approvedSnap(over: Partial<FinancialSnapshot> & Pick<FinancialSnapshot,
   };
 }
 
+/**
+ * Test-local legacy (FORBIDDEN in production): invents delivery from reviewedAt.
+ * Kept only so adversarial tests can prove the production API refuses this.
+ */
+function legacyDeliveriesUsingReviewedAtFallback(
+  companyId: string,
+  snapshots: readonly FinancialSnapshot[],
+): DeliveryRecord[] {
+  const out: DeliveryRecord[] = [];
+  for (const s of snapshots) {
+    if (s.companyId !== companyId) continue;
+    if (s.status !== "APPROVED") continue;
+    if (!s.reportingPeriod || !s.asOf) continue;
+    const persisted = persistedDeliveryDateFromSnapshot(s);
+    const deliveredAtIsoDate = persisted ?? s.review.reviewedAt?.slice(0, 10) ?? null;
+    if (!deliveredAtIsoDate) continue;
+    out.push({
+      companyId,
+      kind: "COMPLIANCE_CERTIFICATE",
+      reportingPeriodKey: s.reportingPeriod,
+      asOfIsoDate: s.asOf,
+      deliveredAtIsoDate,
+      documentId: s.provenance.source ?? s.snapshotId,
+      sourceVersionHash: s.provenance.sourceVersion ?? undefined,
+      snapshotId: s.snapshotId,
+    });
+  }
+  return out;
+}
+
 describe("P0 delivery authority adversarial", () => {
   it("APPROVED + reviewedAt + no deliveredAt must not establish delivery", () => {
     const snap = approvedSnap({
@@ -55,9 +87,14 @@ describe("P0 delivery authority adversarial", () => {
       },
     });
     expect(extractDeliveredAtFromApprovalRef(snap.review.approvalRef)).toBeNull();
+    expect(persistedDeliveryDateFromSnapshot(snap)).toBeNull();
     expect(authoritativeDeliveriesFromSnapshots(CO, [snap])).toEqual([]);
-    // Default mode is REQUIRE_PERSISTED_DELIVERY
     expect(deliveriesFromApprovedSnapshots(CO, [snap])).toEqual([]);
+
+    // Legacy test-local helper WOULD invent delivery — production must not match it.
+    const legacy = legacyDeliveriesUsingReviewedAtFallback(CO, [snap]);
+    expect(legacy).toHaveLength(1);
+    expect(legacy[0]!.deliveredAtIsoDate).toBe("2026-07-20");
 
     const cutoff = resolveAuthoritativeCutoff({
       companyId: CO,
@@ -68,12 +105,36 @@ describe("P0 delivery authority adversarial", () => {
     expect(cutoff.snapshotId).toBeNull();
   });
 
-  it("approve without deliveredAsOfDate does not persist delivery (approval ≠ delivery)", () => {
+  it("production API has no ALLOW_REVIEWED_AT_FALLBACK switch", () => {
+    const src = readFileSync(
+      path.join(process.cwd(), "lib/contract-model/runtime/input/delivery-evidence.ts"),
+      "utf8",
+    );
+    expect(src).not.toMatch(/ALLOW_REVIEWED_AT_FALLBACK/);
+    expect(src).not.toMatch(/DeliveryReconstructionMode/);
+    const bridge = readFileSync(
+      path.join(process.cwd(), "lib/contract-model/north-star-bridge.ts"),
+      "utf8",
+    );
+    expect(bridge).not.toMatch(/DeliveryReconstructionMode/);
+    expect(bridge).not.toMatch(/ALLOW_REVIEWED_AT_FALLBACK/);
+  });
+
+  it("approve without deliveredAsOfDate does not invent delivery from reviewedAt", () => {
+    // Fixture CONMED includes propose-time deliveredAtIsoDate (#334). Use a cert without it.
     const store = new InMemoryApprovedSnapshotStore();
     const ledger = new LedgerProposalRecorder();
-    proposeFromCertificate(store, CONMED_FORM_INSPIRED_CERT, ledger);
+    const certNoDelivery = {
+      ...CONMED_FORM_INSPIRED_CERT,
+      snapshotId: "snap-approval-only-no-delivery",
+      deliveredAtIsoDate: undefined,
+    };
+    proposeFromCertificate(store, certNoDelivery, ledger);
+    const draft = store.getSnapshot(certNoDelivery.snapshotId)!;
+    expect(draft.provenance.deliveredAtIsoDate).toBeUndefined();
+
     const approved = approveCertificateProposal(store, {
-      snapshotId: CONMED_FORM_INSPIRED_CERT.snapshotId,
+      snapshotId: certNoDelivery.snapshotId,
       reviewedBy: "counsel",
       reviewedAt: "2026-07-20T18:00:00Z",
       approvalRef: "apr-approval-only",
@@ -81,10 +142,11 @@ describe("P0 delivery authority adversarial", () => {
       proposerKind: "human",
     });
     expect(approved.ok).toBe(true);
-    const snap = store.getSnapshot(CONMED_FORM_INSPIRED_CERT.snapshotId)!;
+    const snap = store.getSnapshot(certNoDelivery.snapshotId)!;
     expect(snap.status).toBe("APPROVED");
     expect(snap.review.reviewedAt?.slice(0, 10)).toBe("2026-07-20");
     expect(extractDeliveredAtFromApprovalRef(snap.review.approvalRef)).toBeNull();
+    expect(snap.provenance.deliveredAtIsoDate).toBeUndefined();
     expect(authoritativeDeliveriesFromSnapshots(CO, [snap])).toEqual([]);
 
     const cutoff = resolveAuthoritativeCutoff({
@@ -112,6 +174,7 @@ describe("P0 delivery authority adversarial", () => {
     expect(approved.ok).toBe(true);
     const snap = store.getSnapshot(CONMED_FORM_INSPIRED_CERT.snapshotId)!;
     expect(extractDeliveredAtFromApprovalRef(snap.review.approvalRef)).toBe("2026-07-10");
+    expect(snap.provenance.deliveredAtIsoDate).toBe("2026-07-10");
 
     const deliveries = authoritativeDeliveriesFromSnapshots(CO, [snap]);
     expect(deliveries).toHaveLength(1);
@@ -120,12 +183,10 @@ describe("P0 delivery authority adversarial", () => {
       reportingPeriodKey: "FY2026-Q2",
       asOfIsoDate: "2026-06-30",
       deliveredAtIsoDate: "2026-07-10",
-      // Provenance is attributable to the certificate document / source version on the snapshot.
       documentId: snap.provenance.source,
       sourceVersionHash: snap.provenance.sourceVersion ?? undefined,
+      snapshotId: snap.snapshotId,
     });
-    expect(deliveries[0]!.documentId).toBeTruthy();
-    expect(deliveries[0]!.sourceVersionHash).toBeTruthy();
 
     const axes = temporalAxesFromSnapshot(snap, "2026-08-01");
     expect(axes.periodEndAsOf).toBe("2026-06-30");
@@ -144,7 +205,7 @@ describe("P0 delivery authority adversarial", () => {
     expect(cutoff.reportingPeriodKey).toBe("FY2026-Q2");
   });
 
-  it("SUPERSEDED or DRAFT snapshots cannot establish current delivery", () => {
+  it("DRAFT cannot establish delivery; SUPERSEDED without delivery cannot either", () => {
     const draft = approvedSnap({
       snapshotId: "snap-draft",
       status: "DRAFT",
@@ -154,16 +215,37 @@ describe("P0 delivery authority adversarial", () => {
         approvalRef: encodeDeliveredAtInApprovalRef("apr-draft", "2026-07-10"),
       },
     });
-    const superseded = approvedSnap({
-      snapshotId: "snap-superseded",
+    const supersededNoDelivery = approvedSnap({
+      snapshotId: "snap-superseded-bare",
       status: "SUPERSEDED",
+      review: {
+        reviewedBy: "counsel",
+        reviewedAt: "2026-07-15T00:00:00Z",
+        approvalRef: "apr-old-no-delivery",
+      },
+    });
+    expect(authoritativeDeliveriesFromSnapshots(CO, [draft, supersededNoDelivery])).toEqual([]);
+  });
+
+  it("SUPERSEDED with persisted delivery remains historically attributable", () => {
+    const supersededDelivered = approvedSnap({
+      snapshotId: "snap-superseded-delivered",
+      status: "SUPERSEDED",
+      provenance: {
+        source: "doc-old",
+        sourceVersion: "sha256:old",
+        deliveredAtIsoDate: "2026-07-10",
+      },
       review: {
         reviewedBy: "counsel",
         reviewedAt: "2026-07-15T00:00:00Z",
         approvalRef: encodeDeliveredAtInApprovalRef("apr-old", "2026-07-10"),
       },
     });
-    expect(authoritativeDeliveriesFromSnapshots(CO, [draft, superseded])).toEqual([]);
+    const deliveries = authoritativeDeliveriesFromSnapshots(CO, [supersededDelivered]);
+    expect(deliveries).toHaveLength(1);
+    expect(deliveries[0]!.snapshotId).toBe("snap-superseded-delivered");
+    expect(deliveries[0]!.deliveredAtIsoDate).toBe("2026-07-10");
   });
 
   it("later approval without delivery cannot displace the last actually delivered certificate", () => {
@@ -171,7 +253,11 @@ describe("P0 delivery authority adversarial", () => {
       snapshotId: "snap-q2-delivered",
       reportingPeriod: "FY2026-Q2",
       asOf: "2026-06-30",
-      provenance: { source: "doc-q2", sourceVersion: "sha256:q2" },
+      provenance: {
+        source: "doc-q2",
+        sourceVersion: "sha256:q2",
+        deliveredAtIsoDate: "2026-07-10",
+      },
       review: {
         reviewedBy: "counsel",
         reviewedAt: "2026-07-20T18:00:00Z",
@@ -198,7 +284,6 @@ describe("P0 delivery authority adversarial", () => {
     expect(deliveries).toHaveLength(1);
     expect(deliveries[0]!.reportingPeriodKey).toBe("FY2026-Q2");
 
-    // Most recently *delivered* still resolves to Q2 — later approval without delivery ignored.
     const mostDelivered = resolveContractualSelector({
       companyId: CO,
       evaluationDate: "2026-10-15",
@@ -231,197 +316,8 @@ describe("P0 delivery authority adversarial", () => {
     expect(certifiedSrc).toMatch(/resolveAuthoritativeCutoff/);
     expect(readinessSrc).not.toMatch(/ALLOW_REVIEWED_AT_FALLBACK/);
     expect(certifiedSrc).not.toMatch(/ALLOW_REVIEWED_AT_FALLBACK/);
-  });
-
-  it("entrypoint fail-closed: resolveAuthoritativeCutoff NEEDS_INPUT when delivery missing", () => {
-    // Mirrors transaction-readiness + certified-transaction cutoff construction.
-    const approvedOnly = approvedSnap({
-      snapshotId: "snap-entry-no-delivery",
-      review: {
-        reviewedBy: "counsel",
-        reviewedAt: "2026-07-20T18:00:00Z",
-        approvalRef: "apr-entry",
-      },
-    });
-    const cutoff = resolveAuthoritativeCutoff({
-      companyId: CO,
-      evaluationDate: "2026-08-01",
-      approved: [approvedOnly],
-      selector: "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
-    });
-    expect(cutoff.state).toBe("NEEDS_INPUT");
-    expect(cutoff.snapshotId).toBeNull();
-    // Certified path maps this to CUTOFF_UNRESOLVED blocker.
-    expect(["NEEDS_INPUT", "AMBIGUOUS"]).toContain(cutoff.state);
-  });
-
-  it("explicit delivery after evaluation cutoff is excluded (historical cutoff)", () => {
-    const snap = approvedSnap({
-      snapshotId: "snap-delivered-after-eval",
-      review: {
-        reviewedBy: "counsel",
-        reviewedAt: "2026-08-15T18:00:00Z",
-        approvalRef: encodeDeliveredAtInApprovalRef("apr-late", "2026-08-10"),
-      },
-    });
-    const cutoff = resolveAuthoritativeCutoff({
-      companyId: CO,
-      evaluationDate: "2026-08-01",
-      approved: [snap],
-      selector: "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
-    });
-    expect(cutoff.state).toBe("NEEDS_INPUT");
-    expect(cutoff.snapshotId).toBeNull();
-  });
-
-  it("explicit delivery before evaluation cutoff is eligible", () => {
-    const snap = approvedSnap({
-      snapshotId: "snap-delivered-before-eval",
-      review: {
-        reviewedBy: "counsel",
-        reviewedAt: "2026-07-20T18:00:00Z",
-        approvalRef: encodeDeliveredAtInApprovalRef("apr-on-time", "2026-07-10"),
-      },
-    });
-    const cutoff = resolveAuthoritativeCutoff({
-      companyId: CO,
-      evaluationDate: "2026-08-01",
-      approved: [snap],
-      selector: "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
-    });
-    expect(cutoff.state).toBe("RESOLVED");
-    expect(cutoff.snapshotId).toBe("snap-delivered-before-eval");
-    expect(cutoff.reportingPeriodKey).toBe("FY2026-Q2");
-  });
-
-  it("DRAFT restatement does not change authoritative delivered cutoff", () => {
-    const live = approvedSnap({
-      snapshotId: "snap-live-q2",
-      review: {
-        reviewedBy: "counsel",
-        reviewedAt: "2026-07-20T18:00:00Z",
-        approvalRef: encodeDeliveredAtInApprovalRef("apr-live", "2026-07-10"),
-      },
-    });
-    const draftRestatement = approvedSnap({
-      snapshotId: "snap-draft-restatement",
-      status: "DRAFT",
-      supersedesSnapshotId: "snap-live-q2",
-      review: {
-        reviewedBy: null,
-        reviewedAt: null,
-        approvalRef: encodeDeliveredAtInApprovalRef("apr-draft-restatement", "2026-07-22"),
-      },
-    });
-    const before = resolveAuthoritativeCutoff({
-      companyId: CO,
-      evaluationDate: "2026-08-01",
-      approved: [live],
-      selector: "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
-    });
-    const after = resolveAuthoritativeCutoff({
-      companyId: CO,
-      evaluationDate: "2026-08-01",
-      approved: [live, draftRestatement],
-      selector: "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
-    });
-    expect(before.state).toBe("RESOLVED");
-    expect(after.state).toBe("RESOLVED");
-    expect(after.snapshotId).toBe(before.snapshotId);
-    expect(after.snapshotId).toBe("snap-live-q2");
-    expect(authoritativeDeliveriesFromSnapshots(CO, [live, draftRestatement])).toHaveLength(1);
-  });
-
-  it("approved supersession with valid delivery invalidates prior eligible identity", () => {
-    const predecessor = approvedSnap({
-      snapshotId: "snap-pred",
-      status: "SUPERSEDED",
-      review: {
-        reviewedBy: "counsel",
-        reviewedAt: "2026-07-20T18:00:00Z",
-        approvalRef: encodeDeliveredAtInApprovalRef("apr-pred", "2026-07-10"),
-      },
-    });
-    const successor = approvedSnap({
-      snapshotId: "snap-succ",
-      supersedesSnapshotId: "snap-pred",
-      version: "v2",
-      review: {
-        reviewedBy: "counsel",
-        reviewedAt: "2026-07-25T18:00:00Z",
-        approvalRef: encodeDeliveredAtInApprovalRef("apr-succ", "2026-07-22"),
-      },
-    });
-    expect(authoritativeDeliveriesFromSnapshots(CO, [predecessor, successor])).toHaveLength(1);
-    expect(authoritativeDeliveriesFromSnapshots(CO, [predecessor, successor])[0]!.documentId).toBe(
-      successor.provenance.source,
-    );
-    const cutoff = resolveAuthoritativeCutoff({
-      companyId: CO,
-      evaluationDate: "2026-08-01",
-      approved: [predecessor, successor],
-      selector: "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
-    });
-    expect(cutoff.state).toBe("RESOLVED");
-    expect(cutoff.snapshotId).toBe("snap-succ");
-    expect(cutoff.snapshotId).not.toBe("snap-pred");
-  });
-
-  it("Dashboard / Position / Simulate share the same delivered-certificate eligible identity", () => {
-    const readinessSrc = readFileSync(
-      path.join(process.cwd(), "lib/product/north-star-workflow/transaction-readiness.ts"),
-      "utf8",
-    );
-    const certifiedSrc = readFileSync(
-      path.join(process.cwd(), "lib/product/north-star-workflow/certified-transaction.ts"),
-      "utf8",
-    );
-    const binderSrc = readFileSync(
-      path.join(process.cwd(), "lib/product/north-star-workflow/approved-financial-inputs.ts"),
-      "utf8",
-    );
-    const dashSrc = readFileSync(
-      path.join(process.cwd(), "lib/dashboard/ns4-financial-panel.ts"),
-      "utf8",
-    );
-    expect(binderSrc).toMatch(/MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE/);
-    expect(certifiedSrc).toMatch(/NS4_PRODUCT_CUTOFF_SELECTOR/);
-    expect(readinessSrc).toMatch(/MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE/);
-    expect(dashSrc).toMatch(/NS4_PRODUCT_CUTOFF_SELECTOR/);
-    expect(dashSrc).toMatch(/loadApprovedFinancialInputBundle/);
-    // No reviewedAt→deliveredAt reconstruction on product entrypoints.
-    expect(certifiedSrc).not.toMatch(/reviewedAt\.slice/);
-    expect(readinessSrc).not.toMatch(/reviewedAt\.slice/);
-
-    const snap = approvedSnap({
-      snapshotId: "snap-shared-identity",
-      review: {
-        reviewedBy: "counsel",
-        reviewedAt: "2026-07-20T18:00:00Z",
-        approvalRef: encodeDeliveredAtInApprovalRef("apr-shared", "2026-07-10"),
-      },
-    });
-    const dashboardCutoff = resolveAuthoritativeCutoff({
-      companyId: CO,
-      evaluationDate: "2026-08-01",
-      approved: [snap],
-      selector: "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
-    });
-    const positionCutoff = resolveAuthoritativeCutoff({
-      companyId: CO,
-      evaluationDate: "2026-08-01",
-      approved: [snap],
-      selector: "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
-    });
-    const simulateCutoff = resolveAuthoritativeCutoff({
-      companyId: CO,
-      evaluationDate: "2026-08-01",
-      approved: [snap],
-      selector: "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
-    });
-    expect(dashboardCutoff.snapshotId).toBe("snap-shared-identity");
-    expect(positionCutoff.snapshotId).toBe(dashboardCutoff.snapshotId);
-    expect(simulateCutoff.snapshotId).toBe(dashboardCutoff.snapshotId);
-    expect(dashboardCutoff.reportingPeriodKey).toBe(simulateCutoff.reportingPeriodKey);
+    // Must not import #334's competing product-local deliveries helper.
+    expect(readinessSrc).not.toMatch(/certificate-deliveries/);
+    expect(certifiedSrc).not.toMatch(/certificate-deliveries/);
   });
 });

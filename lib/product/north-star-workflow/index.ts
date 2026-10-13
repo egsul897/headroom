@@ -51,6 +51,10 @@ export {
   type ApprovedFinancialInputBundleStatus,
 } from "./approved-financial-inputs";
 export {
+  deliveriesFromApprovedSnapshots,
+  bindSnapshotForDeliveredCutoff,
+} from "./certificate-deliveries";
+export {
   parseTransactionDraft,
   analyzeContemplatedTransaction,
   type TransactionDraft,
@@ -135,6 +139,11 @@ export {
   UTILIZATION_UNKNOWN_REASON,
   type UtilizationHistoryStatus,
 } from "./utilization-history";
+export {
+  classifyCustomerFigure,
+  type CustomerFigureClaim,
+  type CustomerFigureKind,
+} from "./customer-figure-semantics";
 export {
   runCanonicalSequentialDemo,
   buildCanonicalSequentialSteps,

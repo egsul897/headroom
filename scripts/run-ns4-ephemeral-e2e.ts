@@ -36,11 +36,16 @@ async function main() {
   console.log(JSON.stringify({ ephemeralDatabase: ephemeral.name, suites }, null, 2));
 
   try {
-    const result = spawnSync("npx", ["vitest", "run", ...suites], {
-      env: { ...process.env, DATABASE_URL: ephemeral.databaseUrl },
-      stdio: "inherit",
-      cwd: process.cwd(),
-    });
+    // Serial file execution: suites share one DB; avoids cross-file races on store writes.
+    const result = spawnSync(
+      "npx",
+      ["vitest", "run", "--pool=forks", "--maxWorkers=1", "--no-file-parallelism", ...suites],
+      {
+        env: { ...process.env, DATABASE_URL: ephemeral.databaseUrl },
+        stdio: "inherit",
+        cwd: process.cwd(),
+      },
+    );
     const code = result.status ?? 1;
     await destroyEphemeralDatabase(ephemeral);
     process.exit(code);

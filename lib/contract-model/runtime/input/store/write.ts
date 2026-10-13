@@ -6,7 +6,9 @@
  * any of the nine unsafe-graph issue codes refuses the write (store is stricter
  * than 4B resolve, which treats some codes as non-fatal for `safe`).
  */
+import { randomBytes } from "node:crypto";
 import type { FinancialSnapshot } from "../types";
+import { extractDeliveredAtFromApprovalRef } from "../delivery-evidence";
 import { buildSnapshotGraph, type SnapshotIssueCode } from "../snapshot";
 import type {
   AppendSnapshotRequest,
@@ -37,9 +39,10 @@ export interface SnapshotStoreBackend {
 }
 
 let eventSeq = 0;
+/** Globally unique across process workers (eventId is a DB unique key). */
 function nextEventId(): string {
   eventSeq += 1;
-  return `evt-${eventSeq}-${Date.now()}`;
+  return `evt-${process.pid}-${eventSeq}-${Date.now()}-${randomBytes(4).toString("hex")}`;
 }
 
 function nowIso(): string {
@@ -122,9 +125,18 @@ export function materializeFromEvents(events: readonly StoreEvent[]): Map<string
     if (e.type === "SNAPSHOT_APPROVED") {
       const cur = byId.get(e.snapshotId);
       if (!cur) continue;
+      const cloned = cloneSnapshot(cur);
+      // Promote approvalRef deliveredAt= marker into first-class provenance.
+      // Approve-time marker wins over any inherited propose-time value (restatement).
+      // Never invent from reviewedAt — only the persisted marker counts.
+      const fromRef = extractDeliveredAtFromApprovalRef(e.approvalRef);
+      const provenance = fromRef
+        ? { ...cloned.provenance, deliveredAtIsoDate: fromRef }
+        : cloned.provenance;
       byId.set(e.snapshotId, {
-        ...cloneSnapshot(cur),
+        ...cloned,
         status: "APPROVED",
+        provenance,
         review: { reviewedBy: e.reviewedBy, reviewedAt: e.reviewedAt, approvalRef: e.approvalRef },
       });
       continue;

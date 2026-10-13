@@ -15,7 +15,11 @@ export type {
 } from "./types";
 export { APPENDABLE_STATUSES, APPEND_REFUSED_STATUSES, graphIssuesToStoreIssues } from "./types";
 export { InMemoryApprovedSnapshotStore } from "./memory-store";
-export { PrismaApprovedSnapshotStore, loadApprovedSnapshotsFromPrisma } from "./prisma-store";
+export {
+  PrismaApprovedSnapshotStore,
+  loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
+} from "./prisma-store";
 export type { SyncApprovedSnapshotStore, AsyncApprovedSnapshotStore } from "./store-api";
 export {
   appendSnapshot,

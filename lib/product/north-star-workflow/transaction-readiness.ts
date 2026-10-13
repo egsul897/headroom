@@ -12,6 +12,7 @@
 import { prisma } from "@/lib/prisma";
 import {
   loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
   resolveAuthoritativeCutoff,
   type DeliveryRecord,
@@ -19,10 +20,6 @@ import {
   type NamedContractualSelector,
 } from "@/lib/contract-model/north-star-bridge";
 import { loadCapacityReadiness, type CapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
-
-/** Canonical product cutoff — must match NS4_PRODUCT_CUTOFF_SELECTOR (avoid import cycle). */
-const PRODUCT_CUTOFF_SELECTOR: NamedContractualSelector =
-  "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE";
 
 export type WorkflowStepStatus = "READY" | "MISSING" | "PARTIAL" | "LEGACY_ONLY";
 
@@ -67,8 +64,9 @@ export async function loadTransactionWorkflowReadiness(
   },
 ): Promise<TransactionWorkflowReadiness> {
   const legacyCapacity = await loadCapacityReadiness(companyId);
-  const [approved, ledgerUsages] = await Promise.all([
+  const [approved, cutoffEligible, ledgerUsages] = await Promise.all([
     loadApprovedSnapshotsFromPrisma(prisma, companyId),
+    loadCutoffEligibleSnapshotsFromPrisma(prisma, companyId),
     loadLedgerUsagesFromPrisma(prisma, companyId),
   ]);
   const activeLedger = ledgerUsages.filter((u) => u.status !== "SUPERSEDED");
@@ -78,7 +76,6 @@ export async function loadTransactionWorkflowReadiness(
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
-
   let cutoff: TransactionWorkflowReadiness["cutoff"];
   // Do not default evaluation date to "today" — that reintroduces latest-quarter behavior.
   if (!opts?.evaluationDate) {
@@ -87,13 +84,15 @@ export async function loadTransactionWorkflowReadiness(
       reason: "transaction/evaluation date required before cutoff resolution",
       missing: ["evaluationDate"],
     };
-  } else if (opts?.selector || approved.length > 0) {
-    // PAI-11: REQUIRE_PERSISTED_DELIVERY — approval / reviewedAt / asOf never establish delivery.
+  } else if (opts?.selector || approved.length > 0 || cutoffEligible.length > 0) {
+    // P0: persisted-delivery-only — approval never establishes delivery.
+    // Cutoff-eligible includes SUPERSEDED for historical delivery binding.
+    // Default selector matches NS4_PRODUCT_CUTOFF_SELECTOR (Dashboard/Position/Simulate/certified).
     cutoff = resolveAuthoritativeCutoff({
       companyId,
       evaluationDate: opts.evaluationDate,
-      approved,
-      selector: opts?.selector ?? PRODUCT_CUTOFF_SELECTOR,
+      approved: cutoffEligible,
+      selector: opts?.selector ?? "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
       fiscalCalendar,
       deliveries: opts?.deliveries,
     });

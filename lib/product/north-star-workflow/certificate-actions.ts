@@ -35,7 +35,13 @@ export interface SeedCertificateResult {
 /** Seed a clearly-labeled synthetic certificate proposal for a workspace (DRAFT). */
 export async function proposeSyntheticCertificateForCompany(
   companyId: string,
-  opts?: { snapshotId?: string; reportingPeriod?: string; asOf?: string },
+  opts?: {
+    snapshotId?: string;
+    reportingPeriod?: string;
+    asOf?: string;
+    /** Persisted delivery evidence — never inferred from asOf or approval. */
+    deliveredAtIsoDate?: string;
+  },
 ): Promise<SeedCertificateResult> {
   const snapshotId = opts?.snapshotId ?? `snap-${companyId}-synth-cert`;
   const cert: SyntheticCertificate = {
@@ -48,6 +54,7 @@ export async function proposeSyntheticCertificateForCompany(
     versionHash: `sha256:synth-${companyId}-v1`,
     note: "SYNTHETIC engineering fixture — not an authentic customer certificate",
     facts: CONMED_FORM_INSPIRED_CERT.facts.map((f) => ({ ...f, companyId })),
+    deliveredAtIsoDate: opts?.deliveredAtIsoDate?.slice(0, 10) ?? "2026-07-20",
   };
 
   const store = await PrismaApprovedSnapshotStore.open(prisma, companyId);
@@ -121,7 +128,7 @@ export async function approveWorkspaceCertificate(args: {
     return { ok: true, snapshotId: args.snapshotId, status: "APPROVED", approvalRef: snap.review.approvalRef ?? undefined };
   }
   const reviewedAt = args.reviewedAt ?? new Date().toISOString();
-  // PAI-11: never substitute approval timestamp for certificate delivery.
+  // P0: never substitute approval timestamp for certificate delivery.
   // Delivery is persisted only when the caller supplies deliveredAsOfDate explicitly.
   const result = await approveCertificateProposalAsync(store, {
     snapshotId: args.snapshotId,
@@ -269,6 +276,8 @@ export async function proposeCertificateRestatement(args: {
   companyId: string;
   predecessorSnapshotId: string;
   reviewedByNote?: string;
+  /** Persisted delivery date for the restatement certificate (ISO YYYY-MM-DD). */
+  deliveredAtIsoDate?: string;
 }): Promise<SeedCertificateResult> {
   const store = await PrismaApprovedSnapshotStore.open(prisma, args.companyId);
   const pred = store.getSnapshot(args.predecessorSnapshotId);
@@ -295,6 +304,8 @@ export async function proposeCertificateRestatement(args: {
     };
   }
   const snapshotId = `${args.predecessorSnapshotId}-restatement-${Date.now()}`.slice(0, 180);
+  const deliveredAtIsoDate =
+    args.deliveredAtIsoDate?.slice(0, 10) ?? new Date().toISOString().slice(0, 10);
   const cert: SyntheticCertificate = {
     ...CONMED_FORM_INSPIRED_CERT,
     companyId: args.companyId,
@@ -307,6 +318,7 @@ export async function proposeCertificateRestatement(args: {
     note: `SYNTHETIC restatement of ${args.predecessorSnapshotId} — ${args.reviewedByNote ?? "explicit correction"}`,
     facts: CONMED_FORM_INSPIRED_CERT.facts.map((f) => ({ ...f, companyId: args.companyId })),
     basketUsageLines: [],
+    deliveredAtIsoDate,
   };
   const ledger = new LedgerProposalRecorder();
   const proposed = await proposeFromCertificateAsync(store, cert, ledger);

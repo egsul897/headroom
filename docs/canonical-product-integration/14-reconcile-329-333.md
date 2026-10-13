@@ -26,3 +26,13 @@
 
 ## Close after this PR merges to main
 #329, #333, #328, #330, #334 (and absorbed ancestors) — not before.
+
+## Post-#332 PAI-11 reconciliation
+
+# #337 reconcile onto post-#332/#334/#345 main
+
+- Base: `origin/main` @ current tip (includes #332 delivery authority + #334/#345 NS-4).
+- Took main's canonical `delivery-evidence.ts` / `authoritative-cutoff.ts` (no `ALLOW_REVIEWED_AT_FALLBACK` / `DeliveryReconstructionMode`).
+- Removed tip-only second `lib/product/contractual-leverage` engine; Dashboard uses main `contractual-metrics` + NS-4 IR leverage (AFC executable path remains #341/#344).
+- Readiness default selector aligned to `MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE`.
+- Cross-surface regression: `tests/product/delivery-authority-entrypoints.test.ts`.

@@ -10,5 +10,5 @@ export * from "./manifest";
 export * from "./selector";
 /** Cross-layer delivery evidence — distinct from period-end asOf / evaluation dates. */
 export * from "./delivery-evidence";
-/** Authoritative cutoff bind (REQUIRE_PERSISTED_DELIVERY). */
+/** Authoritative cutoff bind (persisted-delivery-only). */
 export * from "./authoritative-cutoff";

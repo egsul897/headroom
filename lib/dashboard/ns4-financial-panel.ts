@@ -11,16 +11,15 @@
 import { prisma } from "@/lib/prisma";
 import {
   loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
   toCanonicalString,
   type FinancialSnapshot,
   type NamedContractualSelector,
   type RuntimeValue,
 } from "@/lib/contract-model/north-star-bridge";
+import { loadTransactionWorkflowReadiness } from "@/lib/product/north-star-workflow/transaction-readiness";
 import {
-  loadApprovedFinancialInputBundle,
-  NS4_PRODUCT_CUTOFF_SELECTOR,
-} from "@/lib/product/north-star-workflow/approved-financial-inputs";
-import {
+  computeNs4ContractualNetLeverage,
   type Ns4LeverageIrTrace,
 } from "@/lib/dashboard/ns4-leverage-ir";
 
@@ -135,92 +134,120 @@ export async function loadNs4DashboardFinancialState(args: {
   selector?: NamedContractualSelector;
 }): Promise<Ns4DashboardFinancialState> {
   const companyId = args.companyId;
-  const selector = args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR;
-  // Same APPROVED binder as Position / Simulate — one cutoff-bound snapshot identity.
-  const [bundle, approved] = await Promise.all([
-    loadApprovedFinancialInputBundle({
-      companyId,
-      evaluationDate: args.evaluationDate,
-      selector,
-    }),
+  // Prefer delivered-certificate cutoff: issuer fiscal labels (e.g. Matthews FY2025-Q1
+  // ending 2024-12-31) often disagree with a calendar MOST_RECENTLY_ENDED_FISCAL_QUARTER
+  // period key. Delivery evidence is provenance.deliveredAtIsoDate only (never asOf / reviewedAt).
+  const [approved, cutoffEligible, readiness] = await Promise.all([
     loadApprovedSnapshotsFromPrisma(prisma, companyId),
+    loadCutoffEligibleSnapshotsFromPrisma(prisma, companyId),
+    loadTransactionWorkflowReadiness(companyId, {
+      evaluationDate: args.evaluationDate,
+      selector: args.selector ?? "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
+    }),
   ]);
+
+  const missingInputs: string[] = [];
+  if (approved.length === 0) missingInputs.push("APPROVED_NorthStar_snapshot");
+  if (!args.evaluationDate) missingInputs.push("evaluationDate");
+  if (args.evaluationDate && readiness.cutoff?.state !== "RESOLVED") {
+    missingInputs.push("contractual_cutoff");
+  }
 
   const legacyNote =
     "LEGACY_ENGINE covenant/financial figures elsewhere on this Dashboard are not NS-4 APPROVED certificate facts and are not certified Phase 4A–4E capacity.";
 
   const cutoff = {
-    state: bundle.cutoff.state,
-    reportingPeriodKey: bundle.cutoff.reportingPeriodKey,
-    asOf: bundle.cutoff.asOf,
-    approvedSnapshotId: bundle.cutoff.approvedSnapshotId,
+    state: readiness.cutoff?.state ?? "NEEDS_INPUT",
+    reportingPeriodKey: readiness.cutoff?.reportingPeriodKey ?? null,
+    asOf: readiness.cutoff?.asOf ?? null,
+    approvedSnapshotId: readiness.cutoff?.snapshotId ?? null,
   };
-  const inventory = inventoryFrom(approved);
-  const evidence = [
-    ...bundle.evidence,
-    bundle.boundSnapshotId
-      ? `Dashboard reuses shared binder snapshot ${bundle.boundSnapshotId} (fingerprint ${bundle.financialInputFingerprint?.slice(0, 16) ?? "—"}…).`
-      : "Dashboard shares the product NS-4 binder; no cutoff-bound snapshot yet.",
-  ];
 
-  if (bundle.status === "NEEDS_INPUT") {
+  const inventory = inventoryFrom(approved);
+  const evidence: string[] = [];
+
+  if (approved.length === 0) {
+    evidence.push(
+      "No APPROVED NS-4 ContractInputSnapshot rows in Neon for this company — Dashboard cannot present North-Star financial facts.",
+    );
     return {
       companyId,
       status: "NEEDS_INPUT",
       authority: "NONE",
-      approvedSnapshotCount: approved.length,
-      evaluationDate: bundle.evaluationDate,
+      approvedSnapshotCount: 0,
+      evaluationDate: args.evaluationDate ?? null,
       cutoff,
       boundSnapshot: null,
-      inventory: inventory.length > 0 ? inventory : [],
-      missingInputs: bundle.missingInputs,
+      inventory: [],
+      missingInputs,
       evidence,
       legacyNote,
-      leverageIr: bundle.leverageIr,
+      leverageIr: computeNs4ContractualNetLeverage({ companyId, boundSnapshot: null }),
     };
   }
 
-  if (bundle.status === "APPROVED_BOUND" && bundle.boundSnapshotId) {
-    const bound = approved.find((s) => s.snapshotId === bundle.boundSnapshotId) ?? null;
-    const facts = bound ? factsFromSnapshot(bound) : [];
+  evidence.push(
+    `${approved.length} APPROVED NS-4 snapshot(s) loaded from Neon ContractInputSnapshot (tenant-scoped).`,
+  );
+
+  const boundId = readiness.cutoff?.state === "RESOLVED" ? readiness.cutoff.snapshotId ?? null : null;
+  const bound = boundId
+    ? cutoffEligible.find((s) => s.snapshotId === boundId) ??
+      approved.find((s) => s.snapshotId === boundId) ??
+      null
+    : null;
+
+  if (bound) {
+    const facts = factsFromSnapshot(bound);
+    const leverageIr = computeNs4ContractualNetLeverage({ companyId, boundSnapshot: bound });
+    evidence.push(
+      `Cutoff-bound snapshot ${bound.snapshotId} (${bound.reportingPeriod ?? "no-period"} asOf ${bound.asOf ?? "—"}) with ${facts.length} fact(s).`,
+    );
+    evidence.push(...leverageIr.evidence);
+    const mergedMissing = [
+      ...missingInputs.filter((m) => m !== "APPROVED_NorthStar_snapshot" && m !== "contractual_cutoff"),
+      ...leverageIr.missingInputs,
+    ];
     return {
       companyId,
       status: "APPROVED_BOUND",
       authority: "NS4_APPROVED",
       approvedSnapshotCount: approved.length,
-      evaluationDate: bundle.evaluationDate,
+      evaluationDate: args.evaluationDate ?? null,
       cutoff,
-      boundSnapshot: bound
-        ? {
-            snapshotId: bound.snapshotId,
-            reportingPeriod: bound.reportingPeriod,
-            asOf: bound.asOf,
-            approvalRef: bound.review.approvalRef,
-            reviewedBy: bound.review.reviewedBy,
-            factCount: facts.length,
-            facts,
-          }
-        : null,
+      boundSnapshot: {
+        snapshotId: bound.snapshotId,
+        reportingPeriod: bound.reportingPeriod,
+        asOf: bound.asOf,
+        approvalRef: bound.review.approvalRef,
+        reviewedBy: bound.review.reviewedBy,
+        factCount: facts.length,
+        facts,
+      },
       inventory,
-      missingInputs: bundle.missingInputs,
+      missingInputs: [...new Set(mergedMissing)],
       evidence,
       legacyNote,
-      leverageIr: bundle.leverageIr,
+      leverageIr,
     };
   }
+
+  evidence.push(
+    "APPROVED snapshots are present but no cutoff-bound snapshot is selected — supply an evaluation date (and delivery/fiscal evidence) before treating any period as current. No silent LATEST_QUARTER.",
+  );
 
   return {
     companyId,
     status: "APPROVED_INVENTORY",
     authority: "NS4_APPROVED",
     approvedSnapshotCount: approved.length,
-    evaluationDate: bundle.evaluationDate,
+    evaluationDate: args.evaluationDate ?? null,
     cutoff,
     boundSnapshot: null,
     inventory,
-    missingInputs: bundle.missingInputs,
+    missingInputs,
     evidence,
     legacyNote,
-    leverageIr: bundle.leverageIr,
+    leverageIr: computeNs4ContractualNetLeverage({ companyId, boundSnapshot: null }),
   };
 }

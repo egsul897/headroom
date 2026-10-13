@@ -2,7 +2,8 @@ import { DashboardClient } from "@/components/DashboardClient";
 import { facilitiesQueryFromPosition, maturitiesQueryFromPosition } from "@/lib/dashboard/load-state";
 import { loadNs4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-panel";
 import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
-import { loadContractualLeverageForCompany } from "@/lib/product/contractual-leverage";
+import { loadContractualMetricsForDashboard } from "@/lib/product/contractual-metrics/service";
+import { toContractualMetricsView } from "@/lib/product/contractual-metrics/serialize";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
@@ -19,6 +20,8 @@ export const metadata = { title: "Headroom — Dashboard" };
  *
  * North-Star financial facts come from Neon NS-4 via
  * `loadNs4DashboardFinancialState` — never from inventing legacy figures.
+ * Definition-executed contractual metrics are a separate read-only GET path
+ * (`persist:false` / `allowNeonWrite:false`) — provisional, never Neon writes.
  */
 export default async function DashboardPage({
   params,
@@ -37,7 +40,6 @@ export default async function DashboardPage({
   // Overview load first — invent-absence: mint facilities/maturities queries only
   // after this returns. NS-4 band is a separate Neon read (fail-closed).
   const inputs = await loadCovenantOverviewInputs(companyId);
-  const leverage = await loadContractualLeverageForCompany(companyId, inputs.asOfDate);
   const {
     company,
     asOfDate,
@@ -55,7 +57,11 @@ export default async function DashboardPage({
   const facilitiesQuery = facilitiesQueryFromPosition(financialPosition, documentNameById);
   const maturitiesQuery = maturitiesQueryFromPosition(financialPosition);
 
-  const ns4Financial = await loadNs4DashboardFinancialState({ companyId, evaluationDate });
+  const [ns4Financial, contractualBundle] = await Promise.all([
+    loadNs4DashboardFinancialState({ companyId, evaluationDate }),
+    loadContractualMetricsForDashboard(companyId),
+  ]);
+  const contractualMetrics = toContractualMetricsView(contractualBundle);
 
   return (
     <DashboardClient
@@ -72,7 +78,7 @@ export default async function DashboardPage({
       maturitiesQuery={maturitiesQuery}
       attributedUtilizationSerialized={attributedUtilizationSerialized}
       ns4Financial={ns4Financial}
-      contractualLeverageRequests={leverage.requests}
+      contractualMetrics={contractualMetrics}
     />
   );
 }

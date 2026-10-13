@@ -106,6 +106,11 @@ export function buildCertificateProposalFromEngine(params: {
   companyId: string;
   run: EngineRunResult;
   proposalStatus?: "DRAFT" | "REVIEW_REQUIRED";
+  /**
+   * Persisted certificate delivery date (ISO YYYY-MM-DD or full ISO).
+   * Distinct from period asOf and from attributable approval reviewedAt.
+   */
+  deliveredAtIsoDate?: string;
 }): SyntheticCertificate | null {
   const { companyId, run } = params;
   const source = run.certificate ?? run.statement;
@@ -161,6 +166,9 @@ export function buildCertificateProposalFromEngine(params: {
     note: `FCE disposition=${run.reconciliation.disposition}; ${run.reconciliation.dispositionReason}`,
     facts,
     basketUsageLines: [],
+    ...(params.deliveredAtIsoDate
+      ? { deliveredAtIsoDate: params.deliveredAtIsoDate.slice(0, 10) }
+      : {}),
   };
 }
 
@@ -175,6 +183,7 @@ export interface ProposeNs4Result {
 export async function proposeNs4SnapshotFromEngine(params: {
   companyId: string;
   run: EngineRunResult;
+  deliveredAtIsoDate?: string;
 }): Promise<ProposeNs4Result> {
   const cert = buildCertificateProposalFromEngine(params);
   if (!cert) return { ok: false, reason: "No metrics available to propose." };
@@ -225,11 +234,12 @@ export async function approveNs4SnapshotAttributable(params: {
   reviewedBy: string;
   approvalRef: string;
   reconciliation: ReconciliationReport;
-  /** ISO timestamp of attributable approval; defaults to now. Not delivery evidence. */
+  /** ISO timestamp of attributable approval; defaults to now. Not certificate delivery. */
   reviewedAt?: string;
   /**
-   * When the certificate was delivered (ISO date). Distinct from reviewedAt / asOf.
-   * When omitted, APPROVED alone does not establish delivery for NS-6 cutoff.
+   * Certificate delivery date (ISO). When omitted, delivery evidence is not invented
+   * from period-end asOf or approval clock — certified NS-6 persisted-delivery-only
+   * selection then fails closed until delivery is supplied.
    */
   deliveredAsOfDate?: string;
 }): Promise<ProposeNs4Result> {
@@ -249,6 +259,7 @@ export async function approveNs4SnapshotAttributable(params: {
     reviewedAt: params.reviewedAt ?? new Date().toISOString(),
     approvalRef: params.approvalRef,
     deliveredAsOfDate: params.deliveredAsOfDate,
+    // Without an explicit delivery date, do not silently attribute approval clock as delivery.
     omitDeliveryEvidence: !params.deliveredAsOfDate,
     proposerKind: "extractor",
   });

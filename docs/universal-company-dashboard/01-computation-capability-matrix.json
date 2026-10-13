@@ -1,0 +1,319 @@
+{
+  "artifact": "UCD-0 verified computation capability matrix",
+  "startingSha": "67027b8f499921a12cee7b9b9f04d832898b6384",
+  "controllingDocs": [
+    "docs/headroom-north-star-v2.md",
+    "docs/headroom-north-star-reconciliation/06-revised-roadmap.md",
+    "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md"
+  ],
+  "canonicalIntegrationBranchMerged": "cursor/canonical-product-integration-5a28 (#293)",
+  "exactTipCi": {
+    "workflow": "canonical-compiler",
+    "runUrl": "https://github.com/egsul897/headroom/actions/runs/38184494968",
+    "headSha": "67027b8f499921a12cee7b9b9f04d832898b6384",
+    "conclusion": "success",
+    "jobs": ["certified path (provider-free): typecheck + phase3 certification + verifier suites"]
+  },
+  "engines": {
+    "legacyCovenantEngine": {
+      "path": "lib/covenant-engine.ts",
+      "role": "Production dashboard / simulate capacity path today",
+      "formulaTypes": [
+        "FLAT_AMOUNT",
+        "FLAT_NET_OF_DEBT",
+        "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+        "LEVERAGE_RATIO_ROOM",
+        "COVERAGE_RATIO_ROOM",
+        "BUILDER_BASKET",
+        "RATIO_GATE"
+      ],
+      "composition": "CapacityExpr REF|SUM|MIN|MAX",
+      "issuerSpecificCode": false,
+      "contractualDefinitionResolution": false,
+      "notes": "Uses flat FinancialSnapshotInput fields (ebitda, cash, totalDebt, securedDebt, interestExpense). computeLeverageMetrics treats FCCR as ebitda/interestExpense and secured net = securedDebt-cash. No first-lien vs secured distinction; no instrument-scoped Consolidated EBITDA definition."
+    },
+    "phase4Runtime": {
+      "paths": [
+        "lib/contract-model/runtime/evaluate-expression.ts",
+        "lib/contract-model/runtime/capacity/",
+        "lib/contract-model/runtime/input/",
+        "lib/contract-model/runtime/transaction/"
+      ],
+      "role": "North-Star deterministic layers 4A–4D (in-memory; not product UI authority)",
+      "expressionPrimitives": [
+        "MONEY", "NUMBER", "PERCENT", "RATIO", "ADD", "SUBTRACT", "MULTIPLY", "DIVIDE",
+        "MAX", "MIN", "SUM", "COMPARE", "AND", "OR", "NOT", "IF",
+        "METRIC_REFERENCE", "DEFINED_TERM_REFERENCE", "RULE_REFERENCE",
+        "LEDGER_USAGE_REFERENCE", "TRANSACTION_INPUT_REFERENCE",
+        "AS_OF", "DURING_PERIOD", "UNSUPPORTED", "UNLIMITED_CAPACITY"
+      ],
+      "wiredToProductDashboard": false,
+      "persistedApprovedSnapshots": false,
+      "persistedLedger": false
+    },
+    "solverNative": {
+      "path": "lib/solver/",
+      "role": "Permission-graph elections reusing evaluateProvision leaf math",
+      "wiredWhen": "Permission rows + coverage declaration SOLVER_NATIVE"
+    },
+    "financialCore": {
+      "path": "lib/financial-core/",
+      "role": "Generic CFO metrics (gross/net/secured leverage, interest coverage) from FinancialState — NOT contractual definitions",
+      "contractual": false
+    },
+    "financialCertificateEngine": {
+      "path": "lib/financial-certificate-engine/",
+      "role": "Evidence extraction + deriveContractualMetrics when certificate/statement evidence present",
+      "ratiosDerived": ["total_net_leverage", "interest_coverage", "fixed_charge_coverage"],
+      "inventsAddbacks": false
+    },
+    "verifiedCapacityAdapters": {
+      "path": "lib/capacity/",
+      "role": "Gross vs remaining, utilization honesty, financial evidence trust classes; production activation BLOCKED without HostIdentityProvider"
+    }
+  },
+  "financialDefinitions": {
+    "supportedAsIRShape": true,
+    "module": "IRDefinition + DEFINED_TERM_REFERENCE + METRIC_REFERENCE",
+    "resolvedFromOperativeDocumentAtScale": false,
+    "catalog": [
+      {
+        "term": "Consolidated EBITDA / Adjusted EBITDA",
+        "representation": "IRDefinition possible; legacy uses flat ebitda field",
+        "executableFromDocument": "NO — requires compiled definition + approved inputs",
+        "legacyProxy": "FinancialSnapshotInput.ebitda / FinancialState.covenantEbitda"
+      },
+      {
+        "term": "Consolidated Net Income",
+        "representation": "IRDefinition / FDP dataset",
+        "executableFromDocument": "NO",
+        "legacyProxy": "cumulativeNetIncome (builder only)"
+      },
+      {
+        "term": "Consolidated Total Debt",
+        "representation": "METRIC_REFERENCE or flat totalDebt",
+        "executableFromDocument": "NO",
+        "legacyProxy": "totalDebt"
+      },
+      {
+        "term": "Consolidated Secured Debt",
+        "representation": "METRIC_REFERENCE or flat securedDebt",
+        "executableFromDocument": "NO",
+        "legacyProxy": "securedDebt"
+      },
+      {
+        "term": "First Lien Debt",
+        "representation": "no first-class engine field",
+        "executableFromDocument": "NO",
+        "legacyProxy": "optional onboarding notes / debt-intelligence firstLienFromNotes only"
+      },
+      {
+        "term": "Consolidated Net Debt / cash netting",
+        "representation": "derived totalDebt-cash in legacy; FCE deriveContractualMetrics",
+        "executableFromDocument": "PARTIAL — simple cash netting only; capped/permitted cash netting UNSUPPORTED in legacy"
+      },
+      {
+        "term": "Fixed Charges",
+        "representation": "FCE FIXED_CHARGES extraction; legacy aliases FCCR to interestExpense",
+        "executableFromDocument": "NO — legacy incorrectly uses interestExpense as FCCR denominator"
+      },
+      {
+        "term": "Interest Expense",
+        "representation": "flat interestExpense / FCE",
+        "executableFromDocument": "PARTIAL — value binding only, not contractual definition expansion"
+      },
+      {
+        "term": "Total Assets / Consolidated Total Assets",
+        "representation": "optional totalAssets for grower baskets",
+        "executableFromDocument": "PARTIAL"
+      },
+      {
+        "term": "Available Amount / Cumulative Credit",
+        "representation": "BUILDER_BASKET + 4C DEFINED_TERM expansion in fixtures",
+        "executableFromDocument": "PARTIAL on fixtures; not general product compilation"
+      }
+    ]
+  },
+  "ratios": [
+    {
+      "name": "First Lien Leverage Ratio",
+      "genuinelyCalculableToday": false,
+      "paths": ["debt-intelligence generic if firstLien notes present"],
+      "status": "MISSING_PRIMITIVE — no first-lien debt identity in covenant-engine metrics"
+    },
+    {
+      "name": "First Lien Net Leverage Ratio",
+      "genuinelyCalculableToday": false,
+      "paths": [],
+      "status": "UNSUPPORTED"
+    },
+    {
+      "name": "Secured Leverage Ratio (gross)",
+      "genuinelyCalculableToday": "PARTIAL",
+      "paths": ["financial-core genericSecuredLeverage", "debt-intelligence"],
+      "status": "Generic securedDebt/EBITDA — not instrument Consolidated Secured Debt definition"
+    },
+    {
+      "name": "Secured Net Leverage Ratio",
+      "genuinelyCalculableToday": "PARTIAL",
+      "paths": ["covenant-engine computeLeverageMetrics.seniorSecuredNetLeverage", "LEVERAGE_RATIO_ROOM debtBasis=secured"],
+      "status": "Uses securedDebt-cash over flat ebitda; cash netting not contract-specific"
+    },
+    {
+      "name": "Total Leverage Ratio (gross)",
+      "genuinelyCalculableToday": "PARTIAL",
+      "paths": ["financial-core genericGrossLeverage", "debt-intelligence"],
+      "status": "Generic totalDebt/EBITDA"
+    },
+    {
+      "name": "Total Net Leverage Ratio",
+      "genuinelyCalculableToday": "PARTIAL",
+      "paths": ["covenant-engine totalNetLeverage", "FCE deriveContractualMetrics", "RATIO_GATE"],
+      "status": "Flat-field arithmetic; not recursive contractual definition"
+    },
+    {
+      "name": "Fixed Charge Coverage Ratio",
+      "genuinelyCalculableToday": false,
+      "paths": ["FCE when FIXED_CHARGES extracted; debt-intelligence if notes"],
+      "status": "Legacy engine aliases FCCR to interest coverage — NOT genuine FCCR"
+    },
+    {
+      "name": "Interest Coverage Ratio",
+      "genuinelyCalculableToday": "PARTIAL",
+      "paths": ["financial-core", "FCE", "covenant-engine fixedChargeCoverage field (misnamed)"],
+      "status": "ebitda/interestExpense when inputs present"
+    },
+    {
+      "name": "Debt / EBITDA",
+      "genuinelyCalculableToday": "PARTIAL",
+      "paths": ["financial-core genericGrossLeverage"],
+      "status": "Same as total leverage generic"
+    },
+    {
+      "name": "Other contractually defined ratios",
+      "genuinelyCalculableToday": "PARTIAL",
+      "paths": ["Phase 4A DIVIDE(METRIC,METRIC) when IR + snapshot supplied in tests"],
+      "status": "Runtime can evaluate; product does not compile/bind arbitrary ratios end-to-end"
+    }
+  ],
+  "baskets": [
+    {
+      "family": "Fixed-dollar general debt / lien / investment / RP baskets",
+      "genuinelyCalculableToday": true,
+      "engine": "legacy FLAT_AMOUNT + 4C MONEY",
+      "remainingCapacity": "Only with verified utilization; unknown usage ≠ zero"
+    },
+    {
+      "family": "Grower (greater-of flat / % EBITDA or Total Assets)",
+      "genuinelyCalculableToday": true,
+      "engine": "GREATER_OF_FLAT_OR_PCT_* + 4C MAX/MUL",
+      "caveat": "Metric is flat snapshot field, not contractual EBITDA definition"
+    },
+    {
+      "family": "Ratio debt / ratio room",
+      "genuinelyCalculableToday": "PARTIAL",
+      "engine": "LEVERAGE_RATIO_ROOM / RATIO_GATE / 4C SUB(NUM×METRIC, METRIC)",
+      "caveat": "Only total vs secured debtBasis; no first-lien; FCCR room needs assumed rate"
+    },
+    {
+      "family": "Builder / Available Amount",
+      "genuinelyCalculableToday": "PARTIAL",
+      "engine": "BUILDER_BASKET (CNI + equity + starter) + 4C DEFINED_TERM fixtures",
+      "caveat": "Not general Available Amount compilation from operative definitions"
+    },
+    {
+      "family": "Incremental facility (fixed + prepays + ratio bucket)",
+      "genuinelyCalculableToday": "PARTIAL",
+      "engine": "4C ADD composition in capacity-mathematics matrix",
+      "productWiring": false
+    },
+    {
+      "family": "Shared baskets / anti-stacking",
+      "genuinelyCalculableToday": "PARTIAL",
+      "engine": "4C shared constraints + solver SharedConstraint; fail-closed on ambiguous usage"
+    },
+    {
+      "family": "Asset sale / reinvestment",
+      "genuinelyCalculableToday": "PARTIAL",
+      "engine": "legacy AssetSaleConfig threshold + reinvestment window days",
+      "caveat": "Not full reinvestment capacity engine"
+    },
+    {
+      "family": "Credit facility / incremental commitments",
+      "genuinelyCalculableToday": "PARTIAL",
+      "engine": "solver + facilities in financial-core",
+      "caveat": "Not universal contractual incremental basket compilation"
+    },
+    {
+      "family": "Alternative path global maximum",
+      "genuinelyCalculableToday": false,
+      "engine": "Phase 4E path enumeration not product-wired; neutral enumeration readiness blocked on Phase 3 reliability"
+    }
+  ],
+  "dashboardMetrics": {
+    "engineDriven": [
+      "getCompanyDashboard → getFinancialPosition + computeRemainingCapacityAfterDebtIncurrence(amount=0)",
+      "dashboard-service explicitly forbids UI arithmetic"
+    ],
+    "hardcodedOrSyntheticOrIssuerBranched": [
+      {
+        "surface": "app/[companyId]/position — CONMED demo path",
+        "issue": "companyId === CONMED_DEMO_COMPANY_ID branches to package legal path"
+      },
+      {
+        "surface": "app/[companyId]/documents|evidence — CONMED demo documents",
+        "issue": "Issuer-specific demo package constants"
+      },
+      {
+        "surface": "lib/dashboard-service SOLVER_CONTEXT_ENTITY_DEFAULTS",
+        "issue": "coherent/matthews entity default table (degrades generically for others)"
+      },
+      {
+        "surface": "lib/product/customer-intelligence/debt-intelligence.ts ratios",
+        "issue": "Generic ratio formulas with AI-surfaced thresholds; not certified rulebook execution"
+      },
+      {
+        "surface": "Feeds / certificates synthetic seed",
+        "issue": "Synthetic certificate DRAFT seed; production IdP BLOCKED"
+      },
+      {
+        "surface": "docs/HEADROOM-NORTH-STAR.md historical note on Feeds connected sources",
+        "issue": "Illustrative connected-sources card pattern historically hardcoded (verify current feeds load-state)"
+      }
+    ],
+    "notFromCovenantEngine": [
+      "financial-core generic leverage/coverage (architecture §G — deliberately non-contractual)",
+      "AI_SURFACED maintenance covenant rows without executable formula mapping"
+    ]
+  },
+  "missingPrimitives": [
+    "Instrument-scoped contractual financial definition compilation → executable IR at product scale",
+    "First-lien / junior-lien / unsecured debt basis identities in legacy metrics",
+    "Genuine Fixed Charges definition distinct from Interest Expense",
+    "Permitted cash netting caps and exclusions as first-class expression components",
+    "Contractual selector → snapshot identity resolution (North Star step 6)",
+    "Persisted APPROVED financial snapshot store (NS-4)",
+    "Persisted path-attributed immutable ledger (North Star step 8)",
+    "Product wiring of 4A–4D as dashboard authority (still legacy)",
+    "Automated missing-input report classified AVAILABLE_VERIFIED|…|UNSUPPORTED per compiled calc",
+    "Cross-company held-out numerical acceptance suite for UCD (distinct from Phase 3 discovery scores)",
+    "Currency conversion (explicitly fail-closed today — correct, but blocks multi-currency packages)",
+    "Global capacity maximum across alternative paths with verified contractual authority (4E)"
+  ],
+  "missingFinancialInputArchitecture": [
+    "NS-4 append-only approved snapshot persistence not implemented",
+    "Certificate → APPROVED snapshot approval path incomplete for real customer certificates",
+    "Selector resolution layer absent",
+    "Dual schemas: legacy FinancialSnapshot vs FinancialState vs 4B FinancialSnapshot types",
+    "Connector framework output not wired to FinancialState",
+    "LedgerEntry (6-basket enum) unlinked from DebtEvent and from 4C path-attributed usage",
+    "Trusted issuer HostIdentityProvider production activation BLOCKED"
+  ],
+  "gapsVsPhase345": {
+    "phase3": "Semantic IR + certification exist; reliability/stratified certification gate still open; product dashboard does not consume certified rulebook",
+    "phase4": "4A–4D engines real and tested in-memory; not persisted; not dashboard authority; 4E not ready",
+    "phase5HistoricalErpVision": "Superseded by north-star-v2 — MVP is certificates/snapshots not ERP sync",
+    "ucdGap": "UCD requires end-to-end: operative docs → definitions → bound verified inputs → ratios/capacity → dashboard with provenance. Pieces exist in isolation; universal company-agnostic product path does not."
+  }
+}

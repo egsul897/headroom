@@ -119,20 +119,19 @@ export function buildPositionView(args: {
   );
 
   const asOfDate = dashboard?.asOfDate ? dashboard.asOfDate.toISOString().slice(0, 10) : null;
-  // Last verified evidence: prefer NS-4 / legal-review signal; never invent "today".
-  const lastVerifiedEvidenceDate =
-    readiness.approvedNorthStarSnapshotCount > 0 || readiness.ns4ApprovedSnapshotCount > 0
-      ? asOfDate
-      : null;
+  // Do not copy legacy dashboard period-end asOf into "Last verified evidence date".
+  // Certificate delivery / approval / completeness attestation are distinct temporal axes;
+  // until those are loaded for the bound snapshot, leave UNKNOWN (null) — never invent today.
+  const lastVerifiedEvidenceDate = null;
 
   const sides: PositionSideClaim[] = (["secured", "unsecured"] as const).map((side) => {
     const sim = dashboard?.capacity[side];
     const packageAuth = sim?.packageAuthoritative;
     // #328: dashboard utilizationRemainingAuthority / remainingCapacity alone must NEVER
     // publish AVAILABLE remaining. Authoritative remaining requires separatedClaims.
-    // PAI-08 refinement: legacy remainingCapacity is NOT source-backed gross — never
-    // auto-relabel it GROSS_CONTRACTUAL. Publish GROSS only from separatedClaims.grossContractual
-    // (ProductCapacityView.grossCapacity); otherwise UNAVAILABLE / UNKNOWN.
+    // PAI-08 refinement (#333 / #330 absorb): legacy remainingCapacity is NOT source-backed
+    // gross — never auto-relabel it GROSS_CONTRACTUAL. Publish GROSS only from
+    // separatedClaims.grossContractual (ProductCapacityView.grossCapacity); otherwise UNAVAILABLE.
     const separated = args.separatedClaims?.[side];
     const productionAuthoritative = separated?.remainingAuthoritative === true;
     const sourceBackedGrossMm =

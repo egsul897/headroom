@@ -388,6 +388,8 @@ describeIso("NS-4 APPROVED financial change invalidates capacity + simulation", 
       companyId: COMPANY,
       predecessorSnapshotId: coherentPropose.snapshotId!,
       reviewedByNote: "draft correction — must not invalidate until approved",
+      // Delivery after Coherent (2026-07-20) and on/before EVAL_COH (2026-08-01).
+      deliveredAtIsoDate: "2026-07-28",
     });
     expect(restatement.ok).toBe(true);
     expect(restatement.status).toBe("DRAFT");

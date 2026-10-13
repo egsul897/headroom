@@ -159,16 +159,14 @@ async function runIssuerSlice(args: {
   });
   expect(before.status).not.toBe("APPROVED_BOUND");
 
-  // Explicit delivery on/before evaluationDate — reviewedAt alone never establishes delivery.
+  // Attributable approval time — delivery is persisted at propose (fixture deliveredAtIsoDate).
   const reviewedAt = `${args.evaluationDate}T12:00:00Z`;
-  const deliveredAsOfDate = args.evaluationDate;
   const approved = await approveFceProposedCertificate({
     companyId: args.companyId,
     snapshotId: proposed.snapshotId!,
     reviewedBy: `counsel-${args.issuer}@test.local`,
     approvalRef: `apr-${args.issuer}`,
     reviewedAt,
-    deliveredAsOfDate,
   });
   if (!approved.ok) {
     const ws = await approveWorkspaceCertificate({
@@ -177,7 +175,6 @@ async function runIssuerSlice(args: {
       reviewedBy: `counsel-${args.issuer}@test.local`,
       approvalRef: `apr-${args.issuer}`,
       reviewedAt,
-      deliveredAsOfDate,
     });
     expect(ws.ok).toBe(true);
   } else {
