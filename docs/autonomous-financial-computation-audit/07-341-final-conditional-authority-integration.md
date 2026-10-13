@@ -30,3 +30,10 @@ Forged `authoritative:true`, matching SHA-256 seals, JSON clones, superseded sna
 ## Explicit non-goals
 
 No self-merge. No second resolver. No production-authority activation.
+## Landing note
+
+Validated authority content identical to `be49c655` (byte-identical brand/fulfillment/adversarial files).
+Rebased onto `main` `7131fc81` (#337) after contaminated tip `a0302cf2` introduced off-main #340 cross-domain surfaces.
+New tip SHA is post-rebase (cannot remain `be49c655` once main advanced).
+Human merge only — no self-merge.
+
