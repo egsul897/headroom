@@ -47,6 +47,15 @@ export type {
   SelectorResolutionResult,
 } from "./runtime/input/selector";
 
+/** Temporal delivery evidence — product must not invent delivery from period-end asOf. */
+export {
+  deliveriesFromApprovedSnapshots,
+  encodeDeliveredAtInApprovalRef,
+  extractDeliveredAtFromApprovalRef,
+  temporalAxesFromSnapshot,
+} from "./runtime/input/delivery-evidence";
+export type { DeliveryReconstructionMode } from "./runtime/input/delivery-evidence";
+
 export {
   PrismaContractLedgerStore,
   InMemoryContractLedgerStore,

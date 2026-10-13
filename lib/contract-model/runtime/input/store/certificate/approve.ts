@@ -4,6 +4,7 @@
  * Extractor / PUBLIC_FILING_RECONSTRUCTION proposals stay DRAFT | REVIEW_REQUIRED until this
  * attributable transition runs. There is no auto-approve path.
  */
+import { encodeDeliveredAtInApprovalRef } from "../../delivery-evidence";
 import type { AsyncApprovedSnapshotStore, SyncApprovedSnapshotStore } from "../store-api";
 import type { WriteResult } from "../types";
 import type { ApproveCertificateProposalRequest, CertificateProposerKind } from "./types";
@@ -14,13 +15,19 @@ function approvalArgs(request: ApproveCertificateProposalRequest) {
     reviewedBy,
     reviewedAt,
     approvalRef,
+    deliveredAsOfDate,
     sourceDocumentId,
     sourceVersionHash,
     proposerKind,
   } = request;
 
   // Provenance-enriched approvalRef for auditability (still attributable via approveSnapshot).
-  const enrichedRef = enrichApprovalRef(approvalRef, {
+  // Persist certificate delivery date here — never reconstruct it later from period-end asOf.
+  const withDelivery = encodeDeliveredAtInApprovalRef(
+    approvalRef,
+    deliveredAsOfDate ?? reviewedAt.slice(0, 10),
+  );
+  const enrichedRef = enrichApprovalRef(withDelivery, {
     sourceDocumentId,
     sourceVersionHash,
     proposerKind,

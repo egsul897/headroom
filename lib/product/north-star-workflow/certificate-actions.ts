@@ -128,11 +128,14 @@ export async function approveWorkspaceCertificate(args: {
     return { ok: true, snapshotId: args.snapshotId, status: "APPROVED", approvalRef: snap.review.approvalRef ?? undefined };
   }
   const reviewedAt = args.reviewedAt ?? new Date().toISOString();
+  // Persist delivery explicitly. Default to approval date — never invent from period-end asOf.
+  const deliveredAsOfDate = args.deliveredAsOfDate ?? reviewedAt.slice(0, 10);
   const result = await approveCertificateProposalAsync(store, {
     snapshotId: args.snapshotId,
     reviewedBy: args.reviewedBy,
     reviewedAt,
     approvalRef: args.approvalRef,
+    deliveredAsOfDate,
     sourceDocumentId: args.sourceDocumentId,
     sourceVersionHash: args.sourceVersionHash,
     proposerKind: "human",

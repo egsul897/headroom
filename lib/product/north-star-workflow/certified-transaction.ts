@@ -112,7 +112,11 @@ export async function attemptCertifiedTransaction(args: {
     // Align with Dashboard NS-4 band — delivered certificate, not calendar FY label alone.
     selector: args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR,
     fiscalCalendar,
+<<<<<<< HEAD
     deliveries: deliveriesFromApprovedSnapshots(companyId, cutoffEligible),
+=======
+    deliveries: deliveriesFromApprovedSnapshots(companyId, approvedAll, "ALLOW_REVIEWED_AT_FALLBACK"),
+>>>>>>> 64bc21e0 (fix(integration): persist certificate delivery dates across NS-6 cutoff)
   });
 
   let cutoffState = resolved.state;
