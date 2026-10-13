@@ -4057,3 +4057,154 @@ model ContractLedgerUsageEvent {
   @@map("contract_ledger_usage_events")
 }
 
+// =============================================================================
+// Covenant Learning Factory — versioned precedent knowledge + evaluation ledger
+// Additive only. Automated writers may set PROPOSED / REVIEW_REQUIRED only.
+// VERIFIED / REJECTED / SUPERSEDED require attributable reviewer transitions.
+// Never auto-promotes production Permission / ledger / APPROVED snapshot authority.
+// =============================================================================
+
+enum LearningKnowledgeState {
+  PROPOSED
+  REVIEW_REQUIRED
+  VERIFIED
+  REJECTED
+  SUPERSEDED
+
+  @@map("learning_knowledge_state")
+}
+
+enum LearningCohort {
+  TRAIN_DEV
+  HELD_OUT
+
+  @@map("learning_cohort")
+}
+
+model LearningPackage {
+  id             String         @id @default(cuid())
+  packageKey     String         @unique
+  companyId      String
+  issuerCik      String
+  issuerTicker   String?
+  issuerName     String?
+  cohort         LearningCohort
+  provenance     String
+  usageRights    String
+  evaluationOnly Boolean        @default(false)
+  metadata       Json?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  runs LearningRun[]
+
+  @@index([issuerCik])
+  @@index([cohort])
+  @@map("learning_packages")
+}
+
+model LearningRun {
+  id              String    @id @default(cuid())
+  runId           String    @unique
+  packageKey      String
+  status          String
+  codeSha         String
+  factoryVersion  String
+  compilerVersion String
+  startedAt       DateTime
+  finishedAt      DateTime?
+  manifestJson    Json
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  package LearningPackage @relation(fields: [packageKey], references: [packageKey], onDelete: Cascade)
+
+  @@index([packageKey])
+  @@index([status])
+  @@map("learning_runs")
+}
+
+model LearningArtifact {
+  id                   String                @id @default(cuid())
+  artifactId           String                @unique
+  packageKey           String
+  runId                String
+  kind                 String
+  state                LearningKnowledgeState
+  family               String?
+  sourceRefsJson       Json
+  payloadJson          Json
+  compilerVersion      String
+  modelOrPromptVersion String?
+  supersedesArtifactId String?
+  reviewedBy           String?
+  reviewedAt           DateTime?
+  createdAt            DateTime              @default(now())
+
+  @@index([packageKey, state])
+  @@index([runId])
+  @@index([kind])
+  @@map("learning_artifacts")
+}
+
+model LearningErrorLedgerEntry {
+  id                    String   @id @default(cuid())
+  errorId               String   @unique
+  packageKey            String
+  runId                 String
+  class                 String
+  severity              String
+  message               String
+  stage                 String
+  evidenceJson          Json?
+  correctiveHistoryJson Json
+  createdAt             DateTime @default(now())
+
+  @@index([packageKey])
+  @@index([class])
+  @@index([runId])
+  @@map("learning_error_ledger_entries")
+}
+
+model LearningEvaluationOutcome {
+  id                       String         @id @default(cuid())
+  evaluationId             String         @unique
+  packageKey               String
+  runId                    String
+  cohort                   LearningCohort
+  sourceFidelityPass       Boolean?
+  coverageScore            Float?
+  calculationCorrectness   Boolean?
+  dangerousOmissionCount   Int            @default(0)
+  abstentionCount          Int            @default(0)
+  supportedStructureUnits  Int            @default(0)
+  verifiedExecutableUnits  Int            @default(0)
+  unsupportedUnits         Int            @default(0)
+  refusedExecutableUnits   Int            @default(0)
+  independent              Boolean        @default(true)
+  notesJson                Json
+  createdAt                DateTime       @default(now())
+
+  @@index([packageKey])
+  @@index([cohort])
+  @@map("learning_evaluation_outcomes")
+}
+
+model LearningImprovementProposal {
+  id           String   @id @default(cuid())
+  proposalId   String   @unique
+  packageKey   String
+  runId        String
+  lever        String
+  summary      String
+  bounded      Boolean  @default(true)
+  autoApply    Boolean  @default(false)
+  evidenceJson Json
+  state        String   @default("PROPOSED")
+  createdAt    DateTime @default(now())
+
+  @@index([packageKey])
+  @@index([state])
+  @@map("learning_improvement_proposals")
+}
+
