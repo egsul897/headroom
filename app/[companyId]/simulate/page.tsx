@@ -16,6 +16,8 @@ import {
 } from "@/lib/product/unified-position/certified-simulate-bridge";
 import { requireAssembledCfoWorkflow } from "@/lib/customer-workflow/require-workflow-access";
 import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
+import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
+import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
 import { loadApprovedFinancialInputBundle } from "@/lib/product/north-star-workflow";
 import { SimulateClient } from "./SimulateClient";
 
@@ -89,6 +91,13 @@ export default async function SimulatePage({
     ]);
   const verifiedSummary = summarizeVerifiedSimulate(verified);
   const simView = workflow.simulate;
+  // Same CompanyCovenantData as Position; utilizationAuthority null → verified remaining withheld.
+  const crossDomainAcquisition = evaluateSimulateCrossDomainAcquisition({
+    data,
+    amountMillions: amountMillions > 0 ? amountMillions : 150,
+    evaluationDate,
+    utilizationAuthority: null,
+  });
 
   return (
     <div className="stack">
@@ -231,6 +240,8 @@ export default async function SimulatePage({
       </Card>
 
       <VerifiedSimulatePanel summary={verifiedSummary} evaluationDate={evaluationDate} />
+
+      <CrossDomainSimulatePanel evaluation={crossDomainAcquisition} />
 
       <SimulateClient
         companyId={companyId}

@@ -130,11 +130,15 @@ describeIso("NS-4 secured-debt acquisition — Dashboard/Position/Simulate ident
     });
 
     const byDomain = Object.fromEntries(xd.domains.map((d) => [d.domain, d]));
-    expect(byDomain.DEBT_INCURRENCE_REFINANCING?.support).toBe("EXECUTABLE");
+    // Honest package-wide classifications (audit): PARTIAL / UNSUPPORTED — never false EXECUTABLE.
+    expect(byDomain.DEBT_INCURRENCE_REFINANCING?.support).toBe("PARTIAL");
     expect(byDomain.LIENS_SECURED_CAPACITY?.support).toBe("PARTIAL");
-    expect(byDomain.INVESTMENTS_ACQUISITIONS?.support).toBe("EXECUTABLE");
-    expect(byDomain.FINANCIAL_COVENANTS_RATIO_CAPACITY?.support).toBe("EXECUTABLE");
+    expect(byDomain.INVESTMENTS_ACQUISITIONS?.support).toBe("PARTIAL");
+    expect(byDomain.FINANCIAL_COVENANTS_RATIO_CAPACITY?.support).toBe("PARTIAL");
     expect(byDomain.LEDGER_UTILIZATION_RECLASSIFICATION?.support).toBe("PARTIAL");
+    expect(byDomain.AFFILIATE_TRANSACTIONS?.support).toBe("UNSUPPORTED");
+    expect(byDomain.GUARANTEES?.support).toBe("PARTIAL");
+    expect(byDomain.SUBSIDIARY_DESIGNATION_STRUCTURAL?.support).toBe("UNSUPPORTED");
 
     // Independent condition statuses (not a single package-wide clear).
     const statuses = new Set(xd.domains.map((d) => `${d.domain}:${d.support}:${d.status}`));

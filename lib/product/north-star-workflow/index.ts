@@ -160,9 +160,12 @@ export {
   evaluateCrossDomainTransaction,
   covenantDomainCoverage,
   CROSS_DOMAIN_EVALUATION_VERSION,
+  CROSS_DOMAIN_CANONICAL_OWNER,
+  resolveCanonicalVerifiedRemaining,
   type CrossDomainTransactionEvaluation,
   type CovenantDomain,
   type ContemplatedCrossDomainTransaction,
+  type CrossDomainUtilizationAuthority,
 } from "@/lib/product/cross-domain-transaction";
 export {
   evaluateDefaultCrossDomainScenarios,
@@ -171,3 +174,10 @@ export {
   evaluateMatthewsScenario,
   listCoherentCrossDomainScenarios,
 } from "@/lib/product/cross-domain-scenarios";
+export {
+  executePackageTransaction,
+  PACKAGE_TRANSACTION_EXECUTION_VERSION,
+  type PackageTransactionResult,
+  type PackageTransactionRequest,
+} from "@/lib/product/package-transaction-execution";
+export { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
