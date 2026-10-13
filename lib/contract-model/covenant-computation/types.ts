@@ -25,18 +25,23 @@ export type RatioKey =
   | "FIXED_CHARGE_COVERAGE"
   | "INTEREST_COVERAGE"
   | "LEVERAGE"
-  | "SENIOR_LEVERAGE";
+  | "SENIOR_LEVERAGE"
+  | "NET_LEVERAGE";
 
 export type RatioDirection = "MAX" | "MIN";
 
 export type BasketCategory =
   | "FIXED_DOLLAR"
   | "GROWER_GREATER_OF"
+  | "PCT_OF_METRIC"
   | "RATIO_BASED"
   | "BUILDER_AVAILABLE_AMOUNT"
   | "UNLIMITED"
+  | "UNLIMITED_BY_PURPOSE"
   | "RECLASS"
   | "UNKNOWN";
+
+export type BasketScope = "GENERAL" | "PURPOSE_SPECIFIC";
 
 export interface PackageDocument {
   documentId: string;
@@ -51,6 +56,11 @@ export interface BasketClause {
   documentId: string;
   /** Exact slice of `documentId` text. Not a paraphrase. */
   operativeText: string;
+  /**
+   * PERMISSION: an affirmative exception (intercompany, a numbered basket).
+   * CONDITION: a negative-covenant proviso with no capacity of its own.
+   */
+  role?: "PERMISSION" | "CONDITION";
 }
 
 /** A covenant the inventory names, whose operative text is not in the bound package. */
@@ -120,6 +130,10 @@ export interface ComputedBasket {
   sourceDocumentId: string;
   citationExcerpt: string;
   category: BasketCategory;
+  /** GENERAL basket versus a purpose-limited permission. */
+  scope: BasketScope;
+  /** Cap as written. Null when the clause states no formula. */
+  capFormula: string | null;
   formulaKind: string | null;
   capStatus: ComputationStatus;
   /** Gross cap in contract units. Null for ratio tests, unlimited, and unknowns. */

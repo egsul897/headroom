@@ -149,7 +149,7 @@ describe("Matthews covenant book", () => {
 
     expect(notes?.citationExcerpt).toMatch(/Debt under the Notes issued on the Issue Date/);
     expect(notes?.citationExcerpt).not.toMatch(/\$300,000,000/);
-    expect(notes?.category).toBe("UNKNOWN");
+    expect(notes?.category).toBe("UNLIMITED_BY_PURPOSE");
     expect(notes?.capCanonical).toBeNull();
 
     expect(ratioDebt?.category).toBe("RATIO_BASED");
@@ -173,9 +173,9 @@ describe("Matthews covenant book", () => {
     expect(foreignSubs?.citationExcerpt).toMatch(/greater of \(a\) \$100\.0 million and \(b\) 5\.5% of the Total Assets/);
     expect(foreignSubs?.capCanonical).toBe(greaterOf("100", "0.055"));
 
-    expect(liens?.category).toBe("UNKNOWN");
+    expect(liens?.category).toBe("UNLIMITED_BY_PURPOSE");
     expect(liens?.capCanonical).toBeNull();
-    expect(caLiens?.category).toBe("UNKNOWN");
+    expect(caLiens?.category).toBe("UNLIMITED_BY_PURPOSE");
     expect(caLiens?.citationExcerpt).toMatch(/2024 Note Offering/);
     expect(caLiens?.capCanonical).toBeNull();
 
@@ -186,12 +186,16 @@ describe("Matthews covenant book", () => {
     expect(section514?.capCanonical).toBeNull();
 
     expect(book.baskets.every((b) => b.remainingStatus === "NEEDS_INPUT")).toBe(true);
-    expect(book.baskets.filter((b) => b.capStatus === "COMPUTED").map((b) => b.stableKey).sort()).toEqual(
-      ["matw-409a", "matw-409a-proviso", "matw-pd-1a", "matw-pd-13", "matw-pd-16", "matw-pd-9"].sort(),
-    );
-    expect(book.baskets.filter((b) => b.capKind === "AMOUNT" && b.capStatus === "COMPUTED").map((b) => b.stableKey).sort()).toEqual(
-      ["matw-409a-proviso", "matw-pd-1a", "matw-pd-13", "matw-pd-16", "matw-pd-9"].sort(),
-    );
+    const computedKeys = book.baskets.filter((b) => b.capStatus === "COMPUTED").map((b) => b.stableKey);
+    for (const key of ["matw-409a", "matw-409a-proviso", "matw-pd-1a", "matw-pd-13", "matw-pd-16", "matw-pd-9"]) {
+      expect(computedKeys, key).toContain(key);
+    }
+    expect(computedKeys).toHaveLength(19);
+    const amountKeys = book.baskets.filter((b) => b.capKind === "AMOUNT" && b.capStatus === "COMPUTED").map((b) => b.stableKey);
+    for (const key of ["matw-409a-proviso", "matw-pd-1a", "matw-pd-13", "matw-pd-16", "matw-pd-9"]) {
+      expect(amountKeys, key).toContain(key);
+    }
+    expect(amountKeys).toHaveLength(18);
   });
 
   it("leaves only the missing compliance-certificate amounts as an omission", () => {

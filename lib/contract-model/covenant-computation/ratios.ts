@@ -47,6 +47,7 @@ export const RATIO_CATALOG: readonly CatalogEntry[] = [
   { ratioKey: "INTEREST_COVERAGE", displayName: "Interest Coverage Ratio", names: ["Interest Coverage Ratio", "Consolidated Interest Coverage Ratio"], kind: "COVERAGE" },
   { ratioKey: "LEVERAGE", displayName: "Leverage Ratio", names: ["Leverage Ratio"], kind: "LEVERAGE" },
   { ratioKey: "SENIOR_LEVERAGE", displayName: "Senior Leverage Ratio", names: ["Senior Leverage Ratio"], kind: "LEVERAGE" },
+  { ratioKey: "NET_LEVERAGE", displayName: "Net Leverage Ratio", names: ["Net Leverage Ratio"], kind: "LEVERAGE" },
 ];
 
 /** Longest first is not required; overlap is dropped in metricsIn. */
@@ -60,6 +61,7 @@ const OPERANDS = [
   "Net Indebtedness",
   "Senior Indebtedness",
   "Secured Debt",
+  "Net Debt",
   "Interest Expense",
   "Total Assets",
   "EBITDA",

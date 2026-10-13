@@ -16,174 +16,104 @@ import {
   MATTHEWS_FINANCIAL_STATEMENT_Q1_FY2025,
 } from "@/lib/financial-certificate-engine/fixtures/authentic-matthews-q1-fy2025";
 import { MATTHEWS_PACKAGE_KEY } from "@/lib/product/real-dashboard-vertical-slice/package-matthews";
+import { extractBasketClauses, supersededSectionNumbers } from "../extract-baskets";
 import type { BasketClause, ComputationPackage } from "../types";
-import { excerptFrom, excerptThrough, norm } from "../text";
+import { norm } from "../text";
 
 const INDENTURE_ID = "matw-indenture-2024-ex4-1";
 const CA_ID = "matw-ca-fifth-amendment";
 const SIXTH_ID = "matw-ca-sixth-amendment";
 
-const PERMITTED_DEBT_STARTS = [
-  "(2) Debt under the Notes issued on the Issue Date",
-  "(3) Debt under the Existing Notes outstanding on the Issue Date",
-  "(4) Debt of the Company or any Restricted Subsidiary outstanding on the Issue Date",
-  "(5) Guarantees by the Company or Restricted Subsidiaries of Debt permitted",
-  "(6) Debt of the Company owing to and held by any Restricted Subsidiary",
-  "(7) Debt Incurred in respect of workers",
-  "(8) Debt under Swap Contracts and Hedging Obligations that are Incurred in the ordinary course of business",
-  "(9) Debt of the Company or any Restricted Subsidiary pursuant to Capital Lease",
-  "(10) Debt arising from agreements of the Company or a Restricted Subsidiary providing for",
-  "(11) Debt arising from the honoring by a bank",
-  "(12) obligations of the Company or its Subsidiaries in respect of customer advances",
-  "(13) Debt of Foreign Subsidiaries in an aggregate amount",
-  "(14) performance bonds or performance guaranties",
-  "(15) (i) Debt of Persons Incurred and outstanding",
-  "(16) Debt of the Company or any Restricted Subsidiary not otherwise permitted",
-  "(17) the Incurrence by the Company or any Restricted Subsidiary of Refinancing Debt",
-  "(18) the issuance by any of the",
-  "(19) Debt arising in connection with endorsement of instruments",
-  "(20) Debt evidenced by promissory notes subordinated",
-  "(21) the issuance by a Receivable Subsidiary of a Purchase Money Note",
-  "(22) Debt incurred in connection with Federal",
-] as const;
-
 function loadOperative(name: string): string {
   return norm(readFileSync(join(process.cwd(), "tests/fixtures/edgar/matthews", name), "utf8"));
 }
 
-function clause(
-  stableKey: string,
-  sectionRef: string,
-  covenantFamily: string,
-  documentId: string,
-  operativeText: string,
-): BasketClause {
-  return { stableKey, sectionRef, covenantFamily, documentId, operativeText };
-}
-
-function orderedSlices(text: string, starts: readonly string[], end: string): string[] {
-  const positions: number[] = [];
-  let from = 0;
-  for (const start of starts) {
-    const at = text.indexOf(start, from);
-    if (at < 0) throw new Error(`covenant computation: source marker missing: ${start.slice(0, 70)}`);
-    positions.push(at);
-    from = at + start.length;
+function aliasMatthews(clause: BasketClause): BasketClause {
+  const text = clause.operativeText;
+  const hit = ALIASES.find((alias) => alias.test(text));
+  if (hit) return { ...clause, stableKey: hit.key, sectionRef: hit.section };
+  const debt = clause.sectionRef.match(/^Permitted Debt \((\d+)\)$/);
+  if (debt && clause.documentId === INDENTURE_ID) {
+    return { ...clause, stableKey: `matw-pd-${debt[1]}`, sectionRef: clause.sectionRef };
   }
-  const endAt = text.indexOf(end, from);
-  if (endAt < 0) throw new Error(`covenant computation: source end marker missing: ${end.slice(0, 70)}`);
-  return positions.map((at, index) => text.slice(at, index + 1 < positions.length ? positions[index + 1]! : endAt).trim());
+  return clause;
 }
 
-function indentureBaskets(text: string): BasketClause[] {
-  const facilities = excerptFrom(
-    text,
-    "not to exceed the sum of (a) $1,300.0 million",
-    " and (b) an amount of Debt",
-  );
-  const secured = excerptFrom(
-    text,
-    "(x) the Secured Net Leverage Ratio",
-    " and (y) in the case of Debt",
-  );
-  const firstLien = excerptThrough(
-    text,
-    "(y) in the case of Debt that constitutes First Priority Obligations",
-    "2.50 to 1.00",
-  );
-  const later = orderedSlices(
-    text,
-    PERMITTED_DEBT_STARTS,
-    "If any Debt incurred by the Company or any Restricted Subsidiary would qualify",
-  );
-  const numbered = later.map((operativeText, index) =>
-    clause(`matw-pd-${index + 2}`, `Permitted Debt (${index + 2})`, "DEBT_INCURRENCE", INDENTURE_ID, operativeText),
-  );
-  return [
-    clause("matw-pd-1a", "Permitted Debt (1)(a)", "DEBT_INCURRENCE", INDENTURE_ID, facilities),
-    clause("matw-pd-1bx", "Permitted Debt (1)(b)(x)", "DEBT_INCURRENCE", INDENTURE_ID, secured),
-    clause("matw-pd-1by", "Permitted Debt (1)(b)(y)", "DEBT_INCURRENCE", INDENTURE_ID, firstLien),
-    ...numbered,
-    clause(
-      "matw-409a",
-      "§4.09(a)",
-      "DEBT_INCURRENCE",
-      INDENTURE_ID,
-      excerptThrough(text, "Section 4.09 Limitation on Incurrence of Debt. (a)", "2.00 to 1.00"),
-    ),
-    clause(
-      "matw-409a-proviso",
-      "§4.09(a) non-guarantor proviso",
-      "DEBT_INCURRENCE",
-      INDENTURE_ID,
-      excerptThrough(
-        text,
-        "the aggregate principal amount of Debt Incurred by Non-Guarantor Subsidiaries pursuant to this Section 4.09(a)",
-        "in the aggregate.",
-      ),
-    ),
-    clause(
-      "matw-410",
-      "§4.10",
-      "LIENS",
-      INDENTURE_ID,
-      excerptFrom(text, "Section 4.10 Limitation on Liens.", "Any Lien created for the benefit of Holders"),
-    ),
-  ];
-}
-
-function creditAgreementBaskets(text: string, sixth: string): BasketClause[] {
-  return [
-    clause(
-      "matw-514a",
-      "Credit Agreement §5.14(a) Leverage Ratio",
-      "FINANCIAL_COVENANT",
-      CA_ID,
-      excerptThrough(
-        text,
-        "(a) Leverage Ratio. The US Borrower and its Subsidiaries shall maintain a Leverage Ratio",
-        "4.50 to 1.00",
-      ),
-    ),
-    clause(
-      "matw-514a-temporary",
-      "Credit Agreement §5.14(a) Temporary Leverage Increase Period",
-      "FINANCIAL_COVENANT",
-      CA_ID,
-      excerptThrough(text, "(x) the required Leverage Ratio", "5.00 to 1.00"),
-    ),
-    clause(
-      "matw-514a-temporary-senior",
-      "Credit Agreement §5.14(a) Temporary Senior Leverage Test Period",
-      "FINANCIAL_COVENANT",
-      CA_ID,
-      excerptThrough(text, "(y) the required Senior Leverage Ratio", "4.00 to 1.00"),
-    ),
-    clause(
-      "matw-514b",
-      "Credit Agreement §5.14(b) Interest Coverage Ratio",
-      "FINANCIAL_COVENANT",
-      CA_ID,
-      excerptThrough(
-        text,
-        "(b) Interest Coverage Ratio. The US Borrower and its Subsidiaries shall maintain an Interest Coverage Ratio",
-        "3.00 to 1.0.",
-      ),
-    ),
-    clause(
-      "matw-ca-601j",
-      "§6.01(j)",
-      "LIENS",
-      SIXTH_ID,
-      excerptFrom(sixth, "(j) Liens securing Indebtedness under the 2024 Note Offering", "; (k)"),
-    ),
-  ];
-}
+const ALIASES: { key: string; section: string; test: (text: string) => boolean }[] = [
+  {
+    key: "matw-pd-1a",
+    section: "Permitted Debt (1)(a)",
+    test: (text) => text.includes("not to exceed the sum of (a) $1,300.0 million"),
+  },
+  {
+    key: "matw-pd-1bx",
+    section: "Permitted Debt (1)(b)(x)",
+    test: (text) => text.includes("(x) the Secured Net Leverage Ratio") && text.includes("3.50 to 1.00"),
+  },
+  {
+    key: "matw-pd-1by",
+    section: "Permitted Debt (1)(b)(y)",
+    test: (text) =>
+      text.includes("(y)") &&
+      text.includes("First Lien Net Leverage Ratio") &&
+      text.includes("2.50 to 1.00") &&
+      text.includes("First Priority Obligations"),
+  },
+  {
+    key: "matw-409a",
+    section: "§4.09(a)",
+    test: (text) =>
+      /Fixed Charge Coverage Ratio/i.test(text) &&
+      /2\.00 to 1\.00/.test(text) &&
+      !/greater of/i.test(text),
+  },
+  {
+    key: "matw-409a-proviso",
+    section: "§4.09(a) non-guarantor proviso",
+    test: (text) => /Non-Guarantor Subsidiaries/.test(text) && /greater of/i.test(text),
+  },
+  {
+    key: "matw-410",
+    section: "§4.10",
+    test: (text) => text.includes("Section 4.10 Limitation on Liens.") && text.includes("except Permitted Liens"),
+  },
+  {
+    key: "matw-514a",
+    section: "Credit Agreement §5.14(a) Leverage Ratio",
+    test: (text) => /shall maintain a Leverage Ratio/.test(text) && /4\.50 to 1\.00/.test(text),
+  },
+  {
+    key: "matw-514a-temporary",
+    section: "Credit Agreement §5.14(a) Temporary Leverage Increase Period",
+    test: (text) => /required Leverage Ratio/.test(text) && /5\.00 to 1\.00/.test(text) && !/Senior/.test(text),
+  },
+  {
+    key: "matw-514a-temporary-senior",
+    section: "Credit Agreement §5.14(a) Temporary Senior Leverage Test Period",
+    test: (text) => /Senior Leverage Ratio/.test(text) && /4\.00 to 1\.00/.test(text),
+  },
+  {
+    key: "matw-514b",
+    section: "Credit Agreement §5.14(b) Interest Coverage Ratio",
+    test: (text) => /Interest Coverage Ratio/.test(text) && /3\.00 to 1\.0/.test(text),
+  },
+  {
+    key: "matw-ca-601j",
+    section: "§6.01(j)",
+    test: (text) => text.includes("Liens securing Indebtedness under the 2024 Note Offering"),
+  },
+];
 
 export function matthewsCovenantPackage(): ComputationPackage {
   const indenture = loadOperative("indenture-ex4-1.txt");
   const creditAgreement = loadOperative("credit-agreement-fifth-amendment.operative.txt");
   const sixth = loadOperative("credit-agreement-sixth-amendment.txt");
+  const replaced = supersededSectionNumbers(sixth);
+  const baskets = [
+    ...extractBasketClauses({ documentId: INDENTURE_ID, text: indenture }),
+    ...extractBasketClauses({ documentId: CA_ID, text: creditAgreement, skipSectionNumbers: replaced }),
+    ...extractBasketClauses({ documentId: SIXTH_ID, text: sixth }),
+  ].map(aliasMatthews);
   return {
     packageKey: MATTHEWS_PACKAGE_KEY,
     companyId: "matthews",
@@ -196,7 +126,7 @@ export function matthewsCovenantPackage(): ComputationPackage {
       { documentId: "matw-10q-2024-12-31", role: "FINANCIAL_STATEMENT", text: MATTHEWS_FINANCIAL_STATEMENT_Q1_FY2025 },
       { documentId: "matw-compliance-certificate-q1-fy2025", role: "COMPLIANCE_CERTIFICATE", text: MATTHEWS_COMPLIANCE_CERTIFICATE_Q1_FY2025 },
     ],
-    baskets: [...indentureBaskets(indenture), ...creditAgreementBaskets(creditAgreement, sixth)],
+    baskets,
     omissions: [
       {
         stableKey: "matw-omit-compliance-certificate",
