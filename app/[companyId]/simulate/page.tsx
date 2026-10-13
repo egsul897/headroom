@@ -13,6 +13,7 @@ import {
   summarizeVerifiedSimulate,
 } from "@/lib/product/unified-position/certified-simulate-bridge";
 import { requireAssembledCfoWorkflow } from "@/lib/customer-workflow/require-workflow-access";
+import { ns4EvidenceLines } from "@/lib/customer-workflow/assemble-cfo-workflow";
 import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
 import { SimulateClient } from "./SimulateClient";
 
@@ -74,6 +75,8 @@ export default async function SimulatePage({
     ]);
   const verifiedSummary = summarizeVerifiedSimulate(verified);
   const simView = workflow.simulate;
+  const authoritative = workflow.authoritativeCapacity;
+  const ns4Lines = ns4EvidenceLines(authoritative);
 
   return (
     <div className="stack">
@@ -81,8 +84,10 @@ export default async function SimulatePage({
         <div className="card-title">Simulate</div>
         <WorkflowJourney companyId={companyId} current="simulate" />
         <div className="card-subtitle" style={{ marginTop: 8 }}>
-          {readiness.headline} Uses the <strong>same capacity state</strong> as Position. Simulations never
-          modify the live customer ledger.
+          {readiness.headline} Uses the <strong>same capacity state</strong> as Position, including NS-4
+          APPROVED snapshot evidence. Cross-domain verified simulation runs through the shared gates
+          (VEP + cutoff + 4C + REQUIRE) — never invents a package. Simulations never modify the live
+          customer ledger.
         </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Status</div>
@@ -136,6 +141,55 @@ export default async function SimulatePage({
           </Link>
           <Link className="button" href={`/${companyId}/review`}>
             Review
+          </Link>
+        </div>
+      </Card>
+
+      <Card>
+        <div className="card-title">NS-4 / North-Star financial evidence</div>
+        <div className="card-subtitle">
+          Same APPROVED snapshots and cutoff identity as Position. Cross-domain verified simulate
+          refuses AVAILABLE without VEP + certified gates — NS-4 alone never upgrades remaining.
+        </div>
+        <div className="row" style={{ marginTop: 8 }}>
+          <div className="row-label">Authoritative status</div>
+          <div className="row-value">
+            <Chip tone={authoritative.status === "CERTIFIED_EXECUTED" ? "pass" : "tight"}>
+              {authoritative.status}
+            </Chip>
+          </div>
+        </div>
+        <div className="row">
+          <div className="row-label">Authority</div>
+          <div className="row-value">{authoritative.authority}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">Transaction kind</div>
+          <div className="row-value">{kind}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">Evaluation date</div>
+          <div className="row-value">{evaluationDate}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">APPROVED snapshots</div>
+          <div className="row-value">{authoritative.approvedSnapshotCount}</div>
+        </div>
+        <div className="row" style={{ borderBottom: "none" }}>
+          <div className="row-label">Active 4C ledger usages</div>
+          <div className="row-value">{authoritative.activeLedgerUsageCount}</div>
+        </div>
+        {ns4Lines.map((line, i) => (
+          <div key={`ns4-${i}`} className="row-note">
+            · {line}
+          </div>
+        ))}
+        <div className="button-row" style={{ marginTop: 12 }}>
+          <Link className="button" href={`/${companyId}/position`}>
+            Position (shared NS-4 identity)
+          </Link>
+          <Link className="button" href={`/${companyId}/capacity`}>
+            Capacity / North-Star
           </Link>
         </div>
       </Card>

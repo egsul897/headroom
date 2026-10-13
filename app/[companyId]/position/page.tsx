@@ -15,11 +15,13 @@ import { buildPositionView } from "@/lib/customer-workflow/position-view";
 import { presentCapacityClaim } from "@/lib/customer-workflow/status-contract";
 import { separateCapacityClaimsFromProductView } from "@/lib/customer-workflow/capacity-state";
 import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
+import { ns4EvidenceLines } from "@/lib/customer-workflow/assemble-cfo-workflow";
 import {
   grossCandidatesFromVerifiedExecutableCompile,
   selectSourceBackedGrossMm,
 } from "@/lib/customer-workflow/select-source-backed-gross";
 import { loadAuthenticDashboardSlice } from "@/lib/product/real-dashboard-vertical-slice";
+import { loadAuthoritativeCapacity } from "@/lib/product/north-star-workflow/authoritative-capacity";
 
 export const metadata = { title: "Headroom — Position" };
 
@@ -118,6 +120,12 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
   // Access-gated above — package registry lookup only, no tenant DB scrape.
   const authenticSlice = await loadAuthenticDashboardSlice(companyId);
 
+  // NS-4 / North-Star APPROVED snapshots + cutoff + 4C ledger — shared identity with Simulate.
+  // Never upgrades production remaining by itself.
+  const authoritative = await loadAuthoritativeCapacity({ companyId });
+  const ns4Lines = ns4EvidenceLines(authoritative);
+  const ns4Missing = authoritative.missingInputs.map((m) => `NS-4/NS: ${m}`);
+
   let readiness: Awaited<ReturnType<typeof loadCapacityReadiness>> | null = null;
   let rulebook: Awaited<ReturnType<typeof loadRulebookReadiness>> | null = null;
   let dashboard = null;
@@ -163,6 +171,7 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     ...(readiness?.blockers ?? []),
     ...(dashboardError ? [dashboardError] : []),
     ...(authenticSlice?.missingInputs ?? []),
+    ...ns4Missing,
     ...(grossSelection.status === "AMBIGUOUS" ? [grossSelection.reason] : []),
     ...(grossSelection.status === "NONE" && authenticSlice?.verifiedExecutableCompile
       ? [grossSelection.reason]
@@ -245,7 +254,7 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
 
   // Prefer live dashboard + separated claims; otherwise authentic slice Position view;
   // always attach #311 separated claims when we build the live view.
-  const view =
+  const baseView =
     readiness && rulebook && (dashboard != null || !authenticSlice)
       ? buildPositionView({
           companyId,
@@ -268,6 +277,15 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
             dashboardError,
             separatedClaims: { secured: securedSeparated, unsecured: unsecuredSeparated },
           });
+
+  // Surface NS-4 evidence on Position without upgrading remaining authority.
+  const view = {
+    ...baseView,
+    missingInputs: [...new Set([...baseView.missingInputs, ...ns4Missing])],
+    authorityNote: `${baseView.authorityNote} NS-4 evidence: ${authoritative.approvedSnapshotCount} APPROVED snapshot(s); cutoff ${authoritative.cutoff.state}; certified package ${
+      authoritative.certified.packagePresent ? "present" : "absent"
+    }.`,
+  };
 
   // Legacy package figures — MODELED / NOT VERIFIED. Dashboard utilizationRemainingAuthority
   // alone must NEVER publish AVAILABLE (#311 security remediation).
@@ -581,6 +599,47 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
           </div>
         </Card>
       ) : null}
+
+      <Card>
+        <div className="card-title">NS-4 / North-Star financial evidence</div>
+        <div className="card-subtitle">
+          APPROVED snapshots, contractual cutoff, and attributed 4C ledger — shared with Simulate.
+          Never upgrades verified remaining / AVAILABLE by itself.
+        </div>
+        <div className="row" style={{ marginTop: 8 }}>
+          <div className="row-label">Authoritative status</div>
+          <div className="row-value">
+            <Chip tone={authoritative.status === "CERTIFIED_EXECUTED" ? "pass" : "tight"}>
+              {authoritative.status}
+            </Chip>
+          </div>
+        </div>
+        <div className="row">
+          <div className="row-label">Authority</div>
+          <div className="row-value">{authoritative.authority}</div>
+        </div>
+        <div className="row">
+          <div className="row-label">APPROVED snapshots</div>
+          <div className="row-value">{authoritative.approvedSnapshotCount}</div>
+        </div>
+        <div className="row" style={{ borderBottom: "none" }}>
+          <div className="row-label">Active 4C ledger usages</div>
+          <div className="row-value">{authoritative.activeLedgerUsageCount}</div>
+        </div>
+        {ns4Lines.map((line, i) => (
+          <div key={i} className="row-note">
+            · {line}
+          </div>
+        ))}
+        <div className="button-row" style={{ marginTop: 12 }}>
+          <Link className="button" href={`/${companyId}/capacity`}>
+            Capacity / North-Star
+          </Link>
+          <Link className="button" href={`/${companyId}/simulate`}>
+            Cross-domain simulate
+          </Link>
+        </div>
+      </Card>
 
       <Card>
         <div className="card-title">Missing inputs</div>
