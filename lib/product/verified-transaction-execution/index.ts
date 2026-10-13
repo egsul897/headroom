@@ -27,6 +27,12 @@ export {
 export { executeUnifiedVerifiedTransaction } from "./execute";
 
 export {
+  isCanonicalUnifiedTransactionExecutionResult,
+  readCanonicalExecutionPermissionSnapshot,
+  type CanonicalExecutionPermissionSnapshot,
+} from "./canonical-result";
+
+export {
   toProductExecutionHandoff,
   toAllProductExecutionHandoffs,
 } from "./product-handoff";

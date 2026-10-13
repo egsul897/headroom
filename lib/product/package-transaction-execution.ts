@@ -27,6 +27,8 @@ import {
 } from "@/lib/product/cross-domain-transaction";
 import {
   UNIFIED_TRANSACTION_EXECUTION_VERSION,
+  isCanonicalUnifiedTransactionExecutionResult,
+  readCanonicalExecutionPermissionSnapshot,
   type ExecutionStatus,
   type ProductionAuthorityClassification,
   type UnifiedTransactionExecutionResult,
@@ -42,7 +44,8 @@ export const PACKAGE_TRANSACTION_EXECUTION_VERSION =
 /**
  * Runtime brand for authentic verified-execution permission handoffs.
  * Plain caller JSON / structural clones are never accepted — only objects
- * minted by sealVerifiedExecutionPermissionHandoff from a real REQUIRE result.
+ * minted by sealVerifiedExecutionPermissionHandoff from a canonical REQUIRE
+ * result (WeakMap-branded by executeUnifiedVerifiedTransaction).
  */
 const sealedVerifiedExecutionHandoffs = new WeakSet<object>();
 
@@ -137,9 +140,10 @@ function domainById(
 
 /**
  * Minimal verified-execution handoff consumed for customer permission.
- * Must be sealed via sealVerifiedExecutionPermissionHandoff from a real
- * executeUnifiedVerifiedTransaction (REQUIRE) result. Plain caller JSON with
- * EXECUTED_SATISFIED / PRODUCTION_AUTHORITY_ACTIVE strings never authorizes.
+ * Must be sealed via sealVerifiedExecutionPermissionHandoff from a canonical
+ * executeUnifiedVerifiedTransaction (REQUIRE) result. Plain caller JSON /
+ * structural Pick fabrications with EXECUTED_SATISFIED /
+ * PRODUCTION_AUTHORITY_ACTIVE strings never authorize.
  */
 export interface VerifiedExecutionPermissionHandoff {
   executionStatus: ExecutionStatus;
@@ -153,28 +157,39 @@ export function isSealedVerifiedExecutionPermissionHandoff(value: unknown): bool
 }
 
 /**
- * Seal a permission handoff from a canonical REQUIRE execution result.
- * Demotes PRODUCTION_AUTHORITY_ACTIVE when the host trusted-issuer gate is
- * BLOCKED — caller strings never override host activation.
+ * Seal a permission handoff from a canonical REQUIRE execution result only.
+ *
+ * Accepts solely objects branded by executeUnifiedVerifiedTransaction
+ * (module-private WeakMap). Reads mint-time snapshots — not live/mutable
+ * caller fields. Fabricated Pick/{executionStatus,productionAuthority,…}
+ * inputs return null. Demotes PRODUCTION_AUTHORITY_ACTIVE when the host
+ * trusted-issuer gate is BLOCKED.
  */
 export function sealVerifiedExecutionPermissionHandoff(
-  result: Pick<
-    UnifiedTransactionExecutionResult,
-    "executionStatus" | "productionAuthority" | "contractVersion"
-  >,
-): VerifiedExecutionPermissionHandoff {
+  result: UnifiedTransactionExecutionResult,
+): VerifiedExecutionPermissionHandoff | null {
+  if (!isCanonicalUnifiedTransactionExecutionResult(result)) {
+    return null;
+  }
+  const snap = readCanonicalExecutionPermissionSnapshot(result);
+  if (!snap) return null;
+  // Contract version must match the live REQUIRE contract — refuse drift/mismatch.
+  if (snap.contractVersion !== UNIFIED_TRANSACTION_EXECUTION_VERSION) {
+    return null;
+  }
+
   const host = resolveTrustedIssuerAuthFromHost();
   const hostActive = host.activation === "ACTIVE" && host.auth != null;
   // Repository-level activation remains BLOCKED until a production provider is wired.
   const repoActive = TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE";
-  let productionAuthority = result.productionAuthority;
+  let productionAuthority = snap.productionAuthority;
   if (productionAuthority === "PRODUCTION_AUTHORITY_ACTIVE" && (!hostActive || !repoActive)) {
     productionAuthority = "PRODUCTION_AUTHORITY_BLOCKED";
   }
   const handoff: VerifiedExecutionPermissionHandoff = {
-    executionStatus: result.executionStatus,
+    executionStatus: snap.executionStatus,
     productionAuthority,
-    contractVersion: result.contractVersion || UNIFIED_TRANSACTION_EXECUTION_VERSION,
+    contractVersion: snap.contractVersion,
   };
   sealedVerifiedExecutionHandoffs.add(handoff);
   return handoff;

@@ -176,6 +176,7 @@ export {
   evaluateMatthewsScenario,
   listCoherentCrossDomainScenarios,
 } from "@/lib/product/cross-domain-scenarios";
+/** Permission seal accepts only canonical REQUIRE results (not Pick fabrications). */
 export {
   executePackageTransaction,
   PACKAGE_TRANSACTION_EXECUTION_VERSION,

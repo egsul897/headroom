@@ -38,6 +38,7 @@ import {
 import { validateFinancialEvidenceBundle } from "./adapters/financial-evidence";
 import { evaluateOperativeSourceAuthority } from "./adapters/operative-authority";
 import { evaluateUtilizationAuthorityGate } from "./adapters/utilization";
+import { brandCanonicalUnifiedTransactionExecutionResult } from "./canonical-result";
 import {
   UNIFIED_TRANSACTION_EXECUTION_VERSION,
   type BindingConstraint,
@@ -789,7 +790,7 @@ export async function executeUnifiedVerifiedTransaction(
   const uniqueCitations = [...new Set(sourceCitations.filter(Boolean))].sort();
   const uniqueBlockers = [...new Set(blockers)];
 
-  return {
+  return brandCanonicalUnifiedTransactionExecutionResult({
     contractVersion: UNIFIED_TRANSACTION_EXECUTION_VERSION,
     executionStatus: finalStatus,
     mode,
@@ -859,5 +860,5 @@ export async function executeUnifiedVerifiedTransaction(
             productionAuthority === "PRODUCTION_AUTHORITY_BLOCKED"
           ? "Hypothetical / non-production result under verified-execution REQUIRE. Production authority remains BLOCKED."
           : "Verified transaction executed under REQUIRE with production authority classification.",
-  };
+  });
 }

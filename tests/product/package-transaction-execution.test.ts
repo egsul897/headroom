@@ -7,9 +7,10 @@ import { describe, expect, it } from "vitest";
 import {
   executePackageTransaction,
   PACKAGE_TRANSACTION_EXECUTION_VERSION,
-  sealVerifiedExecutionPermissionHandoff,
   isSealedVerifiedExecutionPermissionHandoff,
+  sealVerifiedExecutionPermissionHandoff,
 } from "@/lib/product/package-transaction-execution";
+import { UNIFIED_TRANSACTION_EXECUTION_VERSION } from "@/lib/product/verified-transaction-execution";
 import {
   coherentDebtFundedAcquisition,
   coherentDividend,
@@ -185,48 +186,14 @@ describe("verified permission — REQUIRE authenticity gate", () => {
     ).toBe(true);
   });
 
-  it("structural clone of a sealed handoff is refused", () => {
-    const data = coherentPackageData();
-    const sealed = sealVerifiedExecutionPermissionHandoff({
-      executionStatus: "EXECUTED_SATISFIED",
-      productionAuthority: "PRODUCTION_AUTHORITY_ACTIVE",
-      contractVersion: "unified-transaction-execution.v1",
-    });
-    // Host is BLOCKED → seal demotes ACTIVE → still sealed but not permitting.
-    expect(isSealedVerifiedExecutionPermissionHandoff(sealed)).toBe(true);
-    expect(sealed.productionAuthority).toBe("PRODUCTION_AUTHORITY_BLOCKED");
-
-    const clone = { ...sealed };
-    expect(isSealedVerifiedExecutionPermissionHandoff(clone)).toBe(false);
-    const result = executePackageTransaction({
-      packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
-      data,
-      transaction: coherentDebtFundedAcquisition(50),
-      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
-      verifiedExecution: clone,
-    });
-    expect(result.packagePermitted).toBe(false);
-    expect(result.unresolvedBlockers.some((b) => /forged\/unsealed/i.test(b))).toBe(true);
-  });
-
-  it("sealed handoff with demoted authority (host BLOCKED) → packagePermitted false", () => {
-    const data = coherentPackageData();
-    const sealed = sealVerifiedExecutionPermissionHandoff({
-      executionStatus: "EXECUTED_SATISFIED",
-      productionAuthority: "PRODUCTION_AUTHORITY_ACTIVE",
-      contractVersion: "unified-transaction-execution.v1",
-    });
-    const result = executePackageTransaction({
-      packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
-      data,
-      transaction: coherentDebtFundedAcquisition(50),
-      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
-      verifiedExecution: sealed,
-    });
-    expect(result.packagePermitted).toBe(false);
-    expect(result.verifiedExecutionHandoff).toBe(sealed);
-    expect(result.verifiedExecutionHandoff?.productionAuthority).toBe(
-      "PRODUCTION_AUTHORITY_BLOCKED",
-    );
+  it("fabricated Pick sealing input returns null (no brand)", () => {
+    const fabricated = {
+      executionStatus: "EXECUTED_SATISFIED" as const,
+      productionAuthority: "PRODUCTION_AUTHORITY_ACTIVE" as const,
+      contractVersion: UNIFIED_TRANSACTION_EXECUTION_VERSION,
+    };
+    // @ts-expect-error — Pick-only fabrications are no longer accepted
+    expect(sealVerifiedExecutionPermissionHandoff(fabricated)).toBeNull();
+    expect(isSealedVerifiedExecutionPermissionHandoff(fabricated)).toBe(false);
   });
 });
