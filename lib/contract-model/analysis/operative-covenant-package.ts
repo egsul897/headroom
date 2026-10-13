@@ -586,7 +586,7 @@ function authorityForUnit(
 } {
   const handoff = offline.operativeAuthorityHandoff;
   const relationship: DocumentRelationshipEvidence = {
-    asOfDate: handoff?.asOfDate ?? offline.asOfDate ?? null,
+    asOfDate: handoff?.asOfDate ?? null,
     restatementAuthorities: (handoff?.restatementAuthorities ?? []).map((a) => ({
       status: a.status,
       successorDocumentId: a.successorDocumentId,
