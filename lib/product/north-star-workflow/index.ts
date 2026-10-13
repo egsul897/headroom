@@ -51,6 +51,11 @@ export {
   type ApprovedFinancialInputBundleStatus,
 } from "./approved-financial-inputs";
 export {
+  loadSharedNs4FinancialIdentity,
+  sharedIdentityFromApprovedBundle,
+  type SharedNs4FinancialIdentity,
+} from "@/lib/product/ns4-shared-financial-identity";
+export {
   deliveriesFromApprovedSnapshots,
   bindSnapshotForDeliveredCutoff,
 } from "./certificate-deliveries";
