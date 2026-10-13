@@ -133,7 +133,6 @@ describe("Mission 2 — product publication honesty still holds for verified rem
     const utilization = resolveUtilization({
       asOf: AS_OF,
       capacityRuleId: "rule-flat",
-      companyId: CO,
       records: [],
       completenessCertificate: null,
     });

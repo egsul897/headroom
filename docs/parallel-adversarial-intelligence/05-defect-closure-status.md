@@ -1,7 +1,8 @@
 # PAI defect closure status
 
 **PR:** https://github.com/egsul897/headroom/pull/330  
-**SHA:** `05c6ad284523c79209f60cdfca6487703026f3db`  
+**Production fix SHA:** `05c6ad284523c79209f60cdfca6487703026f3db`  
+**Tip:** branch head after typecheck fixture align (see git)  
 **Source suite tip (PR #323):** `059994b9e0788ec8029808bad78520d937e382bb`  
 **Base:** `main` (includes #323 adversarial locks + production closures)
 

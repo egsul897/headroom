@@ -81,7 +81,7 @@ function restateEffect(opts: {
     confidence: 0.55,
     status: opts.status ?? "RESOLVED",
     unresolvedReason: opts.unresolvedReason ?? null,
-    resolutionMethod: "DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR",
+    resolutionMethod: "DETERMINISTIC_FULL_RESTATEMENT",
   };
 }
 
@@ -161,7 +161,6 @@ describe("Mission 1 — safeguards already holding", () => {
     const utilization = resolveUtilization({
       asOf: AS_OF,
       capacityRuleId: "rule-flat",
-      companyId: CO,
       records: [],
       completenessCertificate: null,
     });

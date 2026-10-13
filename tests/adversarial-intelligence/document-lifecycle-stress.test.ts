@@ -129,23 +129,23 @@ function confirmedFull(
 }
 
 function baseSource(over: Partial<KnowledgeSourceRecord> & Pick<KnowledgeSourceRecord, "sourceId">): KnowledgeSourceRecord {
+  const sourceId = over.sourceId;
   return {
-    sourceId: over.sourceId,
     issuerCik: "0000000000",
     accessionNumber: "0000000000-00-000000",
-    exhibitFilename: over.exhibitFilename ?? `${over.sourceId}.htm`,
-    sourceUrl: `https://example.test/${over.sourceId}`,
+    exhibitFilename: over.exhibitFilename ?? `${sourceId}.htm`,
+    sourceUrl: `https://example.test/${sourceId}`,
     filingDate: over.filingDate ?? "2020-01-15",
     formType: "8-K",
-    documentTitle: over.documentTitle ?? over.sourceId,
+    documentTitle: over.documentTitle ?? sourceId,
     documentClass: over.documentClass ?? "CREDIT_AGREEMENT",
-    originalBytesHash: `hash-${over.sourceId}`,
+    originalBytesHash: `hash-${sourceId}`,
     acquisitionTimestamp: "2026-01-01T00:00:00Z",
     parserVersion: "test",
-    extractionStatus: "EXTRACTED",
-    representationLevel: "STRUCTURAL",
+    extractionStatus: "CANDIDATES_DISCOVERED",
+    representationLevel: "DISCOVERED_CANDIDATE",
     provenance: "adversarial-lifecycle-fixture",
-    usageRightsReviewStatus: "APPROVED_FOR_INTERNAL_EVAL",
+    usageRightsReviewStatus: "FIXTURE_INTERNAL",
     companyId: "lifecycle-co",
     ...over,
   };
