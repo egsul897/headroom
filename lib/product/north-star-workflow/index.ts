@@ -23,6 +23,13 @@ export {
   type AuthoritativeCapacityResult,
   type AuthoritativeCapacityStatus,
 } from "./authoritative-capacity";
+/** Dashboard / product read of APPROVED Neon NS-4 financial evidence. */
+export {
+  loadNs4DashboardFinancialState,
+  type Ns4DashboardFinancialState,
+  type Ns4DashboardFinancialStatus,
+  type Ns4DashboardFact,
+} from "@/lib/dashboard/ns4-financial-panel";
 export {
   parseTransactionDraft,
   analyzeContemplatedTransaction,
