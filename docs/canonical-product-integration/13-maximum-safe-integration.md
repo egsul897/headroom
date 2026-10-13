@@ -14,7 +14,7 @@
 | #314 / #315 | Cross-document relationship gate | In #311 tip + #312 align commits |
 | #311 | CFO Upload→Analyze→Review→Position→Simulate→Audit | Merge commit on #319 tip |
 | #326 | APPROVED NS-4 Neon dashboard band | Merge |
-| #325 | Contractual leverage dashboard panel | Merge (coexists with #326) |
+| #325 | Contractual leverage dashboard panel | Merge (coexists with #326); local arithmetic — no raw Phase-4 runtime import (§17) |
 | #324 | Contractual EBITDA derivation (intelligence) | Merge (intelligence surface; not a second dashboard compiler) |
 | #322 | Financial computation audit oracles | Merge |
 | #323 | Adversarial regression locks | Merge |

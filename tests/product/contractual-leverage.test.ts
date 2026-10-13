@@ -3,6 +3,7 @@
  * Matthews Indenture Secured Net Leverage, plus fail-closed missing inputs.
  *
  * Pure calculation path (no DB). Demonstrates issuer-agnostic reuse.
+ * Does not import Phase-4 raw runtime (product boundary §17).
  */
 import { describe, expect, it } from "vitest";
 import {
@@ -15,10 +16,6 @@ import {
   COHERENT_FINANCIALS,
   MATTHEWS_FINANCIALS,
 } from "@/lib/product/contractual-leverage";
-import { evaluateExpression } from "@/lib/contract-model/runtime/evaluate-expression";
-import { fixtureInputResolver, metricInput } from "@/lib/contract-model/runtime/input-resolver";
-import { rationalFromNumber } from "@/lib/contract-model/runtime/decimal";
-import { money } from "@/lib/contract-model/runtime/values";
 
 describe("contractual leverage — identify + compile", () => {
   it("identifies Coherent CA Total Net Leverage components from definition text", () => {
@@ -125,34 +122,13 @@ describe("contractual leverage — fail closed", () => {
     expect(result.missingRequirements.length).toBeGreaterThan(0);
   });
 
-  it("IR evaluation itself fails closed when Cash is absent from the resolver", () => {
-    const id = identifyLeverageComponents({
-      definitions: COHERENT_CA_DEFINITIONS,
-      leverageTermCandidates: ["Total Net Leverage Ratio"],
-    });
-    expect("error" in id).toBe(false);
-    if ("error" in id) return;
-    const compiled = compileLeverageExpressions({
-      components: id,
-      companyId: "coherent",
-      instrumentKey: "ca",
-      threshold: 4.25,
-    });
-    const resolver = fixtureInputResolver({
-      metrics: [
-        metricInput("EBITDA", money(rationalFromNumber(1700), "USD", { exprId: null, inputKeys: ["EBITDA"] }), {
-          source: "t",
-          sourceVersion: "1",
-        }),
-        metricInput("Total Debt", money(rationalFromNumber(3258), "USD", { exprId: null, inputKeys: ["Total Debt"] }), {
-          source: "t",
-          sourceVersion: "1",
-        }),
-        // Cash deliberately omitted
-      ],
-    });
-    const ev = evaluateExpression({ expression: compiled.ratioExpression, inputs: resolver });
-    expect(ev.status).toBe("NEEDS_INPUT");
-    expect(ev.missingInputKeys).toContain("Cash");
+  it("fails closed when Cash is absent from net-leverage financial inputs", () => {
+    const result = calculateContractualLeverage(
+      coherentTotalNetLeverageRequest({ ...COHERENT_FINANCIALS, cash: null }),
+    );
+    expect(result.status).toBe("MISSING_INPUTS");
+    expect(result.currentRatio).toBeNull();
+    expect(result.debtHeadroomMillions).toBeNull();
+    expect(result.missingRequirements.some((m) => /Cash/i.test(m))).toBe(true);
   });
 });
