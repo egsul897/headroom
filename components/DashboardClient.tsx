@@ -398,11 +398,16 @@ export function DashboardClient(props: DashboardClientProps) {
             const candidateProvisional =
               candidate != null &&
               (candidate.isProvisional || isProvisionalContractualAuthority(candidate.authorityLabel));
-            // Never replace an AVAILABLE (approved/authoritative) headline with provisional reconstruction.
+            const ns4ApprovedBound =
+              props.ns4Financial?.authority === "NS4_APPROVED" &&
+              props.ns4Financial.status === "APPROVED_BOUND";
+            // Never replace AVAILABLE or NS-4 APPROVED_BOUND headlines with provisional reconstruction.
+            // (#343 selective absorb — NS-4 bound facts are available approved snapshot metrics even
+            // when the legacy strip state is not AVAILABLE.)
             const maySurfaceContractual =
               candidate?.status === "CALCULATED" &&
               candidate.valueMillions != null &&
-              !(candidateProvisional && m.state === "AVAILABLE");
+              !(candidateProvisional && (m.state === "AVAILABLE" || ns4ApprovedBound));
             const override =
               maySurfaceContractual && m.key === "ebitda" && candidate
                 ? `$${candidate.valueMillions!.toLocaleString(undefined, { maximumFractionDigits: 3 })}M`
@@ -447,6 +452,17 @@ export function DashboardClient(props: DashboardClientProps) {
                 {showingProvisionalContractual ? (
                   <div className="headline-metric-note" style={{ fontSize: 11, opacity: 0.75, marginTop: 2 }}>
                     Provisional reconstruction — not approved NS-4 / certificate authority
+                  </div>
+                ) : null}
+                {candidateProvisional &&
+                (m.state === "AVAILABLE" || ns4ApprovedBound) &&
+                candidate?.status === "CALCULATED" ? (
+                  <div className="headline-metric-note" style={{ fontSize: 11, opacity: 0.75, marginTop: 2 }}>
+                    Approved/NS-4 headline retained — provisional contractual{" "}
+                    {candidate.unit === "RATIO"
+                      ? `${candidate.valueMillions!.toFixed(2)}x`
+                      : `$${candidate.valueMillions!.toLocaleString(undefined, { maximumFractionDigits: 3 })}M`}{" "}
+                    shown in panel only
                   </div>
                 ) : null}
               </div>
