@@ -357,8 +357,9 @@ export default async function DebtIntelligencePage({
         <Card>
           <div className="card-title">Cross-domain package scenarios</div>
           <div className="card-subtitle">
-            Multi-family evaluations over the same covenant engine + contractual computation. Gross capacity is never
-            labeled as verified available. Explicit assumptions and entity scope required.
+            Supporting package-wide modeling (not an independent certification engine). Gross capacity is never
+            verified remaining; overall clear is MODELED_GROSS — never VERIFIED_TRANSACTION_PERMITTED. Authoritative
+            permissibility routes through the verified execution spine.
           </div>
           {d.crossDomainScenarios.map((sc) => (
             <div key={sc.scenario.kind} style={{ marginTop: 12 }}>
@@ -367,14 +368,15 @@ export default async function DebtIntelligencePage({
                 <div className="row-value">
                   <Chip
                     tone={
-                      sc.overallStatus === "clear"
-                        ? "pass"
-                        : sc.overallStatus === "blocked"
-                          ? "tight"
-                          : "navy"
+                      sc.overallStatus === "blocked"
+                        ? "tight"
+                        : sc.claimClass === "MODELED_GROSS" || sc.overallStatus === "clear"
+                          ? "navy"
+                          : "tight"
                     }
                   >
-                    {sc.overallStatus}
+                    {sc.claimClass ?? "MODELED_GROSS"}
+                    {sc.overallStatus === "clear" ? " · modeled clear" : ` · ${sc.overallStatus}`}
                   </Chip>
                 </div>
               </div>

@@ -223,7 +223,7 @@ export function buildPositionView(args: {
     missingInputs: [...new Set(missingInputs)],
     reviewBlockers: [...new Set(reviewBlockers)],
     authorityNote:
-      "Position remaining figures from the legacy shared capacity engine are MODELED / NOT VERIFIED / NOT_PRODUCTION_AUTHORITATIVE unless utilizationRemainingAuthority is PRODUCTION_AUTHORITATIVE (#268 completeness + trusted issuer). Gross contractual ceilings are never labeled AVAILABLE. Unknown utilization is never zero.",
+      "Position distinguishes MODELED_GROSS (gross contractual ceilings), VERIFIED_REMAINING (completeness + trusted issuer on verified spine), and VERIFIED_TRANSACTION_PERMITTED (executeUnifiedVerifiedTransaction REQUIRE). Legacy shared capacity figures are MODELED_GROSS / NOT_PRODUCTION_AUTHORITATIVE unless utilizationRemainingAuthority is PRODUCTION_AUTHORITATIVE. Unknown utilization is never zero. Cross-domain modeling is supporting only.",
     remainingAuthoritative: sides.some((s) => s.remaining.status === "VERIFIED_EXECUTABLE"),
     separatedClaims: args.separatedClaims,
   };

@@ -160,6 +160,7 @@ export {
   evaluateCrossDomainTransaction,
   covenantDomainCoverage,
   CROSS_DOMAIN_EVALUATION_VERSION,
+  CROSS_DOMAIN_LAYER_ROLE,
   type CrossDomainTransactionEvaluation,
   type CovenantDomain,
   type ContemplatedCrossDomainTransaction,
@@ -171,3 +172,5 @@ export {
   evaluateMatthewsScenario,
   listCoherentCrossDomainScenarios,
 } from "@/lib/product/cross-domain-scenarios";
+// Authority helpers are imported from their modules directly by callers/tests
+// (not re-exported here) to avoid circular graphs through certified-simulate.
