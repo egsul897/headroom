@@ -201,8 +201,12 @@ export default async function DebtIntelligencePage({
       <Card>
         <div className="card-title">2. Financial covenant ratios</div>
         <div className="card-subtitle">
-          Generic ratios compute from snapshot inputs when present; contractual thresholds come from AI-surfaced
-          provisions. Map GAAP inputs to contract definitions before treating figures as covenant tests.
+          Net leverage, senior secured net leverage, and interest coverage use contractual Consolidated EBITDA from the
+          verified snapshot when present. Thresholds come from operative provisions when modeled. GAAP is never
+          substituted for contractual EBITDA.
+          {d.contractualComputation?.contractualEbitda != null
+            ? ` Contractual EBITDA ${fmtM(d.contractualComputation.contractualEbitda)}.`
+            : ""}
         </div>
         {d.ratios.map((r) => (
           <MetricRow
@@ -228,8 +232,8 @@ export default async function DebtIntelligencePage({
       <Card>
         <div className="card-title">3. Covenant basket capacity</div>
         <div className="card-subtitle">
-          Debt, lien, RP, investment, incremental, asset-sale and builder language from the package. Remaining
-          availability is shown only when supported — never invented.
+          Ratio-based debt capacity (LEVERAGE_RATIO_ROOM) is computed as gross contractual room when provisions and
+          financials exist. Remaining availability requires attributed utilization — never invented from empty ledgers.
         </div>
         {d.baskets.length === 0 ? (
           <div className="row-note">No basket/threshold language surfaced yet.</div>
