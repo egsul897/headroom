@@ -307,6 +307,9 @@ function matchMetricPattern(line: string, documentRole: DocumentExtraction["iden
   for (const p of METRIC_PATTERNS) {
     if (!p.pattern.test(line)) continue;
 
+    // "non-cash" add-backs contain a `\bcash\b` boundary after the hyphen — never treat as CASH.
+    if (p.family === "CASH" && /\bnon[- ]?cash\b/i.test(line)) continue;
+
     if (p.family === "GAAP_EBITDA") return p;
 
     if (p.family === "CONTRACTUAL_EBITDA") {

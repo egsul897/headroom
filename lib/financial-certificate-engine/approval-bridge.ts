@@ -97,6 +97,7 @@ export async function approveProposedFinancialSnapshot(params: {
   reviewedBy: string;
   approvalRef: string;
   reconciliation: ReconciliationReport;
+  reviewedAt?: string;
 }): Promise<ApprovalBridgeApproveResult> {
   const approve = await approveNs4SnapshotAttributable(params);
   return {

@@ -22,6 +22,10 @@ import { reconcileFinancialFacts, type FinancialFactCandidateWithSource, type Re
 import { getReviewProgress, getCandidatesForReview, type ReviewProgressSummary, type CandidateForReview } from "../onboarding/review";
 import { getCoverageSnapshot } from "../onboarding/promotion";
 import { getCompanyDashboard, getDocumentDetails, type CompanyDashboard, type DocumentDetail } from "../dashboard-service";
+import {
+  loadNs4DashboardFinancialState,
+  type Ns4DashboardFinancialState,
+} from "../dashboard/ns4-financial-panel";
 import type { CoverageResult } from "../solver/types";
 
 export interface DocumentChainSummary {
@@ -53,6 +57,11 @@ export interface CanonicalCompanyState {
   onboardingStatus: OnboardingStatus;
   /** Present only when a FinancialState/FinancialSnapshot exists for this company as of `asOfDate` - absent (not fabricated) otherwise, e.g. a brand-new company with connections but no promoted financial facts yet. */
   dashboard?: CompanyDashboard;
+  /**
+   * North-Star NS-4 financial evidence from Neon (APPROVED ContractInputSnapshot).
+   * Always loaded; status NEEDS_INPUT when no APPROVED rows exist.
+   */
+  ns4Financial: Ns4DashboardFinancialState;
   documentDetails: DocumentDetail[];
 }
 
@@ -129,7 +138,7 @@ async function computeReconciliation(companyId: string): Promise<{ groups: Recon
 export async function getCanonicalCompanyState(companyId: string, asOfDate?: Date): Promise<CanonicalCompanyState> {
   const resolvedAsOfDate = asOfDate ?? new Date();
 
-  const [company, sourceConnections, documents, documentDetails, reviewProgress, allCandidates, coverage, reconciliation, docRelCandidates] = await Promise.all([
+  const [company, sourceConnections, documents, documentDetails, reviewProgress, allCandidates, coverage, reconciliation, docRelCandidates, ns4Financial] = await Promise.all([
     prisma.company.findUniqueOrThrow({ where: { id: companyId } }),
     listCompanySourceConnections(companyId),
     prisma.document.findMany({ where: { companyId } }),
@@ -139,6 +148,7 @@ export async function getCanonicalCompanyState(companyId: string, asOfDate?: Dat
     getCoverageSnapshot(companyId, resolvedAsOfDate),
     computeReconciliation(companyId),
     prisma.extractionCandidate.findMany({ where: { companyId, kind: "DOCUMENT_RELATIONSHIP" } }),
+    loadNs4DashboardFinancialState({ companyId }),
   ]);
 
   const byType: Record<string, number> = {};
@@ -175,6 +185,7 @@ export async function getCanonicalCompanyState(companyId: string, asOfDate?: Dat
     staleness: reconciliation.staleness,
     onboardingStatus: company.onboardingStatus,
     dashboard,
+    ns4Financial,
     documentDetails,
   };
 }

@@ -1,7 +1,8 @@
 /**
  * North-Star product bridge — the ONLY surface product code may use to reach
- * Phase 4B snapshot store, NS-6 selector, Phase 4C contract ledger, and the
- * Phase 4B snapshot input resolver.
+ * Phase 4B snapshot store, NS-6 selector, Phase 4C contract ledger, the
+ * Phase 4B snapshot input resolver, and Phase 4A expression evaluation for
+ * APPROVED-snapshot metric derivation (e.g. Total Net Leverage).
  *
  * Mirrors the verified-execution boundary pattern: raw `runtime/*` imports stay
  * inside contract-model; app/lib/product never import `contract-model/runtime`.
@@ -57,10 +58,19 @@ export type { LedgerUsageRecord } from "./runtime/capacity/types";
 export { snapshotInputResolver } from "./runtime/input/snapshot-resolver";
 export type { SnapshotResolverArgs, SnapshotInputResolver } from "./runtime/input/snapshot-resolver";
 
-/** Exact decimal constructor for APPROVED metric figures — product must not import runtime/decimal. */
-export { rationalFromString } from "./runtime/decimal";
-export type { InputResolver } from "./runtime/types";
+/** Exact decimal helpers for APPROVED metric figures — product must not import runtime/decimal. */
+export { rationalFromString, toCanonicalString } from "./runtime/decimal";
+export type { InputResolver, RuntimeValue } from "./runtime/types";
 export type { FinancialInput, FinancialSnapshot } from "./runtime/input/types";
+
+/**
+ * Phase 4A expression evaluation over APPROVED snapshot inputs.
+ * Product must not import runtime/evaluate-expression directly (§17).
+ */
+export { evaluateExpression } from "./runtime/evaluate-expression";
+export type { EvaluateExpressionArgs } from "./runtime/evaluate-expression";
+export type { EvaluationResult } from "./runtime/types";
+export type { IRExpression } from "./ir/types";
 
 /** Synthetic certificate fixtures — engineering only; not authentic customer data. */
 export { CONMED_FORM_INSPIRED_CERT, CHEWY_FORM_INSPIRED_CERT, INVENTED_TABULAR_CERT } from "./runtime/input/store/certificate/fixtures";

@@ -6,13 +6,47 @@ import {
   appendContractLedgerUsage,
   proposeSyntheticCertificateForCompany,
   proposeCertificateRestatement,
+  proposeAuthenticCertificateFixtureForCompany,
+  proposeCertificateTextForCompany,
+  approveFceProposedCertificate,
+  type CertificateFixtureIssuer,
 } from "@/lib/product/north-star-workflow";
 
-export async function seedSyntheticCertificateAction(companyId: string) {
-  const result = await proposeSyntheticCertificateForCompany(companyId);
+function revalidateCertificateSurfaces(companyId: string) {
   revalidatePath(`/${companyId}/certificates`);
   revalidatePath(`/${companyId}/capacity`);
   revalidatePath(`/${companyId}/ask`);
+  revalidatePath(`/${companyId}/dashboard`);
+  revalidatePath(`/${companyId}/intelligence`);
+}
+
+export async function seedSyntheticCertificateAction(companyId: string) {
+  const result = await proposeSyntheticCertificateForCompany(companyId);
+  revalidateCertificateSurfaces(companyId);
+  return result;
+}
+
+/** Propose NS-4 DRAFT from committed Matthews / Coherent certificate fixtures via FCE. Never APPROVED. */
+export async function seedAuthenticCertificateFixtureAction(
+  companyId: string,
+  issuer: CertificateFixtureIssuer,
+) {
+  const result = await proposeAuthenticCertificateFixtureForCompany(companyId, issuer);
+  revalidateCertificateSurfaces(companyId);
+  return result;
+}
+
+/** Propose NS-4 DRAFT from pasted / uploaded certificate (+ optional statement) text via FCE. */
+export async function proposeUploadedCertificateTextAction(
+  companyId: string,
+  form: { certificateText: string; statementText?: string },
+) {
+  const result = await proposeCertificateTextForCompany({
+    companyId,
+    certificateText: form.certificateText,
+    statementText: form.statementText,
+  });
+  revalidateCertificateSurfaces(companyId);
   return result;
 }
 
@@ -22,16 +56,35 @@ export async function approveCertificateAction(
   reviewedBy: string,
   approvalRef: string,
 ) {
+  const reviewer = reviewedBy.trim();
+  if (!reviewer) {
+    return {
+      ok: false as const,
+      snapshotId,
+      status: "REJECTED",
+      issues: ["reviewedBy is required — never auto-approve"],
+    };
+  }
+
+  // Prefer FCE attributable path (refuses BLOCKED); fall back to workspace approve for synthetic seeds.
+  const fce = await approveFceProposedCertificate({
+    companyId,
+    snapshotId,
+    reviewedBy: reviewer,
+    approvalRef: approvalRef.trim() || `apr-${snapshotId}`,
+  });
+  if (fce.ok) {
+    revalidateCertificateSurfaces(companyId);
+    return fce;
+  }
+
   const result = await approveWorkspaceCertificate({
     companyId,
     snapshotId,
-    reviewedBy: reviewedBy.trim() || "workspace-user",
+    reviewedBy: reviewer,
     approvalRef: approvalRef.trim() || `apr-${snapshotId}`,
   });
-  revalidatePath(`/${companyId}/certificates`);
-  revalidatePath(`/${companyId}/capacity`);
-  revalidatePath(`/${companyId}/ask`);
-  revalidatePath(`/${companyId}/intelligence`);
+  revalidateCertificateSurfaces(companyId);
   return result;
 }
 

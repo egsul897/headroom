@@ -197,12 +197,88 @@ export default async function DebtIntelligencePage({
         ) : null}
       </Card>
 
+      {/* Contractual EBITDA derivation */}
+      {d.contractualComputation?.ebitdaDerivation ? (
+        <Card>
+          <div className="card-title">Contractual Consolidated EBITDA derivation</div>
+          <div className="card-subtitle">
+            Kind: {d.contractualComputation.ebitdaDerivation.kind}
+            {d.contractualComputation.ebitdaDerivation.measurementPeriod
+              ? ` · Period: ${d.contractualComputation.ebitdaDerivation.measurementPeriod}`
+              : ""}
+            {d.contractualComputation.ebitdaDerivation.asOfDate
+              ? ` · As of ${d.contractualComputation.ebitdaDerivation.asOfDate}`
+              : ""}
+          </div>
+          <div className="row">
+            <div className="row-label">Binding contractual EBITDA</div>
+            <div className="row-value">
+              {d.contractualComputation.ebitdaDerivation.bindingContractualEbitdaMillions != null
+                ? fmtM(d.contractualComputation.ebitdaDerivation.bindingContractualEbitdaMillions)
+                : "—"}
+            </div>
+          </div>
+          <div className="row">
+            <div className="row-label">Component sum</div>
+            <div className="row-value">
+              {d.contractualComputation.ebitdaDerivation.componentSumMillions != null
+                ? fmtM(d.contractualComputation.ebitdaDerivation.componentSumMillions)
+                : "NOT DETERMINABLE"}
+            </div>
+          </div>
+          <div className="row">
+            <div className="row-label">Approval / authority</div>
+            <div className="row-value">{d.contractualComputation.ebitdaDerivation.bindingApprovalStatus}</div>
+          </div>
+          {d.contractualComputation.ebitdaDerivation.definitionCitation ? (
+            <div className="row-note">
+              Definition: {d.contractualComputation.ebitdaDerivation.definitionTerm} —{" "}
+              {d.contractualComputation.ebitdaDerivation.definitionCitation}
+            </div>
+          ) : null}
+          {d.contractualComputation.ebitdaDerivation.methodologyDisclosure ? (
+            <div className="row-note" style={{ marginTop: 8 }}>
+              Methodology: {d.contractualComputation.ebitdaDerivation.methodologyDisclosure}
+            </div>
+          ) : null}
+          {d.contractualComputation.ebitdaDerivation.components.map((c, i) => (
+            <div className="row" key={`${c.label}-${i}`}>
+              <div className="row-label">
+                {c.sign === "minus" ? "−" : "+"} {c.label}
+              </div>
+              <div className="row-value">
+                {c.amountMissing || c.amountMillions == null
+                  ? "AMOUNT MISSING"
+                  : fmtM(c.amountMillions)}
+                <div className="row-note">
+                  {c.documentCitation}
+                  {c.measurementPeriod ? ` · ${c.measurementPeriod}` : ""} · {c.approvalStatus}
+                  {c.unresolvedNote ? ` · ${c.unresolvedNote}` : ""}
+                </div>
+              </div>
+            </div>
+          ))}
+          {d.contractualComputation.ebitdaDerivation.unresolvedAdjustments.map((u, i) => (
+            <div className="row-note" key={`unresolved-${i}`}>
+              Unresolved: {u}
+            </div>
+          ))}
+          <div className="row-note" style={{ marginTop: 8 }}>
+            Ratio debt capacity below is gross mathematical room only — not verified available capacity.
+          </div>
+        </Card>
+      ) : null}
+
       {/* 2. Ratios */}
       <Card>
         <div className="card-title">2. Financial covenant ratios</div>
         <div className="card-subtitle">
-          Generic ratios compute from snapshot inputs when present; contractual thresholds come from AI-surfaced
-          provisions. Map GAAP inputs to contract definitions before treating figures as covenant tests.
+          Net leverage, senior secured net leverage, and interest coverage use contractual Consolidated EBITDA from the
+          verified snapshot when present. Thresholds come from operative provisions when modeled. GAAP is never
+          substituted for contractual EBITDA.
+          {d.contractualComputation?.contractualEbitda != null
+            ? ` Contractual EBITDA ${fmtM(d.contractualComputation.contractualEbitda)}.`
+            : ""}
         </div>
         {d.ratios.map((r) => (
           <MetricRow
@@ -228,8 +304,8 @@ export default async function DebtIntelligencePage({
       <Card>
         <div className="card-title">3. Covenant basket capacity</div>
         <div className="card-subtitle">
-          Debt, lien, RP, investment, incremental, asset-sale and builder language from the package. Remaining
-          availability is shown only when supported — never invented.
+          Ratio-based debt capacity (LEVERAGE_RATIO_ROOM) is computed as gross contractual room when provisions and
+          financials exist. Remaining availability requires attributed utilization — never invented from empty ledgers.
         </div>
         {d.baskets.length === 0 ? (
           <div className="row-note">No basket/threshold language surfaced yet.</div>

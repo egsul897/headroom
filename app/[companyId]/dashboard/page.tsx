@@ -1,6 +1,8 @@
 import { DashboardClient } from "@/components/DashboardClient";
 import { facilitiesQueryFromPosition, maturitiesQueryFromPosition } from "@/lib/dashboard/load-state";
+import { loadNs4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-panel";
 import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
+import { loadContractualLeverageForCompany } from "@/lib/product/contractual-leverage";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
@@ -14,10 +16,28 @@ export const metadata = { title: "Headroom — Dashboard" };
  * called from `buildCovenantOverview` (lib/covenant-overview-builder.ts),
  * client-side for live editable-financials reflow with zero server
  * round-trip. This file performs no calculation of its own.
+ *
+ * North-Star financial facts come from Neon NS-4 via
+ * `loadNs4DashboardFinancialState` — never from inventing legacy figures.
  */
-export default async function DashboardPage({ params }: { params: Promise<{ companyId: string }> }) {
+export default async function DashboardPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ companyId: string }>;
+  searchParams?: Promise<{ evaluationDate?: string }>;
+}) {
   const { companyId } = await params;
+  const sp = searchParams ? await searchParams : {};
+  const evaluationDate =
+    typeof sp.evaluationDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(sp.evaluationDate)
+      ? sp.evaluationDate
+      : undefined;
+
+  // Overview load first — invent-absence: mint facilities/maturities queries only
+  // after this returns. NS-4 band is a separate Neon read (fail-closed).
   const inputs = await loadCovenantOverviewInputs(companyId);
+  const leverage = await loadContractualLeverageForCompany(companyId, inputs.asOfDate);
   const {
     company,
     asOfDate,
@@ -35,8 +55,11 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
   const facilitiesQuery = facilitiesQueryFromPosition(financialPosition, documentNameById);
   const maturitiesQuery = maturitiesQueryFromPosition(financialPosition);
 
+  const ns4Financial = await loadNs4DashboardFinancialState({ companyId, evaluationDate });
+
   return (
     <DashboardClient
+      companyId={companyId}
       companyName={company.name}
       asOfDate={asOfDate.toISOString()}
       covenantData={covenantData}
@@ -48,6 +71,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
       facilitiesQuery={facilitiesQuery}
       maturitiesQuery={maturitiesQuery}
       attributedUtilizationSerialized={attributedUtilizationSerialized}
+      ns4Financial={ns4Financial}
+      contractualLeverageRequests={leverage.requests}
     />
   );
 }

@@ -117,10 +117,17 @@ export function buildCertificateProposalFromEngine(params: {
     params.proposalStatus ??
     (run.reconciliation.disposition === "APPROVED_ELIGIBLE" ? "DRAFT" : "REVIEW_REQUIRED");
 
+  const certFamilies = new Set((run.certificate?.metrics ?? []).map((m) => m.family));
   const metrics = [
     ...(run.certificate?.metrics ?? []),
     // Include GAAP from statement so the snapshot preserves both identities.
-    ...(run.statement?.metrics.filter((m) => m.family === "GAAP_EBITDA") ?? []),
+    // Also carry statement CASH when the certificate omitted it (e.g. prior non-cash conflict)
+    // — never invent cash; only reuse an extracted statement metric.
+    ...(run.statement?.metrics.filter(
+      (m) =>
+        m.family === "GAAP_EBITDA" ||
+        (m.family === "CASH" && !certFamilies.has("CASH")),
+    ) ?? []),
   ];
 
   const facts = metrics
@@ -218,6 +225,8 @@ export async function approveNs4SnapshotAttributable(params: {
   reviewedBy: string;
   approvalRef: string;
   reconciliation: ReconciliationReport;
+  /** ISO timestamp of attributable approval; defaults to now. Used as delivery evidence. */
+  reviewedAt?: string;
 }): Promise<ProposeNs4Result> {
   const reviewedBy = params.reviewedBy.trim();
   if (!reviewedBy) {
@@ -232,7 +241,7 @@ export async function approveNs4SnapshotAttributable(params: {
   const result = await approveCertificateProposalAsync(store, {
     snapshotId: params.snapshotId,
     reviewedBy,
-    reviewedAt: new Date().toISOString(),
+    reviewedAt: params.reviewedAt ?? new Date().toISOString(),
     approvalRef: params.approvalRef,
     proposerKind: "extractor",
   });

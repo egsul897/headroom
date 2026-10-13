@@ -1,0 +1,42 @@
+{
+  "artifact": "autonomous-financial-computation-audit.ci-evidence",
+  "version": "afc.v1",
+  "baseMainSha": "67027b8f499921a12cee7b9b9f04d832898b6384",
+  "branch": "cursor/autonomous-financial-computation-audit-45d6",
+  "prUrl": "https://github.com/egsul897/headroom/pull/322",
+  "auditedTipSha": "e08f59984312cf7f4d242bd1d81ea81ca7a3884f",
+  "localFocusedTests": {
+    "heldOutOracles": {
+      "command": "npx vitest run tests/autonomous-financial-computation/held-out-oracles.test.ts",
+      "passed": 13,
+      "failed": 0
+    },
+    "runtimeRegressionBundle": {
+      "command": "npx vitest run tests/contract-model/runtime/expression-runtime.test.ts tests/contract-model/runtime/dependency-graph.test.ts tests/contract-model/runtime/decimal.test.ts tests/contract-model/runtime/input/term-and-manifest.test.ts",
+      "passed": 90,
+      "failed": 0
+    }
+  },
+  "githubChecksOnAuditedTip": {
+    "sha": "e08f59984312cf7f4d242bd1d81ea81ca7a3884f",
+    "conclusion": "success",
+    "checksTotal": 2,
+    "checksSuccessful": 2,
+    "checksFailed": 0,
+    "checks": [
+      {
+        "name": "Vercel",
+        "conclusion": "success",
+        "url": "https://vercel.com/debt-compass/headroom/8VjRViubt7KMPMojyNMHHCunAERT"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "conclusion": "success",
+        "url": "https://github.com/egsul897/headroom/runs/115134537298"
+      }
+    ],
+    "note": "Repository GitHub checks on this branch are Vercel preview deploy + comments only; unit-test evidence is the local vitest focused runs above (no failing GitHub Actions test workflow present on this tip)."
+  },
+  "selfCertify": false,
+  "merged": false
+}
