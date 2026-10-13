@@ -242,9 +242,9 @@ export function evaluateCrossDomainTransaction(params: {
   if (assumptionBlock) packageLimitations.push(assumptionBlock);
 
   const domains: DomainEvaluationSlice[] = [];
-  let debtSimulation: DebtIncurrenceSimulation | null = null;
-  let rpSimulation: RestrictedPaymentSimulation | null = null;
-  let assetSaleSimulation: AssetSaleSimulation | null = null;
+  let debtSim: DebtIncurrenceSimulation | null = null;
+  let rpSim: RestrictedPaymentSimulation | null = null;
+  let assetSaleSim: AssetSaleSimulation | null = null;
   const statusAcc: TransactionStatus[] = [];
 
   const allowRemaining = remainingAllowed(tx.assumptions);
@@ -282,88 +282,105 @@ export function evaluateCrossDomainTransaction(params: {
     amount: number,
     secured: boolean,
     label: string,
-  ): DomainEvaluationSlice => {
-    debtSimulation = simulateDebtIncurrence(data, position, amount, secured);
-    statusAcc.push(debtSimulation.status);
+  ): { slice: DomainEvaluationSlice; sim: DebtIncurrenceSimulation } => {
+    const sim = simulateDebtIncurrence(data, position, amount, secured);
+    statusAcc.push(sim.status);
     return {
-      domain: "DEBT_INCURRENCE_REFINANCING",
-      support: "EXECUTABLE",
-      status: debtSimulation.status,
-      summary: `${label}: ${debtSimulation.status} · binding ${
-        debtSimulation.binding?.documentName ?? "n/a"
-      } · overall gross capacity ${
-        debtSimulation.overallCapacity != null && Number.isFinite(debtSimulation.overallCapacity)
-          ? `$${debtSimulation.overallCapacity.toFixed(1)}M`
-          : "n/a"
-      }`,
-      grossCapacityMillions:
-        debtSimulation.overallCapacity != null && Number.isFinite(debtSimulation.overallCapacity)
-          ? debtSimulation.overallCapacity
-          : null,
-      verifiedRemainingMillions: null,
-      citations: debtSimulation.perDocument.map(
-        (d) => `${d.documentName}${d.bindingProvision ? ` · ${d.bindingProvision.sectionRef}` : ""}`,
-      ),
-      missingInputs: debtSimulation.reason ? [debtSimulation.reason] : [],
-      notes: debtSimulation.ratioTests
-        .filter((r) => r.applies)
-        .map(
-          (r) =>
-            `${r.metricName} ${r.preTransactionRatio?.toFixed(2)}x → ${r.postTransactionRatio?.toFixed(2) ?? "n/a"}x vs ${r.threshold}x (${r.status})`,
+      sim,
+      slice: {
+        domain: "DEBT_INCURRENCE_REFINANCING",
+        support: "EXECUTABLE",
+        status: sim.status,
+        summary: `${label}: ${sim.status} · binding ${
+          sim.binding?.documentName ?? "n/a"
+        } · overall gross capacity ${
+          sim.overallCapacity != null && Number.isFinite(sim.overallCapacity)
+            ? `$${sim.overallCapacity.toFixed(1)}M`
+            : "n/a"
+        }`,
+        grossCapacityMillions:
+          sim.overallCapacity != null && Number.isFinite(sim.overallCapacity)
+            ? sim.overallCapacity
+            : null,
+        verifiedRemainingMillions: null,
+        citations: sim.perDocument.map(
+          (d) => `${d.documentName}${d.bindingProvision ? ` · ${d.bindingProvision.sectionRef}` : ""}`,
         ),
+        missingInputs: sim.reason ? [sim.reason] : [],
+        notes: sim.ratioTests
+          .filter((r) => r.applies)
+          .map(
+            (r) =>
+              `${r.metricName} ${r.preTransactionRatio?.toFixed(2)}x → ${r.postTransactionRatio?.toFixed(2) ?? "n/a"}x vs ${r.threshold}x (${r.status})`,
+          ),
+      },
     };
   };
 
-  const runRp = (amount: number, kind: "dividend" | "investment"): DomainEvaluationSlice => {
+  const runRp = (
+    amount: number,
+    kind: "dividend" | "investment",
+  ): { slice: DomainEvaluationSlice; sim: RestrictedPaymentSimulation | null } => {
     const docId =
       tx.rpDocumentId ??
       data.documents.find((d) => d.rpWaterfall)?.id;
     if (!docId) {
       return {
-        domain: "RESTRICTED_PAYMENTS_BUILDER",
-        support: "UNSUPPORTED",
-        status: "not_tested",
-        summary: "No document with rpWaterfall configuration",
-        grossCapacityMillions: null,
-        verifiedRemainingMillions: null,
-        citations: [],
-        missingInputs: ["rpWaterfall"],
-        notes: [],
+        sim: null,
+        slice: {
+          domain: "RESTRICTED_PAYMENTS_BUILDER",
+          support: "UNSUPPORTED",
+          status: "not_tested",
+          summary: "No document with rpWaterfall configuration",
+          grossCapacityMillions: null,
+          verifiedRemainingMillions: null,
+          citations: [],
+          missingInputs: ["rpWaterfall"],
+          notes: [],
+        },
       };
     }
-    rpSimulation = simulateRestrictedPayment(data, position, docId, amount, kind);
-    statusAcc.push(rpSimulation.status);
-    const stepGross = Object.values(rpSimulation.stepCapacitiesRemaining).reduce((a, b) => a + b, 0);
+    const sim = simulateRestrictedPayment(data, position, docId, amount, kind);
+    statusAcc.push(sim.status);
+    const stepGross = Object.values(sim.stepCapacitiesRemaining).reduce((a, b) => a + b, 0);
     return {
-      domain: kind === "dividend" ? "RESTRICTED_PAYMENTS_BUILDER" : "INVESTMENTS_ACQUISITIONS",
-      support: "EXECUTABLE",
-      status: rpSimulation.status,
-      summary: `${kind} $${amount}M · ${rpSimulation.status} · remaining unallocated $${rpSimulation.remaining.toFixed(1)}M`,
-      grossCapacityMillions: stepGross,
-      verifiedRemainingMillions: allowRemaining ? stepGross : null,
-      citations: rpSimulation.steps.map((s) => `${s.sectionRef} · ${s.basketName}`),
-      missingInputs: rpSimulation.reason ? [rpSimulation.reason] : [],
-      notes: [`Ledger RP pool used before sim: $${rpSimulation.poolUsed.toFixed(1)}M`],
+      sim,
+      slice: {
+        domain: kind === "dividend" ? "RESTRICTED_PAYMENTS_BUILDER" : "INVESTMENTS_ACQUISITIONS",
+        support: "EXECUTABLE",
+        status: sim.status,
+        summary: `${kind} $${amount}M · ${sim.status} · remaining unallocated $${sim.remaining.toFixed(1)}M`,
+        grossCapacityMillions: stepGross,
+        verifiedRemainingMillions: allowRemaining ? stepGross : null,
+        citations: sim.steps.map((s) => `${s.sectionRef} · ${s.basketName}`),
+        missingInputs: sim.reason ? [sim.reason] : [],
+        notes: [`Ledger RP pool used before sim: $${sim.poolUsed.toFixed(1)}M`],
+      },
     };
   };
 
-  const runAssetSale = (netProceeds: number): DomainEvaluationSlice => {
+  const runAssetSale = (
+    netProceeds: number,
+  ): { slice: DomainEvaluationSlice; sim: AssetSaleSimulation | null } => {
     const docId =
       tx.assetSaleDocumentId ?? documentsWithAssetSale(data)[0]?.id;
     if (!docId) {
       return {
-        domain: "ASSET_SALES_PROCEEDS",
-        support: "UNSUPPORTED",
-        status: "not_tested",
-        summary: "No document with assetSale configuration",
-        grossCapacityMillions: null,
-        verifiedRemainingMillions: null,
-        citations: [],
-        missingInputs: ["assetSale"],
-        notes: [],
+        sim: null,
+        slice: {
+          domain: "ASSET_SALES_PROCEEDS",
+          support: "UNSUPPORTED",
+          status: "not_tested",
+          summary: "No document with assetSale configuration",
+          grossCapacityMillions: null,
+          verifiedRemainingMillions: null,
+          citations: [],
+          missingInputs: ["assetSale"],
+          notes: [],
+        },
       };
     }
-    assetSaleSimulation = simulateAssetSale(
+    const sim = simulateAssetSale(
       data,
       position,
       docId,
@@ -371,24 +388,27 @@ export function evaluateCrossDomainTransaction(params: {
       Boolean(tx.reinvestProceeds),
     );
     statusAcc.push(
-      assetSaleSimulation.status === "clear"
+      sim.status === "clear"
         ? "clear"
-        : assetSaleSimulation.status === "review_required"
+        : sim.status === "review_required"
           ? "review_required"
           : "not_tested",
     );
     return {
-      domain: "ASSET_SALES_PROCEEDS",
-      support: "PARTIAL",
-      status: assetSaleSimulation.status,
-      summary: `Net proceeds $${netProceeds}M · offerTriggered=${assetSaleSimulation.offerTriggered ?? false} · reinvest=${tx.reinvestProceeds ?? false}`,
-      grossCapacityMillions: assetSaleSimulation.excessProceedsThreshold ?? null,
-      verifiedRemainingMillions: null,
-      citations: [assetSaleSimulation.documentName ?? docId],
-      missingInputs: assetSaleSimulation.reason ? [assetSaleSimulation.reason] : [],
-      notes: [
-        "Capacity restore from repayment of debt with proceeds requires explicit contractualAuthorityRef (not inferred).",
-      ],
+      sim,
+      slice: {
+        domain: "ASSET_SALES_PROCEEDS",
+        support: "PARTIAL",
+        status: sim.status,
+        summary: `Net proceeds $${netProceeds}M · offerTriggered=${sim.offerTriggered ?? false} · reinvest=${tx.reinvestProceeds ?? false}`,
+        grossCapacityMillions: sim.excessProceedsThreshold ?? null,
+        verifiedRemainingMillions: null,
+        citations: [sim.documentName ?? docId],
+        missingInputs: sim.reason ? [sim.reason] : [],
+        notes: [
+          "Capacity restore from repayment of debt with proceeds requires explicit contractualAuthorityRef (not inferred).",
+        ],
+      },
     };
   };
 
@@ -451,23 +471,33 @@ export function evaluateCrossDomainTransaction(params: {
   // Scenario-specific composition
   switch (tx.kind) {
     case "DEBT_FUNDED_ACQUISITION": {
-      domains.push(runDebt(tx.amountMillions, tx.secured, "Acquisition financing debt"));
-      domains.push(runRp(tx.amountMillions, "investment"));
+      const debt = runDebt(tx.amountMillions, tx.secured, "Acquisition financing debt");
+      debtSim = debt.sim;
+      domains.push(debt.slice);
+      const rp = runRp(tx.amountMillions, "investment");
+      rpSim = rp.sim;
+      domains.push(rp.slice);
       packageLimitations.push(
         "Acquisition target guarantee / restricted-group admission not simulated — entity scope stated in assumptions only.",
       );
       break;
     }
     case "DIVIDEND_AVAILABLE_AMOUNT": {
-      domains.push(runRp(tx.amountMillions, "dividend"));
+      const rp = runRp(tx.amountMillions, "dividend");
+      rpSim = rp.sim;
+      domains.push(rp.slice);
       break;
     }
     case "ASSET_SALE_PROCEEDS": {
-      domains.push(runAssetSale(tx.amountMillions));
+      const sale = runAssetSale(tx.amountMillions);
+      assetSaleSim = sale.sim;
+      domains.push(sale.slice);
       break;
     }
     case "REFINANCING": {
-      domains.push(runDebt(tx.amountMillions, tx.secured, "Refinancing incurrence"));
+      const debt = runDebt(tx.amountMillions, tx.secured, "Refinancing incurrence");
+      debtSim = debt.sim;
+      domains.push(debt.slice);
       packageLimitations.push(
         "Refinancing maturity / permitted refinancing conditions are not separately enforced beyond debt capacity + ratio tests.",
       );
@@ -509,16 +539,16 @@ export function evaluateCrossDomainTransaction(params: {
 
   const proForma = {
     totalNetLeverage:
-      debtSimulation?.proForma.totalNetLeverage ??
-      rpSimulation?.proFormaTotalNetLeverage ??
-      assetSaleSimulation?.proFormaTotalNetLeverage ??
+      debtSim?.proForma.totalNetLeverage ??
+      rpSim?.proFormaTotalNetLeverage ??
+      assetSaleSim?.proFormaTotalNetLeverage ??
       contractualComputation.leverage.totalNetLeverage,
     seniorSecuredNetLeverage:
-      debtSimulation?.proForma.seniorSecuredNetLeverage ??
+      debtSim?.proForma.seniorSecuredNetLeverage ??
       contractualComputation.leverage.seniorSecuredNetLeverage,
     interestCoverage:
-      debtSimulation != null
-        ? debtSimulation.proForma.fixedChargeCoverage
+      debtSim != null
+        ? debtSim.proForma.fixedChargeCoverage
         : contractualComputation.leverage.interestCoverage,
   };
 
@@ -528,9 +558,9 @@ export function evaluateCrossDomainTransaction(params: {
     overallStatus,
     domains,
     contractualComputation,
-    debtSimulation,
-    rpSimulation,
-    assetSaleSimulation,
+    debtSimulation: debtSim,
+    rpSimulation: rpSim,
+    assetSaleSimulation: assetSaleSim,
     proForma,
     packageLimitations,
     authorityNote:
