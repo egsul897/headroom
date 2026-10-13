@@ -106,6 +106,11 @@ export function buildCertificateProposalFromEngine(params: {
   companyId: string;
   run: EngineRunResult;
   proposalStatus?: "DRAFT" | "REVIEW_REQUIRED";
+  /**
+   * Persisted certificate delivery date (ISO YYYY-MM-DD or full ISO).
+   * Distinct from period asOf and from attributable approval reviewedAt.
+   */
+  deliveredAtIsoDate?: string;
 }): SyntheticCertificate | null {
   const { companyId, run } = params;
   const source = run.certificate ?? run.statement;
@@ -161,6 +166,9 @@ export function buildCertificateProposalFromEngine(params: {
     note: `FCE disposition=${run.reconciliation.disposition}; ${run.reconciliation.dispositionReason}`,
     facts,
     basketUsageLines: [],
+    ...(params.deliveredAtIsoDate
+      ? { deliveredAtIsoDate: params.deliveredAtIsoDate.slice(0, 10) }
+      : {}),
   };
 }
 
@@ -175,6 +183,7 @@ export interface ProposeNs4Result {
 export async function proposeNs4SnapshotFromEngine(params: {
   companyId: string;
   run: EngineRunResult;
+  deliveredAtIsoDate?: string;
 }): Promise<ProposeNs4Result> {
   const cert = buildCertificateProposalFromEngine(params);
   if (!cert) return { ok: false, reason: "No metrics available to propose." };
@@ -225,7 +234,7 @@ export async function approveNs4SnapshotAttributable(params: {
   reviewedBy: string;
   approvalRef: string;
   reconciliation: ReconciliationReport;
-  /** ISO timestamp of attributable approval; defaults to now. Used as delivery evidence. */
+  /** ISO timestamp of attributable approval; defaults to now. Not certificate delivery. */
   reviewedAt?: string;
 }): Promise<ProposeNs4Result> {
   const reviewedBy = params.reviewedBy.trim();

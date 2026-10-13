@@ -72,11 +72,22 @@ export interface ApprovalBridgeProposeResult {
 
 /** Steps 1–3: extract, reconcile, propose DRAFT/REVIEW_REQUIRED only. */
 export async function proposeFinancialSnapshotLifecycle(
-  params: RunFinancialCertificateEngineParams,
+  params: RunFinancialCertificateEngineParams & { deliveredAtIsoDate?: string },
 ): Promise<ApprovalBridgeProposeResult> {
   const run = runFinancialCertificateEngine(params);
-  const proposal = buildCertificateProposalFromEngine({ companyId: params.companyId, run });
-  const propose = await proposeNs4SnapshotFromEngine({ companyId: params.companyId, run });
+  const deliveredAtIsoDate =
+    params.deliveredAtIsoDate?.slice(0, 10) ??
+    (params.now ? params.now.toISOString().slice(0, 10) : undefined);
+  const proposal = buildCertificateProposalFromEngine({
+    companyId: params.companyId,
+    run,
+    deliveredAtIsoDate,
+  });
+  const propose = await proposeNs4SnapshotFromEngine({
+    companyId: params.companyId,
+    run,
+    deliveredAtIsoDate,
+  });
   return { run, proposal, propose, authoritative: false };
 }
 

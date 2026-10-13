@@ -49,6 +49,11 @@ export async function proposeCertificateTextForCompany(args: {
   certificateDocumentId?: string;
   statementDocumentId?: string;
   now?: string;
+  /**
+   * Persisted certificate delivery date (ISO). Defaults to `now` date when set.
+   * Never taken from period asOf or from later attributable approval.
+   */
+  deliveredAtIsoDate?: string;
   fixtureAuthority?: FinancialInputAuthorityLabel | null;
   label?: string;
 }): Promise<ProposeCertificateTextResult> {
@@ -89,6 +94,7 @@ export async function proposeCertificateTextForCompany(args: {
         }
       : undefined,
     now: args.now ? new Date(args.now) : undefined,
+    deliveredAtIsoDate: args.deliveredAtIsoDate ?? args.now?.slice(0, 10),
   });
 
   const factKeys = proposed.proposal?.facts.map((f) => f.key) ?? [];
@@ -145,6 +151,8 @@ export async function proposeAuthenticCertificateFixtureForCompany(
       certificateDocumentId: `matthews-cert-q1-fy2025-${companyId}`,
       statementDocumentId: `matthews-stmt-q1-fy2025-${companyId}`,
       now: "2025-02-15T00:00:00Z",
+      // Delivery on/before typical product eval 2025-02-01; distinct from period asOf and approval.
+      deliveredAtIsoDate: "2025-01-28",
       fixtureAuthority: MATTHEWS_FIXTURE_AUTHORITY,
       label: `Matthews Q1 FY2025 fixture (${MATTHEWS_AS_OF_Q1}) — ${MATTHEWS_FIXTURE_AUTHORITY.kind}; DRAFT only`,
     });
@@ -157,6 +165,8 @@ export async function proposeAuthenticCertificateFixtureForCompany(
     certificateDocumentId: `coherent-cert-fy2026-${companyId}`,
     statementDocumentId: `coherent-stmt-fy2026-${companyId}`,
     now: "2026-08-20T00:00:00Z",
+    // Delivery on/before typical product eval 2026-08-01; distinct from period asOf and approval.
+    deliveredAtIsoDate: "2026-07-20",
     fixtureAuthority: COHERENT_FIXTURE_AUTHORITY,
     label: `Coherent FY2026 fixture (${COHERENT_AS_OF}) — ${COHERENT_FIXTURE_AUTHORITY.kind}; DRAFT only`,
   });
@@ -172,7 +182,7 @@ export async function approveFceProposedCertificate(args: {
   reviewedBy: string;
   approvalRef: string;
   reconciliation?: ReconciliationReport;
-  /** ISO approval time — becomes delivery evidence for cutoff; defaults to now. */
+  /** ISO attributable approval time — not certificate delivery evidence. */
   reviewedAt?: string;
 }): Promise<{
   ok: boolean;

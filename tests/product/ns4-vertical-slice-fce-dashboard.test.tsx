@@ -159,7 +159,7 @@ async function runIssuerSlice(args: {
   });
   expect(before.status).not.toBe("APPROVED_BOUND");
 
-  // reviewedAt must be on/before evaluationDate so delivery evidence is visible to cutoff.
+  // Attributable approval time — delivery is persisted at propose (fixture deliveredAtIsoDate).
   const reviewedAt = `${args.evaluationDate}T12:00:00Z`;
   const approved = await approveFceProposedCertificate({
     companyId: args.companyId,

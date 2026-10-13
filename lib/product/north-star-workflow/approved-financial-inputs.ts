@@ -15,6 +15,7 @@ import { createHash } from "crypto";
 import { prisma } from "@/lib/prisma";
 import {
   loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
   type FinancialSnapshot,
   type NamedContractualSelector,
 } from "@/lib/contract-model/north-star-bridge";
@@ -127,8 +128,9 @@ export async function loadApprovedFinancialInputBundle(args: {
     "transaction_simulation",
   ] as const;
 
-  const [approved, readiness] = await Promise.all([
+  const [approved, cutoffEligible, readiness] = await Promise.all([
     loadApprovedSnapshotsFromPrisma(prisma, companyId),
+    loadCutoffEligibleSnapshotsFromPrisma(prisma, companyId),
     loadTransactionWorkflowReadiness(companyId, {
       evaluationDate: args.evaluationDate,
       selector,
@@ -176,7 +178,12 @@ export async function loadApprovedFinancialInputBundle(args: {
   }
 
   const boundId = readiness.cutoff?.state === "RESOLVED" ? readiness.cutoff.snapshotId ?? null : null;
-  const bound = boundId ? approved.find((s) => s.snapshotId === boundId) ?? null : null;
+  // Historical eval may bind a SUPERSEDED predecessor that was eligible at evaluationDate.
+  const bound = boundId
+    ? cutoffEligible.find((s) => s.snapshotId === boundId) ??
+      approved.find((s) => s.snapshotId === boundId) ??
+      null
+    : null;
 
   if (!bound) {
     return {

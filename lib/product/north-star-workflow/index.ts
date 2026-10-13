@@ -51,6 +51,10 @@ export {
   type ApprovedFinancialInputBundleStatus,
 } from "./approved-financial-inputs";
 export {
+  deliveriesFromApprovedSnapshots,
+  bindSnapshotForDeliveredCutoff,
+} from "./certificate-deliveries";
+export {
   parseTransactionDraft,
   analyzeContemplatedTransaction,
   type TransactionDraft,

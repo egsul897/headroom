@@ -110,6 +110,9 @@ function buildProposedSnapshot(cert: SyntheticCertificate): FinancialSnapshot {
       ]
         .filter(Boolean)
         .join("; "),
+      ...(cert.deliveredAtIsoDate
+        ? { deliveredAtIsoDate: cert.deliveredAtIsoDate.slice(0, 10) }
+        : {}),
     },
     review: { reviewedBy: null, reviewedAt: null, approvalRef: null },
   };

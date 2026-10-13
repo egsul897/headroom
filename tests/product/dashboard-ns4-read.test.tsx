@@ -66,6 +66,7 @@ describeDb("Dashboard NS-4 Neon financial band", () => {
       snapshotId: `snap-${CO}-q2`,
       reportingPeriod: "FY2026-Q2",
       asOf: "2026-06-30",
+      deliveredAtIsoDate: "2026-07-20",
     });
     expect(proposed.ok).toBe(true);
 

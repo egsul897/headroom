@@ -123,6 +123,11 @@ export interface SyntheticCertificate {
   facts: CertificateFactProposal[];
   basketUsageLines: BasketUsageScheduleLine[];
   note?: string;
+  /**
+   * Persisted delivery evidence for contractual selectors (ISO YYYY-MM-DD).
+   * Distinct from period asOf and from attributable approval reviewedAt.
+   */
+  deliveredAtIsoDate?: string;
 }
 
 /** Proposal-local issue codes (plus store unsafe-graph codes via WriteResult). */

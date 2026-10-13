@@ -15,6 +15,7 @@
 export {
   PrismaApprovedSnapshotStore,
   loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
   InMemoryApprovedSnapshotStore,
   LedgerProposalRecorder,
   proposeFromCertificate,

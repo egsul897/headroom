@@ -11,6 +11,7 @@
 import { prisma } from "@/lib/prisma";
 import {
   loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
   toCanonicalString,
   type FinancialSnapshot,
   type NamedContractualSelector,
@@ -135,9 +136,10 @@ export async function loadNs4DashboardFinancialState(args: {
   const companyId = args.companyId;
   // Prefer delivered-certificate cutoff: issuer fiscal labels (e.g. Matthews FY2025-Q1
   // ending 2024-12-31) often disagree with a calendar MOST_RECENTLY_ENDED_FISCAL_QUARTER
-  // period key. Delivery evidence is built from APPROVED snapshot rows.
-  const [approved, readiness] = await Promise.all([
+  // period key. Delivery evidence is provenance.deliveredAtIsoDate only (never asOf / reviewedAt).
+  const [approved, cutoffEligible, readiness] = await Promise.all([
     loadApprovedSnapshotsFromPrisma(prisma, companyId),
+    loadCutoffEligibleSnapshotsFromPrisma(prisma, companyId),
     loadTransactionWorkflowReadiness(companyId, {
       evaluationDate: args.evaluationDate,
       selector: args.selector ?? "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
@@ -189,7 +191,11 @@ export async function loadNs4DashboardFinancialState(args: {
   );
 
   const boundId = readiness.cutoff?.state === "RESOLVED" ? readiness.cutoff.snapshotId ?? null : null;
-  const bound = boundId ? approved.find((s) => s.snapshotId === boundId) : null;
+  const bound = boundId
+    ? cutoffEligible.find((s) => s.snapshotId === boundId) ??
+      approved.find((s) => s.snapshotId === boundId) ??
+      null
+    : null;
 
   if (bound) {
     const facts = factsFromSnapshot(bound);
