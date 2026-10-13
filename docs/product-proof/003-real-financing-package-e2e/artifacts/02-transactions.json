@@ -1,0 +1,328 @@
+[
+  {
+    "id": "txn-debt-funded-acquisition",
+    "label": "Debt-funded acquisition",
+    "ask": "Can we finance a $50 million secured debt-funded acquisition on 2024-12-31?",
+    "amountMillions": 50,
+    "evaluationDate": "2024-12-31",
+    "draft": {
+      "rawQuestion": "Can we finance a $50 million secured debt-funded acquisition on 2024-12-31?",
+      "evaluationDate": "2024-12-31",
+      "amountMillions": 50,
+      "kind": "ACQUISITION",
+      "secured": true,
+      "missingConfirmations": []
+    },
+    "applicableCovenants": [
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "sourceProvision": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(a)",
+        "calculation": "max(0, $1300M − secured debt outstanding) → modeled=521.118 mm; remaining published=null",
+        "missingInputs": [
+          "verified remaining (completeness certificate + trusted issuer)",
+          "authenticated VerifiedExecutionPackage with dual-path debt+lien rules",
+          "investment basket for acquisition equity/consideration (NOT_IMPLEMENTED on package)"
+        ],
+        "selectedPath": null,
+        "capacityConsumption": null,
+        "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 521.118 → 471.11800000000005 (Δ -50)",
+        "conclusion": "Modeled leaf arithmetic available; production-authoritative permission REFUSED"
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "sourceProvision": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — §4.09(a)",
+        "calculation": "max(0, (EBITDA/2 − InterestExpense) / assumedNewDebtRate) → modeled=110.33623188405791 mm; remaining published=null",
+        "missingInputs": [
+          "verified remaining (completeness certificate + trusted issuer)",
+          "authenticated VerifiedExecutionPackage with dual-path debt+lien rules",
+          "investment basket for acquisition equity/consideration (NOT_IMPLEMENTED on package)"
+        ],
+        "selectedPath": null,
+        "capacityConsumption": null,
+        "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 110.33623188405791 → 60.3362318840579 (Δ -50.00000000000001)",
+        "conclusion": "Modeled leaf arithmetic available; production-authoritative permission REFUSED"
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "sourceProvision": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(b)(x)",
+        "calculation": "max(0, 3.5×EBITDA − net secured debt) → modeled=0 mm; remaining published=null",
+        "missingInputs": [
+          "verified remaining (completeness certificate + trusted issuer)",
+          "authenticated VerifiedExecutionPackage with dual-path debt+lien rules",
+          "investment basket for acquisition equity/consideration (NOT_IMPLEMENTED on package)"
+        ],
+        "selectedPath": null,
+        "capacityConsumption": null,
+        "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 0 → 0 (Δ 0)",
+        "conclusion": "Modeled leaf arithmetic available; production-authoritative permission REFUSED"
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "sourceProvision": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (2)",
+        "calculation": "flat $300M → modeled=300 mm; remaining published=null",
+        "missingInputs": [
+          "verified remaining (completeness certificate + trusted issuer)",
+          "authenticated VerifiedExecutionPackage with dual-path debt+lien rules",
+          "investment basket for acquisition equity/consideration (NOT_IMPLEMENTED on package)"
+        ],
+        "selectedPath": null,
+        "capacityConsumption": null,
+        "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 300 → 300 (Δ 0)",
+        "conclusion": "Modeled leaf arithmetic available; production-authoritative permission REFUSED"
+      },
+      {
+        "covenantFamily": "LIENS",
+        "sourceProvision": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment) — §6.01(j), as restated by Sixth Amendment",
+        "calculation": "flat $0M → modeled=0 mm; remaining published=null",
+        "missingInputs": [
+          "verified remaining (completeness certificate + trusted issuer)",
+          "authenticated VerifiedExecutionPackage with dual-path debt+lien rules",
+          "investment basket for acquisition equity/consideration (NOT_IMPLEMENTED on package)"
+        ],
+        "selectedPath": null,
+        "capacityConsumption": null,
+        "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 0 → 0 (Δ 0)",
+        "conclusion": "CA lien companion structurally blocks NEW Loan-Party secured liens — not an affirmative secured path"
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "sourceProvision": null,
+        "calculation": null,
+        "missingInputs": [
+          "No Investment exception / basket compiled for Matthews authentic package"
+        ],
+        "selectedPath": null,
+        "capacityConsumption": null,
+        "postTransactionState": null,
+        "conclusion": "NOT_IMPLEMENTED — cannot evaluate acquisition investment leg"
+      }
+    ],
+    "verifiedSimulate": {
+      "executable": false,
+      "refusalSummary": [
+        "NO_VERIFIED_EXECUTION_PACKAGE",
+        "NO_CANDIDATE_PATHS"
+      ],
+      "certifiedBlockers": [
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
+      "pathIncompleteReasons": [
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "selectedPathId": null
+    },
+    "recipeShape": {
+      "kind": "SECURED_BORROWING+INVESTMENT",
+      "limitations": [
+        {
+          "code": "MISSING_CAPACITY_NODE",
+          "message": "Secured borrowing requires explicit capacity draws (debt and/or lien paths)"
+        },
+        {
+          "code": "MISSING_CAPACITY_NODE",
+          "message": "Restricted investment requires an explicit capacity draw"
+        }
+      ],
+      "note": "Recipe API accepts only caller-supplied capacity node ids — none invented for Matthews authentic package."
+    },
+    "modeledLeafProbe": {
+      "used": true,
+      "note": "Modeled leaf recompute after hypothetical secured-debt metric bump — NOT verified simulation; ledger not mutated; UNKNOWN util not zeroed.",
+      "baselineCovenants": [
+        {
+          "code": "ind_permitted_debt_1a_flat",
+          "section": "Permitted Debt def., cl. (1)(a)",
+          "modeledMm": 521.118,
+          "remainingMm": null,
+          "authority": "GROSS_ONLY_UTILIZATION_INCOMPLETE"
+        },
+        {
+          "code": "ind_ratio_debt_fccr",
+          "section": "§4.09(a)",
+          "modeledMm": 110.33623188405791,
+          "remainingMm": null,
+          "authority": "MODELED_AUTHENTIC_EVIDENCE"
+        },
+        {
+          "code": "ind_permitted_debt_1b_ratio_secured",
+          "section": "Permitted Debt def., cl. (1)(b)(x)",
+          "modeledMm": 0,
+          "remainingMm": null,
+          "authority": "MODELED_AUTHENTIC_EVIDENCE"
+        },
+        {
+          "code": "ind_permitted_debt_2_notes",
+          "section": "Permitted Debt def., cl. (2)",
+          "modeledMm": 300,
+          "remainingMm": null,
+          "authority": "MODELED_AUTHENTIC_EVIDENCE"
+        },
+        {
+          "code": "ca_lien_601j_2024notes",
+          "section": "§6.01(j), as restated by Sixth Amendment",
+          "modeledMm": 0,
+          "remainingMm": null,
+          "authority": "STRUCTURAL_ZERO"
+        }
+      ],
+      "postState": [
+        {
+          "code": "ind_permitted_debt_1a_flat",
+          "modeledMm": 471.11800000000005,
+          "deltaMm": -50
+        },
+        {
+          "code": "ind_ratio_debt_fccr",
+          "modeledMm": 60.3362318840579,
+          "deltaMm": -50.00000000000001
+        },
+        {
+          "code": "ind_permitted_debt_1b_ratio_secured",
+          "modeledMm": 0,
+          "deltaMm": 0
+        },
+        {
+          "code": "ind_permitted_debt_2_notes",
+          "modeledMm": 300,
+          "deltaMm": 0
+        },
+        {
+          "code": "ca_lien_601j_2024notes",
+          "modeledMm": 0,
+          "deltaMm": 0
+        }
+      ]
+    },
+    "overallConclusion": "REFUSED / NOT DETERMINED — VERIFIED_SIMULATE_REFUSED: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens; investment leg NOT_IMPLEMENTED. Modeled leaf debt rooms are not production permission.",
+    "truthfulBlocker": "VERIFIED_SIMULATE_REFUSED: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens; investment leg NOT_IMPLEMENTED. Modeled leaf debt rooms are not production permission."
+  },
+  {
+    "id": "txn-restricted-payment",
+    "label": "Restricted payment",
+    "ask": "Can we make a $25 million restricted payment dividend on 2024-12-31?",
+    "amountMillions": 25,
+    "evaluationDate": "2024-12-31",
+    "draft": {
+      "rawQuestion": "Can we make a $25 million restricted payment dividend on 2024-12-31?",
+      "evaluationDate": "2024-12-31",
+      "amountMillions": 25,
+      "kind": "RESTRICTED_PAYMENT",
+      "secured": null,
+      "missingConfirmations": []
+    },
+    "applicableCovenants": [
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "sourceProvision": null,
+        "calculation": null,
+        "missingInputs": [
+          "RP negative covenant + exceptions IR",
+          "builder / Available Amount inputs",
+          "attributed RP utilization ledger with completeness certificate",
+          "VerifiedExecutionPackage"
+        ],
+        "selectedPath": null,
+        "capacityConsumption": null,
+        "postTransactionState": null,
+        "conclusion": "BLOCKED — no authentic RP path on Matthews package"
+      }
+    ],
+    "verifiedSimulate": {
+      "executable": false,
+      "refusalSummary": [
+        "NO_VERIFIED_EXECUTION_PACKAGE",
+        "NO_CANDIDATE_PATHS"
+      ],
+      "certifiedBlockers": [
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
+      "pathIncompleteReasons": [
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "selectedPathId": null
+    },
+    "recipeShape": {
+      "kind": "DIVIDEND_PAYMENT",
+      "limitations": [
+        {
+          "code": "MISSING_CAPACITY_NODE",
+          "message": "Dividend / restricted payment requires an explicit capacity draw"
+        }
+      ],
+      "note": "No authentic RP capacity node on Matthews package — recipe correctly refuses empty draws."
+    },
+    "modeledLeafProbe": {
+      "used": false,
+      "note": "Not applicable — domain not modeled on Matthews authentic leaf."
+    },
+    "overallConclusion": "REFUSED / NOT DETERMINED — EXPLICIT_BLOCKER: Restricted Payments domain NOT_IMPLEMENTED for Matthews authentic package — no RP waterfall, builder, or VEP path. Refusing rather than selecting a favorable synthetic path.",
+    "truthfulBlocker": "EXPLICIT_BLOCKER: Restricted Payments domain NOT_IMPLEMENTED for Matthews authentic package — no RP waterfall, builder, or VEP path. Refusing rather than selecting a favorable synthetic path."
+  },
+  {
+    "id": "txn-asset-sale",
+    "label": "Asset sale",
+    "ask": "Can we complete a $40 million asset sale disposition on 2024-12-31?",
+    "amountMillions": 40,
+    "evaluationDate": "2024-12-31",
+    "draft": {
+      "rawQuestion": "Can we complete a $40 million asset sale disposition on 2024-12-31?",
+      "evaluationDate": "2024-12-31",
+      "amountMillions": 40,
+      "kind": "UNKNOWN",
+      "secured": null,
+      "missingConfirmations": [
+        "transaction kind (debt / RP / investment / acquisition)"
+      ]
+    },
+    "applicableCovenants": [
+      {
+        "covenantFamily": "ASSET_SALES",
+        "sourceProvision": null,
+        "calculation": null,
+        "missingInputs": [
+          "Asset Sale covenant + threshold provision",
+          "proceeds / reinvestment basket configuration",
+          "fair-value / consideration inputs (not invented)",
+          "VerifiedExecutionPackage"
+        ],
+        "selectedPath": null,
+        "capacityConsumption": null,
+        "postTransactionState": null,
+        "conclusion": "BLOCKED — no authentic asset-sale path on Matthews package"
+      }
+    ],
+    "verifiedSimulate": {
+      "executable": false,
+      "refusalSummary": [
+        "NO_VERIFIED_EXECUTION_PACKAGE",
+        "NO_CANDIDATE_PATHS"
+      ],
+      "certifiedBlockers": [
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
+      "pathIncompleteReasons": [
+        "NO_VERIFIED_EXECUTION_PACKAGE"
+      ],
+      "selectedPathId": null
+    },
+    "recipeShape": {
+      "kind": "ASSET_SALE",
+      "limitations": [
+        {
+          "code": "UNSUPPORTED_RECIPE_SHAPE",
+          "message": "Asset sale must state metrics, capacity draws, and/or an event activation explicitly"
+        }
+      ],
+      "note": "No authentic asset-sale threshold or proceeds routing — recipe correctly refuses empty shape."
+    },
+    "modeledLeafProbe": {
+      "used": false,
+      "note": "Not applicable — domain not modeled on Matthews authentic leaf."
+    },
+    "overallConclusion": "REFUSED / NOT DETERMINED — EXPLICIT_BLOCKER: Asset Sales domain NOT_IMPLEMENTED for Matthews authentic package — no assetSale config or VEP path. Refusing rather than inventing proceeds routing.",
+    "truthfulBlocker": "EXPLICIT_BLOCKER: Asset Sales domain NOT_IMPLEMENTED for Matthews authentic package — no assetSale config or VEP path. Refusing rather than inventing proceeds routing."
+  }
+]

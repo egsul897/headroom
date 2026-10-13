@@ -1,0 +1,165 @@
+[
+  {
+    "domain": "debt_incurrence",
+    "status": "PARTIALLY_EXECUTABLE",
+    "evidence": [
+      "ind_permitted_debt_1a_flat §Permitted Debt def., cl. (1)(a): modeled=521.118 remaining=null authority=GROSS_ONLY_UTILIZATION_INCOMPLETE",
+      "ind_ratio_debt_fccr §§4.09(a): modeled=110.33623188405791 remaining=null authority=MODELED_AUTHENTIC_EVIDENCE",
+      "ind_permitted_debt_1b_ratio_secured §Permitted Debt def., cl. (1)(b)(x): modeled=0 remaining=null authority=MODELED_AUTHENTIC_EVIDENCE",
+      "ind_permitted_debt_2_notes §Permitted Debt def., cl. (2): modeled=300 remaining=null authority=MODELED_AUTHENTIC_EVIDENCE"
+    ],
+    "blockers": [
+      "Production remaining refused without utilization completeness certificate + trusted issuer",
+      "Hand-encoded CovenantProvisionInput leaf rows (AUTONOMOUS_COVENANT_COMPILATION_PROVEN=NOT_PROVEN)",
+      "No authentic VerifiedExecutionPackage bound for Matthews multi-path debt simulation"
+    ],
+    "mainFiles": [
+      "lib/product/real-dashboard-vertical-slice/evaluate-covenants.ts",
+      "lib/product/real-dashboard-vertical-slice/package-matthews.ts",
+      "lib/covenant-engine.ts",
+      "lib/contract-model/verified-execution.ts"
+    ]
+  },
+  {
+    "domain": "liens",
+    "status": "PARTIALLY_EXECUTABLE",
+    "evidence": [
+      "ca_lien_601j_2024notes §§6.01(j), as restated by Sixth Amendment: modeled=0 authority=STRUCTURAL_ZERO — Sixth Amendment deleted general Loan-Party secured-lien basket; only 2024 Note Offering exception remains."
+    ],
+    "blockers": [
+      "Only CA §6.01(j) structural-zero leaf is modeled; Indenture first-priority lien companion not dual-path executable for NEW secured debt",
+      "Secured composition labeled HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION"
+    ],
+    "mainFiles": [
+      "lib/product/real-dashboard-vertical-slice/evaluate-covenants.ts",
+      "lib/product/north-star-workflow/transaction-effect-recipes.ts"
+    ]
+  },
+  {
+    "domain": "investments",
+    "status": "NOT_IMPLEMENTED",
+    "evidence": [
+      "Matthews authentic slice has zero Investment provisions / capacityFormulas",
+      "provision-legal-context.ts recognizes INVESTMENTS family signals only",
+      "recipeRestrictedInvestment exists as recipe shape — no authentic package binding"
+    ],
+    "blockers": [
+      "No authentic Matthews/MTN Investment basket IR or leaf provision on main",
+      "Cannot evaluate investment capacity without inventing permissions"
+    ],
+    "mainFiles": [
+      "lib/product/real-dashboard-vertical-slice/provision-legal-context.ts",
+      "lib/product/north-star-workflow/transaction-effect-recipes.ts"
+    ]
+  },
+  {
+    "domain": "restricted_payments",
+    "status": "NOT_IMPLEMENTED",
+    "evidence": [
+      "Matthews authentic slice has zero RP waterfall / builder provisions",
+      "Legacy Coherent seed path has RP waterfall (fixture company) — not this authentic package",
+      "recipeDividendPayment exists as recipe shape only"
+    ],
+    "blockers": [
+      "No authentic RP capacity node, builder metric, or utilization ledger for Matthews",
+      "Verified simulate without VEP refuses; inventing a path would be false permission"
+    ],
+    "mainFiles": [
+      "lib/covenant-engine.ts (simulateRestrictedPayment — requires document.rpWaterfall)",
+      "lib/product/north-star-workflow/transaction-effect-recipes.ts",
+      "prisma/seed-data.ts (Coherent fixture only)"
+    ]
+  },
+  {
+    "domain": "asset_sales",
+    "status": "NOT_IMPLEMENTED",
+    "evidence": [
+      "Matthews authentic slice has zero assetSale config",
+      "simulateAssetSale in covenant-engine requires document.assetSale",
+      "recipeAssetSale exists as recipe shape only"
+    ],
+    "blockers": [
+      "No authentic asset-sale threshold provision, reinvestment basket, or proceeds routing for Matthews"
+    ],
+    "mainFiles": [
+      "lib/covenant-engine.ts (simulateAssetSale)",
+      "lib/product/north-star-workflow/transaction-effect-recipes.ts"
+    ]
+  },
+  {
+    "domain": "applicable_financial_covenants",
+    "status": "PARTIALLY_EXECUTABLE",
+    "evidence": [
+      "FCCR / Secured Net Leverage modeled rooms present as leaf rows: ind_ratio_debt_fccr=110.33623188405791, ind_permitted_debt_1b_ratio_secured=0",
+      "Trusted issuer activation: [object Object]",
+      "Contractual EBITDA build-up / NS-4 APPROVED leverage primarily on open PRs (#322/#341/#338/#339) — not fully on this main tip"
+    ],
+    "blockers": [
+      "Modeled ratio rooms are not published as remainingCapacityMm (D3b)",
+      "CONSOLIDATED_EBITDA is PUBLIC_FILING_RECONSTRUCTION / UNVERIFIED_EXTRACTION",
+      "Open PR #341 absorbs executable AFC path but is CONFLICTING / unmerged — main must not invent APPROVED certificates"
+    ],
+    "mainFiles": [
+      "lib/product/real-dashboard-vertical-slice/evaluate-covenants.ts",
+      "lib/capacity/*",
+      "lib/covenant-engine.ts (computeLeverageMetrics)"
+    ]
+  },
+  {
+    "domain": "amendments",
+    "status": "PARTIALLY_EXECUTABLE",
+    "evidence": [
+      "CA §6.01(j) leaf cites Sixth Amendment restatement (structural zero) — source-backed caveat on modeled leaf",
+      "Phase-2G amendment precedence / operative-state libraries exist on main",
+      "MTN PP001 amendment pipeline ran with 0 effects (restatement + separate indentures)"
+    ],
+    "blockers": [
+      "No full as-amended operative IR package for Matthews credit agreement on product path",
+      "CONMED authenticated VEP still has instrument-level OPERATIVE_STATE_REVIEW_REQUIRED for unattached Omnibus/Second-Amendment effects"
+    ],
+    "mainFiles": [
+      "lib/contract-model/compiler/* (operative / amendment)",
+      "lib/product/legal-reasoning/amendment-graph.ts",
+      "docs/product/customer-workflow/authenticated-vep/00-blocker-report.md"
+    ]
+  },
+  {
+    "domain": "shared_capacity",
+    "status": "PARTIALLY_EXECUTABLE",
+    "evidence": [
+      "Phase 4C IRSharedCapacity + verified-execution shared capacity units implemented in-memory",
+      "Matthews leaf does not bind a shared Debt Facilities / Lien shared-cap unit for dual-path NEW secured debt",
+      "Stage D dual-path demo is SYNTHETIC_LABELED_TECHNICAL_DEMO (pkg-i), not authentic Matthews"
+    ],
+    "blockers": [
+      "Authentic package lacks certified shared-capacity unit + companion discharge for secured dual-path",
+      "Cross-domain Simulate authority is open PR #340 (v2) — not on main"
+    ],
+    "mainFiles": [
+      "lib/contract-model/verified-execution.ts",
+      "lib/contract-model/runtime/capacity/*",
+      "docs/product/customer-workflow/stage-d-pkgi-secured-dual-path/00-execution-report.md"
+    ]
+  },
+  {
+    "domain": "historical_utilization",
+    "status": "BLOCKED_BY_MISSING_REAL_EVIDENCE",
+    "evidence": [
+      "Attributed events: 2 totaling 778.8820000000001 mm",
+      "supportsRemainingClaim=false",
+      "unknownHistoricalActivity=true",
+      "completenessCertificatePresent=false",
+      "trustedIssuerActivation=BLOCKED"
+    ],
+    "blockers": [
+      "No reviewer-confirmed utilization completeness certificate",
+      "UNKNOWN historical activity must not be treated as zero",
+      "Production remaining publication refused (correct fail-closed)"
+    ],
+    "mainFiles": [
+      "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",
+      "lib/capacity/*",
+      "lib/product/verified-transaction-execution/adapters/utilization.ts"
+    ]
+  }
+]
