@@ -280,27 +280,32 @@ describe("P0 — provision identity required for operative authority", () => {
     };
     const unitOnPredecessor = { sourceRef: "7.03(f)", documentId: original };
     const confirmed = {
+      asOfDate: "2023-06-15",
       restatementAuthorities: [
         {
           status: "OPERATIVE_AUTHORITY_CONFIRMED" as const,
           successorDocumentId: restated,
           predecessorDocumentId: original,
+          effectiveDateIso: "2022-01-15",
+          restatementScope: "FULL_AGREEMENT" as const,
+          partialProvisionRefs: [] as string[],
         },
       ],
     };
     // Without verified succession evidence, identical section labels across docs REFUSE.
     expect(provisionIdentityMatchesUnit(provisionOnSuccessor, unitOnPredecessor)).toBe(false);
+    // Operative successor governing + unit discovered on predecessor: permitted.
     expect(provisionIdentityMatchesUnit(provisionOnSuccessor, unitOnPredecessor, confirmed)).toBe(
       true,
     );
-    // Unit remapped onto successor; provision still cites predecessor identity edge.
+    // Predecessor governing after supersession must REFUSE even with confirmed succession edge.
     expect(
       provisionIdentityMatchesUnit(
         { ...provisionOnSuccessor, governingDocumentId: original },
         { sourceRef: "7.03(f)", documentId: restated },
         confirmed,
       ),
-    ).toBe(true);
+    ).toBe(false);
   });
 
   it("adversarial: unverified or ambiguous succession REFUSE", () => {
@@ -349,6 +354,222 @@ describe("P0 — provision identity required for operative authority", () => {
         { kind: "SECTION", sectionRef: "7.03", definedTermRef: null, governingDocumentId: null },
         unit,
         null,
+      ),
+    ).toBe(false);
+  });
+});
+
+describe("P0 — restatement precedence / supersession for operative authority", () => {
+  const original = "credit-agreement-2020";
+  const restated = "amended-restated-credit-agreement-2022";
+  /** Predecessor basket amount (historical evidence — must not authorize post-restatement). */
+  const PREDECESSOR_BASKET_MM = 50;
+  /** Successor basket amount (operative after restatement). */
+  const SUCCESSOR_BASKET_MM = 100;
+
+  function fullRestatement(effectiveDateIso: string) {
+    return {
+      status: "OPERATIVE_AUTHORITY_CONFIRMED" as const,
+      successorDocumentId: restated,
+      predecessorDocumentId: original,
+      effectiveDateIso,
+      restatementScope: "FULL_AGREEMENT" as const,
+      partialProvisionRefs: [] as string[],
+    };
+  }
+
+  it("adversarial: differing basket amounts — superseded predecessor provision REFUSES after effective date", () => {
+    expect(PREDECESSOR_BASKET_MM).not.toBe(SUCCESSOR_BASKET_MM);
+    const predecessorProvision = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: original,
+      // Historical evidence only — amount must not drive authority match.
+      basketAmountMillions: PREDECESSOR_BASKET_MM,
+    };
+    const successorProvision = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: restated,
+      basketAmountMillions: SUCCESSOR_BASKET_MM,
+    };
+    const after = {
+      asOfDate: "2023-06-15",
+      restatementAuthorities: [fullRestatement("2022-01-15")],
+    };
+    // Post-effective: only successor governing may bind; predecessor $50M path refuses.
+    expect(
+      provisionIdentityMatchesUnit(predecessorProvision, {
+        sourceRef: "7.03(f)",
+        documentId: original,
+      }, after),
+    ).toBe(false);
+    expect(
+      provisionIdentityMatchesUnit(predecessorProvision, {
+        sourceRef: "7.03(f)",
+        documentId: restated,
+      }, after),
+    ).toBe(false);
+    expect(
+      provisionIdentityMatchesUnit(successorProvision, {
+        sourceRef: "7.03(f)",
+        documentId: original,
+      }, after),
+    ).toBe(true);
+    expect(
+      provisionIdentityMatchesUnit(successorProvision, {
+        sourceRef: "7.03(f)",
+        documentId: restated,
+      }, after),
+    ).toBe(true);
+  });
+
+  it("adversarial: temporal direction — pre-effective successor REFUSES; predecessor remains operative", () => {
+    const before = {
+      asOfDate: "2021-06-15",
+      restatementAuthorities: [fullRestatement("2022-01-15")],
+    };
+    const predecessorProvision = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: original,
+      basketAmountMillions: PREDECESSOR_BASKET_MM,
+    };
+    const successorProvision = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: restated,
+      basketAmountMillions: SUCCESSOR_BASKET_MM,
+    };
+    expect(
+      provisionIdentityMatchesUnit(predecessorProvision, {
+        sourceRef: "7.03(f)",
+        documentId: original,
+      }, before),
+    ).toBe(true);
+    expect(
+      provisionIdentityMatchesUnit(successorProvision, {
+        sourceRef: "7.03(f)",
+        documentId: original,
+      }, before),
+    ).toBe(false);
+    expect(
+      provisionIdentityMatchesUnit(successorProvision, {
+        sourceRef: "7.03(f)",
+        documentId: restated,
+      }, before),
+    ).toBe(false);
+  });
+
+  it("adversarial: missing effective date / conflicting confirmed successors REFUSE", () => {
+    const provision = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: restated,
+    };
+    const unit = { sourceRef: "7.03(f)", documentId: original };
+    expect(
+      provisionIdentityMatchesUnit(provision, unit, {
+        asOfDate: "2023-06-15",
+        restatementAuthorities: [
+          {
+            status: "OPERATIVE_AUTHORITY_CONFIRMED",
+            successorDocumentId: restated,
+            predecessorDocumentId: original,
+            effectiveDateIso: null,
+            restatementScope: "FULL_AGREEMENT",
+            partialProvisionRefs: [],
+          },
+        ],
+      }),
+    ).toBe(false);
+    expect(
+      provisionIdentityMatchesUnit(provision, unit, {
+        asOfDate: "2023-06-15",
+        restatementAuthorities: [
+          fullRestatement("2022-01-15"),
+          {
+            ...fullRestatement("2022-01-15"),
+            successorDocumentId: "competing-restatement-2022",
+          },
+        ],
+      }),
+    ).toBe(false);
+    // Missing asOf when succession evidence is present — ambiguous precedence.
+    expect(
+      provisionIdentityMatchesUnit(provision, unit, {
+        restatementAuthorities: [fullRestatement("2022-01-15")],
+      }),
+    ).toBe(false);
+  });
+
+  it("adversarial: unresolved succession and materially amended partial provision REFUSE", () => {
+    const provision = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: original,
+    };
+    const unit = { sourceRef: "7.03(f)", documentId: original };
+    expect(
+      provisionIdentityMatchesUnit(provision, unit, {
+        asOfDate: "2023-06-15",
+        restatementAuthorities: [
+          {
+            status: "AMBIGUOUS",
+            successorDocumentId: restated,
+            predecessorDocumentId: original,
+            effectiveDateIso: "2022-01-15",
+            restatementScope: "FULL_AGREEMENT",
+            partialProvisionRefs: [],
+          },
+        ],
+      }),
+    ).toBe(false);
+    expect(
+      provisionIdentityMatchesUnit(provision, unit, {
+        asOfDate: "2023-06-15",
+        restatementAuthorities: [
+          {
+            status: "OPERATIVE_AUTHORITY_CONFIRMED",
+            successorDocumentId: restated,
+            predecessorDocumentId: original,
+            effectiveDateIso: "2022-01-15",
+            restatementScope: "PARTIAL_PROVISIONS",
+            partialProvisionRefs: ["7.03", "7.03(f)"],
+          },
+        ],
+      }),
+    ).toBe(false);
+  });
+
+  it("adversarial: explicitly verified continuing provision on predecessor permitted", () => {
+    const continuing = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: original,
+      basketAmountMillions: PREDECESSOR_BASKET_MM,
+    };
+    const evidence = {
+      asOfDate: "2023-06-15",
+      verifiedContinuingProvisionRefs: ["7.03", "7.03(f)"],
+      restatementAuthorities: [fullRestatement("2022-01-15")],
+    };
+    expect(
+      provisionIdentityMatchesUnit(continuing, { sourceRef: "7.03(f)", documentId: original }, evidence),
+    ).toBe(true);
+    // A different non-continuing section on predecessor still refuses.
+    expect(
+      provisionIdentityMatchesUnit(
+        { kind: "SECTION", sectionRef: "7.01", definedTermRef: null, governingDocumentId: original },
+        { sourceRef: "7.01(i)", documentId: original },
+        evidence,
       ),
     ).toBe(false);
   });
