@@ -99,6 +99,7 @@ describe("neon HTTPS loader (fake client)", () => {
     const dry = await importPrecedentsOverHttps(executor, {
       live: false,
       skipBytes: true,
+      skipCorpus: true,
       limitExportRows: 3,
     });
     expect(dry.dryRun).toBe(true);
@@ -111,6 +112,7 @@ describe("neon HTTPS loader (fake client)", () => {
       const live = await importPrecedentsOverHttps(executor, {
         live: true,
         skipBytes: true,
+        skipCorpus: true,
         limitExportRows: 2,
       });
       expect(live.live).toBe(true);

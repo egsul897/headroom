@@ -4352,3 +4352,24 @@ model KfPrecedentImportCheckpoint {
   @@map("kf_precedent_import_checkpoints")
 }
 
+/// Precedent-only corpus rows (basket formulas, financial definitions, amendment
+/// research, comparison, flywheel). COMPUTED_NOT_CERTIFIED. Not ContractRule.
+model KfPrecedentCorpusRecord {
+  recordId        String   @id
+  corpus          String
+  kind            String
+  sourceId        String?
+  contentHash     String?
+  accessionNumber String?
+  authorityStatus String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson     Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([corpus])
+  @@index([sourceId])
+  @@index([contentHash])
+  @@index([accessionNumber])
+  @@map("kf_precedent_corpus_records")
+}
+

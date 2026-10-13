@@ -76,6 +76,28 @@ describe("SecAccessCoordinator fair-access", () => {
     expect(String(headers["User-Agent"] || headers["user-agent"])).toMatch(/VitestSecAccess/i);
   });
 
+  it("getBytes keeps the raw body and clamps above 10 requests/second", async () => {
+    let t = 0;
+    const sleeps: number[] = [];
+    const fetchImpl = vi.fn(async () => new Response("raw-bytes", { status: 200 })) as unknown as typeof fetch;
+    const sec = mockSec(fetchImpl, {
+      maxRequestsPerSecond: 50,
+      now: () => t,
+      sleep: async (ms: number) => {
+        sleeps.push(ms);
+        t += ms;
+      },
+    });
+    const a = await sec.getBytes("https://www.sec.gov/Archives/edgar/data/1/ex.htm");
+    const b = await sec.getBytes("https://www.sec.gov/Archives/edgar/data/1/ex2.htm");
+    expect(Buffer.from(a.bytes).toString()).toBe("raw-bytes");
+    expect(b.fromCache).toBe(false);
+    expect(sleeps.some((ms) => ms >= 100)).toBe(true);
+    const headers = (fetchImpl as unknown as { mock: { calls: Array<[string, RequestInit?]> } }).mock.calls[0]?.[1]
+      ?.headers as Record<string, string>;
+    expect(String(headers["User-Agent"])).toMatch(/VitestSecAccess/);
+  });
+
   it("caches successful responses and avoids a second network call", async () => {
     const dir = mkdtempSync(join(tmpdir(), "sec-cache-"));
     let hits = 0;

@@ -175,6 +175,67 @@ export class SecAccessCoordinator {
     }
   }
 
+  /**
+   * Fetch raw bytes (exhibit bodies). Does not round-trip through text decoding,
+   * so the sha256 of the returned bytes matches the SEC response body.
+   * Same User-Agent, RPS cap (<=10), and retry policy as getText.
+   */
+  async getBytes(url: string, opts?: { bypassCache?: boolean; maxAttempts?: number }): Promise<{
+    status: number;
+    bytes: Uint8Array;
+    fromCache: boolean;
+    url: string;
+  }> {
+    if (!opts?.bypassCache) {
+      const cached = this.readByteCache(url);
+      if (cached) return { status: cached.status, bytes: cached.bytes, fromCache: true, url };
+    }
+
+    if (this.cacheOnly || !this.policy.liveNetworkAllowed) {
+      throw new Error(
+        `SecAccessCoordinator: live SEC network denied (${this.cacheOnly ? "cacheOnly" : this.policy.reason}). Cache miss for ${url}`,
+      );
+    }
+
+    await this.acquireSlot();
+    try {
+      const maxAttempts = opts?.maxAttempts ?? 5;
+      let lastStatus = 0;
+      let lastBytes = new Uint8Array();
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        await this.awaitSharedBudgetToken();
+        await this.throttle();
+        this.requestCount++;
+        this.liveRequestCount++;
+        const res = await this.fetchImpl(url, {
+          headers: {
+            "User-Agent": this.userAgent,
+            Accept: "application/octet-stream,text/html,*/*",
+          },
+        });
+        lastStatus = res.status;
+        lastBytes = new Uint8Array(await res.arrayBuffer());
+        if (res.status === 200) {
+          this.writeByteCache(url, lastBytes);
+          return { status: 200, bytes: lastBytes, fromCache: false, url };
+        }
+        if (res.status === 404) {
+          return { status: 404, bytes: lastBytes, fromCache: false, url };
+        }
+        if (res.status === 429 || res.status === 503 || res.status >= 500) {
+          const backoff = Math.min(60_000, 500 * 2 ** (attempt - 1));
+          const jitter = Math.floor(Math.random() * backoff * 0.4);
+          await this.sleep(backoff + jitter);
+          continue;
+        }
+        return { status: lastStatus, bytes: lastBytes, fromCache: false, url };
+      }
+      return { status: lastStatus, bytes: lastBytes, fromCache: false, url };
+    } finally {
+      this.releaseSlot();
+    }
+  }
+
   async getJson<T>(url: string): Promise<{ status: number; data: T | null; fromCache: boolean }> {
     const r = await this.getText(url);
     if (r.status !== 200) return { status: r.status, data: null, fromCache: r.fromCache };
@@ -243,6 +304,36 @@ export class SecAccessCoordinator {
     if (!p) return;
     try {
       writeFileSync(p, JSON.stringify(entry));
+    } catch {
+      /* best-effort */
+    }
+  }
+
+  private byteCachePaths(url: string): { bin: string; meta: string } | null {
+    if (!this.cacheDir) return null;
+    const key = createHash("sha256").update(`bytes|${url}`).digest("hex");
+    return { bin: join(this.cacheDir, `${key}.bin`), meta: join(this.cacheDir, `${key}.bin.meta.json`) };
+  }
+
+  private readByteCache(url: string): { status: number; bytes: Uint8Array } | null {
+    const paths = this.byteCachePaths(url);
+    if (!paths || !existsSync(paths.bin) || !existsSync(paths.meta)) return null;
+    try {
+      const meta = JSON.parse(readFileSync(paths.meta, "utf8")) as { status: number; fetchedAt: number };
+      if (meta.status !== 200) return null;
+      if (this.now() - meta.fetchedAt > this.cacheTtlMs) return null;
+      return { status: 200, bytes: new Uint8Array(readFileSync(paths.bin)) };
+    } catch {
+      return null;
+    }
+  }
+
+  private writeByteCache(url: string, bytes: Uint8Array): void {
+    const paths = this.byteCachePaths(url);
+    if (!paths) return;
+    try {
+      writeFileSync(paths.bin, bytes);
+      writeFileSync(paths.meta, JSON.stringify({ status: 200, fetchedAt: this.now() }));
     } catch {
       /* best-effort */
     }
