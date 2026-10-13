@@ -14,24 +14,23 @@
 import { createHash } from "node:crypto";
 import type { IRDefinition, IRRule, IRSharedCapacity } from "@/lib/contract-model/ir/types";
 import {
-  buildCapacityGraph,
-  evaluateCapacityState,
-} from "@/lib/contract-model/runtime/capacity";
-import type {
-  CapacityAmount,
-  CapacityState,
-  CapacityStateEntry,
-  LedgerUsageRecord,
-  SharedConstraintState,
-} from "@/lib/contract-model/runtime/capacity/types";
-import { snapshotInputResolver } from "@/lib/contract-model/runtime/input";
-import type {
-  FinancialInput,
-  FinancialSnapshot,
-  SnapshotStatus,
-} from "@/lib/contract-model/runtime/input/types";
-import { rationalFromString } from "@/lib/contract-model/runtime/decimal";
-import type { RuntimeValue } from "@/lib/contract-model/runtime/types";
+  evaluateVerifiedCapacity,
+  type CapacityAmount,
+  type CapacityState,
+  type CapacityStateEntry,
+  type LedgerUsageRecord,
+  type SharedConstraintState,
+  type VerifiedExecutionPackage,
+  type VerifiedUnitArtifact,
+} from "@/lib/contract-model/verified-execution";
+import {
+  rationalFromString,
+  snapshotInputResolver,
+  type FinancialInput,
+  type FinancialSnapshot,
+  type RuntimeValue,
+  type SnapshotStatus,
+} from "@/lib/contract-model/north-star-bridge";
 import type { TrustedIssuerAuthorizationContext } from "./completeness-issuer-auth";
 import {
   selectFinancialState,
@@ -85,8 +84,14 @@ export interface ExecutableRuleHandoff {
   definitions?: readonly IRDefinition[];
   sharedCapacities?: readonly IRSharedCapacity[];
   /**
-   * Optional verification artifacts. Absence is recorded as incomplete
-   * certification — never invented.
+   * Phase-3 verification artifacts bound to the IR units above.
+   * Required for Phase-4C evaluation via evaluateVerifiedCapacity (REQUIRE).
+   * Absence refuses capacity evaluation — never invented here.
+   */
+  verifications?: readonly VerifiedUnitArtifact[];
+  /**
+   * Optional completeness claim. Never synthesizes artifacts.
+   * True only when caller asserts a complete paired verification set.
    */
   verificationComplete?: boolean;
 }
@@ -608,29 +613,42 @@ export function evaluateVerifiedRemainingCapacity(
       companyId: args.companyId,
       instrumentKey: args.instrumentKey,
     });
-    const graph = buildCapacityGraph({
+    // §17: product capacity evaluation enters Phase-4C only through verified-execution.
+    const verifications = args.executableRules.verifications ?? [];
+    const vep: VerifiedExecutionPackage = {
       companyId: args.companyId,
       instrumentKey: args.instrumentKey,
       rules,
       definitions,
       sharedCapacities,
-    });
-    capacityState = evaluateCapacityState({
-      graph,
-      rules,
-      definitions,
-      sharedCapacities,
+      verifications,
+    };
+    const verified = evaluateVerifiedCapacity({
+      package: vep,
       inputs,
       ledger,
       asOf: args.asOf,
     });
-    capacityEntry = capacityState.capacities.find((c) => c.ruleId === args.capacityRuleId) ?? null;
-    trace.push({
-      stage: "CAPACITY_EVALUATION",
-      detail: capacityEntry
-        ? `rule ${args.capacityRuleId} status=${capacityEntry.status} stateHash=${capacityState.stateHash}`
-        : `capacity state computed but rule ${args.capacityRuleId} not in capacities`,
-    });
+    if (verified.outcome === "REFUSED") {
+      const refuseDetail = verified.refusals.map((r) => `${r.code}: ${r.message}`).join("; ");
+      blockers.push(
+        `verified-execution refused Phase-4C evaluation (${refuseDetail || "no detail"})`,
+      );
+      missingInputs.push("verified_execution_package");
+      trace.push({
+        stage: "REFUSAL",
+        detail: `evaluateVerifiedCapacity REFUSED — ${refuseDetail}`,
+      });
+    } else {
+      capacityState = verified.state;
+      capacityEntry = capacityState.capacities.find((c) => c.ruleId === args.capacityRuleId) ?? null;
+      trace.push({
+        stage: "CAPACITY_EVALUATION",
+        detail: capacityEntry
+          ? `rule ${args.capacityRuleId} status=${capacityEntry.status} stateHash=${capacityState.stateHash} (via evaluateVerifiedCapacity)`
+          : `capacity state computed but rule ${args.capacityRuleId} not in capacities`,
+      });
+    }
 
     if (capacityEntry) {
       // Prefer published gross; when legal state withholds it, read provisional

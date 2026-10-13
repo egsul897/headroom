@@ -4,13 +4,11 @@
  * Preserves transaction identity and chronology. Never invents zero usage
  * from a missing ledger. Reclassifications and repayments keep explicit
  * supersession / reverse semantics.
+ *
+ * Types come from verified-execution — never import contract-model/runtime.
  */
 
-import type {
-  CapacityPathRef,
-  LedgerUsageRecord,
-  UsageStatus,
-} from "@/lib/contract-model/runtime/capacity/types";
+import type { LedgerUsageRecord } from "@/lib/contract-model/verified-execution";
 import type {
   HistoricalUtilizationEvent,
   UtilizationReconstructionResult,
@@ -23,7 +21,10 @@ export interface LedgerBridgeContext {
   capacityRuleId: string;
 }
 
-function pathFor(event: HistoricalUtilizationEvent): CapacityPathRef {
+type CapacityPath = LedgerUsageRecord["capacityPath"];
+type UsageStatus = LedgerUsageRecord["status"];
+
+function pathFor(event: HistoricalUtilizationEvent): CapacityPath {
   if (event.sharedCapacityId) {
     return { kind: "SHARED_CAPACITY", sharedCapacityId: event.sharedCapacityId };
   }
@@ -115,7 +116,7 @@ export function utilizationRecordsToLedgerUsage(
   ctx: LedgerBridgeContext,
 ): LedgerUsageRecord[] {
   return records.map((r) => {
-    const path: CapacityPathRef = r.sharedCapacityId
+    const path: CapacityPath = r.sharedCapacityId
       ? { kind: "SHARED_CAPACITY", sharedCapacityId: r.sharedCapacityId }
       : r.capacityRuleId
         ? { kind: "RULE", ruleId: r.capacityRuleId }

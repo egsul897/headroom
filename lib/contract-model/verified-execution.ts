@@ -72,6 +72,9 @@ export type {
   ReclassificationElection,
   InputResolver,
 };
+
+// Capacity product surfaces may need shared-constraint state without importing runtime/*.
+export type { SharedConstraintState } from "./runtime/capacity/types";
 export { assertRestoreAuthority, formatRestoreReason, extractRestoreAuthority, UNAUTHORIZED_RESTORE_CODE } from "./restore-authority";
 import { hashOf } from "./runtime/input/identity";
 import { compareVerificationIdentity, identityStrengthOf, type RuntimeVerificationEnvelope, type RuntimeVerificationIdentity, type VerificationBlockReason, type VerificationIdentityStrength } from "./runtime/verification-envelope";

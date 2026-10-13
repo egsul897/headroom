@@ -1,25 +1,29 @@
-# #308 boundary blocker — raw Phase-4 runtime imports
+# #308 boundary — raw Phase-4 runtime imports (resolved)
 
 Exact tip under test: see git HEAD.
 
-## Defect (pre-existing on Agent 2 integration; exposed by CI)
+## Defect (resolved)
 
-`tests/contract-model/verified-execution.test.ts` §17 fails:
+`tests/contract-model/verified-execution.test.ts` §17 previously failed because:
 
 - `lib/capacity/evaluate-verified-remaining-capacity.ts`
 - `lib/capacity/ledger-utilization-bridge.ts`
 
-Both import `@/lib/contract-model/runtime/**` directly. Product surfaces must
-use `lib/contract-model/verified-execution.ts` (`evaluateVerifiedCapacity`) —
-not raw `buildCapacityGraph` / `evaluateCapacityState`.
+imported `@/lib/contract-model/runtime/**` directly.
+
+## Fix
+
+- Capacity evaluation now calls `evaluateVerifiedCapacity` (REQUIRE) with paired
+  `VerifiedUnitArtifact`s from the Agent-1 handoff.
+- Ledger bridge and capacity types import from `verified-execution` /
+  `north-star-bridge` only — never `contract-model/runtime`.
+- EXEMPT list unchanged. No bypass of verified execution.
 
 ## CI disposition
 
-- Dedicated workflow `.github/workflows/capacity-path.yml` runs capacity suites
-  (approval provenance + verified remaining) provider-free.
-- Do **not** merge #308 to main until capacity evaluation is routed through the
-  verified-execution boundary (or an equivalent fail-closed adapter). Do not
-  weaken the §17 test / EXEMPT list.
+- `capacity-path.yml` — approval provenance + verified remaining suites.
+- `canonical-compiler.yml` certified path — §17 must pass on this tip.
+- Absence of verification artifacts refuses Phase-4C evaluation (fail closed).
 
 ## Approval provenance (still required)
 

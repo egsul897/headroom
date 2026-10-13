@@ -28,7 +28,133 @@ import {
   sharedCap,
   resetIds,
 } from "@/tests/contract-model/runtime/capacity/helpers";
-import type { IRSharedCapacity } from "@/lib/contract-model/ir/types";
+import type { IRRule, IRSharedCapacity } from "@/lib/contract-model/ir/types";
+import type { SemanticVerificationResult } from "@/lib/contract-model/compiler/semantic-verification/types";
+import type { VerifiedUnitArtifact } from "@/lib/contract-model/verified-execution";
+
+/** STRONG identity required for shared-capacity verification at the boundary. */
+const STRONG = { compilerVersion: "c1", sourceContentVersion: "s1" } as const;
+
+function strongRule(r: IRRule): IRRule {
+  return { ...r, ...STRONG };
+}
+
+function strongShared(s: IRSharedCapacity): IRSharedCapacity {
+  return { ...s, irSchemaVersion: s.irSchemaVersion ?? "t", ...STRONG };
+}
+
+function cleanVerificationResult(
+  over: {
+    irInventoryItems?: NonNullable<SemanticVerificationResult["irInventory"]>["items"];
+  } = {},
+): SemanticVerificationResult {
+  return {
+    candidateRef: "capacity-cand",
+    status: "VERIFIED_NO_MATERIAL_GAP_FOUND",
+    findings: [],
+    irInventory: {
+      candidateRef: "capacity-cand",
+      items: over.irInventoryItems ?? [],
+      ruleCount: 0,
+      definitionCount: 0,
+      inventoryAlgorithmVersion: "capacity-ir-inventory.v1",
+    },
+    reconciliation: { items: [] },
+    semanticReviewInvoked: false,
+    semanticReviewSkippedReason: "capacity fixture — paired artifact for REQUIRE boundary",
+    conditionSuspicion: null,
+    verifierAlgorithmVersion: "capacity-verifier-v1",
+    verifiedAt: "2026-01-01T00:00:00.000Z",
+    evidenceSetHash: "capacity-eh-1",
+  } as unknown as SemanticVerificationResult;
+}
+
+function artifactForRule(u: IRRule): VerifiedUnitArtifact {
+  return {
+    ruleOrDefinitionId: u.ruleId,
+    kind: "RULE",
+    verifiedIdentity: {
+      ruleOrDefinitionId: u.ruleId,
+      companyId: u.companyId,
+      instrumentKey: u.instrumentKey,
+      irSchemaVersion: u.irSchemaVersion ?? "",
+      compilerVersion: u.compilerVersion ?? null,
+      sourceContentVersion: u.sourceContentVersion ?? null,
+    },
+    result: cleanVerificationResult(),
+  };
+}
+
+function artifactForShared(cap: IRSharedCapacity): VerifiedUnitArtifact {
+  const amount =
+    cap.capExpression && "amount" in cap.capExpression
+      ? (cap.capExpression as { amount: number }).amount
+      : null;
+  const items = [
+    {
+      itemId: `${cap.sharedCapId}:amount`,
+      kind: "AMOUNT" as const,
+      ruleOrDefinitionId: cap.sharedCapId,
+      irPath: "sharedCapacities[0].capExpression",
+      numericValue: amount,
+      textValue: null,
+      isAlternativeWithinSelection: false,
+      sourceCitation: null,
+      sourceExcerpt: null,
+    },
+    ...cap.memberRuleIds.map((m, i) => ({
+      itemId: `${cap.sharedCapId}:member-${i}`,
+      kind: "DEPENDENCY" as const,
+      ruleOrDefinitionId: cap.sharedCapId,
+      irPath: `sharedCapacities[0].memberRuleIds[${i}]`,
+      numericValue: null,
+      textValue: `SHARED_CAP_MEMBER:${m}`,
+      isAlternativeWithinSelection: false,
+      sourceCitation: null,
+      sourceExcerpt: null,
+    })),
+  ];
+  return {
+    ruleOrDefinitionId: cap.sharedCapId,
+    kind: "SHARED_CAPACITY",
+    verifiedIdentity: {
+      ruleOrDefinitionId: cap.sharedCapId,
+      companyId: cap.companyId,
+      instrumentKey: cap.instrumentKey,
+      irSchemaVersion: cap.irSchemaVersion ?? "",
+      compilerVersion: cap.compilerVersion ?? null,
+      sourceContentVersion: cap.sourceContentVersion ?? null,
+    },
+    result: cleanVerificationResult({ irInventoryItems: items }),
+  };
+}
+
+/** Build Agent-1 handoff with paired verification artifacts for REQUIRE boundary. */
+function verifiedHandoff(
+  rules: IRRule[],
+  shared: IRSharedCapacity[] = [],
+): {
+  companyId: string;
+  instrumentKey: string;
+  rules: IRRule[];
+  sharedCapacities: IRSharedCapacity[];
+  verifications: VerifiedUnitArtifact[];
+  verificationComplete: true;
+} {
+  const strongRules = rules.map(strongRule);
+  const strongSharedCaps = shared.map(strongShared);
+  return {
+    companyId: CO,
+    instrumentKey: INST,
+    rules: strongRules,
+    sharedCapacities: strongSharedCaps,
+    verifications: [
+      ...strongRules.map(artifactForRule),
+      ...strongSharedCaps.map(artifactForShared),
+    ],
+    verificationComplete: true,
+  };
+}
 
 const CURRENCY = "USD";
 const PERIOD = "FY2025-Q1";
@@ -131,24 +257,26 @@ function baseEval(
 ) {
   resetIds();
   const rules = [fixedRule(RULE_A, 100)];
+  const defaultHandoff = verifiedHandoff(rules);
+  const { executableRules: overRules, ...rest } = over;
   return evaluateVerifiedRemainingCapacity({
     companyId: CO,
     instrumentKey: INST,
     capacityRuleId: RULE_A,
     asOf: AS_OF,
     currency: CURRENCY,
-    executableRules: {
-      companyId: CO,
-      instrumentKey: INST,
-      rules,
-      verificationComplete: false,
-    },
+    executableRules: overRules
+      ? verifiedHandoff(
+          [...(overRules.rules ?? defaultHandoff.rules)],
+          [...(overRules.sharedCapacities ?? [])],
+        )
+      : defaultHandoff,
     financialCatalog: catalog(),
     requiredFinancialMetrics: [],
     utilizationEvents: [],
     completenessCertificate: null,
     allowSynthetic: true,
-    ...over,
+    ...rest,
   });
 }
 
@@ -288,12 +416,7 @@ describe("Agent 2 verified remaining capacity integration", () => {
       capacityRuleId: RULE_A,
       asOf: AS_OF,
       currency: CURRENCY,
-      executableRules: {
-        companyId: CO,
-        instrumentKey: INST,
-        rules,
-        sharedCapacities: shared,
-      },
+      executableRules: verifiedHandoff(rules, shared),
       financialCatalog: catalog(),
       utilizationEvents: events,
       completenessCertificate: syntheticCompleteness(RULE_A),
@@ -512,12 +635,7 @@ describe("Agent 2 verified remaining capacity integration", () => {
       capacityRuleId: RULE_A,
       asOf: AS_OF,
       currency: CURRENCY,
-      executableRules: {
-        companyId: CO,
-        instrumentKey: INST,
-        rules,
-        sharedCapacities: sharedEur,
-      },
+      executableRules: verifiedHandoff(rules, sharedEur),
       financialCatalog: catalog(),
       utilizationEvents: [
         event({ eventId: "u1", kind: "DEBT_ISSUANCE", amount: 10, sharedCapacityId: SHARED }),
@@ -606,11 +724,7 @@ describe("Agent 2 verified remaining capacity integration", () => {
       capacityRuleId: RULE_A,
       asOf: AS_OF,
       currency: CURRENCY,
-      executableRules: {
-        companyId: CO,
-        instrumentKey: INST,
-        rules: [fixedRule(RULE_A, 100)],
-      },
+      executableRules: verifiedHandoff([fixedRule(RULE_A, 100)]),
       financialCatalog: fin,
       requiredFinancialMetrics: ["CONSOLIDATED_EBITDA"] as const,
       utilizationEvents: events,

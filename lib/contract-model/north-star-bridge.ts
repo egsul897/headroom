@@ -59,8 +59,8 @@ export type { SnapshotResolverArgs, SnapshotInputResolver } from "./runtime/inpu
 
 /** Exact decimal constructor for APPROVED metric figures — product must not import runtime/decimal. */
 export { rationalFromString } from "./runtime/decimal";
-export type { InputResolver } from "./runtime/types";
-export type { FinancialInput, FinancialSnapshot } from "./runtime/input/types";
+export type { InputResolver, RuntimeValue } from "./runtime/types";
+export type { FinancialInput, FinancialSnapshot, SnapshotStatus } from "./runtime/input/types";
 
 /** Synthetic certificate fixtures — engineering only; not authentic customer data. */
 export { CONMED_FORM_INSPIRED_CERT, CHEWY_FORM_INSPIRED_CERT, INVENTED_TABULAR_CERT } from "./runtime/input/store/certificate/fixtures";
