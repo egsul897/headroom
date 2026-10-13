@@ -8,6 +8,8 @@ import {
   evaluateConditionalPathsAuthoritatively,
   expressionIdentityFingerprint,
   fulfillFinancialDependencyManifest,
+  isLiveEvaluatedPathAuthority,
+  proveConditionalClearance,
   verifySelectedPathAuthority,
 } from "@/lib/contract-model/runtime/input/information-request";
 import { buildFinancialDependencyManifest } from "@/lib/contract-model/runtime/input/manifest";
@@ -540,5 +542,170 @@ describe("CONDITIONAL path authority — adversarial fail-closed", () => {
     });
     expect(info.executable).toBe(false);
     expect(info.executionMode).toBe("NOT_EXECUTABLE");
+  });
+});
+
+describe("proveConditionalClearance — direct-call bypass refusal", () => {
+  it("rejects fabricated SelectedPathAuthority with authoritative:true (no live brand)", () => {
+    const expr = ifWithIds(BOOL(true), "metric-then-d", "metric-else-d");
+    const ifId = (expr as { exprId?: string }).exprId!;
+    const forged = forgeSelfConsistentAuthority({
+      expressionIdentity: expressionIdentityFingerprint(expr),
+      selections: [
+        {
+          ifExprId: ifId,
+          conditionEvaluatedTo: false,
+          selectedBranch: "else-branch",
+          conditionInputKeys: [],
+          conditionStatus: "EXECUTABLE",
+        },
+      ],
+    });
+    expect(forged.authoritative).toBe(true);
+    expect(verifySelectedPathAuthority(forged)).toBe(true);
+    expect(isLiveEvaluatedPathAuthority(forged)).toBe(false);
+
+    const dep = {
+      inputKind: "METRIC" as const,
+      key: "metric-then-d",
+      displayNameFromContract: "metric-then-d",
+      identityStrength: "CONTRACT_NAME_ONLY" as const,
+      companyId: "co",
+      instrumentKey: "inst",
+      scopeHint: "COMPANY_OR_INSTRUMENT" as const,
+      period: { kind: "NOT_PERIOD_SPECIFIC" as const },
+      asOf: { kind: "NOT_AS_OF_SPECIFIC" as const },
+      expectedType: "MONEY" as const,
+      status: "CONDITIONAL" as const,
+      conditionalOn: `IF ${ifId} then-branch`,
+      safeBoundAvailableWithoutThis: false,
+      via: { kind: "EXPRESSION" as const },
+      exprIds: [ifId],
+    };
+    const disposition = proveConditionalClearance(
+      dep,
+      "MISSING",
+      {
+        conditionalDispositions: [
+          {
+            dependencyKey: "metric-then-d",
+            kind: "PATH_IRRELEVANT",
+            branchLabel: "then-branch",
+            proof: "direct forged authoritative:true",
+          },
+        ],
+        selectedPathAuthority: forged,
+      },
+      forged, // attacker passes fabricated authority as livePathAuthority
+      expressionIdentityFingerprint(expr),
+    );
+    expect(disposition).toBeNull();
+  });
+
+  it("accepts only brand-gated live authority from evaluateConditionalPathsAuthoritatively", () => {
+    const expr = ifWithIds(BOOL(true), "metric-then-live", "metric-else-live");
+    const ifId = (expr as { exprId?: string }).exprId!;
+    const snap = snapshot({
+      snapshotId: "s-live-brand",
+      companyId: "co",
+      inputs: [approvedMetric("metric-then-live", "10")],
+    });
+    const live = evaluateConditionalPathsAuthoritatively({
+      expression: expr,
+      snapshots: [snap],
+      ...ctx,
+    });
+    expect(live.ok).toBe(true);
+    if (!live.ok) return;
+    expect(isLiveEvaluatedPathAuthority(live.authority)).toBe(true);
+
+    const depElse = {
+      inputKind: "METRIC" as const,
+      key: "metric-else-live",
+      displayNameFromContract: "metric-else-live",
+      identityStrength: "CONTRACT_NAME_ONLY" as const,
+      companyId: "co",
+      instrumentKey: "inst",
+      scopeHint: "COMPANY_OR_INSTRUMENT" as const,
+      period: { kind: "NOT_PERIOD_SPECIFIC" as const },
+      asOf: { kind: "NOT_AS_OF_SPECIFIC" as const },
+      expectedType: "MONEY" as const,
+      status: "CONDITIONAL" as const,
+      conditionalOn: `IF ${ifId} else-branch`,
+      safeBoundAvailableWithoutThis: false,
+      via: { kind: "EXPRESSION" as const },
+      exprIds: [ifId],
+    };
+    const cleared = proveConditionalClearance(
+      depElse,
+      "MISSING",
+      {
+        conditionalDispositions: [
+          {
+            dependencyKey: "metric-else-live",
+            kind: "PATH_IRRELEVANT",
+            branchLabel: "else-branch",
+            proof: "live brand clears inactive else",
+          },
+        ],
+      },
+      live.authority,
+      expressionIdentityFingerprint(expr),
+    );
+    expect(cleared?.kind).toBe("PATH_IRRELEVANT");
+
+    // Structured clone / JSON round-trip strips the private brand → refuse.
+    const cloned = JSON.parse(JSON.stringify(live.authority)) as SelectedPathAuthority;
+    expect(cloned.authoritative).toBe(true);
+    expect(isLiveEvaluatedPathAuthority(cloned)).toBe(false);
+    expect(
+      proveConditionalClearance(
+        depElse,
+        "MISSING",
+        {
+          conditionalDispositions: [
+            {
+              dependencyKey: "metric-else-live",
+              kind: "PATH_IRRELEVANT",
+              branchLabel: "else-branch",
+              proof: "json clone",
+            },
+          ],
+        },
+        cloned,
+        expressionIdentityFingerprint(expr),
+      ),
+    ).toBeNull();
+  });
+
+  it("sole production caller is fulfillFinancialDependencyManifest (boundary re-eval)", () => {
+    // Regression lock: proveConditionalClearance must not be invoked from product
+    // surfaces with a caller-minted authority. Grep-backed invariant covered by
+    // the brand gate above; this exercises the only production call path.
+    const expr = ifWithIds(BOOL(false), "metric-then-prod", "metric-else-prod");
+    const snap = snapshot({
+      snapshotId: "s-prod-caller",
+      companyId: "co",
+      inputs: [approvedMetric("metric-else-prod", "20")],
+    });
+    const info = buildFinancialInformationRequest({
+      expression: expr,
+      snapshots: [snap],
+      ...ctx,
+      policy: {
+        conditionalDispositions: [
+          {
+            dependencyKey: "metric-then-prod",
+            kind: "PATH_IRRELEVANT",
+            branchLabel: "then-branch",
+            proof: "production boundary live re-eval",
+          },
+        ],
+      },
+    });
+    expect(info.executable).toBe(true);
+    expect(info.executionMode).toBe("EXACT");
+    const thenItem = info.items.find((i) => i.dependency.key === "metric-then-prod");
+    expect(thenItem?.conditionalDispositionApplied?.kind).toBe("PATH_IRRELEVANT");
   });
 });

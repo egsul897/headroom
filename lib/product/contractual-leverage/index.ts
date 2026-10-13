@@ -14,6 +14,7 @@ export type {
 } from "./types";
 
 export { identifyLeverageComponents, DEFAULT_TOTAL_LEVERAGE_TERMS, DEFAULT_SECURED_LEVERAGE_TERMS } from "./identify";
+export { CAPACITY_DISCLAIMER } from "./disclaimer";
 export { compileLeverageExpressions } from "./compile";
 export {
   calculateContractualLeverage,

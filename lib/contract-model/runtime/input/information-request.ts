@@ -17,6 +17,7 @@ import {
   authorityShowsLeafInactive,
   evaluateConditionalPathsAuthoritatively,
   expressionIdentityFingerprint,
+  isLiveEvaluatedPathAuthority,
   resolveLivePathAuthority,
   selectConditionalPaths,
   verifySelectedPathAuthority,
@@ -45,6 +46,7 @@ export {
   expressionIdentityFingerprint,
   verifySelectedPathAuthority,
   authorityShowsLeafInactive,
+  isLiveEvaluatedPathAuthority,
 } from "./conditional-path-authority";
 
 /** Fulfillment states required by the product join (distinct from raw ResolutionState). */
@@ -59,8 +61,10 @@ export type FulfillmentState =
 
 /**
  * Caller-supplied disposition that an unresolved CONDITIONAL leaf may be disregarded.
- * PATH_IRRELEVANT additionally requires a sealed SelectedPathAuthority on the policy
- * (from selectConditionalPaths). branchLabel + proof alone are never sufficient.
+ * PATH_IRRELEVANT additionally requires LIVE path authority minted in-process by
+ * evaluateConditionalPathsAuthoritatively (private brand). Caller-supplied
+ * selectedPathAuthority / seals / authoritative:true are never trusted.
+ * branchLabel + proof alone are never sufficient.
  */
 export type ConditionalPathDispositionKind = "PATH_IRRELEVANT" | "SAFE_BOUND";
 
@@ -244,8 +248,9 @@ export function proveConditionalClearance(
       const label = pathIrrelevant.branchLabel?.trim();
       if (!label || !pathIrrelevant.proof.trim()) return null;
       if (!dep.conditionalOn || !dep.conditionalOn.includes(label)) return null;
-      // Trust ONLY the live re-evaluation — never policy.selectedPathAuthority / seal.
-      if (!livePathAuthority || livePathAuthority.authoritative !== true) return null;
+      // Trust ONLY brand-gated live evaluation — never policy.selectedPathAuthority,
+      // content-hash seals, or caller-minted { authoritative: true } objects.
+      if (!isLiveEvaluatedPathAuthority(livePathAuthority)) return null;
       const companyId = dep.companyId;
       const instrumentKey = dep.instrumentKey;
       if (!companyId || !instrumentKey) return null;
@@ -257,6 +262,7 @@ export function proveConditionalClearance(
           expectedCompanyId: companyId,
           expectedInstrumentKey: instrumentKey,
           expectedExpressionIdentity,
+          expectedContractVersion: FINANCIAL_INPUT_CONTRACT_VERSION,
         })
       ) {
         return null;

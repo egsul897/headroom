@@ -23,6 +23,7 @@ export {
   expressionIdentityFingerprint,
   verifySelectedPathAuthority,
   authorityShowsLeafInactive,
+  isLiveEvaluatedPathAuthority,
 } from "./runtime/input/information-request";
 export type {
   FulfillmentState,

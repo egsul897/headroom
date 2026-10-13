@@ -14,6 +14,13 @@ import { snapshotInputResolver } from "./snapshot-resolver";
 import type { FinancialSnapshot } from "./types";
 import { FINANCIAL_INPUT_CONTRACT_VERSION } from "./version";
 
+/**
+ * Module-private brand. NOT exported — callers cannot mint live authority by
+ * setting `authoritative: true` on a plain object. Only
+ * evaluateConditionalPathsAuthoritatively attaches this symbol.
+ */
+const LIVE_PATH_AUTHORITY_BRAND = Symbol("headroom.conditionalPath.liveAuthority");
+
 export type ConditionalBranchLabel = "then-branch" | "else-branch";
 
 export interface ConditionalPathSelection {
@@ -61,9 +68,36 @@ export interface SelectedPathAuthority {
    * verifySelectedPathAuthority is intentionally non-authoritative.
    */
   seal: string;
-  /** True only when produced by evaluateConditionalPathsAuthoritatively in-process. */
+  /**
+   * Declarative marker only — NOT a trust token. Fabricated objects may set
+   * `authoritative: true`; clearance gates on isLiveEvaluatedPathAuthority
+   * (module-private brand), never on this field alone.
+   */
   authoritative: true;
   evaluatedAtIso: string;
+}
+
+/**
+ * Runtime gate for PATH_IRRELEVANT / proveConditionalClearance.
+ * Rejects any caller-constructed SelectedPathAuthority that merely sets
+ * `authoritative: true` (or a matching diagnostic seal) without the private brand.
+ */
+export function isLiveEvaluatedPathAuthority(
+  value: SelectedPathAuthority | null | undefined,
+): value is SelectedPathAuthority {
+  if (!value || typeof value !== "object") return false;
+  if (value.authoritative !== true) return false;
+  return (value as unknown as Record<symbol, unknown>)[LIVE_PATH_AUTHORITY_BRAND] === true;
+}
+
+function brandLivePathAuthority(authority: SelectedPathAuthority): SelectedPathAuthority {
+  Object.defineProperty(authority, LIVE_PATH_AUTHORITY_BRAND, {
+    value: true,
+    enumerable: false,
+    writable: false,
+    configurable: false,
+  });
+  return authority;
 }
 
 export type SelectConditionalPathsResult =
@@ -277,14 +311,14 @@ export function evaluateConditionalPathsAuthoritatively(args: {
   const seal = diagnosticFingerprint(transcript);
   return {
     ok: true,
-    authority: {
+    authority: brandLivePathAuthority({
       ...transcript,
       snapshotIds: bindings.map((b) => b.snapshotId),
       authorityId: `path-eval:${seal.slice(0, 24)}`,
       seal,
       authoritative: true,
       evaluatedAtIso: args.nowIso ?? new Date().toISOString(),
-    },
+    }),
   };
 }
 
@@ -330,8 +364,13 @@ export function authorityShowsLeafInactive(args: {
   expectedCompanyId: string;
   expectedInstrumentKey: string;
   expectedExpressionIdentity?: string | null;
+  /** When set, authority.contractVersion must match (operative input contract). */
+  expectedContractVersion?: string | null;
+  /** When set, authority.evaluationPeriodKey must match exactly (null ≡ null). */
+  expectedEvaluationPeriodKey?: string | null;
 }): boolean {
-  if (!args.authority.authoritative) return false;
+  // Brand gate: `authoritative: true` alone is insufficient.
+  if (!isLiveEvaluatedPathAuthority(args.authority)) return false;
   if (args.authority.companyId !== args.expectedCompanyId) return false;
   if (args.authority.instrumentKey !== args.expectedInstrumentKey) return false;
   if (
@@ -339,6 +378,26 @@ export function authorityShowsLeafInactive(args: {
     args.authority.expressionIdentity !== args.expectedExpressionIdentity
   ) {
     return false;
+  }
+  if (
+    args.expectedContractVersion != null &&
+    args.authority.contractVersion !== args.expectedContractVersion
+  ) {
+    return false;
+  }
+  if (
+    args.expectedEvaluationPeriodKey !== undefined &&
+    args.authority.evaluationPeriodKey !== args.expectedEvaluationPeriodKey
+  ) {
+    return false;
+  }
+  // Snapshot identity: every binding must be APPROVED with version + approvalRef.
+  const bindings = args.authority.snapshotBindings ?? [];
+  if (bindings.length === 0) return false;
+  for (const b of bindings) {
+    if (b.status !== "APPROVED") return false;
+    if (!b.snapshotId || !b.version) return false;
+    if (b.approvalRef == null || b.approvalRef === "") return false;
   }
   if (!args.leafConditionalOn) return false;
   if (!args.leafConditionalOn.includes(args.inactiveBranchLabel)) return false;

@@ -7,6 +7,7 @@
 import type { FinancialSnapshot } from "@/lib/contract-model/contractual-metric-execution";
 import { buildSimulateHandoffHref } from "@/lib/product/unified-position/simulate-handoff";
 import { calculateContractualLeverage } from "./calculate";
+import { CAPACITY_DISCLAIMER } from "./disclaimer";
 import {
   compileCoherentEbitdaBuildup,
   compileMatthewsEbitdaBuildup,
@@ -101,7 +102,7 @@ export function runCanonicalContractualFinancialPath(args: {
       simulateHref: null,
       grossVersusVerified: {
         debtHeadroomIsVerifiedCapacity: false,
-        note: "Mathematical ratio room is never verified available debt capacity.",
+        note: CAPACITY_DISCLAIMER,
       },
     };
   }
@@ -209,7 +210,7 @@ export function runCanonicalContractualFinancialPath(args: {
     simulateHref,
     grossVersusVerified: {
       debtHeadroomIsVerifiedCapacity: false,
-      note: "Mathematical ratio room is never verified available debt capacity.",
+      note: CAPACITY_DISCLAIMER,
     },
   };
 }
