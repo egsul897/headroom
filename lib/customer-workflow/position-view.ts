@@ -119,11 +119,10 @@ export function buildPositionView(args: {
   );
 
   const asOfDate = dashboard?.asOfDate ? dashboard.asOfDate.toISOString().slice(0, 10) : null;
-  // Last verified evidence: prefer NS-4 / legal-review signal; never invent "today".
-  const lastVerifiedEvidenceDate =
-    readiness.approvedNorthStarSnapshotCount > 0 || readiness.ns4ApprovedSnapshotCount > 0
-      ? asOfDate
-      : null;
+  // Do not copy legacy dashboard period-end asOf into "Last verified evidence date".
+  // Certificate delivery / approval / completeness attestation are distinct temporal axes;
+  // until those are loaded for the bound snapshot, leave UNKNOWN (null) — never invent today.
+  const lastVerifiedEvidenceDate = null;
 
   const sides: PositionSideClaim[] = (["secured", "unsecured"] as const).map((side) => {
     const sim = dashboard?.capacity[side];

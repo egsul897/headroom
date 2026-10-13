@@ -35,6 +35,8 @@ export {
   resolveApprovedSnapshotInputs,
   runApprovalToCapacityBridge,
 } from "./approval-bridge";
+export { selectAuthoritativeSnapshotForCapacity } from "./snapshot-selection";
+export type { SnapshotSelectionResult } from "./snapshot-selection";
 export {
   computeContractualRatios,
   runSequentialFinancialEffects,

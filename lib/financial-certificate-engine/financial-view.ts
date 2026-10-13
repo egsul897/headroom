@@ -169,6 +169,13 @@ export async function loadSharedFinancialCertificationView(
     return buildSharedFinancialViewFromVerified(loaded.input, { engineRun: opts?.engineRun });
   }
 
+  const loadedMissing =
+    loaded.status === "AMBIGUOUS"
+      ? ["AMBIGUOUS_APPROVED_SNAPSHOT", ...loaded.snapshotIds]
+      : "missingInputs" in loaded
+        ? loaded.missingInputs
+        : ["APPROVED_NorthStar_snapshot"];
+
   if (opts?.engineRun) {
     const fromRun = buildSharedFinancialViewFromEngineRun(opts.engineRun);
     if (loaded.status === "NOT_AUTHORITATIVE") {
@@ -183,7 +190,7 @@ export async function loadSharedFinancialCertificationView(
     }
     return {
       ...fromRun,
-      missingInputs: [...new Set([...fromRun.missingInputs, ...loaded.missingInputs])],
+      missingInputs: [...new Set([...fromRun.missingInputs, ...loadedMissing])],
       capacityProjectionStatus: "NO_SNAPSHOT",
     };
   }
@@ -196,7 +203,7 @@ export async function loadSharedFinancialCertificationView(
       : "ABSENT",
     authoritative: false,
     assumptions: [],
-    missingInputs: loaded.missingInputs,
+    missingInputs: loadedMissing,
     reconciliationDisposition: null,
     dispositionReason: null,
     contractualEbitda: null,

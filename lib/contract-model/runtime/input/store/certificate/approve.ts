@@ -16,17 +16,22 @@ function approvalArgs(request: ApproveCertificateProposalRequest) {
     reviewedAt,
     approvalRef,
     deliveredAsOfDate,
+    omitDeliveryEvidence,
     sourceDocumentId,
     sourceVersionHash,
     proposerKind,
   } = request;
 
   // Provenance-enriched approvalRef for auditability (still attributable via approveSnapshot).
-  // Persist certificate delivery date here — never reconstruct it later from period-end asOf.
-  const withDelivery = encodeDeliveredAtInApprovalRef(
-    approvalRef,
-    deliveredAsOfDate ?? reviewedAt.slice(0, 10),
-  );
+  // Persist certificate delivery only when known — never invent from period-end asOf.
+  // omitDeliveryEvidence: extractor/FCE path when lender delivery date is unknown.
+  // Otherwise: explicit deliveredAsOfDate, or approval-date attribution for workspace approve.
+  const deliveryToPersist = omitDeliveryEvidence
+    ? null
+    : (deliveredAsOfDate ?? reviewedAt.slice(0, 10));
+  const withDelivery = deliveryToPersist
+    ? encodeDeliveredAtInApprovalRef(approvalRef, deliveryToPersist)
+    : approvalRef.trim();
   const enrichedRef = enrichApprovalRef(withDelivery, {
     sourceDocumentId,
     sourceVersionHash,

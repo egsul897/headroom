@@ -29,6 +29,11 @@ Integration readiness ≠ production certification.
 | Restatement supersession | Predecessor `SUPERSEDED`; cutoff binds successor only | `delivery-evidence.test.ts`, vertical-slice |
 | Gross / remaining / hypothetical collapse | `classifyCustomerFigure` refuses headroom upgrade without completeness | vertical-slice |
 | UNKNOWN utilization → zero | Unchanged; still refused in capacity/utilization modules | adversarial `#293` suite (prior) |
+| Evidence UNKNOWN → VERIFIED_EXECUTABLE | Evidence page hardcodes `utilizationComplete: false` (ledger count ≠ completeness cert) | `evidence-utilization-complete-fail-closed.test.ts` |
+| FCE latest-as-of snapshot pick | `selectAuthoritativeSnapshotForCapacity` — snapshotId or NS-6 bind only | `snapshot-selection.test.ts` |
+| FCE approve invents delivery | `omitDeliveryEvidence` when `deliveredAsOfDate` absent | `approveNs4SnapshotAttributable` |
+| Authentic bridge wall-clock asOf | Refuse `MISSING_AS_OF` instead of `new Date()` | `authentic-capacity-bridge.ts` |
+| Position “last verified” = period-end | `lastVerifiedEvidenceDate = null` until delivery/approval axes loaded | adversarial-routes Position case |
 
 ## Canonical vs competing (customer-facing claims)
 
