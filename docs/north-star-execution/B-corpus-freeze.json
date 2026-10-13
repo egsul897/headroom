@@ -1,0 +1,47 @@
+{
+  "corpusId": "NS-GEN-AUDIT-2026-10-13-A324",
+  "createdAt": "2026-10-13T04:42:00.000Z",
+  "immutable": true,
+  "baseTipSha": "c1246becb15a3e3ff508334ba889a759c986a28a",
+  "controllingNorthStar": "docs/headroom-north-star-v2.md",
+  "historicalFreezeManifestsPreserved": [
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-freeze-manifest.json",
+    "docs/phase-2f-unseen-package-validation.md"
+  ],
+  "membership": [
+    {
+      "packageId": "conmed-2025-credit-facility",
+      "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility",
+      "role": "phase-2f-first-blind"
+    },
+    {
+      "packageId": "riot-2025-2026-credit-facility",
+      "path": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility",
+      "role": "phase-3f2-unseen"
+    },
+    {
+      "packageId": "gibraltar-2026-credit-agreement",
+      "path": "tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement",
+      "role": "holdout"
+    },
+    {
+      "packageId": "wor-2023-2026-credit-facility",
+      "path": "tests/fixtures/unseen-packages/wor-2023-2026-credit-facility",
+      "role": "restatement-authority"
+    },
+    {
+      "packageId": "an-2020-2026-credit-facility",
+      "path": "tests/fixtures/unseen-packages/an-2020-2026-credit-facility",
+      "role": "autonation-series"
+    },
+    {
+      "packageId": "autonomous-compilation-independent-inventories",
+      "path": "tests/fixtures/autonomous-covenant-compilation",
+      "role": "independent-expected-inventory"
+    }
+  ],
+  "notes": [
+    "This freeze identifiers membership for Workstream B auditing; it does not rewrite historical Phase 2F/3F scores.",
+    "No new first-blind unseen package was scored on this tip."
+  ]
+}

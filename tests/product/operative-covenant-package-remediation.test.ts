@@ -16,8 +16,10 @@ import {
   mhkOperativePackageContext,
 } from "@/lib/product/autonomous-covenant-compilation";
 import {
+  auditOperativeAuthorityCalculationConsistency,
   documentsShareOperativeAuthority,
   provisionIdentityMatchesUnit,
+  sanitizeCapacityForGoverningAuthority,
 } from "@/lib/contract-model/analysis/operative-covenant-package";
 import { createProviderFreeStageCaller } from "@/lib/contract-model/compiler/llm-caller";
 import { classifyFixedDollarBasket } from "@/lib/contract-model/compiler/fixed-dollar-basket";
@@ -572,6 +574,146 @@ describe("P0 — restatement precedence / supersession for operative authority",
         evidence,
       ),
     ).toBe(false);
+  });
+});
+
+describe("P0 — operative-authority / calculation consistency (PR #311 mismatch)", () => {
+  const original = "credit-agreement-2020";
+  const restated = "amended-restated-credit-agreement-2022";
+  const PREDECESSOR_USD = 50_000_000;
+  const SUCCESSOR_USD = 100_000_000;
+
+  it("adversarial: discovery-on-predecessor + governing-successor REFUSES publishing predecessor basket amount", () => {
+    // Identity match may bind (successor governing, unit on predecessor).
+    expect(
+      provisionIdentityMatchesUnit(
+        {
+          kind: "SECTION",
+          sectionRef: "7.03",
+          definedTermRef: null,
+          governingDocumentId: restated,
+        },
+        { sourceRef: "7.03(f)", documentId: original },
+        {
+          asOfDate: "2023-06-15",
+          restatementAuthorities: [
+            {
+              status: "OPERATIVE_AUTHORITY_CONFIRMED",
+              successorDocumentId: restated,
+              predecessorDocumentId: original,
+              effectiveDateIso: "2022-01-15",
+              restatementScope: "FULL_AGREEMENT",
+              partialProvisionRefs: [],
+            },
+          ],
+        },
+      ),
+    ).toBe(true);
+
+    // Calculation must refuse the predecessor $50M while labeling successor governing.
+    const sanitized = sanitizeCapacityForGoverningAuthority({
+      discoveryDocumentId: original,
+      governingDocumentId: restated,
+      operativeText: `Indebtedness not to exceed $${PREDECESSOR_USD.toLocaleString("en-US")}.`,
+      capacityClass: "SOURCE_BACKED_GROSS_CONTRACTUAL",
+      sourceBackedGrossCapacityUsd: PREDECESSOR_USD,
+      modeledHypotheticalCapacityUsd: null,
+    });
+    expect(sanitized.refused).toBe(true);
+    expect(sanitized.refusalReasons).toContain("operative_text_document_ne_governing_document");
+    expect(sanitized.capacityClass).toBe("UNSUPPORTED_OR_UNKNOWN");
+    expect(sanitized.sourceBackedGrossCapacityUsd).toBeNull();
+    expect(sanitized.modeledHypotheticalCapacityUsd).toBeNull();
+    // Differing amounts must not silently become the governing figure.
+    expect(PREDECESSOR_USD).not.toBe(SUCCESSOR_USD);
+  });
+
+  it("adversarial: same-document governing + discovery PERMITS source-backed gross", () => {
+    const sanitized = sanitizeCapacityForGoverningAuthority({
+      discoveryDocumentId: restated,
+      governingDocumentId: restated,
+      operativeText: `Indebtedness not to exceed $${SUCCESSOR_USD.toLocaleString("en-US")}.`,
+      capacityClass: "SOURCE_BACKED_GROSS_CONTRACTUAL",
+      sourceBackedGrossCapacityUsd: SUCCESSOR_USD,
+      modeledHypotheticalCapacityUsd: null,
+    });
+    expect(sanitized.refused).toBe(false);
+    expect(sanitized.capacityClass).toBe("SOURCE_BACKED_GROSS_CONTRACTUAL");
+    expect(sanitized.sourceBackedGrossCapacityUsd).toBe(SUCCESSOR_USD);
+  });
+
+  it("adversarial: empty operative text REFUSES numeric publication", () => {
+    const sanitized = sanitizeCapacityForGoverningAuthority({
+      discoveryDocumentId: restated,
+      governingDocumentId: restated,
+      operativeText: "   ",
+      capacityClass: "SOURCE_BACKED_GROSS_CONTRACTUAL",
+      sourceBackedGrossCapacityUsd: SUCCESSOR_USD,
+      modeledHypotheticalCapacityUsd: null,
+    });
+    expect(sanitized.refused).toBe(true);
+    expect(sanitized.refusalReasons).toContain("empty_operative_text");
+    expect(sanitized.sourceBackedGrossCapacityUsd).toBeNull();
+  });
+
+  it("adversarial: modeled hypothetical from non-governing discovery text REFUSES", () => {
+    const sanitized = sanitizeCapacityForGoverningAuthority({
+      discoveryDocumentId: original,
+      governingDocumentId: restated,
+      operativeText: "greater of $50,000,000 and 15% of Total Assets",
+      capacityClass: "MODELED_HYPOTHETICAL",
+      sourceBackedGrossCapacityUsd: null,
+      modeledHypotheticalCapacityUsd: PREDECESSOR_USD,
+    });
+    expect(sanitized.refused).toBe(true);
+    expect(sanitized.modeledHypotheticalCapacityUsd).toBeNull();
+    expect(sanitized.capacityClass).toBe("UNSUPPORTED_OR_UNKNOWN");
+  });
+
+  it("pipeline audit detects escaped OA/calculation mismatches", () => {
+    const audit = auditOperativeAuthorityCalculationConsistency([
+      {
+        unitId: "bad-unit",
+        documentId: original,
+        governingDocumentId: restated,
+        operativeText: "not to exceed $50,000,000",
+        capacityClass: "SOURCE_BACKED_GROSS_CONTRACTUAL",
+        sourceBackedGrossCapacityUsd: PREDECESSOR_USD,
+        modeledHypotheticalCapacityUsd: null,
+      },
+      {
+        unitId: "good-unit",
+        documentId: restated,
+        governingDocumentId: restated,
+        operativeText: "not to exceed $100,000,000",
+        capacityClass: "SOURCE_BACKED_GROSS_CONTRACTUAL",
+        sourceBackedGrossCapacityUsd: SUCCESSOR_USD,
+        modeledHypotheticalCapacityUsd: null,
+      },
+    ]);
+    expect(audit.mismatchCount).toBe(1);
+    expect(audit.findings[0]!.unitId).toBe("bad-unit");
+    expect(audit.findings[0]!.reasons).toContain("operative_text_document_ne_governing_document");
+  });
+
+  it("compile path reports zero OA/calculation mismatches on authentic packages", async () => {
+    const [matthews, mhk] = await Promise.all([
+      compileOperativeCovenantPackage(matthewsOperativePackageContext()),
+      compileOperativeCovenantPackage(mhkOperativePackageContext()),
+    ]);
+    expect(matthews.diagnostics.operativeAuthorityCalculationMismatches).toBe(0);
+    expect(mhk.diagnostics.operativeAuthorityCalculationMismatches).toBe(0);
+    for (const u of [...matthews.executableUnits, ...mhk.executableUnits]) {
+      if (u.sourceBackedGrossCapacityUsd != null || u.modeledHypotheticalCapacityUsd != null) {
+        expect(u.documentId).toBe(u.governingDocumentId);
+      }
+    }
+  });
+
+  it("source gate: toExecutable wires sanitizeCapacityForGoverningAuthority", () => {
+    expect(OPERATIVE_SRC).toMatch(/sanitizeCapacityForGoverningAuthority/);
+    expect(OPERATIVE_SRC).toMatch(/operative_text_document_ne_governing_document/);
+    expect(OPERATIVE_SRC).toMatch(/auditOperativeAuthorityCalculationConsistency/);
   });
 });
 

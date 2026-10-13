@@ -173,6 +173,8 @@ export interface OperativeCovenantPackageResult {
     providerFreeEnforced: boolean;
     envCredentialsMutated: false;
     falseExecutableClassifications: number;
+    /** Post-sanitize OA/calculation mismatches remaining on executable units (must be 0). */
+    operativeAuthorityCalculationMismatches: number;
     autonomousCompilationProven: "NOT_PROVEN" | "PARTIAL" | "PROVEN";
     autonomousCompilationRationale: string;
     humanInterventions: { kind: string; detail: string }[];
@@ -229,6 +231,119 @@ function capacityClassFor(unit: CompileUnitRepresentation): CapacityPublicationC
     return "MODELED_HYPOTHETICAL";
   }
   return "UNSUPPORTED_OR_UNKNOWN";
+}
+
+/**
+ * Operative-authority / calculation consistency gate.
+ *
+ * Identity matching may bind a discovery unit on a confirmed predecessor to a
+ * provision whose governing document is the operative successor. Calculation
+ * must never publish SOURCE_BACKED / MODELED numbers from that predecessor
+ * text while labeling the successor as governing — that is the PR #311
+ * operative-authority/calculation mismatch.
+ *
+ * Fail closed: when discovery document ≠ governing document, strip capacity
+ * numbers and demote to UNSUPPORTED_OR_UNKNOWN. Empty operative text also
+ * refuses numeric publication. Exported for adversarial regression tests.
+ */
+export function sanitizeCapacityForGoverningAuthority(input: {
+  discoveryDocumentId: string;
+  governingDocumentId: string;
+  operativeText: string;
+  capacityClass: CapacityPublicationClass;
+  sourceBackedGrossCapacityUsd: number | null;
+  modeledHypotheticalCapacityUsd: number | null;
+}): {
+  capacityClass: CapacityPublicationClass;
+  sourceBackedGrossCapacityUsd: number | null;
+  modeledHypotheticalCapacityUsd: number | null;
+  refused: boolean;
+  refusalReasons: string[];
+} {
+  const discovery = input.discoveryDocumentId.trim();
+  const governing = input.governingDocumentId.trim();
+  const refusalReasons: string[] = [];
+  const publishesNumber =
+    input.capacityClass === "SOURCE_BACKED_GROSS_CONTRACTUAL" ||
+    input.capacityClass === "MODELED_HYPOTHETICAL" ||
+    input.capacityClass === "VERIFIED_REMAINING" ||
+    input.capacityClass === "PRODUCTION_AVAILABLE" ||
+    input.sourceBackedGrossCapacityUsd != null ||
+    input.modeledHypotheticalCapacityUsd != null;
+
+  if (!governing) {
+    refusalReasons.push("missing_governing_document_id");
+  }
+  if (!discovery) {
+    refusalReasons.push("missing_discovery_document_id");
+  }
+  if (publishesNumber && governing && discovery && governing !== discovery) {
+    refusalReasons.push("operative_text_document_ne_governing_document");
+  }
+  if (publishesNumber && input.operativeText.trim().length === 0) {
+    refusalReasons.push("empty_operative_text");
+  }
+  // PRODUCTION_AVAILABLE / VERIFIED_REMAINING are never published from this path;
+  // treat as refuse if somehow labeled.
+  if (
+    input.capacityClass === "PRODUCTION_AVAILABLE" ||
+    input.capacityClass === "VERIFIED_REMAINING"
+  ) {
+    refusalReasons.push(`capacity_class_refused:${input.capacityClass}`);
+  }
+
+  if (refusalReasons.length === 0) {
+    return {
+      capacityClass: input.capacityClass,
+      sourceBackedGrossCapacityUsd: input.sourceBackedGrossCapacityUsd,
+      modeledHypotheticalCapacityUsd: input.modeledHypotheticalCapacityUsd,
+      refused: false,
+      refusalReasons: [],
+    };
+  }
+
+  return {
+    capacityClass: "UNSUPPORTED_OR_UNKNOWN",
+    sourceBackedGrossCapacityUsd: null,
+    modeledHypotheticalCapacityUsd: null,
+    refused: true,
+    refusalReasons,
+  };
+}
+
+/**
+ * Pipeline audit: detect OA/calculation mismatches on already-built units.
+ * Does not mutate; used by compile diagnostics and adversarial audits.
+ */
+export function auditOperativeAuthorityCalculationConsistency(
+  units: ReadonlyArray<{
+    unitId: string;
+    documentId: string;
+    governingDocumentId: string;
+    operativeText: string;
+    capacityClass: CapacityPublicationClass;
+    sourceBackedGrossCapacityUsd: number | null;
+    modeledHypotheticalCapacityUsd: number | null;
+  }>,
+): {
+  mismatchCount: number;
+  findings: Array<{ unitId: string; reasons: string[] }>;
+} {
+  const findings: Array<{ unitId: string; reasons: string[] }> = [];
+  for (const u of units) {
+    const sanitized = sanitizeCapacityForGoverningAuthority({
+      discoveryDocumentId: u.documentId,
+      governingDocumentId: u.governingDocumentId,
+      operativeText: u.operativeText,
+      capacityClass: u.capacityClass,
+      sourceBackedGrossCapacityUsd: u.sourceBackedGrossCapacityUsd,
+      modeledHypotheticalCapacityUsd: u.modeledHypotheticalCapacityUsd,
+    });
+    if (sanitized.refused) {
+      findings.push({ unitId: u.unitId, reasons: sanitized.refusalReasons });
+    }
+  }
+  return { mismatchCount: findings.length, findings };
 }
 
 function missingDepsFor(unit: CompileUnitRepresentation): string[] {
@@ -628,16 +743,29 @@ function toExecutable(
   offline: OfflinePackageCompileResult,
 ): ExecutableOperativeUnit {
   const kind = classifyProvisionKind(unit);
-  const capacityClass = capacityClassFor(unit);
-  const fdUsd =
-    capacityClass === "SOURCE_BACKED_GROSS_CONTRACTUAL"
+  const rawCapacityClass = capacityClassFor(unit);
+  const rawFdUsd =
+    rawCapacityClass === "SOURCE_BACKED_GROSS_CONTRACTUAL"
       ? unit.fixedDollarSlice?.availableAmountUsd ?? null
       : null;
-  const modeledUsd =
-    capacityClass === "MODELED_HYPOTHETICAL"
+  const rawModeledUsd =
+    rawCapacityClass === "MODELED_HYPOTHETICAL"
       ? unit.greaterOfSlice?.availableAmountUsd ?? null
       : null;
   const authority = authorityForUnit(unit, offline);
+  // PR #311 OA/calculation consistency: never publish numbers from discovery
+  // text whose document is not the governing operative document.
+  const sanitized = sanitizeCapacityForGoverningAuthority({
+    discoveryDocumentId: unit.documentId,
+    governingDocumentId: authority.governingDocumentId,
+    operativeText: unit.operativeText,
+    capacityClass: rawCapacityClass,
+    sourceBackedGrossCapacityUsd: rawFdUsd,
+    modeledHypotheticalCapacityUsd: rawModeledUsd,
+  });
+  const capacityClass = sanitized.capacityClass;
+  const fdUsd = sanitized.sourceBackedGrossCapacityUsd;
+  const modeledUsd = sanitized.modeledHypotheticalCapacityUsd;
   const residuals = residualConditionsFor(unit);
 
   let ratioCompile: ExecutableOperativeUnit["ratioCompile"] = null;
@@ -691,6 +819,7 @@ function toExecutable(
       ...missingDepsFor(unit),
       ...(ratioCompile?.missingDependencies ?? []),
       ...(authority.governingAuthorityConfirmed ? [] : ["governing_authority_not_confirmed_for_production"]),
+      ...sanitized.refusalReasons,
     ],
     ratioCompile,
     provenance: {
@@ -954,12 +1083,30 @@ export async function compileOperativeCovenantPackage(
     if (!u.governingDocumentId) {
       throw new Error(`Executable unit missing governingDocumentId: ${u.unitId}`);
     }
+    // Hard fail if a numeric claim survives with discovery≠governing (sanitize must catch).
+    if (
+      (u.sourceBackedGrossCapacityUsd != null || u.modeledHypotheticalCapacityUsd != null) &&
+      u.documentId.trim() !== u.governingDocumentId.trim()
+    ) {
+      throw new Error(
+        `OA/calculation mismatch escaped sanitize for ${u.unitId}: discovery=${u.documentId} governing=${u.governingDocumentId}`,
+      );
+    }
     if (u.sourceSpan.charStart == null || u.sourceSpan.charEnd == null) {
       // Soft: catalog parents may lack spans; leaf VE clauses must have spans.
       if (/\([a-z0-9]+\)$/i.test(u.sourceRef) || /\(\d{1,2}\)\([a-z0-9]+\)$/i.test(u.sourceRef)) {
         throw new Error(`Executable catalog clause missing source span: ${u.unitId} ${u.sourceRef}`);
       }
     }
+  }
+
+  const oaCalcAudit = auditOperativeAuthorityCalculationConsistency(executableUnits);
+  if (oaCalcAudit.mismatchCount > 0) {
+    throw new Error(
+      `operative-authority/calculation mismatches remain: ${oaCalcAudit.findings
+        .map((f) => `${f.unitId}:${f.reasons.join(",")}`)
+        .join("; ")}`,
+    );
   }
 
   if (execution.mode === "PROVIDER_FREE" && offline.paidInferenceUsed) {
@@ -986,6 +1133,7 @@ export async function compileOperativeCovenantPackage(
       providerFreeEnforced: execution.providerFreeEnforced,
       envCredentialsMutated: false,
       falseExecutableClassifications: offline.summary.falseExecutableClassifications,
+      operativeAuthorityCalculationMismatches: oaCalcAudit.mismatchCount,
       autonomousCompilationProven: verdict,
       autonomousCompilationRationale: rationale,
       humanInterventions: offline.humanInterventions,
