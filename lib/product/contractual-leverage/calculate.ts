@@ -41,6 +41,7 @@ import type {
 function summarizeInformationRequest(info: FinancialInformationRequest): FinancialInformationRequestSummary {
   return {
     executable: info.executable,
+    executionMode: info.executionMode,
     blockingKeys: info.blocking.map((b) => b.requestText ?? b.dependency.key),
     summary: info.summary,
   };

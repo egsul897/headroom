@@ -16,12 +16,16 @@ export type { LeverageRatioKind } from "./runtime/leverage-ratio";
 export {
   buildFinancialInformationRequest,
   fulfillFinancialDependencyManifest,
+  proveConditionalClearance,
 } from "./runtime/input/information-request";
 export type {
   FulfillmentState,
   FulfillmentPolicy,
   FulfilledDependency,
   FinancialInformationRequest,
+  ConditionalPathDisposition,
+  ConditionalPathDispositionKind,
+  InformationRequestExecutionMode,
 } from "./runtime/input/information-request";
 export type { FinancialSnapshot } from "./runtime/input/types";
 export { fixtureInputResolver, metricInput } from "./runtime/input-resolver";
@@ -30,5 +34,6 @@ export {
   rationalFromNumber,
   toApproximateNumber,
 } from "./runtime/decimal";
+export type { Rational } from "./runtime/decimal";
 export { money } from "./runtime/values";
 export type { InputProvenance } from "./runtime/types";
