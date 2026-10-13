@@ -178,6 +178,7 @@ export function calculateContractualLeverage(req: LeverageCalculationRequest): C
   let financials: LeverageFinancialInputs = { ...req.financials };
   let ebitdaAuthority: FinancialInputAuthority = baseAuthority;
   let ebitdaBuildup = null as ContractualLeverageResult["ebitdaBuildup"];
+  const limitations = [...identified.limitations];
 
   if (req.ebitdaLineItems && req.ebitdaLineItems.length > 0) {
     ebitdaBuildup = calculateEbitdaBuildup({
@@ -186,17 +187,28 @@ export function calculateContractualLeverage(req: LeverageCalculationRequest): C
       ebitdaDefinition: identified.ebitdaTerm,
       lineItems: req.ebitdaLineItems,
       expectedPeriod: req.expectedPeriod,
+      // Seeded / public-filing reconstructions are never silently APPROVED.
+      evidenceSnapshotStatus:
+        req.financialAuthority === "APPROVED_PERIOD_MATCHED" ? "APPROVED" : "REVIEW_REQUIRED",
     });
     if (ebitdaBuildup.status === "COMPUTED" && ebitdaBuildup.valueMillions != null) {
       financials = { ...financials, ebitda: ebitdaBuildup.valueMillions };
       ebitdaAuthority = ebitdaBuildup.authority;
+    } else {
+      // Build-up requested but incomplete — do not substitute a pre-collapsed leaf as a build-up.
+      financials = { ...financials, ebitda: null };
+      limitations.push(
+        "Consolidated EBITDA build-up did not complete; pre-collapsed EBITDA leaf was not substituted as a build-up.",
+      );
+      if (ebitdaBuildup.unresolvedComponents.length) {
+        limitations.push(`Unresolved EBITDA components: ${ebitdaBuildup.unresolvedComponents.join("; ")}`);
+      }
     }
+    if (ebitdaBuildup.limitations.length) limitations.push(...ebitdaBuildup.limitations);
   }
 
   const inputs = buildInputLines(financials, identified.debtBasis, identified.netsCash, baseAuthority, ebitdaAuthority);
   const missing = inputs.filter((i) => i.status === "MISSING").map((i) => i.label);
-  const limitations = [...identified.limitations];
-  if (ebitdaBuildup?.limitations.length) limitations.push(...ebitdaBuildup.limitations);
 
   if (missing.length > 0) {
     return emptyResult({

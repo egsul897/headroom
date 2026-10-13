@@ -111,9 +111,24 @@ async function main() {
       }),
       covenantMetricFacts: asJson({
         covenantEbitda: {
+          // Seeded leaf remains 1700 for legacy consumers; build-up line items
+          // (PUBLIC_FILING_RECONSTRUCTION schedule) sum to ~1694.14 and drive
+          // contractual-leverage when present. Not CERTIFIED / not APPROVED.
           value: 1700,
-          addbacks: [],
-          provenance: fact(1700, "RECONSTRUCTED", "Same figure as coh-eir-covenant-ebitda-public-filing-reconstruction (PUBLIC_FILING_RECONSTRUCTION, permanent for this fixture per docs/legal-review-status-model.md §5) - not re-derived here."),
+          periodKey: "FY2026-2026-06-30",
+          addbacks: [
+            { label: "Net Earnings Attributable to Coherent Corp. (Consolidated Net Income)", amount: 804.998, provenance: fact(804.998, "REPORTED", "FY2026 10-K Consolidated Statements of Earnings.") },
+            { label: "Income tax expense", amount: 60.849, provenance: fact(60.849, "REPORTED", "FY2026 10-K.") },
+            { label: "Interest expense", amount: 190.267, provenance: fact(190.267, "REPORTED", "FY2026 10-K.") },
+            { label: "Depreciation", amount: 241.561, provenance: fact(241.561, "REPORTED", "FY2026 10-K Cash Flows.") },
+            { label: "Amortization", amount: 280.334, provenance: fact(280.334, "REPORTED", "FY2026 10-K Cash Flows.") },
+            { label: "Restructuring charges", amount: 63.39, provenance: fact(63.39, "REPORTED", "FY2026 10-K Cash Flows.") },
+            { label: "Impairment of assets held-for-sale (non-cash)", amount: 64.404, provenance: fact(64.404, "REPORTED", "FY2026 10-K Cash Flows.") },
+            { label: "Share-based compensation expense (non-cash)", amount: 186.468, provenance: fact(186.468, "REPORTED", "FY2026 10-K Cash Flows.") },
+            { label: "Gain on sale of business", amount: -124.133, provenance: fact(-124.133, "REPORTED", "FY2026 10-K Cash Flows — subtracted in reconstruction.") },
+            { label: "Gain on sale of equity investment", amount: -73.998, provenance: fact(-73.998, "REPORTED", "FY2026 10-K Cash Flows — subtracted in reconstruction.") },
+          ],
+          provenance: fact(1700, "RECONSTRUCTED", "Leaf matches coh-eir-covenant-ebitda-public-filing-reconstruction; line-item schedule is the source-backed build-up (≈1694.14). PUBLIC_FILING_RECONSTRUCTION — not CERTIFIED_EXTERNAL_INPUT / not APPROVED."),
         },
         assumedNewDebtRatePct: fact(6.5, "ASSUMED", SOURCE),
       }),

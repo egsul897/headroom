@@ -1,12 +1,14 @@
 /**
- * Demo: contractual leverage for Coherent + Matthews via the same pure path.
- * No DB. Run: npx tsx scripts/product/demo-contractual-leverage.ts
+ * Demo: Coherent + Matthews contractual EBITDA build-up → leverage (same path).
+ * Run: npx tsx scripts/product/demo-contractual-leverage.ts
  */
 import {
   calculateContractualLeverage,
   calculateEbitdaBuildup,
   coherentTotalNetLeverageRequest,
   matthewsSecuredNetLeverageRequest,
+  COHERENT_CA_DEFINITIONS,
+  COHERENT_FY2026_EBITDA_LINE_ITEMS,
   MATTHEWS_EBITDA_LINE_ITEMS,
   MATTHEWS_INDENTURE_DEFINITIONS,
 } from "../../lib/product/contractual-leverage";
@@ -24,36 +26,39 @@ function show(label: string, req: ReturnType<typeof coherentTotalNetLeverageRequ
   console.log(`disclaimer: ${r.capacityDisclaimer}`);
   if (r.ebitdaBuildup) {
     console.log(
-      `EBITDA build-up: ${r.ebitdaBuildup.status} ${r.ebitdaBuildup.valueMillions?.toFixed(3)} $M (${r.ebitdaBuildup.authority})`,
+      `EBITDA build-up: ${r.ebitdaBuildup.status} ${r.ebitdaBuildup.valueMillions?.toFixed(3)} $M (${r.ebitdaBuildup.authority}) period=${r.ebitdaBuildup.period}`,
     );
-    console.log(`  formula: ${r.ebitdaBuildup.formulaDisplay}`);
+    for (const row of r.ebitdaBuildup.numericalTrace) {
+      console.log(`  ${row.sign} ${row.label}: ${row.amountMillions}`);
+    }
+    if (r.ebitdaBuildup.unresolvedComponents.length) {
+      console.log(`  unresolved: ${r.ebitdaBuildup.unresolvedComponents.join(" | ")}`);
+    }
   }
   console.log(`citations: ${r.citations.join(" | ")}`);
-  console.log(
-    `inputs: ${r.inputs.map((i) => `${i.label}=${i.valueMillions} [${i.authority}]`).join("; ")}`,
-  );
-  if (r.missingRequirements.length) console.log(`missing: ${r.missingRequirements.join("; ")}`);
 }
 
-show("Coherent — CA Total Net Leverage (seeded → INDICATIVE)", coherentTotalNetLeverageRequest());
-show("Matthews — Indenture Secured Net Leverage + EBITDA build-up", matthewsSecuredNetLeverageRequest());
+show("Coherent — CA TNL from FY2026 10-K EBITDA build-up (not leaf 1700)", coherentTotalNetLeverageRequest());
+show("Matthews — Indenture SNLR + EBITDA build-up (same implementation)", matthewsSecuredNetLeverageRequest());
 
-const buildup = calculateEbitdaBuildup({
+const coh = calculateEbitdaBuildup({
+  companyId: "coherent",
+  instrumentKey: "coherent-credit-agreement",
+  ebitdaDefinition: COHERENT_CA_DEFINITIONS[0]!,
+  lineItems: COHERENT_FY2026_EBITDA_LINE_ITEMS,
+  expectedPeriod: "FY2026-2026-06-30",
+  evidenceSnapshotStatus: "REVIEW_REQUIRED",
+});
+console.log("\n=== Coherent build-up alone ===");
+console.log(`value=${coh.valueMillions} authority=${coh.authority}`);
+console.log(`approval: ${coh.approvalResolution.map((a) => a.resolveState).join(",")}`);
+
+const mat = calculateEbitdaBuildup({
   companyId: "matthews",
   instrumentKey: "matthews-indenture-2027-notes",
   ebitdaDefinition: MATTHEWS_INDENTURE_DEFINITIONS[0]!,
   lineItems: MATTHEWS_EBITDA_LINE_ITEMS,
   expectedPeriod: "TTM-2024-12-31",
 });
-console.log("\n=== Matthews EBITDA build-up alone ===");
-console.log(`status: ${buildup.status} value: ${buildup.valueMillions} authority: ${buildup.authority}`);
-console.log(`formula: ${buildup.formulaDisplay}`);
-
-const missing = calculateContractualLeverage(
-  coherentTotalNetLeverageRequest({ ebitda: null, totalDebt: 3258, securedDebt: 2221, cash: 1162 }),
-);
-console.log("\n=== Fail-closed (missing EBITDA) ===");
-console.log(`status: ${missing.status}`);
-console.log(`missing: ${missing.missingRequirements.join("; ")}`);
-console.log(`currentRatio: ${missing.currentRatio}`);
-console.log(`computationAuthority: ${missing.computationAuthority}`);
+console.log("\n=== Matthews build-up alone ===");
+console.log(`value=${mat.valueMillions} authority=${mat.authority}`);

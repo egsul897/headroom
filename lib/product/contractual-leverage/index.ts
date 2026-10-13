@@ -26,6 +26,12 @@ export { compileLeverageExpressions } from "./compile";
 export { CAPACITY_DISCLAIMER } from "./disclaimer";
 export { calculateContractualLeverage, recalculateWithFinancials } from "./calculate";
 export { calculateEbitdaBuildup, compileEbitdaBuildupExpression } from "./ebitda-buildup";
+export {
+  COHERENT_FY2026_EBITDA_LINE_ITEMS,
+  COHERENT_FY2026_EBITDA_BUILDUP_SUM,
+  resolveEbitdaLineApproval,
+  lineItemsToFinancialSnapshot,
+} from "./evidence";
 export { reflowIndicativeLeverage } from "./reflow";
 export { loadContractualLeverageForCompany, type ContractualLeverageDashboardPayload } from "./service";
 export {
@@ -33,6 +39,7 @@ export {
   MATTHEWS_FINANCIALS,
   COHERENT_CA_DEFINITIONS,
   MATTHEWS_INDENTURE_DEFINITIONS,
+  COHERENT_EBITDA_LINE_ITEMS,
   MATTHEWS_EBITDA_LINE_ITEMS,
   MATTHEWS_EBITDA_LINE_ITEMS_APPROVED,
   coherentTotalNetLeverageRequest,

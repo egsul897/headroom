@@ -9,6 +9,10 @@
  * Test/demo data only — authority labeled honestly (not APPROVED by default).
  */
 
+import {
+  COHERENT_FY2026_EBITDA_LINE_ITEMS,
+  COHERENT_FY2026_EBITDA_BUILDUP_SUM,
+} from "./evidence";
 import type {
   ApprovedFinancialLineItem,
   DefinitionText,
@@ -16,13 +20,18 @@ import type {
   LeverageFinancialInputs,
 } from "./types";
 
-/** Coherent CA §6.11(a) — seed FinancialSnapshot ($M). */
+export { COHERENT_FY2026_EBITDA_LINE_ITEMS, COHERENT_FY2026_EBITDA_BUILDUP_SUM };
+
+/** Coherent CA §6.11(a) — seed FinancialSnapshot leaf ($M). Build-up uses line items. */
 export const COHERENT_FINANCIALS: LeverageFinancialInputs = {
   ebitda: 1700,
   totalDebt: 3258,
   securedDebt: 2221,
   cash: 1162,
 };
+
+/** Alias — same 10-K schedule as evidence.ts (not a collapsed leaf). */
+export const COHERENT_EBITDA_LINE_ITEMS = COHERENT_FY2026_EBITDA_LINE_ITEMS;
 
 export const COHERENT_CA_DEFINITIONS: DefinitionText[] = [
   {
@@ -156,6 +165,8 @@ export function coherentTotalNetLeverageRequest(
     debtBasisHint: "total",
     financials,
     financialAuthority: "SEEDED_SNAPSHOT",
+    ebitdaLineItems: COHERENT_FY2026_EBITDA_LINE_ITEMS,
+    expectedPeriod: "FY2026-2026-06-30",
   };
 }
 

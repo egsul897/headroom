@@ -81,16 +81,34 @@ export type ContractualLeverageStatus =
   | "MISSING_INPUTS"
   | "EVALUATION_ERROR";
 
+export interface EbitdaBuildupLineTrace {
+  key: string;
+  label: string;
+  amountMillions: number | null;
+  role: "BASE" | "ADD" | "SUBTRACT";
+  /** Definition category matched, when recognized. */
+  definitionMatch: string | null;
+}
+
 export interface EbitdaBuildupSummary {
   status: "COMPUTED" | "MISSING_INPUTS" | "UNSUPPORTED_DEFINITION_SHAPE";
   valueMillions: number | null;
   formulaDisplay: string | null;
-  lineItems: Array<{ key: string; label: string; amountMillions: number | null; role: "BASE" | "ADD" | "SUBTRACT" }>;
+  lineItems: EbitdaBuildupLineTrace[];
+  /** Ordered numerical trace for the dashboard (signed contributions). */
+  numericalTrace: Array<{ label: string; amountMillions: number; sign: "+" | "−" | "=" }>;
+  /** Definition prongs / evidence rows that remain unresolved. */
+  unresolvedComponents: string[];
+  /** Phase 4B resolve states when approval was checked (APPROVED-only policy). */
+  approvalResolution: Array<{ key: string; label: string; resolveState: string; reason: string | null }>;
   citations: string[];
   missingRequirements: string[];
   limitations: string[];
   authority: FinancialInputAuthority;
   runtimeStatus: string | null;
+  /** Period identity used for the build-up. */
+  period: string | null;
+  definitionIdentity: string | null;
 }
 
 export interface ContractualLeverageResult {

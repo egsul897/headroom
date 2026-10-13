@@ -84,15 +84,39 @@ function dateFilter(asOfDate: Date | null) {
 /**
  * Map FinancialState covenantEbitda addbacks → line items for EBITDA build-up.
  * Authority stays SEEDED_SNAPSHOT unless a future APPROVED bridge upgrades it.
+ *
+ * If addbacks already include a CNI / net-earnings base row, use them as the
+ * full schedule (Coherent path). Otherwise reconstruct CNI = EBITDA − Σ(signed).
  */
 function lineItemsFromCovenantEbitda(
   asOf: Date,
   covenantEbitda: { value: number; addbacks: CovenantEbitdaAddback[] } | null | undefined,
   cumulativeNetIncome: number | null | undefined,
+  periodOverride?: string | null,
 ): ApprovedFinancialLineItem[] {
-  if (!covenantEbitda?.addbacks?.length || cumulativeNetIncome == null) return [];
-  const period = `TTM-${asOf.toISOString().slice(0, 10)}`;
+  if (!covenantEbitda?.addbacks?.length) return [];
   const asOfStr = asOf.toISOString().slice(0, 10);
+  const period = periodOverride ?? `TTM-${asOfStr}`;
+  const hasEmbeddedBase = covenantEbitda.addbacks.some((a) =>
+    /net\s+income|net\s+earnings|consolidated\s+net\s+income/i.test(a.label),
+  );
+
+  if (hasEmbeddedBase) {
+    return covenantEbitda.addbacks.map((ab, i) => {
+      const isGain = /gain\s+on\s+/i.test(ab.label);
+      const isTaxBenefit = /tax\s+benefit/i.test(ab.label);
+      return {
+        key: /net\s+income|net\s+earnings/i.test(ab.label) ? "cni" : `line_${i}`,
+        label: ab.label,
+        amountMillions: isTaxBenefit || isGain ? Math.abs(ab.amount) : ab.amount,
+        period,
+        asOf: asOfStr,
+        authority: "SEEDED_SNAPSHOT" as const,
+      };
+    });
+  }
+
+  if (cumulativeNetIncome == null) return [];
   const items: ApprovedFinancialLineItem[] = [
     {
       key: "cni",
@@ -106,12 +130,11 @@ function lineItemsFromCovenantEbitda(
   for (const [i, ab] of covenantEbitda.addbacks.entries()) {
     const label = ab.label;
     const isTaxBenefit = /tax\s+benefit/i.test(label);
+    const isGain = /gain\s+on\s+/i.test(label);
     items.push({
       key: `addback_${i}`,
       label,
-      // Tax benefit amounts in Matthews are stored as negative in one path and
-      // positive with "SUBTRACTED" label in another — pass absolute for SUBTRACT role.
-      amountMillions: isTaxBenefit ? Math.abs(ab.amount) : ab.amount,
+      amountMillions: isTaxBenefit || isGain ? Math.abs(ab.amount) : ab.amount,
       period,
       asOf: asOfStr,
       authority: "SEEDED_SNAPSHOT",
@@ -231,27 +254,48 @@ export async function loadContractualLeverageForCompany(
   let expectedPeriod: string | null = null;
   if (financialState) {
     const covenantFacts = financialState.covenantMetricFacts as {
-      covenantEbitda?: { value: number; addbacks: CovenantEbitdaAddback[] };
+      covenantEbitda?: { value: number; addbacks: CovenantEbitdaAddback[]; periodKey?: string };
     } | null;
     const incomeFacts = financialState.incomeStatementFacts as {
       cumulativeNetIncomeSinceIssue?: { value?: number };
     } | null;
-    // Prefer reconstructing CNI from EBITDA − Σ(addbacks) when the stored
-    // cumulativeNetIncomeSinceIssue is a since-issue stub, not TTM CNI.
     const addbacks = covenantFacts?.covenantEbitda?.addbacks ?? [];
     const ebitdaVal = covenantFacts?.covenantEbitda?.value;
-    if (ebitdaVal != null && addbacks.length > 0) {
-      const signedSum = addbacks.reduce((s, a) => s + a.amount, 0);
-      // Matthews stores tax benefit as negative amount; CNI = EBITDA − sum(signed addbacks)
-      const cni = ebitdaVal - signedSum;
-      ebitdaLineItems = lineItemsFromCovenantEbitda(financialState.asOfDate, covenantFacts?.covenantEbitda, cni);
-      // Fix tax benefit: lineItemsFromCovenantEbitda uses abs for tax benefit; if addback was negative, keep abs.
-      expectedPeriod = `TTM-${financialState.asOfDate.toISOString().slice(0, 10)}`;
-    } else {
-      const cni = incomeFacts?.cumulativeNetIncomeSinceIssue?.value ?? null;
-      ebitdaLineItems = lineItemsFromCovenantEbitda(financialState.asOfDate, covenantFacts?.covenantEbitda, cni);
-      if (ebitdaLineItems.length) {
-        expectedPeriod = `TTM-${financialState.asOfDate.toISOString().slice(0, 10)}`;
+    const periodKey =
+      covenantFacts?.covenantEbitda?.periodKey ??
+      (addbacks.some((a) => /net\s+earnings\s+attributable/i.test(a.label))
+        ? `FY2026-${financialState.asOfDate.toISOString().slice(0, 10)}`
+        : `TTM-${financialState.asOfDate.toISOString().slice(0, 10)}`);
+
+    if (addbacks.length > 0) {
+      const hasEmbeddedBase = addbacks.some((a) => /net\s+income|net\s+earnings/i.test(a.label));
+      if (hasEmbeddedBase) {
+        ebitdaLineItems = lineItemsFromCovenantEbitda(
+          financialState.asOfDate,
+          covenantFacts?.covenantEbitda,
+          null,
+          periodKey,
+        );
+        expectedPeriod = periodKey;
+      } else if (ebitdaVal != null) {
+        const signedSum = addbacks.reduce((s, a) => s + a.amount, 0);
+        const cni = ebitdaVal - signedSum;
+        ebitdaLineItems = lineItemsFromCovenantEbitda(
+          financialState.asOfDate,
+          covenantFacts?.covenantEbitda,
+          cni,
+          periodKey,
+        );
+        expectedPeriod = periodKey;
+      } else {
+        const cni = incomeFacts?.cumulativeNetIncomeSinceIssue?.value ?? null;
+        ebitdaLineItems = lineItemsFromCovenantEbitda(
+          financialState.asOfDate,
+          covenantFacts?.covenantEbitda,
+          cni,
+          periodKey,
+        );
+        if (ebitdaLineItems.length) expectedPeriod = periodKey;
       }
     }
   }

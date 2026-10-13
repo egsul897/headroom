@@ -74,11 +74,31 @@ function ResultCard({ result }: { result: ContractualLeverageResult }) {
         {result.capacityDisclaimer}
       </div>
 
-      {result.ebitdaBuildup?.status === "COMPUTED" ? (
-        <div className="row-note" style={{ marginTop: 8 }}>
-          Consolidated EBITDA build-up ({result.ebitdaBuildup.authority}):{" "}
-          {result.ebitdaBuildup.valueMillions != null ? fmtM(result.ebitdaBuildup.valueMillions) : "—"}
-          {result.ebitdaBuildup.formulaDisplay ? ` = ${result.ebitdaBuildup.formulaDisplay}` : ""}
+      {result.ebitdaBuildup ? (
+        <div className="row-note" style={{ marginTop: 8 }} data-slot="ebitda-buildup">
+          <div>
+            Consolidated EBITDA build-up ({result.ebitdaBuildup.authority}
+            {result.ebitdaBuildup.period ? ` · ${result.ebitdaBuildup.period}` : ""}
+            ):{" "}
+            {result.ebitdaBuildup.status === "COMPUTED" && result.ebitdaBuildup.valueMillions != null
+              ? fmtM(result.ebitdaBuildup.valueMillions)
+              : result.ebitdaBuildup.status}
+          </div>
+          {result.ebitdaBuildup.numericalTrace.length > 0 ? (
+            <ul style={{ margin: "4px 0 0", paddingLeft: 18 }}>
+              {result.ebitdaBuildup.numericalTrace.map((row, i) => (
+                <li key={`${row.label}-${i}`}>
+                  {row.sign === "=" ? "= " : `${row.sign} `}
+                  {row.label}: {fmtM(row.amountMillions)}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          {result.ebitdaBuildup.unresolvedComponents.length > 0 ? (
+            <div style={{ marginTop: 4, color: "var(--danger, #b45309)" }}>
+              Unresolved: {result.ebitdaBuildup.unresolvedComponents.join("; ")}
+            </div>
+          ) : null}
         </div>
       ) : null}
 
