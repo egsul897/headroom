@@ -470,6 +470,34 @@ export interface IREventActive extends IRExprBase {
   activeDuration: string | null;
 }
 
+/**
+ * Bounded contractual addback cap of the form E = base + min(addbacks, capFraction · E)
+ * ("15% of Consolidated EBITDA" where the defined term is the result being capped).
+ *
+ * Evaluated by exact closed-form solve when eligibility holds; never by expanding a
+ * DEFINED_TERM self-reference (ordinary CYCLE detection remains for naive self-refs).
+ * Unsupported recursive structures (capFraction ≥ 1, negative base/addbacks, unknown
+ * capBase) fail closed as ERROR / UNSUPPORTED — never invent a template approximation.
+ */
+export type FixedPointAddbackCapBase = "RESULT";
+export interface IRFixedPointAddbackCap extends IRExprBase {
+  kind: "FIXED_POINT_ADDBACK_CAP";
+  type: "MONEY";
+  /** Uncapped limbs that form B in E = B + min(A, c·E). */
+  base: IRExpression;
+  /** Qualified addbacks A subject to the cap. */
+  addbacks: IRExpression;
+  /** Cap fraction c as a unit fraction (0.15 = 15%). Must satisfy 0 ≤ c < 1. */
+  capFraction: number;
+  /** Only RESULT (cap of the defined result) is modeled; other bases refuse. */
+  capBase: FixedPointAddbackCapBase;
+  /**
+   * Optional eligibility gate (e.g. "to the extent deducted in CNI"). When present and
+   * false, addbacks contribute 0; when NEEDS_INPUT, the whole node needs input.
+   */
+  eligibility: IRExpression | null;
+}
+
 // --- the escape hatch (task §26) ---------------------------------------------
 
 /**
@@ -537,6 +565,7 @@ export type IRExpression =
   | IRDuringPeriod
   | IRSchedule
   | IREventActive
+  | IRFixedPointAddbackCap
   | IRUnsupportedExpression;
 
 /**
@@ -550,6 +579,7 @@ export const IR_EXPRESSION_KINDS = [
   "ADD", "SUBTRACT", "MULTIPLY", "DIVIDE", "MAX", "MIN", "SUM",
   "COMPARE", "AND", "OR", "NOT", "IF",
   "AS_OF", "DURING_PERIOD", "SCHEDULE", "EVENT_ACTIVE",
+  "FIXED_POINT_ADDBACK_CAP",
   "UNSUPPORTED",
 ] as const satisfies readonly IRExpression["kind"][];
 export type IRExpressionKind = (typeof IR_EXPRESSION_KINDS)[number];

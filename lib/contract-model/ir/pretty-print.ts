@@ -71,6 +71,8 @@ export function printExpression(expr: IRExpression): string {
       return expr.cases.map((c) => `[${c.from ?? "-inf"}, ${c.to ?? "+inf"}): ${printExpression(c.value)}`).join("; ") + (expr.defaultValue ? `; default: ${printExpression(expr.defaultValue)}` : "");
     case "EVENT_ACTIVE":
       return `active(${expr.eventDescription}${expr.activeDuration ? ` for ${expr.activeDuration}` : ""})`;
+    case "FIXED_POINT_ADDBACK_CAP":
+      return `fixedPointCap(${printExpression(expr.base)} + min(${printExpression(expr.addbacks)}, ${(expr.capFraction * 100).toString()}%·E)${expr.eligibility ? ` if ${printExpression(expr.eligibility)}` : ""})`;
     case "UNSUPPORTED":
       return `<UNSUPPORTED: ${expr.semanticDescription}>`;
   }

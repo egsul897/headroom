@@ -95,6 +95,11 @@ function walkForLiterals(expr: IRExpression, acc: LiteralExtraction): void {
     case "EVENT_ACTIVE":
       if (expr.triggerCondition) walkForLiterals(expr.triggerCondition, acc);
       return;
+    case "FIXED_POINT_ADDBACK_CAP":
+      walkForLiterals(expr.base, acc);
+      walkForLiterals(expr.addbacks, acc);
+      if (expr.eligibility) walkForLiterals(expr.eligibility, acc);
+      return;
     default: {
       const exhaustive: never = expr;
       throw new Error(`corrections.ts walkForLiterals: unhandled IRExpression kind ${JSON.stringify(exhaustive)}`);

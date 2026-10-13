@@ -82,6 +82,10 @@ export type RuntimeDiagnosticCode =
   | "CURRENCY_MISMATCH_NO_CONVERSION_MODELED"
   | "TYPE_CONTRACT_VIOLATION"
   | "DIVISION_BY_ZERO"
+  /** Leverage/coverage ratio boundary only: denominator is zero or negative. Generic DIVIDE is unchanged. */
+  | "NON_POSITIVE_DENOMINATOR"
+  /** FIXED_POINT_ADDBACK_CAP refused: eligibility, sign, or capFraction outside the closed-form domain. */
+  | "FIXED_POINT_CAP_UNSUPPORTED"
   | "CYCLE"
   | "MALFORMED_NODE"
   | "TEMPORAL_SEMANTICS_NOT_MODELED"

@@ -73,6 +73,8 @@ function referencesAFact(expr: IRCapacityExpression | IRExpression): boolean {
     case "NOT": return referencesAFact(expr.operand);
     case "AS_OF": return referencesAFact(expr.value);
     case "DURING_PERIOD": return referencesAFact(expr.value);
+    case "FIXED_POINT_ADDBACK_CAP":
+      return referencesAFact(expr.base) || referencesAFact(expr.addbacks) || (expr.eligibility ? referencesAFact(expr.eligibility) : false);
     case "UNLIMITED_CAPACITY": return expr.gatedBy ? referencesAFact(expr.gatedBy) : false;
     default: return false;
   }
