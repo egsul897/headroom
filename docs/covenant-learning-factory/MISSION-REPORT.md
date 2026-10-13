@@ -26,10 +26,10 @@ This run did **not** train a model, certify a rulebook, or grant production auth
 |---|---|---:|---:|---:|---|---|
 | MTN | TRAIN_DEV | 1976 | 344 | 3 | PASS | OK |
 | MHK | HELD_OUT | 910 | 142 | 4 | PASS | OK |
-| ROCK | TRAIN_DEV | 1519 | 205 | 0 | unknown | OK (high abstention) |
-| CHWY | TRAIN_DEV | 1210 | 165 | 0 | unknown | OK (high abstention) |
+| ROCK | TRAIN_DEV | 1519 | 205 | 0 | unknown | OK + `COVERAGE_GAP` proposal |
+| CHWY | TRAIN_DEV | 1210 | 165 | 0 | unknown | OK + `COVERAGE_GAP` proposal |
 
-Compiler version for all: `offline-package-compile.v1`. Dangerous omissions: **0**.
+Compiler version for all: `offline-package-compile.v1`. Dangerous omissions: **0**. Error ledger: 2× `COVERAGE_GAP` (bounded proposals, not auto-applied).
 
 ## Honesty
 

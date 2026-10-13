@@ -47,7 +47,10 @@ describe("covenant learning factory — promotion guards", () => {
 describe("covenant learning factory — inventory + registry", () => {
   it("lists reusable inventory items and registers multi-issuer packages", () => {
     expect(BASELINE_CAPABILITY_INVENTORY.some((i) => i.status === "reusable")).toBe(true);
-    expect(BASELINE_CAPABILITY_INVENTORY.filter((i) => i.status === "missing")).toHaveLength(0);
+    expect(BASELINE_CAPABILITY_INVENTORY.some((i) => i.id === "covenant-summary-prisma" && i.status === "missing")).toBe(
+      true,
+    );
+    expect(BASELINE_CAPABILITY_INVENTORY.some((i) => i.id === "phase-c-compiler-quarantine")).toBe(true);
     const pkgs = listLearningPackages();
     expect(pkgs.length).toBeGreaterThanOrEqual(2);
     const tickers = new Set(pkgs.map((p) => p.issuerTicker).filter(Boolean));
