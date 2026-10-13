@@ -130,9 +130,9 @@ export function buildPositionView(args: {
     const packageAuth = sim?.packageAuthoritative;
     // #328: dashboard utilizationRemainingAuthority / remainingCapacity alone must NEVER
     // publish AVAILABLE remaining. Authoritative remaining requires separatedClaims.
-    // PAI-08 refinement: legacy remainingCapacity is NOT source-backed gross — never
-    // auto-relabel it GROSS_CONTRACTUAL. Publish GROSS only from separatedClaims.grossContractual
-    // (ProductCapacityView.grossCapacity); otherwise UNAVAILABLE / UNKNOWN.
+    // PAI-08 refinement (#333 / #330 absorb): legacy remainingCapacity is NOT source-backed
+    // gross — never auto-relabel it GROSS_CONTRACTUAL. Publish GROSS only from
+    // separatedClaims.grossContractual (ProductCapacityView.grossCapacity); otherwise UNAVAILABLE.
     const separated = args.separatedClaims?.[side];
     const productionAuthoritative = separated?.remainingAuthoritative === true;
     const sourceBackedGrossMm =

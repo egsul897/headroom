@@ -22,6 +22,7 @@ export const CONMED_FORM_INSPIRED_CERT: SyntheticCertificate = {
   version: "1",
   supersedesSnapshotId: null,
   note: "Synthetic CONMED-form-inspired layout; invented metrics only",
+  deliveredAtIsoDate: "2026-07-20",
   facts: [
     {
       companyId: CO,

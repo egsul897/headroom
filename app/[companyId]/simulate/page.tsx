@@ -14,6 +14,7 @@ import {
 } from "@/lib/product/unified-position/certified-simulate-bridge";
 import { requireAssembledCfoWorkflow } from "@/lib/customer-workflow/require-workflow-access";
 import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
+import { loadApprovedFinancialInputBundle } from "@/lib/product/north-star-workflow";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
@@ -56,7 +57,7 @@ export default async function SimulatePage({
     evaluationDate,
   });
 
-  const [readiness, data, documents, definedTermsByProvision, solverContext, verified] =
+  const [readiness, data, documents, definedTermsByProvision, solverContext, verified, ns4Financial] =
     await Promise.all([
       loadCapacityReadiness(companyId),
       loadCovenantDataOrEmpty(companyId, asOfDate),
@@ -71,6 +72,7 @@ export default async function SimulatePage({
         secured: handoff.secured,
         verifiedPackage: null,
       }),
+      loadApprovedFinancialInputBundle({ companyId, evaluationDate }),
     ]);
   const verifiedSummary = summarizeVerifiedSimulate(verified);
   const simView = workflow.simulate;
@@ -138,6 +140,37 @@ export default async function SimulatePage({
             Review
           </Link>
         </div>
+      </Card>
+
+      <Card>
+        <div className="card-title" data-slot="ns4-approved-financial-inputs">
+          APPROVED NS-4 financial inputs (shared with Position / Dashboard)
+        </div>
+        <div className="card-subtitle">
+          Same cutoff-bound snapshot identity feeds Simulate capacity/simulation inputs. Gross IR ≠
+          verified remaining. Authority: {ns4Financial.authority.kind}.
+        </div>
+        <div className="row" style={{ marginTop: 8 }}>
+          <div className="row-label">Binder status</div>
+          <div className="row-value">
+            <Chip tone={ns4Financial.status === "APPROVED_BOUND" ? "pass" : "tight"}>{ns4Financial.status}</Chip>
+          </div>
+        </div>
+        <div className="row-note">
+          Bound snapshot: {ns4Financial.boundSnapshotId ?? "—"}
+          {ns4Financial.financialInputFingerprint
+            ? ` · fingerprint ${ns4Financial.financialInputFingerprint.slice(0, 16)}…`
+            : ""}
+          {ns4Financial.leverageIr.computedRatio
+            ? ` · IR TNL ${ns4Financial.leverageIr.computedRatio}`
+            : ""}
+        </div>
+        <div className="row-note">{ns4Financial.authority.disclosure}</div>
+        {ns4Financial.missingInputs.slice(0, 4).map((m) => (
+          <div className="row-note" key={m}>
+            • Missing: {m}
+          </div>
+        ))}
       </Card>
 
       <Card>

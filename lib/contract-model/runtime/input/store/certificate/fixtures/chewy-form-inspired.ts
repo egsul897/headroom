@@ -26,6 +26,7 @@ export const CHEWY_FORM_INSPIRED_CERT: SyntheticCertificate = {
   version: "1",
   supersedesSnapshotId: null,
   note: "Synthetic Chewy-form-inspired layout; extractor-proposed",
+  deliveredAtIsoDate: "2026-04-20",
   facts: [
     {
       companyId: CO,

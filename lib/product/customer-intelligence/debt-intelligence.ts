@@ -16,6 +16,7 @@ import { loadDashboardOverlay } from "../covenant-intelligence-loop/store";
 import {
   computeLeverageMetrics,
   evaluateProvision,
+  loadCompanyCovenantData,
   type FormulaParams,
   type FormulaType,
 } from "@/lib/covenant-engine";
@@ -28,6 +29,102 @@ import {
   resolveUtilization,
   type UtilizationEvidenceRecord,
 } from "@/lib/capacity";
+import {
+  computeContractualCovenantMetrics,
+  financialSnapshotForContractualComputation,
+  type ContractualComputationResult,
+} from "@/lib/product/contractual-computation";
+import {
+  resolveContractualEbitdaDerivation,
+  type ContractualEbitdaDerivation,
+  type ContractualEbitdaEvidencePackage,
+  type EbitdaBuildupComponent,
+} from "@/lib/financial-certificate-engine/contractual-ebitda-buildup";
+import {
+  COHERENT_EBITDA_EVIDENCE,
+  MATTHEWS_EBITDA_EVIDENCE,
+} from "@/lib/financial-certificate-engine/fixtures";
+import {
+  evaluateDefaultCrossDomainScenarios,
+} from "@/lib/product/cross-domain-scenarios";
+import type { CrossDomainTransactionEvaluation } from "@/lib/product/cross-domain-transaction";
+import type { CompanyCovenantData } from "@/lib/covenant-engine";
+
+/**
+ * Evidence packages keyed by as-of + binding EBITDA — not by company id.
+ * Avoids company-specific production branches while attaching authentic schedules.
+ */
+const EBITDA_EVIDENCE_PACKAGES: ContractualEbitdaEvidencePackage[] = [
+  COHERENT_EBITDA_EVIDENCE,
+  MATTHEWS_EBITDA_EVIDENCE,
+];
+
+function matchEbitdaEvidencePackage(
+  asOf: string | null,
+  bindingEbitda: number | null,
+): ContractualEbitdaEvidencePackage | null {
+  if (asOf == null || bindingEbitda == null) return null;
+  return (
+    EBITDA_EVIDENCE_PACKAGES.find(
+      (p) =>
+        p.asOfDate === asOf &&
+        Math.abs(p.bindingContractualEbitdaMillions - bindingEbitda) < 1e-6,
+    ) ?? null
+  );
+}
+
+function derivationFromFinancialStateCovenantEbitda(
+  covenantFacts: unknown,
+  asOf: string | null,
+): ContractualEbitdaDerivation | null {
+  if (covenantFacts == null || typeof covenantFacts !== "object") return null;
+  const ce = (covenantFacts as { covenantEbitda?: { value?: unknown; addbacks?: unknown; provenance?: { notes?: string; reviewStatus?: string; sourceType?: string } } })
+    .covenantEbitda;
+  if (ce?.value == null || !Number.isFinite(Number(ce.value))) return null;
+  const value = Number(ce.value);
+  const addbacks = Array.isArray(ce.addbacks) ? ce.addbacks : [];
+  if (addbacks.length === 0) return null;
+
+  const components: EbitdaBuildupComponent[] = addbacks.map((a) => {
+    const row = a as { label?: string; amount?: number; provenance?: { notes?: string; reviewStatus?: string; sourceType?: string } };
+    const amount = typeof row.amount === "number" ? row.amount : null;
+    return {
+      label: row.label ?? "addback",
+      amountMillions: amount,
+      amountMissing: amount == null,
+      sign: amount != null && amount < 0 ? "minus" : "plus",
+      documentCitation: row.provenance?.notes ?? "FinancialState.covenantMetricFacts.covenantEbitda.addbacks",
+      measurementPeriod: asOf,
+      approvalStatus:
+        row.provenance?.sourceType === "REPORTED"
+          ? "REPORTED"
+          : row.provenance?.sourceType === "RECONSTRUCTED"
+            ? "RECONSTRUCTED"
+            : "UNVERIFIED",
+    };
+  });
+
+  // Prefer a matched authentic evidence package when fingerprint aligns.
+  const matched = matchEbitdaEvidencePackage(asOf, value);
+  if (matched) return resolveContractualEbitdaDerivation(matched);
+
+  return resolveContractualEbitdaDerivation({
+    bindingContractualEbitdaMillions: value,
+    asOfDate: asOf ?? "unknown",
+    measurementPeriod: asOf ?? "unknown",
+    definitionTerm: "Consolidated EBITDA",
+    definitionExcerpt: ce.provenance?.notes ?? "Consolidated EBITDA from FinancialState covenant metrics",
+    definitionCitation: "FinancialState covenantMetricFacts",
+    bindingApprovalStatus: `${ce.provenance?.reviewStatus ?? "UNVERIFIED"} · ${ce.provenance?.sourceType ?? "UNKNOWN"}`,
+    methodologyIndependent: true,
+    components: components.map((c) => ({
+      ...c,
+      amountMillions: c.amountMillions != null ? Math.abs(c.amountMillions) : null,
+    })),
+    unresolvedAdjustments: [],
+    methodologyDisclosure: ce.provenance?.notes ?? null,
+  });
+}
 
 export type MetricNumericStatus =
   | "COMPUTED"
@@ -146,6 +243,13 @@ export interface DebtIntelligenceDashboard {
   }>;
   /** Multi-path contractual pathway analysis (stacking not assumed). */
   multiPath: MultiPathAnalysis[];
+  /**
+   * Pure contractual EBITDA / leverage / ratio-debt-capacity computation.
+   * Company-agnostic; null when no usable verified financial snapshot.
+   */
+  contractualComputation: ContractualComputationResult | null;
+  /** Package-wide multi-family scenario evaluations (gross ≠ verified remaining). */
+  crossDomainScenarios: CrossDomainTransactionEvaluation[];
   rulebookStage: string;
   capacityStatus: string;
   amendmentResolution: string;
@@ -270,7 +374,7 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
       prisma.financialState.findFirst({
         where: { companyId },
         orderBy: { asOfDate: "desc" },
-        select: { balanceSheetFacts: true },
+        select: { balanceSheetFacts: true, covenantMetricFacts: true, notes: true },
       }),
     ]);
 
@@ -420,6 +524,60 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     basket: LEDGER_BASKET_LABELS[e.basket as keyof typeof LEDGER_BASKET_LABELS] ?? String(e.basket),
   }));
 
+  // Contractual EBITDA / leverage / ratio-debt-capacity (company-agnostic pure engine).
+  const finForContractual = financialSnapshotForContractualComputation({
+    ebitda,
+    cash,
+    interestExpense,
+    cumulativeNetIncome: snapshot ? num(snapshot.cumulativeNetIncome) : null,
+    equityProceedsSinceIssue: snapshot ? num(snapshot.equityProceedsSinceIssue) : null,
+    assumedNewDebtRatePct: assumedRate,
+    totalDebt,
+    securedDebt,
+    totalAssets,
+  });
+  let covenantDataForContractual: CompanyCovenantData | null = null;
+  if (finForContractual) {
+    try {
+      covenantDataForContractual = await loadCompanyCovenantData(
+        prisma,
+        companyId,
+        asOfDate ? new Date(`${asOfDate}T12:00:00.000Z`) : new Date(),
+      );
+    } catch {
+      covenantDataForContractual = null;
+    }
+  }
+
+  // Contractual EBITDA derivation: FinancialState addbacks → evidence package match by as-of+value.
+  const ebitdaDerivation =
+    derivationFromFinancialStateCovenantEbitda(financialState?.covenantMetricFacts, asOfDate) ??
+    (() => {
+      const matched = matchEbitdaEvidencePackage(asOfDate, ebitda);
+      return matched ? resolveContractualEbitdaDerivation(matched) : null;
+    })();
+
+  const contractualComputation = computeContractualCovenantMetrics({
+    financials: finForContractual,
+    provisions: covenantDataForContractual?.provisions ?? [],
+    ebitdaDerivation,
+  });
+
+  const crossDomainScenarios: CrossDomainTransactionEvaluation[] =
+    finForContractual && covenantDataForContractual
+      ? evaluateDefaultCrossDomainScenarios({
+          data: {
+            companyId,
+            documents: covenantDataForContractual.documents,
+            provisions: covenantDataForContractual.provisions,
+            financials: finForContractual,
+            ledger: covenantDataForContractual.ledger,
+          } satisfies CompanyCovenantData,
+          evaluationDate: asOfDate ?? new Date().toISOString().slice(0, 10),
+          ebitdaDerivation,
+        })
+      : [];
+
   // --- Ratios ---
   const ratioDefs: Array<{
     name: string;
@@ -433,7 +591,7 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
       name: "Total leverage",
       family: "LEVERAGE",
       compute: () => ratioStr(totalDebt, ebitda),
-      formula: "Total Debt / Consolidated EBITDA (generic; map to contractual definitions)",
+      formula: "Total Debt / Consolidated EBITDA (gross; map to contractual definitions)",
       thresholdHint: /total\s+leverage|consolidated\s+leverage|maximum\s+leverage/i,
       missing: [
         ...(totalDebt == null ? ["Total Debt"] : []),
@@ -443,22 +601,32 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     {
       name: "Net leverage",
       family: "LEVERAGE",
-      compute: () => ratioStr(netDebt, ebitda),
-      formula: "Net Debt (Total Debt − Cash) / Consolidated EBITDA",
-      thresholdHint: /net\s+leverage|net\s+debt/i,
+      compute: () =>
+        contractualComputation.leverage.totalNetLeverage != null
+          ? `${contractualComputation.leverage.totalNetLeverage.toFixed(2)}x`
+          : ratioStr(netDebt, ebitda),
+      formula: "Net Debt (Total Debt − Cash) / Consolidated EBITDA (contractual)",
+      thresholdHint: /net\s+leverage|net\s+debt|total\s+net\s+leverage/i,
       missing: [
-        ...(netDebt == null ? ["Net Debt (Total Debt and Cash)"] : []),
+        ...(contractualComputation.leverage.totalNetLeverage == null && netDebt == null
+          ? ["Net Debt (Total Debt and Cash)"]
+          : []),
         ...(ebitda == null ? ["Contractual EBITDA"] : []),
       ],
     },
     {
       name: "Secured leverage",
       family: "LEVERAGE",
-      compute: () => ratioStr(securedDebt, ebitda),
-      formula: "Secured Debt / Consolidated EBITDA",
+      compute: () =>
+        contractualComputation.leverage.seniorSecuredNetLeverage != null
+          ? `${contractualComputation.leverage.seniorSecuredNetLeverage.toFixed(2)}x`
+          : ratioStr(securedDebt, ebitda),
+      formula: "Senior Secured Net Leverage = (Secured Debt − Cash) / Consolidated EBITDA (contractual)",
       thresholdHint: /secured\s+leverage|senior\s+secured\s+leverage/i,
       missing: [
-        ...(securedDebt == null ? ["Secured Debt"] : []),
+        ...(contractualComputation.leverage.seniorSecuredNetLeverage == null && securedDebt == null
+          ? ["Secured Debt"]
+          : []),
         ...(ebitda == null ? ["Contractual EBITDA"] : []),
       ],
     },
@@ -476,8 +644,11 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     {
       name: "Interest coverage",
       family: "COVERAGE",
-      compute: () => ratioStr(ebitda, interestExpense),
-      formula: "Consolidated EBITDA / Interest Expense",
+      compute: () =>
+        contractualComputation.leverage.interestCoverage != null
+          ? `${contractualComputation.leverage.interestCoverage.toFixed(2)}x`
+          : ratioStr(ebitda, interestExpense),
+      formula: "Consolidated EBITDA / Interest Expense (contractual)",
       thresholdHint: /interest\s+coverage|coverage\s+ratio/i,
       missing: [
         ...(ebitda == null ? ["Contractual EBITDA"] : []),
@@ -604,24 +775,91 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
   for (const p of executablePermissions) {
     if (!permissionBySection.has(p.sectionRef)) permissionBySection.set(p.sectionRef, p);
   }
-  const finForEval =
-    snapshot && totalDebt != null && ebitda != null
-      ? {
-          ebitda,
-          cash: cash ?? 0,
-          interestExpense: interestExpense ?? 0,
-          cumulativeNetIncome: num(snapshot.cumulativeNetIncome) ?? 0,
-          equityProceedsSinceIssue: num(snapshot.equityProceedsSinceIssue) ?? 0,
-          assumedNewDebtRatePct: num(snapshot.assumedNewDebtRatePct) ?? 0,
-          totalDebt,
-          securedDebt: securedDebt ?? 0,
-          ...(totalAssets != null ? { totalAssets } : {}),
-        }
-      : null;
+  // Fail-closed: do not invent cash/interest/secured zeros for capacity math.
+  const finForEval = finForContractual;
   const leverageMetrics = finForEval ? computeLeverageMetrics(finForEval) : null;
 
   // --- Baskets ---
   const baskets: DebtIntelligenceDashboard["baskets"] = [];
+
+  // Ratio-based debt capacity from operative LEVERAGE_RATIO_ROOM provisions (gross).
+  for (const rt of contractualComputation.ratioTests) {
+    if (rt.formulaType !== "LEVERAGE_RATIO_ROOM") continue;
+    const metricId = `basket:ratio-capacity:${rt.provisionCode}`;
+    const capacityDisplay =
+      rt.ratioDebtCapacityMillions != null ? fmtM(rt.ratioDebtCapacityMillions) : null;
+    const ratioDisplay =
+      rt.currentRatio != null
+        ? `${rt.currentRatio.toFixed(2)}x vs ${rt.threshold.toFixed(2)}x`
+        : null;
+    baskets.push({
+      metricId,
+      category: "RATIO_DEBT_CAPACITY",
+      sectionRef: rt.sectionRef,
+      heading: `${rt.basketName} — ratio debt capacity`,
+      contractualCapacity: capacityDisplay,
+      utilization: null,
+      remaining: null,
+      status:
+        rt.evaluationStatus === "modeled" && capacityDisplay != null
+          ? "COMPUTED"
+          : rt.evaluationStatus === "review_required"
+            ? "CONDITIONAL"
+            : finForEval
+              ? "CONDITIONAL"
+              : "MISSING_FINANCIALS",
+      reviewDecision: null,
+      drilldown: buildDrilldown({
+        metricId,
+        title: `${rt.basketName} — ratio debt capacity`,
+        module: "BASKETS",
+        companyId,
+        formula: `${rt.metricName} room: max(0, ${rt.threshold}× Consolidated EBITDA − net ${rt.debtBasis ?? "total"} debt)`,
+        inputs: [
+          {
+            label: "Contractual Consolidated EBITDA",
+            value: contractualComputation.contractualEbitda != null
+              ? fmtM(contractualComputation.contractualEbitda)
+              : null,
+            required: true,
+          },
+          {
+            label: rt.metricName,
+            value: ratioDisplay,
+            required: true,
+          },
+          {
+            label: "Threshold",
+            value: `${rt.threshold.toFixed(2)}x`,
+            required: true,
+          },
+          {
+            label: "Gross ratio debt capacity",
+            value: capacityDisplay,
+            required: true,
+          },
+          {
+            label: "Headroom to threshold",
+            value: rt.headroom != null ? `${rt.headroom.toFixed(2)}x` : null,
+            required: false,
+          },
+        ],
+        missing: [
+          ...(rt.ratioDebtCapacityMillions == null
+            ? [rt.reason ?? "Ratio debt capacity not modeled"]
+            : []),
+          "Attributed utilization — remaining capacity not claimed from gross alone",
+        ],
+        calcHistory: [
+          `Provision ${rt.provisionCode} · ${rt.sectionRef}`,
+          `Evaluation ${rt.evaluationStatus}`,
+          ...(rt.reason ? [rt.reason] : []),
+          ...contractualComputation.notes,
+        ],
+      }),
+    });
+  }
+
   for (const cat of review.categories) {
     for (const item of cat.items) {
       const basketLines = item.materialBasketsThresholds ?? [];
@@ -1097,13 +1335,18 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     transactions,
     proForma,
     multiPath,
+    contractualComputation:
+      contractualComputation.status === "OK" || contractualComputation.contractualEbitda != null
+        ? contractualComputation
+        : null,
+    crossDomainScenarios,
     rulebookStage: rulebook.stage,
     capacityStatus: capacity.status,
     amendmentResolution: review.amendmentCompare.operativeResolution,
     documentCount: review.documentCount,
     interpretedCount: rulebook.interpretedProvisions,
     acceptedCount,
-    note: "AI-first dashboard: contractual structures and interpretations populate from workspace documents without external legal verification. Numerical capacity stays fail-closed until counsel-reviewed executable rules and financial inputs exist. Counsel accepts/edits on /rulebook; Ask and Simulate reuse the same analyses. Multi-path analyses enumerate alternative contractual pathways without assuming basket stacking. Capacity authority: LEGACY_ENGINE / NOT_CERTIFIED_4E — figures use counsel-compiled Permissions + covenant-engine against dated FinancialState, not Phase 4B APPROVED snapshots or Phase 4E certified path enumeration.",
+    note: "AI-first dashboard: contractual structures and interpretations populate from workspace documents without external legal verification. Contractual EBITDA, net leverage, and ratio-based debt capacity use the shared company-agnostic engine when a complete financial snapshot and CovenantProvision rows exist. Remaining capacity stays fail-closed without attributed utilization. Counsel accepts/edits on /rulebook; Ask and Simulate reuse the same analyses.",
   };
 }
 

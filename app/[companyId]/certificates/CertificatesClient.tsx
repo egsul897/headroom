@@ -6,6 +6,8 @@ import {
   approveCertificateAction,
   appendHistoricalUsageAction,
   seedSyntheticCertificateAction,
+  seedAuthenticCertificateFixtureAction,
+  proposeUploadedCertificateTextAction,
   restateCertificateAction,
 } from "./actions";
 
@@ -43,13 +45,15 @@ export function CertificatesClient({
   const [usageAmount, setUsageAmount] = useState("10000000");
   const [usageRule, setUsageRule] = useState("rule-general-investments-basket");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [certificateText, setCertificateText] = useState("");
+  const [statementText, setStatementText] = useState("");
 
   return (
     <div className="stack" style={{ gap: 16 }}>
-      <div className="button-row">
+      <div className="button-row" style={{ flexWrap: "wrap", gap: 8 }}>
         <button
           type="button"
-          className="button button-primary"
+          className="button"
           disabled={pending}
           onClick={() =>
             start(async () => {
@@ -61,10 +65,88 @@ export function CertificatesClient({
         >
           Seed synthetic certificate (DRAFT)
         </button>
+        <button
+          type="button"
+          className="button button-primary"
+          disabled={pending}
+          onClick={() =>
+            start(async () => {
+              const r = await seedAuthenticCertificateFixtureAction(companyId, "matthews_q1_fy2025");
+              setMessage(
+                r.ok
+                  ? `${r.label} · ${r.snapshotId} (${r.status}) · authority ${r.fixtureAuthority?.kind ?? "—"}`
+                  : `Failed: ${r.issues.join("; ")}`,
+              );
+              router.refresh();
+            })
+          }
+        >
+          Propose Matthews Q1 FY2025 certificate (FCE → DRAFT)
+        </button>
+        <button
+          type="button"
+          className="button button-primary"
+          disabled={pending}
+          onClick={() =>
+            start(async () => {
+              const r = await seedAuthenticCertificateFixtureAction(companyId, "coherent_fy2026");
+              setMessage(
+                r.ok
+                  ? `${r.label} · ${r.snapshotId} (${r.status}) · authority ${r.fixtureAuthority?.kind ?? "—"}`
+                  : `Failed: ${r.issues.join("; ")}`,
+              );
+              router.refresh();
+            })
+          }
+        >
+          Propose Coherent FY2026 certificate (FCE → DRAFT)
+        </button>
       </div>
       <div className="row-note">
-        Synthetic fixtures are for engineering until an authentic completed customer certificate is available. They are
-        never auto-approved. Facts go to the North-Star store — never legacy FinancialSnapshot.
+        FCE proposals extract from certificate text into NS-4 as DRAFT / REVIEW_REQUIRED only. Never auto-approved.
+        Matthews = AUTHENTIC_SOURCE_DERIVED (EDGAR accession 0000063296-25-000006). Coherent = SEED_ALIGNED_MODELED.
+        Attributable Approve is required before Dashboard IR leverage uses the snapshot.
+      </div>
+
+      <div className="stack" style={{ gap: 8 }}>
+        <div className="card-title">Upload / paste certificate evidence</div>
+        <textarea
+          className="input"
+          rows={6}
+          value={certificateText}
+          onChange={(e) => setCertificateText(e.target.value)}
+          placeholder="Paste compliance certificate text (required)"
+          style={{ width: "100%", fontFamily: "inherit" }}
+        />
+        <textarea
+          className="input"
+          rows={4}
+          value={statementText}
+          onChange={(e) => setStatementText(e.target.value)}
+          placeholder="Optional financial statement text for reconciliation"
+          style={{ width: "100%", fontFamily: "inherit" }}
+        />
+        <button
+          type="button"
+          className="button button-primary"
+          disabled={pending || !certificateText.trim()}
+          onClick={() =>
+            start(async () => {
+              const r = await proposeUploadedCertificateTextAction(companyId, {
+                certificateText,
+                statementText: statementText.trim() || undefined,
+              });
+              setMessage(
+                r.ok
+                  ? `${r.label} · ${r.snapshotId} (${r.status}) · facts ${r.factKeys.join(", ")}`
+                  : `Failed: ${r.issues.join("; ")}`,
+              );
+              router.refresh();
+            })
+          }
+        >
+          Propose from pasted text (FCE → DRAFT)
+        </button>
       </div>
 
       {snapshots.map((s) => {

@@ -27,6 +27,7 @@ export const INVENTED_TABULAR_CERT: SyntheticCertificate = {
   version: "1",
   supersedesSnapshotId: null,
   note: "Invented tabular layout; PUBLIC_FILING_RECONSTRUCTION",
+  deliveredAtIsoDate: "2026-01-20",
   facts: [
     {
       companyId: CO,

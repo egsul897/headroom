@@ -12,14 +12,18 @@
 import { prisma } from "@/lib/prisma";
 import {
   loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
   resolveContractualSelector,
-  selectSnapshotForResolvedSelector,
   type DeliveryRecord,
   type FiscalCalendar,
   type NamedContractualSelector,
 } from "@/lib/contract-model/north-star-bridge";
 import { loadCapacityReadiness, type CapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
+import {
+  bindSnapshotForDeliveredCutoff,
+  deliveriesFromApprovedSnapshots,
+} from "./certificate-deliveries";
 
 export type WorkflowStepStatus = "READY" | "MISSING" | "PARTIAL" | "LEGACY_ONLY";
 
@@ -64,8 +68,9 @@ export async function loadTransactionWorkflowReadiness(
   },
 ): Promise<TransactionWorkflowReadiness> {
   const legacyCapacity = await loadCapacityReadiness(companyId);
-  const [approved, ledgerUsages] = await Promise.all([
+  const [approved, cutoffEligible, ledgerUsages] = await Promise.all([
     loadApprovedSnapshotsFromPrisma(prisma, companyId),
+    loadCutoffEligibleSnapshotsFromPrisma(prisma, companyId),
     loadLedgerUsagesFromPrisma(prisma, companyId),
   ]);
   const activeLedger = ledgerUsages.filter((u) => u.status !== "SUPERSEDED");
@@ -75,22 +80,11 @@ export async function loadTransactionWorkflowReadiness(
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
-  // PAI-11: never invent delivery from period asOf. Missing reviewedAt → no delivery record.
-  const deliveries = opts?.deliveries ?? approved.flatMap((s) => {
-    if (!s.reportingPeriod || !s.asOf) return [];
-    if (!s.review.reviewedAt) return [];
-    const deliveredAtIsoDate = s.review.reviewedAt.slice(0, 10);
-    const d: DeliveryRecord = {
-      companyId,
-      kind: "COMPLIANCE_CERTIFICATE",
-      reportingPeriodKey: s.reportingPeriod,
-      asOfIsoDate: s.asOf,
-      deliveredAtIsoDate,
-      documentId: s.provenance.source ?? s.snapshotId,
-      sourceVersionHash: s.provenance.sourceVersion ?? undefined,
-    };
-    return [d];
-  });
+  // PAI-11 / landing gate: never invent delivery from period asOf or approval reviewedAt.
+  // Require persisted provenance.deliveredAtIsoDate (set at propose / certificate intake).
+  // Include SUPERSEDED so historical eval dates retain prior deliveries.
+  const deliveries =
+    opts?.deliveries ?? deliveriesFromApprovedSnapshots(companyId, cutoffEligible);
 
   let cutoff: TransactionWorkflowReadiness["cutoff"];
   // Do not default evaluation date to "today" — that reintroduces latest-quarter behavior.
@@ -109,7 +103,12 @@ export async function loadTransactionWorkflowReadiness(
       deliveries,
     });
     if (resolved.state === "RESOLVED") {
-      const bound = selectSnapshotForResolvedSelector(resolved, approved, companyId);
+      const bound = bindSnapshotForDeliveredCutoff({
+        companyId,
+        evaluationDate: opts.evaluationDate,
+        resolved,
+        snapshots: cutoffEligible,
+      });
       cutoff = {
         state: bound.state,
         reportingPeriodKey: resolved.reportingPeriodKey,

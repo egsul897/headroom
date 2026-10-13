@@ -35,7 +35,13 @@ export interface SeedCertificateResult {
 /** Seed a clearly-labeled synthetic certificate proposal for a workspace (DRAFT). */
 export async function proposeSyntheticCertificateForCompany(
   companyId: string,
-  opts?: { snapshotId?: string; reportingPeriod?: string; asOf?: string },
+  opts?: {
+    snapshotId?: string;
+    reportingPeriod?: string;
+    asOf?: string;
+    /** Persisted delivery evidence — never inferred from asOf or approval. */
+    deliveredAtIsoDate?: string;
+  },
 ): Promise<SeedCertificateResult> {
   const snapshotId = opts?.snapshotId ?? `snap-${companyId}-synth-cert`;
   const cert: SyntheticCertificate = {
@@ -48,6 +54,7 @@ export async function proposeSyntheticCertificateForCompany(
     versionHash: `sha256:synth-${companyId}-v1`,
     note: "SYNTHETIC engineering fixture — not an authentic customer certificate",
     facts: CONMED_FORM_INSPIRED_CERT.facts.map((f) => ({ ...f, companyId })),
+    deliveredAtIsoDate: opts?.deliveredAtIsoDate?.slice(0, 10) ?? "2026-07-20",
   };
 
   const store = await PrismaApprovedSnapshotStore.open(prisma, companyId);
@@ -265,6 +272,8 @@ export async function proposeCertificateRestatement(args: {
   companyId: string;
   predecessorSnapshotId: string;
   reviewedByNote?: string;
+  /** Persisted delivery date for the restatement certificate (ISO YYYY-MM-DD). */
+  deliveredAtIsoDate?: string;
 }): Promise<SeedCertificateResult> {
   const store = await PrismaApprovedSnapshotStore.open(prisma, args.companyId);
   const pred = store.getSnapshot(args.predecessorSnapshotId);
@@ -291,6 +300,8 @@ export async function proposeCertificateRestatement(args: {
     };
   }
   const snapshotId = `${args.predecessorSnapshotId}-restatement-${Date.now()}`.slice(0, 180);
+  const deliveredAtIsoDate =
+    args.deliveredAtIsoDate?.slice(0, 10) ?? new Date().toISOString().slice(0, 10);
   const cert: SyntheticCertificate = {
     ...CONMED_FORM_INSPIRED_CERT,
     companyId: args.companyId,
@@ -303,6 +314,7 @@ export async function proposeCertificateRestatement(args: {
     note: `SYNTHETIC restatement of ${args.predecessorSnapshotId} — ${args.reviewedByNote ?? "explicit correction"}`,
     facts: CONMED_FORM_INSPIRED_CERT.facts.map((f) => ({ ...f, companyId: args.companyId })),
     basketUsageLines: [],
+    deliveredAtIsoDate,
   };
   const ledger = new LedgerProposalRecorder();
   const proposed = await proposeFromCertificateAsync(store, cert, ledger);

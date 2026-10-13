@@ -106,6 +106,11 @@ export function buildCertificateProposalFromEngine(params: {
   companyId: string;
   run: EngineRunResult;
   proposalStatus?: "DRAFT" | "REVIEW_REQUIRED";
+  /**
+   * Persisted certificate delivery date (ISO YYYY-MM-DD or full ISO).
+   * Distinct from period asOf and from attributable approval reviewedAt.
+   */
+  deliveredAtIsoDate?: string;
 }): SyntheticCertificate | null {
   const { companyId, run } = params;
   const source = run.certificate ?? run.statement;
@@ -117,10 +122,17 @@ export function buildCertificateProposalFromEngine(params: {
     params.proposalStatus ??
     (run.reconciliation.disposition === "APPROVED_ELIGIBLE" ? "DRAFT" : "REVIEW_REQUIRED");
 
+  const certFamilies = new Set((run.certificate?.metrics ?? []).map((m) => m.family));
   const metrics = [
     ...(run.certificate?.metrics ?? []),
     // Include GAAP from statement so the snapshot preserves both identities.
-    ...(run.statement?.metrics.filter((m) => m.family === "GAAP_EBITDA") ?? []),
+    // Also carry statement CASH when the certificate omitted it (e.g. prior non-cash conflict)
+    // — never invent cash; only reuse an extracted statement metric.
+    ...(run.statement?.metrics.filter(
+      (m) =>
+        m.family === "GAAP_EBITDA" ||
+        (m.family === "CASH" && !certFamilies.has("CASH")),
+    ) ?? []),
   ];
 
   const facts = metrics
@@ -154,6 +166,9 @@ export function buildCertificateProposalFromEngine(params: {
     note: `FCE disposition=${run.reconciliation.disposition}; ${run.reconciliation.dispositionReason}`,
     facts,
     basketUsageLines: [],
+    ...(params.deliveredAtIsoDate
+      ? { deliveredAtIsoDate: params.deliveredAtIsoDate.slice(0, 10) }
+      : {}),
   };
 }
 
@@ -168,6 +183,7 @@ export interface ProposeNs4Result {
 export async function proposeNs4SnapshotFromEngine(params: {
   companyId: string;
   run: EngineRunResult;
+  deliveredAtIsoDate?: string;
 }): Promise<ProposeNs4Result> {
   const cert = buildCertificateProposalFromEngine(params);
   if (!cert) return { ok: false, reason: "No metrics available to propose." };
@@ -218,6 +234,8 @@ export async function approveNs4SnapshotAttributable(params: {
   reviewedBy: string;
   approvalRef: string;
   reconciliation: ReconciliationReport;
+  /** ISO timestamp of attributable approval; defaults to now. Not certificate delivery. */
+  reviewedAt?: string;
 }): Promise<ProposeNs4Result> {
   const reviewedBy = params.reviewedBy.trim();
   if (!reviewedBy) {
@@ -232,7 +250,7 @@ export async function approveNs4SnapshotAttributable(params: {
   const result = await approveCertificateProposalAsync(store, {
     snapshotId: params.snapshotId,
     reviewedBy,
-    reviewedAt: new Date().toISOString(),
+    reviewedAt: params.reviewedAt ?? new Date().toISOString(),
     approvalRef: params.approvalRef,
     proposerKind: "extractor",
   });

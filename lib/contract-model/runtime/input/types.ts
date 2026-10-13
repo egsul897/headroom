@@ -95,7 +95,17 @@ export interface FinancialSnapshot {
   /** Explicit supersession only. Null means this snapshot supersedes nothing. */
   supersedesSnapshotId: string | null;
   inputs: FinancialInput[];
-  provenance: { source: string; sourceVersion: string | null; note?: string };
+  provenance: {
+    source: string;
+    sourceVersion: string | null;
+    note?: string;
+    /**
+     * Persisted certificate delivery date (ISO YYYY-MM-DD).
+     * Used by MOST_RECENTLY_DELIVERED_* selectors. Never invent from period asOf
+     * or from attributable approval (reviewedAt).
+     */
+    deliveredAtIsoDate?: string;
+  };
   review: { reviewedBy: string | null; reviewedAt: string | null; approvalRef: string | null };
 }
 

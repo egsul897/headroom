@@ -44,6 +44,12 @@ export interface DeliveryRecord {
   deliveredAtIsoDate: string;
   documentId: string;
   sourceVersionHash?: string;
+  /**
+   * NS-4 snapshot identity produced by this delivery when known.
+   * Enables historical binding after later supersession (eval date before
+   * successor delivery still selects this snapshot, even if now SUPERSEDED).
+   */
+  snapshotId?: string;
 }
 
 export interface SelectorResolutionPolicy {

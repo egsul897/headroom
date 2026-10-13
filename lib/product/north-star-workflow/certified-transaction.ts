@@ -7,15 +7,18 @@
  */
 import { prisma } from "@/lib/prisma";
 import {
-  loadApprovedSnapshotsFromPrisma,
+  loadCutoffEligibleSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
   snapshotInputResolver,
   resolveContractualSelector,
-  selectSnapshotForResolvedSelector,
   type NamedContractualSelector,
   type FiscalCalendar,
-  type DeliveryRecord,
 } from "@/lib/contract-model/north-star-bridge";
+import { NS4_PRODUCT_CUTOFF_SELECTOR } from "./approved-financial-inputs";
+import {
+  bindSnapshotForDeliveredCutoff,
+  deliveriesFromApprovedSnapshots,
+} from "./certificate-deliveries";
 import {
   evaluateVerifiedCapacity,
   simulateVerifiedTransaction,
@@ -49,27 +52,6 @@ export interface CertifiedTransactionAttempt {
   authorityNote: string;
 }
 
-function deliveriesFromSnapshots(
-  companyId: string,
-  approved: Awaited<ReturnType<typeof loadApprovedSnapshotsFromPrisma>>,
-): DeliveryRecord[] {
-  return approved.flatMap((s) => {
-    if (!s.reportingPeriod || !s.asOf) return [];
-    const deliveredAtIsoDate = (s.review.reviewedAt ?? s.asOf).slice(0, 10);
-    return [
-      {
-        companyId,
-        kind: "COMPLIANCE_CERTIFICATE" as const,
-        reportingPeriodKey: s.reportingPeriod,
-        asOfIsoDate: s.asOf,
-        deliveredAtIsoDate,
-        documentId: s.provenance.source ?? s.snapshotId,
-        sourceVersionHash: s.provenance.sourceVersion ?? undefined,
-      },
-    ];
-  });
-}
-
 /**
  * Attempt certified capacity (and optional path simulation) for a workspace.
  * Caller must supply a VerifiedExecutionPackage — product never fabricates one.
@@ -82,14 +64,20 @@ export async function attemptCertifiedTransaction(args: {
   verifiedPackage?: VerifiedExecutionPackage | null;
   transaction?: HypotheticalTransaction;
   selectedPath?: SelectedPath;
+  /**
+   * Utilization completeness for remaining publication.
+   * Default UNKNOWN (PAI-04). Pass VERIFIED_EMPTY only with an attested empty ledger.
+   */
+  utilizationCompleteness?: "UNKNOWN" | "VERIFIED_EMPTY";
 }): Promise<CertifiedTransactionAttempt> {
   const companyId = args.companyId;
   const blockers: CertifiedTransactionBlocker[] = [];
-  const [approvedAll, ledger] = await Promise.all([
-    loadApprovedSnapshotsFromPrisma(prisma, companyId),
+  const [cutoffEligible, ledger] = await Promise.all([
+    loadCutoffEligibleSnapshotsFromPrisma(prisma, companyId),
     loadLedgerUsagesFromPrisma(prisma, companyId),
   ]);
   const activeLedger = ledger.filter((u) => u.status !== "SUPERSEDED");
+  const approvedAll = cutoffEligible.filter((s) => s.status === "APPROVED");
 
   if (!args.evaluationDate) {
     blockers.push("MISSING_EVALUATION_DATE");
@@ -109,7 +97,7 @@ export async function attemptCertifiedTransaction(args: {
     };
   }
 
-  if (approvedAll.length === 0) {
+  if (approvedAll.length === 0 && cutoffEligible.length === 0) {
     blockers.push("NO_APPROVED_SNAPSHOT");
   }
 
@@ -121,9 +109,10 @@ export async function attemptCertifiedTransaction(args: {
   const resolved = resolveContractualSelector({
     companyId,
     evaluationDate: args.evaluationDate,
-    selector: args.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+    // Align with Dashboard NS-4 band — delivered certificate, not calendar FY label alone.
+    selector: args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR,
     fiscalCalendar,
-    deliveries: deliveriesFromSnapshots(companyId, approvedAll),
+    deliveries: deliveriesFromApprovedSnapshots(companyId, cutoffEligible),
   });
 
   let cutoffState = resolved.state;
@@ -132,7 +121,12 @@ export async function attemptCertifiedTransaction(args: {
   let approvedSnapshotId: string | null = null;
 
   if (resolved.state === "RESOLVED") {
-    const bound = selectSnapshotForResolvedSelector(resolved, approvedAll, companyId);
+    const bound = bindSnapshotForDeliveredCutoff({
+      companyId,
+      evaluationDate: args.evaluationDate,
+      resolved,
+      snapshots: cutoffEligible,
+    });
     cutoffState = bound.state;
     if (bound.state === "RESOLVED") {
       approvedSnapshotId = bound.snapshotId;
@@ -165,8 +159,21 @@ export async function attemptCertifiedTransaction(args: {
     };
   }
 
-  const boundSnap = approvedAll.find((s) => s.snapshotId === approvedSnapshotId);
-  const snapshots = boundSnap ? [boundSnap] : [];
+  const boundSnap = cutoffEligible.find((s) => s.snapshotId === approvedSnapshotId);
+  // Cutoff already selected the reporting period. Neutralize period identity for
+  // METRIC_REFERENCE resolution so certificate facts (VERBATIM period keys) bind
+  // — same pattern as Dashboard IR leverage. Neon rows are not mutated.
+  const snapshots = boundSnap
+    ? [
+        {
+          ...boundSnap,
+          inputs: boundSnap.inputs.map((inp) => ({
+            ...inp,
+            identity: { ...inp.identity, period: { kind: "NOT_PERIOD_SPECIFIC" as const } },
+          })),
+        },
+      ]
+    : [];
   const inputs = snapshotInputResolver({
     snapshots,
     definitions: pkg.definitions,
@@ -175,11 +182,16 @@ export async function attemptCertifiedTransaction(args: {
     instrumentKey: pkg.instrumentKey,
   });
 
+  // Metric as-of must match the bound snapshot's measurement date (not the
+  // transaction evaluation date). Cutoff already chose which delivery applies.
+  const metricAsOf = boundSnap?.asOf ?? args.evaluationDate;
+
   const capacity = evaluateVerifiedCapacity({
     package: pkg,
     inputs,
     ledger: activeLedger,
-    asOf: args.evaluationDate,
+    asOf: metricAsOf,
+    utilizationCompleteness: args.utilizationCompleteness,
   });
 
   if (capacity.outcome !== "EXECUTED") {
@@ -192,9 +204,10 @@ export async function attemptCertifiedTransaction(args: {
       package: pkg,
       inputs,
       ledger: activeLedger,
-      asOf: args.evaluationDate,
+      asOf: metricAsOf,
       transaction: args.transaction,
       selectedPath: args.selectedPath,
+      utilizationCompleteness: args.utilizationCompleteness,
     });
     if (simulation.outcome !== "EXECUTED") blockers.push("SIMULATION_REFUSED");
   }
