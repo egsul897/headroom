@@ -4209,3 +4209,146 @@ model LearningImprovementProposal {
   @@map("learning_improvement_proposals")
 }
 
+// =============================================================================
+// Knowledge-factory precedent export shards (COMPUTED_NOT_CERTIFIED).
+// Populated by neon:https-precedent-import over HTTPS. Never ContractRule.
+// =============================================================================
+
+model KfPrecedentStructuralNode {
+  nodeId          String   @id
+  sourceId        String
+  nodeType        String?
+  sectionRef      String?
+  heading         String?
+  charStart       Int?
+  charEnd         Int?
+  ambiguous       Boolean?
+  authorityStatus String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson     Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_structural_nodes")
+}
+
+model KfPrecedentCovenantCandidate {
+  candidateId         String   @id
+  sourceId            String
+  nodeId              String?
+  familiesJson        Json
+  signalsJson         Json
+  excerpt             String?
+  discoveryScore      Float?
+  representationLevel String?
+  authorityStatus     String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson         Json
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_covenant_candidates")
+}
+
+model KfPrecedentDefinition {
+  id              String   @id
+  sourceId        String
+  term            String
+  charStart       Int?
+  charEnd         Int?
+  excerpt         String?
+  authorityStatus String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson     Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([sourceId, term])
+  @@index([sourceId])
+  @@map("kf_precedent_definitions")
+}
+
+model KfPrecedentDependencyEdge {
+  edgeId          String   @id
+  sourceId        String
+  kind            String
+  rawReference    String?
+  resolution      String?
+  legalTruth      String?
+  charStart       Int?
+  charEnd         Int?
+  authorityStatus String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson     Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_dependency_edges")
+}
+
+model KfPrecedentConditionException {
+  id                  String   @id
+  sourceId            String
+  kind                String
+  nodeId              String?
+  excerpt             String?
+  signalsJson         Json?
+  representationLevel String?
+  charStart           Int?
+  charEnd             Int?
+  authorityStatus     String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson         Json
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_conditions_exceptions")
+}
+
+model KfPrecedentDocumentRelationship {
+  id              String   @id
+  sourceId        String
+  targetId        String
+  kind            String
+  evidenceStatus  String?
+  rationale       String?
+  confidence      Float?
+  authorityStatus String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson     Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sourceId])
+  @@index([targetId])
+  @@map("kf_precedent_document_relationships")
+}
+
+model KfPrecedentUnresolvedUncertainty {
+  id                  String   @id
+  sourceId            String
+  candidateId         String?
+  nodeId              String?
+  reasonsJson         Json?
+  excerpt             String?
+  reviewerTask        String?
+  suggestedRegression String?
+  authorityStatus     String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson         Json
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_unresolved_uncertainties")
+}
+
+model KfPrecedentImportCheckpoint {
+  batchKey  String
+  stage     String
+  cursor    String?
+  status    String
+  countsJson Json
+  updatedAt DateTime @default(now())
+
+  @@id([batchKey, stage])
+  @@map("kf_precedent_import_checkpoints")
+}
+

@@ -4,6 +4,7 @@
  *   npx tsx scripts/covenant-learning-factory/batch-run.ts --max=3
  *   npx tsx scripts/covenant-learning-factory/batch-run.ts --packages=mhk-2026-credit-agreement,mtn-2026-tenth-ar-credit-agreement
  *   npx tsx scripts/covenant-learning-factory/batch-run.ts --force --persist-neon
+ *   npx tsx scripts/covenant-learning-factory/batch-run.ts --re-persist --persist-neon --packages=chwy-2026-credit-agreement
  */
 import { runLearningBatch } from "../../lib/covenant-learning-factory";
 
@@ -18,13 +19,18 @@ async function main() {
   const cohort = argValue("--cohort") as "TRAIN_DEV" | "HELD_OUT" | undefined;
   const persistNeon = process.argv.includes("--persist-neon");
   const force = process.argv.includes("--force");
+  const rePersistFlag = process.argv.includes("--re-persist");
+  // --force --persist-neon (or --re-persist --persist-neon): write local manifests to Neon
+  // without recompile. --force alone still forces a full recompile.
+  const rePersist = rePersistFlag || (force && persistNeon);
   const authorizePaid = process.argv.includes("--authorize-paid");
 
   const result = await runLearningBatch({
     packageKeys: packages,
     cohort,
     persistNeon,
-    force,
+    force: force && !rePersist,
+    rePersistNeon: rePersist,
     authorizePaidInference: authorizePaid,
     budget: {
       maxPackages: Number.isFinite(max) ? max : 4,

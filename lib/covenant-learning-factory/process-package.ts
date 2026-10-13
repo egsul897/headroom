@@ -65,6 +65,11 @@ export interface ProcessPackageOptions {
   authorizePaidInference?: boolean;
   /** Skip if identical document hashes already processed OK. */
   skipIfUnchanged?: boolean;
+  /**
+   * When true with persistNeon: if local OK/FAILED/ABSTAINED manifest exists,
+   * write it to Neon without recompiling (re-persist skipped packages).
+   */
+  rePersistNeon?: boolean;
 }
 
 export interface ProcessPackageResult {
@@ -95,11 +100,45 @@ export async function processLearningPackage(
     const prior = store.readPackageManifest(spec.packageKey);
     if (
       prior &&
-      prior.status === "OK" &&
+      (prior.status === "OK" || prior.status === "ABSTAINED" || prior.status === "FAILED") &&
       prior.documentHashes.length === documentHashes.length &&
       prior.documentHashes.every((h, i) => h.sha256 === documentHashes[i]?.sha256)
     ) {
       const finishedAt = new Date().toISOString();
+      // Re-persist path: push the prior completed local manifest to Neon without recompile.
+      if (options.persistNeon && options.rePersistNeon) {
+        const neonResult = await persistPackageManifestToNeon(prior, {
+          executor: options.neonExecutor,
+          skipProbe: Boolean(options.neonExecutor),
+        });
+        const manifest: PackageAuditManifest = {
+          ...prior,
+          runId,
+          startedAt,
+          finishedAt,
+          status: "SKIPPED_DUPLICATE",
+          stages: [
+            ...prior.stages,
+            {
+              stage: "PERSIST",
+              status: neonResult.ok ? "OK" : "FAILED",
+              startedAt,
+              finishedAt,
+              diagnostics: `re-persist prior ${prior.status} run ${prior.runId}; neon=${neonResult.ok ? "ok" : neonResult.detail}`,
+            },
+          ],
+          claims: defaultHonestyClaims(),
+        };
+        store.writePackageManifest(manifest);
+        return {
+          manifest,
+          neon: {
+            attempted: neonResult.attempted,
+            ok: neonResult.ok,
+            detail: neonResult.detail,
+          },
+        };
+      }
       const manifest: PackageAuditManifest = {
         ...prior,
         runId,

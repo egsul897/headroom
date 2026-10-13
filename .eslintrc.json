@@ -3,8 +3,10 @@
   "extends": "next/core-web-vitals",
   "ignorePatterns": [
     "scripts/covenant-learning-factory/**",
+    "scripts/neon-https/**",
     "lib/covenant-learning-factory/store/neon-transport.ts",
-    "lib/covenant-learning-factory/store/neon-migration-apply.ts"
+    "lib/covenant-learning-factory/store/neon-migration-apply.ts",
+    "lib/neon-https/**"
   ],
   "overrides": [
     {

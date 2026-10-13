@@ -37,6 +37,11 @@ export interface BatchRunOptions {
   authorizePaidInference?: boolean;
   /** Force reprocessing even when hashes unchanged. */
   force?: boolean;
+  /**
+   * With persistNeon: re-write existing local OK/FAILED/ABSTAINED manifests to Neon
+   * without recompiling when document hashes are unchanged.
+   */
+  rePersistNeon?: boolean;
   docsDashboardPath?: string;
 }
 
@@ -119,6 +124,7 @@ export async function runLearningBatch(options: BatchRunOptions = {}): Promise<B
         persistNeon: options.persistNeon,
         authorizePaidInference: options.authorizePaidInference,
         skipIfUnchanged: !options.force,
+        rePersistNeon: Boolean(options.rePersistNeon || (options.force && options.persistNeon)),
       });
       lastManifest = result.manifest;
       checkpoint.spent.wallMs += Date.now() - t0;
