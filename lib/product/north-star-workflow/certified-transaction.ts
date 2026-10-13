@@ -7,10 +7,17 @@
  */
 import { prisma } from "@/lib/prisma";
 import {
+<<<<<<< HEAD
   loadCutoffEligibleSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
   snapshotInputResolver,
   resolveContractualSelector,
+=======
+  loadApprovedSnapshotsFromPrisma,
+  loadLedgerUsagesFromPrisma,
+  snapshotInputResolver,
+  resolveAuthoritativeCutoff,
+>>>>>>> 06857b18 (fix(delivery): never treat approval as certificate delivery (#332 P0))
   type NamedContractualSelector,
   type FiscalCalendar,
 } from "@/lib/contract-model/north-star-bridge";
@@ -106,9 +113,11 @@ export async function attemptCertifiedTransaction(args: {
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
-  const resolved = resolveContractualSelector({
+  // P0: REQUIRE_PERSISTED_DELIVERY — approval never establishes delivery.
+  const cutoff = resolveAuthoritativeCutoff({
     companyId,
     evaluationDate: args.evaluationDate,
+<<<<<<< HEAD
     // Align with Dashboard NS-4 band — delivered certificate, not calendar FY label alone.
     selector: args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR,
     fiscalCalendar,
@@ -134,7 +143,19 @@ export async function attemptCertifiedTransaction(args: {
       blockers.push("CUTOFF_UNRESOLVED");
     }
   } else {
+=======
+    approved: approvedAll,
+    selector: args.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+    fiscalCalendar,
+  });
+
+  const cutoffState = cutoff.state;
+  const reportingPeriodKey = cutoff.reportingPeriodKey;
+  let approvedSnapshotId: string | null = cutoff.snapshotId;
+  if (cutoff.state !== "RESOLVED" || !approvedSnapshotId) {
+>>>>>>> 06857b18 (fix(delivery): never treat approval as certificate delivery (#332 P0))
     blockers.push("CUTOFF_UNRESOLVED");
+    approvedSnapshotId = null;
   }
 
   const pkg = args.verifiedPackage ?? null;

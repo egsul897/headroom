@@ -2,10 +2,11 @@
  * Cross-layer delivery evidence — keeps certificate delivery dates distinguishable
  * from reporting-period as-of, evaluation/transaction dates, and approval timestamps.
  *
- * Soft gates:
+ * Soft gates (P0):
  * - never invent delivery from period-end asOf
- * - never treat missing delivery as RESOLVED via silent substitution
- * - persist delivery on attributable approval when known
+ * - never invent delivery from approval / reviewedAt
+ * - APPROVED + reviewedAt without persisted deliveredAt does not establish delivery
+ * - SUPERSEDED / DRAFT / REVIEW_REQUIRED never establish current delivery
  */
 import type { FinancialSnapshot } from "./types";
 import type { DeliveryRecord } from "./selector/types";
@@ -39,7 +40,7 @@ export function encodeDeliveredAtInApprovalRef(
 
 /**
  * Extract persisted delivery date from approvalRef.
- * Returns null when absent — callers must not invent from asOf.
+ * Returns null when absent — callers must not invent from asOf or reviewedAt.
  */
 export function extractDeliveredAtFromApprovalRef(
   approvalRef: string | null | undefined,
@@ -51,24 +52,25 @@ export function extractDeliveredAtFromApprovalRef(
 
 export type DeliveryReconstructionMode =
   /**
-   * Prefer explicit deliveredAt marker; if absent, use reviewedAt date only
-   * (approval-time delivery attribution). Never fall back to period-end asOf.
+   * @deprecated Forbidden on authoritative product paths.
+   * Kept only so adversarial tests can prove approval-as-delivery is refused by REQUIRE mode.
    */
   | "ALLOW_REVIEWED_AT_FALLBACK"
-  /** Only emit a DeliveryRecord when deliveredAt was persisted on approval. */
+  /** Only emit a DeliveryRecord when deliveredAt was persisted on approval. Safe default. */
   | "REQUIRE_PERSISTED_DELIVERY";
 
 /**
  * Build DeliveryRecords from APPROVED snapshots without conflating temporal axes.
  *
- * - asOfIsoDate = snapshot.asOf (reporting period end)
- * - deliveredAtIsoDate = persisted delivery (or reviewedAt under ALLOW_REVIEWED_AT_FALLBACK)
+ * Default mode is REQUIRE_PERSISTED_DELIVERY (P0 safe default).
+ * - asOfIsoDate = snapshot.asOf (reporting period end) — never used as delivery
+ * - deliveredAtIsoDate = persisted delivery marker only (unless deprecated fallback mode)
  * - SUPERSEDED / DRAFT / REVIEW_REQUIRED snapshots never contribute current delivery evidence
  */
 export function deliveriesFromApprovedSnapshots(
   companyId: string,
   snapshots: readonly FinancialSnapshot[],
-  mode: DeliveryReconstructionMode = "ALLOW_REVIEWED_AT_FALLBACK",
+  mode: DeliveryReconstructionMode = "REQUIRE_PERSISTED_DELIVERY",
 ): DeliveryRecord[] {
   const out: DeliveryRecord[] = [];
   for (const s of snapshots) {
@@ -78,6 +80,7 @@ export function deliveriesFromApprovedSnapshots(
 
     const persisted = extractDeliveredAtFromApprovalRef(s.review.approvalRef);
     let deliveredAtIsoDate: string | null = persisted;
+    // Deprecated path — must not be used by authoritative readiness / certified / FCE selection.
     if (!deliveredAtIsoDate && mode === "ALLOW_REVIEWED_AT_FALLBACK" && s.review.reviewedAt) {
       deliveredAtIsoDate = s.review.reviewedAt.slice(0, 10);
     }
@@ -94,6 +97,17 @@ export function deliveriesFromApprovedSnapshots(
     });
   }
   return out;
+}
+
+/**
+ * Authoritative product helper — always REQUIRE_PERSISTED_DELIVERY.
+ * Use from transaction-readiness, certified-transaction, Dashboard/Position/Ask cutoff paths.
+ */
+export function authoritativeDeliveriesFromSnapshots(
+  companyId: string,
+  snapshots: readonly FinancialSnapshot[],
+): DeliveryRecord[] {
+  return deliveriesFromApprovedSnapshots(companyId, snapshots, "REQUIRE_PERSISTED_DELIVERY");
 }
 
 /**

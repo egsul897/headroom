@@ -23,12 +23,10 @@ function approvalArgs(request: ApproveCertificateProposalRequest) {
   } = request;
 
   // Provenance-enriched approvalRef for auditability (still attributable via approveSnapshot).
-  // Persist certificate delivery only when known — never invent from period-end asOf.
-  // omitDeliveryEvidence: extractor/FCE path when lender delivery date is unknown.
-  // Otherwise: explicit deliveredAsOfDate, or approval-date attribution for workspace approve.
-  const deliveryToPersist = omitDeliveryEvidence
-    ? null
-    : (deliveredAsOfDate ?? reviewedAt.slice(0, 10));
+  // P0: persist delivery ONLY when explicitly supplied. Never substitute reviewedAt / asOf.
+  // omitDeliveryEvidence or missing deliveredAsOfDate → no deliveredAt marker.
+  const deliveryToPersist =
+    omitDeliveryEvidence || !deliveredAsOfDate ? null : deliveredAsOfDate;
   const withDelivery = deliveryToPersist
     ? encodeDeliveredAtInApprovalRef(approvalRef, deliveryToPersist)
     : approvalRef.trim();

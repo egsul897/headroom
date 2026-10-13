@@ -24,8 +24,8 @@ Integration readiness ≠ production certification.
 
 | Concern | Lock | Test |
 |---|---|---|
-| Delivery ≠ period-end asOf ≠ approval ≠ evaluation | Persist `deliveredAt=` on approvalRef; reconstruct via `deliveriesFromApprovedSnapshots` | `delivery-evidence.test.ts`, vertical-slice |
-| Missing delivery marker | `REQUIRE_PERSISTED_DELIVERY` → empty deliveries → selector `NEEDS_INPUT` | vertical-slice second case |
+| Delivery ≠ period-end asOf ≠ approval ≠ evaluation | Persist `deliveredAt=` only when explicitly supplied; never from reviewedAt | `delivery-authority-adversarial.test.ts` |
+| Missing delivery marker | `REQUIRE_PERSISTED_DELIVERY` default + `resolveAuthoritativeCutoff` → `NEEDS_INPUT` | adversarial + readiness/certified entrypoints |
 | Restatement supersession | Predecessor `SUPERSEDED`; cutoff binds successor only | `delivery-evidence.test.ts`, vertical-slice |
 | Gross / remaining / hypothetical collapse | `classifyCustomerFigure` refuses headroom upgrade without completeness | vertical-slice |
 | UNKNOWN utilization → zero | Unchanged; still refused in capacity/utilization modules | adversarial `#293` suite (prior) |

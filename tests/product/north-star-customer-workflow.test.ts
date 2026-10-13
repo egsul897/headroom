@@ -63,8 +63,9 @@ describeDb("North Star customer workflow (product)", () => {
       snapshotId: proposed.snapshotId,
       reviewedBy: "product-e2e-reviewer",
       approvalRef: "apr-product-e2e-1",
-      // Certificate delivered 2026-07-20 — evaluation after delivery can resolve Q2.
       reviewedAt: "2026-07-20T18:00:00Z",
+      // Explicit delivery — approval clock must not substitute.
+      deliveredAsOfDate: "2026-07-10",
     });
     expect(approved.ok).toBe(true);
     expect(approved.status).toBe("APPROVED");

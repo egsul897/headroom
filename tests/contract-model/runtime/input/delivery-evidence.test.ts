@@ -59,7 +59,7 @@ describe("delivery evidence persistence", () => {
     expect(axes.axesDistinct).toBe(true);
   });
 
-  it("never invents delivery from period-end asOf when marker and reviewedAt are absent", () => {
+  it("default REQUIRE_PERSISTED_DELIVERY never invents delivery from asOf or reviewedAt", () => {
     const fake = {
       snapshotId: "snap-no-delivery",
       version: "v1",
@@ -70,13 +70,11 @@ describe("delivery evidence persistence", () => {
       supersedesSnapshotId: null,
       inputs: [],
       provenance: { source: "doc", sourceVersion: null },
-      review: { reviewedBy: "r", reviewedAt: null, approvalRef: "apr-plain" },
+      review: { reviewedBy: "r", reviewedAt: "2026-07-20T18:00:00Z", approvalRef: "apr-plain" },
     };
-    const deliveries = deliveriesFromApprovedSnapshots("co-x", [fake], "REQUIRE_PERSISTED_DELIVERY");
-    expect(deliveries).toEqual([]);
-    const fallback = deliveriesFromApprovedSnapshots("co-x", [fake], "ALLOW_REVIEWED_AT_FALLBACK");
-    // reviewedAt null → still no delivery; asOf must not be used.
-    expect(fallback).toEqual([]);
+    // Default mode = REQUIRE — reviewedAt present is not delivery.
+    expect(deliveriesFromApprovedSnapshots("co-x", [fake])).toEqual([]);
+    expect(deliveriesFromApprovedSnapshots("co-x", [fake], "REQUIRE_PERSISTED_DELIVERY")).toEqual([]);
   });
 
   it("SUPERSEDED snapshots do not contribute current delivery evidence", () => {

@@ -7,7 +7,7 @@
  * - require explicit snapshotId OR a uniquely RESOLVED contractual cutoff bind
  */
 import {
-  deliveriesFromApprovedSnapshots,
+  authoritativeDeliveriesFromSnapshots,
   resolveContractualSelector,
   selectSnapshotForResolvedSelector,
   type FinancialSnapshot,
@@ -59,11 +59,7 @@ export function selectAuthoritativeSnapshotForCapacity(args: {
     };
   }
 
-  const deliveries = deliveriesFromApprovedSnapshots(
-    args.companyId,
-    approved,
-    "REQUIRE_PERSISTED_DELIVERY",
-  );
+  const deliveries = authoritativeDeliveriesFromSnapshots(args.companyId, approved);
   const resolved = resolveContractualSelector({
     companyId: args.companyId,
     evaluationDate: args.evaluationDate,

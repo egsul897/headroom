@@ -11,11 +11,14 @@
  */
 import { prisma } from "@/lib/prisma";
 import {
-  deliveriesFromApprovedSnapshots,
   loadApprovedSnapshotsFromPrisma,
   loadCutoffEligibleSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
+<<<<<<< HEAD
   resolveContractualSelector,
+=======
+  resolveAuthoritativeCutoff,
+>>>>>>> 06857b18 (fix(delivery): never treat approval as certificate delivery (#332 P0))
   type DeliveryRecord,
   type FiscalCalendar,
   type NamedContractualSelector,
@@ -81,12 +84,15 @@ export async function loadTransactionWorkflowReadiness(
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
+<<<<<<< HEAD
   // PAI-11 / landing gate: never invent delivery from period asOf or approval reviewedAt.
   // Require persisted provenance.deliveredAtIsoDate (set at propose / certificate intake).
   // Include SUPERSEDED so historical eval dates retain prior deliveries.
   const deliveries =
     opts?.deliveries ?? deliveriesFromApprovedSnapshots(companyId, cutoffEligible);
 
+=======
+>>>>>>> 06857b18 (fix(delivery): never treat approval as certificate delivery (#332 P0))
   let cutoff: TransactionWorkflowReadiness["cutoff"];
   // Do not default evaluation date to "today" — that reintroduces latest-quarter behavior.
   if (!opts?.evaluationDate) {
@@ -96,13 +102,16 @@ export async function loadTransactionWorkflowReadiness(
       missing: ["evaluationDate"],
     };
   } else if (opts?.selector || approved.length > 0) {
-    const resolved = resolveContractualSelector({
+    // P0: REQUIRE_PERSISTED_DELIVERY — approval never establishes delivery.
+    cutoff = resolveAuthoritativeCutoff({
       companyId,
       evaluationDate: opts.evaluationDate,
+      approved,
       selector: opts?.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
       fiscalCalendar,
-      deliveries,
+      deliveries: opts?.deliveries,
     });
+<<<<<<< HEAD
     if (resolved.state === "RESOLVED") {
       const bound = bindSnapshotForDeliveredCutoff({
         companyId,
@@ -125,6 +134,8 @@ export async function loadTransactionWorkflowReadiness(
         missing: resolved.state === "NEEDS_INPUT" ? resolved.missing : undefined,
       };
     }
+=======
+>>>>>>> 06857b18 (fix(delivery): never treat approval as certificate delivery (#332 P0))
   }
 
   const blockers: string[] = [...legacyCapacity.blockers];
