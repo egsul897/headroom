@@ -9,6 +9,12 @@ import { mapSimulateStatusToCustomerStatus, presentCustomerStatus } from "./stat
 import type { SeparatedCapacityClaims } from "./capacity-state";
 import type { VerifiedSimulateResult } from "@/lib/product/unified-position/certified-simulate-bridge";
 import type { TransactionEffectsResult } from "@/lib/product/unified-position/transaction-effects";
+import {
+  classifyVerifiedSimulate,
+  executionAuthorityToCustomerStatus,
+  type ExecutionAuthorityClass,
+} from "@/lib/product/canonical-execution-authority";
+// Note: classifyVerifiedSimulate accepts a structural subset — safe vs circular imports.
 
 export interface SimulateViewModel {
   companyId: string;
@@ -26,6 +32,8 @@ export interface SimulateViewModel {
   traceAndProvenance: string[];
   postsToLedger: false;
   overallStatus: CustomerStatusCode;
+  /** Canonical authority vocabulary (directive). */
+  authorityClass: ExecutionAuthorityClass;
   overallGuidance: string;
   executable: boolean;
 }
@@ -96,11 +104,26 @@ export function buildSimulateView(args: {
       ? `Hypothetical consume ${args.amountMillions} ${args.currency ?? "USD"} millions (not ledger-posted)`
       : null;
 
-  const overallStatus: CustomerStatusCode = verified?.executable
-    ? mapSimulateStatusToCustomerStatus("clear")
-    : unsupportedEffects.length > 0 || missingInputs.length > 0
-      ? "HYPOTHETICAL"
-      : "NEEDS_INPUT";
+  const authorityVerdict = classifyVerifiedSimulate(verified, {
+    companyId: args.companyId,
+  });
+  const authorityClass = authorityVerdict.authorityClass;
+
+  // overallStatus remains the customer chip contract:
+  // - VERIFIED_TRANSACTION_PERMITTED → VERIFIED_EXECUTABLE
+  // - otherwise HYPOTHETICAL when a simulation attempt/effects exist (legacy labeled)
+  // - NEEDS_INPUT only when nothing was attempted
+  // Canonical permissibility is authorityClass / executable — never inferred from HYPOTHETICAL.
+  let overallStatus: CustomerStatusCode;
+  if (authorityClass === "VERIFIED_TRANSACTION_PERMITTED" && authorityVerdict.permitted) {
+    overallStatus = executionAuthorityToCustomerStatus("VERIFIED_TRANSACTION_PERMITTED");
+  } else if (verified != null || effects != null || unsupportedEffects.length > 0) {
+    overallStatus = "HYPOTHETICAL";
+  } else if (missingInputs.length > 0) {
+    overallStatus = "NEEDS_INPUT";
+  } else {
+    overallStatus = mapSimulateStatusToCustomerStatus("review_required");
+  }
 
   return {
     companyId: args.companyId,
@@ -114,12 +137,20 @@ export function buildSimulateView(args: {
     preTransactionCapacity: args.preCapacity,
     missingInputs: [...new Set(missingInputs)],
     unsupportedEffects: [...new Set(unsupportedEffects)],
-    traceAndProvenance,
+    traceAndProvenance: [
+      ...traceAndProvenance,
+      `authorityClass=${authorityClass}`,
+      `permitted=${authorityVerdict.permitted}`,
+    ],
     postsToLedger: false,
     overallStatus,
+    authorityClass,
     overallGuidance:
       presentCustomerStatus(overallStatus).customerGuidance +
-      " Simulation never mutates the actual customer ledger.",
-    executable: verified?.executable === true,
+      " Simulation never mutates the actual customer ledger." +
+      (authorityClass === "VERIFIED_TRANSACTION_PERMITTED"
+        ? " Authority: VERIFIED_TRANSACTION_PERMITTED (verified spine REQUIRE)."
+        : ` Authority: ${authorityClass} — not promoted from modeled gross.`),
+    executable: verified?.executable === true && authorityVerdict.permitted,
   };
 }

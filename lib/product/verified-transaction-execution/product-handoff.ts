@@ -28,6 +28,9 @@ function traceIdOf(result: UnifiedTransactionExecutionResult): string {
  * Project orchestration result for a single product surface.
  * EXECUTABLE is affirmative only when simulation SATISFIED under hypothetical
  * or production-active classification — never when REFUSED / incomplete.
+ *
+ * Authority-class annotation is local (no import of canonical-execution-authority)
+ * to avoid circular module graphs through north-star / certified-simulate.
  */
 export function toProductExecutionHandoff(
   result: UnifiedTransactionExecutionResult,
@@ -39,6 +42,14 @@ export function toProductExecutionHandoff(
     result.verified.simulation?.outcome === "EXECUTED" &&
     result.verified.simulation.simulation.selectedPathResult === "SATISFIED" &&
     result.verified.simulation.simulation.simulationStatus === "SIMULATED";
+
+  const authorityClass = executable
+    ? "VERIFIED_TRANSACTION_PERMITTED"
+    : result.blockers.some((b) => /NO_VERIFIED|MISSING|NEEDS/i.test(b))
+      ? "NEEDS_INPUT"
+      : result.blockers.some((b) => /UNSUPPORTED|NOT_TESTED/i.test(b))
+        ? "UNSUPPORTED"
+        : "REVIEW_REQUIRED";
 
   const authorityNote =
     result.productionAuthority === "PRODUCTION_AUTHORITY_ACTIVE"
@@ -54,7 +65,7 @@ export function toProductExecutionHandoff(
     productionAuthority: result.productionAuthority,
     executable,
     blockers: [...result.blockers],
-    authorityNote,
+    authorityNote: `${authorityNote} [${authorityClass}]`,
     selectedPathId: result.legalPath.pathId,
     sourceCitations: [...result.sourceCitations],
     utilizationSupportsRemaining: result.utilizationAuthority.supportsRemainingClaim,

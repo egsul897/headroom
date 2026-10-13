@@ -174,8 +174,19 @@ export function mapEngineLabelToCustomerStatus(raw: string | null | undefined): 
     // authoritative on main until authenticity + trusted-issuer gates land (PR #268).
     return "NOT_PRODUCTION_AUTHORITATIVE";
   }
-  if (key === "GROSS_CONTRACTUAL" || key === "GROSS_ONLY" || key === "KNOWN_ATTRIBUTED_ONLY") {
+  if (
+    key === "GROSS_CONTRACTUAL" ||
+    key === "GROSS_ONLY" ||
+    key === "KNOWN_ATTRIBUTED_ONLY" ||
+    key === "MODELED_GROSS"
+  ) {
     return "GROSS_CONTRACTUAL";
+  }
+  if (key === "VERIFIED_REMAINING") {
+    return "VERIFIED_UTILIZATION_COMPLETE";
+  }
+  if (key === "VERIFIED_TRANSACTION_PERMITTED") {
+    return "VERIFIED_EXECUTABLE";
   }
   if (key === "HYPOTHETICAL" || key === "LEGACY_LABELED" || key === "LEGACY_ENGINE") {
     return "HYPOTHETICAL";

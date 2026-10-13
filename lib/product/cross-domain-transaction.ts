@@ -26,6 +26,14 @@ import type { ContractualEbitdaDerivation } from "@/lib/financial-certificate-en
 
 export const CROSS_DOMAIN_EVALUATION_VERSION = "cross-domain-transaction.v1" as const;
 
+/**
+ * Role of this module in the product architecture.
+ * Supporting package-wide modeling only — not an independent certification engine.
+ * Authoritative remaining / transaction-permissibility → verified execution spine.
+ */
+export const CROSS_DOMAIN_LAYER_ROLE =
+  "SUPPORTING_PACKAGE_WIDE_MODELING_NOT_CERTIFICATION_ENGINE" as const;
+
 /** Covenant families the product tracks for package-wide coverage. */
 export type CovenantDomain =
   | "DEBT_INCURRENCE_REFINANCING"
@@ -88,8 +96,27 @@ export interface DomainEvaluationSlice {
 
 export interface CrossDomainTransactionEvaluation {
   version: typeof CROSS_DOMAIN_EVALUATION_VERSION;
+  layerRole: typeof CROSS_DOMAIN_LAYER_ROLE;
   scenario: ContemplatedCrossDomainTransaction;
+  /**
+   * Legacy engine composition status (clear/blocked/…).
+   * MUST NOT be presented as VERIFIED_TRANSACTION_PERMITTED.
+   * Product surfaces must read `claimClass` / `transactionPermissibility`.
+   */
   overallStatus: TransactionStatus;
+  /**
+   * Canonical authority class for this layer's outputs.
+   * Always MODELED_GROSS when overallStatus is clear; never VERIFIED_*.
+   */
+  claimClass:
+    | "MODELED_GROSS"
+    | "NEEDS_INPUT"
+    | "UNSUPPORTED"
+    | "REVIEW_REQUIRED";
+  /**
+   * Always false on this path — permissibility requires the verified spine.
+   */
+  transactionPermissibility: false;
   domains: DomainEvaluationSlice[];
   contractualComputation: ContractualComputationResult;
   debtSimulation: DebtIncurrenceSimulation | null;
@@ -340,10 +367,13 @@ export function evaluateCrossDomainTransaction(params: {
       tx.rpDocumentId ??
       data.documents.find((d) => d.rpWaterfall)?.id;
     if (!docId) {
+      // Incomplete package coverage must worsen overallStatus (not leave "clear").
+      statusAcc.push("not_tested");
       return {
         sim: null,
         slice: {
-          domain: "RESTRICTED_PAYMENTS_BUILDER",
+          domain:
+            kind === "dividend" ? "RESTRICTED_PAYMENTS_BUILDER" : "INVESTMENTS_ACQUISITIONS",
           support: "UNSUPPORTED",
           status: "not_tested",
           summary: "No document with rpWaterfall configuration",
@@ -351,7 +381,11 @@ export function evaluateCrossDomainTransaction(params: {
           verifiedRemainingMillions: null,
           citations: [],
           missingInputs: ["rpWaterfall"],
-          notes: [],
+          notes: [
+            kind === "investment"
+              ? "Acquisition investment leg untested — debt capacity alone cannot permit the transaction."
+              : "RP waterfall untested — dividend capacity not established.",
+          ],
         },
       };
     }
@@ -366,7 +400,8 @@ export function evaluateCrossDomainTransaction(params: {
         status: sim.status,
         summary: `${kind} $${amount}M · ${sim.status} · remaining unallocated $${sim.remaining.toFixed(1)}M`,
         grossCapacityMillions: stepGross,
-        verifiedRemainingMillions: allowRemaining ? stepGross : null,
+        // Never publish remaining from this supporting layer (allowRemaining is always false).
+        verifiedRemainingMillions: null,
         citations: sim.steps.map((s) => `${s.sectionRef} · ${s.basketName}`),
         missingInputs: sim.reason ? [sim.reason] : [],
         notes: [`Ledger RP pool used before sim: $${sim.poolUsed.toFixed(1)}M`],
@@ -380,6 +415,7 @@ export function evaluateCrossDomainTransaction(params: {
     const docId =
       tx.assetSaleDocumentId ?? documentsWithAssetSale(data)[0]?.id;
     if (!docId) {
+      statusAcc.push("not_tested");
       return {
         sim: null,
         slice: {
@@ -391,7 +427,7 @@ export function evaluateCrossDomainTransaction(params: {
           verifiedRemainingMillions: null,
           citations: [],
           missingInputs: ["assetSale"],
-          notes: [],
+          notes: ["Asset-sale path untested — incomplete package coverage blocks permissibility."],
         },
       };
     }
@@ -552,6 +588,17 @@ export function evaluateCrossDomainTransaction(params: {
     ? "review_required"
     : worstTxnStatus(statusAcc.length ? statusAcc : ["review_required"]);
 
+  // Map legacy overallStatus → canonical claim class. clear ⇒ MODELED_GROSS only.
+  const claimClass: CrossDomainTransactionEvaluation["claimClass"] = assumptionBlock
+    ? "NEEDS_INPUT"
+    : overallStatus === "clear"
+      ? "MODELED_GROSS"
+      : overallStatus === "blocked"
+        ? "UNSUPPORTED"
+        : overallStatus === "not_tested"
+          ? "UNSUPPORTED"
+          : "REVIEW_REQUIRED";
+
   const proForma = {
     totalNetLeverage:
       debtSim?.proForma.totalNetLeverage ??
@@ -567,18 +614,37 @@ export function evaluateCrossDomainTransaction(params: {
         : contractualComputation.leverage.interestCoverage,
   };
 
+  // Defense in depth: strip any accidental remaining publication on domain slices.
+  for (const d of domains) {
+    if (d.verifiedRemainingMillions != null) {
+      d.verifiedRemainingMillions = null;
+      d.notes.push(
+        "Stripped verifiedRemainingMillions — cross-domain layer cannot publish verified remaining.",
+      );
+    }
+  }
+
+  void allowRemaining; // retained for call-site clarity; always false by design
+
   return {
     version: CROSS_DOMAIN_EVALUATION_VERSION,
+    layerRole: CROSS_DOMAIN_LAYER_ROLE,
     scenario: tx,
     overallStatus,
+    claimClass,
+    transactionPermissibility: false,
     domains,
     contractualComputation,
     debtSimulation: debtSim,
     rpSimulation: rpSim,
     assetSaleSimulation: assetSaleSim,
     proForma,
-    packageLimitations,
+    packageLimitations: [
+      ...packageLimitations,
+      "claimClass is MODELED_GROSS (or NEEDS_INPUT/UNSUPPORTED/REVIEW_REQUIRED) — never VERIFIED_TRANSACTION_PERMITTED.",
+      "Route authoritative remaining and permissibility through executeUnifiedVerifiedTransaction / verified spine.",
+    ],
     authorityNote:
-      "LEGACY_ENGINE package composition + contractual computation — NOT_CERTIFIED_4E. Gross ≠ verified remaining.",
+      "SUPPORTING cross-domain modeling (LEGACY_ENGINE composition + contractual computation) — NOT_CERTIFIED_4E. Gross ≠ verified remaining. transactionPermissibility=false always on this path.",
   };
 }
