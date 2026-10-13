@@ -23,6 +23,27 @@ export {
   type AuthoritativeCapacityResult,
   type AuthoritativeCapacityStatus,
 } from "./authoritative-capacity";
+/** Dashboard / product read of APPROVED Neon NS-4 financial evidence. */
+export {
+  loadNs4DashboardFinancialState,
+  type Ns4DashboardFinancialState,
+  type Ns4DashboardFinancialStatus,
+  type Ns4DashboardFact,
+} from "@/lib/dashboard/ns4-financial-panel";
+export {
+  computeNs4ContractualNetLeverage,
+  type Ns4LeverageIrTrace,
+  type Ns4LeverageIrStatus,
+} from "@/lib/dashboard/ns4-leverage-ir";
+export {
+  proposeCertificateTextForCompany,
+  proposeAuthenticCertificateFixtureForCompany,
+  approveFceProposedCertificate,
+  MATTHEWS_FIXTURE_AUTHORITY,
+  COHERENT_FIXTURE_AUTHORITY,
+  type CertificateFixtureIssuer,
+  type ProposeCertificateTextResult,
+} from "./fce-certificate-actions";
 export {
   parseTransactionDraft,
   analyzeContemplatedTransaction,
