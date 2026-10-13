@@ -82,8 +82,23 @@ export async function applyAllPrismaMigrationsOverHttps(
         continue;
       }
 
-      const statements = splitSqlStatements(m.sql).map(toIdempotentMigrationStatement);
+      const statements = splitSqlStatements(m.sql)
+        .map(toIdempotentMigrationStatement)
+        .filter((s) => {
+          const bare = s
+            .replace(/\/\*[\s\S]*?\*\//g, "")
+            .replace(/--[^\n]*/g, "")
+            .trim();
+          return bare.length > 0;
+        });
+      // Neon HTTP prepared statements reject multi-command strings.
       for (const stmt of statements) {
+        const again = splitSqlStatements(stmt);
+        if (again.length !== 1) {
+          throw new Error(
+            `splitter produced multi-command statement (${again.length} parts) in ${m.name}: ${stmt.slice(0, 120)}`,
+          );
+        }
         await executor.execute(stmt);
       }
 

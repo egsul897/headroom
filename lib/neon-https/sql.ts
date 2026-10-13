@@ -1,5 +1,8 @@
 /**
  * Shared SQL helpers for Neon HTTPS migrate/import (scripts/lib only).
+ *
+ * Statement splitter is comment / quote / dollar-quote aware so Neon HTTP
+ * prepared statements never receive multi-command blobs.
  */
 
 import { createHash } from "node:crypto";
@@ -7,22 +10,76 @@ import { createHash } from "node:crypto";
 /** Statement-leading data-destroying verbs (allows ON DELETE CASCADE). */
 const DATA_DESTRUCTIVE_RE = /^\s*(TRUNCATE|DELETE)\b/i;
 
-/** Split SQL on semicolons outside single-quoted / dollar-quoted strings. */
+/**
+ * Split SQL into single executable statements.
+ * Handles: -- line comments, /* block comments *\/, 'strings', "identifiers", $tag$dollar$tag$.
+ */
 export function splitSqlStatements(sql: string): string[] {
   const statements: string[] = [];
   let buf = "";
   let i = 0;
-  let inSingle = false;
+  type Mode = "normal" | "lineComment" | "blockComment" | "single" | "double" | "dollar";
+  let mode: Mode = "normal";
   let dollarTag: string | null = null;
+
+  const pushBuf = () => {
+    const trimmed = buf.trim();
+    if (trimmed.length > 0) statements.push(trimmed);
+    buf = "";
+  };
 
   while (i < sql.length) {
     const ch = sql[i]!;
+    const next = sql[i + 1];
 
-    if (dollarTag) {
-      if (sql.startsWith(dollarTag, i)) {
+    if (mode === "lineComment") {
+      buf += ch;
+      i += 1;
+      if (ch === "\n") mode = "normal";
+      continue;
+    }
+
+    if (mode === "blockComment") {
+      buf += ch;
+      i += 1;
+      if (ch === "*" && next === "/") {
+        buf += "/";
+        i += 1;
+        mode = "normal";
+      }
+      continue;
+    }
+
+    if (mode === "single") {
+      buf += ch;
+      i += 1;
+      if (ch === "'" && next === "'") {
+        buf += "'";
+        i += 1;
+        continue;
+      }
+      if (ch === "'") mode = "normal";
+      continue;
+    }
+
+    if (mode === "double") {
+      buf += ch;
+      i += 1;
+      if (ch === '"' && next === '"') {
+        buf += '"';
+        i += 1;
+        continue;
+      }
+      if (ch === '"') mode = "normal";
+      continue;
+    }
+
+    if (mode === "dollar") {
+      if (dollarTag && sql.startsWith(dollarTag, i)) {
         buf += dollarTag;
         i += dollarTag.length;
         dollarTag = null;
+        mode = "normal";
         continue;
       }
       buf += ch;
@@ -30,25 +87,31 @@ export function splitSqlStatements(sql: string): string[] {
       continue;
     }
 
-    if (inSingle) {
-      buf += ch;
-      if (ch === "'" && sql[i + 1] === "'") {
-        buf += "'";
-        i += 2;
-        continue;
-      }
-      if (ch === "'") inSingle = false;
-      i += 1;
+    // mode === "normal"
+    if (ch === "-" && next === "-") {
+      buf += "--";
+      i += 2;
+      mode = "lineComment";
       continue;
     }
-
+    if (ch === "/" && next === "*") {
+      buf += "/*";
+      i += 2;
+      mode = "blockComment";
+      continue;
+    }
     if (ch === "'") {
-      inSingle = true;
       buf += ch;
       i += 1;
+      mode = "single";
       continue;
     }
-
+    if (ch === '"') {
+      buf += ch;
+      i += 1;
+      mode = "double";
+      continue;
+    }
     if (ch === "$") {
       const rest = sql.slice(i);
       const m = rest.match(/^\$([A-Za-z_][A-Za-z0-9_]*)?\$/);
@@ -56,14 +119,12 @@ export function splitSqlStatements(sql: string): string[] {
         dollarTag = m[0];
         buf += dollarTag;
         i += dollarTag.length;
+        mode = "dollar";
         continue;
       }
     }
-
     if (ch === ";") {
-      const trimmed = buf.trim();
-      if (trimmed.length > 0) statements.push(trimmed);
-      buf = "";
+      pushBuf();
       i += 1;
       continue;
     }
@@ -72,25 +133,49 @@ export function splitSqlStatements(sql: string): string[] {
     i += 1;
   }
 
-  const tail = buf.trim();
-  if (tail.length > 0) statements.push(tail);
+  if (mode !== "normal" && mode !== "lineComment") {
+    // Unterminated quote/comment/dollar — still emit remainder so callers see it.
+    pushBuf();
+  } else {
+    pushBuf();
+  }
+
   return statements;
 }
 
+/**
+ * True when `stmt` contains no top-level semicolon (aside from an optional trailing one).
+ * Semicolons inside comments, quotes, or dollar-quotes are allowed.
+ */
+export function isSingleSqlStatement(stmt: string): boolean {
+  const parts = splitSqlStatements(stmt);
+  if (parts.length === 0) return true;
+  if (parts.length > 1) return false;
+  // splitSqlStatements drops the terminator; a single part means one statement.
+  return true;
+}
+
+/** Count top-level (executable) statements — same as split length. */
+export function countTopLevelStatements(sql: string): number {
+  return splitSqlStatements(sql).length;
+}
+
 export function stripSqlLineComments(sql: string): string {
-  return sql
-    .split("\n")
-    .map((line) => {
-      const idx = line.indexOf("--");
-      return idx >= 0 ? line.slice(0, idx) : line;
-    })
-    .join("\n");
+  // Legacy helper — prefer splitSqlStatements which is fully comment-aware.
+  const statements = splitSqlStatements(sql);
+  return statements.join(";\n");
 }
 
 /** Refuse DELETE/TRUNCATE. DROP INDEX/TYPE/TABLE allowed for Prisma migrate replay. */
 export function assertMigrationSqlSafeForHttpsMigrate(sql: string): void {
-  for (const stmt of splitSqlStatements(stripSqlLineComments(sql))) {
-    if (DATA_DESTRUCTIVE_RE.test(stmt)) {
+  for (const stmt of splitSqlStatements(sql)) {
+    // Ignore pure comment statements
+    const withoutComments = stmt
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/--[^\n]*/g, "")
+      .trim();
+    if (!withoutComments) continue;
+    if (DATA_DESTRUCTIVE_RE.test(withoutComments)) {
       throw new Error(
         "Refusing data-destructive SQL in neon:https-migrate (DELETE/TRUNCATE)",
       );
@@ -101,35 +186,40 @@ export function assertMigrationSqlSafeForHttpsMigrate(sql: string): void {
 /** Make CREATE/DROP statements idempotent for empty or partially-applied DBs. */
 export function toIdempotentMigrationStatement(stmt: string): string {
   const s = stmt.trim();
+  // Strip leading comment-only lines for verb matching, keep full stmt for emit.
+  const executable = s
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/^\s*--[^\n]*\n?/gm, "")
+    .trim();
 
-  if (/^CREATE\s+TYPE\b/i.test(s)) {
-    return `DO $$ BEGIN ${s}; EXCEPTION WHEN duplicate_object THEN NULL; END $$`;
+  if (/^CREATE\s+TYPE\b/i.test(executable)) {
+    return `DO $$ BEGIN ${executable}; EXCEPTION WHEN duplicate_object THEN NULL; END $$`;
   }
-  if (/^CREATE\s+TABLE\b/i.test(s) && !/^CREATE\s+TABLE\s+IF\s+NOT\s+EXISTS\b/i.test(s)) {
-    return s.replace(/^CREATE\s+TABLE\b/i, "CREATE TABLE IF NOT EXISTS");
+  if (/^CREATE\s+TABLE\b/i.test(executable) && !/^CREATE\s+TABLE\s+IF\s+NOT\s+EXISTS\b/i.test(executable)) {
+    return executable.replace(/^CREATE\s+TABLE\b/i, "CREATE TABLE IF NOT EXISTS");
   }
-  if (/^CREATE\s+UNIQUE\s+INDEX\b/i.test(s) && !/IF\s+NOT\s+EXISTS/i.test(s)) {
-    return s.replace(/^CREATE\s+UNIQUE\s+INDEX\b/i, "CREATE UNIQUE INDEX IF NOT EXISTS");
+  if (/^CREATE\s+UNIQUE\s+INDEX\b/i.test(executable) && !/IF\s+NOT\s+EXISTS/i.test(executable)) {
+    return executable.replace(/^CREATE\s+UNIQUE\s+INDEX\b/i, "CREATE UNIQUE INDEX IF NOT EXISTS");
   }
-  if (/^CREATE\s+INDEX\b/i.test(s) && !/IF\s+NOT\s+EXISTS/i.test(s)) {
-    return s.replace(/^CREATE\s+INDEX\b/i, "CREATE INDEX IF NOT EXISTS");
+  if (/^CREATE\s+INDEX\b/i.test(executable) && !/IF\s+NOT\s+EXISTS/i.test(executable)) {
+    return executable.replace(/^CREATE\s+INDEX\b/i, "CREATE INDEX IF NOT EXISTS");
   }
-  if (/^ALTER\s+TABLE\b/i.test(s) && /\bADD\s+CONSTRAINT\b/i.test(s)) {
-    return `DO $$ BEGIN ${s}; EXCEPTION WHEN duplicate_object THEN NULL; END $$`;
+  if (/^ALTER\s+TABLE\b/i.test(executable) && /\bADD\s+CONSTRAINT\b/i.test(executable)) {
+    return `DO $$ BEGIN ${executable}; EXCEPTION WHEN duplicate_object THEN NULL; END $$`;
   }
-  if (/^ALTER\s+TABLE\b/i.test(s) && /\bADD\s+COLUMN\b/i.test(s)) {
-    return `DO $$ BEGIN ${s}; EXCEPTION WHEN duplicate_column THEN NULL; END $$`;
+  if (/^ALTER\s+TABLE\b/i.test(executable) && /\bADD\s+COLUMN\b/i.test(executable)) {
+    return `DO $$ BEGIN ${executable}; EXCEPTION WHEN duplicate_column THEN NULL; END $$`;
   }
-  if (/^DROP\s+INDEX\b/i.test(s) && !/IF\s+EXISTS/i.test(s)) {
-    return s.replace(/^DROP\s+INDEX\b/i, "DROP INDEX IF EXISTS");
+  if (/^DROP\s+INDEX\b/i.test(executable) && !/IF\s+EXISTS/i.test(executable)) {
+    return executable.replace(/^DROP\s+INDEX\b/i, "DROP INDEX IF EXISTS");
   }
-  if (/^DROP\s+TYPE\b/i.test(s) && !/IF\s+EXISTS/i.test(s)) {
-    return s.replace(/^DROP\s+TYPE\b/i, "DROP TYPE IF EXISTS");
+  if (/^DROP\s+TYPE\b/i.test(executable) && !/IF\s+EXISTS/i.test(executable)) {
+    return executable.replace(/^DROP\s+TYPE\b/i, "DROP TYPE IF EXISTS");
   }
-  if (/^DROP\s+TABLE\b/i.test(s) && !/IF\s+EXISTS/i.test(s)) {
-    return s.replace(/^DROP\s+TABLE\b/i, "DROP TABLE IF EXISTS");
+  if (/^DROP\s+TABLE\b/i.test(executable) && !/IF\s+EXISTS/i.test(executable)) {
+    return executable.replace(/^DROP\s+TABLE\b/i, "DROP TABLE IF EXISTS");
   }
-  return s;
+  return executable || s;
 }
 
 export function prismaMigrationChecksum(migrationSql: string): string {

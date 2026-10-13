@@ -59,7 +59,10 @@ export async function createNeonHttpsExecutor(
   const sql = neon(connectionString);
   return {
     async execute(statement: string, params: unknown[] = []) {
-      const rows = await sql(statement, params);
+      // Omit params array when empty so Neon HTTP does not force a multi-command-
+      // hostile prepared path for bare DDL / DO $$ blocks.
+      const rows =
+        params.length > 0 ? await sql(statement, params) : await sql(statement);
       return rows as Record<string, unknown>[];
     },
   };
