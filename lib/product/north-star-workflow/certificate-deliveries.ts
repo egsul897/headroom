@@ -1,48 +1,30 @@
 /**
- * Build DeliveryRecord[] for MOST_RECENTLY_DELIVERED_* selectors and bind
- * the snapshot identity that was eligible as of the evaluation date.
+ * Product-facing delivery helpers for historical cutoff binding.
  *
- * PAI-11 / landing gate:
- * - Never synthesize delivery from period asOf.
- * - Never substitute attributable approval reviewedAt for delivery.
- * - Require persisted provenance.deliveredAtIsoDate.
- * - Include SUPERSEDED snapshots so pre-supersession evaluation dates retain
- *   the historically eligible certificate identity.
+ * Canonical reconstruction lives in
+ * `lib/contract-model/runtime/input/delivery-evidence.ts` (persisted-delivery-only).
+ * This module re-exports that helper and keeps `bindSnapshotForDeliveredCutoff`
+ * for callers that resolve a selector then bind by delivery.snapshotId.
+ *
+ * Do not invent delivery from period asOf or attributable approval reviewedAt.
  */
-import type {
-  FinancialSnapshot,
-  DeliveryRecord,
-  SelectorResolutionResult,
+import {
+  deliveriesFromApprovedSnapshots as bridgeDeliveriesFromApprovedSnapshots,
+  type FinancialSnapshot,
+  type DeliveryRecord,
+  type SelectorResolutionResult,
 } from "@/lib/contract-model/north-star-bridge";
 
 function isoCompare(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
 }
 
+/** @deprecated Prefer importing from north-star-bridge; kept as a thin re-export. */
 export function deliveriesFromApprovedSnapshots(
   companyId: string,
   snapshots: readonly FinancialSnapshot[],
 ): DeliveryRecord[] {
-  return snapshots.flatMap((s) => {
-    if (s.companyId !== companyId) return [];
-    if (s.status !== "APPROVED" && s.status !== "SUPERSEDED") return [];
-    if (!s.reportingPeriod || !s.asOf) return [];
-    const deliveredAtIsoDate = s.provenance.deliveredAtIsoDate?.slice(0, 10);
-    if (!deliveredAtIsoDate || !/^\d{4}-\d{2}-\d{2}$/.test(deliveredAtIsoDate)) {
-      return [];
-    }
-    const d: DeliveryRecord = {
-      companyId,
-      kind: "COMPLIANCE_CERTIFICATE",
-      reportingPeriodKey: s.reportingPeriod,
-      asOfIsoDate: s.asOf,
-      deliveredAtIsoDate,
-      documentId: s.provenance.source ?? s.snapshotId,
-      sourceVersionHash: s.provenance.sourceVersion ?? undefined,
-      snapshotId: s.snapshotId,
-    };
-    return [d];
-  });
+  return bridgeDeliveriesFromApprovedSnapshots(companyId, snapshots);
 }
 
 /**

@@ -113,7 +113,7 @@ export async function approveWorkspaceCertificate(args: {
   reviewedAt?: string;
   /**
    * When the certificate was delivered (ISO date). Used as cutoff delivery evidence.
-   * Defaults to reviewedAt date — do not invent an earlier delivery.
+   * Required for authoritative NS-6 delivery bind — never defaults to reviewedAt / asOf.
    */
   deliveredAsOfDate?: string;
   sourceDocumentId?: string;
@@ -128,11 +128,15 @@ export async function approveWorkspaceCertificate(args: {
     return { ok: true, snapshotId: args.snapshotId, status: "APPROVED", approvalRef: snap.review.approvalRef ?? undefined };
   }
   const reviewedAt = args.reviewedAt ?? new Date().toISOString();
+  // P0: never substitute approval timestamp for certificate delivery.
+  // Delivery is persisted only when the caller supplies deliveredAsOfDate explicitly.
   const result = await approveCertificateProposalAsync(store, {
     snapshotId: args.snapshotId,
     reviewedBy: args.reviewedBy,
     reviewedAt,
     approvalRef: args.approvalRef,
+    deliveredAsOfDate: args.deliveredAsOfDate,
+    omitDeliveryEvidence: !args.deliveredAsOfDate,
     sourceDocumentId: args.sourceDocumentId,
     sourceVersionHash: args.sourceVersionHash,
     proposerKind: "human",

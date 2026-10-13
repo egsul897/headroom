@@ -140,6 +140,11 @@ export {
   type UtilizationHistoryStatus,
 } from "./utilization-history";
 export {
+  classifyCustomerFigure,
+  type CustomerFigureClaim,
+  type CustomerFigureKind,
+} from "./customer-figure-semantics";
+export {
   runCanonicalSequentialDemo,
   buildCanonicalSequentialSteps,
   buildSequentialDemoWorld,

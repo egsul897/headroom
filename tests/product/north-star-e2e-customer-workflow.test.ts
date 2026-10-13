@@ -81,6 +81,7 @@ describeDb("North Star E2E customer workflow", () => {
       reviewedBy: "e2e-counsel",
       approvalRef: "apr-e2e-1",
       reviewedAt: "2026-07-20T18:00:00Z",
+      deliveredAsOfDate: "2026-07-10",
     });
     expect(approved.ok).toBe(true);
 
@@ -124,6 +125,7 @@ describeDb("North Star E2E customer workflow", () => {
       reviewedBy: "e2e-counsel",
       approvalRef: "apr-e2e-restatement",
       reviewedAt: "2026-07-25T18:00:00Z",
+      deliveredAsOfDate: "2026-07-22",
     });
     expect(restatedApproved.ok).toBe(true);
     const store3b = await PrismaApprovedSnapshotStore.open(prisma2, CO);

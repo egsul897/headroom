@@ -236,6 +236,12 @@ export async function approveNs4SnapshotAttributable(params: {
   reconciliation: ReconciliationReport;
   /** ISO timestamp of attributable approval; defaults to now. Not certificate delivery. */
   reviewedAt?: string;
+  /**
+   * Certificate delivery date (ISO). When omitted, delivery evidence is not invented
+   * from period-end asOf or approval clock — certified NS-6 persisted-delivery-only
+   * selection then fails closed until delivery is supplied.
+   */
+  deliveredAsOfDate?: string;
 }): Promise<ProposeNs4Result> {
   const reviewedBy = params.reviewedBy.trim();
   if (!reviewedBy) {
@@ -252,6 +258,9 @@ export async function approveNs4SnapshotAttributable(params: {
     reviewedBy,
     reviewedAt: params.reviewedAt ?? new Date().toISOString(),
     approvalRef: params.approvalRef,
+    deliveredAsOfDate: params.deliveredAsOfDate,
+    // Without an explicit delivery date, do not silently attribute approval clock as delivery.
+    omitDeliveryEvidence: !params.deliveredAsOfDate,
     proposerKind: "extractor",
   });
   if (!result.ok) {

@@ -8,3 +8,7 @@ export * from "./snapshot-resolver";
 export * from "./manifest";
 /** NS-6 — contractual selector → exact period/as-of identity (does not mutate 4B resolve). */
 export * from "./selector";
+/** Cross-layer delivery evidence — distinct from period-end asOf / evaluation dates. */
+export * from "./delivery-evidence";
+/** Authoritative cutoff bind (persisted-delivery-only). */
+export * from "./authoritative-cutoff";
