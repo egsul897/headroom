@@ -4,7 +4,6 @@ import { loadNs4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-pa
 import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
 import { loadContractualMetricsForDashboard } from "@/lib/product/contractual-metrics/service";
 import { toContractualMetricsView } from "@/lib/product/contractual-metrics/serialize";
-import { loadContractualLeverageForCompany } from "@/lib/product/contractual-leverage";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
@@ -23,8 +22,6 @@ export const metadata = { title: "Headroom — Dashboard" };
  * `loadNs4DashboardFinancialState` — never from inventing legacy figures.
  * Definition-executed contractual metrics are a separate read-only GET path
  * (`persist:false` / `allowNeonWrite:false`) — provisional, never Neon writes.
- * Contractual leverage ratios share APPROVED NS-4 identity via
- * `loadContractualLeverageForCompany` (no parallel calculation engine).
  */
 export default async function DashboardPage({
   params,
@@ -60,10 +57,9 @@ export default async function DashboardPage({
   const facilitiesQuery = facilitiesQueryFromPosition(financialPosition, documentNameById);
   const maturitiesQuery = maturitiesQueryFromPosition(financialPosition);
 
-  const [ns4Financial, contractualBundle, leverage] = await Promise.all([
+  const [ns4Financial, contractualBundle] = await Promise.all([
     loadNs4DashboardFinancialState({ companyId, evaluationDate }),
     loadContractualMetricsForDashboard(companyId),
-    loadContractualLeverageForCompany(companyId, asOfDate),
   ]);
   const contractualMetrics = toContractualMetricsView(contractualBundle);
 
@@ -83,7 +79,6 @@ export default async function DashboardPage({
       attributedUtilizationSerialized={attributedUtilizationSerialized}
       ns4Financial={ns4Financial}
       contractualMetrics={contractualMetrics}
-      contractualLeverageResults={leverage.results}
     />
   );
 }

@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Card, Chip, WarningList } from "@/components/ui";
 import { AttentionList, CovenantFamiliesView } from "@/components/CovenantOverview";
-import { ContractualLeveragePanel } from "@/components/ContractualLeveragePanel";
 import { buildCovenantOverview, type CoverageDeclarationInput, type PermissionRowInput } from "@/lib/covenant-overview-builder";
 import {
   deserializeAttributedUtilization,
@@ -24,10 +23,6 @@ import {
 import type { Ns4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-panel";
 import type { CompanyCovenantData, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
-import type {
-  ContractualLeverageResult,
-  LeverageFinancialInputs,
-} from "@/lib/product/contractual-leverage/types";
 import { fmtDate, fmtM } from "@/lib/format";
 import { ContractualMetricsPanel } from "@/components/ContractualMetricsPanel";
 import type { ContractualMetricsView } from "@/lib/product/contractual-metrics/serialize";
@@ -83,8 +78,6 @@ export interface DashboardClientProps {
    */
   contractualMetrics?: ContractualMetricsView | null;
   companyId?: string;
-  /** Server-computed contractual leverage results. Empty ⇒ panel shows missing requirements. */
-  contractualLeverageResults?: ContractualLeverageResult[];
 }
 
 /** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
@@ -492,18 +485,6 @@ export function DashboardClient(props: DashboardClientProps) {
           ))}
         </div>
       </Card>
-
-      <ContractualLeveragePanel
-        results={props.contractualLeverageResults ?? []}
-        financials={
-          {
-            ebitda: financials.ebitda,
-            totalDebt: financials.totalDebt,
-            securedDebt: financials.securedDebt,
-            cash: financials.cash,
-          } satisfies LeverageFinancialInputs
-        }
-      />
 
       {/* 3. Needs attention (§13). */}
       <AttentionList items={overview.attentionItems} />
