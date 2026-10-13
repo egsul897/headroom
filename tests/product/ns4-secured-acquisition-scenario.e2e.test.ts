@@ -6,6 +6,7 @@
  * Requires local DATABASE_URL (skips Neon/RDS). Never invents verified remaining.
  */
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { randomBytes } from "node:crypto";
 import { PrismaClient } from "@prisma/client";
 import {
   proposeAuthenticCertificateFixtureForCompany,
@@ -40,7 +41,7 @@ async function teardown(prisma: PrismaClient, companyId: string) {
 
 describeIso("NS-4 secured-debt acquisition — Dashboard/Position/Simulate identity", () => {
   const prisma = new PrismaClient();
-  const COMPANY = "ns4-acq-scenario-co";
+  const COMPANY = `ns4-acq-scenario-${randomBytes(4).toString("hex")}`;
   const EVAL = "2026-08-01";
 
   beforeAll(async () => {

@@ -6,6 +6,7 @@
  * any of the nine unsafe-graph issue codes refuses the write (store is stricter
  * than 4B resolve, which treats some codes as non-fatal for `safe`).
  */
+import { randomBytes } from "node:crypto";
 import type { FinancialSnapshot } from "../types";
 import { buildSnapshotGraph, type SnapshotIssueCode } from "../snapshot";
 import type {
@@ -37,9 +38,10 @@ export interface SnapshotStoreBackend {
 }
 
 let eventSeq = 0;
+/** Globally unique across process workers (eventId is a DB unique key). */
 function nextEventId(): string {
   eventSeq += 1;
-  return `evt-${eventSeq}-${Date.now()}`;
+  return `evt-${process.pid}-${eventSeq}-${Date.now()}-${randomBytes(4).toString("hex")}`;
 }
 
 function nowIso(): string {
