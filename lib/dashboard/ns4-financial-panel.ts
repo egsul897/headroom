@@ -18,6 +18,7 @@ import {
   type RuntimeValue,
 } from "@/lib/contract-model/north-star-bridge";
 import { loadTransactionWorkflowReadiness } from "@/lib/product/north-star-workflow/transaction-readiness";
+import { NS4_PRODUCT_CUTOFF_SELECTOR } from "@/lib/product/north-star-workflow/approved-financial-inputs";
 import {
   computeNs4ContractualNetLeverage,
   type Ns4LeverageIrTrace,
@@ -137,12 +138,13 @@ export async function loadNs4DashboardFinancialState(args: {
   // Prefer delivered-certificate cutoff: issuer fiscal labels (e.g. Matthews FY2025-Q1
   // ending 2024-12-31) often disagree with a calendar MOST_RECENTLY_ENDED_FISCAL_QUARTER
   // period key. Delivery evidence is provenance.deliveredAtIsoDate only (never asOf / reviewedAt).
+  // Same cutoff selector as Position / Simulate (#334 loadApprovedFinancialInputBundle).
   const [approved, cutoffEligible, readiness] = await Promise.all([
     loadApprovedSnapshotsFromPrisma(prisma, companyId),
     loadCutoffEligibleSnapshotsFromPrisma(prisma, companyId),
     loadTransactionWorkflowReadiness(companyId, {
       evaluationDate: args.evaluationDate,
-      selector: args.selector ?? "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE",
+      selector: args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR,
     }),
   ]);
 

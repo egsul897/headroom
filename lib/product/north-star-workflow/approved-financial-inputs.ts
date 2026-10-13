@@ -49,6 +49,12 @@ export interface ApprovedFinancialInputBundle {
     approvedSnapshotId: string | null;
   };
   boundSnapshotId: string | null;
+  /**
+   * Cutoff-bound NS-4 FinancialSnapshot identity shared with Dashboard / Position /
+   * Simulate and package-wide financial-metric-resolver provenance binding.
+   * Null when not APPROVED_BOUND. Never invents facts.
+   */
+  boundSnapshot: FinancialSnapshot | null;
   /** Content fingerprint — changes when bound APPROVED facts/version change. */
   financialInputFingerprint: string | null;
   authority: FinancialInputAuthorityLabel;
@@ -164,6 +170,7 @@ export async function loadApprovedFinancialInputBundle(args: {
       selector,
       cutoff,
       boundSnapshotId: null,
+      boundSnapshot: null,
       financialInputFingerprint: null,
       authority: emptyAuthority,
       factKeys: [],
@@ -193,6 +200,7 @@ export async function loadApprovedFinancialInputBundle(args: {
       selector,
       cutoff,
       boundSnapshotId: null,
+      boundSnapshot: null,
       financialInputFingerprint: null,
       authority: emptyAuthority,
       factKeys: [],
@@ -229,6 +237,7 @@ export async function loadApprovedFinancialInputBundle(args: {
     selector,
     cutoff,
     boundSnapshotId: bound.snapshotId,
+    boundSnapshot: bound,
     financialInputFingerprint: fp,
     authority,
     factKeys: bound.inputs.map((i) => i.identity.key),
@@ -240,6 +249,7 @@ export async function loadApprovedFinancialInputBundle(args: {
       `Authority: ${authority.kind} — ${authority.disclosure}`,
       ...leverageIr.evidence.slice(0, 4),
       "Reusable across debt/liens/investments/RP capacity and transaction simulation via the same bound snapshot identity — not Dashboard-only.",
+      "Package-wide financial-metric-resolver must bind published values to this same boundSnapshot for APPROVED_SNAPSHOT provenance.",
     ],
     reusableFor,
   };

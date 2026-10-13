@@ -59,3 +59,8 @@ export {
   runCanonicalTransactionScenario,
   demonstrateDependencyPropagation,
 } from "./scenarios";
+
+export {
+  resolveCanonicalFinancialInputsViaProductBinder,
+  type ProductCanonicalFinancialResolution,
+} from "./product-bridge";
