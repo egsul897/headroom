@@ -57,9 +57,9 @@ export type { LedgerUsageRecord } from "./runtime/capacity/types";
 export { snapshotInputResolver } from "./runtime/input/snapshot-resolver";
 export type { SnapshotResolverArgs, SnapshotInputResolver } from "./runtime/input/snapshot-resolver";
 
-/** Exact decimal constructor for APPROVED metric figures — product must not import runtime/decimal. */
-export { rationalFromString } from "./runtime/decimal";
-export type { InputResolver } from "./runtime/types";
+/** Exact decimal helpers for APPROVED metric figures — product must not import runtime/decimal. */
+export { rationalFromString, toCanonicalString } from "./runtime/decimal";
+export type { InputResolver, RuntimeValue } from "./runtime/types";
 export type { FinancialInput, FinancialSnapshot } from "./runtime/input/types";
 
 /** Synthetic certificate fixtures — engineering only; not authentic customer data. */
