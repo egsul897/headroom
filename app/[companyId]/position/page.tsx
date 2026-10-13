@@ -20,7 +20,8 @@ import {
   selectSourceBackedGrossMm,
 } from "@/lib/customer-workflow/select-source-backed-gross";
 import { loadAuthenticDashboardSlice } from "@/lib/product/real-dashboard-vertical-slice";
-import { loadApprovedFinancialInputBundle } from "@/lib/product/north-star-workflow";
+import { loadSharedNs4FinancialIdentity } from "@/lib/product/ns4-shared-financial-identity";
+import { loadAuthoritativeCapacity } from "@/lib/product/north-star-workflow/authoritative-capacity";
 
 export const metadata = { title: "Headroom — Position" };
 
@@ -323,10 +324,16 @@ export default async function PositionPage({
 
   // Shared APPROVED NS-4 financial identity (same binder as capacity / simulation / Dashboard).
   const evaluationDate = sp.evaluationDate?.trim() || view.asOfDate || undefined;
-  const ns4Financial = await loadApprovedFinancialInputBundle({
+  const authoritative = await loadAuthoritativeCapacity({
     companyId,
     evaluationDate,
   });
+  const ns4Identity = await loadSharedNs4FinancialIdentity({
+    companyId,
+    evaluationDate,
+    authoritative,
+  });
+  const ns4Financial = ns4Identity.bundle;
 
   return (
     <div className="stack">
@@ -407,6 +414,17 @@ export default async function PositionPage({
             ? ` · IR TNL ${ns4Financial.leverageIr.computedRatio}`
             : ""}
         </div>
+        <div className="row-note">
+          Identity vs authoritative capacity:{" "}
+          {ns4Identity.identityConsistentWithAuthoritative == null
+            ? "—"
+            : ns4Identity.identityConsistentWithAuthoritative
+              ? "consistent"
+              : "MISMATCH"}
+          {authoritative.certified.packagePresent
+            ? " · VEP present"
+            : " · VEP absent (certified execution blocked)"}
+        </div>
         {ns4Financial.missingInputs.slice(0, 4).map((m) => (
           <div className="row-note" key={m}>
             • Missing: {m}
@@ -414,6 +432,14 @@ export default async function PositionPage({
         ))}
         <div className="row-note" style={{ marginTop: 8 }}>
           Reusable for: {ns4Financial.reusableFor.join(", ")}
+        </div>
+        <div className="button-row" style={{ marginTop: 12 }}>
+          <Link className="button" href={`/${companyId}/dashboard`}>
+            Dashboard (same NS-4 identity)
+          </Link>
+          <Link className="button" href={`/${companyId}/simulate`}>
+            Simulate (same NS-4 identity)
+          </Link>
         </div>
       </Card>
 

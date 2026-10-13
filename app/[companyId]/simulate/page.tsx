@@ -18,7 +18,7 @@ import { requireAssembledCfoWorkflow } from "@/lib/customer-workflow/require-wor
 import { SeparatedCapacityPanel } from "@/components/customer-workflow/SeparatedCapacityPanel";
 import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
 import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
-import { loadApprovedFinancialInputBundle } from "@/lib/product/north-star-workflow";
+import { loadSharedNs4FinancialIdentity } from "@/lib/product/ns4-shared-financial-identity";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
@@ -72,7 +72,7 @@ export default async function SimulatePage({
     evaluationDate,
   });
 
-  const [readiness, data, documents, definedTermsByProvision, solverContext, verified, ns4Financial] =
+  const [readiness, data, documents, definedTermsByProvision, solverContext, verified, ns4Identity] =
     await Promise.all([
       loadCapacityReadiness(companyId),
       loadCovenantDataOrEmpty(companyId, asOfDate),
@@ -87,11 +87,17 @@ export default async function SimulatePage({
         secured: handoff.secured,
         verifiedPackage: null,
       }),
-      loadApprovedFinancialInputBundle({ companyId, evaluationDate }),
+      loadSharedNs4FinancialIdentity({
+        companyId,
+        evaluationDate,
+        authoritative: workflow.authoritativeCapacity,
+      }),
     ]);
   const verifiedSummary = summarizeVerifiedSimulate(verified);
   const simView = workflow.simulate;
+  const ns4Financial = ns4Identity.bundle;
   // Same CompanyCovenantData as Position; utilizationAuthority null → verified remaining withheld.
+  // PRODUCTION surface — synthetic remaining stripped inside #340 sanitizer.
   const crossDomainAcquisition = evaluateSimulateCrossDomainAcquisition({
     data,
     amountMillions: amountMillions > 0 ? amountMillions : 150,
@@ -188,11 +194,29 @@ export default async function SimulatePage({
             : ""}
         </div>
         <div className="row-note">{ns4Financial.authority.disclosure}</div>
+        <div className="row-note">
+          Identity vs authoritative capacity:{" "}
+          {ns4Identity.identityConsistentWithAuthoritative == null
+            ? "—"
+            : ns4Identity.identityConsistentWithAuthoritative
+              ? "consistent"
+              : "MISMATCH"}
+          {" · fingerprint "}
+          {ns4Financial.financialInputFingerprint?.slice(0, 16) ?? "—"}
+        </div>
         {ns4Financial.missingInputs.slice(0, 4).map((m) => (
           <div className="row-note" key={m}>
             • Missing: {m}
           </div>
         ))}
+        <div className="button-row" style={{ marginTop: 12 }}>
+          <Link className="button" href={`/${companyId}/dashboard`}>
+            Dashboard (same NS-4 identity)
+          </Link>
+          <Link className="button" href={`/${companyId}/position`}>
+            Position (same NS-4 identity)
+          </Link>
+        </div>
       </Card>
 
       <Card>

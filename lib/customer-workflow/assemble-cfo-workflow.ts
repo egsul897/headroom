@@ -23,6 +23,10 @@ import {
   attemptVerifiedSimulate,
   type UnifiedTxnKind,
 } from "@/lib/product/unified-position/certified-simulate-bridge";
+import {
+  loadAuthoritativeCapacity,
+  type AuthoritativeCapacityResult,
+} from "@/lib/product/north-star-workflow/authoritative-capacity";
 import { TRUSTED_IDENTITY_PRODUCTION_ACTIVATION } from "@/lib/capacity/identity/activation";
 import {
   toProductCapacityView,
@@ -69,6 +73,11 @@ export interface AssembledCfoWorkflowOk {
   };
   workflow: CfoWorkflowState;
   trustedIdentityStatus: typeof TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status;
+  /**
+   * NS-4 / North-Star APPROVED snapshot + cutoff + 4C ledger evidence for Position/Simulate.
+   * Never upgrades production remaining authority by itself.
+   */
+  authoritativeCapacity: AuthoritativeCapacityResult;
 }
 
 export interface AssembledCfoWorkflowDenied {
@@ -92,6 +101,7 @@ export interface CfoWorkflowSensitiveLoaders {
   listReviewerApprovals: typeof listReviewerApprovals;
   getCompanyDashboard: typeof getCompanyDashboard;
   attemptVerifiedSimulate: typeof attemptVerifiedSimulate;
+  loadAuthoritativeCapacity: typeof loadAuthoritativeCapacity;
 }
 
 const defaultLoaders: CfoWorkflowSensitiveLoaders = {
@@ -104,7 +114,29 @@ const defaultLoaders: CfoWorkflowSensitiveLoaders = {
   listReviewerApprovals,
   getCompanyDashboard,
   attemptVerifiedSimulate,
+  loadAuthoritativeCapacity,
 };
+
+/** Presentation lines for NS-4 evidence — shared by Position/Simulate; no capacity invention. */
+export function ns4EvidenceLines(auth: AuthoritativeCapacityResult): string[] {
+  const lines: string[] = [
+    `NS-4/NS APPROVED snapshots: ${auth.approvedSnapshotCount}`,
+    `Cutoff: ${auth.cutoff.state}${auth.cutoff.asOf ? ` asOf ${auth.cutoff.asOf}` : ""}${
+      auth.cutoff.approvedSnapshotId ? ` snapshot=${auth.cutoff.approvedSnapshotId}` : ""
+    }`,
+    `Active attributed 4C ledger usages: ${auth.activeLedgerUsageCount}`,
+    `Authoritative capacity status: ${auth.status} (${auth.authority})`,
+  ];
+  if (auth.snapshotFactKeys.length > 0) {
+    lines.push(`Bound snapshot facts: ${auth.snapshotFactKeys.slice(0, 12).join(", ")}`);
+  }
+  for (const e of auth.evidence.slice(0, 6)) lines.push(e);
+  for (const m of auth.missingInputs) lines.push(`missing: ${m}`);
+  if (!auth.certified.packagePresent) {
+    lines.push("VerifiedExecutionPackage absent — certified remaining / AVAILABLE refused.");
+  }
+  return lines;
+}
 
 /**
  * Project dashboard modeled figures without upgrading authority.
@@ -374,12 +406,22 @@ export async function assembleCfoWorkflow(args: {
     separatedClaims: { secured: securedClaims, unsecured: unsecuredClaims },
   });
 
+  // Prefer caller date → NS-4 cutoff asOf → dashboard asOf. Never invent "today" as certified evidence.
+  const authoritative = await loaders.loadAuthoritativeCapacity({
+    companyId,
+    evaluationDate: args.evaluationDate,
+    verifiedPackage: null,
+  });
   const evaluationDate =
     args.evaluationDate ??
-    (dashboard?.asOfDate ? dashboard.asOfDate.toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10));
+    authoritative.cutoff.asOf ??
+    (dashboard?.asOfDate ? dashboard.asOfDate.toISOString().slice(0, 10) : null) ??
+    new Date().toISOString().slice(0, 10);
   const amountMillions = args.simulateAmountMillions ?? 0;
   const kind = args.simulateKind ?? "SECURED_DEBT";
 
+  // Cross-domain verified simulate: same evaluationDate / NS-4 gates as Position evidence.
+  // VEP is never invented here — attemptVerifiedSimulate fails closed without it.
   const verified = await loaders.attemptVerifiedSimulate({
     companyId,
     evaluationDate,
@@ -387,6 +429,9 @@ export async function assembleCfoWorkflow(args: {
     kind,
     verifiedPackage: null,
   });
+
+  const ns4Lines = ns4EvidenceLines(authoritative);
+  const ns4Missing = authoritative.missingInputs.map((m) => `NS-4/NS: ${m}`);
 
   // Simulate uses the same secured capacity claims identity as Position.
   const simulate = buildSimulateView({
@@ -397,8 +442,17 @@ export async function assembleCfoWorkflow(args: {
     effects: null,
     preCapacity: securedClaims,
     postCapacity: null,
-    readinessBlockers: readiness.blockers,
+    readinessBlockers: [...readiness.blockers, ...ns4Missing],
   });
+  // Append NS-4 evidence to simulate trace (shared identity with Position).
+  simulate.traceAndProvenance.push(...ns4Lines);
+  simulate.missingInputs = [...new Set([...simulate.missingInputs, ...ns4Missing])];
+
+  // Surface NS-4 gaps on Position without upgrading remaining authority.
+  position.missingInputs = [...new Set([...position.missingInputs, ...ns4Missing])];
+  position.authorityNote = `${position.authorityNote} NS-4 evidence: ${authoritative.approvedSnapshotCount} APPROVED snapshot(s); cutoff ${authoritative.cutoff.state}; certified package ${
+    authoritative.certified.packagePresent ? "present" : "absent"
+  }.`;
 
   const audit = buildAuditView({
     companyId,
@@ -437,5 +491,6 @@ export async function assembleCfoWorkflow(args: {
     },
     workflow,
     trustedIdentityStatus: TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status,
+    authoritativeCapacity: authoritative,
   };
 }
