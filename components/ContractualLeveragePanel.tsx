@@ -2,15 +2,15 @@
 
 import { Card } from "@/components/ui";
 import { fmtM } from "@/lib/format";
-import {
-  recalculateWithFinancials,
-  type ContractualLeverageResult,
-  type LeverageCalculationRequest,
-  type LeverageFinancialInputs,
-} from "@/lib/product/contractual-leverage";
+import { reflowContractualLeverageResult } from "@/lib/product/contractual-leverage/client-reflow";
+import type {
+  ContractualLeverageResult,
+  LeverageFinancialInputs,
+} from "@/lib/product/contractual-leverage/types";
 
 export interface ContractualLeveragePanelProps {
-  requests: LeverageCalculationRequest[];
+  /** Server-computed results (IR evaluation stays off the client bundle). */
+  results: ContractualLeverageResult[];
   financials: LeverageFinancialInputs;
 }
 
@@ -103,37 +103,37 @@ function ResultCard({ result }: { result: ContractualLeverageResult }) {
   );
 }
 
+const EMPTY_RESULT: ContractualLeverageResult = {
+  status: "MISSING_DEFINITIONS",
+  name: "Contractual leverage",
+  sectionRef: "—",
+  documentName: null,
+  debtBasis: null,
+  formulaDisplay: null,
+  citations: [],
+  limitations: [],
+  inputs: [],
+  missingRequirements: ["No leverage-ratio calculation packages loaded for this company"],
+  currentRatio: null,
+  threshold: null,
+  ratioHeadroom: null,
+  debtHeadroomMillions: null,
+  debtHeadroomIsVerifiedCapacity: false,
+  runtimeStatus: null,
+  derivedEbitdaMillions: null,
+  ebitdaBuildupKind: null,
+  informationRequest: null,
+};
+
 /**
  * Universal contractual leverage panel — same component for every company.
- * Recalculates from request packages + current financial inputs (no company branches).
+ * Server supplies IR-evaluated results; client reflows ratio arithmetic only.
  */
-export function ContractualLeveragePanel({ requests, financials }: ContractualLeveragePanelProps) {
-  const results =
-    requests.length > 0
-      ? requests.map((req) => recalculateWithFinancials(req, financials))
-      : [
-          {
-            status: "MISSING_DEFINITIONS" as const,
-            name: "Contractual leverage",
-            sectionRef: "—",
-            documentName: null,
-            debtBasis: null,
-            formulaDisplay: null,
-            citations: [],
-            limitations: [],
-            inputs: [],
-            missingRequirements: ["No leverage-ratio calculation packages loaded for this company"],
-            currentRatio: null,
-            threshold: null,
-            ratioHeadroom: null,
-            debtHeadroomMillions: null,
-            debtHeadroomIsVerifiedCapacity: false as const,
-            runtimeStatus: null,
-            derivedEbitdaMillions: null,
-            ebitdaBuildupKind: null,
-            informationRequest: null,
-          },
-        ];
+export function ContractualLeveragePanel({ results, financials }: ContractualLeveragePanelProps) {
+  const displayResults =
+    results.length > 0
+      ? results.map((result) => reflowContractualLeverageResult(result, financials))
+      : [EMPTY_RESULT];
 
   return (
     <Card>
@@ -143,7 +143,7 @@ export function ContractualLeveragePanel({ requests, financials }: ContractualLe
         inputs are listed — values are never invented.
       </div>
       <div data-slot="contractual-leverage">
-        {results.map((result, i) => (
+        {displayResults.map((result, i) => (
           <ResultCard key={`${result.sectionRef}-${i}`} result={result} />
         ))}
       </div>

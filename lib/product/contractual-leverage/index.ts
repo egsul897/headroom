@@ -8,6 +8,9 @@ export type {
   EbitdaComponentInputs,
   ResolvedInputLine,
   DebtMetricBasis,
+  EbitdaBuildupKind,
+  FulfillmentState,
+  FinancialInformationRequestSummary,
 } from "./types";
 
 export { identifyLeverageComponents, DEFAULT_TOTAL_LEVERAGE_TERMS, DEFAULT_SECURED_LEVERAGE_TERMS } from "./identify";
@@ -17,10 +20,10 @@ export {
   calculateContractualLeverageWithSnapshots,
   recalculateWithFinancials,
 } from "./calculate";
+export { reflowContractualLeverageResult } from "./client-reflow";
 export {
   compileCoherentEbitdaBuildup,
   compileMatthewsEbitdaBuildup,
-  type EbitdaBuildupKind,
   type EbitdaBuildupCompileResult,
 } from "./ebitda-buildup";
 export { loadContractualLeverageForCompany, type ContractualLeverageDashboardPayload } from "./service";

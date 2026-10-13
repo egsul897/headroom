@@ -6,14 +6,20 @@
  * Debt headroom is mathematical ratio room only — never verified available debt capacity.
  */
 
-import { evaluateExpression } from "@/lib/contract-model/runtime/evaluate-expression";
-import { evaluateLeverageOrCoverageRatio } from "@/lib/contract-model/runtime/leverage-ratio";
-import { buildFinancialInformationRequest } from "@/lib/contract-model/runtime/input/information-request";
-import type { FinancialSnapshot } from "@/lib/contract-model/runtime/input/types";
-import { fixtureInputResolver, metricInput } from "@/lib/contract-model/runtime/input-resolver";
-import { rational, rationalFromNumber, toApproximateNumber } from "@/lib/contract-model/runtime/decimal";
-import { money } from "@/lib/contract-model/runtime/values";
-import type { InputProvenance } from "@/lib/contract-model/runtime/types";
+import {
+  buildFinancialInformationRequest,
+  evaluateExpression,
+  evaluateLeverageOrCoverageRatio,
+  fixtureInputResolver,
+  metricInput,
+  money,
+  rational,
+  rationalFromNumber,
+  toApproximateNumber,
+  type FinancialInformationRequest,
+  type FinancialSnapshot,
+  type InputProvenance,
+} from "@/lib/contract-model/contractual-metric-execution";
 import type { IRExpression } from "@/lib/contract-model/ir/types";
 import { withExpressionId } from "@/lib/contract-model/ir/identity";
 import { compileLeverageExpressions } from "./compile";
@@ -26,10 +32,19 @@ import { identifyLeverageComponents } from "./identify";
 import type {
   ContractualLeverageResult,
   EbitdaComponentInputs,
+  FinancialInformationRequestSummary,
   LeverageCalculationRequest,
   LeverageFinancialInputs,
   ResolvedInputLine,
 } from "./types";
+
+function summarizeInformationRequest(info: FinancialInformationRequest): FinancialInformationRequestSummary {
+  return {
+    executable: info.executable,
+    blockingKeys: info.blocking.map((b) => b.requestText ?? b.dependency.key),
+    summary: info.summary,
+  };
+}
 
 const INPUT_PROVENANCE: InputProvenance = {
   source: "verified-financial-snapshot",
@@ -469,7 +484,7 @@ export function calculateContractualLeverageWithSnapshots(args: {
       limitations: identified.limitations,
       inputs,
       missingRequirements: info.blocking.map((b) => b.requestText ?? b.dependency.key),
-      informationRequest: info,
+      informationRequest: summarizeInformationRequest(info),
       ebitdaBuildupKind: buildup?.kind ?? null,
     };
   }
@@ -477,5 +492,5 @@ export function calculateContractualLeverageWithSnapshots(args: {
   // Snapshots are complete for ratio leaves — still run the pure path with caller financials /
   // components (snapshot values must be projected by the caller into LeverageFinancialInputs).
   const computed = calculateContractualLeverage(req);
-  return { ...computed, informationRequest: info };
+  return { ...computed, informationRequest: summarizeInformationRequest(info) };
 }

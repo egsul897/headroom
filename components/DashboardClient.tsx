@@ -22,7 +22,10 @@ import {
 } from "@/lib/dashboard/load-state";
 import type { CompanyCovenantData, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
-import type { LeverageCalculationRequest } from "@/lib/product/contractual-leverage";
+import type {
+  ContractualLeverageResult,
+  LeverageFinancialInputs,
+} from "@/lib/product/contractual-leverage/types";
 import { fmtDate, fmtM } from "@/lib/format";
 
 /**
@@ -64,8 +67,8 @@ export interface DashboardClientProps {
   maturitiesQuery: MaturitiesQuery;
   /** Phase 4C attributed utilization (serializable). Absent ⇒ all rows NOT_TRACKED. */
   attributedUtilizationSerialized?: AttributedUtilizationSerialized | null;
-  /** Contractual leverage packages (definition-backed). Empty ⇒ panel shows missing requirements. */
-  contractualLeverageRequests?: LeverageCalculationRequest[];
+  /** Server-computed contractual leverage results. Empty ⇒ panel shows missing requirements. */
+  contractualLeverageResults?: ContractualLeverageResult[];
 }
 
 /** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
@@ -270,13 +273,15 @@ export function DashboardClient(props: DashboardClientProps) {
       </Card>
 
       <ContractualLeveragePanel
-        requests={props.contractualLeverageRequests ?? []}
-        financials={{
-          ebitda: financials.ebitda,
-          totalDebt: financials.totalDebt,
-          securedDebt: financials.securedDebt,
-          cash: financials.cash,
-        }}
+        results={props.contractualLeverageResults ?? []}
+        financials={
+          {
+            ebitda: financials.ebitda,
+            totalDebt: financials.totalDebt,
+            securedDebt: financials.securedDebt,
+            cash: financials.cash,
+          } satisfies LeverageFinancialInputs
+        }
       />
 
       {/* 3. Needs attention (§13). */}

@@ -50,7 +50,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
       facilitiesQuery={facilitiesQuery}
       maturitiesQuery={maturitiesQuery}
       attributedUtilizationSerialized={attributedUtilizationSerialized}
-      contractualLeverageRequests={leverage.requests}
+      contractualLeverageResults={leverage.results}
     />
   );
 }

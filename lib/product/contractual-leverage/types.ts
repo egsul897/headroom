@@ -5,10 +5,30 @@
  * no production formula branches on companyId.
  */
 
-import type { FulfillmentState, FinancialInformationRequest } from "@/lib/contract-model/runtime/input/information-request";
-import type { EbitdaBuildupKind } from "./ebitda-buildup";
+/**
+ * Fulfillment / information-request shapes mirrored here so client modules can
+ * import this file without traversing contract-model/runtime (node:crypto).
+ * Keep in sync with lib/contract-model/contractual-metric-execution exports.
+ */
+export type FulfillmentState =
+  | "APPROVED_VERIFIED"
+  | "MISSING"
+  | "STALE"
+  | "AMBIGUOUS"
+  | "UNSUPPORTED"
+  | "NOT_APPROVED"
+  | "INCOMPATIBLE";
+
+export type EbitdaBuildupKind = "COHERENT_CAPPED_ADDBACK" | "MATTHEWS_UNCAPPED_SUM";
 
 export type DebtMetricBasis = "total" | "secured";
+
+/** Minimal serializable information-request summary for dashboard display. */
+export interface FinancialInformationRequestSummary {
+  executable: boolean;
+  blockingKeys: string[];
+  summary: Partial<Record<FulfillmentState, number>>;
+}
 
 export interface DefinitionText {
   termName: string;
@@ -101,8 +121,8 @@ export interface ContractualLeverageResult {
   /** Derived contractual EBITDA from build-up when used ($M). */
   derivedEbitdaMillions?: number | null;
   ebitdaBuildupKind?: EbitdaBuildupKind | null;
-  /** Manifest→fulfillment join when snapshots were supplied. */
-  informationRequest?: FinancialInformationRequest | null;
+  /** Manifest→fulfillment join summary when snapshots were supplied. */
+  informationRequest?: FinancialInformationRequestSummary | null;
 }
 
 export interface LeverageCalculationRequest {

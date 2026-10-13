@@ -11,8 +11,9 @@
 
 import type { IRDefinition, IRExpression, SourceProvenance } from "@/lib/contract-model/ir/types";
 import { withExpressionId } from "@/lib/contract-model/ir/identity";
+import type { EbitdaBuildupKind } from "./types";
 
-export type EbitdaBuildupKind = "COHERENT_CAPPED_ADDBACK" | "MATTHEWS_UNCAPPED_SUM";
+export type { EbitdaBuildupKind };
 
 export interface EbitdaBuildupCompileResult {
   kind: EbitdaBuildupKind;
