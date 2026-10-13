@@ -1,10 +1,12 @@
 # Cross-layer integration matrix
 
 **Controlling architecture:** `docs/headroom-north-star-v2.md`, `docs/headroom-north-star-reconciliation/06-revised-roadmap.md`  
-**Branch / PR under test:** `cursor/cross-layer-integration-7039` / [#332](https://github.com/egsul897/headroom/pull/332) (off `origin/main` @ `67027b8f`)  
+**Branch / PR under test:** `cursor/cross-layer-integration-7039` / [#332](https://github.com/egsul897/headroom/pull/332) (off `origin/main` including merged `#333`)  
 **Status legend:** `VERIFIED` = production interface exercised by automated test on real modules/persisted state · `PARTIAL` = interface exists but gap remains · `BLOCKED` = phase-gate / IdP / certification refuses · `UNSUPPORTED` = not built or explicitly out of MVP
 
 Integration readiness ≠ production certification.
+
+**#334 reconciliation (delivery/cutoff):** Canonical delivery reconstruction is `lib/contract-model/runtime/input/delivery-evidence.ts` (first-class `provenance.deliveredAtIsoDate`, approvalRef `deliveredAt=` marker as secondary persisted channel, `resolveAuthoritativeCutoff`). [#334](https://github.com/egsul897/headroom/pull/334) must not ship a competing `certificate-deliveries.deliveriesFromApprovedSnapshots` — absorb historical SUPERSEDED bind (`bindSnapshotForDeliveredCutoff`, cutoff-eligible loaders) onto this shared helper after `#332` merges.
 
 | # | Interface | Canonical implementation | Competing / demoted | Status | Evidence |
 |---|---|---|---|---|---|
@@ -24,8 +26,9 @@ Integration readiness ≠ production certification.
 
 | Concern | Lock | Test |
 |---|---|---|
-| Delivery ≠ period-end asOf ≠ approval ≠ evaluation | Persist `deliveredAt=` only when explicitly supplied; never from reviewedAt | `delivery-authority-adversarial.test.ts` |
-| Missing delivery marker | `REQUIRE_PERSISTED_DELIVERY` default + `resolveAuthoritativeCutoff` → `NEEDS_INPUT` | adversarial + readiness/certified entrypoints |
+| Delivery ≠ period-end asOf ≠ approval ≠ evaluation | Persist `provenance.deliveredAtIsoDate` / approvalRef `deliveredAt=` only when explicitly supplied; never from reviewedAt | `delivery-authority-adversarial.test.ts` |
+| Missing delivery marker | Persisted-delivery-only + `resolveAuthoritativeCutoff` → `NEEDS_INPUT` at readiness + certified entrypoints | adversarial + `delivery-authority-entrypoints.test.ts` |
+| No production approval-as-delivery switch | `ALLOW_REVIEWED_AT_FALLBACK` removed from exported API; legacy proof is test-local only | adversarial source assertions |
 | Restatement supersession | Predecessor `SUPERSEDED`; cutoff binds successor only | `delivery-evidence.test.ts`, vertical-slice |
 | Gross / remaining / hypothetical collapse | `classifyCustomerFigure` refuses headroom upgrade without completeness | vertical-slice |
 | UNKNOWN utilization → zero | Unchanged; still refused in capacity/utilization modules | adversarial `#293` suite (prior) |
@@ -48,6 +51,6 @@ Integration readiness ≠ production certification.
 
 ## Open PR dependency subgraph (do not duplicate)
 
-Active concurrent work (inspect, don’t fork): `#324`–`#327` dashboard contractual EBITDA/leverage/NS-4 Neon band; `#328` canonical path verify; `#311`/`#312`/`#319` CFO + operative binding; `#308` verified remaining; `#320` OA/calc consistency; `#323` adversarial intel.
+Active concurrent work (inspect, don’t fork): `#334` NS-4 Dashboard/Position/Simulate binder (must consume shared delivery-evidence after `#332`); `#328` canonical path verify; `#311`/`#312`/`#319` CFO + operative binding; `#308` verified remaining; `#320` OA/calc consistency; `#323` adversarial intel.
 
-This tip stays on temporal delivery persistence, cross-layer contract tests, figure semantics, and the integration matrix — no competing dashboard/EBITDA engine.
+This tip owns delivery authority + cross-layer contract tests + figure semantics. No competing dashboard/EBITDA engine; no unverified remaining-capacity publication.

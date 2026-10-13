@@ -87,7 +87,6 @@ describe("cross-layer vertical-slice acceptance (SYNTHETIC)", () => {
     const deliveries = deliveriesFromApprovedSnapshots(
       companyId,
       snapStore.getSnapshots(companyId),
-      "REQUIRE_PERSISTED_DELIVERY",
     );
     expect(deliveries).toHaveLength(1);
     expect(deliveries[0]!.deliveredAtIsoDate).toBe("2026-07-10");
@@ -289,6 +288,12 @@ describe("cross-layer vertical-slice acceptance (SYNTHETIC)", () => {
         supersedesSnapshotId: CONMED_FORM_INSPIRED_CERT.snapshotId,
         version: "v2",
         review: { reviewedBy: null, reviewedAt: null, approvalRef: null },
+        // Do not inherit predecessor delivery — restatement supplies its own on approve.
+        provenance: {
+          source: snap.provenance.source,
+          sourceVersion: snap.provenance.sourceVersion,
+          note: snap.provenance.note,
+        },
         // Material restatement of EBITDA
         inputs: snap.inputs.map((inp) =>
           inp.identity.key === "Consolidated EBITDA"
@@ -320,9 +325,19 @@ describe("cross-layer vertical-slice acceptance (SYNTHETIC)", () => {
     const postDeliveries = deliveriesFromApprovedSnapshots(
       companyId,
       snapStore.getSnapshots(companyId),
-      "REQUIRE_PERSISTED_DELIVERY",
     );
-    expect(postDeliveries.every((d) => d.deliveredAtIsoDate === "2026-07-22")).toBe(true);
+    // SUPERSEDED predecessor retains its persisted delivery for historical binding;
+    // current APPROVED restatement carries the later delivery date.
+    expect(postDeliveries.some((d) => d.deliveredAtIsoDate === "2026-07-22" && d.snapshotId === successorId)).toBe(
+      true,
+    );
+    expect(
+      postDeliveries.some(
+        (d) =>
+          d.deliveredAtIsoDate === "2026-07-10" &&
+          d.snapshotId === CONMED_FORM_INSPIRED_CERT.snapshotId,
+      ),
+    ).toBe(true);
 
     const postCutoff = resolveContractualSelector({
       companyId,
@@ -345,7 +360,7 @@ describe("cross-layer vertical-slice acceptance (SYNTHETIC)", () => {
     );
   });
 
-  it("fail-closed: REQUIRE_PERSISTED_DELIVERY without marker does not resolve via asOf", () => {
+  it("fail-closed: persisted-delivery-only without marker does not resolve via asOf", () => {
     const store = new InMemoryApprovedSnapshotStore();
     const ledger = new LedgerProposalRecorder();
     proposeFromCertificate(store, CONMED_FORM_INSPIRED_CERT, ledger);
@@ -363,7 +378,6 @@ describe("cross-layer vertical-slice acceptance (SYNTHETIC)", () => {
     const deliveries = deliveriesFromApprovedSnapshots(
       CONMED_FORM_INSPIRED_CERT.companyId,
       store.getSnapshots(CONMED_FORM_INSPIRED_CERT.companyId),
-      "REQUIRE_PERSISTED_DELIVERY",
     );
     expect(deliveries).toHaveLength(0);
 

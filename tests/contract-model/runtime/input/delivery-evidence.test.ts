@@ -7,6 +7,7 @@ import {
   deliveriesFromApprovedSnapshots,
   encodeDeliveredAtInApprovalRef,
   extractDeliveredAtFromApprovalRef,
+  persistedDeliveryDateFromSnapshot,
   temporalAxesFromSnapshot,
 } from "@/lib/contract-model/runtime/input/delivery-evidence";
 import {
@@ -50,6 +51,9 @@ describe("delivery evidence persistence", () => {
     expect(snap.asOf).toBe("2026-06-30");
     expect(snap.review.reviewedAt?.slice(0, 10)).toBe("2026-07-20");
     expect(extractDeliveredAtFromApprovalRef(snap.review.approvalRef)).toBe("2026-07-10");
+    // Materialization promotes approvalRef marker into first-class provenance.
+    expect(snap.provenance.deliveredAtIsoDate).toBe("2026-07-10");
+    expect(persistedDeliveryDateFromSnapshot(snap)).toBe("2026-07-10");
 
     const axes = temporalAxesFromSnapshot(snap, "2026-08-01");
     expect(axes.periodEndAsOf).toBe("2026-06-30");
@@ -59,7 +63,7 @@ describe("delivery evidence persistence", () => {
     expect(axes.axesDistinct).toBe(true);
   });
 
-  it("default REQUIRE_PERSISTED_DELIVERY never invents delivery from asOf or reviewedAt", () => {
+  it("persisted-delivery-only never invents delivery from asOf or reviewedAt", () => {
     const fake = {
       snapshotId: "snap-no-delivery",
       version: "v1",
@@ -72,12 +76,39 @@ describe("delivery evidence persistence", () => {
       provenance: { source: "doc", sourceVersion: null },
       review: { reviewedBy: "r", reviewedAt: "2026-07-20T18:00:00Z", approvalRef: "apr-plain" },
     };
-    // Default mode = REQUIRE — reviewedAt present is not delivery.
     expect(deliveriesFromApprovedSnapshots("co-x", [fake])).toEqual([]);
-    expect(deliveriesFromApprovedSnapshots("co-x", [fake], "REQUIRE_PERSISTED_DELIVERY")).toEqual([]);
+    expect(persistedDeliveryDateFromSnapshot(fake)).toBeNull();
   });
 
-  it("SUPERSEDED snapshots do not contribute current delivery evidence", () => {
+  it("prefers first-class provenance.deliveredAtIsoDate over approvalRef marker", () => {
+    const snap = {
+      snapshotId: "snap-prov",
+      version: "v1",
+      companyId: "co-x",
+      asOf: "2026-06-30",
+      reportingPeriod: "FY2026-Q2",
+      status: "APPROVED" as const,
+      supersedesSnapshotId: null,
+      inputs: [],
+      provenance: {
+        source: "doc",
+        sourceVersion: "sha256:v1",
+        deliveredAtIsoDate: "2026-07-08",
+      },
+      review: {
+        reviewedBy: "r",
+        reviewedAt: "2026-07-20T18:00:00Z",
+        approvalRef: encodeDeliveredAtInApprovalRef("apr", "2026-07-22"),
+      },
+    };
+    expect(persistedDeliveryDateFromSnapshot(snap)).toBe("2026-07-08");
+    const deliveries = deliveriesFromApprovedSnapshots("co-x", [snap]);
+    expect(deliveries).toHaveLength(1);
+    expect(deliveries[0]!.deliveredAtIsoDate).toBe("2026-07-08");
+    expect(deliveries[0]!.snapshotId).toBe("snap-prov");
+  });
+
+  it("SUPERSEDED snapshots with persisted delivery remain historically attributable", () => {
     const store = new InMemoryApprovedSnapshotStore();
     const ledger = new LedgerProposalRecorder();
     proposeFromCertificate(store, CONMED_FORM_INSPIRED_CERT, ledger);
@@ -100,6 +131,7 @@ describe("delivery evidence persistence", () => {
         supersedesSnapshotId: CONMED_FORM_INSPIRED_CERT.snapshotId,
         review: { reviewedBy: null, reviewedAt: null, approvalRef: null },
         version: "v2-restatement",
+        provenance: { ...pred.provenance, deliveredAtIsoDate: undefined },
       },
     });
     approveCertificateProposal(store, {
@@ -115,11 +147,9 @@ describe("delivery evidence persistence", () => {
     const deliveries = deliveriesFromApprovedSnapshots(
       CONMED_FORM_INSPIRED_CERT.companyId,
       store.getSnapshots(CONMED_FORM_INSPIRED_CERT.companyId),
-      "REQUIRE_PERSISTED_DELIVERY",
     );
-    expect(deliveries).toHaveLength(1);
-    expect(deliveries[0]!.documentId).toBeTruthy();
-    expect(deliveries[0]!.deliveredAtIsoDate).toBe("2026-07-22");
+    // Both predecessor (SUPERSEDED) and successor (APPROVED) carry persisted delivery.
+    expect(deliveries.map((d) => d.deliveredAtIsoDate).sort()).toEqual(["2026-07-10", "2026-07-22"]);
 
     const cutoff = resolveContractualSelector({
       companyId: CONMED_FORM_INSPIRED_CERT.companyId,

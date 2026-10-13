@@ -53,9 +53,9 @@ export {
   authoritativeDeliveriesFromSnapshots,
   encodeDeliveredAtInApprovalRef,
   extractDeliveredAtFromApprovalRef,
+  persistedDeliveryDateFromSnapshot,
   temporalAxesFromSnapshot,
 } from "./runtime/input/delivery-evidence";
-export type { DeliveryReconstructionMode } from "./runtime/input/delivery-evidence";
 
 export { resolveAuthoritativeCutoff } from "./runtime/input/authoritative-cutoff";
 export type { AuthoritativeCutoffResult } from "./runtime/input/authoritative-cutoff";

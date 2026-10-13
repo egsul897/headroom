@@ -1,6 +1,6 @@
 /**
  * Authoritative contractual cutoff bind for product paths.
- * Always uses REQUIRE_PERSISTED_DELIVERY — approval never establishes delivery.
+ * Persisted-delivery-only — approval never establishes delivery.
  */
 import {
   authoritativeDeliveriesFromSnapshots,

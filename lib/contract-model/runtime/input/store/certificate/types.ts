@@ -175,7 +175,7 @@ export interface ApproveCertificateProposalRequest {
   deliveredAsOfDate?: string;
   /**
    * When true, do not encode delivery into approvalRef — delivery is unknown.
-   * Authoritative selectors use REQUIRE_PERSISTED_DELIVERY and fail closed until delivery is supplied.
+   * Authoritative selectors use persisted-delivery-only selection and fail closed until delivery is supplied.
    */
   omitDeliveryEvidence?: boolean;
   /** Optional provenance note linking back to the certificate document. */

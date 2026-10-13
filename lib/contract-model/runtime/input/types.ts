@@ -101,8 +101,8 @@ export interface FinancialSnapshot {
     note?: string;
     /**
      * Persisted certificate delivery date (ISO YYYY-MM-DD).
-     * Used by MOST_RECENTLY_DELIVERED_* selectors. Never invent from period asOf
-     * or from attributable approval (reviewedAt).
+     * First-class channel for MOST_RECENTLY_DELIVERED_* selectors.
+     * Never invent from period asOf or attributable approval reviewedAt.
      */
     deliveredAtIsoDate?: string;
   };
