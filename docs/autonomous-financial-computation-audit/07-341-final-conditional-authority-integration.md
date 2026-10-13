@@ -1,42 +1,32 @@
-# #341 Final Conditional-Authority Integration
+# #341 Final Selective Integration Gate
 
-**Corrected tip SHA:** `77b06f1f550378e5426a475d4ce46ca42e19707a`  
-**Integration target:** `main` @ `d924f5b6c47f1d63982bb4385579d6858cdaf067` (merge of #332; includes #334 + #345)  
-**PR:** https://github.com/egsul897/headroom/pull/341  
-**Mergeable (GitHub at push):** `true` / `unstable` (exact-tip CI pending on this SHA)
+**Tip SHA:** see branch HEAD after push (authority-only tip on current `main`)  
+**Integration target:** `origin/main`  
+**PR:** https://github.com/egsul897/headroom/pull/341
 
-## Non-mergeable root cause (resolved)
+## Scope (selective)
 
-Prior tip `fde73d3e` conflicted with merged #334 Dashboard NS-4 props, then with #345 contractual-metrics and #332 cross-layer authority. Rebased cleanly; `origin/main` is an ancestor of HEAD.
+**Keep (unique, justified):**
+- Live conditional path authority + module-private brand gate
+- Fulfillment join (`information-request.ts`) with PATH_IRRELEVANT / SAFE_BOUND
+- `FIXED_POINT_ADDBACK_CAP` IR + leverage-ratio denominator policy
+- Adversarial conditional-clearance tests
 
-## Authority hardening
+**Removed (competing / redundant vs #345):**
+- `lib/product/contractual-leverage/**`
+- `ContractualLeveragePanel` + Dashboard leverage wiring
+- Parallel NS-4 bind / canonical-integration product path
+- Leverage package tests / DB acceptance tied to that path
 
-- Live IF re-evaluation at fulfillment boundary preserved.
-- New module-private brand on authority objects from `evaluateConditionalPathsAuthoritatively`.
-- `proveConditionalClearance` / `authorityShowsLeafInactive` require `isLiveEvaluatedPathAuthority` — not `authoritative: true` alone.
-- JSON clones and forged self-consistent seals fail closed.
-- Sole production caller of `proveConditionalClearance`: `fulfillFinancialDependencyManifest`.
+**Deferred to #338 (not duplicated):**
+- Filing-reconstruction evidence / alternate reflow engine / disclaimer package
 
-## #338 selective integration
+Dashboard financial metrics remain solely via #345 `loadContractualMetricsForDashboard` (`persist:false`).
 
-Absorbed `CAPACITY_DISCLAIMER` only. Did **not** port #338’s parallel evidence/reflow/EBITDA engine.
+## Authority proofs required
 
-## Local test results (exact tip)
+Forged `authoritative:true`, matching SHA-256 seals, JSON clones, superseded snapshot identities, and cross-company authority must fail clearance. Brand required at `proveConditionalClearance` and `authorityShowsLeafInactive`.
 
-| Suite | Result |
-| --- | --- |
-| `conditional-fulfillment-adversarial.test.ts` | 11 passed |
-| `contractual-leverage.test.ts` | 8 passed |
-| `contractual-ebitda-leverage-integration.test.ts` | 10 passed |
-| `canonical-financial-path-acceptance.test.ts` (local `headroom_afc`) | 4 passed |
-| `tsc --noEmit` | clean |
+## Explicit non-goals
 
-## Remaining blockers
-
-1. Exact-tip GitHub CI must go green on `77b06f1f` (was `unstable` at report time).
-2. #338 remains open/conflicting — human should merge #341 first or resolve #338 against this tip; do not duplicate engines.
-3. No self-merge; no production-authority activation.
-
-## Human merge recommendation
-
-**Merge #341 after exact-tip CI is green.** Authority bypass is closed at the brand gate; Dashboard coexists with #334/#345 surfaces. Do not activate production authority in this PR.
+No self-merge. No second resolver. No production-authority activation.
