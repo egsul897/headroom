@@ -37,13 +37,9 @@ import {
 import {
   resolveContractualEbitdaDerivation,
   type ContractualEbitdaDerivation,
-  type ContractualEbitdaEvidencePackage,
   type EbitdaBuildupComponent,
 } from "@/lib/financial-certificate-engine/contractual-ebitda-buildup";
-import {
-  COHERENT_EBITDA_EVIDENCE,
-  MATTHEWS_EBITDA_EVIDENCE,
-} from "@/lib/financial-certificate-engine/fixtures";
+import { bindContractualEbitdaEvidenceByIdentity } from "@/lib/product/cross-domain-simulate";
 import {
   evaluateDefaultCrossDomainScenarios,
 } from "@/lib/product/cross-domain-scenarios";
@@ -51,28 +47,10 @@ import type { CrossDomainTransactionEvaluation } from "@/lib/product/cross-domai
 import type { CompanyCovenantData } from "@/lib/covenant-engine";
 
 /**
- * Evidence packages keyed by as-of + binding EBITDA — not by company id.
- * Avoids company-specific production branches while attaching authentic schedules.
+ * Derive from FinancialState addback rows only when present.
+ * Authentic Coherent/Matthews schedules attach via
+ * `bindContractualEbitdaEvidenceByIdentity` — never by numerical EBITDA match.
  */
-const EBITDA_EVIDENCE_PACKAGES: ContractualEbitdaEvidencePackage[] = [
-  COHERENT_EBITDA_EVIDENCE,
-  MATTHEWS_EBITDA_EVIDENCE,
-];
-
-function matchEbitdaEvidencePackage(
-  asOf: string | null,
-  bindingEbitda: number | null,
-): ContractualEbitdaEvidencePackage | null {
-  if (asOf == null || bindingEbitda == null) return null;
-  return (
-    EBITDA_EVIDENCE_PACKAGES.find(
-      (p) =>
-        p.asOfDate === asOf &&
-        Math.abs(p.bindingContractualEbitdaMillions - bindingEbitda) < 1e-6,
-    ) ?? null
-  );
-}
-
 function derivationFromFinancialStateCovenantEbitda(
   covenantFacts: unknown,
   asOf: string | null,
@@ -103,10 +81,6 @@ function derivationFromFinancialStateCovenantEbitda(
             : "UNVERIFIED",
     };
   });
-
-  // Prefer a matched authentic evidence package when fingerprint aligns.
-  const matched = matchEbitdaEvidencePackage(asOf, value);
-  if (matched) return resolveContractualEbitdaDerivation(matched);
 
   return resolveContractualEbitdaDerivation({
     bindingContractualEbitdaMillions: value,
@@ -549,12 +523,19 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
     }
   }
 
-  // Contractual EBITDA derivation: FinancialState addbacks → evidence package match by as-of+value.
+  // Contractual EBITDA: FinancialState addbacks first; else identity-bound authentic package
+  // (company/document/period/as-of/source-version). Never select by numerical EBITDA equality.
   const ebitdaDerivation =
     derivationFromFinancialStateCovenantEbitda(financialState?.covenantMetricFacts, asOfDate) ??
     (() => {
-      const matched = matchEbitdaEvidencePackage(asOfDate, ebitda);
-      return matched ? resolveContractualEbitdaDerivation(matched) : null;
+      const docs = covenantDataForContractual?.documents.map((d) => d.id) ?? [];
+      if (docs.length === 0 || !asOfDate) return null;
+      const bound = bindContractualEbitdaEvidenceByIdentity({
+        companyId,
+        documentIds: docs,
+        evaluationDate: asOfDate,
+      });
+      return bound.derivation;
     })();
 
   const contractualComputation = computeContractualCovenantMetrics({

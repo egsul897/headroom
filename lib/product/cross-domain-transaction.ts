@@ -714,6 +714,10 @@ export function evaluateCrossDomainTransaction(params: {
   const { data, transaction: tx } = params;
   const authoritySurface: CrossDomainAuthoritySurface =
     params.authoritySurface ?? "PRODUCTION";
+  const sanitizedAuthority = sanitizeUtilizationAuthorityForSurface(
+    params.utilizationAuthority,
+    authoritySurface,
+  );
   const assumptionBlock = refuseWithoutAssumptions(tx);
   const position = computeCovenantPosition(data);
   const asOf = tx.assumptions.evaluationDate;
@@ -736,17 +740,13 @@ export function evaluateCrossDomainTransaction(params: {
     ebitdaDerivation: params.ebitdaDerivation ?? null,
   });
 
-  const surfaceSanitize = sanitizeUtilizationAuthorityForSurface(
-    params.utilizationAuthority,
-    authoritySurface,
-  );
-
   const packageLimitations: string[] = [
     "Gross capacity is never described as verified available capacity.",
     "Modeled remaining is never relabeled as verified remaining.",
     "Caller-supplied utilizationAttributed / utilizationCompletenessCertified flags never authorize verified remaining.",
     "No contractual permissions or historical utilization are invented.",
-    ...surfaceSanitize.disclosures,
+    `Authority surface: ${authoritySurface}.`,
+    ...sanitizedAuthority.disclosures,
   ];
   if (assumptionBlock) packageLimitations.push(assumptionBlock);
   if (!financialIdentityValid) {
@@ -762,7 +762,7 @@ export function evaluateCrossDomainTransaction(params: {
       "Caller set utilizationAttributed and/or utilizationCompletenessCertified — ignored for verified remaining authorization.",
     );
   }
-  if (!params.utilizationAuthority) {
+  if (!sanitizedAuthority.auth) {
     packageLimitations.push(
       "Verified remaining capacity withheld — canonical utilization authority not supplied.",
     );
@@ -793,7 +793,7 @@ export function evaluateCrossDomainTransaction(params: {
       grossCapacityMillions: slice.grossCapacityMillions,
       modeledRemainingMillions: slice.modeledRemainingMillions ?? null,
       gateSatisfied: slice.gateSatisfied ?? slice.status !== "blocked",
-      utilizationAuthority: params.utilizationAuthority,
+      utilizationAuthority: sanitizedAuthority.auth,
       expectedIdentity,
       authoritySurface,
       claimedSharedPools,
@@ -1088,7 +1088,7 @@ export function evaluateCrossDomainTransaction(params: {
     grossCapacityMillions: null,
     modeledRemainingMillions: null,
     gateSatisfied: false,
-    utilizationAuthority: params.utilizationAuthority,
+    utilizationAuthority: sanitizedAuthority.auth,
     expectedIdentity,
     authoritySurface,
     claimedSharedPools,

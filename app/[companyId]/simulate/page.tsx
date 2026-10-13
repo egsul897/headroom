@@ -19,6 +19,8 @@ import { SeparatedCapacityPanel } from "@/components/customer-workflow/Separated
 import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
 import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
 import { loadApprovedFinancialInputBundle } from "@/lib/product/north-star-workflow";
+import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
+import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };

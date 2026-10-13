@@ -148,7 +148,14 @@ describeIso("NS-4 secured-debt acquisition — Dashboard/Position/Simulate ident
     for (const d of xd.domains) {
       expect(d.verifiedRemainingMillions).toBeNull();
     }
-    expect(xd.packageLimitations.some((l) => /Caller-supplied.*ignored/i.test(l))).toBe(true);
+    expect(
+      xd.packageLimitations.some(
+        (l) =>
+          /Caller-supplied utilizationAttributed|never authorize verified remaining|ignored for verified remaining/i.test(
+            l,
+          ),
+      ),
+    ).toBe(true);
     expect(xd.packageLimitations.some((l) => /Gross capacity is never described as verified/i.test(l))).toBe(
       true,
     );

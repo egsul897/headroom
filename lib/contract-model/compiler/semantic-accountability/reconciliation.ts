@@ -208,6 +208,11 @@ function walkExpression(w: Walk, expr: IRExpression | null | undefined, path: st
       pushText(w, `${path}.activeDuration`, expr.activeDuration, insideAttempt);
       if (expr.triggerCondition) walkExpression(w, expr.triggerCondition, `${path}.triggerCondition`, insideAttempt, insideUnsupported);
       return;
+    case "FIXED_POINT_ADDBACK_CAP":
+      walkExpression(w, expr.base, `${path}.base`, insideAttempt, insideUnsupported);
+      walkExpression(w, expr.addbacks, `${path}.addbacks`, insideAttempt, insideUnsupported);
+      if (expr.eligibility) walkExpression(w, expr.eligibility, `${path}.eligibility`, insideAttempt, insideUnsupported);
+      return;
     case "UNSUPPORTED":
       pushText(w, `${path}.semanticDescription`, expr.semanticDescription, true);
       pushText(w, `${path}.sourceEvidence`, expr.sourceEvidence, true);

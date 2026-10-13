@@ -40,6 +40,7 @@ function childrenOf(expr: IRCapacityExpression): IRExpression[] {
     case "DURING_PERIOD": return [expr.value];
     case "SCHEDULE": return expr.defaultValue ? [...expr.cases.map((c) => c.value), expr.defaultValue] : expr.cases.map((c) => c.value);
     case "EVENT_ACTIVE": return expr.triggerCondition ? [expr.triggerCondition] : [];
+    case "FIXED_POINT_ADDBACK_CAP": return expr.eligibility ? [expr.base, expr.addbacks, expr.eligibility] : [expr.base, expr.addbacks];
     default: return [];
   }
 }

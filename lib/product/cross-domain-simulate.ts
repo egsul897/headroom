@@ -7,8 +7,8 @@
  * VEP / production remaining authority.
  *
  * Contractual EBITDA evidence is resolved by company / package / document /
- * source-version / approved-snapshot identity — NEVER by matching EBITDA
- * dollar values across companies.
+ * source-version / approved-snapshot / measurement-period / as-of identity —
+ * NEVER by matching EBITDA dollar values across companies.
  */
 
 import type { CompanyCovenantData } from "@/lib/covenant-engine";
@@ -30,6 +30,126 @@ import {
   type CrossDomainUtilizationAuthority,
 } from "@/lib/product/cross-domain-transaction";
 import { coherentDebtFundedAcquisition } from "@/lib/product/cross-domain-scenarios";
+
+/** Catalog of identity-bearing evidence packages for Simulate / debt-intelligence binding. */
+export const SIMULATE_EBITDA_EVIDENCE_CATALOG: readonly ContractualEbitdaEvidencePackage[] = [
+  COHERENT_EBITDA_EVIDENCE,
+  MATTHEWS_EBITDA_EVIDENCE,
+];
+
+export interface EbitdaEvidenceBindingRequest {
+  companyId: string;
+  documentIds: readonly string[];
+  evaluationDate: string;
+  /** When set, must equal evidence.bindingIdentity.measurementPeriod. */
+  measurementPeriod?: string | null;
+  /** When set, must equal evidence.bindingIdentity.financialSnapshotId. */
+  financialSnapshotId?: string | null;
+  /** When set, must equal evidence.bindingIdentity.sourceVersionId. */
+  sourceVersionId?: string | null;
+  catalog?: readonly ContractualEbitdaEvidencePackage[];
+}
+
+export interface EbitdaEvidenceBindingResult {
+  derivation: ContractualEbitdaDerivation | null;
+  matched: ContractualEbitdaEvidencePackage | null;
+  refusalReason: string | null;
+}
+
+/**
+ * Bind contractual EBITDA evidence by authenticated identity fields only.
+ * Numeric bindingContractualEbitdaMillions is never used as a selector.
+ * Fail closed when request or package identity cannot be established / matched.
+ *
+ * Used by debt-intelligence and identity-binding tests (#340/#341).
+ */
+export function bindContractualEbitdaEvidenceByIdentity(
+  request: EbitdaEvidenceBindingRequest,
+): EbitdaEvidenceBindingResult {
+  if (!request.companyId?.trim()) {
+    return {
+      derivation: null,
+      matched: null,
+      refusalReason:
+        "Contractual EBITDA evidence withheld — company identity missing (fail closed).",
+    };
+  }
+  if (!request.documentIds.length) {
+    return {
+      derivation: null,
+      matched: null,
+      refusalReason:
+        "Contractual EBITDA evidence withheld — document/package identity missing (fail closed).",
+    };
+  }
+  if (!request.evaluationDate?.trim()) {
+    return {
+      derivation: null,
+      matched: null,
+      refusalReason:
+        "Contractual EBITDA evidence withheld — evaluation as-of identity missing (fail closed).",
+    };
+  }
+
+  const catalog = request.catalog ?? SIMULATE_EBITDA_EVIDENCE_CATALOG;
+  const asOf = request.evaluationDate.slice(0, 10);
+  const matches: ContractualEbitdaEvidencePackage[] = [];
+
+  for (const pkg of catalog) {
+    const id = pkg.bindingIdentity;
+    if (id == null) continue; // packages without identity cannot bind
+    if (id.companyId !== request.companyId) continue;
+    if (id.asOfDate.slice(0, 10) !== asOf) continue;
+    const docOverlap = id.documentIds.some((d) => request.documentIds.includes(d));
+    if (!docOverlap) continue;
+    if (
+      request.measurementPeriod != null &&
+      request.measurementPeriod !== "" &&
+      id.measurementPeriod !== request.measurementPeriod
+    ) {
+      continue;
+    }
+    if (
+      request.sourceVersionId != null &&
+      request.sourceVersionId !== "" &&
+      id.sourceVersionId !== request.sourceVersionId
+    ) {
+      continue;
+    }
+    if (
+      request.financialSnapshotId != null &&
+      request.financialSnapshotId !== "" &&
+      (id.financialSnapshotId ?? null) !== request.financialSnapshotId
+    ) {
+      continue;
+    }
+    matches.push(pkg);
+  }
+
+  if (matches.length === 0) {
+    return {
+      derivation: null,
+      matched: null,
+      refusalReason:
+        "Contractual EBITDA evidence withheld — no package matches authenticated company/document/period/as-of/source-version identity (numeric EBITDA alone never binds).",
+    };
+  }
+  if (matches.length > 1) {
+    return {
+      derivation: null,
+      matched: null,
+      refusalReason:
+        "Contractual EBITDA evidence withheld — ambiguous identity match across multiple packages (fail closed).",
+    };
+  }
+
+  const matched = matches[0]!;
+  return {
+    matched,
+    derivation: resolveContractualEbitdaDerivation(matched),
+    refusalReason: null,
+  };
+}
 
 /** Identity keys required to bind an evidence package — never EBITDA amount. */
 export interface ContractualEbitdaEvidenceIdentity {
@@ -78,6 +198,8 @@ const CONTRACTUAL_EBITDA_EVIDENCE_REGISTRY: readonly RegisteredEbitdaEvidence[] 
  * Resolve contractual EBITDA evidence by package identity only.
  * Returns null when company/asOf/package identity does not bind — never
  * falls back to matching bindingContractualEbitdaMillions across companies.
+ *
+ * Explicit packageKey that does not bind this company → refuse (no asOf fallback).
  */
 export function resolveContractualEbitdaEvidenceForPackage(
   identity: ContractualEbitdaEvidenceIdentity,
@@ -167,7 +289,11 @@ export function evaluateSimulateCrossDomainAcquisition(params: {
   evaluationDate: string;
   utilizationAuthority?: CrossDomainUtilizationAuthority | null;
   expectedFinancialIdentity?: ApprovedFinancialIdentity | null;
+  /** Approved NS-4 / financial snapshot id (HEAD identity path). */
   approvedSnapshotId?: string | null;
+  /** Alias accepted from #340 simulate wiring. */
+  financialSnapshotId?: string | null;
+  /** Explicit package key — wrong key refuses (no asOf fallback). */
   packageKey?: string | null;
 }): CrossDomainTransactionEvaluation {
   const amount = params.amountMillions ?? 150;
@@ -175,23 +301,34 @@ export function evaluateSimulateCrossDomainAcquisition(params: {
     amountMillions: amount,
     evaluationDate: params.evaluationDate,
   });
+  const snapshotId =
+    params.approvedSnapshotId ?? params.financialSnapshotId ?? null;
   const expected =
     params.expectedFinancialIdentity ??
     buildApprovedFinancialIdentity({
       companyId: params.data.companyId,
       asOf: params.evaluationDate,
       financials: params.data.financials,
-      snapshotId: params.approvedSnapshotId ?? null,
+      snapshotId,
     });
   const ebitdaDerivation = resolveContractualEbitdaEvidenceForPackage({
     companyId: params.data.companyId,
     evaluationDate: params.evaluationDate,
     documentIds: params.data.documents.map((d) => d.id),
-    approvedSnapshotId:
-      params.approvedSnapshotId ?? expected.snapshotId ?? null,
+    approvedSnapshotId: snapshotId ?? expected.snapshotId ?? null,
     packageKey: params.packageKey ?? null,
   });
-  return evaluateCrossDomainTransaction({
+  // Also surface #340 binder refusal when registry path did not bind but docs are present.
+  const binderRefusal =
+    ebitdaDerivation == null
+      ? bindContractualEbitdaEvidenceByIdentity({
+          companyId: params.data.companyId,
+          documentIds: params.data.documents.map((d) => d.id),
+          evaluationDate: params.evaluationDate,
+          financialSnapshotId: snapshotId ?? expected.snapshotId,
+        }).refusalReason
+      : null;
+  const evaluation = evaluateCrossDomainTransaction({
     data: params.data,
     transaction: tx,
     ebitdaDerivation,
@@ -200,4 +337,8 @@ export function evaluateSimulateCrossDomainAcquisition(params: {
     // Production Simulate boundary — never TEST_DEMO.
     authoritySurface: "PRODUCTION",
   });
+  if (binderRefusal && ebitdaDerivation == null) {
+    evaluation.packageLimitations.push(binderRefusal);
+  }
+  return evaluation;
 }
