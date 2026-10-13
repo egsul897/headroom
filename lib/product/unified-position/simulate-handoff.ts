@@ -16,7 +16,14 @@ export interface SimulateHandoffDraft {
 
 /** Map Ask transaction kinds onto Simulate action tabs. */
 export function simulateActionFromAskKind(
-  kind: "SECURED_DEBT" | "UNSECURED_DEBT" | "RESTRICTED_PAYMENT" | "INVESTMENT" | "ACQUISITION" | "UNKNOWN",
+  kind:
+    | "SECURED_DEBT"
+    | "UNSECURED_DEBT"
+    | "RESTRICTED_PAYMENT"
+    | "INVESTMENT"
+    | "ACQUISITION"
+    | "ASSET_SALE"
+    | "UNKNOWN",
 ): SimulateActionType | null {
   switch (kind) {
     case "SECURED_DEBT":
@@ -27,6 +34,9 @@ export function simulateActionFromAskKind(
       return "rp";
     case "INVESTMENT":
       return "investment";
+    case "ASSET_SALE":
+      // No dedicated SimulateActionType yet — handoff stays null (do not invent).
+      return null;
     default:
       return null;
   }

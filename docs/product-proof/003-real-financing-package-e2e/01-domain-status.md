@@ -1,4 +1,9 @@
-# Domain executability — Matthews authentic package @ main `8374fa2a`
+# Domain executability — PP003 capability execution
+
+**Baseline PR #346 SHA:** `046161e78dc206c50ee951d71a18dfa4befd3206`  
+**Branch tip:** see `artifacts/00-evaluation.json` → `canonicalMainSha`  
+**Matthews package:** debt / liens (AUTHENTIC_SOURCE_BACKED)  
+**CONMED Article VII fixture:** investments / restricted payments / asset sales (AUTHENTIC_FIXTURE_SOURCE)
 
 Statuses used (exactly one per domain):
 
@@ -7,28 +12,24 @@ Statuses used (exactly one per domain):
 - `BLOCKED_BY_MISSING_REAL_EVIDENCE`
 - `NOT_IMPLEMENTED`
 
-| Domain | Status | What executes on main | Hard blocker |
-|---|---|---|---|
-| Debt incurrence | **PARTIALLY_EXECUTABLE** | Leaf `evaluateProvision` for Permitted Debt (1)(a)/(1)(b)(x)/(2) + §4.09(a) FCCR room; VE fixed-dollar gross $1300M for (1)(a) | No production remaining; no authentic VEP multi-path simulate |
-| Liens | **PARTIALLY_EXECUTABLE** | CA §6.01(j) structural zero (Sixth Amendment) modeled | No dual-path Indenture+CA secured companion for NEW liens; composition is hypothetical |
-| Investments | **NOT_IMPLEMENTED** | Family signal recognition + recipe shape only | No authentic Investment basket / IR / leaf for Matthews |
-| Restricted payments | **NOT_IMPLEMENTED** | Recipe + legacy Coherent RP waterfall (other company) | No Matthews RP waterfall / builder / util |
-| Asset sales | **NOT_IMPLEMENTED** | Recipe + `simulateAssetSale` engine API | No Matthews `assetSale` config / threshold |
-| Applicable financial covenants | **PARTIALLY_EXECUTABLE** | Leverage metrics + modeled FCCR / secured leverage rooms from authentic 10-Q inputs | EBITDA reconstruction unverified; NS-4 APPROVED AFC path still absorbing on open PRs |
-| Amendments | **PARTIALLY_EXECUTABLE** | Sixth Amendment caveat on §6.01(j); Phase-2G libraries | Full as-amended operative IR not product-bound for Matthews CA |
-| Shared capacity | **PARTIALLY_EXECUTABLE** | 4C `IRSharedCapacity` + verified-execution shared units in-memory | Authentic package has no certified shared-cap dual-path; Stage D demo is synthetic |
-| Historical utilization | **BLOCKED_BY_MISSING_REAL_EVIDENCE** | 2 attributed events ($778.882M); UNKNOWN≠zero; remaining refused | No reviewer completeness certificate; trusted-issuer BLOCKED |
+| Domain | Status | Source package | What executes | Hard blocker |
+|---|---|---|---|---|
+| Debt incurrence | **PARTIALLY_EXECUTABLE** | Matthews | Leaf `evaluateProvision` Permitted Debt + FCCR room | No production remaining; no authentic VEP multi-path simulate |
+| Liens | **PARTIALLY_EXECUTABLE** | Matthews | CA §6.01(j) structural zero (Sixth Amendment) | No dual-path Indenture+CA secured companion for NEW liens |
+| Investments | **IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE** | CONMED §7.8(l) | Greater-of $75M / 3.5% CTA fidelity compile → 4E enum + REQUIRE capacity/sim | Verified remaining null; CTA for gross probe is HYPOTHETICAL only; not package CERTIFIED |
+| Restricted payments | **IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE** | CONMED §7.6(d) | Fixed-dollar $40M/fiscal-year fidelity compile → 4E enum + REQUIRE capacity/sim | Verified remaining null; ratio/builder RP not claimed |
+| Asset sales | **IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE** | CONMED §7.5(j) | Greater-of $25M / 1.5% CTA de minimis → ASSET_SALE kind + recipe + REQUIRE | Verified remaining null; §7.5(f) annual baskets not claimed |
+| Applicable financial covenants | **PARTIALLY_EXECUTABLE** | Matthews + main (#345/#332) | Modeled FCCR / leverage rooms; contractual-metrics modules on main | EBITDA reconstruction unverified; corrected #341 tip not fully absorbed |
+| Amendments | **PARTIALLY_EXECUTABLE** | Matthews + CONMED fixtures | Sixth Amendment caveat; CONMED Omnibus/Second Amendment texts present | Amendment effects not attached to multi-family unit compile |
+| Shared capacity | **PARTIALLY_EXECUTABLE** | main IR | 4C shared capacity in-memory | No authentic dual-path shared-cap; #340 not landed (no duplicate engine) |
+| Historical utilization | **BLOCKED_BY_MISSING_REAL_EVIDENCE** | Matthews | Attributed events; UNKNOWN≠zero; remaining refused | No completeness certificate — did **not** stop RP/Inv/AS family work |
 
-## Numeric honesty (debt/lien leaf)
+## CONMED unit bindings (source-backed)
 
-| Code | Section | Modeled ($M) | Remaining published | Authority |
-|---|---|---:|---:|---|
-| `ind_permitted_debt_1a_flat` | Permitted Debt (1)(a) | 521.118 | **null** | `GROSS_ONLY_UTILIZATION_INCOMPLETE` |
-| `ind_ratio_debt_fccr` | §4.09(a) | 110.336 | **null** | `MODELED_AUTHENTIC_EVIDENCE` |
-| `ind_permitted_debt_1b_ratio_secured` | (1)(b)(x) | 0 | **null** | `MODELED_AUTHENTIC_EVIDENCE` |
-| `ind_permitted_debt_2_notes` | (2) grandfather | 300 gross / 0 NEW | **null** | `MODELED_AUTHENTIC_EVIDENCE` |
-| `ca_lien_601j_2024notes` | CA §6.01(j) | 0 | **null** | `STRUCTURAL_ZERO` |
-| VE (1)(a) fixed-dollar | source-backed compile | **1300 gross** | never AVAILABLE | `SOURCE_BACKED_COMPILED_GROSS` |
-| Indenture secured composition | (1a room + FCCR) | 631.454 | — | `HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION` |
+| Family | Section | Formulation | Gross (hypothetical) | Remaining | Document |
+|---|---|---|---:|---|---|
+| RESTRICTED_PAYMENTS | §7.6(d) | FIXED_DOLLAR | $40,000,000 | **null** | `conmed-doc-a-eighth-ar-credit-agreement` |
+| INVESTMENTS | §7.8(l) | GREATER_OF_ASSETS | $75,000,000 (at stipulated $2B CTA) | **null** | same |
+| ASSET_SALES | §7.5(j) | GREATER_OF_ASSETS | $30,000,000 (at stipulated $2B CTA) | **null** | same |
 
-Machine-readable: `artifacts/01-domain-status.json`.
+Machine-readable: `artifacts/01-domain-status.json`, `artifacts/04-conmed-multi-family.json`.

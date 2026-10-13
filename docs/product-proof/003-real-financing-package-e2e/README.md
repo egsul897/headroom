@@ -1,10 +1,10 @@
 # Product Proof 003 — Real financing-package E2E
 
-Authentic Matthews International Q1 FY2025 package evaluated on **canonical main** through existing engines only.
+Matthews International Q1 FY2025 (debt/liens) plus CONMED Article VII authentic multi-family units (RP / Investments / Asset Sales), evaluated through the verified-execution REQUIRE spine only — no competing engine.
 
 ## Verdict
 
-**PARTIAL_PRODUCT_CAPABILITY_PROVEN** — three contemplated transactions all **REFUSED / NOT DETERMINED** with explicit truthful blockers. No false affirmatives.
+**PARTIAL_PRODUCT_CAPABILITY_PROVEN** — RP / Investments / Asset Sales independently GROSS-executable under REQUIRE; verified remaining **null**; customer PERMITTED **not** claimed. Acquisition refused as a whole on Matthews.
 
 ## Reproduce
 

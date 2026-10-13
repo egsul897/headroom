@@ -21,6 +21,7 @@ export type UnifiedTxnKind =
   | "RESTRICTED_PAYMENT"
   | "INVESTMENT"
   | "ACQUISITION"
+  | "ASSET_SALE"
   | "UNKNOWN";
 
 export interface VerifiedSimulateRequest {

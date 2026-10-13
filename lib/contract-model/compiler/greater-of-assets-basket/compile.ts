@@ -65,7 +65,12 @@ export interface GreaterOfCompileArgs {
   sourceSectionRef: string;
   operativeSourceText: string;
   covenantFamily?: string;
-  action?: "INCUR_DEBT" | "CREATE_LIEN";
+  action?:
+    | "INCUR_DEBT"
+    | "CREATE_LIEN"
+    | "MAKE_INVESTMENT"
+    | "PAY_DIVIDEND"
+    | "SELL_ASSET";
 }
 
 export type GreaterOfExecutableClass =
@@ -186,9 +191,15 @@ function greaterOfCapacity(
   return expr;
 }
 
-function inferAction(text: string, explicit?: GreaterOfCompileArgs["action"]): "INCUR_DEBT" | "CREATE_LIEN" {
+function inferAction(
+  text: string,
+  explicit?: GreaterOfCompileArgs["action"],
+): NonNullable<GreaterOfCompileArgs["action"]> {
   if (explicit) return explicit;
   if (/\bLiens?\b/i.test(text) && !/\b(?:Debt|Indebtedness)\b/i.test(text)) return "CREATE_LIEN";
+  if (/\bRestricted\s+Payments?\b|\bDividends?\b/i.test(text)) return "PAY_DIVIDEND";
+  if (/\bInvestments?\b/i.test(text)) return "MAKE_INVESTMENT";
+  if (/\b(?:Asset\s+Sales?|Disposition)\b/i.test(text)) return "SELL_ASSET";
   return "INCUR_DEBT";
 }
 
@@ -231,7 +242,7 @@ function wireRule(args: {
   classification: GreaterOfAssetsClassification;
   capacityExpression: WireExpression;
   family: string;
-  action: "INCUR_DEBT" | "CREATE_LIEN";
+  action: NonNullable<GreaterOfCompileArgs["action"]>;
 }) {
   const citation = `§${args.sourceSectionRef}`;
   return {
@@ -387,8 +398,18 @@ export function compileGreaterOfSharedPair(args: {
   instrumentKey: string;
   sourceDocumentId: string;
   candidateRef: string;
-  memberA: { sourceSectionRef: string; operativeSourceText: string; action?: "INCUR_DEBT" | "CREATE_LIEN"; covenantFamily?: string };
-  memberB: { sourceSectionRef: string; operativeSourceText: string; action?: "INCUR_DEBT" | "CREATE_LIEN"; covenantFamily?: string };
+  memberA: {
+    sourceSectionRef: string;
+    operativeSourceText: string;
+    action?: GreaterOfCompileArgs["action"];
+    covenantFamily?: string;
+  };
+  memberB: {
+    sourceSectionRef: string;
+    operativeSourceText: string;
+    action?: GreaterOfCompileArgs["action"];
+    covenantFamily?: string;
+  };
 }): GreaterOfSharedPairResult {
   const mutual = detectMutualSharedCapacity({
     textA: args.memberA.operativeSourceText,

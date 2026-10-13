@@ -1,20 +1,13 @@
-# Final verdict
+# Final verdict — PP003 capability execution
 
-## PARTIAL_PRODUCT_CAPABILITY_PROVEN
+**PARTIAL_PRODUCT_CAPABILITY_PROVEN**
 
-| Candidate verdict | Decision |
-|---|---|
-| END_TO_END_PRODUCT_PROVEN | **Rejected** — zero of three authentic transactions is verified-executable |
-| **PARTIAL_PRODUCT_CAPABILITY_PROVEN** | **Accepted** — authentic package leaf debt/lien math + fail-closed verified gates + honest domain gaps |
-| PIPELINE_BLOCKED | Rejected as sole label — understates executable modeled leaf + safety refusals |
-| PRODUCT_CORRECTNESS_UNSAFE | **Rejected** — no false affirmatives; UNKNOWN≠zero; empty draws refused |
+Progress is measured by independently executable authentic covenant families and complete (truthful) transaction evaluations:
 
-## Customer-usable answer today
+1. **Investments, Restricted Payments, Asset Sales** — CONMED Article VII source-backed units are fidelity-compiled and independently GROSS-executable under REQUIRE (4E path enumeration + `evaluateVerifiedCapacity` + `simulateVerifiedTransaction`). Verified remaining forced **null**.
+2. **ASSET_SALE** intake and `recipeAssetSale` capacity binding work; draft kind is no longer UNKNOWN for disposition asks.
+3. **Debt-funded acquisition** still refused as a whole on Matthews (no VEP; CA §6.01(j) structural zero); CONMED investment leg is separately exercised under REQUIRE without inventing Matthews authority.
+4. **Utilization incompleteness** remains a hard blocker for remaining publication and did **not** stop other covenant families.
+5. **Consolidation:** #345 absorbed via main; #340/#341 not full-merged (no duplicate engines / no self-merge).
 
-For Matthews authentic package on main `8374fa2a`:
-
-- **Debt-funded acquisition:** NOT DETERMINED / REFUSED (no VEP; util incomplete; CA lien structural zero; investment missing).
-- **Restricted payment:** NOT DETERMINED / REFUSED (domain not implemented on package).
-- **Asset sale:** NOT DETERMINED / REFUSED (domain not implemented; intake kind UNKNOWN).
-
-Lawyer / treasury review required. Modeled Indenture rooms are **not** production permission.
+Not claimed: customer `VERIFIED_TRANSACTION_PERMITTED`, APPROVED NS-4 CTA as production authority, or package CERTIFIED IR for CONMED.

@@ -66,7 +66,14 @@ export interface TransactionDraft {
   rawQuestion: string;
   evaluationDate: string | null;
   amountMillions: number | null;
-  kind: "SECURED_DEBT" | "UNSECURED_DEBT" | "RESTRICTED_PAYMENT" | "INVESTMENT" | "ACQUISITION" | "UNKNOWN";
+  kind:
+    | "SECURED_DEBT"
+    | "UNSECURED_DEBT"
+    | "RESTRICTED_PAYMENT"
+    | "INVESTMENT"
+    | "ACQUISITION"
+    | "ASSET_SALE"
+    | "UNKNOWN";
   secured: boolean | null;
   missingConfirmations: string[];
 }
@@ -137,6 +144,7 @@ function extractAmountMillions(question: string): number | null {
 function inferKind(question: string): TransactionDraft["kind"] {
   const q = question.toLowerCase();
   if (/acquisit|purchase.*target|buy.*company/.test(q)) return "ACQUISITION";
+  if (/asset\s*sale|disposition|dispose of|sale of assets?/.test(q)) return "ASSET_SALE";
   if (/dividend|restricted payment|repurchase|buyback/.test(q)) return "RESTRICTED_PAYMENT";
   if (/investment|contribute|equity infusion/.test(q) && !/equity contribution|eligible equity/.test(q)) {
     return "INVESTMENT";
@@ -171,7 +179,9 @@ export function parseTransactionDraft(question: string): TransactionDraft {
   const missingConfirmations: string[] = [];
   if (!evaluationDate) missingConfirmations.push("evaluationDate (YYYY-MM-DD)");
   if (amountMillions == null) missingConfirmations.push("transaction amount");
-  if (kind === "UNKNOWN") missingConfirmations.push("transaction kind (debt / RP / investment / acquisition)");
+  if (kind === "UNKNOWN") {
+    missingConfirmations.push("transaction kind (debt / RP / investment / acquisition / asset sale)");
+  }
   if (secured == null && (kind === "SECURED_DEBT" || kind === "UNSECURED_DEBT" || kind === "ACQUISITION")) {
     missingConfirmations.push("secured vs unsecured");
   }

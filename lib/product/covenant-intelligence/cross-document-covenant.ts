@@ -52,6 +52,7 @@ export type RestrictionFamily =
   | "LIENS"
   | "RESTRICTED_PAYMENTS"
   | "INVESTMENTS"
+  | "ASSET_SALES"
   | "SUBSIDIARY_GUARANTOR"
   | "INTERCREDITOR"
   | "SHARED_CAPACITY"
@@ -225,11 +226,18 @@ function familiesForKind(kind: ContemplatedTxnKind, secured: boolean | null): Se
       out.add("SHARED_CAPACITY");
       if (secured === true) out.add("LIENS");
       break;
+    case "ASSET_SALE":
+      out.add("ASSET_SALES");
+      out.add("RESTRICTED_PAYMENTS");
+      out.add("INVESTMENTS");
+      out.add("SHARED_CAPACITY");
+      break;
     default:
       out.add("DEBT_INCURRENCE");
       out.add("LIENS");
       out.add("RESTRICTED_PAYMENTS");
       out.add("INVESTMENTS");
+      out.add("ASSET_SALES");
   }
   return out;
 }

@@ -1,78 +1,61 @@
-# HEADROOM — Prove Real Product Progress (Mission Report)
+# HEADROOM — PP003 Product-Capability Execution (Mission Report)
 
 **Date:** 2026-10-13  
-**Branch:** `cursor/prove-real-product-progress-cc62`  
-**Canonical main SHA:** `8374fa2a8697ce39b8ff6d63f6703ea2612b8545` (includes #334 NS-4)  
-**Package:** Matthews International Q1 FY2025 (`AUTHENTIC_SOURCE_BACKED`)  
-**Runner:** `npx tsx scripts/product-proof/run-003-real-package-e2e.ts`  
+**Branch:** `cursor/pp003-capability-execution-cc62`  
+**Baseline:** PR #346 @ `046161e78dc206c50ee951d71a18dfa4befd3206`  
+**Tip SHA:** see `artifacts/00-evaluation.json` → `canonicalMainSha` after rerun  
 **Neon writes / paid inference / self-merge:** none  
 
 ## Overall verdict
 
-**PARTIAL_PRODUCT_CAPABILITY_PROVEN**
+**PARTIAL_PRODUCT_CAPABILITY_PROVEN** — measured by independently executable authentic covenant families, not PR/test count.
 
-End-to-end customer-ready financing-package evaluation for debt-funded acquisition + restricted payment + asset sale is **not** proven. Main correctly fail-closes. Modeled debt/lien leaf arithmetic on authentic EDGAR inputs is partial capability — not production permission.
+Three CONMED Article VII families are fidelity-compiled and exercised under verified-execution REQUIRE (path enum + capacity + simulate). Verified remaining stays **null**. Customer `VERIFIED_TRANSACTION_PERMITTED` is **not** claimed. Matthews debt/lien remain partial; acquisition refused as a whole.
 
-## Main + integration PR audit (summary)
+## Domain status deltas (vs baseline #346)
 
-| Item | Finding |
-|---|---|
-| Main tip | #334 NS-4 on #333 PAI-hardened tip |
-| Canonical engines used | Matthews vertical slice, verified-execution, certified-simulate bridge, 4E enumeration, recipes |
-| Competing open stacks | #345/#343 NS-4 absorb; #340 cross-domain v2; #341/#322 AFC cluster (conflicting) |
-| Human merge sequence | #345 (or #343) → #340 → rebase #341 → authentic util cert → RP/asset-sale compile |
-| Self-merge | **Forbidden** |
+| Domain | Baseline | Now | Source |
+|---|---|---|---|
+| Investments | NOT_IMPLEMENTED | **IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE** | CONMED §7.8(l) |
+| Restricted payments | NOT_IMPLEMENTED | **IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE** | CONMED §7.6(d) |
+| Asset sales | NOT_IMPLEMENTED | **IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE** | CONMED §7.5(j) |
+| Debt / Liens | PARTIALLY_EXECUTABLE | PARTIALLY_EXECUTABLE | Matthews |
+| Historical utilization | BLOCKED_BY_MISSING_REAL_EVIDENCE | unchanged (did not stop other families) | Matthews |
 
-Full audit: `00-main-and-pr-audit.md`.
+## Consolidation (#345 / #340 / #341)
 
-## Domain status matrix
+| PR | Action | Tip SHA |
+|---|---|---|
+| #345 | **Absorbed** via `origin/main` merge | `d91b0a977ef6c92c9224b096306f7dfc8695cdbc` |
+| #340 | **Not full-merged** — would land a second simulate/permissibility surface | `7e3974fcdd1a54c0f8762e41873ed2be045a8a14` |
+| #341 | **Not full-merged** — overlapping financial-metric path already on main via #345/#332; refuse competing leverage engine | `1dc10c4c301257a578ac9758b3f232396020e1c4` |
 
-| Domain | Status |
-|---|---|
-| Debt incurrence | PARTIALLY_EXECUTABLE |
-| Liens | PARTIALLY_EXECUTABLE |
-| Investments | NOT_IMPLEMENTED |
-| Restricted payments | NOT_IMPLEMENTED |
-| Asset sales | NOT_IMPLEMENTED |
-| Applicable financial covenants | PARTIALLY_EXECUTABLE |
-| Amendments | PARTIALLY_EXECUTABLE |
-| Shared capacity | PARTIALLY_EXECUTABLE |
-| Historical utilization | BLOCKED_BY_MISSING_REAL_EVIDENCE |
+See `artifacts/05-consolidation-absorb.json`.
 
-No domain is `IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE` for production-authoritative remaining + verified simulate on this authentic package.
+## Three transactions (REQUIRE)
 
-## Three transactions — conclusions
+| Txn | Executable (customer) | Path auth | Cap / Sim | Path result | Remaining |
+|---|---|---|---|---|---|
+| Acquisition $50M | false | Matthews NOT_CERTIFIED_4E | Inv leg EXECUTED/EXECUTED | INDETERMINATE | null |
+| RP $25M | false | CERTIFIED_4E | EXECUTED / EXECUTED | INDETERMINATE | null |
+| Asset sale $40M | false | CERTIFIED_4E | EXECUTED / EXECUTED | INDETERMINATE | null |
 
-| Transaction | Amount | Verified executable? | Selected path | Capacity consumed | Overall |
-|---|---:|---|---|---|---|
-| Debt-funded acquisition | $50M | **false** | null | null | REFUSED — no VEP; util incomplete; CA §6.01(j)=0; investment NOT_IMPLEMENTED |
-| Restricted payment | $25M | **false** | null | null | REFUSED — RP NOT_IMPLEMENTED on package |
-| Asset sale | $40M | **false** | null | null | REFUSED — asset sale NOT_IMPLEMENTED; draft kind UNKNOWN |
+## Source references
 
-Acquisition modeled leaf probe (explicitly non-authoritative): Permitted Debt (1)(a) 521.118 → 471.118 after hypothetical $50M secured bump; ledger untouched; remaining stays null.
-
-## Five highest-impact engineering tasks
-
-1. **Land one post-#334 NS-4 absorb tip** (#345 preferred) — single financial resolver / APPROVED identity.  
-2. **Merge #340 cross-domain Simulate v2** — verified remaining authority; no shared-cap double count.  
-3. **Bind real utilization completeness + trusted issuer for Matthews** — unlock remaining without UNKNOWN→zero.  
-4. **Rebase #341 AFC/leverage onto absorb tip** — close conflicting #322/#325/#327/#338 forks.  
-5. **Compile authentic RP + asset-sale (+ investment) units** — extend PP003 until domains leave NOT_IMPLEMENTED or evidence-backed blockers deepen; fix ASSET_SALE intake kind.
-
-Exact files, tests, PR sequence, acceptance: `03-gap-roadmap.md`.
+- `tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt`
+- Matthews: `lib/product/real-dashboard-vertical-slice/package-matthews.ts`
+- Units: `lib/product/authentic-multi-family/*`
 
 ## Reproduce
 
 ```bash
-git checkout cursor/prove-real-product-progress-cc62
-npm ci && npx prisma generate
 npx tsx scripts/product-proof/run-003-real-package-e2e.ts
-npx vitest run tests/product/product-proof-003-real-package-e2e.test.ts
+npx vitest run tests/product/authentic-multi-family-conmed.test.ts tests/product/product-proof-003-real-package-e2e.test.ts
 ```
 
 ## What this mission refuses to claim
 
 - Customer-ready affirmative permission for any of the three transactions  
-- That PR count or synthetic Stage-D / Coherent demos prove product progress  
-- That modeled leaf rooms equal verified remaining  
-- That open integration PRs are already on canonical main
+- That verified remaining is known without completeness evidence  
+- That #340/#341 were self-merged or that a second engine was landed  
+- That Matthews alone evidences RP / investment / asset-sale baskets

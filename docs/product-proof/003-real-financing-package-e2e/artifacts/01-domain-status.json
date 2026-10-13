@@ -2,6 +2,7 @@
   {
     "domain": "debt_incurrence",
     "status": "PARTIALLY_EXECUTABLE",
+    "sourcePackage": "matthews-q1-fy2025",
     "evidence": [
       "ind_permitted_debt_1a_flat §Permitted Debt def., cl. (1)(a): modeled=521.118 remaining=null authority=GROSS_ONLY_UTILIZATION_INCOMPLETE",
       "ind_ratio_debt_fccr §§4.09(a): modeled=110.33623188405791 remaining=null authority=MODELED_AUTHENTIC_EVIDENCE",
@@ -23,6 +24,7 @@
   {
     "domain": "liens",
     "status": "PARTIALLY_EXECUTABLE",
+    "sourcePackage": "matthews-q1-fy2025",
     "evidence": [
       "ca_lien_601j_2024notes §§6.01(j), as restated by Sixth Amendment: modeled=0 authority=STRUCTURAL_ZERO — Sixth Amendment deleted general Loan-Party secured-lien basket; only 2024 Note Offering exception remains."
     ],
@@ -37,124 +39,155 @@
   },
   {
     "domain": "investments",
-    "status": "NOT_IMPLEMENTED",
+    "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+    "sourcePackage": "conmed-2025-credit-facility-article-vii",
     "evidence": [
-      "Matthews authentic slice has zero Investment provisions / capacityFormulas",
-      "provision-legal-context.ts recognizes INVESTMENTS family signals only",
-      "recipeRestrictedInvestment exists as recipe shape — no authentic package binding"
+      "conmed-7.8l-investments-greater-of conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
+      "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=75000000",
+      "verifiedRemainingUsd=null (forced; no completeness certificate)",
+      "entityScope=Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+      "formulation=GREATER_OF_ASSETS ruleId=ir-rule:cce3542db9c3a2664896830f"
     ],
     "blockers": [
-      "No authentic Matthews/MTN Investment basket IR or leaf provision on main",
-      "Cannot evaluate investment capacity without inventing permissions"
+      "Matthews authentic slice has zero Investment provisions — CONMED §7.8(l) used as authentic alternate package evidence",
+      "Verified remaining unpublished — no utilization completeness",
+      "Greater-of CTA for gross probe is CALLER_STIPULATED_HYPOTHETICAL only — not APPROVED NS-4",
+      "Not package CERTIFIED IR / not VERIFIED_TRANSACTION_PERMITTED for customer handoff"
     ],
     "mainFiles": [
-      "lib/product/real-dashboard-vertical-slice/provision-legal-context.ts",
-      "lib/product/north-star-workflow/transaction-effect-recipes.ts"
+      "lib/product/authentic-multi-family/conmed-source-units.ts",
+      "lib/product/authentic-multi-family/compile-conmed-vep.ts",
+      "lib/contract-model/compiler/greater-of-assets-basket/",
+      "lib/contract-model/verified-execution.ts"
     ]
   },
   {
     "domain": "restricted_payments",
-    "status": "NOT_IMPLEMENTED",
+    "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+    "sourcePackage": "conmed-2025-credit-facility-article-vii",
     "evidence": [
-      "Matthews authentic slice has zero RP waterfall / builder provisions",
-      "Legacy Coherent seed path has RP waterfall (fixture company) — not this authentic package",
-      "recipeDividendPayment exists as recipe shape only"
+      "conmed-7.6d-rp-40m conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
+      "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=40000000",
+      "verifiedRemainingUsd=null (forced; no completeness certificate)",
+      "entityScope=Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+      "formulation=FIXED_DOLLAR ruleId=ir-rule:81c39f1f14705c94bdd1e85c"
     ],
     "blockers": [
-      "No authentic RP capacity node, builder metric, or utilization ledger for Matthews",
-      "Verified simulate without VEP refuses; inventing a path would be false permission"
+      "Matthews authentic slice has zero RP waterfall — CONMED §7.6(d) $40M fixed-dollar used as authentic alternate",
+      "Verified remaining unpublished — no utilization completeness",
+      "Ratio / builder RP baskets (e.g. §7.6(e)) not claimed executable here",
+      "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials"
     ],
     "mainFiles": [
-      "lib/covenant-engine.ts (simulateRestrictedPayment — requires document.rpWaterfall)",
-      "lib/product/north-star-workflow/transaction-effect-recipes.ts",
-      "prisma/seed-data.ts (Coherent fixture only)"
+      "lib/product/authentic-multi-family/conmed-source-units.ts",
+      "lib/product/authentic-multi-family/compile-conmed-vep.ts",
+      "lib/contract-model/compiler/fixed-dollar-basket/",
+      "lib/contract-model/verified-execution.ts"
     ]
   },
   {
     "domain": "asset_sales",
-    "status": "NOT_IMPLEMENTED",
+    "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+    "sourcePackage": "conmed-2025-credit-facility-article-vii",
     "evidence": [
-      "Matthews authentic slice has zero assetSale config",
-      "simulateAssetSale in covenant-engine requires document.assetSale",
-      "recipeAssetSale exists as recipe shape only"
+      "conmed-7.5j-asset-sale-greater-of conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
+      "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=30000000",
+      "verifiedRemainingUsd=null (forced; no completeness certificate)",
+      "entityScope=Parent Borrower or any of its Subsidiaries",
+      "formulation=GREATER_OF_ASSETS ruleId=ir-rule:a24af4af4518d766efedb79a",
+      "ASSET_SALE ContemplatedTxnKind + recipeAssetSale intake wired"
     ],
     "blockers": [
-      "No authentic asset-sale threshold provision, reinvestment basket, or proceeds routing for Matthews"
+      "Matthews authentic slice has zero assetSale config — CONMED §7.5(j) greater-of de minimis used as authentic alternate",
+      "Verified remaining unpublished — no utilization completeness",
+      "De minimis basket only; annual / four-year Asset Sale baskets in §7.5(f) not claimed executable here",
+      "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials"
     ],
     "mainFiles": [
-      "lib/covenant-engine.ts (simulateAssetSale)",
+      "lib/product/authentic-multi-family/conmed-source-units.ts",
+      "lib/product/authentic-multi-family/compile-conmed-vep.ts",
+      "lib/product/north-star-workflow/verified-path-enumeration.ts",
       "lib/product/north-star-workflow/transaction-effect-recipes.ts"
     ]
   },
   {
     "domain": "applicable_financial_covenants",
     "status": "PARTIALLY_EXECUTABLE",
+    "sourcePackage": "matthews-q1-fy2025 + main contractual-metrics (#345/#332)",
     "evidence": [
       "FCCR / Secured Net Leverage modeled rooms present as leaf rows: ind_ratio_debt_fccr=110.33623188405791, ind_permitted_debt_1b_ratio_secured=0",
       "Trusted issuer activation: [object Object]",
-      "Contractual EBITDA build-up / NS-4 APPROVED leverage primarily on open PRs (#322/#341/#338/#339) — not fully on this main tip"
+      "Main tip absorbed #345 post-#334 NS-4 gates + contractual-metrics / financial-metric-resolver modules",
+      "Open PR #341 still holds corrected AFC conditional-authority tip not fully absorbed here (no duplicate leverage engine landed)"
     ],
     "blockers": [
       "Modeled ratio rooms are not published as remainingCapacityMm (D3b)",
       "CONSOLIDATED_EBITDA is PUBLIC_FILING_RECONSTRUCTION / UNVERIFIED_EXTRACTION",
-      "Open PR #341 absorbs executable AFC path but is CONFLICTING / unmerged — main must not invent APPROVED certificates"
+      "Corrected #341 tip not fully merged — refuse inventing APPROVED certificates"
     ],
     "mainFiles": [
       "lib/product/real-dashboard-vertical-slice/evaluate-covenants.ts",
-      "lib/capacity/*",
-      "lib/covenant-engine.ts (computeLeverageMetrics)"
+      "lib/product/contractual-metrics/",
+      "lib/product/financial-metric-resolver/",
+      "lib/capacity/*"
     ]
   },
   {
     "domain": "amendments",
     "status": "PARTIALLY_EXECUTABLE",
+    "sourcePackage": "matthews + conmed fixtures",
     "evidence": [
       "CA §6.01(j) leaf cites Sixth Amendment restatement (structural zero) — source-backed caveat on modeled leaf",
       "Phase-2G amendment precedence / operative-state libraries exist on main",
-      "MTN PP001 amendment pipeline ran with 0 effects (restatement + separate indentures)"
+      "CONMED curated fixture includes first-omnibus / second-amendment texts — not auto-attached as operative supersession for these units",
+      "Multi-family units bind documentId + sourceSectionRef; amendment effects remain REVIEW_REQUIRED until attached"
     ],
     "blockers": [
       "No full as-amended operative IR package for Matthews credit agreement on product path",
-      "CONMED authenticated VEP still has instrument-level OPERATIVE_STATE_REVIEW_REQUIRED for unattached Omnibus/Second-Amendment effects"
+      "CONMED Omnibus/Second-Amendment effects not attached to Article VII unit compile in this proof"
     ],
     "mainFiles": [
       "lib/contract-model/compiler/* (operative / amendment)",
       "lib/product/legal-reasoning/amendment-graph.ts",
-      "docs/product/customer-workflow/authenticated-vep/00-blocker-report.md"
+      "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/"
     ]
   },
   {
     "domain": "shared_capacity",
     "status": "PARTIALLY_EXECUTABLE",
+    "sourcePackage": "main IR + open #340 supporting",
     "evidence": [
       "Phase 4C IRSharedCapacity + verified-execution shared capacity units implemented in-memory",
       "Matthews leaf does not bind a shared Debt Facilities / Lien shared-cap unit for dual-path NEW secured debt",
-      "Stage D dual-path demo is SYNTHETIC_LABELED_TECHNICAL_DEMO (pkg-i), not authentic Matthews"
+      "CONMED multi-family units are single-rule capacity nodes (no shared-cap pair claimed here)",
+      "Cross-domain Simulate (#340) not absorbed as a second engine — verified spine owns permissibility"
     ],
     "blockers": [
       "Authentic package lacks certified shared-capacity unit + companion discharge for secured dual-path",
-      "Cross-domain Simulate authority is open PR #340 (v2) — not on main"
+      "Open PR #340 cross-domain v2 remains human tip — not landed here to avoid duplicate engines"
     ],
     "mainFiles": [
       "lib/contract-model/verified-execution.ts",
-      "lib/contract-model/runtime/capacity/*",
-      "docs/product/customer-workflow/stage-d-pkgi-secured-dual-path/00-execution-report.md"
+      "lib/contract-model/runtime/capacity/*"
     ]
   },
   {
     "domain": "historical_utilization",
     "status": "BLOCKED_BY_MISSING_REAL_EVIDENCE",
+    "sourcePackage": "matthews-q1-fy2025",
     "evidence": [
       "Attributed events: 2 totaling 778.8820000000001 mm",
       "supportsRemainingClaim=false",
       "unknownHistoricalActivity=true",
       "completenessCertificatePresent=false",
-      "trustedIssuerActivation=BLOCKED"
+      "trustedIssuerActivation=BLOCKED",
+      "CONMED multi-family: verifiedRemainingUsd forced null on every unit"
     ],
     "blockers": [
       "No reviewer-confirmed utilization completeness certificate",
       "UNKNOWN historical activity must not be treated as zero",
-      "Production remaining publication refused (correct fail-closed)"
+      "Production remaining publication refused (correct fail-closed)",
+      "Missing utilization is NOT an excuse to stop other families — RP/Inv/AS progressed independently"
     ],
     "mainFiles": [
       "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",

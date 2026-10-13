@@ -70,8 +70,8 @@ export interface FixedDollarCompileArgs {
     | "INCUR_DEBT"
     | "CREATE_LIEN"
     | "MAKE_INVESTMENT"
-    | "MAKE_RESTRICTED_PAYMENT"
-    | "DISPOSE_ASSET";
+    | "PAY_DIVIDEND"
+    | "SELL_ASSET";
 }
 
 export type FixedDollarExecutableClass =

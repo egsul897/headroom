@@ -1,14 +1,17 @@
 /**
- * Product Proof 003 — Real financing-package E2E evaluation on canonical main.
+ * Product Proof 003 — Real financing-package E2E evaluation.
  *
  * Reproducible. Offline. No Neon writes. No paid inference.
  * No invented financial approvals, zero-utilization assumptions,
  * synthetic legal interpretations, or favorable path selection.
  *
- * Package under test: Matthews International Q1 FY2025 authentic slice
- * (EDGAR-backed fixture on main). Secondary reference: frozen MTN PP001 artifacts.
+ * Primary package: Matthews International Q1 FY2025 authentic slice
+ * (debt / liens modeled leaf). Authentic multi-family units for
+ * Investments / Restricted Payments / Asset Sales are sourced from the
+ * CONMED curated Article VII fixture (mission allows alternate authentic
+ * package where those provisions are evidenced).
  *
- * Usage (from repo root on main / this branch):
+ * Usage (from repo root):
  *   npx tsx scripts/product-proof/run-003-real-package-e2e.ts
  */
 import fs from "node:fs";
@@ -31,6 +34,12 @@ import {
 } from "@/lib/product/north-star-workflow/transaction-effect-recipes";
 import { enumerateCertifiedPaths } from "@/lib/product/north-star-workflow/verified-path-enumeration";
 import { TRUSTED_ISSUER_ACTIVATION } from "@/lib/capacity";
+import {
+  compileConmedAuthenticMultiFamily,
+  evaluateAuthenticTransaction,
+  type AuthenticTxnEvaluation,
+  type ConmedMultiFamilyCompileResult,
+} from "@/lib/product/authentic-multi-family";
 
 const OUT_DIR = path.join(
   process.cwd(),
@@ -50,6 +59,7 @@ type DomainRow = {
   evidence: string[];
   blockers: string[];
   mainFiles: string[];
+  sourcePackage?: string;
 };
 
 type CovenantTrail = {
@@ -61,6 +71,9 @@ type CovenantTrail = {
   capacityConsumption: string | null;
   postTransactionState: string | null;
   conclusion: string;
+  entityScope?: string | null;
+  sourceCitation?: string | null;
+  verifiedRemainingUsd?: null;
 };
 
 type TransactionEval = {
@@ -70,14 +83,24 @@ type TransactionEval = {
   amountMillions: number;
   evaluationDate: string;
   draft: ReturnType<typeof parseTransactionDraft>;
+  packageBinding: {
+    companyId: string;
+    instrumentKey: string;
+    authenticity: string;
+    note: string;
+  };
   applicableCovenants: CovenantTrail[];
   verifiedSimulate: {
     executable: boolean;
     refusalSummary: string[];
     certifiedBlockers: string[];
-      pathEnumerationAuthority: string;
-      pathIncompleteReasons: string[];
-      selectedPathId: string | null;
+    pathEnumerationAuthority: string;
+    pathIncompleteReasons: string[];
+    selectedPathId: string | null;
+    capacityOutcome: string | null;
+    simulationOutcome: string | null;
+    selectedPathResult: string | null;
+    verifiedRemainingUsd: null;
   };
   recipeShape: {
     kind: string;
@@ -100,6 +123,7 @@ type TransactionEval = {
       deltaMm: number | null;
     }>;
   };
+  authenticMultiFamily?: AuthenticTxnEvaluation | null;
   overallConclusion: string;
   truthfulBlocker: string | null;
 };
@@ -119,16 +143,34 @@ function writeJson(name: string, value: unknown) {
   return p;
 }
 
-function domainInventory(slice = evaluateMatthewsVerticalSlice()): DomainRow[] {
-  const debtCodes = slice.covenants.filter((c) =>
-    c.code.startsWith("ind_"),
-  );
+function domainInventory(
+  slice = evaluateMatthewsVerticalSlice(),
+  conmed: ConmedMultiFamilyCompileResult,
+): DomainRow[] {
+  const debtCodes = slice.covenants.filter((c) => c.code.startsWith("ind_"));
   const lienCodes = slice.covenants.filter((c) => c.code.startsWith("ca_lien"));
+  const unitByFamily = (family: string) =>
+    conmed.units.find((u) => u.family === family) ?? null;
+
+  const rp = unitByFamily("RESTRICTED_PAYMENTS");
+  const inv = unitByFamily("INVESTMENTS");
+  const as = unitByFamily("ASSET_SALES");
+
+  const familyStatus = (u: typeof rp): DomainStatus => {
+    if (!u) return "NOT_IMPLEMENTED";
+    if (u.status === "VERIFIED_EXECUTABLE_GROSS") {
+      // Gross executable under REQUIRE; remaining unpublished → not full customer PERMITTED.
+      return "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE";
+    }
+    if (u.status === "PARTIAL") return "PARTIALLY_EXECUTABLE";
+    return "NOT_IMPLEMENTED";
+  };
 
   return [
     {
       domain: "debt_incurrence",
       status: "PARTIALLY_EXECUTABLE",
+      sourcePackage: "matthews-q1-fy2025",
       evidence: debtCodes.map(
         (c) =>
           `${c.code} §${c.operativeSection}: modeled=${c.modeledCapacityMm} remaining=${c.remainingCapacityMm} authority=${c.authorityStatus}`,
@@ -148,6 +190,7 @@ function domainInventory(slice = evaluateMatthewsVerticalSlice()): DomainRow[] {
     {
       domain: "liens",
       status: "PARTIALLY_EXECUTABLE",
+      sourcePackage: "matthews-q1-fy2025",
       evidence: lienCodes.map(
         (c) =>
           `${c.code} §${c.operativeSection}: modeled=${c.modeledCapacityMm} authority=${c.authorityStatus} — ${c.exceptionsOrCaveats[0] ?? ""}`,
@@ -163,127 +206,164 @@ function domainInventory(slice = evaluateMatthewsVerticalSlice()): DomainRow[] {
     },
     {
       domain: "investments",
-      status: "NOT_IMPLEMENTED",
-      evidence: [
-        "Matthews authentic slice has zero Investment provisions / capacityFormulas",
-        "provision-legal-context.ts recognizes INVESTMENTS family signals only",
-        "recipeRestrictedInvestment exists as recipe shape — no authentic package binding",
-      ],
+      status: familyStatus(inv),
+      sourcePackage: "conmed-2025-credit-facility-article-vii",
+      evidence: inv
+        ? [
+            `${inv.candidateId} ${inv.sourceCitation}`,
+            `status=${inv.status} fidelity=${inv.fidelityVerdict} grossUsd=${inv.grossCapacityUsd}`,
+            `verifiedRemainingUsd=null (forced; no completeness certificate)`,
+            `entityScope=${inv.entityScopeNote}`,
+            `formulation=${inv.formulation} ruleId=${inv.ruleId}`,
+          ]
+        : ["No CONMED investment unit compiled"],
       blockers: [
-        "No authentic Matthews/MTN Investment basket IR or leaf provision on main",
-        "Cannot evaluate investment capacity without inventing permissions",
+        "Matthews authentic slice has zero Investment provisions — CONMED §7.8(l) used as authentic alternate package evidence",
+        "Verified remaining unpublished — no utilization completeness",
+        "Greater-of CTA for gross probe is CALLER_STIPULATED_HYPOTHETICAL only — not APPROVED NS-4",
+        "Not package CERTIFIED IR / not VERIFIED_TRANSACTION_PERMITTED for customer handoff",
       ],
       mainFiles: [
-        "lib/product/real-dashboard-vertical-slice/provision-legal-context.ts",
-        "lib/product/north-star-workflow/transaction-effect-recipes.ts",
+        "lib/product/authentic-multi-family/conmed-source-units.ts",
+        "lib/product/authentic-multi-family/compile-conmed-vep.ts",
+        "lib/contract-model/compiler/greater-of-assets-basket/",
+        "lib/contract-model/verified-execution.ts",
       ],
     },
     {
       domain: "restricted_payments",
-      status: "NOT_IMPLEMENTED",
-      evidence: [
-        "Matthews authentic slice has zero RP waterfall / builder provisions",
-        "Legacy Coherent seed path has RP waterfall (fixture company) — not this authentic package",
-        "recipeDividendPayment exists as recipe shape only",
-      ],
+      status: familyStatus(rp),
+      sourcePackage: "conmed-2025-credit-facility-article-vii",
+      evidence: rp
+        ? [
+            `${rp.candidateId} ${rp.sourceCitation}`,
+            `status=${rp.status} fidelity=${rp.fidelityVerdict} grossUsd=${rp.grossCapacityUsd}`,
+            `verifiedRemainingUsd=null (forced; no completeness certificate)`,
+            `entityScope=${rp.entityScopeNote}`,
+            `formulation=${rp.formulation} ruleId=${rp.ruleId}`,
+          ]
+        : ["No CONMED RP unit compiled"],
       blockers: [
-        "No authentic RP capacity node, builder metric, or utilization ledger for Matthews",
-        "Verified simulate without VEP refuses; inventing a path would be false permission",
+        "Matthews authentic slice has zero RP waterfall — CONMED §7.6(d) $40M fixed-dollar used as authentic alternate",
+        "Verified remaining unpublished — no utilization completeness",
+        "Ratio / builder RP baskets (e.g. §7.6(e)) not claimed executable here",
+        "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials",
       ],
       mainFiles: [
-        "lib/covenant-engine.ts (simulateRestrictedPayment — requires document.rpWaterfall)",
-        "lib/product/north-star-workflow/transaction-effect-recipes.ts",
-        "prisma/seed-data.ts (Coherent fixture only)",
+        "lib/product/authentic-multi-family/conmed-source-units.ts",
+        "lib/product/authentic-multi-family/compile-conmed-vep.ts",
+        "lib/contract-model/compiler/fixed-dollar-basket/",
+        "lib/contract-model/verified-execution.ts",
       ],
     },
     {
       domain: "asset_sales",
-      status: "NOT_IMPLEMENTED",
-      evidence: [
-        "Matthews authentic slice has zero assetSale config",
-        "simulateAssetSale in covenant-engine requires document.assetSale",
-        "recipeAssetSale exists as recipe shape only",
-      ],
+      status: familyStatus(as),
+      sourcePackage: "conmed-2025-credit-facility-article-vii",
+      evidence: as
+        ? [
+            `${as.candidateId} ${as.sourceCitation}`,
+            `status=${as.status} fidelity=${as.fidelityVerdict} grossUsd=${as.grossCapacityUsd}`,
+            `verifiedRemainingUsd=null (forced; no completeness certificate)`,
+            `entityScope=${as.entityScopeNote}`,
+            `formulation=${as.formulation} ruleId=${as.ruleId}`,
+            "ASSET_SALE ContemplatedTxnKind + recipeAssetSale intake wired",
+          ]
+        : ["No CONMED asset-sale unit compiled"],
       blockers: [
-        "No authentic asset-sale threshold provision, reinvestment basket, or proceeds routing for Matthews",
+        "Matthews authentic slice has zero assetSale config — CONMED §7.5(j) greater-of de minimis used as authentic alternate",
+        "Verified remaining unpublished — no utilization completeness",
+        "De minimis basket only; annual / four-year Asset Sale baskets in §7.5(f) not claimed executable here",
+        "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials",
       ],
       mainFiles: [
-        "lib/covenant-engine.ts (simulateAssetSale)",
+        "lib/product/authentic-multi-family/conmed-source-units.ts",
+        "lib/product/authentic-multi-family/compile-conmed-vep.ts",
+        "lib/product/north-star-workflow/verified-path-enumeration.ts",
         "lib/product/north-star-workflow/transaction-effect-recipes.ts",
       ],
     },
     {
       domain: "applicable_financial_covenants",
       status: "PARTIALLY_EXECUTABLE",
+      sourcePackage: "matthews-q1-fy2025 + main contractual-metrics (#345/#332)",
       evidence: [
         `FCCR / Secured Net Leverage modeled rooms present as leaf rows: ${debtCodes
           .filter((c) => c.formulaType.includes("RATIO") || c.code.includes("ratio") || c.code.includes("fccr"))
           .map((c) => `${c.code}=${c.modeledCapacityMm}`)
           .join(", ") || "none tagged"}`,
         `Trusted issuer activation: ${TRUSTED_ISSUER_ACTIVATION}`,
-        "Contractual EBITDA build-up / NS-4 APPROVED leverage primarily on open PRs (#322/#341/#338/#339) — not fully on this main tip",
+        "Main tip absorbed #345 post-#334 NS-4 gates + contractual-metrics / financial-metric-resolver modules",
+        "Open PR #341 still holds corrected AFC conditional-authority tip not fully absorbed here (no duplicate leverage engine landed)",
       ],
       blockers: [
         "Modeled ratio rooms are not published as remainingCapacityMm (D3b)",
         "CONSOLIDATED_EBITDA is PUBLIC_FILING_RECONSTRUCTION / UNVERIFIED_EXTRACTION",
-        "Open PR #341 absorbs executable AFC path but is CONFLICTING / unmerged — main must not invent APPROVED certificates",
+        "Corrected #341 tip not fully merged — refuse inventing APPROVED certificates",
       ],
       mainFiles: [
         "lib/product/real-dashboard-vertical-slice/evaluate-covenants.ts",
+        "lib/product/contractual-metrics/",
+        "lib/product/financial-metric-resolver/",
         "lib/capacity/*",
-        "lib/covenant-engine.ts (computeLeverageMetrics)",
       ],
     },
     {
       domain: "amendments",
       status: "PARTIALLY_EXECUTABLE",
+      sourcePackage: "matthews + conmed fixtures",
       evidence: [
         "CA §6.01(j) leaf cites Sixth Amendment restatement (structural zero) — source-backed caveat on modeled leaf",
         "Phase-2G amendment precedence / operative-state libraries exist on main",
-        "MTN PP001 amendment pipeline ran with 0 effects (restatement + separate indentures)",
+        "CONMED curated fixture includes first-omnibus / second-amendment texts — not auto-attached as operative supersession for these units",
+        "Multi-family units bind documentId + sourceSectionRef; amendment effects remain REVIEW_REQUIRED until attached",
       ],
       blockers: [
         "No full as-amended operative IR package for Matthews credit agreement on product path",
-        "CONMED authenticated VEP still has instrument-level OPERATIVE_STATE_REVIEW_REQUIRED for unattached Omnibus/Second-Amendment effects",
+        "CONMED Omnibus/Second-Amendment effects not attached to Article VII unit compile in this proof",
       ],
       mainFiles: [
         "lib/contract-model/compiler/* (operative / amendment)",
         "lib/product/legal-reasoning/amendment-graph.ts",
-        "docs/product/customer-workflow/authenticated-vep/00-blocker-report.md",
+        "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/",
       ],
     },
     {
       domain: "shared_capacity",
       status: "PARTIALLY_EXECUTABLE",
+      sourcePackage: "main IR + open #340 supporting",
       evidence: [
         "Phase 4C IRSharedCapacity + verified-execution shared capacity units implemented in-memory",
         "Matthews leaf does not bind a shared Debt Facilities / Lien shared-cap unit for dual-path NEW secured debt",
-        "Stage D dual-path demo is SYNTHETIC_LABELED_TECHNICAL_DEMO (pkg-i), not authentic Matthews",
+        "CONMED multi-family units are single-rule capacity nodes (no shared-cap pair claimed here)",
+        "Cross-domain Simulate (#340) not absorbed as a second engine — verified spine owns permissibility",
       ],
       blockers: [
         "Authentic package lacks certified shared-capacity unit + companion discharge for secured dual-path",
-        "Cross-domain Simulate authority is open PR #340 (v2) — not on main",
+        "Open PR #340 cross-domain v2 remains human tip — not landed here to avoid duplicate engines",
       ],
       mainFiles: [
         "lib/contract-model/verified-execution.ts",
         "lib/contract-model/runtime/capacity/*",
-        "docs/product/customer-workflow/stage-d-pkgi-secured-dual-path/00-execution-report.md",
       ],
     },
     {
       domain: "historical_utilization",
       status: "BLOCKED_BY_MISSING_REAL_EVIDENCE",
+      sourcePackage: "matthews-q1-fy2025",
       evidence: [
         `Attributed events: ${slice.utilization.attributedEventCount} totaling ${slice.utilization.attributedAmountMm} mm`,
         `supportsRemainingClaim=${slice.utilization.supportsRemainingClaim}`,
         `unknownHistoricalActivity=${slice.utilization.unknownHistoricalActivity}`,
         `completenessCertificatePresent=${slice.utilization.completenessCertificatePresent}`,
         `trustedIssuerActivation=${slice.utilization.trustedIssuerActivation}`,
+        "CONMED multi-family: verifiedRemainingUsd forced null on every unit",
       ],
       blockers: [
         "No reviewer-confirmed utilization completeness certificate",
         "UNKNOWN historical activity must not be treated as zero",
         "Production remaining publication refused (correct fail-closed)",
+        "Missing utilization is NOT an excuse to stop other families — RP/Inv/AS progressed independently",
       ],
       mainFiles: [
         "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",
@@ -294,150 +374,188 @@ function domainInventory(slice = evaluateMatthewsVerticalSlice()): DomainRow[] {
   ];
 }
 
-async function evaluateTransaction(args: {
-  id: string;
-  label: string;
-  ask: string;
+/** Offline-safe bridge: never fail the proof on Neon unavailability. */
+async function attemptVerifiedSimulateOffline(
+  args: Parameters<typeof attemptVerifiedSimulate>[0],
+): Promise<Awaited<ReturnType<typeof attemptVerifiedSimulate>>> {
+  try {
+    return await attemptVerifiedSimulate(args);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    const offline =
+      /Can't reach database|PrismaClientInitializationError|ECONNREFUSED|ENOTFOUND/i.test(
+        msg,
+      );
+    if (!offline) throw err;
+    return {
+      certified: {
+        ok: false,
+        blockers: [`OFFLINE_NS4_BRIDGE:${msg.slice(0, 160)}`],
+        authorityNote: "PP003 offline — Neon NS-4 bridge unavailable; authentic REQUIRE path is separate",
+        readiness: null as never,
+        cutoff: null as never,
+      } as never,
+      pathEnumeration: enumerateCertifiedPaths({
+        verifiedPackage: args.verifiedPackage ?? null,
+        transactionKind: args.kind,
+        secured: args.secured ?? null,
+      }),
+      selectedPathId: null,
+      selectedPath: null,
+      transaction: null,
+      executable: false,
+      refusalSummary: [`OFFLINE_NS4_BRIDGE:${msg.slice(0, 120)}`],
+      pathAutoSelected: false,
+    };
+  }
+}
+
+async function evaluateAcquisitionTransaction(args: {
   amountMillions: number;
   evaluationDate: string;
-  kind: "ACQUISITION" | "RESTRICTED_PAYMENT" | "ASSET_SALE";
+  ask: string;
+  conmed: ConmedMultiFamilyCompileResult;
 }): Promise<TransactionEval> {
   const draft = parseTransactionDraft(args.ask);
 
-  // Canonical verified path — NO invented VEP.
-  const verified = await attemptVerifiedSimulate({
+  const verified = await attemptVerifiedSimulateOffline({
     companyId: "matthews",
     evaluationDate: args.evaluationDate,
     amountMillions: args.amountMillions,
-    kind:
-      args.kind === "ACQUISITION"
-        ? "ACQUISITION"
-        : args.kind === "RESTRICTED_PAYMENT"
-          ? "RESTRICTED_PAYMENT"
-          : "UNKNOWN",
-    secured: args.kind === "ACQUISITION" ? true : null,
+    kind: "ACQUISITION",
+    secured: true,
     verifiedPackage: null,
   });
 
   const pathEnum = enumerateCertifiedPaths({
     verifiedPackage: null,
-    transactionKind:
-      args.kind === "ACQUISITION"
-        ? "ACQUISITION"
-        : args.kind === "RESTRICTED_PAYMENT"
-          ? "RESTRICTED_PAYMENT"
-          : "UNKNOWN",
-    secured: args.kind === "ACQUISITION" ? true : null,
+    transactionKind: "ACQUISITION",
+    secured: true,
   });
 
   const identity = {
     companyId: "matthews",
     instrumentKey: "matthews-international-q1-fy2025",
-    transactionId: `pp003-${args.id}`,
+    transactionId: "pp003-txn-debt-funded-acquisition",
     effectiveAsOf: args.evaluationDate,
     provenance: {
       source: "product-proof-003-real-package-e2e",
-      sourceVersion: "pp003.v1",
+      sourceVersion: "pp003.v2-capability",
       approvalRef: null,
     },
     approvalStatus: "HYPOTHETICAL" as const,
   };
 
-  let recipeShape: TransactionEval["recipeShape"];
-  if (args.kind === "ACQUISITION") {
-    // Honest: do not invent capacity node IDs. Empty draws → limitations.
-    const secured = recipeSecuredBorrowing(identity, {
-      draws: [],
-      label: "Debt-funded acquisition (no authentic capacity nodes supplied)",
-    });
-    const investment = recipeRestrictedInvestment(identity, {
-      draws: [],
-      label: "Acquisition investment leg without authentic capacity node",
-    });
-    recipeShape = {
-      kind: "SECURED_BORROWING+INVESTMENT",
-      limitations: [
-        ...secured.limitations.map((l) => ({ code: l.code, message: l.message })),
-        ...investment.limitations.map((l) => ({
-          code: l.code,
-          message: l.message,
-        })),
-      ],
-      note: "Recipe API accepts only caller-supplied capacity node ids — none invented for Matthews authentic package.",
-    };
-  } else if (args.kind === "RESTRICTED_PAYMENT") {
-    const rp = recipeDividendPayment(identity, {
-      draws: [],
-      label: "Restricted payment without authentic RP capacity node",
-    });
-    recipeShape = {
-      kind: "DIVIDEND_PAYMENT",
-      limitations: rp.limitations.map((l) => ({ code: l.code, message: l.message })),
-      note: "No authentic RP capacity node on Matthews package — recipe correctly refuses empty draws.",
-    };
-  } else {
-    const as = recipeAssetSale(identity, {
-      metrics: [],
-      draws: [],
-      label: "Asset sale without authentic metrics/draws",
-    });
-    recipeShape = {
-      kind: "ASSET_SALE",
-      limitations: as.limitations.map((l) => ({ code: l.code, message: l.message })),
-      note: "No authentic asset-sale threshold or proceeds routing — recipe correctly refuses empty shape.",
-    };
-  }
+  const secured = recipeSecuredBorrowing(identity, {
+    draws: [],
+    label: "Debt-funded acquisition (no authentic capacity nodes supplied)",
+  });
+  const investment = recipeRestrictedInvestment(identity, {
+    draws: [],
+    label: "Acquisition investment leg without Matthews capacity node",
+  });
+
+  // Authentic investment-leg probe on CONMED §7.8(l) — does not invent Matthews authority.
+  const invEval = evaluateAuthenticTransaction({
+    compiled: args.conmed,
+    kind: "INVESTMENT",
+    amountMillions: args.amountMillions,
+    evaluationDate: args.evaluationDate,
+  });
+
+  const baseline = evaluateMatthewsVerticalSlice();
+  const change = demonstrateChangePropagation({
+    hypotheticalSecuredDebtMm: args.amountMillions,
+  });
 
   const applicableCovenants: CovenantTrail[] = [];
-  let modeledLeafProbe: TransactionEval["modeledLeafProbe"] = {
-    used: false,
-    note: "Not applicable — domain not modeled on Matthews authentic leaf.",
-  };
-
-  if (args.kind === "ACQUISITION") {
-    const baseline = evaluateMatthewsVerticalSlice();
-    const change = demonstrateChangePropagation({
-      hypotheticalSecuredDebtMm: args.amountMillions,
-    });
-    for (const c of baseline.covenants) {
-      applicableCovenants.push({
-        covenantFamily: c.code.startsWith("ca_lien") ? "LIENS" : "INDEBTEDNESS",
-        sourceProvision: `${c.governingDocumentName} — ${c.operativeSection}`,
-        calculation: `${c.formulaDescription} → modeled=${c.modeledCapacityMm} mm; remaining published=${c.remainingCapacityMm}`,
-        missingInputs: [
-          ...(c.remainingCapacityMm == null
-            ? ["verified remaining (completeness certificate + trusted issuer)"]
-            : []),
-          "authenticated VerifiedExecutionPackage with dual-path debt+lien rules",
-          "investment basket for acquisition equity/consideration (NOT_IMPLEMENTED on package)",
-        ],
-        selectedPath: null,
-        capacityConsumption: null,
-        postTransactionState: (() => {
-          const d = change.transactionDeltas.find((x) => x.code === c.code);
-          return d
-            ? `hypothetical secured-debt bump only (ledger untouched): modeled ${d.baselineModeledMm} → ${d.changedModeledMm} (Δ ${d.deltaMm})`
-            : null;
-        })(),
-        conclusion:
-          c.authorityStatus === "STRUCTURAL_ZERO"
-            ? "CA lien companion structurally blocks NEW Loan-Party secured liens — not an affirmative secured path"
-            : "Modeled leaf arithmetic available; production-authoritative permission REFUSED",
-      });
-    }
+  for (const c of baseline.covenants) {
     applicableCovenants.push({
-      covenantFamily: "INVESTMENTS",
-      sourceProvision: null,
-      calculation: null,
+      covenantFamily: c.code.startsWith("ca_lien") ? "LIENS" : "INDEBTEDNESS",
+      sourceProvision: `${c.governingDocumentName} — ${c.operativeSection}`,
+      calculation: `${c.formulaDescription} → modeled=${c.modeledCapacityMm} mm; remaining published=${c.remainingCapacityMm}`,
       missingInputs: [
-        "No Investment exception / basket compiled for Matthews authentic package",
+        ...(c.remainingCapacityMm == null
+          ? ["verified remaining (completeness certificate + trusted issuer)"]
+          : []),
+        "authenticated VerifiedExecutionPackage with dual-path debt+lien rules",
       ],
       selectedPath: null,
       capacityConsumption: null,
-      postTransactionState: null,
-      conclusion: "NOT_IMPLEMENTED — cannot evaluate acquisition investment leg",
+      postTransactionState: (() => {
+        const d = change.transactionDeltas.find((x) => x.code === c.code);
+        return d
+          ? `hypothetical secured-debt bump only (ledger untouched): modeled ${d.baselineModeledMm} → ${d.changedModeledMm} (Δ ${d.deltaMm})`
+          : null;
+      })(),
+      conclusion:
+        c.authorityStatus === "STRUCTURAL_ZERO"
+          ? "CA lien companion structurally blocks NEW Loan-Party secured liens — not an affirmative secured path"
+          : "Modeled leaf arithmetic available; production-authoritative permission REFUSED",
+      verifiedRemainingUsd: null,
     });
-    modeledLeafProbe = {
+  }
+  applicableCovenants.push({
+    covenantFamily: "INVESTMENTS",
+    sourceProvision: invEval.unit?.sourceCitation ?? null,
+    calculation: invEval.unit
+      ? `CONMED authentic gross probe: grossUsd=${invEval.unit.grossCapacityUsd}; capacityOutcome=${invEval.capacityOutcome}; sim=${invEval.simulationOutcome}; pathResult=${invEval.selectedPathResult}`
+      : null,
+    missingInputs: [
+      "Matthews Investment basket (NOT_IMPLEMENTED on Matthews package)",
+      "APPROVED NS-4 Consolidated Total Assets for production greater-of",
+      "utilization completeness certificate",
+    ],
+    selectedPath: invEval.selectedPathId,
+    capacityConsumption:
+      invEval.simulationOutcome === "EXECUTED"
+        ? `REQUIRE simulate ${invEval.simulationOutcome} / path ${invEval.selectedPathResult} — remaining null`
+        : null,
+    postTransactionState: null,
+    conclusion: invEval.overallConclusion,
+    entityScope: invEval.unit?.entityScopeNote ?? null,
+    sourceCitation: invEval.unit?.sourceCitation ?? null,
+    verifiedRemainingUsd: null,
+  });
+
+  const truthfulBlocker =
+    "VERIFIED_SIMULATE_REFUSED on Matthews: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens. CONMED §7.8(l) investment leg is independently GROSS-executable under REQUIRE but verified remaining null — not VERIFIED_TRANSACTION_PERMITTED for the acquisition as a whole.";
+
+  return {
+    id: "txn-debt-funded-acquisition",
+    label: "Debt-funded acquisition",
+    ask: args.ask,
+    amountMillions: args.amountMillions,
+    evaluationDate: args.evaluationDate,
+    draft,
+    packageBinding: {
+      companyId: "matthews",
+      instrumentKey: "matthews-international-q1-fy2025",
+      authenticity: "AUTHENTIC_SOURCE_BACKED",
+      note: "Debt/lien leaf = Matthews; investment-leg REQUIRE probe = CONMED §7.8(l) authentic alternate (not Matthews authority).",
+    },
+    applicableCovenants,
+    verifiedSimulate: {
+      executable: false,
+      refusalSummary: verified.refusalSummary,
+      certifiedBlockers: verified.certified.blockers,
+      pathEnumerationAuthority: pathEnum.authority,
+      pathIncompleteReasons: pathEnum.incompleteReasons,
+      selectedPathId: null,
+      capacityOutcome: invEval.capacityOutcome,
+      simulationOutcome: invEval.simulationOutcome,
+      selectedPathResult: invEval.selectedPathResult,
+      verifiedRemainingUsd: null,
+    },
+    recipeShape: {
+      kind: "SECURED_BORROWING+INVESTMENT",
+      limitations: [
+        ...secured.limitations.map((l) => ({ code: l.code, message: l.message })),
+        ...investment.limitations.map((l) => ({ code: l.code, message: l.message })),
+      ],
+      note: "Recipe API accepts only caller-supplied capacity node ids — none invented for Matthews; CONMED investment ruleId not auto-injected into Matthews recipe.",
+    },
+    modeledLeafProbe: {
       used: true,
       note: "Modeled leaf recompute after hypothetical secured-debt metric bump — NOT verified simulation; ledger not mutated; UNKNOWN util not zeroed.",
       baselineCovenants: baseline.covenants.map((c) => ({
@@ -452,52 +570,148 @@ async function evaluateTransaction(args: {
         modeledMm: d.changedModeledMm,
         deltaMm: d.deltaMm,
       })),
+    },
+    authenticMultiFamily: invEval,
+    overallConclusion: `REFUSED / NOT DETERMINED — ${truthfulBlocker}`,
+    truthfulBlocker,
+  };
+}
+
+async function evaluateConmedFamilyTransaction(args: {
+  id: string;
+  label: string;
+  ask: string;
+  amountMillions: number;
+  evaluationDate: string;
+  kind: "RESTRICTED_PAYMENT" | "ASSET_SALE";
+  conmed: ConmedMultiFamilyCompileResult;
+}): Promise<TransactionEval> {
+  const draft = parseTransactionDraft(args.ask);
+  const auth = evaluateAuthenticTransaction({
+    compiled: args.conmed,
+    kind: args.kind,
+    amountMillions: args.amountMillions,
+    evaluationDate: args.evaluationDate,
+  });
+
+  // Product bridge is optional/offline-tolerant. Authentic REQUIRE path (auth) is authoritative for this proof.
+  const verified = await attemptVerifiedSimulateOffline({
+    companyId: "conmed",
+    evaluationDate: args.evaluationDate,
+    amountMillions: args.amountMillions,
+    kind: args.kind,
+    secured: null,
+    verifiedPackage: args.conmed.verifiedPackage,
+    pathId: auth.selectedPathId,
+    instrumentKey: "conmed-eighth-ar-credit-agreement",
+  });
+
+  const identity = {
+    companyId: "conmed",
+    instrumentKey: "conmed-eighth-ar-credit-agreement",
+    transactionId: `pp003-${args.id}`,
+    effectiveAsOf: args.evaluationDate,
+    provenance: {
+      source: "product-proof-003-real-package-e2e",
+      sourceVersion: "pp003.v2-capability",
+      approvalRef: null,
+    },
+    approvalStatus: "HYPOTHETICAL" as const,
+  };
+
+  let recipeShape: TransactionEval["recipeShape"];
+  if (args.kind === "RESTRICTED_PAYMENT") {
+    const draws =
+      auth.unit?.ruleId != null
+        ? [
+            {
+              effectId: "consume-rp",
+              capacityNodeId: `capacity:rule:${auth.unit.ruleId}`,
+              amount: {
+                type: "MONEY" as const,
+                amount: String(Math.round(args.amountMillions * 1_000_000)),
+                currency: "USD",
+              },
+              ruleId: auth.unit.ruleId,
+            },
+          ]
+        : [];
+    const rp = recipeDividendPayment(identity, {
+      draws,
+      label: "CONMED §7.6(d) RP with authentic capacity node",
+    });
+    recipeShape = {
+      kind: "DIVIDEND_PAYMENT",
+      limitations: rp.limitations.map((l) => ({ code: l.code, message: l.message })),
+      note:
+        draws.length > 0
+          ? "Recipe bound to CONMED fidelity-passing RP rule capacity node — remaining still unpublished."
+          : "No authentic RP capacity node — recipe refuses empty draws.",
     };
-  } else if (args.kind === "RESTRICTED_PAYMENT") {
-    applicableCovenants.push({
-      covenantFamily: "RESTRICTED_PAYMENTS",
-      sourceProvision: null,
-      calculation: null,
-      missingInputs: [
-        "RP negative covenant + exceptions IR",
-        "builder / Available Amount inputs",
-        "attributed RP utilization ledger with completeness certificate",
-        "VerifiedExecutionPackage",
-      ],
-      selectedPath: null,
-      capacityConsumption: null,
-      postTransactionState: null,
-      conclusion: "BLOCKED — no authentic RP path on Matthews package",
-    });
   } else {
-    applicableCovenants.push({
-      covenantFamily: "ASSET_SALES",
-      sourceProvision: null,
-      calculation: null,
-      missingInputs: [
-        "Asset Sale covenant + threshold provision",
-        "proceeds / reinvestment basket configuration",
-        "fair-value / consideration inputs (not invented)",
-        "VerifiedExecutionPackage",
-      ],
-      selectedPath: null,
-      capacityConsumption: null,
-      postTransactionState: null,
-      conclusion: "BLOCKED — no authentic asset-sale path on Matthews package",
+    const draws =
+      auth.unit?.ruleId != null
+        ? [
+            {
+              effectId: "consume-asset-sale",
+              capacityNodeId: `capacity:rule:${auth.unit.ruleId}`,
+              amount: {
+                type: "MONEY" as const,
+                amount: String(Math.round(args.amountMillions * 1_000_000)),
+                currency: "USD",
+              },
+              ruleId: auth.unit.ruleId,
+            },
+          ]
+        : [];
+    const as = recipeAssetSale(identity, {
+      metrics: [],
+      draws,
+      label: "CONMED §7.5(j) disposition with authentic capacity draw",
     });
+    recipeShape = {
+      kind: "ASSET_SALE",
+      limitations: as.limitations.map((l) => ({ code: l.code, message: l.message })),
+      note:
+        draws.length > 0
+          ? "ASSET_SALE recipe bound to CONMED §7.5(j) capacity node — accounting treatment not inferred."
+          : "No authentic asset-sale capacity node — recipe refuses empty shape.",
+    };
   }
 
-  const truthfulBlocker =
-    args.kind === "ACQUISITION"
-      ? "VERIFIED_SIMULATE_REFUSED: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens; investment leg NOT_IMPLEMENTED. Modeled leaf debt rooms are not production permission."
-      : args.kind === "RESTRICTED_PAYMENT"
-        ? "EXPLICIT_BLOCKER: Restricted Payments domain NOT_IMPLEMENTED for Matthews authentic package — no RP waterfall, builder, or VEP path. Refusing rather than selecting a favorable synthetic path."
-        : "EXPLICIT_BLOCKER: Asset Sales domain NOT_IMPLEMENTED for Matthews authentic package — no assetSale config or VEP path. Refusing rather than inventing proceeds routing.";
+  const family = args.kind === "RESTRICTED_PAYMENT" ? "RESTRICTED_PAYMENTS" : "ASSET_SALES";
+  const applicableCovenants: CovenantTrail[] = [
+    {
+      covenantFamily: family,
+      sourceProvision: auth.unit?.sourceCitation ?? null,
+      calculation: auth.unit
+        ? `grossUsd=${auth.unit.grossCapacityUsd}; fidelity=${auth.unit.fidelityVerdict}; capacity=${auth.capacityOutcome}; sim=${auth.simulationOutcome}; pathResult=${auth.selectedPathResult}`
+        : null,
+      missingInputs: [
+        "utilization completeness certificate",
+        "APPROVED NS-4 financial snapshot for production remaining",
+        ...(args.kind === "ASSET_SALE"
+          ? ["APPROVED Consolidated Total Assets for production greater-of (EMPTY_RESOLVER in REQUIRE path)"]
+          : []),
+      ],
+      selectedPath: auth.selectedPathId,
+      capacityConsumption:
+        auth.simulationOutcome != null
+          ? `REQUIRE ${auth.simulationOutcome} / selectedPathResult=${auth.selectedPathResult} / remaining=null`
+          : null,
+      postTransactionState: null,
+      conclusion: auth.overallConclusion,
+      entityScope: auth.unit?.entityScopeNote ?? null,
+      sourceCitation: auth.unit?.sourceCitation ?? null,
+      verifiedRemainingUsd: null,
+    },
+  ];
 
-  const overallConclusion =
-    verified.executable === false
-      ? `REFUSED / NOT DETERMINED — ${truthfulBlocker}`
-      : "UNEXPECTED EXECUTABLE — investigate (should not occur without VEP)";
+  // Affirmative customer PERMITTED never claimed — remaining null + path INDETERMINATE.
+  const executable = false;
+  const truthfulBlocker =
+    auth.truthfulBlocker ??
+    "AUTHENTIC_UNIT_PRESENT_BUT_NOT_PERMITTED: verified remaining null; completeness absent";
 
   return {
     id: args.id,
@@ -506,18 +720,35 @@ async function evaluateTransaction(args: {
     amountMillions: args.amountMillions,
     evaluationDate: args.evaluationDate,
     draft,
+    packageBinding: {
+      companyId: "conmed",
+      instrumentKey: "conmed-eighth-ar-credit-agreement",
+      authenticity: "AUTHENTIC_FIXTURE_SOURCE",
+      note: "CONMED curated Article VII — fidelity-gated VE units; not package CERTIFIED; remaining null.",
+    },
     applicableCovenants,
     verifiedSimulate: {
-      executable: verified.executable,
-      refusalSummary: verified.refusalSummary,
+      executable,
+      refusalSummary: [
+        ...verified.refusalSummary,
+        ...(auth.truthfulBlocker ? [auth.truthfulBlocker] : []),
+      ],
       certifiedBlockers: verified.certified.blockers,
-      pathEnumerationAuthority: pathEnum.authority,
-      pathIncompleteReasons: pathEnum.incompleteReasons,
-      selectedPathId: verified.selectedPathId,
+      pathEnumerationAuthority: auth.pathEnumerationAuthority,
+      pathIncompleteReasons: [],
+      selectedPathId: auth.selectedPathId,
+      capacityOutcome: auth.capacityOutcome,
+      simulationOutcome: auth.simulationOutcome,
+      selectedPathResult: auth.selectedPathResult,
+      verifiedRemainingUsd: null,
     },
     recipeShape,
-    modeledLeafProbe,
-    overallConclusion,
+    modeledLeafProbe: {
+      used: false,
+      note: "Matthews modeled leaf not used — CONMED authentic multi-family REQUIRE path.",
+    },
+    authenticMultiFamily: auth,
+    overallConclusion: auth.overallConclusion,
     truthfulBlocker,
   };
 }
@@ -528,33 +759,34 @@ async function main() {
 
   const sha = gitSha();
   const slice = runRealDashboardVerticalSlice();
-  const domains = domainInventory(slice.evaluation);
+  const conmed = compileConmedAuthenticMultiFamily("2024-12-31");
+  const domains = domainInventory(slice.evaluation, conmed);
 
-  const txAcquisition = await evaluateTransaction({
-    id: "txn-debt-funded-acquisition",
-    label: "Debt-funded acquisition",
+  const txAcquisition = await evaluateAcquisitionTransaction({
     ask: "Can we finance a $50 million secured debt-funded acquisition on 2024-12-31?",
     amountMillions: 50,
     evaluationDate: "2024-12-31",
-    kind: "ACQUISITION",
+    conmed,
   });
 
-  const txRp = await evaluateTransaction({
+  const txRp = await evaluateConmedFamilyTransaction({
     id: "txn-restricted-payment",
     label: "Restricted payment",
     ask: "Can we make a $25 million restricted payment dividend on 2024-12-31?",
     amountMillions: 25,
     evaluationDate: "2024-12-31",
     kind: "RESTRICTED_PAYMENT",
+    conmed,
   });
 
-  const txAssetSale = await evaluateTransaction({
+  const txAssetSale = await evaluateConmedFamilyTransaction({
     id: "txn-asset-sale",
     label: "Asset sale",
     ask: "Can we complete a $40 million asset sale disposition on 2024-12-31?",
     amountMillions: 40,
     evaluationDate: "2024-12-31",
     kind: "ASSET_SALE",
+    conmed,
   });
 
   const mtnSimPath = path.join(
@@ -565,48 +797,53 @@ async function main() {
     ? JSON.parse(fs.readFileSync(mtnSimPath, "utf8"))
     : null;
 
-  const openPrAudit = {
-    note: "Snapshot guidance for human merge. Live mergeability changes; see docs/product-proof/003-real-financing-package-e2e/00-main-and-pr-audit.md.",
-    canonicalMainSha: sha,
-    alreadyOnMain: [
-      { number: 333, title: "PAI false authority / false remaining closure" },
-      { number: 334, title: "NS-4 canonical product (delivery evidence + cutoff)" },
-    ],
-    preferredLandingCandidates: [
+  const consolidation = {
+    baselinePr: 346,
+    baselineSha: "046161e78dc206c50ee951d71a18dfa4befd3206",
+    absorbed: [
       {
         number: 345,
-        title: "post-#334 absorb #335/#339 no-write + NS-4 authority gates",
-        role: "Preferred single NS-4 absorb tip after #334",
+        tip: "d91b0a977ef6c92c9224b096306f7dfc8695cdbc",
+        how: "Merged origin/main (includes Merge PR #345) into this branch — NS-4 absorb + no-write gates + contractual-metrics modules.",
       },
-      {
-        number: 343,
-        title: "Canonical landing: #335 no-write + #334 NS-4 + #336 identity (absorb)",
-        role: "Alternate absorb tip — do not merge both #345 and #343",
-      },
+    ],
+    notFullMergedAvoidingDuplicateEngines: [
       {
         number: 340,
-        title: "Cross-domain Simulate integration with canonical verified-remaining authority",
-        role: "Cross-domain v2 — after NS-4 absorb; supersedes competing v1 modules",
+        tip: "7e3974fcdd1a54c0f8762e41873ed2be045a8a14",
+        reason:
+          "Cross-domain Simulate v2 would land a second permissibility surface. Verified-execution REQUIRE spine owns transaction evaluation here; #340 remains human tip / supporting.",
       },
       {
         number: 341,
-        title: "absorb #322 executable financial path onto post-#333 main",
-        role: "AFC / contractual leverage — rebase after absorb tip; CONFLICTING forks must close",
+        tip: "1dc10c4c301257a578ac9758b3f232396020e1c4",
+        reason:
+          "Corrected AFC/conditional-authority tip still open; main already carries overlapping financial-metric-resolver via #345/#332. Full tip not merged — no competing contractual-leverage engine.",
       },
     ],
     doNotSelfMerge: true,
   };
 
+  const independentlyExecutable = domains
+    .filter((d) => d.status === "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE")
+    .map((d) => d.domain);
+
   const report = {
-    schema: "product-proof-003-real-financing-package-e2e.v1",
+    schema: "product-proof-003-real-financing-package-e2e.v2-capability",
     evaluatedAt: new Date().toISOString(),
     canonicalMainSha: sha,
+    baselineSha: consolidation.baselineSha,
     package: {
       key: slice.evaluation.packageKey,
       companyId: slice.evaluation.companyId,
       asOf: slice.evaluation.asOf,
       authenticity: "AUTHENTIC_SOURCE_BACKED",
       governingDocuments: MATTHEWS_GOVERNING_DOCUMENTS,
+      authenticMultiFamilyAlternate: {
+        ...conmed.manifest,
+        independentlyExecutableFamilies: conmed.independentlyExecutableFamilies,
+        units: conmed.units,
+      },
       secondaryReference: {
         package: "MTN Tenth A&R (Product Proof 001 frozen)",
         capacitySimulationArtifact: mtnSimPath,
@@ -614,26 +851,31 @@ async function main() {
       },
     },
     constraintsHonored: [
-      "canonical main-based implementation only — no competing engine",
+      "verified-execution REQUIRE spine for authentic multi-family — no competing engine",
       "no invented financial approvals",
       "no zero utilization assumptions",
       "no synthetic legal interpretations",
       "no favorable path selection",
+      "verified remaining forced null without completeness",
+      "missing utilization did not stop RP / investment / asset-sale family implementation",
       "no Neon writes",
       "no paid inference",
       "no self-merge",
     ],
     domainStatus: domains,
+    independentlyExecutableFamilies: independentlyExecutable,
     milestones: slice.milestones,
     sliceVerdict: slice.verdict,
     productionHandoffRefused: slice.evaluation.productionHandoffRefused,
     productionHandoffReasons: slice.evaluation.productionHandoffReasons,
     numericalHonesty: slice.numericalHonesty,
     transactions: [txAcquisition, txRp, txAssetSale],
-    openIntegrationPrAudit: openPrAudit,
+    consolidationAbsorb: consolidation,
     overallProductVerdict: "PARTIAL_PRODUCT_CAPABILITY_PROVEN",
     overallProductVerdictReason:
-      "Authentic Matthews package yields modeled debt/lien leaf calculations and correct fail-closed refusals for verified simulation, RP, and asset sale. End-to-end customer-ready permission for three real transactions is NOT proven.",
+      independentlyExecutable.length > 0
+        ? `Authentic CONMED multi-family units make ${independentlyExecutable.join(", ")} independently GROSS-executable under REQUIRE (path enum + capacity + simulate). Verified remaining stays null; customer VERIFIED_TRANSACTION_PERMITTED not claimed. Matthews debt/lien remain PARTIALLY_EXECUTABLE; acquisition still refused as a whole.`
+        : "No independently executable authentic families yet.",
   };
 
   writeJson("00-evaluation.json", report);
@@ -645,17 +887,36 @@ async function main() {
     blockers: slice.blockers,
     numericalHonesty: slice.numericalHonesty,
   });
+  writeJson("04-conmed-multi-family.json", {
+    manifest: conmed.manifest,
+    units: conmed.units,
+    independentlyExecutableFamilies: conmed.independentlyExecutableFamilies,
+    partialFamilies: conmed.partialFamilies,
+    failedFamilies: conmed.failedFamilies,
+  });
+  writeJson("05-consolidation-absorb.json", consolidation);
 
   console.log(
     JSON.stringify(
       {
         ok: true,
         sha,
+        baselineSha: consolidation.baselineSha,
         verdict: report.overallProductVerdict,
-        domains: domains.map((d) => ({ domain: d.domain, status: d.status })),
+        independentlyExecutableFamilies: independentlyExecutable,
+        domains: domains.map((d) => ({
+          domain: d.domain,
+          status: d.status,
+          sourcePackage: d.sourcePackage,
+        })),
         transactions: report.transactions.map((t) => ({
           id: t.id,
           executable: t.verifiedSimulate.executable,
+          pathAuth: t.verifiedSimulate.pathEnumerationAuthority,
+          capacity: t.verifiedSimulate.capacityOutcome,
+          sim: t.verifiedSimulate.simulationOutcome,
+          pathResult: t.verifiedSimulate.selectedPathResult,
+          remaining: t.verifiedSimulate.verifiedRemainingUsd,
           blocker: t.truthfulBlocker,
         })),
         outDir: OUT_DIR,
