@@ -600,5 +600,10 @@ export interface SimulateTransactionArgs {
     verification?: import("../verification-envelope").RuntimeVerificationEnvelope;
     /** PHASE-4 VERIFICATION GATE: ALLOW_MISSING (default) or REQUIRE. */
     policy?: import("../verification-envelope").VerificationGatePolicy;
+    /**
+     * PAI-04: default UNKNOWN when omitted. VERIFIED_EMPTY only when the caller
+     * explicitly attests completeness (never implied by an empty ledger).
+     */
+    utilizationCompleteness?: "UNKNOWN" | "VERIFIED_EMPTY";
   };
 }

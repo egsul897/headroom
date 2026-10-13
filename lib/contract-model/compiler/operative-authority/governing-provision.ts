@@ -215,6 +215,25 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
     }
   }
 
+  // PAI-03: a confirmed restatement whose scope could not be classified (UNKNOWN)
+  // must not leave the base document CONFIRMED_OPERATIVE by silent skip.
+  const unknownScopeConfirmed = confirmedAsOf.filter((r) => r.evidence.restatementScope === "UNKNOWN");
+  if (unknownScopeConfirmed.length > 0 && !governingRestatement) {
+    unresolvedConflicts.push(
+      ...unknownScopeConfirmed.map(
+        (r) =>
+          `Restatement authority CONFIRMED but restatementScope UNKNOWN for ${r.successorDocumentId} — cannot assert base/predecessor governs without classifying full vs partial scope`,
+      ),
+    );
+  } else if (unknownScopeConfirmed.length > 0 && governingRestatement) {
+    // A later full/partial was selected; disclose UNKNOWN-scope siblings as caveats.
+    for (const r of unknownScopeConfirmed) {
+      if (r.successorDocumentId !== governingRestatement.successorDocumentId) {
+        caveats.push(`UNKNOWN_RESTATEMENT_SCOPE:${r.successorDocumentId}`);
+      }
+    }
+  }
+
   // Surface review-required / ambiguous / unsupported authorities that would otherwise
   // silently drop. IMPORTANT: predecessorDocumentId may be null when the named prior is
   // out of package (AutoNation Fifth→Fourth). That unresolved competitor must still
@@ -290,7 +309,23 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
     }
     if (compareIsoDates(a.effectiveDateIso, asOf) > 0) return false;
     if (!targetsProvision(a, sectionRef, definedTermRef)) return false;
-    // Must target the current governing document or its predecessor chain.
+    // PAI-12: Must target the current governing document or its predecessor chain.
+    // When targetDocumentId is absent, refuse rather than accepting a cross-facility overlay.
+    const allowedTargets = new Set<string>([
+      ...(governingRestatement
+        ? [governingRestatement.successorDocumentId, ...(governingRestatement.predecessorDocumentId ? [governingRestatement.predecessorDocumentId] : [])]
+        : []),
+      ...(input.baseDocumentId ? [input.baseDocumentId] : []),
+      ...[...familyIds],
+    ]);
+    if (a.targetDocumentId) {
+      if (!allowedTargets.has(a.targetDocumentId)) {
+        unresolvedConflicts.push(
+          `${a.role} ${a.documentId} targets document ${a.targetDocumentId} outside this instrument's governing/predecessor set — overlay refused`,
+        );
+        return false;
+      }
+    }
     return true;
   });
 
@@ -411,6 +446,22 @@ export function resolveGoverningProvision(input: ResolveGoverningProvisionInput)
   if (unresolvedConflicts.some((c) => /Conflicting/.test(c))) {
     authorityClassification = "AMBIGUOUS";
     governingDocumentId = null;
+  }
+
+  // PAI-03: UNKNOWN restatement scope on a confirmed in-family successor must not
+  // leave base CONFIRMED_OPERATIVE (incomplete coverage ≠ complete coverage).
+  if (
+    unresolvedConflicts.some((c) => /restatementScope UNKNOWN/.test(c)) &&
+    (authorityClassification === "CONFIRMED_OPERATIVE" ||
+      authorityClassification === "CONFIRMED_OPERATIVE_WITH_CAVEATS" ||
+      authorityClassification === "NOT_YET_EFFECTIVE")
+  ) {
+    authorityClassification = "REVIEW_REQUIRED";
+    governingDocumentId = null;
+    reasons.push(
+      "A confirmed restatement has UNKNOWN restatementScope — refuse to assert base/predecessor as unconditional operative without classifying full vs partial coverage.",
+    );
+    caveats.push("UNKNOWN_RESTATEMENT_SCOPE_BLOCKS_BASE_OPERATIVE");
   }
 
   // Package-wide vs local provision semantics: a local base / earlier confirmed

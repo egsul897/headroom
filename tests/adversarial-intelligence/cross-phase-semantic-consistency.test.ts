@@ -211,12 +211,9 @@ describe("Mission 1 — safeguards already holding", () => {
   });
 });
 
-describe("Mission 1 — confirmed cross-phase defects (failing-before)", () => {
-  /**
-   * DEF-C1: Phase-4C treats empty ledger as determined zero usage → AVAILABLE remaining = gross.
-   * Utilization-authority (#237) treats the same fact as UNKNOWN and withholds remaining.
-   */
-  it.fails("Phase-4C empty ledger must not publish AVAILABLE remaining equal to gross", () => {
+describe("Mission 1 — closed cross-phase defects (regression locks)", () => {
+  /** PAI-04 */
+  it("Phase-4C empty ledger must not publish AVAILABLE remaining equal to gross", () => {
     const rules = [rule("rule-flat", MONEY(100_000_000))];
     const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
     const state = evaluateCapacityState({
@@ -227,16 +224,15 @@ describe("Mission 1 — confirmed cross-phase defects (failing-before)", () => {
       asOf: AS_OF,
     });
     const c = state.capacities[0]!;
-    // Desired North Star / utilization-authority semantics:
     expect(c.status).not.toBe("AVAILABLE");
     expect(amountString(c.remaining)).toBeNull();
     expect(c.usage.kind).toBe("NOT_DETERMINED");
+    // Gross remains separately evaluable under provisional when status is floored.
+    expect(c.grossCapacity.kind === "AMOUNT" || c.provisional?.grossCapacity.kind === "AMOUNT").toBe(true);
   });
 
-  /**
-   * DEF-C4: legacy evaluateProvision assumes missing pctEbitda = 0 and still reports modeled.
-   */
-  it.fails("legacy grower with missing pct must not report modeled complete capacity", () => {
+  /** PAI-09 */
+  it("legacy grower with missing pct must not report modeled complete capacity", () => {
     const evaluated = evaluateProvision(
       {
         id: "p-grower",
@@ -270,10 +266,8 @@ describe("Mission 1 — confirmed cross-phase defects (failing-before)", () => {
     expect(evaluated.status).toMatch(/review|need|refus/i);
   });
 
-  /**
-   * DEF-AUTH-1: computeOperativeDocument ignores as-of; future restatement becomes tip.
-   */
-  it.fails("whole-document operative tip must not resolve to a future-dated restatement without as-of filter", () => {
+  /** PAI-01 */
+  it("whole-document operative tip must not resolve to a future-dated restatement as of historical date", () => {
     const effects = [
       restateEffect({
         effectId: "e-future",
@@ -283,17 +277,13 @@ describe("Mission 1 — confirmed cross-phase defects (failing-before)", () => {
         status: "RESOLVED",
       }),
     ];
-    const resolution = computeOperativeDocument("v1", effects);
-    // Desired: either NOT_APPLICABLE / REVIEW_REQUIRED as of "today", or an as-of-aware API.
-    // At minimum a future tip must not be confidently RESOLVED as currently operative.
+    const resolution = computeOperativeDocument("v1", effects, [], { asOfDate: "2025-01-01" });
     expect(resolution.status).not.toBe("RESOLVED");
     expect(resolution.operativeDocumentId).not.toBe("v2");
   });
 
-  /**
-   * DEF-AUTH-2: REVIEW_REQUIRED restatement edges still yield operativeDocument RESOLVED.
-   */
-  it.fails("REVIEW_REQUIRED restatement effect must not yield operativeDocument status RESOLVED", () => {
+  /** PAI-02 */
+  it("REVIEW_REQUIRED restatement effect must not yield operativeDocument status RESOLVED", () => {
     const effects = [
       restateEffect({
         effectId: "e-rr",
@@ -309,10 +299,8 @@ describe("Mission 1 — confirmed cross-phase defects (failing-before)", () => {
     expect(resolution.operativeDocumentId).toBeNull();
   });
 
-  /**
-   * DEF-AUTH-3: confirmed restatement with UNKNOWN scope falls through to base CONFIRMED_OPERATIVE.
-   */
-  it.fails("UNKNOWN restatement scope must fail closed, not leave base CONFIRMED_OPERATIVE", () => {
+  /** PAI-03 */
+  it("UNKNOWN restatement scope must fail closed, not leave base CONFIRMED_OPERATIVE", () => {
     const gov = resolveGoverningProvision({
       asOfDate: "2025-01-01",
       sectionRef: "6.01",
@@ -324,10 +312,8 @@ describe("Mission 1 — confirmed cross-phase defects (failing-before)", () => {
     expect(gov.governingDocumentId).not.toBe("base");
   });
 
-  /**
-   * DEF-M2-ENTITY: omitted transaction entities map to path SATISFIED.
-   */
-  it.fails("omitted transaction entities must not satisfy entity-scope path result", () => {
+  /** PAI-07 */
+  it("omitted transaction entities must not satisfy entity-scope path result", () => {
     const w = world({
       rules: [provision("p-a", MONEY(100), { entityScope: ["BORROWER"] })],
     });
@@ -341,8 +327,8 @@ describe("Mission 1 — confirmed cross-phase defects (failing-before)", () => {
   });
 });
 
-describe("Mission 1 — cross-phase fork documentation (observable today)", () => {
-  it("documents the Phase-4C vs utilization-authority semantic fork on empty ledger", () => {
+describe("Mission 1 — post-fix alignment and simulate isolation", () => {
+  it("Phase-4C empty ledger aligns with utilization-authority (remaining withheld)", () => {
     const rules = [rule("rule-flat", MONEY(50_000_000))];
     const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
     const phase4c = evaluateCapacityState({
@@ -361,14 +347,13 @@ describe("Mission 1 — cross-phase fork documentation (observable today)", () =
       completenessCertificate: null,
     });
 
-    // Observable fork at this SHA — not the desired end state.
-    expect(phase4c.status).toBe("AVAILABLE");
-    expect(amountString(phase4c.remaining)).toBe("50000000");
+    expect(phase4c.status).not.toBe("AVAILABLE");
+    expect(amountString(phase4c.remaining)).toBeNull();
     expect(util.authoritativeForRemaining).toBe(false);
     expect(util.kind).toBe("UNKNOWN");
   });
 
-  it("documents simulate isolation: commitPlan stays unexecuted on satisfied hypo", () => {
+  it("simulate isolation: commitPlan stays unexecuted on satisfied hypo", () => {
     const w = world({ rules: [provision("p-a", MONEY(100))] });
     const r = simulate(
       w,
@@ -378,7 +363,6 @@ describe("Mission 1 — cross-phase fork documentation (observable today)", () =
     expect(r.selectedPathResult).toBe("SATISFIED");
     expect(r.commitPlan.executed).toBe(false);
     expect(r.commitPlan.committable).toBe(true);
-    // Hypothetical effects must not mutate the caller's pre-state ledger.
     expect(w.context.ledger ?? []).toHaveLength(0);
   });
 });

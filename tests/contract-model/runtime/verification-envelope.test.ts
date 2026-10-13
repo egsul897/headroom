@@ -248,8 +248,10 @@ describe("step 3 - the envelope is LIVE (the step-1 inertness sentinel, inverted
     const graphEnv = buildCapacityGraph({ companyId: "env-co", instrumentKey: "env-inst", rules, definitions, asOf: "2026-01-01", verification: envelope });
     expect(JSON.stringify(graphEnv)).toBe(JSON.stringify(graphPlain));
 
-    const statePlain = evaluateCapacityState({ graph: graphPlain, rules, definitions, inputs, asOf: "2026-01-01" });
-    const stateEnv = evaluateCapacityState({ graph: graphEnv, rules, definitions, inputs, asOf: "2026-01-01", verification: envelope, policy: "REQUIRE" });
+    const statePlain = evaluateCapacityState({ graph: graphPlain, rules, definitions, inputs, asOf: "2026-01-01",
+    utilizationCompleteness: "VERIFIED_EMPTY", });
+    const stateEnv = evaluateCapacityState({ graph: graphEnv, rules, definitions, inputs, asOf: "2026-01-01", verification: envelope, policy: "REQUIRE",
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     expect(statePlain.capacities[0]!.status).toBe("AVAILABLE");
     expect(stateEnv.capacities[0]!.status).toBe("UNSUPPORTED");
     expect(stateEnv.capacities[0]!.limitations.map((l) => l.code)).toEqual(["PHASE3_VERIFICATION_MATERIAL_FINDING"]);

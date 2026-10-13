@@ -114,6 +114,7 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   const asOf = ctx.asOf ?? currentState.asOf ?? null;
   const baseLedger: readonly LedgerUsageRecord[] = ctx.ledger ?? [];
   const policy = ctx.ledgerPolicy ?? DEFAULT_LEDGER_POLICY;
+  const utilizationCompleteness = ctx.utilizationCompleteness ?? "UNKNOWN";
   const limitations: SimulationLimitation[] = [];
   const diagnostics: { code: string; message: string; refs: string[] }[] = [];
   const trace: SimulationTraceStep[] = [];
@@ -251,7 +252,7 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   // ---- 8. evaluate the relevant capacities against the pro-forma view -------
   let postOverlayState: CapacityState | null = null;
   if (!blockedBeforeEvaluation) {
-    postOverlayState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: overlay.resolver, ledger: baseLedger, ledgerPolicy: policy, asOf, verification: ctx.verification, policy: ctx.policy });
+    postOverlayState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: overlay.resolver, ledger: baseLedger, ledgerPolicy: policy, asOf, verification: ctx.verification, policy: ctx.policy, utilizationCompleteness });
     complexity.stateEvaluations++;
     complexity.capacitiesEvaluated += postOverlayState.capacities.length;
     complexity.sharedResourcesEvaluated += postOverlayState.sharedConstraints.length;
@@ -361,7 +362,7 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   const refreshCursor = (): CapacityState | null => {
     if (!cursorDirty && cursorState) return cursorState;
     const stepOverlay = buildOverlay({ base: inputs, transactionId: tx.transactionId, companyId: graph.companyId, instrumentKey: graph.instrumentKey, metricEffects: appliedMetrics, eventEffects: appliedEvents });
-    cursorState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: stepOverlay.resolver, ledger: workingLedger, ledgerPolicy: policy, asOf, verification: ctx.verification, policy: ctx.policy });
+    cursorState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: stepOverlay.resolver, ledger: workingLedger, ledgerPolicy: policy, asOf, verification: ctx.verification, policy: ctx.policy, utilizationCompleteness });
     complexity.stateEvaluations++;
     complexity.ledgerEntriesExamined += cursorState.complexity.ledgerEntriesExamined;
     cursorDirty = false;
@@ -510,7 +511,7 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   const pathContributions: SelectedPathResult[] = [
     ...capacityEffects.map((r) => r.outcome),
     ...conditions.map((c) => (c.result === "SATISFIED" ? "SATISFIED" : c.result === "NOT_SATISFIED" ? "NOT_SATISFIED" : c.result === "REVIEW_REQUIRED" ? "REVIEW_REQUIRED" : "INDETERMINATE") as SelectedPathResult),
-    ...entityScope.map((e) => entityScopePathResult(e.outcome)),
+    ...entityScope.map((e) => entityScopePathResult(e)),
     ...(reclassEffects.length > 0 ? [reclassAllExecuted ? ("SATISFIED" as SelectedPathResult) : ("NOT_SATISFIED" as SelectedPathResult)] : []),
   ];
   // A specification the engine could not evaluate at all leaves the path dimension indeterminate.
@@ -531,7 +532,7 @@ export function simulateTransaction(args: SimulateTransactionArgs): TransactionS
   let postStateConflicts: string[] = [];
   if (applicable) {
     const proposedLedger = workingLedger;
-    postState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: overlay.resolver, ledger: proposedLedger, ledgerPolicy: policy, asOf, verification: ctx.verification, policy: ctx.policy });
+    postState = evaluateCapacityState({ graph, rules: ctx.rules, sharedCapacities: ctx.sharedCapacities, definitions: ctx.definitions, inputs: overlay.resolver, ledger: proposedLedger, ledgerPolicy: policy, asOf, verification: ctx.verification, policy: ctx.policy, utilizationCompleteness });
     complexity.stateEvaluations++;
     complexity.ledgerEntriesExamined += postState.complexity.ledgerEntriesExamined;
     ledgerPostHash = ledgerHash(proposedLedger);
@@ -800,7 +801,18 @@ function entityScopeOutcome(rule: IRRule, transactionEntities: readonly string[]
   return { ...base, outcome: "NOT_IN_DECLARED_SCOPE", reason: `rule ${rule.ruleId} declares a scope that does not include ${transactionEntities.filter((x) => !(rule.entityScope as readonly string[]).includes(x)).sort().join(", ")}; the scope is reported as it stands and is never widened` };
 }
 
-const entityScopePathResult = (o: EntityScopeResult["outcome"]): SelectedPathResult =>
-  o === "CONFIRMED_APPLICABLE" || o === "NO_TRANSACTION_ENTITIES_SUPPLIED" ? "SATISFIED"
-    : o === "CONFIRMED_EXCLUDED" ? "NOT_APPLICABLE"
-      : o === "NOT_IN_DECLARED_SCOPE" ? "NOT_SATISFIED" : "REVIEW_REQUIRED";
+/** PAI-07: omitted entities never satisfy a path when entity-scope must be verified. */
+const entityScopePathResult = (e: EntityScopeResult): SelectedPathResult => {
+  const o = e.outcome;
+  if (o === "CONFIRMED_APPLICABLE") return "SATISFIED";
+  if (o === "CONFIRMED_EXCLUDED") return "NOT_APPLICABLE";
+  if (o === "NOT_IN_DECLARED_SCOPE") return "NOT_SATISFIED";
+  if (o === "NO_TRANSACTION_ENTITIES_SUPPLIED") {
+    const requiresEntities =
+      e.ruleEntityScope.length > 0 ||
+      e.ruleEntityScopeExcluded.length > 0 ||
+      e.auditStatus != null;
+    return requiresEntities ? "REVIEW_REQUIRED" : "SATISFIED";
+  }
+  return "REVIEW_REQUIRED";
+};

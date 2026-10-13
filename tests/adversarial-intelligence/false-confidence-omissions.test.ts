@@ -90,8 +90,9 @@ describe("Mission 2 — safeguards preferring refusal over unsupported numbers",
   });
 });
 
-describe("Mission 2 — confirmed false-confidence defects (failing-before)", () => {
-  it.fails("empty historical utilization must not publish AVAILABLE remaining = gross", () => {
+describe("Mission 2 — closed false-confidence defects (regression locks)", () => {
+  /** PAI-04 */
+  it("empty historical utilization must not publish AVAILABLE remaining = gross", () => {
     const rules = [rule("rule-flat", MONEY(75_000_000))];
     const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
     const c = evaluateCapacityState({
@@ -105,7 +106,8 @@ describe("Mission 2 — confirmed false-confidence defects (failing-before)", ()
     expect(amountString(c.remaining)).toBeNull();
   });
 
-  it.fails("empty knownSectionRefs must not mark Section refs RESOLVED_CONTROLLING", () => {
+  /** PAI-10 */
+  it("empty knownSectionRefs must not mark Section refs RESOLVED_CONTROLLING", () => {
     const classified = resolveCrossReferences({
       texts: ["Subject to Section 7.05 and the definition of Permitted Investment"],
       knownSectionRefs: new Set<string>(),
@@ -114,7 +116,8 @@ describe("Mission 2 — confirmed false-confidence defects (failing-before)", ()
     expect(classified.unresolvedOrNonResolved.length).toBeGreaterThan(0);
   });
 
-  it.fails("omitted entities on a scoped rule must not yield SATISFIED path", () => {
+  /** PAI-07 */
+  it("omitted entities on a scoped rule must not yield SATISFIED path", () => {
     const w = world({ rules: [provision("p-a", MONEY(50), { entityScope: ["GUARANTOR_RS"] })] });
     const r = simulate(
       w,

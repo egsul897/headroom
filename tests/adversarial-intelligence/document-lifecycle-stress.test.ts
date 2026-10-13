@@ -248,8 +248,8 @@ describe("Mission 3 — historical simulation must not contaminate current ledge
   });
 });
 
-describe("Mission 3 — customer-intelligence as-of gap (failing-before)", () => {
-  it.fails("pre-effective restatement must not resolve as operative before asOfDate", () => {
+describe("Mission 3 — customer-intelligence as-of (PAI-06 closed)", () => {
+  it("pre-effective restatement must not resolve as operative before asOfDate", () => {
     const sources = [
       baseSource({
         sourceId: "base-ca",
@@ -278,15 +278,15 @@ describe("Mission 3 — customer-intelligence as-of gap (failing-before)", () =>
   });
 });
 
-describe("Mission 3 — whole-document tip vs provision as-of (documented fork)", () => {
-  it("documents computeOperativeDocument tip without as-of vs provision-level as-of filter", () => {
+describe("Mission 3 — whole-document tip as-of (PAI-01 closed)", () => {
+  it("computeOperativeDocument with asOfDate excludes future tip; provision path agrees", () => {
     const effects = [
       restateEffect("e1", "ca-ar1", "ca-original", "2022-03-15"),
       restateEffect("e2", "ca-ar2", "ca-ar1", "2030-01-01"),
     ];
-    const tip = computeOperativeDocument("ca-original", effects);
-    expect(tip.status).toBe("RESOLVED");
-    expect(tip.operativeDocumentId).toBe("ca-ar2");
+    const tipAsOf = computeOperativeDocument("ca-original", effects, [], { asOfDate: "2025-06-01" });
+    expect(tipAsOf.status).toBe("RESOLVED");
+    expect(tipAsOf.operativeDocumentId).toBe("ca-ar1");
 
     const gov = resolveGoverningProvision({
       asOfDate: "2025-06-01",

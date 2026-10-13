@@ -57,7 +57,14 @@ const pkg = (rules: IRRule[], verifications: VerifiedUnitArtifact[], definitions
   ({ companyId: tx.ORG, instrumentKey: tx.FACILITY, rules, definitions, verifications, ...over });
 const FACTS = [tx.figure("fig-1", "1000")];
 const inputsFor = (rules: IRRule[], definitions: IRDefinition[] = []) => tx.resolverFor(FACTS, definitions, rules);
-const args = (p: VerifiedExecutionPackage, ledger: ReturnType<typeof tx.usage>[] = []): VerifiedCapacityArgs => ({ package: p, inputs: inputsFor([...p.rules], [...(p.definitions ?? [])]), ledger, asOf: tx.WHEN });
+/** Arithmetic fixtures attest VERIFIED_EMPTY; product default remains UNKNOWN (PAI-04). */
+const args = (p: VerifiedExecutionPackage, ledger: ReturnType<typeof tx.usage>[] = []): VerifiedCapacityArgs => ({
+  package: p,
+  inputs: inputsFor([...p.rules], [...(p.definitions ?? [])]),
+  ledger,
+  asOf: tx.WHEN,
+  utilizationCompleteness: "VERIFIED_EMPTY",
+});
 const codes = (ls: readonly { code: string }[]) => ls.map((l) => l.code).sort();
 const entry = (r: ReturnType<typeof evaluateVerifiedCapacity>, ruleId: string) => {
   if (r.outcome !== "EXECUTED") throw new Error(`expected EXECUTED, got ${r.outcome}`);
@@ -111,7 +118,8 @@ describe("end-to-end matrix (§21)", () => {
     if (r.outcome !== "EXECUTED") return;
     expect(r.coverage).toMatchObject({ unitsInPackage: 1, unitsWithVerification: 1, unitsMissingVerification: [], unitsRefusedByGate: [], unitsIncompletelyVerified: [], identityStrength: { STRONG: 1, WEAK: 0 }, complete: true });
     const graph = buildCapacityGraph({ companyId: tx.ORG, instrumentKey: tx.FACILITY, rules: [r0], definitions: [], asOf: tx.WHEN });
-    const raw = evaluateCapacityState({ graph, rules: [r0], definitions: [], inputs: inputsFor([r0]), asOf: tx.WHEN });
+    const raw = evaluateCapacityState({ graph, rules: [r0], definitions: [], inputs: inputsFor([r0]), asOf: tx.WHEN,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     expect(r.state.stateHash).toBe(raw.stateHash);
     expect(JSON.stringify(r.state)).toBe(JSON.stringify(raw));
   });

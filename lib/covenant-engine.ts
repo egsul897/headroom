@@ -352,11 +352,26 @@ export function evaluateProvision(
       return { provision: p, status: "modeled", capacity: Math.max(0, p.thresholdValue - outstanding) };
     }
     case "GREATER_OF_FLAT_OR_PCT_EBITDA": {
-      const pct = params.pctEbitda ?? 0;
+      // PAI-09: missing grower % is incomplete coverage — refuse, do not assume 0.
+      if (params.pctEbitda === undefined || params.pctEbitda === null) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % EBITDA basket — params.pctEbitda is missing; refusing rather than assuming 0% (fixed floor $${p.thresholdValue}M is not presented alone as remaining capacity).`,
+        };
+      }
+      const pct = params.pctEbitda;
       return { provision: p, status: "modeled", capacity: Math.max(p.thresholdValue, pct * fin.ebitda) };
     }
     case "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS": {
-      const pct = params.pctTotalAssets ?? 0;
+      if (params.pctTotalAssets === undefined || params.pctTotalAssets === null) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Total Assets basket — params.pctTotalAssets is missing; refusing rather than assuming 0%.`,
+        };
+      }
+      const pct = params.pctTotalAssets;
       if (fin.totalAssets == null || !Number.isFinite(fin.totalAssets) || fin.totalAssets < 0) {
         return {
           provision: p,
@@ -395,7 +410,15 @@ export function evaluateProvision(
       return { provision: p, status: "modeled", capacity };
     }
     case "BUILDER_BASKET": {
-      const pct = params.pctEbitda ?? 0;
+      // PAI-09: builder grower % missing → review_required (align with IR adapter honesty).
+      if (params.pctEbitda === undefined || params.pctEbitda === null) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a builder basket — params.pctEbitda is missing; refusing rather than assuming 0% grower.`,
+        };
+      }
+      const pct = params.pctEbitda;
       const base = Math.max(p.thresholdValue, pct * fin.ebitda);
       const cniContribution = (params.cniSharePct ?? 0) * Math.max(0, fin.cumulativeNetIncome);
       const equityContribution = params.includeEquityProceeds ? fin.equityProceedsSinceIssue : 0;

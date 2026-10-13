@@ -121,14 +121,21 @@ export function buildPositionView(args: {
     const packageAuth = sim?.packageAuthoritative;
     // #268: production-authoritative remaining requires completeness + trusted issuer.
     // Live covenant-engine path currently stamps NOT_PRODUCTION_AUTHORITATIVE; honor the field.
+    // PAI-08: non-authoritative modeled dollars are GROSS_CONTRACTUAL, never claimKind REMAINING.
     const productionAuthoritative = sim?.utilizationRemainingAuthority === "PRODUCTION_AUTHORITATIVE";
+    const claimKind =
+      remainingAmount === undefined
+        ? "UNAVAILABLE"
+        : productionAuthoritative
+          ? "REMAINING"
+          : "GROSS_CONTRACTUAL";
     const remaining = presentCapacityClaim({
-      claimKind: remainingAmount === undefined ? "UNAVAILABLE" : "REMAINING",
+      claimKind,
       amountMillions: remainingAmount ?? null,
       remainingIsAuthoritative: productionAuthoritative,
       publicationLabel: productionAuthoritative
         ? "AVAILABLE"
-        : packageAuth?.label ?? readiness.capacityAuthority ?? "NOT_PRODUCTION_AUTHORITATIVE",
+        : "GROSS_CONTRACTUAL",
       unavailableReason:
         remainingAmount === undefined
           ? "Remaining capacity not determinable from the shared engine for this side."

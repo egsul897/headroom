@@ -5,13 +5,22 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { buildCapacityGraph, evaluateCapacityState, buildLedgerIndex } from "@/lib/contract-model/runtime/capacity";
 import { EMPTY_RESOLVER } from "@/lib/contract-model/runtime/input-resolver";
-import { AS_OF, CO, CO2, INST, INST2, METRIC, MONEY, MUL, PCT, RULE_REF, amountString, fact, onRule, onShared, resetIds, resolver, rule, sharedCap, unresolved, usage } from "./helpers";
+import { AS_OF, CO, CO2, INST, INST2, METRIC, MONEY, MUL, PCT, RULE_REF, VERIFIED_EMPTY, amountString, fact, onRule, onShared, resetIds, resolver, rule, sharedCap, unresolved, usage } from "./helpers";
 
 beforeEach(resetIds);
 
+/** Arithmetic fixtures attest VERIFIED_EMPTY so empty-ledger cases can assert remaining = gross. */
 const run = (rules: ReturnType<typeof rule>[], caps: ReturnType<typeof sharedCap>[], ledger: ReturnType<typeof usage>[] = [], facts: ReturnType<typeof fact>[] = []) => {
   const graph = buildCapacityGraph({ rules, sharedCapacities: caps, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-  const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: facts.length ? resolver(facts) : EMPTY_RESOLVER, ledger, asOf: AS_OF });
+  const state = evaluateCapacityState({
+    graph,
+    rules,
+    sharedCapacities: caps,
+    inputs: facts.length ? resolver(facts) : EMPTY_RESOLVER,
+    ledger,
+    asOf: AS_OF,
+    utilizationCompleteness: VERIFIED_EMPTY,
+  });
   return { graph, state };
 };
 const cap = (state: ReturnType<typeof run>["state"], ruleId: string) => state.capacities.find((c) => c.ruleId === ruleId)!;
