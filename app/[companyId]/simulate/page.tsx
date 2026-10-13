@@ -6,6 +6,8 @@ import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { getDocuments, getDefinedTermsByProvision } from "@/lib/coherent";
 import { buildSolverContext } from "@/lib/dashboard-service";
 import { loadCovenantDataOrEmpty } from "@/lib/covenant-overview-service";
+import { FinancialIdentityError } from "@/lib/financial-identity";
+import { resolveCanonicalFinancialAsOf } from "@/lib/product/canonical-financial-asof";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { parseSimulateHandoffSearchParams } from "@/lib/product/unified-position/simulate-handoff";
 import {
@@ -36,7 +38,18 @@ export default async function SimulatePage({
   const { companyId } = await params;
   const sp = searchParams ? await searchParams : {};
   const handoff = parseSimulateHandoffSearchParams(sp);
-  const asOfDate = handoff.evaluationDate ? new Date(`${handoff.evaluationDate}T12:00:00.000Z`) : new Date();
+  // Prefer handoff evaluation date; else shared FinancialState as-of (not wall-clock today when state exists).
+  let asOfDate: Date;
+  if (handoff.evaluationDate) {
+    asOfDate = new Date(`${handoff.evaluationDate}T12:00:00.000Z`);
+  } else {
+    try {
+      asOfDate = await resolveCanonicalFinancialAsOf(companyId);
+    } catch (err) {
+      if (err instanceof FinancialIdentityError && err.code === "AMBIGUOUS") throw err;
+      asOfDate = new Date();
+    }
+  }
   const evaluationDate =
     handoff.evaluationDate ?? asOfDate.toISOString().slice(0, 10);
   const amountMillions = handoff.amountMillions ?? 0;
