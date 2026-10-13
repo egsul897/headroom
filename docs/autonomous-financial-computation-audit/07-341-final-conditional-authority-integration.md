@@ -1,6 +1,6 @@
 # #341 Final Conditional-Authority Integration
 
-**Corrected tip SHA:** `070521a72a5b659f8a9d360e1e44abd2de4ad1e8`  
+**Corrected tip SHA:** `77b06f1f550378e5426a475d4ce46ca42e19707a`  
 **Integration target:** `main` @ `d924f5b6c47f1d63982bb4385579d6858cdaf067` (merge of #332; includes #334 + #345)  
 **PR:** https://github.com/egsul897/headroom/pull/341  
 **Mergeable (GitHub at push):** `true` / `unstable` (exact-tip CI pending on this SHA)
@@ -33,7 +33,7 @@ Absorbed `CAPACITY_DISCLAIMER` only. Did **not** port #338’s parallel evidence
 
 ## Remaining blockers
 
-1. Exact-tip GitHub CI must go green on `4720b3fa` (was `unstable` at report time).
+1. Exact-tip GitHub CI must go green on `77b06f1f` (was `unstable` at report time).
 2. #338 remains open/conflicting — human should merge #341 first or resolve #338 against this tip; do not duplicate engines.
 3. No self-merge; no production-authority activation.
 
