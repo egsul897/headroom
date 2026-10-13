@@ -94,15 +94,24 @@ export function buildProvisionChain(group: ProvisionGroup): ChainResult {
   return { fullChain, conflicts };
 }
 
+export type ComputeOperativeDocumentOptions = {
+  /**
+   * When set, only restatement edges effective on or before this ISO date
+   * participate in tip selection. Future-dated restatements must not become
+   * the operative tip for a historical as-of query (PAI-01).
+   */
+  asOfDate?: string | null;
+};
+
 /**
  * POST-3F.2 remediation (Unit B3) - see types.ts's own OperativeDocumentResolution
  * doc comment for the full rationale. Builds a directed graph over
- * RESTATE_AGREEMENT effects (successor = amendmentDocumentId "restates"
+ * RESOLVED RESTATE_AGREEMENT effects (successor = amendmentDocumentId "restates"
  * predecessor = target.targetDocumentId) and finds its own un-superseded
  * end - the document nothing else restates. Fails safe (REVIEW_REQUIRED,
- * never a guess) on any unresolved target, fork (two documents claiming to
- * restate the same predecessor), or cycle; NOT_APPLICABLE when this
- * instrument has no restatement activity at all.
+ * never a guess) on any unresolved target, non-RESOLVED edge with a named
+ * target, fork, or cycle; NOT_APPLICABLE when this instrument has no
+ * restatement activity at all (or none effective as of `asOfDate`).
  *
  * `unresolvedRestatementEffects` mirrors computeOperativeContractState's
  * own `unresolvedTargetEffectsForThisInstrument` parameter - restatement
@@ -113,7 +122,12 @@ export function buildProvisionChain(group: ProvisionGroup): ChainResult {
  * alone would otherwise form a clean chain - an instrument with ANY known
  * unresolved restatement activity can never be confidently designated.
  */
-export function computeOperativeDocument(baseDocumentId: string, allEffects: AmendmentEffectCandidate[], unresolvedRestatementEffects: AmendmentEffectCandidate[] = []): OperativeDocumentResolution {
+export function computeOperativeDocument(
+  baseDocumentId: string,
+  allEffects: AmendmentEffectCandidate[],
+  unresolvedRestatementEffects: AmendmentEffectCandidate[] = [],
+  options: ComputeOperativeDocumentOptions = {},
+): OperativeDocumentResolution {
   const restatementEffects = allEffects.filter((e) => e.operation === "RESTATE_AGREEMENT");
   const unresolvedRestatements = unresolvedRestatementEffects.filter((e) => e.operation === "RESTATE_AGREEMENT");
 
@@ -121,29 +135,68 @@ export function computeOperativeDocument(baseDocumentId: string, allEffects: Ame
     return { status: "NOT_APPLICABLE", operativeDocumentId: null, predecessorDocumentIds: [], relationshipChain: [], reviewReason: null };
   }
 
-  // A restatement effect only blocks document-graph resolution when it has
-  // NO target document at all (status UNRESOLVED, targetDocumentId null - a
-  // genuinely unknown link). A REVIEW_REQUIRED effect with a real
-  // targetDocumentId (e.g. DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR's
-  // inferential-but-unambiguous resolution, or DETERMINISTIC_TYPE_ONLY_MATCH)
-  // still names a concrete document and is used to build the graph - the
-  // underlying effect's own REVIEW_REQUIRED/lower-confidence status already
-  // flags that specific provision-level effect for human confirmation
-  // (see deterministic-parser.ts), which is a separate concern from whether
-  // the document-identity GRAPH itself is unambiguous. A graph built only
-  // from confirmed-with-a-target links can still be a clean single chain.
-  const notResolved = [...restatementEffects, ...unresolvedRestatements].filter((e) => e.target.kind !== "DOCUMENT" || !e.target.targetDocumentId);
-  if (notResolved.length > 0) {
+  // Missing target document always blocks (genuine unknown link).
+  const notResolvedTarget = [...restatementEffects, ...unresolvedRestatements].filter(
+    (e) => e.target.kind !== "DOCUMENT" || !e.target.targetDocumentId,
+  );
+  if (notResolvedTarget.length > 0) {
     return {
       status: "REVIEW_REQUIRED",
       operativeDocumentId: null,
       predecessorDocumentIds: [],
       relationshipChain: [],
-      reviewReason: `${notResolved.length} restatement effect(s) relevant to this instrument have an unresolved target document - which whole document currently governs cannot be determined without guessing (effect(s): ${notResolved.map((e) => e.effectId).join(", ")}).`,
+      reviewReason: `${notResolvedTarget.length} restatement effect(s) relevant to this instrument have an unresolved target document - which whole document currently governs cannot be determined without guessing (effect(s): ${notResolvedTarget.map((e) => e.effectId).join(", ")}).`,
     };
   }
 
-  const edges = restatementEffects.map((e) => ({ successor: e.amendmentDocumentId, predecessor: e.target.targetDocumentId!, effectId: e.effectId, confidence: e.confidence, effectiveDate: e.effectiveDate.date }));
+  // PAI-02: REVIEW_REQUIRED / non-RESOLVED edges with a named target must not
+  // produce a confident RESOLVED tip. Inferential chronological predecessors
+  // remain provision-level REVIEW_REQUIRED — the whole-document answer follows.
+  const nonResolvedEdges = [...restatementEffects, ...unresolvedRestatements].filter((e) => e.status !== "RESOLVED");
+  if (nonResolvedEdges.length > 0) {
+    return {
+      status: "REVIEW_REQUIRED",
+      operativeDocumentId: null,
+      predecessorDocumentIds: [],
+      relationshipChain: [],
+      reviewReason: `${nonResolvedEdges.length} restatement effect(s) are not RESOLVED (status: ${[...new Set(nonResolvedEdges.map((e) => e.status))].join(", ")}) — which whole document currently governs cannot be designated without human confirmation (effect(s): ${nonResolvedEdges.map((e) => e.effectId).join(", ")}).`,
+    };
+  }
+
+  const asOf = options.asOfDate ?? null;
+  // PAI-01: only edges effective on or before asOf participate when asOf is supplied.
+  // Undated edges with asOf supplied cannot be placed on a timeline — fail closed.
+  const datedForAsOf = restatementEffects.filter((e) => {
+    if (!asOf) return true;
+    const d = e.effectiveDate.date;
+    if (!d) return false;
+    return d <= asOf;
+  });
+  if (asOf) {
+    const undated = restatementEffects.filter((e) => !e.effectiveDate.date);
+    if (undated.length > 0) {
+      return {
+        status: "REVIEW_REQUIRED",
+        operativeDocumentId: null,
+        predecessorDocumentIds: [],
+        relationshipChain: [],
+        reviewReason: `${undated.length} restatement effect(s) lack an effective date and cannot be placed relative to as-of ${asOf} (effect(s): ${undated.map((e) => e.effectId).join(", ")}).`,
+      };
+    }
+    if (datedForAsOf.length === 0) {
+      // Future-only restatements: nothing is yet operative as a restatement tip.
+      return { status: "NOT_APPLICABLE", operativeDocumentId: null, predecessorDocumentIds: [], relationshipChain: [], reviewReason: null };
+    }
+  }
+
+  const graphEffects = asOf ? datedForAsOf : restatementEffects;
+  const edges = graphEffects.map((e) => ({
+    successor: e.amendmentDocumentId,
+    predecessor: e.target.targetDocumentId!,
+    effectId: e.effectId,
+    confidence: e.confidence,
+    effectiveDate: e.effectiveDate.date,
+  }));
 
   const successorsOf = new Map<string, string[]>();
   for (const edge of edges) {

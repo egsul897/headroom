@@ -434,6 +434,7 @@ describe("Phase 4C adapter coverage — ratio/builder", () => {
       inputs: inputsResolver,
       ledger: [],
       asOf,
+      utilizationCompleteness: "VERIFIED_EMPTY",
     });
     const entry = state.capacities[0]!;
     const amt =
@@ -503,6 +504,7 @@ describe("Phase 4C adapter coverage — ratio/builder", () => {
       inputs: inputsResolver,
       ledger: [],
       asOf,
+      utilizationCompleteness: "VERIFIED_EMPTY",
     });
     const entry = state.capacities[0]!;
     const amt =

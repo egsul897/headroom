@@ -139,26 +139,18 @@ describe("POST-3F.2 Unit B3-B6 - restatement chain resolution", () => {
     expect(resolution.predecessorDocumentIds).toEqual(["v1"]);
   });
 
-  it("B5/B6: three-document version chain (V1 -> V2 -> V3) resolves V3 as operative, V1/V2 as historical predecessors, with a full evidence-backed relationship chain", async () => {
+  it("B5/B6: three-document version chain with REVIEW_REQUIRED tip edge refuses RESOLVED operativeDocument (PAI-02)", async () => {
     const [v1, v2, v3] = chainDocs();
     const { amendmentResult } = await runRealPipeline([v1!, v2!, v3!]);
-    const resolution = computeOperativeDocument("v1", amendmentResult.effects);
-    expect(resolution.status).toBe("RESOLVED");
-    expect(resolution.operativeDocumentId).toBe("v3");
-    expect(new Set(resolution.predecessorDocumentIds)).toEqual(new Set(["v1", "v2"]));
-    expect(resolution.relationshipChain).toHaveLength(2);
-    // Ordered chronologically: v2 restates v1 first, then v3 restates v2.
-    expect(resolution.relationshipChain[0]).toMatchObject({ documentId: "v2", restatesDocumentId: "v1" });
-    expect(resolution.relationshipChain[1]).toMatchObject({ documentId: "v3", restatesDocumentId: "v2" });
-    // The date-ambiguity safeguard actually engaged for v3 (whose recital quotes the ORIGINAL v1 date, not its true immediate predecessor v2's date):
+    // The date-ambiguity safeguard engages for v3 (recital quotes ORIGINAL v1 date, not v2):
     const v3Effect = amendmentResult.effects.find((e) => e.amendmentDocumentId === "v3" && e.operation === "RESTATE_AGREEMENT");
-    // resolutionMethod on the effect itself is always "DETERMINISTIC_FULL_RESTATEMENT"
-    // (how deterministic-parser.ts recognized the full-restatement PATTERN) -
-    // the underlying chronological-predecessor TARGET-RESOLUTION mechanism is
-    // instead visible in status/unresolvedReason, propagated verbatim from
-    // relationship-resolution.ts's own resolution object.
     expect(v3Effect?.unresolvedReason).toMatch(/chronological-predecessor/);
-    expect(v3Effect?.status).toBe("REVIEW_REQUIRED"); // inferential, never silently promoted to a confident RESOLVED
+    expect(v3Effect?.status).toBe("REVIEW_REQUIRED"); // inferential, never silently promoted
+    // PAI-02: a REVIEW_REQUIRED restatement edge must not produce a confident RESOLVED tip.
+    const resolution = computeOperativeDocument("v1", amendmentResult.effects);
+    expect(resolution.status).toBe("REVIEW_REQUIRED");
+    expect(resolution.operativeDocumentId).toBeNull();
+    expect(resolution.reviewReason).toMatch(/not RESOLVED/i);
   });
 });
 
@@ -292,24 +284,22 @@ describe("POST-3F.2 Unit B12/B13 - unresolved vs. resolved end-to-end through co
     expect(restateEffect?.target.targetDocumentId).toBeNull();
   });
 
-  it("B13: a fully resolved 3-document chain yields the correct operative document through computeOperativeContractState itself (not merely chain.ts in isolation)", async () => {
+  it("B13: a 3-document chain with REVIEW_REQUIRED tip edge yields REVIEW_REQUIRED through computeOperativeContractState (PAI-02)", async () => {
     const [v1, v2, v3] = chainDocs();
     const { amendmentResult } = await runRealPipeline([v1!, v2!, v3!]);
     const state = computeOperativeContractState({ instrumentKey: "instrument:v1", baseDocumentId: "v1", asOfDate: "2026-01-01", index: buildRealIndex([v1!, v2!, v3!]), allEffects: amendmentResult.effects });
-    expect(state.operativeDocument?.status).toBe("RESOLVED");
-    expect(state.operativeDocument?.operativeDocumentId).toBe("v3");
+    expect(state.operativeDocument?.status).toBe("REVIEW_REQUIRED");
+    expect(state.operativeDocument?.operativeDocumentId).toBeNull();
   });
 });
 
 describe("POST-3F.2 Unit B14/B15 - historical predecessors stay historical, never current trusted evidence", () => {
-  it("B14: V1 and V2 are both reported as historical predecessors, never as the operative document", async () => {
+  it("B14: REVIEW_REQUIRED tip refuses designating V1/V2/V3 as confident operative document (PAI-02)", async () => {
     const [v1, v2, v3] = chainDocs();
     const { amendmentResult } = await runRealPipeline([v1!, v2!, v3!]);
     const resolution = computeOperativeDocument("v1", amendmentResult.effects);
-    expect(resolution.operativeDocumentId).not.toBe("v1");
-    expect(resolution.operativeDocumentId).not.toBe("v2");
-    expect(resolution.predecessorDocumentIds).toContain("v1");
-    expect(resolution.predecessorDocumentIds).toContain("v2");
+    expect(resolution.status).toBe("REVIEW_REQUIRED");
+    expect(resolution.operativeDocumentId).toBeNull();
   });
 
   it("B15: V1's own physical section text is independently flagged KNOWN_SUPERSEDED by the pre-existing, unmodified node-supersession mechanism - operativeDocument never substitutes for or duplicates that check, it only adds the whole-document-level answer", async () => {

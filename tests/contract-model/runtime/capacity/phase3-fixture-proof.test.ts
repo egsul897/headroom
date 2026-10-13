@@ -66,7 +66,8 @@ function prove(rules: IRRule[], opts: { sharedCapacities?: IRSharedCapacity[]; d
   const graph = buildCapacityGraph({ rules, sharedCapacities: opts.sharedCapacities, definitions: opts.definitions, companyId: CO, instrumentKey: INST, asOf: AS_OF });
   const deps = graph.dependencyManifest.dependencies;
   const inputs = deps.length > 0 ? snapshotInputResolver({ snapshots: [snapshotFromManifest(deps)], definitions: opts.definitions, companyId: CO, instrumentKey: INST }) : EMPTY_RESOLVER;
-  const state = evaluateCapacityState({ graph, rules, sharedCapacities: opts.sharedCapacities, definitions: opts.definitions, inputs, ledger: opts.ledger ?? [], asOf: AS_OF });
+  const state = evaluateCapacityState({ graph, rules, sharedCapacities: opts.sharedCapacities, definitions: opts.definitions, inputs, ledger: opts.ledger ?? [], asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
   return { graph, state };
 }
 
@@ -85,7 +86,8 @@ describe("hand-authored real-shape Phase-3 IR", () => {
     const r = retarget(FIXTURE_3_GREATER_OF_FIXED_OR_EBITDA_PCT);
     const graph = buildCapacityGraph({ rules: [r], companyId: CO, instrumentKey: INST, asOf: AS_OF });
     expect(graph.dependencyManifest.dependencies.length).toBe(1);
-    const withoutFacts = evaluateCapacityState({ graph, rules: [r], inputs: EMPTY_RESOLVER, asOf: AS_OF });
+    const withoutFacts = evaluateCapacityState({ graph, rules: [r], inputs: EMPTY_RESOLVER, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     expect(withoutFacts.capacities[0]!.status).toBe("NEEDS_INPUT");
     expect(withoutFacts.capacities[0]!.bounds?.knownLowerBound).toMatchObject({ type: "MONEY" });
     const { state } = prove([r]);

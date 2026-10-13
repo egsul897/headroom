@@ -19,7 +19,8 @@ beforeEach(resetIds);
 
 const run = (rules: IRRule[], caps: IRSharedCapacity[] = [], ledger: ReturnType<typeof usage>[] = [], inputs = EMPTY_RESOLVER) => {
   const graph = buildCapacityGraph({ rules, sharedCapacities: caps, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-  const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs, ledger, asOf: AS_OF });
+  const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
   return { graph, state };
 };
 const cap = (state: ReturnType<typeof run>["state"], ruleId: string) => state.capacities.find((c) => c.ruleId === ruleId)!;
@@ -31,7 +32,8 @@ const reclassRules = () => [
 ];
 const transition = (rules: IRRule[], ledger: ReturnType<typeof usage>[], elections: ReclassificationElection[]) => {
   const graph = buildCapacityGraph({ rules, companyId: CO, instrumentKey: INST, asOf: AS_OF });
-  const before = evaluateCapacityState({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF });
+  const before = evaluateCapacityState({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
   return applyCapacityStateTransition({ graph, rules, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF, before, elections });
 };
 
@@ -65,7 +67,8 @@ describe("P3 - duplicate shared-capacity identity (audit F3, remediation R7)", (
   it("a state handed duplicate resources for a pool the graph does know refuses the pool rather than picking the last", () => {
     const rules0 = rules();
     const graph = buildCapacityGraph({ rules: rules0, sharedCapacities: [sharedCap("zq-pool", MONEY(150), ["zq-a"])], companyId: CO, instrumentKey: INST, asOf: AS_OF });
-    const state = evaluateCapacityState({ graph, rules: rules0, sharedCapacities: pools(), inputs: EMPTY_RESOLVER, asOf: AS_OF });
+    const state = evaluateCapacityState({ graph, rules: rules0, sharedCapacities: pools(), inputs: EMPTY_RESOLVER, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     const s = state.sharedConstraints[0]!;
     expect(s.status).toBe("UNSUPPORTED");
     expect(s.grossCapacity.kind).toBe("NOT_DETERMINED");
@@ -261,7 +264,8 @@ describe("P20 - symmetric relationships on the frozen real corpus are not cycles
     expect(graph.edges.filter((e) => e.kind === "RECLASSIFIABLE_TO")).toEqual([]);
     expect(graph.limitations.some((l) => l.code === "SHARED_CAPACITY_NOT_QUANTIFIED")).toBe(true);
     // Members of an unquantified share are not authoritative.
-    const state = evaluateCapacityState({ graph, rules, definitions: frozen.definitions.map(retarget), inputs: EMPTY_RESOLVER, asOf: AS_OF });
+    const state = evaluateCapacityState({ graph, rules, definitions: frozen.definitions.map(retarget), inputs: EMPTY_RESOLVER, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     const shareMembers = new Set(shares.flatMap((e) => [e.from, e.to]));
     for (const c of state.capacities) if (shareMembers.has(c.capacityNodeId)) { expect(c.status).not.toBe("AVAILABLE"); expect(c.effectiveRemaining.kind).toBe("NOT_DETERMINED"); }
   });
@@ -282,7 +286,8 @@ describe("P21 - state-evaluation complexity (audit F4, remediation R13)", () => 
     const t0 = process.hrtime.bigint();
     const graph = buildCapacityGraph({ rules, sharedCapacities: caps, companyId: CO, instrumentKey: INST, asOf: AS_OF });
     const t1 = process.hrtime.bigint();
-    const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF });
+    const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     const t2 = process.hrtime.bigint();
     return { size, buildMs: Number(t1 - t0) / 1e6, evalMs: Number(t2 - t1) / 1e6, c: state.complexity, edges: graph.edges.length };
   };
@@ -321,7 +326,8 @@ describe("P22 - generality under unseen identifiers, a non-USD currency and rena
     const caps = [sharedCap(`${tag}-pool`, MONEY(400, ccy), [`${tag}-alpha`, `${tag}-beta`], { companyId: co, instrumentKey: inst })];
     const ledger = [usage(`${tag}-u1`, "50", onRule(`${tag}-alpha`), { companyId: co, instrumentKey: inst, amount: { amount: "50", currency: ccy } })];
     const graph = buildCapacityGraph({ rules, sharedCapacities: caps, companyId: co, instrumentKey: inst, asOf: AS_OF });
-    const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF });
+    const state = evaluateCapacityState({ graph, rules, sharedCapacities: caps, inputs: EMPTY_RESOLVER, ledger, asOf: AS_OF,
+    utilizationCompleteness: "VERIFIED_EMPTY", });
     return { kinds: graph.nodes.map((n) => n.kind), edges: graph.edges.map((e) => e.kind), caps: state.capacities.map((c) => [c.status, amountString(c.effectiveRemaining)]), pool: amountString(state.sharedConstraints[0]!.remaining), hash: state.stateHash };
   };
   it("topology, statuses and amounts are identical to a plain USD twin, and only the hashes differ", () => {
