@@ -69,7 +69,17 @@ Independently executable specification: `03-customer-acceptance-specification.md
 
 ## CI status at tip
 
-Local (pre-push): `npx vitest run tests/adversarial-intelligence` → **3 files / 25 tests passed** (including `it.fails` defect locks). Production tree unchanged. Full-repo CI status recorded on the PR after push.
+**PR:** https://github.com/egsul897/headroom/pull/323  
+**Evidence commit:** `e0a27d7a6832ba188a9aa4fa3ff1e637f2fae198` (suite + docs); CI recorded against that tip before this status note.
+
+| Check | Status |
+|---|---|
+| Local `npx vitest run tests/adversarial-intelligence` | **25/25 passed** (incl. `it.fails` locks) |
+| Vercel @ `e0a27d7a` | **SUCCESS** |
+| Vercel Preview Comments @ `e0a27d7a` | **SUCCESS** |
+| GitHub Actions on this branch | none triggered (path-filtered / not applicable) |
+
+Production tree unchanged on this branch.
 
 ## Unresolved blockers
 
