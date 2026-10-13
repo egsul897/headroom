@@ -51,6 +51,7 @@ async function main() {
     reviewedBy: "mission",
     approvalRef: "apr-mission",
     reviewedAt: "2026-07-20T18:00:00Z",
+    deliveredAsOfDate: "2026-07-10",
   });
 
   const bound = await loadNs4DashboardFinancialState({

@@ -184,6 +184,12 @@ export async function approveFceProposedCertificate(args: {
   reconciliation?: ReconciliationReport;
   /** ISO attributable approval time — not certificate delivery evidence. */
   reviewedAt?: string;
+  /**
+   * Optional certificate delivery date (ISO). Never defaults to reviewedAt / asOf.
+   * When omitted, propose-time provenance.deliveredAtIsoDate (if any) remains the
+   * only delivery channel — approval alone never establishes delivery.
+   */
+  deliveredAsOfDate?: string;
 }): Promise<{
   ok: boolean;
   snapshotId: string;
@@ -227,6 +233,7 @@ export async function approveFceProposedCertificate(args: {
     approvalRef: args.approvalRef.trim() || `apr-${args.snapshotId}`,
     reconciliation,
     reviewedAt: args.reviewedAt,
+    deliveredAsOfDate: args.deliveredAsOfDate,
   });
 
   return {

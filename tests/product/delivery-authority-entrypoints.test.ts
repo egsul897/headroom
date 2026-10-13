@@ -33,8 +33,26 @@ vi.mock("@/lib/product/customer-intelligence/capacity-readiness", () => ({
   loadCapacityReadiness: mocks.loadCapacityReadiness,
 }));
 
+vi.mock("@/lib/financial-certificate-engine", async () => {
+  const actual = await vi.importActual<typeof import("@/lib/financial-certificate-engine")>(
+    "@/lib/financial-certificate-engine",
+  );
+  return {
+    ...actual,
+    loadVerifiedFinancialCapacityInput: vi.fn(async () => ({
+      status: "NO_APPROVED_SNAPSHOT" as const,
+      missingInputs: ["APPROVED_NorthStar_snapshot"],
+    })),
+  };
+});
+
 import { loadTransactionWorkflowReadiness } from "@/lib/product/north-star-workflow/transaction-readiness";
 import { attemptCertifiedTransaction } from "@/lib/product/north-star-workflow/certified-transaction";
+import {
+  loadApprovedFinancialInputBundle,
+  NS4_PRODUCT_CUTOFF_SELECTOR,
+} from "@/lib/product/north-star-workflow/approved-financial-inputs";
+import { loadNs4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-panel";
 
 const CO = "delivery-entry-co";
 
@@ -125,6 +143,7 @@ describe("authoritative entrypoints — delivery authority", () => {
 
     const readiness = await loadTransactionWorkflowReadiness(CO, {
       evaluationDate: "2026-08-01",
+      selector: NS4_PRODUCT_CUTOFF_SELECTOR,
     });
     expect(readiness.cutoff?.state).toBe("RESOLVED");
     expect(readiness.cutoff?.snapshotId).toBe("snap-approved-with-delivery");
@@ -139,5 +158,81 @@ describe("authoritative entrypoints — delivery authority", () => {
     // Still blocked for missing VEP — but cutoff itself resolved.
     expect(attempt.blockers).toContain("NO_VERIFIED_EXECUTION_PACKAGE");
     expect(attempt.blockers).not.toContain("CUTOFF_UNRESOLVED");
+  });
+
+  it("Dashboard / Position / Simulate binder: APPROVED + reviewedAt + no deliveredAt → no cutoff", async () => {
+    const snap = approvedNoDelivery();
+    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([snap]);
+    mocks.loadCutoffEligibleSnapshotsFromPrisma.mockResolvedValue([snap]);
+
+    const evalDate = "2026-08-01";
+    const [binder, dash, readiness, certified] = await Promise.all([
+      loadApprovedFinancialInputBundle({ companyId: CO, evaluationDate: evalDate }),
+      loadNs4DashboardFinancialState({ companyId: CO, evaluationDate: evalDate }),
+      loadTransactionWorkflowReadiness(CO, {
+        evaluationDate: evalDate,
+        selector: NS4_PRODUCT_CUTOFF_SELECTOR,
+      }),
+      attemptCertifiedTransaction({
+        companyId: CO,
+        evaluationDate: evalDate,
+        verifiedPackage: null,
+      }),
+    ]);
+
+    // Shared binder drives Position / Simulate; Dashboard uses the same readiness cutoff.
+    // Approval + reviewedAt without persisted delivery never invents a bound identity.
+    expect(binder.selector).toBe(NS4_PRODUCT_CUTOFF_SELECTOR);
+    expect(binder.cutoff.state).toBe("NEEDS_INPUT");
+    expect(binder.boundSnapshotId).toBeNull();
+    expect(binder.status).toBe("APPROVED_INVENTORY");
+    expect(binder.missingInputs).toContain("contractual_cutoff");
+
+    expect(dash.cutoff.state).toBe("NEEDS_INPUT");
+    expect(dash.boundSnapshot).toBeNull();
+    expect(dash.status).not.toBe("APPROVED_BOUND");
+
+    expect(readiness.cutoff?.state).toBe("NEEDS_INPUT");
+    expect(readiness.cutoff?.snapshotId ?? null).toBeNull();
+
+    expect(certified.cutoffState).toBe("NEEDS_INPUT");
+    expect(certified.approvedSnapshotId).toBeNull();
+    expect(certified.blockers).toContain("CUTOFF_UNRESOLVED");
+
+    // Same unresolved identity across surfaces.
+    expect(binder.cutoff.approvedSnapshotId).toBeNull();
+    expect(dash.cutoff.approvedSnapshotId).toBeNull();
+    expect(certified.approvedSnapshotId).toBe(readiness.cutoff?.snapshotId ?? null);
+  });
+
+  it("Dashboard / Position / Simulate share one eligible identity when delivery is persisted", async () => {
+    const snap = approvedWithDelivery();
+    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([snap]);
+    mocks.loadCutoffEligibleSnapshotsFromPrisma.mockResolvedValue([snap]);
+
+    const evalDate = "2026-08-01";
+    const [binder, dash, readiness, certified] = await Promise.all([
+      loadApprovedFinancialInputBundle({ companyId: CO, evaluationDate: evalDate }),
+      loadNs4DashboardFinancialState({ companyId: CO, evaluationDate: evalDate }),
+      loadTransactionWorkflowReadiness(CO, {
+        evaluationDate: evalDate,
+        selector: NS4_PRODUCT_CUTOFF_SELECTOR,
+      }),
+      attemptCertifiedTransaction({
+        companyId: CO,
+        evaluationDate: evalDate,
+        verifiedPackage: null,
+      }),
+    ]);
+
+    expect(binder.status).toBe("APPROVED_BOUND");
+    expect(binder.boundSnapshotId).toBe("snap-approved-with-delivery");
+    expect(dash.status).toBe("APPROVED_BOUND");
+    expect(dash.boundSnapshot?.snapshotId).toBe("snap-approved-with-delivery");
+    expect(readiness.cutoff?.snapshotId).toBe("snap-approved-with-delivery");
+    expect(certified.approvedSnapshotId).toBe("snap-approved-with-delivery");
+    expect(binder.boundSnapshotId).toBe(dash.boundSnapshot?.snapshotId);
+    expect(binder.boundSnapshotId).toBe(readiness.cutoff?.snapshotId);
+    expect(binder.boundSnapshotId).toBe(certified.approvedSnapshotId);
   });
 });
