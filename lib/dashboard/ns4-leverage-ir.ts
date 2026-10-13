@@ -14,11 +14,11 @@
 import {
   snapshotInputResolver,
   toCanonicalString,
+  evaluateExpression,
   type FinancialSnapshot,
   type FinancialInput,
+  type IRExpression,
 } from "@/lib/contract-model/north-star-bridge";
-import { evaluateExpression } from "@/lib/contract-model/runtime/evaluate-expression";
-import type { IRExpression } from "@/lib/contract-model/ir/types";
 
 const EBITDA_KEYS = ["Consolidated EBITDA", "EBITDA", "Covenant EBITDA", "Adjusted EBITDA"] as const;
 const DEBT_KEYS = ["Consolidated Total Debt", "Total Debt", "Consolidated Total Net Debt"] as const;
