@@ -25,14 +25,26 @@ import {
   type DomainEvaluationSlice,
   type DomainSupportLevel,
 } from "@/lib/product/cross-domain-transaction";
-import type {
-  ExecutionStatus,
-  ProductionAuthorityClassification,
-  UnifiedTransactionExecutionResult,
+import {
+  UNIFIED_TRANSACTION_EXECUTION_VERSION,
+  type ExecutionStatus,
+  type ProductionAuthorityClassification,
+  type UnifiedTransactionExecutionResult,
 } from "@/lib/product/verified-transaction-execution";
+import {
+  resolveTrustedIssuerAuthFromHost,
+  TRUSTED_ISSUER_ACTIVATION,
+} from "@/lib/capacity/trusted-issuer-host";
 
 export const PACKAGE_TRANSACTION_EXECUTION_VERSION =
   "package-transaction-execution.v1" as const;
+
+/**
+ * Runtime brand for authentic verified-execution permission handoffs.
+ * Plain caller JSON / structural clones are never accepted — only objects
+ * minted by sealVerifiedExecutionPermissionHandoff from a real REQUIRE result.
+ */
+const sealedVerifiedExecutionHandoffs = new WeakSet<object>();
 
 /** Mandate step identifiers (1–10). */
 export type PackageTransactionStepId =
@@ -125,13 +137,47 @@ function domainById(
 
 /**
  * Minimal verified-execution handoff consumed for customer permission.
- * Callers supply the result of executeUnifiedVerifiedTransaction (REQUIRE).
- * Descriptive modeling statuses never alone authorize packagePermitted.
+ * Must be sealed via sealVerifiedExecutionPermissionHandoff from a real
+ * executeUnifiedVerifiedTransaction (REQUIRE) result. Plain caller JSON with
+ * EXECUTED_SATISFIED / PRODUCTION_AUTHORITY_ACTIVE strings never authorizes.
  */
 export interface VerifiedExecutionPermissionHandoff {
   executionStatus: ExecutionStatus;
   productionAuthority: ProductionAuthorityClassification;
   contractVersion: string;
+}
+
+/** Runtime authenticity check — not a TypeScript type predicate (avoids never-narrowing). */
+export function isSealedVerifiedExecutionPermissionHandoff(value: unknown): boolean {
+  return typeof value === "object" && value !== null && sealedVerifiedExecutionHandoffs.has(value);
+}
+
+/**
+ * Seal a permission handoff from a canonical REQUIRE execution result.
+ * Demotes PRODUCTION_AUTHORITY_ACTIVE when the host trusted-issuer gate is
+ * BLOCKED — caller strings never override host activation.
+ */
+export function sealVerifiedExecutionPermissionHandoff(
+  result: Pick<
+    UnifiedTransactionExecutionResult,
+    "executionStatus" | "productionAuthority" | "contractVersion"
+  >,
+): VerifiedExecutionPermissionHandoff {
+  const host = resolveTrustedIssuerAuthFromHost();
+  const hostActive = host.activation === "ACTIVE" && host.auth != null;
+  // Repository-level activation remains BLOCKED until a production provider is wired.
+  const repoActive = TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE";
+  let productionAuthority = result.productionAuthority;
+  if (productionAuthority === "PRODUCTION_AUTHORITY_ACTIVE" && (!hostActive || !repoActive)) {
+    productionAuthority = "PRODUCTION_AUTHORITY_BLOCKED";
+  }
+  const handoff: VerifiedExecutionPermissionHandoff = {
+    executionStatus: result.executionStatus,
+    productionAuthority,
+    contractVersion: result.contractVersion || UNIFIED_TRANSACTION_EXECUTION_VERSION,
+  };
+  sealedVerifiedExecutionHandoffs.add(handoff);
+  return handoff;
 }
 
 export interface PackageTransactionRequest {
@@ -148,16 +194,10 @@ export interface PackageTransactionRequest {
   utilizationAuthority?: CrossDomainUtilizationAuthority | null;
   expectedFinancialIdentity?: ApprovedFinancialIdentity | null;
   /**
-   * Result of canonical executeUnifiedVerifiedTransaction under REQUIRE gates.
-   * Required for packagePermitted=true. Modeling-only clear/EXECUTABLE is insufficient.
+   * Sealed handoff from sealVerifiedExecutionPermissionHandoff(REQUIRE result).
+   * Unsealed caller JSON is refused for permission (forged successful statuses → false).
    */
-  verifiedExecution?:
-    | VerifiedExecutionPermissionHandoff
-    | Pick<
-        UnifiedTransactionExecutionResult,
-        "executionStatus" | "productionAuthority" | "contractVersion"
-      >
-    | null;
+  verifiedExecution?: VerifiedExecutionPermissionHandoff | null;
 }
 
 export interface PackageTransactionResult {
@@ -281,22 +321,38 @@ export function executePackageTransaction(
           : [evaluation.overallStatus],
       );
 
+  // Authenticity gate: only WeakSet-sealed handoffs from
+  // sealVerifiedExecutionPermissionHandoff may authorize permission.
+  // Plain caller JSON / structural clones are forged — never packagePermitted.
+  const rawVerified = request.verifiedExecution ?? null;
+  const sealed = isSealedVerifiedExecutionPermissionHandoff(rawVerified);
   const verifiedHandoff: VerifiedExecutionPermissionHandoff | null =
-    request.verifiedExecution
+    sealed && rawVerified != null ? rawVerified : null;
+  const forgedClaim =
+    rawVerified != null && !sealed
       ? {
-          executionStatus: request.verifiedExecution.executionStatus,
-          productionAuthority: request.verifiedExecution.productionAuthority,
-          contractVersion: request.verifiedExecution.contractVersion,
+          executionStatus: rawVerified.executionStatus,
+          productionAuthority: rawVerified.productionAuthority,
+          contractVersion: rawVerified.contractVersion,
         }
       : null;
 
-  // Customer permission requires successful REQUIRE verified execution with
-  // production authority active — never modeled clear / EXECUTABLE labels alone.
+  const hostGate = resolveTrustedIssuerAuthFromHost();
+  const hostActive =
+    hostGate.activation === "ACTIVE" &&
+    hostGate.auth != null &&
+    TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE";
+
+  // Customer permission: sealed REQUIRE result + EXECUTED_SATISFIED +
+  // PRODUCTION_AUTHORITY_ACTIVE + live host issuer activation.
+  // Never from modeled clear/EXECUTABLE labels or caller JSON strings.
   const packagePermitted =
     !identityMismatch &&
     verifiedHandoff != null &&
+    sealed &&
     verifiedHandoff.executionStatus === "EXECUTED_SATISFIED" &&
-    verifiedHandoff.productionAuthority === "PRODUCTION_AUTHORITY_ACTIVE";
+    verifiedHandoff.productionAuthority === "PRODUCTION_AUTHORITY_ACTIVE" &&
+    hostActive;
 
   const citations = [
     ...new Set(applicableSlices.flatMap((s) => s.citations).filter(Boolean)),
@@ -311,9 +367,13 @@ export function executePackageTransaction(
   const limitations = [...evaluation.packageLimitations];
   const unresolvedBlockers: string[] = [];
   if (identityMismatch) unresolvedBlockers.push(identityMismatch);
-  if (!verifiedHandoff) {
+  if (forgedClaim) {
     unresolvedBlockers.push(
-      "packagePermitted=false — canonical verified transaction execution (REQUIRE) not supplied; modeled clear/EXECUTABLE labels are insufficient",
+      `packagePermitted=false — forged/unsealed verifiedExecution handoff refused (claimed ${forgedClaim.executionStatus}/${forgedClaim.productionAuthority}); caller JSON cannot authorize permission`,
+    );
+  } else if (!verifiedHandoff) {
+    unresolvedBlockers.push(
+      "packagePermitted=false — sealed canonical verified transaction execution (REQUIRE) not supplied; modeled clear/EXECUTABLE labels are insufficient",
     );
   } else if (verifiedHandoff.executionStatus !== "EXECUTED_SATISFIED") {
     unresolvedBlockers.push(
@@ -322,6 +382,10 @@ export function executePackageTransaction(
   } else if (verifiedHandoff.productionAuthority !== "PRODUCTION_AUTHORITY_ACTIVE") {
     unresolvedBlockers.push(
       `packagePermitted=false — production authority ${verifiedHandoff.productionAuthority} (host trusted-issuer not ACTIVE)`,
+    );
+  } else if (!hostActive) {
+    unresolvedBlockers.push(
+      `packagePermitted=false — host trusted-issuer activation BLOCKED (${TRUSTED_ISSUER_ACTIVATION.blocker})`,
     );
   }
   for (const s of applicableSlices) {

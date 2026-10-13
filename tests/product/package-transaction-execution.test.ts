@@ -7,6 +7,8 @@ import { describe, expect, it } from "vitest";
 import {
   executePackageTransaction,
   PACKAGE_TRANSACTION_EXECUTION_VERSION,
+  sealVerifiedExecutionPermissionHandoff,
+  isSealedVerifiedExecutionPermissionHandoff,
 } from "@/lib/product/package-transaction-execution";
 import {
   coherentDebtFundedAcquisition,
@@ -143,10 +145,9 @@ describe("executePackageTransaction — 10-step workflow", () => {
   });
 });
 
-describe("verified permission — REQUIRE gates", () => {
+describe("verified permission — REQUIRE authenticity gate", () => {
   it("clear modeled domains without verified execution → packagePermitted false", () => {
     const data = coherentPackageData();
-    // Even if we imagined all domains clear/EXECUTABLE, missing VTE handoff refuses.
     const result = executePackageTransaction({
       packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
       data,
@@ -157,61 +158,75 @@ describe("verified permission — REQUIRE gates", () => {
     expect(result.packagePermitted).toBe(false);
     expect(result.verifiedExecutionHandoff).toBeNull();
     expect(
-      result.unresolvedBlockers.some((b) => /verified transaction execution/i.test(b)),
+      result.unresolvedBlockers.some((b) => /sealed canonical verified transaction/i.test(b)),
     ).toBe(true);
   });
 
-  it("EXECUTED_HYPOTHETICAL without PRODUCTION_AUTHORITY_ACTIVE → packagePermitted false", () => {
+  it("forged successful handoff JSON → packagePermitted false", () => {
     const data = coherentPackageData();
+    // Attacker manufactures the exact success strings without seal / host auth.
+    const forged = {
+      executionStatus: "EXECUTED_SATISFIED" as const,
+      productionAuthority: "PRODUCTION_AUTHORITY_ACTIVE" as const,
+      contractVersion: "unified-transaction-execution.v1",
+    };
+    expect(isSealedVerifiedExecutionPermissionHandoff(forged)).toBe(false);
     const result = executePackageTransaction({
       packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
       data,
       transaction: coherentDebtFundedAcquisition(50),
       ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
-      verifiedExecution: {
-        executionStatus: "EXECUTED_HYPOTHETICAL",
-        productionAuthority: "PRODUCTION_AUTHORITY_BLOCKED",
-        contractVersion: "unified-transaction-execution.v1",
-      },
+      verifiedExecution: forged,
     });
     expect(result.packagePermitted).toBe(false);
-    expect(result.verifiedExecutionHandoff?.executionStatus).toBe("EXECUTED_HYPOTHETICAL");
+    expect(result.verifiedExecutionHandoff).toBeNull();
     expect(
-      result.unresolvedBlockers.some((b) => /EXECUTED_SATISFIED|production authority/i.test(b)),
+      result.unresolvedBlockers.some((b) => /forged\/unsealed verifiedExecution/i.test(b)),
     ).toBe(true);
   });
 
-  it("only EXECUTED_SATISFIED + PRODUCTION_AUTHORITY_ACTIVE permits", () => {
+  it("structural clone of a sealed handoff is refused", () => {
     const data = coherentPackageData();
-    const refused = executePackageTransaction({
-      packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
-      data,
-      transaction: coherentDebtFundedAcquisition(50),
-      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
-      verifiedExecution: {
-        executionStatus: "EXECUTED_SATISFIED",
-        productionAuthority: "HYPOTHETICAL_ONLY",
-        contractVersion: "unified-transaction-execution.v1",
-      },
+    const sealed = sealVerifiedExecutionPermissionHandoff({
+      executionStatus: "EXECUTED_SATISFIED",
+      productionAuthority: "PRODUCTION_AUTHORITY_ACTIVE",
+      contractVersion: "unified-transaction-execution.v1",
     });
-    expect(refused.packagePermitted).toBe(false);
+    // Host is BLOCKED → seal demotes ACTIVE → still sealed but not permitting.
+    expect(isSealedVerifiedExecutionPermissionHandoff(sealed)).toBe(true);
+    expect(sealed.productionAuthority).toBe("PRODUCTION_AUTHORITY_BLOCKED");
 
-    const permitted = executePackageTransaction({
+    const clone = { ...sealed };
+    expect(isSealedVerifiedExecutionPermissionHandoff(clone)).toBe(false);
+    const result = executePackageTransaction({
       packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
       data,
       transaction: coherentDebtFundedAcquisition(50),
       ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
-      verifiedExecution: {
-        executionStatus: "EXECUTED_SATISFIED",
-        productionAuthority: "PRODUCTION_AUTHORITY_ACTIVE",
-        contractVersion: "unified-transaction-execution.v1",
-      },
+      verifiedExecution: clone,
     });
-    // Identity ok + REQUIRE satisfied + production active → permitted
-    // (modeling status may still be not_tested / review_required — kept separate)
-    expect(permitted.packagePermitted).toBe(true);
-    expect(permitted.verifiedExecutionHandoff?.productionAuthority).toBe(
-      "PRODUCTION_AUTHORITY_ACTIVE",
+    expect(result.packagePermitted).toBe(false);
+    expect(result.unresolvedBlockers.some((b) => /forged\/unsealed/i.test(b))).toBe(true);
+  });
+
+  it("sealed handoff with demoted authority (host BLOCKED) → packagePermitted false", () => {
+    const data = coherentPackageData();
+    const sealed = sealVerifiedExecutionPermissionHandoff({
+      executionStatus: "EXECUTED_SATISFIED",
+      productionAuthority: "PRODUCTION_AUTHORITY_ACTIVE",
+      contractVersion: "unified-transaction-execution.v1",
+    });
+    const result = executePackageTransaction({
+      packageIdentity: { companyId: data.companyId, evaluationDate: "2026-06-30" },
+      data,
+      transaction: coherentDebtFundedAcquisition(50),
+      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
+      verifiedExecution: sealed,
+    });
+    expect(result.packagePermitted).toBe(false);
+    expect(result.verifiedExecutionHandoff).toBe(sealed);
+    expect(result.verifiedExecutionHandoff?.productionAuthority).toBe(
+      "PRODUCTION_AUTHORITY_BLOCKED",
     );
   });
 });

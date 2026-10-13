@@ -96,9 +96,9 @@ export function resolveContractualEbitdaEvidenceForPackage(
   let matched: RegisteredEbitdaEvidence | undefined;
   if (packageKey) {
     matched = candidates.find((r) => r.packageKey === packageKey);
-    // Explicit packageKey for another company's key → refuse (already filtered by company).
-  }
-  if (!matched) {
+    // Explicit packageKey that does not bind this company → refuse (no asOf fallback).
+    if (!matched) return null;
+  } else {
     // asOf is required to bind when packageKey is absent — never fall back to
     // document hints alone (prevents wrong-period / cross-company date tricks).
     matched = candidates.find((r) => r.asOfDates.includes(asOf));

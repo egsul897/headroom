@@ -179,6 +179,8 @@ export {
 export {
   executePackageTransaction,
   PACKAGE_TRANSACTION_EXECUTION_VERSION,
+  sealVerifiedExecutionPermissionHandoff,
+  isSealedVerifiedExecutionPermissionHandoff,
   type PackageTransactionResult,
   type PackageTransactionRequest,
   type VerifiedExecutionPermissionHandoff,
