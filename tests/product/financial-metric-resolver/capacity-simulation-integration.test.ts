@@ -185,14 +185,18 @@ describe("dependency propagation", () => {
     });
     expect(withApproved!.evidenceAuthority).toBe("APPROVED_SNAPSHOT");
     expect(withApproved!.capacityPublication).toBe("GROSS_FROM_APPROVED_SNAPSHOT");
-    // Fact-level readiness shares the same verified evidence source
+    // Every published fact must carry approved provenance (value binding, not structure alone)
     expect(withApproved!.facts.every((f) => f.evidenceAuthority === "APPROVED_SNAPSHOT")).toBe(true);
+    expect(withApproved!.facts.every((f) => f.approvedProvenance != null)).toBe(true);
     expect(
       withApproved!.facts
         .filter((f) => f.valueMillions != null)
         .every((f) => f.readiness === "AVAILABLE_VERIFIED"),
     ).toBe(true);
-    // Snapshot approval alone never unlocks verified remaining
+    // Gross from approved ≠ verified remaining
     expect(mayClaimVerifiedRemaining(withApproved!)).toBe(false);
+    expect(withApproved!.notes.some((n) => /verified remaining still refused|UNKNOWN utilization/i.test(n))).toBe(
+      true,
+    );
   });
 });

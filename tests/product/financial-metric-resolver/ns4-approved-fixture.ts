@@ -9,12 +9,25 @@ import type { FinancialInput, FinancialSnapshot } from "@/lib/contract-model/nor
 import { rationalFromString } from "@/lib/contract-model/north-star-bridge";
 import type { RegisteredFinancialPackage } from "@/lib/product/financial-metric-resolver";
 
-function moneyInput(
+export function moneyInput(
   pkg: RegisteredFinancialPackage,
   key: string,
   millions: number,
+  opts?: {
+    sourceVersion?: string | null;
+    currency?: string;
+    valueType?: "MONEY" | "NUMBER";
+    period?: string;
+    asOf?: string;
+  },
 ): FinancialInput {
   const dollars = String(Math.round(millions * 1_000_000));
+  const currency = opts?.currency ?? "USD";
+  const valueType = opts?.valueType ?? "MONEY";
+  const period = opts?.period ?? pkg.measurementPeriod;
+  const asOf = opts?.asOf ?? pkg.asOf;
+  const sourceVersion = opts?.sourceVersion === undefined ? "test-fixture-v1" : opts.sourceVersion;
+
   return {
     identity: {
       companyId: pkg.companyId,
@@ -22,28 +35,48 @@ function moneyInput(
       inputKind: "METRIC",
       key,
       identityStrength: "STABLE_KEY",
-      period: { kind: "VERBATIM_CONTRACT_PERIOD_KEY", key: pkg.measurementPeriod },
-      asOf: { kind: "EXACT_DATE", isoDate: pkg.asOf },
-      valueType: "MONEY",
-      currency: "USD",
+      period: { kind: "VERBATIM_CONTRACT_PERIOD_KEY", key: period },
+      asOf: { kind: "EXACT_DATE", isoDate: asOf },
+      valueType,
+      currency,
     },
-    value: {
-      type: "MONEY",
-      amount: rationalFromString(dollars),
-      currency: "USD",
-      lineage: { exprId: null, inputKeys: [key], rawSource: millions },
-    },
+    value:
+      valueType === "MONEY"
+        ? {
+            type: "MONEY",
+            amount: rationalFromString(dollars),
+            currency,
+            lineage: { exprId: null, inputKeys: [key], rawSource: millions },
+          }
+        : {
+            type: "NUMBER",
+            value: rationalFromString(String(millions)),
+            lineage: { exprId: null, inputKeys: [key], rawSource: millions },
+          },
     displayName: key,
-    sourceVersion: "test-fixture",
+    sourceVersion,
     note: "TEST_ONLY NS-4 fixture — not customer APPROVED evidence",
   };
 }
 
-/** Well-formed APPROVED snapshot matching package identity (test-attributed reviewer). */
+/** Full five-metric APPROVED snapshot matching package figures (happy path). */
 export function makeTestApprovedNs4SnapshotForPackage(
   pkg: RegisteredFinancialPackage,
   overrides: Partial<FinancialSnapshot> = {},
+  valueOverrides?: Partial<{
+    ebitda: number;
+    totalDebt: number;
+    securedDebt: number;
+    cash: number;
+    interestExpense: number;
+  }>,
 ): FinancialSnapshot {
+  const ebitda = valueOverrides?.ebitda ?? pkg.ebitdaEvidence.bindingContractualEbitdaMillions;
+  const totalDebt = valueOverrides?.totalDebt ?? pkg.totalDebt;
+  const securedDebt = valueOverrides?.securedDebt ?? pkg.securedDebt;
+  const cash = valueOverrides?.cash ?? pkg.cash;
+  const interestExpense = valueOverrides?.interestExpense ?? pkg.interestExpense;
+
   return {
     snapshotId: `test-ns4-${pkg.packageKey.replace(/[^a-z0-9]+/gi, "-")}`,
     version: "test-v1",
@@ -53,9 +86,11 @@ export function makeTestApprovedNs4SnapshotForPackage(
     status: "APPROVED",
     supersedesSnapshotId: null,
     inputs: [
-      moneyInput(pkg, "Consolidated EBITDA", pkg.ebitdaEvidence.bindingContractualEbitdaMillions),
-      moneyInput(pkg, "Consolidated Total Debt", pkg.totalDebt),
-      moneyInput(pkg, "Unrestricted Cash", pkg.cash),
+      moneyInput(pkg, "Consolidated EBITDA", ebitda),
+      moneyInput(pkg, "Consolidated Total Debt", totalDebt),
+      moneyInput(pkg, "Consolidated Secured Debt", securedDebt),
+      moneyInput(pkg, "Unrestricted Cash", cash),
+      moneyInput(pkg, "Consolidated Interest Expense", interestExpense),
     ],
     provenance: {
       source: "TEST_ONLY_ns4_approved_fixture",

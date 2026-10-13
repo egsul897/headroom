@@ -45,6 +45,18 @@ export interface FinancialMetricIdentity {
   unit: "USD_MILLIONS";
 }
 
+/** Provenance when a published fact is bound to an exact NS-4 APPROVED input. */
+export interface ApprovedFactProvenance {
+  snapshotId: string;
+  snapshotVersion: string;
+  metricKey: string;
+  sourceVersion: string;
+  period: string;
+  asOf: string;
+  unit: "USD_MILLIONS";
+  currency: "USD";
+}
+
 export interface TypedFinancialFact {
   key: string;
   label: string;
@@ -52,6 +64,11 @@ export interface TypedFinancialFact {
   readiness: "AVAILABLE_VERIFIED" | "AVAILABLE_UNVERIFIED" | "MISSING" | "UNSUPPORTED" | "STALE" | "AMBIGUOUS";
   sourceCitation: string;
   evidenceAuthority: FinancialEvidenceAuthority;
+  /**
+   * Set only when evidenceAuthority is APPROVED_SNAPSHOT and the published
+   * value is the bound NS-4 input (never a package/computed substitute).
+   */
+  approvedProvenance: ApprovedFactProvenance | null;
 }
 
 export interface CanonicalFinancialInputBundle {

@@ -108,30 +108,32 @@ export function validateApprovedNs4SnapshotForPackage(
 }
 
 /**
- * Derive bundle evidence authority from package baseline + optional validated NS-4 snapshot.
- * Registry packages never supply APPROVED_SNAPSHOT by themselves.
+ * Structural NS-4 gate only. Does NOT confer APPROVED_SNAPSHOT on published
+ * package/computed figures — value binding (`ns4-value-binding`) is required
+ * per fact. Kept for callers that need the structural check result.
  */
-export function deriveEvidenceAuthority(args: {
+export function deriveStructuralNs4Gate(args: {
   pkg: RegisteredFinancialPackage;
   approvedNs4Snapshot?: FinancialSnapshot | null;
   productionContext?: boolean;
 }): {
-  evidenceAuthority: FinancialEvidenceAuthority;
+  structuralOk: boolean;
+  baselineAuthority: FinancialEvidenceAuthority;
   validation: Ns4ApprovalValidation | null;
   notes: string[];
 } {
   const baseline = args.pkg.evidenceAuthority;
-  // Registry must never claim APPROVED without NS-4 — treat as provisional if misconfigured.
   const safeBaseline: FinancialEvidenceAuthority =
     baseline === "APPROVED_SNAPSHOT" ? "PROVISIONAL_RECONSTRUCTION" : baseline;
 
   if (!args.approvedNs4Snapshot) {
     return {
-      evidenceAuthority: safeBaseline,
+      structuralOk: false,
+      baselineAuthority: safeBaseline,
       validation: null,
       notes:
         safeBaseline !== baseline
-          ? ["Registry APPROVED_SNAPSHOT ignored — APPROVED requires validated NS-4 snapshot evidence"]
+          ? ["Registry APPROVED_SNAPSHOT ignored — APPROVED requires validated NS-4 value bindings"]
           : [],
     };
   }
@@ -142,24 +144,45 @@ export function deriveEvidenceAuthority(args: {
 
   if (!validation.ok) {
     return {
-      evidenceAuthority: safeBaseline,
+      structuralOk: false,
+      baselineAuthority: safeBaseline,
       validation,
       notes: [
-        "NS-4 snapshot provided but failed validation — retaining package evidence authority",
+        "NS-4 snapshot failed structural validation",
         ...validation.reasons.map((r) => `NS-4 validation: ${r}`),
       ],
     };
   }
 
   return {
-    evidenceAuthority: "APPROVED_SNAPSHOT",
+    structuralOk: true,
+    baselineAuthority: safeBaseline,
     validation,
     notes: [
-      `NS-4 APPROVED snapshot ${validation.snapshotId} validated for package ${args.pkg.packageKey}`,
+      `NS-4 snapshot ${validation.snapshotId} structurally valid — fact APPROVED still requires per-value binding`,
       validation.authorityDisclosure,
       validation.realReviewerApproval
-        ? "Reviewer authority classified as REAL_REVIEWER_APPROVED"
-        : "Reviewer authority classified as TEST_ATTRIBUTED_APPROVAL (not production human reviewer)",
+        ? "Reviewer classified REAL_REVIEWER_APPROVED"
+        : "Nonempty reviewedBy/approvalRef is not trusted-issuer proof (TEST_ATTRIBUTED_APPROVAL)",
     ],
+  };
+}
+
+/** @deprecated Use deriveStructuralNs4Gate — structural OK ≠ value APPROVED. */
+export function deriveEvidenceAuthority(args: {
+  pkg: RegisteredFinancialPackage;
+  approvedNs4Snapshot?: FinancialSnapshot | null;
+  productionContext?: boolean;
+}): {
+  evidenceAuthority: FinancialEvidenceAuthority;
+  validation: Ns4ApprovalValidation | null;
+  notes: string[];
+} {
+  const g = deriveStructuralNs4Gate(args);
+  return {
+    // Never promote bundle to APPROVED from structure alone.
+    evidenceAuthority: g.baselineAuthority,
+    validation: g.validation,
+    notes: g.notes,
   };
 }

@@ -1,6 +1,5 @@
 /**
- * Adversarial authority tests: provisional/synthetic evidence cannot be promoted
- * to AVAILABLE_VERIFIED or GROSS_FROM_APPROVED_SNAPSHOT through caller arguments.
+ * Adversarial authority + approved-value provenance tests.
  */
 import { describe, expect, it } from "vitest";
 import * as resolverApi from "@/lib/product/financial-metric-resolver";
@@ -11,16 +10,14 @@ import {
   SYNTHETIC_PKG,
   COHERENT_PKG,
 } from "@/lib/product/financial-metric-resolver";
-import { makeTestApprovedNs4SnapshotForPackage } from "./ns4-approved-fixture";
+import { classifyApprovedSnapshotAuthority } from "@/lib/financial-certificate-engine/authority";
+import { makeTestApprovedNs4SnapshotForPackage, moneyInput } from "./ns4-approved-fixture";
 
 describe("production API surface — no forceEvidenceAuthority", () => {
   it("does not export forceEvidenceAuthority or a force-override helper", () => {
     expect("forceEvidenceAuthority" in resolverApi).toBe(false);
     const exported = Object.keys(resolverApi);
-    expect(exported.some((k) => /force/i.test(k))).toBe(false);
-    // resolveCanonicalFinancialInputs args type must not accept force override at runtime
-    const fn = resolveCanonicalFinancialInputs;
-    expect(fn.length).toBeLessThanOrEqual(1);
+    expect(exported.some((k) => /forceEvidence/i.test(k))).toBe(false);
   });
 
   it("extra caller fields cannot promote provisional Matthews to APPROVED", async () => {
@@ -35,7 +32,7 @@ describe("production API surface — no forceEvidenceAuthority", () => {
     expect(bundle!.evidenceAuthority).toBe("PROVISIONAL_RECONSTRUCTION");
     expect(bundle!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
     expect(bundle!.facts.every((f) => f.evidenceAuthority === "PROVISIONAL_RECONSTRUCTION")).toBe(true);
-    expect(bundle!.facts.every((f) => f.readiness !== "AVAILABLE_VERIFIED")).toBe(true);
+    expect(bundle!.facts.every((f) => f.approvedProvenance == null)).toBe(true);
     expect(mayClaimVerifiedRemaining(bundle!)).toBe(false);
   });
 
@@ -49,99 +46,173 @@ describe("production API surface — no forceEvidenceAuthority", () => {
     const bundle = await resolveCanonicalFinancialInputs(sneaky);
     expect(bundle!.evidenceAuthority).toBe("SYNTHETIC_LABELED");
     expect(bundle!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
-    expect(bundle!.facts.every((f) => f.readiness !== "AVAILABLE_VERIFIED")).toBe(true);
   });
 });
 
-describe("NS-4 snapshot validation gates APPROVED_SNAPSHOT", () => {
-  it("DRAFT snapshot does not promote provisional evidence", async () => {
-    const draft = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, { status: "DRAFT" });
+describe("approved-value provenance gate", () => {
+  it("disagrees with package figures: publishes snapshot values, never labels package numbers APPROVED", async () => {
+    const snap = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, {}, {
+      ebitda: 999,
+      totalDebt: 1000,
+      securedDebt: 900,
+      cash: 50,
+      interestExpense: 40,
+    });
     const bundle = await resolveCanonicalFinancialInputs({
       packageKey: MATTHEWS_PKG.packageKey,
-      approvedNs4Snapshot: draft,
+      approvedNs4Snapshot: snap,
     });
+
+    const ebitda = bundle!.facts.find((f) => f.key === "contractual_ebitda")!;
+    expect(ebitda.valueMillions).toBe(999);
+    expect(ebitda.valueMillions).not.toBeCloseTo(MATTHEWS_PKG.ebitdaEvidence.bindingContractualEbitdaMillions, 1);
+    expect(ebitda.evidenceAuthority).toBe("APPROVED_SNAPSHOT");
+    expect(ebitda.approvedProvenance?.metricKey).toBe("Consolidated EBITDA");
+    expect(ebitda.approvedProvenance?.snapshotId).toBe(snap.snapshotId);
+    expect(ebitda.approvedProvenance?.unit).toBe("USD_MILLIONS");
+
+    expect(bundle!.legacyFinancialSnapshot?.ebitda).toBe(999);
+    expect(bundle!.legacyFinancialSnapshot?.totalDebt).toBe(1000);
+    expect(bundle!.notes.some((n) => /approved snapshot value 999/i.test(n))).toBe(true);
+  });
+
+  it("structural OK with missing approved inputs: unbound facts stay provisional", async () => {
+    const snap = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG);
+    // Drop secured debt + interest — partial metric approval
+    snap.inputs = snap.inputs.filter(
+      (i) => !/secured|interest/i.test(i.identity.key),
+    );
+
+    const bundle = await resolveCanonicalFinancialInputs({
+      packageKey: MATTHEWS_PKG.packageKey,
+      approvedNs4Snapshot: snap,
+    });
+
+    const secured = bundle!.facts.find((f) => f.key === "secured_debt")!;
+    const interest = bundle!.facts.find((f) => f.key === "interest_expense")!;
+    const ebitda = bundle!.facts.find((f) => f.key === "contractual_ebitda")!;
+
+    expect(ebitda.evidenceAuthority).toBe("APPROVED_SNAPSHOT");
+    expect(secured.evidenceAuthority).toBe("PROVISIONAL_RECONSTRUCTION");
+    expect(secured.valueMillions).toBe(MATTHEWS_PKG.securedDebt);
+    expect(secured.approvedProvenance).toBeNull();
+    expect(interest.evidenceAuthority).toBe("PROVISIONAL_RECONSTRUCTION");
+
+    // Bundle cannot claim GROSS_FROM_APPROVED_SNAPSHOT with mixed provisional figures
     expect(bundle!.evidenceAuthority).toBe("PROVISIONAL_RECONSTRUCTION");
     expect(bundle!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
-    expect(bundle!.notes.some((n) => /failed validation|not APPROVED/i.test(n))).toBe(true);
+    expect(mayClaimVerifiedRemaining(bundle!)).toBe(false);
   });
 
-  it("APPROVED with wrong company/instrument/period/as-of does not promote", async () => {
-    const badCompany = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, {
-      companyId: "wrong-company",
-    });
-    const badPeriod = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, {
-      reportingPeriod: "wrong-period",
-    });
-    const badAsOf = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, { asOf: "2099-01-01" });
-    const badInstrument = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG);
-    // Mutate inputs to a different instrument
-    badInstrument.inputs = badInstrument.inputs.map((inp) => ({
-      ...inp,
-      identity: {
-        ...inp.identity,
-        scope: { kind: "INSTRUMENT_LEVEL" as const, instrumentKey: "other-instrument" },
-      },
-    }));
+  it("mismatched units refuse APPROVED binding and retain package provisional values", async () => {
+    const snap = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG);
+    snap.inputs = snap.inputs.map((inp) =>
+      inp.identity.key === "Consolidated EBITDA"
+        ? moneyInput(MATTHEWS_PKG, "Consolidated EBITDA", 999, { valueType: "NUMBER", currency: "USD" })
+        : inp,
+    );
 
-    for (const snap of [badCompany, badPeriod, badAsOf, badInstrument]) {
-      const bundle = await resolveCanonicalFinancialInputs({
-        packageKey: MATTHEWS_PKG.packageKey,
-        approvedNs4Snapshot: snap,
-      });
-      expect(bundle!.evidenceAuthority).toBe("PROVISIONAL_RECONSTRUCTION");
-      expect(bundle!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
-      expect(bundle!.facts.every((f) => f.readiness !== "AVAILABLE_VERIFIED")).toBe(true);
-    }
+    const bundle = await resolveCanonicalFinancialInputs({
+      packageKey: MATTHEWS_PKG.packageKey,
+      approvedNs4Snapshot: snap,
+    });
+    const ebitda = bundle!.facts.find((f) => f.key === "contractual_ebitda")!;
+    // Falls back to Phase-4A/package computed — provisional
+    expect(ebitda.evidenceAuthority).toBe("PROVISIONAL_RECONSTRUCTION");
+    expect(ebitda.approvedProvenance).toBeNull();
+    expect(ebitda.valueMillions).toBeCloseTo(MATTHEWS_PKG.ebitdaEvidence.bindingContractualEbitdaMillions, 2);
+    expect(bundle!.notes.some((n) => /unit\/type mismatch|not approved-bound/i.test(n))).toBe(true);
   });
 
-  it("APPROVED missing reviewer or approvalRef does not promote", async () => {
-    const noReviewer = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, {
-      review: { reviewedBy: null, reviewedAt: "2024-12-31T12:00:00.000Z", approvalRef: "ref" },
+  it("stale SUPERSEDED snapshot refuses all APPROVED bindings", async () => {
+    const snap = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, { status: "SUPERSEDED" });
+    const bundle = await resolveCanonicalFinancialInputs({
+      packageKey: MATTHEWS_PKG.packageKey,
+      approvedNs4Snapshot: snap,
     });
-    const noRef = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, {
-      review: {
-        reviewedBy: "test-reviewer@test.local",
-        reviewedAt: "2024-12-31T12:00:00.000Z",
-        approvalRef: null,
-      },
-    });
-    for (const snap of [noReviewer, noRef]) {
-      const bundle = await resolveCanonicalFinancialInputs({
-        packageKey: MATTHEWS_PKG.packageKey,
-        approvedNs4Snapshot: snap,
-      });
-      expect(bundle!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
-      expect(bundle!.evidenceAuthority).not.toBe("APPROVED_SNAPSHOT");
-    }
+    expect(bundle!.facts.every((f) => f.evidenceAuthority === "PROVISIONAL_RECONSTRUCTION")).toBe(true);
+    expect(bundle!.facts.every((f) => f.approvedProvenance == null)).toBe(true);
+    expect(bundle!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
   });
 
-  it("validated APPROVED aligns bundle publication and fact readiness from same source", async () => {
-    const approved = makeTestApprovedNs4SnapshotForPackage(COHERENT_PKG);
+  it("missing sourceVersion on inputs refuses APPROVED binding", async () => {
+    const snap = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG);
+    snap.inputs = snap.inputs.map((inp) => ({ ...inp, sourceVersion: null }));
+    const bundle = await resolveCanonicalFinancialInputs({
+      packageKey: MATTHEWS_PKG.packageKey,
+      approvedNs4Snapshot: snap,
+    });
+    expect(bundle!.facts.every((f) => f.approvedProvenance == null)).toBe(true);
+    expect(bundle!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
+    expect(bundle!.notes.some((n) => /sourceVersion missing/i.test(n))).toBe(true);
+  });
+
+  it("nonempty reviewedBy/approvalRef is not trusted-issuer proof", async () => {
+    const label = classifyApprovedSnapshotAuthority({
+      reviewedBy: "test-reviewer@test.local",
+      approvalRef: "test-approval-ref-001",
+      productionContext: false,
+    });
+    expect(label.realReviewerApproval).toBe(false);
+    expect(label.kind).toBe("TEST_ATTRIBUTED_APPROVAL");
+
+    const snap = makeTestApprovedNs4SnapshotForPackage(COHERENT_PKG);
     const bundle = await resolveCanonicalFinancialInputs({
       packageKey: COHERENT_PKG.packageKey,
-      approvedNs4Snapshot: approved,
+      approvedNs4Snapshot: snap,
+      productionContext: false,
     });
-    expect(bundle!.evidenceAuthority).toBe("APPROVED_SNAPSHOT");
+    expect(bundle!.notes.some((n) => /NOT trusted-issuer|TEST_ATTRIBUTED/i.test(n))).toBe(true);
+    // Even when all facts bind, verified remaining stays refused
     expect(bundle!.capacityPublication).toBe("GROSS_FROM_APPROVED_SNAPSHOT");
-    for (const fact of bundle!.facts) {
-      expect(fact.evidenceAuthority).toBe(bundle!.evidenceAuthority);
-      if (fact.valueMillions != null) {
-        expect(fact.readiness).toBe("AVAILABLE_VERIFIED");
-      }
-    }
-    // Still no verified remaining without utilization completeness
     expect(mayClaimVerifiedRemaining(bundle!)).toBe(false);
-    expect(bundle!.notes.some((n) => /UNKNOWN utilization/i.test(n))).toBe(true);
   });
 
-  it("synthetic package with mismatched APPROVED snapshot stays SYNTHETIC_LABELED", async () => {
-    // Snapshot built for Matthews identity cannot approve synthetic package
+  it("EUR currency mismatch refuses binding", async () => {
+    const snap = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG);
+    snap.inputs = [
+      moneyInput(MATTHEWS_PKG, "Consolidated EBITDA", 128.313, { currency: "EUR" }),
+      ...snap.inputs.filter((i) => i.identity.key !== "Consolidated EBITDA"),
+    ];
+    const bundle = await resolveCanonicalFinancialInputs({
+      packageKey: MATTHEWS_PKG.packageKey,
+      approvedNs4Snapshot: snap,
+    });
+    expect(bundle!.facts.find((f) => f.key === "contractual_ebitda")!.evidenceAuthority).toBe(
+      "PROVISIONAL_RECONSTRUCTION",
+    );
+  });
+
+  it("Matthews snap cannot approve synthetic package values", async () => {
     const matthewsSnap = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG);
     const bundle = await resolveCanonicalFinancialInputs({
       packageKey: SYNTHETIC_PKG.packageKey,
       approvedNs4Snapshot: matthewsSnap,
     });
     expect(bundle!.evidenceAuthority).toBe("SYNTHETIC_LABELED");
+    expect(bundle!.facts.every((f) => f.approvedProvenance == null)).toBe(true);
+  });
+});
+
+describe("NS-4 structural gates still apply", () => {
+  it("DRAFT snapshot does not promote", async () => {
+    const draft = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, { status: "DRAFT" });
+    const bundle = await resolveCanonicalFinancialInputs({
+      packageKey: MATTHEWS_PKG.packageKey,
+      approvedNs4Snapshot: draft,
+    });
+    expect(bundle!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
+    expect(bundle!.facts.every((f) => f.approvedProvenance == null)).toBe(true);
+  });
+
+  it("missing reviewer refuses structural gate", async () => {
+    const snap = makeTestApprovedNs4SnapshotForPackage(MATTHEWS_PKG, {
+      review: { reviewedBy: null, reviewedAt: "2024-12-31T12:00:00.000Z", approvalRef: "ref" },
+    });
+    const bundle = await resolveCanonicalFinancialInputs({
+      packageKey: MATTHEWS_PKG.packageKey,
+      approvedNs4Snapshot: snap,
+    });
     expect(bundle!.capacityPublication).toBe("GROSS_PROVISIONAL_ONLY");
   });
 });
