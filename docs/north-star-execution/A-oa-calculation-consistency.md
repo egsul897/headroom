@@ -1,7 +1,10 @@
 # Workstream A — Operative-authority / calculation consistency
 
 **Branch:** `cursor/oa-calc-consistency-a324`  
-**Base tip (PR #311):** `c1246becb15a3e3ff508334ba889a759c986a28a`  
+**Starting SHA (PR #311 tip):** `c1246becb15a3e3ff508334ba889a759c986a28a`  
+**Ending SHA:** `013e42a0b9e6035fc18f6c224c42331d1b60eb0d`  
+**PR:** https://github.com/egsul897/headroom/pull/320  
+**Exact-tip CI:** canonical-compiler SUCCESS (`38347847958`)  
 **Controlling North Star:** `docs/headroom-north-star-v2.md` §§1–8 (source-backed rulebook; fail-closed; never manufacture permissions/capacity)  
 **Phase gates preserved:** Phase 2G amendment precedence; Agent #7 operative restatement authority; #306 later-unresolved successor; trusted-identity BLOCKED; no production AVAILABLE.
 
