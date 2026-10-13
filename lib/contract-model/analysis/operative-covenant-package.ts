@@ -79,12 +79,30 @@ export interface OperativePackageContext {
   independentExpectedInventory?: readonly IndependentExpectedProvision[];
 }
 
+/** Historical discovery/predecessor compile preserved when governing-source binding refuses. */
+export interface HistoricalPredecessorEvidence {
+  discoveryDocumentId: string;
+  operativeSourceDocumentId: string;
+  amountUsd: number | null;
+  operativeTextExcerpt: string;
+  sourceSpan: { charStart: number | null; charEnd: number | null };
+  sourceRef: string;
+  note: string;
+}
+
 export interface ExecutableOperativeUnit {
   unitId: string;
   sourceRef: string;
   documentId: string;
   /** Governing document from operative-authority handoff when remapped; else discovery document. */
   governingDocumentId: string;
+  /** Document that supplied operative text / IR amounts (must equal governing for GROSS). */
+  operativeSourceDocumentId: string;
+  operativeSourceBindingStatus:
+    | "VERIFIED_ON_GOVERNING"
+    | "VERIFIED_SAME_AS_DISCOVERY"
+    | "UNVERIFIED_DISCOVERY_FALLBACK"
+    | "REFUSED_MISMATCH";
   operativeAuthorityClassification: string;
   governingAuthorityConfirmed: boolean;
   provisionKind: OperativeProvisionKind;
@@ -108,6 +126,11 @@ export interface ExecutableOperativeUnit {
   fidelityVerdict: string | null;
   productionRefusal: string | null;
   missingDependencies: string[];
+  /**
+   * Predecessor/discovery compile retained for audit when authoritative GROSS is
+   * refused for missing verified operative-source binding. Never used as AVAILABLE.
+   */
+  historicalPredecessorEvidence: HistoricalPredecessorEvidence | null;
   ratioCompile: {
     executableClass: string;
     definitionClosureComplete: boolean;
@@ -623,29 +646,145 @@ function residualConditionsFor(unit: CompileUnitRepresentation): Array<{ kind: s
   return fd.residuals.map((r) => ({ kind: r.kind, excerpt: r.excerpt }));
 }
 
+/**
+ * Authoritative GROSS requires verified operative-source binding on the
+ * governing document. Succession authority alone must never publish amounts
+ * compiled from superseded predecessor text.
+ *
+ * Exported for adversarial amount/source consistency tests.
+ */
+export function operativeSourceBoundToGoverning(args: {
+  governingDocumentId: string;
+  operativeSourceDocumentId: string;
+  operativeSourceBindingStatus: string;
+}): boolean {
+  const gov = args.governingDocumentId.trim();
+  const src = args.operativeSourceDocumentId.trim();
+  if (!gov || !src) return false;
+  if (gov !== src) return false;
+  return (
+    args.operativeSourceBindingStatus === "VERIFIED_ON_GOVERNING" ||
+    args.operativeSourceBindingStatus === "VERIFIED_SAME_AS_DISCOVERY"
+  );
+}
+
+export function applyOperativeSourcePublicationGate(args: {
+  unit: Pick<
+    CompileUnitRepresentation,
+    | "documentId"
+    | "discoveryDocumentId"
+    | "operativeSourceDocumentId"
+    | "operativeSourceBindingStatus"
+    | "operativeText"
+    | "sourceSpan"
+    | "sourceRef"
+    | "fixedDollarSlice"
+    | "greaterOfSlice"
+    | "executableAuthority"
+  >;
+  governingDocumentId: string;
+  capacityClass: CapacityPublicationClass;
+}): {
+  capacityClass: CapacityPublicationClass;
+  sourceBackedGrossCapacityUsd: number | null;
+  modeledHypotheticalCapacityUsd: number | null;
+  executableAuthority: "VERIFIED_EXECUTABLE" | "REFUSED";
+  operativeSourceBindingStatus: ExecutableOperativeUnit["operativeSourceBindingStatus"];
+  historicalPredecessorEvidence: HistoricalPredecessorEvidence | null;
+  missingDependencies: string[];
+  productionRefusal: string | null;
+} {
+  const sourceDoc =
+    args.unit.operativeSourceDocumentId?.trim() ||
+    args.unit.discoveryDocumentId?.trim() ||
+    args.unit.documentId;
+  const discoveryDoc =
+    args.unit.discoveryDocumentId?.trim() || args.unit.documentId;
+  const bindingStatus = args.unit.operativeSourceBindingStatus ?? "UNVERIFIED_DISCOVERY_FALLBACK";
+  const bound = operativeSourceBoundToGoverning({
+    governingDocumentId: args.governingDocumentId,
+    operativeSourceDocumentId: sourceDoc,
+    operativeSourceBindingStatus: bindingStatus,
+  });
+
+  const rawGross =
+    args.capacityClass === "SOURCE_BACKED_GROSS_CONTRACTUAL"
+      ? args.unit.fixedDollarSlice?.availableAmountUsd ?? null
+      : null;
+  const rawModeled =
+    args.capacityClass === "MODELED_HYPOTHETICAL"
+      ? args.unit.greaterOfSlice?.availableAmountUsd ?? null
+      : null;
+
+  if (bound) {
+    return {
+      capacityClass: args.capacityClass,
+      sourceBackedGrossCapacityUsd: rawGross,
+      modeledHypotheticalCapacityUsd: rawModeled,
+      executableAuthority: args.unit.executableAuthority,
+      operativeSourceBindingStatus:
+        bindingStatus === "VERIFIED_ON_GOVERNING"
+          ? "VERIFIED_ON_GOVERNING"
+          : "VERIFIED_SAME_AS_DISCOVERY",
+      historicalPredecessorEvidence: null,
+      missingDependencies: [],
+      productionRefusal:
+        args.unit.fixedDollarSlice?.productionRefusal ??
+        args.unit.greaterOfSlice?.productionRefusal ??
+        null,
+    };
+  }
+
+  // Refuse authoritative publication; preserve historical predecessor/discovery evidence.
+  const historical: HistoricalPredecessorEvidence = {
+    discoveryDocumentId: discoveryDoc,
+    operativeSourceDocumentId: sourceDoc,
+    amountUsd: rawGross ?? rawModeled,
+    operativeTextExcerpt: args.unit.operativeText.slice(0, 240).replace(/\s+/g, " "),
+    sourceSpan: args.unit.sourceSpan,
+    sourceRef: args.unit.sourceRef,
+    note:
+      "Historical discovery/predecessor compile retained for audit — not authoritative under governing document. Successor operative text was not retrieved and verified for amount/conditions/exceptions/definitions.",
+  };
+
+  return {
+    capacityClass: "UNSUPPORTED_OR_UNKNOWN",
+    sourceBackedGrossCapacityUsd: null,
+    modeledHypotheticalCapacityUsd: null,
+    executableAuthority: "REFUSED",
+    operativeSourceBindingStatus: "REFUSED_MISMATCH",
+    historicalPredecessorEvidence: historical,
+    missingDependencies: [
+      "operative_source_not_verified_on_governing_document",
+      `governing_document:${args.governingDocumentId}`,
+      `operative_source_document:${sourceDoc}`,
+      `binding_status:${bindingStatus}`,
+    ],
+    productionRefusal:
+      "REFUSED: authoritative GROSS requires verified operative text on the governing document; predecessor calculations are not reused.",
+  };
+}
+
 function toExecutable(
   unit: CompileUnitRepresentation,
   offline: OfflinePackageCompileResult,
 ): ExecutableOperativeUnit {
   const kind = classifyProvisionKind(unit);
-  const capacityClass = capacityClassFor(unit);
-  const fdUsd =
-    capacityClass === "SOURCE_BACKED_GROSS_CONTRACTUAL"
-      ? unit.fixedDollarSlice?.availableAmountUsd ?? null
-      : null;
-  const modeledUsd =
-    capacityClass === "MODELED_HYPOTHETICAL"
-      ? unit.greaterOfSlice?.availableAmountUsd ?? null
-      : null;
+  const rawCapacityClass = capacityClassFor(unit);
   const authority = authorityForUnit(unit, offline);
   const residuals = residualConditionsFor(unit);
+  const publication = applyOperativeSourcePublicationGate({
+    unit,
+    governingDocumentId: authority.governingDocumentId,
+    capacityClass: rawCapacityClass,
+  });
 
   let ratioCompile: ExecutableOperativeUnit["ratioCompile"] = null;
-  if (kind === "RATIO_BASED_PERMISSION") {
+  if (kind === "RATIO_BASED_PERMISSION" && publication.operativeSourceBindingStatus !== "REFUSED_MISMATCH") {
     const compiled = compileRatioIncurrencePermission({
       companyId: offline.companyId,
       instrumentKey: offline.instrumentKey,
-      sourceDocumentId: unit.documentId,
+      sourceDocumentId: unit.operativeSourceDocumentId || unit.documentId,
       candidateRef: unit.discoveryId,
       sourceSectionRef: unit.sourceRef,
       operativeSourceText: unit.operativeText,
@@ -662,20 +801,27 @@ function toExecutable(
     sourceRef: unit.sourceRef,
     documentId: unit.documentId,
     governingDocumentId: authority.governingDocumentId,
+    operativeSourceDocumentId:
+      unit.operativeSourceDocumentId?.trim() || unit.documentId,
+    operativeSourceBindingStatus: publication.operativeSourceBindingStatus,
     operativeAuthorityClassification: authority.operativeAuthorityClassification,
     governingAuthorityConfirmed: authority.governingAuthorityConfirmed,
     provisionKind: kind,
     role: unit.role,
     families: unit.families,
-    executableAuthority: unit.executableAuthority,
-    capacityClass,
-    sourceBackedGrossCapacityUsd: fdUsd,
-    modeledHypotheticalCapacityUsd: modeledUsd,
+    executableAuthority: publication.executableAuthority,
+    capacityClass: publication.capacityClass,
+    sourceBackedGrossCapacityUsd: publication.sourceBackedGrossCapacityUsd,
+    modeledHypotheticalCapacityUsd: publication.modeledHypotheticalCapacityUsd,
     verifiedRemainingCapacityUsd: null,
     productionAvailableCapacityUsd: null,
     unconditionalPermission: false,
     residualConditions: residuals,
-    currency: fdUsd != null || modeledUsd != null ? "USD" : null,
+    currency:
+      publication.sourceBackedGrossCapacityUsd != null ||
+      publication.modeledHypotheticalCapacityUsd != null
+        ? "USD"
+        : null,
     sourceSpan: unit.sourceSpan,
     operativeText: unit.operativeText,
     definedTermDependencies: unit.definedTermDependencies,
@@ -686,12 +832,14 @@ function toExecutable(
     ].slice(0, 24),
     crossReferences: unit.crossReferences,
     fidelityVerdict: unit.fixedDollarSlice?.fidelityVerdict ?? unit.greaterOfSlice?.fidelityVerdict ?? null,
-    productionRefusal: unit.fixedDollarSlice?.productionRefusal ?? unit.greaterOfSlice?.productionRefusal ?? null,
+    productionRefusal: publication.productionRefusal,
     missingDependencies: [
       ...missingDepsFor(unit),
       ...(ratioCompile?.missingDependencies ?? []),
       ...(authority.governingAuthorityConfirmed ? [] : ["governing_authority_not_confirmed_for_production"]),
+      ...publication.missingDependencies,
     ],
+    historicalPredecessorEvidence: publication.historicalPredecessorEvidence,
     ratioCompile,
     provenance: {
       ...unit.provenance,
