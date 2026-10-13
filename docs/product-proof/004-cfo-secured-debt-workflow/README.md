@@ -12,11 +12,22 @@ verified remaining, or Phase-3 certification.
 Working: orchestrated eight-output answer + audit trail + fail-closed no-package path  
 Blocked for PERMITTED / verified remaining: Matthews VEP, NS-4 APPROVED, utilization completeness, trusted issuer, CERTIFIED_4E dual-path
 
+## Product entry (canonical CFO journey)
+
+| | |
+|---|---|
+| Route | `/{companyId}/simulate` with `companyId=matthews` |
+| Panel | `CfoSecuredDebtWorkflowPanel` (eight outputs + audit download) |
+| Entry loader | `loadCfoSecuredDebtProductEntry` |
+| Handoff | Optional `?amount=&asOf=` seeds the $50M / dated ask |
+
+Modeled `NOT_PERMITTED` is labeled `MODELED_NOT_CERTIFIED_4E` — not a certified legal determination. Verified remaining stays null; certified simulation unavailable.
+
 ## Reproduce
 
 ```bash
 npx tsx scripts/product-proof/run-cfo-secured-debt-workflow.ts
-npx vitest run tests/product/cfo-secured-debt-workflow.test.ts
+npx vitest run tests/product/cfo-secured-debt-workflow.test.ts tests/product/cfo-secured-debt-product-entry.test.ts
 ```
 
 ## Package

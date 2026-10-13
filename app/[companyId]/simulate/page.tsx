@@ -19,6 +19,11 @@ import { SeparatedCapacityPanel } from "@/components/customer-workflow/Separated
 import { loadApprovedFinancialInputBundle } from "@/lib/product/north-star-workflow";
 import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
 import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
+import { CfoSecuredDebtWorkflowPanel } from "@/components/customer-workflow/CfoSecuredDebtWorkflowPanel";
+import {
+  isMatthewsCfoSecuredDebtCompany,
+  loadCfoSecuredDebtProductEntry,
+} from "@/lib/customer-workflow/cfo-secured-debt-entry";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
@@ -97,6 +102,17 @@ export default async function SimulatePage({
     evaluationDate,
     utilizationAuthority: null,
   });
+  const cfoSecuredDebtEntry = isMatthewsCfoSecuredDebtCompany(companyId)
+    ? await loadCfoSecuredDebtProductEntry({
+        companyId,
+        ask:
+          amountMillions > 0
+            ? `As of ${evaluationDate}, is a proposed $${amountMillions} million secured debt transaction permitted under our Indenture and Credit Agreement?`
+            : undefined,
+        amountMillions: amountMillions > 0 ? amountMillions : 50,
+        evaluationDate,
+      })
+    : null;
 
   return (
     <div className="stack">
@@ -239,6 +255,10 @@ export default async function SimulatePage({
       </Card>
 
       <VerifiedSimulatePanel summary={verifiedSummary} evaluationDate={evaluationDate} />
+
+      {cfoSecuredDebtEntry?.routeEligible && (
+        <CfoSecuredDebtWorkflowPanel entry={cfoSecuredDebtEntry} />
+      )}
 
       <CrossDomainSimulatePanel evaluation={crossDomainAcquisition} />
 
