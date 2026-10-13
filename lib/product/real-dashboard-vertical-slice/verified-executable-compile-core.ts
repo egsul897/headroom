@@ -18,8 +18,11 @@ import {
 } from "@/lib/contract-model/compiler/fixed-dollar-basket";
 import { TRUSTED_IDENTITY_PRODUCTION_ACTIVATION } from "@/lib/capacity";
 import {
+  classifyEntityScope,
   classifyProvisionLegalContext,
   isProvisionScopedAttribution,
+  type CovenantFamilyId,
+  type EntityScopeId,
 } from "./provision-legal-context";
 
 export type OperativeClauseCandidate = {
@@ -40,6 +43,11 @@ export type VerifiedExecutableValueClass =
 export type VerifiedExecutableCompileUnit = {
   candidateId: string;
   documentId: string;
+  /** Document that supplied operative text / IR — must equal documentId for GROSS. */
+  operativeSourceDocumentId: string;
+  instrumentKey: string;
+  covenantFamily: CovenantFamilyId | null;
+  entityScope: EntityScopeId;
   sourceSectionRef: string;
   relatedLeafCode: string | null;
   compileClass: FixedDollarExecutableClass | "NOT_ATTEMPTED" | "UNSUPPORTED";
@@ -78,6 +86,33 @@ export type CompileVerifiedFixedDollarArgs = {
   extraLimitations?: readonly string[];
 };
 
+function identityFields(
+  candidate: OperativeClauseCandidate,
+  instrumentKey: string,
+  covenantFamily: CovenantFamilyId | null,
+): Pick<
+  VerifiedExecutableCompileUnit,
+  | "candidateId"
+  | "documentId"
+  | "operativeSourceDocumentId"
+  | "instrumentKey"
+  | "covenantFamily"
+  | "entityScope"
+  | "sourceSectionRef"
+  | "relatedLeafCode"
+> {
+  return {
+    candidateId: candidate.candidateId,
+    documentId: candidate.documentId,
+    operativeSourceDocumentId: candidate.documentId,
+    instrumentKey,
+    covenantFamily,
+    entityScope: classifyEntityScope(candidate.operativeSourceText),
+    sourceSectionRef: candidate.sourceSectionRef,
+    relatedLeafCode: candidate.relatedLeafCode,
+  };
+}
+
 function compileOne(
   candidate: OperativeClauseCandidate,
   asOfDate: string,
@@ -91,16 +126,15 @@ function compileOne(
     "Operative source text must support fixed-dollar classification — unsupported forms refuse.",
     "Covenant family/action from provision legal context — never assumed indebtedness.",
   ];
+  const entityScoped = classifyEntityScope(candidate.operativeSourceText);
 
   // FULL_DOCUMENT / whole-agreement attribution alone cannot authorize executable claims.
   if (!isProvisionScopedAttribution(candidate.sourceSectionRef)) {
     const missing =
       "FULL_DOCUMENT (or empty) attribution — refuse executable claim without provision-scoped section identity.";
     return {
-      candidateId: candidate.candidateId,
-      documentId: candidate.documentId,
-      sourceSectionRef: candidate.sourceSectionRef,
-      relatedLeafCode: candidate.relatedLeafCode,
+      ...identityFields(candidate, instrumentKey, null),
+      entityScope: entityScoped,
       compileClass: "UNSUPPORTED",
       classificationClass: "ATTRIBUTION_INCOMPLETE",
       fidelityVerdict: null,
@@ -121,10 +155,7 @@ function compileOne(
       legal.refusalReason ??
       "Ambiguous or unsupported covenant family — refuse executable claim.";
     return {
-      candidateId: candidate.candidateId,
-      documentId: candidate.documentId,
-      sourceSectionRef: candidate.sourceSectionRef,
-      relatedLeafCode: candidate.relatedLeafCode,
+      ...identityFields(candidate, instrumentKey, null),
       compileClass: "UNSUPPORTED",
       classificationClass: legal.status,
       fidelityVerdict: null,
@@ -144,10 +175,7 @@ function compileOne(
       classification.reasons.join("; ") ||
       "Clause is not a fixed-dollar sole/gated cap (ratio, structural, or non-cap dollar language).";
     return {
-      candidateId: candidate.candidateId,
-      documentId: candidate.documentId,
-      sourceSectionRef: candidate.sourceSectionRef,
-      relatedLeafCode: candidate.relatedLeafCode,
+      ...identityFields(candidate, instrumentKey, legal.family),
       compileClass: "UNSUPPORTED",
       classificationClass: classification.class,
       fidelityVerdict: null,
@@ -181,10 +209,7 @@ function compileOne(
   ) {
     const missing = `Fixed-dollar compile returned ${compiled.executableClass}.`;
     return {
-      candidateId: candidate.candidateId,
-      documentId: candidate.documentId,
-      sourceSectionRef: candidate.sourceSectionRef,
-      relatedLeafCode: candidate.relatedLeafCode,
+      ...identityFields(candidate, instrumentKey, legal.family),
       compileClass: compiled.executableClass,
       classificationClass: classification.class,
       fidelityVerdict: null,
@@ -219,10 +244,7 @@ function compileOne(
   if (!fidelityOk || !hypoOk) {
     const missing = `Fidelity or hypothetical evaluation failed (${hypo.fidelity.verdict}/${hypo.outcomeLabel}).`;
     return {
-      candidateId: candidate.candidateId,
-      documentId: candidate.documentId,
-      sourceSectionRef: candidate.sourceSectionRef,
-      relatedLeafCode: candidate.relatedLeafCode,
+      ...identityFields(candidate, instrumentKey, legal.family),
       compileClass: compiled.executableClass,
       classificationClass: classification.class,
       fidelityVerdict: hypo.fidelity.verdict,
@@ -239,10 +261,7 @@ function compileOne(
 
   const grossMm = hypo.availableAmountUsd! / 1_000_000;
   return {
-    candidateId: candidate.candidateId,
-    documentId: candidate.documentId,
-    sourceSectionRef: candidate.sourceSectionRef,
-    relatedLeafCode: candidate.relatedLeafCode,
+    ...identityFields(candidate, instrumentKey, legal.family),
     compileClass: compiled.executableClass,
     classificationClass: classification.class,
     fidelityVerdict: hypo.fidelity.verdict,

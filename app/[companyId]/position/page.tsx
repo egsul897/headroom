@@ -15,6 +15,10 @@ import { buildPositionView } from "@/lib/customer-workflow/position-view";
 import { presentCapacityClaim } from "@/lib/customer-workflow/status-contract";
 import { separateCapacityClaimsFromProductView } from "@/lib/customer-workflow/capacity-state";
 import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
+import {
+  grossCandidatesFromVerifiedExecutableCompile,
+  selectSourceBackedGrossMm,
+} from "@/lib/customer-workflow/select-source-backed-gross";
 import { loadAuthenticDashboardSlice } from "@/lib/product/real-dashboard-vertical-slice";
 
 export const metadata = { title: "Headroom — Position" };
@@ -141,19 +145,29 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     }
   }
 
+  // Provision-identity-aware GROSS selection — never first non-null metric.
+  // Validates instrument, covenant family, entity scope, and governing source.
+  // Distinct eligible amounts → AMBIGUOUS (null amount, fail closed).
+  const grossSelection = selectSourceBackedGrossMm(
+    grossCandidatesFromVerifiedExecutableCompile(authenticSlice?.verifiedExecutableCompile),
+    {
+      instrumentKey: authenticSlice?.verifiedExecutableCompile.instrumentKey ?? "",
+      covenantFamily: "INDEBTEDNESS",
+      requireOperativeSourceOnGoverning: true,
+    },
+  );
+  const sourceBackedGrossMm =
+    grossSelection.status === "RESOLVED" ? grossSelection.amountMillions : null;
+
   const missingForClaims = [
     ...(readiness?.blockers ?? []),
     ...(dashboardError ? [dashboardError] : []),
     ...(authenticSlice?.missingInputs ?? []),
+    ...(grossSelection.status === "AMBIGUOUS" ? [grossSelection.reason] : []),
+    ...(grossSelection.status === "NONE" && authenticSlice?.verifiedExecutableCompile
+      ? [grossSelection.reason]
+      : []),
   ];
-
-  // Source-backed compiled GROSS from VE feed (when registered) — not remaining AVAILABLE.
-  const sourceBackedGrossMm =
-    authenticSlice?.verifiedExecutableMetrics.find((m) => m.amountMillions != null)?.amountMillions ??
-    authenticSlice?.verifiedExecutableCompile?.verifiedExecutableUnits.find(
-      (u) => u.feedsPosition && u.sourceBackedGrossCapacityMm != null,
-    )?.sourceBackedGrossCapacityMm ??
-    null;
 
   const securedSeparatedBase = separateCapacityClaimsFromProductView(null, {
     modeledAmountMillions: dashboard?.capacity.secured.remainingCapacity ?? null,
@@ -280,14 +294,21 @@ export default async function PositionPage({ params }: { params: Promise<{ compa
     unavailableReason: "Modeled package capacity not published for unsecured side.",
   });
   const grossUnavailable = presentCapacityClaim({
-    claimKind: "GROSS_CONTRACTUAL",
+    claimKind: sourceBackedGrossMm != null ? "GROSS_CONTRACTUAL" : "UNAVAILABLE",
     amountMillions: sourceBackedGrossMm,
     publicationLabel:
-      sourceBackedGrossMm != null ? "SOURCE_BACKED_COMPILED_GROSS" : "GROSS_CONTRACTUAL",
+      sourceBackedGrossMm != null
+        ? "SOURCE_BACKED_COMPILED_GROSS"
+        : grossSelection.status === "AMBIGUOUS"
+          ? "AMBIGUOUS"
+          : "GROSS_CONTRACTUAL",
     unavailableReason:
-      sourceBackedGrossMm == null
-        ? "Backend dependency: Position dashboard does not yet expose a separate gross-contractual field distinct from modeled remaining. Until that API exists, gross is shown as unavailable — never invented."
-        : null,
+      grossSelection.status === "AMBIGUOUS"
+        ? grossSelection.reason
+        : sourceBackedGrossMm == null
+          ? grossSelection.reason ||
+            "No provision-identity-resolved SOURCE_BACKED_COMPILED_GROSS for the applicable instrument/family/governing source — never invented."
+          : null,
   });
 
   return (

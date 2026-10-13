@@ -128,3 +128,28 @@ export function isProvisionScopedAttribution(sourceSectionRef: string | null | u
   if (ref === "FULL_DOCUMENT" || ref === "WHOLE_AGREEMENT") return false;
   return true;
 }
+
+export type EntityScopeId =
+  | "COMPANY_ONLY"
+  | "COMPANY_AND_RESTRICTED_SUBSIDIARIES"
+  | "SUBSIDIARIES"
+  | "UNSPECIFIED";
+
+/**
+ * Derive entity scope from operative provision text. Ambiguous/missing → UNSPECIFIED.
+ */
+export function classifyEntityScope(operativeText: string): EntityScopeId {
+  const text = operativeText?.trim() ?? "";
+  if (!text) return "UNSPECIFIED";
+
+  const hasCompany = /\b(?:the\s+)?Company\b/i.test(text);
+  const hasRestrictedSubs = /\bRestricted\s+Subsidiaries\b/i.test(text);
+  const hasSubs = /\bSubsidiaries\b/i.test(text);
+
+  if (hasCompany && hasRestrictedSubs) return "COMPANY_AND_RESTRICTED_SUBSIDIARIES";
+  if (/\bCompany\s+only\b/i.test(text)) return "COMPANY_ONLY";
+  if (hasCompany && !hasSubs) return "COMPANY_ONLY";
+  if (hasSubs && !hasCompany) return "SUBSIDIARIES";
+  if (hasCompany && hasSubs) return "COMPANY_AND_RESTRICTED_SUBSIDIARIES";
+  return "UNSPECIFIED";
+}

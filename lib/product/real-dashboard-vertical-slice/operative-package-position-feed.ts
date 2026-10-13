@@ -26,8 +26,28 @@ import {
 import type { AuthenticPositionSlice, DashboardConnectedMetric } from "./position-bridge";
 import type { Phase3CompileBridgeResult } from "./phase3-compile-bridge";
 import type { VerifiedExecutableCompileBridgeResult } from "./verified-executable-compile-core";
+import {
+  classifyEntityScope,
+  classifyProvisionLegalContext,
+  type CovenantFamilyId,
+} from "./provision-legal-context";
 import { MATTHEWS_POSITION_COMPANY_ID } from "./package-matthews";
 import { MHK_VE_COMPANY_ID } from "./package-mhk-ve-candidates";
+
+const KNOWN_FAMILIES = new Set<CovenantFamilyId>([
+  "INDEBTEDNESS",
+  "LIENS",
+  "INVESTMENTS",
+  "RESTRICTED_PAYMENTS",
+  "ASSET_SALES",
+]);
+
+function familyFromExecutable(families: string[], operativeText: string): CovenantFamilyId | null {
+  for (const f of families) {
+    if (KNOWN_FAMILIES.has(f as CovenantFamilyId)) return f as CovenantFamilyId;
+  }
+  return classifyProvisionLegalContext(operativeText).family;
+}
 
 export type OperativePositionPackage = {
   companyId: string;
@@ -255,6 +275,10 @@ function compileBridgeFromResult(
     verifiedExecutableUnits: result.executableUnits.map((u) => ({
       candidateId: u.unitId,
       documentId: u.governingDocumentId || u.documentId,
+      operativeSourceDocumentId: u.operativeSourceDocumentId || u.documentId,
+      instrumentKey: result.instrumentKey,
+      covenantFamily: familyFromExecutable(u.families, u.operativeText),
+      entityScope: classifyEntityScope(u.operativeText),
       sourceSectionRef: u.sourceRef,
       relatedLeafCode: null,
       compileClass:
