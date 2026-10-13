@@ -326,6 +326,85 @@ describe("legacy gross capacity", () => {
     expect(html).toMatch(/MODELED \/ NOT VERIFIED/);
     expect(html).not.toMatch(/>AVAILABLE</);
   });
+
+  it("Position sides never auto-relabel legacy remainingCapacity as GROSS_CONTRACTUAL", () => {
+    const dashboard = {
+      asOfDate: new Date("2025-06-30T00:00:00Z"),
+      capacity: {
+        secured: {
+          remainingCapacity: 84,
+          utilizationRemainingAuthority: "NOT_PRODUCTION_AUTHORITATIVE",
+          packageAuthoritative: null,
+          perDocument: [],
+          binding: null,
+        },
+        unsecured: {
+          remainingCapacity: 40,
+          utilizationRemainingAuthority: "NOT_PRODUCTION_AUTHORITATIVE",
+          packageAuthoritative: null,
+          perDocument: [],
+          binding: null,
+        },
+      },
+      financialPosition: { capitalStructure: { facilities: [] } },
+      legalReview: { permissionsVerified: 0 },
+    } as unknown as Parameters<typeof buildPositionView>[0]["dashboard"];
+
+    const withoutGross = buildPositionView({
+      companyId: "adv-co",
+      dashboard,
+      readiness: { ...readinessBase, canEvaluateExecutableCapacity: true, hasFinancialSnapshot: true },
+      rulebook: rulebookBase,
+    });
+    for (const side of withoutGross.sides) {
+      expect(side.remaining.claimKind).toBe("UNAVAILABLE");
+      expect(side.remaining.status).not.toBe("GROSS_CONTRACTUAL");
+      expect(side.remaining.amountMillions).toBeNull();
+    }
+
+    const sourceBackedGross = presentCapacityClaim({
+      claimKind: "GROSS_CONTRACTUAL",
+      amountMillions: 1300,
+      publicationLabel: "GROSS_CONTRACTUAL",
+    });
+    const unavailable = presentCapacityClaim({
+      claimKind: "UNAVAILABLE",
+      amountMillions: null,
+      publicationLabel: "UNKNOWN",
+      unavailableReason: "test",
+    });
+    const withGross = buildPositionView({
+      companyId: "adv-co",
+      dashboard,
+      readiness: { ...readinessBase, canEvaluateExecutableCapacity: true, hasFinancialSnapshot: true },
+      rulebook: rulebookBase,
+      separatedClaims: {
+        secured: {
+          grossContractual: sourceBackedGross,
+          hypotheticalModeled: unavailable,
+          verifiedRemaining: unavailable,
+          unknownUnsupported: unavailable,
+          bindingRestrictions: [],
+          sourceEvidence: [],
+          missingInputs: [],
+          remainingAuthoritative: false,
+        },
+        unsecured: {
+          grossContractual: unavailable,
+          hypotheticalModeled: unavailable,
+          verifiedRemaining: unavailable,
+          unknownUnsupported: unavailable,
+          bindingRestrictions: [],
+          sourceEvidence: [],
+          missingInputs: [],
+          remainingAuthoritative: false,
+        },
+      },
+    });
+    expect(withGross.sides.find((s) => s.side === "secured")!.remaining.claimKind).toBe("GROSS_CONTRACTUAL");
+    expect(withGross.sides.find((s) => s.side === "secured")!.remaining.amountMillions).toBe(1300);
+    expect(withGross.sides.find((s) => s.side === "unsecured")!.remaining.claimKind).toBe("UNAVAILABLE");
+  });
 });
 
 describe("shared-capacity uncertainty", () => {
