@@ -65,12 +65,34 @@ export interface GreaterOfCompileArgs {
   sourceSectionRef: string;
   operativeSourceText: string;
   covenantFamily?: string;
+  /**
+   * Canonical ContractAction values preferred. Caller aliases
+   * MAKE_RESTRICTED_PAYMENT → PAY_DIVIDEND and DISPOSE_ASSET → SELL_ASSET
+   * are accepted then normalized before IR wire emission.
+   */
   action?:
     | "INCUR_DEBT"
     | "CREATE_LIEN"
     | "MAKE_INVESTMENT"
     | "PAY_DIVIDEND"
-    | "SELL_ASSET";
+    | "SELL_ASSET"
+    | "MAKE_RESTRICTED_PAYMENT"
+    | "DISPOSE_ASSET";
+}
+
+type CanonicalBasketAction =
+  | "INCUR_DEBT"
+  | "CREATE_LIEN"
+  | "MAKE_INVESTMENT"
+  | "PAY_DIVIDEND"
+  | "SELL_ASSET";
+
+function normalizeBasketAction(
+  action: NonNullable<GreaterOfCompileArgs["action"]>,
+): CanonicalBasketAction {
+  if (action === "MAKE_RESTRICTED_PAYMENT") return "PAY_DIVIDEND";
+  if (action === "DISPOSE_ASSET") return "SELL_ASSET";
+  return action;
 }
 
 export type GreaterOfExecutableClass =
@@ -194,8 +216,8 @@ function greaterOfCapacity(
 function inferAction(
   text: string,
   explicit?: GreaterOfCompileArgs["action"],
-): NonNullable<GreaterOfCompileArgs["action"]> {
-  if (explicit) return explicit;
+): CanonicalBasketAction {
+  if (explicit) return normalizeBasketAction(explicit);
   if (/\bLiens?\b/i.test(text) && !/\b(?:Debt|Indebtedness)\b/i.test(text)) return "CREATE_LIEN";
   if (/\bRestricted\s+Payments?\b|\bDividends?\b/i.test(text)) return "PAY_DIVIDEND";
   if (/\bInvestments?\b/i.test(text)) return "MAKE_INVESTMENT";
@@ -242,7 +264,7 @@ function wireRule(args: {
   classification: GreaterOfAssetsClassification;
   capacityExpression: WireExpression;
   family: string;
-  action: NonNullable<GreaterOfCompileArgs["action"]>;
+  action: CanonicalBasketAction;
 }) {
   const citation = `§${args.sourceSectionRef}`;
   return {
