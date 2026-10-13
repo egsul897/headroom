@@ -202,7 +202,8 @@ export async function applyClfMigrationOverHttps(
     [loaded.migrationName],
   );
 
-  if (existing.length > 0 && existing[0].finished_at && !existing[0].rolled_back_at) {
+  const existingRow = existing[0];
+  if (existingRow?.finished_at && !existingRow.rolled_back_at) {
     return {
       ok: true,
       skipped: true,
@@ -221,7 +222,7 @@ export async function applyClfMigrationOverHttps(
   }
 
   const migrationId = opts?.migrationId ?? randomUUID();
-  if (existing.length === 0) {
+  if (!existingRow) {
     await executor.execute(
       `INSERT INTO "_prisma_migrations"
         (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count)

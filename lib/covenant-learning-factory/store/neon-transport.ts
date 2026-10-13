@@ -16,7 +16,7 @@ import {
 export type NeonTransportMode = "tcp" | "https";
 
 export function getNeonTransportMode(
-  env: NodeJS.ProcessEnv = process.env,
+  env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
 ): NeonTransportMode {
   return env.NEON_TRANSPORT === "https" ? "https" : "tcp";
 }
@@ -72,7 +72,7 @@ export interface CreateClfPrismaClientResult {
  * Prisma client for CLF Neon ops. HTTPS uses PrismaNeonHTTP (no TCP 5432).
  */
 export async function createClfPrismaClient(
-  env: NodeJS.ProcessEnv = process.env,
+  env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
 ): Promise<CreateClfPrismaClientResult> {
   const transport = getNeonTransportMode(env);
   const raw = env.DATABASE_URL;
