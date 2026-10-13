@@ -1,7 +1,7 @@
 # Cross-layer integration matrix
 
 **Controlling architecture:** `docs/headroom-north-star-v2.md`, `docs/headroom-north-star-reconciliation/06-revised-roadmap.md`  
-**Branch tip under test:** `cursor/cross-layer-integration-7039` @ `76096c0abc431868e6d58d02fe13c699635e8f1d` (off `origin/main` @ `67027b8f`)  
+**Branch / PR under test:** `cursor/cross-layer-integration-7039` / [#332](https://github.com/egsul897/headroom/pull/332) (off `origin/main` @ `67027b8f`)  
 **Status legend:** `VERIFIED` = production interface exercised by automated test on real modules/persisted state · `PARTIAL` = interface exists but gap remains · `BLOCKED` = phase-gate / IdP / certification refuses · `UNSUPPORTED` = not built or explicitly out of MVP
 
 Integration readiness ≠ production certification.
