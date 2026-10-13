@@ -377,6 +377,8 @@ describe("N. BYPASS: product surfaces cannot reach the raw runtime around the bo
     /^lib\/contract-model\/restore-authority\.ts$/,
     // Product-facing North-Star persistence/selector/ledger bridge (stores only; not 4A/4D execution).
     /^lib\/contract-model\/north-star-bridge\.ts$/,
+    // Product-facing Phase 4A definition/expression execution boundary (not capacity/simulate).
+    /^lib\/contract-model\/definition-execution\.ts$/,
   ];
   const RAW_RUNTIME = /contract-model\/runtime(\/|$)/;
   const walk = (dir: string, out: string[] = []): string[] => {

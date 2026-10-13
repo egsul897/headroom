@@ -2,22 +2,19 @@ import { DashboardClient } from "@/components/DashboardClient";
 import { facilitiesQueryFromPosition, maturitiesQueryFromPosition } from "@/lib/dashboard/load-state";
 import { loadNs4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-panel";
 import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
+import { loadContractualMetricsForDashboard } from "@/lib/product/contractual-metrics/service";
+import { toContractualMetricsView } from "@/lib/product/contractual-metrics/serialize";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
 /**
- * The Dashboard tab (task "MAKE THE UI MATCH THE PROTOTYPE EXACTLY" -
- * reference/headroom-coherent.jsx's "Position" tab, renamed to Dashboard
- * per the task's explicit instruction). Server component's ENTIRE job is
- * loading real data and normalizing it into plain, serializable props for
- * `DashboardClient` (components/DashboardClient.tsx) - every number is
- * still computed by the real engine (lib/covenant-engine.ts, unmodified),
- * called from `buildCovenantOverview` (lib/covenant-overview-builder.ts),
- * client-side for live editable-financials reflow with zero server
- * round-trip. This file performs no calculation of its own.
+ * Dashboard GET/render — read-only loads only.
  *
- * North-Star financial facts come from Neon NS-4 via
- * `loadNs4DashboardFinancialState` — never from inventing legacy figures.
+ * - NS-4 APPROVED financial band via `loadNs4DashboardFinancialState` (Neon read).
+ * - Provisional contractual metrics via `loadContractualMetricsForDashboard`
+ *   (in-memory definition execution; never persists).
+ * Capacity numbers still come from the real covenant engine via DashboardClient.
+ * Provisional reconstructions are labeled at display and never replace APPROVED headlines.
  */
 export default async function DashboardPage({
   params,
@@ -48,6 +45,10 @@ export default async function DashboardPage({
     attributedUtilizationSerialized,
   } = inputs;
 
+  // Read-only compute — no SemanticTruthRecord / ExternalInputRecord / certificate writes.
+  const contractualBundle = await loadContractualMetricsForDashboard(companyId);
+  const contractualMetrics = toContractualMetricsView(contractualBundle);
+
   // Verified-empty maturities/facilities are minted only after this load returned.
   // A throw never reaches these constructors, so a failed load cannot paint absence.
   const facilitiesQuery = facilitiesQueryFromPosition(financialPosition, documentNameById);
@@ -70,6 +71,7 @@ export default async function DashboardPage({
       maturitiesQuery={maturitiesQuery}
       attributedUtilizationSerialized={attributedUtilizationSerialized}
       ns4Financial={ns4Financial}
+      contractualMetrics={contractualMetrics}
     />
   );
 }
