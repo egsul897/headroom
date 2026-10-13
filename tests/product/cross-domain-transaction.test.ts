@@ -22,12 +22,16 @@ import {
 import { resolveContractualEbitdaDerivation, COHERENT_EBITDA_EVIDENCE } from "@/lib/financial-certificate-engine";
 
 describe("covenant domain coverage inventory", () => {
-  it("covers all ten mission domains without claiming full executability", () => {
+  it("covers mandate domains honestly without false EXECUTABLE claims", () => {
     const rows = covenantDomainCoverage();
-    expect(rows).toHaveLength(10);
+    expect(rows.length).toBeGreaterThanOrEqual(12);
     expect(rows.every((r) => r.executableToday.length > 0)).toBe(true);
-    expect(rows.some((r) => r.support === "EXECUTABLE")).toBe(true);
+    // Package-wide audit: no domain is fully EXECUTABLE today.
+    expect(rows.every((r) => r.support !== "EXECUTABLE")).toBe(true);
     expect(rows.some((r) => r.support === "PARTIAL" || r.support === "UNSUPPORTED")).toBe(true);
+    expect(rows.some((r) => r.domain === "AFFILIATE_TRANSACTIONS")).toBe(true);
+    expect(rows.some((r) => r.domain === "GUARANTEES")).toBe(true);
+    expect(rows.some((r) => r.domain === "SUBSIDIARY_DESIGNATION_STRUCTURAL")).toBe(true);
   });
 });
 
@@ -42,6 +46,28 @@ describe("assumption gates", () => {
     });
     expect(result.overallStatus).toBe("review_required");
     expect(result.packageLimitations.some((l) => /assumptions are required/i.test(l))).toBe(true);
+  });
+
+  it("caller-supplied utilization completeness booleans cannot manufacture verified remaining", () => {
+    const tx = coherentDebtFundedAcquisition(100);
+    tx.assumptions.utilizationAttributed = true;
+    tx.assumptions.utilizationCompletenessCertified = true;
+    const result = evaluateCrossDomainTransaction({
+      data: coherentPackageData(),
+      transaction: tx,
+      ebitdaDerivation: resolveContractualEbitdaDerivation(COHERENT_EBITDA_EVIDENCE),
+    });
+    for (const d of result.domains) {
+      expect(d.verifiedRemainingMillions).toBeNull();
+    }
+    expect(
+      result.packageLimitations.some(
+        (l) =>
+          /Caller-supplied.*ignored/i.test(l) ||
+          /never authorize verified remaining/i.test(l) ||
+          /Caller set utilizationAttributed/i.test(l),
+      ),
+    ).toBe(true);
   });
 });
 
