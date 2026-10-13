@@ -178,6 +178,9 @@ describe("P0 — provision identity required for operative authority", () => {
     expect(provisionIdentityMatchesUnit(section701, unit703f)).toBe(false);
     expect(provisionIdentityMatchesUnit(section701, unit701i)).toBe(true);
 
+    // Same section on an unrelated document refuses — document identity required.
+    expect(provisionIdentityMatchesUnit(section703, unitOtherDoc)).toBe(false);
+
     // Document id alone never binds — even when governingDocumentId equals unit.documentId.
     const docOnly = {
       kind: "SECTION",
@@ -220,6 +223,65 @@ describe("P0 — provision identity required for operative authority", () => {
         sourceRef: "def:Permitted Debt(2)",
         documentId: doc,
       }),
+    ).toBe(false);
+    // Same defined term on an unrelated document refuses.
+    expect(
+      provisionIdentityMatchesUnit(permittedDebt, {
+        sourceRef: "def:Permitted Debt(1)(a)",
+        documentId: "other-indenture",
+      }),
+    ).toBe(false);
+  });
+
+  it("adversarial: verified amendment/restatement succession preserves match; unrelated docs refuse", () => {
+    const restated = "credit-agreement-restated-2024";
+    const original = "credit-agreement-original-2020";
+    const unrelated = "different-issuer-credit-agreement";
+    const provision = {
+      kind: "SECTION",
+      sectionRef: "7.03",
+      definedTermRef: null,
+      governingDocumentId: restated,
+      supersededDocumentIds: [original],
+      applicableAuthorityChain: [
+        {
+          status: "OPERATIVE_AUTHORITY_CONFIRMED",
+          successorDocumentId: restated,
+          predecessorDocumentId: original,
+        },
+      ],
+    };
+
+    expect(
+      provisionIdentityMatchesUnit(provision, {
+        sourceRef: "7.03(f)",
+        documentId: restated,
+      }),
+    ).toBe(true);
+    expect(
+      provisionIdentityMatchesUnit(provision, {
+        sourceRef: "7.03(f)",
+        documentId: original,
+      }),
+    ).toBe(true);
+    expect(
+      provisionIdentityMatchesUnit(provision, {
+        sourceRef: "7.03(f)",
+        documentId: unrelated,
+      }),
+    ).toBe(false);
+
+    // Missing governingDocumentId refuses even with matching section.
+    expect(
+      provisionIdentityMatchesUnit(
+        {
+          kind: "SECTION",
+          sectionRef: "7.03",
+          definedTermRef: null,
+          governingDocumentId: null,
+        },
+        { sourceRef: "7.03(f)", documentId: restated },
+      ),
     ).toBe(false);
   });
 });
