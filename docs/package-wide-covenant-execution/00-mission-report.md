@@ -112,7 +112,12 @@ Script: `npx tsx scripts/mission-proof-package-transaction.ts`
 
 ## 9. Tests and exact-tip CI
 
-**Local (this tip):**
+**Tip SHA:** `e4dd5a8876d006540cde381204929ce65c7f9628`
+
+**GitHub CI (all SUCCESS):** home overview ×2 · Vercel · Vercel Preview Comments  
+Detail: [`09-exact-tip-ci.md`](./09-exact-tip-ci.md)
+
+**Local product proof (path-filtered CI did not run product suites):**
 
 ```
 tests/product/cross-domain-transaction.test.ts          9 passed
@@ -122,10 +127,9 @@ tests/product/package-wide-generalization.test.ts        8 passed
 tests/product/contractual-computation.test.ts            8 passed
 tests/product/contractual-ebitda-derivation.test.ts      6 passed
 tests/product/debt-intelligence-dashboard.test.ts        2 passed
-tsc --noEmit                                             clean for changed surface
+TOTAL                                                  61 passed
+tsc --noEmit                                           clean for changed surface
 ```
-
-Exact-tip GitHub CI recorded after push on the PR checks.
 
 ---
 
