@@ -127,9 +127,9 @@ describe("createNeonHttpsExecutor mock seam", () => {
     const { createNeonHttpsExecutor } = await import(
       "../../lib/covenant-learning-factory/store/neon-transport"
     );
-    const ex = createNeonHttpsExecutor(
+    const ex = await createNeonHttpsExecutor(
       "postgresql://u:secret@example.invalid/db",
-      neonMock as unknown as typeof import("@neondatabase/serverless").neon,
+      neonMock as unknown as import("../../lib/covenant-learning-factory/store/neon-transport").NeonFactory,
     );
     const rows = await ex.execute("SELECT 1");
     expect(rows).toEqual([{ ok: 1 }]);

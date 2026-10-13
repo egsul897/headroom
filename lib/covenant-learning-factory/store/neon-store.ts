@@ -142,7 +142,7 @@ export async function persistPackageManifestToNeon(
       }
       const transport = getNeonTransportMode();
       if (transport === "https") {
-        executor = createNeonHttpsExecutor(process.env.DATABASE_URL);
+        executor = await createNeonHttpsExecutor(process.env.DATABASE_URL);
       } else {
         opened = await createClfPrismaClient();
         executor = prismaAsExecutor(opened.client);

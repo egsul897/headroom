@@ -1,10 +1,10 @@
 /**
- * Neon Prisma client factory.
+ * Neon Prisma client factory for covenant-learning-factory scripts/lib only.
  *
- * NEON_TRANSPORT=https → @neondatabase/serverless HTTP + PrismaNeonHTTP (port 443)
+ * NEON_TRANSPORT=https → dynamic import of @neondatabase/serverless + PrismaNeonHTTP
  * default / unset     → standard Prisma TCP engine (unchanged)
  *
- * Never logs connection strings.
+ * Never logs connection strings. Does not touch lib/prisma.ts (Next app default).
  */
 
 import { PrismaClient } from "@prisma/client";
@@ -14,6 +14,15 @@ import {
 } from "./neon-database-url";
 
 export type NeonTransportMode = "tcp" | "https";
+
+export type NeonQueryFn = (
+  query: string,
+  params?: unknown[],
+) => Promise<unknown>;
+
+export type NeonFactory = (connectionString: string) => NeonQueryFn & {
+  transaction?: unknown;
+};
 
 export function getNeonTransportMode(
   env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
@@ -35,20 +44,18 @@ export interface NeonHttpsExecutor {
 
 /**
  * Create a Neon HTTPS query executor (fetch to Neon HTTP API on 443).
- * Injectable for offline tests.
+ * Pass `neonFn` in offline tests to avoid loading @neondatabase/serverless.
  */
-export function createNeonHttpsExecutor(
+export async function createNeonHttpsExecutor(
   connectionString: string,
-  neonFn?: typeof import("@neondatabase/serverless").neon,
-): NeonHttpsExecutor {
+  neonFn?: NeonFactory,
+): Promise<NeonHttpsExecutor> {
   if (!connectionString) {
     throw new Error("DATABASE_URL unset");
   }
-  // Lazy require keeps TCP-only paths free of the serverless dependency at import time in tests that mock.
   const neon =
     neonFn ??
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    (require("@neondatabase/serverless") as typeof import("@neondatabase/serverless")).neon;
+    ((await import("@neondatabase/serverless")).neon as unknown as NeonFactory);
   const sql = neon(connectionString);
   return {
     async execute(statement: string, params: unknown[] = []) {
@@ -70,6 +77,7 @@ export interface CreateClfPrismaClientResult {
 
 /**
  * Prisma client for CLF Neon ops. HTTPS uses PrismaNeonHTTP (no TCP 5432).
+ * Only used from CLF scripts/store — not from the Next app prisma singleton.
  */
 export async function createClfPrismaClient(
   env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,

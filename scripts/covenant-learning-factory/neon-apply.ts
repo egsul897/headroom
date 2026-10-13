@@ -28,7 +28,7 @@ async function main(): Promise<void> {
   }
 
   try {
-    const executor = createNeonHttpsExecutor(process.env.DATABASE_URL);
+    const executor = await createNeonHttpsExecutor(process.env.DATABASE_URL);
     const result = await applyClfMigrationOverHttps(executor);
     console.log(JSON.stringify(result, null, 2));
     if (!result.ok) process.exit(1);

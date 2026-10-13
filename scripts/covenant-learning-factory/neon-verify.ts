@@ -30,7 +30,7 @@ async function main(): Promise<void> {
 
   try {
     const probe = await probeNeonLive();
-    const executor = createNeonHttpsExecutor(process.env.DATABASE_URL);
+    const executor = await createNeonHttpsExecutor(process.env.DATABASE_URL);
     const counts = await countLearningTables(executor);
     const payload = {
       ok: probe.live,

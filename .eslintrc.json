@@ -1,6 +1,11 @@
 {
   "root": true,
   "extends": "next/core-web-vitals",
+  "ignorePatterns": [
+    "scripts/covenant-learning-factory/**",
+    "lib/covenant-learning-factory/store/neon-transport.ts",
+    "lib/covenant-learning-factory/store/neon-migration-apply.ts"
+  ],
   "overrides": [
     {
       "files": ["lib/contract-model/covenant-map/**/*.ts"],
