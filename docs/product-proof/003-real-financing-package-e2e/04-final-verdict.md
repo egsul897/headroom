@@ -18,3 +18,5 @@ For Matthews authentic package on main `8374fa2a`:
 - **Asset sale:** NOT DETERMINED / REFUSED (domain not implemented; intake kind UNKNOWN).
 
 Lawyer / treasury review required. Modeled Indenture rooms are **not** production permission.
+
+Coherent seeded cross-domain sims on main may report gross `clear` for acquisition / RP / asset sale while **verifiedRemaining stays null** — that is a demo of engine composition, not customer-ready authentic-package progress.

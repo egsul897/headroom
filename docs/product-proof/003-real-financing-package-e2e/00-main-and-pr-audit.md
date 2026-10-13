@@ -16,7 +16,8 @@ This evaluation runs **only** code reachable from `origin/main` at the SHA above
 | Phase 4E path enumeration | On main — refuses without VEP |
 | Phase 4C/4D capacity + simulate | On main (in-memory / REQUIRE gates) |
 | NS-4 certificate / cutoff / delivery | Newly on main via #334 |
-| Cross-domain Simulate v2 | **Open** PR #340 (not on main) |
+| Cross-domain transaction v1 (Coherent seed) | On main via #334 — `lib/product/cross-domain-transaction.ts` (GROSS only; remaining always withheld) |
+| Cross-domain Simulate v2 (verified remaining) | **Open** PR #340 (not on main) |
 | Contractual EBITDA → leverage AFC absorb | **Open** PRs #322 / #341 / #338 / #344 (conflicting cluster) |
 | APPROVED financial authority gate | **Open** PRs #339 / #345 |
 | Canonical absorb landing tips | **Open** PRs #343 / #345 |

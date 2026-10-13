@@ -1,7 +1,7 @@
 {
   "schema": "product-proof-003-real-financing-package-e2e.v1",
-  "evaluatedAt": "2026-10-13T07:10:58.686Z",
-  "canonicalMainSha": "8374fa2a8697ce39b8ff6d63f6703ea2612b8545",
+  "evaluatedAt": "2026-10-13T07:12:32.686Z",
+  "canonicalMainSha": "046161e78dc206c50ee951d71a18dfa4befd3206",
   "package": {
     "key": "matthews-international-q1-fy2025",
     "companyId": "matthews",
@@ -585,9 +585,459 @@
       "truthfulBlocker": "EXPLICIT_BLOCKER: Asset Sales domain NOT_IMPLEMENTED for Matthews authentic package — no assetSale config or VEP path. Refusing rather than inventing proceeds routing."
     }
   ],
+  "secondarySeededCrossDomainTrack": {
+    "note": "Post-#334 main path lib/product/cross-domain-*.ts over Coherent seed capacityFormulas. utilizationAttributed=false; verifiedRemaining always null. NOT authentic-package customer proof.",
+    "evaluationVersion": "cross-domain-transaction.v1",
+    "coherentScenarios": [
+      {
+        "label": "coherent-debt-funded-acquisition-150",
+        "authorityClass": "SEEDED_OR_MINIMAL_PACKAGE_GROSS_ONLY",
+        "version": "cross-domain-transaction.v1",
+        "scenarioKind": "DEBT_FUNDED_ACQUISITION",
+        "amountMillions": 150,
+        "overallStatus": "clear",
+        "utilizationAttributed": false,
+        "utilizationCompletenessCertified": false,
+        "authorityNote": "LEGACY_ENGINE package composition + contractual computation — NOT_CERTIFIED_4E. Gross ≠ verified remaining.",
+        "packageLimitations": [
+          "Gross capacity is never described as verified available capacity.",
+          "No contractual permissions or historical utilization are invented.",
+          "Verified remaining capacity withheld — LEGACY cross-domain path never publishes remaining from caller flags; requires store-backed attributed utilization + completeness certificate.",
+          "Acquisition target guarantee / restricted-group admission not simulated — entity scope stated in assumptions only."
+        ],
+        "domains": [
+          {
+            "domain": "FINANCIAL_COVENANTS_RATIO_CAPACITY",
+            "support": "EXECUTABLE",
+            "status": "clear",
+            "grossCapacityMillions": 5129,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Contractual EBITDA $1700M · TNL 1.23x · derivation SUPPORTING_RECONSTRUCTION"
+          },
+          {
+            "domain": "LIENS_SECURED_CAPACITY",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": 5129,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Secured-side gross capacity $5129.0M on Credit Agreement (2022, as amended)"
+          },
+          {
+            "domain": "CROSS_DOCUMENT_SHARED_CAPACITY",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "2 document(s) in package; binding selected as tightest modeled capacity on debt sims"
+          },
+          {
+            "domain": "AMENDMENT_VERSION_EFFECTIVE_DATE",
+            "support": "PARTIAL",
+            "status": "not_applicable",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Evaluation date 2026-06-30 — provisions must be date-scoped by loader"
+          },
+          {
+            "domain": "LEDGER_UTILIZATION_RECLASSIFICATION",
+            "support": "PARTIAL",
+            "status": "not_applicable",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [
+              "attributed utilization",
+              "completeness certificate"
+            ],
+            "summary": "6 ledger entr(y/ies) in RP pool math; attributed remaining refused"
+          },
+          {
+            "domain": "DEBT_INCURRENCE_REFINANCING",
+            "support": "EXECUTABLE",
+            "status": "clear",
+            "grossCapacityMillions": 4041,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Acquisition financing debt: clear · binding 2029 Senior Notes Indenture · overall gross capacity $4041.0M"
+          },
+          {
+            "domain": "INVESTMENTS_ACQUISITIONS",
+            "support": "EXECUTABLE",
+            "status": "clear",
+            "grossCapacityMillions": 3450,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "investment $150M · clear · remaining unallocated $0.0M"
+          },
+          {
+            "domain": "MULTI_CONDITION_SIMULATION",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Scenario DEBT_FUNDED_ACQUISITION composed across 7 domain slices"
+          }
+        ],
+        "debtStatus": "clear",
+        "rpStatus": "clear",
+        "rpKind": "investment",
+        "assetSaleStatus": null,
+        "contractualEbitda": 1700,
+        "anyVerifiedRemainingClaimed": false
+      },
+      {
+        "label": "coherent-restricted-payment-dividend-50",
+        "authorityClass": "SEEDED_OR_MINIMAL_PACKAGE_GROSS_ONLY",
+        "version": "cross-domain-transaction.v1",
+        "scenarioKind": "DIVIDEND_AVAILABLE_AMOUNT",
+        "amountMillions": 50,
+        "overallStatus": "clear",
+        "utilizationAttributed": false,
+        "utilizationCompletenessCertified": false,
+        "authorityNote": "LEGACY_ENGINE package composition + contractual computation — NOT_CERTIFIED_4E. Gross ≠ verified remaining.",
+        "packageLimitations": [
+          "Gross capacity is never described as verified available capacity.",
+          "No contractual permissions or historical utilization are invented.",
+          "Verified remaining capacity withheld — LEGACY cross-domain path never publishes remaining from caller flags; requires store-backed attributed utilization + completeness certificate."
+        ],
+        "domains": [
+          {
+            "domain": "FINANCIAL_COVENANTS_RATIO_CAPACITY",
+            "support": "EXECUTABLE",
+            "status": "clear",
+            "grossCapacityMillions": 5129,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Contractual EBITDA $1700M · TNL 1.23x · derivation SUPPORTING_RECONSTRUCTION"
+          },
+          {
+            "domain": "LIENS_SECURED_CAPACITY",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": 5129,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Secured-side gross capacity $5129.0M on Credit Agreement (2022, as amended)"
+          },
+          {
+            "domain": "CROSS_DOCUMENT_SHARED_CAPACITY",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "2 document(s) in package; binding selected as tightest modeled capacity on debt sims"
+          },
+          {
+            "domain": "AMENDMENT_VERSION_EFFECTIVE_DATE",
+            "support": "PARTIAL",
+            "status": "not_applicable",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Evaluation date 2026-06-30 — provisions must be date-scoped by loader"
+          },
+          {
+            "domain": "LEDGER_UTILIZATION_RECLASSIFICATION",
+            "support": "PARTIAL",
+            "status": "not_applicable",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [
+              "attributed utilization",
+              "completeness certificate"
+            ],
+            "summary": "6 ledger entr(y/ies) in RP pool math; attributed remaining refused"
+          },
+          {
+            "domain": "RESTRICTED_PAYMENTS_BUILDER",
+            "support": "EXECUTABLE",
+            "status": "clear",
+            "grossCapacityMillions": 3450,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "dividend $50M · clear · remaining unallocated $0.0M"
+          },
+          {
+            "domain": "MULTI_CONDITION_SIMULATION",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Scenario DIVIDEND_AVAILABLE_AMOUNT composed across 6 domain slices"
+          }
+        ],
+        "debtStatus": null,
+        "rpStatus": "clear",
+        "rpKind": "dividend",
+        "assetSaleStatus": null,
+        "contractualEbitda": 1700,
+        "anyVerifiedRemainingClaimed": false
+      },
+      {
+        "label": "coherent-asset-sale-200",
+        "authorityClass": "SEEDED_OR_MINIMAL_PACKAGE_GROSS_ONLY",
+        "version": "cross-domain-transaction.v1",
+        "scenarioKind": "ASSET_SALE_PROCEEDS",
+        "amountMillions": 200,
+        "overallStatus": "clear",
+        "utilizationAttributed": false,
+        "utilizationCompletenessCertified": false,
+        "authorityNote": "LEGACY_ENGINE package composition + contractual computation — NOT_CERTIFIED_4E. Gross ≠ verified remaining.",
+        "packageLimitations": [
+          "Gross capacity is never described as verified available capacity.",
+          "No contractual permissions or historical utilization are invented.",
+          "Verified remaining capacity withheld — LEGACY cross-domain path never publishes remaining from caller flags; requires store-backed attributed utilization + completeness certificate."
+        ],
+        "domains": [
+          {
+            "domain": "FINANCIAL_COVENANTS_RATIO_CAPACITY",
+            "support": "EXECUTABLE",
+            "status": "clear",
+            "grossCapacityMillions": 5129,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Contractual EBITDA $1700M · TNL 1.23x · derivation SUPPORTING_RECONSTRUCTION"
+          },
+          {
+            "domain": "LIENS_SECURED_CAPACITY",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": 5129,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Secured-side gross capacity $5129.0M on Credit Agreement (2022, as amended)"
+          },
+          {
+            "domain": "CROSS_DOCUMENT_SHARED_CAPACITY",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "2 document(s) in package; binding selected as tightest modeled capacity on debt sims"
+          },
+          {
+            "domain": "AMENDMENT_VERSION_EFFECTIVE_DATE",
+            "support": "PARTIAL",
+            "status": "not_applicable",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Evaluation date 2026-06-30 — provisions must be date-scoped by loader"
+          },
+          {
+            "domain": "LEDGER_UTILIZATION_RECLASSIFICATION",
+            "support": "PARTIAL",
+            "status": "not_applicable",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [
+              "attributed utilization",
+              "completeness certificate"
+            ],
+            "summary": "6 ledger entr(y/ies) in RP pool math; attributed remaining refused"
+          },
+          {
+            "domain": "ASSET_SALES_PROCEEDS",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": 42.5,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Net proceeds $200M · offerTriggered=true · reinvest=false"
+          },
+          {
+            "domain": "MULTI_CONDITION_SIMULATION",
+            "support": "PARTIAL",
+            "status": "clear",
+            "grossCapacityMillions": null,
+            "verifiedRemainingMillions": null,
+            "missingInputs": [],
+            "summary": "Scenario ASSET_SALE_PROCEEDS composed across 6 domain slices"
+          }
+        ],
+        "debtStatus": null,
+        "rpStatus": null,
+        "rpKind": null,
+        "assetSaleStatus": "clear",
+        "contractualEbitda": 1700,
+        "anyVerifiedRemainingClaimed": false
+      }
+    ],
+    "matthewsMinimalRefinancing": {
+      "label": "matthews-minimal-refinancing-50",
+      "authorityClass": "SEEDED_OR_MINIMAL_PACKAGE_GROSS_ONLY",
+      "version": "cross-domain-transaction.v1",
+      "scenarioKind": "REFINANCING",
+      "amountMillions": 50,
+      "overallStatus": "blocked",
+      "utilizationAttributed": false,
+      "utilizationCompletenessCertified": false,
+      "authorityNote": "LEGACY_ENGINE package composition + contractual computation — NOT_CERTIFIED_4E. Gross ≠ verified remaining.",
+      "packageLimitations": [
+        "Gross capacity is never described as verified available capacity.",
+        "No contractual permissions or historical utilization are invented.",
+        "Verified remaining capacity withheld — LEGACY cross-domain path never publishes remaining from caller flags; requires store-backed attributed utilization + completeness certificate.",
+        "Refinancing maturity / permitted refinancing conditions are not separately enforced beyond debt capacity + ratio tests."
+      ],
+      "domains": [
+        {
+          "domain": "FINANCIAL_COVENANTS_RATIO_CAPACITY",
+          "support": "EXECUTABLE",
+          "status": "clear",
+          "grossCapacityMillions": 0,
+          "verifiedRemainingMillions": null,
+          "missingInputs": [],
+          "summary": "Contractual EBITDA $128.313M · TNL 6.05x · derivation INDEPENDENTLY_DERIVED"
+        },
+        {
+          "domain": "LIENS_SECURED_CAPACITY",
+          "support": "PARTIAL",
+          "status": "clear",
+          "grossCapacityMillions": 0,
+          "verifiedRemainingMillions": null,
+          "missingInputs": [],
+          "summary": "Secured-side gross capacity $0.0M on 2027 Senior Secured Notes Indenture"
+        },
+        {
+          "domain": "CROSS_DOCUMENT_SHARED_CAPACITY",
+          "support": "PARTIAL",
+          "status": "clear",
+          "grossCapacityMillions": null,
+          "verifiedRemainingMillions": null,
+          "missingInputs": [],
+          "summary": "1 document(s) in package; binding selected as tightest modeled capacity on debt sims"
+        },
+        {
+          "domain": "AMENDMENT_VERSION_EFFECTIVE_DATE",
+          "support": "PARTIAL",
+          "status": "not_applicable",
+          "grossCapacityMillions": null,
+          "verifiedRemainingMillions": null,
+          "missingInputs": [],
+          "summary": "Evaluation date 2024-12-31 — provisions must be date-scoped by loader"
+        },
+        {
+          "domain": "LEDGER_UTILIZATION_RECLASSIFICATION",
+          "support": "PARTIAL",
+          "status": "not_applicable",
+          "grossCapacityMillions": null,
+          "verifiedRemainingMillions": null,
+          "missingInputs": [
+            "attributed utilization",
+            "completeness certificate"
+          ],
+          "summary": "0 ledger entr(y/ies) in RP pool math; attributed remaining refused"
+        },
+        {
+          "domain": "DEBT_INCURRENCE_REFINANCING",
+          "support": "EXECUTABLE",
+          "status": "blocked",
+          "grossCapacityMillions": 0,
+          "verifiedRemainingMillions": null,
+          "missingInputs": [],
+          "summary": "Refinancing incurrence: blocked · binding 2027 Senior Secured Notes Indenture · overall gross capacity $0.0M"
+        },
+        {
+          "domain": "MULTI_CONDITION_SIMULATION",
+          "support": "PARTIAL",
+          "status": "blocked",
+          "grossCapacityMillions": null,
+          "verifiedRemainingMillions": null,
+          "missingInputs": [],
+          "summary": "Scenario REFINANCING composed across 6 domain slices"
+        }
+      ],
+      "debtStatus": "blocked",
+      "rpStatus": null,
+      "rpKind": null,
+      "assetSaleStatus": null,
+      "contractualEbitda": 128.313,
+      "anyVerifiedRemainingClaimed": false
+    },
+    "staticDomainCoverage": [
+      {
+        "domain": "DEBT_INCURRENCE_REFINANCING",
+        "support": "EXECUTABLE",
+        "executableToday": "simulateDebtIncurrence + capacityFormulas + LEVERAGE/COVERAGE/FLAT/GREATER_OF provisions",
+        "partial": "Refinancing continuity / maturity walls not modeled as first-class effects",
+        "unsupported": "First-lien-only debtBasis; instrument-specific netting bases"
+      },
+      {
+        "domain": "LIENS_SECURED_CAPACITY",
+        "support": "PARTIAL",
+        "executableToday": "Secured-side capacityFormulas and LEVERAGE_RATIO_ROOM(debtBasis=secured)",
+        "partial": "Lien baskets evaluated as capacity leaves; priority tiers via solver-native only when declared",
+        "unsupported": "Automatic-link-only liens without independent ceiling still review_required"
+      },
+      {
+        "domain": "RESTRICTED_PAYMENTS_BUILDER",
+        "support": "EXECUTABLE",
+        "executableToday": "simulateRestrictedPayment waterfall + BUILDER_BASKET + RATIO_GATE",
+        "partial": "Ledger pool shared across dividend/investment; not Permission-attributed",
+        "unsupported": "Builder builder-basket elections beyond configured CNI/equity params"
+      },
+      {
+        "domain": "INVESTMENTS_ACQUISITIONS",
+        "support": "PARTIAL",
+        "executableToday": "RP waterfall kind=investment; acquisition treated as debt+investment composition here",
+        "partial": "No separate Permitted Acquisition basket engine beyond provision leaves",
+        "unsupported": "Unrestricted subsidiary redesignation; guarantee scoping for targets"
+      },
+      {
+        "domain": "ASSET_SALES_PROCEEDS",
+        "support": "PARTIAL",
+        "executableToday": "simulateAssetSale excess-proceeds / offer trigger when assetSale config present",
+        "partial": "Debt repayment / capacity restore from proceeds requires contractualAuthorityRef (recipes)",
+        "unsupported": "Proceeds application waterfalls not configured on all packages"
+      },
+      {
+        "domain": "FINANCIAL_COVENANTS_RATIO_CAPACITY",
+        "support": "EXECUTABLE",
+        "executableToday": "computeContractualCovenantMetrics + buildDebtRatioTests; EBITDA derivation kinds (reported vs independent)",
+        "partial": "Maintenance springing covenants without financial inputs stay missing",
+        "unsupported": "Independent Coherent $1,700M build-up (reported/supporting only)"
+      },
+      {
+        "domain": "CROSS_DOCUMENT_SHARED_CAPACITY",
+        "support": "PARTIAL",
+        "executableToday": "Per-document min/max capacityFormulas; binding document selection on debt sim",
+        "partial": "SharedCapacityConstraint / solver-native when declarations present",
+        "unsupported": "Implicit stacking across documents without express shared cap"
+      },
+      {
+        "domain": "AMENDMENT_VERSION_EFFECTIVE_DATE",
+        "support": "PARTIAL",
+        "executableToday": "loadCompanyCovenantData date-scopes provisions; amendment recipes refuse silent graph mutate",
+        "partial": "Operative resolution surfaces on review workspace",
+        "unsupported": "Auto-recompile of IR from amendment text in product path"
+      },
+      {
+        "domain": "LEDGER_UTILIZATION_RECLASSIFICATION",
+        "support": "PARTIAL",
+        "executableToday": "RP pool from ledger; reclassification recipe with explicit election",
+        "partial": "Attributed utilization + completeness cert required for remaining claims",
+        "unsupported": "Empty ledger never treated as verified zero utilization"
+      },
+      {
+        "domain": "MULTI_CONDITION_SIMULATION",
+        "support": "PARTIAL",
+        "executableToday": "This module composes debt + RP + asset-sale + ratios for multi-family scenarios",
+        "partial": "Sequential Phase 4D recipes for certified worlds",
+        "unsupported": "Intercompany / guarantee chains without entity-scope facts"
+      }
+    ],
+    "anyVerifiedRemainingClaimed": false
+  },
   "openIntegrationPrAudit": {
     "note": "Snapshot guidance for human merge. Live mergeability changes; see docs/product-proof/003-real-financing-package-e2e/00-main-and-pr-audit.md.",
-    "canonicalMainSha": "8374fa2a8697ce39b8ff6d63f6703ea2612b8545",
+    "canonicalMainSha": "046161e78dc206c50ee951d71a18dfa4befd3206",
     "alreadyOnMain": [
       {
         "number": 333,
@@ -623,5 +1073,5 @@
     "doNotSelfMerge": true
   },
   "overallProductVerdict": "PARTIAL_PRODUCT_CAPABILITY_PROVEN",
-  "overallProductVerdictReason": "Authentic Matthews package yields modeled debt/lien leaf calculations and correct fail-closed refusals for verified simulation, RP, and asset sale. End-to-end customer-ready permission for three real transactions is NOT proven."
+  "overallProductVerdictReason": "Authentic Matthews package yields modeled debt/lien leaf calculations and correct fail-closed refusals for verified simulation, RP, and asset sale. Coherent seeded cross-domain demos on main exercise three transaction shapes at GROSS-only authority — not customer-ready. End-to-end authentic permission for three real transactions is NOT proven."
 }

@@ -18,16 +18,16 @@ Ordered by unblocking authentic multi-domain transaction answers without inventi
 
 ---
 
-## Task 2 — Cross-domain Simulate with canonical verified-remaining authority
+## Task 2 — Upgrade cross-domain Simulate to verified-remaining authority (v1→v2)
 
-**Why:** Debt-funded acquisition requires debt + lien (+ investment) conjunction without double-counting shared caps or treating modeled leaf as AVAILABLE.
+**Why:** Main already has `#334` `cross-domain-transaction.v1` over Coherent seed (GROSS `clear` possible; remaining always null). Debt-funded acquisition still needs debt + lien (+ investment) conjunction without treating seeded gross as AVAILABLE.
 
 | Item | Exact target |
 |---|---|
-| Files | Cross-domain module from **#340** (`cross-domain-transaction.v2`); `lib/capacity` `computeVerifiedRemaining` / `mayPublishAvailable`; Simulate handoff in `lib/product/unified-position/*` |
-| Tests | #340 adversarial suite (forged cert/issuer/ledger/identity; shared-cap double-count; PARTIAL/UNSUPPORTED non-clear; Coherent≠Matthews path) |
-| PR sequence | After Task 1 tip is on main → merge **#340** → delete competing v1 modules from #336/#342 remnants |
-| Acceptance | Simulate passes `utilizationAuthority` only when independently authenticated; `allowSyntheticRemaining` cannot publish AVAILABLE; secured dual-path requires explicit companion discharge |
+| Files | Keep `lib/product/cross-domain-transaction.ts` / `cross-domain-scenarios.ts` as composition; land **#340** `cross-domain-transaction.v2` authority path; `lib/capacity` `computeVerifiedRemaining` / `mayPublishAvailable`; Simulate handoff in `lib/product/unified-position/*` |
+| Tests | Existing `tests/product/cross-domain-transaction.test.ts` (remaining never from caller flags) + #340 adversarial suite (forged cert/issuer/ledger/identity; shared-cap double-count; Coherent≠Matthews path) |
+| PR sequence | After Task 1 tip is on main → merge **#340** → delete competing v1 remaining-authority forks from #336/#342 remnants (keep scenario catalog) |
+| Acceptance | Simulate publishes remaining only via independently authenticated utilization; `allowSyntheticRemaining` cannot publish AVAILABLE; secured dual-path requires explicit companion discharge; Coherent seed `clear` ≠ authentic Matthews permission |
 
 ---
 

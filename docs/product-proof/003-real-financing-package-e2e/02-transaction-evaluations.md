@@ -90,3 +90,24 @@ As-of date for all asks: **2024-12-31** (fixture measurement date).
 ---
 
 Machine-readable: `artifacts/02-transactions.json`.
+
+---
+
+## Secondary track (labeled) — Coherent seeded cross-domain on main (#334)
+
+**Authority class:** `SEEDED_OR_MINIMAL_PACKAGE_GROSS_ONLY`  
+**Not** authentic Matthews / MTN customer proof. Uses `prisma/seed-data` `COHERENT_DATA` capacityFormulas + RP waterfall + assetSale config.
+
+| Scenario | overallStatus | verifiedRemaining claimed? |
+|---|---|---|
+| Debt-funded acquisition $150M | `clear` (gross engine) | **false** |
+| Dividend / RP $50M | `clear` (gross engine) | **false** |
+| Asset sale $200M | `clear` (gross engine) | **false** |
+
+Assumptions hard-code `utilizationAttributed=false` and `utilizationCompletenessCertified=false`. Caller-supplied completeness booleans cannot manufacture remaining (locked by `tests/product/cross-domain-transaction.test.ts`).
+
+Matthews minimal cross-domain package only demonstrates SSNL refinancing ratio room — not full authentic multi-domain VEP.
+
+Machine-readable: `artifacts/04-seeded-cross-domain-track.json`.
+
+**Interpretation:** Passing Coherent gross sims is **not** product progress toward authentic-package customer permission. PP003 primary verdict remains the authentic Matthews refusals above.

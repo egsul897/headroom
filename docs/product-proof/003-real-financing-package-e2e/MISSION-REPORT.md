@@ -41,13 +41,23 @@ Full audit: `00-main-and-pr-audit.md`.
 
 No domain is `IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE` for production-authoritative remaining + verified simulate on this authentic package.
 
-## Three transactions — conclusions
+## Three transactions — conclusions (authentic Matthews = primary)
 
 | Transaction | Amount | Verified executable? | Selected path | Capacity consumed | Overall |
 |---|---:|---|---|---|---|
 | Debt-funded acquisition | $50M | **false** | null | null | REFUSED — no VEP; util incomplete; CA §6.01(j)=0; investment NOT_IMPLEMENTED |
 | Restricted payment | $25M | **false** | null | null | REFUSED — RP NOT_IMPLEMENTED on package |
 | Asset sale | $40M | **false** | null | null | REFUSED — asset sale NOT_IMPLEMENTED; draft kind UNKNOWN |
+
+### Secondary (not customer proof) — Coherent seeded cross-domain (#334 on main)
+
+| Scenario | Gross engine status | Verified remaining claimed |
+|---|---|---|
+| Coherent acquisition $150M | `clear` | **false** |
+| Coherent RP dividend $50M | `clear` | **false** |
+| Coherent asset sale $200M | `clear` | **false** |
+
+Seeded `capacityFormulas` ≠ authentic compiled VEP. Do not count this track as end-to-end product proof.
 
 Acquisition modeled leaf probe (explicitly non-authoritative): Permitted Debt (1)(a) 521.118 → 471.118 after hypothetical $50M secured bump; ledger untouched; remaining stays null.
 

@@ -31,6 +31,52 @@ import {
 } from "@/lib/product/north-star-workflow/transaction-effect-recipes";
 import { enumerateCertifiedPaths } from "@/lib/product/north-star-workflow/verified-path-enumeration";
 import { TRUSTED_ISSUER_ACTIVATION } from "@/lib/capacity";
+import {
+  coherentAssetSale,
+  coherentDebtFundedAcquisition,
+  coherentDividend,
+  evaluateCoherentScenario,
+  evaluateMatthewsScenario,
+  matthewsRefinancing,
+} from "@/lib/product/cross-domain-scenarios";
+import {
+  CROSS_DOMAIN_EVALUATION_VERSION,
+  covenantDomainCoverage,
+  type CrossDomainTransactionEvaluation,
+} from "@/lib/product/cross-domain-transaction";
+
+function summarizeCrossDomain(label: string, result: CrossDomainTransactionEvaluation) {
+  return {
+    label,
+    authorityClass: "SEEDED_OR_MINIMAL_PACKAGE_GROSS_ONLY" as const,
+    version: result.version,
+    scenarioKind: result.scenario.kind,
+    amountMillions: result.scenario.amountMillions,
+    overallStatus: result.overallStatus,
+    utilizationAttributed: result.scenario.assumptions.utilizationAttributed,
+    utilizationCompletenessCertified:
+      result.scenario.assumptions.utilizationCompletenessCertified,
+    authorityNote: result.authorityNote,
+    packageLimitations: result.packageLimitations,
+    domains: result.domains.map((d) => ({
+      domain: d.domain,
+      support: d.support,
+      status: d.status,
+      grossCapacityMillions: d.grossCapacityMillions,
+      verifiedRemainingMillions: d.verifiedRemainingMillions,
+      missingInputs: d.missingInputs,
+      summary: d.summary,
+    })),
+    debtStatus: result.debtSimulation?.status ?? null,
+    rpStatus: result.rpSimulation?.status ?? null,
+    rpKind: result.rpSimulation?.kind ?? null,
+    assetSaleStatus: result.assetSaleSimulation?.status ?? null,
+    contractualEbitda: result.contractualComputation.contractualEbitda,
+    anyVerifiedRemainingClaimed: result.domains.some(
+      (d) => d.verifiedRemainingMillions != null,
+    ),
+  };
+}
 
 const OUT_DIR = path.join(
   process.cwd(),
@@ -557,6 +603,28 @@ async function main() {
     kind: "ASSET_SALE",
   });
 
+  // Secondary track (#334 on main): Coherent seeded capacityFormulas + cross-domain
+  // evaluator. Explicitly NOT authentic-package proof. Remaining always withheld.
+  const coherentCrossDomain = [
+    summarizeCrossDomain(
+      "coherent-debt-funded-acquisition-150",
+      evaluateCoherentScenario(coherentDebtFundedAcquisition(150)),
+    ),
+    summarizeCrossDomain(
+      "coherent-restricted-payment-dividend-50",
+      evaluateCoherentScenario(coherentDividend(50)),
+    ),
+    summarizeCrossDomain(
+      "coherent-asset-sale-200",
+      evaluateCoherentScenario(coherentAssetSale(200)),
+    ),
+  ];
+  const matthewsCrossDomainMinimal = summarizeCrossDomain(
+    "matthews-minimal-refinancing-50",
+    evaluateMatthewsScenario(matthewsRefinancing(50)),
+  );
+  const crossDomainCoverage = covenantDomainCoverage();
+
   const mtnSimPath = path.join(
     process.cwd(),
     "docs/product-proof/001/artifacts/stage-10-11-capacity-simulation.json",
@@ -630,10 +698,21 @@ async function main() {
     productionHandoffReasons: slice.evaluation.productionHandoffReasons,
     numericalHonesty: slice.numericalHonesty,
     transactions: [txAcquisition, txRp, txAssetSale],
+    secondarySeededCrossDomainTrack: {
+      note:
+        "Post-#334 main path lib/product/cross-domain-*.ts over Coherent seed capacityFormulas. utilizationAttributed=false; verifiedRemaining always null. NOT authentic-package customer proof.",
+      evaluationVersion: CROSS_DOMAIN_EVALUATION_VERSION,
+      coherentScenarios: coherentCrossDomain,
+      matthewsMinimalRefinancing: matthewsCrossDomainMinimal,
+      staticDomainCoverage: crossDomainCoverage,
+      anyVerifiedRemainingClaimed:
+        coherentCrossDomain.some((s) => s.anyVerifiedRemainingClaimed) ||
+        matthewsCrossDomainMinimal.anyVerifiedRemainingClaimed,
+    },
     openIntegrationPrAudit: openPrAudit,
     overallProductVerdict: "PARTIAL_PRODUCT_CAPABILITY_PROVEN",
     overallProductVerdictReason:
-      "Authentic Matthews package yields modeled debt/lien leaf calculations and correct fail-closed refusals for verified simulation, RP, and asset sale. End-to-end customer-ready permission for three real transactions is NOT proven.",
+      "Authentic Matthews package yields modeled debt/lien leaf calculations and correct fail-closed refusals for verified simulation, RP, and asset sale. Coherent seeded cross-domain demos on main exercise three transaction shapes at GROSS-only authority — not customer-ready. End-to-end authentic permission for three real transactions is NOT proven.",
   };
 
   writeJson("00-evaluation.json", report);
@@ -645,6 +724,7 @@ async function main() {
     blockers: slice.blockers,
     numericalHonesty: slice.numericalHonesty,
   });
+  writeJson("04-seeded-cross-domain-track.json", report.secondarySeededCrossDomainTrack);
 
   console.log(
     JSON.stringify(
@@ -657,6 +737,11 @@ async function main() {
           id: t.id,
           executable: t.verifiedSimulate.executable,
           blocker: t.truthfulBlocker,
+        })),
+        seededCrossDomain: coherentCrossDomain.map((s) => ({
+          label: s.label,
+          overallStatus: s.overallStatus,
+          verifiedRemainingClaimed: s.anyVerifiedRemainingClaimed,
         })),
         outDir: OUT_DIR,
       },

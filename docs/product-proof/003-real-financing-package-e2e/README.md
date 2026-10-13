@@ -40,8 +40,10 @@ Secondary reference (frozen): MTN Product Proof 001 capacity refusal artifact.
 | `02-transaction-evaluations.md` | Three transactions with full covenant trails |
 | `03-gap-roadmap.md` | Five highest-impact engineering tasks |
 | `04-final-verdict.md` | Single overall verdict |
-| `artifacts/*.json` | Machine-readable run outputs |
+| `artifacts/*.json` | Machine-readable run outputs (incl. `04-seeded-cross-domain-track.json`) |
 | `MISSION-REPORT.md` | Copy-ready mission report |
+
+Primary track = authentic Matthews verified refuse. Secondary track = Coherent seeded cross-domain GROSS-only (not customer-ready).
 
 ## Constraints honored
 

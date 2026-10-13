@@ -79,4 +79,29 @@ describe("product-proof-003 real financing package E2E", () => {
       "txn-asset-sale",
     ]);
   });
+
+  it("labels Coherent cross-domain track as seeded GROSS-only without verified remaining", () => {
+    const seededPath = path.join(ARTIFACTS, "04-seeded-cross-domain-track.json");
+    if (!fs.existsSync(seededPath)) {
+      execSync("npx tsx scripts/product-proof/run-003-real-package-e2e.ts", {
+        cwd: ROOT,
+        stdio: "pipe",
+        env: process.env,
+      });
+    }
+    const seeded = JSON.parse(fs.readFileSync(seededPath, "utf8")) as {
+      anyVerifiedRemainingClaimed: boolean;
+      coherentScenarios: Array<{
+        overallStatus: string;
+        anyVerifiedRemainingClaimed: boolean;
+        utilizationAttributed: boolean;
+      }>;
+    };
+    expect(seeded.anyVerifiedRemainingClaimed).toBe(false);
+    expect(seeded.coherentScenarios).toHaveLength(3);
+    for (const s of seeded.coherentScenarios) {
+      expect(s.utilizationAttributed).toBe(false);
+      expect(s.anyVerifiedRemainingClaimed).toBe(false);
+    }
+  });
 });
