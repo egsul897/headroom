@@ -6,6 +6,8 @@
  *
  * Capacity / transaction execution under REQUIRE remains `verified-execution.ts`.
  * Snapshot / ledger / selector remain `north-star-bridge.ts`.
+ * Approved-value provenance for capacity inputs is owned by
+ * `lib/product/financial-metric-resolver` (per-input NS-4 binding).
  */
 
 import type { IRDefinition, IRExpression } from "./ir/types";
