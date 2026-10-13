@@ -45,6 +45,12 @@ export {
   type ProposeCertificateTextResult,
 } from "./fce-certificate-actions";
 export {
+  loadApprovedFinancialInputBundle,
+  NS4_PRODUCT_CUTOFF_SELECTOR,
+  type ApprovedFinancialInputBundle,
+  type ApprovedFinancialInputBundleStatus,
+} from "./approved-financial-inputs";
+export {
   parseTransactionDraft,
   analyzeContemplatedTransaction,
   type TransactionDraft,

@@ -16,6 +16,7 @@ import {
   type FiscalCalendar,
   type DeliveryRecord,
 } from "@/lib/contract-model/north-star-bridge";
+import { NS4_PRODUCT_CUTOFF_SELECTOR } from "./approved-financial-inputs";
 import {
   evaluateVerifiedCapacity,
   simulateVerifiedTransaction,
@@ -82,6 +83,11 @@ export async function attemptCertifiedTransaction(args: {
   verifiedPackage?: VerifiedExecutionPackage | null;
   transaction?: HypotheticalTransaction;
   selectedPath?: SelectedPath;
+  /**
+   * Utilization completeness for remaining publication.
+   * Default UNKNOWN (PAI-04). Pass VERIFIED_EMPTY only with an attested empty ledger.
+   */
+  utilizationCompleteness?: "UNKNOWN" | "VERIFIED_EMPTY";
 }): Promise<CertifiedTransactionAttempt> {
   const companyId = args.companyId;
   const blockers: CertifiedTransactionBlocker[] = [];
@@ -121,7 +127,8 @@ export async function attemptCertifiedTransaction(args: {
   const resolved = resolveContractualSelector({
     companyId,
     evaluationDate: args.evaluationDate,
-    selector: args.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+    // Align with Dashboard NS-4 band — delivered certificate, not calendar FY label alone.
+    selector: args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR,
     fiscalCalendar,
     deliveries: deliveriesFromSnapshots(companyId, approvedAll),
   });
@@ -166,7 +173,20 @@ export async function attemptCertifiedTransaction(args: {
   }
 
   const boundSnap = approvedAll.find((s) => s.snapshotId === approvedSnapshotId);
-  const snapshots = boundSnap ? [boundSnap] : [];
+  // Cutoff already selected the reporting period. Neutralize period identity for
+  // METRIC_REFERENCE resolution so certificate facts (VERBATIM period keys) bind
+  // — same pattern as Dashboard IR leverage. Neon rows are not mutated.
+  const snapshots = boundSnap
+    ? [
+        {
+          ...boundSnap,
+          inputs: boundSnap.inputs.map((inp) => ({
+            ...inp,
+            identity: { ...inp.identity, period: { kind: "NOT_PERIOD_SPECIFIC" as const } },
+          })),
+        },
+      ]
+    : [];
   const inputs = snapshotInputResolver({
     snapshots,
     definitions: pkg.definitions,
@@ -175,11 +195,16 @@ export async function attemptCertifiedTransaction(args: {
     instrumentKey: pkg.instrumentKey,
   });
 
+  // Metric as-of must match the bound snapshot's measurement date (not the
+  // transaction evaluation date). Cutoff already chose which delivery applies.
+  const metricAsOf = boundSnap?.asOf ?? args.evaluationDate;
+
   const capacity = evaluateVerifiedCapacity({
     package: pkg,
     inputs,
     ledger: activeLedger,
-    asOf: args.evaluationDate,
+    asOf: metricAsOf,
+    utilizationCompleteness: args.utilizationCompleteness,
   });
 
   if (capacity.outcome !== "EXECUTED") {
@@ -192,9 +217,10 @@ export async function attemptCertifiedTransaction(args: {
       package: pkg,
       inputs,
       ledger: activeLedger,
-      asOf: args.evaluationDate,
+      asOf: metricAsOf,
       transaction: args.transaction,
       selectedPath: args.selectedPath,
+      utilizationCompleteness: args.utilizationCompleteness,
     });
     if (simulation.outcome !== "EXECUTED") blockers.push("SIMULATION_REFUSED");
   }

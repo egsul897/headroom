@@ -16,6 +16,7 @@ import type { VerifiedExecutionPackage } from "@/lib/contract-model/verified-exe
 import { attemptCertifiedTransaction } from "./certified-transaction";
 import { loadTransactionWorkflowReadiness } from "./transaction-readiness";
 import { loadCapacityReadiness, type CapacityAuthority } from "@/lib/product/customer-intelligence/capacity-readiness";
+import { NS4_PRODUCT_CUTOFF_SELECTOR } from "./approved-financial-inputs";
 
 export type AuthoritativeCapacityStatus =
   | "CERTIFIED_EXECUTED"
@@ -74,10 +75,11 @@ export async function loadAuthoritativeCapacity(args: {
   verifiedPackage?: VerifiedExecutionPackage | null;
 }): Promise<AuthoritativeCapacityResult> {
   const companyId = args.companyId;
+  const selector = args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR;
   const [readiness, legacy, approved, ledger] = await Promise.all([
     loadTransactionWorkflowReadiness(companyId, {
       evaluationDate: args.evaluationDate,
-      selector: args.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+      selector,
     }),
     loadCapacityReadiness(companyId),
     loadApprovedSnapshotsFromPrisma(prisma, companyId),
@@ -91,7 +93,7 @@ export async function loadAuthoritativeCapacity(args: {
   const certified = await attemptCertifiedTransaction({
     companyId,
     evaluationDate: args.evaluationDate,
-    selector: args.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+    selector,
     verifiedPackage: args.verifiedPackage ?? null,
   });
 
