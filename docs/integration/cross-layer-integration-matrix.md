@@ -6,7 +6,7 @@
 
 Integration readiness ≠ production certification.
 
-**#334 reconciliation (delivery/cutoff):** Canonical delivery reconstruction is `lib/contract-model/runtime/input/delivery-evidence.ts` (first-class `provenance.deliveredAtIsoDate`, approvalRef `deliveredAt=` marker as secondary persisted channel, `resolveAuthoritativeCutoff`). [#334](https://github.com/egsul897/headroom/pull/334) must not ship a competing `certificate-deliveries.deliveriesFromApprovedSnapshots` — absorb historical SUPERSEDED bind (`bindSnapshotForDeliveredCutoff`, cutoff-eligible loaders) onto this shared helper after `#332` merges.
+**#334 reconciliation (delivery/cutoff):** `#334` is merged on `main`. Canonical delivery reconstruction is `lib/contract-model/runtime/input/delivery-evidence.ts` (first-class `provenance.deliveredAtIsoDate`, approvalRef `deliveredAt=` marker as secondary persisted channel, `resolveAuthoritativeCutoff` with delivery.snapshotId historical bind). Product `certificate-deliveries.ts` is a thin re-export + `bindSnapshotForDeliveredCutoff` only — not a competing reconstruction.
 
 | # | Interface | Canonical implementation | Competing / demoted | Status | Evidence |
 |---|---|---|---|---|---|

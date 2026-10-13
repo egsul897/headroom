@@ -8,6 +8,7 @@ import type { FinancialSnapshot } from "@/lib/contract-model/north-star-bridge";
 
 const mocks = vi.hoisted(() => ({
   loadApprovedSnapshotsFromPrisma: vi.fn(),
+  loadCutoffEligibleSnapshotsFromPrisma: vi.fn(),
   loadLedgerUsagesFromPrisma: vi.fn(),
   loadCapacityReadiness: vi.fn(),
 }));
@@ -23,6 +24,7 @@ vi.mock("@/lib/contract-model/north-star-bridge", async () => {
   return {
     ...actual,
     loadApprovedSnapshotsFromPrisma: mocks.loadApprovedSnapshotsFromPrisma,
+    loadCutoffEligibleSnapshotsFromPrisma: mocks.loadCutoffEligibleSnapshotsFromPrisma,
     loadLedgerUsagesFromPrisma: mocks.loadLedgerUsagesFromPrisma,
   };
 });
@@ -87,7 +89,9 @@ describe("authoritative entrypoints — delivery authority", () => {
   });
 
   it("transaction-readiness: APPROVED + reviewedAt + no deliveredAt → NEEDS_INPUT", async () => {
-    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([approvedNoDelivery()]);
+    const snap = approvedNoDelivery();
+    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([snap]);
+    mocks.loadCutoffEligibleSnapshotsFromPrisma.mockResolvedValue([snap]);
     const readiness = await loadTransactionWorkflowReadiness(CO, {
       evaluationDate: "2026-08-01",
     });
@@ -100,7 +104,9 @@ describe("authoritative entrypoints — delivery authority", () => {
   });
 
   it("certified-transaction: APPROVED + reviewedAt + no deliveredAt → CUTOFF_UNRESOLVED", async () => {
-    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([approvedNoDelivery()]);
+    const snap = approvedNoDelivery();
+    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([snap]);
+    mocks.loadCutoffEligibleSnapshotsFromPrisma.mockResolvedValue([snap]);
     const attempt = await attemptCertifiedTransaction({
       companyId: CO,
       evaluationDate: "2026-08-01",
@@ -113,7 +119,9 @@ describe("authoritative entrypoints — delivery authority", () => {
   });
 
   it("both entrypoints may resolve when persisted delivery is present", async () => {
-    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([approvedWithDelivery()]);
+    const snap = approvedWithDelivery();
+    mocks.loadApprovedSnapshotsFromPrisma.mockResolvedValue([snap]);
+    mocks.loadCutoffEligibleSnapshotsFromPrisma.mockResolvedValue([snap]);
 
     const readiness = await loadTransactionWorkflowReadiness(CO, {
       evaluationDate: "2026-08-01",
