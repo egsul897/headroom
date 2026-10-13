@@ -1,7 +1,7 @@
 # Absorb #322 into post-#333 / post-#334 canonical main
 
-**Integration target:** current `main` after #334 (`8374fa2a…` merge of NS-4 Dashboard).  
-**Do not integrate against pre-#333 or pre-#334 main.**
+**Integration target:** current `main` after #345 (`db0f2fd3…` post-#334 absorb of no-write metrics + NS-4 gates).  
+**Do not integrate against pre-#333 / pre-#334 / pre-#345 main.**
 
 ## Ported from #322 (selective)
 - `FIXED_POINT_ADDBACK_CAP` IR + exact closed-form runtime
@@ -36,7 +36,8 @@ under the same financial identity. Simulate href is navigation only.
 Supersession invalidates leverage **and** prior simulate artifacts /
 previously cleared conditional branches (live re-eval against superseded set).
 
-## Preserved from #333 / #334
+## Preserved from #333 / #334 / #345
 PAI utilizationCompleteness / PRODUCTION_AUTHORITATIVE / gross≠verified remaining
-untouched. NS-4 Dashboard Neon band from #334 coexists with contractual
-leverage panel. No production-authority activation. No self-merge.
+untouched. NS-4 Dashboard Neon band (#334) and read-only contractual-metrics
+panel (#345, `persist:false`) coexist with contractual leverage panel.
+No production-authority activation. No self-merge.
