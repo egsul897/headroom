@@ -24,7 +24,7 @@ import {
 import type { Ns4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-panel";
 import type { CompanyCovenantData, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
-import type { LeverageCalculationRequest } from "@/lib/product/contractual-leverage";
+import type { LeverageCalculationRequest } from "@/lib/product/contractual-leverage/types";
 import { fmtDate, fmtM } from "@/lib/format";
 
 /**

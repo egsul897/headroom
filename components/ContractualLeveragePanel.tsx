@@ -2,12 +2,12 @@
 
 import { Card } from "@/components/ui";
 import { fmtM } from "@/lib/format";
-import {
-  recalculateWithFinancials,
-  type ContractualLeverageResult,
-  type LeverageCalculationRequest,
-  type LeverageFinancialInputs,
-} from "@/lib/product/contractual-leverage";
+import { recalculateWithFinancials } from "@/lib/product/contractual-leverage/calculate";
+import type {
+  ContractualLeverageResult,
+  LeverageCalculationRequest,
+  LeverageFinancialInputs,
+} from "@/lib/product/contractual-leverage/types";
 
 export interface ContractualLeveragePanelProps {
   requests: LeverageCalculationRequest[];

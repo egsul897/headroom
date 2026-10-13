@@ -1,15 +1,18 @@
 /**
  * End-to-end contractual leverage calculation:
- * identify definitions → compile IR (provenance) → resolve inputs → arithmetic.
+ * identify definitions → resolve inputs → arithmetic.
  *
  * Fail-closed: missing critical inputs or unsupported shapes never invent values.
  *
- * Arithmetic is local (DIVIDE / SUBTRACT / MAX matching the compiled IR shape).
+ * Arithmetic is local (DIVIDE / SUBTRACT / MAX matching the IR shape in compile.ts).
+ * Deliberately does **not** import compile.ts — that pulls IR identity → node:crypto
+ * into the client Dashboard bundle (Vercel/Next webpack). Server/demo code may still
+ * call compileLeverageExpressions separately for IR provenance.
+ *
  * Product code must not import Phase-4 raw runtime primitives — see
  * tests/contract-model/verified-execution.test.ts §17.
  */
 
-import { compileLeverageExpressions } from "./compile";
 import { identifyLeverageComponents } from "./identify";
 import type {
   ContractualLeverageResult,
@@ -124,13 +127,6 @@ export function calculateContractualLeverage(req: LeverageCalculationRequest): C
     };
   }
 
-  const compiled = compileLeverageExpressions({
-    components: identified,
-    companyId: req.companyId,
-    instrumentKey: req.instrumentKey,
-    threshold: req.threshold,
-  });
-
   const ebitda = req.financials.ebitda!;
   const grossDebt =
     (identified.debtBasis === "secured" ? req.financials.securedDebt : req.financials.totalDebt)!;
@@ -157,12 +153,9 @@ export function calculateContractualLeverage(req: LeverageCalculationRequest): C
 
   if (req.threshold != null && Number.isFinite(req.threshold)) {
     ratioHeadroom = req.threshold - currentRatio;
-  }
-
-  if (compiled.debtHeadroomExpression && req.threshold != null && Number.isFinite(req.threshold)) {
     // max(0, threshold × EBITDA − netDebt) — same shape as compiled IR MAX.
     debtHeadroomMillions = Math.max(0, req.threshold * ebitda - netDebt);
-  } else if (req.threshold == null) {
+  } else {
     limitations.push("No ratio threshold supplied — dollar debt headroom not computed.");
   }
 
@@ -172,7 +165,7 @@ export function calculateContractualLeverage(req: LeverageCalculationRequest): C
     sectionRef: req.sectionRef,
     documentName: req.documentName ?? null,
     debtBasis: identified.debtBasis,
-    formulaDisplay: compiled.formulaDisplay,
+    formulaDisplay: identified.formulaDisplay,
     citations: identified.citations,
     limitations,
     inputs,
