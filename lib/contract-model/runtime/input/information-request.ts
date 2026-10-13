@@ -15,6 +15,9 @@
 import type { IRCapacityExpression, IRDefinition, IRRule } from "../../ir/types";
 import {
   authorityShowsLeafInactive,
+  evaluateConditionalPathsAuthoritatively,
+  expressionIdentityFingerprint,
+  resolveLivePathAuthority,
   selectConditionalPaths,
   verifySelectedPathAuthority,
   type SelectedPathAuthority,
@@ -37,6 +40,9 @@ import { FINANCIAL_INPUT_CONTRACT_VERSION } from "./version";
 export type { SelectedPathAuthority, ConditionalPathSelection } from "./conditional-path-authority";
 export {
   selectConditionalPaths,
+  evaluateConditionalPathsAuthoritatively,
+  resolveLivePathAuthority,
+  expressionIdentityFingerprint,
   verifySelectedPathAuthority,
   authorityShowsLeafInactive,
 } from "./conditional-path-authority";
@@ -67,7 +73,7 @@ export interface ConditionalPathDisposition {
   /**
    * For PATH_IRRELEVANT: inactive branch label on this leaf ("then-branch" /
    * "else-branch") that must appear in dependency.conditionalOn. Insufficient
-   * without policy.selectedPathAuthority verifying inactivity.
+   * alone — the fulfillment boundary must re-evaluate IF conditions live.
    */
   branchLabel?: string | null;
 }
@@ -84,8 +90,9 @@ export interface FulfillmentPolicy {
    */
   conditionalDispositions?: readonly ConditionalPathDisposition[];
   /**
-   * Sealed authority from selectConditionalPaths. Required for any PATH_IRRELEVANT
-   * clearance. Fabricated authorities fail verifySelectedPathAuthority.
+   * @deprecated NON-AUTHORITATIVE hint only. Ignored for PATH_IRRELEVANT trust.
+   * The boundary always re-evaluates via evaluateConditionalPathsAuthoritatively.
+   * A forged payload with a matching content hash cannot clear inputs.
    */
   selectedPathAuthority?: SelectedPathAuthority | null;
   /**
@@ -211,8 +218,10 @@ function dispositionsFor(
  * Prove an unresolved leaf may be cleared for a bounded or path-irrelevant outcome.
  * Returns the applied disposition, or null if the leaf still blocks.
  *
- * PATH_IRRELEVANT: only CONDITIONAL / OPTIONAL_FOR_BOUND_ONLY; requires sealed
- * selectedPathAuthority proving inactivity — branchLabel + proof alone refused.
+ * PATH_IRRELEVANT: only CONDITIONAL / OPTIONAL_FOR_BOUND_ONLY; requires a LIVE
+ * authoritative evaluation (`livePathAuthority` from
+ * evaluateConditionalPathsAuthoritatively). Caller-supplied selectedPathAuthority
+ * and content-hash seals are ignored for trust. branchLabel + proof alone refused.
  * SAFE_BOUND: may clear a leaf with safeBoundAvailableWithoutThis under opt-in
  * policy; executionMode becomes SAFE_BOUND never EXACT. Without that policy,
  * REQUIRED missing always blocks.
@@ -221,6 +230,8 @@ export function proveConditionalClearance(
   dep: DependencyRecord,
   fulfillmentState: FulfillmentState,
   policy: FulfillmentPolicy,
+  livePathAuthority: SelectedPathAuthority | null = null,
+  expectedExpressionIdentity: string | null = null,
 ): ConditionalPathDisposition | null {
   if (fulfillmentState === "APPROVED_VERIFIED") return null;
 
@@ -233,13 +244,19 @@ export function proveConditionalClearance(
       const label = pathIrrelevant.branchLabel?.trim();
       if (!label || !pathIrrelevant.proof.trim()) return null;
       if (!dep.conditionalOn || !dep.conditionalOn.includes(label)) return null;
-      const authority = policy.selectedPathAuthority;
-      if (!authority || !verifySelectedPathAuthority(authority)) return null;
+      // Trust ONLY the live re-evaluation — never policy.selectedPathAuthority / seal.
+      if (!livePathAuthority || livePathAuthority.authoritative !== true) return null;
+      const companyId = dep.companyId;
+      const instrumentKey = dep.instrumentKey;
+      if (!companyId || !instrumentKey) return null;
       if (
         !authorityShowsLeafInactive({
-          authority,
+          authority: livePathAuthority,
           leafConditionalOn: dep.conditionalOn,
           inactiveBranchLabel: label,
+          expectedCompanyId: companyId,
+          expectedInstrumentKey: instrumentKey,
+          expectedExpressionIdentity,
         })
       ) {
         return null;
@@ -285,11 +302,32 @@ export function fulfillFinancialDependencyManifest(args: {
   manifest: FinancialDependencyManifest;
   snapshots: readonly FinancialSnapshot[];
   policy?: FulfillmentPolicy;
+  /**
+   * Operative expression identity for PATH_IRRELEVANT. When PATH_IRRELEVANT
+   * dispositions are present, this must be supplied so the boundary can
+   * re-evaluate IF conditions against current APPROVED snapshots.
+   */
+  expression?: IRCapacityExpression | null;
 }): FinancialInformationRequest {
   const policy: FulfillmentPolicy = args.policy ?? {};
   const resolutionPolicy = policy.resolution ?? DEFAULT_RESOLUTION_POLICY;
   const graph = buildSnapshotGraph(args.snapshots);
   const items: FulfilledDependency[] = [];
+
+  const wantsPathIrrelevant = (policy.conditionalDispositions ?? []).some((d) => d.kind === "PATH_IRRELEVANT");
+  let livePathAuthority: SelectedPathAuthority | null = null;
+  let expectedExpressionIdentity: string | null = null;
+  if (wantsPathIrrelevant && args.expression && args.manifest.companyId && args.manifest.instrumentKey) {
+    expectedExpressionIdentity = expressionIdentityFingerprint(args.expression);
+    const live = evaluateConditionalPathsAuthoritatively({
+      expression: args.expression,
+      snapshots: args.snapshots,
+      companyId: args.manifest.companyId,
+      instrumentKey: args.manifest.instrumentKey,
+      evaluationAsOf: policy.staleBeforeIsoDate ?? null,
+    });
+    if (live.ok) livePathAuthority = live.authority;
+  }
 
   for (const reason of args.manifest.unsupportedNodes) {
     const synthetic: DependencyRecord = {
@@ -356,7 +394,13 @@ export function fulfillFinancialDependencyManifest(args: {
     const resolution = resolveInput({ query, snapshots: args.snapshots, policy: resolutionPolicy, graph });
     const stale = isStale(resolution, policy);
     const fulfillmentState = mapResolution(resolution.state, stale);
-    const disposition = proveConditionalClearance(dep, fulfillmentState, policy);
+    const disposition = proveConditionalClearance(
+      dep,
+      fulfillmentState,
+      policy,
+      livePathAuthority,
+      expectedExpressionIdentity,
+    );
 
     let usableForExecution = false;
     if (fulfillmentState === "APPROVED_VERIFIED") {
@@ -447,5 +491,6 @@ export function buildFinancialInformationRequest(args: {
     manifest,
     snapshots: args.snapshots,
     policy: args.policy,
+    expression: args.expression,
   });
 }

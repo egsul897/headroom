@@ -25,10 +25,7 @@ import {
   invalidateAndRecomputeAfterSupersession,
   calculateContractualLeverage,
 } from "@/lib/product/contractual-leverage";
-import {
-  buildFinancialInformationRequest,
-  selectConditionalPaths,
-} from "@/lib/contract-model/runtime/input/information-request";
+import { buildFinancialInformationRequest } from "@/lib/contract-model/runtime/input/information-request";
 import { withExpressionId } from "@/lib/contract-model/ir/identity";
 import { BOOL, resetIds } from "../contract-model/runtime/helpers";
 import { identity, input, money, snapshot } from "../contract-model/runtime/input/helpers";
@@ -346,45 +343,44 @@ describeDb("canonical absorb #322 — isolated DB acceptance", () => {
         }),
       ],
     });
+    // Claiming the ACTIVE then-branch is irrelevant must refuse (live eval).
     const refused = buildFinancialInformationRequest({
       expression: expr,
-      snapshots: [snap],
+      snapshots: [
+        snapshot({
+          snapshotId: "cond-miss-then",
+          companyId: "co",
+          inputs: [],
+        }),
+      ],
       companyId: "co",
       instrumentKey: "inst",
       policy: {
         conditionalDispositions: [
           {
-            dependencyKey: "Alt Addback",
+            dependencyKey: "Restructuring Integration Transaction Costs",
             kind: "PATH_IRRELEVANT",
-            branchLabel: "else-branch",
-            proof: "fabricated without authority",
+            branchLabel: "then-branch",
+            proof: "fabricated: pretend active then-branch is inactive",
           },
         ],
       },
     });
     expect(refused.executable).toBe(false);
 
-    const auth = selectConditionalPaths({
-      expression: expr,
-      snapshots: [snap],
-      companyId: "co",
-      instrumentKey: "inst",
-    });
-    expect(auth.ok).toBe(true);
-    if (!auth.ok) return;
+    // Boundary re-evaluates IF live — inactive else may clear.
     const cleared = buildFinancialInformationRequest({
       expression: expr,
       snapshots: [snap],
       companyId: "co",
       instrumentKey: "inst",
       policy: {
-        selectedPathAuthority: auth.authority,
         conditionalDispositions: [
           {
             dependencyKey: "Alt Addback",
             kind: "PATH_IRRELEVANT",
             branchLabel: "else-branch",
-            proof: "Condition true; else inactive per sealed authority.",
+            proof: "Condition true; else inactive per live authoritative re-evaluation.",
           },
         ],
       },

@@ -10,12 +10,15 @@
 - Non-positive denominator leverage boundary
 - Coherent FIXED_POINT + Matthews uncapped SUM
 
-## PATH_IRRELEVANT authority (corrected)
-`selectConditionalPaths` evaluates IF conditions against APPROVED snapshots and
-seals a `SelectedPathAuthority`. Clearance requires a verified seal showing the
-leaf’s branch is inactive. Fabricated `branchLabel` + proof alone are refused.
-`SAFE_BOUND` is a distinct `executionMode` and never `EXACT`. REQUIRED missing
-without safe-bound policy always blocks.
+## PATH_IRRELEVANT authority (P0 corrected)
+A reproducible content hash is **not** authentication. At the fulfillment
+boundary, `evaluateConditionalPathsAuthoritatively` **re-evaluates** IF
+conditions against the current APPROVED snapshot set and operative expression
+identity. Caller-supplied `selectedPathAuthority` / self-consistent SHA-256
+seals are ignored for trust. Authority binds company, instrument, expression
+fingerprint, snapshot id+version+approval, and selected branch. Stale,
+superseded, mismatched, or fabricated selections are refused.
+`SAFE_BOUND` is a distinct `executionMode` and never `EXACT`.
 
 ## Simulate
 `executeCanonicalPathWithVerifiedSimulate` calls `attemptVerifiedSimulate`

@@ -18,6 +18,9 @@ export {
   fulfillFinancialDependencyManifest,
   proveConditionalClearance,
   selectConditionalPaths,
+  evaluateConditionalPathsAuthoritatively,
+  resolveLivePathAuthority,
+  expressionIdentityFingerprint,
   verifySelectedPathAuthority,
   authorityShowsLeafInactive,
 } from "./runtime/input/information-request";
