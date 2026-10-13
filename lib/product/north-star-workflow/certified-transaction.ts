@@ -10,11 +10,9 @@ import {
   loadApprovedSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
   snapshotInputResolver,
-  resolveContractualSelector,
-  selectSnapshotForResolvedSelector,
+  resolveAuthoritativeCutoff,
   type NamedContractualSelector,
   type FiscalCalendar,
-  type DeliveryRecord,
 } from "@/lib/contract-model/north-star-bridge";
 import { NS4_PRODUCT_CUTOFF_SELECTOR } from "./approved-financial-inputs";
 import {
@@ -48,29 +46,6 @@ export interface CertifiedTransactionAttempt {
   simulation: VerifiedTransactionResult | null;
   blockers: CertifiedTransactionBlocker[];
   authorityNote: string;
-}
-
-function deliveriesFromSnapshots(
-  companyId: string,
-  approved: Awaited<ReturnType<typeof loadApprovedSnapshotsFromPrisma>>,
-): DeliveryRecord[] {
-  // PAI-11: never invent delivery from period asOf. Missing reviewedAt → no delivery.
-  return approved.flatMap((s) => {
-    if (!s.reportingPeriod || !s.asOf) return [];
-    if (!s.review.reviewedAt) return [];
-    const deliveredAtIsoDate = s.review.reviewedAt.slice(0, 10);
-    return [
-      {
-        companyId,
-        kind: "COMPLIANCE_CERTIFICATE" as const,
-        reportingPeriodKey: s.reportingPeriod,
-        asOfIsoDate: s.asOf,
-        deliveredAtIsoDate,
-        documentId: s.provenance.source ?? s.snapshotId,
-        sourceVersionHash: s.provenance.sourceVersion ?? undefined,
-      },
-    ];
-  });
 }
 
 /**
@@ -126,30 +101,22 @@ export async function attemptCertifiedTransaction(args: {
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
-  const resolved = resolveContractualSelector({
+  // PAI-11: REQUIRE_PERSISTED_DELIVERY — approval / reviewedAt / asOf never establish delivery.
+  const cutoff = resolveAuthoritativeCutoff({
     companyId,
     evaluationDate: args.evaluationDate,
-    // Align with Dashboard NS-4 band — delivered certificate, not calendar FY label alone.
+    approved: approvedAll,
+    // Same canonical delivered-certificate selector as Dashboard / Position / Simulate.
     selector: args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR,
     fiscalCalendar,
-    deliveries: deliveriesFromSnapshots(companyId, approvedAll),
   });
 
-  let cutoffState = resolved.state;
-  let reportingPeriodKey: string | null =
-    resolved.state === "RESOLVED" ? resolved.reportingPeriodKey : null;
-  let approvedSnapshotId: string | null = null;
-
-  if (resolved.state === "RESOLVED") {
-    const bound = selectSnapshotForResolvedSelector(resolved, approvedAll, companyId);
-    cutoffState = bound.state;
-    if (bound.state === "RESOLVED") {
-      approvedSnapshotId = bound.snapshotId;
-    } else {
-      blockers.push("CUTOFF_UNRESOLVED");
-    }
-  } else {
+  const cutoffState = cutoff.state;
+  const reportingPeriodKey = cutoff.reportingPeriodKey;
+  let approvedSnapshotId: string | null = cutoff.snapshotId;
+  if (cutoff.state !== "RESOLVED" || !approvedSnapshotId) {
     blockers.push("CUTOFF_UNRESOLVED");
+    approvedSnapshotId = null;
   }
 
   const pkg = args.verifiedPackage ?? null;

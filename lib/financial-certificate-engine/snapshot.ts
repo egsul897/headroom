@@ -225,8 +225,13 @@ export async function approveNs4SnapshotAttributable(params: {
   reviewedBy: string;
   approvalRef: string;
   reconciliation: ReconciliationReport;
-  /** ISO timestamp of attributable approval; defaults to now. Used as delivery evidence. */
+  /** ISO timestamp of attributable approval; defaults to now. Not delivery evidence. */
   reviewedAt?: string;
+  /**
+   * When the certificate was delivered (ISO date). Distinct from reviewedAt / asOf.
+   * When omitted, APPROVED alone does not establish delivery for NS-6 cutoff.
+   */
+  deliveredAsOfDate?: string;
 }): Promise<ProposeNs4Result> {
   const reviewedBy = params.reviewedBy.trim();
   if (!reviewedBy) {
@@ -243,6 +248,8 @@ export async function approveNs4SnapshotAttributable(params: {
     reviewedBy,
     reviewedAt: params.reviewedAt ?? new Date().toISOString(),
     approvalRef: params.approvalRef,
+    deliveredAsOfDate: params.deliveredAsOfDate,
+    omitDeliveryEvidence: !params.deliveredAsOfDate,
     proposerKind: "extractor",
   });
   if (!result.ok) {

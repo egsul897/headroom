@@ -98,6 +98,8 @@ export async function approveProposedFinancialSnapshot(params: {
   approvalRef: string;
   reconciliation: ReconciliationReport;
   reviewedAt?: string;
+  /** Certificate delivery date — never invented from reviewedAt / asOf. */
+  deliveredAsOfDate?: string;
 }): Promise<ApprovalBridgeApproveResult> {
   const approve = await approveNs4SnapshotAttributable(params);
   return {

@@ -172,8 +172,13 @@ export async function approveFceProposedCertificate(args: {
   reviewedBy: string;
   approvalRef: string;
   reconciliation?: ReconciliationReport;
-  /** ISO approval time — becomes delivery evidence for cutoff; defaults to now. */
+  /** ISO approval time — not delivery evidence; defaults to now. */
   reviewedAt?: string;
+  /**
+   * Certificate delivery date (ISO). Required for authoritative cutoff bind.
+   * Never defaults to reviewedAt or reporting-period asOf.
+   */
+  deliveredAsOfDate?: string;
 }): Promise<{
   ok: boolean;
   snapshotId: string;
@@ -217,6 +222,7 @@ export async function approveFceProposedCertificate(args: {
     approvalRef: args.approvalRef.trim() || `apr-${args.snapshotId}`,
     reconciliation,
     reviewedAt: args.reviewedAt,
+    deliveredAsOfDate: args.deliveredAsOfDate,
   });
 
   return {

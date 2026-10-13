@@ -321,6 +321,7 @@ describe("SYNTHETIC certified-vs-legacy CONMED-form demo harness", () => {
       reviewedBy: "synth-shared-pkg",
       reviewedAt: "2026-07-20T12:00:00Z",
       approvalRef: "apr-synth-shared-pkg",
+      deliveredAsOfDate: "2026-07-10",
       sourceDocumentId: CONMED_FORM_INSPIRED_CERT.documentId,
       sourceVersionHash: CONMED_FORM_INSPIRED_CERT.versionHash,
       proposerKind: "human",
@@ -337,13 +338,14 @@ describe("SYNTHETIC certified-vs-legacy CONMED-form demo harness", () => {
       ledger: [],
       asOf: "2026-08-01",
     });
-    // Package binds (not REFUSED); shared-pool member remainings may be REVIEW_REQUIRED.
+    // Package binds (not REFUSED). Empty ledger never establishes zero usage —
+    // member remainings stay REVIEW_REQUIRED (PAI utilization floor / capacity safeguards).
     expect(sharedCap.outcome).toBe("EXECUTED");
     if (sharedCap.outcome === "EXECUTED") {
       expect(sharedCap.coverage.complete).toBe(true);
-      expect(
-        sharedCap.state.capacities.find((c) => c.ruleId === "rule:fixture-7.01-general")?.status,
-      ).toBe("AVAILABLE");
+      const general = sharedCap.state.capacities.find((c) => c.ruleId === "rule:fixture-7.01-general");
+      expect(general?.status).toBe("REVIEW_REQUIRED");
+      expect(general?.limitations.some((l) => l.code === "ALLOCATION_INFORMATION_MISSING")).toBe(true);
     }
 
     for (const row of rows) {

@@ -13,13 +13,16 @@ import { prisma } from "@/lib/prisma";
 import {
   loadApprovedSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
-  resolveContractualSelector,
-  selectSnapshotForResolvedSelector,
+  resolveAuthoritativeCutoff,
   type DeliveryRecord,
   type FiscalCalendar,
   type NamedContractualSelector,
 } from "@/lib/contract-model/north-star-bridge";
 import { loadCapacityReadiness, type CapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
+
+/** Canonical product cutoff — must match NS4_PRODUCT_CUTOFF_SELECTOR (avoid import cycle). */
+const PRODUCT_CUTOFF_SELECTOR: NamedContractualSelector =
+  "MOST_RECENTLY_DELIVERED_COMPLIANCE_CERTIFICATE";
 
 export type WorkflowStepStatus = "READY" | "MISSING" | "PARTIAL" | "LEGACY_ONLY";
 
@@ -75,22 +78,6 @@ export async function loadTransactionWorkflowReadiness(
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
-  // PAI-11: never invent delivery from period asOf. Missing reviewedAt → no delivery record.
-  const deliveries = opts?.deliveries ?? approved.flatMap((s) => {
-    if (!s.reportingPeriod || !s.asOf) return [];
-    if (!s.review.reviewedAt) return [];
-    const deliveredAtIsoDate = s.review.reviewedAt.slice(0, 10);
-    const d: DeliveryRecord = {
-      companyId,
-      kind: "COMPLIANCE_CERTIFICATE",
-      reportingPeriodKey: s.reportingPeriod,
-      asOfIsoDate: s.asOf,
-      deliveredAtIsoDate,
-      documentId: s.provenance.source ?? s.snapshotId,
-      sourceVersionHash: s.provenance.sourceVersion ?? undefined,
-    };
-    return [d];
-  });
 
   let cutoff: TransactionWorkflowReadiness["cutoff"];
   // Do not default evaluation date to "today" — that reintroduces latest-quarter behavior.
@@ -101,30 +88,15 @@ export async function loadTransactionWorkflowReadiness(
       missing: ["evaluationDate"],
     };
   } else if (opts?.selector || approved.length > 0) {
-    const resolved = resolveContractualSelector({
+    // PAI-11: REQUIRE_PERSISTED_DELIVERY — approval / reviewedAt / asOf never establish delivery.
+    cutoff = resolveAuthoritativeCutoff({
       companyId,
       evaluationDate: opts.evaluationDate,
-      selector: opts?.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
+      approved,
+      selector: opts?.selector ?? PRODUCT_CUTOFF_SELECTOR,
       fiscalCalendar,
-      deliveries,
+      deliveries: opts?.deliveries,
     });
-    if (resolved.state === "RESOLVED") {
-      const bound = selectSnapshotForResolvedSelector(resolved, approved, companyId);
-      cutoff = {
-        state: bound.state,
-        reportingPeriodKey: resolved.reportingPeriodKey,
-        asOf: resolved.asOf.kind === "EXACT_DATE" ? resolved.asOf.isoDate : null,
-        snapshotId: bound.state === "RESOLVED" ? bound.snapshotId : null,
-        reason: bound.state !== "RESOLVED" ? ("reason" in bound ? bound.reason : undefined) : undefined,
-        missing: bound.state === "NEEDS_INPUT" ? bound.missing : undefined,
-      };
-    } else {
-      cutoff = {
-        state: resolved.state,
-        reason: resolved.reason,
-        missing: resolved.state === "NEEDS_INPUT" ? resolved.missing : undefined,
-      };
-    }
   }
 
   const blockers: string[] = [...legacyCapacity.blockers];
