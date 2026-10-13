@@ -1,0 +1,104 @@
+{
+  "schema": "cfo-secured-debt-workflow.v1",
+  "evaluatedAt": "2026-10-13T12:59:14.400Z",
+  "gitSha": "d924f5b6c47f1d63982bb4385579d6858cdaf067",
+  "package": {
+    "key": "NONE",
+    "companyId": "unknown-issuer",
+    "authenticity": "NONE",
+    "asOf": "2024-12-31",
+    "governingDocuments": []
+  },
+  "ask": "As of 2024-12-31, is a proposed $50 million secured debt transaction permitted under our Indenture and Credit Agreement?",
+  "draft": {
+    "rawQuestion": "As of 2024-12-31, is a proposed $50 million secured debt transaction permitted under our Indenture and Credit Agreement?",
+    "evaluationDate": "2024-12-31",
+    "amountMillions": 50,
+    "kind": "SECURED_DEBT",
+    "secured": true,
+    "missingConfirmations": []
+  },
+  "auditTrail": {
+    "sources": [],
+    "assumptions": [
+      "No authentic package supplied — fail closed."
+    ],
+    "calculations": [],
+    "unresolvedConditions": [
+      "MISSING_AUTHENTIC_PACKAGE"
+    ],
+    "gates": [
+      {
+        "gate": "PACKAGE_BINDING",
+        "status": "FAIL",
+        "detail": "omitAuthenticPackage=true"
+      },
+      {
+        "gate": "CERTIFIED_4E",
+        "status": "NOT_CERTIFIED_4E",
+        "detail": "NO_VERIFIED_EXECUTION_PACKAGE"
+      }
+    ]
+  },
+  "applicableCovenants": [],
+  "operativeAndAmendmentState": {
+    "documents": [],
+    "amendmentNotes": [
+      "No governing documents bound."
+    ],
+    "operativeStateStatus": "MISSING_PACKAGE"
+  },
+  "debtBasketsAndRatioConditions": [],
+  "approvedFinancialInputs": {
+    "ns4ApprovedPresent": false,
+    "fixtureProvenance": "none",
+    "lines": [],
+    "note": "No financial inputs without a package."
+  },
+  "utilizationAndRemaining": {
+    "attributedEventCount": 0,
+    "attributedAmountMm": 0,
+    "supportsRemainingClaim": false,
+    "completenessCertificatePresent": false,
+    "unknownHistoricalActivity": true,
+    "trustedIssuerActivation": "BLOCKED",
+    "verifiedRemainingUsd": null,
+    "productionHandoffRefused": true
+  },
+  "pathAndSimulation": {
+    "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
+    "pathCount": 0,
+    "selectedPathId": null,
+    "verifiedSimulateExecutable": false,
+    "verifiedSimulateInvoked": true,
+    "simulationOutcome": null,
+    "refusalSummary": [
+      "NO_VERIFIED_EXECUTION_PACKAGE",
+      "NO_CANDIDATE_PATHS"
+    ],
+    "certifiedBlockers": [
+      "NO_VERIFIED_EXECUTION_PACKAGE"
+    ],
+    "recipeLimitations": [],
+    "modeledScenarioOverall": null
+  },
+  "result": "UNSUPPORTED",
+  "resultRationale": "No authentic debt-document package bound — cannot evaluate secured debt permission.",
+  "customerCanDoToday": [
+    "See an explicit UNSUPPORTED / fail-closed answer when no authentic package is bound."
+  ],
+  "requiredExternalEvidence": [
+    {
+      "evidence": "Authentic debt-document package (Indenture + Credit Agreement + financials)",
+      "whyRequired": "No covenant evaluation without source-backed package binding",
+      "status": "ABSENT"
+    }
+  ],
+  "workflowVerdict": "CUSTOMER_WORKFLOW_BLOCKED_BY_EVIDENCE",
+  "constraintsHonored": [
+    "no fabricated VEP / Phase-3 artifacts",
+    "no PERMITTED without genuine gates",
+    "verified remaining null",
+    "fail-closed on missing package"
+  ]
+}

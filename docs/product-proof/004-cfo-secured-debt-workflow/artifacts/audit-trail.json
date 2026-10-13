@@ -1,0 +1,110 @@
+{
+  "sources": [
+    {
+      "id": "matw-2027-second-lien-notes-indenture",
+      "label": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+      "accession": "0001193125-24-228450"
+    },
+    {
+      "id": "matw-credit-agreement-2020",
+      "label": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment)",
+      "accession": "0000063296-20-000040"
+    },
+    {
+      "id": "matw-10q-2024-12-31",
+      "label": "Form 10-Q quarter ended 2024-12-31",
+      "accession": "0000063296-25-000006"
+    },
+    {
+      "id": "matthews-q1-fy2025-slice",
+      "label": "Authentic financial/utilization fixture",
+      "path": "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",
+      "accession": "0000063296-25-000006"
+    },
+    {
+      "id": "source-excerpts-matthews",
+      "label": "In-repo reconstructed operative excerpts",
+      "path": "lib/product/real-dashboard-vertical-slice/source-excerpts-matthews.ts"
+    }
+  ],
+  "assumptions": [
+    "Evaluation uses AUTHENTIC_SOURCE_BACKED Matthews Q1 FY2025 fixture — not NS-4 APPROVED.",
+    "Modeled leaf rooms are NOT verified remaining.",
+    "verifiedPackage intentionally null — no Matthews VEP on main.",
+    "Secured dual-path CERTIFIED_4E not claimed; CA lien structural zero is leaf-encoded.",
+    "Recipe draws empty — capacity node ids not invented.",
+    "Vertical-slice verdict: FIXTURE_MODELED_DASHBOARD_PARTIAL"
+  ],
+  "calculations": [
+    {
+      "label": "ind_permitted_debt_1a_flat modeled capacity",
+      "detail": "max(0, $1300M − secured debt outstanding) → modeled=521.118 mm; remaining published=null; authority=GROSS_ONLY_UTILIZATION_INCOMPLETE"
+    },
+    {
+      "label": "ind_ratio_debt_fccr modeled capacity",
+      "detail": "max(0, (EBITDA/2 − InterestExpense) / assumedNewDebtRate) → modeled=110.33623188405791 mm; remaining published=null; authority=MODELED_AUTHENTIC_EVIDENCE"
+    },
+    {
+      "label": "ind_permitted_debt_1b_ratio_secured modeled capacity",
+      "detail": "max(0, 3.5×EBITDA − net secured debt) → modeled=0 mm; remaining published=null; authority=MODELED_AUTHENTIC_EVIDENCE"
+    },
+    {
+      "label": "ind_permitted_debt_2_notes modeled capacity",
+      "detail": "flat $300M → modeled=300 mm; remaining published=null; authority=MODELED_AUTHENTIC_EVIDENCE"
+    },
+    {
+      "label": "ca_lien_601j_2024notes modeled capacity",
+      "detail": "flat $0M → modeled=0 mm; remaining published=null; authority=STRUCTURAL_ZERO"
+    },
+    {
+      "label": "VE fixed-dollar bridge (Permitted Debt 1a)",
+      "detail": "candidates=3; compile units feeding Position GROSS only; production remaining refused"
+    },
+    {
+      "label": "Cross-domain modeled refinancing scenario",
+      "detail": "overallStatus=blocked for $50M secured (SSNL room probe)"
+    }
+  ],
+  "unresolvedConditions": [
+    "NO_MATTHEWS_VERIFIED_EXECUTION_PACKAGE",
+    "NO_UTILIZATION_COMPLETENESS_CERTIFICATE",
+    "TRUSTED_ISSUER_ACTIVATION=BLOCKED",
+    "TRUSTED_IDENTITY_PRODUCTION=BLOCKED",
+    "CA_LIEN_601J_STRUCTURAL_ZERO_BLOCKS_NEW_LOAN_PARTY_SECURED_LIENS",
+    "SECURED_COMPOSITION_HYPOTHETICAL_UNVERIFIED",
+    "NS4_APPROVED_SNAPSHOT_ABSENT_FOR_MATTHEWS_OFFLINE_SLICE",
+    "DUAL_PATH_DEBT_PLUS_LIEN_NOT_CERTIFIED_4E"
+  ],
+  "gates": [
+    {
+      "gate": "CERTIFIED_4E_PATH_ENUMERATION",
+      "status": "NOT_CERTIFIED_4E",
+      "detail": "NO_VERIFIED_EXECUTION_PACKAGE"
+    },
+    {
+      "gate": "VERIFIED_SIMULATE",
+      "status": "REFUSED",
+      "detail": "NO_VERIFIED_EXECUTION_PACKAGE | NO_CANDIDATE_PATHS"
+    },
+    {
+      "gate": "UTILIZATION_COMPLETENESS",
+      "status": "ABSENT",
+      "detail": "supportsRemainingClaim=false"
+    },
+    {
+      "gate": "TRUSTED_ISSUER",
+      "status": "BLOCKED",
+      "detail": "No production identity provider is present in this repository. Login is a free-text reviewer name (localStorage); there is no lib/auth.ts, no session store, and no service-account verifier. Production trusted-identity authority remains fail-closed."
+    },
+    {
+      "gate": "NS4_APPROVED_FINANCIALS",
+      "status": "ABSENT",
+      "detail": "Offline slice uses UNVERIFIED_EXTRACTION / PUBLIC_FILING_RECONSTRUCTION — not APPROVED"
+    },
+    {
+      "gate": "VE_FIXED_DOLLAR_GROSS",
+      "status": "PARTIAL",
+      "detail": "Bridge compile present for discovery candidates; feeds SOURCE_BACKED_COMPILED_GROSS only (units=3)"
+    }
+  ]
+}
