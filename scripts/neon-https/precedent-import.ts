@@ -1,23 +1,12 @@
 /**
- * Import mass-precedent bytes + export/v1 shards over Neon HTTPS.
- * Dry-run by default.
+ * Import mass-precedent bytes + export/v1 shards + in-repo corpora over Neon HTTPS.
+ * Dry-run by default. `--plan-only` never opens a database connection.
  *
+ *   npm run neon:https-precedent-plan
  *   NEON_TRANSPORT=https npm run neon:https-precedent-import
  *   NEON_TRANSPORT=https KF_MASS_PRECEDENT_LIVE_WRITE=I_AUTHORIZE_NEON_BULK_WRITE \
  *     npm run neon:https-precedent-import
  */
-
-import {
-  createNeonHttpsExecutor,
-  getNeonTransportMode,
-  redactConnectionSecrets,
-} from "../../lib/covenant-learning-factory/store/neon-transport";
-import {
-  importPrecedentsOverHttps,
-  isLiveAuthorized,
-  MASS_LIVE_ENV,
-  MASS_LIVE_TOKEN,
-} from "../../lib/neon-https/precedent-import";
 
 function argNum(name: string): number | undefined {
   const hit = process.argv.find((a) => a.startsWith(`${name}=`));
@@ -27,6 +16,30 @@ function argNum(name: string): number | undefined {
 }
 
 async function main(): Promise<void> {
+  if (process.argv.includes("--plan-only")) {
+    const { mkdirSync, writeFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const { buildOfflinePrecedentPlan } = await import("../../lib/neon-https/precedent-plan");
+    const plan = buildOfflinePrecedentPlan();
+    const outDir = join(process.cwd(), "docs/covenant-learning-factory");
+    mkdirSync(outDir, { recursive: true });
+    writeFileSync(join(outDir, "corpus-expansion-plan.json"), `${JSON.stringify(plan, null, 2)}\n`);
+    console.log(JSON.stringify(plan, null, 2));
+    return;
+  }
+
+  const {
+    createNeonHttpsExecutor,
+    getNeonTransportMode,
+    redactConnectionSecrets,
+  } = await import("../../lib/covenant-learning-factory/store/neon-transport");
+  const {
+    importPrecedentsOverHttps,
+    isLiveAuthorized,
+    MASS_LIVE_ENV,
+    MASS_LIVE_TOKEN,
+  } = await import("../../lib/neon-https/precedent-import");
+
   if (getNeonTransportMode() !== "https") {
     console.error(
       JSON.stringify({

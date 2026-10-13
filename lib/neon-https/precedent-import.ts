@@ -12,11 +12,10 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import type { NeonHttpsExecutor } from "../covenant-learning-factory/store/neon-transport";
 import { scanOriginalByteCandidates } from "../knowledge-factory/consolidation/scan-original-bytes";
+import { importCorpusExpansion } from "./corpus-import";
+import { AUTHORITY_STATUS, BATCH_KEY, MASS_LIVE_ENV, MASS_LIVE_TOKEN } from "./constants";
 
-export const MASS_LIVE_ENV = "KF_MASS_PRECEDENT_LIVE_WRITE";
-export const MASS_LIVE_TOKEN = "I_AUTHORIZE_NEON_BULK_WRITE";
-export const AUTHORITY_STATUS = "COMPUTED_NOT_CERTIFIED" as const;
-export const BATCH_KEY = "kf-https-precedent.v1";
+export { AUTHORITY_STATUS, BATCH_KEY, MASS_LIVE_ENV, MASS_LIVE_TOKEN };
 
 const SAFE_REPRESENTATION_LEVELS = new Set([
   "SOURCE_ONLY",
@@ -37,6 +36,7 @@ export const VERIFY_TABLES = [
   "kf_precedent_conditions_exceptions",
   "kf_precedent_document_relationships",
   "kf_precedent_unresolved_uncertainties",
+  "kf_precedent_corpus_records",
   "learning_packages",
   "learning_runs",
   "learning_artifacts",
@@ -110,6 +110,8 @@ export async function importPrecedentsOverHttps(
     skipBytes?: boolean;
     /** Skip export/v1 stage. */
     skipExport?: boolean;
+    /** Skip in-repo corpus expansion (basket / fdp / amendment / comparison / flywheel / edgar-expand manifest). */
+    skipCorpus?: boolean;
   },
 ): Promise<PrecedentImportResult> {
   const repoRoot = opts?.repoRoot ?? process.cwd();
@@ -578,6 +580,17 @@ export async function importPrecedentsOverHttps(
           ],
         );
       },
+    });
+  }
+
+  if (!opts?.skipCorpus) {
+    stages.push("corpus-expansion");
+    await importCorpusExpansion(executor, {
+      repoRoot,
+      live,
+      batchSize,
+      counts,
+      errors,
     });
   }
 
