@@ -25,7 +25,7 @@ Phase 2F/2G/Agent #7 gates (not rewritten).
 
 ## Exact tip CI
 
-Record after push (canonical-compiler + home-overview).
+Ending SHA: `3a4bd4c0a190c42a32ea969228ab04f4ffd33ec0` (CI after push).
 
 ## Next bounded task
 

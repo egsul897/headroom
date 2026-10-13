@@ -14,7 +14,7 @@ under `tests/fixtures/autonomous-covenant-compilation/`.
 | | SHA |
 |---|---|
 | Audit base (PR #311 tip) | `c1246becb15a3e3ff508334ba889a759c986a28a` |
-| This branch tip | *(set at commit)* |
+| This branch tip | *3a4bd4c0a190c42a32ea969228ab04f4ffd33ec0* |
 
 ## 2. Immutable corpus membership
 
