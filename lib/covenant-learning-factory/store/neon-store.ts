@@ -2,16 +2,19 @@
  * Optional Neon persistence for learning-factory artifacts.
  * Never auto-promotes VERIFIED / production authority.
  * No-ops cleanly when DATABASE_URL is unreachable.
+ *
+ * Set NEON_TRANSPORT=https for PrismaNeonHTTP (Neon HTTPS / no TCP 5432).
  */
 
-import { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
 import type { PackageAuditManifest } from "../types";
 import { assertAutomatedKnowledgeState, assertLearningFactoryCannotWriteProductionAuthority } from "../promotion-guards";
+import { classifyNeonProbeError, type NeonProbeClass } from "./neon-database-url";
 import {
-  classifyNeonProbeError,
-  resolveNeonDatabaseUrlForPrisma,
-  type NeonProbeClass,
-} from "./neon-database-url";
+  createClfPrismaClient,
+  getNeonTransportMode,
+  redactConnectionSecrets,
+} from "./neon-transport";
 
 export interface NeonPersistResult {
   attempted: boolean;
@@ -25,63 +28,47 @@ export interface NeonProbeResult {
   live: boolean;
   detail: string;
   class: NeonProbeClass;
+  transport?: "tcp" | "https";
   originalHost?: string;
   ipv4?: string | null;
-}
-
-/** Ephemeral client aimed at Neon over IPv4 (see neon-database-url.ts). */
-async function neonPrismaClient(): Promise<{
-  client: PrismaClient;
-  meta: { originalHost: string; ipv4: string | null };
-}> {
-  const raw = process.env.DATABASE_URL;
-  if (!raw) {
-    throw new Error("DATABASE_URL unset");
-  }
-  const resolved = await resolveNeonDatabaseUrlForPrisma(raw);
-  const client = new PrismaClient({
-    datasources: { db: { url: resolved.url } },
-  });
-  return {
-    client,
-    meta: { originalHost: resolved.originalHost, ipv4: resolved.ipv4 },
-  };
 }
 
 export async function probeNeonLive(): Promise<NeonProbeResult> {
   if (!process.env.DATABASE_URL) {
     return { live: false, detail: "DATABASE_URL unset", class: "unset" };
   }
-  let client: PrismaClient | undefined;
-  let meta: { originalHost: string; ipv4: string | null } | undefined;
+  const transport = getNeonTransportMode();
+  let opened: Awaited<ReturnType<typeof createClfPrismaClient>> | undefined;
   try {
-    const opened = await neonPrismaClient();
-    client = opened.client;
-    meta = opened.meta;
-    await client.$queryRaw`SELECT 1 as ok`;
+    opened = await createClfPrismaClient();
+    await opened.client.$queryRaw`SELECT 1 as ok`;
     return {
       live: true,
-      detail: "reachable",
+      detail: `reachable via ${transport}`,
       class: "live",
-      originalHost: meta.originalHost,
-      ipv4: meta.ipv4,
+      transport,
+      originalHost: opened.originalHost,
+      ipv4: opened.ipv4,
     };
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
+    const message = redactConnectionSecrets(
+      err instanceof Error ? err.message : String(err),
+    );
     const cls = classifyNeonProbeError(message);
     const detail =
       cls === "auth_failed"
-        ? `Neon auth failed (${cls}): credentials rejected for configured user/database. ${message.slice(0, 180)}`
+        ? `Neon auth failed (${cls}, transport=${transport}): credentials rejected. ${message.slice(0, 180)}`
         : message.slice(0, 240);
     return {
       live: false,
       detail,
       class: cls,
-      originalHost: meta?.originalHost,
-      ipv4: meta?.ipv4,
+      transport,
+      originalHost: opened?.originalHost,
+      ipv4: opened?.ipv4,
     };
   } finally {
-    await client?.$disconnect().catch(() => undefined);
+    await opened?.disconnect();
   }
 }
 
@@ -108,10 +95,10 @@ export async function persistPackageManifestToNeon(
     };
   }
 
-  let owned: PrismaClient | undefined;
+  let opened: Awaited<ReturnType<typeof createClfPrismaClient>> | undefined;
   try {
-    const opened = await neonPrismaClient();
-    owned = opened.client;
+    opened = await createClfPrismaClient();
+    const owned: PrismaClient = opened.client;
     // Dynamic access — tables arrive via additive migration.
     const client = owned as unknown as {
       learningPackage?: {
@@ -276,11 +263,13 @@ export async function persistPackageManifestToNeon(
     return {
       attempted: true,
       ok: false,
-      detail: err instanceof Error ? err.message.slice(0, 400) : String(err).slice(0, 400),
+      detail: redactConnectionSecrets(
+        err instanceof Error ? err.message.slice(0, 400) : String(err).slice(0, 400),
+      ),
       insertedArtifacts: 0,
       insertedErrors: 0,
     };
   } finally {
-    await owned?.$disconnect().catch(() => undefined);
+    await opened?.disconnect();
   }
 }

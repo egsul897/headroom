@@ -18,6 +18,20 @@ export { BASELINE_CAPABILITY_INVENTORY, renderInventoryMarkdown } from "./invent
 export { LearningFileStore, defaultLearningStorePaths } from "./store/file-store";
 export { probeNeonLive, persistPackageManifestToNeon } from "./store/neon-store";
 export {
+  createClfPrismaClient,
+  createNeonHttpsExecutor,
+  getNeonTransportMode,
+  redactConnectionSecrets,
+} from "./store/neon-transport";
+export {
+  applyClfMigrationOverHttps,
+  countLearningTables,
+  CLF_MIGRATION_NAME,
+  CLF_LEARNING_TABLES,
+  assertMigrationSqlSafe,
+  loadClfMigrationSql,
+} from "./store/neon-migration-apply";
+export {
   assertLearningFactoryCannotWriteProductionAuthority,
   assertAutomatedKnowledgeState,
   defaultHonestyClaims,

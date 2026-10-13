@@ -20,6 +20,17 @@ Neon connect probe (no secrets printed):
 npm run clf:neon-connect
 ```
 
+HTTPS transport (Cloud Agents that block TCP 5432; uses `@neondatabase/serverless` + `PrismaNeonHTTP`):
+
+```bash
+export NEON_TRANSPORT=https
+npm run clf:neon-apply    # idempotent additive learning_* migration only
+npm run clf:neon-verify   # row counts per learning_* table
+npm run clf:batch -- --persist-neon --max=2
+```
+
+Default (unset `NEON_TRANSPORT`) keeps Prisma TCP behavior unchanged.
+
 Live Neon persist (optional; requires authenticated `DATABASE_URL` + applied migration):
 
 ```bash

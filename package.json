@@ -67,6 +67,8 @@
     "clf:demo-unseen": "tsx scripts/covenant-learning-factory/demo-unseen.ts",
     "clf:audit-refusals": "tsx scripts/covenant-learning-factory/audit-refusals.ts",
     "clf:neon-connect": "tsx scripts/covenant-learning-factory/neon-connect.ts",
+    "clf:neon-apply": "tsx scripts/covenant-learning-factory/neon-apply.ts",
+    "clf:neon-verify": "tsx scripts/covenant-learning-factory/neon-verify.ts",
     "test:clf": "vitest run tests/covenant-learning-factory/",
     "product:setup-conmed-demo": "tsx scripts/product/setup-conmed-demo.ts",
     "product:legal-intelligence": "tsx scripts/product/run-legal-intelligence.ts",
@@ -80,6 +82,8 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",
+    "@neondatabase/serverless": "^0.10.4",
+    "@prisma/adapter-neon": "^5.22.0",
     "@prisma/client": "^5.20.0",
     "@vercel/blob": "^2.8.0",
     "mammoth": "^1.12.1",
@@ -87,12 +91,14 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "unpdf": "^1.8.1",
+    "ws": "^8.22.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
+    "@types/ws": "^8.18.2",
     "eslint": "^8.57.1",
     "eslint-config-next": "^14.2.35",
     "jszip": "^3.10.1",

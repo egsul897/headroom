@@ -72,7 +72,7 @@ Refused: 849 → **848**. Held-out MHK fidelity PASS; no golden edits; refusal o
 
 - File-backed: audit manifests, unit dumps, `refusal-audit.json`, `dashboard.json`, `demo-unseen.json`
 - Migration ready: `prisma/migrations/20261013180000_covenant_learning_factory/`
-- **Neon live: NO** — TCP/TLS to `ep-shiny-rice-aw903tjv-pooler` is open; Prisma over forced IPv4 reaches the server; **auth rejected** (`28P01` / Prisma `P1010` for `neondb_owner`). See `neon-connect-status.json`. Secret refresh required before migrate/persist.
+- **Neon live: NO** — `NEON_TRANSPORT=https` (`PrismaNeonHTTP`) reaches Neon auth over 443; **auth rejected** (`28P01` for `neondb_owner`). See `neon-https-status.json`. `clf:neon-apply` / `clf:neon-verify` shipped; secret refresh required before persist.
 
 ## 8. Authority
 
