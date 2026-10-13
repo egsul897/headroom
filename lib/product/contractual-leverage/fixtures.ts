@@ -10,7 +10,12 @@
  * Not production company branches — test/demo data only.
  */
 
-import type { DefinitionText, LeverageCalculationRequest, LeverageFinancialInputs } from "./types";
+import type {
+  DefinitionText,
+  EbitdaComponentInputs,
+  LeverageCalculationRequest,
+  LeverageFinancialInputs,
+} from "./types";
 
 /** Coherent CA §6.11(a) — seed FinancialSnapshot ($M): 1141+1080+990+47 total; 1141+1080 secured. */
 export const COHERENT_FINANCIALS: LeverageFinancialInputs = {
@@ -107,5 +112,54 @@ export function matthewsSecuredNetLeverageRequest(
     threshold: 3.5,
     debtBasisHint: "secured",
     financials,
+  };
+}
+
+/**
+ * SYNTHETIC_LABELED component pack for Coherent build-up tests.
+ * B = 1500, A = 200 → uncapped E = 1700 (A ≤ 0.15×1700), matching COHERENT_FINANCIALS.ebitda.
+ * Not certificate-reported EBITDA; not production Neon facts.
+ */
+export const COHERENT_EBITDA_COMPONENTS: EbitdaComponentInputs = {
+  "Consolidated Net Income": 1000,
+  "Income Tax Expense": 100,
+  "Consolidated Interest Expense": 200,
+  "Depreciation and Amortization": 150,
+  "Non-Cash Stock-Based Compensation": 50,
+  "Restructuring Integration Transaction Costs": 200,
+};
+
+/**
+ * SYNTHETIC_LABELED components summing to MATTHEWS_FINANCIALS.ebitda (128.313).
+ */
+export const MATTHEWS_EBITDA_COMPONENTS: EbitdaComponentInputs = {
+  "Consolidated Net Income": 80,
+  "Consolidated Interest Expense": 15,
+  "Income Tax Expense": 10,
+  "Depreciation and Amortization": 18,
+  "Non-Cash Expenses Excluding DA": 5.313,
+};
+
+/** Coherent leverage driven by FIXED_POINT EBITDA build-up (not black-box certificate EBITDA). */
+export function coherentEbitdaBuildupLeverageRequest(
+  components: EbitdaComponentInputs = COHERENT_EBITDA_COMPONENTS,
+  financials: LeverageFinancialInputs = { ...COHERENT_FINANCIALS, ebitda: null },
+): LeverageCalculationRequest {
+  return {
+    ...coherentTotalNetLeverageRequest(financials),
+    ebitdaBuildup: "COHERENT_CAPPED_ADDBACK",
+    ebitdaComponents: components,
+  };
+}
+
+/** Matthews leverage driven by uncapped SUM build-up (second definition shape). */
+export function matthewsEbitdaBuildupLeverageRequest(
+  components: EbitdaComponentInputs = MATTHEWS_EBITDA_COMPONENTS,
+  financials: LeverageFinancialInputs = { ...MATTHEWS_FINANCIALS, ebitda: null },
+): LeverageCalculationRequest {
+  return {
+    ...matthewsSecuredNetLeverageRequest(financials),
+    ebitdaBuildup: "MATTHEWS_UNCAPPED_SUM",
+    ebitdaComponents: components,
   };
 }

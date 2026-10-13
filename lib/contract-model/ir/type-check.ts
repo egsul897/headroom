@@ -196,6 +196,16 @@ export function analyzeType(expr: IRExpression): TypeAnalysis {
       }
       return leaf("BOOLEAN");
     }
+    case "FIXED_POINT_ADDBACK_CAP": {
+      const base = analyzeType(expr.base);
+      const addbacks = analyzeType(expr.addbacks);
+      const elig = expr.eligibility ? analyzeType(expr.eligibility) : null;
+      const children = elig ? [base, addbacks, elig] : [base, addbacks];
+      const moneyOk = known([base, addbacks]).every((t) => t === "MONEY");
+      if (!moneyOk && known([base, addbacks]).length === 2) return conflict("FIXED_POINT_ADDBACK_CAP base and addbacks must both be MONEY");
+      if (elig && elig.known !== null && elig.conflict === null && elig.known !== "BOOLEAN") return conflict("FIXED_POINT_ADDBACK_CAP eligibility must be BOOLEAN");
+      return { known: "MONEY", unsupported: anyUnsupported(children), conflict: null };
+    }
   }
 }
 
@@ -318,6 +328,19 @@ export function validateExpressionTypes(expr: IRExpression, issues: TypeIssue[] 
 
     case "EVENT_ACTIVE":
       if (expr.triggerCondition) validateExpressionTypes(expr.triggerCondition, issues);
+      pushConflict(expr, issues);
+      return issues;
+
+    case "FIXED_POINT_ADDBACK_CAP":
+      validateExpressionTypes(expr.base, issues);
+      validateExpressionTypes(expr.addbacks, issues);
+      if (expr.eligibility) validateExpressionTypes(expr.eligibility, issues);
+      if (!(expr.capFraction >= 0 && expr.capFraction < 1)) {
+        issues.push({ exprId: expr.exprId, kind: expr.kind, message: "FIXED_POINT_ADDBACK_CAP capFraction must satisfy 0 ≤ c < 1" });
+      }
+      if (expr.capBase !== "RESULT") {
+        issues.push({ exprId: expr.exprId, kind: expr.kind, message: `FIXED_POINT_ADDBACK_CAP unsupported capBase "${String(expr.capBase)}"` });
+      }
       pushConflict(expr, issues);
       return issues;
   }

@@ -180,7 +180,11 @@ export async function loadContractualLeverageForCompany(
       threshold: null,
       ratioHeadroom: null,
       debtHeadroomMillions: null,
+      debtHeadroomIsVerifiedCapacity: false,
       runtimeStatus: null,
+      derivedEbitdaMillions: null,
+      ebitdaBuildupKind: null,
+      informationRequest: null,
     });
     return {
       companyId,

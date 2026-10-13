@@ -87,6 +87,11 @@ function collectReferences(expr: IRExpression, out: IRExpression[] = []): IRExpr
     case "EVENT_ACTIVE":
       if (expr.triggerCondition) collectReferences(expr.triggerCondition, out);
       return out;
+    case "FIXED_POINT_ADDBACK_CAP":
+      collectReferences(expr.base, out);
+      collectReferences(expr.addbacks, out);
+      if (expr.eligibility) collectReferences(expr.eligibility, out);
+      return out;
     default:
       return out;
   }

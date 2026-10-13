@@ -58,7 +58,10 @@ function ResultCard({ result }: { result: ContractualLeverageResult }) {
           {result.threshold != null ? `Limit ${result.threshold.toFixed(2)}x` : "No threshold"}
           {result.ratioHeadroom != null ? ` · ratio headroom ${result.ratioHeadroom.toFixed(2)}x` : ""}
           {result.debtHeadroomMillions != null
-            ? ` · debt headroom ${fmtM(result.debtHeadroomMillions)}`
+            ? ` · mathematical ratio room ${fmtM(result.debtHeadroomMillions)} (not verified debt capacity)`
+            : ""}
+          {result.derivedEbitdaMillions != null
+            ? ` · derived EBITDA ${fmtM(result.derivedEbitdaMillions)}`
             : ""}
         </div>
       ) : null}
@@ -68,7 +71,12 @@ function ResultCard({ result }: { result: ContractualLeverageResult }) {
           {result.inputs.map((input) => (
             <li key={input.key}>
               {input.label}:{" "}
-              {input.status === "RESOLVED" && input.valueMillions != null ? fmtM(input.valueMillions) : "MISSING"}
+              {input.status === "RESOLVED" && input.valueMillions != null
+                ? fmtM(input.valueMillions)
+                : input.fulfillmentState ?? input.status}
+              {input.fulfillmentState && input.fulfillmentState !== "APPROVED_VERIFIED" && input.fulfillmentState !== "MISSING"
+                ? ` (${input.fulfillmentState})`
+                : ""}
             </li>
           ))}
         </ul>
@@ -119,7 +127,11 @@ export function ContractualLeveragePanel({ requests, financials }: ContractualLe
             threshold: null,
             ratioHeadroom: null,
             debtHeadroomMillions: null,
+            debtHeadroomIsVerifiedCapacity: false as const,
             runtimeStatus: null,
+            derivedEbitdaMillions: null,
+            ebitdaBuildupKind: null,
+            informationRequest: null,
           },
         ];
 

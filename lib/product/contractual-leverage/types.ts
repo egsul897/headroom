@@ -5,6 +5,9 @@
  * no production formula branches on companyId.
  */
 
+import type { FulfillmentState, FinancialInformationRequest } from "@/lib/contract-model/runtime/input/information-request";
+import type { EbitdaBuildupKind } from "./ebitda-buildup";
+
 export type DebtMetricBasis = "total" | "secured";
 
 export interface DefinitionText {
@@ -34,7 +37,10 @@ export interface IdentifiedLeverageComponents {
 }
 
 export interface LeverageFinancialInputs {
-  /** Contractual / covenant EBITDA ($M). */
+  /**
+   * Caller-supplied contractual EBITDA ($M) when not deriving via build-up.
+   * Never treated as an independently compiled definition result.
+   */
   ebitda: number | null;
   /** Gross total indebtedness ($M). */
   totalDebt: number | null;
@@ -44,12 +50,18 @@ export interface LeverageFinancialInputs {
   cash: number | null;
 }
 
+/** Component metrics for an EBITDA build-up ($M). Absent keys → MISSING (never zero). */
+export type EbitdaComponentInputs = Record<string, number | null | undefined>;
+
 export interface ResolvedInputLine {
   key: string;
   label: string;
   valueMillions: number | null;
   required: boolean;
+  /** Legacy coarse status kept for dashboard compatibility. */
   status: "RESOLVED" | "MISSING";
+  /** Fine-grained fulfillment when join ran. */
+  fulfillmentState?: FulfillmentState;
 }
 
 export type ContractualLeverageStatus =
@@ -78,13 +90,19 @@ export interface ContractualLeverageResult {
   /** Ratio headroom (threshold − current) for at-or-below tests. */
   ratioHeadroom: number | null;
   /**
-   * Dollar headroom under threshold × EBITDA − net debt ($M), when the
-   * definition nets cash (or uses gross debt) and a threshold is known.
-   * Null when legally/mathematically unsupported or inputs missing.
+   * Mathematical threshold×EBITDA − netDebt ($M).
+   * NOT verified available debt capacity — ratio arithmetic only.
    */
   debtHeadroomMillions: number | null;
+  /** Explicit product flag: dollar figure is ratio math, not capacity authority. */
+  debtHeadroomIsVerifiedCapacity: false;
   /** Runtime evaluation status for the ratio expression, when attempted. */
   runtimeStatus: string | null;
+  /** Derived contractual EBITDA from build-up when used ($M). */
+  derivedEbitdaMillions?: number | null;
+  ebitdaBuildupKind?: EbitdaBuildupKind | null;
+  /** Manifest→fulfillment join when snapshots were supplied. */
+  informationRequest?: FinancialInformationRequest | null;
 }
 
 export interface LeverageCalculationRequest {
@@ -105,4 +123,11 @@ export interface LeverageCalculationRequest {
   /** Hint when definition text does not itself establish secured vs total. */
   debtBasisHint?: DebtMetricBasis | null;
   financials: LeverageFinancialInputs;
+  /**
+   * When set, EBITDA is derived from component metrics via FIXED_POINT / SUM build-up
+   * instead of using financials.ebitda as a black-box certificate figure.
+   */
+  ebitdaBuildup?: EbitdaBuildupKind | null;
+  /** Component metrics for build-up ($M). Required keys depend on buildup kind. */
+  ebitdaComponents?: EbitdaComponentInputs | null;
 }
