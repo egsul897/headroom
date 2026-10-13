@@ -1,6 +1,7 @@
 import { DashboardClient } from "@/components/DashboardClient";
 import { facilitiesQueryFromPosition, maturitiesQueryFromPosition } from "@/lib/dashboard/load-state";
 import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
+import { loadContractualLeverageForCompany } from "@/lib/product/contractual-leverage";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
@@ -18,6 +19,7 @@ export const metadata = { title: "Headroom — Dashboard" };
 export default async function DashboardPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
   const inputs = await loadCovenantOverviewInputs(companyId);
+  const leverage = await loadContractualLeverageForCompany(companyId, inputs.asOfDate);
   const {
     company,
     asOfDate,
@@ -48,6 +50,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
       facilitiesQuery={facilitiesQuery}
       maturitiesQuery={maturitiesQuery}
       attributedUtilizationSerialized={attributedUtilizationSerialized}
+      contractualLeverageRequests={leverage.requests}
     />
   );
 }
