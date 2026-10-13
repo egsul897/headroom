@@ -29,6 +29,8 @@ npm run clf:neon-verify   # row counts per learning_* table
 npm run clf:batch -- --persist-neon --max=2
 ```
 
+Factory compile is always `compileOnly` (in-memory; never writes `ContractRule` / production authority). `--persist-neon` writes **learning_*** rows for OK **and FAILED** runs (errors are the learning signal). Production-authority guards stay armed.
+
 Default (unset `NEON_TRANSPORT`) keeps Prisma TCP behavior unchanged.
 
 Live Neon persist (optional; requires authenticated `DATABASE_URL` + applied migration):
