@@ -351,28 +351,31 @@ describe("shared-capacity uncertainty", () => {
 describe("journey navigation", () => {
   it("renders the CFO workflow without inventing numbers", () => {
     const html = renderToStaticMarkup(<WorkflowJourney companyId="adv-co" current="position" />);
-    expect(html).toMatch(/Documents/);
-    expect(html).toMatch(/Verified rulebook|Rulebook/);
+    expect(html).toMatch(/Upload/);
+    expect(html).toMatch(/Analyze/);
+    expect(html).toMatch(/Review/);
     expect(html).toMatch(/Position/);
-    expect(html).toMatch(/Ask/);
     expect(html).toMatch(/Simulate/);
-    expect(html).toMatch(/Evidence/);
+    expect(html).toMatch(/Audit/);
     expect(html).not.toMatch(/\$\d/);
   });
 
-  it("primary nav includes Rulebook between Covenants and Position", async () => {
+  it("primary nav orders CFO journey before legacy tools", async () => {
     const { companyNavItems } = await import("@/lib/home/nav");
     const labels = companyNavItems("adv-co", "ACTIVE").map((i) => i.label);
-    expect(labels.indexOf("Rulebook")).toBeGreaterThan(labels.indexOf("Covenants"));
-    expect(labels.indexOf("Rulebook")).toBeLessThan(labels.indexOf("Position"));
+    expect(labels.indexOf("Upload")).toBeLessThan(labels.indexOf("Analyze"));
+    expect(labels.indexOf("Analyze")).toBeLessThan(labels.indexOf("Review"));
+    expect(labels.indexOf("Review")).toBeLessThan(labels.indexOf("Position"));
+    expect(labels.indexOf("Position")).toBeLessThan(labels.indexOf("Simulate"));
+    expect(labels.indexOf("Simulate")).toBeLessThan(labels.indexOf("Audit"));
   });
 });
 
 describe("route source guards", () => {
-  it("Position page labels remaining non-authoritative and references PR #268 gap", () => {
+  it("Position page labels remaining non-authoritative and refuses dashboard-flag AVAILABLE", () => {
     const src = readFileSync(path.join(process.cwd(), "app/[companyId]/position/page.tsx"), "utf8");
     expect(src).toMatch(/MODELED \/ NOT VERIFIED|NOT_PRODUCTION_AUTHORITATIVE|remainingIsAuthoritative: false/);
-    expect(src).toMatch(/#268|PR #268/);
+    expect(src).toMatch(/Dashboard authority flags alone never publish AVAILABLE|remainingIsAuthoritative: false/);
     expect(src).toMatch(/buildPositionView/);
     expect(src).not.toMatch(/remainingCapacity.*AVAILABLE/);
   });

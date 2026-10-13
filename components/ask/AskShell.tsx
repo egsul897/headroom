@@ -43,7 +43,7 @@ export function AskShell({
       </header>
 
       <div style={{ marginBottom: 12 }}>
-        <WorkflowJourney companyId={companyId} current="ask" />
+        <WorkflowJourney companyId={companyId} current="review" />
       </div>
 
       <section className="home-card ask-card" data-ask-case={result.caseId}>

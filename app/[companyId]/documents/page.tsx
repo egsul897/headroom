@@ -12,14 +12,17 @@ import {
 } from "@/lib/product/customer-intelligence/load";
 import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
+import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
 
 export const metadata = { title: "Headroom — Documents" };
 
 /**
  * Documents workspace — upload, status, covenant intelligence, amendment package.
+ * Access-gated before document / intelligence loaders.
  */
 export default async function DocumentsPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
+  await assertCfoPageAccessOrNotFound({ companyId });
   const documents = await getDocumentDetails(companyId);
   const intelligence = await listCustomerDocumentIntelligence(companyId);
   const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
@@ -30,21 +33,22 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
   return (
     <div className="stack">
       <Card>
-        <div className="card-title">Financing documents</div>
-        <WorkflowJourney companyId={companyId} current="documents" />
+        <div className="card-title">Upload — financing documents</div>
+        <WorkflowJourney companyId={companyId} current="upload" />
         <div className="card-subtitle" style={{ marginTop: 8 }}>
-          Upload credit agreements, indentures, and amendments. Review covenant summaries and ask
-          workspace-grounded questions. Public precedents never govern this package.
+          Create or extend the debt-document package. Receipt of a file is not analysis success —
+          processing state, missing roles, unsupported files, and extraction errors are shown
+          separately on Analyze. Public precedents never govern this package.
         </div>
         <div className="button-row" style={{ marginTop: 12 }}>
           <Link className="button button-primary" href={`/${companyId}/onboarding/documents`}>
             Upload document
           </Link>
+          <Link className="button" href={`/${companyId}/analyze`}>
+            Open Analyze
+          </Link>
           <Link className="button" href={`/${companyId}/ask`}>
             Ask Headroom
-          </Link>
-          <Link className="button" href="/research/compare">
-            Compare precedents
           </Link>
         </div>
       </Card>
