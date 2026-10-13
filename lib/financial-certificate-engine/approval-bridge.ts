@@ -26,6 +26,7 @@ import {
   proposeNs4SnapshotFromEngine,
   type ProposeNs4Result,
 } from "./snapshot";
+import { selectAuthoritativeSnapshotForCapacity } from "./snapshot-selection";
 import {
   buildFinancialStateFromEngineRun,
   projectEngineRunToCapacitySnapshotStrict,
@@ -109,6 +110,8 @@ export async function approveProposedFinancialSnapshot(params: {
   approvalRef: string;
   reconciliation: ReconciliationReport;
   reviewedAt?: string;
+  /** Optional certificate delivery date — never invented from period-end asOf. */
+  deliveredAsOfDate?: string;
 }): Promise<ApprovalBridgeApproveResult> {
   const approve = await approveNs4SnapshotAttributable(params);
   return {
@@ -140,6 +143,7 @@ export interface VerifiedFinancialCapacityInput {
 /**
  * Load only APPROVED NS-4 snapshots as verified capacity inputs.
  * DRAFT / REVIEW_REQUIRED rows in the same company are ignored (never authoritative).
+ * Without snapshotId: NS-6 cutoff bind only — never latest-as-of / snapshotId-order pick.
  */
 export async function loadVerifiedFinancialCapacityInput(
   companyId: string,
@@ -148,6 +152,8 @@ export async function loadVerifiedFinancialCapacityInput(
   | { status: "OK"; input: VerifiedFinancialCapacityInput }
   | { status: "NO_APPROVED_SNAPSHOT"; missingInputs: string[] }
   | { status: "NOT_AUTHORITATIVE"; snapshotId: string; currentStatus: string; missingInputs: string[] }
+  | { status: "NEEDS_INPUT"; missingInputs: string[]; reason: string }
+  | { status: "AMBIGUOUS"; snapshotIds: string[]; reason: string }
 > {
   if (opts?.snapshotId) {
     const row = await prisma.contractInputSnapshot.findFirst({
@@ -180,18 +186,19 @@ export async function loadVerifiedFinancialCapacityInput(
     return { status: "NO_APPROVED_SNAPSHOT", missingInputs: ["APPROVED_NorthStar_snapshot"] };
   }
 
-  let snap = approved[0]!;
-  if (opts?.snapshotId) {
-    const found = approved.find((s) => s.snapshotId === opts.snapshotId);
-    if (!found) {
-      return { status: "NO_APPROVED_SNAPSHOT", missingInputs: ["APPROVED_NorthStar_snapshot"] };
-    }
-    snap = found;
-  } else if (opts?.evaluationDate) {
-    const onOrBefore = approved
-      .filter((s) => s.asOf && s.asOf <= opts.evaluationDate!)
-      .sort((a, b) => (b.asOf ?? "").localeCompare(a.asOf ?? ""));
-    if (onOrBefore[0]) snap = onOrBefore[0];
+  const selected = selectAuthoritativeSnapshotForCapacity({
+    companyId,
+    approved,
+    snapshotId: opts?.snapshotId,
+    evaluationDate: opts?.evaluationDate,
+  });
+  if (selected.status !== "OK") {
+    return selected;
+  }
+
+  const snap = approved.find((s) => s.snapshotId === selected.snapshotId);
+  if (!snap) {
+    return { status: "NO_APPROVED_SNAPSHOT", missingInputs: ["APPROVED_NorthStar_snapshot"] };
   }
 
   assertSnapshotAuthoritative(snap.status);
@@ -297,7 +304,13 @@ function mapNs4FactsToCapacitySnapshot(snap: FinancialSnapshot): {
 export async function resolveApprovedSnapshotInputs(companyId: string, snapshotId: string) {
   const loaded = await loadVerifiedFinancialCapacityInput(companyId, { snapshotId });
   if (loaded.status !== "OK") {
-    return { ok: false as const, reason: loaded.status, missingInputs: loaded.missingInputs };
+    const missingInputs =
+      loaded.status === "AMBIGUOUS"
+        ? ["AMBIGUOUS_APPROVED_SNAPSHOT", ...loaded.snapshotIds]
+        : "missingInputs" in loaded
+          ? loaded.missingInputs
+          : ["APPROVED_NorthStar_snapshot"];
+    return { ok: false as const, reason: loaded.status, missingInputs };
   }
   const resolver = snapshotInputResolver({
     snapshots: [loaded.input.ns4Snapshot],

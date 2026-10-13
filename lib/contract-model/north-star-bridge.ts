@@ -47,6 +47,19 @@ export type {
   SelectorResolutionResult,
 } from "./runtime/input/selector";
 
+/** Temporal delivery evidence — product must not invent delivery from period-end asOf or approval. */
+export {
+  deliveriesFromApprovedSnapshots,
+  authoritativeDeliveriesFromSnapshots,
+  encodeDeliveredAtInApprovalRef,
+  extractDeliveredAtFromApprovalRef,
+  persistedDeliveryDateFromSnapshot,
+  temporalAxesFromSnapshot,
+} from "./runtime/input/delivery-evidence";
+
+export { resolveAuthoritativeCutoff } from "./runtime/input/authoritative-cutoff";
+export type { AuthoritativeCutoffResult } from "./runtime/input/authoritative-cutoff";
+
 export {
   PrismaContractLedgerStore,
   InMemoryContractLedgerStore,

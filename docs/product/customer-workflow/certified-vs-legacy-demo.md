@@ -4,11 +4,11 @@
 
 SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Legacy multipath remains LEGACY_ENGINE_MULTIPATH / NOT_CERTIFIED_4E. This report does NOT certify Phase 3 customer IR.
 
-- Generated: 2026-10-10T00:10:05.502Z
+- Generated: 2026-10-13T06:02:41.691Z
 - Company (synthetic): `synthetic-conmed-form-co`
 - Instrument (synthetic): `synthetic-term-loan-a`
 - Exercises: 7
-- Discrepancies recorded: 19
+- Discrepancies recorded: 22
 - Verified-execution ran: 6
 - Verified-execution blocked: 1
 - Legacy authority: always `NOT_CERTIFIED_4E` / `LEGACY_ENGINE_MULTIPATH`
@@ -21,8 +21,8 @@ SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Leg
 - Legacy: LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E · 3 path(s)
 - Certified/FIXTURE: ran (EXECUTED)
 - Discrepancies (3):
-  - 7.01(b):GENERAL_DEBT / remainingCapacity: legacy=84 vs certified=50000000 — Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)
-  - 7.02(a):GENERAL_LIEN / remainingCapacity: legacy=84 vs certified=50000000 — Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)
+  - 7.01(b):GENERAL_DEBT / remainingCapacity: legacy=84 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
+  - 7.02(a):GENERAL_LIEN / remainingCapacity: legacy=84 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
   - (authority) / authority: legacy="LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E" vs certified="FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)" — Authority surfaces differ by design — legacy must not be presented as certified Phase 4E
 
 ### $75M restricted payment (`restricted-payment-75m`)
@@ -40,7 +40,9 @@ SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Leg
 - Cutoff: FY2026-Q2 as-of 2026-06-30; eval 2026-08-01
 - Legacy: LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E · 4 path(s)
 - Certified/FIXTURE: ran (EXECUTED)
-- Discrepancies (2):
+- Discrepancies (4):
+  - 7.01(d):ACQUISITION_DEBT / remainingCapacity: legacy=100 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
+  - 7.08(a):FIXED_INVESTMENT / remainingCapacity: legacy=50 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
   - 7.02(a):GENERAL_LIEN / remainingCapacity: legacy=84 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
   - (authority) / authority: legacy="LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E" vs certified="FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)" — Authority surfaces differ by design — legacy must not be presented as certified Phase 4E
 
@@ -50,7 +52,7 @@ SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Leg
 - Legacy: LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E · 3 path(s)
 - Certified/FIXTURE: ran (EXECUTED)
 - Discrepancies (4):
-  - 7.01(b):GENERAL_DEBT / remainingCapacity: legacy=84 vs certified=50000000 — Legacy capacityMillions×1e6=84000000 vs FIXTURE_IR remainingUsd=50000000 (scale/formula/ledger divergence)
+  - 7.01(b):GENERAL_DEBT / remainingCapacity: legacy=84 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
   - 7.01(c):GENERAL_DEBT / remainingCapacity: legacy=20 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
   - 7.02(a):GENERAL_LIEN / remainingCapacity: legacy=84 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
   - (authority) / authority: legacy="LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E" vs certified="FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)" — Authority surfaces differ by design — legacy must not be presented as certified Phase 4E
@@ -60,7 +62,8 @@ SYNTHETIC CONMED-form-inspired comparison harness. FIXTURE_IR is hand-built. Leg
 - Cutoff: FY2026-Q2 as-of 2026-06-30; eval 2026-08-01
 - Legacy: LEGACY_ENGINE_MULTIPATH · NOT_CERTIFIED_4E · 2 path(s)
 - Certified/FIXTURE: ran (EXECUTED)
-- Discrepancies (2):
+- Discrepancies (3):
+  - 7.01(b):GENERAL_DEBT / remainingCapacity: legacy=120 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
   - 7.02(a):GENERAL_LIEN / remainingCapacity: legacy=84 vs certified=null — Legacy path has numerical capacity (millions); no matching FIXTURE_IR remaining USD (or null)
   - (authority) / authority: legacy="LEGACY_ENGINE_MULTIPATH/NOT_CERTIFIED_4E" vs certified="FIXTURE_IR/evaluateVerifiedCapacity(REQUIRE)" — Authority surfaces differ by design — legacy must not be presented as certified Phase 4E
 

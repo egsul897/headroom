@@ -317,6 +317,8 @@ export function seedFixtureApprovedWorld(exercise: DemoExercise): {
     reviewedBy: "synth-demo-reviewer",
     reviewedAt: "2026-07-20T12:00:00Z",
     approvalRef: `apr-synth-demo-${exercise.id}`,
+    // Explicit delivery — never inferred from approval timestamp.
+    deliveredAsOfDate: "2026-07-10",
     sourceDocumentId: CONMED_FORM_INSPIRED_CERT.documentId,
     sourceVersionHash: CONMED_FORM_INSPIRED_CERT.versionHash,
     proposerKind: "human",

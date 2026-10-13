@@ -10,15 +10,11 @@ import {
   loadCutoffEligibleSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
   snapshotInputResolver,
-  resolveContractualSelector,
+  resolveAuthoritativeCutoff,
   type NamedContractualSelector,
   type FiscalCalendar,
 } from "@/lib/contract-model/north-star-bridge";
 import { NS4_PRODUCT_CUTOFF_SELECTOR } from "./approved-financial-inputs";
-import {
-  bindSnapshotForDeliveredCutoff,
-  deliveriesFromApprovedSnapshots,
-} from "./certificate-deliveries";
 import {
   evaluateVerifiedCapacity,
   simulateVerifiedTransaction,
@@ -106,35 +102,23 @@ export async function attemptCertifiedTransaction(args: {
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
-  const resolved = resolveContractualSelector({
+  // P0: persisted-delivery-only — approval never establishes delivery.
+  // Pass cutoff-eligible (APPROVED + SUPERSEDED) so historical deliveries bind.
+  const cutoff = resolveAuthoritativeCutoff({
     companyId,
     evaluationDate: args.evaluationDate,
+    approved: cutoffEligible,
     // Align with Dashboard NS-4 band — delivered certificate, not calendar FY label alone.
     selector: args.selector ?? NS4_PRODUCT_CUTOFF_SELECTOR,
     fiscalCalendar,
-    deliveries: deliveriesFromApprovedSnapshots(companyId, cutoffEligible),
   });
 
-  let cutoffState = resolved.state;
-  let reportingPeriodKey: string | null =
-    resolved.state === "RESOLVED" ? resolved.reportingPeriodKey : null;
-  let approvedSnapshotId: string | null = null;
-
-  if (resolved.state === "RESOLVED") {
-    const bound = bindSnapshotForDeliveredCutoff({
-      companyId,
-      evaluationDate: args.evaluationDate,
-      resolved,
-      snapshots: cutoffEligible,
-    });
-    cutoffState = bound.state;
-    if (bound.state === "RESOLVED") {
-      approvedSnapshotId = bound.snapshotId;
-    } else {
-      blockers.push("CUTOFF_UNRESOLVED");
-    }
-  } else {
+  const cutoffState = cutoff.state;
+  const reportingPeriodKey = cutoff.reportingPeriodKey;
+  let approvedSnapshotId: string | null = cutoff.snapshotId;
+  if (cutoff.state !== "RESOLVED" || !approvedSnapshotId) {
     blockers.push("CUTOFF_UNRESOLVED");
+    approvedSnapshotId = null;
   }
 
   const pkg = args.verifiedPackage ?? null;

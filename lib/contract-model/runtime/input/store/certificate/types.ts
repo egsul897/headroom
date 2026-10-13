@@ -166,6 +166,18 @@ export interface ApproveCertificateProposalRequest {
   reviewedBy: string;
   reviewedAt: string;
   approvalRef: string;
+  /**
+   * When the compliance certificate / reporting package was delivered (ISO date).
+   * Distinct from reporting-period asOf and from reviewedAt. Persisted on approvalRef
+   * so NS-6 delivery evidence does not invent delivery from period-end asOf or approval.
+   * When omitted, no delivery marker is written — APPROVED alone does not establish delivery.
+   */
+  deliveredAsOfDate?: string;
+  /**
+   * When true, do not encode delivery into approvalRef — delivery is unknown.
+   * Authoritative selectors use persisted-delivery-only selection and fail closed until delivery is supplied.
+   */
+  omitDeliveryEvidence?: boolean;
   /** Optional provenance note linking back to the certificate document. */
   sourceDocumentId?: string;
   sourceVersionHash?: string;

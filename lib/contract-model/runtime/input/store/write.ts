@@ -8,6 +8,7 @@
  */
 import { randomBytes } from "node:crypto";
 import type { FinancialSnapshot } from "../types";
+import { extractDeliveredAtFromApprovalRef } from "../delivery-evidence";
 import { buildSnapshotGraph, type SnapshotIssueCode } from "../snapshot";
 import type {
   AppendSnapshotRequest,
@@ -124,9 +125,18 @@ export function materializeFromEvents(events: readonly StoreEvent[]): Map<string
     if (e.type === "SNAPSHOT_APPROVED") {
       const cur = byId.get(e.snapshotId);
       if (!cur) continue;
+      const cloned = cloneSnapshot(cur);
+      // Promote approvalRef deliveredAt= marker into first-class provenance.
+      // Approve-time marker wins over any inherited propose-time value (restatement).
+      // Never invent from reviewedAt — only the persisted marker counts.
+      const fromRef = extractDeliveredAtFromApprovalRef(e.approvalRef);
+      const provenance = fromRef
+        ? { ...cloned.provenance, deliveredAtIsoDate: fromRef }
+        : cloned.provenance;
       byId.set(e.snapshotId, {
-        ...cloneSnapshot(cur),
+        ...cloned,
         status: "APPROVED",
+        provenance,
         review: { reviewedBy: e.reviewedBy, reviewedAt: e.reviewedAt, approvalRef: e.approvalRef },
       });
       continue;

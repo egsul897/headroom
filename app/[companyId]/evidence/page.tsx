@@ -106,7 +106,9 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
     executable: readiness.canEvaluateExecutableCapacity && view.overallStatus !== "AMBIGUOUS",
     blockers: readiness.blockers,
     missingCitations: clauses.some((c) => !c.citation),
-    utilizationComplete: readiness.contractLedgerActiveCount > 0 && readiness.ns4ApprovedSnapshotCount > 0,
+    // Active 4C rows + NS-4 APPROVED ≠ utilization completeness certificate (#268).
+    // Never promote UNKNOWN historical activity to VERIFIED_EXECUTABLE here.
+    utilizationComplete: false,
     amendmentResolved: !view.amendment?.conflicting,
   });
 

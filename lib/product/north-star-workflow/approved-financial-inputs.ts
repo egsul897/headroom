@@ -216,10 +216,16 @@ export async function loadApprovedFinancialInputBundle(args: {
     snapshotId: bound.snapshotId,
   });
   const verifiedCapacity = verified.status === "OK" ? verified.input : null;
+  const verifiedMissing =
+    verified.status === "OK"
+      ? verified.input.missingInputs
+      : verified.status === "AMBIGUOUS"
+        ? [`ambiguous_approved_snapshots:${verified.snapshotIds.join(",")}`]
+        : verified.missingInputs;
   const mergedMissing = [
     ...missingInputs.filter((m) => m !== "APPROVED_NorthStar_snapshot" && m !== "contractual_cutoff"),
     ...leverageIr.missingInputs,
-    ...(verified.status === "OK" ? verified.input.missingInputs : verified.missingInputs),
+    ...verifiedMissing,
   ];
 
   return {

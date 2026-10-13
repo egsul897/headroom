@@ -14,16 +14,12 @@ import {
   loadApprovedSnapshotsFromPrisma,
   loadCutoffEligibleSnapshotsFromPrisma,
   loadLedgerUsagesFromPrisma,
-  resolveContractualSelector,
+  resolveAuthoritativeCutoff,
   type DeliveryRecord,
   type FiscalCalendar,
   type NamedContractualSelector,
 } from "@/lib/contract-model/north-star-bridge";
 import { loadCapacityReadiness, type CapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
-import {
-  bindSnapshotForDeliveredCutoff,
-  deliveriesFromApprovedSnapshots,
-} from "./certificate-deliveries";
 
 export type WorkflowStepStatus = "READY" | "MISSING" | "PARTIAL" | "LEGACY_ONLY";
 
@@ -80,12 +76,6 @@ export async function loadTransactionWorkflowReadiness(
     fiscalYearEndMonth: 12,
     fiscalYearEndDay: 31,
   };
-  // PAI-11 / landing gate: never invent delivery from period asOf or approval reviewedAt.
-  // Require persisted provenance.deliveredAtIsoDate (set at propose / certificate intake).
-  // Include SUPERSEDED so historical eval dates retain prior deliveries.
-  const deliveries =
-    opts?.deliveries ?? deliveriesFromApprovedSnapshots(companyId, cutoffEligible);
-
   let cutoff: TransactionWorkflowReadiness["cutoff"];
   // Do not default evaluation date to "today" — that reintroduces latest-quarter behavior.
   if (!opts?.evaluationDate) {
@@ -94,36 +84,17 @@ export async function loadTransactionWorkflowReadiness(
       reason: "transaction/evaluation date required before cutoff resolution",
       missing: ["evaluationDate"],
     };
-  } else if (opts?.selector || approved.length > 0) {
-    const resolved = resolveContractualSelector({
+  } else if (opts?.selector || approved.length > 0 || cutoffEligible.length > 0) {
+    // P0: persisted-delivery-only — approval never establishes delivery.
+    // Cutoff-eligible includes SUPERSEDED for historical delivery binding.
+    cutoff = resolveAuthoritativeCutoff({
       companyId,
       evaluationDate: opts.evaluationDate,
+      approved: cutoffEligible,
       selector: opts?.selector ?? "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
       fiscalCalendar,
-      deliveries,
+      deliveries: opts?.deliveries,
     });
-    if (resolved.state === "RESOLVED") {
-      const bound = bindSnapshotForDeliveredCutoff({
-        companyId,
-        evaluationDate: opts.evaluationDate,
-        resolved,
-        snapshots: cutoffEligible,
-      });
-      cutoff = {
-        state: bound.state,
-        reportingPeriodKey: resolved.reportingPeriodKey,
-        asOf: resolved.asOf.kind === "EXACT_DATE" ? resolved.asOf.isoDate : null,
-        snapshotId: bound.state === "RESOLVED" ? bound.snapshotId : null,
-        reason: bound.state !== "RESOLVED" ? ("reason" in bound ? bound.reason : undefined) : undefined,
-        missing: bound.state === "NEEDS_INPUT" ? bound.missing : undefined,
-      };
-    } else {
-      cutoff = {
-        state: resolved.state,
-        reason: resolved.reason,
-        missing: resolved.state === "NEEDS_INPUT" ? resolved.missing : undefined,
-      };
-    }
   }
 
   const blockers: string[] = [...legacyCapacity.blockers];

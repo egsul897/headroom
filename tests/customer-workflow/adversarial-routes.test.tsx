@@ -140,6 +140,21 @@ describe("missing utilization", () => {
       expect(side.remaining.status).not.toBe("VERIFIED_EXECUTABLE");
     }
   });
+
+  it("Position lastVerifiedEvidenceDate stays null even when NS-4 APPROVED counts exist", () => {
+    const view = buildPositionView({
+      companyId: "adv-co",
+      dashboard: null,
+      readiness: {
+        ...readinessBase,
+        ns4ApprovedSnapshotCount: 2,
+        approvedNorthStarSnapshotCount: 2,
+      },
+      rulebook: rulebookBase,
+    });
+    // Delivery / approval / completeness axes are distinct — never copy period-end asOf.
+    expect(view.lastVerifiedEvidenceDate).toBeNull();
+  });
 });
 
 describe("missing authenticated financials", () => {
