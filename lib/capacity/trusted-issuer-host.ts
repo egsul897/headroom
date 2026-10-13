@@ -61,6 +61,32 @@ export const TRUSTED_ISSUER_ACTIVATION: {
     "No production HostIdentityProvider is registered — session/service-account identity cannot be verified in this repository surface. Production trusted-issuer authority remains fail-closed.",
 };
 
+/**
+ * Test-only override of the repository-level activation gate.
+ * Never flips TRUSTED_ISSUER_ACTIVATION (production constant stays BLOCKED).
+ * Null = use production constant.
+ */
+let testRepoActivationOverride: TrustedIssuerActivationStatus | null = null;
+
+/**
+ * Isolated test injection for future ACTIVE-authority behavior.
+ * Does not enable production identity; TRUSTED_ISSUER_ACTIVATION remains BLOCKED.
+ */
+export function injectTrustedIssuerRepoActivationForTests(
+  status: TrustedIssuerActivationStatus | null,
+  opts: { allowTestInjection: true },
+): void {
+  if (opts.allowTestInjection !== true) {
+    throw new Error("trusted-issuer repo activation injection refused");
+  }
+  testRepoActivationOverride = status;
+}
+
+/** Effective repository activation — production constant unless test override set. */
+export function effectiveTrustedIssuerRepoActivation(): TrustedIssuerActivationStatus {
+  return testRepoActivationOverride ?? TRUSTED_ISSUER_ACTIVATION.status;
+}
+
 let registeredProvider: HostIdentityProvider | null = null;
 
 /**

@@ -38,7 +38,10 @@ import {
 import { validateFinancialEvidenceBundle } from "./adapters/financial-evidence";
 import { evaluateOperativeSourceAuthority } from "./adapters/operative-authority";
 import { evaluateUtilizationAuthorityGate } from "./adapters/utilization";
-import { brandCanonicalUnifiedTransactionExecutionResult } from "./canonical-result";
+import {
+  brandCanonicalUnifiedTransactionExecutionResult,
+  installCanonicalExecutionBrandMinterForExecuteModule,
+} from "./canonical-result";
 import {
   UNIFIED_TRANSACTION_EXECUTION_VERSION,
   type BindingConstraint,
@@ -49,6 +52,11 @@ import {
   type UnifiedTransactionExecutionRequest,
   type UnifiedTransactionExecutionResult,
 } from "./types";
+
+/** Sole brand capability — not exported; deep-import callers cannot obtain it. */
+const CANONICAL_BRAND_MINTER = installCanonicalExecutionBrandMinterForExecuteModule({
+  module: "verified-transaction-execution/execute",
+});
 
 function moneyCapNode(ruleId: string): string {
   return `capacity:rule:${ruleId}`;
@@ -790,75 +798,86 @@ export async function executeUnifiedVerifiedTransaction(
   const uniqueCitations = [...new Set(sourceCitations.filter(Boolean))].sort();
   const uniqueBlockers = [...new Set(blockers)];
 
-  return brandCanonicalUnifiedTransactionExecutionResult({
-    contractVersion: UNIFIED_TRANSACTION_EXECUTION_VERSION,
-    executionStatus: finalStatus,
-    mode,
-    productionAuthority,
-    legalPath: {
-      pathId: path.pathId,
-      ruleIds: [...path.ruleIds],
-      label: path.label,
-      selected: true,
+  return brandCanonicalUnifiedTransactionExecutionResult(
+    {
+      contractVersion: UNIFIED_TRANSACTION_EXECUTION_VERSION,
+      executionStatus: finalStatus,
+      mode,
+      productionAuthority,
+      legalPath: {
+        pathId: path.pathId,
+        ruleIds: [...path.ruleIds],
+        label: path.label,
+        selected: true,
+      },
+      sourceCitations: uniqueCitations,
+      financialInputs: {
+        validation: financial,
+        metrics: request.financialEvidence.metrics.map((m) => ({
+          metricKey: m.metricKey,
+          value: m.value,
+          currency: m.currency,
+          authenticity: m.authenticity,
+          verificationStatus: m.verificationStatus,
+          provenanceId: m.provenanceId,
+        })),
+      },
+      bindingConstraints,
+      capacityEffects: {
+        preStatus,
+        postSelectedPathResult,
+        simulationStatus,
+        sharedPoolIds: [...path.sharedCapacityIds],
+        consumedNodeIds: selectedPath?.capacityNodeIds ?? [],
+        grossCapacityLabel: preStatus,
+        remainingPublicationAllowed:
+          util.supportsRemainingClaim && util.productionAuthoritative,
+        utilizationKnowledge: util.knowledge,
+      },
+      missingInputs: [...new Set(missingInputs)],
+      conditions: [...new Set(conditions)],
+      utilizationAuthority: {
+        supportsRemainingClaim: util.supportsRemainingClaim,
+        productionAuthoritative: util.productionAuthoritative,
+        knowledge: util.knowledge,
+        blockers: util.blockers,
+        resolution: util.resolution,
+      },
+      operativeAuthority: operative,
+      postStateIdentity: {
+        packageHash:
+          capacity != null
+            ? capacity.packageHash
+            : null,
+        transactionId: transaction?.transactionId ?? transactionId,
+        evaluationDate: request.transaction.date,
+        stateHash,
+      },
+      trace,
+      blockers: uniqueBlockers,
+      verified: {
+        capacity,
+        simulation,
+        selectedPath,
+        transaction,
+      },
+      limitations: [...new Set(limitations)],
+      note:
+        finalStatus === "REFUSED"
+          ? "Unified verified transaction execution refused — fail-closed; do not invent capacity or promote authority."
+          : productionAuthority === "HYPOTHETICAL_ONLY" ||
+              productionAuthority === "PRODUCTION_AUTHORITY_BLOCKED"
+            ? "Hypothetical / non-production result under verified-execution REQUIRE. Production authority remains BLOCKED."
+            : "Verified transaction executed under REQUIRE with production authority classification.",
     },
-    sourceCitations: uniqueCitations,
-    financialInputs: {
-      validation: financial,
-      metrics: request.financialEvidence.metrics.map((m) => ({
-        metricKey: m.metricKey,
-        value: m.value,
-        currency: m.currency,
-        authenticity: m.authenticity,
-        verificationStatus: m.verificationStatus,
-        provenanceId: m.provenanceId,
-      })),
+    CANONICAL_BRAND_MINTER,
+    {
+      companyId: request.companyId,
+      instrumentKey: request.instrumentKey,
+      transactionType: request.transaction.type,
+      transactionAmount: request.transaction.amount,
+      transactionCurrency: request.transaction.currency,
+      operativeDocumentId: request.operativeSourceAuthority.sourceDocumentId || null,
     },
-    bindingConstraints,
-    capacityEffects: {
-      preStatus,
-      postSelectedPathResult,
-      simulationStatus,
-      sharedPoolIds: [...path.sharedCapacityIds],
-      consumedNodeIds: selectedPath?.capacityNodeIds ?? [],
-      grossCapacityLabel: preStatus,
-      remainingPublicationAllowed:
-        util.supportsRemainingClaim && util.productionAuthoritative,
-      utilizationKnowledge: util.knowledge,
-    },
-    missingInputs: [...new Set(missingInputs)],
-    conditions: [...new Set(conditions)],
-    utilizationAuthority: {
-      supportsRemainingClaim: util.supportsRemainingClaim,
-      productionAuthoritative: util.productionAuthoritative,
-      knowledge: util.knowledge,
-      blockers: util.blockers,
-      resolution: util.resolution,
-    },
-    operativeAuthority: operative,
-    postStateIdentity: {
-      packageHash:
-        capacity != null
-          ? capacity.packageHash
-          : null,
-      transactionId: transaction?.transactionId ?? transactionId,
-      evaluationDate: request.transaction.date,
-      stateHash,
-    },
-    trace,
-    blockers: uniqueBlockers,
-    verified: {
-      capacity,
-      simulation,
-      selectedPath,
-      transaction,
-    },
-    limitations: [...new Set(limitations)],
-    note:
-      finalStatus === "REFUSED"
-        ? "Unified verified transaction execution refused — fail-closed; do not invent capacity or promote authority."
-        : productionAuthority === "HYPOTHETICAL_ONLY" ||
-            productionAuthority === "PRODUCTION_AUTHORITY_BLOCKED"
-          ? "Hypothetical / non-production result under verified-execution REQUIRE. Production authority remains BLOCKED."
-          : "Verified transaction executed under REQUIRE with production authority classification.",
-  });
+  );
 }

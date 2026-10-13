@@ -30,7 +30,10 @@ export {
   isCanonicalUnifiedTransactionExecutionResult,
   readCanonicalExecutionPermissionSnapshot,
   type CanonicalExecutionPermissionSnapshot,
+  type CanonicalBrandIdentity,
 } from "./canonical-result";
+// brandCanonicalUnifiedTransactionExecutionResult + install minter are NOT
+// re-exported — only executeUnifiedVerifiedTransaction may brand.
 
 export {
   toProductExecutionHandoff,
