@@ -1,0 +1,461 @@
+{
+  "schema": "cfo-secured-debt-workflow.v1",
+  "evaluatedAt": "2026-10-13T14:57:22.216Z",
+  "gitSha": "0fe8c6c281a6db9eefbb46010d3f79c8234511ed",
+  "package": {
+    "key": "matthews-international-q1-fy2025",
+    "companyId": "matthews",
+    "authenticity": "AUTHENTIC_SOURCE_BACKED",
+    "asOf": "2024-12-31",
+    "governingDocuments": [
+      {
+        "id": "matw-2027-second-lien-notes-indenture",
+        "name": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+        "accession": "0001193125-24-228450",
+        "role": "OPERATIVE_INDENTURE"
+      },
+      {
+        "id": "matw-credit-agreement-2020",
+        "name": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment)",
+        "accession": "0000063296-20-000040",
+        "role": "OPERATIVE_CREDIT_AGREEMENT"
+      },
+      {
+        "id": "matw-10q-2024-12-31",
+        "name": "Form 10-Q quarter ended 2024-12-31",
+        "accession": "0000063296-25-000006",
+        "role": "FINANCIAL_EVIDENCE"
+      }
+    ]
+  },
+  "ask": "As of 2024-12-31, is a proposed $50 million secured debt transaction permitted under our Indenture and Credit Agreement?",
+  "draft": {
+    "rawQuestion": "As of 2024-12-31, is a proposed $50 million secured debt transaction permitted under our Indenture and Credit Agreement?",
+    "evaluationDate": "2024-12-31",
+    "amountMillions": 50,
+    "kind": "SECURED_DEBT",
+    "secured": true,
+    "missingConfirmations": []
+  },
+  "auditTrail": {
+    "sources": [
+      {
+        "id": "matw-2027-second-lien-notes-indenture",
+        "label": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+        "accession": "0001193125-24-228450"
+      },
+      {
+        "id": "matw-credit-agreement-2020",
+        "label": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment)",
+        "accession": "0000063296-20-000040"
+      },
+      {
+        "id": "matw-10q-2024-12-31",
+        "label": "Form 10-Q quarter ended 2024-12-31",
+        "accession": "0000063296-25-000006"
+      },
+      {
+        "id": "matthews-q1-fy2025-slice",
+        "label": "Authentic financial/utilization fixture",
+        "path": "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",
+        "accession": "0000063296-25-000006"
+      },
+      {
+        "id": "source-excerpts-matthews",
+        "label": "In-repo reconstructed operative excerpts",
+        "path": "lib/product/real-dashboard-vertical-slice/source-excerpts-matthews.ts"
+      }
+    ],
+    "assumptions": [
+      "Evaluation uses AUTHENTIC_SOURCE_BACKED Matthews Q1 FY2025 fixture — not NS-4 APPROVED.",
+      "Modeled leaf rooms are NOT verified remaining.",
+      "verifiedPackage intentionally null — no Matthews VEP on main.",
+      "Secured dual-path CERTIFIED_4E not claimed; CA lien structural zero is leaf-encoded.",
+      "Recipe draws empty — capacity node ids not invented.",
+      "Vertical-slice verdict: FIXTURE_MODELED_DASHBOARD_PARTIAL"
+    ],
+    "calculations": [
+      {
+        "label": "ind_permitted_debt_1a_flat modeled capacity",
+        "detail": "max(0, $1300M − secured debt outstanding) → modeled=521.118 mm; remaining published=null; authority=GROSS_ONLY_UTILIZATION_INCOMPLETE"
+      },
+      {
+        "label": "ind_ratio_debt_fccr modeled capacity",
+        "detail": "max(0, (EBITDA/2 − InterestExpense) / assumedNewDebtRate) → modeled=110.33623188405791 mm; remaining published=null; authority=MODELED_AUTHENTIC_EVIDENCE"
+      },
+      {
+        "label": "ind_permitted_debt_1b_ratio_secured modeled capacity",
+        "detail": "max(0, 3.5×EBITDA − net secured debt) → modeled=0 mm; remaining published=null; authority=MODELED_AUTHENTIC_EVIDENCE"
+      },
+      {
+        "label": "ind_permitted_debt_2_notes modeled capacity",
+        "detail": "flat $300M → modeled=300 mm; remaining published=null; authority=MODELED_AUTHENTIC_EVIDENCE"
+      },
+      {
+        "label": "ca_lien_601j_2024notes modeled capacity",
+        "detail": "flat $0M → modeled=0 mm; remaining published=null; authority=STRUCTURAL_ZERO"
+      },
+      {
+        "label": "VE fixed-dollar bridge (Permitted Debt 1a)",
+        "detail": "candidates=3; compile units feeding Position GROSS only; production remaining refused"
+      },
+      {
+        "label": "Cross-domain modeled refinancing scenario",
+        "detail": "overallStatus=blocked for $50M secured (SSNL room probe)"
+      }
+    ],
+    "unresolvedConditions": [
+      "NO_MATTHEWS_VERIFIED_EXECUTION_PACKAGE",
+      "NO_UTILIZATION_COMPLETENESS_CERTIFICATE",
+      "TRUSTED_ISSUER_ACTIVATION=BLOCKED",
+      "TRUSTED_IDENTITY_PRODUCTION=BLOCKED",
+      "CA_LIEN_601J_STRUCTURAL_ZERO_BLOCKS_NEW_LOAN_PARTY_SECURED_LIENS",
+      "SECURED_COMPOSITION_HYPOTHETICAL_UNVERIFIED",
+      "NS4_APPROVED_SNAPSHOT_ABSENT_FOR_MATTHEWS_OFFLINE_SLICE",
+      "DUAL_PATH_DEBT_PLUS_LIEN_NOT_CERTIFIED_4E",
+      "ALTERNATIVE_DEBT_LIEN_PATHS_NOT_FULLY_CERTIFIED",
+      "SUBSIDIARY_MODELED_SSNL_PATH_BLOCKED"
+    ],
+    "gates": [
+      {
+        "gate": "FINANCIAL_EVIDENCE_DATE_BINDING",
+        "status": "BOUND",
+        "detail": "requested=2024-12-31; supported=2024-12-31"
+      },
+      {
+        "gate": "CERTIFIED_4E_PATH_ENUMERATION",
+        "status": "NOT_CERTIFIED_4E",
+        "detail": "NO_VERIFIED_EXECUTION_PACKAGE"
+      },
+      {
+        "gate": "VERIFIED_SIMULATE",
+        "status": "REFUSED",
+        "detail": "NO_VERIFIED_EXECUTION_PACKAGE | NO_CANDIDATE_PATHS"
+      },
+      {
+        "gate": "UTILIZATION_COMPLETENESS",
+        "status": "ABSENT",
+        "detail": "supportsRemainingClaim=false"
+      },
+      {
+        "gate": "TRUSTED_ISSUER",
+        "status": "BLOCKED",
+        "detail": "No production identity provider is present in this repository. Login is a free-text reviewer name (localStorage); there is no lib/auth.ts, no session store, and no service-account verifier. Production trusted-identity authority remains fail-closed."
+      },
+      {
+        "gate": "NS4_APPROVED_FINANCIALS",
+        "status": "ABSENT",
+        "detail": "Offline slice uses UNVERIFIED_EXTRACTION / PUBLIC_FILING_RECONSTRUCTION — not APPROVED"
+      },
+      {
+        "gate": "VE_FIXED_DOLLAR_GROSS",
+        "status": "PARTIAL",
+        "detail": "Bridge compile present for discovery candidates; feeds SOURCE_BACKED_COMPILED_GROSS only (units=3)"
+      },
+      {
+        "gate": "MODELED_SSNL_SUBSIDIARY",
+        "status": "BLOCKED_SUBSIDIARY_ONLY",
+        "detail": "Does not alone decide overall NOT_PERMITTED"
+      }
+    ]
+  },
+  "applicableCovenants": [
+    {
+      "code": "ind_permitted_debt_1a_flat",
+      "family": "INDEBTEDNESS",
+      "governingDocument": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+      "sourceCitation": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(a)",
+      "formula": "max(0, $1300M − secured debt outstanding)",
+      "modeledCapacityMm": 521.118,
+      "remainingCapacityMm": null,
+      "authorityStatus": "GROSS_ONLY_UTILIZATION_INCOMPLETE",
+      "caveats": [
+        "FLAT_NET_OF_DEBT nets company-wide secured debt (conservative understatement vs Debt-Facilities-specific outstanding).",
+        "No reviewer-confirmed utilization completeness certificate — production remaining refused."
+      ]
+    },
+    {
+      "code": "ind_ratio_debt_fccr",
+      "family": "INDEBTEDNESS",
+      "governingDocument": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+      "sourceCitation": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — §4.09(a)",
+      "formula": "max(0, (EBITDA/2 − InterestExpense) / assumedNewDebtRate)",
+      "modeledCapacityMm": 110.33623188405791,
+      "remainingCapacityMm": null,
+      "authorityStatus": "MODELED_AUTHENTIC_EVIDENCE",
+      "caveats": [
+        "D3b: modeled FCCR dollar-converted room is not published as remainingCapacityMm."
+      ]
+    },
+    {
+      "code": "ind_permitted_debt_1b_ratio_secured",
+      "family": "INDEBTEDNESS",
+      "governingDocument": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+      "sourceCitation": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(b)(x)",
+      "formula": "max(0, 3.5×EBITDA − net secured debt)",
+      "modeledCapacityMm": 0,
+      "remainingCapacityMm": null,
+      "authorityStatus": "MODELED_AUTHENTIC_EVIDENCE",
+      "caveats": [
+        "First Lien Net Leverage ≤ 2.50x sub-test (cl. (1)(b)(y)) is not separately modeled.",
+        "D3b: modeled Secured Net Leverage room is not published as remainingCapacityMm."
+      ]
+    },
+    {
+      "code": "ind_permitted_debt_2_notes",
+      "family": "INDEBTEDNESS",
+      "governingDocument": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+      "sourceCitation": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (2)",
+      "formula": "flat $300M",
+      "modeledCapacityMm": 300,
+      "remainingCapacityMm": null,
+      "authorityStatus": "MODELED_AUTHENTIC_EVIDENCE",
+      "caveats": [
+        "Grandfather for Issue-Date Notes — zero NEW capacity while Notes remain outstanding."
+      ]
+    },
+    {
+      "code": "ca_lien_601j_2024notes",
+      "family": "LIENS",
+      "governingDocument": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment)",
+      "sourceCitation": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment) — §6.01(j), as restated by Sixth Amendment",
+      "formula": "flat $0M",
+      "modeledCapacityMm": 0,
+      "remainingCapacityMm": null,
+      "authorityStatus": "STRUCTURAL_ZERO",
+      "caveats": [
+        "Sixth Amendment deleted general Loan-Party secured-lien basket; only 2024 Note Offering exception remains."
+      ]
+    }
+  ],
+  "operativeAndAmendmentState": {
+    "documents": [
+      {
+        "id": "matw-2027-second-lien-notes-indenture",
+        "name": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+        "role": "OPERATIVE_INDENTURE",
+        "accession": "0001193125-24-228450"
+      },
+      {
+        "id": "matw-credit-agreement-2020",
+        "name": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment)",
+        "role": "OPERATIVE_CREDIT_AGREEMENT",
+        "accession": "0000063296-20-000040"
+      },
+      {
+        "id": "matw-10q-2024-12-31",
+        "name": "Form 10-Q quarter ended 2024-12-31",
+        "role": "FINANCIAL_EVIDENCE",
+        "accession": "0000063296-25-000006"
+      }
+    ],
+    "amendmentNotes": [
+      "CA §6.01(j) leaf cites Sixth Amendment restatement (structural zero for NEW Loan-Party liens other than 2024 Notes) — source-backed caveat on modeled leaf.",
+      "Full as-amended operative IR package for the credit agreement is NOT product-bound; amendment precedence libraries exist but are not CERTIFIED for this package.",
+      "Indenture operative excerpts are AUTHENTIC_EDGAR_RECONSTRUCTED — not a Phase-3 certified operative-state seal."
+    ],
+    "operativeStateStatus": "PARTIAL_LEAF_ENCODED"
+  },
+  "debtBasketsAndRatioConditions": [
+    {
+      "code": "ind_permitted_debt_1a_flat",
+      "kind": "FIXED_DOLLAR",
+      "condition": "max(0, $1300M − secured debt outstanding)",
+      "modeledRoomMm": 521.118,
+      "remainingPublished": null
+    },
+    {
+      "code": "ind_ratio_debt_fccr",
+      "kind": "RATIO",
+      "condition": "max(0, (EBITDA/2 − InterestExpense) / assumedNewDebtRate)",
+      "modeledRoomMm": 110.33623188405791,
+      "remainingPublished": null
+    },
+    {
+      "code": "ind_permitted_debt_1b_ratio_secured",
+      "kind": "RATIO",
+      "condition": "max(0, 3.5×EBITDA − net secured debt)",
+      "modeledRoomMm": 0,
+      "remainingPublished": null
+    },
+    {
+      "code": "ind_permitted_debt_2_notes",
+      "kind": "GRANDFATHER",
+      "condition": "flat $300M",
+      "modeledRoomMm": 300,
+      "remainingPublished": null
+    },
+    {
+      "code": "ca_lien_601j_2024notes",
+      "kind": "STRUCTURAL",
+      "condition": "flat $0M",
+      "modeledRoomMm": 0,
+      "remainingPublished": null
+    }
+  ],
+  "approvedFinancialInputs": {
+    "ns4ApprovedPresent": false,
+    "fixtureProvenance": "AUTHENTIC_SOURCE_BACKED · accession 0000063296-25-000006 · period FY2025-Q1",
+    "lines": [
+      {
+        "metric": "Total assets",
+        "value": "1791.719",
+        "authority": "AUTHENTIC_FIXTURE_UNVERIFIED_EXTRACTION"
+      },
+      {
+        "metric": "Cash and cash equivalents",
+        "value": "33.513",
+        "authority": "AUTHENTIC_FIXTURE_UNVERIFIED_EXTRACTION"
+      },
+      {
+        "metric": "Interest expense",
+        "value": "54.64",
+        "authority": "AUTHENTIC_FIXTURE_UNVERIFIED_EXTRACTION"
+      },
+      {
+        "metric": "Total debt",
+        "value": "809.211",
+        "authority": "AUTHENTIC_FIXTURE_UNVERIFIED_EXTRACTION"
+      },
+      {
+        "metric": "Secured debt",
+        "value": "778.882",
+        "authority": "AUTHENTIC_FIXTURE_UNVERIFIED_EXTRACTION"
+      },
+      {
+        "metric": "Consolidated EBITDA (Indenture-defined, TTM)",
+        "value": "128.313",
+        "authority": "AUTHENTIC_FIXTURE_UNVERIFIED_EXTRACTION"
+      },
+      {
+        "metric": "Total assets (GAAP face — not auto-mapped to Consolidated Total Assets)",
+        "value": "1791.719",
+        "authority": "AUTHENTIC_FIXTURE_UNVERIFIED_EXTRACTION"
+      }
+    ],
+    "note": "APPROVED NS-4 snapshot not present for this offline demonstration. Fixture figures are shown with non-APPROVED authority labels only."
+  },
+  "utilizationAndRemaining": {
+    "attributedEventCount": 2,
+    "attributedAmountMm": 778.8820000000001,
+    "supportsRemainingClaim": false,
+    "completenessCertificatePresent": false,
+    "unknownHistoricalActivity": true,
+    "trustedIssuerActivation": "BLOCKED",
+    "verifiedRemainingUsd": null,
+    "productionHandoffRefused": true
+  },
+  "pathAndSimulation": {
+    "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
+    "pathCount": 0,
+    "selectedPathId": null,
+    "verifiedSimulateExecutable": false,
+    "verifiedSimulateInvoked": true,
+    "simulationOutcome": null,
+    "refusalSummary": [
+      "NO_VERIFIED_EXECUTION_PACKAGE",
+      "NO_CANDIDATE_PATHS"
+    ],
+    "certifiedBlockers": [
+      "NO_VERIFIED_EXECUTION_PACKAGE"
+    ],
+    "recipeLimitations": [
+      {
+        "code": "MISSING_CAPACITY_NODE",
+        "message": "Secured borrowing requires explicit capacity draws (debt and/or lien paths)"
+      }
+    ],
+    "modeledScenarioOverall": "blocked"
+  },
+  "subsidiaryFindings": [
+    {
+      "code": "ind_permitted_debt_1a_flat",
+      "kind": "DEBT_ALTERNATIVE",
+      "status": "MODELED_LEAF_PRESENT_NOT_CERTIFIED",
+      "detail": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(a) · modeledCapacityMm=521.118 · remaining=null · GROSS_ONLY_UTILIZATION_INCOMPLETE"
+    },
+    {
+      "code": "ind_ratio_debt_fccr",
+      "kind": "DEBT_ALTERNATIVE",
+      "status": "MODELED_LEAF_PRESENT_NOT_CERTIFIED",
+      "detail": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — §4.09(a) · modeledCapacityMm=110.33623188405791 · remaining=null · MODELED_AUTHENTIC_EVIDENCE"
+    },
+    {
+      "code": "ind_permitted_debt_1b_ratio_secured",
+      "kind": "DEBT_ALTERNATIVE",
+      "status": "MODELED_ROOM_ZERO_NOT_OVERALL_REFUSAL",
+      "detail": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(b)(x) · modeledCapacityMm=0 · remaining=null · MODELED_AUTHENTIC_EVIDENCE"
+    },
+    {
+      "code": "ind_permitted_debt_2_notes",
+      "kind": "DEBT_ALTERNATIVE",
+      "status": "GRANDFATHER_NO_NEW_CAPACITY_NOT_CERTIFIED",
+      "detail": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (2) · modeledCapacityMm=300 · remaining=null · MODELED_AUTHENTIC_EVIDENCE"
+    },
+    {
+      "code": "ca_lien_601j_2024notes",
+      "kind": "LIEN_COMPANION",
+      "status": "GRANDFATHER_NO_NEW_CAPACITY_NOT_CERTIFIED",
+      "detail": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment) — §6.01(j), as restated by Sixth Amendment · modeledCapacityMm=0 · remaining=null · STRUCTURAL_ZERO"
+    },
+    {
+      "code": "MODELED_SSNL_REFINANCING_SCENARIO",
+      "kind": "MODELED_SCENARIO",
+      "status": "MODELED_SSNL_PATH_BLOCKED",
+      "detail": "Modeled Indenture secured-net-leverage room is $0 for $50M as-of (SSNL already above 3.50x). Subsidiary finding only — not overall NOT_PERMITTED while other debt/lien alternatives remain incompletely certified."
+    }
+  ],
+  "financialEvidenceBinding": {
+    "requestedEvaluationDate": "2024-12-31",
+    "supportedFixtureAsOf": "2024-12-31",
+    "matched": true,
+    "status": "BOUND"
+  },
+  "result": "NEEDS_INPUT",
+  "resultRationale": "Overall permission is NEEDS_INPUT: relevant debt and lien alternatives have not been fully evaluated under CERTIFIED_4E / verified simulate. Modeled SSNL blockage (if any) is a subsidiary finding only — not an overall NOT_PERMITTED determination. Verified remaining stays null; certified simulation unavailable.",
+  "customerCanDoToday": [
+    "Select the authentic Matthews package and ask a dated $50M secured-debt question with structured draft parsing.",
+    "Receive every applicable modeled covenant with document name + section citation + formula + authority label.",
+    "See operative documents (Indenture + CA + 10-Q) and explicit amendment-state limitations (Sixth Amendment leaf-encoded).",
+    "Inspect debt baskets and ratio conditions with modeled rooms and remaining forced null.",
+    "Read financial fixture provenance labeled non-APPROVED (never as NS-4 APPROVED).",
+    "See utilization completeness absent and verified remaining null — UNKNOWN not treated as zero.",
+    "Run verified simulate (REQUIRE bridge) and get an explicit REFUSED outcome with blockers — no silent path invent.",
+    "Export a single audit trail JSON covering sources, assumptions, calculations, gates, and unresolved conditions.",
+    "Receive NEEDS_INPUT overall until debt/lien alternatives are CERTIFIED — modeled SSNL blockage is subsidiary only; never false PERMITTED.",
+    "See fail-closed NEEDS_INPUT when the requested evaluation date is not the supported fixture as-of."
+  ],
+  "requiredExternalEvidence": [
+    {
+      "evidence": "Phase-3 CERTIFIED IR → VerifiedExecutionPackage for Indenture debt + CA lien companion",
+      "whyRequired": "CERTIFIED_4E path enumeration and verified simulate require authentic VEP",
+      "status": "ABSENT"
+    },
+    {
+      "evidence": "NS-4 APPROVED financial snapshot bound to evaluation cutoff",
+      "whyRequired": "Production capacity / ratio recompute under verified gates",
+      "status": "PARTIAL_FIXTURE_ONLY"
+    },
+    {
+      "evidence": "Reviewer-confirmed utilization completeness certificate + trusted issuer activation",
+      "whyRequired": "Verified remaining publication (UNKNOWN util must not become zero)",
+      "status": "ABSENT"
+    },
+    {
+      "evidence": "Certified as-amended operative state for CA through Sixth Amendment (not leaf-only)",
+      "whyRequired": "Operative amendment precedence for lien companion",
+      "status": "PARTIAL_FIXTURE_ONLY"
+    }
+  ],
+  "workflowVerdict": "CUSTOMER_WORKFLOW_PARTIAL",
+  "constraintsHonored": [
+    "no fabricated Phase-3 / VEP / CERTIFIED_4E",
+    "no PERMITTED without genuine gates",
+    "no overall NOT_PERMITTED from modeled SSNL alone",
+    "financial evidence date bound — unsupported dates fail closed",
+    "verified remaining forced null",
+    "no competing engine — reused vertical slice, VE bridge, path enum, verified simulate, recipes, cross-domain modeled scenario",
+    "no Neon writes / no paid inference",
+    "no self-merge"
+  ]
+}

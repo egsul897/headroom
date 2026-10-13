@@ -18,3 +18,4 @@ export * from "./assert-page-access";
 export * from "./select-source-backed-gross";
 
 export * from "./cross-domain-capacity";
+export * from "./cfo-secured-debt-entry";
