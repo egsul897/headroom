@@ -127,33 +127,49 @@ export function buildPositionView(args: {
 
   const sides: PositionSideClaim[] = (["secured", "unsecured"] as const).map((side) => {
     const sim = dashboard?.capacity[side];
-    const remainingAmount = sim?.remainingCapacity;
     const packageAuth = sim?.packageAuthoritative;
-    // Authoritative remaining requires ProductCapacityView / separatedClaims (#328),
-    // never dashboard utilizationRemainingAuthority alone. PAI-08 (#330): non-authoritative
-    // modeled dollars are GROSS_CONTRACTUAL, never claimKind REMAINING / AVAILABLE.
+    // #328: dashboard utilizationRemainingAuthority / remainingCapacity alone must NEVER
+    // publish AVAILABLE remaining. Authoritative remaining requires separatedClaims.
+    // PAI-08 refinement (#333 / #330 absorb): legacy remainingCapacity is NOT source-backed
+    // gross — never auto-relabel it GROSS_CONTRACTUAL. Publish GROSS only from
+    // separatedClaims.grossContractual (ProductCapacityView.grossCapacity); otherwise UNAVAILABLE.
     const separated = args.separatedClaims?.[side];
     const productionAuthoritative = separated?.remainingAuthoritative === true;
-    const amountMillions = productionAuthoritative
-      ? separated!.verifiedRemaining.amountMillions
-      : remainingAmount ?? null;
-    const claimKind =
-      amountMillions === null || amountMillions === undefined
-        ? "UNAVAILABLE"
-        : productionAuthoritative
-          ? "REMAINING"
-          : "GROSS_CONTRACTUAL";
+    const sourceBackedGrossMm =
+      separated?.grossContractual.claimKind === "GROSS_CONTRACTUAL" &&
+      separated.grossContractual.amountMillions != null &&
+      Number.isFinite(separated.grossContractual.amountMillions)
+        ? separated.grossContractual.amountMillions
+        : null;
+
+    let claimKind: "REMAINING" | "GROSS_CONTRACTUAL" | "UNAVAILABLE";
+    let amountMillions: number | null;
+    let publicationLabel: string;
+    let unavailableReason: string | null;
+    if (productionAuthoritative) {
+      claimKind = "REMAINING";
+      amountMillions = separated!.verifiedRemaining.amountMillions ?? null;
+      publicationLabel = "AVAILABLE";
+      unavailableReason = null;
+    } else if (sourceBackedGrossMm != null) {
+      claimKind = "GROSS_CONTRACTUAL";
+      amountMillions = sourceBackedGrossMm;
+      publicationLabel = "GROSS_CONTRACTUAL";
+      unavailableReason = null;
+    } else {
+      claimKind = "UNAVAILABLE";
+      amountMillions = null;
+      publicationLabel = "UNKNOWN";
+      unavailableReason =
+        "No source-backed gross contractual amount and no production-authoritative remaining for this side — legacy remainingCapacity is withheld (not published as GROSS).";
+    }
+
     const remaining = presentCapacityClaim({
       claimKind,
       amountMillions,
       remainingIsAuthoritative: productionAuthoritative,
-      publicationLabel: productionAuthoritative
-        ? "AVAILABLE"
-        : "GROSS_CONTRACTUAL",
-      unavailableReason:
-        amountMillions === null || amountMillions === undefined
-          ? "Remaining capacity not determinable from the shared engine for this side."
-          : null,
+      publicationLabel,
+      unavailableReason,
     });
 
     const citations: string[] = [];
