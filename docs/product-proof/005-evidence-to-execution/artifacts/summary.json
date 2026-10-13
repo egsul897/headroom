@@ -1,0 +1,45 @@
+{
+  "schema": "evidence-to-execution-demo.v1",
+  "gitSha": "7131fc8172196c30bb0878abfa26aa98260019ff",
+  "family": "RESTRICTED_PAYMENTS",
+  "section": "7.6(d)",
+  "workflowVerdict": "EVIDENCE_TO_EXECUTION_BLOCKED",
+  "irreducibleBlocker": {
+    "code": "PHASE3_SEMANTIC_VERIFICATION_NOT_CLEAN",
+    "summary": "CONMED §7.6(d) cannot enter CERTIFIED → VEP → CANDIDATE → capacity → simulate until Phase-3 semantic verification is clean. On-disk status is MATERIAL_DISCREPANCY (WRONG_ENTITY_SCOPE: Parent Borrower collapsed to BORROWER) plus UNCERTAIN MISSING_DEPENDENCY and compile SEMANTIC_ACCOUNTABILITY_INCOMPLETE. Soft gate forbids paid re-verify; no offline-clean CERTIFIED packet exists for this leaf.",
+    "requiredNextAuthenticWork": [
+      "Preserve Parent Borrower ≠ Subsidiary Borrower in IR entity representation (stop silent PARENT_BORROWER→BORROWER permission expansion, or bind a certified definition proving equivalence).",
+      "Bind Restricted Payments / Parent Borrower definitions (or fail closed with explicit limitation) so MISSING_DEPENDENCY closes.",
+      "Clear SEMANTIC_ACCOUNTABILITY_INCOMPLETE / UNKNOWN_SOURCE_COMPLETENESS so compilation can COMPLETE.",
+      "Produce offline-clean VerifiedUnitArtifact + certifyCandidate → CERTIFIED (no fabricated findings resolution).",
+      "Then DERIVED VEP → RESTRICTED_PAYMENT CANDIDATE path → REQUIRE capacity → verified simulate."
+    ]
+  },
+  "customerCapabilitiesDemonstrated": [
+    "Select one real RP family (§7.6(d)) and see the authentic operative text + EDGAR-backed population evidence bound in-repo.",
+    "Inspect a dependency-ordered evidence→execution plan with each stage marked PASSED / PARTIAL / BLOCKED from real artifacts.",
+    "See exact Phase-3 blockers (WRONG_ENTITY_SCOPE, MISSING_DEPENDENCY, SEMANTIC_ACCOUNTABILITY_INCOMPLETE) without a false CERTIFIED claim.",
+    "See that the authenticated VEP adapter spine already DERIVES a package from CERTIFIED §7.2(c) — and that its path remains UNSUPPORTED (cross-rule), so it is not a substitute eligible RP path.",
+    "Receive an explicit irreducible blocker naming the authentic work required before customer execution of §7.6(d)."
+  ],
+  "customerCapabilitiesNotClaimed": [
+    "CERTIFIED VerifiedUnitArtifact for §7.6(d)",
+    "DERIVED VEP containing §7.6(d)",
+    "Eligible CERTIFIED_4E CANDIDATE path for Restricted Payments",
+    "Verified capacity EXECUTE / numeric headroom for the $40M basket",
+    "Affirmative verified simulate PERMITTED",
+    "Verified remaining / AVAILABLE publication"
+  ],
+  "stages": {
+    "compilation": "REVIEW_REQUIRED",
+    "verification": "MATERIAL_DISCREPANCY",
+    "wouldCertify": false,
+    "vepAdapter": "DERIVED",
+    "contrast72cDerived": true,
+    "contrastPathStatuses": [
+      "UNSUPPORTED"
+    ],
+    "contrastCapacity": "REFUSED",
+    "contrastSimulateExecutable": false
+  }
+}
