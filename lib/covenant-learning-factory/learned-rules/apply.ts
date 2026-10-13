@@ -80,3 +80,18 @@ export function applyDefinitionAlias(term: string, ruleset?: LearnedRuleSet): Al
   }
   return null;
 }
+
+/**
+ * Rules that should capture missed document spans into baskets during extract.
+ * PHRASE_PATTERN with a family, plus SECTION_MAPPING (sectionFamily → family).
+ */
+export function phrasePatternCaptureRules(ruleset?: LearnedRuleSet): LearnedRule[] {
+  if (!ruleset) return [];
+  return acceptedRules(ruleset)
+    .filter(
+      (r) =>
+        (r.kind === "PHRASE_PATTERN" && Boolean(r.effect.family || r.effect.sectionFamily)) ||
+        (r.kind === "SECTION_MAPPING" && Boolean(r.effect.sectionFamily)),
+    )
+    .sort((a, b) => a.ruleId.localeCompare(b.ruleId));
+}

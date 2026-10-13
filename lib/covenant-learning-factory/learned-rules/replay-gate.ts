@@ -1,19 +1,34 @@
 /**
  * Replay gate: accept a candidate rule only when measured errors strictly drop
  * and golden regression is clean.
+ *
+ * Measurement re-extracts baskets under the candidate ruleset and runs the same
+ * self-check used in the sweep (including DISCOVERY_GAP against precedent candidates).
  */
 
 import { runCovenantComputation } from "../../contract-model/covenant-computation";
 import type { ComputationPackage } from "../../contract-model/covenant-computation/types";
+import { buildComputationPackage, type PrecedentSourceRow } from "../sweep/build-package";
+import { candidatesAsRows } from "../sweep/neon-load";
+import {
+  selfCheckComputation,
+  type PrecedentCandidate,
+} from "../sweep/self-check";
 import type { LearnedRule, LearnedRuleSet } from "./types";
 import { emptyRuleSet } from "./types";
 
 export interface ReplaySource {
   sourceId: string;
   packageKey: string;
-  /** Minimal computation package built from Neon precedent text/excerpts. */
+  /** Baseline package (informational); replay rebuilds from documentText + rules. */
   pkg: ComputationPackage;
-  /** Error count observed under the baseline ruleset for this source. */
+  /** Full document text when available — required for re-extract under candidate rules. */
+  documentText: string | null;
+  /** Precedent candidates used for DISCOVERY_GAP self-check. */
+  candidates: PrecedentCandidate[];
+  /** Source row for package rebuild. */
+  source: PrecedentSourceRow;
+  /** Error count observed under the baseline / working ruleset for this source. */
   baselineErrorCount: number;
 }
 
@@ -33,7 +48,7 @@ export interface ReplayGateResult {
   rule: LearnedRule;
 }
 
-function withProposedRule(base: LearnedRuleSet, candidate: LearnedRule): LearnedRuleSet {
+export function withProposedRule(base: LearnedRuleSet, candidate: LearnedRule): LearnedRuleSet {
   return {
     ...base,
     rules: [
@@ -44,18 +59,45 @@ function withProposedRule(base: LearnedRuleSet, candidate: LearnedRule): Learned
 }
 
 /**
- * Count self-check / computation mistakes for a package under a ruleset.
- * Includes UNKNOWN-numeric clauses so CATEGORY_HINT / GROWER_FORM rules can reduce the score.
+ * Rebuild package under ruleset, compute, self-check — count all ledger errors.
+ * This is what the learner optimizes; CATEGORY_HINT-only measures are insufficient
+ * when DISCOVERY_GAP dominates.
  */
-export function countErrorsUnderRuleset(pkg: ComputationPackage, ruleset: LearnedRuleSet): number {
-  const result = runCovenantComputation(pkg, { rules: ruleset });
-  let mismatches = result.mistakes.length + result.omissions.length;
-  for (const basket of result.baskets) {
-    if (basket.category === "UNKNOWN" && /\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(basket.citationExcerpt)) {
-      mismatches += 1;
-    }
-  }
-  return mismatches;
+export function countErrorsUnderRuleset(args: {
+  source: PrecedentSourceRow;
+  documentText: string | null;
+  candidates: PrecedentCandidate[];
+  ruleset: LearnedRuleSet;
+  packageKey?: string;
+}): number {
+  const pkg = buildComputationPackage({
+    source: args.source,
+    documentText: args.documentText,
+    candidates: candidatesAsRows(args.candidates),
+    rules: args.ruleset,
+  });
+  const result = runCovenantComputation(pkg, { rules: args.ruleset });
+  const errors = selfCheckComputation({
+    packageKey: args.packageKey ?? pkg.packageKey,
+    runId: "replay",
+    sourceId: args.source.sourceId,
+    result,
+    candidates: args.candidates,
+    definitions: [],
+    conditions: [],
+    now: "1970-01-01T00:00:00.000Z",
+  });
+  return errors.length;
+}
+
+export function measureReplaySource(source: ReplaySource, ruleset: LearnedRuleSet): number {
+  return countErrorsUnderRuleset({
+    source: source.source,
+    documentText: source.documentText,
+    candidates: source.candidates,
+    ruleset,
+    packageKey: source.packageKey,
+  });
 }
 
 /**
@@ -73,7 +115,7 @@ export function evaluateReplayGate(args: {
   let after = 0;
   for (const source of args.sources) {
     before += source.baselineErrorCount;
-    after += countErrorsUnderRuleset(source.pkg, candidateSet);
+    after += measureReplaySource(source, candidateSet);
   }
   const goldens = args.goldens ?? [];
   let goldenOk = true;

@@ -14,7 +14,10 @@ import {
   loadLatestLearnedRules,
   writeLearnedRules,
 } from "@/lib/covenant-learning-factory/learned-rules/load";
-import { evaluateReplayGate } from "@/lib/covenant-learning-factory/learned-rules/replay-gate";
+import {
+  evaluateReplayGate,
+  measureReplaySource,
+} from "@/lib/covenant-learning-factory/learned-rules/replay-gate";
 import { synthesizeCandidateRules } from "@/lib/covenant-learning-factory/learned-rules/synthesize";
 import { emptyRuleSet, type LearnedRule, type LearnedRuleSet } from "@/lib/covenant-learning-factory/learned-rules/types";
 import { buildComputationPackage } from "@/lib/covenant-learning-factory/sweep/build-package";
@@ -244,86 +247,114 @@ describe("self-check + grower", () => {
   });
 });
 
-describe("replay gate", () => {
-  it("accepts only when errors strictly drop and golden ok", () => {
-    const text =
-      'Permitted Debt means Indebtedness in an amount not to exceed the greater of $1 and 2% of assets under available amount builder.';
-    // Craft a basket that is UNKNOWN without rules; CATEGORY_HINT makes it GROWER
-    const pkg = {
-      packageKey: "replay-pkg",
-      companyId: "c",
-      instrumentKey: "i",
-      asOf: "2020-01-01",
-      documents: [{ documentId: "d1", role: "INDENTURE" as const, text }],
-      baskets: [
-        {
-          stableKey: "b1",
-          sectionRef: "PD (1)",
-          covenantFamily: "DEBT_INCURRENCE",
-          documentId: "d1",
-          operativeText: text,
-          role: "PERMISSION" as const,
-        },
-      ],
-    };
+describe("replay gate — DISCOVERY_GAP learning", () => {
+  const missedDoc = `
+Article IX Miscellaneous.
+The Borrower may make distributions to the parent under the builder basket for Restricted Payments not to exceed $5,000,000 in any fiscal year when no Event of Default exists.
+`;
+  const missedExcerpt =
+    "distributions to the parent under the builder basket for Restricted Payments not to exceed $5,000,000";
+
+  it("synthesized PHRASE_PATTERN for a missed candidate drops DISCOVERY_GAP in replay", () => {
+    const source = { sourceId: "src-miss", issuerCik: "0001", companyId: "co" };
+    const candidates = [
+      {
+        candidateId: "cand-rp-1",
+        sourceId: source.sourceId,
+        family: "RESTRICTED_PAYMENTS",
+        sectionRef: "Article IX",
+        excerpt: missedExcerpt,
+      },
+    ];
     const baseline = emptyRuleSet(0);
-    const before = runCovenantComputation(pkg, { rules: baseline });
-    // Without rules, greater-of should already be GROWER — use a phrase that engine leaves UNKNOWN
-    const odd =
-      "Indebtedness pursuant to the special numeric form equal to 12.5 percent of Consolidated Net Tangible Assets as adjusted";
-    const pkg2 = {
-      ...pkg,
-      documents: [{ documentId: "d1", role: "INDENTURE" as const, text: odd }],
-      baskets: [
-        {
-          stableKey: "b2",
-          sectionRef: "PD (2)",
-          covenantFamily: "DEBT_INCURRENCE",
-          documentId: "d1",
-          operativeText: odd,
-          role: "PERMISSION" as const,
-        },
-      ],
+    const pkg = buildComputationPackage({
+      source,
+      documentText: missedDoc,
+      candidates: candidates.map((c) => ({
+        candidateId: c.candidateId,
+        sourceId: c.sourceId,
+        family: c.family,
+        sectionRef: c.sectionRef,
+        excerpt: c.excerpt,
+      })),
+      rules: baseline,
+    });
+    // Regional extractor misses this text (no Permitted-* / §4.xx heading).
+    expect(extractBasketClauses({ documentId: source.sourceId, text: missedDoc }).length).toBe(0);
+
+    const replaySource = {
+      sourceId: source.sourceId,
+      packageKey: pkg.packageKey,
+      pkg,
+      documentText: missedDoc,
+      candidates,
+      source,
+      baselineErrorCount: 0,
     };
-    const baselineCount = (() => {
-      const r = runCovenantComputation(pkg2, { rules: baseline });
-      return r.baskets.filter((b) => b.category === "UNKNOWN").length + r.mistakes.length;
-    })();
-    const candidate: LearnedRule = {
-      ruleId: "lr:pct",
-      version: 0,
-      kind: "CATEGORY_HINT",
-      pattern: "percent of Consolidated Net Tangible Assets",
-      flags: "i",
-      effect: { category: "PCT_OF_METRIC" },
-      provenance: { ledgerErrorIds: ["e"], synthesizedAt: "2026-10-13T00:00:00.000Z", epoch: 1 },
-      state: "PROPOSED",
-    };
-    const gate = evaluateReplayGate({
-      baseline,
-      candidate,
-      sources: [
+    replaySource.baselineErrorCount = measureReplaySource(replaySource, baseline);
+    expect(replaySource.baselineErrorCount).toBeGreaterThan(0);
+
+    const synthesized = synthesizeCandidateRules({
+      epoch: 1,
+      now: "2026-10-13T00:00:00.000Z",
+      signals: [
         {
-          sourceId: "s",
-          packageKey: pkg2.packageKey,
-          pkg: pkg2,
-          baselineErrorCount: Math.max(baselineCount, 1),
-        },
-      ],
-      goldens: [
-        {
-          name: "uncertified",
-          run: (rs) => runCovenantComputation(pkg2, { rules: rs }).certification === "COMPUTED_NOT_CERTIFIED",
+          errorId: "err-discovery-1",
+          class: "DISCOVERY_GAP",
+          message: `precedent candidate cand-rp-1 family=RESTRICTED_PAYMENTS not reflected in computed baskets`,
+          evidence: {
+            candidateId: "cand-rp-1",
+            expectedFamily: "RESTRICTED_PAYMENTS",
+            citationExcerpt: missedExcerpt,
+            sectionRef: "Article IX",
+            sectionTitle: "Article IX",
+          },
         },
       ],
     });
+    expect(synthesized.some((r) => r.kind === "PHRASE_PATTERN")).toBe(true);
+    const phraseRule = synthesized.find((r) => r.kind === "PHRASE_PATTERN")!;
+
+    const gate = evaluateReplayGate({
+      baseline,
+      candidate: phraseRule,
+      sources: [replaySource],
+      goldens: [
+        {
+          name: "uncertified",
+          run: (rs) => {
+            const rebuilt = buildComputationPackage({
+              source,
+              documentText: missedDoc,
+              candidates: candidates.map((c) => ({
+                candidateId: c.candidateId,
+                sourceId: c.sourceId,
+                family: c.family,
+                sectionRef: c.sectionRef,
+                excerpt: c.excerpt,
+              })),
+              rules: rs,
+            });
+            return runCovenantComputation(rebuilt, { rules: rs }).certification === "COMPUTED_NOT_CERTIFIED";
+          },
+        },
+      ],
+    });
+
     expect(gate.goldenOk).toBe(true);
-    // Accept if the hint reclassifies UNKNOWN → PCT_OF_METRIC
-    if (baselineCount > 0) {
-      expect(gate.accepted).toBe(true);
-      expect(gate.errorsAfter).toBeLessThan(gate.errorsBefore);
-    }
-    expect(before.certification).toBe("COMPUTED_NOT_CERTIFIED");
+    expect(gate.accepted).toBe(true);
+    expect(gate.errorsAfter).toBeLessThan(gate.errorsBefore);
+
+    // Extractor actually loads the accepted rule and captures the missed span.
+    const captured = extractBasketClauses({
+      documentId: source.sourceId,
+      text: missedDoc,
+      rules: {
+        ...baseline,
+        rules: [{ ...phraseRule, state: "ACCEPTED" }],
+      },
+    });
+    expect(captured.some((c) => /Restricted Payments/i.test(c.operativeText))).toBe(true);
   });
 });
 

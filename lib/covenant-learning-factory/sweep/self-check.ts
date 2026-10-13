@@ -114,30 +114,30 @@ export function selfCheckComputation(args: {
     );
   }
 
-  // Family coverage: candidates present in Neon but no computed basket citing overlapping excerpt
+  // Missed precedent candidates: excerpt not reflected in any computed basket citation.
+  // This is the dominant learning signal — rules must capture the missed text.
   const baskets = args.result.baskets;
   for (const cand of args.candidates) {
     if (!cand.excerpt || cand.excerpt.length < 24) continue;
-    const excerpt = norm(cand.excerpt).slice(0, 80);
-    const hit = baskets.some((b) => norm(b.citationExcerpt).includes(excerpt.slice(0, 40)));
-    if (!hit && cand.family) {
-      // Soft signal — only flag when family is known and no basket of that family exists
-      const familyHit = baskets.some(
-        (b) => norm(b.covenantFamily) === norm(cand.family!) || norm(b.covenantFamily).includes(norm(cand.family!).slice(0, 8)),
+    const excerpt = norm(cand.excerpt);
+    const needle = excerpt.slice(0, Math.min(40, excerpt.length));
+    const hit = baskets.some((b) => {
+      const cite = norm(b.citationExcerpt);
+      return cite.includes(needle) || excerpt.includes(cite.slice(0, 40));
+    });
+    if (!hit) {
+      push(
+        "DISCOVERY_GAP",
+        `precedent candidate ${cand.candidateId} family=${cand.family ?? "UNKNOWN"} not reflected in computed baskets`,
+        {
+          candidateId: cand.candidateId,
+          expectedFamily: cand.family,
+          citationExcerpt: cand.excerpt.slice(0, 160),
+          sectionRef: cand.sectionRef,
+          sectionTitle: cand.sectionRef,
+        },
+        "MEDIUM",
       );
-      if (!familyHit) {
-        push(
-          "DISCOVERY_GAP",
-          `precedent candidate ${cand.candidateId} family=${cand.family} not reflected in computed baskets`,
-          {
-            candidateId: cand.candidateId,
-            expectedFamily: cand.family,
-            citationExcerpt: cand.excerpt.slice(0, 160),
-            sectionRef: cand.sectionRef,
-          },
-          "MEDIUM",
-        );
-      }
     }
   }
 

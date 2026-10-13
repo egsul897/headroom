@@ -11,8 +11,9 @@ import {
   applyDefinitionAlias,
   applyFamilyHints,
   applySectionMappings,
+  phrasePatternCaptureRules,
 } from "@/lib/covenant-learning-factory/learned-rules/apply";
-import type { LearnedRuleSet } from "@/lib/covenant-learning-factory/learned-rules/types";
+import { compileRuleRegex, type LearnedRuleSet } from "@/lib/covenant-learning-factory/learned-rules/types";
 import type { BasketClause } from "./types";
 import { norm } from "./text";
 
@@ -70,7 +71,65 @@ export function extractBasketClauses(args: ExtractBasketsArgs): BasketClause[] {
       clauses.push(clause);
     }
   }
+  // Learned PHRASE_PATTERN / SECTION_MAPPING captures: inject clauses for
+  // document spans the regional extractor missed (DISCOVERY_GAP lessons).
+  for (const clause of clausesFromLearnedPatterns(args.documentId, text, args.rules)) {
+    const key = norm(clause.operativeText);
+    if (key.length < 24 || seen.has(key)) continue;
+    seen.add(key);
+    clauses.push(clause);
+  }
   return uniqueKeys(dropContainedNumericLimbs(clauses));
+}
+
+/**
+ * Apply accepted phrase/section rules that pull missed candidate text into baskets.
+ * Operative text is always an exact slice of the (normalized) document — never invented.
+ */
+function clausesFromLearnedPatterns(
+  documentId: string,
+  text: string,
+  rules?: LearnedRuleSet,
+): BasketClause[] {
+  const out: BasketClause[] = [];
+  for (const rule of phrasePatternCaptureRules(rules)) {
+    const re = compileRuleRegex(rule);
+    if (!re) continue;
+    re.lastIndex = 0;
+    const match = re.exec(text);
+    if (!match || match.index == null || !match[0]) continue;
+    const window = captureWindow(text, match.index, match[0].length);
+    if (window.length < 24) continue;
+    const family = rule.effect.family ?? rule.effect.sectionFamily ?? "OTHER";
+    out.push({
+      stableKey: `learned-${rule.ruleId}`,
+      sectionRef: `learned:${rule.kind}:${rule.ruleId}`,
+      covenantFamily: family,
+      documentId,
+      operativeText: window,
+      role: "PERMISSION",
+    });
+  }
+  return out;
+}
+
+/** Expand a regex match to a nearby clause-sized window still inside `text`. */
+function captureWindow(text: string, index: number, matchLen: number): string {
+  const matchEnd = index + matchLen;
+  // Prefer a window that keeps ~40 chars before and up to ~180 after the match.
+  let start = Math.max(0, index - 40);
+  let end = Math.min(text.length, matchEnd + 180);
+  // Snap start forward to a sentence/clause boundary when cheap.
+  const pre = text.slice(start, index);
+  const boundary = pre.search(/[.;:]\s+[A-Z(]/);
+  if (boundary >= 0) start = start + boundary + 1;
+  while (start < index && /\s/.test(text[start]!)) start += 1;
+  let window = text.slice(start, end).trim();
+  // Ensure the matched span is present; if trimming ate it, fall back to exact match pad.
+  if (!window.toLowerCase().includes(text.slice(index, matchEnd).toLowerCase().slice(0, 20))) {
+    window = text.slice(index, Math.min(text.length, matchEnd + 120)).trim();
+  }
+  return window;
 }
 
 /** A shorter numeric limb already quoted inside a longer clause is the same cap. */

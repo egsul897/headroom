@@ -8,11 +8,15 @@
 import { createHash } from "node:crypto";
 import { execSync } from "node:child_process";
 import { runCovenantComputation } from "../../contract-model/covenant-computation";
-import type { ComputationPackage } from "../../contract-model/covenant-computation/types";
 import { bumpRuleSet, loadLatestLearnedRules, writeLearnedRules } from "../learned-rules/load";
-import { evaluateReplayGate, type ReplaySource } from "../learned-rules/replay-gate";
+import {
+  evaluateReplayGate,
+  measureReplaySource,
+  withProposedRule,
+  type ReplaySource,
+} from "../learned-rules/replay-gate";
 import { synthesizeCandidateRules, type LedgerSignal } from "../learned-rules/synthesize";
-import type { LearnedRule, LearnedRuleSet } from "../learned-rules/types";
+import type { LearnedRule } from "../learned-rules/types";
 import type { LearningErrorRecord, LearningEvaluationRecord } from "../types";
 import type { NeonHttpsExecutor } from "../store/neon-transport";
 import { buildComputationPackage } from "./build-package";
@@ -55,6 +59,8 @@ export interface SweepOptions {
   goldenChecks?: import("../learned-rules/replay-gate").GoldenCheck[];
   /** Optional progress logger. */
   log?: (line: string) => void;
+  /** How many candidate rules to evaluate per progress log batch (default 50). */
+  proposalBatchSize?: number;
 }
 
 export interface EpochDashboard {
@@ -99,24 +105,12 @@ function mergeTallies(a: Record<string, number>, b: Record<string, number>): Rec
   return out;
 }
 
-/**
- * Count actionable errors under a ruleset for replay (self-check + engine mistakes).
- */
-function measureSourceErrors(pkg: ComputationPackage, ruleset: LearnedRuleSet): number {
-  const result = runCovenantComputation(pkg, { rules: ruleset });
-  // Lightweight self-check without Neon candidates (replay uses computation mistakes + UNKNOWN numeric)
-  let n = result.mistakes.length + result.omissions.length;
-  for (const b of result.baskets) {
-    if (b.category === "UNKNOWN" && /\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(b.citationExcerpt)) n += 1;
-  }
-  return n;
-}
-
 export async function runCovenantLearningSweep(opts: SweepOptions): Promise<SweepResult> {
   const log = opts.log ?? (() => undefined);
   const batchSize = opts.batchSize ?? 10;
   const maxSources = opts.maxSources ?? Number.POSITIVE_INFINITY;
   const maxEpochs = opts.maxEpochs ?? 8;
+  const proposalBatchSize = opts.proposalBatchSize ?? 50;
   const resume = opts.resume !== false;
   const dryRun = Boolean(opts.dryRun);
   const now = opts.now ?? (() => new Date().toISOString());
@@ -257,12 +251,17 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
         totalSources += 1;
         totalErrors += errors.length;
 
-        replaySources.push({
+        const replaySource: ReplaySource = {
           sourceId: source.sourceId,
           packageKey,
           pkg,
-          baselineErrorCount: measureSourceErrors(pkg, ruleset),
-        });
+          documentText: text,
+          candidates,
+          source,
+          baselineErrorCount: 0,
+        };
+        replaySource.baselineErrorCount = measureReplaySource(replaySource, ruleset);
+        replaySources.push(replaySource);
 
         afterSourceId = source.sourceId;
         if (!dryRun) {
@@ -285,15 +284,17 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
       evidence: e.evidence,
     }));
     const candidates = synthesizeCandidateRules({ signals, epoch, now: now() });
-    log(`epoch ${epoch}: ${sourcesProcessed} sources, ${epochErrors.length} errors, ${candidates.length} candidate rules`);
+    log(
+      `epoch ${epoch}: ${sourcesProcessed} sources, ${epochErrors.length} errors, ${candidates.length} candidate rules (evaluating all)`,
+    );
 
     let accepted = 0;
     let rejected = 0;
     const acceptedRules: LearnedRule[] = [];
     const rejectedIds: string[] = [];
-
-    // Limit candidates per epoch for determinism / cost
-    const capped = candidates.slice(0, 24);
+    // Working ruleset grows as proposals pass the gate so later candidates
+    // measure against cumulative improvements within the epoch.
+    let workingRuleset = ruleset;
     const epochRunId = runIdFor(`epoch-${epoch}`, epoch, now());
 
     if (!dryRun) {
@@ -304,17 +305,20 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
       });
     }
 
-    for (const candidate of capped) {
+    for (let i = 0; i < candidates.length; i++) {
+      const candidate = candidates[i]!;
       // Replay only sources that contributed provenance errors when possible
       const related = new Set(candidate.provenance.ledgerErrorIds);
       const scoped = replaySources.filter((s) =>
-        epochErrors.some(
-          (e) => related.has(e.errorId) && e.packageKey === s.packageKey,
-        ),
+        epochErrors.some((e) => related.has(e.errorId) && e.packageKey === s.packageKey),
       );
       const sourcesForGate = scoped.length > 0 ? scoped : replaySources.slice(0, 20);
+      // Refresh baselines under the working ruleset so sequential accepts compound.
+      for (const s of sourcesForGate) {
+        s.baselineErrorCount = measureReplaySource(s, workingRuleset);
+      }
       const gate = evaluateReplayGate({
-        baseline: ruleset,
+        baseline: workingRuleset,
         candidate,
         sources: sourcesForGate,
         goldens: opts.goldenChecks,
@@ -322,6 +326,10 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
       if (gate.accepted) {
         accepted += 1;
         acceptedRules.push(gate.rule);
+        workingRuleset = withProposedRule(workingRuleset, gate.rule);
+        for (const s of sourcesForGate) {
+          s.baselineErrorCount = measureReplaySource(s, workingRuleset);
+        }
       } else {
         rejected += 1;
         rejectedIds.push(gate.rule.ruleId);
@@ -336,7 +344,11 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
           }),
         );
       }
-      log(`  rule ${candidate.ruleId} → ${gate.accepted ? "ACCEPT" : "REJECT"} (${gate.reason})`);
+      if (gate.accepted || (i + 1) % proposalBatchSize === 0 || i + 1 === candidates.length) {
+        log(
+          `  [${i + 1}/${candidates.length}] rule ${candidate.ruleId} → ${gate.accepted ? "ACCEPT" : "REJECT"} (${gate.reason})`,
+        );
+      }
     }
 
     const dashboard: EpochDashboard = {

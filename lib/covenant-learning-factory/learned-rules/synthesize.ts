@@ -1,6 +1,9 @@
 /**
  * Synthesize executable candidate rules from clustered error-ledger entries.
  * No hand-written per-case patterns — only mechanical clustering + template effects.
+ *
+ * DISCOVERY_GAP (missed kf_precedent candidates) is the dominant signal: emit
+ * PHRASE_PATTERN / SECTION_MAPPING rules from the candidate excerpt the extractor missed.
  */
 
 import { createHash } from "node:crypto";
@@ -53,12 +56,82 @@ export function extractPhraseSeed(signal: LedgerSignal): string | null {
     const v = ev[key];
     if (typeof v === "string") {
       const cleaned = v.replace(/\s+/g, " ").trim();
-      if (cleaned.length >= 12 && cleaned.length <= 160) return cleaned.slice(0, 120);
+      if (cleaned.length >= 12) return cleaned.slice(0, 160);
     }
   }
   const m = signal.message.match(/"([^"]{12,120})"/);
   if (m?.[1]) return m[1];
   return null;
+}
+
+/**
+ * Choose a distinctive whitespace-flexible pattern from a missed candidate excerpt.
+ * Prefer a mid-length token run that is long enough to be specific (≥24 chars).
+ */
+export function distinctivePatternFromExcerpt(excerpt: string): string {
+  const cleaned = excerpt.replace(/\s+/g, " ").trim();
+  const slice =
+    cleaned.length <= 64 ? cleaned : cleaned.slice(0, 72).replace(/\s+\S*$/, "").trim();
+  const base = slice.length >= 24 ? slice : cleaned.slice(0, Math.min(48, cleaned.length));
+  // Flexible whitespace so Neon excerpts still match normalized document bytes.
+  return base
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(escapeRegexLiteral)
+    .join("\\s+");
+}
+
+function familyFromSignal(signal: LedgerSignal, phrase: string): string | null {
+  const expected =
+    typeof signal.evidence?.expectedFamily === "string" ? signal.evidence.expectedFamily : null;
+  if (expected && expected.trim()) return expected.trim();
+  const blob = `${signal.message} ${phrase}`;
+  for (const tok of FAMILY_TOKENS) {
+    if (tok.re.test(blob)) return tok.family;
+  }
+  return null;
+}
+
+function inferDiscoveryGapRules(
+  signal: LedgerSignal,
+  phrase: string,
+): Array<{
+  kind: LearnedRuleKind;
+  effect: LearnedRule["effect"];
+  pattern: string;
+  flags: string;
+}> {
+  const out: Array<{
+    kind: LearnedRuleKind;
+    effect: LearnedRule["effect"];
+    pattern: string;
+    flags: string;
+  }> = [];
+  const family = familyFromSignal(signal, phrase) ?? "OTHER";
+  const pattern = distinctivePatternFromExcerpt(phrase);
+  if (pattern.length >= 12) {
+    out.push({
+      kind: "PHRASE_PATTERN",
+      effect: { family },
+      pattern,
+      flags: "i",
+    });
+  }
+  const sectionRef =
+    typeof signal.evidence?.sectionRef === "string"
+      ? signal.evidence.sectionRef
+      : typeof signal.evidence?.sectionTitle === "string"
+        ? signal.evidence.sectionTitle
+        : null;
+  if (sectionRef && sectionRef.trim().length >= 3) {
+    out.push({
+      kind: "SECTION_MAPPING",
+      effect: { sectionFamily: family },
+      pattern: escapeRegexLiteral(sectionRef.trim().slice(0, 80)),
+      flags: "i",
+    });
+  }
+  return out;
 }
 
 function inferKindAndEffect(signal: LedgerSignal, phrase: string): {
@@ -67,12 +140,14 @@ function inferKindAndEffect(signal: LedgerSignal, phrase: string): {
   pattern: string;
   flags: string;
 } | null {
+  // DISCOVERY_GAP handled separately (may emit multiple drafts)
+  if (signal.class === "DISCOVERY_GAP") return null;
+
   const blob = `${signal.class} ${signal.message} ${phrase}`;
   for (const tok of CATEGORY_TOKENS) {
     if (tok.re.test(blob)) {
       const kind: LearnedRuleKind =
         tok.category === "GROWER_GREATER_OF" ? "GROWER_FORM" : "CATEGORY_HINT";
-      // Prefer a compact distinctive token from the phrase rather than the whole phrase
       const tokenMatch = phrase.match(
         /\b(?:greater\s+of|available\s+amount|builder\s+basket|without\s+limitation|shall\s+not\s+exceed|%\s+of|to\s+1\.00)\b/i,
       );
@@ -85,7 +160,7 @@ function inferKindAndEffect(signal: LedgerSignal, phrase: string): {
   }
   for (const tok of FAMILY_TOKENS) {
     if (tok.re.test(blob)) {
-      const pattern = escapeRegexLiteral(phrase.slice(0, 48).trim());
+      const pattern = distinctivePatternFromExcerpt(phrase);
       if (pattern.length < 6) continue;
       return {
         kind: "PHRASE_PATTERN",
@@ -95,7 +170,6 @@ function inferKindAndEffect(signal: LedgerSignal, phrase: string): {
       };
     }
   }
-  // Definition alias: "X means Y" style messages
   const alias = blob.match(/alias\s+(\w[\w\s-]{2,40})\s*[→=]\s*(\w[\w\s-]{2,40})/i);
   if (alias) {
     return {
@@ -105,7 +179,6 @@ function inferKindAndEffect(signal: LedgerSignal, phrase: string): {
       flags: "i",
     };
   }
-  // Section mapping from evidence
   const sectionTitle = typeof signal.evidence?.sectionTitle === "string" ? signal.evidence.sectionTitle : null;
   const sectionFamily = typeof signal.evidence?.expectedFamily === "string" ? signal.evidence.expectedFamily : null;
   if (sectionTitle && sectionFamily) {
@@ -130,30 +203,36 @@ export function synthesizeCandidateRules(args: {
   const now = args.now ?? new Date().toISOString();
   const clusters = new Map<
     string,
-    { draft: ReturnType<typeof inferKindAndEffect>; errorIds: string[]; phrase: string }
+    { draft: { kind: LearnedRuleKind; effect: LearnedRule["effect"]; pattern: string; flags: string }; errorIds: string[]; phrase: string }
   >();
+
+  const add = (
+    draft: { kind: LearnedRuleKind; effect: LearnedRule["effect"]; pattern: string; flags: string },
+    signal: LedgerSignal,
+    phrase: string,
+  ) => {
+    const key = `${draft.kind}|${draft.effect.category ?? ""}|${draft.effect.family ?? ""}|${draft.effect.aliasOf ?? ""}|${draft.effect.sectionFamily ?? ""}|${draft.pattern}`;
+    const existing = clusters.get(key);
+    if (existing) existing.errorIds.push(signal.errorId);
+    else clusters.set(key, { draft, errorIds: [signal.errorId], phrase });
+  };
 
   for (const signal of args.signals) {
     const phrase = extractPhraseSeed(signal);
     if (!phrase) continue;
-    const draft = inferKindAndEffect(signal, phrase);
-    if (!draft) continue;
-    const key = `${draft.kind}|${draft.effect.category ?? ""}|${draft.effect.family ?? ""}|${draft.effect.aliasOf ?? ""}|${draft.effect.sectionFamily ?? ""}|${draft.pattern}`;
-    const existing = clusters.get(key);
-    if (existing) {
-      existing.errorIds.push(signal.errorId);
-    } else {
-      clusters.set(key, { draft, errorIds: [signal.errorId], phrase });
+    if (signal.class === "DISCOVERY_GAP") {
+      for (const draft of inferDiscoveryGapRules(signal, phrase)) add(draft, signal, phrase);
+      continue;
     }
+    const draft = inferKindAndEffect(signal, phrase);
+    if (draft) add(draft, signal, phrase);
   }
 
   const out: LearnedRule[] = [];
   for (const [, cluster] of [...clusters.entries()].sort((a, b) => a[0].localeCompare(b[0]))) {
-    if (!cluster.draft) continue;
-    // Require at least 1 supporting error; prefer clusters with 2+ but allow singleton for NEEDS_INPUT gaps
     const { kind, effect, pattern, flags } = cluster.draft;
     out.push({
-      ruleId: rid([kind, pattern, effect.category ?? "", effect.family ?? "", String(args.epoch)]),
+      ruleId: rid([kind, pattern, effect.category ?? "", effect.family ?? "", effect.sectionFamily ?? "", String(args.epoch)]),
       version: 0,
       kind,
       pattern,
@@ -168,5 +247,12 @@ export function synthesizeCandidateRules(args: {
       state: "PROPOSED",
     });
   }
-  return out;
+  // Prefer DISCOVERY_GAP-derived phrase/section rules first (dominant error class).
+  return out.sort((a, b) => {
+    const score = (r: LearnedRule) =>
+      r.kind === "PHRASE_PATTERN" ? 0 : r.kind === "SECTION_MAPPING" ? 1 : 2;
+    const d = score(a) - score(b);
+    if (d !== 0) return d;
+    return b.provenance.ledgerErrorIds.length - a.provenance.ledgerErrorIds.length;
+  });
 }
