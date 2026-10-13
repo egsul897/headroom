@@ -1,7 +1,5 @@
 /**
- * Locks Product Proof 003 invariants: authentic Matthews + CONMED multi-family,
- * three transactions refuse customer PERMITTED without inventing remaining,
- * domain matrix honesty (RP/Inv/AS independently GROSS-executable).
+ * Locks Product Proof 003 certification-integrity invariants after remediation.
  */
 import { describe, expect, it } from "vitest";
 import fs from "node:fs";
@@ -15,7 +13,6 @@ const ARTIFACTS = path.join(
 );
 
 function ensureArtifacts() {
-  // Always regenerate — capability proof must stay truthful to current SHA.
   execSync("npx tsx scripts/product-proof/run-003-real-package-e2e.ts", {
     cwd: ROOT,
     stdio: "pipe",
@@ -26,7 +23,14 @@ function ensureArtifacts() {
     overallProductVerdict: string;
     baselineSha: string;
     independentlyExecutableFamilies: string[];
-    domainStatus: Array<{ domain: string; status: string; sourcePackage?: string }>;
+    fidelityPassHypotheticalGrossFamilies?: string[];
+    certificationIntegrity: {
+      fabricatedVerificationArtifacts: boolean;
+      phase3EvidencePresent: boolean;
+      certified4eClaimed: boolean;
+      hypotheticalCtaIsApprovedNs4: boolean;
+    };
+    domainStatus: Array<{ domain: string; status: string }>;
     transactions: Array<{
       id: string;
       verifiedSimulate: {
@@ -34,22 +38,19 @@ function ensureArtifacts() {
         selectedPathId: string | null;
         verifiedRemainingUsd: null;
         pathEnumerationAuthority: string;
-        capacityOutcome: string | null;
         simulationOutcome: string | null;
       };
       truthfulBlocker: string | null;
       draft: { kind: string };
-      applicableCovenants: Array<{
-        selectedPath: string | null;
-        capacityConsumption: string | null;
-        verifiedRemainingUsd?: null;
-      }>;
     }>;
     package: {
       authenticity: string;
       authenticMultiFamilyAlternate: {
         independentlyExecutableFamilies: string[];
-        units: Array<{ verifiedRemainingUsd: null; status: string }>;
+        units: Array<{
+          verifiedRemainingUsd: null;
+          capability: { rollup: string; semanticCertification: string };
+        }>;
       };
     };
     consolidationAbsorb: { doNotSelfMerge: boolean };
@@ -57,46 +58,43 @@ function ensureArtifacts() {
 }
 
 describe("product-proof-003 real financing package E2E", () => {
-  it("reproducible evaluation advances authentic RP/Inv/AS without false remaining or false PERMITTED", () => {
+  it("certification-integrity: hypo-gross partial; no false CERTIFIED_4E / independently executable", () => {
     const report = ensureArtifacts();
 
     expect(report.package.authenticity).toBe("AUTHENTIC_SOURCE_BACKED");
     expect(report.overallProductVerdict).toBe("PARTIAL_PRODUCT_CAPABILITY_PROVEN");
     expect(report.baselineSha).toBe("046161e78dc206c50ee951d71a18dfa4befd3206");
     expect(report.consolidationAbsorb.doNotSelfMerge).toBe(true);
+    expect(report.certificationIntegrity.fabricatedVerificationArtifacts).toBe(false);
+    expect(report.certificationIntegrity.phase3EvidencePresent).toBe(false);
+    expect(report.certificationIntegrity.certified4eClaimed).toBe(false);
+    expect(report.certificationIntegrity.hypotheticalCtaIsApprovedNs4).toBe(false);
 
     const byDomain = Object.fromEntries(
       report.domainStatus.map((d) => [d.domain, d.status]),
     );
     expect(byDomain.debt_incurrence).toBe("PARTIALLY_EXECUTABLE");
     expect(byDomain.liens).toBe("PARTIALLY_EXECUTABLE");
-    expect(byDomain.investments).toBe("IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE");
-    expect(byDomain.restricted_payments).toBe("IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE");
-    expect(byDomain.asset_sales).toBe("IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE");
-    expect(byDomain.historical_utilization).toBe(
-      "BLOCKED_BY_MISSING_REAL_EVIDENCE",
-    );
+    expect(byDomain.investments).toBe("PARTIALLY_EXECUTABLE");
+    expect(byDomain.restricted_payments).toBe("PARTIALLY_EXECUTABLE");
+    expect(byDomain.asset_sales).toBe("PARTIALLY_EXECUTABLE");
+    expect(byDomain.historical_utilization).toBe("BLOCKED_BY_MISSING_REAL_EVIDENCE");
 
-    expect(report.independentlyExecutableFamilies.sort()).toEqual(
-      ["asset_sales", "investments", "restricted_payments"].sort(),
+    expect(report.independentlyExecutableFamilies).toEqual([]);
+    expect((report.fidelityPassHypotheticalGrossFamilies ?? []).sort()).toEqual(
+      ["ASSET_SALES", "INVESTMENTS", "RESTRICTED_PAYMENTS"].sort(),
     );
-    expect(
-      report.package.authenticMultiFamilyAlternate.independentlyExecutableFamilies.sort(),
-    ).toEqual(["ASSET_SALES", "INVESTMENTS", "RESTRICTED_PAYMENTS"].sort());
+    expect(report.package.authenticMultiFamilyAlternate.independentlyExecutableFamilies).toEqual(
+      [],
+    );
     for (const u of report.package.authenticMultiFamilyAlternate.units) {
       expect(u.verifiedRemainingUsd).toBeNull();
-      expect(u.status).toBe("VERIFIED_EXECUTABLE_GROSS");
+      expect(u.capability.rollup).toBe("FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED");
+      expect(u.capability.semanticCertification).toBe("ABSENT_NO_PHASE3_EVIDENCE");
     }
 
     expect(report.transactions).toHaveLength(3);
-    expect(report.transactions.map((t) => t.id)).toEqual([
-      "txn-debt-funded-acquisition",
-      "txn-restricted-payment",
-      "txn-asset-sale",
-    ]);
-
     for (const txn of report.transactions) {
-      // Never claim customer-affirmative PERMITTED without completeness.
       expect(txn.verifiedSimulate.executable).toBe(false);
       expect(txn.verifiedSimulate.verifiedRemainingUsd).toBeNull();
       expect(txn.truthfulBlocker).toBeTruthy();
@@ -106,11 +104,11 @@ describe("product-proof-003 real financing package E2E", () => {
     const as = report.transactions.find((t) => t.id === "txn-asset-sale")!;
     expect(rp.draft.kind).toBe("RESTRICTED_PAYMENT");
     expect(as.draft.kind).toBe("ASSET_SALE");
-    expect(rp.verifiedSimulate.pathEnumerationAuthority).toBe("CERTIFIED_4E");
-    expect(as.verifiedSimulate.pathEnumerationAuthority).toBe("CERTIFIED_4E");
-    expect(rp.verifiedSimulate.selectedPathId).toBeTruthy();
-    expect(as.verifiedSimulate.selectedPathId).toBeTruthy();
-    expect(rp.verifiedSimulate.capacityOutcome).toBeTruthy();
-    expect(rp.verifiedSimulate.simulationOutcome).toBeTruthy();
+    expect(rp.verifiedSimulate.pathEnumerationAuthority).toBe("NOT_CERTIFIED_4E");
+    expect(as.verifiedSimulate.pathEnumerationAuthority).toBe("NOT_CERTIFIED_4E");
+    expect(rp.verifiedSimulate.selectedPathId).toBeNull();
+    expect(as.verifiedSimulate.selectedPathId).toBeNull();
+    expect(rp.verifiedSimulate.simulationOutcome).toBeNull();
+    expect(as.verifiedSimulate.simulationOutcome).toBeNull();
   });
 });

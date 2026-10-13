@@ -39,69 +39,105 @@
   },
   {
     "domain": "investments",
-    "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+    "status": "PARTIALLY_EXECUTABLE",
     "sourcePackage": "conmed-2025-credit-facility-article-vii",
     "evidence": [
       "conmed-7.8l-investments-greater-of conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
-      "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=75000000",
-      "verifiedRemainingUsd=null (forced; no completeness certificate)",
-      "entityScope=Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+      "rollup=FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED fidelityPass=true hypoGrossCalculable=true",
+      "semanticCertification=ABSENT_NO_PHASE3_EVIDENCE",
+      "operativeState=UNRESOLVED_AMENDMENTS",
+      "productionRemaining=REFUSED_NULL_NO_COMPLETENESS",
+      "grossUsd=75000000 (hypothetical probe only; CTA not APPROVED NS-4)",
+      "verifiedRemainingUsd=null",
+      "ruleSufficiency=PARTIAL",
+      "authoritativeBlockers=SUFFICIENCY_PARTIAL | PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no  | UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments | UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified. | UNRESOLVED_OPERATIVE_CONDITION:Source text includes Default/Event of Default gate around §7.8(l). | SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact | PRODUCTION_REMAINING_REFUSED:no_utilization_completeness | PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
       "formulation=GREATER_OF_ASSETS ruleId=ir-rule:cce3542db9c3a2664896830f"
     ],
     "blockers": [
-      "Matthews authentic slice has zero Investment provisions — CONMED §7.8(l) used as authentic alternate package evidence",
+      "Matthews authentic slice has no Investment provision — CONMED used as authentic alternate text only",
+      "No Phase-3 SemanticVerificationResult / VerifiedUnitArtifact — CERTIFIED_4E not claimed",
       "Verified remaining unpublished — no utilization completeness",
-      "Greater-of CTA for gross probe is CALLER_STIPULATED_HYPOTHETICAL only — not APPROVED NS-4",
-      "Not package CERTIFIED IR / not VERIFIED_TRANSACTION_PERMITTED for customer handoff"
+      "SUFFICIENCY_PARTIAL",
+      "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+      "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+      "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+      "UNRESOLVED_OPERATIVE_CONDITION:Source text includes Default/Event of Default gate around §7.8(l).",
+      "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+      "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+      "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
+      "Not VERIFIED_TRANSACTION_PERMITTED for customer handoff"
     ],
     "mainFiles": [
       "lib/product/authentic-multi-family/conmed-source-units.ts",
       "lib/product/authentic-multi-family/compile-conmed-vep.ts",
-      "lib/contract-model/compiler/greater-of-assets-basket/",
-      "lib/contract-model/verified-execution.ts"
+      "lib/contract-model/compiler/greater-of-assets-basket/"
     ]
   },
   {
     "domain": "restricted_payments",
-    "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+    "status": "PARTIALLY_EXECUTABLE",
     "sourcePackage": "conmed-2025-credit-facility-article-vii",
     "evidence": [
       "conmed-7.6d-rp-40m conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
-      "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=40000000",
-      "verifiedRemainingUsd=null (forced; no completeness certificate)",
-      "entityScope=Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+      "rollup=FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED fidelityPass=true hypoGrossCalculable=true",
+      "semanticCertification=ABSENT_NO_PHASE3_EVIDENCE",
+      "operativeState=UNRESOLVED_AMENDMENTS",
+      "productionRemaining=REFUSED_NULL_NO_COMPLETENESS",
+      "grossUsd=40000000 (hypothetical probe only; CTA not APPROVED NS-4)",
+      "verifiedRemainingUsd=null",
+      "ruleSufficiency=COMPLETE",
+      "authoritativeBlockers=UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments | UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified. | UNRESOLVED_OPERATIVE_CONDITION:§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf. | SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact | PRODUCTION_REMAINING_REFUSED:no_utilization_completeness | PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
       "formulation=FIXED_DOLLAR ruleId=ir-rule:81c39f1f14705c94bdd1e85c"
     ],
     "blockers": [
-      "Matthews authentic slice has zero RP waterfall — CONMED §7.6(d) $40M fixed-dollar used as authentic alternate",
+      "Matthews authentic slice has no Restricted Payments provision — CONMED used as authentic alternate text only",
+      "No Phase-3 SemanticVerificationResult / VerifiedUnitArtifact — CERTIFIED_4E not claimed",
       "Verified remaining unpublished — no utilization completeness",
-      "Ratio / builder RP baskets (e.g. §7.6(e)) not claimed executable here",
-      "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials"
+      "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+      "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+      "UNRESOLVED_OPERATIVE_CONDITION:§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf.",
+      "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+      "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+      "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
+      "Not VERIFIED_TRANSACTION_PERMITTED for customer handoff",
+      "Ratio / builder RP baskets (e.g. §7.6(e)) not claimed here"
     ],
     "mainFiles": [
       "lib/product/authentic-multi-family/conmed-source-units.ts",
       "lib/product/authentic-multi-family/compile-conmed-vep.ts",
-      "lib/contract-model/compiler/fixed-dollar-basket/",
-      "lib/contract-model/verified-execution.ts"
+      "lib/contract-model/compiler/fixed-dollar-basket/"
     ]
   },
   {
     "domain": "asset_sales",
-    "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+    "status": "PARTIALLY_EXECUTABLE",
     "sourcePackage": "conmed-2025-credit-facility-article-vii",
     "evidence": [
       "conmed-7.5j-asset-sale-greater-of conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
-      "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=30000000",
-      "verifiedRemainingUsd=null (forced; no completeness certificate)",
-      "entityScope=Parent Borrower or any of its Subsidiaries",
+      "rollup=FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED fidelityPass=true hypoGrossCalculable=true",
+      "semanticCertification=ABSENT_NO_PHASE3_EVIDENCE",
+      "operativeState=UNRESOLVED_AMENDMENTS",
+      "productionRemaining=REFUSED_NULL_NO_COMPLETENESS",
+      "grossUsd=30000000 (hypothetical probe only; CTA not APPROVED NS-4)",
+      "verifiedRemainingUsd=null",
+      "ruleSufficiency=PARTIAL",
+      "authoritativeBlockers=SUFFICIENCY_PARTIAL | PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no  | UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments | UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified. | SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact | PRODUCTION_REMAINING_REFUSED:no_utilization_completeness | PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
       "formulation=GREATER_OF_ASSETS ruleId=ir-rule:a24af4af4518d766efedb79a",
       "ASSET_SALE ContemplatedTxnKind + recipeAssetSale intake wired"
     ],
     "blockers": [
-      "Matthews authentic slice has zero assetSale config — CONMED §7.5(j) greater-of de minimis used as authentic alternate",
+      "Matthews authentic slice has no Asset Sales provision — CONMED used as authentic alternate text only",
+      "No Phase-3 SemanticVerificationResult / VerifiedUnitArtifact — CERTIFIED_4E not claimed",
       "Verified remaining unpublished — no utilization completeness",
-      "De minimis basket only; annual / four-year Asset Sale baskets in §7.5(f) not claimed executable here",
-      "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials"
+      "SUFFICIENCY_PARTIAL",
+      "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+      "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+      "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+      "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+      "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+      "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
+      "Not VERIFIED_TRANSACTION_PERMITTED for customer handoff",
+      "De minimis §7.5(j) only; §7.5(f) annual baskets not claimed"
     ],
     "mainFiles": [
       "lib/product/authentic-multi-family/conmed-source-units.ts",

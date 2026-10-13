@@ -1,12 +1,12 @@
 /**
- * Authentic CONMED multi-family: extract → fidelity compile → REQUIRE enum/cap/sim.
- * Remaining always null. No invented baskets.
+ * Authentic CONMED multi-family: fidelity + hypo gross; no false certification.
  */
 import { describe, expect, it } from "vitest";
 import {
   compileConmedAuthenticMultiFamily,
   evaluateAuthenticTransaction,
   extractConmedMultiFamilyCandidates,
+  HYPOTHETICAL_CTA_USD,
 } from "@/lib/product/authentic-multi-family";
 import { parseTransactionDraft } from "@/lib/product/north-star-workflow/transaction-analysis";
 
@@ -17,29 +17,45 @@ describe("authentic multi-family CONMED", () => {
       ["ASSET_SALES", "INVESTMENTS", "RESTRICTED_PAYMENTS"].sort(),
     );
     expect(c.every((x) => x.operativeSourceText.length > 40)).toBe(true);
-    expect(c.every((x) => x.documentId.includes("conmed"))).toBe(true);
   });
 
-  it("compiles three independently GROSS-executable units with remaining null", () => {
+  it("compiles fidelity-pass hypo-gross candidates without Phase-3 VEP or CERTIFIED_4E", () => {
     const compiled = compileConmedAuthenticMultiFamily("2024-12-31");
-    expect(compiled.independentlyExecutableFamilies.sort()).toEqual(
+    expect(compiled.verifiedPackage).toBeNull();
+    expect(compiled.independentlyExecutableFamilies).toEqual([]);
+    expect(compiled.certificationIntegrity.fabricatedVerificationArtifacts).toBe(false);
+    expect(compiled.certificationIntegrity.phase3EvidencePresent).toBe(false);
+    expect(compiled.certificationIntegrity.certified4eClaimed).toBe(false);
+    expect(compiled.certificationIntegrity.hypotheticalCtaIsApprovedNs4).toBe(false);
+    expect(compiled.certificationIntegrity.hypotheticalCtaUsd).toBe(HYPOTHETICAL_CTA_USD);
+    expect(compiled.fidelityPassHypotheticalGrossFamilies.sort()).toEqual(
       ["ASSET_SALES", "INVESTMENTS", "RESTRICTED_PAYMENTS"].sort(),
     );
-    expect(compiled.failedFamilies).toEqual([]);
-    expect(compiled.verifiedPackage?.rules.length).toBe(3);
+    expect(compiled.candidateRules.length).toBe(3);
     for (const u of compiled.units) {
-      expect(u.status).toBe("VERIFIED_EXECUTABLE_GROSS");
-      expect(u.fidelityVerdict).toBe("PASS");
+      expect(u.capability.fidelityPass).toBe(true);
+      expect(u.capability.hypotheticalGrossCalculable).toBe(true);
+      expect(u.capability.semanticCertification).toBe("ABSENT_NO_PHASE3_EVIDENCE");
+      expect(u.capability.operativeState).toBe("UNRESOLVED_AMENDMENTS");
+      expect(u.capability.productionRemaining).toBe("REFUSED_NULL_NO_COMPLETENESS");
+      expect(u.capability.rollup).toBe("FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED");
       expect(u.verifiedRemainingUsd).toBeNull();
-      expect(u.operativeDocumentId).toBeTruthy();
-      expect(u.sourceCitation).toMatch(/§7\./);
-      expect(u.grossCapacityUsd).toBeGreaterThan(0);
+      expect(u.capability.authoritativeBlockers.length).toBeGreaterThan(0);
+      expect(u.capability.authoritativeBlockers.some((b) => /SEMANTIC_CERTIFICATION_ABSENT/.test(b))).toBe(
+        true,
+      );
     }
-    const rp = compiled.units.find((u) => u.family === "RESTRICTED_PAYMENTS")!;
-    expect(rp.grossCapacityUsd).toBe(40_000_000);
+    const inv = compiled.units.find((u) => u.family === "INVESTMENTS")!;
+    const as = compiled.units.find((u) => u.family === "ASSET_SALES")!;
+    expect(inv.diagnosticEvidence.some((d) => /PROVENANCE_EXCERPT_UNRESOLVED|SUFFICIENCY_PARTIAL/.test(d))).toBe(
+      true,
+    );
+    expect(as.diagnosticEvidence.some((d) => /PROVENANCE_EXCERPT_UNRESOLVED|SUFFICIENCY_PARTIAL/.test(d))).toBe(
+      true,
+    );
   });
 
-  it("REQUIRE path enum + capacity + simulate for RP / investment / asset sale", () => {
+  it("evaluation is NOT_CERTIFIED_4E; no simulate; PATH_NOT_FOUND without Phase-3 VEP", () => {
     const compiled = compileConmedAuthenticMultiFamily("2024-12-31");
     for (const kind of ["RESTRICTED_PAYMENT", "INVESTMENT", "ASSET_SALE"] as const) {
       const ev = evaluateAuthenticTransaction({
@@ -48,16 +64,16 @@ describe("authentic multi-family CONMED", () => {
         amountMillions: 20,
         evaluationDate: "2024-12-31",
       });
-      expect(ev.pathEnumerationAuthority).toBe("CERTIFIED_4E");
-      expect(ev.pathCount).toBeGreaterThanOrEqual(1);
-      expect(ev.selectedPathId).toBeTruthy();
-      expect(ev.capacityOutcome).toBeTruthy();
-      expect(ev.simulationOutcome).toBeTruthy();
+      expect(ev.pathEnumerationAuthority).toBe("NOT_CERTIFIED_4E");
+      expect(ev.pathCount).toBe(0);
+      expect(ev.selectedPathId).toBeNull();
+      expect(ev.simulationOutcome).toBeNull();
+      expect(ev.capacityOutcome).toBeNull();
       expect(ev.verifiedRemainingUsd).toBeNull();
-      // Never claim affirmative customer PERMITTED without completeness.
-      expect(ev.overallConclusion).toMatch(/not VERIFIED_TRANSACTION_PERMITTED/);
-      expect(ev.overallConclusion).not.toMatch(/\bVERIFIED_TRANSACTION_PERMITTED\b(?!.*null)/);
-      expect(ev.truthfulBlocker).toBeTruthy();
+      expect(ev.hypotheticalGrossProbeUsd).toBeGreaterThan(0);
+      expect(ev.truthfulBlocker).toMatch(/PATH_NOT_FOUND|NOT_CERTIFIED_4E/);
+      expect(ev.overallConclusion).toMatch(/not CERTIFIED_4E/);
+      expect(ev.overallConclusion).toMatch(/simulate not invoked/);
     }
   });
 
@@ -67,6 +83,5 @@ describe("authentic multi-family CONMED", () => {
     );
     expect(d.kind).toBe("ASSET_SALE");
     expect(d.amountMillions).toBe(40);
-    expect(d.evaluationDate).toBe("2024-12-31");
   });
 });

@@ -1,7 +1,7 @@
 /**
  * Authentic multi-family covenant units (CONMED Article VII fixture).
- * Fidelity-gated fixed-dollar / greater-of compiles → VerifiedExecutionPackage.
- * Verified remaining stays null without utilization completeness.
+ * Fidelity-gated fixed-dollar / greater-of compiles as non-certified candidates.
+ * No fabricated Phase-3 verification. Verified remaining stays null.
  */
 
 export {
@@ -17,11 +17,15 @@ export {
 } from "./conmed-source-units";
 
 export {
+  HYPOTHETICAL_CTA_USD,
   compileConmedAuthenticMultiFamily,
   evaluateAuthenticTransaction,
   type AuthenticTxnEvaluation,
   type AuthenticTxnKind,
   type CompiledAuthenticUnit,
-  type CompiledUnitStatus,
+  type CompiledUnitCapability,
   type ConmedMultiFamilyCompileResult,
+  type OperativeStateStatus,
+  type ProductionRemainingStatus,
+  type SemanticCertificationStatus,
 } from "./compile-conmed-vep";

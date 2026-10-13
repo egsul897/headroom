@@ -158,13 +158,39 @@ function domainInventory(
 
   const familyStatus = (u: typeof rp): DomainStatus => {
     if (!u) return "NOT_IMPLEMENTED";
-    if (u.status === "VERIFIED_EXECUTABLE_GROSS") {
-      // Gross executable under REQUIRE; remaining unpublished → not full customer PERMITTED.
-      return "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE";
+    // Fidelity-pass + hypo gross is PARTIAL — never independently executable without
+    // Phase-3 semantic certification, operative-state resolution, and remaining completeness.
+    if (
+      u.capability.rollup === "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED" ||
+      u.capability.rollup === "COMPILE_PARTIAL_NOT_AUTHORITATIVE"
+    ) {
+      return "PARTIALLY_EXECUTABLE";
     }
-    if (u.status === "PARTIAL") return "PARTIALLY_EXECUTABLE";
+    if (u.capability.rollup === "FAILED" || u.capability.rollup === "UNSUPPORTED") {
+      return "NOT_IMPLEMENTED";
+    }
     return "NOT_IMPLEMENTED";
   };
+
+  const familyEvidence = (u: NonNullable<typeof rp>): string[] => [
+    `${u.candidateId} ${u.sourceCitation}`,
+    `rollup=${u.capability.rollup} fidelityPass=${u.capability.fidelityPass} hypoGrossCalculable=${u.capability.hypotheticalGrossCalculable}`,
+    `semanticCertification=${u.capability.semanticCertification}`,
+    `operativeState=${u.capability.operativeState}`,
+    `productionRemaining=${u.capability.productionRemaining}`,
+    `grossUsd=${u.grossCapacityUsd} (hypothetical probe only; CTA not APPROVED NS-4)`,
+    `verifiedRemainingUsd=null`,
+    `ruleSufficiency=${u.ruleSufficiency}`,
+    `authoritativeBlockers=${u.capability.authoritativeBlockers.join(" | ")}`,
+  ];
+
+  const familyBlockers = (u: NonNullable<typeof rp> | null, section: string): string[] => [
+    `Matthews authentic slice has no ${section} provision — CONMED used as authentic alternate text only`,
+    "No Phase-3 SemanticVerificationResult / VerifiedUnitArtifact — CERTIFIED_4E not claimed",
+    "Verified remaining unpublished — no utilization completeness",
+    ...(u?.diagnosticEvidence ?? []),
+    "Not VERIFIED_TRANSACTION_PERMITTED for customer handoff",
+  ];
 
   return [
     {
@@ -209,25 +235,13 @@ function domainInventory(
       status: familyStatus(inv),
       sourcePackage: "conmed-2025-credit-facility-article-vii",
       evidence: inv
-        ? [
-            `${inv.candidateId} ${inv.sourceCitation}`,
-            `status=${inv.status} fidelity=${inv.fidelityVerdict} grossUsd=${inv.grossCapacityUsd}`,
-            `verifiedRemainingUsd=null (forced; no completeness certificate)`,
-            `entityScope=${inv.entityScopeNote}`,
-            `formulation=${inv.formulation} ruleId=${inv.ruleId}`,
-          ]
+        ? [...familyEvidence(inv), `formulation=${inv.formulation} ruleId=${inv.ruleId}`]
         : ["No CONMED investment unit compiled"],
-      blockers: [
-        "Matthews authentic slice has zero Investment provisions — CONMED §7.8(l) used as authentic alternate package evidence",
-        "Verified remaining unpublished — no utilization completeness",
-        "Greater-of CTA for gross probe is CALLER_STIPULATED_HYPOTHETICAL only — not APPROVED NS-4",
-        "Not package CERTIFIED IR / not VERIFIED_TRANSACTION_PERMITTED for customer handoff",
-      ],
+      blockers: familyBlockers(inv, "Investment"),
       mainFiles: [
         "lib/product/authentic-multi-family/conmed-source-units.ts",
         "lib/product/authentic-multi-family/compile-conmed-vep.ts",
         "lib/contract-model/compiler/greater-of-assets-basket/",
-        "lib/contract-model/verified-execution.ts",
       ],
     },
     {
@@ -235,25 +249,16 @@ function domainInventory(
       status: familyStatus(rp),
       sourcePackage: "conmed-2025-credit-facility-article-vii",
       evidence: rp
-        ? [
-            `${rp.candidateId} ${rp.sourceCitation}`,
-            `status=${rp.status} fidelity=${rp.fidelityVerdict} grossUsd=${rp.grossCapacityUsd}`,
-            `verifiedRemainingUsd=null (forced; no completeness certificate)`,
-            `entityScope=${rp.entityScopeNote}`,
-            `formulation=${rp.formulation} ruleId=${rp.ruleId}`,
-          ]
+        ? [...familyEvidence(rp), `formulation=${rp.formulation} ruleId=${rp.ruleId}`]
         : ["No CONMED RP unit compiled"],
       blockers: [
-        "Matthews authentic slice has zero RP waterfall — CONMED §7.6(d) $40M fixed-dollar used as authentic alternate",
-        "Verified remaining unpublished — no utilization completeness",
-        "Ratio / builder RP baskets (e.g. §7.6(e)) not claimed executable here",
-        "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials",
+        ...familyBlockers(rp, "Restricted Payments"),
+        "Ratio / builder RP baskets (e.g. §7.6(e)) not claimed here",
       ],
       mainFiles: [
         "lib/product/authentic-multi-family/conmed-source-units.ts",
         "lib/product/authentic-multi-family/compile-conmed-vep.ts",
         "lib/contract-model/compiler/fixed-dollar-basket/",
-        "lib/contract-model/verified-execution.ts",
       ],
     },
     {
@@ -262,19 +267,14 @@ function domainInventory(
       sourcePackage: "conmed-2025-credit-facility-article-vii",
       evidence: as
         ? [
-            `${as.candidateId} ${as.sourceCitation}`,
-            `status=${as.status} fidelity=${as.fidelityVerdict} grossUsd=${as.grossCapacityUsd}`,
-            `verifiedRemainingUsd=null (forced; no completeness certificate)`,
-            `entityScope=${as.entityScopeNote}`,
+            ...familyEvidence(as),
             `formulation=${as.formulation} ruleId=${as.ruleId}`,
             "ASSET_SALE ContemplatedTxnKind + recipeAssetSale intake wired",
           ]
         : ["No CONMED asset-sale unit compiled"],
       blockers: [
-        "Matthews authentic slice has zero assetSale config — CONMED §7.5(j) greater-of de minimis used as authentic alternate",
-        "Verified remaining unpublished — no utilization completeness",
-        "De minimis basket only; annual / four-year Asset Sale baskets in §7.5(f) not claimed executable here",
-        "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials",
+        ...familyBlockers(as, "Asset Sales"),
+        "De minimis §7.5(j) only; §7.5(f) annual baskets not claimed",
       ],
       mainFiles: [
         "lib/product/authentic-multi-family/conmed-source-units.ts",
@@ -499,7 +499,7 @@ async function evaluateAcquisitionTransaction(args: {
     covenantFamily: "INVESTMENTS",
     sourceProvision: invEval.unit?.sourceCitation ?? null,
     calculation: invEval.unit
-      ? `CONMED authentic gross probe: grossUsd=${invEval.unit.grossCapacityUsd}; capacityOutcome=${invEval.capacityOutcome}; sim=${invEval.simulationOutcome}; pathResult=${invEval.selectedPathResult}`
+      ? `CONMED hypo gross probe: grossUsd=${invEval.hypotheticalGrossProbeUsd}; pathAuth=${invEval.pathEnumerationAuthority}; sim=${invEval.simulationOutcome}; blocker=${invEval.truthfulBlocker}`
       : null,
     missingInputs: [
       "Matthews Investment basket (NOT_IMPLEMENTED on Matthews package)",
@@ -519,7 +519,7 @@ async function evaluateAcquisitionTransaction(args: {
   });
 
   const truthfulBlocker =
-    "VERIFIED_SIMULATE_REFUSED on Matthews: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens. CONMED §7.8(l) investment leg is independently GROSS-executable under REQUIRE but verified remaining null — not VERIFIED_TRANSACTION_PERMITTED for the acquisition as a whole.";
+    "VERIFIED_SIMULATE_REFUSED on Matthews: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens. CONMED §7.8(l) investment leg is fidelity-pass hypothetical gross only (NOT_CERTIFIED_4E; no Phase-3 artifact; remaining null) — not VERIFIED_TRANSACTION_PERMITTED for the acquisition as a whole.";
 
   return {
     id: "txn-debt-funded-acquisition",
@@ -827,12 +827,14 @@ async function main() {
   const independentlyExecutable = domains
     .filter((d) => d.status === "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE")
     .map((d) => d.domain);
+  const fidelityHypoFamilies = conmed.fidelityPassHypotheticalGrossFamilies;
 
   const report = {
-    schema: "product-proof-003-real-financing-package-e2e.v2-capability",
+    schema: "product-proof-003-real-financing-package-e2e.v3-certification-integrity",
     evaluatedAt: new Date().toISOString(),
     canonicalMainSha: sha,
     baselineSha: consolidation.baselineSha,
+    auditedShaRemediationFrom: "bd594716516d5b3905f6a8a40dcdeb33cb2691a5",
     package: {
       key: slice.evaluation.packageKey,
       companyId: slice.evaluation.companyId,
@@ -842,6 +844,8 @@ async function main() {
       authenticMultiFamilyAlternate: {
         ...conmed.manifest,
         independentlyExecutableFamilies: conmed.independentlyExecutableFamilies,
+        fidelityPassHypotheticalGrossFamilies: fidelityHypoFamilies,
+        certificationIntegrity: conmed.certificationIntegrity,
         units: conmed.units,
       },
       secondaryReference: {
@@ -851,19 +855,19 @@ async function main() {
       },
     },
     constraintsHonored: [
-      "verified-execution REQUIRE spine for authentic multi-family — no competing engine",
-      "no invented financial approvals",
-      "no zero utilization assumptions",
-      "no synthetic legal interpretations",
-      "no favorable path selection",
+      "no fabricated Phase-3 SemanticVerificationResult / VerifiedUnitArtifact",
+      "no CERTIFIED_4E from manufactured verification artifacts",
+      "no fallback selected path / no simulate without eligible CANDIDATE path",
+      "hypothetical $2bn CTA never represented as APPROVED NS-4",
       "verified remaining forced null without completeness",
-      "missing utilization did not stop RP / investment / asset-sale family implementation",
-      "no Neon writes",
-      "no paid inference",
-      "no self-merge",
+      "no customer VERIFIED_TRANSACTION_PERMITTED",
+      "no competing engine / no self-merge",
+      "no Neon writes / no paid inference",
     ],
     domainStatus: domains,
     independentlyExecutableFamilies: independentlyExecutable,
+    fidelityPassHypotheticalGrossFamilies: fidelityHypoFamilies,
+    certificationIntegrity: conmed.certificationIntegrity,
     milestones: slice.milestones,
     sliceVerdict: slice.verdict,
     productionHandoffRefused: slice.evaluation.productionHandoffRefused,
@@ -873,9 +877,9 @@ async function main() {
     consolidationAbsorb: consolidation,
     overallProductVerdict: "PARTIAL_PRODUCT_CAPABILITY_PROVEN",
     overallProductVerdictReason:
-      independentlyExecutable.length > 0
-        ? `Authentic CONMED multi-family units make ${independentlyExecutable.join(", ")} independently GROSS-executable under REQUIRE (path enum + capacity + simulate). Verified remaining stays null; customer VERIFIED_TRANSACTION_PERMITTED not claimed. Matthews debt/lien remain PARTIALLY_EXECUTABLE; acquisition still refused as a whole.`
-        : "No independently executable authentic families yet.",
+      fidelityHypoFamilies.length > 0
+        ? `CONMED ${fidelityHypoFamilies.join(", ")}: fidelity-pass + hypothetical gross calculable; Phase-3 absent → NOT_CERTIFIED_4E; simulate not invoked; remaining null; not VERIFIED_TRANSACTION_PERMITTED. No family is IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE. Matthews debt/lien remain PARTIALLY_EXECUTABLE.`
+        : "No fidelity-pass hypothetical-gross authentic families.",
   };
 
   writeJson("00-evaluation.json", report);
@@ -891,8 +895,12 @@ async function main() {
     manifest: conmed.manifest,
     units: conmed.units,
     independentlyExecutableFamilies: conmed.independentlyExecutableFamilies,
+    fidelityPassHypotheticalGrossFamilies: fidelityHypoFamilies,
     partialFamilies: conmed.partialFamilies,
     failedFamilies: conmed.failedFamilies,
+    certificationIntegrity: conmed.certificationIntegrity,
+    candidateRuleCount: conmed.candidateRules.length,
+    verifiedPackage: conmed.verifiedPackage,
   });
   writeJson("05-consolidation-absorb.json", consolidation);
 
@@ -904,6 +912,8 @@ async function main() {
         baselineSha: consolidation.baselineSha,
         verdict: report.overallProductVerdict,
         independentlyExecutableFamilies: independentlyExecutable,
+        fidelityPassHypotheticalGrossFamilies: fidelityHypoFamilies,
+        certificationIntegrity: conmed.certificationIntegrity,
         domains: domains.map((d) => ({
           domain: d.domain,
           status: d.status,

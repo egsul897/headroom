@@ -1,13 +1,14 @@
-# Final verdict — PP003 capability execution
+# Final verdict — PP003 certification-integrity remediation
 
-**PARTIAL_PRODUCT_CAPABILITY_PROVEN**
+**PARTIAL_PRODUCT_CAPABILITY_PROVEN** (honest partial — not false certification)
 
-Progress is measured by independently executable authentic covenant families and complete (truthful) transaction evaluations:
+### Remediation vs audited SHA `bd594716`
 
-1. **Investments, Restricted Payments, Asset Sales** — CONMED Article VII source-backed units are fidelity-compiled and independently GROSS-executable under REQUIRE (4E path enumeration + `evaluateVerifiedCapacity` + `simulateVerifiedTransaction`). Verified remaining forced **null**.
-2. **ASSET_SALE** intake and `recipeAssetSale` capacity binding work; draft kind is no longer UNKNOWN for disposition asks.
-3. **Debt-funded acquisition** still refused as a whole on Matthews (no VEP; CA §6.01(j) structural zero); CONMED investment leg is separately exercised under REQUIRE without inventing Matthews authority.
-4. **Utilization incompleteness** remains a hard blocker for remaining publication and did **not** stop other covenant families.
-5. **Consolidation:** #345 absorbed via main; #340/#341 not full-merged (no duplicate engines / no self-merge).
+| Claim at bd594716 | After remediation |
+|---|---|
+| CERTIFIED_4E via fabricated VERIFIED_NO_MATERIAL_GAP_FOUND | Removed; `verifiedPackage=null`; authority NOT_CERTIFIED_4E |
+| VERIFIED_EXECUTABLE_GROSS / IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE | Replaced with FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED / PARTIALLY_EXECUTABLE |
+| Fallback selectedPath + REQUIRE simulate | PATH_NOT_FOUND; simulate not invoked |
+| $2bn CTA ambiguous | Explicitly hypothetical; `hypotheticalCtaIsApprovedNs4=false` |
 
-Not claimed: customer `VERIFIED_TRANSACTION_PERMITTED`, APPROVED NS-4 CTA as production authority, or package CERTIFIED IR for CONMED.
+Preserved: CONMED fixed-dollar / greater-of compiler progress, authentic source extracts, remaining=null, no customer PERMITTED, no second engine, no self-merge.

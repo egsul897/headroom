@@ -1,8 +1,9 @@
 {
-  "schema": "product-proof-003-real-financing-package-e2e.v2-capability",
-  "evaluatedAt": "2026-10-13T07:33:37.307Z",
-  "canonicalMainSha": "c8d114cfce6a06b6ac010217f1ef488cb7740a38",
+  "schema": "product-proof-003-real-financing-package-e2e.v3-certification-integrity",
+  "evaluatedAt": "2026-10-13T12:44:10.975Z",
+  "canonicalMainSha": "bd594716516d5b3905f6a8a40dcdeb33cb2691a5",
   "baselineSha": "046161e78dc206c50ee951d71a18dfa4befd3206",
+  "auditedShaRemediationFrom": "bd594716516d5b3905f6a8a40dcdeb33cb2691a5",
   "package": {
     "key": "matthews-international-q1-fy2025",
     "companyId": "matthews",
@@ -40,11 +41,19 @@
         "Fixed-dollar / greater-of fidelity compile only; ratio RP unlimited basket (§7.6(e)) not claimed executable here.",
         "No utilization completeness certificate — verified remaining stays null."
       ],
-      "independentlyExecutableFamilies": [
+      "independentlyExecutableFamilies": [],
+      "fidelityPassHypotheticalGrossFamilies": [
         "RESTRICTED_PAYMENTS",
         "INVESTMENTS",
         "ASSET_SALES"
       ],
+      "certificationIntegrity": {
+        "fabricatedVerificationArtifacts": false,
+        "phase3EvidencePresent": false,
+        "certified4eClaimed": false,
+        "hypotheticalCtaUsd": 2000000000,
+        "hypotheticalCtaIsApprovedNs4": false
+      },
       "units": [
         {
           "candidateId": "conmed-7.6d-rp-40m",
@@ -59,17 +68,43 @@
             "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
             "§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf."
           ],
-          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "capability": {
+            "fidelityPass": true,
+            "hypotheticalGrossCalculable": true,
+            "semanticCertification": "ABSENT_NO_PHASE3_EVIDENCE",
+            "operativeState": "UNRESOLVED_AMENDMENTS",
+            "productionRemaining": "REFUSED_NULL_NO_COMPLETENESS",
+            "authoritativeBlockers": [
+              "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+              "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+              "UNRESOLVED_OPERATIVE_CONDITION:§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf.",
+              "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+              "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+              "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
+            ],
+            "rollup": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED"
+          },
+          "status": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED",
           "grossCapacityUsd": 40000000,
           "verifiedRemainingUsd": null,
           "fidelityVerdict": "PASS",
           "ruleId": "ir-rule:81c39f1f14705c94bdd1e85c",
+          "ruleSufficiency": "COMPLETE",
           "limitations": [
             "No utilization completeness certificate — verifiedRemainingUsd forced null.",
             "Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+            "No Phase-3 SemanticVerificationResult — rules are non-certified candidates only.",
             "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
             "sole_fixed_dollar_cap",
             "sufficiency=COMPLETE"
+          ],
+          "diagnosticEvidence": [
+            "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+            "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "UNRESOLVED_OPERATIVE_CONDITION:§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf.",
+            "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+            "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+            "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
           ]
         },
         {
@@ -85,19 +120,49 @@
             "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
             "Source text includes Default/Event of Default gate around §7.8(l)."
           ],
-          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "capability": {
+            "fidelityPass": true,
+            "hypotheticalGrossCalculable": true,
+            "semanticCertification": "ABSENT_NO_PHASE3_EVIDENCE",
+            "operativeState": "UNRESOLVED_AMENDMENTS",
+            "productionRemaining": "REFUSED_NULL_NO_COMPLETENESS",
+            "authoritativeBlockers": [
+              "SUFFICIENCY_PARTIAL",
+              "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+              "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+              "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+              "UNRESOLVED_OPERATIVE_CONDITION:Source text includes Default/Event of Default gate around §7.8(l).",
+              "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+              "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+              "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
+            ],
+            "rollup": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED"
+          },
+          "status": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED",
           "grossCapacityUsd": 75000000,
           "verifiedRemainingUsd": null,
           "fidelityVerdict": "PASS",
           "ruleId": "ir-rule:cce3542db9c3a2664896830f",
+          "ruleSufficiency": "PARTIAL",
           "limitations": [
             "No utilization completeness certificate — verifiedRemainingUsd forced null.",
             "Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+            "No Phase-3 SemanticVerificationResult — rules are non-certified candidates only.",
             "Greater-of CTA input stipulated at $2000000000 for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.",
             "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
             "greater_of_fixed_or_pct_total_assets",
             "{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no admissible source text); it is retained only as rawModelExcerpt and is not authoritative source evidence (review required)\",\"kind\":\"SUFFICIENCY\"}",
             "sufficiency=PARTIAL"
+          ],
+          "diagnosticEvidence": [
+            "SUFFICIENCY_PARTIAL",
+            "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+            "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+            "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "UNRESOLVED_OPERATIVE_CONDITION:Source text includes Default/Event of Default gate around §7.8(l).",
+            "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+            "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+            "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
           ]
         },
         {
@@ -113,19 +178,47 @@
             "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
             "§7.5(j) is a de minimis Disposition exception — larger §7.5(f) baskets not compiled here."
           ],
-          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "capability": {
+            "fidelityPass": true,
+            "hypotheticalGrossCalculable": true,
+            "semanticCertification": "ABSENT_NO_PHASE3_EVIDENCE",
+            "operativeState": "UNRESOLVED_AMENDMENTS",
+            "productionRemaining": "REFUSED_NULL_NO_COMPLETENESS",
+            "authoritativeBlockers": [
+              "SUFFICIENCY_PARTIAL",
+              "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+              "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+              "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+              "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+              "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+              "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
+            ],
+            "rollup": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED"
+          },
+          "status": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED",
           "grossCapacityUsd": 30000000,
           "verifiedRemainingUsd": null,
           "fidelityVerdict": "PASS",
           "ruleId": "ir-rule:a24af4af4518d766efedb79a",
+          "ruleSufficiency": "PARTIAL",
           "limitations": [
             "No utilization completeness certificate — verifiedRemainingUsd forced null.",
             "Parent Borrower or any of its Subsidiaries",
+            "No Phase-3 SemanticVerificationResult — rules are non-certified candidates only.",
             "Greater-of CTA input stipulated at $2000000000 for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.",
             "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
             "greater_of_fixed_or_pct_total_assets",
             "{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no admissible source text); it is retained only as rawModelExcerpt and is not authoritative source evidence (review required)\",\"kind\":\"SUFFICIENCY\"}",
             "sufficiency=PARTIAL"
+          ],
+          "diagnosticEvidence": [
+            "SUFFICIENCY_PARTIAL",
+            "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+            "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+            "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+            "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+            "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
           ]
         }
       ]
@@ -137,16 +230,14 @@
     }
   },
   "constraintsHonored": [
-    "verified-execution REQUIRE spine for authentic multi-family — no competing engine",
-    "no invented financial approvals",
-    "no zero utilization assumptions",
-    "no synthetic legal interpretations",
-    "no favorable path selection",
+    "no fabricated Phase-3 SemanticVerificationResult / VerifiedUnitArtifact",
+    "no CERTIFIED_4E from manufactured verification artifacts",
+    "no fallback selected path / no simulate without eligible CANDIDATE path",
+    "hypothetical $2bn CTA never represented as APPROVED NS-4",
     "verified remaining forced null without completeness",
-    "missing utilization did not stop RP / investment / asset-sale family implementation",
-    "no Neon writes",
-    "no paid inference",
-    "no self-merge"
+    "no customer VERIFIED_TRANSACTION_PERMITTED",
+    "no competing engine / no self-merge",
+    "no Neon writes / no paid inference"
   ],
   "domainStatus": [
     {
@@ -189,69 +280,105 @@
     },
     {
       "domain": "investments",
-      "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+      "status": "PARTIALLY_EXECUTABLE",
       "sourcePackage": "conmed-2025-credit-facility-article-vii",
       "evidence": [
         "conmed-7.8l-investments-greater-of conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
-        "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=75000000",
-        "verifiedRemainingUsd=null (forced; no completeness certificate)",
-        "entityScope=Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+        "rollup=FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED fidelityPass=true hypoGrossCalculable=true",
+        "semanticCertification=ABSENT_NO_PHASE3_EVIDENCE",
+        "operativeState=UNRESOLVED_AMENDMENTS",
+        "productionRemaining=REFUSED_NULL_NO_COMPLETENESS",
+        "grossUsd=75000000 (hypothetical probe only; CTA not APPROVED NS-4)",
+        "verifiedRemainingUsd=null",
+        "ruleSufficiency=PARTIAL",
+        "authoritativeBlockers=SUFFICIENCY_PARTIAL | PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no  | UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments | UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified. | UNRESOLVED_OPERATIVE_CONDITION:Source text includes Default/Event of Default gate around §7.8(l). | SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact | PRODUCTION_REMAINING_REFUSED:no_utilization_completeness | PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
         "formulation=GREATER_OF_ASSETS ruleId=ir-rule:cce3542db9c3a2664896830f"
       ],
       "blockers": [
-        "Matthews authentic slice has zero Investment provisions — CONMED §7.8(l) used as authentic alternate package evidence",
+        "Matthews authentic slice has no Investment provision — CONMED used as authentic alternate text only",
+        "No Phase-3 SemanticVerificationResult / VerifiedUnitArtifact — CERTIFIED_4E not claimed",
         "Verified remaining unpublished — no utilization completeness",
-        "Greater-of CTA for gross probe is CALLER_STIPULATED_HYPOTHETICAL only — not APPROVED NS-4",
-        "Not package CERTIFIED IR / not VERIFIED_TRANSACTION_PERMITTED for customer handoff"
+        "SUFFICIENCY_PARTIAL",
+        "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+        "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+        "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+        "UNRESOLVED_OPERATIVE_CONDITION:Source text includes Default/Event of Default gate around §7.8(l).",
+        "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+        "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+        "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
+        "Not VERIFIED_TRANSACTION_PERMITTED for customer handoff"
       ],
       "mainFiles": [
         "lib/product/authentic-multi-family/conmed-source-units.ts",
         "lib/product/authentic-multi-family/compile-conmed-vep.ts",
-        "lib/contract-model/compiler/greater-of-assets-basket/",
-        "lib/contract-model/verified-execution.ts"
+        "lib/contract-model/compiler/greater-of-assets-basket/"
       ]
     },
     {
       "domain": "restricted_payments",
-      "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+      "status": "PARTIALLY_EXECUTABLE",
       "sourcePackage": "conmed-2025-credit-facility-article-vii",
       "evidence": [
         "conmed-7.6d-rp-40m conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
-        "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=40000000",
-        "verifiedRemainingUsd=null (forced; no completeness certificate)",
-        "entityScope=Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+        "rollup=FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED fidelityPass=true hypoGrossCalculable=true",
+        "semanticCertification=ABSENT_NO_PHASE3_EVIDENCE",
+        "operativeState=UNRESOLVED_AMENDMENTS",
+        "productionRemaining=REFUSED_NULL_NO_COMPLETENESS",
+        "grossUsd=40000000 (hypothetical probe only; CTA not APPROVED NS-4)",
+        "verifiedRemainingUsd=null",
+        "ruleSufficiency=COMPLETE",
+        "authoritativeBlockers=UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments | UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified. | UNRESOLVED_OPERATIVE_CONDITION:§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf. | SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact | PRODUCTION_REMAINING_REFUSED:no_utilization_completeness | PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
         "formulation=FIXED_DOLLAR ruleId=ir-rule:81c39f1f14705c94bdd1e85c"
       ],
       "blockers": [
-        "Matthews authentic slice has zero RP waterfall — CONMED §7.6(d) $40M fixed-dollar used as authentic alternate",
+        "Matthews authentic slice has no Restricted Payments provision — CONMED used as authentic alternate text only",
+        "No Phase-3 SemanticVerificationResult / VerifiedUnitArtifact — CERTIFIED_4E not claimed",
         "Verified remaining unpublished — no utilization completeness",
-        "Ratio / builder RP baskets (e.g. §7.6(e)) not claimed executable here",
-        "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials"
+        "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+        "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+        "UNRESOLVED_OPERATIVE_CONDITION:§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf.",
+        "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+        "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+        "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
+        "Not VERIFIED_TRANSACTION_PERMITTED for customer handoff",
+        "Ratio / builder RP baskets (e.g. §7.6(e)) not claimed here"
       ],
       "mainFiles": [
         "lib/product/authentic-multi-family/conmed-source-units.ts",
         "lib/product/authentic-multi-family/compile-conmed-vep.ts",
-        "lib/contract-model/compiler/fixed-dollar-basket/",
-        "lib/contract-model/verified-execution.ts"
+        "lib/contract-model/compiler/fixed-dollar-basket/"
       ]
     },
     {
       "domain": "asset_sales",
-      "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+      "status": "PARTIALLY_EXECUTABLE",
       "sourcePackage": "conmed-2025-credit-facility-article-vii",
       "evidence": [
         "conmed-7.5j-asset-sale-greater-of conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
-        "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=30000000",
-        "verifiedRemainingUsd=null (forced; no completeness certificate)",
-        "entityScope=Parent Borrower or any of its Subsidiaries",
+        "rollup=FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED fidelityPass=true hypoGrossCalculable=true",
+        "semanticCertification=ABSENT_NO_PHASE3_EVIDENCE",
+        "operativeState=UNRESOLVED_AMENDMENTS",
+        "productionRemaining=REFUSED_NULL_NO_COMPLETENESS",
+        "grossUsd=30000000 (hypothetical probe only; CTA not APPROVED NS-4)",
+        "verifiedRemainingUsd=null",
+        "ruleSufficiency=PARTIAL",
+        "authoritativeBlockers=SUFFICIENCY_PARTIAL | PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no  | UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments | UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified. | SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact | PRODUCTION_REMAINING_REFUSED:no_utilization_completeness | PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
         "formulation=GREATER_OF_ASSETS ruleId=ir-rule:a24af4af4518d766efedb79a",
         "ASSET_SALE ContemplatedTxnKind + recipeAssetSale intake wired"
       ],
       "blockers": [
-        "Matthews authentic slice has zero assetSale config — CONMED §7.5(j) greater-of de minimis used as authentic alternate",
+        "Matthews authentic slice has no Asset Sales provision — CONMED used as authentic alternate text only",
+        "No Phase-3 SemanticVerificationResult / VerifiedUnitArtifact — CERTIFIED_4E not claimed",
         "Verified remaining unpublished — no utilization completeness",
-        "De minimis basket only; annual / four-year Asset Sale baskets in §7.5(f) not claimed executable here",
-        "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials"
+        "SUFFICIENCY_PARTIAL",
+        "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+        "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+        "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+        "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+        "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+        "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED",
+        "Not VERIFIED_TRANSACTION_PERMITTED for customer handoff",
+        "De minimis §7.5(j) only; §7.5(f) annual baskets not claimed"
       ],
       "mainFiles": [
         "lib/product/authentic-multi-family/conmed-source-units.ts",
@@ -346,11 +473,19 @@
       ]
     }
   ],
-  "independentlyExecutableFamilies": [
-    "investments",
-    "restricted_payments",
-    "asset_sales"
+  "independentlyExecutableFamilies": [],
+  "fidelityPassHypotheticalGrossFamilies": [
+    "RESTRICTED_PAYMENTS",
+    "INVESTMENTS",
+    "ASSET_SALES"
   ],
+  "certificationIntegrity": {
+    "fabricatedVerificationArtifacts": false,
+    "phase3EvidencePresent": false,
+    "certified4eClaimed": false,
+    "hypotheticalCtaUsd": 2000000000,
+    "hypotheticalCtaIsApprovedNs4": false
+  },
   "milestones": {
     "FIXTURE_MODELED_DASHBOARD_PROVEN": "PROVEN_WITH_DEFECTS",
     "GENERALIZED_CALCULATION_PIPELINE_PROVEN": "NOT_PROVEN",
@@ -495,16 +630,16 @@
         {
           "covenantFamily": "INVESTMENTS",
           "sourceProvision": "conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
-          "calculation": "CONMED authentic gross probe: grossUsd=75000000; capacityOutcome=EXECUTED; sim=EXECUTED; pathResult=INDETERMINATE",
+          "calculation": "CONMED hypo gross probe: grossUsd=75000000; pathAuth=NOT_CERTIFIED_4E; sim=null; blocker=PATH_NOT_FOUND:NOT_CERTIFIED_4E:no_phase3_vep",
           "missingInputs": [
             "Matthews Investment basket (NOT_IMPLEMENTED on Matthews package)",
             "APPROVED NS-4 Consolidated Total Assets for production greater-of",
             "utilization completeness certificate"
           ],
-          "selectedPath": "path:ir-rule:cce3542db9c3a2664896830f",
-          "capacityConsumption": "REQUIRE simulate EXECUTED / path INDETERMINATE — remaining null",
+          "selectedPath": null,
+          "capacityConsumption": null,
           "postTransactionState": null,
-          "conclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+          "conclusion": "FIDELITY_PASS_HYPOTHETICAL_GROSS — not CERTIFIED_4E; simulate not invoked; remaining null (conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets)",
           "entityScope": "Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
           "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
           "verifiedRemainingUsd": null
@@ -524,9 +659,9 @@
           "NO_VERIFIED_EXECUTION_PACKAGE"
         ],
         "selectedPathId": null,
-        "capacityOutcome": "EXECUTED",
-        "simulationOutcome": "EXECUTED",
-        "selectedPathResult": "INDETERMINATE",
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "selectedPathResult": null,
         "verifiedRemainingUsd": null
       },
       "recipeShape": {
@@ -628,33 +763,64 @@
             "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
             "Source text includes Default/Event of Default gate around §7.8(l)."
           ],
-          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "capability": {
+            "fidelityPass": true,
+            "hypotheticalGrossCalculable": true,
+            "semanticCertification": "ABSENT_NO_PHASE3_EVIDENCE",
+            "operativeState": "UNRESOLVED_AMENDMENTS",
+            "productionRemaining": "REFUSED_NULL_NO_COMPLETENESS",
+            "authoritativeBlockers": [
+              "SUFFICIENCY_PARTIAL",
+              "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+              "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+              "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+              "UNRESOLVED_OPERATIVE_CONDITION:Source text includes Default/Event of Default gate around §7.8(l).",
+              "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+              "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+              "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
+            ],
+            "rollup": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED"
+          },
+          "status": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED",
           "grossCapacityUsd": 75000000,
           "verifiedRemainingUsd": null,
           "fidelityVerdict": "PASS",
           "ruleId": "ir-rule:cce3542db9c3a2664896830f",
+          "ruleSufficiency": "PARTIAL",
           "limitations": [
             "No utilization completeness certificate — verifiedRemainingUsd forced null.",
             "Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+            "No Phase-3 SemanticVerificationResult — rules are non-certified candidates only.",
             "Greater-of CTA input stipulated at $2000000000 for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.",
             "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
             "greater_of_fixed_or_pct_total_assets",
             "{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no admissible source text); it is retained only as rawModelExcerpt and is not authoritative source evidence (review required)\",\"kind\":\"SUFFICIENCY\"}",
             "sufficiency=PARTIAL"
+          ],
+          "diagnosticEvidence": [
+            "SUFFICIENCY_PARTIAL",
+            "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+            "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+            "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "UNRESOLVED_OPERATIVE_CONDITION:Source text includes Default/Event of Default gate around §7.8(l).",
+            "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+            "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+            "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
           ]
         },
-        "pathEnumerationAuthority": "CERTIFIED_4E",
-        "pathCount": 1,
-        "selectedPathId": "path:ir-rule:cce3542db9c3a2664896830f",
-        "capacityOutcome": "EXECUTED",
-        "simulationOutcome": "EXECUTED",
-        "selectedPathResult": "INDETERMINATE",
         "verifiedRemainingUsd": null,
-        "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
-        "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+        "hypotheticalGrossProbeUsd": 75000000,
+        "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
+        "pathCount": 0,
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "selectedPathResult": null,
+        "overallConclusion": "FIDELITY_PASS_HYPOTHETICAL_GROSS — not CERTIFIED_4E; simulate not invoked; remaining null (conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets)",
+        "truthfulBlocker": "PATH_NOT_FOUND:NOT_CERTIFIED_4E:no_phase3_vep"
       },
-      "overallConclusion": "REFUSED / NOT DETERMINED — VERIFIED_SIMULATE_REFUSED on Matthews: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens. CONMED §7.8(l) investment leg is independently GROSS-executable under REQUIRE but verified remaining null — not VERIFIED_TRANSACTION_PERMITTED for the acquisition as a whole.",
-      "truthfulBlocker": "VERIFIED_SIMULATE_REFUSED on Matthews: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens. CONMED §7.8(l) investment leg is independently GROSS-executable under REQUIRE but verified remaining null — not VERIFIED_TRANSACTION_PERMITTED for the acquisition as a whole."
+      "overallConclusion": "REFUSED / NOT DETERMINED — VERIFIED_SIMULATE_REFUSED on Matthews: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens. CONMED §7.8(l) investment leg is fidelity-pass hypothetical gross only (NOT_CERTIFIED_4E; no Phase-3 artifact; remaining null) — not VERIFIED_TRANSACTION_PERMITTED for the acquisition as a whole.",
+      "truthfulBlocker": "VERIFIED_SIMULATE_REFUSED on Matthews: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens. CONMED §7.8(l) investment leg is fidelity-pass hypothetical gross only (NOT_CERTIFIED_4E; no Phase-3 artifact; remaining null) — not VERIFIED_TRANSACTION_PERMITTED for the acquisition as a whole."
     },
     {
       "id": "txn-restricted-payment",
@@ -680,15 +846,15 @@
         {
           "covenantFamily": "RESTRICTED_PAYMENTS",
           "sourceProvision": "conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
-          "calculation": "grossUsd=40000000; fidelity=PASS; capacity=EXECUTED; sim=EXECUTED; pathResult=INDETERMINATE",
+          "calculation": "grossUsd=40000000; fidelity=PASS; capacity=null; sim=null; pathResult=null",
           "missingInputs": [
             "utilization completeness certificate",
             "APPROVED NS-4 financial snapshot for production remaining"
           ],
-          "selectedPath": "path:ir-rule:81c39f1f14705c94bdd1e85c",
-          "capacityConsumption": "REQUIRE EXECUTED / selectedPathResult=INDETERMINATE / remaining=null",
+          "selectedPath": null,
+          "capacityConsumption": null,
           "postTransactionState": null,
-          "conclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+          "conclusion": "FIDELITY_PASS_HYPOTHETICAL_GROSS — not CERTIFIED_4E; simulate not invoked; remaining null (conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year)",
           "entityScope": "Parent Borrower (chapeau §7.6); Loan Party scope per CA",
           "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
           "verifiedRemainingUsd": null
@@ -697,18 +863,19 @@
       "verifiedSimulate": {
         "executable": false,
         "refusalSummary": [
-          "OFFLINE_NS4_BRIDGE:\nInvalid `prisma.contractInputSnapshot.findMany()` invocation in\n/workspace/lib/contract-model/runtime/input/store/prism",
-          "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+          "NO_VERIFIED_EXECUTION_PACKAGE",
+          "NO_CANDIDATE_PATHS",
+          "PATH_NOT_FOUND:NOT_CERTIFIED_4E:no_phase3_vep"
         ],
         "certifiedBlockers": [
-          "OFFLINE_NS4_BRIDGE:\nInvalid `prisma.contractInputSnapshot.findMany()` invocation in\n/workspace/lib/contract-model/runtime/input/store/prisma-store.ts:404:51\n\n  401   prisma: Ns4Db"
+          "NO_VERIFIED_EXECUTION_PACKAGE"
         ],
-        "pathEnumerationAuthority": "CERTIFIED_4E",
+        "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
         "pathIncompleteReasons": [],
-        "selectedPathId": "path:ir-rule:81c39f1f14705c94bdd1e85c",
-        "capacityOutcome": "EXECUTED",
-        "simulationOutcome": "EXECUTED",
-        "selectedPathResult": "INDETERMINATE",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "selectedPathResult": null,
         "verifiedRemainingUsd": null
       },
       "recipeShape": {
@@ -737,31 +904,58 @@
             "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
             "§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf."
           ],
-          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "capability": {
+            "fidelityPass": true,
+            "hypotheticalGrossCalculable": true,
+            "semanticCertification": "ABSENT_NO_PHASE3_EVIDENCE",
+            "operativeState": "UNRESOLVED_AMENDMENTS",
+            "productionRemaining": "REFUSED_NULL_NO_COMPLETENESS",
+            "authoritativeBlockers": [
+              "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+              "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+              "UNRESOLVED_OPERATIVE_CONDITION:§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf.",
+              "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+              "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+              "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
+            ],
+            "rollup": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED"
+          },
+          "status": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED",
           "grossCapacityUsd": 40000000,
           "verifiedRemainingUsd": null,
           "fidelityVerdict": "PASS",
           "ruleId": "ir-rule:81c39f1f14705c94bdd1e85c",
+          "ruleSufficiency": "COMPLETE",
           "limitations": [
             "No utilization completeness certificate — verifiedRemainingUsd forced null.",
             "Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+            "No Phase-3 SemanticVerificationResult — rules are non-certified candidates only.",
             "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
             "sole_fixed_dollar_cap",
             "sufficiency=COMPLETE"
+          ],
+          "diagnosticEvidence": [
+            "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+            "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "UNRESOLVED_OPERATIVE_CONDITION:§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf.",
+            "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+            "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+            "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
           ]
         },
-        "pathEnumerationAuthority": "CERTIFIED_4E",
-        "pathCount": 1,
-        "selectedPathId": "path:ir-rule:81c39f1f14705c94bdd1e85c",
-        "capacityOutcome": "EXECUTED",
-        "simulationOutcome": "EXECUTED",
-        "selectedPathResult": "INDETERMINATE",
         "verifiedRemainingUsd": null,
-        "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
-        "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+        "hypotheticalGrossProbeUsd": 40000000,
+        "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
+        "pathCount": 0,
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "selectedPathResult": null,
+        "overallConclusion": "FIDELITY_PASS_HYPOTHETICAL_GROSS — not CERTIFIED_4E; simulate not invoked; remaining null (conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year)",
+        "truthfulBlocker": "PATH_NOT_FOUND:NOT_CERTIFIED_4E:no_phase3_vep"
       },
-      "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
-      "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+      "overallConclusion": "FIDELITY_PASS_HYPOTHETICAL_GROSS — not CERTIFIED_4E; simulate not invoked; remaining null (conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year)",
+      "truthfulBlocker": "PATH_NOT_FOUND:NOT_CERTIFIED_4E:no_phase3_vep"
     },
     {
       "id": "txn-asset-sale",
@@ -787,16 +981,16 @@
         {
           "covenantFamily": "ASSET_SALES",
           "sourceProvision": "conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
-          "calculation": "grossUsd=30000000; fidelity=PASS; capacity=EXECUTED; sim=EXECUTED; pathResult=INDETERMINATE",
+          "calculation": "grossUsd=30000000; fidelity=PASS; capacity=null; sim=null; pathResult=null",
           "missingInputs": [
             "utilization completeness certificate",
             "APPROVED NS-4 financial snapshot for production remaining",
             "APPROVED Consolidated Total Assets for production greater-of (EMPTY_RESOLVER in REQUIRE path)"
           ],
-          "selectedPath": "path:ir-rule:a24af4af4518d766efedb79a",
-          "capacityConsumption": "REQUIRE EXECUTED / selectedPathResult=INDETERMINATE / remaining=null",
+          "selectedPath": null,
+          "capacityConsumption": null,
           "postTransactionState": null,
-          "conclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+          "conclusion": "FIDELITY_PASS_HYPOTHETICAL_GROSS — not CERTIFIED_4E; simulate not invoked; remaining null (conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets)",
           "entityScope": "Parent Borrower or any of its Subsidiaries",
           "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
           "verifiedRemainingUsd": null
@@ -805,16 +999,19 @@
       "verifiedSimulate": {
         "executable": false,
         "refusalSummary": [
-          "PATH_NOT_FOUND:path:ir-rule:a24af4af4518d766efedb79a",
-          "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+          "NO_VERIFIED_EXECUTION_PACKAGE",
+          "NO_CANDIDATE_PATHS",
+          "PATH_NOT_FOUND:NOT_CERTIFIED_4E:no_phase3_vep"
         ],
-        "certifiedBlockers": [],
-        "pathEnumerationAuthority": "CERTIFIED_4E",
+        "certifiedBlockers": [
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
         "pathIncompleteReasons": [],
-        "selectedPathId": "path:ir-rule:a24af4af4518d766efedb79a",
-        "capacityOutcome": "EXECUTED",
-        "simulationOutcome": "EXECUTED",
-        "selectedPathResult": "INDETERMINATE",
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "selectedPathResult": null,
         "verifiedRemainingUsd": null
       },
       "recipeShape": {
@@ -843,33 +1040,62 @@
             "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
             "§7.5(j) is a de minimis Disposition exception — larger §7.5(f) baskets not compiled here."
           ],
-          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "capability": {
+            "fidelityPass": true,
+            "hypotheticalGrossCalculable": true,
+            "semanticCertification": "ABSENT_NO_PHASE3_EVIDENCE",
+            "operativeState": "UNRESOLVED_AMENDMENTS",
+            "productionRemaining": "REFUSED_NULL_NO_COMPLETENESS",
+            "authoritativeBlockers": [
+              "SUFFICIENCY_PARTIAL",
+              "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+              "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+              "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+              "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+              "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+              "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
+            ],
+            "rollup": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED"
+          },
+          "status": "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED",
           "grossCapacityUsd": 30000000,
           "verifiedRemainingUsd": null,
           "fidelityVerdict": "PASS",
           "ruleId": "ir-rule:a24af4af4518d766efedb79a",
+          "ruleSufficiency": "PARTIAL",
           "limitations": [
             "No utilization completeness certificate — verifiedRemainingUsd forced null.",
             "Parent Borrower or any of its Subsidiaries",
+            "No Phase-3 SemanticVerificationResult — rules are non-certified candidates only.",
             "Greater-of CTA input stipulated at $2000000000 for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.",
             "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
             "greater_of_fixed_or_pct_total_assets",
             "{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no admissible source text); it is retained only as rawModelExcerpt and is not authoritative source evidence (review required)\",\"kind\":\"SUFFICIENCY\"}",
             "sufficiency=PARTIAL"
+          ],
+          "diagnosticEvidence": [
+            "SUFFICIENCY_PARTIAL",
+            "PROVENANCE_EXCERPT_UNRESOLVED:{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no ",
+            "UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments",
+            "UNRESOLVED_OPERATIVE_CONDITION:Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact",
+            "PRODUCTION_REMAINING_REFUSED:no_utilization_completeness",
+            "PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED"
           ]
         },
-        "pathEnumerationAuthority": "CERTIFIED_4E",
-        "pathCount": 1,
-        "selectedPathId": "path:ir-rule:a24af4af4518d766efedb79a",
-        "capacityOutcome": "EXECUTED",
-        "simulationOutcome": "EXECUTED",
-        "selectedPathResult": "INDETERMINATE",
         "verifiedRemainingUsd": null,
-        "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
-        "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+        "hypotheticalGrossProbeUsd": 30000000,
+        "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
+        "pathCount": 0,
+        "selectedPathId": null,
+        "capacityOutcome": null,
+        "simulationOutcome": null,
+        "selectedPathResult": null,
+        "overallConclusion": "FIDELITY_PASS_HYPOTHETICAL_GROSS — not CERTIFIED_4E; simulate not invoked; remaining null (conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets)",
+        "truthfulBlocker": "PATH_NOT_FOUND:NOT_CERTIFIED_4E:no_phase3_vep"
       },
-      "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
-      "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+      "overallConclusion": "FIDELITY_PASS_HYPOTHETICAL_GROSS — not CERTIFIED_4E; simulate not invoked; remaining null (conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets)",
+      "truthfulBlocker": "PATH_NOT_FOUND:NOT_CERTIFIED_4E:no_phase3_vep"
     }
   ],
   "consolidationAbsorb": {
@@ -897,5 +1123,5 @@
     "doNotSelfMerge": true
   },
   "overallProductVerdict": "PARTIAL_PRODUCT_CAPABILITY_PROVEN",
-  "overallProductVerdictReason": "Authentic CONMED multi-family units make investments, restricted_payments, asset_sales independently GROSS-executable under REQUIRE (path enum + capacity + simulate). Verified remaining stays null; customer VERIFIED_TRANSACTION_PERMITTED not claimed. Matthews debt/lien remain PARTIALLY_EXECUTABLE; acquisition still refused as a whole."
+  "overallProductVerdictReason": "CONMED RESTRICTED_PAYMENTS, INVESTMENTS, ASSET_SALES: fidelity-pass + hypothetical gross calculable; Phase-3 absent → NOT_CERTIFIED_4E; simulate not invoked; remaining null; not VERIFIED_TRANSACTION_PERMITTED. No family is IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE. Matthews debt/lien remain PARTIALLY_EXECUTABLE."
 }

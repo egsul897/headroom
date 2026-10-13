@@ -1,35 +1,25 @@
 /**
- * Compile authentic CONMED multi-family units → VerifiedExecutionPackage.
+ * Compile authentic CONMED multi-family units (fidelity + hypothetical gross).
  *
- * Reuses fixed-dollar / greater-of compilers + evaluateVerifiedCapacity (REQUIRE).
- * Never invents utilization completeness; remaining stays unpublished.
+ * Does NOT fabricate Phase-3 SemanticVerificationResult / VerifiedUnitArtifact.
+ * Does NOT claim CERTIFIED_4E or VERIFIED_TRANSACTION_PERMITTED without real
+ * Phase-3 evidence. Verified remaining stays null.
  */
 
 import {
   compileFixedDollarBasket,
   evaluateFixedDollarCapacity,
-  packageForFixedDollarRule,
   verifyFixedDollarLegalFidelity,
+  type FixedDollarCompileResult,
 } from "@/lib/contract-model/compiler/fixed-dollar-basket";
 import {
   compileGreaterOfAssetsBasket,
   evaluateGreaterOfCapacity,
-  packageForGreaterOfRule,
   verifyGreaterOfLegalFidelity,
+  type GreaterOfCompileResult,
 } from "@/lib/contract-model/compiler/greater-of-assets-basket";
 import type { IRRule } from "@/lib/contract-model/ir/types";
-import {
-  evaluateVerifiedCapacity,
-  simulateVerifiedTransaction,
-  type HypotheticalTransaction,
-  type SelectedPath,
-  type VerifiedCapacityResult,
-  type VerifiedExecutionPackage,
-  type VerifiedTransactionResult,
-  type VerifiedUnitArtifact,
-} from "@/lib/contract-model/verified-execution";
-import type { SemanticVerificationResult } from "@/lib/contract-model/compiler/semantic-verification/types";
-import { EMPTY_RESOLVER } from "@/lib/contract-model/runtime/input-resolver";
+import type { VerifiedExecutionPackage } from "@/lib/contract-model/verified-execution";
 import { enumerateCertifiedPaths } from "@/lib/product/north-star-workflow/verified-path-enumeration";
 import {
   CONMED_COMPANY_ID,
@@ -40,12 +30,42 @@ import {
   type ConmedSourceUnitCandidate,
 } from "./conmed-source-units";
 
-export type CompiledUnitStatus =
-  | "VERIFIED_EXECUTABLE_GROSS"
-  | "PARTIAL"
-  | "FAILED"
-  | "UNSUPPORTED"
-  | "PRODUCTION_REMAINING_REFUSED";
+/** Hypothetical CTA for greater-of gross probe only — never APPROVED NS-4. */
+export const HYPOTHETICAL_CTA_USD = 2_000_000_000;
+
+export type SemanticCertificationStatus =
+  | "ABSENT_NO_PHASE3_EVIDENCE"
+  | "PHASE3_VERIFIED";
+
+export type OperativeStateStatus =
+  | "UNRESOLVED_AMENDMENTS"
+  | "OPERATIVE_STATE_REVIEW_REQUIRED"
+  | "RESOLVED";
+
+export type ProductionRemainingStatus = "REFUSED_NULL_NO_COMPLETENESS";
+
+/**
+ * Precise multi-axis status — replaces the collapsed VERIFIED_EXECUTABLE_GROSS
+ * promotion that falsely implied Phase-3 / 4E certification.
+ */
+export type CompiledUnitCapability = {
+  fidelityPass: boolean;
+  hypotheticalGrossCalculable: boolean;
+  semanticCertification: SemanticCertificationStatus;
+  operativeState: OperativeStateStatus;
+  productionRemaining: ProductionRemainingStatus;
+  /** Blocking diagnostics that prevent authoritative execution. */
+  authoritativeBlockers: string[];
+  /**
+   * Rollup for inventory only — never “independently executable” without
+   * Phase-3 + operative-state + remaining completeness.
+   */
+  rollup:
+    | "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED"
+    | "COMPILE_PARTIAL_NOT_AUTHORITATIVE"
+    | "FAILED"
+    | "UNSUPPORTED";
+};
 
 export type CompiledAuthenticUnit = {
   candidateId: string;
@@ -54,49 +74,21 @@ export type CompiledAuthenticUnit = {
   sourceSectionRef: string;
   sourceCitation: string;
   entityScopeNote: string;
-  /** Operative document binding (fixture document id). */
   operativeDocumentId: string;
-  /** Amendment attachments — empty until Omnibus/Second Amendment effects are certified attached. */
   amendmentBindings: string[];
-  /** Qualitative / residual conditions encoded at compile time (gate names). */
   conditionNotes: string[];
-  status: CompiledUnitStatus;
+  capability: CompiledUnitCapability;
+  /** @deprecated Use capability.rollup — retained for transition reads only. */
+  status: CompiledUnitCapability["rollup"];
   grossCapacityUsd: number | null;
+  /** Always null — no utilization completeness. */
   verifiedRemainingUsd: null;
   fidelityVerdict: string | null;
   ruleId: string | null;
+  ruleSufficiency: string | null;
   limitations: string[];
+  diagnosticEvidence: string[];
 };
-
-function cleanVerification(rule: IRRule): SemanticVerificationResult {
-  return {
-    candidateRef: rule.ruleId,
-    status: "VERIFIED_NO_MATERIAL_GAP_FOUND",
-    findings: [],
-    semanticReviewInvoked: false,
-    semanticReviewSkippedReason: "authentic-multi-family fidelity gate",
-    conditionSuspicion: null,
-    verifierAlgorithmVersion: "authentic-multi-family-fidelity.v1",
-    verifiedAt: new Date().toISOString(),
-    evidenceSetHash: rule.sourceContentVersion,
-  } as unknown as SemanticVerificationResult;
-}
-
-function artifactFor(rule: IRRule): VerifiedUnitArtifact {
-  return {
-    ruleOrDefinitionId: rule.ruleId,
-    kind: "RULE",
-    verifiedIdentity: {
-      ruleOrDefinitionId: rule.ruleId,
-      companyId: rule.companyId,
-      instrumentKey: rule.instrumentKey,
-      irSchemaVersion: rule.irSchemaVersion,
-      compilerVersion: rule.compilerVersion,
-      sourceContentVersion: rule.sourceContentVersion,
-    },
-    result: cleanVerification(rule),
-  };
-}
 
 /** Map family → canonical ContractAction (not evaluation-v2 aliases). */
 function familyToAction(
@@ -139,29 +131,139 @@ function bindingFields(c: ConmedSourceUnitCandidate): Pick<
   };
 }
 
+function collectDiagnostics(args: {
+  warnings: string[];
+  sufficiency: string | null | undefined;
+  amendmentBindings: string[];
+  conditionNotes: string[];
+}): string[] {
+  const out: string[] = [];
+  for (const w of args.warnings) {
+    if (/PROVENANCE_EXCERPT_UNRESOLVED/i.test(w)) {
+      out.push(`PROVENANCE_EXCERPT_UNRESOLVED:${w.slice(0, 240)}`);
+    }
+    if (/sufficiency=PARTIAL/i.test(w) || args.sufficiency === "PARTIAL") {
+      out.push("SUFFICIENCY_PARTIAL");
+    }
+  }
+  if (args.sufficiency === "PARTIAL") out.push("SUFFICIENCY_PARTIAL");
+  if (args.amendmentBindings.length === 0) {
+    out.push("UNRESOLVED_AMENDMENTS:no_certified_amendment_attachments");
+  }
+  for (const n of args.conditionNotes) {
+    if (/OPERATIVE_STATE_REVIEW_REQUIRED|Default\/Event of Default/i.test(n)) {
+      out.push(`UNRESOLVED_OPERATIVE_CONDITION:${n.slice(0, 160)}`);
+    }
+  }
+  out.push("SEMANTIC_CERTIFICATION_ABSENT:no_phase3_VerifiedUnitArtifact");
+  out.push("PRODUCTION_REMAINING_REFUSED:no_utilization_completeness");
+  return [...new Set(out)];
+}
+
+function buildCapability(args: {
+  fidelityPass: boolean;
+  hypoGrossUsd: number | null;
+  diagnostics: string[];
+  executableClass: string | null;
+}): CompiledUnitCapability {
+  const authoritativeBlockers = [...args.diagnostics];
+  if (!args.fidelityPass) {
+    authoritativeBlockers.push("FIDELITY_FAIL_OR_ABSENT");
+  }
+  // Any Phase-3 / operative / provenance / sufficiency issue blocks authoritative execution.
+  const blocksAuth =
+    authoritativeBlockers.some((d) =>
+      /PROVENANCE_EXCERPT_UNRESOLVED|SUFFICIENCY_PARTIAL|UNRESOLVED_AMENDMENTS|UNRESOLVED_OPERATIVE|SEMANTIC_CERTIFICATION_ABSENT|PRODUCTION_REMAINING_REFUSED|FIDELITY_FAIL/i.test(
+        d,
+      ),
+    );
+
+  let rollup: CompiledUnitCapability["rollup"];
+  if (args.executableClass === "UNSUPPORTED") {
+    rollup = "UNSUPPORTED";
+  } else if (!args.fidelityPass) {
+    rollup = "FAILED";
+  } else if (args.hypoGrossUsd != null && args.hypoGrossUsd > 0 && blocksAuth) {
+    rollup = "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED";
+  } else if (args.fidelityPass) {
+    rollup = "COMPILE_PARTIAL_NOT_AUTHORITATIVE";
+  } else {
+    rollup = "FAILED";
+  }
+
+  return {
+    fidelityPass: args.fidelityPass,
+    hypotheticalGrossCalculable: args.hypoGrossUsd != null && args.hypoGrossUsd > 0,
+    semanticCertification: "ABSENT_NO_PHASE3_EVIDENCE",
+    operativeState: "UNRESOLVED_AMENDMENTS",
+    productionRemaining: "REFUSED_NULL_NO_COMPLETENESS",
+    authoritativeBlockers,
+    rollup,
+  };
+}
+
 export type ConmedMultiFamilyCompileResult = {
   manifest: ReturnType<typeof conmedSourceManifest>;
   units: CompiledAuthenticUnit[];
-  /** Multi-rule VEP when ≥1 fidelity-passing rule; else null. */
+  /**
+   * Authoritative VEP — only when real Phase-3 verification evidence exists.
+   * Always null for this fixture path (fidelity ≠ Phase-3 certify).
+   */
   verifiedPackage: VerifiedExecutionPackage | null;
+  /** Fidelity-passing compiled rules retained as non-certified candidates. */
+  candidateRules: IRRule[];
+  /** Families with fidelity-pass + hypo gross (not authoritative execution). */
+  fidelityPassHypotheticalGrossFamilies: string[];
   independentlyExecutableFamilies: string[];
   partialFamilies: string[];
   failedFamilies: string[];
+  certificationIntegrity: {
+    fabricatedVerificationArtifacts: false;
+    phase3EvidencePresent: false;
+    certified4eClaimed: false;
+    hypotheticalCtaUsd: typeof HYPOTHETICAL_CTA_USD;
+    hypotheticalCtaIsApprovedNs4: false;
+  };
 };
+
+function finalizeUnit(args: {
+  candidate: ConmedSourceUnitCandidate;
+  capability: CompiledUnitCapability;
+  grossCapacityUsd: number | null;
+  fidelityVerdict: string | null;
+  ruleId: string | null;
+  ruleSufficiency: string | null;
+  limitations: string[];
+  diagnosticEvidence: string[];
+}): CompiledAuthenticUnit {
+  return {
+    ...bindingFields(args.candidate),
+    capability: args.capability,
+    status: args.capability.rollup,
+    grossCapacityUsd: args.grossCapacityUsd,
+    verifiedRemainingUsd: null,
+    fidelityVerdict: args.fidelityVerdict,
+    ruleId: args.ruleId,
+    ruleSufficiency: args.ruleSufficiency,
+    limitations: args.limitations,
+    diagnosticEvidence: args.diagnosticEvidence,
+  };
+}
 
 export function compileConmedAuthenticMultiFamily(asOf = "2025-06-30"): ConmedMultiFamilyCompileResult {
   const candidates = extractConmedMultiFamilyCandidates();
-  const rules: IRRule[] = [];
+  const candidateRules: IRRule[] = [];
   const units: CompiledAuthenticUnit[] = [];
 
   for (const c of candidates) {
     const limitations: string[] = [
       "No utilization completeness certificate — verifiedRemainingUsd forced null.",
       c.entityScopeNote,
+      "No Phase-3 SemanticVerificationResult — rules are non-certified candidates only.",
     ];
 
     if (c.formulation === "FIXED_DOLLAR") {
-      const compile = compileFixedDollarBasket({
+      const compile: FixedDollarCompileResult = compileFixedDollarBasket({
         companyId: CONMED_COMPANY_ID,
         instrumentKey: CONMED_INSTRUMENT_KEY,
         sourceDocumentId: CONMED_DOCUMENT_ID,
@@ -177,8 +279,9 @@ export function compileConmedAuthenticMultiFamily(asOf = "2025-06-30"): ConmedMu
             rule: compile.rule,
           })
         : null;
+      const fidelityPass = fidelity?.verdict === "PASS";
       const evalCap =
-        compile.rule && fidelity?.verdict === "PASS"
+        compile.rule && fidelityPass
           ? evaluateFixedDollarCapacity({
               compile,
               operativeSourceText: c.operativeSourceText,
@@ -187,47 +290,76 @@ export function compileConmedAuthenticMultiFamily(asOf = "2025-06-30"): ConmedMu
             })
           : null;
 
-      if (compile.rule && fidelity?.verdict === "PASS") {
-        rules.push(compile.rule);
-        // Production remaining check — must refuse
+      if (compile.rule && fidelityPass) {
+        candidateRules.push(compile.rule);
         const prod = evaluateFixedDollarCapacity({
           compile,
           operativeSourceText: c.operativeSourceText,
           authorityMode: "PRODUCTION",
           asOf,
         });
-        units.push({
-          ...bindingFields(c),
-          status:
-            prod.outcomeLabel === "PRODUCTION_CAPACITY_REFUSED"
-              ? "VERIFIED_EXECUTABLE_GROSS"
-              : "PARTIAL",
-          grossCapacityUsd: evalCap?.availableAmountUsd ?? null,
-          verifiedRemainingUsd: null,
-          fidelityVerdict: fidelity.verdict,
-          ruleId: compile.rule.ruleId,
-          limitations: [
-            ...limitations,
-            ...(prod.productionRefusal ? [prod.productionRefusal] : []),
-            ...compile.warnings,
-          ],
+        const diagnostics = collectDiagnostics({
+          warnings: compile.warnings,
+          sufficiency: compile.rule.sufficiency,
+          amendmentBindings: [],
+          conditionNotes: bindingFields(c).conditionNotes,
         });
+        if (prod.outcomeLabel === "PRODUCTION_CAPACITY_REFUSED") {
+          diagnostics.push("PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED");
+        }
+        const capability = buildCapability({
+          fidelityPass: true,
+          hypoGrossUsd: evalCap?.availableAmountUsd ?? null,
+          diagnostics,
+          executableClass: compile.executableClass,
+        });
+        units.push(
+          finalizeUnit({
+            candidate: c,
+            capability,
+            grossCapacityUsd: evalCap?.availableAmountUsd ?? null,
+            fidelityVerdict: fidelity!.verdict,
+            ruleId: compile.rule.ruleId,
+            ruleSufficiency: compile.rule.sufficiency,
+            limitations: [
+              ...limitations,
+              ...(prod.productionRefusal ? [prod.productionRefusal] : []),
+              ...compile.warnings,
+            ],
+            diagnosticEvidence: diagnostics,
+          }),
+        );
       } else {
-        units.push({
-          ...bindingFields(c),
-          status: compile.executableClass === "UNSUPPORTED" ? "UNSUPPORTED" : "FAILED",
-          grossCapacityUsd: null,
-          verifiedRemainingUsd: null,
-          fidelityVerdict: fidelity?.verdict ?? null,
-          ruleId: null,
-          limitations: [...limitations, ...compile.warnings],
+        const diagnostics = collectDiagnostics({
+          warnings: compile.warnings,
+          sufficiency: compile.rule?.sufficiency,
+          amendmentBindings: [],
+          conditionNotes: bindingFields(c).conditionNotes,
         });
+        const capability = buildCapability({
+          fidelityPass: false,
+          hypoGrossUsd: null,
+          diagnostics,
+          executableClass: compile.executableClass,
+        });
+        units.push(
+          finalizeUnit({
+            candidate: c,
+            capability,
+            grossCapacityUsd: null,
+            fidelityVerdict: fidelity?.verdict ?? null,
+            ruleId: null,
+            ruleSufficiency: compile.rule?.sufficiency ?? null,
+            limitations: [...limitations, ...compile.warnings],
+            diagnosticEvidence: diagnostics,
+          }),
+        );
       }
       continue;
     }
 
     // GREATER_OF_ASSETS
-    const compile = compileGreaterOfAssetsBasket({
+    const compile: GreaterOfCompileResult = compileGreaterOfAssetsBasket({
       companyId: CONMED_COMPANY_ID,
       instrumentKey: CONMED_INSTRUMENT_KEY,
       sourceDocumentId: CONMED_DOCUMENT_ID,
@@ -243,90 +375,118 @@ export function compileConmedAuthenticMultiFamily(asOf = "2025-06-30"): ConmedMu
           rule: compile.rule,
         })
       : null;
+    const fidelityPass = fidelity?.verdict === "PASS";
 
-    // Hypothetical evaluation needs Total Assets — supply fixture-backed CTA
-    // only as CALLER_STIPULATED_HYPOTHETICAL for gross math; never as APPROVED.
-    const totalAssetsUsd = 2_000_000_000; // disclosure: stipulated for gross probe only
     limitations.push(
-      `Greater-of CTA input stipulated at $${totalAssetsUsd} for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.`,
+      `Greater-of CTA input stipulated at $${HYPOTHETICAL_CTA_USD} for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.`,
     );
 
     const evalCap =
-      compile.rule && fidelity?.verdict === "PASS"
+      compile.rule && fidelityPass
         ? evaluateGreaterOfCapacity({
             compile,
             operativeSourceText: c.operativeSourceText,
             authorityMode: "CALLER_STIPULATED_HYPOTHETICAL",
-            totalAssetsUsd,
+            totalAssetsUsd: HYPOTHETICAL_CTA_USD,
             asOf,
           })
         : null;
 
-    if (compile.rule && fidelity?.verdict === "PASS") {
-      rules.push(compile.rule);
+    if (compile.rule && fidelityPass) {
+      candidateRules.push(compile.rule);
       const prod = evaluateGreaterOfCapacity({
         compile,
         operativeSourceText: c.operativeSourceText,
         authorityMode: "PRODUCTION",
-        totalAssetsUsd,
+        totalAssetsUsd: HYPOTHETICAL_CTA_USD,
         asOf,
       });
-      units.push({
-        ...bindingFields(c),
-        status:
-          prod.outcomeLabel === "PRODUCTION_CAPACITY_REFUSED" ||
-          prod.outcomeLabel === "VERIFIED_EXECUTABLE"
-            ? "VERIFIED_EXECUTABLE_GROSS"
-            : "PARTIAL",
-        grossCapacityUsd: evalCap?.availableAmountUsd ?? null,
-        verifiedRemainingUsd: null,
-        fidelityVerdict: fidelity.verdict,
-        ruleId: compile.rule.ruleId,
-        limitations: [
-          ...limitations,
-          ...(prod.productionRefusal ? [prod.productionRefusal] : []),
-          ...compile.warnings,
-        ],
+      const diagnostics = collectDiagnostics({
+        warnings: compile.warnings,
+        sufficiency: compile.rule.sufficiency,
+        amendmentBindings: [],
+        conditionNotes: bindingFields(c).conditionNotes,
       });
+      if (prod.outcomeLabel === "PRODUCTION_CAPACITY_REFUSED") {
+        diagnostics.push("PRODUCTION_CAPACITY_REFUSED_AS_EXPECTED");
+      }
+      const capability = buildCapability({
+        fidelityPass: true,
+        hypoGrossUsd: evalCap?.availableAmountUsd ?? null,
+        diagnostics,
+        executableClass: compile.executableClass,
+      });
+      units.push(
+        finalizeUnit({
+          candidate: c,
+          capability,
+          grossCapacityUsd: evalCap?.availableAmountUsd ?? null,
+          fidelityVerdict: fidelity!.verdict,
+          ruleId: compile.rule.ruleId,
+          ruleSufficiency: compile.rule.sufficiency,
+          limitations: [
+            ...limitations,
+            ...(prod.productionRefusal ? [prod.productionRefusal] : []),
+            ...compile.warnings,
+          ],
+          diagnosticEvidence: diagnostics,
+        }),
+      );
     } else {
-      units.push({
-        ...bindingFields(c),
-        status: compile.executableClass === "UNSUPPORTED" ? "UNSUPPORTED" : "FAILED",
-        grossCapacityUsd: null,
-        verifiedRemainingUsd: null,
-        fidelityVerdict: fidelity?.verdict ?? null,
-        ruleId: null,
-        limitations: [...limitations, ...compile.warnings],
+      const diagnostics = collectDiagnostics({
+        warnings: compile.warnings,
+        sufficiency: compile.rule?.sufficiency,
+        amendmentBindings: [],
+        conditionNotes: bindingFields(c).conditionNotes,
       });
+      const capability = buildCapability({
+        fidelityPass: false,
+        hypoGrossUsd: null,
+        diagnostics,
+        executableClass: compile.executableClass,
+      });
+      units.push(
+        finalizeUnit({
+          candidate: c,
+          capability,
+          grossCapacityUsd: null,
+          fidelityVerdict: fidelity?.verdict ?? null,
+          ruleId: null,
+          ruleSufficiency: compile.rule?.sufficiency ?? null,
+          limitations: [...limitations, ...compile.warnings],
+          diagnosticEvidence: diagnostics,
+        }),
+      );
     }
   }
 
-  const verifiedPackage: VerifiedExecutionPackage | null =
-    rules.length > 0
-      ? {
-          companyId: CONMED_COMPANY_ID,
-          instrumentKey: CONMED_INSTRUMENT_KEY,
-          rules,
-          definitions: [],
-          sharedCapacities: [],
-          verifications: rules.map(artifactFor),
-        }
-      : null;
+  // No fabricated Phase-3 verifications → no authoritative VEP.
+  const verifiedPackage: VerifiedExecutionPackage | null = null;
 
-  const independentlyExecutableFamilies = [
+  const fidelityPassHypotheticalGrossFamilies = [
     ...new Set(
       units
-        .filter((u) => u.status === "VERIFIED_EXECUTABLE_GROSS")
+        .filter((u) => u.capability.rollup === "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED")
         .map((u) => u.family),
     ),
   ];
+  // Never claim independently executable without Phase-3 + operative + remaining.
+  const independentlyExecutableFamilies: string[] = [];
   const partialFamilies = [
-    ...new Set(units.filter((u) => u.status === "PARTIAL").map((u) => u.family)),
+    ...new Set(
+      units
+        .filter(
+          (u) =>
+            u.capability.rollup === "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED" ||
+            u.capability.rollup === "COMPILE_PARTIAL_NOT_AUTHORITATIVE",
+        )
+        .map((u) => u.family),
+    ),
   ];
   const failedFamilies = [
     ...new Set(
       units
-        .filter((u) => u.status === "FAILED" || u.status === "UNSUPPORTED")
+        .filter((u) => u.capability.rollup === "FAILED" || u.capability.rollup === "UNSUPPORTED")
         .map((u) => u.family),
     ),
   ];
@@ -335,9 +495,18 @@ export function compileConmedAuthenticMultiFamily(asOf = "2025-06-30"): ConmedMu
     manifest: conmedSourceManifest(),
     units,
     verifiedPackage,
+    candidateRules,
+    fidelityPassHypotheticalGrossFamilies,
     independentlyExecutableFamilies,
     partialFamilies,
     failedFamilies,
+    certificationIntegrity: {
+      fabricatedVerificationArtifacts: false,
+      phase3EvidencePresent: false,
+      certified4eClaimed: false,
+      hypotheticalCtaUsd: HYPOTHETICAL_CTA_USD,
+      hypotheticalCtaIsApprovedNs4: false,
+    },
   };
 }
 
@@ -357,13 +526,9 @@ export type AuthenticTxnEvaluation = {
   verifiedRemainingUsd: null;
   overallConclusion: string;
   truthfulBlocker: string | null;
+  /** Hypothetical gross probe only (CALLER_STIPULATED); never APPROVED NS-4. */
+  hypotheticalGrossProbeUsd: number | null;
 };
-
-function actionForKind(kind: AuthenticTxnKind): string {
-  if (kind === "RESTRICTED_PAYMENT") return "MAKE_RESTRICTED_PAYMENT";
-  if (kind === "INVESTMENT") return "MAKE_INVESTMENT";
-  return "DISPOSE_ASSET";
-}
 
 function familyForKind(kind: AuthenticTxnKind): CompiledAuthenticUnit["family"] {
   if (kind === "RESTRICTED_PAYMENT") return "RESTRICTED_PAYMENTS";
@@ -372,8 +537,9 @@ function familyForKind(kind: AuthenticTxnKind): CompiledAuthenticUnit["family"] 
 }
 
 /**
- * Exercise 4E enumeration + REQUIRE capacity + REQUIRE simulate for one txn.
- * Remaining always null. Production remaining never published.
+ * Truthful evaluation: no fabricated VEP, no CERTIFIED_4E from synthetic artifacts,
+ * no fallback selected path, no simulate without an eligible enumerated path.
+ * Hypothetical gross may be reported separately from certification.
  */
 export function evaluateAuthenticTransaction(args: {
   compiled: ConmedMultiFamilyCompileResult;
@@ -384,32 +550,39 @@ export function evaluateAuthenticTransaction(args: {
   const family = familyForKind(args.kind);
   const unit =
     args.compiled.units.find(
-      (u) => u.family === family && u.status === "VERIFIED_EXECUTABLE_GROSS",
+      (u) =>
+        u.family === family &&
+        u.capability.rollup === "FIDELITY_PASS_HYPOTHETICAL_GROSS_NOT_CERTIFIED",
     ) ??
     args.compiled.units.find((u) => u.family === family) ??
     null;
 
-  const pkg = args.compiled.verifiedPackage;
-  if (!pkg || !unit?.ruleId) {
+  const base = {
+    kind: args.kind,
+    amountMillions: args.amountMillions,
+    evaluationDate: args.evaluationDate,
+    unit,
+    verifiedRemainingUsd: null as null,
+    hypotheticalGrossProbeUsd: unit?.grossCapacityUsd ?? null,
+  };
+
+  if (!unit?.ruleId || !unit.capability.fidelityPass) {
     return {
-      kind: args.kind,
-      amountMillions: args.amountMillions,
-      evaluationDate: args.evaluationDate,
-      unit,
+      ...base,
       pathEnumerationAuthority: "NOT_CERTIFIED_4E",
       pathCount: 0,
       selectedPathId: null,
       capacityOutcome: null,
       simulationOutcome: null,
       selectedPathResult: null,
-      verifiedRemainingUsd: null,
-      overallConclusion: "REFUSED — no fidelity-passing verified unit for family",
-      truthfulBlocker: `NO_VERIFIED_UNIT:${family}`,
+      overallConclusion: "REFUSED — no fidelity-passing candidate unit for family",
+      truthfulBlocker: `NO_FIDELITY_CANDIDATE:${family}`,
     };
   }
 
+  // Authoritative VEP is null without Phase-3 evidence — enumeration must stay NOT_CERTIFIED_4E.
   const pathEnum = enumerateCertifiedPaths({
-    verifiedPackage: pkg,
+    verifiedPackage: args.compiled.verifiedPackage,
     transactionKind:
       args.kind === "ASSET_SALE"
         ? "ASSET_SALE"
@@ -419,125 +592,52 @@ export function evaluateAuthenticTransaction(args: {
     secured: null,
   });
 
-  const rule = pkg.rules.find((r) => r.ruleId === unit.ruleId)!;
-  const singlePkg =
-    unit.formulation === "FIXED_DOLLAR"
-      ? packageForFixedDollarRule(rule)
-      : packageForGreaterOfRule(rule);
+  const matchingPath = pathEnum.paths.find(
+    (p) => p.ruleId === unit.ruleId && p.status === "CANDIDATE",
+  );
 
-  // Capacity REQUIRE: empty ledger + EMPTY_RESOLVER — PAI-04 UNKNOWN util,
-  // missing APPROVED financials → never invent zero remaining or CTA.
-  const capacity: VerifiedCapacityResult = evaluateVerifiedCapacity({
-    package: singlePkg,
-    inputs: EMPTY_RESOLVER,
-    ledger: [],
-    asOf: args.evaluationDate,
-  });
+  // Blocking diagnostics always prevent authoritative simulate.
+  const authBlockers = unit.capability.authoritativeBlockers;
+  if (
+    pathEnum.authority !== "CERTIFIED_4E" ||
+    !matchingPath ||
+    args.compiled.verifiedPackage == null ||
+    authBlockers.length > 0
+  ) {
+    const blocker =
+      !matchingPath && pathEnum.paths.length === 0
+        ? "PATH_NOT_FOUND:NOT_CERTIFIED_4E:no_phase3_vep"
+        : !matchingPath
+          ? `PATH_NOT_FOUND:no_eligible_CANDIDATE_path_for_${unit.ruleId}`
+          : pathEnum.authority !== "CERTIFIED_4E"
+            ? `NOT_CERTIFIED_4E:authority=${pathEnum.authority}`
+            : `AUTHORITATIVE_BLOCKERS:${authBlockers.slice(0, 4).join("|")}`;
 
-  // Prefer path that matches our rule; else refuse silent substitution.
-  const matchingPath = pathEnum.paths.find((p) => p.ruleId === unit.ruleId);
-  const selectedPath: SelectedPath | null = matchingPath
-    ? {
-        capacityNodeIds: [`capacity:rule:${unit.ruleId}`],
-        ruleIds: [unit.ruleId],
-        sharedCapacityIds: [],
-        reclassificationElectionIds: [],
-      }
-    : {
-        capacityNodeIds: [`capacity:rule:${unit.ruleId}`],
-        ruleIds: [unit.ruleId],
-        sharedCapacityIds: [],
-        reclassificationElectionIds: [],
-      };
-
-  const amountDollars = String(Math.round(args.amountMillions * 1_000_000));
-  const transaction: HypotheticalTransaction = {
-    transactionId: `pp003-auth-${args.kind}-${args.amountMillions}`,
-    companyId: CONMED_COMPANY_ID,
-    instrumentKey: CONMED_INSTRUMENT_KEY,
-    effectiveAsOf: args.evaluationDate,
-    category: args.kind,
-    label: `${args.kind} $${args.amountMillions}M`,
-    intendedAmount: { type: "MONEY", amount: amountDollars, currency: "USD" },
-    effects: [
-      {
-        effectId: "e1",
-        kind: "CONSUME_CAPACITY",
-        capacityNodeId: `capacity:rule:${unit.ruleId}`,
-        amount: { type: "MONEY", amount: amountDollars, currency: "USD" },
-      },
-    ],
-    provenance: {
-      source: "pp003-authentic-multi-family",
-      sourceVersion: "pp003-capability.v1",
-      approvalRef: null,
-    },
-  };
-
-  let simulation: VerifiedTransactionResult | null = null;
-  try {
-    simulation = simulateVerifiedTransaction({
-      package: singlePkg,
-      inputs: EMPTY_RESOLVER,
-      ledger: [],
-      asOf: args.evaluationDate,
-      transaction,
-      selectedPath,
-    });
-  } catch (err) {
     return {
-      kind: args.kind,
-      amountMillions: args.amountMillions,
-      evaluationDate: args.evaluationDate,
-      unit,
+      ...base,
       pathEnumerationAuthority: pathEnum.authority,
       pathCount: pathEnum.paths.length,
-      selectedPathId: matchingPath?.pathId ?? null,
-      capacityOutcome: capacity.outcome,
+      selectedPathId: null,
+      capacityOutcome: null,
       simulationOutcome: null,
       selectedPathResult: null,
-      verifiedRemainingUsd: null,
-      overallConclusion: "REFUSED — simulate threw",
-      truthfulBlocker: `SIMULATE_ERROR:${err instanceof Error ? err.message : String(err)}`,
+      overallConclusion:
+        `FIDELITY_PASS_HYPOTHETICAL_GROSS — not CERTIFIED_4E; simulate not invoked; remaining null (${unit.sourceCitation})`,
+      truthfulBlocker: blocker,
     };
   }
 
-  const simOutcome = simulation.outcome;
-  const pathResult =
-    simulation.outcome === "EXECUTED"
-      ? simulation.simulation.selectedPathResult
-      : null;
-
-  // Gross unit exists but remaining null + missing financial inputs ⇒ not customer PERMITTED.
-  const truthfulBlocker =
-    simOutcome === "REFUSED"
-      ? simulation.refusals.map((r) => r.code).join(",") || "SIMULATE_REFUSED"
-      : pathResult === "SATISFIED"
-        ? "GROSS_PATH_SATISFIED_BUT_VERIFIED_REMAINING_NULL:no_completeness_certificate"
-        : pathResult === "INDETERMINATE"
-          ? "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
-          : pathResult
-            ? `SELECTED_PATH_${pathResult};verifiedRemainingUsd=null`
-            : "NOT_SATISFIED;verifiedRemainingUsd=null";
-
-  const overallConclusion =
-    pathResult === "SATISFIED"
-      ? `GROSS_EXECUTABLE_UNDER_REQUIRE — remaining null; not VERIFIED_TRANSACTION_PERMITTED without completeness (${unit.sourceCitation})`
-      : `GROSS_UNIT_PRESENT_REQUIRE_RAN — path ${pathResult ?? "n/a"}; remaining null; not VERIFIED_TRANSACTION_PERMITTED (${unit.sourceCitation}) — ${truthfulBlocker}`;
-
+  // Unreachable today without Phase-3 evidence; kept for honest future wiring only.
   return {
-    kind: args.kind,
-    amountMillions: args.amountMillions,
-    evaluationDate: args.evaluationDate,
-    unit,
+    ...base,
     pathEnumerationAuthority: pathEnum.authority,
     pathCount: pathEnum.paths.length,
-    selectedPathId: matchingPath?.pathId ?? `path:rule:${unit.ruleId}`,
-    capacityOutcome: capacity.outcome,
-    simulationOutcome: simOutcome,
-    selectedPathResult: pathResult,
-    verifiedRemainingUsd: null,
-    overallConclusion,
-    truthfulBlocker,
+    selectedPathId: matchingPath.pathId,
+    capacityOutcome: null,
+    simulationOutcome: null,
+    selectedPathResult: null,
+    overallConclusion:
+      "UNEXPECTED_CERTIFIED_PATH — Phase-3 evidence present; REQUIRE simulate deferred to product bridge with real gates",
+    truthfulBlocker: "PHASE3_PRESENT_BUT_SIMULATE_NOT_AUTO_INVOKED:manual_product_bridge_required",
   };
 }

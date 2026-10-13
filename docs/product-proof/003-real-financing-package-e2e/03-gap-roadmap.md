@@ -57,16 +57,16 @@ Ordered by unblocking authentic multi-domain transaction answers without inventi
 
 ---
 
-## Task 5 — Compile authentic RP + asset-sale (+ investment) units for one real package
+## Task 5 — Phase-3 certify CONMED (or next) RP / Inv / Asset Sale candidates → real VEP
 
-**Why:** Two of three required transactions are `NOT_IMPLEMENTED` on the authentic package; intake does not even classify “asset sale” (`kind=UNKNOWN`). Customer-ready E2E is impossible until these domains exist as verified units — not Coherent seeds.
+**Why (updated after PR #349 remediation):** Fidelity-pass + hypo-gross CONMED candidates exist (`PARTIALLY_EXECUTABLE`). False CERTIFIED_4E promotion was removed. Customer-ready E2E still needs **real** Phase-3 `VerifiedUnitArtifact` evidence, amendment attachment, provenance resolution (Inv/AS PARTIAL), APPROVED CTA, and utilization completeness — not fabricated verification.
 
 | Item | Exact target |
 |---|---|
-| Files | `lib/product/north-star-workflow/transaction-analysis.ts` (add ASSET_SALE kind); compiler fixed-dollar / builder evaluators under `lib/contract-model/compiler/**`; Matthews or next authentic package sources under `docs/product-proof/` / `tests/fixtures/`; `lib/product/real-dashboard-vertical-slice/package-matthews.ts` only if source-backed — **no hand-waved baskets** |
-| Tests | Extend `scripts/product-proof/run-003-real-package-e2e.ts` + `tests/product/product-proof-003-real-package-e2e.test.ts` until RP and asset-sale domains leave `NOT_IMPLEMENTED` **or** return evidence-backed blockers more specific than absence; Phase 3 certify → VEP → 4E enumeration for those families |
-| PR sequence | After Tasks 1–4 authority stack is stable → one package compile PR → one VEP bind PR → re-run PP003 |
-| Acceptance | For each of acquisition / RP / asset sale: every applicable covenant lists source provision, calculation or explicit missing input, selected path or null, capacity consumption or null, post state or null, and overall conclusion — with **zero** invented approvals. Prefer fail-closed over favorable path. |
+| Files | `lib/product/authentic-multi-family/*` (bind only real Phase-3 artifacts); Phase-3 semantic verification pipeline; CONMED Omnibus/Second Amendment operative-state attach; greater-of provenance excerpt binding |
+| Tests | Keep `authentic-multi-family-certification-integrity.adversarial.test.ts` green; add Phase-3 evidence fixture tests that refuse forged `VERIFIED_NO_MATERIAL_GAP_FOUND`; re-run PP003 |
+| PR sequence | After Tasks 1–4 authority stack is stable → Phase-3 certify package → bind VEP only with verified identity → re-run PP003 |
+| Acceptance | `CERTIFIED_4E` only with real Phase-3 evidence; eligible CANDIDATE path required before simulate; remaining null until completeness; never fabricate SemanticVerificationResult |
 
 ---
 

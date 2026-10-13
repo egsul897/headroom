@@ -1,61 +1,37 @@
-# HEADROOM — PP003 Product-Capability Execution (Mission Report)
+# HEADROOM — PP003 Certification Integrity Remediation (PR #349)
 
-**Date:** 2026-10-13  
-**Branch:** `cursor/pp003-capability-execution-cc62`  
-**Baseline:** PR #346 @ `046161e78dc206c50ee951d71a18dfa4befd3206`  
-**Tip SHA:** see `artifacts/00-evaluation.json` → `canonicalMainSha` after rerun  
-**Neon writes / paid inference / self-merge:** none  
+**Audited SHA:** `bd594716516d5b3905f6a8a40dcdeb33cb2691a5`  
+**Baseline PR #346:** `046161e78dc206c50ee951d71a18dfa4befd3206`  
+**PR:** #349 — do not self-merge  
+**Before artifacts:** `artifacts/remediation-before-bd594716/`
 
-## Overall verdict
+## Verdict
 
-**PARTIAL_PRODUCT_CAPABILITY_PROVEN** — measured by independently executable authentic covenant families, not PR/test count.
+**PARTIAL_PRODUCT_CAPABILITY_PROVEN** — fidelity-pass + hypothetical gross retained; false CERTIFIED_4E / independently-executable promotion eliminated.
 
-Three CONMED Article VII families are fidelity-compiled and exercised under verified-execution REQUIRE (path enum + capacity + simulate). Verified remaining stays **null**. Customer `VERIFIED_TRANSACTION_PERMITTED` is **not** claimed. Matthews debt/lien remain partial; acquisition refused as a whole.
+## What was fixed
 
-## Domain status deltas (vs baseline #346)
+1. Removed `cleanVerification()` / synthetic `VERIFIED_NO_MATERIAL_GAP_FOUND` from authentic-multi-family.
+2. `verifiedPackage` is **null** without Phase-3 evidence; candidate rules retained separately.
+3. Path enumeration → `NOT_CERTIFIED_4E`; no fallback selected path; simulate not invoked.
+4. Precise capability axes replace `VERIFIED_EXECUTABLE_GROSS`.
+5. PROVENANCE_EXCERPT_UNRESOLVED / PARTIAL / unresolved amendments preserved as authoritative blockers.
+6. $2bn CTA strictly hypothetical (`hypotheticalCtaIsApprovedNs4=false`).
+7. `verifiedRemainingUsd=null` preserved.
 
-| Domain | Baseline | Now | Source |
-|---|---|---|---|
-| Investments | NOT_IMPLEMENTED | **IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE** | CONMED §7.8(l) |
-| Restricted payments | NOT_IMPLEMENTED | **IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE** | CONMED §7.6(d) |
-| Asset sales | NOT_IMPLEMENTED | **IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE** | CONMED §7.5(j) |
-| Debt / Liens | PARTIALLY_EXECUTABLE | PARTIALLY_EXECUTABLE | Matthews |
-| Historical utilization | BLOCKED_BY_MISSING_REAL_EVIDENCE | unchanged (did not stop other families) | Matthews |
+## Domain status (truthful)
 
-## Consolidation (#345 / #340 / #341)
-
-| PR | Action | Tip SHA |
-|---|---|---|
-| #345 | **Absorbed** via `origin/main` merge | `d91b0a977ef6c92c9224b096306f7dfc8695cdbc` |
-| #340 | **Not full-merged** — would land a second simulate/permissibility surface | `7e3974fcdd1a54c0f8762e41873ed2be045a8a14` |
-| #341 | **Not full-merged** — overlapping financial-metric path already on main via #345/#332; refuse competing leverage engine | `1dc10c4c301257a578ac9758b3f232396020e1c4` |
-
-See `artifacts/05-consolidation-absorb.json`.
-
-## Three transactions (REQUIRE)
-
-| Txn | Executable (customer) | Path auth | Cap / Sim | Path result | Remaining |
-|---|---|---|---|---|---|
-| Acquisition $50M | false | Matthews NOT_CERTIFIED_4E | Inv leg EXECUTED/EXECUTED | INDETERMINATE | null |
-| RP $25M | false | CERTIFIED_4E | EXECUTED / EXECUTED | INDETERMINATE | null |
-| Asset sale $40M | false | CERTIFIED_4E | EXECUTED / EXECUTED | INDETERMINATE | null |
-
-## Source references
-
-- `tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt`
-- Matthews: `lib/product/real-dashboard-vertical-slice/package-matthews.ts`
-- Units: `lib/product/authentic-multi-family/*`
+| Domain | Status |
+|---|---|
+| investments / restricted_payments / asset_sales | PARTIALLY_EXECUTABLE |
+| independently executable families | **[]** |
+| fidelity-pass hypo-gross families | ASSET_SALES, INVESTMENTS, RESTRICTED_PAYMENTS |
 
 ## Reproduce
 
 ```bash
+npx vitest run tests/product/authentic-multi-family-conmed.test.ts \
+  tests/product/authentic-multi-family-certification-integrity.adversarial.test.ts \
+  tests/product/product-proof-003-real-package-e2e.test.ts
 npx tsx scripts/product-proof/run-003-real-package-e2e.ts
-npx vitest run tests/product/authentic-multi-family-conmed.test.ts tests/product/product-proof-003-real-package-e2e.test.ts
 ```
-
-## What this mission refuses to claim
-
-- Customer-ready affirmative permission for any of the three transactions  
-- That verified remaining is known without completeness evidence  
-- That #340/#341 were self-merged or that a second engine was landed  
-- That Matthews alone evidences RP / investment / asset-sale baskets

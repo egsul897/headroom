@@ -4,7 +4,7 @@ Matthews International Q1 FY2025 (debt/liens) plus CONMED Article VII authentic 
 
 ## Verdict
 
-**PARTIAL_PRODUCT_CAPABILITY_PROVEN** — RP / Investments / Asset Sales independently GROSS-executable under REQUIRE; verified remaining **null**; customer PERMITTED **not** claimed. Acquisition refused as a whole on Matthews.
+**PARTIAL_PRODUCT_CAPABILITY_PROVEN** — CONMED RP / Investments / Asset Sales are fidelity-pass + hypothetical-gross **candidates** (PARTIALLY_EXECUTABLE). No Phase-3 VEP → **NOT_CERTIFIED_4E**; simulate not invoked; remaining **null**; customer PERMITTED **not** claimed. Pre-remediation false CERTIFIED_4E artifacts retained under `artifacts/remediation-before-bd594716/`.
 
 ## Reproduce
 

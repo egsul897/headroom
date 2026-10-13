@@ -1,17 +1,13 @@
-# Transaction evaluations — PP003 capability execution
+# Transaction evaluations — certification-integrity remediation
 
-All three transactions: **`verifiedSimulate.executable = false`**. Verified remaining always **null**. No invented favorable paths.
+All three: `verifiedSimulate.executable = false`. Remaining **null**. Simulate **not invoked** without Phase-3 VEP + eligible CANDIDATE path.
 
-| Transaction | Amount | Package | Path authority | Capacity | Simulate | Path result | Remaining | Overall |
-|---|---:|---|---|---|---|---|---|---|
-| Debt-funded acquisition | $50M | Matthews debt/lien + CONMED §7.8(l) investment leg | Matthews `NOT_CERTIFIED_4E`; Inv leg `CERTIFIED_4E` | Inv REQUIRE `EXECUTED` | Inv REQUIRE `EXECUTED` | `INDETERMINATE` | null | REFUSED as a whole — Matthews no VEP; CA §6.01(j)=0; Inv remaining null |
-| Restricted payment | $25M | CONMED §7.6(d) | `CERTIFIED_4E` | REQUIRE `EXECUTED` | REQUIRE `EXECUTED` | `INDETERMINATE` | null | GROSS unit present; not `VERIFIED_TRANSACTION_PERMITTED` |
-| Asset sale | $40M | CONMED §7.5(j) | `CERTIFIED_4E` | REQUIRE `EXECUTED` | REQUIRE `EXECUTED` | `INDETERMINATE` | null | Draft kind `ASSET_SALE`; recipe bound to capacity node; remaining null |
+| Transaction | Path authority | Selected path | Simulate | Remaining | Blocker |
+|---|---|---|---|---|---|
+| Acquisition $50M | Matthews NOT_CERTIFIED_4E | null | null (Inv leg) | null | Matthews refuse + CONMED Inv NOT_CERTIFIED_4E / PATH_NOT_FOUND |
+| RP $25M | **NOT_CERTIFIED_4E** | null | null | null | PATH_NOT_FOUND:no_phase3_vep |
+| Asset sale $40M | **NOT_CERTIFIED_4E** | null | null | null | PATH_NOT_FOUND:no_phase3_vep |
 
-### Intake / recipes
+Hypothetical gross probe (non-authoritative): RP $40M; Inv $75M; AS $30M at stipulated $2bn CTA (**not** APPROVED NS-4).
 
-- `parseTransactionDraft` classifies asset-sale asks as `ASSET_SALE` (not `UNKNOWN`).
-- `recipeDividendPayment` / `recipeAssetSale` bind CONMED rule capacity nodes when present.
-- Empty-resolver REQUIRE path keeps PAI-04 UNKNOWN utilization ≠ zero remaining.
-
-Machine-readable: `artifacts/02-transactions.json`.
+Before/after machine JSON: `artifacts/remediation-before-bd594716/` vs current `artifacts/`.

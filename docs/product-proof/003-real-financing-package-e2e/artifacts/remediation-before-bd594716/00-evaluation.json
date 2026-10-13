@@ -1,0 +1,901 @@
+{
+  "schema": "product-proof-003-real-financing-package-e2e.v2-capability",
+  "evaluatedAt": "2026-10-13T07:33:37.307Z",
+  "canonicalMainSha": "c8d114cfce6a06b6ac010217f1ef488cb7740a38",
+  "baselineSha": "046161e78dc206c50ee951d71a18dfa4befd3206",
+  "package": {
+    "key": "matthews-international-q1-fy2025",
+    "companyId": "matthews",
+    "asOf": "2024-12-31",
+    "authenticity": "AUTHENTIC_SOURCE_BACKED",
+    "governingDocuments": [
+      {
+        "id": "matw-2027-second-lien-notes-indenture",
+        "name": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027",
+        "accession": "0001193125-24-228450",
+        "role": "OPERATIVE_INDENTURE"
+      },
+      {
+        "id": "matw-credit-agreement-2020",
+        "name": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment)",
+        "accession": "0000063296-20-000040",
+        "role": "OPERATIVE_CREDIT_AGREEMENT"
+      },
+      {
+        "id": "matw-10q-2024-12-31",
+        "name": "Form 10-Q quarter ended 2024-12-31",
+        "accession": "0000063296-25-000006",
+        "role": "FINANCIAL_EVIDENCE"
+      }
+    ],
+    "authenticMultiFamilyAlternate": {
+      "packageKey": "conmed-2025-credit-facility-article-vii",
+      "companyId": "conmed",
+      "instrumentKey": "conmed-eighth-ar-credit-agreement",
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "authenticity": "AUTHENTIC_FIXTURE_SOURCE",
+      "fixturePath": "/workspace/tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
+      "limitations": [
+        "Curated Article VII excerpt — not full credit agreement / not package CERTIFIED.",
+        "Fixed-dollar / greater-of fidelity compile only; ratio RP unlimited basket (§7.6(e)) not claimed executable here.",
+        "No utilization completeness certificate — verified remaining stays null."
+      ],
+      "independentlyExecutableFamilies": [
+        "RESTRICTED_PAYMENTS",
+        "INVESTMENTS",
+        "ASSET_SALES"
+      ],
+      "units": [
+        {
+          "candidateId": "conmed-7.6d-rp-40m",
+          "family": "RESTRICTED_PAYMENTS",
+          "formulation": "FIXED_DOLLAR",
+          "sourceSectionRef": "7.6(d)",
+          "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
+          "entityScopeNote": "Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+          "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "amendmentBindings": [],
+          "conditionNotes": [
+            "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf."
+          ],
+          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "grossCapacityUsd": 40000000,
+          "verifiedRemainingUsd": null,
+          "fidelityVerdict": "PASS",
+          "ruleId": "ir-rule:81c39f1f14705c94bdd1e85c",
+          "limitations": [
+            "No utilization completeness certificate — verifiedRemainingUsd forced null.",
+            "Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+            "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
+            "sole_fixed_dollar_cap",
+            "sufficiency=COMPLETE"
+          ]
+        },
+        {
+          "candidateId": "conmed-7.8l-investments-greater-of",
+          "family": "INVESTMENTS",
+          "formulation": "GREATER_OF_ASSETS",
+          "sourceSectionRef": "7.8(l)",
+          "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
+          "entityScopeNote": "Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+          "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "amendmentBindings": [],
+          "conditionNotes": [
+            "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "Source text includes Default/Event of Default gate around §7.8(l)."
+          ],
+          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "grossCapacityUsd": 75000000,
+          "verifiedRemainingUsd": null,
+          "fidelityVerdict": "PASS",
+          "ruleId": "ir-rule:cce3542db9c3a2664896830f",
+          "limitations": [
+            "No utilization completeness certificate — verifiedRemainingUsd forced null.",
+            "Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+            "Greater-of CTA input stipulated at $2000000000 for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.",
+            "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
+            "greater_of_fixed_or_pct_total_assets",
+            "{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no admissible source text); it is retained only as rawModelExcerpt and is not authoritative source evidence (review required)\",\"kind\":\"SUFFICIENCY\"}",
+            "sufficiency=PARTIAL"
+          ]
+        },
+        {
+          "candidateId": "conmed-7.5j-asset-sale-greater-of",
+          "family": "ASSET_SALES",
+          "formulation": "GREATER_OF_ASSETS",
+          "sourceSectionRef": "7.5(j)",
+          "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
+          "entityScopeNote": "Parent Borrower or any of its Subsidiaries",
+          "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "amendmentBindings": [],
+          "conditionNotes": [
+            "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "§7.5(j) is a de minimis Disposition exception — larger §7.5(f) baskets not compiled here."
+          ],
+          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "grossCapacityUsd": 30000000,
+          "verifiedRemainingUsd": null,
+          "fidelityVerdict": "PASS",
+          "ruleId": "ir-rule:a24af4af4518d766efedb79a",
+          "limitations": [
+            "No utilization completeness certificate — verifiedRemainingUsd forced null.",
+            "Parent Borrower or any of its Subsidiaries",
+            "Greater-of CTA input stipulated at $2000000000 for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.",
+            "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
+            "greater_of_fixed_or_pct_total_assets",
+            "{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no admissible source text); it is retained only as rawModelExcerpt and is not authoritative source evidence (review required)\",\"kind\":\"SUFFICIENCY\"}",
+            "sufficiency=PARTIAL"
+          ]
+        }
+      ]
+    },
+    "secondaryReference": {
+      "package": "MTN Tenth A&R (Product Proof 001 frozen)",
+      "capacitySimulationArtifact": "/workspace/docs/product-proof/001/artifacts/stage-10-11-capacity-simulation.json",
+      "note": "No authentic VerifiedExecutionPackage / capacityFormulas / Permissions for MTN. Fail-closed expected."
+    }
+  },
+  "constraintsHonored": [
+    "verified-execution REQUIRE spine for authentic multi-family — no competing engine",
+    "no invented financial approvals",
+    "no zero utilization assumptions",
+    "no synthetic legal interpretations",
+    "no favorable path selection",
+    "verified remaining forced null without completeness",
+    "missing utilization did not stop RP / investment / asset-sale family implementation",
+    "no Neon writes",
+    "no paid inference",
+    "no self-merge"
+  ],
+  "domainStatus": [
+    {
+      "domain": "debt_incurrence",
+      "status": "PARTIALLY_EXECUTABLE",
+      "sourcePackage": "matthews-q1-fy2025",
+      "evidence": [
+        "ind_permitted_debt_1a_flat §Permitted Debt def., cl. (1)(a): modeled=521.118 remaining=null authority=GROSS_ONLY_UTILIZATION_INCOMPLETE",
+        "ind_ratio_debt_fccr §§4.09(a): modeled=110.33623188405791 remaining=null authority=MODELED_AUTHENTIC_EVIDENCE",
+        "ind_permitted_debt_1b_ratio_secured §Permitted Debt def., cl. (1)(b)(x): modeled=0 remaining=null authority=MODELED_AUTHENTIC_EVIDENCE",
+        "ind_permitted_debt_2_notes §Permitted Debt def., cl. (2): modeled=300 remaining=null authority=MODELED_AUTHENTIC_EVIDENCE"
+      ],
+      "blockers": [
+        "Production remaining refused without utilization completeness certificate + trusted issuer",
+        "Hand-encoded CovenantProvisionInput leaf rows (AUTONOMOUS_COVENANT_COMPILATION_PROVEN=NOT_PROVEN)",
+        "No authentic VerifiedExecutionPackage bound for Matthews multi-path debt simulation"
+      ],
+      "mainFiles": [
+        "lib/product/real-dashboard-vertical-slice/evaluate-covenants.ts",
+        "lib/product/real-dashboard-vertical-slice/package-matthews.ts",
+        "lib/covenant-engine.ts",
+        "lib/contract-model/verified-execution.ts"
+      ]
+    },
+    {
+      "domain": "liens",
+      "status": "PARTIALLY_EXECUTABLE",
+      "sourcePackage": "matthews-q1-fy2025",
+      "evidence": [
+        "ca_lien_601j_2024notes §§6.01(j), as restated by Sixth Amendment: modeled=0 authority=STRUCTURAL_ZERO — Sixth Amendment deleted general Loan-Party secured-lien basket; only 2024 Note Offering exception remains."
+      ],
+      "blockers": [
+        "Only CA §6.01(j) structural-zero leaf is modeled; Indenture first-priority lien companion not dual-path executable for NEW secured debt",
+        "Secured composition labeled HYPOTHETICAL_UNVERIFIED_SECURED_COMPOSITION"
+      ],
+      "mainFiles": [
+        "lib/product/real-dashboard-vertical-slice/evaluate-covenants.ts",
+        "lib/product/north-star-workflow/transaction-effect-recipes.ts"
+      ]
+    },
+    {
+      "domain": "investments",
+      "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+      "sourcePackage": "conmed-2025-credit-facility-article-vii",
+      "evidence": [
+        "conmed-7.8l-investments-greater-of conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
+        "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=75000000",
+        "verifiedRemainingUsd=null (forced; no completeness certificate)",
+        "entityScope=Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+        "formulation=GREATER_OF_ASSETS ruleId=ir-rule:cce3542db9c3a2664896830f"
+      ],
+      "blockers": [
+        "Matthews authentic slice has zero Investment provisions — CONMED §7.8(l) used as authentic alternate package evidence",
+        "Verified remaining unpublished — no utilization completeness",
+        "Greater-of CTA for gross probe is CALLER_STIPULATED_HYPOTHETICAL only — not APPROVED NS-4",
+        "Not package CERTIFIED IR / not VERIFIED_TRANSACTION_PERMITTED for customer handoff"
+      ],
+      "mainFiles": [
+        "lib/product/authentic-multi-family/conmed-source-units.ts",
+        "lib/product/authentic-multi-family/compile-conmed-vep.ts",
+        "lib/contract-model/compiler/greater-of-assets-basket/",
+        "lib/contract-model/verified-execution.ts"
+      ]
+    },
+    {
+      "domain": "restricted_payments",
+      "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+      "sourcePackage": "conmed-2025-credit-facility-article-vii",
+      "evidence": [
+        "conmed-7.6d-rp-40m conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
+        "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=40000000",
+        "verifiedRemainingUsd=null (forced; no completeness certificate)",
+        "entityScope=Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+        "formulation=FIXED_DOLLAR ruleId=ir-rule:81c39f1f14705c94bdd1e85c"
+      ],
+      "blockers": [
+        "Matthews authentic slice has zero RP waterfall — CONMED §7.6(d) $40M fixed-dollar used as authentic alternate",
+        "Verified remaining unpublished — no utilization completeness",
+        "Ratio / builder RP baskets (e.g. §7.6(e)) not claimed executable here",
+        "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials"
+      ],
+      "mainFiles": [
+        "lib/product/authentic-multi-family/conmed-source-units.ts",
+        "lib/product/authentic-multi-family/compile-conmed-vep.ts",
+        "lib/contract-model/compiler/fixed-dollar-basket/",
+        "lib/contract-model/verified-execution.ts"
+      ]
+    },
+    {
+      "domain": "asset_sales",
+      "status": "IMPLEMENTED_AND_INDEPENDENTLY_EXECUTABLE",
+      "sourcePackage": "conmed-2025-credit-facility-article-vii",
+      "evidence": [
+        "conmed-7.5j-asset-sale-greater-of conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
+        "status=VERIFIED_EXECUTABLE_GROSS fidelity=PASS grossUsd=30000000",
+        "verifiedRemainingUsd=null (forced; no completeness certificate)",
+        "entityScope=Parent Borrower or any of its Subsidiaries",
+        "formulation=GREATER_OF_ASSETS ruleId=ir-rule:a24af4af4518d766efedb79a",
+        "ASSET_SALE ContemplatedTxnKind + recipeAssetSale intake wired"
+      ],
+      "blockers": [
+        "Matthews authentic slice has zero assetSale config — CONMED §7.5(j) greater-of de minimis used as authentic alternate",
+        "Verified remaining unpublished — no utilization completeness",
+        "De minimis basket only; annual / four-year Asset Sale baskets in §7.5(f) not claimed executable here",
+        "Not VERIFIED_TRANSACTION_PERMITTED without completeness + APPROVED financials"
+      ],
+      "mainFiles": [
+        "lib/product/authentic-multi-family/conmed-source-units.ts",
+        "lib/product/authentic-multi-family/compile-conmed-vep.ts",
+        "lib/product/north-star-workflow/verified-path-enumeration.ts",
+        "lib/product/north-star-workflow/transaction-effect-recipes.ts"
+      ]
+    },
+    {
+      "domain": "applicable_financial_covenants",
+      "status": "PARTIALLY_EXECUTABLE",
+      "sourcePackage": "matthews-q1-fy2025 + main contractual-metrics (#345/#332)",
+      "evidence": [
+        "FCCR / Secured Net Leverage modeled rooms present as leaf rows: ind_ratio_debt_fccr=110.33623188405791, ind_permitted_debt_1b_ratio_secured=0",
+        "Trusted issuer activation: [object Object]",
+        "Main tip absorbed #345 post-#334 NS-4 gates + contractual-metrics / financial-metric-resolver modules",
+        "Open PR #341 still holds corrected AFC conditional-authority tip not fully absorbed here (no duplicate leverage engine landed)"
+      ],
+      "blockers": [
+        "Modeled ratio rooms are not published as remainingCapacityMm (D3b)",
+        "CONSOLIDATED_EBITDA is PUBLIC_FILING_RECONSTRUCTION / UNVERIFIED_EXTRACTION",
+        "Corrected #341 tip not fully merged — refuse inventing APPROVED certificates"
+      ],
+      "mainFiles": [
+        "lib/product/real-dashboard-vertical-slice/evaluate-covenants.ts",
+        "lib/product/contractual-metrics/",
+        "lib/product/financial-metric-resolver/",
+        "lib/capacity/*"
+      ]
+    },
+    {
+      "domain": "amendments",
+      "status": "PARTIALLY_EXECUTABLE",
+      "sourcePackage": "matthews + conmed fixtures",
+      "evidence": [
+        "CA §6.01(j) leaf cites Sixth Amendment restatement (structural zero) — source-backed caveat on modeled leaf",
+        "Phase-2G amendment precedence / operative-state libraries exist on main",
+        "CONMED curated fixture includes first-omnibus / second-amendment texts — not auto-attached as operative supersession for these units",
+        "Multi-family units bind documentId + sourceSectionRef; amendment effects remain REVIEW_REQUIRED until attached"
+      ],
+      "blockers": [
+        "No full as-amended operative IR package for Matthews credit agreement on product path",
+        "CONMED Omnibus/Second-Amendment effects not attached to Article VII unit compile in this proof"
+      ],
+      "mainFiles": [
+        "lib/contract-model/compiler/* (operative / amendment)",
+        "lib/product/legal-reasoning/amendment-graph.ts",
+        "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/"
+      ]
+    },
+    {
+      "domain": "shared_capacity",
+      "status": "PARTIALLY_EXECUTABLE",
+      "sourcePackage": "main IR + open #340 supporting",
+      "evidence": [
+        "Phase 4C IRSharedCapacity + verified-execution shared capacity units implemented in-memory",
+        "Matthews leaf does not bind a shared Debt Facilities / Lien shared-cap unit for dual-path NEW secured debt",
+        "CONMED multi-family units are single-rule capacity nodes (no shared-cap pair claimed here)",
+        "Cross-domain Simulate (#340) not absorbed as a second engine — verified spine owns permissibility"
+      ],
+      "blockers": [
+        "Authentic package lacks certified shared-capacity unit + companion discharge for secured dual-path",
+        "Open PR #340 cross-domain v2 remains human tip — not landed here to avoid duplicate engines"
+      ],
+      "mainFiles": [
+        "lib/contract-model/verified-execution.ts",
+        "lib/contract-model/runtime/capacity/*"
+      ]
+    },
+    {
+      "domain": "historical_utilization",
+      "status": "BLOCKED_BY_MISSING_REAL_EVIDENCE",
+      "sourcePackage": "matthews-q1-fy2025",
+      "evidence": [
+        "Attributed events: 2 totaling 778.8820000000001 mm",
+        "supportsRemainingClaim=false",
+        "unknownHistoricalActivity=true",
+        "completenessCertificatePresent=false",
+        "trustedIssuerActivation=BLOCKED",
+        "CONMED multi-family: verifiedRemainingUsd forced null on every unit"
+      ],
+      "blockers": [
+        "No reviewer-confirmed utilization completeness certificate",
+        "UNKNOWN historical activity must not be treated as zero",
+        "Production remaining publication refused (correct fail-closed)",
+        "Missing utilization is NOT an excuse to stop other families — RP/Inv/AS progressed independently"
+      ],
+      "mainFiles": [
+        "tests/fixtures/financial-utilization-evidence/matthews-q1-fy2025-slice.json",
+        "lib/capacity/*",
+        "lib/product/verified-transaction-execution/adapters/utilization.ts"
+      ]
+    }
+  ],
+  "independentlyExecutableFamilies": [
+    "investments",
+    "restricted_payments",
+    "asset_sales"
+  ],
+  "milestones": {
+    "FIXTURE_MODELED_DASHBOARD_PROVEN": "PROVEN_WITH_DEFECTS",
+    "GENERALIZED_CALCULATION_PIPELINE_PROVEN": "NOT_PROVEN",
+    "AUTONOMOUS_COVENANT_COMPILATION_PROVEN": "NOT_PROVEN",
+    "PRODUCTION_AUTHORITY_PROVEN": "NOT_PROVEN"
+  },
+  "sliceVerdict": "FIXTURE_MODELED_DASHBOARD_PARTIAL",
+  "productionHandoffRefused": true,
+  "productionHandoffReasons": [
+    "financialTrustClass=INCOMPLETE",
+    "utilizationSupportsRemaining=false",
+    "productionAuthority=REFUSED"
+  ],
+  "numericalHonesty": {
+    "sourceBackedCompiledGrossMm": [
+      {
+        "code": "ve:matw-permitted-debt-1a-fixed-dollar",
+        "amountMm": 1300
+      }
+    ],
+    "modeledLeafCapacityMm": [
+      {
+        "code": "ind_permitted_debt_1a_flat",
+        "amountMm": 521.118,
+        "authorityStatus": "GROSS_ONLY_UTILIZATION_INCOMPLETE"
+      },
+      {
+        "code": "ind_ratio_debt_fccr",
+        "amountMm": 110.33623188405791,
+        "authorityStatus": "MODELED_AUTHENTIC_EVIDENCE"
+      },
+      {
+        "code": "ind_permitted_debt_1b_ratio_secured",
+        "amountMm": 0,
+        "authorityStatus": "MODELED_AUTHENTIC_EVIDENCE"
+      },
+      {
+        "code": "ind_permitted_debt_2_notes",
+        "amountMm": 300,
+        "authorityStatus": "MODELED_AUTHENTIC_EVIDENCE"
+      },
+      {
+        "code": "ca_lien_601j_2024notes",
+        "amountMm": 0,
+        "authorityStatus": "STRUCTURAL_ZERO"
+      }
+    ],
+    "hypotheticalUnverifiedSecuredCompositionMm": 631.454231884058
+  },
+  "transactions": [
+    {
+      "id": "txn-debt-funded-acquisition",
+      "label": "Debt-funded acquisition",
+      "ask": "Can we finance a $50 million secured debt-funded acquisition on 2024-12-31?",
+      "amountMillions": 50,
+      "evaluationDate": "2024-12-31",
+      "draft": {
+        "rawQuestion": "Can we finance a $50 million secured debt-funded acquisition on 2024-12-31?",
+        "evaluationDate": "2024-12-31",
+        "amountMillions": 50,
+        "kind": "ACQUISITION",
+        "secured": true,
+        "missingConfirmations": []
+      },
+      "packageBinding": {
+        "companyId": "matthews",
+        "instrumentKey": "matthews-international-q1-fy2025",
+        "authenticity": "AUTHENTIC_SOURCE_BACKED",
+        "note": "Debt/lien leaf = Matthews; investment-leg REQUIRE probe = CONMED §7.8(l) authentic alternate (not Matthews authority)."
+      },
+      "applicableCovenants": [
+        {
+          "covenantFamily": "INDEBTEDNESS",
+          "sourceProvision": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(a)",
+          "calculation": "max(0, $1300M − secured debt outstanding) → modeled=521.118 mm; remaining published=null",
+          "missingInputs": [
+            "verified remaining (completeness certificate + trusted issuer)",
+            "authenticated VerifiedExecutionPackage with dual-path debt+lien rules"
+          ],
+          "selectedPath": null,
+          "capacityConsumption": null,
+          "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 521.118 → 471.11800000000005 (Δ -50)",
+          "conclusion": "Modeled leaf arithmetic available; production-authoritative permission REFUSED",
+          "verifiedRemainingUsd": null
+        },
+        {
+          "covenantFamily": "INDEBTEDNESS",
+          "sourceProvision": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — §4.09(a)",
+          "calculation": "max(0, (EBITDA/2 − InterestExpense) / assumedNewDebtRate) → modeled=110.33623188405791 mm; remaining published=null",
+          "missingInputs": [
+            "verified remaining (completeness certificate + trusted issuer)",
+            "authenticated VerifiedExecutionPackage with dual-path debt+lien rules"
+          ],
+          "selectedPath": null,
+          "capacityConsumption": null,
+          "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 110.33623188405791 → 60.3362318840579 (Δ -50.00000000000001)",
+          "conclusion": "Modeled leaf arithmetic available; production-authoritative permission REFUSED",
+          "verifiedRemainingUsd": null
+        },
+        {
+          "covenantFamily": "INDEBTEDNESS",
+          "sourceProvision": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (1)(b)(x)",
+          "calculation": "max(0, 3.5×EBITDA − net secured debt) → modeled=0 mm; remaining published=null",
+          "missingInputs": [
+            "verified remaining (completeness certificate + trusted issuer)",
+            "authenticated VerifiedExecutionPackage with dual-path debt+lien rules"
+          ],
+          "selectedPath": null,
+          "capacityConsumption": null,
+          "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 0 → 0 (Δ 0)",
+          "conclusion": "Modeled leaf arithmetic available; production-authoritative permission REFUSED",
+          "verifiedRemainingUsd": null
+        },
+        {
+          "covenantFamily": "INDEBTEDNESS",
+          "sourceProvision": "Indenture — 8.625% Senior Secured Second Lien Notes due 2027 — Permitted Debt def., cl. (2)",
+          "calculation": "flat $300M → modeled=300 mm; remaining published=null",
+          "missingInputs": [
+            "verified remaining (completeness certificate + trusted issuer)",
+            "authenticated VerifiedExecutionPackage with dual-path debt+lien rules"
+          ],
+          "selectedPath": null,
+          "capacityConsumption": null,
+          "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 300 → 300 (Δ 0)",
+          "conclusion": "Modeled leaf arithmetic available; production-authoritative permission REFUSED",
+          "verifiedRemainingUsd": null
+        },
+        {
+          "covenantFamily": "LIENS",
+          "sourceProvision": "Third Amended and Restated Loan Agreement (as amended through Sixth Amendment) — §6.01(j), as restated by Sixth Amendment",
+          "calculation": "flat $0M → modeled=0 mm; remaining published=null",
+          "missingInputs": [
+            "verified remaining (completeness certificate + trusted issuer)",
+            "authenticated VerifiedExecutionPackage with dual-path debt+lien rules"
+          ],
+          "selectedPath": null,
+          "capacityConsumption": null,
+          "postTransactionState": "hypothetical secured-debt bump only (ledger untouched): modeled 0 → 0 (Δ 0)",
+          "conclusion": "CA lien companion structurally blocks NEW Loan-Party secured liens — not an affirmative secured path",
+          "verifiedRemainingUsd": null
+        },
+        {
+          "covenantFamily": "INVESTMENTS",
+          "sourceProvision": "conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
+          "calculation": "CONMED authentic gross probe: grossUsd=75000000; capacityOutcome=EXECUTED; sim=EXECUTED; pathResult=INDETERMINATE",
+          "missingInputs": [
+            "Matthews Investment basket (NOT_IMPLEMENTED on Matthews package)",
+            "APPROVED NS-4 Consolidated Total Assets for production greater-of",
+            "utilization completeness certificate"
+          ],
+          "selectedPath": "path:ir-rule:cce3542db9c3a2664896830f",
+          "capacityConsumption": "REQUIRE simulate EXECUTED / path INDETERMINATE — remaining null",
+          "postTransactionState": null,
+          "conclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+          "entityScope": "Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+          "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
+          "verifiedRemainingUsd": null
+        }
+      ],
+      "verifiedSimulate": {
+        "executable": false,
+        "refusalSummary": [
+          "NO_VERIFIED_EXECUTION_PACKAGE",
+          "NO_CANDIDATE_PATHS"
+        ],
+        "certifiedBlockers": [
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "pathEnumerationAuthority": "NOT_CERTIFIED_4E",
+        "pathIncompleteReasons": [
+          "NO_VERIFIED_EXECUTION_PACKAGE"
+        ],
+        "selectedPathId": null,
+        "capacityOutcome": "EXECUTED",
+        "simulationOutcome": "EXECUTED",
+        "selectedPathResult": "INDETERMINATE",
+        "verifiedRemainingUsd": null
+      },
+      "recipeShape": {
+        "kind": "SECURED_BORROWING+INVESTMENT",
+        "limitations": [
+          {
+            "code": "MISSING_CAPACITY_NODE",
+            "message": "Secured borrowing requires explicit capacity draws (debt and/or lien paths)"
+          },
+          {
+            "code": "MISSING_CAPACITY_NODE",
+            "message": "Restricted investment requires an explicit capacity draw"
+          }
+        ],
+        "note": "Recipe API accepts only caller-supplied capacity node ids — none invented for Matthews; CONMED investment ruleId not auto-injected into Matthews recipe."
+      },
+      "modeledLeafProbe": {
+        "used": true,
+        "note": "Modeled leaf recompute after hypothetical secured-debt metric bump — NOT verified simulation; ledger not mutated; UNKNOWN util not zeroed.",
+        "baselineCovenants": [
+          {
+            "code": "ind_permitted_debt_1a_flat",
+            "section": "Permitted Debt def., cl. (1)(a)",
+            "modeledMm": 521.118,
+            "remainingMm": null,
+            "authority": "GROSS_ONLY_UTILIZATION_INCOMPLETE"
+          },
+          {
+            "code": "ind_ratio_debt_fccr",
+            "section": "§4.09(a)",
+            "modeledMm": 110.33623188405791,
+            "remainingMm": null,
+            "authority": "MODELED_AUTHENTIC_EVIDENCE"
+          },
+          {
+            "code": "ind_permitted_debt_1b_ratio_secured",
+            "section": "Permitted Debt def., cl. (1)(b)(x)",
+            "modeledMm": 0,
+            "remainingMm": null,
+            "authority": "MODELED_AUTHENTIC_EVIDENCE"
+          },
+          {
+            "code": "ind_permitted_debt_2_notes",
+            "section": "Permitted Debt def., cl. (2)",
+            "modeledMm": 300,
+            "remainingMm": null,
+            "authority": "MODELED_AUTHENTIC_EVIDENCE"
+          },
+          {
+            "code": "ca_lien_601j_2024notes",
+            "section": "§6.01(j), as restated by Sixth Amendment",
+            "modeledMm": 0,
+            "remainingMm": null,
+            "authority": "STRUCTURAL_ZERO"
+          }
+        ],
+        "postState": [
+          {
+            "code": "ind_permitted_debt_1a_flat",
+            "modeledMm": 471.11800000000005,
+            "deltaMm": -50
+          },
+          {
+            "code": "ind_ratio_debt_fccr",
+            "modeledMm": 60.3362318840579,
+            "deltaMm": -50.00000000000001
+          },
+          {
+            "code": "ind_permitted_debt_1b_ratio_secured",
+            "modeledMm": 0,
+            "deltaMm": 0
+          },
+          {
+            "code": "ind_permitted_debt_2_notes",
+            "modeledMm": 300,
+            "deltaMm": 0
+          },
+          {
+            "code": "ca_lien_601j_2024notes",
+            "modeledMm": 0,
+            "deltaMm": 0
+          }
+        ]
+      },
+      "authenticMultiFamily": {
+        "kind": "INVESTMENT",
+        "amountMillions": 50,
+        "evaluationDate": "2024-12-31",
+        "unit": {
+          "candidateId": "conmed-7.8l-investments-greater-of",
+          "family": "INVESTMENTS",
+          "formulation": "GREATER_OF_ASSETS",
+          "sourceSectionRef": "7.8(l)",
+          "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets",
+          "entityScopeNote": "Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+          "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "amendmentBindings": [],
+          "conditionNotes": [
+            "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "Source text includes Default/Event of Default gate around §7.8(l)."
+          ],
+          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "grossCapacityUsd": 75000000,
+          "verifiedRemainingUsd": null,
+          "fidelityVerdict": "PASS",
+          "ruleId": "ir-rule:cce3542db9c3a2664896830f",
+          "limitations": [
+            "No utilization completeness certificate — verifiedRemainingUsd forced null.",
+            "Parent Borrower or any of its Subsidiaries; Default/Event of Default gate in source",
+            "Greater-of CTA input stipulated at $2000000000 for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.",
+            "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
+            "greater_of_fixed_or_pct_total_assets",
+            "{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no admissible source text); it is retained only as rawModelExcerpt and is not authoritative source evidence (review required)\",\"kind\":\"SUFFICIENCY\"}",
+            "sufficiency=PARTIAL"
+          ]
+        },
+        "pathEnumerationAuthority": "CERTIFIED_4E",
+        "pathCount": 1,
+        "selectedPathId": "path:ir-rule:cce3542db9c3a2664896830f",
+        "capacityOutcome": "EXECUTED",
+        "simulationOutcome": "EXECUTED",
+        "selectedPathResult": "INDETERMINATE",
+        "verifiedRemainingUsd": null,
+        "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.8(l) — Investments ≤ greater of $75,000,000 and 3.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+        "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+      },
+      "overallConclusion": "REFUSED / NOT DETERMINED — VERIFIED_SIMULATE_REFUSED on Matthews: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens. CONMED §7.8(l) investment leg is independently GROSS-executable under REQUIRE but verified remaining null — not VERIFIED_TRANSACTION_PERMITTED for the acquisition as a whole.",
+      "truthfulBlocker": "VERIFIED_SIMULATE_REFUSED on Matthews: no authentic VEP; utilization completeness absent; CA §6.01(j) structural zero blocks NEW secured Loan-Party liens. CONMED §7.8(l) investment leg is independently GROSS-executable under REQUIRE but verified remaining null — not VERIFIED_TRANSACTION_PERMITTED for the acquisition as a whole."
+    },
+    {
+      "id": "txn-restricted-payment",
+      "label": "Restricted payment",
+      "ask": "Can we make a $25 million restricted payment dividend on 2024-12-31?",
+      "amountMillions": 25,
+      "evaluationDate": "2024-12-31",
+      "draft": {
+        "rawQuestion": "Can we make a $25 million restricted payment dividend on 2024-12-31?",
+        "evaluationDate": "2024-12-31",
+        "amountMillions": 25,
+        "kind": "RESTRICTED_PAYMENT",
+        "secured": null,
+        "missingConfirmations": []
+      },
+      "packageBinding": {
+        "companyId": "conmed",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "authenticity": "AUTHENTIC_FIXTURE_SOURCE",
+        "note": "CONMED curated Article VII — fidelity-gated VE units; not package CERTIFIED; remaining null."
+      },
+      "applicableCovenants": [
+        {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "sourceProvision": "conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
+          "calculation": "grossUsd=40000000; fidelity=PASS; capacity=EXECUTED; sim=EXECUTED; pathResult=INDETERMINATE",
+          "missingInputs": [
+            "utilization completeness certificate",
+            "APPROVED NS-4 financial snapshot for production remaining"
+          ],
+          "selectedPath": "path:ir-rule:81c39f1f14705c94bdd1e85c",
+          "capacityConsumption": "REQUIRE EXECUTED / selectedPathResult=INDETERMINATE / remaining=null",
+          "postTransactionState": null,
+          "conclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+          "entityScope": "Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+          "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
+          "verifiedRemainingUsd": null
+        }
+      ],
+      "verifiedSimulate": {
+        "executable": false,
+        "refusalSummary": [
+          "OFFLINE_NS4_BRIDGE:\nInvalid `prisma.contractInputSnapshot.findMany()` invocation in\n/workspace/lib/contract-model/runtime/input/store/prism",
+          "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+        ],
+        "certifiedBlockers": [
+          "OFFLINE_NS4_BRIDGE:\nInvalid `prisma.contractInputSnapshot.findMany()` invocation in\n/workspace/lib/contract-model/runtime/input/store/prisma-store.ts:404:51\n\n  401   prisma: Ns4Db"
+        ],
+        "pathEnumerationAuthority": "CERTIFIED_4E",
+        "pathIncompleteReasons": [],
+        "selectedPathId": "path:ir-rule:81c39f1f14705c94bdd1e85c",
+        "capacityOutcome": "EXECUTED",
+        "simulationOutcome": "EXECUTED",
+        "selectedPathResult": "INDETERMINATE",
+        "verifiedRemainingUsd": null
+      },
+      "recipeShape": {
+        "kind": "DIVIDEND_PAYMENT",
+        "limitations": [],
+        "note": "Recipe bound to CONMED fidelity-passing RP rule capacity node — remaining still unpublished."
+      },
+      "modeledLeafProbe": {
+        "used": false,
+        "note": "Matthews modeled leaf not used — CONMED authentic multi-family REQUIRE path."
+      },
+      "authenticMultiFamily": {
+        "kind": "RESTRICTED_PAYMENT",
+        "amountMillions": 25,
+        "evaluationDate": "2024-12-31",
+        "unit": {
+          "candidateId": "conmed-7.6d-rp-40m",
+          "family": "RESTRICTED_PAYMENTS",
+          "formulation": "FIXED_DOLLAR",
+          "sourceSectionRef": "7.6(d)",
+          "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year",
+          "entityScopeNote": "Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+          "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "amendmentBindings": [],
+          "conditionNotes": [
+            "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "§7.6 chapeau Default/Event of Default gate may apply beyond this fixed-dollar leaf."
+          ],
+          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "grossCapacityUsd": 40000000,
+          "verifiedRemainingUsd": null,
+          "fidelityVerdict": "PASS",
+          "ruleId": "ir-rule:81c39f1f14705c94bdd1e85c",
+          "limitations": [
+            "No utilization completeness certificate — verifiedRemainingUsd forced null.",
+            "Parent Borrower (chapeau §7.6); Loan Party scope per CA",
+            "PRODUCTION_CAPACITY_REFUSED: fixed-dollar vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
+            "sole_fixed_dollar_cap",
+            "sufficiency=COMPLETE"
+          ]
+        },
+        "pathEnumerationAuthority": "CERTIFIED_4E",
+        "pathCount": 1,
+        "selectedPathId": "path:ir-rule:81c39f1f14705c94bdd1e85c",
+        "capacityOutcome": "EXECUTED",
+        "simulationOutcome": "EXECUTED",
+        "selectedPathResult": "INDETERMINATE",
+        "verifiedRemainingUsd": null,
+        "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+        "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+      },
+      "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.6(d) — Restricted Payments ≤ $40,000,000 per fiscal year) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+      "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+    },
+    {
+      "id": "txn-asset-sale",
+      "label": "Asset sale",
+      "ask": "Can we complete a $40 million asset sale disposition on 2024-12-31?",
+      "amountMillions": 40,
+      "evaluationDate": "2024-12-31",
+      "draft": {
+        "rawQuestion": "Can we complete a $40 million asset sale disposition on 2024-12-31?",
+        "evaluationDate": "2024-12-31",
+        "amountMillions": 40,
+        "kind": "ASSET_SALE",
+        "secured": null,
+        "missingConfirmations": []
+      },
+      "packageBinding": {
+        "companyId": "conmed",
+        "instrumentKey": "conmed-eighth-ar-credit-agreement",
+        "authenticity": "AUTHENTIC_FIXTURE_SOURCE",
+        "note": "CONMED curated Article VII — fidelity-gated VE units; not package CERTIFIED; remaining null."
+      },
+      "applicableCovenants": [
+        {
+          "covenantFamily": "ASSET_SALES",
+          "sourceProvision": "conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
+          "calculation": "grossUsd=30000000; fidelity=PASS; capacity=EXECUTED; sim=EXECUTED; pathResult=INDETERMINATE",
+          "missingInputs": [
+            "utilization completeness certificate",
+            "APPROVED NS-4 financial snapshot for production remaining",
+            "APPROVED Consolidated Total Assets for production greater-of (EMPTY_RESOLVER in REQUIRE path)"
+          ],
+          "selectedPath": "path:ir-rule:a24af4af4518d766efedb79a",
+          "capacityConsumption": "REQUIRE EXECUTED / selectedPathResult=INDETERMINATE / remaining=null",
+          "postTransactionState": null,
+          "conclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+          "entityScope": "Parent Borrower or any of its Subsidiaries",
+          "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
+          "verifiedRemainingUsd": null
+        }
+      ],
+      "verifiedSimulate": {
+        "executable": false,
+        "refusalSummary": [
+          "PATH_NOT_FOUND:path:ir-rule:a24af4af4518d766efedb79a",
+          "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+        ],
+        "certifiedBlockers": [],
+        "pathEnumerationAuthority": "CERTIFIED_4E",
+        "pathIncompleteReasons": [],
+        "selectedPathId": "path:ir-rule:a24af4af4518d766efedb79a",
+        "capacityOutcome": "EXECUTED",
+        "simulationOutcome": "EXECUTED",
+        "selectedPathResult": "INDETERMINATE",
+        "verifiedRemainingUsd": null
+      },
+      "recipeShape": {
+        "kind": "ASSET_SALE",
+        "limitations": [],
+        "note": "ASSET_SALE recipe bound to CONMED §7.5(j) capacity node — accounting treatment not inferred."
+      },
+      "modeledLeafProbe": {
+        "used": false,
+        "note": "Matthews modeled leaf not used — CONMED authentic multi-family REQUIRE path."
+      },
+      "authenticMultiFamily": {
+        "kind": "ASSET_SALE",
+        "amountMillions": 40,
+        "evaluationDate": "2024-12-31",
+        "unit": {
+          "candidateId": "conmed-7.5j-asset-sale-greater-of",
+          "family": "ASSET_SALES",
+          "formulation": "GREATER_OF_ASSETS",
+          "sourceSectionRef": "7.5(j)",
+          "sourceCitation": "conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets",
+          "entityScopeNote": "Parent Borrower or any of its Subsidiaries",
+          "operativeDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "amendmentBindings": [],
+          "conditionNotes": [
+            "Amendment effects (Omnibus / Second Amendment) not attached — OPERATIVE_STATE_REVIEW_REQUIRED until certified.",
+            "§7.5(j) is a de minimis Disposition exception — larger §7.5(f) baskets not compiled here."
+          ],
+          "status": "VERIFIED_EXECUTABLE_GROSS",
+          "grossCapacityUsd": 30000000,
+          "verifiedRemainingUsd": null,
+          "fidelityVerdict": "PASS",
+          "ruleId": "ir-rule:a24af4af4518d766efedb79a",
+          "limitations": [
+            "No utilization completeness certificate — verifiedRemainingUsd forced null.",
+            "Parent Borrower or any of its Subsidiaries",
+            "Greater-of CTA input stipulated at $2000000000 for HYPOTHETICAL gross probe only — not APPROVED NS-4 snapshot.",
+            "PRODUCTION_CAPACITY_REFUSED: greater-of vertical slice has verified IR but no AUTHENTICATED_APPROVED_FINANCIAL_EVIDENCE / trusted utilization completeness certificate for this package",
+            "greater_of_fixed_or_pct_total_assets",
+            "{\"scope\":\"rule[greater-of-1]\",\"message\":\"PROVENANCE_EXCERPT_UNRESOLVED: rule[greater-of-1] the model's excerpt (\\\"shall not exceed the greater of\\\") does not bind to any admissible source span (NOT_IN_SOURCE: the exact excerpt occurs in no admissible source text); it is retained only as rawModelExcerpt and is not authoritative source evidence (review required)\",\"kind\":\"SUFFICIENCY\"}",
+            "sufficiency=PARTIAL"
+          ]
+        },
+        "pathEnumerationAuthority": "CERTIFIED_4E",
+        "pathCount": 1,
+        "selectedPathId": "path:ir-rule:a24af4af4518d766efedb79a",
+        "capacityOutcome": "EXECUTED",
+        "simulationOutcome": "EXECUTED",
+        "selectedPathResult": "INDETERMINATE",
+        "verifiedRemainingUsd": null,
+        "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+        "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+      },
+      "overallConclusion": "GROSS_UNIT_PRESENT_REQUIRE_RAN — path INDETERMINATE; remaining null; not VERIFIED_TRANSACTION_PERMITTED (conmed-doc-a-eighth-ar-credit-agreement §7.5(j) — Disposition net proceeds < greater of $25,000,000 and 1.5% Consolidated Total Assets) — SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED",
+      "truthfulBlocker": "SELECTED_PATH_INDETERMINATE:EMPTY_RESOLVER_OR_PAI04_UNKNOWN_UTIL;verifiedRemainingUsd=null;not_VERIFIED_TRANSACTION_PERMITTED"
+    }
+  ],
+  "consolidationAbsorb": {
+    "baselinePr": 346,
+    "baselineSha": "046161e78dc206c50ee951d71a18dfa4befd3206",
+    "absorbed": [
+      {
+        "number": 345,
+        "tip": "d91b0a977ef6c92c9224b096306f7dfc8695cdbc",
+        "how": "Merged origin/main (includes Merge PR #345) into this branch — NS-4 absorb + no-write gates + contractual-metrics modules."
+      }
+    ],
+    "notFullMergedAvoidingDuplicateEngines": [
+      {
+        "number": 340,
+        "tip": "7e3974fcdd1a54c0f8762e41873ed2be045a8a14",
+        "reason": "Cross-domain Simulate v2 would land a second permissibility surface. Verified-execution REQUIRE spine owns transaction evaluation here; #340 remains human tip / supporting."
+      },
+      {
+        "number": 341,
+        "tip": "1dc10c4c301257a578ac9758b3f232396020e1c4",
+        "reason": "Corrected AFC/conditional-authority tip still open; main already carries overlapping financial-metric-resolver via #345/#332. Full tip not merged — no competing contractual-leverage engine."
+      }
+    ],
+    "doNotSelfMerge": true
+  },
+  "overallProductVerdict": "PARTIAL_PRODUCT_CAPABILITY_PROVEN",
+  "overallProductVerdictReason": "Authentic CONMED multi-family units make investments, restricted_payments, asset_sales independently GROSS-executable under REQUIRE (path enum + capacity + simulate). Verified remaining stays null; customer VERIFIED_TRANSACTION_PERMITTED not claimed. Matthews debt/lien remain PARTIALLY_EXECUTABLE; acquisition still refused as a whole."
+}
