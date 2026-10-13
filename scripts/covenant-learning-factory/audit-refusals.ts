@@ -3,7 +3,7 @@
  *
  *   npx tsx scripts/covenant-learning-factory/audit-refusals.ts
  */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { classifyFixedDollarBasket } from "../../lib/contract-model/compiler/fixed-dollar-basket/classify";
 import { classifyGreaterOfAssetsBasket } from "../../lib/contract-model/compiler/greater-of-assets-basket/classify";
@@ -137,16 +137,21 @@ export function classifyRefusal(u: UnitLike): { cause: RefusalRootCause; legalSt
 
 async function main() {
   const repo = process.cwd();
-  const unitPaths = [
-    "docs/product-proof/002/artifacts/mhk-holdout/units.json",
-    "docs/product-proof/002/artifacts/mtn-regression/units.json",
-  ];
-  // Also pick up any CLF-exported unit dumps if present
+  // Prefer fresh CLF unit dumps (post-compile). Fall back to product-proof only if none.
+  const unitPaths: string[] = [];
   const clfUnitsDir = path.join(repo, "docs/covenant-learning-factory/unit-dumps");
   if (existsSync(clfUnitsDir)) {
-    for (const f of require("fs").readdirSync(clfUnitsDir) as string[]) {
-      if (f.endsWith(".json")) unitPaths.push(path.join("docs/covenant-learning-factory/unit-dumps", f));
+    for (const f of readdirSync(clfUnitsDir)) {
+      if (f.endsWith(".json")) {
+        unitPaths.push(path.join("docs/covenant-learning-factory/unit-dumps", f));
+      }
     }
+  }
+  if (unitPaths.length === 0) {
+    unitPaths.push(
+      "docs/product-proof/002/artifacts/mhk-holdout/units.json",
+      "docs/product-proof/002/artifacts/mtn-regression/units.json",
+    );
   }
 
   const byCause: Record<string, number> = {};
