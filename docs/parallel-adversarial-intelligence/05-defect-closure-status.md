@@ -2,7 +2,7 @@
 
 **PR:** https://github.com/egsul897/headroom/pull/330  
 **Production fix SHA:** `05c6ad284523c79209f60cdfca6487703026f3db`  
-**Tip:** branch head after typecheck fixture align (see git)  
+**Tip SHA (CI green):** `13d27c24403c626f7ff92775e70658856459e2d4`  
 **Source suite tip (PR #323):** `059994b9e0788ec8029808bad78520d937e382bb`  
 **Base:** `main` (includes #323 adversarial locks + production closures)
 
@@ -23,5 +23,5 @@ Open PRs inspected (#308–#329): none already closed these defect modules on th
 | PAI-11 | FIXED_HERE | #330 / `05c6ad28` | (bounded production fix) | no delivery from period asOf |
 | PAI-12 | FIXED_HERE | #330 / `05c6ad28` | governing-provision overlay | targetDocumentId enforced |
 
-**CI:** pending at push of `05c6ad28` (subscribe for terminal result).  
-**Local focused:** adversarial 25, capacity suites (excl. Neon authentic), verified-execution, home overview, utilization-and-remaining — green. Pre-existing: `determinism-and-generality` anti-enumeration vs greater-of-assets type import (not introduced here).
+**CI:** green on tip `13d27c24` (certified path, home overview, P3-R0 soft gate, Vercel).  
+**Local focused:** `tsc --noEmit` clean; adversarial 25; `test:phase3-certification` 481; capacity suites (excl. Neon authentic); home overview; utilization-and-remaining — green. Pre-existing (not this PR): `determinism-and-generality` anti-enumeration vs greater-of-assets type import.
