@@ -202,6 +202,7 @@ function Ns4FinancialBand({
             {state.boundSnapshot.reportingPeriod ? ` · ${state.boundSnapshot.reportingPeriod}` : ""}
             {state.boundSnapshot.asOf ? ` · asOf ${state.boundSnapshot.asOf}` : ""}
             {state.boundSnapshot.approvalRef ? ` · approval ${state.boundSnapshot.approvalRef}` : ""}
+            {state.boundSnapshot.reviewedBy ? ` · reviewedBy ${state.boundSnapshot.reviewedBy}` : ""}
           </div>
           {state.boundSnapshot.facts.map((f) => (
             <div className="row" key={`${f.key}:${f.valueType}`}>
@@ -220,6 +221,43 @@ function Ns4FinancialBand({
           ))}
         </>
       )}
+
+      <div className="card-title" data-slot="ns4-leverage-ir" style={{ marginTop: 16 }}>
+        Contractual Total Net Leverage (Phase 4A IR)
+      </div>
+      <div className="row">
+        <div className="row-label">IR status</div>
+        <div className="row-value">
+          <Chip tone={state.leverageIr.status === "EXECUTABLE" ? "pass" : "tight"}>{state.leverageIr.status}</Chip>
+        </div>
+      </div>
+      <div className="row">
+        <div className="row-label">Computed ratio</div>
+        <div className="row-value mono" data-testid="ns4-computed-leverage">
+          {state.leverageIr.computedRatio ?? "Not determinable"}
+        </div>
+      </div>
+      <div className="row-note">Formula: {state.leverageIr.formula}</div>
+      <div className="row-note">
+        Components: EBITDA {state.leverageIr.components.ebitdaDisplay ?? "—"} (
+        {state.leverageIr.components.ebitdaKey ?? "missing"}) · Debt{" "}
+        {state.leverageIr.components.debtDisplay ?? "—"} ({state.leverageIr.components.debtKey ?? "missing"}) · Cash{" "}
+        {state.leverageIr.components.cashDisplay ?? "—"} ({state.leverageIr.components.cashKey ?? "missing"})
+      </div>
+      {state.leverageIr.reportedRatioDisplay && (
+        <div className="row-note">
+          Certificate-reported Total Net Leverage Ratio (display only, not IR result):{" "}
+          {state.leverageIr.reportedRatioDisplay}
+        </div>
+      )}
+      {state.leverageIr.calculationSteps.map((step, i) => (
+        <div key={`step-${i}`} className="row-note">
+          • {step}
+        </div>
+      ))}
+      <div className="row-note" style={{ marginTop: 8 }}>
+        {state.leverageIr.capacitySeparationNote}
+      </div>
       {state.status === "APPROVED_INVENTORY" &&
         state.inventory.map((s) => (
           <div className="row-note" key={s.snapshotId}>
