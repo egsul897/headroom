@@ -170,10 +170,19 @@ export interface ImprovementProposal {
   lever: "RETRIEVAL" | "INTERPRETATION" | "COMPILATION" | "STRUCTURE" | "COVERAGE";
   summary: string;
   bounded: true;
-  autoApply: false;
+  /**
+   * False for advisory proposals. True only after the replay gate measured
+   * an error drop with zero golden regressions (executable learned rules).
+   */
+  autoApply: boolean;
   evidenceRefs: string[];
   createdAt: string;
-  state: "PROPOSED" | "REJECTED" | "SUPERSEDED";
+  state: "PROPOSED" | "REJECTED" | "SUPERSEDED" | "ACCEPTED";
+  /**
+   * Executable rule artifact synthesized from ledger clusters.
+   * Loaded by the extractor at runtime from learned-rules/vN.json / Neon.
+   */
+  executableRule?: import("./learned-rules/types").LearnedRule;
 }
 
 export interface PackageAuditManifest {

@@ -321,7 +321,11 @@ async function writeLearningManifest(
         p.summary,
         p.bounded,
         p.autoApply,
-        JSON.stringify({ evidenceRefs: p.evidenceRefs ?? [] }),
+        JSON.stringify({
+          evidenceRefs: p.evidenceRefs ?? [],
+          executableRule: p.executableRule ?? null,
+          authorityStatus: "COMPUTED_NOT_CERTIFIED",
+        }),
         p.state,
         new Date(p.createdAt),
       ],
