@@ -16,6 +16,7 @@ import {
   type FinancialSnapshotInput,
   type LeverageMetrics,
 } from "@/lib/covenant-engine";
+import type { ContractualEbitdaDerivation } from "@/lib/financial-certificate-engine/contractual-ebitda-buildup";
 
 export type ContractualComputationStatus = "OK" | "MISSING_FINANCIALS";
 
@@ -41,6 +42,8 @@ export interface ContractualComputationResult {
   status: ContractualComputationStatus;
   missingInputs: string[];
   contractualEbitda: number | null;
+  /** Contractual EBITDA derivation / evidence breakdown when supplied by caller. */
+  ebitdaDerivation: ContractualEbitdaDerivation | null;
   leverage: {
     netDebt: number | null;
     netSecured: number | null;
@@ -49,6 +52,11 @@ export interface ContractualComputationResult {
     interestCoverage: number | null;
   };
   ratioTests: ContractualRatioTestRow[];
+  /**
+   * Gross mathematical ratio-room capacity only.
+   * Never claims verified available / remaining debt capacity.
+   */
+  ratioCapacityIsGrossOnly: true;
   notes: string[];
 }
 
@@ -76,21 +84,27 @@ function requiredFinancialGaps(fin: FinancialSnapshotInput | null): string[] {
 /**
  * Compute contractual EBITDA-bound leverage and ratio-based debt capacity.
  * `financials.ebitda` must already be contractual Consolidated EBITDA — never GAAP.
+ * Optional `ebitdaDerivation` attaches the certificate/evidence build-up without
+ * changing ratio arithmetic.
  */
 export function computeContractualCovenantMetrics(params: {
   financials: FinancialSnapshotInput | null;
   provisions: CovenantProvisionInput[];
+  ebitdaDerivation?: ContractualEbitdaDerivation | null;
 }): ContractualComputationResult {
   const notes: string[] = [
     "EBITDA input is treated as contractual Consolidated EBITDA; GAAP is never substituted here.",
+    "Ratio debt capacity figures are gross mathematical room only — not verified available capacity.",
   ];
   const missingInputs = requiredFinancialGaps(params.financials);
+  const ebitdaDerivation = params.ebitdaDerivation ?? null;
 
   if (params.financials == null || missingInputs.includes("contractual_ebitda")) {
     return {
       status: "MISSING_FINANCIALS",
       missingInputs,
       contractualEbitda: params.financials?.ebitda ?? null,
+      ebitdaDerivation,
       leverage: {
         netDebt: null,
         netSecured: null,
@@ -99,6 +113,7 @@ export function computeContractualCovenantMetrics(params: {
         interestCoverage: null,
       },
       ratioTests: [],
+      ratioCapacityIsGrossOnly: true,
       notes: [
         ...notes,
         "Missing contractual EBITDA or financial snapshot — leverage and ratio capacity not computed.",
@@ -145,8 +160,10 @@ export function computeContractualCovenantMetrics(params: {
       status: "MISSING_FINANCIALS",
       missingInputs,
       contractualEbitda: fin.ebitda,
+      ebitdaDerivation,
       leverage,
       ratioTests,
+      ratioCapacityIsGrossOnly: true,
       notes,
     };
   }
@@ -199,12 +216,23 @@ export function computeContractualCovenantMetrics(params: {
     });
   }
 
+  if (
+    ebitdaDerivation?.bindingContractualEbitdaMillions != null &&
+    Math.abs(ebitdaDerivation.bindingContractualEbitdaMillions - fin.ebitda) > 1e-6
+  ) {
+    notes.push(
+      `EBITDA derivation binding $${ebitdaDerivation.bindingContractualEbitdaMillions}M differs from snapshot ebitda $${fin.ebitda}M — snapshot remains the ratio input; review required.`,
+    );
+  }
+
   return {
     status: "OK",
     missingInputs: missingInputs.filter((k) => k === "interest_expense"),
     contractualEbitda: fin.ebitda,
+    ebitdaDerivation,
     leverage,
     ratioTests,
+    ratioCapacityIsGrossOnly: true,
     notes,
   };
 }

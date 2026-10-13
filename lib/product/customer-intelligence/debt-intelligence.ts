@@ -34,6 +34,92 @@ import {
   financialSnapshotForContractualComputation,
   type ContractualComputationResult,
 } from "@/lib/product/contractual-computation";
+import {
+  resolveContractualEbitdaDerivation,
+  type ContractualEbitdaDerivation,
+  type ContractualEbitdaEvidencePackage,
+  type EbitdaBuildupComponent,
+} from "@/lib/financial-certificate-engine/contractual-ebitda-buildup";
+import {
+  COHERENT_EBITDA_EVIDENCE,
+  MATTHEWS_EBITDA_EVIDENCE,
+} from "@/lib/financial-certificate-engine/fixtures";
+
+/**
+ * Evidence packages keyed by as-of + binding EBITDA — not by company id.
+ * Avoids company-specific production branches while attaching authentic schedules.
+ */
+const EBITDA_EVIDENCE_PACKAGES: ContractualEbitdaEvidencePackage[] = [
+  COHERENT_EBITDA_EVIDENCE,
+  MATTHEWS_EBITDA_EVIDENCE,
+];
+
+function matchEbitdaEvidencePackage(
+  asOf: string | null,
+  bindingEbitda: number | null,
+): ContractualEbitdaEvidencePackage | null {
+  if (asOf == null || bindingEbitda == null) return null;
+  return (
+    EBITDA_EVIDENCE_PACKAGES.find(
+      (p) =>
+        p.asOfDate === asOf &&
+        Math.abs(p.bindingContractualEbitdaMillions - bindingEbitda) < 1e-6,
+    ) ?? null
+  );
+}
+
+function derivationFromFinancialStateCovenantEbitda(
+  covenantFacts: unknown,
+  asOf: string | null,
+): ContractualEbitdaDerivation | null {
+  if (covenantFacts == null || typeof covenantFacts !== "object") return null;
+  const ce = (covenantFacts as { covenantEbitda?: { value?: unknown; addbacks?: unknown; provenance?: { notes?: string; reviewStatus?: string; sourceType?: string } } })
+    .covenantEbitda;
+  if (ce?.value == null || !Number.isFinite(Number(ce.value))) return null;
+  const value = Number(ce.value);
+  const addbacks = Array.isArray(ce.addbacks) ? ce.addbacks : [];
+  if (addbacks.length === 0) return null;
+
+  const components: EbitdaBuildupComponent[] = addbacks.map((a) => {
+    const row = a as { label?: string; amount?: number; provenance?: { notes?: string; reviewStatus?: string; sourceType?: string } };
+    const amount = typeof row.amount === "number" ? row.amount : null;
+    return {
+      label: row.label ?? "addback",
+      amountMillions: amount,
+      amountMissing: amount == null,
+      sign: amount != null && amount < 0 ? "minus" : "plus",
+      documentCitation: row.provenance?.notes ?? "FinancialState.covenantMetricFacts.covenantEbitda.addbacks",
+      measurementPeriod: asOf,
+      approvalStatus:
+        row.provenance?.sourceType === "REPORTED"
+          ? "REPORTED"
+          : row.provenance?.sourceType === "RECONSTRUCTED"
+            ? "RECONSTRUCTED"
+            : "UNVERIFIED",
+    };
+  });
+
+  // Prefer a matched authentic evidence package when fingerprint aligns.
+  const matched = matchEbitdaEvidencePackage(asOf, value);
+  if (matched) return resolveContractualEbitdaDerivation(matched);
+
+  return resolveContractualEbitdaDerivation({
+    bindingContractualEbitdaMillions: value,
+    asOfDate: asOf ?? "unknown",
+    measurementPeriod: asOf ?? "unknown",
+    definitionTerm: "Consolidated EBITDA",
+    definitionExcerpt: ce.provenance?.notes ?? "Consolidated EBITDA from FinancialState covenant metrics",
+    definitionCitation: "FinancialState covenantMetricFacts",
+    bindingApprovalStatus: `${ce.provenance?.reviewStatus ?? "UNVERIFIED"} · ${ce.provenance?.sourceType ?? "UNKNOWN"}`,
+    methodologyIndependent: true,
+    components: components.map((c) => ({
+      ...c,
+      amountMillions: c.amountMillions != null ? Math.abs(c.amountMillions) : null,
+    })),
+    unresolvedAdjustments: [],
+    methodologyDisclosure: ce.provenance?.notes ?? null,
+  });
+}
 
 export type MetricNumericStatus =
   | "COMPUTED"
@@ -281,7 +367,7 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
       prisma.financialState.findFirst({
         where: { companyId },
         orderBy: { asOfDate: "desc" },
-        select: { balanceSheetFacts: true },
+        select: { balanceSheetFacts: true, covenantMetricFacts: true, notes: true },
       }),
     ]);
 
@@ -450,9 +536,19 @@ export async function loadDebtIntelligenceDashboard(companyId: string): Promise<
         asOfDate ? new Date(`${asOfDate}T12:00:00.000Z`) : new Date(),
       )
     : null;
+
+  // Contractual EBITDA derivation: FinancialState addbacks → evidence package match by as-of+value.
+  let ebitdaDerivation =
+    derivationFromFinancialStateCovenantEbitda(financialState?.covenantMetricFacts, asOfDate) ??
+    (() => {
+      const matched = matchEbitdaEvidencePackage(asOfDate, ebitda);
+      return matched ? resolveContractualEbitdaDerivation(matched) : null;
+    })();
+
   const contractualComputation = computeContractualCovenantMetrics({
     financials: finForContractual,
     provisions: covenantDataForContractual?.provisions ?? [],
+    ebitdaDerivation,
   });
 
   // --- Ratios ---
