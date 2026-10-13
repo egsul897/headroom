@@ -10,9 +10,13 @@
  *
  * These texts are labeled reconstructions for deterministic extraction tests.
  * They are not fabricated capacity figures and are NOT a reviewer APPROVED snapshot.
+ *
+ * Unlike Coherent's seeded $1,700M, Matthews' $128.313M is a definition-first
+ * Indenture §1.01 build-up (methodology-independent of a pre-known target).
  */
 
 import { FIXTURE_AUTHORITY } from "../authority";
+import type { ContractualEbitdaEvidencePackage } from "../contractual-ebitda-buildup";
 
 export const MATTHEWS_FIXTURE_AUTHORITY = FIXTURE_AUTHORITY.matthews_q1_fy2025;
 
@@ -27,6 +31,16 @@ export const MATTHEWS_CONTRACTUAL_EBITDA_BUILDUP = {
     assetWriteDowns: 16.847,
     stockBasedCompensation: 18.806,
   },
+  /** Full Indenture build-up including CNI base and tax benefit subtraction. */
+  buildupMillions: {
+    consolidatedNetIncome: -60.829,
+    interestExpense: 54.64,
+    incomeTaxBenefitSubtracted: -11.629,
+    depreciationAndAmortization: 93.751,
+    goodwillWriteDowns: 16.727,
+    assetWriteDowns: 16.847,
+    stockBasedCompensation: 18.806,
+  },
   consolidatedEbitdaMillions: 128.313,
   gaapEbitdaMillions: 77.675,
   totalDebtMillions: 809.211,
@@ -34,6 +48,91 @@ export const MATTHEWS_CONTRACTUAL_EBITDA_BUILDUP = {
   cashMillions: 33.513,
   interestExpenseMillions: 54.64,
 } as const;
+
+export const MATTHEWS_EBITDA_EVIDENCE: ContractualEbitdaEvidencePackage = {
+  bindingContractualEbitdaMillions: MATTHEWS_CONTRACTUAL_EBITDA_BUILDUP.consolidatedEbitdaMillions,
+  asOfDate: MATTHEWS_CONTRACTUAL_EBITDA_BUILDUP.asOf,
+  measurementPeriod: "TTM through 2024-12-31 (FY2024 + Q1FY25 − Q1FY24)",
+  definitionTerm: "Consolidated EBITDA",
+  definitionExcerpt:
+    '"Consolidated EBITDA" means Consolidated Net Income for such period plus, without duplication, income tax expense, Consolidated Interest Expense, depreciation and amortization, and other add-backs as defined in the Indenture.',
+  definitionCitation: "Indenture §1.01 Consolidated EBITDA · accession 0000063296-25-000006 (period anchor)",
+  bindingApprovalStatus:
+    "PUBLIC_FILING_RECONSTRUCTION · UNVERIFIED · definition-first Indenture build-up · NOT CERTIFIED_EXTERNAL_INPUT · NOT capacity APPROVED",
+  methodologyIndependent: true,
+  methodologyDisclosure:
+    "Build-up fixed from Indenture §1.01 Consolidated EBITDA defined-term text first (clauses (1)(a)-(c)/(i) and tax benefit clause (2)) before any TTM dollar figure was computed. Extraordinary/non-recurring and run-rate synergy prongs not invoked. See scripts/populate-matthews-financial-provenance.ts header.",
+  components: [
+    {
+      label: "Consolidated Net Income (TTM)",
+      amountMillions: -60.829,
+      amountMissing: false,
+      sign: "plus",
+      documentCitation: "FY2024 10-K 0000063296-24-000094 + Q1 FY2025 10-Q 0000063296-25-000006 (− Q1 FY2024 comparative)",
+      measurementPeriod: "TTM through 2024-12-31",
+      approvalStatus: "RECONSTRUCTED",
+    },
+    {
+      label: "Consolidated Interest Expense (TTM)",
+      amountMillions: 54.64,
+      amountMissing: false,
+      sign: "plus",
+      documentCitation: "Same TTM stack · Interest expense",
+      measurementPeriod: "TTM through 2024-12-31",
+      approvalStatus: "RECONSTRUCTED",
+    },
+    {
+      label: "Income tax benefit (clause (2) — subtracted)",
+      amountMillions: 11.629,
+      amountMissing: false,
+      sign: "minus",
+      documentCitation: "Indenture §1.01 cl.(2) · TTM tax benefit",
+      measurementPeriod: "TTM through 2024-12-31",
+      approvalStatus: "RECONSTRUCTED",
+    },
+    {
+      label: "Depreciation and amortization (TTM)",
+      amountMillions: 93.751,
+      amountMissing: false,
+      sign: "plus",
+      documentCitation: "Same TTM stack · D&A",
+      measurementPeriod: "TTM through 2024-12-31",
+      approvalStatus: "RECONSTRUCTED",
+    },
+    {
+      label: "Goodwill write-downs (non-cash)",
+      amountMillions: 16.727,
+      amountMissing: false,
+      sign: "plus",
+      documentCitation: "FY2024 10-K Consolidated Statement of Cash Flows",
+      measurementPeriod: "FY2024 (none in Q1s)",
+      approvalStatus: "REPORTED",
+    },
+    {
+      label: "Asset write-downs (non-cash)",
+      amountMillions: 16.847,
+      amountMissing: false,
+      sign: "plus",
+      documentCitation: "FY2024 10-K Consolidated Statement of Cash Flows",
+      measurementPeriod: "FY2024 (none in Q1s)",
+      approvalStatus: "REPORTED",
+    },
+    {
+      label: "Stock-based compensation (non-cash, TTM)",
+      amountMillions: 18.806,
+      amountMissing: false,
+      sign: "plus",
+      documentCitation: "Same TTM stack · stock-based compensation",
+      measurementPeriod: "TTM through 2024-12-31",
+      approvalStatus: "RECONSTRUCTED",
+    },
+  ],
+  unresolvedAdjustments: [
+    "Indenture cl.(1)(f) extraordinary/non-recurring prong not invoked (conservative).",
+    "Indenture cl.(1)(g) run-rate synergy addback not invoked (not disclosed as discrete GAAP line).",
+    "No compliance certificate in source set — reconstruction remains UNVERIFIED / not CERTIFIED_EXTERNAL_INPUT.",
+  ],
+};
 
 export const MATTHEWS_ISSUER = "Matthews International Corporation";
 export const MATTHEWS_AS_OF_Q1 = "2024-12-31";
