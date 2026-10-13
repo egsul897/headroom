@@ -110,10 +110,29 @@ export interface OfflinePackageCompileOptions {
   asOfDate?: string;
 }
 
+/** Where operative text / IR amounts were actually compiled from. */
+export type OperativeSourceBindingStatus =
+  | "VERIFIED_ON_GOVERNING"
+  | "VERIFIED_SAME_AS_DISCOVERY"
+  | "UNVERIFIED_DISCOVERY_FALLBACK";
+
 export interface CompileUnitRepresentation {
   unitId: string;
   discoveryId: string;
   documentId: string;
+  /**
+   * Document where the candidate was discovered (may be a superseded predecessor).
+   * Preserved even when operative text is remapped onto a governing successor.
+   */
+  discoveryDocumentId: string;
+  /**
+   * Document from which operativeText, source spans, and fixed-dollar / greater-of
+   * IR were actually compiled. Must equal the Agent #7 governing document before
+   * SOURCE_BACKED_GROSS may publish.
+   */
+  operativeSourceDocumentId: string;
+  /** Binding quality of operativeSourceDocumentId vs governing / discovery. */
+  operativeSourceBindingStatus: OperativeSourceBindingStatus;
   sourceRef: string;
   role: string;
   families: string[];
@@ -714,15 +733,25 @@ export async function compileFrozenDebtPackage(
     const retrievalBinding = retrievalBindings.get(candidate.discoveryId)!;
     const operativeCandidate = retrievalBinding.retrievalCandidate;
     const operativeDocumentId = operativeCandidate.documentId;
+    const discoveryDocumentId = candidate.documentId;
+    const governingDocumentIdForBinding =
+      retrievalBinding.governingDocumentId ?? discoveryDocumentId;
     let operativeText = operativeSourceTextFor(operativeCandidate, index, operativeState);
 
     // Prefer exact catalog-clause text over section-level OWN/FULL spans.
     // Indenture Permitted* catalogs often hang every lettered limb on the parent
     // §1.01 node — using that span pollutes fixed-dollar classification with
     // sibling dollars / ratio limbs. Composite markers: "1)(a" → def:Term(1)(a).
+    //
+    // CRITICAL: only accept catalog text from the operative/governing document.
+    // Predecessor catalogs must never supply amounts under successor authority.
     const sectionTerm = (term: string) => term.replace(/^Section\s+/i, "");
+    let catalogSourceDocumentId: string | null = null;
     const catalogClauseText = (() => {
-      for (const cat of exceptionCatalogs) {
+      const catalogsOnOperative = exceptionCatalogs.filter(
+        (c) => c.documentId === operativeDocumentId,
+      );
+      for (const cat of catalogsOnOperative) {
         for (const clause of cat.clauses) {
           const defRef = `def:${cat.termExact}(${clause.marker})`;
           const secRef = `${sectionTerm(cat.termExact)}(${clause.marker})`;
@@ -730,6 +759,7 @@ export async function compileFrozenDebtPackage(
             candidate.normalizedSourceRef === defRef ||
             candidate.normalizedSourceRef === secRef
           ) {
+            catalogSourceDocumentId = cat.documentId;
             return candidate.normalizedSourceRef.startsWith("def:")
               ? `${cat.termExact} (${clause.marker}): ${clause.text}`
               : `§${sectionTerm(cat.termExact)}(${clause.marker}): ${clause.text}`;
@@ -739,18 +769,22 @@ export async function compileFrozenDebtPackage(
           candidate.normalizedSourceRef === `def:${cat.termExact}` ||
           candidate.normalizedSourceRef === sectionTerm(cat.termExact)
         ) {
+          catalogSourceDocumentId = cat.documentId;
           return cat.chapeauText + "\n" + cat.clauses.map((cl) => `(${cl.marker}) ${cl.text}`).join("\n");
         }
       }
       const secClause = candidate.normalizedSourceRef.match(/^(\d+\.\d+)\(([a-z0-9]+)\)$/i);
       if (secClause) {
-        const cat = exceptionCatalogs.find(
+        const cat = catalogsOnOperative.find(
           (c) =>
             sectionTerm(c.termExact) === secClause[1] ||
             c.referencedFromProhibitionRefs.includes(`§${secClause[1]}`),
         );
         const clause = cat?.clauses.find((cl) => cl.marker === secClause[2]!.toLowerCase());
-        if (cat && clause) return `§${secClause[1]}(${clause.marker}): ${clause.text}`;
+        if (cat && clause) {
+          catalogSourceDocumentId = cat.documentId;
+          return `§${secClause[1]}(${clause.marker}): ${clause.text}`;
+        }
       }
       return null;
     })();
@@ -758,6 +792,44 @@ export async function compileFrozenDebtPackage(
       operativeText = catalogClauseText;
     } else if (!operativeText.trim()) {
       operativeText = candidate.description;
+    }
+
+    // Resolve which document the compiled operative text actually came from.
+    let operativeSourceDocumentId = catalogSourceDocumentId ?? operativeDocumentId;
+    const claimedGoverning = retrievalBinding.governingDocumentId;
+    // Only confirmed restatement succession requires remapping onto a different
+    // governing document. Cross-instrument OA matches (e.g. indenture vs credit
+    // agreement sharing a definition label) must not force UNVERIFIED fallback.
+    const successionRequiresGoverning =
+      claimedGoverning != null &&
+      claimedGoverning !== discoveryDocumentId &&
+      (operativeAuthorityHandoff?.restatementAuthorities ?? []).some(
+        (a) =>
+          a.status === "OPERATIVE_AUTHORITY_CONFIRMED" &&
+          a.predecessorDocumentId != null &&
+          ((a.successorDocumentId === claimedGoverning &&
+            a.predecessorDocumentId === discoveryDocumentId) ||
+            (a.successorDocumentId === discoveryDocumentId &&
+              a.predecessorDocumentId === claimedGoverning)),
+      );
+
+    let operativeSourceBindingStatus: OperativeSourceBindingStatus;
+    if (
+      successionRequiresGoverning &&
+      operativeSourceDocumentId !== claimedGoverning
+    ) {
+      // Restatement successor is operative, but text/IR still from predecessor discovery.
+      operativeSourceDocumentId = discoveryDocumentId;
+      operativeSourceBindingStatus = "UNVERIFIED_DISCOVERY_FALLBACK";
+    } else if (operativeSourceDocumentId === discoveryDocumentId) {
+      operativeSourceBindingStatus = "VERIFIED_SAME_AS_DISCOVERY";
+    } else if (
+      operativeSourceDocumentId === claimedGoverning ||
+      operativeSourceDocumentId === governingDocumentIdForBinding
+    ) {
+      operativeSourceBindingStatus = "VERIFIED_ON_GOVERNING";
+    } else {
+      operativeSourceBindingStatus = "UNVERIFIED_DISCOVERY_FALLBACK";
     }
 
     const knownDefs = [...(exactTermsByDocument.get(operativeDocumentId)?.values() ?? [])];
@@ -812,10 +884,11 @@ export async function compileFrozenDebtPackage(
       hasUnresolvedContext: hasUnresolved,
     });
 
-    // Locate span from catalog if present (definition or section clause).
+    // Locate span from catalog on the operative source document only.
     let charStart: number | null = null;
     let charEnd: number | null = null;
     for (const cat of exceptionCatalogs) {
+      if (cat.documentId !== operativeSourceDocumentId) continue;
       // Definition catalogs: def:Permitted Debt(a) / def:Permitted Debt(1)(a)
       // Section catalogs use termExact "Section 7.01 Exceptions" but refs are "7.01(i)".
       const sectionRefMatch = cat.termExact.match(/^Section\s+(\d+\.\d+)\b/i);
@@ -849,11 +922,15 @@ export async function compileFrozenDebtPackage(
     const restatementBlocksAllExecutable =
       !packageGraphRelationshipsUnchanged ||
       operativeAuthorityGate === "PROVISIONAL_IDENTITY_BLOCKED";
-    if (isCatalogClause && !restatementBlocksAllExecutable) {
+    // Unverified discovery fallback must never elevate to VERIFIED_EXECUTABLE —
+    // successor authority would otherwise publish predecessor amounts.
+    const sourceBindingBlocksExecutable =
+      operativeSourceBindingStatus === "UNVERIFIED_DISCOVERY_FALLBACK";
+    if (isCatalogClause && !restatementBlocksAllExecutable && !sourceBindingBlocksExecutable) {
       const fdCompile = compileFixedDollarBasket({
         companyId: options.companyId,
         instrumentKey,
-        sourceDocumentId: candidate.documentId,
+        sourceDocumentId: operativeSourceDocumentId,
         candidateRef: candidate.discoveryId,
         sourceSectionRef: candidate.normalizedSourceRef,
         operativeSourceText: operativeText,
@@ -889,7 +966,7 @@ export async function compileFrozenDebtPackage(
         const goCompile = compileGreaterOfAssetsBasket({
           companyId: options.companyId,
           instrumentKey,
-          sourceDocumentId: candidate.documentId,
+          sourceDocumentId: operativeSourceDocumentId,
           candidateRef: candidate.discoveryId,
           sourceSectionRef: candidate.normalizedSourceRef,
           operativeSourceText: operativeText,
@@ -900,7 +977,7 @@ export async function compileFrozenDebtPackage(
           greaterOfCandidates.push({
             sourceRef: candidate.normalizedSourceRef,
             operativeText,
-            documentId: candidate.documentId,
+            documentId: operativeSourceDocumentId,
             discoveryId: candidate.discoveryId,
             families: candidate.families,
           });
@@ -946,6 +1023,9 @@ export async function compileFrozenDebtPackage(
       unitId: `unit:${candidate.discoveryId}`,
       discoveryId: candidate.discoveryId,
       documentId: candidate.documentId,
+      discoveryDocumentId,
+      operativeSourceDocumentId,
+      operativeSourceBindingStatus,
       sourceRef: candidate.normalizedSourceRef,
       role: candidate.role,
       families: candidate.families,
