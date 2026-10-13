@@ -1,0 +1,259 @@
+{
+  "schema": "evidence-to-execution.conmed-76d.v1",
+  "evaluatedAt": "2026-10-13T13:10:54.613Z",
+  "gitSha": "a52f2e5a00b66778396d54b2d8e2992bea8e421e",
+  "family": "RESTRICTED_PAYMENTS",
+  "target": {
+    "candidateRef": "discovery-candidate:9e35243e01539edee04ff6a5",
+    "section": "7.6(d)",
+    "companyId": "conmed-pilot",
+    "instrumentKey": "conmed-eighth-ar-credit-agreement",
+    "operativeSourceText": "(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;"
+  },
+  "evidenceInventory": [
+    {
+      "piece": "Authentic operative text §7.6(d)",
+      "class": "IN_REPO",
+      "status": "PRESENT",
+      "detail": "(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;",
+      "path": "docs/phase-3-conmed-population-verified/run-original/evidence/discovery-candidate:9e35243e01539edee04ff6a5.json"
+    },
+    {
+      "piece": "Curated Article VII source fixture",
+      "class": "IN_REPO",
+      "status": "PRESENT",
+      "detail": "Eighth A&R negative covenants curated extract",
+      "path": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt"
+    },
+    {
+      "piece": "Compiled IR leaf (DURING_PERIOD $40M, empty conditions)",
+      "class": "IN_REPO",
+      "status": "REVIEW_REQUIRED",
+      "detail": "action=OTHER; entityScope=[\"BORROWER\"]; amount=40000000",
+      "path": "docs/phase-3-conmed-population-verified/run-original/evidence/discovery-candidate:9e35243e01539edee04ff6a5.json"
+    },
+    {
+      "piece": "Semantic verification clean (VERIFIED_NO_MATERIAL_GAP_FOUND)",
+      "class": "ABSENT",
+      "status": "MATERIAL_DISCREPANCY",
+      "detail": "MATERIAL findings=1; UNCERTAIN=1",
+      "path": "docs/phase-3-conmed-population-verified/run-original/evidence/discovery-candidate:9e35243e01539edee04ff6a5.json"
+    },
+    {
+      "piece": "Persisted VerifiedUnitArtifact package",
+      "class": "IN_REPO",
+      "status": "MATERIAL_DISCREPANCY",
+      "detail": "complete=true; packageHash=090473f73d2a25228724eed9af7565be3e3b58d0dbaac781b1bfdb200c7df740",
+      "path": "docs/phase-3-conmed-population-verified/run-original/evidence/verified-units/discovery-candidate:9e35243e01539edee04ff6a5.verified-units.json"
+    },
+    {
+      "piece": "10-certification.json CERTIFIED for §7.6(d)",
+      "class": "ABSENT",
+      "status": "NO_CERTIFICATION_PACKET",
+      "detail": "Population evidence never produced a CERTIFIED candidate certification"
+    },
+    {
+      "piece": "Parent Borrower vs BORROWER entity-lattice fidelity",
+      "class": "IN_REPO",
+      "status": "LATTICE_COLLAPSE",
+      "detail": "entity-scope-guard aliases PARENT_BORROWER→BORROWER; verifier MATERIAL finding WRONG_ENTITY_SCOPE (source contrasts Parent vs Subsidiary Borrower in §7.6(g))"
+    },
+    {
+      "piece": "Definition binding (Parent Borrower, Restricted Payments)",
+      "class": "IN_REPO",
+      "status": "MISSING_IN_IR",
+      "detail": "UNCERTAIN MISSING_DEPENDENCY — dependsOn/definitions empty; action=OTHER"
+    },
+    {
+      "piece": "Clean re-compile + re-verify (no open MATERIAL/UNCERTAIN)",
+      "class": "EXTERNAL_OR_PAID",
+      "status": "SOFT_GATED",
+      "detail": "Soft gate forbids paid Phase-3 re-runs; offline clean packet does not exist for §7.6(d)"
+    },
+    {
+      "piece": "Amendment / operative-state attach for Article VII RP",
+      "class": "IN_REPO",
+      "status": "POPULATION_NOTES_CURRENT",
+      "detail": "Population supersession CURRENT_OPERATIVE for this leaf; instrument-level Omnibus/Second-Amendment unattached effects remain (shared CONMED honesty limit)"
+    },
+    {
+      "piece": "NS-4 APPROVED financials + utilization completeness (for remaining)",
+      "class": "EXTERNAL_OR_PAID",
+      "status": "ABSENT",
+      "detail": "Not required to prove eligible CANDIDATE path for a fixed-dollar period basket; required before verified remaining / AVAILABLE claims"
+    },
+    {
+      "piece": "Contrast: §7.2(c) CERTIFIED + DERIVED VEP",
+      "class": "IN_REPO",
+      "status": "CERTIFIED",
+      "detail": "Proves adapter spine; path UNSUPPORTED (cross-rule) — not the eligible-capacity vehicle",
+      "path": "docs/phase-3-live-validation/7.2c-recompute-phase2-certified/10-certification.json"
+    }
+  ],
+  "dependencyOrderedPlan": [
+    {
+      "step": 1,
+      "name": "Authentic source + compiled IR leaf",
+      "status": "PARTIAL",
+      "detail": "Compile REVIEW_REQUIRED; leaf present with $40M DURING_PERIOD"
+    },
+    {
+      "step": 2,
+      "name": "Close semantic gaps (entity scope + definitions) + COMPLETED compile",
+      "status": "BLOCKED",
+      "detail": "SEMANTIC_ACCOUNTABILITY_INCOMPLETE / UNKNOWN_SOURCE_COMPLETENESS"
+    },
+    {
+      "step": 3,
+      "name": "Clean semantic verification (no open MATERIAL/UNCERTAIN)",
+      "status": "BLOCKED",
+      "detail": "verification=MATERIAL_DISCREPANCY; primary MATERIAL=WRONG_ENTITY_SCOPE"
+    },
+    {
+      "step": 4,
+      "name": "certifyCandidate → CERTIFIED + hash-aligned VUA",
+      "status": "BLOCKED",
+      "detail": "Would-block codes: COMPILATION_NOT_COMPLETED, VERIFICATION_NOT_CLEAN, OPEN_MATERIAL_OR_UNCERTAIN_FINDING, CONTEXT_CONTRACT_UNACCEPTABLE"
+    },
+    {
+      "step": 5,
+      "name": "certifiedMapToVerifiedExecutionPackage → DERIVED VEP",
+      "status": "BLOCKED",
+      "detail": "No §7.6(d) CERTIFIED artifact; adapter cannot include this unit"
+    },
+    {
+      "step": 6,
+      "name": "enumerateCertifiedPaths → CANDIDATE (RESTRICTED_PAYMENT)",
+      "status": "NOT_ATTEMPTED",
+      "detail": "Requires step 5; leaf has empty conditions (no OTHER_RULE_SATISFIED) so eligible path is reachable once CERTIFIED"
+    },
+    {
+      "step": 7,
+      "name": "evaluateVerifiedCapacity(REQUIRE) EXECUTE",
+      "status": "NOT_ATTEMPTED",
+      "detail": "Requires eligible path + VEP; empty ledger ⇒ period gross, not verified remaining"
+    },
+    {
+      "step": 8,
+      "name": "attemptVerifiedSimulate on selected eligible path",
+      "status": "NOT_ATTEMPTED",
+      "detail": "Requires step 7; do not invent PERMITTED without completeness if publishing remaining"
+    },
+    {
+      "step": 9,
+      "name": "Contrast spine §7.2(c) CERTIFIED→VEP→enum→capacity→simulate",
+      "status": "CONTRAST_ONLY",
+      "detail": "DERIVED VEP; paths=UNSUPPORTED; capacity=REFUSED; simulateExecutable=false"
+    }
+  ],
+  "stages": {
+    "authenticSource": {
+      "present": true,
+      "sha256": "f05abb8e96bd0e07bf402a5be904232ddaccbfe994e3594d36bc4acde59669e9"
+    },
+    "compilation": {
+      "status": "REVIEW_REQUIRED",
+      "failureReasons": [
+        "SEMANTIC_ACCOUNTABILITY_INCOMPLETE"
+      ]
+    },
+    "semanticVerification": {
+      "status": "MATERIAL_DISCREPANCY",
+      "materialFindings": [
+        {
+          "type": "WRONG_ENTITY_SCOPE",
+          "severity": "MATERIAL",
+          "summary": "The source provision limits the $40,000,000 basket to the defined term \"Parent Borrower\". The proposed IR instead records the entity scope as \"BORROWER\". The same section uses \"Parent Borrower\" and \"Subsidiary Borrower\" as distinct concepts, and clause (g) separately permits \"the"
+        }
+      ],
+      "uncertainFindings": [
+        {
+          "type": "MISSING_DEPENDENCY",
+          "severity": "UNCERTAIN",
+          "summary": "The operative clause is an exception permitting the \"Parent Borrower\" to make \"Restricted Payments\", both defined terms tied to other provisions. The proposed IR does not reference either definition in its dependencies, and its top-level definitions array is empty. In particular,"
+        }
+      ]
+    },
+    "verifiedUnitArtifact": {
+      "present": true,
+      "complete": true,
+      "verificationStatus": "MATERIAL_DISCREPANCY",
+      "packageHash": "090473f73d2a25228724eed9af7565be3e3b58d0dbaac781b1bfdb200c7df740"
+    },
+    "certifyCandidate": {
+      "attempted": "FROM_ON_DISK_ARTIFACTS_ONLY",
+      "wouldCertify": false,
+      "blockerCodes": [
+        "COMPILATION_NOT_COMPLETED",
+        "VERIFICATION_NOT_CLEAN",
+        "OPEN_MATERIAL_OR_UNCERTAIN_FINDING",
+        "CONTEXT_CONTRACT_UNACCEPTABLE"
+      ],
+      "detail": "certifyCandidate gates require COMPLETED compile + clean verification. On-disk §7.6(d) artifacts fail those gates; no fabricated CERTIFIED packet written."
+    },
+    "vep": {
+      "targetCandidateCertified": false,
+      "authenticatedScanCertifiedCount": 1,
+      "adapterOutcome": "DERIVED",
+      "contrast72cDerived": true
+    },
+    "eligiblePath": {
+      "for76d": "NO_VEP",
+      "contrast72c": {
+        "authority": "CERTIFIED_4E",
+        "pathStatuses": [
+          "UNSUPPORTED"
+        ],
+        "unsupportedReasons": [
+          "CROSS_RULE_GATE_NOT_EXECUTABLE:ir-rule:29309c463e06b77b4b243eda"
+        ]
+      }
+    },
+    "verifiedCapacity": {
+      "for76d": "NOT_REACHED",
+      "contrast72cOutcome": "REFUSED"
+    },
+    "transactionSimulation": {
+      "for76d": "NOT_REACHED",
+      "contrast72cExecutable": false,
+      "contrast72cRefusal": [
+        "NO_CANDIDATE_PATHS"
+      ]
+    }
+  },
+  "irreducibleBlocker": {
+    "code": "PHASE3_SEMANTIC_VERIFICATION_NOT_CLEAN",
+    "summary": "CONMED §7.6(d) cannot enter CERTIFIED → VEP → CANDIDATE → capacity → simulate until Phase-3 semantic verification is clean. On-disk status is MATERIAL_DISCREPANCY (WRONG_ENTITY_SCOPE: Parent Borrower collapsed to BORROWER) plus UNCERTAIN MISSING_DEPENDENCY and compile SEMANTIC_ACCOUNTABILITY_INCOMPLETE. Soft gate forbids paid re-verify; no offline-clean CERTIFIED packet exists for this leaf.",
+    "requiredNextAuthenticWork": [
+      "Preserve Parent Borrower ≠ Subsidiary Borrower in IR entity representation (stop silent PARENT_BORROWER→BORROWER permission expansion, or bind a certified definition proving equivalence).",
+      "Bind Restricted Payments / Parent Borrower definitions (or fail closed with explicit limitation) so MISSING_DEPENDENCY closes.",
+      "Clear SEMANTIC_ACCOUNTABILITY_INCOMPLETE / UNKNOWN_SOURCE_COMPLETENESS so compilation can COMPLETE.",
+      "Produce offline-clean VerifiedUnitArtifact + certifyCandidate → CERTIFIED (no fabricated findings resolution).",
+      "Then DERIVED VEP → RESTRICTED_PAYMENT CANDIDATE path → REQUIRE capacity → verified simulate."
+    ]
+  },
+  "customerCapabilitiesDemonstrated": [
+    "Select one real RP family (§7.6(d)) and see the authentic operative text + EDGAR-backed population evidence bound in-repo.",
+    "Inspect a dependency-ordered evidence→execution plan with each stage marked PASSED / PARTIAL / BLOCKED from real artifacts.",
+    "See exact Phase-3 blockers (WRONG_ENTITY_SCOPE, MISSING_DEPENDENCY, SEMANTIC_ACCOUNTABILITY_INCOMPLETE) without a false CERTIFIED claim.",
+    "See that the authenticated VEP adapter spine already DERIVES a package from CERTIFIED §7.2(c) — and that its path remains UNSUPPORTED (cross-rule), so it is not a substitute eligible RP path.",
+    "Receive an explicit irreducible blocker naming the authentic work required before customer execution of §7.6(d)."
+  ],
+  "customerCapabilitiesNotClaimed": [
+    "CERTIFIED VerifiedUnitArtifact for §7.6(d)",
+    "DERIVED VEP containing §7.6(d)",
+    "Eligible CERTIFIED_4E CANDIDATE path for Restricted Payments",
+    "Verified capacity EXECUTE / numeric headroom for the $40M basket",
+    "Affirmative verified simulate PERMITTED",
+    "Verified remaining / AVAILABLE publication"
+  ],
+  "workflowVerdict": "EVIDENCE_TO_EXECUTION_BLOCKED",
+  "constraintsHonored": [
+    "no fabricated CERTIFIED / VEP / PERMITTED",
+    "no paid Phase-3 re-run",
+    "no competing solver or parallel product engine",
+    "no PP003 documentation polish / no duplicate #349 integration PR",
+    "no self-merge / no production-authority activation",
+    "§7.2(c) used only as contrast spine, not as false RP permission"
+  ]
+}
