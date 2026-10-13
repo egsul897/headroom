@@ -94,7 +94,7 @@ function ruleOf(ruleId: string): IRRule {
       sourceCitation: "CONMED §7.02(d)",
       excerpt: null,
     },
-  } as IRRule;
+  } as unknown as IRRule;
 }
 
 function artifactForRule(rule: IRRule): VerifiedUnitArtifact {
@@ -355,7 +355,7 @@ describe("seal input authenticity — fabricated REQUIRE fields refused", () => 
       },
       limitations: [],
       note: "forged",
-    } as UnifiedTransactionExecutionResult;
+    } as unknown as UnifiedTransactionExecutionResult;
 
     expect(isCanonicalUnifiedTransactionExecutionResult(forged)).toBe(false);
     expect(sealVerifiedExecutionPermissionHandoff(forged)).toBeNull();
