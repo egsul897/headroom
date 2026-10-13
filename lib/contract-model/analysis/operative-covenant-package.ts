@@ -185,6 +185,7 @@ function classifyProvisionKind(unit: CompileUnitRepresentation): OperativeProvis
   const role = unit.role;
   const families = unit.families;
   const text = unit.operativeText;
+  const head = text.slice(0, 240);
 
   if (unit.greaterOfSlice) return "GREATER_OF_BASKET";
   if (unit.fixedDollarSlice?.classification?.startsWith("FIXED_DOLLAR")) return "FIXED_DOLLAR_BASKET";
@@ -196,21 +197,27 @@ function classifyProvisionKind(unit: CompileUnitRepresentation): OperativeProvis
     return "RATIO_BASED_PERMISSION";
   }
   if (role === "GENERAL_PROHIBITION") {
-    if (families.includes("LIENS") || /\bLiens?\b/i.test(text.slice(0, 200))) return "LIEN_RESTRICTION";
-    if (families.includes("INDEBTEDNESS") || /\b(?:Indebtedness|Debt)\b/i.test(text.slice(0, 200))) {
+    if (families.includes("LIENS") || /\bLiens?\b/i.test(head)) return "LIEN_RESTRICTION";
+    if (families.includes("INDEBTEDNESS") || /\b(?:Indebtedness|Debt)\b/i.test(head)) {
       return "DEBT_INCURRENCE_PROHIBITION";
     }
-    return "DEBT_INCURRENCE_PROHIBITION";
+    // Do not assume indebtedness for unclassified prohibitions.
+    return "OTHER_OR_UNKNOWN";
   }
   if (role === "BASKET" || role === "SHARED_CAP" || role === "PERMISSION") {
-    if (families.includes("LIENS")) return "PERMITTED_LIEN_BASKET";
+    if (families.includes("LIENS") || /\bLiens?\b/i.test(head)) return "PERMITTED_LIEN_BASKET";
     if (/\$[\d,]+/.test(text) && !/\bnot\s+to\s+exceed\b|\bshall\s+not\s+exceed\b|\bdoes\s+not\s+exceed\b/i.test(text)) {
       return "GRANDFATHERED_OR_NON_CAP";
     }
-    return families.includes("LIENS") ? "PERMITTED_LIEN_BASKET" : "PERMITTED_DEBT_BASKET";
+    if (families.includes("INDEBTEDNESS") || /\b(?:Indebtedness|Debt)\b/i.test(head)) {
+      return "PERMITTED_DEBT_BASKET";
+    }
+    // Investment / RP / asset-sale baskets stay unknown until family is resolved.
+    return "OTHER_OR_UNKNOWN";
   }
   if (ref.startsWith("def:") && /Lien/i.test(ref)) return "PERMITTED_LIEN_BASKET";
-  if (ref.startsWith("def:")) return "PERMITTED_DEBT_BASKET";
+  if (ref.startsWith("def:") && /(?:Debt|Indebtedness)/i.test(ref)) return "PERMITTED_DEBT_BASKET";
+  if (ref.startsWith("def:")) return "OTHER_OR_UNKNOWN";
   return "OTHER_OR_UNKNOWN";
 }
 
@@ -245,23 +252,201 @@ function missingDepsFor(unit: CompileUnitRepresentation): string[] {
 }
 
 /**
- * Narrow document-relationship evidence for provision↔unit authority binding.
- * Only OPERATIVE_AUTHORITY_CONFIRMED restatement edges with both endpoints
- * may authorize cross-document section/term identity. Unverified / ambiguous
- * / unsupported succession never binds. No issuer-specific exceptions.
+ * Narrow document-relationship + restatement-precedence evidence for
+ * provision↔unit authority binding.
+ *
+ * Verified document succession is necessary but not sufficient: operative
+ * authority for the specific provision is resolved with as-of effective-date
+ * and supersession precedence. Unverified / ambiguous / conflicting succession
+ * never binds. No issuer-specific exceptions.
  */
 export interface DocumentRelationshipEvidence {
+  /** ISO as-of date required whenever restatement authorities are supplied. */
+  asOfDate?: string | null;
   restatementAuthorities?: ReadonlyArray<{
     status: string;
     successorDocumentId: string;
     predecessorDocumentId: string | null;
+    effectiveDateIso?: string | null;
+    restatementScope?: string | null;
+    partialProvisionRefs?: readonly string[] | null;
   }>;
+  /**
+   * Explicitly verified continuing provision refs (section / def keys) that
+   * survive restatement on the predecessor. Historical evidence alone never
+   * invents continuation.
+   */
+  verifiedContinuingProvisionRefs?: readonly string[] | null;
+}
+
+export type ProvisionIdentityRefs = {
+  sectionRef?: string | null;
+  definedTermRef?: string | null;
+};
+
+function provisionIdentityKey(identity?: ProvisionIdentityRefs | null): string | null {
+  const section = identity?.sectionRef?.trim() ?? "";
+  if (section) return section;
+  const term = identity?.definedTermRef?.trim() ?? "";
+  if (term) return `def:${term.toLowerCase()}`;
+  return null;
+}
+
+function provisionRefCoveredByPartial(
+  provisionKey: string | null,
+  partialRefs: readonly string[] | null | undefined,
+): boolean {
+  if (!provisionKey || !partialRefs || partialRefs.length === 0) return false;
+  for (const raw of partialRefs) {
+    const ref = raw.trim();
+    if (!ref) continue;
+    if (provisionKey === ref) return true;
+    if (provisionKey.startsWith(`${ref}(`) || provisionKey.startsWith(`${ref}.`)) return true;
+    // partial "7.03(f)" covers unit key "7.03" only via exact/prefix on provision side —
+    // require the restatement's listed ref to cover the provision key, not the reverse widen.
+  }
+  return false;
+}
+
+function isVerifiedContinuing(
+  provisionKey: string | null,
+  relationship?: DocumentRelationshipEvidence | null,
+): boolean {
+  if (!provisionKey) return false;
+  const continuing = relationship?.verifiedContinuingProvisionRefs ?? [];
+  for (const raw of continuing) {
+    const ref = raw.trim();
+    if (!ref) continue;
+    if (provisionKey === ref) return true;
+    if (provisionKey.startsWith(`${ref}(`) || provisionKey.startsWith(`${ref}.`)) return true;
+  }
+  return false;
+}
+
+type NormalizedRestatement = {
+  status: string;
+  successorDocumentId: string;
+  predecessorDocumentId: string;
+  effectiveDateIso: string | null;
+  restatementScope: string;
+  partialProvisionRefs: readonly string[];
+};
+
+function normalizeRestatementAuthorities(
+  relationship?: DocumentRelationshipEvidence | null,
+): NormalizedRestatement[] {
+  const out: NormalizedRestatement[] = [];
+  for (const a of relationship?.restatementAuthorities ?? []) {
+    const succ = a.successorDocumentId?.trim() ?? "";
+    const pred = a.predecessorDocumentId?.trim() ?? "";
+    if (!succ) continue;
+    out.push({
+      status: a.status,
+      successorDocumentId: succ,
+      predecessorDocumentId: pred,
+      effectiveDateIso: a.effectiveDateIso?.trim() || null,
+      restatementScope: (a.restatementScope ?? "UNKNOWN").trim() || "UNKNOWN",
+      partialProvisionRefs: a.partialProvisionRefs ?? [],
+    });
+  }
+  return out;
+}
+
+function restatementAffectsProvision(
+  a: NormalizedRestatement,
+  provisionKey: string | null,
+): boolean {
+  if (a.restatementScope === "FULL_AGREEMENT") return true;
+  if (a.restatementScope === "PARTIAL_PROVISIONS") {
+    return provisionRefCoveredByPartial(provisionKey, a.partialProvisionRefs);
+  }
+  // UNKNOWN scope — fail closed: treat as potentially replacing when confirmed.
+  return true;
 }
 
 /**
- * True when the provision's governing document is the unit's source document
- * or a verified operative restatement successor/predecessor of it.
- * Fail closed on missing ids, null predecessors, or non-confirmed status.
+ * Resolve the single operative governing document for a provision as of date.
+ * Returns null when evidence is missing, conflicting, or unresolved.
+ */
+export function resolveOperativeGoverningDocumentId(
+  relationship: DocumentRelationshipEvidence | null | undefined,
+  provisionIdentity?: ProvisionIdentityRefs | null,
+): { operativeDocumentId: string | null; refusalReason: string | null } {
+  const authorities = normalizeRestatementAuthorities(relationship);
+  if (authorities.length === 0) {
+    return { operativeDocumentId: null, refusalReason: null };
+  }
+  const asOf = relationship?.asOfDate?.trim() ?? "";
+  if (!asOf) {
+    return { operativeDocumentId: null, refusalReason: "missing_as_of_date" };
+  }
+
+  const provisionKey = provisionIdentityKey(provisionIdentity);
+  const confirmedAffecting = authorities.filter(
+    (a) =>
+      a.status === "OPERATIVE_AUTHORITY_CONFIRMED" &&
+      a.predecessorDocumentId &&
+      restatementAffectsProvision(a, provisionKey),
+  );
+
+  // Unresolved / ambiguous succession that could affect this provision → refuse.
+  const blockingUnresolved = authorities.some(
+    (a) =>
+      a.predecessorDocumentId &&
+      (a.status === "REVIEW_REQUIRED" ||
+        a.status === "AMBIGUOUS" ||
+        a.status === "UNSUPPORTED" ||
+        a.status === "PROVISIONAL_IDENTITY_BLOCKED") &&
+      restatementAffectsProvision(a, provisionKey) &&
+      // Future-dated unresolved does not block current predecessor authority.
+      (a.effectiveDateIso == null || a.effectiveDateIso <= asOf),
+  );
+  if (blockingUnresolved) {
+    return { operativeDocumentId: null, refusalReason: "unresolved_succession" };
+  }
+
+  const effectiveConfirmed = confirmedAffecting.filter((a) => {
+    if (!a.effectiveDateIso) return false; // missing date → not usable for precedence
+    return a.effectiveDateIso <= asOf;
+  });
+  const missingDateConfirmed = confirmedAffecting.some((a) => !a.effectiveDateIso);
+  if (missingDateConfirmed && effectiveConfirmed.length === 0) {
+    return { operativeDocumentId: null, refusalReason: "missing_effective_date" };
+  }
+
+  if (effectiveConfirmed.length === 0) {
+    // Restatement not yet effective — predecessor remains operative when unique.
+    const preds = [
+      ...new Set(confirmedAffecting.map((a) => a.predecessorDocumentId).filter(Boolean)),
+    ];
+    if (preds.length === 1) {
+      return { operativeDocumentId: preds[0]!, refusalReason: null };
+    }
+    return { operativeDocumentId: null, refusalReason: "ambiguous_pre_effective_predecessor" };
+  }
+
+  // Latest effective confirmed successor; conflict if multiple distinct successors
+  // share the latest effective date.
+  const latestIso = [...effectiveConfirmed]
+    .map((a) => a.effectiveDateIso!)
+    .sort((a, b) => (a < b ? 1 : a > b ? -1 : 0))[0]!;
+  const latest = effectiveConfirmed.filter((a) => a.effectiveDateIso === latestIso);
+  const successors = [...new Set(latest.map((a) => a.successorDocumentId))];
+  if (successors.length !== 1) {
+    return { operativeDocumentId: null, refusalReason: "conflicting_confirmed_successors" };
+  }
+  return { operativeDocumentId: successors[0]!, refusalReason: null };
+}
+
+/**
+ * True when the provision's governing document may bind the unit under
+ * verified succession AND as-of supersession precedence for that provision.
+ *
+ * - Same document: permitted only if not a superseded predecessor for the provision
+ *   (unless explicitly verified continuing).
+ * - Cross-document: provision governing must be the operative document as-of;
+ *   unit may be that document or its confirmed predecessor (discovery location).
+ * - Bidirectional predecessor↔successor matching alone is insufficient.
  *
  * Exported for adversarial regression tests.
  */
@@ -269,35 +454,67 @@ export function documentsShareOperativeAuthority(
   provisionGoverningDocumentId: string | null | undefined,
   unitDocumentId: string | null | undefined,
   relationship?: DocumentRelationshipEvidence | null,
+  provisionIdentity?: ProvisionIdentityRefs | null,
 ): boolean {
   const gov = provisionGoverningDocumentId?.trim() ?? "";
   const unitDoc = unitDocumentId?.trim() ?? "";
   if (!gov || !unitDoc) return false;
-  if (gov === unitDoc) return true;
 
-  const authorities = relationship?.restatementAuthorities ?? [];
-  for (const a of authorities) {
-    if (a.status !== "OPERATIVE_AUTHORITY_CONFIRMED") continue;
-    const succ = a.successorDocumentId?.trim() ?? "";
-    const pred = a.predecessorDocumentId?.trim() ?? "";
-    // Null / empty predecessor — refuse silent cross-document bind.
-    if (!succ || !pred) continue;
-    if ((gov === succ && unitDoc === pred) || (gov === pred && unitDoc === succ)) {
-      return true;
-    }
+  const authorities = normalizeRestatementAuthorities(relationship);
+  const provisionKey = provisionIdentityKey(provisionIdentity);
+
+  // No succession evidence → only exact same-document identity.
+  if (authorities.length === 0) {
+    return gov === unitDoc;
   }
-  return false;
+
+  // Continuing provision: predecessor governing may remain when explicitly verified.
+  if (isVerifiedContinuing(provisionKey, relationship)) {
+    const continuingPred = authorities.some(
+      (a) =>
+        a.status === "OPERATIVE_AUTHORITY_CONFIRMED" &&
+        a.predecessorDocumentId === gov &&
+        (unitDoc === gov || unitDoc === a.successorDocumentId),
+    );
+    if (continuingPred && gov === unitDoc) return true;
+  }
+
+  const resolved = resolveOperativeGoverningDocumentId(relationship, provisionIdentity);
+  if (resolved.operativeDocumentId == null) {
+    return false;
+  }
+  const operative = resolved.operativeDocumentId;
+
+  // Provision's stated governing document must be the operative document as-of.
+  if (gov !== operative) return false;
+
+  if (unitDoc === operative) return true;
+
+  // Unit discovered on immediate confirmed predecessor of the operative successor.
+  const predOfOperative = authorities.find(
+    (a) =>
+      a.status === "OPERATIVE_AUTHORITY_CONFIRMED" &&
+      a.successorDocumentId === operative &&
+      a.predecessorDocumentId &&
+      a.effectiveDateIso &&
+      relationship?.asOfDate &&
+      a.effectiveDateIso <= relationship.asOfDate.trim() &&
+      restatementAffectsProvision(a, provisionKey),
+  )?.predecessorDocumentId;
+  return predOfOperative != null && unitDoc === predOfOperative;
 }
 
 /**
  * Match a handoff provision to a compile unit by provision identity
- * (sectionRef / definedTermRef) AND document relationship.
+ * (sectionRef / definedTermRef) AND document relationship with restatement
+ * precedence.
  *
  * - Same-document governingDocumentId alone is NEVER sufficient — distinct
  *   sections must not inherit one another's authority.
  * - Section / defined-term identity across unrelated documents REFUSES.
- * - Verified OPERATIVE_AUTHORITY_CONFIRMED restatement succession may bind
- *   when both endpoints are present; unverified/ambiguous succession REFUSES.
+ * - Verified succession is separated from operative authority: as-of effective
+ *   date + supersession precedence apply; replaced predecessor provisions REFUSE.
+ * - Explicitly verified continuing provisions may remain on the predecessor.
  *
  * Exported for adversarial regression tests.
  */
@@ -311,12 +528,17 @@ export function provisionIdentityMatchesUnit(
   unit: Pick<CompileUnitRepresentation, "sourceRef" | "documentId">,
   relationship?: DocumentRelationshipEvidence | null,
 ): boolean {
-  // Document-relationship gate first — never bind on section/term alone across docs.
+  const provisionIdentity: ProvisionIdentityRefs = {
+    sectionRef: provision.sectionRef,
+    definedTermRef: provision.definedTermRef,
+  };
+  // Document-relationship + precedence gate first — never bind on section/term alone.
   if (
     !documentsShareOperativeAuthority(
       provision.governingDocumentId,
       unit.documentId,
       relationship,
+      provisionIdentity,
     )
   ) {
     return false;
@@ -364,7 +586,15 @@ function authorityForUnit(
 } {
   const handoff = offline.operativeAuthorityHandoff;
   const relationship: DocumentRelationshipEvidence = {
-    restatementAuthorities: handoff?.restatementAuthorities ?? [],
+    asOfDate: handoff?.asOfDate ?? offline.asOfDate ?? null,
+    restatementAuthorities: (handoff?.restatementAuthorities ?? []).map((a) => ({
+      status: a.status,
+      successorDocumentId: a.successorDocumentId,
+      predecessorDocumentId: a.predecessorDocumentId,
+      effectiveDateIso: a.effectiveDateIso,
+      restatementScope: a.evidence?.restatementScope ?? null,
+      partialProvisionRefs: a.evidence?.partialProvisionRefs ?? [],
+    })),
   };
   const provision =
     handoff?.provisions.find((p) => provisionIdentityMatchesUnit(p, unit, relationship)) ?? null;
