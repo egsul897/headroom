@@ -362,7 +362,8 @@ describe("P0 — assembler access gating (injectable identity; Neon unreachable 
     expect(allowed.position.authorityNote).toMatch(/APPROVED snapshot/);
     // Cross-domain kind is accepted by the assembler path; VEP absence keeps simulate non-authoritative.
     expect(allowed.simulate.overallStatus).not.toBe("VERIFIED_EXECUTABLE");
-    expect(allowed.capacityBySide.secured.remaining.mayPublishAvailable).toBe(false);
+    expect(allowed.capacityBySide.secured.remainingAuthoritative).toBe(false);
+    expect(allowed.capacityBySide.secured.verifiedRemaining.amountMillions).toBeNull();
     expect(counters.n).toBeGreaterThan(0);
   });
 
