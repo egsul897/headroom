@@ -27,11 +27,11 @@ Phase 2F/2G/Agent #7 gates (not rewritten).
 
 | | |
 |---|---|
-| Feature tip (code + docs pin) | `013e42a0b9e6035fc18f6c224c42331d1b60eb0d` |
-| Docs CI-record tip | `c763c0d028f9716f8eaab8af3b438208df457054` |
+| Branch tip | `8435a1b0541f1e7090357ad25a90aa70ac42fad3` |
+| Code + docs-pin tip (last canonical-compiler) | `013e42a0b9e6035fc18f6c224c42331d1b60eb0d` |
 | PR | https://github.com/egsul897/headroom/pull/320 |
 | canonical-compiler @ `013e42a0` | SUCCESS — https://github.com/egsul897/headroom/actions/runs/38347847958 |
-| Vercel @ `013e42a0` | SUCCESS |
+| Tip `8435a1b0` checks | Vercel SUCCESS; Preview Comments SUCCESS (docs-only; compiler path-filter skipped) |
 
 Local targeted suites before push: remediation 36 + pipeline audit 2 + harness 4 + compile 5 + VE Position 7 = **54/54**; `tsc --noEmit` clean.
 
