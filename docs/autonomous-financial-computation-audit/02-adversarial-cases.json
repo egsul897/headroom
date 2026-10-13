@@ -1,0 +1,95 @@
+{
+  "artifact": "autonomous-financial-computation-audit.adversarial-cases",
+  "version": "afc.v1",
+  "immutable": true,
+  "testFile": "tests/autonomous-financial-computation/held-out-oracles.test.ts",
+  "rule": "Do not edit expected values to improve performance. Expectations are independent oracles.",
+  "cases": [
+    {
+      "id": "ADV-CASH-NET-FLOOR",
+      "track": "A",
+      "whyNotTemplateTrivial": "Combines floor, cash cap, and gross debt — not a GREATER_OF_FLAT_OR_PCT_EBITDA basket shape",
+      "inputs": { "grossDebt": 250000000, "cash": 140000000, "cashCap": 100000000 },
+      "oracle": 150000000,
+      "engine": "EXECUTABLE 150000000",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ADV-MISSING-CASH-NEQ-ZERO",
+      "track": "A/B",
+      "whyNotTemplateTrivial": "Proves missing netting cash cannot become zero debt reduction",
+      "engine": "NEEDS_INPUT Unrestricted Cash",
+      "verdict": "PASS_FAIL_CLOSED"
+    },
+    {
+      "id": "ADV-FX-CASH-NET",
+      "track": "A/C",
+      "whyNotTemplateTrivial": "USD debt vs EUR cash",
+      "engine": "ERROR CURRENCY_MISMATCH_NO_CONVERSION_MODELED",
+      "verdict": "PASS_FAIL_CLOSED"
+    },
+    {
+      "id": "ADV-RECURSIVE-ADDBACK-CAP",
+      "track": "A",
+      "whyNotTemplateTrivial": "Self-referential 15% of defined Consolidated EBITDA — existing flat/grower templates cannot encode",
+      "oracleFixedPoint": "100000000/0.85",
+      "engine": "ERROR CYCLE",
+      "verdict": "CONFIRMED_REPRESENTATION_GAP"
+    },
+    {
+      "id": "ADV-TEMPLATE-ADDBACK-DRIFT",
+      "track": "A/C",
+      "whyNotTemplateTrivial": "Shows hand-template IR that 'looks like' a cap silently disagrees with algebraic fixed point",
+      "approxEngine": 121000000,
+      "trueFixedPointApprox": 117647058.8235,
+      "verdict": "CONFIRMED_COMPILATION_HAZARD"
+    },
+    {
+      "id": "ADV-MANIFEST-PERIOD-LEVERAGE",
+      "track": "B",
+      "whyNotTemplateTrivial": "Requires period selector preservation on EBITDA leaf through nested MAX/MIN/SUB/DIV",
+      "requiredKeys": ["Consolidated EBITDA", "Gross Debt", "Unrestricted Cash"],
+      "periodKey": "four consecutive fiscal quarters most recently ended",
+      "verdict": "PASS_STRUCTURAL_MANIFEST"
+    },
+    {
+      "id": "ADV-INPUTKIND-GAP",
+      "track": "B",
+      "whyNotTemplateTrivial": "Documents absence of reviewer/corporate-structure kinds on runtime manifest",
+      "verdict": "CONFIRMED_DEPENDENCY_GAP"
+    },
+    {
+      "id": "ADV-RATIO-1-3",
+      "track": "C",
+      "oracle": "1/3",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ADV-NEG-DENOM",
+      "track": "C",
+      "independentOracle": "NON_POSITIVE_DENOMINATOR refuse",
+      "engine": "EXECUTABLE -10",
+      "verdict": "CONFIRMED_POLICY_GAP",
+      "separateFromArithmetic": true
+    },
+    {
+      "id": "ADV-RATIO-BOUNDARY-3.75",
+      "track": "C",
+      "oracle": "375/100 LTE 3.75 → true",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ADV-GROWER-MISSING-BOUNDS",
+      "track": "C",
+      "engine": "NEEDS_INPUT + lower bound 75mm; value null",
+      "verdict": "PASS_FAIL_CLOSED"
+    },
+    {
+      "id": "ADV-SHARED-MIN-GROWERS",
+      "track": "C",
+      "oracle": 45000000,
+      "partialMissing": "NEEDS_INPUT Total Assets",
+      "verdict": "PASS"
+    }
+  ]
+}
