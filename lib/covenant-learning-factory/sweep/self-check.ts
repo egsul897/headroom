@@ -265,6 +265,34 @@ export function basketTreeSection(loc: TreeLocator, cite: string): string | null
   return m.get(cite)!;
 }
 
+/**
+ * Diagnostic only (CLF_DIAG=1; never changes counts): why a candidate was not matched.
+ *  NOT_IN_TREE       candidate text not locatable in the parsed document
+ *  SECTION_EMPTY     located, but no basket cites anything in that tree section
+ *  LIMB_MISSING      section has baskets, none shares text with the candidate
+ *  BOUNDARY          a basket in the section shares a 24-char run but strict reflection fails
+ *  REJECTED_<why>    text reflected by some basket but rejected (AMBIGUOUS / OTHER_PARTIAL / LOCATION / FAMILY)
+ */
+export function discoveryGapCause(cand: PrecedentCandidate, excerpt: string, candTree: string | null, baskets: ComputationResult["baskets"], loc: TreeLocator | null): string {
+  const reflected = baskets.filter((b) => strictTextReflected(excerpt, norm(b.citationExcerpt)));
+  if (reflected.length) {
+    const b = reflected[0]!;
+    const bt = loc ? basketTreeSection(loc, b.citationExcerpt) : null;
+    if (candTree === AMBIGUOUS || bt === AMBIGUOUS) return "REJECTED_AMBIGUOUS";
+    if (canonicalFamily(b.covenantFamily) == null && citeCoverage(excerpt, norm(b.citationExcerpt)) < 0.8) return "REJECTED_OTHER_PARTIAL";
+    const cs = candTree ?? sectionNumberOf(cand.sectionRef ?? null, excerpt), bs = bt ?? sectionNumberOf(b.sectionRef, norm(b.citationExcerpt));
+    if (cs && bs) return "REJECTED_LOCATION";
+    return "REJECTED_FAMILY";
+  }
+  if (!loc || candTree == null) return "NOT_IN_TREE";
+  const inSec = baskets.filter((b) => basketTreeSection(loc, b.citationExcerpt) === candTree);
+  if (!inSec.length) return "SECTION_EMPTY";
+  const grams = new Set<string>();
+  for (let i = 0; i + 24 <= excerpt.length; i += 8) grams.add(excerpt.slice(i, i + 24));
+  if (inSec.some((b) => { const c = norm(b.citationExcerpt); for (const g of grams) if (c.includes(g)) return true; return false; })) return "BOUNDARY";
+  return "LIMB_MISSING";
+}
+
 export function selfCheckComputation(args: {
   packageKey: string;
   runId: string;
@@ -333,9 +361,10 @@ export function selfCheckComputation(args: {
       ),
     );
     if (!hit) {
+      const cause = process.env.CLF_DIAG === "1" ? ` [cause=${discoveryGapCause(cand, excerpt, candTree, baskets, args.locator ?? null)}]` : "";
       push(
         "DISCOVERY_GAP",
-        `precedent candidate ${cand.candidateId} family=${cand.family ?? "UNKNOWN"} not reflected in computed baskets`,
+        `precedent candidate ${cand.candidateId} family=${cand.family ?? "UNKNOWN"} not reflected in computed baskets${cause}`,
         {
           candidateId: cand.candidateId,
           expectedFamily: cand.family,
