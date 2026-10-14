@@ -37,7 +37,8 @@ export type BasketCategory =
   | "RATIO_BASED"
   | "BUILDER_AVAILABLE_AMOUNT"
   | "UNLIMITED"
-  | "UNLIMITED_BY_PURPOSE"
+  /** Purpose or condition limit with no dollar or ratio cap. Not an unlimited grant. */
+  | "NO_NUMERIC_CAP_CONDITIONAL"
   | "RECLASS"
   | "STATED_PERIOD"
   | "STATED_PERCENT"
@@ -88,7 +89,8 @@ export interface CovenantSection {
 export type SectionCoverageStatus =
   | "COMPUTED"
   | "NEEDS_INPUT"
-  | "UNLIMITED_BY_PURPOSE"
+  /** Clauses are present and state no numeric cap. They do not grant unlimited capacity. */
+  | "NO_NUMERIC_CAP_CONDITIONAL"
   | "NO_NUMERIC_TERM"
   | "SUPERSEDED";
 

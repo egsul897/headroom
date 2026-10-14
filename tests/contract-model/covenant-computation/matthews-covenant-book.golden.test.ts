@@ -149,7 +149,8 @@ describe("Matthews covenant book", () => {
 
     expect(notes?.citationExcerpt).toMatch(/Debt under the Notes issued on the Issue Date/);
     expect(notes?.citationExcerpt).not.toMatch(/\$300,000,000/);
-    expect(notes?.category).toBe("UNLIMITED_BY_PURPOSE");
+    expect(notes?.category).toBe("NO_NUMERIC_CAP_CONDITIONAL");
+    expect(notes?.capKind).not.toBe("UNLIMITED");
     expect(notes?.capCanonical).toBeNull();
 
     expect(ratioDebt?.category).toBe("RATIO_BASED");
@@ -173,9 +174,11 @@ describe("Matthews covenant book", () => {
     expect(foreignSubs?.citationExcerpt).toMatch(/greater of \(a\) \$100\.0 million and \(b\) 5\.5% of the Total Assets/);
     expect(foreignSubs?.capCanonical).toBe(greaterOf("100", "0.055"));
 
-    expect(liens?.category).toBe("UNLIMITED_BY_PURPOSE");
+    expect(liens?.category).toBe("NO_NUMERIC_CAP_CONDITIONAL");
+    expect(liens?.capKind).not.toBe("UNLIMITED");
     expect(liens?.capCanonical).toBeNull();
-    expect(caLiens?.category).toBe("UNLIMITED_BY_PURPOSE");
+    expect(caLiens?.category).toBe("NO_NUMERIC_CAP_CONDITIONAL");
+    expect(caLiens?.capKind).not.toBe("UNLIMITED");
     expect(caLiens?.citationExcerpt).toMatch(/2024 Note Offering/);
     expect(caLiens?.capCanonical).toBeNull();
 

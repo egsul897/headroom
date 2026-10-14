@@ -3,8 +3,10 @@
  *
  * Classification reuses the compiler classifiers and the basket-formula
  * taxonomy. Cap numbers come only from evaluateExpression. Unknown ledger
- * usage is never treated as zero. A ratio test is not converted to dollars
- * unless the clause states that conversion (it does not, here).
+ * usage is never treated as zero. A clause with no numeric cap is conditional,
+ * not unlimited. Unlimited capacity requires an explicit "unlimited" or
+ * "without limit" quote. A ratio test is not converted to dollars unless the
+ * clause states that conversion (it does not, here).
  */
 
 import { FORMULA_TAXONOMY } from "@/lib/basket-formula-corpus";
@@ -29,7 +31,7 @@ const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKin
   RATIO_BASED: "RATIO_INCURRENCE_ROOM",
   BUILDER_AVAILABLE_AMOUNT: "BUILDER_SUM_COMPONENTS",
   UNLIMITED: "UNLIMITED_SUBJECT_TO_GATE",
-  UNLIMITED_BY_PURPOSE: "UNLIMITED_SUBJECT_TO_GATE",
+  NO_NUMERIC_CAP_CONDITIONAL: "OTHER_SOURCE_STATED",
   RECLASS: "REALLOCATION_TRANSFER",
   STATED_PERIOD: "NON_CAPACITY_APPROVAL_OR_DEFAULT_TRIGGER",
   STATED_PERCENT: "NON_CAPACITY_COMPARATOR",
@@ -80,8 +82,8 @@ export function evaluateBasket(
               ? evalBuilder(pkg, clause, metrics)
               : category === "UNLIMITED"
                 ? evalUnlimited(pkg, clause, metrics)
-                : category === "UNLIMITED_BY_PURPOSE"
-                  ? purposeUnlimited(clause)
+                : category === "NO_NUMERIC_CAP_CONDITIONAL"
+                  ? conditionalNoCap(clause)
                   : category === "STATED_PERIOD"
                     ? evalStatedPeriod(clause)
                     : category === "STATED_PERCENT"
@@ -112,7 +114,7 @@ export function categorize(operativeText: string): BasketCategory {
   const ratio = classifyRatioIncurrencePermission(text);
   if (ratio.class !== "NOT_RATIO_INCURRENCE") return "RATIO_BASED";
   if (percentOfMetric(text) && !/\$\s*[\d,]+/.test(text)) return "PCT_OF_METRIC";
-  const unlimited = isCapacityUnlimited(text);
+  const unlimited = explicitUnlimitedQuote(text) != null;
   const dollarCap = soleFixedDollar(text) != null;
   if (unlimited && (dollarCap || /\$\s?[\d,]+/.test(text) || /\d+(?:\.\d+)?\s*%/.test(text))) return "UNKNOWN";
   if (unlimited) return "UNLIMITED";
@@ -120,7 +122,7 @@ export function categorize(operativeText: string): BasketCategory {
   if (text.length < 240 && statedPeriod(text) && !/\$\s*[\d,]+/.test(text) && !/\d+(?:\.\d+)?\s*%/.test(text)) return "STATED_PERIOD";
   if (text.length < 240 && statedPercent(text) && !/\$\s*[\d,]+/.test(text) && !percentOfMetric(text)) return "STATED_PERCENT";
   if (numeric) return "UNKNOWN";
-  return "UNLIMITED_BY_PURPOSE";
+  return "NO_NUMERIC_CAP_CONDITIONAL";
 }
 
 const DAY_WORDS: Record<string, string> = {
@@ -190,11 +192,22 @@ function statedPercent(text: string): string | null {
   return bare?.[1] ?? null;
 }
 
-/** "including, without limitation" is an idiom. It does not grant unlimited capacity. */
-function isCapacityUnlimited(text: string): boolean {
-  if (/\bunlimited\b/i.test(text)) return true;
-  const stripped = text.replace(/\bincluding,?\s+without\s+limitation\b/gi, "");
-  return /\bwithout\s+limitation\b/i.test(stripped);
+/**
+ * The only phrases that grant unlimited capacity.
+ * "including, without limitation" is an idiom. "without limitation" is not "without limit".
+ */
+export function explicitUnlimitedQuote(text: string): string | null {
+  const stripped = norm(text).replace(/\bincluding,?\s+without\s+limitation\b/gi, " ");
+  const unlimited = stripped.match(/\bunlimited\b/i);
+  if (unlimited?.[0]) return unlimited[0].toLowerCase();
+  const without = stripped.match(/\bwithout\s+limit\b/i);
+  if (without?.[0]) return without[0].toLowerCase().replace(/\s+/g, " ");
+  return null;
+}
+
+/** True only when the published row is unlimited because the clause says so. */
+export function grantsUnlimitedCapacity(basket: { category: string; capKind: string; citationExcerpt: string }): boolean {
+  return basket.category === "UNLIMITED" && basket.capKind === "UNLIMITED" && explicitUnlimitedQuote(basket.citationExcerpt) != null;
 }
 
 function hasNumeric(text: string): boolean {
@@ -473,6 +486,8 @@ function evalUnlimited(
   clause: BasketClause,
   metrics: readonly MetricInput[],
 ): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
+  const quote = explicitUnlimitedQuote(clause.operativeText);
+  if (!quote) return conditionalNoCap(clause);
   const expression: IRCapacityExpression = {
     kind: "UNLIMITED_CAPACITY",
     type: "CAPACITY",
@@ -489,7 +504,7 @@ function evalUnlimited(
   }
   return {
     ...capShell("COMPUTED", "UNLIMITED", null, null, [], null),
-    note: "No dollar ceiling in the clause. Unlimited is not a certified capacity grant.",
+    note: `Explicit quote: "${quote}". Unlimited is not a certified capacity grant.`,
   };
 }
 
@@ -606,15 +621,15 @@ function evalStatedPercent(
   };
 }
 
-function purposeUnlimited(
+function conditionalNoCap(
   clause: BasketClause,
 ): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
   return {
-    ...capShell("NEEDS_INPUT", "UNLIMITED", null, null, [], null),
+    ...capShell("NEEDS_INPUT", "NONE", null, null, ["stated dollar or ratio cap"], null),
     note:
       clause.role === "CONDITION"
-        ? "No numeric cap. This condition does not grant a dollar capacity."
-        : "No numeric cap. The permission is limited to the purpose stated in the clause. No dollar capacity was inferred.",
+        ? "No numeric cap. This condition does not grant dollar capacity, and it is not unlimited."
+        : "No numeric cap. The clause is limited to its stated purpose or conditions. Absence of a cap is not unlimited capacity.",
   };
 }
 
@@ -671,6 +686,7 @@ function capFormulaOf(category: BasketCategory, text: string): string | null {
     return classified.ratioName;
   }
   if (category === "BUILDER_AVAILABLE_AMOUNT") return "sum of stated builder components";
+  if (category === "UNLIMITED") return explicitUnlimitedQuote(t);
   if (category === "STATED_PERIOD") {
     const period = statedPeriod(t);
     if (!period) return null;
@@ -685,8 +701,9 @@ function capFormulaOf(category: BasketCategory, text: string): string | null {
   return null;
 }
 
-export function basketDisposition(basket: ComputedBasket): "COMPUTED" | "UNLIMITED_BY_PURPOSE" | "NEEDS_INPUT" | "UNKNOWN" {
-  if (basket.category === "UNLIMITED_BY_PURPOSE") return "UNLIMITED_BY_PURPOSE";
+export function basketDisposition(basket: ComputedBasket): "COMPUTED" | "NO_NUMERIC_CAP_CONDITIONAL" | "NEEDS_INPUT" | "UNKNOWN" {
+  if (basket.category === "NO_NUMERIC_CAP_CONDITIONAL") return "NO_NUMERIC_CAP_CONDITIONAL";
+  if (basket.capKind === "UNLIMITED" && explicitUnlimitedQuote(basket.citationExcerpt) == null) return "NEEDS_INPUT";
   if (basket.category === "RECLASS") return "NEEDS_INPUT";
   if (basket.capStatus === "COMPUTED") return "COMPUTED";
   if (basket.capStatus === "UNKNOWN") return "UNKNOWN";

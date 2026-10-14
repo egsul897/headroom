@@ -25,7 +25,7 @@ const EBITDA = "128.313"; // certificate: "Consolidated EBITDA: $128.313 million
 
 const CREATED_AT = "2026-10-13T00:00:00.000Z";
 
-/** Clauses, then COMPUTED / UNLIMITED_BY_PURPOSE / NEEDS_INPUT / UNKNOWN, then amount caps. */
+/** Clauses, then COMPUTED / NO_NUMERIC_CAP_CONDITIONAL / NEEDS_INPUT / UNKNOWN, then amount caps. */
 const PACKAGE_COUNTS: Record<string, [number, number, number, number, number, number]> = {
   "matthews-international-q1-fy2025": [245, 69, 145, 31, 0, 30],
   "chwy-2026-credit-agreement": [133, 22, 54, 57, 0, 0],
@@ -77,10 +77,10 @@ function typeOf(basket: ComputedBasket): string {
 }
 
 function tally(baskets: ComputedBasket[]): [number, number, number, number, number, number] {
-  const counts = { COMPUTED: 0, UNLIMITED_BY_PURPOSE: 0, NEEDS_INPUT: 0, UNKNOWN: 0 };
+  const counts = { COMPUTED: 0, NO_NUMERIC_CAP_CONDITIONAL: 0, NEEDS_INPUT: 0, UNKNOWN: 0 };
   for (const basket of baskets) counts[basketDisposition(basket)] += 1;
   const amounts = baskets.filter((basket) => basket.capKind === "AMOUNT" && basket.capStatus === "COMPUTED").length;
-  return [baskets.length, counts.COMPUTED, counts.UNLIMITED_BY_PURPOSE, counts.NEEDS_INPUT, counts.UNKNOWN, amounts];
+  return [baskets.length, counts.COMPUTED, counts.NO_NUMERIC_CAP_CONDITIONAL, counts.NEEDS_INPUT, counts.UNKNOWN, amounts];
 }
 
 function sectionBody(markdown: string, heading: string): string {
@@ -113,10 +113,16 @@ function assertBasket(pkg: ComputationPackage, basket: ComputedBasket, hasFinanc
   expect(basket.certification, basket.stableKey).toBe("COMPUTED_NOT_CERTIFIED");
 
   const disposition = basketDisposition(basket);
-  if (disposition === "UNLIMITED_BY_PURPOSE") {
+  if (disposition === "NO_NUMERIC_CAP_CONDITIONAL") {
     expect(basket.citationExcerpt, basket.stableKey).not.toMatch(NUMERIC);
+    expect(basket.citationExcerpt, basket.stableKey).not.toMatch(/\bunlimited\b|\bwithout\s+limit\b/i);
     expect(basket.capCanonical, basket.stableKey).toBeNull();
-    expect(basket.category, basket.stableKey).toBe("UNLIMITED_BY_PURPOSE");
+    expect(basket.capKind, basket.stableKey).not.toBe("UNLIMITED");
+    expect(basket.category, basket.stableKey).toBe("NO_NUMERIC_CAP_CONDITIONAL");
+  }
+  if (basket.capKind === "UNLIMITED") {
+    expect(basket.category, basket.stableKey).toBe("UNLIMITED");
+    expect(basket.citationExcerpt, basket.stableKey).toMatch(/\bunlimited\b|\bwithout\s+limit\b/i);
   }
   if (basket.capStatus === "COMPUTED" && basket.capKind === "AMOUNT") {
     expect(basket.capCanonical, basket.stableKey).toBe(expectedFromQuote(basket.citationExcerpt));

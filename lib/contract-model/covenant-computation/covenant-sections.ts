@@ -312,7 +312,7 @@ function amendmentCut(text: string, from: number): number {
 
 export function buildSectionCoverage(
   sections: readonly CovenantSection[],
-  baskets: readonly { sourceDocumentId: string; sectionRef: string; citationExcerpt: string; capStatus: string; category: string }[],
+  baskets: readonly { sourceDocumentId: string; sectionRef: string; citationExcerpt: string; capStatus: string; capKind: string; category: string }[],
 ): import("./types").CovenantSectionCoverage[] {
   return sections.map((section) => {
     const note = section.note.replace(/skip-clause:\S+/g, "").replace(/\s+/g, " ").trim();
@@ -330,9 +330,11 @@ export function buildSectionCoverage(
     const related = baskets.filter((basket) => basketBelongs(basket, section, body));
     const missing = numericCores(body).filter((core) => !related.some((basket) => norm(basket.citationExcerpt).includes(norm(core))));
     if (numericCores(body).length === 0) {
+      const explicitUnlimited =
+        related.length > 0 && related.every((basket) => basket.category === "UNLIMITED" && basket.capKind === "UNLIMITED");
       return {
         ...base,
-        status: related.length ? ("UNLIMITED_BY_PURPOSE" as const) : ("NO_NUMERIC_TERM" as const),
+        status: related.length === 0 ? ("NO_NUMERIC_TERM" as const) : explicitUnlimited ? ("COMPUTED" as const) : ("NO_NUMERIC_CAP_CONDITIONAL" as const),
         clauseCount: related.length,
       };
     }
@@ -350,7 +352,7 @@ export function buildSectionCoverage(
     if (related.some((basket) => basket.capStatus === "COMPUTED")) {
       return { ...base, status: "COMPUTED" as const, clauseCount: related.length };
     }
-    return { ...base, status: "UNLIMITED_BY_PURPOSE" as const, clauseCount: related.length };
+    return { ...base, status: "NO_NUMERIC_CAP_CONDITIONAL" as const, clauseCount: related.length };
   });
 }
 

@@ -1,10 +1,10 @@
 # Covenant section coverage
 
-Every covenant section the extractor found in the pinned documents. SUPERSEDED means a later amendment replaced that section in full and the replacement is its own row. NO_NUMERIC_TERM means the section is present and states no number. A section is listed even when its number cannot be computed.
+Every covenant section the extractor found in the pinned documents. SUPERSEDED means a later amendment replaced that section in full and the replacement is its own row. NO_NUMERIC_TERM means the section is present and states no number. NO_NUMERIC_CAP_CONDITIONAL means the section's clauses state a purpose or a condition and no numeric cap; that is not unlimited capacity. A section is listed even when its number cannot be computed.
 
 ## Counts
 
-| package | sections | COMPUTED | NEEDS_INPUT | UNLIMITED_BY_PURPOSE | NO_NUMERIC_TERM | SUPERSEDED |
+| package | sections | COMPUTED | NEEDS_INPUT | NO_NUMERIC_CAP_CONDITIONAL | NO_NUMERIC_TERM | SUPERSEDED |
 | --- | --- | --- | --- | --- | --- | --- |
 | matthews-international-q1-fy2025 | 84 | 19 | 12 | 6 | 39 | 8 |
 | chwy-2026-credit-agreement | 30 | 5 | 6 | 0 | 19 | 0 |
@@ -26,10 +26,10 @@ Every covenant section the extractor found in the pinned documents. SUPERSEDED m
 | matw-indenture-2024-ex4-1 | 4.07 | Compliance Certificate | COMPUTED | 5 |  |
 | matw-indenture-2024-ex4-1 | 4.08 | Limitation on Restricted Payments | NEEDS_INPUT | 16 | A numeric term in this section has no closed form. |
 | matw-indenture-2024-ex4-1 | 4.09 | Limitation on Incurrence of Debt | NEEDS_INPUT | 9 | A numeric term in this section has no closed form. |
-| matw-indenture-2024-ex4-1 | 4.10 | Limitation on Liens | UNLIMITED_BY_PURPOSE | 1 |  |
+| matw-indenture-2024-ex4-1 | 4.10 | Limitation on Liens | NO_NUMERIC_CAP_CONDITIONAL | 1 |  |
 | matw-indenture-2024-ex4-1 | 4.11 | Future Guarantors | COMPUTED | 4 |  |
-| matw-indenture-2024-ex4-1 | 4.12 | Limitation on Dividend and Other Payment Restrictions Affecting Restricted Subsidiaries | UNLIMITED_BY_PURPOSE | 18 |  |
-| matw-indenture-2024-ex4-1 | 4.13 | Limitation on Creation of Unrestricted Subsidiaries | UNLIMITED_BY_PURPOSE | 4 |  |
+| matw-indenture-2024-ex4-1 | 4.12 | Limitation on Dividend and Other Payment Restrictions Affecting Restricted Subsidiaries | NO_NUMERIC_CAP_CONDITIONAL | 18 |  |
+| matw-indenture-2024-ex4-1 | 4.13 | Limitation on Creation of Unrestricted Subsidiaries | NO_NUMERIC_CAP_CONDITIONAL | 4 |  |
 | matw-indenture-2024-ex4-1 | 4.14 | Transactions with Affiliates | COMPUTED | 2 |  |
 | matw-indenture-2024-ex4-1 | 4.15 | Offer to Repurchase Upon Change of Control | NEEDS_INPUT | 2 | A numeric term in this section has no closed form. |
 | matw-indenture-2024-ex4-1 | 4.16 | Limitation on Asset Sales | NEEDS_INPUT | 11 | A numeric term in this section has no closed form. |
@@ -75,7 +75,7 @@ Every covenant section the extractor found in the pinned documents. SUPERSEDED m
 | matw-ca-fifth-amendment | 5.17 | Anti-Terrorism Laws | NO_NUMERIC_TERM | 0 |  |
 | matw-ca-fifth-amendment | 6.01 | Liens | SUPERSEDED | 0 | Replaced in full by a later amendment. The replacement is a separate row. |
 | matw-ca-fifth-amendment | 6.02 | Restrictions on Non-Loan Party Subsidiaries | SUPERSEDED | 0 | Replaced in full by a later amendment. The replacement is a separate row. |
-| matw-ca-fifth-amendment | 6.03 | Self-Dealing | UNLIMITED_BY_PURPOSE | 3 |  |
+| matw-ca-fifth-amendment | 6.03 | Self-Dealing | NO_NUMERIC_CAP_CONDITIONAL | 3 |  |
 | matw-ca-fifth-amendment | 6.04 | Disposition of Assets | SUPERSEDED | 0 | Replaced in full by a later amendment. The replacement is a separate row. |
 | matw-ca-fifth-amendment | 6.05 | Margin Stock | NO_NUMERIC_TERM | 0 |  |
 | matw-ca-fifth-amendment | 6.06 | Partnerships; Mergers or Consolidation; Acquisitions | COMPUTED | 4 |  |
@@ -92,10 +92,10 @@ Every covenant section the extractor found in the pinned documents. SUPERSEDED m
 | matw-ca-sixth-amendment | 5.03 | Insurance | COMPUTED | 3 |  |
 | matw-ca-sixth-amendment | 5.12 | Further Assurances | NO_NUMERIC_TERM | 0 |  |
 | matw-ca-sixth-amendment | 5.15 | Subsidiary Guaranty Agreements and Security Agreements | NEEDS_INPUT | 3 | A numeric term in this section has no closed form. |
-| matw-ca-sixth-amendment | 6.01 | Liens | UNLIMITED_BY_PURPOSE | 16 |  |
+| matw-ca-sixth-amendment | 6.01 | Liens | NO_NUMERIC_CAP_CONDITIONAL | 16 |  |
 | matw-ca-sixth-amendment | 6.02 | Restrictions on Non-Loan Party Subsidiaries | COMPUTED | 1 |  |
 | matw-ca-sixth-amendment | 6.04 | Disposition of Assets | NEEDS_INPUT | 1 | A numeric term in this section has no closed form. |
-| matw-ca-sixth-amendment | 6.07 | Double Negative Pledge | UNLIMITED_BY_PURPOSE | 1 |  |
+| matw-ca-sixth-amendment | 6.07 | Double Negative Pledge | NO_NUMERIC_CAP_CONDITIONAL | 1 |  |
 | matw-ca-sixth-amendment | 7.03 | Set-Off | NO_NUMERIC_TERM | 0 |  |
 | matw-ca-sixth-amendment | 7.01(h) | clause (h) inserted | COMPUTED | 1 |  |
 | matw-ca-sixth-amendment | 7.01(i) | clause (i) inserted | NO_NUMERIC_TERM | 0 |  |
@@ -160,8 +160,8 @@ Every covenant section the extractor found in the pinned documents. SUPERSEDED m
 | gibraltar-2026-credit-agreement | 6.17 | No Change in Line of Business | NO_NUMERIC_TERM | 0 |  |
 | gibraltar-2026-credit-agreement | 6.18 | Transactions with Affiliates | NEEDS_INPUT | 4 | A numeric term in this section has no closed form. |
 | gibraltar-2026-credit-agreement | 7.01 | Indebtedness | NEEDS_INPUT | 27 | A numeric term in this section has no closed form. |
-| gibraltar-2026-credit-agreement | 7.02 | Limitations on Liens | UNLIMITED_BY_PURPOSE | 1 |  |
-| gibraltar-2026-credit-agreement | 7.03 | Fundamental Changes | UNLIMITED_BY_PURPOSE | 7 |  |
+| gibraltar-2026-credit-agreement | 7.02 | Limitations on Liens | NO_NUMERIC_CAP_CONDITIONAL | 1 |  |
+| gibraltar-2026-credit-agreement | 7.03 | Fundamental Changes | NO_NUMERIC_CAP_CONDITIONAL | 7 |  |
 | gibraltar-2026-credit-agreement | 7.04 | Asset Dispositions | NEEDS_INPUT | 7 | A numeric term in this section has no closed form. |
 | gibraltar-2026-credit-agreement | 7.05 | Restricted Payments | NEEDS_INPUT | 21 | A numeric term in this section has no closed form. |
 | gibraltar-2026-credit-agreement | 7.06 | Burdensome Agreements | NO_NUMERIC_TERM | 0 |  |
@@ -333,11 +333,11 @@ Every covenant section the extractor found in the pinned documents. SUPERSEDED m
 | mhk-2026-credit-agreement | 6.18 | Compliance with Anti-Corruption Laws, Anti-Money Laundering Laws, Sanctions and Beneficial Ownership Regulation | NO_NUMERIC_TERM | 0 |  |
 | mhk-2026-credit-agreement | 7.01 | Liens | NEEDS_INPUT | 11 | A numeric term in this section has no closed form. |
 | mhk-2026-credit-agreement | 7.03 | Indebtedness | NEEDS_INPUT | 11 | A numeric term in this section has no closed form. |
-| mhk-2026-credit-agreement | 7.04 | Fundamental Changes | UNLIMITED_BY_PURPOSE | 1 |  |
-| mhk-2026-credit-agreement | 7.05 | Outbound Investment Rules | UNLIMITED_BY_PURPOSE | 1 |  |
-| mhk-2026-credit-agreement | 7.07 | Change in Nature of Business | UNLIMITED_BY_PURPOSE | 1 |  |
+| mhk-2026-credit-agreement | 7.04 | Fundamental Changes | NO_NUMERIC_CAP_CONDITIONAL | 1 |  |
+| mhk-2026-credit-agreement | 7.05 | Outbound Investment Rules | NO_NUMERIC_CAP_CONDITIONAL | 1 |  |
+| mhk-2026-credit-agreement | 7.07 | Change in Nature of Business | NO_NUMERIC_CAP_CONDITIONAL | 1 |  |
 | mhk-2026-credit-agreement | 7.12 | Financial Covenant | NEEDS_INPUT | 2 | A numeric term in this section has no closed form. |
 | mhk-2026-credit-agreement | 8.01 | Events of Default | NEEDS_INPUT | 4 | A numeric term in this section has no closed form. |
-| mhk-2026-credit-agreement | 8.02 | Remedies Upon Event of Default | UNLIMITED_BY_PURPOSE | 3 |  |
-| mhk-2026-credit-agreement | 8.03 | Application of Funds | UNLIMITED_BY_PURPOSE | 1 |  |
+| mhk-2026-credit-agreement | 8.02 | Remedies Upon Event of Default | NO_NUMERIC_CAP_CONDITIONAL | 3 |  |
+| mhk-2026-credit-agreement | 8.03 | Application of Funds | NO_NUMERIC_CAP_CONDITIONAL | 1 |  |
 | mhk-2026-credit-agreement | definition | Change of Control | NEEDS_INPUT | 1 | A numeric term in this section has no closed form. |

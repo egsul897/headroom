@@ -10,6 +10,7 @@ import { subtract, toCanonicalString } from "../runtime/decimal";
 import type { MetricInput } from "../runtime/types";
 import type { ComputationMistake, ComputationPackage, ComputationResult } from "./types";
 import { canonicalOf, parseCanonical } from "./ratios";
+import { explicitUnlimitedQuote } from "./baskets";
 import { citedIn, millionsToUsd } from "./text";
 
 export function verifyComputation(args: {
@@ -116,6 +117,20 @@ export function verifyComputation(args: {
   }
 
   for (const basket of args.result.baskets) {
+    if (basket.capKind === "UNLIMITED" && explicitUnlimitedQuote(basket.citationExcerpt) == null) {
+      mistakes.push({
+        stableKey: basket.stableKey,
+        message: "Unlimited capacity was published without an explicit unlimited or without-limit quote.",
+        evidence: { category: basket.category },
+      });
+    }
+    if (basket.category === "NO_NUMERIC_CAP_CONDITIONAL" && basket.capKind === "UNLIMITED") {
+      mistakes.push({
+        stableKey: basket.stableKey,
+        message: "A purpose or condition clause was published as unlimited capacity.",
+        evidence: {},
+      });
+    }
     if (basket.remainingStatus === "COMPUTED") {
       mistakes.push({
         stableKey: basket.stableKey,

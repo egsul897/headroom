@@ -10,7 +10,7 @@ import {
   runCovenantComputation,
   type ComputationPackage,
 } from "@/lib/contract-model/covenant-computation";
-import { evaluateBasket } from "@/lib/contract-model/covenant-computation/baskets";
+import { evaluateBasket, grantsUnlimitedCapacity } from "@/lib/contract-model/covenant-computation/baskets";
 
 function withoutFixedCharges(): ComputationPackage {
   const pkg = matthewsCovenantPackage();
@@ -109,6 +109,53 @@ describe("covenant computation adversarial", () => {
     expect(book.baskets[0]?.category).toBe("BUILDER_AVAILABLE_AMOUNT");
     expect(book.baskets[0]?.capCanonical).toBeNull();
     expect(book.baskets[0]?.missingInputs.join(" ")).toMatch(/Consolidated Net Income/);
+  });
+
+  it("does not treat a conditional refinancing basket with no number as unlimited capacity", () => {
+    const text =
+      "The Company may Incur Refinancing Debt to refinance outstanding Debt under clause (b), provided that the refinancing is scheduled to mature no earlier than the Debt refinanced and the holders of the Refinancing Debt have no greater rights than the holders of the Debt being refinanced.";
+    const book = runCovenantComputation(miniPackage(text), { createdAt: "2026-10-13T00:00:00.000Z" });
+    const basket = book.baskets[0];
+    expect(basket?.category).toBe("NO_NUMERIC_CAP_CONDITIONAL");
+    expect(basket?.capKind).not.toBe("UNLIMITED");
+    expect(basket?.capCanonical).toBeNull();
+    expect(basket?.capStatus).toBe("NEEDS_INPUT");
+    expect(basket?.citationExcerpt).toMatch(/Refinancing Debt/);
+    expect(grantsUnlimitedCapacity(basket!)).toBe(false);
+  });
+
+  it("does not treat a conditional intercompany basket with no number as unlimited capacity", () => {
+    const text =
+      "Debt owed by a Restricted Subsidiary to the Company or another Restricted Subsidiary, provided that the obligor is a Restricted Subsidiary and the Debt is not transferred to any other Person.";
+    const book = runCovenantComputation(miniPackage(text), { createdAt: "2026-10-13T00:00:00.000Z" });
+    const basket = book.baskets[0];
+    expect(basket?.category).toBe("NO_NUMERIC_CAP_CONDITIONAL");
+    expect(basket?.capKind).not.toBe("UNLIMITED");
+    expect(basket?.capCanonical).toBeNull();
+    expect(basket?.capStatus).toBe("NEEDS_INPUT");
+    expect(grantsUnlimitedCapacity(basket!)).toBe(false);
+  });
+
+  it("does not treat without limitation as an unlimited grant", () => {
+    const text = "The Company may incur intercompany Debt without limitation, provided that the obligor is a Restricted Subsidiary.";
+    const book = runCovenantComputation(miniPackage(text), { createdAt: "2026-10-13T00:00:00.000Z" });
+    const basket = book.baskets[0];
+    expect(basket?.category).toBe("NO_NUMERIC_CAP_CONDITIONAL");
+    expect(basket?.capKind).not.toBe("UNLIMITED");
+    expect(basket?.capCanonical).toBeNull();
+  });
+
+  it("records unlimited only from an explicit without-limit quote", () => {
+    const text = "The Company may incur Indebtedness under this clause without limit.";
+    const book = runCovenantComputation(miniPackage(text), { createdAt: "2026-10-13T00:00:00.000Z" });
+    const basket = book.baskets[0];
+    expect(basket?.category).toBe("UNLIMITED");
+    expect(basket?.capKind).toBe("UNLIMITED");
+    expect(basket?.capCanonical).toBeNull();
+    expect(basket?.capFormula).toBe("without limit");
+    expect(basket?.citationExcerpt).toContain("without limit");
+    expect(basket?.note).toContain("without limit");
+    expect(grantsUnlimitedCapacity(basket!)).toBe(true);
   });
 
   it("types a reclassification as reclass and does not invent the transfer", () => {
