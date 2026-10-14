@@ -13,6 +13,8 @@ import {
   COVERAGE_GAP_CONDITION_PREFIX,
   COVERAGE_GAP_OMISSION_PREFIX,
   excerptReflectedByPrefixOnly,
+  canonicalFamily,
+  sectionNumberOf,
   selfCheckComputation,
 } from "@/lib/covenant-learning-factory/sweep/self-check";
 
@@ -26,9 +28,9 @@ const MTN = "docs/product-proof/001/sources/mtn-2026-tenth-ar-credit-agreement/e
 const LSB = "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/article-6-negative-covenants.txt";
 const MHK = "docs/product-proof/002/sources/mhk-2026-credit-agreement/extracted-text/doc-a-credit-agreement.txt";
 
-function sweep(sourceId: string, text: string, candidates: { candidateId: string; excerpt: string }[], conditions: { conditionId: string; kind: string; excerpt: string }[] = []) {
+function sweep(sourceId: string, text: string, candidates: { candidateId: string; excerpt: string; family?: string; sectionRef?: string | null }[], conditions: { conditionId: string; kind: string; excerpt: string }[] = []) {
   const source = { sourceId, ticker: sourceId, companyId: sourceId };
-  const rows = candidates.map((c) => ({ ...c, sourceId, family: "DEBT_INCURRENCE", sectionRef: null }));
+  const rows = candidates.map((c) => ({ family: "DEBT_INCURRENCE", sectionRef: null, ...c, sourceId }));
   const pkg = buildComputationPackage({ source, documentText: text, candidates: rows });
   const result = runCovenantComputation(pkg, { createdAt: "1970-01-01T00:00:00.000Z" });
   const errors = selfCheckComputation({
@@ -48,15 +50,19 @@ function sweep(sourceId: string, text: string, candidates: { candidateId: string
 function markerCandidates(sourceId: string, text: string) {
   const { result } = sweep(sourceId, text, []);
   const cites = result.baskets.map((b) => norm(b.citationExcerpt));
-  const out: { candidateId: string; excerpt: string }[] = [];
-  for (const cite of cites) {
+  const out: { candidateId: string; excerpt: string; family: string; sectionRef: string }[] = [];
+  for (const [bi, cite] of cites.entries()) {
+    // Strict matcher: a candidate derived from a basket carries that basket's section and family.
+    const basket = result.baskets[bi]!;
+    // Structureless "proviso"/OTHER baskets fail closed under the strict matcher (no section, no family).
+    if (sectionNumberOf(basket.sectionRef, cite) == null && canonicalFamily(basket.covenantFamily) == null) continue;
     const match = /\([0-9a-z]{1,6}\)\s+/i.exec(cite.slice(0, 240));
     if (!match || match.index == null || match.index < 40) continue;
     const limb = cite.slice(match.index, match.index + 120);
     if (limb.length < 40) continue;
     const excerpt = `stored precedent chapeau before the extracted marker. ${limb}`;
     if (cites.some((other) => excerptReflectedByPrefixOnly(excerpt, other))) continue;
-    out.push({ candidateId: `${sourceId}-${out.length}`, excerpt });
+    out.push({ candidateId: `${sourceId}-${out.length}`, excerpt, family: basket.covenantFamily, sectionRef: basket.sectionRef });
     if (out.length >= 8) break;
   }
   return out;
@@ -102,7 +108,7 @@ describe("sweep self-check metric", () => {
       const candidates = result.baskets
         .filter((b) => norm(b.citationExcerpt).length >= 24)
         .slice(0, 12)
-        .map((b, i) => ({ candidateId: `${sourceId}-cite-${i}`, excerpt: b.citationExcerpt }));
+        .map((b, i) => ({ candidateId: `${sourceId}-cite-${i}`, excerpt: b.citationExcerpt, family: b.covenantFamily, sectionRef: b.sectionRef }));
       const { errors } = sweep(sourceId, text, candidates);
       expect(errors.filter((e) => e.class === "DISCOVERY_GAP").length).toBe(0);
     }

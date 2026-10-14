@@ -72,10 +72,10 @@ export function excerptReflectedInCitation(excerpt: string, cite: string): boole
   return false;
 }
 
-function citationAnchors(cite: string): string[] {
+function citationAnchors(cite: string, width = 40): string[] {
   const anchors: string[] = [];
   const push = (value: string) => {
-    const anchor = value.slice(0, Math.min(40, value.length));
+    const anchor = value.slice(0, Math.min(width, value.length));
     if (anchor.length >= 24 && !anchors.includes(anchor)) anchors.push(anchor);
   };
   push(cite);
@@ -97,6 +97,105 @@ function citationAnchors(cite: string): string[] {
     push(cite.slice(match.index));
   }
   return anchors;
+}
+
+/**
+ * Strict reflection (reviewer FAIL on #363 @ b966c306): a text fragment alone is not
+ * evidence that a basket reflects a precedent candidate. Generic openers ("the borrower
+ * will not, and will not permit any subsidiary to…") occur in every negative covenant,
+ * so they matched 6.04 → 6.03, 2.09 → 2.28, 6.07 → 6.01.
+ *
+ * A match now requires BOTH
+ *   1. a non-generic text anchor (≥ 3 distinctive tokens), and
+ *   2. structural agreement: the same section number when both sides carry one;
+ *      otherwise the same canonical covenant family (never OTHER/UNKNOWN).
+ * Anything else fails closed (counts as not reflected).
+ */
+const GENERIC_TOKENS = new Set(
+  ("the a an and or of to in on for by with any all each such other than this that which " +
+    "borrower borrowers company issuer guarantor guarantors parent holdings loan party parties " +
+    "subsidiary subsidiaries restricted will shall not may permit cause directly indirectly " +
+    "create incur assume suffer exist existence remain outstanding following except provided however " +
+    "section article agreement credit hereunder herein thereof respect its their be is are " +
+    "indebtedness debt liens lien investments investment payment payments make made").split(/\s+/),
+);
+
+export function distinctiveTokenCount(fragment: string): number {
+  const toks = fragment.toLowerCase().match(/[a-z][a-z'-]{2,}|\$?[0-9][0-9,.%]*/g) ?? [];
+  // last token may be cut mid-word; ignore it
+  return new Set(toks.filter((t) => !GENERIC_TOKENS.has(t))).size;
+}
+
+export function isGenericAnchor(fragment: string): boolean {
+  return distinctiveTokenCount(fragment) < 3;
+}
+
+const SECTION_NUM = /(?:^|§\s*|section\s+)(\d{1,2}\.\d{1,3})\b/i;
+
+/** Section number ("6.04") from a sectionRef, else from the text's leading heading. */
+export function sectionNumberOf(sectionRef: string | null | undefined, text: string): string | null {
+  const fromRef = sectionRef ? SECTION_NUM.exec(sectionRef.trim()) : null;
+  if (fromRef) return normalizeSectionNumber(fromRef[1]!);
+  const lead = /^\s*(?:§\s*)?(?:section\s+)?(\d{1,2}\.\d{1,3})\b/i.exec(text);
+  return lead ? normalizeSectionNumber(lead[1]!) : null;
+}
+
+function normalizeSectionNumber(n: string): string {
+  const [a, b] = n.split(".");
+  return `${Number(a)}.${Number(b)}`;
+}
+
+/** Canonical covenant family across precedent-candidate and extractor vocabularies. */
+export function canonicalFamily(f: string | null | undefined): string | null {
+  const t = (f ?? "").toUpperCase();
+  if (!t) return null;
+  if (/LIEN/.test(t)) return "LIENS";
+  if (/INVEST/.test(t)) return "INVESTMENTS";
+  if (/RESTRICTED_PAYMENT|DIVIDEND/.test(t)) return "RESTRICTED_PAYMENTS";
+  if (/ASSET_SALE|DISPOSITION/.test(t)) return "ASSET_SALES";
+  if (/JUNIOR|PREPAY/.test(t)) return "PREPAYMENTS";
+  if (/INDEBTEDNESS|DEBT/.test(t)) return "DEBT";
+  if (/FINANCIAL|RATIO/.test(t)) return "FINANCIAL_COVENANTS";
+  if (/FUNDAMENTAL|MERGER/.test(t)) return "FUNDAMENTAL_CHANGES";
+  if (/AFFILIATE/.test(t)) return "AFFILIATES";
+  return null;
+}
+
+function strictTextReflected(excerpt: string, cite: string): boolean {
+  if (excerpt.length < 24 || cite.length < 24) return false;
+  // Whole-text containment is not a fragment match: a short limb that appears in full is reflected.
+  if (cite.includes(excerpt) || excerpt.includes(cite)) return true;
+  // Fragment anchors: judge distinctiveness on the full shared run, not a fixed 40-char window.
+  const excerptStart = cite.indexOf(excerpt.slice(0, 24));
+  if (excerptStart >= 0 && sharedRunDistinctive(excerpt, 0, cite, excerptStart)) return true;
+  for (const anchor of citationAnchors(cite, 24)) {
+    const at = excerpt.indexOf(anchor);
+    if (at < 0) continue;
+    const citeAt = cite.indexOf(anchor);
+    if (sharedRunDistinctive(excerpt, at, cite, citeAt)) return true;
+  }
+  return false;
+}
+
+function sharedRunDistinctive(a: string, ai: number, b: string, bi: number): boolean {
+  let k = 0;
+  while (ai + k < a.length && bi + k < b.length && a[ai + k] === b[bi + k]) k++;
+  const run = a.slice(ai, ai + k);
+  // The run covers the whole remainder of one side: full-limb containment.
+  if (run.length >= 24 && (ai + k === a.length || bi + k === b.length) && ai === 0) return true;
+  return run.length >= 40 && !isGenericAnchor(run);
+}
+
+export function strictCandidateMatch(
+  cand: { excerpt: string; sectionRef: string | null; family: string | null },
+  basket: { cite: string; sectionRef: string | null | undefined; family: string | null | undefined },
+): boolean {
+  if (!strictTextReflected(cand.excerpt, basket.cite)) return false;
+  const cs = sectionNumberOf(cand.sectionRef, cand.excerpt);
+  const bs = sectionNumberOf(basket.sectionRef, basket.cite);
+  if (cs && bs) return cs === bs;
+  const cf = canonicalFamily(cand.family);
+  return cf != null && cf === canonicalFamily(basket.family);
 }
 
 /** Prefix-only reflection used before citation anchors. Tests compare the sweep metric against it. */
@@ -179,7 +278,12 @@ export function selfCheckComputation(args: {
   for (const cand of args.candidates) {
     if (!cand.excerpt || cand.excerpt.length < 24) continue;
     const excerpt = norm(cand.excerpt);
-    const hit = baskets.some((b) => excerptReflectedInCitation(excerpt, norm(b.citationExcerpt)));
+    const hit = baskets.some((b) =>
+      strictCandidateMatch(
+        { excerpt, sectionRef: cand.sectionRef ?? null, family: cand.family ?? null },
+        { cite: norm(b.citationExcerpt), sectionRef: b.sectionRef, family: b.covenantFamily },
+      ),
+    );
     if (!hit) {
       push(
         "DISCOVERY_GAP",
