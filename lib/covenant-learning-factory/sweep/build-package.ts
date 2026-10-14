@@ -5,6 +5,7 @@ import { stripHtmlPreserveStructure } from "../../contract-model/compiler/determ
  */
 
 import { createHash } from "node:crypto";
+import { treeBaskets } from "./tree-baskets";
 import { extractBasketClauses } from "../../contract-model/covenant-computation/extract-baskets";
 import type { ComputationPackage, PackageDocument } from "../../contract-model/covenant-computation/types";
 import type { LearnedRuleSet } from "../learned-rules/types";
@@ -66,6 +67,16 @@ export function buildComputationPackage(args: {
             role: "PERMISSION" as const,
           }));
 
+  // Section-tree baskets (real document text only): add exact-span clauses the regional extractor missed.
+  if (text.length >= 80 && args.documentText && args.documentText.trim().length >= 80 && process.env.CLF_TREE_BASKETS !== "0") {
+    const have = new Set(baskets.map((b) => b.operativeText.replace(/\s+/g, " ").trim()));
+    for (const b of treeBaskets(documentId, text, args.rules)) {
+      const k = b.operativeText.replace(/\s+/g, " ").trim();
+      if (have.has(k)) continue;
+      have.add(k);
+      baskets.push(b);
+    }
+  }
   // Ensure operative text is subset of document for citation binding
   const docText = documents[0]?.text ?? "";
   const boundBaskets = baskets.filter((b) => {

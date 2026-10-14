@@ -16,6 +16,7 @@
  *   --progress=PATH        (neon mode) append-only per-source progress (resumes on rerun)
  *   --rules=neon           (neon mode) score with the LIVE latest learning_rulesets row (read-only SELECT)
  *   --rules-file=PATH      score with a pinned ruleset JSON (CI uses the committed scoreboard/ruleset.json)
+ *   --shard=i/n            (snapshot mode) score only every n-th source starting at i; merge reports after
  *   --rules=v0             extractor-only: empty learned ruleset (v0)
  *   --write-findings=PATH  candidate-level JSONL: one row per scored error (class, candidateId, family, excerpt)
  *   --write-rules=PATH     write the ruleset actually used (pin it for offline replay)
@@ -136,7 +137,12 @@ async function main(): Promise<void> {
   const perSource: SourceScore[] = [];
   if (snapshotPath) {
     const snap = readSnapshot(resolve(snapshotPath));
-    for (const input of snap.sources) perSource.push(scoreSource(input, rules, manifest));
+    // --shard=i/n: score only sources with index % n === i (parallel offline replay; merge reports after).
+    const shard = argStr("shard");
+    const [si, sn] = shard ? shard.split("/").map(Number) : [0, 1];
+    snap.sources.forEach((input, idx) => {
+      if (idx % sn! === si) perSource.push(scoreSource(input, rules, manifest));
+    });
   } else {
     const progress = argStr("progress");
     const done = new Set<string>();

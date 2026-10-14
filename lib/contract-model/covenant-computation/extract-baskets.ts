@@ -314,7 +314,7 @@ function parseCovenantTitle(text: string, from: number): { title: string; bodyAt
   return { title, bodyAt };
 }
 
-function resolveFamily(title: string, rules?: LearnedRuleSet): string {
+export function resolveFamily(title: string, rules?: LearnedRuleSet): string {
   const mapped = applySectionMappings(title, rules);
   if (mapped) return mapped.sectionFamily;
   const alias = applyDefinitionAlias(title, rules);
