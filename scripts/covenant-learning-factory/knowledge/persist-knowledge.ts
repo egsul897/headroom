@@ -23,6 +23,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { createNeonHttpsExecutor, redactConnectionSecrets } from "../../../lib/covenant-learning-factory/store/neon-transport";
+import { KNOWLEDGE_DDL, insertRows } from "../../../lib/covenant-learning-factory/pipeline/agreement-pipeline";
 import { readSnapshot } from "../../../lib/covenant-learning-factory/scoreboard";
 import { parseDocumentTree } from "../../../lib/contract-model/section-tree/parse";
 import { covenantChecklist, resolveCrossRefs, roleOf } from "../../../lib/contract-model/section-tree/semantics";
@@ -40,46 +41,7 @@ export function parserVersion(): string {
 
 type Ex = Awaited<ReturnType<typeof createNeonHttpsExecutor>>;
 
-const DDL = [
-  `CREATE TABLE IF NOT EXISTS kf_tree_parses (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, "sourceId" text NOT NULL, basis text NOT NULL,
-    verification text, "textLength" int NOT NULL, "nodeCount" int NOT NULL, "xrefCount" int NOT NULL,
-    "checklistCount" int NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT now(),
-    PRIMARY KEY ("textSha256","parserVersion"))`,
-  `CREATE INDEX IF NOT EXISTS kf_tree_parses_source ON kf_tree_parses ("sourceId")`,
-  `CREATE TABLE IF NOT EXISTS kf_tree_nodes (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, "nodeId" text NOT NULL, "parentId" text,
-    kind text NOT NULL, label text, path text, "sectionNumber" text, title text, level text,
-    "start" int NOT NULL, "headingEnd" int NOT NULL, "end" int NOT NULL, depth int NOT NULL,
-    status text NOT NULL, role text, issues jsonb NOT NULL DEFAULT '[]',
-    PRIMARY KEY ("textSha256","parserVersion","nodeId"))`,
-  `CREATE TABLE IF NOT EXISTS kf_tree_xrefs (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, ord int NOT NULL, "fromNodeId" text NOT NULL,
-    at int NOT NULL, raw text NOT NULL, target text NOT NULL, status text NOT NULL, "targetNodeId" text,
-    PRIMARY KEY ("textSha256","parserVersion",ord))`,
-  `CREATE TABLE IF NOT EXISTS kf_tree_checklist (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, family text NOT NULL, status text NOT NULL,
-    "sectionPaths" jsonb NOT NULL, parts jsonb NOT NULL, "needsInputs" jsonb NOT NULL, note text,
-    PRIMARY KEY ("textSha256","parserVersion",family))`,
-  `CREATE TABLE IF NOT EXISTS kf_scoreboard_runs (
-    "runId" text PRIMARY KEY, "gitCommit" text NOT NULL, "rulesLabel" text NOT NULL, "rulesetVersion" text,
-    tree boolean NOT NULL, "snapshotSha256" text NOT NULL, totals jsonb NOT NULL, "findingCount" int NOT NULL,
-    "createdAt" timestamptz NOT NULL DEFAULT now())`,
-  `CREATE TABLE IF NOT EXISTS kf_scoreboard_findings (
-    "runId" text NOT NULL, "sourceId" text NOT NULL, ord int NOT NULL, "textSha256" text, split text NOT NULL,
-    class text NOT NULL, key text, family text, "sectionRef" text, excerpt text, message text,
-    PRIMARY KEY ("runId","sourceId",ord))`,
-];
-
-/** Multi-row INSERT ... ON CONFLICT DO NOTHING in chunks (Neon HTTPS param limit friendly). */
-async function insertRows(ex: Ex, table: string, cols: string[], rows: unknown[][], chunk = 200) {
-  for (let i = 0; i < rows.length; i += chunk) {
-    const part = rows.slice(i, i + chunk);
-    const params: unknown[] = [];
-    const values = part.map((r) => "(" + r.map((v) => { params.push(v); return `$${params.length}`; }).join(",") + ")");
-    await ex.execute(`INSERT INTO ${table} (${cols.map((c) => `"${c}"`).join(",")}) VALUES ${values.join(",")} ON CONFLICT DO NOTHING`, params);
-  }
-}
+const DDL = KNOWLEDGE_DDL;
 
 async function count(ex: Ex, table: string, where: string, params: unknown[]) {
   return Number((await ex.execute(`SELECT count(*)::int AS n FROM ${table} WHERE ${where}`, params))[0]?.n ?? -1);

@@ -469,6 +469,27 @@ export async function analyzeCustomerDocument(params: {
       /* non-blocking */
     }
 
+    // Deterministic agreement pipeline (text → section tree → roles/xrefs → checklist → baskets/compute),
+    // persisted additively to Neon keyed by text sha256 + parser version. Zero AI; never unlimited by default.
+    // Non-blocking: a failure here never fails the upload. Disable with CLF_AGREEMENT_PIPELINE=0.
+    let agreementPipeline: Record<string, unknown> | null = null;
+    if (process.env.CLF_AGREEMENT_PIPELINE !== "0") {
+      try {
+        const { extractTextAsync } = await import("../../knowledge-factory/pipeline/text");
+        const { runAgreementPipeline, ensureKnowledgeTables, persistAgreementPipeline, prismaSqlExecutor } = await import(
+          "../../covenant-learning-factory/pipeline/agreement-pipeline"
+        );
+        const text = (await extractTextAsync(params.bytes, params.filename)).text;
+        const result = runAgreementPipeline({ sourceId, text });
+        const ex = prismaSqlExecutor(prisma);
+        await ensureKnowledgeTables(ex);
+        const stored = await persistAgreementPipeline(ex, result, { sourceId, verification: "CUSTOMER_UPLOAD", companyId: params.companyId, documentId: params.documentId });
+        agreementPipeline = { textSha256: result.textSha256, parserVersion: result.parserVersion, pipelineVersion: result.pipelineVersion, stats: result.stats, stored, families: result.families };
+      } catch (err) {
+        agreementPipeline = { error: err instanceof Error ? err.message : String(err) };
+      }
+    }
+
     // Preserve counsel decisions across reanalysis; flag conflicts when AI text drifts.
     const priorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
     const priorMeta =
@@ -498,6 +519,7 @@ export async function analyzeCustomerDocument(params: {
         },
         covenantSummary: merged.summary,
         amendmentPackage: amendment,
+        agreementPipeline,
         storageProvider: stored.provider,
         processingStatus: "ANALYZED",
         promotedToLegalTruth: 0,
