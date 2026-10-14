@@ -5,20 +5,243 @@
   "sourceCount": 189,
   "totals": {
     "DEV": {
-      "COVERAGE_GAP": 202,
-      "DISCOVERY_GAP": 347,
-      "UNSUPPORTED_SEMANTICS": 15,
-      "total": 564,
-      "sources": 47
+      "COVERAGE_GAP": 199,
+      "DISCOVERY_GAP": 211,
+      "UNSUPPORTED_SEMANTICS": 57,
+      "total": 467,
+      "sources": 50
     },
     "HELDOUT": {
-      "COVERAGE_GAP": 933,
-      "DISCOVERY_GAP": 2784,
-      "UNSUPPORTED_SEMANTICS": 26,
-      "total": 3743,
-      "sources": 140
+      "COVERAGE_GAP": 710,
+      "DISCOVERY_GAP": 1532,
+      "UNSUPPORTED_SEMANTICS": 144,
+      "total": 2386,
+      "sources": 137
     }
   },
+  "inScopeTotals": {
+    "DEV": {
+      "COVERAGE_GAP": 199,
+      "DISCOVERY_GAP": 211,
+      "UNSUPPORTED_SEMANTICS": 57,
+      "total": 467,
+      "sources": 49
+    },
+    "HELDOUT": {
+      "COVERAGE_GAP": 335,
+      "DISCOVERY_GAP": 1471,
+      "UNSUPPORTED_SEMANTICS": 140,
+      "total": 1946,
+      "sources": 97
+    }
+  },
+  "excluded": [
+    {
+      "sourceId": "edgar:0000012927-22-000058:a202206jun3010qex32.htm",
+      "split": "HELDOUT",
+      "total": 35
+    },
+    {
+      "sourceId": "edgar:0000060667-22-000104:exhibit101_06022022.htm",
+      "split": "HELDOUT",
+      "total": 30
+    },
+    {
+      "sourceId": "edgar:0000060667-25-000210:exhibit151_10312025.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0000060667-26-000072:exhibit151_05012026.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0000060667-26-000117:exhibit151_07312026.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0000063296-23-000103:ex32amendedandrestatedbyla.htm",
+      "split": "HELDOUT",
+      "total": 33
+    },
+    {
+      "sourceId": "edgar:0000077476-19-000046:exhibit31articlesofinc.htm",
+      "split": "HELDOUT",
+      "total": 4
+    },
+    {
+      "sourceId": "edgar:0000077476-24-000046:pepsico-ex32xseptember2020.htm",
+      "split": "HELDOUT",
+      "total": 41
+    },
+    {
+      "sourceId": "edgar:0000078003-18-000027:pfe-exhibit104x1231201.htm",
+      "split": "HELDOUT",
+      "total": 5
+    },
+    {
+      "sourceId": "edgar:0000703604-24-000079:dsgr-20240630.htm",
+      "split": "DEV",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0000732717-24-000059:exhibit1013q24.htm",
+      "split": "HELDOUT",
+      "total": 10
+    },
+    {
+      "sourceId": "edgar:0000885725-20-000024:exhibit101amendedandre.htm",
+      "split": "HELDOUT",
+      "total": 11
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex101amendedmasterconfirmgs.htm",
+      "split": "HELDOUT",
+      "total": 22
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex102amendedmasterconfirmwf.htm",
+      "split": "HELDOUT",
+      "total": 28
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex103amendedsupplementalco.htm",
+      "split": "HELDOUT",
+      "total": 1
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex104amendedsupplementalco.htm",
+      "split": "HELDOUT",
+      "total": 1
+    },
+    {
+      "sourceId": "edgar:0001065280-13-000008:executiveseveranceandreten.htm",
+      "split": "HELDOUT",
+      "total": 16
+    },
+    {
+      "sourceId": "edgar:0001193125-12-224972:d311298dex10b.htm",
+      "split": "HELDOUT",
+      "total": 14
+    },
+    {
+      "sourceId": "edgar:0001193125-12-463586:d400394dex10.htm",
+      "split": "HELDOUT",
+      "total": 27
+    },
+    {
+      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex51.htm",
+      "split": "HELDOUT",
+      "total": 3
+    },
+    {
+      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex52.htm",
+      "split": "HELDOUT",
+      "total": 5
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-3_7gcholdings.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-4_7gcholdings.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-5_7gcholdings.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-6_7gcholdings.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-7_7gcholdings.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-8_7gcholdings.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0001213900-22-078344:ea169690ex10-3_7gcandcohold.htm",
+      "split": "HELDOUT",
+      "total": 20
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-1_7gcandco.htm",
+      "split": "HELDOUT",
+      "total": 10
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-2_7gcandco.htm",
+      "split": "HELDOUT",
+      "total": 21
+    },
+    {
+      "sourceId": "edgar:0001219601-25-000009:ex23-12312024.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0001327567-14-000043:panwex102q115.htm",
+      "split": "HELDOUT",
+      "total": 5
+    },
+    {
+      "sourceId": "edgar:0001327567-14-000043:panwex103q115.htm",
+      "split": "HELDOUT",
+      "total": 22
+    },
+    {
+      "sourceId": "edgar:0001327567-17-000027:panwex104q417esppplan.htm",
+      "split": "HELDOUT",
+      "total": 23
+    },
+    {
+      "sourceId": "edgar:0001467858-18-000089:ex10106282018cruise.htm",
+      "split": "HELDOUT",
+      "total": 22
+    },
+    {
+      "sourceId": "edgar:0001467858-19-000033:ex-1023amendedgmexecutives.htm",
+      "split": "HELDOUT",
+      "total": 18
+    },
+    {
+      "sourceId": "edgar:0001585689-25-000109:certificateofamendment-bxe.htm",
+      "split": "HELDOUT",
+      "total": 4
+    },
+    {
+      "sourceId": "edgar:0001585689-25-000109:certificateofamendment-sup.htm",
+      "split": "HELDOUT",
+      "total": 0
+    },
+    {
+      "sourceId": "edgar:0001585689-26-000007:hgv-xfirstamendmenttosecon.htm",
+      "split": "HELDOUT",
+      "total": 1
+    },
+    {
+      "sourceId": "edgar:0001585689-26-000037:hiltonamendedandrestated20.htm",
+      "split": "HELDOUT",
+      "total": 8
+    },
+    {
+      "sourceId": "edgar:0001628280-26-012904:ex23-12312025.htm",
+      "split": "HELDOUT",
+      "total": 0
+    }
+  ],
   "duplicates": [
     {
       "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
@@ -36,2080 +259,2458 @@
       "sourceId": "edgar:0000006201-22-000097:aal-20221219.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000008947-24-000205:fourthamendmenttocreditagr.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0000012927-22-000058:a202206jun3010qex32.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
-        "COVERAGE_GAP": 39,
-        "DISCOVERY_GAP": 11,
+        "COVERAGE_GAP": 28,
+        "DISCOVERY_GAP": 7,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 50
+      "total": 35,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000060667-22-000104:exhibit101_06022022.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
-        "COVERAGE_GAP": 24,
-        "DISCOVERY_GAP": 15,
+        "COVERAGE_GAP": 17,
+        "DISCOVERY_GAP": 13,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 39
+      "total": 30,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000060667-25-000210:exhibit151_10312025.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000060667-26-000072:exhibit151_05012026.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000060667-26-000117:exhibit151_07312026.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000063296-21-000048:firstamendmenttothirdamend.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0000063296-22-000060:secondamendmenttothirdamen.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0000063296-22-000099:thirdamendmenttothirdamend.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0000063296-23-000044:fourthamendmenttothirdamen.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0000063296-23-000103:ex32amendedandrestatedbyla.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
-        "COVERAGE_GAP": 33,
-        "DISCOVERY_GAP": 3,
+        "COVERAGE_GAP": 31,
+        "DISCOVERY_GAP": 2,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 36
+      "total": 33,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000077476-19-000046:exhibit31articlesofinc.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
-        "COVERAGE_GAP": 5,
+        "COVERAGE_GAP": 4,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 5
+      "total": 4,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000077476-24-000046:pepsico-ex32xseptember2020.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
-        "COVERAGE_GAP": 40,
-        "DISCOVERY_GAP": 7,
+        "COVERAGE_GAP": 35,
+        "DISCOVERY_GAP": 6,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 47
+      "total": 41,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000078003-18-000027:pfe-exhibit104x1231201.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 5,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 5
+      "total": 5,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000100493-17-000095:exhibit101termloanagreemen.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 14,
-        "DISCOVERY_GAP": 19,
+        "COVERAGE_GAP": 10,
+        "DISCOVERY_GAP": 17,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 33
+      "total": 27,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000100493-17-000095:exhibit102amendedandrestat.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 16,
+        "DISCOVERY_GAP": 12,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 16
+      "total": 12,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000100493-18-000047:exhibit101amendedandrestat.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 1,
-        "DISCOVERY_GAP": 66,
-        "UNSUPPORTED_SEMANTICS": 0
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 41,
+        "UNSUPPORTED_SEMANTICS": 1
       },
-      "total": 67
+      "total": 42,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000100493-18-000047:exhibit102amendmentno3tote.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 18,
-        "DISCOVERY_GAP": 23,
-        "UNSUPPORTED_SEMANTICS": 0
+        "COVERAGE_GAP": 14,
+        "DISCOVERY_GAP": 13,
+        "UNSUPPORTED_SEMANTICS": 1
       },
-      "total": 41
+      "total": 28,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000320187-15-000153:nikecreditagreement2015.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 4,
-        "DISCOVERY_GAP": 19,
-        "UNSUPPORTED_SEMANTICS": 0
+        "DISCOVERY_GAP": 13,
+        "UNSUPPORTED_SEMANTICS": 2
       },
-      "total": 23
+      "total": 19,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000703604-24-000079:dsg-secondamendmenttocre.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0000703604-24-000079:dsgr-20240630.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0000732717-24-000009:ex-21ye2023.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000732717-24-000059:exhibit1013q24.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
-        "COVERAGE_GAP": 18,
+        "COVERAGE_GAP": 8,
         "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
+        "UNSUPPORTED_SEMANTICS": 2
       },
-      "total": 18
+      "total": 10,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000820318-23-000009:ex1001-amendmentno1tocredi.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0000885725-20-000024:exhibit101amendedandre.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 11,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 11
+      "total": 11,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000940944-14-000129:ex101amendedmasterconfirmgs.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
-        "COVERAGE_GAP": 38,
+        "COVERAGE_GAP": 22,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 38
+      "total": 22,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0000940944-14-000129:ex102amendedmasterconfirmwf.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 40,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 40
-    },
-    {
-      "sourceId": "edgar:0000940944-14-000129:ex103amendedsupplementalco.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 2,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 2
-    },
-    {
-      "sourceId": "edgar:0000940944-14-000129:ex104amendedsupplementalco.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 2,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 2
-    },
-    {
-      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1001.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 20,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 21
-    },
-    {
-      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1002.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 9,
-        "DISCOVERY_GAP": 3,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 12
-    },
-    {
-      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1001.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 5,
-        "DISCOVERY_GAP": 1,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 6
-    },
-    {
-      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1002.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 5,
-        "DISCOVERY_GAP": 1,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 6
-    },
-    {
-      "sourceId": "edgar:0000950157-19-000659:ex10-1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 24,
-        "DISCOVERY_GAP": 65,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 90
-    },
-    {
-      "sourceId": "edgar:0000950157-21-000696:ex10-1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 1,
-        "DISCOVERY_GAP": 74,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 76
-    },
-    {
-      "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 77,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 78
-    },
-    {
-      "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 87,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 87
-    },
-    {
-      "sourceId": "edgar:0000950157-25-000533:ex10-1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 4,
-        "DISCOVERY_GAP": 7,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 11
-    },
-    {
-      "sourceId": "edgar:0000950157-25-000533:ex10-2.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 4,
-        "DISCOVERY_GAP": 7,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 11
-    },
-    {
-      "sourceId": "edgar:0001065280-13-000008:executiveseveranceandreten.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 15,
-        "DISCOVERY_GAP": 1,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 16
-    },
-    {
-      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex10d1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 38,
-        "DISCOVERY_GAP": 15,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 53
-    },
-    {
-      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 77,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 77
-    },
-    {
-      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d6.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 38,
-        "DISCOVERY_GAP": 29,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 67
-    },
-    {
-      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d7.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 37,
-        "DISCOVERY_GAP": 29,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 66
-    },
-    {
-      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 1,
-        "DISCOVERY_GAP": 28,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 30
-    },
-    {
-      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 76,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 77
-    },
-    {
-      "sourceId": "edgar:0001140361-18-005437:ex10_1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001140361-18-011053:ex10_1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001140361-18-018015:ex10_1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001140361-18-037610:ex10_1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001140361-19-008719:nc10001703x2_ex10-1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001140361-19-019513:ex10_1.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-12-224972:d311298dex10b.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 15,
-        "DISCOVERY_GAP": 1,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 16
-    },
-    {
-      "sourceId": "edgar:0001193125-12-423438:d424570dex101.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 9,
-        "DISCOVERY_GAP": 6,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 15
-    },
-    {
-      "sourceId": "edgar:0001193125-12-423438:d424570dex102.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 2,
-        "DISCOVERY_GAP": 4,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 6
-    },
-    {
-      "sourceId": "edgar:0001193125-12-463586:d400394dex10.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 31,
-        "DISCOVERY_GAP": 7,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 38
-    },
-    {
-      "sourceId": "edgar:0001193125-13-034798:d477945dex41.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 8,
-        "DISCOVERY_GAP": 84,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 92
-    },
-    {
-      "sourceId": "edgar:0001193125-16-462492:d49534dex42.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 2,
-        "DISCOVERY_GAP": 69,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 72
-    },
-    {
-      "sourceId": "edgar:0001193125-16-462492:d49534dex43.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 1,
-        "DISCOVERY_GAP": 4,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 5
-    },
-    {
-      "sourceId": "edgar:0001193125-16-559672:d188918dex41.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 1,
-        "DISCOVERY_GAP": 3,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 4
-    },
-    {
-      "sourceId": "edgar:0001193125-16-559672:d188918dex42.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 20,
-        "DISCOVERY_GAP": 6,
-        "UNSUPPORTED_SEMANTICS": 2
-      },
-      "total": 28
-    },
-    {
-      "sourceId": "edgar:0001193125-21-217426:d170717dex101.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-22-169336:d320648dex1025.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-22-186770:d307343dex101.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-23-163984:d511994dex101.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-24-085009:d794721dex101.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-24-224129:d872508dex102.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-25-002808:d891952dex101.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-25-220656:d854664dex101.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-25-220656:d854664dex102.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
-      "split": "DEV",
-      "duplicateOf": "fixture:chwy",
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex51.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 3,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 3
-    },
-    {
-      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex52.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 5,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 5
-    },
-    {
-      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-3_7gcholdings.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-4_7gcholdings.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-5_7gcholdings.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-6_7gcholdings.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-7_7gcholdings.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-8_7gcholdings.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001213900-22-078344:ea169690ex10-3_7gcandcohold.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 37,
-        "DISCOVERY_GAP": 1,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 38
-    },
-    {
-      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-1_7gcandco.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 11,
-        "DISCOVERY_GAP": 1,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 12
-    },
-    {
-      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-2_7gcandco.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 37,
-        "DISCOVERY_GAP": 2,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 39
-    },
-    {
-      "sourceId": "edgar:0001213900-25-041096:ea024138601ex4-2_starbucks.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 30,
-        "DISCOVERY_GAP": 18,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 48
-    },
-    {
-      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 3,
-        "DISCOVERY_GAP": 100,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 103
-    },
-    {
-      "sourceId": "edgar:0001219601-16-000050:incamend8kfeb2016.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001219601-16-000070:creditagreementsep2016.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001219601-17-000011:creditagreement8kapril2017.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001219601-17-000016:ex4march2017.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 158,
-        "UNSUPPORTED_SEMANTICS": 2
-      },
-      "total": 160
-    },
-    {
-      "sourceId": "edgar:0001219601-18-000002:cck8kjan2018.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001219601-18-000009:ex41dec2017.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 23,
-        "DISCOVERY_GAP": 9,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 32
-    },
-    {
-      "sourceId": "edgar:0001219601-18-000009:ex4dec2017.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 15,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 15
-    },
-    {
-      "sourceId": "edgar:0001219601-19-000005:ex4dec2018.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 13,
-        "DISCOVERY_GAP": 7,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 20
-    },
-    {
-      "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 108,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 108
-    },
-    {
-      "sourceId": "edgar:0001219601-25-000009:a4ff-crownseventhamendment.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 30,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 30
-    },
-    {
-      "sourceId": "edgar:0001219601-25-000009:ex23-12312024.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "edgar:0001327567-14-000043:panwex102q115.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 5,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 5
-    },
-    {
-      "sourceId": "edgar:0001327567-14-000043:panwex103q115.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 28,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 28
+      "total": 28,
+      "textBasis": "DOCUMENT"
     },
     {
-      "sourceId": "edgar:0001327567-17-000027:panwex104q417esppplan.htm",
+      "sourceId": "edgar:0000940944-14-000129:ex103amendedsupplementalco.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 29,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 29
-    },
-    {
-      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1030xamendm.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 47,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 48
-    },
-    {
-      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1047x4875se.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 1,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 1
+      "total": 1,
+      "textBasis": "DOCUMENT"
     },
     {
-      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1031xamendm.htm",
+      "sourceId": "edgar:0000940944-14-000129:ex104amendedsupplementalco.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 48,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 49
-    },
-    {
-      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 30,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 31
-    },
-    {
-      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 198,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 198
-    },
-    {
-      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1023xthirds.htm",
-      "split": "HELDOUT",
-      "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 1,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 1
+      "total": 1,
+      "textBasis": "DOCUMENT"
     },
     {
-      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1026xsecond.htm",
+      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1001.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 1,
+        "COVERAGE_GAP": 13,
         "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 6
+      },
+      "total": 19,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1002.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 4,
+        "DISCOVERY_GAP": 3,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 1
+      "total": 7,
+      "textBasis": "DOCUMENT"
     },
     {
-      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1029xsecond.htm",
+      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1001.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 1,
-        "DISCOVERY_GAP": 0,
+        "DISCOVERY_GAP": 1,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 1
+      "total": 2,
+      "textBasis": "DOCUMENT"
     },
     {
-      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1002.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 47,
-        "UNSUPPORTED_SEMANTICS": 3
+        "COVERAGE_GAP": 1,
+        "DISCOVERY_GAP": 1,
+        "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 50
+      "total": 2,
+      "textBasis": "DOCUMENT"
     },
     {
-      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex101xnotepur.htm",
+      "sourceId": "edgar:0000950157-19-000659:ex10-1.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 87,
+        "COVERAGE_GAP": 20,
+        "DISCOVERY_GAP": 33,
         "UNSUPPORTED_SEMANTICS": 2
       },
-      "total": 89
+      "total": 55,
+      "textBasis": "DOCUMENT"
     },
     {
-      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+      "sourceId": "edgar:0000950157-21-000696:ex10-1.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 71,
-        "UNSUPPORTED_SEMANTICS": 1
+        "DISCOVERY_GAP": 35,
+        "UNSUPPORTED_SEMANTICS": 7
       },
-      "total": 72
+      "total": 42,
+      "textBasis": "DOCUMENT"
     },
     {
-      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex103xfirstsu.htm",
+      "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 30,
-        "DISCOVERY_GAP": 11,
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 36,
+        "UNSUPPORTED_SEMANTICS": 8
+      },
+      "total": 44,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 35,
+        "UNSUPPORTED_SEMANTICS": 6
+      },
+      "total": 41,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0000950157-25-000533:ex10-1.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 3,
+        "DISCOVERY_GAP": 3,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 41
+      "total": 6,
+      "textBasis": "DOCUMENT"
     },
     {
-      "sourceId": "edgar:0001467373-24-000157:acn05142024101excreditagre.htm",
+      "sourceId": "edgar:0000950157-25-000533:ex10-2.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 3,
+        "DISCOVERY_GAP": 3,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 6,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001065280-13-000008:executiveseveranceandreten.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 14,
+        "DISCOVERY_GAP": 2,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 16,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex10d1.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 15,
+        "DISCOVERY_GAP": 14,
+        "UNSUPPORTED_SEMANTICS": 1
+      },
+      "total": 30,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 25,
+        "UNSUPPORTED_SEMANTICS": 2
+      },
+      "total": 27,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d6.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 34,
+        "DISCOVERY_GAP": 5,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 39,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d7.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 34,
+        "DISCOVERY_GAP": 5,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 39,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 1,
+        "DISCOVERY_GAP": 13,
+        "UNSUPPORTED_SEMANTICS": 2
+      },
+      "total": 16,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 32,
+        "UNSUPPORTED_SEMANTICS": 1
+      },
+      "total": 33,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001140361-18-005437:ex10_1.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
-      "sourceId": "edgar:0001467858-18-000089:ex10106282018cruise.htm",
+      "sourceId": "edgar:0001140361-18-011053:ex10_1.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 39,
+        "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 39
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
-      "sourceId": "edgar:0001467858-19-000033:ex-1023amendedgmexecutives.htm",
+      "sourceId": "edgar:0001140361-18-018015:ex10_1.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001140361-18-037610:ex10_1.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001140361-19-008719:nc10001703x2_ex10-1.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001140361-19-019513:ex10_1.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001140361-26-003087:ef20064499_ex10-1.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-224972:d311298dex10b.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 14,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 14,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-423438:d424570dex101.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 9,
+        "DISCOVERY_GAP": 6,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 15,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-423438:d424570dex102.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 2,
+        "DISCOVERY_GAP": 3,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 5,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-12-463586:d400394dex10.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 21,
+        "DISCOVERY_GAP": 6,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 27,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-13-034798:d477945dex41.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 7,
+        "DISCOVERY_GAP": 50,
+        "UNSUPPORTED_SEMANTICS": 1
+      },
+      "total": 58,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-462492:d49534dex42.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 2,
+        "DISCOVERY_GAP": 35,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 37,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-462492:d49534dex43.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 2,
+        "DISCOVERY_GAP": 3,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 5,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-559672:d188918dex41.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 1,
+        "DISCOVERY_GAP": 2,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 3,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-16-559672:d188918dex42.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 8,
+        "DISCOVERY_GAP": 5,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 13,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001193125-21-217426:d170717dex101.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001193125-22-169336:d320648dex1025.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001193125-22-186770:d307343dex101.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001193125-23-163984:d511994dex101.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001193125-24-085009:d794721dex101.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001193125-24-224129:d872508dex102.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "UNKNOWN",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001193125-25-002808:d891952dex101.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001193125-25-220656:d854664dex101.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "UNKNOWN",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001193125-25-220656:d854664dex102.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "UNKNOWN",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "split": "DEV",
+      "duplicateOf": "fixture:chwy",
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex51.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 3,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 3,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex52.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 5,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 5,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-3_7gcholdings.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-4_7gcholdings.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-5_7gcholdings.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-6_7gcholdings.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-7_7gcholdings.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-8_7gcholdings.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-22-078344:ea169690ex10-3_7gcandcohold.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 20,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 20,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-1_7gcandco.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 10,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 10,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-2_7gcandco.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 20,
         "DISCOVERY_GAP": 1,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 21
+      "total": 21,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-25-041096:ea024138601ex4-2_starbucks.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 28,
+        "DISCOVERY_GAP": 13,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 41,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 3,
+        "DISCOVERY_GAP": 67,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 70,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-16-000050:incamend8kfeb2016.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-16-000070:creditagreementsep2016.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-17-000011:creditagreement8kapril2017.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-17-000016:ex4march2017.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 82,
+        "UNSUPPORTED_SEMANTICS": 6
+      },
+      "total": 88,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000002:cck8kjan2018.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000009:ex41dec2017.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 19,
+        "DISCOVERY_GAP": 2,
+        "UNSUPPORTED_SEMANTICS": 1
+      },
+      "total": 22,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000009:ex4dec2017.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 15,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 15,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-19-000005:ex4dec2018.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 13,
+        "DISCOVERY_GAP": 7,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 20,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 61,
+        "UNSUPPORTED_SEMANTICS": 2
+      },
+      "total": 63,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-25-000009:a4ff-crownseventhamendment.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 9,
+        "UNSUPPORTED_SEMANTICS": 2
+      },
+      "total": 11,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001219601-25-000009:ex23-12312024.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001327567-14-000043:panwex102q115.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 5,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 5,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001327567-14-000043:panwex103q115.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 22,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 22,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001327567-17-000027:panwex104q417esppplan.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 23,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 23,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1030xamendm.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 36,
+        "UNSUPPORTED_SEMANTICS": 8
+      },
+      "total": 44,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1047x4875se.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 1,
+        "DISCOVERY_GAP": 1,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 2,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1031xamendm.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 31,
+        "UNSUPPORTED_SEMANTICS": 4
+      },
+      "total": 35,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 19,
+        "UNSUPPORTED_SEMANTICS": 3
+      },
+      "total": 22,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 103,
+        "UNSUPPORTED_SEMANTICS": 4
+      },
+      "total": 107,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1023xthirds.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 1,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 1,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1026xsecond.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 1,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 1,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1029xsecond.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 1,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 1,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 32,
+        "UNSUPPORTED_SEMANTICS": 3
+      },
+      "total": 35,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex101xnotepur.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 36,
+        "UNSUPPORTED_SEMANTICS": 1
+      },
+      "total": 37,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 31,
+        "UNSUPPORTED_SEMANTICS": 1
+      },
+      "total": 32,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex103xfirstsu.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
+      "counts": {
+        "COVERAGE_GAP": 29,
+        "DISCOVERY_GAP": 5,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 34,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001467373-24-000157:acn05142024101excreditagre.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 1
+      },
+      "total": 1,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001467858-18-000089:ex10106282018cruise.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 20,
+        "UNSUPPORTED_SEMANTICS": 2
+      },
+      "total": 22,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "edgar:0001467858-19-000033:ex-1023amendedgmexecutives.htm",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "OTHER",
+      "counts": {
+        "COVERAGE_GAP": 17,
+        "DISCOVERY_GAP": 1,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 18,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001571049-17-003250:t1700214_ex10-1.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0001585689-25-000109:certificateofamendment-bxe.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
-        "COVERAGE_GAP": 5,
+        "COVERAGE_GAP": 4,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 5
+      "total": 4,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001585689-25-000109:certificateofamendment-sup.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001585689-26-000007:hgv-xfirstamendmenttosecon.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 1,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 1
+      "total": 1,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001585689-26-000037:hiltonamendedandrestated20.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 5,
         "DISCOVERY_GAP": 3,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 8
+      "total": 8,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001628280-17-008032:exhibit109firstamendmentto.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "edgar:0001628280-26-012904:ex23-12312025.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "OTHER",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
       "counts": {
         "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 111,
+        "DISCOVERY_GAP": 68,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 111
+      "total": 68,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001683168-20-003281:delta_8k-ex1001.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_SUPPORT",
       "counts": {
         "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 129,
-        "UNSUPPORTED_SEMANTICS": 0
+        "DISCOVERY_GAP": 89,
+        "UNSUPPORTED_SEMANTICS": 1
       },
-      "total": 129
+      "total": 90,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001683168-22-007951:delta_ex1001.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 101,
-        "UNSUPPORTED_SEMANTICS": 0
+        "DISCOVERY_GAP": 36,
+        "UNSUPPORTED_SEMANTICS": 2
       },
-      "total": 101
+      "total": 38,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001744489-20-000066:fy2020q28kex101364-day.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 12,
-        "DISCOVERY_GAP": 34,
+        "DISCOVERY_GAP": 17,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 46
+      "total": 29,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0001744489-20-000066:fy2020q28kex1025-yearc.htm",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 13,
-        "DISCOVERY_GAP": 43,
+        "DISCOVERY_GAP": 18,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 56
+      "total": 31,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 4,
-        "DISCOVERY_GAP": 166,
-        "UNSUPPORTED_SEMANTICS": 1
+        "COVERAGE_GAP": 3,
+        "DISCOVERY_GAP": 90,
+        "UNSUPPORTED_SEMANTICS": 4
       },
-      "total": 171
+      "total": 97,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "ehb:29c628c2d47f883dee2f7ef6",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 1,
-        "DISCOVERY_GAP": 77,
-        "UNSUPPORTED_SEMANTICS": 0
+        "DISCOVERY_GAP": 57,
+        "UNSUPPORTED_SEMANTICS": 1
       },
-      "total": 78
+      "total": 59,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "ehb:3d7a2cbca4c404d838c8bd94",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "ehb:42e4a267e5f11e0fb858e576",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 8,
+        "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 8
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "ehb:48e5472e73a8e3b96357fbf8",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_SUPPORT",
       "counts": {
         "COVERAGE_GAP": 6,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 6
+      "total": 6,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "ehb:68579e05aae3a5300e6a69a0",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 98,
-        "UNSUPPORTED_SEMANTICS": 2
+        "DISCOVERY_GAP": 62,
+        "UNSUPPORTED_SEMANTICS": 3
       },
-      "total": 100
+      "total": 65,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "ehb:8b895fb699886a716ba820b4",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 3,
-        "DISCOVERY_GAP": 55,
-        "UNSUPPORTED_SEMANTICS": 0
+        "COVERAGE_GAP": 1,
+        "DISCOVERY_GAP": 27,
+        "UNSUPPORTED_SEMANTICS": 3
       },
-      "total": 58
+      "total": 31,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "ehb:8dbd3212a9f91a14a5cf35ae",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "ehb:8f26240e1e02e95a3df8c5e4",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 2,
-        "DISCOVERY_GAP": 75,
-        "UNSUPPORTED_SEMANTICS": 0
+        "DISCOVERY_GAP": 56,
+        "UNSUPPORTED_SEMANTICS": 1
       },
-      "total": 77
+      "total": 59,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "ehb:a77c506b087aab39da748554",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
-        "COVERAGE_GAP": 9,
-        "DISCOVERY_GAP": 59,
-        "UNSUPPORTED_SEMANTICS": 0
+        "COVERAGE_GAP": 8,
+        "DISCOVERY_GAP": 29,
+        "UNSUPPORTED_SEMANTICS": 4
       },
-      "total": 68
+      "total": 41,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "ehb:d55198aea2a0c1a1c655a1bf",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
       "counts": {
         "COVERAGE_GAP": 1,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 1
+      "total": 1,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
       "split": "HELDOUT",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 101,
-        "UNSUPPORTED_SEMANTICS": 0
+        "DISCOVERY_GAP": 60,
+        "UNSUPPORTED_SEMANTICS": 4
       },
-      "total": 101
+      "total": 64,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "ehb:f670d11eb77d466e17f71b9d",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_SUPPORT",
       "counts": {
         "COVERAGE_GAP": 5,
         "DISCOVERY_GAP": 1,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 6
+      "total": 6,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "ehb:f78f73c096f37e04ec99961e",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "INDENTURE_OR_NOTE",
       "counts": {
         "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 87,
-        "UNSUPPORTED_SEMANTICS": 2
+        "DISCOVERY_GAP": 56,
+        "UNSUPPORTED_SEMANTICS": 12
       },
-      "total": 89
+      "total": 68,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fdp:CHWY-2026-CA",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fdp:CONMED-2025-PLAIN",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 4
       },
-      "total": 4
+      "total": 4,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fdp:DSGR-2024-AMD3",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 3
       },
-      "total": 3
+      "total": 3,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fdp:DSGR-2025-AR2",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 3
       },
-      "total": 3
+      "total": 3,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fdp:GIB-2026-CA",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fdp:RIOT-2026-CA",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:an-2020-2026-credit-facility:doc-a-2020-03-26-third-ar-credit-agreement.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
+        "UNSUPPORTED_SEMANTICS": 1
       },
-      "total": 0
+      "total": 1,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:an-2020-2026-credit-facility:doc-b-2026-09-14-fifth-ar-credit-agreement.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
+        "UNSUPPORTED_SEMANTICS": 1
       },
-      "total": 0
+      "total": 1,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:chwy",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 23,
         "DISCOVERY_GAP": 7,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 30
+      "total": 30,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
+        "UNSUPPORTED_SEMANTICS": 4
       },
-      "total": 0
+      "total": 4,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
+        "UNSUPPORTED_SEMANTICS": 4
       },
-      "total": 0
+      "total": 4,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_SUPPORT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:conmed-2025-credit-facility:ex10-2-second-amendment-2022-08-02.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:conmed-amendment",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "UNKNOWN",
       "counts": {
         "COVERAGE_GAP": 8,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 8
+      "total": 8,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "fixture:conmed-article7",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 33,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 33
+      "total": 33,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "fixture:conmed-defs",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 27,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 27
+      "total": 27,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "fixture:conmed-gsa",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_SUPPORT",
       "counts": {
         "COVERAGE_GAP": 33,
-        "DISCOVERY_GAP": 7,
+        "DISCOVERY_GAP": 6,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 40
+      "total": 39,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "fixture:conmed-second-amd",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "UNKNOWN",
       "counts": {
         "COVERAGE_GAP": 4,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 4
+      "total": 4,
+      "textBasis": "COMPOSITE"
     },
     {
       "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
+        "UNSUPPORTED_SEMANTICS": 1
       },
-      "total": 0
+      "total": 1,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
+        "UNSUPPORTED_SEMANTICS": 1
       },
-      "total": 0
+      "total": 1,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
       "split": "DEV",
       "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 0
       },
-      "total": 0
+      "total": 0,
+      "textBasis": "DOCUMENT"
     },
     {
       "sourceId": "fixture:dsgr-2022-2025-credit-facility:doc-d-2025-second-amended-restated-credit-agreement.htm",
       "split": "DEV",
       "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 1
-    },
-    {
-      "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 1
-    },
-    {
-      "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "fixture:fwrg-article6",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 11,
-        "DISCOVERY_GAP": 1,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 12
-    },
-    {
-      "sourceId": "fixture:fwrg-defs",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 11,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 11
-    },
-    {
-      "sourceId": "fixture:gibraltar",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 21,
-        "DISCOVERY_GAP": 14,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 35
-    },
-    {
-      "sourceId": "fixture:lsb-article6",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 8,
-        "DISCOVERY_GAP": 9,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 17
-    },
-    {
-      "sourceId": "fixture:lsb-defs",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 3,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 3
-    },
-    {
-      "sourceId": "fixture:lsb-intercreditor",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 1,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 1
-    },
-    {
-      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-b-2025-05-19-amended-restated-credit-agreement.htm",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "fixture:wor-2023-2026-credit-facility:doc-a-2023-09-27-fourth-ar-credit-agreement.htm",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "fixture:wor-2023-2026-credit-facility:doc-b-2026-08-31-fifth-ar-credit-agreement.htm",
-      "split": "DEV",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:chef-unknown-ex_975043",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:chwy_alt-unknown-d43042dex101",
-      "split": "DEV",
-      "duplicateOf": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:mck-unknown-mck_ex101termloanagreement",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 1
-      },
-      "total": 1
-    },
-    {
-      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
-      "split": "HELDOUT",
-      "duplicateOf": null,
-      "counts": {
-        "COVERAGE_GAP": 0,
-        "DISCOVERY_GAP": 0,
-        "UNSUPPORTED_SEMANTICS": 0
-      },
-      "total": 0
-    },
-    {
-      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
-      "split": "HELDOUT",
-      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
       "counts": {
         "COVERAGE_GAP": 0,
         "DISCOVERY_GAP": 0,
         "UNSUPPORTED_SEMANTICS": 3
       },
-      "total": 3
+      "total": 3,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 6
+      },
+      "total": 6,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 5
+      },
+      "total": 5,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "fixture:fwrg-article6",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 11,
+        "DISCOVERY_GAP": 1,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 12,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "fixture:fwrg-defs",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 11,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 11,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "fixture:gibraltar",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 21,
+        "DISCOVERY_GAP": 14,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 35,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "fixture:lsb-article6",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 8,
+        "DISCOVERY_GAP": 9,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 17,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "fixture:lsb-defs",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 3,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 3,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "fixture:lsb-intercreditor",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_SUPPORT",
+      "counts": {
+        "COVERAGE_GAP": 1,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 1,
+      "textBasis": "COMPOSITE"
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-b-2025-05-19-amended-restated-credit-agreement.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "fixture:wor-2023-2026-credit-facility:doc-a-2023-09-27-fourth-ar-credit-agreement.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 1
+      },
+      "total": 1,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "fixture:wor-2023-2026-credit-facility:doc-b-2026-08-31-fifth-ar-credit-agreement.htm",
+      "split": "DEV",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 1
+      },
+      "total": 1,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 4
+      },
+      "total": 4,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 2
+      },
+      "total": 2,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 4
+      },
+      "total": 4,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:chef-unknown-ex_975043",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:chwy_alt-unknown-d43042dex101",
+      "split": "HELDOUT",
+      "duplicateOf": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "docType": "UNKNOWN",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 4
+      },
+      "total": 4,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:mck-unknown-mck_ex101termloanagreement",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 6
+      },
+      "total": 6,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 7
+      },
+      "total": 7,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 14
+      },
+      "total": 14,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 0
+      },
+      "total": 0,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 4
+      },
+      "total": 4,
+      "textBasis": "DOCUMENT"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "split": "HELDOUT",
+      "duplicateOf": null,
+      "docType": "CREDIT_AGREEMENT",
+      "counts": {
+        "COVERAGE_GAP": 0,
+        "DISCOVERY_GAP": 0,
+        "UNSUPPORTED_SEMANTICS": 3
+      },
+      "total": 3,
+      "textBasis": "DOCUMENT"
     }
   ]
 }
