@@ -14,7 +14,8 @@ export async function getFlywheelStatus(executor: NeonHttpsExecutor): Promise<Fl
 
   const runRows = await executor.execute(
     `SELECT "runId", slice, status, "startedAt", "finishedAt", epoch,
-            "sourcesProcessed", "candidatesEvaluated", "proposalsAccepted", "proposalsRejected",
+            "sourcesProcessed", "candidatesEvaluated",
+            "proposalsAccepted", "proposalsMechanicallyReplayed", "proposalsRejected",
             "errorRateByClassJson", "errorMessage"
      FROM flywheel_runs
      ORDER BY "startedAt" DESC
@@ -22,7 +23,8 @@ export async function getFlywheelStatus(executor: NeonHttpsExecutor): Promise<Fl
   ).catch(() => [] as Record<string, unknown>[]);
 
   const rulesRows = await executor.execute(
-    `SELECT "rulesetVersion", "acceptedCount", "updatedAt"
+    `SELECT "rulesetVersion", "acceptedCount", "mechanicallyReplayedCount",
+            "independentlyVerifiedCount", "updatedAt"
      FROM learning_rulesets
      ORDER BY "rulesetVersion" DESC
      LIMIT 1`,
@@ -61,9 +63,34 @@ export async function getFlywheelStatus(executor: NeonHttpsExecutor): Promise<Fl
     }
   }
 
+  const mechanicallyReplayed = run
+    ? asNum(
+        run.proposalsMechanicallyReplayed ??
+          run.proposalsmechanicallyreplayed ??
+          run.proposalsAccepted ??
+          run.proposalsaccepted,
+      )
+    : 0;
+  const mechRules = rules
+    ? asNum(
+        rules.mechanicallyReplayedCount ??
+          rules.mechanicallyreplayedcount ??
+          rules.acceptedCount ??
+          rules.acceptedcount,
+      )
+    : 0;
+  const verifiedRules = rules
+    ? asNum(rules.independentlyVerifiedCount ?? rules.independentlyverifiedcount)
+    : 0;
+
   return {
     authorityStatus: AUTHORITY_STATUS,
     paidInferenceUsed: FLYWHEEL_PAID_INFERENCE,
+    adjudicationHonesty: {
+      acceptMeans: "MECHANICALLY_REPLAYED",
+      independentlyVerifiedRequires: "held-out adjudicated goldens",
+      productionTreatsMechanicallyReplayedAsVerified: false,
+    },
     lock,
     latestRun: run
       ? {
@@ -82,7 +109,8 @@ export async function getFlywheelStatus(executor: NeonHttpsExecutor): Promise<Fl
           epoch: run.epoch == null ? null : asNum(run.epoch),
           sourcesProcessed: asNum(run.sourcesProcessed ?? run.sourcesprocessed),
           candidatesEvaluated: asNum(run.candidatesEvaluated ?? run.candidatesevaluated),
-          proposalsAccepted: asNum(run.proposalsAccepted ?? run.proposalsaccepted),
+          proposalsMechanicallyReplayed: mechanicallyReplayed,
+          proposalsAccepted: mechanicallyReplayed,
           proposalsRejected: asNum(run.proposalsRejected ?? run.proposalsrejected),
           errorRateByClass,
           errorMessage: run.errorMessage ? String(run.errorMessage) : null,
@@ -90,7 +118,9 @@ export async function getFlywheelStatus(executor: NeonHttpsExecutor): Promise<Fl
       : null,
     ruleset: {
       version: rules ? asNum(rules.rulesetVersion ?? rules.rulesetversion) : null,
-      acceptedCount: rules ? asNum(rules.acceptedCount ?? rules.acceptedcount) : 0,
+      mechanicallyReplayedCount: mechRules,
+      independentlyVerifiedCount: verifiedRules,
+      acceptedCount: mechRules + verifiedRules,
       updatedAt: rules
         ? rules.updatedAt instanceof Date
           ? rules.updatedAt.toISOString()

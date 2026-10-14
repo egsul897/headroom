@@ -4192,20 +4192,23 @@ model LearningEvaluationOutcome {
 }
 
 model LearningImprovementProposal {
-  id           String   @id @default(cuid())
-  proposalId   String   @unique
-  packageKey   String
-  runId        String
-  lever        String
-  summary      String
-  bounded      Boolean  @default(true)
-  autoApply    Boolean  @default(false)
-  evidenceJson Json
-  state        String   @default("PROPOSED")
-  createdAt    DateTime @default(now())
+  id                  String   @id @default(cuid())
+  proposalId          String   @unique
+  packageKey          String
+  runId               String
+  lever               String
+  summary             String
+  bounded             Boolean  @default(true)
+  autoApply           Boolean  @default(false)
+  evidenceJson        Json
+  state               String   @default("PROPOSED")
+  /// PROPOSED | MECHANICALLY_REPLAYED | INDEPENDENTLY_VERIFIED | REJECTED | SUPERSEDED
+  adjudicationStatus  String   @default("PROPOSED")
+  createdAt           DateTime @default(now())
 
   @@index([packageKey])
   @@index([state])
+  @@index([adjudicationStatus])
   @@map("learning_improvement_proposals")
 }
 
@@ -4357,15 +4360,18 @@ model KfPrecedentImportCheckpoint {
 // =============================================================================
 
 model LearningRuleset {
-  id               String   @id @default(cuid())
-  rulesetVersion   Int      @unique
-  authorityStatus  String   @default("COMPUTED_NOT_CERTIFIED")
-  schemaVersion    String
-  payloadJson      Json
-  acceptedCount    Int      @default(0)
-  writtenFromEpoch Int?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                         String   @id @default(cuid())
+  rulesetVersion             Int      @unique
+  authorityStatus            String   @default("COMPUTED_NOT_CERTIFIED")
+  schemaVersion              String
+  payloadJson                Json
+  /// Legacy count of loadable rules (mechanical + independently verified).
+  acceptedCount              Int      @default(0)
+  mechanicallyReplayedCount  Int      @default(0)
+  independentlyVerifiedCount Int      @default(0)
+  writtenFromEpoch           Int?
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
 
   @@index([updatedAt])
   @@map("learning_rulesets")
@@ -4398,21 +4404,23 @@ model FlywheelLock {
 }
 
 model FlywheelRun {
-  id                   String    @id @default(cuid())
-  runId                String    @unique
-  slice                String
-  status               String
-  startedAt            DateTime
-  finishedAt           DateTime?
-  epoch                Int?
-  sourcesProcessed     Int       @default(0)
-  candidatesEvaluated  Int       @default(0)
-  proposalsAccepted    Int       @default(0)
-  proposalsRejected    Int       @default(0)
-  errorRateByClassJson Json?
-  detailJson           Json?
-  errorMessage         String?
-  createdAt            DateTime  @default(now())
+  id                            String    @id @default(cuid())
+  runId                         String    @unique
+  slice                         String
+  status                        String
+  startedAt                     DateTime
+  finishedAt                    DateTime?
+  epoch                         Int?
+  sourcesProcessed              Int       @default(0)
+  candidatesEvaluated           Int       @default(0)
+  /// Legacy name — means mechanically replayed (not independently verified).
+  proposalsAccepted             Int       @default(0)
+  proposalsMechanicallyReplayed Int       @default(0)
+  proposalsRejected             Int       @default(0)
+  errorRateByClassJson          Json?
+  detailJson                    Json?
+  errorMessage                  String?
+  createdAt                     DateTime  @default(now())
 
   @@index([startedAt])
   @@index([status])

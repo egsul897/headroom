@@ -24,6 +24,9 @@ export interface FlywheelSliceResult {
   epoch?: number;
   sourcesProcessed?: number;
   candidatesEvaluated?: number;
+  /** Rules that passed mechanical replay only (not independently verified). */
+  proposalsMechanicallyReplayed?: number;
+  /** @deprecated alias of proposalsMechanicallyReplayed */
   proposalsAccepted?: number;
   proposalsRejected?: number;
   errorRateByClass?: Record<string, number>;
@@ -36,6 +39,12 @@ export interface FlywheelSliceResult {
 export interface FlywheelStatus {
   authorityStatus: typeof AUTHORITY_STATUS;
   paidInferenceUsed: false; // flywheel never uses paid models
+  /** Explicit: mechanical replay ≠ independent legal verification. */
+  adjudicationHonesty: {
+    acceptMeans: "MECHANICALLY_REPLAYED";
+    independentlyVerifiedRequires: "held-out adjudicated goldens";
+    productionTreatsMechanicallyReplayedAsVerified: false;
+  };
   lock: {
     held: boolean;
     holderId: string | null;
@@ -50,6 +59,8 @@ export interface FlywheelStatus {
     epoch: number | null;
     sourcesProcessed: number;
     candidatesEvaluated: number;
+    proposalsMechanicallyReplayed: number;
+    /** @deprecated alias of proposalsMechanicallyReplayed */
     proposalsAccepted: number;
     proposalsRejected: number;
     errorRateByClass: Record<string, number> | null;
@@ -57,6 +68,9 @@ export interface FlywheelStatus {
   } | null;
   ruleset: {
     version: number | null;
+    mechanicallyReplayedCount: number;
+    independentlyVerifiedCount: number;
+    /** @deprecated loadable mechanical+verified count; prefer mechanicallyReplayedCount */
     acceptedCount: number;
     updatedAt: string | null;
   };

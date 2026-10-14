@@ -5,7 +5,7 @@
  * Extraction/classification improvements arrive only as learned-rules/vN.json.
  *
  * Crash safety:
- * - Each ACCEPT appends learned-rules/vN.partial.jsonl and Neon proposal/eval immediately.
+ * - Each MECHANICALLY_REPLAYED rule appends partial.jsonl + Neon proposal/eval immediately.
  * - Checkpoint tracks phase + candidateIndex so --resume continues mid-epoch.
  * - A completed source cursor means "enter proposals / next epoch", not "0 sources".
  */
@@ -118,7 +118,9 @@ export interface EpochDashboard {
   sourcesProcessed: number;
   covenantsComputed: number;
   errorRateByClass: Record<string, number>;
+  /** Count of rules that passed mechanical replay (not independently verified). */
   proposalsAccepted: number;
+  proposalsMechanicallyReplayed: number;
   proposalsRejected: number;
   rulesetVersion: number;
 }
@@ -158,7 +160,7 @@ function mergeTallies(a: Record<string, number>, b: Record<string, number>): Rec
 function applyPartialToRuleset(base: LearnedRuleSet, accepts: LearnedRule[]): LearnedRuleSet {
   let working = base;
   for (const rule of accepts) {
-    working = withProposedRule(working, { ...rule, state: "ACCEPTED" });
+    working = withProposedRule(working, { ...rule, state: "MECHANICALLY_REPLAYED" });
   }
   return working;
 }
@@ -505,6 +507,7 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
           covenantsComputed,
           errorRateByClass,
           proposalsAccepted: accepted,
+          proposalsMechanicallyReplayed: accepted,
           proposalsRejected: rejected,
           rulesetVersion: ruleset.rulesetVersion,
         };
@@ -611,10 +614,11 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
             },
             independent: true,
             notes: [
-              `ACCEPT ${gate.rule.ruleId}`,
+              `MECHANICALLY_REPLAYED ${gate.rule.ruleId}`,
               `errors ${gate.errorsBefore}→${gate.errorsAfter}`,
               `candidateIndex=${i}`,
-              `partial=v${nextRulesetVersion}.partial.jsonl`,
+              `adjudicationClass=MECHANICAL_REPLAY`,
+              `not INDEPENDENTLY_VERIFIED`,
               `authority=COMPUTED_NOT_CERTIFIED`,
             ],
             createdAt: now(),
@@ -679,7 +683,7 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
 
       if (gate.accepted || (i + 1) % proposalBatchSize === 0 || i + 1 === candidateEnd) {
         log(
-          `  [${i + 1}/${candidates.length}] rule ${candidate.ruleId} → ${gate.accepted ? "ACCEPT" : "REJECT"} (${gate.reason})`,
+          `  [${i + 1}/${candidates.length}] rule ${candidate.ruleId} → ${gate.accepted ? "MECHANICALLY_REPLAYED" : "REJECT"} (${gate.reason})`,
         );
       }
     }
@@ -692,12 +696,13 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
       covenantsComputed,
       errorRateByClass,
       proposalsAccepted: accepted,
+      proposalsMechanicallyReplayed: accepted,
       proposalsRejected: rejected,
       rulesetVersion: ruleset.rulesetVersion,
     };
     epochs.push(dashboard);
     log(
-      `epoch ${epoch} dashboard: sources=${sourcesProcessed} covenants=${covenantsComputed} accepted=${accepted} (new=${newAcceptsThisRun}) rejected=${rejected}${slicedEarly ? ` (slice pause at ${candidateEnd}/${candidates.length})` : ""}`,
+      `epoch ${epoch} dashboard: sources=${sourcesProcessed} covenants=${covenantsComputed} mechanicallyReplayed=${accepted} (new=${newAcceptsThisRun}) rejected=${rejected}${slicedEarly ? ` (slice pause at ${candidateEnd}/${candidates.length})` : ""}`,
     );
 
     if (slicedEarly) {

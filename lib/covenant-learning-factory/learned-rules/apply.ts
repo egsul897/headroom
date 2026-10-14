@@ -5,7 +5,7 @@
 
 import type { BasketCategory } from "../../contract-model/covenant-computation/types";
 import {
-  acceptedRules,
+  loadableRules,
   compileRuleRegex,
   type LearnedRule,
   type LearnedRuleSet,
@@ -33,7 +33,7 @@ export interface AliasMatch {
 
 function activeOfKind(ruleset: LearnedRuleSet | undefined, kind: LearnedRule["kind"]): LearnedRule[] {
   if (!ruleset) return [];
-  return acceptedRules(ruleset).filter((r) => r.kind === kind);
+  return loadableRules(ruleset).filter((r) => r.kind === kind);
 }
 
 /** First matching CATEGORY_HINT / GROWER_FORM wins (deterministic by ruleId). */
@@ -87,7 +87,7 @@ export function applyDefinitionAlias(term: string, ruleset?: LearnedRuleSet): Al
  */
 export function phrasePatternCaptureRules(ruleset?: LearnedRuleSet): LearnedRule[] {
   if (!ruleset) return [];
-  return acceptedRules(ruleset)
+  return loadableRules(ruleset)
     .filter(
       (r) =>
         (r.kind === "PHRASE_PATTERN" && Boolean(r.effect.family || r.effect.sectionFamily)) ||

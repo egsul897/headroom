@@ -53,7 +53,18 @@ export function withProposedRule(base: LearnedRuleSet, candidate: LearnedRule): 
     ...base,
     rules: [
       ...base.rules.filter((r) => r.ruleId !== candidate.ruleId),
-      { ...candidate, state: "ACCEPTED" },
+      {
+        ...candidate,
+        // Replay-gate pass = mechanical only — never INDEPENDENTLY_VERIFIED.
+        state: "MECHANICALLY_REPLAYED",
+        metrics: {
+          errorsBefore: candidate.metrics?.errorsBefore ?? 0,
+          errorsAfter: candidate.metrics?.errorsAfter ?? 0,
+          sourcesReplayed: candidate.metrics?.sourcesReplayed ?? 0,
+          goldenOk: candidate.metrics?.goldenOk ?? false,
+          adjudicationClass: "MECHANICAL_REPLAY",
+        },
+      },
     ],
   };
 }
@@ -101,8 +112,11 @@ export function measureReplaySource(source: ReplaySource, ruleset: LearnedRuleSe
 }
 
 /**
- * Evaluate one candidate. Accept only if total errors across replay sources
- * strictly decrease and every golden check passes.
+ * Evaluate one candidate. Advance to MECHANICALLY_REPLAYED only if total errors
+ * across replay sources strictly decrease and every golden check passes.
+ *
+ * This is NOT independent legal adjudication — signals are self-generated /
+ * kf_precedent. Callers must not label the result as VERIFIED.
  */
 export function evaluateReplayGate(args: {
   baseline: LearnedRuleSet;
@@ -132,15 +146,16 @@ export function evaluateReplayGate(args: {
       ? "golden regression"
       : after >= before
         ? `errors did not drop (${before} → ${after})`
-        : `errors dropped (${before} → ${after})`;
+        : `mechanical replay improved (${before} → ${after}); state=MECHANICALLY_REPLAYED not INDEPENDENTLY_VERIFIED`;
   const rule: LearnedRule = {
     ...args.candidate,
-    state: accepted ? "ACCEPTED" : "REJECTED",
+    state: accepted ? "MECHANICALLY_REPLAYED" : "REJECTED",
     metrics: {
       errorsBefore: before,
       errorsAfter: after,
       sourcesReplayed: args.sources.length,
       goldenOk,
+      adjudicationClass: accepted ? "MECHANICAL_REPLAY" : undefined,
     },
   };
   return {

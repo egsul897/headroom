@@ -25,15 +25,20 @@ async function persistRun(
   executor: NeonHttpsExecutor,
   result: FlywheelSliceResult,
 ): Promise<void> {
+  const mechanicallyReplayed =
+    result.proposalsMechanicallyReplayed ?? result.proposalsAccepted ?? 0;
   await executor.execute(
     `INSERT INTO flywheel_runs
        (id, "runId", slice, status, "startedAt", "finishedAt", epoch,
-        "sourcesProcessed", "candidatesEvaluated", "proposalsAccepted", "proposalsRejected",
+        "sourcesProcessed", "candidatesEvaluated", "proposalsAccepted",
+        "proposalsMechanicallyReplayed", "proposalsRejected",
         "errorRateByClassJson", "detailJson", "errorMessage", "createdAt")
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::jsonb,$13::jsonb,$14,$15)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::jsonb,$14::jsonb,$15,$16)
      ON CONFLICT ("runId") DO UPDATE SET
        status = EXCLUDED.status,
        "finishedAt" = EXCLUDED."finishedAt",
+       "proposalsAccepted" = EXCLUDED."proposalsAccepted",
+       "proposalsMechanicallyReplayed" = EXCLUDED."proposalsMechanicallyReplayed",
        "detailJson" = EXCLUDED."detailJson",
        "errorMessage" = EXCLUDED."errorMessage"`,
     [
@@ -46,12 +51,14 @@ async function persistRun(
       result.epoch ?? null,
       result.sourcesProcessed ?? 0,
       result.candidatesEvaluated ?? 0,
-      result.proposalsAccepted ?? 0,
+      mechanicallyReplayed,
+      mechanicallyReplayed,
       result.proposalsRejected ?? 0,
       JSON.stringify(result.errorRateByClass ?? {}),
       JSON.stringify({
         authorityStatus: "COMPUTED_NOT_CERTIFIED",
         paidInferenceUsed: FLYWHEEL_PAID_INFERENCE,
+        adjudicationClass: "MECHANICAL_REPLAY",
         ...(result.detail ?? {}),
       }),
       result.errorMessage ?? null,
@@ -187,21 +194,26 @@ export async function runFlywheelSlice(opts: {
         log: () => undefined,
       });
       const last = sweep.epochs[sweep.epochs.length - 1];
+      const mechanicallyReplayed =
+        last?.proposalsMechanicallyReplayed ?? last?.proposalsAccepted ?? 0;
       result = {
         ...result,
         status: "OK",
         epoch: last?.epoch ?? sweep.finalRulesetVersion,
         sourcesProcessed: sweep.totalSources,
         candidatesEvaluated: last
-          ? last.proposalsAccepted + last.proposalsRejected
+          ? mechanicallyReplayed + last.proposalsRejected
           : 0,
-        proposalsAccepted: last?.proposalsAccepted ?? 0,
+        proposalsMechanicallyReplayed: mechanicallyReplayed,
+        proposalsAccepted: mechanicallyReplayed,
         proposalsRejected: last?.proposalsRejected ?? 0,
         errorRateByClass: last?.errorRateByClass ?? {},
         detail: {
           stoppedReason: sweep.stoppedReason,
           finalRulesetVersion: sweep.finalRulesetVersion,
           slice,
+          adjudicationNote:
+            "ACCEPT today = MECHANICALLY_REPLAYED only; not INDEPENDENTLY_VERIFIED",
         },
         finishedAt: (opts.now ?? (() => new Date().toISOString()))(),
       };

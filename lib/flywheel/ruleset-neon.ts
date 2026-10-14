@@ -10,6 +10,9 @@ import {
   AUTHORITY_STATUS,
   LEARNED_RULES_SCHEMA,
   emptyRuleSet,
+  isIndependentlyVerified,
+  isMechanicallyReplayedOnly,
+  normalizeLearnedRuleSet,
   type LearnedRuleSet,
 } from "../covenant-learning-factory/learned-rules/types";
 import { writeLearnedRules } from "../covenant-learning-factory/learned-rules/load";
@@ -37,7 +40,7 @@ export async function loadLatestRulesetFromNeon(
   if (raw.authorityStatus !== AUTHORITY_STATUS) {
     throw new Error("Neon ruleset must carry COMPUTED_NOT_CERTIFIED");
   }
-  return raw;
+  return normalizeLearnedRuleSet(raw);
 }
 
 export async function saveRulesetToNeon(
@@ -45,32 +48,45 @@ export async function saveRulesetToNeon(
   ruleset: LearnedRuleSet,
   opts?: { exportToRepo?: boolean; rulesDir?: string },
 ): Promise<void> {
-  const acceptedCount = ruleset.rules.filter((r) => r.state === "ACCEPTED").length;
+  const normalized = normalizeLearnedRuleSet(ruleset);
+  const mechanicallyReplayedCount = normalized.rules.filter((r) =>
+    isMechanicallyReplayedOnly(r),
+  ).length;
+  const independentlyVerifiedCount = normalized.rules.filter((r) =>
+    isIndependentlyVerified(r),
+  ).length;
+  // Legacy column: loadable mechanical + independently verified (not legal VERIFIED).
+  const acceptedCount = mechanicallyReplayedCount + independentlyVerifiedCount;
   const now = new Date();
   await executor.execute(
     `INSERT INTO learning_rulesets
        (id, "rulesetVersion", "authorityStatus", "schemaVersion", "payloadJson",
-        "acceptedCount", "writtenFromEpoch", "createdAt", "updatedAt")
-     VALUES ($1,$2,$3,$4,$5::jsonb,$6,$7,$8,$9)
+        "acceptedCount", "mechanicallyReplayedCount", "independentlyVerifiedCount",
+        "writtenFromEpoch", "createdAt", "updatedAt")
+     VALUES ($1,$2,$3,$4,$5::jsonb,$6,$7,$8,$9,$10,$11)
      ON CONFLICT ("rulesetVersion") DO UPDATE SET
        "payloadJson" = EXCLUDED."payloadJson",
        "acceptedCount" = EXCLUDED."acceptedCount",
+       "mechanicallyReplayedCount" = EXCLUDED."mechanicallyReplayedCount",
+       "independentlyVerifiedCount" = EXCLUDED."independentlyVerifiedCount",
        "writtenFromEpoch" = EXCLUDED."writtenFromEpoch",
        "updatedAt" = EXCLUDED."updatedAt"`,
     [
       id(["ruleset", String(ruleset.rulesetVersion)]),
-      ruleset.rulesetVersion,
+      normalized.rulesetVersion,
       AUTHORITY_STATUS,
       LEARNED_RULES_SCHEMA,
-      JSON.stringify(ruleset),
+      JSON.stringify(normalized),
       acceptedCount,
-      ruleset.writtenFrom?.epoch ?? null,
+      mechanicallyReplayedCount,
+      independentlyVerifiedCount,
+      normalized.writtenFrom?.epoch ?? null,
       now,
       now,
     ],
   );
   if (opts?.exportToRepo) {
-    writeLearnedRules(ruleset, opts.rulesDir);
+    writeLearnedRules(normalized, opts.rulesDir);
   }
 }
 

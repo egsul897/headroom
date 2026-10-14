@@ -4,3 +4,4 @@ export * from "./load";
 export * from "./partial";
 export * from "./synthesize";
 export * from "./replay-gate";
+export * from "./promotion";

@@ -28,6 +28,8 @@ export type LearningRunStage =
   | "DISCOVERY"
   | "COMPILE"
   | "INDEPENDENT_EVAL"
+  /** Mechanical self-check vs kf_precedent / engine signals — not independent adjudication. */
+  | "MECHANICAL_SELF_CHECK"
   | "PERSIST"
   | "IMPROVEMENT_PROPOSAL";
 
@@ -171,16 +173,38 @@ export interface ImprovementProposal {
   summary: string;
   bounded: true;
   /**
-   * False for advisory proposals. True only after the replay gate measured
-   * an error drop with zero golden regressions (executable learned rules).
+   * False for advisory proposals. True only when a rule is MECHANICALLY_REPLAYED
+   * (replay gate) — never means independent legal verification or production authority.
    */
   autoApply: boolean;
   evidenceRefs: string[];
   createdAt: string;
-  state: "PROPOSED" | "REJECTED" | "SUPERSEDED" | "ACCEPTED";
+  /**
+   * Proposal lifecycle. Replay-gate pass → MECHANICALLY_REPLAYED (not ACCEPTED/VERIFIED).
+   * INDEPENDENTLY_VERIFIED requires held-out adjudicated evidence outside automated paths.
+   */
+  state:
+    | "PROPOSED"
+    | "REJECTED"
+    | "SUPERSEDED"
+    | "MECHANICALLY_REPLAYED"
+    | "INDEPENDENTLY_VERIFIED"
+    /** @deprecated legacy alias for MECHANICALLY_REPLAYED */
+    | "ACCEPTED";
+  /**
+   * Explicit adjudication class persisted to Neon (additive honesty field).
+   * MECHANICAL_REPLAY = self-check / kf_precedent replay only.
+   */
+  adjudicationStatus?:
+    | "PROPOSED"
+    | "MECHANICALLY_REPLAYED"
+    | "INDEPENDENTLY_VERIFIED"
+    | "REJECTED"
+    | "SUPERSEDED";
   /**
    * Executable rule artifact synthesized from ledger clusters.
    * Loaded by the extractor at runtime from learned-rules/vN.json / Neon.
+   * MECHANICALLY_REPLAYED rules remain COMPUTED_NOT_CERTIFIED.
    */
   executableRule?: import("./learned-rules/types").LearnedRule;
 }

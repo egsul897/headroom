@@ -54,6 +54,18 @@ Automated paths may append **PROPOSED** or **REVIEW_REQUIRED** only.
 **VERIFIED / REJECTED / SUPERSEDED** require attributable reviewer action.  
 Never writes production `Permission`, ledger usage, or APPROVED financial snapshots.
 
+## Learned-rule adjudication (honesty)
+
+Executable learned rules (`learned-rules/vN.json` / Neon `learning_rulesets`) use three states:
+
+| State | Meaning |
+|---|---|
+| **PROPOSED** | Synthesized from ledger / kf_precedent clusters; not yet replayed. |
+| **MECHANICALLY_REPLAYED** | Passed the replay gate vs self-generated / kf_precedent signals. Today's ACCEPT. |
+| **INDEPENDENTLY_VERIFIED** | Requires substantive **held-out** adjudicated golden expectations from sources **not** used to synthesize or replay the rule. Never automatic. |
+
+Mechanical self-check / replay is **not** independent adjudication. Production and compute paths must **not** treat `MECHANICALLY_REPLAYED` as verified legal authority (no `ContractRule` / certification). Neon columns `adjudicationStatus`, `mechanicallyReplayedCount`, `independentlyVerifiedCount`, and `proposalsMechanicallyReplayed` are additive honesty fields.
+
 ## Cohorts
 
 - **HELD_OUT** default: Mohawk (`0000851968` / MHK)

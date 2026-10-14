@@ -2,6 +2,13 @@
  * Executable, data-driven rule artifacts.
  * Hand-written code must not encode per-case patterns — only the engine,
  * safety gates, and learner may live in TypeScript; everything else is rules.
+ *
+ * Adjudication honesty:
+ * - PROPOSED: synthesized, not yet replayed
+ * - MECHANICALLY_REPLAYED: passed replay gate vs self-generated / kf_precedent signals
+ * - INDEPENDENTLY_VERIFIED: requires substantive held-out legal adjudication (not automatic)
+ *
+ * Production/compute paths must never treat MECHANICALLY_REPLAYED as verified legal authority.
  */
 
 import type { BasketCategory } from "../../contract-model/covenant-computation/types";
@@ -16,7 +23,18 @@ export type LearnedRuleKind =
   | "SECTION_MAPPING"
   | "CATEGORY_HINT";
 
-export type LearnedRuleState = "PROPOSED" | "ACCEPTED" | "REJECTED" | "SUPERSEDED";
+/**
+ * Learned-rule lifecycle states.
+ * Legacy "ACCEPTED" in on-disk JSON is normalized to MECHANICALLY_REPLAYED on load.
+ */
+export type LearnedRuleState =
+  | "PROPOSED"
+  | "MECHANICALLY_REPLAYED"
+  | "INDEPENDENTLY_VERIFIED"
+  | "REJECTED"
+  | "SUPERSEDED"
+  /** @deprecated Read-only legacy alias for MECHANICALLY_REPLAYED. */
+  | "ACCEPTED";
 
 export interface LearnedRuleEffect {
   /** Covenant family hint for extraction (e.g. DEBT_INCURRENCE). */
@@ -29,9 +47,23 @@ export interface LearnedRuleEffect {
   sectionFamily?: string;
 }
 
+/** Evidence required to promote MECHANICALLY_REPLAYED → INDEPENDENTLY_VERIFIED. */
+export interface IndependentVerificationEvidence {
+  /** Held-out source ids — must be disjoint from synthesis and replay sets. */
+  heldOutSourceIds: string[];
+  /** Adjudicated golden expectation refs (package keys, fixture ids, or review records). */
+  adjudicatedGoldenRefs: string[];
+  /** Sources that motivated synthesis (ledger provenance). */
+  synthesisSourceIds: string[];
+  /** Sources used in the mechanical replay gate. */
+  replaySourceIds: string[];
+  reviewerNote: string;
+  adjudicatedAt: string;
+}
+
 export interface LearnedRule {
   ruleId: string;
-  /** Monotonic ruleset version that introduced or last accepted this rule. */
+  /** Monotonic ruleset version that introduced or last advanced this rule. */
   version: number;
   kind: LearnedRuleKind;
   /** Regex source synthesized from ledger evidence — never free-form invention. */
@@ -50,7 +82,11 @@ export interface LearnedRule {
     errorsAfter: number;
     sourcesReplayed: number;
     goldenOk: boolean;
+    /** Explicit: replay gate is mechanical, not independent legal adjudication. */
+    adjudicationClass?: "MECHANICAL_REPLAY" | "INDEPENDENT_HELD_OUT";
   };
+  /** Present only when state === INDEPENDENTLY_VERIFIED. */
+  independentVerification?: IndependentVerificationEvidence;
 }
 
 export interface LearnedRuleSet {
@@ -62,8 +98,11 @@ export interface LearnedRuleSet {
   /** Provenance of the file itself. */
   writtenFrom?: {
     epoch: number;
-    acceptedRuleIds: string[];
+    /** Rule ids advanced to MECHANICALLY_REPLAYED this write. */
+    mechanicallyReplayedRuleIds: string[];
     rejectedRuleIds: string[];
+    /** @deprecated legacy key — prefer mechanicallyReplayedRuleIds */
+    acceptedRuleIds?: string[];
   };
 }
 
@@ -77,8 +116,68 @@ export function emptyRuleSet(version = 0): LearnedRuleSet {
   };
 }
 
+/** Normalize legacy ACCEPTED → MECHANICALLY_REPLAYED. */
+export function normalizeLearnedRuleState(state: string): LearnedRuleState {
+  if (state === "ACCEPTED") return "MECHANICALLY_REPLAYED";
+  return state as LearnedRuleState;
+}
+
+export function normalizeLearnedRule(rule: LearnedRule): LearnedRule {
+  const state = normalizeLearnedRuleState(rule.state);
+  return state === rule.state ? rule : { ...rule, state };
+}
+
+export function normalizeLearnedRuleSet(ruleset: LearnedRuleSet): LearnedRuleSet {
+  return {
+    ...ruleset,
+    authorityStatus: AUTHORITY_STATUS,
+    rules: ruleset.rules.map(normalizeLearnedRule),
+    writtenFrom: ruleset.writtenFrom
+      ? {
+          ...ruleset.writtenFrom,
+          mechanicallyReplayedRuleIds:
+            ruleset.writtenFrom.mechanicallyReplayedRuleIds ??
+            ruleset.writtenFrom.acceptedRuleIds ??
+            [],
+        }
+      : undefined,
+  };
+}
+
+/**
+ * Rules loadable by the extractor at runtime (COMPUTED_NOT_CERTIFIED only).
+ * Includes MECHANICALLY_REPLAYED and INDEPENDENTLY_VERIFIED — never implies production authority.
+ */
+export function loadableRules(ruleset: LearnedRuleSet): LearnedRule[] {
+  return ruleset.rules
+    .map(normalizeLearnedRule)
+    .filter(
+      (r) =>
+        r.state === "MECHANICALLY_REPLAYED" ||
+        r.state === "INDEPENDENTLY_VERIFIED" ||
+        r.state === "ACCEPTED",
+    );
+}
+
+/** @deprecated Use loadableRules — name "accepted" implied legal acceptance. */
 export function acceptedRules(ruleset: LearnedRuleSet): LearnedRule[] {
-  return ruleset.rules.filter((r) => r.state === "ACCEPTED");
+  return loadableRules(ruleset);
+}
+
+export function independentlyVerifiedRules(ruleset: LearnedRuleSet): LearnedRule[] {
+  return ruleset.rules
+    .map(normalizeLearnedRule)
+    .filter((r) => r.state === "INDEPENDENTLY_VERIFIED");
+}
+
+export function isIndependentlyVerified(rule: LearnedRule): boolean {
+  return normalizeLearnedRuleState(rule.state) === "INDEPENDENTLY_VERIFIED";
+}
+
+/** True when the rule passed only the mechanical replay gate. */
+export function isMechanicallyReplayedOnly(rule: LearnedRule): boolean {
+  const s = normalizeLearnedRuleState(rule.state);
+  return s === "MECHANICALLY_REPLAYED" || s === "ACCEPTED";
 }
 
 export function compileRuleRegex(rule: LearnedRule): RegExp | null {

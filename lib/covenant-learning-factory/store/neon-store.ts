@@ -307,10 +307,17 @@ async function writeLearningManifest(
 
   let insertedProposals = 0;
   for (const p of manifest.improvementProposals ?? []) {
+    const adjudicationStatus =
+      p.adjudicationStatus ??
+      (p.state === "ACCEPTED" || p.state === "MECHANICALLY_REPLAYED"
+        ? "MECHANICALLY_REPLAYED"
+        : p.state);
+    const state =
+      p.state === "ACCEPTED" ? "MECHANICALLY_REPLAYED" : p.state;
     await executor.execute(
       `INSERT INTO learning_improvement_proposals
-        (id, "proposalId", "packageKey", "runId", lever, summary, bounded, "autoApply", "evidenceJson", state, "createdAt")
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11)
+        (id, "proposalId", "packageKey", "runId", lever, summary, bounded, "autoApply", "evidenceJson", state, "adjudicationStatus", "createdAt")
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11,$12)
        ON CONFLICT ("proposalId") DO NOTHING`,
       [
         p.proposalId,
@@ -325,8 +332,16 @@ async function writeLearningManifest(
           evidenceRefs: p.evidenceRefs ?? [],
           executableRule: p.executableRule ?? null,
           authorityStatus: "COMPUTED_NOT_CERTIFIED",
+          adjudicationStatus,
+          adjudicationClass:
+            adjudicationStatus === "MECHANICALLY_REPLAYED"
+              ? "MECHANICAL_REPLAY"
+              : adjudicationStatus === "INDEPENDENTLY_VERIFIED"
+                ? "INDEPENDENT_HELD_OUT"
+                : null,
         }),
-        p.state,
+        state,
+        adjudicationStatus,
         new Date(p.createdAt),
       ],
     );

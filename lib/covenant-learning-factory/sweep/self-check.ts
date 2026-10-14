@@ -1,7 +1,8 @@
 /**
- * Cross-validate computed covenant results against independent Neon precedent
- * signals. Disagreements → error ledger entries. Unresolved → NEEDS_INPUT.
- * Never invents values.
+ * Mechanical self-check: cross-validate computed results against Neon
+ * kf_precedent signals (and engine consistency). This is NOT independent legal
+ * adjudication — disagreements feed the learning ledger for mechanical replay.
+ * Unresolved → NEEDS_INPUT. Never invents values.
  */
 
 import { createHash } from "node:crypto";
@@ -92,8 +93,8 @@ export function selfCheckComputation(args: {
       class: cls,
       severity,
       message,
-      stage: "INDEPENDENT_EVAL",
-      evidence: { sourceId: args.sourceId, ...evidence },
+      stage: "MECHANICAL_SELF_CHECK",
+      evidence: { sourceId: args.sourceId, ...evidence, adjudicationClass: "MECHANICAL_SELF_CHECK" },
       createdAt: now,
       correctiveHistory: [],
     });

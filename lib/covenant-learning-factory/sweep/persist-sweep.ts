@@ -163,14 +163,18 @@ export async function persistSweepProposal(
   executor: NeonHttpsExecutor,
   p: ImprovementProposal,
 ): Promise<void> {
+  const adjudicationStatus =
+    p.adjudicationStatus ??
+    (p.state === "ACCEPTED" ? "MECHANICALLY_REPLAYED" : p.state);
   await executor.execute(
     `INSERT INTO learning_improvement_proposals
-      (id, "proposalId", "packageKey", "runId", lever, summary, bounded, "autoApply", "evidenceJson", state, "createdAt")
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11)
+      (id, "proposalId", "packageKey", "runId", lever, summary, bounded, "autoApply", "evidenceJson", state, "adjudicationStatus", "createdAt")
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11,$12)
      ON CONFLICT ("proposalId") DO UPDATE SET
        state = EXCLUDED.state,
        "autoApply" = EXCLUDED."autoApply",
-       "evidenceJson" = EXCLUDED."evidenceJson"`,
+       "evidenceJson" = EXCLUDED."evidenceJson",
+       "adjudicationStatus" = EXCLUDED."adjudicationStatus"`,
     [
       p.proposalId,
       p.proposalId,
@@ -184,8 +188,17 @@ export async function persistSweepProposal(
         evidenceRefs: p.evidenceRefs,
         executableRule: p.executableRule ?? null,
         authorityStatus: "COMPUTED_NOT_CERTIFIED",
+        adjudicationStatus,
+        adjudicationClass:
+          adjudicationStatus === "MECHANICALLY_REPLAYED"
+            ? "MECHANICAL_REPLAY"
+            : adjudicationStatus === "INDEPENDENTLY_VERIFIED"
+              ? "INDEPENDENT_HELD_OUT"
+              : null,
       }),
-      p.state,
+      // Persist canonical state; map legacy ACCEPTED → MECHANICALLY_REPLAYED.
+      adjudicationStatus === "MECHANICALLY_REPLAYED" ? "MECHANICALLY_REPLAYED" : p.state === "ACCEPTED" ? "MECHANICALLY_REPLAYED" : p.state,
+      adjudicationStatus,
       new Date(p.createdAt),
     ],
   );
@@ -267,7 +280,11 @@ export async function persistRuleSetArtifact(
       "CALCULATION",
       "PROPOSED",
       "LEARNED_RULESET",
-      JSON.stringify(ruleset.writtenFrom?.acceptedRuleIds ?? []),
+      JSON.stringify(
+        ruleset.writtenFrom?.mechanicallyReplayedRuleIds ??
+          ruleset.writtenFrom?.acceptedRuleIds ??
+          [],
+      ),
       JSON.stringify(ruleset),
       `learned-rules.v${ruleset.rulesetVersion}`,
       new Date(),
@@ -279,19 +296,34 @@ export function proposalFromRule(args: {
   rule: LearnedRule;
   runId: string;
   packageKey?: string;
+  /** True when mechanical replay gate passed → MECHANICALLY_REPLAYED (not verified). */
   accepted: boolean;
 }): ImprovementProposal {
+  const state = args.accepted ? ("MECHANICALLY_REPLAYED" as const) : ("REJECTED" as const);
   return {
     proposalId: args.rule.ruleId,
     packageKey: args.packageKey ?? "clf-sweep:global",
     runId: args.runId,
     lever: "INTERPRETATION",
-    summary: `executable ${args.rule.kind}: /${args.rule.pattern}/ → ${JSON.stringify(args.rule.effect)}`,
+    summary: args.accepted
+      ? `MECHANICALLY_REPLAYED ${args.rule.kind}: /${args.rule.pattern}/ → ${JSON.stringify(args.rule.effect)} (not INDEPENDENTLY_VERIFIED)`
+      : `REJECTED ${args.rule.kind}: /${args.rule.pattern}/`,
     bounded: true,
     autoApply: args.accepted,
     evidenceRefs: args.rule.provenance.ledgerErrorIds,
     createdAt: args.rule.provenance.synthesizedAt,
-    state: args.accepted ? "ACCEPTED" : "REJECTED",
-    executableRule: args.rule,
+    state,
+    adjudicationStatus: state,
+    executableRule: {
+      ...args.rule,
+      state: args.accepted ? "MECHANICALLY_REPLAYED" : "REJECTED",
+      metrics: {
+        errorsBefore: args.rule.metrics?.errorsBefore ?? 0,
+        errorsAfter: args.rule.metrics?.errorsAfter ?? 0,
+        sourcesReplayed: args.rule.metrics?.sourcesReplayed ?? 0,
+        goldenOk: args.rule.metrics?.goldenOk ?? false,
+        adjudicationClass: args.accepted ? "MECHANICAL_REPLAY" : undefined,
+      },
+    },
   };
 }

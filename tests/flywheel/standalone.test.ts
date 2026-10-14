@@ -71,7 +71,9 @@ function memoryExecutor(): NeonHttpsExecutor & {
           rulesetVersion: version,
           payloadJson: JSON.parse(String(params[4])),
           acceptedCount: params[5],
-          updatedAt: params[8],
+          mechanicallyReplayedCount: params[6],
+          independentlyVerifiedCount: params[7],
+          updatedAt: params[10] ?? params[8],
         });
         return [];
       }
@@ -113,9 +115,10 @@ function memoryExecutor(): NeonHttpsExecutor & {
           sourcesProcessed: params[7],
           candidatesEvaluated: params[8],
           proposalsAccepted: params[9],
-          proposalsRejected: params[10],
-          errorRateByClassJson: params[11],
-          errorMessage: params[13],
+          proposalsMechanicallyReplayed: params[10],
+          proposalsRejected: params[11],
+          errorRateByClassJson: params[12],
+          errorMessage: params[14],
         });
         return [];
       }
@@ -205,7 +208,7 @@ describe("flywheel lock + ruleset neon", () => {
         flags: "i",
         effect: { family: "RESTRICTED_PAYMENTS" },
         provenance: { ledgerErrorIds: ["e"], synthesizedAt: "t", epoch: 1 },
-        state: "ACCEPTED",
+        state: "MECHANICALLY_REPLAYED",
       },
       candidateIndex: 0,
       acceptedAt: "2026-10-14T00:00:00.000Z",
@@ -248,6 +251,8 @@ describe("flywheel slice runner", () => {
     const status = await getFlywheelStatus(ex);
     expect(status.paidInferenceUsed).toBe(false);
     expect(status.authorityStatus).toBe("COMPUTED_NOT_CERTIFIED");
+    expect(status.adjudicationHonesty.acceptMeans).toBe("MECHANICALLY_REPLAYED");
+    expect(status.adjudicationHonesty.productionTreatsMechanicallyReplayedAsVerified).toBe(false);
     expect(status.latestRun?.slice).toBeTruthy();
   });
 });

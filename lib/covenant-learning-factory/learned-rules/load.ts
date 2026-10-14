@@ -8,6 +8,7 @@ import {
   AUTHORITY_STATUS,
   LEARNED_RULES_SCHEMA,
   emptyRuleSet,
+  normalizeLearnedRuleSet,
   type LearnedRuleSet,
 } from "./types";
 
@@ -47,7 +48,7 @@ export function loadLearnedRules(version: number, dir = DEFAULT_LEARNED_RULES_DI
   if (raw.authorityStatus !== AUTHORITY_STATUS) {
     throw new Error("learned-rules must carry COMPUTED_NOT_CERTIFIED");
   }
-  return raw;
+  return normalizeLearnedRuleSet(raw);
 }
 
 export function writeLearnedRules(ruleset: LearnedRuleSet, dir = DEFAULT_LEARNED_RULES_DIR): string {
@@ -63,28 +64,44 @@ export function writeLearnedRules(ruleset: LearnedRuleSet, dir = DEFAULT_LEARNED
   return path;
 }
 
-/** Merge newly accepted rules into a next versioned file. */
+/** Merge newly mechanically-replayed rules into a next versioned file. */
 export function bumpRuleSet(args: {
   previous: LearnedRuleSet;
+  /** Rules that passed the mechanical replay gate (→ MECHANICALLY_REPLAYED). */
   accepted: LearnedRuleSet["rules"];
   rejectedIds: string[];
   epoch: number;
 }): LearnedRuleSet {
   const nextVersion = args.previous.rulesetVersion + 1;
   const retained = args.previous.rules
-    .filter((r) => r.state === "ACCEPTED" && !args.rejectedIds.includes(r.ruleId))
+    .filter((r) => {
+      const s = r.state;
+      return (
+        (s === "MECHANICALLY_REPLAYED" ||
+          s === "INDEPENDENTLY_VERIFIED" ||
+          s === "ACCEPTED") &&
+        !args.rejectedIds.includes(r.ruleId)
+      );
+    })
     .map((r) => ({ ...r, version: r.version }));
-  const accepted = args.accepted.map((r) => ({
+  const mechanicallyReplayed = args.accepted.map((r) => ({
     ...r,
-    state: "ACCEPTED" as const,
+    state: "MECHANICALLY_REPLAYED" as const,
     version: nextVersion,
+    metrics: {
+      errorsBefore: r.metrics?.errorsBefore ?? 0,
+      errorsAfter: r.metrics?.errorsAfter ?? 0,
+      sourcesReplayed: r.metrics?.sourcesReplayed ?? 0,
+      goldenOk: r.metrics?.goldenOk ?? false,
+      adjudicationClass: "MECHANICAL_REPLAY" as const,
+    },
   }));
   const rejected = args.previous.rules
     .filter((r) => args.rejectedIds.includes(r.ruleId))
     .map((r) => ({ ...r, state: "REJECTED" as const }));
   // Keep rejected history for audit but mark superseded duplicates
   const byId = new Map<string, LearnedRuleSet["rules"][number]>();
-  for (const r of [...retained, ...rejected, ...accepted]) byId.set(r.ruleId, r);
+  for (const r of [...retained, ...rejected, ...mechanicallyReplayed]) byId.set(r.ruleId, r);
   return {
     schemaVersion: LEARNED_RULES_SCHEMA,
     rulesetVersion: nextVersion,
@@ -93,7 +110,8 @@ export function bumpRuleSet(args: {
     updatedAt: new Date().toISOString(),
     writtenFrom: {
       epoch: args.epoch,
-      acceptedRuleIds: accepted.map((r) => r.ruleId),
+      mechanicallyReplayedRuleIds: mechanicallyReplayed.map((r) => r.ruleId),
+      acceptedRuleIds: mechanicallyReplayed.map((r) => r.ruleId),
       rejectedRuleIds: args.rejectedIds,
     },
   };

@@ -188,7 +188,7 @@ describe("learned-rules apply + synthesize", () => {
           flags: "i",
           effect: { category: "GROWER_GREATER_OF" },
           provenance: { ledgerErrorIds: ["e1"], synthesizedAt: "2026-10-13T00:00:00.000Z", epoch: 1 },
-          state: "ACCEPTED",
+          state: "MECHANICALLY_REPLAYED",
         },
       ],
     };
@@ -241,7 +241,9 @@ describe("learned-rules apply + synthesize", () => {
       writeLearnedRules(next, dir);
       const loaded = loadLatestLearnedRules(dir);
       expect(loaded.rulesetVersion).toBe(1);
-      expect(loaded.rules.some((r) => r.ruleId === "lr:accept-1" && r.state === "ACCEPTED")).toBe(true);
+      expect(
+        loaded.rules.some((r) => r.ruleId === "lr:accept-1" && r.state === "MECHANICALLY_REPLAYED"),
+      ).toBe(true);
       expect(loaded.authorityStatus).toBe("COMPUTED_NOT_CERTIFIED");
     } finally {
       rmSync(dir, { recursive: true, force: true });
@@ -416,7 +418,7 @@ The Borrower may make distributions to the parent under the builder basket for R
       text: missedDoc,
       rules: {
         ...baseline,
-        rules: [{ ...phraseRule, state: "ACCEPTED" }],
+        rules: [{ ...phraseRule, state: "MECHANICALLY_REPLAYED" }],
       },
     });
     expect(captured.some((c) => /Restricted Payments/i.test(c.operativeText))).toBe(true);
@@ -487,7 +489,7 @@ describe("clf:sweep end-to-end (fake HTTPS)", () => {
       expect(existsSync(partialJsonlPath(1, dir))).toBe(true);
       const partial = loadPartialAccepts(1, dir);
       expect(partial.length).toBeGreaterThanOrEqual(1);
-      expect(neon.state.proposals.some((p) => p.state === "ACCEPTED")).toBe(true);
+      expect(neon.state.proposals.some((p) => p.state === "MECHANICALLY_REPLAYED")).toBe(true);
       expect(
         neon.state.evaluations.some((e) => String(e.evaluationId).startsWith("eval:accept:")),
       ).toBe(true);
@@ -521,7 +523,12 @@ describe("clf:sweep end-to-end (fake HTTPS)", () => {
       // Must not strand at 0 sources.
       expect(resumed.epochs.some((e) => e.sourcesProcessed > 0 || e.proposalsAccepted > 0)).toBe(true);
       expect(loadLatestLearnedRules(dir).rulesetVersion).toBeGreaterThanOrEqual(1);
-      expect(loadLatestLearnedRules(dir).rules.some((r) => r.state === "ACCEPTED")).toBe(true);
+      expect(
+        loadLatestLearnedRules(dir).rules.some((r) => r.state === "MECHANICALLY_REPLAYED"),
+      ).toBe(true);
+      expect(
+        loadLatestLearnedRules(dir).rules.every((r) => r.state !== "INDEPENDENTLY_VERIFIED"),
+      ).toBe(true);
       // Partial cleared after finalize.
       expect(loadPartialAccepts(1, dir)).toHaveLength(0);
     } finally {
