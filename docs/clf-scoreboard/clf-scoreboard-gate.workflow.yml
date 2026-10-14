@@ -1,7 +1,9 @@
 # CLF scoreboard gate. Soft gate: computed ≠ certified.
 # Replays the sweep self-check (COVERAGE_GAP, DISCOVERY_GAP, UNSUPPORTED_SEMANTICS)
 # offline over the committed input snapshot and fails when HELDOUT errors rise
-# above the committed baseline. Deliberately NOT path-filtered: every PR runs it.
+# above the committed baseline, when HELDOUT UNSUPPORTED_SEMANTICS rises, on a material
+# per-source regression, on frozen-membership changes without a migration record, on
+# incomparable inputs (exit 3) and on baseline-history rewrites. Deliberately NOT path-filtered: every PR runs it.
 # No secrets, no Neon, no AI/LLM calls.
 name: clf-scoreboard-gate
 on:
@@ -14,16 +16,25 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - name: Scoreboard unit tests
-        run: npx vitest run tests/covenant-learning-factory/scoreboard-gate.test.ts
-      - name: HELDOUT regression gate (offline snapshot vs committed baseline)
+        run: npx vitest run tests/covenant-learning-factory/scoreboard-gate.test.ts tests/covenant-learning-factory/scoreboard-integrity.test.ts
+      - name: Base-branch baseline history (append-only prefix check)
+        if: github.event_name == 'pull_request'
+        run: >
+          git show "origin/${{ github.base_ref }}:scripts/covenant-learning-factory/scoreboard/baseline-history.json"
+          > /tmp/base-history.json 2>/dev/null
+          || echo '{"schema":"clf-scoreboard-baseline-history/v1","entries":[]}' > /tmp/base-history.json
+      - name: HELDOUT regression gate (identity-bound, frozen membership, append-only history)
         run: >
           npm run -s clf:scoreboard --
+          $( [ -s /tmp/base-history.json ] && echo --history-base=/tmp/base-history.json )
           --snapshot=scripts/covenant-learning-factory/scoreboard/snapshot.json.gz
           --rules-file=scripts/covenant-learning-factory/scoreboard/ruleset.json
           --baseline=scripts/covenant-learning-factory/scoreboard/baseline.json
