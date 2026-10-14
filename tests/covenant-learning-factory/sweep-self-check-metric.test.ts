@@ -14,7 +14,6 @@ import {
   COVERAGE_GAP_OMISSION_PREFIX,
   excerptReflectedByPrefixOnly,
   canonicalFamily,
-  sectionNumberOf,
   selfCheckComputation,
 } from "@/lib/covenant-learning-factory/sweep/self-check";
 
@@ -55,7 +54,8 @@ function markerCandidates(sourceId: string, text: string) {
     // Strict matcher: a candidate derived from a basket carries that basket's section and family.
     const basket = result.baskets[bi]!;
     // Structureless "proviso"/OTHER baskets fail closed under the strict matcher (no section, no family).
-    if (sectionNumberOf(basket.sectionRef, cite) == null && canonicalFamily(basket.covenantFamily) == null) continue;
+    // Family-OTHER baskets credit only >=80% coverage (reviewer note on #365), never a marker-anchored fragment.
+    if (canonicalFamily(basket.covenantFamily) == null) continue;
     const match = /\([0-9a-z]{1,6}\)\s+/i.exec(cite.slice(0, 240));
     if (!match || match.index == null || match.index < 40) continue;
     const limb = cite.slice(match.index, match.index + 120);

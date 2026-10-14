@@ -8,7 +8,7 @@
 import { createHash } from "node:crypto";
 import type { ComputationResult } from "../../contract-model/covenant-computation/types";
 import type { LearningErrorRecord } from "../types";
-import type { TreeLocator } from "./tree-locator";
+import { AMBIGUOUS, type TreeLocator } from "./tree-locator";
 
 export interface PrecedentCandidate {
   candidateId: string;
@@ -162,6 +162,14 @@ export function canonicalFamily(f: string | null | undefined): string | null {
   return null;
 }
 
+/** Share of the candidate text the citation covers: 1 when the citation contains it, else the
+ *  fraction for a contained fragment, else 0 (anchor-only overlap is never full coverage). */
+export function citeCoverage(excerpt: string, cite: string): number {
+  if (cite.includes(excerpt)) return 1;
+  if (excerpt.includes(cite)) return cite.length / Math.max(1, excerpt.length);
+  return 0;
+}
+
 function strictTextReflected(excerpt: string, cite: string): boolean {
   if (excerpt.length < 24 || cite.length < 24) return false;
   // Whole-text containment is not a fragment match: a short limb that appears in full is reflected.
@@ -196,6 +204,12 @@ export function strictCandidateMatch(
   basket: { cite: string; sectionRef: string | null | undefined; family: string | null | undefined; treeSection?: string | null },
 ): boolean {
   if (!strictTextReflected(cand.excerpt, basket.cite)) return false;
+  // Ambiguous tree location (duplicated clause) on EITHER side: reject. Falling back to the other
+  // side's location or to the declared section would credit an unproven location.
+  if (cand.treeSection === AMBIGUOUS || basket.treeSection === AMBIGUOUS) return false;
+  // A basket with no family evidence (OTHER) that captures only a fragment of the candidate is a
+  // partial capture, not a match: require it to cover >= 80% of the candidate text.
+  if (canonicalFamily(basket.family) == null && citeCoverage(cand.excerpt, basket.cite) < 0.8) return false;
   // Tree location (where the text sits in the parsed document) and the declared section
   // must agree. A basket whose label (e.g. "§7.03 Transactions with Affiliates") disagrees with
   // where its citation actually sits is mislabeled: fail closed rather than let the tree
