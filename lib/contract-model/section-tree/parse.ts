@@ -117,7 +117,9 @@ function findHeadings(text: string): Heading[] {
     const lead = m[1]!;
     // A bare "6.01 Title." after a sentence (not line start / wide gap) needs the "Section" word.
     const hasWord = /section|§/i.test(m[0].slice(lead.length, lead.length + 12));
-    if (/^\.\s+$/.test(lead) && !hasWord) continue;
+    // (A lead of ".\s+" that crosses a newline is a line start: the previous section's last sentence
+    // ended the line — the acn under-parse, 96 of 116 body headings dropped.)
+    if (/^\.\s+$/.test(lead) && !lead.includes("\n") && !hasWord) continue;
     const title = m[3]!.replace(/\s+/g, " ").trim();
     // Cross-reference shapes, not headings: "Section 6.01 hereof", "Section 7.02 of the Credit Agreement".
     if (/^(hereof|herein|of the|of this|above|below|and|or|to|shall|is|has)\b/i.test(title)) continue;

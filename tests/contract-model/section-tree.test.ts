@@ -152,3 +152,12 @@ describe("tree mode flag (#365 note 4)", () => {
     delete process.env.CLF_SCOREBOARD_TREE_MODE;
   });
 });
+
+describe("acn under-parse (#365 note 7)", () => {
+  it("a heading on the line after a sentence-ending period is a line-start heading, not a mid-sentence reference", () => {
+    const body = " The Borrower shall deliver to the Administrative Agent for distribution to each Lender, in form and detail satisfactory to the Administrative Agent, the items described in this Section.";
+    const text = `ARTICLE VI. AFFIRMATIVE COVENANTS\n  6.01    Financial Statements.   ${body}\n  6.02    Certificates; Other Information.   ${body}\n  6.03    Notices.   ${body}\n`;
+    const t = parseSectionTree(text);
+    expect(t.nodes.filter((n) => n.kind === "SECTION").map((n) => n.sectionNumber)).toEqual(["6.1", "6.2", "6.3"]);
+  });
+});
