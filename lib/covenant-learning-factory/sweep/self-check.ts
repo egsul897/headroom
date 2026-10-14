@@ -50,7 +50,7 @@ function eid(parts: string[]): string {
   return createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 20);
 }
 
-function norm(s: string): string {
+export function norm(s: string): string {
   return s.replace(/\s+/g, " ").trim().toLowerCase();
 }
 
@@ -244,7 +244,7 @@ export function checkGrowerConsistency(input: GrowerCheckInput): string | null {
 }
 
 const basketSectionCache = new WeakMap<object, Map<string, string | null>>();
-function basketTreeSection(loc: TreeLocator, cite: string): string | null {
+export function basketTreeSection(loc: TreeLocator, cite: string): string | null {
   let m = basketSectionCache.get(loc);
   if (!m) basketSectionCache.set(loc, (m = new Map()));
   if (!m.has(cite)) m.set(cite, loc.citationSection(cite));

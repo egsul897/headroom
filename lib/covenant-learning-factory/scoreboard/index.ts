@@ -138,8 +138,10 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
     definitions: input.definitions,
     conditions: input.conditions,
     now: FIXED_NOW,
-    // Tree locator is OPT-IN (CLF_SCOREBOARD_TREE=1): it did not lower HELDOUT honestly (see docs/clf-scoreboard/section-tree-findings.md).
-    locator: process.env.CLF_SCOREBOARD_TREE !== "1" ? undefined : buildTreeLocator({ documentText: input.documentText, candidates: input.candidates }),
+    // Tree locator is ON by default (CLF_SCOREBOARD_TREE=0 disables). After the SEC text backfill and the
+    // nesting fixes it lowers HELDOUT 3616 -> 2386 (v2) with 16/16 hand-checked flips genuine
+    // (docs/clf-scoreboard/section-tree-findings.md). Mode: CLF_SCOREBOARD_TREE_MODE=agree (default) | override.
+    locator: process.env.CLF_SCOREBOARD_TREE === "0" ? undefined : buildTreeLocator({ documentText: input.documentText, candidates: input.candidates }),
   });
   const counts = emptyCounts();
   for (const e of errors) {
