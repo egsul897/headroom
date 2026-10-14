@@ -1,3 +1,4 @@
+import { stripHtmlPreserveStructure } from "../../contract-model/compiler/deterministic-extraction/html-text";
 /**
  * Build a ComputationPackage from Neon precedent rows (bytes + candidates).
  * Never invents operative text — uses document bytes or concatenated candidate excerpts.
@@ -37,6 +38,8 @@ export function buildComputationPackage(args: {
   const packageKey = `clf-sweep:${args.source.sourceId}`;
   const companyId = args.source.companyId || args.source.issuerCik || args.source.sourceId;
   let text = args.documentText?.trim() ?? "";
+  // Raw SEC filings are HTML; compute over the visible text, never markup.
+  if (/<(html|body|div|p|font|table|span)\b/i.test(text.slice(0, 20000))) text = stripHtmlPreserveStructure(text).trim();
   if (text.length < 80) {
     // Fall back to candidate excerpts only — marked as precedent composite, not invented
     const parts = args.candidates

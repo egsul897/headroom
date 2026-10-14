@@ -14,6 +14,7 @@ import { createNeonHttpsExecutor, redactConnectionSecrets } from "../../lib/cove
 import { requireSecUserAgentFromEnv } from "../../lib/edgar-historical-backfill/sec-identity";
 
 const arg = (k: string) => process.argv.find((a) => a.startsWith(`--${k}=`))?.split("=")[1];
+const STORE_MISMATCH = process.argv.includes("--store-hash-mismatch");
 const DRY = process.argv.includes("--dry-run");
 const LIMIT = Number(arg("limit") ?? 1e9);
 const RPS = Math.min(10, Number(arg("rps") ?? 4));
@@ -26,19 +27,24 @@ export function isSecUrl(u: string): boolean {
 async function main() {
   const ua = DRY ? "dry-run" : requireSecUserAgentFromEnv();
   const ex = await createNeonHttpsExecutor(process.env.DATABASE_URL!);
-  await ex.execute(`CREATE TABLE IF NOT EXISTS kf_source_text_backfill (
+  if (!DRY) await ex.execute(`CREATE TABLE IF NOT EXISTS kf_source_text_backfill (
     "sourceId" text PRIMARY KEY, status text NOT NULL, "httpStatus" int, sha256 text,
     "originalBytesHash" text, "byteSize" int, error text, "fetchedAt" timestamptz NOT NULL DEFAULT now())`);
+  const has = (await ex.execute(`SELECT to_regclass('kf_source_text_backfill') IS NOT NULL AS ok`))[0]?.ok === true;
+  const resumeClause = has
+    ? `AND NOT EXISTS (SELECT 1 FROM kf_source_text_backfill b WHERE b."sourceId" = ks.id AND b.status IN ('FETCHED','HASH_MISMATCH_STORED'))`
+    : "";
   const rows = await ex.execute(`SELECT ks.id, ks."sourceUrl", ks."originalBytesHash", NULL AS filename
     FROM knowledge_sources ks
     WHERE ks."sourceUrl" IS NOT NULL AND ks."originalBytesHash" IS NOT NULL
       AND NOT EXISTS (SELECT 1 FROM document_byte_objects d WHERE d."contentHash" = ks."originalBytesHash")
-      AND NOT EXISTS (SELECT 1 FROM kf_source_text_backfill b WHERE b."sourceId" = ks.id AND b.status = 'FETCHED')
+      ${resumeClause}
     ORDER BY ks.id`);
   const todo = rows.filter((r) => isSecUrl(String(r.sourceUrl))).slice(0, LIMIT);
   console.log(`pending=${todo.length} (of ${rows.length} without bytes) dry=${DRY} rps=${RPS}`);
   const counts: Record<string, number> = {};
   for (const r of todo) {
+    const fname = String(r.sourceUrl).split("/").pop() || "document";
     const id = String(r.id), url = String(r.sourceUrl), expect = String(r.originalBytesHash).toLowerCase();
     let status = "FETCH_FAILED", http: number | null = null, sha: string | null = null, size: number | null = null, err: string | null = null;
     if (DRY) { console.log(`would fetch ${id}`); continue; }
@@ -51,21 +57,29 @@ async function main() {
         if (sha === expect) {
           await ex.execute(`INSERT INTO document_byte_objects (id,"contentHash","byteSize","contentType",namespace,filename,bytes,"createdAt","updatedAt")
             VALUES ($1,$2,$3,$4,'sec-backfill',$5,$6,now(),now()) ON CONFLICT ("contentHash") DO NOTHING`,
-            [randomUUID(), sha, size, res.headers.get("content-type") ?? "application/octet-stream", r.filename ?? null, buf]);
+            [randomUUID(), sha, size, res.headers.get("content-type") ?? "application/octet-stream", fname, buf]);
           const v = await ex.execute(`SELECT count(*)::int AS n FROM document_byte_objects WHERE "contentHash"=$1`, [sha]);
           status = Number(v[0]?.n) === 1 ? "FETCHED" : "WRITE_UNVERIFIED";
+        } else if (STORE_MISMATCH) {
+          // Bytes come from the source's own SEC URL but differ from the recorded originalBytesHash.
+          // Store under their OWN sha256 in a separate namespace; linkage is via kf_source_text_backfill.sha256 only.
+          await ex.execute(`INSERT INTO document_byte_objects (id,"contentHash","byteSize","contentType",namespace,filename,bytes,"createdAt","updatedAt")
+            VALUES ($1,$2,$3,$4,'sec-backfill-hash-mismatch',$5,$6,now(),now()) ON CONFLICT ("contentHash") DO NOTHING`,
+            [randomUUID(), sha, size, res.headers.get("content-type") ?? "application/octet-stream", fname, buf]);
+          const v = await ex.execute(`SELECT count(*)::int AS n FROM document_byte_objects WHERE "contentHash"=$1`, [sha]);
+          status = Number(v[0]?.n) === 1 ? "HASH_MISMATCH_STORED" : "WRITE_UNVERIFIED";
         } else status = "HASH_MISMATCH";
       } else err = `http ${res.status}`;
     } catch (e) { err = redactConnectionSecrets(String((e as Error).message)).slice(0, 300); }
     await ex.execute(`INSERT INTO kf_source_text_backfill ("sourceId",status,"httpStatus",sha256,"originalBytesHash","byteSize",error,"fetchedAt")
       VALUES ($1,$2,$3,$4,$5,$6,$7,now()) ON CONFLICT ("sourceId") DO UPDATE SET status=EXCLUDED.status,"httpStatus"=EXCLUDED."httpStatus",
       sha256=EXCLUDED.sha256,"byteSize"=EXCLUDED."byteSize",error=EXCLUDED.error,"fetchedAt"=now()
-      WHERE kf_source_text_backfill.status <> 'FETCHED'`, [id, status, http, sha, expect, size, err]);
+      WHERE kf_source_text_backfill.status NOT IN ('FETCHED','HASH_MISMATCH_STORED')`, [id, status, http, sha, expect, size, err]);
     counts[status] = (counts[status] ?? 0) + 1;
     console.log(`${id} ${status} http=${http ?? "-"}`);
     await sleep(Math.ceil(1000 / RPS));
   }
-  const tot = await ex.execute(`SELECT count(*)::int AS n FROM document_byte_objects WHERE namespace='sec-backfill'`);
+  const tot = await ex.execute(`SELECT count(*)::int AS n FROM document_byte_objects WHERE namespace LIKE 'sec-backfill%'`);
   console.log(JSON.stringify({ counts, verifiedSecBackfillRows: tot[0]?.n }));
 }
 main().catch((e) => { console.error(redactConnectionSecrets(String(e?.message ?? e))); process.exit(1); });
