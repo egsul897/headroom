@@ -237,7 +237,7 @@ describe("proviso boundaries, page furniture, and non-capacity numbers", () => {
     });
     const schedule = (clauses: BasketClause[]) =>
       clauses.find((c) => /in excess of \$\s*[\d,]+(?:\.\d+)?[^.]{0,120}(?:described|listed|set forth) on Schedule/i.test(norm(c.operativeText)));
-    expect(categorize(schedule(fwrg)!.operativeText)).toBe("UNLIMITED_BY_PURPOSE");
-    expect(categorize(schedule(gibraltar)!.operativeText)).toBe("UNLIMITED_BY_PURPOSE");
+    expect(categorize(schedule(fwrg)!.operativeText)).toBe("CONDITIONS_LIMITED");
+    expect(categorize(schedule(gibraltar)!.operativeText)).toBe("CONDITIONS_LIMITED");
   });
 });
