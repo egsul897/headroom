@@ -91,3 +91,16 @@ Why they were gaps without the tree: these candidates have `sectionRef=null` and
   - Both sources are DEV under the CIK split.
 - **(6)** `fetchDocumentText` throws a redacted error on Neon errors; it returns null only when the row is absent.
 - **(7)** acn under-parse: a heading on the line after a sentence-ending period was treated as a mid-sentence reference (96 of 116 body headings were dropped). Fixed: 15 → 111 sections.
+
+## Re-measure after reviewer fixes (1) ambiguous-side REJECT, (2) OTHER-proviso fragment needs ≥80% coverage
+
+Full snapshot (r2/after-snap, 187 sources, CIK split), HELDOUT totals:
+
+| rules | no tree | tree | tree delta |
+|---|---|---|---|
+| v0 (extractor only) | 4633 (was 4615) | 4525 (was 4457) | −108 (was −158) |
+| v2 (committed ruleset) | 3623 (was 3616) | 2618 (was 2386) | −1005 (was −1230) |
+
+Every changed source moved UP (v0: 36, v2: 47): the fixes only remove credit that was previously given to
+ambiguous duplicate clauses or to fragments of OTHER provisos. No source improved, as expected for strictness-only fixes.
+Findings for all four runs are stored in Neon (kf_scoreboard_runs / kf_scoreboard_findings), SELECT-verified.
