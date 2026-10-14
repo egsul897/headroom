@@ -48,6 +48,73 @@
           }
         ]
       }
+    },
+    {
+      "files": [
+        "app/api/flywheel/**/*.{ts,tsx}",
+        "lib/flywheel/**/*.{ts,tsx}",
+        "lib/covenant-learning-factory/sweep/**/*.{ts,tsx}",
+        "lib/covenant-learning-factory/learned-rules/**/*.{ts,tsx}",
+        "lib/neon-https/**/*.{ts,tsx}",
+        "scripts/flywheel/**/*.{ts,tsx}",
+        "scripts/covenant-learning-factory/sweep.ts"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "@anthropic-ai/sdk",
+                "message": "Flywheel is ZERO-AI: no Anthropic SDK. Deterministic code only."
+              },
+              {
+                "name": "openai",
+                "message": "Flywheel is ZERO-AI: no OpenAI SDK. Deterministic code only."
+              },
+              {
+                "name": "ai",
+                "message": "Flywheel is ZERO-AI: no Vercel AI SDK. Deterministic code only."
+              },
+              {
+                "name": "@ai-sdk/openai",
+                "message": "Flywheel is ZERO-AI: no AI SDK providers."
+              },
+              {
+                "name": "@ai-sdk/anthropic",
+                "message": "Flywheel is ZERO-AI: no AI SDK providers."
+              },
+              {
+                "name": "@ai-sdk/xai",
+                "message": "Flywheel is ZERO-AI: no AI SDK providers."
+              },
+              {
+                "name": "langchain",
+                "message": "Flywheel is ZERO-AI: no LangChain."
+              },
+              {
+                "name": "@langchain/core",
+                "message": "Flywheel is ZERO-AI: no LangChain."
+              }
+            ],
+            "patterns": [
+              {
+                "group": ["@ai-sdk/*", "openai/*", "@anthropic-ai/*", "langchain/*", "@langchain/*"],
+                "message": "Flywheel is ZERO-AI: scheduled runs must not import any model SDK."
+              },
+              {
+                "group": [
+                  "**/contract-model/compiler/llm-caller",
+                  "**/contract-model/compiler/llm-caller.ts",
+                  "**/contract-model/compiler/semantic/caller",
+                  "**/contract-model/compiler/semantic/caller.ts"
+                ],
+                "message": "Flywheel is ZERO-AI: no LLM caller / semantic caller imports on the scheduled path."
+              }
+            ]
+          }
+        ]
+      }
     }
   ]
 }

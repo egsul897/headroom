@@ -18,7 +18,34 @@ import {
   appendPartialAccept,
   clearPartialAccepts,
   loadPartialAccepts,
+  type PartialAcceptRecord,
 } from "../learned-rules/partial";
+import type { LearnedRuleSet } from "../learned-rules/types";
+
+/** Pluggable rules persistence (filesystem default; Neon for serverless flywheel). */
+export interface SweepRulesStore {
+  loadLatest(): Promise<LearnedRuleSet> | LearnedRuleSet;
+  save(ruleset: LearnedRuleSet): Promise<void> | void;
+  appendPartial(version: number, record: PartialAcceptRecord): Promise<void> | void;
+  loadPartials(version: number): Promise<PartialAcceptRecord[]> | PartialAcceptRecord[];
+  clearPartials(version: number): Promise<void> | void;
+}
+
+function filesystemRulesStore(rulesDir?: string): SweepRulesStore {
+  return {
+    loadLatest: () => loadLatestLearnedRules(rulesDir),
+    save: (ruleset) => {
+      writeLearnedRules(ruleset, rulesDir);
+    },
+    appendPartial: (version, record) => {
+      appendPartialAccept(version, record, rulesDir);
+    },
+    loadPartials: (version) => loadPartialAccepts(version, rulesDir),
+    clearPartials: (version) => {
+      clearPartialAccepts(version, rulesDir);
+    },
+  };
+}
 import {
   evaluateReplayGate,
   measureReplaySource,
@@ -26,7 +53,7 @@ import {
   type ReplaySource,
 } from "../learned-rules/replay-gate";
 import { synthesizeCandidateRules, type LedgerSignal } from "../learned-rules/synthesize";
-import type { LearnedRule, LearnedRuleSet } from "../learned-rules/types";
+import type { LearnedRule } from "../learned-rules/types";
 import type { LearningErrorRecord, LearningEvaluationRecord } from "../types";
 import type { NeonHttpsExecutor } from "../store/neon-transport";
 import { buildComputationPackage } from "./build-package";
@@ -73,6 +100,12 @@ export interface SweepOptions {
   log?: (line: string) => void;
   /** How many candidate rules to evaluate per progress log batch (default 50). */
   proposalBatchSize?: number;
+  /** Max candidate rules to evaluate this invocation (serverless slice bound). */
+  maxCandidates?: number;
+  /** When true, skip source re-persist during proposals rebuild (flywheel). */
+  rebuildSourcesOnly?: boolean;
+  /** Pluggable rules store; defaults to learned-rules/ files. */
+  rulesStore?: SweepRulesStore;
   /**
    * Test hook: throw after this many ACCEPTs in the current process
    * (simulates a mid-epoch kill after durable per-accept writes).
@@ -145,12 +178,14 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
   const maxSources = opts.maxSources ?? Number.POSITIVE_INFINITY;
   const maxEpochs = opts.maxEpochs ?? 8;
   const proposalBatchSize = opts.proposalBatchSize ?? 50;
+  const maxCandidates = opts.maxCandidates ?? Number.POSITIVE_INFINITY;
   const resume = opts.resume !== false;
   const dryRun = Boolean(opts.dryRun);
   const now = opts.now ?? (() => new Date().toISOString());
   const sha = opts.codeSha ?? codeShaFallback();
+  const rulesStore = opts.rulesStore ?? filesystemRulesStore(opts.rulesDir);
 
-  let ruleset = loadLatestLearnedRules(opts.rulesDir);
+  let ruleset = await Promise.resolve(rulesStore.loadLatest());
   const epochs: EpochDashboard[] = [];
   let totalSources = 0;
   let totalErrors = 0;
@@ -172,8 +207,8 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
   if (checkpoint?.phase === "finalize" || checkpoint?.status === "EPOCH_COMPLETE") {
     // Completed epoch with no pending partial → advance; if partial exists for next version, continue building.
     const nextVer = Math.max(ruleset.rulesetVersion + 1, checkpoint.nextRulesetVersion || 1);
-    const pending = loadPartialAccepts(nextVer, opts.rulesDir);
-    if (pending.length > 0 && checkpoint.phase !== "finalize") {
+    const pending = await Promise.resolve(rulesStore.loadPartials(nextVer));
+    if (pending.length > 0 && checkpoint.phase === "proposals") {
       startEpoch = checkpoint.epoch;
     } else if (checkpoint.phase === "finalize" || checkpoint.status === "EPOCH_COMPLETE") {
       // Sources done + proposals done last run → start next epoch from scratch.
@@ -193,7 +228,7 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
 
   for (let epoch = startEpoch; epoch <= maxEpochs; epoch++) {
     const nextRulesetVersion = ruleset.rulesetVersion + 1;
-    const partialAccepts = loadPartialAccepts(nextRulesetVersion, opts.rulesDir);
+    const partialAccepts = await Promise.resolve(rulesStore.loadPartials(nextRulesetVersion));
     let workingRuleset = applyPartialToRuleset(
       ruleset,
       partialAccepts.map((p) => p.rule),
@@ -244,7 +279,7 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
 
     // ---- Sources phase (or rebuild for proposals resume) ----
     if (phase === "sources" || phase === "proposals") {
-      const rebuildOnly = phase === "proposals";
+      const rebuildOnly = phase === "proposals" || Boolean(opts.rebuildSourcesOnly);
       let promotedFromEmptyCursor = false;
 
       while (sourcesProcessed < maxSources) {
@@ -433,24 +468,52 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
         }
       }
 
-      sourcesComplete = true;
-      phase = "proposals";
-      await persistCheckpoint(
-        opts.executor,
-        makeSweepCursor({
+      // If we stopped because of maxSources, peek whether more sources remain.
+      if (!sourcesComplete && afterSourceId) {
+        const more = await fetchKnowledgeSources(opts.executor, {
+          afterSourceId,
+          limit: 1,
+        });
+        if (more.length === 0) sourcesComplete = true;
+      }
+
+      // Only advance to proposals when the source stream is exhausted.
+      // Hitting maxSources mid-stream must leave phase=sources for the next slice.
+      if (sourcesComplete) {
+        phase = "proposals";
+        await persistCheckpoint(
+          opts.executor,
+          makeSweepCursor({
+            epoch,
+            phase: "proposals",
+            sourcesComplete: true,
+            afterSourceId: "",
+            candidateIndex: candidateStartIndex,
+            acceptedCount: accepted,
+            rejectedCount: rejected,
+            nextRulesetVersion,
+            epochRunId,
+            status: "PROPOSALS",
+          }),
+          dryRun,
+        );
+      } else {
+        stoppedReason = "slice budget reached";
+        const dashboard: EpochDashboard = {
           epoch,
-          phase: "proposals",
-          sourcesComplete: true,
-          afterSourceId: "",
-          candidateIndex: candidateStartIndex,
-          acceptedCount: accepted,
-          rejectedCount: rejected,
-          nextRulesetVersion,
-          epochRunId,
-          status: "PROPOSALS",
-        }),
-        dryRun,
-      );
+          sourcesProcessed,
+          covenantsComputed,
+          errorRateByClass,
+          proposalsAccepted: accepted,
+          proposalsRejected: rejected,
+          rulesetVersion: ruleset.rulesetVersion,
+        };
+        epochs.push(dashboard);
+        log(
+          `epoch ${epoch} dashboard: sources=${sourcesProcessed} covenants=${covenantsComputed} (sources slice pause)`,
+        );
+        break;
+      }
     }
 
     // ---- Proposals phase ----
@@ -478,7 +541,8 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
       });
     }
 
-    for (let i = candidateStartIndex; i < candidates.length; i++) {
+    const candidateEnd = Math.min(candidates.length, candidateStartIndex + maxCandidates);
+    for (let i = candidateStartIndex; i < candidateEnd; i++) {
       const candidate = candidates[i]!;
       const related = new Set(candidate.provenance.ledgerErrorIds);
       const scoped = replaySources.filter((s) =>
@@ -506,9 +570,8 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
 
         // Durable immediate persist — survives kill before epoch finalize.
         if (!dryRun) {
-          appendPartialAccept(
-            nextRulesetVersion,
-            {
+          await Promise.resolve(
+            rulesStore.appendPartial(nextRulesetVersion, {
               rule: gate.rule,
               candidateIndex: i,
               acceptedAt: now(),
@@ -516,8 +579,7 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
               errorsAfter: gate.errorsAfter,
               epoch,
               epochRunId,
-            },
-            opts.rulesDir,
+            }),
           );
           await persistSweepProposal(
             opts.executor,
@@ -615,13 +677,14 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
         dryRun,
       );
 
-      if (gate.accepted || (i + 1) % proposalBatchSize === 0 || i + 1 === candidates.length) {
+      if (gate.accepted || (i + 1) % proposalBatchSize === 0 || i + 1 === candidateEnd) {
         log(
           `  [${i + 1}/${candidates.length}] rule ${candidate.ruleId} → ${gate.accepted ? "ACCEPT" : "REJECT"} (${gate.reason})`,
         );
       }
     }
 
+    const slicedEarly = candidateEnd < candidates.length;
     const newAcceptsThisRun = acceptedRules.length - partialAccepts.length;
     const dashboard: EpochDashboard = {
       epoch,
@@ -634,8 +697,13 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
     };
     epochs.push(dashboard);
     log(
-      `epoch ${epoch} dashboard: sources=${sourcesProcessed} covenants=${covenantsComputed} accepted=${accepted} (new=${newAcceptsThisRun}) rejected=${rejected}`,
+      `epoch ${epoch} dashboard: sources=${sourcesProcessed} covenants=${covenantsComputed} accepted=${accepted} (new=${newAcceptsThisRun}) rejected=${rejected}${slicedEarly ? ` (slice pause at ${candidateEnd}/${candidates.length})` : ""}`,
     );
+
+    if (slicedEarly) {
+      stoppedReason = "slice budget reached";
+      break;
+    }
 
     if (accepted === 0) {
       stoppedReason = "no proposal improved";
@@ -643,17 +711,17 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
       break;
     }
 
-    // Finalize partial → versioned ruleset file.
+    // Finalize partial → versioned ruleset (Neon and/or repo export via store).
     ruleset = bumpRuleSet({
       previous: ruleset,
       accepted: acceptedRules,
       rejectedIds,
       epoch,
     });
-    writeLearnedRules(ruleset, opts.rulesDir);
-    clearPartialAccepts(nextRulesetVersion, opts.rulesDir);
+    await Promise.resolve(rulesStore.save(ruleset));
+    await Promise.resolve(rulesStore.clearPartials(nextRulesetVersion));
     if (!dryRun) await persistRuleSetArtifact(opts.executor, ruleset);
-    log(`wrote learned-rules/v${ruleset.rulesetVersion}.json (${acceptedRules.length} rules)`);
+    log(`persisted ruleset v${ruleset.rulesetVersion} (${acceptedRules.length} rules)`);
 
     await persistCheckpoint(
       opts.executor,

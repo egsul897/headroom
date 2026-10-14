@@ -4352,3 +4352,87 @@ model KfPrecedentImportCheckpoint {
   @@map("kf_precedent_import_checkpoints")
 }
 
+// =============================================================================
+// Standalone flywheel — Neon source-of-record for learned rules + ops
+// =============================================================================
+
+model LearningRuleset {
+  id               String   @id @default(cuid())
+  rulesetVersion   Int      @unique
+  authorityStatus  String   @default("COMPUTED_NOT_CERTIFIED")
+  schemaVersion    String
+  payloadJson      Json
+  acceptedCount    Int      @default(0)
+  writtenFromEpoch Int?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([updatedAt])
+  @@map("learning_rulesets")
+}
+
+model LearningRulesetPartialAccept {
+  id                   String   @id @default(cuid())
+  targetRulesetVersion Int
+  ruleId               String
+  candidateIndex       Int
+  epoch                Int
+  epochRunId           String
+  payloadJson          Json
+  createdAt            DateTime @default(now())
+
+  @@unique([targetRulesetVersion, ruleId])
+  @@index([targetRulesetVersion])
+  @@map("learning_ruleset_partial_accepts")
+}
+
+model FlywheelLock {
+  lockName    String   @id
+  holderId    String
+  acquiredAt  DateTime
+  expiresAt   DateTime
+  heartbeatAt DateTime
+  metaJson    Json?
+
+  @@map("flywheel_locks")
+}
+
+model FlywheelRun {
+  id                   String    @id @default(cuid())
+  runId                String    @unique
+  slice                String
+  status               String
+  startedAt            DateTime
+  finishedAt           DateTime?
+  epoch                Int?
+  sourcesProcessed     Int       @default(0)
+  candidatesEvaluated  Int       @default(0)
+  proposalsAccepted    Int       @default(0)
+  proposalsRejected    Int       @default(0)
+  errorRateByClassJson Json?
+  detailJson           Json?
+  errorMessage         String?
+  createdAt            DateTime  @default(now())
+
+  @@index([startedAt])
+  @@index([status])
+  @@index([slice])
+  @@map("flywheel_runs")
+}
+
+model FlywheelAlert {
+  id         String    @id @default(cuid())
+  alertId    String    @unique
+  severity   String
+  kind       String
+  message    String
+  runId      String?
+  detailJson Json?
+  ackedAt    DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([createdAt])
+  @@index([kind])
+  @@map("flywheel_alerts")
+}
+

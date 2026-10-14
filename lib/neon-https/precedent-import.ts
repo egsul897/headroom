@@ -43,6 +43,11 @@ export const VERIFY_TABLES = [
   "learning_error_ledger_entries",
   "learning_evaluation_outcomes",
   "learning_improvement_proposals",
+  "learning_rulesets",
+  "learning_ruleset_partial_accepts",
+  "flywheel_locks",
+  "flywheel_runs",
+  "flywheel_alerts",
 ] as const;
 
 export function isLiveAuthorized(env: NodeJS.ProcessEnv | Record<string, string | undefined> = process.env): boolean {
