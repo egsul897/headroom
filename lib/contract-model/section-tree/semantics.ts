@@ -3,7 +3,7 @@
  * checklist over a SectionTree. Deterministic; no AI / LLM calls; nothing invented.
  * A family with no numeric cap is NEVER reported as unlimited.
  */
-import { classifyCovenantFamily } from "./family-classifier";
+import { classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
 import { normalizeSectionNumber, sectionOf, type SectionTree, type TreeNode } from "./parse";
 
 export type ClauseRole = "PROHIBITION" | "BASKET" | "EXCEPTION_PROVISO" | "DEFINITION" | "CROSS_REFERENCE" | "OTHER";
@@ -150,9 +150,13 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   // Family per SECTION from the general classifier (lead-in prohibition object, heading, defined terms).
   const sections = tree.nodes.filter((n) => n.kind === "SECTION");
   const famOf = new Map<string, readonly string[]>();
-  for (const s of sections) {
+  const leadOf = (s: (typeof sections)[number]) => text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 700));
+  const prohib = new Map(sections.map((s) => [s.id, isObligorProhibitionLead(leadOf(s))]));
+  for (const [i, s] of sections.entries()) {
     const parent = s.parentId ? tree.byId.get(s.parentId) : undefined;
-    const v = classifyCovenantFamily({ title: s.title, parentTitle: parent?.title ?? null, leadIn: text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 700)) });
+    // Covenant run: an adjacent sibling section (same parent) also opens with an obligor-bound prohibition.
+    const sib = (j: number) => { const o = sections[j]; return !!o && o.parentId === s.parentId && prohib.get(o.id) === true; };
+    const v = classifyCovenantFamily({ title: s.title, parentTitle: parent?.title ?? null, leadIn: leadOf(s), covenantContext: sib(i - 1) || sib(i + 1) });
     famOf.set(s.id, v.families);
   }
   return CHECKLIST_FAMILIES.map((family) => {

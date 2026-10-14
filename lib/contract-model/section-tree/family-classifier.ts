@@ -71,7 +71,16 @@ const DEFINED: Array<[CovenantFamily, RegExp]> = [
   ["AFFILIATE_TRANSACTIONS", /\bAffiliate Transactions?\b/],
 ];
 
-export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null }): FamilyVerdict {
+/**
+ * Structural covenant context (no title keywords): a section's lead-in is an obligor-bound prohibition or an
+ * article-imperative. A section sits in a covenant run when an adjacent sibling section is one too.
+ */
+export function isObligorProhibitionLead(leadIn: string): boolean {
+  const lead = leadIn.slice(0, 700);
+  return IMPERATIVE.test(lead) || (PROHIBITION.test(lead) && obligorBound(lead));
+}
+
+export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
   const lead = args.leadIn.slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
   const ratio = RATIO_SUBJECT.test(lead.slice(0, 450)) && RATIO_LIMIT.test(lead);
@@ -109,8 +118,9 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
       if (f === "DEBT" && /\b(?:junior|subordinated|senior)\s+(?:indebtedness|debt)\b/i.test(heading) && !/incurrence|limitation on (?:indebtedness|debt)/i.test(heading)) continue;
       if (f === "DEBT" && seen.has("PREPAYMENTS") && !/\b(?:incurrence|limitation on (?:indebtedness|debt))\b/i.test(heading)) continue;
       seen.add(f);
-      // Own heading + obligor-bound prohibition inside a covenants article (or an imperative lead) is self-sufficient.
-      const covenantContext = IMPERATIVE.test(lead) || /\bcovenants?\b/i.test(args.parentTitle ?? "");
+      // Own heading + obligor-bound prohibition inside a covenant run (or an imperative lead) is self-sufficient.
+      // Context is structural (adjacent obligor-prohibition sibling, supplied by the caller), never a title keyword.
+      const covenantContext = IMPERATIVE.test(lead) || args.covenantContext === true;
       add(f, own && obligor && covenantContext ? 3 : 2, own ? "heading" : "parent-heading");
     }
     for (const [f, re] of DEFINED) if (re.test(lead)) add(f, 1, "defined-term");
