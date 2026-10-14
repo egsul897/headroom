@@ -16,6 +16,21 @@ import { readFileSync } from "node:fs";
 import { gunzipSync, gzipSync } from "node:zlib";
 import { runCovenantComputation } from "../../contract-model/covenant-computation";
 import type { LearnedRuleSet } from "../learned-rules/types";
+import {
+  assertComparable,
+  checkMembership,
+  DEFAULT_THRESHOLDS,
+  evaluationIdentity,
+  IncomparableEvaluationError,
+  materialRegressionLimit,
+  membershipFromReport,
+  sourceInputSha256,
+  type BenchmarkMembership,
+  type BenchmarkMigration,
+  type EvaluationIdentity,
+  type GateThresholds,
+} from "./integrity";
+export * from "./integrity";
 import { buildComputationPackage, type PrecedentSourceRow } from "../sweep/build-package";
 import { candidatesAsRows } from "../sweep/neon-load";
 import { buildTreeLocator } from "../sweep/tree-locator";
@@ -50,6 +65,12 @@ export interface SourceScore {
   total: number;
   /** DOCUMENT = scored over stored document text; COMPOSITE = no text, candidate excerpts only. */
   textBasis?: "DOCUMENT" | "COMPOSITE";
+  /** Frozen-membership identity: source hash and issuer (see integrity.ts). */
+  contentSha256?: string | null;
+  issuerCik?: string | null;
+  ticker?: string | null;
+  /** sha256 of everything scored for this source (comparability binding). */
+  inputSha256?: string | null;
   /** Candidate-level errors (only written via --write-findings; stripped from the report). */
   findings?: ScoreFinding[];
 }
@@ -68,6 +89,8 @@ export interface ScoreboardReport {
   schema: "clf-scoreboard/v1";
   mode: "neon" | "snapshot";
   rulesetVersion: number;
+  /** Snapshot + per-source input hashes + ruleset version/hash. Comparisons without a matching identity are refused. */
+  identity?: EvaluationIdentity | null;
   sourceCount: number;
   totals: Record<Split, ClassCounts & { total: number; sources: number }>;
   /** Same totals restricted to in-scope document types (credit agreements, indentures/notes, credit support, unknown). */
@@ -156,6 +179,10 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
   }).type;
   return {
     sourceId,
+    contentSha256: input.source.contentSha256 ?? null,
+    issuerCik: input.source.issuerCik ?? null,
+    ticker: input.source.ticker ?? null,
+    inputSha256: sourceInputSha256(input),
     split: splitFor(sourceId, manifest, input.source.issuerCik),
     duplicateOf: duplicateOf(sourceId, manifest),
     docType,
@@ -181,7 +208,7 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
 
 export function aggregate(
   perSource: SourceScore[],
-  meta: { mode: ScoreboardReport["mode"]; rulesetVersion: number },
+  meta: { mode: ScoreboardReport["mode"]; rulesetVersion: number; rulesetSha256?: string; scorerConfig?: string | null },
 ): ScoreboardReport {
   const totals = {
     DEV: { ...emptyCounts(), total: 0, sources: 0 },
@@ -219,6 +246,9 @@ export function aggregate(
     schema: "clf-scoreboard/v1",
     mode: meta.mode,
     rulesetVersion: meta.rulesetVersion,
+    identity: meta.rulesetSha256
+      ? evaluationIdentity(sorted, { rulesetVersion: meta.rulesetVersion, rulesetSha256: meta.rulesetSha256 }, meta.scorerConfig ?? null)
+      : null,
     sourceCount: sorted.length,
     totals,
     inScopeTotals,
@@ -253,7 +283,32 @@ export interface GateResult {
  * increase, or when HELDOUT sources disappear (a shrinking denominator could
  * otherwise hide regressions).
  */
-export function compareToBaseline(baseline: ScoreboardReport, current: ScoreboardReport): GateResult {
+export interface GateOptions {
+  /** Committed frozen HELDOUT membership (default: derived from the baseline's HELDOUT rows). */
+  membership?: Pick<BenchmarkMembership, "heldout">;
+  /** Committed benchmark migrations authorizing membership changes. */
+  migrations?: BenchmarkMigration[];
+  /** Recorded thresholds from the baseline history (default DEFAULT_THRESHOLDS). */
+  thresholds?: GateThresholds;
+}
+
+export function compareToBaseline(baseline: ScoreboardReport, current: ScoreboardReport, opts: GateOptions = {}): GateResult {
+  // Frozen membership first: a moved / dropped / re-hashed HELDOUT source is reported as such.
+  const membershipReasons = checkMembership(
+    opts.membership ?? membershipFromReport(baseline.perSource, "baseline"),
+    current.perSource,
+    opts.migrations ?? [],
+  );
+  // Refuse incomparable evaluations (different snapshot / source hashes / ruleset). If membership already
+  // failed, the run fails with both reasons instead of throwing.
+  let incomparable: string | null = null;
+  try {
+    assertComparable(baseline, current);
+  } catch (err) {
+    if (!(err instanceof IncomparableEvaluationError) || membershipReasons.length === 0) throw err;
+    incomparable = err.message;
+  }
+  const t = opts.thresholds ?? DEFAULT_THRESHOLDS;
   const reasons: string[] = [];
   const before = new Map(baseline.perSource.map((s) => [s.sourceId, s]));
   const after = new Map(current.perSource.map((s) => [s.sourceId, s]));
@@ -278,7 +333,24 @@ export function compareToBaseline(baseline: ScoreboardReport, current: Scoreboar
   } as GateResult["byClass"];
   const heldoutBefore = baseline.totals.HELDOUT.total;
   const heldoutAfter = current.totals.HELDOUT.total;
-  if (heldoutAfter > heldoutBefore) reasons.push(`HELDOUT errors increased ${heldoutBefore} → ${heldoutAfter}`);
+  if (heldoutAfter - heldoutBefore > t.heldoutTotalMaxIncrease) reasons.push(`HELDOUT errors increased ${heldoutBefore} → ${heldoutAfter}`);
+  const usBefore = baseline.totals.HELDOUT.UNSUPPORTED_SEMANTICS;
+  const usAfter = current.totals.HELDOUT.UNSUPPORTED_SEMANTICS;
+  if (usAfter - usBefore > t.heldoutUnsupportedMaxIncrease) reasons.push(`HELDOUT UNSUPPORTED_SEMANTICS increased ${usBefore} → ${usAfter}`);
+  for (const id of ids) {
+    const b = before.get(id);
+    const a = after.get(id);
+    if (!b || !a || b.split !== "HELDOUT" || a.split !== "HELDOUT" || b.duplicateOf || a.duplicateOf) continue;
+    if (a.counts.UNSUPPORTED_SEMANTICS > b.counts.UNSUPPORTED_SEMANTICS) {
+      reasons.push(`HELDOUT source ${id} UNSUPPORTED_SEMANTICS ${b.counts.UNSUPPORTED_SEMANTICS} → ${a.counts.UNSUPPORTED_SEMANTICS}`);
+    }
+    const limit = materialRegressionLimit(b.total, t);
+    if (a.total - b.total >= limit) {
+      reasons.push(`material per-source regression: ${id} ${b.total} → ${a.total} (+${a.total - b.total} ≥ limit ${limit})`);
+    }
+  }
+  reasons.push(...membershipReasons);
+  if (incomparable) reasons.push(incomparable);
   const missing = baseline.perSource.filter((s) => s.split === "HELDOUT" && !s.duplicateOf && !after.has(s.sourceId));
   if (missing.length > 0) reasons.push(`${missing.length} HELDOUT source(s) missing from current run`);
   return {

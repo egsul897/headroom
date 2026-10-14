@@ -1,0 +1,830 @@
+{
+  "schema": "clf-scoreboard-membership/v1",
+  "description": "Frozen HELDOUT membership: sourceId + contentSha256 + issuer (CIK, ticker). Moving, dropping, re-hashing or re-issuing any of these fails the gate unless benchmark-migrations.json carries a matching record (id, date, change, sourceIds, reason, approver).",
+  "frozenAt": "2026-10-14",
+  "snapshotSha256": "05b2234708d0f43f1445ae9adba4a100627a54ee59dcd9fb184daba6d2555846",
+  "heldout": [
+    {
+      "sourceId": "edgar:0000006201-22-000097:aal-20221219.htm",
+      "contentSha256": "48044e21d0315919915a3a2be453da08a9886c4a5b5c88a0bd82b30fc427cdd9",
+      "issuerCik": "0000006201",
+      "ticker": "AAL"
+    },
+    {
+      "sourceId": "edgar:0000008947-24-000205:fourthamendmenttocreditagr.htm",
+      "contentSha256": "4cc27f8f6ead0caeb714b6109e75dcd5581e25024decded2d2d8d22091351471",
+      "issuerCik": "0000008947",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000012927-22-000058:a202206jun3010qex32.htm",
+      "contentSha256": "e5862d12ab16bdacbe3da40be8c005de7d24ad5e64c2bd0326ce0c63b7a4d28f",
+      "issuerCik": "0000012927",
+      "ticker": "BA"
+    },
+    {
+      "sourceId": "edgar:0000060667-22-000104:exhibit101_06022022.htm",
+      "contentSha256": "93f27e2d61a355c3797d73e1a921ad114800d49ae0f88673f4dc5914fa82d00f",
+      "issuerCik": "0000060667",
+      "ticker": "LOW"
+    },
+    {
+      "sourceId": "edgar:0000060667-25-000210:exhibit151_10312025.htm",
+      "contentSha256": "5aff1ad0f62731d6ff44006e83a0a6a532e1f8dbc404e6694a7e2b6c4cf80078",
+      "issuerCik": "0000060667",
+      "ticker": "LOW"
+    },
+    {
+      "sourceId": "edgar:0000060667-26-000072:exhibit151_05012026.htm",
+      "contentSha256": "f157dfe13dd7411b897fcc824c3f216b89d3af4560ce99fbcb0b88d87bcd703c",
+      "issuerCik": "0000060667",
+      "ticker": "LOW"
+    },
+    {
+      "sourceId": "edgar:0000060667-26-000117:exhibit151_07312026.htm",
+      "contentSha256": "e77b416f2e74fe14743ea91f859dea24a185257d92bd66fb51bdfca4b6bffb42",
+      "issuerCik": "0000060667",
+      "ticker": "LOW"
+    },
+    {
+      "sourceId": "edgar:0000063296-21-000048:firstamendmenttothirdamend.htm",
+      "contentSha256": "96100188c046d1d3d9fd6c8eb60ced979089c76f8fc774f2155aebbf4e598817",
+      "issuerCik": "0000063296",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000063296-22-000060:secondamendmenttothirdamen.htm",
+      "contentSha256": "9687f746e5e566e27babe7185ac47eab6602b18f46a8bf0b8a6e2d0e62accaca",
+      "issuerCik": "0000063296",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000063296-22-000099:thirdamendmenttothirdamend.htm",
+      "contentSha256": "a67d1924939f7b5988efb5dd1a877ed59bd5bd99fb6602e663ee96c0be3f8307",
+      "issuerCik": "0000063296",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000063296-23-000044:fourthamendmenttothirdamen.htm",
+      "contentSha256": "f78c812b6e5a5533f09b037822478a252ab466241e19aff822d8be6136ddd181",
+      "issuerCik": "0000063296",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000063296-23-000103:ex32amendedandrestatedbyla.htm",
+      "contentSha256": "0d033d4790e5981e66a52321f2622ca343bc7d764f8fcb753b737b3c4a9d073d",
+      "issuerCik": "0000063296",
+      "ticker": "MATW"
+    },
+    {
+      "sourceId": "edgar:0000077476-19-000046:exhibit31articlesofinc.htm",
+      "contentSha256": "84dc5cb38aa0ca054330b0c0d790e328512a28e9efa56f62cf727740554664ed",
+      "issuerCik": "0000077476",
+      "ticker": "PEP"
+    },
+    {
+      "sourceId": "edgar:0000077476-24-000046:pepsico-ex32xseptember2020.htm",
+      "contentSha256": "a743dee6e228013b26fd2647452462d70ccc81487a36f0668a747988369521b5",
+      "issuerCik": "0000077476",
+      "ticker": "PEP"
+    },
+    {
+      "sourceId": "edgar:0000078003-18-000027:pfe-exhibit104x1231201.htm",
+      "contentSha256": "b0648464f39d0ec4461946ebf6f078544286b60eafd610721ffd3b1a79ab9660",
+      "issuerCik": "0000078003",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000100493-17-000095:exhibit101termloanagreemen.htm",
+      "contentSha256": "4c182976b4d46fc95308d28f94b8a9ac6f78e6da689d7cfdf41bd358e703f07b",
+      "issuerCik": "0000100493",
+      "ticker": "TSN"
+    },
+    {
+      "sourceId": "edgar:0000100493-17-000095:exhibit102amendedandrestat.htm",
+      "contentSha256": "4817bad95ebd3798f263df13e02a73901b5afcf6506ca91a37870b75ea406aff",
+      "issuerCik": "0000100493",
+      "ticker": "TSN"
+    },
+    {
+      "sourceId": "edgar:0000100493-18-000047:exhibit101amendedandrestat.htm",
+      "contentSha256": "af9077cab7097adaeb2df8db092672e9784d754069c7089d4f57449f8b89b3b0",
+      "issuerCik": "0000100493",
+      "ticker": "TSN"
+    },
+    {
+      "sourceId": "edgar:0000100493-18-000047:exhibit102amendmentno3tote.htm",
+      "contentSha256": "236a267bd98641ebe08848a26c81265a0f141055cb6a79c90d5bb9d5c680e5ac",
+      "issuerCik": "0000100493",
+      "ticker": "TSN"
+    },
+    {
+      "sourceId": "edgar:0000320187-15-000153:nikecreditagreement2015.htm",
+      "contentSha256": "464f2b1d10f4cf53cc3afbea71c3e562b00a258b39ea99b803e3baf9719d5e29",
+      "issuerCik": "0000320187",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000732717-24-000009:ex-21ye2023.htm",
+      "contentSha256": "9f1dc2d20abe41466f8cf88b9adaf2bde01e969da3e7300543834df306a9338f",
+      "issuerCik": "0000732717",
+      "ticker": "T"
+    },
+    {
+      "sourceId": "edgar:0000732717-24-000059:exhibit1013q24.htm",
+      "contentSha256": "a637e89c00188f7ad7078110d3cbf598270a9c7346fdd654d8f497f584abfa26",
+      "issuerCik": "0000732717",
+      "ticker": "T"
+    },
+    {
+      "sourceId": "edgar:0000820318-23-000009:ex1001-amendmentno1tocredi.htm",
+      "contentSha256": "8bc68f235a45d28f203d9ceccbadf88bbae00c3a81a16fbe538f33afc60bdf9a",
+      "issuerCik": "0000820318",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000885725-20-000024:exhibit101amendedandre.htm",
+      "contentSha256": "5531e30059850ac96e1afdce20537794876cdac89d3606889c1bdd9b8f7329c7",
+      "issuerCik": "0000885725",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex101amendedmasterconfirmgs.htm",
+      "contentSha256": "e2d478994c35f293cf921bd48f41684e4a29f7d6bbcf59657a601839371dff8c",
+      "issuerCik": "0000940944",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex102amendedmasterconfirmwf.htm",
+      "contentSha256": "3929d8c3bd4ca9529b6f42ca93c8759b941d74ede44687e628d4b7f758171e93",
+      "issuerCik": "0000940944",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex103amendedsupplementalco.htm",
+      "contentSha256": "ff7f06874516d22eec59ff87d9375ef4427c28a299120b046fcf659064f37544",
+      "issuerCik": "0000940944",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000940944-14-000129:ex104amendedsupplementalco.htm",
+      "contentSha256": "61856c72f7a93d9346ed9bab9401a6c2106134fac8bbc0d50c5616dcc80df9e9",
+      "issuerCik": "0000940944",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1001.htm",
+      "contentSha256": "ad0c5ee74572f6817338242d1374dd2e90fa9ee2a4e9a32eec1e8a3314ff5466",
+      "issuerCik": "0000885725",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000397:ss171930_ex1002.htm",
+      "contentSha256": "c40374ab86a32bd3e74a9c41288ea834870d98e14322de3f9e926194858f80cc",
+      "issuerCik": "0000885725",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1001.htm",
+      "contentSha256": "fc7206836f6d154f12e45d9ead5e7e2060ae0f2cec0d6e739510a911573f61af",
+      "issuerCik": "0000885725",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000947871-20-000527:ss174648_ex1002.htm",
+      "contentSha256": "674465241b5e7628620ab90f12bb1fc9a301d43afce3ae1336c0b3afd61fb587",
+      "issuerCik": "0000885725",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0000950157-19-000659:ex10-1.htm",
+      "contentSha256": "f4e7770e122ba9527a7d92a9bedacaca3457ad0678146245dfc7cc3fb34105e0",
+      "issuerCik": "0000076334",
+      "ticker": "PH"
+    },
+    {
+      "sourceId": "edgar:0000950157-21-000696:ex10-1.htm",
+      "contentSha256": "8a63c8e4251d67ce3f32ccdd9087d0e470bb2f8df61c825da424fd92a93d809e",
+      "issuerCik": "0000051143",
+      "ticker": "IBM"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+      "contentSha256": "ff2f73c8922a08a5b3451790be1b1d8ac32b4d7a282ecd17a424b4c1665af61c",
+      "issuerCik": "0000051143",
+      "ticker": "IBM"
+    },
+    {
+      "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
+      "contentSha256": "f8d8a953f28bac2e1c902f06a6deed0fbbe0611f22a8337102e17715598a765c",
+      "issuerCik": "0000051143",
+      "ticker": "IBM"
+    },
+    {
+      "sourceId": "edgar:0000950157-25-000533:ex10-1.htm",
+      "contentSha256": "c340bf69661e275e2508c29749adc56e31069718f4d9a4d3079a79f685f58e41",
+      "issuerCik": "0000051143",
+      "ticker": "IBM"
+    },
+    {
+      "sourceId": "edgar:0000950157-25-000533:ex10-2.htm",
+      "contentSha256": "fe87b4f43a74fde1f6832e9febed59bfe70dd64d313f6adf1ad699157dd414ff",
+      "issuerCik": "0000051143",
+      "ticker": "IBM"
+    },
+    {
+      "sourceId": "edgar:0001065280-13-000008:executiveseveranceandreten.htm",
+      "contentSha256": "339951d8e880ae858ada94e89550c568d6a76bf2e0005407d3ee67ddfec7fbde",
+      "issuerCik": "0001065280",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex10d1.htm",
+      "contentSha256": "ca4b61c4aa7042ee219a799f8efe3558ddc53644fb05358b7bc5df56dda4468c",
+      "issuerCik": "0000896622",
+      "ticker": "ATR"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
+      "contentSha256": "d55b7d4ddf03e5a8d05c5765e278b7e5ffc853d6ba12b04a02c2dfb0be849dad",
+      "issuerCik": "0000896622",
+      "ticker": "ATR"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d6.htm",
+      "contentSha256": "77dbddaca7f894ba10d6dd100ae2e3cdc1b716f09d5019541d260060596bd14f",
+      "issuerCik": "0000896622",
+      "ticker": "ATR"
+    },
+    {
+      "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d7.htm",
+      "contentSha256": "9da5df6e09ac174885832127aef25ab06887b6401bbc06988a075a416d028744",
+      "issuerCik": "0000896622",
+      "ticker": "ATR"
+    },
+    {
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-1.htm",
+      "contentSha256": "7dff8845be7b884d4805cd9a6c32efc7440faecde054f1ce6e9e6f2eac27f22a",
+      "issuerCik": "0000884887",
+      "ticker": "RCL"
+    },
+    {
+      "sourceId": "edgar:0001104659-22-106834:tm2227571d1_ex4-2.htm",
+      "contentSha256": "9280119d33132f6a7eddcc992f1e844533e93dbae11d9730945399bcffac7b87",
+      "issuerCik": "0000884887",
+      "ticker": "RCL"
+    },
+    {
+      "sourceId": "edgar:0001140361-18-005437:ex10_1.htm",
+      "contentSha256": "c72f9755499f5450997229cef02e98b77a4a488f9d3f0911d0260285fbdcf343",
+      "issuerCik": "0001056386",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001140361-18-011053:ex10_1.htm",
+      "contentSha256": "9e7297882ad63fd3c5c504f7363584a14293461c1330caab519dda8815a8cb74",
+      "issuerCik": "0001056386",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001140361-18-018015:ex10_1.htm",
+      "contentSha256": "fdfb207d2fbe9d6123f3959cbc46d19e7849eaf9795060713002d649580d92e1",
+      "issuerCik": "0001056386",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001140361-18-037610:ex10_1.htm",
+      "contentSha256": "de38883079dee74d94c033078c932297d39d71cfedae34de0df2aa1ce3e45ecd",
+      "issuerCik": "0001056386",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001140361-19-008719:nc10001703x2_ex10-1.htm",
+      "contentSha256": "6339114072ed67b1d28f3c16e0359f63f48611825ad2e31836546ed3dda05f36",
+      "issuerCik": "0001056386",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001140361-19-019513:ex10_1.htm",
+      "contentSha256": "fa49d4d82cdd9ab27dc5e754ce52982232fed98b0b4934122965cb9769a6bbed",
+      "issuerCik": "0001056386",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-12-224972:d311298dex10b.htm",
+      "contentSha256": "bc8c66716c52bbfe8fdf4d15cea3822682b00d40b468ada1ca2200346a5844d7",
+      "issuerCik": "0000075362",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-12-423438:d424570dex101.htm",
+      "contentSha256": "0d3c6666d6da964e857f21947e70531cbdfa23067f46bf4035056c45077f7e92",
+      "issuerCik": "0001326801",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-12-423438:d424570dex102.htm",
+      "contentSha256": "bc2b2b7d2d6e0c49cc9b8209669f05f88e60a75380e9f0ee50f0859d845a4eaf",
+      "issuerCik": "0001326801",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-12-463586:d400394dex10.htm",
+      "contentSha256": "24fa5fd2b1f1b21f6e76115b418e833ab411a598c4198f4834f0686dadb4a859",
+      "issuerCik": "0000310158",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-13-034798:d477945dex41.htm",
+      "contentSha256": "f72b86eff7f36f0e264face4b59373ec5bf1c1f806b7aa3a3d7317f5a18a00dc",
+      "issuerCik": "0001065280",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-16-462492:d49534dex42.htm",
+      "contentSha256": "e995bcd907935aca7220a36597ae2d7d4b04869a980e2d9c834c44662020eb2f",
+      "issuerCik": "0001652044",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-16-462492:d49534dex43.htm",
+      "contentSha256": "e1aea0e73d60a0e2906790b56d3cace15b720a22ab96d012b7720f73ceec2003",
+      "issuerCik": "0001652044",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-16-559672:d188918dex41.htm",
+      "contentSha256": "b7b137121c1d8e93377e7e95300a5611b3e025194eba7a6e7dbfd224e45073d1",
+      "issuerCik": "0001652044",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-16-559672:d188918dex42.htm",
+      "contentSha256": "cab84f362567e6dba2bb23a2a0d89c433fc4bdbb35b9549cc351bc8e85c84b80",
+      "issuerCik": "0001652044",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-22-186770:d307343dex101.htm",
+      "contentSha256": "3b4579129d311538c51f72e2974cee766ef8ca69dd654651daafb69d927fbe7e",
+      "issuerCik": "0000820318",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-24-085009:d794721dex101.htm",
+      "contentSha256": "42a3d3e209a321e44fd306a139b5c090b34864b7d27dad914fc7f9684ebed27f",
+      "issuerCik": "0000820318",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-24-224129:d872508dex102.htm",
+      "contentSha256": "d0b465d138f5ef09d05138dea8b9dbc9cfe97942049e69dfed832111de08353f",
+      "issuerCik": "0000063296",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-25-002808:d891952dex101.htm",
+      "contentSha256": "fff2289c93152562664795614f3d7d2efbe38fbff8a3e787fef1cecbff5467c7",
+      "issuerCik": "0000820318",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-25-220656:d854664dex101.htm",
+      "contentSha256": "4f3f69a6489af0cf7f61825c3b0f9cfd710379403137cdf05ba9f00c44831f77",
+      "issuerCik": "0000820318",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001193125-25-220656:d854664dex102.htm",
+      "contentSha256": "114300efeef9819e822ab016382d455654037ae2c8cfbcb104c95a49e995df9b",
+      "issuerCik": "0000820318",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex51.htm",
+      "contentSha256": "b481375e3a134141ca17340acedd128121c4c6d0195ccaead34c913468dfb589",
+      "issuerCik": "0001437107",
+      "ticker": "WBD"
+    },
+    {
+      "sourceId": "edgar:0001206774-21-000500:discovery3870321-ex52.htm",
+      "contentSha256": "712d858fa1e11c24e06a96e77d951b3d1c3c8fb8c50931ee4008a94dce8b2a66",
+      "issuerCik": "0001437107",
+      "ticker": "WBD"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-3_7gcholdings.htm",
+      "contentSha256": "2766e916394d13970a03efb27c2ac94c2a2aa513a6e27de4d90b60af321de645",
+      "issuerCik": "0001826011",
+      "ticker": "PARA"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-4_7gcholdings.htm",
+      "contentSha256": "768e7267535c959fa8b3119b16658208a13e800d5c884b0f4f3d8ae6c9bd8086",
+      "issuerCik": "0001826011",
+      "ticker": "PARA"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-5_7gcholdings.htm",
+      "contentSha256": "df072c427018375e44fc12cdafd499f959d4e768b5c3ae63022193f6ad0c735a",
+      "issuerCik": "0001826011",
+      "ticker": "PARA"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-6_7gcholdings.htm",
+      "contentSha256": "aeec64295f2198c2e1d8c12ab92be3e3f4e2e840541ddaafcaa1dfe11fd0f577",
+      "issuerCik": "0001826011",
+      "ticker": "PARA"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-7_7gcholdings.htm",
+      "contentSha256": "9fbc4c0e912e3566a57425d1012642d4f5c36e5bdd2427c081770c41e6698774",
+      "issuerCik": "0001826011",
+      "ticker": "PARA"
+    },
+    {
+      "sourceId": "edgar:0001213900-20-041190:fs12020ex99-8_7gcholdings.htm",
+      "contentSha256": "f587384353515a4cf9a43ff83e4c71c23f2d6d8ecc9957a209138a9028eedafc",
+      "issuerCik": "0001826011",
+      "ticker": "PARA"
+    },
+    {
+      "sourceId": "edgar:0001213900-22-078344:ea169690ex10-3_7gcandcohold.htm",
+      "contentSha256": "1454bd2de4882077b0419e9632eafd11964b9e71ad658f0b9bc21e7575fec7a6",
+      "issuerCik": "0001826011",
+      "ticker": "PARA"
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-1_7gcandco.htm",
+      "contentSha256": "07786c53d199a9aa8f02e7ea6e181ffc98e0740ad04a9b68e1bde423e5220999",
+      "issuerCik": "0001826011",
+      "ticker": "PARA"
+    },
+    {
+      "sourceId": "edgar:0001213900-23-063838:ea182915ex10-2_7gcandco.htm",
+      "contentSha256": "45f7a98fe6edcf2cf8f2dc2128e2c243e598bc55f13ebfe75443c006d80f19f3",
+      "issuerCik": "0001826011",
+      "ticker": "PARA"
+    },
+    {
+      "sourceId": "edgar:0001213900-25-041096:ea024138601ex4-2_starbucks.htm",
+      "contentSha256": "ab6fbcb89a6a34351816280a2791579f70df909b74d33597101003e07a08e734",
+      "issuerCik": "0000829224",
+      "ticker": "SBUX"
+    },
+    {
+      "sourceId": "edgar:0001213900-25-054811:ea024579601ex10-1_starbucks.htm",
+      "contentSha256": "61b7988b24f4d7c85883ef215fa167c481da70b99d2db791316e06429119ff63",
+      "issuerCik": "0000829224",
+      "ticker": "SBUX"
+    },
+    {
+      "sourceId": "edgar:0001219601-16-000050:incamend8kfeb2016.htm",
+      "contentSha256": "31eae45e6d753353c1106927f71cae9ebafdde051456ba55cbfd441de8492826",
+      "issuerCik": "0001219601",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001219601-16-000070:creditagreementsep2016.htm",
+      "contentSha256": "99469985161cd479d11cebfa7675aec4564817185c7aaae071940320c0191123",
+      "issuerCik": "0001219601",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001219601-17-000011:creditagreement8kapril2017.htm",
+      "contentSha256": "9a4fe5c3bbbc036bb13086c28ce9993646365720829da624b8e8cec8a5b30e95",
+      "issuerCik": "0001219601",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001219601-17-000016:ex4march2017.htm",
+      "contentSha256": "fac20a3ac12f41252816dbf3951d36d9e4f493a97c6f44e884515d2f336fa410",
+      "issuerCik": "0001219601",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000002:cck8kjan2018.htm",
+      "contentSha256": "ddfc41f1acdb9ff56c001e8008aa30519a8dc30e635e3f4fb5926f39aa0da792",
+      "issuerCik": "0001219601",
+      "ticker": "CCK"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000009:ex41dec2017.htm",
+      "contentSha256": "cdc150dc8f2e8c54ca9484aa3fdc6fb507247f1b45b3c419245858904937e637",
+      "issuerCik": "0001219601",
+      "ticker": "CCK"
+    },
+    {
+      "sourceId": "edgar:0001219601-18-000009:ex4dec2017.htm",
+      "contentSha256": "1a8797206139e8bd673832d98e4ac4adf80fd0e911b09fc21024359b2d42e201",
+      "issuerCik": "0001219601",
+      "ticker": "CCK"
+    },
+    {
+      "sourceId": "edgar:0001219601-19-000005:ex4dec2018.htm",
+      "contentSha256": "527b7893339174f01fe685c5f2c251ca904d485fff813a6afa21e4bce5ffbbe0",
+      "issuerCik": "0001219601",
+      "ticker": "CCK"
+    },
+    {
+      "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+      "contentSha256": "8db8dc43a4a31527a344552794bc4f5580d502d62762784d6dfb7d840a4416a9",
+      "issuerCik": "0001219601",
+      "ticker": "CCK"
+    },
+    {
+      "sourceId": "edgar:0001219601-25-000009:a4ff-crownseventhamendment.htm",
+      "contentSha256": "ac3491e2bbd5e170c3a69a1315c08f8b6bc5e8e4c2bcfcc7735c14a6b90f7af4",
+      "issuerCik": "0001219601",
+      "ticker": "CCK"
+    },
+    {
+      "sourceId": "edgar:0001219601-25-000009:ex23-12312024.htm",
+      "contentSha256": "05ebeabed6daf4ffa348e04236c6a97204d43735395d5a0b173fff86adfc31e7",
+      "issuerCik": "0001219601",
+      "ticker": "CCK"
+    },
+    {
+      "sourceId": "edgar:0001327567-14-000043:panwex102q115.htm",
+      "contentSha256": "e0a749aed23cdf8a1d7c6357c6ac2c47423d59223759b112b67a8ba6f06528db",
+      "issuerCik": "0001327567",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001327567-14-000043:panwex103q115.htm",
+      "contentSha256": "74481143972e559b1bf3add9018e4270f56b2ce9631a8aa410cba4ba92a7ac3f",
+      "issuerCik": "0001327567",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001327567-17-000027:panwex104q417esppplan.htm",
+      "contentSha256": "a78c7100e3de986add15d5042877efe7fbf5ebe1c2277ba5fc8bc8373d6aa244",
+      "issuerCik": "0001327567",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1030xamendm.htm",
+      "contentSha256": "3346cd970c1f4c4bac705e811694af63dcc70904ecd41dd1ae030443b60c6091",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-24-000017:lyv-20231231xex1047x4875se.htm",
+      "contentSha256": "5112175da30014d779d2d51c727c0fbedd2c11d47e32d34f0438de7bddffcda1",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1031xamendm.htm",
+      "contentSha256": "344ac22cc87b53e56ff93e748f59f8c4dfd1832a44bf2cb40c4a9728784d6386",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+      "contentSha256": "5842fbb5bf6d8422c5fa7afa4eba3e711a2366a7793b74bec84561bb5e9d5683",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+      "contentSha256": "18e5240fa3be49ae2c263cf5b7e6665cbe0fa01e41c8b0b2708064112d248fd2",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1023xthirds.htm",
+      "contentSha256": "ef75a6797ff4a37edaaaf8fb0dc92be7fabafcbc42e8840fc92e1a123d9208fd",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1026xsecond.htm",
+      "contentSha256": "9ddc5f79571e224e09d6bb7aec50f8602f08f1109d81d0cb653ba1abca4efc74",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1029xsecond.htm",
+      "contentSha256": "e3295a83d188c8d8b95a69649cf538af65c09c5b22f64a8701fddc58fd161aa1",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+      "contentSha256": "e22786ac590f4223c864028cbe83a4af97b4d9a81fb3b2ad00dffac6ed8d9fd5",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex101xnotepur.htm",
+      "contentSha256": "51441918353b664e6f6600ba81b6c7102516ec1164bdca4e32699776e71c681d",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+      "contentSha256": "8ba5a5e493a2c38c5bb17a9868fa600e8b2626265e91cd3425a0bdcb9785e81e",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex103xfirstsu.htm",
+      "contentSha256": "a2ce67d665c25c36d93c04b1c6da22066b1ceee62ff4f2d437aafd2742be8460",
+      "issuerCik": "0001335258",
+      "ticker": "LYV"
+    },
+    {
+      "sourceId": "edgar:0001467373-24-000157:acn05142024101excreditagre.htm",
+      "contentSha256": "73c8d96ff5bc3f08ad8f7914053aacdc027ab4671d6ab07583bb0b4404ff8260",
+      "issuerCik": "0001467373",
+      "ticker": "ACN"
+    },
+    {
+      "sourceId": "edgar:0001467858-18-000089:ex10106282018cruise.htm",
+      "contentSha256": "23bf21d8d33a2632486bb824fefc8f00b8f3b8af2c8f6e217199f6962d1b180c",
+      "issuerCik": "0001467858",
+      "ticker": "GM"
+    },
+    {
+      "sourceId": "edgar:0001467858-19-000033:ex-1023amendedgmexecutives.htm",
+      "contentSha256": "573f94c35aa74970adc1f736ceca4fc83c3a67150e4e36c205d49114372cac9b",
+      "issuerCik": "0001467858",
+      "ticker": "GM"
+    },
+    {
+      "sourceId": "edgar:0001571049-17-003250:t1700214_ex10-1.htm",
+      "contentSha256": "c600780b554a76b3610728a6c060b438b5dd0c8b4983534b1cd0c6f639c6b3e7",
+      "issuerCik": "0001056386",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001585689-25-000109:certificateofamendment-bxe.htm",
+      "contentSha256": "f0a316e9b869f156c73d1863d741700c69fb4295c32553e8f009a057525d76d9",
+      "issuerCik": "0001585689",
+      "ticker": "HLT"
+    },
+    {
+      "sourceId": "edgar:0001585689-25-000109:certificateofamendment-sup.htm",
+      "contentSha256": "fbcbec9c1d8a929adff3f7f581af13cb5c46b395ad0bcf56a72e83746066bece",
+      "issuerCik": "0001585689",
+      "ticker": "HLT"
+    },
+    {
+      "sourceId": "edgar:0001585689-26-000007:hgv-xfirstamendmenttosecon.htm",
+      "contentSha256": "719f6c2e0b7502fcd442faaf15a380a512c947bd29a3fa58d7502ae6d3fafd12",
+      "issuerCik": "0001585689",
+      "ticker": "HLT"
+    },
+    {
+      "sourceId": "edgar:0001585689-26-000037:hiltonamendedandrestated20.htm",
+      "contentSha256": "1e24c2b10267f52fd7ef04295499466697053ce0ef56a218efbcf61a5ff62541",
+      "issuerCik": "0001585689",
+      "ticker": "HLT"
+    },
+    {
+      "sourceId": "edgar:0001628280-17-008032:exhibit109firstamendmentto.htm",
+      "contentSha256": "543d090ec79f317205acfd17ef8b13cad187d2da3443c27d5466f2adf66757ca",
+      "issuerCik": "0001056386",
+      "ticker": null
+    },
+    {
+      "sourceId": "edgar:0001628280-26-012904:ex23-12312025.htm",
+      "contentSha256": "1e63affa3b514705ee0b94d2934d906c856a271ae6de3b2a11f69903567d291d",
+      "issuerCik": "0001219601",
+      "ticker": "CCK"
+    },
+    {
+      "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+      "contentSha256": "21416c822fe0e00dc2e784ba87a9418bca6713f064b7370bd37c1d5afc93eceb",
+      "issuerCik": "0000027904",
+      "ticker": "DAL"
+    },
+    {
+      "sourceId": "edgar:0001683168-20-003281:delta_8k-ex1001.htm",
+      "contentSha256": "5a1c6cffe92806fb6ce1cb8a205394831ef3eaec8d3bddf6ee972e9968214732",
+      "issuerCik": "0000027904",
+      "ticker": "DAL"
+    },
+    {
+      "sourceId": "edgar:0001683168-22-007951:delta_ex1001.htm",
+      "contentSha256": "4a5b4cb36370d11f7fe471e08b96241534f39b2459b4272417b46c2584eabad9",
+      "issuerCik": "0000027904",
+      "ticker": "DAL"
+    },
+    {
+      "sourceId": "edgar:0001744489-20-000066:fy2020q28kex101364-day.htm",
+      "contentSha256": "778f4e03618fe5d4c85b11339bee7117b03f4b929733a8e19811f2e81bc10659",
+      "issuerCik": "0001744489",
+      "ticker": "DIS"
+    },
+    {
+      "sourceId": "edgar:0001744489-20-000066:fy2020q28kex1025-yearc.htm",
+      "contentSha256": "028e6c2cd1f707093c0a0417780c532fbb17b0961f8fc917eb5a5460600e8551",
+      "issuerCik": "0001744489",
+      "ticker": "DIS"
+    },
+    {
+      "sourceId": "ehb:29c628c2d47f883dee2f7ef6",
+      "contentSha256": "0432f9d4ad9820d88fbb8f8c8ccb5ca63559665b4d190736a4d8cd8b1169ab3c",
+      "issuerCik": "0000063296",
+      "ticker": "MATW"
+    },
+    {
+      "sourceId": "ehb:42e4a267e5f11e0fb858e576",
+      "contentSha256": "298a1a6f2683c850c255c1392b0caf3b785084def573ad46580982eca3049f3e",
+      "issuerCik": "0000063296",
+      "ticker": "MATW"
+    },
+    {
+      "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+      "contentSha256": "e6bb4926b9a3ce090b964040233ad596e5faa87fe0489e0b43f951b03d01010a",
+      "issuerCik": "0000063296",
+      "ticker": "MATW"
+    },
+    {
+      "sourceId": "ehb:8f26240e1e02e95a3df8c5e4",
+      "contentSha256": "a964a47a24cd85c528b50c6f0e3dd2252aac1cdac23bf5c05bf1f71bde6da986",
+      "issuerCik": "0000063296",
+      "ticker": "MATW"
+    },
+    {
+      "sourceId": "ehb:a77c506b087aab39da748554",
+      "contentSha256": "46f928b51ed1f18f56fd0aa098d97f0c62ac4ac1090f60b4bd493c4e8b3bf3c6",
+      "issuerCik": "0000063296",
+      "ticker": "MATW"
+    },
+    {
+      "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+      "contentSha256": "61bb92243ddc8a72d85466dd231d7fa0bc54e797e9b39e5dc27ee7f92358cb77",
+      "issuerCik": "0000063296",
+      "ticker": "MATW"
+    },
+    {
+      "sourceId": "research:cbcfl:aeo2-unknown-aeo-ex10_1",
+      "contentSha256": "c0e79bde6b3c94e1d4bf7bf6278ce488b24fe5e673f114e4cbc6e1788dd3d7df",
+      "issuerCik": "0000000000",
+      "ticker": "AEO2"
+    },
+    {
+      "sourceId": "research:cbcfl:alks-unknown-alks-ex10_1",
+      "contentSha256": "b068c2d0d01d76598a473ddecd2464a5fe31605acec0331af5e388fac48ffe63",
+      "issuerCik": "0000000000",
+      "ticker": "ALKS"
+    },
+    {
+      "sourceId": "research:cbcfl:bv-unknown-bv-ex10_1",
+      "contentSha256": "e86052b771fe42e4d734e83181f06b77694eedf5c662bec6f4b894b79ab06436",
+      "issuerCik": "0000000000",
+      "ticker": "BV"
+    },
+    {
+      "sourceId": "research:cbcfl:chef-unknown-ex_975043",
+      "contentSha256": "78f82854e46e2d30f18bddfd4157e7838f390da445a5b6d7343c440418a64aab",
+      "issuerCik": "0000000000",
+      "ticker": "CHEF"
+    },
+    {
+      "sourceId": "research:cbcfl:gddy-unknown-ex101-73126",
+      "contentSha256": "4cca0bc1803bba633546c3becd8ae45efbb6ea3fec3874340134c469b4245d3b",
+      "issuerCik": "0000000000",
+      "ticker": "GDDY"
+    },
+    {
+      "sourceId": "research:cbcfl:mck-unknown-mck_ex101termloanagreement",
+      "contentSha256": "7c0eab5ef50410f9483d90987a3e38aa8c77175d72dfa8022831362b496dca75",
+      "issuerCik": "0000000000",
+      "ticker": "MCK"
+    },
+    {
+      "sourceId": "research:cbcfl:mrvi-unknown-newcreditagreement",
+      "contentSha256": "ecccf286660e0a49bd835909d6fd0b84cf659d8f50bb6636062d3c27e0d720bb",
+      "issuerCik": "0000000000",
+      "ticker": "MRVI"
+    },
+    {
+      "sourceId": "research:cbcfl:pton-unknown-tm2618568d1_ex10-1",
+      "contentSha256": "41749ddf2c5a4292dd30ce8909f8c131f12fbe259ce53b8e8f17a82316db9442",
+      "issuerCik": "0000000000",
+      "ticker": "PTON"
+    },
+    {
+      "sourceId": "research:cbcfl:rbc-unknown-exhibit101-8xkxv2xxrbcxa",
+      "contentSha256": "277d8c2ae527822ccc0b38065ddf3d0d77f85dff3e2a464269fa53e30a88011d",
+      "issuerCik": "0000000000",
+      "ticker": "RBC"
+    },
+    {
+      "sourceId": "research:cbcfl:snow_sel-unknown-d107933dex101",
+      "contentSha256": "9b8a1dca733c81fc01cd8f5048474cd4396d8be8dbbf440fd9df5272a6216ac1",
+      "issuerCik": "0000000000",
+      "ticker": "SNOW_SEL"
+    },
+    {
+      "sourceId": "research:cbcfl:suja-unknown-suja-arcreditagreement20",
+      "contentSha256": "4ca0e8f8337d0177265b48a1305451c6078147e39e37449c851a1a0864e599ad",
+      "issuerCik": "0000000000",
+      "ticker": "SUJA"
+    }
+  ]
+}
