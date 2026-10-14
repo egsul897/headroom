@@ -24,9 +24,19 @@ export interface RatioIncurrenceClassification {
 }
 
 const RATIO_NAME_RE =
-  /\b((?:Consolidated\s+)?(?:Fixed\s+Charge\s+Coverage|Interest\s+Coverage|(?:Total\s+|Secured\s+|First\s+Lien\s+)?(?:Net\s+)?Leverage)\s+Ratio)\b/i;
+  /\b((?:Consolidated\s+)?(?:Fixed\s+Charge\s+Coverage|Interest\s+Coverage|(?:Total\s+|Secured\s+|First\s+Lien\s+|Senior\s+)?(?:Net\s+)?Leverage)\s+Ratio)\b/i;
 const AT_LEAST_RE = /\bat\s+least\s+(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)\b/i;
 const NO_GREATER_RE = /\bno\s+greater\s+than\s+(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)\b/i;
+const GTE_RE = /\bgreater\s+than\s+or\s+equal\s+to\s+(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)\b/i;
+const LTE_RE = /\bless\s+than\s+or\s+equal\s+to\s+(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)\b/i;
+const EXCEED_RE = /\bto\s+exceed\s+(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)\b/i;
+const EXCEEDED_RE = /\bexceeded\s+(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)\b/i;
+const LT_TO_RE = /\bless\s+than\s+(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)\b/i;
+const GT_TO_RE = /\bgreater\s+than\s+(\d+(?:\.\d+)?)\s+to\s+(\d+(?:\.\d+)?)\b/i;
+const LT_COLON_RE = /\bless\s+than\s+(\d+(?:\.\d+)?)\s*:\s*(\d+(?:\.\d+)?)\b/i;
+const GT_COLON_RE = /\bgreater\s+than\s+(\d+(?:\.\d+)?)\s*:\s*(\d+(?:\.\d+)?)\b/i;
+const LTE_COLON_RE = /\bless\s+than\s+or\s+equal\s+to\s+(\d+(?:\.\d+)?)\s*:\s*(\d+(?:\.\d+)?)\b/i;
+const GTE_COLON_RE = /\bgreater\s+than\s+or\s+equal\s+to\s+(\d+(?:\.\d+)?)\s*:\s*(\d+(?:\.\d+)?)\b/i;
 const WOULD_BE_AT_LEAST = /\bwould\s+be\s+at\s+least\b/i;
 const WOULD_BE_NO_GREATER = /\bwould\s+be\s+no\s+greater\s+than\b/i;
 const DEFINED_TERM_RE = /[“"]([A-Z][^”"]{2,80})[”"]/g;
@@ -51,18 +61,31 @@ export function classifyRatioIncurrencePermission(operativeText: string): RatioI
   let thresholdDenominator: number | null = null;
   let thresholdRaw: string | null = null;
 
-  const atLeast = text.match(AT_LEAST_RE);
-  const noGreater = text.match(NO_GREATER_RE);
-  if (atLeast && (WOULD_BE_AT_LEAST.test(text) || /\bat\s+least\b/i.test(text))) {
-    comparator = "AT_LEAST";
-    thresholdNumerator = Number(atLeast[1]);
-    thresholdDenominator = Number(atLeast[2]);
-    thresholdRaw = atLeast[0];
-  } else if (noGreater && (WOULD_BE_NO_GREATER.test(text) || /\bno\s+greater\s+than\b/i.test(text))) {
-    comparator = "NO_GREATER_THAN";
-    thresholdNumerator = Number(noGreater[1]);
-    thresholdDenominator = Number(noGreater[2]);
-    thresholdRaw = noGreater[0];
+  const hits: Array<{ index: number; comparator: NonNullable<RatioIncurrenceClassification["comparator"]>; raw: string; n: string; d: string }> = [];
+  const pushHit = (re: RegExp, cmp: NonNullable<RatioIncurrenceClassification["comparator"]>) => {
+    const hit = text.match(re);
+    if (!hit || hit.index == null || !hit[1] || !hit[2]) return;
+    hits.push({ index: hit.index, comparator: cmp, raw: hit[0], n: hit[1], d: hit[2] });
+  };
+  pushHit(GTE_RE, "AT_LEAST");
+  pushHit(GTE_COLON_RE, "AT_LEAST");
+  pushHit(LTE_RE, "NO_GREATER_THAN");
+  pushHit(LTE_COLON_RE, "NO_GREATER_THAN");
+  if (WOULD_BE_AT_LEAST.test(text) || /\bat\s+least\b/i.test(text)) pushHit(AT_LEAST_RE, "AT_LEAST");
+  if (WOULD_BE_NO_GREATER.test(text) || /\bno\s+greater\s+than\b/i.test(text)) pushHit(NO_GREATER_RE, "NO_GREATER_THAN");
+  pushHit(EXCEED_RE, "NO_GREATER_THAN");
+  pushHit(EXCEEDED_RE, "NO_GREATER_THAN");
+  pushHit(LT_TO_RE, "LESS_THAN");
+  pushHit(LT_COLON_RE, "LESS_THAN");
+  pushHit(GT_TO_RE, "GREATER_THAN");
+  pushHit(GT_COLON_RE, "GREATER_THAN");
+  hits.sort((a, b) => a.index - b.index);
+  const earliest = hits[0];
+  if (earliest) {
+    comparator = earliest.comparator;
+    thresholdNumerator = Number(earliest.n);
+    thresholdDenominator = Number(earliest.d);
+    thresholdRaw = earliest.raw;
   }
 
   if (comparator == null || thresholdNumerator == null || thresholdDenominator == null) {
