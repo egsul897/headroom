@@ -162,73 +162,44 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
   };
 }
 
-// ---------------- persistence (additive tables, idempotent) ----------------
+// ---------------- persistence (additive tables created by prisma/migrations/20261014220000_section_tree_knowledge) ----------------
+// No DDL here: tables come from migrations. Public corpus → kf_* (text sha256 + parser version).
+// Customer uploads → customer_* only, scoped by (companyId, documentId); never the shared kf_* corpus tables.
 
 export interface SqlExecutor { execute(sql: string, params?: unknown[]): Promise<Array<Record<string, unknown>>> }
 
-/** Adapt a Prisma client ($queryRawUnsafe / $executeRawUnsafe) to SqlExecutor. */
-export function prismaSqlExecutor(db: { $queryRawUnsafe: (sql: string, ...p: unknown[]) => Promise<unknown>; $executeRawUnsafe: (sql: string, ...p: unknown[]) => Promise<unknown> }): SqlExecutor {
-  return {
-    async execute(sql, params = []) {
-      if (/^\s*(SELECT|WITH)\b/i.test(sql)) return (await db.$queryRawUnsafe(sql, ...params)) as Array<Record<string, unknown>>;
-      await db.$executeRawUnsafe(sql, ...params);
-      return [];
-    },
-  };
-}
-
-export const KNOWLEDGE_DDL = [
-  `CREATE TABLE IF NOT EXISTS kf_tree_parses (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, "sourceId" text NOT NULL, basis text NOT NULL,
-    verification text, "textLength" int NOT NULL, "nodeCount" int NOT NULL, "xrefCount" int NOT NULL,
-    "checklistCount" int NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT now(),
-    PRIMARY KEY ("textSha256","parserVersion"))`,
-  `CREATE INDEX IF NOT EXISTS kf_tree_parses_source ON kf_tree_parses ("sourceId")`,
-  `CREATE TABLE IF NOT EXISTS kf_tree_nodes (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, "nodeId" text NOT NULL, "parentId" text,
-    kind text NOT NULL, label text, path text, "sectionNumber" text, title text, level text,
-    "start" int NOT NULL, "headingEnd" int NOT NULL, "end" int NOT NULL, depth int NOT NULL,
-    status text NOT NULL, role text, issues jsonb NOT NULL DEFAULT '[]',
-    PRIMARY KEY ("textSha256","parserVersion","nodeId"))`,
-  `CREATE TABLE IF NOT EXISTS kf_tree_xrefs (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, ord int NOT NULL, "fromNodeId" text NOT NULL,
-    at int NOT NULL, raw text NOT NULL, target text NOT NULL, status text NOT NULL, "targetNodeId" text,
-    PRIMARY KEY ("textSha256","parserVersion",ord))`,
-  `CREATE TABLE IF NOT EXISTS kf_tree_checklist (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, family text NOT NULL, status text NOT NULL,
-    "sectionPaths" jsonb NOT NULL, parts jsonb NOT NULL, "needsInputs" jsonb NOT NULL, note text,
-    PRIMARY KEY ("textSha256","parserVersion",family))`,
-  `CREATE TABLE IF NOT EXISTS kf_scoreboard_runs (
-    "runId" text PRIMARY KEY, "gitCommit" text NOT NULL, "rulesLabel" text NOT NULL, "rulesetVersion" text,
-    tree boolean NOT NULL, "snapshotSha256" text NOT NULL, totals jsonb NOT NULL, "findingCount" int NOT NULL,
-    "createdAt" timestamptz NOT NULL DEFAULT now())`,
-  `CREATE TABLE IF NOT EXISTS kf_scoreboard_findings (
-    "runId" text NOT NULL, "sourceId" text NOT NULL, ord int NOT NULL, "textSha256" text, split text NOT NULL,
-    class text NOT NULL, key text, family text, "sectionRef" text, excerpt text, message text,
-    PRIMARY KEY ("runId","sourceId",ord))`,
-  `CREATE TABLE IF NOT EXISTS kf_agreement_pipeline_results (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, "pipelineVersion" text NOT NULL, "sourceId" text NOT NULL,
-    "companyId" text, "documentId" text, stats jsonb NOT NULL, families jsonb NOT NULL,
-    "createdAt" timestamptz NOT NULL DEFAULT now(),
-    PRIMARY KEY ("textSha256","parserVersion","pipelineVersion","sourceId"))`,
-];
-
-export async function ensureKnowledgeTables(ex: SqlExecutor): Promise<void> {
-  for (const d of KNOWLEDGE_DDL) await ex.execute(d);
-}
-
 const JSONB_COLS = new Set(["issues", "sectionPaths", "parts", "needsInputs", "totals", "stats", "families"]);
-const INT_COLS = new Set(["start", "headingEnd", "end", "depth", "ord", "at", "textLength", "nodeCount", "xrefCount", "checklistCount", "findingCount"]);
+const INT_COLS = new Set(["start", "headingEnd", "end", "depth", "ord", "at", "textLength", "nodeCount", "xrefCount", "checklistCount", "findingCount", "spanStart", "spanEnd", "occurrence"]);
 
 /** Multi-row INSERT ... ON CONFLICT DO NOTHING, chunked. */
 export async function insertRows(ex: SqlExecutor, table: string, cols: string[], rows: unknown[][], chunk = 150): Promise<void> {
   for (let i = 0; i < rows.length; i += chunk) {
     const part = rows.slice(i, i + chunk);
     const params: unknown[] = [];
-    // Explicit casts so typed drivers (Prisma) bind JSON text and integers correctly.
+    // Explicit casts so typed drivers bind JSON text and integers correctly.
     const values = part.map((r) => "(" + r.map((v, j) => { params.push(v); return `$${params.length}${JSONB_COLS.has(cols[j] ?? "") ? "::jsonb" : INT_COLS.has(cols[j] ?? "") ? "::int" : ""}`; }).join(",") + ")");
     await ex.execute(`INSERT INTO ${table} (${cols.map((c) => `"${c}"`).join(",")}) VALUES ${values.join(",")} ON CONFLICT DO NOTHING`, params);
   }
+}
+
+/** Content key for a cross-reference: its span in the tree text plus sha256 of that span (not list position). */
+export function xrefSpanKey(text: string, x: CrossRef): { spanStart: number; spanEnd: number; spanSha256: string } {
+  const spanEnd = x.at + x.raw.length;
+  return { spanStart: x.at, spanEnd, spanSha256: sha(text.slice(x.at, spanEnd)) };
+}
+
+/** Content-keyed rows; identical (span, hash) pairs collapse, which is the point of content keys. */
+function xrefRows(r: AgreementPipelineResult) {
+  const seen = new Set<string>();
+  const out: Array<ReturnType<typeof xrefSpanKey> & { x: CrossRef }> = [];
+  for (const x of r.crossRefs) {
+    const k = xrefSpanKey(r.tree.text, x);
+    const id = `${k.spanStart}:${k.spanEnd}:${k.spanSha256}`;
+    if (seen.has(id)) continue;
+    seen.add(id);
+    out.push({ ...k, x });
+  }
+  return out;
 }
 
 async function countWhere(ex: SqlExecutor, table: string, h: string, pv: string): Promise<number> {
@@ -236,25 +207,83 @@ async function countWhere(ex: SqlExecutor, table: string, h: string, pv: string)
 }
 
 /**
- * Write tree nodes / xrefs / checklist (keyed by textSha256+parserVersion), verify counts with SELECT, then write the
- * kf_tree_parses completion marker and the per-source pipeline result. Re-runs are no-ops.
+ * PUBLIC CORPUS ONLY (verified SEC / research texts). Writes tree nodes / content-keyed xrefs / checklist keyed by
+ * textSha256 + parserVersion, verifies counts with SELECT, then writes the kf_tree_parses completion marker and the
+ * pipeline result. Re-runs are no-ops. Customer uploads must use persistCustomerAgreementRun.
  */
-export async function persistAgreementPipeline(ex: SqlExecutor, r: AgreementPipelineResult, meta: { sourceId: string; verification?: string | null; companyId?: string | null; documentId?: string | null }): Promise<{ nodes: number; xrefs: number; checklist: number }> {
+export async function persistAgreementPipeline(ex: SqlExecutor, r: AgreementPipelineResult, meta: { sourceId: string; verification?: string | null }): Promise<{ nodes: number; xrefs: number; checklist: number }> {
+  if (/^customer:|^cust-/i.test(meta.sourceId) || meta.verification === "CUSTOMER_UPLOAD") throw new Error("customer uploads must not be written to the shared kf_* corpus tables");
   const h = r.textSha256, pv = r.parserVersion;
   const nodes = r.tree.nodes.map((n) => [h, pv, n.id, n.parentId, n.kind, n.label, n.path, n.sectionNumber, n.title, n.level,
     n.start, n.headingEnd, n.end, n.depth, n.status, r.roles.get(n.id) ?? null, JSON.stringify(n.issues)]);
-  const xr = r.crossRefs.map((x, i) => [h, pv, i, x.fromNodeId, x.at, x.raw, x.target, x.status, x.targetNodeId]);
+  const xr = xrefRows(r).map((k) => [h, pv, k.spanStart, k.spanEnd, k.spanSha256, k.x.fromNodeId, k.x.raw, k.x.target, k.x.status, k.x.targetNodeId]);
   const cl = r.checklist.map((c) => [h, pv, c.family, c.status, JSON.stringify(c.sectionPaths), JSON.stringify(c.parts), JSON.stringify(c.needsInputs), c.note]);
   await insertRows(ex, "kf_tree_nodes", ["textSha256","parserVersion","nodeId","parentId","kind","label","path","sectionNumber","title","level","start","headingEnd","end","depth","status","role","issues"], nodes, 100);
-  await insertRows(ex, "kf_tree_xrefs", ["textSha256","parserVersion","ord","fromNodeId","at","raw","target","status","targetNodeId"], xr);
+  await insertRows(ex, "kf_tree_xref_spans", ["textSha256","parserVersion","spanStart","spanEnd","spanSha256","fromNodeId","raw","target","status","targetNodeId"], xr);
   await insertRows(ex, "kf_tree_checklist", ["textSha256","parserVersion","family","status","sectionPaths","parts","needsInputs","note"], cl);
-  const got = { nodes: await countWhere(ex, "kf_tree_nodes", h, pv), xrefs: await countWhere(ex, "kf_tree_xrefs", h, pv), checklist: await countWhere(ex, "kf_tree_checklist", h, pv) };
+  const got = { nodes: await countWhere(ex, "kf_tree_nodes", h, pv), xrefs: await countWhere(ex, "kf_tree_xref_spans", h, pv), checklist: await countWhere(ex, "kf_tree_checklist", h, pv) };
   if (got.nodes !== nodes.length || got.xrefs !== xr.length || got.checklist !== cl.length) {
     throw new Error(`knowledge count mismatch for ${meta.sourceId}: nodes ${got.nodes}/${nodes.length} xrefs ${got.xrefs}/${xr.length} checklist ${got.checklist}/${cl.length}`);
   }
   await insertRows(ex, "kf_tree_parses", ["textSha256","parserVersion","sourceId","basis","verification","textLength","nodeCount","xrefCount","checklistCount"],
     [[h, pv, meta.sourceId, r.basis, meta.verification ?? null, r.textLength, nodes.length, xr.length, cl.length]]);
   await insertRows(ex, "kf_agreement_pipeline_results", ["textSha256","parserVersion","pipelineVersion","sourceId","companyId","documentId","stats","families"],
-    [[h, pv, r.pipelineVersion, meta.sourceId, meta.companyId ?? null, meta.documentId ?? null, JSON.stringify(r.stats), JSON.stringify(r.families)]]);
+    [[h, pv, r.pipelineVersion, meta.sourceId, null, null, JSON.stringify(r.stats), JSON.stringify(r.families)]]);
   return got;
+}
+
+/** Minimal Prisma surface used for customer persistence (so tests can pass an in-memory fake). */
+export interface CustomerStore {
+  $transaction<T>(fn: (tx: CustomerStore) => Promise<T>): Promise<T>;
+  customerAgreementRun: { create(args: { data: Record<string, unknown> }): Promise<{ id: string }> };
+  customerTreeNode: { createMany(args: { data: Record<string, unknown>[] }): Promise<{ count: number }> };
+  customerTreeXref: { createMany(args: { data: Record<string, unknown>[] }): Promise<{ count: number }> };
+  customerTreeChecklist: { createMany(args: { data: Record<string, unknown>[] }): Promise<{ count: number }> };
+}
+
+export type CustomerRunOutcome =
+  | { status: "OK"; runId: string; textSha256: string; stored: { nodes: number; xrefs: number; checklist: number } }
+  | { status: "FAILED"; runId: string | null; error: string };
+
+/**
+ * Customer upload persistence. Isolation key = (companyId, documentId): every row hangs off a customer_agreement_runs
+ * row for that company+document, so identical texts uploaded by two customers never collapse or cross. A pipeline
+ * failure is recorded as a FAILED run with the error (visible), and is returned rather than thrown.
+ */
+export async function persistCustomerAgreementRun(
+  db: CustomerStore,
+  scope: { companyId: string; documentId: string; sourceId: string },
+  run: () => AgreementPipelineResult | Promise<AgreementPipelineResult>,
+): Promise<CustomerRunOutcome> {
+  if (!scope.companyId || !scope.documentId) throw new Error("customer agreement runs require companyId and documentId");
+  let r: AgreementPipelineResult;
+  try {
+    r = await run();
+  } catch (err) {
+    const error = err instanceof Error ? err.message : String(err);
+    try {
+      const row = await db.customerAgreementRun.create({ data: { ...scope, parserVersion: sectionTreeParserVersion(), pipelineVersion: PIPELINE_VERSION, status: "FAILED", error } });
+      return { status: "FAILED", runId: row.id, error };
+    } catch (err2) {
+      return { status: "FAILED", runId: null, error: `${error}; failure record not written: ${err2 instanceof Error ? err2.message : String(err2)}` };
+    }
+  }
+  try {
+    return await db.$transaction(async (tx) => {
+      const row = await tx.customerAgreementRun.create({ data: { ...scope, textSha256: r.textSha256, parserVersion: r.parserVersion, pipelineVersion: r.pipelineVersion, status: "OK", stats: r.stats, families: r.families } });
+      const runId = row.id;
+      const n = await tx.customerTreeNode.createMany({ data: r.tree.nodes.map((x) => ({ runId, nodeId: x.id, parentId: x.parentId, kind: x.kind, label: x.label, path: x.path, sectionNumber: x.sectionNumber, title: x.title, level: x.level, start: x.start, headingEnd: x.headingEnd, end: x.end, depth: x.depth, status: x.status, role: r.roles.get(x.id) ?? null, issues: x.issues })) });
+      const xr = await tx.customerTreeXref.createMany({ data: xrefRows(r).map((k) => ({ runId, spanStart: k.spanStart, spanEnd: k.spanEnd, spanSha256: k.spanSha256, fromNodeId: k.x.fromNodeId, raw: k.x.raw, target: k.x.target, status: k.x.status, targetNodeId: k.x.targetNodeId })) });
+      const cl = await tx.customerTreeChecklist.createMany({ data: r.checklist.map((c) => ({ runId, family: c.family, status: c.status, sectionPaths: c.sectionPaths, parts: c.parts, needsInputs: c.needsInputs, note: c.note })) });
+      return { status: "OK" as const, runId, textSha256: r.textSha256, stored: { nodes: n.count, xrefs: xr.count, checklist: cl.count } };
+    });
+  } catch (err) {
+    const error = `persist failed: ${err instanceof Error ? err.message : String(err)}`;
+    try {
+      const row = await db.customerAgreementRun.create({ data: { ...scope, textSha256: r.textSha256, parserVersion: r.parserVersion, pipelineVersion: r.pipelineVersion, status: "FAILED", error } });
+      return { status: "FAILED", runId: row.id, error };
+    } catch {
+      return { status: "FAILED", runId: null, error };
+    }
+  }
 }
