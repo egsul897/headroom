@@ -16,6 +16,8 @@
  *   --progress=PATH        (neon mode) append-only per-source progress (resumes on rerun)
  *   --rules=neon           (neon mode) score with the LIVE latest learning_rulesets row (read-only SELECT)
  *   --rules-file=PATH      score with a pinned ruleset JSON (CI uses the committed scoreboard/ruleset.json)
+ *   --rules=v0             extractor-only: empty learned ruleset (v0)
+ *   --write-findings=PATH  candidate-level JSONL: one row per scored error (class, candidateId, family, excerpt)
  *   --write-rules=PATH     write the ruleset actually used (pin it for offline replay)
  *
  * Deterministic. Zero AI / LLM calls. Never prints the connection string.
@@ -105,6 +107,11 @@ async function main(): Promise<void> {
     process.exit(2);
   }
 
+  if (argStr("rules") === "v0") {
+    // Extractor-only: empty learned ruleset (no unverified learned rules inflate the numbers).
+    const { emptyRuleSet } = await import("../../lib/covenant-learning-factory/learned-rules/types");
+    rules = emptyRuleSet(0);
+  }
   if (argStr("rules") === "neon") {
     if (!neon) {
       console.error("--rules=neon requires --neon");
@@ -138,7 +145,7 @@ async function main(): Promise<void> {
     await loadNeonInputs(async (input) => {
       const s = scoreSource(input, rules, manifest);
       perSource.push(s);
-      if (progress) appendFileSync(progress, JSON.stringify(s) + "\n");
+      if (progress) appendFileSync(progress, JSON.stringify({ ...s, findings: undefined }) + "\n");
       if (capture && (!only || only.toUpperCase() === s.split || (only === "dev" && s.split === "DEV"))) captured.push(input);
       if (perSource.length % 10 === 0) console.log(`scored ${perSource.length}`);
     }, done);
@@ -148,6 +155,14 @@ async function main(): Promise<void> {
     }
   }
 
+  const findingsPath = argStr("write-findings");
+  if (findingsPath) {
+    const lines: string[] = [];
+    for (const s of perSource) for (const f of s.findings ?? []) lines.push(JSON.stringify({ sourceId: s.sourceId, split: s.split, textBasis: s.textBasis, ...f }));
+    writeFileSync(findingsPath, lines.join("\n") + "\n");
+    console.log(`findings: ${lines.length} rows → ${findingsPath}`);
+  }
+  for (const s of perSource) delete s.findings;
   const report = aggregate(perSource, { mode: neon ? "neon" : "snapshot", rulesetVersion: rules.rulesetVersion });
   printSummary(report);
   const out = argStr("write-report");

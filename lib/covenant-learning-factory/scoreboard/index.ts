@@ -45,6 +45,20 @@ export interface SourceScore {
   duplicateOf?: string | null;
   counts: ClassCounts;
   total: number;
+  /** DOCUMENT = scored over stored document text; COMPOSITE = no text, candidate excerpts only. */
+  textBasis?: "DOCUMENT" | "COMPOSITE";
+  /** Candidate-level errors (only written via --write-findings; stripped from the report). */
+  findings?: ScoreFinding[];
+}
+
+export interface ScoreFinding {
+  class: ScoreboardClass;
+  /** Stable key for diffing runs: candidateId / definitionId / message. */
+  key: string;
+  family: string | null;
+  sectionRef: string | null;
+  excerpt: string;
+  message: string;
 }
 
 export interface ScoreboardReport {
@@ -62,10 +76,9 @@ export interface DevManifest {
   description: string;
   /** Exact sourceIds treated as DEV (fixtures / fixture-derived packages). */
   sourceIds: string[];
-  /** Issuers with DEV fixtures: every source of these issuers is DEV (split by issuer, not document). */
-  devIssuerTickers?: string[];
-  /** Sources of a DEV issuer whose knowledge_sources ticker is null (matched by CIK/filename evidence). */
-  devIssuerSourceIds?: { sourceId: string; issuer: string; evidence: string }[];
+  /** SEC CIKs of issuers with DEV fixtures: every source with one of these issuerCik values is DEV.
+   *  Split by CIK (never ticker / hand-listed sourceIds — tickers are null on many rows). */
+  devIssuerCiks?: { cik: string; issuer: string; evidence: string }[];
   /** Exact duplicates of another source: scored and listed, excluded from totals and the gate. */
   duplicates?: { sourceId: string; duplicateOf: string; evidence: string }[];
 }
@@ -80,11 +93,16 @@ export function issuerOf(ticker: string | null | undefined): string | null {
   return ticker.toUpperCase().replace(/_(?:ALT|SEL)$/, "");
 }
 
-export function splitFor(sourceId: string, manifest: DevManifest, ticker?: string | null): Split {
-  if (manifest.sourceIds.includes(sourceId)) return "DEV";
-  if (manifest.devIssuerSourceIds?.some((d) => d.sourceId === sourceId)) return "DEV";
-  const issuer = issuerOf(ticker);
-  if (issuer && manifest.devIssuerTickers?.includes(issuer)) return "DEV";
+export function normCik(cik: string | null | undefined): string | null {
+  if (!cik) return null;
+  const d = cik.replace(/\D/g, "").replace(/^0+/, "");
+  return d.length ? d : null; // "0000000000" (fixture placeholder) → null
+}
+
+export function splitFor(sourceId: string, manifest: DevManifest, issuerCik?: string | null): Split {
+  if (manifest.sourceIds.includes(sourceId) || /^(fixture|fdp):/.test(sourceId)) return "DEV";
+  const cik = normCik(issuerCik);
+  if (cik && manifest.devIssuerCiks?.some((d) => normCik(d.cik) === cik)) return "DEV";
   return "HELDOUT";
 }
 
@@ -121,10 +139,25 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
   const total = SCOREBOARD_CLASSES.reduce((a, c) => a + counts[c], 0);
   return {
     sourceId,
-    split: splitFor(sourceId, manifest, input.source.ticker),
+    split: splitFor(sourceId, manifest, input.source.issuerCik),
     duplicateOf: duplicateOf(sourceId, manifest),
     counts,
     total,
+    textBasis: input.documentText && input.documentText.trim() ? "DOCUMENT" : "COMPOSITE",
+    findings: errors
+      .filter((e) => (SCOREBOARD_CLASSES as readonly string[]).includes(e.class))
+      .map((e) => {
+        const ev = ((e as unknown as { evidence?: Record<string, unknown> }).evidence ?? {}) as Record<string, unknown>;
+        const str = (v: unknown) => (typeof v === "string" ? v : null);
+        return {
+          class: e.class as ScoreboardClass,
+          key: str(ev.candidateId) ?? str(ev.definitionId) ?? str(ev.stableKey) ?? e.message,
+          family: str(ev.expectedFamily) ?? str(ev.family),
+          sectionRef: str(ev.sectionRef),
+          excerpt: (str(ev.citationExcerpt) ?? "").slice(0, 200),
+          message: e.message,
+        };
+      }),
   };
 }
 

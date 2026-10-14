@@ -215,18 +215,22 @@ export async function fetchDocumentText(
        LIMIT 1`,
       [source.contentSha256],
     );
-    if (rows.length === 0 && process.env.CLF_UNVERIFIED_TEXT === "1") {
-      // SEC text backfill: bytes fetched from the source's own SEC URL whose sha256 differs
-      // from the recorded originalBytesHash are stored under their own hash; provenance in
-      // kf_source_text_backfill (status HASH_MISMATCH_STORED) = UNVERIFIED_TEXT.
-      // Opt-in only (CLF_UNVERIFIED_TEXT=1); never used for the gate baseline.
+    if (rows.length === 0) {
+      // SEC text backfill (kf_source_text_backfill). Re-fetched bytes are stored under their own sha256.
+      // Linked by default only when proven equal to the original ingest: BYTES_VERIFIED (raw sha256) or
+      // TEXT_VERIFIED (normalizedTextHash recomputed by the original pipeline matches).
+      // UNVERIFIED_TEXT (same accession + exhibit filename, text differs) is opt-in via CLF_UNVERIFIED_TEXT=1
+      // and must never be used for the gate baseline.
+      const allowed = process.env.CLF_UNVERIFIED_TEXT === "1"
+        ? ["BYTES_VERIFIED", "TEXT_VERIFIED", "UNVERIFIED_TEXT"]
+        : ["BYTES_VERIFIED", "TEXT_VERIFIED"];
       rows = await executor.execute(
         `SELECT convert_from(d.bytes, 'UTF8') AS text
          FROM kf_source_text_backfill b
          JOIN document_byte_objects d ON d."contentHash" = b.sha256
-         WHERE b."originalBytesHash" = $1 AND b.status IN ('FETCHED','HASH_MISMATCH_STORED')
+         WHERE b."originalBytesHash" = $1 AND b.verification = ANY($2::text[])
          LIMIT 1`,
-        [source.contentSha256],
+        [source.contentSha256, allowed],
       );
     }
   } catch (err) {
