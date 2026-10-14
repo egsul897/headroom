@@ -161,3 +161,35 @@ describe("acn under-parse (#365 note 7)", () => {
     expect(t.nodes.filter((n) => n.kind === "SECTION").map((n) => n.sectionNumber)).toEqual(["6.1", "6.2", "6.3"]);
   });
 });
+
+describe("reviewer adversarial (#365 PASS_WITH_NOTES)", () => {
+  it("(1) located candidate vs AMBIGUOUS basket (duplicated clause) is rejected, never falls back to the declared section", async () => {
+    const { strictCandidateMatch } = await import("@/lib/covenant-learning-factory/sweep/self-check");
+    const { buildTreeLocator, AMBIGUOUS } = await import("@/lib/covenant-learning-factory/sweep/tree-locator");
+    const dup = "Indebtedness in an aggregate principal amount not to exceed the greater of $50,000,000 and 25% of Consolidated EBITDA";
+    const filler = " The Borrower will comply with this Section in all material respects at all times during the term of this Agreement.";
+    const doc = `ARTICLE VI\nNEGATIVE COVENANTS\n\nSection 6.01 Indebtedness. The Borrower will not incur any Indebtedness, except:${filler}\n(a) ${dup};\n(b) purchase money debt;\n\nSection 7.01 Liens. The Borrower will not create any Lien, except:${filler}\n(a) Liens securing ${dup};\n(b) statutory liens.\n`;
+    const loc = buildTreeLocator({ documentText: doc, candidates: [] });
+    const candText = `Liens securing ${dup}`;
+    const candTree = loc.candidateSection({ candidateId: "c", sourceId: "s", family: "LIENS", sectionRef: null, excerpt: candText } as never);
+    const basketTree = loc.citationSection(dup);
+    expect(candTree).toBe("7.1");
+    expect(basketTree).toBe(AMBIGUOUS);
+    const norm = (t: string) => t.toLowerCase();
+    expect(
+      strictCandidateMatch(
+        { excerpt: norm(candText), sectionRef: null, family: "LIENS", treeSection: candTree },
+        { cite: norm(dup), sectionRef: "Section 7.01", family: "LIENS", treeSection: basketTree },
+      ),
+    ).toBe(false);
+  });
+  it("(2) a family-OTHER basket that is only a fragment of a proviso does not count as a match", async () => {
+    const { strictCandidateMatch } = await import("@/lib/covenant-learning-factory/sweep/self-check");
+    const proviso = "provided that the aggregate amount of all such investments made in reliance on this clause shall not exceed the greater of $10,000,000 and 5% of total assets at any time outstanding";
+    const fragment = proviso.slice(0, 90);
+    const c = { excerpt: proviso, sectionRef: "Section 6.04", family: "INVESTMENTS" };
+    expect(strictCandidateMatch(c, { cite: fragment, sectionRef: "Section 6.04", family: "OTHER" })).toBe(false);
+    expect(strictCandidateMatch(c, { cite: proviso, sectionRef: "Section 6.04", family: "OTHER" })).toBe(true);
+    expect(strictCandidateMatch(c, { cite: fragment, sectionRef: "Section 6.04", family: "INVESTMENTS" })).toBe(true);
+  });
+});

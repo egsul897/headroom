@@ -38,6 +38,9 @@ function index(tree: SectionTree, text: string): Indexed {
   return { tree, norm, map };
 }
 
+/** Located in more than one place (e.g. a duplicated clause): NOT the same as "not found". */
+export const AMBIGUOUS = "?AMBIGUOUS";
+
 const key = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
 
 function sectionAt(ix: Indexed, needle: string): string | null {
@@ -46,7 +49,7 @@ function sectionAt(ix: Indexed, needle: string): string | null {
   const at = ix.norm.indexOf(k);
   if (at < 0) return null;
   // ambiguous location (same text in two places) → fail closed
-  if (ix.norm.indexOf(k, at + 1) >= 0) return null;
+  if (ix.norm.indexOf(k, at + 1) >= 0) return AMBIGUOUS;
   const start = ix.map[at]!;
   const end = ix.map[Math.min(ix.map.length - 1, at + k.length - 1)]! + 1;
   const node = deepestContaining(ix.tree, start, end);
@@ -97,7 +100,8 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
       const hits = blocks.filter((b) => b.norm.includes(k));
       const secs = new Set(hits.map((b) => sectionAt(b, cite)));
       // Same citation located under different sections in different blocks → ambiguous → null.
-      return secs.size === 1 ? [...secs][0]! : null;
+      if (secs.size === 0) return null;
+      return secs.size === 1 ? [...secs][0]! : AMBIGUOUS;
     },
   };
 }
