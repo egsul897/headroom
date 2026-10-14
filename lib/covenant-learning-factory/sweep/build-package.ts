@@ -69,10 +69,14 @@ export function buildComputationPackage(args: {
 
   // Section-tree baskets (real document text only): add exact-span clauses the regional extractor missed.
   if (text.length >= 80 && args.documentText && args.documentText.trim().length >= 80 && process.env.CLF_TREE_BASKETS !== "0") {
-    const have = new Set(baskets.map((b) => b.operativeText.replace(/\s+/g, " ").trim()));
+    const nrm = (t: string) => t.replace(/\s+/g, " ").trim().toLowerCase();
+    const existing = baskets.map((b) => nrm(b.operativeText));
+    const have = new Set(existing);
     for (const b of treeBaskets(documentId, text, args.rules)) {
-      const k = b.operativeText.replace(/\s+/g, " ").trim();
-      if (have.has(k)) continue;
+      const k = nrm(b.operativeText);
+      // Only clauses the regional extractor missed: skip any span overlapping an existing basket.
+      const probe = k.slice(0, 60);
+      if (have.has(k) || existing.some((e) => e.includes(probe) || k.includes(e.slice(0, 60)))) continue;
       have.add(k);
       baskets.push(b);
     }
