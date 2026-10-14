@@ -94,6 +94,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
   const famBySection = new Map<string, string>();
   for (const c of checklist) for (const p of c.sectionPaths) if (!famBySection.has(p)) famBySection.set(p, c.family);
   const cited = pkg.baskets.map((b) => b.operativeText.replace(/[^A-Za-z0-9]/g, "")).join("|");
+  const sumSeen = new Set<string>();
   for (const n of tree.nodes) {
     if (n.kind !== "CLAUSE") continue;
     const role = roles.get(n.id);
@@ -101,8 +102,18 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     const sec = sectionOf(tree, n);
     const family = sec ? famBySection.get(sec.path) : undefined;
     if (!family) continue;
-    const own = ownText(tree, tree.text, n).trim();
-    if (own.length < 24 || !/\$\s?[\d,]{3,}|greater\s+of/i.test(own)) continue;
+    let own = ownText(tree, tree.text, n).trim();
+    if (own.length < 24 && !/\$\s?[\d,]{3,}/.test(own)) continue;
+    if (!/\$\s?[\d,]{3,}|greater\s+of/i.test(own)) continue;
+    // A limb of a sum ("the sum of (1) 50% of CNI, plus (2) ..., plus (3) $200M") is not a cap by itself: cite the
+    // whole sum so it is computed as a builder (NEEDS_INPUT while any component is unbound).
+    const sum = sumAncestor(tree, n);
+    if (sum) {
+      if (sumSeen.has(sum.id)) continue;
+      sumSeen.add(sum.id);
+      own = tree.text.slice(sum.start, sum.end).trim();
+    }
+    if (own.length < 24) continue;
     const key = own.replace(/[^A-Za-z0-9]/g, "").slice(0, 80);
     if (key.length < 20 || cited.includes(key)) continue;
     pkg.baskets.push({ stableKey: `tree:${n.path}`, sectionRef: n.path, covenantFamily: family, documentId: pkg.baskets[0]?.documentId ?? args.sourceId, operativeText: own, role: "PERMISSION" });
@@ -308,3 +319,19 @@ export async function persistCustomerAgreementRun(
     }
   }
 }
+
+const SUM_LEAD = /\b(?:the\s+)?(?:sum|aggregate)\s+of\b[^.;]{0,40}$|\bplus\b[^.;]{0,20}$|\b(?:sum|aggregate)\s+of\s*:?\s*$/i;
+const SUM_LIMB = /\bplus\b|\bminus\b/i;
+
+/** Nearest clause ancestor that introduces a sum whose limbs include node n (lead-in ends "sum of" / limbs joined by "plus"). */
+function sumAncestor(tree: AgreementPipelineResult["tree"], n: AgreementPipelineResult["tree"]["nodes"][number]) {
+  const byId = new Map(tree.nodes.map((x) => [x.id, x]));
+  let p = n.parentId ? byId.get(n.parentId) : undefined;
+  for (let hops = 0; p && p.kind === "CLAUSE" && hops < 3; hops++, p = p.parentId ? byId.get(p.parentId) : undefined) {
+    const lead = ownText(tree, tree.text, p).trim();
+    const body = tree.text.slice(p.start, p.end);
+    if (SUM_LEAD.test(lead) || (/\b(?:sum|aggregate)\s+of\b/i.test(lead) && SUM_LIMB.test(body))) return p;
+  }
+  return null;
+}
+
