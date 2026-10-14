@@ -58,3 +58,8 @@ whenever `--baseline` is given. Tests: `tests/covenant-learning-factory/scoreboa
    or any single HELDOUT source's UNSUPPORTED_SEMANTICS rises; and on a **material per-source regression**: a HELDOUT
    source whose total rises by ≥ max(2, ceil(10% × before)) — e.g. 0→2 fails, 0→1 passes, 50→55 fails, 50→54 passes —
    even when aggregate errors go down.
+
+**CI status: NOT ENFORCED.** Installing `.github/workflows/clf-scoreboard-gate.yml` was attempted on 2026-10-14 and
+rejected by GitHub: `refusing to allow an OAuth App to create or update workflow .github/workflows/clf-scoreboard-gate.yml
+without workflow scope`. The workflow stays parked in this folder; the gate runs only when invoked locally until a
+token with `workflow` scope installs it and it has run green at the exact PR tip.
