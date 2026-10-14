@@ -281,15 +281,17 @@ export function discoveryGapCause(cand: PrecedentCandidate, excerpt: string, can
     if (candTree === AMBIGUOUS || bt === AMBIGUOUS) return "REJECTED_AMBIGUOUS";
     if (canonicalFamily(b.covenantFamily) == null && citeCoverage(excerpt, norm(b.citationExcerpt)) < 0.8) return "REJECTED_OTHER_PARTIAL";
     const cs = candTree ?? sectionNumberOf(cand.sectionRef ?? null, excerpt), bs = bt ?? sectionNumberOf(b.sectionRef, norm(b.citationExcerpt));
-    if (cs && bs) return "REJECTED_LOCATION";
+    if (cs && bs) return `REJECTED_LOCATION cand=${cs} basket=${bs} decl=${sectionNumberOf(cand.sectionRef ?? null, excerpt)}/${sectionNumberOf(b.sectionRef, norm(b.citationExcerpt))} bfam=${b.covenantFamily}`;
     return "REJECTED_FAMILY";
   }
   if (!loc || candTree == null) return "NOT_IN_TREE";
   const inSec = baskets.filter((b) => basketTreeSection(loc, b.citationExcerpt) === candTree);
-  if (!inSec.length) return "SECTION_EMPTY";
+  if (!inSec.length) return `SECTION_EMPTY sec=${candTree}`;
   const grams = new Set<string>();
   for (let i = 0; i + 24 <= excerpt.length; i += 8) grams.add(excerpt.slice(i, i + 24));
-  if (inSec.some((b) => { const c = norm(b.citationExcerpt); for (const g of grams) if (c.includes(g)) return true; return false; })) return "BOUNDARY";
+  const ov = inSec.find((b) => { const c = norm(b.citationExcerpt); for (const g of grams) if (c.includes(g)) return true; return false; });
+  if (ov) return `BOUNDARY sec=${candTree} bfam=${ov.covenantFamily} clen=${excerpt.length} blen=${norm(ov.citationExcerpt).length} cite=${JSON.stringify(norm(ov.citationExcerpt).slice(0, 200))}`;
+  if (inSec.length) return `LIMB_MISSING sec=${candTree} n=${inSec.length}`;
   return "LIMB_MISSING";
 }
 
