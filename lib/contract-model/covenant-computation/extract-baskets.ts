@@ -292,7 +292,9 @@ function findCovenantHeadings(text: string): CovenantHeading[] {
     if (isTocEntry(text, match.index + (/^[Ss]/.test(match[0]) ? match[0].indexOf(match[1]!) : 0))) continue;
     const parsed = parseCovenantTitle(text, match.index + match[0].length);
     if (!parsed) continue;
-    if (!isOperativeCovenant(text.slice(parsed.bodyAt, parsed.bodyAt + 240))) continue;
+    // Operative covenant body: the classic markers, or (general) an obligor-bound prohibition lead-in such as
+    // "No Loan Party nor any Subsidiary of a Loan Party shall sell, convey, ..." / "No Loan Party shall ... except".
+    if (!isOperativeCovenant(text.slice(parsed.bodyAt, parsed.bodyAt + 240)) && !isObligorProhibitionLead(text.slice(parsed.bodyAt, parsed.bodyAt + 450))) continue;
     const prior = hits[hits.length - 1];
     if (prior && match.index - prior.index < 12 && prior.sectionNumber === match[1]) continue;
     hits.push({ index: match.index, sectionNumber: match[1], title: parsed.title });
@@ -308,7 +310,7 @@ function isTitleCase(title: string): boolean {
 
 /** Flattened table-of-contents entry: the title is followed by a page number and then the next entry. */
 function isTocEntry(text: string, at: number): boolean {
-  return /^\S+\s+[A-Z][^.]{0,160}?\s\d{1,3}\s+(?:[Ss][Ee][Cc][Tt][Ii][Oo][Nn]\b|ARTICLE\b|Article\b|\d{1,2}\.\d{1,2}\.?\s|EXHIBIT|SCHEDULE)/.test(text.slice(at, at + 260));
+  return /^\S+\s+[A-Z][^.]{0,160}?\.?\s\d{1,3}\s+(?:[Ss][Ee][Cc][Tt][Ii][Oo][Nn]\b|ARTICLE\b|Article\b|\d{1,2}\.\d{1,2}\.?\s|EXHIBIT|SCHEDULE)/.test(text.slice(at, at + 260));
 }
 
 function parseCovenantTitle(text: string, from: number): { title: string; bodyAt: number } | null {
@@ -322,9 +324,12 @@ function parseCovenantTitle(text: string, from: number): { title: string; bodyAt
   if (period < 2) return null;
   if (toc >= 0 && toc < period) return null;
   const title = rest.slice(0, period).replace(/\s+/g, " ").trim();
-  if (!title || title.length > 180 || !isCovenantTitle(title)) return null;
+  if (!title || title.length > 180) return null;
   let bodyAt = i + period + 1;
   while (bodyAt < text.length && text[bodyAt] === " ") bodyAt += 1;
+  // Title whitelist, or (general) the family classifier recognizes the heading + lead-in as a covenant
+  // ("Disposition of Assets . No Loan Party nor any Subsidiary … shall sell …").
+  if (!isCovenantTitle(title) && (!isTitleCase(title) || /^(?:section|article)\b/i.test(title) || classifyCovenantFamily({ title, leadIn: text.slice(bodyAt, bodyAt + 700) }).family == null)) return null;
   return { title, bodyAt };
 }
 
