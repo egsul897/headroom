@@ -463,6 +463,8 @@ function evalUnlimited(
 function soleFixedDollar(text: string): string | null {
   const normed = norm(text);
   if (/\bgreater\s+of\b/i.test(normed) || /\d+(?:\.\d+)?\s*%/.test(normed) || /\bmay be increased by\b/i.test(normed)) return null;
+  // A dollar figure inside arithmetic ("the quotient of $550 million divided by the rate") is an operand, not the cap.
+  if (/\b(?:quotient|divided\s+by|multiplied\s+by|product\s+of)\b/i.test(normed)) return null;
   const tokens = [...normed.matchAll(/\$\s*([\d,]+(?:\.\d+)?)/g)].map((m) => m[1]!.replace(/,/g, ""));
   const distinct = [...new Set(tokens)];
   if (distinct.length !== 1) return null;
@@ -471,6 +473,9 @@ function soleFixedDollar(text: string): string | null {
       normed,
     ) ||
     /\bDollars\s*\(\s*\$\s*[\d,]+\.\d{2}/i.test(normed) ||
+    // "shall not at any one time exceed $X", "do not ... in excess of $X": a negated ceiling directly on the one dollar figure.
+    /\b(?:shall|will|does|do|to)\s+not\s+(?:[\w’',]+\s+){0,6}?exceed\s+\$\s*[\d,]+/i.test(normed) ||
+    /\bnot\s+(?:[\w’',]+\s+){0,16}?in\s+excess\s+of\s+\$\s*[\d,]+/i.test(normed) ||
     /\bexceeds\s+\$\s*[\d,]+(?:\.\d+)?\s+million\b/i.test(normed);
   return capRole ? distinct[0]! : null;
 }

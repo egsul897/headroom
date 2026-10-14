@@ -9,9 +9,9 @@
  */
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { parseDocumentTree, type TextBasis } from "../../contract-model/section-tree/parse";
+import { parseDocumentTree, sectionOf, type TextBasis } from "../../contract-model/section-tree/parse";
 import {
-  CHECKLIST_FAMILIES, covenantChecklist, resolveCrossRefs, roleOf,
+  CHECKLIST_FAMILIES, covenantChecklist, ownText, resolveCrossRefs, roleOf,
   type ChecklistItem, type ClauseRole, type CrossRef,
 } from "../../contract-model/section-tree/semantics";
 import { runCovenantComputation } from "../../contract-model/covenant-computation";
@@ -88,6 +88,25 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
   // Extractor-only (v0 ruleset): no learned rules, so nothing issuer-specific can leak in.
   const rules = emptyRuleSet(0);
   const pkg = buildComputationPackage({ source: { sourceId: args.sourceId, issuerCik: args.issuerCik ?? null }, documentText: raw, candidates: [], rules });
+  // Amount-bearing tree clauses (BASKET / EXCEPTION_PROVISO with a "$" figure or "greater of") inside sections the
+  // checklist assigned to a covenant family, when the regional extractor did not already cite them. Exact spans of
+  // the tree text; family from the section classifier. Pipeline-only (the scoreboard path is unchanged).
+  const famBySection = new Map<string, string>();
+  for (const c of checklist) for (const p of c.sectionPaths) if (!famBySection.has(p)) famBySection.set(p, c.family);
+  const cited = pkg.baskets.map((b) => b.operativeText.replace(/[^A-Za-z0-9]/g, "")).join("|");
+  for (const n of tree.nodes) {
+    if (n.kind !== "CLAUSE") continue;
+    const role = roles.get(n.id);
+    if (role !== "BASKET" && role !== "EXCEPTION_PROVISO") continue;
+    const sec = sectionOf(tree, n);
+    const family = sec ? famBySection.get(sec.path) : undefined;
+    if (!family) continue;
+    const own = ownText(tree, tree.text, n).trim();
+    if (own.length < 24 || !/\$\s?[\d,]{3,}|greater\s+of/i.test(own)) continue;
+    const key = own.replace(/[^A-Za-z0-9]/g, "").slice(0, 80);
+    if (key.length < 20 || cited.includes(key)) continue;
+    pkg.baskets.push({ stableKey: `tree:${n.path}`, sectionRef: n.path, covenantFamily: family, documentId: pkg.baskets[0]?.documentId ?? args.sourceId, operativeText: own, role: "PERMISSION" });
+  }
   const computed = runCovenantComputation(pkg, { rules, createdAt: "1970-01-01T00:00:00.000Z" }).baskets;
 
   const families: FamilySummary[] = [];
