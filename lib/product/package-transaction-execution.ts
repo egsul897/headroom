@@ -29,11 +29,14 @@ import {
   UNIFIED_TRANSACTION_EXECUTION_VERSION,
   isCanonicalUnifiedTransactionExecutionResult,
   readCanonicalExecutionPermissionSnapshot,
+  type CanonicalExecutionPermissionSnapshot,
   type ExecutionStatus,
   type ProductionAuthorityClassification,
+  type TransactionType,
   type UnifiedTransactionExecutionResult,
 } from "@/lib/product/verified-transaction-execution";
 import {
+  effectiveTrustedIssuerRepoActivation,
   resolveTrustedIssuerAuthFromHost,
   TRUSTED_ISSUER_ACTIVATION,
 } from "@/lib/capacity/trusted-issuer-host";
@@ -46,8 +49,12 @@ export const PACKAGE_TRANSACTION_EXECUTION_VERSION =
  * Plain caller JSON / structural clones are never accepted — only objects
  * minted by sealVerifiedExecutionPermissionHandoff from a canonical REQUIRE
  * result (WeakMap-branded by executeUnifiedVerifiedTransaction).
+ *
+ * Authorization reads privately retained evidence (WeakMap), never mutable
+ * fields on the sealed object.
  */
 const sealedVerifiedExecutionHandoffs = new WeakSet<object>();
+const sealedPermissionEvidence = new WeakMap<object, SealedPermissionEvidence>();
 
 /** Mandate step identifiers (1–10). */
 export type PackageTransactionStepId =
@@ -139,11 +146,8 @@ function domainById(
 }
 
 /**
- * Minimal verified-execution handoff consumed for customer permission.
- * Must be sealed via sealVerifiedExecutionPermissionHandoff from a canonical
- * executeUnifiedVerifiedTransaction (REQUIRE) result. Plain caller JSON /
- * structural Pick fabrications with EXECUTED_SATISFIED /
- * PRODUCTION_AUTHORITY_ACTIVE strings never authorize.
+ * Public echo of a sealed handoff. Field values are informational only —
+ * authorization always reads privately retained SealedPermissionEvidence.
  */
 export interface VerifiedExecutionPermissionHandoff {
   executionStatus: ExecutionStatus;
@@ -151,9 +155,97 @@ export interface VerifiedExecutionPermissionHandoff {
   contractVersion: string;
 }
 
+/** Immutable permission evidence retained at seal time (private WeakMap). */
+export interface SealedPermissionEvidence {
+  executionStatus: ExecutionStatus;
+  productionAuthority: ProductionAuthorityClassification;
+  contractVersion: typeof UNIFIED_TRANSACTION_EXECUTION_VERSION;
+  companyId: string;
+  instrumentKey: string;
+  packageHash: string | null;
+  transactionId: string | null;
+  transactionType: TransactionType;
+  transactionAmount: number;
+  transactionCurrency: string;
+  evaluationDate: string;
+  selectedPathId: string;
+  selectedRuleIds: readonly string[];
+  operativeDocumentId: string | null;
+  financialSnapshotProvenanceIds: readonly string[];
+}
+
+/**
+ * Subject that must match sealed evidence for packagePermitted.
+ * Cross-transaction / cross-package replay is refused on any mismatch.
+ */
+export interface VerifiedExecutionSubject {
+  companyId: string;
+  instrumentKey: string;
+  transactionId: string;
+  transactionType: TransactionType;
+  transactionAmount: number;
+  transactionCurrency: string;
+  evaluationDate: string;
+  selectedPathId: string;
+  selectedRuleIds: readonly string[];
+  packageHash?: string | null;
+  operativeDocumentId?: string | null;
+  financialSnapshotProvenanceIds?: readonly string[];
+}
+
 /** Runtime authenticity check — not a TypeScript type predicate (avoids never-narrowing). */
 export function isSealedVerifiedExecutionPermissionHandoff(value: unknown): boolean {
-  return typeof value === "object" && value !== null && sealedVerifiedExecutionHandoffs.has(value);
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    sealedVerifiedExecutionHandoffs.has(value) &&
+    sealedPermissionEvidence.has(value)
+  );
+}
+
+/** Read privately retained seal evidence — ignores mutable handoff fields. */
+export function readSealedPermissionEvidence(
+  handoff: unknown,
+): SealedPermissionEvidence | null {
+  if (typeof handoff !== "object" || handoff === null) return null;
+  if (!sealedVerifiedExecutionHandoffs.has(handoff)) return null;
+  return sealedPermissionEvidence.get(handoff) ?? null;
+}
+
+function demoteProductionAuthority(
+  authority: ProductionAuthorityClassification,
+): ProductionAuthorityClassification {
+  const host = resolveTrustedIssuerAuthFromHost();
+  const hostActive = host.activation === "ACTIVE" && host.auth != null;
+  // Production constant stays BLOCKED; tests may inject effective repo ACTIVE.
+  const repoActive = effectiveTrustedIssuerRepoActivation() === "ACTIVE";
+  if (authority === "PRODUCTION_AUTHORITY_ACTIVE" && (!hostActive || !repoActive)) {
+    return "PRODUCTION_AUTHORITY_BLOCKED";
+  }
+  return authority;
+}
+
+function snapshotToEvidence(
+  snap: CanonicalExecutionPermissionSnapshot,
+  productionAuthority: ProductionAuthorityClassification,
+): SealedPermissionEvidence {
+  return {
+    executionStatus: snap.executionStatus,
+    productionAuthority,
+    contractVersion: snap.contractVersion,
+    companyId: snap.companyId,
+    instrumentKey: snap.instrumentKey,
+    packageHash: snap.packageHash,
+    transactionId: snap.transactionId,
+    transactionType: snap.transactionType,
+    transactionAmount: snap.transactionAmount,
+    transactionCurrency: snap.transactionCurrency,
+    evaluationDate: snap.evaluationDate,
+    selectedPathId: snap.selectedPathId,
+    selectedRuleIds: snap.selectedRuleIds,
+    operativeDocumentId: snap.operativeDocumentId,
+    financialSnapshotProvenanceIds: snap.financialSnapshotProvenanceIds,
+  };
 }
 
 /**
@@ -161,9 +253,9 @@ export function isSealedVerifiedExecutionPermissionHandoff(value: unknown): bool
  *
  * Accepts solely objects branded by executeUnifiedVerifiedTransaction
  * (module-private WeakMap). Reads mint-time snapshots — not live/mutable
- * caller fields. Fabricated Pick/{executionStatus,productionAuthority,…}
- * inputs return null. Demotes PRODUCTION_AUTHORITY_ACTIVE when the host
- * trusted-issuer gate is BLOCKED.
+ * caller fields. Retains immutable identity-bound evidence privately.
+ * Fabricated Pick inputs return null. Demotes PRODUCTION_AUTHORITY_ACTIVE when
+ * the host / effective repo trusted-issuer gate is BLOCKED.
  */
 export function sealVerifiedExecutionPermissionHandoff(
   result: UnifiedTransactionExecutionResult,
@@ -177,22 +269,127 @@ export function sealVerifiedExecutionPermissionHandoff(
   if (snap.contractVersion !== UNIFIED_TRANSACTION_EXECUTION_VERSION) {
     return null;
   }
-
-  const host = resolveTrustedIssuerAuthFromHost();
-  const hostActive = host.activation === "ACTIVE" && host.auth != null;
-  // Repository-level activation remains BLOCKED until a production provider is wired.
-  const repoActive = TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE";
-  let productionAuthority = snap.productionAuthority;
-  if (productionAuthority === "PRODUCTION_AUTHORITY_ACTIVE" && (!hostActive || !repoActive)) {
-    productionAuthority = "PRODUCTION_AUTHORITY_BLOCKED";
+  // Identity binding must be complete at mint — refuse incomplete canonical snaps.
+  if (
+    !snap.companyId ||
+    !snap.instrumentKey ||
+    !snap.evaluationDate ||
+    !snap.selectedPathId ||
+    snap.selectedRuleIds.length === 0 ||
+    !snap.transactionId
+  ) {
+    return null;
   }
+
+  const productionAuthority = demoteProductionAuthority(snap.productionAuthority);
+  const evidence = snapshotToEvidence(snap, productionAuthority);
+  // Public handoff echoes mint evidence; mutation of these fields cannot authorize.
   const handoff: VerifiedExecutionPermissionHandoff = {
-    executionStatus: snap.executionStatus,
-    productionAuthority,
-    contractVersion: snap.contractVersion,
+    executionStatus: evidence.executionStatus,
+    productionAuthority: evidence.productionAuthority,
+    contractVersion: evidence.contractVersion,
   };
   sealedVerifiedExecutionHandoffs.add(handoff);
+  sealedPermissionEvidence.set(handoff, Object.freeze({ ...evidence, selectedRuleIds: Object.freeze([...evidence.selectedRuleIds]), financialSnapshotProvenanceIds: Object.freeze([...evidence.financialSnapshotProvenanceIds]) }));
   return handoff;
+}
+
+function sameStringList(a: readonly string[], b: readonly string[]): boolean {
+  if (a.length !== b.length) return false;
+  const as = [...a].sort();
+  const bs = [...b].sort();
+  return as.every((v, i) => v === bs[i]);
+}
+
+/** Compare sealed evidence to the declared verified subject — fail closed on mismatch. */
+export function sealedEvidenceMatchesSubject(
+  evidence: SealedPermissionEvidence,
+  subject: VerifiedExecutionSubject,
+): string | null {
+  if (evidence.companyId !== subject.companyId) {
+    return `verified subject companyId mismatch (${subject.companyId} ≠ sealed ${evidence.companyId})`;
+  }
+  if (evidence.instrumentKey !== subject.instrumentKey) {
+    return `verified subject instrumentKey mismatch`;
+  }
+  if (evidence.transactionId !== subject.transactionId) {
+    return `verified subject transactionId mismatch — cross-transaction handoff replay refused`;
+  }
+  if (evidence.transactionType !== subject.transactionType) {
+    return `verified subject transactionType mismatch`;
+  }
+  if (evidence.transactionAmount !== subject.transactionAmount) {
+    return `verified subject transactionAmount mismatch`;
+  }
+  if (evidence.transactionCurrency !== subject.transactionCurrency) {
+    return `verified subject transactionCurrency mismatch`;
+  }
+  if (evidence.evaluationDate !== subject.evaluationDate) {
+    return `verified subject evaluationDate mismatch`;
+  }
+  if (evidence.selectedPathId !== subject.selectedPathId) {
+    return `verified subject selectedPathId mismatch`;
+  }
+  if (!sameStringList(evidence.selectedRuleIds, subject.selectedRuleIds)) {
+    return `verified subject selectedRuleIds mismatch`;
+  }
+  const subjectHash = subject.packageHash ?? null;
+  if (subjectHash != null || evidence.packageHash != null) {
+    if (evidence.packageHash !== subjectHash) {
+      return `verified subject packageHash mismatch — cross-package handoff replay refused`;
+    }
+  }
+  if (subject.operativeDocumentId != null || evidence.operativeDocumentId != null) {
+    if ((subject.operativeDocumentId ?? null) !== evidence.operativeDocumentId) {
+      return `verified subject operativeDocumentId mismatch`;
+    }
+  }
+  if (subject.financialSnapshotProvenanceIds != null) {
+    if (
+      !sameStringList(
+        evidence.financialSnapshotProvenanceIds,
+        subject.financialSnapshotProvenanceIds,
+      )
+    ) {
+      return `verified subject financialSnapshotProvenanceIds mismatch`;
+    }
+  }
+  return null;
+}
+
+/** Applicable mandatory domains must be fully resolved before packagePermitted. */
+function applicableDomainsBlockPermission(
+  applicable: CovenantDomain[],
+  supportByDomain: Array<{
+    domain: CovenantDomain;
+    support: DomainSupportLevel;
+    status: DomainEvaluationSlice["status"];
+  }>,
+): string[] {
+  const blockers: string[] = [];
+  for (const domain of applicable) {
+    const row = supportByDomain.find((d) => d.domain === domain);
+    const support = row?.support ?? "NOT_IMPLEMENTED";
+    const status = row?.status ?? "not_tested";
+    if (
+      support === "PARTIAL" ||
+      support === "UNSUPPORTED" ||
+      support === "NOT_IMPLEMENTED"
+    ) {
+      blockers.push(
+        `packagePermitted=false — applicable domain ${domain} support=${support} (unresolved)`,
+      );
+    } else if (
+      status === "blocked" ||
+      status === "not_tested" ||
+      status === "review_required"
+    ) {
+      blockers.push(
+        `packagePermitted=false — applicable domain ${domain} status=${status} (unresolved)`,
+      );
+    }
+  }
+  return blockers;
 }
 
 export interface PackageTransactionRequest {
@@ -211,8 +408,14 @@ export interface PackageTransactionRequest {
   /**
    * Sealed handoff from sealVerifiedExecutionPermissionHandoff(REQUIRE result).
    * Unsealed caller JSON is refused for permission (forged successful statuses → false).
+   * Authorization reads private seal evidence — not mutable handoff fields.
    */
   verifiedExecution?: VerifiedExecutionPermissionHandoff | null;
+  /**
+   * Declared verified-transaction subject that must match sealed evidence.
+   * Required for packagePermitted; mismatch refuses cross-tx / cross-package replay.
+   */
+  verifiedSubject?: VerifiedExecutionSubject | null;
 }
 
 export interface PackageTransactionResult {
@@ -336,11 +539,15 @@ export function executePackageTransaction(
           : [evaluation.overallStatus],
       );
 
-  // Authenticity gate: only WeakSet-sealed handoffs from
-  // sealVerifiedExecutionPermissionHandoff may authorize permission.
+  // Authenticity gate: only WeakSet-sealed handoffs with private evidence
+  // from sealVerifiedExecutionPermissionHandoff may authorize permission.
   // Plain caller JSON / structural clones are forged — never packagePermitted.
+  // Mutable fields on the sealed object are ignored — evidence is WeakMap-only.
   const rawVerified = request.verifiedExecution ?? null;
-  const sealed = isSealedVerifiedExecutionPermissionHandoff(rawVerified);
+  const sealEvidence = readSealedPermissionEvidence(rawVerified);
+  const sealed = sealEvidence != null;
+  // Retain caller object identity for sealed handoffs; authorization never
+  // trusts mutable fields on it — only privately retained sealEvidence.
   const verifiedHandoff: VerifiedExecutionPermissionHandoff | null =
     sealed && rawVerified != null ? rawVerified : null;
   const forgedClaim =
@@ -353,21 +560,63 @@ export function executePackageTransaction(
       : null;
 
   const hostGate = resolveTrustedIssuerAuthFromHost();
+  const repoActive = effectiveTrustedIssuerRepoActivation() === "ACTIVE";
   const hostActive =
-    hostGate.activation === "ACTIVE" &&
-    hostGate.auth != null &&
-    TRUSTED_ISSUER_ACTIVATION.status === "ACTIVE";
+    hostGate.activation === "ACTIVE" && hostGate.auth != null && repoActive;
 
-  // Customer permission: sealed REQUIRE result + EXECUTED_SATISFIED +
-  // PRODUCTION_AUTHORITY_ACTIVE + live host issuer activation.
-  // Never from modeled clear/EXECUTABLE labels or caller JSON strings.
+  const domainPermissionBlockers = applicableDomainsBlockPermission(
+    applicable,
+    supportByDomain,
+  );
+  const applicableDomainsResolved = domainPermissionBlockers.length === 0;
+
+  const subject = request.verifiedSubject ?? null;
+  let subjectMismatch: string | null = null;
+  if (sealEvidence != null) {
+    if (subject == null) {
+      subjectMismatch =
+        "packagePermitted=false — verifiedSubject required to bind sealed handoff to transaction/package identity";
+    } else {
+      subjectMismatch = sealedEvidenceMatchesSubject(sealEvidence, subject);
+      if (subjectMismatch) {
+        subjectMismatch = `packagePermitted=false — ${subjectMismatch}`;
+      }
+    }
+    // Package identity must agree with sealed company / date / documents.
+    if (!subjectMismatch && sealEvidence.companyId !== packageIdentity.companyId) {
+      subjectMismatch =
+        "packagePermitted=false — packageIdentity.companyId ≠ sealed verified company (cross-package replay refused)";
+    }
+    if (!subjectMismatch && sealEvidence.evaluationDate !== packageIdentity.evaluationDate) {
+      subjectMismatch =
+        "packagePermitted=false — packageIdentity.evaluationDate ≠ sealed evaluationDate";
+    }
+    if (
+      !subjectMismatch &&
+      sealEvidence.operativeDocumentId &&
+      packageIdentity.documentIds &&
+      packageIdentity.documentIds.length > 0 &&
+      !packageIdentity.documentIds.includes(sealEvidence.operativeDocumentId)
+    ) {
+      subjectMismatch =
+        "packagePermitted=false — sealed operative document not in packageIdentity.documentIds";
+    }
+  }
+
+  // Customer permission: sealed REQUIRE evidence + EXECUTED_SATISFIED +
+  // PRODUCTION_AUTHORITY_ACTIVE + live host issuer activation + subject bind +
+  // every applicable mandatory domain fully resolved.
+  // Never from modeled clear/EXECUTABLE labels, caller JSON, or mutated fields.
   const packagePermitted =
     !identityMismatch &&
+    subjectMismatch == null &&
     verifiedHandoff != null &&
+    sealEvidence != null &&
     sealed &&
-    verifiedHandoff.executionStatus === "EXECUTED_SATISFIED" &&
-    verifiedHandoff.productionAuthority === "PRODUCTION_AUTHORITY_ACTIVE" &&
-    hostActive;
+    sealEvidence.executionStatus === "EXECUTED_SATISFIED" &&
+    sealEvidence.productionAuthority === "PRODUCTION_AUTHORITY_ACTIVE" &&
+    hostActive &&
+    applicableDomainsResolved;
 
   const citations = [
     ...new Set(applicableSlices.flatMap((s) => s.citations).filter(Boolean)),
@@ -386,23 +635,26 @@ export function executePackageTransaction(
     unresolvedBlockers.push(
       `packagePermitted=false — forged/unsealed verifiedExecution handoff refused (claimed ${forgedClaim.executionStatus}/${forgedClaim.productionAuthority}); caller JSON cannot authorize permission`,
     );
-  } else if (!verifiedHandoff) {
+  } else if (!verifiedHandoff || !sealEvidence) {
     unresolvedBlockers.push(
       "packagePermitted=false — sealed canonical verified transaction execution (REQUIRE) not supplied; modeled clear/EXECUTABLE labels are insufficient",
     );
-  } else if (verifiedHandoff.executionStatus !== "EXECUTED_SATISFIED") {
+  } else if (subjectMismatch) {
+    unresolvedBlockers.push(subjectMismatch);
+  } else if (sealEvidence.executionStatus !== "EXECUTED_SATISFIED") {
     unresolvedBlockers.push(
-      `packagePermitted=false — verified execution status ${verifiedHandoff.executionStatus} (REQUIRE must EXECUTED_SATISFIED)`,
+      `packagePermitted=false — verified execution status ${sealEvidence.executionStatus} (REQUIRE must EXECUTED_SATISFIED)`,
     );
-  } else if (verifiedHandoff.productionAuthority !== "PRODUCTION_AUTHORITY_ACTIVE") {
+  } else if (sealEvidence.productionAuthority !== "PRODUCTION_AUTHORITY_ACTIVE") {
     unresolvedBlockers.push(
-      `packagePermitted=false — production authority ${verifiedHandoff.productionAuthority} (host trusted-issuer not ACTIVE)`,
+      `packagePermitted=false — production authority ${sealEvidence.productionAuthority} (host trusted-issuer not ACTIVE)`,
     );
   } else if (!hostActive) {
     unresolvedBlockers.push(
       `packagePermitted=false — host trusted-issuer activation BLOCKED (${TRUSTED_ISSUER_ACTIVATION.blocker})`,
     );
   }
+  for (const b of domainPermissionBlockers) unresolvedBlockers.push(b);
   for (const s of applicableSlices) {
     if (s.support === "UNSUPPORTED" || s.support === "NOT_IMPLEMENTED") {
       unresolvedBlockers.push(`${s.domain}: ${s.support} — ${s.summary}`);
@@ -560,7 +812,7 @@ export function executePackageTransaction(
         `missingInputs=${missingInputs.length}`,
         `limitations=${limitations.length}`,
         `blockers=${unresolvedBlockers.length}`,
-        `verifiedExecution=${verifiedHandoff?.executionStatus ?? "absent"}/${verifiedHandoff?.productionAuthority ?? "n/a"}`,
+        `verifiedExecution=${sealEvidence?.executionStatus ?? "absent"}/${sealEvidence?.productionAuthority ?? "n/a"}`,
       ],
     },
   ];
@@ -570,7 +822,7 @@ export function executePackageTransaction(
     `owner=${CROSS_DOMAIN_CANONICAL_OWNER}`,
     `scenario=${tx.kind} amount=${tx.amountMillions} secured=${tx.secured}`,
     `overall(modeled)=${overallStatus} packagePermitted=${packagePermitted}`,
-    `verifiedExecution=${verifiedHandoff?.executionStatus ?? "absent"} productionAuthority=${verifiedHandoff?.productionAuthority ?? "n/a"}`,
+    `verifiedExecution=${sealEvidence?.executionStatus ?? "absent"} productionAuthority=${sealEvidence?.productionAuthority ?? "n/a"}`,
     ...steps.map((s) => `step${s.index}:${s.id}:${s.status}`),
     evaluation.authorityNote,
   ];

@@ -1,0 +1,13 @@
+{
+  "baseline": "a19c9a95a71d7df283adae6bd6afd099d372277f",
+  "findings": [
+    "DEEP_BRAND_BASELINE: brandCanonicalUnifiedTransactionExecutionResult(result) exported with no minter \u2014 any deep-import caller could WeakMap-brand fabrications (see a19c9a95 canonical-result.ts)",
+    "PACKAGE_PERMITTED_CHECKS_DOMAIN_SUPPORT=false",
+    "PACKAGE_PERMITTED_EXPR=const packagePermitted = !identityMismatch && verifiedHandoff != null && sealed && verifiedHandoff.executionStatus === \"EXECUTED_SATISFIED\" && verifiedHandoff.productionAuthority === \"PRODUCTION_AUTHORITY_ACTIVE\" && hostActive",
+    "SEAL_BINDS_TRANSACTION_ID=false",
+    "SEAL_BINDS_PACKAGE_HASH=false",
+    "SEAL_BINDS_PATH=false",
+    "SEAL_BINDS_AMOUNT=false",
+    "POST_SEAL_HANDOFF: executePackageTransaction reads verifiedHandoff.executionStatus/productionAuthority from mutable sealed object fields (not private WeakMap evidence)"
+  ]
+}

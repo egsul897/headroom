@@ -1,0 +1,19 @@
+{
+  "baseline": "a19c9a95a71d7df283adae6bd6afd099d372277f",
+  "findings_after": [
+    "DEEP_BRAND: fake minter → isCanonical=false; seal=null",
+    "POST_SEAL_MUTATION: readSealedPermissionEvidence ignores mutated handoff fields",
+    "PACKAGE_PERMITTED_CHECKS_DOMAIN_SUPPORT=true (applicable PARTIAL/UNSUPPORTED/NOT_IMPLEMENTED/blocked/not_tested/review_required gate packagePermitted)",
+    "SEAL_BINDS_TRANSACTION_ID=true",
+    "SEAL_BINDS_PACKAGE_HASH=true",
+    "SEAL_BINDS_PATH=true",
+    "SEAL_BINDS_AMOUNT=true",
+    "CROSS_TX_REPLAY: refused",
+    "CROSS_PACKAGE_REPLAY: refused",
+    "TRUSTED_ISSUER_ACTIVATION.status remains BLOCKED; ACTIVE only via injectTrustedIssuerRepoActivationForTests"
+  ],
+  "tests": {
+    "tests/product/p1-authorization-integrity.test.ts": "7 passed",
+    "focused_suite": "77 passed (6 files)"
+  }
+}

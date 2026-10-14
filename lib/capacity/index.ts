@@ -69,6 +69,8 @@ export {
 } from "./financial-evidence";
 export {
   TRUSTED_ISSUER_ACTIVATION,
+  injectTrustedIssuerRepoActivationForTests,
+  effectiveTrustedIssuerRepoActivation,
   registerHostIdentityProvider,
   getRegisteredHostIdentityProvider,
   mintHostVerifiedIdentityForTests,
