@@ -38,6 +38,8 @@ export type BasketCategory =
   | "BUILDER_AVAILABLE_AMOUNT"
   | "UNLIMITED"
   | "UNLIMITED_BY_PURPOSE"
+  /** No cap stated and no explicit unlimited language: NEEDS_INPUT, never unlimited by default. */
+  | "CONDITIONS_LIMITED"
   | "RECLASS"
   | "UNKNOWN";
 
