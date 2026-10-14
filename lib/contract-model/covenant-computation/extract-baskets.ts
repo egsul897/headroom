@@ -32,11 +32,15 @@ export interface ExtractBasketsArgs {
 const QUOTED_DEF = /[“"]\s*([^”"]{2,120}?)\s*[”"]\s+(?:shall\s+mean|means)\b/g;
 const BARE_DEF =
   /(?:^|[.;]\s+)(Permitted\s+(?:Debt|Indebtedness|Liens|Investments?|Payments|Dispositions))\s+means\b/g;
-const SECTION_HEAD =
-  /(?:Section\s+)?(\d{1,2}\.\d{2})\s+(Limitation on [^.]{3,90}|Financial Covenants|Liens|Indebtedness|Restricted Payments|Investments|Disposition of Assets|Dividends and Distributions|Asset Sales|Double Negative Pledge|Negative Pledge|Partnerships;[^.]{0,70}|Fundamental Changes|Self-Dealing|Margin Stock)\s*\.\s+(?=[A-Z(“"])/g;
 
 const RATIO_NAME =
   /(?:Consolidated\s+)?(?:Fixed\s+Charge\s+Coverage|Interest\s+Coverage|(?:Total\s+|Secured\s+|First\s+Lien\s+|Senior\s+)?(?:Net\s+)?Leverage)\s+Ratio/gi;
+
+/**
+ * Section numbers in credit agreements and indentures.
+ * One or two digits after the dot (`7.2`, `10.9`, `6.01`, `4.11`).
+ */
+const SECTION_NUMBER = String.raw`\d{1,2}\.\d{1,2}`;
 
 interface Region {
   family: string;
@@ -66,7 +70,9 @@ export function extractBasketClauses(args: ExtractBasketsArgs): BasketClause[] {
   for (const region of regions) {
     for (const clause of clausesFromRegion(args.documentId, region, args.rules)) {
       const key = norm(clause.operativeText);
-      if (key.length < 24 || seen.has(key)) continue;
+      // Numbered caps such as "(A) $5,000,000" are shorter than a full sentence.
+      const numericMarker = key.length >= 12 && /\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(key);
+      if ((key.length < 24 && !numericMarker) || seen.has(key)) continue;
       seen.add(key);
       clauses.push(clause);
     }
@@ -140,7 +146,12 @@ function dropContainedNumericLimbs(clauses: BasketClause[]): BasketClause[] {
     return !clauses.some((other) => {
       if (other === clause || other.documentId !== clause.documentId) return false;
       const outer = norm(other.operativeText);
-      return outer.length > text.length && outer.includes(text);
+      if (!(outer.length > text.length && outer.includes(text))) return false;
+      // (a)(i)(A) is its own basket even when the parent clause quotes it.
+      if (clause.sectionRef.startsWith(other.sectionRef) && clause.sectionRef.length > other.sectionRef.length) {
+        return false;
+      }
+      return true;
     });
   });
 }
@@ -162,14 +173,82 @@ function uniqueKeys(clauses: BasketClause[]): BasketClause[] {
 const BASKET_DEFINITION =
   /^(?:Permitted\s+(?:Debt|Indebtedness|Liens|Investments?|Payments|Dispositions)|Asset Sale)$/i;
 
-function isCovenantHeading(sectionNumber: string, title: string): boolean {
-  const article = Number(sectionNumber.split(".")[0]);
+/**
+ * Covenant section titles, any article. Exact whitelist names, "Limitation(s) on …",
+ * and "Restriction(s) on …" are the forms credit agreements and indentures actually use.
+ * Administrative titles (suits, trustee, events of default) are not baskets.
+ */
+function isCovenantTitle(title: string): boolean {
   const name = title.replace(/\s+/g, " ").trim();
-  if (/suits|trustee|guarantor liability|duty of/i.test(name)) return false;
-  if (article === 4 && /^Limitation on /i.test(name)) return true;
-  return /^(?:Liens|Indebtedness|Restricted Payments|Investments|Disposition of Assets|Dividends and Distributions|Asset Sales|Double Negative Pledge|Negative Pledge|Financial Covenants|Fundamental Changes|Self-Dealing|Margin Stock)$/i.test(
+  if (
+    /suits|trustee|guarantor(?:['’]s|s)? liability|duty of|events of default|conditions precedent|representations and warranties|appointment of|reports to holders|payment of notes|legal existence|compliance certificate|use of proceeds|change in nature/i.test(
+      name,
+    )
+  ) {
+    return false;
+  }
+  if (/^(?:limitations?|restrictions?)\s+on\b/i.test(name)) return true;
+  if (/\bfinancial\s+(?:condition\s+)?covenants?\b/i.test(name)) return true;
+  return /^(?:liens|indebtedness|restricted payments|investments|dispositions|disposal of assets|asset sales|asset dispositions|dividends(?: and distributions)?|negative pledge|double negative pledge|fundamental changes|sale and lease-?back(?: transactions)?|transactions with affiliates|burdensome agreements|restricted debt payments|mergers?|consolidation, merger|self-dealing|margin stock|partnerships)\b/i.test(
     name,
-  ) || /^Partnerships\b/i.test(name);
+  );
+}
+
+/** The words after the heading are an operative covenant, not a table-of-contents page number. */
+function isOperativeCovenant(following: string): boolean {
+  return /\b(?:shall not|will not|may not|create,\s+incur|incur any|suffer to exist|except\s*:)|\([a-z0-9]{1,4}\)/i.test(
+    following,
+  );
+}
+
+interface CovenantHeading {
+  index: number;
+  sectionNumber: string;
+  title: string;
+}
+
+/**
+ * Operative covenant headings across numbering styles:
+ * `Section 6.01. Indebtedness`, `SECTION 7.2 Limitation on Indebtedness`,
+ * `SECTION 4.11. Limitation on Liens`, and bare `7.01 Liens`.
+ * A trailing period after the section number is optional. Table-of-contents
+ * lines (`Section 6.01 Liens 130 Section 6.02`) are not headings.
+ */
+function findCovenantHeadings(text: string): CovenantHeading[] {
+  const re = new RegExp(
+    String.raw`(?:[Ss][Ee][Cc][Tt][Ii][Oo][Nn]\s+)?(${SECTION_NUMBER})\.?(?=\s)`,
+    "g",
+  );
+  const hits: CovenantHeading[] = [];
+  for (const match of text.matchAll(re)) {
+    if (match.index == null || !match[1]) continue;
+    const prev = match.index === 0 ? "" : (text[match.index - 1] ?? "");
+    if (prev !== "" && !/[\s.;:(]/.test(prev)) continue;
+    const parsed = parseCovenantTitle(text, match.index + match[0].length);
+    if (!parsed) continue;
+    if (!isOperativeCovenant(text.slice(parsed.bodyAt, parsed.bodyAt + 240))) continue;
+    const prior = hits[hits.length - 1];
+    if (prior && match.index - prior.index < 12 && prior.sectionNumber === match[1]) continue;
+    hits.push({ index: match.index, sectionNumber: match[1], title: parsed.title });
+  }
+  return hits;
+}
+
+function parseCovenantTitle(text: string, from: number): { title: string; bodyAt: number } | null {
+  let i = from;
+  while (i < text.length && text[i] === " ") i += 1;
+  const first = text[i] ?? "";
+  if (!/[A-Z]/.test(first)) return null;
+  const rest = text.slice(i, Math.min(text.length, i + 200));
+  const toc = rest.search(/\s+\d{1,3}\s+[Ss]ection\b/);
+  const period = rest.indexOf(".");
+  if (period < 2) return null;
+  if (toc >= 0 && toc < period) return null;
+  const title = rest.slice(0, period).replace(/\s+/g, " ").trim();
+  if (!title || title.length > 180 || !isCovenantTitle(title)) return null;
+  let bodyAt = i + period + 1;
+  while (bodyAt < text.length && text[bodyAt] === " ") bodyAt += 1;
+  return { title, bodyAt };
 }
 
 function resolveFamily(title: string, rules?: LearnedRuleSet): string {
@@ -208,17 +287,14 @@ function findRegions(text: string, rules?: LearnedRuleSet): Region[] {
       bodyFrom: match.index + match[0].length,
     });
   }
-  for (const match of text.matchAll(SECTION_HEAD)) {
-    if (match.index == null || !match[1] || !match[2]) continue;
-    const heading = match[2].replace(/\s+/g, " ").trim();
-    if (!isCovenantHeading(match[1], heading)) continue;
-    const title = `§${match[1]} ${heading}`;
+  for (const heading of findCovenantHeadings(text)) {
+    const title = `§${heading.sectionNumber} ${heading.title}`;
     starts.push({
-      at: match.index,
+      at: heading.index,
       title,
-      family: resolveFamily(heading, rules),
-      sectionNumber: match[1],
-      bodyFrom: match.index,
+      family: resolveFamily(heading.title, rules),
+      sectionNumber: heading.sectionNumber,
+      bodyFrom: heading.index,
     });
   }
 
@@ -255,12 +331,17 @@ function definitionBoundaries(text: string): number[] {
 
 function sectionBoundaries(text: string): number[] {
   const at = new Set<number>();
-  for (const match of text.matchAll(SECTION_HEAD)) if (match.index != null) at.add(match.index);
-  for (const match of text.matchAll(/(?:^|\.\s+)Section\s+\d{1,2}\.\d{2}\s+[A-Z]/g)) {
+  for (const heading of findCovenantHeadings(text)) at.add(heading.index);
+  const anySection = new RegExp(
+    String.raw`(?:^|\.\s+)[Ss]ection\s+${SECTION_NUMBER}\.?\s+[A-Z]`,
+    "g",
+  );
+  for (const match of text.matchAll(anySection)) {
     if (match.index == null) continue;
     const lead = match[0].startsWith(".") ? 1 : 0;
     at.add(match.index + lead);
   }
+  // All-caps ARTICLE headings only. "Article VII" inside "paragraph (n) of Article VII" is a cross-reference.
   for (const match of text.matchAll(/\bARTICLE\s+[IVXLC]+\b/g)) if (match.index != null) at.add(match.index);
   return [...at].sort((a, b) => a - b);
 }
@@ -269,11 +350,11 @@ function familyOf(title: string): string {
   const t = title.toLowerCase();
   if (/lien|negative pledge/.test(t)) return "LIENS";
   if (/investment/.test(t)) return "INVESTMENT";
-  if (/restricted payment|dividend|distribution/.test(t)) return "RESTRICTED_PAYMENTS";
-  if (/asset sale|disposition/.test(t)) return "ASSET_SALE";
+  if (/restricted payment|dividend|distribution|restricted debt/.test(t)) return "RESTRICTED_PAYMENTS";
+  if (/asset sale|disposition|lease-?back|disposal of assets/.test(t)) return "ASSET_SALE";
   if (/debt|indebtedness/.test(t)) return "DEBT_INCURRENCE";
-  if (/financial covenant/.test(t)) return "FINANCIAL_COVENANT";
-  if (/fundamental|partnership|merger|self-dealing|margin/.test(t)) return "OTHER";
+  if (/financial\s+(?:condition\s+)?covenants?/.test(t)) return "FINANCIAL_COVENANT";
+  if (/fundamental|partnership|merger|self-dealing|margin|affiliate|burdensome/.test(t)) return "OTHER";
   return "OTHER";
 }
 
@@ -329,7 +410,39 @@ interface Part {
   text: string;
 }
 
+/** (a) then (i) then (A), capped so a citation cannot recurse through the whole section. */
 function splitEnumerated(body: string): Part[] {
+  return deepenParts(splitOneLevel(body), 0);
+}
+
+function deepenParts(parts: Part[], depth: number): Part[] {
+  if (depth >= 2) return parts;
+  const out: Part[] = [];
+  for (const part of parts) out.push(...deepenPart(part, depth));
+  return out;
+}
+
+function deepenPart(part: Part, depth: number): Part[] {
+  if (!part.marker) return [part];
+  const lead = part.text.match(/^\([^)]+\)\s*/);
+  if (!lead) return [part];
+  const rest = part.text.slice(lead[0].length);
+  const inner = splitOneLevel(rest);
+  const marked = inner.filter((p) => p.marker);
+  if (marked.length < 2) return [part];
+  const out: Part[] = [];
+  const firstAt = rest.search(new RegExp(String.raw`\(${marked[0]!.marker}\)`));
+  const headText = firstAt > 0 ? rest.slice(0, firstAt).trim() : "";
+  if (headText.length >= 24 || /\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(headText)) {
+    out.push({ marker: part.marker, text: `${lead[0]}${headText}`.trim() });
+  }
+  for (const sub of marked) {
+    out.push(...deepenPart({ marker: `${part.marker})(${sub.marker}`, text: sub.text }, depth + 1));
+  }
+  return out.length ? out : [part];
+}
+
+function splitOneLevel(body: string): Part[] {
   const candidates = markerCandidates(body);
   if (candidates.length === 0) return [{ marker: "", text: body.trim() }];
   const groups: { marker: string; pos: number }[][] = [];
@@ -340,7 +453,7 @@ function splitEnumerated(body: string): Part[] {
     const reset =
       current.length > 0 &&
       candidate.order === 1 &&
-      (candidate.style === "num" || candidate.style === "letter") &&
+      (candidate.style === "num" || candidate.style === "letter" || candidate.style === "upper") &&
       (/\)\s*:\s*$/.test(introducer) ||
         /\bfollowing\b[^:]{0,60}:\s*$/i.test(introducer) ||
         /\b(?:exclude|except)\b[^:]{0,40}:\s*$/i.test(introducer));
@@ -379,7 +492,7 @@ interface Marker {
   pos: number;
   raw: string;
   marker: string;
-  style: "num" | "letter" | "roman";
+  style: "num" | "letter" | "upper" | "roman";
   order: number;
 }
 
@@ -400,13 +513,17 @@ const ROMAN: Record<string, number> = {
 
 function markerCandidates(body: string): Marker[] {
   const out: Marker[] = [];
-  for (const match of body.matchAll(/\(([0-9]{1,3}|[a-z]{1,6})\)/g)) {
+  for (const match of body.matchAll(/\(([0-9]{1,3}|[a-z]{1,6}|[A-Z])\)/g)) {
     if (match.index == null || !match[1]) continue;
-    const pre = body.slice(Math.max(0, match.index - 60), match.index);
+    const pre = body.slice(Math.max(0, match.index - 80), match.index);
     if (!preOk(pre)) continue;
     const raw = match[1];
     if (/^\d+$/.test(raw)) {
       out.push({ pos: match.index, raw, marker: raw, style: "num", order: Number(raw) });
+      continue;
+    }
+    if (/^[A-Z]$/.test(raw)) {
+      out.push({ pos: match.index, raw, marker: raw, style: "upper", order: raw.charCodeAt(0) - 64 });
       continue;
     }
     if (/^[a-z]$/.test(raw)) {
@@ -422,17 +539,53 @@ function markerCandidates(body: string): Marker[] {
 function preOk(pre: string): boolean {
   if (pre.trim() === "") return true;
   // "; 23 " and "; - 9 - " are page markers sitting between the semicolon and the next clause.
-  return /(?:^|[;.])\s*(?:-\s*\d{1,3}\s*-\s*)?(?:\d{1,3}\s+)?(?:and\s+)?$/.test(pre) || /[:)]\s*$/.test(pre);
+  if (/(?:^|[;.])\s*(?:-\s*\d{1,3}\s*-\s*)?(?:\d{1,3}\s+)?(?:and\s+)?$/.test(pre) || /[:)]\s*$/.test(pre)) {
+    return true;
+  }
+  // (A)/(B) and (i)/(ii) introduced by a proviso or a greater-of, and the "and (B)" twin.
+  return /\b(?:provided\s+that|greater\s+of|except|the\s+following|sum\s+of)\s+$/i.test(pre) || /\band\s+$/i.test(pre);
 }
 
 function expandLimbs(text: string): string[] {
   // A builder, or a starter dollar that "may be increased" by unbound proceeds, is one basket.
   // Splitting out the starter or one "plus (vi)" limb would publish a partial as the cap.
   if (/\bmay be increased by\b/i.test(text) || isBuilderContainer(text)) return [text.trim()];
-  const spans = capSpans(text);
-  if (spans.length === 0) return [text.trim()];
-  if (spans.length === 1 && !poison(text)) return [text.trim()];
-  return spans;
+  const ranges = capSpanRanges(text);
+  if (ranges.length === 0) return [text.trim()];
+  if (ranges.length === 1 && !poison(text)) return [text.trim()];
+  // Cap spans alone drop the proviso and the caps the patterns did not name.
+  // Keep those residuals so an exception excerpt still binds to a clause.
+  return stitchResiduals(text, ranges);
+}
+
+const RESIDUAL_QUAL = /\b(?:shall not|will not|provided|except|so long as|reclassif)\b/i;
+const RESIDUAL_NUMERIC = /\$\s*[\d,]|\d+(?:\.\d+)?\s*%/;
+const RESIDUAL_CAP =
+  /\b(?:not to exceed|shall not exceed|not in excess of|does not exceed|greater of|in an aggregate(?: principal)? amount)\b/i;
+
+function stitchResiduals(text: string, ranges: { start: number; end: number }[]): string[] {
+  const out: string[] = [];
+  const emitGap = (chunk: string) => {
+    const pieces = chunk.length > 420 ? chunk.split(/(?<=[.;])\s+/) : [chunk];
+    for (const piece of pieces) {
+      const t = piece.trim();
+      if (t.length < 40) continue;
+      if (!RESIDUAL_NUMERIC.test(t)) {
+        if (RESIDUAL_QUAL.test(t)) out.push(t);
+        continue;
+      }
+      const dollars = [...t.matchAll(/\$\s*[\d,]+/g)].length;
+      if (dollars <= 3 && RESIDUAL_CAP.test(t)) out.push(t);
+    }
+  };
+  emitGap(text.slice(0, ranges[0]!.start));
+  for (let i = 0; i < ranges.length; i++) {
+    const slice = text.slice(ranges[i]!.start, ranges[i]!.end).trim();
+    if (slice.length >= 12) out.push(slice);
+    const gapEnd = i + 1 < ranges.length ? ranges[i + 1]!.start : text.length;
+    emitGap(text.slice(ranges[i]!.end, gapEnd));
+  }
+  return out.length ? out : [text.trim()];
 }
 
 function isBuilderContainer(text: string): boolean {
@@ -451,7 +604,7 @@ function poison(text: string): boolean {
   return false;
 }
 
-function capSpans(text: string): string[] {
+function capSpanRanges(text: string): { start: number; end: number }[] {
   const spans: { start: number; end: number }[] = [];
   const push = (start: number, end: number) => {
     if (end - start < 12) return;
@@ -531,7 +684,7 @@ function capSpans(text: string): string[] {
     if (kept.some((prior) => span.start >= prior.start && span.end <= prior.end)) continue;
     kept.push(span);
   }
-  return kept.map((span) => text.slice(span.start, span.end).trim());
+  return kept;
 }
 
 function childRef(parentRef: string, excerpt: string): string {
