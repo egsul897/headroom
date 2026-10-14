@@ -105,7 +105,14 @@ function memoryCustomerStore(failOn?: string): CustomerStore & { rows: Record<st
       const snap = Object.fromEntries(Object.entries(rows).map(([k, v]) => [k, v.length]));
       try { return await fn(store); } catch (e) { for (const [k, n] of Object.entries(snap)) rows[k]!.length = n; throw e; }
     },
-    customerAgreementRun: { async create({ data }) { const id = `run${++seq}`; rows.run!.push({ id, ...data }); return { id }; } },
+    customerAgreementRun: {
+      async create({ data }) {
+        if (data.runKey && rows.run!.some((x) => x.runKey === data.runKey)) throw new Error("unique violation runKey");
+        const id = `run${++seq}`; rows.run!.push({ id, ...data }); return { id };
+      },
+      async findUnique({ where }) { const x = rows.run!.find((y) => y.runKey === where.runKey); return x ? { id: String(x.id), status: String(x.status) } : null; },
+      async update({ where, data }) { const x = rows.run!.find((y) => y.id === where.id)!; Object.assign(x, data); return { id: String(x.id) }; },
+    },
     customerTreeNode: many("node", ["runId", "nodeId"]),
     customerTreeXref: many("xref", ["runId", "spanStart", "spanEnd", "spanSha256"]),
     customerTreeChecklist: many("checklist", ["runId", "family"]),
@@ -148,5 +155,19 @@ describe("customer upload persistence (scoped, never in the shared corpus)", () 
     expect(db.rows.node).toHaveLength(0);
     expect(db.rows.run!.map((x) => x.status)).toEqual(["FAILED"]);
     expect(String(db.rows.run![0]!.error)).toMatch(/boom:xref/);
+  }, 60_000);
+
+  it("re-analysis of the same document does not duplicate runs (unique runKey); failures update one row", async () => {
+    const db = memoryCustomerStore();
+    const scope = { companyId: "co-A", documentId: "d5", sourceId: "customer:d5" };
+    const a = await persistCustomerAgreementRun(db, scope, () => r);
+    const b = await persistCustomerAgreementRun(db, scope, () => r);
+    expect(b).toMatchObject({ status: "OK", runId: a.runId, reused: true });
+    expect(db.rows.run).toHaveLength(1);
+    expect(db.rows.node).toHaveLength(r.tree.nodes.length);
+    const scope2 = { companyId: "co-A", documentId: "d6", sourceId: "customer:d6" };
+    await persistCustomerAgreementRun(db, scope2, () => { throw new Error("x"); });
+    await persistCustomerAgreementRun(db, scope2, () => { throw new Error("y"); });
+    expect(db.rows.run!.filter((x) => x.documentId === "d6").map((x) => [x.status, x.error])).toEqual([["FAILED", "y"]]);
   }, 60_000);
 });
