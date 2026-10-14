@@ -90,11 +90,11 @@ interface Heading {
   headingEnd: number;
 }
 
-const ARTICLE_RE = /(^|\n)[ \t]*(ARTICLE|Article)[ \t]+([IVXLC]+|\d{1,2})\b\.?[ \t]*(?:\n[ \t]*)?([A-Z][A-Z ,;'’&\-]{2,100})?/g;
+const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)[^\S\n]+([IVXLC]+|\d{1,2})\b\.?[^\S\n]*(?:\n[^\S\n]*)?([A-Z][A-Z ,;'’&\-]{2,100})?/g;
 const SECTION_RE =
-  /(^|\n|\s{2,}|\.\s+)[ \t]*(?:(?:SECTION|Section)[ \t]+|§[ \t]*)?(\d{1,2}\.\d{1,3})\.?(?:[ \t]+|[ \t]*\n[ \t]*)([A-Z][^.\n]{1,160}?)[ \t]*[.:]/g;
+  /(^|\n|\s{2,}|\.\s+)[^\S\n]*(?:(?:SECTION|Section)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})\.?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z][^.\n]{1,160}?)[^\S\n]*[.:]/g;
 /** Amendment-style single-number sections: "SECTION 3. Conditions." (requires the word). */
-const SECTION_SINGLE_RE = /(^|\n)[ \t]*(?:SECTION|Section)[ \t]+(\d{1,2})\.(?:[ \t]+|[ \t]*\n[ \t]*)([A-Z][^.\n]{1,120}?)[ \t]*[.:\n]/g;
+const SECTION_SINGLE_RE = /(^|\n)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2})\.(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z][^.\n]{1,120}?)[^\S\n]*[.:\n]/g;
 
 function findHeadings(text: string): Heading[] {
   const out: Heading[] = [];
@@ -132,10 +132,10 @@ function findHeadings(text: string): Heading[] {
 
 function findFurniture(text: string, headings: Heading[]): { furniture: FurnitureSpan[]; tocIdx: Set<number> } {
   const furniture: FurnitureSpan[] = [];
-  for (const m of text.matchAll(/(^|\n)([ \t]*(?:-\s*)?\d{1,3}(?:\s*-)?[ \t]*)(?=\n)/g)) {
+  for (const m of text.matchAll(/(^|\n)([^\S\n]*(?:-\s*)?\d{1,3}(?:\s*-)?[^\S\n]*)(?=\n)/g)) {
     furniture.push({ kind: "PAGE_NUMBER", start: m.index! + m[1]!.length, end: m.index! + m[0].length });
   }
-  for (const m of text.matchAll(/(^|\n)([ \t]*(?:Table of Contents|TABLE OF CONTENTS)[ \t]*)(?=\n)/g)) {
+  for (const m of text.matchAll(/(^|\n)([^\S\n]*(?:Table of Contents|TABLE OF CONTENTS)[^\S\n]*)(?=\n)/g)) {
     furniture.push({ kind: "RUNNING_HEADER", start: m.index! + m[1]!.length, end: m.index! + m[0].length });
   }
   // TOC: a heading whose body (to the next heading) is short and looks like "Title .... 45".
