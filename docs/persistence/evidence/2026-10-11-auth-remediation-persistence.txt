@@ -1,0 +1,22 @@
+SHA=a4b9d50e9c881655fab7e7ef4cad76bc07f0706a
+UTC=2026-10-11T20:54:32Z
+DATABASE_URL_HOST=127.0.0.1 (local disposable via createEphemeralDatabase; NOT Neon)
+COMMAND: DATABASE_URL=postgresql://postgres:***@127.0.0.1:5432/headroom_gate vitest run tests/persistence/
+
+RESULT:
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v2.1.9 /tmp/gate294
+
+ ✓ tests/persistence/neon-first-acceptance.test.ts (16 tests) 2249ms
+ ✓ tests/persistence/agent9-financial-utilization-persistence.test.ts (21 tests) 2254ms
+ ✓ tests/persistence/ssr-persisted-execution-gate.test.ts (11 tests) 6ms
+ ✓ tests/persistence/product-execution-persistence.test.ts (10 tests) 2262ms
+ ✓ tests/persistence/authorization-adversarial.test.ts (10 tests) 1465ms
+
+ Test Files  5 passed (5)
+      Tests  68 passed (68)
+   Start at  20:54:19
+   Duration  4.49s (transform 761ms, setup 0ms, collect 1.50s, tests 8.24s, environment 1ms, prepare 235ms)
+
+

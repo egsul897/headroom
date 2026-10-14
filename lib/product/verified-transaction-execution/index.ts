@@ -62,3 +62,32 @@ export {
   evaluateUtilizationAuthorityGate,
   type UtilizationAuthorityGate,
 } from "./adapters/utilization";
+
+export {
+  PRODUCT_EXECUTION_PERSISTENCE_VERSION,
+  persistUnifiedTransactionExecution,
+  executeAndPersistUnifiedVerifiedTransaction,
+  loadPersistedUnifiedExecution,
+  type PersistUnifiedExecutionInput,
+  type UnifiedExecutionPersistenceRecord,
+  type ExecuteAndPersistOptions,
+} from "./persist-execution";
+
+export {
+  SSR_PERSISTED_EXECUTION_GATE_VERSION,
+  SSR_GATE_SEMANTICS,
+  assessSsrPersistedExecutionReadiness,
+  assessCurrentSsrEntrypointShape,
+  type ProductSurface,
+  type SsrPersistedExecutionBlocker,
+  type SsrPersistedExecutionDependencies,
+  type SsrPersistedExecutionAssessment,
+} from "./ssr-persisted-execution-gate";
+
+/** Shared durable capacity identity refs for Position / Ask / Simulate (Agent #9 pathway). */
+export {
+  loadSharedDurableCapacityIdentities,
+  buildSharedVerifiedCapacityInputFromDurable,
+  REMAINING_PRODUCT_DURABLE_WIRING_CALL_SITES,
+  type DurableCapacityIdentityRefs,
+} from "@/lib/product/durable-capacity-identities";
