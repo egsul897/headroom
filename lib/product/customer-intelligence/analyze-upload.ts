@@ -469,25 +469,28 @@ export async function analyzeCustomerDocument(params: {
       /* non-blocking */
     }
 
-    // Deterministic agreement pipeline (text → section tree → roles/xrefs → checklist → baskets/compute),
-    // persisted additively to Neon keyed by text sha256 + parser version. Zero AI; never unlimited by default.
-    // Non-blocking: a failure here never fails the upload. Disable with CLF_AGREEMENT_PIPELINE=0.
+    // Deterministic agreement pipeline (text → section tree → roles/xrefs → checklist → baskets/compute).
+    // Persisted ONLY to customer_* tables scoped by (companyId, documentId) — never the shared kf_* corpus.
+    // Tables come from migrations (no DDL here). A failure is recorded as a FAILED run (status + error) and
+    // surfaced in metadata.agreementPipeline; it never fails the upload. Disable with CLF_AGREEMENT_PIPELINE=0.
     let agreementPipeline: Record<string, unknown> | null = null;
     if (process.env.CLF_AGREEMENT_PIPELINE !== "0") {
-      try {
-        const { extractTextAsync } = await import("../../knowledge-factory/pipeline/text");
-        const { runAgreementPipeline, ensureKnowledgeTables, persistAgreementPipeline, prismaSqlExecutor } = await import(
-          "../../covenant-learning-factory/pipeline/agreement-pipeline"
-        );
-        const text = (await extractTextAsync(params.bytes, params.filename)).text;
-        const result = runAgreementPipeline({ sourceId, text });
-        const ex = prismaSqlExecutor(prisma);
-        await ensureKnowledgeTables(ex);
-        const stored = await persistAgreementPipeline(ex, result, { sourceId, verification: "CUSTOMER_UPLOAD", companyId: params.companyId, documentId: params.documentId });
-        agreementPipeline = { textSha256: result.textSha256, parserVersion: result.parserVersion, pipelineVersion: result.pipelineVersion, stats: result.stats, stored, families: result.families };
-      } catch (err) {
-        agreementPipeline = { error: err instanceof Error ? err.message : String(err) };
-      }
+      const { runAgreementPipeline, persistCustomerAgreementRun } = await import(
+        "../../covenant-learning-factory/pipeline/agreement-pipeline"
+      );
+      const { extractTextAsync } = await import("../../knowledge-factory/pipeline/text");
+      let summary: { stats: unknown; families: unknown } | null = null;
+      const outcome = await persistCustomerAgreementRun(
+        prisma as never,
+        { companyId: params.companyId, documentId: params.documentId, sourceId },
+        async () => {
+          const text = (await extractTextAsync(params.bytes, params.filename)).text;
+          const r = runAgreementPipeline({ sourceId, text });
+          summary = { stats: r.stats, families: r.families };
+          return r;
+        },
+      );
+      agreementPipeline = { ...outcome, ...(outcome.status === "OK" && summary ? summary : {}) };
     }
 
     // Preserve counsel decisions across reanalysis; flag conflicts when AI text drifts.
