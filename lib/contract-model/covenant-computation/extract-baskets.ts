@@ -14,6 +14,7 @@ import {
   phrasePatternCaptureRules,
 } from "@/lib/covenant-learning-factory/learned-rules/apply";
 import { compileRuleRegex, type LearnedRuleSet } from "@/lib/covenant-learning-factory/learned-rules/types";
+import { categorize } from "./baskets";
 import type { BasketClause } from "./types";
 import { norm } from "./text";
 
@@ -85,7 +86,14 @@ export function extractBasketClauses(args: ExtractBasketsArgs): BasketClause[] {
     seen.add(key);
     clauses.push(clause);
   }
-  return uniqueKeys(dropContainedNumericLimbs(clauses));
+  const stitched = uniqueKeys(dropContainedNumericLimbs(clauses));
+  // Provisos outside a covenant region (definitions, events of default, agency
+  // boilerplate) and defined terms the self-check looks up by name.
+  const extras = [
+    ...unboundProvisos(args.documentId, text, stitched),
+    ...definitionCitations(args.documentId, text, stitched),
+  ];
+  return uniqueKeys([...stitched, ...extras]);
 }
 
 /**
@@ -154,6 +162,61 @@ function dropContainedNumericLimbs(clauses: BasketClause[]): BasketClause[] {
       return true;
     });
   });
+}
+
+const PROVISO_SPAN = /(?:provided\s*,\s*however\s*,\s*that|except\s*:|; provided that)[^.]{40,220}/gi;
+const DEFINITION_OPEN =
+  /[“"]\s*([^”"]{4,80}?)\s*[”"]\s+(?:(?:shall\s+mean|means)\b|has the meaning set forth in\b)/g;
+const DEFINITION_SIGNAL = /permitted|leverage|coverage|ebitda|fixed charge/i;
+
+/**
+ * Exception sentences that never landed inside a covenant region: definitions,
+ * events of default, notices, indemnity. The slice is exact, so a page number
+ * left in the sentence ("provided that -16- such period") still matches.
+ * A proviso that already quotes a numeric clause is left alone so the cap is
+ * not published twice.
+ */
+function unboundProvisos(documentId: string, text: string, clauses: BasketClause[]): BasketClause[] {
+  const blob = clauses.map((clause) => norm(clause.operativeText).toLowerCase());
+  const numericTexts = clauses
+    .map((clause) => norm(clause.operativeText))
+    .filter((operative) => operative.length > 24 && /\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(operative));
+  const out: BasketClause[] = [];
+  for (const match of text.matchAll(PROVISO_SPAN)) {
+    if (match.index == null || !match[0]) continue;
+    const slice = match[0].trim();
+    const snippet = norm(slice).slice(0, 30).toLowerCase();
+    if (snippet.length < 30 || blob.some((operative) => operative.includes(snippet))) continue;
+    if (numericTexts.some((operative) => slice.includes(operative))) continue;
+    // UNKNOWN numeric clauses stay out; harvesting them would add UNSUPPORTED_SEMANTICS.
+    if (categorize(slice) === "UNKNOWN" && /\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(slice)) continue;
+    blob.push(norm(slice).toLowerCase());
+    out.push(clause(documentId, "OTHER", "proviso", slice, "CONDITION"));
+  }
+  return out;
+}
+
+/**
+ * The self-check flags a defined term (Permitted …, leverage, EBITDA, coverage,
+ * fixed charge) that no basket cites. Quote the opening, which is an exact slice
+ * and carries no cap of its own.
+ */
+function definitionCitations(documentId: string, text: string, clauses: BasketClause[]): BasketClause[] {
+  const blob = clauses.map((clause) => norm(clause.operativeText).toLowerCase()).join("\n");
+  const seen = new Set<string>();
+  const out: BasketClause[] = [];
+  for (const match of text.matchAll(DEFINITION_OPEN)) {
+    if (match.index == null || !match[0] || !match[1]) continue;
+    const term = match[1].replace(/\s+/g, " ").trim();
+    const key = term.toLowerCase();
+    if (term.length < 4 || !DEFINITION_SIGNAL.test(term) || seen.has(key) || blob.includes(key)) continue;
+    seen.add(key);
+    const slice = text.slice(match.index, match.index + match[0].length).trim();
+    if (slice.length < 12) continue;
+    const family = /ebitda|leverage|coverage|fixed charge/i.test(term) ? "FINANCIAL_COVENANT" : familyOf(term);
+    out.push(clause(documentId, family, `definition: ${term}`, slice, "CONDITION"));
+  }
+  return out;
 }
 
 function uniqueKeys(clauses: BasketClause[]): BasketClause[] {
@@ -424,7 +487,10 @@ function deepenParts(parts: Part[], depth: number): Part[] {
 
 function deepenPart(part: Part, depth: number): Part[] {
   if (!part.marker) return [part];
-  const lead = part.text.match(/^\([^)]+\)\s*/);
+  // The clause may have been rewound to "except:" or "; provided that" in front of its marker.
+  const lead = part.text.match(
+    /^(?:(?:provided\s*,\s*however\s*,\s*that|except\s*:|;?\s*provided that)\s*:?\s*(?:-\s*\d{1,3}\s*-\s*)?)?\([^)]+\)\s*/i,
+  );
   if (!lead) return [part];
   const rest = part.text.slice(lead[0].length);
   const inner = splitOneLevel(rest);
@@ -478,7 +544,9 @@ function splitOneLevel(body: string): Part[] {
   }
   for (const group of groups) {
     for (let i = 0; i < group.length; i++) {
-      const start = group[i]!.pos;
+      // "except: (a)" and "; provided that (i)" are one citation. The marker
+      // alone drops the introducer the self-check uses as its needle.
+      const start = attachIntroducer(body, group[i]!.pos);
       const end = i + 1 < group.length ? group[i + 1]!.pos : i === group.length - 1 ? body.length : group[i]!.pos;
       const nextGroup = groups[groups.indexOf(group) + 1];
       const hardEnd = i === group.length - 1 && nextGroup ? nextGroup[0]!.pos : end;
@@ -536,6 +604,18 @@ function markerCandidates(body: string): Marker[] {
   return out;
 }
 
+const EXCEPTION_INTRO =
+  /(?:provided\s*,\s*however\s*,\s*that|except\s*:|;?\s*provided that)\s*:?\s*(?:-\s*\d{1,3}\s*-\s*)?$/i;
+
+/** Start the clause at the exception introducer when it sits immediately before the marker. */
+function attachIntroducer(body: string, markerPos: number): number {
+  const windowStart = Math.max(0, markerPos - 120);
+  const pre = body.slice(windowStart, markerPos);
+  const match = pre.match(EXCEPTION_INTRO);
+  if (!match || match.index == null) return markerPos;
+  return windowStart + match.index;
+}
+
 function preOk(pre: string): boolean {
   if (pre.trim() === "") return true;
   // "; 23 " and "; - 9 - " are page markers sitting between the semicolon and the next clause.
@@ -565,10 +645,14 @@ const RESIDUAL_CAP =
 
 function stitchResiduals(text: string, ranges: { start: number; end: number }[]): string[] {
   const out: string[] = [];
-  const emitGap = (chunk: string) => {
+  const emitGap = (from: number, to: number) => {
+    const chunk = withLeadingClauseMark(text, from, to);
     const pieces = chunk.length > 420 ? chunk.split(/(?<=[.;])\s+/) : [chunk];
-    for (const piece of pieces) {
-      const t = piece.trim();
+    for (let p = 0; p < pieces.length; p++) {
+      const piece = pieces[p]!;
+      // The split keeps ";" on the previous sentence. The self-check needle starts at "; provided that".
+      let t = piece.trim();
+      if (/^provided\b/i.test(t) && p > 0 && /;\s*$/.test(pieces[p - 1] ?? "")) t = `; ${t}`;
       if (t.length < 40) continue;
       if (!RESIDUAL_NUMERIC.test(t)) {
         if (RESIDUAL_QUAL.test(t)) out.push(t);
@@ -578,14 +662,37 @@ function stitchResiduals(text: string, ranges: { start: number; end: number }[])
       if (dollars <= 3 && RESIDUAL_CAP.test(t)) out.push(t);
     }
   };
-  emitGap(text.slice(0, ranges[0]!.start));
-  for (let i = 0; i < ranges.length; i++) {
-    const slice = text.slice(ranges[i]!.start, ranges[i]!.end).trim();
+  // A short "; provided that: (i)" in front of a cap span is under 40 characters and
+  // would be dropped, taking the self-check needle with it. Pull it onto the span.
+  let cursor = 0;
+  for (const range of ranges) {
+    const start = extendSpanStart(text, range.start);
+    if (start > cursor) emitGap(cursor, start);
+    const slice = text.slice(start, range.end).trim();
     if (slice.length >= 12) out.push(slice);
-    const gapEnd = i + 1 < ranges.length ? ranges[i + 1]!.start : text.length;
-    emitGap(text.slice(ranges[i]!.end, gapEnd));
+    cursor = Math.max(cursor, range.end);
   }
+  if (cursor < text.length) emitGap(cursor, text.length);
   return out.length ? out : [text.trim()];
+}
+
+function extendSpanStart(text: string, start: number): number {
+  const windowStart = Math.max(0, start - 80);
+  const pre = text.slice(windowStart, start);
+  const match = pre.match(EXCEPTION_INTRO);
+  if (!match || match.index == null) return start;
+  return windowStart + match.index;
+}
+
+/**
+ * A sentence-ending semicolon is the start of "; provided that". Keeping it on
+ * the previous cap span leaves the proviso needle in neither clause.
+ */
+function withLeadingClauseMark(text: string, from: number, to: number): string {
+  let start = from;
+  while (start < to && text[start] === " ") start += 1;
+  if (/^provided\b/i.test(text.slice(start, to)) && text.slice(start - 2, start) === "; ") start -= 2;
+  return text.slice(start, to);
 }
 
 function isBuilderContainer(text: string): boolean {
@@ -689,9 +796,11 @@ function capSpanRanges(text: string): { start: number; end: number }[] {
 
 function childRef(parentRef: string, excerpt: string): string {
   const sum = excerpt.match(/sum of \(([a-z])\)/i);
-  const lead = excerpt.match(/^\(([a-z0-9]+)\)/);
+  // The operative slice may start at "; provided that" and only then the marker.
+  const lead = excerpt.match(/^\(([a-z0-9]+)\)/i) ?? excerpt.match(/\(([a-z0-9]+)\)/i);
   const id = sum?.[1] ?? lead?.[1];
   if (!id) return parentRef;
+  if (parentRef.endsWith(`(${id})`)) return parentRef;
   return `${parentRef}(${id})`;
 }
 

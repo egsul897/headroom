@@ -7,7 +7,9 @@
 
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { categorize } from "@/lib/contract-model/covenant-computation/baskets";
 import { extractBasketClauses } from "@/lib/contract-model/covenant-computation/extract-baskets";
+import { dollarAmountIsMillions } from "@/lib/contract-model/covenant-computation/text";
 import type { BasketClause } from "@/lib/contract-model/covenant-computation/types";
 
 function norm(text: string): string {
@@ -66,6 +68,8 @@ const CONMED =
   "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt";
 const MTN_INDENTURE =
   "docs/product-proof/001/sources/mtn-2026-tenth-ar-credit-agreement/extracted-text/doc-b-indenture-2024.txt";
+const MTN_INDENTURE_2025 =
+  "docs/product-proof/001/sources/mtn-2026-tenth-ar-credit-agreement/extracted-text/doc-c-indenture-2025.txt";
 const CHWY =
   "tests/fixtures/unseen-packages/chwy-2026-credit-agreement/extracted-text/doc-a-2026-06-23-credit-agreement.txt";
 const WOR =
@@ -169,5 +173,71 @@ Section 4.09 Limitation on Indebtedness. The Issuer shall not Incur any Indebted
 `;
     const clauses = extractBasketClauses({ documentId: "sample", text: sample });
     expect(clauses.some((c) => /greater of \$50,000,000/.test(c.operativeText))).toBe(true);
+    const mhkGaps = exceptionCoverageGaps(load(MHK), covenantArticleAt(load(MHK)));
+    expect(mhkGaps.gaps).toBe(0);
+  });
+});
+
+describe("proviso boundaries, page furniture, and non-capacity numbers", () => {
+  it("closes the remaining operative-window gaps on a credit agreement and an indenture", () => {
+    // Same window after the heading fix, before this round: WOR 22/29, FWRG 12/40, MTN indenture 16/38.
+    const wor = exceptionCoverageGaps(load(WOR), covenantArticleAt(load(WOR)));
+    const fwrg = exceptionCoverageGaps(load(FWRG));
+    const mtn = exceptionCoverageGaps(load(MTN_INDENTURE), covenantArticleAt(load(MTN_INDENTURE)));
+    expect(wor.gaps).toBe(0);
+    expect(fwrg.gaps).toBe(0);
+    expect(mtn.gaps).toBe(0);
+    expect(
+      wor.clauses.some((c) => /; provided that the aggregate face amount of all such letters of credit/i.test(norm(c.operativeText))),
+    ).toBe(true);
+    expect(
+      fwrg.clauses.some((c) => /; provided that: \(i\) with respect to any such Disposition/i.test(norm(c.operativeText))),
+    ).toBe(true);
+  });
+
+  it("reads a page-split million and a page-split proviso on two indentures", () => {
+    for (const path of [MTN_INDENTURE, MTN_INDENTURE_2025]) {
+      const clauses = extractBasketClauses({ documentId: path, text: load(path) });
+      const million = clauses.find((c) => /\$175\.0\s+-46-\s+million/.test(norm(c.operativeText)));
+      expect(million).toBeTruthy();
+      expect(dollarAmountIsMillions(million!.operativeText, "175.0")).toBe(true);
+      expect(clauses.some((c) => /provided that -16- such period/.test(norm(c.operativeText)))).toBe(true);
+    }
+    expect(dollarAmountIsMillions("greater of $40.0 -8- million and 3.0% of Consolidated Total Assets", "40.0")).toBe(true);
+  });
+
+  it("cites EBITDA and leverage definitions that no covenant sentence quotes, on two credit agreements", () => {
+    const chwy = extractBasketClauses({ documentId: "chwy", text: load(CHWY) });
+    const wor = extractBasketClauses({ documentId: "wor", text: load(WOR) });
+    expect(chwy.some((c) => /Acquired EBITDA/.test(c.operativeText))).toBe(true);
+    expect(chwy.some((c) => /Permitted Holder/.test(c.operativeText))).toBe(true);
+    expect(wor.some((c) => /Consolidated EBITDA/.test(c.operativeText))).toBe(true);
+    expect(wor.some((c) => /Total Leverage Ratio/.test(c.operativeText))).toBe(true);
+  });
+
+  it("does not classify grower prongs, holder votes, or schedule floors as UNKNOWN", () => {
+    const chwy = extractBasketClauses({ documentId: "chwy", text: load(CHWY) });
+    const conmed = extractBasketClauses({ documentId: "conmed", text: load(CONMED) });
+    const prong = (clauses: BasketClause[], amount: RegExp) =>
+      clauses.find((c) => amount.test(norm(c.operativeText)) && /^\([^)]+\)\s+\$/.test(norm(c.operativeText)));
+    expect(categorize(prong(chwy, /\$800\.0 million and/)!.operativeText)).toBe("FIXED_DOLLAR");
+    expect(categorize(prong(conmed, /\$150,000,000 and/)!.operativeText)).toBe("FIXED_DOLLAR");
+
+    for (const path of [MTN_INDENTURE, MTN_INDENTURE_2025]) {
+      const clauses = extractBasketClauses({ documentId: path, text: load(path) });
+      const holder = clauses.find((c) => /Holders of at least 30%/.test(c.operativeText));
+      expect(holder).toBeTruthy();
+      expect(categorize(holder!.operativeText)).not.toBe("UNKNOWN");
+    }
+
+    const fwrg = extractBasketClauses({ documentId: "fwrg", text: load(FWRG) });
+    const gibraltar = extractBasketClauses({
+      documentId: "gibraltar",
+      text: load("tests/fixtures/unseen-packages/gibraltar-2026-credit-agreement/extracted-text/credit-agreement.txt"),
+    });
+    const schedule = (clauses: BasketClause[]) =>
+      clauses.find((c) => /in excess of \$\s*[\d,]+(?:\.\d+)?[^.]{0,120}(?:described|listed|set forth) on Schedule/i.test(norm(c.operativeText)));
+    expect(categorize(schedule(fwrg)!.operativeText)).toBe("UNLIMITED_BY_PURPOSE");
+    expect(categorize(schedule(gibraltar)!.operativeText)).toBe("UNLIMITED_BY_PURPOSE");
   });
 });
