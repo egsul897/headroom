@@ -1,0 +1,35 @@
+# CLF scoreboard gate. Soft gate: computed ≠ certified.
+# Replays the sweep self-check (COVERAGE_GAP, DISCOVERY_GAP, UNSUPPORTED_SEMANTICS)
+# offline over the committed input snapshot and fails when HELDOUT errors rise
+# above the committed baseline. Deliberately NOT path-filtered: every PR runs it.
+# No secrets, no Neon, no AI/LLM calls.
+name: clf-scoreboard-gate
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  scoreboard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Scoreboard unit tests
+        run: npx vitest run tests/covenant-learning-factory/scoreboard-gate.test.ts
+      - name: HELDOUT regression gate (offline snapshot vs committed baseline)
+        run: >
+          npm run -s clf:scoreboard --
+          --snapshot=scripts/covenant-learning-factory/scoreboard/snapshot.json.gz
+          --baseline=scripts/covenant-learning-factory/scoreboard/baseline.json
+          --write-report=scoreboard-report.json
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: clf-scoreboard-report
+          path: scoreboard-report.json
+          if-no-files-found: ignore
