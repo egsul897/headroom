@@ -7,6 +7,7 @@
  * ceiling. Clauses with no numeric cap stay in the list as purpose permissions.
  */
 
+import { classifyCovenantFamily, type CovenantFamily } from "../section-tree/family-classifier";
 import {
   applyDefinitionAlias,
   applyFamilyHints,
@@ -375,7 +376,7 @@ function findRegions(text: string, rules?: LearnedRuleSet): Region[] {
     if (amendmentItem > 80) end = Math.min(end, start.bodyFrom + amendmentItem);
     const body = text.slice(start.bodyFrom, end).trim();
     if (body.length < 40) continue;
-    regions.push({ family: start.family || "OTHER", title: start.title, body, sectionNumber: start.sectionNumber });
+    regions.push({ family: classifiedFamily(start, body), title: start.title, body, sectionNumber: start.sectionNumber });
   }
   return regions;
 }
@@ -407,6 +408,26 @@ function sectionBoundaries(text: string): number[] {
   // All-caps ARTICLE headings only. "Article VII" inside "paragraph (n) of Article VII" is a cross-reference.
   for (const match of text.matchAll(/\bARTICLE\s+[IVXLC]+\b/g)) if (match.index != null) at.add(match.index);
   return [...at].sort((a, b) => a - b);
+}
+
+const EXTRACTOR_FAMILY: Record<CovenantFamily, string> = {
+  DEBT: "DEBT_INCURRENCE", LIENS: "LIENS", RESTRICTED_PAYMENTS: "RESTRICTED_PAYMENTS", INVESTMENTS: "INVESTMENT",
+  ASSET_SALES: "ASSET_SALE", AFFILIATE_TRANSACTIONS: "AFFILIATE_TRANSACTIONS", FUNDAMENTAL_CHANGES: "FUNDAMENTAL_CHANGES",
+  PREPAYMENTS: "PREPAYMENTS", FINANCIAL_RATIOS: "FINANCIAL_COVENANT",
+};
+
+/**
+ * Section regions whose heading resolves to OTHER get the general family classifier
+ * (lead-in prohibition object + heading + defined terms). Definition regions and learned mappings are untouched.
+ * CLF_FAMILY_CLASSIFIER=0 disables.
+ */
+function classifiedFamily(start: { family: string; title: string; sectionNumber: string | null }, body: string): string {
+  const fam = start.family || "OTHER";
+  if (fam !== "OTHER" || start.sectionNumber == null || process.env.CLF_FAMILY_CLASSIFIER === "0") return fam;
+  const title = start.title.replace(/^§\S+\s*/, "");
+  const lead = body.replace(/^[^\n]{0,200}?\.\s/, "");
+  const v = classifyCovenantFamily({ title, leadIn: lead, parentTitle: "COVENANTS" });
+  return v.family ? EXTRACTOR_FAMILY[v.family] : fam;
 }
 
 function familyOf(title: string): string {
