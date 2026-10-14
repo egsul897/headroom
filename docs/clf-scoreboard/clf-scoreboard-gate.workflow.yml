@@ -25,6 +25,7 @@ jobs:
         run: >
           npm run -s clf:scoreboard --
           --snapshot=scripts/covenant-learning-factory/scoreboard/snapshot.json.gz
+          --rules-file=scripts/covenant-learning-factory/scoreboard/ruleset.json
           --baseline=scripts/covenant-learning-factory/scoreboard/baseline.json
           --write-report=scoreboard-report.json
       - if: always()

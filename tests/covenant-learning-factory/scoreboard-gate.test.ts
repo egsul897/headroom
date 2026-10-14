@@ -73,3 +73,65 @@ describe("clf scoreboard gate", () => {
     expect(a.counts.DISCOVERY_GAP).toBeGreaterThanOrEqual(1);
   });
 });
+
+describe("issuer split + duplicates (reviewer notes on #364)", () => {
+  const m: DevManifest = {
+    description: "t",
+    sourceIds: ["fixture:chwy"],
+    devIssuerCiks: [
+      { cik: "0000816956", issuer: "CNMD", evidence: "t" },
+      { cik: "0000703604", issuer: "DSGR", evidence: "t" },
+    ],
+    duplicates: [{ sourceId: "edgar:chwy-doc-a", duplicateOf: "fixture:chwy", evidence: "same doc" }],
+  };
+  it("splits by CIK: null-ticker rows of a DEV issuer are DEV (the 3 reviewer leaks)", () => {
+    expect(splitFor("edgar:0001193125-21-217426:d170717dex101.htm", m, "0000816956")).toBe("DEV");
+    expect(splitFor("edgar:0001193125-22-169336:d320648dex1025.htm", m, "816956")).toBe("DEV");
+    expect(splitFor("edgar:0001193125-23-163984:d511994dex101.htm", m, "0000703604")).toBe("DEV");
+    expect(splitFor("fixture:anything", m, "0000000000")).toBe("DEV");
+    expect(splitFor("research:y", m, "0000000000")).toBe("HELDOUT");
+    expect(splitFor("edgar:z", m, "0000051143")).toBe("HELDOUT");
+  });
+  it("lists duplicates but excludes them from totals", () => {
+    const r = aggregate(
+      [
+        { sourceId: "fixture:chwy", split: "DEV", counts: { ...emptyCounts(), DISCOVERY_GAP: 2 }, total: 2 },
+        { sourceId: "edgar:chwy-doc-a", split: "DEV", duplicateOf: "fixture:chwy", counts: { ...emptyCounts(), DISCOVERY_GAP: 9 }, total: 9 },
+      ],
+      { mode: "snapshot", rulesetVersion: 2 },
+    );
+    expect(r.totals.DEV.total).toBe(2);
+    expect(r.duplicates).toEqual([{ sourceId: "edgar:chwy-doc-a", duplicateOf: "fixture:chwy", total: 9 }]);
+  });
+});
+
+describe("fetchDocumentText surfaces Neon errors", () => {
+  it("throws (redacted) instead of returning null on executor failure; null only when the row is absent", async () => {
+    const { fetchDocumentText } = await import("@/lib/covenant-learning-factory/sweep/neon-load");
+    const failing = { execute: async () => { throw new Error("boom postgresql://u:p@host/db"); } } as never;
+    await expect(fetchDocumentText(failing, { sourceId: "s", contentSha256: "h" })).rejects.toThrow(/fetchDocumentText\(s\) failed: boom \[URL\]/);
+    const empty = { execute: async () => [] } as never;
+    await expect(fetchDocumentText(empty, { sourceId: "s", contentSha256: "h" })).resolves.toBeNull();
+  });
+});
+
+describe("SEC backfill linkage (fetchDocumentText)", () => {
+  it("falls back to backfilled text only for BYTES_VERIFIED/TEXT_VERIFIED unless CLF_UNVERIFIED_TEXT=1", async () => {
+    const { fetchDocumentText } = await import("../../lib/covenant-learning-factory/sweep/neon-load");
+    const calls: { sql: string; params?: unknown[] }[] = [];
+    const ex = {
+      execute: async (sql: string, params?: unknown[]) => {
+        calls.push({ sql, params });
+        return sql.includes("kf_source_text_backfill") ? [{ text: "body" }] : [];
+      },
+    };
+    const src = { sourceId: "s", contentSha256: "h" };
+    delete process.env.CLF_UNVERIFIED_TEXT;
+    expect(await fetchDocumentText(ex, src)).toBe("body");
+    expect(calls[1]!.params![1]).toEqual(["BYTES_VERIFIED", "TEXT_VERIFIED"]);
+    process.env.CLF_UNVERIFIED_TEXT = "1";
+    await fetchDocumentText(ex, src);
+    expect(calls[3]!.params![1]).toContain("UNVERIFIED_TEXT");
+    delete process.env.CLF_UNVERIFIED_TEXT;
+  });
+});

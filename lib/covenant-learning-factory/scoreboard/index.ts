@@ -44,8 +44,24 @@ export interface SourceScore {
   sourceId: string;
   split: Split;
   docType?: DocType;
+  /** Set when this source duplicates another; excluded from totals and the gate. */
+  duplicateOf?: string | null;
   counts: ClassCounts;
   total: number;
+  /** DOCUMENT = scored over stored document text; COMPOSITE = no text, candidate excerpts only. */
+  textBasis?: "DOCUMENT" | "COMPOSITE";
+  /** Candidate-level errors (only written via --write-findings; stripped from the report). */
+  findings?: ScoreFinding[];
+}
+
+export interface ScoreFinding {
+  class: ScoreboardClass;
+  /** Stable key for diffing runs: candidateId / definitionId / message. */
+  key: string;
+  family: string | null;
+  sectionRef: string | null;
+  excerpt: string;
+  message: string;
 }
 
 export interface ScoreboardReport {
@@ -58,21 +74,47 @@ export interface ScoreboardReport {
   inScopeTotals?: Record<Split, ClassCounts & { total: number; sources: number }>;
   /** Out-of-scope sources (doc type OTHER): reported, never silently dropped. */
   excluded?: { sourceId: string; split: Split; total: number }[];
+  /** Duplicates: scored and listed, never counted. */
+  duplicates?: { sourceId: string; duplicateOf: string; total: number }[];
   perSource: SourceScore[];
 }
 
 export interface DevManifest {
   description: string;
-  /** Exact sourceIds treated as DEV. */
+  /** Exact sourceIds treated as DEV (fixtures / fixture-derived packages). */
   sourceIds: string[];
+  /** SEC CIKs of issuers with DEV fixtures: every source with one of these issuerCik values is DEV.
+   *  Split by CIK (never ticker / hand-listed sourceIds — tickers are null on many rows). */
+  devIssuerCiks?: { cik: string; issuer: string; evidence: string }[];
+  /** Exact duplicates of another source: scored and listed, excluded from totals and the gate. */
+  duplicates?: { sourceId: string; duplicateOf: string; evidence: string }[];
 }
 
 export function emptyCounts(): ClassCounts {
   return { COVERAGE_GAP: 0, DISCOVERY_GAP: 0, UNSUPPORTED_SEMANTICS: 0 };
 }
 
-export function splitFor(sourceId: string, manifest: DevManifest): Split {
-  return manifest.sourceIds.includes(sourceId) ? "DEV" : "HELDOUT";
+/** Normalized issuer ticker ("CHWY_ALT" → "CHWY"). */
+export function issuerOf(ticker: string | null | undefined): string | null {
+  if (!ticker) return null;
+  return ticker.toUpperCase().replace(/_(?:ALT|SEL)$/, "");
+}
+
+export function normCik(cik: string | null | undefined): string | null {
+  if (!cik) return null;
+  const d = cik.replace(/\D/g, "").replace(/^0+/, "");
+  return d.length ? d : null; // "0000000000" (fixture placeholder) → null
+}
+
+export function splitFor(sourceId: string, manifest: DevManifest, issuerCik?: string | null): Split {
+  if (manifest.sourceIds.includes(sourceId) || /^(fixture|fdp):/.test(sourceId)) return "DEV";
+  const cik = normCik(issuerCik);
+  if (cik && manifest.devIssuerCiks?.some((d) => normCik(d.cik) === cik)) return "DEV";
+  return "HELDOUT";
+}
+
+export function duplicateOf(sourceId: string, manifest: DevManifest): string | null {
+  return manifest.duplicates?.find((d) => d.sourceId === sourceId)?.duplicateOf ?? null;
 }
 
 const FIXED_NOW = "1970-01-01T00:00:00.000Z";
@@ -110,7 +152,29 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
     text: input.documentText,
     excerpts: input.candidates.map((c) => c.excerpt ?? ""),
   }).type;
-  return { sourceId, split: splitFor(sourceId, manifest), docType, counts, total };
+  return {
+    sourceId,
+    split: splitFor(sourceId, manifest, input.source.issuerCik),
+    duplicateOf: duplicateOf(sourceId, manifest),
+    docType,
+    counts,
+    total,
+    textBasis: input.documentText && input.documentText.trim() ? "DOCUMENT" : "COMPOSITE",
+    findings: errors
+      .filter((e) => (SCOREBOARD_CLASSES as readonly string[]).includes(e.class))
+      .map((e) => {
+        const ev = ((e as unknown as { evidence?: Record<string, unknown> }).evidence ?? {}) as Record<string, unknown>;
+        const str = (v: unknown) => (typeof v === "string" ? v : null);
+        return {
+          class: e.class as ScoreboardClass,
+          key: str(ev.candidateId) ?? str(ev.definitionId) ?? str(ev.stableKey) ?? e.message,
+          family: str(ev.expectedFamily) ?? str(ev.family),
+          sectionRef: str(ev.sectionRef),
+          excerpt: (str(ev.citationExcerpt) ?? "").slice(0, 200),
+          message: e.message,
+        };
+      }),
+  };
 }
 
 export function aggregate(
@@ -122,7 +186,12 @@ export function aggregate(
     HELDOUT: { ...emptyCounts(), total: 0, sources: 0 },
   };
   const sorted = [...perSource].sort((a, b) => (a.sourceId < b.sourceId ? -1 : a.sourceId > b.sourceId ? 1 : 0));
+  const duplicates: { sourceId: string; duplicateOf: string; total: number }[] = [];
   for (const s of sorted) {
+    if (s.duplicateOf) {
+      duplicates.push({ sourceId: s.sourceId, duplicateOf: s.duplicateOf, total: s.total });
+      continue;
+    }
     const t = totals[s.split];
     t.sources += 1;
     t.total += s.total;
@@ -134,6 +203,7 @@ export function aggregate(
   };
   const excluded: { sourceId: string; split: Split; total: number }[] = [];
   for (const s of sorted) {
+    if (s.duplicateOf) continue;
     if (s.docType && !IN_SCOPE.has(s.docType)) {
       excluded.push({ sourceId: s.sourceId, split: s.split, total: s.total });
       continue;
@@ -151,6 +221,7 @@ export function aggregate(
     totals,
     inScopeTotals,
     excluded,
+    duplicates,
     perSource: sorted,
   };
 }
@@ -206,7 +277,7 @@ export function compareToBaseline(baseline: ScoreboardReport, current: Scoreboar
   const heldoutBefore = baseline.totals.HELDOUT.total;
   const heldoutAfter = current.totals.HELDOUT.total;
   if (heldoutAfter > heldoutBefore) reasons.push(`HELDOUT errors increased ${heldoutBefore} → ${heldoutAfter}`);
-  const missing = baseline.perSource.filter((s) => s.split === "HELDOUT" && !after.has(s.sourceId));
+  const missing = baseline.perSource.filter((s) => s.split === "HELDOUT" && !s.duplicateOf && !after.has(s.sourceId));
   if (missing.length > 0) reasons.push(`${missing.length} HELDOUT source(s) missing from current run`);
   return {
     pass: reasons.length === 0,
