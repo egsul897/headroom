@@ -23,6 +23,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { createNeonHttpsExecutor, redactConnectionSecrets } from "../../../lib/covenant-learning-factory/store/neon-transport";
+import { insertRows } from "../../../lib/covenant-learning-factory/pipeline/agreement-pipeline";
 import { readSnapshot } from "../../../lib/covenant-learning-factory/scoreboard";
 import { parseDocumentTree } from "../../../lib/contract-model/section-tree/parse";
 import { covenantChecklist, resolveCrossRefs, roleOf } from "../../../lib/contract-model/section-tree/semantics";
@@ -40,46 +41,6 @@ export function parserVersion(): string {
 
 type Ex = Awaited<ReturnType<typeof createNeonHttpsExecutor>>;
 
-const DDL = [
-  `CREATE TABLE IF NOT EXISTS kf_tree_parses (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, "sourceId" text NOT NULL, basis text NOT NULL,
-    verification text, "textLength" int NOT NULL, "nodeCount" int NOT NULL, "xrefCount" int NOT NULL,
-    "checklistCount" int NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT now(),
-    PRIMARY KEY ("textSha256","parserVersion"))`,
-  `CREATE INDEX IF NOT EXISTS kf_tree_parses_source ON kf_tree_parses ("sourceId")`,
-  `CREATE TABLE IF NOT EXISTS kf_tree_nodes (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, "nodeId" text NOT NULL, "parentId" text,
-    kind text NOT NULL, label text, path text, "sectionNumber" text, title text, level text,
-    "start" int NOT NULL, "headingEnd" int NOT NULL, "end" int NOT NULL, depth int NOT NULL,
-    status text NOT NULL, role text, issues jsonb NOT NULL DEFAULT '[]',
-    PRIMARY KEY ("textSha256","parserVersion","nodeId"))`,
-  `CREATE TABLE IF NOT EXISTS kf_tree_xrefs (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, ord int NOT NULL, "fromNodeId" text NOT NULL,
-    at int NOT NULL, raw text NOT NULL, target text NOT NULL, status text NOT NULL, "targetNodeId" text,
-    PRIMARY KEY ("textSha256","parserVersion",ord))`,
-  `CREATE TABLE IF NOT EXISTS kf_tree_checklist (
-    "textSha256" text NOT NULL, "parserVersion" text NOT NULL, family text NOT NULL, status text NOT NULL,
-    "sectionPaths" jsonb NOT NULL, parts jsonb NOT NULL, "needsInputs" jsonb NOT NULL, note text,
-    PRIMARY KEY ("textSha256","parserVersion",family))`,
-  `CREATE TABLE IF NOT EXISTS kf_scoreboard_runs (
-    "runId" text PRIMARY KEY, "gitCommit" text NOT NULL, "rulesLabel" text NOT NULL, "rulesetVersion" text,
-    tree boolean NOT NULL, "snapshotSha256" text NOT NULL, totals jsonb NOT NULL, "findingCount" int NOT NULL,
-    "createdAt" timestamptz NOT NULL DEFAULT now())`,
-  `CREATE TABLE IF NOT EXISTS kf_scoreboard_findings (
-    "runId" text NOT NULL, "sourceId" text NOT NULL, ord int NOT NULL, "textSha256" text, split text NOT NULL,
-    class text NOT NULL, key text, family text, "sectionRef" text, excerpt text, message text,
-    PRIMARY KEY ("runId","sourceId",ord))`,
-];
-
-/** Multi-row INSERT ... ON CONFLICT DO NOTHING in chunks (Neon HTTPS param limit friendly). */
-async function insertRows(ex: Ex, table: string, cols: string[], rows: unknown[][], chunk = 200) {
-  for (let i = 0; i < rows.length; i += chunk) {
-    const part = rows.slice(i, i + chunk);
-    const params: unknown[] = [];
-    const values = part.map((r) => "(" + r.map((v) => { params.push(v); return `$${params.length}`; }).join(",") + ")");
-    await ex.execute(`INSERT INTO ${table} (${cols.map((c) => `"${c}"`).join(",")}) VALUES ${values.join(",")} ON CONFLICT DO NOTHING`, params);
-  }
-}
 
 async function count(ex: Ex, table: string, where: string, params: unknown[]) {
   return Number((await ex.execute(`SELECT count(*)::int AS n FROM ${table} WHERE ${where}`, params))[0]?.n ?? -1);
@@ -106,19 +67,35 @@ async function trees(ex: Ex) {
   for (const s of todo) {
     const raw = s.documentText!;
     const h = sha(raw);
-    if (done.has(h)) { tally.skipped++; continue; }
     const tree = parseDocumentTree(raw);
+    // Cross-refs keyed by content: span in tree text + sha256 of the span (not list position).
+    const seenX = new Set<string>();
+    const xr = resolveCrossRefs(tree, tree.text).flatMap((x) => {
+      const e = x.at + x.raw.length, ss = sha(tree.text.slice(x.at, e)), id = `${x.at}:${e}:${ss}`;
+      if (seenX.has(id)) return [];
+      seenX.add(id);
+      return [[h, pv, x.at, e, ss, x.fromNodeId, x.raw, x.target, x.status, x.targetNodeId]];
+    });
+    const XCOLS = ["textSha256","parserVersion","spanStart","spanEnd","spanSha256","fromNodeId","raw","target","status","targetNodeId"];
+    if (done.has(h)) {
+      // Already parsed: only backfill the content-keyed xref table (idempotent), then verify.
+      if (!DRY) {
+        await insertRows(ex, "kf_tree_xref_spans", XCOLS, xr);
+        const cx = await count(ex, "kf_tree_xref_spans", `"textSha256"=$1 AND "parserVersion"=$2`, [h, pv]);
+        if (cx !== xr.length) { tally.mismatch++; console.log(`XREF SPAN MISMATCH ${s.source.sourceId} ${cx}/${xr.length}`); }
+      }
+      tally.skipped++; continue;
+    }
     const nodes = tree.nodes.map((n) => [h, pv, n.id, n.parentId, n.kind, n.label, n.path, n.sectionNumber, n.title, n.level,
       n.start, n.headingEnd, n.end, n.depth, n.status, n.kind === "CLAUSE" ? roleOf(tree, tree.text, n) : null, JSON.stringify(n.issues)]);
-    const xr = resolveCrossRefs(tree, tree.text).map((x, i) => [h, pv, i, x.fromNodeId, x.at, x.raw, x.target, x.status, x.targetNodeId]);
     const cl = covenantChecklist(tree, tree.text).map((c) => [h, pv, c.family, c.status, JSON.stringify(c.sectionPaths), JSON.stringify(c.parts), JSON.stringify(c.needsInputs), c.note]);
     if (DRY) { console.log(`would write ${s.source.sourceId} nodes=${nodes.length} xrefs=${xr.length} checklist=${cl.length}`); continue; }
     await insertRows(ex, "kf_tree_nodes", ["textSha256","parserVersion","nodeId","parentId","kind","label","path","sectionNumber","title","level","start","headingEnd","end","depth","status","role","issues"], nodes, 100);
-    await insertRows(ex, "kf_tree_xrefs", ["textSha256","parserVersion","ord","fromNodeId","at","raw","target","status","targetNodeId"], xr);
+    await insertRows(ex, "kf_tree_xref_spans", XCOLS, xr);
     await insertRows(ex, "kf_tree_checklist", ["textSha256","parserVersion","family","status","sectionPaths","parts","needsInputs","note"], cl);
     const k = [h, pv];
     const w = `"textSha256"=$1 AND "parserVersion"=$2`;
-    const [cn, cx, cc] = [await count(ex, "kf_tree_nodes", w, k), await count(ex, "kf_tree_xrefs", w, k), await count(ex, "kf_tree_checklist", w, k)];
+    const [cn, cx, cc] = [await count(ex, "kf_tree_nodes", w, k), await count(ex, "kf_tree_xref_spans", w, k), await count(ex, "kf_tree_checklist", w, k)];
     if (cn !== nodes.length || cx !== xr.length || cc !== cl.length) {
       tally.mismatch++;
       console.log(`COUNT MISMATCH ${s.source.sourceId} nodes ${cn}/${nodes.length} xrefs ${cx}/${xr.length} checklist ${cc}/${cl.length} — not marking done`);
@@ -133,8 +110,8 @@ async function trees(ex: Ex) {
   if (!DRY) console.log("verify:", JSON.stringify((await ex.execute(
     `SELECT count(*)::int parses, sum("nodeCount")::int nodes, sum("xrefCount")::int xrefs, sum("checklistCount")::int checklist,
        (SELECT count(*)::int FROM kf_tree_nodes WHERE "parserVersion"=$1) nodes_rows,
-       (SELECT count(*)::int FROM kf_tree_xrefs WHERE "parserVersion"=$1) xref_rows,
-       (SELECT count(*)::int FROM kf_tree_xrefs WHERE "parserVersion"=$1 AND status='RESOLVED') xref_resolved,
+       (SELECT count(*)::int FROM kf_tree_xref_spans WHERE "parserVersion"=$1) xref_rows,
+       (SELECT count(*)::int FROM kf_tree_xref_spans WHERE "parserVersion"=$1 AND status='RESOLVED') xref_resolved,
        (SELECT count(*)::int FROM kf_tree_checklist WHERE "parserVersion"=$1) checklist_rows
      FROM kf_tree_parses WHERE "parserVersion"=$1`, [pv]))[0]));
 }
@@ -150,28 +127,34 @@ async function findings(ex: Ex) {
   const label = arg("rules-label") ?? "unknown";
   const snapSha = sha(readFileSync(snapPath));
   const runId = sha([commit, label, report.rulesetVersion ?? "", tree, snapSha].join("|")).slice(0, 32);
-  const ords = new Map<string, number>();
+  // Content key: findingSha = sha256(class|key|family|sectionRef|excerpt); occurrence counts exact duplicates
+  // within (run, source) so reordering the findings file does not change keys.
+  const occ = new Map<string, number>();
   const rows = lines.map((f) => {
-    const o = ords.get(f.sourceId) ?? 0; ords.set(f.sourceId, o + 1);
-    return [runId, f.sourceId, o, textSha.get(f.sourceId) ?? null, f.split, f.class, f.key ?? null, f.family ?? null, f.sectionRef ?? null, f.excerpt ?? null, f.message ?? null];
+    const fs = sha([f.class, f.key ?? "", f.family ?? "", f.sectionRef ?? "", f.excerpt ?? ""].join("|"));
+    const ok = `${f.sourceId}|${fs}`, o = occ.get(ok) ?? 0; occ.set(ok, o + 1);
+    return [runId, f.sourceId, fs, o, textSha.get(f.sourceId) ?? null, f.split, f.class, f.key ?? null, f.family ?? null, f.sectionRef ?? null, f.excerpt ?? null, f.message ?? null];
   });
   console.log(`runId=${runId} commit=${commit.slice(0, 8)} rules=${label} tree=${tree} findings=${rows.length} dry=${DRY}`);
   if (DRY) return;
   // Findings first, run row last (completion marker).
-  await insertRows(ex, "kf_scoreboard_findings", ["runId","sourceId","ord","textSha256","split","class","key","family","sectionRef","excerpt","message"], rows, 150);
-  const n = await count(ex, "kf_scoreboard_findings", `"runId"=$1`, [runId]);
+  await insertRows(ex, "kf_scoreboard_finding_items", ["runId","sourceId","findingSha","occurrence","textSha256","split","class","key","family","sectionRef","excerpt","message"], rows, 150);
+  const n = await count(ex, "kf_scoreboard_finding_items", `"runId"=$1`, [runId]);
   if (n !== rows.length) throw new Error(`findings count mismatch ${n}/${rows.length}; run row not written`);
   await insertRows(ex, "kf_scoreboard_runs", ["runId","gitCommit","rulesLabel","rulesetVersion","tree","snapshotSha256","totals","findingCount"],
     [[runId, commit, label, report.rulesetVersion ?? null, tree, snapSha, JSON.stringify(report.totals ?? report.splits ?? {}), rows.length]]);
   console.log("verify:", JSON.stringify((await ex.execute(
-    `SELECT r."findingCount", (SELECT count(*)::int FROM kf_scoreboard_findings f WHERE f."runId"=r."runId") stored,
-       (SELECT json_object_agg(class, c) FROM (SELECT class, count(*)::int c FROM kf_scoreboard_findings WHERE "runId"=$1 AND split='HELDOUT' GROUP BY class) q) heldout
+    `SELECT r."findingCount", (SELECT count(*)::int FROM kf_scoreboard_finding_items f WHERE f."runId"=r."runId") stored,
+       (SELECT json_object_agg(class, c) FROM (SELECT class, count(*)::int c FROM kf_scoreboard_finding_items WHERE "runId"=$1 AND split='HELDOUT' GROUP BY class) q) heldout
      FROM kf_scoreboard_runs r WHERE r."runId"=$1`, [runId]))[0]));
 }
 
 async function main() {
   const ex = await createNeonHttpsExecutor(process.env.DATABASE_URL!);
-  if (!DRY) for (const d of DDL) await ex.execute(d);
+  // No DDL: tables come from prisma/migrations/20261014220000_section_tree_knowledge.
+  const missing = (await ex.execute(`SELECT t FROM unnest($1::text[]) t WHERE to_regclass(t) IS NULL`,
+    [["kf_tree_parses","kf_tree_nodes","kf_tree_xref_spans","kf_tree_checklist","kf_scoreboard_runs","kf_scoreboard_finding_items"]])).map((r) => r.t);
+  if (missing.length) throw new Error(`missing tables ${missing.join(",")}: apply migration 20261014220000_section_tree_knowledge`);
   if (cmd === "trees") await trees(ex);
   else if (cmd === "findings") await findings(ex);
   else throw new Error("usage: persist-knowledge.ts trees|findings ...");

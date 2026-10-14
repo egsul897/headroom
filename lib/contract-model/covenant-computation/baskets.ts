@@ -31,6 +31,7 @@ const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKin
   BUILDER_AVAILABLE_AMOUNT: "BUILDER_SUM_COMPONENTS",
   UNLIMITED: "UNLIMITED_SUBJECT_TO_GATE",
   UNLIMITED_BY_PURPOSE: "UNLIMITED_SUBJECT_TO_GATE",
+  CONDITIONS_LIMITED: "OTHER_SOURCE_STATED",
   RECLASS: "REALLOCATION_TRANSFER",
 };
 
@@ -83,6 +84,8 @@ export function evaluateBasket(
                 ? evalUnlimited(pkg, clause, metrics)
                 : category === "UNLIMITED_BY_PURPOSE"
                   ? purposeUnlimited(clause)
+                  : category === "CONDITIONS_LIMITED"
+                    ? conditionsLimited(clause)
                   : category === "RECLASS"
                     ? {
                         ...capShell("NEEDS_INPUT", "NONE", null, null, ["source basket unused", "reclassification election"], null),
@@ -96,8 +99,12 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   const text = norm(operativeText);
   // Learned rules win over the generic engine heuristics — they are the
   // factory's lessons. Hand-written per-case branches must not be added here.
+  const ul = unlimitedCapacityMatch(text);
+  // "in an unlimited amount if, after giving effect thereto, [ratio test]" is a ratio permission with its condition.
+  if (ul.kind === "CONDITIONAL") return "RATIO_BASED";
   const hinted = applyCategoryHints(text, rules);
-  if (hinted) return hinted.category;
+  // A learned hint may not grant UNLIMITED unless the text is an unconditional grant.
+  if (hinted && !(hinted.category === "UNLIMITED" && ul.kind !== "UNCONDITIONAL")) return hinted.category;
   const numeric = hasNumeric(text);
   const closed = hasClosedCap(text);
   if (/\breclassif/i.test(text) && !closed) return "RECLASS";
@@ -122,9 +129,11 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   if (/^\([^)]{1,8}\)\s+\$\s*[\d,]+(?:\.\d+)?(?:\s+million)?(?:\s+and)?\s*$/i.test(text)) return "FIXED_DOLLAR";
   // Holder votes, original-issue fractions, equity-control tests, and schedule
   // disclosure floors are numbers, not capacity caps.
-  if (isNonCapacityNumber(text)) return "UNLIMITED_BY_PURPOSE";
+  // Owner rule: never unlimited by default. Without explicit unlimited language (handled above) a clause with no
+  // capacity number is CONDITIONS_LIMITED (computed as NEEDS_INPUT), not unlimited.
+  if (isNonCapacityNumber(text)) return "CONDITIONS_LIMITED";
   if (numeric) return "UNKNOWN";
-  return "UNLIMITED_BY_PURPOSE";
+  return "CONDITIONS_LIMITED";
 }
 
 function isNonCapacityNumber(text: string): boolean {
@@ -155,12 +164,35 @@ function isNonCapacityNumber(text: string): boolean {
   });
 }
 
-/** "including, without limitation" is an idiom. It does not grant unlimited capacity. */
-function isCapacityUnlimited(text: string): boolean {
-  if (/\bunlimited\b/i.test(text)) return true;
-  const stripped = text.replace(/\bincluding,?\s+without\s+limitation\b/gi, "");
-  return /\bwithout\s+limitation\b/i.test(stripped);
+/**
+ * Explicit unlimited CAPACITY only. Keyword hits are not enough: "unlimited liability company", "including
+ * (without limitation)", "without limitation of the foregoing" and "including but without limitation" are idioms,
+ * not capacity grants. Only amount phrasing counts.
+ */
+export const UNLIMITED_CAPACITY_PHRASE =
+  /\bin\s+(?:an?\s+)?unlimited\s+(?:aggregate\s+)?(?:principal\s+)?amounts?\b|\bunlimited\s+in\s+(?:aggregate\s+)?amount\b|\bwithout\s+limit(?:ation)?\s+as\s+to\s+(?:the\s+)?(?:aggregate\s+)?(?:principal\s+)?amount\b|\bwithout\s+(?:any\s+)?(?:dollar|monetary|numerical)\s+(?:limit|cap)\b/i;
+const RATIO_CONDITION = /\b(?:ratio|coverage|leverage)\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b|\btimes\b/i;
+/** Unlimited phrasing gated by a condition ("in an unlimited amount if, after giving effect thereto, [ratio]"). */
+const UNLIMITED_CONDITION = /^[^.;]{0,40}?\b(?:if|so\s+long\s+as|provided\s+that|subject\s+to|to\s+the\s+extent|after\s+giving\s+(?:pro\s+forma\s+)?effect)\b/i;
+/** Negated unlimited ("nothing herein shall permit ... in an unlimited amount", "shall not ... unlimited"). */
+const UNLIMITED_NEGATION = /\b(?:nothing\s+(?:herein|in\s+this\s+\w+|contained\s+herein)[^.;]{0,160}?\b(?:shall|will|may)\s+(?:be\s+(?:deemed|construed)\s+to\s+)?(?:permit|allow|authorize)|(?:shall|will|may)\s+not\b|\bno\b)[^.;]{0,160}$/i;
+
+export function unlimitedCapacityMatch(text: string): { kind: "NONE" | "UNCONDITIONAL" | "CONDITIONAL" | "NEGATED" } {
+  const m = UNLIMITED_CAPACITY_PHRASE.exec(text);
+  if (!m) return { kind: "NONE" };
+  const before = text.slice(Math.max(0, m.index - 240), m.index);
+  if (UNLIMITED_NEGATION.test(before)) return { kind: "NEGATED" };
+  // Only a financial-test condition turns the grant into a ratio permission; "so long as no Default exists" does not.
+  const after = text.slice(m.index + m[0].length);
+  if (UNLIMITED_CONDITION.test(after) && RATIO_CONDITION.test(after)) return { kind: "CONDITIONAL" };
+  return { kind: "UNCONDITIONAL" };
 }
+
+/** True only for an unconditional, non-negated capacity grant. */
+export function isCapacityUnlimited(text: string): boolean {
+  return unlimitedCapacityMatch(text).kind === "UNCONDITIONAL";
+}
+
 
 function hasNumeric(text: string): boolean {
   return /\$\s*[\d,]+|\d+(?:\.\d+)?\s*%|\d+(?:\.\d+)?\s+to\s+\d+(?:\.\d+)?/.test(text);
@@ -533,12 +565,26 @@ function evalPercentOfMetric(
 function purposeUnlimited(
   clause: BasketClause,
 ): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
+  // A learned-rule hint alone is not explicit text: only "unlimited"/"without limitation" keeps an UNLIMITED kind.
+  if (!isCapacityUnlimited(norm(clause.operativeText))) return conditionsLimited(clause);
   return {
     ...capShell("NEEDS_INPUT", "UNLIMITED", null, null, [], null),
     note:
       clause.role === "CONDITION"
         ? "No numeric cap. This condition does not grant a dollar capacity."
         : "No numeric cap. The permission is limited to the purpose stated in the clause. No dollar capacity was inferred.",
+  };
+}
+
+function conditionsLimited(
+  clause: BasketClause,
+): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
+  return {
+    ...capShell("NEEDS_INPUT", "NONE", null, null, ["no cap stated in clause"], null),
+    note:
+      clause.role === "CONDITION"
+        ? "No numeric cap. This condition does not grant a dollar capacity. Not treated as unlimited."
+        : "No numeric cap and no explicit unlimited language. Limited by the clause's conditions; never unlimited by default.",
   };
 }
 
