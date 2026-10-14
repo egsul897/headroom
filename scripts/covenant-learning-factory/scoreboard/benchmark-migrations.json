@@ -1,0 +1,5 @@
+{
+  "schema": "clf-scoreboard-benchmark-migrations/v1",
+  "description": "Append-only. Each record authorizes a frozen-HELDOUT change: {id, date, change: HELDOUT_TO_DEV|DROP_HELDOUT|SOURCE_HASH_CHANGE|ISSUER_CHANGE, sourceIds, reason, approver}.",
+  "migrations": []
+}
