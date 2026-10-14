@@ -7,10 +7,25 @@ import type { NeonHttpsExecutor } from "../store/neon-transport";
 import type { CandidateRow, PrecedentSourceRow } from "./build-package";
 import type { PrecedentCandidate, PrecedentCondition, PrecedentDefinition } from "./self-check";
 
+export type SweepPhase = "sources" | "proposals" | "finalize";
+
+/** Durable sweep checkpoint — survives mid-epoch kills. */
 export interface SweepCursor {
   afterSourceId: string;
   epoch: number;
   updatedAt: string;
+  phase: SweepPhase;
+  /** True once every knowledge_source for this epoch has been processed. */
+  sourcesComplete: boolean;
+  /** Next candidate index to evaluate in the proposals phase. */
+  candidateIndex: number;
+  candidatesTotal: number;
+  acceptedCount: number;
+  rejectedCount: number;
+  /** Ruleset version being built via vN.partial.jsonl. */
+  nextRulesetVersion: number;
+  epochRunId: string;
+  status: string;
 }
 
 const BATCH_KEY = "clf-sweep";
@@ -18,6 +33,33 @@ const STAGE = "sources";
 
 function asString(v: unknown): string {
   return typeof v === "string" ? v : v == null ? "" : String(v);
+}
+
+function asNumber(v: unknown, fallback = 0): number {
+  return typeof v === "number" && Number.isFinite(v) ? v : fallback;
+}
+
+function asPhase(v: unknown): SweepPhase {
+  if (v === "proposals" || v === "finalize" || v === "sources") return v;
+  return "sources";
+}
+
+function defaultCursor(partial?: Partial<SweepCursor>): SweepCursor {
+  return {
+    afterSourceId: "",
+    epoch: 1,
+    updatedAt: new Date().toISOString(),
+    phase: "sources",
+    sourcesComplete: false,
+    candidateIndex: 0,
+    candidatesTotal: 0,
+    acceptedCount: 0,
+    rejectedCount: 0,
+    nextRulesetVersion: 1,
+    epochRunId: "",
+    status: "IN_PROGRESS",
+    ...partial,
+  };
 }
 
 function familyFromJson(familiesJson: unknown): string | null {
@@ -41,7 +83,7 @@ function familyFromJson(familiesJson: unknown): string | null {
 export async function loadSweepCursor(executor: NeonHttpsExecutor): Promise<SweepCursor | null> {
   try {
     const rows = await executor.execute(
-      `SELECT cursor, "countsJson", "updatedAt"
+      `SELECT cursor, status, "countsJson", "updatedAt"
        FROM kf_precedent_import_checkpoints
        WHERE "batchKey" = $1 AND stage = $2
        LIMIT 1`,
@@ -50,12 +92,37 @@ export async function loadSweepCursor(executor: NeonHttpsExecutor): Promise<Swee
     const row = rows[0];
     if (!row) return null;
     const counts = (row.countsJson ?? row.countsjson) as Record<string, unknown> | null;
+    const status = asString(row.status) || "IN_PROGRESS";
     const afterSourceId = asString(row.cursor ?? counts?.afterSourceId ?? "");
-    return {
+    const epoch = asNumber(counts?.epoch, 1);
+    // Legacy checkpoints (pre-phase field): a non-empty cursor with EPOCH_COMPLETE,
+    // or cursor past the last source, must not strand resume at "0 sources".
+    let phase = asPhase(counts?.phase);
+    let sourcesComplete = Boolean(counts?.sourcesComplete);
+    if (status === "EPOCH_COMPLETE") {
+      phase = "finalize";
+      sourcesComplete = true;
+    } else if (status === "PROPOSALS" || counts?.phase === "proposals") {
+      phase = "proposals";
+      sourcesComplete = true;
+    } else if (!counts?.phase && afterSourceId && !sourcesComplete) {
+      // Ambiguous legacy: keep sources; runner promotes to proposals if fetch returns 0.
+      phase = "sources";
+    }
+    return defaultCursor({
       afterSourceId,
-      epoch: typeof counts?.epoch === "number" ? counts.epoch : 0,
+      epoch: epoch > 0 ? epoch : 1,
       updatedAt: asString(row.updatedAt ?? row.updatedat) || new Date().toISOString(),
-    };
+      phase,
+      sourcesComplete,
+      candidateIndex: asNumber(counts?.candidateIndex, 0),
+      candidatesTotal: asNumber(counts?.candidatesTotal, 0),
+      acceptedCount: asNumber(counts?.acceptedCount, 0),
+      rejectedCount: asNumber(counts?.rejectedCount, 0),
+      nextRulesetVersion: asNumber(counts?.nextRulesetVersion, epoch > 0 ? epoch : 1),
+      epochRunId: asString(counts?.epochRunId),
+      status,
+    });
   } catch {
     return null;
   }
@@ -63,6 +130,14 @@ export async function loadSweepCursor(executor: NeonHttpsExecutor): Promise<Swee
 
 export async function saveSweepCursor(executor: NeonHttpsExecutor, cursor: SweepCursor): Promise<void> {
   const now = new Date().toISOString();
+  const status =
+    cursor.status ||
+    (cursor.phase === "finalize"
+      ? "EPOCH_COMPLETE"
+      : cursor.phase === "proposals"
+        ? "PROPOSALS"
+        : "IN_PROGRESS");
+  const payload: SweepCursor = { ...cursor, updatedAt: now, status };
   await executor.execute(
     `INSERT INTO kf_precedent_import_checkpoints
        ("batchKey", stage, cursor, status, "countsJson", "updatedAt")
@@ -72,40 +147,29 @@ export async function saveSweepCursor(executor: NeonHttpsExecutor, cursor: Sweep
        status = EXCLUDED.status,
        "countsJson" = EXCLUDED."countsJson",
        "updatedAt" = EXCLUDED."updatedAt"`,
-    [
-      BATCH_KEY,
-      STAGE,
-      cursor.afterSourceId,
-      "IN_PROGRESS",
-      JSON.stringify({ afterSourceId: cursor.afterSourceId, epoch: cursor.epoch, updatedAt: now }),
-      new Date(now),
-    ],
+    [BATCH_KEY, STAGE, payload.afterSourceId, status, JSON.stringify(payload), new Date(now)],
   );
 }
 
 export async function markSweepEpochComplete(
   executor: NeonHttpsExecutor,
   epoch: number,
+  extras?: Partial<SweepCursor>,
 ): Promise<void> {
-  const now = new Date().toISOString();
-  await executor.execute(
-    `INSERT INTO kf_precedent_import_checkpoints
-       ("batchKey", stage, cursor, status, "countsJson", "updatedAt")
-     VALUES ($1, $2, $3, $4, $5::jsonb, $6)
-     ON CONFLICT ("batchKey", stage) DO UPDATE SET
-       cursor = EXCLUDED.cursor,
-       status = EXCLUDED.status,
-       "countsJson" = EXCLUDED."countsJson",
-       "updatedAt" = EXCLUDED."updatedAt"`,
-    [
-      BATCH_KEY,
-      STAGE,
-      "",
-      "EPOCH_COMPLETE",
-      JSON.stringify({ afterSourceId: "", epoch, updatedAt: now }),
-      new Date(now),
-    ],
-  );
+  await saveSweepCursor(executor, defaultCursor({
+    afterSourceId: "",
+    epoch,
+    phase: "finalize",
+    sourcesComplete: true,
+    candidateIndex: 0,
+    status: "EPOCH_COMPLETE",
+    ...extras,
+  }));
+}
+
+/** Build a fresh in-memory cursor (also used by tests). */
+export function makeSweepCursor(partial?: Partial<SweepCursor>): SweepCursor {
+  return defaultCursor(partial);
 }
 
 export async function fetchKnowledgeSources(

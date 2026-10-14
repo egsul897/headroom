@@ -2,7 +2,7 @@
  * Offline tests for executable learned-rules + clf:sweep (fake HTTPS client).
  */
 
-import { mkdtempSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -14,6 +14,7 @@ import {
   loadLatestLearnedRules,
   writeLearnedRules,
 } from "@/lib/covenant-learning-factory/learned-rules/load";
+import { loadPartialAccepts, partialJsonlPath } from "@/lib/covenant-learning-factory/learned-rules/partial";
 import {
   evaluateReplayGate,
   measureReplaySource,
@@ -36,7 +37,30 @@ Section 4.09 Limitation on Indebtedness.
 The Issuer shall not Incur any Indebtedness except Permitted Debt.
 `;
 
-function fakeExecutor(): NeonHttpsExecutor {
+const MISSED_RP_DOC = `
+Article IX Miscellaneous.
+The Borrower may make distributions to the parent under the builder basket for Restricted Payments not to exceed $5,000,000 in any fiscal year when no Event of Default exists.
+`;
+const MISSED_RP_EXCERPT =
+  "distributions to the parent under the builder basket for Restricted Payments not to exceed $5,000,000";
+
+interface FakeNeonState {
+  checkpoint: Record<string, unknown> | null;
+  proposals: Array<Record<string, unknown>>;
+  evaluations: Array<Record<string, unknown>>;
+}
+
+function fakeExecutor(opts?: {
+  state?: FakeNeonState;
+  /** Use documents the regional extractor misses so DISCOVERY_GAP → ACCEPT path fires. */
+  missable?: boolean;
+}): NeonHttpsExecutor & { state: FakeNeonState } {
+  const state: FakeNeonState = opts?.state ?? {
+    checkpoint: null,
+    proposals: [],
+    evaluations: [],
+  };
+  const missable = Boolean(opts?.missable);
   const sources = [
     {
       sourceId: "src-alpha",
@@ -57,20 +81,30 @@ function fakeExecutor(): NeonHttpsExecutor {
       originalBytesHash: "hash-beta",
     },
   ];
-  const writes: string[] = [];
-  return {
+  const executor = {
+    state,
     async execute(sql: string, params: unknown[] = []) {
-      writes.push(sql.slice(0, 80));
       if (/FROM knowledge_sources/i.test(sql)) {
         const after = String(params[0] ?? "");
         const limit = Number(params[1] ?? 10);
         return sources.filter((s) => s.sourceId > after).slice(0, limit) as unknown as Record<string, unknown>[];
       }
       if (/FROM document_byte_objects/i.test(sql)) {
-        return [{ text: SAMPLE_TEXT }] as unknown as Record<string, unknown>[];
+        return [{ text: missable ? MISSED_RP_DOC : SAMPLE_TEXT }] as unknown as Record<string, unknown>[];
       }
       if (/FROM kf_precedent_covenant_candidates/i.test(sql)) {
         const sourceId = String(params[0]);
+        if (missable) {
+          return [
+            {
+              candidateId: `${sourceId}-rp`,
+              sourceId,
+              familiesJson: ["RESTRICTED_PAYMENTS"],
+              excerpt: MISSED_RP_EXCERPT,
+              payloadJson: { sectionRef: "Article IX" },
+            },
+          ] as unknown as Record<string, unknown>[];
+        }
         return [
           {
             candidateId: `${sourceId}-c1`,
@@ -102,12 +136,43 @@ function fakeExecutor(): NeonHttpsExecutor {
         return [] as Record<string, unknown>[];
       }
       if (/FROM kf_precedent_import_checkpoints/i.test(sql)) {
-        return [] as Record<string, unknown>[];
+        return state.checkpoint
+          ? [
+              {
+                cursor: state.checkpoint.afterSourceId ?? "",
+                status: state.checkpoint.status ?? "IN_PROGRESS",
+                countsJson: state.checkpoint,
+                updatedAt: state.checkpoint.updatedAt ?? new Date().toISOString(),
+              },
+            ]
+          : [];
       }
-      // writes
+      if (/INSERT INTO kf_precedent_import_checkpoints/i.test(sql)) {
+        const counts = typeof params[4] === "string" ? JSON.parse(params[4] as string) : params[4];
+        state.checkpoint = {
+          ...(counts as Record<string, unknown>),
+          afterSourceId: params[2],
+          status: params[3],
+        };
+        return [];
+      }
+      if (/INSERT INTO learning_improvement_proposals/i.test(sql)) {
+        state.proposals.push({
+          proposalId: params[1],
+          state: params[9],
+          autoApply: params[7],
+          evidenceJson: params[8],
+        });
+        return [];
+      }
+      if (/INSERT INTO learning_evaluation_outcomes/i.test(sql)) {
+        state.evaluations.push({ evaluationId: params[1], notes: params[14] });
+        return [];
+      }
       return [] as Record<string, unknown>[];
     },
   };
+  return executor;
 }
 
 describe("learned-rules apply + synthesize", () => {
@@ -391,6 +456,111 @@ describe("clf:sweep end-to-end (fake HTTPS)", () => {
         rules: loadLatestLearnedRules(dir),
       });
       expect(clauses.length).toBeGreaterThan(0);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("crash mid-epoch persists accepts; resume continues from candidate index (not 0 sources)", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "clf-crash-"));
+    writeLearnedRules(emptyRuleSet(0), dir);
+    const neon = fakeExecutor({ missable: true });
+    const goldenChecks = [{ name: "uncertified", run: () => true }];
+    try {
+      await expect(
+        runCovenantLearningSweep({
+          executor: neon,
+          batchSize: 10,
+          maxSources: 2,
+          maxEpochs: 1,
+          resume: false,
+          dryRun: false,
+          rulesDir: dir,
+          codeSha: "crashsha",
+          now: () => "2026-10-14T00:00:00.000Z",
+          goldenChecks,
+          crashAfterAccepts: 1,
+        }),
+      ).rejects.toThrow(/simulated crash/);
+
+      // Immediate durable writes survived the kill.
+      expect(existsSync(partialJsonlPath(1, dir))).toBe(true);
+      const partial = loadPartialAccepts(1, dir);
+      expect(partial.length).toBeGreaterThanOrEqual(1);
+      expect(neon.state.proposals.some((p) => p.state === "ACCEPTED")).toBe(true);
+      expect(
+        neon.state.evaluations.some((e) => String(e.evaluationId).startsWith("eval:accept:")),
+      ).toBe(true);
+      expect(neon.state.checkpoint?.phase).toBe("proposals");
+      expect(Number(neon.state.checkpoint?.candidateIndex)).toBeGreaterThan(0);
+      // Only v0.json finalized so far — accepts live in partial.
+      expect(existsSync(join(dir, "v1.json"))).toBe(false);
+
+      // Simulate the live bug: source cursor past the end.
+      neon.state.checkpoint = {
+        ...neon.state.checkpoint,
+        afterSourceId: "src-beta",
+        phase: "proposals",
+        sourcesComplete: true,
+        status: "PROPOSALS",
+      };
+
+      const resumed = await runCovenantLearningSweep({
+        executor: neon,
+        batchSize: 10,
+        maxSources: 2,
+        maxEpochs: 1,
+        resume: true,
+        dryRun: false,
+        rulesDir: dir,
+        codeSha: "crashsha",
+        now: () => "2026-10-14T00:01:00.000Z",
+        goldenChecks,
+      });
+
+      // Must not strand at 0 sources.
+      expect(resumed.epochs.some((e) => e.sourcesProcessed > 0 || e.proposalsAccepted > 0)).toBe(true);
+      expect(loadLatestLearnedRules(dir).rulesetVersion).toBeGreaterThanOrEqual(1);
+      expect(loadLatestLearnedRules(dir).rules.some((r) => r.state === "ACCEPTED")).toBe(true);
+      // Partial cleared after finalize.
+      expect(loadPartialAccepts(1, dir)).toHaveLength(0);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it("completed source cursor with no phase promotes to proposals instead of idle", async () => {
+    const dir = mkdtempSync(join(tmpdir(), "clf-cursor-"));
+    writeLearnedRules(emptyRuleSet(0), dir);
+    const neon = fakeExecutor({ missable: true });
+    // Legacy checkpoint: last source id, IN_PROGRESS, no phase — the live failure mode.
+    neon.state.checkpoint = {
+      afterSourceId: "src-beta",
+      epoch: 1,
+      phase: "sources",
+      sourcesComplete: false,
+      candidateIndex: 0,
+      status: "IN_PROGRESS",
+      nextRulesetVersion: 1,
+      epochRunId: "",
+      updatedAt: "2026-10-14T00:00:00.000Z",
+    };
+    try {
+      const result = await runCovenantLearningSweep({
+        executor: neon,
+        batchSize: 10,
+        maxSources: 2,
+        maxEpochs: 1,
+        resume: true,
+        dryRun: false,
+        rulesDir: dir,
+        codeSha: "cursor",
+        now: () => "2026-10-14T00:02:00.000Z",
+        goldenChecks: [{ name: "uncertified", run: () => true }],
+      });
+      // Must rebuild sources (not idle at 0) despite cursor past last sourceId.
+      expect(result.totalSources).toBeGreaterThan(0);
+      expect(result.epochs[0]?.sourcesProcessed ?? 0).toBeGreaterThan(0);
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
