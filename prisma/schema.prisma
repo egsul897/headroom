@@ -4615,6 +4615,8 @@ model CustomerAgreementRun {
   companyId       String
   documentId      String
   sourceId        String
+  /// sha256(companyId|documentId|textSha256|parserVersion|pipelineVersion): one run per re-analysis key.
+  runKey          String?  @unique
   textSha256      String?
   parserVersion   String
   pipelineVersion String
