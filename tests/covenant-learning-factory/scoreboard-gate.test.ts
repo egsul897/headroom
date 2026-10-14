@@ -18,9 +18,9 @@ const manifest: DevManifest = { description: "test", sourceIds: ["fixture:a"] };
 
 function s(sourceId: string, cg: number, dg: number, us = 0): SourceScore {
   const counts = { ...emptyCounts(), COVERAGE_GAP: cg, DISCOVERY_GAP: dg, UNSUPPORTED_SEMANTICS: us };
-  return { sourceId, split: splitFor(sourceId, manifest), counts, total: cg + dg + us };
+  return { sourceId, split: splitFor(sourceId, manifest), counts, total: cg + dg + us, inputSha256: `in-${sourceId}` };
 }
-const rep = (xs: SourceScore[]) => aggregate(xs, { mode: "snapshot", rulesetVersion: 0 });
+const rep = (xs: SourceScore[]) => aggregate(xs, { mode: "snapshot", rulesetVersion: 0, rulesetSha256: "t" });
 
 describe("clf scoreboard gate", () => {
   const base = rep([s("fixture:a", 3, 1), s("edgar:x", 2, 5), s("edgar:y", 0, 4, 1)]);
