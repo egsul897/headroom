@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "01-audit-counterexample-reproduction",
+  "purpose": "Mission \u00a71: reproduce the final audit's silent-omission examples against the FROZEN detector before changing anything, and freeze them as immutable regression fixtures.",
+  "fixtureFile": "tests/contract-model/semantic-accountability/audit-counterexamples.ts",
+  "fixtureWordingRule": "FROZEN. No fixture text may be softened, lengthened, re-punctuated or given extra vocabulary to make detection easier.",
+  "harness": "scripts/source-coverage-reproduce-audit.ts - drives the real runSemanticInventory + reconcileInventoryWithComposition + rollupAgreementSemanticStatus with a scripted StageCaller; zero network calls.",
+  "runAgainstSha": "1957105c58be77465745566167f1a05708d4d3b5 (the frozen detector under repair)",
+  "result": "6 of 6 counterexamples are SILENT: INVENTORY_OK, zero uncovered segments, semanticallyComplete true, no reconciliation reason. Material source semantics dropped with no signal in every case.",
+  "perFixture": [
+    {
+      "id": "A",
+      "title": "material springing guarantee + all-assets lien grant",
+      "inventoryStatus": "INVENTORY_OK",
+      "uninventoriedSegments": 0,
+      "uninventoriedValues": [],
+      "semanticallyComplete": true,
+      "detectedAll": false
+    },
+    {
+      "id": "B",
+      "title": "29-character absolute debt prohibition",
+      "inventoryStatus": "INVENTORY_OK",
+      "uninventoriedSegments": 0,
+      "uninventoriedValues": [],
+      "semanticallyComplete": true,
+      "detectedAll": false
+    },
+    {
+      "id": "C",
+      "title": "four 26-35 character Lien carve-outs",
+      "inventoryStatus": "INVENTORY_OK",
+      "uninventoriedSegments": 0,
+      "uninventoriedValues": [],
+      "semanticallyComplete": true,
+      "detectedAll": false
+    },
+    {
+      "id": "D",
+      "title": "cure period (DAYS) dropped",
+      "inventoryStatus": "INVENTORY_OK",
+      "uninventoriedSegments": 0,
+      "uninventoriedValues": [
+        "operative:DAYS:30 days"
+      ],
+      "semanticallyComplete": true,
+      "detectedAll": false
+    },
+    {
+      "id": "E",
+      "title": "maturity date (DATE) dropped",
+      "inventoryStatus": "INVENTORY_OK",
+      "uninventoriedSegments": 0,
+      "uninventoriedValues": [
+        "operative:DATE:March 31, 2030"
+      ],
+      "semanticallyComplete": true,
+      "detectedAll": false
+    },
+    {
+      "id": "F",
+      "title": "$75M cap inside a dependency-expanded definition",
+      "inventoryStatus": "INVENTORY_OK",
+      "uninventoriedSegments": 0,
+      "uninventoriedValues": [
+        "xref-0:MONEY:$75,000,000"
+      ],
+      "semanticallyComplete": true,
+      "detectedAll": false
+    }
+  ],
+  "note": "fixture D was adjusted ONCE, before any implementation, so that it isolates the value-gate hole the audit demonstrated (an uncovered DAYS value that blocks nothing) rather than being caught incidentally by the text rule. The adjustment made the fixture HARDER for the old detector, not easier - it moved D from detected to silent. No fixture has been touched since.",
+  "silentCount": 6,
+  "totalFixtures": 6
+}

@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "34-rt7-child-descent-positive-evidence",
+  "mission": "RT-7 ARCHITECTURAL REMEDIATION - child descent must not depend on value-scanner completeness",
+  "startingSha": "a2a0d31f8f8e8f6fd0e6df4d820cabc18c8086ca",
+  "frozenFinding": {
+    "artifact": "docs/source-coverage-repair/33-final-closure-audit.json",
+    "remainingBlocker": "RT-7",
+    "originalP3ScannerOutputs": {
+      "five million dollars": [],
+      "fifty percent (50%)": [
+        "50%"
+      ],
+      "fifty percent": [],
+      "one hundred and eighty days": [],
+      "one-half of the Net Proceeds": [],
+      "\u00a5500,000,000": [],
+      "CHF 2,000,000": [
+        "CHF 2,000,000"
+      ],
+      "2,500,000 (the \"Cap\")": [],
+      "a ratio of 4.5:1": [
+        "4.5:1"
+      ],
+      "3/31/2030": [],
+      "31 March 2030": [],
+      "one half of one percent": [],
+      "twenty-five basis points": [],
+      "thirty days": []
+    },
+    "scannerModified": false
+  },
+  "unsoundInference": {
+    "location": "source-coverage.ts, child-descent loop (pre-change lines 741-744): `if (introducesChildren && rebuilt[lastResidue]!.values.length === 0) { ... COVERED_BY_CHILD_DESCENT ... }`",
+    "statement": "'no recognised quantitative value' => 'no quantitative semantics' => 'safe to discharge through child descent'",
+    "whyInvalid": "the residue reaching this branch is UNACCOUNTED_SOURCE - the classifier itself already refused to dismiss it (content words, operator, adjunct or digits). The value scanner is a second, weaker detector; its silence on 'five million dollars' etc. (p3 probes above) is exactly what the branch then treated as proof of harmlessness. Absence of detection was used as negative proof.",
+    "confirmed": true
+  },
+  "firstExecutableFixture": {
+    "text": "The Borrower shall not make Restricted Payments in an aggregate amount exceeding five million dollars in any fiscal year other than (a) intercompany dividends (b) tax distributions.",
+    "inventoried": [
+      "(a) intercompany dividends",
+      "(b) tax distributions."
+    ],
+    "frame": "scripts/red-team-original/e2e2.ts V1, verbatim, quantitative slot replaced by the original p3 probe",
+    "before": {
+      "scan": [],
+      "childrenOwned": true,
+      "parent": "COVERED_BY_CHILD_DESCENT",
+      "unaccounted": 0,
+      "uninventoriedValues": 0,
+      "inventoryStatus": "INVENTORY_OK",
+      "semanticallyComplete": true,
+      "rollup": "SEMANTICALLY_COMPLETE",
+      "dangerousBehaviourReproduced": true
+    },
+    "after": {
+      "scan": [],
+      "parent": "UNACCOUNTED_SOURCE",
+      "unaccounted": 1,
+      "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+      "semanticallyComplete": false,
+      "rollup": "REVIEW_REQUIRED"
+    }
+  },
+  "positiveChapeauEvidenceAnalysis": {
+    "available": "PARTIAL",
+    "inspected": [
+      "segmentation relationship (parent = nearest preceding non-enumerated unit; unchanged)",
+      "parent/child boundaries (unchanged)",
+      "accepted inventory spans (a lead-in anchored by an item is COVERED_BY_INVENTORY and never reaches descent)",
+      "introducing-fragment test (residue must run up to the children; unchanged)",
+      "surrounding inventory (identical in the chapeau and the V1 frame: all siblings inventoried, lead-in not)",
+      "independent-proposition test (both 'The Borrower may make the following Investments:' and the V1 lead-in carry a modal + verb; no structural difference)",
+      "coordination split (unchanged; the V1 frame is a single conjunct)",
+      "semantic ownership (artifact 32, unchanged)",
+      "the colon terminator (positive evidence of INTRODUCTION, not of emptiness - a colon-terminated cap is trivially the same defect)"
+    ],
+    "conclusion": "with current metadata the layer cannot distinguish a genuinely empty content-bearing chapeau from a substantive lead-in whose semantics are scanner-invisible. The ONE positive proof it possesses is the existing canary #2 predicate isPureClauseIntroducer: every content word is a subordinating connective and the fragment carries no object (no value, digit, reference noun or quotation). That is a positive identification of the whole fragment as a connective, not an absence test."
+  },
+  "conservativeOptionTaken": true,
+  "newChildDescentRule": "A parent residue is discharged COVERED_BY_CHILD_DESCENT only when ALL of: (1) every child unit is fully accounted (no UNACCOUNTED_SOURCE span); (2) every child unit carries at least one semantically OWNED span (COVERED_BY_INVENTORY or ACCOUNTED_BY_EXTERNAL_UNIT - artifact 32, unchanged); (3) the residue is the final coordination fragment of the parent and runs up to the children (canary #4, unchanged); (4) the residue is POSITIVELY a bare subordinating connective per isPureClauseIntroducer (canary #2 predicate, reused, not extended). The former test `values.length === 0` is deleted: the scanner participates only as positive evidence inside (4) (a value makes the fragment not bare). Any content-bearing residue stays UNACCOUNTED_SOURCE with a reason naming the owned children and stating that absence of a recognised value is not proof.",
+  "phraseOrValueSpecificLogic": false,
+  "vocabularyAdded": false,
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts"
+  ],
+  "quantitativeTsChanged": false,
+  "schemaIrReconciliationPromptChanged": false,
+  "rt7ClassResults": {
+    "frame": "V1 amount slot 'exceeding <probe>' or period slot 'within <probe>' with the two V1 children inventoried",
+    "rows": [
+      {
+        "probe": "five million dollars",
+        "scan": [],
+        "before": "SILENT",
+        "after": "UNACCOUNTED_SOURCE / gap / complete=false / REVIEW_REQUIRED"
+      },
+      {
+        "probe": "fifty percent (50%)",
+        "scan": [
+          "50%"
+        ],
+        "before": "surfaced (value)",
+        "after": "surfaced"
+      },
+      {
+        "probe": "fifty percent",
+        "scan": [],
+        "before": "SILENT",
+        "after": "surfaced"
+      },
+      {
+        "probe": "one-half of the Net Proceeds",
+        "scan": [],
+        "before": "SILENT",
+        "after": "surfaced"
+      },
+      {
+        "probe": "\u00a5500,000,000",
+        "scan": [],
+        "before": "SILENT",
+        "after": "surfaced"
+      },
+      {
+        "probe": "CHF 2,000,000",
+        "scan": [
+          "CHF 2,000,000"
+        ],
+        "before": "surfaced (V1 remediation)",
+        "after": "surfaced"
+      },
+      {
+        "probe": "2,500,000 (the \"Cap\")",
+        "scan": [],
+        "before": "SILENT",
+        "after": "surfaced"
+      },
+      {
+        "probe": "one half of one percent",
+        "scan": [],
+        "before": "SILENT",
+        "after": "surfaced"
+      },
+      {
+        "probe": "twenty-five basis points",
+        "scan": [],
+        "before": "SILENT",
+        "after": "surfaced"
+      },
+      {
+        "probe": "$2,000,000 (V2 control)",
+        "scan": [
+          "$2,000,000"
+        ],
+        "before": "surfaced",
+        "after": "surfaced"
+      },
+      {
+        "probe": "one hundred and eighty days",
+        "scan": [],
+        "before": "surfaced (coordination split on 'and')",
+        "after": "surfaced"
+      },
+      {
+        "probe": "thirty days",
+        "scan": [],
+        "before": "SILENT",
+        "after": "surfaced"
+      },
+      {
+        "probe": "3/31/2030",
+        "scan": [],
+        "before": "SILENT",
+        "after": "surfaced"
+      },
+      {
+        "probe": "31 March 2030",
+        "scan": [],
+        "before": "SILENT",
+        "after": "surfaced"
+      },
+      {
+        "probe": "a ratio of 4.5:1",
+        "scan": [
+          "4.5:1"
+        ],
+        "before": "surfaced (value)",
+        "after": "surfaced"
+      }
+    ],
+    "silentBefore": 10,
+    "silentAfter": 0,
+    "harness": "scripts/source-coverage-rt7-descent-reproduce.ts"
+  },
+  "legitimateDescentRegression": {
+    "canary4_controlA_pureChapeau": "The Borrower may make the following Investments: -> now UNACCOUNTED_SOURCE (was COVERED_BY_CHILD_DESCENT). Review cost: PLAUSIBLE_REVIEW - the permission and its object are the lead-in's own content.",
+    "canary4_controlB_mixedParent": "may take only the following actions: -> now UNACCOUNTED_SOURCE (was discharged). Review cost: PLAUSIBLE_REVIEW - a permission plus the scope restriction 'only'.",
+    "canary4_attack_thirdConjunct": "shall not incur any Indebtedness other than -> now UNACCOUNTED_SOURCE (was discharged). TRUE_SAFETY_IMPROVEMENT - a prohibition was being discharged on scanner silence.",
+    "descentOwnershipHarnessControl": "same pure chapeau -> UNACCOUNTED_SOURCE",
+    "stillDescending": "bare subordinating connectives ahead of owned children: corpus I16/I18/I27/I44 'provided that ' (4 spans, unchanged); test controls 'except' and 'unless' before owned children",
+    "noLongerDescending": "corpus I1 'the sum of ', I3 'The Applicable Margin for any day shall be ', I4 ' plus ', I25 'The Borrower will furnish to the Administrative Agent:\\n'",
+    "descentSpansAcrossCorpus": {
+      "before": 8,
+      "after": 4
+    }
+  },
+  "priorClosures": {
+    "v1Chf": "e2e2.ts unmodified: V1 surfaced, MONEY/CHF, gap, complete=false - unchanged",
+    "rt3Direct": "p1.ts unmodified: 24/24 UNACCOUNTED_SOURCE - unchanged",
+    "rt3InSitu": "descent-ownership harness: parent UNACCOUNTED_SOURCE, childDescent=0, unaccounted=1 - unchanged",
+    "noiseOnlyChildren": "SEMANTIC_OWNERSHIP untouched; glue-only child still denies descent (test B, harness CONTROL)",
+    "canaries2to12": "all eleven exit 0; UNACCOUNTED counts identical to before except canary #4 (2 -> 3: the attack's third conjunct now surfaces; its 3 descent spans -> 0)",
+    "preservedHarnesses": "e2e, e2e2, e2e3, e2e4, p1, p2, p3, p4: outputs byte-identical to the pre-change runs"
+  },
+  "suites": {
+    "sourceCoverage": "129/129 (125 before; 6 tests rewritten to pin the conservative rule, 4 RT-7 tests added)",
+    "adversarial": "3/3, not expanded",
+    "corpus": {
+      "before": "12 failed | 280 passed (292)",
+      "after": "18 failed | 278 passed (296)",
+      "delta": "+4 tests; +6 failures = three scenarios x (Pass A + Pass B/C)"
+    }
+  },
+  "newlySurfacedGaps": [
+    {
+      "scenario": "I4 capped addback",
+      "excerpt": "plus",
+      "classification": "TRUE_SAFETY_IMPROVEMENT",
+      "reasoning": "an arithmetic operator lead-in was being discharged by descent through its owned children and the scenario reached INVENTORY_OK - the RT-3 class reaching trusted completeness in situ. The remediation stops it; the ground-truth fix (extend a component excerpt to carry the operator) is out of scope."
+    },
+    {
+      "scenario": "I1 dense definition",
+      "excerpt": "the sum of",
+      "classification": "TRUE_SAFETY_IMPROVEMENT",
+      "reasoning": "same class as I4: the aggregation operator introducing twenty inventoried components was discharged on scanner silence. I1 was already red on 'plus,'; the corpus-wide assertion now lists both."
+    },
+    {
+      "scenario": "I3 pricing grid",
+      "excerpt": "The Applicable Margin for any day shall be",
+      "classification": "PLAUSIBLE_REVIEW",
+      "reasoning": "the definiendum binding - WHAT the grid values are values of - lives only in the lead-in. Ground truth anchors the two grid rows; a reviewer would want the binding represented. Not silent, one short gap."
+    },
+    {
+      "scenario": "I25 reporting deadline",
+      "excerpt": "The Borrower will furnish to the Administrative Agent:",
+      "classification": "PLAUSIBLE_REVIEW",
+      "reasoning": "the obligation and its recipient are stated only in the chapeau; the children are the deliverables. A safe false review rather than a discharge."
+    }
+  ],
+  "i1_i23_i26_i27": "I1 gains 'the sum of' beside 'plus,'; I23 'Solely', I26 notice obligation, I27 'Notwithstanding' unchanged and still red; none repaired",
+  "groundTruthChanged": false,
+  "qualityGates": {
+    "typescript": "6 pre-existing errors in tests/foundation-audit/*; 0 in semantic-accountability",
+    "lint": "1 pre-existing error in tests/foundation-audit; changed files lint clean"
+  },
+  "spend": {
+    "paidModelCalls": 0,
+    "vercelDeploys": 0,
+    "providerBalanceReadOnly": "GET /v1/credits total_used $150.494171 - unchanged"
+  },
+  "rt7BlockerClosed": true,
+  "childDescentRequiresStrongerStructuralSignal": {
+    "forClosure": false,
+    "forPositiveEvidenceDescentOfContentBearingChapeaux": true,
+    "minimumUpstreamSignal": "an inventory item span (or an explicit parent item / parentRef from Pass A) that anchors the lead-in itself. Until then content-bearing chapeaux are review gaps, absorbed in production by the existing targeted gap re-inventory call."
+  }
+}

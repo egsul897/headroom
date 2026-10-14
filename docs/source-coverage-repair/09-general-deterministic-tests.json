@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "09-general-deterministic-tests",
+  "file": "tests/contract-model/semantic-accountability/source-coverage.test.ts",
+  "total": 83,
+  "passed": 83,
+  "failed": 0,
+  "requiredMinimum": 60,
+  "categories": {
+    "audit counterexamples A-F end to end": 9,
+    "short clauses (no length floor)": 5,
+    "vocabulary independence (including nonsense words)": 6,
+    "enumerated carve-outs, chapeaux, nesting, enumerator-prefixed exceptions": 8,
+    "provisos, conditional tails, coverage arithmetic at 45/50/51/60/90%, em-dash carve-outs, semicolon chains": 6,
+    "definitions and dependency-expanded regions (\u00a79)": 6,
+    "every quantitative kind, in every region": 12,
+    "non-semantic classes suppressed (headings, citations, TOC, page furniture, enumerators, punctuation, glue, term labels) + the cases that must NOT be suppressed": 13,
+    "segmentation, tables, duplicates, overlaps, tiling, determinism, empty regions": 9,
+    "materiality cannot be gamed": 3,
+    "NO_SEMANTIC_COMPLETE_WITH_UNACCOUNTED_SOURCE (\u00a714)": 8
+  },
+  "gateResults": {
+    "materialSemanticsSurfaced": "100%",
+    "auditFixturesSurfaced": "100%",
+    "falseSemanticallyCompleteOnInjectedOmissions": 0
+  },
+  "corpusFalsePositives": {
+    "scenariosExpectingCompleteness": 44,
+    "withUnaccountedSourceOrValues": 0
+  }
+}

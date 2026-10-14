@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "06-value-accountability",
+  "kindsCovered": [
+    "MONEY",
+    "PERCENT",
+    "RATIO",
+    "DAYS",
+    "DATE",
+    "PERIOD",
+    "MULTIPLIER",
+    "NUMBER",
+    "OTHER"
+  ],
+  "v2Rule": "only MONEY/PERCENT/RATIO, and only in the region literally named 'operative'",
+  "v3Rule": "every kind the scanner recognises, in every region of the unit",
+  "anchorRule": "a value is accounted only when a CRITICAL/MATERIAL item span contains it; an INFORMATIONAL or REVIEW_UNCERTAIN item accounts for nothing",
+  "noiseInteraction": "a value inside deterministically non-semantic source (page furniture, a heading) is not reported; conversely a fragment carrying a value is NEVER dismissed as noise, so the suppression cannot swallow one",
+  "blocking": "any unaccounted value refuses semanticallyComplete on its own, with no unaccounted text required",
+  "knownLimitation": "the scanner's own recall bounds this rule: an amount written only in words ('five million dollars') is not a scanned value, so it is covered by TEXT accounting rather than value accounting. Text accounting has no vocabulary or length gate, so such a clause is still surfaced when unanchored - but it will not appear in uninventoriedValues."
+}

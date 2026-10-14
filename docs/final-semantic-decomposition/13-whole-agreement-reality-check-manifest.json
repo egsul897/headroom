@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "WHOLE_AGREEMENT_REALITY_CHECK_MANIFEST",
+  "requirement": "Select, source-first and before seeing any new compiler output, 12 diversified real regions from already-ingested packages (2 definition-heavy, 2 debt, 2 liens, 2 restricted payments/investments, 1 asset-sale/prepayment, 1 financial covenant, 1 reporting/affirmative, 1 cross-reference/shared-cap/condition-heavy). Not new GT creation - a zero-tuning behavioral check.",
+  "selectionMethod": "For every region, the real section HEADING (e.g. 'SECTION 6.01. Indebtedness') was located directly in the package's own already-extracted plain-text source via exact-string search, verified by inspecting the surrounding real body text (not a table-of-contents occurrence of the same heading - every package's own TOC lists the same headings near the start of the file at a much smaller character offset; the REAL body occurrence used here was confirmed by reading real substantive covenant language - lettered baskets, real cross-references, real numeric thresholds - immediately following it) BEFORE any compile call was made against it. No region was chosen, adjusted, or swapped after seeing any compiler output.",
+  "sourcePackages": ["DSGR 2022 Amended and Restated Credit Agreement (doc-a, tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility)", "DSGR 2025 Second Amended and Restated Credit Agreement (doc-d, same package, a separate, later real document instance)", "LSB 2023 ABL Credit Agreement (tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement) - a genuinely different real package/company than DSGR and than the frozen A1-A6/B1-B4 Superior holdout"],
+  "regions": [
+    { "id": "definitions-lsb", "family": "DEFINITIONS", "document": "LSB definitions-excerpt.txt (whole file, 8137 chars)", "sourceSectionRef": "1.01 (LSB excerpt)" },
+    { "id": "definitions-dsgr", "family": "DEFINITIONS", "document": "DSGR doc-a", "sourceSectionRef": "1.01", "charStart": 12620, "windowChars": 4000 },
+    { "id": "debt-dsgr", "family": "DEBT", "document": "DSGR doc-a", "sourceSectionRef": "6.01", "charStart": 436142, "windowChars": 4500 },
+    { "id": "debt-lsb", "family": "DEBT", "document": "LSB article-6-negative-covenants.txt (whole file, 16854 chars, opens at Section 6.01 Indebtedness)", "sourceSectionRef": "6.xx (LSB excerpt)" },
+    { "id": "liens-dsgr-a", "family": "LIENS", "document": "DSGR doc-a", "sourceSectionRef": "6.02", "charStart": 444932, "windowChars": 3500 },
+    { "id": "liens-dsgr-d", "family": "LIENS", "document": "DSGR doc-d (a separate real document from doc-a, for genuine document-instance diversity within one family)", "sourceSectionRef": "6.02", "charStart": 464193, "windowChars": 3500 },
+    { "id": "investments-dsgr", "family": "RESTRICTED_PAYMENTS_INVESTMENTS", "document": "DSGR doc-a", "sourceSectionRef": "6.04", "charStart": 455225, "windowChars": 4000 },
+    { "id": "restricted-payments-dsgr", "family": "RESTRICTED_PAYMENTS_INVESTMENTS", "document": "DSGR doc-a", "sourceSectionRef": "6.08", "charStart": 468878, "windowChars": 4000 },
+    { "id": "asset-sales-dsgr", "family": "ASSET_SALES_PREPAYMENT", "document": "DSGR doc-a", "sourceSectionRef": "6.05", "charStart": 463076, "windowChars": 3500 },
+    { "id": "financial-covenant-dsgr", "family": "FINANCIAL_COVENANT", "document": "DSGR doc-a", "sourceSectionRef": "6.12", "charStart": 476724, "windowChars": 3500 },
+    { "id": "reporting-dsgr", "family": "REPORTING_AFFIRMATIVE", "document": "DSGR doc-a", "sourceSectionRef": "5.01", "charStart": 404706, "windowChars": 3500 },
+    { "id": "cross-reference-dsgr", "family": "CROSS_REFERENCE_SHARED_CAP_CONDITION", "document": "DSGR doc-a", "sourceSectionRef": "6.10 (Restrictive Agreements - inherently cross-referential to the debt/lien/investment baskets it carves exceptions into)", "charStart": 474298, "windowChars": 2800 }
+  ],
+  "scriptCommitted": "scripts/final-semantic-decomposition-reality-check.ts",
+  "notGtBenchmarking": "No new ground-truth file was authored for these 12 regions - this manifest, committed BEFORE the script was run, is itself the pre-registration artifact the mission's own Section 21 method requires ('not new GT creation for benchmarking'). Scoring in 14 is against the mission's own stated gates (material semantic-component recall, composition->disposition coverage, 0 silent trusted omissions, per-family substantive capture) applied by direct inspection of the real compiled+verified output, not against a hand-authored answer key."
+}

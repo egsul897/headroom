@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "08-audit-regression-tests",
+  "file": "tests/contract-model/semantic-accountability/source-coverage.test.ts (Part 1)",
+  "fixtures": "tests/contract-model/semantic-accountability/audit-counterexamples.ts - wording FROZEN",
+  "method": "each counterexample is driven through the real runSemanticInventory -> reconcileInventoryWithComposition -> rollupAgreementSemanticStatus with a scripted StageCaller, exactly as the independent audit drove it",
+  "results": [
+    {
+      "id": "A",
+      "omitted": "a springing guarantee plus an all-assets first-lien grant",
+      "beforeRepair": "INVENTORY_OK / semanticallyComplete true / 0 signals",
+      "afterRepair": "UNACCOUNTED_SOURCE + INVENTORY_COVERAGE_GAP + semanticallyComplete false"
+    },
+    {
+      "id": "B",
+      "omitted": "a 29-character absolute debt prohibition",
+      "beforeRepair": "silent",
+      "afterRepair": "surfaced"
+    },
+    {
+      "id": "C",
+      "omitted": "four 26-35 character Lien carve-outs",
+      "beforeRepair": "silent",
+      "afterRepair": "all four surfaced"
+    },
+    {
+      "id": "D",
+      "omitted": "a 30-day cure period",
+      "beforeRepair": "silent (text below floor, DAYS outside the value gate)",
+      "afterRepair": "surfaced as text AND as an unaccounted value"
+    },
+    {
+      "id": "E",
+      "omitted": "a maturity date",
+      "beforeRepair": "silent (DATE outside the value gate)",
+      "afterRepair": "surfaced as text AND as an unaccounted value"
+    },
+    {
+      "id": "F",
+      "omitted": "a $75,000,000 cap, a no-Default condition and an equity pledge inside an expanded definition",
+      "beforeRepair": "silent (accounting scoped to the region named 'operative')",
+      "afterRepair": "surfaced as text AND as an unaccounted value"
+    }
+  ],
+  "silentBefore": 6,
+  "silentAfter": 0,
+  "additionalAssertions": [
+    "every counterexample carries an actionable reason string, never a bare status",
+    "the agreement rollup is never SEMANTICALLY_COMPLETE for any of them"
+  ]
+}

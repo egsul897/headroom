@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CLASSIFIER_GENERIC_TESTS",
+  "testFile": "tests/contract-model/final-phase3-closure-whitespace-tolerance.test.ts",
+  "fixtureConvention": "Wholly synthetic (Meridian Fabrication/Solaris Bank/Trust, matching the existing pre-unseen-classifier-remediation.test.ts's own convention) - zero Superior Industries text, real party names, or real section numbers anywhere in the fixture set.",
+  "results": {
+    "A1_normal_one_line": "PASS - AMENDED_AND_RESTATED_AGREEMENT",
+    "A2_newline_restated_credit": "PASS - AMENDED_AND_RESTATED_AGREEMENT despite the line-wrap",
+    "A3_newline_credit_agreement": "PASS - AMENDED_AND_RESTATED_AGREEMENT despite the line-wrap",
+    "A4_multiple_spaces": "PASS - AMENDED_AND_RESTATED_AGREEMENT despite extra spacing",
+    "A5_tab": "PASS - AMENDED_AND_RESTATED_AGREEMENT despite a tab",
+    "A6_crlf": "PASS - AMENDED_AND_RESTATED_AGREEMENT despite a CRLF",
+    "A7_line_wrapped_supplemental_indenture": "PASS - SUPPLEMENTAL_INDENTURE despite the line-wrap",
+    "A8_line_wrapped_security_agreement": "PASS - SECURITY_AGREEMENT despite the line-wrap",
+    "A9_line_wrapped_compliance_certificate": "PASS - COMPLIANCE_CERTIFICATE despite the line-wrap",
+    "A10_ordinary_amendment_referencing_line_wrapped_ar_target": "PASS - AMENDMENT, not misled by the referenced target's own line-wrapped type name",
+    "A11_base_credit_agreement_with_later_line_wrapped_toc_reference": "PASS - CREDIT_AGREEMENT, the earlier real caption beats a later, line-wrapped TOC/exhibit mention placed well outside the caption zone",
+    "A12_fused_ambiguous_caption": "PASS - DETERMINISTIC_CAPTION_AMBIGUOUS, confidence < 0.9 - a base-facility type (CREDIT_AGREEMENT) genuinely conflicting with a disjoint, comparably-prominent, line-wrapped type (GUARANTEE) within the caption zone/ambiguity-gap still fails safely rather than forcing a guess",
+    "A13_self_referential_tier1_dominates": "PASS - AMENDMENT via DETERMINISTIC_SELF_REFERENTIAL_TITLE, not misled by the later-referenced base agreement's own line-wrapped type",
+    "A14_earliest_evidence_ordering_preserved": "PASS - the earlier match still wins even when both candidate matches are individually line-wrapped",
+    "A15_no_package_specific_strings_in_production_diff": "PASS (after one self-correction - see note below) - document-classifier.ts contains no Superior/issuer-specific literal text"
+  },
+  "selfCorrectionNote": "A15 initially FAILED on first run: the remediation's own explanatory doc-comment (added in this session) named 'Superior Industries' and quoted its real caption text as a rationale example - a genuine violation of the mission's own Section 4 'do NOT add Superior-specific text' rule, caught by this session's own required test, not missed. Corrected immediately: the comment now describes the defect class generically ('a real, observed extraction artifact') with no issuer name or quoted real-document text. A12 and A11 also required one round of fixture correction after their first run exposed real bugs in MY OWN synthetic test design (not in document-classifier.ts) - A12's original fixture used two non-base-referenceable types (GUARANTEE vs SECURITY_AGREEMENT), which the ambiguity guard is architecturally designed to never gate (by design - see BASE_REFERENCEABLE_TYPES's own doc comment), so it never should have been expected to trigger; A11's original fixture placed its TOC reference within the 150-char ambiguity-gap window, a genuine boundary case this whitespace fix legitimately newly exposes (a previously-invisible-due-to-line-wrap TOC reference can now trigger the SAME guard a same-line reference already would have) - both fixtures were corrected to test the intended scenario precisely, with zero change to document-classifier.ts itself for either.",
+  "finalResult": "15/15 PASS after fixture corrections. Zero changes needed to the production fix itself post-hoc (only the explanatory comment, per the A15 self-correction above).",
+  "regressionCheck": {
+    "preExistingTestFilesRun": 21,
+    "preExistingTestsRun": 316,
+    "preExistingTestsPassed": 316,
+    "note": "Every pre-existing package-graph/classifier/relationship/operative-state/coverage/context-retrieval/tenant-isolation test file in the repository re-run unmodified against the fixed classifier - zero regressions."
+  }
+}

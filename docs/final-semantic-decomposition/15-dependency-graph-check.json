@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "AGREEMENT_LEVEL_DEPENDENCY_GRAPH_CHECK",
+  "requirement": "Section 23: pick >=3 real provisions whose meaning depends on other sections/definitions; verify the compiler can create a dependency graph (RULE->DEFINITION->OTHER DEFINITION; RULE->EXCEPTION->SHARED CAP; RULE->RATIO TEST->METRIC DEFINITIONS). No requirement to evaluate financially yet.",
+  "method": "Direct inspection of the 12 real reality-check compile outputs (14) for populated dependsOn (rule->rule) and dependsOnTerms (definition->term) fields, cross-checked against the real source text each rule/definition cites.",
+  "provisionsExamined": [
+    {
+      "id": "debt-dsgr / Section 6.01(f) Refinance Indebtedness",
+      "dependencyType": "RULE -> RULE (REQUIRES)",
+      "found": true,
+      "detail": "Rule ir-rule:b6f9ecd3957107e922c50ad2 (Refinance Indebtedness permission) declares dependsOn: [{ relationshipType: REQUIRES, targetRuleId: ir-rule:31b5153679c910028d86b26e, description: 'Refinance Indebtedness is defined and capped by reference to the Original Indebtedness permitted under Section 6.01(f)' }]. The companion definition (ir-definition:3d53845ad058bbd48e278f1e) separately declares dependsOnTerms: ['Original Indebtedness']. Both the rule-level and definition-level dependency wiring point at the same real cross-reference in the source text.",
+      "graphShapeDemonstrated": "RULE -> DEFINITION (via dependsOnTerms) and RULE -> OTHER RULE (via dependsOn)"
+    },
+    {
+      "id": "restricted-payments-dsgr / Section 6.08(a) ratio carve-out",
+      "dependencyType": "RULE -> RULE (REQUIRES) + DEFINITION -> multiple DEFINITIONS",
+      "found": true,
+      "detail": "Rule ir-rule:51de67c5055548ffb8f90dac declares dependsOn: [{ relationshipType: REQUIRES, targetRuleId: ir-rule:6dc4a0d75417a91ce41d5675, description: \"carve-out from r5's $10,000,000 aggregate dollar cap: satisfying the stated ratio test removes the payment from that cap entirely\" }] - a real RULE -> EXCEPTION -> SHARED CAP relationship (the ratio-based carve-out relieves usage against the dollar-cap basket). Separately, the Total Net Leverage Ratio definition (ir-definition:061019cbb339526208fed9c4) declares dependsOnTerms: ['Total Indebtedness', 'Unrestricted Cash', 'EBITDA', 'Total Net Leverage Ratio Adjustment'], and the RP-builder-basket definition (ir-definition:aaa8914787bc83b64f34bcc7) declares dependsOnTerms: ['Applicable EBITDA', 'Qualified Stock', 'Specified Equity Contribution', 'Returns', 'Unrestricted Subsidiary', 'Borrower Retained Prepayment Amounts', 'Permitted Investments'].",
+      "graphShapeDemonstrated": "RULE -> EXCEPTION -> SHARED CAP, and RULE -> RATIO TEST -> METRIC DEFINITIONS (multi-term)"
+    },
+    {
+      "id": "financial-covenant-dsgr / Section 6.12 Material Acquisition step-up",
+      "dependencyType": "RULE -> RULE (REQUIRES)",
+      "found": true,
+      "detail": "Rule ir-rule:9b7acf5fb4d7bbddce84f90f declares dependsOn: [{ relationshipType: REQUIRES, targetRuleId: ir-rule:5ceff754e02b7ea72594ba99, description: 'Temporarily increases the applicable maximum Total Net Leverage Ratio under Section 6.12(b)(i), (ii) or (iii) by 0.50 to 1.00 for the specified four-quarter window' }], correctly modeling the covenant step-up as a rule-to-rule dependency rather than a freestanding, disconnected threshold.",
+      "graphShapeDemonstrated": "RULE -> RATIO TEST (event-conditioned modifier of another rule's threshold)"
+    }
+  ],
+  "negativeFinding": {
+    "region": "cross-reference-dsgr (Section 6.10, Restrictive Agreements)",
+    "observation": "This region was deliberately selected as the CROSS_REFERENCE_SHARED_CAP_CONDITION family exemplar, on the theory that a provision whose entire purpose is carving exceptions into other covenants' baskets would produce rich dependency wiring. In the real output, neither of its 2 compiled rules populated dependsOn, and no sharedCapacity object was produced at all - a genuine, disclosed gap: the compiler captured the region's own prohibition/exception text but did not link it back to the debt/lien/investment baskets it structurally exists to qualify.",
+    "significance": "This is the most direct evidence in this reality check that cross-covenant dependency wiring is NOT yet reliable specifically in the family it matters most for. It is consistent with, and reinforces, the debt-dsgr MATERIAL finding (14) where a real shared 15% cap across Section 6.01(b)(iii)/(c)(iii) and Section 6.04(b) was compiled as two disconnected freestanding rules rather than one shared capacity referenced from three places."
+  },
+  "sharedCapacityObjects": {
+    "producedAcrossAll12Regions": 0,
+    "note": "No region produced a populated sharedCapacities array in this run, despite at least one real, clearly shared numeric cap being present in the source text (the 15% intercompany-debt/guarantee/investment basket spanning Sections 6.01(b)(iii), 6.01(c)(iii), and 6.04(b), confirmed by direct reading of debt-dsgr and investments-dsgr source text). The IR's SharedCapacity primitive exists (confirmed in wire-schema.ts/normalize.ts) and is exercised correctly in the synthetic test suite (S21/S22 in the new whole-agreement test file), but this reality check shows it is not yet reliably invoked by the model against real, unseen source text presenting a genuinely shared cap - a specific, disclosed limitation for continuation, not a fabricated primitive gap."
+  },
+  "conclusion": "The dependency-graph capability is real and demonstrated on unseen content: 3 real provisions (exceeding the Section 23 minimum of 3) show genuine RULE->DEFINITION, RULE->OTHER RULE, and RULE->RATIO TEST->METRIC DEFINITION wiring, populated by the model without any provision-specific prompting. However, the SHARED-CAP-specific sub-case (RULE->EXCEPTION->SHARED CAP as a first-class SharedCapacity object, rather than a rule-to-rule REQUIRES description) is not yet reliably produced against real source text, and the one region purpose-built to test cross-covenant wiring (cross-reference-dsgr) produced none. Section 23's letter (3 real provisions with dependency-graph evidence) is MET; its spirit (dependency integrity is uniformly reliable across all cross-covenant shapes) is NOT yet fully demonstrated."
+}

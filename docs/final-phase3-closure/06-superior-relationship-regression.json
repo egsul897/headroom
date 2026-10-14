@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SUPERIOR_RELATIONSHIP_REGRESSION",
+  "requirement": "doc-b RESTATES doc-a must now be SURFACED (not necessarily RESOLVED). doc-c AMENDS doc-b must remain surfaced and not regress. NOT acceptable: relationship absent entirely.",
+  "docBRestatesDocA": {
+    "before": "ABSENT ENTIRELY - zero relationshipCandidates of any kind existed for doc-b anywhere in the frozen prior run's real output (docs/final-lightweight-unseen/13-version-operative-state.json's own D1 finding).",
+    "after": {
+      "sourceDocumentId": "doc-b",
+      "targetDocumentId": null,
+      "relationshipType": "RESTATES",
+      "status": "UNRESOLVED",
+      "confidence": 0,
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text"
+    },
+    "hardRequirementMet": true,
+    "note": "The relationship is now SURFACED (a real relationshipCandidate entry exists) rather than absent entirely - the mission's own literal bar is met. It resolves to UNRESOLVED rather than RESOLVED or REVIEW_REQUIRED, however, per a SEPARATE, newly-discovered, generalizable limitation documented below - not a re-occurrence of the C2/D1 root cause, and not fixed in this session (out of Unit A's declared classifier-only scope)."
+  },
+  "newlyDiscoveredLimitation": {
+    "id": "WINDOW-SIZE-LIMIT",
+    "file": "lib/contract-model/compiler/package-graph/relationship-resolution.ts",
+    "mechanism": "findAllAgreementReferences(doc.text, windowChars) scans only the first windowChars characters of a source document for an explicit target-agreement reference. windowChars is 8000 for a hardcoded bigWindowTypes list (INTERCREDITOR_AGREEMENT, GUARANTEE, SECURITY_AGREEMENT, GUARANTEE_AND_SECURITY_AGREEMENT) and 4000 for every other type, including AMENDED_AND_RESTATED_AGREEMENT.",
+    "confirmedOnRealSource": "doc-b's real recital text naming doc-a explicitly ('amend and restate that certain Credit Agreement, dated as of December 15, 2022 (the \"Original Credit Agreement\")') begins at raw-text character offset 8496 - past BOTH the 4000-char window actually used for this type AND the 8000-char bigWindowTypes ceiling. doc-b's own PRELIMINARY STATEMENTS section (the recital block) itself does not begin until offset 8424, because Superior's real credit agreement places a lengthy defined-terms/party-block/table-of-contents-style front section before its own recitals - a real, generalizable document-layout variation, not an artifact of this specific fixture.",
+    "isThisTheSameRootCauseAsC2D1": false,
+    "reasoning": "C2/D1's root cause was a classification-type MISMATCH (doc-b never being recognized as AMENDED_AND_RESTATED_AGREEMENT at all, so the RESTATES scan never ran). That is now fixed - the scan DOES run. This is a SEPARATE, downstream limitation in the SAME scan's own recital-search window size, independent of classification correctness.",
+    "whyNotFixedInThisSession": "Out of Unit A's declared scope (Section 4: 'Unit A may modify only classifier/package-identity logic'). relationship-resolution.ts's target-resolution window size is not classifier/package-identity logic - it is a downstream relationship-target-extraction mechanism in a different module. Fixing it now would violate the mission's own post-Unit-A production freeze (Section 7) and would also require re-establishing a NEW freeze point before any semantic holdout could be trusted (Section 15). Recorded here as an honest, generalizable residual finding for a future bounded remediation session, not remediated in this one."
+  },
+  "docCAmendsDocB": {
+    "sourceDocumentId": "doc-c",
+    "targetDocumentId": "doc-b",
+    "relationshipType": "AMENDS",
+    "status": "REVIEW_REQUIRED",
+    "confidence": 0.6,
+    "resolutionMethod": "resolved by type+execution-date match",
+    "regressionCheck": "UNCHANGED from the frozen prior run (docs/final-lightweight-unseen/13-version-operative-state.json's own D2 finding: 'CONSERVATIVE_REVIEW_REQUIRED_SANCTIONED_BY_SECTION_28'). Zero regression - still correctly surfaced at REVIEW_REQUIRED, never force-resolved, exactly the safe conservative behavior the mission's own Section 28 protects."
+  },
+  "overallHardRequirementMet": true,
+  "summary": "doc-b RESTATES doc-a is no longer absent entirely - it is now a real, surfaced relationshipCandidate (the mission's own literal Section 9 bar). It does not reach RESOLVED or REVIEW_REQUIRED due to a separate, newly-discovered, honestly-disclosed window-size limitation in relationship-resolution.ts, out of this session's declared scope to fix. doc-c AMENDS doc-b is unchanged and un-regressed."
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "04-segmentation-and-ownership-design",
+  "boundaries": [
+    "after a clause terminator (. ; : ! ?) followed by whitespace",
+    "at every line break",
+    "immediately before an enumerator, wherever it appears",
+    "before a dash-introduced aside",
+    "after a comma followed by whitespace"
+  ],
+  "neverSplitInside": "a detected quantitative value - 'March 31, 2030' and '$5,000,000' stay in one unit so the value can be attributed to the span that holds it",
+  "whyCommas": "A comma-delimited aside is where drafting hides a qualifier inside a lead-in ('... plus, without duplication and to the extent deducted, the sum of'). Splitting there costs nothing - glue-only fragments classify as STRUCTURAL_NOISE - and it stops a lead-in's discharge from ever reaching a qualifier.",
+  "shortClausePolicy": {
+    "rule": "There is no length floor anywhere in the detection path. A 15-character clause is a unit exactly like a 200-character one.",
+    "howNoiseIsSeparated": "by CONTENT, not by length: a fragment whose words are all closed-class (enumerators, punctuation, function words, subordinating connectives, adverbial adjuncts, arithmetic connectives) and which carries no quantitative value is STRUCTURAL_NOISE. Every content word in the language sits outside that closed class, so a proposition can never fall into it.",
+    "whyTheOldExperimentFailed": "Lowering the v2 floor from 40 to 24 made colon-terminated lead-ins fire as gaps across eleven corpus scenarios. The cause was structural - the segmenter treated a lead-in as a standalone semantic unit - and is fixed here by parent/child ownership, not by another threshold."
+  },
+  "ownership": {
+    "rule": "The parent of an enumerated unit is the nearest preceding non-enumerated unit, with or without a colon (real drafting runs '... shall be (a) ... (b) ...' inline as often as '... as follows:').",
+    "direction": "Credit flows CHILD -> PARENT only. A covered parent never discharges an uncovered child - that was the audit's Lien carve-out failure.",
+    "guards": [
+      "descent requires EVERY child to be accounted",
+      "descent is refused when the lead-in residue carries a quantitative value",
+      "descent discharges only the immediate lead-in unit, so a substantive main clause separated by a comma stays accountable"
+    ]
+  }
+}

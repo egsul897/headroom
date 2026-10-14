@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "05-dependency-region-accountability",
+  "rule": "Mission \u00a79. A dependency-expanded region either (A) is owned by another semantic unit through an explicit recorded link, or (B) participates in this unit's source coverage in full. Unresolved ownership is UNACCOUNTED_SOURCE - never assumed from a region's kind.",
+  "linkContract": {
+    "regionId": "the region discharged",
+    "ownerCandidateRef": "the unit that inventories its semantics",
+    "ownerInventoryHash": "deterministic proof the owner exists - normally the owner's frozenContentHash",
+    "bothRequired": "a link missing either field discharges nothing"
+  },
+  "disclosure": "Every link that discharged a region is echoed in FrozenSemanticInventory.sourceCoverage.externallyAccountedRegions, so a reader can see what was delegated and to whom.",
+  "productionDefault": "OPTION B. The compiler supplies NO links today, so every expansion region participates in full and its uncovered text is surfaced. This is the conservative default and is the honest state of the wiring: the pipeline knows which candidate owns which section, but plumbing that through is orchestration work outside this mission's scope.",
+  "consequence": "A unit whose expansion regions are not inventoried will report INVENTORY_COVERAGE_GAP until either the model inventories them or the pipeline supplies ownership links. This is a deliberate increase in strictness, disclosed here rather than hidden.",
+  "testCoverage": [
+    "link present -> ACCOUNTED_BY_EXTERNAL_UNIT with the owner recorded",
+    "link missing -> UNACCOUNTED_SOURCE",
+    "link missing its hash -> discharges nothing",
+    "link naming another region -> discharges nothing",
+    "expansion inventoried by this unit -> discharged with no link at all"
+  ]
+}

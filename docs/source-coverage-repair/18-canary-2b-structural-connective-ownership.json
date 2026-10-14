@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "18-canary-2b-structural-connective-ownership",
+  "mission": "SINGLE CANARY #2B - fix only the structural ownership problem behind canary #2's 10 obvious false gaps. Do not put the connective words back into FUNCTION_WORDS. No other audit defect addressed.",
+  "startingSha": "45baa2390c46adda3761dc5842c7f9c1a27253ce",
+  "primaryPositiveFixture": "I5: \"...not to exceed $40,000,000; provided that no Default has occurred and is continuing; provided further that, if the Total Leverage Ratio exceeds 4.00 to 1.00, such amount shall not exceed $20,000,000.\" with MATERIAL items on the permission, the condition and the alternative",
+  "negativeFixture": "S9 (canary #2's safety control): \"The Borrower shall not make any Investment, except as provided in Section 6.02, at any time prior to the Maturity Date.\" with MATERIAL items on the two outer clauses only",
+  "rootStructuralCause": "Both fixtures have the IDENTICAL span shape - an UNACCOUNTED connective fragment immediately followed by a COVERED_BY_INVENTORY clause with only whitespace between - so adjacency, brevity and neighbouring coverage cannot separate them. What separates them is whether the fragment carries an object of its own. \", provided that\" contributes nothing but the attachment of the clause that follows it; \", except as provided in Section 6.02,\" carries a cross-reference that IS the content of the exception, so no amount of coverage of the following clause accounts for it.",
+  "ownershipRule": {
+    "disposition": "COVERED_BY_CONNECTIVE_OWNERSHIP (new, auditable, in the ACCOUNTED set)",
+    "allConditionsRequired": [
+      "the fragment has at least one content word and EVERY content word is a clause-introducing connective",
+      "the fragment carries no digit (a locator such as '6.02' is an object)",
+      "the fragment carries no reference noun (section/clause/paragraph/subsection/article/annex/exhibit/schedule/appendix)",
+      "the fragment carries no quoted term",
+      "the fragment carries no quantitative value",
+      "the very next span in the region is COVERED_BY_INVENTORY, with only whitespace between - so no independent clause and no clause terminator intervenes",
+      "that complement's coverage BEGINS where the connective ends, so the covered clause is the one the connective introduces",
+      "the complement is substantive in its own right (it has content words of its own)"
+    ],
+    "onUncertainty": "UNACCOUNTED_SOURCE - the fragment stays a gap",
+    "notKeyedTo": "no rule mentions I5, S9, Section 6.02, any section number, any corpus id, or the specific words 'provided'/'except' as special cases; the connective set is a generic class and membership alone discharges nothing",
+    "notwithstandingExcluded": "'notwithstanding' is deliberately NOT a clause-introducing connective. It is an OVERRIDE operator whose complement is the provision being disapplied, which lives elsewhere in the agreement; covering the text that follows it does not account for the override relationship. This is why I27 remains a review gap - by design, not by optimisation."
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts (new disposition, CLAUSE_INTRODUCING_CONNECTIVES, isPureClauseIntroducer, applyConnectiveOwnership, wired into the per-region pass)"
+  ],
+  "positiveResult": {
+    "before": "2 gaps: 'provided that', 'provided further that,'",
+    "after": "0 gaps; both COVERED_BY_CONNECTIVE_OWNERSHIP",
+    "inheritanceNotSuppression": "with the condition NOT covered, the whole clause is a gap again - proven by test"
+  },
+  "s9Result": {
+    "before": "UNACCOUNTED_SOURCE / INVENTORY_COVERAGE_GAP / semanticallyComplete false",
+    "after": "IDENTICAL - UNACCOUNTED_SOURCE / INVENTORY_COVERAGE_GAP / semanticallyComplete false; COVERED_BY_CONNECTIVE_OWNERSHIP count is 0 for this fixture"
+  },
+  "canary2GapResolution": {
+    "obviousFalseGapsBefore": 10,
+    "resolved": 10,
+    "remaining": 0,
+    "perGap": [
+      {
+        "scenario": "I5",
+        "excerpt": "provided that",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I5",
+        "excerpt": "provided further that,",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I9",
+        "excerpt": "provided that",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I12",
+        "excerpt": "provided that",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I17",
+        "excerpt": "provided that",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I20",
+        "excerpt": "provided that",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I30",
+        "excerpt": "provided that",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I31",
+        "excerpt": "provided that",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I31",
+        "excerpt": "except that,",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I32",
+        "excerpt": "provided that",
+        "result": "RESOLVED"
+      },
+      {
+        "scenario": "I27",
+        "excerpt": "Notwithstanding",
+        "result": "STILL A GAP - unchanged, by design (override operator, not a clause introducer)",
+        "previousClass": "PLAUSIBLE_REVIEW"
+      }
+    ]
+  },
+  "corpusImpact": {
+    "before": "237 / 257 (6 files)",
+    "after": "256 / 259 (6 files; +2 tests are the two canary #2B regression tests)",
+    "remainingFailures": [
+      {
+        "test": "Pass A corpus - I27 cure right",
+        "class": "EXPECTED_REVIEW",
+        "why": "the bare 'Notwithstanding' override operator remains UNACCOUNTED_SOURCE; the mission states leaving it as a review gap is acceptable and probably preferable"
+      },
+      {
+        "test": "Pass B/C corpus - I27 cure right",
+        "class": "EXPECTED_REVIEW",
+        "why": "same single gap, seen through reconciliation"
+      },
+      {
+        "test": "corpus-wide: no fully-inventoried scenario leaves unaccounted source",
+        "class": "EXPECTED_REVIEW",
+        "why": "the aggregate assertion over all 44 complete-expected scenarios, failing solely on I27"
+      }
+    ],
+    "newlyIntroducedFailures": 0,
+    "realRegressions": 0,
+    "unrelatedExistingFailures": 0
+  },
+  "qualityGates": {
+    "typescript": "6 pre-existing errors, 0 new",
+    "lint": "clean",
+    "sourceCoverageSuite": "87/87"
+  },
+  "paidCallsMade": 0,
+  "canary2bSolved": true
+}

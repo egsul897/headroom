@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "30-closure-remediation-v1",
+  "mission": "BOUNDED CLOSURE REMEDIATION V1 - CHF quantitative cap must block child descent",
+  "startingSha": "4466e06c6b0a64849f7911dbb5975c3fa4dff570",
+  "scenario": {
+    "id": "V1 (scripts/red-team-original/e2e2.ts, unmodified)",
+    "source": "The Borrower shall not make Restricted Payments in an aggregate amount exceeding CHF 2,000,000 in any fiscal year other than (a) intercompany dividends (b) tax distributions.",
+    "segmentation": ["...exceeding CHF 2,000,000 in any fiscal year other than ", "(a) intercompany dividends ", "(b) tax distributions."],
+    "inventorySpans": "two CRITICAL items on the children only",
+    "reproducedBefore": true,
+    "before": {
+      "valuesInLeadIn": [],
+      "childDescentDecision": "granted - 'introduces an enumerated list whose 2 child clause(s) are each accounted for; carries no independent conjunct and no quantitative value of its own'",
+      "coverage": "COVERED_BY_CHILD_DESCENT over the entire lead-in",
+      "inventoryStatus": "INVENTORY_OK", "unaccountedSource": 0, "uninventoriedValues": 0, "semanticallyComplete": true, "rollup": "SEMANTICALLY_COMPLETE"
+    }
+  },
+  "causalDifferential": {
+    "V2_USD": { "scan": "[MONEY '$2,000,000' unit USD]", "coverage": "UNACCOUNTED_SOURCE lead-in; unaccountedValues ['$2,000,000']", "result": "surfaced" },
+    "V1_CHF": { "scan": "[]", "coverage": "COVERED_BY_CHILD_DESCENT lead-in; unaccountedValues []", "result": "SILENT" },
+    "conclusion": "Segmentation, spans and the descent rule are byte-identical between the two. The only difference is whether the scanner returns a MONEY value, which is what the descent value guard consults. Replacing '$' with 'CHF ' flips the safety result. Root cause confirmed at the quantitative layer; child descent is not the defect and was not changed."
+  },
+  "rootCauseConfirmed": true,
+  "productionFilesChanged": ["lib/contract-model/compiler/semantic-accountability/quantitative.ts"],
+  "scannerChange": {
+    "what": "one additional MONEY PatternDef: /\\b[A-Z]{3}\\s?\\d[\\d,]*(?:\\.\\d+)?(?:\\s?(?:million|billion|thousand|mm|bn))?\\b/ (case-sensitive), normalize -> value via the existing parseMoney, unit = the captured three-letter code",
+    "architecture": "generalises the shape the existing symbol pattern already carried for exactly one hardcoded code (USD\\s?); the currency code lands in the existing `unit` field exactly as USD/GBP/EUR do - no schema change, no currency list, no FX, no normalisation across currencies",
+    "precedence": "placed LAST in PATTERNS so every more specific unit shape claims its span first ('LTV 65%' stays PERCENT); the pre-existing symbol/USD pattern keeps first claim ('USD 2,000,000' still unit USD via the original path)",
+    "chfSpecificLogic": false,
+    "chfLiteralInProduction": "appears only in the explanatory comment, never in code"
+  },
+  "falseMatchSafety": {
+    "uppercaseTokenNoAmount": "'the ABC Facility and the LTV Covenant' -> []",
+    "lowercase": "'chf 2,000,000' -> [] (a code is uppercase)",
+    "morSpecificUnitWins": "'LTV 65%' -> PERCENT only",
+    "disclosedResidualFalsePositive": "an uppercase three-letter token directly followed by a bare number that no other unit explains (e.g. 'LTV 65' with no %) is now MONEY with unit 'LTV'. This errs in the conservative direction - a value surfaces for review rather than vanishes - and is disclosed rather than hidden."
+  },
+  "after": {
+    "chfExtraction": "[MONEY 'CHF 2,000,000' value 2000000 unit CHF span 81-94]",
+    "coverage": "[UNACCOUNTED_SOURCE] the entire lead-in; COVERED_BY_CHILD_DESCENT count 0; unaccountedValues ['MONEY:CHF 2,000,000']",
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP", "unaccountedSource": 1, "uninventoriedValues": 1, "semanticallyComplete": false, "rollup": "REVIEW_REQUIRED",
+    "harness": "scripts/red-team-original/e2e2.ts run unmodified: 'surfaced | V1 CHF cap in lead-in | status=INVENTORY_COVERAGE_GAP unacc=1 vals=1 complete=false rollup=REVIEW_REQUIRED'"
+  },
+  "v2Control": "unchanged - surfaced, INVENTORY_COVERAGE_GAP, unacc=1 vals=1, complete=false; USD extraction untouched",
+  "rt7ProbesAfter": {
+    "changedIncidentally": ["'CHF 2,000,000' -> ['CHF 2,000,000']"],
+    "unchanged": ["five million dollars", "fifty percent", "one hundred and eighty days", "one-half of the Net Proceeds", "¥500,000,000", "2,500,000 (the \"Cap\")", "3/31/2030", "31 March 2030", "one half of one percent", "twenty-five basis points", "thirty days"],
+    "note": "exactly one of twelve probes changed - the one V1 depends on. No spelled-out, bare-number, date or symbol-currency support was added."
+  },
+  "rt3ArithmeticFragment": "'less the sum of clauses (a) and (b),' -> STRUCTURAL_NOISE (unchanged). FUNCTION_WORDS and arithmetic-connective handling untouched, as required.",
+  "canaries2to12": "all re-run from committed harnesses; every safety behaviour unchanged (bare numbers, numbered clauses, ALL-CAPS substantive text, modifiers, CJK, Cyrillic all still surface)",
+  "otherPreservedHarnesses": "e2e.ts S1-S10 all surfaced; e2e3 A/B and e2e4 unchanged; p4 controls unchanged - no false-positive regression",
+  "tests": {
+    "added": 2,
+    "names": ["closure remediation V1 - A. generic ISO-style currency-code amounts are MONEY; an uppercase token without an amount is not", "closure remediation V1 - B. exact historical V1: the CHF lead-in is no longer discharged by child descent and cannot complete"],
+    "note": "there is no standalone quantitative-scanner test file; scanner assertions live in the source-coverage suite, so both tests were added there",
+    "sourceCoverageSuite": "118/118 (116 before)",
+    "adversarialSuite": "3/3, 2400 cases, 0 dangerous false negatives, not expanded",
+    "corpus": { "before": "7 failed | 276 passed (283)", "after": "7 failed | 278 passed (285)", "delta": "+2 (the new tests), zero new failures; I23/I26/I27 unchanged" },
+    "newlySurfacedCorpusGaps": 0,
+    "groundTruthChanged": false
+  },
+  "qualityGates": { "typescript": "6 pre-existing errors in tests/foundation-audit/*; zero in semantic-accountability or quantitative", "lint": "1 pre-existing error; none in changed files" },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402, $150.49 / $150.00 - unchanged" },
+  "v1BlockerClosed": true,
+  "scopeDiscipline": "One original failure fixed at the layer the differential proved responsible. Child descent not touched. RT-3 not touched. Eleven of twelve RT-7 blind spots deliberately left as they were. No closure re-audit, no fuzz expansion, no paid validation, no Phase 4."
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "VERIFIER_FAILURE_INVESTIGATION",
+  "observedPattern": "13 semantic-review-invoked verification attempts in the frozen prior run, 13 VERIFICATION_FAILED, 0 fully verified candidates. Every one of the 13 logged $0.0000 real telemetry cost (tests/fixtures/unseen-packages/final-lightweight-unseen-sup-run/stage7-verification-results.json + the run's own log lines).",
+  "codeReadFindings": [
+    {
+      "file": "lib/contract-model/compiler/semantic-verification/verify.ts",
+      "finding": "determineStatus() returns VERIFICATION_FAILED exactly when semanticReviewInvoked && semanticReviewFailed - i.e. the reviewer call itself threw."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-verification/reviewer.ts",
+      "finding": "runAdversarialSemanticReview's own catch block DOES capture the real thrown error message (failureDetail: err instanceof Error ? err.message : String(err)) - but verifyCompiledCandidate's own returned SemanticVerificationResult NEVER includes failureDetail anywhere in its shape. This is a genuine, confirmed OBSERVABILITY GAP: the real error text existed in memory during the original run and was silently discarded before persistence to stage7-verification-results.json, making the ORIGINAL failures retroactively undiagnosable from artifacts alone."
+    },
+    {
+      "file": "lib/contract-model/analyzer/anthropic-analyzer.ts",
+      "finding": "runStructuredStage's own catch block sets calculatedCostUsd: null (mapped to $0.0000 by the run script's logCost helper) precisely when the thrown error occurred BEFORE `usage = message.usage` was reached in the try block - i.e. before any billable response was received. This confirms the original 13 failures happened during REQUEST CONSTRUCTION or IN-FLIGHT (network/timeout/rate-limit), not as a post-response schema-parse failure (which would show real, non-null token usage alongside the parse error)."
+    },
+    {
+      "file": "lib/contract-model/analyzer/telemetry.ts",
+      "finding": "withRetry() only retries a genuine HTTP 429 (isRateLimitError), up to 5 attempts with exponential backoff (base 2s: ~2s/4s/8s/16s + jitter, up to ~60s total). Any other error type (timeout, network error, non-429 4xx/5xx) propagates immediately on the FIRST attempt with no retry."
+    }
+  ],
+  "categoryConsidered": {
+    "ENVIRONMENTAL": "candidate",
+    "VALIDATION_HARNESS": "ruled out - the run script's own verify-stage code (scripts/final-lightweight-unseen-run.ts) is a thin, faithful orchestration wrapper around the real production verifyCompiledCandidate; no harness-specific bug was found in it.",
+    "PROVIDER_TRANSPORT": "candidate - most consistent with the evidence (see disposition below)",
+    "TOOL_SCHEMA": "ruled out - see 09-verifier-health-probe.json's own live evidence: the SAME wire schema (SubmitVerificationFindingsSchema) and the SAME zodOutputFormat/output_config mechanism successfully round-tripped through the SAME real provider TWICE in this session, once with a trivial synthetic fixture and once with the FULL real Superior payload reconstructed byte-for-byte (106,626-char context bundle, 42 items).",
+    "PROMPT_REQUEST": "ruled out for the same reason - the SAME buildVerifierSystemPrompt/buildUserContent construction succeeded on the real, full-size Superior payload.",
+    "PRODUCTION_VERIFIER": "ruled out - two independent live calls through the exact same production code path (runAdversarialSemanticReview -> getStageCaller() -> VERCEL_AI_GATEWAY/anthropic/claude-sonnet-5) both succeeded cleanly, with real findings and real telemetry, on both a trivial and a full-realistic-size payload.",
+    "OTHER": "not applicable - sufficient evidence to disposition below."
+  },
+  "disposition": "ENVIRONMENTAL / PROVIDER_TRANSPORT (transient) - not a PRODUCTION_VERIFIER code defect. The original 13/13 failure window immediately followed 15 large, real Stage 6 compilation calls in rapid succession within the same process (the run's own log shows verify calls beginning immediately after the last compile call, all within roughly a 20-minute window of sustained heavy real API traffic). Every one of the 13 failures shows the signature of a pre-response failure (null token usage, $0 cost) consistent with a network-level or rate-limit-style failure during a period of unusually dense real call volume - not a deterministic, payload-shape-dependent defect, since the SAME reconstructed real payload for the FIRST failing candidate (discovery-candidate:38b229b984193e98fa1586dc) was independently re-verified live in this session and succeeded cleanly."
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PERMANENT_FALSE_CREDIT_CONTROLS",
+  "requirement": "Section 25: Run 14/14 permanent false-credit controls; required: PASS.",
+  "testFilesRun": [
+    "tests/evaluation-v2/false-credit-prohibitions.test.ts (10 synthetic false-credit-refusal scenarios)",
+    "tests/evaluation-v2/dsgr-false-credit-gate.test.ts (the 14 previously-confirmed real DSGR false-credit cases, re-judged; includes the standing GATE test)"
+  ],
+  "result": "14/14 PASS - all real-world previously-confirmed false credits are rejected or flagged, none silently upheld; all 10 synthetic false-credit-refusal scenarios pass.",
+  "rawTestOutput": {
+    "falseCreditProhibitions": "10/10 passed (chapeau-vs-descendant-basket, sibling-basket-same-amount, section-number-only match, higher-materiality descendant with different subject, ratio-test-vs-nearby-basket-same-number, permission-vs-restriction-same-section, secured-vs-unsecured-debt permission, dividend-vs-investment permission, entity-scope mismatch, amended-vs-pre-amendment text)",
+    "dsgrFalseCreditGate": "4/4 passed, including the standing gate assertion 'GATE: every one of the 14 previously-confirmed false credits is rejected or flagged, none silently upheld' and 'does not blanket-reject: it re-judges each case on its own evidence'"
+  },
+  "productionChangeImpact": "This mission's sole production change (completeness-check.ts's recursive descent into nested UNSUPPORTED attemptedStructure) does not touch the false-credit evaluation path at all (a separate module, tests/evaluation-v2/*), so this result is an unaffected-but-reverified control, not a new capability."
+}

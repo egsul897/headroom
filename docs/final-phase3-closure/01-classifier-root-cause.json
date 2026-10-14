@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CLASSIFIER_ROOT_CAUSE",
+  "confirmedRootCause": {
+    "file": "lib/contract-model/compiler/package-graph/document-classifier.ts",
+    "line": 51,
+    "before": "{ type: \"AMENDED_AND_RESTATED_AGREEMENT\", patterns: [/amended and restated (credit agreement|indenture|loan agreement)/i, /(credit agreement|indenture),?\\s+as amended and restated/i] }",
+    "defect": "Literal single-space characters between semantically-separate words in a multi-word regex phrase, run against the RAW (never whitespace-normalized) document preamble text."
+  },
+  "syntheticReproduction": {
+    "pattern": "/amended and restated (credit agreement|indenture|loan agreement)/i",
+    "cases": {
+      "one-line \"AMENDED AND RESTATED CREDIT AGREEMENT\"": "MATCH",
+      "newline between RESTATED and CREDIT": "NO MATCH (bug)",
+      "newline between CREDIT and AGREEMENT": "NO MATCH (bug)",
+      "multiple spaces": "NO MATCH (bug)",
+      "tab": "NO MATCH (bug)",
+      "CRLF": "NO MATCH (bug)"
+    },
+    "conclusion": "The original production rule treats ordinary whitespace variation inconsistently - exactly one layout form (single ASCII space) works; every other real-world layout form (newline, multi-space, tab, CRLF) silently fails to match."
+  },
+  "confirmedOnRealSource": {
+    "file": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt",
+    "lines": "8-9",
+    "rawExtractedText": "AMENDED AND RESTATED\\nCREDIT AGREEMENT",
+    "note": "Confirmed via direct read of the real extracted text (cat -A showing a literal newline, not merely visual wrapping) - this is the SEC EDGAR HTML-to-text extraction's own rendering of the source PDF's visual two-line caption, not a synthetic or hypothetical case."
+  },
+  "cascadeToRelationshipResolution": {
+    "file": "lib/contract-model/compiler/package-graph/relationship-resolution.ts",
+    "gatingMechanism": "RELATIONSHIP_TYPES_BY_SOURCE_CLASSIFICATION[classification.type] - a lookup keyed strictly by the SOURCE document's own classification.type. Only AMENDED_AND_RESTATED_AGREEMENT maps to [\"RESTATES\"]; CREDIT_AGREEMENT has no entry.",
+    "effect": "Because doc-b's classification.type fell through to CREDIT_AGREEMENT (the C2 defect), the RESTATES-relationship scan for doc-b was never even attempted - not a second, independent defect, a direct single-root-cause cascade.",
+    "confirmedViaSourceRead": true
+  },
+  "rootCauseMaterialityAssessment": "Root cause does NOT materially differ from the prior session's own diagnosis in docs/final-lightweight-unseen/12-document-classification.json and 13-version-operative-state.json - both independently re-derived here from a fresh direct source read and a fresh synthetic reproduction, and both concur exactly. Proceeding to Unit A remediation per the mission's own Section 3."
+}

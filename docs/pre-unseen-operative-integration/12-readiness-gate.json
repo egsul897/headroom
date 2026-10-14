@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "READINESS_GATE",
+  "criteria": {
+    "rootCauseConfirmedMatchesExpectation": { "met": true, "evidence": "01-inconsistency-trace.json - node/source currentness never consumed resolved whole-document supersession, exactly as anticipated; no STOP condition triggered." },
+    "consumerInventoryComplete": { "met": true, "evidence": "02-consumer-inventory.json - every real consumer classified, zero unsafe (D) bypasses found." },
+    "integrationDesignSound": { "met": true, "evidence": "03-integration-design.json - reuses existing KNOWN_SUPERSEDED vocabulary, gated strictly on RESOLVED, additive-only type changes." },
+    "ordinaryAmendmentSafetyProven": { "met": true, "evidence": "S3/S4 targeted tests + 11-independent-audit.json item B - untouched base document stays current; specific provision-level supersession unreplaced." },
+    "uncertaintyNeverConvertedToSupersession": { "met": true, "evidence": "S5/S6/S7 targeted tests + 11-independent-audit.json item C - unresolved/fork/cycle all leave predecessors CURRENT_OPERATIVE." },
+    "noDuplicateVersionChainLogic": { "met": true, "evidence": "11-independent-audit.json item D - chain.ts unmodified; buildNodeSupersessionIndex only composes its already-computed result." },
+    "provenancePreserved": { "met": true, "evidence": "S8 + Riot replay's own physicalTextStillRetrievable field - no node/text ever deleted or mutated." },
+    "genericAdversarialTestsPass": { "met": true, "evidence": "21/21 in pre-unseen-operative-integration.test.ts (S1-S15 plus A-F adversarial)." },
+    "noBenchmarkSpecificProductionLogic": { "met": true, "evidence": "Zero Riot/Coinbase/known-package strings in lib/ (grep-confirmed independently in 11-independent-audit.json item F)." },
+    "fullRegressionClean": { "met": true, "evidence": "06-full-regression.json - 3115/3117, same 2 pre-existing unrelated failures as baseline, zero new; one CPU-contention flake investigated and confirmed non-regression." },
+    "knownPackageRegressionClean": { "met": true, "evidence": "07-known-package-regression.json - byte-identical FWRG/LSB/CONMED/DSGR results via controlled pre-fix-worktree comparison." },
+    "riotVersionChainControlUnregressed": { "met": true, "evidence": "08-riot-deterministic-replay.json - classifications and restatement-edge resolutions identical to the prior session's own baseline." },
+    "riotDocA601dNoLongerCurrentOperative": { "met": true, "evidence": "09-historical-node-trust-check.json criterion 2 - the real, frozen node now reports KNOWN_SUPERSEDED, tracing to doc-a being an affirmatively established predecessor of doc-b within its own real instrument scope." },
+    "riotProvenanceCheck": { "met": true, "evidence": "09-historical-node-trust-check.json criterion 3 - full physical text remains retrievable." },
+    "riotTrustedTruthCheck": { "met": true, "evidence": "09-historical-node-trust-check.json criterion 4 - resolveOperativeSectionEvidence (the real production trust primitive) confirms isCurrentTruth=false end to end, deterministic-only." },
+    "docCRemainsOperative": { "met": true, "evidence": "09-historical-node-trust-check.json criterion 5 - instrument:doc-c's own operativeDocument unregressed." },
+    "instrumentScopingLimitHonestlyDisclosed": { "met": true, "evidence": "08-riot-deterministic-replay.json's own honest disclosure + 01-inconsistency-trace.json - never overclaims a doc-a-to-doc-c fact the REVIEW_REQUIRED instrument boundary does not support." },
+    "falseCreditControls14of14": { "met": true, "evidence": "10-false-credit-controls.json." },
+    "independentAuditNoBlocker": { "met": true, "evidence": "11-independent-audit.json verdict: NO BLOCKER FOUND, 14/14 items independently re-confirmed." },
+    "noSchemaMigrationRequired": { "met": true, "evidence": "11-independent-audit.json item L - zero prisma/ changes; the new fields are pure in-memory types." }
+  },
+  "unmetCriteria": [],
+  "overallGateVerdict": "PASS - ALL CRITERIA MET",
+  "verdict": "READY_FOR_LIGHTWEIGHT_UNSEEN_CONFIRMATION",
+  "reasoning": "Every criterion in this mission's own readiness gate is met without exception. The governing invariant - whole-document currentness places an upper bound on node/source currentness - is now enforced generically, deterministically, and additively: computeOperativeDocument's already-computed OperativeDocumentResolution is composed into buildNodeSupersessionIndex/getNodeSupersessionStatus via the existing KNOWN_SUPERSEDED status vocabulary, which every real consumer (semantic tools, verifier, coverage audit, discovery) already treats as the single fail-closed non-current signal - closing the exact node/document trust inconsistency the prior pre-unseen-classifier-remediation session disclosed and left unfixed, on real, frozen Riot evidence, without any Riot-specific code. Ordinary amendments, unresolved targets, forks, and cycles are all structurally protected from false conversion into supersession. The one honest architecture nuance discovered during tracing - that REVIEW_REQUIRED instrument boundaries mean the fix's own reach stops at doc-b for doc-a's own instrument, never overreaching to assert a fact about doc-c the evidence does not support - is disclosed transparently throughout, not hidden, and is itself evidence of correct, disciplined behavior (Rule 4: never guess uncertain relationships), not a residual defect.",
+  "notReadyForPhase4": "This verdict does NOT declare Phase 4 ready and does NOT declare the classifier/package-graph/instrument-grouping architecture itself finished. A separate, lightweight, genuinely-unseen package confirmation remains REQUIRED before Phase 4, per this mission's own explicit Section 35 prohibition against beginning it in this session.",
+  "recommendedFollowUpsNotActionedThisSession": [
+    "The instrument-scoping boundary (REVIEW_REQUIRED links never merging two documents into one instrument, per instrument-grouping.ts's own RESOLVED-only merge policy) means a chain with one low-confidence link in the middle will never have its whole-document trust invariant reach all the way across that link in a single instrument's own computation - this is a genuine, disclosed, pre-existing package-graph/instrument-grouping architecture property (not a defect this session introduced or was authorized to fix; package-graph redesign is explicitly out of scope for this mission) that a future session could evaluate for whether cross-instrument whole-document trust propagation is ever needed.",
+    "The Day Count Fraction leap/no-anniversary proviso representation gap (disclosed in the post-3F.2 remediation session) remains explicit semantic-compiler backlog, out of scope for this session per its own explicit prohibition - not proven to interact with this invariant."
+  ]
+}

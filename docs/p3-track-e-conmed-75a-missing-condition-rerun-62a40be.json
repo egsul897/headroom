@@ -1,0 +1,208 @@
+{
+  "tip": "62a40be22b9598d9732e9ce2574d86d2228d6270",
+  "evidencePath": "docs/phase-3-conmed-population-verified/run-original/evidence/discovery-candidate:baca43714b8502cc9c596c23.json",
+  "evidenceSha256": "19e2173b3fd261f74f55f36c5e4b9210ff1d1c841dd1e15bdfd4f1f41f7c636c",
+  "operativeSha256": "b5234392b81353005e573fd482a18db182ad460c0a2235fc77e9d240418014a0",
+  "operativeChars": 89,
+  "storedCompilerAlgorithmVersion": "semantic-accountability-compiler.v4",
+  "storedCompilerPromptVersion": "semantic-accountability-compiler-prompt.v5",
+  "replayCompilerAlgorithmVersion": "semantic-accountability-compiler.v11",
+  "replayCompilerPromptVersion": "semantic-accountability-compiler-prompt.v9",
+  "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v5",
+  "structuralIndex": "tests/contract-model/semantic-compiler/test-helpers.ts stub",
+  "semanticReview": "skipped (skipSemanticReview: true). No provider call.",
+  "ruleCount": 1,
+  "ruleId": "ir-rule:b752bbaf461e4c3b704300d2",
+  "sufficiency": "PARTIAL",
+  "sufficiencyReasons": [
+    "The exception is purely qualitative - it carries no dollar ceiling, percentage, ratio or metric, so UNLIMITED_CAPACITY with the ordinary-course qualifier preserved as a first-class condition faithfully captures its full operative economics",
+    "Entity scope is not stated in clause (a) itself but is derived from the confirmed-current Section 7.5 chapeau, which binds the Parent Borrower and its Subsidiaries",
+    "Source reports no recorded amendment history and the operative text is confirmed current; neither inventory item is missing or ambiguous",
+    "deterministic post-processing: at least one subexpression is UNSUPPORTED or fails to type-check, so COMPLETE was downgraded to PARTIAL (task §27)",
+    "covenantFamily \"ASSET_DISPOSITIONS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+    "condition[0].conditionType \"ORDINARY_COURSE_OF_BUSINESS\" not recognized - normalized to UNSUPPORTED",
+    "QUALITATIVE_GATE_NO_CLOSED_CONDITION_TYPE: an unlimited carve-out states a property-character object class and an ordinary-course manner; neither has a licensed computable condition type, so each gate is UNSUPPORTED, composed with AND on gatedBy, and sufficiency is PARTIAL (invent-absence; not a certification)",
+    "dependsOn[0].relationshipType \"EXCEPTION_TO\" not recognized - defaulted to REQUIRES",
+    "MODEL_INVENTED_REFERENCE_EXCLUDED: rule[r7-5a].dependsOn[0] emitted \"Section 7.5\", which the candidate's source never states; excluded from the unit's semantics (review required), retained in sourceReferenceAudit",
+    "ENTITY_SCOPE_SOURCE_MATCH_CONFIRMED: applicability inherited from the governing provision's lead-in (PARENT_SCOPE witness) - the rule's own text binds no obligor class"
+  ],
+  "conditions": [
+    {
+      "conditionId": "rule[r7-5a].condition[0]",
+      "conditionType": "UNSUPPORTED",
+      "expression": null,
+      "excerpt": "in the ordinary course of business",
+      "excerptResolutionStatus": "SOURCE_BOUND_EXACT",
+      "excerptSourceKind": "OPERATIVE",
+      "charStart": 53,
+      "charEnd": 87,
+      "description": "The exception for the Disposition of obsolete or worn out property applies only if the disposition occurs in the ordinary course of business",
+      "inventoryItemIds": [
+        "inv-item:71d2743d5ead0525735ab015"
+      ]
+    },
+    {
+      "conditionId": "rule[r7-5a].condition[1]",
+      "conditionType": "UNSUPPORTED",
+      "expression": null,
+      "excerpt": "obsolete or worn out property",
+      "excerptResolutionStatus": "SOURCE_BOUND_EXACT",
+      "excerptSourceKind": "OPERATIVE",
+      "charStart": 23,
+      "charEnd": 52,
+      "description": "The unlimited carve-out applies only to obsolete or worn out property. This property-character test has no licensed computable condition type.",
+      "inventoryItemIds": []
+    }
+  ],
+  "capacityKind": "UNLIMITED_CAPACITY",
+  "gatedByKind": "AND",
+  "gateTree": [
+    {
+      "kind": "AND"
+    },
+    {
+      "kind": "UNSUPPORTED",
+      "sourceEvidence": "obsolete or worn out property",
+      "type": null,
+      "requiredReview": true
+    },
+    {
+      "kind": "UNSUPPORTED",
+      "sourceEvidence": "in the ordinary course of business",
+      "type": null,
+      "requiredReview": true
+    }
+  ],
+  "falseCompleteness": [],
+  "warnings": [
+    {
+      "kind": "SUFFICIENCY",
+      "message": "covenantFamily \"ASSET_DISPOSITIONS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)"
+    },
+    {
+      "kind": "SUFFICIENCY",
+      "message": "condition[0].conditionType \"ORDINARY_COURSE_OF_BUSINESS\" not recognized - normalized to UNSUPPORTED"
+    },
+    {
+      "kind": "SUFFICIENCY",
+      "message": "QUALITATIVE_GATE_NO_CLOSED_CONDITION_TYPE: an unlimited carve-out states a property-character object class and an ordinary-course manner; neither has a licensed computable condition type, so each gate is UNSUPPORTED, composed with AND on gatedBy, and sufficiency is PARTIAL (invent-absence; not a certification)"
+    },
+    {
+      "kind": "SUFFICIENCY",
+      "message": "dependsOn[0].relationshipType \"EXCEPTION_TO\" not recognized - defaulted to REQUIRES"
+    },
+    {
+      "kind": "SUFFICIENCY",
+      "message": "MODEL_INVENTED_REFERENCE_EXCLUDED: rule[r7-5a].dependsOn[0] emitted \"Section 7.5\", which the candidate's source never states; excluded from the unit's semantics (review required), retained in sourceReferenceAudit"
+    }
+  ],
+  "sourceReferenceAudit": {
+    "version": "source-reference-fidelity.v2",
+    "note": "NON-AUTHORITATIVE DIAGNOSTIC - raw model references classified against the references the candidate's source states; only `authoritative` entries entered the unit's semantics",
+    "statedReferences": [],
+    "entries": [
+      {
+        "path": "rule[r7-5a].dependsOn[0]",
+        "emitted": "Section 7.5",
+        "classification": "MODEL_INVENTED_REFERENCE",
+        "authoritative": false,
+        "restoredTo": null,
+        "statedRefs": [],
+        "detail": "related to none of the drafted references (); excluded"
+      }
+    ]
+  },
+  "entityScopeAuditStatus": "SOURCE_MATCH_CONFIRMED",
+  "dependsOn": [],
+  "unresolvedDependencies": [],
+  "definitionCount": 0,
+  "verification": {
+    "status": "VERIFICATION_INCOMPLETE",
+    "semanticReviewInvoked": false,
+    "semanticReviewSkippedReason": "caller explicitly requested skipSemanticReview (test/synthetic-scenario/zero-cost-preview override) - production code should not rely on this",
+    "contextBundleSufficiencyState": "REVIEW_REQUIRED",
+    "findings": [],
+    "reconciliationMaterialUnresolvedCount": 0,
+    "reconciliationItemCount": 0,
+    "sourceInventorySupersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "sourceInventoryItems": [
+      {
+        "kind": "TRANSACTION_ACTION_SIGNAL",
+        "rawText": "Disposition"
+      },
+      {
+        "kind": "INDEPENDENT_LIST_ITEM",
+        "rawText": "(a)"
+      }
+    ],
+    "irInventory": [
+      {
+        "kind": "ACTION",
+        "irPath": "rules[0].action",
+        "textValue": "OTHER"
+      },
+      {
+        "kind": "POSTURE",
+        "irPath": "rules[0].posture",
+        "textValue": "PERMISSION"
+      },
+      {
+        "kind": "ENTITY_SCOPE",
+        "irPath": "rules[0].entityScope",
+        "textValue": "{\"include\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"exclude\":[]}"
+      },
+      {
+        "kind": "CONDITION",
+        "irPath": "rules[0].conditions[0]",
+        "textValue": "The exception for the Disposition of obsolete or worn out property applies only if the disposition occurs in the ordinary course of business"
+      },
+      {
+        "kind": "CONDITION",
+        "irPath": "rules[0].conditions[1]",
+        "textValue": "The unlimited carve-out applies only to obsolete or worn out property. This property-character test has no licensed computable condition type."
+      },
+      {
+        "kind": "INHERITED_ATTRIBUTE",
+        "irPath": "rules[0].inheritedAttributes[0]",
+        "textValue": "governingProhibition:@PARENT_SCOPE:7.5"
+      },
+      {
+        "kind": "INHERITED_ATTRIBUTE",
+        "irPath": "rules[0].inheritedAttributes[1]",
+        "textValue": "entityScope:BORROWER+ANY_SUBSIDIARY@PARENT_SCOPE:7.5"
+      },
+      {
+        "kind": "UNLIMITED_CAPACITY_MARKER",
+        "irPath": "rules[0].capacityExpression",
+        "textValue": null
+      },
+      {
+        "kind": "UNSUPPORTED_MARKER",
+        "irPath": "rules[0].capacityExpression.gatedBy.operands[0]",
+        "textValue": "The unlimited carve-out applies only to obsolete or worn out property. This property-character test has no licensed computable condition type."
+      },
+      {
+        "kind": "UNSUPPORTED_MARKER",
+        "irPath": "rules[0].capacityExpression.gatedBy.operands[1]",
+        "textValue": "The unlimited carve-out applies only when it is in the ordinary course of business. This manner test has no licensed computable condition type."
+      }
+    ],
+    "qualitativeVerdict": [
+      {
+        "unitId": "ir-rule:b752bbaf461e4c3b704300d2",
+        "verdict": "GROUNDED",
+        "grounded": [
+          "posture",
+          "action",
+          "ruleType",
+          "covenantFamily",
+          "entityScope",
+          "conditions[0]",
+          "conditions[1]"
+        ],
+        "ungrounded": []
+      }
+    ],
+    "qualitativeMaterialUngrounded": 0
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "21-canary-5-quoted-replacement-text",
+  "mission": "SINGLE CANARY #5 - amendment quoted replacement text must not be dismissed as a term/label",
+  "startingSha": "e61d1e6926b1b77b491bb2a9a40a12da8f333de5",
+  "failureFixed": "Substantive covenant text quoted inside an amendment was classified DEFINED_TERM_LABEL and disappeared from source accountability while semantic completeness remained true.",
+  "provenance": "independent red-team audit, finding 5, scenario S6 (docs/source-coverage-repair/13-independent-red-team-audit.json)",
+  "fixture": {
+    "source": "Section 6.02 of the Credit Agreement is amended and restated to read as follows: \"The Borrower shall not make any Restricted Payment while any Default is continuing.\"",
+    "quotedReplacementLanguage": "\"The Borrower shall not make any Restricted Payment while any Default is continuing.\"",
+    "region": "operative (OPERATIVE), chars 0-166",
+    "inventorySpans": "one CRITICAL item anchoring the lead-in only: \"Section 6.02 of the Credit Agreement is amended and restated to read as follows:\"",
+    "structuralUnits": [
+      "Section 6.02 of the Credit Agreement is amended and restated to read as follows: ",
+      "\"The Borrower shall not make any Restricted Payment while any Default is continuing.\""
+    ],
+    "reproduced": true
+  },
+  "before": {
+    "dispositionOfQuotedText": "DEFINED_TERM_LABEL (\"a quoted defined-term label with no operative body\")",
+    "coverageSpans": "[COVERED_BY_INVENTORY] lead-in | [PUNCTUATION_OR_DELIMITER] \" \" | [DEFINED_TERM_LABEL] the entire replacement covenant",
+    "unaccountedSource": 0,
+    "unaccountedValues": 0,
+    "inventoryStatus": "INVENTORY_OK",
+    "semanticallyComplete": true,
+    "reasons": [],
+    "note": "The replacement covenant an amendment installs - the operative point of the amendment - vanished with no signal at any of the three enforcement points."
+  },
+  "earliestResponsibleBranch": {
+    "function": "classifyUnaccountedFragment",
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "branch": "the DEFINED_TERM_LABEL_RE test inside the values.length === 0 block",
+    "trace": "segmentSourceUnits splits at the colon, leaving the quoted covenant as its own unit -> no inventory span covers it -> classifyUnaccountedFragment runs -> the quoted-label branch fires FIRST, before contentWords or any caption rule. Nothing earlier in the pipeline touches quotes; segmentation only declines to split inside them. This is the first and only branch that gives the quoted proposition an accounted disposition."
+  },
+  "rootCause": "DEFINED_TERM_LABEL_RE was /^\\s*[\u201c\"][^\u201d\"]{1,120}[\u201d\"]\\s*(?:means|shall\\s+mean|has\\s+the\\s+meaning[^.]*)?\\s*[.:;,]?\\s*$/i - it decided label-hood from DELIMITERS plus a LENGTH CEILING and never looked at what the quotes contained. Any quoted run of at most 120 characters standing alone in a segment qualified, complete sentences included. Quotation marks were treated as proof that source is non-semantic.",
+  "genericRuleImplemented": {
+    "invariant": "QUOTATION MARKS DO NOT MAKE SOURCE NON-SEMANTIC. Quoted source is accountable exactly like unquoted source unless label-hood is positively established.",
+    "split": "The regex is now QUOTED_LABEL_FRAME_RE and matches only the quote FRAME, capturing the interior. The decision moved into isQuotedTermName(interior), a positive structural test.",
+    "isQuotedTermName": [
+      "1. No clause punctuation inside the quotes (. ; : ! ? ,). A sentence terminator or a comma is sentence structure; a name has none.",
+      "2. Every word inside is either pure grammar (the existing FUNCTION_WORDS closed class) or an orthographic proper-noun form, and at least one is a name. A proposition fails on its predicate: a lowercase content word such as 'make', 'deliver' or 'continuing' is a verb doing work, not part of a name."
+    ],
+    "conservativeDefault": "Anything not established as a name keeps UNACCOUNTED_SOURCE. False review is acceptable; silent disappearance of quoted operative text is not.",
+    "whatItIsNot": [
+      "no length ceiling - the 120-character limit is gone",
+      "no amendment vocabulary: 'amended and restated', 'hereby amended', 'read as follows', 'deleted and replaced' appear nowhere in the implementation",
+      "no section-number or issuer or document template",
+      "no covenant-family keyword list",
+      "the attack fixture and the generic control are both caught by the same two structural criteria, and the generic control contains no legal vocabulary at all"
+    ],
+    "acceptedFalseReviews": "A lowercase defined term (\"business day\") and a term carrying internal periods (\"U.S. Government Securities\") are now reported rather than dismissed. Documented in the function's own docstring; per §6 this is the correct direction of error."
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts - DEFINED_TERM_LABEL_RE replaced by QUOTED_LABEL_FRAME_RE + isQuotedTermName(); the classifier branch now requires the positive test"
+  ],
+  "attackAfter": {
+    "dispositionOfQuotedText": "UNACCOUNTED_SOURCE",
+    "coverageSpans": "[COVERED_BY_INVENTORY] lead-in | [PUNCTUATION_OR_DELIMITER] \" \" | [UNACCOUNTED_SOURCE] \"The Borrower shall not make any Restricted Payment while any Default is continuing.\"",
+    "unaccountedSource": 1,
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "semanticallyComplete": false,
+    "reason": "1 stretch(es) of source Pass A could not account for: operative:81-166 - materiality undetermined, review required",
+    "noDefinedTermLabelSpanRemains": true
+  },
+  "controls": {
+    "trueQuotedLabel": {
+      "fixture": "The following terms are defined below.\\n\"Consolidated EBITDA\"\\n\"Applicable Margin\"\\nEach term has the meaning assigned to it.",
+      "result": "0 unaccounted; the quoted names remain DEFINED_TERM_LABEL, before and after",
+      "classifierSpotChecks": {
+        "\"Consolidated EBITDA\"": "DEFINED_TERM_LABEL",
+        "\"Applicable Margin\" means": "DEFINED_TERM_LABEL",
+        "\"Change of Control\".": "DEFINED_TERM_LABEL",
+        "\"Permitted Liens\" means": "DEFINED_TERM_LABEL (the pre-existing general-matrix noise case, unchanged)"
+      },
+      "verdict": "the fix does not turn every quoted term into a semantic gap"
+    },
+    "genericQuotedProposition": {
+      "fixture": "The text is replaced with:\\n\"The Company must deliver the report.\"",
+      "before": "DEFINED_TERM_LABEL, 0 unaccounted",
+      "after": "UNACCOUNTED_SOURCE, 1 unaccounted",
+      "verdict": "no amendment vocabulary and no covenant family anywhere in the fixture - the rule is generic"
+    }
+  },
+  "priorCanariesStillHold": {
+    "canary2_S9": "\"except as provided in Section 6.02,\" still UNACCOUNTED_SOURCE; INVENTORY_COVERAGE_GAP; semanticallyComplete false",
+    "canary2b_I5": "both connectives still COVERED_BY_CONNECTIVE_OWNERSHIP; 0 unaccounted in I5",
+    "canary3_RT8": "the blanket span is still clipped to its first independent proposition; RATIO 4.00 to 1.00 and DAYS 30 days still unaccounted",
+    "canary4_RT4": "the prepayment and cure obligations still surface as UNACCOUNTED_SOURCE; only the introducing fragment descends; both #4 controls unchanged"
+  },
+  "tests": {
+    "added": 3,
+    "names": [
+      "canary #5 ATTACK: quoted replacement covenant text is accountable, not a defined-term label",
+      "canary #5 TRUE LABEL CONTROL: a quoted defined-term name is still non-blocking",
+      "canary #5 GENERIC QUOTED PROPOSITION: no legal or amendment vocabulary needed to keep quoted text accountable"
+    ],
+    "sourceCoverageSuite": "96/96 passing (93 before, +3 new)",
+    "adversarialSuite": "2400 generated cases, 0 dangerous false negatives, unchanged",
+    "existingTestsAltered": []
+  },
+  "corpusImpact": {
+    "before": "5 failed | 255 passed (260)",
+    "after": "5 failed | 258 passed (263)",
+    "delta": "+3 tests (the three new canary #5 tests, all green); ZERO new failures",
+    "newlySurfacedCorpusGaps": 0,
+    "remainingFailures": [
+      { "scenarioId": "I26", "status": "out of scope by mission instruction; unchanged since canary #4; classified TRUE_SAFETY_IMPROVEMENT in artifact 20" },
+      { "scenarioId": "I27", "status": "out of scope by mission instruction; unchanged since canary #2B; classified OBVIOUS_FALSE_GAP in artifact 18" }
+    ],
+    "realRegressions": 0,
+    "groundTruthChanged": false
+  },
+  "qualityGates": {
+    "typescript": "npx tsc --noEmit - 6 errors, all pre-existing in tests/foundation-audit/*; identical count to the starting SHA; zero in semantic-accountability or source-coverage",
+    "lint": "npx next lint --dir lib --dir tests --dir scripts - 1 error, pre-existing (@typescript-eslint/no-var-requires rule definition missing in tests/foundation-audit/amendment-operative-state-adversarial.test.ts); none in changed files"
+  },
+  "spend": {
+    "paidModelCalls": 0,
+    "vercelDeploys": 0,
+    "providerProbe": "HTTP 402 quota_for_entity_exceeded, current spend $150.49 / limit $150.00 - unchanged from before this mission"
+  },
+  "reproductionHarness": "scripts/source-coverage-canary5-reproduce.ts (committed; run with npx tsx)",
+  "canary5Solved": true,
+  "scopeDiscipline": "One failure fixed. ALL-CAPS headings, numbered captions, 'jointly and severally', 'directly or indirectly', CJK, Cyrillic, bare-integer baskets, digit blindness, spelled-out values, I26 and I27 all left untouched as instructed. No collateral gap repaired, no ground truth edited, no broad red-team, no paid validation."
+}

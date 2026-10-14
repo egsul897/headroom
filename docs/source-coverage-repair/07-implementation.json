@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "07-implementation",
+  "commits": [
+    {
+      "sha": "0cd22e5",
+      "what": "replace the v2 eligibility filters with whole-unit source coverage"
+    },
+    {
+      "sha": "5344861",
+      "what": "adversarial gates (\u00a712, \u00a713, \u00a714) + consumer updates for the stricter boundary"
+    }
+  ],
+  "productionFilesChanged": [
+    {
+      "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+      "change": "NEW - the whole detection layer: dispositions, structural segmentation, parent/child ownership, external-ownership links, residue arithmetic, deterministic noise classification"
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-accountability/inventory.ts",
+      "change": "v2 detector block deleted; coverage runs over every region before and after the bounded gap call; unaccounted source outranks every other status branch except EMPTY_SUSPECT, which is the more specific report of the same refusal; new externalAccountability input"
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-accountability/types.ts",
+      "change": "algorithm/prompt version -> v3; UncoveredOperativeSegment replaced by UnaccountedSourceSpan (with reason + values); SourceCoverageSummary added; counts.uninventoriedSegments -> counts.unaccountedSource"
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-accountability/reconciliation.ts",
+      "change": "completeness requires zero unaccounted source AND zero unaccounted values of ANY kind in ANY region; the money/percent/ratio + 'operative' filter is gone"
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic/compile.ts",
+      "change": "failure reason keyed on unaccountedSource; each unaccounted span is reported with its excerpt and its reason"
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-accountability/prompt.ts",
+      "change": "gap-call block header renamed to UNACCOUNTED SOURCE"
+    }
+  ],
+  "testFilesAdded": [
+    "tests/contract-model/semantic-accountability/audit-counterexamples.ts (immutable fixtures)",
+    "tests/contract-model/semantic-accountability/source-coverage.test.ts (83 tests)",
+    "tests/contract-model/semantic-accountability/source-coverage-adversarial.test.ts (2400 generated cases)"
+  ],
+  "scriptsAdded": [
+    "scripts/source-coverage-reproduce-audit.ts - field-agnostic, reproduces the evidence at the pre-repair SHA and after"
+  ],
+  "groundTruthCorrections": [
+    {
+      "what": "corpus I5's permission item excluded its own operative verb",
+      "before": "\"Investments in Joint Ventures in an aggregate amount not to exceed $40,000,000\"",
+      "after": "\"The Borrower may make Investments in Joint Ventures in an aggregate amount not to exceed $40,000,000\"",
+      "why": "the grant of permission had no semantic disposition; the detector was right and the ground truth was incomplete"
+    },
+    {
+      "what": "four scenarios' cross-reference expansions",
+      "change": "now declare externallyAccountedRegionIds explicitly",
+      "why": "their semantics belong to other units; under \u00a79 that must be a recorded link, never an exemption inferred from region kind"
+    }
+  ],
+  "consumerUpdates": [
+    "tests/certification/open-2-fresh-attack-matrix.test.ts - 13 compiles now run with accountability off; these are evidence-resolution tests whose scripted clients answer Pass B only",
+    "tests/contract-model/semantic-compiler/definition-completeness-check.test.ts - one fixture likewise",
+    "tests/contract-model/semantic-compiler/compile-and-package.test.ts - asserts batch isolation directly instead of using COMPLETED as a proxy",
+    "tests/contract-model/semantic-accountability/harness.ts - silentAbsences treats a region with a recorded ownership link as accounted and asserts the link is disclosed"
+  ],
+  "notChanged": [
+    "Pass B composition",
+    "Pass C disposition semantics",
+    "the IR",
+    "the Phase 3C verifier",
+    "the package graph",
+    "operative state",
+    "Phase 4"
+  ]
+}

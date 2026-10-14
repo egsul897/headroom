@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "VERIFIER_HEALTH_HOLDOUT_RERUN",
+  "requirement": "No universal VERIFICATION_FAILED. Verifier must discriminate complete vs incomplete.",
+  "result": "8/8 real verify invocations succeeded (0 failures, 0 VERIFICATION_FAILED) across the 8 unique holdout regions, semanticReviewInvoked=true for all 8.",
+  "discriminationEvidence": "The verifier returned 3 distinct status values across the 8 regions in this run - MATERIAL_DISCREPANCY (ebitda, applicable-liquidity-rate, secured-net-leverage, cash-sweep-cure) and VERIFICATION_INCOMPLETE (net-income, interest-expense, first-lien-debt, new-definitions) - never a uniform blanket status, and never a false VERIFIED for a claim this artifact's own independent structural-completeness check (checkIntraDefinitionComponentCompleteness) shows still has genuinely unsupported components. Materiality discrimination within a single region is also real: e.g. the ebitda region's 5 findings span MATERIAL (1), UNCERTAIN (3), and NON_MATERIAL (1) severities, not a uniform materiality either - and per 08's own emergent finding, the verifier's per-clause findings now cite exact irPath locations inside the preserved attemptedStructure, a qualitatively finer-grained discrimination than the pre-fix run's own blanket findings.",
+  "hardRequirementMet": true
+}

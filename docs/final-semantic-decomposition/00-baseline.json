@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BASELINE",
+  "missionName": "HEADROOM — FINAL SEMANTIC DECOMPOSITION GENERALIZATION ITERATION",
+  "startingSha": "9b36fe4ef563bc1307256e71ca4c8c32f0bc92ad",
+  "remediatedProductionShaAtStart": "db7f32a1b737e02a251c23989b750ba2fec602b8",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "gitStatusAtStart": "clean working tree, HEAD == startingSha",
+  "priorMissionOutcome": {
+    "verdict": "SEMANTIC_REMEDIATION_NEEDS_ITERATION",
+    "definitionExhaustivenessGate": "3/6 (A3, A4, A6 clean), required >=5/6",
+    "qualifierGate": "0/4 numerically, required 4/4 or 3/4-safe-failed",
+    "leadingHypothesis": "residual MODEL_DECOMPOSITION_GAP for the densest real definition shapes"
+  },
+  "governingDocsRead": [
+    "docs/post-holdout-semantic-remediation.md",
+    "docs/post-holdout-semantic-remediation/01-holdout-failure-ledger.json",
+    "docs/post-holdout-semantic-remediation/04-semantic-architecture-decision.json",
+    "docs/post-holdout-semantic-remediation/08-holdout-rerun-definition-exhaustiveness-gate.json",
+    "docs/post-holdout-semantic-remediation/09-holdout-rerun-qualifier-completeness-gate.json",
+    "tests/fixtures/unseen-packages/post-holdout-semantic-remediation-rerun/*.json (real, frozen holdout re-run output from the immediately preceding session)"
+  ],
+  "productionCodeReadThisMission": [
+    "lib/contract-model/compiler/semantic/completeness-check.ts (own recent addition, re-audited for a real limitation found this session)",
+    "lib/contract-model/ir/type-check.ts",
+    "lib/contract-model/compiler/semantic/normalize.ts",
+    "lib/contract-model/ir/types.ts"
+  ],
+  "researchMethod": "Direct, unlimited-depth manual traversal of the real, already-paid-for compiled output from the immediately preceding session's holdout re-run (tests/fixtures/unseen-packages/post-holdout-semantic-remediation-rerun/) - specifically the full nested attemptedStructure trees for A2 (net-income), A5 (secured-net-leverage), and B2 (Applicable Rate, inside the applicable-liquidity-rate region) - to determine the TRUE underlying failure mechanism per Section 13's own 7-way taxonomy, without any new paid model call. No new production code was read or modified before this analysis was complete.",
+  "keyFindingSummary": "The full-depth manual traversal (which the production checkIntraDefinitionComponentCompleteness diagnostic does NOT itself perform - see 01/03) revealed that: (1) the model handles very high cardinality (19 individually-reasoned leaf clauses in one A2 sub-tree) with full fidelity in a single pass, refuting the mission's own working cognitive-overload hypothesis for that case; (2) the model's own real UNSUPPORTED leaf reasons are precise, evidence-based, and narrow (a discretionary lender-election right, an underdetermined source drafting gap, a context-dependent branching condition) - not generic catch-alls or dropped material; (3) B2's Applicable Rate is compiled as an 8-level-deep chain of nested IF nodes (a de facto hand-rolled pricing-grid encoding) where TWO narrow, deep, genuinely-unsupported leaves poison the ENTIRE ancestor chain's top-level executability verdict via ordinary, correct, unmodified poison propagation - and the CURRENT completeness diagnostic (checkIntraDefinitionComponentCompleteness, added in the immediately preceding session) does NOT descend into a nested UNSUPPORTED node's own attemptedStructure, so it UNDERCOUNTS how much of a deeply-nested tree actually survived (reports 2/4 components for B2 when the true count, confirmed by manual unlimited-depth traversal, is roughly 36/38). This is the real, concrete, bounded architectural finding this session's implementation targets - see 01/03.",
+  "scopeStatement": "Per the mission's own Section 0/32 gate, commit 1 (artifacts 00-03) is architecture analysis only - zero production code changes."
+}

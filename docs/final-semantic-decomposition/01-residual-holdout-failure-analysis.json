@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RESIDUAL_HOLDOUT_FAILURE_ANALYSIS",
+  "requirement": "For A1, A2, A5, B1, B2, B3, B4 determine which of 6 categories explains the missing semantic component: (1) absent from raw model output entirely; (2) present but malformed; (3) present but rejected by schema; (4) present but dropped by normalization; (5) present structurally but verifier judged semantics incomplete; (6) dependent on missing source context.",
+  "methodologyNote": "rawModelOutput/toolCallLog are still not persisted separately from the final normalized wire submission (a pre-existing, disclosed gap - see docs/post-holdout-semantic-remediation/01's own scopeNote). Category (1) vs (3) [absent entirely vs schema-rejected] therefore cannot be distinguished with certainty from stored artifacts alone. However, the WIRE-level submission IS what the model actually produced and IS what passed schema validation (Zod parse succeeds or normalizeSubmission would itself throw) - so anything present in the final compiled output's attemptedStructure, including a leaf explicitly marked kind='UNSUPPORTED' by the MODEL ITSELF with its own stated reason string, is direct, first-person evidence of what the model attempted and judged, not an inference. This lets every one of the 7 claims below be assigned a confident category from the remaining five, without needing new paid calls.",
+  "perClaimAnalysis": [
+    {
+      "claimId": "A1",
+      "region": "ebitda",
+      "category": "6 - dependent on missing source context",
+      "evidence": "attemptedStructure shows 17/18 components well-typed; the ONE unsupported leaf's own model-stated reason: 'The supplied source text is truncated after clause (1)(l) and ends mid-sentence...clause (2) and any remaining content were never provided. This definition has no anchoring structural nodeId...getSourceSpan/getChildren/getSiblingClauses could not be used to page further.' The model explicitly attempted and failed a tool-based retrieval, not a decomposition failure.",
+      "notADecompositionCapacityIssue": true
+    },
+    {
+      "claimId": "A2",
+      "region": "net-income",
+      "category": "5 (partially) but predominantly NOT a defect at all - the model's own decomposition is complete and correct; the definition's own real 19-item exclusion/addback list is genuinely qualitative-by-drafting, not quantitative",
+      "evidence": "Full-depth manual traversal (00's own key finding) shows the model individually reasoned about and explicitly, correctly declined EVERY ONE of 19 leaf-level clauses with precise, non-generic reasons ('qualitative GAAP-determined adjustment', 'qualitative determination dependent on facts (actual cash dividends received) not stated as a fixed value', a correctly-isolated $5,000,000 sub-cap noted as a limiting proviso rather than the category's own value). This is not dropped, malformed, or schema-rejected material - it is the model correctly recognizing that most of Consolidated Net Income's own real addback/exclusion categories are GAAP-determined qualitative judgments in the SOURCE TEXT ITSELF, not literal numeric formulas. The verifier's own 0-MATERIAL-finding result on this region (docs/post-holdout-semantic-remediation/08) independently corroborates this reading.",
+      "notADecompositionCapacityIssue": true,
+      "strongEvidenceAgainstCognitiveOverloadHypothesis": "19 individually-reasoned leaf clauses handled correctly in a single pass directly refutes the mission's own working hypothesis (Section 2/6) that high cardinality alone overwhelms a single-pass architecture."
+    },
+    {
+      "claimId": "A5",
+      "region": "secured-net-leverage",
+      "category": "6 - dependent on missing source context (a genuine, narrow IR-expressivity boundary, not a cardinality issue)",
+      "evidence": "The numerator (SUBTRACT of two metrics) is perfectly well-typed. The ONLY unsupported leaf is the denominator IF's own condition, with the model's own precise reason: 'this is a usage-context branch (which section of the agreement is invoking the definition) rather than a comparable financial condition expressible with COMPARE/AND/OR primitives.' This is a real, narrow representability gap - the source text branches the definition's OWN denominator based on WHICH agreement section is asking for it (a parameterized/context-dependent definition), not a boolean financial test - the IF node's condition slot assumes a financial BOOLEAN, which this genuinely is not.",
+      "notADecompositionCapacityIssue": true
+    },
+    {
+      "claimId": "B1",
+      "region": "applicable-liquidity-rate",
+      "category": "5 - present structurally (fully well-typed, 0 unsupported nodes anywhere in the tree) but the independent verifier judged specific numeric/structural content within it incorrect (not omitted)",
+      "evidence": "Full-depth traversal shows a completely well-typed IF(COMPARE, MIN(ADD(MONEY,MULTIPLY(PERCENT,SUBTRACT(METRIC,MONEY))),MONEY), MONEY) tree with ZERO unsupported nodes. Yet the verifier found 5 real MATERIAL findingType=UNSUPPORTED_IR_ADDITION findings citing specific paths inside this tree - a fundamentally DIFFERENT failure category than A1/A2/A5/B2/B3 (which are all about missing/unsupported structure). UNSUPPORTED_IR_ADDITION means the verifier believes the compiled value does not match source-side evidence, i.e. a possible numeric/structural HALLUCINATION or misassignment, not an omission. This is a semantic-accuracy concern, not a decomposition-architecture concern - out of this mission's own IR/normalization scope."
+    },
+    {
+      "claimId": "B2",
+      "region": "applicable-liquidity-rate",
+      "category": "5 - present structurally at great depth, but a coarse top-level poison-propagation verdict AND a diagnostic-undercounting limitation in the existing completeness-check.ts obscure how much actually succeeded",
+      "evidence": "Full-depth manual traversal (00's key finding) reveals an 8-level-deep chain of nested IF nodes (the model's own chosen encoding of a multi-tier pricing grid). Of this large tree, only TWO leaves are genuinely unsupported, each with a precise, narrow, real reason: (a) 'The override applies at the option of the Required Facility Lenders - a discretionary lender election, not a self-executing formulaic condition; no IR primitive represents a discretionary election right' and (b) 'The stated bands (>1.00, <1.00 and >0.50, <0.50) leave the exact boundary values undefined in the source text itself; this is a genuine drafting gap, not a compiler omission.' Both are real, narrow, correctly-identified gaps (a discretionary-election condition type the IR has no primitive for; a genuine source ambiguity). Ordinary, unmodified, correct poison propagation then cascades these two leaf-level failures up through all 8 levels to the TOP-level UNSUPPORTED verdict - exactly as type-check.ts is DESIGNED to do (an 8-level-deep tree with any unsupported leaf cannot be assigned one clean top-level scalar type, and that verdict must not be relaxed). The SEPARATE, additional problem: checkIntraDefinitionComponentCompleteness (added in the immediately preceding session) does not recurse into a NESTED UNSUPPORTED node's own attemptedStructure, so it reports only 2/4 components for this definition instead of the true ~36/38 - understating, for deeply-nested cases specifically, exactly the kind of completeness signal it exists to provide. This diagnostic-completeness gap, not a model-decomposition-capacity gap, is this session's concrete, bounded implementation target (see 03).",
+      "notADecompositionCapacityIssue": true
+    },
+    {
+      "claimId": "B3",
+      "region": "ebitda",
+      "category": "6 - dependent on missing source context, identical root cause to A1 (same region, same truncation)",
+      "evidence": "Direct inspection (docs/post-holdout-semantic-remediation/09) confirmed no 10%/15% cap language appears anywhere in the compiled attemptedStructure, because the supplied source text truncates before clause (2) - the same already-disclosed, out-of-Unit-A-scope region-selection limitation as A1."
+    },
+    {
+      "claimId": "B4",
+      "region": "cash-sweep-cure",
+      "category": "5 - present structurally (both real dollar thresholds ARE captured, per docs/post-holdout-semantic-remediation/09) but a likely verifier-side comparison limitation (unit-scale mismatch, '50' vs '50000000') plus a genuine residual gap in the cure-recalculation/no-refund-obligation clause",
+      "evidence": "Already documented in docs/post-holdout-semantic-remediation/09's own possibleVerifierComparisonLimitation finding - not re-litigated here, only re-classified into this session's own taxonomy for completeness."
+    }
+  ],
+  "aggregateConclusion": "Of the 7 residual claims, ZERO show evidence of a model-decomposition-capacity failure (the mission's own working hypothesis in Section 2/6). Two (A1, B3) are genuine SOURCE-CONTEXT/region-selection limitations, entirely outside this mission's own semantic-decomposition-architecture scope. Two (A5, B2) are genuine, narrow IR-representability boundaries for condition TYPES the IF node's BOOLEAN-condition slot does not model (a context-dependent/parameterized branch; a discretionary election right) - real, but narrow, not evidence of a systemic architecture inadequacy. One (A2) is not a defect at all on closer inspection - a correctly-handled, high-cardinality (19-item), individually-reasoned qualitative-vs-quantitative distinction, and is in fact STRONG evidence AGAINST the cognitive-overload hypothesis. Two (B1, B4) show a DIFFERENT failure category entirely (verifier-flagged semantic-accuracy concerns on otherwise well-typed or well-captured structure), not a decomposition-architecture concern. The ONE concrete, generalizable, evidence-supported architectural defect found is narrower and more bounded than any hypothesis in the mission's own Section 2-6: the existing completeness-check.ts diagnostic undercounts preserved structure for deeply-nested (chained) composites, obscuring exactly how much of a large tree like B2's actually succeeded. See 02/03 for the full family audit and architecture decision this evidence supports."
+}

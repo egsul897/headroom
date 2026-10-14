@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "UNIT_A_SEMANTIC_REMEDIATION_RESULTS",
+  "evidenceCategory": "IMPLEMENTATION_EVIDENCE",
+  "note": "This artifact reports IMPLEMENTATION-level test results (synthetic/generic, no Riot data) only. Riot-specific regression results belong in 08-riot-regression-replay.json (RIOT_REGRESSION_EVIDENCE category) - never blurred together per the governing spec.",
+  "filesChanged": [
+    "lib/contract-model/compiler/semantic/prompt.ts (Unit A1)",
+    "lib/contract-model/compiler/semantic/completeness-check.ts (new file, Unit A2)",
+    "lib/contract-model/compiler/semantic/types.ts (additive fields: ToolCallLogEntry.evidenceTruncated, 2 new SemanticCompilerFailureReason values, SemanticCompilationResult.definitionCompletenessCheck)",
+    "lib/contract-model/compiler/semantic/tools.ts (additive: ToolExecutionOutcome.evidenceTruncated, set at all 9 truncate() call sites, threaded into ToolRunner.run's log entry)",
+    "lib/contract-model/compiler/semantic/compile.ts (wires checkDefinitionCompleteness + the truncation failureReason into the existing failureReasons -> determineStatus pipeline)"
+  ],
+  "schemaOrIrRedesign": false,
+  "definitionsSplitIntoPerTermCandidates": false,
+  "newSchemaTables": false,
+  "targetedTestFile": "tests/contract-model/semantic-compiler/definition-completeness-check.test.ts",
+  "targetedTestResults": {
+    "totalTests": 20,
+    "passed": 20,
+    "failed": 0,
+    "coverageMap": {
+      "A1_threeSiblingDefinitionsAllExtracted": "PASS",
+      "A2_tenPlusSiblingDefinitionsRepresentable": "PASS",
+      "A3_deliberateOmissionOfOneSiblingDetected": "PASS",
+      "A4_deliberateOmissionOfMultipleSiblingsDetected": "PASS",
+      "A5_complexDefinitionNoFalseAlert": "PASS",
+      "A6_arbitraryTerminologyNoCodeChange": "PASS",
+      "A7_sourceToolTruncationCannotBeMistakenForComplete": "PASS (both A7a direct-tool-level and A7b end-to-end)",
+      "A8_missingQualifierCannotReceiveCompleteTreatment": "PASS",
+      "A9_existingMultiRuleExtractionStillWorks": "PASS (A9 + A9b)",
+      "A10_existingVerifierIndependenceRemainsIntact": "CONFIRMED VIA FULL SUITE (see below) - semantic-verification/verify.ts was not modified at all; its own 143 tests across 9 files pass unchanged",
+      "A11_existingClaimReviewSafeFailureBehaviorIntact": "PASS (folded into A3/A7b assertions - fired checks route to REVIEW_REQUIRED via the pre-existing determineStatus function, never a new status kind)",
+      "A12_noBenchmarkSpecificStringsInProductionLogic": "PASS (automated grep test against prompt.ts, completeness-check.ts, compile.ts)"
+    },
+    "additionalFalsePositiveHardeningTests": [
+      "nested quotes inside a definition body - PASS",
+      "'shall mean' phrasing recognized identically to 'means' - PASS",
+      "multi-sentence definition body + semicolons + schedule/heading reference - PASS",
+      "case/whitespace-insensitive comparison never false-positives on trivial formatting differences - PASS",
+      "zero detections in a rules-only section is a normal, non-firing outcome - PASS"
+    ]
+  },
+  "fullSemanticAndVerificationSuiteRegression": {
+    "command": "npx vitest run tests/contract-model/semantic-compiler/ tests/contract-model/semantic-verification*.test.ts tests/contract-model/package-graph*.test.ts tests/contract-model/amendment*.test.ts",
+    "result": "23 test files, 288 tests, 0 failures",
+    "breakdown": {
+      "semanticCompilerSuite": "9 files, 98 tests, 0 failures (includes the new 20-test Unit A file)",
+      "semanticVerificationSuite": "9 files, 143 tests, 0 failures - verify.ts untouched by this remediation, confirms independence preserved",
+      "packageGraphSuite": "3 files, 34 tests, 0 failures (untouched by Unit A, confirms no cross-module regression)",
+      "amendmentSuite": "1 file, 6 tests, 0 failures"
+    }
+  }
+}

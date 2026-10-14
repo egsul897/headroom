@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "COMPOSITION_DESIGN",
+  "requirement": "Design Pass B (composition): given source + frozen Pass-A inventory, construct IR components each identifying which inventory IDs it consumes, creating a deterministic accountability relation SOURCE COMPONENT -> INVENTORY ITEM -> IR NODE.",
+  "status": "NOT IMPLEMENTED THIS SESSION - same OPTION 1 decision as 04. There is no Pass A inventory for a Pass B composition step to consume.",
+  "existingEquivalentAccountability": "The current single-pass architecture already provides a real, deterministic accountability relation, just without an intermediate inventory stage: every IRExpression node carries its own SourceProvenance (documentId/sourceCitation/excerpt), every IRRule/IRDefinition carries citation/excerpt, and - as of the immediately preceding session's own Unit A fix, extended this session (03) - every UNSUPPORTED node additionally carries attemptedStructure, preserving the FULL attempted composition (not just a pass/fail verdict) all the way down to individual leaf components with their own provenance and reason strings. SOURCE TEXT -> IR NODE (with citation) -> completeness diagnostic is the real, working accountability chain this codebase has today; SOURCE -> INVENTORY ITEM -> IR NODE would be a parallel chain with the same destination, at the cost of a new intermediate representation and a new class of pass-boundary failure mode (an inventory item lost or misassigned between Pass A and Pass B) that the CURRENT single-pass architecture cannot suffer from, because there is no boundary to lose material across.",
+  "conclusion": "No composition-pass schema was implemented, for the same evidence-discipline reason as 04."
+}

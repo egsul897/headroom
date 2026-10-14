@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "26-canary-10-allcaps-predication",
+  "mission": "SINGLE CANARY #10 - determinerless ALL-CAPS predication must not pass as a heading",
+  "startingSha": "f211a633c48a1043974945f07dc187b847ced8dc",
+  "failureFixed": "The residual hole canary #8 pinned and disclosed: an ALL-CAPS proposition whose arguments are bare nouns satisfied every condition of the canary #8 heading rule and received HEADING_OR_LABEL.",
+  "pinnedFixture": {
+    "text": "BORROWER SHALL PAY INTEREST",
+    "provenance": "the permanent limitation test introduced by canary #8 (artifact 24); not substituted",
+    "reproduced": true,
+    "before": { "disposition": "HEADING_OR_LABEL", "unaccountedSource": 0, "inventoryStatus": "INVENTORY_OK", "semanticallyComplete": true },
+    "after": { "disposition": "UNACCOUNTED_SOURCE", "unaccountedSource": 1, "inventoryStatus": "not INVENTORY_OK (INVENTORY_COVERAGE_GAP / EMPTY_SUSPECT)", "semanticallyComplete": false }
+  },
+  "earliestResponsibleBranch": {
+    "function": "classifyUnaccountedFragment",
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "branch": "the ALL-CAPS arm of the caption test - noInternalTerminator && isAllCapsNominalHeading(trimmed)",
+    "trace": "ALLCAPS_FRAME_RE matches -> no clause punctuation -> no determiner found -> HEADING_OR_LABEL -> the span is ACCOUNTED, so the region reports unaccounted 0 and completeness is reachable."
+  },
+  "whyCanary8sRemainingRuleIsUnsound": "Canary #8's rule was 'all caps + no clause punctuation + no determiner or pronoun'. Its stated justification was that a proposition needs arguments and an argument is introduced by a determiner. That inference has a hole the rule cannot see: A PREDICATION WHOSE ARGUMENTS ARE BARE NOUNS HAS NO DETERMINER TO FIND. 'BORROWER SHALL PAY INTEREST' and 'COMPANY DELIVERS REPORTS' are both subject-verb-object with zero determiners. The absence of a determiner is therefore not positive evidence of anything - it is the absence of one particular clue, and canary #8 shipped it as proof. The rule was necessary but never sufficient, which is exactly why the counterexample was pinned rather than hidden.",
+  "architecturalRuleChosen": {
+    "question": "What independent structural evidence actually proves this source is a heading?",
+    "investigation": "computeSourceCoverage receives SourceContextRegion. Its sourceNodeId and sectionRef describe the WHOLE region, not the line. No per-fragment heading or caption metadata reaches the classifier. segmentSourceUnits reports where units begin and end, not what they are. The structural index does distinguish heading-only nodes (reference-resolver.ts DEGENERATE_TEXT_CHARS), but that signal is not plumbed into coverage, and plumbing it is a larger change than this mission authorises.",
+    "answer": "At this layer, none exists. Deterministic structure cannot positively distinguish 'NEGATIVE COVENANTS' from 'BORROWER SHALL PAY INTEREST'.",
+    "decision": "Per §5, do not pretend it can. The ALL-CAPS suppression is REMOVED OUTRIGHT - ALLCAPS_FRAME_RE, DETERMINERS and isAllCapsNominalHeading are deleted, not patched with a further lexical exception. Typography now grants nothing at all.",
+    "whatSuppressionStillRequires": "a frame independent of casing - a bare citation (CITATION_ONLY), a numbered caption whose remainder is a name (canary #7), a quoted defined-term name (canary #5), pagination or a table-of-contents leader (canary #6). All verified unchanged.",
+    "noVerbList": "No SHALL / MUST / MAY / WILL / PAY / MAKE / DELIVER / INCUR / MAINTAIN, no covenant-family terms, no BORROWER or INTEREST special case. The fix removes a rule; it adds no vocabulary.",
+    "noLength": "no min or max characters, no token thresholds, no short-phrase logic. Two permanent assertions hold both directions: a short all-caps fragment and a 109-character all-caps nominal now receive the same conservative default."
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts - ALLCAPS_FRAME_RE, DETERMINERS and isAllCapsNominalHeading removed along with the branch that used them; replaced by a docstring recording why typography can no longer grant a disposition"
+  ],
+  "results": {
+    "pinnedAttack": "UNACCOUNTED_SOURCE, unaccounted 1, semanticallyComplete false, zero HEADING_OR_LABEL spans",
+    "canary8Waiver": "EACH PARTY HEREBY IRREVOCABLY WAIVES ANY RIGHT TO TRIAL BY JURY -> UNACCOUNTED_SOURCE, still review-blocking",
+    "canary8LiabilityCap": "IN NO EVENT SHALL THE AGGREGATE LIABILITY EXCEED FIVE MILLION DOLLARS -> UNACCOUNTED_SOURCE, still review-blocking",
+    "negativeCovenants": "NEGATIVE COVENANTS -> UNACCOUNTED_SOURCE (was HEADING_OR_LABEL). Reported, not forced. §9 authorises this outcome and §5 forbids preserving the control by weakening the boundary.",
+    "articleViiNegativeCovenants": "ARTICLE VII / NEGATIVE COVENANTS as one fragment -> UNACCOUNTED_SOURCE (was HEADING_OR_LABEL). 'ARTICLE VII' alone remains CITATION_ONLY - that frame is casing-independent.",
+    "genericNonLegal": "COMPANY DELIVERS REPORTS -> UNACCOUNTED_SOURCE. Neither DELIVERS nor REPORTS was added to any list.",
+    "casingIndependentFrames": {
+      "SECTION 7.04 Dispositions.": "HEADING_OR_LABEL (unchanged)",
+      "Section 7.11.": "CITATION_ONLY (unchanged)",
+      "Page 12 of 40": "NON_SEMANTIC_FORMATTING (unchanged)",
+      "\"Consolidated EBITDA\"": "DEFINED_TERM_LABEL (unchanged)"
+    }
+  },
+  "priorCanariesStillHold": {
+    "canary2_S9": "UNACCOUNTED_SOURCE; semanticallyComplete false",
+    "canary2b_I5": "both connectives still COVERED_BY_CONNECTIVE_OWNERSHIP",
+    "canary3_RT8": "blanket span still clipped; RATIO and DAYS still unaccounted",
+    "canary4_RT4": "parent obligations still surface; only the introducing fragment descends",
+    "canary5_S6": "quoted replacement still UNACCOUNTED_SOURCE; quoted term names still DEFINED_TERM_LABEL",
+    "canary6_S8": "both bare basket amounts and the generic 75 still UNACCOUNTED_SOURCE",
+    "canary7": "6.02 and the V4 amount line still UNACCOUNTED_SOURCE; all four numbered captions still HEADING_OR_LABEL; Section 7.11. still CITATION_ONLY",
+    "canary8": "both original attacks still UNACCOUNTED_SOURCE. Its HEADING CONTROL expectation changed as §9 and §12 authorise - a conservative review gap, not a regression.",
+    "canary9": "both modifiers still UNACCOUNTED_SOURCE; pure glue still STRUCTURAL_NOISE"
+  },
+  "testsChanged": {
+    "rewrittenNotPatchedAround": [
+      "general matrix: the ALL-CAPS article-heading entry was removed from the suppressed-noise list - it is no longer a suppressed class",
+      "canary #8 TRUE ALL-CAPS HEADING CONTROL -> rewritten as 'HEADING CONTROLS ARE NOW REVIEW-BLOCKING', asserting UNACCOUNTED_SOURCE and recording that this is the accepted disclosed cost",
+      "canary #8 GENERIC ALL-CAPS PROPOSITION -> the long-nominal assertion now expects UNACCOUNTED_SOURCE; the length point is preserved in both directions",
+      "canary #8 DISCLOSED LIMITATION -> deleted; the limitation is closed, and the closure is asserted by the new canary #10 block"
+    ],
+    "added": 3,
+    "names": [
+      "canary #10 PINNED ATTACK: a determinerless all-caps predication is accountable",
+      "canary #10 GENERIC NON-LEGAL CONTROL: the same shape with no legal vocabulary also surfaces",
+      "canary #10 CASING-INDEPENDENT FRAMES ARE UNAFFECTED: suppression now needs a frame that is not typography"
+    ],
+    "sourceCoverageSuite": "112/112 passing (111 before)",
+    "adversarialSuite": "2400 generated cases, 0 dangerous false negatives, unchanged - no fuzzing changes"
+  },
+  "corpusImpact": {
+    "before": "7 failed | 271 passed (278)",
+    "after": "7 failed | 272 passed (279)",
+    "newlySurfacedCorpusGaps": 0,
+    "failingScenariosUnchanged": ["I23", "I26", "I27"],
+    "measurementCorrection": "An initial sweep appeared to show all 45 scenarios newly surfacing an unaccounted ALL-CAPS article heading. That sweep was wrong and is recorded rather than quietly dropped: it fed scenario.text - the whole synthetic agreement including the ARTICLE VII / NEGATIVE COVENANTS preamble - as the coverage region. The compiler never does that. resolveSourceContext extends to the anchoring unit, so the real operative region begins at the numbered caption ('SECTION 7.06 Investments. ...'), and the ALL-CAPS preamble never reaches computeSourceCoverage at all. Verified directly through buildScenario: I1, I5 and I35 all report unaccounted 0 with no gap re-inventory attempted, and their single HEADING_OR_LABEL span is the numbered caption, which this canary does not touch.",
+    "realRegressions": 0,
+    "groundTruthChanged": false,
+    "note": "I23, I26 and I27 remain out of scope and untouched. No collateral gap was repaired."
+  },
+  "qualityGates": {
+    "typescript": "npx tsc --noEmit - 6 errors, all pre-existing in tests/foundation-audit/*; identical count to the starting SHA; zero in semantic-accountability or source-coverage",
+    "lint": "npx next lint --dir lib --dir tests --dir scripts - 1 error, pre-existing; none in changed files"
+  },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402 quota_for_entity_exceeded, current spend $150.49 / limit $150.00 - unchanged" },
+  "reproductionHarness": "scripts/source-coverage-canary10-reproduce.ts (committed; run with npx tsx)",
+  "canary10Solved": true,
+  "openFollowUp": "Restoring bare ALL-CAPS headings to non-blocking requires real structural heading metadata reaching the coverage layer - the heading-only node signal the structural index already computes. That is future work behind a plumbing change, explicitly NOT another heuristic in this classifier.",
+  "scopeDiscipline": "One residual hole closed. CJK, Cyrillic, spelled-out quantitative values, I23, I26, I27 and all unrelated corpus gaps left untouched. No fuzzing changes, no independent red-team, no real validation, no paid calls, no deploy."
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "VERIFIER_HEALTH_PROBE",
+  "requirement": "One tiny synthetic verification case through the real production verifier path (runAdversarialSemanticReview -> getStageCaller()), same provider/model as the original run (VERCEL_AI_GATEWAY / anthropic/claude-sonnet-5). Required result: the semantic reviewer must successfully return a real semantic-review response with non-zero real provider telemetry.",
+  "probes": [
+    {
+      "name": "Minimal synthetic fixture probe",
+      "script": "scripts/final-phase3-closure-verifier-probe.ts",
+      "fixture": "tests/contract-model/semantic-compiler/test-helpers.ts's own testCompilerInput() - the same fixture the pre-existing synthetic reviewer test suite (tests/contract-model/semantic-verification-reviewer.test.ts) already relies on, wholly synthetic, no Superior language.",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "result": { "failed": false, "failureDetail": null, "findingsCount": 0, "elapsedMs": 7951, "telemetry": { "inputTokens": 4189, "outputTokens": 472, "calculatedCostUsd": 0.013098 } },
+      "verdict": "PASS - real response, real non-zero telemetry, correct model behavior (identified the placeholder fixture as non-substantive and declined to fabricate a finding)."
+    },
+    {
+      "name": "Full real-payload reproduction probe",
+      "script": "scripts/final-phase3-closure-verifier-reproduction.ts",
+      "fixture": "The ACTUAL compilerInput reconstructed byte-for-byte for the frozen prior run's FIRST failing candidate (discovery-candidate:38b229b984193e98fa1586dc, doc-a::2.11) - real Stage 1/3/4 output (structural index + package graph + context retrieval, all deterministic/free), the real preserved Stage 2 discovery candidate, and the real preserved Stage 6 compiled IR (5 rules, 0 definitions). Context bundle: 42 real items, 106,626 real JSON characters, 44 unresolved dependencies.",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "result": { "failed": false, "failureDetail": null, "findingsCount": 1, "elapsedMs": 61772, "telemetry": { "inputTokens": 24834, "outputTokens": 5762, "calculatedCostUsd": 0.107288 } },
+      "verdict": "PASS - the EXACT SAME payload that failed in the original run (immediately after 15 rapid-fire compile calls) succeeded cleanly when re-run in isolation, with real findings and real telemetry. Strong evidence the original failure was a transient condition tied to the specific high-load window, not a deterministic payload-shape or schema defect."
+    }
+  ],
+  "overallVerdict": "PASS - the real production semantic verifier is operational. Both probes (a trivial synthetic case and the actual full-size real Superior payload) succeeded through the SAME production code path, SAME provider, SAME model, with real non-zero telemetry.",
+  "totalRealCostThisSession": 0.120386,
+  "observabilityGapFlaggedNotFixed": "SemanticReviewResult.failureDetail is computed but never persisted into SemanticVerificationResult/stage7-verification-results.json (see 08-verifier-failure-investigation.json) - a real, worth-fixing gap for future diagnosability, but NOT fixed in this session: it lives in lib/contract-model/compiler/semantic-verification/, which must remain byte-identical to the frozen SHA for the Unit C semantic holdout's own validity (see 10-semantic-freeze-proof.json). Recorded as a recommended follow-up, not remediated here."
+}

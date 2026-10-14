@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "14-provider-readiness",
+  "policy": "Mission \u00a718/\u00a719: no paid call until the trust-boundary audit passes AND the provider budget is confirmed.",
+  "probe": "scripts/final-lightweight-unseen-provider-probe.ts - one 16-max-token Gateway call",
+  "checkedAt": "2026-09-02, after the freeze at 5344861",
+  "result": "HTTP 402 quota_for_entity_exceeded",
+  "providerMessage": "API key budget exceeded. Current spend: $150.49, limit: $150.00.",
+  "interpretation": "The credential's account budget is exhausted, unchanged from the previous mission's first and last checks. Paid validation cannot start regardless of the audit outcome.",
+  "paidCallsMadeThisMission": 0,
+  "evidenceOfZeroSpend": "the reported spend is identical ($150.49) to every check across both missions"
+}

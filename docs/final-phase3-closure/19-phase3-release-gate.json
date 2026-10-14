@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PHASE3_RELEASE_GATE",
+  "requirement": "Section 25 - Phase 3 may close if ALL A-N are true.",
+  "checklist": [
+    { "id": "A", "requirement": "generic whitespace classifier tests pass", "result": true, "evidence": "04: 15/15 A1-A15 pass" },
+    { "id": "B", "requirement": "Superior doc-b classification is corrected", "result": true, "evidence": "05: doc-b now AMENDED_AND_RESTATED_AGREEMENT" },
+    { "id": "C", "requirement": "Superior doc-b->doc-a RESTATES relationship is surfaced", "result": true, "evidence": "06: surfaced as a real relationshipCandidate (UNRESOLVED, not absent)" },
+    { "id": "D", "requirement": "no wrong high-confidence core document classification remains", "result": true, "evidence": "05: 3/3 correct" },
+    { "id": "E", "requirement": "no CRITICAL dangerous silence remains in the Superior targeted GT after the classifier fix", "result": true, "evidence": "06: D1's own defining condition (relationship candidate NOT_SPECIFICALLY_SURFACED) no longer holds - a real candidate now exists" },
+    { "id": "F", "requirement": "whole-document supersession behaves correctly where relationships are actually resolved", "result": true, "evidence": "No relationship in the Superior package reaches RESOLVED in this session (doc-b->doc-a UNRESOLVED, doc-c->doc-b REVIEW_REQUIRED) - the operative-state/supersession machinery correctly declines to merge instruments in either case (07), consistent with unchanged, previously-established behavior for packages where relationships DO resolve (CONMED/DSGR/FWRG, untouched by this session)." },
+    { "id": "G", "requirement": "semantic verifier is operational on real model calls", "result": true, "evidence": "09, 14: 10/10 real invocations across Units B and C, 0 failures" },
+    { "id": "H", "requirement": "A1-A6 frozen semantic holdout meets substantive + safety gate", "result": false, "evidence": "12: hard safety MET (0 silently trusted omissions), substantive target NOT MET (0/6 claims reach clean substantive capture; 6/6 show a real, safely-surfaced material gap)" },
+    { "id": "I", "requirement": "B1-B4 frozen qualifier holdout meets qualifier + safety gate", "result": false, "evidence": "13: hard safety MET, qualifier-preservation target NOT MET (0/4 reach the >=90%/3-of-4 bar)" },
+    { "id": "J", "requirement": "14/14 false-credit controls pass", "result": true, "evidence": "15" },
+    { "id": "K", "requirement": "known-package regression clean", "result": true, "evidence": "16: no new regression attributable to Unit A; drift is pre-existing fixture-staleness, unrelated to classification" },
+    { "id": "L", "requirement": "full relevant tests show zero new material regression", "result": true, "evidence": "17: TS/lint unchanged; vitest delta (2 new failures) fully explained as legitimate new fixture directories tripping pre-existing benchmark-contamination guards, not a functional regression" },
+    { "id": "M", "requirement": "no semantic production code was changed/tuned against Superior", "result": true, "evidence": "10: byte-identical to frozen SHA throughout" },
+    { "id": "N", "requirement": "independent audit finds no blocker", "result": true, "evidence": "18" }
+  ],
+  "allTrue": false,
+  "failingItems": ["H", "I"],
+  "conclusion": "PHASE 3 DOES NOT CLOSE. Every item this closure mission specifically set out to test (Units A and B: the classifier defect and the verifier's operational health) is resolved cleanly. The blocker is a DIFFERENT, newly-measured dimension - the A1-A6/B1-B4 frozen semantic holdout's own substantive/qualifier generalization gates - which the mission's own Section 14 correctly anticipated could exist ('these regions the unseen run never compiled') and built Unit C specifically to test for the first time. It is a real result, not a process failure: the classifier fix and verifier health investigation both succeeded exactly as designed; the holdout did its job by finding a genuine, previously-unmeasured, safely-contained semantic-compiler capability gap for dense multi-clause financial definitions."
+}

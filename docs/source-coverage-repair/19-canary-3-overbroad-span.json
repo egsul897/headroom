@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "19-canary-3-overbroad-span",
+  "mission": "SINGLE CANARY #3 - an overbroad inventory span must not discharge semantics it does not represent. No other audit defect addressed.",
+  "startingSha": "2969de969cdd744423511deb417f4dbea375d222",
+  "fixture": {
+    "source": "The Borrower shall not incur Indebtedness exceeding $10,000,000. The Borrower shall maintain a Leverage Ratio of not more than 4.00 to 1.00 as of the last day of each fiscal quarter. The cure period is 30 days.",
+    "inventory": "ONE item, materiality CRITICAL, role OTHER, span 0-210 (the whole region), proposition \"this section contains provisions\"",
+    "reproduced": true,
+    "before": {
+      "coverageSpans": "one COVERED_BY_INVENTORY span over the entire region",
+      "unaccountedSource": 0,
+      "uninventoriedValues": 0,
+      "inventoryStatus": "INVENTORY_OK",
+      "itemDisposition": "REPRESENTED",
+      "semanticallyComplete": true,
+      "reasons": []
+    },
+    "note": "the item's three quantitative values are auto-attached by Pass A normalisation, so an IR carrying MONEY 10000000, RATIO 4 and a condition naming 30 days reconciles it REPRESENTED - exactly the audit's harness"
+  },
+  "earliestResponsibleBranch": "computeSourceCoverage's mask fill in lib/contract-model/compiler/semantic-accountability/source-coverage.ts - `mask.fill(1, s.charStart, s.charEnd)`",
+  "rootCause": "Raw character overlap was treated as semantic coverage. A span is evidence about the ONE proposition its item represents; the mask made it evidence about everything inside the same character range, and once filled nothing downstream could tell the difference. Every later layer - unaccounted spans, unaccounted values, reconciliation, completeness - inherited that conflation.",
+  "ruleChosen": {
+    "name": "coverage credit is clipped to the independent structural segment the span STARTS in (mission \u00a75 option C, with \u00a75 option D's provenance split)",
+    "independentBoundary": "a clause terminator (. ; : ! ?) followed by whitespace, or a line break - deliberately NARROWER than the unit segmenter, which also splits at commas, dashes and enumerators because those separate the PARTS of one proposition, not one proposition from the next",
+    "provenancePreserved": "the item keeps its full source span in the frozen inventory; only coverage CREDIT is clipped",
+    "conservativeDefault": "an item spanning 'Clause A. Clause B. Clause C.' credits A only; B and C stay accountable because there is no deterministic basis for believing the item represents them",
+    "whatItIsNot": [
+      "no proposition-length or token-ratio threshold",
+      "no covenant-family keyword list",
+      "no attempt to interpret legal prose or compare proposition text to source"
+    ]
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts (independentSegmentBounds, clipCreditToStartSegment, applied at the mask fill)"
+  ],
+  "attackAfter": {
+    "unaccountedSource": 1,
+    "unaccountedExcerpt": "The Borrower shall maintain a Leverage Ratio ... The cure period is 30 days.",
+    "uninventoriedValues": 2,
+    "kinds": [
+      "RATIO",
+      "DAYS"
+    ],
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "itemDisposition": "REPRESENTED (unchanged - Pass B is untouched)",
+    "semanticallyComplete": false
+  },
+  "legitimateBroadSpanControl": {
+    "fixture": "\"If the Total Leverage Ratio exceeds 4.00 to 1.00, such amount shall not exceed $20,000,000.\" anchored by ONE item",
+    "result": "fully covered, 0 unaccounted, 0 unaccounted values - a comma is not an independent-proposition boundary, so genuine broad citations are not prohibited"
+  },
+  "splitClauseControl": {
+    "fixture": "\"Clause A states the first obligation. Clause B states the second obligation.\" with one item spanning both",
+    "result": "Clause A COVERED_BY_INVENTORY, Clause B UNACCOUNTED_SOURCE",
+    "note": "wholly generic - no covenant-family semantics"
+  },
+  "previousCanaries": {
+    "canary2_S9": "UNCHANGED - 'except as provided in Section 6.02,' stays UNACCOUNTED_SOURCE, INVENTORY_COVERAGE_GAP, semanticallyComplete false",
+    "canary2b_I5": "UNCHANGED - both connectives stay COVERED_BY_CONNECTIVE_OWNERSHIP, 0 gaps"
+  },
+  "corpusImpact": {
+    "sourceCoverageSuite": "90/90",
+    "before": "256 / 259 (6 files)",
+    "after": "259 / 262 (6 files; +3 tests are the canary #3 attack, legitimate-broad-span and split-clause tests)",
+    "newlySurfacedCorpusGaps": 0,
+    "remainingFailures": [
+      {
+        "test": "Pass A corpus - I27 cure right",
+        "class": "EXPECTED_REVIEW",
+        "why": "the bare 'Notwithstanding' override operator, unchanged since canary #2B and deliberately left as a review gap"
+      },
+      {
+        "test": "Pass B/C corpus - I27 cure right",
+        "class": "EXPECTED_REVIEW",
+        "why": "the same single gap through reconciliation"
+      },
+      {
+        "test": "corpus-wide aggregate",
+        "class": "EXPECTED_REVIEW",
+        "why": "fails solely on I27"
+      }
+    ],
+    "realRegressions": 0
+  },
+  "testsUpdatedNotPatchedAround": [
+    {
+      "test": "source-coverage: 'a defined term inventoried inside the expansion region discharges it without any link'",
+      "why": "it asserted that ONE span over a definition AND its proviso discharges both - the exact shape canary #3 forbids. Rewritten with one item per independent proposition; its actual subject (a region discharged without an ownership link) is unchanged."
+    },
+    {
+      "test": "source-coverage: 'a span reaching beyond the region is clamped'",
+      "why": "same shape; the fixture is now a single sentence so the test measures the region-length clamp it was written for."
+    },
+    {
+      "test": "pass-a-stability: 'a fully anchored region surfaces nothing'",
+      "why": "same shape; now anchors one span per independent proposition."
+    }
+  ],
+  "qualityGates": {
+    "typescript": "6 pre-existing errors, 0 new",
+    "lint": "clean"
+  },
+  "paidCallsMade": 0,
+  "canary3Solved": true
+}

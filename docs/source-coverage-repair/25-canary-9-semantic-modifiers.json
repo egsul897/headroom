@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "25-canary-9-semantic-modifiers",
+  "mission": "SINGLE CANARY #9 - semantic modifiers must not disappear as structural noise",
+  "startingSha": "77c6ffcc74230e80730ec2641a45dd8810fce705",
+  "failureFixed": "Short substantive modifiers were classified STRUCTURAL_NOISE because every one of their words sits in the closed class, and disappeared from source accountability even though they materially change the meaning of the surrounding obligation.",
+  "provenance": "independent red-team audit, finding 3, scenarios S3 and S4 (docs/source-coverage-repair/13-independent-red-team-audit.json)",
+  "fixtureA": {
+    "fullSource": "The Borrowers shall repay the Obligations, jointly and severally, on the Maturity Date.",
+    "modifierFragment": "jointly and severally,",
+    "segmentation": ["The Borrowers shall repay the Obligations, ", "jointly and severally, ", "on the Maturity Date."],
+    "inventorySpans": "two CRITICAL items anchoring the first and third units. The modifier is anchored by nothing.",
+    "extractedQuantitativeValues": "none",
+    "before": { "disposition": "STRUCTURAL_NOISE", "unaccountedSource": 0, "inventoryStatus": "INVENTORY_OK", "semanticallyComplete": true },
+    "after": { "disposition": "UNACCOUNTED_SOURCE", "unaccountedSource": 1, "inventoryStatus": "INVENTORY_COVERAGE_GAP", "semanticallyComplete": false },
+    "whatWasLost": "joint-and-several liability silently converted to several liability"
+  },
+  "fixtureB": {
+    "fullSource": "The Borrower shall not, directly or indirectly, create any Lien upon the Collateral.",
+    "modifierFragment": "directly or indirectly,",
+    "segmentation": ["The Borrower shall not, ", "directly or indirectly, ", "create any Lien upon the Collateral."],
+    "inventorySpans": "two CRITICAL items anchoring the first and third units. The modifier is anchored by nothing.",
+    "extractedQuantitativeValues": "none",
+    "before": { "disposition": "STRUCTURAL_NOISE", "unaccountedSource": 0, "inventoryStatus": "INVENTORY_OK", "semanticallyComplete": true },
+    "after": { "disposition": "UNACCOUNTED_SOURCE", "unaccountedSource": 1 },
+    "whatWasLost": "anti-evasion language silently deleted"
+  },
+  "reproduced": "both, verbatim, on the starting SHA",
+  "earliestResponsibleBranch": {
+    "function": "classifyUnaccountedFragment",
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "branch": "the STRUCTURAL_NOISE test - contentWords(trimmed).length === 0",
+    "sharedRootCause": true,
+    "evidence": "Both fixtures hit the same first branch for the same reason. segmentSourceUnits splits at commas, isolating each modifier as its own unit; the extractor finds no values; no inventory span covers it; contentWords filters every word as a FUNCTION_WORD because 'jointly', 'severally', 'directly' and 'indirectly' all sit in the adverbial-adjunct block of that set; the fragment scores zero content words and is dismissed. One mechanism, one branch, one fix - §3's condition for proceeding is met."
+  },
+  "rootCause": "The adjunct block of FUNCTION_WORDS carried this comment: 'An adjunct modifies a proposition and cannot head one; a residue made only of these sits beside text an item already anchors.' The first half is true; the second half does not follow from it. MODIFYING A PROPOSITION IS CHANGING IT. Closed-class composition was being treated as proof of semantic emptiness - the same assumption that produced canary #2, now falsified a second time on a different subset of the same list.",
+  "genericRuleImplemented": {
+    "invariant": "GRAMMATICAL SHORTNESS DOES NOT MAKE TEXT NON-SEMANTIC. Closed-class composition alone cannot prove structural noise; unknown stays UNACCOUNTED_SOURCE.",
+    "mechanism": "ADVERBIAL_ADJUNCTS is named as an explicit partition of FUNCTION_WORDS - the adjunct block the file already grouped and commented as such. A residue carrying any adjunct can no longer be dismissed as glue and falls through to UNACCOUNTED_SOURCE with a modifier-specific reason.",
+    "classDistinction": {
+      "A_inheritsCoverage": "pure syntactic glue - connectives, determiners, prepositions, enumerators, arithmetic operators. These join or introduce; they carry no independent modifier content. 'and', 'or', 'of the', '(a)' are unchanged.",
+      "B_staysAccountable": "standalone modifier content - words that change scope ('solely', 'only'), allocation ('jointly', 'severally'), directness ('directly', 'indirectly'), distribution ('collectively', 'individually', 'respectively') or anaphoric reach ('foregoing', 'aforesaid', 'above', 'below') of whatever they attach to."
+    },
+    "ownershipModelInvestigated": "§6 asked whether the canary #2B ownership pattern solves this class. It does not need to, and the investigation is recorded rather than skipped: an adjunct introduces nothing, so isPureClauseIntroducer already declines it and connective ownership can never fire on it; and a modifier that IS inside a represented span never becomes a residue at all, because the coverage mask marks it COVERED_BY_INVENTORY. Span geometry already answers the ownership question. The only thing wrongly granting coverage was the closed-class noise branch, and that is what was fixed.",
+    "notAPhraseBlacklist": "The strings 'jointly and severally' and 'directly or indirectly' appear nowhere in the implementation. The rule is a word class, which is why it also catches the generic control 'both individually and collectively' - a phrase nobody hardcoded and which contains no legal vocabulary.",
+    "blastRadiusContained": "contentWords keeps its meaning everywhere else, so isPureClauseIntroducer and applyConnectiveOwnership (canary #2B) are untouched; the adjuncts also stay inside FUNCTION_WORDS so the nominal-label tests of canaries #5, #7 and #8 are unchanged. The adjunct check is confined to the one branch that was wrong.",
+    "ordering": "the explicit modifier branch sits with the unexplained-digit branch at the end, after every positive structural rule has had first refusal - the ordering lesson from canary #6."
+  },
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts - ADVERBIAL_ADJUNCTS extracted as a named partition of FUNCTION_WORDS; the STRUCTURAL_NOISE branch now declines when a residue carries one, with an explicit modifier reason at the end of the classifier"
+  ],
+  "controls": {
+    "pureStructuralGlue": {
+      "fixtures": ["and", "or", "of the", "(a)", "; :,"],
+      "result": "the first four still STRUCTURAL_NOISE, the last still PUNCTUATION_OR_DELIMITER - unchanged, non-blocking"
+    },
+    "genericModifier": {
+      "fixture": "The parties are responsible, both individually and collectively, for the outcome.",
+      "before": "STRUCTURAL_NOISE, 0 unaccounted",
+      "after": "UNACCOUNTED_SOURCE, 1 unaccounted",
+      "alsoAsserted": "'solely,' and 'respectively,' surface by the same class rule, not by phrase match"
+    }
+  },
+  "priorCanariesStillHold": {
+    "canary2_S9": "\"except as provided in Section 6.02,\" still UNACCOUNTED_SOURCE; semanticallyComplete false",
+    "canary2b_I5": "connective ownership correct - both I5 connectives still COVERED_BY_CONNECTIVE_OWNERSHIP (the reason contentWords was deliberately left alone)",
+    "canary3_RT8": "blanket span still clipped; RATIO and DAYS still unaccounted",
+    "canary4_RT4": "parent obligations still surface; only the introducing fragment descends; both controls unchanged",
+    "canary5_S6": "quoted replacement still UNACCOUNTED_SOURCE; quoted term names still DEFINED_TERM_LABEL",
+    "canary6_S8": "both bare basket amounts still UNACCOUNTED_SOURCE; generic 75 still surfaced",
+    "canary7": "6.02 and the V4 amount line still UNACCOUNTED_SOURCE; all four numbered captions still HEADING_OR_LABEL; Section 7.11. still CITATION_ONLY",
+    "canary8": "waiver and liability cap still UNACCOUNTED_SOURCE; all four all-caps headings still HEADING_OR_LABEL; the disclosed limitation still pinned"
+  },
+  "tests": {
+    "added": 4,
+    "names": [
+      "canary #9 FIXTURE A: 'jointly and severally' is accountable, not structural noise",
+      "canary #9 FIXTURE B: 'directly or indirectly' is accountable, not structural noise",
+      "canary #9 PURE GLUE CONTROL: a connective with no independent modifier content is still non-blocking",
+      "canary #9 GENERIC MODIFIER: no legal vocabulary and no phrase list - the rule is the word class"
+    ],
+    "sourceCoverageSuite": "111/111 passing (107 before, +4 new)",
+    "adversarialSuite": "2400 generated cases, 0 dangerous false negatives, unchanged - no new fuzzing added",
+    "existingTestsAltered": []
+  },
+  "corpusImpact": {
+    "before": "5 failed | 265 passed (270)",
+    "after": "7 failed | 271 passed (278)",
+    "delta": "+8 tests (+4 new canary #9 tests all green, +4 from canary #8 already counted in the prior artifact's after-figure); +2 failures, both the same newly surfaced scenario I23 counted once in pass-a-inventory and once in pass-bc-reconciliation",
+    "newlySurfacedCorpusGaps": 1,
+    "gaps": [
+      {
+        "scenarioId": "I23",
+        "excerpt": "Solely",
+        "classification": "PLAUSIBLE_REVIEW",
+        "reasoning": "I23's source is 'SECTION 7.10 Springing Financial Covenant. Solely if Revolving Exposure exceeds 35% ..., the Borrower will not permit the Total Leverage Ratio ... to exceed 5.00 to 1.00.' The trigger item's excerpt begins at 'if', so 'Solely' falls outside every inventoried span, and Pass B's rule carries one AMOUNT_THRESHOLD condition with no exclusivity marker. FOR: 'solely' is a scope-limiting modifier - it says the covenant springs under that condition and no other - and it is genuinely unrepresented, which is exactly the class this canary targets. AGAINST: with a single condition in the composition, 'if X' and 'solely if X' compile to the same rule shape, so the practical semantic delta here is small; and the clean repair is to extend I23's ground-truth excerpt by one word to include it, which would make the gap vanish without weakening the detector. A reviewer could defensibly go either way, so PLAUSIBLE_REVIEW rather than a claimed safety win.",
+        "groundTruthChanged": false,
+        "repaired": false,
+        "note": "The mission forbids repairing collateral gaps and forbids editing ground truth to restore green. I23's excerpt stays as it is and the two resulting failures stay red."
+      }
+    ],
+    "preexistingFailures": [
+      { "scenarioId": "I26", "status": "out of scope by instruction; unchanged since canary #4; TRUE_SAFETY_IMPROVEMENT in artifact 20" },
+      { "scenarioId": "I27", "status": "out of scope by instruction; unchanged since canary #2B; OBVIOUS_FALSE_GAP in artifact 18" }
+    ],
+    "realRegressions": 0,
+    "groundTruthChanged": false
+  },
+  "qualityGates": {
+    "typescript": "npx tsc --noEmit - 6 errors, all pre-existing in tests/foundation-audit/*; identical count to the starting SHA; zero in semantic-accountability or source-coverage",
+    "lint": "npx next lint --dir lib --dir tests --dir scripts - 1 error, pre-existing (@typescript-eslint/no-var-requires rule definition missing in tests/foundation-audit/amendment-operative-state-adversarial.test.ts); none in changed files"
+  },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402 quota_for_entity_exceeded, current spend $150.49 / limit $150.00 - unchanged from before this mission" },
+  "reproductionHarness": "scripts/source-coverage-canary9-reproduce.ts (committed; run with npx tsx)",
+  "canary9Solved": true,
+  "scopeDiscipline": "One failure class fixed, both its fixtures sharing one mechanism. CJK, Cyrillic, spelled-out quantitative values, the residual determinerless ALL-CAPS predication hole, I26 and I27 all left untouched as instructed. No collateral gap repaired, no ground truth edited, no new fuzzing, no broad red-team, no paid validation."
+}

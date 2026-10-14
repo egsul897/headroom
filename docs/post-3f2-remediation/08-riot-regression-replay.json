@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RIOT_REGRESSION_REPLAY_CONSOLIDATED",
+  "evidenceCategory": "RIOT_REGRESSION_EVIDENCE",
+  "warningOnEvidenceCategoryBoundaries": "This entire artifact is RIOT REGRESSION EVIDENCE - it replays the FROZEN, ALREADY-SCORED Phase 3F.2 Riot package as a regression check on the two remediated capabilities. It is NOT new/unseen validation evidence and must never be read as evidence of independent generalization to a genuinely new package (see mission Section 31 - a separate, lightweight, genuinely-unseen confirmation remains required before Phase 4, and is explicitly NOT performed in this session).",
+  "governingConstraints": "Riot ground truth, source documents, and scoring thresholds are immutable and were NOT touched. No claim was re-adjudicated. No threshold was altered. No Riot-specific code was written anywhere in Unit A or Unit B (verified in 10-independent-code-audit.json). Only 3 semantic-compiler candidates were recompiled (cost $1.689 total, forecast $1.05-ish, both well under the $15 ceiling) plus one corrective recompile after discovering the originally-cited candidate ID for RGT-C-030 pointed at a different section than its own architecture-decision citation claimed (see below) - never a full 38-candidate re-run.",
+  "costActual": {
+    "originalThreeCandidates": 0.8359,
+    "correctiveRecompile": 0.853008,
+    "totalUsd": 1.688908,
+    "budgetCeilingUsd": 15
+  },
+  "previouslyOmittedDefinitionsResult": {
+    "RGT_C_008_FinalMaturityDate": {
+      "before": "Entirely absent from the definitions array on all 3 previously-compiled candidates.",
+      "after": "CORRECTLY EXTRACTED - 'Final Maturity Date' and 'Initial Final Maturity Date' both present in the recompiled discovery-candidate:b33c341e3169731f00d02245 (doc-a Section 1.01), alongside 122 other definitions.",
+      "disposition": "CORRECTLY_EXTRACTED"
+    },
+    "RGT_C_029_CollateralDocuments_docA": {
+      "before": "Entirely absent from the same 3 candidates.",
+      "after": "CORRECTLY EXTRACTED - 'Collateral Documents' present in the same recompiled candidate.",
+      "disposition": "CORRECTLY_EXTRACTED"
+    },
+    "RGT_C_030_docC_ThreeLinkedDefinitions": {
+      "before": "Only 'Second Security Confirmation' extracted; 'Collateral Documents' and 'Security Confirmation' missing.",
+      "correctionNote": "The candidate ID cited in docs/post-3f2-generalization-architecture-decision.json section 2 for this claim (discovery-candidate:3b57707452b7d665665ea2f5) was recompiled first and turned out, on inspection of its actual frozen normalizedSourceRef, to be doc-c Section 3.04(c)(i) (a closing-condition RULE referencing these terms), not the doc-c Section 1.01 DEFINITIONS article itself - an imprecision in the architecture decision's own citation, not a defect in this remediation. The actual definitions candidate was identified by searching the frozen stage2 discovery output for doc-c's own Section 1.01 (discovery-candidate:ae1291f397735dffa79d3f52) and recompiled.",
+      "after": "CORRECTLY EXTRACTED - 'Collateral Documents', 'Security Confirmation', AND 'Second Security Confirmation' all three present among 129 total definitions in the recompiled discovery-candidate:ae1291f397735dffa79d3f52 (doc-c Section 1.01).",
+      "disposition": "CORRECTLY_EXTRACTED"
+    },
+    "deterministicCompletenessCheckStatus": "Fired (fired: false / null) on all recompiled candidates - no further suspected omissions detected beyond what the model itself extracted, consistent with the exhaustive multi-definition extraction observed."
+  },
+  "qualifierTruncationResult": {
+    "RGT_C_022_DayCountFraction": {
+      "before": "The compiled excerpt truncated with an internal ellipsis exactly at the required 'or zero if there is no such period' qualifier and the leap/no-exact-anniversary proviso; neither branch encoded in the structured expression.",
+      "after": "The zero-floor qualifier is now captured directly in the calculationExpression's numerator inputName description ('number of calendar days from the early repayment/prepayment date to the six-month anniversary of the first Drawdown Date (zero if none)'). The full leap/no-exact-anniversary proviso is not separately branched in the structured expression - this remains an inherent limitation of the compiler's opaque-numerator modeling choice for this term, not a truncation defect (toolCallLogTruncationFlags recorded zero truncated tool results for this compile - the TRUNCATED_EVIDENCE_USED failure reason never fired).",
+      "disposition": "IMPROVED_NO_LONGER_SILENTLY_TRUNCATED - the specific silent-ellipsis truncation artifact originally documented is resolved; a narrower residual limitation (full proviso branching) is disclosed rather than claimed fixed."
+    },
+    "truncationSignalMechanism": "Verified functioning as designed: toolCallLogTruncationFlags was captured for every recompiled candidate and reported empty (no truncated tool results) in each case - consistent with the operativeSourceText being supplied unbounded (per caller.ts) and no follow-up tool call in these specific compiles hitting the 4000-char MAX_TEXT_RESULT_CHARS ceiling."
+  },
+  "packageGraphAndOperativeStateResult": {
+    "seeAlso": "08b-riot-package-graph-replay.json for the full detail - summarized here for the consolidated report.",
+    "docBTarget": "Resolves to doc-c (INCORRECT target - true target is doc-a), REVIEW_REQUIRED/0.55 confidence. Root cause is an unrelated, pre-existing, out-of-scope document-classifier.ts misclassification of doc-a as COMPLIANCE_CERTIFICATE - NOT a Unit B1/B2 defect. Unit B1's own regex fix correctly detects this reference (previously zero references detected at all).",
+    "docCTarget": "Resolves to doc-b (CORRECT), REVIEW_REQUIRED/0.7 confidence, via Unit B2's chronological-predecessor date-ambiguity safeguard - working exactly as designed on real evidence.",
+    "operativeDocument": "REVIEW_REQUIRED (cycle detected) for doc-b/doc-c as base; NOT_APPLICABLE for doc-a as base. Never confidently resolves to any single document, because the document-classifier defect produces a genuine cycle in the restatement graph (doc-b claims to restate doc-c and doc-c claims to restate doc-b) - Unit B4's cycle-detection safeguard correctly refuses to guess.",
+    "predecessorChain": "N/A - no chain is ever asserted, since the graph is never resolved.",
+    "reviewRequiredConditions": "Both restatement edges are REVIEW_REQUIRED (never RESOLVED) at the relationship-candidate level; the whole-document operativeDocument concept is REVIEW_REQUIRED due to the detected cycle. Every relevant status in this replay correctly stays at or below REVIEW_REQUIRED - none is falsely RESOLVED."
+  },
+  "expectedButNotHardcodedOutcomeDisclosure": "Mission Section 26 flags that doc-c resolving as the current operative agreement is an EXPECTED (not required, not hardcoded) outcome if justified by unchanged source evidence. On the real Riot documents, this expectation is NOT met - the operative document does not resolve at all, due to the independent document-classifier defect described above. This is disclosed honestly rather than engineered to match the expectation; no code in this remediation was tuned toward Riot-specific evidence to force a particular outcome (verified via 10-independent-code-audit.json's Riot-string grep).",
+  "deletedCarveOutSafetyCheck": {
+    "candidate": "discovery-candidate:5913769a32bdcaf9212050ca (doc-a Section 6.01(d) EXCEPTION carve-out)",
+    "result": "The carve-out is compiled from doc-a as before (REVIEW_REQUIRED, its own dangling Section 5.02(g) cross-reference correctly flagged as unresolvable rather than guessed). Since the operative-document computation never resolves any document as currently operative for this instrument (see above), this historical/superseded provision can never be presented as part of a confidently-asserted CURRENT operative state - the hard safety requirement (historical/deleted language must never become current trusted truth) is satisfied, trivially but genuinely, because nothing is ever asserted current at all.",
+    "preExistingNodeSupersessionMechanism": "buildNodeSupersessionIndex/getNodeSupersessionStatus (Phase 3F.1-era, unmodified by Unit A/B) remains fully intact per the full regression suite - this remediation neither weakened nor bypassed it.",
+    "verdict": "PASS - no resurrection of deleted/historical language as current trusted truth."
+  },
+  "falseCreditControlsResult": "14/14 PASS - see 09-false-credit-controls.json (unaffected by this replay, run separately against the unchanged production evaluator/false-credit logic)."
+}

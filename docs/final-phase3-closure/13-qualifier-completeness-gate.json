@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "QUALIFIER_COMPLETENESS_GATE",
+  "requirement": "For B1-B4, evaluate exact material qualifiers (caps, floors, provisos, conditions, alternative branches, quantitative thresholds, temporal conditions). Hard: 0 silently trusted material qualifier omissions. Target: >= 90% qualifier preservation on evaluable claims (denominator 4: prefer 4/4; 3/4 acceptable only if the 1 miss is explicitly safe-failed, not trusted complete).",
+  "perClaimResults": [
+    {
+      "claimId": "B1",
+      "materiality": "MATERIAL",
+      "expectedQualifier": "Applicable Liquidity Threshold - the specific dollar-threshold formula.",
+      "region": "applicable-liquidity-rate (shared with B2)",
+      "compiledCapture": "Definition object produced with dependsOnTerms correctly identifying Super-Senior Revolving Facility / Refinancing Indebtedness / RCF Increase Amount as inputs, but 0 rules - the actual numeric threshold structure was not captured as computable IR.",
+      "trustStatus": "NOT SILENTLY TRUSTED - verify status MATERIAL_DISCREPANCY includes a specific finding on the maximum-committed-amount threshold text.",
+      "outcome": "QUALIFIER_MISS_SAFELY_SURFACED"
+    },
+    {
+      "claimId": "B2",
+      "materiality": "MATERIAL",
+      "expectedQualifier": "Applicable Rate - the multi-tier pricing-grid basis-point/percentage thresholds keyed to Secured Net Leverage Ratio.",
+      "region": "applicable-liquidity-rate (shared with B1)",
+      "compiledCapture": "0 rules for the pricing grid itself.",
+      "trustStatus": "NOT SILENTLY TRUSTED - of the region's 27 real verifier findings, at least 10 are MISSING_BASKET findings quoting SPECIFIC real numeric values from the source (8.00%, 7.00%, 8.00%, 7.00%, 7.75%, 6.75%, 7.50%, 6.50%, plus 1.00-to-1.00 and 0.50-to-1.00 leverage-ratio tier breakpoints) that the compiled IR omitted - a precise, itemized, real safe-failure disclosure, not a vague catch-all.",
+      "outcome": "QUALIFIER_MISS_SAFELY_SURFACED_WITH_DETAILED_ITEMIZATION"
+    },
+    {
+      "claimId": "B3",
+      "materiality": "MATERIAL",
+      "expectedQualifier": "Consolidated EBITDA's internal 10% addback cap (clauses (f)/(m)/(n) combined addbacks capped at 10% of Consolidated EBITDA per Test Period) and the separate 15%-of-Acquired-EBITDA run-rate-synergies cap in clause (l).",
+      "region": "ebitda (shared with A1)",
+      "compiledCapture": "Same region as A1 - calculationExpression tagged UNSUPPORTED, 0 rules; the 10%/15% caps are NOT present anywhere in the compiled IR.",
+      "trustStatus": "NOT SILENTLY TRUSTED - the SAME MATERIAL_DISCREPANCY verify result covering A1 also covers B3's own qualifier gap (the verifier's finding explicitly calls out that 'zero of the 8 conditional/proviso markers in the source' were captured, naming the discretionary add-back/cash-payment-clawback proviso as one specific example).",
+      "outcome": "QUALIFIER_MISS_SAFELY_SURFACED"
+    },
+    {
+      "claimId": "B4",
+      "materiality": "CRITICAL",
+      "expectedQualifier": "Section 2.05(2)(c)'s dual-threshold cash-sweep-with-cure structure ($50 million / $115 million Maintenance Liquidity thresholds and the Deficiency Amount cure mechanism).",
+      "region": "cash-sweep-cure",
+      "compiledCapture": "2 REAL RULES produced with real capacityExpression trees (MIN and SUBTRACT operations) - the ONLY region in the entire holdout where the compiler produced actual computed rule structure rather than an UNSUPPORTED definition. Both the Deficiency Amount and Maintenance Liquidity definitions were compiled with real dependsOnTerms.",
+      "trustStatus": "NOT SILENTLY TRUSTED, AND PARTIALLY SUBSTANTIVE - verify status MATERIAL_DISCREPANCY, but with 4 specific MISSING_BASKET findings quoting the EXACT two real dollar thresholds ($50 million, $115 million, each flagged twice from different angles) the compiler's 2 rules did not fully capture, alongside 3 OTHER_MATERIAL_SEMANTIC_DISCREPANCY findings on the cure mechanism's own conditional logic.",
+      "outcome": "PARTIAL_SUBSTANTIVE_CAPTURE_WITH_REMAINING_QUALIFIER_MISS_SAFELY_SURFACED"
+    }
+  ],
+  "hardSafetyRequirement": {
+    "result": "MET - 0/4 claims show a silently trusted material qualifier omission. Every gap in B1-B4 was explicitly, specifically flagged by the independent verifier with real, itemized findings (frequently quoting the exact missing dollar/percentage figures) - never presented as complete."
+  },
+  "qualifierPreservationRate": {
+    "result": "0/4 (0%) reached a clean VERIFIED status with qualifiers fully preserved; B4 shows meaningfully MORE substantive capture (real rules with real capacityExpression trees) than B1/B2/B3 (which produced only definition objects with 0 rules), but even B4's real rules did not capture both dollar thresholds.",
+    "hardRequirementMet": false,
+    "conclusion": "FAILS the mission's own >=90% qualifier-preservation target and the '3/4 acceptable' small-denominator alternative (0/4, not 3/4, reached even non-material-only residual gaps). Same underlying root cause as the A1-A6 definition-exhaustiveness gate: a real semantic-compiler generalization limit for complex multi-clause financial provisions, most acute for pure Article I definitions (B1/B2/B3) and less severe (but still present) for an actual operative covenant provision (B4)."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "KNOWN_PACKAGE_REGRESSION",
+  "evidenceCategory": "KNOWN_PACKAGE_REGRESSION_EVIDENCE",
+  "packages": ["FWRG", "LSB", "CONMED", "DSGR"],
+  "method": "scripts/phase-3f1-6-known-package-regression.ts run twice at controlled commits in isolated environments: once in a temporary git worktree at the pre-fix commit 16a0b06, once at this session's own post-fix commit (c47fd35), both against the same real Postgres database and preserved fixture evidence. Raw JSON output from each run captured to /tmp before either run's own side-effect (it overwrites docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json) was reverted via git checkout --.",
+  "importantMethodologyNote": "An initial comparison against the ALREADY-COMMITTED copy of 26-known-package-regression.json (rather than a controlled pre-fix worktree rerun) showed large, alarming-looking differences (e.g. DSGR totalMaterialSemanticUnits 7349 vs 7517). This is a RED HERRING, not a regression: the committed file's own header (reproducibilityAndFixtureFreshnessFinding) already discloses that this script's own numbers depend on the exact git commit some of its preserved-evidence fixtures were regenerated at (an unrelated, pre-existing, already-disclosed limitation of scripts/phase-3f1-dsgr-remediation-regression.ts and scripts/phase-2g-rerun-conmed.ts, both invoked internally by this script) - the committed file reflects an EARLIER commit in this branch's history than either 16a0b06 or this session's own HEAD. The correct, controlled comparison is pre-fix-worktree vs post-fix-worktree at the SAME two adjacent commits, which is what this artifact actually reports.",
+  "result": {
+    "diffBetweenPreFixWorktreeRunAndPostFixRun": "Byte-identical except for the `generatedAt` timestamp field and one non-semantic JSON key-ordering difference (MISSING_REQUIRED_SEMANTIC_DIMENSION/COMPILATION_FAILURE key order swapped in one object - identical key set, identical values).",
+    "fwrg": "IDENTICAL (totalMaterialSemanticUnits 771, materialTierUnits 439, dangerousUnaccountedCount 439, claimReviewItemsWouldBeCreated 439 - unchanged).",
+    "lsb": "IDENTICAL (totalMaterialSemanticUnits 122, materialTierUnits 84, dangerousUnaccountedCount 84, claimReviewItemsWouldBeCreated 84, amendmentIndependentVerificationAllPassed true - unchanged).",
+    "conmed": "NOT_APPLICABLE in both runs (no semantic-coverage run exists for CONMED - unchanged, pre-existing, disclosed gap).",
+    "dsgr": "IDENTICAL (totalMaterialSemanticUnits 7517, materialTierUnits 2766, dangerousUnaccountedCount 2762, claimReviewItemsWouldBeCreated 2551, materialUnitsWithoutClaimReviewItem 215 - unchanged in both runs)."
+  },
+  "dangerousSilentFailureCheckIdentical": true,
+  "conclusion": "Byte-identical known-package regression results before and after this session's fix (particular attention paid to ordinary amendments, A&R agreements, provision-specific supersession, source trace, and semantic trust per this mission's own Section 26 - none of these known packages exercise a RESOLVED whole-document restatement chain in a way this fix's own gate (operativeDocument.status===\"RESOLVED\" AND baseDocumentId in predecessorDocumentIds) would ever fire for, so zero behavioral change is the expected, correct result, not merely a coincidence). No tuning of any kind was performed to any known package."
+}

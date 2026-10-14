@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "DEFINITION_EXHAUSTIVENESS_GATE",
+  "requirement": "For A1-A6: expected definitions; compiled definitions; material sibling omissions; deterministic completeness diagnostics; final trust/review status. Hard: 0 silently trusted material sibling omissions. Target: substantive semantic credit >= 85%, OR (small denominator) no more than 1 substantive material miss among A1-A6, every miss safely surfaced.",
+  "perClaimResults": [
+    {
+      "claimId": "A1",
+      "materiality": "CRITICAL",
+      "expected": "Consolidated Net Income + 16 lettered addback clauses (a)-(p) + 4 lettered subtraction clauses (a)-(d).",
+      "compiled": "1 definition object produced; calculationExpression tagged kind=UNSUPPORTED ('ADD operands do not type-check together'); 0 of the 16 addback clauses and 0 of the 4 subtraction clauses represented as computable structure.",
+      "trustStatus": "NOT SILENTLY TRUSTED - definition.sufficiency was self-labeled PARTIAL, but the independent verifier caught this as an internal inconsistency (near-total absence of computed structure mislabeled as merely 'partial') and returned MATERIAL_DISCREPANCY with a specific, detailed finding naming the gap.",
+      "outcome": "SUBSTANTIVE_MISS_SAFELY_SURFACED"
+    },
+    {
+      "claimId": "A2",
+      "materiality": "MATERIAL",
+      "expected": "Consolidated Net Income with its own exclusion/addback clauses.",
+      "compiled": "1 definition object; 0 rules.",
+      "trustStatus": "NOT SILENTLY TRUSTED - verify status VERIFICATION_INCOMPLETE with 5 real findings including a MISSING_BASKET on a specific $5,000,000 threshold.",
+      "outcome": "SUBSTANTIVE_MISS_SAFELY_SURFACED"
+    },
+    {
+      "claimId": "A3",
+      "materiality": "MATERIAL",
+      "expected": "Consolidated Interest Expense definition.",
+      "compiled": "2 definition objects (Consolidated Interest Expense + an adjacent Consolidated Maintenance EBITDA); 0 rules.",
+      "trustStatus": "NOT SILENTLY TRUSTED - verify status MATERIAL_DISCREPANCY with a MATERIAL finding specifically about excluded interest-expense sub-items.",
+      "outcome": "SUBSTANTIVE_MISS_SAFELY_SURFACED"
+    },
+    {
+      "claimId": "A4",
+      "materiality": "MATERIAL",
+      "expected": "Consolidated First Lien Secured Debt definition.",
+      "compiled": "2 definition objects; 0 rules.",
+      "trustStatus": "NOT SILENTLY TRUSTED - verify status VERIFICATION_INCOMPLETE.",
+      "outcome": "SUBSTANTIVE_MISS_SAFELY_SURFACED"
+    },
+    {
+      "claimId": "A5",
+      "materiality": "CRITICAL",
+      "expected": "Secured Net Leverage Ratio definition (the covenant's own core financial-maintenance-covenant metric).",
+      "compiled": "2 definition objects (Secured Net Leverage Ratio + Secured Parties); 0 rules.",
+      "trustStatus": "NOT SILENTLY TRUSTED - verify status MATERIAL_DISCREPANCY with a MATERIAL finding directly on the ratio's own definition text.",
+      "outcome": "SUBSTANTIVE_MISS_SAFELY_SURFACED"
+    },
+    {
+      "claimId": "A6",
+      "materiality": "MATERIAL",
+      "expected": "3 new sibling definitions added by doc-c: Invoice Restrictions, Maintenance Liquidity, Monthly Factoring Report.",
+      "compiled": "EXACTLY 3 definition objects produced - Invoice Restrictions, Maintenance Liquidity, Monthly Factoring Report - matching the expected count and names precisely. This is the ONE claim in A1-A6 where compiled definition COUNT and IDENTITY fully match the GT's own expectation.",
+      "trustStatus": "PARTIALLY TRUSTED WITH REAL CAVEAT - verify status VERIFICATION_INCOMPLETE (not silently trusted as fully complete), with findings on the internal completeness of the Maintenance Liquidity calculation specifically.",
+      "outcome": "STRUCTURAL_MATCH_WITH_SURFACED_INTERNAL_GAP"
+    }
+  ],
+  "hardSafetyRequirement": {
+    "result": "MET - 0/6 claims show a silently trusted material sibling omission. Every one of A1-A6 was either flagged MATERIAL_DISCREPANCY or VERIFICATION_INCOMPLETE by the independent verifier - never a false VERIFIED_NO_MATERIAL_GAP_FOUND for an incompletely-captured definition."
+  },
+  "generalizationTarget": {
+    "substantiveCreditRate": "0/6 (0%) - not a single one of A1-A6 achieved a clean, fully-captured compilation reaching VERIFIED status; every claim shows a real, verifier-confirmed material gap in the compiled structure.",
+    "smallDenominatorAlternative": "no more than 1 substantive material miss among A1-A6 - NOT MET: 6/6 show a substantive material miss (safely surfaced in every case, per the hard safety requirement above, but present nonetheless).",
+    "hardRequirementMet": false,
+    "conclusion": "FAILS the mission's own generalization target for the A1-A6 definition-exhaustiveness gate. This reflects a real, generalizable SEMANTIC-COMPILER capability limit when handling dense, multi-clause Article I financial definitions (16+4-clause EBITDA-style addback/subtraction structures, multi-tier pricing grids) - distinct from, and not fixed by, Unit A's classifier remediation. It was not previously measured in the frozen prior run because the COMPILE_CAP sampling never reached these regions; this session's direct, discovery-bypassing holdout is the first real measurement of this specific capability."
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "36-numbered-caption-positive-evidence",
+  "mission": "FINAL BOUNDED CLASSIFIER REMEDIATION - numbering alone must not prove a heading",
+  "startingSha": "2251f803304617dedcdac0dd4397750dfece2bdf",
+  "fixture": {
+    "text": "31 March 2030",
+    "provenance": "scripts/red-team-original/p3.ts value-scanner probe, verbatim; artifact 35 BLOCKER row",
+    "before": {
+      "scanner": [],
+      "captionFrameMatch": {
+        "whole": "31 March 2030",
+        "numbering": "31",
+        "remainder": "March 2030"
+      },
+      "nominalLabel": "true - WORD_RE is letter-only, so '2030' is invisible; 'March' is capitalised and not a function word",
+      "disposition": "HEADING_OR_LABEL",
+      "reason": "a section caption - the text after the number is a name, not a proposition"
+    },
+    "reproducedExactly": true
+  },
+  "responsiblePredicate": {
+    "location": "source-coverage.ts NUMBERED_CAPTION_FRAME_RE + the caption branch of classifyUnaccountedFragment (inside the `values.length === 0` gate) + isNominalLabel",
+    "frameBefore": "/^\\s*(?:section|article|annex|exhibit|schedule|appendix)?\\s*\\d+(?:\\.\\d+)*\\s*[.:)]?\\s*([A-Za-z][^\\n]*?)\\s*[.:]?\\s*$/i",
+    "numberingAccepted": "ANY leading integer, optionally dotted, optionally preceded by a structural word (the word was optional)",
+    "remainderExtraction": "capture group 1 = everything after the number up to an optional trailing . or :",
+    "nominalLabelDecision": "no clause punctuation; every letter-word is either a function word or begins with a capital; at least one name; digits ignored entirely",
+    "contextParticipating": "none - classifyUnaccountedFragment receives (fragment, values) only; no line position, no structural-node metadata, no source-context field reaches it; noInternalTerminator is computed from the fragment text",
+    "scannerOrder": "scanner runs first; the caption branch is entered only when values.length === 0, so scanner silence is a necessary condition",
+    "whyFixtureMatched": "'31' satisfied \\d+ with the structural word absent; 'March 2030' satisfied isNominalLabel because the year is not a letter-word and 'March' is a capitalised non-function word"
+  },
+  "positiveHeadingEvidenceAvailable": {
+    "atClassifier": "NONE - the classifier sees only the fragment text and the scanned values",
+    "upstream": "StructuralNode carries nodeType (ARTICLE/SECTION/SUBSECTION/CLAUSE/SUBCLAUSE) and a heading string; reference-resolver.ts recognises heading-only (degenerate) occurrences. SourceContextRegion carries sourceNodeId and sectionRef for the WHOLE region, not per fragment. None of this is plumbed to coverage and plumbing it is outside this mission.",
+    "usableHere": "only what is inside the fragment: (a) an explicit structural word (Section/Article/Annex/Exhibit/Schedule/Appendix) - caption syntax the drafter wrote; (b) a dotted multi-level number - conventional legal section grammar that no date or unit quantity takes in prose; (c) the absence of any digit in the remainder"
+  },
+  "decision": "conservative narrowing using the two in-fragment positive markers; no structural metadata required",
+  "productionFixMade": true,
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/semantic-accountability/source-coverage.ts"
+  ],
+  "quantitativeTsChanged": false,
+  "schemaIrPromptInventoryReconciliationChanged": false,
+  "newCaptionRule": "HEADING_OR_LABEL for a numbered caption requires ALL of: (1) scanner found no value in the fragment (unchanged gate); (2) no internal sentence terminator (unchanged); (3) the frame now demands positive legal-numbering grammar: `(?:section|article|annex|exhibit|schedule|appendix)\\s*\\d+(?:\\.\\d+)*` OR a dotted multi-level number `\\d+(?:\\.\\d+)+` - a bare integer, with or without a trailing period, no longer qualifies; (4) the remainder passes isNominalLabel, which now additionally refuses any candidate containing a digit (shared helper, so the quoted-label frame inherits it)",
+  "phraseOrDateSpecificLogic": false,
+  "vocabularyAdded": false,
+  "after": {
+    "31 March 2030": {
+      "scanner": [],
+      "disposition": "UNACCOUNTED_SOURCE",
+      "inSitu": "'The Borrower shall repay the Loans in full on or before 31 March 2030' with the clause covered up to 'before': residue '31 March 2030' UNACCOUNTED_SOURCE, unaccounted=1 - blocks completeness"
+    },
+    "otherNumberLeadingSubstantive": {
+      "25000000": "UNACCOUNTED_SOURCE",
+      "3/31/2030": "UNACCOUNTED_SOURCE",
+      "2,500,000 (the \"Cap\")": "UNACCOUNTED_SOURCE",
+      "5.02 The maximum aggregate basket amount is 2,500,000": "UNACCOUNTED_SOURCE",
+      "6.02 The Borrower shall not incur any Indebtedness": "UNACCOUNTED_SOURCE",
+      "Schedule 31 March 2030": "UNACCOUNTED_SOURCE (structural word does not rescue a digit-bearing remainder)"
+    },
+    "genuineHeadingControls": {
+      "SECTION 7.04 Dispositions.": "HEADING_OR_LABEL",
+      "6.02 Liens.": "HEADING_OR_LABEL",
+      "7.05 Restricted Payments": "HEADING_OR_LABEL",
+      "6.02 Limitation on Indebtedness.": "HEADING_OR_LABEL",
+      "SECTION 1.01 Defined Terms.": "HEADING_OR_LABEL"
+    },
+    "reviewCost": {
+      "1. Definitions.": "UNACCOUNTED_SOURCE (was HEADING_OR_LABEL) - PLAUSIBLE_REVIEW",
+      "7 Restricted Payments": "UNACCOUNTED_SOURCE (was HEADING_OR_LABEL) - PLAUSIBLE_REVIEW",
+      "\"2029 Notes\"-style digit-bearing quoted names": "would be UNACCOUNTED_SOURCE - PLAUSIBLE_REVIEW; no preserved fixture or corpus scenario carries one"
+    },
+    "independentRulesUntouched": {
+      "Section 7.11.": "CITATION_ONLY",
+      "ARTICLE VII": "CITATION_ONLY",
+      "Page 12 of 40": "NON_SEMANTIC_FORMATTING",
+      "\"Consolidated EBITDA\"": "DEFINED_TERM_LABEL"
+    }
+  },
+  "equivalentCaptionRoutes": {
+    "found": [
+      {
+        "route": "QUOTED_LABEL_FRAME_RE + isNominalLabel (canary #5 defined-term labels)",
+        "sameHelper": true,
+        "before": "'\"31 March 2030\"' (quoted) -> DEFINED_TERM_LABEL",
+        "after": "UNACCOUNTED_SOURCE via the helper-level digit refusal",
+        "note": "the quote frame itself is a distinct mechanism and is untouched; only the shared digit-blind nominal test was corrected"
+      }
+    ],
+    "notFound": "no other branch combines a weak lexical frame with isNominalLabel; CITATION_ONLY, PAGE_FURNITURE, TOC_LEADER and the STRUCTURAL_NOISE sink use different, positively-shaped predicates with their own guards"
+  },
+  "priorClosures": {
+    "originalHarnesses": "e2e, e2e2, e2e3, e2e4, p1, p2, p3, p4: byte-identical to the artifact-35 certification logs",
+    "canaries2to12": "all exit 0; every log byte-identical to certification (canary #7 keeps its 5 genuine captions, #8 and #10 their one each, #5 its 4 defined-term labels)",
+    "v1Chf": "closed, unchanged",
+    "rt3Direct": "24/24, unchanged",
+    "rt3InSitu": "parent UNACCOUNTED_SOURCE, childDescent=0, unchanged",
+    "noiseOnlyDescent": "unchanged",
+    "rt7DescentClass": "0 SILENT across 16 V1-frame variants, unchanged"
+  },
+  "suites": {
+    "sourceCoverage": "132/132 (129 before; 3 tests added)",
+    "adversarial": "3/3, not expanded",
+    "corpus": "18 failed | 278 passed (296) excluding the independence file - identical failing set to artifacts 34/35; corpus HEADING_OR_LABEL/CITATION_ONLY spans 48 before and after (all 'SECTION N.NN Name.' captions); DEFINED_TERM_LABEL spans 0 before and after; descent spans 4"
+  },
+  "newlySurfacedGaps": [],
+  "existingGaps": "I1 ('plus,', 'the sum of'), I3, I4, I23, I25, I26, I27 unchanged and out of scope",
+  "groundTruthChanged": false,
+  "qualityGates": {
+    "typescript": "6 pre-existing errors in tests/foundation-audit/*; 0 in semantic-accountability",
+    "lint": "1 pre-existing error in tests/foundation-audit; changed files clean"
+  },
+  "spend": {
+    "paidModelCalls": 0,
+    "vercelDeploys": 0,
+    "providerBalanceReadOnly": "GET /v1/credits total_used $150.494171 - unchanged"
+  },
+  "harness": "scripts/source-coverage-numbered-caption-reproduce.ts",
+  "numberedCaptionBlockerClosed": true,
+  "numberedCaptionRequiresStructuralMetadata": false,
+  "note": "positive per-fragment heading metadata (node type / heading text) would allow bare-integer captions to be suppressed safely again; until it is plumbed, they are review gaps by design."
+}

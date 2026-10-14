@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FULL_REGRESSION",
+  "fullRepositorySuite": {
+    "command": "npx vitest run --reporter=dot",
+    "result": "2 test files failed | 280 passed (282 total); 2 tests failed | 3115 passed (3117 total)",
+    "failures": [
+      "tests/contract-model/architecture-proposal-node-identity.test.ts - PRE_EXISTING_UNRELATED_FAILURE (identical to 00-baseline.json)",
+      "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts - PRE_EXISTING_UNRELATED_FAILURE (identical to 00-baseline.json)"
+    ],
+    "flakeInvestigated": {
+      "description": "An intermediate concurrent full-suite run (under heavier system load, immediately after starting Postgres and running the known-package regression script in parallel) showed 4 failures instead of 2 - the 2 known pre-existing failures above, plus tests/contract-model/part-b-recert-finding4-independent.test.ts and tests/contract-model/part-b-terminal-recert-open3-independent.test.ts (both O(n)-vs-O(n^2) wall-clock scaling measurements).",
+      "diagnosis": "Re-ran both files in isolation immediately: both passed cleanly (22/22 tests, log-log slope 0.99, consistent with linear scaling). This session's own production change (a Map lookup added to buildNodeSupersessionIndex/getNodeSupersessionStatus) touches nothing these two tests measure (bare-or-chain regex construction time) - the failure was CPU-contention flake from concurrent background load, not a real regression. Confirmed clean (2/2 pre-existing only) on a second full, uncontended run, which is the result recorded above.",
+      "reRunPolicy": "One re-run only, per this session's own flake-handling discipline - the isolated re-run passed cleanly, confirming flake rather than masking a real failure."
+    },
+    "netAssessment": "Zero new failures. Test count increased from 3096 (pre-unseen-classifier-remediation baseline) to 3117 (+21, this session's new pre-unseen-operative-integration.test.ts generic/adversarial suite)."
+  },
+  "typeScript": { "command": "npx tsc --noEmit", "result": "6 errors, identical set to 00-baseline.json (same files/lines/messages) - zero new." },
+  "lint": { "command": "npx eslint .", "result": "1 error, identical to 00-baseline.json - zero new." }
+}

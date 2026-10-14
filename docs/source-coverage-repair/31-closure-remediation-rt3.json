@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "31-closure-remediation-rt3",
+  "mission": "FINAL BOUNDED SOURCE-COVERAGE REMEDIATION - RT-3 arithmetic connectives are substantive",
+  "startingSha": "9a9d40bdbda631f32e36f06a19bc9cebd9aed193",
+  "fixture": {
+    "text": "less the sum of clauses (a) and (b),",
+    "provenance": "scripts/red-team-original/p1.ts, verbatim; audit finding 3",
+    "reproducedBefore": true,
+    "before": { "disposition": "STRUCTURAL_NOISE", "reason": "enumerators, punctuation and closed-class connectives only - the residue of splitting a parent unit", "contentWords": [], "values": [] }
+  },
+  "earliestResponsibleBranch": {
+    "function": "classifyUnaccountedFragment",
+    "branch": "the STRUCTURAL_NOISE test - words.length === 0 after contentWords filtered every token through FUNCTION_WORDS",
+    "diagnosis": "After enumerator stripping the fragment is 'less the sum of clauses and'. 'less' and 'sum' sat on the arithmetic-connective line of FUNCTION_WORDS; 'clauses' on the structural-lead-in-noun line; 'the', 'of', 'and' are pure grammar; '(a)' and '(b)' are stripped as enumerators. contentWords therefore returned [] and the noise sink took it. The sibling probes 'minus the sum of the foregoing,' and 'plus the product of the foregoing,' surfaced before this mission ONLY because 'foregoing' was partitioned as an adjunct in canary #9 - incidental cover; the operator vocabulary itself was still disposable glue. Proven by the generic control 'plus the difference of' (no adjunct, no digits, no enumerators), which was STRUCTURAL_NOISE before and is UNACCOUNTED_SOURCE after."
+  },
+  "partitionIntroduced": {
+    "name": "ARITHMETIC_OPERATORS",
+    "members": ["plus", "minus", "less", "sum", "difference", "product", "quotient"],
+    "derivation": "exactly the seven words already on the arithmetic-connective line of FUNCTION_WORDS - nothing invented, no thesaurus",
+    "mechanism": "mirrors ADVERBIAL_ADJUNCTS: the words stay inside FUNCTION_WORDS (so the nominal-label tests still treat them as grammar inside a NAME), but a residue carrying one can no longer be dismissed as STRUCTURAL_NOISE and falls through to UNACCOUNTED_SOURCE with an explicit operator reason after every positive structural rule has had first refusal",
+    "phraseSpecificLogic": false,
+    "fixtureLiteralInProduction": "only inside the ARITHMETIC_OPERATORS docstring (2 comment lines); 0 non-comment occurrences"
+  },
+  "productionFilesChanged": ["lib/contract-model/compiler/semantic-accountability/source-coverage.ts"],
+  "quantitativeTsChanged": false,
+  "after": {
+    "exactFragment": "UNACCOUNTED_SOURCE - 'carries an arithmetic or compositional operator that no inventory item anchors ...'",
+    "rt3ProbeSetViaOriginalHarness": "24 of 24 fragments UNACCOUNTED_SOURCE (before: 23 of 24)",
+    "relatedProbes": { "minus the sum of the foregoing,": "UNACCOUNTED_SOURCE (unchanged, now by operator as well as adjunct)", "plus the product of the foregoing,": "UNACCOUNTED_SOURCE (unchanged, same)" },
+    "genericOperatorControls": { "plus the difference of": "UNACCOUNTED_SOURCE", "minus the product of": "UNACCOUNTED_SOURCE", "the quotient of": "UNACCOUNTED_SOURCE" },
+    "structuralNoiseControls": { "and": "STRUCTURAL_NOISE", "or": "STRUCTURAL_NOISE", "of the": "STRUCTURAL_NOISE", "(a)": "STRUCTURAL_NOISE", "; and": "STRUCTURAL_NOISE", "\"Consolidated EBITDA less Taxes\"": "DEFINED_TERM_LABEL - operators stay grammar inside a name" }
+  },
+  "disclosedLimitation_descentInteraction": {
+    "statement": "In situ, 'Consolidated Net Income, less the sum of clauses (a) and (b), for such period' with the two outer spans covered still yields unaccounted = 0.",
+    "mechanism": "segmentSourceUnits makes 'less the sum of clauses ' a parent unit and the bare references '(a) and ' / '(b), ' its children. Those children classify STRUCTURAL_NOISE, which isAccountedDisposition treats as accounted, so the canary #4 descent rule ('every child accounted, final fragment runs up to the children, no value') discharges the operator lead-in as COVERED_BY_CHILD_DESCENT. The classifier surfaced it correctly; descent re-absorbed it.",
+    "whyNotFixedHere": "This is a descent-semantics defect - noise-only children granting parent credit - not the STRUCTURAL_NOISE sink this mission authorises. §6 forbids letting arithmetic vocabulary override a positive disposition, and §14 forbids architectural changes without a new prompt. It is the same 'guard is only as strong as its inputs' family as V1.",
+    "pinned": "a DISCLOSED LIMITATION test asserts the current behaviour so it cannot drift unnoticed",
+    "recommendation": "a bounded prompt: child descent must not grant credit when NO child is COVERED_BY_INVENTORY (or when the parent carries an operator/adjunct). Not attempted."
+  },
+  "v1Status": { "chfScan": "[MONEY 'CHF 2,000,000' unit CHF]", "originalHarness": "V1 surfaced - INVENTORY_COVERAGE_GAP unacc=1 vals=1 complete=false rollup=REVIEW_REQUIRED; V2 unchanged" },
+  "canaries2to12": "all re-run; every safety behaviour intact (exception/reference language, connective ownership, overbroad clipping, chapeau handling, quoted replacement, bare numbers, numbered clauses, ALL-CAPS propositions, modifiers, CJK, Cyrillic)",
+  "otherPreservedHarnesses": "e2e.ts S1-S10 all surfaced; e2e3 A/B and e2e4 unchanged; p4 controls unchanged",
+  "tests": {
+    "added": 4,
+    "names": [
+      "closure remediation RT-3 - A. exact historical fragment: 'less the sum of clauses (a) and (b),' is accountable",
+      "closure remediation RT-3 - DISCLOSED LIMITATION: inline enumerator references after an operator let child descent re-discharge it",
+      "closure remediation RT-3 - B. generic operator control: the partition is the word class, not the fixture and not 'foregoing'",
+      "closure remediation RT-3 - C. pure structural glue is still STRUCTURAL_NOISE - the category was not deleted"
+    ],
+    "sourceCoverageSuite": "122/122 (118 before)",
+    "adversarialSuite": "3/3, 2400 cases, 0 dangerous false negatives, not expanded"
+  },
+  "corpusImpact": {
+    "before": "7 failed | 278 passed (285)",
+    "after": "12 failed | 277 passed (289)",
+    "delta": "+4 tests; +5 failures, ALL one underlying gap observed through five assertions",
+    "newlySurfacedGaps": [
+      {
+        "scenarioId": "I1 dense definition, 20 components",
+        "excerpt": "plus,",
+        "classification": "PLAUSIBLE_REVIEW",
+        "reasoning": "I1 reads '... Consolidated Net Income for such period plus, without duplication ..., the sum of (i) ... (xx) ...'. The ground-truth items anchor the components on either side; the operator 'plus,' sits between them and is anchored by nothing, so at Pass A it is genuinely unrepresented. Pass B composes the formula, so the addition IS represented downstream. This is precisely the class the mission's root invariant makes substantive, and the reviewer-facing cost is one word. The clean repair is to extend the adjacent ground-truth excerpt to include 'plus,' - forbidden in this mission.",
+        "alsoFails": ["pass-a-inventory I1", "pass-bc-reconciliation I1", "pass-a-stability: gap-call closes to INVENTORY_OK (I1-derived)", "pass-a-stability: Pass C contrast full scenario complete (I1-derived)", "pass-a-stability: B2'' echo closes to INVENTORY_OK (I1-derived)"],
+        "note": "the three stability tests are not additional gaps; they build on the I1 fixture and assert INVENTORY_OK / complete=true, which the 'plus,' residue now prevents. Not repaired, not patched around."
+      }
+    ],
+    "i23_i26_i27": "unchanged, still red, out of scope",
+    "groundTruthChanged": false,
+    "falsePositiveRegressions": "none observed in the preserved harnesses or the adversarial suite"
+  },
+  "qualityGates": { "typescript": "6 pre-existing errors in tests/foundation-audit/*; zero in semantic-accountability", "lint": "1 pre-existing error; none in changed files" },
+  "spend": { "paidModelCalls": 0, "vercelDeploys": 0, "providerProbe": "HTTP 402, $150.49 / $150.00 - unchanged" },
+  "rt3BlockerClosed": true,
+  "closedAtWhichLayer": "the authorised layer - the STRUCTURAL_NOISE sink in classifyUnaccountedFragment. The exact original probe and the whole original RT-3 probe set are UNACCOUNTED_SOURCE. The descent interaction disclosed above is a distinct, newly observed defect in another rule and is reported for its own bounded prompt."
+}

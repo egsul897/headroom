@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BENIGN_ROUTING_METRICS_RESUME",
+  "status": "EVALUATED",
+  "benignCaseCount": 5,
+  "benignNoConditionCount": 3,
+  "benignOverRouteCount": 2,
+  "benignOverRouteRate": 0.4,
+  "perCaseDisposition": [
+    { "id": "B1", "category": "benign control - cross-referencing 'if', non-conditional", "classifierStatus": "NO_MATERIAL_CONDITION_SUSPECTED", "routesToReview": false },
+    { "id": "B2", "category": "benign control - definitional boilerplate", "classifierStatus": "NO_MATERIAL_CONDITION_SUSPECTED", "routesToReview": false },
+    { "id": "B3", "category": "benign control - unconditional periodic obligation", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "note": "Over-routed: the model treated the 45-day-following-quarter-close deadline itself as a temporal dependency worth flagging. Conservative, not a correctness failure - this is the architecture's documented safety-first bias (a false positive costs one extra review; a false negative can let a real condition through unscrutinized)." },
+    { "id": "B4", "category": "benign control - lexical false-positive trap ('provided' as a verb, not a connective)", "classifierStatus": "NO_MATERIAL_CONDITION_SUSPECTED", "routesToReview": false, "note": "Confirms the classifier correctly distinguishes 'financial statements provided' (past participle of 'provide') from the conditional connective 'provided that' - exactly the lexical trap Gate 1's LEGACY_ENUMERATED_CONNECTIVE_RE falls into (it independently flags this same text), demonstrating real semantic discrimination Gate 1 alone cannot achieve." },
+    { "id": "B5", "category": "benign control - unconditional grant of discretion", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "note": "Over-routed: the model treated the 'minor' scope limitation and 'reasonable discretion' standard as qualifying content worth flagging rather than pure discretion boilerplate. Conservative, not a correctness failure." }
+  ],
+  "assessment": "3/5 benign controls (B1, B2, B4) received clean NO_MATERIAL_CONDITION_SUSPECTED verdicts, including the specifically-engineered B4 lexical false-positive trap that Gate 1's own regex layer independently mis-flags - direct evidence the real semantic judgment achieves discrimination the deterministic layer cannot. 2/5 (B3, B5) were conservatively over-routed. Per the governing spec's own instruction, this is NOT treated as a failure: conservative over-routing on benign text is an accepted, by-design cost of a safety-first architecture whose sole hard requirement is zero material omissions.",
+  "verdict": "BENIGN_ROUTING_ACCEPTABLE"
+}

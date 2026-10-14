@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RIOT_DETERMINISTIC_REPLAY",
+  "evidenceCategory": "RIOT_REGRESSION_EVIDENCE",
+  "method": "Deterministic only - no AI/semantic call, no GT/package/graph/classifier changes, no post-hoc tuning. Unlike the prior pre-unseen-classifier-remediation session's own replay script (which fed all three documents into ONE combined runAmendmentPipeline call), scripts/pre-unseen-operative-integration-riot-replay.ts mirrors the REAL production orchestrator's own PER-INSTRUMENT scoping: buildPackageGraph's own instrument-grouping (RESOLVED-only merge) determines which documents' text each runAmendmentPipeline call actually receives, exactly like lib/contract-model/analysis/orchestrator.ts's own analyzeInstrument. Raw output: docs/pre-unseen-operative-integration/08-riot-deterministic-replay-raw.json.",
+  "instrumentGroupingResult": {
+    "instrumentDocA": { "instrumentKey": "instrument:doc-a", "documentIds": ["doc-a", "doc-b"], "reviewStatus": "RESOLVED" },
+    "instrumentDocC": { "instrumentKey": "instrument:doc-c", "documentIds": ["doc-c"], "reviewStatus": "RESOLVED" },
+    "explanation": "doc-b's own restatement of doc-a resolves RESOLVED (0.95, DETERMINISTIC_TITLE_DATE_MATCH) so doc-a+doc-b merge into ONE instrument (per instrument-grouping.ts's own RESOLVED-only merge policy, unchanged, pre-existing). doc-c's own restatement of doc-b resolves only REVIEW_REQUIRED (0.7, DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR) - per the SAME pre-existing policy, a REVIEW_REQUIRED link never merges two documents into one instrument, so doc-c remains its own separate instrument. This is a genuine, pre-existing (not caused by this session) architecture fact disclosed in 01-inconsistency-trace.json BEFORE implementation began."
+  },
+  "classificationRegression": {
+    "docA": "CREDIT_AGREEMENT (unchanged from the prior pre-unseen-classifier-remediation session's own fix)",
+    "docB": "AMENDED_AND_RESTATED_AGREEMENT (unchanged)",
+    "docC": "AMENDED_AND_RESTATED_AGREEMENT (unchanged)",
+    "verdict": "No regression - this session made zero changes to document-classifier.ts/package-graph."
+  },
+  "restatementChainRegression": {
+    "docBTargetsDocA": "RESOLVED, 0.95, DETERMINISTIC_TITLE_DATE_MATCH - unchanged",
+    "docCTargetsDocB": "REVIEW_REQUIRED, 0.7, DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR - unchanged",
+    "verdict": "No regression - this session made zero changes to relationship-resolution.ts/chain.ts's own edge-resolution logic."
+  },
+  "perInstrumentOperativeDocumentResults": {
+    "instrumentDocA": {
+      "status": "RESOLVED",
+      "operativeDocumentId": "doc-b",
+      "predecessorDocumentIds": ["doc-a"],
+      "note": "Within THIS instrument's own document family (doc-a, doc-b only - doc-c is not part of it), doc-b is correctly identified as the operative document and doc-a as its historical predecessor."
+    },
+    "instrumentDocC": {
+      "status": "RESOLVED",
+      "operativeDocumentId": "doc-c",
+      "predecessorDocumentIds": ["doc-b"],
+      "note": "Within THIS instrument's own document family (doc-c only, plus doc-b as an unresolved-target reference), doc-c is correctly identified as operative and doc-b as its predecessor. This instrument has no knowledge of doc-a at all - it never claims doc-a as a predecessor, correctly, since doc-a is not part of its own document family."
+    },
+    "honestDisclosure": "This differs from the combined-graph result the prior session's own replay script demonstrated (operativeDocumentId=doc-c with predecessors=[doc-a,doc-b] in ONE call) - that result required feeding all three documents into one runAmendmentPipeline call, which is NOT how the real per-instrument orchestrator invokes it. Within REAL production instrument boundaries, the doc-a-to-doc-c relationship is never asserted as a single RESOLVED fact (correctly - the doc-b-to-doc-c link is only REVIEW_REQUIRED, so no instrument's own operativeDocument computation is ever entitled to claim doc-a is a predecessor of doc-c specifically). This is NOT a regression this session introduced - the instrument-grouping/per-instrument-scoping policy itself is pre-existing, unmodified, and out of scope (package-graph redesign is explicitly excluded by this mission). What this session's fix DOES correctly and fully close, within these real boundaries, is documented below."
+  },
+  "verdict": "Riot version-chain control (mission Section 21): doc-a=CREDIT_AGREEMENT, doc-b=AMENDED_AND_RESTATED_AGREEMENT, doc-c=AMENDED_AND_RESTATED_AGREEMENT, chain doc-a->doc-b (RESOLVED, within instrument:doc-a) and doc-b->doc-c (REVIEW_REQUIRED, within instrument:doc-c) - UNREGRESSED, identical to the prior session's own baseline. No document-graph/classifier tuning was performed."
+}
