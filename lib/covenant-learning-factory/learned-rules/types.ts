@@ -5,8 +5,10 @@
  *
  * Adjudication honesty:
  * - PROPOSED: synthesized, not yet replayed
- * - MECHANICALLY_REPLAYED: passed replay gate vs self-generated / kf_precedent signals
- * - INDEPENDENTLY_VERIFIED: requires substantive held-out legal adjudication (not automatic)
+ * - MECHANICALLY_REPLAYED: passed the held-out generalization gate (sweep) or the
+ *   lower-level replay measurement. Not independent legal adjudication.
+ * - INDEPENDENTLY_VERIFIED: requires substantive held-out legal adjudication (not automatic).
+ *   The sweep generalization gate must never set this state.
  *
  * Production/compute paths must never treat MECHANICALLY_REPLAYED as verified legal authority.
  */
@@ -75,6 +77,14 @@ export interface LearnedRule {
     synthesizedAt: string;
     epoch: number;
     note?: string;
+    /** Packages that contributed this cluster. The gate counts train packages only. */
+    packageKeys?: string[];
+    /** Distinct packages in packageKeys at synthesis time. */
+    sourcesSpanned?: number;
+    /** True when the pattern abstracts a slot (amount, term, synonym, anchor). */
+    generalized?: boolean;
+    /** Normalized clause skeleton used to cluster errors. */
+    normalizedSignature?: string;
   };
   state: LearnedRuleState;
   metrics?: {
@@ -84,6 +94,12 @@ export interface LearnedRule {
     goldenOk: boolean;
     /** Explicit: replay gate is mechanical, not independent legal adjudication. */
     adjudicationClass?: "MECHANICAL_REPLAY" | "INDEPENDENT_HELD_OUT";
+    /** Errors removed on the train packages the rule was built from. */
+    trainFixed?: number;
+    /** Errors removed on held-out packages the rule was not built from. */
+    heldoutFixed?: number;
+    /** Distinct train packages supporting the rule. */
+    sourcesSpanned?: number;
   };
   /** Present only when state === INDEPENDENTLY_VERIFIED. */
   independentVerification?: IndependentVerificationEvidence;

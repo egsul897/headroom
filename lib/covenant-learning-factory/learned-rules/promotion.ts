@@ -95,6 +95,9 @@ export function promoteToIndependentlyVerified(
       sourcesReplayed: rule.metrics?.sourcesReplayed ?? 0,
       goldenOk: rule.metrics?.goldenOk ?? false,
       adjudicationClass: "INDEPENDENT_HELD_OUT",
+      trainFixed: rule.metrics?.trainFixed,
+      heldoutFixed: rule.metrics?.heldoutFixed,
+      sourcesSpanned: rule.metrics?.sourcesSpanned,
     },
   };
 }

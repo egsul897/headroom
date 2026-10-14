@@ -314,10 +314,12 @@ async function writeLearningManifest(
         : p.state);
     const state =
       p.state === "ACCEPTED" ? "MECHANICALLY_REPLAYED" : p.state;
+    const metrics = p.executableRule?.metrics;
     await executor.execute(
       `INSERT INTO learning_improvement_proposals
-        (id, "proposalId", "packageKey", "runId", lever, summary, bounded, "autoApply", "evidenceJson", state, "adjudicationStatus", "createdAt")
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11,$12)
+        (id, "proposalId", "packageKey", "runId", lever, summary, bounded, "autoApply", "evidenceJson", state, "adjudicationStatus", "createdAt",
+         "trainFixed", "heldoutFixed", "sourcesSpanned")
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11,$12,$13,$14,$15)
        ON CONFLICT ("proposalId") DO NOTHING`,
       [
         p.proposalId,
@@ -339,10 +341,16 @@ async function writeLearningManifest(
               : adjudicationStatus === "INDEPENDENTLY_VERIFIED"
                 ? "INDEPENDENT_HELD_OUT"
                 : null,
+          trainFixed: metrics?.trainFixed ?? null,
+          heldoutFixed: metrics?.heldoutFixed ?? null,
+          sourcesSpanned: metrics?.sourcesSpanned ?? null,
         }),
         state,
         adjudicationStatus,
         new Date(p.createdAt),
+        metrics?.trainFixed ?? null,
+        metrics?.heldoutFixed ?? null,
+        metrics?.sourcesSpanned ?? null,
       ],
     );
     insertedProposals += 1;

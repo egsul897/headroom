@@ -47,7 +47,12 @@ function filesystemRulesStore(rulesDir?: string): SweepRulesStore {
   };
 }
 import {
-  evaluateReplayGate,
+  assignGeneralizationCohort,
+  cohortForReplaySource,
+  evaluateGeneralizationGate,
+  generalizationSplitKey,
+} from "../learned-rules/generalization-gate";
+import {
   measureReplaySource,
   withProposedRule,
   type ReplaySource,
@@ -392,11 +397,18 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
             });
             await persistSweepErrors(opts.executor, errors);
 
+            const splitSide = assignGeneralizationCohort(
+              generalizationSplitKey({
+                issuerCik: source.issuerCik,
+                packageKey,
+                sourceId: source.sourceId,
+              }),
+            );
             const evaluation: LearningEvaluationRecord = {
               evaluationId: `eval:${runId}`,
               packageKey,
               runId,
-              cohort: "TRAIN_DEV",
+              cohort: splitSide === "HELD_OUT" ? "HELD_OUT" : "TRAIN_DEV",
               sourceFidelityPass: null,
               coverageScore:
                 candidates.length === 0
@@ -528,9 +540,14 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
       sourceId: typeof e.evidence?.sourceId === "string" ? e.evidence.sourceId : undefined,
       evidence: e.evidence,
     }));
-    const candidates = synthesizeCandidateRules({ signals, epoch, now: now() });
+    // Rules are built only from the train cohort. Held-out packages stay unseen.
+    const trainPackages = new Set(
+      replaySources.filter((s) => cohortForReplaySource(s) === "TRAIN").map((s) => s.packageKey),
+    );
+    const trainSignals = signals.filter((s) => s.packageKey != null && trainPackages.has(s.packageKey));
+    const candidates = synthesizeCandidateRules({ signals: trainSignals, epoch, now: now() });
     log(
-      `epoch ${epoch}: ${sourcesProcessed} sources, ${epochErrors.length} errors, ${candidates.length} candidate rules (resume index ${candidateStartIndex})`,
+      `epoch ${epoch}: ${sourcesProcessed} sources, trainPackages=${trainPackages.size}, heldoutPackages=${replaySources.length - trainPackages.size}, ${epochErrors.length} errors, ${candidates.length} candidate rules (resume index ${candidateStartIndex})`,
     );
 
     const acceptedRules: LearnedRule[] = partialAccepts.map((p) => p.rule);
@@ -547,18 +564,10 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
     const candidateEnd = Math.min(candidates.length, candidateStartIndex + maxCandidates);
     for (let i = candidateStartIndex; i < candidateEnd; i++) {
       const candidate = candidates[i]!;
-      const related = new Set(candidate.provenance.ledgerErrorIds);
-      const scoped = replaySources.filter((s) =>
-        epochErrors.some((e) => related.has(e.errorId) && e.packageKey === s.packageKey),
-      );
-      const sourcesForGate = scoped.length > 0 ? scoped : replaySources.slice(0, 20);
-      for (const s of sourcesForGate) {
-        s.baselineErrorCount = measureReplaySource(s, workingRuleset);
-      }
-      const gate = evaluateReplayGate({
+      const gate = evaluateGeneralizationGate({
         baseline: workingRuleset,
         candidate,
-        sources: sourcesForGate,
+        sources: replaySources,
         goldens: opts.goldenChecks,
       });
 
@@ -567,9 +576,6 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
         processAccepts += 1;
         acceptedRules.push(gate.rule);
         workingRuleset = withProposedRule(workingRuleset, gate.rule);
-        for (const s of sourcesForGate) {
-          s.baselineErrorCount = measureReplaySource(s, workingRuleset);
-        }
 
         // Durable immediate persist — survives kill before epoch finalize.
         if (!dryRun) {
@@ -616,6 +622,9 @@ export async function runCovenantLearningSweep(opts: SweepOptions): Promise<Swee
             notes: [
               `MECHANICALLY_REPLAYED ${gate.rule.ruleId}`,
               `errors ${gate.errorsBefore}→${gate.errorsAfter}`,
+              `trainFixed=${gate.trainFixed}`,
+              `heldoutFixed=${gate.heldoutFixed}`,
+              `sourcesSpanned=${gate.sourcesSpanned}`,
               `candidateIndex=${i}`,
               `adjudicationClass=MECHANICAL_REPLAY`,
               `not INDEPENDENTLY_VERIFIED`,

@@ -94,6 +94,9 @@ export function bumpRuleSet(args: {
       sourcesReplayed: r.metrics?.sourcesReplayed ?? 0,
       goldenOk: r.metrics?.goldenOk ?? false,
       adjudicationClass: "MECHANICAL_REPLAY" as const,
+      trainFixed: r.metrics?.trainFixed,
+      heldoutFixed: r.metrics?.heldoutFixed,
+      sourcesSpanned: r.metrics?.sourcesSpanned,
     },
   }));
   const rejected = args.previous.rules
