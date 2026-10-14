@@ -75,6 +75,16 @@ function printSummary(report: ScoreboardReport): void {
       `${split.padEnd(8)} sources=${t.sources} total=${t.total} COVERAGE_GAP=${t.COVERAGE_GAP} DISCOVERY_GAP=${t.DISCOVERY_GAP} UNSUPPORTED_SEMANTICS=${t.UNSUPPORTED_SEMANTICS}`,
     );
   }
+  if (report.inScopeTotals) {
+    for (const split of ["DEV", "HELDOUT"] as const) {
+      const t = report.inScopeTotals[split];
+      console.log(
+        `IN-SCOPE ${split.padEnd(8)} sources=${t.sources} total=${t.total} COVERAGE_GAP=${t.COVERAGE_GAP} DISCOVERY_GAP=${t.DISCOVERY_GAP} UNSUPPORTED_SEMANTICS=${t.UNSUPPORTED_SEMANTICS}`,
+      );
+    }
+    console.log(`EXCLUDED (doc type OTHER, still counted in the gate totals above): ${report.excluded?.length ?? 0}`);
+    for (const e of report.excluded ?? []) console.log(`  excluded ${e.split} ${e.sourceId} errors=${e.total}`);
+  }
 }
 
 async function main(): Promise<void> {

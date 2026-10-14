@@ -18,6 +18,8 @@ import { runCovenantComputation } from "../../contract-model/covenant-computatio
 import type { LearnedRuleSet } from "../learned-rules/types";
 import { buildComputationPackage, type PrecedentSourceRow } from "../sweep/build-package";
 import { candidatesAsRows } from "../sweep/neon-load";
+import { buildTreeLocator } from "../sweep/tree-locator";
+import { classifyDocType, IN_SCOPE, type DocType } from "./doc-type";
 import {
   selfCheckComputation,
   type PrecedentCandidate,
@@ -41,6 +43,7 @@ export interface ScoreboardSourceInput {
 export interface SourceScore {
   sourceId: string;
   split: Split;
+  docType?: DocType;
   counts: ClassCounts;
   total: number;
 }
@@ -51,6 +54,10 @@ export interface ScoreboardReport {
   rulesetVersion: number;
   sourceCount: number;
   totals: Record<Split, ClassCounts & { total: number; sources: number }>;
+  /** Same totals restricted to in-scope document types (credit agreements, indentures/notes, credit support, unknown). */
+  inScopeTotals?: Record<Split, ClassCounts & { total: number; sources: number }>;
+  /** Out-of-scope sources (doc type OTHER): reported, never silently dropped. */
+  excluded?: { sourceId: string; split: Split; total: number }[];
   perSource: SourceScore[];
 }
 
@@ -89,13 +96,20 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
     definitions: input.definitions,
     conditions: input.conditions,
     now: FIXED_NOW,
+    locator: process.env.CLF_SCOREBOARD_NO_TREE ? undefined : buildTreeLocator({ documentText: input.documentText, candidates: input.candidates }),
   });
   const counts = emptyCounts();
   for (const e of errors) {
     if ((SCOREBOARD_CLASSES as readonly string[]).includes(e.class)) counts[e.class as ScoreboardClass] += 1;
   }
   const total = SCOREBOARD_CLASSES.reduce((a, c) => a + counts[c], 0);
-  return { sourceId, split: splitFor(sourceId, manifest), counts, total };
+  const docType = classifyDocType({
+    sourceId,
+    title: input.source.title,
+    text: input.documentText,
+    excerpts: input.candidates.map((c) => c.excerpt ?? ""),
+  }).type;
+  return { sourceId, split: splitFor(sourceId, manifest), docType, counts, total };
 }
 
 export function aggregate(
@@ -113,12 +127,29 @@ export function aggregate(
     t.total += s.total;
     for (const c of SCOREBOARD_CLASSES) t[c] += s.counts[c];
   }
+  const inScopeTotals = {
+    DEV: { ...emptyCounts(), total: 0, sources: 0 },
+    HELDOUT: { ...emptyCounts(), total: 0, sources: 0 },
+  };
+  const excluded: { sourceId: string; split: Split; total: number }[] = [];
+  for (const s of sorted) {
+    if (s.docType && !IN_SCOPE.has(s.docType)) {
+      excluded.push({ sourceId: s.sourceId, split: s.split, total: s.total });
+      continue;
+    }
+    const t = inScopeTotals[s.split];
+    t.sources += 1;
+    t.total += s.total;
+    for (const c of SCOREBOARD_CLASSES) t[c] += s.counts[c];
+  }
   return {
     schema: "clf-scoreboard/v1",
     mode: meta.mode,
     rulesetVersion: meta.rulesetVersion,
     sourceCount: sorted.length,
     totals,
+    inScopeTotals,
+    excluded,
     perSource: sorted,
   };
 }

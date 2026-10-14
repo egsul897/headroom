@@ -92,7 +92,12 @@ function deepestAt(tree: SectionTree, at: number): TreeNode | null {
 
 export function resolveCrossRefs(tree: SectionTree, text: string): CrossRef[] {
   const index = new Map<string, TreeNode>();
-  for (const n of tree.nodes) if (n.kind === "SECTION" || n.kind === "CLAUSE") if (!index.has(n.path)) index.set(n.path, n);
+  // Duplicate paths (e.g. a schedule list echoing headings): prefer the node with the larger span.
+  for (const n of tree.nodes) {
+    if (n.kind !== "SECTION" && n.kind !== "CLAUSE") continue;
+    const prev = index.get(n.path);
+    if (!prev || n.end - n.start > prev.end - prev.start) index.set(n.path, n);
+  }
   const out: CrossRef[] = [];
   const re = /\bSections?\s+(\d{1,2}\.\d{1,3})((?:\([a-zA-Z0-9]{1,5}\))*)/g;
   for (const m of text.matchAll(re)) {

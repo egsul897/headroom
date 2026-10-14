@@ -355,7 +355,7 @@ export function parseSectionTree(text: string): SectionTree {
       parseErrors.push(`${n.path}: clause parse failed`);
     }
   }
-  return { textLength: text.length, nodes, byId, furniture, tocExcluded: tocIdx.size > 0, parseErrors };
+  return { textLength: text.length, nodes, byId, furniture, tocExcluded: tocIdx.size > 0 || furniture.some((f) => f.kind === "TOC"), parseErrors };
 }
 
 /** Deepest node whose span contains [start, end). */
