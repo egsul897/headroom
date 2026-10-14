@@ -23,6 +23,7 @@
  * "coherent")` anywhere in this file or any other lib/ or app/ file).
  */
 import type { CompanyTenantKind, OnboardingStatus } from "@prisma/client";
+import { withDbRetry } from "./db-retry";
 import { prisma } from "./prisma";
 import {
   computeCovenantPosition,
@@ -70,8 +71,13 @@ export interface CompanySummary {
  * have deduplicated. Correctness over a request-scoped memoization nicety.
  */
 export async function listCompanies(): Promise<CompanySummary[]> {
-  const rows = await prisma.company.findMany({ orderBy: { name: "asc" } });
-  return rows.map((r) => ({ id: r.id, name: r.name, ticker: r.ticker, onboardingStatus: r.onboardingStatus, tenantKind: r.tenantKind }));
+  // Homepage (app/page.tsx, force-dynamic) is this function's caller. A Neon
+  // cold start fails the first connect; withDbRetry repeats only that class
+  // of error. See lib/db-retry.ts.
+  return withDbRetry(async () => {
+    const rows = await prisma.company.findMany({ orderBy: { name: "asc" } });
+    return rows.map((r) => ({ id: r.id, name: r.name, ticker: r.ticker, onboardingStatus: r.onboardingStatus, tenantKind: r.tenantKind }));
+  });
 }
 
 export async function getCompanySummary(companyId: string): Promise<CompanySummary> {
