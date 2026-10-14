@@ -47,3 +47,28 @@ describe("unlimited capacity requires amount phrasing", () => {
     expect(b.capKind).toBe("NONE");
   });
 });
+
+describe("conditional and negated unlimited phrasing", () => {
+  const chwy = "(a) the Borrower and any Restricted Subsidiary may incur Indebtedness in an unlimited amount if, after giving effect thereto on a Pro Forma Basis, the Consolidated Total Net Leverage Ratio would not exceed 4.50 to 1.00;";
+  it("'in an unlimited amount if, after giving effect thereto, [ratio]' is RATIO_BASED, never UNLIMITED", () => {
+    expect(categorize(chwy)).toBe("RATIO_BASED");
+    const b = evalText(chwy);
+    expect(b.category).toBe("RATIO_BASED");
+    expect(b.capKind).not.toBe("UNLIMITED");
+    expect(b.capStatus).not.toBe("COMPUTED");
+  });
+  const negated = [
+    "(m) provided that nothing herein shall permit the Borrower to incur Indebtedness in an unlimited amount under this clause;",
+    "(n) the Issuer shall not incur Indebtedness in an unlimited amount pursuant to this paragraph;",
+  ];
+  for (const t of negated) {
+    it(`negated unlimited is not a grant: ${t.slice(4, 50)}`, () => {
+      expect(categorize(t)).not.toBe("UNLIMITED");
+      expect(evalText(t).capKind).not.toBe("UNLIMITED");
+    });
+  }
+  it("a non-financial condition ('so long as no Default') keeps an unlimited grant", () => {
+    expect(categorize("(o) Investments in Guarantors in an unlimited amount so long as no Event of Default has occurred and is continuing;")).toBe("UNLIMITED");
+  });
+});
+

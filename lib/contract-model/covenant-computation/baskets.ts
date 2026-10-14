@@ -99,8 +99,12 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   const text = norm(operativeText);
   // Learned rules win over the generic engine heuristics — they are the
   // factory's lessons. Hand-written per-case branches must not be added here.
+  const ul = unlimitedCapacityMatch(text);
+  // "in an unlimited amount if, after giving effect thereto, [ratio test]" is a ratio permission with its condition.
+  if (ul.kind === "CONDITIONAL") return "RATIO_BASED";
   const hinted = applyCategoryHints(text, rules);
-  if (hinted) return hinted.category;
+  // A learned hint may not grant UNLIMITED unless the text is an unconditional grant.
+  if (hinted && !(hinted.category === "UNLIMITED" && ul.kind !== "UNCONDITIONAL")) return hinted.category;
   const numeric = hasNumeric(text);
   const closed = hasClosedCap(text);
   if (/\breclassif/i.test(text) && !closed) return "RECLASS";
@@ -167,9 +171,28 @@ function isNonCapacityNumber(text: string): boolean {
  */
 export const UNLIMITED_CAPACITY_PHRASE =
   /\bin\s+(?:an?\s+)?unlimited\s+(?:aggregate\s+)?(?:principal\s+)?amounts?\b|\bunlimited\s+in\s+(?:aggregate\s+)?amount\b|\bwithout\s+limit(?:ation)?\s+as\s+to\s+(?:the\s+)?(?:aggregate\s+)?(?:principal\s+)?amount\b|\bwithout\s+(?:any\s+)?(?:dollar|monetary|numerical)\s+(?:limit|cap)\b/i;
-export function isCapacityUnlimited(text: string): boolean {
-  return UNLIMITED_CAPACITY_PHRASE.test(text);
+const RATIO_CONDITION = /\b(?:ratio|coverage|leverage)\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b|\btimes\b/i;
+/** Unlimited phrasing gated by a condition ("in an unlimited amount if, after giving effect thereto, [ratio]"). */
+const UNLIMITED_CONDITION = /^[^.;]{0,40}?\b(?:if|so\s+long\s+as|provided\s+that|subject\s+to|to\s+the\s+extent|after\s+giving\s+(?:pro\s+forma\s+)?effect)\b/i;
+/** Negated unlimited ("nothing herein shall permit ... in an unlimited amount", "shall not ... unlimited"). */
+const UNLIMITED_NEGATION = /\b(?:nothing\s+(?:herein|in\s+this\s+\w+|contained\s+herein)[^.;]{0,160}?\b(?:shall|will|may)\s+(?:be\s+(?:deemed|construed)\s+to\s+)?(?:permit|allow|authorize)|(?:shall|will|may)\s+not\b|\bno\b)[^.;]{0,160}$/i;
+
+export function unlimitedCapacityMatch(text: string): { kind: "NONE" | "UNCONDITIONAL" | "CONDITIONAL" | "NEGATED" } {
+  const m = UNLIMITED_CAPACITY_PHRASE.exec(text);
+  if (!m) return { kind: "NONE" };
+  const before = text.slice(Math.max(0, m.index - 240), m.index);
+  if (UNLIMITED_NEGATION.test(before)) return { kind: "NEGATED" };
+  // Only a financial-test condition turns the grant into a ratio permission; "so long as no Default exists" does not.
+  const after = text.slice(m.index + m[0].length);
+  if (UNLIMITED_CONDITION.test(after) && RATIO_CONDITION.test(after)) return { kind: "CONDITIONAL" };
+  return { kind: "UNCONDITIONAL" };
 }
+
+/** True only for an unconditional, non-negated capacity grant. */
+export function isCapacityUnlimited(text: string): boolean {
+  return unlimitedCapacityMatch(text).kind === "UNCONDITIONAL";
+}
+
 
 function hasNumeric(text: string): boolean {
   return /\$\s*[\d,]+|\d+(?:\.\d+)?\s*%|\d+(?:\.\d+)?\s+to\s+\d+(?:\.\d+)?/.test(text);

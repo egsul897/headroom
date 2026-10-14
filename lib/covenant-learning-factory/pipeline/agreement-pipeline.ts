@@ -235,14 +235,22 @@ export async function persistAgreementPipeline(ex: SqlExecutor, r: AgreementPipe
 /** Minimal Prisma surface used for customer persistence (so tests can pass an in-memory fake). */
 export interface CustomerStore {
   $transaction<T>(fn: (tx: CustomerStore) => Promise<T>): Promise<T>;
-  customerAgreementRun: { create(args: { data: Record<string, unknown> }): Promise<{ id: string }> };
+  customerAgreementRun: {
+    create(args: { data: Record<string, unknown> }): Promise<{ id: string }>;
+    findUnique(args: { where: { runKey: string } }): Promise<{ id: string; status: string } | null>;
+    update(args: { where: { id: string }; data: Record<string, unknown> }): Promise<{ id: string }>;
+  };
   customerTreeNode: { createMany(args: { data: Record<string, unknown>[] }): Promise<{ count: number }> };
   customerTreeXref: { createMany(args: { data: Record<string, unknown>[] }): Promise<{ count: number }> };
   customerTreeChecklist: { createMany(args: { data: Record<string, unknown>[] }): Promise<{ count: number }> };
 }
 
+export function customerRunKey(scope: { companyId: string; documentId: string }, textSha256: string | null, parserVersion: string, pipelineVersion: string): string {
+  return sha([scope.companyId, scope.documentId, textSha256 ?? "", parserVersion, pipelineVersion].join("|"));
+}
+
 export type CustomerRunOutcome =
-  | { status: "OK"; runId: string; textSha256: string; stored: { nodes: number; xrefs: number; checklist: number } }
+  | { status: "OK"; runId: string; textSha256: string; stored: { nodes: number; xrefs: number; checklist: number }; reused?: boolean }
   | { status: "FAILED"; runId: string | null; error: string };
 
 /**
@@ -256,21 +264,34 @@ export async function persistCustomerAgreementRun(
   run: () => AgreementPipelineResult | Promise<AgreementPipelineResult>,
 ): Promise<CustomerRunOutcome> {
   if (!scope.companyId || !scope.documentId) throw new Error("customer agreement runs require companyId and documentId");
+  // FAILED rows are keyed too, so repeated failing re-analysis updates one row instead of piling up.
+  const recordFailure = async (data: Record<string, unknown>): Promise<{ id: string }> => {
+    const runKey = customerRunKey(scope, (data.textSha256 as string | undefined) ?? null, String(data.parserVersion), String(data.pipelineVersion));
+    const prior = await db.customerAgreementRun.findUnique({ where: { runKey } });
+    if (prior) return db.customerAgreementRun.update({ where: { id: prior.id }, data: { status: "FAILED", error: data.error } });
+    return db.customerAgreementRun.create({ data: { ...data, runKey } });
+  };
   let r: AgreementPipelineResult;
   try {
     r = await run();
   } catch (err) {
     const error = err instanceof Error ? err.message : String(err);
     try {
-      const row = await db.customerAgreementRun.create({ data: { ...scope, parserVersion: sectionTreeParserVersion(), pipelineVersion: PIPELINE_VERSION, status: "FAILED", error } });
+      const row = await recordFailure({ ...scope, parserVersion: sectionTreeParserVersion(), pipelineVersion: PIPELINE_VERSION, status: "FAILED", error });
       return { status: "FAILED", runId: row.id, error };
     } catch (err2) {
       return { status: "FAILED", runId: null, error: `${error}; failure record not written: ${err2 instanceof Error ? err2.message : String(err2)}` };
     }
   }
+  const runKey = customerRunKey(scope, r.textSha256, r.parserVersion, r.pipelineVersion);
   try {
+    // Re-analysis of identical input reuses the completed run (deterministic pipeline → identical rows).
+    const prior = await db.customerAgreementRun.findUnique({ where: { runKey } });
+    if (prior?.status === "OK") return { status: "OK", runId: prior.id, textSha256: r.textSha256, stored: { nodes: r.tree.nodes.length, xrefs: xrefRows(r).length, checklist: r.checklist.length }, reused: true };
     return await db.$transaction(async (tx) => {
-      const row = await tx.customerAgreementRun.create({ data: { ...scope, textSha256: r.textSha256, parserVersion: r.parserVersion, pipelineVersion: r.pipelineVersion, status: "OK", stats: r.stats, families: r.families } });
+      const okData = { ...scope, runKey, textSha256: r.textSha256, parserVersion: r.parserVersion, pipelineVersion: r.pipelineVersion, status: "OK", error: null, stats: r.stats, families: r.families };
+      // A prior FAILED run with the same key is promoted in place (it has no child rows).
+      const row = prior ? await tx.customerAgreementRun.update({ where: { id: prior.id }, data: okData }) : await tx.customerAgreementRun.create({ data: okData });
       const runId = row.id;
       const n = await tx.customerTreeNode.createMany({ data: r.tree.nodes.map((x) => ({ runId, nodeId: x.id, parentId: x.parentId, kind: x.kind, label: x.label, path: x.path, sectionNumber: x.sectionNumber, title: x.title, level: x.level, start: x.start, headingEnd: x.headingEnd, end: x.end, depth: x.depth, status: x.status, role: r.roles.get(x.id) ?? null, issues: x.issues })) });
       const xr = await tx.customerTreeXref.createMany({ data: xrefRows(r).map((k) => ({ runId, spanStart: k.spanStart, spanEnd: k.spanEnd, spanSha256: k.spanSha256, fromNodeId: k.x.fromNodeId, raw: k.x.raw, target: k.x.target, status: k.x.status, targetNodeId: k.x.targetNodeId })) });
@@ -280,7 +301,7 @@ export async function persistCustomerAgreementRun(
   } catch (err) {
     const error = `persist failed: ${err instanceof Error ? err.message : String(err)}`;
     try {
-      const row = await db.customerAgreementRun.create({ data: { ...scope, textSha256: r.textSha256, parserVersion: r.parserVersion, pipelineVersion: r.pipelineVersion, status: "FAILED", error } });
+      const row = await recordFailure({ ...scope, textSha256: r.textSha256, parserVersion: r.parserVersion, pipelineVersion: r.pipelineVersion, status: "FAILED", error });
       return { status: "FAILED", runId: row.id, error };
     } catch {
       return { status: "FAILED", runId: null, error };
