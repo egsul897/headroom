@@ -30,3 +30,31 @@ or (no section on a side) same canonical family (never OTHER/UNKNOWN). Fails clo
 The GitHub token on the box lacks `workflow` scope, so the workflow is checked in at
 `docs/clf-scoreboard/clf-scoreboard-gate.workflow.yml`; copy it to `.github/workflows/` to activate.
 It is not path-filtered. Snapshot replay reproduced live Neon exactly (0 per-source deltas).
+
+## Benchmark integrity (owner directive, 2026-10-14)
+
+Implemented in `lib/covenant-learning-factory/scoreboard/integrity.ts`, enforced by `compareToBaseline` and the CLI
+whenever `--baseline` is given. Tests: `tests/covenant-learning-factory/scoreboard-integrity.test.ts`.
+
+1. **Frozen membership** — `scoreboard/heldout-membership.json` freezes every HELDOUT source by `sourceId`,
+   `contentSha256` and issuer (`issuerCik`, normalized `ticker`). The gate fails if a frozen source is moved to DEV,
+   dropped (absent, or re-marked as a duplicate), re-hashed or re-issued, unless `scoreboard/benchmark-migrations.json`
+   carries a complete record `{ id, date, change: HELDOUT_TO_DEV | DROP_HELDOUT | SOURCE_HASH_CHANGE | ISSUER_CHANGE,
+   sourceIds, reason, approver }` for that source and that change. Incomplete records fail the gate.
+2. **Comparability** — every report carries `identity` = ruleset version + sha256 of the canonical ruleset JSON,
+   per-source input sha256 (source row, document text, candidates, definitions, conditions), the snapshot sha256
+   over those, and (where relevant) the scorer config (section-tree on/off, mode). `compareToBaseline` refuses
+   (`IncomparableEvaluationError`, CLI exit 3) when any of them differ or are missing.
+3. **Append-only history** — `scoreboard/baseline-history.json` is a hash-chained list; each entry points to an
+   immutable file under `scoreboard/baselines/` with its sha256. `baseline.json` must be byte-identical to the
+   latest entry. Earlier baselines (including the pre-integrity ones, marked `legacy`, approver UNRECORDED) are
+   kept as evidence. In CI the base branch's history must be an unchanged prefix (`--history-base`).
+   Thresholds live in the history: changing them, or accepting a baseline with a higher HELDOUT total or higher
+   HELDOUT UNSUPPORTED_SEMANTICS than the previous identity-bound entry, requires `thresholdMigration { reason, approver }`.
+   To rebaseline: add the new report as the next `baselines/NNNN-*.json`, copy it to `baseline.json`, append an
+   entry (seq, prevEntrySha256 = sha256 of the previous entry's canonical JSON, reason, approver), never edit old ones.
+4. **Regressions beyond the aggregate** (recorded thresholds, current values): fail when HELDOUT total rises
+   (`heldoutTotalMaxIncrease` 0); when aggregate HELDOUT UNSUPPORTED_SEMANTICS rises (`heldoutUnsupportedMaxIncrease` 0)
+   or any single HELDOUT source's UNSUPPORTED_SEMANTICS rises; and on a **material per-source regression**: a HELDOUT
+   source whose total rises by ≥ max(2, ceil(10% × before)) — e.g. 0→2 fails, 0→1 passes, 50→55 fails, 50→54 passes —
+   even when aggregate errors go down.

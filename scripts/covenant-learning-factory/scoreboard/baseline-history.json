@@ -1,0 +1,127 @@
+{
+  "schema": "clf-scoreboard-baseline-history/v1",
+  "entries": [
+    {
+      "seq": 1,
+      "recordedAt": "2026-10-14T13:40:45-04:00",
+      "file": "scripts/covenant-learning-factory/scoreboard/baselines/0001-legacy-9c627b94.json",
+      "reportSha256": "74dd64709f68503871f98ca26687532cd3c361296f6282feba58402019000b52",
+      "sourceCommit": "9c627b9486e6fcceef97eeb84189129174f07f21",
+      "legacy": true,
+      "identity": null,
+      "heldout": {
+        "sources": 153,
+        "total": 3863,
+        "UNSUPPORTED_SEMANTICS": 13
+      },
+      "thresholds": {
+        "heldoutTotalMaxIncrease": 0,
+        "heldoutUnsupportedMaxIncrease": 1000000000,
+        "perSourceMaterialAbs": 1000000000,
+        "perSourceMaterialRel": 0
+      },
+      "reason": "legacy baseline preserved as historical evidence (commit 9c627b94: feat(clf): scoreboard gate — sweep self-check DEV/HELDOUT split with offline snapshot + regression gate)",
+      "approver": "UNRECORDED (pre-integrity baseline committed on the PR branch; no approval was recorded)",
+      "prevEntrySha256": null
+    },
+    {
+      "seq": 2,
+      "recordedAt": "2026-10-14T13:45:57-04:00",
+      "file": "scripts/covenant-learning-factory/scoreboard/baselines/0002-legacy-89b7690b.json",
+      "reportSha256": "7079878e4305d16e1cd8f7d072895102b26843f386f98bdaa55aa9787e819e49",
+      "sourceCommit": "89b7690be89a8f4630b843afde51796f8ac3d9a1",
+      "legacy": true,
+      "identity": null,
+      "heldout": {
+        "sources": 153,
+        "total": 5326,
+        "UNSUPPORTED_SEMANTICS": 13
+      },
+      "thresholds": {
+        "heldoutTotalMaxIncrease": 0,
+        "heldoutUnsupportedMaxIncrease": 1000000000,
+        "perSourceMaterialAbs": 1000000000,
+        "perSourceMaterialRel": 0
+      },
+      "reason": "legacy baseline preserved as historical evidence (commit 89b7690b: fix(clf): strict reflection matcher (section/family + non-generic anchors); strict baseline; held-out count docs)",
+      "approver": "UNRECORDED (pre-integrity baseline committed on the PR branch; no approval was recorded)",
+      "prevEntrySha256": "f71b02e34f2a08d44cb25b95308c0d2420cd1cd20384dff85985afd8d4e8f20f"
+    },
+    {
+      "seq": 3,
+      "recordedAt": "2026-10-14T14:23:13-04:00",
+      "file": "scripts/covenant-learning-factory/scoreboard/baselines/0003-legacy-dfaa0f19.json",
+      "reportSha256": "25606506709eebadd4092bbc170bca9bb61bdbaa946807e198f323c8efce683f",
+      "sourceCommit": "dfaa0f19a6bef28ba01ed5748b982adaca9401cd",
+      "legacy": true,
+      "identity": null,
+      "heldout": {
+        "sources": 140,
+        "total": 3743,
+        "UNSUPPORTED_SEMANTICS": 26
+      },
+      "thresholds": {
+        "heldoutTotalMaxIncrease": 0,
+        "heldoutUnsupportedMaxIncrease": 1000000000,
+        "perSourceMaterialAbs": 1000000000,
+        "perSourceMaterialRel": 0
+      },
+      "reason": "legacy baseline preserved as historical evidence (commit dfaa0f19: scoreboard: issuer-level DEV/HELDOUT split, CHWY dedupe, rebaseline on live ruleset v2, fetchDocumentText surfaces Neon errors)",
+      "approver": "UNRECORDED (pre-integrity baseline committed on the PR branch; no approval was recorded)",
+      "prevEntrySha256": "56bed0cb5c125e0d39cccbd8abf05ab497564d2c51322c97bfdf0d509a74b3a5"
+    },
+    {
+      "seq": 4,
+      "recordedAt": "2026-10-14T15:48:47-04:00",
+      "file": "scripts/covenant-learning-factory/scoreboard/baselines/0004-legacy-c5b8c83e.json",
+      "reportSha256": "52915e229722b411a385c909fce6c653f15831c35e5516ac0f63115a27bfbc3c",
+      "sourceCommit": "c5b8c83e8bc6c4b5a107d6b4c15f26cf1aec898c",
+      "legacy": true,
+      "identity": null,
+      "heldout": {
+        "sources": 137,
+        "total": 3788,
+        "UNSUPPORTED_SEMANTICS": 71
+      },
+      "thresholds": {
+        "heldoutTotalMaxIncrease": 0,
+        "heldoutUnsupportedMaxIncrease": 1000000000,
+        "perSourceMaterialAbs": 1000000000,
+        "perSourceMaterialRel": 0
+      },
+      "reason": "legacy baseline preserved as historical evidence (commit c5b8c83e: scoreboard: rebaseline for CIK split + HTML strip (committed snapshot, v2): HELDOUT 137 src / 3788)",
+      "approver": "UNRECORDED (pre-integrity baseline committed on the PR branch; no approval was recorded)",
+      "prevEntrySha256": "434ba71dcf85547aef77e8275c0380e40a3853c45bf0d6d89ee2ef796481602f"
+    },
+    {
+      "seq": 5,
+      "recordedAt": "2026-10-14T00:00:00Z",
+      "file": "scripts/covenant-learning-factory/scoreboard/baselines/0005-identity-3d256384b657.json",
+      "reportSha256": "327059375667a9a2f0794c37f5b82a16c98ff9468d83c20a08aadd1893d6e16b",
+      "legacy": false,
+      "identity": {
+        "rulesetVersion": 2,
+        "rulesetSha256": "6bc7b606993b1eec8b9ea136b07adb66777233de2e66a4292fa6e58d754620bf",
+        "snapshotSha256": "3d256384b657408cf532e9004ca3c739dd82df1a1dd5c4323a41098725704809"
+      },
+      "heldout": {
+        "sources": 137,
+        "total": 3788,
+        "UNSUPPORTED_SEMANTICS": 71
+      },
+      "thresholds": {
+        "heldoutTotalMaxIncrease": 0,
+        "heldoutUnsupportedMaxIncrease": 0,
+        "perSourceMaterialAbs": 2,
+        "perSourceMaterialRel": 0.1
+      },
+      "reason": "PR #364: same snapshot, ruleset and code as the previous baseline (totals unchanged), now bound to an evaluation identity and frozen HELDOUT membership",
+      "approver": "owner directive 'HEADROOM — PR #364 / #365 BENCHMARK INTEGRITY' (2026-10-14)",
+      "thresholdMigration": {
+        "reason": "tighten acceptance: HELDOUT UNSUPPORTED_SEMANTICS may not rise (aggregate or per source); material per-source regression = +max(2, ceil(10% of before)); legacy gate checked only the aggregate HELDOUT total",
+        "approver": "owner directive 'HEADROOM — PR #364 / #365 BENCHMARK INTEGRITY' (2026-10-14)"
+      },
+      "prevEntrySha256": "3708777c24360b1d1bd995d2524d800451b512f99d4f9c7dcc13f803342de84a"
+    }
+  ]
+}

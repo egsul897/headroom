@@ -20,6 +20,14 @@
  *   --write-findings=PATH  candidate-level JSONL: one row per scored error (class, candidateId, family, excerpt)
  *   --write-rules=PATH     write the ruleset actually used (pin it for offline replay)
  *
+ * Benchmark integrity (applies whenever --baseline is given; see docs/clf-scoreboard/README.md):
+ *   --history=PATH         append-only baseline history (default scoreboard/baseline-history.json);
+ *                          baseline must equal its latest entry; thresholds come from it
+ *   --history-base=PATH    the base branch's history: must be an unchanged prefix (CI passes this)
+ *   --membership=PATH      frozen HELDOUT membership (default scoreboard/heldout-membership.json)
+ *   --migrations=PATH      committed benchmark migrations (default scoreboard/benchmark-migrations.json)
+ *   Exit 1 = gate failed, exit 3 = incomparable evaluations (different snapshot / source hashes / ruleset).
+ *
  * Deterministic. Zero AI / LLM calls. Never prints the connection string.
  */
 
@@ -28,6 +36,12 @@ import { resolve } from "node:path";
 import {
   aggregate,
   compareToBaseline,
+  IncomparableEvaluationError,
+  rulesetIdentity,
+  verifyHistory,
+  type BaselineHistory,
+  type BenchmarkMembership,
+  type BenchmarkMigration,
   readSnapshot,
   scoreSource,
   splitFor,
@@ -163,16 +177,55 @@ async function main(): Promise<void> {
     console.log(`findings: ${lines.length} rows → ${findingsPath}`);
   }
   for (const s of perSource) delete s.findings;
-  const report = aggregate(perSource, { mode: neon ? "neon" : "snapshot", rulesetVersion: rules.rulesetVersion });
+  const rid = rulesetIdentity(rules);
+  const report = aggregate(perSource, { mode: neon ? "neon" : "snapshot", rulesetVersion: rules.rulesetVersion, rulesetSha256: rid.rulesetSha256 });
   printSummary(report);
+  console.log(
+    `identity: ruleset v${rid.rulesetVersion} sha256=${rid.rulesetSha256} snapshot=${report.identity?.snapshotSha256 ?? "NONE (missing per-source input hashes)"}`,
+  );
   const out = argStr("write-report");
   if (out) writeFileSync(out, JSON.stringify(report, null, 2) + "\n");
 
   const baselinePath = argStr("baseline");
   if (baselinePath) {
-    const baseline = JSON.parse(readFileSync(resolve(baselinePath), "utf8")) as ScoreboardReport;
-    const gate = compareToBaseline(baseline, report);
-    console.log(JSON.stringify({ event: "clf.scoreboard.gate", pass: gate.pass, reasons: gate.reasons, heldout: [gate.heldoutBefore, gate.heldoutAfter], dev: [gate.devBefore, gate.devAfter], byClass: gate.byClass }, null, 2));
+    const baselineText = readFileSync(resolve(baselinePath));
+    const baseline = JSON.parse(baselineText.toString("utf8")) as ScoreboardReport;
+    const dir = "scripts/covenant-learning-factory/scoreboard";
+    const readJson = <T>(p: string): T => JSON.parse(readFileSync(resolve(p), "utf8")) as T;
+    const historyPath = argStr("history") ?? `${dir}/baseline-history.json`;
+    const membershipPath = argStr("membership") ?? `${dir}/heldout-membership.json`;
+    const migrationsPath = argStr("migrations") ?? `${dir}/benchmark-migrations.json`;
+    const integrity: string[] = [];
+    for (const p of [historyPath, membershipPath, migrationsPath]) if (!existsSync(resolve(p))) integrity.push(`required integrity file missing: ${p}`);
+    if (integrity.length) {
+      console.log(JSON.stringify({ event: "clf.scoreboard.gate", pass: false, reasons: integrity }, null, 2));
+      process.exit(1);
+    }
+    const historyBase = argStr("history-base");
+    const hist = verifyHistory(
+      readJson<BaselineHistory>(historyPath),
+      (rel) => (existsSync(resolve(rel)) ? readFileSync(resolve(rel)) : null),
+      { baselineText, baseHistory: historyBase ? readJson<BaselineHistory>(historyBase) : null },
+    );
+    let gate;
+    try {
+      gate = compareToBaseline(baseline, report, {
+        membership: readJson<BenchmarkMembership>(membershipPath),
+        migrations: readJson<{ migrations: BenchmarkMigration[] }>(migrationsPath).migrations ?? [],
+        thresholds: hist.thresholds,
+      });
+    } catch (err) {
+      if (err instanceof IncomparableEvaluationError) {
+        console.log(JSON.stringify({ event: "clf.scoreboard.gate", pass: false, incomparable: err.problems }, null, 2));
+        process.exit(3);
+      }
+      throw err;
+    }
+    if (hist.reasons.length) {
+      gate.reasons.push(...hist.reasons);
+      gate.pass = false;
+    }
+    console.log(JSON.stringify({ event: "clf.scoreboard.gate", pass: gate.pass, reasons: gate.reasons, thresholds: hist.thresholds, historyEntries: hist.latest?.seq ?? 0, heldout: [gate.heldoutBefore, gate.heldoutAfter], dev: [gate.devBefore, gate.devAfter], byClass: gate.byClass }, null, 2));
     for (const d of gate.deltas.slice(0, 40)) console.log(`  Δ ${d.delta > 0 ? "+" : ""}${d.delta} ${d.split} ${d.sourceId} ${JSON.stringify(d.byClass)}`);
     if (!gate.pass) process.exit(1);
   }
