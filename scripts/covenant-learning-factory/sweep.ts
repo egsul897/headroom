@@ -20,6 +20,7 @@
 import { createNeonHttpsExecutor, getNeonTransportMode, redactConnectionSecrets } from "../../lib/covenant-learning-factory/store/neon-transport";
 import { runCovenantLearningSweep } from "../../lib/covenant-learning-factory/sweep";
 import { defaultCertificationGolden } from "../../lib/covenant-learning-factory/learned-rules/replay-gate";
+import { createNeonRulesStore } from "../../lib/flywheel/ruleset-neon";
 
 function argNum(name: string, fallback: number): number {
   const hit = process.argv.find((a) => a.startsWith(`--${name}=`));
@@ -60,10 +61,18 @@ async function main(): Promise<void> {
       max: argNum("max", Number.POSITIVE_INFINITY),
       epochs: argNum("epochs", 8),
       resume: !hasFlag("no-resume"),
+      neonRulesStore: !dryRun,
     }),
   );
 
   try {
+    const rulesStore = dryRun
+      ? undefined
+      : createNeonRulesStore(executor, {
+          exportToRepo: true,
+          rulesDir: argStr("rules-dir"),
+        });
+
     const result = await runCovenantLearningSweep({
       executor,
       batchSize: argNum("batch", 10),
@@ -72,6 +81,7 @@ async function main(): Promise<void> {
       resume: !hasFlag("no-resume"),
       dryRun,
       rulesDir: argStr("rules-dir"),
+      rulesStore,
       goldenChecks: [
         defaultCertificationGolden(() => ({
           packageKey: "sweep-golden-shell",
