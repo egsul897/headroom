@@ -7,7 +7,7 @@
  * ceiling. Clauses with no numeric cap stay in the list as purpose permissions.
  */
 
-import { classifyCovenantFamily, type CovenantFamily } from "../section-tree/family-classifier";
+import { classifyCovenantFamily, isObligorProhibitionLead, type CovenantFamily } from "../section-tree/family-classifier";
 import {
   applyDefinitionAlias,
   applyFamilyHints,
@@ -288,6 +288,8 @@ function findCovenantHeadings(text: string): CovenantHeading[] {
     if (match.index == null || !match[1]) continue;
     const prev = match.index === 0 ? "" : (text[match.index - 1] ?? "");
     if (prev !== "" && !/[\s.;:(]/.test(prev)) continue;
+    // Table-of-contents entry ("7.2 Mergers, Consolidations ....... 45" / "7.2  Liens   61"): not a heading.
+    if (isTocEntry(text, match.index + (/^[Ss]/.test(match[0]) ? match[0].indexOf(match[1]!) : 0))) continue;
     const parsed = parseCovenantTitle(text, match.index + match[0].length);
     if (!parsed) continue;
     if (!isOperativeCovenant(text.slice(parsed.bodyAt, parsed.bodyAt + 240))) continue;
@@ -296,6 +298,17 @@ function findCovenantHeadings(text: string): CovenantHeading[] {
     hits.push({ index: match.index, sectionNumber: match[1], title: parsed.title });
   }
   return hits;
+}
+
+/** Heading-shaped title: every word of 4+ letters is capitalized ("Margin Regulations", "Sales of Assets"). */
+function isTitleCase(title: string): boolean {
+  const words = title.split(/[\s,;]+/).filter((w) => /^[A-Za-z]{4,}$/.test(w));
+  return words.length >= 1 && words.length <= 14 && words.every((w) => /^[A-Z]/.test(w));
+}
+
+/** Flattened table-of-contents entry: the title is followed by a page number and then the next entry. */
+function isTocEntry(text: string, at: number): boolean {
+  return /^\S+\s+[A-Z][^.]{0,160}?\s\d{1,3}\s+(?:[Ss][Ee][Cc][Tt][Ii][Oo][Nn]\b|ARTICLE\b|Article\b|\d{1,2}\.\d{1,2}\.?\s|EXHIBIT|SCHEDULE)/.test(text.slice(at, at + 260));
 }
 
 function parseCovenantTitle(text: string, from: number): { title: string; bodyAt: number } | null {
@@ -325,6 +338,7 @@ function resolveFamily(title: string, rules?: LearnedRuleSet): string {
 
 function findRegions(text: string, rules?: LearnedRuleSet): Region[] {
   const regions: Region[] = [];
+  const regionStarts: Array<{ family: string; title: string; sectionNumber: string | null }> = [];
   const starts: { at: number; title: string; family: string; sectionNumber: string | null; bodyFrom: number }[] = [];
 
   for (const match of text.matchAll(QUOTED_DEF)) {
@@ -376,8 +390,13 @@ function findRegions(text: string, rules?: LearnedRuleSet): Region[] {
     if (amendmentItem > 80) end = Math.min(end, start.bodyFrom + amendmentItem);
     const body = text.slice(start.bodyFrom, end).trim();
     if (body.length < 40) continue;
-    regions.push({ family: classifiedFamily(start, body), title: start.title, body, sectionNumber: start.sectionNumber });
+    regions.push({ family: start.family, title: start.title, body, sectionNumber: start.sectionNumber });
+    regionStarts.push(start);
   }
+  // Family classifier for OTHER-headed regions, with structural covenant context: an adjacent section region
+  // also opens with an obligor-bound prohibition (no title keyword such as "COVENANTS").
+  const prohib = regions.map((r) => r.sectionNumber != null && isObligorProhibitionLead(leadOfBody(r.body)));
+  regions.forEach((r, k) => { r.family = classifiedFamily(regionStarts[k]!, r.body, !!(prohib[k - 1] || prohib[k + 1])); });
   return regions;
 }
 
@@ -405,6 +424,14 @@ function sectionBoundaries(text: string): number[] {
     const lead = match[0].startsWith(".") ? 1 : 0;
     at.add(match.index + lead);
   }
+  // Bare-numbered headings ("… Lender. 11.23 Incremental Revolving Credit Commitments . (a) IBM …") bound a region
+  // even when they are not covenant headings; without them a covenant region runs on into later articles.
+  // The text is whitespace-normalized, so a heading is: sentence end, number, Title-Case words, period.
+  const bare = new RegExp(String.raw`(?:[.;:)]\s+)(${SECTION_NUMBER})\.?\s+([A-Z][A-Za-z'’&,;\- ]{2,140}?)\s*\.\s`, "g");
+  for (const match of text.matchAll(bare)) {
+    if (match.index == null || !isTitleCase(match[2] ?? "")) continue;
+    at.add(match.index + match[0].indexOf(match[1]!));
+  }
   // All-caps ARTICLE headings only. "Article VII" inside "paragraph (n) of Article VII" is a cross-reference.
   for (const match of text.matchAll(/\bARTICLE\s+[IVXLC]+\b/g)) if (match.index != null) at.add(match.index);
   return [...at].sort((a, b) => a - b);
@@ -421,12 +448,13 @@ const EXTRACTOR_FAMILY: Record<CovenantFamily, string> = {
  * (lead-in prohibition object + heading + defined terms). Definition regions and learned mappings are untouched.
  * CLF_FAMILY_CLASSIFIER=0 disables.
  */
-function classifiedFamily(start: { family: string; title: string; sectionNumber: string | null }, body: string): string {
+const leadOfBody = (body: string) => body.replace(/^[^\n]{0,200}?\.\s/, "");
+
+function classifiedFamily(start: { family: string; title: string; sectionNumber: string | null }, body: string, covenantContext: boolean): string {
   const fam = start.family || "OTHER";
   if (fam !== "OTHER" || start.sectionNumber == null || process.env.CLF_FAMILY_CLASSIFIER === "0") return fam;
   const title = start.title.replace(/^§\S+\s*/, "");
-  const lead = body.replace(/^[^\n]{0,200}?\.\s/, "");
-  const v = classifyCovenantFamily({ title, leadIn: lead, parentTitle: "COVENANTS" });
+  const v = classifyCovenantFamily({ title, leadIn: leadOfBody(body), covenantContext });
   return v.family ? EXTRACTOR_FAMILY[v.family] : fam;
 }
 
