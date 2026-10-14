@@ -77,6 +77,16 @@ function ordinal(marker: string, level: ClauseLevel): number | null {
   }
 }
 
+function labelFor(level: ClauseLevel, ord: number): string | null {
+  if (ord < 1) return null;
+  switch (level) {
+    case "LOWER_ALPHA": return ord <= 26 ? String.fromCharCode(96 + ord) : null;
+    case "LOWER_ROMAN": return ROMAN[ord - 1] ?? null;
+    case "UPPER_ALPHA": return ord <= 26 ? String.fromCharCode(64 + ord) : null;
+    case "DIGIT": return String(ord);
+  }
+}
+
 const LEVEL_ORDER: ClauseLevel[] = ["LOWER_ALPHA", "LOWER_ROMAN", "UPPER_ALPHA", "DIGIT"];
 
 // ---------- headings ----------
@@ -194,6 +204,8 @@ function findFurniture(text: string, headings: Heading[]): { furniture: Furnitur
 
 interface Marker {
   marker: string;
+  /** Enumerator begins a line (after optional indentation / merged page number). */
+  lineStart: boolean;
   start: number;
   bodyStart: number;
 }
@@ -202,11 +214,12 @@ interface Marker {
 function candidateMarkers(text: string, from: number, to: number): Marker[] {
   const out: Marker[] = [];
   const slice = text.slice(from, to);
-  const re = /(^|\n|[:;]\s*(?:and|or)?\s*|\.\s{2,}|—\s*|^\s*)\(([a-z]{1,2}|[ivxl]{1,6}|[A-Z]{1,2}|\d{1,2})\)[ \t\u00a0]*/g;
+  // Line-start leads tolerate indentation and a merged page number ("\n 161 (4) ...") from page furniture.
+  const re = /(^\s*|\n[ \t\u00a0]*(?:\d{1,3}[ \t\u00a0]+)?|[:;]\s*(?:and|or)?\s*|\.\s{2,}|—\s*)\(([a-z]{1,2}|[ivxl]{1,6}|[A-Z]{1,2}|\d{1,2})\)[ \t\u00a0]*/g;
   for (const m of slice.matchAll(re)) {
     const lead = m[1]!;
     const start = from + m.index! + lead.length;
-    out.push({ marker: m[2]!, start, bodyStart: from + m.index! + m[0].length });
+    out.push({ marker: m[2]!, start, bodyStart: from + m.index! + m[0].length, lineStart: lead.includes("\n") || m.index === 0 });
   }
   // A clause immediately after the section heading "(a)" at headingEnd.
   return out;
@@ -219,7 +232,8 @@ function parseClauses(
 ): void {
   const markers = candidateMarkers(text, section.headingEnd, section.end);
   // Stack of open levels: { level, ord, node }
-  const stack: { level: ClauseLevel; ord: number; node: TreeNode }[] = [];
+  const stack: { level: ClauseLevel; ord: number; node: TreeNode; prefix?: string }[] = [];
+  let listNo = 1;
   const opened: TreeNode[] = [];
   const close = (n: TreeNode, at: number) => {
     n.end = Math.max(n.headingEnd, at);
@@ -231,23 +245,104 @@ function parseClauses(
       const top = stack[d]!;
       const o = ordinal(mk.marker, top.level);
       if (o != null && o === top.ord + 1) {
+        // Inline run guard: a shallower sibling that would close deeper open levels is treated as an
+        // inline enumerator when the deepest open level's NEXT ordinal still appears later at a line
+        // start in this section, and the candidate does not open a new paragraph (e.g. "(8) ... in respect of (a) ...\n(c) customer deposits ... (f) ...;\n(9) ...").
+        const paraBreak = /\n[ \t\u00a0]*\n[ \t\u00a0\d]*$/.test(text.slice(Math.max(0, mk.start - 200), mk.start));
+        if (d < stack.length - 1 && !paraBreak) {
+          const deep = stack[stack.length - 1]!;
+          const nextLabel = labelFor(deep.level, deep.ord + 1);
+          if (nextLabel) {
+            // Follow this candidate's run (c, d, e, ...); if the first marker that breaks the run is the
+            // deep level's next ordinal, the run was inline inside the deep item.
+            let expect = o + 1;
+            let inline = false;
+            for (const m2 of markers) {
+              if (m2.start <= mk.start) continue;
+              const o2 = ordinal(m2.marker, top.level);
+              if (o2 != null && o2 >= expect && o2 <= expect + 2) { expect = o2 + 1; continue; }
+              inline = m2.marker === nextLabel;
+              break;
+            }
+            if (inline) break;
+          }
+        }
         // close deeper levels and this sibling
         for (let k = stack.length - 1; k >= d; k--) close(stack[k]!.node, mk.start);
         stack.length = d;
         const parent = d === 0 ? section : stack[d - 1]!.node;
+        const prefix = d === 0 ? top.prefix : undefined;
         const node = make({
           kind: "CLAUSE", label: `(${mk.marker})`, sectionNumber: section.sectionNumber,
-          path: `${parent.path}(${mk.marker})`, title: null, level: top.level,
+          path: `${prefix ?? parent.path}(${mk.marker})`, title: null, level: top.level,
           start: mk.start, headingEnd: mk.bodyStart, end: section.end, parentId: parent.id,
           depth: parent.depth + 1, status: "OK", issues: [],
         });
-        stack.push({ level: top.level, ord: o, node });
+        stack.push({ level: top.level, ord: o, node, prefix });
         opened.push(node);
         placed = true;
         break;
       }
     }
     if (placed) continue;
+    // Option 1b: a first marker (a)/(1)/(i)/(A) for a level that is ALREADY open, introduced by a colon
+    // lead-in. Either (i) a nested list under the deepest open item ("(3) ...; provided, however, that:
+    // (a) ..."), or (ii) a NEW list after hanging text that closes the previous list — an unnumbered
+    // paragraph ("For purposes of ...:") or text after the deepest item's terminal ";" that is not a
+    // proviso ("(4) ...; (all such payments ...) unless ...: (a)"). A restart is attached to the
+    // section as list #k (path "7.5[2](a)") so paths never collide.
+    if (stack.length) {
+      const reopenOpen = LEVEL_ORDER.find((lv) => stack.some((x) => x.level === lv) && ordinal(mk.marker, lv) === 1);
+      const fresh = LEVEL_ORDER.find((lv) => !stack.some((x) => x.level === lv) && ordinal(mk.marker, lv) === 1);
+      const before = text.slice(stack[stack.length - 1]!.node.headingEnd, mk.start).replace(/\s+$/, "");
+      const restartCheck = (reopenOpen || fresh) && /:$/.test(before);
+      const paraStart0 = before.lastIndexOf("\n\n");
+      const leadPara0 = before.slice(paraStart0 + 1).trimStart();
+      const semi0 = before.lastIndexOf(";");
+      const tail0 = semi0 >= 0 ? before.slice(semi0 + 1).trimStart() : "";
+      const isRestart =
+        !!restartCheck &&
+        ((paraStart0 >= 0 && !/^\(([a-z]{1,2}|[ivxl]{1,6}|[A-Z]{1,2}|\d{1,2})\)/.test(leadPara0)) ||
+          /\.\s+[A-Z](?:[^.;:]|\.(?=\d))*:$/.test(before) ||
+          (semi0 >= 0 && tail0.length > 0 &&
+            !/^(provided|except|other than|subject to|and\b|or\b|in each case|so long as|however|but\b)/i.test(tail0)));
+      const reopen = isRestart ? (reopenOpen ?? fresh) : reopenOpen;
+      if (reopen && restartCheck) {
+        const deepest = stack[stack.length - 1]!.node;
+        const paraStart = Math.max(before.lastIndexOf("\n\n"), -1);
+        const leadPara = before.slice(paraStart + 1).trimStart();
+        const unnumberedPara = paraStart >= 0 && !/^\(([a-z]{1,2}|[ivxl]{1,6}|[A-Z]{1,2}|\d{1,2})\)/.test(leadPara);
+        const semi = before.lastIndexOf(";");
+        const tail = semi >= 0 ? before.slice(semi + 1).trimStart() : "";
+        const hanging =
+          semi >= 0 && tail.length > 0 &&
+          !/^(provided|except|other than|subject to|and\b|or\b|in each case|so long as|however|but\b)/i.test(tail);
+        let parent: TreeNode;
+        let path: string;
+        let issues: string[] = [];
+        void unnumberedPara; void hanging;
+        if (isRestart) {
+          for (let k = stack.length - 1; k >= 0; k--) close(stack[k]!.node, mk.start);
+          stack.length = 0;
+          listNo += 1;
+          parent = section;
+          path = `${section.path}[${listNo}](${mk.marker})`;
+          issues = ["LIST_RESTART"];
+        } else {
+          parent = deepest;
+          path = `${deepest.path}(${mk.marker})`;
+        }
+        const node = make({
+          kind: "CLAUSE", label: `(${mk.marker})`, sectionNumber: section.sectionNumber,
+          path, title: null, level: reopen,
+          start: mk.start, headingEnd: mk.bodyStart, end: parent === section ? section.end : parent.end, parentId: parent.id,
+          depth: parent.depth + 1, status: "OK", issues,
+        });
+        stack.push({ level: reopen, ord: 1, node, prefix: parent === section && issues.length ? `${section.path}[${listNo}]` : undefined });
+        opened.push(node);
+        continue;
+      }
+    }
     // Option 2: open a new deeper level with a first marker (a)/(i)/(A)/(1) not already open.
     const used = new Set(stack.map((s) => s.level));
     for (const level of LEVEL_ORDER) {

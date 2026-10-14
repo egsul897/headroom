@@ -75,3 +75,66 @@ describe("section tree", () => {
     expect(() => parseDocumentTree("")).not.toThrow();
   });
 });
+
+describe("nesting regressions (reviewer #365)", () => {
+  const paths = (text: string, sec: string) => {
+    const t = parseSectionTree(text);
+    const s = t.nodes.find((n) => n.kind === "SECTION" && n.sectionNumber === sec)!;
+    const out: string[] = [];
+    const walk = (id: string) => { const n = t.byId.get(id)!; out.push(n.path); n.childIds.forEach(walk); };
+    s.childIds.forEach(walk);
+    return { s, out };
+  };
+
+  it("ef20064499 7.01: (b)'s (1)-(n) list nests, (3)'s proviso (a)/(b) nest under (3), inline (c)-(f) inside (8) do not escape, and the post-list (a)-(c) restart", () => {
+    const text = [
+      "Section 7.01 Indebtedness .", "",
+      "(a) Incur any Indebtedness; provided that the Borrower may incur Indebtedness.", "",
+      "(b) The provisions of Section 7.01(a) will not prohibit the following:", "",
+      "(1) Indebtedness under the Loan Documents;", "",
+      "(2) Guarantees by the Borrower;", "",
+      "(3) Indebtedness of the Borrower to any Restricted Subsidiary; provided , however , that:", "",
+      "(a) any subsequent issuance of Capital Stock, and", "",
+      "(b) any sale of any such Indebtedness;", "",
+      "(4) Swap Obligations;", "",
+      "(5) Indebtedness in respect of (a) workers' compensation claims, (b) bankers' acceptances,",
+      "(c) customer deposits; (d) letters of credit, (e) Cash Management Agreements; and",
+      "(f) Settlement Indebtedness;", "",
+      "(6) Indebtedness arising from guarantees.", "",
+      "For purposes of determining compliance with this Section 7.01 :", "",
+      "(a) in the event that any item meets more than one type;", "",
+      "(b) additionally, subject to clause (c) below, reclassification; and", "",
+      "(c) all Indebtedness outstanding on the Closing Date.", "",
+      "Section 7.02 Liens .", "", "(a) Create any Lien.",
+    ].join("\n");
+    const { s, out } = paths(text, "7.1");
+    expect(s.title).toBe("Indebtedness");
+    expect(out).toEqual([
+      "7.1(a)", "7.1(b)", "7.1(b)(1)", "7.1(b)(2)", "7.1(b)(3)", "7.1(b)(3)(a)", "7.1(b)(3)(b)",
+      "7.1(b)(4)", "7.1(b)(5)", "7.1(b)(6)", "7.1[2](a)", "7.1[2](b)", "7.1[2](c)",
+    ]);
+  });
+
+  it("mrvi 6.07: clause (a) is not lost after a page number between heading and body", () => {
+    const text = "Section 6.07  Restricted Payments; Certain Payments of Indebtedness  .\n    162\n      \n\n  (a)  The Borrower will not make any Restricted Payment, except:\n\n  (i)  the Borrower may make Restricted Payments to any Restricted Subsidiary;\n\n  (ii)  Holdings may declare dividends;\n\n  (b)  Holdings will not make any payment on Junior Financing, except:\n\n  (i)  regularly scheduled interest;\n\nSection 6.08 Transactions with Affiliates.\n";
+    const { out } = paths(text, "6.7");
+    expect(out).toEqual(["6.7(a)", "6.7(a)(i)", "6.7(a)(ii)", "6.7(b)", "6.7(b)(i)"]);
+  });
+
+  it("rbc 7.05: page-number-merged (4) is found, proviso (a)-(c) is not nested under (3), second list restarts without duplicated (b)/(c)", () => {
+    const text = [
+      "Section 7.05 Restricted Payments.  Directly or indirectly:  (1) declare or pay any dividend;",
+      "(2) purchase any Equity Interests;",
+      "(3) make any principal payment on Subordinated Indebtedness; or", "",
+      " 161 (4) make any Restricted Investment; (all such payments being collectively referred to as \u201cRestricted Payments\u201d), unless, at the time of such Restricted Payment: (a) no Specified Event of Default shall have occurred; (b) [reserved]; and (c) such Restricted Payment is less than the sum of (i) Excess Cash Flow plus (ii) equity proceeds. This Section 7.05 will not prohibit: (1) the payment of any dividend within 60 days;",
+      "(2) the redemption of Equity Interests;",
+      "(3) [reserved].", "",
+      "Section 7.06 Burdensome Agreements.",
+    ].join("\n");
+    const { out } = paths(text, "7.5");
+    expect(out.filter((p) => !/\(i+\)$/.test(p))).toEqual([
+      "7.5(1)", "7.5(2)", "7.5(3)", "7.5(4)", "7.5[2](a)", "7.5[2](b)", "7.5[2](c)", "7.5[3](1)", "7.5[3](2)", "7.5[3](3)",
+    ]);
+    expect(new Set(out).size).toBe(out.length);
+  });
+});
