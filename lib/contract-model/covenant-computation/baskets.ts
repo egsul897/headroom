@@ -160,11 +160,15 @@ function isNonCapacityNumber(text: string): boolean {
   });
 }
 
-/** "including, without limitation" is an idiom. It does not grant unlimited capacity. */
-function isCapacityUnlimited(text: string): boolean {
-  if (/\bunlimited\b/i.test(text)) return true;
-  const stripped = text.replace(/\bincluding,?\s+without\s+limitation\b/gi, "");
-  return /\bwithout\s+limitation\b/i.test(stripped);
+/**
+ * Explicit unlimited CAPACITY only. Keyword hits are not enough: "unlimited liability company", "including
+ * (without limitation)", "without limitation of the foregoing" and "including but without limitation" are idioms,
+ * not capacity grants. Only amount phrasing counts.
+ */
+export const UNLIMITED_CAPACITY_PHRASE =
+  /\bin\s+(?:an?\s+)?unlimited\s+(?:aggregate\s+)?(?:principal\s+)?amounts?\b|\bunlimited\s+in\s+(?:aggregate\s+)?amount\b|\bwithout\s+limit(?:ation)?\s+as\s+to\s+(?:the\s+)?(?:aggregate\s+)?(?:principal\s+)?amount\b|\bwithout\s+(?:any\s+)?(?:dollar|monetary|numerical)\s+(?:limit|cap)\b/i;
+export function isCapacityUnlimited(text: string): boolean {
+  return UNLIMITED_CAPACITY_PHRASE.test(text);
 }
 
 function hasNumeric(text: string): boolean {
