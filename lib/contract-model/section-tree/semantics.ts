@@ -3,6 +3,7 @@
  * checklist over a SectionTree. Deterministic; no AI / LLM calls; nothing invented.
  * A family with no numeric cap is NEVER reported as unlimited.
  */
+import { classifyCovenantFamily } from "./family-classifier";
 import { normalizeSectionNumber, sectionOf, type SectionTree, type TreeNode } from "./parse";
 
 export type ClauseRole = "PROHIBITION" | "BASKET" | "EXCEPTION_PROVISO" | "DEFINITION" | "CROSS_REFERENCE" | "OTHER";
@@ -133,17 +134,6 @@ export const CHECKLIST_FAMILIES = [
 ] as const;
 export type ChecklistFamily = (typeof CHECKLIST_FAMILIES)[number];
 
-const FAMILY_TITLE: Record<ChecklistFamily, RegExp> = {
-  DEBT: /\b(?:indebtedness|debt)\b(?!.*(?:prepay|payment))/i,
-  LIENS: /\bliens?\b|negative pledge/i,
-  RESTRICTED_PAYMENTS: /restricted payments?|dividends?|distributions?/i,
-  INVESTMENTS: /\binvestments?\b|loans?,? advances/i,
-  ASSET_SALES: /asset sales?|dispositions?|sale of assets|disposal|sale[- ]leaseback/i,
-  AFFILIATE_TRANSACTIONS: /affiliates?/i,
-  FUNDAMENTAL_CHANGES: /fundamental changes?|mergers?|consolidat/i,
-  PREPAYMENTS: /prepayments?.*(?:debt|indebtedness)|(?:junior|subordinated).*(?:payment|prepay)|payments? of (?:certain )?(?:debt|indebtedness)/i,
-  FINANCIAL_RATIOS: /financial (?:condition )?covenants?|leverage ratio|coverage ratio|fixed charge/i,
-};
 
 export type ChecklistStatus = "MISSING" | "NEEDS_INPUT" | "CONDITIONS_LIMITED" | "CAP_FOUND";
 
@@ -157,16 +147,16 @@ export interface ChecklistItem {
 }
 
 export function covenantChecklist(tree: SectionTree, text: string): ChecklistItem[] {
-  const sections = tree.nodes.filter((n) => n.kind === "SECTION" && n.title);
+  // Family per SECTION from the general classifier (lead-in prohibition object, heading, defined terms).
+  const sections = tree.nodes.filter((n) => n.kind === "SECTION");
+  const famOf = new Map<string, readonly string[]>();
+  for (const s of sections) {
+    const parent = s.parentId ? tree.byId.get(s.parentId) : undefined;
+    const v = classifyCovenantFamily({ title: s.title, parentTitle: parent?.title ?? null, leadIn: text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 700)) });
+    famOf.set(s.id, v.families);
+  }
   return CHECKLIST_FAMILIES.map((family) => {
-    let hits = sections.filter((s) => FAMILY_TITLE[family].test(s.title!));
-    // Prefer operative (negative/financial covenant) sections over definitions & reps.
-    const operative = hits.filter((s) => {
-      const body = text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 1500));
-      return family === "FINANCIAL_RATIOS" ? /ratio|not (?:permit|exceed|be less)/i.test(body) : isProhibitive(body);
-    });
-    if (operative.length) hits = operative;
-    else hits = [];
+    const hits = sections.filter((s) => famOf.get(s.id)?.includes(family));
     if (hits.length === 0) {
       return { family, status: "MISSING" as const, sectionPaths: [], parts: { fixedCap: false, grower: false, ratio: false, exceptions: 0, prohibition: false }, needsInputs: [], note: "no operative section found; not treated as unlimited" };
     }
@@ -181,7 +171,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     }
     const status: ChecklistStatus = grower || ratio || (needsInputs.length > 0 && !fixedCap) ? "NEEDS_INPUT" : fixedCap ? "CAP_FOUND" : "CONDITIONS_LIMITED";
     return {
-      family, status, sectionPaths: hits.map((h) => h.path),
+      family, status, sectionPaths: [...new Set(hits.map((h) => h.path))],
       parts: { fixedCap, grower, ratio, exceptions, prohibition: hits.some((h) => isProhibitive(text.slice(h.headingEnd, h.end))) },
       needsInputs,
       note: status === "CONDITIONS_LIMITED" ? "limited by conditions/exceptions without a numeric cap; never unlimited by default" : "",

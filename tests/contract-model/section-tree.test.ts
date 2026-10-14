@@ -193,3 +193,23 @@ describe("reviewer adversarial (#365 PASS_WITH_NOTES)", () => {
     expect(strictCandidateMatch(c, { cite: fragment, sectionRef: "Section 6.04", family: "INVESTMENTS" })).toBe(true);
   });
 });
+
+describe("covenant family classifier (general signals)", async () => {
+  const { classifyCovenantFamily } = await import("@/lib/contract-model/section-tree/family-classifier");
+  it("classifies by lead-in prohibition object, not heading alone", () => {
+    expect(classifyCovenantFamily({ title: "Liens", parentTitle: "NEGATIVE COVENANTS", leadIn: " No Loan Party will directly or indirectly create, incur, assume or suffer to exist any Lien of any kind" }).family).toBe("LIENS");
+    expect(classifyCovenantFamily({ title: null, leadIn: "The Borrower will not, directly or indirectly: (i) declare or pay any dividend on its Equity Interests" }).family).toBe("RESTRICTED_PAYMENTS");
+    expect(classifyCovenantFamily({ title: "Financial Covenant", leadIn: "The Consolidated Leverage Ratio shall not, as of the last day of any period, be greater than 1.75 to 1.00." }).family).toBe("FINANCIAL_RATIOS");
+  });
+  it("rejects non-covenant sections that only share words", () => {
+    expect(classifyCovenantFamily({ title: "Margin Regulations; Investment Company Act", leadIn: "The Borrower is not engaged and will not engage in the business of extending credit for margin stock" }).family).toBeNull();
+    expect(classifyCovenantFamily({ title: "Trustee Not Fiduciary for Holders of Senior Indebtedness", leadIn: "The Trustee shall not be deemed to owe any fiduciary duty to the holders of Senior Indebtedness" }).family).toBeNull();
+    expect(classifyCovenantFamily({ title: "Rounding", leadIn: "Any financial ratios required to be maintained by the Borrower shall be calculated by dividing" }).family).toBeNull();
+    expect(classifyCovenantFamily({ title: "Use of Proceeds", leadIn: "The Borrower will not use the proceeds of any Advance to purchase or carry any margin stock or to pay dividends" }).family).toBeNull();
+  });
+  it("a lien securing debt is a lien covenant, not a debt covenant", () => {
+    const v = classifyCovenantFamily({ title: "Negative Pledge", parentTitle: "COVENANTS", leadIn: "No Loan Party shall create, assume, or suffer to exist any Lien securing Indebtedness" });
+    expect(v.family).toBe("LIENS");
+    expect(v.families).not.toContain("DEBT");
+  });
+});
