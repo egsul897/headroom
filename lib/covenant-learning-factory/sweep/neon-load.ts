@@ -204,19 +204,41 @@ export async function fetchDocumentText(
   source: PrecedentSourceRow,
 ): Promise<string | null> {
   if (!source.contentSha256) return null;
+  // Absent row → null (bytes genuinely not stored). A Neon / decode error is NOT absence:
+  // it propagates (redacted) so a run can never silently score a source as text-less.
+  let rows: Record<string, unknown>[];
   try {
-    const rows = await executor.execute(
+    rows = await executor.execute(
       `SELECT convert_from(bytes, 'UTF8') AS text
        FROM document_byte_objects
        WHERE "contentHash" = $1
        LIMIT 1`,
       [source.contentSha256],
     );
-    const t = rows[0]?.text;
-    if (typeof t === "string" && t.length > 0) return t;
-  } catch {
-    /* continue */
+    if (rows.length === 0) {
+      // SEC text backfill (kf_source_text_backfill). Re-fetched bytes are stored under their own sha256.
+      // Linked by default only when proven equal to the original ingest: BYTES_VERIFIED (raw sha256) or
+      // TEXT_VERIFIED (normalizedTextHash recomputed by the original pipeline matches).
+      // UNVERIFIED_TEXT (same accession + exhibit filename, text differs) is opt-in via CLF_UNVERIFIED_TEXT=1
+      // and must never be used for the gate baseline.
+      const allowed = process.env.CLF_UNVERIFIED_TEXT === "1"
+        ? ["BYTES_VERIFIED", "TEXT_VERIFIED", "UNVERIFIED_TEXT"]
+        : ["BYTES_VERIFIED", "TEXT_VERIFIED"];
+      rows = await executor.execute(
+        `SELECT convert_from(d.bytes, 'UTF8') AS text
+         FROM kf_source_text_backfill b
+         JOIN document_byte_objects d ON d."contentHash" = b.sha256
+         WHERE b."originalBytesHash" = $1 AND b.verification = ANY($2::text[])
+         LIMIT 1`,
+        [source.contentSha256, allowed],
+      );
+    }
+  } catch (err) {
+    const msg = (err instanceof Error ? err.message : String(err)).replace(/postgres(ql)?:\/\/[^ "]+/g, "[URL]");
+    throw new Error(`fetchDocumentText(${source.sourceId}) failed: ${msg}`);
   }
+  const t = rows[0]?.text;
+  if (typeof t === "string" && t.length > 0) return t;
   return null;
 }
 
