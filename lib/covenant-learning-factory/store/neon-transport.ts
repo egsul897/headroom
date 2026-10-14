@@ -12,6 +12,13 @@ import {
   classifyNeonProbeError,
   resolveNeonDatabaseUrlForPrisma,
 } from "./neon-database-url";
+import { withNeonHttpsRetry, type NeonHttpsRetryOptions } from "./neon-https-retry";
+
+export {
+  isTransientNeonHttpsError,
+  withNeonHttpsRetry,
+  type NeonHttpsRetryOptions,
+} from "./neon-https-retry";
 
 export type NeonTransportMode = "tcp" | "https";
 
@@ -49,6 +56,7 @@ export interface NeonHttpsExecutor {
 export async function createNeonHttpsExecutor(
   connectionString: string,
   neonFn?: NeonFactory,
+  retry?: NeonHttpsRetryOptions,
 ): Promise<NeonHttpsExecutor> {
   if (!connectionString) {
     throw new Error("DATABASE_URL unset");
@@ -57,13 +65,21 @@ export async function createNeonHttpsExecutor(
     neonFn ??
     ((await import("@neondatabase/serverless")).neon as unknown as NeonFactory);
   const sql = neon(connectionString);
+  const retryOpts: NeonHttpsRetryOptions = {
+    maxAttempts: 5,
+    baseDelayMs: 100,
+    maxDelayMs: 2000,
+    ...retry,
+  };
   return {
     async execute(statement: string, params: unknown[] = []) {
       // Omit params array when empty so Neon HTTP does not force a multi-command-
       // hostile prepared path for bare DDL / DO $$ blocks.
-      const rows =
-        params.length > 0 ? await sql(statement, params) : await sql(statement);
-      return rows as Record<string, unknown>[];
+      return withNeonHttpsRetry(async () => {
+        const rows =
+          params.length > 0 ? await sql(statement, params) : await sql(statement);
+        return rows as Record<string, unknown>[];
+      }, retryOpts);
     },
   };
 }
