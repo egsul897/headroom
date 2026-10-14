@@ -73,3 +73,40 @@ describe("clf scoreboard gate", () => {
     expect(a.counts.DISCOVERY_GAP).toBeGreaterThanOrEqual(1);
   });
 });
+
+describe("issuer split + duplicates (reviewer notes on #364)", () => {
+  const m: DevManifest = {
+    description: "t",
+    sourceIds: ["fixture:chwy"],
+    devIssuerTickers: ["CNMD", "CHWY"],
+    devIssuerSourceIds: [{ sourceId: "edgar:dsg", issuer: "DSGR", evidence: "cik" }],
+    duplicates: [{ sourceId: "edgar:chwy-doc-a", duplicateOf: "fixture:chwy", evidence: "same doc" }],
+  };
+  it("routes every source of a DEV issuer to DEV, including _ALT tickers and null-ticker evidence rows", () => {
+    expect(splitFor("ehb:x", m, "CNMD")).toBe("DEV");
+    expect(splitFor("research:y", m, "CHWY_ALT")).toBe("DEV");
+    expect(splitFor("edgar:dsg", m, null)).toBe("DEV");
+    expect(splitFor("edgar:z", m, "IBM")).toBe("HELDOUT");
+  });
+  it("lists duplicates but excludes them from totals", () => {
+    const r = aggregate(
+      [
+        { sourceId: "fixture:chwy", split: "DEV", counts: { ...emptyCounts(), DISCOVERY_GAP: 2 }, total: 2 },
+        { sourceId: "edgar:chwy-doc-a", split: "DEV", duplicateOf: "fixture:chwy", counts: { ...emptyCounts(), DISCOVERY_GAP: 9 }, total: 9 },
+      ],
+      { mode: "snapshot", rulesetVersion: 2 },
+    );
+    expect(r.totals.DEV.total).toBe(2);
+    expect(r.duplicates).toEqual([{ sourceId: "edgar:chwy-doc-a", duplicateOf: "fixture:chwy", total: 9 }]);
+  });
+});
+
+describe("fetchDocumentText surfaces Neon errors", () => {
+  it("throws (redacted) instead of returning null on executor failure; null only when the row is absent", async () => {
+    const { fetchDocumentText } = await import("@/lib/covenant-learning-factory/sweep/neon-load");
+    const failing = { execute: async () => { throw new Error("boom postgresql://u:p@host/db"); } } as never;
+    await expect(fetchDocumentText(failing, { sourceId: "s", contentSha256: "h" })).rejects.toThrow(/fetchDocumentText\(s\) failed: boom \[URL\]/);
+    const empty = { execute: async () => [] } as never;
+    await expect(fetchDocumentText(empty, { sourceId: "s", contentSha256: "h" })).resolves.toBeNull();
+  });
+});

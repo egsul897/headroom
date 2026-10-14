@@ -41,6 +41,8 @@ export interface ScoreboardSourceInput {
 export interface SourceScore {
   sourceId: string;
   split: Split;
+  /** Set when this source duplicates another; excluded from totals and the gate. */
+  duplicateOf?: string | null;
   counts: ClassCounts;
   total: number;
 }
@@ -51,21 +53,43 @@ export interface ScoreboardReport {
   rulesetVersion: number;
   sourceCount: number;
   totals: Record<Split, ClassCounts & { total: number; sources: number }>;
+  /** Duplicates: scored and listed, never counted. */
+  duplicates?: { sourceId: string; duplicateOf: string; total: number }[];
   perSource: SourceScore[];
 }
 
 export interface DevManifest {
   description: string;
-  /** Exact sourceIds treated as DEV. */
+  /** Exact sourceIds treated as DEV (fixtures / fixture-derived packages). */
   sourceIds: string[];
+  /** Issuers with DEV fixtures: every source of these issuers is DEV (split by issuer, not document). */
+  devIssuerTickers?: string[];
+  /** Sources of a DEV issuer whose knowledge_sources ticker is null (matched by CIK/filename evidence). */
+  devIssuerSourceIds?: { sourceId: string; issuer: string; evidence: string }[];
+  /** Exact duplicates of another source: scored and listed, excluded from totals and the gate. */
+  duplicates?: { sourceId: string; duplicateOf: string; evidence: string }[];
 }
 
 export function emptyCounts(): ClassCounts {
   return { COVERAGE_GAP: 0, DISCOVERY_GAP: 0, UNSUPPORTED_SEMANTICS: 0 };
 }
 
-export function splitFor(sourceId: string, manifest: DevManifest): Split {
-  return manifest.sourceIds.includes(sourceId) ? "DEV" : "HELDOUT";
+/** Normalized issuer ticker ("CHWY_ALT" → "CHWY"). */
+export function issuerOf(ticker: string | null | undefined): string | null {
+  if (!ticker) return null;
+  return ticker.toUpperCase().replace(/_(?:ALT|SEL)$/, "");
+}
+
+export function splitFor(sourceId: string, manifest: DevManifest, ticker?: string | null): Split {
+  if (manifest.sourceIds.includes(sourceId)) return "DEV";
+  if (manifest.devIssuerSourceIds?.some((d) => d.sourceId === sourceId)) return "DEV";
+  const issuer = issuerOf(ticker);
+  if (issuer && manifest.devIssuerTickers?.includes(issuer)) return "DEV";
+  return "HELDOUT";
+}
+
+export function duplicateOf(sourceId: string, manifest: DevManifest): string | null {
+  return manifest.duplicates?.find((d) => d.sourceId === sourceId)?.duplicateOf ?? null;
 }
 
 const FIXED_NOW = "1970-01-01T00:00:00.000Z";
@@ -95,7 +119,13 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
     if ((SCOREBOARD_CLASSES as readonly string[]).includes(e.class)) counts[e.class as ScoreboardClass] += 1;
   }
   const total = SCOREBOARD_CLASSES.reduce((a, c) => a + counts[c], 0);
-  return { sourceId, split: splitFor(sourceId, manifest), counts, total };
+  return {
+    sourceId,
+    split: splitFor(sourceId, manifest, input.source.ticker),
+    duplicateOf: duplicateOf(sourceId, manifest),
+    counts,
+    total,
+  };
 }
 
 export function aggregate(
@@ -107,7 +137,12 @@ export function aggregate(
     HELDOUT: { ...emptyCounts(), total: 0, sources: 0 },
   };
   const sorted = [...perSource].sort((a, b) => (a.sourceId < b.sourceId ? -1 : a.sourceId > b.sourceId ? 1 : 0));
+  const duplicates: { sourceId: string; duplicateOf: string; total: number }[] = [];
   for (const s of sorted) {
+    if (s.duplicateOf) {
+      duplicates.push({ sourceId: s.sourceId, duplicateOf: s.duplicateOf, total: s.total });
+      continue;
+    }
     const t = totals[s.split];
     t.sources += 1;
     t.total += s.total;
@@ -119,6 +154,7 @@ export function aggregate(
     rulesetVersion: meta.rulesetVersion,
     sourceCount: sorted.length,
     totals,
+    duplicates,
     perSource: sorted,
   };
 }
@@ -174,7 +210,7 @@ export function compareToBaseline(baseline: ScoreboardReport, current: Scoreboar
   const heldoutBefore = baseline.totals.HELDOUT.total;
   const heldoutAfter = current.totals.HELDOUT.total;
   if (heldoutAfter > heldoutBefore) reasons.push(`HELDOUT errors increased ${heldoutBefore} → ${heldoutAfter}`);
-  const missing = baseline.perSource.filter((s) => s.split === "HELDOUT" && !after.has(s.sourceId));
+  const missing = baseline.perSource.filter((s) => s.split === "HELDOUT" && !s.duplicateOf && !after.has(s.sourceId));
   if (missing.length > 0) reasons.push(`${missing.length} HELDOUT source(s) missing from current run`);
   return {
     pass: reasons.length === 0,

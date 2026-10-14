@@ -1,5 +1,5 @@
 {
-  "description": "DEV split: sources that are repo fixtures (fixture:*) or fixture-derived packages (fdp:*), i.e. text the extraction code has been developed against. Every other knowledge_sources row is HELDOUT. Rule is by sourceId prefix as of 2026-10-14; list is explicit so new rows default to HELDOUT.",
+  "description": "DEV split BY ISSUER. DEV = every fixture:* / fdp:* source, plus every source of an issuer that has DEV fixtures (devIssuerTickers, plus devIssuerSourceIds for rows with a null ticker). Everything else is HELDOUT. Duplicates are scored and listed but excluded from totals and the gate. Explicit lists, so new rows default to HELDOUT unless their issuer has DEV fixtures.",
   "sourceIds": [
     "fdp:CHWY-2026-CA",
     "fdp:CONMED-2025-PLAIN",
@@ -37,5 +37,38 @@
     "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
     "fixture:wor-2023-2026-credit-facility:doc-a-2023-09-27-fourth-ar-credit-agreement.htm",
     "fixture:wor-2023-2026-credit-facility:doc-b-2026-08-31-fifth-ar-credit-agreement.htm"
+  ],
+  "devIssuerTickers": [
+    "CNMD",
+    "ROCK",
+    "CHWY",
+    "DSGR",
+    "FWRG",
+    "LXU",
+    "RIOT"
+  ],
+  "devIssuerSourceIds": [
+    {
+      "sourceId": "edgar:0000703604-24-000079:dsg-secondamendmenttocre.htm",
+      "issuer": "DSGR",
+      "evidence": "filer CIK 0000703604 = Distribution Solutions Group; DEV fixtures dsgr-2022-2025-credit-facility / fdp:DSGR-*; knowledge_sources ticker is null"
+    },
+    {
+      "sourceId": "edgar:0000703604-24-000079:dsgr-20240630.htm",
+      "issuer": "DSGR",
+      "evidence": "same filing as above (10-Q body); ticker null"
+    }
+  ],
+  "duplicates": [
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "duplicateOf": "fixture:chwy",
+      "evidence": "reviewer: same Chewy 2026-06-23 credit agreement as the DEV fixture"
+    },
+    {
+      "sourceId": "research:cbcfl:chwy_alt-unknown-d43042dex101",
+      "duplicateOf": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "evidence": "same exhibit d43042dex101; identical tree stats (A=9 S=99 C=430)"
+    }
   ]
 }

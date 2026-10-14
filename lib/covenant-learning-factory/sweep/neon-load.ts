@@ -204,19 +204,23 @@ export async function fetchDocumentText(
   source: PrecedentSourceRow,
 ): Promise<string | null> {
   if (!source.contentSha256) return null;
+  // Absent row → null (bytes genuinely not stored). A Neon / decode error is NOT absence:
+  // it propagates (redacted) so a run can never silently score a source as text-less.
+  let rows: Record<string, unknown>[];
   try {
-    const rows = await executor.execute(
+    rows = await executor.execute(
       `SELECT convert_from(bytes, 'UTF8') AS text
        FROM document_byte_objects
        WHERE "contentHash" = $1
        LIMIT 1`,
       [source.contentSha256],
     );
-    const t = rows[0]?.text;
-    if (typeof t === "string" && t.length > 0) return t;
-  } catch {
-    /* continue */
+  } catch (err) {
+    const msg = (err instanceof Error ? err.message : String(err)).replace(/postgres(ql)?:\/\/[^ "]+/g, "[URL]");
+    throw new Error(`fetchDocumentText(${source.sourceId}) failed: ${msg}`);
   }
+  const t = rows[0]?.text;
+  if (typeof t === "string" && t.length > 0) return t;
   return null;
 }
 

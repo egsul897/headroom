@@ -14,6 +14,9 @@
  *   --only=dev|heldout     (snapshot capture) restrict captured sources
  *   --manifest=PATH        DEV manifest (default scripts/covenant-learning-factory/scoreboard/dev-manifest.json)
  *   --progress=PATH        (neon mode) append-only per-source progress (resumes on rerun)
+ *   --rules=neon           (neon mode) score with the LIVE latest learning_rulesets row (read-only SELECT)
+ *   --rules-file=PATH      score with a pinned ruleset JSON (CI uses the committed scoreboard/ruleset.json)
+ *   --write-rules=PATH     write the ruleset actually used (pin it for offline replay)
  *
  * Deterministic. Zero AI / LLM calls. Never prints the connection string.
  */
@@ -33,6 +36,17 @@ import {
   type SourceScore,
 } from "../../lib/covenant-learning-factory/scoreboard";
 import { loadLatestLearnedRules } from "../../lib/covenant-learning-factory/learned-rules/load";
+import { normalizeLearnedRuleSet } from "../../lib/covenant-learning-factory/learned-rules/types";
+
+/** Read-only: SELECT the latest ruleset. Never bootstraps / writes (unlike loadLatestRulesetFromNeon). */
+async function loadLiveRulesReadOnly() {
+  const { createNeonHttpsExecutor } = await import("../../lib/covenant-learning-factory/store/neon-transport");
+  const ex = await createNeonHttpsExecutor(process.env.DATABASE_URL!);
+  const rows = await ex.execute(`SELECT "payloadJson" FROM learning_rulesets ORDER BY "rulesetVersion" DESC LIMIT 1`, []);
+  const payload = rows[0]?.payloadJson ?? (rows[0] as Record<string, unknown> | undefined)?.payloadjson;
+  if (!payload) throw new Error("no learning_rulesets row in Neon (refusing to bootstrap: read-only)");
+  return normalizeLearnedRuleSet((typeof payload === "string" ? JSON.parse(payload) : payload) as never);
+}
 
 function argStr(name: string): string | undefined {
   const hit = process.argv.find((a) => a.startsWith(`--${name}=`));
@@ -80,13 +94,27 @@ function printSummary(report: ScoreboardReport): void {
 async function main(): Promise<void> {
   const manifestPath = resolve(argStr("manifest") ?? "scripts/covenant-learning-factory/scoreboard/dev-manifest.json");
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as DevManifest;
-  const rules = loadLatestLearnedRules();
+  const rulesFile = argStr("rules-file");
+  let rules = rulesFile
+    ? normalizeLearnedRuleSet(JSON.parse(readFileSync(resolve(rulesFile), "utf8")))
+    : loadLatestLearnedRules();
   const snapshotPath = argStr("snapshot");
   const neon = hasFlag("neon");
   if (Number(neon) + Number(Boolean(snapshotPath)) !== 1) {
     console.error("choose exactly one of --neon or --snapshot=PATH");
     process.exit(2);
   }
+
+  if (argStr("rules") === "neon") {
+    if (!neon) {
+      console.error("--rules=neon requires --neon");
+      process.exit(2);
+    }
+    rules = await loadLiveRulesReadOnly();
+  }
+  console.log(`ruleset v${rules.rulesetVersion} (${rules.rules.length} rules)`);
+  const writeRules = argStr("write-rules");
+  if (writeRules) writeFileSync(writeRules, JSON.stringify(rules, null, 2) + "\n");
 
   const perSource: SourceScore[] = [];
   if (snapshotPath) {
@@ -99,7 +127,6 @@ async function main(): Promise<void> {
       for (const line of readFileSync(progress, "utf8").split("\n")) {
         if (!line.trim()) continue;
         const s = JSON.parse(line) as SourceScore;
-        s.split = splitFor(s.sourceId, manifest);
         perSource.push(s);
         done.add(s.sourceId);
       }
