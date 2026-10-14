@@ -40,12 +40,70 @@ export interface GrowerCheckInput {
   evidence?: Record<string, unknown>;
 }
 
+/** self-check.ts omission path: zero baskets bound for a source that has precedent candidates. */
+export const COVERAGE_GAP_OMISSION_PREFIX = "NEEDS_INPUT: omission ";
+/** self-check.ts condition path: exception / proviso / carve-out excerpt not in any citation. */
+export const COVERAGE_GAP_CONDITION_PREFIX = "NEEDS_INPUT: condition/exception ";
+
 function eid(parts: string[]): string {
   return createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 20);
 }
 
 function norm(s: string): string {
   return s.replace(/\s+/g, " ").trim().toLowerCase();
+}
+
+/**
+ * A precedent excerpt is reflected in a citation when either opening sits in the
+ * other text, or the citation's body after its heading, exception introducer, or
+ * enumerated marker sits in the excerpt.
+ *
+ * Checking only the first 40 characters misses a limb the citation still contains
+ * once extraction prepends "Section 6.01…" or "except:". The limb is the text the
+ * precedent candidate stored.
+ */
+export function excerptReflectedInCitation(excerpt: string, cite: string): boolean {
+  if (excerpt.length < 24 || cite.length < 24) return false;
+  const needle = excerpt.slice(0, Math.min(40, excerpt.length));
+  if (cite.includes(needle)) return true;
+  for (const anchor of citationAnchors(cite)) {
+    if (excerpt.includes(anchor)) return true;
+  }
+  return false;
+}
+
+function citationAnchors(cite: string): string[] {
+  const anchors: string[] = [];
+  const push = (value: string) => {
+    const anchor = value.slice(0, Math.min(40, value.length));
+    if (anchor.length >= 24 && !anchors.includes(anchor)) anchors.push(anchor);
+  };
+  push(cite);
+  const head = cite.slice(0, 240);
+  const markerScan = cite.slice(0, 4000);
+  let rest = head;
+  const heading = /^(?:§\s*)?(?:section\s+)?\d{1,2}\.\d{1,2}\.?\s+[^.]{0,120}\.\s+/i.exec(rest);
+  if (heading && heading.index === 0) {
+    rest = rest.slice(heading[0].length);
+    push(rest);
+  }
+  const intro = /^(?:provided\s*,\s*however\s*,\s*that|except\s*:|;?\s*provided that)\s*:?\s*/i.exec(rest);
+  if (intro && intro.index === 0) {
+    rest = rest.slice(intro[0].length);
+    push(rest);
+  }
+  for (const match of markerScan.matchAll(/\([0-9a-z]{1,6}\)\s+/gi)) {
+    if (match.index == null || match.index === 0) continue;
+    push(cite.slice(match.index));
+  }
+  return anchors;
+}
+
+/** Prefix-only reflection used before citation anchors. Tests compare the sweep metric against it. */
+export function excerptReflectedByPrefixOnly(excerpt: string, cite: string): boolean {
+  if (excerpt.length < 24 || cite.length < 24) return false;
+  const needle = excerpt.slice(0, Math.min(40, excerpt.length));
+  return cite.includes(needle) || excerpt.includes(cite.slice(0, Math.min(40, cite.length)));
 }
 
 /** Grower consistency: max(fixed, pct·base). Returns mismatch message or null. */
@@ -109,7 +167,7 @@ export function selfCheckComputation(args: {
   for (const om of args.result.omissions) {
     push(
       "COVERAGE_GAP",
-      `NEEDS_INPUT: omission ${om.stableKey}`,
+      `${COVERAGE_GAP_OMISSION_PREFIX}${om.stableKey}`,
       { stableKey: om.stableKey, reason: om.reason },
       "MEDIUM",
     );
@@ -121,11 +179,7 @@ export function selfCheckComputation(args: {
   for (const cand of args.candidates) {
     if (!cand.excerpt || cand.excerpt.length < 24) continue;
     const excerpt = norm(cand.excerpt);
-    const needle = excerpt.slice(0, Math.min(40, excerpt.length));
-    const hit = baskets.some((b) => {
-      const cite = norm(b.citationExcerpt);
-      return cite.includes(needle) || excerpt.includes(cite.slice(0, 40));
-    });
+    const hit = baskets.some((b) => excerptReflectedInCitation(excerpt, norm(b.citationExcerpt)));
     if (!hit) {
       push(
         "DISCOVERY_GAP",
@@ -219,7 +273,7 @@ export function selfCheckComputation(args: {
         // (caller can filter). Record as LOW COVERAGE_GAP with NEEDS_INPUT framing.
         push(
           "COVERAGE_GAP",
-          `NEEDS_INPUT: condition/exception ${cond.conditionId} not bound`,
+          `${COVERAGE_GAP_CONDITION_PREFIX}${cond.conditionId} not bound`,
           { conditionId: cond.conditionId, citationExcerpt: cond.excerpt.slice(0, 120) },
           "LOW",
         );
