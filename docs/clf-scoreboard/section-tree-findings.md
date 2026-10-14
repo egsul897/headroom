@@ -2,19 +2,22 @@
 
 Soft gate. Computed ≠ certified. Deterministic. No AI or LLM calls.
 
-## Scoreboard (strict matcher), before vs after wiring the tree into the self-check
-| split | before | after |
-|---|---|---|
-| DEV (36) | 287 (CG 198 / DG 79 / US 10) | 287 (unchanged) |
-| HELDOUT (153) | 5326 (CG 1029 / DG 4284 / US 13) | 5326 (unchanged, 0 per-source deltas) |
-| IN-SCOPE HELDOUT (112) | 4662 (CG 492 / DG 4157 / US 13) | 4662 |
+## Scoreboard (strict matcher, offline snapshot, deterministic)
+| variant | DEV (36) | HELDOUT (153) | IN-SCOPE HELDOUT (112) |
+|---|---|---|---|
+| baseline, no tree | 287 (CG 198 / DG 79 / US 10) | 5326 (CG 1029 / DG 4284 / US 13) | 4662 (CG 492 / DG 4157 / US 13) |
+| tree section overrides label | 287 | 5315 (DG 4273) | 4651 |
+| tree must AGREE with label (fail closed) | 287 | 5331 (DG 4289), gate FAILS | 4667 |
 
-**The tree does NOT lower HELDOUT errors.** Do not claim success. Why:
-- 138 of 153 HELDOUT sources have **no document bytes** in Neon (`document_byte_objects` has a row for 3 of 141 edgar/ehb hashes). Those sources' packages are built from the candidate excerpts themselves. 5323 of 5326 HELDOUT errors are on those 138 sources.
-- The 15 HELDOUT sources that do have text carry ~0 precedent candidates, so a better tree cannot move DISCOVERY_GAP on them.
-- 2820 of the HELDOUT DISCOVERY_GAP candidates have no basket that reflects them, even under the old loose matcher. That is an extractor coverage problem, not a matching problem.
-- Next lever (not done; it needs Neon writes): backfill document bytes for the 138 text-less sources from their `sourceUrl` (an SEC fetch).
+**Gaming check.** All 11 verdicts that flipped in the "tree overrides" variant were GAP→MATCH. I hand-checked all 11 and **0 of 11 are genuine**. All 11 are text-less (composite) sources. In each one the extractor built a "basket" from the candidate's own excerpt, gave it an unrelated covenant label, and glued on text from another excerpt. Examples:
+- an Events of Default (a) limb labelled "§7.02 Fundamental Changes"
+- "Waivers; Amendments" labelled "§7.03 Transactions with Affiliates"
+- a GAAP definition labelled "§8.06 Restricted Payments"
+- a Debt to Capitalization ratio matched to a "proviso" basket whose text runs on into the notices section
 
+The tree only relabels these baskets; it does not show that a covenant was extracted. **I am not keeping the -11.** Tree locating in the self-check is OPT-IN (`CLF_SCOREBOARD_TREE=1`). When it is on, it uses the fail-closed agreement rule, and under that rule HELDOUT rises by 5. **Result: the tree does not lower HELDOUT honestly.**
+
+Why the tree cannot move this metric:
 ## Document-type scope (deterministic classifier)
 41 HELDOUT sources are OTHER: equity plans, bylaws, consents, swap confirmations, charters, LLC agreements, and a 10-Q body. They are listed by `clf:scoreboard` and are still counted in the gate totals. 6 UNKNOWN sources stay in scope.
 

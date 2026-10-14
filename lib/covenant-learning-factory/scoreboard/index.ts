@@ -96,7 +96,8 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
     definitions: input.definitions,
     conditions: input.conditions,
     now: FIXED_NOW,
-    locator: process.env.CLF_SCOREBOARD_NO_TREE ? undefined : buildTreeLocator({ documentText: input.documentText, candidates: input.candidates }),
+    // Tree locator is OPT-IN (CLF_SCOREBOARD_TREE=1): it did not lower HELDOUT honestly (see docs/clf-scoreboard/section-tree-findings.md).
+    locator: process.env.CLF_SCOREBOARD_TREE !== "1" ? undefined : buildTreeLocator({ documentText: input.documentText, candidates: input.candidates }),
   });
   const counts = emptyCounts();
   for (const e of errors) {

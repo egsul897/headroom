@@ -8,6 +8,7 @@
 import { createHash } from "node:crypto";
 import type { ComputationResult } from "../../contract-model/covenant-computation/types";
 import type { LearningErrorRecord } from "../types";
+import type { TreeLocator } from "./tree-locator";
 
 export interface PrecedentCandidate {
   candidateId: string;
@@ -187,12 +188,21 @@ function sharedRunDistinctive(a: string, ai: number, b: string, bi: number): boo
 }
 
 export function strictCandidateMatch(
-  cand: { excerpt: string; sectionRef: string | null; family: string | null },
-  basket: { cite: string; sectionRef: string | null | undefined; family: string | null | undefined },
+  cand: { excerpt: string; sectionRef: string | null; family: string | null; treeSection?: string | null },
+  basket: { cite: string; sectionRef: string | null | undefined; family: string | null | undefined; treeSection?: string | null },
 ): boolean {
   if (!strictTextReflected(cand.excerpt, basket.cite)) return false;
-  const cs = sectionNumberOf(cand.sectionRef, cand.excerpt);
-  const bs = sectionNumberOf(basket.sectionRef, basket.cite);
+  // Tree location (where the text sits in the parsed document) and the declared section
+  // must agree. A basket whose label (e.g. "§7.03 Transactions with Affiliates") disagrees with
+  // where its citation actually sits is mislabeled: fail closed rather than let the tree
+  // silently relabel it (that relabelling was measured as metric gaming, see
+  // docs/clf-scoreboard/section-tree-findings.md).
+  const cDecl = sectionNumberOf(cand.sectionRef, cand.excerpt);
+  const bDecl = sectionNumberOf(basket.sectionRef, basket.cite);
+  if (cand.treeSection && cDecl && cand.treeSection !== cDecl) return false;
+  if (basket.treeSection && bDecl && basket.treeSection !== bDecl) return false;
+  const cs = cand.treeSection ?? cDecl;
+  const bs = basket.treeSection ?? bDecl;
   if (cs && bs) return cs === bs;
   const cf = canonicalFamily(cand.family);
   return cf != null && cf === canonicalFamily(basket.family);
@@ -225,6 +235,14 @@ export function checkGrowerConsistency(input: GrowerCheckInput): string | null {
   return null;
 }
 
+const basketSectionCache = new WeakMap<object, Map<string, string | null>>();
+function basketTreeSection(loc: TreeLocator, cite: string): string | null {
+  let m = basketSectionCache.get(loc);
+  if (!m) basketSectionCache.set(loc, (m = new Map()));
+  if (!m.has(cite)) m.set(cite, loc.citationSection(cite));
+  return m.get(cite)!;
+}
+
 export function selfCheckComputation(args: {
   packageKey: string;
   runId: string;
@@ -234,6 +252,8 @@ export function selfCheckComputation(args: {
   definitions: PrecedentDefinition[];
   conditions: PrecedentCondition[];
   now?: string;
+  /** Section-tree locator (optional). When present, structural agreement uses tree sections. */
+  locator?: TreeLocator;
 }): LearningErrorRecord[] {
   const now = args.now ?? new Date().toISOString();
   const errors: LearningErrorRecord[] = [];
@@ -278,10 +298,16 @@ export function selfCheckComputation(args: {
   for (const cand of args.candidates) {
     if (!cand.excerpt || cand.excerpt.length < 24) continue;
     const excerpt = norm(cand.excerpt);
+    const candTree = args.locator ? args.locator.candidateSection(cand) : null;
     const hit = baskets.some((b) =>
       strictCandidateMatch(
-        { excerpt, sectionRef: cand.sectionRef ?? null, family: cand.family ?? null },
-        { cite: norm(b.citationExcerpt), sectionRef: b.sectionRef, family: b.covenantFamily },
+        { excerpt, sectionRef: cand.sectionRef ?? null, family: cand.family ?? null, treeSection: candTree },
+        {
+          cite: norm(b.citationExcerpt),
+          sectionRef: b.sectionRef,
+          family: b.covenantFamily,
+          treeSection: args.locator ? basketTreeSection(args.locator, b.citationExcerpt) : null,
+        },
       ),
     );
     if (!hit) {
