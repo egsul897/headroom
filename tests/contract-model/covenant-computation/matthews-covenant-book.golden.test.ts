@@ -126,13 +126,16 @@ describe("Matthews covenant book", () => {
   });
 
   it("types excerpted baskets and evaluates only a cite-bound gross cap", () => {
-    const facilities = book.baskets.find((b) => b.stableKey === "matw-pd-1a");
-    const securedProng = book.baskets.find((b) => b.stableKey === "matw-pd-1bx");
-    const firstLienProng = book.baskets.find((b) => b.stableKey === "matw-pd-1by");
-    const notes = book.baskets.find((b) => b.stableKey === "matw-pd-2");
-    const ratioDebt = book.baskets.find((b) => b.stableKey === "matw-409a");
-    const liens = book.baskets.find((b) => b.stableKey === "matw-410");
-    const caLiens = book.baskets.find((b) => b.stableKey === "matw-ca-601j");
+    const byQuote = (pattern: RegExp) => book.baskets.find((b) => pattern.test(b.citationExcerpt));
+    const facilities = byQuote(/not to exceed the sum of \(a\) \$1,300\.0 million/);
+    const securedProng = byQuote(/\(x\) the Secured Net Leverage Ratio/);
+    const firstLienProng = byQuote(/First Lien Net Leverage Ratio[\s\S]*2\.50 to 1\.00/);
+    const notes = byQuote(/Debt under the Notes issued on the Issue Date/);
+    const ratioDebt = book.baskets.find(
+      (b) => /Fixed Charge Coverage Ratio/i.test(b.citationExcerpt) && /2\.00 to 1\.00/.test(b.citationExcerpt) && !/greater of/i.test(b.citationExcerpt),
+    );
+    const liens = byQuote(/Section 4\.10 Limitation on Liens/);
+    const caLiens = byQuote(/Liens securing Indebtedness under the 2024 Note Offering/);
 
     expect(facilities?.category).toBe("FIXED_DOLLAR");
     expect(facilities?.citationExcerpt).toMatch(/not to exceed the sum of \(a\) \$1,300\.0 million/);
@@ -158,10 +161,10 @@ describe("Matthews covenant book", () => {
     expect(ratioDebt?.gateOpen).toBe(true);
     expect(ratioDebt?.dollarRoomStatus).toBe("NEEDS_INPUT");
 
-    const proviso = book.baskets.find((b) => b.stableKey === "matw-409a-proviso");
-    const purchaseMoney = book.baskets.find((b) => b.stableKey === "matw-pd-9");
-    const foreignSubs = book.baskets.find((b) => b.stableKey === "matw-pd-13");
-    const general = book.baskets.find((b) => b.stableKey === "matw-pd-16");
+    const proviso = byQuote(/greater of \(i\) \$125\.0 million and \(ii\) 7\.0% of the Total Assets/);
+    const purchaseMoney = book.baskets.find((b) => b.sectionRef === "Permitted Debt (9)");
+    const foreignSubs = book.baskets.find((b) => b.sectionRef === "Permitted Debt (13)");
+    const general = book.baskets.find((b) => b.sectionRef === "Permitted Debt (16)");
     const assetsCap = greaterOf("125", "0.07");
     expect(proviso?.category).toBe("GROWER_GREATER_OF");
     expect(proviso?.citationExcerpt).toMatch(/greater of \(i\) \$125\.0 million and \(ii\) 7\.0% of the Total Assets/);
@@ -182,23 +185,25 @@ describe("Matthews covenant book", () => {
     expect(caLiens?.citationExcerpt).toMatch(/2024 Note Offering/);
     expect(caLiens?.capCanonical).toBeNull();
 
-    const section514 = book.baskets.find((b) => b.stableKey === "matw-514a");
+    const section514 = book.baskets.find(
+      (b) => /shall maintain a Leverage Ratio/.test(b.citationExcerpt) && /4\.50 to 1\.00/.test(b.citationExcerpt),
+    );
     expect(section514?.category).toBe("RATIO_BASED");
     expect(section514?.citationExcerpt).toMatch(/December 31, 2023/);
     expect(section514?.citationExcerpt).toMatch(/less than or equal to 4\.50 to 1\.00/);
     expect(section514?.capCanonical).toBeNull();
 
     expect(book.baskets.every((b) => b.remainingStatus === "NEEDS_INPUT")).toBe(true);
-    const computedKeys = book.baskets.filter((b) => b.capStatus === "COMPUTED").map((b) => b.stableKey);
-    for (const key of ["matw-409a", "matw-409a-proviso", "matw-pd-1a", "matw-pd-13", "matw-pd-16", "matw-pd-9"]) {
-      expect(computedKeys, key).toContain(key);
+    const computed = book.baskets.filter((b) => b.capStatus === "COMPUTED");
+    for (const basket of [ratioDebt, proviso, facilities, foreignSubs, general, purchaseMoney]) {
+      expect(computed.map((b) => b.stableKey), basket?.sectionRef).toContain(basket?.stableKey);
     }
-    expect(computedKeys).toHaveLength(69);
-    const amountKeys = book.baskets.filter((b) => b.capKind === "AMOUNT" && b.capStatus === "COMPUTED").map((b) => b.stableKey);
-    for (const key of ["matw-409a-proviso", "matw-pd-1a", "matw-pd-13", "matw-pd-16", "matw-pd-9"]) {
-      expect(amountKeys, key).toContain(key);
+    expect(computed).toHaveLength(69);
+    const amounts = computed.filter((b) => b.capKind === "AMOUNT");
+    for (const basket of [proviso, facilities, foreignSubs, general, purchaseMoney]) {
+      expect(amounts.map((b) => b.stableKey), basket?.sectionRef).toContain(basket?.stableKey);
     }
-    expect(amountKeys).toHaveLength(30);
+    expect(amounts).toHaveLength(30);
   });
 
   it("leaves only the missing compliance-certificate amounts as an omission", () => {
@@ -207,7 +212,7 @@ describe("Matthews covenant book", () => {
     ]);
     expect(book.omissions.every((o) => o.status === "NEEDS_INPUT" && o.capCanonical === null)).toBe(true);
     for (const n of [3, 4, 5, 6, 7, 8, 10, 11, 12, 14, 15, 17, 18, 19, 20, 21, 22]) {
-      expect(book.baskets.some((b) => b.stableKey === `matw-pd-${n}`), `Permitted Debt (${n})`).toBe(true);
+      expect(book.baskets.some((b) => b.sectionRef === `Permitted Debt (${n})`), `Permitted Debt (${n})`).toBe(true);
     }
   });
 });

@@ -263,6 +263,19 @@ function bodyArticles(text: string): ArticleHit[] {
       covenant: true,
     });
   }
+  if (!out.some((row) => row.covenant)) {
+    for (const match of text.matchAll(/(?:^|[.]\s+)((?:AFFIRMATIVE|NEGATIVE)\s+COVENANTS|FINANCIAL\s+COVENANTS)\b/gi)) {
+      if (match.index == null || !match[1]) continue;
+      out.push({
+        at: match.index,
+        number: "covenants",
+        title: match[1].replace(/\s+/g, " ").trim(),
+        bodyFrom: match.index,
+        covenant: true,
+      });
+      break;
+    }
+  }
   return out.sort((a, b) => a.at - b.at);
 }
 

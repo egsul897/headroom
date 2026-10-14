@@ -46,7 +46,7 @@ describe("covenant computation adversarial", () => {
       createdAt: "2026-10-13T00:00:00.000Z",
       corrections: [
         {
-          stableKey: "matw-409a",
+          stableKey: fccrKey(matthewsCovenantPackage()),
           field: "basket.category",
           corrected: "FIXED_DOLLAR",
           rationale: "treat the 2.00x test as a dollar cap",
@@ -54,7 +54,10 @@ describe("covenant computation adversarial", () => {
         },
       ],
     });
-    expect(book.baskets.find((b) => b.stableKey === "matw-409a")?.category).toBe("RATIO_BASED");
+    const fccr = book.baskets.find(
+      (b) => /Fixed Charge Coverage Ratio/i.test(b.citationExcerpt) && /2\.00 to 1\.00/.test(b.citationExcerpt) && !/greater of/i.test(b.citationExcerpt),
+    );
+    expect(fccr?.category).toBe("RATIO_BASED");
     expect(book.correctionsRefused[0]?.reason).toMatch(/disagrees/);
     expect(sink.errors.some((e) => e.class === "CALCULATION_MISMATCH")).toBe(true);
     expect(sink.artifacts[0]?.state).toBe("PROPOSED");
@@ -166,6 +169,14 @@ describe("covenant computation adversarial", () => {
     expect(book.baskets[0]?.capCanonical).toBeNull();
   });
 });
+
+function fccrKey(pkg: ComputationPackage): string {
+  const clause = pkg.baskets.find(
+    (b) => /Fixed Charge Coverage Ratio/i.test(b.operativeText) && /2\.00 to 1\.00/.test(b.operativeText) && !/greater of/i.test(b.operativeText),
+  );
+  if (!clause) throw new Error("missing fixed-charge coverage clause");
+  return clause.stableKey;
+}
 
 function miniPackage(operativeText: string): ComputationPackage {
   return {

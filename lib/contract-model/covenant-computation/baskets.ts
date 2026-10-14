@@ -12,7 +12,6 @@
 import { FORMULA_TAXONOMY } from "@/lib/basket-formula-corpus";
 import type { FormulaKind } from "@/lib/basket-formula-corpus";
 import { classifyFixedDollarBasket } from "../compiler/fixed-dollar-basket/classify";
-import { classifyGreaterOfAssetsBasket } from "../compiler/greater-of-assets-basket/classify";
 import { classifyRatioIncurrencePermission } from "../compiler/ratio-incurrence/classify";
 import type { IRCapacityExpression, IRExpression, SourceProvenance } from "../ir/types";
 import { fixtureInputResolver } from "../runtime/input-resolver";
@@ -267,20 +266,17 @@ function evalGrower(
   clause: BasketClause,
   metrics: readonly MetricInput[],
 ): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
-  const assets = classifyGreaterOfAssetsBasket(clause.operativeText);
-  const ebitda = parseEbitdaGrower(clause.operativeText);
-  const fixedToken = assets.class !== "NOT_GREATER_OF_ASSETS"
-    ? dollarMatching(clause.operativeText, assets.fixedAmountUsd)
-    : ebitda?.fixedToken ?? null;
-  const percent = assets.class !== "NOT_GREATER_OF_ASSETS" ? assets.percentFraction : ebitda?.fraction ?? null;
-  const metricName = assets.class !== "NOT_GREATER_OF_ASSETS" ? assets.metricName : ebitda?.metricName ?? null;
+  const read = readGreaterOf(clause.operativeText);
+  const fixedToken = read?.fixedToken ?? null;
+  const percent = read?.fraction ?? null;
+  const metricName = read?.metricName ?? null;
   if (!fixedToken || percent == null || !metricName) {
     return {
       ...capShell("NEEDS_INPUT", "NONE", null, null, ["greater-of fixed limb", "percent limb", "metric"], null),
       note: "Greater-of language is present. A limb could not be read from the text, so neither limb is used alone.",
     };
   }
-  const metric = metrics.find((m) => m.metricKey.toLowerCase() === metricName.toLowerCase());
+  const metric = metricNamedIn(metricName, metrics);
   if (!metric || metric.value.type !== "MONEY") {
     return {
       ...capShell("NEEDS_INPUT", "NONE", null, null, [metricName], null),
@@ -668,7 +664,7 @@ function capFormulaOf(category: BasketCategory, text: string): string | null {
   const t = norm(text);
   if (category === "GROWER_GREATER_OF") {
     const match = t.match(
-      /greater of\s+\([a-z0-9]+\)\s+\$\s*[\d,]+(?:\.\d+)?(?:\s+million)?\s+and\s+\([a-z0-9]+\)\s+\d+(?:\.\d+)?%\s+of\s+(?:the\s+)?(?:Total Assets|Consolidated Total Assets|Total Consolidated Assets|(?:Consolidated\s+)?EBITDA)/i,
+      /greater of\s+\([A-Za-z0-9]+\)\s+\$\s*[\d,]+(?:\.\d+)?(?:\s+million)?\s+and\s+\([A-Za-z0-9]+\)\s+\d+(?:\.\d+)?%\s+of\s+(?:the\s+)?(?:[A-Z][A-Za-z0-9]+)(?:\s+[A-Z][A-Za-z0-9]+){0,8}/,
     );
     return match?.[0] ?? "greater of fixed dollar and percent of metric";
   }
@@ -779,18 +775,25 @@ function formulaLabel(kind: FormulaKind): string {
   return FORMULA_TAXONOMY.find((entry) => entry.formulaKind === kind)?.formulaKind ?? kind;
 }
 
+/** The dollar and percent written in "greater of $X and Y% of <Defined Term>". No size cutoff. */
+function readGreaterOf(text: string): { fixedToken: string; fraction: number; metricName: string } | null {
+  const src = norm(text);
+  if (!/\bgreater\s+of\b/i.test(src)) return null;
+  const marked = src.match(
+    /[Gg]reater\s+of\s+\(\s*[A-Za-z0-9]+\s*\)\s+\$\s*([\d,]+(?:\.\d+)?)(?:\s+[Mm]illion)?\s+and\s+\(\s*[A-Za-z0-9]+\s*\)\s+(\d+(?:\.\d+)?)\s*%\s+of\s+(?:[Tt]he\s+)?((?:[A-Z][A-Za-z0-9]+)(?:\s+[A-Z][A-Za-z0-9]+){0,8})/,
+  );
+  if (marked?.[1] && marked[2] && marked[3]) {
+    return { fixedToken: marked[1].replace(/,/g, ""), fraction: Number(marked[2]) / 100, metricName: marked[3].replace(/\s+/g, " ").trim() };
+  }
+  return parseEbitdaGrower(src);
+}
+
 function parseEbitdaGrower(text: string): { fixedToken: string; fraction: number; metricName: string } | null {
   const m = norm(text).match(
     /\$\s*([\d,]+(?:\.\d+)?)[\s\S]{0,120}?(\d+(?:\.\d+)?)\s*%\s+of\s+(?:the\s+)?([A-Za-z][A-Za-z0-9][A-Za-z0-9 ]{1,48}?)(?=\s*(?:$|[,;.]|\bprovided\b|\bas\b|\bimmediately\b|\bfor\b|\bin\b))/i,
   );
   if (!m?.[1] || !m[2] || !m[3]) return null;
   return { fixedToken: m[1].replace(/,/g, ""), fraction: Number(m[2]) / 100, metricName: m[3].replace(/\s+/g, " ").trim() };
-}
-
-function dollarMatching(text: string, amount: number | null): string | null {
-  if (amount == null) return null;
-  const tokens = [...norm(text).matchAll(/\$\s*([\d,]+(?:\.\d+)?)/g)].map((m) => m[1]!.replace(/,/g, ""));
-  return tokens.find((token) => Number(token) === amount) ?? null;
 }
 
 function fractionBefore(text: string, metricName: string): number {

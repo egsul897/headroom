@@ -43,30 +43,30 @@ Packages other than Matthews have no bound Total Assets or EBITDA line, so a gro
 | matw-indenture-2024-ex4-1-asset-sale-u | Asset Sale (u) | ASSET_SALE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-indenture-2024-ex4-1-asset-sale-v | Asset Sale (v) | ASSET_SALE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-indenture-2024-ex4-1-asset-sale-w | Asset Sale (w) | ASSET_SALE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-1a | Permitted Debt (1)(a) | DEBT_INCURRENCE / FIXED_DOLLAR / PURPOSE_SPECIFIC | $1,300.0 million | 1300000000 USD | COMPUTED |
-| matw-pd-1bx | Permitted Debt (1)(b)(x) | DEBT_INCURRENCE / RATIO_BASED / PURPOSE_SPECIFIC | Secured Net Leverage Ratio to exceed 3.50 to 1.00 |  | NEEDS_INPUT |
-| matw-pd-1by | Permitted Debt (1)(b)(y) | DEBT_INCURRENCE / RATIO_BASED / PURPOSE_SPECIFIC | First Lien Net Leverage Ratio to exceed 2.50 to 1.00 |  | NEEDS_INPUT |
-| matw-pd-2 | Permitted Debt (2) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-3 | Permitted Debt (3) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-4 | Permitted Debt (4) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-5 | Permitted Debt (5) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-6 | Permitted Debt (6) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-7 | Permitted Debt (7) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-8 | Permitted Debt (8) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-9 | Permitted Debt (9) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (a) $125.0 million and (b) 7.0% of the Total Assets | 125.42033 USD_MILLIONS | COMPUTED |
-| matw-pd-10 | Permitted Debt (10) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-11 | Permitted Debt (11) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-12 | Permitted Debt (12) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-13 | Permitted Debt (13) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (a) $100.0 million and (b) 5.5% of the Total Assets | 100 USD_MILLIONS | COMPUTED |
-| matw-pd-14 | Permitted Debt (14) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-15 | Permitted Debt (15) | DEBT_INCURRENCE / RATIO_BASED / PURPOSE_SPECIFIC | Consolidated Fixed Charge Coverage Ratio |  | NEEDS_INPUT |
-| matw-pd-16 | Permitted Debt (16) | DEBT_INCURRENCE / GROWER_GREATER_OF / GENERAL | greater of (a) $125.0 million and (b) 7.0% of the Total Assets | 125.42033 USD_MILLIONS | COMPUTED |
-| matw-pd-17 | Permitted Debt (17) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-18 | Permitted Debt (18) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-19 | Permitted Debt (19) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-20 | Permitted Debt (20) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-21 | Permitted Debt (21) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-pd-22 | Permitted Debt (22) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-1-a | Permitted Debt (1)(a) | DEBT_INCURRENCE / FIXED_DOLLAR / PURPOSE_SPECIFIC | $1,300.0 million | 1300000000 USD | COMPUTED |
+| matw-indenture-2024-ex4-1-permitted-debt-1-b | Permitted Debt (1)(b) | DEBT_INCURRENCE / RATIO_BASED / PURPOSE_SPECIFIC | Secured Net Leverage Ratio to exceed 3.50 to 1.00 |  | NEEDS_INPUT |
+| matw-indenture-2024-ex4-1-permitted-debt-1-y | Permitted Debt (1)(y) | DEBT_INCURRENCE / RATIO_BASED / PURPOSE_SPECIFIC | First Lien Net Leverage Ratio to exceed 2.50 to 1.00 |  | NEEDS_INPUT |
+| matw-indenture-2024-ex4-1-permitted-debt-2 | Permitted Debt (2) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-3 | Permitted Debt (3) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-4 | Permitted Debt (4) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-5 | Permitted Debt (5) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-6 | Permitted Debt (6) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-7 | Permitted Debt (7) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-8 | Permitted Debt (8) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-9 | Permitted Debt (9) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (a) $125.0 million and (b) 7.0% of the Total Assets | 125.42033 USD_MILLIONS | COMPUTED |
+| matw-indenture-2024-ex4-1-permitted-debt-10 | Permitted Debt (10) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-11 | Permitted Debt (11) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-12 | Permitted Debt (12) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-13 | Permitted Debt (13) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (a) $100.0 million and (b) 5.5% of the Total Assets | 100 USD_MILLIONS | COMPUTED |
+| matw-indenture-2024-ex4-1-permitted-debt-14 | Permitted Debt (14) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-15 | Permitted Debt (15) | DEBT_INCURRENCE / RATIO_BASED / PURPOSE_SPECIFIC | Consolidated Fixed Charge Coverage Ratio |  | NEEDS_INPUT |
+| matw-indenture-2024-ex4-1-permitted-debt-16 | Permitted Debt (16) | DEBT_INCURRENCE / GROWER_GREATER_OF / GENERAL | greater of (a) $125.0 million and (b) 7.0% of the Total Assets | 125.42033 USD_MILLIONS | COMPUTED |
+| matw-indenture-2024-ex4-1-permitted-debt-17 | Permitted Debt (17) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-18 | Permitted Debt (18) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-19 | Permitted Debt (19) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-20 | Permitted Debt (20) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-21 | Permitted Debt (21) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-permitted-debt-22 | Permitted Debt (22) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-indenture-2024-ex4-1-permitted-debt-reclassification | Permitted Debt reclassification | DEBT_INCURRENCE / RECLASS / PURPOSE_SPECIFIC |  |  | NEEDS_INPUT |
 | matw-indenture-2024-ex4-1-permitted-investment-1 | Permitted Investment (1) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-indenture-2024-ex4-1-permitted-investment-2 | Permitted Investment (2) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
@@ -133,8 +133,8 @@ Packages other than Matthews have no bound Total Assets or EBITDA line, so a gro
 | matw-indenture-2024-ex4-1-s4-08-limitation-on-restricted-payments-10 | §4.08 Limitation on Restricted Payments (10) | RESTRICTED_PAYMENTS / GROWER_GREATER_OF / GENERAL | greater of (i) $100 million and (ii) 5.5% of the Total Assets | 100 USD_MILLIONS | COMPUTED |
 | matw-indenture-2024-ex4-1-s4-08-limitation-on-restricted-payments-11 | §4.08 Limitation on Restricted Payments (11) | RESTRICTED_PAYMENTS / RATIO_BASED / PURPOSE_SPECIFIC | Net Leverage Ratio exceeded 3.25 to 1.00 |  | NEEDS_INPUT |
 | matw-indenture-2024-ex4-1-s4-08-limitation-on-restricted-payments-12 | §4.08 Limitation on Restricted Payments (12) | RESTRICTED_PAYMENTS / RECLASS / PURPOSE_SPECIFIC |  |  | NEEDS_INPUT |
-| matw-409a | §4.09(a) | DEBT_INCURRENCE / RATIO_BASED / GENERAL | Consolidated Fixed Charge Coverage Ratio at least 2.00 to 1.00 | gate open | COMPUTED |
-| matw-409a-proviso | §4.09(a) non-guarantor proviso | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $125.0 million and (ii) 7.0% of the Total Assets | 125.42033 USD_MILLIONS | COMPUTED |
+| matw-indenture-2024-ex4-1-s4-09-limitation-on-incurrence-of-debt-a | §4.09 Limitation on Incurrence of Debt (a) | DEBT_INCURRENCE / RATIO_BASED / PURPOSE_SPECIFIC | Consolidated Fixed Charge Coverage Ratio at least 2.00 to 1.00 | gate open | COMPUTED |
+| matw-indenture-2024-ex4-1-s4-09-limitation-on-incurrence-of-debt-a-2 | §4.09 Limitation on Incurrence of Debt (a) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $125.0 million and (ii) 7.0% of the Total Assets | 125.42033 USD_MILLIONS | COMPUTED |
 | matw-indenture-2024-ex4-1-s4-09-limitation-on-incurrence-of-debt-b | §4.09 Limitation on Incurrence of Debt (b) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-indenture-2024-ex4-1-s4-09-limitation-on-incurrence-of-debt-c | §4.09 Limitation on Incurrence of Debt (c) | DEBT_INCURRENCE / RECLASS / PURPOSE_SPECIFIC |  |  | NEEDS_INPUT |
 | matw-indenture-2024-ex4-1-s4-09-limitation-on-incurrence-of-debt-d | §4.09 Limitation on Incurrence of Debt (d) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
@@ -143,7 +143,7 @@ Packages other than Matthews have no bound Total Assets or EBITDA line, so a gro
 | matw-indenture-2024-ex4-1-s4-09-limitation-on-incurrence-of-debt-g | §4.09 Limitation on Incurrence of Debt (g) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-indenture-2024-ex4-1-s4-09-limitation-on-incurrence-of-debt-h | §4.09 Limitation on Incurrence of Debt (h) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-indenture-2024-ex4-1-s4-09-limitation-on-incurrence-of-debt-i | §4.09 Limitation on Incurrence of Debt (i) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-410 | §4.10 | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-indenture-2024-ex4-1-s4-10-limitation-on-liens | §4.10 Limitation on Liens | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-indenture-2024-ex4-1-s4-10-limitation-on-liens-1 | §4.10 Limitation on Liens (1) | LIENS / RECLASS / PURPOSE_SPECIFIC |  |  | NEEDS_INPUT |
 | matw-indenture-2024-ex4-1-s4-12-limitation-on-dividend-and-other-payment-restrictions-affecting-re | §4.12 Limitation on Dividend and Other Payment Restrictions Affecting Restricted Subsidiaries (a) | RESTRICTED_PAYMENTS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-indenture-2024-ex4-1-s4-12-limitation-on-dividend-and-other-payment-restrictions-affecting-re-2 | §4.12 Limitation on Dividend and Other Payment Restrictions Affecting Restricted Subsidiaries (b) | RESTRICTED_PAYMENTS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
@@ -205,10 +205,10 @@ Packages other than Matthews have no bound Total Assets or EBITDA line, so a gro
 | matw-indenture-2024-ex4-1-6-14-undertaking-for-costs-10 | §6.14 Undertaking for Costs | EVENTS_OF_DEFAULT / STATED_PERCENT / PURPOSE_SPECIFIC | 10% | 10 PERCENT | COMPUTED |
 | matw-indenture-2024-ex4-1-definition-change-of-control-50 | §definition Change of Control | CHANGE_OF_CONTROL / PCT_OF_METRIC / PURPOSE_SPECIFIC | 50% of total voting power of the Voting Stock of the Company or any of its direct or indirect parent entities (or their successors by merger |  | NEEDS_INPUT |
 | matw-ca-fifth-amendment-s3-16-margin-stock | §3.16 Margin Stock | OTHER / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-514a | Credit Agreement §5.14(a) Leverage Ratio | FINANCIAL_COVENANT / RATIO_BASED / PURPOSE_SPECIFIC | Leverage Ratio less than or equal to 4.50 to 1.00 |  | NEEDS_INPUT |
-| matw-514a-temporary | Credit Agreement §5.14(a) Temporary Leverage Increase Period | FINANCIAL_COVENANT / RATIO_BASED / PURPOSE_SPECIFIC | Leverage Ratio less than or equal to 5.00 to 1.00 |  | NEEDS_INPUT |
-| matw-514a-temporary-senior | Credit Agreement §5.14(a) Temporary Senior Leverage Test Period | FINANCIAL_COVENANT / RATIO_BASED / PURPOSE_SPECIFIC | Senior Leverage Ratio less than or equal to 4.00 to 1.00 |  | NEEDS_INPUT |
-| matw-514b | Credit Agreement §5.14(b) Interest Coverage Ratio | FINANCIAL_COVENANT / RATIO_BASED / PURPOSE_SPECIFIC | Interest Coverage Ratio greater than or equal to 3.00 to 1.0 |  | NEEDS_INPUT |
+| matw-ca-fifth-amendment-s5-14-financial-covenants-a-a | §5.14 Financial Covenants (a)(a) | FINANCIAL_COVENANT / RATIO_BASED / PURPOSE_SPECIFIC | Leverage Ratio less than or equal to 4.50 to 1.00 |  | NEEDS_INPUT |
+| matw-ca-fifth-amendment-s5-14-financial-covenants-a-x | §5.14 Financial Covenants (a)(x) | FINANCIAL_COVENANT / RATIO_BASED / PURPOSE_SPECIFIC | Leverage Ratio less than or equal to 5.00 to 1.00 |  | NEEDS_INPUT |
+| matw-ca-fifth-amendment-s5-14-financial-covenants-a-y | §5.14 Financial Covenants (a)(y) | FINANCIAL_COVENANT / RATIO_BASED / PURPOSE_SPECIFIC | Senior Leverage Ratio less than or equal to 4.00 to 1.00 |  | NEEDS_INPUT |
+| matw-ca-fifth-amendment-s5-14-financial-covenants-a-b | §5.14 Financial Covenants (a)(b) | FINANCIAL_COVENANT / RATIO_BASED / PURPOSE_SPECIFIC | Interest Coverage Ratio greater than or equal to 3.00 to 1.0 |  | NEEDS_INPUT |
 | matw-ca-fifth-amendment-s6-03-self-dealing-a | §6.03 Self-Dealing (a) | OTHER / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-ca-fifth-amendment-s6-03-self-dealing-b | §6.03 Self-Dealing (b) | OTHER / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-ca-fifth-amendment-s6-03-self-dealing-c | §6.03 Self-Dealing (c) | OTHER / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
@@ -244,7 +244,7 @@ Packages other than Matthews have no bound Total Assets or EBITDA line, so a gro
 | matw-ca-sixth-amendment-s6-01-liens-g | §6.01 Liens (g) | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-ca-sixth-amendment-s6-01-liens-h | §6.01 Liens (h) | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-ca-sixth-amendment-s6-01-liens-i | §6.01 Liens (i) | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| matw-ca-601j | §6.01(j) | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
+| matw-ca-sixth-amendment-s6-01-liens-j | §6.01 Liens (j) | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-ca-sixth-amendment-s6-01-liens-k | §6.01 Liens (k) | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-ca-sixth-amendment-s6-01-liens-l | §6.01 Liens (l) | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | matw-ca-sixth-amendment-s6-01-liens-m | §6.01 Liens (m) | LIENS / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
@@ -407,8 +407,8 @@ Packages other than Matthews have no bound Total Assets or EBITDA line, so a gro
 
 | basket | section | type | cap formula | computed value | status |
 | --- | --- | --- | --- | --- | --- |
-| gibraltar-2026-credit-agreement-permitted-investments-1 | Permitted Investments (1) | INVESTMENT / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
-| gibraltar-2026-credit-agreement-permitted-investments-2 | Permitted Investments (2) | INVESTMENT / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-permitted-investments-1 | Permitted Investments (1) | INVESTMENT / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $172,000,000 and (ii) 50.0% of LTM EBITDA |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-permitted-investments-2 | Permitted Investments (2) | INVESTMENT / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $ 172,000,000 and (ii) 50.0% of LTM EBITDA |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-permitted-investments-3 | Permitted Investments (3) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-permitted-investments-4 | Permitted Investments (4) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-permitted-investments-5 | Permitted Investments (5) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
@@ -426,9 +426,9 @@ Packages other than Matthews have no bound Total Assets or EBITDA line, so a gro
 | gibraltar-2026-credit-agreement-permitted-investments-17 | Permitted Investments (17) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-permitted-investments-18 | Permitted Investments (18) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-permitted-investments-19 | Permitted Investments (19) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| gibraltar-2026-credit-agreement-permitted-investments-20 | Permitted Investments (20) | INVESTMENT / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-permitted-investments-20 | Permitted Investments (20) | INVESTMENT / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $258,000,000 and (ii) 75.0% of LTM EBITDA |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-permitted-investments-21 | Permitted Investments (21) | INVESTMENT / BUILDER_AVAILABLE_AMOUNT / PURPOSE_SPECIFIC | sum of stated builder components |  | NEEDS_INPUT |
-| gibraltar-2026-credit-agreement-permitted-investments-22 | Permitted Investments (22) | INVESTMENT / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-permitted-investments-22 | Permitted Investments (22) | INVESTMENT / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $258,000,000 and (ii) 75.0% of LTM EBITDA |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-permitted-investments-23 | Permitted Investments (23) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-permitted-investments-24 | Permitted Investments (24) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-permitted-investments-26 | Permitted Investments (26) | INVESTMENT / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
@@ -497,17 +497,17 @@ Packages other than Matthews have no bound Total Assets or EBITDA line, so a gro
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-7-ii | §7.01 Indebtedness (7)(ii) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-8 | §7.01 Indebtedness (8) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-9 | §7.01 Indebtedness (9) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| gibraltar-2026-credit-agreement-s7-01-indebtedness-11 | §7.01 Indebtedness (11) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-s7-01-indebtedness-11 | §7.01 Indebtedness (11) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $172,000,000 and (ii) 50.0% of LTM EBITDA |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-12 | §7.01 Indebtedness (12) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-13 | §7.01 Indebtedness (13) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-14 | §7.01 Indebtedness (14) | DEBT_INCURRENCE / BUILDER_AVAILABLE_AMOUNT / PURPOSE_SPECIFIC | sum of stated builder components |  | NEEDS_INPUT |
-| gibraltar-2026-credit-agreement-s7-01-indebtedness-15 | §7.01 Indebtedness (15) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-s7-01-indebtedness-15 | §7.01 Indebtedness (15) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $172,000,000 and (ii) 50.0% of LTM EBITDA |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-16 | §7.01 Indebtedness (16) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-17 | §7.01 Indebtedness (17) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-18 | §7.01 Indebtedness (18) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-19 | §7.01 Indebtedness (19) | DEBT_INCURRENCE / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
-| gibraltar-2026-credit-agreement-s7-01-indebtedness-22 | §7.01 Indebtedness (22) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
-| gibraltar-2026-credit-agreement-s7-01-indebtedness-23 | §7.01 Indebtedness (23) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-s7-01-indebtedness-22 | §7.01 Indebtedness (22) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $68,800,000 and (ii) 20.0% of LTM EBITDA |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-s7-01-indebtedness-23 | §7.01 Indebtedness (23) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $51,600,000 and (ii) 15.0% of LTM EBITDA |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-s7-01-indebtedness-25 | §7.01 Indebtedness (25) | DEBT_INCURRENCE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-s7-03-fundamental-changes-a | §7.03 Fundamental Changes (a) | OTHER / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
 | gibraltar-2026-credit-agreement-s7-03-fundamental-changes-c | §7.03 Fundamental Changes (c) | OTHER / NO_NUMERIC_CAP_CONDITIONAL / PURPOSE_SPECIFIC |  |  | NO_NUMERIC_CAP_CONDITIONAL |
@@ -543,15 +543,15 @@ Packages other than Matthews have no bound Total Assets or EBITDA line, so a gro
 | gibraltar-2026-credit-agreement-6-01-financial-statements-45-days | §6.01 Financial Statements | OTHER / STATED_PERIOD / PURPOSE_SPECIFIC | 45 days | 45 DAYS | COMPUTED |
 | gibraltar-2026-credit-agreement-6-02-certificates-other-information-5-business-days | §6.02 Certificates; Other Information | REPORTING / STATED_PERIOD / PURPOSE_SPECIFIC | 5 Business Days | 5 BUSINESS_DAYS | COMPUTED |
 | gibraltar-2026-credit-agreement-6-12-covenant-to-guarantee-obligations-and-give-secur-90-days | §6.12 Covenant to Guarantee Obligations and Give Security | AFFIRMATIVE / STATED_PERIOD / PURPOSE_SPECIFIC | 90 days | 90 DAYS | COMPUTED |
-| gibraltar-2026-credit-agreement-6-18-transactions-with-affiliates-17-200-000 | §6.18 Transactions with Affiliates | AFFILIATE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
-| gibraltar-2026-credit-agreement-6-18-transactions-with-affiliates-51-600-000 | §6.18 Transactions with Affiliates | AFFILIATE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-6-18-transactions-with-affiliates-17-200-000 | §6.18 Transactions with Affiliates | AFFILIATE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $ 17,200,000 and (ii) 5.0% of LTM EBITDA |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-6-18-transactions-with-affiliates-51-600-000 | §6.18 Transactions with Affiliates | AFFILIATE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $51,600,000 and (ii) 15.0% of LTM EBITDA |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-6-18-transactions-with-affiliates-5-0 | §6.18 Transactions with Affiliates | AFFILIATE / PCT_OF_METRIC / PURPOSE_SPECIFIC | 5.0% of LTM EBITDA unless: (1) the terms of such Affiliate Transaction |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-6-18-transactions-with-affiliates-15-0 | §6.18 Transactions with Affiliates | AFFILIATE / PCT_OF_METRIC / PURPOSE_SPECIFIC | 15.0% of LTM EBITDA |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-7-01-indebtedness-35-0 | §7.01 Indebtedness | DEBT_INCURRENCE / PCT_OF_METRIC / PURPOSE_SPECIFIC | 35.0% of LTM EBITDA plus (y) the Incremental Amount available |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-7-01-indebtedness-35-0-2 | §7.01 Indebtedness | DEBT_INCURRENCE / PCT_OF_METRIC / PURPOSE_SPECIFIC | 35.0% of LTM EBITDA plus (y) an unlimited amount so long |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-7-01-indebtedness-35-0-3 | §7.01 Indebtedness | DEBT_INCURRENCE / PCT_OF_METRIC / PURPOSE_SPECIFIC | 35.0% of LTM EBITDA at the time of incurrence |  | NEEDS_INPUT |
-| gibraltar-2026-credit-agreement-7-04-asset-dispositions-68-800-000 | §7.04 Asset Dispositions | ASSET_SALE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
-| gibraltar-2026-credit-agreement-7-04-asset-dispositions-86-000-000 | §7.04 Asset Dispositions | ASSET_SALE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of fixed dollar and percent of metric |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-7-04-asset-dispositions-68-800-000 | §7.04 Asset Dispositions | ASSET_SALE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $68,800,000 and (ii) 20.0% of LTM EBITDA |  | NEEDS_INPUT |
+| gibraltar-2026-credit-agreement-7-04-asset-dispositions-86-000-000 | §7.04 Asset Dispositions | ASSET_SALE / GROWER_GREATER_OF / PURPOSE_SPECIFIC | greater of (i) $ 86,000,000 and (ii) 25.0% of LTM EBITDA |  | NEEDS_INPUT |
 | gibraltar-2026-credit-agreement-7-04-asset-dispositions-365-days | §7.04 Asset Dispositions | ASSET_SALE / STATED_PERIOD / PURPOSE_SPECIFIC | 365 days | 365 DAYS | COMPUTED |
 | gibraltar-2026-credit-agreement-7-04-asset-dispositions-540-days | §7.04 Asset Dispositions | ASSET_SALE / STATED_PERIOD / PURPOSE_SPECIFIC | 540 days | 540 DAYS | COMPUTED |
 | gibraltar-2026-credit-agreement-7-04-asset-dispositions-180-days | §7.04 Asset Dispositions | ASSET_SALE / STATED_PERIOD / PURPOSE_SPECIFIC | 180 days | 180 DAYS | COMPUTED |

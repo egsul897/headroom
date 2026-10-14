@@ -169,7 +169,7 @@ describe("basket inventory", () => {
         "§4.06 Reports and Other Information",
         "§4.08 Limitation on Restricted Payments (10)",
         "§4.08 Limitation on Restricted Payments (9)",
-        "§4.09(a) non-guarantor proviso",
+        "§4.09 Limitation on Incurrence of Debt (a)",
         "§4.14 Transactions with Affiliates",
         "§4.14 Transactions with Affiliates",
         "§4.16 Limitation on Asset Sales (2)",
