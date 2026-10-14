@@ -138,3 +138,17 @@ describe("nesting regressions (reviewer #365)", () => {
     expect(new Set(out).size).toBe(out.length);
   });
 });
+
+describe("tree mode flag (#365 note 4)", () => {
+  it("agree (default) fails closed on tree/declared disagreement; override relabels", async () => {
+    const { strictCandidateMatch } = await import("@/lib/covenant-learning-factory/sweep/self-check");
+    const text = "the debt to capitalization ratio shall not exceed 0.60 to 1.00 as of the last day of any fiscal quarter";
+    const cand = { excerpt: text, sectionRef: "Section 6.07", family: "RATIO_BASED_PERMISSIONS", treeSection: "6.7" };
+    const basket = { cite: text, sectionRef: "Section 7.03", family: "OTHER", treeSection: "6.7" };
+    delete process.env.CLF_SCOREBOARD_TREE_MODE;
+    expect(strictCandidateMatch(cand, basket)).toBe(false);
+    process.env.CLF_SCOREBOARD_TREE_MODE = "override";
+    expect(strictCandidateMatch(cand, basket)).toBe(true);
+    delete process.env.CLF_SCOREBOARD_TREE_MODE;
+  });
+});

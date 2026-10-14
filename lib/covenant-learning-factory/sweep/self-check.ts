@@ -187,6 +187,10 @@ function sharedRunDistinctive(a: string, ai: number, b: string, bi: number): boo
   return run.length >= 40 && !isGenericAnchor(run);
 }
 
+export function treeMode(): "agree" | "override" {
+  return process.env.CLF_SCOREBOARD_TREE_MODE === "override" ? "override" : "agree";
+}
+
 export function strictCandidateMatch(
   cand: { excerpt: string; sectionRef: string | null; family: string | null; treeSection?: string | null },
   basket: { cite: string; sectionRef: string | null | undefined; family: string | null | undefined; treeSection?: string | null },
@@ -199,8 +203,12 @@ export function strictCandidateMatch(
   // docs/clf-scoreboard/section-tree-findings.md).
   const cDecl = sectionNumberOf(cand.sectionRef, cand.excerpt);
   const bDecl = sectionNumberOf(basket.sectionRef, basket.cite);
-  if (cand.treeSection && cDecl && cand.treeSection !== cDecl) return false;
-  if (basket.treeSection && bDecl && basket.treeSection !== bDecl) return false;
+  // CLF_SCOREBOARD_TREE_MODE=override reproduces the rejected variant (tree relabels; -11 HELDOUT,
+  // 0/11 flips genuine — docs/clf-scoreboard/tree-override-flips.jsonl). Default: agree (fail closed).
+  if (treeMode() !== "override") {
+    if (cand.treeSection && cDecl && cand.treeSection !== cDecl) return false;
+    if (basket.treeSection && bDecl && basket.treeSection !== bDecl) return false;
+  }
   const cs = cand.treeSection ?? cDecl;
   const bs = basket.treeSection ?? bDecl;
   if (cs && bs) return cs === bs;
