@@ -103,7 +103,7 @@ interface Heading {
 
 const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)(?:[^\S\n]+([IVXLC]+|\d{1,2})\b\.?|[^\S\n]*\n[^\S\n]*(\d{1,2}|[IVXLC]+\.)(?=[^\S\n]*\n))[^\S\n]*(?:\n[^\S\n]*){0,2}([A-Z][A-Z ,;'’&\-]{2,100})?/g;
 const SECTION_RE =
-  /(^|\n|\s{2,}|\.\s+)[^\S\n]*(?:(?:SECTION|Section)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})(?:[^\S\n]*\.)?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z](?:[^.\n]|\n(?![^\S\n]*(?:\n|\(|\d))){1,160}?)[^\S\n]*[.:]/g;
+  /(^|\n|\s{2,}|\.\s+|(?:^|\n)-\d{1,3}-[^\S\n]+(?=SECTION|Section))[^\S\n]*(?:(?:SECTION|Section)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})(?:[^\S\n]*\.)?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z](?:[^.\n]|\n(?![^\S\n]*(?:\n|\(|\d))){1,160}?)[^\S\n]*[.:]/g;
 /** Amendment-style single-number sections: "SECTION 3. Conditions." (requires the word). */
 const SECTION_SINGLE_RE = /(^|\n)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2})\.(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z][^.\n]{1,120}?)[^\S\n]*[.:\n]/g;
 

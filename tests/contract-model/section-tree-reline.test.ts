@@ -168,3 +168,10 @@ describe("round 8: Roman 'ARTICLE\\nVII.'", async () => {
     expect(t.nodes.filter((n) => n.kind === "ARTICLE").map((n) => [n.label, n.title])).toEqual([["ARTICLE VII", "NEGATIVE COVENANTS"]]);
   });
 });
+
+describe("round 9: false LIENS finds", () => {
+  it("a negative-pledge clause restricting agreements is not LIENS; 'No Member, nor any X, will create ... Lien' is", () => {
+    expect(classifyCovenantFamily({ title: "No Further Negative Pledges", leadIn: "Enter into, assume or become subject to any agreement of Indebtedness that prohibits or otherwise restricts the creation or assumption of any Lien upon its properties, or requiring the grant of any security for such obligation, except:", covenantContext: true }).families).not.toContain("LIENS");
+    expect(classifyCovenantFamily({ title: "Permitted Encumbrances", leadIn: "No Member, nor any Participant, will create or permit to exist any Lien upon any of its property, other than Permitted Encumbrances.", covenantContext: true }).families).toContain("LIENS");
+  });
+});

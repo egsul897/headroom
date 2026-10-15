@@ -28,7 +28,7 @@ const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\
 const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:(?:except\b[^.;:]{0,200}?|in the case of [^.;:]{1,80}?|whether in (?:one|a single) transaction or (?:in )?a series of (?:related )?transactions),\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
 /** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
 const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
-const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
+const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:,?\s+[\w’'-]+){0,14}?),?\s+(shall|will|may)\b/g;
 /** Parentheticals removed (with their length kept), so carve-outs neither count as head tokens nor shift offsets. */
 function stripParens(s: string): string { return s.replace(/\([^()]{0,200}\)/g, (m) => " ".repeat(m.length)).replace(/ {2,}/g, (m) => " ".repeat(m.length)); }
 function noPartyMatches(lead: string): RegExpMatchArray[] {
@@ -223,6 +223,9 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   // Restrictive-agreement covenants ("Negative Pledge Clauses", "Clauses Restricting Subsidiary Distributions") and
   // loan-record mechanics ("Evidence of Indebtedness") name liens/dividends/debt only as the restricted subject.
   if (args.title && /\bnegative pledge clauses\b|\bclauses restricting\b|^\s*evidence of\b/i.test(args.title)) scores.clear();
+  // "Negative Pledges; Other Inconsistent Agreements. ... shall not ... enter into any agreement containing any
+  // provision which would ..." restricts agreements, not liens.
+  if (args.title && /\bnegative pledges?\b/i.test(args.title) && /\benter into\b[^.]{0,60}\b(?:agreement|contractual obligation|instrument)s?\b/i.test(lead.slice(0, 400)) && !/(?:\b(?:shall|will)\s+not\b[^.]{0,80}|^\s*(?:\([a-z0-9]+\)\s*)?)\b(?:create|incur|grant|permit|suffer)\b[^.]{0,160}\b(?:liens?|security|encumbrances?|mortgages?|charges?)\b/i.test(lead.slice(0, 400))) scores.delete("LIENS");
   let best: CovenantFamily | null = null, score = 0;
   for (const [f, s] of scores) if (s > score) { best = f; score = s; }
   // Need at least a heading+lead-in agreement or a strong lead-in alone.
