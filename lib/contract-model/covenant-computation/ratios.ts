@@ -27,6 +27,8 @@ import type {
 } from "./types";
 import { CERTIFICATION } from "./types";
 import { citedIn, norm } from "./text";
+import { plainText } from "@/lib/covenant-learning-factory/xbrl/definition-items";
+import { clauseRatioTerm, clauseRatioThreshold } from "./ratio-terms";
 import type { BoundInputs } from "./bind-inputs";
 
 interface CatalogEntry {
@@ -50,22 +52,6 @@ export const RATIO_CATALOG: readonly CatalogEntry[] = [
   { ratioKey: "NET_LEVERAGE", displayName: "Net Leverage Ratio", names: ["Net Leverage Ratio"], kind: "LEVERAGE" },
 ];
 
-/** Longest first is not required; overlap is dropped in metricsIn. */
-const OPERANDS = [
-  "Consolidated Fixed Charges",
-  "Consolidated Interest Expense",
-  "Consolidated EBITDA",
-  "Eligible Cash Equivalents",
-  "Unrestricted Cash",
-  "First Lien Debt",
-  "Net Indebtedness",
-  "Senior Indebtedness",
-  "Secured Debt",
-  "Net Debt",
-  "Interest Expense",
-  "Total Assets",
-  "EBITDA",
-] as const;
 
 interface ParsedDefinition {
   ratioName: string;
@@ -78,10 +64,24 @@ interface ParsedDefinition {
 
 export function computeRatios(pkg: ComputationPackage, bound: BoundInputs): ComputedRatio[] {
   const definitions = pkg.documents.flatMap((doc) => parseDefinitions(doc));
-  const thresholds = collectThresholds(pkg);
-  return RATIO_CATALOG.map((entry) =>
-    computeOne(pkg, entry, definitions, thresholds, bound),
+  const catalog = catalogWith(definitions);
+  const thresholds = collectThresholds(pkg, catalog);
+  return catalog.map((entry) =>
+    computeOne(pkg, entry, definitions, thresholds, bound, catalog),
   );
+}
+
+/**
+ * The static catalog plus every ratio the agreement itself defines ("“Total Secured Leverage Ratio” means the ratio
+ * of …") under a name no static entry carries. Each defined ratio is its own entry, keyed by its own name.
+ */
+export function catalogWith(definitions: readonly ParsedDefinition[]): CatalogEntry[] {
+  const out: CatalogEntry[] = [...RATIO_CATALOG];
+  for (const d of definitions) {
+    if (out.some((e) => e.names.some((n) => namesEqual(n, d.ratioName)))) continue;
+    out.push({ ratioKey: `DEFINED:${d.ratioName.replace(/\s+/g, " ")}`, displayName: d.ratioName, names: [d.ratioName], kind: /coverage|interest|fixed\s+charge/i.test(d.ratioName) ? "COVERAGE" : "LEVERAGE" });
+  }
+  return out;
 }
 
 function computeOne(
@@ -90,9 +90,10 @@ function computeOne(
   definitions: ParsedDefinition[],
   thresholds: Map<RatioKey, RatioThreshold[]>,
   bound: BoundInputs,
+  catalog: readonly CatalogEntry[] = RATIO_CATALOG,
 ): ComputedRatio {
   const stableKey = `${pkg.packageKey}:${entry.ratioKey}`;
-  const named = pkg.documents.find((doc) => entry.names.some((name) => nameAppears(doc.text, name)));
+  const named = pkg.documents.find((doc) => entry.names.some((name) => nameAppears(doc.text, name, catalog)));
   const definition = definitions.find((d) => entry.names.some((name) => namesEqual(d.ratioName, name)));
   const entryThresholds = thresholds.get(entry.ratioKey) ?? [];
   const refused = refusedReported(entry, bound);
@@ -213,38 +214,49 @@ function refusedReported(entry: CatalogEntry, bound: BoundInputs): ComputedRatio
   };
 }
 
+// "X Ratio" means … and the colon form "X Ratio": as at …, the ratio of ….
+const RATIO_HEADER = /[“"]\s*([A-Z][^"”]{2,120}?\bRatio)\s*[”"]\s*(?:shall\s+mean\b|means\b|:)/g;
+const NEXT_DEFINITION = /[“"]\s*[A-Z][^"”]{1,120}[”"]\s*(?:shall\s+(?:mean|have\s+the\s+meaning)\b|means\b|has\s+the\s+meaning\b|:)/;
+
 export function parseDefinitions(doc: PackageDocument): ParsedDefinition[] {
-  const text = norm(doc.text);
-  const header = /[“"]([^"”]{3,140})[”"]\s+(?:shall\s+mean|means)\b/gi;
+  const text = norm(plainText(doc.text));
+  const header = new RegExp(RATIO_HEADER.source, "g");
   const out: ParsedDefinition[] = [];
   let match: RegExpExecArray | null;
   while ((match = header.exec(text)) !== null) {
     const ratioName = match[1]!.replace(/\s+/g, " ").trim();
-    if (!RATIO_CATALOG.some((entry) => entry.names.some((name) => namesEqual(name, ratioName)))) continue;
-    const window = text.slice(match.index, Math.min(text.length, match.index + 4000));
-    const ratioAt = window.search(/\bthe\s+ratio\s+of\b/i);
-    if (ratioAt < 0 || ratioAt > 500) continue;
+    let window = text.slice(match.index, Math.min(text.length, match.index + 4000));
+    const next = NEXT_DEFINITION.exec(window.slice(match[0].length));
+    if (next) window = window.slice(0, match[0].length + next.index);
+    // "the ratio, determined as of …, of (i) X to (ii) Y": drop the interposed timing clause.
+    window = window.replace(/\bthe\s+(ratio|quotient),\s[\s\S]{1,500}?,\s+(of|obtained\s+by\s+dividing)\s+(?=\(|[A-Z])/, "the $1 $2 ");
+    const ratioAt = window.search(/\bthe\s+(?:ratio|quotient)\s+(?:of|obtained\s+by\s+dividing)\b/i);
+    if (ratioAt < 0 || ratioAt > 600) continue;
     const after = window.slice(ratioAt);
-    const split = after.match(/\bthe\s+ratio\s+of\s+([\s\S]*?)\s+to\s+(\((?:y|ii|2|b)\))/i);
+    // "the ratio of (a) X to (b) Y", "the quotient obtained by dividing (x) X by (y) Y", or un-enumerated "X to Y".
+    const lead = String.raw`\bthe\s+(?:ratio|quotient)\s+(?:of|obtained\s+by\s+dividing)\s+`;
+    const split = after.match(new RegExp(`${lead}([\\s\\S]*?)\\s+(?:to|by|divided\\s+by)\\s+(\\((?:y|ii|2|b|B|II)\\))`))
+      ?? after.match(new RegExp(`${lead}([\\s\\S]{3,400}?)\\s+(?:to|divided\\s+by)\\s+()(?=(?:the\\s+)?(?:Consolidated\\s+)?(?:[A-Z][A-Za-z\\-]*\\s+){0,4}(?:EBITDA\\w*|EBIT|Interest|Fixed\\s+Charges|Debt|Indebtedness|Capitalization|Assets|Net\\s+Worth|Income|Cash\\s+Flow)\\b)`));
     if (!split || split.index == null || !split[1]) continue;
     const numeratorRaw = split[1].trim();
     const denominatorStart = split.index + split[0].length;
     const rest = after.slice(denominatorStart);
-    const end = sentenceEnd(rest);
-    if (end < 0) continue;
+    let end = sentenceEnd(rest);
+    if (end < 0) end = rest.length;
     const denominatorRaw = rest.slice(0, end).trim();
-    const minusAt = numeratorRaw.search(/\b(?:minus|less)\b/i);
+    // "the excess of (i) Debt over (ii) Unrestricted Cash" is Debt minus Cash.
+    const minusAt = numeratorRaw.search(/\b(?:minus|less|over)\b/i);
     const left = minusAt < 0 ? numeratorRaw : numeratorRaw.slice(0, minusAt);
     const right = minusAt < 0 ? "" : numeratorRaw.slice(minusAt);
-    const denominatorHead = denominatorRaw.split(/\bpro\s+forma\b/i)[0] ?? denominatorRaw;
+    const denominatorHead = denominatorRaw.split(/\bpro\s+forma\b|\bfor\s+(?:the|such|any|each)\b|\bas\s+of\b|\bin\s+each\s+case\b|[;,]/i)[0] ?? denominatorRaw;
     const excerpt = window.slice(0, ratioAt + denominatorStart + end + 1).trim();
     out.push({
       ratioName,
       excerpt,
       documentId: doc.documentId,
-      numeratorMetrics: metricsIn(left),
-      subtrahendMetrics: metricsIn(right),
-      denominatorMetrics: metricsIn(denominatorHead),
+      numeratorMetrics: metricsIn(left, text),
+      subtrahendMetrics: metricsIn(right, text),
+      denominatorMetrics: metricsIn(denominatorHead, text),
     });
     header.lastIndex = match.index + Math.max(excerpt.length, 1);
   }
@@ -261,23 +273,36 @@ function sentenceEnd(text: string): number {
   return -1;
 }
 
-function metricsIn(phrase: string): string[] {
-  const hits: Array<{ index: number; name: string }> = [];
-  for (const name of OPERANDS) {
-    const re = new RegExp(`(?<![A-Za-z])${name.replace(/\s+/g, "\\s+")}(?![A-Za-z])`, "gi");
-    for (const match of phrase.matchAll(re)) {
-      if (match.index == null) continue;
-      hits.push({ index: match.index, name });
+const FINANCIAL_HEAD = /(?:Debt|Indebtedness|EBITDA\w*|EBIT|Interest(?:\s+Expense|\s+Charges)?|Expense|Charges|Income|Cash(?:\s+Equivalents)?|Assets|Liabilities|Obligations|Rentals?|Capitalization|Net\s+Worth|Revenues?|Cash\s+Flow|Amount)$/;
+const NOT_OPERAND = /^(?:the|a|an|such|any|each|all|on|of|to|by)\s+/i;
+
+/**
+ * The defined-term operands of one side of a ratio, generically: each run of capitalized words ("Consolidated Total
+ * Net Debt", "Consolidated EBITDA") that ends in a financial head noun. A run joined by "and" / "of" is kept whole when
+ * the whole run is itself a defined term in the document ("Cash and Cash Equivalents").
+ */
+function metricsIn(phrase: string, docText = ""): string[] {
+  // Parenthetical qualifiers ("(exclusive of Indebtedness under …)") are not operands.
+  let flat = phrase, prev = "";
+  while (flat !== prev) { prev = flat; flat = flat.replace(/\((?![ivxlIVXL]{1,5}\)|[a-zA-Z]{1,2}\)|\d{1,2}\))[^()]{3,}\)/g, " "); }
+  // A side that narrows its debt by security or ranking ("Indebtedness that is secured by a Lien") names a subset the
+  // term alone does not: it is not one plain operand.
+  const qualified = /\b(?:that\s+is|which\s+is|to\s+the\s+extent)\s+(?:secured|subordinated)|\bsecured\s+by\b|\bsecured\s+on\b/i.test(flat);
+  const cleaned = flat.replace(/\((?:[ivxlIVXL]{1,5}|[a-zA-Z]{1,2}|\d{1,2})\)/g, " ").replace(/\s+/g, " ");
+  const out: string[] = [];
+  const run = /(?:[A-Z][A-Za-z\-]*|EBITDA\w*)(?:\s+(?:(?:and|of|to)\s+)?(?:[A-Z][A-Za-z\-]*|EBITDA\w*))*/g;
+  for (const m of cleaned.matchAll(run)) {
+    let term = m[0].replace(NOT_OPERAND, "").trim();
+    const defined = (t: string) => docText && new RegExp(`[“"]\\s*${t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+")}\\s*[”"]\\s*(?:shall\\s+)?(?:mean|means|has\\s+the\\s+meaning)`, "i").test(docText);
+    if (/\s(?:and|of|to)\s/.test(term) && !defined(term)) {
+      // Keep the parts that are operands on their own.
+      for (const part of term.split(/\s+(?:and|of|to)\s+/)) if (FINANCIAL_HEAD.test(part) && !/^(?:the|The)$/.test(part)) out.push(part);
+      continue;
     }
+    if (FINANCIAL_HEAD.test(term) && !/^(?:Amount)$/.test(term)) out.push(term);
   }
-  hits.sort((a, b) => a.index - b.index || b.name.length - a.name.length);
-  const kept: Array<{ index: number; end: number; name: string }> = [];
-  for (const hit of hits) {
-    const end = hit.index + hit.name.length;
-    if (kept.some((prior) => hit.index < prior.end && end > prior.index)) continue;
-    kept.push({ index: hit.index, end, name: hit.name });
-  }
-  return kept.map((hit) => hit.name);
+  const terms = [...new Set(out)];
+  return qualified && !terms.some((t) => /secured|lien|senior/i.test(t)) ? [...terms, "(qualified subset)"] : terms;
 }
 
 function boundKey(name: string, metrics: readonly MetricInput[]): string {
@@ -355,30 +380,31 @@ function citedMetrics(names: readonly string[], metrics: readonly MetricInput[],
   return out;
 }
 
-function collectThresholds(pkg: ComputationPackage): Map<RatioKey, RatioThreshold[]> {
+function collectThresholds(pkg: ComputationPackage, catalog: readonly CatalogEntry[] = RATIO_CATALOG): Map<RatioKey, RatioThreshold[]> {
   const map = new Map<RatioKey, RatioThreshold[]>();
   for (const basket of pkg.baskets) {
-    const classified = classifyRatioIncurrencePermission(basket.operativeText);
-    if (classified.class === "NOT_RATIO_INCURRENCE" || !classified.ratioName) continue;
-    if (classified.thresholdNumerator == null || classified.thresholdDenominator == null || !classified.comparator) continue;
-    const entry = RATIO_CATALOG.find((c) => c.names.some((n) => namesEqual(n, classified.ratioName!)));
+    // The full ratio term in the clause and one stated threshold (shared with ratio-based baskets).
+    const term = clauseRatioTerm(basket.operativeText);
+    if (!term) continue;
+    const t = clauseRatioThreshold(basket.operativeText);
+    if (!t) continue;
+    const entry = catalog.find((c) => c.names.some((n) => namesEqual(n, term)));
     if (!entry) continue;
-    const direction: RatioDirection =
-      classified.comparator === "AT_LEAST" || classified.comparator === "GREATER_THAN" ? "MIN" : "MAX";
+    const direction: RatioDirection = t.comparator === "AT_LEAST" || t.comparator === "GREATER_THAN" ? "MIN" : "MAX";
     const canonical = toCanonicalString(
       rational(
-        rationalFromNumber(classified.thresholdNumerator).num * rationalFromNumber(classified.thresholdDenominator).den,
-        rationalFromNumber(classified.thresholdDenominator).num * rationalFromNumber(classified.thresholdNumerator).den,
+        rationalFromNumber(t.num).num * rationalFromNumber(t.den).den,
+        rationalFromNumber(t.den).num * rationalFromNumber(t.num).den,
       ),
     );
     const row: RatioThreshold = {
       sectionRef: basket.sectionRef,
       sourceDocumentId: basket.documentId,
       citationExcerpt: basket.operativeText,
-      raw: classified.thresholdRaw ?? "",
+      raw: t.raw,
       canonical,
       direction,
-      comparator: classified.comparator,
+      comparator: t.comparator,
       headroomStatus: "NEEDS_INPUT",
       headroomCanonical: null,
     };
@@ -419,8 +445,8 @@ function statusOf(evaluation: EvaluationResult): ComputationStatus {
   return evaluation.status === "EXECUTABLE" && evaluation.value ? "COMPUTED" : "NEEDS_INPUT";
 }
 
-function nameAppears(text: string, name: string): boolean {
-  const names = RATIO_CATALOG.flatMap((entry) => [...entry.names]);
+function nameAppears(text: string, name: string, catalog: readonly CatalogEntry[] = RATIO_CATALOG): boolean {
+  const names = catalog.flatMap((entry) => [...entry.names]);
   const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const re = new RegExp(`(?<![A-Za-z])${escaped}(?![A-Za-z])`, "gi");
   for (const match of text.matchAll(re)) {
@@ -431,13 +457,22 @@ function nameAppears(text: string, name: string): boolean {
       if (from < 0) return false;
       return text.slice(from, match.index! + name.length).toLowerCase() === other.toLowerCase();
     });
-    if (!buried) return true;
+    if (buried) continue;
+    // Part of a longer capitalized term the catalog does not list ("Consolidated First Lien Net Leverage Ratio",
+    // "Senior Secured Leverage Ratio"): the shorter ratio is not named by that mention.
+    const prev = /([A-Z][A-Za-z'’\-]*)\s+$/.exec(text.slice(Math.max(0, match.index - 40), match.index));
+    if (prev && !NAME_LEADERS.test(prev[1]!)) continue;
+    return true;
   }
   return false;
 }
 
-function namesEqual(a: string, b: string): boolean {
-  return norm(a).toLowerCase() === norm(b).toLowerCase();
+const NAME_LEADERS = /^(?:Consolidated|The|If|So|Such|Any|Each|Its|Their|Our|Pro|Forma|Basis|Borrower(?:'s|’s)?|Company(?:'s|’s)?|Section|Article|A|An|In|On|At|For|When|Where|Whether|Until|Unless|While|Upon|As|By|To|Of|Under|With|Without|No|Neither|Nor|Then|After|Before|And|Or|But|Applicable|Maximum|Minimum|Financial|Covenant|Covenants)$/;
+
+/** Equal up to whitespace, case and a leading "Consolidated" ("Consolidated Leverage Ratio" = "Leverage Ratio"). */
+export function namesEqual(a: string, b: string): boolean {
+  const c = (x: string) => norm(x).toLowerCase().replace(/^consolidated\s+/, "");
+  return c(a) === c(b);
 }
 
 export function documentContaining(documents: readonly PackageDocument[], excerpt: string): PackageDocument | undefined {
