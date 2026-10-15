@@ -32,6 +32,7 @@ const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKin
   UNLIMITED: "UNLIMITED_SUBJECT_TO_GATE",
   UNLIMITED_BY_PURPOSE: "UNLIMITED_SUBJECT_TO_GATE",
   CONDITIONS_LIMITED: "OTHER_SOURCE_STATED",
+  FORMULA_AMOUNT: "OTHER_SOURCE_STATED",
   RECLASS: "REALLOCATION_TRANSFER",
 };
 
@@ -86,6 +87,11 @@ export function evaluateBasket(
                   ? purposeUnlimited(clause)
                   : category === "CONDITIONS_LIMITED"
                     ? conditionsLimited(clause)
+                  : category === "FORMULA_AMOUNT"
+                    ? {
+                        ...capShell("NEEDS_INPUT", "NONE", null, null, ["formula operands (stated arithmetic on the dollar figure)"], null),
+                        note: "The dollar figure is an operand of stated arithmetic, not a cap by itself. Needs the other operands.",
+                      }
                   : category === "RECLASS"
                     ? {
                         ...capShell("NEEDS_INPUT", "NONE", null, null, ["source basket unused", "reclassification election"], null),
@@ -112,7 +118,10 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
     /\b(available amount|builder basket|cumulative credit|available restricted payments amount)\b/i.test(text) ||
     (/\bsum of\b/i.test(text) && /\d+(?:\.\d+)?\s*%\s+of\b/i.test(text)) ||
     (/\bsum\b/i.test(text) && /\d+(?:\.\d+)?\s*%\s+of\b/i.test(text) && /\bshall not exceed the sum\b/i.test(text)) ||
-    (/\bmay be increased by\b/i.test(text) && /\$\s*[\d,]+/.test(text))
+    (/\bmay be increased by\b/i.test(text) && /\$\s*[\d,]+/.test(text)) ||
+    // "(x) $200,000,000 plus (y) 50% of Consolidated Net Income plus (z) 100% of Net Proceeds": a sum with a
+    // metric-percentage component is a builder (NEEDS_INPUT until every component is bound), never the fixed part alone.
+    (/\$\s*[\d,]+/.test(text) && /\d+(?:\.\d+)?\s*%\s+of\b/i.test(text) && /\bplus\b/i.test(text) && !/\bgreater\s+of\b/i.test(text))
   ) {
     return "BUILDER_AVAILABLE_AMOUNT";
   }
@@ -132,6 +141,7 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   // Owner rule: never unlimited by default. Without explicit unlimited language (handled above) a clause with no
   // capacity number is CONDITIONS_LIMITED (computed as NEEDS_INPUT), not unlimited.
   if (isNonCapacityNumber(text)) return "CONDITIONS_LIMITED";
+  if (/\$\s*[\d,]+/.test(text) && ARITHMETIC_ON_AMOUNT.test(text)) return "FORMULA_AMOUNT";
   if (numeric) return "UNKNOWN";
   return "CONDITIONS_LIMITED";
 }
@@ -487,9 +497,13 @@ function evalUnlimited(
   };
 }
 
+const ARITHMETIC_ON_AMOUNT = /\b(?:quotient|divided\s+by|multiplied\s+by|product\s+of)\b/i;
+
 function soleFixedDollar(text: string): string | null {
   const normed = norm(text);
   if (/\bgreater\s+of\b/i.test(normed) || /\d+(?:\.\d+)?\s*%/.test(normed) || /\bmay be increased by\b/i.test(normed)) return null;
+  // A dollar figure inside arithmetic ("the quotient of $550 million divided by the rate") is an operand, not the cap.
+  if (/\b(?:quotient|divided\s+by|multiplied\s+by|product\s+of)\b/i.test(normed)) return null;
   const tokens = [...normed.matchAll(/\$\s*([\d,]+(?:\.\d+)?)/g)].map((m) => m[1]!.replace(/,/g, ""));
   const distinct = [...new Set(tokens)];
   if (distinct.length !== 1) return null;
@@ -498,6 +512,9 @@ function soleFixedDollar(text: string): string | null {
       normed,
     ) ||
     /\bDollars\s*\(\s*\$\s*[\d,]+\.\d{2}/i.test(normed) ||
+    // "shall not at any one time exceed $X", "do not ... in excess of $X": a negated ceiling directly on the one dollar figure.
+    /\b(?:shall|will|does|do|to)\s+not\s+(?:[\w’',]+\s+){0,6}?exceed\s+\$\s*[\d,]+/i.test(normed) ||
+    /\bnot\s+(?:[\w’',]+\s+){0,16}?in\s+excess\s+of\s+\$\s*[\d,]+/i.test(normed) ||
     /\bexceeds\s+\$\s*[\d,]+(?:\.\d+)?\s+million\b/i.test(normed);
   return capRole ? distinct[0]! : null;
 }

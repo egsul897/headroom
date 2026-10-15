@@ -19,7 +19,7 @@ const load = (k: string) => ({
 });
 
 const EXPECTED: Record<string, Record<string, string>> = {
-  "nike-credit-2015": {"DEBT": "MISSING", "LIENS": "NEEDS_INPUT", "RESTRICTED_PAYMENTS": "MISSING", "INVESTMENTS": "MISSING", "ASSET_SALES": "CONDITIONS_LIMITED", "AFFILIATE_TRANSACTIONS": "CONDITIONS_LIMITED", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
+  "nike-credit-2015": {"DEBT": "MISSING", "LIENS": "CAP_COMPUTED", "RESTRICTED_PAYMENTS": "MISSING", "INVESTMENTS": "MISSING", "ASSET_SALES": "CONDITIONS_LIMITED", "AFFILIATE_TRANSACTIONS": "CONDITIONS_LIMITED", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
   "delta-indenture-2020": {"DEBT": "NEEDS_INPUT", "LIENS": "NEEDS_INPUT", "RESTRICTED_PAYMENTS": "NEEDS_INPUT", "INVESTMENTS": "MISSING", "ASSET_SALES": "NEEDS_INPUT", "AFFILIATE_TRANSACTIONS": "MISSING", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
   "lyv-indenture-2025": {"DEBT": "MISSING", "LIENS": "MISSING", "RESTRICTED_PAYMENTS": "MISSING", "INVESTMENTS": "MISSING", "ASSET_SALES": "MISSING", "AFFILIATE_TRANSACTIONS": "MISSING", "FUNDAMENTAL_CHANGES": "CONDITIONS_LIMITED", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "MISSING"},
 };
@@ -69,6 +69,12 @@ describe("agreement pipeline end-to-end (held-out)", () => {
         if (b.capStatus === "NEEDS_INPUT") expect(b.missingInputs.length).toBeGreaterThan(0);
       }
       for (const c of r.checklist) if (c.status === "MISSING") expect(c.note).toMatch(/not treated as unlimited/);
+
+      // Amount compute: dollar caps are computed from the clause text; arithmetic operands are never taken as caps.
+      const caps = r.computedBaskets.filter((b) => b.capStatus === "COMPUTED" && b.capKind === "AMOUNT").map((b) => b.capCanonical);
+      if (k === "nike-credit-2015") expect(caps).toEqual(expect.arrayContaining(["200000000", "100000000"]));
+      if (k === "delta-indenture-2020") expect(caps).not.toContain("550000000");
+      for (const b of r.computedBaskets) if (b.category === "GROWER_GREATER_OF") expect(b.capStatus).toBe("NEEDS_INPUT");
 
       const ex = memoryExecutor();
       const stored = await persistAgreementPipeline(ex, r, { sourceId: meta.sourceId, verification: "TEXT_VERIFIED" });
