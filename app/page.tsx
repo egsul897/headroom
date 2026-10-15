@@ -4,6 +4,7 @@ import { GlobalBrand } from "@/components/GlobalBrand";
 import { PROTECTED_COMPANY_IDS } from "@/lib/coherent";
 import { listCompanies } from "@/lib/dashboard-service";
 import { companyOpenHref } from "@/lib/home/nav";
+import { onboardingStatusLabel } from "@/lib/status-labels";
 
 export const metadata = { title: "Headroom" };
 export const dynamic = "force-dynamic";
@@ -48,64 +49,89 @@ export default async function Home() {
         <div>
           <p className="page-kicker">Headroom</p>
           <h1 className="page-question">Which company are you opening?</h1>
-          <p className="page-answer">Nothing is remembered between visits. Open one workspace, or connect a new one.</p>
+          <p className="page-answer">
+            A portfolio list, not a blended number. Headroom stays inside the company you open. Nothing is remembered between visits.
+          </p>
         </div>
       </header>
 
       {customer.length > 0 && (
         <Card>
-          <div className="card-title">Your companies</div>
-          <div className="chooser-list">
-            {customer.map((c) => (
-              <div key={c.id} className="chooser-row">
-                <div>
-                  <div className="chooser-name">{c.name}</div>
-                  {c.ticker ? <div className="chooser-meta">{c.ticker}</div> : null}
-                </div>
-                <div className="chooser-actions">
-                  <Link className="button button-quiet" href={`/companies/${c.id}/delete`}>
-                    Delete
-                  </Link>
-                  <Link className="button button-primary" href={openHref(c)}>
-                    Open
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+          <div className="card-title">Customer portfolio</div>
+          <p className="chooser-note">Companies in the customer tenant. Open one workspace. Coverage is setup status, not a capacity figure.</p>
+          <table className="portfolio-table">
+            <thead>
+              <tr>
+                <th scope="col">Company</th>
+                <th scope="col">Ticker</th>
+                <th scope="col">Coverage</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {customer.map((c) => (
+                <tr key={c.id}>
+                  <td className="portfolio-name">{c.name}</td>
+                  <td>{c.ticker ?? "—"}</td>
+                  <td>{onboardingStatusLabel(c.onboardingStatus)}</td>
+                  <td>
+                    <div className="portfolio-actions">
+                      <Link className="button button-quiet" href={`/companies/${c.id}/delete`}>
+                        Delete
+                      </Link>
+                      <Link className="button button-primary" href={openHref(c)}>
+                        Open
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Card>
       )}
 
       {evaluation.length > 0 && (
         <Card>
-          <div className="card-title">Evaluation companies</div>
+          <div className="card-title">Evaluation portfolio</div>
           <p className="chooser-note">
             Coherent, Matthews, and any test fixtures — used for regression and evaluation, never shown to a real customer once real authentication exists.
           </p>
-          <div className="chooser-list">
-            {evaluation.map((c) => (
-              <div key={c.id} className="chooser-row">
-                <div>
-                  <div className="chooser-name">{c.name}</div>
-                  {c.ticker ? <div className="chooser-meta">{c.ticker}</div> : null}
-                </div>
-                <div className="chooser-actions">
-                  {PROTECTED_COMPANY_IDS.has(c.id) ? (
-                    <span className="status-badge status-badge-attention" title="Protected golden-regression company - cannot be deleted from this instance.">
-                      Protected
-                    </span>
-                  ) : (
-                    <Link className="button button-quiet" href={`/companies/${c.id}/delete`}>
-                      Delete
-                    </Link>
-                  )}
-                  <Link className="button button-primary" href={openHref(c)}>
-                    Open
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+          <table className="portfolio-table">
+            <thead>
+              <tr>
+                <th scope="col">Company</th>
+                <th scope="col">Ticker</th>
+                <th scope="col">Coverage</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {evaluation.map((c) => (
+                <tr key={c.id}>
+                  <td className="portfolio-name">{c.name}</td>
+                  <td>{c.ticker ?? "—"}</td>
+                  <td>{onboardingStatusLabel(c.onboardingStatus)}</td>
+                  <td>
+                    <div className="portfolio-actions">
+                      {PROTECTED_COMPANY_IDS.has(c.id) ? (
+                        <span className="status-badge status-badge-attention" title="Protected golden-regression company - cannot be deleted from this instance.">
+                          Protected
+                        </span>
+                      ) : (
+                        <Link className="button button-quiet" href={`/companies/${c.id}/delete`}>
+                          Delete
+                        </Link>
+                      )}
+                      <Link className="button button-primary" href={openHref(c)}>
+                        Open
+                      </Link>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Card>
       )}
 

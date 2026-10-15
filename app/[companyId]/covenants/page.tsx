@@ -65,6 +65,45 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         <div className="row-note">{rulebook.headline}</div>
       </Card>
 
+      {review.analyzedOkCount > 0 && (
+        <Card>
+          <div className="card-title">What the documents restrict</div>
+          <div className="card-subtitle">Material restrictions and permissions from analyzed package text. Not a capacity figure.</div>
+          <div className="row-label" style={{ marginTop: 8 }}>
+            Material restrictions
+          </div>
+          {review.executive.materialRestrictions.length === 0 ? (
+            <div className="row-note">None clearly segmented yet.</div>
+          ) : (
+            review.executive.materialRestrictions.map((r, i) => (
+              <div key={i} className="row-note">
+                • {r}
+              </div>
+            ))
+          )}
+          <div className="row-label" style={{ marginTop: 12 }}>
+            Material permissions / baskets (not capacity)
+          </div>
+          {review.executive.materialPermissions.length === 0 ? (
+            <div className="row-note">None clearly segmented yet.</div>
+          ) : (
+            review.executive.materialPermissions.map((p, i) => (
+              <div key={i} className="row-note">
+                • {p}
+              </div>
+            ))
+          )}
+          <div className="row-label" style={{ marginTop: 12 }}>
+            Unresolved
+          </div>
+          {review.executive.unresolved.map((u, i) => (
+            <div key={i} className="row-note">
+              • {u}
+            </div>
+          ))}
+        </Card>
+      )}
+
       {review.amendmentPackage && (
         <Card>
           <div className="card-title">Operative amendment status</div>
@@ -113,25 +152,27 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
 
       {review.amendmentCompare.rows.length > 0 && (
         <Card>
-          <div className="card-title">Amendment before / after (discovery)</div>
-          <div className="card-subtitle">{review.amendmentCompare.note}</div>
+          <div className="card-title">Redline</div>
+          <div className="card-subtitle">Base document beside the amendment. Discovery only — not counsel approval.</div>
+          <div className="row-note">{review.amendmentCompare.note}</div>
           {review.amendmentCompare.rows.slice(0, 16).map((row, i) => (
-            <div
-              key={`${row.sectionRef}-${i}`}
-              style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}
-            >
-              <div className="row">
-                <div className="row-label">§{row.sectionRef}</div>
-                <div className="row-value">
-                  <Chip tone="navy">{row.changeKind}</Chip>
-                </div>
+            <article className="clause" key={`${row.sectionRef}-${i}`}>
+              <div className="clause-head">
+                <div className="clause-sec">§{row.sectionRef}</div>
+                <Chip tone="navy">{row.changeKind}</Chip>
               </div>
               <div className="row-note">{row.note}</div>
-              {row.baseExcerpt && <div className="row-note">Base: “{row.baseExcerpt}”</div>}
-              {row.amendmentExcerpt && (
-                <div className="row-note">Amendment: “{row.amendmentExcerpt}”</div>
-              )}
-            </div>
+              <div className="redline">
+                <div className="redline-col redline-base">
+                  <span className="redline-label">Base document</span>
+                  <div>{row.baseExcerpt ? `“${row.baseExcerpt}”` : "No base excerpt loaded."}</div>
+                </div>
+                <div className="redline-col redline-amend">
+                  <span className="redline-label">Amendment</span>
+                  <div>{row.amendmentExcerpt ? `“${row.amendmentExcerpt}”` : "No amendment excerpt loaded."}</div>
+                </div>
+              </div>
+            </article>
           ))}
         </Card>
       )}
@@ -159,62 +200,24 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         </Card>
       )}
 
-      {review.analyzedOkCount > 0 && (
-        <Card>
-          <div className="card-title">Executive summary</div>
-          <div className="card-subtitle">Material restrictions and permissions from analyzed package text.</div>
-          <div className="row-label" style={{ marginTop: 8 }}>
-            Material restrictions
-          </div>
-          {review.executive.materialRestrictions.length === 0 ? (
-            <div className="row-note">None clearly segmented yet.</div>
-          ) : (
-            review.executive.materialRestrictions.map((r, i) => (
-              <div key={i} className="row-note">
-                • {r}
-              </div>
-            ))
-          )}
-          <div className="row-label" style={{ marginTop: 12 }}>
-            Material permissions / baskets (not capacity)
-          </div>
-          {review.executive.materialPermissions.length === 0 ? (
-            <div className="row-note">None clearly segmented yet.</div>
-          ) : (
-            review.executive.materialPermissions.map((p, i) => (
-              <div key={i} className="row-note">
-                • {p}
-              </div>
-            ))
-          )}
-          <div className="row-label" style={{ marginTop: 12 }}>
-            Unresolved
-          </div>
-          {review.executive.unresolved.map((u, i) => (
-            <div key={i} className="row-note">
-              • {u}
-            </div>
-          ))}
-        </Card>
-      )}
-
       {review.categories.map((block) => (
         <Card key={block.category}>
           <div className="card-title">{block.categoryLabel}</div>
           <div className="card-subtitle">{block.items.length} analyzed provision(s)</div>
           {block.items.slice(0, 24).map((item, idx) => (
-            <div
-              key={`${item.sourceId}-${item.sectionRef}-${idx}`}
-              style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--border, #e5e7eb)" }}
-            >
-              <div className="row">
-                <div className="row-label">§{item.sectionRef}</div>
-                <div className="row-value">
-                  {item.posture ? <StatusBadge status={item.posture} /> : null}{" "}
+            <article className="clause" key={`${item.sourceId}-${item.sectionRef}-${idx}`}>
+              <div className="clause-head">
+                <div>
+                  <div className="clause-sec">§{item.sectionRef}</div>
+                  <div className="card-subtitle" style={{ marginBottom: 0 }}>
+                    {item.heading}
+                  </div>
+                </div>
+                <div className="clause-badges">
+                  {item.posture ? <StatusBadge status={item.posture} /> : null}
                   <StatusBadge status={item.epistemicStatus} />
                 </div>
               </div>
-              <div className="card-subtitle">{item.heading}</div>
               <p className="row-note" style={{ whiteSpace: "pre-wrap" }}>
                 {item.plainEnglish}
               </p>
@@ -235,15 +238,14 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
               {(item.dependencies?.length ?? 0) > 0 && (
                 <div className="row-note">Dependencies: {item.dependencies.slice(0, 3).join(" · ")}</div>
               )}
-              <div className="button-row" style={{ marginTop: 8 }}>
-                {item.documentId && (
-                  <Link className="button" href={`/${companyId}/documents/${item.documentId}`}>
-                    Source · {item.documentTitle}
-                  </Link>
-                )}
-                <span className="row-note">Citation: {item.sourceCitation}</span>
+              <div className="clause-cite">
+                <span>Citation</span>
+                <span>{item.sourceCitation}</span>
+                {item.documentId ? (
+                  <Link href={`/${companyId}/documents/${item.documentId}`}>Open {item.documentTitle}</Link>
+                ) : null}
               </div>
-            </div>
+            </article>
           ))}
         </Card>
       ))}
@@ -311,7 +313,7 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
       {review.analyzedOkCount === 0 && provisions.length === 0 && !isConmed && (
         <Card>
           <div className="card-subtitle">
-            Upload a credit agreement, indenture, or amendment to generate substantive covenant summaries.
+            No clauses are loaded. Citations and any amendment redline appear here after a credit agreement or amendment is uploaded.
           </div>
           <div className="button-row" style={{ marginTop: 12 }}>
             <Link className="button button-primary" href={`/${companyId}/onboarding/documents`}>

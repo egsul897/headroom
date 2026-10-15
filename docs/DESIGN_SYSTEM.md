@@ -20,6 +20,30 @@ There is no repository-root README. The product is defined by `package.json` ("c
 
 Trust rules that the visuals have to obey: unknown is not zero and not unlimited; gross contractual is not remaining available; legal-review verified is not an engineering pass; a discovered clause is not counsel-approved.
 
+## Who is on the other side of the screen
+
+The same three truths serve every client. What changes is the first thing they are willing to trust.
+
+### CFO and treasurer
+
+They need the answer first: supported remaining capacity, or an explicit unknown; covenants that could block a deal; the next test. Trust is the authority on the number (certified path, legacy engine, or not determinable), the snapshot it used, and the clause that binds. Their workflow is open the company, read the executive summary, and only then simulate a transaction or chase the missing snapshot.
+
+### Controller
+
+They need the period, the as-of, and what is still missing before a figure can be approved. Trust is "not evaluated" instead of zero, and counts of analyzed documents versus an approved snapshot. Their workflow is clear the blockers, then confirm the capacity page still refuses a number until the path exists.
+
+### Finance and restructuring counsel
+
+They need the clause, the section, the document, and whether the reading is discovered, reviewed, or executable. Trust is a citation they can open, and a redline of base against amendment before anyone treats a basket as capacity. Their workflow is covenants, then the redline and operative status, then the source, and only then the number.
+
+### Lenders and private credit
+
+They need a portfolio they can scan, then inside one name a secured and unsecured split and the binding document. Trust is the same provenance counsel requires. A blended headroom on the portfolio list would be a lie, so the list shows coverage status only. Their workflow is pick a name, read whether a figure is relyable, then the clause that binds.
+
+### PE sponsors and portfolio ops
+
+They need the same portfolio list, with customer companies kept apart from evaluation fixtures, and an executive summary a deal team can read without a legal memo. Trust is that sample illustrations never appear on a real company. Their workflow is scan the list, open the company that is financing, forward counsel to the citations.
+
 ## Decisions, each tied to that job
 
 ### Color
@@ -130,3 +154,7 @@ Headers are small, uppercase, muted. Numeric columns are right-aligned with tabu
 | Sidebar that wrapped into a second row on a phone | It pushed the answer below a pile of links. The drawer stays closed until asked. |
 
 Locked overview regions, empty-state copy, and every computed value are unchanged. Loading skeletons are bars with no digits. Motion is limited to color, transform, and the skeleton shimmer, and it is off when `prefers-reduced-motion` is set.
+
+The overview now leads with that executive summary, then the covenant table, then movement, then the record. Covenants lead with the restriction summary, then a base-versus-amendment redline, then each clause with its citation. Capacity leads with provenance: snapshot, ledger, and authority, before any per-document row. The chooser is a portfolio table of real companies and real setup status. It does not show headroom.
+
+`app/dev/sample` is a development-only illustration. It calls `notFound()` in production, imports no database client, and prints SAMPLE DATA on every screen. Production pages do not import it.

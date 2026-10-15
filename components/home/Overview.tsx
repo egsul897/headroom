@@ -98,24 +98,37 @@ export function CompanyOverview({
       ) : null}
 
       <div className="home-regions">
-        <div className="home-kpis">
-          <TotalHeadroomCard state={slots.totalHeadroom} />
-          <UtilizationCard state={slots.utilization} />
-          <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
-          <NextTestCard state={slots.nextTest} />
-        </div>
-        <div className="home-split">
-          <HeadroomOverTimeCard state={slots.headroomOverTime} />
-          <CapacitySummaryCard state={slots.capacitySummary} />
-        </div>
-        <div className="home-split">
+        <section className="exec-block" aria-label="Executive summary">
+          <div className="exec-block-copy">
+            <h2 className="exec-block-label">Executive summary</h2>
+            <p className="exec-block-lead">Where this company stands. A blank figure is unknown, not zero.</p>
+          </div>
+          <div className="home-kpis">
+            <TotalHeadroomCard state={slots.totalHeadroom} />
+            <UtilizationCard state={slots.utilization} />
+            <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
+            <NextTestCard state={slots.nextTest} />
+          </div>
+        </section>
+        <section className="exec-block" aria-label="Covenants">
+          <h2 className="exec-block-label">Covenants</h2>
           <StatusTable state={slots.statusTable} />
-          <DriversCard state={slots.drivers} />
-        </div>
-        <div className="home-pair">
-          <AlertsCard state={alerts} />
-          <TransactionsCard state={slots.transactions} />
-        </div>
+        </section>
+        <section className="exec-block" aria-label="Movement">
+          <h2 className="exec-block-label">Movement</h2>
+          <div className="home-split">
+            <HeadroomOverTimeCard state={slots.headroomOverTime} />
+            <DriversCard state={slots.drivers} />
+          </div>
+          <CapacitySummaryCard state={slots.capacitySummary} />
+        </section>
+        <section className="exec-block" aria-label="Record">
+          <h2 className="exec-block-label">Record</h2>
+          <div className="home-pair">
+            <AlertsCard state={alerts} />
+            <TransactionsCard state={slots.transactions} />
+          </div>
+        </section>
       </div>
       {authorityNote ? (
         <p className="home-authority-note" data-authority-note>

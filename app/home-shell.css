@@ -544,7 +544,34 @@ main:has(.app-shell) {
 
 .home-regions {
   display: grid;
-  gap: 14px;
+  gap: 28px;
+}
+
+.exec-block {
+  display: grid;
+  gap: 12px;
+}
+
+.exec-block-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.exec-block-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.exec-block-lead {
+  margin: 0;
+  max-width: 40rem;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 .home-kpis {

@@ -96,10 +96,10 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
 
   const northStarCard = (
     <Card>
-      <div className="card-title">North-Star authoritative capacity</div>
+      <div className="card-title">Provenance</div>
       <div className="card-subtitle">
-        Certified path uses APPROVED NS-4 snapshots + attributed 4C ledger + verified-execution REQUIRE. Legacy engine
-        figures below stay labeled separately.
+        What this number is allowed to rest on: an APPROVED snapshot, an attributed ledger, and a verified path. Legacy
+        engine figures stay labeled separately and are not the same claim.
       </div>
       <div className="row" style={{ marginTop: 8 }}>
         <div className="row-label">Status</div>
