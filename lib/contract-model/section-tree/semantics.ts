@@ -353,10 +353,12 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
   // Clause-caption headings: "(d) Mergers and Consolidations; Disposition of Assets. The Borrower will not ...".
   if (!out.length) for (const m of text.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
     const title = m[1]!.trim();
-    // Only an operative caption: the text after it prohibits or commands ("Merge or consolidate ...", "The Borrower
-    // shall not ..."), not a representation ("Schedule 5.2(i) sets forth ...").
-    const after = text.slice(m.index! + m[0].length, m.index! + m[0].length + 300);
-    if (!(NEG_RE.test(after.split(/(?<=[.;])\s/)[0] ?? "") || /^(?:Merge|Consolidate|Create|Incur|Make|Declare|Sell|Enter|Permit|Pay|Prepay|Transfer|Dispose|Maintain)\b/.test(after))) continue;
+    // Only a caption followed by an obligation: drop it only when the sentence after it carries no modal, negation or
+    // imperative (a representation, "Schedule 5.2(i) sets forth ...", or a default trigger, "Borrower fails to pay ...").
+    const after = text.slice(m.index! + m[0].length, m.index! + m[0].length + 400);
+    const first = after.split(/(?<=\.)\s+(?=[A-Z(])/)[0] ?? after;
+    if (!(/\b(?:shall|will|must|agrees?|covenants?)\b/i.test(first) || NEG_RE.test(first) || /\b(?:neither|nor)\b/i.test(first) ||
+      /(?:^|,\s*)(?:Merge|Consolidate|Create|Incur|Make|Declare|Sell|Enter|Permit|Pay|Prepay|Transfer|Dispose|Maintain|Wind|Liquidate|Dissolve|Engage|Suffer)\b/.test(first))) continue;
     if (title.split(/\s+/).length > 10 || NOT_COVENANT_TITLE.test(title)) continue;
     if (title.split(/[;,]|\band\b/).some((part) => { const hm = ev.heading.exec(part.trim()); return !!hm && hm.index <= 25; })) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
   }
