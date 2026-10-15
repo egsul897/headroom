@@ -535,7 +535,30 @@ export function treeText(raw: string): { text: string; basis: TextBasis } {
     .replace(/&(ldquo|rdquo|lsquo|rsquo|mdash|ndash|sect|quot|apos);/g, (_, n: string) =>
       ({ ldquo: "\u201c", rdquo: "\u201d", lsquo: "\u2018", rsquo: "\u2019", mdash: "\u2014", ndash: "\u2013", sect: "\u00a7", quot: '"', apos: "'" })[n] ?? " ",
     );
-  return { text: t.replace(/\u00a0/g, " "), basis };
+  return { text: stripPageFurniture(relineFlattened(t.replace(/\u00a0/g, " "))), basis };
+}
+
+/**
+ * Text extracted with almost no line breaks (whole pages joined into one line) hides every heading from the
+ * line-anchored heading finder. When lines average > 1500 chars, break before "ARTICLE <n>" and "SECTION <n.n> Title"
+ * that follow a sentence end, a closing quote/paren or a page number. Whitespace-only change.
+ */
+export function relineFlattened(t: string): string {
+  const lines = t.split("\n").length;
+  if (t.length / lines < 1500) return t;
+  return t.replace(/([.;:)\u201d"]|\s\d{1,3})(\s{1,6})(?=(?:ARTICLE|Article)\s+(?:[IVXLC]+|\d{1,2})\b\.?\s+[A-Z“"]|(?:SECTION|Section)\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"](?![^.]{0,20}\bof\b(?:\s+the)?\s+(?:Agreement|Indenture)))/g, "$1\n")
+    // An all-caps "SECTION 5.01 Title" right after an all-caps article caption ("ARTICLE 5 SUCCESSOR COMPANY SECTION 5.01").
+    .replace(/(\b[A-Z]{3,})(\s{1,6})(?=SECTION\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"])/g, "$1\n");
+}
+
+/**
+ * Page furniture: lines that are only a page number ("12", "- 12 -", "Page 12 of 90", "ii"). Replaced by empty lines.
+ * (Repeated short lines are NOT dropped: split headings repeat their titles in the TOC and body.)
+ */
+export function stripPageFurniture(t: string): string {
+  const PAGE = /^\s*(?:[-–—]?\s*\d{1,3}\s*[-–—]?|page\s+\d{1,3}(?:\s+of\s+\d{1,3})?|[ivxl]{1,6})\s*$/i;
+  const lines = t.split("\n");
+  return lines.map((l) => (PAGE.test(l) ? "" : l)).join("\n");
 }
 
 export function parseDocumentTree(raw: string): SectionTree & { text: string; basis: TextBasis } {
