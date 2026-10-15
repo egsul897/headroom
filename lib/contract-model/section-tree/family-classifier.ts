@@ -144,6 +144,23 @@ const SUBCAPTION = /^\s*(?:\([a-z0-9]+\)\s*)?((?:[A-Z][\w’'&/-]*|of|on|and|or|
 const REPRESENTATION_LEAD = /\b(?:represents\s+and\s+warrants|hereby\s+represents)\b|\b(?:has|have)\s+(?:heretofore\s+)?(?:furnished|delivered)\s+to\b[^.]{0,200}\b(?:balance\s+sheets?|financial\s+statements?)\b|\bpresent\s+fairly\b|\b(?:balance\s+sheets?|financial\s+statements?)\b[^.]{0,300}\b(?:fairly\s+present|present\s+fairly|were\s+prepared\s+in\s+accordance)\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:since|as\s+of)\b[^.]{0,120}\bthere\s+has\s+(?:not\s+)?been\b/i;
 /** Amendments that only add, amend or delete definitions. */
 const DEFINITION_AMENDMENT_LEAD = /^\s*(?:\([a-z0-9]+\)\s*)?(?:(?:The|Each\s+of\s+the)\s+)?(?:following\s+)?(?:definitions?|defined\s+terms?)\b[^.:]{0,200}?\b(?:is|are)\s+(?:hereby\s+)?(?:amended|added|deleted|restated|inserted)\b|^\s*(?:\([a-z0-9]+\)\s*)?Section\s+1\.0?1\b[^.:]{0,120}?\b(?:is|are)\s+hereby\s+amended\s+by\s+(?:adding|amending|deleting|inserting|replacing)\b[^.:]{0,80}?\bdefinitions?\b/i;
+/** Object nouns that can be conjoined in one prohibition ("any Investments or Restricted Payments"). */
+const OBJECT_NOUN: Partial<Record<CovenantFamily, string>> = {
+  INVESTMENTS: "Investments?",
+  RESTRICTED_PAYMENTS: "Restricted Payments?|dividends?|distributions?",
+  DEBT: "Indebtedness|Debt",
+  LIENS: "Liens?",
+  ASSET_SALES: "Asset Sales?|Asset Dispositions?|Dispositions?",
+  PREPAYMENTS: "(?:Junior|Subordinated) (?:Indebtedness|Debt)",
+};
+/** Both families' objects sit in one coordinated object of the sentence ("A or B", "A, B and C"). */
+export function coordinatedObjects(sentence: string, a: CovenantFamily, b: CovenantFamily): boolean {
+  const na = OBJECT_NOUN[a], nb = OBJECT_NOUN[b];
+  if (!na || !nb) return false;
+  const link = String.raw`\s*(?:\([^()]{0,80}\)\s*)?(?:,\s*(?:or\s+|and\s+)?|\s+(?:or|and|and/or)\s+)(?:any\s+|other\s+)?`;
+  const re = (x: string, y: string) => new RegExp(String.raw`\b(?:${x})\b${link}(?:[\w-]+\s+){0,2}?(?:${y})\b`, "i");
+  return re(na, nb).test(sentence) || re(nb, na).test(sentence);
+}
 
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
   // Small-caps headings extracted letter-split (each word's capital split from its small capitals, e.g. "L IMITATION ON L IENS"): rejoin for title matching only.
@@ -177,7 +194,8 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     const from = lead.slice(m?.index ?? 0);
     const sentence = from.slice(0, Math.min(450, (from.search(/\.\s/) + 1) || 450));
     if (IMPERATIVE.test(lead) || obligorBound(lead)) {
-      const hit = VERB_OBJECT.filter(([, re]) => re.test(sentence)).map(([f]) => f);
+      // A transfer of "all or substantially all" the assets is a fundamental change, not an asset-sale covenant.
+      const hit = VERB_OBJECT.filter(([f, re]) => { const x = re.exec(sentence); return !!x && !(f === "ASSET_SALES" && /\ball or substantially all\b/i.test(x[0])); }).map(([f]) => f);
       // "Lien securing Indebtedness" / "prepay Junior Indebtedness" name debt as the object's qualifier, not a debt covenant.
       // A titled section whose heading names no covenant family ("Use of Proceeds", "Post-Closing") needs more
       // than its lead-in: the lead-in object alone scores 2 there.
@@ -219,12 +237,21 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     }
     for (const [f, re] of DEFINED) if (re.test(lead)) add(f, 1, "defined-term");
   }
+  let leadSentence = "";
+  if (prohibitive) {
+    const ci = /(?:shall|will|may)\s+not\b/i.exec(lead), np = noPartyMatches(lead)[0];
+    const m = IMPERATIVE.test(lead) ? { index: 0 } : [ci, np].filter(Boolean).sort((a, b) => a!.index! - b!.index!)[0] ?? null;
+    const from = lead.slice(m?.index ?? 0);
+    leadSentence = from.slice(0, Math.min(450, (from.search(/\.\s/) + 1) || 450));
+  }
   let best: CovenantFamily | null = null, score = 0;
   for (const [f, s] of scores) if (s > score) { best = f; score = s; }
   // Need at least a heading+lead-in agreement or a strong lead-in alone.
   if (score < 3) best = null;
   // Secondary families need their own heading support ("Merger, Consolidation, or Sale of Assets").
-  const families = best ? [best, ...[...scores].filter(([f, s]) => f !== best && s >= 3 && evidence.includes(`${f}:heading`)).map(([f]) => f)] : [];
+  // Conjoined lead-in objects ("make any Investments or Restricted Payments") credit every family named.
+  const families = best ? [best, ...[...scores].filter(([f, s]) => f !== best && s >= 3 && (evidence.includes(`${f}:heading`)
+    || (evidence.includes(`${f}:lead-in`) && evidence.includes(`${best}:lead-in`) && coordinatedObjects(leadSentence, best!, f)))).map(([f]) => f)] : [];
   return { family: best, score, families, evidence };
 }
 

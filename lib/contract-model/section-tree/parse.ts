@@ -103,9 +103,71 @@ interface Heading {
 
 const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)[^\S\n]+([IVXLC]+|\d{1,2})\b\.?[^\S\n]*(?:\n[^\S\n]*)?([A-Z][A-Z ,;'’&\-]{2,100})?/g;
 const SECTION_RE =
-  /(^|\n|\s{2,}|\.\s+)[^\S\n]*(?:(?:SECTION|Section)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})(?:[^\S\n]*\.)?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z](?:[^.\n]|\n(?![^\S\n]*(?:\n|\(|\d))){1,160}?)[^\S\n]*[.:]/g;
+  /(^|\n|\s{2,}|\.\s+)[^\S\n]*(?:(?:SECTION|Sections?)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})(?:[^\S\n]*\.)?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z](?:[^.\n]|\n(?![^\S\n]*(?:\n|\(|\d))){1,160}?)[^\S\n]*[.:]/g;
 /** Amendment-style single-number sections: "SECTION 3. Conditions." (requires the word). */
 const SECTION_SINGLE_RE = /(^|\n)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2})\.(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z][^.\n]{1,120}?)[^\S\n]*[.:\n]/g;
+
+/**
+ * Bare single-number sections without the "Section" word: "5. Covenants . Holdings ...",
+ * "11.      Negative\nCovenants ." (title may wrap one line), "3.\nCovenants ." (number on its own line). Only accepted as a consecutive
+ * 1, 2, 3, ... chain of at least 3 (list items like "1. Principal amount of $..." are not
+ * title-cased and break no chain).
+ */
+const SECTION_BARE_RE = /(^|\n)[^\S\n]*(\d{1,2})\.(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)(\[[A-Za-z ]{1,30}\](?=[^\S\n]*\n)|(?:[A-Z][^.:\n]{0,100}?)(?:\n[^\S\n]*[A-Za-z][^.:\n]{0,60}?)?)[^\S\n]*[.:]?(?<=[.:\]])/g;
+const SMALL_WORDS = /^(of|and|or|the|to|in|on|for|by|with|a|an|as|at|upon|under|from|no\.?)$/i;
+function titleCased(t: string): boolean {
+  const w = t.replace(/[;,]/g, " ").split(/\s+/).filter(Boolean);
+  if (w.length === 0 || w.length > 10) return false;
+  if (/[\d$%]/.test(t)) return false;
+  if (/^\[[A-Za-z ]+\]$/.test(t)) return true;
+  if (!/^[A-Z“"(]/.test(w[0]!) || w.length > 8) return false;
+  const big = w.filter((x) => !SMALL_WORDS.test(x));
+  return big.filter((x) => /^[A-Z“"(]/.test(x)).length * 2 >= big.length;
+}
+function bareSingleHeadings(text: string): Heading[] {
+  const chain: Heading[] = [];
+  let next = 1;
+  for (const m of text.matchAll(SECTION_BARE_RE)) {
+    const n = Number(m[2]);
+    const title = m[3]!.replace(/\s+/g, " ").trim();
+    if (!titleCased(title)) continue;
+    if (n === 1 && next !== 1 && chain.length < 3) { chain.length = 0; next = 1; }
+    if (n !== next) continue;
+    const start = m.index! + m[1]!.length;
+    chain.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
+    next++;
+  }
+  return chain.length >= 3 ? chain : [];
+}
+
+/**
+ * Number-only heading lines ("11.2\nThe Issuer will not ..." / "1.1\nDefinitions\n"): facility agreements that put the
+ * clause number on its own line, with a title line without a period or no title at all. Used only when the regular
+ * scan found far fewer sections than such lines; kept only where the numbering runs forward (same major, next
+ * minor; or next major starting at 1), so tables and stray figures break no sequence.
+ */
+const NUMBER_LINE_RE = /(^|\n)[^\S\n]*(\d{1,2})\.(\d{1,2})\.?[^\S\n]*\n[^\S\n]*([A-Z][^\n]{0,400})/g;
+function numberLineHeadings(text: string, have: Heading[]): Heading[] {
+  const cands = [...text.matchAll(NUMBER_LINE_RE)];
+  const sections = have.filter((h) => h.kind === "SECTION").length;
+  if (cands.length < 10 || cands.length < 2 * Math.max(sections, 1)) return [];
+  const taken = new Set(have.map((h) => h.start));
+  const out: Heading[] = [];
+  let maj = 0, min = 0;
+  for (const m of cands) {
+    const a = Number(m[2]), b = Number(m[3]);
+    const forward = (a === maj && b === min + 1) || (a === maj + 1 && b === 1) || (a > maj && b === 1 && a - maj <= 3) || (a === 1 && b === 1);
+    if (!forward) continue;
+    maj = a; min = b;
+    const start = m.index! + m[1]!.length;
+    if (taken.has(start)) continue;
+    const line = m[4]!.trim();
+    const titled = line.split(/\s+/).length <= 10 && !/[.;:,]$/.test(line);
+    const lineStart = m.index! + m[0].length - m[4]!.length;
+    out.push({ kind: "SECTION", label: `${a}.${b}`, number: normalizeSectionNumber(`${a}.${b}`), title: titled ? line : null, start, headingEnd: titled ? lineStart + m[4]!.length : lineStart });
+  }
+  return out;
+}
 
 function findHeadings(text: string): Heading[] {
   const out: Heading[] = [];
@@ -161,8 +223,18 @@ function findHeadings(text: string): Heading[] {
       const start = m.index! + m[1]!.length;
       out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
     }
+    if (out.filter((h) => h.kind === "SECTION").length < 3) {
+      const taken = new Set(out.filter((h) => h.kind === "SECTION").map((h) => h.number));
+      for (const h of bareSingleHeadings(text)) if (!taken.has(h.number)) out.push(h);
+    }
   }
   out.sort((a, b) => a.start - b.start);
+  const extra = numberLineHeadings(text, out);
+  if (extra.length) {
+    const near = (h: Heading) => out.some((o) => o.kind === "SECTION" && Math.abs(o.start - h.start) < 40);
+    out.push(...extra.filter((h) => !near(h)));
+    out.sort((a, b) => a.start - b.start);
+  }
   return out;
 }
 

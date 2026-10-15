@@ -241,6 +241,8 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   // Prohibitions buried inside other clauses: inside a negative-covenant container (an ARTICLE/SECTION titled as
   // covenants but not affirmative, or holding at least two classified covenant sections), each obligor-bound
   // prohibition sentence whose lead-in object names a family is a covenant unit (the smallest section holding it).
+  // Subjects: "No <obligor> shall ..." (negated subject) or "<Obligor> shall/will not ..." (named obligor, e.g. a
+  // defined holding-company term) — isObligorProhibitionLead and the creditor-actor guard still decide.
   const buriedUnits: typeof units = [];
   const classified = new Set(units.filter((u) => famOf.get(u.id)?.length).map((u) => u.id));
   const containers = tree.nodes.filter((n) => (n.kind === "ARTICLE" || n.kind === "SECTION")
@@ -248,11 +250,23 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     && (/\bnegative covenants?\b|^\s*covenants?\b|\bcertain covenants\b|\bcovenants of\b/i.test(n.title ?? "")
       || (n.kind === "ARTICLE" && tree.nodes.filter((c) => c.parentId === n.id && classified.has(c.id)).length >= 2)
       || classified.has(n.id)));
+  // Term-sheet rows the tree cannot number: a caption line naming negative/restrictive covenants ("Restrictive
+  // covenants\n\n<prohibitions>") is a container up to the next caption-shaped line (short, no closing punctuation,
+  // followed by a blank line).
+  for (const m of text.matchAll(/(?:^|\n)[^\S\n]*((?:Negative|Restrictive)\s+[Cc]ovenants?)[^\S\n]*\n[^\S\n]*\n/g)) {
+    const at = m.index! + m[0].indexOf(m[1]!), headingEnd = m.index! + m[0].length;
+    if (sections.some((x) => x.start <= at && x.headingEnd > at)) continue;
+    const rest = text.slice(headingEnd, headingEnd + 30000);
+    const next = /\n\n[^\S\n]*[A-Z][\w’'&/ -]{1,60}[A-Za-z)][^\S\n]*\n[^\S\n]*\n(?![^\S\n]*[a-z])/.exec(rest);
+    const end = headingEnd + (next ? next.index : rest.length);
+    containers.push({ id: `row:${at}`, kind: "SECTION", label: m[1]!, sectionNumber: null, path: m[1]!.replace(/\s+/g, " "), title: m[1]!, level: null,
+      start: at, headingEnd, end, parentId: null, childIds: [], depth: 1, status: "OK", issues: [] } as TreeNode);
+  }
   for (const c of containers) {
     const body = text.slice(c.headingEnd, Math.min(c.end, c.headingEnd + 200000));
-    for (const m of body.matchAll(/(?:^|[.;:]\s+|\n\s*)((?:\([a-zA-Z0-9]{1,4}\)\s*)?(?:The|No|Neither|None of|Each)\s+[A-Z][^.;]{0,160}?\b(?:shall|will|may)\s+not\b[^.;]{0,400})/g)) {
+    for (const m of body.matchAll(/(?:^|[.;:]\s+|\n\s*)(?:[\x95\u2022\u25aa\u00b7]\s*)?((?:\([a-zA-Z0-9]{1,4}\)\s*)?(?:(?:No|Neither|None of)\s+[A-Z][^.;]{0,160}?\b(?:shall|will|may)\b|(?:(?:The|Each)\s+[A-Z][^.;]{0,160}?|[A-Z][\w’'-]*(?:\s+(?:[A-Z][\w’'-]*|of|any|its|and))*,?)\s+(?:shall|will|may)\s+not\b)(?:(?![^\S\n]*(?<!:[^\S\n]*)\n[^\S\n]*\n)[^.;]){0,400})/g)) {
       const sent = m[1]!, at = c.headingEnd + m.index! + (m[0].length - sent.length);
-      if (!isObligorProhibitionLead(sent) || /\b(?:Trustee|Agent|Lenders?|Holders?|Secured Part(?:y|ies)|Purchasers?)\b/.test(sent.slice(0, 60))) continue;
+      if (!isObligorProhibitionLead(sent) || /\bdeemed\b/i.test(sent.slice(0, 200)) || /\b(?:Trustee|Agent|Lenders?|Holders?|Secured Part(?:y|ies)|Purchasers?)\b/.test(sent.slice(0, 60))) continue;
       const v = classifyCovenantFamily({ title: null, parentTitle: null, leadIn: sent, covenantContext: true });
       // "all or substantially all" is a fundamental change, a sale-leaseback its own covenant, and a sentence about
       // dealings with Affiliates the affiliate covenant only.
@@ -356,7 +370,7 @@ function restrictedPaymentItemFamilies(body: string): Set<string> {
     const it = m[1]!;
     if (/^\s*(?:dividends|distributions|payments?|any\s+\w+\s+(?:made|paid))\b/i.test(it)) continue; // an exception limb, not a restricted act
     if (/^\s*(?:directly or indirectly,?\s*)?(?:purchase|repurchase|redeem|defease|retire|prepay|make any (?:principal )?payment on)\b[^;]{0,300}\b(?:subordinated|junior)\b[^;]{0,60}\b(?:obligations|indebtedness|debt|notes)\b/i.test(it)) out.add("PREPAYMENTS");
-    if (/^\s*(?:directly or indirectly,?\s*)?make\s+any\s+(?:Restricted\s+)?Investment\b/i.test(it)) out.add("INVESTMENTS");
+    if (/^\s*(?:directly or indirectly,?\s*)?make\s+any\s+(?:Restricted\s+)?Investments?\b/i.test(it)) out.add("INVESTMENTS");
   }
   return out;
 }
@@ -391,7 +405,8 @@ function laterProhibitionFamilies(body: string): Set<string> {
   const stop = body.search(/(?:^|\n|[.;]\s+)(?:SECTION|Section|ARTICLE|Article)\s+[\dIVXLC]+\.?\s+[A-Z]/);
   if (stop > 0) body = body.slice(0, stop);
   for (const m of body.matchAll(/(?:^|[.;]\s+)((?:The|No|Neither)\s+[A-Z][\w-]*(?:\s+[\w-]+){0,4}?\s+(?:will|shall)\s+not\b[^.;]{0,400})/g)) {
-    const sent = m[1]!;
+    // Parenthetical carve-outs ("(other than a Restricted Investment)") name no restricted object.
+    const sent = m[1]!.replace(/\([^()]{0,200}\)/g, (x) => " ".repeat(x.length));
     for (const [f, re] of LATER_OBJECT) {
       const om = re.exec(sent);
       if (!om || om.index > 220) continue;
