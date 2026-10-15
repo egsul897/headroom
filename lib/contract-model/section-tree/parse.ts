@@ -130,6 +130,17 @@ function findHeadings(text: string): Heading[] {
     const start = m.index! + lead.length;
     out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
   }
+  // Stacked headings: the number alone on its line and the title alone on the next ("8.01.\nLiens\n\nCreate, incur ..."),
+  // with no period after the title (the inline pattern above needs one).
+  const existing = out.filter((h) => h.kind === "SECTION");
+  for (const m of text.matchAll(/(^|\n)[^\S\n]*(?:(?:SECTION|Section)[^\S\n]+)?(\d{1,2}\.\d{1,3})\.?[^\S\n]*\n[^\S\n]*([A-Z][^\n.]{1,100}?)[^\S\n]*\.?[^\S\n]*(?=\n)/g)) {
+    const start = m.index! + m[1]!.length;
+    // Already found inline (possibly with a different lead offset or a wrapped title): keep the inline heading.
+    if (existing.some((h) => Math.abs(h.start - start) < 40)) continue;
+    const title = m[3]!.replace(/\s+/g, " ").trim();
+    if (title.split(" ").length > 14 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
+    out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
+  }
   // Single-number sections only when the document has no dotted section numbering.
   if (out.filter((h) => h.kind === "SECTION").length < 3) {
     for (const m of text.matchAll(SECTION_SINGLE_RE)) {
