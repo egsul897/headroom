@@ -152,7 +152,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   // operative unit.
   const sections = tree.nodes.filter((n) => n.kind === "SECTION" || (n.kind === "ARTICLE" && !tree.nodes.some((c) => c.kind === "SECTION" && c.parentId === n.id)));
   const famOf = new Map<string, readonly string[]>();
-  const leadOf = (s: (typeof sections)[number]) => text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 700));
+  const leadOf = (s: (typeof sections)[number]) => text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 2000));
   const prohib = new Map(sections.map((s) => [s.id, isObligorProhibitionLead(leadOf(s))]));
   for (const [i, s] of sections.entries()) {
     const parent = s.parentId ? tree.byId.get(s.parentId) : undefined;
@@ -162,10 +162,23 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     const v = am
       ? classifyCovenantFamily({ title: am.title, parentTitle: null, leadIn: am.lead, covenantContext: true })
       : classifyCovenantFamily({ title: s.title, parentTitle: parent?.title ?? null, leadIn: leadOf(s), covenantContext: sib(i - 1) || sib(i + 1) });
-    famOf.set(s.id, v.families);
+    // Restated articles/sections quoted later in the body ("(g) Article IX of the Credit Agreement is hereby amended and
+    // restated in its entirety to read as follows: From and after ..."): classify each quoted text too.
+    const fams = new Set(v.families);
+    if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
+    famOf.set(s.id, [...fams]);
+  }
+  // Restatements in text no section covers (an amendment with no numbered sections) belong to the document root.
+  const root = tree.nodes.find((n) => n.kind === "ROOT");
+  const units = [...sections];
+  if (root) {
+    const covered = (i: number) => sections.some((s) => s.start <= i && s.end > i);
+    const rootFams = new Set<string>();
+    for (const q of restatedTexts(text, covered)) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) rootFams.add(f);
+    if (rootFams.size) { famOf.set(root.id, [...rootFams]); units.push(root); }
   }
   return CHECKLIST_FAMILIES.map((family) => {
-    const hits = sections.filter((s) => famOf.get(s.id)?.includes(family));
+    const hits = units.filter((s) => famOf.get(s.id)?.includes(family));
     if (hits.length === 0) {
       const ev = familyEvidence(text, family);
       const absent = ev.length === 0;
@@ -208,6 +221,20 @@ function amendedText(lead: string): { title: string; lead: string } | null {
   const h = /^\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([A-Z][^.\n]{2,80})\.\s*/i.exec(rest);
   if (!h) return null;
   return { title: h[1]!.trim(), lead: rest.slice(h[0].length) };
+}
+
+/** Every "amended (and restated) in its entirety to read as follows:" instruction in a body, with its quoted text. */
+function restatedTexts(body: string, skip?: (offset: number) => boolean): { title: string | null; lead: string }[] {
+  const out: { title: string | null; lead: string }[] = [];
+  const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?[^.:]{0,120}?\bamended(?: and restated)?(?: in (?:its|their) entirety)? to read as follows:\s*/gi;
+  for (const m of body.matchAll(re)) {
+    if (out.length >= 50) break;
+    if (skip?.(m.index!)) continue;
+    const rest = body.slice(m.index! + m[0].length, m.index! + m[0].length + 2000).replace(/^[\s“”"'‘\u0080-\u009f]+/, "");
+    const h = /^(?:(?:section\s+)?\d{1,2}\.\d{1,3}\.?|ARTICLE\s+[IVXLC\d]+)\s+([A-Z][^.\n]{2,80})[.\n]\s*/i.exec(rest);
+    out.push(h ? { title: h[1]!.trim(), lead: rest.slice(h[0].length) } : { title: null, lead: rest });
+  }
+  return out;
 }
 
 function isDesc(tree: SectionTree, n: TreeNode, anc: TreeNode): boolean {

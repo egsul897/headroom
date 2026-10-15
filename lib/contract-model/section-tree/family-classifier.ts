@@ -76,12 +76,31 @@ const DEFINED: Array<[CovenantFamily, RegExp]> = [
  * article-imperative. A section sits in a covenant run when an adjacent sibling section is one too.
  */
 export function isObligorProhibitionLead(leadIn: string): boolean {
-  const lead = leadIn.slice(0, 700);
+  const lead = operativeWindow(leadIn).slice(0, 700);
   return IMPERATIVE.test(lead) || (PROHIBITION.test(lead) && obligorBound(lead));
 }
 
+/**
+ * Reading window: 700 chars from the operative sentence. A survival preamble ("From and after the Effective Date,
+ * X hereby agrees, that, so long as any Loan remains outstanding ..., that X will not ...") can run past 700 chars;
+ * when the lead-in opens with one, read from the clause after its closing "that" (searched within 2000 chars).
+ */
+export function operativeWindow(leadIn: string): string {
+  const head = leadIn.slice(0, 2000);
+  if (/^\s*(?:\([a-z0-9]+\)\s*)?(?:from and after|so long as|until|at all times)\b/i.test(head) || /^\s*[^.;]{0,200}\bhereby (?:covenants?|agrees?)\b/i.test(head)) {
+    const op = /\b(?:shall|will)\s+(?:not\s+)?(?:permit|maintain|cause|suffer|create|incur|make|declare|pay|enter|merge|sell|furnish|deliver)\b/i.exec(head.slice(100));
+    if (op) {
+      const at = op.index + 100;
+      const thats = [...head.slice(0, at).matchAll(/,?\s*that[,:]?\s+/gi)];
+      const cut = thats.length ? thats[thats.length - 1]!.index! + thats[thats.length - 1]![0].length : 0;
+      if (cut > 0) return head.slice(cut);
+    }
+  }
+  return leadIn;
+}
+
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
-  const lead = args.leadIn.slice(0, 700);
+  const lead = operativeWindow(args.leadIn).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
   // The ratio subject is read from the operative test verb, past any "so long as any Loan remains outstanding ...,
   // that" survival preamble.
