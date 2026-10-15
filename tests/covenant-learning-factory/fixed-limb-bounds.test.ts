@@ -42,3 +42,11 @@ describe("sum-of-limbs lower bound", () => {
     expect(sumLowerBound("the sum of (a) $25,000,000, plus (b) 100% of Net Cash Proceeds, minus (c) the aggregate amount of Investments made")).toBeNull();
   });
 });
+
+describe("fixed-limb bounds apply to caps only", () => {
+  it("a limb of a larger sum or a minimum is not bounded", () => {
+    expect(one("(D) the greater of $40.0 million and 5.0% of the Issuer’s Consolidated Total Assets").capBound).toBeUndefined();
+    expect(one("any such request shall be in a minimum amount of the lesser of (x) $5,000,000 and (y) the entire amount of any New Loan Commitment").capBound).toBeUndefined();
+    expect(one("(1) at least the lesser of (a) 50% of the aggregate principal amount of the Notes then outstanding or (b) $600 million").capBound).toBeUndefined();
+  });
+});

@@ -411,6 +411,13 @@ export function extremumLimbs(text: string, which: "greater" | "lesser"): Array<
  * smallest fixed limb. Every limb must be read; the unknown limbs are named as missing. All limbs fixed → exact.
  */
 function fixedLimbBound(text: string, which: "greater" | "lesser", missing: string[]): BasketPartial | null {
+  // Only a cap: the extreme must be what an amount may not exceed ("not to exceed the greater of …"), not a limb of
+  // a larger sum ("plus (D) the greater of …") or a floor ("a minimum amount of the lesser of …", "at least the lesser of").
+  const t = norm(text);
+  const at = t.search(new RegExp(`\\b${which}\\s+of\\b`, "i"));
+  const before = t.slice(Math.max(0, at - 120), at);
+  if (!/\b(?:not\s+(?:to\s+)?exceed|(?:shall|does|do|will|would)\s+not\s+exceed|not\s+in\s+excess\s+of|up\s+to|not\s+(?:more|greater)\s+than|no\s+(?:more|greater)\s+than|exceeding)\b[^;]{0,60}$/i.test(before)) return null;
+  if (/\b(?:minimum|at\s+least|not\s+less\s+than)\b[^;]{0,40}$/i.test(before)) return null;
   const limbs = extremumLimbs(text, which);
   if (!limbs) return null;
   const fixed = limbs.filter((l) => l.usd != null).map((l) => BigInt(l.usd!));
