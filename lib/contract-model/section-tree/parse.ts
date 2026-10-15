@@ -108,11 +108,11 @@ const SECTION_SINGLE_RE = /(^|\n)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2})\.(
 
 /**
  * Bare single-number sections without the "Section" word: "5. Covenants . Holdings ...",
- * "11.      Negative\nCovenants ." (title may wrap one line). Only accepted as a consecutive
+ * "11.      Negative\nCovenants ." (title may wrap one line), "3.\nCovenants ." (number on its own line). Only accepted as a consecutive
  * 1, 2, 3, ... chain of at least 3 (list items like "1. Principal amount of $..." are not
  * title-cased and break no chain).
  */
-const SECTION_BARE_RE = /(^|\n)[^\S\n]*(\d{1,2})\.[^\S\n]+(\[[A-Za-z ]{1,30}\](?=[^\S\n]*\n)|(?:[A-Z][^.:\n]{0,100}?)(?:\n[^\S\n]*[A-Za-z][^.:\n]{0,60}?)?)[^\S\n]*[.:]?(?<=[.:\]])/g;
+const SECTION_BARE_RE = /(^|\n)[^\S\n]*(\d{1,2})\.(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)(\[[A-Za-z ]{1,30}\](?=[^\S\n]*\n)|(?:[A-Z][^.:\n]{0,100}?)(?:\n[^\S\n]*[A-Za-z][^.:\n]{0,60}?)?)[^\S\n]*[.:]?(?<=[.:\]])/g;
 const SMALL_WORDS = /^(of|and|or|the|to|in|on|for|by|with|a|an|as|at|upon|under|from|no\.?)$/i;
 function titleCased(t: string): boolean {
   const w = t.replace(/[;,]/g, " ").split(/\s+/).filter(Boolean);

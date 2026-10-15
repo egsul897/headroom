@@ -46,3 +46,12 @@ describe("number-only heading lines", () => {
     expect(t.nodes.filter((n) => n.kind === "SECTION").map((n) => n.path)).toEqual(["1.1", "1.2", "1.3"]);
   });
 });
+
+describe("bare sections with the number on its own line", () => {
+  it("'3.\\nCovenants of Company .' chains like '3. Covenants .'", () => {
+    const p = (n: number, t: string) => `${n}.\n${t} . The Company agrees to observe this provision at all times while this Note remains outstanding.\n\n`;
+    const doc = `PROMISSORY NOTE\n\n${p(1, "Optional Prepayment")}${p(2, "Interest")}3.\nCovenants of Company .\n\n(i)\nLiquidation, Dissolution . The Company will not liquidate or dissolve, consolidate with, or merge into or with, any other corporation.\n\n${p(4, "Events of Default")}`;
+    expect(secs(doc)).toEqual(["1", "2", "3", "4"]);
+    expect(st(doc, "FUNDAMENTAL_CHANGES").sectionPaths).toEqual(["3"]);
+  });
+});
