@@ -1,0 +1,226 @@
+/**
+ * Line-item evaluation of an agreement's Consolidated EBITDA / Interest Expense definition against XBRL facts.
+ * General rules only (no per-issuer logic, no AI):
+ *   - The definition is split into enumerated line items; each gets a sign from the group it sits in
+ *     ("plus … to the extent deducted" → add-back, "minus / less … to the extent increasing" → deduction).
+ *   - Items map to us-gaap concepts by their words (D&A, ShareBasedCompensation, impairments, restructuring, loss on
+ *     extinguishment, amortization of intangibles, interest income, capitalized interest …).
+ *   - EXACT: every item maps fully. LOWER_BOUND: every unmapped (or partly mapped / capped) item is an add-back that
+ *     can only raise the total. NEEDS_INPUT: any unmapped deduction, any two-sided item (gains or losses, pro forma
+ *     acquisition / disposition adjustments, net amounts that can turn negative), or an undefined / adjusted base.
+ */
+import type { IssuerFinancials } from "./companyfacts";
+
+export type DefinitionKind = "EBITDA" | "INTEREST";
+export type ItemSign = "+" | "-" | "?";
+export interface DefinitionItem { label: string; text: string; sign: ItemSign; coverage: "FULL" | "PARTIAL" | "NONE" | "HEADER"; concepts: Array<{ concept: string; value: string }>; value: string; note: string }
+export interface DefinitionEvaluation { kind: DefinitionKind; term: string; status: "EXACT" | "LOWER_BOUND" | "NEEDS_INPUT"; value: string | null; base: { concept: string; value: string } | null; items: DefinitionItem[]; missing: string[]; reason: string; periodEnd: string | null }
+
+const ENT: Record<string, string> = { ldquo: '"', rdquo: '"', quot: '"', nbsp: " ", amp: "&", rsquo: "'", lsquo: "'" };
+export function plainText(text: string): string {
+  return text.replace(/<[^>]+>/g, " ")
+    .replace(/&#(x[0-9a-f]+|\d+);/gi, (_, n: string) => { const c = /^x/i.test(n) ? parseInt(n.slice(1), 16) : parseInt(n, 10); return c === 147 || c === 148 || c === 0x201c || c === 0x201d ? '"' : c === 160 ? " " : String.fromCharCode(c); })
+    .replace(/&([a-z]+);/gi, (m, n: string) => ENT[n.toLowerCase()] ?? m).replace(/[“”\u0093\u0094]/g, '"').replace(/\s+/g, " ");
+}
+
+export function findDefinitionText(text: string, term: string): string | null {
+  const t = plainText(text);
+  const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+  const m = new RegExp(`"\\s*${esc}\\s*"\\s*(?:shall\\s+)?(?:mean|means|shall\\s+have\\s+the\\s+meaning)\\b`, "i").exec(t);
+  if (!m) return null;
+  const rest = t.slice(m.index, m.index + 8000);
+  const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(rest.slice(m[0].length));
+  return rest.slice(0, next ? m[0].length + next.index : 3000).trim();
+}
+
+const item = (fin: IssuerFinancials, concept: string): bigint | null => {
+  const v = fin.values.find((x) => x.metric === "item" && x.concept === concept);
+  return v ? BigInt(v.value) : null;
+};
+const firstItem = (fin: IssuerFinancials, cs: string[]) => { for (const c of cs) { const v = item(fin, c); if (v != null) return { concept: c, value: v }; } return null; };
+const DA = ["DepreciationDepletionAndAmortization", "DepreciationAndAmortization", "DepreciationAmortizationAndAccretionNet"];
+const IE = ["InterestExpense", "InterestExpenseNonoperating", "InterestExpenseDebt", "InterestAndDebtExpense"];
+const II = ["InvestmentIncomeInterest", "InterestIncomeOther"];
+
+/** Enumerators "(a)", "(ii)", "(B)", "(3)" that start a line item (not "clause (k)" / "Section 7.01(b)" references). */
+const ENUM = /\((?:[ivxl]{1,5}|[a-z]{1,2}|[A-Z]{1,2}|\d{1,2})\)(?=\s)/g;
+
+function segments(body: string): Array<{ label: string; text: string; lead: string }> {
+  const out: Array<{ label: string; text: string; lead: string }> = [];
+  const hits: Array<{ at: number; label: string }> = [];
+  for (const m of body.matchAll(ENUM)) {
+    const before = body.slice(Math.max(0, m.index! - 60), m.index!);
+    if (/(?:\b(?:clauses?|Sections?|Articles?|paragraphs?)\s*(?:\d[\d.]*)?\s*(?:\([^)]{1,5}\)\s*(?:,|and|or|through|to)?\s*)*|\d)$/i.test(before)) continue;
+    hits.push({ at: m.index!, label: m[0] });
+  }
+  const lead = body.slice(0, hits[0]?.at ?? body.length);
+  out.push({ label: "(lead)", text: lead, lead: "" });
+  hits.forEach((h, i) => out.push({ label: h.label, text: body.slice(h.at + h.label.length, hits[i + 1]?.at ?? body.length).trim(), lead: "" }));
+  return out;
+}
+
+/** Group-level sign markers outside parentheses in a segment, in order. */
+function markers(text: string): ItemSign[] {
+  let depth = 0, flat = "";
+  for (const ch of text) { if (ch === "(") depth++; else if (ch === ")") depth = Math.max(0, depth - 1); else if (depth === 0) flat += ch; }
+  const out: ItemSign[] = [];
+  for (const m of flat.matchAll(/\b(plus|minus|less|reduced\s+by|deducting|subtracting|to\s+the\s+extent\s+(?:deducted|decreasing|reducing|included\s+as\s+an?\s+expense)|to\s+the\s+extent\s+(?:increasing|added|included\s+in\s+(?:arriving|determining|calculating))|excluding|net\s+of|including)\b/gi)) {
+    const w = m[1]!.toLowerCase();
+    out.push(/^(plus|including)|deducted|decreasing|reducing|as an? expense/.test(w) ? "+" : "-");
+  }
+  return out;
+}
+
+const GAIN_LIKE = /\b(?:gains?|income|credits?|benefits?|refunds?|reversals?)\b/i;
+const COST_LIKE = /\b(?:expenses?|loss(?:es)?|charges?|costs?|fees?|deductions?|write-?(?:offs?|downs?)|impairments?|amortization|depreciation|depletion|taxes|tax\s+expense|provision|compensation|savings|synerg\w*|premiums?|commissions?|interest)\b/i;
+const TWO_SIDED = /\bpro\s+forma\b(?![^.;]{0,80}\b(?:cost\s+savings|synerg|run[- ]rate))|\b(?:acquired|disposed|acquisition|disposition)\b[^.;]{0,120}\b(?:as\s+if|beginning\s+of)\b|\bgains?\s+(?:or|and|\/)\s+loss|\bloss(?:es)?\s+(?:or|and|\/)\s+gains?|\bincome\s+\(?(?:or|and)\s+loss|\(loss\)|\bforeign\s+(?:currency|exchange)|\bmark[- ]to[- ]market|\bhedg/i;
+const CAPPED = /\bnot\s+(?:to\s+)?exceed|\bshall\s+not\s+exceed|\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not|up\s+to)|\bcapped\b|\bmaximum\s+of\b/i;
+const QUALIFIED = /\bother\s+than\b|\bexcluding\b|\bexcept\b|\bsolely\b|\bonly\s+to\s+the\s+extent\b|\bcash\s+portion|\bnet\s+of\b/i;
+const HEADER = /^(?:,|\s)*(?:without\s+duplication|to\s+the\s+extent|the\s+sum\s+of|in\s+each\s+case|plus|minus|less|and|for\s+such\s+period|of\s+such\s+Person|:|,|\s)+/i;
+
+interface MapResult { concepts: Array<{ concept: string; value: bigint }>; residueStop: RegExp[] }
+
+function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, depth: number): MapResult | "TWO_SIDED" | null {
+  const r: MapResult = { concepts: [], residueStop: [] };
+  const add = (c: { concept: string; value: bigint } | null, re: RegExp) => { if (c) { r.concepts.push(c); r.residueStop.push(re); } };
+  if (/\bextraordinary\b/i.test(t) && !/non-?recurring|unusual/i.test(t)) { r.concepts.push({ concept: "extraordinary items (eliminated from US GAAP by ASU 2015-01)", value: 0n }); r.residueStop.push(/extraordinary\s+(?:loss(?:es)?|items?|charges?)(?:\s+in\s+accordance\s+with\s+GAAP)?/gi); }
+  if (/interest/i.test(t) && !/interest\s+income/i.test(t.replace(/net\s+of\s+interest\s+income/i, ""))) {
+    const term = /"?((?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense)"?/.exec(t)?.[1];
+    if (term && /[A-Z]/.test(term[0]!) && depth < 2) {
+      const ev = evaluateDefinition("INTEREST", term, text, fin, depth + 1);
+      if (ev.status === "NEEDS_INPUT") return "TWO_SIDED";
+      add({ concept: `${term} (${ev.status})`, value: BigInt(ev.value!) }, /(?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense/gi);
+      if (ev.status === "LOWER_BOUND") r.residueStop.push(/^$/); // marker handled by caller via note
+      (r as MapResult & { lowerBound?: boolean }).lowerBound = ev.status === "LOWER_BOUND";
+    } else {
+      const ie = firstItem(fin, IE);
+      if (/net\s+of\s+interest\s+income/i.test(t)) {
+        const ii = firstItem(fin, II);
+        if (!ie || !ii) return "TWO_SIDED";
+        r.concepts.push(ie, { concept: ii.concept, value: -ii.value });
+        r.residueStop.push(/(?:consolidated\s+)?interest\s+expense|\(?net\s+of\s+interest\s+income\)?/gi);
+      } else add(ie, /(?:consolidated\s+)?(?:total\s+)?interest\s+(?:expense|charges)/gi);
+    }
+  }
+  if (/\btax(?:es)?\b/i.test(t) && !/tax\s+(?:credits?|benefits?|refunds?)/i.test(t)) add(firstItem(fin, ["IncomeTaxExpenseBenefit"]), /(?:consolidated\s+)?(?:provision\s+for\s+)?(?:income\s+)?tax(?:es)?(?:\s+expense)?(?:,?\s+to\s+the\s+extent\s+based\s+on\s+income\s+or\s+profits)?|based\s+on\s+income|profits?/gi);
+  const daAll = /depreciation/i.test(t);
+  const amortFinancing = /amortization\s+of\s+(?:deferred\s+)?(?:financing|debt|original\s+issue|OID|discount)/i.test(t);
+  if (daAll) add(firstItem(fin, DA), /(?:all\s+amounts\s+attributable\s+to\s+)?(?:depreciation|amortization|depletion)(?:,?\s+(?:and|or)\s+(?:depreciation|amortization|depletion))*(?:\s+expense)?/gi);
+  else if (/amortization/i.test(t) && !amortFinancing) add(firstItem(fin, /intangible/i.test(t) ? ["AmortizationOfIntangibleAssets"] : DA), /amortization(?:\s+expense)?(?:\s+of\s+(?:other\s+)?intangibles?(?:\s+assets)?)?/gi);
+  if (/(?:stock|equity|share)[- ]based\s+compensation|stock\s+options?|equity\s+awards?/i.test(t)) add(firstItem(fin, ["ShareBasedCompensation", "AllocatedShareBasedCompensationExpense"]), /(?:non-?cash\s+)?(?:expense\s+recorded\s+with\s+respect\s+to\s+)?(?:stock|equity|share)[- ]based\s+compensation(?:\s+expense)?|stock\s+options?(?:\s+or\s+other\s+equity-based\s+compensation)?|equity\s+awards?/gi);
+  if (/impairment/i.test(t)) {
+    if (/goodwill/i.test(t)) add(firstItem(fin, ["GoodwillImpairmentLoss"]), /(?:non-?cash\s+)?impairment(?:\s+loss(?:es)?)?(?:\s+of)?\s+goodwill/gi);
+    if (/intangible/i.test(t)) add(firstItem(fin, ["ImpairmentOfIntangibleAssetsExcludingGoodwill", "ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill"]), /(?:or\s+other\s+)?intangibles?(?:\s+assets)?/gi);
+    if (!/goodwill|intangible/i.test(t)) add(firstItem(fin, ["AssetImpairmentCharges"]), /(?:non-?cash\s+)?(?:asset\s+)?impairment(?:\s+charges?|\s+loss(?:es)?)?/gi);
+  }
+  if (/restructuring/i.test(t)) add(firstItem(fin, ["RestructuringCharges"]), /restructuring(?:\s+charges?|\s+costs?|\s+expenses?)?/gi);
+  if (/extinguishment|early\s+(?:retirement|repayment|redemption)\s+of\s+(?:debt|Indebtedness)/i.test(t)) {
+    const g = firstItem(fin, ["GainsLossesOnExtinguishmentOfDebt"]);
+    if (g) { r.concepts.push({ concept: `${g.concept} (losses only)`, value: g.value < 0n ? -g.value : 0n }); r.residueStop.push(/(?:the\s+amount\s+of\s+all\s+)?(?:expenses?|loss(?:es)?|charges?)\s+(?:associated\s+with|from|on|relating\s+to)\s+(?:the\s+)?(?:early\s+)?extinguishment\s+of\s+(?:Indebtedness|debt)/gi); }
+  }
+  return r.concepts.length ? r : null;
+}
+
+const STOP = /\b(?:the|a|an|of|and|or|any|all|such|its|their|in|for|to|on|with|by|from|that|this|each|case|period|amount|amounts|consolidated|person|borrower|parent|company|subsidiaries|subsidiary|group|restricted|required|taken|pursuant|gaap|accordance|recorded|respect|other|non-?cash|expense|expenses|charges?|losses?|attributable|which|was|were|is|be|been|deducted|determining|net|income|calculating|arriving|at|as|so|without|duplication|extent|solely|aggregate)\b/gi;
+
+export function evaluateDefinition(kind: DefinitionKind, term: string, text: string, fin: IssuerFinancials, depth = 0): DefinitionEvaluation {
+  const res = (status: DefinitionEvaluation["status"], reason: string, extra: Partial<DefinitionEvaluation> = {}): DefinitionEvaluation =>
+    ({ kind, term, status, value: null, base: null, items: [], missing: [], reason, periodEnd: fin.anchor ?? null, ...extra });
+  const def = findDefinitionText(text, term);
+  if (!def) return res("NEEDS_INPUT", `"${term}" is not defined in the agreement text`);
+  const body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*,?\s*/i, "").replace(/^(?:for|with\s+respect\s+to)\s+any\s+(?:period|Person)[^,]{0,120},\s*/i, "");
+  const segs = segments(body);
+  // "(i) EBIT, plus (ii) …": when the lead names no base, the first enumerated item is the base.
+  const baseRe = kind === "EBITDA" ? /net\s+income|\bEBIT\b|operating\s+income/i : /interest/i;
+  if (!baseRe.test(segs[0]!.text) && segs[1] && baseRe.test(segs[1].text)) { segs[0] = { ...segs[0]!, text: `${segs[0]!.text} ${segs[1].text}` }; segs.splice(1, 1); }
+  const lead = segs[0]!.text;
+
+  // ---- base ----
+  let base: { concept: string; value: bigint } | null = null;
+  const items: DefinitionItem[] = [];
+  if (kind === "EBITDA") {
+    const niTerm = /"?((?:Consolidated\s+)?(?:Adjusted\s+)?Net\s+Income)"?/i.exec(lead)?.[1];
+    const ebit = /\b(EBIT|Consolidated\s+EBIT|Consolidated\s+Operating\s+Income)\b/.exec(lead)?.[1];
+    if (niTerm) {
+      const capital = /^[A-Z]/.test(niTerm) && /[A-Z]/.test(niTerm.split(/\s+/).at(-1)![0]!);
+      if (capital) {
+        const ni = findDefinitionText(text, niTerm);
+        if (!ni) return res("NEEDS_INPUT", `base "${niTerm}" is not defined in this document`);
+        const niBody = ni.replace(/after\s+any\s+deduction\s+for\s+minority\s+interests[^)]*\)?/i, "");
+        const two = /equity\s+method|Unrestricted\s+Subsidiar|not\s+a\s+(?:Restricted\s+)?Subsidiary|cumulative\s+effect|\bgains?\b|non-?recurring|unusual|discontinued|pro\s+forma|acquired|disposed|excluded|exclude|dividends?\s+or\s+(?:similar\s+)?distributions/i.exec(niBody);
+        if (two) return res("NEEDS_INPUT", `base "${niTerm}" carries a two-sided adjustment ("${two[0]}") not derivable from filings`);
+      }
+      const v = firstItem(fin, ["NetIncomeLoss", "ProfitLoss"]);
+      if (!v) return res("NEEDS_INPUT", "no exact TTM net income in XBRL");
+      base = v;
+    } else if (ebit && depth < 2) {
+      const ev = evaluateDefinition("EBITDA", ebit, text, fin, depth + 1);
+      if (ev.status === "NEEDS_INPUT") return res("NEEDS_INPUT", `base "${ebit}": ${ev.reason}`);
+      base = { concept: `${ebit} (${ev.status})`, value: BigInt(ev.value!) };
+      if (ev.status === "LOWER_BOUND") items.push({ label: "(base)", text: ebit, sign: "+", coverage: "PARTIAL", concepts: [], value: "0", note: `base is a lower bound: ${ev.missing.join("; ")}` });
+    } else return res("NEEDS_INPUT", "definition does not start from net income or a defined EBIT");
+  } else {
+    if (!/interest/i.test(lead)) return res("NEEDS_INPUT", "interest definition has no interest-expense base");
+    const v = firstItem(fin, IE);
+    if (!v) return res("NEEDS_INPUT", "no exact TTM interest expense in XBRL");
+    base = v;
+    if (TWO_SIDED.test(lead)) return res("NEEDS_INPUT", "interest base carries a two-sided adjustment");
+    const paren = /\((?:excluding|other\s+than|net\s+of|less)\b[^)]*\)/i.exec(lead);
+    if (paren && !/interest\s+income/i.test(paren[0])) return res("NEEDS_INPUT", `interest base excludes an item not in XBRL: "${paren[0].slice(0, 100)}"`);
+    if (paren) { const ii = firstItem(fin, II); if (!ii) return res("NEEDS_INPUT", "net of interest income, but no XBRL interest income"); items.push({ label: "(net)", text: paren[0], sign: "-", coverage: "FULL", concepts: [{ concept: ii.concept, value: ii.value.toString() }], value: (-ii.value).toString(), note: "" }); }
+    if (/capitaliz/i.test(lead)) { const c = firstItem(fin, ["InterestCostsCapitalized"]); items.push({ label: "(cap)", text: "capitalized interest", sign: "+", coverage: c ? "FULL" : "NONE", concepts: c ? [{ concept: c.concept, value: c.value.toString() }] : [], value: (c?.value ?? 0n).toString(), note: "GAAP InterestExpense is net of capitalized interest" }); }
+  }
+
+  // ---- line items ----
+  let sign: ItemSign = "+";
+  for (const m of markers(lead)) sign = m;
+  if (kind === "EBITDA" && /\bincreas/i.test(lead) && !/\bdecreas|deducted/i.test(lead)) sign = "-";
+  const used = new Set<string>();
+  for (const s of segs.slice(1)) {
+    const t = s.text;
+    const groupSign = sign;
+    for (const m of markers(t)) sign = m;
+    if (/\bto\s+the\s+extent\s+(?:increasing|included\s+in)/i.test(t)) sign = "-";
+    const descr = t.replace(HEADER, "").trim();
+    if (descr.length < 3 || (!COST_LIKE.test(descr) && !GAIN_LIKE.test(descr) && HEADER.test(t))) { items.push({ label: s.label, text: t.slice(0, 160), sign: groupSign, coverage: "HEADER", concepts: [], value: "0", note: "group header" }); continue; }
+    const it: DefinitionItem = { label: s.label, text: t.slice(0, 240), sign: groupSign, coverage: "NONE", concepts: [], value: "0", note: "" };
+    items.push(it);
+    if (kind === "INTEREST") {
+      if (groupSign === "-") { if (/interest\s+income/i.test(t)) { const ii = firstItem(fin, II); if (ii) { it.coverage = "FULL"; it.concepts.push({ concept: ii.concept, value: ii.value.toString() }); it.value = (-ii.value).toString(); continue; } } it.note = "unmapped deduction"; continue; }
+      if (/amortization\s+of\s+(?:deferred\s+)?(?:financing|debt|original|discount)|non-?cash\s+interest|interest\s+component\s+of\s+(?:capital|finance)\s+lease/i.test(t)) { it.coverage = "FULL"; it.note = "already within GAAP interest expense"; continue; }
+      if (/capitaliz/i.test(t)) { const c = firstItem(fin, ["InterestCostsCapitalized"]); if (c) { it.coverage = "FULL"; it.concepts.push({ concept: c.concept, value: c.value.toString() }); it.value = c.value.toString(); } else it.note = "unmapped add (capitalized interest)"; continue; }
+      if (GAIN_LIKE.test(t) && !COST_LIKE.test(t)) { it.sign = "?"; it.note = "income-like item"; continue; }
+      it.note = "unmapped inclusion (raises interest expense)"; continue;
+    }
+    if (TWO_SIDED.test(t)) { it.sign = "?"; it.note = "two-sided adjustment"; continue; }
+    if (groupSign === "+" && GAIN_LIKE.test(t.replace(/net\s+of\s+interest\s+income|based\s+on\s+income|income\s+tax(?:es)?|determining\s+(?:Consolidated\s+)?Net\s+Income|(?:Consolidated\s+)?Net\s+Income|decreasing\s+\w+\s+Net\s+Income/gi, "")) && !COST_LIKE.test(t)) { it.sign = "?"; it.note = "income/gain-like item in an add-back group"; continue; }
+    if (groupSign === "-") { it.note = "unmapped deduction"; continue; }
+    const mapped = CAPPED.test(t) ? null : mapEbitdaItem(t, fin, text, depth);
+    if (mapped === "TWO_SIDED") { it.sign = "?"; it.note = "referenced definition not derivable (could lower the total)"; continue; }
+    if (!mapped) { it.note = CAPPED.test(t) ? "capped add-back (counted as 0 in the lower bound)" : COST_LIKE.test(t) ? "unmapped add-back" : "unclassified item"; if (!COST_LIKE.test(t)) it.sign = "?"; continue; }
+    const fresh = mapped.concepts.filter((c) => !used.has(c.concept));
+    fresh.forEach((c) => used.add(c.concept));
+    it.concepts = fresh.map((c) => ({ concept: c.concept, value: c.value.toString() }));
+    it.value = fresh.reduce((a, c) => a + c.value, 0n).toString();
+    let residue = t; for (const re of mapped.residueStop) residue = residue.replace(re, " ");
+    residue = residue.replace(/\([^)]*\)/g, " ").replace(STOP, " ").replace(/[^A-Za-z]+/g, " ").trim();
+    const lb = (mapped as MapResult & { lowerBound?: boolean }).lowerBound;
+    it.coverage = residue.length <= 12 && !QUALIFIED.test(t) && !lb ? "FULL" : "PARTIAL";
+    if (QUALIFIED.test(t)) { it.coverage = "PARTIAL"; it.concepts = []; it.value = "0"; it.note = "qualified add-back (other than / solely …): mapped amount may overstate, counted as 0"; continue; }
+    it.note = it.coverage === "FULL" ? "mapped" : `partly mapped; unmapped remainder "${residue.slice(0, 60)}"`;
+  }
+  // D&A total subsumes its components; restructuring and asset impairments may overlap → take the larger.
+  const all = items.flatMap((i) => i.concepts.map((c) => ({ i, c })));
+  if (all.some((x) => DA.includes(x.c.concept))) for (const x of all) if (["AmortizationOfIntangibleAssets", "Depreciation"].includes(x.c.concept)) { x.i.value = (BigInt(x.i.value) - BigInt(x.c.value)).toString(); x.i.note += "; within D&A total"; x.c.value = "0"; }
+  const rs = all.find((x) => x.c.concept === "RestructuringCharges"), ai = all.find((x) => x.c.concept === "AssetImpairmentCharges");
+  let overlap = false;
+  if (rs && ai) { const small = BigInt(rs.c.value) < BigInt(ai.c.value) ? rs : ai; small.i.value = (BigInt(small.i.value) - BigInt(small.c.value)).toString(); small.i.note += "; may overlap restructuring/impairment, larger kept"; small.c.value = "0"; small.i.coverage = "PARTIAL"; overlap = true; }
+
+  const bad = items.filter((i) => i.sign === "?" || (i.sign === "-" && i.coverage !== "FULL"));
+  const short = (i: DefinitionItem) => `${i.label} ${i.text.replace(HEADER, "").slice(0, 70)}`;
+  if (bad.length) return res("NEEDS_INPUT", `items that could lower the total are not in XBRL: ${bad.slice(0, 3).map((i) => `${short(i)} [${i.note}]`).join("; ")}`, { items, base: base && { concept: base.concept, value: base.value.toString() }, missing: bad.map(short) });
+  const total = items.reduce((a, i) => a + BigInt(i.value), base!.value);
+  const open = items.filter((i) => i.coverage === "NONE" || i.coverage === "PARTIAL");
+  const status = open.length || overlap ? "LOWER_BOUND" : "EXACT";
+  return res(status, status === "EXACT" ? "every line item maps to XBRL" : `${open.length} add-back item(s) not (fully) in XBRL; total is a lower bound`, { value: total.toString(), items, base: { concept: base!.concept, value: base!.value.toString() }, missing: open.map(short) });
+}

@@ -12,6 +12,7 @@
 import { metricInput, money, rationalFromString } from "../../contract-model/definition-execution";
 import type { MetricInput } from "../../contract-model/runtime/types";
 import type { FinancialValue, HeadroomInput, IssuerFinancials } from "./companyfacts";
+import { evaluateDefinition, type DefinitionEvaluation } from "./definition-items";
 
 export const XBRL_SOURCE_PREFIX = "sec-xbrl:";
 
@@ -74,13 +75,25 @@ export function findDefinition(text: string, term: string): string | null {
   return rest.slice(0, next ? m[0].length + next.index : 2500).trim();
 }
 
-export interface BindDecision { metricName: string; family: Family | null; status: "BOUND" | "NEEDS_INPUT"; reason: string; definition: string | null; input?: FinancialValue }
-
-const EBITDA_COMPONENTS = /\b(?:net\s+income|interest(?:\s+expense)?|(?:income\s+)?tax(?:es)?|depreciation|amortization|plus|without\s+duplication|to\s+the\s+extent\s+deducted|in\s+determining|for\s+such\s+period|consolidated|borrower|subsidiar|sum|of|and|the|its|in|each|case|calculating|such|period|any|without|duplication|deducted|determining|expense|provision|for|federal|state|local|foreign)\b/gi;
+export interface BindDecision {
+  metricName: string; family: Family | null;
+  /** LOWER_BOUND: bound at a value the true metric is at least (only unmapped add-backs remain). */
+  status: "BOUND" | "LOWER_BOUND" | "NEEDS_INPUT";
+  reason: string; definition: string | null; input?: FinancialValue;
+  evaluation?: DefinitionEvaluation;
+}
 
 export function decide(metricName: string, text: string, fin: IssuerFinancials): BindDecision {
   const family = familyOfMetricName(metricName);
   if (!family) return { metricName, family, status: "NEEDS_INPUT", reason: "not a filing-derivable metric family", definition: null };
+  if (family === "EBITDA" || family === "INTEREST") {
+    // Line-item evaluation of the agreement's own definition (definition-items.ts).
+    const ev = evaluateDefinition(family, metricName, text, fin);
+    if (ev.status === "NEEDS_INPUT" || ev.value == null) return { metricName, family, status: "NEEDS_INPUT", reason: ev.reason, definition: null, evaluation: ev };
+    const input: FinancialValue = { metric: family === "EBITDA" ? "reportedEbitdaBase" : "interestExpense", concept: `parsed definition: ${metricName}`, periodType: "TTM", periodStart: null, periodEnd: ev.periodEnd ?? "", value: ev.value, unit: "USD",
+      accession: [...new Set(fin.values.filter((v) => v.metric === "item").map((v) => v.accession))].slice(0, 1).join(""), form: "", filed: "", derivation: `${ev.status}: ${ev.base?.concept} ${ev.base?.value} ${ev.items.filter((i) => i.value !== "0").map((i) => `${BigInt(i.value) < 0n ? "-" : "+"} ${i.concepts.map((c) => c.concept).join("/")} ${i.value.replace("-", "")}`).join(" ")}` };
+    return { metricName, family, status: ev.status === "EXACT" ? "BOUND" : "LOWER_BOUND", reason: ev.reason + (ev.missing.length ? `; not in XBRL: ${ev.missing.slice(0, 4).join(" | ")}` : ""), definition: null, input, evaluation: ev };
+  }
   const input = fin.values.find((v) => v.metric === FAMILY_INPUT[family]);
   const def = findDefinition(text, metricName);
   if (!input) return { metricName, family, status: "NEEDS_INPUT", reason: `XBRL ${FAMILY_INPUT[family]} not derivable: ${fin.missing.find((m) => m.metric === FAMILY_INPUT[family])?.reason ?? "absent"}`, definition: def };
@@ -92,20 +105,15 @@ export function decide(metricName: string, text: string, fin: IssuerFinancials):
   }
   const body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*/i, "");
   const hits = NON_DERIVABLE.filter(([, re]) => re.test(body)).map(([label]) => label);
-  if (family === "ASSETS" && !/total\s+assets/i.test(body)) hits.push("definition is not balance-sheet total assets");
-  if (family === "EBITDA") {
-    const residue = body.replace(/\([a-z]{1,4}\)|[(),;:.\-]/gi, " ").replace(EBITDA_COMPONENTS, " ").replace(/\s+/g, " ").trim();
-    if (residue.length > 0) hits.push(`definition items beyond net income + interest + taxes + D&A ("${residue.slice(0, 60)}")`);
-    const niTerm = /"?((?:Consolidated\s+)?Net\s+Income)"?/i.exec(body)?.[1];
-    const niDef = niTerm ? findDefinition(text, niTerm) : null;
-    if (niDef && NON_DERIVABLE.some(([, re]) => re.test(niDef))) hits.push(`${niTerm} is itself adjusted`);
-  }
+  // "total assets", or "the assets and properties of X … determined on a consolidated basis in accordance with GAAP".
+  const assetsLike = /total\s+assets/i.test(body) || (/\bassets\s+and\s+properties\b/i.test(body) && /in\s+accordance\s+with\s+GAAP/i.test(body));
+  if (family === "ASSETS" && !assetsLike) hits.push("definition is not balance-sheet total assets");
   if (hits.length) return { metricName, family, status: "NEEDS_INPUT", reason: `definition has non-derivable items: ${[...new Set(hits)].join("; ")}`, definition: def.slice(0, 400) };
   return { metricName, family, status: "BOUND", reason: "definition is derivable from the XBRL concept", definition: def.slice(0, 400), input };
 }
 
 export function toMetricInput(d: BindDecision): MetricInput | null {
-  if (d.status !== "BOUND" || !d.input) return null;
+  if (d.status === "NEEDS_INPUT" || !d.input) return null;
   const v = d.input;
   return metricInput(d.metricName, money(rationalFromString(v.value), "USD", { exprId: null, inputKeys: [v.metric], rawSource: v.value }),
     { source: `${XBRL_SOURCE_PREFIX}${v.accession}`, sourceVersion: v.filed, note: `${v.derivation} [${v.concept}, ${v.periodType} ending ${v.periodEnd}]` },

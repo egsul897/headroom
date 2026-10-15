@@ -44,7 +44,7 @@ export interface FamilySummary {
   outcome: FamilyOutcome;
   checklistStatus: ChecklistItem["status"] | "N/A";
   sectionPaths: string[];
-  baskets: Array<{ sectionRef: string; category: string; capStatus: string; cap: string | null; currency: string | null; missingInputs: string[]; citation: string }>;
+  baskets: Array<{ sectionRef: string; category: string; capStatus: string; cap: string | null; /** AT_LEAST: cap computed from a lower-bound metric (capacity is at least `cap`). */ capBound?: "AT_LEAST"; currency: string | null; missingInputs: string[]; citation: string }>;
   needsInputs: string[];
 }
 
@@ -61,7 +61,13 @@ export interface AgreementPipelineResult {
   computedBaskets: ComputedBasket[];
   computedRatios: ComputedRatio[];
   /** Present when filing financials were supplied: one decision per requested metric name. */
-  xbrl?: { cik: string; decisions: BindDecision[]; before: { basketsComputed: string[]; ratiosComputed: string[] } };
+  xbrl?: {
+    cik: string; decisions: BindDecision[]; before: { basketsComputed: string[]; ratiosComputed: string[] };
+    /** Results computed from a LOWER_BOUND metric: AT_LEAST (cap / ratio ≥ value) or AT_MOST (ratio ≤ value). */
+    bounds: Array<{ stableKey: string; kind: "AT_LEAST" | "AT_MOST"; metric: string; missing: string[] }>;
+    /** Computed only because of a lower bound in a direction that cannot be bounded: reverted to NEEDS_INPUT. */
+    reverted: string[];
+  };
   families: FamilySummary[];
   stats: { nodes: number; sections: number; clauses: number; xrefs: number; xrefResolved: number; baskets: number };
 }
@@ -133,7 +139,31 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     const decisions = requested.map((name) => decide(name, tree.text, args.financials!)).filter((d) => d.family);
     const externalMetrics = decisions.map(toMetricInput).filter((m): m is NonNullable<typeof m> => !!m);
     if (externalMetrics.length) result = runCovenantComputation(pkg, { rules, createdAt: "1970-01-01T00:00:00.000Z", externalMetrics });
-    xbrl = { cik: args.financials.cik, decisions, before };
+    // Lower-bound metrics: a cap that rises with the metric (greater-of / % of / builder) is "at least"; a ratio is
+    // bounded only when exactly one operand is a lower bound; anything else that used one goes back to NEEDS_INPUT.
+    const lb = decisions.filter((d) => d.status === "LOWER_BOUND");
+    const bounds: NonNullable<AgreementPipelineResult["xbrl"]>["bounds"] = [];
+    const reverted: string[] = [];
+    const uses = (s: string, m: string) => new RegExp(`\\b${m.replace(/\s+/g, "\\s+")}\\b`, "i").test(s);
+    if (lb.length) {
+      for (const b of result.baskets) {
+        if (b.capStatus !== "COMPUTED") continue;
+        const d = lb.find((x) => uses(b.citationExcerpt, x.metricName));
+        if (!d) continue;
+        if (["GROWER_GREATER_OF", "PCT_OF_METRIC", "BUILDER_AVAILABLE_AMOUNT"].includes(b.category)) bounds.push({ stableKey: b.stableKey, kind: "AT_LEAST", metric: d.metricName, missing: d.evaluation?.missing ?? [] });
+        else { b.capStatus = "NEEDS_INPUT"; b.capCanonical = null; b.missingInputs = [...b.missingInputs, `${d.metricName} (only a lower bound is derivable)`]; reverted.push(b.stableKey); }
+      }
+      for (const r of result.ratios) {
+        if (r.status !== "COMPUTED") continue;
+        const num = lb.filter((x) => r.numerator.some((n) => n.metricName.toLowerCase() === x.metricName.toLowerCase()));
+        const den = lb.filter((x) => r.denominator.some((n) => n.metricName.toLowerCase() === x.metricName.toLowerCase()));
+        if (!num.length && !den.length) continue;
+        if (num.length && den.length) { r.status = "NEEDS_INPUT"; r.canonical = null; reverted.push(r.stableKey); continue; }
+        const d = (num[0] ?? den[0])!;
+        bounds.push({ stableKey: r.stableKey, kind: num.length ? "AT_LEAST" : "AT_MOST", metric: d.metricName, missing: d.evaluation?.missing ?? [] });
+      }
+    }
+    xbrl = { cik: args.financials.cik, decisions, before, bounds, reverted };
   }
   const computed = result.baskets;
 
@@ -159,6 +189,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
         currency: b.capCurrency,
         missingInputs: defaulted ? ["cap not located in clause text"] : b.missingInputs,
         citation: b.citationExcerpt.slice(0, 240),
+        ...(xbrl?.bounds.some((x) => x.stableKey === b.stableKey && x.kind === "AT_LEAST") ? { capBound: "AT_LEAST" as const } : {}),
       };
     });
     const needsInputs = [...new Set([...(ck?.needsInputs ?? []), ...baskets.flatMap((b) => b.missingInputs)])];

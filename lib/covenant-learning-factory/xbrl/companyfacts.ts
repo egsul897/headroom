@@ -14,7 +14,19 @@ export interface CompanyFacts { cik: number; entityName: string; facts: Record<s
 
 export type HeadroomInput =
   | "netIncome" | "interestExpense" | "incomeTaxes" | "depreciationAmortization" | "operatingIncome" | "revenue"
-  | "totalAssets" | "cash" | "totalDebt" | "longTermDebtNoncurrent" | "debtCurrent" | "reportedEbitdaBase";
+  | "totalAssets" | "cash" | "totalDebt" | "longTermDebtNoncurrent" | "debtCurrent" | "reportedEbitdaBase"
+  /** A definition line-item concept (concept column names it). */
+  | "item";
+
+/** us-gaap concepts that EBITDA / interest-expense definition line items can map to. */
+export const ITEM_CONCEPTS = [
+  "ShareBasedCompensation", "AllocatedShareBasedCompensationExpense", "AssetImpairmentCharges", "GoodwillImpairmentLoss",
+  "ImpairmentOfIntangibleAssetsExcludingGoodwill", "ImpairmentOfIntangibleAssetsIndefinitelivedExcludingGoodwill", "RestructuringCharges",
+  "GainsLossesOnExtinguishmentOfDebt", "AmortizationOfIntangibleAssets", "Depreciation", "InvestmentIncomeInterest", "InterestIncomeOther",
+  "InterestCostsCapitalized", "AmortizationOfDebtDiscountPremium", "AmortizationOfFinancingCosts", "InterestExpense", "InterestExpenseNonoperating",
+  "InterestExpenseDebt", "InterestAndDebtExpense", "IncomeTaxExpenseBenefit", "NetIncomeLoss", "ProfitLoss", "OperatingIncomeLoss",
+  "DepreciationDepletionAndAmortization", "DepreciationAndAmortization", "DepreciationAmortizationAndAccretionNet",
+] as const;
 
 export interface FinancialValue {
   metric: HeadroomInput;
@@ -33,7 +45,7 @@ export interface FinancialValue {
   derivation: string;
 }
 
-export interface IssuerFinancials { cik: string; entityName: string; values: FinancialValue[]; missing: Array<{ metric: HeadroomInput; reason: string }> }
+export interface IssuerFinancials { cik: string; entityName: string; values: FinancialValue[]; missing: Array<{ metric: HeadroomInput; reason: string }>; anchor?: string | null; asOf?: string | null }
 
 const FLOW_CONCEPTS: Array<[HeadroomInput, string[]]> = [
   ["netIncome", ["NetIncomeLoss", "ProfitLoss"]],
@@ -48,11 +60,13 @@ const FORMS = /^10-[KQ](?:\/A)?$/;
 const DAY = 86_400_000;
 const days = (a: string, b: string) => (Date.parse(b) - Date.parse(a)) / DAY;
 
-function usd(cf: CompanyFacts, concept: string): XbrlFact[] {
+function usd(cf: CompanyFacts, concept: string, asOf?: string | null): XbrlFact[] {
   const rows = cf.facts["us-gaap"]?.[concept]?.units?.USD ?? [];
   const best = new Map<string, XbrlFact>();
   for (const f of rows) {
     if (!FORMS.test(f.form) || !Number.isFinite(f.val)) continue;
+    // Test-date matching: only periods ended, and filings made, on or before the test date.
+    if (asOf && (f.end > asOf || f.filed > asOf)) continue;
     const k = `${f.start ?? ""}|${f.end}`;
     const prev = best.get(k);
     if (!prev || f.filed > prev.filed) best.set(k, f);
@@ -89,11 +103,12 @@ function latestEnd(facts: XbrlFact[], instant: boolean): string | null {
 
 const lastFiled = (parts: XbrlFact[]) => parts.reduce((a, b) => (b.filed > a.filed ? b : a));
 
-export function extractFinancials(cf: CompanyFacts, cikPadded: string): IssuerFinancials {
+export function extractFinancials(cf: CompanyFacts, cikPadded: string, opts: { asOf?: string | null } = {}): IssuerFinancials {
+  const U = (c: string) => usd(cf, c, opts.asOf);
   const values: FinancialValue[] = [];
   const missing: IssuerFinancials["missing"] = [];
   // One TTM end for every flow: the latest duration end of net income (else revenue), so the EBITDA base is coherent.
-  const anchor = latestEnd(usd(cf, "NetIncomeLoss"), false) ?? latestEnd(usd(cf, "ProfitLoss"), false) ?? latestEnd(usd(cf, "Revenues"), false);
+  const anchor = latestEnd(U("NetIncomeLoss"), false) ?? latestEnd(U("ProfitLoss"), false) ?? latestEnd(U("Revenues"), false);
   const flow = new Map<HeadroomInput, FinancialValue>();
   const pushFlow = (metric: HeadroomInput, concept: string, t: NonNullable<ReturnType<typeof ttmAt>>) => {
     const lf = lastFiled(t.parts);
@@ -106,17 +121,22 @@ export function extractFinancials(cf: CompanyFacts, cikPadded: string): IssuerFi
     if (!anchor) { missing.push({ metric, reason: "no 10-K/10-Q duration facts" }); continue; }
     let done = false;
     for (const c of concepts) {
-      const t = ttmAt(usd(cf, c), anchor);
+      const t = ttmAt(U(c), anchor);
       if (t) { pushFlow(metric, c, t); done = true; break; }
     }
     if (!done && metric === "depreciationAmortization") {
-      const [d, a] = DA_COMPOSITE.map((c) => ttmAt(usd(cf, c), anchor));
+      const [d, a] = DA_COMPOSITE.map((c) => ttmAt(U(c), anchor));
       if (d && a && d.start === a.start) {
         pushFlow(metric, DA_COMPOSITE.join("+"), { ...d, value: d.value + a.value, parts: [...d.parts, ...a.parts].slice(0, 3), derivation: `(${d.derivation}) + (${a.derivation})` });
         done = true;
       }
     }
     if (!done) missing.push({ metric, reason: `no exact TTM at ${anchor} for ${concepts.join(" / ")}` });
+  }
+  // Definition line items (EBITDA / interest add-backs and deductions), same TTM end, stored for traceability.
+  if (anchor) for (const c of ITEM_CONCEPTS) {
+    const t = ttmAt(U(c), anchor);
+    if (t) pushFlow("item", c, t);
   }
   // Reported EBITDA base: labeled, never a contract metric.
   const parts = (["netIncome", "interestExpense", "incomeTaxes", "depreciationAmortization"] as const).map((m) => flow.get(m));
@@ -128,9 +148,9 @@ export function extractFinancials(cf: CompanyFacts, cikPadded: string): IssuerFi
   } else missing.push({ metric: "reportedEbitdaBase", reason: "a component (net income / interest / taxes / D&A) has no exact TTM" });
 
   // Balance sheet at the latest Assets instant; every component must share that instant.
-  const assets = usd(cf, "Assets");
+  const assets = U("Assets");
   const bs = latestEnd(assets, true);
-  const inst = (concept: string) => (bs ? usd(cf, concept).find((f) => !f.start && f.end === bs) : undefined);
+  const inst = (concept: string) => (bs ? U(concept).find((f) => !f.start && f.end === bs) : undefined);
   const pushInst = (metric: HeadroomInput, concept: string, fs: XbrlFact[]) => {
     const lf = lastFiled(fs);
     values.push({ metric, concept, periodType: "INSTANT", periodStart: null, periodEnd: bs!, value: fs.reduce((s, f) => s + big(f.val), 0n).toString(), unit: "USD",
@@ -149,7 +169,7 @@ export function extractFinancials(cf: CompanyFacts, cikPadded: string): IssuerFi
   if (nonCur && cur) pushInst("totalDebt", `${nonCur.c}+${cur.c}`, [nonCur.f, cur.f]);
   else if (ltdTotal) pushInst("totalDebt", "LongTermDebt", [ltdTotal]);
   else missing.push({ metric: "totalDebt", reason: `no LongTermDebt, or noncurrent + current pair, at ${bs}` });
-  return { cik: cikPadded, entityName: cf.entityName, values, missing };
+  return { cik: cikPadded, entityName: cf.entityName, values, missing, anchor, asOf: opts.asOf ?? null };
 }
 
 // ---------------- fetch ----------------
@@ -178,7 +198,7 @@ export const pad10 = (cik: string | number) => String(cik).replace(/\D/g, "").pa
 export const companyFactsUrl = (cik: string) => `https://data.sec.gov/api/xbrl/companyfacts/CIK${pad10(cik)}.json`;
 export const companyConceptUrl = (cik: string, concept: string) => `https://data.sec.gov/api/xbrl/companyconcept/CIK${pad10(cik)}/us-gaap/${concept}.json`;
 
-export async function fetchIssuerFinancials(cik: string, fetchImpl?: typeof fetch): Promise<IssuerFinancials | null> {
+export async function fetchIssuerFinancials(cik: string, fetchImpl?: typeof fetch, asOf?: string | null): Promise<IssuerFinancials | null> {
   const cf = await fetchSecJson<CompanyFacts>(companyFactsUrl(cik), fetchImpl);
-  return cf ? extractFinancials(cf, pad10(cik)) : null;
+  return cf ? extractFinancials(cf, pad10(cik), { asOf }) : null;
 }

@@ -11,6 +11,7 @@ const flows = (ni: [number, number, number]) => [f("2025-01-01", "2025-12-31", n
 const FACTS = cf({
   NetIncomeLoss: flows([100, 60, 40]), InterestExpense: flows([10, 6, 5]), IncomeTaxExpenseBenefit: flows([30, 20, 10]), DepreciationAndAmortization: flows([50, 30, 25]),
   Assets: [f(undefined, "2026-06-30", 2_000_000_000), f(undefined, "2025-12-31", 1_900_000_000, "10-K")],
+  ShareBasedCompensation: flows([8, 5, 4]),
   LongTermDebtNoncurrent: [f(undefined, "2026-06-30", 500)], LongTermDebtCurrent: [f(undefined, "2026-06-30", 25)],
 });
 
@@ -36,7 +37,33 @@ describe("definition-gated binding", () => {
     const text = `"Consolidated EBITDA" means Consolidated Net Income plus interest expense, taxes, depreciation and amortization, plus non-cash charges and restructuring costs. "Lien" means any lien.`;
     const d = decide("Consolidated EBITDA", text, fin);
     expect(d.status).toBe("NEEDS_INPUT");
-    expect(d.reason).toMatch(/non-cash/);
+    expect(d.reason).toMatch(/Consolidated Net Income/);
+  });
+  const E = (items: string) => `"Consolidated EBITDA" means, for any period, net income for such period plus, without duplication and to the extent deducted in determining such net income, (a) interest expense, (b) provision for income taxes, (c) depreciation and amortization, (d) stock-based compensation expense${items}. "Lien" means any lien.`;
+  it("every add-back maps → EXACT EBITDA = NI + interest + tax + D&A + SBC", () => {
+    const d = decide("Consolidated EBITDA", E(""), fin);
+    expect(d.status).toBe("BOUND");
+    expect(d.input?.value).toBe(String(120 + 11 + 40 + 55 + 9));
+  });
+  it("an unmapped add-back → LOWER_BOUND with the item named", () => {
+    const d = decide("Consolidated EBITDA", E(" and (e) fees and expenses incurred in connection with the Transactions"), fin);
+    expect(d.status).toBe("LOWER_BOUND");
+    expect(d.input?.value).toBe(String(120 + 11 + 40 + 55 + 9));
+    expect(d.evaluation?.missing.join(" ")).toMatch(/Transactions/);
+  });
+  it("an unmapped deduction → NEEDS_INPUT", () => {
+    expect(decide("Consolidated EBITDA", E(", minus (e) non-cash gains increasing net income"), fin).status).toBe("NEEDS_INPUT");
+  });
+  it("gains or losses (two-sided) → NEEDS_INPUT", () => {
+    expect(decide("Consolidated EBITDA", E(" and (e) any gains or losses on sales of assets"), fin).status).toBe("NEEDS_INPUT");
+  });
+  it("assets and properties in accordance with GAAP = total assets", () => {
+    expect(decide("Consolidated Total Assets", `"Consolidated Total Assets" means, as of any date, the assets and properties of the Company and its Subsidiaries determined on a consolidated basis in accordance with GAAP. "X" means y.`, fin).status).toBe("BOUND");
+  });
+  it("test date: only periods ended and filed on or before it", () => {
+    const f2 = extractFinancials(FACTS, "0000000001", { asOf: "2026-03-31" });
+    expect(f2.values.find((v) => v.metric === "netIncome")?.periodType).toBe("FY");
+    expect(f2.values.find((v) => v.metric === "totalAssets")?.periodEnd).toBe("2025-12-31");
   });
   it("undefined EBITDA stays NEEDS_INPUT", () => expect(decide("Consolidated EBITDA", "no definitions", fin).status).toBe("NEEDS_INPUT"));
   it("plain total assets definition binds; tangible / pro forma do not", () => {

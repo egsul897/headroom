@@ -15,6 +15,8 @@ import { createNeonHttpsExecutor, getNeonTransportMode, redactConnectionSecrets 
 const SB = new URL("./scoreboard/", import.meta.url);
 const out = process.argv[2] ?? "xbrl-run.json";
 const only = process.env.XBRL_ONLY ? new Set(process.env.XBRL_ONLY.split(",")) : null;
+/** Covenant test date: latest fiscal period ended AND filed on or before it (default: today). */
+const TEST_DATE = process.env.XBRL_TEST_DATE ?? new Date().toISOString().slice(0, 10);
 const cacheDir = process.env.XBRL_CACHE ?? "/tmp/xbrl-cache";
 mkdirSync(cacheDir, { recursive: true });
 
@@ -28,7 +30,7 @@ async function financials(cik: string): Promise<IssuerFinancials | null> {
   let cf: CompanyFacts | null;
   if (existsSync(f)) cf = JSON.parse(readFileSync(f, "utf8"));
   else { cf = await fetchSecJson<CompanyFacts>(companyFactsUrl(cik)); if (cf) writeFileSync(f, JSON.stringify(cf)); }
-  return cf ? extractFinancials(cf, pad10(cik)) : null;
+  return cf ? extractFinancials(cf, pad10(cik), { asOf: TEST_DATE }) : null;
 }
 
 async function main() {
@@ -53,7 +55,7 @@ async function main() {
   console.error(JSON.stringify({ issuers: ciks.length, withFacts: [...fin.values()].filter(Boolean).length, neon }));
 
   const rows: unknown[] = [];
-  const tot = { docs: 0, basketsBefore: 0, basketsAfter: 0, ratiosBefore: 0, ratiosAfter: 0, basketsNeedsToComputed: 0, ratiosNeedsToComputed: 0, decisions: { BOUND: 0, NEEDS_INPUT: 0 } as Record<string, number> };
+  const tot = { docs: 0, basketsBefore: 0, basketsAfter: 0, ratiosBefore: 0, ratiosAfter: 0, basketsNeedsToComputed: 0, ratiosNeedsToComputed: 0, basketsAtLeast: 0, ratiosBounded: 0, reverted: 0, testDate: TEST_DATE, decisions: { BOUND: 0, LOWER_BOUND: 0, NEEDS_INPUT: 0 } as Record<string, number> };
   for (const d of docs) {
     const f = fin.get(d.source.issuerCik!);
     if (!f) continue;
@@ -63,12 +65,14 @@ async function main() {
     const b1 = r.computedBaskets.filter((b) => b.capStatus === "COMPUTED"), r1 = r.computedRatios.filter((x) => x.status === "COMPUTED");
     const newB = b1.filter((b) => !b0.has(b.stableKey)), newR = r1.filter((x) => !r0.has(x.stableKey));
     tot.docs++; tot.basketsBefore += b0.size; tot.basketsAfter += b1.length; tot.ratiosBefore += r0.size; tot.ratiosAfter += r1.length;
-    tot.basketsNeedsToComputed += newB.length; tot.ratiosNeedsToComputed += newR.length;
+    const bk = new Map(r.xbrl!.bounds.map((x) => [x.stableKey, x]));
+    tot.basketsNeedsToComputed += newB.filter((b) => !bk.has(b.stableKey)).length; tot.ratiosNeedsToComputed += newR.filter((x) => !bk.has(x.stableKey)).length;
+    tot.basketsAtLeast += newB.filter((b) => bk.has(b.stableKey)).length; tot.ratiosBounded += newR.filter((x) => bk.has(x.stableKey)).length; tot.reverted += r.xbrl!.reverted.length;
     for (const x of r.xbrl!.decisions) tot.decisions[x.status] = (tot.decisions[x.status] ?? 0) + 1;
     rows.push({ sourceId: d.source.sourceId, cik: f.cik, entity: f.entityName, split: heldout.has(d.source.sourceId) ? "HELDOUT" : "DEV",
-      decisions: r.xbrl!.decisions.map((x) => ({ name: x.metricName, status: x.status, reason: x.reason, value: x.input?.value, period: x.input ? `${x.input.periodType} ${x.input.periodEnd}` : null, accession: x.input?.accession, definition: x.definition?.slice(0, 200) })),
-      newBaskets: newB.map((b) => ({ sectionRef: b.sectionRef, family: b.covenantFamily, category: b.category, cap: b.capCanonical, currency: b.capCurrency, note: b.note, excerpt: b.citationExcerpt.slice(0, 400) })),
-      newRatios: newR.map((x) => ({ ratio: x.displayName, value: x.canonical, numerator: x.numerator, denominator: x.denominator })) });
+      decisions: r.xbrl!.decisions.map((x) => ({ name: x.metricName, status: x.status, reason: x.reason, value: x.input?.value, period: x.input ? `${x.input.periodType} ${x.input.periodEnd}` : null, accession: x.input?.accession, definition: x.definition?.slice(0, 200), derivation: x.input?.derivation, items: x.evaluation?.items.map((i) => `${i.sign}${i.label} ${i.coverage} ${i.value} ${i.concepts.map((c) => c.concept).join('/')} | ${i.note} | ${i.text.slice(0, 90)}`) })),
+      newBaskets: newB.map((b) => ({ bound: bk.get(b.stableKey)?.kind ?? 'EXACT', missing: bk.get(b.stableKey)?.missing, sectionRef: b.sectionRef, family: b.covenantFamily, category: b.category, cap: b.capCanonical, currency: b.capCurrency, note: b.note, excerpt: b.citationExcerpt.slice(0, 400) })),
+      newRatios: newR.map((x) => ({ bound: bk.get(x.stableKey)?.kind ?? 'EXACT', ratio: x.displayName, value: x.canonical, numerator: x.numerator, denominator: x.denominator })) });
   }
   writeFileSync(out, JSON.stringify({ totals: tot, neon, financials: [...fin.values()].filter(Boolean), rows }, null, 1));
   console.log(JSON.stringify({ totals: tot, neon }, null, 1));
