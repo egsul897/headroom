@@ -168,6 +168,12 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
   if (/\bshall\s+not\b|\bwill\s+not\b|\bmay\s+not\b/i.test(hay) && !/\bexcept\b/i.test(hay)) {
     return "GENERAL_PROHIBITION";
   }
+  // "Neither X nor Y shall ..." is a prohibition with no "not" — a common
+  // drafting form in credit agreements and indentures alike. Without this
+  // it falls through to OBLIGATION, inverting the covenant's meaning.
+  if (/\bneither\b.{0,120}\bshall\b/i.test(hay)) {
+    return "GENERAL_PROHIBITION";
+  }
   // A bare letter-clause "(a) …" is not by itself a permission — EoD
   // triggers, definitions, and administrative lists all use letter clauses.
   // Require permission language for the letter-clause branch.

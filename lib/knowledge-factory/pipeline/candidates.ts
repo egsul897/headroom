@@ -10,8 +10,9 @@ import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRe
 
 /** A dotted-leader page-number line, e.g. "Section 6.01 Limitation on Indebtedness .... 45". */
 const TOC_LEADER_LINE = /^\s*(?:Section|§)\s*[\dA-Za-z.()-]+\s+.+\.{3,}\s*\d+\s*$/m;
-/** A bare TOC entry: "6.05 Limitation on Liens 58" — ref + title + page number, no "Section", no dotted leader. */
-const TOC_BARE_ENTRY = /^\s*\d+(?:\.\d+)+(?:\([a-z0-9]+\))?\s+[A-Za-z].*\S\s+\d+\s*$/;
+/** A bare TOC entry: "6.05 Limitation on Liens 58" or "VII. Limitation on Indebtedness 35" — ref + title + page number, no "Section", no dotted leader. */
+const TOC_BARE_ENTRY =
+  /^\s*(?:\d+(?:\.\d+)+(?:\([a-z0-9]+\))?|M{0,4}(?:C[MD]|D?C{0,3})(?:X[CL]|L?X{0,3})(?:I[XV]|V?I{0,3})\.?)\s+[A-Za-z].*\S\s+\d+\s*$/;
 const OPERATIVE_VERB = /\b(?:shall|will|must|may)\b/i;
 
 /**
