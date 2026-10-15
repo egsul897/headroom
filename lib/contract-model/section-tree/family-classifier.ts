@@ -190,6 +190,12 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   // is not a maintenance test, whatever ratios it mentions.
   const representation = /\b(?:present(?:s|ed)? fairly|fairly present|has (?:heretofore )?(?:furnished|delivered)|have been prepared in accordance|there has (?:not )?been no)\b/i.test(lead.slice(0, 400));
   if (ratio && !representation) add("FINANCIAL_RATIOS", titledOffFamilyAll ? 2 : 3, "ratio-test");
+  if (ratio) add("FINANCIAL_RATIOS", titledOffFamilyAll ? 2 : 3, "ratio-test");
+  // Affiliate covenants worded as an obligation: the obligor shall conduct its affiliate transactions on arm's-length
+  // (no less favorable) terms. Needs an affiliate heading and the obligor as subject.
+  if (!prohibitive && args.title && /\btransactions?\s+with\s+(?:affiliates|related)/i.test(args.title)
+    && /^\W*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+)?(?:Borrower|Company|Issuer|Parent|Holdings|Obligors?|Loan Parties|Credit Parties|Guarantors?)\b[^.]{0,120}\b(?:shall|will)\b[^.]{0,80}\b(?:conduct|enter into|effect|consummate|engage in)\b[^.]{0,200}\btransactions?\b[^.]{0,80}\bAffiliates?\b[^.]{0,700}\b(?:favorable|arm[’']?s[- ]length)/i.test(lead.slice(0, 1200)))
+    add("AFFILIATE_TRANSACTIONS", 3, "obligation-form");
   // A leading clause caption ("(a) Mergers, Consolidations, Disposal of Assets, Etc. The Borrower will not ...") is
   // heading text of the section too.
   const caption = /^\s*\([a-z]\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s/.exec(args.leadIn)?.[1] ?? "";
