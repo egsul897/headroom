@@ -137,6 +137,7 @@ export type CertificateProposalIssueCode =
   | "BASKET_LINE_MUST_NOT_BE_SNAPSHOT_FACT"
   | "INVALID_PROPOSAL_STATUS"
   | "VALUE_TYPE_MISMATCH"
+  | "FACT_COMPANY_MISMATCH"
   | "STORE_WRITE_REJECTED";
 
 export interface CertificateProposalIssue {

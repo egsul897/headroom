@@ -31,6 +31,14 @@ function validateCertificate(cert: SyntheticCertificate): CertificateProposalIss
 
   const seen = new Set<string>();
   for (const fact of cert.facts) {
+    if (fact.companyId !== cert.companyId) {
+      issues.push({
+        code: "FACT_COMPANY_MISMATCH",
+        message: `fact "${fact.key}" belongs to company ${fact.companyId}, not certificate company ${cert.companyId}; facts must not cross tenant boundaries at ingestion`,
+        refs: [fact.key],
+      });
+    }
+
     // Refuse LEDGER_USAGE disguised as a snapshot fact — basket lines have their own channel.
     if (fact.inputKind === "LEDGER_USAGE") {
       issues.push({
