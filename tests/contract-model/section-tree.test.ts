@@ -193,3 +193,59 @@ describe("reviewer adversarial (#365 PASS_WITH_NOTES)", () => {
     expect(strictCandidateMatch(c, { cite: fragment, sectionRef: "Section 6.04", family: "INVESTMENTS" })).toBe(true);
   });
 });
+
+describe("covenant family classifier (general signals)", async () => {
+  const { classifyCovenantFamily } = await import("@/lib/contract-model/section-tree/family-classifier");
+  it("classifies by lead-in prohibition object, not heading alone", () => {
+    expect(classifyCovenantFamily({ title: "Liens", parentTitle: "NEGATIVE COVENANTS", leadIn: " No Loan Party will directly or indirectly create, incur, assume or suffer to exist any Lien of any kind" }).family).toBe("LIENS");
+    expect(classifyCovenantFamily({ title: null, leadIn: "The Borrower will not, directly or indirectly: (i) declare or pay any dividend on its Equity Interests" }).family).toBe("RESTRICTED_PAYMENTS");
+    expect(classifyCovenantFamily({ title: "Financial Covenant", leadIn: "The Consolidated Leverage Ratio shall not, as of the last day of any period, be greater than 1.75 to 1.00." }).family).toBe("FINANCIAL_RATIOS");
+  });
+  it("rejects non-covenant sections that only share words", () => {
+    expect(classifyCovenantFamily({ title: "Margin Regulations; Investment Company Act", leadIn: "The Borrower is not engaged and will not engage in the business of extending credit for margin stock" }).family).toBeNull();
+    expect(classifyCovenantFamily({ title: "Trustee Not Fiduciary for Holders of Senior Indebtedness", leadIn: "The Trustee shall not be deemed to owe any fiduciary duty to the holders of Senior Indebtedness" }).family).toBeNull();
+    expect(classifyCovenantFamily({ title: "Rounding", leadIn: "Any financial ratios required to be maintained by the Borrower shall be calculated by dividing" }).family).toBeNull();
+    expect(classifyCovenantFamily({ title: "Use of Proceeds", leadIn: "The Borrower will not use the proceeds of any Advance to purchase or carry any margin stock or to pay dividends" }).family).toBeNull();
+  });
+  it("a lien securing debt is a lien covenant, not a debt covenant", () => {
+    const v = classifyCovenantFamily({ title: "Negative Pledge", parentTitle: "COVENANTS", leadIn: "No Loan Party shall create, assume, or suffer to exist any Lien securing Indebtedness" });
+    expect(v.family).toBe("LIENS");
+    expect(v.families).not.toContain("DEBT");
+  });
+  it("covenant context is structural, not the parent title", () => {
+    // Heading "Mergers" names a family; the lead-in object ("enter into any arrangement") does not, so the score rests
+    // on heading strength: 3 only with covenant context.
+    const lead = "The Company will not enter into any arrangement with any Person other than as described herein";
+    const base = { title: "Mergers", leadIn: lead };
+    expect(classifyCovenantFamily({ ...base, parentTitle: "COVENANTS" }).family).toBeNull();
+    expect(classifyCovenantFamily({ ...base, parentTitle: "MISCELLANEOUS", covenantContext: true }).family).toBe("FUNDAMENTAL_CHANGES");
+  });
+});
+
+describe("checklist covenant context comes from adjacent prohibition sections", async () => {
+  const { parseDocumentTree } = await import("@/lib/contract-model/section-tree/parse");
+  const { covenantChecklist } = await import("@/lib/contract-model/section-tree/semantics");
+  const doc = (art: string, neighbor: string) => `AGREEMENT
+
+ARTICLE V
+${art}
+
+Section 5.01 Reports. The Company shall deliver annual financial statements to the Trustee within 120 days.
+
+Section 5.02 Mergers. The Company will not enter into any arrangement with any Person other than as described herein.
+
+Section 5.03 Other Matters. ${neighbor}
+
+ARTICLE VI
+REMEDIES
+
+Section 6.01 Events of Default. Each of the following is an Event of Default: (a) default in payment.
+`;
+  const fc = (t: string) => covenantChecklist(parseDocumentTree(t), parseDocumentTree(t).text).find((c) => c.family === "FUNDAMENTAL_CHANGES")!.status;
+  it("an article titled COVENANTS does not by itself supply context", () => {
+    expect(fc(doc("COVENANTS", "The Trustee may rely on any certificate delivered to it hereunder in good faith."))).toBe("MISSING");
+  });
+  it("an adjacent obligor prohibition supplies context under any article title", () => {
+    expect(fc(doc("GENERAL PROVISIONS", "The Company shall not, and shall not permit any Subsidiary to, sell any assets other than in the ordinary course."))).not.toBe("MISSING");
+  });
+});
