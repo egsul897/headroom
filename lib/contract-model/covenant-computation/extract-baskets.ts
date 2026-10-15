@@ -139,6 +139,15 @@ function captureWindow(text: string, index: number, matchLen: number): string {
   const boundary = pre.search(/[.;:]\s+[A-Z(]/);
   if (boundary >= 0) start = start + boundary + 1;
   while (start < index && /\s/.test(text[start]!)) start += 1;
+  // A window straddling a section heading ("... thereof. Section 3.06 Funding Losses . With respect ...") cites
+  // two sections: start it at the last heading that still leaves >= 24 chars of the match after it.
+  const HEADING = /(?:^|[.;:]\s+|\n)\s*((?:SECTION|Section)\s+\d{1,2}\.\d{1,3}\b|ARTICLE\s+[IVXLC\d]+\b)/g;
+  let cut = -1;
+  for (const h of text.slice(start, matchEnd).matchAll(HEADING)) {
+    const at = start + h.index! + h[0].indexOf(h[1]!);
+    if (at > start && matchEnd - at >= 24) cut = at;
+  }
+  if (cut > start) start = cut;
   let window = text.slice(start, end).trim();
   // Ensure the matched span is present; if trimming ate it, fall back to exact match pad.
   if (!window.toLowerCase().includes(text.slice(index, matchEnd).toLowerCase().slice(0, 20))) {
