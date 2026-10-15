@@ -174,9 +174,7 @@ function dropContainedNumericLimbs(clauses: BasketClause[]): BasketClause[] {
   });
 }
 
-// Exception / proviso / carve-out openings ("provided, however, that", "provided that", "except as", "except for",
-// "except that", "other than", "notwithstanding ...") through the end of their sentence.
-const PROVISO_SPAN = /\b(?:provided\s*,?\s*(?:however\s*,?\s*)?that|except\s*:|except\s+(?:as|for|that|to the extent)|other\s+than|notwithstanding)\b[^.]{20,220}/gi;
+const PROVISO_SPAN = /(?:provided\s*,\s*however\s*,\s*that|except\s*:|; provided that)[^.]{40,220}/gi;
 const DEFINITION_OPEN =
   /[“"]\s*([^”"]{4,80}?)\s*[”"]\s+(?:(?:shall\s+mean|means)\b|has the meaning set forth in\b)/g;
 const DEFINITION_SIGNAL = /permitted|leverage|coverage|ebitda|fixed charge/i;
