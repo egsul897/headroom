@@ -169,6 +169,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // prohibition with a family object counts, but only inside an obligor-bound prohibition section body.
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
+    if (!am && fams.has("RESTRICTED_PAYMENTS") && prohib.get(s.id)) for (const f of restrictedPaymentItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     famOf.set(s.id, [...fams]);
   }
   // Restatements in text no section covers (an amendment with no numbered sections) belong to the document root.
@@ -229,6 +230,28 @@ function amendedText(lead: string): { title: string; lead: string } | null {
   const h = /^\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([A-Z][^.\n]{2,80})\.\s*/i.exec(rest);
   if (!h) return null;
   return { title: h[1]!.trim(), lead: rest.slice(h[0].length) };
+}
+
+/**
+ * Indenture-style Restricted Payments covenants enumerate the restricted acts under one negative stem ("will not ...
+ * directly or indirectly, to: (1) declare or pay any dividend ...; (2) purchase, redeem ... any Capital Stock ...;
+ * (3) purchase, repurchase, redeem, defease ... any Subordinated Obligations ...; (4) make any Investment"). Each
+ * enumerated restricted act that opens with a prepayment or investment verb-object is that covenant too.
+ * Only the stem's own items (before the first "except"/proviso paragraph past 8000 chars) are read.
+ */
+function restrictedPaymentItemFamilies(body: string): Set<string> {
+  const out = new Set<string>();
+  const head = body.slice(0, 8000).replace(/\s+/g, " ");
+  const stem = /\b(?:shall|will)\s+not\b[^.:]{0,300}?(?:directly or indirectly)?[^.:]{0,40}?(?:to|:)\s*(?=\((?:1|a|i)\))/i.exec(head);
+  if (!stem) return out;
+  const items = head.slice(stem.index + stem[0].length);
+  for (const m of items.matchAll(/\((?:\d{1,2}|[a-h]|i{1,3}|iv|v|vi{0,3})\)\s+([^]{10,400}?)(?=\((?:\d{1,2}|[a-h]|i{1,3}|iv|v|vi{0,3})\)\s|$)/gi)) {
+    const it = m[1]!;
+    if (/^\s*(?:dividends|distributions|payments?|any\s+\w+\s+(?:made|paid))\b/i.test(it)) continue; // an exception limb, not a restricted act
+    if (/^\s*(?:directly or indirectly,?\s*)?(?:purchase|repurchase|redeem|defease|retire|prepay|make any (?:principal )?payment on)\b[^;]{0,200}\b(?:subordinated|junior)\b[^;]{0,60}\b(?:obligations|indebtedness|debt|notes)\b/i.test(it)) out.add("PREPAYMENTS");
+    if (/^\s*(?:directly or indirectly,?\s*)?make\s+any\s+(?:Restricted\s+)?Investment\b/i.test(it)) out.add("INVESTMENTS");
+  }
+  return out;
 }
 
 function covenantItemFamilies(body: string): Set<string> {
