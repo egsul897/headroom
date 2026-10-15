@@ -107,21 +107,25 @@
 
 [data-brand="teal"] .app-shell,
 [data-brand="teal"].app-shell {
-  /* Same lighter petrol as the product rail. Kept so ?brand=teal does not
-     paint the older dark petrol back over the default. */
-  --shell-sidebar: #3a6a74;
-  --shell-sidebar-ink: #f4f7f8;
-  --shell-sidebar-muted: #e7f1f3;
-  --shell-sidebar-hover: #42727c;
-  --shell-sidebar-active: #447684;
-  --shell-sidebar-card: #2f5c66;
-  --sample-brand: #2f7482;
-  --sample-brand-hover: #266876;
-  --sample-brand-signal: #e7f3f5;
+  /* Matches the pale product rail so ?brand=teal does not restore a darker bar. */
+  --shell-sidebar: #dcebed;
+  --shell-sidebar-ink: #12151a;
+  --shell-sidebar-muted: #3e555c;
+  --shell-sidebar-hover: #cfe3e6;
+  --shell-sidebar-active: #3a8a98;
+  --shell-sidebar-card: #f7fbfb;
+  --sample-brand: #3a8a98;
+  --sample-brand-hover: #49a3b0;
+  --sample-brand-signal: #f4fbfb;
 }
 
 [data-brand="teal"] .app-sidebar {
-  border-right-color: #2f5c66;
+  border-right-color: #b7d0d6;
+}
+
+[data-brand="teal"] .button-primary,
+[data-brand="teal"] .button-primary:hover {
+  color: #12151a;
 }
 
 /*
@@ -207,4 +211,95 @@
 
 [data-teal="3"] .app-sidebar {
   border-right-color: #3a6670;
+}
+
+/*
+ * Lighter-than-variant-2 studies. /dev/sample?light=a|b|c
+ * The button is #3a8a98 on every option. White on that button is 3.99:1
+ * (fails AA), so the label is #12151a (4.59:1). Status green stays #0e6b43.
+ */
+
+[data-light] .button-primary {
+  background: var(--light-accent);
+  border-color: var(--light-accent);
+  color: var(--light-accent-ink);
+}
+
+[data-light] .button-primary:hover {
+  background: var(--light-accent-hover);
+  border-color: var(--light-accent-hover);
+  color: var(--light-accent-ink);
+}
+
+[data-light] .app-nav-link.active {
+  box-shadow: inset 3px 0 0 var(--light-signal);
+}
+
+[data-light] .app-nav-label {
+  color: var(--shell-sidebar-muted);
+}
+
+[data-light] .sample-chart {
+  color: var(--light-accent);
+}
+
+[data-light="a"] .app-shell {
+  /* White on #5f8f98 is 3.58:1. Muted #eef7f8 is 3.29:1. Both fail AA.
+     Dark ink #12151a would pass at 5.11:1; this study keeps the white. */
+  --shell-sidebar: #5f8f98;
+  --shell-sidebar-ink: #ffffff;
+  --shell-sidebar-muted: #eef7f8;
+  --shell-sidebar-hover: #6a9aa3;
+  --shell-sidebar-active: #548691;
+  --shell-sidebar-card: #4f848e;
+  --light-accent: #3a8a98;
+  --light-accent-hover: #49a3b0;
+  --light-accent-ink: #12151a;
+  --light-signal: #ffffff;
+}
+
+[data-light="a"] .app-sidebar {
+  border-right-color: #4a7e88;
+}
+
+[data-light="b"] .app-shell {
+  /* Pale rail. Ink #12151a is 14.94:1. Muted #3e555c is 6.45:1 on the rail
+     and 5.94:1 on hover #cfe3e6. Active chip #3a8a98 keeps that ink at 4.59:1. */
+  --shell-sidebar: #dcebed;
+  --shell-sidebar-ink: #12151a;
+  --shell-sidebar-muted: #3e555c;
+  --shell-sidebar-hover: #cfe3e6;
+  --shell-sidebar-active: #3a8a98;
+  --shell-sidebar-card: #f7fbfb;
+  --light-accent: #3a8a98;
+  --light-accent-hover: #49a3b0;
+  --light-accent-ink: #12151a;
+  --light-signal: #f4fbfb;
+}
+
+[data-light="b"] .app-sidebar {
+  border-right-color: #b7d0d6;
+}
+
+[data-light="c"] .app-shell {
+  /* Near the canvas. Ink #12151a is 16.20:1. Muted #3e555c is 6.99:1.
+     The active row is a whisper tint; the stripe #3a8a98 is 3.53:1 on it. */
+  --shell-sidebar: #e9f3f4;
+  --shell-sidebar-ink: #12151a;
+  --shell-sidebar-muted: #3e555c;
+  --shell-sidebar-hover: #dcebed;
+  --shell-sidebar-active: #d7eef0;
+  --shell-sidebar-card: #ffffff;
+  --light-accent: #3a8a98;
+  --light-accent-hover: #49a3b0;
+  --light-accent-ink: #12151a;
+  --light-signal: #3a8a98;
+}
+
+[data-light="c"] .app-sidebar {
+  border-right-color: #c5dde2;
+}
+
+[data-light="c"] .app-nav-link.active {
+  box-shadow: inset 3px 0 0 var(--light-signal);
 }

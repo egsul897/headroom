@@ -16,11 +16,12 @@ export const metadata = { title: "Headroom — sample data" };
  * Development illustration. Production builds take notFound().
  * This module does not import Prisma, Neon, or the dashboard service.
  */
-export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string } }) {
+export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string } }) {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") notFound();
   const screen = searchParams.screen ?? "overview";
   const brand = searchParams.brand === "navy" || searchParams.brand === "olive" || searchParams.brand === "teal" ? searchParams.brand : undefined;
   const teal = searchParams.teal === "1" || searchParams.teal === "2" || searchParams.teal === "3" ? searchParams.teal : undefined;
+  const light = searchParams.light === "a" || searchParams.light === "b" || searchParams.light === "c" ? searchParams.light : undefined;
 
   if (screen === "portfolio") {
     return (
@@ -86,7 +87,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
   const rail = searchParams.rail === "deep" || searchParams.rail === "mid" || searchParams.rail === "soft" ? searchParams.rail : undefined;
 
   return (
-    <div data-rail={rail} data-brand={brand} data-teal={teal}>
+    <div data-rail={rail} data-brand={brand} data-teal={teal} data-light={light}>
       <AppShell
         companyId="sample"
         companyName={SAMPLE_COMPANY}

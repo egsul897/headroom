@@ -13,10 +13,12 @@
   --amber-soft: #fbf3df;
   --navy: #1a365d;
   --navy-soft: #e8eef6;
-  /* Lighter petrol. White on #2f7482 is 5.33:1. Hue 190°, apart from status green at 154°. */
-  --accent: #2f7482;
-  --accent-hover: #266876;
-  --accent-signal: #e7f3f5;
+  /* Lighter petrol. White on #3a8a98 is 3.99:1, so the label is ink (4.59:1).
+     Hue 189°, apart from status green at 154°. */
+  --accent: #3a8a98;
+  --accent-hover: #49a3b0;
+  --accent-ink: #12151a;
+  --accent-signal: #f4fbfb;
   --idle-soft: #eef1f4;
   --input-bg: #ffffff;
 
@@ -554,7 +556,7 @@ input[type="range"] {
 
 .button-primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-ink);
   border-color: var(--accent);
 }
 
@@ -579,7 +581,7 @@ input[type="range"] {
 .button-primary:hover {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
-  color: #fff;
+  color: var(--accent-ink);
 }
 
 .button:disabled {

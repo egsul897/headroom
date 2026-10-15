@@ -11,15 +11,15 @@ main:has(.app-shell) {
 }
 
 .app-shell {
-  /* Lighter petrol rail. Text and the active chip are measured for WCAG AA
-     in docs/DESIGN_SYSTEM.md. Content tokens and status colors are not set here. */
-  --shell-sidebar: #3a6a74;
-  --shell-sidebar-ink: #f4f7f8;
-  --shell-sidebar-muted: #e7f1f3;
-  --shell-sidebar-hover: #42727c;
-  --shell-sidebar-active: #447684;
-  --shell-sidebar-card: #2f5c66;
-  --shell-sidebar-line: rgba(255, 255, 255, 0.14);
+  /* Pale teal rail. Text is dark ink. The active chip is the petrol accent.
+     Measured for WCAG AA in docs/DESIGN_SYSTEM.md. Status colors are not set here. */
+  --shell-sidebar: #dcebed;
+  --shell-sidebar-ink: #12151a;
+  --shell-sidebar-muted: #3e555c;
+  --shell-sidebar-hover: #cfe3e6;
+  --shell-sidebar-active: #3a8a98;
+  --shell-sidebar-card: #f7fbfb;
+  --shell-sidebar-line: #b7d0d6;
   --shell-canvas: var(--paper);
   --shell-card: var(--card);
   --shell-line: var(--line);
@@ -39,7 +39,7 @@ main:has(.app-shell) {
   min-height: 100vh;
   padding: 18px 12px 14px;
   background: var(--shell-sidebar);
-  border-right: 1px solid #2f5c66;
+  border-right: 1px solid #b7d0d6;
   color: var(--shell-sidebar-muted);
   position: sticky;
   top: 0;
@@ -150,7 +150,7 @@ main:has(.app-shell) {
 }
 
 .app-company-card:hover {
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: #8fb8c0;
 }
 
 .app-company-icon {
