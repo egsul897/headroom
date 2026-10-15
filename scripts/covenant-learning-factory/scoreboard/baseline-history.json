@@ -145,6 +145,33 @@
         "approver": "owner directive 'HEADROOM — PR #364 / #365 BENCHMARK INTEGRITY' (2026-10-14)"
       },
       "prevEntrySha256": "5525f6933545bb0473d749f1a550da4fd156bc2c574c6db9d58a272a60139f61"
+    },
+    {
+      "seq": 7,
+      "recordedAt": "2026-10-15T00:49:00Z",
+      "file": "scripts/covenant-learning-factory/scoreboard/baselines/0007-identity-05b2234708d0-pr368.json",
+      "reportSha256": "0d6083c58d81eb029ceda448bbd0819f2cb1a15523b2aae0b6141842523d3c43",
+      "prevEntrySha256": "8691f36f3467b12b0ff9edccac019b1cc3dd21f021f476c641a197ff66527737",
+      "sourceCommit": "8ece66ee",
+      "legacy": false,
+      "identity": {
+        "rulesetVersion": 2,
+        "rulesetSha256": "6bc7b606993b1eec8b9ea136b07adb66777233de2e66a4292fa6e58d754620bf",
+        "snapshotSha256": "05b2234708d0f43f1445ae9adba4a100627a54ee59dcd9fb184daba6d2555846"
+      },
+      "heldout": {
+        "sources": 137,
+        "total": 2595,
+        "UNSUPPORTED_SEMANTICS": 115
+      },
+      "thresholds": {
+        "heldoutTotalMaxIncrease": 0,
+        "heldoutUnsupportedMaxIncrease": 0,
+        "perSourceMaterialAbs": 2,
+        "perSourceMaterialRel": 0.1
+      },
+      "reason": "PR #368 region-boundary fix (covenant regions bounded at the next cross-article bare heading). Reviewer findings: 8 HELDOUT sources move on COVERAGE_GAP/UNSUPPORTED_SEMANTICS: COVERAGE_GAP +13, UNSUPPORTED_SEMANTICS -29. Of the 13 COVERAGE_GAP, 8 are direct overrun (exceptions previously 'bound' only by clauses whose citations overran into later articles) and 5 are overrun plus a false match on the 30-character opening. The 30-character-opening false match is a separate scorer weakness, tracked as a follow-up. The new errors are boilerplate (LLC member/distribution, assignment, amendment and agency text), not covenant gaps. Material per-source increases accepted: exhibit1013q24 10->15, ss171930_ex1001 19->21. Also, 4 sources have DISCOVERY_GAP -7. HELDOUT total 2618->2595, UNSUPPORTED 144->115; thresholds and membership unchanged. Evidence: docs/clf-scoreboard/pr368-region-overrun-evidence.md",
+      "approver": "owner (approved in chat 2026-10-15 00:49 UTC: 'Yes, approve the exception')"
     }
   ]
 }
