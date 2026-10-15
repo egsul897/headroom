@@ -110,22 +110,38 @@ function clausesFromLearnedPatterns(
   for (const rule of phrasePatternCaptureRules(rules)) {
     const re = compileRuleRegex(rule);
     if (!re) continue;
-    re.lastIndex = 0;
-    const match = re.exec(text);
-    if (!match || match.index == null || !match[0]) continue;
-    const window = captureWindow(text, match.index, match[0].length);
-    if (window.length < 24) continue;
-    const family = rule.effect.family ?? rule.effect.sectionFamily ?? "OTHER";
-    out.push({
-      stableKey: `learned-${rule.ruleId}`,
-      sectionRef: `learned:${rule.kind}:${rule.ruleId}`,
-      covenantFamily: family,
-      documentId,
-      operativeText: window,
-      role: "PERMISSION",
-    });
+    // The first occurrence is often the table of contents ("5.01 Consolidation, Merger ... 33 Section 5.02 ..."): cite it,
+    // and also the first occurrence outside it (the operative text).
+    const g = new RegExp(re.source, re.flags.includes("g") ? re.flags : `${re.flags}g`);
+    const hits: RegExpExecArray[] = [];
+    for (let m = g.exec(text), n = 0; m && n < 50; m = g.exec(text), n += 1) {
+      if (!m[0]) { g.lastIndex += 1; continue; }
+      if (!hits.length) hits.push(m);
+      if (!inTableOfContents(text, m.index)) { if (hits[0] !== m && inTableOfContents(text, hits[0]!.index)) hits.push(m); break; }
+    }
+    for (const [k, match] of hits.entries()) {
+      if (!match || match.index == null || !match[0]) continue;
+      const window = captureWindow(text, match.index, match[0].length);
+      if (window.length < 24) continue;
+      const family = rule.effect.family ?? rule.effect.sectionFamily ?? "OTHER";
+      out.push({
+        stableKey: k ? `learned-${rule.ruleId}-body` : `learned-${rule.ruleId}`,
+        sectionRef: `learned:${rule.kind}:${rule.ruleId}`,
+        covenantFamily: family,
+        documentId,
+        operativeText: window,
+        role: "PERMISSION",
+      });
+    }
   }
   return out;
+}
+
+/** Inside a table of contents: the surrounding text is a run of "title page-number next-entry" lines. */
+function inTableOfContents(text: string, at: number): boolean {
+  const w = text.slice(Math.max(0, at - 200), at + 200);
+  const entries = w.match(/[A-Za-z.)]\s+\d{1,3}\s+(?:(?:Section|SECTION|ARTICLE|Article)\s+)?(?:\d{1,2}\.\d{1,2}\b|[IVX]+\b)/g);
+  return (entries?.length ?? 0) >= 2;
 }
 
 /** Expand a regex match to a nearby clause-sized window still inside `text`. */
