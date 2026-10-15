@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "node:fs";
 const WT = process.argv[2]!, OUT = process.argv[3]!;
-const { extractTextAsync } = await import("${WT}/lib/knowledge-factory/pipeline/text.ts");
+const { extractTextAsync } = await import(`${WT}/lib/knowledge-factory/pipeline/text.ts`);
 const { parseDocumentTree } = await import(`${WT}/lib/contract-model/section-tree/parse.ts`);
 const { covenantChecklist } = await import(`${WT}/lib/contract-model/section-tree/semantics.ts`);
 const man = JSON.parse(readFileSync("/workspace/fresh/fresh-manifest.json","utf8"));
