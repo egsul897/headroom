@@ -131,6 +131,25 @@ export async function stageCustomerDocument(params: {
     }),
   );
 
+  // General rule: staging must never clobber a prior analysis. The stage
+  // upsert is keyed by sourceId = (companyId, documentId, contentHash),
+  // so an update here means IDENTICAL bytes — the prior analysis is for
+  // these exact bytes and stays valid until the new analysis replaces it.
+  // Without this merge, a re-upload (or a retry after a transient
+  // failure) wiped covenantSummary/amendmentPackage/reviewer decisions,
+  // and a failed re-analysis left the row with no analysis at all.
+  // The fresh attempt supersedes a prior analysisError, but keeps the
+  // prior analysis payload.
+  const priorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
+  const priorMeta =
+    priorRow?.metadata && typeof priorRow.metadata === "object" && !Array.isArray(priorRow.metadata)
+      ? { ...(priorRow.metadata as Record<string, unknown>) }
+      : {};
+  const stagedMeta = JSON.parse(
+    JSON.stringify({ ...priorMeta, ...pendingMeta }),
+  ) as Record<string, unknown>;
+  delete stagedMeta.analysisError;
+
   await prisma.knowledgeSource.upsert({
     where: { sourceId },
     create: {
@@ -156,7 +175,7 @@ export async function stageCustomerDocument(params: {
       usageRightsReviewStatus: "UNREVIEWED",
       byteSize: params.bytes.length,
       storageRef,
-      metadata: pendingMeta,
+      metadata: stagedMeta,
     },
     update: {
       companyId: params.companyId,
@@ -165,7 +184,7 @@ export async function stageCustomerDocument(params: {
       byteSize: params.bytes.length,
       issuerName: company.name,
       issuerTicker: company.ticker,
-      metadata: pendingMeta,
+      metadata: stagedMeta,
     },
   });
 
