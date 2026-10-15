@@ -197,7 +197,8 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   // Run-in headings the tree did not split (flattened text: "... thereof). 8.07 Restricted Payments. The Borrower will
   // not ..."): inline numbered units outside any classified section, kept only inside a covenant run (an adjacent inline
   // unit also opens with an obligor-bound prohibition).
-  for (const u of inlineCovenantUnits(text, (i) => sections.some((s) => s.start <= i && s.end > i && (famOf.get(s.id)?.length ?? 0) > 0), sections.map((s) => s.start))) {
+  // (Inline units only fill families with no tree hit, so a family-bearing encloser does not block them.)
+  for (const u of inlineCovenantUnits(text, () => false, sections.map((s) => s.start))) {
     const fams = new Set<string>(classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: u.lead, covenantContext: true }).families);
     if (fams.has("RESTRICTED_PAYMENTS") && !restrictsPayments(u.lead)) fams.delete("RESTRICTED_PAYMENTS");
     if (DESIGNATION_OR_SUSPENSION.test(`${u.title} ${u.lead.slice(0, 200)}`)) for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) fams.delete(f);
@@ -350,7 +351,7 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
   }
   // A unit also ends at the next unit start the tree knows (its sections), so it never reads into a parsed section.
   // Heading lines with no closing period ("6.12 Transactions with Affiliates\n\nDirectly or indirectly, enter into ...").
-  for (const m of text.matchAll(/(?:^|\n)[ \t]*((?:SECTION[ \t]+|Section[ \t]+)?(\d{1,2}\.\d{1,2}))\.?[ \t]+([A-Z][^\n.]{2,80}?)[ \t]*\n(?![ \t]*\d{1,3}[ \t]*\n)/g)) {
+  for (const m of text.matchAll(/(?:^|\n)[ \t]*((?:SECTION[ \t]+|Section[ \t]+)?(\d{1,2}\.\d{1,2}))\.?(?:[ \t]+|[ \t]*\n[ \t]*)([A-Z][^\n.]{2,80}?)[ \t]*\n(?![ \t]*\d{1,3}(?:[ \t]+\d{1,3})?[ \t]*\n)/g)) {
     const start = m.index! + (m[0].length - m[0].trimStart().length);
     if (insideClassified(start) || cands.some((c) => Math.abs(c.start - start) < 5)) continue;
     cands.push({ path: normalizeSectionNumber(m[2]!), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
