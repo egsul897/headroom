@@ -338,6 +338,7 @@ function captionedClauseFamilies(body: string): Set<string> {
   return out;
 }
 
+const IMPERATIVE_OPEN = /^\W*(?:\([a-z0-9]{1,4}\)\s*)?(?:except[^,]{0,200},\s*)?(?:not\s+)?(?:directly\s+or\s+indirectly,?\s*)?(?:incur|create|make|declare|sell|enter into|conduct|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make)\b/i;
 function inlineCovenantUnits(text: string, insideClassified: (i: number) => boolean, boundaries: number[] = []): { path: string; title: string; start: number; headingEnd: number; end: number; lead: string }[] {
   const re = /(?:^|[.;:)”"]\s+|\s{2,})(?:\d{1,3}[ \t]+(?=(?:SECTION|Section)?[ \t]*\d{1,2}\.\d))?((?:SECTION\s+|Section\s+)?(\d{1,2}\.\d{1,2})|(?:SECTION|Section)\s+(?:\d{3,4}))\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,80}?)\s?\.\s+(?=[A-Z(“"])/g;
   const cands: { path: string; title: string; start: number; headingEnd: number }[] = [];
@@ -361,6 +362,8 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
   const extra = [
     /(?:^|\n)[ \t]*((?:SECTION|Section)[ \t]+(\d{3,4}))\.?[ \t]+([A-Z][^\n.]{2,80}?)[ \t]*\.?[ \t]*(?:\n|(?=\([a-z0-9]\)|[A-Z]))/g,
     /(?:^|\n)[ \t]*((\d{1,2}))\.[ \t]+([A-Z][A-Z,;'’&\- ]{4,80}?)[ \t]*\n/g,
+    // "N.NN <Caption> Enter into ..." / "N.NN <Caption> The Borrower shall not ...": no period, body on the same line.
+    /(?:^|\n)[ \t]*((?:SECTION[ \t]+|Section[ \t]+)?(\d{1,2}\.\d{1,2}))\.?[ \t]+([A-Z][a-z’']+(?:[ \t]+(?:[A-Z][a-z’']+|of|on|and|with|to|in|the|or|for|&))*?)[ \t]+(?=(?:Enter|Make|Create|Incur|Declare|Sell|Permit|Directly|Pay|Prepay|Merge|Consolidate|Purchase|Dispose|Transfer)\b|(?:The|No|Neither)[ \t]+(?:[A-Z][\w-]*[ \t]+){0,3}(?:shall|will)[ \t]+not\b)/g,
     /(?:^|\n)[ \t]*(\(([a-z]{1,2}|\d{1,2})\))[ \t]+([A-Z][A-Za-z,;'’&\- ]{2,60}?)[ \t]?\.[ \t]+(?=[A-Z])/g,
   ];
   for (const r of extra) for (const m of text.matchAll(r)) {
@@ -373,10 +376,13 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
   const units = cands.map((c, i) => { const end = Math.min(cands[i + 1]?.start ?? text.length, c.headingEnd + 30000, ...boundaries.filter((b) => b > c.headingEnd)); return { ...c, end, lead: text.slice(c.headingEnd, Math.min(end, c.headingEnd + 2000)) }; });
   // Creditor-side actors (secured parties, holders, lenders, trustees, agents) are not obligor covenants.
   const CREDITOR_ACTOR = /^\W*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+|each\s+|no\s+)?(?:[A-Z][\w-]*\s+){0,4}(?:Secured Parties|Secured Party|Holders?|Lenders?|Purchasers?|Trustees?|Agents?|Creditors?|Noteholders?)\b[^.;]{0,40}\b(?:will|shall|may)\s+not\b/i;
-  const prohib = units.map((u) => isObligorProhibitionLead(u.lead) && !CREDITOR_ACTOR.test(u.lead.slice(0, 200)));
+  // The prohibition must be in the unit's opening sentence (a representation "has not entered into ... ; the Borrower
+  // shall ..." is not), and a non-covenant caption (investment company, margin regulations) never opens a unit.
+  const opening = (l: string) => { const s0 = l.slice(0, 400); return /\b(?:shall|will|may)\s+not\b|\b(?:neither|none of)\b[^.]{0,150}\b(?:shall|will)\b|\bNo\s+(?:[A-Z][\w-]*\s+){1,4}(?:shall|will|may)\b/i.test(s0) || IMPERATIVE_OPEN.test(l); };
+  const prohib = units.map((u) => isObligorProhibitionLead(u.lead) && opening(u.lead) && !NOT_COVENANT_TITLE.test(u.title) && !/margin regulations|investment company/i.test(u.title) && !CREDITOR_ACTOR.test(u.lead.slice(0, 200)));
   // Outside a run, a unit still counts when its own caption names a covenant family and its lead is an obligor
   // prohibition.
-  const titled = (u: { title: string }) => classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: "" }).family != null;
+  const titled = (u: { title: string; lead: string }) => classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: u.lead }).evidence.some((e) => /:heading$/.test(e));
   return units.filter((u, i) => prohib[i] && (prohib[i - 1] || prohib[i + 1] || titled(u)));
 }
 
