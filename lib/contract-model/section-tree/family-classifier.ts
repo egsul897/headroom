@@ -24,15 +24,20 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION_CI = /\b(?:shall|will|may)\s+not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
-const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
+const PROHIBITION_CI = /\b(?:shall|will|may)\s+not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:not\s+)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
+const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:not\s+)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
 /** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
 const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
 const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
 /** Parentheticals removed (with their length kept), so carve-outs neither count as head tokens nor shift offsets. */
 function stripParens(s: string): string { return s.replace(/\([^()]{0,200}\)/g, (m) => " ".repeat(m.length)).replace(/ {2,}/g, (m) => " ".repeat(m.length)); }
+/** "Neither the Borrower nor any Restricted Subsidiary shall": the same party-headed prohibition. */
+const NEITHER_PARTY_RE = /\bNeither\s+(?:the\s+|any\s+)?([A-Z][\w-]*)((?:,?\s+[\w’'-]+){0,8}?,?\s+nor\s+(?:the\s+|any\s+(?:of\s+(?:the|its)\s+)?)?[\w’'-]+(?:\s+[\w’'-]+){0,8}?)\s+(shall|will|may)\b/g;
+/** "None of the Borrower or any Restricted Subsidiary shall". */
+const NONE_OF_PARTY_RE = /\bNone of\s+(?:the\s+)?([A-Z][\w-]*)((?:,?\s+[\w’'-]+){0,10}?)\s+(shall|will|may)\b/g;
 function noPartyMatches(lead: string): RegExpMatchArray[] {
-  return [...stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length)).matchAll(NO_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!));
+  const s = stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length));
+  return [...s.matchAll(NO_PARTY_RE), ...s.matchAll(NEITHER_PARTY_RE), ...s.matchAll(NONE_OF_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!)).sort((a, b) => a.index! - b.index!);
 }
 const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 };
 
@@ -67,11 +72,12 @@ const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
 ];
 
 const HEADING: Array<[CovenantFamily, RegExp]> = [
-  ["PREPAYMENTS", /prepayments?.*(?:debt|indebtedness)|(?:junior|subordinated)[^,]*(?:payment|prepay)|payments? of (?:certain )?(?:debt|indebtedness)/i],
+  ["PREPAYMENTS", /prepayments?.*(?:debt|indebtedness)|(?:junior|subordinated)[^,]*(?:payment|prepay)|payments? (?:of|on|in respect of) (?:certain |junior |subordinated )?(?:debt|indebtedness)|restricted debt payments?/i],
   ["LIENS", /\bliens?\b|negative pledge|\bencumbrances?\b/i],
   ["DEBT", /\b(?:indebtedness|debt|borrowings?)\b/i],
   ["RESTRICTED_PAYMENTS", /restricted (?:junior )?payments?|dividends?|distributions?/i],
-  ["INVESTMENTS", /\binvestments?\b|loans?,? advances|acquisitions/i],
+  // Not "Investment Company Act", "investment grade", "Use of Proceeds of <X> Investment".
+  ["INVESTMENTS", /^(?!.*\buse of proceeds\b)(?:.*?\binvestments?\b(?!\s+(?:company|grade|bank|banker|banking|management|advis|policy|policies))|.*?loans?,? advances|.*?acquisitions)/i],
   ["ASSET_SALES", /asset sales?|asset transfers?|transfers? of assets|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],
   ["AFFILIATE_TRANSACTIONS", /affiliates?/i],
   ["FUNDAMENTAL_CHANGES", /fundamental changes?|mergers?|\bconsolidations?\b|consolidate\b/i],
@@ -91,8 +97,10 @@ const DEFINED: Array<[CovenantFamily, RegExp]> = [
  * Structural covenant context (no title keywords): a section's lead-in is an obligor-bound prohibition or an
  * article-imperative. A section sits in a covenant run when an adjacent sibling section is one too.
  */
+/** An exception lead before an article imperative ("Except for Permitted Investments, directly or indirectly, make ..."). */
+const EXCEPT_LEAD = /^[\s.:]*(?:\([a-z0-9]+\)\s*)?except\s+(?:for|as)\b[^;:]{0,200}?,\s*(?=(?:directly or indirectly|incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose)\b)/i;
 export function isObligorProhibitionLead(leadIn: string): boolean {
-  const lead = operativeWindow(leadIn).slice(0, 700);
+  const lead = operativeWindow(leadIn).replace(EXCEPT_LEAD, "").slice(0, 700);
   return IMPERATIVE.test(lead) || (PROHIBITION.test(lead) && obligorBound(lead));
 }
 
@@ -123,8 +131,26 @@ const TEMPORAL_LEAD = /^[\s.:]*(?:\([a-z0-9]+\)\s*)?(?:from|after|prior to|until
  */
 const CONDITIONAL_PERMISSION = /^\s*(?:\([a-z0-9]+\)\s*)?(?:the\s+)?(?:issuer|company|borrower|parent|guarantor|obligor)s?\s+(?:shall\s+not\s+|may\s+(?:not\s+)?)?(?:consolidate|merge|amalgamate|convey|transfer|sell|lease)\b[^]{0,1800}?\b(?:only if|provided,? that|if|unless|so long as)\b/i;
 
+/** Object nouns that can be conjoined in one prohibition ("any Investments or Restricted Payments"). */
+const OBJECT_NOUN: Partial<Record<CovenantFamily, string>> = {
+  INVESTMENTS: "Investments?",
+  RESTRICTED_PAYMENTS: "Restricted Payments?|dividends?|distributions?",
+  DEBT: "Indebtedness|Debt",
+  LIENS: "Liens?",
+  ASSET_SALES: "Asset Sales?|Asset Dispositions?|Dispositions?",
+  PREPAYMENTS: "(?:Junior|Subordinated) (?:Indebtedness|Debt)",
+};
+/** Both families' objects sit in one coordinated object of the sentence ("A or B", "A, B and C"). */
+export function coordinatedObjects(sentence: string, a: CovenantFamily, b: CovenantFamily): boolean {
+  const na = OBJECT_NOUN[a], nb = OBJECT_NOUN[b];
+  if (!na || !nb) return false;
+  const link = String.raw`\s*(?:\([^()]{0,80}\)\s*)?(?:,\s*(?:or\s+|and\s+)?|\s+(?:or|and|and/or)\s+)(?:any\s+|other\s+)?`;
+  const re = (x: string, y: string) => new RegExp(String.raw`\b(?:${x})\b${link}(?:[\w-]+\s+){0,2}?(?:${y})\b`, "i");
+  return re(na, nb).test(sentence) || re(nb, na).test(sentence);
+}
+
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
-  const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "");
+  const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "").replace(EXCEPT_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
   // The ratio subject is read from the operative test verb, past any "so long as any Loan remains outstanding ...,
@@ -144,7 +170,8 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     const from = lead.slice(m?.index ?? 0);
     const sentence = from.slice(0, Math.min(450, (from.search(/\.\s/) + 1) || 450));
     if (IMPERATIVE.test(lead) || obligorBound(lead)) {
-      const hit = VERB_OBJECT.filter(([, re]) => re.test(sentence)).map(([f]) => f);
+      // A transfer of "all or substantially all" the assets is a fundamental change, not an asset-sale covenant.
+      const hit = VERB_OBJECT.filter(([f, re]) => { const x = re.exec(sentence); return !!x && !(f === "ASSET_SALES" && /\ball or substantially all\b/i.test(x[0])); }).map(([f]) => f);
       // "Lien securing Indebtedness" / "prepay Junior Indebtedness" name debt as the object's qualifier, not a debt covenant.
       // A titled section whose heading names no covenant family ("Use of Proceeds", "Post-Closing") needs more
       // than its lead-in: the lead-in object alone scores 2 there.
@@ -154,6 +181,11 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   }
   const titledOffFamilyAll = !!args.title && !HEADING.some(([, re]) => re.test(args.title!));
   if (ratio) add("FINANCIAL_RATIOS", titledOffFamilyAll ? 2 : 3, "ratio-test");
+  // Affiliate covenants worded as an obligation: the obligor shall conduct its affiliate transactions on arm's-length
+  // (no less favorable) terms. Needs an affiliate heading and the obligor as subject.
+  if (!prohibitive && args.title && /\btransactions?\s+with\s+(?:affiliates|related)/i.test(args.title)
+    && /^\W*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+)?(?:Borrower|Company|Issuer|Parent|Holdings|Obligors?|Loan Parties|Credit Parties|Guarantors?)\b[^.]{0,120}\b(?:shall|will)\b[^.]{0,80}\b(?:conduct|enter into|effect|consummate|engage in)\b[^.]{0,200}\btransactions?\b[^.]{0,80}\bAffiliates?\b[^.]{0,700}\b(?:favorable|arm[’']?s[- ]length)/i.test(lead.slice(0, 1200)))
+    add("AFFILIATE_TRANSACTIONS", 3, "obligation-form");
   // A leading clause caption ("(a) Mergers, Consolidations, Disposal of Assets, Etc. The Borrower will not ...") is
   // heading text of the section too.
   const caption = /^\s*\([a-z]\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s/.exec(args.leadIn)?.[1] ?? "";
@@ -176,12 +208,21 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     }
     for (const [f, re] of DEFINED) if (re.test(lead)) add(f, 1, "defined-term");
   }
+  let leadSentence = "";
+  if (prohibitive) {
+    const ci = /(?:shall|will|may)\s+not\b/i.exec(lead), np = noPartyMatches(lead)[0];
+    const m = IMPERATIVE.test(lead) ? { index: 0 } : [ci, np].filter(Boolean).sort((a, b) => a!.index! - b!.index!)[0] ?? null;
+    const from = lead.slice(m?.index ?? 0);
+    leadSentence = from.slice(0, Math.min(450, (from.search(/\.\s/) + 1) || 450));
+  }
   let best: CovenantFamily | null = null, score = 0;
   for (const [f, s] of scores) if (s > score) { best = f; score = s; }
   // Need at least a heading+lead-in agreement or a strong lead-in alone.
   if (score < 3) best = null;
   // Secondary families need their own heading support ("Merger, Consolidation, or Sale of Assets").
-  const families = best ? [best, ...[...scores].filter(([f, s]) => f !== best && s >= 3 && evidence.includes(`${f}:heading`)).map(([f]) => f)] : [];
+  // Conjoined lead-in objects ("make any Investments or Restricted Payments") credit every family named.
+  const families = best ? [best, ...[...scores].filter(([f, s]) => f !== best && s >= 3 && (evidence.includes(`${f}:heading`)
+    || (evidence.includes(`${f}:lead-in`) && evidence.includes(`${best}:lead-in`) && coordinatedObjects(leadSentence, best!, f)))).map(([f]) => f)] : [];
   return { family: best, score, families, evidence };
 }
 
