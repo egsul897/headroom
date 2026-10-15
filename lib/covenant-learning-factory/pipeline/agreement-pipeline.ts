@@ -18,6 +18,9 @@ import { runCovenantComputation } from "../../contract-model/covenant-computatio
 import type { ComputedBasket } from "../../contract-model/covenant-computation/types";
 import { buildComputationPackage } from "../sweep/build-package";
 import { emptyRuleSet } from "../learned-rules/types";
+import type { ComputedRatio } from "../../contract-model/covenant-computation/types";
+import type { IssuerFinancials } from "../xbrl/companyfacts";
+import { decide, toMetricInput, type BindDecision } from "../xbrl/bind";
 
 export const PIPELINE_VERSION = "agreement-pipeline-1";
 
@@ -56,6 +59,9 @@ export interface AgreementPipelineResult {
   crossRefs: CrossRef[];
   checklist: ChecklistItem[];
   computedBaskets: ComputedBasket[];
+  computedRatios: ComputedRatio[];
+  /** Present when filing financials were supplied: one decision per requested metric name. */
+  xbrl?: { cik: string; decisions: BindDecision[]; before: { basketsComputed: string[]; ratiosComputed: string[] } };
   families: FamilySummary[];
   stats: { nodes: number; sections: number; clauses: number; xrefs: number; xrefResolved: number; baskets: number };
 }
@@ -77,7 +83,7 @@ function checklistFamilyOf(f: string): string {
   return u;
 }
 
-export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null }): AgreementPipelineResult {
+export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null }): AgreementPipelineResult {
   const raw = args.text ?? "";
   const tree = parseDocumentTree(raw);
   const roles = new Map<string, ClauseRole>();
@@ -118,7 +124,18 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     if (key.length < 20 || cited.includes(key)) continue;
     pkg.baskets.push({ stableKey: `tree:${n.path}`, sectionRef: n.path, covenantFamily: family, documentId: pkg.baskets[0]?.documentId ?? args.sourceId, operativeText: own, role: "PERMISSION" });
   }
-  const computed = runCovenantComputation(pkg, { rules, createdAt: "1970-01-01T00:00:00.000Z" }).baskets;
+  let result = runCovenantComputation(pkg, { rules, createdAt: "1970-01-01T00:00:00.000Z" });
+  let xbrl: AgreementPipelineResult["xbrl"];
+  if (args.financials) {
+    const before = { basketsComputed: result.baskets.filter((b) => b.capStatus === "COMPUTED").map((b) => b.stableKey), ratiosComputed: result.ratios.filter((r) => r.status === "COMPUTED").map((r) => r.stableKey) };
+    // Bind filing figures only to the metric names this computation asked for, each gated by its own definition.
+    const requested = [...new Set([...result.baskets.flatMap((b) => b.missingInputs), ...result.ratios.flatMap((r) => r.missingInputs)])];
+    const decisions = requested.map((name) => decide(name, tree.text, args.financials!)).filter((d) => d.family);
+    const externalMetrics = decisions.map(toMetricInput).filter((m): m is NonNullable<typeof m> => !!m);
+    if (externalMetrics.length) result = runCovenantComputation(pkg, { rules, createdAt: "1970-01-01T00:00:00.000Z", externalMetrics });
+    xbrl = { cik: args.financials.cik, decisions, before };
+  }
+  const computed = result.baskets;
 
   const families: FamilySummary[] = [];
   const byFam = new Map<string, ComputedBasket[]>();
@@ -162,7 +179,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     textSha256: sha(raw),
     basis: tree.basis,
     textLength: raw.length,
-    tree, roles, crossRefs, checklist, computedBaskets: computed, families,
+    tree, roles, crossRefs, checklist, computedBaskets: computed, computedRatios: result.ratios, xbrl, families,
     stats: {
       nodes: tree.nodes.length,
       sections: tree.nodes.filter((n) => n.kind === "SECTION").length,

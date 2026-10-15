@@ -7,6 +7,7 @@
  * unless the clause states that conversion (it does not, here).
  */
 
+import { xbrlInUnit } from "@/lib/covenant-learning-factory/xbrl/bind";
 import { FORMULA_TAXONOMY } from "@/lib/basket-formula-corpus";
 import type { FormulaKind } from "@/lib/basket-formula-corpus";
 import { applyCategoryHints } from "@/lib/covenant-learning-factory/learned-rules/apply";
@@ -274,14 +275,18 @@ function evalGrower(
       note: "Greater-of language is present. A limb could not be read from the text, so neither limb is used alone.",
     };
   }
-  const metric = metrics.find((m) => m.metricKey.toLowerCase() === metricName.toLowerCase());
-  if (!metric || metric.value.type !== "MONEY") {
+  const found = metrics.find((m) => m.metricKey.toLowerCase() === metricName.toLowerCase());
+  if (!found || found.value.type !== "MONEY") {
     return {
       ...capShell("NEEDS_INPUT", "NONE", null, null, [metricName], null),
       note: "Greater-of metric is not bound. The fixed limb is not reported as the cap.",
     };
   }
   const statedMillions = dollarAmountIsMillions(clause.operativeText, fixedToken);
+  // Filing (XBRL) inputs are exact whole dollars, so expressing them in millions is an exact rescale, not an assumption.
+  const metric = xbrlInUnit(found, statedMillions);
+  if (metric !== found) metrics = metrics.map((m) => (m === found ? metric : m));
+  if (metric.value.type !== "MONEY") return { ...capShell("NEEDS_INPUT", "NONE", null, null, [metricName], null), note: "Greater-of metric is not money." };
   const aligned =
     (statedMillions && metric.value.currency === "USD_MILLIONS") ||
     (!statedMillions && metric.value.currency === "USD");

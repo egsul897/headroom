@@ -1,0 +1,184 @@
+/**
+ * SEC XBRL companyfacts → Headroom financial inputs (general, no per-issuer logic, no AI).
+ *
+ * Fetch: data.sec.gov companyfacts / companyconcept with an identifying User-Agent (SEC_EDGAR_USER_AGENT, fail closed)
+ * and a ≤ 5 req/s limiter. Extraction: 10-K / 10-Q facts only (amendments included), deduped per period by latest
+ * filing. Balance-sheet items are the latest instant; flows are trailing twelve months:
+ *   FY fact ending at E, else  FY(ending at YTD start) + YTD(ending E) − prior-year YTD (same length, one year earlier).
+ * Anything that cannot be derived exactly is absent (callers treat it as NEEDS_INPUT); nothing is defaulted.
+ */
+import { resolveSecUserAgentFromEnv } from "../../edgar-historical-backfill/sec-identity";
+
+export interface XbrlFact { start?: string; end: string; val: number; accn: string; fy?: number; fp?: string; form: string; filed: string; frame?: string }
+export interface CompanyFacts { cik: number; entityName: string; facts: Record<string, Record<string, { units: Record<string, XbrlFact[]> }>> }
+
+export type HeadroomInput =
+  | "netIncome" | "interestExpense" | "incomeTaxes" | "depreciationAmortization" | "operatingIncome" | "revenue"
+  | "totalAssets" | "cash" | "totalDebt" | "longTermDebtNoncurrent" | "debtCurrent" | "reportedEbitdaBase";
+
+export interface FinancialValue {
+  metric: HeadroomInput;
+  /** us-gaap concept, or "a+b" / "a+b-c" for composites. */
+  concept: string;
+  periodType: "INSTANT" | "FY" | "TTM";
+  periodStart: string | null;
+  periodEnd: string;
+  /** Exact USD integer string (XBRL facts are whole dollars). */
+  value: string;
+  unit: "USD";
+  /** Source accession(s); derived rows join them with the derivation operators. */
+  accession: string;
+  form: string;
+  filed: string;
+  derivation: string;
+}
+
+export interface IssuerFinancials { cik: string; entityName: string; values: FinancialValue[]; missing: Array<{ metric: HeadroomInput; reason: string }> }
+
+const FLOW_CONCEPTS: Array<[HeadroomInput, string[]]> = [
+  ["netIncome", ["NetIncomeLoss", "ProfitLoss"]],
+  ["interestExpense", ["InterestExpense", "InterestExpenseNonoperating", "InterestExpenseDebt", "InterestAndDebtExpense"]],
+  ["incomeTaxes", ["IncomeTaxExpenseBenefit"]],
+  ["depreciationAmortization", ["DepreciationDepletionAndAmortization", "DepreciationAndAmortization", "DepreciationAmortizationAndAccretionNet"]],
+  ["operatingIncome", ["OperatingIncomeLoss"]],
+  ["revenue", ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax", "SalesRevenueNet", "RevenueFromContractWithCustomerIncludingAssessedTax"]],
+];
+const DA_COMPOSITE = ["Depreciation", "AmortizationOfIntangibleAssets"];
+const FORMS = /^10-[KQ](?:\/A)?$/;
+const DAY = 86_400_000;
+const days = (a: string, b: string) => (Date.parse(b) - Date.parse(a)) / DAY;
+
+function usd(cf: CompanyFacts, concept: string): XbrlFact[] {
+  const rows = cf.facts["us-gaap"]?.[concept]?.units?.USD ?? [];
+  const best = new Map<string, XbrlFact>();
+  for (const f of rows) {
+    if (!FORMS.test(f.form) || !Number.isFinite(f.val)) continue;
+    const k = `${f.start ?? ""}|${f.end}`;
+    const prev = best.get(k);
+    if (!prev || f.filed > prev.filed) best.set(k, f);
+  }
+  return [...best.values()];
+}
+
+const near = (a: string, b: string, tol: number) => Math.abs(days(a, b)) <= tol;
+const isAnnual = (f: XbrlFact) => !!f.start && days(f.start, f.end) >= 350 && days(f.start, f.end) <= 380;
+const big = (n: number) => BigInt(Math.round(n));
+
+/** TTM ending exactly at `end` for one concept, or null (never approximated). */
+export function ttmAt(facts: XbrlFact[], end: string): { value: bigint; start: string; parts: XbrlFact[]; derivation: string; periodType: "FY" | "TTM" } | null {
+  const durations = facts.filter((f) => f.start && f.end === end);
+  const fy = durations.find(isAnnual);
+  if (fy) return { value: big(fy.val), start: fy.start!, parts: [fy], derivation: `FY ${fy.start}..${fy.end}`, periodType: "FY" };
+  const ytd = durations.filter((f) => days(f.start!, f.end) < 350 && days(f.start!, f.end) >= 80).sort((a, b) => days(b.start!, b.end) - days(a.start!, a.end))[0];
+  if (!ytd) return null;
+  const annual = facts.find((f) => isAnnual(f) && near(f.end, new Date(Date.parse(ytd.start!) - DAY).toISOString().slice(0, 10), 7));
+  const len = days(ytd.start!, ytd.end);
+  const prior = facts.find((f) => f.start && near(f.end, new Date(Date.parse(ytd.end) - 365 * DAY).toISOString().slice(0, 10), 7) && Math.abs(days(f.start, f.end) - len) <= 10);
+  if (!annual || !prior) return null;
+  const start = new Date(Date.parse(ytd.end) - 364 * DAY).toISOString().slice(0, 10);
+  return {
+    value: big(annual.val) + big(ytd.val) - big(prior.val), start, parts: [annual, ytd, prior], periodType: "TTM",
+    derivation: `FY ${annual.start}..${annual.end} + YTD ${ytd.start}..${ytd.end} - YTD ${prior.start}..${prior.end}`,
+  };
+}
+
+function latestEnd(facts: XbrlFact[], instant: boolean): string | null {
+  const ends = facts.filter((f) => (instant ? !f.start : !!f.start)).map((f) => f.end).sort();
+  return ends.at(-1) ?? null;
+}
+
+const lastFiled = (parts: XbrlFact[]) => parts.reduce((a, b) => (b.filed > a.filed ? b : a));
+
+export function extractFinancials(cf: CompanyFacts, cikPadded: string): IssuerFinancials {
+  const values: FinancialValue[] = [];
+  const missing: IssuerFinancials["missing"] = [];
+  // One TTM end for every flow: the latest duration end of net income (else revenue), so the EBITDA base is coherent.
+  const anchor = latestEnd(usd(cf, "NetIncomeLoss"), false) ?? latestEnd(usd(cf, "ProfitLoss"), false) ?? latestEnd(usd(cf, "Revenues"), false);
+  const flow = new Map<HeadroomInput, FinancialValue>();
+  const pushFlow = (metric: HeadroomInput, concept: string, t: NonNullable<ReturnType<typeof ttmAt>>) => {
+    const lf = lastFiled(t.parts);
+    const v: FinancialValue = { metric, concept, periodType: t.periodType, periodStart: t.start, periodEnd: t.parts[t.periodType === "FY" ? 0 : 1]!.end, value: t.value.toString(), unit: "USD",
+      accession: t.parts.map((p) => p.accn).join(t.parts.length === 3 ? "|" : ""), form: lf.form, filed: lf.filed, derivation: `${concept}: ${t.derivation}` };
+    flow.set(metric, v);
+    values.push(v);
+  };
+  for (const [metric, concepts] of FLOW_CONCEPTS) {
+    if (!anchor) { missing.push({ metric, reason: "no 10-K/10-Q duration facts" }); continue; }
+    let done = false;
+    for (const c of concepts) {
+      const t = ttmAt(usd(cf, c), anchor);
+      if (t) { pushFlow(metric, c, t); done = true; break; }
+    }
+    if (!done && metric === "depreciationAmortization") {
+      const [d, a] = DA_COMPOSITE.map((c) => ttmAt(usd(cf, c), anchor));
+      if (d && a && d.start === a.start) {
+        pushFlow(metric, DA_COMPOSITE.join("+"), { ...d, value: d.value + a.value, parts: [...d.parts, ...a.parts].slice(0, 3), derivation: `(${d.derivation}) + (${a.derivation})` });
+        done = true;
+      }
+    }
+    if (!done) missing.push({ metric, reason: `no exact TTM at ${anchor} for ${concepts.join(" / ")}` });
+  }
+  // Reported EBITDA base: labeled, never a contract metric.
+  const parts = (["netIncome", "interestExpense", "incomeTaxes", "depreciationAmortization"] as const).map((m) => flow.get(m));
+  if (parts.every(Boolean)) {
+    const [ni, ie, tx, da] = parts as FinancialValue[];
+    values.push({ metric: "reportedEbitdaBase", concept: `${ni!.concept}+${ie!.concept}+${tx!.concept}+${da!.concept}`, periodType: ni!.periodType, periodStart: ni!.periodStart, periodEnd: ni!.periodEnd,
+      value: (BigInt(ni!.value) + BigInt(ie!.value) + BigInt(tx!.value) + BigInt(da!.value)).toString(), unit: "USD", accession: ni!.accession, form: ni!.form, filed: ni!.filed,
+      derivation: "Reported EBITDA base = net income + interest expense + income taxes + D&A (XBRL, TTM). Not covenant EBITDA." });
+  } else missing.push({ metric: "reportedEbitdaBase", reason: "a component (net income / interest / taxes / D&A) has no exact TTM" });
+
+  // Balance sheet at the latest Assets instant; every component must share that instant.
+  const assets = usd(cf, "Assets");
+  const bs = latestEnd(assets, true);
+  const inst = (concept: string) => (bs ? usd(cf, concept).find((f) => !f.start && f.end === bs) : undefined);
+  const pushInst = (metric: HeadroomInput, concept: string, fs: XbrlFact[]) => {
+    const lf = lastFiled(fs);
+    values.push({ metric, concept, periodType: "INSTANT", periodStart: null, periodEnd: bs!, value: fs.reduce((s, f) => s + big(f.val), 0n).toString(), unit: "USD",
+      accession: [...new Set(fs.map((f) => f.accn))].join("+"), form: lf.form, filed: lf.filed, derivation: `${concept} at ${bs}` });
+  };
+  const a = inst("Assets");
+  if (a) pushInst("totalAssets", "Assets", [a]); else missing.push({ metric: "totalAssets", reason: "no Assets instant" });
+  const cash = inst("CashAndCashEquivalentsAtCarryingValue");
+  if (cash) pushInst("cash", "CashAndCashEquivalentsAtCarryingValue", [cash]); else missing.push({ metric: "cash", reason: `no CashAndCashEquivalentsAtCarryingValue at ${bs}` });
+  const firstInst = (cs: string[]) => { for (const c of cs) { const f = inst(c); if (f) return { c, f }; } return null; };
+  const nonCur = firstInst(["LongTermDebtNoncurrent", "LongTermDebtAndCapitalLeaseObligations"]);
+  const cur = firstInst(["LongTermDebtCurrent", "DebtCurrent", "LongTermDebtAndCapitalLeaseObligationsCurrent"]);
+  const ltdTotal = inst("LongTermDebt");
+  if (nonCur) pushInst("longTermDebtNoncurrent", nonCur.c, [nonCur.f]);
+  if (cur) pushInst("debtCurrent", cur.c, [cur.f]);
+  if (nonCur && cur) pushInst("totalDebt", `${nonCur.c}+${cur.c}`, [nonCur.f, cur.f]);
+  else if (ltdTotal) pushInst("totalDebt", "LongTermDebt", [ltdTotal]);
+  else missing.push({ metric: "totalDebt", reason: `no LongTermDebt, or noncurrent + current pair, at ${bs}` });
+  return { cik: cikPadded, entityName: cf.entityName, values, missing };
+}
+
+// ---------------- fetch ----------------
+let last = 0;
+async function throttle(minGapMs = 200): Promise<void> {
+  const wait = last + minGapMs - Date.now();
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  last = Date.now();
+}
+
+export async function fetchSecJson<T>(url: string, fetchImpl: typeof fetch = fetch): Promise<T | null> {
+  const ua = resolveSecUserAgentFromEnv();
+  if (!ua) throw new Error("SEC_EDGAR_USER_AGENT (with a real contact email) is required for data.sec.gov");
+  for (let attempt = 0; attempt < 4; attempt++) {
+    await throttle();
+    const res = await fetchImpl(url, { headers: { "User-Agent": ua, Accept: "application/json" } });
+    if (res.status === 404) return null;
+    if (res.status === 429 || res.status >= 500) { await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt)); continue; }
+    if (!res.ok) throw new Error(`SEC ${res.status} for ${url}`);
+    return (await res.json()) as T;
+  }
+  throw new Error(`SEC retries exhausted for ${url}`);
+}
+
+export const pad10 = (cik: string | number) => String(cik).replace(/\D/g, "").padStart(10, "0");
+export const companyFactsUrl = (cik: string) => `https://data.sec.gov/api/xbrl/companyfacts/CIK${pad10(cik)}.json`;
+export const companyConceptUrl = (cik: string, concept: string) => `https://data.sec.gov/api/xbrl/companyconcept/CIK${pad10(cik)}/us-gaap/${concept}.json`;
+
+export async function fetchIssuerFinancials(cik: string, fetchImpl?: typeof fetch): Promise<IssuerFinancials | null> {
+  const cf = await fetchSecJson<CompanyFacts>(companyFactsUrl(cik), fetchImpl);
+  return cf ? extractFinancials(cf, pad10(cik)) : null;
+}
