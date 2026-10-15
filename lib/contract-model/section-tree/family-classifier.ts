@@ -140,11 +140,20 @@ const CONDITIONAL_PERMISSION = /^\s*(?:\([a-z0-9]+\)\s*)?(?:the\s+)?(?:issuer|co
  */
 const SUBCAPTION = /^\s*(?:\([a-z0-9]+\)\s*)?((?:[A-Z][\w’'&/-]*|of|on|and|or|to|the|in)(?:\s+(?:[A-Z][\w’'&/-]*|of|on|and|or|to|the|in)){0,7})\s*\.\s+(?=(?:Permit|Maintain|Incur|Create|Make|Declare|Sell|Enter|Merge|Pay|Prepay|Purchase|Transfer|Consolidate|Dispose|Cause|Directly)\b)/;
 
+/** Representation lead-ins: statements of fact about financial statements or condition, not undertakings. */
+const REPRESENTATION_LEAD = /\b(?:represents\s+and\s+warrants|hereby\s+represents)\b|\b(?:has|have)\s+(?:heretofore\s+)?(?:furnished|delivered)\s+to\b[^.]{0,200}\b(?:balance\s+sheets?|financial\s+statements?)\b|\bpresent\s+fairly\b|\b(?:balance\s+sheets?|financial\s+statements?)\b[^.]{0,300}\b(?:fairly\s+present|present\s+fairly|were\s+prepared\s+in\s+accordance)\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:since|as\s+of)\b[^.]{0,120}\bthere\s+has\s+(?:not\s+)?been\b/i;
+/** Amendments that only add, amend or delete definitions. */
+const DEFINITION_AMENDMENT_LEAD = /^\s*(?:\([a-z0-9]+\)\s*)?(?:(?:The|Each\s+of\s+the)\s+)?(?:following\s+)?(?:definitions?|defined\s+terms?)\b[^.:]{0,200}?\b(?:is|are)\s+(?:hereby\s+)?(?:amended|added|deleted|restated|inserted)\b|^\s*(?:\([a-z0-9]+\)\s*)?Section\s+1\.0?1\b[^.:]{0,120}?\b(?:is|are)\s+hereby\s+amended\s+by\s+(?:adding|amending|deleting|inserting|replacing)\b[^.:]{0,80}?\bdefinitions?\b/i;
+
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
   const sub = SUBCAPTION.exec(args.leadIn);
   if (sub) args = { ...args, leadIn: args.leadIn.slice(sub[0].length), title: [args.title, sub[1]].filter(Boolean).join("; ") || null };
   const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "").replace(EXCEPT_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
+  // A representation ("1.1 Financial Condition. The consolidated balance sheet ... present fairly ...") or an amendment of
+  // definitions only ("The definition of \u201cConsolidated Leverage Ratio\u201d in Section 1.01 is hereby amended ...")
+  // states no covenant, whatever its heading or the ratio words it quotes.
+  if (REPRESENTATION_LEAD.test(lead.slice(0, 400)) || DEFINITION_AMENDMENT_LEAD.test(lead.slice(0, 400))) return { family: null, score: 0, families: [], evidence: ["not-covenant:representation-or-definition"] };
   const prohibitive = PROHIBITION.test(lead);
   // The ratio subject is read from the operative test verb, past any "so long as any Loan remains outstanding ...,
   // that" survival preamble.

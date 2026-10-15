@@ -496,6 +496,10 @@ function restatedSpans(text: string, from: number, to: number, skip?: (offset: n
     if (out.length >= 50) break;
     if (skip?.(from + m.index!)) continue;
     const qs = m.index! + m[0].length;
+    // A restated definition ("The definition of \u201cX\u201d in Section 1.01 ... to read as follows: \u201cX\u201d means ...") is
+    // a definition, not a covenant.
+    const pre = body.slice(Math.max(0, m.index! - 240), m.index!);
+    if (/\b(?:definitions?|defined\s+terms?)\b[^.;]*$/i.test(pre) || /^[\s\u201c"']*[^\u201d"]{2,80}[\u201d"]\s+(?:shall\s+)?means?\b/.test(body.slice(qs, qs + 120))) continue;
     const lead0 = body.slice(qs, qs + 2000);
     const lead1 = lead0.replace(/^[\s“”"'‘\u0080-\u009f]+/, "");
     const start = from + qs + (lead0.length - lead1.length);
