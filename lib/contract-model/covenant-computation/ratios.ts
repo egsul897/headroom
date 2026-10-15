@@ -214,8 +214,9 @@ function refusedReported(entry: CatalogEntry, bound: BoundInputs): ComputedRatio
   };
 }
 
-const RATIO_HEADER = /[“"]\s*([A-Z][^"”]{2,120}?\bRatio)\s*[”"]\s*(?:shall\s+mean|means)\b/g;
-const NEXT_DEFINITION = /[“"]\s*[A-Z][^"”]{1,120}[”"]\s*(?:shall\s+(?:mean|have\s+the\s+meaning)|means|has\s+the\s+meaning)\b/;
+// "X Ratio" means … and the colon form "X Ratio": as at …, the ratio of ….
+const RATIO_HEADER = /[“"]\s*([A-Z][^"”]{2,120}?\bRatio)\s*[”"]\s*(?:shall\s+mean\b|means\b|:)/g;
+const NEXT_DEFINITION = /[“"]\s*[A-Z][^"”]{1,120}[”"]\s*(?:shall\s+(?:mean|have\s+the\s+meaning)\b|means\b|has\s+the\s+meaning\b|:)/;
 
 export function parseDefinitions(doc: PackageDocument): ParsedDefinition[] {
   const text = norm(plainText(doc.text));
@@ -227,6 +228,8 @@ export function parseDefinitions(doc: PackageDocument): ParsedDefinition[] {
     let window = text.slice(match.index, Math.min(text.length, match.index + 4000));
     const next = NEXT_DEFINITION.exec(window.slice(match[0].length));
     if (next) window = window.slice(0, match[0].length + next.index);
+    // "the ratio, determined as of …, of (i) X to (ii) Y": drop the interposed timing clause.
+    window = window.replace(/\bthe\s+(ratio|quotient),\s[\s\S]{1,500}?,\s+(of|obtained\s+by\s+dividing)\s+(?=\(|[A-Z])/, "the $1 $2 ");
     const ratioAt = window.search(/\bthe\s+(?:ratio|quotient)\s+(?:of|obtained\s+by\s+dividing)\b/i);
     if (ratioAt < 0 || ratioAt > 600) continue;
     const after = window.slice(ratioAt);
