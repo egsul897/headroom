@@ -357,6 +357,9 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     // imperative (a representation, "Schedule 5.2(i) sets forth ...", or a default trigger, "Borrower fails to pay ...").
     const after = text.slice(m.index! + m[0].length, m.index! + m[0].length + 400);
     const first = after.split(/(?<=\.)\s+(?=[A-Z(])/)[0] ?? after;
+    // Equity-plan mechanics ("Merger or Change in Control. In the event of a merger, each outstanding Option shall be
+    // assumed ...") govern awards, not the issuer's conduct.
+    if (/\b(?:outstanding\s+)?(?:options?|awards?|purchase rights?|offering periods?|participants?|the plan)\b/i.test(first) && !NEG_RE.test(first)) continue;
     if (!(/\b(?:shall|will|must|agrees?|covenants?)\b/i.test(first) || NEG_RE.test(first) || /\b(?:neither|nor)\b/i.test(first) ||
       /(?:^|,\s*)(?:Merge|Consolidate|Create|Incur|Make|Declare|Sell|Enter|Permit|Pay|Prepay|Transfer|Dispose|Maintain|Wind|Liquidate|Dissolve|Engage|Suffer)\b/.test(first))) continue;
     if (title.split(/\s+/).length > 10 || NOT_COVENANT_TITLE.test(title)) continue;
