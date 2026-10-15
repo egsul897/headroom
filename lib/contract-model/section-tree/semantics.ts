@@ -3,7 +3,7 @@
  * checklist over a SectionTree. Deterministic; no AI / LLM calls; nothing invented.
  * A family with no numeric cap is NEVER reported as unlimited.
  */
-import { negatedItemFamilies, classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
+import { type CovenantFamily, negatedItemFamilies, classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
 import { normalizeSectionNumber, sectionOf, type SectionTree, type TreeNode } from "./parse";
 
 export type ClauseRole = "PROHIBITION" | "BASKET" | "EXCEPTION_PROVISO" | "DEFINITION" | "CROSS_REFERENCE" | "OTHER";
@@ -144,7 +144,12 @@ export interface ChecklistItem {
   parts: { fixedCap: boolean; grower: boolean; ratio: boolean; exceptions: number; prohibition: boolean };
   needsInputs: string[];
   note: string;
+  /** Source locators of the operative spans the numbers were read from (additive). */
+  spans?: { path: string; start: number; end: number; resolved: boolean }[];
 }
+
+/** One operative covenant span: a section body, or a restated covenant's quoted text (never document-wide ROOT text). */
+interface OperativeSpan { id: string; path: string; start: number; end: number; resolved: boolean; node: TreeNode | null }
 
 export function covenantChecklist(tree: SectionTree, text: string): ChecklistItem[] {
   // Family per SECTION from the general classifier (lead-in prohibition object, heading, defined terms).
@@ -152,6 +157,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   // operative unit.
   const sections = tree.nodes.filter((n) => n.kind === "SECTION" || (n.kind === "ARTICLE" && !tree.nodes.some((c) => c.kind === "SECTION" && c.parentId === n.id)));
   const famOf = new Map<string, readonly string[]>();
+  const restated: OperativeSpan[] = [];
   const leadOf = (s: (typeof sections)[number]) => text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 2000));
   const prohib = new Map(sections.map((s) => [s.id, isObligorProhibitionLead(leadOf(s))]));
   for (const [i, s] of sections.entries()) {
@@ -165,20 +171,32 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // Restated articles/sections quoted later in the body ("(g) Article IX of the Credit Agreement is hereby amended and
     // restated in its entirety to read as follows: From and after ..."): classify each quoted text too.
     const fams = new Set(v.families);
-    // Enumerated covenant items (LLC separateness / "shall not take any of the following actions" lists): an item-level
-    // prohibition with a family object counts, but only inside an obligor-bound prohibition section body.
-    if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
-    if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
+    // Enumerated covenant items: an item counts only when its own structural parent's lead-in is an obligor-bound
+    // negative stem, or the item itself carries an obligor-bound prohibition.
+    if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(tree, text, s)) fams.add(f);
     famOf.set(s.id, [...fams]);
+    // Each restated covenant is its own operative span (the quoted text), so its numbers never mix with the wrapper.
+    if (!am) for (const [k, q] of restatedSpans(text, s.headingEnd, s.end).entries()) {
+      const qf = classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families.filter((f) => !fams.has(f));
+      if (!qf.length) continue;
+      const id = `${s.id}#restated${k}`;
+      famOf.set(id, qf);
+      restated.push({ id, path: `${s.path}@${q.start}-${q.end}`, start: q.start, end: q.end, resolved: q.resolved, node: null });
+    }
   }
-  // Restatements in text no section covers (an amendment with no numbered sections) belong to the document root.
+  const units: OperativeSpan[] = [...sections.map((n) => ({ id: n.id, path: n.path, start: n.start, end: n.end, resolved: true, node: n as TreeNode | null })), ...restated];
+  // Restatements in text no section covers (an amendment with no numbered sections): each restated covenant is its
+  // own span (the quoted text only). Document-wide ROOT text is never an operative span.
   const root = tree.nodes.find((n) => n.kind === "ROOT");
-  const units = [...sections];
   if (root) {
     const covered = (i: number) => sections.some((s) => s.start <= i && s.end > i);
-    const rootFams = new Set<string>();
-    for (const q of restatedTexts(text, covered)) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) rootFams.add(f);
-    if (rootFams.size) { famOf.set(root.id, [...rootFams]); units.push(root); }
+    for (const [k, q] of restatedSpans(text, 0, text.length, covered).entries()) {
+      const fams = classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families;
+      if (!fams.length) continue;
+      const id = `${root.id}#restated${k}`;
+      famOf.set(id, [...fams]);
+      units.push({ id, path: `${root.path || "ROOT"}@${q.start}-${q.end}`, start: q.start, end: q.end, resolved: q.resolved, node: null });
+    }
   }
   return CHECKLIST_FAMILIES.map((family) => {
     const hits = units.filter((s) => famOf.get(s.id)?.includes(family));
@@ -193,11 +211,20 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
           : `no operative section found, but the text has ${family} covenant evidence (${ev[0]!.kind}: "${ev[0]!.excerpt}"); not treated as unlimited`,
       };
     }
+    const spans = hits.map((h) => ({ path: h.path, start: h.start, end: h.end, resolved: h.resolved }));
+    // Fail closed: an operative span whose end could not be bound yields no numbers and no CAP_FOUND.
+    if (hits.some((h) => !h.resolved)) {
+      return {
+        family, status: "NEEDS_INPUT" as const, sectionPaths: [...new Set(hits.map((h) => h.path))],
+        parts: { fixedCap: false, grower: false, ratio: false, exceptions: 0, prohibition: false }, needsInputs: ["OPERATIVE_SPAN_UNRESOLVED"],
+        note: "operative covenant span could not be bound; no ceiling derived (fail closed)", spans,
+      };
+    }
     const body = hits.map((s) => text.slice(s.start, s.end)).join("\n");
     const fixedCap = /\$\s?[\d,]{3,}/.test(body);
     const grower = /greater of[^.;]{0,200}%/i.test(body);
     const ratio = /\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b/i.test(body);
-    const exceptions = hits.reduce((a, s) => a + tree.nodes.filter((n) => n.parentId === s.id || isDesc(tree, n, s)).filter((n) => n.kind === "CLAUSE" && n.depth === s.depth + 1).length, 0);
+    const exceptions = hits.reduce((a, s) => a + (s.node ? tree.nodes.filter((n) => n.parentId === s.node!.id || isDesc(tree, n, s.node!)).filter((n) => n.kind === "CLAUSE" && n.depth === s.node!.depth + 1).length : 0), 0);
     const needsInputs: string[] = [];
     for (const [re, name] of [[/consolidated (?:adjusted )?ebitda/i, "EBITDA"], [/total assets/i, "TOTAL_ASSETS"], [/consolidated net income/i, "NET_INCOME"], [/available amount|builder basket|cumulative credit/i, "BUILDER_BASKET_BALANCE"], [/leverage ratio|coverage ratio|fixed charge/i, "RATIO_INPUTS"]] as const) {
       if (re.test(body)) needsInputs.push(name);
@@ -205,9 +232,10 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     const status: ChecklistStatus = grower || ratio || (needsInputs.length > 0 && !fixedCap) ? "NEEDS_INPUT" : fixedCap ? "CAP_FOUND" : "CONDITIONS_LIMITED";
     return {
       family, status, sectionPaths: [...new Set(hits.map((h) => h.path))],
-      parts: { fixedCap, grower, ratio, exceptions, prohibition: hits.some((h) => isProhibitive(text.slice(h.headingEnd, h.end))) },
+      parts: { fixedCap, grower, ratio, exceptions, prohibition: hits.some((h) => isProhibitive(text.slice(h.node ? h.node.headingEnd : h.start, h.end))) },
       needsInputs,
       note: status === "CONDITIONS_LIMITED" ? "limited by conditions/exceptions without a numeric cap; never unlimited by default" : "",
+      spans,
     };
   });
 }
@@ -226,31 +254,70 @@ function amendedText(lead: string): { title: string; lead: string } | null {
   return { title: h[1]!.trim(), lead: rest.slice(h[0].length) };
 }
 
-function covenantItemFamilies(body: string): Set<string> {
-  const out = new Set<string>();
-  if (body.length > 60000) return out;
-  // A negative stem governs the items that follow its colon until the next stem.
-  const stemRe = /\b(?:shall|will|may)\s+not\b[^.:]{0,300}?\b(?:any of the following|the following actions?)[^:]{0,80}:/gi;
-  const stems = [...body.matchAll(stemRe)].map((m) => m.index! + m[0].length);
-  const itemRe = /(?:^|\n)\s*\(((?:[ivxl]{1,6})|[a-z]{1,2})\)\s+([^\n]{10,600})/g;
-  for (const m of body.matchAll(itemRe)) {
-    const at = m.index!;
-    const underStem = stems.some((st) => st <= at && at - st < 6000);
-    for (const f of negatedItemFamilies(m[2]!, underStem)) out.add(f);
+/** Lead-in of a node: its own text before its first child (the stem that governs its enumerated items). */
+function ownLead(tree: SectionTree, text: string, n: TreeNode): string {
+  const first = tree.nodes.filter((c) => c.parentId === n.id).sort((x, y) => x.start - y.start)[0];
+  return text.slice(n.headingEnd, first ? first.start : Math.min(n.end, n.headingEnd + 2000));
+}
+
+/** Negative stem ending the parent's lead-in ("The Borrower shall not ... any of the following:"), bound to an obligor;
+ *  exception/permission stems ("will not prohibit:", "may incur the following:", "unless:") never govern. */
+function governingNegativeStem(lead: string): boolean {
+  const tail = lead.trimEnd().slice(-500);
+  if (!/:\s*$/.test(tail)) return false;
+  const stem = /[^.:;]*\b(?:shall|will|may)\s+not\b[^.:]{0,300}:\s*$/i.exec(tail)?.[0];
+  if (!stem || /\b(?:prohibit|apply|applies|restrict|limit|unless|ability|required|obligat\w*|be deemed|include)\b/i.test(stem)) return false;
+  return isObligorProhibitionLead(stem);
+}
+
+function covenantItemFamilies(tree: SectionTree, text: string, s: TreeNode): Set<CovenantFamily> {
+  const out = new Set<CovenantFamily>();
+  if (s.end - s.start > 60000) return out;
+  const leadCache = new Map<string, boolean>();
+  for (const c of tree.nodes) {
+    if (c.kind !== "CLAUSE" || c.start < s.headingEnd || c.end > s.end || !isDesc(tree, c, s)) continue;
+    const parent = c.parentId ? tree.byId.get(c.parentId) : undefined;
+    if (!parent) continue;
+    let under = leadCache.get(parent.id);
+    if (under === undefined) { under = governingNegativeStem(ownLead(tree, text, parent)); leadCache.set(parent.id, under); }
+    const item = text.slice(c.headingEnd, Math.min(c.end, c.headingEnd + 600));
+    const fams = under ? negatedItemFamilies(item, true) : isObligorProhibitionLead(item) ? negatedItemFamilies(item, false) : [];
+    for (const f of fams) out.add(f);
   }
   return out;
 }
 
 /** Every "amended (and restated) in its entirety to read as follows:" instruction in a body, with its quoted text. */
 function restatedTexts(body: string, skip?: (offset: number) => boolean): { title: string | null; lead: string }[] {
-  const out: { title: string | null; lead: string }[] = [];
-  const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?[^.:]{0,120}?\bamended(?: and restated)?(?: in (?:its|their) entirety)? to read as follows:\s*/gi;
-  for (const m of body.matchAll(re)) {
+  return restatedSpans(body, 0, body.length, skip).map((q) => ({ title: q.title, lead: q.lead }));
+}
+
+const RESTATE_RE = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?[^.:]{0,120}?\bamended(?: and restated)?(?: in (?:its|their) entirety)? to read as follows:\s*/gi;
+/** Next amendment instruction or top-level amendment section after a restated text: where the quoted covenant ends. */
+const NEXT_INSTRUCTION = /\n[^\S\n]*(?:\([a-z]{1,3}\)[^\S\n]*)?(?:(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?(?:\([a-z0-9]+\))*[^\n.]{0,160}?\b(?:is|are)\s+hereby\s+(?:amended|deleted|replaced|restated)|SECTION\s+\d{1,2}\.\s+[A-Z]|ARTICLE\s+[IVXLC\d]+\b)|[”"][^\S\n]*[.;]?[^\S\n]*\n/g;
+const MAX_RESTATED = 20000;
+
+/**
+ * Restated covenant spans in text[from, to): the quoted text after each instruction, ending at the next instruction,
+ * the closing quote, or `to`. A span with no such end within MAX_RESTATED is unresolved (callers fail closed).
+ */
+function restatedSpans(text: string, from: number, to: number, skip?: (offset: number) => boolean): { title: string | null; lead: string; start: number; end: number; resolved: boolean }[] {
+  const out: { title: string | null; lead: string; start: number; end: number; resolved: boolean }[] = [];
+  const body = text.slice(from, to);
+  for (const m of body.matchAll(RESTATE_RE)) {
     if (out.length >= 50) break;
-    if (skip?.(m.index!)) continue;
-    const rest = body.slice(m.index! + m[0].length, m.index! + m[0].length + 2000).replace(/^[\s“”"'‘\u0080-\u009f]+/, "");
-    const h = /^(?:(?:section\s+)?\d{1,2}\.\d{1,3}\.?|ARTICLE\s+[IVXLC\d]+)\s+([A-Z][^.\n]{2,80})[.\n]\s*/i.exec(rest);
-    out.push(h ? { title: h[1]!.trim(), lead: rest.slice(h[0].length) } : { title: null, lead: rest });
+    if (skip?.(from + m.index!)) continue;
+    const qs = m.index! + m[0].length;
+    const lead0 = body.slice(qs, qs + 2000);
+    const lead1 = lead0.replace(/^[\s“”"'‘\u0080-\u009f]+/, "");
+    const start = from + qs + (lead0.length - lead1.length);
+    const tail = body.slice(start - from + 1, Math.min(body.length, start - from + 1 + MAX_RESTATED));
+    NEXT_INSTRUCTION.lastIndex = 0;
+    const e = NEXT_INSTRUCTION.exec(tail);
+    const hitTo = to - start <= MAX_RESTATED;
+    const end = e ? start + 1 + e.index + (/^[”"]/.test(e[0]) ? 1 : 0) : hitTo ? to : start;
+    const h = /^(?:(?:section\s+)?\d{1,2}\.\d{1,3}\.?|ARTICLE\s+[IVXLC\d]+)\s+([A-Z][^.\n]{2,80})[.\n]\s*/i.exec(lead1);
+    out.push({ ...(h ? { title: h[1]!.trim(), lead: lead1.slice(h[0].length) } : { title: null, lead: lead1 }), start, end, resolved: !!e || hitTo });
   }
   return out;
 }
