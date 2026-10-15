@@ -250,8 +250,8 @@ function articleStem(tree: SectionTree, text: string, s: TreeNode): boolean {
 }
 
 /** Families of captioned clauses ("(a) Prohibition of Fundamental Changes. Guarantor shall not ..."); offsets in skip are ignored. */
-function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<string> {
-  const out = new Set<string>();
+function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<CovenantFamily> {
+  const out = new Set<CovenantFamily>();
   const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
   let n = 0;
   for (const c of body.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s*([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
