@@ -34,6 +34,8 @@ export * from "./integrity";
 import { buildComputationPackage, type PrecedentSourceRow } from "../sweep/build-package";
 import { candidatesAsRows } from "../sweep/neon-load";
 import { buildTreeLocator } from "../sweep/tree-locator";
+import { parseDocumentTree } from "../../contract-model/section-tree/parse";
+import { covenantChecklist } from "../../contract-model/section-tree/semantics";
 import { classifyDocType, IN_SCOPE, type DocType } from "./doc-type";
 import {
   selfCheckComputation,
@@ -73,6 +75,8 @@ export interface SourceScore {
   inputSha256?: string | null;
   /** Candidate-level errors (only written via --write-findings; stripped from the report). */
   findings?: ScoreFinding[];
+  /** Report-only (never gates): checklist status per family, for TEXT_VERIFIED sources with document text. */
+  checklist?: Record<string, string> | null;
 }
 
 export interface ScoreFinding {
@@ -99,6 +103,8 @@ export interface ScoreboardReport {
   excluded?: { sourceId: string; split: Split; total: number }[];
   /** Duplicates: scored and listed, never counted. */
   duplicates?: { sourceId: string; duplicateOf: string; total: number }[];
+  /** Report-only (never gates until the owner approves): checklist MISSED per family on TEXT_VERIFIED docs. */
+  checklistMissed?: Record<Split, ChecklistMissedTotals>;
   perSource: SourceScore[];
 }
 
@@ -143,7 +149,7 @@ export function duplicateOf(sourceId: string, manifest: DevManifest): string | n
 const FIXED_NOW = "1970-01-01T00:00:00.000Z";
 
 /** Score one source exactly as the sweep does (dry run, fixed clock). */
-export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet, manifest: DevManifest): SourceScore {
+export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet, manifest: DevManifest, textVerified?: ReadonlySet<string>): SourceScore {
   const sourceId = input.source.sourceId;
   const pkg = buildComputationPackage({
     source: input.source,
@@ -189,6 +195,7 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
     counts,
     total,
     textBasis: input.documentText && input.documentText.trim() ? "DOCUMENT" : "COMPOSITE",
+    checklist: checklistOf(input, textVerified),
     findings: errors
       .filter((e) => (SCOREBOARD_CLASSES as readonly string[]).includes(e.class))
       .map((e) => {
@@ -204,6 +211,39 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
         };
       }),
   };
+}
+
+/** Report-only checklist (MISSED metric). Only TEXT_VERIFIED sources with document text; else null. */
+function checklistOf(input: ScoreboardSourceInput, textVerified?: ReadonlySet<string>): Record<string, string> | null {
+  const sha = input.source.contentSha256;
+  if (!textVerified || !sha || !textVerified.has(sha) || !input.documentText?.trim()) return null;
+  try {
+    const t = parseDocumentTree(input.documentText);
+    return Object.fromEntries(covenantChecklist(t, t.text).map((c) => [c.family, c.status]));
+  } catch {
+    return null;
+  }
+}
+
+export interface ChecklistMissedTotals {
+  docs: number;
+  missed: number;
+  byFamily: Record<string, { found: number; missed: number; absent: number }>;
+}
+
+/** Report-only metric: checklist MISSED per family (evidence exists, no section found), by split. Never gates. */
+export function checklistMissed(perSource: SourceScore[]): Record<Split, ChecklistMissedTotals> {
+  const out = { DEV: { docs: 0, missed: 0, byFamily: {} }, HELDOUT: { docs: 0, missed: 0, byFamily: {} } } as Record<Split, ChecklistMissedTotals>;
+  for (const s of perSource) {
+    if (s.duplicateOf || !s.checklist) continue;
+    const t = out[s.split];
+    t.docs += 1;
+    for (const [fam, st] of Object.entries(s.checklist)) {
+      const f = (t.byFamily[fam] ??= { found: 0, missed: 0, absent: 0 });
+      if (st === "MISSING") { f.missed += 1; t.missed += 1; } else if (st === "ABSENT_VERIFIED") f.absent += 1; else f.found += 1;
+    }
+  }
+  return out;
 }
 
 export function aggregate(
@@ -254,6 +294,7 @@ export function aggregate(
     inScopeTotals,
     excluded,
     duplicates,
+    checklistMissed: checklistMissed(sorted),
     perSource: sorted,
   };
 }
