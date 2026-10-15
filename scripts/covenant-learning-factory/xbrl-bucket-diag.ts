@@ -7,6 +7,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { gunzipSync } from "node:zlib";
 import { extractFinancials, fetchSecJson, companyFactsUrl, pad10, type CompanyFacts, type IssuerFinancials } from "../../lib/covenant-learning-factory/xbrl/companyfacts";
+import { latestInstanceFacts } from "../../lib/covenant-learning-factory/xbrl/instance-debt";
 import { headroomBound, runAgreementPipeline } from "../../lib/covenant-learning-factory/pipeline/agreement-pipeline";
 
 const SB = new URL("./scoreboard/", import.meta.url);
@@ -54,6 +55,7 @@ function basketBucket(b: { category: string; capStatus: string; note: string; mi
   return `${b.category}: ${n.slice(0, 70) || b.missingInputs.slice(0, 2).join(",")}`;
 }
 
+const usageB: Record<string, number> = {}; const usageOut: unknown[] = [];
 async function main() {
   const tally = { headroom: {} as Record<string, number>, docs: 0, baskets: { COMPUTED: 0, AT_LEAST: 0, NEEDS_INPUT: 0 } as Record<string, number>, ratios: { COMPUTED: 0, AT_LEAST: 0, AT_MOST: 0, NEEDS_INPUT: 0 } as Record<string, number> };
   const buckets: Record<string, number> = {}, rbuckets: Record<string, number> = {};
@@ -65,8 +67,9 @@ async function main() {
   for (const d of docs.slice(0, limit).filter((_, i) => i % sn === si)) {
     const fin = d.cik ? (finCache.has(d.cik) ? finCache.get(d.cik)! : (finCache.set(d.cik, await financials(d.cik)), finCache.get(d.cik)!)) : null;
     let r;
-    try { r = runAgreementPipeline({ sourceId: d.id, text: d.text(), issuerCik: d.cik, financials: fin }); } catch { continue; }
+    try { r = runAgreementPipeline({ sourceId: d.id, text: d.text(), issuerCik: d.cik, financials: fin, facilityFacts: d.cik ? await latestInstanceFacts(d.cik, TEST_DATE, `${cacheDir}/instances`) : null }); } catch { continue; }
     tally.docs++;
+    for (const h of r.headroom) if (h.kind === "BASKET") { const k = h.status === "COMPUTED" ? "COMPUTED" : (h.missing[0] ?? "").replace(/"[^"]*"/g, '"…"').replace(/: .*;.*/, "").slice(0, 70); usageB[k] = (usageB[k] ?? 0) + 1; if (h.status === "COMPUTED") usageOut.push({ doc: d.id, ...h }); }
     const bound = new Map((r.xbrl?.bounds ?? []).map((x) => [x.stableKey, x.kind]));
     const why = (name: string) => { const dec = r.xbrl?.decisions.find((x) => x.metricName === name); return !fin ? "no XBRL financials" : !dec ? `not a filing family: ${name.slice(0, 40)}` : dec.reason.replace(/:.*/, "").slice(0, 60); };
     for (const b of r.computedBaskets) {
@@ -95,7 +98,7 @@ async function main() {
     }
   }
   const sort = (o: Record<string, number>) => Object.fromEntries(Object.entries(o).sort((a, b) => b[1] - a[1]));
-  writeFileSync(out, JSON.stringify({ testDate: TEST_DATE, tally, basketBuckets: sort(buckets), ratioBuckets: sort(rbuckets), samples, computed, ratios: ratiosOut }, null, 1));
+  writeFileSync(out, JSON.stringify({ testDate: TEST_DATE, usageB, usageOut, tally, basketBuckets: sort(buckets), ratioBuckets: sort(rbuckets), samples, computed, ratios: ratiosOut }, null, 1));
   console.log(JSON.stringify({ tally, basketBuckets: Object.fromEntries(Object.entries(sort(buckets)).slice(0, 25)), ratioBuckets: sort(rbuckets) }, null, 1));
 }
 main().catch((e) => { console.error(String(e?.stack ?? e)); process.exit(1); });
