@@ -412,8 +412,8 @@ function articleStem(tree: SectionTree, text: string, s: TreeNode): boolean {
 }
 
 /** Families of captioned clauses ("(a) Prohibition of Fundamental Changes. Guarantor shall not ..."); offsets in skip are ignored. */
-function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<string> {
-  const out = new Set<string>();
+function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<CovenantFamily> {
+  const out = new Set<CovenantFamily>();
   const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
   let n = 0;
   for (const c of body.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s*([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
@@ -511,7 +511,7 @@ function isDesc(tree: SectionTree, n: TreeNode, anc: TreeNode): boolean {
 
 // ---------- family evidence (deterministic absence check) ----------
 
-const NEG = String.raw`(?:shall|will|may)\s+not\b|\bno\s+[^.;]{1,140}?\b(?:shall|will|may)\b`;
+const NEG = String.raw`(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|\bno\s+[^.;]{1,140}?\b(?:shall|will|may)\b`;
 const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }> = {
   DEBT: { heading: /\b(?:limitations? on |restrictions? on )?(?:indebtedness|incurrence of (?:indebtedness|debt)|debt)\b/i, lead: /(?:create|incur|assume|guarantee|suffer to exist|issue)[^.;]{0,100}?\b(?:indebtedness|debt)\b/i },
   LIENS: { heading: /\b(?:liens|negative pledge|limitations? on liens)\b/i, lead: /(?:create|incur|assume|grant|suffer to exist)[^.;]{0,100}?\b(?:liens?|mortgage|pledge|security interest)\b/i },
@@ -525,7 +525,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
 };
 const DESIGNATION_OR_SUSPENSION = /\bdesignat\w*\b[^.;]{0,60}\b(?:un)?restricted subsidiar|\b(?:suspension|suspended|suspend)\b[^.;]{0,40}\bcovenants?\b|\bcovenant suspension\b|\bsuspended covenants?\b/i;
 const NEG_RE = new RegExp(NEG, "i");
-const NOT_COVENANT_TITLE = /\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion|dividend equivalents|designation of|suspension of|limited condition|ratio adjustments?|pro forma|title to|ownership of|pledged|net proceeds|disposition offer|investment company/i;
+const NOT_COVENANT_TITLE = /\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion|dividend equivalents|designation of|suspension of|limited condition|ratio adjustments?|pro forma|title to|ownership of|pledged|net proceeds|disposition offer|investment company|\brating\b|existing (?:indebtedness|debt)|succession to business|\bterm loans\b|debt documents|purchase transactions/i;
 
 /**
  * Lead-in text that names a family's verb/object but is not that covenant: affiliate-transaction text for asset sales,
