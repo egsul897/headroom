@@ -174,7 +174,8 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
       // A debt-incurrence section's ratio test ("(a) ... unless the Fixed Charge Coverage Ratio ... would be at least
       // 2.0 to 1.0") is a condition to incurrence, not a maintenance covenant.
       const debtSection = v.families.includes("DEBT") || /\b(?:indebtedness|debt)\b/i.test(s.title ?? "");
-      for (const f of captionFamilies(text.slice(s.headingEnd, s.end))) if (!(f === "FINANCIAL_RATIOS" && debtSection)) fams.add(f);
+      // (A caption that names the ratio covenant itself, "7. FINANCIAL COVENANTS.", still counts.)
+      for (const f of captionFamilies(text.slice(s.headingEnd, s.end), undefined, debtSection)) fams.add(f);
     }
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end), articleStem(tree, text, s))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of restatedFamilies(q)) fams.add(f);
@@ -268,11 +269,11 @@ function articleStem(tree: SectionTree, text: string, s: TreeNode): boolean {
 }
 
 /** Families of captioned clauses ("(a) Prohibition of Fundamental Changes. Guarantor shall not ..."); offsets in skip are ignored. */
-function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<CovenantFamily> {
+function captionFamilies(body: string, skip?: (offset: number) => boolean, debtSection = false): Set<CovenantFamily> {
   const out = new Set<CovenantFamily>();
   const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
   let n = 0;
-  for (const c of body.matchAll(/(?:^|\n)\s*(?:\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)|\d{1,2}\.\d{1,3}\.\d{1,3}\.?)\s*([A-Z][^.\n]{3,90}?(?:\n[a-zA-Z][^.\n]{1,60}?)?)\s*\.\s+(?=[A-Z]|\([a-z0-9]{1,4}\)\s)/g)) {
+  for (const c of body.matchAll(/(?:^|\n)\s*(?:\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)|\d{1,2}\.\d{1,3}\.\d{1,3}\.?|\d{1,2}\.(?=[^\S\n]+[A-Z][A-Z ,;&'\u2019-]{3,60}\.\s*\n))\s*([A-Z][^.\n]{3,90}?(?:\n[a-zA-Z][^.\n]{1,60}?)?)\s*\.\s+(?=[A-Z]|\([a-z0-9]{1,4}\)\s)/g)) {
     if (c[1]!.split(/\s+/).length > 10 || skip?.(c.index!)) continue;
     // A caption wrapped onto a second line ("(d) Prohibition\nof Fundamental Changes .") has a short first line; a
     // longer one is a list item ending in a sentence.
@@ -282,7 +283,8 @@ function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<
     if (++n > 400) break;
     const rest = body.slice(c.index! + c[0].length, c.index! + c[0].length + 1500);
     const underStem = stem.test(body.slice(Math.max(0, c.index! - 400), c.index!).trimEnd() + " ") || stem.test(body.slice(0, Math.min(c.index!, 600)));
-    for (const f of classifyCovenantFamily({ title: c[1]!.replace(/\s+/g, " ").trim(), parentTitle: null, leadIn: underStem ? rest.replace(/^\s*/, "") : rest, covenantContext: true }).families) out.add(f);
+    const capTitle = c[1]!.replace(/\s+/g, " ").trim();
+    for (const f of classifyCovenantFamily({ title: capTitle, parentTitle: null, leadIn: underStem ? rest.replace(/^\s*/, "") : rest, covenantContext: true }).families) if (!(f === "FINANCIAL_RATIOS" && debtSection && !headingFamilies(capTitle).includes("FINANCIAL_RATIOS"))) out.add(f);
   }
   return out;
 }
@@ -374,7 +376,7 @@ function restatedFamilies(q: { title: string | null; lead: string }): CovenantFa
 
 function restatedTexts(body: string, skip?: (offset: number) => boolean): { title: string | null; lead: string }[] {
   const out: { title: string | null; lead: string }[] = [];
-  const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?[^.:]{0,120}?\b(?:amended(?: and restated)?(?: in (?:its|their) entirety)? to read|restated in (?:its|their) entirety(?: to read)?) as follows:\s*/gi;
+  const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?[^.:]{0,120}?\b(?:amended(?: and restated)?(?: in (?:its|their) entirety)? to read|amended and restated|restated in (?:its|their) entirety(?: to read)?) as follows:\s*/gi;
   for (const m of body.matchAll(re)) {
     if (out.length >= 50) break;
     if (skip?.(m.index!)) continue;
@@ -457,6 +459,9 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     // (Index lines are skipped for ratios only: defined-ratio indexes are common in indentures that test ratios only
     // for incurrence; for other families an index entry still points at a covenant the parse may have missed.)
     if (family === "FINANCIAL_RATIOS" && (/^[^\n]*\n\s*\d{1,2}\.\d{1,3}\s*\n/.test(afterTitle) || /\s\d{1,3}\s*$/.test(title))) continue;
+    // Nor a section that states none ("6.26 Financial Covenants. None."), a calculation convention ("Financial
+    // Covenant Calculations"), or a parenthetical cross-reference ("1.1 (“Consolidated Interest Coverage Ratio”)").
+    if (family === "FINANCIAL_RATIOS" && (/^[\s.]*(?:None|\[Reserved\]|Reserved|Intentionally Omitted)\b/i.test(text.slice(m.index! + m[0].length, m.index! + m[0].length + 60)) || /\bcalculations?\b/i.test(title) || /^[(“"]/.test(title))) continue;
     // A notice duty under a covenant-sounding heading ("5.16 Fundamental Changes  Provide the Purchaser with at least 15
     // days' prior written notice ...") restricts nothing.
     if (family === "DEBT" || family === "FUNDAMENTAL_CHANGES") {
@@ -500,6 +505,9 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     if (isDefinition) continue outer;
     const imperative = false;
     if (spuriousEvidence(family, sent, lm.index)) continue;
+    // "Borrower shall not be required to maintain any minimum tangible net worth ... or comply with any similar
+    // financial covenant" disclaims the test.
+    if (family === "FINANCIAL_RATIOS" && /\bnot\s+be\s+required\s+to\s+(?:maintain|comply)\b/i.test(sent)) continue;
     if (imperative) { out.push({ kind: "LEAD_IN", excerpt: sent.trim().slice(0, 100) }); break outer; }
     if (family === "FINANCIAL_RATIOS") {
       // A ratio test is an obligation: a modal or undertaking must govern the test verb. A narrative summary

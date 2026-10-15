@@ -137,3 +137,15 @@ describe("round 7: false FOUND removals", () => {
     expect(classifyCovenantFamily({ title: "Financial Covenant", leadIn: "The Borrower shall not permit the Total Leverage Ratio as of the last day of any fiscal quarter to exceed 5.00 to 1.00.", covenantContext: true }).families).toContain("FINANCIAL_RATIOS");
   });
 });
+
+describe("round 8: FR headings without an operative section", async () => {
+  const { familyEvidence } = await import("@/lib/contract-model/section-tree/semantics");
+  it("'Financial Covenants. None.', calculation conventions and disclaimers are not ratio evidence", () => {
+    expect(familyEvidence("6.26 Financial Covenants\n\nNone.\n", "FINANCIAL_RATIOS")).toEqual([]);
+    expect(familyEvidence("1.05 Financial Covenant Calculations . Notwithstanding anything herein, ratios are computed pro forma.\n", "FINANCIAL_RATIOS")).toEqual([]);
+    expect(familyEvidence("(c) Borrower shall not be required to maintain any minimum tangible net worth, working capital, current ratio or debt-to-equity ratio or comply with any similar financial covenant.\n", "FINANCIAL_RATIOS")).toEqual([]);
+  });
+  it("minimum EBITDA and minimum cash tests", () => {
+    expect(classifyCovenantFamily({ title: "Minimum Liquidity", leadIn: "Within forty five days of the end of each fiscal quarter, the account will be measured to confirm that Pledgor has maintained a minimum cash balance of $7,000,000.", covenantContext: true }).families).toContain("FINANCIAL_RATIOS");
+  });
+});

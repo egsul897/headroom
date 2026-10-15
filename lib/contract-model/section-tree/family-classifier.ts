@@ -55,8 +55,8 @@ function obligorBound(lead: string): boolean {
   }
   return false;
 }
-const RATIO_SUBJECT = /\b(?:ratio|liquidity|net worth|financial covenants?|(?:interest|debt service|fixed charge) coverage)\b/i;
-const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bto\s+(?:exceed|be\s+(?:less|lower|greater|more|higher)\b)|\bat\s+least\b|\bmaintain\b|\b(?:not|never)\s+(?:permit|exceed)\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b|\bshall apply\b/i;
+const RATIO_SUBJECT = /\b(?:ratio|liquidity|net worth|financial covenants?|(?:interest|debt service|fixed charge) coverage|minimum (?:unrestricted )?cash(?: balance)?|(?:Consolidated |Adjusted )?EBITDA(?:R|X)? for the)\b/i;
+const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bto\s+(?:exceed|be\s+(?:less|lower|greater|more|higher)\b)|\bat\s+least\b|\bmaintain(?:ed)?\b|\b(?:not|never)\s+(?:permit|exceed)\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b|\bshall apply\b/i;
 
 const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
   ["LIENS", /\b(?:create|incur|assume|suffer|permit)\b[^.;]{0,160}\b(?:liens?|mortgages?|pledges?|security interests?|encumbrances?)\b(?!\s+(?:net|leverage|obligations|notes|credit|facility|term|secured)\b)/i],
