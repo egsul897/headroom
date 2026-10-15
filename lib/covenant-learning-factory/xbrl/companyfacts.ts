@@ -17,6 +17,8 @@ export type HeadroomInput =
   | "totalAssets" | "cash" | "totalDebt" | "longTermDebtNoncurrent" | "debtCurrent" | "reportedEbitdaBase"
   /** Cash, cash equivalents and short-term investments at the balance-sheet instant. */
   | "cashAndShortTermInvestments"
+  /** Balance-sheet equity and its tangible adjustments at the balance-sheet instant. */
+  | "equity" | "equityInclNci" | "goodwill" | "intangiblesExGoodwill"
   /** Unamortized debt premium at the balance-sheet instant (carrying amount above principal). */
   | "debtPremium"
   /** A definition line-item concept (concept column names it). */
@@ -172,9 +174,22 @@ export function extractFinancials(cf: CompanyFacts, cikPadded: string, opts: { a
   if (cur) pushInst("debtCurrent", cur.c, [cur.f]);
   if (nonCur && cur) pushInst("totalDebt", `${nonCur.c}+${cur.c}`, [nonCur.f, cur.f]);
   else if (ltdTotal) pushInst("totalDebt", "LongTermDebt", [ltdTotal]);
-  else missing.push({ metric: "totalDebt", reason: `no LongTermDebt, or noncurrent + current pair, at ${bs}` });
+  else {
+    // No total: the largest single reported borrowing caption is still borrowed money of the group, so it is a lower
+    // bound of the total (never a sum: captions can overlap). Lease-inclusive captions are not used.
+    const caps = ["DebtInstrumentCarryingAmount", "SeniorNotes", "SeniorLongTermNotes", "JuniorSubordinatedNotes", "JuniorSubordinatedDebentureOwedToUnconsolidatedSubsidiaryTrust", "SubordinatedDebt", "NotesPayable", "NotesPayableToBank", "LongTermNotesPayable", "ConvertibleNotesPayable", "LongTermLineOfCredit", "LineOfCredit", "LinesOfCreditCurrent", "SecuredDebt", "UnsecuredDebt", "OtherNotesPayable", "CommercialPaper", "ShortTermBorrowings"]
+      .map((c) => ({ c, f: inst(c) })).filter((x): x is { c: string; f: XbrlFact } => !!x.f && x.f.val > 0).sort((a, b) => b.f.val - a.f.val);
+    if (caps[0]) {
+      pushInst("totalDebt", caps[0].c, [caps[0].f]);
+      values[values.length - 1]!.derivation = `largest single reported borrowing caption ${caps[0].c} at ${bs} (no total-debt tag; lower bound of borrowed money)`;
+    } else missing.push({ metric: "totalDebt", reason: `no LongTermDebt, noncurrent + current pair, or borrowing caption at ${bs}` });
+  }
   const csti = inst("CashCashEquivalentsAndShortTermInvestments");
   if (csti) pushInst("cashAndShortTermInvestments", "CashCashEquivalentsAndShortTermInvestments", [csti]);
+  for (const [metric, concept] of [["equity", "StockholdersEquity"], ["equityInclNci", "StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"], ["goodwill", "Goodwill"], ["intangiblesExGoodwill", "IntangibleAssetsNetExcludingGoodwill"]] as const) {
+    const f = inst(concept);
+    if (f) pushInst(metric, concept, [f]);
+  }
   const prem = inst("DebtInstrumentUnamortizedPremium");
   if (prem) pushInst("debtPremium", "DebtInstrumentUnamortizedPremium", [prem]);
   return { cik: cikPadded, entityName: cf.entityName, values, missing, anchor, asOf: opts.asOf ?? null };

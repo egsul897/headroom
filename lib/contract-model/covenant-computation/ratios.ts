@@ -287,13 +287,13 @@ function metricsIn(phrase: string, docText = ""): string[] {
   const qualified = /\b(?:that\s+is|which\s+is|to\s+the\s+extent)\s+(?:secured|subordinated)|\bsecured\s+by\b|\bsecured\s+on\b/i.test(flat);
   const cleaned = flat.replace(/\((?:[ivxlIVXL]{1,5}|[a-zA-Z]{1,2}|\d{1,2})\)/g, " ").replace(/\s+/g, " ");
   const out: string[] = [];
-  const run = /(?:[A-Z][A-Za-z\-]*|EBITDA\w*)(?:\s+(?:(?:and|of)\s+)?(?:[A-Z][A-Za-z\-]*|EBITDA\w*))*/g;
+  const run = /(?:[A-Z][A-Za-z\-]*|EBITDA\w*)(?:\s+(?:(?:and|of|to)\s+)?(?:[A-Z][A-Za-z\-]*|EBITDA\w*))*/g;
   for (const m of cleaned.matchAll(run)) {
     let term = m[0].replace(NOT_OPERAND, "").trim();
     const defined = (t: string) => docText && new RegExp(`[“"]\\s*${t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+")}\\s*[”"]\\s*(?:shall\\s+)?(?:mean|means|has\\s+the\\s+meaning)`, "i").test(docText);
-    if (/\s(?:and|of)\s/.test(term) && !defined(term)) {
+    if (/\s(?:and|of|to)\s/.test(term) && !defined(term)) {
       // Keep the parts that are operands on their own.
-      for (const part of term.split(/\s+(?:and|of)\s+/)) if (FINANCIAL_HEAD.test(part) && !/^(?:the|The)$/.test(part)) out.push(part);
+      for (const part of term.split(/\s+(?:and|of|to)\s+/)) if (FINANCIAL_HEAD.test(part) && !/^(?:the|The)$/.test(part)) out.push(part);
       continue;
     }
     if (FINANCIAL_HEAD.test(term) && !/^(?:Amount)$/.test(term)) out.push(term);

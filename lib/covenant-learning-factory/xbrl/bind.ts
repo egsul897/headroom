@@ -15,21 +15,27 @@ import { evaluateDefinition, type DefinitionEvaluation } from "./definition-item
 
 export const XBRL_SOURCE_PREFIX = "sec-xbrl:";
 
-type Family = "ASSETS" | "EBITDA" | "DEBT" | "NET_DEBT" | "INTEREST" | "CASH";
+type Family = "ASSETS" | "EBITDA" | "DEBT" | "NET_DEBT" | "INTEREST" | "CASH" | "CAPITALIZATION" | "NET_WORTH";
 
 export function familyOfMetricName(name: string): Family | null {
   const n = name.replace(/\s+/g, " ").trim();
+  if (/^(?:consolidated\s+)?tangible\s+net\s+worth$/i.test(n)) return "NET_WORTH";
   if (/tangible|net assets|current assets|fixed assets|eligible|receivable|inventor/i.test(n)) return null;
   if (/^(?:the\s+)?(?:consolidated\s+)?(?:total\s+)?(?:consolidated\s+)?assets$/i.test(n) || /^total consolidated assets$/i.test(n)) return "ASSETS";
   if (/^(?:(?:LTM|TTM|Trailing|Four\s+Quarter)\s+)?(?:consolidated\s+)?(?:adjusted\s+)?EBITDA$/i.test(n)) return "EBITDA";
   if (/^(?:consolidated\s+)?(?:total\s+)?(?:consolidated\s+)?(?:funded\s+)?(?:debt|indebtedness)$/i.test(n)) return "DEBT";
   if (/^(?:consolidated\s+)?(?:total\s+)?net\s+(?:funded\s+)?(?:debt|indebtedness)$/i.test(n)) return "NET_DEBT";
+  if (/^(?:consolidated\s+)?(?:total\s+)?capitali[sz]ation$/i.test(n)) return "CAPITALIZATION";
+  // Any other defined debt term ("Debt to Capitalization Ratio Indebtedness") is gated by its own definition; ranking
+  // and security subsets never bind.
+  if (/(?:Debt|Indebtedness)$/.test(n) && !/secured|lien|senior|subordinat|junior|non-?funding|net\b|recourse|vehicle|project|securiti/i.test(n)) return "DEBT";
+  if (/^(?:consolidated\s+)?(?:tangible\s+)?(?:net\s+worth|(?:share|stock)holders[’']?\s+equity)$/i.test(n)) return "NET_WORTH";
   if (/^(?:consolidated\s+)?(?:total\s+)?interest expense$/i.test(n)) return "INTEREST";
   if (/^(?:unrestricted\s+)?cash(?: and cash equivalents)?$/i.test(n)) return "CASH";
   return null;
 }
 
-const FAMILY_INPUT: Record<Family, HeadroomInput> = { ASSETS: "totalAssets", EBITDA: "reportedEbitdaBase", DEBT: "totalDebt", NET_DEBT: "totalDebt", INTEREST: "interestExpense", CASH: "cash" };
+const FAMILY_INPUT: Record<Family, HeadroomInput> = { ASSETS: "totalAssets", EBITDA: "reportedEbitdaBase", DEBT: "totalDebt", NET_DEBT: "totalDebt", INTEREST: "interestExpense", CASH: "cash", CAPITALIZATION: "totalDebt", NET_WORTH: "equity" };
 
 /** Items that make a definition non-derivable from XBRL. Each match is reported as the NEEDS_INPUT reason. */
 const NON_DERIVABLE: Array<[string, RegExp]> = [
@@ -76,6 +82,8 @@ export function findDefinition(text: string, term: string): string | null {
 }
 
 export interface BindDecision {
+  /** Capitalization = debt + equity: the lower-bounded debt term it grows with (a debt/capitalization ratio rises with it). */
+  growsWith?: string;
   metricName: string; family: Family | null;
   /** LOWER_BOUND: bound at a value the true metric is at least (only unmapped add-backs remain). */
   status: "BOUND" | "LOWER_BOUND" | "NEEDS_INPUT";
@@ -87,6 +95,8 @@ export function decide(metricName: string, text: string, fin: IssuerFinancials):
   const family = familyOfMetricName(metricName);
   if (!family) return { metricName, family, status: "NEEDS_INPUT", reason: "not a filing-derivable metric family", definition: null };
   if (family === "DEBT" || family === "NET_DEBT") return decideDebt(metricName, family, text, fin);
+  if (family === "NET_WORTH") return decideNetWorth(metricName, text, fin);
+  if (family === "CAPITALIZATION") return decideCapitalization(metricName, text, fin);
   if (family === "EBITDA" || family === "INTEREST") {
     // Line-item evaluation of the agreement's own definition (definition-items.ts). A trailing-period wrapper
     // ("LTM EBITDA" means Consolidated EBITDA for the most recent four fiscal quarters) is the wrapped term over the
@@ -127,7 +137,7 @@ const DEBT_NARROWING: Array<[string, RegExp]> = [
   ["unrestricted / excluded / non-recourse subsidiaries", /\bUnrestricted\s+Subsidiar|\bExcluded\s+Subsidiar|\bnon-?recourse|\bNon-?Guarantor/i],
   ["securitization / receivables financing", /\bsecuriti[sz]ation|\breceivables?\s+(?:financ|facilit|program)|\bfactoring/i],
   ["secured / lien / ranking subset", /\b(?:secured\s+by|that\s+is\s+secured|first\s+lien|second\s+lien|senior\s+secured|subordinated)\b/i],
-  ["exclusion of borrowed money", /\b(?:excluding|exclusive\s+of|other\s+than|except|shall\s+not\s+include|does\s+not\s+include|but\s+not)\b[^.;]{0,140}\b(?:Indebtedness|Debt|borrow|notes|loans|bonds|debentures)/i],
+  ["exclusion of borrowed money", /\b(?:excluding|exclusive\s+of|excluded\s+from|be\s+excluded|other\s+than|except|shall\s+not\s+include|does\s+not\s+include|but\s+not)\b[^.;]{0,140}\b(?:Indebtedness|Debt|borrow|notes|loans|bonds|debentures)/i],
   ["netting", /\b(?:minus|less|net\s+of|reduced\s+by)\b/i],
 ];
 
@@ -194,6 +204,57 @@ function decideDebtBody(metricName: string, body: string, def: string, text: str
   const input: FinancialValue = { ...debt, derivation: `${debt.derivation} (carrying amount; contract debt counts at least this borrowed money)` };
   return { metricName, family: "DEBT", status: "LOWER_BOUND", reason: "definition counts the consolidated group's borrowed money with no carve-out; XBRL long-term debt is a lower bound", definition: def.slice(0, 400), input,
     evaluation: { kind: "EBITDA", term: metricName, status: "LOWER_BOUND", value: debt.value, base: null, items: [], missing: ["debt items beyond XBRL long-term debt (leases, letters of credit, guarantees, short-term borrowings)"], reason: "debt lower bound", periodEnd: debt.periodEnd } };
+}
+
+/** Equity the agreement defines as GAAP shareholders' equity (optionally less goodwill and intangibles): exact from XBRL. */
+function equityFrom(body: string, text: string, fin: IssuerFinancials): { input: FinancialValue } | { reason: string } {
+  const nci = /non-?controlling|minority/i.test(body) && !/\b(?:excluding|other\s+than|less)\b[^.;]{0,40}(?:non-?controlling|minority)/i.test(body);
+  const eq = fin.values.find((v) => v.metric === (nci ? "equityInclNci" : "equity"));
+  if (!eq) return { reason: `no XBRL ${nci ? "equity including noncontrolling interests" : "stockholders' equity"} at the balance-sheet instant` };
+  if (/\bRestricted\s+Subsidiar/i.test(body) && /"\s*Unrestricted\s+Subsidiary\s*"\s*(?:shall\s+)?means/i.test(text.replace(/[“”]/g, '"'))) return { reason: "scope is the restricted group; the filing consolidates unrestricted subsidiaries" };
+  const tangible = /goodwill|intangible/i.test(body);
+  // Anything beyond equity (and, for tangible net worth, goodwill and intangibles) is not in the filing figure.
+  const rest = body.replace(/\([^)]*\)/g, " ").replace(/goodwill|intangibles?(?:\s+assets)?(?:\s*\(net\))?|net\s+of\s+amortization/gi, " ");
+  if (/\bplus\b|\badd\b|\bexclud\w*|\bother\s+than\b|\bDisqualified\b|\btreasury\b|\baccumulated\s+other\s+comprehensive|\bmark-to-market|\bdeferred\b|\bpast\s+due|\bwrite-?(?:ups?|downs?)/i.test(rest)) return { reason: "net worth definition adjusts equity by items not in the filing figure" };
+  if (!tangible) return { input: eq };
+  const gw = fin.values.find((v) => v.metric === "goodwill"), ia = fin.values.find((v) => v.metric === "intangiblesExGoodwill");
+  if (!gw || !ia) return { reason: "no XBRL goodwill and intangible assets at the balance-sheet instant" };
+  if (gw.periodEnd !== eq.periodEnd || ia.periodEnd !== eq.periodEnd) return { reason: "equity, goodwill and intangibles are not at one instant" };
+  return { input: { ...eq, concept: `${eq.concept}-${gw.concept}-${ia.concept}`, value: (BigInt(eq.value) - BigInt(gw.value) - BigInt(ia.value)).toString(), accession: [...new Set([eq.accession, gw.accession, ia.accession])].join("+"), derivation: `${eq.concept} ${eq.value} - ${gw.concept} ${gw.value} - ${ia.concept} ${ia.value} at ${eq.periodEnd}` } };
+}
+
+function decideNetWorth(metricName: string, text: string, fin: IssuerFinancials): BindDecision {
+  const def = findDefinition(text, metricName);
+  const plainName = /^(?:the\s+)?(?:consolidated\s+)?(?:total\s+)?(?:share|stock)holders[’']?\s+equity$/i.test(metricName);
+  if (!def && !plainName) return { metricName, family: "NET_WORTH", status: "NEEDS_INPUT", reason: "term is not defined in the agreement text; definition needed", definition: null };
+  const body = def ? def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*/i, "") : "total stockholders' equity determined on a consolidated basis in accordance with GAAP";
+  if (!/\b(?:share|stock)holders[’']?\s+equity\b|\bnet\s+worth\b|total\s+assets[^.;]{0,40}(?:over|minus|less)[^.;]{0,20}total\s+liabilities/i.test(body)) return { metricName, family: "NET_WORTH", status: "NEEDS_INPUT", reason: "net worth definition is not balance-sheet equity", definition: def?.slice(0, 400) ?? null };
+  const r = equityFrom(body.replace(/total\s+assets[^.;]{0,40}(?:over|minus|less)[^.;]{0,20}total\s+liabilities/i, "stockholders' equity"), text, fin);
+  if ("reason" in r) return { metricName, family: "NET_WORTH", status: "NEEDS_INPUT", reason: r.reason, definition: def?.slice(0, 400) ?? null };
+  return { metricName, family: "NET_WORTH", status: "BOUND", reason: "definition is GAAP equity (less goodwill and intangibles where stated); exact from XBRL", definition: def?.slice(0, 400) ?? null, input: r.input };
+}
+
+/** "Total Capitalization" = <debt term> + shareholders' equity: debt lower bound + exact equity, growing with that debt term. */
+function decideCapitalization(metricName: string, text: string, fin: IssuerFinancials): BindDecision {
+  const na = (reason: string, def: string | null = null): BindDecision => ({ metricName, family: "CAPITALIZATION", status: "NEEDS_INPUT", reason, definition: def });
+  const def = findDefinition(text, metricName);
+  if (!def) return na("term is not defined in the agreement text; definition needed");
+  const body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*/i, "");
+  const m = /\bsum\b[^.]*?(?:\(\s*(?:a|i|1|x)\s*\)\s*)?(?:the\s+)?([A-Z][A-Za-z ]{2,80}?(?:Debt|Indebtedness))\b([\s\S]*?)(?:\band\b|\bplus\b)\s*(?:\(\s*(?:b|ii|2|y)\s*\)\s*)?([\s\S]*)$/.exec(body);
+  if (!m) return na("capitalization definition is not debt plus equity", def.slice(0, 400));
+  const debtTerm = m[1]!.trim().replace(/^(?:aggregate\s+)?/i, "");
+  const eqPart = m[3]!;
+  if (/\bplus\b|\band\s+\(\s*(?:c|iii|3|z)\s*\)/i.test(eqPart)) return na("capitalization adds more than debt and equity", def.slice(0, 400));
+  const debt = decideDebt(debtTerm, familyOfMetricName(debtTerm) === "NET_DEBT" ? "NET_DEBT" : "DEBT", text, fin);
+  if (debt.status === "NEEDS_INPUT" || !debt.input) return na(`debt term "${debtTerm}": ${debt.reason}`, def.slice(0, 400));
+  const eq = equityFrom(eqPart, text, fin);
+  if ("reason" in eq) return na(eq.reason, def.slice(0, 400));
+  if (BigInt(eq.input.value) <= 0n) return na("equity is not positive; capitalization ratio direction is not monotone", def.slice(0, 400));
+  if (eq.input.periodEnd !== debt.input.periodEnd) return na("debt and equity are not at one balance-sheet instant", def.slice(0, 400));
+  const value = (BigInt(debt.input.value) + BigInt(eq.input.value)).toString();
+  const input: FinancialValue = { ...debt.input, concept: `${debt.input.concept}+${eq.input.concept}`, value, accession: [...new Set([debt.input.accession, eq.input.accession])].join("+"), derivation: `(${debt.input.derivation}) + ${eq.input.derivation}` };
+  return { metricName, family: "CAPITALIZATION", status: "LOWER_BOUND", growsWith: debtTerm, reason: `capitalization = "${debtTerm}" (lower bound) + equity (exact)`, definition: def.slice(0, 400), input,
+    evaluation: { kind: "EBITDA", term: metricName, status: "LOWER_BOUND", value, base: null, items: [], missing: debt.evaluation?.missing ?? [], reason: "capitalization lower bound", periodEnd: debt.input.periodEnd } };
 }
 
 export function toMetricInput(d: BindDecision): MetricInput | null {

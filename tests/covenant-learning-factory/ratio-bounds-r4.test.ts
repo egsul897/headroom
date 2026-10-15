@@ -42,3 +42,15 @@ describe("round 4: maintenance limits, defined ratios, debt bounds", () => {
     expect(headroomBound("AT_MOST", "MAX")).toBe("AT_LEAST");
   });
 });
+
+describe("round 5: debt to capitalization", () => {
+  const f2: IssuerFinancials = { ...fin, values: [...fin.values, fv("equity", "3000", "StockholdersEquity")] };
+  const text = '"Consolidated Indebtedness" shall mean consolidated Indebtedness for the Borrower and its Subsidiaries. "Consolidated Capitalization" shall mean the sum of (a) Consolidated Indebtedness and (b) the consolidated stockholders\' equity (determined in accordance with GAAP) of the Borrower. "Z" means y.';
+  it("capitalization is the debt lower bound plus exact equity and grows with that debt term", () => {
+    expect(decide("Consolidated Capitalization", text, f2)).toMatchObject({ status: "LOWER_BOUND", growsWith: "Consolidated Indebtedness", input: { value: "4000" } });
+  });
+  it("a debt definition that excludes some notes is not a bound", () => {
+    const t = '"Total Debt" means the principal amount of Indebtedness of the Borrower and its Subsidiaries on a consolidated basis; provided that there shall be excluded from Total Debt the amount of any Indebtedness incurred under any offering of notes. "Z" means y.';
+    expect(decide("Total Debt", t, f2).status).toBe("NEEDS_INPUT");
+  });
+});

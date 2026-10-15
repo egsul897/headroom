@@ -164,6 +164,12 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
         if (!numLb.length && !subLb.length && !den.length) continue;
         // Numerator lower bound (a lower-bounded subtrahend makes it an upper bound); a lower-bounded denominator turns
         // the direction. Mixed directions, or a bounded denominator under a negative numerator, give no bound.
+        // Debt / (that same debt + equity) rises with the debt (equity > 0): a lower-bounded debt in both places gives
+        // a lower-bounded ratio.
+        if (numLb.length === 1 && !subLb.length && den.length === 1 && den[0]!.growsWith && den[0]!.growsWith.toLowerCase() === numLb[0]!.metricName.toLowerCase()) {
+          bounds.push({ stableKey: r.stableKey, kind: "AT_LEAST", metric: numLb[0]!.metricName, missing: numLb[0]!.evaluation?.missing ?? [] });
+          continue;
+        }
         const numDir = numLb.length && subLb.length ? null : numLb.length ? "LB" : subLb.length ? "UB" : "EXACT";
         const ratioDir = numDir == null ? null : den.length ? (numDir === "LB" ? null : "UB") : numDir === "EXACT" ? null : numDir;
         const negative = r.canonical != null && r.canonical.startsWith("-");
