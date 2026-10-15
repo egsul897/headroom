@@ -1,0 +1,66 @@
+/*
+ * Dev-only brand directions for /dev/sample?brand=
+ * The product default is unchanged. These tokens are not imported
+ * by any production page. The rail stays the mid slate.
+ *
+ * Each direction uses the brand in three places only: the primary button,
+ * a thin active indicator on the rail, and the sample chart stroke.
+ */
+
+[data-brand] .button-primary {
+  background: var(--sample-brand);
+  border-color: var(--sample-brand);
+  color: #fff;
+}
+
+[data-brand] .button-primary:hover {
+  background: var(--sample-brand-hover);
+  border-color: var(--sample-brand-hover);
+  color: #fff;
+}
+
+[data-brand] .app-nav-link.active {
+  box-shadow: inset 3px 0 0 var(--sample-brand-signal);
+}
+
+.sample-chart {
+  color: var(--sample-brand, var(--navy));
+}
+
+.sample-chart svg {
+  width: 100%;
+  height: 36px;
+  display: block;
+}
+
+.sample-exec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+[data-brand="navy"] {
+  /* Deep navy. White on #12315a is 13.02:1. The rail indicator is a light steel
+     so it can be seen on the slate chip; the button and chart stay deep. */
+  --sample-brand: #12315a;
+  --sample-brand-hover: #0e2444;
+  --sample-brand-signal: #c5d0e0;
+}
+
+[data-brand="olive"] {
+  /* Desaturated stone olive, hue ~66°, saturation 0.20. Status clear stays
+     hue ~154°, saturation 0.77, so a pass chip does not match the accent.
+     #7a7d5a fails AA for both white and ink text, so the button is #6b6f4a
+     (white text 5.25:1). The rail indicator is the lighter stone. */
+  --sample-brand: #6b6f4a;
+  --sample-brand-hover: #5c6040;
+  --sample-brand-signal: #c5c6a4;
+}
+
+[data-brand="teal"] {
+  /* Petrol. White on #134e5e is 9.21:1. Hue ~193°, separate from status green. */
+  --sample-brand: #134e5e;
+  --sample-brand-hover: #0e3d48;
+  --sample-brand-signal: #9ec4cc;
+}

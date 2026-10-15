@@ -5,6 +5,7 @@ import { AppShell } from "@/components/shell/AppShell";
 import { Card } from "@/components/ui";
 import "../../home-shell.css";
 import "./rails.css";
+import "./brands.css";
 import { SAMPLE_BANNER, SAMPLE_COMPANY, SAMPLE_TICKER } from "./fixture";
 
 export const dynamic = "force-dynamic";
@@ -14,13 +15,14 @@ export const metadata = { title: "Headroom — sample data" };
  * Development illustration. Production builds take notFound().
  * This module does not import Prisma, Neon, or the dashboard service.
  */
-export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string } }) {
+export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string } }) {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") notFound();
   const screen = searchParams.screen ?? "overview";
+  const brand = searchParams.brand === "navy" || searchParams.brand === "olive" || searchParams.brand === "teal" ? searchParams.brand : undefined;
 
   if (screen === "portfolio") {
     return (
-      <div className="chooser">
+      <div className="chooser" data-brand={brand}>
         <SampleBanner />
         <header className="page-head">
           <div>
@@ -52,7 +54,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
                   <td>{row.coverage}</td>
                   <td>
                     <div className="portfolio-actions">
-                      <Link className="button button-primary" href="/dev/sample?screen=overview">
+                      <Link className="button button-primary" href={sampleHref("overview", brand)}>
                         Open sample
                       </Link>
                     </div>
@@ -70,7 +72,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
   const rail = searchParams.rail === "deep" || searchParams.rail === "mid" || searchParams.rail === "soft" ? searchParams.rail : undefined;
 
   return (
-    <div data-rail={rail}>
+    <div data-rail={rail} data-brand={brand}>
       <AppShell
         companyId="sample"
         companyName={SAMPLE_COMPANY}
@@ -79,10 +81,18 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
         pathnameOverride={path}
       >
         <SampleBanner />
-        {screen === "covenants" ? <CovenantsSample /> : screen === "capacity" ? <CapacitySample /> : <OverviewSample />}
+        {screen === "covenants" ? <CovenantsSample brand={brand} /> : screen === "capacity" ? <CapacitySample /> : <OverviewSample brand={brand} />}
       </AppShell>
     </div>
   );
+}
+
+function sampleHref(screen: string, brand?: string) {
+  const params = new URLSearchParams();
+  if (screen !== "overview") params.set("screen", screen);
+  if (brand) params.set("brand", brand);
+  const query = params.toString();
+  return query ? `/dev/sample?${query}` : "/dev/sample";
 }
 
 function SampleBanner() {
@@ -94,21 +104,31 @@ function SampleBanner() {
   );
 }
 
-function OverviewSample() {
+function OverviewSample({ brand }: { brand?: string }) {
   return (
     <div className="home-regions">
       <section className="exec-block" aria-label="Executive summary">
-        <div className="exec-block-copy">
-          <h2 className="exec-block-label">Executive summary</h2>
-          <p className="exec-block-lead">
-            What a CFO reads first. Every figure on this screen is an illustration. A real workspace leaves the slot blank until a sourced path exists.
-          </p>
+        <div className="sample-exec-head">
+          <div className="exec-block-copy">
+            <h2 className="exec-block-label">Executive summary</h2>
+            <p className="exec-block-lead">
+              What a CFO reads first. Every figure on this screen is an illustration. A real workspace leaves the slot blank until a sourced path exists.
+            </p>
+          </div>
+          <Link className="button button-primary" href={sampleHref("covenants", brand)}>
+            Open sample covenants
+          </Link>
         </div>
         <div className="home-kpis">
           <SampleKpi label="Total headroom" value="$86 million" caption="Sample incremental, secured. Not engine-backed." />
           <SampleKpi label="Utilization" value="54%" caption="Sample used against a sample cap." />
           <SampleKpi label="Covenants at risk" value="1" caption="Sample count. One clause needs a person." />
           <SampleKpi label="Next test" value="Dec 31, 2024" caption="Sample measurement date." />
+        </div>
+        <div className="home-card sample-chart" aria-hidden="true">
+          <svg viewBox="0 0 240 36" preserveAspectRatio="none">
+            <polyline fill="none" stroke="currentColor" strokeWidth="2" points="0,28 30,24 60,26 90,16 120,18 150,10 180,12 210,8 240,6" />
+          </svg>
         </div>
       </section>
       <section className="exec-block" aria-label="Covenants">
@@ -142,6 +162,14 @@ function OverviewSample() {
                 </td>
                 <td className="num">$40 million sample</td>
               </tr>
+              <tr>
+                <td>Sample pass chip</td>
+                <td>Status illustration only</td>
+                <td>
+                  <StatusBadge status="PASS" />
+                </td>
+                <td className="num">Not a capacity figure</td>
+              </tr>
             </tbody>
           </table>
         </Card>
@@ -150,7 +178,7 @@ function OverviewSample() {
   );
 }
 
-function CovenantsSample() {
+function CovenantsSample({ brand }: { brand?: string }) {
   return (
     <div className="page-frame">
       <header className="page-head">
@@ -159,6 +187,9 @@ function CovenantsSample() {
           <h1 className="page-question">What do the documents restrict?</h1>
           <p className="page-answer">Counsel starts at the clause and the redline. This text is sample language, not an agreement.</p>
         </div>
+        <Link className="button button-primary" href={sampleHref("overview", brand)}>
+          Back to sample summary
+        </Link>
       </header>
       <Card>
         <div className="card-title">Redline</div>
