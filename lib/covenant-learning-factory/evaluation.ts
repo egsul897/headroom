@@ -16,6 +16,12 @@ function eid(parts: string[]): string {
   return createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 24);
 }
 
+/**
+ * evaluation.ts COVERAGE_GAP path. The sweep does not call this function.
+ * High refusal is a compiler-abstention count, not an unbound excerpt.
+ */
+export const HIGH_REFUSAL_COVERAGE_MARKER = "refused executable with zero verified-executable";
+
 export const METRIC_DEFINITIONS = {
   supportedStructureUnits:
     "Count of compile units with supportStatus===SUPPORTED_STRUCTURE (exception-catalog support and no unresolved context). Independent of executableAuthority.",
@@ -139,7 +145,7 @@ export function evaluateCompileIndependently(args: {
       runId,
       class: "COVERAGE_GAP",
       severity: "MEDIUM",
-      message: `${refused}/${units} units refused executable with zero verified-executable — record for bounded compiler expansion (not auto-applied)`,
+      message: `${refused}/${units} units ${HIGH_REFUSAL_COVERAGE_MARKER} — record for bounded compiler expansion (not auto-applied)`,
       stage: "INDEPENDENT_EVAL",
       evidence: { units, refused, verified, supported },
       createdAt: now,

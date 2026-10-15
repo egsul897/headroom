@@ -37,7 +37,8 @@ export function statedAsMillions(excerpt: string): boolean {
 
 /** True when this dollar token is written as "$N million", not as a full dollar figure. */
 export function dollarAmountIsMillions(text: string, token: string): boolean {
-  const re = /\$\s*([\d,]+(?:\.\d+)?)\s+million\b/gi;
+  // A page marker ("-46-") may sit between the number and the word million.
+  const re = /\$\s*([\d,]+(?:\.\d+)?)\s+(?:-\s*\d{1,3}\s*-\s+)?million\b/gi;
   for (const match of text.matchAll(re)) {
     if (match[1]!.replace(/,/g, "") === token) return true;
   }

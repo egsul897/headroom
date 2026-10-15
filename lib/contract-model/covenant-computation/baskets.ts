@@ -123,8 +123,41 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   if (unlimited && (dollarCap || /\$\s?[\d,]+/.test(text) || /\d+(?:\.\d+)?\s*%/.test(text))) return "UNKNOWN";
   if (unlimited) return "UNLIMITED";
   if (dollarCap) return "FIXED_DOLLAR";
+  // A split greater-of prong is only the dollar limb: "(a) $800.0 million and" or "(i) $86,000,000".
+  if (/^\([^)]{1,8}\)\s+\$\s*[\d,]+(?:\.\d+)?(?:\s+million)?(?:\s+and)?\s*$/i.test(text)) return "FIXED_DOLLAR";
+  // Holder votes, original-issue fractions, equity-control tests, and schedule
+  // disclosure floors are numbers, not capacity caps.
+  if (isNonCapacityNumber(text)) return "UNLIMITED_BY_PURPOSE";
   if (numeric) return "UNKNOWN";
   return "UNLIMITED_BY_PURPOSE";
+}
+
+function isNonCapacityNumber(text: string): boolean {
+  if (/\b(?:not\s+to\s+exceed|shall\s+not\s+exceed|does\s+not\s+exceed|greater\s+of)\b/i.test(text)) return false;
+  if (/%\s+of\s+(?:the\s+)?(?:consolidated\s+)?(?:total\s+)?(?:assets|ebitda|net\s+income|revenues?)/i.test(text)) return false;
+  const dollars = [...text.matchAll(/\$\s*[\d,]+(?:\.\d+)?/g)];
+  const percents = [...text.matchAll(/\d+(?:\.\d+)?\s*%/g)];
+  if (dollars.length >= 1 && percents.length === 0) {
+    if (dollars.length === 1 && /in excess of \$\s*[\d,]+(?:\.\d+)?[^.]{0,120}\b(?:described|listed|set forth) on Schedule\b/i.test(text)) {
+      return true;
+    }
+    // Minimum denomination ("principal amount of $2,000 or less", "integral multiples of $1,000").
+    return dollars.every((match) => {
+      const at = match.index ?? 0;
+      const window = text.slice(Math.max(0, at - 80), Math.min(text.length, at + match[0].length + 48));
+      return /integral multiples? of|principal amount of \$\s*[\d,]+(?:\.\d+)? or less|shall be in a principal amount of/i.test(window);
+    });
+  }
+  if (dollars.length > 0 || percents.length === 0) return false;
+  return percents.every((match) => {
+    const at = match.index ?? 0;
+    const window = text.slice(Math.max(0, at - 90), Math.min(text.length, at + match[0].length + 140));
+    return (
+      /holders?\s+of\s+(?:at least|not less than|a majority)/i.test(window) ||
+      /original aggregate principal amount/i.test(window) ||
+      /\d+(?:\.\d+)?\s*%\s+or more of (?:its |the )?(?:equity|voting|capital stock)/i.test(window)
+    );
+  });
 }
 
 /** "including, without limitation" is an idiom. It does not grant unlimited capacity. */
