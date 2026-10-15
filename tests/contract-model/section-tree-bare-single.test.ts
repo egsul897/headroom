@@ -31,3 +31,18 @@ describe("conjoined prohibition objects", () => {
     expect(v.families).toEqual(["LIENS"]);
   });
 });
+
+describe("number-only heading lines", () => {
+  it("'N.N' on its own line (title line without a period, or none) becomes a section when the scan is sparse", () => {
+    const body = Array.from({ length: 6 }, (_, i) => `${i + 1}.1\nTopic ${i + 1}\n\nThe Company agrees to perform item ${i + 1} in full and on time, in each case as further described in the schedules hereto.\n\n${i + 1}.2\nThe Company will not merge, consolidate or amalgamate with any Person, except a wholly-owned Subsidiary that assumes all obligations.\n`).join("\n");
+    const t = parseDocumentTree(`FACILITY AGREEMENT\n\n${body}`);
+    const s = t.nodes.filter((n) => n.kind === "SECTION");
+    expect(s.map((n) => n.path)).toEqual(["1.1", "1.2", "2.1", "2.2", "3.1", "3.2", "4.1", "4.2", "5.1", "5.2", "6.1", "6.2"]);
+    expect(s[0]!.title).toBe("Topic 1");
+    expect(s[1]!.title).toBeNull();
+  });
+  it("backward or stray figures on their own line do not become sections", () => {
+    const t = parseDocumentTree(`AGREEMENT\n\nSection 1.01 Terms. The Company shall comply with this provision at all times while any Loan remains outstanding.\n\nSection 1.02 More. The Company shall comply with this provision at all times while any Loan remains outstanding.\n\nSection 1.03 Other. The Company shall comply with this provision at all times while any Loan remains outstanding.\n\n4.50\nTo 1.00 for each quarter.\n`);
+    expect(t.nodes.filter((n) => n.kind === "SECTION").map((n) => n.path)).toEqual(["1.1", "1.2", "1.3"]);
+  });
+});
