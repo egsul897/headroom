@@ -34,7 +34,9 @@ function stripParens(s: string): string { return s.replace(/\([^()]{0,200}\)/g, 
 function noPartyMatches(lead: string): RegExpMatchArray[] {
   return [...stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length)).matchAll(NO_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!));
 }
-const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 };
+/** "Neither the Issuer nor Parent may consolidate ..." / "Neither Borrower shall ...": a negated obligor subject. */
+const NEITHER_RE = /\b[Nn]either\s+(?:the\s+)?[A-Z][^.;:]{0,120}?\b(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated))/;
+const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 || NEITHER_RE.test(lead) };
 
 /** The prohibition binds an obligor: not the trustee, agents, lenders or holders, and not a passive "shall not be required/deemed". */
 const NON_OBLIGOR = /\b(?:trustees?|agents?|holders?|lenders?|banks?|purchasers?|registrar|noteholders?|collateral agent|arrangers?)\b/i;
@@ -46,6 +48,7 @@ function obligorBound(lead: string): boolean {
     const subject = head.slice(Math.max(0, m.index! - 70), m.index!).split(/[.;:]/).pop() ?? "";
     if (!NON_OBLIGOR.test(subject)) return true;
   }
+  for (const m of head.matchAll(new RegExp(NEITHER_RE.source, "g"))) if (!NON_OBLIGOR.test(m[0])) return true;
   for (const m of noPartyMatches(head)) {
     if (PASSIVE.test(head.slice(m.index! + m[0].length))) continue;
     if (!NON_OBLIGOR.test(m[1]! + m[2]!)) return true;
@@ -147,8 +150,8 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   if (prohibitive) {
     // Only the first prohibition sentence counts as the lead-in object.
     // Article-imperative leads ("Enter into any transaction ...") start at 0; otherwise at the first prohibition.
-    const ci = /(?:shall|will|may)\s+not\b/i.exec(lead), np = noPartyMatches(lead)[0];
-    const m = IMPERATIVE.test(lead) ? { index: 0 } : [ci, np].filter(Boolean).sort((a, b) => a!.index! - b!.index!)[0] ?? null;
+    const ci = /(?:shall|will|may)\s+not\b/i.exec(lead), np = noPartyMatches(lead)[0], ne = NEITHER_RE.exec(lead);
+    const m = IMPERATIVE.test(lead) ? { index: 0 } : [ci, np, ne].filter(Boolean).sort((a, b) => a!.index! - b!.index!)[0] ?? null;
     // The object may follow a colon and a first enumerated clause ("shall not: (i) declare or pay any dividend").
     const from = lead.slice(m?.index ?? 0);
     const sentence = from.slice(0, Math.min(450, (from.search(/\.\s/) + 1) || 450));
