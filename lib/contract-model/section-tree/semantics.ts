@@ -180,6 +180,9 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     for (const q of restatedTexts(text, covered)) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) rootFams.add(f);
     if (rootFams.size) { famOf.set(root.id, [...rootFams]); units.push(root); }
   }
+  // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
+  const opening = text.slice(0, 4000);
+  const partialDocument = /\bFORM\s+8-K\b|\bCURRENT REPORT\b/i.test(opening) || /\b(?:AMENDMENT|WAIVER|JOINDER|SUPPLEMENTAL INDENTURE|INCREMENTAL)\b[^\n]{0,80}\b(?:TO|NO\.)\b/.test(opening);
   return CHECKLIST_FAMILIES.map((family) => {
     const hits = units.filter((s) => famOf.get(s.id)?.includes(family));
     if (hits.length === 0) {
@@ -189,7 +192,9 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
         family, status: absent ? ("ABSENT_VERIFIED" as const) : ("MISSING" as const), sectionPaths: [],
         parts: { fixedCap: false, grower: false, ratio: false, exceptions: 0, prohibition: false }, needsInputs: [],
         note: absent
-          ? "no operative lead-in or heading for this family anywhere in the document; not treated as unlimited"
+          ? partialDocument
+            ? "absent from this document (an amendment or 8-K, not the full agreement; the base agreement may contain it); not treated as unlimited"
+            : "no operative lead-in or heading for this family anywhere in the document; not treated as unlimited"
           : `no operative section found, but the text has ${family} covenant evidence (${ev[0]!.kind}: "${ev[0]!.excerpt}"); not treated as unlimited`,
       };
     }
@@ -276,10 +281,25 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   AFFILIATE_TRANSACTIONS: { heading: /\btransactions? with affiliates\b|\baffiliate transactions\b/i, lead: /(?:enter into|permit to exist|engage in)[^.;]{0,140}?\baffiliates?\b/i },
   FUNDAMENTAL_CHANGES: { heading: /\b(?:mergers?|consolidations?|fundamental changes|merger,? consolidation)\b/i, lead: /\b(?:merge|consolidate|amalgamate|liquidate|dissolve)\b/i },
   PREPAYMENTS: { heading: /\b(?:prepayments? of (?:other )?(?:indebtedness|debt)|restricted debt payments|payments? of (?:subordinated|junior) (?:indebtedness|debt))\b/i, lead: /(?:prepay|redeem|repurchase|defease|retire)[^.;]{0,100}?\b(?:subordinated|junior)?\s*(?:indebtedness|debt)\b/i },
-  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?)\b[^.;]{0,120}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
+  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge|minimum liquidity)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?)\b[^.;]{0,120}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
 };
 const NEG_RE = new RegExp(NEG, "i");
 const NOT_COVENANT_TITLE = /definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
+
+/**
+ * Lead-in text that names a family's verb/object but is not that covenant: affiliate-transaction text for asset sales,
+ * lender funding mechanics for investments, payment waterfalls, LLC dissolution timing, secured-debt (liens) clauses
+ * for debt.
+ */
+function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): boolean {
+  if (/\b(?:shall|will|may)\s+be\s+applied\b[^.]{0,200}\b(?:first|second)\b|\bpriority of payments\b|\bwaterfall\b|\bfirst,\s+to\b[^.]{0,200}\bsecond,\s+to\b/i.test(sent)) return true;
+  const before = sent.slice(Math.max(0, at - 160), at);
+  if (family === "ASSET_SALES" && /\baffiliates?\b/i.test(sent)) return true;
+  if (family === "INVESTMENTS" && (/\b(?:lenders?|banks?|issuing bank|swingline lender|agent)s?\b[^.;]{0,80}$/i.test(before) || /\b(?:not be obligated|obligated to)\b/i.test(sent) || /\badvances?\b/i.test(sent) && /\b(?:lenders?|borrowing)\b/i.test(sent))) return true;
+  if (family === "FUNDAMENTAL_CHANGES" && !/\b(?:merge|consolidate|amalgamate)\b/i.test(sent) && /\b(?:dissol|liquidat|wind(?:ing)? up)\w*\b[^.]{0,200}\b(?:prior to|until|upon the (?:first )?(?:to )?occur|liquidation event|the act)\b/i.test(sent)) return true;
+  if (family === "DEBT" && /\b(?:indebtedness|debt)\b[^.;]{0,80}\bsecured by\b[^.;]{0,80}\b(?:mortgage|lien|security interest|pledge)/i.test(sent)) return true;
+  return false;
+}
 
 /**
  * Evidence that a covenant family exists in the document: a heading line naming it ("6.01 Liens") or an
@@ -298,6 +318,12 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     // word inside an unrelated heading ("Evidence of Debt", "Trustee as Holder of Senior Indebtedness").
     if (hm && hm.index <= 25 && !NOT_COVENANT_TITLE.test(title)) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
   }
+  // Clause-caption headings: "(d) Mergers and Consolidations; Disposition of Assets. The Borrower will not ...".
+  if (!out.length) for (const m of text.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
+    const title = m[1]!.trim();
+    if (title.split(/\s+/).length > 10 || NOT_COVENANT_TITLE.test(title)) continue;
+    if (title.split(/[;,]|\band\b/).some((part) => { const hm = ev.heading.exec(part.trim()); return !!hm && hm.index <= 25; })) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
+  }
   // Operative lead-ins: a sentence with the family's operative verb/object, negated (or a ratio test).
   outer: for (const para of text.split(/\n\s*\n|\n(?=\s*(?:\(?[a-z0-9]{1,4}[.)]|section\s+\d|\d{1,2}\.\d)\s)/i)) {
   // A paragraph that is a definition ("\"Guarantee Obligation\" means ... (ii) to advance or supply funds ... to
@@ -308,6 +334,11 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     const lm = ev.lead.exec(sent);
     if (!lm) continue;
     if (isDefinition) continue outer;
+    // An article imperative at a clause start ("(i) Maintain a Consolidated Net Leverage Ratio ...", "Create, incur ...
+    // any Lien") is operative on its own, including in amendments that add a section with an imperative opening.
+    const imperative = new RegExp(String.raw`^\s*(?:\([a-z0-9]{1,4}\)\s*)*` + "(?:Maintain|Permit|Create|Incur|Make|Declare|Sell|Merge|Enter into|Pay|Prepay|Transfer|Dispose|Consolidate|Assume|Grant|Acquire|Purchase)\\b").test(sent) && lm.index <= 80;
+    if (spuriousEvidence(family, sent, lm.index)) continue;
+    if (imperative) { out.push({ kind: "LEAD_IN", excerpt: sent.trim().slice(0, 100) }); break outer; }
     if (family === "FINANCIAL_RATIOS") {
       // A ratio test is an obligation: a modal or undertaking must govern the test verb. A narrative summary
       // ("The Credit Agreement contains certain covenants, a financial covenant ... requiring ... to maintain")
