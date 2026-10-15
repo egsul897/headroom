@@ -421,7 +421,15 @@ function findRegions(text: string, rules?: LearnedRuleSet): Region[] {
     // number differs ("7.2 …" must not absorb "11.23 Incremental Revolving Credit Commitments").
     if (start.sectionNumber) {
       const major = start.sectionNumber.split(".")[0];
-      const other = bare.find((h) => h.at > start.at + 20 && h.major !== major);
+      // Nor into the next sibling section of the same article ("6.12 Liens … (j) …$100,000,000. 6.13 Affiliates . …").
+      const num = (x: string) => x.split(".").map((p) => Number(p) || 0);
+      const [smaj, smin] = num(start.sectionNumber);
+      const other = bare.find((h) => {
+        if (h.at <= start.at + 20) return false;
+        if (h.major !== major) return true;
+        const [hmaj, hmin] = num(h.number);
+        return hmaj === smaj && hmin === (smin ?? 0) + 1;
+      });
       if (other && other.at < nextBoundary) nextBoundary = other.at;
     }
     let end = nextBoundary;
@@ -458,12 +466,12 @@ function definitionBoundaries(text: string): number[] {
  * Bare-numbered headings ("… Lender. 11.23 Incremental Revolving Credit Commitments . (a) IBM …"). The text is
  * whitespace-normalized, so a heading is: sentence end, number, Title-Case words, period.
  */
-function bareHeadings(text: string): Array<{ at: number; major: string }> {
-  const out: Array<{ at: number; major: string }> = [];
+function bareHeadings(text: string): Array<{ at: number; major: string; number: string }> {
+  const out: Array<{ at: number; major: string; number: string }> = [];
   const bare = new RegExp(String.raw`(?:[.;:)]\s+)(${SECTION_NUMBER})\.?\s+([A-Z][A-Za-z'’&,;\- ]{2,140}?)\s*\.\s`, "g");
   for (const match of text.matchAll(bare)) {
     if (match.index == null || !isTitleCase(match[2] ?? "")) continue;
-    out.push({ at: match.index + match[0].indexOf(match[1]!), major: match[1]!.split(".")[0]! });
+    out.push({ at: match.index + match[0].indexOf(match[1]!), major: match[1]!.split(".")[0]!, number: match[1]! });
   }
   return out;
 }
