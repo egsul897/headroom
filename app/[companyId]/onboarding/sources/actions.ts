@@ -1,4 +1,5 @@
 "use server";
+import { requireTenantAction } from "@/lib/auth/guard";
 
 /**
  * Bare-minimum "Connect Source" action layer (docs/autonomous-retrieval-phase-a-foundation.md,
@@ -14,6 +15,7 @@ import { createIngestionJob, runAllPendingIngestionStages } from "@/lib/connecto
 import { prisma } from "@/lib/prisma";
 
 export async function connectEdgarAction(companyId: string, formData: FormData) {
+  await requireTenantAction(companyId);
   const ticker = String(formData.get("ticker") ?? "").trim();
   if (!ticker) throw new Error("Enter a ticker to connect an EDGAR source.");
   await connectSource({ companyId, connectorType: "EDGAR", config: { ticker } });
@@ -22,6 +24,7 @@ export async function connectEdgarAction(companyId: string, formData: FormData) 
 
 /** Runs an INITIALIZE job on first sync, SYNC on every sync after - the connection's own lastSuccessfulSyncAt is what decides which. */
 export async function syncConnectionAction(companyId: string, sourceConnectionId: string) {
+  await requireTenantAction(companyId);
   const connection = await prisma.companySourceConnection.findUniqueOrThrow({ where: { id: sourceConnectionId } });
   const kind = connection.lastSuccessfulSyncAt ? "SYNC" : "INITIALIZE";
   const job = await createIngestionJob({ companyId, kind, sourceConnectionId });
@@ -30,6 +33,7 @@ export async function syncConnectionAction(companyId: string, sourceConnectionId
 }
 
 export async function connectAndSyncCsvAction(companyId: string, formData: FormData) {
+  await requireTenantAction(companyId);
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) throw new Error("Choose a CSV file to upload.");
   const buffer = Buffer.from(await file.arrayBuffer());

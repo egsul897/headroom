@@ -1,4 +1,5 @@
 "use server";
+import { requireTenantAction } from "@/lib/auth/guard";
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -14,6 +15,7 @@ import { prisma } from "@/lib/prisma";
 import type { DocumentType } from "@prisma/client";
 
 export async function uploadDocumentAction(companyId: string, formData: FormData) {
+  await requireTenantAction(companyId);
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) throw new Error("Choose a file to upload.");
   const { MAX_CUSTOMER_UPLOAD_BYTES, LARGE_UPLOAD_DEFER_BYTES, stageCustomerDocument, reanalyzeCustomerDocumentFromStorage } =
@@ -100,6 +102,7 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
 }
 
 export async function retryCustomerAnalysisAction(companyId: string, documentId: string) {
+  await requireTenantAction(companyId);
   const { reanalyzeCustomerDocumentFromStorage } = await import(
     "@/lib/product/customer-intelligence/analyze-upload"
   );
@@ -111,6 +114,7 @@ export async function retryCustomerAnalysisAction(companyId: string, documentId:
 }
 
 export async function runExtractionAction(companyId: string, documentId: string) {
+  await requireTenantAction(companyId);
   const { provider, providerName, model, promptVersion, schemaVersion } = getExtractionProvider();
   await runExtractionForDocument({ companyId, documentId, provider, providerName, model, promptVersion, schemaVersion });
 
@@ -156,6 +160,7 @@ export async function runExtractionAction(companyId: string, documentId: string)
 
 /** CSV financials → FINANCIAL_FACT candidates (same connector as the sources stage). */
 export async function uploadFinancialCsvAction(companyId: string, formData: FormData) {
+  await requireTenantAction(companyId);
   const file = formData.get("file");
   if (!(file instanceof File) || file.size === 0) throw new Error("Choose a CSV file to upload.");
   const buffer = Buffer.from(await file.arrayBuffer());

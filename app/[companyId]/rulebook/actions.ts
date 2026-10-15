@@ -1,9 +1,11 @@
 "use server";
+import { requireTenantAction } from "@/lib/auth/guard";
 
 import { revalidatePath } from "next/cache";
 import { recordReviewerDecision, type ReviewDecision } from "@/lib/product/customer-intelligence/reviewer-approvals";
 
 export async function reviewProvisionAction(companyId: string, formData: FormData) {
+  await requireTenantAction(companyId);
   const sourceId = String(formData.get("sourceId") ?? "");
   const sectionRef = String(formData.get("sectionRef") ?? "");
   const category = String(formData.get("category") ?? "");
