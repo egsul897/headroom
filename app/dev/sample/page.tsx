@@ -4,6 +4,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { AppShell } from "@/components/shell/AppShell";
 import { Card } from "@/components/ui";
 import "../../home-shell.css";
+import "./rails.css";
 import { SAMPLE_BANNER, SAMPLE_COMPANY, SAMPLE_TICKER } from "./fixture";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +14,7 @@ export const metadata = { title: "Headroom — sample data" };
  * Development illustration. Production builds take notFound().
  * This module does not import Prisma, Neon, or the dashboard service.
  */
-export default function SamplePreview({ searchParams }: { searchParams: { screen?: string } }) {
+export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string } }) {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") notFound();
   const screen = searchParams.screen ?? "overview";
 
@@ -66,18 +67,21 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
   }
 
   const path = screen === "covenants" ? "/sample/covenants" : screen === "capacity" ? "/sample/capacity" : "/sample";
+  const rail = searchParams.rail === "deep" || searchParams.rail === "mid" || searchParams.rail === "soft" ? searchParams.rail : undefined;
 
   return (
-    <AppShell
-      companyId="sample"
-      companyName={SAMPLE_COMPANY}
-      ticker={SAMPLE_TICKER}
-      onboardingStatus="ACTIVE"
-      pathnameOverride={path}
-    >
-      <SampleBanner />
-      {screen === "covenants" ? <CovenantsSample /> : screen === "capacity" ? <CapacitySample /> : <OverviewSample />}
-    </AppShell>
+    <div data-rail={rail}>
+      <AppShell
+        companyId="sample"
+        companyName={SAMPLE_COMPANY}
+        ticker={SAMPLE_TICKER}
+        onboardingStatus="ACTIVE"
+        pathnameOverride={path}
+      >
+        <SampleBanner />
+        {screen === "covenants" ? <CovenantsSample /> : screen === "capacity" ? <CapacitySample /> : <OverviewSample />}
+      </AppShell>
+    </div>
   );
 }
 

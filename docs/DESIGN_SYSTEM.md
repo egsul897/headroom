@@ -98,7 +98,7 @@ The shell that shipped:
 - Contextual tabs, only on the section you are in — Covenants / Rulebook / Intelligence, or Capacity / Ledger / Certificates.
 - Finish setup — only while `companyNavItems` includes Onboarding. The palette still says Onboarding.
 
-Active state is navy on a navy tint. Status green is never used for selection. Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser.
+The rail is a mid slate, `#3a4656`, lighter than an ink bar and darker than the cool canvas. Nav text and icons are `#b7c2ce` (5.31:1). The wordmark is `#f4f6f8` (8.85:1). The active chip is a lighter slate, `#4c5c70`, with that same near-white text (6.31:1). It is not green, amber, or red. Two other rails were rendered on the sample overview and covenants screens: `#2b3644` (still heavy beside status color) and `#4a5668` (muted text only just clears AA, at 4.68:1, and the bar starts to blend into the canvas). Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser.
 
 | Item | Before | After |
 | --- | --- | --- |
