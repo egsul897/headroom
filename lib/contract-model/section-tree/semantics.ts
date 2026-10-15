@@ -783,7 +783,9 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     if (family === "FINANCIAL_RATIOS" && (/^[^\n]*\n\s*\d{1,2}\.\d{1,3}\s*\n/.test(afterTitle) || /\s\d{1,3}\s*$/.test(title))) continue;
     // A notice duty under a covenant-sounding heading ("5.16 Fundamental Changes  Provide the Purchaser with at least 15
     // days' prior written notice ...") restricts nothing.
-    if (family === "DEBT" || family === "FUNDAMENTAL_CHANGES") {
+    // A heading whose whole body is "None." / "[Reserved]" / "Intentionally Omitted" states no covenant.
+    if (/^[\s.]*(?:None|\[?(?:Reserved|Intentionally Omitted)\]?)\s*[.;]?\s*(?:\n|$)/i.test(text.slice(m.index! + m[0].length, m.index! + m[0].length + 60))) continue;
+    if (family === "DEBT" || family === "FUNDAMENTAL_CHANGES" || family === "LIENS") {
       const body = text.slice(m.index! + m[0].length, m.index! + m[0].length + 400).replace(/^[\s.]+/, "");
       const first = body.split(/(?<=\.)\s+(?=[A-Z(])/)[0] ?? body;
       if (!NEG_RE.test(first) && /\b(?:notice|inform|notify)\b/i.test(first) && !/\b(?:except|unless|without)\b/i.test(first)) continue;
