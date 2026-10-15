@@ -76,3 +76,14 @@ describe("metric names for percent limbs", () => {
     expect(namedMetricIn("in an aggregate amount not to exceed the greater of (x) an amount and (y) 15% of Consolidated Net Tangible Assets at such time")).toBe("Consolidated Net Tangible Assets");
   });
 });
+
+import { greaterOfMissingInputs } from "@/lib/contract-model/covenant-computation/baskets";
+describe("greater-of missing inputs are named from the clause", () => {
+  it("names both limbs of a non-percent greater-of (Delta 4.23 Junior Lien Debt ratio)", () => {
+    expect(greaterOfMissingInputs("plus (II) the greater of (x) the then-outstanding principal amount of Priority Lien Debt and (y) the Priority Lien Cap divided by (B) the sum of"))
+      .toEqual(["then-outstanding principal amount of Priority Lien Debt", "Priority Lien Cap"]);
+  });
+  it("names the percent limb's metric", () => {
+    expect(greaterOfMissingInputs("not to exceed the greater of (x) an amount and (y) 15% of Consolidated Net Tangible Assets")[2]).toBe("Consolidated Net Tangible Assets");
+  });
+});
