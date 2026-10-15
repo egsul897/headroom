@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusBadge } from "@/components/StatusBadge";
 import { AppShell } from "@/components/shell/AppShell";
+import { BrandMark } from "@/components/home/icons";
 import { Card } from "@/components/ui";
 import "../../home-shell.css";
 import "./rails.css";
@@ -22,48 +23,60 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
 
   if (screen === "portfolio") {
     return (
-      <div className="chooser" data-brand={brand}>
-        <SampleBanner />
-        <header className="page-head">
-          <div>
-            <p className="page-kicker">Sample portfolio</p>
-            <h1 className="page-question">Which company are you opening?</h1>
-            <p className="page-answer">
-              A sponsor or lender scans coverage here. Headroom is not on this list, because a list of made-up capacity would be a false portfolio.
-            </p>
+      <div className="app-shell sample-portfolio" data-brand={brand}>
+        <aside className="app-sidebar" aria-label="Sample brand">
+          <div className="app-brand">
+            <BrandMark />
+            <span className="app-brand-word">Headroom</span>
           </div>
-        </header>
-        <Card>
-          <div className="card-title">Sample portfolio</div>
-          <table className="portfolio-table">
-            <thead>
-              <tr>
-                <th scope="col">Company</th>
-                <th scope="col">Ticker</th>
-                <th scope="col">Watch role</th>
-                <th scope="col">Coverage</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {PORTFOLIO.map((row) => (
-                <tr key={row.name}>
-                  <td className="portfolio-name">{row.name}</td>
-                  <td>{row.ticker}</td>
-                  <td>{row.role}</td>
-                  <td>{row.coverage}</td>
-                  <td>
-                    <div className="portfolio-actions">
-                      <Link className="button button-primary" href={sampleHref("overview", brand)}>
-                        Open sample
-                      </Link>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </Card>
+        </aside>
+        <div className="app-main">
+          <div className="app-content">
+            <div className="chooser">
+              <SampleBanner />
+              <header className="page-head">
+                <div>
+                  <p className="page-kicker">Sample portfolio</p>
+                  <h1 className="page-question">Which company are you opening?</h1>
+                  <p className="page-answer">
+                    A sponsor or lender scans coverage here. Headroom is not on this list, because a list of made-up capacity would be a false portfolio.
+                  </p>
+                </div>
+              </header>
+              <Card>
+                <div className="card-title">Sample portfolio</div>
+                <table className="portfolio-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Company</th>
+                      <th scope="col">Ticker</th>
+                      <th scope="col">Watch role</th>
+                      <th scope="col">Coverage</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {PORTFOLIO.map((row) => (
+                      <tr key={row.name}>
+                        <td className="portfolio-name">{row.name}</td>
+                        <td>{row.ticker}</td>
+                        <td>{row.role}</td>
+                        <td>{row.coverage}</td>
+                        <td>
+                          <div className="portfolio-actions">
+                            <Link className="button button-primary" href={sampleHref("overview", brand)}>
+                              Open sample
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </Card>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

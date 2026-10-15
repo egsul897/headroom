@@ -1,11 +1,18 @@
 /*
  * Dev-only brand directions for /dev/sample?brand=
- * The product default is unchanged. These tokens are not imported
- * by any production page. The rail stays the mid slate.
- *
- * Each direction uses the brand in three places only: the primary button,
- * a thin active indicator on the rail, and the sample chart stroke.
+ * Product default (mid slate rail, cool field) is not changed.
+ * Each family tints only its own rail. Accents stay on the button,
+ * a thin active mark, and the sample chart stroke.
  */
+
+[data-brand="navy"] .app-shell,
+[data-brand="navy"].app-shell,
+[data-brand="olive"] .app-shell,
+[data-brand="olive"].app-shell,
+[data-brand="teal"] .app-shell,
+[data-brand="teal"].app-shell {
+  --shell-sidebar-line: rgba(255, 255, 255, 0.1);
+}
 
 [data-brand] .button-primary {
   background: var(--sample-brand);
@@ -40,27 +47,78 @@
   gap: 16px;
 }
 
-[data-brand="navy"] {
-  /* Deep navy. White on #12315a is 13.02:1. The rail indicator is a light steel
-     so it can be seen on the slate chip; the button and chart stay deep. */
+.sample-portfolio .chooser {
+  min-height: 0;
+  padding-bottom: 0;
+}
+
+[data-brand="navy"] .app-shell,
+[data-brand="navy"].app-shell {
+  /* Lighter-dark navy slate. Muted text #b7c2ce is 6.34:1. Wordmark #f4f6f8 is 10.57:1. */
+  --shell-sidebar: #2c3a52;
+  --shell-sidebar-ink: #f4f6f8;
+  --shell-sidebar-muted: #b7c2ce;
+  --shell-sidebar-hover: #354764;
+  --shell-sidebar-active: #3a4c68;
+  --shell-sidebar-card: #243246;
   --sample-brand: #12315a;
   --sample-brand-hover: #0e2444;
   --sample-brand-signal: #c5d0e0;
 }
 
-[data-brand="olive"] {
-  /* Desaturated stone olive, hue ~66°, saturation 0.20. Status clear stays
-     hue ~154°, saturation 0.77, so a pass chip does not match the accent.
-     #7a7d5a fails AA for both white and ink text, so the button is #6b6f4a
-     (white text 5.25:1). The rail indicator is the lighter stone. */
-  --sample-brand: #6b6f4a;
-  --sample-brand-hover: #5c6040;
-  --sample-brand-signal: #c5c6a4;
+[data-brand="navy"] .app-sidebar {
+  border-right-color: #243044;
 }
 
-[data-brand="teal"] {
-  /* Petrol. White on #134e5e is 9.21:1. Hue ~193°, separate from status green. */
+[data-brand="olive"] .app-shell,
+[data-brand="olive"].app-shell {
+  /* Earthy stone rail, not a green. Muted #c8c6b8 on #4a4c3e is 5.11:1.
+     Wordmark #f3f1ea is 7.76:1. Content shifts to a warm grey so the field
+     is not the cool canvas and not a green wash. Status green is untouched. */
+  --paper: #f3f1ec;
+  --ink: #1c1b17;
+  --muted: #5c574e;
+  --line: #e3dfd6;
+  --idle-soft: #ebe7df;
+  --input-bg: #fffcf8;
+  --shell-canvas: #f3f1ec;
+  --shell-sidebar: #4a4c3e;
+  --shell-sidebar-ink: #f3f1ea;
+  --shell-sidebar-muted: #c8c6b8;
+  --shell-sidebar-hover: #4e5044;
+  --shell-sidebar-active: #5c5e48;
+  --shell-sidebar-card: #3e4034;
+  --sample-brand: #6b6f4a;
+  --sample-brand-hover: #5c6040;
+  --sample-brand-signal: #e4e0cc;
+}
+
+[data-brand="olive"] .app-sidebar {
+  border-right-color: #3c3e32;
+}
+
+[data-brand="olive"] .data-table tbody tr:nth-child(even) {
+  background: #f7f5f0;
+}
+
+[data-brand="olive"] .data-table tbody tr:hover {
+  background: #efece4;
+}
+
+[data-brand="teal"] .app-shell,
+[data-brand="teal"].app-shell {
+  /* Lighter-dark petrol. Muted #b7c9ce is 6.20:1. Wordmark #f4f6f8 is 9.80:1. */
+  --shell-sidebar: #23434c;
+  --shell-sidebar-ink: #f4f6f8;
+  --shell-sidebar-muted: #b7c9ce;
+  --shell-sidebar-hover: #2c4e58;
+  --shell-sidebar-active: #2f5560;
+  --shell-sidebar-card: #1b363e;
   --sample-brand: #134e5e;
   --sample-brand-hover: #0e3d48;
   --sample-brand-signal: #9ec4cc;
+}
+
+[data-brand="teal"] .app-sidebar {
+  border-right-color: #1b363e;
 }
