@@ -130,3 +130,10 @@ describe("round 7: others", () => {
     expect(classifyCovenantFamily({ title: "Fundamental Changes; Dissolution", leadIn: "Whether in one transaction or a series of transactions, wind up, liquidate or dissolve its affairs, or enter into any transaction of merger or consolidation.", covenantContext: true }).families).toContain("FUNDAMENTAL_CHANGES");
   });
 });
+
+describe("round 7: false FOUND removals", () => {
+  it("an incurrence ratio under a non-ratio title is not a maintenance test", () => {
+    expect(classifyCovenantFamily({ title: "Sale Leasebacks", leadIn: "The Issuer shall not enter into any Sale Leaseback; provided that any Sale Leaseback shall be permitted so long as the Total Leverage Ratio at the time of entry into such lease does not exceed 5.00 to 1.00.", covenantContext: true }).families).not.toContain("FINANCIAL_RATIOS");
+    expect(classifyCovenantFamily({ title: "Financial Covenant", leadIn: "The Borrower shall not permit the Total Leverage Ratio as of the last day of any fiscal quarter to exceed 5.00 to 1.00.", covenantContext: true }).families).toContain("FINANCIAL_RATIOS");
+  });
+});

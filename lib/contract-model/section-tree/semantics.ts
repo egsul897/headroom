@@ -177,7 +177,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
       for (const f of captionFamilies(text.slice(s.headingEnd, s.end))) if (!(f === "FINANCIAL_RATIOS" && debtSection)) fams.add(f);
     }
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end), articleStem(tree, text, s))) fams.add(f);
-    if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
+    if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of restatedFamilies(q)) fams.add(f);
     famOf.set(s.id, [...fams]);
   }
   // Restatements in text no section covers (an amendment with no numbered sections) belong to the document root.
@@ -186,7 +186,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   if (root) {
     const covered = (i: number) => sections.some((s) => s.start <= i && s.end > i);
     const rootFams = new Set<string>();
-    for (const q of restatedTexts(text, covered)) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) rootFams.add(f);
+    for (const q of restatedTexts(text, covered)) for (const f of restatedFamilies(q)) rootFams.add(f);
     // Captioned covenant clauses in text no section covers (guaranties / short agreements numbered "10. Covenants.").
     for (const f of captionFamilies(text, covered)) rootFams.add(f);
     for (const f of scheduleCovenantFamilies(text)) rootFams.add(f);
@@ -361,6 +361,17 @@ function covenantItemFamilies(body: string, inherited = false): Set<CovenantFami
 }
 
 /** Every "amended (and restated) in its entirety to read as follows:" instruction in a body, with its quoted text. */
+/**
+ * Families of a restated text. A restated untitled paragraph of the financial covenant section ("The final paragraph
+ * of Section 6.4 ... restated ...: Notwithstanding the foregoing, failure to comply with Section 6.4(e) ... the other
+ * financial covenants contained herein") amends that covenant.
+ */
+function restatedFamilies(q: { title: string | null; lead: string }): CovenantFamily[] {
+  const fams = classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families;
+  if (!q.title && /\bcomply with Section\s+\d{1,2}\.\d{1,3}[^.]{0,300}\bfinancial covenants\b/i.test(q.lead.slice(0, 800)) && !fams.includes("FINANCIAL_RATIOS")) return [...fams, "FINANCIAL_RATIOS"];
+  return fams;
+}
+
 function restatedTexts(body: string, skip?: (offset: number) => boolean): { title: string | null; lead: string }[] {
   const out: { title: string | null; lead: string }[] = [];
   const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?[^.:]{0,120}?\b(?:amended(?: and restated)?(?: in (?:its|their) entirety)? to read|restated in (?:its|their) entirety(?: to read)?) as follows:\s*/gi;
@@ -372,6 +383,9 @@ function restatedTexts(body: string, skip?: (offset: number) => boolean): { titl
     // A restated clause fragment ("Section 8.8(d) ... restated ... as follows: so long as (i) ... the Total Leverage
     // Ratio is not greater than 5.00 to 1.00") is a condition inside another covenant, not a covenant of its own.
     if (!h && /^[a-z]/.test(rest)) continue;
+    // A restated definition ("The definition of “Consolidated Fixed Charge Coverage Ratio” in Section 1.01 ... is
+    // hereby amended to read as follows: “ ... ” means ...") states no covenant.
+    if (/^[^”"\n]{2,100}[”"]\s*(?:\([^)]{0,60}\)\s*)?(?:means|shall mean|has the meaning)\b/i.test(rest)) continue;
     out.push(h ? { title: h[1]!.trim(), lead: rest.slice(h[0].length) } : { title: null, lead: rest });
   }
   return out;
