@@ -275,12 +275,14 @@ function covenantItemFamilies(body: string): Set<string> {
 /** Every "amended (and restated) in its entirety to read as follows:" instruction in a body, with its quoted text. */
 function restatedTexts(body: string, skip?: (offset: number) => boolean): { title: string | null; lead: string }[] {
   const out: { title: string | null; lead: string }[] = [];
-  const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?[^.:]{0,120}?\bamended(?: and restated)?(?: in (?:its|their) entirety)? to read as follows:\s*/gi;
+  // Also supplements that replace a provision ("Section 6.14(d) of the Indenture is hereby deleted in its entirety and
+  // replaced with the following:", "... is hereby amended by replacing clause (d) with the following:").
+  const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?(?:\([a-z0-9]{1,4}\))*[^.:]{0,120}?\b(?:amended(?: and restated)?(?: in (?:its|their) entirety)? to read as follows|(?:deleted|amended)(?: in (?:its|their) entirety)?(?: and)? (?:replaced|restated) (?:in (?:its|their) entirety )?(?:with|by) the following|amended by (?:deleting|replacing)[^:]{0,80}?(?:with|by) the following)[^:]{0,20}:\s*/gi;
   for (const m of body.matchAll(re)) {
     if (out.length >= 50) break;
     if (skip?.(m.index!)) continue;
     const rest = body.slice(m.index! + m[0].length, m.index! + m[0].length + 2000).replace(/^[\s“”"'‘\u0080-\u009f]+/, "");
-    const h = /^(?:(?:section\s+)?\d{1,2}\.\d{1,3}\.?|ARTICLE\s+[IVXLC\d]+)\s+([A-Z][^.\n]{2,80})[.\n]\s*/i.exec(rest);
+    const h = /^(?:(?:section\s+)?\d{1,2}\.\d{1,3}\.?(?:\([a-z0-9]{1,4}\))?|ARTICLE\s+[IVXLC\d]+|\([a-z0-9]{1,4}\))\s+([A-Z][^.\n]{2,80})[.\n]\s*/i.exec(rest);
     out.push(h ? { title: h[1]!.trim(), lead: rest.slice(h[0].length) } : { title: null, lead: rest });
   }
   return out;
@@ -368,6 +370,8 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     if (isDefinition) continue outer;
     const imperative = false;
     if (spuriousEvidence(family, sent, lm.index)) continue;
+    // A designation / covenant-suspension paragraph states how covenants apply, not a restriction.
+    if ((family === "INVESTMENTS" || family === "RESTRICTED_PAYMENTS" || family === "PREPAYMENTS") && DESIGNATION_OR_SUSPENSION.test(para.slice(0, 400))) continue outer;
     if (imperative) { out.push({ kind: "LEAD_IN", excerpt: sent.trim().slice(0, 100) }); break outer; }
     if (family === "FINANCIAL_RATIOS") {
       // A ratio test is an obligation: a modal or undertaking must govern the test verb. A narrative summary
