@@ -164,13 +164,13 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
       : classifyCovenantFamily({ title: s.title, parentTitle: parent?.title ?? null, leadIn: leadOf(s), covenantContext: sib(i - 1) || sib(i + 1) });
     // Restated articles/sections quoted later in the body ("(g) Article IX of the Credit Agreement is hereby amended and
     // restated in its entirety to read as follows: From and after ..."): classify each quoted text too.
-    const fams = new Set(v.families);
+    const fams = new Set<string>(v.families);
     // Enumerated covenant items (LLC separateness / "shall not take any of the following actions" lists): an item-level
     // prohibition with a family object counts, but only inside an obligor-bound prohibition section body.
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
-    // Captioned covenant clauses inside a "Negative Covenants" section ("(g) Restricted Payments; Certain Payments of
-    // Indebtedness . (A) The Borrower will not ...") are each a covenant unit.
+    // Captioned covenant clauses inside a negative-covenants section ("(x) <Caption> . <obligor> will not ...") are each
+    // a covenant unit.
     if (!am && /\bnegative covenants?\b|^\s*covenants?\b|\bcertain covenants\b/i.test(s.title ?? "")) for (const f of captionedClauseFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 120000)))) fams.add(f);
     if (!am && fams.size && prohib.get(s.id)) for (const f of laterProhibitionFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 8000)))) fams.add(f);
     if (!am && fams.has("RESTRICTED_PAYMENTS") && prohib.get(s.id)) for (const f of restrictedPaymentItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
@@ -194,8 +194,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     if (rootFams.size) { famOf.set(root.id, [...rootFams]); units.push(root); }
   }
   const inlineUnits: typeof units = [];
-  // Run-in headings the tree did not split (flattened text: "... thereof). 8.07 Restricted Payments. The Borrower will
-  // not ..."): inline numbered units outside any classified section, kept only inside a covenant run (an adjacent inline
+  // Run-in headings the tree did not split (flattened text: "... . N.NN <Caption>. <obligor> will not ..."): inline numbered units outside any classified section, kept only inside a covenant run (an adjacent inline
   // unit also opens with an obligor-bound prohibition).
   // (Inline units only fill families with no tree hit, so a family-bearing encloser does not block them.)
   for (const u of inlineCovenantUnits(text, () => false, sections.map((s) => s.start))) {
@@ -285,8 +284,7 @@ function restrictedPaymentItemFamilies(body: string): Set<string> {
 
 function restrictsPayments(lead: string): boolean {
   const w = lead.slice(0, 2000);
-  // Article imperative ("(a) Directly or indirectly: (1) declare or pay ...", "From <date> and prior to <date>, declare or
-  // pay ... any Restricted Payment"): the first declare/pay/make within 250 chars, no modal before it, with its object.
+  // Article imperative (an item or sentence that opens with "declare or pay ..." under the article's negative preamble): the first declare/pay/make within 250 chars, no modal before it, with its object.
   const im = /\b(?:declare|pay|make)\b/i.exec(w.slice(0, 250));
   if (im && !/\b(?:shall|will|may|must|is|are|be)\b/i.test(w.slice(0, im.index)) && /^[^.;]{0,160}?\b(?:dividends?|distributions?|restricted (?:junior )?payments?)\b/i.test(w.slice(im.index))) return true;
   if (/\b(?:Liquidator|record date|Preferred Return|Capital Accounts?)\b/.test(w.slice(0, 600))) return false;
@@ -310,7 +308,7 @@ const LATER_OBJECT: [string, RegExp][] = [
 ];
 function laterProhibitionFamilies(body: string): Set<string> {
   const out = new Set<string>();
-  // Stop at an embedded heading the tree did not split ("... Material Adverse Effect. Section 10. Negative Covenants.").
+  // Stop at an embedded heading the tree did not split ("... . Section N. <Caption>.").
   const stop = body.search(/(?:^|\n|[.;]\s+)(?:SECTION|Section|ARTICLE|Article)\s+[\dIVXLC]+\.?\s+[A-Z]/);
   if (stop > 0) body = body.slice(0, stop);
   for (const m of body.matchAll(/(?:^|[.;]\s+)((?:The|No|Neither)\s+[A-Z][\w-]*(?:\s+[\w-]+){0,4}?\s+(?:will|shall)\s+not\b[^.;]{0,400})/g)) {
@@ -350,16 +348,16 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
     if (cands.length > 2000) break;
   }
   // A unit also ends at the next unit start the tree knows (its sections), so it never reads into a parsed section.
-  // Heading lines with no closing period ("6.12 Transactions with Affiliates\n\nDirectly or indirectly, enter into ...").
+  // Heading lines with no closing period ("N.NN <Caption>" on its own line, body on the next).
   for (const m of text.matchAll(/(?:^|\n)[ \t]*((?:SECTION[ \t]+|Section[ \t]+)?(\d{1,2}\.\d{1,2}))\.?(?:[ \t]+|[ \t]*\n[ \t]*)([A-Z][^\n.]{2,80}?)[ \t]*\n(?![ \t]*\d{1,3}(?:[ \t]+\d{1,3})?[ \t]*\n)/g)) {
     const start = m.index! + (m[0].length - m[0].trimStart().length);
     if (insideClassified(start) || cands.some((c) => Math.abs(c.start - start) < 5)) continue;
     cands.push({ path: normalizeSectionNumber(m[2]!), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
     if (cands.length > 4000) break;
   }
-  // Other heading shapes: dotless "Section 411 Limitation on Sales of Assets ." (3-4 digit numbers only after the
-  // Section keyword), an all-caps "5. LIMITATION ON SALES OF ASSETS" line, and run-in captioned clauses
-  // "(5) Asset Dispositions . The Company shall not ..." (still subject to the adjacent-prohibition run test below).
+  // Other heading shapes: dotless "Section NNN <Caption>" (3-4 digit numbers only after the Section keyword), an
+  // all-caps "N. <CAPTION>" line, and run-in captioned clauses "(x) <Caption> . <obligor> shall not ..." (still subject
+  // to the adjacent-prohibition run test below).
   const extra = [
     /(?:^|\n)[ \t]*((?:SECTION|Section)[ \t]+(\d{3,4}))\.?[ \t]+([A-Z][^\n.]{2,80}?)[ \t]*\.?[ \t]*(?:\n|(?=\([a-z0-9]\)|[A-Z]))/g,
     /(?:^|\n)[ \t]*((\d{1,2}))\.[ \t]+([A-Z][A-Z,;'’&\- ]{4,80}?)[ \t]*\n/g,
@@ -373,11 +371,11 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
   }
   cands.sort((a, b) => a.start - b.start);
   const units = cands.map((c, i) => { const end = Math.min(cands[i + 1]?.start ?? text.length, c.headingEnd + 30000, ...boundaries.filter((b) => b > c.headingEnd)); return { ...c, end, lead: text.slice(c.headingEnd, Math.min(end, c.headingEnd + 2000)) }; });
-  // Creditor-side actors ("The Junior Priority Secured Parties will not object to ...") are not obligor covenants.
+  // Creditor-side actors (secured parties, holders, lenders, trustees, agents) are not obligor covenants.
   const CREDITOR_ACTOR = /^\W*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+|each\s+|no\s+)?(?:[A-Z][\w-]*\s+){0,4}(?:Secured Parties|Secured Party|Holders?|Lenders?|Purchasers?|Trustees?|Agents?|Creditors?|Noteholders?)\b[^.;]{0,40}\b(?:will|shall|may)\s+not\b/i;
   const prohib = units.map((u) => isObligorProhibitionLead(u.lead) && !CREDITOR_ACTOR.test(u.lead.slice(0, 200)));
-  // Outside a run, a unit still counts when its own caption names a covenant family ("(p) Transactions with
-  // Affiliates . The Borrower will not ...") and its lead is an obligor prohibition.
+  // Outside a run, a unit still counts when its own caption names a covenant family and its lead is an obligor
+  // prohibition.
   const titled = (u: { title: string }) => classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: "" }).family != null;
   return units.filter((u, i) => prohib[i] && (prohib[i - 1] || prohib[i + 1] || titled(u)));
 }
@@ -400,8 +398,8 @@ function covenantItemFamilies(body: string): Set<string> {
 /** Every "amended (and restated) in its entirety to read as follows:" instruction in a body, with its quoted text. */
 function restatedTexts(body: string, skip?: (offset: number) => boolean): { title: string | null; lead: string }[] {
   const out: { title: string | null; lead: string }[] = [];
-  // Also supplements that replace a provision ("Section 6.14(d) of the Indenture is hereby deleted in its entirety and
-  // replaced with the following:", "... is hereby amended by replacing clause (d) with the following:").
+  // Also supplements that replace a provision ("Section X ... deleted in its entirety and replaced with the following:",
+  // "... amended by replacing clause (x) with the following:").
   const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?(?:\([a-z0-9]{1,4}\))*[^.:]{0,120}?\b(?:amended(?: and restated)?(?: in (?:its|their) entirety)?,?\s+(?:to read\s+)?as follows|(?:deleted|amended)(?: in (?:its|their) entirety)?(?: and)? (?:replaced|restated) (?:in (?:its|their) entirety )?(?:with|by) the following|amended by (?:deleting|replacing)[^:]{0,80}?(?:with|by) the following)[^:]{0,20}:\s*/gi;
   for (const m of body.matchAll(re)) {
     if (out.length >= 50) break;
@@ -462,9 +460,8 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   // Statutory limits on an entity's own distributions to its members ("shall not make a distribution to any Member if such
   // distribution would violate Section 18-607 of the Act") restate law, not a negotiated restricted-payment covenant.
   if (family === "RESTRICTED_PAYMENTS" && /\bdistributions?\b[^.]{0,120}\bto\s+(?:(?:any|a|the|such|its)\s+)?(?:[A-Z]\w*\s+){0,3}(?:Members?|Partners?|Unitholders?)\b/i.test(sent) && /\b(?:would violate|in violation of|18-607|17-607|the Act|applicable law)\b/i.test(sent)) return true;
-  // Representations ("The Transactions (a) do not require ... and (d) will not result in the creation of any Lien", "The
-  // execution, delivery and performance ... are within ...") and non-obligor actors (trustee, transferees, a lender or
-  // agency making Advances) are not covenant evidence.
+  // Representations (no-conflict / no-lien-creation / within-powers statements) and non-obligor actors (trustee,
+  // transferees, a lender or agency) are not covenant evidence.
   if (/\b(?:do not|does not|will not)\s+(?:require|violate|conflict|contravene|result in (?:the creation|a breach))\b|\bare within\b[^.]{0,60}\bpowers\b/i.test(sent)) return true;
   if (/\b(?:the Trustee|any purchaser or other transferee|transferee in good faith|the RUS|the Administrative Agent|the Collateral Agent)\b[^.;]{0,40}\b(?:shall|will|may)\s+(?:not|ever)\b|\bunder no circumstances shall the\b|\bin no event shall any purchaser\b/i.test(sent)) return true;
   // Equity-award dividend equivalents (stock plans) are not a restricted payment.
