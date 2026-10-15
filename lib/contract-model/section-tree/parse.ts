@@ -403,6 +403,7 @@ function parseClauses(
 
 // ---------- main ----------
 
+const EXECUTION_BLOCK = /\[\s*(?:Remainder\s+of\s+(?:this\s+)?page\s+(?:is\s+)?intentionally\s+left\s+blank|Signature\s+Pages?\s+(?:Follows?|to\s+Follow))|\bIN\s+WITNESS\s+WHEREOF\b/i;
 export function parseSectionTree(text: string): SectionTree {
   const parseErrors: string[] = [];
   const nodes: TreeNode[] = [];
@@ -463,6 +464,19 @@ export function parseSectionTree(text: string): SectionTree {
     }
   }
   // Fix section ends to their article end when they are last in the article.
+  for (const n of nodes) {
+    if (n.kind !== "SECTION") continue;
+    const p = byId.get(n.parentId!)!;
+    if (n.end > p.end) n.end = p.end;
+  }
+  // The execution block (signature pages, then exhibits and schedules) is not part of the last section or article:
+  // a node ends at the first "[Remainder of page intentionally left blank]", "[Signature Page(s) Follow]" or
+  // "IN WITNESS WHEREOF" inside its body.
+  for (const n of nodes) {
+    if (n.kind !== "SECTION" && n.kind !== "ARTICLE") continue;
+    const m = EXECUTION_BLOCK.exec(text.slice(n.headingEnd, n.end));
+    if (m) n.end = n.headingEnd + m.index;
+  }
   for (const n of nodes) {
     if (n.kind !== "SECTION") continue;
     const p = byId.get(n.parentId!)!;
