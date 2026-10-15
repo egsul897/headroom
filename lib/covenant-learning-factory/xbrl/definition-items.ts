@@ -76,7 +76,7 @@ const COST_LIKE = /\b(?:expenses?|loss(?:es)?|charges?|costs?|fees?|deductions?|
 const TWO_SIDED = /\bpro\s+forma\b(?![^.;]{0,80}\b(?:cost\s+savings|synerg|run[- ]rate))|\b(?:acquired|disposed|acquisition|disposition)\b[^.;]{0,120}\b(?:as\s+if|beginning\s+of)\b|\bgains?\s+(?:or|and|\/)\s+loss|\bloss(?:es)?\s+(?:or|and|\/)\s+gains?|\bincome\s+\(?(?:or|and)\s+loss|\(loss\)|\bforeign\s+(?:currency|exchange)|\bmark[- ]to[- ]market|\bhedg/i;
 const CAPPED = /\bnot\s+(?:to\s+)?exceed|\bshall\s+not\s+exceed|\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not|up\s+to)|\bcapped\b|\bmaximum\s+of\b/i;
 const QUALIFIED = /\bother\s+than\b|\bexcluding\b|\bexcept\b|\bsolely\b|\bonly\s+to\s+the\s+extent\b|\bcash\s+portion|\bnet\s+of\b/i;
-const HEADER = /^(?:,|\s)*(?:without\s+duplication|to\s+the\s+extent|the\s+sum\s+of|in\s+each\s+case|plus|minus|less|and|for\s+such\s+period|of\s+such\s+Person|:|,|\s)+/i;
+const HEADER = /^(?:,|\s)*(?:(?:the\s+)?following(?:\s+(?:items|amounts))?|without\s+duplication|to\s+the\s+extent|the\s+sum\s+of|in\s+each\s+case|plus|minus|less|and|for\s+such\s+period|of\s+such\s+Person|:|,|\s)+/i;
 
 interface MapResult { concepts: Array<{ concept: string; value: bigint }>; residueStop: RegExp[] }
 
@@ -146,7 +146,9 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
       if (capital) {
         const ni = findDefinitionText(text, niTerm);
         if (!ni) return res("NEEDS_INPUT", `base "${niTerm}" is not defined in this document`);
-        const niBody = ni.replace(/after\s+any\s+deduction\s+for\s+minority\s+interests[^)]*\)?/i, "");
+        // Extraordinary items no longer exist under US GAAP (ASU 2015-01): excluding them changes nothing.
+        const niBody = ni.replace(/after\s+any\s+deduction\s+for\s+minority\s+interests[^)]*\)?/i, "")
+          .replace(/\(?\s*(?:but\s+)?(?:excluding|exclusive\s+of|other\s+than|before)\s+(?:any\s+)?extraordinary\s+(?:gains?|loss(?:es)?|items?)(?:\s+(?:and|or|but\s+including|and\s+including)\s+(?:any\s+)?extraordinary\s+(?:gains?|loss(?:es)?|items?))?\s*\)?/gi, " ");
         const two = /equity\s+method|Unrestricted\s+Subsidiar|not\s+a\s+(?:Restricted\s+)?Subsidiary|cumulative\s+effect|\bgains?\b|non-?recurring|unusual|discontinued|pro\s+forma|acquired|disposed|excluded|exclude|dividends?\s+or\s+(?:similar\s+)?distributions/i.exec(niBody);
         if (two) return res("NEEDS_INPUT", `base "${niTerm}" carries a two-sided adjustment ("${two[0]}") not derivable from filings`);
       }
@@ -178,9 +180,14 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
   const used = new Set<string>();
   for (const s of segs.slice(1)) {
     const t = s.text;
+    const header = /\bthe\s+following\b|:\s*$/.test(t) && t.length < 300;
+    // A group header ("(b) the following, to the extent included in calculating Net Income:") sets the sign of the
+    // items under it. Inside an item, qualifiers ("excluding", "net of") do not flip the group; only a trailing
+    // connector ("…; minus") does.
+    if (header) { for (const m of markers(t)) sign = m; if (/\bto\s+the\s+extent\s+(?:increasing|included\s+in)/i.test(t)) sign = "-"; }
     const groupSign = sign;
-    for (const m of markers(t)) sign = m;
-    if (/\bto\s+the\s+extent\s+(?:increasing|included\s+in)/i.test(t)) sign = "-";
+    if (!header) for (const m of markers(t.slice(-30))) sign = m;
+    if (header) { items.push({ label: s.label, text: t.slice(0, 160), sign: groupSign, coverage: "HEADER", concepts: [], value: "0", note: "group header" }); continue; }
     const descr = t.replace(HEADER, "").trim();
     if (descr.length < 3 || (!COST_LIKE.test(descr) && !GAIN_LIKE.test(descr) && HEADER.test(t))) { items.push({ label: s.label, text: t.slice(0, 160), sign: groupSign, coverage: "HEADER", concepts: [], value: "0", note: "group header" }); continue; }
     const it: DefinitionItem = { label: s.label, text: t.slice(0, 240), sign: groupSign, coverage: "NONE", concepts: [], value: "0", note: "" };
@@ -216,7 +223,7 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
   let overlap = false;
   if (rs && ai) { const small = BigInt(rs.c.value) < BigInt(ai.c.value) ? rs : ai; small.i.value = (BigInt(small.i.value) - BigInt(small.c.value)).toString(); small.i.note += "; may overlap restructuring/impairment, larger kept"; small.c.value = "0"; small.i.coverage = "PARTIAL"; overlap = true; }
 
-  const bad = items.filter((i) => i.sign === "?" || (i.sign === "-" && i.coverage !== "FULL"));
+  const bad = items.filter((i) => i.coverage !== "HEADER" && (i.sign === "?" || (i.sign === "-" && i.coverage !== "FULL")));
   const short = (i: DefinitionItem) => `${i.label} ${i.text.replace(HEADER, "").slice(0, 70)}`;
   if (bad.length) return res("NEEDS_INPUT", `items that could lower the total are not in XBRL: ${bad.slice(0, 3).map((i) => `${short(i)} [${i.note}]`).join("; ")}`, { items, base: base && { concept: base.concept, value: base.value.toString() }, missing: bad.map(short) });
   const total = items.reduce((a, i) => a + BigInt(i.value), base!.value);

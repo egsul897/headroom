@@ -22,6 +22,8 @@ import type { MetricInput } from "../runtime/types";
 import type { BasketCategory, BasketClause, BasketScope, ComputationPackage, ComputationStatus, ComputedBasket, ComputedRatio } from "./types";
 import { CERTIFICATION } from "./types";
 import { canonicalOf, namesEqual } from "./ratios";
+import { clauseRatioTerm, clauseRatioThreshold } from "./ratio-terms";
+export { clauseRatioTerm, clauseRatioThreshold } from "./ratio-terms";
 import { dollarAmountIsMillions, dollarToken, millionsToUsd, norm } from "./text";
 
 const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKind> = {
@@ -35,6 +37,7 @@ const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKin
   CONDITIONS_LIMITED: "OTHER_SOURCE_STATED",
   FORMULA_AMOUNT: "OTHER_SOURCE_STATED",
   RECLASS: "REALLOCATION_TRANSFER",
+  MAINTENANCE_LIMIT: "OTHER_SOURCE_STATED",
 };
 
 export function evaluateBaskets(
@@ -93,6 +96,11 @@ export function evaluateBasket(
                         ...capShell("NEEDS_INPUT", "NONE", null, null, ["formula operands (stated arithmetic on the dollar figure)"], null),
                         note: "The dollar figure is an operand of stated arithmetic, not a cap by itself. Needs the other operands.",
                       }
+                  : category === "MAINTENANCE_LIMIT"
+                    ? {
+                        ...capShell("NEEDS_INPUT", "NONE", null, null, ["not a basket: maintenance limit"], null),
+                        note: "A maintenance limit on a stated measure (a test), not capacity. No basket cap is computed from it.",
+                      }
                   : category === "RECLASS"
                     ? {
                         ...capShell("NEEDS_INPUT", "NONE", null, null, ["source basket unused", "reclassification election"], null),
@@ -100,6 +108,20 @@ export function evaluateBasket(
                       }
                     : numericButOpen(clause);
   return present(clause, { ...base, ...partial });
+}
+
+/**
+ * "The Company will not permit, as of the end of any fiscal quarter, X to have an aggregate of over 25% of Total
+ * Assets": a stated measure must stay under a limit at test dates. It grants nothing, so it is not a basket.
+ */
+export function isMaintenanceLimit(text: string): boolean {
+  const t = norm(text);
+  const m = /\b(?:will|shall)\s+not\s+permit\b[^.;]{0,160}?\bto\s+(?:have|hold|own|account\s+for|represent|constitute|contribute|generate)\b([^.;]{0,200})/i.exec(t);
+  // The measure held is the group's size (assets / revenues / EBITDA), not debt, liens or investments outstanding
+  // (a limit on those is capacity).
+  if (!m || !/\b(?:Assets|revenues?|EBITDA|Net\s+Worth|net\s+sales)\b/i.test(m[1]!) || /\b(?:Indebtedness|Debt|Liens?|Investments?|Guarantees?|obligations)\b/i.test(m[1]!)) return false;
+  // A permission ("may incur / make / pay … not to exceed") is a basket even with test-like words nearby.
+  return !/\b(?:may|is\s+permitted\s+to|shall\s+be\s+permitted\s+to)\s+(?:incur|make|pay|declare|create|issue|sell|dispose|invest|guarantee|assume)\b|\bnot\s+otherwise\s+permitted\b|\bpermitted\s+(?:under|by|pursuant)\b/i.test(t);
 }
 
 export function categorize(operativeText: string, rules?: LearnedRuleSet): BasketCategory {
@@ -129,6 +151,7 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   if (/\bgreater\s+of\b/i.test(text)) return "GROWER_GREATER_OF";
   const ratio = classifyRatioIncurrencePermission(text);
   if (ratio.class !== "NOT_RATIO_INCURRENCE") return "RATIO_BASED";
+  if (isMaintenanceLimit(text)) return "MAINTENANCE_LIMIT";
   if (percentOfMetric(text) && !/\$\s*[\d,]+/.test(text)) return "PCT_OF_METRIC";
   const unlimited = isCapacityUnlimited(text);
   const dollarCap = soleFixedDollar(text) != null;
@@ -348,34 +371,6 @@ function evalGrower(
       ? "Greater-of cap from evaluateExpression. The fixed limb is written in millions, the same unit as the bound metric. Remaining usage is not bound."
       : "Greater-of cap from evaluateExpression. Remaining usage is not bound.",
   };
-}
-
-/**
- * The full capitalized ratio term in the clause ("Total First Lien Leverage Ratio", "Consolidated Senior Secured
- * Leverage Ratio"), longest form. A ratio is linked only when that full term equals a catalog ratio (up to a leading
- * "Consolidated"), so "Total First Lien Leverage Ratio" never borrows the "First Lien Leverage Ratio" result.
- */
-export function clauseRatioTerm(text: string): string | null {
-  const m = /\b((?:[A-Z][A-Za-z\-]*\s+){0,6}(?:[A-Z][A-Za-z\-]*\s+)?Ratio)\b/.exec(norm(text));
-  if (!m) return null;
-  const words = m[1]!.split(/\s+/);
-  while (words.length > 1 && !/^[A-Z]/.test(words[0]!)) words.shift();
-  while (words.length > 2 && /^(?:The|If|So|Such|Any|Each|Its|Their|Our|Pro|Forma|Basis|Borrower(?:'s|’s)?)$/.test(words[0]!)) words.shift();
-  return words.join(" ");
-}
-
-const THRESHOLD_FORMS: ReadonlyArray<[RegExp, "AT_LEAST" | "NO_GREATER_THAN" | "GREATER_THAN" | "LESS_THAN"]> = [
-  [/\b(?:at\s+least|not\s+(?:be\s+)?less\s+than|no\s+less\s+than|(?:greater|more)\s+than\s+or\s+equal\s+to|equal\s+to\s+or\s+(?:greater|more)\s+than)\s+(\d+(?:\.\d+)?)\s*(?:to|:)\s*(\d+(?:\.\d+)?)\b/i, "AT_LEAST"],
-  [/\b(?:no\s+greater\s+than|not\s+(?:be\s+)?(?:greater|more)\s+than|no\s+more\s+than|(?:less|lower)\s+than\s+or\s+equal\s+to|equal\s+to\s+or\s+less\s+than|(?:shall|would|will|does|do)\s+not\s+exceed|not\s+to\s+exceed|not\s+(?:be\s+)?in\s+excess\s+of)\s+(\d+(?:\.\d+)?)\s*(?:to|:)\s*(\d+(?:\.\d+)?)\b/i, "NO_GREATER_THAN"],
-];
-
-/** One stated threshold, or null when the clause states none or more than one distinct ratio threshold. */
-export function clauseRatioThreshold(text: string): { comparator: "AT_LEAST" | "NO_GREATER_THAN" | "GREATER_THAN" | "LESS_THAN"; num: number; den: number } | null {
-  const t = norm(text);
-  const stated = new Set([...t.matchAll(/\b(\d+(?:\.\d+)?)\s*(?:to|:)\s*(1(?:\.0+)?)\b/g)].map((m) => Number(m[1]) / Number(m[2])));
-  if (stated.size !== 1) return null;
-  const hits = THRESHOLD_FORMS.map(([re, c]) => { const m = re.exec(t); return m ? { comparator: c, num: Number(m[1]), den: Number(m[2]) } : null; }).filter((x) => x != null);
-  return hits.length === 1 ? hits[0]! : null;
 }
 
 function evalRatioBasket(

@@ -7,7 +7,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { gunzipSync } from "node:zlib";
 import { extractFinancials, fetchSecJson, companyFactsUrl, pad10, type CompanyFacts, type IssuerFinancials } from "../../lib/covenant-learning-factory/xbrl/companyfacts";
-import { runAgreementPipeline } from "../../lib/covenant-learning-factory/pipeline/agreement-pipeline";
+import { headroomBound, runAgreementPipeline } from "../../lib/covenant-learning-factory/pipeline/agreement-pipeline";
 
 const SB = new URL("./scoreboard/", import.meta.url);
 const out = process.argv[2] ?? "bucket.json";
@@ -55,12 +55,14 @@ function basketBucket(b: { category: string; capStatus: string; note: string; mi
 }
 
 async function main() {
-  const tally = { docs: 0, baskets: { COMPUTED: 0, AT_LEAST: 0, NEEDS_INPUT: 0 } as Record<string, number>, ratios: { COMPUTED: 0, AT_LEAST: 0, AT_MOST: 0, NEEDS_INPUT: 0 } as Record<string, number> };
+  const tally = { headroom: {} as Record<string, number>, docs: 0, baskets: { COMPUTED: 0, AT_LEAST: 0, NEEDS_INPUT: 0 } as Record<string, number>, ratios: { COMPUTED: 0, AT_LEAST: 0, AT_MOST: 0, NEEDS_INPUT: 0 } as Record<string, number> };
   const buckets: Record<string, number> = {}, rbuckets: Record<string, number> = {};
   const samples: Record<string, string[]> = {};
   const computed: unknown[] = [];
+  const ratiosOut: unknown[] = [];
   const finCache = new Map<string, IssuerFinancials | null>();
-  for (const d of docs.slice(0, limit)) {
+  const [si, sn] = (process.env.DIAG_SHARD ?? "0/1").split("/").map(Number) as [number, number];
+  for (const d of docs.slice(0, limit).filter((_, i) => i % sn === si)) {
     const fin = d.cik ? (finCache.has(d.cik) ? finCache.get(d.cik)! : (finCache.set(d.cik, await financials(d.cik)), finCache.get(d.cik)!)) : null;
     let r;
     try { r = runAgreementPipeline({ sourceId: d.id, text: d.text(), issuerCik: d.cik, financials: fin }); } catch { continue; }
@@ -76,7 +78,15 @@ async function main() {
     }
     for (const x of r.computedRatios) {
       if (x.status === "UNKNOWN") continue; // not named in the document
-      if (x.status === "COMPUTED") { tally.ratios[bound.get(x.stableKey) ?? "COMPUTED"]!++; continue; }
+      if (x.status === "COMPUTED") {
+        const rb = bound.get(x.stableKey) as "AT_LEAST" | "AT_MOST" | undefined;
+        tally.ratios[rb ?? "COMPUTED"]!++;
+        const ops = (xs: typeof x.numerator) => xs.map((n) => `${n.metricName}=${n.canonical} [${n.sourceDocumentId} ${n.citationExcerpt.slice(0, 160)}]`);
+        ratiosOut.push({ doc: d.id, set: d.set, key: x.stableKey, name: x.displayName, value: x.canonical, bound: rb ?? "EXACT", numerator: ops(x.numerator), denominator: ops(x.denominator), definition: (x.definitionExcerpt ?? "").slice(0, 400),
+          headroom: x.thresholds.map((t) => ({ section: t.sectionRef, limit: t.canonical, direction: t.direction, headroom: t.headroomCanonical, label: headroomBound(rb, t.direction), clause: t.citationExcerpt.replace(/\s+/g, " ").slice(0, 200) })) });
+        for (const t of x.thresholds) if (t.headroomStatus === "COMPUTED") tally.headroom[headroomBound(rb, t.direction)] = (tally.headroom[headroomBound(rb, t.direction)] ?? 0) + 1;
+        continue;
+      }
       tally.ratios.NEEDS_INPUT!++;
       const k = `${x.ratioKey}: ${x.missingInputs.includes("contract definition") ? "named, ratio-of definition not linked" : x.missingInputs.includes("definition arithmetic") ? "definition not one numerator over one denominator" : `operand unbound (${x.missingInputs.map(why).join("; ").slice(0, 80)})`}`;
       const g = k.replace(/^[A-Z_]+: /, "");
@@ -85,7 +95,7 @@ async function main() {
     }
   }
   const sort = (o: Record<string, number>) => Object.fromEntries(Object.entries(o).sort((a, b) => b[1] - a[1]));
-  writeFileSync(out, JSON.stringify({ testDate: TEST_DATE, tally, basketBuckets: sort(buckets), ratioBuckets: sort(rbuckets), samples, computed }, null, 1));
+  writeFileSync(out, JSON.stringify({ testDate: TEST_DATE, tally, basketBuckets: sort(buckets), ratioBuckets: sort(rbuckets), samples, computed, ratios: ratiosOut }, null, 1));
   console.log(JSON.stringify({ tally, basketBuckets: Object.fromEntries(Object.entries(sort(buckets)).slice(0, 25)), ratioBuckets: sort(rbuckets) }, null, 1));
 }
 main().catch((e) => { console.error(String(e?.stack ?? e)); process.exit(1); });

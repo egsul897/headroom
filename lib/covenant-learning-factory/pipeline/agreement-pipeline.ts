@@ -156,12 +156,20 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
       }
       for (const r of result.ratios) {
         if (r.status !== "COMPUTED") continue;
-        const num = lb.filter((x) => r.numerator.some((n) => n.metricName.toLowerCase() === x.metricName.toLowerCase()));
-        const den = lb.filter((x) => r.denominator.some((n) => n.metricName.toLowerCase() === x.metricName.toLowerCase()));
-        if (!num.length && !den.length) continue;
-        if (num.length && den.length) { r.status = "NEEDS_INPUT"; r.canonical = null; reverted.push(r.stableKey); continue; }
-        const d = (num[0] ?? den[0])!;
-        bounds.push({ stableKey: r.stableKey, kind: num.length ? "AT_LEAST" : "AT_MOST", metric: d.metricName, missing: d.evaluation?.missing ?? [] });
+        const sub = new Set(subtrahendNames(r.expression).map((x) => x.toLowerCase()));
+        const has = (list: { metricName: string }[], d: { metricName: string }) => list.some((n) => n.metricName.toLowerCase() === d.metricName.toLowerCase());
+        const numLb = lb.filter((x) => has(r.numerator, x) && !sub.has(x.metricName.toLowerCase()));
+        const subLb = lb.filter((x) => sub.has(x.metricName.toLowerCase()));
+        const den = lb.filter((x) => has(r.denominator, x));
+        if (!numLb.length && !subLb.length && !den.length) continue;
+        // Numerator lower bound (a lower-bounded subtrahend makes it an upper bound); a lower-bounded denominator turns
+        // the direction. Mixed directions, or a bounded denominator under a negative numerator, give no bound.
+        const numDir = numLb.length && subLb.length ? null : numLb.length ? "LB" : subLb.length ? "UB" : "EXACT";
+        const ratioDir = numDir == null ? null : den.length ? (numDir === "LB" ? null : "UB") : numDir === "EXACT" ? null : numDir;
+        const negative = r.canonical != null && r.canonical.startsWith("-");
+        if (ratioDir == null || (den.length && negative)) { r.status = "NEEDS_INPUT"; r.canonical = null; r.thresholds = r.thresholds.map((t) => ({ ...t, headroomStatus: "NEEDS_INPUT", headroomCanonical: null })); reverted.push(r.stableKey); continue; }
+        const d = (numLb[0] ?? subLb[0] ?? den[0])!;
+        bounds.push({ stableKey: r.stableKey, kind: ratioDir === "LB" ? "AT_LEAST" : "AT_MOST", metric: d.metricName, missing: [...new Set([...numLb, ...subLb, ...den].flatMap((x) => x.evaluation?.missing ?? []))] });
       }
     }
     xbrl = { cik: args.financials.cik, decisions, before, bounds, reverted };
@@ -393,6 +401,25 @@ const FIRST_LIMB_ONLY = /greater\s+of\s*:?\s*(?:(?:\(\s*\w{1,4}\s*\)\s*)?(?:U\.S
  * Consolidated Total Assets …") is cited as one clause: the cited text is extended with the exact following document
  * text up to the end of the percent limb, and the orphaned percent-limb clause is dropped (it is not a cap by itself).
  */
+/** Metric names under the subtracted side of a ratio numerator ("Debt minus Cash"). */
+function subtrahendNames(e: unknown): string[] {
+  const x = e as { kind?: string; numerator?: { kind?: string; right?: unknown } } | null;
+  const right = x?.kind === "DIVIDE" && x.numerator?.kind === "SUBTRACT" ? x.numerator.right : null;
+  const out: string[] = [];
+  const walk = (n: unknown) => { const y = n as { kind?: string; metricName?: string; operands?: unknown[] } | null; if (!y) return; if (y.kind === "METRIC_REFERENCE" && y.metricName) out.push(y.metricName); (y.operands ?? []).forEach(walk); };
+  walk(right);
+  return out;
+}
+
+/**
+ * Headroom label for a bounded ratio: actual − limit (MIN) or limit − actual (MAX). An AT_LEAST ratio gives at-least
+ * headroom against a minimum and at-most headroom against a maximum; an AT_MOST ratio the reverse.
+ */
+export function headroomBound(ratioBound: "AT_LEAST" | "AT_MOST" | undefined, direction: "MIN" | "MAX"): "EXACT" | "AT_LEAST" | "AT_MOST" {
+  if (!ratioBound) return "EXACT";
+  return (ratioBound === "AT_LEAST") === (direction === "MIN") ? "AT_LEAST" : "AT_MOST";
+}
+
 export function joinSplitGreaterOf(pkg: { documents: Array<{ documentId: string; text: string }>; baskets: Array<{ operativeText: string; documentId: string }> }): number {
   let joined = 0;
   const drop = new Set<number>();

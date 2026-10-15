@@ -15,6 +15,10 @@ export interface CompanyFacts { cik: number; entityName: string; facts: Record<s
 export type HeadroomInput =
   | "netIncome" | "interestExpense" | "incomeTaxes" | "depreciationAmortization" | "operatingIncome" | "revenue"
   | "totalAssets" | "cash" | "totalDebt" | "longTermDebtNoncurrent" | "debtCurrent" | "reportedEbitdaBase"
+  /** Cash, cash equivalents and short-term investments at the balance-sheet instant. */
+  | "cashAndShortTermInvestments"
+  /** Unamortized debt premium at the balance-sheet instant (carrying amount above principal). */
+  | "debtPremium"
   /** A definition line-item concept (concept column names it). */
   | "item";
 
@@ -169,6 +173,10 @@ export function extractFinancials(cf: CompanyFacts, cikPadded: string, opts: { a
   if (nonCur && cur) pushInst("totalDebt", `${nonCur.c}+${cur.c}`, [nonCur.f, cur.f]);
   else if (ltdTotal) pushInst("totalDebt", "LongTermDebt", [ltdTotal]);
   else missing.push({ metric: "totalDebt", reason: `no LongTermDebt, or noncurrent + current pair, at ${bs}` });
+  const csti = inst("CashCashEquivalentsAndShortTermInvestments");
+  if (csti) pushInst("cashAndShortTermInvestments", "CashCashEquivalentsAndShortTermInvestments", [csti]);
+  const prem = inst("DebtInstrumentUnamortizedPremium");
+  if (prem) pushInst("debtPremium", "DebtInstrumentUnamortizedPremium", [prem]);
   return { cik: cikPadded, entityName: cf.entityName, values, missing, anchor, asOf: opts.asOf ?? null };
 }
 
