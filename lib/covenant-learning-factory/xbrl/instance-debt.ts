@@ -61,20 +61,28 @@ export function clauseFacilityNames(clause: string): string[] {
 export type UsageDecision = { status: "COMPUTED"; usage: bigint; fact: FacilityFact; facility: string } | { status: "NEEDS_INPUT"; reason: string };
 
 /** Usage under a basket from the facility it names: exactly one name, exactly one member equal to it, a principal concept. */
-export function basketUsage(clause: string, facts: readonly FacilityFact[]): UsageDecision {
+export function basketUsage(clause: string, facts: readonly FacilityFact[], docText?: string): UsageDecision {
   const names = clauseFacilityNames(clause);
   if (!names.length) return { status: "NEEDS_INPUT", reason: "basket names no specific facility" };
   if (names.length > 1) return { status: "NEEDS_INPUT", reason: `basket names several facilities: ${names.join("; ")}` };
   const name = names[0]!;
   const hits = facts.filter((f) => words(f.name) === words(name));
   const members = [...new Set(hits.map((h) => h.member))];
+  let via: string | null = null;
+  if (!members.length && docText) {
+    const r = resolveByDefinition(name, docText, facts);
+    if ("reason" in r) return { status: "NEEDS_INPUT", reason: `no XBRL debt-axis member named exactly "${name}"; ${r.reason}` };
+    members.push(r.member);
+    hits.push(...facts.filter((f) => f.member === r.member));
+    via = r.definition;
+  }
   if (!members.length) return { status: "NEEDS_INPUT", reason: `no XBRL debt-axis member named exactly "${name}"` };
   if (members.length > 1) return { status: "NEEDS_INPUT", reason: `several XBRL members named "${name}"` };
   const principal = hits.filter((h) => h.principal);
   const values = [...new Set(principal.map((h) => h.value))];
   if (!principal.length) return { status: "NEEDS_INPUT", reason: `"${name}" is reported only as a carrying amount (${hits[0]!.concept}), not principal outstanding` };
   if (values.length > 1) return { status: "NEEDS_INPUT", reason: `"${name}" principal concepts disagree` };
-  return { status: "COMPUTED", usage: values[0]!, fact: principal[0]!, facility: name };
+  return { status: "COMPUTED", usage: values[0]!, fact: principal[0]!, facility: via ? `${name} = ${via.slice(0, 160)}` : name };
 }
 
 async function secGet(url: string): Promise<string | null> {
@@ -113,4 +121,66 @@ export async function latestInstanceFacts(cik: string, asOf: string, cacheDir: s
   } catch { facts = null; }
   writeFileSync(f, JSON.stringify(facts ? facts.map((x) => ({ ...x, value: x.value.toString() })) : null));
   return facts;
+}
+
+// ---- Defined term → instrument (coupon, maturity year, type), matched to one filing debt line ----
+
+const ONES: Record<string, number> = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19 };
+const TENS: Record<string, number> = { twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90 };
+
+/** Spelled-out numbers in XBRL member names → digits: "Five Point Two Five Zero" → "5.250", "Two Thousand Twenty Seven" → "2027". */
+export function digitsFromWords(s: string): string {
+  let t = s.replace(/\b(Two\s+Thousand)((?:\s+(?:Twenty|Thirty|Forty|Fifty)(?:\s+(?:One|Two|Three|Four|Five|Six|Seven|Eight|Nine))?|\s+(?:One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve|Thirteen|Fourteen|Fifteen|Sixteen|Seventeen|Eighteen|Nineteen)))\b/g, (_, __, rest: string) => {
+    const w = rest.trim().toLowerCase().split(/\s+/);
+    return String(2000 + (TENS[w[0]!] ?? ONES[w[0]!] ?? 0) + (w[1] ? ONES[w[1]] ?? 0 : 0));
+  });
+  t = t.replace(/\b((?:Zero|One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve|Thirteen|Fourteen|Fifteen)\s+Point(?:\s+(?:Zero|One|Two|Three|Four|Five|Six|Seven|Eight|Nine))+)\b/g, (m) => {
+    const [a, b] = m.split(/\s+Point\s+/);
+    return `${ONES[a!.toLowerCase()]}.${b!.split(/\s+/).map((x) => ONES[x.toLowerCase()]).join("")}`;
+  });
+  return t;
+}
+
+export interface Instrument { type: "NOTES" | "TERM_LOAN" | "REVOLVER"; coupon: number | null; year: number | null }
+
+function instrumentType(s: string): Instrument["type"] | null {
+  const n = /\b(?:Notes|Debentures|Bonds)\b/i.test(s), tl = /\bTerm\s+Loans?\b/i.test(s), rv = /\bRevolv/i.test(s);
+  return [n, tl, rv].filter(Boolean).length !== 1 ? null : n ? "NOTES" : tl ? "TERM_LOAN" : "REVOLVER";
+}
+
+/** The one instrument a phrase names, or null when it names none or several (two coupons, two maturities, two types). */
+export function instrumentOf(phrase: string): Instrument | null {
+  const s = digitsFromWords(phrase);
+  const type = instrumentType(s);
+  if (!type) return null;
+  const coupons = [...new Set([...s.matchAll(/(\d{1,2}(?:\.\d{1,4})?)\s*(?:%|Percent(?:age)?\b)/gi)].map((m) => Number(m[1])))];
+  const years = [...new Set([...s.matchAll(/\bDue\s+(?:(?:January|February|March|April|May|June|July|August|September|October|November|December)\s+(?:\d{1,2},?\s+)?)?(20\d\d)\b/gi)].map((m) => Number(m[1])))];
+  if (coupons.length > 1 || years.length > 1) return null;
+  return { type, coupon: coupons[0] ?? null, year: years[0] ?? null };
+}
+
+/** The text of `"Term" means …` up to the end of its first sentence, or null. */
+export function definitionText(doc: string, term: string): string | null {
+  const t = doc.replace(/\s+/g, " ");
+  const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const all = [...t.matchAll(new RegExp(`[“"]\\s*${esc}\\s*[”"]\\s*(?:shall\\s+mean|means|:)\\s*([^;]{0,400}?)(?:\\.\\s|;|$)`, "g"))];
+  if (all.length !== 1) return null;
+  return all[0]![1]!;
+}
+
+/**
+ * Usage via the agreement's definition: the term must be defined once, the definition must name exactly one instrument
+ * with a coupon and a maturity year, and exactly one filing debt member must carry the same type, coupon and year.
+ */
+export function resolveByDefinition(name: string, docText: string, facts: readonly FacilityFact[]): { member: string; instrument: Instrument; definition: string } | { reason: string } {
+  const def = definitionText(docText, name);
+  if (!def) return { reason: `"${name}" is not defined exactly once` };
+  const ins = instrumentOf(def);
+  if (!ins || ins.coupon == null || ins.year == null) return { reason: `definition of "${name}" does not name one instrument with coupon and maturity` };
+  const members = [...new Set(facts.map((f) => f.member))].filter((m) => {
+    const fi = instrumentOf(memberName(m));
+    return fi && fi.type === ins.type && fi.coupon === ins.coupon && fi.year === ins.year;
+  });
+  if (members.length !== 1) return { reason: members.length ? `several filing debt lines match "${name}"` : `no filing debt line is ${ins.coupon}% ${ins.type} due ${ins.year}` };
+  return { member: members[0]!, instrument: ins, definition: def };
 }

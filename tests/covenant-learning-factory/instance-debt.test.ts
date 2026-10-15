@@ -34,3 +34,28 @@ describe("instance-file debt breakdown", () => {
     expect(basketUsage("Indebtedness not to exceed $50,000,000 at any time outstanding", facts).status).toBe("NEEDS_INPUT");
   });
 });
+
+import { digitsFromWords, instrumentOf, resolveByDefinition } from "@/lib/covenant-learning-factory/xbrl/instance-debt";
+
+describe("defined term → filing instrument", () => {
+  const xml2 = `<xbrl>
+<context id="n1"><entity><segment><xbrldi:explicitMember dimension="us-gaap:DebtInstrumentAxis">x:FivePointZeroZeroZeroPercentageSeniorUnsecuredNotesDueTwoThousandTwentySevenMember</xbrldi:explicitMember></segment></entity><period><instant>2026-06-30</instant></period></context>
+<context id="n2"><entity><segment><xbrldi:explicitMember dimension="us-gaap:DebtInstrumentAxis">x:SixPointTwoFivePercentSeniorNotesDue2030Member</xbrldi:explicitMember></segment></entity><period><instant>2026-06-30</instant></period></context>
+<us-gaap:LongTermDebtGross contextRef="n1" unitRef="usd" decimals="-5">750000000</us-gaap:LongTermDebtGross>
+<us-gaap:LongTermDebtGross contextRef="n2" unitRef="usd" decimals="-5">400000000</us-gaap:LongTermDebtGross>
+</xbrl>`;
+  const f2 = parseInstanceDebt(xml2, "a");
+  it("reads spelled-out coupons and years", () => {
+    expect(digitsFromWords("Five Point Zero Zero Zero Percentage Senior Unsecured Notes Due Two Thousand Twenty Seven")).toBe("5.000 Percentage Senior Unsecured Notes Due 2027");
+    expect(instrumentOf("the 5.000% Senior Notes due 2027")).toEqual({ type: "NOTES", coupon: 5, year: 2027 });
+    expect(instrumentOf("the 5.000% Senior Notes due 2027 and the 6.25% Senior Notes due 2030")).toBeNull();
+  });
+  it("matches one definition to one filing line; ambiguity stays unresolved", () => {
+    const doc = `"Existing Notes" means the Company's 5.000% Senior Notes due 2027 issued under the Base Indenture. "Other" means x.`;
+    expect(resolveByDefinition("Existing Notes", doc, f2)).toMatchObject({ member: "x:FivePointZeroZeroZeroPercentageSeniorUnsecuredNotesDueTwoThousandTwentySevenMember" });
+    expect(basketUsage("Indebtedness in respect of the Existing Notes not to exceed $800,000,000", f2, doc)).toMatchObject({ status: "COMPUTED", usage: 750000000n });
+    expect("reason" in resolveByDefinition("Existing Notes", `"Existing Notes" means the 5.000% Senior Notes due 2027 and the 6.25% Senior Notes due 2030.`, f2)).toBe(true);
+    expect("reason" in resolveByDefinition("Existing Notes", `"Existing Notes" means the 5.000% Senior Notes due 2028.`, f2)).toBe(true);
+    expect("reason" in resolveByDefinition("Existing Notes", `"Existing Notes" means the senior notes of the Company.`, f2)).toBe(true);
+  });
+});

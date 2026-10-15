@@ -221,7 +221,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     if (b.capStatus !== "COMPUTED") continue;
     const row: HeadroomRow = { stableKey: b.stableKey, kind: "BASKET", name: b.category, sectionRef: b.sectionRef, status: "NEEDS_INPUT", usage: null, usageBound: "EXACT", limit: b.capCanonical, direction: "MAX", headroom: null, headroomBound: null, citation: b.citationExcerpt, missing: ["basket usage (amount already used under this basket)"] };
     const debtLike = /DEBT|LIEN/i.test(b.covenantFamily);
-    const u = args.facilityFacts && debtLike ? basketUsage(b.citationExcerpt, args.facilityFacts) : null;
+    const u = args.facilityFacts && debtLike ? basketUsage(b.citationExcerpt, args.facilityFacts, tree.text) : null;
     if (u && u.status === "NEEDS_INPUT") row.missing = [`basket usage: ${u.reason}`];
     if (u && u.status === "COMPUTED" && b.capCanonical && /^-?\d+(?:\.\d+)?$/.test(b.capCanonical)) {
       const capBound = boundOf.get(b.stableKey);
@@ -230,7 +230,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
       const capScaled = BigInt(ci! + cf);
       const h = capScaled - u.usage * scale;
       const hs = cf.length ? `${h < 0n ? "-" : ""}${(h < 0n ? -h : h) / scale}.${((h < 0n ? -h : h) % scale).toString().padStart(cf.length, "0")}` : h.toString();
-      Object.assign(row, { status: "COMPUTED", usage: u.usage.toString(), usageBound: "EXACT", headroom: hs, headroomBound: capBound === "AT_LEAST" ? "AT_LEAST" : "EXACT", missing: [], usageSource: `${u.fact.concept} [${u.fact.member}] ${u.fact.instant} accn ${u.fact.accession}` });
+      Object.assign(row, { status: "COMPUTED", usage: u.usage.toString(), usageBound: "EXACT", headroom: hs, headroomBound: capBound === "AT_LEAST" ? "AT_LEAST" : "EXACT", missing: [], usageSource: `${u.facility} → ${u.fact.concept} [${u.fact.member}] ${u.fact.instant} accn ${u.fact.accession}` });
     }
     headroom.push(row);
   }
