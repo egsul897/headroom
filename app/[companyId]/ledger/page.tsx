@@ -1,3 +1,4 @@
+import { Select } from "@/components/Select";
 import { Banner, Card } from "@/components/ui";
 import { Disclosure } from "@/components/Disclosure";
 import { LEDGER_BASKET_LABELS, getLedgerEntries, getPosition, getSupersededLedgerEntries } from "@/lib/coherent";
@@ -311,13 +312,15 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
           <label className="field">
             <span className="field-label">Category</span>
             <div className="field-control">
-              <select name="basket" defaultValue="EQUITY">
-                {Object.entries(LEDGER_BASKET_LABELS).map(([code, label]) => (
-                  <option key={code} value={code}>
-                    {label}
-                  </option>
-                ))}
-              </select>
+              <Select
+                name="basket"
+                ariaLabel="Category"
+                defaultValue="EQUITY"
+                options={Object.entries(LEDGER_BASKET_LABELS).map(([code, label]) => ({
+                  value: code,
+                  label,
+                }))}
+              />
             </div>
           </label>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>

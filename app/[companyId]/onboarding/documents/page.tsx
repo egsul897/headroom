@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Select } from "@/components/Select";
 import { Card, Chip, type ChipTone } from "@/components/ui";
 import { getDocumentsWithExtractionStatus } from "@/lib/onboarding/documents";
 import { getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailureLogsForCompany } from "@/lib/contract-model/analysis";
@@ -124,13 +125,7 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
           <div className="field">
             <div className="field-label">Declared type (best guess — extraction may propose a correction for review)</div>
             <div className="field-control">
-              <select name="declaredType" defaultValue="CREDIT_AGREEMENT">
-                {DOCUMENT_TYPES.map((t) => (
-                  <option key={t.value} value={t.value}>
-                    {t.label}
-                  </option>
-                ))}
-              </select>
+              <Select name="declaredType" ariaLabel="Declared type" defaultValue="CREDIT_AGREEMENT" options={DOCUMENT_TYPES} />
             </div>
           </div>
           <div className="field">

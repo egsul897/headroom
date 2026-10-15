@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Select } from "@/components/Select";
 import { Card } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
 import { suggestPermissionMatches } from "@/lib/onboarding/financial";
@@ -56,13 +57,18 @@ export default async function OnboardingFacilitiesPage({ params, searchParams }:
             <div className="field">
               <div className="field-label">Facility type</div>
               <div className="field-control">
-                <select name="facilityType" defaultValue="TERM_LOAN">
-                  <option value="TERM_LOAN">Term Loan</option>
-                  <option value="REVOLVER">Revolver</option>
-                  <option value="NOTES">Notes</option>
-                  <option value="ABL">ABL</option>
-                  <option value="OTHER">Other</option>
-                </select>
+                <Select
+                  name="facilityType"
+                  ariaLabel="Facility type"
+                  defaultValue="TERM_LOAN"
+                  options={[
+                    { value: "TERM_LOAN", label: "Term Loan" },
+                    { value: "REVOLVER", label: "Revolver" },
+                    { value: "NOTES", label: "Notes" },
+                    { value: "ABL", label: "ABL" },
+                    { value: "OTHER", label: "Other" },
+                  ]}
+                />
               </div>
             </div>
             <div className="field">
@@ -77,10 +83,15 @@ export default async function OnboardingFacilitiesPage({ params, searchParams }:
             <div className="field">
               <div className="field-label">Coupon type</div>
               <div className="field-control">
-                <select name="couponType" defaultValue="FLOATING">
-                  <option value="FLOATING">Floating</option>
-                  <option value="FIXED">Fixed</option>
-                </select>
+                <Select
+                  name="couponType"
+                  ariaLabel="Coupon type"
+                  defaultValue="FLOATING"
+                  options={[
+                    { value: "FLOATING", label: "Floating" },
+                    { value: "FIXED", label: "Fixed" },
+                  ]}
+                />
               </div>
             </div>
             <div className="field">
