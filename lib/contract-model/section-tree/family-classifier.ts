@@ -24,8 +24,8 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted)\b/i;
-const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted)\b/i;
+const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
+const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
 /** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
 const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
 const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
@@ -35,7 +35,7 @@ function noPartyMatches(lead: string): RegExpMatchArray[] {
   return [...stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length)).matchAll(NO_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!));
 }
 /** "Neither the Issuer nor Parent may consolidate ..." / "Neither Borrower shall ...": a negated obligor subject. */
-const NEITHER_RE = /\b[Nn]either\s+(?:the\s+)?[A-Z][^.;:]{0,120}?\b(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated))/;
+const NEITHER_RE = /\b(?:[Nn]either|[Nn]one\s+of)\s+(?:the\s+)?[A-Z][^.;:]{0,160}?\b(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated))/;
 const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 || NEITHER_RE.test(lead) };
 
 /** The prohibition binds an obligor: not the trustee, agents, lenders or holders, and not a passive "shall not be required/deemed". */
@@ -64,7 +64,7 @@ const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
   ["RESTRICTED_PAYMENTS", /\b(?:declare|pay|make)\b[^.;]{0,120}\b(?:dividends?|distributions?|restricted (?:junior )?payments?)\b|\b(?:purchase|redeem|retire|acquire)\b[^.;]{0,80}\b(?:equity interests?|capital stock|shares)\b/i],
   ["INVESTMENTS", /\b(?:make|hold|acquire)\b[^.;]{0,80}\b(?:investments?|advances?|loans?\s+to|capital contributions?)\b/i],
   ["PREPAYMENTS", /\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\b(?:subordinated|junior|second lien|unsecured)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b/i],
-  ["FUNDAMENTAL_CHANGES", /\btransactions? of merger\b|\b(?:merge|consolidate|amalgamate|liquidate|dissolve|wind\s+up)\b(?!\s+(?:EBITDA|Net|Total))/i],
+  ["FUNDAMENTAL_CHANGES", /\btransactions? of merger\b|\b(?:consummate|enter into|effect)\b[^.;]{0,40}\b(?:merger|consolidation|amalgamation)\b|\b(?:merge|consolidate|amalgamate|liquidate|dissolve|wind\s+up)\b(?!\s+(?:EBITDA|Net|Total))/i],
   ["ASSET_SALES", /\b(?:sell|lease|transfer|convey|dispose|assign)\b[^.;]{0,300}?\b(?:assets?|propert(?:y|ies)|equity interests? (?:in|of) any (?:restricted )?subsidiar)|\b(?:make|consummate|effect)\b[^.;]{0,40}\b(?:Asset Sales?|Asset Dispositions?)\b/i],
   ["AFFILIATE_TRANSACTIONS", /\btransactions?\b[^.;]{0,220}\b(?:with|involving|to)\b[^.;]{0,60}\baffiliates?\b/i],
 ];
