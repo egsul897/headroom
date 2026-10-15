@@ -130,6 +130,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     if (key.length < 20 || cited.includes(key)) continue;
     pkg.baskets.push({ stableKey: `tree:${n.path}`, sectionRef: n.path, covenantFamily: family, documentId: pkg.baskets[0]?.documentId ?? args.sourceId, operativeText: own, role: "PERMISSION" });
   }
+  joinSplitGreaterOf(pkg);
   let result = runCovenantComputation(pkg, { rules, createdAt: "1970-01-01T00:00:00.000Z" });
   let xbrl: AgreementPipelineResult["xbrl"];
   if (args.financials) {
@@ -384,3 +385,38 @@ function sumAncestor(tree: AgreementPipelineResult["tree"], n: AgreementPipeline
   return null;
 }
 
+
+const FIRST_LIMB_ONLY = /greater\s+of\s*:?\s*(?:(?:\(\s*\w{1,4}\s*\)\s*)?(?:U\.S\.\s*)?\$\s*[\d,]+(?:\.\d+)?(?:\s+million)?\s*(?:,|and|or)?)?\s*$/i;
+
+/**
+ * A greater-of whose second limb sits in the next tree node ("… the greater of (1) $250,000,000" / "(2) 2% of
+ * Consolidated Total Assets …") is cited as one clause: the cited text is extended with the exact following document
+ * text up to the end of the percent limb, and the orphaned percent-limb clause is dropped (it is not a cap by itself).
+ */
+export function joinSplitGreaterOf(pkg: { documents: Array<{ documentId: string; text: string }>; baskets: Array<{ operativeText: string; documentId: string }> }): number {
+  let joined = 0;
+  const drop = new Set<number>();
+  pkg.baskets.forEach((b, i) => {
+    const op = b.operativeText.replace(/\s+$/, "");
+    if (!FIRST_LIMB_ONLY.test(op.replace(/\s+/g, " "))) return;
+    // Already cited whole by another clause ("… greater of (1) $X and (2) Y% of …"): drop the truncated duplicate.
+    const nOp = op.replace(/\s+/g, " ").trim(), key = nOp.slice(nOp.toLowerCase().lastIndexOf("greater of"));
+    if (pkg.baskets.some((o, j) => j !== i && !drop.has(j) && (() => { const n = o.operativeText.replace(/\s+/g, " "); const k = n.indexOf(key); return k >= 0 && /^[^;]{0,120}%/.test(n.slice(k + key.length)) && (key.length > 12 || /\$/.test(n.slice(k + key.length, k + key.length + 120))); })())) { drop.add(i); return; }
+    const doc = pkg.documents.find((d) => d.documentId === b.documentId) ?? pkg.documents[0];
+    if (!doc) return;
+    const loc = new RegExp(nOp.slice(-200).replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/ /g, "\\s+")).exec(doc.text);
+    if (!loc) return;
+    const at = loc.index + loc[0].length - op.length;
+    const end = loc.index + loc[0].length;
+    const tail = doc.text.slice(end, end + 600);
+    if (at < 0 || doc.text.slice(at, end).replace(/\s+/g, " ").trim() !== nOp) return;
+    const m = /^[^;]{0,160}?(?:\(\s*\w{1,4}\s*\)\s*)?(?:an\s+amount\s+equal\s+to\s+)?(?:[a-z][a-z\- ]{2,40}\s+percent\s*\(\s*)?\d+(?:\.\d+)?\s*%\s*\)?\s+of\s+[^;]{3,240}?(?=;|\.\s|\.$|$)/.exec(tail);
+    if (!m || /greater\s+of/i.test(m[0]) || (!/\$/.test(nOp.slice(nOp.toLowerCase().lastIndexOf("greater of"))) && !/\$/.test(m[0]))) return;
+    b.operativeText = doc.text.slice(at, end) + m[0];
+    joined++;
+    const limb = m[0].replace(/\s+/g, " ").trim();
+    pkg.baskets.forEach((o, j) => { if (j !== i && limb.includes(o.operativeText.replace(/\s+/g, " ").trim()) && /%/.test(o.operativeText)) drop.add(j); });
+  });
+  if (drop.size) pkg.baskets.splice(0, pkg.baskets.length, ...pkg.baskets.filter((_, j) => !drop.has(j)));
+  return joined;
+}

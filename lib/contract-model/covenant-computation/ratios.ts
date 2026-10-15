@@ -27,6 +27,7 @@ import type {
 } from "./types";
 import { CERTIFICATION } from "./types";
 import { citedIn, norm } from "./text";
+import { plainText } from "@/lib/covenant-learning-factory/xbrl/definition-items";
 import type { BoundInputs } from "./bind-inputs";
 
 interface CatalogEntry {
@@ -52,6 +53,21 @@ export const RATIO_CATALOG: readonly CatalogEntry[] = [
 
 /** Longest first is not required; overlap is dropped in metricsIn. */
 const OPERANDS = [
+  "Consolidated Total Net Debt",
+  "Consolidated Net Debt",
+  "Consolidated Total Debt",
+  "Consolidated Funded Indebtedness",
+  "Consolidated Funded Debt",
+  "Consolidated Indebtedness",
+  "Consolidated Debt",
+  "Consolidated Adjusted EBITDA",
+  "Consolidated Cash Interest Expense",
+  "Consolidated Net Interest Expense",
+  "Funded Indebtedness",
+  "Funded Debt",
+  "Total Indebtedness",
+  "Total Debt",
+  "Adjusted EBITDA",
   "Consolidated Fixed Charges",
   "Consolidated Interest Expense",
   "Consolidated EBITDA",
@@ -214,8 +230,8 @@ function refusedReported(entry: CatalogEntry, bound: BoundInputs): ComputedRatio
 }
 
 export function parseDefinitions(doc: PackageDocument): ParsedDefinition[] {
-  const text = norm(doc.text);
-  const header = /[“"]([^"”]{3,140})[”"]\s+(?:shall\s+mean|means)\b/gi;
+  const text = norm(plainText(doc.text));
+  const header = /[“"]\s*([^"”]{3,140}?)\s*[”"]\s*(?:shall\s+mean|means)\b/gi;
   const out: ParsedDefinition[] = [];
   let match: RegExpExecArray | null;
   while ((match = header.exec(text)) !== null) {
@@ -225,7 +241,9 @@ export function parseDefinitions(doc: PackageDocument): ParsedDefinition[] {
     const ratioAt = window.search(/\bthe\s+ratio\s+of\b/i);
     if (ratioAt < 0 || ratioAt > 500) continue;
     const after = window.slice(ratioAt);
-    const split = after.match(/\bthe\s+ratio\s+of\s+([\s\S]*?)\s+to\s+(\((?:y|ii|2|b)\))/i);
+    // "the ratio of (a) X to (b) Y", or un-enumerated "the ratio of X … to Y …" (first " to " followed by a known operand).
+    const split = after.match(/\bthe\s+ratio\s+of\s+([\s\S]*?)\s+to\s+(\((?:y|ii|2|b)\))/i)
+      ?? after.match(new RegExp(`\\bthe\\s+ratio\\s+of\\s+([\\s\\S]{3,400}?)\\s+to\\s+()(?=(?:the\\s+)?(?:${OPERANDS.map((o) => o.replace(/\s+/g, "\\s+")).join("|")})\\b)`, "i"));
     if (!split || split.index == null || !split[1]) continue;
     const numeratorRaw = split[1].trim();
     const denominatorStart = split.index + split[0].length;
@@ -233,7 +251,8 @@ export function parseDefinitions(doc: PackageDocument): ParsedDefinition[] {
     const end = sentenceEnd(rest);
     if (end < 0) continue;
     const denominatorRaw = rest.slice(0, end).trim();
-    const minusAt = numeratorRaw.search(/\b(?:minus|less)\b/i);
+    // "the excess of (i) Debt over (ii) Unrestricted Cash" is Debt minus Cash.
+    const minusAt = numeratorRaw.search(/\b(?:minus|less|over)\b/i);
     const left = minusAt < 0 ? numeratorRaw : numeratorRaw.slice(0, minusAt);
     const right = minusAt < 0 ? "" : numeratorRaw.slice(minusAt);
     const denominatorHead = denominatorRaw.split(/\bpro\s+forma\b/i)[0] ?? denominatorRaw;
@@ -436,8 +455,10 @@ function nameAppears(text: string, name: string): boolean {
   return false;
 }
 
+/** Equal up to whitespace, case and a leading "Consolidated" ("Consolidated Leverage Ratio" = "Leverage Ratio"). */
 function namesEqual(a: string, b: string): boolean {
-  return norm(a).toLowerCase() === norm(b).toLowerCase();
+  const c = (x: string) => norm(x).toLowerCase().replace(/^consolidated\s+/, "");
+  return c(a) === c(b);
 }
 
 export function documentContaining(documents: readonly PackageDocument[], excerpt: string): PackageDocument | undefined {

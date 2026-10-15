@@ -264,11 +264,16 @@ function evalGrower(
 ): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
   const assets = classifyGreaterOfAssetsBasket(clause.operativeText);
   const ebitda = parseEbitdaGrower(clause.operativeText);
-  const fixedToken = assets.class !== "NOT_GREATER_OF_ASSETS"
+  let fixedToken = assets.class !== "NOT_GREATER_OF_ASSETS"
     ? dollarMatching(clause.operativeText, assets.fixedAmountUsd)
     : ebitda?.fixedToken ?? null;
-  const percent = assets.class !== "NOT_GREATER_OF_ASSETS" ? assets.percentFraction : ebitda?.fraction ?? null;
-  const metricName = assets.class !== "NOT_GREATER_OF_ASSETS" ? assets.metricName : ebitda?.metricName ?? null;
+  let percent = assets.class !== "NOT_GREATER_OF_ASSETS" ? assets.percentFraction : ebitda?.fraction ?? null;
+  let metricName = assets.class !== "NOT_GREATER_OF_ASSETS" ? assets.metricName : ebitda?.metricName ?? null;
+  if (!fixedToken || percent == null || !metricName) {
+    // General two-limb reader: "greater of (x) $A [million] and (y) B% of <metric>" in either order.
+    const g = parseGenericGrower(clause.operativeText);
+    if (g) ({ fixedToken, percent, metricName } = g);
+  }
   if (!fixedToken || percent == null || !metricName) {
     return {
       ...capShell("NEEDS_INPUT", "NONE", null, null, greaterOfMissingInputs(clause.operativeText), null),
@@ -741,6 +746,20 @@ function prov(clause: BasketClause): SourceProvenance {
 
 function formulaLabel(kind: FormulaKind): string {
   return FORMULA_TAXONOMY.find((entry) => entry.formulaKind === kind)?.formulaKind ?? kind;
+}
+
+const LIMB = String.raw`(?:\(\s*[a-zA-Z0-9]{1,4}\s*\)\s*)?(?:an\s+amount\s+equal\s+to\s+)?`;
+const PCT = String.raw`(?:[a-z][a-z\- ]{2,40}\s+percent\s*\(\s*)?(\d+(?:\.\d+)?)\s*%\s*\)?`;
+const USD = String.raw`(?:U\.S\.\s*)?\$\s*([\d,]+(?:\.\d+)?)(?:\s+million)?`;
+/** "greater of (x) $A and (y) B% of M" / "greater of B% of M and $A". Fixed limb, percent fraction and the metric as named. */
+export function parseGenericGrower(text: string): { fixedToken: string; percent: number; metricName: string } | null {
+  const t = norm(text);
+  const a = new RegExp(`greater\\s+of\\s*:?\\s*${LIMB}${USD}\\s*,?\\s*(?:and|or)\\s+${LIMB}${PCT}\\s+of\\s+([^.;]{3,180})`, "i").exec(t);
+  const b = a ? null : new RegExp(`greater\\s+of\\s*:?\\s*${LIMB}${PCT}\\s+of\\s+(.{3,180}?)\\s*,?\\s*(?:and|or)\\s+${LIMB}${USD}`, "i").exec(t);
+  const fixed = a?.[1] ?? b?.[3], pct = a?.[2] ?? b?.[1], raw = a?.[3] ?? b?.[2];
+  if (!fixed || !pct || !raw) return null;
+  const metricName = metricPhrase(raw.replace(/\s+(?:and|or)\s*\(\s*\w{1,4}\s*\)[\s\S]*$/, ""));
+  return metricName.length >= 3 ? { fixedToken: fixed.replace(/,/g, ""), percent: Number(pct) / 100, metricName } : null;
 }
 
 function parseEbitdaGrower(text: string): { fixedToken: string; fraction: number; metricName: string } | null {
