@@ -30,7 +30,7 @@ async function groupBy(
     by: [field],
     where: { companyId: null },
     _count: { _all: true },
-    orderBy: { _count: { _all: "desc" } },
+    orderBy: { _count: { _all: "desc" as const } },
   })) as Array<Record<string, unknown> & { _count: { _all: number } }>;
   return rows.map((r) => ({ key: String(r[field] ?? "(null)"), count: r._count._all }));
 }
