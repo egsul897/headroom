@@ -270,7 +270,7 @@ function evalGrower(
   const metricName = assets.class !== "NOT_GREATER_OF_ASSETS" ? assets.metricName : ebitda?.metricName ?? null;
   if (!fixedToken || percent == null || !metricName) {
     return {
-      ...capShell("NEEDS_INPUT", "NONE", null, null, ["greater-of fixed limb", "percent limb", namedMetricIn(clause.operativeText) ?? "metric"], null),
+      ...capShell("NEEDS_INPUT", "NONE", null, null, greaterOfMissingInputs(clause.operativeText), null),
       note: "Greater-of language is present. A limb could not be read from the text, so neither limb is used alone.",
     };
   }
@@ -777,4 +777,20 @@ export function namedMetricIn(text: string): string | null {
   const m = norm(text).match(/greater\s+of[^;]{0,300}?\d+(?:\.\d+)?\s*%\s+of\s+([^.;]{3,180})/i);
   const name = m ? metricPhrase(m[1]!) : "";
   return name.length >= 3 ? name : null;
+}
+
+/**
+ * Missing inputs for a greater-of whose limbs could not be evaluated, named from the clause: the percent
+ * limb's metric when there is one, else each "(x) … and (y) …" limb ("then-outstanding principal amount of
+ * Priority Lien Debt", "Priority Lien Cap"). Generic labels only when the text names nothing.
+ */
+export function greaterOfMissingInputs(text: string): string[] {
+  const metric = namedMetricIn(text);
+  if (metric) return ["greater-of fixed limb", "percent limb", metric];
+  const m = norm(text).match(/greater\s+of\s+\(\s*(?:x|a|i|1)\s*\)\s+([^;]{3,200}?)\s+and\s+\(\s*(?:y|b|ii|2)\s*\)\s+([^;]{3,200}?)(?=\s+(?:divided by|plus|minus|multiplied by|times)\b|[,;.)]|$)/i);
+  if (m) {
+    const limbs = [m[1]!, m[2]!].map((x) => metricPhrase(x)).filter((x) => x.length >= 3);
+    if (limbs.length === 2) return limbs;
+  }
+  return ["greater-of fixed limb", "percent limb", "metric"];
 }
