@@ -11,6 +11,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { discoverCovenantCandidates } from "../../lib/knowledge-factory/pipeline/candidates";
+import { classifyFamiliesFromText } from "../../lib/knowledge-factory/taxonomy/families";
 import type { StructuralNodeRecord } from "../../lib/knowledge-factory/types";
 import { analyzeProvision } from "../../lib/product/covenant-intelligence/analyze-provision";
 
@@ -148,6 +149,25 @@ describe("generalization: clause markers and currency forms", () => {
     );
     expect(a.permissions).toHaveLength(1);
     expect(a.permissions[0]).toContain("US$100 million");
+  });
+});
+
+describe("generalization: family synonyms", () => {
+  it("'Limitation on Debt' / 'shall not incur Debt' classifies as INDEBTEDNESS", () => {
+    const families = classifyFamiliesFromText(
+      "The Issuer shall not incur any Debt except Permitted Debt.",
+      "Limitation on Debt",
+    );
+    expect(families).toContain("INDEBTEDNESS");
+  });
+
+  it("'Junior Debt Prepayments' does NOT gain INDEBTEDNESS (precision guard)", () => {
+    const families = classifyFamiliesFromText(
+      "The Issuer shall not prepay any Junior Debt except as permitted by this Section.",
+      "Junior Debt Prepayments",
+    );
+    expect(families).toContain("JUNIOR_DEBT_PREPAYMENTS");
+    expect(families).not.toContain("INDEBTEDNESS");
   });
 });
 

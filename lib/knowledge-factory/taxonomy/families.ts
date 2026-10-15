@@ -21,8 +21,16 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     family: "INDEBTEDNESS",
     label: "Indebtedness",
     aliases: ["debt", "permitted indebtedness"],
-    headingPatterns: [/\bIndebtedness\b/i, /\bLimitation on Indebtedness\b/i],
-    bodyPatterns: [/\bPermitted\s+Indebtedness\b/i, /\bshall not\s+(?:incur|create|assume).{0,40}Indebtedness\b/i],
+    // "Debt" is the same covenant under a shorter name ("Limitation on
+    // Debt", "shall not incur Debt", "Permitted Debt"). The patterns accept
+    // the synonym only in the exact covenant shapes — a bare /\bDebt\b/
+    // would mislabel "Junior Debt Prepayments", "Debt Service", and
+    // "Debt-to-EBITDA" headings as Indebtedness.
+    headingPatterns: [/\bIndebtedness\b/i, /\bLimitation on (?:Indebtedness|Debt)\b/i],
+    bodyPatterns: [
+      /\bPermitted\s+(?:Indebtedness|Debt)\b/i,
+      /\bshall not\s+(?:incur|create|assume).{0,40}\b(?:Indebtedness|Debt)\b/i,
+    ],
   },
   {
     family: "LIENS",
