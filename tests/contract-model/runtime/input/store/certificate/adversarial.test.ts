@@ -238,6 +238,24 @@ describe("adversarial: PUBLIC_FILING_RECONSTRUCTION works only via explicit appr
   });
 });
 
+describe("adversarial: cross-company fact must not enter another tenant's snapshot", () => {
+  it("refuses a fact whose companyId differs from the certificate companyId; nothing stored", () => {
+    const store = new InMemoryApprovedSnapshotStore();
+    const ledger = new LedgerProposalRecorder();
+    const foreign = moneyFact("EBITDA", "100", "USD");
+    foreign.companyId = "victim-co";
+    const r = proposeFromCertificate(
+      store,
+      baseCert({ snapshotId: "adv-xco", facts: [moneyFact("Cash", "50", "USD"), foreign] }),
+      ledger,
+    );
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.issues.map((i) => i.code)).toContain("FACT_COMPANY_MISMATCH");
+    expect(store.getSnapshot("adv-xco")).toBeNull();
+    expect(ledger.count()).toBe(0);
+  });
+});
+
 describe("adversarial: LEDGER_USAGE must not enter snapshot facts", () => {
   it("refuses a fact with inputKind LEDGER_USAGE", () => {
     const store = new InMemoryApprovedSnapshotStore();
