@@ -146,7 +146,7 @@ const REPRESENTATION_LEAD = /\b(?:represents\s+and\s+warrants|hereby\s+represent
 const DEFINITION_AMENDMENT_LEAD = /^\s*(?:\([a-z0-9]+\)\s*)?(?:(?:The|Each\s+of\s+the)\s+)?(?:following\s+)?(?:definitions?|defined\s+terms?)\b[^.:]{0,200}?\b(?:is|are)\s+(?:hereby\s+)?(?:amended|added|deleted|restated|inserted)\b|^\s*(?:\([a-z0-9]+\)\s*)?Section\s+1\.0?1\b[^.:]{0,120}?\b(?:is|are)\s+hereby\s+amended\s+by\s+(?:adding|amending|deleting|inserting|replacing)\b[^.:]{0,80}?\bdefinitions?\b/i;
 
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
-  // Small-caps headings extracted letter-split ("W HEN THE I SSUER M AY M ERGE , E TC"): rejoin for title matching only.
+  // Small-caps headings extracted letter-split (each word's capital split from its small capitals, e.g. "L IMITATION ON L IENS"): rejoin for title matching only.
   if (args.title) args = { ...args, title: args.title.replace(/\b([A-Z]) ([A-Z]{2,})\b/g, "$1$2") };
   const sub = SUBCAPTION.exec(args.leadIn);
   if (sub) args = { ...args, leadIn: args.leadIn.slice(sub[0].length), title: [args.title, sub[1]].filter(Boolean).join("; ") || null };
