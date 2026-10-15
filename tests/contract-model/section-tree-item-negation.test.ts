@@ -13,13 +13,13 @@ describe("enumerated-item negation bound to its structural parent (#377)", () =>
     const doc = `ARTICLE V
 COVENANTS
 
-Section 5.1 Separateness. The Company shall not, without the consent of the Member, do any of the following:
-(a) amend its certificate of formation;
-(b) change its fiscal year.
-
-Section 5.2 Financing. The Company may, from time to time, do any of the following:
-(a) incur Indebtedness under the Credit Facility;
-(b) incur Indebtedness owed to the Member.
+Section 5.1 Company Matters.
+(a) The Company shall not, without the consent of the Member, do any of the following:
+(i) amend its certificate of formation;
+(ii) change its fiscal year.
+(b) Notwithstanding anything herein, the Company may, from time to time, do any of the following:
+(i) incur Indebtedness under the Credit Facility;
+(ii) incur Indebtedness owed to the Member.
 `;
     expect(FOUND).not.toContain(status(doc, "DEBT"));
   });
@@ -28,7 +28,7 @@ Section 5.2 Financing. The Company may, from time to time, do any of the followi
     const doc = `ARTICLE V
 COVENANTS
 
-Section 5.1 Separateness. The Company shall not, without the consent of the Member, do any of the following:
+Section 5.1 Separateness. The Company shall not, directly or indirectly:
 (a) incur any Indebtedness other than trade payables in the ordinary course;
 (b) change its fiscal year.
 `;
@@ -37,9 +37,9 @@ Section 5.1 Separateness. The Company shall not, without the consent of the Memb
 
   it("(e) a non-obligor negative list gives no false restriction", () => {
     const doc = `ARTICLE V
-AGENCY
+COVENANTS
 
-Section 5.1 Agent Duties. The Administrative Agent shall not be obligated to do any of the following:
+Section 5.1 Certain Matters. The Administrative Agent shall not do any of the following:
 (a) incur any Indebtedness on behalf of any Lender;
 (b) make any Investment for the account of any Lender.
 `;
