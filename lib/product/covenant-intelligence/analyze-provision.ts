@@ -220,7 +220,7 @@ function extractBaskets(excerpt: string): string[] {
       /greater of\s*\(?(?:x\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:y\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
     ),
   ];
-  for (const m of greaterOf.slice(0, 4)) {
+  for (const m of greaterOf.slice(0, 8)) {
     // Preserve the fixed limb's unit: "greater of (x) $150.0 million" is a
     // $150,000,000 limb, not a $150.0 limb. Dropping "million" understated
     // the basket a million-fold in the live Quila output.
@@ -230,7 +230,7 @@ function extractBaskets(excerpt: string): string[] {
   // Preserve the unit on every dollar amount: "$150.0 million" stays
   // "$150.0 million", never bare "$150.0".
   const amounts = [...excerpt.matchAll(/\$\s?[\d,]+(?:\.\d+)?\s*(million|billion|thousand)?/gi)];
-  for (const m of amounts.slice(0, 6)) {
+  for (const m of amounts.slice(0, 10)) {
     const amount = normalizeWs(m[0] ?? "");
     if (!out.some((x) => x.includes(amount))) {
       out.push(`Amount/threshold: ${amount}`);
@@ -293,10 +293,9 @@ function extractPermissions(
     posture === "CONDITIONAL_PERMISSION" ||
     /\bexcept\b/i.test(excerpt)
   ) {
-    // Letter-clause baskets: (a) ... ; (b) ...
-    const clauses = [...excerpt.matchAll(/\(([a-z]|[ivx]+|\d+)\)\s+([^;.]{15,220})/gi)];
-    for (const c of clauses.slice(0, 12)) {
-      perms.push(`(${c[1]}) ${clip(c[2] ?? "", 200)}`);
+    // Letter-clause baskets: (a) ... ; (b) ... — split depth-aware below.
+    for (const clause of splitLetterClauses(excerpt)) {
+      perms.push(clause);
     }
     if (perms.length === 0 && /\bexcept\b/i.test(excerpt)) {
       const after = excerpt.split(/\bexcept\b/i)[1];
@@ -304,6 +303,65 @@ function extractPermissions(
     }
   }
   return perms.slice(0, 12);
+}
+
+/**
+ * Split an enumerated list into its letter clauses, respecting nesting.
+ *
+ * The previous implementation cut clauses with /[^;.]{15,220}/, which
+ * truncated a clause at the first "." — the "." in "U.S.$150.0 million"
+ * cut a basket to "...not to exceed U" — at the first ";" (severing a
+ * basket's own proviso from the basket), and at 220 chars (long baskets
+ * lost their cap). Nested markers such as the (x)/(y) limbs of a
+ * greater-of also leaked across clause boundaries.
+ *
+ * A marker starts a new clause only when it sits at paren depth 0 AND
+ * follows a list separator (`;`, `.`, `:`) or the start of the excerpt.
+ * That keeps "(x) $50,000,000 and (y) 10.0%" inside its (b) basket (it
+ * follows "of" / "and", not a separator) while splitting "(a) ... ; (b)"
+ * correctly. Clause text is kept whole up to 400 chars — periods and
+ * semicolons inside a clause are content, not boundaries.
+ */
+const CLAUSE_MARKER = /\(([a-z]|\d+|[ivx]{1,5})\)/i;
+
+function splitLetterClauses(excerpt: string): string[] {
+  const starts: number[] = [];
+  let depth = 0;
+  for (let i = 0; i < excerpt.length; i += 1) {
+    const ch = excerpt[i];
+    if (ch === "(") {
+      const rest = excerpt.slice(i);
+      const marker = rest.match(CLAUSE_MARKER);
+      if (marker && marker.index === 0) {
+        // Look back past whitespace for the preceding significant char.
+        let j = i - 1;
+        while (j >= 0 && /\s/.test(excerpt[j]!)) j -= 1;
+        const prev = j < 0 ? "" : excerpt[j]!;
+        const isBoundary = depth === 0 && (prev === "" || prev === ";" || prev === "." || prev === ":");
+        if (isBoundary) {
+          starts.push(i);
+          // Skip the marker's own parens — they don't change nesting depth.
+          i += marker[0].length - 1;
+          continue;
+        }
+      }
+      depth += 1;
+      continue;
+    }
+    if (ch === ")" && depth > 0) depth -= 1;
+  }
+  if (starts.length === 0) return [];
+  const out: string[] = [];
+  for (let k = 0; k < starts.length; k += 1) {
+    const start = starts[k]!;
+    const end = starts[k + 1] ?? excerpt.length;
+    let clause = excerpt.slice(start, end).trim();
+    // Strip one trailing list separator (the ";" or "." ending the clause).
+    clause = clause.replace(/[;.]+$/, "").trim();
+    if (clause.length < 5) continue;
+    out.push(clip(clause, 400));
+  }
+  return out;
 }
 
 function relatedDefinitions(

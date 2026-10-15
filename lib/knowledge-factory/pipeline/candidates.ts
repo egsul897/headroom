@@ -10,14 +10,17 @@ import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRe
 
 /** A dotted-leader page-number line, e.g. "Section 6.01 Limitation on Indebtedness .... 45". */
 const TOC_LEADER_LINE = /^\s*(?:Section|§)\s*[\dA-Za-z.()-]+\s+.+\.{3,}\s*\d+\s*$/m;
+/** A bare TOC entry: "6.05 Limitation on Liens 58" — ref + title + page number, no "Section", no dotted leader. */
+const TOC_BARE_ENTRY = /^\s*\d+(?:\.\d+)+(?:\([a-z0-9]+\))?\s+[A-Za-z].*\S\s+\d+\s*$/;
 const OPERATIVE_VERB = /\b(?:shall|will|must|may)\b/i;
 
 /**
  * True when a node's span is table-of-contents material, not operative
  * covenant text: the span is (or sits inside) the TOC, or the span itself
- * is a TOC entry line (heading + dotted leader + page number) with no
- * operative sentence. Body sections carry operative verbs; TOC lines never
- * do, and body text never carries dotted-leader page numbers.
+ * is a TOC entry line (heading + dotted leader + page number, or bare
+ * ref + title + page number) with no operative sentence. Body sections
+ * carry operative verbs; TOC lines never do. Body headings never end in
+ * a bare page number, and TOC lines never end in a period.
  */
 function isTableOfContentsSpan(
   node: StructuralNodeRecord,
@@ -27,8 +30,21 @@ function isTableOfContentsSpan(
   if (/table of contents/i.test(node.heading)) return true;
   const own = fullText.slice(node.charStart, node.charEnd);
   if (TOC_LEADER_LINE.test(own)) return true;
+  if (isBareTocLine(own)) return true;
   if (TOC_LEADER_LINE.test(spanText) && !OPERATIVE_VERB.test(spanText)) return true;
+  if (!OPERATIVE_VERB.test(spanText)) {
+    for (const line of spanText.split("\n")) {
+      if (isBareTocLine(line)) return true;
+    }
+  }
   return false;
+}
+
+function isBareTocLine(line: string): boolean {
+  const trimmed = line.trimEnd();
+  if (trimmed.endsWith(".")) return false;
+  if (OPERATIVE_VERB.test(line)) return false;
+  return TOC_BARE_ENTRY.test(line);
 }
 
 /** Real section refs start with a digit; "AMBIGUOUS" must never dedup-collapse. */
