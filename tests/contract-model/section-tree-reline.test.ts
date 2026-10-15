@@ -124,3 +124,9 @@ describe("round 7: blackline remnants, Article + next-line number", async () => 
     expect(t.nodes.filter((n) => n.kind === "ARTICLE").map((n) => [n.label, n.title])).toEqual([["ARTICLE 5", "MERGERS AND CONSOLIDATIONS"]]);
   });
 });
+
+describe("round 7: others", () => {
+  it("'Whether in one transaction or a series of transactions, wind up ...' is an imperative prohibition", () => {
+    expect(classifyCovenantFamily({ title: "Fundamental Changes; Dissolution", leadIn: "Whether in one transaction or a series of transactions, wind up, liquidate or dissolve its affairs, or enter into any transaction of merger or consolidation.", covenantContext: true }).families).toContain("FUNDAMENTAL_CHANGES");
+  });
+});

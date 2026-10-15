@@ -272,11 +272,13 @@ function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<
   const out = new Set<CovenantFamily>();
   const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
   let n = 0;
-  for (const c of body.matchAll(/(?:^|\n)\s*(?:\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)|\d{1,2}\.\d{1,3}\.\d{1,3}\.?)\s*([A-Z][^.\n]{3,90}?(?:\n[a-z][^.\n]{1,60}?)?)\s*\.\s+(?=[A-Z]|\([a-z0-9]{1,4}\)\s)/g)) {
+  for (const c of body.matchAll(/(?:^|\n)\s*(?:\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)|\d{1,2}\.\d{1,3}\.\d{1,3}\.?)\s*([A-Z][^.\n]{3,90}?(?:\n[a-zA-Z][^.\n]{1,60}?)?)\s*\.\s+(?=[A-Z]|\([a-z0-9]{1,4}\)\s)/g)) {
     if (c[1]!.split(/\s+/).length > 10 || skip?.(c.index!)) continue;
     // A caption wrapped onto a second line ("(d) Prohibition\nof Fundamental Changes .") has a short first line; a
     // longer one is a list item ending in a sentence.
     if (c[1]!.includes("\n") && c[1]!.split("\n")[0]!.trim().split(/\s+/).length > 3) continue;
+    // "Taxes, Charges and\nLiens. Pay and discharge ..." is the affirmative payment covenant.
+    if (/\btax(?:es)?\b/i.test(c[1]!)) continue;
     if (++n > 400) break;
     const rest = body.slice(c.index! + c[0].length, c.index! + c[0].length + 1500);
     const underStem = stem.test(body.slice(Math.max(0, c.index! - 400), c.index!).trimEnd() + " ") || stem.test(body.slice(0, Math.min(c.index!, 600)));
@@ -293,7 +295,7 @@ function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<
 function scheduleCovenantFamilies(text: string): Set<CovenantFamily> {
   const out = new Set<CovenantFamily>();
   const W = String.raw`(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|upon)`;
-  const item = new RegExp(String.raw`(?:^|\s)(\d{1,2})\.\s+(${W}(?:,?\s+${W}){0,12}?)\.?\s+(?=(?:\d{1,2}\.\d{1,2}\s+(?:The\s+)?[A-Z][\w\u2019'-]*(?:\s+[A-Z][\w\u2019'-]*){0,3}\s+(?:\([a-z]\)\s+)?)?(?:The|Each|No|Neither)\s+(?:[A-Z][\w\u2019'-]*\s+){1,3}(?:shall|will|may)\b)`, "g");
+  const item = new RegExp(String.raw`(?:^|\s)(\d{1,2})\.\s+(${W}(?:,?\s+${W}){0,12}?)\.?\s+(?=(?:\d{1,2}\.\d{1,2}\s+(?:(?:The\s+)?[A-Z][\w\u2019'-]*(?:\s+[A-Z][\w\u2019'-]*){0,3}\s+(?:\([a-z]\)\s+)?)??)?(?:The|Each|No|Neither)\s+(?:[A-Z][\w\u2019'-]*\s+){1,3}(?:shall|will|may)\b)`, "g");
   // Scan forward from each mention of a covenant schedule (non-overlapping windows).
   let scanned = -1;
   for (const h of text.matchAll(/\bSchedule\s+\d{1,2}\s*(?:\(|[-\u2013\u2014:]\s*)?[^\n.]{0,60}?\b(?:Covenants|Undertakings)\b(?![\s\u200b\u200c\u2026.]*\d{1,3}\s*(?:\n|$))/gi)) {
@@ -306,6 +308,12 @@ function scheduleCovenantFamilies(text: string): Set<CovenantFamily> {
       const lead = region.slice(m.index! + m[0].length, m.index! + m[0].length + 1500);
       if (NOT_COVENANT_TITLE.test(m[2]!)) continue;
       for (const f of classifyCovenantFamily({ title: m[2]!.trim(), parentTitle: null, leadIn: lead, covenantContext: true }).families) out.add(f);
+      // Later numbered paragraphs of the same item ("11.2\nThe Issuer will not (i) merge ...") are covenants too.
+      const body = region.slice(m.index! + m[0].length, m.index! + m[0].length + 8000);
+      for (const p of body.matchAll(/\n[^\S\n]*\d{1,2}\.\d{1,2}[^\S\n]*\n[^\S\n]*(?=(?:The|Each|No|Neither)\s+(?:[A-Z][\w\u2019'-]*\s+){1,3}(?:shall|will|may)\s+not\b)/g)) {
+        if (p.index! < 40) continue;
+        for (const f of classifyCovenantFamily({ title: m[2]!.trim(), parentTitle: null, leadIn: body.slice(p.index! + p[0].length, p.index! + p[0].length + 1500), covenantContext: true }).families) out.add(f);
+      }
     }
   }
   return out;
