@@ -55,3 +55,10 @@ describe("bare sections with the number on its own line", () => {
     expect(st(doc, "FUNDAMENTAL_CHANGES").sectionPaths).toEqual(["3"]);
   });
 });
+
+describe("evidence location", () => {
+  it("'make any Restricted Investments' (plural) item binds INVESTMENTS to the RP section, not to a carve-out mention elsewhere", () => {
+    const doc = `ARTICLE 4 COVENANTS\n\nSection 4.01 Restricted Payments. The Company will not, and will not permit any Restricted Subsidiary to, directly or indirectly:\n(a) declare or pay any dividend on its Equity Interests;\n(b) make any Restricted Investments;\nunless no Default has occurred and is continuing.\n\nSection 4.02 Holding Company. The Company will not own any assets other than cash and assets that will be used to make a Restricted Payment (other than a Restricted Investment) promptly after receipt.\n\nSection 4.03 Liens. The Company will not create any Lien on any of its property.\n`;
+    expect(st(doc, "INVESTMENTS").sectionPaths).toEqual(["4.1"]);
+  });
+});

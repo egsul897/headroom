@@ -310,7 +310,7 @@ function restrictedPaymentItemFamilies(body: string): Set<string> {
     const it = m[1]!;
     if (/^\s*(?:dividends|distributions|payments?|any\s+\w+\s+(?:made|paid))\b/i.test(it)) continue; // an exception limb, not a restricted act
     if (/^\s*(?:directly or indirectly,?\s*)?(?:purchase|repurchase|redeem|defease|retire|prepay|make any (?:principal )?payment on)\b[^;]{0,300}\b(?:subordinated|junior)\b[^;]{0,60}\b(?:obligations|indebtedness|debt|notes)\b/i.test(it)) out.add("PREPAYMENTS");
-    if (/^\s*(?:directly or indirectly,?\s*)?make\s+any\s+(?:Restricted\s+)?Investment\b/i.test(it)) out.add("INVESTMENTS");
+    if (/^\s*(?:directly or indirectly,?\s*)?make\s+any\s+(?:Restricted\s+)?Investments?\b/i.test(it)) out.add("INVESTMENTS");
   }
   return out;
 }
@@ -345,7 +345,8 @@ function laterProhibitionFamilies(body: string): Set<string> {
   const stop = body.search(/(?:^|\n|[.;]\s+)(?:SECTION|Section|ARTICLE|Article)\s+[\dIVXLC]+\.?\s+[A-Z]/);
   if (stop > 0) body = body.slice(0, stop);
   for (const m of body.matchAll(/(?:^|[.;]\s+)((?:The|No|Neither)\s+[A-Z][\w-]*(?:\s+[\w-]+){0,4}?\s+(?:will|shall)\s+not\b[^.;]{0,400})/g)) {
-    const sent = m[1]!;
+    // Parenthetical carve-outs ("(other than a Restricted Investment)") name no restricted object.
+    const sent = m[1]!.replace(/\([^()]{0,200}\)/g, (x) => " ".repeat(x.length));
     for (const [f, re] of LATER_OBJECT) {
       const om = re.exec(sent);
       if (!om || om.index > 220) continue;
