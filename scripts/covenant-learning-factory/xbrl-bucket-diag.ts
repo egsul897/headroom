@@ -7,6 +7,8 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { gunzipSync } from "node:zlib";
 import { extractFinancials, fetchSecJson, companyFactsUrl, pad10, type CompanyFacts, type IssuerFinancials } from "../../lib/covenant-learning-factory/xbrl/companyfacts";
+import { loadNameIndex, loadTickerCiks, resolveBorrowerCik } from "../../lib/covenant-learning-factory/xbrl/cik-resolve";
+import { plainText } from "../../lib/covenant-learning-factory/xbrl/definition-items";
 import { latestInstanceFacts } from "../../lib/covenant-learning-factory/xbrl/instance-debt";
 import { headroomBound, runAgreementPipeline } from "../../lib/covenant-learning-factory/pipeline/agreement-pipeline";
 
@@ -22,7 +24,14 @@ const heldout = new Set((JSON.parse(readFileSync(new URL("heldout-membership.jso
 const dev = new Set(JSON.parse(readFileSync(new URL("dev-manifest.json", SB), "utf8")).sourceIds as string[]);
 type Doc = { id: string; set: string; cik: string | null; text: () => string };
 const docs: Doc[] = snap.sources.filter((s) => heldout.has(s.source.sourceId) || dev.has(s.source.sourceId))
-  .map((s) => ({ id: s.source.sourceId, set: heldout.has(s.source.sourceId) ? "HELDOUT" : "DEV", cik: s.source.issuerCik && /^\d+$/.test(s.source.issuerCik) ? s.source.issuerCik : null, text: () => s.documentText }));
+  .map((s) => ({ id: s.source.sourceId, set: heldout.has(s.source.sourceId) ? "HELDOUT" : "DEV", cik: s.source.issuerCik && /^\d+$/.test(s.source.issuerCik) && !/^0+$/.test(s.source.issuerCik) ? s.source.issuerCik : null, text: () => s.documentText }));
+// No (or a placeholder) CIK: resolve the borrower's legal name to EDGAR exactly; ambiguous stays null.
+const cikResolved: Record<string, string> = {};
+if (process.env.DIAG_RESOLVE_CIK !== "0" && existsSync(`${cacheDir}/cik-lookup-data.txt`)) {
+  const idx = loadNameIndex(`${cacheDir}/cik-lookup-data.txt`);
+  const tk = existsSync(`${cacheDir}/company_tickers.json`) ? loadTickerCiks(`${cacheDir}/company_tickers.json`) : undefined;
+  for (const d of docs) if (!d.cik) { const r = resolveBorrowerCik(plainText(d.text()), idx, tk); if (r.cik) { d.cik = r.cik.replace(/^0+/, ""); cikResolved[d.id] = `${r.cik} ${r.name}`; } }
+}
 // TUNABLE only: the BLIND split (fresh-heldout.json) is never read.
 if (process.env.DIAG_NO_FRESH !== "1") for (const f of readFileSync(new URL("fresh-tunable.txt", SB), "utf8").split("\n").map((x) => x.trim()).filter(Boolean)) {
   const p = `${freshDir}/${f}`;
@@ -98,7 +107,7 @@ async function main() {
     }
   }
   const sort = (o: Record<string, number>) => Object.fromEntries(Object.entries(o).sort((a, b) => b[1] - a[1]));
-  writeFileSync(out, JSON.stringify({ testDate: TEST_DATE, usageB, usageOut, tally, basketBuckets: sort(buckets), ratioBuckets: sort(rbuckets), samples, computed, ratios: ratiosOut }, null, 1));
+  writeFileSync(out, JSON.stringify({ testDate: TEST_DATE, cikResolved, usageB, usageOut, tally, basketBuckets: sort(buckets), ratioBuckets: sort(rbuckets), samples, computed, ratios: ratiosOut }, null, 1));
   console.log(JSON.stringify({ tally, basketBuckets: Object.fromEntries(Object.entries(sort(buckets)).slice(0, 25)), ratioBuckets: sort(rbuckets) }, null, 1));
 }
 main().catch((e) => { console.error(String(e?.stack ?? e)); process.exit(1); });
