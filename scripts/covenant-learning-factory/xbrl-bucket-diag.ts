@@ -44,6 +44,10 @@ function basketBucket(b: { category: string; capStatus: string; note: string; mi
   if (/single cap-role dollar/.test(n)) return `${b.category}: fixed amount not parsed`;
   if (/different units/.test(n)) return `${b.category}: unit alignment`;
   if (b.missingInputs.includes("contract ratio definition")) return `${b.category}: ratio definition not linked`;
+  if (b.missingInputs.some((m) => m.startsWith("ratio not in catalog"))) return `${b.category}: ratio term not in catalog`;
+  if (b.missingInputs.includes("ratio definition arithmetic")) return `${b.category}: linked ratio definition not one numerator over one denominator`;
+  if (b.missingInputs.some((m) => m.startsWith("ratio operand"))) return `${b.category}: linked ratio operand unbound (${why(b.missingInputs.find((m) => m.startsWith("ratio operand"))!.replace(/^ratio operand: ?/, ""))})`;
+  if (b.missingInputs.includes("ratio threshold")) return `${b.category}: ratio computed, threshold not stated once`;
   if (/not a closed sum/.test(n)) return `${b.category}: builder components not a closed sum`;
   if (/builder component is unbound/.test(n)) return `${b.category}: builder metric unbound (${why(b.missingInputs[0] ?? "")})`;
   if (b.missingInputs.includes("no cap stated in clause")) return `${b.category}: no cap stated`;
