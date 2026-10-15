@@ -26,11 +26,22 @@ function printSection(title: string): void {
 async function groupBy(
   field: "extractionStatus" | "representationLevel" | "documentClass" | "provenance",
 ): Promise<CountRow[]> {
-  const rows = (await prisma.knowledgeSource.groupBy({
+  // Cast the method, not the result: Prisma's groupBy generics cannot infer
+  // a return type from a dynamic `by` field, and casting the awaited result
+  // leaks the cast type into the args inference (TS2345). The runtime call
+  // is unchanged; the cast only gives this script a plain function type.
+  const groupByCall = prisma.knowledgeSource.groupBy as (
+    args: {
+      by: string[];
+      where: { companyId: null };
+      _count: { _all: boolean };
+    },
+  ) => Promise<Array<Record<string, unknown> & { _count: { _all: number } }>>;
+  const rows = await groupByCall({
     by: [field],
     where: { companyId: null },
     _count: { _all: true },
-  })) as Array<Record<string, unknown> & { _count: { _all: number } }>;
+  });
   // Sort in JS: Prisma's groupBy orderBy input has no `_all` key under
   // `_count` (it takes per-field keys), so ordering by count must happen
   // here. Row count is tiny (one per distinct enum value).
