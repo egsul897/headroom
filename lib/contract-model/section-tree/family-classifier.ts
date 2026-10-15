@@ -60,6 +60,8 @@ function obligorBound(lead: string): boolean {
   }
   return false;
 }
+/** A minimum-EBITDA maintenance test: "(not) permit/allow ... Consolidated EBITDA for the 12-month period ... to be less than". */
+const MIN_EBITDA_TEST = /\b(?:permit|allow)\b[^.;]{0,200}\bEBITDA\b[^.;]{0,160}\bto\s+be\s+less\s+than\b/i;
 const RATIO_SUBJECT = /\b(?:ratio|liquidity|net worth|financial covenants?|(?:interest|debt service|fixed charge) coverage)\b/i;
 const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bto\s+(?:exceed|be\s+(?:less|lower|greater|more|higher)\b)|\bat\s+least\b|\bmaintain\b|\b(?:not|never)\s+(?:permit|exceed)\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b|\bshall apply\b/i;
 
@@ -195,7 +197,7 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   const wide = raw.slice(0, 1500);
   const wideAt = wide.search(/\b(?:shall|will)\s+not\s+permit\b|,\s*permit\s+the\b/i);
   const springing = wideAt >= 0 && /\b(?:test period|fiscal quarter|covenant trigger|testing threshold|revolving)\b/i.test(wide.slice(0, wideAt)) && /\bratio\b/i.test(wide.slice(wideAt, wideAt + 250)) && /\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b/.test(wide.slice(wideAt, wideAt + 400));
-  const ratio = ((RATIO_SUBJECT.test(lead.slice(0, 450)) || RATIO_SUBJECT.test(lead.slice(testAt, testAt + 250))) && RATIO_LIMIT.test(lead)) || springing;
+  const ratio = ((RATIO_SUBJECT.test(lead.slice(0, 450)) || RATIO_SUBJECT.test(lead.slice(testAt, testAt + 250))) && RATIO_LIMIT.test(lead)) || springing || MIN_EBITDA_TEST.test(lead.slice(0, 700));
   const scores = new Map<CovenantFamily, number>();
   const evidence: string[] = [];
   const add = (f: CovenantFamily, w: number, why: string) => { scores.set(f, (scores.get(f) ?? 0) + w); evidence.push(`${f}:${why}`); };
