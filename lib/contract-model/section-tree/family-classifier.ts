@@ -165,7 +165,19 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
  * not engage in any transaction with any Affiliate"). Verb-object test only; no title keywords.
  */
 export function negatedItemFamilies(item: string, underNegativeStem: boolean): CovenantFamily[] {
-  const negated = underNegativeStem || /\b(?:shall|will|may)\s+not\b|(?:^|[;,]\s*|\band\s+)not\s+(?:to\s+)?(?:incur|create|engage|enter|make|declare|pay|sell|merge|consolidate|dissolve|permit|cause|acquire|transfer)\b/i.test(item);
-  if (!negated) return [];
-  return VERB_OBJECT.filter(([, re]) => re.test(item)).map(([f]) => f);
+  const out: CovenantFamily[] = [];
+  // Where a negation governs: the item start under a "shall not ... the following:" stem, else every in-item
+  // "shall/will/may not" or list-position "not" ("; and not engage in"), never a conditional ("so long as ... does not").
+  const starts: number[] = underNegativeStem ? [0] : [];
+  for (const m of item.matchAll(/(?:\b(?:shall|will|may)\s+|(?:^|[;,]|\band)\s*)not\s+(?:to\s+)?/gi)) {
+    if (/\b(?:so long as|if|unless|until|provided)\b[^;]*$/i.test(item.slice(0, m.index!))) continue;
+    starts.push(m.index! + m[0].length);
+  }
+  for (const [f, re] of VERB_OBJECT) {
+    if (f === "ASSET_SALES" && /all or substantially all/i.test(item)) continue; // a fundamental change
+    if (f === "INVESTMENTS" && /\b(?:proceeds|swingline|lenders?|advances? to be made|borrowing)\b/i.test(item)) continue; // lending mechanics
+    // The family's verb/object must start right at the governed position (adverbs / "engage in any" allowed).
+    if (starts.some((st) => { const m = re.exec(item.slice(st, st + 400)); return !!m && m.index <= (st === 0 && underNegativeStem ? 60 : 40); })) out.push(f);
+  }
+  return out;
 }
