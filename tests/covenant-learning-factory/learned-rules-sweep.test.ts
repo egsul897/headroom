@@ -19,6 +19,7 @@ import {
   evaluateReplayGate,
   measureReplaySource,
 } from "@/lib/covenant-learning-factory/learned-rules/replay-gate";
+import { findIssuersForGeneralizationSplit } from "@/lib/covenant-learning-factory/learned-rules/generalization-gate";
 import { synthesizeCandidateRules } from "@/lib/covenant-learning-factory/learned-rules/synthesize";
 import { emptyRuleSet, type LearnedRule, type LearnedRuleSet } from "@/lib/covenant-learning-factory/learned-rules/types";
 import { buildComputationPackage } from "@/lib/covenant-learning-factory/sweep/build-package";
@@ -61,26 +62,57 @@ function fakeExecutor(opts?: {
     evaluations: [],
   };
   const missable = Boolean(opts?.missable);
-  const sources = [
-    {
-      sourceId: "src-alpha",
-      companyId: "co-a",
-      issuerCik: "0001111111",
-      issuerTicker: "AAA",
-      documentTitle: "Alpha Indenture",
-      storageRef: null,
-      originalBytesHash: "hash-alpha",
-    },
-    {
-      sourceId: "src-beta",
-      companyId: "co-b",
-      issuerCik: "0002222222",
-      issuerTicker: "BBB",
-      documentTitle: "Beta CA",
-      storageRef: null,
-      originalBytesHash: "hash-beta",
-    },
-  ];
+  const picked = missable ? findIssuersForGeneralizationSplit(2, 1) : null;
+  const sources = missable
+    ? [
+        {
+          sourceId: "src-a-train",
+          companyId: "co-a",
+          issuerCik: picked!.train[0]!,
+          issuerTicker: "AAA",
+          documentTitle: "Alpha Indenture",
+          storageRef: null,
+          originalBytesHash: "hash-alpha",
+        },
+        {
+          sourceId: "src-b-train",
+          companyId: "co-b",
+          issuerCik: picked!.train[1]!,
+          issuerTicker: "BBB",
+          documentTitle: "Beta CA",
+          storageRef: null,
+          originalBytesHash: "hash-beta",
+        },
+        {
+          sourceId: "src-c-held",
+          companyId: "co-c",
+          issuerCik: picked!.heldout[0]!,
+          issuerTicker: "CCC",
+          documentTitle: "Held CA",
+          storageRef: null,
+          originalBytesHash: "hash-held",
+        },
+      ]
+    : [
+        {
+          sourceId: "src-alpha",
+          companyId: "co-a",
+          issuerCik: "0001111111",
+          issuerTicker: "AAA",
+          documentTitle: "Alpha Indenture",
+          storageRef: null,
+          originalBytesHash: "hash-alpha",
+        },
+        {
+          sourceId: "src-beta",
+          companyId: "co-b",
+          issuerCik: "0002222222",
+          issuerTicker: "BBB",
+          documentTitle: "Beta CA",
+          storageRef: null,
+          originalBytesHash: "hash-beta",
+        },
+      ];
   const executor = {
     state,
     async execute(sql: string, params: unknown[] = []) {
@@ -473,7 +505,7 @@ describe("clf:sweep end-to-end (fake HTTPS)", () => {
         runCovenantLearningSweep({
           executor: neon,
           batchSize: 10,
-          maxSources: 2,
+          maxSources: 10,
           maxEpochs: 1,
           resume: false,
           dryRun: false,
@@ -510,7 +542,7 @@ describe("clf:sweep end-to-end (fake HTTPS)", () => {
       const resumed = await runCovenantLearningSweep({
         executor: neon,
         batchSize: 10,
-        maxSources: 2,
+        maxSources: 10,
         maxEpochs: 1,
         resume: true,
         dryRun: false,
@@ -542,7 +574,7 @@ describe("clf:sweep end-to-end (fake HTTPS)", () => {
     const neon = fakeExecutor({ missable: true });
     // Legacy checkpoint: last source id, IN_PROGRESS, no phase — the live failure mode.
     neon.state.checkpoint = {
-      afterSourceId: "src-beta",
+      afterSourceId: "src-c-held",
       epoch: 1,
       phase: "sources",
       sourcesComplete: false,
@@ -556,7 +588,7 @@ describe("clf:sweep end-to-end (fake HTTPS)", () => {
       const result = await runCovenantLearningSweep({
         executor: neon,
         batchSize: 10,
-        maxSources: 2,
+        maxSources: 10,
         maxEpochs: 1,
         resume: true,
         dryRun: false,

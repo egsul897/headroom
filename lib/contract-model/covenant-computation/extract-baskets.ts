@@ -7,6 +7,7 @@
  * ceiling. Clauses with no numeric cap stay in the list as purpose permissions.
  */
 
+import { hasOperativePermissionEvidence } from "./amount-role";
 import {
   applyDefinitionAlias,
   applyFamilyHints,
@@ -107,7 +108,8 @@ function clausesFromLearnedPatterns(
       covenantFamily: family,
       documentId,
       operativeText: window,
-      role: "PERMISSION",
+      // A learned pattern does not inherit PERMISSION from its precedent's label.
+      role: hasOperativePermissionEvidence(window) ? "PERMISSION" : "DISCOVERY",
     });
   }
   return out;

@@ -5,6 +5,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { findIssuersForGeneralizationSplit } from "@/lib/covenant-learning-factory/learned-rules/generalization-gate";
 import { emptyRuleSet, type LearnedRuleSet } from "@/lib/covenant-learning-factory/learned-rules/types";
 import type { PartialAcceptRecord } from "@/lib/covenant-learning-factory/learned-rules/partial";
 import {
@@ -57,24 +58,34 @@ function mockNeonRulesStore(seed?: LearnedRuleSet): SweepRulesStore & {
 }
 
 function fakeExecutor(state: FakeNeonState): NeonHttpsExecutor & { state: FakeNeonState } {
+  const picked = findIssuersForGeneralizationSplit(2, 1);
   const sources = [
     {
-      sourceId: "src-alpha",
+      sourceId: "src-a-train",
       companyId: "co-a",
-      issuerCik: "0001111111",
+      issuerCik: picked.train[0]!,
       issuerTicker: "AAA",
       documentTitle: "Alpha Indenture",
       storageRef: null,
       originalBytesHash: "hash-alpha",
     },
     {
-      sourceId: "src-beta",
+      sourceId: "src-b-train",
       companyId: "co-b",
-      issuerCik: "0002222222",
+      issuerCik: picked.train[1]!,
       issuerTicker: "BBB",
       documentTitle: "Beta CA",
       storageRef: null,
       originalBytesHash: "hash-beta",
+    },
+    {
+      sourceId: "src-c-held",
+      companyId: "co-c",
+      issuerCik: picked.heldout[0]!,
+      issuerTicker: "CCC",
+      documentTitle: "Held CA",
+      storageRef: null,
+      originalBytesHash: "hash-held",
     },
   ];
   return {
@@ -182,7 +193,7 @@ describe("clf:sweep Neon rules store wire", () => {
       runCovenantLearningSweep({
         executor: neon,
         batchSize: 10,
-        maxSources: 2,
+        maxSources: 10,
         maxEpochs: 1,
         resume: false,
         dryRun: false,
@@ -214,10 +225,10 @@ describe("clf:sweep Neon rules store wire", () => {
     const resumeLogs: string[] = [];
     const resumed = await runCovenantLearningSweep({
       executor: neon,
-      batchSize: 10,
-      maxSources: 2,
-      maxEpochs: 1,
-      resume: true,
+        batchSize: 10,
+        maxSources: 10,
+        maxEpochs: 1,
+        resume: true,
       dryRun: false,
       rulesStore: store,
       codeSha: "neon-store-resume",

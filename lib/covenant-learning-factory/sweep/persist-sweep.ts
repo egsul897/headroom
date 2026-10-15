@@ -166,15 +166,20 @@ export async function persistSweepProposal(
   const adjudicationStatus =
     p.adjudicationStatus ??
     (p.state === "ACCEPTED" ? "MECHANICALLY_REPLAYED" : p.state);
+  const metrics = p.executableRule?.metrics;
   await executor.execute(
     `INSERT INTO learning_improvement_proposals
-      (id, "proposalId", "packageKey", "runId", lever, summary, bounded, "autoApply", "evidenceJson", state, "adjudicationStatus", "createdAt")
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11,$12)
+      (id, "proposalId", "packageKey", "runId", lever, summary, bounded, "autoApply", "evidenceJson", state, "adjudicationStatus", "createdAt",
+       "trainFixed", "heldoutFixed", "sourcesSpanned")
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11,$12,$13,$14,$15)
      ON CONFLICT ("proposalId") DO UPDATE SET
        state = EXCLUDED.state,
        "autoApply" = EXCLUDED."autoApply",
        "evidenceJson" = EXCLUDED."evidenceJson",
-       "adjudicationStatus" = EXCLUDED."adjudicationStatus"`,
+       "adjudicationStatus" = EXCLUDED."adjudicationStatus",
+       "trainFixed" = EXCLUDED."trainFixed",
+       "heldoutFixed" = EXCLUDED."heldoutFixed",
+       "sourcesSpanned" = EXCLUDED."sourcesSpanned"`,
     [
       p.proposalId,
       p.proposalId,
@@ -195,11 +200,17 @@ export async function persistSweepProposal(
             : adjudicationStatus === "INDEPENDENTLY_VERIFIED"
               ? "INDEPENDENT_HELD_OUT"
               : null,
+        trainFixed: metrics?.trainFixed ?? null,
+        heldoutFixed: metrics?.heldoutFixed ?? null,
+        sourcesSpanned: metrics?.sourcesSpanned ?? null,
       }),
       // Persist canonical state; map legacy ACCEPTED → MECHANICALLY_REPLAYED.
       adjudicationStatus === "MECHANICALLY_REPLAYED" ? "MECHANICALLY_REPLAYED" : p.state === "ACCEPTED" ? "MECHANICALLY_REPLAYED" : p.state,
       adjudicationStatus,
       new Date(p.createdAt),
+      metrics?.trainFixed ?? null,
+      metrics?.heldoutFixed ?? null,
+      metrics?.sourcesSpanned ?? null,
     ],
   );
 }
@@ -323,6 +334,9 @@ export function proposalFromRule(args: {
         sourcesReplayed: args.rule.metrics?.sourcesReplayed ?? 0,
         goldenOk: args.rule.metrics?.goldenOk ?? false,
         adjudicationClass: args.accepted ? "MECHANICAL_REPLAY" : undefined,
+        trainFixed: args.rule.metrics?.trainFixed,
+        heldoutFixed: args.rule.metrics?.heldoutFixed,
+        sourcesSpanned: args.rule.metrics?.sourcesSpanned,
       },
     },
   };

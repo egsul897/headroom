@@ -4204,6 +4204,12 @@ model LearningImprovementProposal {
   state               String   @default("PROPOSED")
   /// PROPOSED | MECHANICALLY_REPLAYED | INDEPENDENTLY_VERIFIED | REJECTED | SUPERSEDED
   adjudicationStatus  String   @default("PROPOSED")
+  /// Errors removed on train packages the rule was built from. Null on legacy rows.
+  trainFixed          Int?
+  /// Errors removed on held-out packages the rule was not built from.
+  heldoutFixed        Int?
+  /// Distinct train packages supporting the rule.
+  sourcesSpanned      Int?
   createdAt           DateTime @default(now())
 
   @@index([packageKey])
