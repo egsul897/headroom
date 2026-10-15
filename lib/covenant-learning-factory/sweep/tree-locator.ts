@@ -66,9 +66,7 @@ function sectionAt(ix: Indexed, needle: string): string | null {
     const longer = bodyHits(ix, k);
     if (longer.length >= 1) hits = longer;
   }
-  // Text that exists only inside a table of contents is not an operative location: fail closed (never fall back
-  // to the declared section or family, which would credit a TOC line).
-  if (hits.length === 0) return ix.norm.includes(k) ? AMBIGUOUS : null;
+  if (hits.length === 0) return null;
   // ambiguous location (same text in two body places) → fail closed
   if (hits.length > 1) return AMBIGUOUS;
   const at = hits[0]!;
