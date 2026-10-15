@@ -101,7 +101,7 @@ interface Heading {
   headingEnd: number;
 }
 
-const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)[^\S\n]+([IVXLC]+|\d{1,2})\b\.?[^\S\n]*(?:\n[^\S\n]*){0,2}([A-Z][A-Z ,;'’&\-]{2,100})?/g;
+const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)(?:[^\S\n]+([IVXLC]+|\d{1,2})\b\.?|[^\S\n]*\n[^\S\n]*(\d{1,2})(?=[^\S\n]*\n))[^\S\n]*(?:\n[^\S\n]*){0,2}([A-Z][A-Z ,;'’&\-]{2,100})?/g;
 const SECTION_RE =
   /(^|\n|\s{2,}|\.\s+)[^\S\n]*(?:(?:SECTION|Section)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})(?:[^\S\n]*\.)?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z](?:[^.\n]|\n(?![^\S\n]*(?:\n|\(|\d))){1,160}?)[^\S\n]*[.:]/g;
 /** Amendment-style single-number sections: "SECTION 3. Conditions." (requires the word). */
@@ -112,8 +112,10 @@ function findHeadings(text: string): Heading[] {
   for (const m of text.matchAll(ARTICLE_RE)) {
     const start = m.index! + m[1]!.length;
     // The caption may sit behind a blank line ("ARTICLE 4\n\nCOVENANTS").
-    const num = m[3]!;
-    const title = m[4] ? m[4].trim() : null;
+    // Or the number alone on the next line ("Article\n5\n\nMERGERS"; Arabic only: a Roman "VII." there is
+    // ambiguous with table-of-contents rows).
+    const num = m[3] ?? m[4]!;
+    const title = m[5] ? m[5].trim() : null;
     out.push({ kind: "ARTICLE", label: `ARTICLE ${num}`, number: num, title, start, headingEnd: m.index! + m[0].length });
   }
   for (const m of text.matchAll(SECTION_RE)) {
@@ -649,7 +651,9 @@ function relineLine(t: string, bare: boolean): string {
     // An all-caps "SECTION 5.01 Title" right after an all-caps article caption ("ARTICLE 5 SUCCESSOR COMPANY SECTION 5.01").
     // Blackline remnants "... Value. 7.02 7.03 Investments. Make ..." (old and new number side by side): the new
     // number's heading starts its own line.
-    .replace(/([.;:)\u201d"]\s{1,6}\d{1,2}\.\d{2})(\s{1,6})(?=\d{1,2}\.\d{2}\.?\s+[A-Z][A-Za-z\u2019'-]+(?:,?\s+(?:[A-Z][A-Za-z\u2019'-]+|of|and|or|on|to|the|with|in|for)){0,8}\.\s+[A-Z(])/g, "$1\n")
+    .replace(/([.;:)\u201d"]\s{1,6}\d{1,2}\.\d{2})(\s{1,6})(?=\d{1,2}\.\d{2}\.?\s+[A-Z][A-Za-z\u2019'-]+(?:,?\s+(?:[A-Z][A-Za-z\u2019'-]+|of|and|or|on|to|the|with|in|for)){0,8}(?:\s*\[Reserved\])?\.\s+[A-Z(])/g, "$1\n")
+    // ... or the stray old number right after the new heading ("...: 7.01 Liens. 07.02 Create ...").
+    .replace(/([.;:)\u201d"])(\s{1,6})(?=\d{1,2}\.\d{2}\.?\s+[A-Z][A-Za-z\u2019'-]+(?:,?\s+(?:[A-Z][A-Za-z\u2019'-]+|of|and|or|on|to|the|with|in|for)){0,8}\.\s+0\d\.\d{2}\s+[A-Z])/g, "$1\n")
     .replace(/(\b[A-Z]{3,})(\s{1,6})(?=SECTION\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"])/g, "$1\n");
   // Bare "8.20 Post-Closing Covenants. The Borrower ..." headings (no SECTION keyword) after a sentence end, only in
   // fully flattened text (in partly flattened amendments these are quoted restatements).

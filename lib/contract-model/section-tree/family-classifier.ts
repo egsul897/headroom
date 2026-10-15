@@ -141,6 +141,8 @@ const SUBCAPTION = /^\s*(?:\([a-z0-9]+\)\s*)?((?:[A-Z][\w’'&/-]*|of|on|and|or|
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
   // Small-caps headings extracted letter-split ("W HEN THE I SSUER M AY M ERGE , E TC"): rejoin for title matching only.
   if (args.title) args = { ...args, title: args.title.replace(/\b([A-Z]) ([A-Z]{2,})\b/g, "$1$2") };
+  // A blackline's stray old section number opening the body ("7.01 Liens. 07.02 Create ...").
+  if (/^\s*0\d\.\d{2}\s+[A-Z]/.test(args.leadIn)) args = { ...args, leadIn: args.leadIn.replace(/^\s*0\d\.\d{2}\s+/, "") };
   const sub = SUBCAPTION.exec(args.leadIn);
   if (sub) args = { ...args, leadIn: args.leadIn.slice(sub[0].length), title: [args.title, sub[1]].filter(Boolean).join("; ") || null };
   // A definition ("“Consolidated Leverage Ratio” means ...", e.g. a definitions-only amendment's restated term) states

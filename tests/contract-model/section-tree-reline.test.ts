@@ -109,3 +109,18 @@ describe("round 6: amendments, run-in titles, blackline numbers", async () => {
     expect(t.nodes.filter((n) => n.kind === "ARTICLE").map((n) => n.title)).toEqual(["COVENANTS", "SUCCESSORS"]);
   });
 });
+
+describe("round 7: blackline remnants, Article + next-line number", async () => {
+  const { parseDocumentTree } = await import("@/lib/contract-model/section-tree/parse");
+  it("stray old number after the new heading, and '[Reserved]' captions", () => {
+    const body = `${filler(25)}directly or indirectly: 7.01 Liens. 07.02 Create, incur or suffer any Lien. ${filler(5)}purpose. 7.11 7.12 Financial Covenants[Reserved]. (a) Liquidity. Permit cash to be less. ${filler(25)}`;
+    const t = relineFlattened(body);
+    expect(t).toMatch(/\n7\.01 Liens\. 07\.02/);
+    expect(t).toMatch(/7\.11\n7\.12 Financial/);
+    expect(classifyCovenantFamily({ title: "Liens", leadIn: "07.02 Create, incur, assume or suffer to exist any Lien upon any of its property.", covenantContext: true }).families).toContain("LIENS");
+  });
+  it("'Article' with an Arabic number alone on the next line", () => {
+    const t = parseDocumentTree(`Article\n5\n\nMERGERS AND CONSOLIDATIONS\n\nSection 5.01 Issuer. The Issuer shall not merge. ${filler(3)}`);
+    expect(t.nodes.filter((n) => n.kind === "ARTICLE").map((n) => [n.label, n.title])).toEqual([["ARTICLE 5", "MERGERS AND CONSOLIDATIONS"]]);
+  });
+});
