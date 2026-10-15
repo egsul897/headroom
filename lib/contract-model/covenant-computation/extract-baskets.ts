@@ -16,8 +16,6 @@ import {
 } from "@/lib/covenant-learning-factory/learned-rules/apply";
 import { compileRuleRegex, type LearnedRuleSet } from "@/lib/covenant-learning-factory/learned-rules/types";
 import { categorize } from "./baskets";
-import { parseDocumentTree } from "../section-tree/parse";
-import { covenantChecklist, ownText, roleOf as treeRoleOf } from "../section-tree/semantics";
 import type { BasketClause } from "./types";
 import { norm } from "./text";
 
@@ -86,12 +84,6 @@ export function extractBasketClauses(args: ExtractBasketsArgs): BasketClause[] {
   for (const clause of clausesFromLearnedPatterns(args.documentId, text, args.rules)) {
     const key = norm(clause.operativeText);
     if (key.length < 24 || seen.has(key)) continue;
-    seen.add(key);
-    clauses.push(clause);
-  }
-  for (const clause of treeBasketLimbs(args.documentId, args.text, text, clauses)) {
-    const key = norm(clause.operativeText);
-    if (seen.has(key)) continue;
     seen.add(key);
     clauses.push(clause);
   }
@@ -887,39 +879,4 @@ function slug(value: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 72);
-}
-
-/**
- * Basket limbs from the section tree: inside sections the tree + family classifier call covenant
- * sections, every CLAUSE whose role is BASKET becomes a limb unless an extracted clause already
- * covers it. Operative text is the clause's own words, kept only when it is an exact slice of the
- * normalized document (never invented). Fails closed (no limbs) if the tree cannot be built.
- */
-function treeBasketLimbs(documentId: string, raw: string, normText: string, existing: BasketClause[]): BasketClause[] {
-  if (process.env.CLF_TREE_LIMBS === "0") return [];
-  let tree: ReturnType<typeof parseDocumentTree>;
-  try {
-    tree = parseDocumentTree(raw);
-  } catch {
-    return [];
-  }
-  const famOfPath = new Map<string, string>();
-  for (const item of covenantChecklist(tree, tree.text)) for (const p of item.sectionPaths) if (!famOfPath.has(p)) famOfPath.set(p, item.family);
-  if (famOfPath.size === 0) return [];
-  const have = existing.map((c) => norm(c.operativeText).toLowerCase());
-  const out: BasketClause[] = [];
-  for (const node of tree.nodes) {
-    if (node.kind !== "CLAUSE") continue;
-    let sec = node.parentId ? tree.byId.get(node.parentId) : undefined;
-    while (sec && sec.kind !== "SECTION") sec = sec.parentId ? tree.byId.get(sec.parentId) : undefined;
-    const family = sec ? famOfPath.get(sec.path) : undefined;
-    if (!sec || !family) continue;
-    if (treeRoleOf(tree, tree.text, node) !== "BASKET") continue;
-    const own = norm(ownText(tree, tree.text, node));
-    if (own.length < 24 || !normText.includes(own)) continue;
-    const probe = own.toLowerCase().slice(0, 60);
-    if (have.some((h) => h.includes(probe))) continue;
-    out.push(clause(documentId, family, `${sec.title ?? `Section ${sec.sectionNumber}`} ${node.label}`, own, "PERMISSION"));
-  }
-  return out;
 }
