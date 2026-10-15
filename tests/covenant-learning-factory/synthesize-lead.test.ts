@@ -12,7 +12,8 @@ describe("synthesizeCandidateRules", () => {
     const b = "(c) each partial prepayment of any Borrowing (other than a Borrowing of Swing Line Loans) shall be in an aggregate principal amount of $1,000,000 and integral";
     const rules = synthesizeCandidateRules({ signals: [gap("1", "p1", a), gap("2", "p2", b)], epoch: 1 }).filter((r) => r.kind === "PHRASE_PATTERN");
     expect(rules[0]!.provenance.sourcesSpanned).toBe(2);
-    expect(rules[0]!.effect.category).toBe("FIXED_DOLLAR");
+    // Seeds state minimum prepayment amounts, not a ceiling: no FIXED_DOLLAR capacity is carried (P1).
+    expect(rules[0]!.effect.category).not.toBe("FIXED_DOLLAR");
     expect(new RegExp(rules[0]!.pattern, "i").test(a.replace(/\s+/g, " "))).toBe(true);
   });
   it("matches a seed across '.', ')(' and line breaks", () => {

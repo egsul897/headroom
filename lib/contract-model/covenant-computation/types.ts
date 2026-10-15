@@ -59,8 +59,10 @@ export interface BasketClause {
   /**
    * PERMISSION: an affirmative exception (intercompany, a numbered basket).
    * CONDITION: a negative-covenant proviso with no capacity of its own.
+   * DISCOVERY: a learned capture without affirmative operative permission
+   * evidence. Kept as discovery evidence; never an executable permission.
    */
-  role?: "PERMISSION" | "CONDITION";
+  role?: "PERMISSION" | "CONDITION" | "DISCOVERY";
 }
 
 /** A covenant the inventory names, whose operative text is not in the bound package. */

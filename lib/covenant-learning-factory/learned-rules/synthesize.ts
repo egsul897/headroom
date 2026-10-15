@@ -7,6 +7,7 @@
  * and one rule is emitted per cross-source cluster. Multi-source clusters sort first.
  */
 
+import { hasMaximumCapacityAmount } from "../../contract-model/covenant-computation/amount-role";
 import { createHash } from "node:crypto";
 import type { BasketCategory } from "../../contract-model/covenant-computation/types";
 import {
@@ -31,6 +32,7 @@ export interface LedgerSignal {
 const CATEGORY_TOKENS: Array<{ re: RegExp; category: BasketCategory }> = [
   { re: /\bgrower|greater\s+of\b/i, category: "GROWER_GREATER_OF" },
   { re: /\bbuilder|available\s+amount|cumulative\s+credit\b/i, category: "BUILDER_AVAILABLE_AMOUNT" },
+  // A dollar figure alone is not capacity: it must sit in a ceiling role (see amount-role).
   { re: /\bfixed\s+dollar|dollar\s+cap|\$\s*[\d,]+\b/i, category: "FIXED_DOLLAR" },
   { re: /\bratio[- ]based|leverage\s+ratio|coverage\s+ratio\b/i, category: "RATIO_BASED" },
   { re: /\bunlimited\b/i, category: "UNLIMITED" },
@@ -45,6 +47,13 @@ const FAMILY_TOKENS: Array<{ re: RegExp; family: string }> = [
   { re: /\basset\s+sales?|dispositions?\b/i, family: "ASSET_SALES" },
   { re: /\bindebtedness|\bdebt\b/i, family: "DEBT_INCURRENCE" },
 ];
+
+/** FIXED_DOLLAR from a bare "$" requires a ceiling-role amount in the clause text itself. */
+function categoryTokenHolds(tok: { re: RegExp; category: BasketCategory }, blob: string, phrase: string): boolean {
+  if (!tok.re.test(blob)) return false;
+  if (tok.category !== "FIXED_DOLLAR") return true;
+  return hasMaximumCapacityAmount(phrase);
+}
 
 function rid(parts: string[]): string {
   return `lr:${createHash("sha256").update(parts.join("|")).digest("hex").slice(0, 16)}`;
@@ -112,7 +121,7 @@ function inferKindAndEffect(signal: LedgerSignal, phrase: string): {
 
   const blob = `${signal.class} ${signal.message} ${phrase}`;
   for (const tok of CATEGORY_TOKENS) {
-    if (tok.re.test(blob)) {
+    if (categoryTokenHolds(tok, blob, phrase)) {
       const kind: LearnedRuleKind =
         tok.category === "GROWER_GREATER_OF" ? "GROWER_FORM" : "CATEGORY_HINT";
       const tokenMatch = phrase.match(
@@ -325,7 +334,7 @@ export function synthesizeCandidateRules(args: {
     const signature = use.map((t) => t.id).join(">");
     // A capture is a numeric basket too: when every seed states the same numeric form ("in an aggregate amount of
     // $5,000,000"), carry that category so the captured clause is not left UNKNOWN.
-    const forms = members.map((m) => CATEGORY_TOKENS.find((t) => t.re.test(m.phrase))?.category ?? null);
+    const forms = members.map((m) => CATEGORY_TOKENS.find((t) => categoryTokenHolds(t, m.phrase, m.phrase))?.category ?? null);
     const form = forms[0] && forms.every((f) => f === forms[0]) ? forms[0] : null;
     const effect = form && !members[0]!.effect.category ? { ...members[0]!.effect, category: form } : members[0]!.effect;
     const packageKeys = [...new Set(members.map((m) => m.packageKey).filter((k): k is string => Boolean(k)))].sort();

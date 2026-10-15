@@ -7,6 +7,7 @@
  * unless the clause states that conversion (it does not, here).
  */
 
+import { amountRoles, isNonCapacityRole } from "./amount-role";
 import { FORMULA_TAXONOMY } from "@/lib/basket-formula-corpus";
 import type { FormulaKind } from "@/lib/basket-formula-corpus";
 import { applyCategoryHints } from "@/lib/covenant-learning-factory/learned-rules/apply";
@@ -55,6 +56,9 @@ export function evaluateBasket(
     return basket(clause, "UNKNOWN", "NONE", "UNKNOWN", null, null, ["operative text is not a substring of the cited document"], "Citation does not bind to the cited document.");
   }
 
+  if (clause.role === "DISCOVERY") {
+    return basket(clause, "UNKNOWN", "NONE", "UNKNOWN", null, null, ["affirmative operative permission"], "Discovery evidence only. The clause states no operative permission or ceiling, so no basket capacity is inferred.");
+  }
   const category = categorize(clause.operativeText, rules);
   const formulaKind = category === "UNKNOWN" ? null : formulaLabel(FORMULA_BY_CATEGORY[category]);
   const base = {
@@ -96,8 +100,9 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   const text = norm(operativeText);
   // Learned rules win over the generic engine heuristics — they are the
   // factory's lessons. Hand-written per-case branches must not be added here.
+  // A learned hint never establishes FIXED_DOLLAR capacity on its own: the text must state a ceiling.
   const hinted = applyCategoryHints(text, rules);
-  if (hinted) return hinted.category;
+  if (hinted && (hinted.category !== "FIXED_DOLLAR" || soleFixedDollar(text) != null)) return hinted.category;
   const numeric = hasNumeric(text);
   const closed = hasClosedCap(text);
   if (/\breclassif/i.test(text) && !closed) return "RECLASS";
@@ -422,19 +427,26 @@ function evalUnlimited(
   };
 }
 
-function soleFixedDollar(text: string): string | null {
+/** The single ceiling-role dollar in the clause, or null. Exported for gate checks. */
+export function soleFixedDollar(text: string): string | null {
   const normed = norm(text);
   if (/\bgreater\s+of\b/i.test(normed) || /\d+(?:\.\d+)?\s*%/.test(normed) || /\bmay be increased by\b/i.test(normed)) return null;
-  const tokens = [...normed.matchAll(/\$\s*([\d,]+(?:\.\d+)?)/g)].map((m) => m[1]!.replace(/,/g, ""));
-  const distinct = [...new Set(tokens)];
-  if (distinct.length !== 1) return null;
+  const roles = amountRoles(normed);
+  // Ceiling-role amounts control capacity; minimums, increments, reporting thresholds and
+  // qualifying conditions never do. When both appear, only the ceiling remains.
+  const ceilings = [...new Set(roles.filter((a) => a.role === "MAXIMUM_CAPACITY").map((a) => a.value))];
+  if (ceilings.length === 1) return ceilings[0]!;
+  if (ceilings.length > 1) return null;
+  if (roles.some((a) => isNonCapacityRole(a.role))) return null;
+  const tokens = [...new Set(roles.map((a) => a.value))];
+  if (tokens.length !== 1) return null;
   const capRole =
     /\b(?:not\s+to\s+exceed|does\s+not\s+exceed|shall\s+not\s+exceed|not\s+in\s+excess\s+of|in\s+a\s+maximum\s+aggregate\s+amount\s+not\s+to\s+exceed|up\s+to\s+an\s+aggregate\s+amount\s+of)\b/i.test(
       normed,
     ) ||
     /\bDollars\s*\(\s*\$\s*[\d,]+\.\d{2}/i.test(normed) ||
     /\bexceeds\s+\$\s*[\d,]+(?:\.\d+)?\s+million\b/i.test(normed);
-  return capRole ? distinct[0]! : null;
+  return capRole ? tokens[0]! : null;
 }
 
 function evalPercentOfMetric(

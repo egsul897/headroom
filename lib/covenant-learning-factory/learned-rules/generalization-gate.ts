@@ -12,6 +12,8 @@
  * a hand-coded issuer list. This gate never assigns INDEPENDENTLY_VERIFIED.
  */
 
+import { soleFixedDollar } from "../../contract-model/covenant-computation/baskets";
+import { extractBasketClauses } from "../../contract-model/covenant-computation/extract-baskets";
 import { createHash } from "node:crypto";
 import { patternAbstractsSlot } from "./generalize";
 import {
@@ -20,7 +22,7 @@ import {
   type GoldenCheck,
   type ReplaySource,
 } from "./replay-gate";
-import type { LearnedRule, LearnedRuleSet } from "./types";
+import { compileRuleRegex, type LearnedRule, type LearnedRuleSet } from "./types";
 
 export const MIN_GENERALIZATION_SUPPORT = 2;
 const SPLIT_SALT = "clf-generalization-split-v1";
@@ -107,6 +109,35 @@ export function findIssuersForGeneralizationSplit(
   return { train, heldout };
 }
 
+/**
+ * A rule's claimed category must be evidenced by every clause it captures.
+ * Fewer precedent-matching errors never justify a wrong classification: a
+ * FIXED_DOLLAR rule whose matches state no ceiling, or whose captures carry no
+ * affirmative operative permission, is unsupported.
+ */
+function classificationSupported(
+  candidate: LearnedRule,
+  sources: readonly ReplaySource[],
+  candidateSet: LearnedRuleSet,
+): boolean {
+  const category = candidate.effect.category;
+  if (!category) return true;
+  const re = compileRuleRegex(candidate);
+  if (!re) return false;
+  const capacity = category !== "UNLIMITED_BY_PURPOSE" && category !== "RECLASS" && category !== "UNKNOWN";
+  for (const source of sources) {
+    if (!source.documentText) continue;
+    const clauses = extractBasketClauses({ documentId: source.sourceId, text: source.documentText, rules: candidateSet });
+    for (const clause of clauses) {
+      const own = clause.stableKey.startsWith(`learned-${candidate.ruleId}`);
+      if (!own && !re.test(clause.operativeText)) continue;
+      if (own && capacity && clause.role === "DISCOVERY") return false;
+      if (category === "FIXED_DOLLAR" && soleFixedDollar(clause.operativeText) == null) return false;
+    }
+  }
+  return true;
+}
+
 function sumPair(
   sources: readonly ReplaySource[],
   baseline: LearnedRuleSet,
@@ -174,6 +205,8 @@ export function evaluateGeneralizationGate(args: {
     }
   }
 
+  const classificationOk = classificationSupported(args.candidate, [...trainSources, ...heldoutSources], candidateSet);
+
   const generalized = ruleIsGeneralized(args.candidate);
   const trainFixed = train.before - train.after;
   const heldoutFixed = held.before - held.after;
@@ -183,6 +216,7 @@ export function evaluateGeneralizationGate(args: {
     sourcesSpanned >= minSupport &&
     heldoutSources.length > 0 &&
     goldenOk &&
+    classificationOk &&
     !held.regression &&
     held.after < held.before;
 
@@ -196,6 +230,8 @@ export function evaluateGeneralizationGate(args: {
           ? "no held-out packages"
           : !goldenOk
             ? "golden regression"
+            : !classificationOk
+              ? "classification unsupported by matched text (category or permission not evidenced)"
             : held.regression
               ? "held-out regression"
               : held.after >= held.before
