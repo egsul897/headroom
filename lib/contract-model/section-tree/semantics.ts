@@ -411,7 +411,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   LIENS: { heading: /\b(?:liens|negative pledge|limitations? on liens)\b/i, lead: /(?:create|incur|assume|grant|suffer to exist)[^.;]{0,100}?\b(?:liens?|mortgage|pledge|security interest)\b/i },
   RESTRICTED_PAYMENTS: { heading: /\b(?:restricted payments|dividends|distributions)\b/i, lead: /(?:declare|pay|make)[^.;]{0,80}?\b(?:dividends?|restricted payments?|distributions?)\b/i },
   INVESTMENTS: { heading: /\b(?:investments|loans,? advances|acquisitions)\b/i, lead: /(?:make|hold|acquire|purchase)[^.;]{0,80}?\b(?:investments?|advances?|capital contributions?)\b/i },
-  ASSET_SALES: { heading: /\b(?:asset sales|asset transfers|dispositions?|sales? of assets|disposition of assets)\b/i, lead: /(?:sell|transfer|convey|dispose|lease)[^.;]{0,100}?\b(?:assets?|propert(?:y|ies)|business)\b/i },
+  ASSET_SALES: { heading: /\b(?:asset sales|asset transfers|dispositions?|sales? of assets|disposition of assets)\b/i, lead: /(?:sell|transfer|convey|dispose|lease)[^.;]{0,100}?\b(?:assets?|propert(?:y|ies)|business)\b|\b(?:make|consummate|effect)\b[^.;]{0,40}\bAsset (?:Sales?|Dispositions?)\b/i },
   AFFILIATE_TRANSACTIONS: { heading: /\btransactions? with affiliates\b|\baffiliate transactions\b/i, lead: /(?:enter into|permit to exist|engage in)[^.;]{0,140}?\baffiliates?\b/i },
   FUNDAMENTAL_CHANGES: { heading: /\b(?:mergers?|consolidations?|fundamental changes|merger,? consolidation)\b/i, lead: /\b(?:merge|consolidate|amalgamate|liquidate|dissolve)\b/i },
   PREPAYMENTS: { heading: /\b(?:prepayments? of (?:other )?(?:indebtedness|debt)|restricted debt payments|payments? of (?:subordinated|junior) (?:indebtedness|debt))\b/i, lead: /(?:prepay|redeem|repurchase|defease|retire)[^.;]{0,100}?\b(?:subordinated|junior)?\s*(?:indebtedness|debt)\b/i },
@@ -419,7 +419,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
 };
 const DESIGNATION_OR_SUSPENSION = /\bdesignat\w*\b[^.;]{0,60}\b(?:un)?restricted subsidiar|\b(?:suspension|suspended|suspend)\b[^.;]{0,40}\bcovenants?\b|\bcovenant suspension\b|\bsuspended covenants?\b/i;
 const NEG_RE = new RegExp(NEG, "i");
-const NOT_COVENANT_TITLE = /dividend equivalents|designation of|suspension of|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
+const NOT_COVENANT_TITLE = /limited condition|ratio adjustments?|pro forma|title to|ownership of|pledged|net proceeds|disposition offer|investment company|dividend equivalents|designation of|suspension of|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
 
 /**
  * Lead-in text that names a family's verb/object but is not that covenant: affiliate-transaction text for asset sales,
@@ -443,6 +443,11 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   // Statutory limits on an entity's own distributions to its members ("shall not make a distribution to any Member if such
   // distribution would violate Section 18-607 of the Act") restate law, not a negotiated restricted-payment covenant.
   if (family === "RESTRICTED_PAYMENTS" && /\bdistributions?\b[^.]{0,120}\bto\s+(?:(?:any|a|the|such|its)\s+)?(?:[A-Z]\w*\s+){0,3}(?:Members?|Partners?|Unitholders?)\b/i.test(sent) && /\b(?:would violate|in violation of|18-607|17-607|the Act|applicable law)\b/i.test(sent)) return true;
+  // Representations ("The Transactions (a) do not require ... and (d) will not result in the creation of any Lien", "The
+  // execution, delivery and performance ... are within ...") and non-obligor actors (trustee, transferees, a lender or
+  // agency making Advances) are not covenant evidence.
+  if (/\b(?:do not|does not|will not)\s+(?:require|violate|conflict|contravene|result in (?:the creation|a breach))\b|\bare within\b[^.]{0,60}\bpowers\b/i.test(sent)) return true;
+  if (/\b(?:the Trustee|any purchaser or other transferee|transferee in good faith|the RUS|the Administrative Agent|the Collateral Agent)\b[^.;]{0,40}\b(?:shall|will|may)\s+(?:not|ever)\b|\bunder no circumstances shall the\b|\bin no event shall any purchaser\b/i.test(sent)) return true;
   // Equity-award dividend equivalents (stock plans) are not a restricted payment.
   if (family === "RESTRICTED_PAYMENTS" && /\bdividend equivalents?\b/i.test(sent)) return true;
   if (family === "INVESTMENTS" && (/\b(?:lenders?|banks?|issuing bank|swingline lender|agent)s?\b[^.;]{0,80}$/i.test(before) || /\b(?:not be obligated|obligated to)\b/i.test(sent) || /\badvances?\b/i.test(sent) && /\b(?:lenders?|borrowing)\b/i.test(sent))) return true;
