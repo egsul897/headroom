@@ -454,10 +454,17 @@ function nameAppears(text: string, name: string, catalog: readonly CatalogEntry[
       if (from < 0) return false;
       return text.slice(from, match.index! + name.length).toLowerCase() === other.toLowerCase();
     });
-    if (!buried) return true;
+    if (buried) continue;
+    // Part of a longer capitalized term the catalog does not list ("Consolidated First Lien Net Leverage Ratio",
+    // "Senior Secured Leverage Ratio"): the shorter ratio is not named by that mention.
+    const prev = /([A-Z][A-Za-z'’\-]*)\s+$/.exec(text.slice(Math.max(0, match.index - 40), match.index));
+    if (prev && !NAME_LEADERS.test(prev[1]!)) continue;
+    return true;
   }
   return false;
 }
+
+const NAME_LEADERS = /^(?:Consolidated|The|If|So|Such|Any|Each|Its|Their|Our|Pro|Forma|Basis|Borrower(?:'s|’s)?|Company(?:'s|’s)?|Section|Article|A|An|In|On|At|For|When|Where|Whether|Until|Unless|While|Upon|As|By|To|Of|Under|With|Without|No|Neither|Nor|Then|After|Before|And|Or|But|Applicable|Maximum|Minimum|Financial|Covenant|Covenants)$/;
 
 /** Equal up to whitespace, case and a leading "Consolidated" ("Consolidated Leverage Ratio" = "Leverage Ratio"). */
 export function namesEqual(a: string, b: string): boolean {
