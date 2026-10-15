@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "covenant-learning-factory.dashboard.v1",
+  "generatedAt": "2026-10-13T19:37:50.614Z",
+  "factoryVersion": "covenant-learning-factory.v1",
+  "neonLive": false,
+  "packages": {
+    "total": 4,
+    "trainDev": 3,
+    "heldOut": 1,
+    "processedOk": 4,
+    "failed": 0,
+    "unsupported": 0,
+    "abstained": 0
+  },
+  "coverage": {
+    "totalCandidates": 856,
+    "supportedStructureUnits": 0,
+    "verifiedExecutableUnits": 8,
+    "unsupportedUnits": 0,
+    "refusedExecutableUnits": 848
+  },
+  "correctness": {
+    "sourceFidelityPass": 2,
+    "sourceFidelityFail": 0,
+    "sourceFidelityUnknown": 2,
+    "dangerousOmissions": "NOT_MEASURED",
+    "dangerousOmissionsStatus": "NOT_MEASURED",
+    "abstentions": 848
+  },
+  "metricDefinitions": {
+    "supportedStructureUnits": "Count of compile units with supportStatus===SUPPORTED_STRUCTURE (exception-catalog support and no unresolved context). Independent of executableAuthority.",
+    "verifiedExecutableUnits": "Count of units elevated to executableAuthority===VERIFIED_EXECUTABLE by fixed-dollar / greater-of / percent-of-assets vertical slices after independent fidelity PASS. May be >0 while supportedStructureUnits===0 when supportStatus is PARTIAL due to unresolved context bundles.",
+    "dangerousOmissions": "NOT_MEASURED unless an independently adjudicated completeness oracle exists for the package. Heuristic discovery gaps are recorded as DISCOVERY_GAP / COVERAGE_GAP errors — never reported as measured dangerousOmissions=0."
+  },
+  "costs": {
+    "estimatedUsd": 0,
+    "wallMs": 61465
+  },
+  "errorLedger": [
+    {
+      "class": "COVERAGE_GAP",
+      "count": 2
+    }
+  ],
+  "recentPackages": [
+    {
+      "packageKey": "mhk-2026-credit-agreement",
+      "cohort": "HELD_OUT",
+      "status": "OK",
+      "verifiedExecutableUnits": 4,
+      "supportedStructureUnits": 0,
+      "unsupportedUnits": 0,
+      "dangerousOmissions": "NOT_MEASURED"
+    },
+    {
+      "packageKey": "mtn-2026-tenth-ar-credit-agreement",
+      "cohort": "TRAIN_DEV",
+      "status": "OK",
+      "verifiedExecutableUnits": 4,
+      "supportedStructureUnits": 0,
+      "unsupportedUnits": 0,
+      "dangerousOmissions": "NOT_MEASURED"
+    },
+    {
+      "packageKey": "gibraltar-2026-credit-agreement",
+      "cohort": "TRAIN_DEV",
+      "status": "OK",
+      "verifiedExecutableUnits": 0,
+      "supportedStructureUnits": 0,
+      "unsupportedUnits": 0,
+      "dangerousOmissions": "NOT_MEASURED"
+    },
+    {
+      "packageKey": "chwy-2026-credit-agreement",
+      "cohort": "TRAIN_DEV",
+      "status": "OK",
+      "verifiedExecutableUnits": 0,
+      "supportedStructureUnits": 0,
+      "unsupportedUnits": 0,
+      "dangerousOmissions": "NOT_MEASURED"
+    }
+  ],
+  "honesty": {
+    "trained": false,
+    "certified": false,
+    "generalized": false,
+    "productionReady": false,
+    "autoPromotedLegalAuthority": false
+  }
+}

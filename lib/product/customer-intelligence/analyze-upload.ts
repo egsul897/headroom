@@ -469,6 +469,30 @@ export async function analyzeCustomerDocument(params: {
       /* non-blocking */
     }
 
+    // Deterministic agreement pipeline (text → section tree → roles/xrefs → checklist → baskets/compute).
+    // Persisted ONLY to customer_* tables scoped by (companyId, documentId) — never the shared kf_* corpus.
+    // Tables come from migrations (no DDL here). A failure is recorded as a FAILED run (status + error) and
+    // surfaced in metadata.agreementPipeline; it never fails the upload. Disable with CLF_AGREEMENT_PIPELINE=0.
+    let agreementPipeline: Record<string, unknown> | null = null;
+    if (process.env.CLF_AGREEMENT_PIPELINE !== "0") {
+      const { runAgreementPipeline, persistCustomerAgreementRun } = await import(
+        "../../covenant-learning-factory/pipeline/agreement-pipeline"
+      );
+      const { extractTextAsync } = await import("../../knowledge-factory/pipeline/text");
+      let summary: { stats: unknown; families: unknown } | null = null;
+      const outcome = await persistCustomerAgreementRun(
+        prisma as never,
+        { companyId: params.companyId, documentId: params.documentId, sourceId },
+        async () => {
+          const text = (await extractTextAsync(params.bytes, params.filename)).text;
+          const r = runAgreementPipeline({ sourceId, text });
+          summary = { stats: r.stats, families: r.families };
+          return r;
+        },
+      );
+      agreementPipeline = { ...outcome, ...(outcome.status === "OK" && summary ? summary : {}) };
+    }
+
     // Preserve counsel decisions across reanalysis; flag conflicts when AI text drifts.
     const priorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
     const priorMeta =
@@ -498,6 +522,7 @@ export async function analyzeCustomerDocument(params: {
         },
         covenantSummary: merged.summary,
         amendmentPackage: amendment,
+        agreementPipeline,
         storageProvider: stored.provider,
         processingStatus: "ANALYZED",
         promotedToLegalTruth: 0,

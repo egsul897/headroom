@@ -1,4 +1,5 @@
 "use server";
+import { requireTenantAction } from "@/lib/auth/guard";
 
 import { revalidatePath } from "next/cache";
 import { createManualFinancialState } from "@/lib/onboarding/financial";
@@ -16,6 +17,7 @@ function optionalNum(formData: FormData, name: string): number | undefined {
 }
 
 export async function submitFinancialsAction(companyId: string, formData: FormData) {
+  await requireTenantAction(companyId);
   await createManualFinancialState({
     companyId,
     asOfDate: new Date(String(formData.get("asOfDate"))),

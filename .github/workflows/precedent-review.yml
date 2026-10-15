@@ -1,0 +1,63 @@
+# Read-only precedent-corpus review (aggregates only).
+#
+# workflow_dispatch ONLY — triggered by hand from the GitHub Actions UI
+# ("Use workflow from" -> muse/precedent-review), never on push / PR.
+#
+# What it does: runs scripts/precedent-review.ts, which prints ONLY
+# aggregate counts / GROUP BY on enum + scalar columns for the PUBLIC
+# research corpus (KnowledgeSource.companyId IS NULL), plus
+# information_schema / pg_stat metadata (table + column names, row counts).
+# It never selects document bodies, excerpts, titles, metadata JSON, or
+# byte objects; never touches customer rows, HELDOUT / BLIND bodies, or
+# any other data. It performs no writes of any kind.
+#
+# DATABASE_URL comes from the NEON_DATABASE_URL secret and is never printed.
+# Node 22 — matches the other manual workflows in this repo.
+
+name: Precedent review (read-only aggregates)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Guard — secret present, no secret values printed
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::NEON_DATABASE_URL secret is not set. Refusing to proceed."
+            exit 1
+          fi
+          case "$DATABASE_URL" in
+            *localhost*|*127.0.0.1*)
+              echo "::error::DATABASE_URL looks local. Refusing to run against a local database."
+              exit 1
+              ;;
+          esac
+          echo "Guard passed (no secret values printed)."
+
+      - name: Precedent review (read-only aggregates)
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: npx tsx scripts/precedent-review.ts

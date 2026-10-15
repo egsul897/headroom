@@ -13,6 +13,13 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: "50mb",
     },
+    // CLF Neon HTTPS adapter is scripts/lib-only (dynamic import). Keep it out
+    // of the Next server bundle; default Prisma TCP via lib/prisma.ts is unchanged.
+    serverComponentsExternalPackages: [
+      "@neondatabase/serverless",
+      "@prisma/adapter-neon",
+      "ws",
+    ],
   },
 };
 

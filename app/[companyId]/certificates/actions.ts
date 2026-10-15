@@ -1,4 +1,5 @@
 "use server";
+import { requireTenantAction } from "@/lib/auth/guard";
 
 import { revalidatePath } from "next/cache";
 import {
@@ -21,6 +22,7 @@ function revalidateCertificateSurfaces(companyId: string) {
 }
 
 export async function seedSyntheticCertificateAction(companyId: string) {
+  await requireTenantAction(companyId);
   const result = await proposeSyntheticCertificateForCompany(companyId);
   revalidateCertificateSurfaces(companyId);
   return result;
@@ -31,6 +33,7 @@ export async function seedAuthenticCertificateFixtureAction(
   companyId: string,
   issuer: CertificateFixtureIssuer,
 ) {
+  await requireTenantAction(companyId);
   const result = await proposeAuthenticCertificateFixtureForCompany(companyId, issuer);
   revalidateCertificateSurfaces(companyId);
   return result;
@@ -41,6 +44,7 @@ export async function proposeUploadedCertificateTextAction(
   companyId: string,
   form: { certificateText: string; statementText?: string },
 ) {
+  await requireTenantAction(companyId);
   const result = await proposeCertificateTextForCompany({
     companyId,
     certificateText: form.certificateText,
@@ -56,6 +60,7 @@ export async function approveCertificateAction(
   reviewedBy: string,
   approvalRef: string,
 ) {
+  await requireTenantAction(companyId);
   const reviewer = reviewedBy.trim();
   if (!reviewer) {
     return {
@@ -99,6 +104,7 @@ export async function appendHistoricalUsageAction(
     instrumentKey: string;
   },
 ) {
+  await requireTenantAction(companyId);
   const result = await appendContractLedgerUsage({
     companyId,
     usageId: form.usageId,
@@ -117,6 +123,7 @@ export async function appendHistoricalUsageAction(
 }
 
 export async function restateCertificateAction(companyId: string, predecessorSnapshotId: string) {
+  await requireTenantAction(companyId);
   const result = await proposeCertificateRestatement({
     companyId,
     predecessorSnapshotId,

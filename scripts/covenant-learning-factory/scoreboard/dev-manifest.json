@@ -1,0 +1,91 @@
+{
+  "description": "DEV split BY ISSUER CIK. DEV = every fixture:* / fdp:* source plus every source whose issuerCik belongs to an issuer with DEV fixtures (devIssuerCiks). Everything else is HELDOUT. Duplicates are scored and listed but excluded from totals and the gate.",
+  "sourceIds": [
+    "fdp:CHWY-2026-CA",
+    "fdp:CONMED-2025-PLAIN",
+    "fdp:DSGR-2024-AMD3",
+    "fdp:DSGR-2025-AR2",
+    "fdp:GIB-2026-CA",
+    "fdp:RIOT-2026-CA",
+    "fixture:an-2020-2026-credit-facility:doc-a-2020-03-26-third-ar-credit-agreement.htm",
+    "fixture:an-2020-2026-credit-facility:doc-b-2026-09-14-fifth-ar-credit-agreement.htm",
+    "fixture:chwy",
+    "fixture:conmed-2025-credit-facility:ex10-1-eighth-ar-credit-agreement-2025-06-16.htm",
+    "fixture:conmed-2025-credit-facility:ex10-1-first-omnibus-amendment-2026-06-01.htm",
+    "fixture:conmed-2025-credit-facility:ex10-2-ar-guarantee-and-collateral-agreement-2025-06-16.htm",
+    "fixture:conmed-2025-credit-facility:ex10-2-second-amendment-2022-08-02.htm",
+    "fixture:conmed-amendment",
+    "fixture:conmed-article7",
+    "fixture:conmed-defs",
+    "fixture:conmed-gsa",
+    "fixture:conmed-second-amd",
+    "fixture:dsgr-2022-2025-credit-facility:doc-a-2022-amended-restated-credit-agreement.htm",
+    "fixture:dsgr-2022-2025-credit-facility:doc-b-2024-third-amendment.htm",
+    "fixture:dsgr-2022-2025-credit-facility:doc-c-2025-fourth-amendment.htm",
+    "fixture:dsgr-2022-2025-credit-facility:doc-d-2025-second-amended-restated-credit-agreement.htm",
+    "fixture:final-lightweight-unseen-sup:doc-a-2022-12-15-term-loan-credit-agreement.htm",
+    "fixture:final-lightweight-unseen-sup:doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm",
+    "fixture:final-lightweight-unseen-sup:doc-c-2025-03-31-first-amendment.htm",
+    "fixture:fwrg-article6",
+    "fixture:fwrg-defs",
+    "fixture:gibraltar",
+    "fixture:lsb-article6",
+    "fixture:lsb-defs",
+    "fixture:lsb-intercreditor",
+    "fixture:riot-2025-2026-credit-facility:doc-a-2025-04-22-credit-agreement.htm",
+    "fixture:riot-2025-2026-credit-facility:doc-b-2025-05-19-amended-restated-credit-agreement.htm",
+    "fixture:riot-2025-2026-credit-facility:doc-c-2026-04-21-second-amended-restated-credit-agreement.htm",
+    "fixture:wor-2023-2026-credit-facility:doc-a-2023-09-27-fourth-ar-credit-agreement.htm",
+    "fixture:wor-2023-2026-credit-facility:doc-b-2026-08-31-fifth-ar-credit-agreement.htm"
+  ],
+  "duplicates": [
+    {
+      "sourceId": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "duplicateOf": "fixture:chwy",
+      "evidence": "reviewer: same Chewy 2026-06-23 credit agreement as the DEV fixture"
+    },
+    {
+      "sourceId": "research:cbcfl:chwy_alt-unknown-d43042dex101",
+      "duplicateOf": "edgar:0001193125-26-281042:doc-a-2026-06-23-credit-agreement.htm",
+      "evidence": "same exhibit d43042dex101; identical tree stats (A=9 S=99 C=430)"
+    }
+  ],
+  "devIssuerCiks": [
+    {
+      "cik": "0000816956",
+      "issuer": "CNMD",
+      "evidence": "CONMED Corp; fixture:conmed-* rows carry this CIK"
+    },
+    {
+      "cik": "0000912562",
+      "issuer": "ROCK",
+      "evidence": "GIBRALTAR INDUSTRIES, INC. (knowledge_sources issuerName)"
+    },
+    {
+      "cik": "0000920230",
+      "issuer": "ROCK",
+      "evidence": "CIK recorded on fixture:gibraltar (ticker ROCK); kept DEV so no Gibraltar-fixture CIK leaks"
+    },
+    {
+      "cik": "0001766502",
+      "issuer": "CHWY",
+      "evidence": "Chewy, Inc. (issuerName)"
+    },
+    {
+      "cik": "0000703604",
+      "issuer": "DSGR",
+      "evidence": "Distribution Solutions Group; DEV fixtures dsgr-* / fdp:DSGR-*"
+    },
+    {
+      "cik": "0001789940",
+      "issuer": "FWRG",
+      "evidence": "rows with ticker FWRG"
+    },
+    {
+      "cik": "0000609371",
+      "issuer": "LXU",
+      "evidence": "rows with ticker LXU"
+    }
+  ],
+  "devIssuerCiksNote": "RIOT: DEV fixtures only (CIK 0000000000 placeholder); no non-fixture RIOT rows exist in knowledge_sources, so no CIK is listed rather than guessing one."
+}

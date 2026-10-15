@@ -1,6 +1,6 @@
 {
   "schemaVersion": "agent8-independent-adversarial.v1",
-  "generatedAt": "2026-10-09T23:07:27.941Z",
+  "generatedAt": "2026-10-15T09:35:01.476Z",
   "methodology": {
     "groundTruth": "Independent arithmetic from Phase-2 adversarial scenarios + authentic CONMED/Chewy source text + human-ground-truth.ts. Not derived from compiler/runtime dumps.",
     "productionCodeModified": false,
@@ -15,19 +15,19 @@
   },
   "summary": {
     "total": 32,
-    "passed": 32,
-    "failed": 0,
+    "passed": 24,
+    "failed": 8,
     "outcomeBuckets": {
-      "CORRECT_EXECUTABLE": 16,
-      "CORRECT_PROHIBITION": 5,
+      "CORRECT_EXECUTABLE": 13,
+      "CORRECT_PROHIBITION": 3,
       "CORRECT_REFUSAL": 11,
-      "INCORRECT_REFUSAL": 0,
-      "INCORRECT_FAVORABLE": 0,
-      "UNSUPPORTED": 0,
+      "INCORRECT_REFUSAL": 1,
+      "INCORRECT_FAVORABLE": 3,
+      "UNSUPPORTED": 1,
       "UNTESTED": 0,
       "OBSERVATION": 0
     },
-    "releaseBlockingCount": 0
+    "releaseBlockingCount": 2
   },
   "cases": [
     {
@@ -76,8 +76,8 @@
       "title": "Runtime trusts IR that omits shared capacity (certification must catch 'together with')",
       "source": "pkg-f / IPV-02 drafting: 'together with … pursuant to Section'; Phase-2 sc-shared-double-spend",
       "expected": "Runtime shows independent remaining (inv still 20mm) — CORRECT given IR; certification must refuse such IR from 'together with' text",
-      "actual": "inv.remaining=20000000, sharedConstraints=0",
-      "pass": true,
+      "actual": "inv.remaining=null, sharedConstraints=0",
+      "pass": false,
       "outcomeClass": "CORRECT_EXECUTABLE",
       "severity": "NONE",
       "repro": "evaluateCapacityState(two $20mm rules, no sharedCapacities, one usage 15mm)",
@@ -130,12 +130,12 @@
       "title": "Same-day RP+Investment against Available Amount cannot both clear full 30+30 on 50",
       "source": "Phase-2 sc-available-amount-depletion; Chewy §1.09 anti-double-count sequencing",
       "expected": "First CONSUME SATISFIED; second INSUFFICIENT_CAPACITY; path not SATISFIED",
-      "actual": "e1=SATISFIED, e2=INSUFFICIENT_CAPACITY, path=INSUFFICIENT_CAPACITY",
-      "pass": true,
-      "outcomeClass": "CORRECT_PROHIBITION",
-      "severity": "NONE",
+      "actual": "e1=INDETERMINATE, e2=INDETERMINATE, path=INDETERMINATE",
+      "pass": false,
+      "outcomeClass": "INCORRECT_FAVORABLE",
+      "severity": "CRITICAL_FALSE_PERMISSION",
       "repro": "simulateTransaction two CONSUME 30mm against shared AA 50mm",
-      "releaseBlocking": false
+      "releaseBlocking": true
     },
     {
       "id": "RT-07b-transaction-ordering",
@@ -143,12 +143,12 @@
       "title": "Intra-transaction ordering depletes shared AA before the second effect (not simultaneous pre-state)",
       "source": "Phase-2 sc-available-amount-depletion / Chewy §1.09; same fixture as RT-07",
       "expected": "Effects applied sequentially within one simulation; second sees depleted pool",
-      "actual": "e1=SATISFIED, e2=INSUFFICIENT_CAPACITY, path=INSUFFICIENT_CAPACITY",
-      "pass": true,
-      "outcomeClass": "CORRECT_PROHIBITION",
-      "severity": "NONE",
+      "actual": "e1=INDETERMINATE, e2=INDETERMINATE, path=INDETERMINATE",
+      "pass": false,
+      "outcomeClass": "INCORRECT_FAVORABLE",
+      "severity": "CRITICAL_FALSE_PERMISSION",
       "repro": "simulateTransaction two CONSUME effects in one transaction against shared AA",
-      "releaseBlocking": false
+      "releaseBlocking": true
     },
     {
       "id": "RT-08-ratio-vs-grower-paths",
@@ -156,10 +156,10 @@
       "title": "Failed ratio gate blocks ratio debt without collapsing the separate grower path",
       "source": "Phase-2 sc-ratio-test-failure; Chewy Fixed vs Ratio Incremental path separation",
       "expected": "ratio gross/remaining GATE_NOT_SATISFIED; general grower remains 40mm AVAILABLE",
-      "actual": "ratio.status=NOT_SATISFIED, ratio.gross.kind=GATE_NOT_SATISFIED, ratio.rem.kind=GATE_NOT_SATISFIED, general.status=AVAILABLE, general.rem=40000000",
-      "pass": true,
-      "outcomeClass": "CORRECT_EXECUTABLE",
-      "severity": "NONE",
+      "actual": "ratio.status=NOT_SATISFIED, ratio.gross.kind=GATE_NOT_SATISFIED, ratio.rem.kind=GATE_NOT_SATISFIED, general.status=REVIEW_REQUIRED, general.rem=null",
+      "pass": false,
+      "outcomeClass": "INCORRECT_REFUSAL",
+      "severity": "NONMATERIAL",
       "repro": "evaluateCapacityState(UNLIMITED gated by FLNL<=3.75 with FLNL=4.1 + separate $40mm)",
       "releaseBlocking": false
     },
@@ -221,10 +221,10 @@
       "title": "Equity contribution builder adds only when the contribution fact is supplied",
       "source": "Chewy Available Amount equity-contribution builder leg (phase-2 formula hypotheses); independent arithmetic 10+5=15",
       "expected": "with contribution: 15,000,000 AVAILABLE; without: NEEDS_INPUT",
-      "actual": "with=15000000/AVAILABLE, without=NEEDS_INPUT",
-      "pass": true,
-      "outcomeClass": "CORRECT_EXECUTABLE",
-      "severity": "NONE",
+      "actual": "with=null/REVIEW_REQUIRED, without=NEEDS_INPUT",
+      "pass": false,
+      "outcomeClass": "INCORRECT_FAVORABLE",
+      "severity": "MATERIAL_OVERSTATEMENT",
       "repro": "evaluateCapacityState(ADD($10mm, Qualified Equity Contributions))",
       "releaseBlocking": false
     },
@@ -234,7 +234,7 @@
       "title": "EUR basket without FX must not be published as a USD capacity figure",
       "source": "Phase-2 sc-currency-mismatch; pkg-f F-R7",
       "expected": "EUR figure or NEEDS_INPUT/UNSUPPORTED — never a USD conversion",
-      "actual": "AVAILABLE, rem={\"kind\":\"AMOUNT\",\"value\":{\"type\":\"MONEY\",\"amount\":\"10000000\",\"currency\":\"EUR\",\"lineage\":{\"exprId\":\"a8-33\",\"inputKeys\":[],\"rawSource\":1000000",
+      "actual": "REVIEW_REQUIRED, rem={\"kind\":\"NOT_DETERMINED\",\"reason\":\"the legal state of this rule is not safe to rely on; the computed arithmetic is reported under `provision",
       "pass": true,
       "outcomeClass": "CORRECT_REFUSAL",
       "severity": "NONE",
@@ -247,9 +247,9 @@
       "title": "Simulation postState diverges from fresh evaluation after external ledger update",
       "source": "Independent ordering/staleness challenge; system must not treat old sim as current authority",
       "expected": "Different stateHash; stale rem 40mm vs fresh 10mm — consumer must rebind",
-      "actual": "staleRem=40000000, freshRem=10000000, hashesDiffer=true",
-      "pass": true,
-      "outcomeClass": "CORRECT_EXECUTABLE",
+      "actual": "staleRem=null, freshRem=10000000, hashesDiffer=true",
+      "pass": false,
+      "outcomeClass": "UNSUPPORTED",
       "severity": "NONE",
       "repro": "simulate then evaluateCapacityState with additional external usage; compare stateHash",
       "releaseBlocking": false,
@@ -261,8 +261,8 @@
       "title": "Runtime publishes widened entityScope from IR (subsidiary restriction is a certification concern)",
       "source": "IPV-01 closed at certification; CONMED §7.14 subsidiary distribution restrictions; Chewy non-Guarantor debt baskets",
       "expected": "Runtime AVAILABLE with submitted scope — documents that false widening must be blocked upstream",
-      "actual": "status=AVAILABLE, scope={\"entityScope\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"entityScopeExcluded\":[],\"auditStatus\":null,\"safeToRely\":null,\"applicability\":\"SCOPE_UNAUDITED\"}, rem=50000000",
-      "pass": true,
+      "actual": "status=REVIEW_REQUIRED, scope={\"entityScope\":[\"BORROWER\",\"ANY_SUBSIDIARY\"],\"entityScopeExcluded\":[],\"auditStatus\":null,\"safeToRely\":null,\"applicability\":\"SCOPE_UNAUDITED\"}, rem=null",
+      "pass": false,
       "outcomeClass": "CORRECT_EXECUTABLE",
       "severity": "NONE",
       "repro": "evaluateCapacityState(entityScope BORROWER+ANY_SUBSIDIARY)",
@@ -288,8 +288,8 @@
       "title": "Lien basket and debt basket remain distinct capacity nodes (no silent merge)",
       "source": "CONMED §7.2 / §7.3(m) human-ground-truth; secured debt typically needs both permissions",
       "expected": "Two distinct capacity nodes; consuming lien does not reduce debt remaining",
-      "actual": "nodes=debt,lien, debt.rem=50000000, lien.family present, sim.path=SATISFIED",
-      "pass": true,
+      "actual": "nodes=debt,lien, debt.rem=null, lien.family present, sim.path=INDETERMINATE",
+      "pass": false,
       "outcomeClass": "CORRECT_EXECUTABLE",
       "severity": "NONE",
       "repro": "evaluateCapacityState(INDEBTEDNESS $50mm + LIENS $50mm); consume lien only",
@@ -462,6 +462,47 @@
       "releaseBlocking": false
     }
   ],
-  "releaseBlocking": [],
-  "materialObservations": []
+  "releaseBlocking": [
+    {
+      "id": "RT-07-aa-sequential-depletion",
+      "challenge": 12,
+      "title": "Same-day RP+Investment against Available Amount cannot both clear full 30+30 on 50",
+      "source": "Phase-2 sc-available-amount-depletion; Chewy §1.09 anti-double-count sequencing",
+      "expected": "First CONSUME SATISFIED; second INSUFFICIENT_CAPACITY; path not SATISFIED",
+      "actual": "e1=INDETERMINATE, e2=INDETERMINATE, path=INDETERMINATE",
+      "pass": false,
+      "outcomeClass": "INCORRECT_FAVORABLE",
+      "severity": "CRITICAL_FALSE_PERMISSION",
+      "repro": "simulateTransaction two CONSUME 30mm against shared AA 50mm",
+      "releaseBlocking": true
+    },
+    {
+      "id": "RT-07b-transaction-ordering",
+      "challenge": 18,
+      "title": "Intra-transaction ordering depletes shared AA before the second effect (not simultaneous pre-state)",
+      "source": "Phase-2 sc-available-amount-depletion / Chewy §1.09; same fixture as RT-07",
+      "expected": "Effects applied sequentially within one simulation; second sees depleted pool",
+      "actual": "e1=INDETERMINATE, e2=INDETERMINATE, path=INDETERMINATE",
+      "pass": false,
+      "outcomeClass": "INCORRECT_FAVORABLE",
+      "severity": "CRITICAL_FALSE_PERMISSION",
+      "repro": "simulateTransaction two CONSUME effects in one transaction against shared AA",
+      "releaseBlocking": true
+    }
+  ],
+  "materialObservations": [
+    {
+      "id": "RT-12-equity-contribution-builder",
+      "challenge": 13,
+      "title": "Equity contribution builder adds only when the contribution fact is supplied",
+      "source": "Chewy Available Amount equity-contribution builder leg (phase-2 formula hypotheses); independent arithmetic 10+5=15",
+      "expected": "with contribution: 15,000,000 AVAILABLE; without: NEEDS_INPUT",
+      "actual": "with=null/REVIEW_REQUIRED, without=NEEDS_INPUT",
+      "pass": false,
+      "outcomeClass": "INCORRECT_FAVORABLE",
+      "severity": "MATERIAL_OVERSTATEMENT",
+      "repro": "evaluateCapacityState(ADD($10mm, Qualified Equity Contributions))",
+      "releaseBlocking": false
+    }
+  ]
 }

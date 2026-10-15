@@ -5,6 +5,9 @@
 export type GreaterOfAssetsClass =
   | "GREATER_OF_FIXED_OR_PCT_ASSETS"
   | "GREATER_OF_FIXED_OR_PCT_ASSETS_WITH_QUALITATIVE_GATES"
+  /** Sole % of Total Assets cap (no fixed-dollar limb, no "greater of"). */
+  | "PERCENT_OF_ASSETS_SOLE_CAP"
+  | "PERCENT_OF_ASSETS_SOLE_CAP_WITH_QUALITATIVE_GATES"
   | "NOT_GREATER_OF_ASSETS";
 
 export interface GreaterOfResidual {
@@ -35,6 +38,9 @@ export interface GreaterOfAssetsClassification {
 const GREATER_OF_RE = /\bgreater\s+of\b/i;
 const FACILITY_DIFF_RE =
   /\bdifference\s+between\b|\bMaximum\s+Facility\s+Amount\b|\bFacility\s+Amount\b/i;
+/** Cap-role stem for sole percent-of-assets baskets (no fixed-dollar limb). */
+const PCT_SOLE_CAP_ROLE_RE =
+  /\b(?:not\s+to\s+exceed|does\s+not\s+exceed|shall\s+not\s+exceed|in\s+a\s+maximum\s+aggregate\s+amount\s+not\s+to\s+exceed)\b/i;
 const PCT_ASSETS_RE =
   /\b(?:ten|five|fifteen|twenty|twenty[- ]five|thirty|\d+(?:\.\d+)?)\s*percent\s*\((\d+(?:\.\d+)?)%\)\s+of\s+the\s+(Total\s+Consolidated\s+Assets|Consolidated\s+Total\s+Assets|Total\s+Assets)\b/i;
 const PCT_ASSETS_ALT_RE =
@@ -108,13 +114,59 @@ export function classifyGreaterOfAssetsBasket(operativeText: string): GreaterOfA
     };
   }
   if (!GREATER_OF_RE.test(text)) {
+    // Bounded generalization: sole "% of Total Assets" capacity (no fixed limb).
+    // Refuse when any dollar amount is present (hybrid / multi-limb → other compilers).
+    const solePct = wordPercentToFraction(text);
+    const hasDollar = /\$\s?[\d,]+/.test(text);
+    if (solePct && !hasDollar && PCT_SOLE_CAP_ROLE_RE.test(text)) {
+      const residuals: GreaterOfResidual[] = [];
+      const pushSole = (kind: GreaterOfResidual["kind"], re: RegExp, gateInputName: string) => {
+        const hit = text.match(re);
+        if (hit) residuals.push({ kind, excerpt: hit[0].slice(0, 120), gateInputName });
+      };
+      pushSole("PROVISO_OR_CONDITIONAL", PROVISO_RE, "qualitative_gate:proviso_satisfied");
+      pushSole("PRO_FORMA_ADJUSTMENT", PRO_FORMA_RE, "qualitative_gate:pro_forma_election_acknowledged");
+      pushSole("AS_OF_MEASUREMENT", AS_OF_RE, "qualitative_gate:as_of_measurement_satisfied");
+      pushSole("OBJECT_RESTRICTION", OBJECT_RE, "qualitative_gate:object_restriction_satisfied");
+      pushSole("CROSS_SECTION_LINK", CROSS_SEC_RE, "qualitative_gate:cross_section_condition_satisfied");
+      pushSole("SHARED_CAP_COMBINE", SHARED_RE, "qualitative_gate:shared_cap_combine_satisfied");
+      // Object restriction for "for (i) Capital Lease…" style purpose lists.
+      if (
+        !residuals.some((r) => r.kind === "OBJECT_RESTRICTION") &&
+        /\bfor\s*\(\s*[ivx0-9]+/i.test(text)
+      ) {
+        const purpose = text.match(/\bfor\s*\(\s*[ivx0-9]+[^.;]{0,80}/i);
+        if (purpose) {
+          residuals.push({
+            kind: "OBJECT_RESTRICTION",
+            excerpt: purpose[0].slice(0, 120),
+            gateInputName: "qualitative_gate:object_restriction_satisfied",
+          });
+        }
+      }
+      reasons.push("percent_of_assets_sole_cap");
+      return {
+        class:
+          residuals.length === 0
+            ? "PERCENT_OF_ASSETS_SOLE_CAP"
+            : "PERCENT_OF_ASSETS_SOLE_CAP_WITH_QUALITATIVE_GATES",
+        fixedAmountUsd: null,
+        percentFraction: solePct.fraction,
+        percentRaw: solePct.raw,
+        metricName: solePct.metric,
+        metricExcerpt: solePct.excerpt,
+        sharedCounterpartRefs: [],
+        residuals,
+        reasons,
+      };
+    }
     return {
       class: "NOT_GREATER_OF_ASSETS",
       fixedAmountUsd: null,
-      percentFraction: null,
-      percentRaw: null,
-      metricName: null,
-      metricExcerpt: null,
+      percentFraction: solePct?.fraction ?? null,
+      percentRaw: solePct?.raw ?? null,
+      metricName: solePct?.metric ?? null,
+      metricExcerpt: solePct?.excerpt ?? null,
       sharedCounterpartRefs: [],
       residuals: [],
       reasons: ["no_greater_of"],
