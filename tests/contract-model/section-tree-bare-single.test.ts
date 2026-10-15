@@ -95,3 +95,14 @@ describe("false INVESTMENTS headings", () => {
     }
   });
 });
+
+describe("margin numbers glued into the body", () => {
+  it("'<Caption>. text...andSECTION 6.02 text' starts the section at the caption", () => {
+    const cov = (n: string, cap: string, verb: string) => `${cap}. The Borrower will not, and${n} will not permit any Subsidiary to, ${verb}, except as permitted herein and in the other Loan Documents. `;
+    const doc = `ARTICLE VI NEGATIVE COVENANTS ` + cov("SECTION 6.01", "Indebtedness", "incur any Indebtedness") + cov("SECTION 6.02", "Limitation on Liens", "create any Lien on any property") + cov("SECTION 6.03", "Fundamental Changes", "merge or consolidate with any Person") + cov("SECTION 6.04", "Restricted Payments", "declare or pay any dividend") + cov("SECTION 6.05", "Sale of Assets", "sell any assets") + `ARTICLE VII EVENTS OF DEFAULT The following are Events of Default.`;
+    const t = parseDocumentTree(doc);
+    const s = t.nodes.filter((n) => n.kind === "SECTION");
+    expect(s.map((n) => n.path)).toEqual(["6.1", "6.2", "6.3", "6.4", "6.5"]);
+    expect(s[1]!.title).toBe("Limitation on Liens");
+  });
+});

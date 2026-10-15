@@ -168,6 +168,43 @@ function numberLineHeadings(text: string, have: Heading[]): Heading[] {
   return out;
 }
 
+/**
+ * Margin-column numbers glued into the body ("Terms Generally. The definitions ... shall applySECTION 1.04 equally"):
+ * the heading is the "<Caption>." sentence just before the glued number (within 400 chars), so the section starts at
+ * that caption. Only when the glued shape recurs (>= 5 times), as it does for a whole two-column layout.
+ */
+const GLUED_RE = /(?<=[A-Za-z,;.])(?:SECTION|Section)[^\S\n]+(\d{1,2}\.\d{2})(?=[^\S\n]+[A-Za-z(“])/g;
+function gluedHeadings(text: string): Heading[] {
+  const ms = [...text.matchAll(GLUED_RE)];
+  if (ms.length < 5) return [];
+  const out: Heading[] = [];
+  for (const m of ms) {
+    const from = Math.max(0, m.index! - 400);
+    const back = text.slice(from, m.index!) + " ";
+    let cap: RegExpExecArray | null = null;
+    for (const c of back.matchAll(/(?:^|[.:;”"]\s+)((?:[A-Z][\w’'&/,-]*)(?:\s+(?:[A-Z][\w’'&/,-]*|of|and|or|the|to|in|on|for|by|with|from|under|upon|a|an|as|at)){0,9})\.\s+(?=[A-Z“"(])/g)) cap = c as RegExpExecArray;
+    if (!cap) continue;
+    const capStart = from + cap.index! + cap[0].indexOf(cap[1]!);
+    // Two glued numbers resolving to one caption: the caption belongs to neither with certainty; keep the later one.
+    if (out.length && out[out.length - 1]!.start === capStart) out.pop();
+    out.push({ kind: "SECTION", label: m[1]!, number: normalizeSectionNumber(m[1]!), title: cap[1]!, start: capStart, headingEnd: capStart + cap[1]!.length + 1 });
+  }
+  // Number glued inside a wrapped caption: "... . Limitation on Investments and Designation of Unrestricted SECTION 6.07
+  // Subsidiaries. The Borrower ...".
+  for (const m of text.matchAll(/(?<=[A-Z][\w’'-]*[^\S\n])(?:SECTION|Section)[^\S\n]+(\d{1,2}\.\d{2})[^\S\n]+([A-Z][\w’'-]*(?:[^\S\n]+(?:[A-Z][\w’'-]*|of|and|or|the|to|in|on|for|by|with)){0,5})\.[^\S\n]+(?=[A-Z“"(])/g)) {
+    const back = text.slice(Math.max(0, m.index! - 200), m.index!);
+    const k = Math.max(back.lastIndexOf(". "), back.lastIndexOf(": "), back.lastIndexOf("; "), back.lastIndexOf("” "));
+    if (k < 0) continue;
+    const capStart = m.index! - back.length + k + 2;
+    const pre = text.slice(capStart, m.index!).trim();
+    if (!/^[A-Z]/.test(pre) || pre.split(/\s+/).length > 12 || /[.;:]/.test(pre)) continue;
+    const title = `${pre} ${m[2]!}`;
+    if (out.some((o) => o.number === normalizeSectionNumber(m[1]!) && Math.abs(o.start - capStart) < 600)) continue;
+    out.push({ kind: "SECTION", label: m[1]!, number: normalizeSectionNumber(m[1]!), title, start: capStart, headingEnd: m.index! + m[0].length - 1 });
+  }
+  return out.sort((a, b) => a.start - b.start);
+}
+
 function findHeadings(text: string): Heading[] {
   const out: Heading[] = [];
   for (const m of text.matchAll(ARTICLE_RE)) {
@@ -205,6 +242,8 @@ function findHeadings(text: string): Heading[] {
     }
   }
   out.sort((a, b) => a.start - b.start);
+  const glued = gluedHeadings(text).filter((h) => !out.some((o) => o.kind === "SECTION" && o.number === h.number && Math.abs(o.start - h.start) < 600));
+  if (glued.length) { out.push(...glued); out.sort((a, b) => a.start - b.start); }
   const extra = numberLineHeadings(text, out);
   if (extra.length) {
     const near = (h: Heading) => out.some((o) => o.kind === "SECTION" && Math.abs(o.start - h.start) < 40);
