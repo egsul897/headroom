@@ -62,3 +62,11 @@ describe("evidence location", () => {
     expect(st(doc, "INVESTMENTS").sectionPaths).toEqual(["4.1"]);
   });
 });
+
+describe("term-sheet covenant rows", () => {
+  it("a 'Restrictive covenants' row with bulleted prohibitions is a container; each bullet is its own sentence", () => {
+    const doc = `TERM SHEET\n\nLender\n\nA Lender Inc.\n\nRestrictive covenants\n\n\u2022 The Borrower Group shall not make capital expenditure in excess of the budget\n\n\u2022 The Borrower Group\nshall not make any investments other than as agreed,\n\n\u2022 The Borrower Group shall not pay any dividends or other distributions\n\nRedemption\n\nThe Warrants will not be subject to redemption.\n`;
+    expect(st(doc, "INVESTMENTS").sectionPaths).toEqual(["Restrictive covenants"]);
+    expect(st(doc, "RESTRICTED_PAYMENTS").sectionPaths).toEqual(["Restrictive covenants"]);
+  });
+});
