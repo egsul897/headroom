@@ -151,10 +151,14 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   ) {
     return "BUILDER_AVAILABLE_AMOUNT";
   }
-  // Both extremes in one clause (nested max/min): neither bound direction holds without reading the nesting.
-  if (/\bgreater\s+of\b/i.test(text) && /\blesser\s+of\b/i.test(text)) return "UNKNOWN";
+  // A "lesser of" counts only when it is what the amount may not exceed; one inside a condition ("the ratio is at
+  // least the lesser of …", "a minimum amount of the lesser of …") does not change the cap.
+  const lesserCap = capExtremeAt(text, "lesser");
+  const greaterAt = norm(text).search(/\bgreater\s+of\b/i);
+  // Both extremes in the cap expression (nested max/min): neither bound direction holds without reading the nesting.
+  if (lesserCap >= 0 && greaterAt >= 0 && Math.abs(greaterAt - lesserCap) < 300) return "UNKNOWN";
   if (/\bgreater\s+of\b/i.test(text)) return "GROWER_GREATER_OF";
-  if (/\blesser\s+of\b/i.test(text) && /\$\s*[\d,]+/.test(text)) return "LESSER_OF";
+  if (lesserCap >= 0 && /\$\s*[\d,]+/.test(text)) return "LESSER_OF";
   const ratio = classifyRatioIncurrencePermission(text);
   if (ratio.class !== "NOT_RATIO_INCURRENCE") return "RATIO_BASED";
   if (isMaintenanceLimit(text)) return "MAINTENANCE_LIMIT";
@@ -388,7 +392,8 @@ function evalGrower(
  */
 export function extremumLimbs(text: string, which: "greater" | "lesser"): Array<{ raw: string; usd: string | null }> | null {
   const t = norm(text);
-  const at = t.search(new RegExp(`\\b${which}\\s+of\\b`, "i"));
+  const capAt = capExtremeAt(text, which);
+  const at = capAt >= 0 ? capAt : t.search(new RegExp(`\\b${which}\\s+of\\b`, "i"));
   if (at < 0) return null;
   let body = t.slice(at).replace(new RegExp(`^${which}\\s+of\\s*:?\\s*`, "i"), "");
   body = body.split(/;|\.(?:\s|$)|\bprovided\b|\bin\s+each\s+case\b/i)[0]!;
@@ -396,7 +401,7 @@ export function extremumLimbs(text: string, which: "greater" | "lesser"): Array<
   const parts = enumerated
     ? body.split(/\(\s*(?:[a-z]{1,4}|\d{1,2})\s*\)/i).map((x) => x.trim()).filter((x) => x.length)
     : body.split(/\s*,?\s+(?:and|or)\s+/i).slice(0, 2);
-  const limbs = parts.map((raw) => raw.replace(/\s*,?\s*(?:and|or)?\s*$/i, "").replace(/^(?:an\s+amount\s+equal\s+to\s+)?/i, "").trim());
+  const limbs = parts.map((raw) => raw.replace(/\s*\((?:collectively|together|each|the\s+[“"])[^)]*\)\s*$/i, "").replace(/\s*,?\s*(?:and|or)?\s*$/i, "").replace(/^(?:an\s+amount\s+equal\s+to\s+)?/i, "").trim());
   if (limbs.length < 2 || limbs.some((l) => !l)) return null;
   return limbs.map((raw) => {
     const m = /^(?:U\.S\.\s*)?\$\s*([\d,]+(?:\.\d+)?)(\s+million)?\s*$/i.exec(raw);
@@ -407,17 +412,28 @@ export function extremumLimbs(text: string, which: "greater" | "lesser"): Array<
 }
 
 /**
+ * Position of a "greater of" / "lesser of" that is the cap ("not to exceed the greater of …"), not a limb of a larger
+ * sum ("plus (D) the greater of …") or a floor ("a minimum amount of the lesser of …", "at least the lesser of"). -1 if none.
+ */
+export function capExtremeAt(text: string, which: "greater" | "lesser"): number {
+  const t = norm(text);
+  for (const m of t.matchAll(new RegExp(`\\b${which}\\s+of\\b`, "gi"))) {
+    const before = t.slice(Math.max(0, m.index! - 120), m.index!);
+    if (!/\b(?:not\s+(?:to\s+)?exceed|(?:shall|does|do|will|would)\s+not\s+exceed|not\s+in\s+excess\s+of|up\s+to|not\s+(?:more|greater)\s+than|no\s+(?:more|greater)\s+than|exceeding)\b[^;]{0,60}$/i.test(before)) continue;
+    if (/\b(?:minimum|at\s+least|not\s+less\s+than)\b[^;]{0,40}$/i.test(before)) continue;
+    return m.index!;
+  }
+  return -1;
+}
+
+/**
  * A greater-of cap is at least its largest fixed limb, whatever the other limbs are; a lesser-of cap is at most its
  * smallest fixed limb. Every limb must be read; the unknown limbs are named as missing. All limbs fixed → exact.
  */
 function fixedLimbBound(text: string, which: "greater" | "lesser", missing: string[]): BasketPartial | null {
   // Only a cap: the extreme must be what an amount may not exceed ("not to exceed the greater of …"), not a limb of
   // a larger sum ("plus (D) the greater of …") or a floor ("a minimum amount of the lesser of …", "at least the lesser of").
-  const t = norm(text);
-  const at = t.search(new RegExp(`\\b${which}\\s+of\\b`, "i"));
-  const before = t.slice(Math.max(0, at - 120), at);
-  if (!/\b(?:not\s+(?:to\s+)?exceed|(?:shall|does|do|will|would)\s+not\s+exceed|not\s+in\s+excess\s+of|up\s+to|not\s+(?:more|greater)\s+than|no\s+(?:more|greater)\s+than|exceeding)\b[^;]{0,60}$/i.test(before)) return null;
-  if (/\b(?:minimum|at\s+least|not\s+less\s+than)\b[^;]{0,40}$/i.test(before)) return null;
+  if (capExtremeAt(text, which) < 0) return null;
   const limbs = extremumLimbs(text, which);
   if (!limbs) return null;
   const fixed = limbs.filter((l) => l.usd != null).map((l) => BigInt(l.usd!));

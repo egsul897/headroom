@@ -50,3 +50,19 @@ describe("fixed-limb bounds apply to caps only", () => {
     expect(one("(1) at least the lesser of (a) 50% of the aggregate principal amount of the Notes then outstanding or (b) $600 million").capBound).toBeUndefined();
   });
 });
+
+describe("a lesser-of in a condition does not change the cap", () => {
+  it("'a minimum amount of the lesser of …' is not a lesser-of cap", () => {
+    expect(categorize("any such request for an increase shall be in a minimum amount of the lesser of (x) $5,000,000 and (y) the entire amount of any increase that may be requested")).not.toBe("LESSER_OF");
+  });
+  it("a capped lesser-of is still at most its fixed limb", () => {
+    expect(categorize("Investments not to exceed the lesser of (i) $10,000,000 and (ii) 5% of Consolidated Total Assets")).toBe("LESSER_OF");
+  });
+});
+
+describe("lost exact caps", () => {
+  it("'does not exceed the lesser of (x) the face amount … or (y) $250,000 (collectively, …)' is at most $250,000, not exactly", () => {
+    const b = one("(b) Deposit Accounts subject to Liens so long as the balance in any such Deposit Account does not exceed the lesser of (x) the face amount of the letter of credit secured by such Deposit Account or (y) $250,000 (collectively, the “ Excluded Accounts ”)");
+    expect(b).toMatchObject({ capStatus: "COMPUTED", capCanonical: "250000", capBound: "AT_MOST" });
+  });
+});
