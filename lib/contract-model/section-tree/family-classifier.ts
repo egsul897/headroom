@@ -52,8 +52,8 @@ function obligorBound(lead: string): boolean {
   }
   return false;
 }
-const RATIO_SUBJECT = /\b(?:ratio|liquidity|net worth|financial covenants?)\b/i;
-const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bat\s+least\b|\bmaintain\b|\b(?:not|never)\s+(?:permit|exceed)\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b|\bshall apply\b/i;
+const RATIO_SUBJECT = /\b(?:ratio|liquidity|net worth|financial covenants?|(?:interest|debt service|fixed charge) coverage)\b/i;
+const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bto\s+(?:exceed|be\s+(?:less|lower|greater|more|higher)\b)|\bat\s+least\b|\bmaintain\b|\b(?:not|never)\s+(?:permit|exceed)\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b|\bshall apply\b/i;
 
 const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
   ["LIENS", /\b(?:create|incur|assume|suffer|permit)\b[^.;]{0,160}\b(?:liens?|mortgages?|pledges?|security interests?|encumbrances?)\b(?!\s+(?:net|leverage|obligations|notes|credit|facility|term|secured)\b)/i],
@@ -75,7 +75,7 @@ const HEADING: Array<[CovenantFamily, RegExp]> = [
   ["ASSET_SALES", /asset sales?|asset transfers?|transfers? of assets|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],
   ["AFFILIATE_TRANSACTIONS", /affiliates?/i],
   ["FUNDAMENTAL_CHANGES", /fundamental changes?|mergers?|\bconsolidations?\b|consolidate\b/i],
-  ["FINANCIAL_RATIOS", /financial (?:condition )?covenants?|\bratios?\b|minimum liquidity|net worth|fixed charge/i],
+  ["FINANCIAL_RATIOS", /financial (?:condition )?covenants?|\bratios?\b|\bliquidity\b|net worth|fixed charge|\bleverage\b|(?:interest|debt service|asset) coverage/i],
 ];
 
 const DEFINED: Array<[CovenantFamily, RegExp]> = [
@@ -123,7 +123,16 @@ const TEMPORAL_LEAD = /^[\s.:]*(?:\([a-z0-9]+\)\s*)?(?:from|after|prior to|until
  */
 const CONDITIONAL_PERMISSION = /^\s*(?:\([a-z0-9]+\)\s*)?(?:the\s+)?(?:issuer|company|borrower|parent|guarantor|obligor)s?\s+(?:shall\s+not\s+|may\s+(?:not\s+)?)?(?:consolidate|merge|amalgamate|convey|transfer|sell|lease)\b[^]{0,1800}?\b(?:only if|provided,? that|if|unless|so long as)\b/i;
 
+/**
+ * A run-in sub-caption before an article imperative ("Consolidated Leverage Ratio. Permit the Consolidated Leverage
+ * Ratio ... to exceed ...", "Minimum Liquidity. Maintain Liquidity of at least ..."): short Title-Case words ending in a
+ * period, then a capitalized operative verb. The caption is heading text; the operative lead starts at the verb.
+ */
+const SUBCAPTION = /^\s*(?:\([a-z0-9]+\)\s*)?((?:[A-Z][\w’'&/-]*|of|on|and|or|to|the|in)(?:\s+(?:[A-Z][\w’'&/-]*|of|on|and|or|to|the|in)){0,7})\s*\.\s+(?=(?:Permit|Maintain|Incur|Create|Make|Declare|Sell|Enter|Merge|Pay|Prepay|Purchase|Transfer|Consolidate|Dispose|Cause|Directly)\b)/;
+
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
+  const sub = SUBCAPTION.exec(args.leadIn);
+  if (sub) args = { ...args, leadIn: args.leadIn.slice(sub[0].length), title: [args.title, sub[1]].filter(Boolean).join("; ") || null };
   const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);

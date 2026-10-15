@@ -281,7 +281,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   AFFILIATE_TRANSACTIONS: { heading: /\btransactions? with affiliates\b|\baffiliate transactions\b/i, lead: /(?:enter into|permit to exist|engage in)[^.;]{0,140}?\baffiliates?\b/i },
   FUNDAMENTAL_CHANGES: { heading: /\b(?:mergers?|consolidations?|fundamental changes|merger,? consolidation)\b/i, lead: /\b(?:merge|consolidate|amalgamate|liquidate|dissolve)\b/i },
   PREPAYMENTS: { heading: /\b(?:prepayments? of (?:other )?(?:indebtedness|debt)|restricted debt payments|payments? of (?:subordinated|junior) (?:indebtedness|debt))\b/i, lead: /(?:prepay|redeem|repurchase|defease|retire)[^.;]{0,100}?\b(?:subordinated|junior)?\s*(?:indebtedness|debt)\b/i },
-  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?)\b[^.;]{0,120}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
+  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge|minimum liquidity)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?|liquidity)\b[^.;]{0,400}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
 };
 const NEG_RE = new RegExp(NEG, "i");
 const NOT_COVENANT_TITLE = /definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
@@ -344,7 +344,10 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
       // ("The Credit Agreement contains certain covenants, a financial covenant ... requiring ... to maintain")
       // is not.
       const before = sent.slice(Math.max(0, lm.index - 160), lm.index);
-      if (!/\b(?:shall|will|agrees?|covenants?\s+(?:and agrees?\s+)?that)\b/i.test(before) || /\bcontains?\b[^.;]{0,80}\bcovenants?\b/i.test(sent)) continue;
+      // An article imperative ("Permit the Consolidated Leverage Ratio ... to exceed", "Maintain Liquidity of at least")
+      // under the article's "will not / will:" stem is an obligation too.
+      const imperativeTest = /^\s*(?:\([a-z0-9]+\)\s*)?(?:(?:[A-Z][\w’'&/-]*\s+){0,6}[A-Z][\w’'&/-]*\s*\.\s+)?(?:Permit|Maintain)\b/.test(sent) && lm.index <= sent.search(/\b(?:Permit|Maintain)\b/);
+      if ((!imperativeTest && !/\b(?:shall|will|agrees?|covenants?\s+(?:and agrees?\s+)?that)\b/i.test(before)) || /\bcontains?\b[^.;]{0,80}\bcovenants?\b/i.test(sent)) continue;
     }
     if (family !== "FINANCIAL_RATIOS") {
       // The negated obligation must govern the operative verb: negation within 160 chars before it.
