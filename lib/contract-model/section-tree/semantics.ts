@@ -169,6 +169,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // prohibition with a family object counts, but only inside an obligor-bound prohibition section body.
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
+    if (!am && fams.size && prohib.get(s.id)) for (const f of laterProhibitionFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 8000)))) fams.add(f);
     if (!am && fams.has("RESTRICTED_PAYMENTS") && prohib.get(s.id)) for (const f of restrictedPaymentItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     // A Restricted Payments section must restrict the obligor's payments: a negated (or article-imperative) declare/pay/
     // make ... dividend/distribution/restricted payment, or an enumerated restricted act. Distribution mechanics of an
@@ -288,6 +289,31 @@ function restrictsPayments(lead: string): boolean {
     if (/(?:shall|will|may)\s+not\b|\b(?:no|neither)\s+[^.;]{1,140}?\b(?:shall|will|may)\b|\bnot\s+permit\b/i.test(before)) return true;
   }
   return false;
+}
+
+/**
+ * A covenant section's later sentences that open with their own obligor prohibition ("... Fundamental Changes ... The
+ * Company will not, nor will it permit any of its Subsidiaries to, convey, sell, lease, transfer or otherwise dispose of
+ * ... assets") state a second covenant in the same section.
+ */
+const LATER_OBJECT: [string, RegExp][] = [
+  ["ASSET_SALES", /\b(?:sell|lease|transfer|convey|dispose)\b[^.;]{0,200}?\b(?:assets?|propert(?:y|ies))\b/i],
+  ["INVESTMENTS", /\bmake\b[^.;]{0,60}\b(?:investments?|loans? or advances?|advances? to)\b/i],
+  ["RESTRICTED_PAYMENTS", /\b(?:declare|pay|make)\b[^.;]{0,80}\b(?:dividends?|restricted payments?)\b/i],
+  ["PREPAYMENTS", /\b(?:prepay|redeem|repurchase|defease)\b[^.;]{0,120}\b(?:subordinated|junior)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b/i],
+];
+function laterProhibitionFamilies(body: string): Set<string> {
+  const out = new Set<string>();
+  for (const m of body.matchAll(/(?:^|[.;]\s+)((?:The|No|Neither)\s+[A-Z][\w-]*(?:\s+[\w-]+){0,4}?\s+(?:will|shall)\s+not\b[^.;]{0,400})/g)) {
+    const sent = m[1]!;
+    for (const [f, re] of LATER_OBJECT) {
+      const om = re.exec(sent);
+      if (!om || om.index > 220) continue;
+      if (f === "ASSET_SALES" && /all or substantially all|affiliate/i.test(sent)) continue;
+      out.add(f);
+    }
+  }
+  return out;
 }
 
 function inlineCovenantUnits(text: string, insideClassified: (i: number) => boolean): { path: string; title: string; start: number; headingEnd: number; end: number; lead: string }[] {
