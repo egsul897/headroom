@@ -154,6 +154,15 @@ function findHeadings(text: string): Heading[] {
     if (/\s\d{1,3}$/.test(title) || title.split(" ").length > 14 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
     out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
   }
+  // The same without the word ("5.2    Fundamental Changes\nThe Borrower will not ..."): stricter — a Title Case title
+  // with no trailing page number, and an operative next line ("(a) ..." or "The <Party> shall/will ...").
+  for (const m of text.matchAll(/(^|\n)[^\S\n]*(\d{1,2}\.\d{1,3})\.?[^\S\n]+([A-Z][A-Za-z\u2019'&-]*(?:,?[^\S\n]+(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|etc\.?|;)){0,10})[^\S\n]*(?=\n(?:[^\S\n]*\n)?[^\S\n]*(?:\(a\)|\(i\)|(?:The|Each|No|Neither)\s+[A-Z][\w\u2019'-]*(?:\s+[A-Z][\w\u2019'-]*)?\s+(?:shall|will|may|covenants|agrees)\b|(?:Create|Incur|Enter|Make|Permit|Declare|Merge|Sell|Directly)\b))/g)) {
+    const start = m.index! + m[1]!.length;
+    if (out.some((h) => h.kind === "SECTION" && Math.abs(h.start - start) < 40)) continue;
+    const title = m[3]!.replace(/\s+/g, " ").trim();
+    if (title.split(" ").length > 12 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
+    out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
+  }
   // Indenture "Section 501." numbering (article digit + two-digit section, the word required) when the document has
   // little dotted numbering: "Section 501. When the Company May Merge, Etc." is section 5.01.
   if (out.filter((h) => h.kind === "SECTION").length < 10) {
