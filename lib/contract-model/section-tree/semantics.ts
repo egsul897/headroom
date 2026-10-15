@@ -135,7 +135,7 @@ export const CHECKLIST_FAMILIES = [
 export type ChecklistFamily = (typeof CHECKLIST_FAMILIES)[number];
 
 
-export type ChecklistStatus = "MISSING" | "NEEDS_INPUT" | "CONDITIONS_LIMITED" | "CAP_FOUND";
+export type ChecklistStatus = "MISSING" | "ABSENT_VERIFIED" | "NEEDS_INPUT" | "CONDITIONS_LIMITED" | "CAP_FOUND";
 
 export interface ChecklistItem {
   family: ChecklistFamily;
@@ -162,7 +162,15 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   return CHECKLIST_FAMILIES.map((family) => {
     const hits = sections.filter((s) => famOf.get(s.id)?.includes(family));
     if (hits.length === 0) {
-      return { family, status: "MISSING" as const, sectionPaths: [], parts: { fixedCap: false, grower: false, ratio: false, exceptions: 0, prohibition: false }, needsInputs: [], note: "no operative section found; not treated as unlimited" };
+      const ev = familyEvidence(text, family);
+      const absent = ev.length === 0;
+      return {
+        family, status: absent ? ("ABSENT_VERIFIED" as const) : ("MISSING" as const), sectionPaths: [],
+        parts: { fixedCap: false, grower: false, ratio: false, exceptions: 0, prohibition: false }, needsInputs: [],
+        note: absent
+          ? "no operative lead-in or heading for this family anywhere in the document; not treated as unlimited"
+          : `no operative section found, but the text has ${family} covenant evidence (${ev[0]!.kind}: "${ev[0]!.excerpt}"); not treated as unlimited`,
+      };
     }
     const body = hits.map((s) => text.slice(s.start, s.end)).join("\n");
     const fixedCap = /\$\s?[\d,]{3,}/.test(body);
@@ -190,4 +198,56 @@ function isDesc(tree: SectionTree, n: TreeNode, anc: TreeNode): boolean {
     p = p.parentId ? tree.byId.get(p.parentId) : undefined;
   }
   return false;
+}
+
+// ---------- family evidence (deterministic absence check) ----------
+
+const NEG = String.raw`(?:shall|will|may)\s+not\b|\bno\s+[^.;]{1,140}?\b(?:shall|will|may)\b`;
+const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }> = {
+  DEBT: { heading: /\b(?:limitations? on |restrictions? on )?(?:indebtedness|incurrence of (?:indebtedness|debt)|debt)\b/i, lead: /(?:create|incur|assume|guarantee|suffer to exist|issue)[^.;]{0,100}?\b(?:indebtedness|debt)\b/i },
+  LIENS: { heading: /\b(?:liens|negative pledge|limitations? on liens)\b/i, lead: /(?:create|incur|assume|grant|suffer to exist)[^.;]{0,100}?\b(?:liens?|mortgage|pledge|security interest)\b/i },
+  RESTRICTED_PAYMENTS: { heading: /\b(?:restricted payments|dividends|distributions)\b/i, lead: /(?:declare|pay|make)[^.;]{0,80}?\b(?:dividends?|restricted payments?|distributions?)\b/i },
+  INVESTMENTS: { heading: /\b(?:investments|loans,? advances|acquisitions)\b/i, lead: /(?:make|hold|acquire|purchase)[^.;]{0,80}?\b(?:investments?|advances?|capital contributions?)\b/i },
+  ASSET_SALES: { heading: /\b(?:asset sales|dispositions?|sales? of assets|disposition of assets)\b/i, lead: /(?:sell|transfer|convey|dispose|lease)[^.;]{0,100}?\b(?:assets?|propert(?:y|ies)|business)\b/i },
+  AFFILIATE_TRANSACTIONS: { heading: /\btransactions? with affiliates\b|\baffiliate transactions\b/i, lead: /(?:enter into|permit to exist|engage in)[^.;]{0,140}?\baffiliates?\b/i },
+  FUNDAMENTAL_CHANGES: { heading: /\b(?:mergers?|consolidations?|fundamental changes|merger,? consolidation)\b/i, lead: /\b(?:merge|consolidate|amalgamate|liquidate|dissolve)\b/i },
+  PREPAYMENTS: { heading: /\b(?:prepayments? of (?:other )?(?:indebtedness|debt)|restricted debt payments|payments? of (?:subordinated|junior) (?:indebtedness|debt))\b/i, lead: /(?:prepay|redeem|repurchase|defease|retire)[^.;]{0,100}?\b(?:subordinated|junior)?\s*(?:indebtedness|debt)\b/i },
+  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge)\b/i, lead: /(?:permit|maintain|exceed|be (?:less|greater) than)[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
+};
+const NEG_RE = new RegExp(NEG, "i");
+
+/**
+ * Evidence that a covenant family exists in the document: a heading line naming it ("6.01 Liens") or an
+ * operative lead-in (a negated obligation within the same sentence for negative covenants; a maintain/permit
+ * test for financial ratios). Empty array ⇒ the family is verifiably absent. Deterministic, no per-issuer logic.
+ */
+export function familyEvidence(text: string, family: ChecklistFamily): { kind: "HEADING" | "LEAD_IN"; excerpt: string }[] {
+  const ev = FAMILY_EVIDENCE[family];
+  const out: { kind: "HEADING" | "LEAD_IN"; excerpt: string }[] = [];
+  // Headings: a numbered heading line whose title names the family.
+  const headRe = /(?:^|\n)\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([^\n.]{3,90})/gi;
+  for (const m of text.matchAll(headRe)) {
+    if (ev.heading.test(m[1]!) && !/definition|defined terms|representation|event of default/i.test(m[1]!)) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
+  }
+  // Operative lead-ins: a sentence with the family's operative verb/object, negated (or a ratio test).
+  for (const sent of text.split(/(?<=[.;:])\s+/)) {
+    if (sent.length > 2000) continue;
+    const lm = ev.lead.exec(sent);
+    if (!lm) continue;
+    if (family !== "FINANCIAL_RATIOS") {
+      // The negated obligation must govern the operative verb: negation within 160 chars before it.
+      const before = sent.slice(Math.max(0, lm.index - 160), lm.index + 1);
+      const nm = [...before.matchAll(new RegExp(NEG, "gi"))].pop();
+      if (!nm) continue;
+      // Between the negation and the operative verb: only the obligor/permission chain ("and shall not permit any
+      // Subsidiary to, directly or indirectly,"), never a different predicate ("shall not apply to", "not be required").
+      const between = before.slice(nm.index! + nm[0].length);
+      if (/\b(?:apply|be|been|constitute|include|affect|count|limit|restrict|prohibit|prevent|require|deem)\b/i.test(between) || /^\s*be\b/i.test(between)) continue;
+      if (family === "ASSET_SALES" && /all or substantially all/i.test(sent)) continue; // that is a fundamental change
+    }
+    if (/\bmeans\b|\bshall mean\b/.test(sent.slice(0, 200))) continue; // definitions
+    out.push({ kind: "LEAD_IN", excerpt: sent.trim().slice(0, 100) });
+    break;
+  }
+  return out;
 }

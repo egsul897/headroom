@@ -34,7 +34,7 @@ export function sectionTreeParserVersion(): string {
   return cachedParserVersion;
 }
 
-export type FamilyOutcome = "CAP_COMPUTED" | "NEEDS_INPUT" | "CONDITIONS_LIMITED" | "UNLIMITED_EXPLICIT" | "MISSING";
+export type FamilyOutcome = "ABSENT_VERIFIED" | "CAP_COMPUTED" | "NEEDS_INPUT" | "CONDITIONS_LIMITED" | "UNLIMITED_EXPLICIT" | "MISSING";
 
 export interface FamilySummary {
   family: string;
@@ -149,6 +149,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     if (baskets.some((b) => b.capStatus === "COMPUTED" && b.cap && b.cap !== "UNLIMITED_EXPLICIT")) outcome = "CAP_COMPUTED";
     else if (baskets.some((b) => b.capStatus === "NEEDS_INPUT" || b.capStatus === "UNKNOWN") || ck?.status === "NEEDS_INPUT") outcome = "NEEDS_INPUT";
     else if (baskets.some((b) => b.cap === "UNLIMITED_EXPLICIT")) outcome = "UNLIMITED_EXPLICIT";
+    else if (ck?.status === "ABSENT_VERIFIED") outcome = "ABSENT_VERIFIED";
     else if (ck && ck.status !== "MISSING") outcome = ck.status === "CAP_FOUND" ? "NEEDS_INPUT" : "CONDITIONS_LIMITED";
     else outcome = "MISSING";
     if (outcome === "MISSING" && !ck) continue;
