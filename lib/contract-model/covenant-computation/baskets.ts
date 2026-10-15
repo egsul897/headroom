@@ -32,6 +32,7 @@ const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKin
   UNLIMITED: "UNLIMITED_SUBJECT_TO_GATE",
   UNLIMITED_BY_PURPOSE: "UNLIMITED_SUBJECT_TO_GATE",
   CONDITIONS_LIMITED: "OTHER_SOURCE_STATED",
+  FORMULA_AMOUNT: "OTHER_SOURCE_STATED",
   RECLASS: "REALLOCATION_TRANSFER",
 };
 
@@ -86,6 +87,11 @@ export function evaluateBasket(
                   ? purposeUnlimited(clause)
                   : category === "CONDITIONS_LIMITED"
                     ? conditionsLimited(clause)
+                  : category === "FORMULA_AMOUNT"
+                    ? {
+                        ...capShell("NEEDS_INPUT", "NONE", null, null, ["formula operands (stated arithmetic on the dollar figure)"], null),
+                        note: "The dollar figure is an operand of stated arithmetic, not a cap by itself. Needs the other operands.",
+                      }
                   : category === "RECLASS"
                     ? {
                         ...capShell("NEEDS_INPUT", "NONE", null, null, ["source basket unused", "reclassification election"], null),
@@ -135,6 +141,7 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   // Owner rule: never unlimited by default. Without explicit unlimited language (handled above) a clause with no
   // capacity number is CONDITIONS_LIMITED (computed as NEEDS_INPUT), not unlimited.
   if (isNonCapacityNumber(text)) return "CONDITIONS_LIMITED";
+  if (/\$\s*[\d,]+/.test(text) && ARITHMETIC_ON_AMOUNT.test(text)) return "FORMULA_AMOUNT";
   if (numeric) return "UNKNOWN";
   return "CONDITIONS_LIMITED";
 }
@@ -489,6 +496,8 @@ function evalUnlimited(
     note: "No dollar ceiling in the clause. Unlimited is not a certified capacity grant.",
   };
 }
+
+const ARITHMETIC_ON_AMOUNT = /\b(?:quotient|divided\s+by|multiplied\s+by|product\s+of)\b/i;
 
 function soleFixedDollar(text: string): string | null {
   const normed = norm(text);

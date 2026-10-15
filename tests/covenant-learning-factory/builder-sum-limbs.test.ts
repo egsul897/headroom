@@ -54,3 +54,11 @@ describe("builder sums stay NEEDS_INPUT while any part is unbound", () => {
     });
   }
 });
+
+describe("a dollar figure inside stated arithmetic is a formula operand", async () => {
+  const { categorize } = await import("@/lib/contract-model/covenant-computation/baskets");
+  it("'$550,000,000 divided by the …' is FORMULA_AMOUNT (NEEDS_INPUT), never UNKNOWN or a cap", () => {
+    const t = "(b) Pre-paid Miles Purchases, so long as (i) the aggregate amount of Miles purchased does not exceed the quotient of $550,000,000 divided by the Miles Purchase Price then in effect;";
+    expect(categorize(t)).toBe("FORMULA_AMOUNT");
+  });
+});
