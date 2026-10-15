@@ -270,7 +270,7 @@ function evalGrower(
   const metricName = assets.class !== "NOT_GREATER_OF_ASSETS" ? assets.metricName : ebitda?.metricName ?? null;
   if (!fixedToken || percent == null || !metricName) {
     return {
-      ...capShell("NEEDS_INPUT", "NONE", null, null, ["greater-of fixed limb", "percent limb", "metric"], null),
+      ...capShell("NEEDS_INPUT", "NONE", null, null, ["greater-of fixed limb", "percent limb", namedMetricIn(clause.operativeText) ?? "metric"], null),
       note: "Greater-of language is present. A limb could not be read from the text, so neither limb is used alone.",
     };
   }
@@ -529,7 +529,7 @@ function evalPercentOfMetric(
     /(?:(\d+(?:\.\d+)?)\s*%|percent\s*\(\s*(\d+(?:\.\d+)?)\s*%\s*\))\s+of\s+(?:the\s+)?([^.;]{3,180})/i,
   );
   const pct = match?.[1] ?? match?.[2];
-  const metricName = (match?.[3] ?? "").split(/\bprovided\b/i)[0]!.trim().replace(/[,:]$/, "");
+  const metricName = metricPhrase(match?.[3] ?? "");
   if (!pct || !metricName) {
     return {
       ...capShell("NEEDS_INPUT", "NONE", null, null, ["percent limb", "metric"], null),
@@ -754,4 +754,27 @@ function fractionBefore(text: string, metricName: string): number {
   const escaped = metricName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const m = text.match(new RegExp(`(\\d+(?:\\.\\d+)?)\\s*%\\s+of\\s+${escaped}`, "i"));
   return m?.[1] ? Number(m[1]) / 100 : Number.NaN;
+}
+
+/**
+ * The metric a percent applies to, as named in the clause: a capitalized defined term
+ * ("Consolidated Total Assets") when the phrase starts with one, otherwise the phrase up to the first
+ * qualifier ("as of", "at the time", a comma, a parenthetical), at most 10 words. Never invents a name.
+ */
+export function metricPhrase(raw: string): string {
+  const t = norm(raw).replace(/^(?:the|such)\s+/i, "").split(/\bprovided\b/i)[0]!.trim();
+  const term = t.match(/^(?:[A-Z][\w’'-]*)(?:\s+(?:of|and|to|for|[A-Z][\w’'-]*))*/);
+  if (term) {
+    const words = term[0].replace(/\s+(?:of|and|to|for)$/i, "").split(/\s+/);
+    if (words.length >= 2 || /^[A-Z]{2,}/.test(words[0]!)) return words.slice(0, 10).join(" ");
+  }
+  const cut = t.split(/\s*(?:[,;(“"]|\bas of\b|\bat the time\b|\bdetermined\b|\bcalculated\b|\bmeasured\b|\bon a pro forma\b|\bfor the most recent\b)/i)[0]!.trim();
+  return cut.split(/\s+/).slice(0, 12).join(" ").replace(/[,:]$/, "").replace(/\s+(?:of|and|the|to|for)$/i, "");
+}
+
+/** Metric named in a greater-of clause's percent limb ("greater of $X and Y% of <metric>"), if readable. */
+export function namedMetricIn(text: string): string | null {
+  const m = norm(text).match(/greater\s+of[^;]{0,300}?\d+(?:\.\d+)?\s*%\s+of\s+([^.;]{3,180})/i);
+  const name = m ? metricPhrase(m[1]!) : "";
+  return name.length >= 3 ? name : null;
 }
