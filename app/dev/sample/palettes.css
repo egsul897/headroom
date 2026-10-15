@@ -1,0 +1,60 @@
+/*
+ * Sample-only Maya palettes for /dev/sample?palette=1|2|3.
+ * Status green, amber, and red are not redefined.
+ * Palette 1 matches the product default.
+ */
+
+[data-palette="1"] .app-shell,
+[data-palette="2"] .app-shell,
+[data-palette="3"] .app-shell {
+  --shell-sidebar: #e3f1fc;
+  --shell-sidebar-ink: #12151a;
+  --shell-sidebar-muted: #3e4d5e;
+  --shell-sidebar-hover: #d6eafa;
+  --shell-sidebar-card: #f7fbfe;
+  --shell-sidebar-line: #c5dff3;
+  --shell-sidebar-active-ink: #ffffff;
+  --accent-ink: #ffffff;
+  --accent-signal: #73c2fb;
+  --chart-track: #d6eafa;
+}
+
+[data-palette] .app-sidebar {
+  border-right-color: var(--shell-sidebar-line);
+}
+
+[data-palette="1"] .app-shell {
+  /* Navy primary. White on #1a365d is 12.14:1. Hover #244878 is 9.24:1.
+     Charts: navy, Maya #73c2fb, peach #f2c3a8 (hue 22°, apart from red at 4° and amber at 36°). */
+  --shell-sidebar-active: #1a365d;
+  --accent: #1a365d;
+  --accent-hover: #244878;
+  --chart-1: #1a365d;
+  --chart-2: #73c2fb;
+  --chart-3: #f2c3a8;
+  --chart-4: #5aaee0;
+}
+
+[data-palette="2"] .app-shell {
+  /* Slate primary. White on #3e4c59 is 8.81:1. Hover #4a5968 is 7.19:1.
+     Charts: slate, Maya, sand #e4d2a1 (hue 44°, lighter than amber at hue 36°). */
+  --shell-sidebar-active: #3e4c59;
+  --accent: #3e4c59;
+  --accent-hover: #4a5968;
+  --chart-1: #3e4c59;
+  --chart-2: #73c2fb;
+  --chart-3: #e4d2a1;
+  --chart-4: #5aaee0;
+}
+
+[data-palette="3"] .app-shell {
+  /* Indigo primary. White on #3c4a9a is 7.96:1. Hover #4a5aa8 is 6.33:1.
+     Charts: indigo, Maya, periwinkle #8b97d4, and a gray sage hint #b7c4bc (saturation 0.10). */
+  --shell-sidebar-active: #3c4a9a;
+  --accent: #3c4a9a;
+  --accent-hover: #4a5aa8;
+  --chart-1: #3c4a9a;
+  --chart-2: #73c2fb;
+  --chart-3: #b7c4bc;
+  --chart-4: #8b97d4;
+}

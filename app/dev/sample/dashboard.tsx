@@ -13,6 +13,9 @@ export function SampleDashboard() {
           <p className="home-greeting-sub">Illustrative figures for layout. Not a company result.</p>
         </div>
         <div className="home-top-actions">
+          <a className="button button-primary" href="/dev/sample?screen=covenants">
+            Sample covenants
+          </a>
           <span className="home-icon-button" aria-label="Sample alerts">
             <span aria-hidden="true">⌁</span>
           </span>
@@ -40,7 +43,7 @@ export function SampleDashboard() {
         <section className="home-card" aria-label="Utilization">
           <h2 className="home-eyebrow">Utilization</h2>
           <div className="home-util">
-            <div className="home-util-ring" style={{ background: "conic-gradient(#3a8a98 0deg 194deg, #dcebed 194deg 360deg)" }} aria-hidden="true">
+            <div className="home-util-ring" style={{ background: "conic-gradient(var(--chart-1) 0deg 194deg, var(--chart-track) 194deg 360deg)" }} aria-hidden="true">
               <div className="home-util-ring-hole">
                 <span className="home-util-pct">54%</span>
               </div>
@@ -73,8 +76,8 @@ export function SampleDashboard() {
           </div>
           <div className="sample-chart" aria-hidden="true">
             <svg viewBox="0 0 640 180" width="100%" height="180">
-              <polyline fill="none" stroke="#3a8a98" strokeWidth="2.5" points="20,140 80,120 140,128 200,90 260,100 320,70 380,78 440,48 500,55 580,30" />
-              <polyline fill="none" stroke="#7eb4be" strokeWidth="2" points="20,150 80,146 140,148 200,140 260,138 320,132 380,130 440,124 500,120 580,112" />
+              <polyline fill="none" stroke="var(--chart-2)" strokeWidth="2.5" points="20,140 80,120 140,128 200,90 260,100 320,70 380,78 440,48 500,55 580,30" />
+              <polyline fill="none" stroke="var(--chart-4)" strokeWidth="2" points="20,150 80,146 140,148 200,140 260,138 320,132 380,130 440,124 500,120 580,112" />
             </svg>
           </div>
           <p className="home-kpi-caption">Sample lines. Not a history load.</p>
@@ -84,7 +87,7 @@ export function SampleDashboard() {
           <div className="home-capacity">
             <div
               className="home-capacity-donut"
-              style={{ background: "conic-gradient(#1a5560 0% 55%, #3a8a98 55% 82%, #7eb4be 82% 100%)" }}
+              style={{ background: "conic-gradient(var(--chart-1) 0% 55%, var(--chart-2) 55% 82%, var(--chart-3) 82% 100%)" }}
               aria-hidden="true"
             >
               <div className="home-capacity-donut-hole">
@@ -94,17 +97,17 @@ export function SampleDashboard() {
             </div>
             <ul className="home-capacity-legend">
               <li>
-                <span className="home-capacity-swatch" style={{ background: "#1a5560" }} />
+                <span className="home-capacity-swatch" style={{ background: "var(--chart-1)" }} />
                 <span className="home-capacity-name">Sample revolver</span>
                 <span className="home-capacity-amt">$88 million (55%)</span>
               </li>
               <li>
-                <span className="home-capacity-swatch" style={{ background: "#3a8a98" }} />
+                <span className="home-capacity-swatch" style={{ background: "var(--chart-2)" }} />
                 <span className="home-capacity-name">Sample term loan</span>
                 <span className="home-capacity-amt">$43 million (27%)</span>
               </li>
               <li>
-                <span className="home-capacity-swatch" style={{ background: "#7eb4be" }} />
+                <span className="home-capacity-swatch" style={{ background: "var(--chart-3)" }} />
                 <span className="home-capacity-name">Sample other</span>
                 <span className="home-capacity-amt">$29 million (18%)</span>
               </li>

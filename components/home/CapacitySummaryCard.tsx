@@ -1,7 +1,7 @@
 import { UNKNOWN_STATE, presentFigure, type FigureLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
-const SEGMENT_COLORS = ["#1a5560", "#3a8a98", "#7eb4be", "#b7d0d6", "#4a6a72"];
+const SEGMENT_COLORS = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)", "var(--chart-1)"];
 
 function parseCapacity(display: string): { total: string; segments: { name: string; amount: string; pct: number }[] } {
   const parts = display.split(" · ").map((p) => p.trim()).filter(Boolean);
@@ -58,7 +58,7 @@ export function CapacitySummaryCard({ state = UNKNOWN_STATE }: { state?: FigureL
         <div
           className="home-capacity-donut"
           style={{
-            background: stops.length > 0 ? `conic-gradient(${stops.join(", ")})` : "#dcebed",
+            background: stops.length > 0 ? `conic-gradient(${stops.join(", ")})` : "var(--chart-track)",
           }}
           aria-hidden="true"
         >

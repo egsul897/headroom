@@ -8,6 +8,7 @@ import { Card } from "@/components/ui";
 import "../../home-shell.css";
 import "./rails.css";
 import "./brands.css";
+import "./palettes.css";
 import { SampleDashboard } from "./dashboard";
 import { SAMPLE_BANNER, SAMPLE_COMPANY, SAMPLE_TICKER } from "./fixture";
 
@@ -18,12 +19,13 @@ export const metadata = { title: "Headroom — sample data" };
  * Development illustration. Production builds take notFound().
  * This module does not import Prisma, Neon, or the dashboard service.
  */
-export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string } }) {
+export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string } }) {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") notFound();
   const screen = searchParams.screen ?? "overview";
   const brand = searchParams.brand === "navy" || searchParams.brand === "olive" || searchParams.brand === "teal" ? searchParams.brand : undefined;
   const teal = searchParams.teal === "1" || searchParams.teal === "2" || searchParams.teal === "3" ? searchParams.teal : undefined;
   const light = searchParams.light === "a" || searchParams.light === "b" || searchParams.light === "c" ? searchParams.light : undefined;
+  const palette = searchParams.palette === "1" || searchParams.palette === "2" || searchParams.palette === "3" ? searchParams.palette : undefined;
 
   if (screen === "portfolio") {
     return (
@@ -33,6 +35,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
             <BrandMark />
             <span className="app-brand-word">Headroom</span>
           </div>
+          <p className="app-tagline">Clarity. Control. Confidence.</p>
         </aside>
         <div className="app-main">
           <div className="app-content">
@@ -102,7 +105,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
   const rail = searchParams.rail === "deep" || searchParams.rail === "mid" || searchParams.rail === "soft" ? searchParams.rail : undefined;
 
   return (
-    <div data-rail={rail} data-brand={brand} data-teal={teal} data-light={light}>
+    <div data-rail={rail} data-brand={brand} data-teal={teal} data-light={light} data-palette={palette}>
       <AppShell
         companyId="sample"
         companyName={SAMPLE_COMPANY}

@@ -11,15 +11,16 @@ main:has(.app-shell) {
 }
 
 .app-shell {
-  /* Pale teal rail. Text is dark ink. The active chip is the petrol accent.
+  /* Pale Maya blue rail. Dark ink on the field. The active chip is navy.
      Measured for WCAG AA in docs/DESIGN_SYSTEM.md. Status colors are not set here. */
-  --shell-sidebar: #dcebed;
+  --shell-sidebar: #e3f1fc;
   --shell-sidebar-ink: #12151a;
-  --shell-sidebar-muted: #3e555c;
-  --shell-sidebar-hover: #cfe3e6;
-  --shell-sidebar-active: #3a8a98;
-  --shell-sidebar-card: #f7fbfb;
-  --shell-sidebar-line: #b7d0d6;
+  --shell-sidebar-muted: #3e4d5e;
+  --shell-sidebar-hover: #d6eafa;
+  --shell-sidebar-active: #1a365d;
+  --shell-sidebar-active-ink: #ffffff;
+  --shell-sidebar-card: #f7fbfe;
+  --shell-sidebar-line: #c5dff3;
   --shell-canvas: var(--paper);
   --shell-card: var(--card);
   --shell-line: var(--line);
@@ -39,7 +40,7 @@ main:has(.app-shell) {
   min-height: 100vh;
   padding: 18px 12px 14px;
   background: var(--shell-sidebar);
-  border-right: 1px solid #b7d0d6;
+  border-right: 1px solid #c5dff3;
   color: var(--shell-sidebar-muted);
   position: sticky;
   top: 0;
@@ -113,13 +114,13 @@ main:has(.app-shell) {
 
 .app-nav-link.active {
   background: var(--shell-sidebar-active);
-  color: var(--shell-sidebar-ink);
+  color: var(--shell-sidebar-active-ink);
   font-weight: 620;
   box-shadow: inset 3px 0 0 var(--accent-signal);
 }
 
 .app-nav-link.active svg {
-  color: var(--shell-sidebar-ink);
+  color: var(--shell-sidebar-active-ink);
 }
 
 .app-nav-link:hover {
@@ -150,7 +151,7 @@ main:has(.app-shell) {
 }
 
 .app-company-card:hover {
-  border-color: #8fb8c0;
+  border-color: #9ec4e4;
 }
 
 .app-company-icon {
@@ -160,7 +161,7 @@ main:has(.app-shell) {
   height: 32px;
   border-radius: 8px;
   background: var(--shell-sidebar-active);
-  color: var(--shell-sidebar-ink);
+  color: var(--shell-sidebar-active-ink);
   flex-shrink: 0;
 }
 
@@ -205,7 +206,7 @@ main:has(.app-shell) {
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  background: #dcebed;
+  background: #d6eafa;
   color: #12151a;
   font-size: 13px;
   font-weight: 650;
@@ -214,9 +215,16 @@ main:has(.app-shell) {
 
 .app-tagline {
   margin: 0;
-  padding: 0 4px 2px;
-  font-size: 12px;
-  color: var(--shell-muted);
+  padding: 2px 4px 0;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  text-align: left;
+  color: var(--shell-sidebar-muted);
+}
+
+.app-sidebar > .app-tagline {
+  margin-top: auto;
 }
 
 .app-main {

@@ -27,7 +27,7 @@ export function UtilizationCard({ state = UNKNOWN_STATE }: { state?: FigureLoadS
         {pct !== null ? (
           <div
             className="home-util-ring"
-            style={{ background: `conic-gradient(var(--accent) 0deg ${deg}deg, #dcebed ${deg}deg 360deg)` }}
+            style={{ background: `conic-gradient(var(--chart-1) 0deg ${deg}deg, var(--chart-track) ${deg}deg 360deg)` }}
             aria-hidden="true"
           >
             <div className="home-util-ring-hole">

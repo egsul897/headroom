@@ -128,6 +128,7 @@ export function AppShell({
               <span className="app-company-ticker">{user ? user.role : "Not loaded"}</span>
             </span>
           </div>
+          <p className="app-tagline">Clarity. Control. Confidence.</p>
         </div>
       </aside>
       {drawerOpen ? (
