@@ -19,4 +19,9 @@ describe("RP / INVESTMENTS / PREPAYMENTS checklist (coder C)", () => {
     expect(st(doc, "ASSET_SALES").status).not.toBe("ABSENT_VERIFIED");
     expect(st(doc, "ASSET_SALES").sectionPaths.length).toBeGreaterThan(0);
   });
+  it("entity distribution mechanics (LLC statutory limits, record dates, in-kind) are not RESTRICTED_PAYMENTS", () => {
+    expect(familyEvidence("Notwithstanding any provision to the contrary contained in this Agreement the Company shall not make any Distribution to Members if such Distribution would violate Section 18-607 of the Act or other applicable law.", "RESTRICTED_PAYMENTS")).toEqual([]);
+    const doc = `ARTICLE 9 STOCK\n\nSection 9.2 Transfers. Shares may be transferred on the books.\n\nSection 9.3 Dividends, Distributions, and Other Rights. For the purpose of determining the stockholders entitled to receive payment of any dividend, the Board of Directors may fix a record date, which record date shall not precede the date on which the resolution is adopted.\n\nSection 9.4 Seal. The corporation shall not be required to have a seal.\n`;
+    expect(st(doc, "RESTRICTED_PAYMENTS").status).toBe("ABSENT_VERIFIED");
+  });
 });

@@ -170,6 +170,11 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
     if (!am && fams.has("RESTRICTED_PAYMENTS") && prohib.get(s.id)) for (const f of restrictedPaymentItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
+    // A Restricted Payments section must restrict the obligor's payments: a negated (or article-imperative) declare/pay/
+    // make ... dividend/distribution/restricted payment, or an enumerated restricted act. Distribution mechanics of an
+    // entity to its own holders (LLC preferred-return and liquidating distributions, in-kind distributions, charter
+    // record dates) only name distributions.
+    if (fams.has("RESTRICTED_PAYMENTS") && !am && !restrictsPayments(leadOf(s))) fams.delete("RESTRICTED_PAYMENTS");
     // Designating (Un)restricted Subsidiaries and suspending covenants on an investment-grade rating describe how the
     // covenants apply; they restrict no payment, investment or prepayment themselves.
     if (DESIGNATION_OR_SUSPENSION.test(`${s.title ?? ""} ${leadOf(s).slice(0, 200)}`)) for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) fams.delete(f);
@@ -257,6 +262,20 @@ function restrictedPaymentItemFamilies(body: string): Set<string> {
   return out;
 }
 
+function restrictsPayments(lead: string): boolean {
+  const w = lead.slice(0, 2000);
+  // Article imperative ("(a) Directly or indirectly: (1) declare or pay ...", "From <date> and prior to <date>, declare or
+  // pay ... any Restricted Payment"): the first declare/pay/make within 250 chars, no modal before it, with its object.
+  const im = /\b(?:declare|pay|make)\b/i.exec(w.slice(0, 250));
+  if (im && !/\b(?:shall|will|may|must|is|are|be)\b/i.test(w.slice(0, im.index)) && /^[^.;]{0,160}?\b(?:dividends?|distributions?|restricted (?:junior )?payments?)\b/i.test(w.slice(im.index))) return true;
+  if (/\b(?:Liquidator|record date|Preferred Return|Capital Accounts?)\b/.test(w.slice(0, 600))) return false;
+  for (const m of w.matchAll(/\b(?:declare|pay|make|purchase|redeem)\b[^.;]{0,120}?\b(?:dividends?|distributions?|restricted (?:junior )?payments?|equity interests|capital stock)\b/gi)) {
+    const before = w.slice(Math.max(0, m.index! - 220), m.index!);
+    if (/(?:shall|will|may)\s+not\b|\bno\s+[^.;]{1,140}?\b(?:shall|will|may)\b|\bnot\s+permit\b/i.test(before)) return true;
+  }
+  return false;
+}
+
 function covenantItemFamilies(body: string): Set<string> {
   const out = new Set<string>();
   if (body.length > 60000) return out;
@@ -330,6 +349,9 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   // Subordination payment blockage ("the Company shall not pay principal of ... or redeem the Securities ... if a default on
   // Designated Senior Indebtedness occurs") restricts paying the subordinated instrument itself, not a prepayment covenant.
   if (family === "PREPAYMENTS" && /\b(?:(?:Guarantor\s+)?Senior Indebtedness|Designated Senior|Payment Blockage|Senior Debt)\b/.test(sent) && /\b(?:the\s+)?(?:Securities|Notes|Subsidiary Guarantees?|Debentures)\b/.test(sent)) return true;
+  // Statutory limits on an entity's own distributions to its members ("shall not make a distribution to any Member if such
+  // distribution would violate Section 18-607 of the Act") restate law, not a negotiated restricted-payment covenant.
+  if (family === "RESTRICTED_PAYMENTS" && /\bdistributions?\b[^.]{0,120}\bto\s+(?:(?:any|a|the|such|its)\s+)?(?:[A-Z]\w*\s+){0,3}(?:Members?|Partners?|Unitholders?)\b/i.test(sent) && /\b(?:would violate|in violation of|18-607|17-607|the Act|applicable law)\b/i.test(sent)) return true;
   // Equity-award dividend equivalents (stock plans) are not a restricted payment.
   if (family === "RESTRICTED_PAYMENTS" && /\bdividend equivalents?\b/i.test(sent)) return true;
   if (family === "INVESTMENTS" && (/\b(?:lenders?|banks?|issuing bank|swingline lender|agent)s?\b[^.;]{0,80}$/i.test(before) || /\b(?:not be obligated|obligated to)\b/i.test(sent) || /\badvances?\b/i.test(sent) && /\b(?:lenders?|borrowing)\b/i.test(sent))) return true;
@@ -353,12 +375,14 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     const hm = ev.heading.exec(title);
     // The family must lead the title (allowing "Limitation on", "Restrictions on", "Incurrence of"), not be one
     // word inside an unrelated heading ("Evidence of Debt", "Trustee as Holder of Senior Indebtedness").
+    if (family === "RESTRICTED_PAYMENTS" && hm && !restrictsPayments(text.slice(m.index! + m[0].length, m.index! + m[0].length + 2000))) continue;
     if (hm && hm.index <= 25 && !NOT_COVENANT_TITLE.test(title)) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
   }
   // Clause-caption headings: "(d) Mergers and Consolidations; Disposition of Assets. The Borrower will not ...".
   if (!out.length) for (const m of text.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
     const title = m[1]!.trim();
     if (title.split(/\s+/).length > 10 || NOT_COVENANT_TITLE.test(title)) continue;
+    if (family === "RESTRICTED_PAYMENTS" && !restrictsPayments(text.slice(m.index! + m[0].length, m.index! + m[0].length + 2000))) continue;
     if (title.split(/[;,]|\band\b/).some((part) => { const hm = ev.heading.exec(part.trim()); return !!hm && hm.index <= 25; })) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
   }
   // Operative lead-ins: a sentence with the family's operative verb/object, negated (or a ratio test).
