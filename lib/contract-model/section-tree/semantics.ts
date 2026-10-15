@@ -3,7 +3,7 @@
  * checklist over a SectionTree. Deterministic; no AI / LLM calls; nothing invented.
  * A family with no numeric cap is NEVER reported as unlimited.
  */
-import { classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
+import { negatedItemFamilies, classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
 import { normalizeSectionNumber, sectionOf, type SectionTree, type TreeNode } from "./parse";
 
 export type ClauseRole = "PROHIBITION" | "BASKET" | "EXCEPTION_PROVISO" | "DEFINITION" | "CROSS_REFERENCE" | "OTHER";
@@ -165,6 +165,9 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // Restated articles/sections quoted later in the body ("(g) Article IX of the Credit Agreement is hereby amended and
     // restated in its entirety to read as follows: From and after ..."): classify each quoted text too.
     const fams = new Set(v.families);
+    // Enumerated covenant items (LLC separateness / "shall not take any of the following actions" lists): an item-level
+    // prohibition with a family object counts, but only inside an obligor-bound prohibition section body.
+    if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
     famOf.set(s.id, [...fams]);
   }
@@ -221,6 +224,21 @@ function amendedText(lead: string): { title: string; lead: string } | null {
   const h = /^\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([A-Z][^.\n]{2,80})\.\s*/i.exec(rest);
   if (!h) return null;
   return { title: h[1]!.trim(), lead: rest.slice(h[0].length) };
+}
+
+function covenantItemFamilies(body: string): Set<string> {
+  const out = new Set<string>();
+  if (body.length > 60000) return out;
+  // A negative stem governs the items that follow its colon until the next stem.
+  const stemRe = /\b(?:shall|will|may)\s+not\b[^.:]{0,300}?\b(?:any of the following|the following actions?)[^:]{0,80}:/gi;
+  const stems = [...body.matchAll(stemRe)].map((m) => m.index! + m[0].length);
+  const itemRe = /(?:^|\n)\s*\(((?:[ivxl]{1,6})|[a-z]{1,2})\)\s+([^\n]{10,600})/g;
+  for (const m of body.matchAll(itemRe)) {
+    const at = m.index!;
+    const underStem = stems.some((st) => st <= at && at - st < 6000);
+    for (const f of negatedItemFamilies(m[2]!, underStem)) out.add(f);
+  }
+  return out;
 }
 
 /** Every "amended (and restated) in its entirety to read as follows:" instruction in a body, with its quoted text. */

@@ -42,7 +42,7 @@ const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bat\s+least\
 const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
   ["LIENS", /\b(?:create|incur|assume|suffer|permit)\b[^.;]{0,160}\b(?:liens?|mortgages?|pledges?|security interests?|encumbrances?)\b(?!\s+(?:net|leverage|obligations|notes|credit|facility|term|secured)\b)/i],
   ["DEBT", /\b(?:create|incur|issue|assume|guarantee|become\s+(?:directly\s+or\s+indirectly\s+)?liable)\b[^.;]{0,160}\b(?:indebtedness|debt|disqualified stock|preferred stock)\b/i],
-  ["RESTRICTED_PAYMENTS", /\b(?:declare|pay|make)\b[^.;]{0,120}\b(?:dividends?|distributions?|restricted payments?)\b|\b(?:purchase|redeem|retire|acquire)\b[^.;]{0,80}\b(?:equity interests?|capital stock|shares)\b/i],
+  ["RESTRICTED_PAYMENTS", /\b(?:declare|pay|make)\b[^.;]{0,120}\b(?:dividends?|distributions?|restricted (?:junior )?payments?)\b|\b(?:purchase|redeem|retire|acquire)\b[^.;]{0,80}\b(?:equity interests?|capital stock|shares)\b/i],
   ["INVESTMENTS", /\b(?:make|hold|acquire)\b[^.;]{0,80}\b(?:investments?|advances?|loans?\s+to|capital contributions?)\b/i],
   ["PREPAYMENTS", /\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\b(?:subordinated|junior|second lien|unsecured)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b/i],
   ["FUNDAMENTAL_CHANGES", /\btransactions? of merger\b|\b(?:merge|consolidate|amalgamate|liquidate|dissolve|wind\s+up)\b(?!\s+(?:EBITDA|Net|Total))/i],
@@ -54,7 +54,7 @@ const HEADING: Array<[CovenantFamily, RegExp]> = [
   ["PREPAYMENTS", /prepayments?.*(?:debt|indebtedness)|(?:junior|subordinated)[^,]*(?:payment|prepay)|payments? of (?:certain )?(?:debt|indebtedness)/i],
   ["LIENS", /\bliens?\b|negative pledge|\bencumbrances?\b/i],
   ["DEBT", /\b(?:indebtedness|debt|borrowings?)\b/i],
-  ["RESTRICTED_PAYMENTS", /restricted payments?|dividends?|distributions?/i],
+  ["RESTRICTED_PAYMENTS", /restricted (?:junior )?payments?|dividends?|distributions?/i],
   ["INVESTMENTS", /\binvestments?\b|loans?,? advances|acquisitions/i],
   ["ASSET_SALES", /asset sales?|asset transfers?|transfers? of assets|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],
   ["AFFILIATE_TRANSACTIONS", /affiliates?/i],
@@ -157,4 +157,15 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   // Secondary families need their own heading support ("Merger, Consolidation, or Sale of Assets").
   const families = best ? [best, ...[...scores].filter(([f, s]) => f !== best && s >= 3 && evidence.includes(`${f}:heading`)).map(([f]) => f)] : [];
   return { family: best, score, families, evidence };
+}
+
+/**
+ * Families named by one enumerated covenant item under a negative stem ("shall not ... take any of the following
+ * actions: (ii) cause or permit the Company to incur ... any Indebtedness") or negated inside the item ("(vi) ...
+ * not engage in any transaction with any Affiliate"). Verb-object test only; no title keywords.
+ */
+export function negatedItemFamilies(item: string, underNegativeStem: boolean): CovenantFamily[] {
+  const negated = underNegativeStem || /\b(?:shall|will|may)\s+not\b|(?:^|[;,]\s*|\band\s+)not\s+(?:to\s+)?(?:incur|create|engage|enter|make|declare|pay|sell|merge|consolidate|dissolve|permit|cause|acquire|transfer)\b/i.test(item);
+  if (!negated) return [];
+  return VERB_OBJECT.filter(([, re]) => re.test(item)).map(([f]) => f);
 }
