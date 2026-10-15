@@ -71,7 +71,7 @@ const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
   ["PREPAYMENTS", /\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\b(?:subordinated|junior|second lien|unsecured)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b|\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\bany\s+(?:other\s+)?(?:indebtedness|debt)\s+other\s+than\b|\bmake\b[^.;]{0,120}\b(?:payment|prepayment|redemption|repurchase|defeasance)\b[^.;]{0,120}\bof\s+(?:any\s+)?(?:subordinated|junior|second lien)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b/i],
   ["FUNDAMENTAL_CHANGES", /\btransactions? of merger\b|\b(?:consummate|enter into|effect)\b[^.;]{0,40}\b(?:merger|consolidation|amalgamation)\b|\b(?:merge|consolidate|amalgamate|liquidate|dissolve|wind\s+up)\b(?!\s+(?:EBITDA|Net|Total))/i],
   ["ASSET_SALES", /\b(?:sell|lease|transfer|convey|dispose|assign)\b[^.;]{0,300}?\b(?:assets?|propert(?:y|ies)|equity interests? (?:in|of) any (?:restricted )?subsidiar)|\b(?:make|consummate|effect)\b[^.;]{0,40}\b(?:Asset Sales?|Asset Dispositions?)\b/i],
-  ["AFFILIATE_TRANSACTIONS", /\btransactions?\b[^.;]{0,220}\b(?:with|involving|to)\b[^.;]{0,60}\baffiliates?\b/i],
+  ["AFFILIATE_TRANSACTIONS", /\btransactions?\b[^.;]{0,220}\b(?:with|involving|to)\b[^.;]{0,160}\baffiliates?\b/i],
 ];
 
 const HEADING: Array<[CovenantFamily, RegExp]> = [
