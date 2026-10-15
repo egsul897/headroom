@@ -1,0 +1,1383 @@
+{
+ "schema": "clf-scoreboard-reference-relabels/v1",
+ "description": "Append-only log of corrected precedent reference labels used by npm run clf:scoreboard. Never edit or remove an entry; to undo, append a new entry. oldLabel must equal the snapshot/Neon label at apply time (fail closed otherwise). newLabel NOT_COVENANT_SCOPE = span is not covenant text of any scored family (removed from the reference set); any other value replaces the family. The snapshot and Neon rows are not modified; the overlay is applied at score time and bound into the scorer config.",
+ "entries": [
+  {
+   "id": "RL-0001",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000060667-22-000104:exhibit101_06022022.htm",
+   "locator": {
+    "candidateId": "70ead55167d5952de480e193"
+   },
+   "oldLabel": "ASSET_SALES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE VI OPTIONS 8 Section 6.1 Award 8 Section 6.2 Option Price 8 Section 6.3 Maximum Option Period 8 Section 6.4 Ten ",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0002",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000100493-17-000095:exhibit102amendedandrestat.htm",
+   "locator": {
+    "candidateId": "4fa29ef127badeb240440b72"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(e) If the Company or any Subsidiary Borrower fails to deliver a timely Interest Election Request with respect to a Euro",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0003",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000100493-18-000047:exhibit101amendedandrestat.htm",
+   "locator": {
+    "candidateId": "73da7a2f1ea37c27b2de67bf"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(e) If the Company fails to deliver a timely Interest Election Request with respect to a Eurocurrency Borrowing prior to",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0004",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000100493-18-000047:exhibit102amendmentno3tote.htm",
+   "locator": {
+    "candidateId": "4ddcbc0249c347e762a2ef04"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) If the Borrower fails to deliver a timely Interest Election Request with respect to a Eurocurrency Borrowing prior t",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0005",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-21-000696:ex10-1.htm",
+   "locator": {
+    "candidateId": "1f246ca7b1e925a658da1671"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) Each Borrower may elect from time to time to convert Eurodollar Loans to ABR Loans, by giving the Administrative Age",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0006",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-21-000696:ex10-1.htm",
+   "locator": {
+    "candidateId": "8e4f7c589320e187baa45c01"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) Any Eurodollar Loans or EURIBOR Loans may be continued as such upon the expiration of the then current Interest Peri",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0007",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+   "locator": {
+    "candidateId": "161f612163217e7b8168b289"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) Any Eurodollar Term SOFR Loans or EURIBOR Loans may be continued as such upon the expiration of the then current Int",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0008",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+   "locator": {
+    "candidateId": "5b193cae920a636ebea5b5de"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) Each Borrower may elect from time to time to convert Eurodollar Term SOFR Loans to ABR Loans, by giving the Administ",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0009",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
+   "locator": {
+    "candidateId": "1bbeed991fe56959d451c782"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) Each Borrower may elect from time to time to convert Eurodollar Term Benchmark Loans to ABR Loans, by giving the Adm",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0010",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
+   "locator": {
+    "candidateId": "857bded0b694c2cd7bd3d3f0"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(c) If, for any reason, ABR Loans may not be, or are not, made pursuant to paragraph (b) of this Section 2.5 to repay Sw",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0011",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
+   "locator": {
+    "candidateId": "f2222892ddbbf64021beea30"
+   },
+   "oldLabel": "AFFILIATE_TRANSACTIONS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "11.25 No Fiduciary Duty, etc. (a) Each Borrower acknowledges and agrees that (i) no fiduciary, advisory or agency relati",
+   "reason": "no-fiduciary/agent-duties boilerplate, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0012",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
+   "locator": {
+    "candidateId": "d9fd9c951ef0a39952c76f03"
+   },
+   "oldLabel": "AFFILIATE_TRANSACTIONS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) Each Borrower acknowledges and agrees that (i) no fiduciary, advisory or agency relationship between any Borrower an",
+   "reason": "no-fiduciary/agent-duties boilerplate, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0013",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-22-000765:ex10-2.htm",
+   "locator": {
+    "candidateId": "538a020d5277d46f9b95db79"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) Any Eurodollar Term Benchmark Loans may be continued as such upon the expiration of the then current Interest Period",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0014",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001193125-13-034798:d477945dex41.htm",
+   "locator": {
+    "candidateId": "6a8e7a58321b336f24b2c060"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) A Global Note deposited with the Depositary or with the Trustee as Custodian pursuant to Section 2.1 or issued in co",
+   "reason": "note transfer/paying-agent administration, not a covenant family",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0015",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001193125-13-034798:d477945dex41.htm",
+   "locator": {
+    "candidateId": "e37d50f66bf64cca1a412b96"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 2.4 Definitive Notes . (a) A Global Note deposited with the Depositary or with the Trustee as Custodian pursuant",
+   "reason": "note transfer/paying-agent administration, not a covenant family",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0016",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001193125-16-462492:d49534dex42.htm",
+   "locator": {
+    "candidateId": "1f8da350a3432a6fa9ca2d82"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) such optional payment shall operate to reduce the amount of any Mandatory Sinking Fund Payment obligation as to Secu",
+   "reason": "payment/redemption mechanics, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0017",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-17-000016:ex4march2017.htm",
+   "locator": {
+    "candidateId": "5cdbf1ef7d80cfbdfc208e1d"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(iii) at the end of any Interest Period with respect thereto, to continue Loans denominated in an Alternative Currency f",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0018",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-17-000016:ex4march2017.htm",
+   "locator": {
+    "candidateId": "0867a11e22b3207a6c53d578"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(f) Payment of Interest . Interest on each Loan (other than a B/A Loan) shall be payable in arrears on each Interest Pay",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0019",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-17-000016:ex4march2017.htm",
+   "locator": {
+    "candidateId": "762318c3bb73b54d65052706"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(e) Corporate Documents and Financial Matters . (i) Officer’s Certificate . Administrative Agent shall have received a c",
+   "reason": "officer certificate / closing deliverable, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0020",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-17-000016:ex4march2017.htm",
+   "locator": {
+    "candidateId": "3cee953aa1c139889b6670ed"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) Each Lender may at any time sell to one or more banks or other financial institutions (other than any Disqualified I",
+   "reason": "lender participations clause, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0021",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+   "locator": {
+    "candidateId": "0d3b09d299071b07ee13ae98"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) Each Lender may at any time sell to one or more banks or other financial institutions (other than any Disqualified I",
+   "reason": "lender participations clause, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0022",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+   "locator": {
+    "candidateId": "3db2c99175cc72f2e69108da"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) In the case of a proposed continuation of Revolving Loans denominated in an Agreed Alternative Currency for an addit",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0023",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+   "locator": {
+    "candidateId": "04281299bf61693e62dcf0ed"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(e) Corporate Documents and Financial Matters . Officer’s Certificate . Administrative Agent shall have received a certi",
+   "reason": "officer certificate / closing deliverable, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0024",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-25-000009:a4ff-crownseventhamendment.htm",
+   "locator": {
+    "candidateId": "bfb06625ef5a5acecfbd3571"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(h) Payment of Interest . Interest on each Loan (other than a B/A Loan) shall be payable in arrears on each Interest Pay",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0025",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-25-000009:a4ff-crownseventhamendment.htm",
+   "locator": {
+    "candidateId": "18f73267da6339f53685ba3a"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(e) Corporate Documents and Financial Matters . (i) Officer’s Certificate . Administrative Agent shall have received a c",
+   "reason": "officer certificate / closing deliverable, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0026",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+   "locator": {
+    "candidateId": "28440d9926593985f273fcb7"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "EVENTS_OF_DEFAULT",
+   "quote": "Section 6.01 Events of Default . Each of the following events shall be an “ Event of Default ” with respect to the Notes",
+   "reason": "span is the Events of Default section text, labeled FUNDAMENTAL_CHANGES",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0027",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+   "locator": {
+    "candidateId": "cdef5d2def6c9ce8c79439e3"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "EVENTS_OF_DEFAULT",
+   "quote": "(a) default in the payment of principal of any Note when due on the Maturity Date, upon Optional Redemption, upon Fundam",
+   "reason": "span is the Events of Default section text, labeled FUNDAMENTAL_CHANGES",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0028",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+   "locator": {
+    "candidateId": "0d464c912b09be1c658c12f2"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) If the Company shall appoint a Paying Agent other than the Trustee, the Company will cause such Paying Agent to exec",
+   "reason": "note transfer/paying-agent administration, not a covenant family",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0029",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+   "locator": {
+    "candidateId": "2019c72826dda2881a4ca2f9"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) If the Company shall act as its own Paying Agent, it will, on or before each due date of the principal (including th",
+   "reason": "payment/redemption mechanics, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0030",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+   "locator": {
+    "candidateId": "ef4f05369f7230d13ef31447"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 4.01 Payment of Principal and Interest. The Company covenants and agrees that it will cause to be paid the princ",
+   "reason": "payment/redemption mechanics, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0031",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+   "locator": {
+    "candidateId": "fe5477cad3d8df3cc62bece8"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) Any money and shares of Common Stock deposited with the Trustee or any Paying Agent, or then held by the Company, in",
+   "reason": "payment/redemption mechanics, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0032",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+   "locator": {
+    "candidateId": "9a15206e580da6101fe10785"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) a statement as to whether or not, in the judgment of such person, such action is permitted by this Indenture. Sectio",
+   "reason": "Legal Holidays / compliance-certificate boilerplate, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0033",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+   "locator": {
+    "candidateId": "6d1a9ec534def5ba60a137bf"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(e) Except as otherwise provided herein, without the consent of the applicable Required Lenders a Term Benchmark Loan ma",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0034",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "223cf438c05e21d813f4c9c4"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 4.01 Payment of Principal and Interest. The Company covenants and agrees that it will cause to be paid the princ",
+   "reason": "payment/redemption mechanics, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0035",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "c76c5f0ead412c1ea91d341b"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) If the Company shall appoint a Paying Agent other than the Trustee, the Company will cause such Paying Agent to exec",
+   "reason": "note transfer/paying-agent administration, not a covenant family",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0036",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "cefcf0236413ab133f1dfab4"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "EVENTS_OF_DEFAULT",
+   "quote": "Section 6.01 Events of Default. Each of the following events shall be an “ Event of Default ” with respect to the Notes:",
+   "reason": "span is the Events of Default section text, labeled FUNDAMENTAL_CHANGES",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0037",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "64205473b4447e15ff91c5b7"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "EVENTS_OF_DEFAULT",
+   "quote": "(a) default in the payment of principal of any Note when due on the Maturity Date, upon Optional Redemption, upon Fundam",
+   "reason": "span is the Events of Default section text, labeled FUNDAMENTAL_CHANGES",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0038",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "861e7ce6ff5197a27acea592"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE 4 PARTICULAR COVENANTS OF THE COMPANY Section 4.01 Payment of Principal and Interest. The Company covenants and ",
+   "reason": "payment/redemption mechanics, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0039",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "12389fb714488aa6f2e91926"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) If the Company shall act as its own Paying Agent, it will, on or before each due date of the principal (including th",
+   "reason": "payment/redemption mechanics, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0040",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "b86757339207e78343715f0b"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) Any money and shares of Common Stock deposited with the Trustee or any Paying Agent, or then held by the Company, in",
+   "reason": "payment/redemption mechanics, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0041",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+   "locator": {
+    "candidateId": "a03f730c9f094293ecb5c0eb"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) The Master Trustee shall owe no fiduciary duties to any Member, any Participant, or any Affiliate thereof, and the d",
+   "reason": "no-fiduciary/agent-duties boilerplate, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0042",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+   "locator": {
+    "candidateId": "7a793d9c902ed0a87c6b01b6"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 2.06 Transfer and Exchange . (a) Transfer and Exchange of Global Notes . Except as otherwise set forth in this S",
+   "reason": "note transfer/paying-agent administration, not a covenant family",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0043",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+   "locator": {
+    "candidateId": "c2821b9a9724295f1901498d"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) Transfer and Exchange of Global Notes . Except as otherwise set forth in this Section 2.06 , a Global Note may be tr",
+   "reason": "note transfer/paying-agent administration, not a covenant family",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0044",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-20-003281:delta_8k-ex1001.htm",
+   "locator": {
+    "candidateId": "1dac629a6f2af11bb8b127f2"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) No Agent shall have any duties or obligations except those expressly set forth herein and in any other applicable Lo",
+   "reason": "no-fiduciary/agent-duties boilerplate, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0045",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-22-007951:delta_ex1001.htm",
+   "locator": {
+    "candidateId": "91a12e67f6ae3f3a14547bec"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) (a) the payment of any principal of any Eurodollar Revolving Loan or any Term Benchmark Revolving Loan other than on",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0046",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0002077096-26-000190:ea029246401ex10-1.htm",
+   "locator": {
+    "candidateId": "0bf347b1a53f1e0e5ca50996"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) Any Term Benchmark Loan may be continued as such upon the expiration of the then current Interest Period with respec",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0047",
+   "date": "2026-10-15",
+   "sourceId": "ehb:29c628c2d47f883dee2f7ef6",
+   "locator": {
+    "candidateId": "78f085588e7ae9f93a635137"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(ii) for such Loans with an applicable Interest Period exceeding three (3) Months, on each and every three (3) Month ann",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0048",
+   "date": "2026-10-15",
+   "sourceId": "ehb:29c628c2d47f883dee2f7ef6",
+   "locator": {
+    "candidateId": "3823cdd5e314ea3bdac8dbc3"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) if any Swing Line Loans are outstanding or any Letters of Credit Outstanding exist at the time such Bank becomes an ",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0049",
+   "date": "2026-10-15",
+   "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+   "locator": {
+    "candidateId": "f010e49e829d333b44ad11c6"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) Swing Line Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0050",
+   "date": "2026-10-15",
+   "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+   "locator": {
+    "candidateId": "397e93804686b1b467ff0062"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) if any Swing Line Loans are outstanding or any Letters of Credit Outstanding exist at the time such Bank becomes an ",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0051",
+   "date": "2026-10-15",
+   "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+   "locator": {
+    "candidateId": "1cc68f88ee4ce53b6094a08e"
+   },
+   "oldLabel": "AFFILIATE_TRANSACTIONS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "9.22 No Advisory or Fiduciary Responsibility . In connection with all aspects of each transaction contemplated hereby (i",
+   "reason": "no-fiduciary/agent-duties boilerplate, not the labeled covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0052",
+   "date": "2026-10-15",
+   "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+   "locator": {
+    "candidateId": "ad73731865ac655b9a0f5d51"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) Refunded Swing Line Loans . With respect to any Swing Line Loans, the Swing Line Lender may, at any time in its sole",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0053",
+   "date": "2026-10-15",
+   "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+   "locator": {
+    "candidateId": "d6f442d33fe123e23ff5ab3d"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(ii) for such Loans with an applicable Interest Period exceeding three (3) Months, on each and every three (3) Month ann",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0054",
+   "date": "2026-10-15",
+   "sourceId": "ehb:8b895fb699886a716ba820b4",
+   "locator": {
+    "candidateId": "5a1190f4b5472e09d795cc13"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) Participations . Each Lender may at any time grant participations in any of its rights hereunder or under any of the",
+   "reason": "lender participations clause, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0055",
+   "date": "2026-10-15",
+   "sourceId": "ehb:8b895fb699886a716ba820b4",
+   "locator": {
+    "candidateId": "9db2b599bd9ff4eab6b52f71"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(ii) once prepaid or repaid, may not be reborrowed, (iii) may, except as set forth herein, at the option of the Borrower",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0056",
+   "date": "2026-10-15",
+   "sourceId": "ehb:8f26240e1e02e95a3df8c5e4",
+   "locator": {
+    "candidateId": "33285ec5c7d4c322f9830a32"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(ii) for such Loans with an applicable Interest Period exceeding three (3) Months, on each and every three (3) Month ann",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0057",
+   "date": "2026-10-15",
+   "sourceId": "ehb:a77c506b087aab39da748554",
+   "locator": {
+    "candidateId": "be1ef0826bf97a77c7efabd7"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(ii) for such Loans with an applicable Interest Period exceeding three (3) Months, on each and every three (3) Month ann",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0058",
+   "date": "2026-10-15",
+   "sourceId": "ehb:a77c506b087aab39da748554",
+   "locator": {
+    "candidateId": "b543ddfee46a615089009546"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) Swing Line Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0059",
+   "date": "2026-10-15",
+   "sourceId": "ehb:a77c506b087aab39da748554",
+   "locator": {
+    "candidateId": "6b5b483cb583e40e3e0cda9e"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) Refunded Swing Line Loans . With respect to any Swing Line Loans, the Swing Line Lender may, at any time in its sole",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0060",
+   "date": "2026-10-15",
+   "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+   "locator": {
+    "candidateId": "105699a71dfa11ea04802e73"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) Swing Line Loans . Subject to the terms and conditions and relying upon the representations and warranties set forth",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0061",
+   "date": "2026-10-15",
+   "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+   "locator": {
+    "candidateId": "83cd9af98d34d3e50b51409e"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) Refunded Swing Line Loans . With respect to any Swing Line Loans, the Swing Line Lender may, at any time in its sole",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0062",
+   "date": "2026-10-15",
+   "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+   "locator": {
+    "candidateId": "fa225e65b90c6c8f3be248a7"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(ii) for such Loans with an applicable Interest Period exceeding three (3) Months, on each and every three (3) Month ann",
+   "reason": "interest-rate/interest-period mechanics, not a covenant or event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0063",
+   "date": "2026-10-15",
+   "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+   "locator": {
+    "candidateId": "2ef01c5bf2f5d6b44c86d75d"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(b) if any Swing Line Loans are outstanding or any Letters of Credit Outstanding exist at the time such Bank becomes an ",
+   "reason": "swing line / defaulting-lender borrowing mechanics, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0064",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001193125-16-462492:d49534dex42.htm",
+   "locator": {
+    "candidateId": "87c5568db30d936508257fe2"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 11.05 Resignation and Notice; Removal 49 Section 11.06 Successor Trustee by Appointment 50 Section 11.07 Success",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0065",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001193125-16-462492:d49534dex42.htm",
+   "locator": {
+    "candidateId": "7343f478fd5756eccca8d014"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 6.02 Maintenance of Office or Agency; Paying Agent 29 Section 6.03 To Hold Payment in Trust 29 Section 6.04 Merg",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0066",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001193125-16-462492:d49534dex42.htm",
+   "locator": {
+    "candidateId": "ddd5be8715d1d447014ea827"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE VI PARTICULAR COVENANTS OF THE COMPANY Section 6.01 Payments of Principal, Premium and Interest 29 Section 6.02 ",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0067",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001213900-25-041096:ea024138601ex4-2_starbucks.htm",
+   "locator": {
+    "candidateId": "45ca9c71cdb2dd81ec3fb0bf"
+   },
+   "oldLabel": "LIENS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE 4. PARTICULAR COVENANTS 16 Section 4.01 Liens 16 Section 4.02 Offer to Purchase Upon Change of Control Triggerin",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0068",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+   "locator": {
+    "candidateId": "36d0d745c838340e3f8a801c"
+   },
+   "oldLabel": "INCREMENTAL_DEBT_AND_FACILITIES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE II THE COMMITMENTS AND CREDIT EXTENSIONS 94 Section 2.01 The Loans 94 Section 2.02 Borrowings, Conversions and C",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0069",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1019amended.htm",
+   "locator": {
+    "candidateId": "5a33172544e89da4963cacad"
+   },
+   "oldLabel": "INDEBTEDNESS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE VII NEGATIVE COVENANTS 162 Section 7.01 Indebtedness 163 Section 7.02 Limitations on Liens 170 Section 7.03 Fund",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0070",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "6fc4203137800ac448a053cc"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE 13 CONVERSION OF NOTES 49 Section 13.01 Conversion Privilege 49 Section 13.02 Conversion Procedure; Settlement U",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0071",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "9a59f0c056306bf44050dbb4"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE 14 REPURCHASE OF NOTES AT OPTION OF HOLDERS 69 Section 14.01 Repurchase at Option of Holders Upon a Fundamental ",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0072",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+   "locator": {
+    "candidateId": "359add6d6d2277069dd76777"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE VI REPRESENTATIONS AND COVENANTS 75 Section 6.1 Payment of Principal, Premium, Interest and Other Amounts 75 Sec",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0073",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+   "locator": {
+    "candidateId": "e941d9be95a0c71dd07a3894"
+   },
+   "oldLabel": "INVESTMENTS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE X CONCERNING DEPOSITORIES 110 Section 10.1 Depositories 110 Section 10.2 Duties of Depository 110 Section 10.3 Q",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0074",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+   "locator": {
+    "candidateId": "5d7baa451bbf370e0f5dc365"
+   },
+   "oldLabel": "INDEBTEDNESS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 4.19 Collections; Releases from Collection Account 87 Section 4.20 Mandatory Prepayments or Repurchases 87 Secti",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0075",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+   "locator": {
+    "candidateId": "aabf27f23606b72d6e7e46a9"
+   },
+   "oldLabel": "FUNDAMENTAL_CHANGES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE 7 TRUSTEE 105 Section 7.01 Duties of Trustee 105 Section 7.02 Rights of Trustee 106 Section 7.03 Individual Righ",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0076",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+   "locator": {
+    "candidateId": "e041828bb2bc585f710ebd90"
+   },
+   "oldLabel": "LIENS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE 13 COLLATERAL 132 Section 13.01 Collateral Documents 132 Section 13.02 Non-Impairment of Liens 133 Section 13.03",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0077",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+   "locator": {
+    "candidateId": "dc883b2208cbdb10e8781fc8"
+   },
+   "oldLabel": "MANDATORY_PREPAYMENTS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE 3 REDEMPTION 65 Section 3.01 Notices to Trustee 65 Section 3.02 Selection of Notes to Be Redeemed 66 Section 3.0",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0078",
+   "date": "2026-10-15",
+   "sourceId": "ehb:8b895fb699886a716ba820b4",
+   "locator": {
+    "candidateId": "1773cac29b879247796b8892"
+   },
+   "oldLabel": "INDEBTEDNESS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE VII. NEGATIVE COVENANTS 64 Section 7.01 Changes in Business 64 Section 7.02 Consolidation, Merger, Acquisitions,",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0079",
+   "date": "2026-10-15",
+   "sourceId": "fixture:chwy",
+   "locator": {
+    "candidateId": "6fee8f6867354691f7f1055b"
+   },
+   "oldLabel": "INVESTMENTS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 3.04 Financial Condition; No Material Adverse Effect 116 Section 3.05 Properties 116 Section 3.06 Litigation and",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0080",
+   "date": "2026-10-15",
+   "sourceId": "fixture:gibraltar",
+   "locator": {
+    "candidateId": "70c7bc27437b5ca7f4fa184e"
+   },
+   "oldLabel": "INCREMENTAL_DEBT_AND_FACILITIES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 2.12 Payments Generally; Administrative Agent’s Clawback 156 Section 2.13 Sharing of Payments 159 Section 2.14 I",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0081",
+   "date": "2026-10-15",
+   "sourceId": "fixture:gibraltar",
+   "locator": {
+    "candidateId": "3341cecb231ae6bc22ca5702"
+   },
+   "oldLabel": "INDEBTEDNESS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE VII NEGATIVE COVENANTS 225 Section 7.01 Indebtedness 225 Section 7.02 Limitations on Liens 232 Section 7.03 Fund",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0082",
+   "date": "2026-10-15",
+   "sourceId": "fixture:gibraltar",
+   "locator": {
+    "candidateId": "bc3bbd7cd28e77fcc6c79739"
+   },
+   "oldLabel": "INCREMENTAL_DEBT_AND_FACILITIES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE IX ADMINISTRATIVE AGENT AND OTHER AGENTS 257 Section 9.01 Appointment and Authorization of Agents 257 Section 9.",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0083",
+   "date": "2026-10-15",
+   "sourceId": "fixture:gibraltar",
+   "locator": {
+    "candidateId": "4152477407262580267248e6"
+   },
+   "oldLabel": "INCREMENTAL_DEBT_AND_FACILITIES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "ARTICLE II THE COMMITMENTS AND CREDIT EXTENSIONS 128 Section 2.01 The Loans 128 Section 2.02 Borrowings, Conversions and",
+   "reason": "table of contents (headings and page numbers), not operative text",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0084",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-22-007951:delta_ex1001.htm",
+   "locator": {
+    "candidateId": "17c92cdcad522f8179c7860c"
+   },
+   "oldLabel": "LIENS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 8.08. Sharing of Setoffs . Each Lender agrees that, except to the extent this Agreement expressly provides for p",
+   "reason": "Sharing of Setoffs among lenders, not a lien covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0085",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-20-003281:delta_8k-ex1001.htm",
+   "locator": {
+    "candidateId": "d9befe85dd28eae01ad1538d"
+   },
+   "oldLabel": "LIENS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "Section 10.22 Limited Recourse; Non-Petition 150 iv ANNEX A LENDERS AND COMMITMENTS EXHIBIT A FORM OF COLLATERAL AGENCY ",
+   "reason": "Limited Recourse heading + table of contents / exhibit list, not a lien covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0086",
+   "date": "2026-10-15",
+   "sourceId": "ehb:29c628c2d47f883dee2f7ef6",
+   "locator": {
+    "candidateId": "b417a00f38bb168ede8d27a1"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(c) Interest After Maturity or Default; Interest Laws . Upon the occurrence and during the continuance of an Event of De",
+   "reason": "default-interest rate provision, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0087",
+   "date": "2026-10-15",
+   "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+   "locator": {
+    "candidateId": "f9943a6d95985581982caa19"
+   },
+   "oldLabel": "EVENTS_OF_DEFAULT",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) The Agent may resign as administrative agent hereunder by giving not fewer than thirty (30) days' prior written noti",
+   "reason": "administrative agent resignation, not an event of default",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0088",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
+   "locator": {
+    "candidateId": "533475f65baf83122d2dd07e"
+   },
+   "oldLabel": "LIENS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) contravene, result in any breach of, or constitute a default under, or result in the creation of 7 any Lien in respe",
+   "reason": "no-conflict representation, not a lien covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0089",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001193125-13-034798:d477945dex41.htm",
+   "locator": {
+    "candidateId": "c21a7a36aea9e8fbe3b36e83"
+   },
+   "oldLabel": "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(d) Where this Indenture provides for notice in any manner, such notice may be waived in writing by the Person entitled ",
+   "reason": "waiver of notice boilerplate, not a covenant condition/exception",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0090",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex103xfirstsu.htm",
+   "locator": {
+    "candidateId": "f0d17ea4f43d14a1b864e476"
+   },
+   "oldLabel": "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) The Master Trustee accepts the trusts created by the Master Indenture, as supplemented from time to time, including ",
+   "reason": "trustee acceptance of trusts, not a covenant condition/exception",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0091",
+   "date": "2026-10-15",
+   "sourceId": "ehb:a77c506b087aab39da748554",
+   "locator": {
+    "candidateId": "e44d1247f466d8d2eb341e75"
+   },
+   "oldLabel": "INDEBTEDNESS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(ii) Second , to payment of that portion of the Indebtedness owed under this Agreement and the other Loan Documents cons",
+   "reason": "application-of-proceeds waterfall, not a debt covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0092",
+   "date": "2026-10-15",
+   "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+   "locator": {
+    "candidateId": "2f87c9c2cf318cf50f259340"
+   },
+   "oldLabel": "INDEBTEDNESS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "3.22 Governmental Regulation . The Borrower is not subject to regulation under the Federal Power Act or the Investment C",
+   "reason": "Governmental Regulation representation, not a debt covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0093",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex101xnotepur.htm",
+   "locator": {
+    "candidateId": "443b7a138d825ccf2234d1fe"
+   },
+   "oldLabel": "ASSET_SALES",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) Make-Whole Amount with respect to Non-Swapped Euro Notes . The terms “ Make-Whole Amount ” and “ Modified Make-Whole",
+   "reason": "Make-Whole Amount definition, not an asset sale covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0094",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+   "locator": {
+    "candidateId": "5b235b77a096e3f4dcbb3754"
+   },
+   "oldLabel": "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(g) Fees for Letters of Credit . Facing Agent Fees . The applicable Borrower agrees to pay the following amount to the r",
+   "reason": "letter of credit fees, not a covenant condition/exception",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  },
+  {
+   "id": "RL-0095",
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-21-000696:ex10-1.htm",
+   "locator": {
+    "candidateId": "dd7b984c3a27304f3adec4dd"
+   },
+   "oldLabel": "INVESTMENTS",
+   "newLabel": "NOT_COVENANT_SCOPE",
+   "quote": "(a) an “ investment company ” as defined in, or subject to regulation under, the Investment Company Act of 1940 or ",
+   "reason": "Investment Company Act representation, not an investments covenant",
+   "approver": "owner (chat 2026-10-15: relabel mislabeled references, keep old labels in a log)"
+  }
+ ],
+ "ambiguousUnchanged": [
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+   "locator": {
+    "candidateId": "96ee085f24f4013b4eee0e6c"
+   },
+   "label": "FUNDAMENTAL_CHANGES",
+   "quote": "(c) No later than 20 calendar days after the occurrence of the effective date of a Fundamental Change, the Company shall",
+   "why": "convertible-note Fundamental Change put / structure rep / reinvestment / swap-obligation waterfall: plausibly related to the label"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-25-000028:lyv-20241231xex1049x2875co.htm",
+   "locator": {
+    "candidateId": "cf09391791bf351782fc204b"
+   },
+   "label": "FUNDAMENTAL_CHANGES",
+   "quote": "(b) Repurchases of Notes under this Section 14.01 shall be made, at the option of the Holder thereof, upon: (i) delivery",
+   "why": "convertible-note Fundamental Change put / structure rep / reinvestment / swap-obligation waterfall: plausibly related to the label"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "f9af0d3f1468cd03a8f6d812"
+   },
+   "label": "FUNDAMENTAL_CHANGES",
+   "quote": "(c) No later than 20 calendar days after the occurrence of the effective date of a Fundamental Change, the Company shall",
+   "why": "convertible-note Fundamental Change put / structure rep / reinvestment / swap-obligation waterfall: plausibly related to the label"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000009:lyv-20251231xex1034xindent.htm",
+   "locator": {
+    "candidateId": "9e48d3cec1fc92a266d708b6"
+   },
+   "label": "FUNDAMENTAL_CHANGES",
+   "quote": "(b) Repurchases of Notes under this Section 14.01 shall be made, at the option of the Holder thereof, upon: (i) delivery",
+   "why": "convertible-note Fundamental Change put / structure rep / reinvestment / swap-obligation waterfall: plausibly related to the label"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex101xnotepur.htm",
+   "locator": {
+    "candidateId": "81fe73c3338d87c64f9b41ea"
+   },
+   "label": "FUNDAMENTAL_CHANGES",
+   "quote": "(i) Corporate Structure . As of the date hereof and the Closing Date, the organizational structure and capital structure",
+   "why": "convertible-note Fundamental Change put / structure rep / reinvestment / swap-obligation waterfall: plausibly related to the label"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001335258-26-000035:lyv-20260630xex102xmastert.htm",
+   "locator": {
+    "candidateId": "fed5446b263128c3a1715967"
+   },
+   "label": "ASSET_SALES",
+   "quote": "(b) If the affected Member or Participant elects to exercise its option under clause (iv) above, the applicable Member o",
+   "why": "convertible-note Fundamental Change put / structure rep / reinvestment / swap-obligation waterfall: plausibly related to the label"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "ehb:68579e05aae3a5300e6a69a0",
+   "locator": {
+    "candidateId": "87f71135a049a709997f0ba2"
+   },
+   "label": "GUARANTEES",
+   "quote": "(vi) Last , the balance, if any, to the Loan Parties or as required by Law. Notwithstanding anything to the contrary in ",
+   "why": "convertible-note Fundamental Change put / structure rep / reinvestment / swap-obligation waterfall: plausibly related to the label"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "ehb:a77c506b087aab39da748554",
+   "locator": {
+    "candidateId": "899ffdccbde1d63383659140"
+   },
+   "label": "GUARANTEES",
+   "quote": "(vi) Last , the balance, if any, to the Loan Parties or as required by Law. Notwithstanding anything to the contrary in ",
+   "why": "convertible-note Fundamental Change put / structure rep / reinvestment / swap-obligation waterfall: plausibly related to the label"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "ehb:e08b2d33f66897b31a4dd6d0",
+   "locator": {
+    "candidateId": "39dff1711c853dc348c165a6"
+   },
+   "label": "GUARANTEES",
+   "quote": "(vi) Last , the balance, if any, to the Loan Parties or as required by Law. Notwithstanding anything to the contrary in ",
+   "why": "convertible-note Fundamental Change put / structure rep / reinvestment / swap-obligation waterfall: plausibly related to the label"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001744489-20-000066:fy2020q28kex1025-yearc.htm",
+   "locator": {
+    "candidateId": "691ada899dcd0cf3eb45023e"
+   },
+   "label": "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+   "quote": "(b) Payment of Taxes, etc . Pay and discharge, and cause each member of the Consolidated Group to pay and discharge, bef",
+   "why": "payment of taxes affirmative covenant: GENERAL_CONDITIONS is a catch-all, unclear"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001683168-20-003281:delta_8k-ex0401.htm",
+   "locator": {
+    "candidateId": "1e8ba7401f08c49e077aaddc"
+   },
+   "label": "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+   "quote": "(b) An Opinion of Counsel in form and substance reasonably satisfactory to the Trustee (which shall include the statemen",
+   "why": "opinion of counsel may be a defeasance condition"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0000950157-22-000765:ex10-1.htm",
+   "locator": {
+    "candidateId": "55148d9d88514598538e2734"
+   },
+   "label": "EVENTS_OF_DEFAULT",
+   "quote": "(a) Do or cause to be done all things necessary to preserve, renew and keep in full force and effect its legal existence",
+   "why": "preservation-of-existence affirmative covenant: not EoD, but no in-scope correct family"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001104659-14-087365:a14-26274_1ex4d1.htm",
+   "locator": {
+    "candidateId": "bb6d056292434195d15519f3"
+   },
+   "label": "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+   "quote": "(b) Condition to Company Action. The Company will not take any action, directly or indirectly, that consummates or final",
+   "why": "condition to company action: may be a genuine condition"
+  },
+  {
+   "date": "2026-10-15",
+   "sourceId": "edgar:0001219601-22-000011:exhibit4.htm",
+   "locator": {
+    "candidateId": "f1ac808734fe2a188f399c10"
+   },
+   "label": "LIENS",
+   "quote": "(b) The Lenders hereby authorize and direct each Collateral Agent, in accordance with the terms hereof, (1) to release a",
+   "why": "collateral-agent lien release authority: lien-related"
+  }
+ ]
+}
