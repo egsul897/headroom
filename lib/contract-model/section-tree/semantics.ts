@@ -171,7 +171,10 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // Assets. The Borrower shall not consolidate ...") are covenant units of their own; a bare imperative under the
     // section's negative stem ("the Borrower will not ...: (a) Mergers, etc. Merge ...") reads as prohibited.
     if (!am && !(s.title && NOT_COVENANT_TITLE.test(s.title))) {
-      for (const f of captionFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
+      // A debt-incurrence section's ratio test ("(a) ... unless the Fixed Charge Coverage Ratio ... would be at least
+      // 2.0 to 1.0") is a condition to incurrence, not a maintenance covenant.
+      const debtSection = v.families.includes("DEBT") || /\b(?:indebtedness|debt)\b/i.test(s.title ?? "");
+      for (const f of captionFamilies(text.slice(s.headingEnd, s.end))) if (!(f === "FINANCIAL_RATIOS" && debtSection)) fams.add(f);
     }
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end), articleStem(tree, text, s))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
@@ -187,6 +190,8 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // Captioned covenant clauses in text no section covers (guaranties / short agreements numbered "10. Covenants.").
     for (const f of captionFamilies(text, covered)) rootFams.add(f);
     for (const f of scheduleCovenantFamilies(text)) rootFams.add(f);
+    // Term-sheet style ("Financial Covenants:\n ... Maximum Consolidated Leverage Ratio :\n ... 4.00 to 1.00").
+    if (/(?:^|\n)\s*Financial (?:Maintenance )?Covenants?\s*:[\s\S]{0,800}?\b(?:Maximum|Minimum)\b[^\n:]{0,80}\b(?:Ratio|Coverage|Liquidity|Net Worth)\b[\s\S]{0,600}?\d+(?:\.\d+)?\s*(?:to|:|x)\s*1(?:\.0+)?\b/.test(text)) rootFams.add("FINANCIAL_RATIOS");
     if (rootFams.size) { famOf.set(root.id, [...rootFams]); units.push(root); }
   }
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
@@ -260,7 +265,7 @@ function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<
   const out = new Set<CovenantFamily>();
   const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
   let n = 0;
-  for (const c of body.matchAll(/(?:^|\n)\s*\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)\s*([A-Z][^.\n]{3,90}?(?:\n[a-z][^.\n]{1,60}?)?)\s*\.\s+(?=[A-Z])/g)) {
+  for (const c of body.matchAll(/(?:^|\n)\s*\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)\s*([A-Z][^.\n]{3,90}?(?:\n[a-z][^.\n]{1,60}?)?)\s*\.\s+(?=[A-Z]|\([a-z0-9]{1,4}\)\s)/g)) {
     if (c[1]!.split(/\s+/).length > 10 || skip?.(c.index!)) continue;
     // A caption wrapped onto a second line ("(d) Prohibition\nof Fundamental Changes .") has a short first line; a
     // longer one is a list item ending in a sentence.
@@ -322,12 +327,15 @@ function covenantItemFamilies(body: string, inherited = false): Set<CovenantFami
 /** Every "amended (and restated) in its entirety to read as follows:" instruction in a body, with its quoted text. */
 function restatedTexts(body: string, skip?: (offset: number) => boolean): { title: string | null; lead: string }[] {
   const out: { title: string | null; lead: string }[] = [];
-  const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?[^.:]{0,120}?\bamended(?: and restated)?(?: in (?:its|their) entirety)? to read as follows:\s*/gi;
+  const re = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?[^.:]{0,120}?\b(?:amended(?: and restated)?(?: in (?:its|their) entirety)? to read|restated in (?:its|their) entirety(?: to read)?) as follows:\s*/gi;
   for (const m of body.matchAll(re)) {
     if (out.length >= 50) break;
     if (skip?.(m.index!)) continue;
     const rest = body.slice(m.index! + m[0].length, m.index! + m[0].length + 2000).replace(/^[\s“”"'‘\u0080-\u009f]+/, "");
-    const h = /^(?:(?:section\s+)?\d{1,2}\.\d{1,3}\.?|ARTICLE\s+[IVXLC\d]+)\s+([A-Z][^.\n]{2,80})[.\n]\s*/i.exec(rest);
+    const h = /^(?:(?:section\s+)?\d{1,2}\.\d{1,3}\.?|ARTICLE\s+[IVXLC\d]+|\([a-z]{1,2}\))\s+([A-Z][^.\n]{2,80}?)\s*[.\n]\s*/i.exec(rest);
+    // A restated clause fragment ("Section 8.8(d) ... restated ... as follows: so long as (i) ... the Total Leverage
+    // Ratio is not greater than 5.00 to 1.00") is a condition inside another covenant, not a covenant of its own.
+    if (!h && /^[a-z]/.test(rest)) continue;
     out.push(h ? { title: h[1]!.trim(), lead: rest.slice(h[0].length) } : { title: null, lead: rest });
   }
   return out;
@@ -392,6 +400,13 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
   const headRe = /(?:^|\n)\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([^\n.]{3,90})/gi;
   for (const m of text.matchAll(headRe)) {
     const title = m[1]!.trim();
+    // Not a heading: a wrapped ratio or cross-reference ("1.00 or (2) the Net ... Ratio", "2.23 , any ... Ratio"), or an
+    // index/TOC line (the title is followed by a bare section number line: "Fixed Charge Coverage Test\n\n4.10").
+    if (/^(?:or\b|and\b|to\b|[,;])/.test(title)) continue;
+    const afterTitle = text.slice(m.index! + m[0].length, m.index! + m[0].length + 40);
+    // (Index lines are skipped for ratios only: defined-ratio indexes are common in indentures that test ratios only
+    // for incurrence; for other families an index entry still points at a covenant the parse may have missed.)
+    if (family === "FINANCIAL_RATIOS" && (/^[^\n]*\n\s*\d{1,2}\.\d{1,3}\s*\n/.test(afterTitle) || /\s\d{1,3}\s*$/.test(title))) continue;
     const hm = ev.heading.exec(title);
     // The family must lead the title (allowing "Limitation on", "Restrictions on", "Incurrence of"), not be one
     // word inside an unrelated heading ("Evidence of Debt", "Trustee as Holder of Senior Indebtedness").

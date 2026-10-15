@@ -86,3 +86,11 @@ describe("financial covenants", () => {
     expect(classifyCovenantFamily({ title: "Financial Maintenance Covenant", leadIn: "From and after the Closing Date, the Company shall not permit the Consolidated Secured Net Leverage Ratio to exceed 4.50 to 1.00 as of the last day of any Fiscal Quarter.", covenantContext: false }).families).toContain("FINANCIAL_RATIOS");
   });
 });
+
+describe("ratio evidence and buried tests", async () => {
+  const { familyEvidence } = await import("@/lib/contract-model/section-tree/semantics");
+  it("index lines and wrapped ratio text are not ratio headings", () => {
+    expect(familyEvidence("Defined Terms Index\n\nCovenant Defeasance\n\n8.03\n\nFixed Charge Coverage Test\n\n4.10\n\nEvent of Default\n", "FINANCIAL_RATIOS")).toEqual([]);
+    expect(familyEvidence("the Interest Coverage Ratio is not less than 2.00 to\n1.00 or (2) the Net Total Leverage Ratio would be no greater\n", "FINANCIAL_RATIOS").filter((e) => e.kind === "HEADING")).toEqual([]);
+  });
+});
