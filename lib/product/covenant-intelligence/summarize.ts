@@ -101,6 +101,15 @@ export interface DocumentCovenantSummary {
   countsByCategory: Record<string, number>;
   items: CovenantSummaryItem[];
   definedTermsSample: Array<{ term: string; excerpt: string }>;
+  /**
+   * General rule: silent truncation is a lie. countsByCategory counts
+   * EVERY candidate, but items is capped at 120 — without these fields
+   * the counts and the listed items disagreed with no explanation.
+   * totalItemsBeforeCap is the pre-cap item count; truncated is true
+   * when the cap dropped items.
+   */
+  totalItemsBeforeCap: number;
+  truncated: boolean;
 }
 
 function entityScopeFromAnalysis(a: ProvisionAnalysis): CovenantSummaryItem["entityScope"] {
@@ -210,6 +219,8 @@ export function buildDocumentCovenantSummary(params: {
     note: "AI-first interpretations for customer counsel review. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
     items: items.slice(0, 120),
+    totalItemsBeforeCap: items.length,
+    truncated: items.length > 120,
     definedTermsSample: params.definitions.slice(0, 40).map((d) => ({
       term: d.term,
       excerpt: (d.excerpt ?? "").slice(0, 240),
