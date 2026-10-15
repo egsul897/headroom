@@ -1,0 +1,105 @@
+# One-time manual provisioning of a company account (Egzon's team only).
+#
+# workflow_dispatch ONLY — triggered by hand from the GitHub Actions UI,
+# never on push / pull_request / deployment. There is no self-serve signup
+# and no customer-facing "create a company" flow; users exist only because
+# Egzon's team provisioned them via scripts/provision-company-account.ts.
+#
+# How to use:
+#   1. GitHub → Repo Settings → Secrets and variables → Actions → add
+#      repository secret PROVISION_PASSWORD (the password for the new
+#      account). Delete the secret after the account is created.
+#   2. Actions → Provision company account → Run workflow → fill in
+#      email + company_name (+ optional company_id to attach to an
+#      existing company) → Run workflow.
+#   3. Log in at /login with that email + password.
+#
+# Security: the password comes ONLY from the PROVISION_PASSWORD secret via
+# env var HEADROOM_PROVISION_PASSWORD (the script's preferred path — it
+# never lands in shell history). It is NEVER a workflow input (inputs are
+# logged in the run UI) and is NEVER printed in logs. DATABASE_URL comes
+# from the NEON_DATABASE_URL secret. Delete/disable this workflow after
+# the smoke test if desired.
+#
+# Node 22 — matches the other manual workflows in this repo.
+
+name: Provision company account
+
+on:
+  workflow_dispatch:
+    inputs:
+      email:
+        description: "Email for the new account (login)"
+        required: true
+        type: string
+      company_name:
+        description: "Company name (new company is created unless company_id is given)"
+        required: true
+        type: string
+      company_id:
+        description: "Optional: attach to an existing company instead of creating a new one"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Guard — inputs and secrets present, no secret values printed
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          HEADROOM_PROVISION_PASSWORD: ${{ secrets.PROVISION_PASSWORD }}
+        run: |
+          if [ -z "${{ inputs.email }}" ] || [ -z "${{ inputs.company_name }}" ]; then
+            echo "::error::email and company_name inputs are required."
+            exit 1
+          fi
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::NEON_DATABASE_URL secret is not set. Refusing to proceed."
+            exit 1
+          fi
+          if [ -z "$HEADROOM_PROVISION_PASSWORD" ]; then
+            echo "::error::PROVISION_PASSWORD secret is not set. Refusing to proceed."
+            exit 1
+          fi
+          case "$DATABASE_URL" in
+            *localhost*|*127.0.0.1*)
+              echo "::error::DATABASE_URL looks local. Refusing to provision against a local database."
+              exit 1
+              ;;
+          esac
+          echo "Guard passed (no secret values printed)."
+
+      - name: Provision company account
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+          HEADROOM_PROVISION_PASSWORD: ${{ secrets.PROVISION_PASSWORD }}
+        run: |
+          if [ -n "${{ inputs.company_id }}" ]; then
+            npx tsx scripts/provision-company-account.ts \
+              --email "${{ inputs.email }}" \
+              --company-name "${{ inputs.company_name }}" \
+              --company-id "${{ inputs.company_id }}"
+          else
+            npx tsx scripts/provision-company-account.ts \
+              --email "${{ inputs.email }}" \
+              --company-name "${{ inputs.company_name }}"
+          fi
