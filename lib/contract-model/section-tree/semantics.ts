@@ -192,6 +192,20 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     for (const f of captionFamilies(text, covered)) rootFams.add(f);
     for (const f of scheduleCovenantFamilies(text)) rootFams.add(f);
     for (const f of unnumberedHeadingFamilies(text)) rootFams.add(f);
+    // Obligor prohibitions in text no section covers (a note's lettered covenants, a term sheet's covenant rows):
+    // "(f) Holdings will not, and will not permit any of its subsidiaries to, create, incur ... any Indebtedness".
+    {
+      let n = 0;
+      for (const m of text.matchAll(/(?:^|\n[^\S\n]*\n)[^\S\n]*(?:\([a-z]{1,2}\)[^\S\n]*|[\u0080-\u009f\u2022\u00b7\u2000-\u200b\s]+)?((?:The\s+)?[A-Z][\w\u2019'-]*(?:,?\s+\S+){0,16}?\s+(?:shall|will)\s+not\b)/g)) {
+        if (++n > 300) break;
+        const at = m.index! + m[0].length - m[1]!.length;
+        if (covered(at)) continue;
+        // A recital describing another instrument's covenants ("WHEREAS, Section 9 of each CoD sets forth certain
+        // negative covenants, which provide that ... the Company shall not ...") is not one.
+        if (/\bWHEREAS\b/.test(text.slice(Math.max(0, at - 300), at)) || /\b(?:sets? forth|which provides?|provides? that)\b/i.test(text.slice(at, at + 400))) continue;
+        for (const f of classifyCovenantFamily({ title: null, parentTitle: null, leadIn: text.slice(at, at + 1500), covenantContext: true }).families) rootFams.add(f);
+      }
+    }
     // Amendment instructions naming the covenant they change ("Section 7.2 of the Credit Agreement (Indebtedness) is
     // hereby amended by ... adding the following new clause (n)"): the amended covenant is that family.
     for (const m of text.matchAll(/\bSection\s+\d{1,2}\.\d{1,3}(?:\([a-z0-9]{1,4}\))*\s+of\s+the\s+(?:Credit|Loan|Note Purchase|Financing)\s+Agreement\s*\(([A-Z][^()\n]{2,80})\)\s*(?:is|shall be)\s+(?:hereby\s+)?(?:amended|restated|modified|supplemented)\b/g)) {
@@ -343,7 +357,7 @@ function unnumberedHeadingFamilies(text: string): Set<CovenantFamily> {
 
 function covenantItemFamilies(body: string, inherited = false): Set<CovenantFamily> {
   const out = new Set<CovenantFamily>();
-  if (body.length > 60000) return out;
+  if (body.length > 150000) return out;
   // A negative stem governs the items that follow its colon until the next stem.
   // A negative stem ends in a colon introducing the list ("shall not ... take any of the following actions:", "will not,
   // directly or indirectly:").
@@ -450,6 +464,13 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
   const out: { kind: "HEADING" | "LEAD_IN"; excerpt: string }[] = [];
   // Headings: a numbered heading line whose title names the family.
   const headRe = /(?:^|\n)\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([^\n.]{3,90})/gi;
+  const noticeOnly = (at: number) => {
+    const body = text.slice(at, at + 400).replace(/^[\s.]+/, "");
+    const first = body.split(/(?<=\.)\s+(?=[A-Z(])|(?<=\.)\s*\n[^\S\n]*\n/)[0] ?? body;
+    // (Also a disclosure representation: "6.7 Debt  Schedule 6.7 lists all outstanding Debt ...".)
+    if (/^Schedule\s+[\d.()a-z]+\s+(?:lists|sets forth|contains|describes|is a (?:true|complete))\b/i.test(first)) return true;
+    return !NEG_RE.test(first) && /\b(?:notice|inform|notify)\b/i.test(first) && !/\b(?:except|unless|without)\b/i.test(first);
+  };
   for (const m of text.matchAll(headRe)) {
     const title = m[1]!.trim();
     // Not a heading: a wrapped ratio or cross-reference ("1.00 or (2) the Net ... Ratio", "2.23 , any ... Ratio"), or an
@@ -464,11 +485,9 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     if (family === "FINANCIAL_RATIOS" && (/^[\s.]*(?:None|\[Reserved\]|Reserved|Intentionally Omitted)\b/i.test(text.slice(m.index! + m[0].length, m.index! + m[0].length + 60)) || /\bcalculations?\b/i.test(title) || /^[(“"]/.test(title))) continue;
     // A notice duty under a covenant-sounding heading ("5.16 Fundamental Changes  Provide the Purchaser with at least 15
     // days' prior written notice ...") restricts nothing.
-    if (family === "DEBT" || family === "FUNDAMENTAL_CHANGES") {
-      const body = text.slice(m.index! + m[0].length, m.index! + m[0].length + 400).replace(/^[\s.]+/, "");
-      const first = body.split(/(?<=\.)\s+(?=[A-Z(])/)[0] ?? body;
-      if (!NEG_RE.test(first) && /\b(?:notice|inform|notify)\b/i.test(first) && !/\b(?:except|unless|without)\b/i.test(first)) continue;
-    }
+    // (The table-of-contents entry of such a heading goes with it.)
+    if ((family === "DEBT" || family === "FUNDAMENTAL_CHANGES") && noticeOnly(m.index! + m[0].length)) continue;
+    if ((family === "DEBT" || family === "FUNDAMENTAL_CHANGES") && [...text.matchAll(headRe)].some((o) => o.index !== m.index && o[1]!.trim() === title && noticeOnly(o.index! + o[0].length))) continue;
     const hm = ev.heading.exec(title);
     // The family must lead the title (allowing "Limitation on", "Restrictions on", "Incurrence of"), not be one
     // word inside an unrelated heading ("Evidence of Debt", "Trustee as Holder of Senior Indebtedness").

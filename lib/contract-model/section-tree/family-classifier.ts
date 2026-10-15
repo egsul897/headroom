@@ -167,6 +167,7 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   const evidence: string[] = [];
   const add = (f: CovenantFamily, w: number, why: string) => { scores.set(f, (scores.get(f) ?? 0) + w); evidence.push(`${f}:${why}`); };
 
+  let bothObjects = false;
   if (prohibitive) {
     // Only the first prohibition sentence counts as the lead-in object.
     // Article-imperative leads ("Enter into any transaction ...") start at 0; otherwise at the first prohibition.
@@ -183,7 +184,9 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
       // A short party/caption title ("5.01 Issuer.") under an article that names the family ("MERGERS AND
       // CONSOLIDATIONS") takes the article heading.
       const titledOffFamily = !!args.title && !HEADING.some(([, re]) => re.test(args.title!)) && !(args.parentTitle && args.title!.split(/\s+/).length <= 3 && HEADING.some(([, re]) => re.test(args.parentTitle!)));
-      for (const f of hit) if (!(f === "DEBT" && (hit.includes("LIENS") || hit.includes("PREPAYMENTS")))) add(f, titledOffFamily ? 2 : 3, "lead-in");
+      // ("incur or guarantee any other indebtedness or liens" names both as objects.)
+      bothObjects = /\b(?:incur|guarantee)\b[^.;]{0,40}\bindebtedness\s+or\s+liens?\b/i.test(sentence);
+      for (const f of hit) if (!(f === "DEBT" && !bothObjects && (hit.includes("LIENS") || hit.includes("PREPAYMENTS")))) add(f, titledOffFamily ? 2 : 3, "lead-in");
     }
   }
   const titledOffFamilyAll = !!args.title && !HEADING.some(([, re]) => re.test(args.title!));
@@ -225,7 +228,7 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   // Need at least a heading+lead-in agreement or a strong lead-in alone.
   if (score < 3) best = null;
   // Secondary families need their own heading support ("Merger, Consolidation, or Sale of Assets").
-  const families = best ? [best, ...[...scores].filter(([f, s]) => f !== best && s >= 3 && evidence.includes(`${f}:heading`)).map(([f]) => f)] : [];
+  const families = best ? [best, ...[...scores].filter(([f, s]) => f !== best && s >= 3 && (evidence.includes(`${f}:heading`) || (bothObjects && f === "DEBT"))).map(([f]) => f)] : [];
   return { family: best, score, families, evidence };
 }
 

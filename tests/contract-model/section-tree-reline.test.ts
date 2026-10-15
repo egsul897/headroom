@@ -149,3 +149,14 @@ describe("round 8: FR headings without an operative section", async () => {
     expect(classifyCovenantFamily({ title: "Minimum Liquidity", leadIn: "Within forty five days of the end of each fiscal quarter, the account will be measured to confirm that Pledgor has maintained a minimum cash balance of $7,000,000.", covenantContext: true }).families).toContain("FINANCIAL_RATIOS");
   });
 });
+
+describe("round 8: DEBT open items", async () => {
+  const { familyEvidence } = await import("@/lib/contract-model/section-tree/semantics");
+  it("'incur or guarantee any other indebtedness or liens' is DEBT and LIENS", () => {
+    expect(classifyCovenantFamily({ title: null, leadIn: "Borrower and its subsidiaries shall not incur or guarantee any other indebtedness or liens on any assets without the Lenders prior written approval.", covenantContext: true }).families).toEqual(expect.arrayContaining(["DEBT", "LIENS"]));
+  });
+  it("disclosure and notice-only 'Debt' headings are not DEBT evidence", () => {
+    expect(familyEvidence("6.7\nDebt\n\nSchedule 6.7 lists all outstanding\nDebt of the Corporation.\n\n6.8\nMaterial Contracts\n", "DEBT")).toEqual([]);
+    expect(familyEvidence("5.17\nDebt and Liens\n\nCorporation will in reasonable\ntime inform the Purchaser of any new liens and debts.\n\n16\n\n5.18\nOther. The Corporation shall not do X.\n", "DEBT")).toEqual([]);
+  });
+});
