@@ -106,3 +106,10 @@ describe("margin numbers glued into the body", () => {
     expect(s[1]!.title).toBe("Limitation on Liens");
   });
 });
+
+describe("combined investments / designation titles", () => {
+  it("'Limitation on Investments and Designation of Unrestricted Subsidiaries' with an investment prohibition is INVESTMENTS", () => {
+    const doc = `ARTICLE VI NEGATIVE COVENANTS\n\nSection 6.01 Liens. The Borrower will not create any Lien on any of its property except Permitted Liens.\n\nSection 6.02 Limitation on Investments and Designation of Unrestricted Subsidiaries. The Borrower will not, and will not permit any Restricted Subsidiary to, make any Investment except Permitted Investments. The Borrower may designate any Restricted Subsidiary as an Unrestricted Subsidiary if no Default exists.\n\nSection 6.03 Fiscal Year. The Borrower will not change its fiscal year.\n`;
+    expect(st(doc, "INVESTMENTS").sectionPaths).toEqual(["6.2"]);
+  });
+});

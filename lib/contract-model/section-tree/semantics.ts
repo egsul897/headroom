@@ -181,7 +181,13 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     if (fams.has("RESTRICTED_PAYMENTS") && !am && !restrictsPayments(leadOf(s))) fams.delete("RESTRICTED_PAYMENTS");
     // Designating (Un)restricted Subsidiaries and suspending covenants on an investment-grade rating describe how the
     // covenants apply; they restrict no payment, investment or prepayment themselves.
-    if (DESIGNATION_OR_SUSPENSION.test(`${s.title ?? ""} ${leadOf(s).slice(0, 200)}`)) for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) fams.delete(f);
+    // A combined title ("Limitation on Investments and Designation of Unrestricted Subsidiaries") keeps INVESTMENTS when
+    // the body itself prohibits the obligor's investments.
+    if (DESIGNATION_OR_SUSPENSION.test(`${s.title ?? ""} ${leadOf(s).slice(0, 200)}`)) {
+      const keepInv = /\binvestments?\b/i.test(s.title ?? "") && investmentProhibition(leadOf(s));
+      for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) if (!(f === "INVESTMENTS" && keepInv)) fams.delete(f);
+      if (keepInv) fams.add("INVESTMENTS");
+    }
     famOf.set(s.id, [...fams]);
   }
   // Restatements in text no section covers (an amendment with no numbered sections) belong to the document root.
@@ -487,6 +493,10 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   PREPAYMENTS: { heading: /\b(?:prepayments? of (?:other )?(?:indebtedness|debt)|restricted debt payments|payments? of (?:subordinated|junior) (?:indebtedness|debt))\b/i, lead: /(?:prepay|redeem|repurchase|defease|retire)[^.;]{0,100}?\b(?:subordinated|junior)?\s*(?:indebtedness|debt)\b/i },
   FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?)\b[^.;]{0,120}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
 };
+/** An obligor-bound negated "make ... Investment(s)/loans/advances" in the text. */
+function investmentProhibition(lead: string): boolean {
+  return /\b(?:shall|will|may)\s+not\b[^.]{0,200}?\bmake\b[^.;]{0,80}\b(?:investments?|loans? or advances?|advances? to)\b/i.test(lead) && isObligorProhibitionLead(lead);
+}
 const DESIGNATION_OR_SUSPENSION = /\bdesignat\w*\b[^.;]{0,60}\b(?:un)?restricted subsidiar|\b(?:suspension|suspended|suspend)\b[^.;]{0,40}\bcovenants?\b|\bcovenant suspension\b|\bsuspended covenants?\b/i;
 const NEG_RE = new RegExp(NEG, "i");
 const NOT_COVENANT_TITLE = /limited condition|ratio adjustments?|pro forma|title to|ownership of|pledged|net proceeds|disposition offer|investment company|dividend equivalents|designation of|suspension of|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
