@@ -34,7 +34,9 @@ function stripParens(s: string): string { return s.replace(/\([^()]{0,200}\)/g, 
 function noPartyMatches(lead: string): RegExpMatchArray[] {
   return [...stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length)).matchAll(NO_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!));
 }
-const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 };
+/** "Neither the Issuer nor Parent may consolidate ..." / "Neither Borrower shall ...": a negated obligor subject. */
+const NEITHER_RE = /\b[Nn]either\s+(?:the\s+)?[A-Z][^.;:]{0,120}?\b(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated))/;
+const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 || NEITHER_RE.test(lead) };
 
 /** The prohibition binds an obligor: not the trustee, agents, lenders or holders, and not a passive "shall not be required/deemed". */
 const NON_OBLIGOR = /\b(?:trustees?|agents?|holders?|lenders?|banks?|purchasers?|registrar|noteholders?|collateral agent|arrangers?)\b/i;
@@ -46,14 +48,15 @@ function obligorBound(lead: string): boolean {
     const subject = head.slice(Math.max(0, m.index! - 70), m.index!).split(/[.;:]/).pop() ?? "";
     if (!NON_OBLIGOR.test(subject)) return true;
   }
+  for (const m of head.matchAll(new RegExp(NEITHER_RE.source, "g"))) if (!NON_OBLIGOR.test(m[0])) return true;
   for (const m of noPartyMatches(head)) {
     if (PASSIVE.test(head.slice(m.index! + m[0].length))) continue;
     if (!NON_OBLIGOR.test(m[1]! + m[2]!)) return true;
   }
   return false;
 }
-const RATIO_SUBJECT = /\b(?:ratio|liquidity|net worth|financial covenants?)\b/i;
-const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bat\s+least\b|\bmaintain\b|\b(?:not|never)\s+(?:permit|exceed)\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b|\bshall apply\b/i;
+const RATIO_SUBJECT = /\b(?:ratio|liquidity|net worth|financial covenants?|(?:interest|debt service|fixed charge) coverage)\b/i;
+const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bto\s+(?:exceed|be\s+(?:less|lower|greater|more|higher)\b)|\bat\s+least\b|\bmaintain\b|\b(?:not|never)\s+(?:permit|exceed)\b|\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b|\bshall apply\b/i;
 
 const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
   ["LIENS", /\b(?:create|incur|assume|suffer|permit)\b[^.;]{0,160}\b(?:liens?|mortgages?|pledges?|security interests?|encumbrances?)\b(?!\s+(?:net|leverage|obligations|notes|credit|facility|term|secured)\b)/i],
@@ -74,8 +77,8 @@ const HEADING: Array<[CovenantFamily, RegExp]> = [
   ["INVESTMENTS", /\binvestments?\b|loans?,? advances|acquisitions/i],
   ["ASSET_SALES", /asset sales?|asset transfers?|transfers? of assets|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],
   ["AFFILIATE_TRANSACTIONS", /affiliates?/i],
-  ["FUNDAMENTAL_CHANGES", /fundamental changes?|mergers?|\bconsolidations?\b|consolidate\b/i],
-  ["FINANCIAL_RATIOS", /financial (?:condition )?covenants?|\bratios?\b|minimum liquidity|net worth|fixed charge/i],
+  ["FUNDAMENTAL_CHANGES", /fundamental changes?|\bmerger?s?\b|\bconsolidations?\b|consolidate\b|amalgamat/i],
+  ["FINANCIAL_RATIOS", /financial (?:condition )?covenants?|\bratios?\b|\bliquidity\b|net worth|fixed charge|\bleverage\b|(?:interest|debt service|asset) coverage/i],
 ];
 
 const DEFINED: Array<[CovenantFamily, RegExp]> = [
@@ -123,7 +126,16 @@ const TEMPORAL_LEAD = /^[\s.:]*(?:\([a-z0-9]+\)\s*)?(?:from|after|prior to|until
  */
 const CONDITIONAL_PERMISSION = /^\s*(?:\([a-z0-9]+\)\s*)?(?:the\s+)?(?:issuer|company|borrower|parent|guarantor|obligor)s?\s+(?:shall\s+not\s+|may\s+(?:not\s+)?)?(?:consolidate|merge|amalgamate|convey|transfer|sell|lease)\b[^]{0,1800}?\b(?:only if|provided,? that|if|unless|so long as)\b/i;
 
+/**
+ * A run-in sub-caption before an article imperative ("Consolidated Leverage Ratio. Permit the Consolidated Leverage
+ * Ratio ... to exceed ...", "Minimum Liquidity. Maintain Liquidity of at least ..."): short Title-Case words ending in a
+ * period, then a capitalized operative verb. The caption is heading text; the operative lead starts at the verb.
+ */
+const SUBCAPTION = /^\s*(?:\([a-z0-9]+\)\s*)?((?:[A-Z][\w’'&/-]*|of|on|and|or|to|the|in)(?:\s+(?:[A-Z][\w’'&/-]*|of|on|and|or|to|the|in)){0,7})\s*\.\s+(?=(?:Permit|Maintain|Incur|Create|Make|Declare|Sell|Enter|Merge|Pay|Prepay|Purchase|Transfer|Consolidate|Dispose|Cause|Directly)\b)/;
+
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
+  const sub = SUBCAPTION.exec(args.leadIn);
+  if (sub) args = { ...args, leadIn: args.leadIn.slice(sub[0].length), title: [args.title, sub[1]].filter(Boolean).join("; ") || null };
   const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
@@ -138,8 +150,8 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   if (prohibitive) {
     // Only the first prohibition sentence counts as the lead-in object.
     // Article-imperative leads ("Enter into any transaction ...") start at 0; otherwise at the first prohibition.
-    const ci = /(?:shall|will|may)\s+not\b/i.exec(lead), np = noPartyMatches(lead)[0];
-    const m = IMPERATIVE.test(lead) ? { index: 0 } : [ci, np].filter(Boolean).sort((a, b) => a!.index! - b!.index!)[0] ?? null;
+    const ci = /(?:shall|will|may)\s+not\b/i.exec(lead), np = noPartyMatches(lead)[0], ne = NEITHER_RE.exec(lead);
+    const m = IMPERATIVE.test(lead) ? { index: 0 } : [ci, np, ne].filter(Boolean).sort((a, b) => a!.index! - b!.index!)[0] ?? null;
     // The object may follow a colon and a first enumerated clause ("shall not: (i) declare or pay any dividend").
     const from = lead.slice(m?.index ?? 0);
     const sentence = from.slice(0, Math.min(450, (from.search(/\.\s/) + 1) || 450));

@@ -119,7 +119,8 @@ function findHeadings(text: string): Heading[] {
     const hasWord = /section|§/i.test(m[0].slice(lead.length, lead.length + 12));
     // (A lead of ".\s+" that crosses a newline is a line start: the previous section's last sentence
     // ended the line — the acn under-parse, 96 of 116 body headings dropped.)
-    if (/^\.\s+$/.test(lead) && !lead.includes("\n") && !hasWord) continue;
+    // Two or more spaces after the sentence's period is a run-in heading gap ("Encumbrances.  6.3 Fundamental Changes.").
+    if (/^\.\s+$/.test(lead) && !lead.includes("\n") && !/\s{2,}/.test(lead) && !hasWord) continue;
     const title = m[3]!.replace(/\s+/g, " ").trim();
     // Cross-reference shapes, not headings: "Section 6.01 hereof", "Section 7.02 of the Credit Agreement".
     if (/^(hereof|herein|of the|of this|above|below|and|or|to|shall|is|has)\b/i.test(title)) continue;

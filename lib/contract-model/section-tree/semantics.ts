@@ -171,9 +171,15 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // Restated articles/sections quoted later in the body ("(g) Article IX of the Credit Agreement is hereby amended and
     // restated in its entirety to read as follows: From and after ..."): classify each quoted text too.
     const fams = new Set(v.families);
+    // Captioned clauses ("(a) Mergers, etc. Merge or consolidate ...", "(d) Mergers and Consolidations; Disposition of
+    // Assets. The Borrower shall not consolidate ...") are covenant units of their own; a bare imperative under the
+    // section's negative stem ("the Borrower will not ...: (a) Mergers, etc. Merge ...") reads as prohibited.
+    if (!am && !(s.title && NOT_COVENANT_TITLE.test(s.title))) {
+      for (const f of captionFamilies(text.slice(s.headingEnd, s.end))) fams.add(f as CovenantFamily);
+    }
     // Enumerated covenant items: an item counts only when its own structural parent's lead-in is an obligor-bound
     // negative stem, or the item itself carries an obligor-bound prohibition.
-    if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(tree, text, s)) fams.add(f);
+    if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(tree, text, s, articleStem(tree, text, s))) fams.add(f);
     if (!am && fams.has("RESTRICTED_PAYMENTS") && prohib.get(s.id)) for (const f of restrictedPaymentItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f as CovenantFamily);
     // Designating (Un)restricted Subsidiaries and suspending covenants on an investment-grade rating describe how the
     // covenants apply; they restrict no payment, investment or prepayment themselves.
@@ -201,6 +207,9 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
       famOf.set(id, [...fams]);
       units.push({ id, path: `${root.path || "ROOT"}@${q.start}-${q.end}`, start: q.start, end: q.end, resolved: q.resolved, node: null });
     }
+    // Captioned covenant clauses in text no section covers: no bound span, so they fail closed (no ceiling from ROOT).
+    const capFams = captionFamilies(text, covered);
+    if (capFams.size) { const id = `${root.id}#captions`; famOf.set(id, [...capFams]); units.push({ id, path: `${root.path || "ROOT"}@captions`, start: 0, end: 0, resolved: false, node: null }); }
   }
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
   const opening = text.slice(0, 4000);
@@ -285,6 +294,31 @@ function restrictedPaymentItemFamilies(body: string): Set<string> {
   return out;
 }
 
+/** True when the section's enclosing ARTICLE opens with a negative stem ("the Borrower shall not, ...:") before its first section. */
+function articleStem(tree: SectionTree, text: string, s: TreeNode): boolean {
+  let p = s.parentId ? tree.byId.get(s.parentId) : undefined;
+  while (p && p.kind !== "ARTICLE") p = p.parentId ? tree.byId.get(p.parentId) : undefined;
+  if (!p) return false;
+  const first = tree.nodes.filter((n) => n.kind === "SECTION" && n.start > p!.start && n.start < p!.end).sort((a, b) => a.start - b.start)[0];
+  const lead = text.slice(p.headingEnd, first ? first.start : Math.min(p.end, p.headingEnd + 1500)).slice(-600);
+  return /\b(?:shall|will)\s+not\b[^.:]{0,300}:\s*$/i.test(lead) && !/\b(?:prohibit|apply|unless)\b/i.test(lead);
+}
+
+/** Families of captioned clauses ("(a) Prohibition of Fundamental Changes. Guarantor shall not ..."); offsets in skip are ignored. */
+function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<string> {
+  const out = new Set<string>();
+  const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
+  let n = 0;
+  for (const c of body.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s*([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
+    if (c[1]!.split(/\s+/).length > 10 || skip?.(c.index!)) continue;
+    if (++n > 400) break;
+    const rest = body.slice(c.index! + c[0].length, c.index! + c[0].length + 1500);
+    const underStem = stem.test(body.slice(Math.max(0, c.index! - 400), c.index!).trimEnd() + " ") || stem.test(body.slice(0, Math.min(c.index!, 600)));
+    for (const f of classifyCovenantFamily({ title: c[1]!.trim(), parentTitle: null, leadIn: underStem ? rest.replace(/^\s*/, "") : rest, covenantContext: true }).families) out.add(f);
+  }
+  return out;
+}
+
 /** Lead-in of a node: its own text before its first child (the stem that governs its enumerated items). */
 function ownLead(tree: SectionTree, text: string, n: TreeNode): string {
   const first = tree.nodes.filter((c) => c.parentId === n.id).sort((x, y) => x.start - y.start)[0];
@@ -301,7 +335,7 @@ function governingNegativeStem(lead: string): boolean {
   return isObligorProhibitionLead(stem);
 }
 
-function covenantItemFamilies(tree: SectionTree, text: string, s: TreeNode): Set<CovenantFamily> {
+function covenantItemFamilies(tree: SectionTree, text: string, s: TreeNode, inherited = false): Set<CovenantFamily> {
   const out = new Set<CovenantFamily>();
   if (s.end - s.start > 60000) return out;
   const leadCache = new Map<string, boolean>();
@@ -310,7 +344,13 @@ function covenantItemFamilies(tree: SectionTree, text: string, s: TreeNode): Set
     const parent = c.parentId ? tree.byId.get(c.parentId) : undefined;
     if (!parent) continue;
     let under = leadCache.get(parent.id);
-    if (under === undefined) { under = governingNegativeStem(ownLead(tree, text, parent)); leadCache.set(parent.id, under); }
+    if (under === undefined) {
+      const lead = ownLead(tree, text, parent);
+      // A section's direct items inherit its article's obligor-bound negative stem ("the Borrower shall not ...:" before
+      // Section 7.01) unless the section's own lead-in is a permission/exception stem.
+      under = governingNegativeStem(lead) || (inherited && parent.id === s.id && !/\b(?:may|prohibit|apply|unless|permitted)\b/i.test(lead.trimEnd().slice(-300)));
+      leadCache.set(parent.id, under);
+    }
     const item = text.slice(c.headingEnd, Math.min(c.end, c.headingEnd + 600));
     const fams = under ? negatedItemFamilies(item, true) : isObligorProhibitionLead(item) ? negatedItemFamilies(item, false) : [];
     for (const f of fams) out.add(f);
@@ -374,11 +414,11 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   AFFILIATE_TRANSACTIONS: { heading: /\btransactions? with affiliates\b|\baffiliate transactions\b/i, lead: /(?:enter into|permit to exist|engage in)[^.;]{0,140}?\baffiliates?\b/i },
   FUNDAMENTAL_CHANGES: { heading: /\b(?:mergers?|consolidations?|fundamental changes|merger,? consolidation)\b/i, lead: /\b(?:merge|consolidate|amalgamate|liquidate|dissolve)\b/i },
   PREPAYMENTS: { heading: /\b(?:prepayments? of (?:other )?(?:indebtedness|debt)|restricted debt payments|payments? of (?:subordinated|junior) (?:indebtedness|debt))\b/i, lead: /(?:prepay|redeem|repurchase|defease|retire)[^.;]{0,100}?\b(?:subordinated|junior)?\s*(?:indebtedness|debt)\b/i },
-  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?)\b[^.;]{0,120}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
+  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge|minimum liquidity)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?|liquidity)\b[^.;]{0,400}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
 };
 const DESIGNATION_OR_SUSPENSION = /\bdesignat\w*\b[^.;]{0,60}\b(?:un)?restricted subsidiar|\b(?:suspension|suspended|suspend)\b[^.;]{0,40}\bcovenants?\b|\bcovenant suspension\b|\bsuspended covenants?\b/i;
 const NEG_RE = new RegExp(NEG, "i");
-const NOT_COVENANT_TITLE = /dividend equivalents|designation of|suspension of|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
+const NOT_COVENANT_TITLE = /\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion|dividend equivalents|designation of|suspension of/i;
 
 /**
  * Lead-in text that names a family's verb/object but is not that covenant: affiliate-transaction text for asset sales,
@@ -399,6 +439,7 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   if (family === "RESTRICTED_PAYMENTS" && /\bdividend equivalents?\b/i.test(sent)) return true;
   if (family === "INVESTMENTS" && (/\b(?:lenders?|banks?|issuing bank|swingline lender|agent)s?\b[^.;]{0,80}$/i.test(before) || /\b(?:not be obligated|obligated to)\b/i.test(sent) || /\badvances?\b/i.test(sent) && /\b(?:lenders?|borrowing)\b/i.test(sent))) return true;
   if (family === "FUNDAMENTAL_CHANGES" && !/\b(?:merge|consolidate|amalgamate)\b/i.test(sent) && /\b(?:dissol|liquidat|wind(?:ing)? up)\w*\b[^.]{0,200}\b(?:prior to|until|upon the (?:first )?(?:to )?occur|liquidation event|the act)\b/i.test(sent)) return true;
+  if (family === "DEBT" && /\b(?:liens?|mortgages?|security interests?)\s+(?:securing|to secure)\b[^.;]{0,60}\b(?:indebtedness|debt)\b/i.test(sent)) return true;
   if (family === "DEBT" && /\b(?:indebtedness|debt)\b[^.;]{0,80}\bsecured by\b[^.;]{0,80}\b(?:mortgage|lien|security interest|pledge)/i.test(sent)) return true;
   return false;
 }
@@ -423,6 +464,15 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
   // Clause-caption headings: "(d) Mergers and Consolidations; Disposition of Assets. The Borrower will not ...".
   if (!out.length) for (const m of text.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
     const title = m[1]!.trim();
+    // Only a caption followed by an obligation: drop it only when the sentence after it carries no modal, negation or
+    // imperative (a representation, "Schedule 5.2(i) sets forth ...", or a default trigger, "Borrower fails to pay ...").
+    const after = text.slice(m.index! + m[0].length, m.index! + m[0].length + 400);
+    const first = after.split(/(?<=\.)\s+(?=[A-Z(])/)[0] ?? after;
+    // Equity-plan mechanics ("Merger or Change in Control. In the event of a merger, each outstanding Option shall be
+    // assumed ...") govern awards, not the issuer's conduct.
+    if (/\b(?:outstanding\s+)?(?:options?|awards?|purchase rights?|offering periods?|participants?|the plan)\b/i.test(first) && !NEG_RE.test(first)) continue;
+    if (!(/\b(?:shall|will|must|agrees?|covenants?)\b/i.test(first) || NEG_RE.test(first) || /\b(?:neither|nor)\b/i.test(first) ||
+      /(?:^|,\s*)(?:Merge|Consolidate|Create|Incur|Make|Declare|Sell|Enter|Permit|Pay|Prepay|Transfer|Dispose|Maintain|Wind|Liquidate|Dissolve|Engage|Suffer)\b/.test(first))) continue;
     if (title.split(/\s+/).length > 10 || NOT_COVENANT_TITLE.test(title)) continue;
     if (title.split(/[;,]|\band\b/).some((part) => { const hm = ev.heading.exec(part.trim()); return !!hm && hm.index <= 25; })) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
   }
@@ -446,7 +496,10 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
       // ("The Credit Agreement contains certain covenants, a financial covenant ... requiring ... to maintain")
       // is not.
       const before = sent.slice(Math.max(0, lm.index - 160), lm.index);
-      if (!/\b(?:shall|will|agrees?|covenants?\s+(?:and agrees?\s+)?that)\b/i.test(before) || /\bcontains?\b[^.;]{0,80}\bcovenants?\b/i.test(sent)) continue;
+      // An article imperative ("Permit the Consolidated Leverage Ratio ... to exceed", "Maintain Liquidity of at least")
+      // under the article's "will not / will:" stem is an obligation too.
+      const imperativeTest = /^\s*(?:\([a-z0-9]+\)\s*)?(?:(?:[A-Z][\w’'&/-]*\s+){0,6}[A-Z][\w’'&/-]*\s*\.\s+)?(?:Permit|Maintain)\b/.test(sent) && lm.index <= sent.search(/\b(?:Permit|Maintain)\b/);
+      if ((!imperativeTest && !/\b(?:shall|will|agrees?|covenants?\s+(?:and agrees?\s+)?that)\b/i.test(before)) || /\bcontains?\b[^.;]{0,80}\bcovenants?\b/i.test(sent)) continue;
     }
     if (family !== "FINANCIAL_RATIOS") {
       // The negated obligation must govern the operative verb: negation within 160 chars before it.
