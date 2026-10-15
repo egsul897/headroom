@@ -96,8 +96,10 @@ const DEFINED: Array<[CovenantFamily, RegExp]> = [
  * Structural covenant context (no title keywords): a section's lead-in is an obligor-bound prohibition or an
  * article-imperative. A section sits in a covenant run when an adjacent sibling section is one too.
  */
+/** An exception lead before an article imperative ("Except for Permitted Investments, directly or indirectly, make ..."). */
+const EXCEPT_LEAD = /^[\s.:]*(?:\([a-z0-9]+\)\s*)?except\s+(?:for|as)\b[^;:]{0,200}?,\s*(?=(?:directly or indirectly|incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose)\b)/i;
 export function isObligorProhibitionLead(leadIn: string): boolean {
-  const lead = operativeWindow(leadIn).slice(0, 700);
+  const lead = operativeWindow(leadIn).replace(EXCEPT_LEAD, "").slice(0, 700);
   return IMPERATIVE.test(lead) || (PROHIBITION.test(lead) && obligorBound(lead));
 }
 
@@ -129,7 +131,7 @@ const TEMPORAL_LEAD = /^[\s.:]*(?:\([a-z0-9]+\)\s*)?(?:from|after|prior to|until
 const CONDITIONAL_PERMISSION = /^\s*(?:\([a-z0-9]+\)\s*)?(?:the\s+)?(?:issuer|company|borrower|parent|guarantor|obligor)s?\s+(?:shall\s+not\s+|may\s+(?:not\s+)?)?(?:consolidate|merge|amalgamate|convey|transfer|sell|lease)\b[^]{0,1800}?\b(?:only if|provided,? that|if|unless|so long as)\b/i;
 
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
-  const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "");
+  const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "").replace(EXCEPT_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
   // The ratio subject is read from the operative test verb, past any "so long as any Loan remains outstanding ...,
