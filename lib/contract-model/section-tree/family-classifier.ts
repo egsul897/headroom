@@ -24,8 +24,8 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:except\b[^.;:]{0,200}?,\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
-const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:except\b[^.;:]{0,200}?,\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
+const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:(?:except\b[^.;:]{0,200}?|in the case of [^.;:]{1,80}?),\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
+const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:(?:except\b[^.;:]{0,200}?|in the case of [^.;:]{1,80}?),\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
 /** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
 const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
 const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
@@ -94,6 +94,11 @@ const DEFINED: Array<[CovenantFamily, RegExp]> = [
  * Structural covenant context (no title keywords): a section's lead-in is an obligor-bound prohibition or an
  * article-imperative. A section sits in a covenant run when an adjacent sibling section is one too.
  */
+/** Families a covenant heading names on its own ("Indebtedness", "Restricted Payments"); no lead-in test. */
+export function headingFamilies(title: string): CovenantFamily[] {
+  return [...new Set(HEADING.filter(([, re]) => re.test(title)).map(([f]) => f))];
+}
+
 export function isObligorProhibitionLead(leadIn: string): boolean {
   const lead = operativeWindow(leadIn).slice(0, 700);
   return IMPERATIVE.test(lead) || (PROHIBITION.test(lead) && obligorBound(lead));
@@ -141,6 +146,8 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   // A definition ("“Consolidated Leverage Ratio” means ...", e.g. a definitions-only amendment's restated term) states
   // no covenant.
   if (/^\s*(?:\([a-z0-9]{1,4}\)\s*)?[“"][^”"]{2,80}[”"]\s*(?:\([^)]{0,60}\)\s*)?(?:means|shall mean|has the meaning)/i.test(args.leadIn) || /^\s*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+)?(?:definitions?\s+of|following\s+(?:new\s+)?definitions?)\b/i.test(args.leadIn)) return { family: null, score: 0, families: [], evidence: [] };
+  // A scope carve-out ("(a) This Article 5 will not apply to: (1) a merger ...") prohibits nothing.
+  if (/^\s*(?:\([a-z0-9]{1,4}\)\s*)?This\s+(?:Article|Section)\b[^.:]{0,40}\b(?:shall|will|does)\s+not\s+apply\b/i.test(args.leadIn)) return { family: null, score: 0, families: [], evidence: [] };
   const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
@@ -171,7 +178,9 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
       // "Lien securing Indebtedness" / "prepay Junior Indebtedness" name debt as the object's qualifier, not a debt covenant.
       // A titled section whose heading names no covenant family ("Use of Proceeds", "Post-Closing") needs more
       // than its lead-in: the lead-in object alone scores 2 there.
-      const titledOffFamily = !!args.title && !HEADING.some(([, re]) => re.test(args.title!));
+      // A short party/caption title ("5.01 Issuer.") under an article that names the family ("MERGERS AND
+      // CONSOLIDATIONS") takes the article heading.
+      const titledOffFamily = !!args.title && !HEADING.some(([, re]) => re.test(args.title!)) && !(args.parentTitle && args.title!.split(/\s+/).length <= 3 && HEADING.some(([, re]) => re.test(args.parentTitle!)));
       for (const f of hit) if (!(f === "DEBT" && (hit.includes("LIENS") || hit.includes("PREPAYMENTS")))) add(f, titledOffFamily ? 2 : 3, "lead-in");
     }
   }

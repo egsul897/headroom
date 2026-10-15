@@ -3,7 +3,7 @@
  * checklist over a SectionTree. Deterministic; no AI / LLM calls; nothing invented.
  * A family with no numeric cap is NEVER reported as unlimited.
  */
-import { type CovenantFamily, negatedItemFamilies, classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
+import { type CovenantFamily, negatedItemFamilies, classifyCovenantFamily, isObligorProhibitionLead, headingFamilies } from "./family-classifier";
 import { normalizeSectionNumber, sectionOf, type SectionTree, type TreeNode } from "./parse";
 
 export type ClauseRole = "PROHIBITION" | "BASKET" | "EXCEPTION_PROVISO" | "DEFINITION" | "CROSS_REFERENCE" | "OTHER";
@@ -190,6 +190,13 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // Captioned covenant clauses in text no section covers (guaranties / short agreements numbered "10. Covenants.").
     for (const f of captionFamilies(text, covered)) rootFams.add(f);
     for (const f of scheduleCovenantFamilies(text)) rootFams.add(f);
+    for (const f of unnumberedHeadingFamilies(text)) rootFams.add(f);
+    // Amendment instructions naming the covenant they change ("Section 7.2 of the Credit Agreement (Indebtedness) is
+    // hereby amended by ... adding the following new clause (n)"): the amended covenant is that family.
+    for (const m of text.matchAll(/\bSection\s+\d{1,2}\.\d{1,3}(?:\([a-z0-9]{1,4}\))*\s+of\s+the\s+(?:Credit|Loan|Note Purchase|Financing)\s+Agreement\s*\(([A-Z][^()\n]{2,80})\)\s*(?:is|shall be)\s+(?:hereby\s+)?(?:amended|restated|modified|supplemented)\b/g)) {
+      if (NOT_COVENANT_TITLE.test(m[1]!)) continue;
+      for (const f of headingFamilies(m[1]!)) rootFams.add(f);
+    }
     // Term-sheet style ("Financial Covenants:\n ... Maximum Consolidated Leverage Ratio :\n ... 4.00 to 1.00").
     if (/(?:^|\n)\s*Financial (?:Maintenance )?Covenants?\s*:[\s\S]{0,800}?\b(?:Maximum|Minimum)\b[^\n:]{0,80}\b(?:Ratio|Coverage|Liquidity|Net Worth)\b[\s\S]{0,600}?\d+(?:\.\d+)?\s*(?:to|:|x)\s*1(?:\.0+)?\b/.test(text)) rootFams.add("FINANCIAL_RATIOS");
     if (rootFams.size) { famOf.set(root.id, [...rootFams]); units.push(root); }
@@ -265,7 +272,7 @@ function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<
   const out = new Set<CovenantFamily>();
   const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
   let n = 0;
-  for (const c of body.matchAll(/(?:^|\n)\s*\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)\s*([A-Z][^.\n]{3,90}?(?:\n[a-z][^.\n]{1,60}?)?)\s*\.\s+(?=[A-Z]|\([a-z0-9]{1,4}\)\s)/g)) {
+  for (const c of body.matchAll(/(?:^|\n)\s*(?:\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)|\d{1,2}\.\d{1,3}\.\d{1,3}\.?)\s*([A-Z][^.\n]{3,90}?(?:\n[a-z][^.\n]{1,60}?)?)\s*\.\s+(?=[A-Z]|\([a-z0-9]{1,4}\)\s)/g)) {
     if (c[1]!.split(/\s+/).length > 10 || skip?.(c.index!)) continue;
     // A caption wrapped onto a second line ("(d) Prohibition\nof Fundamental Changes .") has a short first line; a
     // longer one is a list item ending in a sentence.
@@ -304,13 +311,33 @@ function scheduleCovenantFamilies(text: string): Set<CovenantFamily> {
   return out;
 }
 
+/**
+ * Unnumbered heading blocks ("Description of Notes" style): a Title Case caption of 1-2 lines with no period, between
+ * blank lines, followed by an obligor sentence ("The\nIssuer will not, and will not permit ..."). Classified like a
+ * section; families come only with an operative lead-in.
+ */
+function unnumberedHeadingFamilies(text: string): Set<CovenantFamily> {
+  const out = new Set<CovenantFamily>();
+  const W = String.raw`(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|upon|All|Substantially)`;
+  const re = new RegExp(String.raw`\n[^\S\n]*\n[^\S\n]*(${W}(?:[,;]?[^\S\n]+${W}|\n[^\S\n]*${W}){0,14})[^\S\n]*\n[^\S\n]*\n[^\S\n]*(?=(?:The|Each|No|Neither)\s+(?:[A-Z][\w\u2019'-]*\s+){1,3}(?:shall|will|may)\s+not\b)`, "g");
+  let n = 0;
+  for (const m of text.matchAll(re)) {
+    if (++n > 200) break;
+    const title = m[1]!.replace(/\s+/g, " ").trim();
+    if (title.split(" ").length < 1 || NOT_COVENANT_TITLE.test(title)) continue;
+    const lead = text.slice(m.index! + m[0].length, m.index! + m[0].length + 1500);
+    for (const f of classifyCovenantFamily({ title, parentTitle: null, leadIn: lead, covenantContext: true }).families) out.add(f);
+  }
+  return out;
+}
+
 function covenantItemFamilies(body: string, inherited = false): Set<CovenantFamily> {
   const out = new Set<CovenantFamily>();
   if (body.length > 60000) return out;
   // A negative stem governs the items that follow its colon until the next stem.
   // A negative stem ends in a colon introducing the list ("shall not ... take any of the following actions:", "will not,
   // directly or indirectly:").
-  const stemRe = /\b(?:shall|will|may)\s+not\b[^.:]{0,300}?:/gi;
+  const stemRe = /\b(?:shall|will|may)\s+not\b(?:[^.:]|\.(?=\d)){0,300}?:/gi;
   // Exception and condition stems ("will not prohibit any of the following:", "will not apply to:", "unless:", "restriction
   // on the ability of ... to:") introduce permissions or conditions, not prohibited acts; they also end the prior stem.
   const EXC = /\b(?:prohibit|apply|applies|restrict|limit|unless|ability|required|obligat\w*|be deemed|include)\b/i;
