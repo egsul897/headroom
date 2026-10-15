@@ -117,6 +117,7 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   if (
     /\b(available amount|builder basket|cumulative credit|available restricted payments amount)\b/i.test(text) ||
     (/\bsum of\b/i.test(text) && /\d+(?:\.\d+)?\s*%\s+of\b/i.test(text)) ||
+    namedSumLimbs(text).length > 0 ||
     (/\bsum\b/i.test(text) && /\d+(?:\.\d+)?\s*%\s+of\b/i.test(text) && /\bshall not exceed the sum\b/i.test(text)) ||
     (/\bmay be increased by\b/i.test(text) && /\$\s*[\d,]+/.test(text)) ||
     // "(x) $200,000,000 plus (y) 50% of Consolidated Net Income plus (z) 100% of Net Proceeds": a sum with a
@@ -825,6 +826,6 @@ export function namedSumLimbs(text: string): string[] {
   if (limbs.length < 2) return [];
   return limbs
     .filter((x) => !/\$\s?[\d,]/.test(x) && !/\d+(?:\.\d+)?\s*%\s+of\b/i.test(x))
-    .filter((x) => /\b(?:cumulative credit|available amount|builder|amount|balance|credit|proceeds|retained|equity)\b/i.test(x))
+    // Structural: every additive limb that states no dollar figure and no percentage of a metric is valueless here.
     .map((x) => x.slice(0, 80));
 }

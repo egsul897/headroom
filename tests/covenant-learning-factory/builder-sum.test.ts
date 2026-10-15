@@ -20,4 +20,10 @@ describe("builder sums are never a computed cap", () => {
     expect(namedSumLimbs("the sum of (1) $50,000,000, plus (2) 50% of Consolidated Net Income")).toEqual([]);
     expect(namedSumLimbs("not to exceed $25,000,000")).toEqual([]);
   });
+  it("any additive non-dollar limb makes the sum NEEDS_INPUT ('(b) Excluded Contributions')", () => {
+    const b = evalText("Restricted Payments in an aggregate amount not to exceed the sum of (a) $50,000,000 plus (b) Excluded Contributions");
+    expect(b.capStatus).toBe("NEEDS_INPUT");
+    expect(b.capCanonical ?? null).toBeNull();
+    expect(namedSumLimbs("the sum of (a) $50,000,000 plus (b) Excluded Contributions")).toEqual(["Excluded Contributions"]);
+  });
 });
