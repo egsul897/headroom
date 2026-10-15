@@ -141,31 +141,72 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     label: "Ratio-based permissions",
     aliases: ["leverage-based"],
     headingPatterns: [/\bLeverage\s+Ratio\b/i],
-    bodyPatterns: [/\bpro\s+forma.{0,40}Leverage\b/i, /\b\d+(?:\.\d+)?\s*(?:x|to\s*1)\b/i],
+    // A bare "3.0x" / "3.0 to 1" appears in rates, fees, and thresholds all
+    // over an indenture; it must not by itself manufacture this family.
+    bodyPatterns: [/\bpro\s+forma.{0,40}Leverage\b/i],
   },
   {
     family: "SHARED_CAPACITY_PROVISIONS",
     label: "Shared-capacity provisions",
     aliases: ["shared baskets"],
     headingPatterns: [/\bshared\b/i],
-    bodyPatterns: [/\b(?:shared|aggregate(?:d)?)\s+(?:basket|capacity)\b/i],
+    bodyPatterns: [/\b(?:shared|aggregate(?:d)?)\s+basket\b/i],
   },
   {
     family: "GENERAL_CONDITIONS_AND_EXCEPTIONS",
     label: "General conditions and exceptions",
     aliases: ["provisos", "provided that"],
+    // Heading-only: "provided that" / "no Default" / "pro forma compliance"
+    // appear in nearly every operative section, so matching them in body
+    // text manufactured this family (and a BASKETS_EXCEPTIONS_CONDITIONS
+    // category) for defeasance, trustee, and administrative provisions.
     headingPatterns: [/\bConditions?\b/i],
-    bodyPatterns: [/\bprovided\s+that\b/i, /\bno\s+Default\b/i, /\bpro\s+forma\s+compliance\b/i],
+    bodyPatterns: [],
   },
 ];
 
+/**
+ * Administrative / non-covenant provisions. These are real parts of an
+ * indenture, but they are not operating covenants: defeasance is an
+ * elective discharge mechanic, trustee/paying-agent sections are agency
+ * mechanics, and interpretation clauses state how the document reads.
+ * Labeling any of them a debt-incurrence prohibition or permission is a
+ * false legal conclusion, so the classifier returns UNKNOWN for them and
+ * candidate discovery drops them.
+ */
+const ADMINISTRATIVE_HEADING =
+  /\b(?:defeasance|satisfaction and discharge|trustee|paying agent|registrar|authenticating agent|notices?|governing law|miscellaneous|counterparts?|severability|waiver of jury)\b/i;
+const ADMINISTRATIVE_HEADING_PREFIX = /^\s*No\s+.*\b(?:interpretation|construction)\b/i;
+
+export function isAdministrativeProvision(heading = "", _text = ""): boolean {
+  return ADMINISTRATIVE_HEADING.test(heading) || ADMINISTRATIVE_HEADING_PREFIX.test(heading);
+}
+
+/** An event-of-default trigger: "… shall constitute an Event of Default". */
+const EOD_TRIGGER = /\bconstitutes?\s+an\s+Event\s+of\s+Default\b/i;
+
+export function isEventOfDefaultTrigger(heading = "", text = ""): boolean {
+  return EOD_TRIGGER.test(text) || /\bEvents?\s+of\s+Default\b/i.test(heading);
+}
+
 export function classifyFamiliesFromText(text: string, heading = ""): KnowledgeTaxonomyFamily[] {
+  // Administrative provisions never take a covenant family, no matter what
+  // their body mentions (a defeasance section mentions the Trustee, money,
+  // and provisos; none of that makes it a covenant).
+  if (isAdministrativeProvision(heading, text)) return ["UNKNOWN"];
+  // An EoD trigger is an EoD trigger even when its body mentions
+  // Indebtedness, Liens, or a dollar threshold (e.g. §8.01(j) cross-default:
+  // the Indebtedness is the trigger's subject, not a permission).
+  if (isEventOfDefaultTrigger(heading, text)) return ["EVENTS_OF_DEFAULT"];
   const families: KnowledgeTaxonomyFamily[] = [];
-  const hay = `${heading}\n${text}`;
   for (const def of TAXONOMY_FAMILIES) {
+    // Heading patterns match only the section's own heading. They used to
+    // also match the first 400 chars of body text, so a table-of-contents
+    // excerpt — which lists many sections' headings — collected every
+    // family named in the TOC.
     const hit =
-      def.headingPatterns.some((re) => re.test(heading) || re.test(text.slice(0, 400))) ||
-      def.bodyPatterns.some((re) => re.test(hay));
+      def.headingPatterns.some((re) => re.test(heading)) ||
+      def.bodyPatterns.some((re) => re.test(text));
     if (hit) families.push(def.family);
   }
   if (families.length === 0) return ["UNKNOWN"];

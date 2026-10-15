@@ -34,6 +34,8 @@ export type BasketCategory =
   | "FIXED_DOLLAR"
   | "GROWER_GREATER_OF"
   | "PCT_OF_METRIC"
+  | "MULTIPLE_OF_METRIC"
+  | "LESSER_OF"
   | "RATIO_BASED"
   | "BUILDER_AVAILABLE_AMOUNT"
   | "UNLIMITED"

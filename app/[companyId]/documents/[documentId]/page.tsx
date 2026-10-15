@@ -7,10 +7,11 @@ import { prisma } from "@/lib/prisma";
 import { getDocumentStorageProvider } from "@/lib/document-storage";
 import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
+import { loadSourceTextFromBytes } from "@/lib/product/customer-intelligence/source-text";
 
 export const metadata = { title: "Headroom — Document source" };
 
-async function loadSourceText(documentId: string, storageRef: string | null, notes: string | null): Promise<{
+async function loadSourceText(documentId: string, storageRef: string | null, notes: string | null, filename = ""): Promise<{
   text: string;
   origin: string;
   truncated: boolean;
@@ -19,8 +20,7 @@ async function loadSourceText(documentId: string, storageRef: string | null, not
   if (curatedMatch?.[1]) {
     const abs = path.join(process.cwd(), curatedMatch[1]);
     if (existsSync(abs)) {
-      const text = readFileSync(abs, "utf8");
-      return { text, origin: `curated excerpt (${curatedMatch[1]})`, truncated: false };
+      return loadSourceTextFromBytes(readFileSync(abs), path.basename(abs), `curated excerpt (${curatedMatch[1]})`);
     }
   }
 
@@ -28,16 +28,7 @@ async function loadSourceText(documentId: string, storageRef: string | null, not
     try {
       const provider = getDocumentStorageProvider();
       const buf = await provider.retrieve(storageRef);
-      const raw = buf.toString("utf8");
-      const max = 120_000;
-      if (raw.length > max) {
-        return {
-          text: raw.slice(0, max) + "\n\n… [truncated for display — full bytes remain in storage] …",
-          origin: `stored object (${storageRef})`,
-          truncated: true,
-        };
-      }
-      return { text: raw, origin: `stored object (${storageRef})`, truncated: false };
+      return loadSourceTextFromBytes(buf, filename, `stored object (${storageRef})`);
     } catch {
       // fall through
     }
@@ -47,16 +38,7 @@ async function loadSourceText(documentId: string, storageRef: string | null, not
   if (spec) {
     const abs = path.join(process.cwd(), spec.rawRelativePath);
     if (existsSync(abs)) {
-      const raw = readFileSync(abs, "utf8");
-      const max = 120_000;
-      if (raw.length > max) {
-        return {
-          text: raw.slice(0, max) + "\n\n… [truncated for display] …",
-          origin: `repository fixture (${spec.rawRelativePath})`,
-          truncated: true,
-        };
-      }
-      return { text: raw, origin: `repository fixture (${spec.rawRelativePath})`, truncated: false };
+      return loadSourceTextFromBytes(readFileSync(abs), path.basename(abs), `repository fixture (${spec.rawRelativePath})`);
     }
   }
 
@@ -72,7 +54,7 @@ export default async function DocumentSourcePage({
   const doc = await prisma.document.findFirst({ where: { id: documentId, companyId } });
   if (!doc) notFound();
 
-  const source = await loadSourceText(doc.id, doc.storageRef, doc.notes);
+  const source = await loadSourceText(doc.id, doc.storageRef, doc.notes, doc.originalFilename || doc.name);
   const intel = await getCustomerDocumentIntelligence(companyId, documentId);
   const sourceUrl = doc.notes?.match(/^sourceUrl=(.+)$/m)?.[1];
   const unresolved = doc.notes?.match(/^unresolved=(.+)$/m)?.[1];

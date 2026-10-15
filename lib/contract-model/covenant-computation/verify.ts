@@ -151,7 +151,7 @@ function capCited(excerpt: string, canonical: string): boolean {
   const digits = canonical.replace(/[^0-9]/g, "");
   if (!digits) return true;
   if (excerpt.replace(/[^0-9]/g, "").includes(digits)) return true;
-  const millions = excerpt.matchAll(/\$\s*([\d,]+(?:\.\d+)?)\s+million\b/gi);
+  const millions = excerpt.matchAll(/\$\s*([\d,]+(?:\.\d+)?)(?:\s|&nbsp;|&#160;|&#xA0;)+million\b/gi);
   for (const match of millions) {
     const token = match[1]!.replace(/,/g, "");
     if (millionsToUsd(token) === digits) return true;
