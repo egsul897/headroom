@@ -22,6 +22,7 @@ import { buildComputationPackage } from "../sweep/build-package";
 import { emptyRuleSet } from "../learned-rules/types";
 import type { ComputedRatio } from "../../contract-model/covenant-computation/types";
 import type { IssuerFinancials } from "../xbrl/companyfacts";
+import { basketUsage, type FacilityFact } from "../xbrl/instance-debt";
 import { decide, toMetricInput, type BindDecision } from "../xbrl/bind";
 
 export const PIPELINE_VERSION = "agreement-pipeline-1";
@@ -81,6 +82,8 @@ export interface HeadroomRow {
   status: "COMPUTED" | "NEEDS_INPUT"; usage: string | null; usageBound: "EXACT" | "AT_LEAST" | "AT_MOST";
   limit: string | null; direction: "MIN" | "MAX" | null; headroom: string | null; headroomBound: "EXACT" | "AT_LEAST" | "AT_MOST" | null;
   citation: string | null; missing: string[];
+  /** Filing locator for a basket usage figure. */
+  usageSource?: string;
 }
 
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
@@ -100,7 +103,7 @@ function checklistFamilyOf(f: string): string {
   return u;
 }
 
-export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null }): AgreementPipelineResult {
+export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null; facilityFacts?: readonly FacilityFact[] | null }): AgreementPipelineResult {
   const raw = args.text ?? "";
   const tree = parseDocumentTree(raw);
   const roles = new Map<string, ClauseRole>();
@@ -213,7 +216,24 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     for (const t of r.thresholds) headroom.push({ stableKey: r.stableKey, kind: "RATIO", name: r.displayName, sectionRef: t.sectionRef || null, status: t.headroomStatus === "COMPUTED" ? "COMPUTED" : "NEEDS_INPUT", usage: r.canonical, usageBound: ub ?? "EXACT", limit: t.canonical, direction: t.direction, headroom: t.headroomCanonical, headroomBound: t.headroomStatus === "COMPUTED" ? headroomBound(ub, t.direction) : null, citation: t.citationExcerpt, missing: t.headroomStatus === "COMPUTED" ? [] : ["ratio value"] });
   }
   // A basket's headroom is its cap minus what is already used under it; usage is not in the agreement or in XBRL.
-  for (const b of computed) if (b.capStatus === "COMPUTED") headroom.push({ stableKey: b.stableKey, kind: "BASKET", name: b.category, sectionRef: b.sectionRef, status: "NEEDS_INPUT", usage: null, usageBound: "EXACT", limit: b.capCanonical, direction: "MAX", headroom: null, headroomBound: null, citation: b.citationExcerpt, missing: ["basket usage (amount already used under this basket)"] });
+  // Usage is read only for debt and lien baskets that name one facility matching exactly one filing debt-axis member.
+  for (const b of computed) {
+    if (b.capStatus !== "COMPUTED") continue;
+    const row: HeadroomRow = { stableKey: b.stableKey, kind: "BASKET", name: b.category, sectionRef: b.sectionRef, status: "NEEDS_INPUT", usage: null, usageBound: "EXACT", limit: b.capCanonical, direction: "MAX", headroom: null, headroomBound: null, citation: b.citationExcerpt, missing: ["basket usage (amount already used under this basket)"] };
+    const debtLike = /DEBT|LIEN/i.test(b.covenantFamily);
+    const u = args.facilityFacts && debtLike ? basketUsage(b.citationExcerpt, args.facilityFacts) : null;
+    if (u && u.status === "NEEDS_INPUT") row.missing = [`basket usage: ${u.reason}`];
+    if (u && u.status === "COMPUTED" && b.capCanonical && /^-?\d+(?:\.\d+)?$/.test(b.capCanonical)) {
+      const capBound = boundOf.get(b.stableKey);
+      const [ci, cf = ""] = b.capCanonical.split(".");
+      const scale = 10n ** BigInt(cf.length);
+      const capScaled = BigInt(ci! + cf);
+      const h = capScaled - u.usage * scale;
+      const hs = cf.length ? `${h < 0n ? "-" : ""}${(h < 0n ? -h : h) / scale}.${((h < 0n ? -h : h) % scale).toString().padStart(cf.length, "0")}` : h.toString();
+      Object.assign(row, { status: "COMPUTED", usage: u.usage.toString(), usageBound: "EXACT", headroom: hs, headroomBound: capBound === "AT_LEAST" ? "AT_LEAST" : "EXACT", missing: [], usageSource: `${u.fact.concept} [${u.fact.member}] ${u.fact.instant} accn ${u.fact.accession}` });
+    }
+    headroom.push(row);
+  }
 
   const families: FamilySummary[] = [];
   const byFam = new Map<string, ComputedBasket[]>();
