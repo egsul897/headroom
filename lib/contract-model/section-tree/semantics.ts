@@ -426,7 +426,7 @@ function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<
   const out = new Set<CovenantFamily>();
   const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
   let n = 0;
-  for (const c of body.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s*([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
+  for (const c of body.matchAll(/(?:^|\n)\s*\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)\s*([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
     if (c[1]!.split(/\s+/).length > 10 || skip?.(c.index!)) continue;
     if (++n > 400) break;
     const rest = body.slice(c.index! + c[0].length, c.index! + c[0].length + 1500);

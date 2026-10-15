@@ -24,8 +24,8 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:not\s+)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage)\b/i;
-const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:not\s+)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage)\b/i;
+const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
+const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
 /** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
 const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
 const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
@@ -40,7 +40,7 @@ function noPartyMatches(lead: string): RegExpMatchArray[] {
   return [...s.matchAll(NO_PARTY_RE), ...s.matchAll(NEITHER_PARTY_RE), ...s.matchAll(NONE_OF_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!)).sort((a, b) => a.index! - b.index!);
 }
 /** "Neither the Issuer nor Parent may consolidate ..." / "Neither Borrower shall ...": a negated obligor subject. */
-const NEITHER_RE = /\b[Nn]either\s+(?:the\s+)?[A-Z][^.;:]{0,120}?\b(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated))/;
+const NEITHER_RE = /\b(?:[Nn]either|[Nn]one\s+of)\s+(?:the\s+)?[A-Z][^.;:]{0,160}?\b(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated))/;
 const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 || NEITHER_RE.test(lead) };
 
 /** The prohibition binds an obligor: not the trustee, agents, lenders or holders, and not a passive "shall not be required/deemed". */
@@ -65,11 +65,11 @@ const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bto\s+(?:exc
 
 const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
   ["LIENS", /\b(?:create|incur|assume|suffer|permit)\b[^.;]{0,160}\b(?:liens?|mortgages?|pledges?|security interests?|encumbrances?)\b(?!\s+(?:net|leverage|obligations|notes|credit|facility|term|secured)\b)/i],
-  ["DEBT", /\b(?:create|incur|issue|assume|guarantee|become\s+(?:directly\s+or\s+indirectly\s+)?liable)\b[^.;]{0,160}\b(?:indebtedness|debt|disqualified stock|preferred stock)\b/i],
+  ["DEBT", /\b(?:create|incur|issue|assume|guarantee|become\s+(?:directly\s+or\s+indirectly\s+)?liable|be(?:come)?\s+indebted)\b[^.;]{0,160}\b(?:indebtedness|debt|disqualified stock|preferred stock)\b/i],
   ["RESTRICTED_PAYMENTS", /\b(?:declare|pay|make)\b[^.;]{0,120}\b(?:dividends?|distributions?|restricted (?:junior )?payments?)\b|\b(?:purchase|redeem|retire|acquire)\b[^.;]{0,80}\b(?:equity interests?|capital stock|shares)\b/i],
   ["INVESTMENTS", /\b(?:make|hold|acquire)\b[^.;]{0,80}\b(?:investments?|advances?|loans?\s+to|capital contributions?)\b/i],
   ["PREPAYMENTS", /\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\b(?:subordinated|junior|second lien|unsecured)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b/i],
-  ["FUNDAMENTAL_CHANGES", /\btransactions? of merger\b|\b(?:merge|consolidate|amalgamate|liquidate|dissolve|wind\s+up)\b(?!\s+(?:EBITDA|Net|Total))/i],
+  ["FUNDAMENTAL_CHANGES", /\btransactions? of merger\b|\b(?:consummate|enter into|effect)\b[^.;]{0,40}\b(?:merger|consolidation|amalgamation)\b|\b(?:merge|consolidate|amalgamate|liquidate|dissolve|wind\s+up)\b(?!\s+(?:EBITDA|Net|Total))/i],
   ["ASSET_SALES", /\b(?:sell|lease|transfer|convey|dispose|assign)\b[^.;]{0,300}?\b(?:assets?|propert(?:y|ies)|equity interests? (?:in|of) any (?:restricted )?subsidiar)|\b(?:make|consummate|effect)\b[^.;]{0,40}\b(?:Asset Sales?|Asset Dispositions?)\b/i],
   ["AFFILIATE_TRANSACTIONS", /\btransactions?\b[^.;]{0,220}\b(?:with|involving|to)\b[^.;]{0,60}\baffiliates?\b/i],
 ];
@@ -146,8 +146,13 @@ const REPRESENTATION_LEAD = /\b(?:represents\s+and\s+warrants|hereby\s+represent
 const DEFINITION_AMENDMENT_LEAD = /^\s*(?:\([a-z0-9]+\)\s*)?(?:(?:The|Each\s+of\s+the)\s+)?(?:following\s+)?(?:definitions?|defined\s+terms?)\b[^.:]{0,200}?\b(?:is|are)\s+(?:hereby\s+)?(?:amended|added|deleted|restated|inserted)\b|^\s*(?:\([a-z0-9]+\)\s*)?Section\s+1\.0?1\b[^.:]{0,120}?\b(?:is|are)\s+hereby\s+amended\s+by\s+(?:adding|amending|deleting|inserting|replacing)\b[^.:]{0,80}?\bdefinitions?\b/i;
 
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
+  // Small-caps headings extracted letter-split ("W HEN THE I SSUER M AY M ERGE , E TC"): rejoin for title matching only.
+  if (args.title) args = { ...args, title: args.title.replace(/\b([A-Z]) ([A-Z]{2,})\b/g, "$1$2") };
   const sub = SUBCAPTION.exec(args.leadIn);
   if (sub) args = { ...args, leadIn: args.leadIn.slice(sub[0].length), title: [args.title, sub[1]].filter(Boolean).join("; ") || null };
+  // A definition ("“Consolidated Leverage Ratio” means ...", e.g. a definitions-only amendment's restated term) states
+  // no covenant.
+  if (/^\s*(?:\([a-z0-9]{1,4}\)\s*)?[“"][^”"]{2,80}[”"]\s*(?:\([^)]{0,60}\)\s*)?(?:means|shall mean|has the meaning)/i.test(args.leadIn) || /^\s*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+)?(?:definitions?\s+of|following\s+(?:new\s+)?definitions?)\b/i.test(args.leadIn)) return { family: null, score: 0, families: [], evidence: [] };
   const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "").replace(EXCEPT_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   // A representation ("1.1 Financial Condition. The consolidated balance sheet ... present fairly ...") or an amendment of
@@ -181,7 +186,10 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     }
   }
   const titledOffFamilyAll = !!args.title && !HEADING.some(([, re]) => re.test(args.title!));
-  if (ratio) add("FINANCIAL_RATIOS", titledOffFamilyAll ? 2 : 3, "ratio-test");
+  // A representation about financial statements ("Financial Condition. The financial statements ... present fairly ...")
+  // is not a maintenance test, whatever ratios it mentions.
+  const representation = /\b(?:present(?:s|ed)? fairly|fairly present|has (?:heretofore )?(?:furnished|delivered)|have been prepared in accordance|there has (?:not )?been no)\b/i.test(lead.slice(0, 400));
+  if (ratio && !representation) add("FINANCIAL_RATIOS", titledOffFamilyAll ? 2 : 3, "ratio-test");
   // A leading clause caption ("(a) Mergers, Consolidations, Disposal of Assets, Etc. The Borrower will not ...") is
   // heading text of the section too.
   const caption = /^\s*\([a-z]\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s/.exec(args.leadIn)?.[1] ?? "";
@@ -194,6 +202,7 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     const seen = new Set<CovenantFamily>();
     for (const [f, re] of HEADING) {
       if (!re.test(heading) || seen.has(f)) continue;
+      if (f === "FINANCIAL_RATIOS" && representation) continue;
       if (f === "DEBT" && /\b(?:junior|subordinated|senior)\s+(?:indebtedness|debt)\b/i.test(heading) && !/incurrence|limitation on (?:indebtedness|debt)/i.test(heading)) continue;
       if (f === "DEBT" && seen.has("PREPAYMENTS") && !/\b(?:incurrence|limitation on (?:indebtedness|debt))\b/i.test(heading)) continue;
       seen.add(f);

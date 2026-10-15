@@ -1,3 +1,4 @@
+import { stripPageNumberLines } from "../../contract-model/text/page-furniture";
 import { stripHtmlPreserveStructure } from "../../contract-model/compiler/deterministic-extraction/html-text";
 /**
  * Build a ComputationPackage from Neon precedent rows (bytes + candidates).
@@ -40,6 +41,7 @@ export function buildComputationPackage(args: {
   let text = args.documentText?.trim() ?? "";
   // Raw SEC filings are HTML; compute over the visible text, never markup.
   if (/<(html|body|div|p|font|table|span)\b/i.test(text.slice(0, 20000))) text = stripHtmlPreserveStructure(text).trim();
+  text = stripPageNumberLines(text); // shared page-furniture normalizer (tree, matcher and locator use the same)
   if (text.length < 80) {
     // Fall back to candidate excerpts only — marked as precedent composite, not invented
     const parts = args.candidates
