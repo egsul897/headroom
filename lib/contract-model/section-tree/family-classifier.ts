@@ -24,8 +24,8 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION_CI = /\b(?:shall|will|may)\s+not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
-const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
+const PROHIBITION_CI = /\b(?:shall|will|may)\s+not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:not\s+)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
+const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:not\s+)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
 /** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
 const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
 const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
@@ -33,9 +33,11 @@ const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|
 function stripParens(s: string): string { return s.replace(/\([^()]{0,200}\)/g, (m) => " ".repeat(m.length)).replace(/ {2,}/g, (m) => " ".repeat(m.length)); }
 /** "Neither the Borrower nor any Restricted Subsidiary shall": the same party-headed prohibition. */
 const NEITHER_PARTY_RE = /\bNeither\s+(?:the\s+|any\s+)?([A-Z][\w-]*)((?:,?\s+[\w’'-]+){0,8}?,?\s+nor\s+(?:the\s+|any\s+(?:of\s+(?:the|its)\s+)?)?[\w’'-]+(?:\s+[\w’'-]+){0,8}?)\s+(shall|will|may)\b/g;
+/** "None of the Borrower or any Restricted Subsidiary shall". */
+const NONE_OF_PARTY_RE = /\bNone of\s+(?:the\s+)?([A-Z][\w-]*)((?:,?\s+[\w’'-]+){0,10}?)\s+(shall|will|may)\b/g;
 function noPartyMatches(lead: string): RegExpMatchArray[] {
   const s = stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length));
-  return [...s.matchAll(NO_PARTY_RE), ...s.matchAll(NEITHER_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!)).sort((a, b) => a.index! - b.index!);
+  return [...s.matchAll(NO_PARTY_RE), ...s.matchAll(NEITHER_PARTY_RE), ...s.matchAll(NONE_OF_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!)).sort((a, b) => a.index! - b.index!);
 }
 const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 };
 
