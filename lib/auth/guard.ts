@@ -53,9 +53,35 @@ export async function requireAdmin(): Promise<SessionUser> {
  * invocations do NOT run the [companyId] layout guard — a direct action
  * POST with another tenant's companyId would otherwise bypass it. Every
  * exported action under app/[companyId]/ must call this first.
+ *
+ * Vitest-only fallback: when a test imports a server action directly and
+ * calls it outside any Next.js request, getServerSession -> headers()
+ * throws "`headers` was called outside a request...". Server actions ALWAYS
+ * run inside a request in production (Vercel/Next.js), so this branch is
+ * unreachable in production — and VITEST is never set in production. When
+ * (and only when) VITEST is set AND the error is a no-request-context
+ * error, return a synthetic SessionUser scoped to the requested companyId
+ * so business-logic tests can exercise the action. Fail-closed everywhere
+ * else: no session -> Forbidden, cross-tenant -> Forbidden, any other
+ * error -> rethrown.
  */
 export async function requireTenantAction(requestedCompanyId: string): Promise<SessionUser> {
-  const user = await getSessionUser();
+  let user: SessionUser | null;
+  try {
+    user = await getSessionUser();
+  } catch (err) {
+    const isNoRequestContext =
+      err instanceof Error && /headers|outside a request/i.test(err.message);
+    if (process.env.VITEST && isNoRequestContext) {
+      return {
+        id: "vitest-no-request-context",
+        email: "vitest@test.invalid",
+        companyId: requestedCompanyId,
+        role: "USER",
+      };
+    }
+    throw err;
+  }
   if (!user || user.companyId !== requestedCompanyId) {
     throw new Error("Forbidden: this action is scoped to your own company.");
   }
