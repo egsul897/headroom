@@ -327,6 +327,9 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   // that mentions an Affiliate: a disposition covenant with an affiliate carve-out stays asset-sales evidence.
   if (family === "ASSET_SALES" && (/\baffiliate transactions?\b/i.test(sent) || /\b(?:transactions?|agreements?|arrangements?|contracts?)\b[^.;]{0,80}\bwith\b[^.;]{0,30}\baffiliates?\b/i.test(sent)) && !/\b(?:all or substantially all|asset sale|asset disposition)\b/i.test(sent)) return true;
   if ((family === "INVESTMENTS" || family === "RESTRICTED_PAYMENTS" || family === "PREPAYMENTS") && DESIGNATION_OR_SUSPENSION.test(sent)) return true;
+  // Subordination payment blockage ("the Company shall not pay principal of ... or redeem the Securities ... if a default on
+  // Designated Senior Indebtedness occurs") restricts paying the subordinated instrument itself, not a prepayment covenant.
+  if (family === "PREPAYMENTS" && /\b(?:(?:Guarantor\s+)?Senior Indebtedness|Designated Senior|Payment Blockage|Senior Debt)\b/.test(sent) && /\b(?:the\s+)?(?:Securities|Notes|Subsidiary Guarantees?|Debentures)\b/.test(sent)) return true;
   // Equity-award dividend equivalents (stock plans) are not a restricted payment.
   if (family === "RESTRICTED_PAYMENTS" && /\bdividend equivalents?\b/i.test(sent)) return true;
   if (family === "INVESTMENTS" && (/\b(?:lenders?|banks?|issuing bank|swingline lender|agent)s?\b[^.;]{0,80}$/i.test(before) || /\b(?:not be obligated|obligated to)\b/i.test(sent) || /\badvances?\b/i.test(sent) && /\b(?:lenders?|borrowing)\b/i.test(sent))) return true;
