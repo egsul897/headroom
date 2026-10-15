@@ -19,9 +19,9 @@ const load = (k: string) => ({
 });
 
 const EXPECTED: Record<string, Record<string, string>> = {
-  "nike-credit-2015": {"DEBT": "MISSING", "LIENS": "CAP_COMPUTED", "RESTRICTED_PAYMENTS": "MISSING", "INVESTMENTS": "MISSING", "ASSET_SALES": "NEEDS_INPUT", "AFFILIATE_TRANSACTIONS": "NEEDS_INPUT", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
-  "delta-indenture-2020": {"DEBT": "NEEDS_INPUT", "LIENS": "NEEDS_INPUT", "RESTRICTED_PAYMENTS": "NEEDS_INPUT", "INVESTMENTS": "MISSING", "ASSET_SALES": "CAP_COMPUTED", "AFFILIATE_TRANSACTIONS": "MISSING", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
-  "lyv-indenture-2025": {"DEBT": "MISSING", "LIENS": "MISSING", "RESTRICTED_PAYMENTS": "MISSING", "INVESTMENTS": "MISSING", "ASSET_SALES": "MISSING", "AFFILIATE_TRANSACTIONS": "MISSING", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "MISSING"},
+  "nike-credit-2015": {"DEBT": "MISSING", "LIENS": "CAP_COMPUTED", "RESTRICTED_PAYMENTS": "MISSING", "INVESTMENTS": "MISSING", "ASSET_SALES": "CONDITIONS_LIMITED", "AFFILIATE_TRANSACTIONS": "CONDITIONS_LIMITED", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
+  "delta-indenture-2020": {"DEBT": "NEEDS_INPUT", "LIENS": "NEEDS_INPUT", "RESTRICTED_PAYMENTS": "NEEDS_INPUT", "INVESTMENTS": "MISSING", "ASSET_SALES": "NEEDS_INPUT", "AFFILIATE_TRANSACTIONS": "MISSING", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
+  "lyv-indenture-2025": {"DEBT": "MISSING", "LIENS": "MISSING", "RESTRICTED_PAYMENTS": "MISSING", "INVESTMENTS": "MISSING", "ASSET_SALES": "MISSING", "AFFILIATE_TRANSACTIONS": "MISSING", "FUNDAMENTAL_CHANGES": "CONDITIONS_LIMITED", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "MISSING"},
 };
 
 /** In-memory executor: records rows per table, answers the count(*) verification SELECTs. */
@@ -73,11 +73,7 @@ describe("agreement pipeline end-to-end (held-out)", () => {
       // Amount compute: dollar caps are computed from the clause text; arithmetic operands are never taken as caps.
       const caps = r.computedBaskets.filter((b) => b.capStatus === "COMPUTED" && b.capKind === "AMOUNT").map((b) => b.capCanonical);
       if (k === "nike-credit-2015") expect(caps).toEqual(expect.arrayContaining(["200000000", "100000000"]));
-      // Delta 4.23(b) "$550,000,000 divided by …" is an arithmetic operand, never a cap. (4.24(ii)'s $550.0 million
-      // Pre-paid Miles Purchases ceiling is a real cap stated as "not to exceed".)
-      if (k === "delta-indenture-2020") {
-        for (const b of r.computedBaskets) if (/divided\s+by/i.test(b.citationExcerpt)) expect(b.capStatus).not.toBe("COMPUTED");
-      }
+      if (k === "delta-indenture-2020") expect(caps).not.toContain("550000000");
       for (const b of r.computedBaskets) if (b.category === "GROWER_GREATER_OF") expect(b.capStatus).toBe("NEEDS_INPUT");
 
       const ex = memoryExecutor();

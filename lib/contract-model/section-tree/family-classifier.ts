@@ -24,12 +24,12 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION = /\b(?:shall|will|may)\s+not\b|\bno\s+(?:[A-Z][\w-]*\s+){1,4}(?:(?:nor|or)\s+any\s+[^.;]{0,60}?)?(?:shall|will|may)\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|directly or indirectly)\b/i;
+const PROHIBITION = /\b(?:shall|will|may)\s+not\b|\bno\s+(?:[A-Z][\w-]*\s+){1,4}(?:shall|will|may)\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|directly or indirectly)\b/i;
 const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|directly or indirectly)\b/i;
 /** The prohibition binds an obligor: not the trustee, agents, lenders or holders, and not a passive "shall not be required/deemed". */
 const NON_OBLIGOR = /\b(?:trustees?|agents?|holders?|lenders?|banks?|purchasers?|registrar|noteholders?|collateral agent|arrangers?)\b/i;
 function obligorBound(lead: string): boolean {
-  const re = /\b(?:shall|will|may)\s+not\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated|construed))|\b[Nn]o\s+((?:[A-Z][\w-]*\s+){1,4}(?:(?:nor|or)\s+any\s+[^.;]{0,60}?)?)(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated|construed))/g;
+  const re = /\b(?:shall|will|may)\s+not\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated|construed))|\b[Nn]o\s+((?:[A-Z][\w-]*\s+){1,4})(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated|construed))/g;
   for (const m of lead.slice(0, 450).matchAll(re)) {
     const subject = m[1] ?? lead.slice(Math.max(0, (m.index ?? 0) - 70), m.index ?? 0).split(/[.;:]/).pop() ?? "";
     if (!NON_OBLIGOR.test(subject)) return true;
