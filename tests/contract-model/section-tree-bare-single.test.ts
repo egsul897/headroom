@@ -85,3 +85,13 @@ describe("'Sections N.NN' heading typo", () => {
     expect(st(doc, "AFFILIATE_TRANSACTIONS").sectionPaths).toEqual(["4.10"]);
   });
 });
+
+describe("false INVESTMENTS headings", () => {
+  it("'Investment Company Act' and use-of-proceeds titles are not INVESTMENTS headings", async () => {
+    const { classifyCovenantFamily } = await import("@/lib/contract-model/section-tree/family-classifier");
+    for (const title of ["Investment Company Act", "Limitation on Use of Proceeds of Sponsor Direct Investment"]) {
+      const v = classifyCovenantFamily({ title, parentTitle: null, covenantContext: true, leadIn: "No Borrower shall take any action that would result in it being required to register under any statute." });
+      expect(v.evidence).not.toContain("INVESTMENTS:heading");
+    }
+  });
+});

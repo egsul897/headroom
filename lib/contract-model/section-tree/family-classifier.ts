@@ -76,7 +76,8 @@ const HEADING: Array<[CovenantFamily, RegExp]> = [
   ["LIENS", /\bliens?\b|negative pledge|\bencumbrances?\b/i],
   ["DEBT", /\b(?:indebtedness|debt|borrowings?)\b/i],
   ["RESTRICTED_PAYMENTS", /restricted (?:junior )?payments?|dividends?|distributions?/i],
-  ["INVESTMENTS", /\binvestments?\b|loans?,? advances|acquisitions/i],
+  // Not "Investment Company Act", "investment grade", "Use of Proceeds of <X> Investment".
+  ["INVESTMENTS", /^(?!.*\buse of proceeds\b)(?:.*?\binvestments?\b(?!\s+(?:company|grade|bank|banker|banking|management|advis|policy|policies))|.*?loans?,? advances|.*?acquisitions)/i],
   ["ASSET_SALES", /asset sales?|asset transfers?|transfers? of assets|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],
   ["AFFILIATE_TRANSACTIONS", /affiliates?/i],
   ["FUNDAMENTAL_CHANGES", /fundamental changes?|mergers?|\bconsolidations?\b|consolidate\b/i],
