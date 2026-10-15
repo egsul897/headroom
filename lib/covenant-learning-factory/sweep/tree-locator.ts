@@ -90,6 +90,12 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
       // Structural links (no keywords): a section is kept when a covenant section uses a term it defines, or
       // when it cross-references / is cross-referenced by a covenant section (definitions, amendments).
       for (const sec of linkedToCovenant(t, t.text, covenantSecs)) covenantSecs.add(sec);
+      // Amendment instructions that amend a section of the base agreement ("Section 10.3 ... is hereby amended") are in
+      // scope when this document also amends a covenant section of the same base article (Section 10.7 restated as a
+      // covenant here).
+      const amendTarget = (n: SectionTree["nodes"][number]) => /\bSection\s+(\d{1,2})\.\d{1,3}\b[^.]{0,200}\b(?:is|are|shall be)\s+(?:and is\s+)?(?:hereby\s+)?amended\b/i.exec(`${n.title ?? ""}${/\d$/.test(n.title ?? "") ? "." : " "}${t.text.slice(n.headingEnd, Math.min(n.end, n.headingEnd + 600)).trimStart()}`)?.[1] ?? null;
+      const covArticles = new Set(t.nodes.filter((n) => n.kind === "SECTION" && n.sectionNumber && covenantSecs!.has(n.sectionNumber)).map(amendTarget).filter(Boolean));
+      for (const n of t.nodes) if (n.kind === "SECTION" && n.sectionNumber && !covenantSecs.has(n.sectionNumber) && covArticles.has(amendTarget(n))) covenantSecs.add(n.sectionNumber);
     } catch {
       ix = null;
       covenantSecs = null;
@@ -134,6 +140,8 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
 const COVENANT_TITLE = /covenant|events? of default|\bdefaults?\b|negative pledge|limitation|restrict|nonrecourse|non-recourse|burdensome/i;
 export const OBLIGATION_LEAD = /\b(?:shall|will|may)\s+not\b|\b(?:shall|will)\s+(?:cause|maintain|deliver|furnish|keep|comply|preserve|pay)\b|\bevents? of default\b|\bif any of the following\b|\bno recourse\b/i;
 
+export const PROHIBITIVE_ANYWHERE = /\b(?:shall|will|may)\s+not\b|\bevents? of default\b|\bif any of the following\b|\bno recourse\b/i;
+
 /** "No Loan Party nor any Subsidiary shall …", "No Borrower and no Subsidiary will …" (not "No Loan Party is …", a representation). */
 /** Affirmative covenant lead-ins: imperative ("Maintain, preserve and protect …") or obligor "agree(s) to". */
 export const AFFIRMATIVE_LEAD = /^\s*(?:\([a-z0-9]+\)\s*)?(?:maintain|preserve|deliver|furnish|keep|comply|cause|pay and discharge|use the proceeds)\b|\b(?:borrowers?|company|issuer|loan part(?:y|ies)(?: \(as applicable\))?|obligors?|guarantors?)\s+(?:hereby\s+)?agrees?\s+to\b/i;
@@ -144,9 +152,11 @@ export const NO_PARTY_SHALL = /^\s*(?:\([a-z0-9]+\)\s*)?no\s+[^.;]{1,140}?\b(?:s
 export function sectionLooksCovenant(tree: SectionTree, text: string, n: SectionTree["nodes"][number]): boolean {
   const lead = text.slice(n.headingEnd, Math.min(n.end, n.headingEnd + 700));
   if (isObligorProhibitionLead(lead) || isProhibitive(lead) || NO_PARTY_SHALL.test(lead) || AFFIRMATIVE_LEAD.test(lead)) return true;
-  // Obligation wording anywhere in the section, not only its opening.
+  // Affirmative obligations ("will pay", "shall deliver") count only in lead-ins: the section opening and each clause
+  // opening. Prohibitions, default triggers and no-recourse wording count anywhere in the body.
   const body = text.slice(n.headingEnd, n.end);
-  if (OBLIGATION_LEAD.test(body) || NO_PARTY_ANYWHERE.test(body)) return true;
+  if (OBLIGATION_LEAD.test(lead) || PROHIBITIVE_ANYWHERE.test(body) || NO_PARTY_ANYWHERE.test(body)) return true;
+  for (const c of body.matchAll(/(?:^|\n|[;:]\s+)\s*\((?:[a-z]{1,2}|[ivxl]{1,6}|\d{1,2})\)\s+([^\n]{0,200})/g)) if (OBLIGATION_LEAD.test(c[1]!)) return true;
   for (let a: typeof n | undefined = n; a; a = a.parentId ? tree.byId.get(a.parentId) : undefined) {
     if (a.title && COVENANT_TITLE.test(a.title)) return true;
   }
