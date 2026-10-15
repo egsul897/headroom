@@ -12,7 +12,10 @@
 import { describe, expect, it } from "vitest";
 import { discoverCovenantCandidates } from "../../lib/knowledge-factory/pipeline/candidates";
 import { classifyFamiliesFromText } from "../../lib/knowledge-factory/taxonomy/families";
-import type { StructuralNodeRecord } from "../../lib/knowledge-factory/types";
+import type {
+  KnowledgeTaxonomyFamily,
+  StructuralNodeRecord,
+} from "../../lib/knowledge-factory/types";
 import { analyzeProvision } from "../../lib/product/covenant-intelligence/analyze-provision";
 
 function node(
@@ -43,7 +46,7 @@ function spanOf(text: string, needle: string, from = 0): { start: number; end: n
 function analyze(
   excerpt: string,
   heading: string,
-  families: string[],
+  families: KnowledgeTaxonomyFamily[],
   candidateId = "c-general",
 ) {
   return analyzeProvision({
