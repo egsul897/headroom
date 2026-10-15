@@ -546,7 +546,7 @@ export function treeText(raw: string): { text: string; basis: TextBasis } {
     .replace(/&(ldquo|rdquo|lsquo|rsquo|mdash|ndash|sect|quot|apos);/g, (_, n: string) =>
       ({ ldquo: "\u201c", rdquo: "\u201d", lsquo: "\u2018", rsquo: "\u2019", mdash: "\u2014", ndash: "\u2013", sect: "\u00a7", quot: '"', apos: "'" })[n] ?? " ",
     );
-  return { text: stripPageNumberLines(relineFlattened(t.replace(/\u00a0/g, " "))), basis };
+  return { text: relineFlattened(t.replace(/\u00a0/g, " ")), basis };
 }
 
 /**
@@ -562,13 +562,8 @@ export function relineFlattened(t: string): string {
     .replace(/(\b[A-Z]{3,})(\s{1,6})(?=SECTION\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"])/g, "$1\n");
 }
 
-/**
- * Page furniture: lines that are only a page number ("12", "- 12 -", "Page 12 of 90", "12 13" dual numbering) are
- * blanked. Shared by the tree text and the compute path (build-package) so citations stay consistent across both.
- */
-export function stripPageNumberLines(t: string): string {
-  return t.replace(/(^|\n)[^\S\n]*(?:[-–—][^\S\n]*)?(?:page[^\S\n]+)?\d{1,3}(?:[^\S\n]+\d{1,3})?(?:[^\S\n]+of[^\S\n]+\d{1,3})?(?:[^\S\n]*[-–—])?[^\S\n]*(?=\n|$)/gi, "$1");
-}
+// Page-number lines are NOT stripped from tree text: basket citations come from the compute path's text, and the
+// pipeline checks every citation against the tree text (agreement-pipeline-e2e).
 
 export function parseDocumentTree(raw: string): SectionTree & { text: string; basis: TextBasis } {
   const { text, basis } = treeText(raw);
