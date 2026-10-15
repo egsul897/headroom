@@ -208,6 +208,8 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   // Prohibitions buried inside other clauses: inside a negative-covenant container (an ARTICLE/SECTION titled as
   // covenants but not affirmative, or holding at least two classified covenant sections), each obligor-bound
   // prohibition sentence whose lead-in object names a family is a covenant unit (the smallest section holding it).
+  // Subjects: "No <obligor> shall ..." (negated subject) or "<Obligor> shall/will not ..." (named obligor, e.g. a
+  // defined holding-company term) — isObligorProhibitionLead and the creditor-actor guard still decide.
   const buriedUnits: typeof units = [];
   const classified = new Set(units.filter((u) => famOf.get(u.id)?.length).map((u) => u.id));
   const containers = tree.nodes.filter((n) => (n.kind === "ARTICLE" || n.kind === "SECTION")
@@ -217,9 +219,9 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
       || classified.has(n.id)));
   for (const c of containers) {
     const body = text.slice(c.headingEnd, Math.min(c.end, c.headingEnd + 200000));
-    for (const m of body.matchAll(/(?:^|[.;:]\s+|\n\s*)((?:\([a-zA-Z0-9]{1,4}\)\s*)?(?:The|No|Neither|None of|Each)\s+[A-Z][^.;]{0,160}?\b(?:shall|will|may)\s+not\b[^.;]{0,400})/g)) {
+    for (const m of body.matchAll(/(?:^|[.;:]\s+|\n\s*)((?:\([a-zA-Z0-9]{1,4}\)\s*)?(?:(?:No|Neither|None of)\s+[A-Z][^.;]{0,160}?\b(?:shall|will|may)\b|(?:(?:The|Each)\s+[A-Z][^.;]{0,160}?|[A-Z][\w’'-]*(?:\s+(?:[A-Z][\w’'-]*|of|any|its|and))*,?)\s+(?:shall|will|may)\s+not\b)[^.;]{0,400})/g)) {
       const sent = m[1]!, at = c.headingEnd + m.index! + (m[0].length - sent.length);
-      if (!isObligorProhibitionLead(sent) || /\b(?:Trustee|Agent|Lenders?|Holders?|Secured Part(?:y|ies)|Purchasers?)\b/.test(sent.slice(0, 60))) continue;
+      if (!isObligorProhibitionLead(sent) || /\bdeemed\b/i.test(sent.slice(0, 200)) || /\b(?:Trustee|Agent|Lenders?|Holders?|Secured Part(?:y|ies)|Purchasers?)\b/.test(sent.slice(0, 60))) continue;
       const v = classifyCovenantFamily({ title: null, parentTitle: null, leadIn: sent, covenantContext: true });
       // "all or substantially all" is a fundamental change, a sale-leaseback its own covenant, and a sentence about
       // dealings with Affiliates the affiliate covenant only.

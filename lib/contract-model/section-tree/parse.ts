@@ -106,6 +106,39 @@ const SECTION_RE =
 /** Amendment-style single-number sections: "SECTION 3. Conditions." (requires the word). */
 const SECTION_SINGLE_RE = /(^|\n)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2})\.(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z][^.\n]{1,120}?)[^\S\n]*[.:\n]/g;
 
+/**
+ * Bare single-number sections without the "Section" word: "5. Covenants . Holdings ...",
+ * "11.      Negative\nCovenants ." (title may wrap one line). Only accepted as a consecutive
+ * 1, 2, 3, ... chain of at least 3 (list items like "1. Principal amount of $..." are not
+ * title-cased and break no chain).
+ */
+const SECTION_BARE_RE = /(^|\n)[^\S\n]*(\d{1,2})\.[^\S\n]+(\[[A-Za-z ]{1,30}\](?=[^\S\n]*\n)|(?:[A-Z][^.:\n]{0,100}?)(?:\n[^\S\n]*[A-Za-z][^.:\n]{0,60}?)?)[^\S\n]*[.:]?(?<=[.:\]])/g;
+const SMALL_WORDS = /^(of|and|or|the|to|in|on|for|by|with|a|an|as|at|upon|under|from|no\.?)$/i;
+function titleCased(t: string): boolean {
+  const w = t.replace(/[;,]/g, " ").split(/\s+/).filter(Boolean);
+  if (w.length === 0 || w.length > 10) return false;
+  if (/[\d$%]/.test(t)) return false;
+  if (/^\[[A-Za-z ]+\]$/.test(t)) return true;
+  if (!/^[A-Z“"(]/.test(w[0]!) || w.length > 8) return false;
+  const big = w.filter((x) => !SMALL_WORDS.test(x));
+  return big.filter((x) => /^[A-Z“"(]/.test(x)).length * 2 >= big.length;
+}
+function bareSingleHeadings(text: string): Heading[] {
+  const chain: Heading[] = [];
+  let next = 1;
+  for (const m of text.matchAll(SECTION_BARE_RE)) {
+    const n = Number(m[2]);
+    const title = m[3]!.replace(/\s+/g, " ").trim();
+    if (!titleCased(title)) continue;
+    if (n === 1 && next !== 1 && chain.length < 3) { chain.length = 0; next = 1; }
+    if (n !== next) continue;
+    const start = m.index! + m[1]!.length;
+    chain.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
+    next++;
+  }
+  return chain.length >= 3 ? chain : [];
+}
+
 function findHeadings(text: string): Heading[] {
   const out: Heading[] = [];
   for (const m of text.matchAll(ARTICLE_RE)) {
@@ -136,6 +169,10 @@ function findHeadings(text: string): Heading[] {
       if (title.split(" ").length > 18) continue;
       const start = m.index! + m[1]!.length;
       out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
+    }
+    if (out.filter((h) => h.kind === "SECTION").length < 3) {
+      const taken = new Set(out.filter((h) => h.kind === "SECTION").map((h) => h.number));
+      for (const h of bareSingleHeadings(text)) if (!taken.has(h.number)) out.push(h);
     }
   }
   out.sort((a, b) => a.start - b.start);
