@@ -6,8 +6,8 @@ import "../home-shell.css";
 
 /**
  * Company shell. The company card is the database name. There is no
- * signed-in user, so the user card is omitted. The shell does not render
- * a leverage figure — overview slots stay on Product LOCK empty copy.
+ * signed-in user, so the user card says the person is not loaded.
+ * The shell does not render a leverage figure.
  */
 export default async function CompanyLayout({ children, params }: { children: ReactNode; params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;

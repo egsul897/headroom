@@ -188,6 +188,30 @@ main:has(.app-shell) {
   font-variant-numeric: tabular-nums;
 }
 
+.app-user-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--shell-sidebar-line);
+  border-radius: 8px;
+  background: var(--shell-sidebar-card);
+  color: var(--shell-sidebar-ink);
+}
+
+.app-user-mark {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #dcebed;
+  color: #12151a;
+  font-size: 13px;
+  font-weight: 650;
+  flex-shrink: 0;
+}
+
 .app-tagline {
   margin: 0;
   padding: 0 4px 2px;
@@ -248,8 +272,8 @@ main:has(.app-shell) {
 }
 
 .home-setup-banner {
-  border-color: #d9c9a8;
-  background: linear-gradient(180deg, #fffdf8 0%, #f7f1e6 100%);
+  border-color: #b7d0d6;
+  background: #f4fafb;
 }
 
 .home-authority-note {
@@ -549,8 +573,14 @@ main:has(.app-shell) {
 }
 
 .home-export:disabled {
-  opacity: 0.55;
+  opacity: 0.72;
   cursor: not-allowed;
+}
+
+.home-export-chevron {
+  margin-left: 2px;
+  color: var(--shell-muted);
+  font-size: 11px;
 }
 
 .home-export-link {
@@ -645,15 +675,53 @@ main:has(.app-shell) {
   color: var(--shell-muted);
 }
 
+.home-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.home-card-head .home-eyebrow {
+  margin: 0;
+}
+
+.home-period {
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 8px;
+  border: 1px solid var(--shell-line);
+  background: var(--shell-card);
+  color: var(--shell-muted);
+  font: inherit;
+  font-size: 12px;
+}
+
+.home-period:disabled {
+  cursor: not-allowed;
+}
+
+.home-ask-link {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  margin-top: 10px;
+  max-width: 280px;
+  text-decoration: none;
+  color: inherit;
+}
+
 .home-chart-well {
-  min-height: 240px;
+  min-height: 220px;
   display: grid;
   place-items: center;
   text-align: center;
   padding: 24px 16px;
   border-radius: 12px;
-  border: 1px dashed #ddd6c6;
-  background: linear-gradient(180deg, #fcfbf8 0%, #f6f3ec 100%);
+  border: 1px dashed #c5dde2;
+  background: #f4fafb;
 }
 
 .home-chart-well .home-empty {
@@ -695,7 +763,7 @@ main:has(.app-shell) {
 }
 
 .home-table tbody tr:nth-child(even) {
-  background: #fbfaf7;
+  background: #f4fafb;
 }
 
 .home-table tbody tr:hover {

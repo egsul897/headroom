@@ -42,6 +42,7 @@ export function AppShell({
   startPaletteOpen = false,
   startDrawerOpen = false,
   pathnameOverride,
+  user,
 }: {
   companyId: string;
   companyName: string;
@@ -51,6 +52,8 @@ export function AppShell({
   startPaletteOpen?: boolean;
   startDrawerOpen?: boolean;
   pathnameOverride?: string;
+  /** Sample illustration only. Production has no signed-in user. */
+  user?: { name: string; role: string } | null;
 }) {
   const livePath = usePathname() ?? "";
   const pathname = pathnameOverride ?? livePath;
@@ -116,6 +119,15 @@ export function AppShell({
             </Link>
           ) : null}
           <CompanyIdentityCard name={companyName} ticker={ticker} />
+          <div className="app-user-card" data-user-card>
+            <span className="app-user-mark" aria-hidden="true">
+              {user ? user.name.slice(0, 1) : "—"}
+            </span>
+            <span className="app-company-copy">
+              <span className="app-company-name">{user ? user.name : "Signed-in user"}</span>
+              <span className="app-company-ticker">{user ? user.role : "Not loaded"}</span>
+            </span>
+          </div>
         </div>
       </aside>
       {drawerOpen ? (

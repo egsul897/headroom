@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { StatusBadge } from "@/components/StatusBadge";
+import { CompanyOverview } from "@/components/home/Overview";
 import { AppShell } from "@/components/shell/AppShell";
 import { BrandMark } from "@/components/home/icons";
 import { Card } from "@/components/ui";
 import "../../home-shell.css";
 import "./rails.css";
 import "./brands.css";
+import { SampleDashboard } from "./dashboard";
 import { SAMPLE_BANNER, SAMPLE_COMPANY, SAMPLE_TICKER } from "./fixture";
 
 export const dynamic = "force-dynamic";
@@ -83,6 +85,19 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
     );
   }
 
+  if (screen === "empty") {
+    return (
+      <div data-brand={brand}>
+        <AppShell companyId="unloaded" companyName="No company loaded" ticker={null} onboardingStatus="ACTIVE" pathnameOverride="/unloaded">
+          <p className="sample-banner" role="note">
+            Product empty state. No company is connected. Figures stay unknown.
+          </p>
+          <CompanyOverview companyId="unloaded" identityName={null} />
+        </AppShell>
+      </div>
+    );
+  }
+
   const path = screen === "covenants" ? "/sample/covenants" : screen === "capacity" ? "/sample/capacity" : "/sample";
   const rail = searchParams.rail === "deep" || searchParams.rail === "mid" || searchParams.rail === "soft" ? searchParams.rail : undefined;
 
@@ -94,9 +109,10 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
         ticker={SAMPLE_TICKER}
         onboardingStatus="ACTIVE"
         pathnameOverride={path}
+        user={{ name: "Sample reviewer", role: "Illustration only" }}
       >
         <SampleBanner />
-        {screen === "covenants" ? <CovenantsSample brand={brand} /> : screen === "capacity" ? <CapacitySample /> : <OverviewSample brand={brand} />}
+        {screen === "covenants" ? <CovenantsSample brand={brand} /> : screen === "capacity" ? <CapacitySample /> : <SampleDashboard />}
       </AppShell>
     </div>
   );
@@ -116,80 +132,6 @@ function SampleBanner() {
       <strong>SAMPLE DATA</strong>
       <span>{SAMPLE_BANNER.replace(/^SAMPLE DATA — /, "")}</span>
     </p>
-  );
-}
-
-function OverviewSample({ brand }: { brand?: string }) {
-  return (
-    <div className="home-regions">
-      <section className="exec-block" aria-label="Executive summary">
-        <div className="sample-exec-head">
-          <div className="exec-block-copy">
-            <h2 className="exec-block-label">Executive summary</h2>
-            <p className="exec-block-lead">
-              What a CFO reads first. Every figure on this screen is an illustration. A real workspace leaves the slot blank until a sourced path exists.
-            </p>
-          </div>
-          <Link className="button button-primary" href={sampleHref("covenants", brand)}>
-            Open sample covenants
-          </Link>
-        </div>
-        <div className="home-kpis">
-          <SampleKpi label="Total headroom" value="$86 million" caption="Sample incremental, secured. Not engine-backed." />
-          <SampleKpi label="Utilization" value="54%" caption="Sample used against a sample cap." />
-          <SampleKpi label="Covenants at risk" value="1" caption="Sample count. One clause needs a person." />
-          <SampleKpi label="Next test" value="Dec 31, 2024" caption="Sample measurement date." />
-        </div>
-        <div className="home-card sample-chart" aria-hidden="true">
-          <svg viewBox="0 0 240 36" preserveAspectRatio="none">
-            <polyline fill="none" stroke="currentColor" strokeWidth="2" points="0,28 30,24 60,26 90,16 120,18 150,10 180,12 210,8 240,6" />
-          </svg>
-        </div>
-      </section>
-      <section className="exec-block" aria-label="Covenants">
-        <h2 className="exec-block-label">Covenants</h2>
-        <Card>
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th scope="col">Covenant</th>
-                <th scope="col">Citation</th>
-                <th scope="col">Status</th>
-                <th scope="col" className="num">
-                  Headroom
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Sample maintenance covenant</td>
-                <td>Sample agreement §7.01</td>
-                <td>
-                  <StatusBadge status="NEEDS_INPUT" />
-                </td>
-                <td className="num">Not evaluated</td>
-              </tr>
-              <tr>
-                <td>Sample indebtedness covenant</td>
-                <td>Sample agreement §6.04</td>
-                <td>
-                  <StatusBadge status="DISCOVERED" />
-                </td>
-                <td className="num">$40 million sample</td>
-              </tr>
-              <tr>
-                <td>Sample pass chip</td>
-                <td>Status illustration only</td>
-                <td>
-                  <StatusBadge status="PASS" />
-                </td>
-                <td className="num">Not a capacity figure</td>
-              </tr>
-            </tbody>
-          </table>
-        </Card>
-      </section>
-    </div>
   );
 }
 

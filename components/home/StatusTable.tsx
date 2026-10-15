@@ -29,17 +29,7 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
                     <StatusBadge status={row.status} />
                   </td>
                   <td className="num">{row.headroom}</td>
-                  <td className="home-trend-cell">
-                    {row.trend === "—" ? (
-                      <span className="home-trend-flat" aria-hidden="true">
-                        <svg viewBox="0 0 48 16" width="48" height="16">
-                          <polyline fill="none" stroke="currentColor" strokeWidth="1.5" points="0,10 8,9 16,11 24,7 32,8 40,5 48,6" />
-                        </svg>
-                      </span>
-                    ) : (
-                      row.trend
-                    )}
-                  </td>
+                  <td className="home-trend-cell">{row.trend && row.trend !== "—" ? row.trend : "Unknown"}</td>
                   <td>{row.nextTest}</td>
                 </tr>
               ))

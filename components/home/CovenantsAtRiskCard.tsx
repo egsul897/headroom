@@ -1,4 +1,4 @@
-import { HOME_RISK_NEEDS_REVIEW, HOME_VERIFIED_EMPTY } from "@/lib/home/copy";
+import { HOME_RISK_NEEDS_REVIEW } from "@/lib/home/copy";
 import { UNKNOWN_STATE, presentRisk, type RiskLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
@@ -41,10 +41,7 @@ export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoa
   if (presented.kind === "VERIFIED_EMPTY") {
     return (
       <RegionCard region="covenants-at-risk" eyebrow="Covenants at risk">
-        <div className="home-kpi-figure" data-load-kind="VERIFIED_EMPTY" data-slot="covenantsAtRisk">
-          <p className="home-kpi-value home-kpi-value-hero">0</p>
-          <p className="home-kpi-caption">{HOME_VERIFIED_EMPTY.covenantsAtRisk.detail}</p>
-        </div>
+        <EmptyCopy slot="covenantsAtRisk" state={presented} />
       </RegionCard>
     );
   }

@@ -6,15 +6,20 @@ export function RegionCard({
   eyebrow,
   children,
   id,
+  toolbar,
 }: {
   region: string;
   eyebrow: string;
   children: ReactNode;
   id?: string;
+  toolbar?: ReactNode;
 }) {
   return (
     <section className="home-card" data-region={region} aria-label={eyebrow} id={id}>
-      <h2 className="home-eyebrow">{eyebrow}</h2>
+      <div className="home-card-head">
+        <h2 className="home-eyebrow">{eyebrow}</h2>
+        {toolbar}
+      </div>
       {children}
     </section>
   );

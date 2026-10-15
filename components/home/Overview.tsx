@@ -56,15 +56,12 @@ export function CompanyOverview({
               {readinessHeadline}
             </p>
           ) : null}
-        </div>
-        <div className="home-top-actions">
-          <Link className="button button-primary" href={`/${companyId}/intelligence`}>
-            Debt intelligence
-          </Link>
-          <Link className="home-ask-hero" href={`/${companyId}/ask`} data-ask-hero>
+          <Link className="home-ask-link" href={`/${companyId}/ask`} data-ask-hero>
             <span className="home-ask-hero-label">Ask</span>
             <span className="home-ask-hero-note">{ASK_CASES.NOT_AVAILABLE_ON_DEAL.headline}</span>
           </Link>
+        </div>
+        <div className="home-top-actions">
           <a className="home-icon-button" href="#home-alerts" aria-label="Alerts">
             <BellIcon />
             {badge != null ? (
@@ -82,6 +79,9 @@ export function CompanyOverview({
           >
             <ExportIcon />
             Export
+            <span className="home-export-chevron" aria-hidden="true">
+              ▾
+            </span>
           </button>
         </div>
       </header>
@@ -98,37 +98,24 @@ export function CompanyOverview({
       ) : null}
 
       <div className="home-regions">
-        <section className="exec-block" aria-label="Executive summary">
-          <div className="exec-block-copy">
-            <h2 className="exec-block-label">Executive summary</h2>
-            <p className="exec-block-lead">Where this company stands. A blank figure is unknown, not zero.</p>
-          </div>
-          <div className="home-kpis">
-            <TotalHeadroomCard state={slots.totalHeadroom} />
-            <UtilizationCard state={slots.utilization} />
-            <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
-            <NextTestCard state={slots.nextTest} />
-          </div>
-        </section>
-        <section className="exec-block" aria-label="Covenants">
-          <h2 className="exec-block-label">Covenants</h2>
-          <StatusTable state={slots.statusTable} />
-        </section>
-        <section className="exec-block" aria-label="Movement">
-          <h2 className="exec-block-label">Movement</h2>
-          <div className="home-split">
-            <HeadroomOverTimeCard state={slots.headroomOverTime} />
-            <DriversCard state={slots.drivers} />
-          </div>
+        <div className="home-kpis">
+          <TotalHeadroomCard state={slots.totalHeadroom} />
+          <UtilizationCard state={slots.utilization} />
+          <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
+          <NextTestCard state={slots.nextTest} />
+        </div>
+        <div className="home-split">
+          <HeadroomOverTimeCard state={slots.headroomOverTime} />
           <CapacitySummaryCard state={slots.capacitySummary} />
-        </section>
-        <section className="exec-block" aria-label="Record">
-          <h2 className="exec-block-label">Record</h2>
-          <div className="home-pair">
-            <AlertsCard state={alerts} />
-            <TransactionsCard state={slots.transactions} />
-          </div>
-        </section>
+        </div>
+        <div className="home-split">
+          <StatusTable state={slots.statusTable} />
+          <DriversCard state={slots.drivers} />
+        </div>
+        <div className="home-pair">
+          <AlertsCard state={alerts} />
+          <TransactionsCard state={slots.transactions} />
+        </div>
       </div>
       {authorityNote ? (
         <p className="home-authority-note" data-authority-note>
