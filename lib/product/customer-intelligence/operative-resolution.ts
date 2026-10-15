@@ -36,6 +36,35 @@ function filingDateOf(sources: KnowledgeSourceRecord[], sourceId: string): strin
   return s?.filingDate?.slice(0, 10) ?? null;
 }
 
+/** Classes that carry no precedence information (mirror of amendment-package rule 8). */
+const UNCLASSIFIED_CLASSES = new Set(["UNKNOWN", "OTHER_DEBT_RELATED"]);
+
+type InstrumentFamily = "CREDIT" | "INDENTURE";
+
+/**
+ * Coarse instrument family from title/class. Returns null when the
+ * document does not name an instrument — unknown is not a mismatch.
+ * CREDIT covers credit/loan/term/revolver/ABL facilities (one family:
+ * a "Loan Agreement" restating a "Credit Agreement" is the same kind
+ * of instrument). INDENTURE is a distinct instrument.
+ */
+function instrumentFamily(
+  documentTitle: string | undefined,
+  documentClass: string,
+): InstrumentFamily | null {
+  const t = (documentTitle || "").toLowerCase();
+  if (/indenture/.test(t) || documentClass === "INDENTURE") return "INDENTURE";
+  if (
+    /credit agreement|loan agreement|term loan|revolv|abl|credit facility/.test(t) ||
+    documentClass === "CREDIT_AGREEMENT" ||
+    documentClass === "TERM_LOAN_AGREEMENT" ||
+    documentClass === "REVOLVING_CREDIT_AGREEMENT" ||
+    documentClass === "ABL_AGREEMENT"
+  )
+    return "CREDIT";
+  return null;
+}
+
 /** Parse dates like "as of March 15, 2024" / "dated as of 2024-03-15" / ISO from titles. */
 export function extractEffectiveDateHint(text: string): string | null {
   const iso = text.match(/\b(20\d{2}-\d{2}-\d{2})\b/);
@@ -95,10 +124,52 @@ export function resolveOperativePrecedence(params: {
   );
   const nonRestatementBases = ap.baseCandidates.filter((b) => b.documentClass !== "RESTATEMENT");
 
+  // Gate: an unclassified sibling blocks EVERY resolution path. The
+  // RESOLVED returns below must not discard the package-level
+  // fail-closed signal (rule 8) by resetting unresolvedReasons to [].
+  const unclassified = params.sources.filter((s) => UNCLASSIFIED_CLASSES.has(s.documentClass));
+  if (unclassified.length > 0) {
+    unresolved.push(
+      "Operative resolution blocked: unclassified document(s) present (UNKNOWN / OTHER_DEBT_RELATED) — their relationship to the base agreement is unknown.",
+    );
+    return {
+      status: "UNRESOLVED_PRECEDENCE",
+      operativeDocumentSourceId: null,
+      baseDocumentSourceId:
+        nonRestatementBases.length === 1 ? nonRestatementBases[0]!.sourceId : null,
+      effectiveDate: null,
+      asOfDate: params.asOfDate ?? null,
+      bindings: [],
+      unresolvedReasons: unresolved,
+      note: "Unclassified documents block operative resolution until classified.",
+    };
+  }
+
   // Full restatement / amended-and-restated supersession (RESTATEMENT is also a "base" class)
   if (restatementSources.length === 1 && nonRestatementBases.length === 1) {
     const baseId = nonRestatementBases[0]!.sourceId;
     const restatement = restatementSources[0]!;
+    const baseSource = params.sources.find((x) => x.sourceId === baseId);
+    // The restatement must evidence it restates THIS base. A restatement
+    // naming a different instrument (e.g. "Amended and Restated Credit
+    // Agreement" beside a base Indenture) must not supersede it.
+    const restatementFamily = instrumentFamily(restatement.documentTitle, restatement.documentClass);
+    const baseFamily = instrumentFamily(baseSource?.documentTitle, baseSource?.documentClass ?? "");
+    if (restatementFamily && baseFamily && restatementFamily !== baseFamily) {
+      unresolved.push(
+        `Restatement “${restatement.documentTitle}” appears to concern a different instrument than the base agreement — automatic supersession blocked.`,
+      );
+      return {
+        status: "UNRESOLVED_PRECEDENCE",
+        operativeDocumentSourceId: null,
+        baseDocumentSourceId: baseId,
+        effectiveDate: null,
+        asOfDate: params.asOfDate ?? null,
+        bindings: [],
+        unresolvedReasons: unresolved,
+        note: "Restatement instrument mismatch blocks automatic supersession.",
+      };
+    }
     const baseDate = filingDateOf(params.sources, baseId);
     const eff =
       extractEffectiveDateHint(restatement.documentTitle || "") ||
@@ -164,6 +235,22 @@ export function resolveOperativePrecedence(params: {
   const baseDate = filingDateOf(params.sources, baseId);
 
   // Additional restatement path when restatement is not classified as base candidate
+  // Multiple restatements must not silently pick one (Array.find order).
+  if (restatementSources.length > 1) {
+    unresolved.push(
+      "Multiple restatements present — sequencing requires counsel review; no single restatement selected.",
+    );
+    return {
+      status: "UNRESOLVED_PRECEDENCE",
+      operativeDocumentSourceId: null,
+      baseDocumentSourceId: baseId,
+      effectiveDate: null,
+      asOfDate: params.asOfDate ?? null,
+      bindings: [],
+      unresolvedReasons: unresolved,
+      note: "Multiple restatements block automatic supersession.",
+    };
+  }
   const restatement = params.sources.find(
     (s) =>
       s.sourceId !== baseId &&
@@ -171,6 +258,24 @@ export function resolveOperativePrecedence(params: {
         /\bamended and restated\b|\brestate/i.test(s.documentTitle || "")),
   );
   if (restatement) {
+    const restatementFamily = instrumentFamily(restatement.documentTitle, restatement.documentClass);
+    const baseSource = params.sources.find((x) => x.sourceId === baseId);
+    const baseFamily = instrumentFamily(baseSource?.documentTitle, baseSource?.documentClass ?? "");
+    if (restatementFamily && baseFamily && restatementFamily !== baseFamily) {
+      unresolved.push(
+        `Restatement “${restatement.documentTitle}” appears to concern a different instrument than the base agreement — automatic supersession blocked.`,
+      );
+      return {
+        status: "UNRESOLVED_PRECEDENCE",
+        operativeDocumentSourceId: null,
+        baseDocumentSourceId: baseId,
+        effectiveDate: null,
+        asOfDate: params.asOfDate ?? null,
+        bindings: [],
+        unresolvedReasons: unresolved,
+        note: "Restatement instrument mismatch blocks automatic supersession.",
+      };
+    }
     const eff =
       extractEffectiveDateHint(restatement.documentTitle || "") ||
       restatement.filingDate?.slice(0, 10) ||
