@@ -20,7 +20,9 @@ describe("dev sample route", () => {
     expect(source("app/dev/sample/brands.css")).toContain('data-brand="olive"');
     expect(source("app/globals.css")).toContain("--paper: #f4f6f8");
     expect(source("app/globals.css")).not.toContain("sample-brand");
-    expect(source("app/home-shell.css")).toContain("--shell-sidebar: #3a4656");
+    expect(source("app/home-shell.css")).toContain("--shell-sidebar: #3a6a74");
+    expect(source("app/globals.css")).toContain("--accent: #2f7482");
+    expect(source("app/globals.css")).toContain("--green: #0e6b43");
     expect(source("app/home-shell.css")).not.toContain("sample-brand");
     for (const rel of ["app/page.tsx", "app/[companyId]/page.tsx", "app/[companyId]/covenants/page.tsx", "app/[companyId]/capacity/page.tsx"]) {
       expect(source(rel)).not.toContain("dev/sample");

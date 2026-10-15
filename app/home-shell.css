@@ -11,16 +11,15 @@ main:has(.app-shell) {
 }
 
 .app-shell {
-  /* Mid slate rail. Lighter than an ink bar, darker than the cool canvas.
-     Text and the active chip are measured for WCAG AA in docs/DESIGN_SYSTEM.md.
-     Content tokens (--paper, status colors) are not set here. */
-  --shell-sidebar: #3a4656;
-  --shell-sidebar-ink: #f4f6f8;
-  --shell-sidebar-muted: #b7c2ce;
-  --shell-sidebar-hover: #3f4c5c;
-  --shell-sidebar-active: #4c5c70;
-  --shell-sidebar-card: #314052;
-  --shell-sidebar-line: rgba(255, 255, 255, 0.1);
+  /* Lighter petrol rail. Text and the active chip are measured for WCAG AA
+     in docs/DESIGN_SYSTEM.md. Content tokens and status colors are not set here. */
+  --shell-sidebar: #3a6a74;
+  --shell-sidebar-ink: #f4f7f8;
+  --shell-sidebar-muted: #e7f1f3;
+  --shell-sidebar-hover: #42727c;
+  --shell-sidebar-active: #447684;
+  --shell-sidebar-card: #2f5c66;
+  --shell-sidebar-line: rgba(255, 255, 255, 0.14);
   --shell-canvas: var(--paper);
   --shell-card: var(--card);
   --shell-line: var(--line);
@@ -40,7 +39,7 @@ main:has(.app-shell) {
   min-height: 100vh;
   padding: 18px 12px 14px;
   background: var(--shell-sidebar);
-  border-right: 1px solid #2a3442;
+  border-right: 1px solid #2f5c66;
   color: var(--shell-sidebar-muted);
   position: sticky;
   top: 0;
@@ -116,6 +115,7 @@ main:has(.app-shell) {
   background: var(--shell-sidebar-active);
   color: var(--shell-sidebar-ink);
   font-weight: 620;
+  box-shadow: inset 3px 0 0 var(--accent-signal);
 }
 
 .app-nav-link.active svg {

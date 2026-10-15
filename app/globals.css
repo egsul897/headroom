@@ -13,6 +13,10 @@
   --amber-soft: #fbf3df;
   --navy: #1a365d;
   --navy-soft: #e8eef6;
+  /* Lighter petrol. White on #2f7482 is 5.33:1. Hue 190°, apart from status green at 154°. */
+  --accent: #2f7482;
+  --accent-hover: #266876;
+  --accent-signal: #e7f3f5;
   --idle-soft: #eef1f4;
   --input-bg: #ffffff;
 
@@ -77,7 +81,7 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--navy);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -542,11 +546,16 @@ input[type="range"] {
   color: var(--muted);
 }
 
-.button.active,
-.button-primary {
+.button.active {
   background: var(--ink);
   color: #fff;
   border-color: var(--ink);
+}
+
+.button-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
 
 .button-danger {
@@ -561,10 +570,15 @@ input[type="range"] {
   background: var(--card);
 }
 
-.button.active:hover,
-.button-primary:hover {
+.button.active:hover {
   background: var(--navy);
   border-color: var(--navy);
+  color: #fff;
+}
+
+.button-primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
   color: #fff;
 }
 
