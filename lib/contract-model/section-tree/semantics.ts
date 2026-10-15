@@ -281,7 +281,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   AFFILIATE_TRANSACTIONS: { heading: /\btransactions? with affiliates\b|\baffiliate transactions\b/i, lead: /(?:enter into|permit to exist|engage in)[^.;]{0,140}?\baffiliates?\b/i },
   FUNDAMENTAL_CHANGES: { heading: /\b(?:mergers?|consolidations?|fundamental changes|merger,? consolidation)\b/i, lead: /\b(?:merge|consolidate|amalgamate|liquidate|dissolve)\b/i },
   PREPAYMENTS: { heading: /\b(?:prepayments? of (?:other )?(?:indebtedness|debt)|restricted debt payments|payments? of (?:subordinated|junior) (?:indebtedness|debt))\b/i, lead: /(?:prepay|redeem|repurchase|defease|retire)[^.;]{0,100}?\b(?:subordinated|junior)?\s*(?:indebtedness|debt)\b/i },
-  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge|minimum liquidity)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?)\b[^.;]{0,120}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
+  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?)\b[^.;]{0,120}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
 };
 const NEG_RE = new RegExp(NEG, "i");
 const NOT_COVENANT_TITLE = /definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
@@ -334,9 +334,7 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     const lm = ev.lead.exec(sent);
     if (!lm) continue;
     if (isDefinition) continue outer;
-    // An article imperative at a clause start ("(i) Maintain a Consolidated Net Leverage Ratio ...", "Create, incur ...
-    // any Lien") is operative on its own, including in amendments that add a section with an imperative opening.
-    const imperative = new RegExp(String.raw`^\s*(?:\([a-z0-9]{1,4}\)\s*)*` + "(?:Maintain|Permit|Create|Incur|Make|Declare|Sell|Merge|Enter into|Pay|Prepay|Transfer|Dispose|Consolidate|Assume|Grant|Acquire|Purchase)\\b").test(sent) && lm.index <= 80;
+    const imperative = false;
     if (spuriousEvidence(family, sent, lm.index)) continue;
     if (imperative) { out.push({ kind: "LEAD_IN", excerpt: sent.trim().slice(0, 100) }); break outer; }
     if (family === "FINANCIAL_RATIOS") {
