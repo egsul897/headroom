@@ -1,23 +1,16 @@
 #!/bin/bash
-# usage: sbrun.sh NAME SNAP RULESARG TREE NSHARD
+# usage: shard-run.sh NAME SNAP RULESARG TREE NSHARD
+# Runs N shards in parallel, then merges them with merge-shards.ts, which refuses missing sources / shard indexes /
+# mixed snapshots and requires the merged snapshot identity to equal the shards' identity. Fails (exit != 0) otherwise.
+set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
-N=${5:-4}; mkdir -p ${OUT:-/tmp/clf-shards}
+N=${5:-4}; OUT=${OUT:-/tmp/clf-shards}; mkdir -p "$OUT"
+pids=()
 for i in $(seq 0 $((N-1))); do
-  CLF_SCOREBOARD_TREE=$4 npx tsx scripts/covenant-learning-factory/scoreboard.ts --snapshot=$2 $3 --shard=$i/$N --write-report=${OUT:-/tmp/clf-shards}/$1.$i.json --write-findings=${OUT:-/tmp/clf-shards}/$1.$i.jsonl > ${OUT:-/tmp/clf-shards}/$1.$i.log 2>&1 &
+  CLF_SCOREBOARD_TREE=$4 npx tsx scripts/covenant-learning-factory/scoreboard.ts --snapshot=$2 $3 --shard=$i/$N --write-report=$OUT/$1.$i.json --write-findings=$OUT/$1.$i.jsonl > $OUT/$1.$i.log 2>&1 &
+  pids+=($!)
 done
-wait
-python3 - "$1" "$N" <<'PY'
-import json,sys
-name,n=sys.argv[1],int(sys.argv[2])
-per=[]
-for i in range(n): per+=json.load(open(f'${OUT:-/tmp/clf-shards}/{name}.{i}.json'))['perSource']
-tot={}
-for s in per:
-    if s.get('duplicateOf'): continue
-    t=tot.setdefault(s['split'],{'total':0,'sources':0,'COVERAGE_GAP':0,'DISCOVERY_GAP':0,'UNSUPPORTED_SEMANTICS':0})
-    t['total']+=s['total'];t['sources']+=1
-    for k,v in s['counts'].items(): t[k]+=v
-json.dump({'totals':tot,'perSource':per},open(f'${OUT:-/tmp/clf-shards}/{name}.json','w'))
-print(name,json.dumps(tot))
-PY
-cat ${OUT:-/tmp/clf-shards}/$1.*.jsonl > ${OUT:-/tmp/clf-shards}/$1.jsonl
+for p in "${pids[@]}"; do wait "$p"; done
+shards=(); for i in $(seq 0 $((N-1))); do shards+=("$OUT/$1.$i.json"); done
+npx tsx scripts/covenant-learning-factory/scoreboard/merge-shards.ts "$OUT/$1.json" "${shards[@]}"
+cat $OUT/$1.*.jsonl > $OUT/$1.jsonl
