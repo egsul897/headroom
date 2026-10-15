@@ -130,6 +130,24 @@ const TEMPORAL_LEAD = /^[\s.:]*(?:\([a-z0-9]+\)\s*)?(?:from|after|prior to|until
  */
 const CONDITIONAL_PERMISSION = /^\s*(?:\([a-z0-9]+\)\s*)?(?:the\s+)?(?:issuer|company|borrower|parent|guarantor|obligor)s?\s+(?:shall\s+not\s+|may\s+(?:not\s+)?)?(?:consolidate|merge|amalgamate|convey|transfer|sell|lease)\b[^]{0,1800}?\b(?:only if|provided,? that|if|unless|so long as)\b/i;
 
+/** Object nouns that can be conjoined in one prohibition ("any Investments or Restricted Payments"). */
+const OBJECT_NOUN: Partial<Record<CovenantFamily, string>> = {
+  INVESTMENTS: "Investments?",
+  RESTRICTED_PAYMENTS: "Restricted Payments?|dividends?|distributions?",
+  DEBT: "Indebtedness|Debt",
+  LIENS: "Liens?",
+  ASSET_SALES: "Asset Sales?|Asset Dispositions?|Dispositions?",
+  PREPAYMENTS: "(?:Junior|Subordinated) (?:Indebtedness|Debt)",
+};
+/** Both families' objects sit in one coordinated object of the sentence ("A or B", "A, B and C"). */
+export function coordinatedObjects(sentence: string, a: CovenantFamily, b: CovenantFamily): boolean {
+  const na = OBJECT_NOUN[a], nb = OBJECT_NOUN[b];
+  if (!na || !nb) return false;
+  const link = String.raw`\s*(?:\([^()]{0,80}\)\s*)?(?:,\s*(?:or\s+|and\s+)?|\s+(?:or|and|and/or)\s+)(?:any\s+|other\s+)?`;
+  const re = (x: string, y: string) => new RegExp(String.raw`\b(?:${x})\b${link}(?:[\w-]+\s+){0,2}?(?:${y})\b`, "i");
+  return re(na, nb).test(sentence) || re(nb, na).test(sentence);
+}
+
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
   const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "").replace(EXCEPT_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
@@ -188,12 +206,21 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     }
     for (const [f, re] of DEFINED) if (re.test(lead)) add(f, 1, "defined-term");
   }
+  let leadSentence = "";
+  if (prohibitive) {
+    const ci = /(?:shall|will|may)\s+not\b/i.exec(lead), np = noPartyMatches(lead)[0];
+    const m = IMPERATIVE.test(lead) ? { index: 0 } : [ci, np].filter(Boolean).sort((a, b) => a!.index! - b!.index!)[0] ?? null;
+    const from = lead.slice(m?.index ?? 0);
+    leadSentence = from.slice(0, Math.min(450, (from.search(/\.\s/) + 1) || 450));
+  }
   let best: CovenantFamily | null = null, score = 0;
   for (const [f, s] of scores) if (s > score) { best = f; score = s; }
   // Need at least a heading+lead-in agreement or a strong lead-in alone.
   if (score < 3) best = null;
   // Secondary families need their own heading support ("Merger, Consolidation, or Sale of Assets").
-  const families = best ? [best, ...[...scores].filter(([f, s]) => f !== best && s >= 3 && evidence.includes(`${f}:heading`)).map(([f]) => f)] : [];
+  // Conjoined lead-in objects ("make any Investments or Restricted Payments") credit every family named.
+  const families = best ? [best, ...[...scores].filter(([f, s]) => f !== best && s >= 3 && (evidence.includes(`${f}:heading`)
+    || (evidence.includes(`${f}:lead-in`) && evidence.includes(`${best}:lead-in`) && coordinatedObjects(leadSentence, best!, f)))).map(([f]) => f)] : [];
   return { family: best, score, families, evidence };
 }
 

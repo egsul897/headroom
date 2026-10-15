@@ -18,3 +18,16 @@ describe("bare single-number sections and obligor-subject prohibitions", () => {
     expect(secs(`1. Purpose . Text.\n\n2. Term . Text.\n`)).toEqual([]);
   });
 });
+
+describe("conjoined prohibition objects", () => {
+  it("'make any Investments or Restricted Payments' credits both families", async () => {
+    const { classifyCovenantFamily } = await import("@/lib/contract-model/section-tree/family-classifier");
+    const v = classifyCovenantFamily({ title: null, parentTitle: null, covenantContext: true, leadIn: "The Company will not, and will not permit any Subsidiary to, declare or make, directly or indirectly, any Investments or Restricted Payments, other than as permitted under the Senior Agreement." });
+    expect(v.families).toEqual(expect.arrayContaining(["RESTRICTED_PAYMENTS", "INVESTMENTS"]));
+  });
+  it("a Lien securing Indebtedness is not a conjoined DEBT object", async () => {
+    const { classifyCovenantFamily } = await import("@/lib/contract-model/section-tree/family-classifier");
+    const v = classifyCovenantFamily({ title: null, parentTitle: null, covenantContext: true, leadIn: "The Company will not create, incur or suffer to exist any Lien securing Indebtedness on any of its property." });
+    expect(v.families).toEqual(["LIENS"]);
+  });
+});
