@@ -15,10 +15,12 @@ import { evaluateDefinition, type DefinitionEvaluation } from "./definition-item
 
 export const XBRL_SOURCE_PREFIX = "sec-xbrl:";
 
-type Family = "ASSETS" | "EBITDA" | "DEBT" | "NET_DEBT" | "INTEREST" | "CASH" | "CAPITALIZATION" | "NET_WORTH";
+type Family = "TANGIBLE_ASSETS" | "ASSETS" | "EBITDA" | "DEBT" | "NET_DEBT" | "INTEREST" | "CASH" | "CAPITALIZATION" | "NET_WORTH";
 
 export function familyOfMetricName(name: string): Family | null {
-  const n = name.replace(/\s+/g, " ").trim();
+  // A possessive owner ("the Issuer's Consolidated Total Assets") names the same measure.
+  const n = name.replace(/\s+/g, " ").trim().replace(/^(?:the\s+)?[A-Z][A-Za-z]*(?:\s+[A-Z][A-Za-z]*)?['’]s\s+/, "");
+  if (/^(?:consolidated\s+)?(?:total\s+)?tangible\s+assets$/i.test(n)) return "TANGIBLE_ASSETS";
   if (/^(?:consolidated\s+)?tangible\s+net\s+worth$/i.test(n)) return "NET_WORTH";
   if (/tangible|net assets|current assets|fixed assets|eligible|receivable|inventor/i.test(n)) return null;
   if (/^(?:the\s+)?(?:consolidated\s+)?(?:total\s+)?(?:consolidated\s+)?assets$/i.test(n) || /^total consolidated assets$/i.test(n)) return "ASSETS";
@@ -35,7 +37,7 @@ export function familyOfMetricName(name: string): Family | null {
   return null;
 }
 
-const FAMILY_INPUT: Record<Family, HeadroomInput> = { ASSETS: "totalAssets", EBITDA: "reportedEbitdaBase", DEBT: "totalDebt", NET_DEBT: "totalDebt", INTEREST: "interestExpense", CASH: "cash", CAPITALIZATION: "totalDebt", NET_WORTH: "equity" };
+const FAMILY_INPUT: Record<Family, HeadroomInput> = { TANGIBLE_ASSETS: "totalAssets", ASSETS: "totalAssets", EBITDA: "reportedEbitdaBase", DEBT: "totalDebt", NET_DEBT: "totalDebt", INTEREST: "interestExpense", CASH: "cash", CAPITALIZATION: "totalDebt", NET_WORTH: "equity" };
 
 /** Items that make a definition non-derivable from XBRL. Each match is reported as the NEEDS_INPUT reason. */
 const NON_DERIVABLE: Array<[string, RegExp]> = [
@@ -96,6 +98,8 @@ export function decide(metricName: string, text: string, fin: IssuerFinancials):
   if (!family) return { metricName, family, status: "NEEDS_INPUT", reason: "not a filing-derivable metric family", definition: null };
   if (family === "DEBT" || family === "NET_DEBT") return decideDebt(metricName, family, text, fin);
   if (family === "NET_WORTH") return decideNetWorth(metricName, text, fin);
+  if (family === "ASSETS" || family === "TANGIBLE_ASSETS") { const d = decideAssets(metricName, family, text, fin); if (d) return d; }
+  if (family === "TANGIBLE_ASSETS") return { metricName, family, status: "NEEDS_INPUT", reason: "tangible assets definition is not total assets less goodwill and intangibles", definition: findDefinition(text, metricName)?.slice(0, 400) ?? null };
   if (family === "CAPITALIZATION") return decideCapitalization(metricName, text, fin);
   if (family === "EBITDA" || family === "INTEREST") {
     // Line-item evaluation of the agreement's own definition (definition-items.ts). A trailing-period wrapper
@@ -128,6 +132,9 @@ export function decide(metricName: string, text: string, fin: IssuerFinancials):
   // "total assets", or "the assets and properties of X … determined on a consolidated basis in accordance with GAAP".
   const assetsLike = /total\s+assets/i.test(body) || (/\bassets\s+and\s+properties\b/i.test(body) && /in\s+accordance\s+with\s+GAAP/i.test(body));
   if (family === "ASSETS" && !assetsLike) hits.push("definition is not balance-sheet total assets");
+  // Restricted-group totals and internal / month-end statements are not the consolidated filing figure.
+  if (family === "ASSETS" && /\bRestricted\s+Subsidiar/i.test(body)) hits.push("restricted-group scope (filing is the whole consolidated group)");
+  if (family === "ASSETS" && /\binternal\b|\bmonth-?end\b/i.test(body)) hits.push("internal / month-end statements, not the filed balance sheet");
   if (hits.length) return { metricName, family, status: "NEEDS_INPUT", reason: `definition has non-derivable items: ${[...new Set(hits)].join("; ")}`, definition: def.slice(0, 400) };
   return { metricName, family, status: "BOUND", reason: "definition is derivable from the XBRL concept", definition: def.slice(0, 400), input };
 }
@@ -204,6 +211,38 @@ function decideDebtBody(metricName: string, body: string, def: string, text: str
   const input: FinancialValue = { ...debt, derivation: `${debt.derivation} (carrying amount; contract debt counts at least this borrowed money)` };
   return { metricName, family: "DEBT", status: "LOWER_BOUND", reason: "definition counts the consolidated group's borrowed money with no carve-out; XBRL long-term debt is a lower bound", definition: def.slice(0, 400), input,
     evaluation: { kind: "EBITDA", term: metricName, status: "LOWER_BOUND", value: debt.value, base: null, items: [], missing: ["debt items beyond XBRL long-term debt (leases, letters of credit, guarantees, short-term borrowings)"], reason: "debt lower bound", periodEnd: debt.periodEnd } };
+}
+
+/**
+ * Total assets (or total assets less goodwill and intangibles) of the whole consolidated group, as shown on the latest
+ * balance sheet: exact from the XBRL instant. A pro forma proviso for testing a transaction does not change the
+ * standing balance-sheet figure, so the definition is read up to it. Restricted-group scope, internal or month-end
+ * statements, or any other adjustment → null (the generic rule decides, normally NEEDS_INPUT).
+ */
+function decideAssets(metricName: string, family: "ASSETS" | "TANGIBLE_ASSETS", text: string, fin: IssuerFinancials): BindDecision | null {
+  const def = findDefinition(text, metricName);
+  if (!def) return null;
+  let body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*,?\s*/i, "");
+  body = body.split(/[;,]?\s*(?:\(\s*)?(?:provided\b|and,?\s+in\s+the\s+case\s+of\s+any\s+determination|calculated\s+on\s+a\s+pro\s+forma|which\s+may\s+be\s+calculated\s+on\s+a\s+pro\s+forma|giving\s+pro\s+forma\s+effect)/i)[0]!;
+  body = body.replace(/^as\s+of\s+(?:any|the)\s+date(?:\s+of\s+determination)?\s*,?\s*/i, "");
+  if (/\bRestricted\s+Subsidiar|\binternal|\bmonth|\bpro\s+forma|\bUnrestricted|\bexcluded?\s+subsidiar|\bForeign|\bDomestic|\bGuarantor/i.test(body)) return null;
+  const owner = String.raw`(?:of\s+(?:the\s+)?[A-Z][\w\s’'&.,-]{0,60}?(?:\s+and\s+(?:its|their)\s+(?:consolidated\s+)?Subsidiaries)?)`;
+  const shown = String.raw`(?:\s*,?\s*(?:on\s+a\s+consolidated\s+basis|determined\s+on\s+a\s+consolidated\s+basis|in\s+accordance\s+with\s+GAAP|determined\s+in\s+accordance\s+with\s+GAAP|as\s+(?:shown|reflected|set\s+forth)\s+on\s+the\s+(?:most\s+recent(?:ly\s+(?:available|delivered))?\s+)?(?:consolidated\s+)?balance\s+sheet\s+(?:of\s+[A-Z][\w\s’'&.,-]{0,60}?)?|of\s+such\s+Person|at\s+such\s+date))*`;
+  const lessGI = String.raw`\s*,?\s*(?:less|minus|excluding|after\s+deducting(?:\s+therefrom)?)\s+(?:\(\w+\)\s+)?(?:all\s+)?(?:goodwill|intangible\s+assets)(?:\s*,?\s*(?:and|\(\w+\))\s+(?:all\s+)?(?:other\s+)?(?:goodwill|intangible\s+assets))?`;
+  const core = String.raw`^(?:the\s+)?(?:aggregate\s+amount\s+of\s+)?(?:total\s+)?(?:consolidated\s+)?(?:total\s+)?assets\s*${owner}?${shown}`;
+  const tangible = family === "TANGIBLE_ASSETS";
+  const re = new RegExp(`${core}${tangible ? `${lessGI}${shown}` : ""}\\s*[.,]?\\s*$`, "i");
+  if (!re.test(body.trim())) return null;
+  if (tangible && !(/goodwill/i.test(body) && /intangible/i.test(body))) return null;
+  const assets = fin.values.find((v) => v.metric === "totalAssets");
+  if (!assets) return { metricName, family, status: "NEEDS_INPUT", reason: "no XBRL total assets", definition: def.slice(0, 400) };
+  if (!tangible) return { metricName, family, status: "BOUND", reason: "definition is consolidated GAAP total assets on the latest balance sheet; exact from XBRL", definition: def.slice(0, 400), input: assets };
+  const gw = fin.values.find((v) => v.metric === "goodwill"), ia = fin.values.find((v) => v.metric === "intangiblesExGoodwill");
+  if (!gw || !ia) return { metricName, family, status: "NEEDS_INPUT", reason: "no XBRL goodwill and intangible assets at the balance-sheet instant", definition: def.slice(0, 400) };
+  if (gw.periodEnd !== assets.periodEnd || ia.periodEnd !== assets.periodEnd) return { metricName, family, status: "NEEDS_INPUT", reason: "assets, goodwill and intangibles are not at one instant", definition: def.slice(0, 400) };
+  const value = (BigInt(assets.value) - BigInt(gw.value) - BigInt(ia.value)).toString();
+  return { metricName, family, status: "BOUND", reason: "definition is total assets less goodwill and intangibles; exact from XBRL", definition: def.slice(0, 400),
+    input: { ...assets, concept: `${assets.concept} - ${gw.concept} - ${ia.concept}`, value, derivation: `${assets.concept} ${assets.value} - ${gw.concept} ${gw.value} - ${ia.concept} ${ia.value} at ${assets.periodEnd}` } };
 }
 
 /** Equity the agreement defines as GAAP shareholders' equity (optionally less goodwill and intangibles): exact from XBRL. */
