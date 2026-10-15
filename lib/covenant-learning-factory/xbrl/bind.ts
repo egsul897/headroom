@@ -19,7 +19,7 @@ type Family = "TANGIBLE_ASSETS" | "ASSETS" | "EBITDA" | "DEBT" | "NET_DEBT" | "I
 
 export function familyOfMetricName(name: string): Family | null {
   // A possessive owner ("the Issuer's Consolidated Total Assets") names the same measure.
-  const n = name.replace(/\s+/g, " ").trim().replace(/^(?:the\s+)?[A-Z][A-Za-z]*(?:\s+[A-Z][A-Za-z]*)?['’]s\s+/, "");
+  const n = stripPossessiveOwner(name);
   if (/^(?:consolidated\s+)?(?:total\s+)?tangible\s+assets$/i.test(n)) return "TANGIBLE_ASSETS";
   if (/^(?:consolidated\s+)?tangible\s+net\s+worth$/i.test(n)) return "NET_WORTH";
   if (/tangible|net assets|current assets|fixed assets|eligible|receivable|inventor/i.test(n)) return null;
@@ -73,14 +73,22 @@ function plain(text: string): string {
 }
 
 /** The agreement's own definition of `term` (from `"Term" means` to the next defined term), or null. */
+/** Drop a leading "the Issuer's " / "Company's " owner so the defined measure name remains. */
+function stripPossessiveOwner(name: string): string {
+  return name.replace(/\s+/g, " ").trim().replace(/^(?:the\s+)?[A-Z][A-Za-z]*(?:\s+[A-Z][A-Za-z]*)?['’]s\s+/, "");
+}
+
 export function findDefinition(text: string, term: string): string | null {
   const t = plain(text);
-  const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
-  const m = new RegExp(`"\\s*${esc}\\s*"\\s*(?:shall\\s+)?(?:mean|means|shall\\s+have\\s+the\\s+meaning)\\b`, "i").exec(t);
-  if (!m) return null;
-  const rest = t.slice(m.index, m.index + 6000);
-  const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(rest.slice(m[0].length));
-  return rest.slice(0, next ? m[0].length + next.index : 2500).trim();
+  const tryTerm = (term: string): string | null => {
+    const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+    const m = new RegExp(`"\\s*${esc}\\s*"\\s*(?:shall\\s+)?(?:mean|means|shall\\s+have\\s+the\\s+meaning)\\b`, "i").exec(t);
+    if (!m) return null;
+    const rest = t.slice(m.index, m.index + 6000);
+    const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(rest.slice(m[0].length));
+    return rest.slice(0, next ? m[0].length + next.index : 2500).trim();
+  };
+  return tryTerm(term) ?? (() => { const s = stripPossessiveOwner(term); return s !== term ? tryTerm(s) : null; })();
 }
 
 export interface BindDecision {
@@ -223,17 +231,35 @@ function decideAssets(metricName: string, family: "ASSETS" | "TANGIBLE_ASSETS", 
   const def = findDefinition(text, metricName);
   if (!def) return null;
   let body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*,?\s*/i, "");
-  body = body.split(/[;,]?\s*(?:\(\s*)?(?:provided\b|and,?\s+in\s+the\s+case\s+of\s+any\s+determination|calculated\s+on\s+a\s+pro\s+forma|which\s+may\s+be\s+calculated\s+on\s+a\s+pro\s+forma|giving\s+pro\s+forma\s+effect)/i)[0]!;
+  body = body.split(/[;,]?\s*(?:\(\s*)?(?:provided\b|and,?\s+in\s+the\s+case\s+of\s+any\s+determination|calculated\s+on\s+a\s+pro\s+forma|which\s+may\s+be\s+calculated\s+on\s+a\s+pro\s+forma|giving\s+pro\s+forma\s+effect|and\s+after\s+giving\b)/i)[0]!;
+  body = body.replace(/^with\s+respect\s+to\s+any\s+Person(?:\s+as\s+of\s+any\s+date)?\s*,?\s*/i, "");
   body = body.replace(/^as\s+of\s+(?:any|the)\s+date(?:\s+of\s+determination)?\s*,?\s*/i, "");
-  if (/\bRestricted\s+Subsidiar|\binternal|\bmonth|\bpro\s+forma|\bUnrestricted|\bexcluded?\s+subsidiar|\bForeign|\bDomestic|\bGuarantor/i.test(body)) return null;
-  const owner = String.raw`(?:of\s+(?:the\s+)?[A-Z][\w\s’'&.,-]{0,60}?(?:\s+and\s+(?:its|their)\s+(?:consolidated\s+)?Subsidiaries)?)`;
-  const shown = String.raw`(?:\s*,?\s*(?:on\s+a\s+consolidated\s+basis|determined\s+on\s+a\s+consolidated\s+basis|in\s+accordance\s+with\s+GAAP|determined\s+in\s+accordance\s+with\s+GAAP|as\s+(?:shown|reflected|set\s+forth)\s+on\s+the\s+(?:most\s+recent(?:ly\s+(?:available|delivered))?\s+)?(?:consolidated\s+)?balance\s+sheet\s+(?:of\s+[A-Z][\w\s’'&.,-]{0,60}?)?|of\s+such\s+Person|at\s+such\s+date))*`;
-  const lessGI = String.raw`\s*,?\s*(?:less|minus|excluding|after\s+deducting(?:\s+therefrom)?)\s+(?:\(\w+\)\s+)?(?:all\s+)?(?:goodwill|intangible\s+assets)(?:\s*,?\s*(?:and|\(\w+\))\s+(?:all\s+)?(?:other\s+)?(?:goodwill|intangible\s+assets))?`;
-  const core = String.raw`^(?:the\s+)?(?:aggregate\s+amount\s+of\s+)?(?:total\s+)?(?:consolidated\s+)?(?:total\s+)?assets\s*${owner}?${shown}`;
+  body = body.replace(/\s*,?\s*(?:delivered|filed|prepared)\s+pursuant\b[\s\S]*$/i, "");
+  body = body.replace(/\s+for\s+which\b[\s\S]*$/i, "");
+  if (/\bRestricted\s+Subsidiar|\binternal|\bmonth-?end\b|\bpro\s+forma|\bUnrestricted|\bexcluded?\s+subsidiar|\bForeign|\bDomestic|\bGuarantor|\bRegulated\s+Subsidiar/i.test(body)) return null;
   const tangible = family === "TANGIBLE_ASSETS";
-  const re = new RegExp(`${core}${tangible ? `${lessGI}${shown}` : ""}\\s*[.,]?\\s*$`, "i");
-  if (!re.test(body.trim())) return null;
-  if (tangible && !(/goodwill/i.test(body) && /intangible/i.test(body))) return null;
+  if (tangible) {
+    if (!(/goodwill/i.test(body) && /intangible/i.test(body))) return null;
+    if (/\bdeferred\s+financ|\bNon-Recourse|\bother\s+than\b|\bless\b[\s\S]*\band\s+\(\s*[2-9]\s*\)/i.test(body)) return null;
+  } else if (/\b(?:less|minus|excluding|after\s+deducting)\b/i.test(body)) {
+    return null;
+  }
+  // Strip owner + GAAP / balance-sheet wrappers; remainder must be "total assets" (+ less GI).
+  let core = body;
+  core = core.replace(/\bof\s+(?:the\s+)?(?:Company|Parent|Issuer|Borrower|Holdings|Parent\s+Guarantor)(?:\s+and\s+(?:its|their)\s+(?:consolidated\s+)?Subsidiaries)?\b/gi, " ");
+  core = core.replace(/\bon\s+a\s+consolidated\s+basis\b/gi, " ");
+  core = core.replace(/\bdetermined(?:\s+on\s+a\s+consolidated\s+basis)?(?:\s+in\s+accordance\s+with\s+GAAP)?\b/gi, " ");
+  core = core.replace(/\bin\s+accordance\s+with\s+GAAP\b/gi, " ");
+  core = core.replace(/\bas\s+of\s+such\s+date\b|\bat\s+such\s+date\b|\bof\s+such\s+Person\b/gi, " ");
+  core = core.replace(/\bin\s+each\s+case(?:\s+that\s+is\s+or\s+would\s+be)?\b/gi, " ");
+  core = core.replace(/\bthat\s+is\s+or\s+would\s+be\b/gi, " ");
+  core = core.replace(/\b(?:as\s+)?(?:shown|reflected|set\s+forth)\s+on\s+(?:the\s+)?(?:most\s+recent(?:ly\s+(?:available|delivered))?\s+)?(?:consolidated\s+)?balance\s+sheet\b/gi, " ");
+  core = core.replace(/\bas\s+at\s+(?:the\s+end\s+of\s+)?(?:the\s+)?most\s+recent(?:ly\s+ended)?\s+(?:fiscal\s+)?quarter\b/gi, " ");
+  core = core.replace(/[.,]/g, " ").replace(/\s+/g, " ").trim();
+  const assetsCore = /^(?:the\s+)?(?:aggregate\s+amount\s+of\s+)?(?:consolidated\s+)?(?:total\s+)?(?:consolidated\s+)?(?:total\s+)?assets$/i;
+  const tangCore = /^(?:the\s+)?(?:aggregate\s+amount\s+of\s+)?(?:consolidated\s+)?(?:total\s+)?(?:consolidated\s+)?(?:total\s+)?assets\s+(?:less|minus|excluding|after\s+deducting(?:\s+therefrom)?)\s+(?:the\s+sum\s+of\s+)?(?:the\s+)?(?:all\s+)?(?:goodwill|(?:other\s+)?intangible\s+assets)(?:\s*,?\s*and\s+(?:the\s+)?(?:all\s+)?(?:other\s+)?(?:goodwill|(?:other\s+)?intangible\s+assets))?$/i;
+  if (tangible) { if (!tangCore.test(core)) return null; }
+  else if (!assetsCore.test(core)) return null;
   const assets = fin.values.find((v) => v.metric === "totalAssets");
   if (!assets) return { metricName, family, status: "NEEDS_INPUT", reason: "no XBRL total assets", definition: def.slice(0, 400) };
   if (!tangible) return { metricName, family, status: "BOUND", reason: "definition is consolidated GAAP total assets on the latest balance sheet; exact from XBRL", definition: def.slice(0, 400), input: assets };
@@ -244,6 +270,7 @@ function decideAssets(metricName: string, family: "ASSETS" | "TANGIBLE_ASSETS", 
   return { metricName, family, status: "BOUND", reason: "definition is total assets less goodwill and intangibles; exact from XBRL", definition: def.slice(0, 400),
     input: { ...assets, concept: `${assets.concept} - ${gw.concept} - ${ia.concept}`, value, derivation: `${assets.concept} ${assets.value} - ${gw.concept} ${gw.value} - ${ia.concept} ${ia.value} at ${assets.periodEnd}` } };
 }
+
 
 /** Equity the agreement defines as GAAP shareholders' equity (optionally less goodwill and intangibles): exact from XBRL. */
 function equityFrom(body: string, text: string, fin: IssuerFinancials): { input: FinancialValue } | { reason: string } {
