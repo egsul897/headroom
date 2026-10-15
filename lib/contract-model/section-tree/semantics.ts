@@ -183,8 +183,8 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     if (!am && fams.has("RESTRICTED_PAYMENTS") && prohib.get(s.id)) for (const f of restrictedPaymentItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f as CovenantFamily);
     // Captioned covenant clauses inside a "Negative Covenants" section ("(g) Restricted Payments; Certain Payments of
     // Indebtedness . (A) The Borrower will not ...") are each a covenant unit.
-    if (!am && /\bnegative covenants?\b|^\s*covenants?\b|\bcertain covenants\b/i.test(s.title ?? "")) for (const f of captionedClauseFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 120000)))) fams.add(f);
-    if (!am && fams.size && prohib.get(s.id)) for (const f of laterProhibitionFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 8000)))) fams.add(f);
+    if (!am && /\bnegative covenants?\b|^\s*covenants?\b|\bcertain covenants\b/i.test(s.title ?? "")) for (const f of captionedClauseFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 120000)))) fams.add(f as CovenantFamily);
+    if (!am && fams.size && prohib.get(s.id)) for (const f of laterProhibitionFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 8000)))) fams.add(f as CovenantFamily);
     // A Restricted Payments section must restrict the obligor's payments: a negated (or article-imperative) declare/pay/
     // make ... dividend/distribution/restricted payment, or an enumerated restricted act. Distribution mechanics of an
     // entity to its own holders (LLC preferred-return and liquidating distributions, in-kind distributions, charter
@@ -231,7 +231,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     if (DESIGNATION_OR_SUSPENSION.test(`${u.title} ${u.lead.slice(0, 200)}`)) for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) fams.delete(f);
     if (!fams.size) continue;
     const node = { id: `inline:${u.start}`, kind: "SECTION", path: u.path, title: u.title, start: u.start, headingEnd: u.headingEnd, end: u.end, depth: 1, parentId: null } as unknown as TreeNode;
-    famOf.set(node.id, [...fams]); inlineUnits.push(node as (typeof units)[number]);
+    famOf.set(node.id, [...fams]); inlineUnits.push({ id: node.id, path: node.path, start: node.start, end: node.end, resolved: true, node });
   }
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
   const opening = text.slice(0, 4000);
