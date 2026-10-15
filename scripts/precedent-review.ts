@@ -26,11 +26,12 @@ function printSection(title: string): void {
 async function groupBy(
   field: "extractionStatus" | "representationLevel" | "documentClass" | "provenance",
 ): Promise<CountRow[]> {
-  // Cast the method, not the result: Prisma's groupBy generics cannot infer
-  // a return type from a dynamic `by` field, and casting the awaited result
-  // leaks the cast type into the args inference (TS2345). The runtime call
-  // is unchanged; the cast only gives this script a plain function type.
-  const groupByCall = prisma.knowledgeSource.groupBy as (
+  // Cast the method (via unknown, as TS2352 requires), not the result:
+  // Prisma's groupBy generics cannot infer a return type from a dynamic
+  // `by` field, and casting the awaited result leaks the cast type into
+  // the args inference (TS2345). The runtime call is unchanged; the cast
+  // only gives this script a plain function type.
+  const groupByCall = prisma.knowledgeSource.groupBy as unknown as (
     args: {
       by: string[];
       where: { companyId: null };
