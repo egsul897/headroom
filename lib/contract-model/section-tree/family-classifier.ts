@@ -138,6 +138,9 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   if (args.title) args = { ...args, title: args.title.replace(/\b([A-Z]) ([A-Z]{2,})\b/g, "$1$2") };
   const sub = SUBCAPTION.exec(args.leadIn);
   if (sub) args = { ...args, leadIn: args.leadIn.slice(sub[0].length), title: [args.title, sub[1]].filter(Boolean).join("; ") || null };
+  // A definition ("“Consolidated Leverage Ratio” means ...", e.g. a definitions-only amendment's restated term) states
+  // no covenant.
+  if (/^\s*(?:\([a-z0-9]{1,4}\)\s*)?[“"][^”"]{2,80}[”"]\s*(?:\([^)]{0,60}\)\s*)?(?:means|shall mean|has the meaning)/i.test(args.leadIn)) return { family: null, score: 0, families: [], evidence: [] };
   const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
@@ -167,7 +170,10 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     }
   }
   const titledOffFamilyAll = !!args.title && !HEADING.some(([, re]) => re.test(args.title!));
-  if (ratio) add("FINANCIAL_RATIOS", titledOffFamilyAll ? 2 : 3, "ratio-test");
+  // A representation about financial statements ("Financial Condition. The financial statements ... present fairly ...")
+  // is not a maintenance test, whatever ratios it mentions.
+  const representation = /\b(?:present(?:s|ed)? fairly|fairly present|has (?:heretofore )?(?:furnished|delivered)|have been prepared in accordance|there has (?:not )?been no)\b/i.test(lead.slice(0, 400));
+  if (ratio && !representation) add("FINANCIAL_RATIOS", titledOffFamilyAll ? 2 : 3, "ratio-test");
   // A leading clause caption ("(a) Mergers, Consolidations, Disposal of Assets, Etc. The Borrower will not ...") is
   // heading text of the section too.
   const caption = /^\s*\([a-z]\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s/.exec(args.leadIn)?.[1] ?? "";
@@ -180,6 +186,7 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     const seen = new Set<CovenantFamily>();
     for (const [f, re] of HEADING) {
       if (!re.test(heading) || seen.has(f)) continue;
+      if (f === "FINANCIAL_RATIOS" && representation) continue;
       if (f === "DEBT" && /\b(?:junior|subordinated|senior)\s+(?:indebtedness|debt)\b/i.test(heading) && !/incurrence|limitation on (?:indebtedness|debt)/i.test(heading)) continue;
       if (f === "DEBT" && seen.has("PREPAYMENTS") && !/\b(?:incurrence|limitation on (?:indebtedness|debt))\b/i.test(heading)) continue;
       seen.add(f);
