@@ -49,6 +49,15 @@ const AMENDMENT_CLASSES = new Set([
   "RESTATEMENT",
 ]);
 
+/**
+ * Classes that carry no precedence information: the document's
+ * relationship to the base agreement is unknown by definition. A
+ * package containing one can never resolve to RESOLVED on this
+ * function's evidence — the sibling might be an unrecognized
+ * amendment, supplement, or unrelated exhibit.
+ */
+const UNCLASSIFIED_CLASSES = new Set(["UNKNOWN", "OTHER_DEBT_RELATED"]);
+
 function inferChangeSignals(
   sources: KnowledgeSourceRecord[],
   edges: AmendmentPackageView["amendmentEdges"],
@@ -91,6 +100,15 @@ function inferChangeSignals(
         evidence: `Discovered amendment edge (${e.evidenceStatus})`,
         fromSourceId: e.fromSourceId,
         toSourceId: e.toSourceId,
+      });
+    }
+  }
+  for (const s of sources) {
+    if (UNCLASSIFIED_CLASSES.has(s.documentClass)) {
+      signals.push({
+        kind: "UNRESOLVED",
+        evidence: `Document with unclassified relationship to the base agreement: ${s.documentTitle || s.exhibitFilename} (${s.documentClass})`,
+        toSourceId: s.sourceId,
       });
     }
   }
@@ -151,6 +169,15 @@ export function analyzeAmendmentPackage(params: {
     operativeResolution = "UNRESOLVED_PRECEDENCE";
     unresolvedReasons.push(
       "Amendment package detected — operative bindings require section-level change evidence and consistent chronology (auto-resolved when present).",
+    );
+  } else if (sources.some((s) => UNCLASSIFIED_CLASSES.has(s.documentClass))) {
+    // Fail-closed: an unclassified sibling's relationship to the base is
+    // unknown by definition. The old fallthrough returned RESOLVED here,
+    // silently treating an UNKNOWN / OTHER_DEBT_RELATED document as if
+    // it could not affect operative precedence.
+    operativeResolution = "UNRESOLVED_PRECEDENCE";
+    unresolvedReasons.push(
+      "Document(s) with unclassified relationship to the base agreement (UNKNOWN / OTHER_DEBT_RELATED) — precedence cannot be resolved until classified.",
     );
   } else {
     operativeResolution = "RESOLVED";
