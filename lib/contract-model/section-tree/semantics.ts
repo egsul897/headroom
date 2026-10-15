@@ -148,7 +148,9 @@ export interface ChecklistItem {
 
 export function covenantChecklist(tree: SectionTree, text: string): ChecklistItem[] {
   // Family per SECTION from the general classifier (lead-in prohibition object, heading, defined terms).
-  const sections = tree.nodes.filter((n) => n.kind === "SECTION");
+  // An ARTICLE with no numbered sections ("ARTICLE IX FINANCIAL COVENANT  Crown will not permit ...") is itself the
+  // operative unit.
+  const sections = tree.nodes.filter((n) => n.kind === "SECTION" || (n.kind === "ARTICLE" && !tree.nodes.some((c) => c.kind === "SECTION" && c.parentId === n.id)));
   const famOf = new Map<string, readonly string[]>();
   const leadOf = (s: (typeof sections)[number]) => text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 700));
   const prohib = new Map(sections.map((s) => [s.id, isObligorProhibitionLead(leadOf(s))]));
@@ -156,7 +158,10 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     const parent = s.parentId ? tree.byId.get(s.parentId) : undefined;
     // Covenant run: an adjacent sibling section (same parent) also opens with an obligor-bound prohibition.
     const sib = (j: number) => { const o = sections[j]; return !!o && o.parentId === s.parentId && prohib.get(o.id) === true; };
-    const v = classifyCovenantFamily({ title: s.title, parentTitle: parent?.title ?? null, leadIn: leadOf(s), covenantContext: sib(i - 1) || sib(i + 1) });
+    const am = amendedText(`${s.title ?? ""} ${leadOf(s)}`);
+    const v = am
+      ? classifyCovenantFamily({ title: am.title, parentTitle: null, leadIn: am.lead, covenantContext: true })
+      : classifyCovenantFamily({ title: s.title, parentTitle: parent?.title ?? null, leadIn: leadOf(s), covenantContext: sib(i - 1) || sib(i + 1) });
     famOf.set(s.id, v.families);
   }
   return CHECKLIST_FAMILIES.map((family) => {
@@ -191,6 +196,20 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   });
 }
 
+/**
+ * An amendment instruction section ("Section 10.1 of the Agreement is hereby amended in its entirety to read as
+ * follows: Section 10.1. Debt. The Company will not ...", "The following shall be added as a new Section 10.8:")
+ * carries the amended covenant as quoted text: classify that text by its own heading and lead-in, not the wrapper.
+ */
+function amendedText(lead: string): { title: string; lead: string } | null {
+  const m = /\b(?:amended(?: and restated)?(?: in (?:its|their) entirety)? to read as follows|(?:added|inserted) (?:as )?(?:a )?new (?:Section|clause)[^:]{0,60}?):\s*/i.exec(lead.slice(0, 300));
+  if (!m) return null;
+  const rest = lead.slice(m.index + m[0].length).replace(/^[\s“”"'‘\u0080-\u009f]+/, ""); // opening quote (incl. C1-mangled cp1252 quotes)
+  const h = /^\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([A-Z][^.\n]{2,80})\.\s*/i.exec(rest);
+  if (!h) return null;
+  return { title: h[1]!.trim(), lead: rest.slice(h[0].length) };
+}
+
 function isDesc(tree: SectionTree, n: TreeNode, anc: TreeNode): boolean {
   let p = n.parentId ? tree.byId.get(n.parentId) : undefined;
   while (p) {
@@ -212,7 +231,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   AFFILIATE_TRANSACTIONS: { heading: /\btransactions? with affiliates\b|\baffiliate transactions\b/i, lead: /(?:enter into|permit to exist|engage in)[^.;]{0,140}?\baffiliates?\b/i },
   FUNDAMENTAL_CHANGES: { heading: /\b(?:mergers?|consolidations?|fundamental changes|merger,? consolidation)\b/i, lead: /\b(?:merge|consolidate|amalgamate|liquidate|dissolve)\b/i },
   PREPAYMENTS: { heading: /\b(?:prepayments? of (?:other )?(?:indebtedness|debt)|restricted debt payments|payments? of (?:subordinated|junior) (?:indebtedness|debt))\b/i, lead: /(?:prepay|redeem|repurchase|defease|retire)[^.;]{0,100}?\b(?:subordinated|junior)?\s*(?:indebtedness|debt)\b/i },
-  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge)\b/i, lead: /(?:permit|maintain|exceed|be (?:less|greater) than)[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
+  FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?)\b[^.;]{0,120}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
 };
 const NEG_RE = new RegExp(NEG, "i");
 const NOT_COVENANT_TITLE = /definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
@@ -235,10 +254,22 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     if (hm && hm.index <= 25 && !NOT_COVENANT_TITLE.test(title)) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
   }
   // Operative lead-ins: a sentence with the family's operative verb/object, negated (or a ratio test).
-  for (const sent of text.split(/(?<=[.;:])\s+/)) {
+  outer: for (const para of text.split(/\n\s*\n|\n(?=\s*(?:\(?[a-z0-9]{1,4}[.)]|section\s+\d|\d{1,2}\.\d)\s)/i)) {
+  // A paragraph that is a definition ("\"Guarantee Obligation\" means ... (ii) to advance or supply funds ... to
+  // maintain ... net worth") states no covenant, in any of its clauses.
+  const isDefinition = /^\s*[“"][^”"]{1,80}[”"]\s*(?:\([^)]{0,60}\)\s*)?(?:means|shall mean|has the meaning)/i.test(para);
+  for (const sent of para.split(/(?<=[.;:])\s+/)) {
     if (sent.length > 2000) continue;
     const lm = ev.lead.exec(sent);
     if (!lm) continue;
+    if (isDefinition) continue outer;
+    if (family === "FINANCIAL_RATIOS") {
+      // A ratio test is an obligation: a modal or undertaking must govern the test verb. A narrative summary
+      // ("The Credit Agreement contains certain covenants, a financial covenant ... requiring ... to maintain")
+      // is not.
+      const before = sent.slice(Math.max(0, lm.index - 160), lm.index);
+      if (!/\b(?:shall|will|agrees?|covenants?\s+(?:and agrees?\s+)?that)\b/i.test(before) || /\bcontains?\b[^.;]{0,80}\bcovenants?\b/i.test(sent)) continue;
+    }
     if (family !== "FINANCIAL_RATIOS") {
       // The negated obligation must govern the operative verb: negation within 160 chars before it.
       const before = sent.slice(Math.max(0, lm.index - 160), lm.index + 1);
@@ -253,7 +284,8 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     }
     if (/\bmeans\b|\bshall mean\b/.test(sent.slice(0, 200))) continue; // definitions
     out.push({ kind: "LEAD_IN", excerpt: sent.trim().slice(0, 100) });
-    break;
+    break outer;
+  }
   }
   return out;
 }

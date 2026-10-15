@@ -59,7 +59,7 @@ const HEADING: Array<[CovenantFamily, RegExp]> = [
   ["ASSET_SALES", /asset sales?|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],
   ["AFFILIATE_TRANSACTIONS", /affiliates?/i],
   ["FUNDAMENTAL_CHANGES", /fundamental changes?|mergers?|\bconsolidations?\b|consolidate\b/i],
-  ["FINANCIAL_RATIOS", /financial (?:condition )?covenants?|\bratio\b|minimum liquidity|net worth|fixed charge/i],
+  ["FINANCIAL_RATIOS", /financial (?:condition )?covenants?|\bratios?\b|minimum liquidity|net worth|fixed charge/i],
 ];
 
 const DEFINED: Array<[CovenantFamily, RegExp]> = [
@@ -83,7 +83,10 @@ export function isObligorProhibitionLead(leadIn: string): boolean {
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
   const lead = args.leadIn.slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
-  const ratio = RATIO_SUBJECT.test(lead.slice(0, 450)) && RATIO_LIMIT.test(lead);
+  // The ratio subject is read from the operative test verb, past any "so long as any Loan remains outstanding ...,
+  // that" survival preamble.
+  const testAt = Math.max(0, lead.search(/\b(?:shall|will)\s+(?:not\s+)?(?:permit|maintain|cause|suffer)\b/i));
+  const ratio = (RATIO_SUBJECT.test(lead.slice(0, 450)) || RATIO_SUBJECT.test(lead.slice(testAt, testAt + 250))) && RATIO_LIMIT.test(lead);
   const scores = new Map<CovenantFamily, number>();
   const evidence: string[] = [];
   const add = (f: CovenantFamily, w: number, why: string) => { scores.set(f, (scores.get(f) ?? 0) + w); evidence.push(`${f}:${why}`); };
