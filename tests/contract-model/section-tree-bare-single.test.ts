@@ -78,3 +78,10 @@ describe("false ASSET_SALES finds", () => {
     expect(v.families).not.toContain("ASSET_SALES");
   });
 });
+
+describe("'Sections N.NN' heading typo", () => {
+  it("'Sections 4.10 Transactions with Affiliates.' is a heading", () => {
+    const doc = `ARTICLE 4 COVENANTS\n\nSection 4.09 Asset Sales.\n(a) Parent will not consummate any Asset Sale unless it receives fair market value for the assets sold.\nSections 4.10 Transactions with Affiliates.\n(a) Parent will not enter into any transaction with any Affiliate unless on arm's-length terms.\nSection 4.11 Liens.\n(a) Parent will not create any Lien on any of its property except Permitted Liens.\n`;
+    expect(st(doc, "AFFILIATE_TRANSACTIONS").sectionPaths).toEqual(["4.10"]);
+  });
+});
