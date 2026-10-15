@@ -24,8 +24,8 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION_CI = /\b(?:shall|will|may)\s+not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
-const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
+const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage)\b/i;
+const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage)\b/i;
 /** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
 const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
 const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
@@ -43,7 +43,7 @@ const NON_OBLIGOR = /\b(?:trustees?|agents?|holders?|lenders?|banks?|purchasers?
 function obligorBound(lead: string): boolean {
   const PASSIVE = /^\s+be\s+(?:required|deemed|responsible|liable|obligated|construed)/;
   const head = lead.slice(0, 450);
-  for (const m of head.matchAll(/\b(?:shall|will|may)\s+not\b/gi)) {
+  for (const m of head.matchAll(/\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b/gi)) {
     if (PASSIVE.test(head.slice(m.index! + m[0].length))) continue;
     const subject = head.slice(Math.max(0, m.index! - 70), m.index!).split(/[.;:]/).pop() ?? "";
     if (!NON_OBLIGOR.test(subject)) return true;
@@ -150,7 +150,7 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   if (prohibitive) {
     // Only the first prohibition sentence counts as the lead-in object.
     // Article-imperative leads ("Enter into any transaction ...") start at 0; otherwise at the first prohibition.
-    const ci = /(?:shall|will|may)\s+not\b/i.exec(lead), np = noPartyMatches(lead)[0], ne = NEITHER_RE.exec(lead);
+    const ci = /(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b/i.exec(lead), np = noPartyMatches(lead)[0], ne = NEITHER_RE.exec(lead);
     const m = IMPERATIVE.test(lead) ? { index: 0 } : [ci, np, ne].filter(Boolean).sort((a, b) => a!.index! - b!.index!)[0] ?? null;
     // The object may follow a colon and a first enumerated clause ("shall not: (i) declare or pay any dividend").
     const from = lead.slice(m?.index ?? 0);

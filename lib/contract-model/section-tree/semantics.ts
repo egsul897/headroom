@@ -310,7 +310,7 @@ function isDesc(tree: SectionTree, n: TreeNode, anc: TreeNode): boolean {
 
 // ---------- family evidence (deterministic absence check) ----------
 
-const NEG = String.raw`(?:shall|will|may)\s+not\b|\bno\s+[^.;]{1,140}?\b(?:shall|will|may)\b`;
+const NEG = String.raw`(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|\bno\s+[^.;]{1,140}?\b(?:shall|will|may)\b`;
 const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }> = {
   DEBT: { heading: /\b(?:limitations? on |restrictions? on )?(?:indebtedness|incurrence of (?:indebtedness|debt)|debt)\b/i, lead: /(?:create|incur|assume|guarantee|suffer to exist|issue)[^.;]{0,100}?\b(?:indebtedness|debt)\b/i },
   LIENS: { heading: /\b(?:liens|negative pledge|limitations? on liens)\b/i, lead: /(?:create|incur|assume|grant|suffer to exist)[^.;]{0,100}?\b(?:liens?|mortgage|pledge|security interest)\b/i },
@@ -323,7 +323,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge|minimum liquidity)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?|liquidity)\b[^.;]{0,400}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
 };
 const NEG_RE = new RegExp(NEG, "i");
-const NOT_COVENANT_TITLE = /\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
+const NOT_COVENANT_TITLE = /\brating\b|existing (?:indebtedness|debt)|succession to business|\bterm loans\b|debt documents|purchase transactions|\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
 
 /**
  * Lead-in text that names a family's verb/object but is not that covenant: affiliate-transaction text for asset sales,
