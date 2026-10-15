@@ -1,4 +1,5 @@
 "use server";
+import { requireTenantAction } from "@/lib/auth/guard";
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
@@ -13,6 +14,7 @@ const VALID_DIRECTIONS: LedgerDirection[] = ["CREDIT", "DEBIT"];
 
 /** Generalized off app/ledger/actions.ts (Coherent-only) - same real writes, companyId-scoped. */
 export async function addLedgerEntry(companyId: string, formData: FormData) {
+  await requireTenantAction(companyId);
   const basket = String(formData.get("basket"));
   const direction = String(formData.get("direction"));
   const amount = Number(formData.get("amount"));
@@ -36,6 +38,7 @@ export async function addLedgerEntry(companyId: string, formData: FormData) {
  * there is no successor fact. A second call fails closed.
  */
 export async function supersedeLedgerEntry(companyId: string, id: string) {
+  await requireTenantAction(companyId);
   const entry = await prisma.ledgerEntry.findUniqueOrThrow({ where: { id } });
   if (entry.companyId !== companyId) throw new Error(`Ledger entry ${id} does not belong to this company`);
   if (entry.status === "SUPERSEDED") throw new Error(`Ledger entry ${id} is already superseded`);
@@ -48,6 +51,7 @@ export async function supersedeLedgerEntry(companyId: string, id: string) {
 
 /** Mirrors the "commit to ledger" buttons on the Simulate tab - a cleared dividend/Investment becomes a real DEBIT entry against the shared restricted-payment pool. */
 export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND" | "INVESTMENT", amount: number) {
+  await requireTenantAction(companyId);
   if (!Number.isFinite(amount) || amount <= 0) throw new Error("Amount must be a positive number");
   await prisma.ledgerEntry.create({
     data: {
@@ -65,6 +69,7 @@ export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND
 
 /** Append attributed Phase 4C contract-ledger usage (North Star — distinct from legacy LedgerEntry). */
 export async function addContractLedgerUsageAction(companyId: string, formData: FormData) {
+  await requireTenantAction(companyId);
   const usageId = String(formData.get("usageId") || "").trim() || `usage-${companyId}-${Date.now()}`;
   const amount = String(formData.get("amount") || "").trim();
   const currency = String(formData.get("currency") || "USD").trim() || "USD";
@@ -91,6 +96,7 @@ export async function addContractLedgerUsageAction(companyId: string, formData: 
 
 /** Supersede a Phase 4C usage with an attributed successor (never delete). */
 export async function supersedeContractLedgerUsageAction(companyId: string, formData: FormData) {
+  await requireTenantAction(companyId);
   const predecessorUsageId = String(formData.get("predecessorUsageId") || "").trim();
   const successorAmount = String(formData.get("successorAmount") || "").trim();
   const currency = String(formData.get("currency") || "USD").trim() || "USD";

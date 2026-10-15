@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import type { CompanyTenantKind } from "@prisma/client";
+import { requireAdmin } from "@/lib/auth/guard";
 
 function slugify(name: string): string {
   const base = name
@@ -13,6 +14,8 @@ function slugify(name: string): string {
 }
 
 export async function createCompanyAction(formData: FormData) {
+  // Admin-only: provisioning is Egzon's team only in the SaaS model.
+  await requireAdmin();
   const name = String(formData.get("name") ?? "").trim();
   if (!name) throw new Error("Company name is required.");
   const ticker = String(formData.get("ticker") ?? "").trim() || undefined;

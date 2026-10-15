@@ -159,7 +159,40 @@ model Company {
   // promotion so recoverable failures cannot strand NS-4 behind legacy state.
   ns4FinancialSyncs Ns4FinancialSync[]
 
+  // --- SaaS accounts (auth) ---
+  // Additive only. Each user belongs to exactly one company — the tenant
+  // boundary. There is no cross-tenant user and no company switcher.
+  users User[]
+
   @@map("companies")
+}
+
+// SaaS account role. USER: a customer user, scoped to one company.
+// ADMIN: Egzon's team only — gates the provisioning surfaces
+// (/companies/new, /companies/[id]/delete, /admin). ADMIN confers NO
+// cross-tenant dashboard access; tenant checks compare companyId only.
+enum UserRole {
+  USER
+  ADMIN
+
+  @@map("user_role")
+}
+
+// SaaS account. Provisioned offline by Egzon's team
+// (scripts/provision-company-account.ts) — no self-serve signup.
+// passwordHash is a scrypt hash (lib/auth/password.ts); the plaintext
+// password is never stored.
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(USER)
+  companyId    String
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("users")
 }
 
 enum DocumentType {
