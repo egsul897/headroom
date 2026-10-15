@@ -32,7 +32,7 @@ const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|
 /** Parentheticals removed (with their length kept), so carve-outs neither count as head tokens nor shift offsets. */
 function stripParens(s: string): string { return s.replace(/\([^()]{0,200}\)/g, (m) => " ".repeat(m.length)).replace(/ {2,}/g, (m) => " ".repeat(m.length)); }
 /** "Neither the Borrower nor any Restricted Subsidiary shall": the same party-headed prohibition. */
-const NEITHER_PARTY_RE = /\bNeither\s+(?:the\s+|any\s+)?([A-Z][\w-]*)((?:\s+[\w’'-]+){0,8}?\s+nor\s+(?:the\s+|any\s+(?:of\s+(?:the|its)\s+)?)?[\w’'-]+(?:\s+[\w’'-]+){0,8}?)\s+(shall|will|may)\b/g;
+const NEITHER_PARTY_RE = /\bNeither\s+(?:the\s+|any\s+)?([A-Z][\w-]*)((?:,?\s+[\w’'-]+){0,8}?,?\s+nor\s+(?:the\s+|any\s+(?:of\s+(?:the|its)\s+)?)?[\w’'-]+(?:\s+[\w’'-]+){0,8}?)\s+(shall|will|may)\b/g;
 function noPartyMatches(lead: string): RegExpMatchArray[] {
   const s = stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length));
   return [...s.matchAll(NO_PARTY_RE), ...s.matchAll(NEITHER_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!)).sort((a, b) => a.index! - b.index!);
