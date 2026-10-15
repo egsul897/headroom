@@ -15,6 +15,7 @@ import { prisma } from "../../prisma";
 import { openMassPrecedentCorpus } from "./corpus-paths";
 import { writePrecedentRetrievalIndex } from "./retrieval-index";
 import { buildDocumentCovenantSummary } from "../../product/covenant-intelligence/summarize";
+import { recordImportStall } from "./stall-record";
 
 export const MASS_LIVE_ENV = "KF_MASS_PRECEDENT_LIVE_WRITE";
 export const MASS_LIVE_TOKEN = "I_AUTHORIZE_NEON_BULK_WRITE";
@@ -137,6 +138,7 @@ export async function persistSecManifestBatch(params?: {
       discoverySignals: ["mass-precedent-sec-batch"],
     };
 
+    let rowPersisted = false;
     try {
       const { bytes, contentHash } = await client.fetchDocument(discovered);
       out.fetched += 1;
@@ -177,6 +179,7 @@ export async function persistSecManifestBatch(params?: {
 
       if (live) {
         const persist = await persistDurableKnowledgeSource({ source, bytes, contentType: "text/html" });
+        rowPersisted = true;
         if (persist.reusedExisting) out.reused += 1;
         else out.persisted += 1;
         out.persistedSourceIds.push(loc.sourceId);
@@ -241,10 +244,24 @@ export async function persistSecManifestBatch(params?: {
         }
       }
     } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
       out.errors.push({
         sourceId: loc.sourceId,
-        error: err instanceof Error ? err.message : String(err),
+        error: message,
       });
+      // Durable stall record (see recordImportStall): if a row was
+      // persisted this run and processing/update then failed, the row
+      // must not sit at ACQUIRED + SOURCE_ONLY with no reason. Fetch
+      // failures (no row persisted) skip this — there is no row to mark.
+      if (live && rowPersisted) {
+        const recorded = await recordImportStall(prisma, loc.sourceId, "process-or-update", message);
+        if (!recorded) {
+          out.errors.push({
+            sourceId: loc.sourceId,
+            error: "stall record not written (row missing or update failed)",
+          });
+        }
+      }
     }
 
     if (out.attempted % checkpointEvery === 0) {
