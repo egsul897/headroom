@@ -742,6 +742,10 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   if (family === "FUNDAMENTAL_CHANGES" && !/\b(?:merge|consolidate|amalgamate)\b/i.test(sent) && /\b(?:dissol|liquidat|wind(?:ing)? up)\w*\b[^.]{0,200}\b(?:prior to|until|upon the (?:first )?(?:to )?occur|liquidation event|the act)\b/i.test(sent)) return true;
   if (family === "DEBT" && /\b(?:liens?|mortgages?|security interests?)\s+(?:securing|to secure)\b[^.;]{0,60}\b(?:indebtedness|debt)\b/i.test(sent)) return true;
   if (family === "DEBT" && /\b(?:indebtedness|debt)\b[^.;]{0,80}\bsecured by\b[^.;]{0,80}\b(?:mortgage|lien|security interest|pledge)/i.test(sent)) return true;
+  // A waiver of financial covenants ("shall not be required to maintain any minimum ... ratio") is not a maintenance test.
+  if (family === "FINANCIAL_RATIOS" && /\b(?:shall|will)\s+not\s+be\s+required\s+to\s+(?:maintain|comply)\b/i.test(sent)) return true;
+  // An Event of Default that fires when the borrower "fails to comply with the financial covenant" is not the covenant.
+  if (family === "FINANCIAL_RATIOS" && /\bfails?\s+to\s+comply\s+with\s+the\s+financial\s+covenant/i.test(sent)) return true;
   return false;
 }
 
@@ -752,7 +756,9 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
  */
 /** "7.01\n\nLiens\n\n152 146" / "Section 6.5 Restricted Payments 69": a heading followed by page number(s). */
 function isIndexEntry(title: string, afterTitle: string): boolean {
-  return /\s\d{1,3}\s*$/.test(title) || /^\s*\n\s*\d{1,3}(?:\s+\d{1,3})*\s*(?:\n|$)/.test(afterTitle);
+  // "Section 6.14. Financial Covenants. 110 109" (page numbers after the title's period) and
+  // "7.01\n\nLiens\n\n152 146" (page numbers on the next line).
+  return /\s\d{1,3}\s*$/.test(title) || /^\.?\s*\d{1,3}(?:\s+\d{1,3})*\s*(?:\n|$)/.test(afterTitle);
 }
 /** Does the index entry's section number open another heading line that is not itself an index entry? */
 function sectionBodyElsewhere(text: string, entry: string, at: number): boolean {
@@ -785,13 +791,15 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     // days' prior written notice ...") restricts nothing.
     // A heading whose whole body is "None." / "[Reserved]" / "Intentionally Omitted" states no covenant.
     if (/^[\s.]*(?:None|\[?(?:Reserved|Intentionally Omitted)\]?)\s*[.;]?\s*(?:\n|$)/i.test(text.slice(m.index! + m[0].length, m.index! + m[0].length + 60))) continue;
-    if (family === "DEBT" || family === "FUNDAMENTAL_CHANGES" || family === "LIENS") {
+    if (family === "DEBT" || family === "FUNDAMENTAL_CHANGES" || family === "LIENS" || family === "AFFILIATE_TRANSACTIONS" || family === "FINANCIAL_RATIOS") {
       // Stop at the next numbered heading so a later "No X shall" never counts as this section's body.
       const raw = text.slice(m.index! + m[0].length, m.index! + m[0].length + 400);
       const cut = raw.search(/\n\s*(?:section\s+)?\d{1,2}\.\d{1,3}\b/i);
       const body = (cut >= 0 ? raw.slice(0, cut) : raw).replace(/^[\s.]+/, "");
       const first = body.split(/(?<=\.)\s+(?=[A-Z(])/)[0] ?? body;
       if (!NEG_RE.test(first) && /\b(?:notice|inform|notify)\b/i.test(first) && !/\b(?:except|unless|without)\b/i.test(first)) continue;
+      // An Events-of-Default trigger that names the financial covenant ("fails to comply with the financial covenant in Clause 26.1") is not the covenant.
+      if (family === "FINANCIAL_RATIOS" && /\bfails?\s+to\s+comply\s+with\s+the\s+financial\s+covenant/i.test(first) && !/\b(?:permit|maintain|allow)\b[^.]{0,80}\b(?:ratio|EBITDA|net worth|liquidity)\b/i.test(first)) continue;
     }
     // A table-of-contents entry (page number after the title) whose section number never opens a heading line again
     // points at a section this document does not contain (an amendment carrying the base agreement's index only).
