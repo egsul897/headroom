@@ -166,7 +166,7 @@ const CAPPED_TERMS: [CovenantFamily, RegExp][] = [
  * "7.02 Liens .") with its own lead-in (the parent clause / negative stem), classified the same way as any section.
  * Null when there is no heading within reach or the section states no covenant family.
  */
-export function enclosingSectionFamily(text: string, at: number): CovenantFamily | null {
+export function enclosingSectionFamily(text: string, at: number): string | null {
   const from = Math.max(0, at - 20000);
   const pre = text.slice(from, at);
   const HEAD = /(?:^|[.;:]\s+|\n)\s*(?:(?:SECTION|Section)\s+)?(\d{1,2}\.\d{1,3})\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,90}?)\s*\.\s+/g;
@@ -175,8 +175,18 @@ export function enclosingSectionFamily(text: string, at: number): CovenantFamily
   if (!last || last.index == null) return null;
   const title = last[2]!.trim();
   const leadIn = pre.slice(last.index + last[0].length) + text.slice(at, at + 200);
-  return classifyCovenantFamily({ title, leadIn: leadIn.slice(0, 1500) }).family;
+  const fam = classifyCovenantFamily({ title, leadIn: leadIn.slice(0, 1500) }).family;
+  if (fam) return fam;
+  // Families outside the negative-covenant classifier, read from the enclosing section or article heading only.
+  const article = [...pre.matchAll(/\bARTICLE\s+[IVXLC\d]+\.?\s+([A-Z][A-Z ,;&'’\-]{3,80})/g)].pop()?.[1] ?? "";
+  for (const [f, re] of HEADING_FAMILIES) if (re.test(title) || re.test(article)) return f;
+  return null;
 }
+const HEADING_FAMILIES: Array<[string, RegExp]> = [
+  ["GUARANTEES", /\bguarant(?:y|ee|ees|ies)\b/i],
+  ["INCREMENTAL_DEBT_AND_FACILITIES", /\bincremental\b/i],
+  ["EVENTS_OF_DEFAULT", /\bevents?\s+of\s+default\b|^\s*defaults?\s*$/i],
+];
 
 /** Expand a regex match to a nearby clause-sized window still inside `text`. */
 function captureWindow(text: string, index: number, matchLen: number): string {

@@ -30,3 +30,15 @@ describe("enclosing section family", () => {
     expect(enclosingSectionFamily(boiler, boiler.indexOf("each of which"))).toBeNull();
   });
 });
+
+describe("enclosing heading families outside the negative covenants", () => {
+  it("a guarantee or incremental section heading supplies the family; boilerplate headings do not", async () => {
+    const { enclosingSectionFamily } = await import("@/lib/contract-model/covenant-computation/extract-baskets");
+    const g = "Section 6.12 Additional Guarantors . (a) In the event that any Domestic Subsidiary is formed after the Effective Date, it shall become a Guarantor.";
+    expect(enclosingSectionFamily(g, g.indexOf("it shall become"))).toBe("GUARANTEES");
+    const i = "Section 2.20 Incremental Commitments . (e) On the date of effectiveness of any Incremental Commitments, the aggregate amount shall not exceed the cap.";
+    expect(enclosingSectionFamily(i, i.indexOf("the aggregate"))).toBe("INCREMENTAL_DEBT_AND_FACILITIES");
+    const f = "Section 2.09 Fees . (g) The Borrower agrees to pay the facing fees to the Facing Agent in the amounts agreed.";
+    expect(enclosingSectionFamily(f, f.indexOf("agrees to pay"))).toBeNull();
+  });
+});
