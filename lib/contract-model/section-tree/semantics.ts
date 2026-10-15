@@ -380,9 +380,8 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
   // shall ..." is not), and a non-covenant caption (investment company, margin regulations) never opens a unit.
   const opening = (l: string) => { const s0 = l.slice(0, 400); return /\b(?:shall|will|may)\s+not\b|\b(?:neither|none of)\b[^.]{0,150}\b(?:shall|will)\b|\bNo\s+(?:[A-Z][\w-]*\s+){1,4}(?:shall|will|may)\b/i.test(s0) || IMPERATIVE_OPEN.test(l); };
   const prohib = units.map((u) => isObligorProhibitionLead(u.lead) && opening(u.lead) && !NOT_COVENANT_TITLE.test(u.title) && !/margin regulations|investment company/i.test(u.title) && !CREDITOR_ACTOR.test(u.lead.slice(0, 200)));
-  // Outside a run, a unit still counts when its own caption names a covenant family and its lead is an obligor
-  // prohibition.
-  const titled = (u: { title: string; lead: string }) => classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: u.lead }).evidence.some((e) => /:heading$/.test(e));
+  // Outside a run, a unit still counts when its caption and its lead-in object name the same covenant family.
+  const titled = (u: { title: string; lead: string }) => { const ev = classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: u.lead }).evidence; return ev.some((e) => e.endsWith(":heading") && ev.includes(e.replace(/:heading$/, ":lead-in"))); };
   return units.filter((u, i) => prohib[i] && (prohib[i - 1] || prohib[i + 1] || titled(u)));
 }
 
