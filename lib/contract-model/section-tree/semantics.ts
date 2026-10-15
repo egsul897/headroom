@@ -750,6 +750,23 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
  * operative lead-in (a negated obligation within the same sentence for negative covenants; a maintain/permit
  * test for financial ratios). Empty array ⇒ the family is verifiably absent. Deterministic, no per-issuer logic.
  */
+/** "7.01\n\nLiens\n\n152 146" / "Section 6.5 Restricted Payments 69": a heading followed by page number(s). */
+function isIndexEntry(title: string, afterTitle: string): boolean {
+  return /\s\d{1,3}\s*$/.test(title) || /^\s*\n\s*\d{1,3}(?:\s+\d{1,3})*\s*(?:\n|$)/.test(afterTitle);
+}
+/** Does the index entry's section number open another heading line that is not itself an index entry? */
+function sectionBodyElsewhere(text: string, entry: string, at: number): boolean {
+  const num = /\d{1,2}\.\d{1,3}/.exec(entry)?.[0];
+  if (!num) return true;
+  const re = new RegExp(String.raw`(?:^|\n)\s*(?:section\s+)?${num.replace(".", "\\.")}\.?\s+([^\n.]{3,90})`, "gi");
+  for (const m of text.matchAll(re)) {
+    if (m.index === at) continue;
+    const t = m[1]!.trim(), after = text.slice(m.index! + m[0].length, m.index! + m[0].length + 40);
+    if (!isIndexEntry(t, after)) return true;
+  }
+  return false;
+}
+
 export function familyEvidence(text: string, family: ChecklistFamily): { kind: "HEADING" | "LEAD_IN"; excerpt: string }[] {
   const ev = FAMILY_EVIDENCE[family];
   const out: { kind: "HEADING" | "LEAD_IN"; excerpt: string }[] = [];
@@ -771,6 +788,9 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
       const first = body.split(/(?<=\.)\s+(?=[A-Z(])/)[0] ?? body;
       if (!NEG_RE.test(first) && /\b(?:notice|inform|notify)\b/i.test(first) && !/\b(?:except|unless|without)\b/i.test(first)) continue;
     }
+    // A table-of-contents entry (page number after the title) whose section number never opens a heading line again
+    // points at a section this document does not contain (an amendment carrying the base agreement's index only).
+    if (isIndexEntry(title, afterTitle) && !sectionBodyElsewhere(text, m[0], m.index!)) continue;
     const hm = ev.heading.exec(title);
     // The family must lead the title (allowing "Limitation on", "Restrictions on", "Incurrence of"), not be one
     // word inside an unrelated heading ("Evidence of Debt", "Trustee as Holder of Senior Indebtedness").
