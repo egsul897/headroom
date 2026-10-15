@@ -189,11 +189,25 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     for (const q of restatedTexts(text, covered)) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) rootFams.add(f);
     if (rootFams.size) { famOf.set(root.id, [...rootFams]); units.push(root); }
   }
+  const inlineUnits: typeof units = [];
+  // Run-in headings the tree did not split (flattened text: "... thereof). 8.07 Restricted Payments. The Borrower will
+  // not ..."): inline numbered units outside any classified section, kept only inside a covenant run (an adjacent inline
+  // unit also opens with an obligor-bound prohibition).
+  for (const u of inlineCovenantUnits(text, (i) => sections.some((s) => s.start <= i && s.end > i && (famOf.get(s.id)?.length ?? 0) > 0))) {
+    const fams = new Set<string>(classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: u.lead, covenantContext: true }).families);
+    if (fams.has("RESTRICTED_PAYMENTS") && !restrictsPayments(u.lead)) fams.delete("RESTRICTED_PAYMENTS");
+    if (DESIGNATION_OR_SUSPENSION.test(`${u.title} ${u.lead.slice(0, 200)}`)) for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) fams.delete(f);
+    if (!fams.size) continue;
+    const node = { id: `inline:${u.start}`, kind: "SECTION", path: u.path, title: u.title, start: u.start, headingEnd: u.headingEnd, end: u.end, depth: 1, parentId: null } as unknown as TreeNode;
+    famOf.set(node.id, [...fams]); inlineUnits.push(node as (typeof units)[number]);
+  }
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
   const opening = text.slice(0, 4000);
   const partialDocument = /\bFORM\s+8-K\b|\bCURRENT REPORT\b/i.test(opening) || /\b(?:AMENDMENT|WAIVER|JOINDER|SUPPLEMENTAL INDENTURE|INCREMENTAL)\b[^\n]{0,80}\b(?:TO|NO\.)\b/.test(opening);
   return CHECKLIST_FAMILIES.map((family) => {
-    const hits = units.filter((s) => famOf.get(s.id)?.includes(family));
+    // Inline units only fill a family the tree found nowhere.
+    const treeHits = units.filter((s) => famOf.get(s.id)?.includes(family));
+    const hits = treeHits.length ? treeHits : inlineUnits.filter((s) => famOf.get(s.id)?.includes(family));
     if (hits.length === 0) {
       const ev = familyEvidence(text, family);
       const absent = ev.length === 0;
@@ -274,6 +288,20 @@ function restrictsPayments(lead: string): boolean {
     if (/(?:shall|will|may)\s+not\b|\b(?:no|neither)\s+[^.;]{1,140}?\b(?:shall|will|may)\b|\bnot\s+permit\b/i.test(before)) return true;
   }
   return false;
+}
+
+function inlineCovenantUnits(text: string, insideClassified: (i: number) => boolean): { path: string; title: string; start: number; headingEnd: number; end: number; lead: string }[] {
+  const re = /(?:^|[.;:)”"]\s+|\s{2,})((?:SECTION\s+|Section\s+)?(\d{1,2}\.\d{1,2}))\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,80}?)\s?\.\s+(?=[A-Z(“"])/g;
+  const cands: { path: string; title: string; start: number; headingEnd: number }[] = [];
+  for (const m of text.matchAll(re)) {
+    const start = m.index! + (m[0].length - m[0].trimStart().length);
+    if (insideClassified(start)) continue;
+    cands.push({ path: normalizeSectionNumber(m[2]!), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
+    if (cands.length > 2000) break;
+  }
+  const units = cands.map((c, i) => { const end = Math.min(cands[i + 1]?.start ?? text.length, c.headingEnd + 30000); return { ...c, end, lead: text.slice(c.headingEnd, Math.min(end, c.headingEnd + 2000)) }; });
+  const prohib = units.map((u) => isObligorProhibitionLead(u.lead));
+  return units.filter((u, i) => prohib[i] && (prohib[i - 1] || prohib[i + 1]));
 }
 
 function covenantItemFamilies(body: string): Set<string> {
