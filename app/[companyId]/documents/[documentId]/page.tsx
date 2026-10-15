@@ -8,6 +8,7 @@ import { getDocumentStorageProvider } from "@/lib/document-storage";
 import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import { loadSourceTextFromBytes } from "@/lib/product/customer-intelligence/source-text";
+import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 
 export const metadata = { title: "Headroom — Document source" };
 
@@ -100,6 +101,17 @@ export default async function DocumentSourcePage({
         {intel?.analysisError && (
           <div className="row-note" style={{ color: "var(--color-danger, #b91c1c)" }}>
             Analysis failed: {intel.analysisError}. This document has not been successfully analyzed.
+          </div>
+        )}
+        {intel?.analysisStale && (
+          <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+            This analysis was produced by an older version of Headroom and may not include the latest
+            corrections. Re-analyze for current results.
+            <form action={retryCustomerAnalysisAction.bind(null, companyId, documentId)} style={{ marginTop: 8 }}>
+              <button className="button" type="submit">
+                Re-analyze document
+              </button>
+            </form>
           </div>
         )}
         {accession && (

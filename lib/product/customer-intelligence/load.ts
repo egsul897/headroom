@@ -4,7 +4,11 @@
  */
 
 import { prisma } from "../../prisma";
-import { summarizeFromStoredMetadata, type DocumentCovenantSummary } from "../covenant-intelligence/summarize";
+import {
+  isSummaryStale,
+  summarizeFromStoredMetadata,
+  type DocumentCovenantSummary,
+} from "../covenant-intelligence/summarize";
 import type { AmendmentPackageView } from "./amendment-package";
 
 export interface CustomerDocumentIntelligence {
@@ -24,6 +28,8 @@ export interface CustomerDocumentIntelligence {
   analysisOk: boolean;
   analysisError: string | null;
   declaredType: string | null;
+  /** True when a stored summary predates the current analyzer build. */
+  analysisStale: boolean;
 }
 
 function amendmentFromMetadata(metadata: unknown): AmendmentPackageView | null {
@@ -75,6 +81,7 @@ export async function listCustomerDocumentIntelligence(
       analysisOk,
       analysisError: analysisErrorFromMetadata(row.metadata),
       declaredType: typeof meta.declaredType === "string" ? meta.declaredType : null,
+      analysisStale: isSummaryStale(summary),
     };
   });
 }

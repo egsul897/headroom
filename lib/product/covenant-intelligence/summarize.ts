@@ -88,6 +88,14 @@ export interface DocumentCovenantSummary {
   issuerCik: string;
   documentClass: string;
   generatedAt: string;
+  /**
+   * Build that produced this summary (Vercel git commit SHA, "dev"
+   * elsewhere). General rule: every computed artifact records its
+   * producer build, so the UI can tell a stale analysis (produced by
+   * older code, e.g. before a correctness fix) from a current one.
+   * Absent on summaries stored before this rule — those are stale.
+   */
+  analyzerBuild?: string;
   promotedToLegalTruth: 0;
   note: string;
   countsByCategory: Record<string, number>;
@@ -197,6 +205,7 @@ export function buildDocumentCovenantSummary(params: {
     issuerCik: params.issuerCik,
     documentClass: params.documentClass,
     generatedAt: new Date().toISOString(),
+    analyzerBuild: currentAnalyzerBuild(),
     promotedToLegalTruth: 0,
     note: "AI-first interpretations for customer counsel review. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
@@ -213,4 +222,26 @@ export function summarizeFromStoredMetadata(metadata: unknown): DocumentCovenant
   const cs = (metadata as Record<string, unknown>).covenantSummary;
   if (!cs || typeof cs !== "object") return null;
   return cs as DocumentCovenantSummary;
+}
+
+/**
+ * Build identifier for the analyzer code producing summaries. Vercel
+ * injects the git commit SHA at build and runtime; anything else is
+ * "dev". Stable within a deploy, changes on every deploy — exactly
+ * what staleness detection needs. (The older KNOWLEDGE_FACTORY_VERSION
+ * constant never changes, so it cannot serve this purpose.)
+ */
+export function currentAnalyzerBuild(): string {
+  return process.env.VERCEL_GIT_COMMIT_SHA ?? "dev";
+}
+
+/**
+ * True when a stored summary was produced by older analyzer code (or
+ * predates build stamping entirely). A missing summary is not stale —
+ * it is absent. Callers surface this as "re-analyze for the latest
+ * corrections", never as an error.
+ */
+export function isSummaryStale(summary: DocumentCovenantSummary | null): boolean {
+  if (!summary) return false;
+  return !summary.analyzerBuild || summary.analyzerBuild !== currentAnalyzerBuild();
 }
