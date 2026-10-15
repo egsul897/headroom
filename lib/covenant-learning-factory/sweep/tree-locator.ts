@@ -10,6 +10,7 @@
  */
 import { deepestContaining, parseDocumentTree, parseSectionTree, sectionOf, type SectionTree } from "../../contract-model/section-tree/parse";
 import type { PrecedentCandidate } from "./self-check";
+import { covenantChecklist } from "../../contract-model/section-tree/semantics";
 
 interface Indexed {
   tree: SectionTree;
@@ -59,21 +60,33 @@ function sectionAt(ix: Indexed, needle: string): string | null {
 export interface TreeLocator {
   candidateSection(c: PrecedentCandidate): string | null;
   citationSection(citation: string): string | null;
+  /** true/false when the tree + family classifier can tell whether a located section is a covenant section; null when unknown. */
+  isCovenantSection?(section: string | null): boolean | null;
 }
 
 export function buildTreeLocator(args: { documentText: string | null; candidates: PrecedentCandidate[] }): TreeLocator {
   const doc = args.documentText?.trim() ?? "";
   if (doc.length >= 80) {
     let ix: Indexed | null = null;
+    let covenantSecs: Set<string> | null = null;
     try {
       const t = parseDocumentTree(doc);
       ix = index(t, t.text);
+      const byPath = new Map(t.nodes.map((n) => [n.path, n.sectionNumber]));
+      covenantSecs = new Set();
+      for (const item of covenantChecklist(t, t.text)) for (const p of item.sectionPaths) {
+        const n = byPath.get(p) ?? null;
+        if (n) covenantSecs.add(n);
+      }
     } catch {
       ix = null;
+      covenantSecs = null;
     }
     return {
       candidateSection: (c) => (ix && c.excerpt ? sectionAt(ix, c.excerpt) : null),
       citationSection: (cite) => (ix ? sectionAt(ix, cite) : null),
+      // Unknown (no tree, unlocated, ambiguous) → null: callers must keep counting (fail closed).
+      isCovenantSection: (sec) => (!covenantSecs || !sec || sec === AMBIGUOUS ? null : covenantSecs.has(sec)),
     };
   }
   const blocks: Indexed[] = [];

@@ -295,6 +295,31 @@ export function discoveryGapCause(cand: PrecedentCandidate, excerpt: string, can
   return "LIMB_MISSING";
 }
 
+/**
+ * PROPOSAL (opt-in, CLF_SCOPE_COVENANT=1; default OFF so the benchmark is unchanged until approved):
+ * a DISCOVERY_GAP candidate or condition COVERAGE_GAP is dropped only when the tree locates it in a
+ * section that the tree + family classifier positively classify as non-covenant. Unlocated or ambiguous
+ * text, or text with no tree, is still counted (fail closed).
+ */
+/**
+ * Is a condition/exception bound by a basket citation?
+ * Legacy: the citation contains the condition's first 30 characters. That falsely matches boilerplate
+ * openings shared by unrelated clauses ("Except as otherwise provided in ..."), so a condition counted as
+ * bound by an unrelated basket.
+ * PROPOSAL (CLF_STRICT_CONDITION_MATCH=1, default OFF): use the same distinctive-text reflection the
+ * candidate check uses (strictTextReflected: shared run of >= 40 non-generic chars, or a whole limb).
+ */
+export function conditionBound(condExcerpt: string, cite: string): boolean {
+  const c = norm(condExcerpt), b = norm(cite);
+  if (process.env.CLF_STRICT_CONDITION_MATCH === "1") return strictTextReflected(c, b);
+  return b.includes(c.slice(0, 30));
+}
+
+export function outOfCovenantScope(loc: TreeLocator | null | undefined, section: string | null): boolean {
+  if (process.env.CLF_SCOPE_COVENANT !== "1" || !loc?.isCovenantSection) return false;
+  return loc.isCovenantSection(section) === false;
+}
+
 export function selfCheckComputation(args: {
   packageKey: string;
   runId: string;
@@ -362,6 +387,7 @@ export function selfCheckComputation(args: {
         },
       ),
     );
+    if (!hit && outOfCovenantScope(args.locator, candTree)) continue;
     if (!hit) {
       const cause = process.env.CLF_DIAG === "1" ? ` [cause=${discoveryGapCause(cand, excerpt, candTree, baskets, args.locator ?? null)}]` : "";
       push(
@@ -449,8 +475,8 @@ export function selfCheckComputation(args: {
     if (!cond.excerpt || cond.excerpt.length < 40) continue;
     // Keep light — do not flood ledger; only when kind suggests covenant gate
     if (cond.kind && /exception|proviso|carve.?out/i.test(cond.kind)) {
-      const snippet = norm(cond.excerpt).slice(0, 30);
-      const hit = baskets.some((b) => norm(b.citationExcerpt).includes(snippet));
+      const hit = baskets.some((b) => conditionBound(cond.excerpt!, b.citationExcerpt));
+      if (!hit && outOfCovenantScope(args.locator, args.locator ? args.locator.citationSection(cond.excerpt) : null)) continue;
       if (!hit) {
         // Skip mass noise: only record if we already have other errors for this source
         // (caller can filter). Record as LOW COVERAGE_GAP with NEEDS_INPUT framing.
