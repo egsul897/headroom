@@ -3,7 +3,7 @@
  * checklist over a SectionTree. Deterministic; no AI / LLM calls; nothing invented.
  * A family with no numeric cap is NEVER reported as unlimited.
  */
-import { classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
+import { type CovenantFamily, negatedItemFamilies, classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
 import { normalizeSectionNumber, sectionOf, type SectionTree, type TreeNode } from "./parse";
 
 export type ClauseRole = "PROHIBITION" | "BASKET" | "EXCEPTION_PROVISO" | "DEFINITION" | "CROSS_REFERENCE" | "OTHER";
@@ -170,13 +170,17 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
       : classifyCovenantFamily({ title: s.title, parentTitle: parent?.title ?? null, leadIn: leadOf(s), covenantContext: sib(i - 1) || sib(i + 1) });
     // Restated articles/sections quoted later in the body ("(g) Article IX of the Credit Agreement is hereby amended and
     // restated in its entirety to read as follows: From and after ..."): classify each quoted text too.
-    famOf.set(s.id, [...v.families]);
+    const fams = new Set(v.families);
+    // Enumerated covenant items: an item counts only when its own structural parent's lead-in is an obligor-bound
+    // negative stem, or the item itself carries an obligor-bound prohibition.
+    if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(tree, text, s)) fams.add(f);
+    famOf.set(s.id, [...fams]);
     // Each restated covenant is its own operative span (the quoted text), so its numbers never mix with the wrapper.
     if (!am) for (const [k, q] of restatedSpans(text, s.headingEnd, s.end).entries()) {
-      const fams = classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families.filter((f) => !v.families.includes(f));
-      if (!fams.length) continue;
+      const qf = classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families.filter((f) => !fams.has(f));
+      if (!qf.length) continue;
       const id = `${s.id}#restated${k}`;
-      famOf.set(id, fams);
+      famOf.set(id, qf);
       restated.push({ id, path: `${s.path}@${q.start}-${q.end}`, start: q.start, end: q.end, resolved: q.resolved, node: null });
     }
   }
@@ -248,6 +252,39 @@ function amendedText(lead: string): { title: string; lead: string } | null {
   const h = /^\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([A-Z][^.\n]{2,80})\.\s*/i.exec(rest);
   if (!h) return null;
   return { title: h[1]!.trim(), lead: rest.slice(h[0].length) };
+}
+
+/** Lead-in of a node: its own text before its first child (the stem that governs its enumerated items). */
+function ownLead(tree: SectionTree, text: string, n: TreeNode): string {
+  const first = tree.nodes.filter((c) => c.parentId === n.id).sort((x, y) => x.start - y.start)[0];
+  return text.slice(n.headingEnd, first ? first.start : Math.min(n.end, n.headingEnd + 2000));
+}
+
+/** Negative stem ending the parent's lead-in ("The Borrower shall not ... any of the following:"), bound to an obligor;
+ *  exception/permission stems ("will not prohibit:", "may incur the following:", "unless:") never govern. */
+function governingNegativeStem(lead: string): boolean {
+  const tail = lead.trimEnd().slice(-500);
+  if (!/:\s*$/.test(tail)) return false;
+  const stem = /[^.:;]*\b(?:shall|will|may)\s+not\b[^.:]{0,300}:\s*$/i.exec(tail)?.[0];
+  if (!stem || /\b(?:prohibit|apply|applies|restrict|limit|unless|ability|required|obligat\w*|be deemed|include)\b/i.test(stem)) return false;
+  return isObligorProhibitionLead(stem);
+}
+
+function covenantItemFamilies(tree: SectionTree, text: string, s: TreeNode): Set<CovenantFamily> {
+  const out = new Set<CovenantFamily>();
+  if (s.end - s.start > 60000) return out;
+  const leadCache = new Map<string, boolean>();
+  for (const c of tree.nodes) {
+    if (c.kind !== "CLAUSE" || c.start < s.headingEnd || c.end > s.end || !isDesc(tree, c, s)) continue;
+    const parent = c.parentId ? tree.byId.get(c.parentId) : undefined;
+    if (!parent) continue;
+    let under = leadCache.get(parent.id);
+    if (under === undefined) { under = governingNegativeStem(ownLead(tree, text, parent)); leadCache.set(parent.id, under); }
+    const item = text.slice(c.headingEnd, Math.min(c.end, c.headingEnd + 600));
+    const fams = under ? negatedItemFamilies(item, true) : isObligorProhibitionLead(item) ? negatedItemFamilies(item, false) : [];
+    for (const f of fams) out.add(f);
+  }
+  return out;
 }
 
 /** Every "amended (and restated) in its entirety to read as follows:" instruction in a body, with its quoted text. */
