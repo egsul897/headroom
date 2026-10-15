@@ -149,12 +149,18 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
         // Extraordinary items no longer exist under US GAAP (ASU 2015-01): excluding them changes nothing.
         const niBody = ni.replace(/after\s+any\s+deduction\s+for\s+minority\s+interests[^)]*\)?/i, "")
           .replace(/\(?\s*(?:but\s+)?(?:excluding|exclusive\s+of|other\s+than|before)\s+(?:any\s+)?extraordinary\s+(?:gains?|loss(?:es)?|items?)(?:\s+(?:and|or|but\s+including|and\s+including)\s+(?:any\s+)?extraordinary\s+(?:gains?|loss(?:es)?|items?))?\s*\)?/gi, " ");
-        const two = /equity\s+method|Unrestricted\s+Subsidiar|not\s+a\s+(?:Restricted\s+)?Subsidiary|cumulative\s+effect|\bgains?\b|non-?recurring|unusual|discontinued|pro\s+forma|acquired|disposed|excluded|exclude|dividends?\s+or\s+(?:similar\s+)?distributions/i.exec(niBody);
-        if (two) return res("NEEDS_INPUT", `base "${niTerm}" carries a two-sided adjustment ("${two[0]}") not derivable from filings`);
+        const cni = cniAdjustments(niBody.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*,?\s*/i, ""), fin);
+        if ("reason" in cni) return res("NEEDS_INPUT", `base "${niTerm}": ${cni.reason}`);
+        const v0 = firstItem(fin, ["NetIncomeLoss", "ProfitLoss"]);
+        if (!v0) return res("NEEDS_INPUT", "no exact TTM net income in XBRL");
+        base = { concept: `${v0.concept}${cni.adjust.map((a) => ` - ${a.concept}`).join("")}`, value: cni.adjust.reduce((acc, a) => acc - a.value, v0.value) };
+        if (cni.lower.length) items.push({ label: "(base)", text: niTerm, sign: "+", coverage: "PARTIAL", concepts: cni.adjust.map((a) => ({ concept: a.concept, value: (-a.value).toString() })), value: "0", note: `net income base is a lower bound: ${cni.lower.join("; ")}` });
       }
+      if (!base) {
       const v = firstItem(fin, ["NetIncomeLoss", "ProfitLoss"]);
       if (!v) return res("NEEDS_INPUT", "no exact TTM net income in XBRL");
       base = v;
+      }
     } else if (ebit && depth < 2) {
       const ev = evaluateDefinition("EBITDA", ebit, text, fin, depth + 1);
       if (ev.status === "NEEDS_INPUT") return res("NEEDS_INPUT", `base "${ebit}": ${ev.reason}`);
@@ -230,4 +236,51 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
   const open = items.filter((i) => i.coverage === "NONE" || i.coverage === "PARTIAL");
   const status = open.length || overlap ? "LOWER_BOUND" : "EXACT";
   return res(status, status === "EXACT" ? "every line item maps to XBRL" : `${open.length} add-back item(s) not (fully) in XBRL; total is a lower bound`, { value: total.toString(), items, base: { concept: base!.concept, value: base!.value.toString() }, missing: open.map(short) });
+}
+
+
+const EQUITY_METHOD = ["IncomeLossFromEquityMethodInvestments", "IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions"];
+const ASSET_SALE = ["GainLossOnDispositionOfAssets", "GainLossOnSaleOfPropertyPlantEquipment", "GainLossOnDispositionOfAssets1"];
+const EXTINGUISH = ["GainsLossesOnExtinguishmentOfDebt"];
+
+/**
+ * Net-income exclusions mapped to what the filings report. Each excluded item is:
+ *  - gone under GAAP (extraordinary items, cumulative effect of accounting changes): no change;
+ *  - losses / charges / expenses only: excluding them can only raise the contract figure, so net income stays a lower
+ *    bound (noted, not blocking);
+ *  - equity-method income of non-subsidiaries (except dividends received): minus the XBRL equity-method income, a lower
+ *    bound because the dividends added back are not negative;
+ *  - gains and losses on asset sales / debt extinguishment: minus the XBRL gain (exact);
+ *  - anything else that can lower the figure (gains or income of other kinds, unrestricted or dividend-restricted
+ *    subsidiaries, non-recurring items, pro forma): NEEDS_INPUT with the clause named.
+ */
+export function cniAdjustments(body: string, fin: IssuerFinancials): { adjust: Array<{ concept: string; value: bigint }>; lower: string[] } | { reason: string } {
+  const flat = body.replace(/\bnet\s+income\s*\(\s*loss\s*\)/gi, "net income").replace(/\(\s*loss\s*\)/gi, "");
+  // Exclusions start at "excluding" / "provided that" / "there shall be excluded" or the first enumerated item.
+  const cut = flat.search(/\b(?:excluding|exclusive\s+of|but\s+excluding|provided(?:,\s*however)?,?\s+that|there\s+shall\s+(?:be\s+)?(?:excluded|not\s+be\s+included))\b|\((?:a|i|1)\)\s/i);
+  const lead = cut < 0 ? flat : flat.slice(0, cut);
+  if (/pro\s+forma|acquired|disposed|non-?recurring|unusual|Unrestricted\s+Subsidiar|discontinued/i.test(lead)) return { reason: `net income lead adjusts by items not in filings ("${/pro\s+forma|acquired|disposed|non-?recurring|unusual|Unrestricted\s+Subsidiar|discontinued/i.exec(lead)![0]}")` };
+  if (cut < 0) return { adjust: [], lower: [] };
+  const rest = flat.slice(cut);
+  const parts = rest.split(/(?:;|,)\s*(?:and\s+|or\s+|plus\s+)?(?=\((?:[ivxl]{1,5}|[a-z]{1,2}|\d{1,2})\)\s)/i).flatMap((x) => x.split(/\s(?=\((?:[ivxl]{1,5}|[a-z]{1,2}|\d{1,2})\)\s)/i)).map((x) => x.trim()).filter((x) => x.length > 8);
+  const adjust: Array<{ concept: string; value: bigint }> = [], lower: string[] = [], used = new Set<string>();
+  const take = (cs: string[], what: string) => { const it = firstItem(fin, cs); if (!it) return `${what} is excluded, but the filing reports no ${cs[0]} for the period`; if (!used.has(it.concept)) { used.add(it.concept); adjust.push(it); } return null; };
+  for (const raw of parts) {
+    const t = raw.replace(/^(?:excluding|exclusive\s+of|but\s+excluding|provided[^:()]*?(?:excluded|that)|there\s+shall\s+(?:be\s+)?excluded)[,:]?\s*(?:\(?\s*without\s+duplication\s*\)?,?\s*)?/i, "");
+    if (t.length < 8) continue;
+    if (/cumulative\s+effect/i.test(t) && !/\bgains?\b[^.;]{0,40}(?:sale|disposition)|non-?recurring|unusual|Unrestricted/i.test(t)) continue;
+    if (/\bextraordinary\b/i.test(t) && !/non-?recurring|unusual|infrequent|\bsales?\b|disposition/i.test(t)) continue;
+    if (/equity\s+method|any\s+Person\s+(?:\(other\s+than|other\s+than|that\s+is\s+not)|not\s+a\s+(?:Restricted\s+)?Subsidiary|in\s+which\s+any\s+other\s+Person/i.test(t) && !/Unrestricted\s+Subsidiar/i.test(t)) {
+      const e = take(EQUITY_METHOD, "equity-method income"); if (e) return { reason: e };
+      if (/dividends?|distributions?/i.test(t)) lower.push("dividends from equity investees added back are not in XBRL");
+      continue;
+    }
+    const gainsAndLosses = /\bgains?\b/i.test(t) && /\bloss(?:es)?\b/i.test(t);
+    if (gainsAndLosses && /extinguishment|early\s+(?:retirement|repayment|redemption)|repurchase\s+of\s+(?:debt|Indebtedness)/i.test(t) && !/non-?recurring|unusual|asset|sale/i.test(t)) { const e = take(EXTINGUISH, "gain or loss on extinguishment of debt"); if (e) return { reason: e }; continue; }
+    if (gainsAndLosses && /(?:sale|disposition|disposal)s?\s+of\s+(?:any\s+)?(?:assets?|property|properties)|asset\s+(?:sales?|dispositions?)/i.test(t) && !/non-?recurring|unusual|extinguishment|hedg|currency|securities|discontinued/i.test(t)) { const e = take(ASSET_SALE, "gain or loss on asset sales"); if (e) return { reason: e }; continue; }
+    // Excluding only losses / charges / expenses can only raise the contract figure.
+    if (!/\bgains?\b|\bincome\b|\bcredits?\b|\bbenefits?\b|\bincreas|\bwrite-?ups?\b|Unrestricted\s+Subsidiar|dividends?|distributions?|pro\s+forma|acquired|accru/i.test(t) && /\bloss(?:es)?\b|\bcharges?\b|\bexpenses?\b|\bcosts?\b|\bwrite-?(?:offs?|downs?)\b|\bimpairments?\b/i.test(t)) { lower.push(`excluded losses/charges not in XBRL: ${t.slice(0, 60)}`); continue; }
+    return { reason: `excludes an item that can lower net income and is not in filings: "${t.slice(0, 90)}"` };
+  }
+  return { adjust, lower };
 }

@@ -32,6 +32,7 @@ export const ITEM_CONCEPTS = [
   "InterestCostsCapitalized", "AmortizationOfDebtDiscountPremium", "AmortizationOfFinancingCosts", "InterestExpense", "InterestExpenseNonoperating",
   "InterestExpenseDebt", "InterestAndDebtExpense", "IncomeTaxExpenseBenefit", "NetIncomeLoss", "ProfitLoss", "OperatingIncomeLoss",
   "DepreciationDepletionAndAmortization", "DepreciationAndAmortization", "DepreciationAmortizationAndAccretionNet",
+  "IncomeLossFromEquityMethodInvestments", "IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions", "GainLossOnDispositionOfAssets", "GainLossOnSaleOfPropertyPlantEquipment", "GainLossOnDispositionOfAssets1",
 ] as const;
 
 export interface FinancialValue {
