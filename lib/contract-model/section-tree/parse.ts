@@ -102,7 +102,7 @@ interface Heading {
 
 const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)[^\S\n]+([IVXLC]+|\d{1,2})\b\.?[^\S\n]*(?:\n[^\S\n]*)?([A-Z][A-Z ,;'’&\-]{2,100})?/g;
 const SECTION_RE =
-  /(^|\n|\s{2,}|\.\s+)[^\S\n]*(?:(?:SECTION|Section)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})(?:[^\S\n]*\.)?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z][^.\n]{1,160}?)[^\S\n]*[.:]/g;
+  /(^|\n|\s{2,}|\.\s+)[^\S\n]*(?:(?:SECTION|Section)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})(?:[^\S\n]*\.)?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z](?:[^.\n]|\n(?![^\S\n]*(?:\n|\(|\d))){1,160}?)[^\S\n]*[.:]/g;
 /** Amendment-style single-number sections: "SECTION 3. Conditions." (requires the word). */
 const SECTION_SINGLE_RE = /(^|\n)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2})\.(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z][^.\n]{1,120}?)[^\S\n]*[.:\n]/g;
 
@@ -123,6 +123,8 @@ function findHeadings(text: string): Heading[] {
     const title = m[3]!.replace(/\s+/g, " ").trim();
     // Cross-reference shapes, not headings: "Section 6.01 hereof", "Section 7.02 of the Credit Agreement".
     if (/^(hereof|herein|of the|of this|above|below|and|or|to|shall|is|has)\b/i.test(title)) continue;
+    // An empty heading ("Section 6.04 .") whose "title" is the next line's heading ("SECTION 5.").
+    if (/^(?:section|article)\b/i.test(title) && /\d[^\S\n]*\.?[^\S\n]*\n/.test(m[0].slice(lead.length))) continue;
     if (title.split(" ").length > 18) continue;
     const start = m.index! + lead.length;
     out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
