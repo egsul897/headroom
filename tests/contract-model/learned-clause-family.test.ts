@@ -20,3 +20,13 @@ describe("enumerated permitted items", () => {
     expect(learnedClauseFamily("(b) Each Lender shall make its Advance available to the Administrative Agent.")).toBeNull();
   });
 });
+
+describe("enclosing section family", () => {
+  it("an item that names no family takes the family of its enclosing covenant section", async () => {
+    const { enclosingSectionFamily } = await import("@/lib/contract-model/covenant-computation/extract-baskets");
+    const text = "Section 7.02 Liens . The Borrower shall not create, incur or suffer to exist any Lien on its property, except: (a) those arising by operation of law; (b) deposits to secure the performance of bids, trade contracts and leases in the ordinary course.";
+    expect(enclosingSectionFamily(text, text.indexOf("deposits to secure"))).toBe("LIENS");
+    const boiler = "Section 10.11 Counterparts . This Agreement may be executed in counterparts, each of which shall be an original.";
+    expect(enclosingSectionFamily(boiler, boiler.indexOf("each of which"))).toBeNull();
+  });
+});

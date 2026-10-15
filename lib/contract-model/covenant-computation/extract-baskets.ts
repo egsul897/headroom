@@ -117,7 +117,7 @@ function clausesFromLearnedPatterns(
     if (window.length < 24) continue;
     // The family comes from the captured clause itself, never from the rule's (precedent-derived) label: a
     // learned capture whose own words state no covenant family, or a different one, is not a basket.
-    const family = learnedClauseFamily(window);
+    const family = learnedClauseFamily(window) ?? enclosingSectionFamily(text, match.index);
     if (!family) continue;
     out.push({
       stableKey: `learned-${rule.ruleId}`,
@@ -160,6 +160,23 @@ const CAPPED_TERMS: [CovenantFamily, RegExp][] = [
   ["ASSET_SALES", /\b(?:Asset Sales?|Asset Dispositions?|Dispositions?)\b/],
   ["AFFILIATE_TRANSACTIONS", /\bAffiliates?\b/],
 ];
+
+/**
+ * Family of the section enclosing a position: the nearest preceding section heading ("Section 7.02 Liens .",
+ * "7.02 Liens .") with its own lead-in (the parent clause / negative stem), classified the same way as any section.
+ * Null when there is no heading within reach or the section states no covenant family.
+ */
+export function enclosingSectionFamily(text: string, at: number): CovenantFamily | null {
+  const from = Math.max(0, at - 20000);
+  const pre = text.slice(from, at);
+  const HEAD = /(?:^|[.;:]\s+|\n)\s*(?:(?:SECTION|Section)\s+)?(\d{1,2}\.\d{1,3})\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,90}?)\s*\.\s+/g;
+  let last: RegExpExecArray | null = null;
+  for (const m of pre.matchAll(HEAD)) last = m as RegExpExecArray;
+  if (!last || last.index == null) return null;
+  const title = last[2]!.trim();
+  const leadIn = pre.slice(last.index + last[0].length) + text.slice(at, at + 200);
+  return classifyCovenantFamily({ title, leadIn: leadIn.slice(0, 1500) }).family;
+}
 
 /** Expand a regex match to a nearby clause-sized window still inside `text`. */
 function captureWindow(text: string, index: number, matchLen: number): string {
