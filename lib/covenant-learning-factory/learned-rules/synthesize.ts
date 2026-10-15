@@ -161,6 +161,22 @@ function inferKindAndEffect(signal: LedgerSignal, phrase: string): {
 
 const PHRASE_MERGE_JACCARD = 0.72;
 
+/** Tokens kept from a seed: the clause's opening words carry its drafting shape; a 160-char tail is one document's. */
+const LEAD_TOKENS = 10;
+
+/**
+ * The opening of a missed clause without its enumeration marker ("(b) each partial prepayment of any Borrowing ..." →
+ * "each partial prepayment of any Borrowing ..."), so the same drafting under different markers and in different
+ * documents yields one skeleton.
+ */
+export function clauseLead(phrase: string): string {
+  const body = phrase.replace(/^\s*(?:\(\s*[a-z0-9]{1,5}\s*\)\s*)+/i, "");
+  const words = body.split(/\s+/).filter(Boolean);
+  // Drop a cut-off last word (the seed is a fixed-length slice).
+  const whole = phrase.length >= 160 ? words.slice(0, -1) : words;
+  return whole.slice(0, LEAD_TOKENS + 4).join(" ");
+}
+
 function effectKey(effect: LearnedRuleEffect): string {
   return `${effect.category ?? ""}|${effect.family ?? ""}|${effect.aliasOf ?? ""}|${effect.sectionFamily ?? ""}`;
 }
@@ -251,19 +267,23 @@ export function synthesizeCandidateRules(args: {
   };
 
   const addPhrase = (signal: LedgerSignal, phrase: string, effect: LearnedRuleEffect) => {
-    const generalized = generalizePhrase(phrase);
+    const generalized = generalizePhrase(clauseLead(phrase));
     if (generalized.pattern.length < 12 || generalized.tokens.length < 4) return;
+    const tokens = generalized.tokens.slice(0, LEAD_TOKENS);
     phraseProtos.push({
       effect,
       errorId: signal.errorId,
       phrase,
       packageKey: packageOf(signal),
-      tokens: generalized.tokens,
-      ids: generalized.tokens.map((t) => t.id),
+      tokens,
+      ids: tokens.map((t) => t.id),
     });
   };
 
   for (const signal of args.signals) {
+    // The replay gate re-checks baskets against precedent candidates only (it passes no conditions), so an unbound
+    // condition/exception can never be cut by a rule: a candidate built from one cannot improve.
+    if (signal.class === "COVERAGE_GAP" && signal.evidence?.conditionId != null) continue;
     const phrase = extractPhraseSeed(signal);
     if (!phrase) continue;
     if (signal.class === "DISCOVERY_GAP") {
@@ -303,7 +323,11 @@ export function synthesizeCandidateRules(args: {
     const pattern = patternFromTokens(use);
     if (pattern.length < 12) continue;
     const signature = use.map((t) => t.id).join(">");
-    const effect = members[0]!.effect;
+    // A capture is a numeric basket too: when every seed states the same numeric form ("in an aggregate amount of
+    // $5,000,000"), carry that category so the captured clause is not left UNKNOWN.
+    const forms = members.map((m) => CATEGORY_TOKENS.find((t) => t.re.test(m.phrase))?.category ?? null);
+    const form = forms[0] && forms.every((f) => f === forms[0]) ? forms[0] : null;
+    const effect = form && !members[0]!.effect.category ? { ...members[0]!.effect, category: form } : members[0]!.effect;
     const packageKeys = [...new Set(members.map((m) => m.packageKey).filter((k): k is string => Boolean(k)))].sort();
     const errorIds = [...new Set(members.map((m) => m.errorId))].sort();
     const generalized = patternAbstractsSlot(pattern);

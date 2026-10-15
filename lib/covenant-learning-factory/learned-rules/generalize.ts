@@ -89,7 +89,9 @@ const PERCENT_RE = /^\d+(?:\.\d+)?\s*%/;
 const RATIO_RE = /^\d+(?:\.\d+)?\s+to\s+\d+(?:\.\d+)?/;
 const AMOUNT_RE = /^\$(?:\s*\d{1,3}(?:,\d{3})+|\s*\d+)(?:\.\d+)?|^(?:\d{1,3}(?:,\d{3})+)(?:\.\d+)?/;
 const WORD_RE = /^[A-Za-z][A-Za-z0-9'’-]*/;
-const TOKEN_GAP = "(?:\\s*[,:;()\"'“”]*\\s+)";
+// Any run of non-alphanumeric separators: the tokenizer drops ".", "?", "/", "-", ")(" and line breaks between tokens,
+// so the gap must accept them too or the rule fails to match its own seed ("Section 6.14.\nDelay", "6.12(j)(i):").
+const TOKEN_GAP = "(?:[^A-Za-z0-9$]{1,16})";
 
 function escapeRegexLiteral(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
