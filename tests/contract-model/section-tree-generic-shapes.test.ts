@@ -25,3 +25,10 @@ describe("creditor-side 'will not' is not an obligor covenant (any creditor noun
     expect(["MISSING", "ABSENT_VERIFIED"]).toContain(covenantChecklist(t, t.text).find((c) => c.family === "ASSET_SALES")?.status);
   });
 });
+
+describe("paying or retiring any other debt is a PREPAYMENTS restriction", () => {
+  it("'... purchase, redeem, defease or otherwise acquire or retire for value any Indebtedness other than the Senior Debt'", async () => {
+    const { negatedItemFamilies } = await import("@/lib/contract-model/section-tree/family-classifier");
+    expect(negatedItemFamilies("(iii) make any payment on or with respect to, or purchase, redeem, defease or otherwise acquire or retire for value any Indebtedness other than the Senior Debt", true)).toContain("PREPAYMENTS");
+  });
+});
