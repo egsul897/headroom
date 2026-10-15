@@ -401,6 +401,15 @@ function evalBuilder(
       note: "Builder named. Components are not a closed sum in the text, so no partial Available Amount is returned.",
     };
   }
+  // A limb that is neither a dollar figure nor "N% of <Metric>" ("(B) the Cumulative Credit", "the Available Amount")
+  // has no stated value: the sum is not computable, and the dollar limb alone is never the cap.
+  const named = namedSumLimbs(text);
+  if (named.length > 0) {
+    return {
+      ...capShell("NEEDS_INPUT", "NONE", null, null, [...named, "prior usage"], null),
+      note: "A builder component has no stated value. The starter dollar is not presented as Available Amount.",
+    };
+  }
   const missing = metricNames.filter((name) => !metrics.some((m) => m.metricKey.toLowerCase() === name.toLowerCase()));
   if (missing.length > 0) {
     return {
@@ -793,4 +802,17 @@ export function greaterOfMissingInputs(text: string): string[] {
     if (limbs.length === 2) return limbs;
   }
   return ["greater-of fixed limb", "percent limb", "metric"];
+}
+
+/** Limbs of the first "sum of" that are neither a dollar figure nor a percentage of a metric (named balances). */
+export function namedSumLimbs(text: string): string[] {
+  const m = /\bsum of\b\s*:?/i.exec(text);
+  if (!m) return [];
+  const rest = text.slice(m.index + m[0].length).split(/[;.](?:\s|$)/)[0]!;
+  const limbs = rest.split(/\s*(?:\((?:[a-z]|[ivx]{1,4}|[A-Z]|\d{1,2})\)|,?\s+\bplus\b|,?\s+\band\b(?=\s+(?:\([A-Za-z0-9]{1,4}\)|the\b|\$|\d)))\s*/).map((x) => x.trim().replace(/^[,\s]+|[,\s]+$/g, "")).filter((x) => x.length > 2);
+  if (limbs.length < 2) return [];
+  return limbs
+    .filter((x) => !/\$\s?[\d,]/.test(x) && !/\d+(?:\.\d+)?\s*%\s+of\b/i.test(x))
+    .filter((x) => /\b(?:cumulative credit|available amount|builder|amount|balance|credit|proceeds|retained|equity)\b/i.test(x))
+    .map((x) => x.slice(0, 80));
 }
