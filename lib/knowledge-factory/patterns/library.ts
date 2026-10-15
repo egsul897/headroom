@@ -234,16 +234,45 @@ const PATTERN_DETECT: { patternId: string; re: RegExp }[] = [
   { patternId: "greater-of-basket", re: /\bgreater of\b/i },
   { patternId: "ratio-basket", re: /\b(?:Leverage|Coverage)\s+Ratio\b/i },
   { patternId: "builder-basket", re: /\bAvailable\s+Amount\b|\bbuilder\s+basket\b/i },
-  { patternId: "fixed-dollar-basket", re: /\$[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?/i },
+  // A bare dollar amount is not a basket (purchase prices, fees, thresholds
+  // all carry dollar amounts). Require permission/exception language within
+  // 240 chars on either side — the pattern's own structural characteristic.
+  {
+    patternId: "fixed-dollar-basket",
+    re: /(?:\bexcept\b|\bpermitted\b)[\s\S]{0,240}\$[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?|\$[\d,]+(?:\.\d+)?(?:\s*(?:million|billion))?[\s\S]{0,240}(?:\bexcept\b|\bpermitted\b)/i,
+  },
   { patternId: "incremental-equivalent-debt", re: /\bIncremental\s+Equivalent\s+Debt\b/i },
   { patternId: "permitted-liens", re: /\bPermitted\s+Liens?\b/i },
   { patternId: "restricted-payment-builder", re: /\bRestricted\s+Payments?\b[\s\S]{0,200}\bAvailable\s+Amount\b/i },
-  { patternId: "asset-sale-reinvestment", re: /\breinvest/i },
+  // "Reinvest" alone is generic (R&D, profits). Require asset-sale context
+  // on either side: asset / sale / proceeds / prepay.
+  {
+    patternId: "asset-sale-reinvestment",
+    re: /(?:\basset\b|\bsale\b|\bproceeds\b|\bprepay\w*\b)[\s\S]{0,120}\breinvest\w*|\breinvest\w*[\s\S]{0,120}(?:\basset\b|\bsale\b|\bproceeds\b|\bprepay\w*)/i,
+  },
   { patternId: "no-default-condition", re: /\bno\s+(?:Default|Event of Default)\b/i },
   { patternId: "pro-forma-compliance", re: /\bpro\s+forma\s+compliance\b/i },
-  { patternId: "shared-capacity", re: /\b(?:shared|aggregate(?:d)?)\s+(?:basket|capacity|amount)\b/i },
-  { patternId: "reclassification", re: /\breclassif/i },
-  { patternId: "refinancing-debt", re: /\brefinanc/i },
+  // "Aggregate principal amount" is the standard phrasing of a SINGLE
+  // siloed basket — the old "aggregate(d) amount" branch fired on nearly
+  // every basket clause and labeled it shared capacity. Shared capacity
+  // requires "shared"/"combined" language, or "in the aggregate" with
+  // cross-category language.
+  {
+    patternId: "shared-capacity",
+    re: /\b(?:shared|combined)\s+(?:basket|capacity|amount)\b|\bin the aggregate\b[\s\S]{0,120}\b(?:across|together|combined)\b/i,
+  },
+  // Accounting reclassification ("reclassified prior period amounts")
+  // is not basket reclassification. Require basket/incurred/deemed context.
+  {
+    patternId: "reclassification",
+    re: /\breclassif\w*\b[\s\S]{0,120}\b(?:basket|incurred|deemed)\b/i,
+  },
+  // "Refinancing risk" in risk factors is not a refinancing permission.
+  // Require a debt noun nearby.
+  {
+    patternId: "refinancing-debt",
+    re: /\brefinanc\w*\b[\s\S]{0,120}\b(?:indebtedness|debt|notes|loans|facility)\b/i,
+  },
   { patternId: "purchase-money-debt", re: /\bpurchase\s+money\b/i },
   { patternId: "acquisition-debt", re: /\bacquisition\s+(?:debt|indebtedness)\b|\bAcquired\s+Indebtedness\b/i },
   { patternId: "general-debt-basket", re: /\bother\s+Indebtedness\b|\bgeneral\s+(?:debt|basket)\b/i },
@@ -251,7 +280,12 @@ const PATTERN_DETECT: { patternId: string; re: RegExp }[] = [
   { patternId: "ratio-lien", re: /\bPermitted\s+Liens?\b[\s\S]{0,240}\b(?:Secured\s+)?(?:Net\s+)?Leverage\s+Ratio\b/i },
   { patternId: "available-amount-definition", re: /\bAvailable\s+Amount\s+means\b/i },
   { patternId: "subsidiary-designation", re: /\b(?:designate|designat(?:ion|ed))\b[\s\S]{0,80}\bUnrestricted\s+Subsidiary\b/i },
-  { patternId: "financial-covenant-cure", re: /\b(?:equity\s+)?cure\b[\s\S]{0,120}\b(?:EBITDA|financial\s+covenant)\b/i },
+  // A default cure period ("30 days to cure such Default") is not an
+  // equity cure. Require equity / contribution / add-back language nearby.
+  {
+    patternId: "financial-covenant-cure",
+    re: /\bcure\b[\s\S]{0,160}\b(?:equity|contribution|add-?back)\b/i,
+  },
   { patternId: "liability-management", re: /\b(?:exchange\s+offer|open[\s-]market\s+purchase|debt\s+repurchase|liability\s+management)\b/i },
 ];
 

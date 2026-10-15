@@ -3,12 +3,97 @@
  */
 
 import { createHash } from "node:crypto";
-import { classifyFamiliesFromText } from "../taxonomy/families";
+import { classifyFamiliesFromText, isAdministrativeProvision } from "../taxonomy/families";
 import { scoreDiscoveryPotential } from "../rank/discovery-score";
 import { detectPatternsInText } from "../patterns/library";
 import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRecord } from "../types";
 
-/** Expand heading-only spans to the next section start so body text is analyzed. */
+/** A dotted-leader page-number line, e.g. "Section 6.01 Limitation on Indebtedness .... 45". */
+const TOC_LEADER_LINE = /^\s*(?:Section|§)\s*[\dA-Za-z.()-]+\s+.+\.{3,}\s*\d+\s*$/m;
+/** A bare TOC entry: "6.05 Limitation on Liens 58" or "VII. Limitation on Indebtedness 35" — ref + title + page number, no "Section", no dotted leader. */
+const TOC_BARE_ENTRY =
+  /^\s*(?:\d+(?:\.\d+)+(?:\([a-z0-9]+\))?|M{0,4}(?:C[MD]|D?C{0,3})(?:X[CL]|L?X{0,3})(?:I[XV]|V?I{0,3})\.?)\s+[A-Za-z].*\S\s+\d+\s*$/;
+const OPERATIVE_VERB = /\b(?:shall|will|must|may)\b/i;
+
+/**
+ * True when a node's span is table-of-contents material, not operative
+ * covenant text: the span is (or sits inside) the TOC, or the span itself
+ * is a TOC entry line (heading + dotted leader + page number, or bare
+ * ref + title + page number) with no operative sentence. Body sections
+ * carry operative verbs; TOC lines never do. Body headings never end in
+ * a bare page number, and TOC lines never end in a period.
+ */
+function isTableOfContentsSpan(
+  node: StructuralNodeRecord,
+  spanText: string,
+  fullText: string,
+): boolean {
+  if (/table of contents/i.test(node.heading)) return true;
+  const own = fullText.slice(node.charStart, node.charEnd);
+  if (TOC_LEADER_LINE.test(own)) return true;
+  if (isBareTocLine(own)) return true;
+  if (TOC_LEADER_LINE.test(spanText) && !OPERATIVE_VERB.test(spanText)) return true;
+  if (!OPERATIVE_VERB.test(spanText)) {
+    for (const line of spanText.split("\n")) {
+      if (isBareTocLine(line)) return true;
+    }
+  }
+  return false;
+}
+
+function isBareTocLine(line: string): boolean {
+  const trimmed = line.trimEnd();
+  if (trimmed.endsWith(".")) return false;
+  if (OPERATIVE_VERB.test(line)) return false;
+  return TOC_BARE_ENTRY.test(line);
+}
+
+/** Real section refs start with a digit; "AMBIGUOUS" must never dedup-collapse. */
+function dedupKeyFor(sectionRef: string): string | null {
+  const norm = sectionRef.trim();
+  if (!/^\d/.test(norm) || norm.toUpperCase() === "AMBIGUOUS") return null;
+  return norm;
+}
+
+/**
+ * One candidate per section ref. A section legitimately appears twice in a
+ * document — once in the table of contents, once in the body — and the
+ * structural parser emits a node for each. Without dedup the same section
+ * (e.g. §6.01) surfaces twice with different excerpts. Keep the strongest
+ * candidate (highest discovery score, then longest excerpt). Distinct
+ * subsections keep distinct refs ("6.01(1)" vs "6.01(2)") and are untouched.
+ */
+function dedupBySectionRef(
+  candidates: CovenantCandidateRecord[],
+  nodesById: Map<string, StructuralNodeRecord>,
+): CovenantCandidateRecord[] {
+  const bestByKey = new Map<string, CovenantCandidateRecord>();
+  const out: CovenantCandidateRecord[] = [];
+  for (const c of candidates) {
+    const ref = c.nodeId ? nodesById.get(c.nodeId)?.sectionRef : undefined;
+    const key = ref ? dedupKeyFor(ref) : null;
+    if (!key) {
+      out.push(c);
+      continue;
+    }
+    const prev = bestByKey.get(key);
+    if (!prev) {
+      bestByKey.set(key, c);
+      out.push(c);
+      continue;
+    }
+    const prevScore = prev.discoveryScore;
+    const nextScore = c.discoveryScore;
+    if (
+      nextScore > prevScore ||
+      (nextScore === prevScore && c.excerpt.length > prev.excerpt.length)
+    ) {
+      bestByKey.set(key, c);
+      out[out.indexOf(prev)] = c;
+    }
+  }
+  return out;
+}
 function operativeSpan(
   node: StructuralNodeRecord,
   sectionNodes: StructuralNodeRecord[],
@@ -50,6 +135,10 @@ export function discoverCovenantCandidates(
   for (const node of sectionNodes) {
     const span = operativeSpan(node, sectionNodes, text.length);
     const excerpt = text.slice(span.start, Math.min(span.end, span.start + 4000));
+    // TOC entries and administrative provisions are not covenant candidates,
+    // even though their headings name covenant families.
+    if (isTableOfContentsSpan(node, excerpt, text)) continue;
+    if (isAdministrativeProvision(node.heading, excerpt)) continue;
     const families = classifyFamiliesFromText(excerpt, node.heading);
     if (families.length === 1 && families[0] === "UNKNOWN") {
       // Keep UNKNOWN only when heading still looks covenant-relevant.
@@ -88,7 +177,7 @@ export function discoverCovenantCandidates(
     }
   }
 
-  return out;
+  return dedupBySectionRef(out, new Map(nodes.map((n) => [n.nodeId, n])));
 }
 
 function uniqueFamilies(families: KnowledgeTaxonomyFamily[]): KnowledgeTaxonomyFamily[] {

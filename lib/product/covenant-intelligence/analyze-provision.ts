@@ -5,6 +5,10 @@
 
 import { detectPatternsInText, getPattern } from "../../knowledge-factory/patterns/library";
 import { extractConditionsAndExceptions } from "../../knowledge-factory/pipeline/conditions";
+import {
+  isAdministrativeProvision,
+  isEventOfDefaultTrigger,
+} from "../../knowledge-factory/taxonomy/families";
 import type {
   CovenantCandidateRecord,
   CrossReferenceRecord,
@@ -112,8 +116,31 @@ function clip(s: string, n: number): string {
   return t.length > n ? `${t.slice(0, n)}…` : t;
 }
 
+/** Interpretation language ("shall not be construed …") is not a covenant. */
+const CONSTRUED_RE = /\bshall\s+not\s+be\s+(?:construed|deemed|interpreted)\b/i;
+
+/**
+ * True when a provision must not be presented as a prohibition, permission,
+ * or maintenance test: event-of-default triggers, administrative provisions
+ * (defeasance, trustee mechanics, interpretation clauses), and
+ * interpretation language. These get posture UNRESOLVED with an honest
+ * explanation, never an inverted permission/prohibition.
+ */
+function isNonOperative(excerpt: string, heading: string, families: string[]): boolean {
+  return (
+    families.includes("EVENTS_OF_DEFAULT") ||
+    isEventOfDefaultTrigger(heading, excerpt) ||
+    isAdministrativeProvision(heading, excerpt) ||
+    CONSTRUED_RE.test(excerpt)
+  );
+}
+
 function detectPosture(excerpt: string, heading: string, families: string[]): ProvisionPosture {
   const hay = `${heading}\n${excerpt}`;
+  // Never invert a trigger / administrative provision into a permission or
+  // prohibition. §8.01(j) cross-default starts with "(j)" — without this
+  // guard the letter-clause rule below labeled it ENUMERATED_PERMISSION.
+  if (isNonOperative(excerpt, heading, families)) return "UNRESOLVED";
   // Classic negative-covenant stem (shall-not often lives in the Article chapeau).
   if (
     /\bCreate,\s*incur,\s*assume or suffer to exist\b/i.test(hay) ||
@@ -123,15 +150,11 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
   ) {
     return "GENERAL_PROHIBITION";
   }
-  if (
-    /\bshall\s+not\b/i.test(hay) &&
-    /\bexcept\b/i.test(hay) &&
-    (/\bcreate,\s*incur\b/i.test(hay) ||
-      /\bpermit\b/i.test(hay) ||
-      /\bmake\s+any\s+Restricted\s+Payment/i.test(hay) ||
-      /\bDisposition\b/i.test(hay) ||
-      /\bLien\b/i.test(hay))
-  ) {
+  // A "shall not … except …" negative covenant is a general prohibition
+  // whatever operative verb follows — the previous version required the
+  // literal pair "create, incur", so a plain "shall not incur Indebtedness
+  // except …" fell through to UNRESOLVED.
+  if (/\b(?:shall|will|may)\s+not\b/i.test(hay) && /\bexcept\b/i.test(hay)) {
     return "GENERAL_PROHIBITION";
   }
   if (
@@ -145,7 +168,19 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
   if (/\bshall\s+not\b|\bwill\s+not\b|\bmay\s+not\b/i.test(hay) && !/\bexcept\b/i.test(hay)) {
     return "GENERAL_PROHIBITION";
   }
-  if (/^\s*\([a-z0-9]+\)/i.test(excerpt.trim()) || /\bnot to exceed\b|\bgreater of\b/i.test(hay)) {
+  // "Neither X nor Y shall ..." is a prohibition with no "not" — a common
+  // drafting form in credit agreements and indentures alike. Without this
+  // it falls through to OBLIGATION, inverting the covenant's meaning.
+  if (/\bneither\b.{0,120}\bshall\b/i.test(hay)) {
+    return "GENERAL_PROHIBITION";
+  }
+  // A bare letter-clause "(a) …" is not by itself a permission — EoD
+  // triggers, definitions, and administrative lists all use letter clauses.
+  // Require permission language for the letter-clause branch.
+  const letterClausePermission =
+    /^\s*\([a-z0-9]+\)/i.test(excerpt.trim()) &&
+    /\b(?:may|permitted|entitled|allowed|shall\s+be\s+permitted)\b/i.test(hay);
+  if (letterClausePermission || /\bnot to exceed\b|\bgreater of\b/i.test(hay)) {
     return /\bprovided that\b|\bso long as\b|\bno Default\b|\bpro forma\b/i.test(hay)
       ? "CONDITIONAL_PERMISSION"
       : "ENUMERATED_PERMISSION";
@@ -188,16 +223,23 @@ function extractBaskets(excerpt: string): string[] {
   const out: string[] = [];
   const greaterOf = [
     ...excerpt.matchAll(
-      /greater of\s*\((?:x\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(?:and|,)\s*(?:\(y\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
+      /greater of\s*\(?(?:x\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:y\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
     ),
   ];
-  for (const m of greaterOf.slice(0, 4)) {
-    out.push(`Greater-of basket: $${m[1]} and ${m[2]}% of ${normalizeWs(m[3] ?? "")}`);
+  for (const m of greaterOf.slice(0, 8)) {
+    // Preserve the fixed limb's unit: "greater of (x) $150.0 million" is a
+    // $150,000,000 limb, not a $150.0 limb. Dropping "million" understated
+    // the basket a million-fold in the live Quila output.
+    const unit = m[2] ? ` ${m[2]}` : "";
+    out.push(`Greater-of basket: $${m[1]}${unit} and ${m[3]}% of ${normalizeWs(m[4] ?? "")}`);
   }
-  const dollars = excerpt.match(/\$\s?[\d,]+(?:\.\d+)?/g) ?? [];
-  for (const d of dollars.slice(0, 6)) {
-    if (!out.some((x) => x.includes(d.replace(/\s/g, "")))) {
-      out.push(`Amount/threshold: ${d.replace(/\s/g, "")}`);
+  // Preserve the unit on every dollar amount: "$150.0 million" stays
+  // "$150.0 million", never bare "$150.0".
+  const amounts = [...excerpt.matchAll(/\$\s?[\d,]+(?:\.\d+)?\s*(million|billion|thousand)?/gi)];
+  for (const m of amounts.slice(0, 10)) {
+    const amount = normalizeWs(m[0] ?? "");
+    if (!out.some((x) => x.includes(amount))) {
+      out.push(`Amount/threshold: ${amount}`);
     }
   }
   const ratios = excerpt.match(/\d+(?:\.\d+)?\s+to\s+1\.00/gi) ?? [];
@@ -243,17 +285,23 @@ function extractRestriction(excerpt: string, heading: string, posture: Provision
   return null;
 }
 
-function extractPermissions(excerpt: string, posture: ProvisionPosture): string[] {
+function extractPermissions(
+  excerpt: string,
+  posture: ProvisionPosture,
+  nonOperative = false,
+): string[] {
+  // An event-of-default trigger's letter clauses are trigger sub-paragraphs,
+  // not permissions; an administrative provision's are not permissions either.
+  if (nonOperative) return [];
   const perms: string[] = [];
   if (
     posture === "ENUMERATED_PERMISSION" ||
     posture === "CONDITIONAL_PERMISSION" ||
     /\bexcept\b/i.test(excerpt)
   ) {
-    // Letter-clause baskets: (a) ... ; (b) ...
-    const clauses = [...excerpt.matchAll(/\(([a-z]|[ivx]+|\d+)\)\s+([^;.]{15,220})/gi)];
-    for (const c of clauses.slice(0, 12)) {
-      perms.push(`(${c[1]}) ${clip(c[2] ?? "", 200)}`);
+    // Letter-clause baskets: (a) ... ; (b) ... — split depth-aware below.
+    for (const clause of splitLetterClauses(excerpt)) {
+      perms.push(clause);
     }
     if (perms.length === 0 && /\bexcept\b/i.test(excerpt)) {
       const after = excerpt.split(/\bexcept\b/i)[1];
@@ -261,6 +309,65 @@ function extractPermissions(excerpt: string, posture: ProvisionPosture): string[
     }
   }
   return perms.slice(0, 12);
+}
+
+/**
+ * Split an enumerated list into its letter clauses, respecting nesting.
+ *
+ * The previous implementation cut clauses with /[^;.]{15,220}/, which
+ * truncated a clause at the first "." — the "." in "U.S.$150.0 million"
+ * cut a basket to "...not to exceed U" — at the first ";" (severing a
+ * basket's own proviso from the basket), and at 220 chars (long baskets
+ * lost their cap). Nested markers such as the (x)/(y) limbs of a
+ * greater-of also leaked across clause boundaries.
+ *
+ * A marker starts a new clause only when it sits at paren depth 0 AND
+ * follows a list separator (`;`, `.`, `:`) or the start of the excerpt.
+ * That keeps "(x) $50,000,000 and (y) 10.0%" inside its (b) basket (it
+ * follows "of" / "and", not a separator) while splitting "(a) ... ; (b)"
+ * correctly. Clause text is kept whole up to 400 chars — periods and
+ * semicolons inside a clause are content, not boundaries.
+ */
+const CLAUSE_MARKER = /\(([a-z]|\d+|[ivx]{1,5})\)/i;
+
+function splitLetterClauses(excerpt: string): string[] {
+  const starts: number[] = [];
+  let depth = 0;
+  for (let i = 0; i < excerpt.length; i += 1) {
+    const ch = excerpt[i];
+    if (ch === "(") {
+      const rest = excerpt.slice(i);
+      const marker = rest.match(CLAUSE_MARKER);
+      if (marker && marker.index === 0) {
+        // Look back past whitespace for the preceding significant char.
+        let j = i - 1;
+        while (j >= 0 && /\s/.test(excerpt[j]!)) j -= 1;
+        const prev = j < 0 ? "" : excerpt[j]!;
+        const isBoundary = depth === 0 && (prev === "" || prev === ";" || prev === "." || prev === ":");
+        if (isBoundary) {
+          starts.push(i);
+          // Skip the marker's own parens — they don't change nesting depth.
+          i += marker[0].length - 1;
+          continue;
+        }
+      }
+      depth += 1;
+      continue;
+    }
+    if (ch === ")" && depth > 0) depth -= 1;
+  }
+  if (starts.length === 0) return [];
+  const out: string[] = [];
+  for (let k = 0; k < starts.length; k += 1) {
+    const start = starts[k]!;
+    const end = starts[k + 1] ?? excerpt.length;
+    let clause = excerpt.slice(start, end).trim();
+    // Strip one trailing list separator (the ";" or "." ending the clause).
+    clause = clause.replace(/[;.]+$/, "").trim();
+    if (clause.length < 5) continue;
+    out.push(clip(clause, 400));
+  }
+  return out;
 }
 
 function relatedDefinitions(
@@ -308,6 +415,7 @@ function buildPlainEnglish(params: {
   definitions: Array<{ term: string; resolved: boolean }>;
   dependencies: string[];
   unresolved: string[];
+  isEod: boolean;
 }): string {
   const parts: string[] = [];
   const entity =
@@ -315,6 +423,17 @@ function buildPlainEnglish(params: {
       ? params.coveredEntities.join(", ")
       : "entities not clearly identified in the excerpt";
 
+  if (params.isEod) {
+    // An EoD trigger is neither a permission nor a prohibition on the
+    // underlying activity — it defines when a failure becomes a default.
+    parts.push(
+      `Section ${params.sectionRef} (“${clip(params.heading, 100)}”) states an event-of-default trigger covering ${entity}.`,
+    );
+    if (params.restriction) parts.push(params.restriction);
+    parts.push(
+      "It does not itself permit or prohibit the underlying activity; it defines when the described failure or default becomes an Event of Default.",
+    );
+  } else {
   switch (params.posture) {
     case "GENERAL_PROHIBITION":
       parts.push(
@@ -359,6 +478,7 @@ function buildPlainEnglish(params: {
       parts.push(
         `Section ${params.sectionRef} (“${clip(params.heading, 100)}”) relates to ${params.categoryLabel.toLowerCase()}, but its prohibition/permission posture could not be determined from the excerpt.`,
       );
+  }
   }
 
   if (params.baskets.length > 0) {
@@ -449,13 +569,24 @@ export function analyzeProvision(params: {
   const { sectionRef, heading } = sectionForNode(params.candidate.nodeId, params.structuralNodes);
   const excerpt = params.candidate.excerpt || "";
   const primary = params.candidate.families[0] ?? "UNKNOWN";
-  const category = FAMILY_TO_CATEGORY[primary] ?? "OTHER";
+  const nonOperative = isNonOperative(excerpt, heading, params.candidate.families);
+  const isEod =
+    params.candidate.families.includes("EVENTS_OF_DEFAULT") ||
+    isEventOfDefaultTrigger(heading, excerpt);
+  // Category follows substance, not just the first family tag: an EoD
+  // trigger stays EVENTS_OF_DEFAULT even if the classifier also tagged a
+  // subject family, and an administrative provision is OTHER.
+  const category = isAdministrativeProvision(heading, excerpt)
+    ? "OTHER"
+    : isEod
+      ? "EVENTS_OF_DEFAULT"
+      : (FAMILY_TO_CATEGORY[primary] ?? "OTHER");
   const categoryLabel = CATEGORY_LABELS[category];
   const posture = detectPosture(excerpt, heading, params.candidate.families);
   const { coveredEntities, entityScopeNotes } = extractEntities(excerpt, heading);
   const basketsAndThresholds = extractBaskets(excerpt);
   const restriction = extractRestriction(excerpt, heading, posture, categoryLabel);
-  const permissions = extractPermissions(excerpt, posture);
+  const permissions = extractPermissions(excerpt, posture, nonOperative);
 
   const condRecords = extractConditionsAndExceptions(params.sourceId, excerpt, params.structuralNodes, 40);
   const conditions = condRecords
@@ -519,6 +650,7 @@ export function analyzeProvision(params: {
     definitions: applicableDefinitions,
     dependencies,
     unresolved,
+    isEod,
   });
 
   const { alternativeInterpretations, assumptions, judgmentCalls } = buildAlternativesAndAssumptions({
