@@ -181,6 +181,10 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // negative stem, or the item itself carries an obligor-bound prohibition.
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(tree, text, s, articleStem(tree, text, s))) fams.add(f);
     if (!am && fams.has("RESTRICTED_PAYMENTS") && prohib.get(s.id)) for (const f of restrictedPaymentItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f as CovenantFamily);
+    // Captioned covenant clauses inside a "Negative Covenants" section ("(g) Restricted Payments; Certain Payments of
+    // Indebtedness . (A) The Borrower will not ...") are each a covenant unit.
+    if (!am && /\bnegative covenants?\b|^\s*covenants?\b|\bcertain covenants\b/i.test(s.title ?? "")) for (const f of captionedClauseFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 120000)))) fams.add(f);
+    if (!am && fams.size && prohib.get(s.id)) for (const f of laterProhibitionFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 8000)))) fams.add(f);
     // A Restricted Payments section must restrict the obligor's payments: a negated (or article-imperative) declare/pay/
     // make ... dividend/distribution/restricted payment, or an enumerated restricted act. Distribution mechanics of an
     // entity to its own holders (LLC preferred-return and liquidating distributions, in-kind distributions, charter
@@ -216,11 +220,26 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     const capFams = captionFamilies(text, covered);
     if (capFams.size) { const id = `${root.id}#captions`; famOf.set(id, [...capFams]); units.push({ id, path: `${root.path || "ROOT"}@captions`, start: 0, end: 0, resolved: false, node: null }); }
   }
+  const inlineUnits: typeof units = [];
+  // Run-in headings the tree did not split (flattened text: "... thereof). 8.07 Restricted Payments. The Borrower will
+  // not ..."): inline numbered units outside any classified section, kept only inside a covenant run (an adjacent inline
+  // unit also opens with an obligor-bound prohibition).
+  // (Inline units only fill families with no tree hit, so a family-bearing encloser does not block them.)
+  for (const u of inlineCovenantUnits(text, () => false, sections.map((s) => s.start))) {
+    const fams = new Set<string>(classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: u.lead, covenantContext: true }).families);
+    if (fams.has("RESTRICTED_PAYMENTS") && !restrictsPayments(u.lead)) fams.delete("RESTRICTED_PAYMENTS");
+    if (DESIGNATION_OR_SUSPENSION.test(`${u.title} ${u.lead.slice(0, 200)}`)) for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) fams.delete(f);
+    if (!fams.size) continue;
+    const node = { id: `inline:${u.start}`, kind: "SECTION", path: u.path, title: u.title, start: u.start, headingEnd: u.headingEnd, end: u.end, depth: 1, parentId: null } as unknown as TreeNode;
+    famOf.set(node.id, [...fams]); inlineUnits.push(node as (typeof units)[number]);
+  }
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
   const opening = text.slice(0, 4000);
   const partialDocument = /\bFORM\s+8-K\b|\bCURRENT REPORT\b/i.test(opening) || /\b(?:AMENDMENT|WAIVER|JOINDER|SUPPLEMENTAL INDENTURE|INCREMENTAL)\b[^\n]{0,80}\b(?:TO|NO\.)\b/.test(opening);
   return CHECKLIST_FAMILIES.map((family) => {
-    const hits = units.filter((s) => famOf.get(s.id)?.includes(family));
+    // Inline units only fill a family the tree found nowhere.
+    const treeHits = units.filter((s) => famOf.get(s.id)?.includes(family));
+    const hits = treeHits.length ? treeHits : inlineUnits.filter((s) => famOf.get(s.id)?.includes(family));
     if (hits.length === 0) {
       const ev = familyEvidence(text, family);
       const absent = ev.length === 0;
@@ -288,12 +307,14 @@ function restrictedPaymentItemFamilies(body: string): Set<string> {
   const out = new Set<string>();
   const head = body.slice(0, 8000).replace(/\s+/g, " ");
   const stem = /\b(?:shall|will)\s+not\b[^.:]{0,300}?(?:directly or indirectly)?[^.:]{0,40}?(?:to|:)\s*(?=\((?:1|a|i)\))/i.exec(head);
-  if (!stem) return out;
-  const items = head.slice(stem.index + stem[0].length);
+  // Article-imperative layout: the negative stem sits in the article preamble and the section opens "(1) declare or pay".
+  const imperative = /^\s*\((?:1|a|i|A)\)\s+(?:directly or indirectly,?\s*)?(?:declare|pay|make)\b/.test(head);
+  if (!stem && !imperative) return out;
+  const items = imperative || !stem ? head : head.slice(stem.index + stem[0].length);
   for (const m of items.matchAll(/\((?:\d{1,2}|[a-h]|i{1,3}|iv|v|vi{0,3})\)\s+([^]{10,400}?)(?=\((?:\d{1,2}|[a-h]|i{1,3}|iv|v|vi{0,3})\)\s|$)/gi)) {
     const it = m[1]!;
     if (/^\s*(?:dividends|distributions|payments?|any\s+\w+\s+(?:made|paid))\b/i.test(it)) continue; // an exception limb, not a restricted act
-    if (/^\s*(?:directly or indirectly,?\s*)?(?:purchase|repurchase|redeem|defease|retire|prepay|make any (?:principal )?payment on)\b[^;]{0,200}\b(?:subordinated|junior)\b[^;]{0,60}\b(?:obligations|indebtedness|debt|notes)\b/i.test(it)) out.add("PREPAYMENTS");
+    if (/^\s*(?:directly or indirectly,?\s*)?(?:purchase|repurchase|redeem|defease|retire|prepay|make any (?:principal )?payment on)\b[^;]{0,300}\b(?:subordinated|junior)\b[^;]{0,60}\b(?:obligations|indebtedness|debt|notes)\b/i.test(it)) out.add("PREPAYMENTS");
     if (/^\s*(?:directly or indirectly,?\s*)?make\s+any\s+(?:Restricted\s+)?Investment\b/i.test(it)) out.add("INVESTMENTS");
   }
   return out;
@@ -308,10 +329,77 @@ function restrictsPayments(lead: string): boolean {
   if (/\b(?:Liquidator|record date|Preferred Return|Capital Accounts?)\b/.test(w.slice(0, 600))) return false;
   for (const m of w.matchAll(/\b(?:declare|pay|make|purchase|redeem)\b[^.;]{0,120}?\b(?:dividends?|distributions?|restricted (?:junior )?payments?|equity interests|capital stock)\b/gi)) {
     const before = w.slice(Math.max(0, m.index! - 220), m.index!);
-    if (/(?:shall|will|may)\s+not\b|\bno\s+[^.;]{1,140}?\b(?:shall|will|may)\b|\bnot\s+permit\b/i.test(before)) return true;
+    if (/(?:shall|will|may)\s+not\b|\b(?:no|neither)\s+[^.;]{1,140}?\b(?:shall|will|may)\b|\bnot\s+permit\b/i.test(before)) return true;
   }
   return false;
 }
+
+/**
+ * A covenant section's later sentences that open with their own obligor prohibition ("... Fundamental Changes ... The
+ * Company will not, nor will it permit any of its Subsidiaries to, convey, sell, lease, transfer or otherwise dispose of
+ * ... assets") state a second covenant in the same section.
+ */
+const LATER_OBJECT: [string, RegExp][] = [
+  ["ASSET_SALES", /\b(?:sell|lease|transfer|convey|dispose)\b[^.;]{0,200}?\b(?:assets?|propert(?:y|ies))\b/i],
+  ["INVESTMENTS", /\bmake\b[^.;]{0,60}\b(?:investments?|loans? or advances?|advances? to)\b/i],
+  ["RESTRICTED_PAYMENTS", /\b(?:declare|pay|make)\b[^.;]{0,80}\b(?:dividends?|restricted payments?)\b/i],
+  ["PREPAYMENTS", /\b(?:prepay|redeem|repurchase|defease)\b[^.;]{0,120}\b(?:subordinated|junior)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b/i],
+];
+function laterProhibitionFamilies(body: string): Set<string> {
+  const out = new Set<string>();
+  // Stop at an embedded heading the tree did not split ("... Material Adverse Effect. Section 10. Negative Covenants.").
+  const stop = body.search(/(?:^|\n|[.;]\s+)(?:SECTION|Section|ARTICLE|Article)\s+[\dIVXLC]+\.?\s+[A-Z]/);
+  if (stop > 0) body = body.slice(0, stop);
+  for (const m of body.matchAll(/(?:^|[.;]\s+)((?:The|No|Neither)\s+[A-Z][\w-]*(?:\s+[\w-]+){0,4}?\s+(?:will|shall)\s+not\b[^.;]{0,400})/g)) {
+    const sent = m[1]!;
+    for (const [f, re] of LATER_OBJECT) {
+      const om = re.exec(sent);
+      if (!om || om.index > 220) continue;
+      if (f === "ASSET_SALES" && /all or substantially all|affiliate/i.test(sent)) continue;
+      out.add(f);
+    }
+  }
+  return out;
+}
+
+function captionedClauseFamilies(body: string): Set<string> {
+  const out = new Set<string>();
+  for (const m of body.matchAll(/(?:^|\n)\s*\(([a-z]{1,2})\)\s+([A-Z][^.\n]{2,90}?)\s?\.[ \t]*(?=\n|\s+(?:\([A-Za-z0-9]{1,4}\)\s*)?[A-Z])/g)) {
+    const title = m[2]!.trim();
+    if (title.split(/\s+/).length > 12) continue;
+    const lead = body.slice(m.index! + m[0].length, m.index! + m[0].length + 2000);
+    if (!isObligorProhibitionLead(lead)) continue;
+    const fams = new Set<string>(classifyCovenantFamily({ title, parentTitle: null, leadIn: lead, covenantContext: true }).families);
+    if (fams.has("RESTRICTED_PAYMENTS") && !restrictsPayments(lead)) fams.delete("RESTRICTED_PAYMENTS");
+    if (DESIGNATION_OR_SUSPENSION.test(`${title} ${lead.slice(0, 200)}`)) for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) fams.delete(f);
+    for (const f of fams) out.add(f);
+  }
+  return out;
+}
+
+function inlineCovenantUnits(text: string, insideClassified: (i: number) => boolean, boundaries: number[] = []): { path: string; title: string; start: number; headingEnd: number; end: number; lead: string }[] {
+  const re = /(?:^|[.;:)”"]\s+|\s{2,})((?:SECTION\s+|Section\s+)?(\d{1,2}\.\d{1,2}))\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,80}?)\s?\.\s+(?=[A-Z(“"])/g;
+  const cands: { path: string; title: string; start: number; headingEnd: number }[] = [];
+  for (const m of text.matchAll(re)) {
+    const start = m.index! + (m[0].length - m[0].trimStart().length);
+    if (insideClassified(start)) continue;
+    cands.push({ path: normalizeSectionNumber(m[2]!), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
+    if (cands.length > 2000) break;
+  }
+  // A unit also ends at the next unit start the tree knows (its sections), so it never reads into a parsed section.
+  // Heading lines with no closing period ("6.12 Transactions with Affiliates\n\nDirectly or indirectly, enter into ...").
+  for (const m of text.matchAll(/(?:^|\n)[ \t]*((?:SECTION[ \t]+|Section[ \t]+)?(\d{1,2}\.\d{1,2}))\.?(?:[ \t]+|[ \t]*\n[ \t]*)([A-Z][^\n.]{2,80}?)[ \t]*\n(?![ \t]*\d{1,3}(?:[ \t]+\d{1,3})?[ \t]*\n)/g)) {
+    const start = m.index! + (m[0].length - m[0].trimStart().length);
+    if (insideClassified(start) || cands.some((c) => Math.abs(c.start - start) < 5)) continue;
+    cands.push({ path: normalizeSectionNumber(m[2]!), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
+    if (cands.length > 4000) break;
+  }
+  cands.sort((a, b) => a.start - b.start);
+  const units = cands.map((c, i) => { const end = Math.min(cands[i + 1]?.start ?? text.length, c.headingEnd + 30000, ...boundaries.filter((b) => b > c.headingEnd)); return { ...c, end, lead: text.slice(c.headingEnd, Math.min(end, c.headingEnd + 2000)) }; });
+  const prohib = units.map((u) => isObligorProhibitionLead(u.lead));
+  return units.filter((u, i) => prohib[i] && (prohib[i - 1] || prohib[i + 1]));
+}
+
 
 /** True when the section's enclosing ARTICLE opens with a negative stem ("the Borrower shall not, ...:") before its first section. */
 function articleStem(tree: SectionTree, text: string, s: TreeNode): boolean {
@@ -382,7 +470,7 @@ function restatedTexts(body: string, skip?: (offset: number) => boolean): { titl
   return restatedSpans(body, 0, body.length, skip).map((q) => ({ title: q.title, lead: q.lead }));
 }
 
-const RESTATE_RE = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?(?:\([a-z0-9]{1,4}\))*[^.:]{0,120}?\b(?:amended(?: and restated)?(?: in (?:its|their) entirety)? to read as follows|(?:deleted|amended)(?: in (?:its|their) entirety)?(?: and)? (?:replaced|restated) (?:in (?:its|their) entirety )?(?:with|by) the following|amended by (?:deleting|replacing)[^:]{0,80}?(?:with|by) the following)[^:]{0,20}:\s*/gi;
+const RESTATE_RE = /\b(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?(?:\([a-z0-9]{1,4}\))*[^.:]{0,120}?\b(?:amended(?: and restated)?(?: in (?:its|their) entirety)?,?\s+(?:to read\s+)?as follows|(?:deleted|amended)(?: in (?:its|their) entirety)?(?: and)? (?:replaced|restated) (?:in (?:its|their) entirety )?(?:with|by) the following|amended by (?:deleting|replacing)[^:]{0,80}?(?:with|by) the following)[^:]{0,20}:\s*/gi;
 /** Next amendment instruction or top-level amendment section after a restated text: where the quoted covenant ends. */
 const NEXT_INSTRUCTION = /\n[^\S\n]*(?:\([a-z]{1,3}\)[^\S\n]*)?(?:(?:Article|Section)\s+[\dIVXLC]+(?:\.\d+)?(?:\([a-z0-9]+\))*[^\n.]{0,160}?\b(?:is|are)\s+hereby\s+(?:amended|deleted|replaced|restated)|SECTION\s+\d{1,2}\.\s+[A-Z]|ARTICLE\s+[IVXLC\d]+\b)|[”"][^\S\n]*[.;]?[^\S\n]*\n/g;
 const MAX_RESTATED = 20000;
@@ -406,7 +494,7 @@ function restatedSpans(text: string, from: number, to: number, skip?: (offset: n
     const e = NEXT_INSTRUCTION.exec(tail);
     const hitTo = to - start <= MAX_RESTATED;
     const end = e ? start + 1 + e.index + (/^[”"]/.test(e[0]) ? 1 : 0) : hitTo ? to : start;
-    const h = /^(?:(?:section\s+)?\d{1,2}\.\d{1,3}\.?(?:\([a-z0-9]{1,4}\))?|ARTICLE\s+[IVXLC\d]+|\([a-z0-9]{1,4}\))\s+([A-Z][^.\n]{2,80})[.\n]\s*/i.exec(lead1);
+    const h = /^(?:(?:section\s+)?\d{1,2}\.\d{1,3}\.?(?:\([a-z0-9]{1,4}\))?|ARTICLE\s+[IVXLC\d]+|\([a-z0-9]{1,4}\))\s+([A-Z][^.\n]{2,80}?)\s?[.\n]\s*/i.exec(lead1);
     out.push({ ...(h ? { title: h[1]!.trim(), lead: lead1.slice(h[0].length) } : { title: null, lead: lead1 }), start, end, resolved: !!e || hitTo });
   }
   return out;
@@ -429,7 +517,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   LIENS: { heading: /\b(?:liens|negative pledge|limitations? on liens)\b/i, lead: /(?:create|incur|assume|grant|suffer to exist)[^.;]{0,100}?\b(?:liens?|mortgage|pledge|security interest)\b/i },
   RESTRICTED_PAYMENTS: { heading: /\b(?:restricted payments|dividends|distributions)\b/i, lead: /(?:declare|pay|make)[^.;]{0,80}?\b(?:dividends?|restricted payments?|distributions?)\b/i },
   INVESTMENTS: { heading: /\b(?:investments|loans,? advances|acquisitions)\b/i, lead: /(?:make|hold|acquire|purchase)[^.;]{0,80}?\b(?:investments?|advances?|capital contributions?)\b/i },
-  ASSET_SALES: { heading: /\b(?:asset sales|asset transfers|dispositions?|sales? of assets|disposition of assets)\b/i, lead: /(?:sell|transfer|convey|dispose|lease)[^.;]{0,100}?\b(?:assets?|propert(?:y|ies)|business)\b/i },
+  ASSET_SALES: { heading: /\b(?:asset sales|asset transfers|dispositions?|sales? of assets|disposition of assets)\b/i, lead: /(?:sell|transfer|convey|dispose|lease)[^.;]{0,100}?\b(?:assets?|propert(?:y|ies)|business)\b|\b(?:make|consummate|effect)\b[^.;]{0,40}\bAsset (?:Sales?|Dispositions?)\b/i },
   AFFILIATE_TRANSACTIONS: { heading: /\btransactions? with affiliates\b|\baffiliate transactions\b/i, lead: /(?:enter into|permit to exist|engage in)[^.;]{0,140}?\baffiliates?\b/i },
   FUNDAMENTAL_CHANGES: { heading: /\b(?:mergers?|consolidations?|fundamental changes|merger,? consolidation)\b/i, lead: /\b(?:merge|consolidate|amalgamate|liquidate|dissolve)\b/i },
   PREPAYMENTS: { heading: /\b(?:prepayments? of (?:other )?(?:indebtedness|debt)|restricted debt payments|payments? of (?:subordinated|junior) (?:indebtedness|debt))\b/i, lead: /(?:prepay|redeem|repurchase|defease|retire)[^.;]{0,100}?\b(?:subordinated|junior)?\s*(?:indebtedness|debt)\b/i },
@@ -437,7 +525,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
 };
 const DESIGNATION_OR_SUSPENSION = /\bdesignat\w*\b[^.;]{0,60}\b(?:un)?restricted subsidiar|\b(?:suspension|suspended|suspend)\b[^.;]{0,40}\bcovenants?\b|\bcovenant suspension\b|\bsuspended covenants?\b/i;
 const NEG_RE = new RegExp(NEG, "i");
-const NOT_COVENANT_TITLE = /\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion|dividend equivalents|designation of|suspension of/i;
+const NOT_COVENANT_TITLE = /\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion|dividend equivalents|designation of|suspension of|limited condition|ratio adjustments?|pro forma|title to|ownership of|pledged|net proceeds|disposition offer|investment company/i;
 
 /**
  * Lead-in text that names a family's verb/object but is not that covenant: affiliate-transaction text for asset sales,
@@ -449,14 +537,23 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   const before = sent.slice(Math.max(0, at - 160), at);
   // Affiliate-transaction text ("any transaction ... with any Affiliate", "Affiliate Transaction"), not every sentence
   // that mentions an Affiliate: a disposition covenant with an affiliate carve-out stays asset-sales evidence.
-  if (family === "ASSET_SALES" && (/\baffiliate transactions?\b/i.test(sent) || /\b(?:transactions?|agreements?|arrangements?|contracts?)\b[^.;]{0,80}\bwith\b[^.;]{0,30}\baffiliates?\b/i.test(sent)) && !/\b(?:all or substantially all|asset sale|asset disposition)\b/i.test(sent)) return true;
+  if (family === "ASSET_SALES" && (/\baffiliate transactions?\b/i.test(sent) || /\b(?:transactions?|agreements?|arrangements?|contracts?)\b[^.;]{0,80}\bwith\b[^.;]{0,30}\baffiliates?\b/i.test(sent.replace(/\([^()]{0,400}\)/g, " "))) && !/\b(?:all or substantially all|asset sale|asset disposition)\b/i.test(sent)) return true;
   if ((family === "INVESTMENTS" || family === "RESTRICTED_PAYMENTS" || family === "PREPAYMENTS") && DESIGNATION_OR_SUSPENSION.test(sent)) return true;
+  // Debt-incurrence mechanics that mention repaying debt: ratio-debt / refinancing / lien-priority provisos, pro forma
+  // calculation and classification rules ("shall not give effect to any repayment", "Ratio Debt ... not in excess of",
+  // "the Indebtedness secured by the new Lien shall not have a higher priority", "shall classify Indebtedness").
+  if (family === "PREPAYMENTS" && (/\b(?:Ratio Debt|Refinancing Indebtedness|Permitted Refinancing|secured by the new Lien|higher priority|pro forma|calculation|calculated|classify|reclassif|give effect to|Fixed Charge|Leverage Ratio|Coverage Ratio)\b/i.test(sent) || /^\s*(?:\(\w{1,4}\)\s*)?(?:provided|that)\b/i.test(sent))) return true;
   // Subordination payment blockage ("the Company shall not pay principal of ... or redeem the Securities ... if a default on
   // Designated Senior Indebtedness occurs") restricts paying the subordinated instrument itself, not a prepayment covenant.
   if (family === "PREPAYMENTS" && /\b(?:(?:Guarantor\s+)?Senior Indebtedness|Designated Senior|Payment Blockage|Senior Debt)\b/.test(sent) && /\b(?:the\s+)?(?:Securities|Notes|Subsidiary Guarantees?|Debentures)\b/.test(sent)) return true;
   // Statutory limits on an entity's own distributions to its members ("shall not make a distribution to any Member if such
   // distribution would violate Section 18-607 of the Act") restate law, not a negotiated restricted-payment covenant.
   if (family === "RESTRICTED_PAYMENTS" && /\bdistributions?\b[^.]{0,120}\bto\s+(?:(?:any|a|the|such|its)\s+)?(?:[A-Z]\w*\s+){0,3}(?:Members?|Partners?|Unitholders?)\b/i.test(sent) && /\b(?:would violate|in violation of|18-607|17-607|the Act|applicable law)\b/i.test(sent)) return true;
+  // Representations ("The Transactions (a) do not require ... and (d) will not result in the creation of any Lien", "The
+  // execution, delivery and performance ... are within ...") and non-obligor actors (trustee, transferees, a lender or
+  // agency making Advances) are not covenant evidence.
+  if (/\b(?:do not|does not|will not)\s+(?:require|violate|conflict|contravene|result in (?:the creation|a breach))\b|\bare within\b[^.]{0,60}\bpowers\b/i.test(sent)) return true;
+  if (/\b(?:the Trustee|any purchaser or other transferee|transferee in good faith|the RUS|the Administrative Agent|the Collateral Agent)\b[^.;]{0,40}\b(?:shall|will|may)\s+(?:not|ever)\b|\bunder no circumstances shall the\b|\bin no event shall any purchaser\b/i.test(sent)) return true;
   // Equity-award dividend equivalents (stock plans) are not a restricted payment.
   if (family === "RESTRICTED_PAYMENTS" && /\bdividend equivalents?\b/i.test(sent)) return true;
   if (family === "INVESTMENTS" && (/\b(?:lenders?|banks?|issuing bank|swingline lender|agent)s?\b[^.;]{0,80}$/i.test(before) || /\b(?:not be obligated|obligated to)\b/i.test(sent) || /\badvances?\b/i.test(sent) && /\b(?:lenders?|borrowing)\b/i.test(sent))) return true;
