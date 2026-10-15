@@ -171,14 +171,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // Assets. The Borrower shall not consolidate ...") are covenant units of their own; a bare imperative under the
     // section's negative stem ("the Borrower will not ...: (a) Mergers, etc. Merge ...") reads as prohibited.
     if (!am && !(s.title && NOT_COVENANT_TITLE.test(s.title))) {
-      const body = text.slice(s.headingEnd, s.end);
-      const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
-      for (const c of body.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s*([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
-        if (c[1]!.split(/\s+/).length > 10) continue;
-        const rest = body.slice(c.index! + c[0].length, c.index! + c[0].length + 1500);
-        const underStem = stem.test(body.slice(Math.max(0, c.index! - 400), c.index!).trimEnd() + " ") || stem.test(body.slice(0, Math.min(c.index!, 600)));
-        for (const f of classifyCovenantFamily({ title: c[1]!.trim(), parentTitle: null, leadIn: underStem ? rest.replace(/^\s*/, "") : rest, covenantContext: true }).families) fams.add(f);
-      }
+      for (const f of captionFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     }
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end), articleStem(tree, text, s))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
@@ -191,6 +184,8 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     const covered = (i: number) => sections.some((s) => s.start <= i && s.end > i);
     const rootFams = new Set<string>();
     for (const q of restatedTexts(text, covered)) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) rootFams.add(f);
+    // Captioned covenant clauses in text no section covers (guaranties / short agreements numbered "10. Covenants.").
+    for (const f of captionFamilies(text, covered)) rootFams.add(f);
     if (rootFams.size) { famOf.set(root.id, [...rootFams]); units.push(root); }
   }
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
@@ -252,6 +247,21 @@ function articleStem(tree: SectionTree, text: string, s: TreeNode): boolean {
   const first = tree.nodes.filter((n) => n.kind === "SECTION" && n.start > p!.start && n.start < p!.end).sort((a, b) => a.start - b.start)[0];
   const lead = text.slice(p.headingEnd, first ? first.start : Math.min(p.end, p.headingEnd + 1500)).slice(-600);
   return /\b(?:shall|will)\s+not\b[^.:]{0,300}:\s*$/i.test(lead) && !/\b(?:prohibit|apply|unless)\b/i.test(lead);
+}
+
+/** Families of captioned clauses ("(a) Prohibition of Fundamental Changes. Guarantor shall not ..."); offsets in skip are ignored. */
+function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<string> {
+  const out = new Set<string>();
+  const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
+  let n = 0;
+  for (const c of body.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s*([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
+    if (c[1]!.split(/\s+/).length > 10 || skip?.(c.index!)) continue;
+    if (++n > 400) break;
+    const rest = body.slice(c.index! + c[0].length, c.index! + c[0].length + 1500);
+    const underStem = stem.test(body.slice(Math.max(0, c.index! - 400), c.index!).trimEnd() + " ") || stem.test(body.slice(0, Math.min(c.index!, 600)));
+    for (const f of classifyCovenantFamily({ title: c[1]!.trim(), parentTitle: null, leadIn: underStem ? rest.replace(/^\s*/, "") : rest, covenantContext: true }).families) out.add(f);
+  }
+  return out;
 }
 
 function covenantItemFamilies(body: string, inherited = false): Set<CovenantFamily> {
