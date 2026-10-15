@@ -3,7 +3,7 @@
  * checklist over a SectionTree. Deterministic; no AI / LLM calls; nothing invented.
  * A family with no numeric cap is NEVER reported as unlimited.
  */
-import { negatedItemFamilies, classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
+import { type CovenantFamily, negatedItemFamilies, classifyCovenantFamily, isObligorProhibitionLead } from "./family-classifier";
 import { normalizeSectionNumber, sectionOf, type SectionTree, type TreeNode } from "./parse";
 
 export type ClauseRole = "PROHIBITION" | "BASKET" | "EXCEPTION_PROVISO" | "DEFINITION" | "CROSS_REFERENCE" | "OTHER";
@@ -167,7 +167,20 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     const fams = new Set(v.families);
     // Enumerated covenant items (LLC separateness / "shall not take any of the following actions" lists): an item-level
     // prohibition with a family object counts, but only inside an obligor-bound prohibition section body.
-    if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
+    // Captioned clauses ("(a) Mergers, etc. Merge or consolidate ...", "(d) Mergers and Consolidations; Disposition of
+    // Assets. The Borrower shall not consolidate ...") are covenant units of their own; a bare imperative under the
+    // section's negative stem ("the Borrower will not ...: (a) Mergers, etc. Merge ...") reads as prohibited.
+    if (!am && !(s.title && NOT_COVENANT_TITLE.test(s.title))) {
+      const body = text.slice(s.headingEnd, s.end);
+      const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
+      for (const c of body.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s*([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
+        if (c[1]!.split(/\s+/).length > 10) continue;
+        const rest = body.slice(c.index! + c[0].length, c.index! + c[0].length + 1500);
+        const underStem = stem.test(body.slice(Math.max(0, c.index! - 400), c.index!).trimEnd() + " ") || stem.test(body.slice(0, Math.min(c.index!, 600)));
+        for (const f of classifyCovenantFamily({ title: c[1]!.trim(), parentTitle: null, leadIn: underStem ? rest.replace(/^\s*/, "") : rest, covenantContext: true }).families) fams.add(f);
+      }
+    }
+    if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end), articleStem(tree, text, s))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
     famOf.set(s.id, [...fams]);
   }
@@ -231,16 +244,32 @@ function amendedText(lead: string): { title: string; lead: string } | null {
   return { title: h[1]!.trim(), lead: rest.slice(h[0].length) };
 }
 
-function covenantItemFamilies(body: string): Set<string> {
-  const out = new Set<string>();
+/** True when the section's enclosing ARTICLE opens with a negative stem ("the Borrower shall not, ...:") before its first section. */
+function articleStem(tree: SectionTree, text: string, s: TreeNode): boolean {
+  let p = s.parentId ? tree.byId.get(s.parentId) : undefined;
+  while (p && p.kind !== "ARTICLE") p = p.parentId ? tree.byId.get(p.parentId) : undefined;
+  if (!p) return false;
+  const first = tree.nodes.filter((n) => n.kind === "SECTION" && n.start > p!.start && n.start < p!.end).sort((a, b) => a.start - b.start)[0];
+  const lead = text.slice(p.headingEnd, first ? first.start : Math.min(p.end, p.headingEnd + 1500)).slice(-600);
+  return /\b(?:shall|will)\s+not\b[^.:]{0,300}:\s*$/i.test(lead) && !/\b(?:prohibit|apply|unless)\b/i.test(lead);
+}
+
+function covenantItemFamilies(body: string, inherited = false): Set<CovenantFamily> {
+  const out = new Set<CovenantFamily>();
   if (body.length > 60000) return out;
   // A negative stem governs the items that follow its colon until the next stem.
-  const stemRe = /\b(?:shall|will|may)\s+not\b[^.:]{0,300}?\b(?:any of the following|the following actions?)[^:]{0,80}:/gi;
-  const stems = [...body.matchAll(stemRe)].map((m) => m.index! + m[0].length);
-  const itemRe = /(?:^|\n)\s*\(((?:[ivxl]{1,6})|[a-z]{1,2})\)\s+([^\n]{10,600})/g;
+  // A negative stem ends in a colon introducing the list ("shall not ... take any of the following actions:", "will not,
+  // directly or indirectly:").
+  const stemRe = /\b(?:shall|will|may)\s+not\b[^.:]{0,300}?:/gi;
+  // Exception and condition stems ("will not prohibit any of the following:", "will not apply to:", "unless:", "restriction
+  // on the ability of ... to:") introduce permissions or conditions, not prohibited acts; they also end the prior stem.
+  const EXC = /\b(?:prohibit|apply|applies|restrict|limit|unless|ability|required|obligat\w*|be deemed|include)\b/i;
+  const stems = [...body.matchAll(stemRe)].map((m) => ({ at: m.index! + m[0].length, neg: !EXC.test(m[0]) }));
+  const itemRe = /(?:^|\n|;\s+|:\s+)\s*\(((?:[ivxl]{1,6})|[a-z]{1,2}|\d{1,2})\)\s+([^\n;]{10,600})/g;
   for (const m of body.matchAll(itemRe)) {
     const at = m.index!;
-    const underStem = stems.some((st) => st <= at && at - st < 6000);
+    const gov = stems.filter((st) => st.at <= at + 3).pop();
+    const underStem = (!!gov && gov.neg && at - gov.at < 4000) || (inherited && (!gov || gov.neg));
     for (const f of negatedItemFamilies(m[2]!, underStem)) out.add(f);
   }
   return out;
@@ -299,6 +328,7 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   if (family === "ASSET_SALES" && (/\baffiliate transactions?\b/i.test(sent) || /\b(?:transactions?|agreements?|arrangements?|contracts?)\b[^.;]{0,80}\bwith\b[^.;]{0,30}\baffiliates?\b/i.test(sent)) && !/\b(?:all or substantially all|asset sale|asset disposition)\b/i.test(sent)) return true;
   if (family === "INVESTMENTS" && (/\b(?:lenders?|banks?|issuing bank|swingline lender|agent)s?\b[^.;]{0,80}$/i.test(before) || /\b(?:not be obligated|obligated to)\b/i.test(sent) || /\badvances?\b/i.test(sent) && /\b(?:lenders?|borrowing)\b/i.test(sent))) return true;
   if (family === "FUNDAMENTAL_CHANGES" && !/\b(?:merge|consolidate|amalgamate)\b/i.test(sent) && /\b(?:dissol|liquidat|wind(?:ing)? up)\w*\b[^.]{0,200}\b(?:prior to|until|upon the (?:first )?(?:to )?occur|liquidation event|the act)\b/i.test(sent)) return true;
+  if (family === "DEBT" && /\b(?:liens?|mortgages?|security interests?)\s+(?:securing|to secure)\b[^.;]{0,60}\b(?:indebtedness|debt)\b/i.test(sent)) return true;
   if (family === "DEBT" && /\b(?:indebtedness|debt)\b[^.;]{0,80}\bsecured by\b[^.;]{0,80}\b(?:mortgage|lien|security interest|pledge)/i.test(sent)) return true;
   return false;
 }
@@ -323,6 +353,10 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
   // Clause-caption headings: "(d) Mergers and Consolidations; Disposition of Assets. The Borrower will not ...".
   if (!out.length) for (const m of text.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
     const title = m[1]!.trim();
+    // Only an operative caption: the text after it prohibits or commands ("Merge or consolidate ...", "The Borrower
+    // shall not ..."), not a representation ("Schedule 5.2(i) sets forth ...").
+    const after = text.slice(m.index! + m[0].length, m.index! + m[0].length + 300);
+    if (!(NEG_RE.test(after.split(/(?<=[.;])\s/)[0] ?? "") || /^(?:Merge|Consolidate|Create|Incur|Make|Declare|Sell|Enter|Permit|Pay|Prepay|Transfer|Dispose|Maintain)\b/.test(after))) continue;
     if (title.split(/\s+/).length > 10 || NOT_COVENANT_TITLE.test(title)) continue;
     if (title.split(/[;,]|\band\b/).some((part) => { const hm = ev.heading.exec(part.trim()); return !!hm && hm.index <= 25; })) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
   }
