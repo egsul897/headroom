@@ -271,7 +271,7 @@ function restrictsPayments(lead: string): boolean {
   if (/\b(?:Liquidator|record date|Preferred Return|Capital Accounts?)\b/.test(w.slice(0, 600))) return false;
   for (const m of w.matchAll(/\b(?:declare|pay|make|purchase|redeem)\b[^.;]{0,120}?\b(?:dividends?|distributions?|restricted (?:junior )?payments?|equity interests|capital stock)\b/gi)) {
     const before = w.slice(Math.max(0, m.index! - 220), m.index!);
-    if (/(?:shall|will|may)\s+not\b|\bno\s+[^.;]{1,140}?\b(?:shall|will|may)\b|\bnot\s+permit\b/i.test(before)) return true;
+    if (/(?:shall|will|may)\s+not\b|\b(?:no|neither)\s+[^.;]{1,140}?\b(?:shall|will|may)\b|\bnot\s+permit\b/i.test(before)) return true;
   }
   return false;
 }
