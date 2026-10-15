@@ -392,7 +392,8 @@ function captionedClauseFamilies(body: string): Set<string> {
 
 const IMPERATIVE_OPEN = /^\W*(?:\([a-z0-9]{1,4}\)\s*)?(?:except[^,]{0,200},\s*)?(?:not\s+)?(?:directly\s+or\s+indirectly,?\s*)?(?:incur|create|make|declare|sell|enter into|conduct|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make)\b/i;
 function inlineCovenantUnits(text: string, insideClassified: (i: number) => boolean, boundaries: number[] = []): { path: string; title: string; start: number; headingEnd: number; end: number; lead: string }[] {
-  const re = /(?:^|[.;:)”"]\s+|\s{2,})(?:\d{1,3}[ \t]+(?=(?:SECTION|Section)?[ \t]*\d{1,2}\.\d))?((?:SECTION\s+|Section\s+)?(\d{1,2}\.\d{1,2})|(?:SECTION|Section)\s+(?:\d{3,4}))\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,80}?)\s?\.\s+(?=[A-Z(“"])/g;
+  const re = /(?:^|[.;:)”"]\s+|\s{2,})(?:\d{1,3}[ \t]+(?=(?:SECTION|Section)?[ \t]*\d{1,2}\.\d))?((?:SECTION\s+|Section\s+)?(\d{1,2}\.\d{1,2})|(?:SECTION|Section)\s+(?:\d{3,4}))\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,80}?)\s?\.{1,2}\s+(?=(?:\d{1,3}\s+)?[A-Z(“"])/g;
+  // ("Sales of Assets, Etc.." double period; "Asset Sales.\n\n89 The Borrower" body after a page number.)
   const cands: { path: string; title: string; start: number; headingEnd: number }[] = [];
   for (const m of text.matchAll(re)) {
     const start = m.index! + (m[0].length - m[0].trimStart().length);

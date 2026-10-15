@@ -123,3 +123,10 @@ describe("combined RP / debt-payment headings", () => {
     }
   });
 });
+
+describe("flattened run-in captions", () => {
+  it("double-period captions and a page number before the body still open inline units", () => {
+    const doc = `CREDIT AGREEMENT ARTICLE 9 NEGATIVE COVENANTS 9.08 Change in Fiscal Year. The Obligors shall not change their fiscal year. 9.09 Sales of Assets, Etc.. The Obligors shall not, and shall not permit any of their Subsidiaries to sell, lease, transfer or otherwise dispose of any assets, except Permitted Dispositions. 9.10 Liens. The Obligors shall not create any Lien on any property. 9.11 Asset Sales.\n\n89 The Obligors will not sell any property except as permitted. 9.12 Fiscal Quarter. The Obligors shall not change their fiscal quarter.`;
+    expect(st(doc, "ASSET_SALES").sectionPaths).toContain("9.9");
+  });
+});
