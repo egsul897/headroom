@@ -161,6 +161,10 @@ export function canonicalFamily(f: string | null | undefined): string | null {
   if (/FINANCIAL|RATIO/.test(t)) return "FINANCIAL_COVENANTS";
   if (/FUNDAMENTAL|MERGER/.test(t)) return "FUNDAMENTAL_CHANGES";
   if (/AFFILIATE/.test(t)) return "AFFILIATES";
+  if (/EVENTS?_OF_DEFAULT/.test(t)) return "EVENTS_OF_DEFAULT";
+  if (/GENERAL_CONDITION/.test(t)) return "GENERAL_CONDITIONS";
+  if (/GUARANT/.test(t)) return "GUARANTEES";
+  if (/RESTRICTED_SUBSIDIAR|UNRESTRICTED_SUB|DESIGNATION/.test(t)) return "RESTRICTED_SUBSIDIARIES_AND_DESIGNATIONS";
   return null;
 }
 
