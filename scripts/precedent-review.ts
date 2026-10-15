@@ -91,7 +91,135 @@ async function main(): Promise<void> {
   }
   if (cols.length === 0) console.log("(no kf_* tables present)");
 
+  await runPhase2();
+
   console.log("\nReview recon complete. No bodies, excerpts, titles, or metadata were read.");
+}
+
+/**
+ * Phase 2 — deeper aggregates over the kf_precedent_* tables, from the
+ * column inventory phase 1 returned. Every query is aggregate-only
+ * (COUNT / GROUP BY / distribution buckets). Columns NEVER selected:
+ * excerpt, heading, term, rationale, rawReference, payloadJson,
+ * signalsJson, metadata — anything that could carry document text.
+ * Each query is fail-soft: a bad query reports its error, never kills
+ * the run.
+ */
+async function runPhase2(): Promise<void> {
+  printSection("Phase 2 — kf_precedent aggregates (counts / distributions only)");
+
+  await agg(
+    "covenant candidates by representationLevel",
+    `SELECT "representationLevel" AS key, COUNT(*) AS count FROM "kf_precedent_covenant_candidates" GROUP BY "representationLevel" ORDER BY COUNT(*) DESC`,
+  );
+  await agg(
+    "covenant candidates by authorityStatus",
+    `SELECT "authorityStatus" AS key, COUNT(*) AS count FROM "kf_precedent_covenant_candidates" GROUP BY "authorityStatus" ORDER BY COUNT(*) DESC`,
+  );
+  await agg(
+    "covenant candidates by discoveryScore bucket",
+    `SELECT CASE WHEN "discoveryScore" < 2 THEN '0-2' WHEN "discoveryScore" < 4 THEN '2-4' WHEN "discoveryScore" < 6 THEN '4-6' WHEN "discoveryScore" < 8 THEN '6-8' ELSE '8+' END AS key, COUNT(*) AS count FROM "kf_precedent_covenant_candidates" GROUP BY 1 ORDER BY 1`,
+  );
+  await agg(
+    "covenant candidates with no family (familiesJson null or [])",
+    `SELECT COUNT(*) AS count FROM "kf_precedent_covenant_candidates" WHERE "familiesJson" IS NULL OR "familiesJson" = '[]'::jsonb`,
+  );
+  await agg(
+    "covenant candidate family frequency (top 30)",
+    `SELECT jsonb_array_elements_text("familiesJson") AS key, COUNT(*) AS count FROM "kf_precedent_covenant_candidates" WHERE "familiesJson" IS NOT NULL GROUP BY 1 ORDER BY COUNT(*) DESC LIMIT 30`,
+  );
+
+  await agg(
+    "structural nodes by nodeType",
+    `SELECT "nodeType" AS key, COUNT(*) AS count FROM "kf_precedent_structural_nodes" GROUP BY "nodeType" ORDER BY COUNT(*) DESC`,
+  );
+  await agg(
+    "structural nodes ambiguous=true",
+    `SELECT COUNT(*) AS count FROM "kf_precedent_structural_nodes" WHERE "ambiguous" = true`,
+  );
+  await agg(
+    "duplicate (sourceId, sectionRef) groups — TOC/dedup signal",
+    `SELECT COUNT(*) AS count FROM (SELECT "sourceId", "sectionRef" FROM "kf_precedent_structural_nodes" GROUP BY "sourceId", "sectionRef" HAVING COUNT(*) > 1) d`,
+  );
+  await agg(
+    "extra rows from duplicate (sourceId, sectionRef) groups",
+    `SELECT COALESCE(SUM(cnt - 1), 0) AS count FROM (SELECT COUNT(*) AS cnt FROM "kf_precedent_structural_nodes" GROUP BY "sourceId", "sectionRef" HAVING COUNT(*) > 1) d`,
+  );
+
+  await agg(
+    "unresolved uncertainties by reviewerTask (top 20)",
+    `SELECT "reviewerTask" AS key, COUNT(*) AS count FROM "kf_precedent_unresolved_uncertainties" GROUP BY "reviewerTask" ORDER BY COUNT(*) DESC LIMIT 20`,
+  );
+  await agg(
+    "unresolved uncertainties with a suggested regression",
+    `SELECT COUNT(*) AS count FROM "kf_precedent_unresolved_uncertainties" WHERE "suggestedRegression" IS NOT NULL AND "suggestedRegression" <> ''`,
+  );
+
+  await agg(
+    "conditions/exceptions by kind",
+    `SELECT "kind" AS key, COUNT(*) AS count FROM "kf_precedent_conditions_exceptions" GROUP BY "kind" ORDER BY COUNT(*) DESC`,
+  );
+  await agg(
+    "conditions/exceptions by representationLevel",
+    `SELECT "representationLevel" AS key, COUNT(*) AS count FROM "kf_precedent_conditions_exceptions" GROUP BY "representationLevel" ORDER BY COUNT(*) DESC`,
+  );
+
+  await agg(
+    "dependency edges by kind",
+    `SELECT "kind" AS key, COUNT(*) AS count FROM "kf_precedent_dependency_edges" GROUP BY "kind" ORDER BY COUNT(*) DESC`,
+  );
+  await agg(
+    "dependency edges by resolution",
+    `SELECT "resolution" AS key, COUNT(*) AS count FROM "kf_precedent_dependency_edges" GROUP BY "resolution" ORDER BY COUNT(*) DESC`,
+  );
+  await agg(
+    "dependency edges by legalTruth",
+    `SELECT "legalTruth" AS key, COUNT(*) AS count FROM "kf_precedent_dependency_edges" GROUP BY "legalTruth" ORDER BY COUNT(*) DESC`,
+  );
+
+  await agg(
+    "corpus records by corpus",
+    `SELECT "corpus" AS key, COUNT(*) AS count FROM "kf_precedent_corpus_records" GROUP BY "corpus" ORDER BY COUNT(*) DESC`,
+  );
+  await agg(
+    "corpus records by kind",
+    `SELECT "kind" AS key, COUNT(*) AS count FROM "kf_precedent_corpus_records" GROUP BY "kind" ORDER BY COUNT(*) DESC`,
+  );
+  await agg(
+    "corpus records by authorityStatus",
+    `SELECT "authorityStatus" AS key, COUNT(*) AS count FROM "kf_precedent_corpus_records" GROUP BY "authorityStatus" ORDER BY COUNT(*) DESC`,
+  );
+
+  await agg(
+    "definitions total (count only, no terms listed)",
+    `SELECT COUNT(*) AS count FROM "kf_precedent_definitions"`,
+  );
+
+  await agg(
+    "scoreboard findings by class (top 20)",
+    `SELECT "class" AS key, COUNT(*) AS count FROM "kf_scoreboard_findings" GROUP BY "class" ORDER BY COUNT(*) DESC LIMIT 20`,
+  );
+  await agg(
+    "scoreboard findings by family (top 20)",
+    `SELECT "family" AS key, COUNT(*) AS count FROM "kf_scoreboard_findings" GROUP BY "family" ORDER BY COUNT(*) DESC LIMIT 20`,
+  );
+}
+
+async function agg(name: string, sql: string): Promise<void> {
+  console.log(`\n-- ${name} --`);
+  try {
+    const rows = await prisma.$queryRawUnsafe<Array<Record<string, unknown>>>(sql);
+    for (const row of rows) {
+      const printable: Record<string, string> = {};
+      for (const [k, v] of Object.entries(row)) {
+        printable[k] = v === null ? "(null)" : String(v);
+      }
+      console.log(JSON.stringify(printable));
+    }
+    if (rows.length === 0) console.log("(no rows)");
+  } catch (err) {
+    console.log(`(query failed: ${err instanceof Error ? err.message : String(err)})`);
+  }
 }
 
 main()
