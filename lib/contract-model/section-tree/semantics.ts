@@ -349,6 +349,14 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
     if (cands.length > 2000) break;
   }
   // A unit also ends at the next unit start the tree knows (its sections), so it never reads into a parsed section.
+  // Heading lines with no closing period ("6.12 Transactions with Affiliates\n\nDirectly or indirectly, enter into ...").
+  for (const m of text.matchAll(/(?:^|\n)[ \t]*((?:SECTION[ \t]+|Section[ \t]+)?(\d{1,2}\.\d{1,2}))\.?[ \t]+([A-Z][^\n.]{2,80}?)[ \t]*\n(?![ \t]*\d{1,3}[ \t]*\n)/g)) {
+    const start = m.index! + (m[0].length - m[0].trimStart().length);
+    if (insideClassified(start) || cands.some((c) => Math.abs(c.start - start) < 5)) continue;
+    cands.push({ path: normalizeSectionNumber(m[2]!), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
+    if (cands.length > 4000) break;
+  }
+  cands.sort((a, b) => a.start - b.start);
   const units = cands.map((c, i) => { const end = Math.min(cands[i + 1]?.start ?? text.length, c.headingEnd + 30000, ...boundaries.filter((b) => b > c.headingEnd)); return { ...c, end, lead: text.slice(c.headingEnd, Math.min(end, c.headingEnd + 2000)) }; });
   const prohib = units.map((u) => isObligorProhibitionLead(u.lead));
   return units.filter((u, i) => prohib[i] && (prohib[i - 1] || prohib[i + 1]));
