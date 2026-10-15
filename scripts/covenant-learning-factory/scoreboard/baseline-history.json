@@ -208,16 +208,16 @@
     },
     {
       "seq": 9,
-      "recordedAt": "2026-10-15T15:30:00Z",
+      "recordedAt": "2026-10-15T16:00:00Z",
       "file": "scripts/covenant-learning-factory/scoreboard/baselines/0009-identity-05b2234708d0-relabels.json",
-      "reportSha256": "30c67231dbea83093c00b8daed8998adcd63f9f8deb976025a093a91e71a46ff",
+      "reportSha256": "4c109b0b243c7fda1479a2d94a65cdf2d32a85b99087866852f6fb371de9184c",
       "prevEntrySha256": "69ddf0ea5c7ee9b0ae7f10716bfaa28a3635c45f8bb27100fb852d213c625f3b",
       "sourceCommit": "8ece66ee",
       "legacy": false,
       "identity": {
         "rulesetVersion": 2,
         "rulesetSha256": "6bc7b606993b1eec8b9ea136b07adb66777233de2e66a4292fa6e58d754620bf",
-        "snapshotSha256": "62384aeebb2f378b6d100af55abda2dd440ce931d45f5b1fd57e7956e1682610"
+        "snapshotSha256": "caca53023c4561b05498e88e6a53e485fa52387f8df38bfaf6828fe9d974d76e"
       },
       "heldout": {
         "sources": 137,
@@ -232,11 +232,11 @@
       },
       "relabels": {
         "logFile": "scripts/covenant-learning-factory/scoreboard/reference-relabels.json",
-        "entries": 371,
-        "logSha256": "10d154d8ea2835d764f04c2a67ce1dcb239a79685bebb8776786d28d79319ff4",
-        "scorerConfig": "tree=on;mode=agree;relabels=10d154d8ea2835d7"
+        "entries": 527,
+        "logSha256": "6272fcec9b7a817b196ce0583a3be7da21baff45871fb96d458b38072a81644e",
+        "scorerConfig": "tree=on;mode=agree;relabels=6272fcec9b7a817b"
       },
-      "reason": "Relabels track seq 9: seq 7 code (8ece66ee) + extended reference-relabel log (RL-0001..RL-0371 = 371 entries; 54 ambiguous left listed). Same raw snapshot (seq 7 identity 05b2234708d0) and pinned ruleset v2 6bc7b606. Identity snapshot hash is 62384aee... because per-source input hashes cover the relabeled candidates. Reproduced: HELDOUT 2595 / DEV 509, identical to seq 7 and seq 8 (the 371 relabeled candidates were not errors under seq 7 code). Seq 1-8 untouched; --relabels gates against this latest relabels entry via baseline-relabels.json.",
+      "reason": "Relabels track seq 9 (replaces the interim 371-entry seq 9 on the same PR): seq 7 code (8ece66ee) + extended reference-relabel log RL-0001..RL-0527 (527 entries; 68 ambiguous left listed). Same raw snapshot (seq 7 identity 05b2234708d0) and pinned ruleset v2 6bc7b606. Identity snapshot hash is caca5302... because per-source input hashes cover the relabeled candidates. Reproduced: HELDOUT 2595 / DEV 510 (DEV +1 COVERAGE_GAP vs seq 7's 509 under the extended overlay; HELDOUT identical). Seq 1-8 untouched; --relabels gates against this latest relabels entry via baseline-relabels.json.",
       "approver": "owner (approved in chat 2026-10-15: extend the relabel log and add seq 9, keep seq 7 and seq 8 unchanged)"
     }
   ]
