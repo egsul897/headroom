@@ -101,7 +101,7 @@ interface Heading {
   headingEnd: number;
 }
 
-const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)[^\S\n]+([IVXLC]+|\d{1,2})\b\.?[^\S\n]*(?:\n[^\S\n]*)?([A-Z][A-Z ,;'’&\-]{2,100})?/g;
+const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)(?:[^\S\n]+([IVXLC]+|\d{1,2})\b\.?|[^\S\n]*\n[^\S\n]*(\d{1,2})(?=[^\S\n]*\n))[^\S\n]*(?:\n[^\S\n]*){0,2}([A-Z][A-Z ,;'’&\-]{2,100})?/g;
 const SECTION_RE =
   /(^|\n|\s{2,}|\.\s+)[^\S\n]*(?:(?:SECTION|Sections?)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})(?:[^\S\n]*\.)?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z](?:[^.\n]|\n(?![^\S\n]*(?:\n|\(|\d))){1,160}?)[^\S\n]*[.:]/g;
 /** Amendment-style single-number sections: "SECTION 3. Conditions." (requires the word). */
@@ -173,8 +173,12 @@ function findHeadings(text: string): Heading[] {
   const out: Heading[] = [];
   for (const m of text.matchAll(ARTICLE_RE)) {
     const start = m.index! + m[1]!.length;
-    const title = m[4] ? m[4].trim() : null;
-    out.push({ kind: "ARTICLE", label: `ARTICLE ${m[3]}`, number: m[3]!, title, start, headingEnd: m.index! + m[0].length });
+    // The caption may sit behind a blank line ("ARTICLE 4\n\nCOVENANTS").
+    // Or the number alone on the next line ("Article\n5\n\nMERGERS"; Arabic only: a Roman "VII." there is
+    // ambiguous with table-of-contents rows).
+    const num = m[3] ?? m[4]!;
+    const title = m[5] ? m[5].trim() : null;
+    out.push({ kind: "ARTICLE", label: `ARTICLE ${num}`, number: num, title, start, headingEnd: m.index! + m[0].length });
   }
   for (const m of text.matchAll(SECTION_RE)) {
     const lead = m[1]!;
@@ -189,8 +193,16 @@ function findHeadings(text: string): Heading[] {
     if (/^(hereof|herein|of the|of this|above|below|and|or|to|shall|is|has)\b/i.test(title)) continue;
     // An empty heading ("Section 6.04 .") whose "title" is the next line's heading ("SECTION 5.").
     if (/^(?:section|article)\b/i.test(title) && /\d[^\S\n]*\.?[^\S\n]*\n/.test(m[0].slice(lead.length))) continue;
-    if (title.split(" ").length > 18) continue;
     const start = m.index! + lead.length;
+    // Run-in caption with no period ("Section 6.8 Indenture Restrictions Notwithstanding the provisions ..., the
+    // Borrower shall not ..."): the title ends where the operative sentence begins.
+    const cut = /^((?:[A-Z][\w\u2019'&-]*|of|and|or|on|to|the|in|for|with|by)(?:[,;]?\s+(?:[A-Z][\w\u2019'&-]*|of|and|or|on|to|the|in|for|with|by)){0,10}?)\s+(?=(?:The|Notwithstanding|Each|Neither|Except|Unless|So long as|Subject to|Without)\s)/.exec(title);
+    if (title.split(" ").length > 18) {
+      if (!cut || !/^(?:SECTION|Section)/.test(m[0].slice(lead.length).trimStart())) continue;
+      const bodyAt = m[0].indexOf(cut[1]!, lead.length) + cut[1]!.length;
+      out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title: cut[1]!, start, headingEnd: m.index! + bodyAt });
+      continue;
+    }
     out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
   }
   // Stacked headings: the number alone on its line and the title alone on the next ("8.01.\nLiens\n\nCreate, incur ..."),
@@ -202,6 +214,27 @@ function findHeadings(text: string): Heading[] {
     if (existing.some((h) => Math.abs(h.start - start) < 40)) continue;
     const title = m[3]!.replace(/\s+/g, " ").trim();
     if (title.split(" ").length > 14 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
+    out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
+  }
+  // Unpunctuated line headings with the word ("Section 4.3 Limitations in Incurrence of Indebtedness" alone on its line,
+  // a title that wraps after "and"/"of" may continue on one more line), followed by a blank line, a "(a)" clause or a
+  // capitalized sentence.
+  const known = out.filter((h) => h.kind === "SECTION");
+  for (const m of text.matchAll(/(^|\n)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2}\.\d{1,3})\.?[^\S\n]+([A-Z][^\n.]{1,100}?)[^\S\n]*(?:\n[^\S\n]*([A-Z][^\n.]{1,60}?)[^\S\n]*)?(?=\n[^\S\n]*(?:\n|\([a-z1-9]\)|[A-Z][a-z]+\s))/g)) {
+    if (m[4] && !/(?:\b(?:and|or|of|the|on|to|in|for|with)|,)$/.test(m[3]!)) continue;
+    const start = m.index! + m[1]!.length;
+    if (known.some((h) => Math.abs(h.start - start) < 40)) continue;
+    const title = [m[3], m[4]].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+    if (/\s\d{1,3}$/.test(title) || title.split(" ").length > 14 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
+    out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
+  }
+  // The same without the word ("5.2    Fundamental Changes\nThe Borrower will not ..."): stricter — a Title Case title
+  // with no trailing page number, and an operative next line ("(a) ..." or "The <Party> shall/will ...").
+  for (const m of text.matchAll(/(^|\n)[^\S\n]*(\d{1,2}\.\d{1,3})\.?[^\S\n]+([A-Z][A-Za-z\u2019'&-]*(?:,?[^\S\n]+(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|etc\.?|;)){0,10})[^\S\n]*(?=\n(?:[^\S\n]*\n)?[^\S\n]*(?:\(a\)|\(i\)|(?:The|Each|No|Neither)\s+[A-Z][\w\u2019'-]*(?:\s+[A-Z][\w\u2019'-]*)?\s+(?:shall|will|may|covenants|agrees)\b|(?:Create|Incur|Enter|Make|Permit|Declare|Merge|Sell|Directly)\b))/g)) {
+    const start = m.index! + m[1]!.length;
+    if (out.some((h) => h.kind === "SECTION" && Math.abs(h.start - start) < 40)) continue;
+    const title = m[3]!.replace(/\s+/g, " ").trim();
+    if (title.split(" ").length > 12 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
     out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
   }
   // Indenture "Section 501." numbering (article digit + two-digit section, the word required) when the document has
@@ -652,12 +685,65 @@ export function treeText(raw: string): { text: string; basis: TextBasis } {
  * line-anchored heading finder. When lines average > 1500 chars, break before "ARTICLE <n>" and "SECTION <n.n> Title"
  * that follow a sentence end, a closing quote/paren or a page number. Whitespace-only change.
  */
-export function relineFlattened(t: string): string {
-  const lines = t.split("\n").length;
-  if (t.length / lines < 1500) return t;
-  return t.replace(/([.;:)\u201d"]|\s\d{1,3})(\s{1,6})(?=(?:ARTICLE|Article)\s+(?:[IVXLC]+|\d{1,2})\b\.?\s+[A-Z“"]|(?:SECTION|Section)\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"](?![^.]{0,20}\bof\b(?:\s+the)?\s+(?:Agreement|Indenture)))/g, "$1\n")
+export function relineFlattened(raw: string): string {
+  let t = relineLong(unjamHeadings(raw));
+  // "ARTICLE V SUCCESSORS Section 5.1. Consolidation ..." on one line: the section heading starts its own line.
+  t = t.replace(/^(\s*(?:ARTICLE|Article)\s+(?:[IVXLC]+|\d{1,2})\.?\s+[A-Z][A-Z ,;&'\u2019-]{2,80}?)[ \t]+(?=(?:SECTION|Section)\s+(?:\d{1,2}\.\d{1,3}|\d{3,4})\.?\s+[A-Z\u201c"])/gm, "$1\n");
+  return t;
+}
+
+/**
+ * Two-column extractions interleave the margin number into the first body line: "Classification of Loans. For
+ * purposes of thisSECTION 1.02 Agreement, ..." (the number glued to a lowercase word). When a document does this
+ * repeatedly (>= 5 times), move "SECTION N.NN" to a new line in front of the caption sentence it belongs to.
+ */
+function unjamHeadings(t: string): string {
+  if ((t.match(/[a-z,;\u201d](?:SECTION|Section)[ \t]+\d{1,2}\.\d{1,3}/g) ?? []).length < 5) return t;
+  // In such a document the number also lands after a period or a mid-caption word ("Issuance of SECTION 6.01 Disqualified").
+  const JAM = /([a-z,;.\u201d])[ \t]?(SECTION|Section)[ \t]+(\d{1,2}\.\d{1,3})\.?[ \t]+(?![^\n]{0,40}\b(?:hereof|of (?:this|the) (?:Agreement|Indenture))\b)/g;
+  let out = "", last = 0;
+  for (const m of t.matchAll(JAM)) {
+    const at = m.index! + 1;
+    const win = t.slice(Math.max(last, at - 400), at);
+    // The caption: the last "Title Case words." that follows a sentence end inside the window.
+    const caps = [...win.matchAll(/(?:^|[.:;)\u201d][ \t]+|\n)((?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|etc)(?:[,;]?[ \t]+(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|etc\.?)){0,12}\.)(?:[ \t]+(?=[A-Z\u201c"(])|$)/g)];
+    const base = Math.max(last, at - 400);
+    // A caption the number split in two ("Limitation on ... Issuance of SECTION 6.01 Disqualified Stock."): the
+    // window ends inside Title Case words that follow the last sentence end.
+    const W = "(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by)";
+    const open = new RegExp(`(?:^|[.:;)\u201d][ \\t]+|\\n)(${W}(?:[,;]?[ \\t]+${W}){0,12})[ \\t]*$`).exec(win);
+    const c = caps[caps.length - 1];
+    if (!c && !open) continue;
+    const start = open && /^[ \t]?[A-Z]/.test(t.slice(m.index! + m[0].length)) && !/[.;:]$/.test(win.trimEnd()) ? base + open.index! + open[0].indexOf(open[1]!) : c ? base + c.index! + c[0].indexOf(c[1]!) : -1;
+    if (start < 0) continue;
+    out += t.slice(last, start) + `\n${m[2]} ${m[3]} ` + t.slice(start, at) + " ";
+    last = m.index! + m[0].length;
+  }
+  return out + t.slice(last);
+}
+
+function relineLong(t: string): string {
+  const lines = t.split("\n");
+  // Partially flattened extractions: most of the text sits in page-length lines even when short lines pull the
+  // average under the threshold. Re-line only the long lines.
+  const longChars = lines.reduce((n, l) => n + (l.length > 1500 ? l.length : 0), 0);
+  if (t.length / lines.length < 1500 && longChars < t.length * 0.5) return t;
+  if (t.length / lines.length >= 1500) return relineLine(t, true);
+  return lines.map((l) => (l.length > 1500 ? relineLine(l, false) : l)).join("\n");
+}
+
+function relineLine(t: string, bare: boolean): string {
+  const r = t.replace(/([.;:)\u201d"]|(?:^|\s)\d{1,3})(\s{1,6})(?=(?:ARTICLE|Article)\s+(?:[IVXLC]+|\d{1,2})\b\.?\s+[A-Z“"]|(?:SECTION|Section)\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"](?![^.]{0,20}\bof\b(?:\s+the)?\s+(?:Agreement|Indenture)))/gm, "$1\n")
     // An all-caps "SECTION 5.01 Title" right after an all-caps article caption ("ARTICLE 5 SUCCESSOR COMPANY SECTION 5.01").
+    // Blackline remnants "... Value. 7.02 7.03 Investments. Make ..." (old and new number side by side): the new
+    // number's heading starts its own line.
+    .replace(/([.;:)\u201d"]\s{1,6}\d{1,2}\.\d{2})(\s{1,6})(?=\d{1,2}\.\d{2}\.?\s+[A-Z][A-Za-z\u2019'-]+(?:,?\s+(?:[A-Z][A-Za-z\u2019'-]+|of|and|or|on|to|the|with|in|for)){0,8}(?:\s*\[Reserved\])?\.\s+[A-Z(])/g, "$1\n")
+    // ... or the stray old number right after the new heading ("...: 7.01 Liens. 07.02 Create ...").
+    .replace(/([.;:)\u201d"])(\s{1,6})(?=\d{1,2}\.\d{2}\.?\s+[A-Z][A-Za-z\u2019'-]+(?:,?\s+(?:[A-Z][A-Za-z\u2019'-]+|of|and|or|on|to|the|with|in|for)){0,8}\.\s+0\d\.\d{2}\s+[A-Z])/g, "$1\n")
     .replace(/(\b[A-Z]{3,})(\s{1,6})(?=SECTION\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"])/g, "$1\n");
+  // Bare "8.20 Post-Closing Covenants. The Borrower ..." headings (no SECTION keyword) after a sentence end, only in
+  // fully flattened text (in partly flattened amendments these are quoted restatements).
+  return bare ? r.replace(/([.;:)\u201d"])(\s{1,6})(?=\d{1,2}\.\d{1,3}\.?\s+[A-Z][A-Za-z\u2019'-]+(?:,?\s+(?:[A-Z][A-Za-z\u2019'-]+|of|and|or|on|to|the|with|in|for)){0,8}\.\s+[A-Z(])/g, "$1\n") : r;
 }
 
 // Page-number lines are NOT stripped from tree text: basket citations come from the compute path's text, and the
