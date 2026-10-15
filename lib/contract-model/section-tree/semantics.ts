@@ -146,9 +146,15 @@ export interface ChecklistItem {
   note: string;
   /** Source locators of the operative spans the numbers were read from (additive). */
   spans?: { path: string; start: number; end: number; resolved: boolean }[];
+  /** ABSENT_VERIFIED only: the absence is from this document; the family may sit in an incorporated/base instrument (additive). */
+  absentScope?: "DOCUMENT_ONLY_INCORPORATED_BY_REFERENCE";
 }
 
+/** Incorporation of another instrument's covenants by reference. */
+const INCORPORATED_BY_REFERENCE = /\b(?:covenants?|terms|provisions|agreements?|Articles?|Sections?)\b[^.]{0,240}?\b(?:are|is)\s+(?:hereby\s+)?incorporated\s+(?:herein\s+|into\s+this\s+\w+\s+)?by\s+reference\b|\bincorporate[sd]?\s+(?:herein\s+)?by\s+reference\b[^.]{0,200}?\b(?:covenants?|Articles?|Sections?)\b/i;
+
 /** One operative covenant span: a section body, or a restated covenant's quoted text (never document-wide ROOT text). */
+
 interface OperativeSpan { id: string; path: string; start: number; end: number; resolved: boolean; node: TreeNode | null }
 
 export function covenantChecklist(tree: SectionTree, text: string): ChecklistItem[] {
@@ -236,6 +242,9 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
   const opening = text.slice(0, 4000);
   const partialDocument = /\bFORM\s+8-K\b|\bCURRENT REPORT\b/i.test(opening) || /\b(?:AMENDMENT|WAIVER|JOINDER|SUPPLEMENTAL INDENTURE|INCREMENTAL)\b[^\n]{0,80}\b(?:TO|NO\.)\b/.test(opening);
+  // Covenants incorporated by reference from another instrument ("the covenants set forth in Article VI of the Credit
+  // Agreement are hereby incorporated herein by reference") live outside this document.
+  const incorporatesByReference = INCORPORATED_BY_REFERENCE.test(text);
   return CHECKLIST_FAMILIES.map((family) => {
     // Inline units only fill a family the tree found nowhere.
     const treeHits = units.filter((s) => famOf.get(s.id)?.includes(family));
@@ -245,10 +254,11 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
       const absent = ev.length === 0;
       return {
         family, status: absent ? ("ABSENT_VERIFIED" as const) : ("MISSING" as const), sectionPaths: [],
+        ...(absent && (partialDocument || incorporatesByReference) ? { absentScope: "DOCUMENT_ONLY_INCORPORATED_BY_REFERENCE" as const } : {}),
         parts: { fixedCap: false, grower: false, ratio: false, exceptions: 0, prohibition: false }, needsInputs: [],
         note: absent
-          ? partialDocument
-            ? "absent from this document (an amendment or 8-K, not the full agreement; the base agreement may contain it); not treated as unlimited"
+          ? partialDocument || incorporatesByReference
+            ? "absent from this document, incorporated by reference (an amendment, 8-K or incorporating instrument; the base agreement may contain it); not treated as unlimited"
             : "no operative lead-in or heading for this family anywhere in the document; not treated as unlimited"
           : `no operative section found, but the text has ${family} covenant evidence (${ev[0]!.kind}: "${ev[0]!.excerpt}"); not treated as unlimited`,
       };
