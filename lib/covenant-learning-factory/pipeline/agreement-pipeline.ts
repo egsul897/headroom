@@ -15,6 +15,8 @@ import {
   type ChecklistItem, type ClauseRole, type CrossRef,
 } from "../../contract-model/section-tree/semantics";
 import { runCovenantComputation } from "../../contract-model/covenant-computation";
+import { covenantRatioThresholds } from "../../contract-model/covenant-computation/ratio-terms";
+import { attachHeadroom } from "../../contract-model/covenant-computation/ratios";
 import type { ComputedBasket } from "../../contract-model/covenant-computation/types";
 import { buildComputationPackage } from "../sweep/build-package";
 import { emptyRuleSet } from "../learned-rules/types";
@@ -60,6 +62,8 @@ export interface AgreementPipelineResult {
   checklist: ChecklistItem[];
   computedBaskets: ComputedBasket[];
   computedRatios: ComputedRatio[];
+  /** Headroom (limit minus usage, or usage minus a minimum) for every computed or bounded result, with its label. */
+  headroom: HeadroomRow[];
   /** Present when filing financials were supplied: one decision per requested metric name. */
   xbrl?: {
     cik: string; decisions: BindDecision[]; before: { basketsComputed: string[]; ratiosComputed: string[] };
@@ -70,6 +74,13 @@ export interface AgreementPipelineResult {
   };
   families: FamilySummary[];
   stats: { nodes: number; sections: number; clauses: number; xrefs: number; xrefResolved: number; baskets: number };
+}
+
+export interface HeadroomRow {
+  stableKey: string; kind: "RATIO" | "BASKET"; name: string; sectionRef: string | null;
+  status: "COMPUTED" | "NEEDS_INPUT"; usage: string | null; usageBound: "EXACT" | "AT_LEAST" | "AT_MOST";
+  limit: string | null; direction: "MIN" | "MAX" | null; headroom: string | null; headroomBound: "EXACT" | "AT_LEAST" | "AT_MOST" | null;
+  citation: string | null; missing: string[];
 }
 
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
@@ -181,6 +192,28 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     xbrl = { cik: args.financials.cik, decisions, before, bounds, reverted };
   }
   const computed = result.baskets;
+  // Ratio thresholds stated in the operative covenant (not in a basket clause): taken only when exactly one exists.
+  for (const r of result.ratios) {
+    if (r.status !== "COMPUTED" || r.thresholds.length) continue;
+    const found = covenantRatioThresholds(tree.text, r.displayName, r.numerator.map((n) => n.metricName), r.denominator.map((n) => n.metricName));
+    if (found.length !== 1) continue;
+    const f = found[0]!;
+    const g = (a: bigint, b: bigint): bigint => (b === 0n ? a : g(b, a % b));
+    const [n, d] = [BigInt(Math.round(f.num * 1e6)), BigInt(Math.round(f.den * 1e6))];
+    const k = g(n, d);
+    const canonical = d / k === 1n ? `${n / k}` : `${n / k}/${d / k}`;
+    r.thresholds = [attachHeadroom({ sectionRef: "", sourceDocumentId: args.sourceId, citationExcerpt: f.sentence, raw: f.raw, canonical, direction: f.comparator === "AT_LEAST" ? "MIN" : "MAX", comparator: f.comparator, headroomStatus: "NEEDS_INPUT", headroomCanonical: null }, r.canonical)];
+  }
+  const boundOf = new Map((xbrl?.bounds ?? []).map((b) => [b.stableKey, b.kind]));
+  const headroom: HeadroomRow[] = [];
+  for (const r of result.ratios) {
+    if (r.status !== "COMPUTED") continue;
+    const ub = boundOf.get(r.stableKey);
+    if (!r.thresholds.length) headroom.push({ stableKey: r.stableKey, kind: "RATIO", name: r.displayName, sectionRef: null, status: "NEEDS_INPUT", usage: r.canonical, usageBound: ub ?? "EXACT", limit: null, direction: null, headroom: null, headroomBound: null, citation: null, missing: ["ratio threshold"] });
+    for (const t of r.thresholds) headroom.push({ stableKey: r.stableKey, kind: "RATIO", name: r.displayName, sectionRef: t.sectionRef || null, status: t.headroomStatus === "COMPUTED" ? "COMPUTED" : "NEEDS_INPUT", usage: r.canonical, usageBound: ub ?? "EXACT", limit: t.canonical, direction: t.direction, headroom: t.headroomCanonical, headroomBound: t.headroomStatus === "COMPUTED" ? headroomBound(ub, t.direction) : null, citation: t.citationExcerpt, missing: t.headroomStatus === "COMPUTED" ? [] : ["ratio value"] });
+  }
+  // A basket's headroom is its cap minus what is already used under it; usage is not in the agreement or in XBRL.
+  for (const b of computed) if (b.capStatus === "COMPUTED") headroom.push({ stableKey: b.stableKey, kind: "BASKET", name: b.category, sectionRef: b.sectionRef, status: "NEEDS_INPUT", usage: null, usageBound: "EXACT", limit: b.capCanonical, direction: "MAX", headroom: null, headroomBound: null, citation: b.citationExcerpt, missing: ["basket usage (amount already used under this basket)"] });
 
   const families: FamilySummary[] = [];
   const byFam = new Map<string, ComputedBasket[]>();
@@ -225,7 +258,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     textSha256: sha(raw),
     basis: tree.basis,
     textLength: raw.length,
-    tree, roles, crossRefs, checklist, computedBaskets: computed, computedRatios: result.ratios, xbrl, families,
+    tree, roles, crossRefs, checklist, computedBaskets: computed, computedRatios: result.ratios, headroom, xbrl, families,
     stats: {
       nodes: tree.nodes.length,
       sections: tree.nodes.filter((n) => n.kind === "SECTION").length,

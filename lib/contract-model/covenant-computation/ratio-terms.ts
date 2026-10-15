@@ -28,3 +28,38 @@ export function clauseRatioThreshold(text: string): { comparator: "AT_LEAST" | "
   return hits.length === 1 ? hits[0]! : null;
 }
 
+
+const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/**
+ * Maintenance-covenant thresholds for a ratio stated in the operative covenant text rather than in a basket:
+ * "will not permit [the] <Ratio> ... to exceed 3.50 to 1.00" or "will not permit <Numerator> ... to exceed 35% of
+ * <Denominator>" (and "maintain ... at least" forms). Only sentences that state an obligation ("will/shall not permit",
+ * "will/shall maintain") count, so a closing condition ("evidence ... demonstrating a ratio of no greater than 35%")
+ * does not. Returns every distinct threshold found; the caller uses it only when exactly one exists.
+ */
+export function covenantRatioThresholds(text: string, ratioName: string, numerator: readonly string[], denominator: readonly string[]): Array<{ comparator: "AT_LEAST" | "NO_GREATER_THAN"; num: number; den: number; raw: string; sentence: string }> {
+  const t = norm(text);
+  const out: Array<{ comparator: "AT_LEAST" | "NO_GREATER_THAN"; num: number; den: number; raw: string; sentence: string }> = [];
+  const MAX = String.raw`(?:to\s+(?:exceed|be\s+(?:greater|more)\s+than)|in\s+excess\s+of|(?:greater|more)\s+than)`;
+  const MIN = String.raw`(?:to\s+be\s+less\s+than|(?:of\s+)?(?:at\s+least|not\s+less\s+than|no\s+less\s+than))`;
+  const LIM = String.raw`(\d+(?:\.\d+)?)\s*(%|\s*(?:to|:)\s*(\d+(?:\.\d+)?))`;
+  const forms: Array<[string, "AT_LEAST" | "NO_GREATER_THAN"]> = [];
+  forms.push([String.raw`(?:the\s+)?${esc(ratioName)}\b[^.;]{0,120}?${MAX}\s+${LIM}`, "NO_GREATER_THAN"], [String.raw`(?:the\s+)?${esc(ratioName)}\b[^.;]{0,120}?${MIN}\s+${LIM}`, "AT_LEAST"]);
+  if (numerator.length === 1 && denominator.length === 1) {
+    forms.push([String.raw`${esc(numerator[0]!)}\b[^.;]{0,80}?${MAX}\s+(\d+(?:\.\d+)?)\s*(%)()\s+of\s+(?:the\s+)?${esc(denominator[0]!)}\b`, "NO_GREATER_THAN"]);
+    forms.push([String.raw`${esc(numerator[0]!)}\b[^.;]{0,80}?${MIN}\s+(\d+(?:\.\d+)?)\s*(%)()\s+of\s+(?:the\s+)?${esc(denominator[0]!)}\b`, "AT_LEAST"]);
+  }
+  for (const sentence of t.split(/(?<=[.;])\s+/)) {
+    if (!/\b(?:will|shall)\s+not\s+permit\b|\b(?:will|shall)\s+(?:at\s+all\s+times\s+)?maintain\b/i.test(sentence)) continue;
+    for (const [src, comparator] of forms) {
+      const m = new RegExp(src, "i").exec(sentence);
+      if (!m) continue;
+      const pct = m[2] === "%";
+      const num = Number(m[1]), den = pct ? 100 : Number(m[3]);
+      if (!Number.isFinite(num) || !Number.isFinite(den) || den === 0) continue;
+      if (!out.some((o) => o.num / o.den === num / den && o.comparator === comparator)) out.push({ comparator, num, den, raw: m[0], sentence });
+    }
+  }
+  return out;
+}
