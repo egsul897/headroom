@@ -88,14 +88,19 @@ const big = (n: number) => BigInt(Math.round(n));
 /** TTM ending exactly at `end` for one concept, or null (never approximated). */
 export function ttmAt(facts: XbrlFact[], end: string): { value: bigint; start: string; parts: XbrlFact[]; derivation: string; periodType: "FY" | "TTM" } | null {
   const durations = facts.filter((f) => f.start && f.end === end);
-  const fy = durations.find(isAnnual);
+  // Trailing four quarters only: a fiscal-year value from a 10-K, or 10-K FY + 10-Q YTD − prior-year matching YTD.
+  const k10 = (f: XbrlFact) => /^10-K/.test(f.form);
+  const fy = durations.find((f) => isAnnual(f) && k10(f));
   if (fy) return { value: big(fy.val), start: fy.start!, parts: [fy], derivation: `FY ${fy.start}..${fy.end}`, periodType: "FY" };
   const ytd = durations.filter((f) => days(f.start!, f.end) < 350 && days(f.start!, f.end) >= 80).sort((a, b) => days(b.start!, b.end) - days(a.start!, a.end))[0];
   if (!ytd) return null;
-  const annual = facts.find((f) => isAnnual(f) && near(f.end, new Date(Date.parse(ytd.start!) - DAY).toISOString().slice(0, 10), 7));
+  // The YTD must come from a 10-Q and start the day after the 10-K fiscal year ends.
+  if (!/^10-Q/.test(ytd.form)) return null;
+  const annual = facts.find((f) => isAnnual(f) && k10(f) && near(f.end, new Date(Date.parse(ytd.start!) - DAY).toISOString().slice(0, 10), 7));
   const len = days(ytd.start!, ytd.end);
   const prior = facts.find((f) => f.start && near(f.end, new Date(Date.parse(ytd.end) - 365 * DAY).toISOString().slice(0, 10), 7) && Math.abs(days(f.start, f.end) - len) <= 10);
-  if (!annual || !prior) return null;
+  // The prior-year YTD must be the same fiscal window one year earlier: it starts where that fiscal year starts.
+  if (!annual || !prior || !near(prior.start!, annual.start!, 3)) return null;
   const start = new Date(Date.parse(ytd.end) - 364 * DAY).toISOString().slice(0, 10);
   return {
     value: big(annual.val) + big(ytd.val) - big(prior.val), start, parts: [annual, ytd, prior], periodType: "TTM",
