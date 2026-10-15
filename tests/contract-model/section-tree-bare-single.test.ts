@@ -70,3 +70,11 @@ describe("term-sheet covenant rows", () => {
     expect(st(doc, "RESTRICTED_PAYMENTS").sectionPaths).toEqual(["Restrictive covenants"]);
   });
 });
+
+describe("false ASSET_SALES finds", () => {
+  it("a transfer of all or substantially all assets is not an asset-sale lead-in", async () => {
+    const { classifyCovenantFamily } = await import("@/lib/contract-model/section-tree/family-classifier");
+    const v = classifyCovenantFamily({ title: "Consolidation", parentTitle: null, covenantContext: true, leadIn: "The Company shall not effect any consolidation of the Company with or into, or a transfer of all or substantially all the assets of the Company to, another entity unless the successor assumes this Agreement." });
+    expect(v.families).not.toContain("ASSET_SALES");
+  });
+});

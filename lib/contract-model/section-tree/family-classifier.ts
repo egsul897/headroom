@@ -169,7 +169,8 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     const from = lead.slice(m?.index ?? 0);
     const sentence = from.slice(0, Math.min(450, (from.search(/\.\s/) + 1) || 450));
     if (IMPERATIVE.test(lead) || obligorBound(lead)) {
-      const hit = VERB_OBJECT.filter(([, re]) => re.test(sentence)).map(([f]) => f);
+      // A transfer of "all or substantially all" the assets is a fundamental change, not an asset-sale covenant.
+      const hit = VERB_OBJECT.filter(([f, re]) => { const x = re.exec(sentence); return !!x && !(f === "ASSET_SALES" && /\ball or substantially all\b/i.test(x[0])); }).map(([f]) => f);
       // "Lien securing Indebtedness" / "prepay Junior Indebtedness" name debt as the object's qualifier, not a debt covenant.
       // A titled section whose heading names no covenant family ("Use of Proceeds", "Post-Closing") needs more
       // than its lead-in: the lead-in object alone scores 2 there.
