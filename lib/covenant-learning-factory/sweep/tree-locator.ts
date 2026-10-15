@@ -76,7 +76,8 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
       ix = index(t, t.text);
       const byPath = new Map(t.nodes.map((n) => [n.path, n.sectionNumber]));
       covenantSecs = new Set();
-      for (const item of covenantChecklist(t, t.text)) for (const p of item.sectionPaths) {
+      const checklist = covenantChecklist(t, t.text);
+      for (const item of checklist) for (const p of item.sectionPaths) {
         const n = byPath.get(p) ?? null;
         if (n) covenantSecs.add(n);
       }
@@ -97,6 +98,14 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
       const amendTarget = (n: SectionTree["nodes"][number]) => /\bSection\s+(\d{1,2})\.\d{1,3}\b[^.]{0,200}\b(?:is|are|shall be)\s+(?:and is\s+)?(?:hereby\s+)?amended\b/i.exec(`${n.title ?? ""}${/\d$/.test(n.title ?? "") ? "." : " "}${t.text.slice(n.headingEnd, Math.min(n.end, n.headingEnd + 600)).trimStart()}`)?.[1] ?? null;
       const covArticles = new Set(t.nodes.filter((n) => n.kind === "SECTION" && n.sectionNumber && covenantSecs!.has(n.sectionNumber)).map(amendTarget).filter(Boolean));
       for (const n of t.nodes) if (n.kind === "SECTION" && n.sectionNumber && !covenantSecs.has(n.sectionNumber) && covArticles.has(amendTarget(n))) covenantSecs.add(n.sectionNumber);
+      // Definitions / accounting-terms / interpretation sections state no covenant, whatever terms or cross-references
+      // a covenant shares with them (a covenant found by the checklist itself is kept).
+      const found = new Set<string>();
+      for (const item of checklist) if (item.status !== "MISSING" && item.status !== "ABSENT_VERIFIED") for (const p of item.sectionPaths) { const n = byPath.get(p); if (n) found.add(n); }
+      for (const n of t.nodes) if (n.kind === "SECTION" && n.sectionNumber && !found.has(n.sectionNumber) && isDefinitionalSection(t, n)) covenantSecs.delete(n.sectionNumber);
+      // A document that is not a debt instrument (by-laws, equity plans, charters: no covenant family found, and no
+      // lender / borrower / indenture / event-of-default vocabulary anywhere) has no covenant sections.
+      if (found.size === 0 && !checklist.some((item) => item.status === "MISSING") && !DEBT_INSTRUMENT.test(t.text)) covenantSecs.clear();
     } catch {
       ix = null;
       covenantSecs = null;
@@ -150,6 +159,13 @@ export const NO_PARTY_ANYWHERE = /(?:^|[.;:]\s+|\)\s*)no\s+[A-Z][^.;]{0,140}?\b(
 export const NO_PARTY_SHALL = /^\s*(?:\([a-z0-9]+\)\s*)?no\s+[^.;]{1,140}?\b(?:shall|will)\b/i;
 
 /** Covenant evidence beyond the family classifier: lead-in obligation/prohibition, or a covenant/default title on the section or an ancestor. */
+const DEBT_INSTRUMENT = /\b(?:Lenders?|Borrowers?|Indenture|Trustee|Noteholders?|Holders of (?:the )?Notes|Events? of Default|Indebtedness|Loan Documents?|Credit Agreement|Note Purchase|Administrative Agent|Collateral Agent)\b/;
+const DEFINITIONAL_TITLE = /^\s*(?:certain\s+)?(?:defined\s+terms|definitions?(?:\s+and\s+(?:rules\s+of\s+)?(?:interpretation|construction))?|accounting\s+terms(?:\s+and\s+determinations)?|(?:other\s+)?(?:interpretive|interpretation|construction)(?:\s+provisions)?|rules\s+of\s+(?:interpretation|construction)|terms\s+generally|classification\s+of\s+loans|rounding|times\s+of\s+day|currency\s+equivalents)\b/i;
+/** A definitions / accounting-terms / interpretation section (by its own title). */
+export function isDefinitionalSection(tree: SectionTree, n: SectionTree["nodes"][number]): boolean {
+  return Boolean(n.title && DEFINITIONAL_TITLE.test(n.title));
+}
+
 export function sectionLooksCovenant(tree: SectionTree, text: string, n: SectionTree["nodes"][number]): boolean {
   const lead = text.slice(n.headingEnd, Math.min(n.end, n.headingEnd + 700));
   if (isObligorProhibitionLead(lead) || isProhibitive(lead) || NO_PARTY_SHALL.test(lead) || AFFIRMATIVE_LEAD.test(lead)) return true;
