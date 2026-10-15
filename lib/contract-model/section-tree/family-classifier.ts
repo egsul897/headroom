@@ -140,7 +140,7 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   if (sub) args = { ...args, leadIn: args.leadIn.slice(sub[0].length), title: [args.title, sub[1]].filter(Boolean).join("; ") || null };
   // A definition ("“Consolidated Leverage Ratio” means ...", e.g. a definitions-only amendment's restated term) states
   // no covenant.
-  if (/^\s*(?:\([a-z0-9]{1,4}\)\s*)?[“"][^”"]{2,80}[”"]\s*(?:\([^)]{0,60}\)\s*)?(?:means|shall mean|has the meaning)/i.test(args.leadIn)) return { family: null, score: 0, families: [], evidence: [] };
+  if (/^\s*(?:\([a-z0-9]{1,4}\)\s*)?[“"][^”"]{2,80}[”"]\s*(?:\([^)]{0,60}\)\s*)?(?:means|shall mean|has the meaning)/i.test(args.leadIn) || /^\s*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+)?(?:definitions?\s+of|following\s+(?:new\s+)?definitions?)\b/i.test(args.leadIn)) return { family: null, score: 0, families: [], evidence: [] };
   const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "");
   const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
