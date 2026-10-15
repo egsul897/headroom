@@ -198,6 +198,9 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
       units.push({ id, path: `${root.path || "ROOT"}@${q.start}-${q.end}`, start: q.start, end: q.end, resolved: q.resolved, node: null });
     }
   }
+  // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
+  const opening = text.slice(0, 4000);
+  const partialDocument = /\bFORM\s+8-K\b|\bCURRENT REPORT\b/i.test(opening) || /\b(?:AMENDMENT|WAIVER|JOINDER|SUPPLEMENTAL INDENTURE|INCREMENTAL)\b[^\n]{0,80}\b(?:TO|NO\.)\b/.test(opening);
   return CHECKLIST_FAMILIES.map((family) => {
     const hits = units.filter((s) => famOf.get(s.id)?.includes(family));
     if (hits.length === 0) {
@@ -207,7 +210,9 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
         family, status: absent ? ("ABSENT_VERIFIED" as const) : ("MISSING" as const), sectionPaths: [],
         parts: { fixedCap: false, grower: false, ratio: false, exceptions: 0, prohibition: false }, needsInputs: [],
         note: absent
-          ? "no operative lead-in or heading for this family anywhere in the document; not treated as unlimited"
+          ? partialDocument
+            ? "absent from this document (an amendment or 8-K, not the full agreement; the base agreement may contain it); not treated as unlimited"
+            : "no operative lead-in or heading for this family anywhere in the document; not treated as unlimited"
           : `no operative section found, but the text has ${family} covenant evidence (${ev[0]!.kind}: "${ev[0]!.excerpt}"); not treated as unlimited`,
       };
     }
@@ -349,6 +354,23 @@ const NEG_RE = new RegExp(NEG, "i");
 const NOT_COVENANT_TITLE = /definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
 
 /**
+ * Lead-in text that names a family's verb/object but is not that covenant: affiliate-transaction text for asset sales,
+ * lender funding mechanics for investments, payment waterfalls, LLC dissolution timing, secured-debt (liens) clauses
+ * for debt.
+ */
+function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): boolean {
+  if (/\b(?:shall|will|may)\s+be\s+applied\b[^.]{0,200}\b(?:first|second)\b|\bpriority of payments\b|\bwaterfall\b|\bfirst,\s+to\b[^.]{0,200}\bsecond,\s+to\b/i.test(sent)) return true;
+  const before = sent.slice(Math.max(0, at - 160), at);
+  // Affiliate-transaction text ("any transaction ... with any Affiliate", "Affiliate Transaction"), not every sentence
+  // that mentions an Affiliate: a disposition covenant with an affiliate carve-out stays asset-sales evidence.
+  if (family === "ASSET_SALES" && (/\baffiliate transactions?\b/i.test(sent) || /\b(?:transactions?|agreements?|arrangements?|contracts?)\b[^.;]{0,80}\bwith\b[^.;]{0,30}\baffiliates?\b/i.test(sent)) && !/\b(?:all or substantially all|asset sale|asset disposition)\b/i.test(sent)) return true;
+  if (family === "INVESTMENTS" && (/\b(?:lenders?|banks?|issuing bank|swingline lender|agent)s?\b[^.;]{0,80}$/i.test(before) || /\b(?:not be obligated|obligated to)\b/i.test(sent) || /\badvances?\b/i.test(sent) && /\b(?:lenders?|borrowing)\b/i.test(sent))) return true;
+  if (family === "FUNDAMENTAL_CHANGES" && !/\b(?:merge|consolidate|amalgamate)\b/i.test(sent) && /\b(?:dissol|liquidat|wind(?:ing)? up)\w*\b[^.]{0,200}\b(?:prior to|until|upon the (?:first )?(?:to )?occur|liquidation event|the act)\b/i.test(sent)) return true;
+  if (family === "DEBT" && /\b(?:indebtedness|debt)\b[^.;]{0,80}\bsecured by\b[^.;]{0,80}\b(?:mortgage|lien|security interest|pledge)/i.test(sent)) return true;
+  return false;
+}
+
+/**
  * Evidence that a covenant family exists in the document: a heading line naming it ("6.01 Liens") or an
  * operative lead-in (a negated obligation within the same sentence for negative covenants; a maintain/permit
  * test for financial ratios). Empty array ⇒ the family is verifiably absent. Deterministic, no per-issuer logic.
@@ -365,6 +387,12 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     // word inside an unrelated heading ("Evidence of Debt", "Trustee as Holder of Senior Indebtedness").
     if (hm && hm.index <= 25 && !NOT_COVENANT_TITLE.test(title)) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
   }
+  // Clause-caption headings: "(d) Mergers and Consolidations; Disposition of Assets. The Borrower will not ...".
+  if (!out.length) for (const m of text.matchAll(/(?:^|\n)\s*\([a-z]{1,2}\)\s+([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
+    const title = m[1]!.trim();
+    if (title.split(/\s+/).length > 10 || NOT_COVENANT_TITLE.test(title)) continue;
+    if (title.split(/[;,]|\band\b/).some((part) => { const hm = ev.heading.exec(part.trim()); return !!hm && hm.index <= 25; })) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
+  }
   // Operative lead-ins: a sentence with the family's operative verb/object, negated (or a ratio test).
   outer: for (const para of text.split(/\n\s*\n|\n(?=\s*(?:\(?[a-z0-9]{1,4}[.)]|section\s+\d|\d{1,2}\.\d)\s)/i)) {
   // A paragraph that is a definition ("\"Guarantee Obligation\" means ... (ii) to advance or supply funds ... to
@@ -375,6 +403,9 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     const lm = ev.lead.exec(sent);
     if (!lm) continue;
     if (isDefinition) continue outer;
+    const imperative = false;
+    if (spuriousEvidence(family, sent, lm.index)) continue;
+    if (imperative) { out.push({ kind: "LEAD_IN", excerpt: sent.trim().slice(0, 100) }); break outer; }
     if (family === "FINANCIAL_RATIOS") {
       // A ratio test is an obligation: a modal or undertaking must govern the test verb. A narrative summary
       // ("The Credit Agreement contains certain covenants, a financial covenant ... requiring ... to maintain")
