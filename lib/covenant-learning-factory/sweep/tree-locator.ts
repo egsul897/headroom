@@ -43,33 +43,13 @@ export const AMBIGUOUS = "?AMBIGUOUS";
 
 const key = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
 
-function inToc(ix: Indexed, at: number): boolean {
-  const pos = ix.map[at] ?? -1;
-  return ix.tree.furniture.some((f) => f.kind === "TOC" && pos >= f.start && pos < f.end);
-}
-
-/** Occurrences of k in the document body (table-of-contents copies are not locations). */
-function bodyHits(ix: Indexed, k: string, limit = 3): number[] {
-  const hits: number[] = [];
-  for (let at = ix.norm.indexOf(k); at >= 0 && hits.length < limit; at = ix.norm.indexOf(k, at + 1)) if (!inToc(ix, at)) hits.push(at);
-  return hits;
-}
-
 function sectionAt(ix: Indexed, needle: string): string | null {
-  const full = key(needle);
-  let k = full.slice(0, 60);
+  const k = key(needle).slice(0, 60);
   if (k.length < 24) return null;
-  let hits = bodyHits(ix, k);
-  // Same 60-char prefix in two places (a heading repeated, a shared lead-in): the longer text may still be unique.
-  if (hits.length > 1 && full.length > 60) {
-    k = full.slice(0, 240);
-    const longer = bodyHits(ix, k);
-    if (longer.length >= 1) hits = longer;
-  }
-  if (hits.length === 0) return null;
-  // ambiguous location (same text in two body places) → fail closed
-  if (hits.length > 1) return AMBIGUOUS;
-  const at = hits[0]!;
+  const at = ix.norm.indexOf(k);
+  if (at < 0) return null;
+  // ambiguous location (same text in two places) → fail closed
+  if (ix.norm.indexOf(k, at + 1) >= 0) return AMBIGUOUS;
   const start = ix.map[at]!;
   const end = ix.map[Math.min(ix.map.length - 1, at + k.length - 1)]! + 1;
   const node = deepestContaining(ix.tree, start, end);
