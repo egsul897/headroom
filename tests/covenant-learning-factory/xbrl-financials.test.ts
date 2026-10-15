@@ -102,14 +102,16 @@ EVENTS OF DEFAULT
 
 Section 7.01 Events of Default. If the Borrower shall fail to pay any principal when due.
 `;
-  it("greater-of total-assets grower: NEEDS_INPUT without filings, COMPUTED from XBRL with them", () => {
+  it("greater-of total-assets grower: at least the fixed limb without filings, COMPUTED exactly from XBRL with them", () => {
     const without = runAgreementPipeline({ sourceId: "t", text: doc });
     const g0 = without.computedBaskets.find((b) => b.category === "GROWER_GREATER_OF");
-    expect(g0?.capStatus).toBe("NEEDS_INPUT");
+    // Without the metric the cap is only known to be at least $50M (the fixed limb).
+    expect(g0).toMatchObject({ capStatus: "COMPUTED", capCanonical: "50000000", capBound: "AT_LEAST" });
     const withFin = runAgreementPipeline({ sourceId: "t", text: doc, financials: extractFinancials(FACTS, "0000000001") });
     const g1 = withFin.computedBaskets.find((b) => b.category === "GROWER_GREATER_OF");
     expect(g1?.capStatus).toBe("COMPUTED");
     expect(Number(g1?.capCanonical)).toBe(100_000_000); // max($50M, 5% × $2.0B)
+    expect(g1?.capBound).toBeUndefined();
     expect(withFin.xbrl?.decisions.find((d) => d.metricName === "Consolidated Total Assets")?.status).toBe("BOUND");
   });
 });

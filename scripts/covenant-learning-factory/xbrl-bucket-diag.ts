@@ -66,7 +66,7 @@ function basketBucket(b: { category: string; capStatus: string; note: string; mi
 
 const usageB: Record<string, number> = {}; const usageOut: unknown[] = [];
 async function main() {
-  const tally = { headroom: {} as Record<string, number>, docs: 0, baskets: { COMPUTED: 0, AT_LEAST: 0, NEEDS_INPUT: 0 } as Record<string, number>, ratios: { COMPUTED: 0, AT_LEAST: 0, AT_MOST: 0, NEEDS_INPUT: 0 } as Record<string, number> };
+  const tally = { headroom: {} as Record<string, number>, docs: 0, baskets: { COMPUTED: 0, AT_LEAST: 0, AT_MOST: 0, NEEDS_INPUT: 0 } as Record<string, number>, ratios: { COMPUTED: 0, AT_LEAST: 0, AT_MOST: 0, NEEDS_INPUT: 0 } as Record<string, number> };
   const buckets: Record<string, number> = {}, rbuckets: Record<string, number> = {};
   const samples: Record<string, string[]> = {};
   const computed: unknown[] = [];
@@ -82,7 +82,7 @@ async function main() {
     const bound = new Map((r.xbrl?.bounds ?? []).map((x) => [x.stableKey, x.kind]));
     const why = (name: string) => { const dec = r.xbrl?.decisions.find((x) => x.metricName === name); return !fin ? "no XBRL financials" : !dec ? `not a filing family: ${name.slice(0, 40)}` : dec.reason.replace(/:.*/, "").slice(0, 60); };
     for (const b of r.computedBaskets) {
-      if (b.capStatus === "COMPUTED") { const k = bound.get(b.stableKey) ?? "COMPUTED"; tally.baskets[k]!++; if (b.category !== "FIXED_DOLLAR") computed.push({ doc: d.id, set: d.set, key: b.stableKey, cat: b.category, cap: b.capCanonical, cur: b.capCurrency, bound: k, excerpt: b.citationExcerpt.slice(0, 300) }); continue; }
+      if (b.capStatus === "COMPUTED") { const k = b.capBound ?? bound.get(b.stableKey) ?? "COMPUTED"; tally.baskets[k]!++; if (b.category !== "FIXED_DOLLAR") computed.push({ doc: d.id, set: d.set, key: b.stableKey, cat: b.category, cap: b.capCanonical, cur: b.capCurrency, bound: k, missing: b.missingInputs, excerpt: b.citationExcerpt.slice(0, 300) }); continue; }
       tally.baskets.NEEDS_INPUT!++;
       const k = basketBucket(b, why);
       buckets[k] = (buckets[k] ?? 0) + 1;

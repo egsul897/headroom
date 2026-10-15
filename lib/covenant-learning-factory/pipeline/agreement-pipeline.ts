@@ -82,6 +82,8 @@ export interface HeadroomRow {
   status: "COMPUTED" | "NEEDS_INPUT"; usage: string | null; usageBound: "EXACT" | "AT_LEAST" | "AT_MOST";
   limit: string | null; direction: "MIN" | "MAX" | null; headroom: string | null; headroomBound: "EXACT" | "AT_LEAST" | "AT_MOST" | null;
   citation: string | null; missing: string[];
+  /** For a basket: whether the cap itself is exact or only a bound. */
+  limitBound?: "EXACT" | "AT_LEAST" | "AT_MOST";
   /** Filing locator for a basket usage figure. */
   usageSource?: string;
 }
@@ -162,7 +164,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     const uses = (s: string, m: string) => new RegExp(`\\b${m.replace(/\s+/g, "\\s+")}\\b`, "i").test(s);
     if (lb.length) {
       for (const b of result.baskets) {
-        if (b.capStatus !== "COMPUTED") continue;
+        if (b.capStatus !== "COMPUTED" || b.capBound) continue; // already a bound from the fixed limbs alone
         const d = lb.find((x) => uses(b.citationExcerpt, x.metricName));
         if (!d) continue;
         if (["GROWER_GREATER_OF", "PCT_OF_METRIC", "BUILDER_AVAILABLE_AMOUNT"].includes(b.category)) bounds.push({ stableKey: b.stableKey, kind: "AT_LEAST", metric: d.metricName, missing: d.evaluation?.missing ?? [] });
@@ -219,7 +221,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
   // Usage is read only for debt and lien baskets that name one facility matching exactly one filing debt-axis member.
   for (const b of computed) {
     if (b.capStatus !== "COMPUTED") continue;
-    const row: HeadroomRow = { stableKey: b.stableKey, kind: "BASKET", name: b.category, sectionRef: b.sectionRef, status: "NEEDS_INPUT", usage: null, usageBound: "EXACT", limit: b.capCanonical, direction: "MAX", headroom: null, headroomBound: null, citation: b.citationExcerpt, missing: ["basket usage (amount already used under this basket)"] };
+    const row: HeadroomRow = { stableKey: b.stableKey, kind: "BASKET", name: b.category, sectionRef: b.sectionRef, status: "NEEDS_INPUT", usage: null, usageBound: "EXACT", limit: b.capCanonical, limitBound: b.capBound ?? boundOf.get(b.stableKey) ?? "EXACT", direction: "MAX", headroom: null, headroomBound: null, citation: b.citationExcerpt, missing: ["basket usage (amount already used under this basket)"] };
     const debtLike = /DEBT|LIEN/i.test(b.covenantFamily);
     const u = args.facilityFacts && debtLike ? basketUsage(b.citationExcerpt, args.facilityFacts, tree.text) : null;
     if (u && u.status === "NEEDS_INPUT") row.missing = [`basket usage: ${u.reason}`];
@@ -230,7 +232,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
       const capScaled = BigInt(ci! + cf);
       const h = capScaled - u.usage * scale;
       const hs = cf.length ? `${h < 0n ? "-" : ""}${(h < 0n ? -h : h) / scale}.${((h < 0n ? -h : h) % scale).toString().padStart(cf.length, "0")}` : h.toString();
-      Object.assign(row, { status: "COMPUTED", usage: u.usage.toString(), usageBound: "EXACT", headroom: hs, headroomBound: capBound === "AT_LEAST" ? "AT_LEAST" : "EXACT", missing: [], usageSource: `${u.facility} → ${u.fact.concept} [${u.fact.member}] ${u.fact.instant} accn ${u.fact.accession}` });
+      Object.assign(row, { status: "COMPUTED", usage: u.usage.toString(), usageBound: "EXACT", headroom: hs, headroomBound: (b.capBound ?? capBound) === "AT_LEAST" ? "AT_LEAST" : (b.capBound ?? capBound) === "AT_MOST" ? "AT_MOST" : "EXACT", missing: [], usageSource: `${u.facility} → ${u.fact.concept} [${u.fact.member}] ${u.fact.instant} accn ${u.fact.accession}` });
     }
     headroom.push(row);
   }

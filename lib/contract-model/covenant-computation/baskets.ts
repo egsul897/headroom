@@ -29,6 +29,7 @@ import { dollarAmountIsMillions, dollarToken, millionsToUsd, norm } from "./text
 const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKind> = {
   FIXED_DOLLAR: "FIXED_DOLLAR_CEILING",
   GROWER_GREATER_OF: "GREATER_OF_FIXED_OR_PCT_METRIC",
+  LESSER_OF: "OTHER_SOURCE_STATED",
   PCT_OF_METRIC: "PCT_OF_METRIC_ONLY",
   RATIO_BASED: "RATIO_INCURRENCE_ROOM",
   BUILDER_AVAILABLE_AMOUNT: "BUILDER_SUM_COMPONENTS",
@@ -79,6 +80,8 @@ export function evaluateBasket(
       ? evalFixed(pkg, clause, metrics)
       : category === "GROWER_GREATER_OF"
         ? evalGrower(pkg, clause, metrics)
+      : category === "LESSER_OF"
+        ? evalLesser(clause)
         : category === "PCT_OF_METRIC"
           ? evalPercentOfMetric(pkg, clause, metrics)
           : category === "RATIO_BASED"
@@ -148,7 +151,10 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   ) {
     return "BUILDER_AVAILABLE_AMOUNT";
   }
+  // Both extremes in one clause (nested max/min): neither bound direction holds without reading the nesting.
+  if (/\bgreater\s+of\b/i.test(text) && /\blesser\s+of\b/i.test(text)) return "UNKNOWN";
   if (/\bgreater\s+of\b/i.test(text)) return "GROWER_GREATER_OF";
+  if (/\blesser\s+of\b/i.test(text) && /\$\s*[\d,]+/.test(text)) return "LESSER_OF";
   const ratio = classifyRatioIncurrencePermission(text);
   if (ratio.class !== "NOT_RATIO_INCURRENCE") return "RATIO_BASED";
   if (isMaintenanceLimit(text)) return "MAINTENANCE_LIMIT";
@@ -280,6 +286,8 @@ function evalFixed(
   };
 }
 
+type BasketPartial = ReturnType<typeof capShell> & { note: string; remainingStatus?: ComputedBasket["remainingStatus"]; capBound?: ComputedBasket["capBound"] };
+
 function evalGrower(
   pkg: ComputationPackage,
   clause: BasketClause,
@@ -298,14 +306,14 @@ function evalGrower(
     if (g) ({ fixedToken, percent, metricName } = g);
   }
   if (!fixedToken || percent == null || !metricName) {
-    return {
+    return fixedLimbBound(clause.operativeText, "greater", greaterOfMissingInputs(clause.operativeText)) ?? {
       ...capShell("NEEDS_INPUT", "NONE", null, null, greaterOfMissingInputs(clause.operativeText), null),
       note: "Greater-of language is present. A limb could not be read from the text, so neither limb is used alone.",
     };
   }
   const found = metrics.find((m) => m.metricKey.toLowerCase() === metricName.toLowerCase());
   if (!found || found.value.type !== "MONEY") {
-    return {
+    return fixedLimbBound(clause.operativeText, "greater", [metricName]) ?? {
       ...capShell("NEEDS_INPUT", "NONE", null, null, [metricName], null),
       note: "Greater-of metric is not bound. The fixed limb is not reported as the cap.",
     };
@@ -371,6 +379,59 @@ function evalGrower(
       ? "Greater-of cap from evaluateExpression. The fixed limb is written in millions, the same unit as the bound metric. Remaining usage is not bound."
       : "Greater-of cap from evaluateExpression. Remaining usage is not bound.",
   };
+}
+
+/**
+ * The limbs of "the greater of …" / "the lesser of …": the text after the phrase up to the end of the clause,
+ * split at "(x)"-style enumerators (else at "and"/"or"). A limb is fixed when it is only a dollar amount.
+ * Null unless at least two limbs are read.
+ */
+export function extremumLimbs(text: string, which: "greater" | "lesser"): Array<{ raw: string; usd: string | null }> | null {
+  const t = norm(text);
+  const at = t.search(new RegExp(`\\b${which}\\s+of\\b`, "i"));
+  if (at < 0) return null;
+  let body = t.slice(at).replace(new RegExp(`^${which}\\s+of\\s*:?\\s*`, "i"), "");
+  body = body.split(/;|\.(?:\s|$)|\bprovided\b|\bin\s+each\s+case\b/i)[0]!;
+  const enumerated = /^\(\s*[a-z0-9]{1,4}\s*\)/i.test(body);
+  const parts = enumerated
+    ? body.split(/\(\s*(?:[a-z]{1,4}|\d{1,2})\s*\)/i).map((x) => x.trim()).filter((x) => x.length)
+    : body.split(/\s*,?\s+(?:and|or)\s+/i).slice(0, 2);
+  const limbs = parts.map((raw) => raw.replace(/\s*,?\s*(?:and|or)?\s*$/i, "").replace(/^(?:an\s+amount\s+equal\s+to\s+)?/i, "").trim());
+  if (limbs.length < 2 || limbs.some((l) => !l)) return null;
+  return limbs.map((raw) => {
+    const m = /^(?:U\.S\.\s*)?\$\s*([\d,]+(?:\.\d+)?)(\s+million)?\s*$/i.exec(raw);
+    if (!m) return { raw, usd: null };
+    const tok = m[1]!.replace(/,/g, "");
+    return { raw, usd: m[2] ? millionsToUsd(tok) : /^\d+$/.test(tok) ? tok : null };
+  });
+}
+
+/**
+ * A greater-of cap is at least its largest fixed limb, whatever the other limbs are; a lesser-of cap is at most its
+ * smallest fixed limb. Every limb must be read; the unknown limbs are named as missing. All limbs fixed → exact.
+ */
+function fixedLimbBound(text: string, which: "greater" | "lesser", missing: string[]): BasketPartial | null {
+  const limbs = extremumLimbs(text, which);
+  if (!limbs) return null;
+  const fixed = limbs.filter((l) => l.usd != null).map((l) => BigInt(l.usd!));
+  if (!fixed.length) return null;
+  const v = fixed.reduce((a, b) => (which === "greater" ? (b > a ? b : a) : (b < a ? b : a)));
+  const exact = fixed.length === limbs.length;
+  const unknown = limbs.filter((l) => l.usd == null).map((l) => metricPhrase(l.raw.replace(/^\d+(?:\.\d+)?\s*%\s+of\s+/i, "")) || l.raw.slice(0, 60));
+  const bound = which === "greater" ? "AT_LEAST" : "AT_MOST";
+  return {
+    ...capShell("COMPUTED", "AMOUNT", v.toString(), "USD", exact ? [] : unknown.length ? unknown : missing, null),
+    ...(exact ? {} : { capBound: bound as "AT_LEAST" | "AT_MOST" }),
+    remainingStatus: "NEEDS_INPUT",
+    note: exact
+      ? `${which === "greater" ? "Greater" : "Lesser"}-of with only fixed limbs: the ${which === "greater" ? "largest" : "smallest"}.`
+      : `${which === "greater" ? "Greater" : "Lesser"}-of: the cap is ${which === "greater" ? "at least the largest" : "at most the smallest"} fixed limb; the other limb${unknown.length > 1 ? "s are" : " is"} not known (${unknown.join("; ")}).`,
+  };
+}
+
+function evalLesser(clause: BasketClause): BasketPartial {
+  const r = fixedLimbBound(clause.operativeText, "lesser", ["lesser-of limb"]);
+  return r ?? { ...capShell("NEEDS_INPUT", "NONE", null, null, ["lesser-of limbs"], null), note: "Lesser-of limbs could not be read; no limb is used alone." };
 }
 
 function evalRatioBasket(
