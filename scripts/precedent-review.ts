@@ -30,9 +30,13 @@ async function groupBy(
     by: [field],
     where: { companyId: null },
     _count: { _all: true },
-    orderBy: { _count: { _all: "desc" as const } },
   })) as Array<Record<string, unknown> & { _count: { _all: number } }>;
-  return rows.map((r) => ({ key: String(r[field] ?? "(null)"), count: r._count._all }));
+  // Sort in JS: Prisma's groupBy orderBy input has no `_all` key under
+  // `_count` (it takes per-field keys), so ordering by count must happen
+  // here. Row count is tiny (one per distinct enum value).
+  return rows
+    .map((r) => ({ key: String(r[field] ?? "(null)"), count: r._count._all }))
+    .sort((a, b) => b.count - a.count);
 }
 
 async function main(): Promise<void> {
