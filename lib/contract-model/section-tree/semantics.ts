@@ -622,6 +622,20 @@ function covenantItemFamilies(tree: SectionTree, text: string, s: TreeNode, inhe
     const fams = under ? negatedItemFamilies(item, true) : isObligorProhibitionLead(item) ? negatedItemFamilies(item, false) : [];
     for (const f of fams) out.add(f);
   }
+  // Items the tree did not split into clauses ("... directly or indirectly: (1) declare ...; (2) ...; (3) make any
+  // Restricted Investment" run in one paragraph): each "(x)" item after an obligor-bound negative stem's colon, until the
+  // next stem. Exception / condition stems ("will not prohibit:", "will not apply to:", "unless:") govern nothing.
+  const body = text.slice(s.headingEnd, s.end);
+  // Every lead ending in a colon is a stem (a permission stem such as "the Company may ... do any of the following:" ends
+  // the prior negative one); only an obligor-bound negative stem governs.
+  const stems = [...body.matchAll(/[^.:;]{1,400}:/g)].map((m) => ({
+    at: m.index! + m[0].length,
+    neg: /\b(?:shall|will|may)\s+not\b/i.test(m[0]) && !/\b(?:prohibit|apply|applies|restrict|limit|unless|ability|required|obligat\w*|be deemed|include)\b/i.test(m[0]) && isObligorProhibitionLead(m[0]),
+  }));
+  for (const m of body.matchAll(/(?:^|\n|;\s+|:\s+)\s*\(((?:[ivxl]{1,6})|[a-z]{1,2}|\d{1,2})\)\s+([^\n;]{10,600})/g)) {
+    const gov = stems.filter((st) => st.at <= m.index! + 3).pop();
+    if (gov?.neg && m.index! - gov.at < 4000) for (const f of negatedItemFamilies(m[2]!, true)) out.add(f);
+  }
   return out;
 }
 
