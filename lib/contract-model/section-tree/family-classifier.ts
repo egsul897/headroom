@@ -99,8 +99,17 @@ export function operativeWindow(leadIn: string): string {
   return leadIn;
 }
 
+/** A temporal lead ("From the Amendment No. 1 Effective Date and prior to September 30, 2022, declare or pay ...") before an article imperative. */
+const TEMPORAL_LEAD = /^[\s.:]*(?:\([a-z0-9]+\)\s*)?(?:from|after|prior to|until|at any time|during)\b[^;:]{0,200}?,\s*(?=(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|directly or indirectly)\b)/i;
+/**
+ * Conditional permission: "The Issuer may consolidate with or merge ... and may permit ..., provided that / only if ..."
+ * (indenture merger covenants). Restrictive in substance: the act is allowed only on the stated conditions.
+ */
+const CONDITIONAL_PERMISSION = /^\s*(?:\([a-z0-9]+\)\s*)?(?:the\s+)?(?:issuer|company|borrower|parent|guarantor|obligor)s?\s+(?:shall\s+not\s+|may\s+(?:not\s+)?)?(?:consolidate|merge|amalgamate|convey|transfer|sell|lease)\b[^]{0,1800}?\b(?:only if|provided,? that|if|unless|so long as)\b/i;
+
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
-  const lead = operativeWindow(args.leadIn).slice(0, 700);
+  const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "");
+  const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
   // The ratio subject is read from the operative test verb, past any "so long as any Loan remains outstanding ...,
   // that" survival preamble.
