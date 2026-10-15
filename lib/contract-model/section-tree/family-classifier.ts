@@ -24,8 +24,8 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage)\b/i;
-const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage)\b/i;
+const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted)\b/i;
+const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted)\b/i;
 /** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
 const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
 const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
@@ -60,7 +60,7 @@ const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bto\s+(?:exc
 
 const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
   ["LIENS", /\b(?:create|incur|assume|suffer|permit)\b[^.;]{0,160}\b(?:liens?|mortgages?|pledges?|security interests?|encumbrances?)\b(?!\s+(?:net|leverage|obligations|notes|credit|facility|term|secured)\b)/i],
-  ["DEBT", /\b(?:create|incur|issue|assume|guarantee|become\s+(?:directly\s+or\s+indirectly\s+)?liable)\b[^.;]{0,160}\b(?:indebtedness|debt|disqualified stock|preferred stock)\b/i],
+  ["DEBT", /\b(?:create|incur|issue|assume|guarantee|become\s+(?:directly\s+or\s+indirectly\s+)?liable|be(?:come)?\s+indebted)\b[^.;]{0,160}\b(?:indebtedness|debt|disqualified stock|preferred stock)\b/i],
   ["RESTRICTED_PAYMENTS", /\b(?:declare|pay|make)\b[^.;]{0,120}\b(?:dividends?|distributions?|restricted (?:junior )?payments?)\b|\b(?:purchase|redeem|retire|acquire)\b[^.;]{0,80}\b(?:equity interests?|capital stock|shares)\b/i],
   ["INVESTMENTS", /\b(?:make|hold|acquire)\b[^.;]{0,80}\b(?:investments?|advances?|loans?\s+to|capital contributions?)\b/i],
   ["PREPAYMENTS", /\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\b(?:subordinated|junior|second lien|unsecured)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b/i],
