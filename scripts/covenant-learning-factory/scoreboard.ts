@@ -45,6 +45,9 @@ import {
   type BenchmarkMigration,
   readSnapshot,
   scoreSource,
+  snapshotIdentitySha256,
+  sourceInputSha256,
+  type ShardInfo,
   splitFor,
   writeSnapshotBuffer,
   type DevManifest,
@@ -158,6 +161,7 @@ async function main(): Promise<void> {
   if (writeRules) writeFileSync(writeRules, JSON.stringify(rules, null, 2) + "\n");
 
   const perSource: SourceScore[] = [];
+  let shardInfo: ShardInfo | null = null;
   if (snapshotPath) {
     const snap = readSnapshot(resolve(snapshotPath));
     // --shard=i/n: score only sources with index % n === i (parallel offline replay; merge reports after).
@@ -166,6 +170,8 @@ async function main(): Promise<void> {
     snap.sources.forEach((input, idx) => {
       if (idx % sn! === si) perSource.push(scoreSource(input, rules, manifest, TEXT_VERIFIED));
     });
+    const pairs = snap.sources.map((input) => [input.source.sourceId, sourceInputSha256(input)] as const);
+    shardInfo = { index: si!, count: sn!, snapshotSha256: snapshotIdentitySha256(pairs), snapshotSourceIds: pairs.map((p) => p[0]).sort() };
   } else {
     const progress = argStr("progress");
     const done = new Set<string>();
@@ -204,6 +210,7 @@ async function main(): Promise<void> {
   for (const s of perSource) delete s.findings;
   const rid = rulesetIdentity(rules);
   const report = aggregate(perSource, { mode: neon ? "neon" : "snapshot", rulesetVersion: rules.rulesetVersion, rulesetSha256: rid.rulesetSha256, scorerConfig: scorerConfig() });
+  if (shardInfo) report.shard = shardInfo;
   printSummary(report);
   console.log(
     `identity: ruleset v${rid.rulesetVersion} sha256=${rid.rulesetSha256} snapshot=${report.identity?.snapshotSha256 ?? "NONE (missing per-source input hashes)"}`,
