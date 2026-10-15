@@ -215,6 +215,7 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge)\b/i, lead: /(?:permit|maintain|exceed|be (?:less|greater) than)[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
 };
 const NEG_RE = new RegExp(NEG, "i");
+const NOT_COVENANT_TITLE = /definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion/i;
 
 /**
  * Evidence that a covenant family exists in the document: a heading line naming it ("6.01 Liens") or an
@@ -227,7 +228,11 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
   // Headings: a numbered heading line whose title names the family.
   const headRe = /(?:^|\n)\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([^\n.]{3,90})/gi;
   for (const m of text.matchAll(headRe)) {
-    if (ev.heading.test(m[1]!) && !/definition|defined terms|representation|event of default/i.test(m[1]!)) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
+    const title = m[1]!.trim();
+    const hm = ev.heading.exec(title);
+    // The family must lead the title (allowing "Limitation on", "Restrictions on", "Incurrence of"), not be one
+    // word inside an unrelated heading ("Evidence of Debt", "Trustee as Holder of Senior Indebtedness").
+    if (hm && hm.index <= 25 && !NOT_COVENANT_TITLE.test(title)) { out.push({ kind: "HEADING", excerpt: m[0].trim().slice(0, 80) }); break; }
   }
   // Operative lead-ins: a sentence with the family's operative verb/object, negated (or a ratio test).
   for (const sent of text.split(/(?<=[.;:])\s+/)) {
@@ -243,6 +248,7 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
       // Subsidiary to, directly or indirectly,"), never a different predicate ("shall not apply to", "not be required").
       const between = before.slice(nm.index! + nm[0].length);
       if (/\b(?:apply|be|been|constitute|include|affect|count|limit|restrict|prohibit|prevent|require|deem)\b/i.test(between) || /^\s*be\b/i.test(between)) continue;
+      if (/\bexceed\b/i.test(between) || /\bno opinion\b/i.test(nm[0]) || /\bexpress\b/i.test(before.slice(Math.max(0, nm.index! - 20), nm.index! + 4))) continue;
       if (family === "ASSET_SALES" && /all or substantially all/i.test(sent)) continue; // that is a fundamental change
     }
     if (/\bmeans\b|\bshall mean\b/.test(sent.slice(0, 200))) continue; // definitions
