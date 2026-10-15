@@ -28,8 +28,27 @@ function customerSourceId(companyId: string, documentId: string, contentHash: st
   return `customer:${companyId}:${documentId}:${contentHash.slice(0, 16)}`;
 }
 
-/** Map human-declared DocumentType onto KF debt classes when classifier returns UNKNOWN. */
-function documentClassFromDeclared(
+/**
+ * General rule: an analysis that found NO covenant items, NO structural
+ * nodes, and NO definitions found nothing at all — either the document
+ * is not a debt document or extraction failed. That is a review/failure
+ * state, never a silent ANALYZED success: presenting an empty covenant
+ * list as success tells the customer "no covenants" when the truth is
+ * "we could not read the document." A document with structure but no
+ * covenants (e.g. a short waiver with a section tree) still succeeds —
+ * the rule fires only on total emptiness.
+ */
+export function isEmptyAnalysis(args: {
+  covenantItemCount: number;
+  structuralNodeCount: number;
+  definitionCount: number;
+}): boolean {
+  return (
+    args.covenantItemCount === 0 && args.structuralNodeCount === 0 && args.definitionCount === 0
+  );
+}
+
+/** Map human-declared DocumentType onto KF debt classes when classifier returns UNKNOWN. */function documentClassFromDeclared(
   declaredType: string | undefined,
   classified: DebtDocumentClass,
 ): DebtDocumentClass {
@@ -507,6 +526,12 @@ export async function analyzeCustomerDocument(params: {
       priorApprovals,
     });
 
+    const foundNothing = isEmptyAnalysis({
+      covenantItemCount: summary.items.length,
+      structuralNodeCount: processed.structuralNodeCount,
+      definitionCount: processed.definitionCount,
+    });
+
     const metadata = JSON.parse(
       JSON.stringify({
         workspaceScope: "CUSTOMER",
@@ -524,7 +549,13 @@ export async function analyzeCustomerDocument(params: {
         amendmentPackage: amendment,
         agreementPipeline,
         storageProvider: stored.provider,
-        processingStatus: "ANALYZED",
+        processingStatus: foundNothing ? "FAILED_RETRYABLE" : "ANALYZED",
+        ...(foundNothing
+          ? {
+              analysisError:
+                "Analysis found no covenant structure (no covenant items, no structural nodes, no definitions) — document may not be a debt document or extraction failed. Re-upload or request review.",
+            }
+          : {}),
         promotedToLegalTruth: 0,
         reviewerApprovals: priorApprovals,
         reviewerDecisionHistory: priorMeta.reviewerDecisionHistory ?? [],
@@ -576,9 +607,10 @@ export async function analyzeCustomerDocument(params: {
     });
 
     const analysisSucceeded =
-      processed.source.extractionStatus === "CANDIDATES_DISCOVERED" ||
-      processed.source.extractionStatus === "TEXT_EXTRACTED" ||
-      processed.structuralNodeCount > 0;
+      (processed.source.extractionStatus === "CANDIDATES_DISCOVERED" ||
+        processed.source.extractionStatus === "TEXT_EXTRACTED" ||
+        processed.structuralNodeCount > 0) &&
+      !foundNothing;
 
     return {
       ok: analysisSucceeded,
@@ -590,6 +622,12 @@ export async function analyzeCustomerDocument(params: {
       covenantItemCount: summary.items.length,
       definitionCount: processed.definitionCount,
       structuralNodeCount: processed.structuralNodeCount,
+      ...(foundNothing
+        ? {
+            error:
+              "Analysis found no covenant structure (no covenant items, no structural nodes, no definitions) — document may not be a debt document or extraction failed. Re-upload or request review.",
+          }
+        : {}),
       promotedToLegalTruth: 0,
     };
   } catch (err) {
