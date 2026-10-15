@@ -142,6 +142,18 @@ function findHeadings(text: string): Heading[] {
     if (title.split(" ").length > 14 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
     out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
   }
+  // Unpunctuated line headings with the word ("Section 4.3 Limitations in Incurrence of Indebtedness" alone on its line,
+  // a title that wraps after "and"/"of" may continue on one more line), followed by a blank line, a "(a)" clause or a
+  // capitalized sentence.
+  const known = out.filter((h) => h.kind === "SECTION");
+  for (const m of text.matchAll(/(^|\n)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2}\.\d{1,3})\.?[^\S\n]+([A-Z][^\n.]{1,100}?)[^\S\n]*(?:\n[^\S\n]*([A-Z][^\n.]{1,60}?)[^\S\n]*)?(?=\n[^\S\n]*(?:\n|\([a-z1-9]\)|[A-Z][a-z]+\s))/g)) {
+    if (m[4] && !/(?:\b(?:and|or|of|the|on|to|in|for|with)|,)$/.test(m[3]!)) continue;
+    const start = m.index! + m[1]!.length;
+    if (known.some((h) => Math.abs(h.start - start) < 40)) continue;
+    const title = [m[3], m[4]].filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+    if (/\s\d{1,3}$/.test(title) || title.split(" ").length > 14 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
+    out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
+  }
   // Indenture "Section 501." numbering (article digit + two-digit section, the word required) when the document has
   // little dotted numbering: "Section 501. When the Company May Merge, Etc." is section 5.01.
   if (out.filter((h) => h.kind === "SECTION").length < 10) {
@@ -566,7 +578,14 @@ export function treeText(raw: string): { text: string; basis: TextBasis } {
  * line-anchored heading finder. When lines average > 1500 chars, break before "ARTICLE <n>" and "SECTION <n.n> Title"
  * that follow a sentence end, a closing quote/paren or a page number. Whitespace-only change.
  */
-export function relineFlattened(t: string): string {
+export function relineFlattened(raw: string): string {
+  let t = relineLong(raw);
+  // "ARTICLE V SUCCESSORS Section 5.1. Consolidation ..." on one line: the section heading starts its own line.
+  t = t.replace(/^(\s*(?:ARTICLE|Article)\s+(?:[IVXLC]+|\d{1,2})\.?\s+[A-Z][A-Z ,;&'\u2019-]{2,80}?)[ \t]+(?=(?:SECTION|Section)\s+(?:\d{1,2}\.\d{1,3}|\d{3,4})\.?\s+[A-Z\u201c"])/gm, "$1\n");
+  return t;
+}
+
+function relineLong(t: string): string {
   const lines = t.split("\n");
   // Partially flattened extractions: most of the text sits in page-length lines even when short lines pull the
   // average under the threshold. Re-line only the long lines.

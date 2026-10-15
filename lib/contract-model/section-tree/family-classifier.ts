@@ -35,7 +35,7 @@ function noPartyMatches(lead: string): RegExpMatchArray[] {
   return [...stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length)).matchAll(NO_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!));
 }
 /** "Neither the Issuer nor Parent may consolidate ..." / "Neither Borrower shall ...": a negated obligor subject. */
-const NEITHER_RE = /\b(?:[Nn]either|[Nn]one\s+of)\s+(?:the\s+)?[A-Z][^.;:]{0,160}?\b(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated))/;
+const NEITHER_RE = /\b(?:[Nn]either(?:\s+of)?|[Nn]one\s+of)\s+(?:the\s+)?[A-Z][^.;:]{0,160}?\b(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated))/;
 const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 || NEITHER_RE.test(lead) };
 
 /** The prohibition binds an obligor: not the trustee, agents, lenders or holders, and not a passive "shall not be required/deemed". */

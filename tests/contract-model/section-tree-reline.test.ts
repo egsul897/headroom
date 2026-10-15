@@ -25,3 +25,19 @@ describe("restrictive-agreement titles", () => {
     expect(classifyCovenantFamily({ title: "Indebtedness", leadIn: "Create, incur or assume any Indebtedness, except:", covenantContext: true }).families).toContain("DEBT");
   });
 });
+
+describe("heading shapes", () => {
+  const pad = "The Issuer shall deliver the reports required under this Indenture within the periods specified. ".repeat(4);
+  it("splits 'ARTICLE V SUCCESSORS Section 5.1. Title.' onto its own heading line", () => {
+    expect(relineFlattened(`${pad}\nARTICLE V SUCCESSORS Section 5.1. Consolidation, Merger or Sale. (a) The Issuer shall not merge.\n`)).toMatch(/\nARTICLE V SUCCESSORS\nSection 5\.1\. Consolidation/);
+  });
+  it("finds unpunctuated line headings, incl. a title wrapped after 'and'", async () => {
+    const { parseDocumentTree } = await import("@/lib/contract-model/section-tree/parse");
+    const t = parseDocumentTree(`ARTICLE IV\nCOVENANTS\n\nSection 4.1 Payment of Notes\n\nThe Issuer shall pay the Notes. ${pad}\n\nSection 4.2 Limitation on Indebtedness and\nPreferred Stock\n(a) The Issuer will not incur any Indebtedness. ${pad}\n`);
+    const secs = t.nodes.filter((n) => n.kind === "SECTION").map((n) => `${n.path}:${n.title}`);
+    expect(secs).toEqual(["4.1:Payment of Notes", "4.2:Limitation on Indebtedness and Preferred Stock"]);
+  });
+  it("'Neither of the Issuers may ... consolidate' is a prohibition", () => {
+    expect(classifyCovenantFamily({ title: "Merger, Consolidation or Sale of Assets", leadIn: "(a) Neither of the Issuers may, directly or indirectly: (1) consolidate or merge with or into another Person; or (2) sell all or substantially all of its properties.", covenantContext: false }).families).toContain("FUNDAMENTAL_CHANGES");
+  });
+});
