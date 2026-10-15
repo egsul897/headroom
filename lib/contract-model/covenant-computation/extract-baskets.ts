@@ -378,10 +378,18 @@ function findRegions(text: string, rules?: LearnedRuleSet): Region[] {
 
   const definitionEnds = definitionBoundaries(text);
   const sectionEnds = sectionBoundaries(text);
+  const bare = bareHeadings(text);
   starts.sort((a, b) => a.at - b.at);
   for (const start of starts) {
     const bounds = start.sectionNumber == null ? definitionEnds : sectionEnds;
-    const nextBoundary = bounds.find((at) => at > start.at + 20) ?? text.length;
+    let nextBoundary = bounds.find((at) => at > start.at + 20) ?? text.length;
+    // A covenant section never runs into a different article: stop at the next bare-numbered heading whose major
+    // number differs ("7.2 …" must not absorb "11.23 Incremental Revolving Credit Commitments").
+    if (start.sectionNumber) {
+      const major = start.sectionNumber.split(".")[0];
+      const other = bare.find((h) => h.at > start.at + 20 && h.major !== major);
+      if (other && other.at < nextBoundary) nextBoundary = other.at;
+    }
     let end = nextBoundary;
     const window = text.slice(start.bodyFrom, end);
     const deleted = window.search(/Section\s+\d+\.\d+\s+of the (?:Loan|Credit) Agreement is hereby deleted/i);
@@ -412,6 +420,20 @@ function definitionBoundaries(text: string): number[] {
   return [...at].sort((a, b) => a - b);
 }
 
+/**
+ * Bare-numbered headings ("… Lender. 11.23 Incremental Revolving Credit Commitments . (a) IBM …"). The text is
+ * whitespace-normalized, so a heading is: sentence end, number, Title-Case words, period.
+ */
+function bareHeadings(text: string): Array<{ at: number; major: string }> {
+  const out: Array<{ at: number; major: string }> = [];
+  const bare = new RegExp(String.raw`(?:[.;:)]\s+)(${SECTION_NUMBER})\.?\s+([A-Z][A-Za-z'’&,;\- ]{2,140}?)\s*\.\s`, "g");
+  for (const match of text.matchAll(bare)) {
+    if (match.index == null || !isTitleCase(match[2] ?? "")) continue;
+    out.push({ at: match.index + match[0].indexOf(match[1]!), major: match[1]!.split(".")[0]! });
+  }
+  return out;
+}
+
 function sectionBoundaries(text: string): number[] {
   const at = new Set<number>();
   for (const heading of findCovenantHeadings(text)) at.add(heading.index);
@@ -423,14 +445,6 @@ function sectionBoundaries(text: string): number[] {
     if (match.index == null) continue;
     const lead = match[0].startsWith(".") ? 1 : 0;
     at.add(match.index + lead);
-  }
-  // Bare-numbered headings ("… Lender. 11.23 Incremental Revolving Credit Commitments . (a) IBM …") bound a region
-  // even when they are not covenant headings; without them a covenant region runs on into later articles.
-  // The text is whitespace-normalized, so a heading is: sentence end, number, Title-Case words, period.
-  const bare = new RegExp(String.raw`(?:[.;:)]\s+)(${SECTION_NUMBER})\.?\s+([A-Z][A-Za-z'’&,;\- ]{2,140}?)\s*\.\s`, "g");
-  for (const match of text.matchAll(bare)) {
-    if (match.index == null || !isTitleCase(match[2] ?? "")) continue;
-    at.add(match.index + match[0].indexOf(match[1]!));
   }
   // All-caps ARTICLE headings only. "Article VII" inside "paragraph (n) of Article VII" is a cross-reference.
   for (const match of text.matchAll(/\bARTICLE\s+[IVXLC]+\b/g)) if (match.index != null) at.add(match.index);
