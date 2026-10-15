@@ -132,7 +132,7 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
 }
 
 const COVENANT_TITLE = /covenant|events? of default|\bdefaults?\b|negative pledge|limitation|restrict|nonrecourse|non-recourse|burdensome/i;
-export const OBLIGATION_LEAD = /\b(?:shall|will|may)\s+not\b|\bshall\s+(?:cause|maintain|deliver|furnish|keep|comply|preserve|pay)\b|\bevents? of default\b|\bif any of the following\b|\bno recourse\b/i;
+export const OBLIGATION_LEAD = /\b(?:shall|will|may)\s+not\b|\b(?:shall|will)\s+(?:cause|maintain|deliver|furnish|keep|comply|preserve|pay)\b|\bevents? of default\b|\bif any of the following\b|\bno recourse\b/i;
 
 /** "No Loan Party nor any Subsidiary shall …", "No Borrower and no Subsidiary will …" (not "No Loan Party is …", a representation). */
 /** Affirmative covenant lead-ins: imperative ("Maintain, preserve and protect …") or obligor "agree(s) to". */
