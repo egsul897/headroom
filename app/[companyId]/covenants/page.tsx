@@ -1,30 +1,14 @@
 import Link from "next/link";
+import { ActionMenu } from "@/components/ActionMenu";
+import { StatusBadge } from "@/components/StatusBadge";
 import { Card, Chip } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
 import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
-import {
-  listConmedCovenantExplorerRows,
-  type CapacityDeterminationStatus,
-} from "@/lib/product/conmed-demo/covenant-catalog";
+import { listConmedCovenantExplorerRows } from "@/lib/product/conmed-demo/covenant-catalog";
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 
 export const metadata = { title: "Headroom — Covenants" };
-
-function statusTone(status: CapacityDeterminationStatus): "navy" | "tight" | "idle" {
-  switch (status) {
-    case "PROHIBITION_STRUCTURE":
-    case "STRUCTURE_ONLY":
-      return "navy";
-    case "NEEDS_FINANCIAL_INPUTS":
-    case "RATIO_GATED_UNRESOLVED":
-    case "SCHEDULE_DEPENDENT_UNRESOLVED":
-    case "OUT_OF_PACKAGE_UNRESOLVED":
-      return "tight";
-    default:
-      return "idle";
-  }
-}
 
 export default async function CovenantsPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
@@ -40,41 +24,33 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
   });
 
   return (
-    <div className="stack">
+    <div className="page-frame">
+      <header className="page-head">
+        <div>
+          <p className="page-kicker">Covenants</p>
+          <h1 className="page-question">What do the documents restrict?</h1>
+          <p className="page-answer">{review.executive.headline}</p>
+        </div>
+      </header>
       <Card>
-        <div className="card-title">Covenant review</div>
-        <div className="card-subtitle">{review.executive.headline}</div>
-        <div className="button-row" style={{ marginTop: 12 }}>
+        <div className="page-toolbar">
           <Link className="button button-primary" href={`/${companyId}/onboarding/documents`}>
             Upload documents
           </Link>
-          <Link className="button" href={`/${companyId}/ask`}>
-            Ask Headroom
-          </Link>
-          <Link className="button" href={`/${companyId}/documents`}>
-            Documents
-          </Link>
-          <Link className="button" href={`/${companyId}/covenants/export`}>
-            Export Markdown
-          </Link>
-          <Link className="button" href={`/${companyId}/covenants/export/html`}>
-            Export HTML
-          </Link>
-          <Link className="button" href={`/${companyId}/covenants/export/docx`}>
-            Export DOCX
-          </Link>
-          <Link className="button" href={`/${companyId}/covenants/export/pdf`}>
-            Export PDF
-          </Link>
-          <Link className="button" href={`/${companyId}/rulebook`}>
-            Lawyer review
-          </Link>
-          <Link className="button" href={`/${companyId}/intelligence`}>
-            Debt intelligence
-          </Link>
-          <Link className="button" href="/research/compare">
-            Compare precedents
-          </Link>
+          <ActionMenu
+            label="More actions"
+            items={[
+              { href: `/${companyId}/ask`, label: "Ask Headroom" },
+              { href: `/${companyId}/documents`, label: "Documents" },
+              { href: `/${companyId}/covenants/export`, label: "Export Markdown" },
+              { href: `/${companyId}/covenants/export/html`, label: "Export HTML" },
+              { href: `/${companyId}/covenants/export/docx`, label: "Export DOCX" },
+              { href: `/${companyId}/covenants/export/pdf`, label: "Export PDF" },
+              { href: `/${companyId}/rulebook`, label: "Lawyer review" },
+              { href: `/${companyId}/intelligence`, label: "Debt intelligence" },
+              { href: "/research/compare", label: "Compare precedents" },
+            ]}
+          />
         </div>
         <div className="row-note" style={{ marginTop: 8 }}>
           AI-first interpretations for counsel review. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE
@@ -83,7 +59,7 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Rulebook stage</div>
           <div className="row-value">
-            <Chip tone={rulebook.stage === "EXECUTABLE" ? "pass" : "tight"}>{rulebook.stage}</Chip>
+            <StatusBadge status={rulebook.stage} />
           </div>
         </div>
         <div className="row-note">{rulebook.headline}</div>
@@ -95,17 +71,7 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
           <div className="row">
             <div className="row-label">Resolution</div>
             <div className="row-value">
-              <Chip
-                tone={
-                  review.amendmentPackage.operativeResolution === "UNRESOLVED_PRECEDENCE"
-                    ? "tight"
-                    : review.amendmentPackage.operativeResolution === "RESOLVED"
-                      ? "pass"
-                      : "idle"
-                }
-              >
-                {review.amendmentPackage.operativeResolution}
-              </Chip>
+              <StatusBadge status={review.amendmentPackage.operativeResolution} />
             </div>
           </div>
           {review.amendmentPackage.unresolvedReasons.map((r, i) => (
@@ -128,7 +94,7 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
             <div className="row">
               <div className="row-label">Status</div>
               <div className="row-value">
-                <Chip tone="pass">{review.operativeResolution.status}</Chip>
+                <StatusBadge status={review.operativeResolution.status} />
               </div>
             </div>
             {review.operativeResolution.effectiveDate && (
@@ -244,8 +210,8 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
               <div className="row">
                 <div className="row-label">§{item.sectionRef}</div>
                 <div className="row-value">
-                  {item.posture && <Chip tone="navy">{item.posture}</Chip>}{" "}
-                  <Chip tone="idle">{item.epistemicStatus}</Chip>
+                  {item.posture ? <StatusBadge status={item.posture} /> : null}{" "}
+                  <StatusBadge status={item.epistemicStatus} />
                 </div>
               </div>
               <div className="card-subtitle">{item.heading}</div>
@@ -306,7 +272,7 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
                         <div className="row-note">Figures: {r.realFigures.join("; ")}</div>
                       )}
                       <div className="row-note" style={{ marginTop: 4 }}>
-                        <Chip tone={statusTone(r.capacityStatus)}>{r.capacityStatus}</Chip>{" "}
+                        <StatusBadge status={r.capacityStatus} />{" "}
                         {r.capacityExplanation}
                       </div>
                     </div>

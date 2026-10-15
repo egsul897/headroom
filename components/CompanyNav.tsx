@@ -41,20 +41,45 @@ const ICONS: Record<CompanyNavKey, () => ReactNode> = {
 /**
  * Institutional company navigation for the Headroom product workspace.
  */
+const NAV_GROUP: Partial<Record<CompanyNavKey, string>> = {
+  home: "Now",
+  documents: "Set up",
+  analyze: "Set up",
+  review: "Set up",
+  onboarding: "Set up",
+  position: "Decide",
+  simulate: "Decide",
+  audit: "Decide",
+  covenants: "Contract",
+  rulebook: "Contract",
+  intelligence: "Contract",
+  ledger: "Record",
+  evidence: "Record",
+  ask: "Record",
+  alerts: "Record",
+};
+
 export function CompanyNav({ companyId, onboardingStatus }: { companyId: string; onboardingStatus: OnboardingStatus }) {
   const pathname = usePathname() ?? "";
   const items = companyNavItems(companyId, onboardingStatus);
+  let previousGroup = "";
 
   return (
     <nav className="app-nav" aria-label="Company">
       {items.map((item) => {
         const Icon = ICONS[item.key];
         const active = isCompanyNavItemActive(pathname, item, companyId);
+        const group = NAV_GROUP[item.key] ?? "";
+        const showGroup = group !== "" && group !== previousGroup;
+        if (showGroup) previousGroup = group;
         return (
-          <Link key={item.key} href={item.href} className={`app-nav-link${active ? " active" : ""}`} aria-current={active ? "page" : undefined}>
-            <Icon />
-            <span>{item.label}</span>
-          </Link>
+          <span key={item.key} className="app-nav-slot">
+            {showGroup ? <span className="app-nav-label">{group}</span> : null}
+            <Link href={item.href} className={`app-nav-link${active ? " active" : ""}`} aria-current={active ? "page" : undefined}>
+              <Icon />
+              <span>{item.label}</span>
+            </Link>
+          </span>
         );
       })}
     </nav>

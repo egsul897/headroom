@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Select } from "@/components/Select";
 import Link from "next/link";
 import type { AskShellResult } from "@/lib/ask/shell-runner";
 import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
@@ -392,17 +393,17 @@ export function AskShell({
         <label className="home-eyebrow" htmlFor="ask-mode">
           Mode
         </label>
-        <select
+        <Select
           id="ask-mode"
+          ariaLabel="Mode"
           value={mode}
-          onChange={(e) => setMode(e.target.value as AskMode)}
+          onValueChange={(next) => setMode(next as AskMode)}
           disabled={pending}
-          className="input"
-          style={{ maxWidth: 280, marginBottom: 8 }}
-        >
-          <option value="transaction">Transaction analysis (North Star gated)</option>
-          <option value="corpus">Corpus research (citations only)</option>
-        </select>
+          options={[
+            { value: "transaction", label: "Transaction analysis (North Star gated)" },
+            { value: "corpus", label: "Corpus research (citations only)" },
+          ]}
+        />
         <label className="home-eyebrow" htmlFor="ask-question">
           Question about this workspace’s financing documents
         </label>

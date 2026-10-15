@@ -42,84 +42,86 @@ export default async function Home() {
   const openHref = companyOpenHref;
 
   return (
-    <>
+    <div className="chooser">
       <GlobalBrand />
-      <div className="stack">
-        <Card>
-          <div className="card-subtitle">Choose a company to open, or connect a new one - nothing is remembered between visits.</div>
-        </Card>
+      <header className="page-head">
+        <div>
+          <p className="page-kicker">Headroom</p>
+          <h1 className="page-question">Which company are you opening?</h1>
+          <p className="page-answer">Nothing is remembered between visits. Open one workspace, or connect a new one.</p>
+        </div>
+      </header>
 
-        {customer.length > 0 && (
-          <Card>
-            <div className="card-title">Your companies</div>
+      {customer.length > 0 && (
+        <Card>
+          <div className="card-title">Your companies</div>
+          <div className="chooser-list">
             {customer.map((c) => (
-              <div key={c.id} className="row">
+              <div key={c.id} className="chooser-row">
                 <div>
-                  <div className="row-label">{c.name}</div>
-                  {c.ticker && <div className="row-note">{c.ticker}</div>}
+                  <div className="chooser-name">{c.name}</div>
+                  {c.ticker ? <div className="chooser-meta">{c.ticker}</div> : null}
                 </div>
-                <div className="button-row" style={{ marginTop: 0 }}>
+                <div className="chooser-actions">
+                  <Link className="button button-quiet" href={`/companies/${c.id}/delete`}>
+                    Delete
+                  </Link>
                   <Link className="button button-primary" href={openHref(c)}>
                     Open
-                  </Link>
-                  <Link className="button" href={`/companies/${c.id}/delete`}>
-                    Delete
                   </Link>
                 </div>
               </div>
             ))}
-          </Card>
-        )}
+          </div>
+        </Card>
+      )}
 
-        {evaluation.length > 0 && (
-          <Card>
-            <div className="card-title">Evaluation companies</div>
-            <div className="card-subtitle">Coherent, Matthews, and any test fixtures - used for regression and evaluation, never shown to a real customer once real authentication exists.</div>
+      {evaluation.length > 0 && (
+        <Card>
+          <div className="card-title">Evaluation companies</div>
+          <p className="chooser-note">
+            Coherent, Matthews, and any test fixtures — used for regression and evaluation, never shown to a real customer once real authentication exists.
+          </p>
+          <div className="chooser-list">
             {evaluation.map((c) => (
-              <div key={c.id} className="row">
+              <div key={c.id} className="chooser-row">
                 <div>
-                  <div className="row-label">{c.name}</div>
-                  {c.ticker && <div className="row-note">{c.ticker}</div>}
+                  <div className="chooser-name">{c.name}</div>
+                  {c.ticker ? <div className="chooser-meta">{c.ticker}</div> : null}
                 </div>
-                <div className="button-row" style={{ marginTop: 0 }}>
-                  <Link className="button button-primary" href={openHref(c)}>
-                    Open
-                  </Link>
+                <div className="chooser-actions">
                   {PROTECTED_COMPANY_IDS.has(c.id) ? (
-                    <span className="chip chip-tight" title="Protected golden-regression company - cannot be deleted from this instance.">
+                    <span className="status-badge status-badge-attention" title="Protected golden-regression company - cannot be deleted from this instance.">
                       Protected
                     </span>
                   ) : (
-                    <Link className="button" href={`/companies/${c.id}/delete`}>
+                    <Link className="button button-quiet" href={`/companies/${c.id}/delete`}>
                       Delete
                     </Link>
                   )}
+                  <Link className="button button-primary" href={openHref(c)}>
+                    Open
+                  </Link>
                 </div>
               </div>
             ))}
-          </Card>
-        )}
-
-        <Card>
-          <div className="card-title">Connect a new company</div>
-          <div className="card-subtitle">
-            Create a workspace, upload debt documents and financials, review what Headroom extracted, then open the dashboard.
           </div>
+        </Card>
+      )}
+
+      <div className="chooser-foot">
+        <p className="chooser-note">
+          Research precedents are not operative authority for a company workspace.
+        </p>
+        <div className="chooser-actions">
+          <Link className="button button-quiet" href="/research/corpus">
+            Browse corpus
+          </Link>
           <Link className="button button-primary" href="/companies/new">
             Connect your company
           </Link>
-        </Card>
-
-        <Card>
-          <div className="card-title">Research corpus</div>
-          <div className="card-subtitle">
-            Issuer-disjoint financing precedents persisted in Neon. Not operative authority for any company workspace.
-          </div>
-          <Link className="button" href="/research/corpus">
-            Browse corpus
-          </Link>
-        </Card>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

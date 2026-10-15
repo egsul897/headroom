@@ -28,7 +28,6 @@ export default async function CompanyLayout({ children, params }: { children: Re
         <CompanyNav companyId={companyId} onboardingStatus={company.onboardingStatus} />
         <div className="app-sidebar-foot">
           <CompanyIdentityCard name={company.name} ticker={company.ticker} />
-          <p className="app-tagline">Clarity. Control. Confidence.</p>
         </div>
       </aside>
       <div className="app-content stack">{children}</div>

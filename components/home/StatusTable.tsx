@@ -1,15 +1,8 @@
+import { StatusBadge } from "@/components/StatusBadge";
 import { UNKNOWN_STATE, presentStatus, type StatusLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
 const COLUMNS = ["Covenant", "Facility / Document", "Status", "Headroom", "Trend", "Next test"] as const;
-
-function statusPillClass(status: string): string {
-  const s = status.toLowerCase();
-  if (s === "healthy" || s === "within capacity") return "home-status-pill home-status-ok";
-  if (s === "moderate" || s === "needs review") return "home-status-pill home-status-warn";
-  if (s === "at risk" || s === "at capacity") return "home-status-pill home-status-risk";
-  return "home-status-pill";
-}
 
 export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState }) {
   const presented = presentStatus(state);
@@ -20,7 +13,7 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
           <thead>
             <tr>
               {COLUMNS.map((column) => (
-                <th key={column} scope="col">
+                <th key={column} scope="col" className={column === "Headroom" ? "num" : undefined}>
                   {column}
                 </th>
               ))}
@@ -33,9 +26,9 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
                   <td>{row.covenant}</td>
                   <td>{row.facility}</td>
                   <td>
-                    <span className={statusPillClass(row.status)}>{row.status}</span>
+                    <StatusBadge status={row.status} />
                   </td>
-                  <td>{row.headroom}</td>
+                  <td className="num">{row.headroom}</td>
                   <td className="home-trend-cell">
                     {row.trend === "—" ? (
                       <span className="home-trend-flat" aria-hidden="true">

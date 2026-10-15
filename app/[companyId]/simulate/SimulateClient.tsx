@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { Select } from "@/components/Select";
 import { Banner, Card, Chip, ProgressBar, SectionRef, type ChipTone } from "@/components/ui";
 import { ProvisionTrace } from "@/components/ProvisionTrace";
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
@@ -484,11 +485,12 @@ function RpPanel({
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
           <div className="card-title" style={{ marginBottom: 0 }}>{title}</div>
           {candidates.length > 1 && (
-            <select value={doc.id} onChange={(e) => setSelectedId(e.target.value)}>
-              {candidates.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
+            <Select
+              ariaLabel="Document"
+              value={doc.id}
+              onValueChange={setSelectedId}
+              options={candidates.map((c) => ({ value: c.id, label: c.name }))}
+            />
           )}
         </div>
         <div className="card-subtitle" style={{ marginBottom: 0 }}>
@@ -622,11 +624,12 @@ function AssetSalePanel({
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
           <div className="card-title" style={{ marginBottom: 0 }}>Test an asset sale</div>
           {candidates.length > 1 && (
-            <select value={doc.id} onChange={(e) => setSelectedId(e.target.value)}>
-              {candidates.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
+            <Select
+              ariaLabel="Document"
+              value={doc.id}
+              onValueChange={setSelectedId}
+              options={candidates.map((c) => ({ value: c.id, label: c.name }))}
+            />
           )}
         </div>
         <div className="card-subtitle" style={{ marginBottom: 0 }}>
