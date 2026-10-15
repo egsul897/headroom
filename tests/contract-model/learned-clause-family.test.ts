@@ -12,3 +12,11 @@ describe("learned captures take their family from the clause, never the rule lab
     expect(learnedClauseFamily("The Borrower may make distributions under the builder basket for Restricted Payments not to exceed $5,000,000 in any fiscal year.")).toBe("RESTRICTED_PAYMENTS");
   });
 });
+
+describe("enumerated permitted items", () => {
+  it("an item headed by a family term takes that family; an item headed by anything else does not", () => {
+    expect(learnedClauseFamily("(c) Liens arising out of pledges or deposits under worker’s compensation laws.")).toBe("LIENS");
+    expect(learnedClauseFamily("(f) Indebtedness in respect of Swap Contracts entered into in the ordinary course.")).toBe("DEBT");
+    expect(learnedClauseFamily("(b) Each Lender shall make its Advance available to the Administrative Agent.")).toBeNull();
+  });
+});

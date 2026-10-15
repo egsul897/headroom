@@ -138,6 +138,14 @@ export function learnedClauseFamily(window: string): CovenantFamily | null {
   const leadIn = h ? window.slice(h[0].length) : window;
   const v = classifyCovenantFamily({ title, leadIn }).family;
   if (v) return v;
+  // An enumerated permitted item headed by one family's defined term ("(c) Liens arising out of ...", "(f) Indebtedness
+  // in respect of ...") belongs to that family.
+  const item = /^\s*\((?:[a-z]{1,3}|[ivxl]{1,6}|\d{1,2})\)\s+(?:(?:any|other|additional|unsecured|secured|purchase money)\s+)*/i.exec(leadIn);
+  if (item) {
+    const head = leadIn.slice(item[0].length, item[0].length + 40);
+    const hit = CAPPED_TERMS.filter(([f, re]) => f !== "AFFILIATE_TRANSACTIONS" && new RegExp(`^(?:${re.source})`).test(head)).map(([f]) => f);
+    if (hit.length === 1) return hit[0]!;
+  }
   // A capped permission ("may make ... Restricted Payments not to exceed $5,000,000") that names exactly one covenant
   // family's defined term is a basket of that family.
   if (!/\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(leadIn) || !/\b(?:not\s+(?:to\s+)?exceed|in an aggregate (?:principal )?amount|up to)\b/i.test(leadIn)) return null;
