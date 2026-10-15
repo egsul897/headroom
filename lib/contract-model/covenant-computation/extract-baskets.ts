@@ -115,7 +115,10 @@ function clausesFromLearnedPatterns(
     if (!match || match.index == null || !match[0]) continue;
     const window = captureWindow(text, match.index, match[0].length);
     if (window.length < 24) continue;
-    const family = rule.effect.family ?? rule.effect.sectionFamily ?? "OTHER";
+    // The family comes from the captured clause itself, never from the rule's (precedent-derived) label: a
+    // learned capture whose own words state no covenant family, or a different one, is not a basket.
+    const family = learnedClauseFamily(window);
+    if (!family) continue;
     out.push({
       stableKey: `learned-${rule.ruleId}`,
       sectionRef: `learned:${rule.kind}:${rule.ruleId}`,
@@ -127,6 +130,28 @@ function clausesFromLearnedPatterns(
   }
   return out;
 }
+
+/** Covenant family stated by a captured clause's own heading and lead-in (null when it states none). */
+export function learnedClauseFamily(window: string): CovenantFamily | null {
+  const h = /^\s*(?:SECTION|Section)\s+\d{1,2}\.\d{1,3}\.?\s+([^.]{2,90}?)\s*\.\s+/.exec(window);
+  const title = h ? h[1]!.trim() : null;
+  const leadIn = h ? window.slice(h[0].length) : window;
+  const v = classifyCovenantFamily({ title, leadIn }).family;
+  if (v) return v;
+  // A capped permission ("may make ... Restricted Payments not to exceed $5,000,000") that names exactly one covenant
+  // family's defined term is a basket of that family.
+  if (!/\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(leadIn) || !/\b(?:not\s+(?:to\s+)?exceed|in an aggregate (?:principal )?amount|up to)\b/i.test(leadIn)) return null;
+  const named = CAPPED_TERMS.filter(([, re]) => re.test(leadIn)).map(([f]) => f);
+  return named.length === 1 ? named[0]! : null;
+}
+const CAPPED_TERMS: [CovenantFamily, RegExp][] = [
+  ["RESTRICTED_PAYMENTS", /\bRestricted Payments?\b/],
+  ["DEBT", /\bIndebtedness\b/],
+  ["LIENS", /\bLiens?\b/],
+  ["INVESTMENTS", /\bInvestments?\b/],
+  ["ASSET_SALES", /\b(?:Asset Sales?|Asset Dispositions?|Dispositions?)\b/],
+  ["AFFILIATE_TRANSACTIONS", /\bAffiliates?\b/],
+];
 
 /** Expand a regex match to a nearby clause-sized window still inside `text`. */
 function captureWindow(text: string, index: number, matchLen: number): string {
