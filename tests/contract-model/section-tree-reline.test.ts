@@ -76,3 +76,13 @@ describe("by-reference, unnumbered-word headings, wrapped captions, schedules", 
     expect(["MISSING", "ABSENT_VERIFIED"]).not.toContain(c.status);
   });
 });
+
+describe("financial covenants", () => {
+  it("springing revolver test past the first 700 characters", () => {
+    const trigger = "Solely with respect to the Revolving Credit Facility, if on the last day of any Test Period the sum of " + "the aggregate principal amount of Revolving Loans then outstanding (other than certain excluded amounts), ".repeat(6) + "exceeds 40.0% of the Revolving Commitments, the Borrower will not permit the First Lien Leverage Ratio to exceed 7.75 to 1.00 as of the last day of such Test Period.";
+    expect(classifyCovenantFamily({ title: "Financial Covenant", leadIn: trigger, covenantContext: true }).families).toContain("FINANCIAL_RATIOS");
+  });
+  it("'Financial Maintenance Covenant' heading", () => {
+    expect(classifyCovenantFamily({ title: "Financial Maintenance Covenant", leadIn: "From and after the Closing Date, the Company shall not permit the Consolidated Secured Net Leverage Ratio to exceed 4.50 to 1.00 as of the last day of any Fiscal Quarter.", covenantContext: false }).families).toContain("FINANCIAL_RATIOS");
+  });
+});

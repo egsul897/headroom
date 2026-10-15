@@ -78,7 +78,7 @@ const HEADING: Array<[CovenantFamily, RegExp]> = [
   ["ASSET_SALES", /asset sales?|asset transfers?|transfers? of assets|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],
   ["AFFILIATE_TRANSACTIONS", /affiliates?/i],
   ["FUNDAMENTAL_CHANGES", /fundamental changes?|corporate changes?|^\s*liquidation(?:,|\s+(?:and|or))\s+dissolution|\bmerger?s?\b|\bconsolidations?\b|consolidate\b|amalgamat/i],
-  ["FINANCIAL_RATIOS", /financial (?:condition )?covenants?|\bratios?\b|\bliquidity\b|net worth|fixed charge|\bleverage\b|(?:interest|debt service|asset) coverage/i],
+  ["FINANCIAL_RATIOS", /financial (?:condition |maintenance |performance |ratio )?covenants?|maintenance covenants?|financial tests?|\bratios?\b|\bliquidity\b|net worth|fixed charge|\bleverage\b|(?:interest|debt service|asset) coverage/i],
 ];
 
 const DEFINED: Array<[CovenantFamily, RegExp]> = [
@@ -147,7 +147,13 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   // The ratio subject is read from the operative test verb, past any "so long as any Loan remains outstanding ...,
   // that" survival preamble.
   const testAt = Math.max(0, lead.search(/\b(?:shall|will)\s+(?:not\s+)?(?:permit|maintain|cause|suffer)\b/i));
-  const ratio = (RATIO_SUBJECT.test(lead.slice(0, 450)) || RATIO_SUBJECT.test(lead.slice(testAt, testAt + 250))) && RATIO_LIMIT.test(lead);
+  // Springing maintenance tests open with a long trigger ("Solely with respect to the Revolving Credit Facility, if on the
+  // last day of any Test Period ... exceeds 40%, the Borrower will not permit the ... Ratio to exceed 7.75 to 1.00"): the
+  // test verb may sit past the first 700 characters, or be a bare imperative ("..., permit the ... Ratio").
+  const wide = raw.slice(0, 1500);
+  const wideAt = wide.search(/\b(?:shall|will)\s+not\s+permit\b|,\s*permit\s+the\b/i);
+  const springing = wideAt >= 0 && /\b(?:test period|fiscal quarter|covenant trigger|testing threshold|revolving)\b/i.test(wide.slice(0, wideAt)) && /\bratio\b/i.test(wide.slice(wideAt, wideAt + 250)) && /\d+(?:\.\d+)?\s*(?:to|:)\s*1(?:\.0+)?\b/.test(wide.slice(wideAt, wideAt + 400));
+  const ratio = ((RATIO_SUBJECT.test(lead.slice(0, 450)) || RATIO_SUBJECT.test(lead.slice(testAt, testAt + 250))) && RATIO_LIMIT.test(lead)) || springing;
   const scores = new Map<CovenantFamily, number>();
   const evidence: string[] = [];
   const add = (f: CovenantFamily, w: number, why: string) => { scores.set(f, (scores.get(f) ?? 0) + w); evidence.push(`${f}:${why}`); };
