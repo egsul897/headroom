@@ -169,6 +169,9 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     // prohibition with a family object counts, but only inside an obligor-bound prohibition section body.
     if (!am && !(s.title && (NOT_COVENANT_TITLE.test(s.title) || /condition|default|remed|termination|indemn|agent|trustee/i.test(s.title)))) for (const f of covenantItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     if (!am) for (const q of restatedTexts(text.slice(s.headingEnd, s.end))) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) fams.add(f);
+    // Captioned covenant clauses inside a "Negative Covenants" section ("(g) Restricted Payments; Certain Payments of
+    // Indebtedness . (A) The Borrower will not ...") are each a covenant unit.
+    if (!am && /\bnegative covenants?\b|^\s*covenants?\b|\bcertain covenants\b/i.test(s.title ?? "")) for (const f of captionedClauseFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 120000)))) fams.add(f);
     if (!am && fams.size && prohib.get(s.id)) for (const f of laterProhibitionFamilies(text.slice(s.headingEnd, Math.min(s.end, s.headingEnd + 8000)))) fams.add(f);
     if (!am && fams.has("RESTRICTED_PAYMENTS") && prohib.get(s.id)) for (const f of restrictedPaymentItemFamilies(text.slice(s.headingEnd, s.end))) fams.add(f);
     // A Restricted Payments section must restrict the obligor's payments: a negated (or article-imperative) declare/pay/
@@ -312,6 +315,21 @@ function laterProhibitionFamilies(body: string): Set<string> {
       if (f === "ASSET_SALES" && /all or substantially all|affiliate/i.test(sent)) continue;
       out.add(f);
     }
+  }
+  return out;
+}
+
+function captionedClauseFamilies(body: string): Set<string> {
+  const out = new Set<string>();
+  for (const m of body.matchAll(/(?:^|\n)\s*\(([a-z]{1,2})\)\s+([A-Z][^.\n]{2,90}?)\s?\.[ \t]*(?=\n|\s+(?:\([A-Za-z0-9]{1,4}\)\s*)?[A-Z])/g)) {
+    const title = m[2]!.trim();
+    if (title.split(/\s+/).length > 12) continue;
+    const lead = body.slice(m.index! + m[0].length, m.index! + m[0].length + 2000);
+    if (!isObligorProhibitionLead(lead)) continue;
+    const fams = new Set<string>(classifyCovenantFamily({ title, parentTitle: null, leadIn: lead, covenantContext: true }).families);
+    if (fams.has("RESTRICTED_PAYMENTS") && !restrictsPayments(lead)) fams.delete("RESTRICTED_PAYMENTS");
+    if (DESIGNATION_OR_SUSPENSION.test(`${title} ${lead.slice(0, 200)}`)) for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) fams.delete(f);
+    for (const f of fams) out.add(f);
   }
   return out;
 }
