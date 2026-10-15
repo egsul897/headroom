@@ -53,3 +53,26 @@ describe("jammed headings and caption evidence", () => {
     expect(classifyCovenantFamily({ title: "Borrowed Money", leadIn: "Except with respect to existing Indebtedness, create, incur, assume or suffer to exist any liability for Indebtedness.", covenantContext: true }).families).toContain("DEBT");
   });
 });
+
+describe("by-reference, unnumbered-word headings, wrapped captions, schedules", async () => {
+  const { parseDocumentTree } = await import("@/lib/contract-model/section-tree/parse");
+  const { covenantChecklist } = await import("@/lib/contract-model/section-tree/semantics");
+  const fam = (txt: string, f: string) => { const t = parseDocumentTree(txt); return covenantChecklist(t, t.text).find((c) => c.family === f)!; };
+  const pad = "The Borrower shall deliver the reports required under this Agreement within the periods specified. ".repeat(3);
+  it("covenants incorporated by reference are MISSING, not ABSENT", () => {
+    const c = fam(`ARTICLE VII\nNEGATIVE COVENANTS\n7.01 Use of Proceeds. The Borrower shall not use proceeds for margin stock. ${pad}\n7.02 Additional Negative Covenants. The negative covenants set forth in the Senior Notes, including Sections 4.07 through 4.14 thereof, shall be deemed to be incorporated into this Agreement as though set forth in full.\n`, "DEBT");
+    expect(c.status).toBe("MISSING");
+  });
+  it("unpunctuated '5.2 Fundamental Changes' heading without the Section word", () => {
+    const c = fam(`5. NEGATIVE COVENANTS\n5.1 Business Activities\nThe Borrower will not engage in any business or activities other than the Permitted Businesses, except to such extent as would not be material to the Borrower and its Subsidiaries taken as a whole. ${pad}\n5.2 Fundamental Changes\nThe Borrower will not, directly or indirectly, consolidate, amalgamate, or merge with or into another Person (regardless of whether the Borrower is the surviving entity), or sell, assign, transfer or otherwise dispose of all or substantially all of its properties. ${pad}\n`, "FUNDAMENTAL_CHANGES");
+    expect(["MISSING", "ABSENT_VERIFIED"]).not.toContain(c.status);
+  });
+  it("caption wrapped over two lines", () => {
+    const c = fam(`4.3 Negative Covenants.\n\n(c) Payments . Debtor shall not pay any dividend. ${pad}\n\n(d) Prohibition\nof Fundamental Changes . Debtor shall not (i) liquidate, merge or consolidate with any other entity.\n`, "FUNDAMENTAL_CHANGES");
+    expect(["MISSING", "ABSENT_VERIFIED"]).not.toContain(c.status);
+  });
+  it("numbered covenants in a covenant schedule", () => {
+    const c = fam(`${pad}\nSchedule 16 (Incurrence Covenants) Part A Incurrence Covenants 1. Limitation on Debt The Company shall not, and shall not permit any Restricted Subsidiary to, Incur any Debt, unless the ratio is at least 2.00 to 1.00.`, "DEBT");
+    expect(["MISSING", "ABSENT_VERIFIED"]).not.toContain(c.status);
+  });
+});

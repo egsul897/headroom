@@ -186,6 +186,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     for (const q of restatedTexts(text, covered)) for (const f of classifyCovenantFamily({ title: q.title, parentTitle: null, leadIn: q.lead, covenantContext: true }).families) rootFams.add(f);
     // Captioned covenant clauses in text no section covers (guaranties / short agreements numbered "10. Covenants.").
     for (const f of captionFamilies(text, covered)) rootFams.add(f);
+    for (const f of scheduleCovenantFamilies(text)) rootFams.add(f);
     if (rootFams.size) { famOf.set(root.id, [...rootFams]); units.push(root); }
   }
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
@@ -195,11 +196,16 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     const hits = units.filter((s) => famOf.get(s.id)?.includes(family));
     if (hits.length === 0) {
       const ev = familyEvidence(text, family);
-      const absent = ev.length === 0;
+      // Covenants pulled in from another agreement ("The negative covenants set forth in the Senior Notes ... are
+      // incorporated herein") are not absent: they bind the obligor but their text is elsewhere.
+      const byRef = ev.length === 0 && incorporatedCovenants.test(text);
+      const absent = ev.length === 0 && !byRef;
       return {
         family, status: absent ? ("ABSENT_VERIFIED" as const) : ("MISSING" as const), sectionPaths: [],
         parts: { fixedCap: false, grower: false, ratio: false, exceptions: 0, prohibition: false }, needsInputs: [],
-        note: absent
+        note: byRef
+          ? "covenants incorporated by reference from another agreement; their text is not in this document; not treated as unlimited"
+          : absent
           ? partialDocument
             ? "absent from this document (an amendment or 8-K, not the full agreement; the base agreement may contain it); not treated as unlimited"
             : "no operative lead-in or heading for this family anywhere in the document; not treated as unlimited"
@@ -254,12 +260,40 @@ function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<
   const out = new Set<CovenantFamily>();
   const stem = /\b(?:shall|will)\s+not\b[^.]{0,300}:\s*$/i;
   let n = 0;
-  for (const c of body.matchAll(/(?:^|\n)\s*\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)\s*([A-Z][^.\n]{3,90}?)\s*\.\s+(?=[A-Z])/g)) {
+  for (const c of body.matchAll(/(?:^|\n)\s*\((?:[a-zA-Z]{1,2}|[ivx]{1,4}|\d{1,2})\)\s*([A-Z][^.\n]{3,90}?(?:\n[a-z][^.\n]{1,60}?)?)\s*\.\s+(?=[A-Z])/g)) {
     if (c[1]!.split(/\s+/).length > 10 || skip?.(c.index!)) continue;
+    // A caption wrapped onto a second line ("(d) Prohibition\nof Fundamental Changes .") has a short first line; a
+    // longer one is a list item ending in a sentence.
+    if (c[1]!.includes("\n") && c[1]!.split("\n")[0]!.trim().split(/\s+/).length > 3) continue;
     if (++n > 400) break;
     const rest = body.slice(c.index! + c[0].length, c.index! + c[0].length + 1500);
     const underStem = stem.test(body.slice(Math.max(0, c.index! - 400), c.index!).trimEnd() + " ") || stem.test(body.slice(0, Math.min(c.index!, 600)));
-    for (const f of classifyCovenantFamily({ title: c[1]!.trim(), parentTitle: null, leadIn: underStem ? rest.replace(/^\s*/, "") : rest, covenantContext: true }).families) out.add(f);
+    for (const f of classifyCovenantFamily({ title: c[1]!.replace(/\s+/g, " ").trim(), parentTitle: null, leadIn: underStem ? rest.replace(/^\s*/, "") : rest, covenantContext: true }).families) out.add(f);
+  }
+  return out;
+}
+
+/**
+ * Covenants set out in a schedule ("Schedule 16 (Incurrence Covenants) ... Part A Incurrence Covenants 1. Limitation on
+ * Debt and Issuance of Preferred Stock The Company shall not ..."): numbered items "N. Title" followed by an obligor
+ * sentence, inside a schedule whose caption names covenants/undertakings.
+ */
+function scheduleCovenantFamilies(text: string): Set<CovenantFamily> {
+  const out = new Set<CovenantFamily>();
+  const W = String.raw`(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|upon)`;
+  const item = new RegExp(String.raw`(?:^|\s)(\d{1,2})\.\s+(${W}(?:,?\s+${W}){0,12}?)\.?\s+(?=(?:The|Each|No|Neither)\s+(?:[A-Z][\w\u2019'-]*\s+){1,3}(?:shall|will|may)\b)`, "g");
+  // Scan forward from each mention of a covenant schedule (non-overlapping windows).
+  let scanned = -1;
+  for (const h of text.matchAll(/\bSchedule\s+\d{1,2}\s*(?:\(|[-\u2013\u2014:]\s*)?[^\n.]{0,60}?\b(?:Covenants|Undertakings)\b/gi)) {
+    if (h.index! < scanned) continue;
+    const region = text.slice(h.index!, h.index! + 60000);
+    scanned = h.index! + 60000;
+    let n = 0;
+    for (const m of region.matchAll(item)) {
+      if (++n > 60) break;
+      const lead = region.slice(m.index! + m[0].length, m.index! + m[0].length + 1500);
+      for (const f of classifyCovenantFamily({ title: m[2]!.trim(), parentTitle: null, leadIn: lead, covenantContext: true }).families) out.add(f);
+    }
   }
   return out;
 }
@@ -323,6 +357,9 @@ const FAMILY_EVIDENCE: Record<ChecklistFamily, { heading: RegExp; lead: RegExp }
   FINANCIAL_RATIOS: { heading: /\b(?:leverage ratio|coverage ratio|financial covenants?|net worth|fixed charge|minimum liquidity)\b/i, lead: /\b(?:permit|maintain)\b[^.;]{0,100}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage(?: ratio)?|liquidity)\b[^.;]{0,400}?\b(?:to\s+(?:exceed|be\s+(?:less|greater|more)\s+than)|of\s+(?:not\s+)?(?:less|more|greater)\s+than|at\s+(?:least|not\s+less\s+than))|\b(?:maintain)\b[^.;]{0,40}?\b(?:leverage ratio|coverage ratio|net worth|fixed charge coverage)\b/i },
 };
 const NEG_RE = new RegExp(NEG, "i");
+/** Negative covenants of another agreement incorporated by reference into this one. */
+const incorporatedCovenants = /\b(?:negative|restrictive)?\s*covenants\s+(?:set forth|contained)\s+in\s+(?!this\b|these\b)(?:the\s+)?(?:Senior|Existing|Other|[A-Z][A-Za-z]+\s+)?(?:Notes|Indenture|Credit Agreement|Loan Agreement)\b[\s\S]{0,1200}?\b(?:are|is|shall be)\s+(?:hereby\s+)?(?:deemed\s+(?:to\s+be\s+)?)?incorporated\b|\bincorporated\s+herein\s+by\s+reference\b[^.]{0,200}\bcovenants\b|\bcovenants\b[^.]{0,200}\bincorporated\s+herein\s+by\s+reference\b/i;
+
 const NOT_COVENANT_TITLE = /\brating\b|existing (?:indebtedness|debt)|succession to business|\bterm loans\b|debt documents|purchase transactions|\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion|negative pledge clauses|clauses restricting/i;
 
 /**
