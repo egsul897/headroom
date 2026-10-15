@@ -197,6 +197,9 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
     }
     for (const [f, re] of DEFINED) if (re.test(lead)) add(f, 1, "defined-term");
   }
+  // Restrictive-agreement covenants ("Negative Pledge Clauses", "Clauses Restricting Subsidiary Distributions") and
+  // loan-record mechanics ("Evidence of Indebtedness") name liens/dividends/debt only as the restricted subject.
+  if (args.title && /\bnegative pledge clauses\b|\bclauses restricting\b|^\s*evidence of\b/i.test(args.title)) scores.clear();
   let best: CovenantFamily | null = null, score = 0;
   for (const [f, s] of scores) if (s > score) { best = f; score = s; }
   // Need at least a heading+lead-in agreement or a strong lead-in alone.

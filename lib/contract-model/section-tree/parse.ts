@@ -567,11 +567,22 @@ export function treeText(raw: string): { text: string; basis: TextBasis } {
  * that follow a sentence end, a closing quote/paren or a page number. Whitespace-only change.
  */
 export function relineFlattened(t: string): string {
-  const lines = t.split("\n").length;
-  if (t.length / lines < 1500) return t;
-  return t.replace(/([.;:)\u201d"]|\s\d{1,3})(\s{1,6})(?=(?:ARTICLE|Article)\s+(?:[IVXLC]+|\d{1,2})\b\.?\s+[A-Z“"]|(?:SECTION|Section)\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"](?![^.]{0,20}\bof\b(?:\s+the)?\s+(?:Agreement|Indenture)))/g, "$1\n")
+  const lines = t.split("\n");
+  // Partially flattened extractions: most of the text sits in page-length lines even when short lines pull the
+  // average under the threshold. Re-line only the long lines.
+  const longChars = lines.reduce((n, l) => n + (l.length > 1500 ? l.length : 0), 0);
+  if (t.length / lines.length < 1500 && longChars < t.length * 0.5) return t;
+  if (t.length / lines.length >= 1500) return relineLine(t, true);
+  return lines.map((l) => (l.length > 1500 ? relineLine(l, false) : l)).join("\n");
+}
+
+function relineLine(t: string, bare: boolean): string {
+  const r = t.replace(/([.;:)\u201d"]|(?:^|\s)\d{1,3})(\s{1,6})(?=(?:ARTICLE|Article)\s+(?:[IVXLC]+|\d{1,2})\b\.?\s+[A-Z“"]|(?:SECTION|Section)\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"](?![^.]{0,20}\bof\b(?:\s+the)?\s+(?:Agreement|Indenture)))/gm, "$1\n")
     // An all-caps "SECTION 5.01 Title" right after an all-caps article caption ("ARTICLE 5 SUCCESSOR COMPANY SECTION 5.01").
     .replace(/(\b[A-Z]{3,})(\s{1,6})(?=SECTION\s+\d{1,2}\.\d{1,3}\.?\s+[A-Z“"])/g, "$1\n");
+  // Bare "8.20 Post-Closing Covenants. The Borrower ..." headings (no SECTION keyword) after a sentence end, only in
+  // fully flattened text (in partly flattened amendments these are quoted restatements).
+  return bare ? r.replace(/([.;:)\u201d"])(\s{1,6})(?=\d{1,2}\.\d{1,3}\.?\s+[A-Z][A-Za-z\u2019'-]+(?:,?\s+(?:[A-Z][A-Za-z\u2019'-]+|of|and|or|on|to|the|with|in|for)){0,8}\.\s+[A-Z(])/g, "$1\n") : r;
 }
 
 // Page-number lines are NOT stripped from tree text: basket citations come from the compute path's text, and the
