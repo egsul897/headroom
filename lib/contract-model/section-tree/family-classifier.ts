@@ -72,7 +72,7 @@ const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
 ];
 
 const HEADING: Array<[CovenantFamily, RegExp]> = [
-  ["PREPAYMENTS", /prepayments?.*(?:debt|indebtedness)|(?:junior|subordinated)[^,]*(?:payment|prepay)|payments? of (?:certain )?(?:debt|indebtedness)/i],
+  ["PREPAYMENTS", /prepayments?.*(?:debt|indebtedness)|(?:junior|subordinated)[^,]*(?:payment|prepay)|payments? (?:of|on|in respect of) (?:certain |junior |subordinated )?(?:debt|indebtedness)|restricted debt payments?/i],
   ["LIENS", /\bliens?\b|negative pledge|\bencumbrances?\b/i],
   ["DEBT", /\b(?:indebtedness|debt|borrowings?)\b/i],
   ["RESTRICTED_PAYMENTS", /restricted (?:junior )?payments?|dividends?|distributions?/i],

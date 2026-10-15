@@ -113,3 +113,13 @@ describe("combined investments / designation titles", () => {
     expect(st(doc, "INVESTMENTS").sectionPaths).toEqual(["6.2"]);
   });
 });
+
+describe("combined RP / debt-payment headings", () => {
+  it("'Restricted Payments; Restricted Debt Payments' credits PREPAYMENTS too", async () => {
+    const { classifyCovenantFamily } = await import("@/lib/contract-model/section-tree/family-classifier");
+    for (const title of ["Restricted Payments; Restricted Debt Payments", "Restricted Payments; Payments of Junior Debt"]) {
+      const v = classifyCovenantFamily({ title, parentTitle: null, covenantContext: true, leadIn: "(a) The Borrower will not, and will not permit any Restricted Subsidiary to, declare or make any Restricted Payment. (b) The Borrower will not prepay any Junior Indebtedness." });
+      expect(v.families).toEqual(expect.arrayContaining(["RESTRICTED_PAYMENTS", "PREPAYMENTS"]));
+    }
+  });
+});
