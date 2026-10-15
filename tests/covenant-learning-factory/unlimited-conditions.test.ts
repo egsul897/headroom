@@ -13,4 +13,8 @@ describe("unlimited grants and their conditions", () => {
     expect(unlimitedCapacityMatch("Restricted Payments in an unlimited amount so long as the Payment Conditions are satisfied").kind).toBe("CONDITIONAL");
     expect(unlimitedCapacityMatch("if the Payment Conditions are satisfied, Restricted Payments in an unlimited amount").kind).toBe("CONDITIONAL");
   });
+  it("'provided that no Restricted Payments may be made in an unlimited amount' is the grant's own negation", () => {
+    expect(unlimitedCapacityMatch("The Borrower may make Restricted Payments under this clause; provided that no Restricted Payments may be made in an unlimited amount").kind).toBe("NEGATED");
+    expect(unlimitedCapacityMatch("if no Investments shall be made in an unlimited amount").kind).toBe("NEGATED");
+  });
 });

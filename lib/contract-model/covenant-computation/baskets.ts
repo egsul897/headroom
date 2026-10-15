@@ -198,7 +198,9 @@ export function unlimitedCapacityMatch(text: string): { kind: "NONE" | "UNCONDIT
   if (!m) return { kind: "NONE" };
   const before = text.slice(Math.max(0, m.index - 240), m.index);
   // A condition's own "no" ("so long as no Default or Event of Default exists, ...") gates the grant; it does not negate it.
-  const beforeGrant = before.replace(CONDITION_NO, " ");
+  // Only a condition that closes ("..., ") before the grant is stripped. A "provided that no ..." that runs straight into
+  // the grant ("provided that no Restricted Payments may be made in an unlimited amount") is the grant's own negation.
+  const beforeGrant = before.replace(CONDITION_NO, (span, at: number) => (/^\s*[,;]/.test(before.slice(at + span.length)) ? " " : span));
   if (UNLIMITED_NEGATION.test(beforeGrant)) return { kind: "NEGATED" };
   // A financial-test condition, or a defined gating condition set ("so long as the Payment Conditions are satisfied"),
   // makes the grant conditional; "so long as no Default exists" alone does not.
