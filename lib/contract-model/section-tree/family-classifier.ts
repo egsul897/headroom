@@ -43,7 +43,9 @@ function obligorBound(lead: string): boolean {
   const head = lead.slice(0, 450);
   for (const m of head.matchAll(/\b(?:shall|will|may)\s+not\b/gi)) {
     if (PASSIVE.test(head.slice(m.index! + m[0].length))) continue;
-    const subject = head.slice(Math.max(0, m.index! - 70), m.index!).split(/[.;:]/).pop() ?? "";
+    // The subject is the clause just before the modal, carve-out parentheticals removed ("(which consent may be given in
+    // Lender’s sole discretion), Borrower will not").
+    const subject = stripParens(head.slice(Math.max(0, m.index! - 120), m.index!)).split(/[.;:,]/).pop() ?? "";
     if (!NON_OBLIGOR.test(subject)) return true;
   }
   for (const m of noPartyMatches(head)) {
