@@ -99,3 +99,12 @@ describe("item-level prohibition keeps an item in scope (a14-26274 negative pled
     expect(outOfCovenantScope(loc, "9.1", "Each Lender hereby irrevocably appoints the Administrative Agent as its agent.")).toBe(true);
   });
 });
+
+describe("affirmative covenants and distribution restrictions stay in scope", () => {
+  it("keeps 'The Company will cause each of its Subsidiaries…' and 'no such distribution shall be made … unless'", () => {
+    process.env.CLF_SCOPE_COVENANT = "1";
+    const loc = { candidateSection: () => null, citationSection: () => null, isCovenantSection: () => false };
+    expect(outOfCovenantScope(loc, "4.1", "(a) The Company will cause each of its Subsidiaries that becomes a guarantor of any Debt to execute a Guarantee")).toBe(false);
+    expect(outOfCovenantScope(loc, "4.1", "provided, however, no such bonus or profit distribution shall be made at any time unless, after giving effect thereto")).toBe(false);
+  });
+});

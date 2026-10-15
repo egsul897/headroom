@@ -129,10 +129,10 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
 }
 
 const COVENANT_TITLE = /covenant|events? of default|\bdefaults?\b|negative pledge|limitation|restrict|nonrecourse|non-recourse|burdensome/i;
-const OBLIGATION_LEAD = /\b(?:shall|will|may)\s+not\b|\bshall\s+(?:cause|maintain|deliver|furnish|keep|comply|preserve|pay)\b|\bevents? of default\b|\bif any of the following\b|\bno recourse\b/i;
+export const OBLIGATION_LEAD = /\b(?:shall|will|may)\s+not\b|\bshall\s+(?:cause|maintain|deliver|furnish|keep|comply|preserve|pay)\b|\bevents? of default\b|\bif any of the following\b|\bno recourse\b/i;
 
 /** "No Loan Party nor any Subsidiary shall …", "No Borrower and no Subsidiary will …" (not "No Loan Party is …", a representation). */
-const NO_PARTY_SHALL = /^\s*(?:\([a-z0-9]+\)\s*)?no\s+[^.;]{1,140}?\b(?:shall|will)\b/i;
+export const NO_PARTY_SHALL = /^\s*(?:\([a-z0-9]+\)\s*)?no\s+[^.;]{1,140}?\b(?:shall|will)\b/i;
 
 /** Covenant evidence beyond the family classifier: lead-in obligation/prohibition, or a covenant/default title on the section or an ancestor. */
 export function sectionLooksCovenant(tree: SectionTree, text: string, n: SectionTree["nodes"][number]): boolean {

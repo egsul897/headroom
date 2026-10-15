@@ -344,11 +344,14 @@ export function strictConditionReflected(c: string, b: string): boolean {
   return distinctiveTokenCount(conditionBoilerplateStripped(head)) >= 4;
 }
 
+/** Obligor-bound covenant wording in the item itself (affirmative or negative). */
+const ITEM_OBLIGATION = /\b(?:the\s+)?(?:company|borrower|issuer|parent|guarantor|loan part(?:y|ies)|obligors?)\s+(?:shall|will)\s+(?:not\b|cause|maintain|deliver|furnish|keep|comply|preserve|pay|use)/i;
+
 export function outOfCovenantScope(loc: TreeLocator | null | undefined, section: string | null, itemText?: string | null): boolean {
   if (process.env.CLF_SCOPE_COVENANT !== "1" || !loc?.isCovenantSection) return false;
   // An item whose own words are an operative prohibition ("shall not, and shall not permit … to") stays in
   // scope wherever it sits (e.g. a negative pledge inside a section the classifier calls non-covenant).
-  if (itemText && isProhibitive(itemText)) return false;
+  if (itemText && (isProhibitive(itemText) || ITEM_OBLIGATION.test(itemText) || /\bno\s+[^.;]{1,80}?\bshall\s+be\s+(?:made|paid|incurred|declared)\b/i.test(itemText))) return false;
   return loc.isCovenantSection(section) === false;
 }
 
