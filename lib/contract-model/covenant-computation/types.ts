@@ -40,6 +40,8 @@ export type BasketCategory =
   | "UNLIMITED_BY_PURPOSE"
   /** No cap stated and no explicit unlimited language: NEEDS_INPUT, never unlimited by default. */
   | "CONDITIONS_LIMITED"
+  /** Dollar figure is an operand of stated arithmetic ("$550,000,000 divided by …"): NEEDS_INPUT for the other operands. */
+  | "FORMULA_AMOUNT"
   | "RECLASS"
   | "UNKNOWN";
 
