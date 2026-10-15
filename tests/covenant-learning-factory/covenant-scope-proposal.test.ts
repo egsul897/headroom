@@ -108,3 +108,12 @@ describe("affirmative covenants and distribution restrictions stay in scope", ()
     expect(outOfCovenantScope(loc, "4.1", "provided, however, no such bonus or profit distribution shall be made at any time unless, after giving effect thereto")).toBe(false);
   });
 });
+
+describe("imperative / 'agree to' affirmative covenants stay in scope (Starbucks 6.06, Delta 5.16)", () => {
+  it("keeps them", () => {
+    process.env.CLF_SCOPE_COVENANT = "1";
+    const loc = { candidateSection: () => null, citationSection: () => null, isCovenantSection: () => false };
+    expect(outOfCovenantScope(loc, "6.6", "6.06 Maintenance of Properties . (a) Maintain, preserve and protect all of its material properties and equipment")).toBe(false);
+    expect(outOfCovenantScope(loc, "5.16", "(a) The Loan Parties (as applicable) agree to honor Miles in accordance with the SkyMiles Program")).toBe(false);
+  });
+});

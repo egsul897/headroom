@@ -8,7 +8,7 @@
 import { createHash } from "node:crypto";
 import type { ComputationResult } from "../../contract-model/covenant-computation/types";
 import type { LearningErrorRecord } from "../types";
-import { AMBIGUOUS, type TreeLocator } from "./tree-locator";
+import { AFFIRMATIVE_LEAD, AMBIGUOUS, type TreeLocator } from "./tree-locator";
 import { isProhibitive } from "../../contract-model/section-tree/semantics";
 
 export interface PrecedentCandidate {
@@ -351,7 +351,7 @@ export function outOfCovenantScope(loc: TreeLocator | null | undefined, section:
   if (process.env.CLF_SCOPE_COVENANT !== "1" || !loc?.isCovenantSection) return false;
   // An item whose own words are an operative prohibition ("shall not, and shall not permit … to") stays in
   // scope wherever it sits (e.g. a negative pledge inside a section the classifier calls non-covenant).
-  if (itemText && (isProhibitive(itemText) || ITEM_OBLIGATION.test(itemText) || /\bno\s+[^.;]{1,80}?\bshall\s+be\s+(?:made|paid|incurred|declared)\b/i.test(itemText))) return false;
+  if (itemText && (isProhibitive(itemText) || ITEM_OBLIGATION.test(itemText) || AFFIRMATIVE_LEAD.test(itemText.replace(/^\s*(?:section\s+)?\d+\.\d+\s*[^.]{0,80}\.\s*/i, "")) || /\bno\s+[^.;]{1,80}?\bshall\s+be\s+(?:made|paid|incurred|declared)\b/i.test(itemText))) return false;
   return loc.isCovenantSection(section) === false;
 }
 

@@ -132,12 +132,14 @@ const COVENANT_TITLE = /covenant|events? of default|\bdefaults?\b|negative pledg
 export const OBLIGATION_LEAD = /\b(?:shall|will|may)\s+not\b|\bshall\s+(?:cause|maintain|deliver|furnish|keep|comply|preserve|pay)\b|\bevents? of default\b|\bif any of the following\b|\bno recourse\b/i;
 
 /** "No Loan Party nor any Subsidiary shall …", "No Borrower and no Subsidiary will …" (not "No Loan Party is …", a representation). */
+/** Affirmative covenant lead-ins: imperative ("Maintain, preserve and protect …") or obligor "agree(s) to". */
+export const AFFIRMATIVE_LEAD = /^\s*(?:\([a-z0-9]+\)\s*)?(?:maintain|preserve|deliver|furnish|keep|comply|cause|pay and discharge|use the proceeds)\b|\b(?:borrowers?|company|issuer|loan part(?:y|ies)(?: \(as applicable\))?|obligors?|guarantors?)\s+(?:hereby\s+)?agrees?\s+to\b/i;
 export const NO_PARTY_SHALL = /^\s*(?:\([a-z0-9]+\)\s*)?no\s+[^.;]{1,140}?\b(?:shall|will)\b/i;
 
 /** Covenant evidence beyond the family classifier: lead-in obligation/prohibition, or a covenant/default title on the section or an ancestor. */
 export function sectionLooksCovenant(tree: SectionTree, text: string, n: SectionTree["nodes"][number]): boolean {
   const lead = text.slice(n.headingEnd, Math.min(n.end, n.headingEnd + 700));
-  if (isObligorProhibitionLead(lead) || isProhibitive(lead) || OBLIGATION_LEAD.test(lead) || NO_PARTY_SHALL.test(lead)) return true;
+  if (isObligorProhibitionLead(lead) || isProhibitive(lead) || OBLIGATION_LEAD.test(lead) || NO_PARTY_SHALL.test(lead) || AFFIRMATIVE_LEAD.test(lead)) return true;
   for (let a: typeof n | undefined = n; a; a = a.parentId ? tree.byId.get(a.parentId) : undefined) {
     if (a.title && COVENANT_TITLE.test(a.title)) return true;
   }
