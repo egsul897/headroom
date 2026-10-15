@@ -65,10 +65,10 @@ const RATIO_LIMIT = /\b(?:greater|less|more|lower|higher)\s+than\b|\bto\s+(?:exc
 
 const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
   ["LIENS", /\b(?:create|incur|assume|suffer|permit)\b[^.;]{0,160}\b(?:liens?|mortgages?|pledges?|security interests?|encumbrances?)\b(?!\s+(?:net|leverage|obligations|notes|credit|facility|term|secured)\b)/i],
-  ["DEBT", /\b(?:create|incur|issue|assume|guarantee|become\s+(?:directly\s+or\s+indirectly\s+)?liable|be(?:come)?\s+indebted)\b[^.;]{0,160}\b(?:indebtedness|debt|disqualified stock|preferred stock)\b/i],
+  ["DEBT", /\b(?:create|incur|issue|assume|guarantee|become\s+(?:directly\s+or\s+indirectly\s+)?liable|be(?:come)?\s+indebted)\b[^.;]{0,160}\b(?:indebtedness|debt|disqualified stock|preferred stock)\b|\bincur\s+(?:any\s+)?additional\s+Obligations\b/i],
   ["RESTRICTED_PAYMENTS", /\b(?:declare|pay|make)\b[^.;]{0,120}\b(?:dividends?|distributions?|restricted (?:junior )?payments?)\b|\b(?:purchase|redeem|retire|acquire)\b[^.;]{0,80}\b(?:equity interests?|capital stock|shares)\b/i],
   ["INVESTMENTS", /\b(?:make|hold|acquire)\b[^.;]{0,80}\b(?:investments?|advances?|loans?\s+to|capital contributions?)\b/i],
-  ["PREPAYMENTS", /\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\b(?:subordinated|junior|second lien|unsecured)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b|\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\bany\s+(?:other\s+)?(?:indebtedness|debt)\s+other\s+than\b/i],
+  ["PREPAYMENTS", /\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\b(?:subordinated|junior|second lien|unsecured)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b|\b(?:prepay|redeem|repurchase|defease|retire)\b[^.;]{0,160}\bany\s+(?:other\s+)?(?:indebtedness|debt)\s+other\s+than\b|\bmake\b[^.;]{0,120}\b(?:payment|prepayment|redemption|repurchase|defeasance)\b[^.;]{0,120}\bof\s+(?:any\s+)?(?:subordinated|junior|second lien)\b[^.;]{0,40}\b(?:indebtedness|debt|notes)\b/i],
   ["FUNDAMENTAL_CHANGES", /\btransactions? of merger\b|\b(?:consummate|enter into|effect)\b[^.;]{0,40}\b(?:merger|consolidation|amalgamation)\b|\b(?:merge|consolidate|amalgamate|liquidate|dissolve|wind\s+up)\b(?!\s+(?:EBITDA|Net|Total))/i],
   ["ASSET_SALES", /\b(?:sell|lease|transfer|convey|dispose|assign)\b[^.;]{0,300}?\b(?:assets?|propert(?:y|ies)|equity interests? (?:in|of) any (?:restricted )?subsidiar)|\b(?:make|consummate|effect)\b[^.;]{0,40}\b(?:Asset Sales?|Asset Dispositions?)\b/i],
   ["AFFILIATE_TRANSACTIONS", /\btransactions?\b[^.;]{0,220}\b(?:with|involving|to)\b[^.;]{0,60}\baffiliates?\b/i],
@@ -77,7 +77,7 @@ const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
 const HEADING: Array<[CovenantFamily, RegExp]> = [
   ["PREPAYMENTS", /prepayments?.*(?:debt|indebtedness)|(?:junior|subordinated)[^,]*(?:payment|prepay)|payments? of (?:certain )?(?:debt|indebtedness)/i],
   ["LIENS", /\bliens?\b|negative pledge|\bencumbrances?\b/i],
-  ["DEBT", /\b(?:indebtedness|debt|borrowings?|borrowed money)\b/i],
+  ["DEBT", /\b(?:indebtedness|debt|borrowings?|borrowed money)\b|^\s*additional obligations\b(?!\s+of\b)/i],
   ["RESTRICTED_PAYMENTS", /restricted (?:junior )?payments?|dividends?|distributions?/i],
   ["INVESTMENTS", /\binvestments?\b|loans?,? advances|acquisitions/i],
   ["ASSET_SALES", /asset sales?|asset transfers?|transfers? of assets|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],
