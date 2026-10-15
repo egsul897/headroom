@@ -183,7 +183,7 @@ export function enclosingSectionFamily(text: string, at: number): string | null 
   return null;
 }
 const HEADING_FAMILIES: Array<[string, RegExp]> = [
-  ["GUARANTEES", /\bguarant(?:y|ee|ees|ies)\b/i],
+  ["GUARANTEES", /\bguarant(?:y|ee|ees|ies|ors?)\b/i],
   ["INCREMENTAL_DEBT_AND_FACILITIES", /\bincremental\b/i],
   ["EVENTS_OF_DEFAULT", /\bevents?\s+of\s+default\b|^\s*defaults?\s*$/i],
 ];
