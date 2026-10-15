@@ -24,8 +24,8 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
-const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
+const PROHIBITION_CI = /\b(?:shall|will|may)\s+(?:\([a-z0-9]{1,4}\)\s*)?not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:except\b[^.;:]{0,200}?,\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
+const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:except\b[^.;:]{0,200}?,\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly|change its|liquidate|dissolve|wind up|amalgamate|assume|guarantee|issue|convey|engage|be(?:come)? indebted|consummate|not\s+(?:\([a-z0-9]{1,4}\)\s*)?(?:change|merge|consolidate|liquidate|dissolve|incur|create|make|sell|enter|permit|pay))\b/i;
 /** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
 const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
 const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
@@ -72,7 +72,7 @@ const VERB_OBJECT: Array<[CovenantFamily, RegExp]> = [
 const HEADING: Array<[CovenantFamily, RegExp]> = [
   ["PREPAYMENTS", /prepayments?.*(?:debt|indebtedness)|(?:junior|subordinated)[^,]*(?:payment|prepay)|payments? of (?:certain )?(?:debt|indebtedness)/i],
   ["LIENS", /\bliens?\b|negative pledge|\bencumbrances?\b/i],
-  ["DEBT", /\b(?:indebtedness|debt|borrowings?)\b/i],
+  ["DEBT", /\b(?:indebtedness|debt|borrowings?|borrowed money)\b/i],
   ["RESTRICTED_PAYMENTS", /restricted (?:junior )?payments?|dividends?|distributions?/i],
   ["INVESTMENTS", /\binvestments?\b|loans?,? advances|acquisitions/i],
   ["ASSET_SALES", /asset sales?|asset transfers?|transfers? of assets|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],

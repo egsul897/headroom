@@ -41,3 +41,15 @@ describe("heading shapes", () => {
     expect(classifyCovenantFamily({ title: "Merger, Consolidation or Sale of Assets", leadIn: "(a) Neither of the Issuers may, directly or indirectly: (1) consolidate or merge with or into another Person; or (2) sell all or substantially all of its properties.", covenantContext: false }).families).toContain("FUNDAMENTAL_CHANGES");
   });
 });
+
+describe("jammed headings and caption evidence", () => {
+  it("moves a margin number glued mid-sentence in front of its caption", () => {
+    const W = ["Zero", "One", "Two", "Three", "Four", "Five", "Six"];
+    const one = (n: number) => `Caption ${W[n]}. For purposes of thisSECTION 1.0${n} Agreement, the terms apply. `;
+    const t = relineFlattened([1, 2, 3, 4, 5, 6].map(one).join(""));
+    expect(t).toMatch(/\nSECTION 1\.02 Caption Two\. For purposes of this Agreement/);
+  });
+  it("'Except ..., create, incur ... Indebtedness' under 'Borrowed Money' is DEBT", () => {
+    expect(classifyCovenantFamily({ title: "Borrowed Money", leadIn: "Except with respect to existing Indebtedness, create, incur, assume or suffer to exist any liability for Indebtedness.", covenantContext: true }).families).toContain("DEBT");
+  });
+});
