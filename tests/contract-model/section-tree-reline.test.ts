@@ -94,3 +94,18 @@ describe("ratio evidence and buried tests", async () => {
     expect(familyEvidence("the Interest Coverage Ratio is not less than 2.00 to\n1.00 or (2) the Net Total Leverage Ratio would be no greater\n", "FINANCIAL_RATIOS").filter((e) => e.kind === "HEADING")).toEqual([]);
   });
 });
+
+describe("round 6: amendments, run-in titles, blackline numbers", async () => {
+  const { parseDocumentTree } = await import("@/lib/contract-model/section-tree/parse");
+  it("blackline 'old new Title.' numbers re-line to the new number", () => {
+    const body = `${filler(25)}Collateral Fair Market Value. 7.02 7.03 Investments. Make any Investments, except Permitted Investments. ${filler(25)}`;
+    expect(relineFlattened(body)).toMatch(/7\.02\n7\.03 Investments\. Make/);
+  });
+  it("'In the case of the Borrower, directly or indirectly: (i) consolidate' is an imperative prohibition", () => {
+    expect(classifyCovenantFamily({ title: "Fundamental Changes", leadIn: "(a) In the case of the Borrower, directly or indirectly: (i) consolidate or merge with or into another Person, or liquidate, divide or dissolve; unless the Borrower is the continuing Person.", covenantContext: true }).families).toContain("FUNDAMENTAL_CHANGES");
+  });
+  it("an article caption may follow a blank line", () => {
+    const t = parseDocumentTree(`ARTICLE 4\n\nCOVENANTS\n\nSection 4.01 Payment. The Company shall pay. ${filler(3)}\n\nARTICLE 5\n\nSUCCESSORS\n\nSection 5.01 Merger. The Company shall not merge. ${filler(3)}`);
+    expect(t.nodes.filter((n) => n.kind === "ARTICLE").map((n) => n.title)).toEqual(["COVENANTS", "SUCCESSORS"]);
+  });
+});
