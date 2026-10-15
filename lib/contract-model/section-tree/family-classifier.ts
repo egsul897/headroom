@@ -24,15 +24,31 @@ export interface FamilyVerdict {
 }
 
 /** Opening prohibition: "shall/will not", "No X shall", "may not", or an article-imperative lead. */
-const PROHIBITION = /\b(?:shall|will|may)\s+not\b|\bno\s+[A-Z][\w-]*(?:\s+[\w’'()-]+){0,20}?\s+(?:shall|will|may)\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
+const PROHIBITION_CI = /\b(?:shall|will|may)\s+not\b|^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
 const IMPERATIVE = /^\s*(?:\([a-z0-9]+\)\s*)?(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|cause or make|directly or indirectly)\b/i;
+/** Case-sensitive "No <Party> [nor any <Party>] shall": the head must be a capitalized party noun, not a condition. */
+const NOT_PARTY_HEAD = /^(?:Default|Event|Events|Lien|Liens|Material|Change|Notice|Amendment|Provision|Payment|Proceeds|Responsible|Termination|Waiver|Consent|Action|Claim|Person|Prepayment|Borrowing|Loan(?! Part)|Advance|Letter|Interest|Fee|Commitment|Holder|Holders|Lender|Lenders|Trustee|Agent|Bank|Purchaser|Noteholder)\b/;
+const NO_PARTY_RE = /\b[Nn]o\s+([A-Z][\w-]*)((?:\s+[\w’'-]+){0,12}?)\s+(shall|will|may)\b/g;
+/** Parentheticals removed (with their length kept), so carve-outs neither count as head tokens nor shift offsets. */
+function stripParens(s: string): string { return s.replace(/\([^()]{0,200}\)/g, (m) => " ".repeat(m.length)).replace(/ {2,}/g, (m) => " ".repeat(m.length)); }
+function noPartyMatches(lead: string): RegExpMatchArray[] {
+  return [...stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length)).matchAll(NO_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!));
+}
+const PROHIBITION = { test: (lead: string) => PROHIBITION_CI.test(lead) || noPartyMatches(lead).length > 0 };
+
 /** The prohibition binds an obligor: not the trustee, agents, lenders or holders, and not a passive "shall not be required/deemed". */
 const NON_OBLIGOR = /\b(?:trustees?|agents?|holders?|lenders?|banks?|purchasers?|registrar|noteholders?|collateral agent|arrangers?)\b/i;
 function obligorBound(lead: string): boolean {
-  const re = /\b(?:shall|will|may)\s+not\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated|construed))|\b[Nn]o\s+([A-Z][\w-]*(?:\s+[\w’'()-]+){0,20}?\s+)(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated|construed))/g;
-  for (const m of lead.slice(0, 450).matchAll(re)) {
-    const subject = m[1] ?? lead.slice(Math.max(0, (m.index ?? 0) - 70), m.index ?? 0).split(/[.;:]/).pop() ?? "";
+  const PASSIVE = /^\s+be\s+(?:required|deemed|responsible|liable|obligated|construed)/;
+  const head = lead.slice(0, 450);
+  for (const m of head.matchAll(/\b(?:shall|will|may)\s+not\b/gi)) {
+    if (PASSIVE.test(head.slice(m.index! + m[0].length))) continue;
+    const subject = head.slice(Math.max(0, m.index! - 70), m.index!).split(/[.;:]/).pop() ?? "";
     if (!NON_OBLIGOR.test(subject)) return true;
+  }
+  for (const m of noPartyMatches(head)) {
+    if (PASSIVE.test(head.slice(m.index! + m[0].length))) continue;
+    if (!NON_OBLIGOR.test(m[1]! + m[2]!)) return true;
   }
   return false;
 }
@@ -99,8 +115,17 @@ export function operativeWindow(leadIn: string): string {
   return leadIn;
 }
 
+/** A temporal lead ("From the Amendment No. 1 Effective Date and prior to September 30, 2022, declare or pay ...") before an article imperative. */
+const TEMPORAL_LEAD = /^[\s.:]*(?:\([a-z0-9]+\)\s*)?(?:from|after|prior to|until|at any time|during)\b[^;:]{0,200}?,\s*(?=(?:incur|create|make|declare|sell|enter into|merge|permit|pay|prepay|purchase|transfer|consolidate|dispose|directly or indirectly)\b)/i;
+/**
+ * Conditional permission: "The Issuer may consolidate with or merge ... and may permit ..., provided that / only if ..."
+ * (indenture merger covenants). Restrictive in substance: the act is allowed only on the stated conditions.
+ */
+const CONDITIONAL_PERMISSION = /^\s*(?:\([a-z0-9]+\)\s*)?(?:the\s+)?(?:issuer|company|borrower|parent|guarantor|obligor)s?\s+(?:shall\s+not\s+|may\s+(?:not\s+)?)?(?:consolidate|merge|amalgamate|convey|transfer|sell|lease)\b[^]{0,1800}?\b(?:only if|provided,? that|if|unless|so long as)\b/i;
+
 export function classifyCovenantFamily(args: { title: string | null; leadIn: string; parentTitle?: string | null; covenantContext?: boolean }): FamilyVerdict {
-  const lead = operativeWindow(args.leadIn).slice(0, 700);
+  const raw = operativeWindow(args.leadIn).replace(TEMPORAL_LEAD, "");
+  const lead = (CONDITIONAL_PERMISSION.test(raw) && !/\b(?:shall|will|may)\s+not\b/i.test(raw.slice(0, 120)) ? raw.replace(/\bmay\s+(?=consolidate|merge|amalgamate|convey|transfer|sell|lease)/i, "shall not, except as provided below, ") : raw).slice(0, 700);
   const prohibitive = PROHIBITION.test(lead);
   // The ratio subject is read from the operative test verb, past any "so long as any Loan remains outstanding ...,
   // that" survival preamble.
@@ -113,7 +138,8 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   if (prohibitive) {
     // Only the first prohibition sentence counts as the lead-in object.
     // Article-imperative leads ("Enter into any transaction ...") start at 0; otherwise at the first prohibition.
-    const m = IMPERATIVE.test(lead) ? { index: 0 } : /(?:shall|will|may)\s+not\b|\bno\s+[A-Z][\w-]*(?:\s+[\w’'()-]+){0,20}?\s+(?:shall|will|may)\b/i.exec(lead);
+    const ci = /(?:shall|will|may)\s+not\b/i.exec(lead), np = noPartyMatches(lead)[0];
+    const m = IMPERATIVE.test(lead) ? { index: 0 } : [ci, np].filter(Boolean).sort((a, b) => a!.index! - b!.index!)[0] ?? null;
     // The object may follow a colon and a first enumerated clause ("shall not: (i) declare or pay any dividend").
     const from = lead.slice(m?.index ?? 0);
     const sentence = from.slice(0, Math.min(450, (from.search(/\.\s/) + 1) || 450));
