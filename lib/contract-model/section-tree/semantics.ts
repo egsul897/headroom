@@ -286,17 +286,18 @@ function captionFamilies(body: string, skip?: (offset: number) => boolean): Set<
 function scheduleCovenantFamilies(text: string): Set<CovenantFamily> {
   const out = new Set<CovenantFamily>();
   const W = String.raw`(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|upon)`;
-  const item = new RegExp(String.raw`(?:^|\s)(\d{1,2})\.\s+(${W}(?:,?\s+${W}){0,12}?)\.?\s+(?=(?:The|Each|No|Neither)\s+(?:[A-Z][\w\u2019'-]*\s+){1,3}(?:shall|will|may)\b)`, "g");
+  const item = new RegExp(String.raw`(?:^|\s)(\d{1,2})\.\s+(${W}(?:,?\s+${W}){0,12}?)\.?\s+(?=(?:\d{1,2}\.\d{1,2}\s+(?:The\s+)?[A-Z][\w\u2019'-]*(?:\s+[A-Z][\w\u2019'-]*){0,3}\s+(?:\([a-z]\)\s+)?)?(?:The|Each|No|Neither)\s+(?:[A-Z][\w\u2019'-]*\s+){1,3}(?:shall|will|may)\b)`, "g");
   // Scan forward from each mention of a covenant schedule (non-overlapping windows).
   let scanned = -1;
-  for (const h of text.matchAll(/\bSchedule\s+\d{1,2}\s*(?:\(|[-\u2013\u2014:]\s*)?[^\n.]{0,60}?\b(?:Covenants|Undertakings)\b/gi)) {
+  for (const h of text.matchAll(/\bSchedule\s+\d{1,2}\s*(?:\(|[-\u2013\u2014:]\s*)?[^\n.]{0,60}?\b(?:Covenants|Undertakings)\b(?![\s\u200b\u200c\u2026.]*\d{1,3}\s*(?:\n|$))/gi)) {
     if (h.index! < scanned) continue;
-    const region = text.slice(h.index!, h.index! + 60000);
-    scanned = h.index! + 60000;
+    const region = text.slice(h.index!, h.index! + 150000);
+    scanned = h.index! + 20000;
     let n = 0;
     for (const m of region.matchAll(item)) {
       if (++n > 60) break;
       const lead = region.slice(m.index! + m[0].length, m.index! + m[0].length + 1500);
+      if (NOT_COVENANT_TITLE.test(m[2]!)) continue;
       for (const f of classifyCovenantFamily({ title: m[2]!.trim(), parentTitle: null, leadIn: lead, covenantContext: true }).families) out.add(f);
     }
   }
@@ -368,7 +369,7 @@ const NEG_RE = new RegExp(NEG, "i");
 /** Negative covenants of another agreement incorporated by reference into this one. */
 const incorporatedCovenants = /\b(?:negative|restrictive)?\s*covenants\s+(?:set forth|contained)\s+in\s+(?!this\b|these\b)(?:the\s+)?(?:Senior|Existing|Other|[A-Z][A-Za-z]+\s+)?(?:Notes|Indenture|Credit Agreement|Loan Agreement)\b[\s\S]{0,1200}?\b(?:are|is|shall be)\s+(?:hereby\s+)?(?:deemed\s+(?:to\s+be\s+)?)?incorporated\b|\bincorporated\s+herein\s+by\s+reference\b[^.]{0,200}\bcovenants\b|\bcovenants\b[^.]{0,200}\bincorporated\s+herein\s+by\s+reference\b/i;
 
-const NOT_COVENANT_TITLE = /\brating\b|existing (?:indebtedness|debt)|succession to business|\bterm loans\b|debt documents|purchase transactions|\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion|negative pledge clauses|clauses restricting/i;
+const NOT_COVENANT_TITLE = /\brating\b|existing (?:indebtedness|debt)|succession to business|\bterm loans\b|debt documents|purchase transactions|\btrustee\b|^[“"]|[“"][^”"]{1,80}[”"]\s*means|definition|defined terms|representation|event of default|evidence of|references to|debt service|senior indebtedness|holder of|of stock|of shares|repayment|status as|opinion|negative pledge clauses|clauses restricting|debt purchase/i;
 
 /**
  * Lead-in text that names a family's verb/object but is not that covenant: affiliate-transaction text for asset sales,
@@ -407,6 +408,13 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
     // (Index lines are skipped for ratios only: defined-ratio indexes are common in indentures that test ratios only
     // for incurrence; for other families an index entry still points at a covenant the parse may have missed.)
     if (family === "FINANCIAL_RATIOS" && (/^[^\n]*\n\s*\d{1,2}\.\d{1,3}\s*\n/.test(afterTitle) || /\s\d{1,3}\s*$/.test(title))) continue;
+    // A notice duty under a covenant-sounding heading ("5.16 Fundamental Changes  Provide the Purchaser with at least 15
+    // days' prior written notice ...") restricts nothing.
+    if (family === "DEBT" || family === "FUNDAMENTAL_CHANGES") {
+      const body = text.slice(m.index! + m[0].length, m.index! + m[0].length + 400).replace(/^[\s.]+/, "");
+      const first = body.split(/(?<=\.)\s+(?=[A-Z(])/)[0] ?? body;
+      if (!NEG_RE.test(first) && /\b(?:notice|inform|notify)\b/i.test(first) && !/\b(?:except|unless|without)\b/i.test(first)) continue;
+    }
     const hm = ev.heading.exec(title);
     // The family must lead the title (allowing "Limitation on", "Restrictions on", "Incurrence of"), not be one
     // word inside an unrelated heading ("Evidence of Debt", "Trustee as Holder of Senior Indebtedness").

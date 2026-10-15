@@ -77,7 +77,7 @@ const HEADING: Array<[CovenantFamily, RegExp]> = [
   ["INVESTMENTS", /\binvestments?\b|loans?,? advances|acquisitions/i],
   ["ASSET_SALES", /asset sales?|asset transfers?|transfers? of assets|dispositions?|sale of assets|disposal|sale[- ]leaseback|sales? of (?:property|assets)/i],
   ["AFFILIATE_TRANSACTIONS", /affiliates?/i],
-  ["FUNDAMENTAL_CHANGES", /fundamental changes?|corporate changes?|^\s*liquidation(?:,|\s+(?:and|or))\s+dissolution|\bmerger?s?\b|\bconsolidations?\b|consolidate\b|amalgamat/i],
+  ["FUNDAMENTAL_CHANGES", /^\s*successors?\s*$|fundamental changes?|corporate changes?|^\s*liquidation(?:,|\s+(?:and|or))\s+dissolution|\bmerger?s?\b|\bconsolidations?\b|consolidate\b|amalgamat/i],
   ["FINANCIAL_RATIOS", /financial (?:condition |maintenance |performance |ratio )?covenants?|maintenance covenants?|financial tests?|\bratios?\b|\bliquidity\b|net worth|fixed charge|\bleverage\b|(?:interest|debt service|asset|collateral) coverage/i],
 ];
 
