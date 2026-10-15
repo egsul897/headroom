@@ -315,21 +315,6 @@ export function conditionBound(condExcerpt: string, cite: string): boolean {
   return b.includes(c.slice(0, 30));
 }
 
-/**
- * Tree binding: a condition/exception is bound when a basket citation overlaps the tree node that
- * holds the condition (the clause the proviso qualifies). Returns null when the tree cannot locate the
- * condition uniquely, so the caller falls back to text matching.
- */
-export function conditionBoundByTree(loc: TreeLocator | null | undefined, condExcerpt: string, baskets: ComputationResult["baskets"]): boolean | null {
-  if (process.env.CLF_TREE_PROVISO === "0" || !loc?.nodeSpanOf || !loc.textSpanOf) return null;
-  const node = loc.nodeSpanOf(condExcerpt);
-  if (!node) return null;
-  return baskets.some((b) => {
-    const sp = loc.textSpanOf!(b.citationExcerpt);
-    return !!sp && sp.start < node.end && node.start < sp.end;
-  });
-}
-
 export function outOfCovenantScope(loc: TreeLocator | null | undefined, section: string | null): boolean {
   if (process.env.CLF_SCOPE_COVENANT !== "1" || !loc?.isCovenantSection) return false;
   return loc.isCovenantSection(section) === false;
@@ -490,7 +475,7 @@ export function selfCheckComputation(args: {
     if (!cond.excerpt || cond.excerpt.length < 40) continue;
     // Keep light — do not flood ledger; only when kind suggests covenant gate
     if (cond.kind && /exception|proviso|carve.?out/i.test(cond.kind)) {
-      const hit = conditionBoundByTree(args.locator, cond.excerpt, baskets) ?? baskets.some((b) => conditionBound(cond.excerpt!, b.citationExcerpt));
+      const hit = baskets.some((b) => conditionBound(cond.excerpt!, b.citationExcerpt));
       if (!hit && outOfCovenantScope(args.locator, args.locator ? args.locator.citationSection(cond.excerpt) : null)) continue;
       if (!hit) {
         // Skip mass noise: only record if we already have other errors for this source

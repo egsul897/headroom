@@ -62,20 +62,6 @@ export interface TreeLocator {
   citationSection(citation: string): string | null;
   /** true/false when the tree + family classifier can tell whether a located section is a covenant section; null when unknown. */
   isCovenantSection?(section: string | null): boolean | null;
-  /** Span [start,end) in tree text of the deepest tree node holding `text` (unique body hit only), else null. */
-  nodeSpanOf?(text: string): { start: number; end: number } | null;
-  /** Span [start,end) in tree text covered by `text` (unique body hit only), else null. */
-  textSpanOf?(text: string): { start: number; end: number } | null;
-}
-
-function uniqueSpan(ix: Indexed, text: string): { start: number; end: number } | null {
-  const full = key(text);
-  const k = full.slice(0, 60);
-  if (k.length < 24) return null;
-  const at = ix.norm.indexOf(k);
-  if (at < 0 || ix.norm.indexOf(k, at + 1) >= 0) return null;
-  const endAt = ix.norm.startsWith(full, at) ? at + full.length - 1 : at + k.length - 1;
-  return { start: ix.map[at]!, end: ix.map[Math.min(ix.map.length - 1, endAt)]! + 1 };
 }
 
 export function buildTreeLocator(args: { documentText: string | null; candidates: PrecedentCandidate[] }): TreeLocator {
@@ -100,15 +86,6 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
       candidateSection: (c) => (ix && c.excerpt ? sectionAt(ix, c.excerpt) : null),
       citationSection: (cite) => (ix ? sectionAt(ix, cite) : null),
       // Unknown (no tree, unlocated, ambiguous) → null: callers must keep counting (fail closed).
-      nodeSpanOf: (t) => {
-        const sp = ix ? uniqueSpan(ix, t) : null;
-        if (!ix || !sp) return null;
-        const n = deepestContaining(ix.tree, sp.start, sp.end);
-        // Only a CLAUSE (the limb the proviso qualifies); a whole SECTION or ARTICLE is too coarse and would bind
-        // any exception to any basket in the same section.
-        return n.kind === "CLAUSE" ? { start: n.start, end: n.end } : null;
-      },
-      textSpanOf: (t) => (ix ? uniqueSpan(ix, t) : null),
       isCovenantSection: (sec) => (!covenantSecs || !sec || sec === AMBIGUOUS ? null : covenantSecs.has(sec)),
     };
   }
