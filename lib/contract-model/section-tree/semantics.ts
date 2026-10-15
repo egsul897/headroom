@@ -269,12 +269,14 @@ function restrictedPaymentItemFamilies(body: string): Set<string> {
   const out = new Set<string>();
   const head = body.slice(0, 8000).replace(/\s+/g, " ");
   const stem = /\b(?:shall|will)\s+not\b[^.:]{0,300}?(?:directly or indirectly)?[^.:]{0,40}?(?:to|:)\s*(?=\((?:1|a|i)\))/i.exec(head);
-  if (!stem) return out;
-  const items = head.slice(stem.index + stem[0].length);
+  // Article-imperative layout: the negative stem sits in the article preamble and the section opens "(1) declare or pay".
+  const imperative = /^\s*\((?:1|a|i|A)\)\s+(?:directly or indirectly,?\s*)?(?:declare|pay|make)\b/.test(head);
+  if (!stem && !imperative) return out;
+  const items = imperative || !stem ? head : head.slice(stem.index + stem[0].length);
   for (const m of items.matchAll(/\((?:\d{1,2}|[a-h]|i{1,3}|iv|v|vi{0,3})\)\s+([^]{10,400}?)(?=\((?:\d{1,2}|[a-h]|i{1,3}|iv|v|vi{0,3})\)\s|$)/gi)) {
     const it = m[1]!;
     if (/^\s*(?:dividends|distributions|payments?|any\s+\w+\s+(?:made|paid))\b/i.test(it)) continue; // an exception limb, not a restricted act
-    if (/^\s*(?:directly or indirectly,?\s*)?(?:purchase|repurchase|redeem|defease|retire|prepay|make any (?:principal )?payment on)\b[^;]{0,200}\b(?:subordinated|junior)\b[^;]{0,60}\b(?:obligations|indebtedness|debt|notes)\b/i.test(it)) out.add("PREPAYMENTS");
+    if (/^\s*(?:directly or indirectly,?\s*)?(?:purchase|repurchase|redeem|defease|retire|prepay|make any (?:principal )?payment on)\b[^;]{0,300}\b(?:subordinated|junior)\b[^;]{0,60}\b(?:obligations|indebtedness|debt|notes)\b/i.test(it)) out.add("PREPAYMENTS");
     if (/^\s*(?:directly or indirectly,?\s*)?make\s+any\s+(?:Restricted\s+)?Investment\b/i.test(it)) out.add("INVESTMENTS");
   }
   return out;
@@ -421,6 +423,10 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   // that mentions an Affiliate: a disposition covenant with an affiliate carve-out stays asset-sales evidence.
   if (family === "ASSET_SALES" && (/\baffiliate transactions?\b/i.test(sent) || /\b(?:transactions?|agreements?|arrangements?|contracts?)\b[^.;]{0,80}\bwith\b[^.;]{0,30}\baffiliates?\b/i.test(sent)) && !/\b(?:all or substantially all|asset sale|asset disposition)\b/i.test(sent)) return true;
   if ((family === "INVESTMENTS" || family === "RESTRICTED_PAYMENTS" || family === "PREPAYMENTS") && DESIGNATION_OR_SUSPENSION.test(sent)) return true;
+  // Debt-incurrence mechanics that mention repaying debt: ratio-debt / refinancing / lien-priority provisos, pro forma
+  // calculation and classification rules ("shall not give effect to any repayment", "Ratio Debt ... not in excess of",
+  // "the Indebtedness secured by the new Lien shall not have a higher priority", "shall classify Indebtedness").
+  if (family === "PREPAYMENTS" && (/\b(?:Ratio Debt|Refinancing Indebtedness|Permitted Refinancing|secured by the new Lien|higher priority|pro forma|calculation|calculated|classify|reclassif|give effect to|Fixed Charge|Leverage Ratio|Coverage Ratio)\b/i.test(sent) || /^\s*(?:\(\w{1,4}\)\s*)?(?:provided|that)\b/i.test(sent))) return true;
   // Subordination payment blockage ("the Company shall not pay principal of ... or redeem the Securities ... if a default on
   // Designated Senior Indebtedness occurs") restricts paying the subordinated instrument itself, not a prepayment covenant.
   if (family === "PREPAYMENTS" && /\b(?:(?:Guarantor\s+)?Senior Indebtedness|Designated Senior|Payment Blockage|Senior Debt)\b/.test(sent) && /\b(?:the\s+)?(?:Securities|Notes|Subsidiary Guarantees?|Debentures)\b/.test(sent)) return true;
