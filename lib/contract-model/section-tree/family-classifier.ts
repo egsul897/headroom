@@ -164,7 +164,7 @@ export function classifyCovenantFamily(args: { title: string | null; leadIn: str
   // Affiliate covenants worded as an obligation: the obligor shall conduct its affiliate transactions on arm's-length
   // (no less favorable) terms. Needs an affiliate heading and the obligor as subject.
   if (!prohibitive && args.title && /\btransactions?\s+with\s+(?:affiliates|related)/i.test(args.title)
-    && /^\W*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+)?(?:Borrower|Company|Issuer|Parent|Holdings|Obligors?|Loan Parties|Credit Parties|Guarantors?)\b[^.]{0,120}\b(?:shall|will)\b[^.]{0,80}\b(?:conduct|enter into|effect)\b[^.]{0,200}\btransactions?\b[^.]{0,80}\bAffiliates?\b[^.]{0,300}\b(?:favorable|arm[’']?s[- ]length)/i.test(lead.slice(0, 700)))
+    && /^\W*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+)?(?:Borrower|Company|Issuer|Parent|Holdings|Obligors?|Loan Parties|Credit Parties|Guarantors?)\b[^.]{0,120}\b(?:shall|will)\b[^.]{0,80}\b(?:conduct|enter into|effect|consummate|engage in)\b[^.]{0,200}\btransactions?\b[^.]{0,80}\bAffiliates?\b[^.]{0,700}\b(?:favorable|arm[’']?s[- ]length)/i.test(lead.slice(0, 1200)))
     add("AFFILIATE_TRANSACTIONS", 3, "obligation-form");
   // A leading clause caption ("(a) Mergers, Consolidations, Disposal of Assets, Etc. The Borrower will not ...") is
   // heading text of the section too.

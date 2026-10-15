@@ -205,13 +205,44 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
     const node = { id: `inline:${u.start}`, kind: "SECTION", path: u.path, title: u.title, start: u.start, headingEnd: u.headingEnd, end: u.end, depth: 1, parentId: null } as unknown as TreeNode;
     famOf.set(node.id, [...fams]); inlineUnits.push(node as (typeof units)[number]);
   }
+  // Prohibitions buried inside other clauses: inside a negative-covenant container (an ARTICLE/SECTION titled as
+  // covenants but not affirmative, or holding at least two classified covenant sections), each obligor-bound
+  // prohibition sentence whose lead-in object names a family is a covenant unit (the smallest section holding it).
+  const buriedUnits: typeof units = [];
+  const classified = new Set(units.filter((u) => famOf.get(u.id)?.length).map((u) => u.id));
+  const containers = tree.nodes.filter((n) => (n.kind === "ARTICLE" || n.kind === "SECTION")
+    && !/affirmative|remed|default|condition|representation|warrant|definition/i.test(n.title ?? "")
+    && (/\bnegative covenants?\b|^\s*covenants?\b|\bcertain covenants\b|\bcovenants of\b/i.test(n.title ?? "")
+      || (n.kind === "ARTICLE" && tree.nodes.filter((c) => c.parentId === n.id && classified.has(c.id)).length >= 2)
+      || classified.has(n.id)));
+  for (const c of containers) {
+    const body = text.slice(c.headingEnd, Math.min(c.end, c.headingEnd + 200000));
+    for (const m of body.matchAll(/(?:^|[.;:]\s+|\n\s*)((?:\([a-zA-Z0-9]{1,4}\)\s*)?(?:The|No|Neither|None of|Each)\s+[A-Z][^.;]{0,160}?\b(?:shall|will|may)\s+not\b[^.;]{0,400})/g)) {
+      const sent = m[1]!, at = c.headingEnd + m.index! + (m[0].length - sent.length);
+      if (!isObligorProhibitionLead(sent) || /\b(?:Trustee|Agent|Lenders?|Holders?|Secured Part(?:y|ies)|Purchasers?)\b/.test(sent.slice(0, 60))) continue;
+      const v = classifyCovenantFamily({ title: null, parentTitle: null, leadIn: sent, covenantContext: true });
+      // "all or substantially all" is a fundamental change, a sale-leaseback its own covenant, and a sentence about
+      // dealings with Affiliates the affiliate covenant only.
+      const fams = v.families.filter((f) => v.evidence.includes(`${f}:lead-in`) && !spuriousEvidence(f as ChecklistFamily, sent, 0)
+        && !(f !== "AFFILIATE_TRANSACTIONS" && /\bAffiliates?\b/.test(sent))
+        && !(f === "ASSET_SALES" && /substantially all|lease[- ]?back|rent or lease/i.test(sent)));
+      if (!fams.length) continue;
+      const holder = sections.filter((x) => x.start <= at && x.end > at).sort((a, b) => (a.end - a.start) - (b.end - b.start))[0] ?? c;
+      if (/affiliate/i.test(holder.title ?? "") || /\bAffiliates?\b/.test(text.slice(at, at + 1200))) { const k = fams.indexOf("INVESTMENTS"); if (k >= 0) fams.splice(k, 1); }
+      if (!fams.length) continue;
+      const node = { ...holder, id: `buried:${at}` } as (typeof units)[number];
+      famOf.set(node.id, fams); buriedUnits.push(node);
+      if (buriedUnits.length > 200) break;
+    }
+  }
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
   const opening = text.slice(0, 4000);
   const partialDocument = /\bFORM\s+8-K\b|\bCURRENT REPORT\b/i.test(opening) || /\b(?:AMENDMENT|WAIVER|JOINDER|SUPPLEMENTAL INDENTURE|INCREMENTAL)\b[^\n]{0,80}\b(?:TO|NO\.)\b/.test(opening);
   return CHECKLIST_FAMILIES.map((family) => {
     // Inline units only fill a family the tree found nowhere.
     const treeHits = units.filter((s) => famOf.get(s.id)?.includes(family));
-    const hits = treeHits.length ? treeHits : inlineUnits.filter((s) => famOf.get(s.id)?.includes(family));
+    const inlineHits = inlineUnits.filter((s) => famOf.get(s.id)?.includes(family));
+    const hits = treeHits.length ? treeHits : inlineHits.length ? inlineHits : buriedUnits.filter((s) => famOf.get(s.id)?.includes(family));
     if (hits.length === 0) {
       const ev = familyEvidence(text, family);
       const absent = ev.length === 0;
@@ -361,15 +392,17 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
   // to the adjacent-prohibition run test below).
   const extra = [
     /(?:^|\n)[ \t]*((?:SECTION|Section)[ \t]+(\d{3,4}))\.?[ \t]+([A-Z][^\n.]{2,80}?)[ \t]*\.?[ \t]*(?:\n|(?=\([a-z0-9]\)|[A-Z]))/g,
-    /(?:^|\n)[ \t]*((\d{1,2}))\.[ \t]+([A-Z][A-Z,;'’&\- ]{4,80}?)[ \t]*\n/g,
+    /(?:^|\n)[ \t]*((\d{1,2}))\.(?:[ \t]+|[ \t]*\n[ \t]*)([A-Z][A-Z,;'’&\- ]{4,80}?)[ \t]*\n/g,
+    // An unnumbered caption on its own line ("Liens" then a blank line, then "The Issuer will not ...").
+    /(?:^|\n[ \t]*\n)[ \t]*(()([A-Z][A-Za-z,;'’&\- ]{2,60}?))[ \t]*\n[ \t]*\n?[ \t]*(?=(?:The|No|Neither)\s)/g,
     // "N.NN <Caption> Enter into ..." / "N.NN <Caption> The Borrower shall not ...": no period, body on the same line.
-    /(?:^|\n)[ \t]*((?:SECTION[ \t]+|Section[ \t]+)?(\d{1,2}\.\d{1,2}))\.?[ \t]+([A-Z][a-z’']+(?:[ \t]+(?:[A-Z][a-z’']+|of|on|and|with|to|in|the|or|for|&))*?)[ \t]+(?=(?:Enter|Make|Create|Incur|Declare|Sell|Permit|Directly|Pay|Prepay|Merge|Consolidate|Purchase|Dispose|Transfer)\b|(?:The|No|Neither)[ \t]+(?:[A-Z][\w-]*[ \t]+){0,3}(?:shall|will)[ \t]+not\b)/g,
-    /(?:^|\n)[ \t]*(\(([a-z]{1,2}|\d{1,2})\))[ \t]+([A-Z][A-Za-z,;'’&\- ]{2,60}?)[ \t]?\.[ \t]+(?=[A-Z])/g,
+    /(?:^|\n)[ \t]*(?:\d{1,3}[ \t]+(?=(?:SECTION|Section)[ \t]))?((?:SECTION[ \t]+|Section[ \t]+)?(\d{1,2}\.\d{1,2}))\.?[ \t]+([A-Z][a-z’']+,?(?:[ \t]+(?:[A-Z][a-z’']+|of|on|and|with|to|in|the|or|for|&),?)*?)[ \t]+(?=(?:Enter|Make|Create|Incur|Declare|Sell|Permit|Directly|Pay|Prepay|Merge|Consolidate|Purchase|Dispose|Transfer)\b|(?:The|No|Neither)[ \t]+(?:[A-Z][\w-]*[ \t]+){0,3}(?:shall|will)[ \t]+not\b)/g,
+    /(?:^|\n)[ \t]*(\(([a-z]{1,2}|\d{1,2})\))[ \t]+([A-Z][A-Za-z,;'’&\- ]{0,60}?(?:\n[ \t]*[A-Za-z,;'’&\- ]{2,40})?)[ \t]?\.[ \t]+(?=[A-Z])/g,
   ];
   for (const r of extra) for (const m of text.matchAll(r)) {
     const start = m.index! + (m[0].length - m[0].trimStart().length);
     if (insideClassified(start) || cands.some((c) => Math.abs(c.start - start) < 5)) continue;
-    cands.push({ path: m[2]!, title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
+    cands.push({ path: m[2] || m[3]!.trim(), title: m[3]!.replace(/\s+/g, " ").trim(), start, headingEnd: m.index! + m[0].length });
     if (cands.length > 6000) break;
   }
   cands.sort((a, b) => a.start - b.start);
@@ -489,6 +522,9 @@ export function familyEvidence(text: string, family: ChecklistFamily): { kind: "
   const headRe = /(?:^|\n)\s*(?:section\s+)?\d{1,2}\.\d{1,3}\.?\s+([^\n.]{3,90})/gi;
   for (const m of text.matchAll(headRe)) {
     const title = m[1]!.trim();
+    // A cross-reference ("4.10 or any Permitted Investments", "1.00 or (2) the ...") is not a heading; an amendment
+    // instruction naming the section's caption ("7.11 of the Credit Agreement (Transactions With Affiliates)") is.
+    if ((!/^[A-Z]/.test(title) || /^(?:or|and|any|all|the|such)\b/i.test(title)) && !/^of (?:the|this)\b[^()]{0,60}\(/i.test(title)) continue;
     const hm = ev.heading.exec(title);
     // The family must lead the title (allowing "Limitation on", "Restrictions on", "Incurrence of"), not be one
     // word inside an unrelated heading ("Evidence of Debt", "Trustee as Holder of Senior Indebtedness").
