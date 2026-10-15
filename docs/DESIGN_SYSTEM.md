@@ -24,19 +24,25 @@ Trust rules that the visuals have to obey: unknown is not zero and not unlimited
 
 ### Color
 
-The existing palette stays. Paper `#f6f5f0`, ink `#1a1b17`, muted `#6e6c62`, line `#dddacf`, green `#1e6b4f`, amber `#96690f`, red `#a6392f`, navy `#22304a`, with the existing soft tints. The sidebar had drifted to nearby hexes; it now uses these tokens so the chooser and the workspace look like one instrument.
+Three palettes were rendered on the same unloaded screens. The one that shipped is **cool precision**.
 
-Semantic status tones are aliases of those colors, not new hues:
-
-| Tone | Uses | Meaning for a CFO |
+| Option | Field | Why it did or did not ship |
 | --- | --- | --- |
-| clear (green) | Verified, approved, satisfied, pass, ok | This check is in a good state. Read the hint. Green is not "borrow this." |
-| attention (amber) | Needs input, review required, unresolved, missing | A person has to finish something before the number can be relied on. |
-| stop (red) | Failed, blocked, disputed, at risk | Do not treat this as allowed. |
-| info (navy) | Modeled, legacy engine, clause type, hypothetical | Context. Not a pass and not a failure. |
-| unknown (muted) | Unknown, not tested, unmapped codes | Nothing was invented. |
+| Paper, refined | Warm `#f6f5f0`, amber darkened to `#7c4a00` so the badge passes WCAG AA | Closest to the previous skin. Still reads as a document, and the warm field competes with amber. |
+| Cool precision | Canvas `#f4f6f8`, card white, ink `#12151a`, navy `#1a365d` | **Shipped.** A financing decision needs a quiet field. Green, amber, and red are then the only saturated signals. Navy is selection and information, never a status pass. |
+| Ink rail | Light canvas, sidebar `#1b2430` | Bolder, and it splits the product. A dark rail next to red and green status makes the chrome compete with the answer. |
 
-A prohibition clause is navy, not red. The clause restricts; that is not the same as a breach.
+Status pairs are measured for normal text (WCAG AA, 4.5:1) against their soft backgrounds:
+
+| Tone | Ink / soft | Ratio | Meaning for a CFO |
+| --- | --- | --- | --- |
+| clear | `#0e6b43` / `#e5f4ec` | 5.77 | This check is in a good state. Read the hint. Green is not "borrow this," and it is not the nav selection color. |
+| attention | `#7c4a00` / `#fbf3df` | 6.69 | A person has to finish something before the number can be relied on. The previous amber `#96690f` on `#f4ecdb` was 4.13 and failed AA. |
+| stop | `#9d2c24` / `#fdeceb` | 6.52 | Do not treat this as allowed. |
+| info | `#1a365d` / `#e8eef6` | 10.40 | Context. Not a pass and not a failure. |
+| unknown | `#3e4651` / `#eef1f4` | 8.81 | Nothing was invented. |
+
+Body muted `#4a5360` on canvas `#f4f6f8` is 7.19. A prohibition clause stays navy, not red. The clause restricts; that is not the same as a breach.
 
 ### Type
 
@@ -58,15 +64,38 @@ Scale: 12px meta, 14px body, 16px titles, 28px the page question and the primary
 
 ### Navigation
 
-The route list is unchanged (`lib/home/nav.ts`). What changed is grouping, because fourteen equal rows hide the question:
+`companyNavItems()` is unchanged. The sidebar used to show every item at equal weight, which hid the question the workspace answers. Three patterns were mocked on the same screen: a five-item sidebar plus Jump to, a top tab bar plus command palette, and a primary row with a permanent sub-tab strip. The sidebar won. A CFO's first scan is vertical and short. Top tabs spend the width the tables need. A permanent sub-tab strip asks a second question before the first one is answered.
 
-- Now — Overview
-- Set up — Upload, Analyze, Review, Onboarding
-- Decide — Position, Simulate, Audit
-- Contract — Covenants, Rulebook, Intelligence
-- Record — Ledger, Evidence, Ask, Alerts
+The shell that shipped:
 
-Active state is navy on the existing navy tint, not a black block. The company card still shows the database name and returns to the chooser.
+- Sidebar — Overview, Covenants, Capacity, Simulate, Ask. Capacity was already a route and was missing from the primary list.
+- Header — Jump to (⌘K) and an Alerts bell with no count. A count would be an invented figure.
+- Command palette — every `companyNavItems` href, plus Capacity, Certificates, All tools, and Switch company.
+- Contextual tabs, only on the section you are in — Covenants / Rulebook / Intelligence, or Capacity / Ledger / Certificates.
+- Finish setup — only while `companyNavItems` includes Onboarding. The palette still says Onboarding.
+
+Active state is navy on a navy tint. Status green is never used for selection. Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser.
+
+| Item | Before | After |
+| --- | --- | --- |
+| Overview | Sidebar | Sidebar |
+| Upload | Sidebar | Palette |
+| Analyze | Sidebar | Palette |
+| Review | Sidebar | Palette |
+| Position | Sidebar | Palette |
+| Simulate | Sidebar | Sidebar |
+| Audit | Sidebar | Palette |
+| Covenants | Sidebar | Sidebar, and the contract tabs |
+| Rulebook | Sidebar | Palette and the contract tabs |
+| Intelligence | Sidebar | Palette and the contract tabs |
+| Ledger | Sidebar | Palette and the capacity tabs |
+| Evidence | Sidebar | Palette |
+| Ask | Sidebar | Sidebar |
+| Alerts | Sidebar | Header bell and palette. No badge count. |
+| Onboarding | Sidebar while setup remains | Finish setup in the sidebar, Onboarding in the palette |
+| Capacity | Tools index only | Sidebar |
+| All tools | Tools index | Palette |
+| Switch company | Company card | Company card and palette |
 
 ### Company chooser
 
@@ -78,7 +107,7 @@ Native `<select>` elements differed by browser and looked unfinished next to the
 
 ### Tables
 
-Headers are small, uppercase, muted. Numeric columns are right-aligned with tabular figures. Rows alternate on a warm paper tint of the existing background and highlight with the navy tint on hover, so the eye can track one covenant across status and headroom.
+Headers are small, uppercase, muted. Numeric columns are right-aligned with tabular figures. Rows alternate on a cool tint of the canvas and highlight with the navy tint on hover, so the eye can track one covenant across status and headroom.
 
 ### Status badges
 
@@ -95,5 +124,9 @@ Headers are small, uppercase, muted. Numeric columns are right-aligned with tabu
 | Repeated capacity headline inside the status card | The headline is the answer under the page question. The card keeps the status badge, counts, blockers, and guidance. |
 | Serif display headings and mono figures | Two extra voices. Figures stay tabular, in the same family as the labels. |
 | Sidebar's separate hex palette | It made the product look assembled from two skins. |
+| Fourteen equal sidebar rows | They hid Overview, Covenants, Capacity, Simulate, and Ask. The other routes stay one keystroke away. |
+| Alerts as a nav row with no count | A bell in the header is the signal. A number on it would invent an alert count. |
+| Warm paper field | It competed with amber. The canvas is now neutral so status color means something. |
+| Sidebar that wrapped into a second row on a phone | It pushed the answer below a pile of links. The drawer stays closed until asked. |
 
-Locked overview regions, empty-state copy, and every computed value are unchanged.
+Locked overview regions, empty-state copy, and every computed value are unchanged. Loading skeletons are bars with no digits. Motion is limited to color, transform, and the skeleton shimmer, and it is off when `prefers-reduced-motion` is set.

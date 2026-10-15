@@ -109,6 +109,13 @@ export default async function Home() {
         </Card>
       )}
 
+      {customer.length === 0 && evaluation.length === 0 ? (
+        <Card>
+          <div className="card-title">No companies connected</div>
+          <p className="chooser-note">This workspace has no companies to open yet. Connect one to begin.</p>
+        </Card>
+      ) : null}
+
       <div className="chooser-foot">
         <p className="chooser-note">
           Research precedents are not operative authority for a company workspace.

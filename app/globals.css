@@ -1,19 +1,20 @@
 :root {
-  --paper: #f6f5f0;
+  /* Cool precision. A neutral field so green, amber, and red stay the only saturated signals. */
+  --paper: #f4f6f8;
   --card: #ffffff;
-  --ink: #1a1b17;
-  --muted: #6e6c62;
-  --line: #dddacf;
-  --green: #1e6b4f;
-  --green-soft: #e4efe9;
-  --red: #a6392f;
-  --red-soft: #f6e7e4;
-  --amber: #96690f;
-  --amber-soft: #f4ecdb;
-  --navy: #22304a;
-  --navy-soft: #e7eaf1;
-  --idle-soft: #efede6;
-  --input-bg: #fcfbf8;
+  --ink: #12151a;
+  --muted: #4a5360;
+  --line: #e2e6eb;
+  --green: #0e6b43;
+  --green-soft: #e5f4ec;
+  --red: #9d2c24;
+  --red-soft: #fdeceb;
+  --amber: #7c4a00;
+  --amber-soft: #fbf3df;
+  --navy: #1a365d;
+  --navy-soft: #e8eef6;
+  --idle-soft: #eef1f4;
+  --input-bg: #ffffff;
 
   /*
    * One family. Inter (app/layout.tsx) carries UI and figures.
@@ -34,8 +35,8 @@
   --status-stop-soft: var(--red-soft);
   --status-info: var(--navy);
   --status-info-soft: var(--navy-soft);
-  --status-unknown: var(--muted);
-  --status-unknown-soft: var(--idle-soft);
+  --status-unknown: #3e4651;
+  --status-unknown-soft: #eef1f4;
 
   /* Spacing scale. Use these steps; do not invent one-off gaps. */
   --space-1: 4px;
@@ -46,8 +47,13 @@
   --space-6: 32px;
   --space-7: 48px;
 
-  --shadow-rest: 0 1px 2px rgba(26, 27, 23, 0.05);
-  --radius: 8px;
+  --shadow-rest: 0 1px 2px rgba(18, 21, 26, 0.05);
+  --radius: 10px;
+}
+
+::selection {
+  background: #d6e2f2;
+  color: var(--ink);
 }
 
 * {
@@ -528,8 +534,8 @@ input[type="range"] {
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
-  padding: 8px 12px;
-  border-radius: 4px;
+  padding: 8px 14px;
+  border-radius: 8px;
   cursor: pointer;
   border: 1px solid var(--line);
   background: var(--input-bg);
@@ -1278,7 +1284,7 @@ footer.app-footer {
 }
 
 .data-table tbody tr:nth-child(even) {
-  background: #fbfaf7;
+  background: #f7f9fb;
 }
 
 .data-table tbody tr:hover {
@@ -1286,7 +1292,7 @@ footer.app-footer {
 }
 
 .covenant-row:hover {
-  background: rgba(34, 48, 74, 0.05);
+  background: rgba(26, 54, 93, 0.05);
 }
 
 .status-badge {
@@ -1429,10 +1435,24 @@ footer.app-footer {
 }
 
 .chooser {
-  max-width: 760px;
+  max-width: 720px;
   margin: 0 auto;
   display: grid;
-  gap: var(--space-5);
+  gap: 28px;
+  min-height: calc(100vh - 48px);
+  align-content: center;
+  padding-bottom: 48px;
+}
+
+.chooser .site-header {
+  background: transparent;
+  border-bottom: none;
+  position: static;
+}
+
+.chooser .site-header-inner {
+  max-width: none;
+  padding: 0 0 8px;
 }
 
 .chooser-list {
