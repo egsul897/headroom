@@ -31,3 +31,14 @@ describe("fixed-limb bounds", () => {
     expect(extremumLimbs("the greater of $10,000,000", "greater")).toBeNull();
   });
 });
+
+import { sumLowerBound } from "@/lib/contract-model/covenant-computation/baskets";
+describe("sum-of-limbs lower bound", () => {
+  it("fixed limb plus non-negative limbs: at least the fixed limb", () => {
+    expect(sumLowerBound("the sum of (a) $25,000,000, plus (b) 100% of the aggregate Net Cash Proceeds received from the issuance of Qualified Equity Interests, plus (c) the fair market value of capital contributions received")).toMatchObject({ capCanonical: "25000000", capBound: "AT_LEAST" });
+  });
+  it("a limb that can be negative, or a minus limb, gives no bound", () => {
+    expect(sumLowerBound("the sum of (a) $25,000,000, plus (b) 50% of Consolidated Net Income (or, if a deficit, minus 100% of such deficit)")).toBeNull();
+    expect(sumLowerBound("the sum of (a) $25,000,000, plus (b) 100% of Net Cash Proceeds, minus (c) the aggregate amount of Investments made")).toBeNull();
+  });
+});

@@ -429,6 +429,39 @@ function fixedLimbBound(text: string, which: "greater" | "lesser", missing: stri
   };
 }
 
+const NONNEG_LIMB = /\b(?:net\s+cash\s+proceeds|cash\s+proceeds|proceeds|capital\s+contributions?|cash\s+contributions?|fair\s+market\s+value|dividends?\s+(?:or\s+distributions?\s+)?received|returns?\s+(?:of|on)\s+capital|repayments?\s+of\s+principal|Declined\s+Proceeds)\b/i;
+const MAYBE_NEG_LIMB = /\b(?:net\s+income|income|earnings|deficit|loss(?:es)?|minus|less|negative|reduced|decrease|EBITDA|cash\s+flow)\b/i;
+
+/**
+ * "the sum of (a) $X, plus (b) …, plus (c) …": at least the fixed limbs when every other limb is added (no minus
+ * limb) and cannot be negative (proceeds, contributions, fair market value received — never income or EBITDA,
+ * which can be negative). Otherwise null.
+ */
+export function sumLowerBound(text: string): BasketPartial | null {
+  const t = norm(text);
+  const at = t.search(/\bsum\s+of\b/i);
+  if (at < 0) return null;
+  const body = t.slice(at).replace(/^sum\s+of\s*:?\s*/i, "").split(/;\s*(?:provided|and\s+(?:minus|less))|\bprovided\b|\.(?:\s|$)/i)[0]!;
+  if (/\b(?:minus|less|reduced\s+by)\s*(?:\(\s*[a-z0-9]{1,4}\s*\))?\s*(?:the\s+)?(?:aggregate|sum|amount|\d)/i.test(body)) return null;
+  if (!/^\(\s*[a-z0-9]{1,4}\s*\)/i.test(body)) return null;
+  const limbs = body.split(/\(\s*(?:[a-z]{1,4}|\d{1,2})\s*\)/i).map((x) => x.replace(/[,;]?\s*(?:plus|and)?\s*[,;]?\s*$/i, "").trim()).filter(Boolean);
+  if (limbs.length < 2) return null;
+  let total = 0n; const unknown: string[] = [];
+  for (const l of limbs) {
+    const m = /^(?:an\s+amount\s+equal\s+to\s+)?(?:U\.S\.\s*)?\$\s*([\d,]+(?:\.\d+)?)(\s+million)?$/i.exec(l);
+    if (m) { const tok = m[1]!.replace(/,/g, ""); if (!m[2] && !/^\d+$/.test(tok)) return null; total += BigInt(m[2] ? millionsToUsd(tok) : tok); continue; }
+    if (!NONNEG_LIMB.test(l) || MAYBE_NEG_LIMB.test(l)) return null;
+    unknown.push(l.slice(0, 80));
+  }
+  if (total === 0n || !unknown.length) return null;
+  return {
+    ...capShell("COMPUTED", "AMOUNT", total.toString(), "USD", unknown, null),
+    capBound: "AT_LEAST",
+    remainingStatus: "NEEDS_INPUT",
+    note: `Sum of limbs: at least the fixed limbs; the other limbs are added and cannot be negative (${unknown.length} unknown).`,
+  };
+}
+
 function evalLesser(clause: BasketClause): BasketPartial {
   const r = fixedLimbBound(clause.operativeText, "lesser", ["lesser-of limb"]);
   return r ?? { ...capShell("NEEDS_INPUT", "NONE", null, null, ["lesser-of limbs"], null), note: "Lesser-of limbs could not be read; no limb is used alone." };
@@ -513,7 +546,7 @@ function evalBuilder(
   }
   const missing = metricNames.filter((name) => !metrics.some((m) => m.metricKey.toLowerCase() === name.toLowerCase()));
   if (missing.length > 0) {
-    return {
+    return sumLowerBound(clause.operativeText) ?? {
       ...capShell("NEEDS_INPUT", "NONE", null, null, [...missing, "prior usage"], null),
       note: "A builder component is unbound. The starter dollar is not presented as Available Amount.",
     };
