@@ -9,8 +9,7 @@
  *     taxes + D&A with no adjustment items (and any defined net-income term it uses is itself unadjusted).
  *   - Net income / revenue are never bound (builders use cumulative contract net income, not TTM).
  */
-import { metricInput, money, rationalFromString } from "../../contract-model/definition-execution";
-import type { MetricInput } from "../../contract-model/runtime/types";
+import { metricInput, money, rationalFromString, type MetricInput } from "../../contract-model/definition-execution";
 import type { FinancialValue, HeadroomInput, IssuerFinancials } from "./companyfacts";
 import { evaluateDefinition, type DefinitionEvaluation } from "./definition-items";
 

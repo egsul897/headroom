@@ -456,7 +456,7 @@ function nameAppears(text: string, name: string): boolean {
 }
 
 /** Equal up to whitespace, case and a leading "Consolidated" ("Consolidated Leverage Ratio" = "Leverage Ratio"). */
-function namesEqual(a: string, b: string): boolean {
+export function namesEqual(a: string, b: string): boolean {
   const c = (x: string) => norm(x).toLowerCase().replace(/^consolidated\s+/, "");
   return c(a) === c(b);
 }
