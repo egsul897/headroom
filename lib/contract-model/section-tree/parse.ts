@@ -220,7 +220,7 @@ function findHeadings(text: string): Heading[] {
   // a title that wraps after "and"/"of" may continue on one more line), followed by a blank line, a "(a)" clause or a
   // capitalized sentence.
   const known = out.filter((h) => h.kind === "SECTION");
-  for (const m of text.matchAll(/(^|\n)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2}\.\d{1,3})\.?[^\S\n]+([A-Z][^\n.]{1,100}?)[^\S\n]*(?:\n[^\S\n]*([A-Z][^\n.]{1,60}?)[^\S\n]*)?(?=\n[^\S\n]*(?:\n|\([a-z1-9]\)|[A-Z][a-z]+\s))/g)) {
+  for (const m of text.matchAll(/(^|\n)[^\S\n]*(?:-\d{1,4}-|[Pp]age[^\S\n]+\d{1,4})?[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2}\.\d{1,3})\.?[^\S\n]+([A-Z][^\n.]{1,100}?)[^\S\n]*(?:\n[^\S\n]*([A-Z][^\n.]{1,60}?)[^\S\n]*)?(?=(?:\n[^\S\n]*(?:\n|\([a-z1-9]\)|[A-Z][a-z]+\s)|[.]?[^\S\n]*\([a-z1-9]\)))/g)) {
     if (m[4] && !/(?:\b(?:and|or|of|the|on|to|in|for|with)|,)$/.test(m[3]!)) continue;
     const start = m.index! + m[1]!.length;
     if (known.some((h) => Math.abs(h.start - start) < 40)) continue;
