@@ -160,3 +160,11 @@ describe("round 8: DEBT open items", async () => {
     expect(familyEvidence("5.17\nDebt and Liens\n\nCorporation will in reasonable\ntime inform the Purchaser of any new liens and debts.\n\n16\n\n5.18\nOther. The Corporation shall not do X.\n", "DEBT")).toEqual([]);
   });
 });
+
+describe("round 8: Roman 'ARTICLE\\nVII.'", async () => {
+  const { parseDocumentTree } = await import("@/lib/contract-model/section-tree/parse");
+  it("parses a Roman number on the next line and ignores wrapped cross-references", () => {
+    const t = parseDocumentTree(`  ARTICLE\nVII.\n\nNEGATIVE COVENANTS\n\n7.01 Liens. The Borrower shall not create Liens. ${filler(3)}\nas used in\n Article IX  included such Issuer. ${filler(3)}`);
+    expect(t.nodes.filter((n) => n.kind === "ARTICLE").map((n) => [n.label, n.title])).toEqual([["ARTICLE VII", "NEGATIVE COVENANTS"]]);
+  });
+});

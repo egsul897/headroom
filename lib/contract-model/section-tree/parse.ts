@@ -101,7 +101,7 @@ interface Heading {
   headingEnd: number;
 }
 
-const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)(?:[^\S\n]+([IVXLC]+|\d{1,2})\b\.?|[^\S\n]*\n[^\S\n]*(\d{1,2})(?=[^\S\n]*\n))[^\S\n]*(?:\n[^\S\n]*){0,2}([A-Z][A-Z ,;'’&\-]{2,100})?/g;
+const ARTICLE_RE = /(^|\n)[^\S\n]*(ARTICLE|Article)(?:[^\S\n]+([IVXLC]+|\d{1,2})\b\.?|[^\S\n]*\n[^\S\n]*(\d{1,2}|[IVXLC]+\.)(?=[^\S\n]*\n))[^\S\n]*(?:\n[^\S\n]*){0,2}([A-Z][A-Z ,;'’&\-]{2,100})?/g;
 const SECTION_RE =
   /(^|\n|\s{2,}|\.\s+)[^\S\n]*(?:(?:SECTION|Section)[^\S\n]+|§[^\S\n]*)?(\d{1,2}\.\d{1,3})(?:[^\S\n]*\.)?(?:[^\S\n]+|[^\S\n]*\n[^\S\n]*)([A-Z](?:[^.\n]|\n(?![^\S\n]*(?:\n|\(|\d))){1,160}?)[^\S\n]*[.:]/g;
 /** Amendment-style single-number sections: "SECTION 3. Conditions." (requires the word). */
@@ -114,8 +114,10 @@ function findHeadings(text: string): Heading[] {
     // The caption may sit behind a blank line ("ARTICLE 4\n\nCOVENANTS").
     // Or the number alone on the next line ("Article\n5\n\nMERGERS"; Arabic only: a Roman "VII." there is
     // ambiguous with table-of-contents rows).
-    const num = m[3] ?? m[4]!;
+    const num = m[3] ?? m[4]!.replace(/\.$/, "");
     const title = m[5] ? m[5].trim() : null;
+    // A wrapped cross-reference ("... as used in\n Article IX  included such L/C Issuer") is not a heading.
+    if (!title && /^[^\S\n]*[a-z]/.test(text.slice(m.index! + m[0].length, m.index! + m[0].length + 20))) continue;
     out.push({ kind: "ARTICLE", label: `ARTICLE ${num}`, number: num, title, start, headingEnd: m.index! + m[0].length });
   }
   for (const m of text.matchAll(SECTION_RE)) {
