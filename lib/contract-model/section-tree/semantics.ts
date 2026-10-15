@@ -270,10 +270,11 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   }
   // Amendments and 8-K wrappers carry only part of the agreement: an absence is an absence from this document.
   const opening = text.slice(0, 4000);
-  const partialDocument = /\bFORM\s+8-K\b|\bCURRENT REPORT\b/i.test(opening) || /\b(?:AMENDMENT|WAIVER|JOINDER|SUPPLEMENTAL INDENTURE|INCREMENTAL)\b[^\n]{0,80}\b(?:TO|NO\.)\b/.test(opening);
+  const partialDocument = /\bFORM\s+8-K\b|\bCURRENT REPORT\b/i.test(opening) || /\b(?:AMENDMENT|WAIVER|JOINDER|SUPPLEMENTAL INDENTURE|INCREMENTAL)\b[^\n]{0,80}\b(?:TO|NO\.)\b/.test(opening) || /\bSUPPLEMENTAL\s+(?:[A-Z]+\s+){0,2}(?:INDENTURE|AGREEMENT)\b/.test(opening);
   // Covenants incorporated by reference from another instrument ("the covenants set forth in Article VI of the Credit
   // Agreement are hereby incorporated herein by reference") live outside this document.
-  const incorporatesByReference = INCORPORATED_BY_REFERENCE.test(text);
+  // The document's own exhibits and schedules "attached hereto ... incorporated herein by reference" are not another instrument.
+  const incorporatesByReference = [...text.matchAll(new RegExp(INCORPORATED_BY_REFERENCE.source, "gi"))].some((m) => !/\b(?:attached|annexed)\s+hereto\b/i.test(m[0]));
   return CHECKLIST_FAMILIES.map((family) => {
     // Inline units only fill a family the tree found nowhere.
     const treeHits = units.filter((s) => famOf.get(s.id)?.includes(family));
