@@ -228,7 +228,12 @@ async function main(): Promise<void> {
   const out = argStr("write-report");
   if (out) writeFileSync(out, JSON.stringify(report, null, 2) + "\n");
 
-  const baselinePath = argStr("baseline");
+  // --relabels gates against the relabels track (scoreboard/baseline-relabels.json = latest relabels history entry).
+  const baselineArg = argStr("baseline");
+  const baselinePath = baselineArg && relabelLog && baselineArg.endsWith("scoreboard/baseline.json")
+    ? baselineArg.replace(/baseline\.json$/, "baseline-relabels.json")
+    : baselineArg;
+  if (baselinePath && baselinePath !== baselineArg) console.log(`--relabels: gating against ${baselinePath} (relabels track)`);
   if (baselinePath) {
     const baselineText = readFileSync(resolve(baselinePath));
     const baseline = JSON.parse(baselineText.toString("utf8")) as ScoreboardReport;
@@ -247,7 +252,7 @@ async function main(): Promise<void> {
     const hist = verifyHistory(
       readJson<BaselineHistory>(historyPath),
       (rel) => (existsSync(resolve(rel)) ? readFileSync(resolve(rel)) : null),
-      { baselineText, baseHistory: historyBase ? readJson<BaselineHistory>(historyBase) : null },
+      { baselineText, baseHistory: historyBase ? readJson<BaselineHistory>(historyBase) : null, track: relabelLog ? "relabels" : "default" },
     );
     let gate;
     try {

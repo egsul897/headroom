@@ -172,6 +172,39 @@
       },
       "reason": "PR #368 region-boundary fix (covenant regions bounded at the next cross-article bare heading). Reviewer findings: 8 HELDOUT sources move on COVERAGE_GAP/UNSUPPORTED_SEMANTICS: COVERAGE_GAP +13, UNSUPPORTED_SEMANTICS -29. Of the 13 COVERAGE_GAP, 8 are direct overrun (exceptions previously 'bound' only by clauses whose citations overran into later articles) and 5 are overrun plus a false match on the 30-character opening. The 30-character-opening false match is a separate scorer weakness, tracked as a follow-up. The new errors are boilerplate (LLC member/distribution, assignment, amendment and agency text), not covenant gaps. Material per-source increases accepted: exhibit1013q24 10->15, ss171930_ex1001 19->21. Also, 4 sources have DISCOVERY_GAP -7. HELDOUT total 2618->2595, UNSUPPORTED 144->115; thresholds and membership unchanged. Evidence: docs/clf-scoreboard/pr368-region-overrun-evidence.md",
       "approver": "owner (approved in chat 2026-10-15 00:49 UTC: 'Yes, approve the exception')"
+    },
+    {
+      "seq": 8,
+      "recordedAt": "2026-10-15T13:25:00Z",
+      "file": "scripts/covenant-learning-factory/scoreboard/baselines/0008-identity-05b2234708d0-relabels.json",
+      "reportSha256": "296f79808fe82a6a751fd80732afb714d215419620543a0fc9eb46b1c59dd3ba",
+      "prevEntrySha256": "04785855fa14f44fbea8c437f2f16b898c02b148de401f337da0bd98a63e4e64",
+      "sourceCommit": "8ece66ee",
+      "legacy": false,
+      "identity": {
+        "rulesetVersion": 2,
+        "rulesetSha256": "6bc7b606993b1eec8b9ea136b07adb66777233de2e66a4292fa6e58d754620bf",
+        "snapshotSha256": "c71c19fd889d9d9b9c2863c4f54f8dc40625a257d35c1856b376a82cf20d2949"
+      },
+      "heldout": {
+        "sources": 137,
+        "total": 2595,
+        "UNSUPPORTED_SEMANTICS": 115
+      },
+      "thresholds": {
+        "heldoutTotalMaxIncrease": 0,
+        "heldoutUnsupportedMaxIncrease": 0,
+        "perSourceMaterialAbs": 2,
+        "perSourceMaterialRel": 0.1
+      },
+      "relabels": {
+        "logFile": "scripts/covenant-learning-factory/scoreboard/reference-relabels.json",
+        "entries": 95,
+        "logSha256": "5c5f718bcf42d36f4570a826d963eab2842e3861f706fc3e6867e1056b2e6fa1",
+        "scorerConfig": "tree=on;mode=agree;relabels=5c5f718bcf42d36f"
+      },
+      "reason": "Relabels track (first entry): seq 7 code (8ece66ee, PR #368 baseline commit) with only the reference-relabel overlay from #385 (91820a0b: reference-relabels.ts, reference-relabels.json RL-0001..RL-0095, --relabels CLI wiring) applied on top; same raw snapshot file (seq 7 identity 05b2234708d0) and pinned ruleset v2 6bc7b606. The identity snapshot hash is c71c19fd... because per-source input hashes cover the relabeled candidates. Reproduced: HELDOUT 2595 / DEV 509, identical totals to seq 7 (the 95 relabeled candidates were not errors under seq 7 code). Seq 1-7 untouched; the default gate still uses seq 7 via baseline.json.",
+      "approver": "owner (approved in chat 2026-10-15: add seq 8 baseline on the corrected labels, keep seq 7 and earlier untouched)"
     }
   ]
 }

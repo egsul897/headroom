@@ -256,7 +256,14 @@ export interface BaselineHistoryEntry {
   approver: string;
   /** Required when thresholds change, or HELDOUT total / UNSUPPORTED_SEMANTICS rise vs the previous identity-bound entry. */
   thresholdMigration?: RecordedMigration;
+  /** Set on entries scored with the reference-relabel overlay (--relabels). Such entries form their own track:
+   *  thresholds, raise checks and "latest" are per track, so the default gate keeps using the latest default entry. */
+  relabels?: { logFile: string; entries: number; logSha256: string; scorerConfig: string };
 }
+
+/** Which baseline track a gate uses: "default" (no relabels) or "relabels" (scored with --relabels). */
+export type BaselineTrack = "default" | "relabels";
+export const trackOf = (e: Pick<BaselineHistoryEntry, "relabels">): BaselineTrack => (e.relabels ? "relabels" : "default");
 
 export interface BaselineHistory {
   schema: "clf-scoreboard-baseline-history/v1";
@@ -279,14 +286,17 @@ export interface HistoryCheck {
 export function verifyHistory(
   history: BaselineHistory,
   readFile: (rel: string) => string | Buffer | null,
-  opts: { baselineText?: string | Buffer; baseHistory?: BaselineHistory | null } = {},
+  opts: { baselineText?: string | Buffer; baseHistory?: BaselineHistory | null; track?: BaselineTrack } = {},
 ): HistoryCheck {
+  const track = opts.track ?? "default";
   const reasons: string[] = [];
   const entries = history?.entries ?? [];
   if (history?.schema !== "clf-scoreboard-baseline-history/v1") reasons.push("baseline history: unsupported schema");
   if (entries.length === 0) reasons.push("baseline history is empty");
-  let prevBound: BaselineHistoryEntry | null = null;
+  const prevBoundByTrack: Record<BaselineTrack, BaselineHistoryEntry | null> = { default: null, relabels: null };
+  const prevByTrack: Record<BaselineTrack, BaselineHistoryEntry | null> = { default: null, relabels: null };
   for (const [i, e] of entries.entries()) {
+    const prevBound = prevBoundByTrack[trackOf(e)];
     const tag = `history entry seq=${e.seq}`;
     if (e.seq !== i + 1) reasons.push(`${tag}: seq must be ${i + 1} (append-only, contiguous)`);
     const expectPrev = i === 0 ? null : historyEntrySha256(entries[i - 1]!);
@@ -295,8 +305,10 @@ export function verifyHistory(
     if (bytes === null) reasons.push(`${tag}: baseline file ${e.file} is missing (history must be preserved)`);
     else if (sha256(bytes) !== e.reportSha256) reasons.push(`${tag}: baseline file ${e.file} was modified (sha256 mismatch)`);
     if (!nonEmpty(e.reason) || !nonEmpty(e.approver)) reasons.push(`${tag}: reason and approver are required`);
-    if (i > 0) {
-      const prev = entries[i - 1]!;
+    if (e.relabels && (!nonEmpty(e.relabels.logSha256) || !nonEmpty(e.relabels.scorerConfig))) reasons.push(`${tag}: relabels entry without log sha / scorer config`);
+    // The first entry of a track compares thresholds with the previous entry overall; later ones within the track.
+    const prev = prevByTrack[trackOf(e)] ?? (i > 0 ? entries[i - 1]! : null);
+    if (prev) {
       const changed = canonicalJson(prev.thresholds) !== canonicalJson(e.thresholds);
       const mig = e.thresholdMigration;
       const recorded = Boolean(mig && nonEmpty(mig.reason) && nonEmpty(mig.approver));
@@ -313,7 +325,8 @@ export function verifyHistory(
       }
     }
     if (!e.legacy && !e.identity) reasons.push(`${tag}: non-legacy entry without evaluation identity`);
-    if (!e.legacy) prevBound = e;
+    if (!e.legacy) prevBoundByTrack[trackOf(e)] = e;
+    prevByTrack[trackOf(e)] = e;
   }
   if (opts.baseHistory) {
     const base = opts.baseHistory.entries ?? [];
@@ -322,9 +335,10 @@ export function verifyHistory(
       if (canonicalJson(base[i]) !== canonicalJson(entries[i])) reasons.push(`baseline history entry seq=${i + 1} differs from the base branch (rewritten)`);
     }
   }
-  const latest = entries.length ? entries[entries.length - 1]! : null;
+  const latest = prevByTrack[track];
+  if (!latest) reasons.push(`baseline history has no ${track} entry`);
   if (latest && opts.baselineText !== undefined && sha256(opts.baselineText) !== latest.reportSha256) {
-    reasons.push("baseline.json is not the latest history entry (overwritten without appending to history)");
+    reasons.push(track === "default" ? "baseline.json is not the latest history entry (overwritten without appending to history)" : "baseline-relabels.json is not the latest relabels history entry (overwritten without appending to history)");
   }
   if (latest?.legacy) reasons.push("latest baseline history entry is legacy (no evaluation identity): gate cannot compare");
   return { reasons, thresholds: latest?.thresholds ?? DEFAULT_THRESHOLDS, latest };
