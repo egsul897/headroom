@@ -127,8 +127,7 @@ export default async function SimulatePage({
         <div className="card-title">Simulate</div>
         <WorkflowJourney companyId={companyId} current="simulate" />
         <div className="card-subtitle" style={{ marginTop: 8 }}>
-          {readiness.headline} Uses the <strong>same capacity state</strong> as Position. Simulations never
-          modify the live customer ledger.
+          {readiness.headline} Uses the <strong>same capacity state</strong> as Position. Simulations never modify the live transaction ledger.
         </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Status</div>
