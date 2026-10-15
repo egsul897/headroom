@@ -1,3 +1,4 @@
+import { stripPageNumberLines } from "../text/page-furniture";
 /**
  * Deterministic section tree: ARTICLE > SECTION > (a) > (i) > (A) > (1).
  *
@@ -140,6 +141,17 @@ function findHeadings(text: string): Heading[] {
     const title = m[3]!.replace(/\s+/g, " ").trim();
     if (title.split(" ").length > 14 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
     out.push({ kind: "SECTION", label: m[2]!, number: normalizeSectionNumber(m[2]!), title, start, headingEnd: m.index! + m[0].length });
+  }
+  // Indenture "Section 501." numbering (article digit + two-digit section, the word required) when the document has
+  // little dotted numbering: "Section 501. When the Company May Merge, Etc." is section 5.01.
+  if (out.filter((h) => h.kind === "SECTION").length < 10) {
+    for (const m of text.matchAll(/(^|\n|\s{2,}|[.:]\s+)[^\S\n]*(?:SECTION|Section)[^\S\n]+(\d{1,2})(\d{2})\.?[^\S\n]+([A-Z][^.\n]{1,120}?)[^\S\n]*[.:\n]/g)) {
+      const title = m[4]!.replace(/\s+/g, " ").trim();
+      if (title.split(" ").length > 18 || /^(hereof|herein|of the|of this|and|or|to|shall|is|has)\b/i.test(title)) continue;
+      const label = `${m[2]}.${m[3]}`;
+      const start = m.index! + m[1]!.length;
+      out.push({ kind: "SECTION", label, number: normalizeSectionNumber(label), title, start, headingEnd: m.index! + m[0].length });
+    }
   }
   // Single-number sections only when the document has no dotted section numbering.
   if (out.filter((h) => h.kind === "SECTION").length < 3) {
@@ -546,7 +558,7 @@ export function treeText(raw: string): { text: string; basis: TextBasis } {
     .replace(/&(ldquo|rdquo|lsquo|rsquo|mdash|ndash|sect|quot|apos);/g, (_, n: string) =>
       ({ ldquo: "\u201c", rdquo: "\u201d", lsquo: "\u2018", rsquo: "\u2019", mdash: "\u2014", ndash: "\u2013", sect: "\u00a7", quot: '"', apos: "'" })[n] ?? " ",
     );
-  return { text: relineFlattened(t.replace(/\u00a0/g, " ")), basis };
+  return { text: stripPageNumberLines(relineFlattened(t.replace(/\u00a0/g, " "))), basis };
 }
 
 /**

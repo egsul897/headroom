@@ -1,3 +1,4 @@
+import { stripPageNumberLines } from "../../contract-model/text/page-furniture";
 /**
  * Mechanical self-check: cross-validate computed results against Neon
  * kf_precedent signals (and engine consistency). This is NOT independent legal
@@ -51,7 +52,7 @@ function eid(parts: string[]): string {
 }
 
 export function norm(s: string): string {
-  return s.replace(/\s+/g, " ").trim().toLowerCase();
+  return stripPageNumberLines(s).replace(/\s+/g, " ").trim().toLowerCase();
 }
 
 /**

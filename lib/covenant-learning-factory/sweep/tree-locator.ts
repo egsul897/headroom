@@ -1,3 +1,4 @@
+import { stripPageNumberLines } from "../../contract-model/text/page-furniture";
 /**
  * Locates precedent candidates and computed basket citations in a section tree so the
  * self-check can compare WHERE two texts sit (tree section), not whether a fragment of
@@ -42,7 +43,7 @@ function index(tree: SectionTree, text: string): Indexed {
 /** Located in more than one place (e.g. a duplicated clause): NOT the same as "not found". */
 export const AMBIGUOUS = "?AMBIGUOUS";
 
-const key = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
+const key = (s: string) => stripPageNumberLines(s).replace(/\s+/g, " ").trim().toLowerCase();
 
 function sectionAt(ix: Indexed, needle: string): string | null {
   const k = key(needle).slice(0, 60);
