@@ -10,7 +10,7 @@
  */
 import { deepestContaining, parseDocumentTree, parseSectionTree, sectionOf, type SectionTree } from "../../contract-model/section-tree/parse";
 import type { PrecedentCandidate } from "./self-check";
-import { covenantChecklist, isProhibitive } from "../../contract-model/section-tree/semantics";
+import { covenantChecklist, definedTerms, isProhibitive, resolveCrossRefs } from "../../contract-model/section-tree/semantics";
 import { isObligorProhibitionLead } from "../../contract-model/section-tree/family-classifier";
 
 interface Indexed {
@@ -87,6 +87,9 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
         if (covenantSecs.has(n.sectionNumber)) continue;
         if (sectionLooksCovenant(t, t.text, n)) covenantSecs.add(n.sectionNumber);
       }
+      // Structural links (no keywords): a section is kept when a covenant section uses a term it defines, or
+      // when it cross-references / is cross-referenced by a covenant section (definitions, amendments).
+      for (const sec of linkedToCovenant(t, t.text, covenantSecs)) covenantSecs.add(sec);
     } catch {
       ix = null;
       covenantSecs = null;
@@ -134,14 +137,42 @@ export const OBLIGATION_LEAD = /\b(?:shall|will|may)\s+not\b|\bshall\s+(?:cause|
 /** "No Loan Party nor any Subsidiary shall …", "No Borrower and no Subsidiary will …" (not "No Loan Party is …", a representation). */
 /** Affirmative covenant lead-ins: imperative ("Maintain, preserve and protect …") or obligor "agree(s) to". */
 export const AFFIRMATIVE_LEAD = /^\s*(?:\([a-z0-9]+\)\s*)?(?:maintain|preserve|deliver|furnish|keep|comply|cause|pay and discharge|use the proceeds)\b|\b(?:borrowers?|company|issuer|loan part(?:y|ies)(?: \(as applicable\))?|obligors?|guarantors?)\s+(?:hereby\s+)?agrees?\s+to\b/i;
+export const NO_PARTY_ANYWHERE = /(?:^|[.;:]\s+|\)\s*)no\s+[A-Z][^.;]{0,140}?\b(?:shall|will)\b/;
 export const NO_PARTY_SHALL = /^\s*(?:\([a-z0-9]+\)\s*)?no\s+[^.;]{1,140}?\b(?:shall|will)\b/i;
 
 /** Covenant evidence beyond the family classifier: lead-in obligation/prohibition, or a covenant/default title on the section or an ancestor. */
 export function sectionLooksCovenant(tree: SectionTree, text: string, n: SectionTree["nodes"][number]): boolean {
   const lead = text.slice(n.headingEnd, Math.min(n.end, n.headingEnd + 700));
-  if (isObligorProhibitionLead(lead) || isProhibitive(lead) || OBLIGATION_LEAD.test(lead) || NO_PARTY_SHALL.test(lead) || AFFIRMATIVE_LEAD.test(lead)) return true;
+  if (isObligorProhibitionLead(lead) || isProhibitive(lead) || NO_PARTY_SHALL.test(lead) || AFFIRMATIVE_LEAD.test(lead)) return true;
+  // Obligation wording anywhere in the section, not only its opening.
+  const body = text.slice(n.headingEnd, n.end);
+  if (OBLIGATION_LEAD.test(body) || NO_PARTY_ANYWHERE.test(body)) return true;
   for (let a: typeof n | undefined = n; a; a = a.parentId ? tree.byId.get(a.parentId) : undefined) {
     if (a.title && COVENANT_TITLE.test(a.title)) return true;
   }
   return false;
+}
+
+function sectionNumberOfNode(tree: SectionTree, id: string | null): string | null {
+  for (let n = id ? tree.byId.get(id) : undefined; n; n = n.parentId ? tree.byId.get(n.parentId) : undefined) if (n.kind === "SECTION") return n.sectionNumber;
+  return null;
+}
+
+/** Sections linked to a covenant section by a defined term the covenant uses or by a resolved cross-reference (either direction). */
+export function linkedToCovenant(tree: SectionTree, text: string, covenant: Set<string>): Set<string> {
+  const out = new Set<string>();
+  const covText = tree.nodes.filter((n) => n.kind === "SECTION" && n.sectionNumber && covenant.has(n.sectionNumber)).map((n) => text.slice(n.headingEnd, n.end)).join("\n");
+  for (const d of definedTerms(tree, text)) {
+    const sec = sectionNumberOfNode(tree, d.nodeId);
+    if (!sec || covenant.has(sec) || out.has(sec)) continue;
+    if (d.term.length >= 3 && covText.includes(d.term)) out.add(sec);
+  }
+  for (const x of resolveCrossRefs(tree, text)) {
+    if (x.status !== "RESOLVED") continue;
+    const from = sectionNumberOfNode(tree, x.fromNodeId), to = sectionNumberOfNode(tree, x.targetNodeId);
+    if (!from || !to) continue;
+    if (covenant.has(from) && !covenant.has(to)) out.add(to);
+    if (covenant.has(to) && !covenant.has(from)) out.add(from);
+  }
+  return out;
 }

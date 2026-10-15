@@ -117,3 +117,23 @@ describe("imperative / 'agree to' affirmative covenants stay in scope (Starbucks
     expect(outOfCovenantScope(loc, "5.16", "(a) The Loan Parties (as applicable) agree to honor Miles in accordance with the SkyMiles Program")).toBe(false);
   });
 });
+
+describe("structural links keep definitions / amendment sections (reviewer, no keywords)", () => {
+  it("a definitions section whose term a covenant uses stays in scope; an unlinked section does not", () => {
+    const doc = [
+      "ARTICLE I", "GENERAL", "", "1.01 Terms. \u201cPermitted Liens\u201d means Liens described in the schedule hereto and any replacements thereof.", "",
+      "ARTICLE VI", "NEGATIVE COVENANTS", "", "6.01 Liens. The Borrower shall not create, incur or assume any Lien on any of its property, except Permitted Liens.", "",
+      "ARTICLE IX", "MISCELLANEOUS", "", "9.05 Counterparts. This Agreement may be executed in counterparts, each of which is an original.",
+    ].join("\n");
+    const l = buildTreeLocator({ documentText: doc, candidates: [] });
+    expect(l.isCovenantSection!("1.1")).toBe(true);
+    expect(l.isCovenantSection!("9.5")).toBe(false);
+  });
+});
+
+describe("strict: >= 4 distinctive tokens in the shared opening bind; generic-only never", () => {
+  it("binds a basket citation sharing a distinctive opening longer than 30 chars but not the whole condition", () => {
+    const c = "except Liens on accounts receivable sold in a Permitted Receivables Financing, so long as the aggregate amount does not exceed";
+    expect(strictConditionReflected(c, "10.2 (j) except Liens on accounts receivable sold in a Permitted Receivables Financing; and (k) other Liens")).toBe(true);
+  });
+});

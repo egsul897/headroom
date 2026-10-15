@@ -338,10 +338,14 @@ export function conditionBoilerplateStripped(t: string): string {
 
 /** Strict condition binding: the citation contains the condition's opening (up to 120 chars) AND that opening carries >= 4 distinctive tokens once boilerplate is removed; or the citation contains the whole condition. */
 export function strictConditionReflected(c: string, b: string): boolean {
-  if (c.length >= 40 && b.includes(c) && distinctiveTokenCount(conditionBoilerplateStripped(c)) >= 4) return true;
-  const head = c.slice(0, 120);
-  if (head.length < 40 || !b.includes(head)) return false;
-  return distinctiveTokenCount(conditionBoilerplateStripped(head)) >= 4;
+  // Longest opening of the condition that the citation contains (the legacy check used a fixed 30 chars).
+  if (c.length < 24 || !b.includes(c.slice(0, 24))) return false;
+  let lo = 24, hi = c.length;
+  while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (b.includes(c.slice(0, mid))) lo = mid; else hi = mid - 1; }
+  const run = c.slice(0, lo);
+  // Bind when the shared text carries >= 4 distinctive tokens once boilerplate is removed; a run made only of
+  // generic / boilerplate tokens never binds.
+  return distinctiveTokenCount(conditionBoilerplateStripped(run)) >= 4;
 }
 
 /** Obligor-bound covenant wording in the item itself (affirmative or negative). */
