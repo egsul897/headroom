@@ -197,7 +197,7 @@ export function covenantChecklist(tree: SectionTree, text: string): ChecklistIte
   // Run-in headings the tree did not split (flattened text: "... thereof). 8.07 Restricted Payments. The Borrower will
   // not ..."): inline numbered units outside any classified section, kept only inside a covenant run (an adjacent inline
   // unit also opens with an obligor-bound prohibition).
-  for (const u of inlineCovenantUnits(text, (i) => sections.some((s) => s.start <= i && s.end > i && (famOf.get(s.id)?.length ?? 0) > 0))) {
+  for (const u of inlineCovenantUnits(text, (i) => sections.some((s) => s.start <= i && s.end > i && (famOf.get(s.id)?.length ?? 0) > 0), sections.map((s) => s.start))) {
     const fams = new Set<string>(classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: u.lead, covenantContext: true }).families);
     if (fams.has("RESTRICTED_PAYMENTS") && !restrictsPayments(u.lead)) fams.delete("RESTRICTED_PAYMENTS");
     if (DESIGNATION_OR_SUSPENSION.test(`${u.title} ${u.lead.slice(0, 200)}`)) for (const f of ["RESTRICTED_PAYMENTS", "INVESTMENTS", "PREPAYMENTS"]) fams.delete(f);
@@ -339,7 +339,7 @@ function captionedClauseFamilies(body: string): Set<string> {
   return out;
 }
 
-function inlineCovenantUnits(text: string, insideClassified: (i: number) => boolean): { path: string; title: string; start: number; headingEnd: number; end: number; lead: string }[] {
+function inlineCovenantUnits(text: string, insideClassified: (i: number) => boolean, boundaries: number[] = []): { path: string; title: string; start: number; headingEnd: number; end: number; lead: string }[] {
   const re = /(?:^|[.;:)”"]\s+|\s{2,})((?:SECTION\s+|Section\s+)?(\d{1,2}\.\d{1,2}))\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,80}?)\s?\.\s+(?=[A-Z(“"])/g;
   const cands: { path: string; title: string; start: number; headingEnd: number }[] = [];
   for (const m of text.matchAll(re)) {
@@ -348,7 +348,8 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
     cands.push({ path: normalizeSectionNumber(m[2]!), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
     if (cands.length > 2000) break;
   }
-  const units = cands.map((c, i) => { const end = Math.min(cands[i + 1]?.start ?? text.length, c.headingEnd + 30000); return { ...c, end, lead: text.slice(c.headingEnd, Math.min(end, c.headingEnd + 2000)) }; });
+  // A unit also ends at the next unit start the tree knows (its sections), so it never reads into a parsed section.
+  const units = cands.map((c, i) => { const end = Math.min(cands[i + 1]?.start ?? text.length, c.headingEnd + 30000, ...boundaries.filter((b) => b > c.headingEnd)); return { ...c, end, lead: text.slice(c.headingEnd, Math.min(end, c.headingEnd + 2000)) }; });
   const prohib = units.map((u) => isObligorProhibitionLead(u.lead));
   return units.filter((u, i) => prohib[i] && (prohib[i - 1] || prohib[i + 1]));
 }
@@ -421,7 +422,7 @@ function spuriousEvidence(family: ChecklistFamily, sent: string, at: number): bo
   const before = sent.slice(Math.max(0, at - 160), at);
   // Affiliate-transaction text ("any transaction ... with any Affiliate", "Affiliate Transaction"), not every sentence
   // that mentions an Affiliate: a disposition covenant with an affiliate carve-out stays asset-sales evidence.
-  if (family === "ASSET_SALES" && (/\baffiliate transactions?\b/i.test(sent) || /\b(?:transactions?|agreements?|arrangements?|contracts?)\b[^.;]{0,80}\bwith\b[^.;]{0,30}\baffiliates?\b/i.test(sent)) && !/\b(?:all or substantially all|asset sale|asset disposition)\b/i.test(sent)) return true;
+  if (family === "ASSET_SALES" && (/\baffiliate transactions?\b/i.test(sent) || /\b(?:transactions?|agreements?|arrangements?|contracts?)\b[^.;]{0,80}\bwith\b[^.;]{0,30}\baffiliates?\b/i.test(sent.replace(/\([^()]{0,400}\)/g, " "))) && !/\b(?:all or substantially all|asset sale|asset disposition)\b/i.test(sent)) return true;
   if ((family === "INVESTMENTS" || family === "RESTRICTED_PAYMENTS" || family === "PREPAYMENTS") && DESIGNATION_OR_SUSPENSION.test(sent)) return true;
   // Debt-incurrence mechanics that mention repaying debt: ratio-debt / refinancing / lien-priority provisos, pro forma
   // calculation and classification rules ("shall not give effect to any repayment", "Ratio Debt ... not in excess of",
