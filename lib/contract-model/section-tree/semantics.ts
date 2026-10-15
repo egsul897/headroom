@@ -341,12 +341,12 @@ function captionedClauseFamilies(body: string): Set<string> {
 }
 
 function inlineCovenantUnits(text: string, insideClassified: (i: number) => boolean, boundaries: number[] = []): { path: string; title: string; start: number; headingEnd: number; end: number; lead: string }[] {
-  const re = /(?:^|[.;:)”"]\s+|\s{2,})((?:SECTION\s+|Section\s+)?(\d{1,2}\.\d{1,2}))\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,80}?)\s?\.\s+(?=[A-Z(“"])/g;
+  const re = /(?:^|[.;:)”"]\s+|\s{2,})(?:\d{1,3}[ \t]+(?=(?:SECTION|Section)?[ \t]*\d{1,2}\.\d))?((?:SECTION\s+|Section\s+)?(\d{1,2}\.\d{1,2})|(?:SECTION|Section)\s+(?:\d{3,4}))\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,80}?)\s?\.\s+(?=[A-Z(“"])/g;
   const cands: { path: string; title: string; start: number; headingEnd: number }[] = [];
   for (const m of text.matchAll(re)) {
     const start = m.index! + (m[0].length - m[0].trimStart().length);
     if (insideClassified(start)) continue;
-    cands.push({ path: normalizeSectionNumber(m[2]!), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
+    cands.push({ path: m[2] ? normalizeSectionNumber(m[2]) : m[1]!.replace(/^\D+/, ""), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
     if (cands.length > 2000) break;
   }
   // A unit also ends at the next unit start the tree knows (its sections), so it never reads into a parsed section.
@@ -357,10 +357,29 @@ function inlineCovenantUnits(text: string, insideClassified: (i: number) => bool
     cands.push({ path: normalizeSectionNumber(m[2]!), title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
     if (cands.length > 4000) break;
   }
+  // Other heading shapes: dotless "Section 411 Limitation on Sales of Assets ." (3-4 digit numbers only after the
+  // Section keyword), an all-caps "5. LIMITATION ON SALES OF ASSETS" line, and run-in captioned clauses
+  // "(5) Asset Dispositions . The Company shall not ..." (still subject to the adjacent-prohibition run test below).
+  const extra = [
+    /(?:^|\n)[ \t]*((?:SECTION|Section)[ \t]+(\d{3,4}))\.?[ \t]+([A-Z][^\n.]{2,80}?)[ \t]*\.?[ \t]*(?:\n|(?=\([a-z0-9]\)|[A-Z]))/g,
+    /(?:^|\n)[ \t]*((\d{1,2}))\.[ \t]+([A-Z][A-Z,;'’&\- ]{4,80}?)[ \t]*\n/g,
+    /(?:^|\n)[ \t]*(\(([a-z]{1,2}|\d{1,2})\))[ \t]+([A-Z][A-Za-z,;'’&\- ]{2,60}?)[ \t]?\.[ \t]+(?=[A-Z])/g,
+  ];
+  for (const r of extra) for (const m of text.matchAll(r)) {
+    const start = m.index! + (m[0].length - m[0].trimStart().length);
+    if (insideClassified(start) || cands.some((c) => Math.abs(c.start - start) < 5)) continue;
+    cands.push({ path: m[2]!, title: m[3]!.trim(), start, headingEnd: m.index! + m[0].length });
+    if (cands.length > 6000) break;
+  }
   cands.sort((a, b) => a.start - b.start);
   const units = cands.map((c, i) => { const end = Math.min(cands[i + 1]?.start ?? text.length, c.headingEnd + 30000, ...boundaries.filter((b) => b > c.headingEnd)); return { ...c, end, lead: text.slice(c.headingEnd, Math.min(end, c.headingEnd + 2000)) }; });
-  const prohib = units.map((u) => isObligorProhibitionLead(u.lead));
-  return units.filter((u, i) => prohib[i] && (prohib[i - 1] || prohib[i + 1]));
+  // Creditor-side actors ("The Junior Priority Secured Parties will not object to ...") are not obligor covenants.
+  const CREDITOR_ACTOR = /^\W*(?:\([a-z0-9]{1,4}\)\s*)?(?:the\s+|each\s+|no\s+)?(?:[A-Z][\w-]*\s+){0,4}(?:Secured Parties|Secured Party|Holders?|Lenders?|Purchasers?|Trustees?|Agents?|Creditors?|Noteholders?)\b[^.;]{0,40}\b(?:will|shall|may)\s+not\b/i;
+  const prohib = units.map((u) => isObligorProhibitionLead(u.lead) && !CREDITOR_ACTOR.test(u.lead.slice(0, 200)));
+  // Outside a run, a unit still counts when its own caption names a covenant family ("(p) Transactions with
+  // Affiliates . The Borrower will not ...") and its lead is an obligor prohibition.
+  const titled = (u: { title: string }) => classifyCovenantFamily({ title: u.title, parentTitle: null, leadIn: "" }).family != null;
+  return units.filter((u, i) => prohib[i] && (prohib[i - 1] || prohib[i + 1] || titled(u)));
 }
 
 function covenantItemFamilies(body: string): Set<string> {
