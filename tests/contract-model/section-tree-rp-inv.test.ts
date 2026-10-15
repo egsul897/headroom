@@ -15,7 +15,7 @@ describe("RP / INVESTMENTS / PREPAYMENTS checklist (coder C)", () => {
     expect(familyEvidence("During any Suspension Period the covenants shall be suspended and the Company shall not be required to comply with restrictions on Investments; it will not make investments in breach thereof.", "INVESTMENTS")).toEqual([]);
   });
   it("a supplement that replaces a clause is classified by the replacement text", () => {
-    const doc = `FIRST SUPPLEMENTAL INDENTURE\n\nSection 1. Amendment. Section 6.14(d) of the Indenture is hereby deleted in its entirety and replaced with the following: "(d) Asset Sales. The Company will not, and will not permit any Restricted Subsidiary to, consummate any Asset Sale unless the Company receives fair market value."\n\nSection 2. Governing Law. This Supplemental Indenture is governed by New York law.\n`;
+    const doc = `FIRST SUPPLEMENTAL INDENTURE\n\nSection 1. Amendment. Section 4.10(b) of the Indenture is hereby deleted in its entirety and replaced with the following: "(b) Asset Sales. The Company will not, and will not permit any Restricted Subsidiary to, consummate any Asset Sale unless the Company receives fair market value."\n\nSection 2. Governing Law. This Supplemental Indenture is governed by New York law.\n`;
     expect(st(doc, "ASSET_SALES").status).not.toBe("ABSENT_VERIFIED");
     expect(st(doc, "ASSET_SALES").sectionPaths.length).toBeGreaterThan(0);
   });
