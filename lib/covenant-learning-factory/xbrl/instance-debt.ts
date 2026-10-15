@@ -159,13 +159,17 @@ export function instrumentOf(phrase: string): Instrument | null {
   return { type, coupon: coupons[0] ?? null, year: years[0] ?? null };
 }
 
-/** The text of `"Term" means …` up to the end of its first sentence, or null. */
-export function definitionText(doc: string, term: string): string | null {
+/**
+ * Every definition of the term: `"Term" means …` (to the end of its sentence) and the parenthetical form
+ * `… 9.200% Senior Secured Second Lien Notes due 2028 (the "Notes")` (the phrase before it, within its clause).
+ */
+export function definitionTexts(doc: string, term: string): string[] {
   const t = doc.replace(/\s+/g, " ");
   const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const all = [...t.matchAll(new RegExp(`[“"]\\s*${esc}\\s*[”"]\\s*(?:shall\\s+mean|means|:)\\s*([^;]{0,400}?)(?:\\.\\s|;|$)`, "g"))];
-  if (all.length !== 1) return null;
-  return all[0]![1]!;
+  const out: string[] = [];
+  for (const m of t.matchAll(new RegExp(`[“"]\\s*${esc}\\s*[”"]\\s*(?:shall\\s+mean|means|:)\\s*([^;]{0,400}?)(?:\\.\\s|;|$)`, "g"))) out.push(m[1]!);
+  for (const m of t.matchAll(new RegExp(`([^;():]{0,250})\\(\\s*(?:together|collectively)?[^()“"]{0,40}?\\bthe\\s+[“"]\\s*${esc}\\s*[”"]\\s*\\)`, "g"))) out.push(m[1]!);
+  return out;
 }
 
 /**
@@ -173,10 +177,13 @@ export function definitionText(doc: string, term: string): string | null {
  * with a coupon and a maturity year, and exactly one filing debt member must carry the same type, coupon and year.
  */
 export function resolveByDefinition(name: string, docText: string, facts: readonly FacilityFact[]): { member: string; instrument: Instrument; definition: string } | { reason: string } {
-  const def = definitionText(docText, name);
-  if (!def) return { reason: `"${name}" is not defined exactly once` };
-  const ins = instrumentOf(def);
-  if (!ins || ins.coupon == null || ins.year == null) return { reason: `definition of "${name}" does not name one instrument with coupon and maturity` };
+  const defs = definitionTexts(docText, name);
+  if (!defs.length) return { reason: `"${name}" is not defined` };
+  const all = defs.map(instrumentOf);
+  const keys = new Set(all.map((i) => (i && i.coupon != null && i.year != null ? `${i.type}|${i.coupon}|${i.year}` : "none")));
+  if (keys.has("none") || keys.size !== 1) return { reason: `definition of "${name}" does not name one instrument with coupon and maturity` };
+  const ins = all[0]!;
+  const def = defs[0]!;
   const members = [...new Set(facts.map((f) => f.member))].filter((m) => {
     const fi = instrumentOf(memberName(m));
     return fi && fi.type === ins.type && fi.coupon === ins.coupon && fi.year === ins.year;

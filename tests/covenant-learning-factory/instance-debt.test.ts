@@ -59,3 +59,15 @@ describe("defined term → filing instrument", () => {
     expect("reason" in resolveByDefinition("Existing Notes", `"Existing Notes" means the senior notes of the Company.`, f2)).toBe(true);
   });
 });
+
+describe("parenthetical definitions", () => {
+  it("reads '… 9.200% Senior Secured Second Lien Notes due 2028 (the \"Notes\")' and refuses a mixed definition", async () => {
+    const { definitionTexts, resolveByDefinition: rb } = await import("@/lib/covenant-learning-factory/xbrl/instance-debt");
+    const doc = `WHEREAS, the Issuer has authorized an issue of up to $189.05 million of 9.200% Senior Secured Second Lien Notes due 2028 (the “ Notes ”); and WHEREAS ...`;
+    expect(definitionTexts(doc, "Notes")).toHaveLength(1);
+    const xml = `<context id="q"><entity><segment><xbrldi:explicitMember dimension="us-gaap:LongTermDebtTypeAxis">x:NinePointTwoZeroZeroPercentSeniorSecuredSecondLieuNotesDue2028Member</xbrldi:explicitMember></segment></entity><period><instant>2026-06-30</instant></period></context><us-gaap:LongTermDebtGross contextRef="q" unitRef="usd">189050000</us-gaap:LongTermDebtGross>`;
+    const f = parseInstanceDebt(xml, "a");
+    expect(rb("Notes", doc, f)).toMatchObject({ instrument: { type: "NOTES", coupon: 9.2, year: 2028 } });
+    expect("reason" in rb("Notes", doc + ` “ Notes ” means the Initial Notes and any Additional Notes.`, f)).toBe(true);
+  });
+});
