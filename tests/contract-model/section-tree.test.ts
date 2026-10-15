@@ -50,12 +50,12 @@ describe("section tree", () => {
     expect(xr.find((x) => x.target === "6.4(a)")!.status).toBe("RESOLVED");
   });
 
-  it("checklist never reports unlimited; missing families are MISSING", () => {
+  it("checklist never reports unlimited; missing families are MISSING or ABSENT_VERIFIED", () => {
     const ck = Object.fromEntries(covenantChecklist(t, DOC).map((c) => [c.family, c]));
     expect(ck.DEBT!.status).toBe("NEEDS_INPUT");
     expect(ck.DEBT!.needsInputs).toContain("EBITDA");
     expect(ck.LIENS!.status).toBe("CAP_FOUND");
-    expect(ck.INVESTMENTS!.status).toBe("MISSING");
+    expect(ck.INVESTMENTS!.status).toBe("ABSENT_VERIFIED");
     expect(Object.values(ck).map((c) => c.status)).not.toContain("UNLIMITED");
   });
 

@@ -152,6 +152,7 @@ async function main(): Promise<void> {
     }
     rules = await loadLiveRulesReadOnly();
   }
+  const TEXT_VERIFIED = new Set<string>((JSON.parse(readFileSync("scripts/covenant-learning-factory/scoreboard/text-verified.json", "utf8")) as { contentSha256: string[] }).contentSha256);
   console.log(`ruleset v${rules.rulesetVersion} (${rules.rules.length} rules)`);
   const writeRules = argStr("write-rules");
   if (writeRules) writeFileSync(writeRules, JSON.stringify(rules, null, 2) + "\n");
@@ -163,7 +164,7 @@ async function main(): Promise<void> {
     const shard = argStr("shard");
     const [si, sn] = shard ? shard.split("/").map(Number) : [0, 1];
     snap.sources.forEach((input, idx) => {
-      if (idx % sn! === si) perSource.push(scoreSource(input, rules, manifest));
+      if (idx % sn! === si) perSource.push(scoreSource(input, rules, manifest, TEXT_VERIFIED));
     });
   } else {
     const progress = argStr("progress");
@@ -181,7 +182,7 @@ async function main(): Promise<void> {
     const only = argStr("only");
     const captured: ScoreboardSourceInput[] = [];
     await loadNeonInputs(async (input) => {
-      const s = scoreSource(input, rules, manifest);
+      const s = scoreSource(input, rules, manifest, TEXT_VERIFIED);
       perSource.push(s);
       if (progress) appendFileSync(progress, JSON.stringify({ ...s, findings: undefined }) + "\n");
       if (capture && (!only || only.toUpperCase() === s.split || (only === "dev" && s.split === "DEV"))) captured.push(input);

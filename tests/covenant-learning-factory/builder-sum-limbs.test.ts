@@ -62,3 +62,28 @@ describe("a dollar figure inside stated arithmetic is a formula operand", async 
     expect(categorize(t)).toBe("FORMULA_AMOUNT");
   });
 });
+
+import { metricPhrase, namedMetricIn } from "@/lib/contract-model/covenant-computation/baskets";
+describe("metric names for percent limbs", () => {
+  it("keeps a capitalized defined term", () => {
+    expect(metricPhrase("Consolidated Total Assets as of the end of the most recent fiscal quarter")).toBe("Consolidated Total Assets");
+  });
+  it("cuts a lower-case phrase at its qualifier", () => {
+    expect(metricPhrase("the aggregate book value of the assets of the Borrower and its Subsidiaries, taken as a whole (“Substantial Portion”), as of the end"))
+      .toBe("aggregate book value of the assets of the Borrower and its Subsidiaries");
+  });
+  it("names the metric of an unread greater-of", () => {
+    expect(namedMetricIn("in an aggregate amount not to exceed the greater of (x) an amount and (y) 15% of Consolidated Net Tangible Assets at such time")).toBe("Consolidated Net Tangible Assets");
+  });
+});
+
+import { greaterOfMissingInputs } from "@/lib/contract-model/covenant-computation/baskets";
+describe("greater-of missing inputs are named from the clause", () => {
+  it("names both limbs of a non-percent greater-of (Delta 4.23 Junior Lien Debt ratio)", () => {
+    expect(greaterOfMissingInputs("plus (II) the greater of (x) the then-outstanding principal amount of Priority Lien Debt and (y) the Priority Lien Cap divided by (B) the sum of"))
+      .toEqual(["then-outstanding principal amount of Priority Lien Debt", "Priority Lien Cap"]);
+  });
+  it("names the percent limb's metric", () => {
+    expect(greaterOfMissingInputs("not to exceed the greater of (x) an amount and (y) 15% of Consolidated Net Tangible Assets")[2]).toBe("Consolidated Net Tangible Assets");
+  });
+});

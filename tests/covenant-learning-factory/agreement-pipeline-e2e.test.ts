@@ -19,9 +19,9 @@ const load = (k: string) => ({
 });
 
 const EXPECTED: Record<string, Record<string, string>> = {
-  "nike-credit-2015": {"DEBT": "MISSING", "LIENS": "CAP_COMPUTED", "RESTRICTED_PAYMENTS": "MISSING", "INVESTMENTS": "MISSING", "ASSET_SALES": "CONDITIONS_LIMITED", "AFFILIATE_TRANSACTIONS": "CONDITIONS_LIMITED", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
-  "delta-indenture-2020": {"DEBT": "NEEDS_INPUT", "LIENS": "NEEDS_INPUT", "RESTRICTED_PAYMENTS": "NEEDS_INPUT", "INVESTMENTS": "MISSING", "ASSET_SALES": "NEEDS_INPUT", "AFFILIATE_TRANSACTIONS": "MISSING", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
-  "lyv-indenture-2025": {"DEBT": "MISSING", "LIENS": "MISSING", "RESTRICTED_PAYMENTS": "MISSING", "INVESTMENTS": "MISSING", "ASSET_SALES": "MISSING", "AFFILIATE_TRANSACTIONS": "MISSING", "FUNDAMENTAL_CHANGES": "CONDITIONS_LIMITED", "PREPAYMENTS": "MISSING", "FINANCIAL_RATIOS": "MISSING"},
+  "nike-credit-2015": {"DEBT": "ABSENT_VERIFIED", "LIENS": "CAP_COMPUTED", "RESTRICTED_PAYMENTS": "ABSENT_VERIFIED", "INVESTMENTS": "ABSENT_VERIFIED", "ASSET_SALES": "CONDITIONS_LIMITED", "AFFILIATE_TRANSACTIONS": "CONDITIONS_LIMITED", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "ABSENT_VERIFIED", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
+  "delta-indenture-2020": {"DEBT": "NEEDS_INPUT", "LIENS": "NEEDS_INPUT", "RESTRICTED_PAYMENTS": "NEEDS_INPUT", "INVESTMENTS": "ABSENT_VERIFIED", "ASSET_SALES": "NEEDS_INPUT", "AFFILIATE_TRANSACTIONS": "ABSENT_VERIFIED", "FUNDAMENTAL_CHANGES": "NEEDS_INPUT", "PREPAYMENTS": "ABSENT_VERIFIED", "FINANCIAL_RATIOS": "NEEDS_INPUT"},
+  "lyv-indenture-2025": {"DEBT": "ABSENT_VERIFIED", "LIENS": "ABSENT_VERIFIED", "RESTRICTED_PAYMENTS": "ABSENT_VERIFIED", "INVESTMENTS": "ABSENT_VERIFIED", "ASSET_SALES": "ABSENT_VERIFIED", "AFFILIATE_TRANSACTIONS": "ABSENT_VERIFIED", "FUNDAMENTAL_CHANGES": "CONDITIONS_LIMITED", "PREPAYMENTS": "ABSENT_VERIFIED", "FINANCIAL_RATIOS": "ABSENT_VERIFIED"},
 };
 
 /** In-memory executor: records rows per table, answers the count(*) verification SELECTs. */
@@ -68,7 +68,7 @@ describe("agreement pipeline end-to-end (held-out)", () => {
         if (b.cap === "UNLIMITED_EXPLICIT") expect(b.category).toBe("UNLIMITED");
         if (b.capStatus === "NEEDS_INPUT") expect(b.missingInputs.length).toBeGreaterThan(0);
       }
-      for (const c of r.checklist) if (c.status === "MISSING") expect(c.note).toMatch(/not treated as unlimited/);
+      for (const c of r.checklist) if (c.status === "MISSING" || c.status === "ABSENT_VERIFIED") expect(c.note).toMatch(/not treated as unlimited/);
 
       // Amount compute: dollar caps are computed from the clause text; arithmetic operands are never taken as caps.
       const caps = r.computedBaskets.filter((b) => b.capStatus === "COMPUTED" && b.capKind === "AMOUNT").map((b) => b.capCanonical);
