@@ -90,3 +90,12 @@ describe("covenant scope fails closed on missed headings (reviewer cases)", () =
     expect(l.isCovenantSection!("7.6")).toBe(true);
   });
 });
+
+describe("item-level prohibition keeps an item in scope (a14-26274 negative pledge)", () => {
+  it("a 'shall not, and shall not permit' item in a non-covenant section is not dropped", () => {
+    process.env.CLF_SCOPE_COVENANT = "1";
+    const loc = { candidateSection: () => null, citationSection: () => null, isCovenantSection: () => false };
+    expect(outOfCovenantScope(loc, "9.1", "notwithstanding the foregoing, the Borrower shall not, and shall not permit any of its Subsidiaries to, secure pursuant to the Collateral Documents any Debt")).toBe(false);
+    expect(outOfCovenantScope(loc, "9.1", "Each Lender hereby irrevocably appoints the Administrative Agent as its agent.")).toBe(true);
+  });
+});

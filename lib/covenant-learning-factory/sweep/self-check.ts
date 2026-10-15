@@ -9,6 +9,7 @@ import { createHash } from "node:crypto";
 import type { ComputationResult } from "../../contract-model/covenant-computation/types";
 import type { LearningErrorRecord } from "../types";
 import { AMBIGUOUS, type TreeLocator } from "./tree-locator";
+import { isProhibitive } from "../../contract-model/section-tree/semantics";
 
 export interface PrecedentCandidate {
   candidateId: string;
@@ -343,8 +344,11 @@ export function strictConditionReflected(c: string, b: string): boolean {
   return distinctiveTokenCount(conditionBoilerplateStripped(head)) >= 4;
 }
 
-export function outOfCovenantScope(loc: TreeLocator | null | undefined, section: string | null): boolean {
+export function outOfCovenantScope(loc: TreeLocator | null | undefined, section: string | null, itemText?: string | null): boolean {
   if (process.env.CLF_SCOPE_COVENANT !== "1" || !loc?.isCovenantSection) return false;
+  // An item whose own words are an operative prohibition ("shall not, and shall not permit … to") stays in
+  // scope wherever it sits (e.g. a negative pledge inside a section the classifier calls non-covenant).
+  if (itemText && isProhibitive(itemText)) return false;
   return loc.isCovenantSection(section) === false;
 }
 
@@ -415,7 +419,7 @@ export function selfCheckComputation(args: {
         },
       ),
     );
-    if (!hit && outOfCovenantScope(args.locator, candTree)) continue;
+    if (!hit && outOfCovenantScope(args.locator, candTree, cand.excerpt)) continue;
     if (!hit) {
       const cause = process.env.CLF_DIAG === "1" ? ` [cause=${discoveryGapCause(cand, excerpt, candTree, baskets, args.locator ?? null)}]` : "";
       push(
@@ -504,7 +508,7 @@ export function selfCheckComputation(args: {
     // Keep light — do not flood ledger; only when kind suggests covenant gate
     if (cond.kind && /exception|proviso|carve.?out/i.test(cond.kind)) {
       const hit = baskets.some((b) => conditionBound(cond.excerpt!, b.citationExcerpt));
-      if (!hit && outOfCovenantScope(args.locator, args.locator ? args.locator.citationSection(cond.excerpt) : null)) continue;
+      if (!hit && outOfCovenantScope(args.locator, args.locator ? args.locator.citationSection(cond.excerpt) : null, cond.excerpt)) continue;
       if (!hit) {
         // Skip mass noise: only record if we already have other errors for this source
         // (caller can filter). Record as LOW COVERAGE_GAP with NEEDS_INPUT framing.
