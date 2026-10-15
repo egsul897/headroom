@@ -178,10 +178,14 @@ export function enclosingSectionFamily(text: string, at: number): string | null 
   const fam = classifyCovenantFamily({ title, leadIn: leadIn.slice(0, 1500) }).family;
   if (fam) return fam;
   // Families outside the negative-covenant classifier, read from the enclosing section or article heading only.
-  const article = [...pre.matchAll(/\bARTICLE\s+[IVXLC\d]+\.?\s+([A-Z][A-Z ,;&'’\-]{3,80})/g)].pop()?.[1] ?? "";
-  for (const [f, re] of HEADING_FAMILIES) if (re.test(title) || re.test(article)) return f;
+  // Section title only (an Events of Default article also holds remedies and payment waterfalls), and never a clause
+  // whose actor is a creditor ("The Lenders hereby authorize ... the Collateral Agent to release ...").
+  const clauseLead = text.slice(Math.max(0, at - 40), at + 160);
+  if (CREDITOR_LEAD.test(clauseLead)) return null;
+  for (const [f, re] of HEADING_FAMILIES) if (re.test(title)) return f;
   return null;
 }
+const CREDITOR_LEAD = /(?:^|[;:.]\s*|\)\s*)(?:the\s+|each\s+)?(?:Required\s+)?(?:Lenders?|Holders?|Secured Parties|(?:Administrative|Collateral)\s+Agents?|Agents?|Trustees?|Noteholders?)\s+(?:hereby\s+)?(?:authorize|agree|acknowledge|may|shall|will|direct|consent)/i;
 const HEADING_FAMILIES: Array<[string, RegExp]> = [
   ["GUARANTEES", /\bguarant(?:y|ee|ees|ies|ors?)\b/i],
   ["INCREMENTAL_DEBT_AND_FACILITIES", /\bincremental\b/i],

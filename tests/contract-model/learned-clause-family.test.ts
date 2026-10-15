@@ -42,3 +42,13 @@ describe("enclosing heading families outside the negative covenants", () => {
     expect(enclosingSectionFamily(f, f.indexOf("agrees to pay"))).toBeNull();
   });
 });
+
+describe("heading fallback does not credit remedies or creditor actions", () => {
+  it("a waterfall under an Events of Default article and a lender authorization under a guarantee heading get no family", async () => {
+    const { enclosingSectionFamily } = await import("@/lib/contract-model/covenant-computation/extract-baskets");
+    const w = "ARTICLE VII EVENTS OF DEFAULT Section 7.06 Application of Proceeds . Proceeds shall be applied: (i) First, to fees; (ii) Second, to payment of that portion of the Indebtedness owed under this Agreement.";
+    expect(enclosingSectionFamily(w, w.indexOf("(ii) Second"))).toBeNull();
+    const r = "Section 11.10 Release of Collateral and Guarantees . (a) Liens shall be released as provided in the Security Documents; (b) The Lenders hereby authorize and direct each Collateral Agent to release any Guarantor.";
+    expect(enclosingSectionFamily(r, r.indexOf("(b) The Lenders") + 4)).toBeNull();
+  });
+});
