@@ -307,6 +307,9 @@ const LATER_OBJECT: [string, RegExp][] = [
 ];
 function laterProhibitionFamilies(body: string): Set<string> {
   const out = new Set<string>();
+  // Stop at an embedded heading the tree did not split ("... Material Adverse Effect. Section 10. Negative Covenants.").
+  const stop = body.search(/(?:^|\n|[.;]\s+)(?:SECTION|Section|ARTICLE|Article)\s+[\dIVXLC]+\.?\s+[A-Z]/);
+  if (stop > 0) body = body.slice(0, stop);
   for (const m of body.matchAll(/(?:^|[.;]\s+)((?:The|No|Neither)\s+[A-Z][\w-]*(?:\s+[\w-]+){0,4}?\s+(?:will|shall)\s+not\b[^.;]{0,400})/g)) {
     const sent = m[1]!;
     for (const [f, re] of LATER_OBJECT) {
