@@ -311,8 +311,36 @@ export function discoveryGapCause(cand: PrecedentCandidate, excerpt: string, can
  */
 export function conditionBound(condExcerpt: string, cite: string): boolean {
   const c = norm(condExcerpt), b = norm(cite);
-  if (process.env.CLF_STRICT_CONDITION_MATCH === "1") return strictTextReflected(c, b);
+  if (process.env.CLF_STRICT_CONDITION_MATCH === "1") return strictConditionReflected(c, b);
   return b.includes(c.slice(0, 30));
+}
+
+/**
+ * Boilerplate that recurs across unrelated clauses (MAE / consent / committee-discretion language, clause
+ * markers). Shared text made only of this is not evidence that a basket binds a condition.
+ */
+const CONDITION_BOILERPLATE = [
+  /^\s*\(?[a-z0-9]{1,4}\)\s*/i,
+  /\bno (?:consent|approval|waiver|notice)\b[^.;]{0,40}/gi,
+  /\b(?:the )?committee may,? in its sole (?:and absolute )?discretion,?/gi,
+  /\bin its sole (?:and absolute )?discretion\b/gi,
+  /\b(?:has had|could reasonably be expected to have|would have) a material adverse (?:effect|change)\b/gi,
+  /\bmaterial adverse (?:effect|change)\b/gi,
+  /\bexcept as (?:otherwise )?(?:provided|permitted|set forth|expressly provided) (?:in|by|herein|under)\b(?: this agreement| this section)?/gi,
+  /\bnotwithstanding (?:anything|the foregoing)(?: to the contrary)?(?: herein| contained herein| in this agreement)?\b/gi,
+];
+export function conditionBoilerplateStripped(t: string): string {
+  let out = t;
+  for (const re of CONDITION_BOILERPLATE) out = out.replace(re, " ");
+  return out.replace(/\s+/g, " ").trim();
+}
+
+/** Strict condition binding: the citation contains the condition's opening (up to 120 chars) AND that opening carries >= 4 distinctive tokens once boilerplate is removed; or the citation contains the whole condition. */
+export function strictConditionReflected(c: string, b: string): boolean {
+  if (c.length >= 40 && b.includes(c) && distinctiveTokenCount(conditionBoilerplateStripped(c)) >= 4) return true;
+  const head = c.slice(0, 120);
+  if (head.length < 40 || !b.includes(head)) return false;
+  return distinctiveTokenCount(conditionBoilerplateStripped(head)) >= 4;
 }
 
 export function outOfCovenantScope(loc: TreeLocator | null | undefined, section: string | null): boolean {

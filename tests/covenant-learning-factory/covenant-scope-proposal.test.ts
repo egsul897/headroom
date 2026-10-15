@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { conditionBound, outOfCovenantScope } from "../../lib/covenant-learning-factory/sweep/self-check";
+import { conditionBound, outOfCovenantScope, strictConditionReflected } from "../../lib/covenant-learning-factory/sweep/self-check";
 import { buildTreeLocator } from "../../lib/covenant-learning-factory/sweep/tree-locator";
 
 const opening = "Except as otherwise provided in this Agreement, ";
@@ -41,5 +41,52 @@ describe("covenant scope (opt-in)", () => {
     const l = buildTreeLocator({ documentText: doc, candidates: [] });
     expect(l.isCovenantSection!("6.1")).toBe(true);
     expect(l.isCovenantSection!("9.1")).toBe(false);
+  });
+});
+
+describe("strict condition match: MAE / consent / discretion boilerplate is generic (reviewer cases)", () => {
+  it("'(d) No consent' boilerplate shared with an unrelated basket does not bind", () => {
+    const c = "(d) No consent, approval or waiver shall be required, except as otherwise provided in this Agreement.";
+    const b = "Section 6.02 Liens. (d) No consent, approval or waiver shall be required, except as otherwise provided in this Agreement, and Liens securing Indebtedness not exceeding $5,000,000.";
+    expect(strictConditionReflected(c.slice(0, 60), b)).toBe(false);
+  });
+  it("'Committee may, in its sole discretion' does not bind", () => {
+    const c = "The Committee may, in its sole discretion, and except as otherwise provided herein,";
+    expect(strictConditionReflected(c, "Other text. " + c + " permit Investments up to $10,000,000.")).toBe(false);
+  });
+  it("a distinctive condition contained in the citation binds", () => {
+    const c = "except Liens on accounts receivable sold in a Permitted Receivables Financing not exceeding $50,000,000";
+    expect(strictConditionReflected(c, "Section 6.02 Liens. (k) " + c + ".")).toBe(true);
+  });
+});
+
+describe("covenant scope fails closed on missed headings (reviewer cases)", () => {
+  const mk = (sections: string[]) => sections.join("\n\n");
+  it("'No Loan Party nor any Subsidiary shall' sections stay in scope even when the heading is missed (ehb 6.01/6.04/6.06)", () => {
+    process.env.CLF_SCOPE_COVENANT = "1";
+    const doc = mk([
+      "ARTICLE VI", "MISCELLANEOUS PROVISIONS",
+      "6.01 Liens. No Loan Party nor any Subsidiary of a Loan Party shall, at any time, create, incur, assume or suffer to exist any Lien on any of its assets.",
+      "6.04 Disposition of Assets. No Loan Party nor any Subsidiary of a Loan Party shall sell, convey, pledge, assign or lease any of its assets.",
+      "6.06 Partnerships; Mergers or Consolidation. No Loan Party nor any Subsidiary of a Loan Party shall enter into any partnership or merge.",
+      "6.09 Counterparts. This Agreement may be executed in counterparts, each of which shall be an original.",
+    ]);
+    const l = buildTreeLocator({ documentText: doc, candidates: [] });
+    for (const s of ["6.1", "6.4", "6.6"]) expect(l.isCovenantSection!(s), s).toBe(true);
+    expect(l.isCovenantSection!("6.9")).toBe(false);
+  });
+  it("a representation 'No Loan Party is …' is not made a covenant by the lead-in rule", () => {
+    const doc = mk(["ARTICLE III", "MISCELLANEOUS", "3.27 Affected Financial Institutions. No Loan Party is an Affected Financial Institution and the Borrower has delivered a certificate."]);
+    expect(buildTreeLocator({ documentText: doc, candidates: [] }).isCovenantSection!("3.27")).toBe(false);
+  });
+  it("Events of Default stay in scope even under a 'Financial Ratios' article (a14-26274) and burdensome-agreement titles", () => {
+    const doc = mk([
+      "ARTICLE VII", "FINANCIAL RATIOS",
+      "7.05 Defaults. If any of the following events shall occur, the Lenders may terminate the Commitments.",
+      "7.06 Burdensome Agreements. The Borrower may enter into agreements described in the schedule.",
+    ]);
+    const l = buildTreeLocator({ documentText: doc, candidates: [] });
+    expect(l.isCovenantSection!("7.5")).toBe(true);
+    expect(l.isCovenantSection!("7.6")).toBe(true);
   });
 });

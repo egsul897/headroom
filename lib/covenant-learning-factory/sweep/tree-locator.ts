@@ -10,7 +10,8 @@
  */
 import { deepestContaining, parseDocumentTree, parseSectionTree, sectionOf, type SectionTree } from "../../contract-model/section-tree/parse";
 import type { PrecedentCandidate } from "./self-check";
-import { covenantChecklist } from "../../contract-model/section-tree/semantics";
+import { covenantChecklist, isProhibitive } from "../../contract-model/section-tree/semantics";
+import { isObligorProhibitionLead } from "../../contract-model/section-tree/family-classifier";
 
 interface Indexed {
   tree: SectionTree;
@@ -78,6 +79,14 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
         const n = byPath.get(p) ?? null;
         if (n) covenantSecs.add(n);
       }
+      // Fail closed: a heading the family classifier misses is still a covenant section when its
+      // operative lead-in, its own title or its article title says so. Events of Default and affirmative
+      // covenants stay in scope.
+      for (const n of t.nodes) {
+        if (n.kind !== "SECTION" || !n.sectionNumber) continue;
+        if (covenantSecs.has(n.sectionNumber)) continue;
+        if (sectionLooksCovenant(t, t.text, n)) covenantSecs.add(n.sectionNumber);
+      }
     } catch {
       ix = null;
       covenantSecs = null;
@@ -117,4 +126,20 @@ export function buildTreeLocator(args: { documentText: string | null; candidates
       return secs.size === 1 ? [...secs][0]! : AMBIGUOUS;
     },
   };
+}
+
+const COVENANT_TITLE = /covenant|events? of default|\bdefaults?\b|negative pledge|limitation|restrict|nonrecourse|non-recourse|burdensome/i;
+const OBLIGATION_LEAD = /\b(?:shall|will|may)\s+not\b|\bshall\s+(?:cause|maintain|deliver|furnish|keep|comply|preserve|pay)\b|\bevents? of default\b|\bif any of the following\b|\bno recourse\b/i;
+
+/** "No Loan Party nor any Subsidiary shall …", "No Borrower and no Subsidiary will …" (not "No Loan Party is …", a representation). */
+const NO_PARTY_SHALL = /^\s*(?:\([a-z0-9]+\)\s*)?no\s+[^.;]{1,140}?\b(?:shall|will)\b/i;
+
+/** Covenant evidence beyond the family classifier: lead-in obligation/prohibition, or a covenant/default title on the section or an ancestor. */
+export function sectionLooksCovenant(tree: SectionTree, text: string, n: SectionTree["nodes"][number]): boolean {
+  const lead = text.slice(n.headingEnd, Math.min(n.end, n.headingEnd + 700));
+  if (isObligorProhibitionLead(lead) || isProhibitive(lead) || OBLIGATION_LEAD.test(lead) || NO_PARTY_SHALL.test(lead)) return true;
+  for (let a: typeof n | undefined = n; a; a = a.parentId ? tree.byId.get(a.parentId) : undefined) {
+    if (a.title && COVENANT_TITLE.test(a.title)) return true;
+  }
+  return false;
 }
