@@ -37,7 +37,10 @@ const NEITHER_PARTY_RE = /\bNeither\s+(?:the\s+|any\s+)?([A-Z][\w-]*)((?:,?\s+[\
 const NONE_OF_PARTY_RE = /\bNone of\s+(?:the\s+)?([A-Z][\w-]*)((?:,?\s+[\w’'-]+){0,10}?)\s+(shall|will|may)\b/g;
 function noPartyMatches(lead: string): RegExpMatchArray[] {
   const s = stripParens(lead).replace(/\s{2,}/g, (m) => " ".repeat(m.length));
-  return [...s.matchAll(NO_PARTY_RE), ...s.matchAll(NEITHER_PARTY_RE), ...s.matchAll(NONE_OF_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test(m[1]! + m[2]!)).sort((a, b) => a.index! - b.index!);
+  // The head may span a line break ("No Loan\nParty will ..."). Collapse whitespace
+  // before the NOT_PARTY_HEAD guard, or its `Loan(?! Part)` lookahead sees "\nParty"
+  // (not " Part") and filters a genuine party head as standalone "Loan".
+  return [...s.matchAll(NO_PARTY_RE), ...s.matchAll(NEITHER_PARTY_RE), ...s.matchAll(NONE_OF_PARTY_RE)].filter((m) => !NOT_PARTY_HEAD.test((m[1]! + m[2]!).replace(/\s+/g, " "))).sort((a, b) => a.index! - b.index!);
 }
 /** "Neither the Issuer nor Parent may consolidate ..." / "Neither Borrower shall ...": a negated obligor subject. */
 const NEITHER_RE = /\b(?:[Nn]either(?:\s+of)?|[Nn]one\s+of)\s+(?:the\s+)?[A-Z][^.;:]{0,160}?\b(?:shall|will|may)\b(?!\s+be\s+(?:required|deemed|responsible|liable|obligated))/;
