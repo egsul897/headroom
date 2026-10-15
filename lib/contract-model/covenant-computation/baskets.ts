@@ -187,14 +187,24 @@ const UNLIMITED_CONDITION = /^[^.;]{0,40}?\b(?:if|so\s+long\s+as|provided\s+that
 /** Negated unlimited ("nothing herein shall permit ... in an unlimited amount", "shall not ... unlimited"). */
 const UNLIMITED_NEGATION = /\b(?:nothing\s+(?:herein|in\s+this\s+\w+|contained\s+herein)[^.;]{0,160}?\b(?:shall|will|may)\s+(?:be\s+(?:deemed|construed)\s+to\s+)?(?:permit|allow|authorize)|(?:shall|will|may)\s+not\b|\bno\b)[^.;]{0,160}$/i;
 
+/** "so long as no ...", "provided that no ...", "if no ...", "unless ..." up to the clause's comma: a condition, not a negation. */
+const CONDITION_NO = /\b(?:so\s+long\s+as|provided(?:,?\s+however,?)?\s+that|if|when|unless|(?:immediately\s+)?after\s+giving\s+effect[^,;]{0,80}?,)\s+(?:no|not)\b[^,;]{0,160}/gi;
+/** A defined set of gating conditions ("Payment Conditions", "RP Conditions", "Payment Condition") or satisfied tests. */
+const DEFINED_CONDITIONS = /\b(?:[A-Z][A-Za-z]*\s+)+Conditions?\b|\bconditions?\s+(?:set\s+forth|specified|described)\b|\b(?:is|are)\s+satisfied\b/;
+const LEAD_CONDITION = /\b(?:if|so\s+long\s+as|provided\s+that|subject\s+to)\b/i;
+
 export function unlimitedCapacityMatch(text: string): { kind: "NONE" | "UNCONDITIONAL" | "CONDITIONAL" | "NEGATED" } {
   const m = UNLIMITED_CAPACITY_PHRASE.exec(text);
   if (!m) return { kind: "NONE" };
   const before = text.slice(Math.max(0, m.index - 240), m.index);
-  if (UNLIMITED_NEGATION.test(before)) return { kind: "NEGATED" };
-  // Only a financial-test condition turns the grant into a ratio permission; "so long as no Default exists" does not.
+  // A condition's own "no" ("so long as no Default or Event of Default exists, ...") gates the grant; it does not negate it.
+  const beforeGrant = before.replace(CONDITION_NO, " ");
+  if (UNLIMITED_NEGATION.test(beforeGrant)) return { kind: "NEGATED" };
+  // A financial-test condition, or a defined gating condition set ("so long as the Payment Conditions are satisfied"),
+  // makes the grant conditional; "so long as no Default exists" alone does not.
   const after = text.slice(m.index + m[0].length);
-  if (UNLIMITED_CONDITION.test(after) && RATIO_CONDITION.test(after)) return { kind: "CONDITIONAL" };
+  if (UNLIMITED_CONDITION.test(after) && (RATIO_CONDITION.test(after) || DEFINED_CONDITIONS.test(after))) return { kind: "CONDITIONAL" };
+  if (LEAD_CONDITION.test(before) && DEFINED_CONDITIONS.test(before)) return { kind: "CONDITIONAL" };
   return { kind: "UNCONDITIONAL" };
 }
 
