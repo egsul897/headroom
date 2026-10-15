@@ -142,7 +142,8 @@ async function main(): Promise<void> {
   if (argStr("rules") === "v0") {
     // Extractor-only: empty learned ruleset (no unverified learned rules inflate the numbers).
     const { emptyRuleSet } = await import("../../lib/covenant-learning-factory/learned-rules/types");
-    rules = emptyRuleSet(0);
+    // Fixed timestamp: the v0 identity hash must not depend on wall-clock time (it differed per shard).
+    rules = { ...emptyRuleSet(0), updatedAt: "1970-01-01T00:00:00.000Z" };
   }
   if (argStr("rules") === "neon") {
     if (!neon) {
