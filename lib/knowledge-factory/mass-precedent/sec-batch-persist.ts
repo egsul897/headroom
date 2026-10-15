@@ -15,7 +15,7 @@ import { prisma } from "../../prisma";
 import { openMassPrecedentCorpus } from "./corpus-paths";
 import { writePrecedentRetrievalIndex } from "./retrieval-index";
 import { buildDocumentCovenantSummary } from "../../product/covenant-intelligence/summarize";
-import { recordImportStall } from "./stall-record";
+import { recordImportStall, type StallRecorderClient } from "./stall-record";
 
 export const MASS_LIVE_ENV = "KF_MASS_PRECEDENT_LIVE_WRITE";
 export const MASS_LIVE_TOKEN = "I_AUTHORIZE_NEON_BULK_WRITE";
@@ -254,7 +254,16 @@ export async function persistSecManifestBatch(params?: {
       // must not sit at ACQUIRED + SOURCE_ONLY with no reason. Fetch
       // failures (no row persisted) skip this — there is no row to mark.
       if (live && rowPersisted) {
-        const recorded = await recordImportStall(prisma, loc.sourceId, "process-or-update", message);
+        // The real PrismaClient is structurally wider than the testable
+        // StallRecorderClient (strict enum/Json arg types); the runtime
+        // contract (findUnique by sourceId + update extractionStatus /
+        // metadata) is what the helper relies on.
+        const recorded = await recordImportStall(
+          prisma as unknown as StallRecorderClient,
+          loc.sourceId,
+          "process-or-update",
+          message,
+        );
         if (!recorded) {
           out.errors.push({
             sourceId: loc.sourceId,

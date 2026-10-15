@@ -147,7 +147,7 @@ export async function stageCustomerDocument(params: {
       : {};
   const stagedMeta = JSON.parse(
     JSON.stringify({ ...priorMeta, ...pendingMeta }),
-  ) as Record<string, unknown>;
+  );
   delete stagedMeta.analysisError;
 
   await prisma.knowledgeSource.upsert({
