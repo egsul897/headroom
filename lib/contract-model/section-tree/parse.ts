@@ -579,10 +579,40 @@ export function treeText(raw: string): { text: string; basis: TextBasis } {
  * that follow a sentence end, a closing quote/paren or a page number. Whitespace-only change.
  */
 export function relineFlattened(raw: string): string {
-  let t = relineLong(raw);
+  let t = relineLong(unjamHeadings(raw));
   // "ARTICLE V SUCCESSORS Section 5.1. Consolidation ..." on one line: the section heading starts its own line.
   t = t.replace(/^(\s*(?:ARTICLE|Article)\s+(?:[IVXLC]+|\d{1,2})\.?\s+[A-Z][A-Z ,;&'\u2019-]{2,80}?)[ \t]+(?=(?:SECTION|Section)\s+(?:\d{1,2}\.\d{1,3}|\d{3,4})\.?\s+[A-Z\u201c"])/gm, "$1\n");
   return t;
+}
+
+/**
+ * Two-column extractions interleave the margin number into the first body line: "Classification of Loans. For
+ * purposes of thisSECTION 1.02 Agreement, ..." (the number glued to a lowercase word). When a document does this
+ * repeatedly (>= 5 times), move "SECTION N.NN" to a new line in front of the caption sentence it belongs to.
+ */
+function unjamHeadings(t: string): string {
+  if ((t.match(/[a-z,;\u201d](?:SECTION|Section)[ \t]+\d{1,2}\.\d{1,3}/g) ?? []).length < 5) return t;
+  // In such a document the number also lands after a period or a mid-caption word ("Issuance of SECTION 6.01 Disqualified").
+  const JAM = /([a-z,;.\u201d])[ \t]?(SECTION|Section)[ \t]+(\d{1,2}\.\d{1,3})\.?[ \t]+(?![^\n]{0,40}\b(?:hereof|of (?:this|the) (?:Agreement|Indenture))\b)/g;
+  let out = "", last = 0;
+  for (const m of t.matchAll(JAM)) {
+    const at = m.index! + 1;
+    const win = t.slice(Math.max(last, at - 400), at);
+    // The caption: the last "Title Case words." that follows a sentence end inside the window.
+    const caps = [...win.matchAll(/(?:^|[.:;)\u201d][ \t]+|\n)((?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|etc)(?:[,;]?[ \t]+(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by|etc\.?)){0,12}\.)(?:[ \t]+(?=[A-Z\u201c"(])|$)/g)];
+    const base = Math.max(last, at - 400);
+    // A caption the number split in two ("Limitation on ... Issuance of SECTION 6.01 Disqualified Stock."): the
+    // window ends inside Title Case words that follow the last sentence end.
+    const W = "(?:[A-Z][A-Za-z\u2019'&-]*|of|and|or|on|to|the|in|for|with|by)";
+    const open = new RegExp(`(?:^|[.:;)\u201d][ \\t]+|\\n)(${W}(?:[,;]?[ \\t]+${W}){0,12})[ \\t]*$`).exec(win);
+    const c = caps[caps.length - 1];
+    if (!c && !open) continue;
+    const start = open && /^[ \t]?[A-Z]/.test(t.slice(m.index! + m[0].length)) && !/[.;:]$/.test(win.trimEnd()) ? base + open.index! + open[0].indexOf(open[1]!) : c ? base + c.index! + c[0].indexOf(c[1]!) : -1;
+    if (start < 0) continue;
+    out += t.slice(last, start) + `\n${m[2]} ${m[3]} ` + t.slice(start, at) + " ";
+    last = m.index! + m[0].length;
+  }
+  return out + t.slice(last);
 }
 
 function relineLong(t: string): string {
