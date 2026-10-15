@@ -152,11 +152,14 @@ export const NO_PARTY_SHALL = /^\s*(?:\([a-z0-9]+\)\s*)?no\s+[^.;]{1,140}?\b(?:s
 export function sectionLooksCovenant(tree: SectionTree, text: string, n: SectionTree["nodes"][number]): boolean {
   const lead = text.slice(n.headingEnd, Math.min(n.end, n.headingEnd + 700));
   if (isObligorProhibitionLead(lead) || isProhibitive(lead) || NO_PARTY_SHALL.test(lead) || AFFIRMATIVE_LEAD.test(lead)) return true;
-  // Affirmative obligations ("will pay", "shall deliver") count only in lead-ins: the section opening and each clause
-  // opening. Prohibitions, default triggers and no-recourse wording count anywhere in the body.
+  // Every signal is read from lead-ins only: the section opening and each clause opening. Text deeper in a body
+  // (reps, agency, governing law quoting "shall not" in passing) never pulls a section into scope.
+  if (OBLIGATION_LEAD.test(lead) || PROHIBITIVE_ANYWHERE.test(lead) || NO_PARTY_ANYWHERE.test(lead)) return true;
   const body = text.slice(n.headingEnd, n.end);
-  if (OBLIGATION_LEAD.test(lead) || PROHIBITIVE_ANYWHERE.test(body) || NO_PARTY_ANYWHERE.test(body)) return true;
-  for (const c of body.matchAll(/(?:^|\n|[;:]\s+)\s*\((?:[a-z]{1,2}|[ivxl]{1,6}|\d{1,2})\)\s+([^\n]{0,200})/g)) if (OBLIGATION_LEAD.test(c[1]!)) return true;
+  for (const c of body.matchAll(/(?:^|\n|[;:]\s+)\s*\((?:[a-z]{1,2}|[ivxl]{1,6}|\d{1,2})\)\s+([^\n]{0,200})/g)) {
+    const cl = c[1]!;
+    if (OBLIGATION_LEAD.test(cl) || isObligorProhibitionLead(cl) || NO_PARTY_SHALL.test(cl)) return true;
+  }
   for (let a: typeof n | undefined = n; a; a = a.parentId ? tree.byId.get(a.parentId) : undefined) {
     if (a.title && COVENANT_TITLE.test(a.title)) return true;
   }
