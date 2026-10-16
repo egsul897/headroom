@@ -190,11 +190,21 @@ export function isAdministrativeProvision(heading = "", _text = ""): boolean {
   return ADMINISTRATIVE_HEADING.test(heading) || ADMINISTRATIVE_HEADING_PREFIX.test(heading);
 }
 
-/** An event-of-default trigger: "… shall constitute an Event of Default". */
-const EOD_TRIGGER = /\bconstitutes?\s+an\s+Event\s+of\s+Default\b/i;
+/**
+ * An event-of-default trigger. Drafters write it several ways, not
+ * only "constitutes an Event of Default": "shall be an Event of
+ * Default", "is an Event of Default", "shall be deemed (to be) an
+ * Event of Default", and "shall constitute a Default" are all
+ * trigger phrasings. "Shall NOT be an Event of Default" (waiver
+ * language) is deliberately not matched — the "shall be" adjacency
+ * requirement excludes it.
+ */
+const EOD_TRIGGER = /\bconstitutes?\s+(?:an\s+Event\s+of\s+Default|a\s+Default)\b/i;
+const EOD_BE_TRIGGER =
+  /\b(?:shall\s+be|is|shall\s+be\s+deemed\s+(?:to\s+be\s+)?)\s+(?:an\s+)?Event\s+of\s+Default\b/i;
 
 export function isEventOfDefaultTrigger(heading = "", text = ""): boolean {
-  return EOD_TRIGGER.test(text) || /\bEvents?\s+of\s+Default\b/i.test(heading);
+  return EOD_TRIGGER.test(text) || EOD_BE_TRIGGER.test(text) || /\bEvents?\s+of\s+Default\b/i.test(heading);
 }
 
 export function classifyFamiliesFromText(text: string, heading = ""): KnowledgeTaxonomyFamily[] {
