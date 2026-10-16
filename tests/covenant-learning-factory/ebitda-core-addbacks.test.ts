@@ -262,4 +262,53 @@ describe("base promotion and invent-safe CNI extinguishment", () => {
     expect(sc.coverage).not.toBe("NONE");
     expect(Number(sc.evidenced)).toBe(12 * M);
   });
+  it("REIT 'net income excluding the following (to the extent included)' treats D&A/interest/tax as add-backs", () => {
+    // Indenture pattern: sum of (1) NI excluding the following (to the extent included): (A) D&A; (B) interest; (C) tax.
+    // "excluding" here is an add-back list, not a subtraction from NI.
+    const text =
+      `"Consolidated EBITDA" means, with respect to a Person for any period and without duplication, the sum of: (1) net income (loss) of such Person for such period determined on a consolidated basis excluding the following (but only to the extent included in determining net income (loss) for such period): (A) depreciation and amortization; (B) interest expense; (C) income tax expense; (D) extraordinary or nonrecurring items, including gains, losses, charges or expenses from the sale of properties; (E) other non-cash charges, including share-based compensation expense; and (F) equity in net income (loss) of its Joint Ventures; plus (2) such Person's Ownership Share of Consolidated EBITDA of its Joint Ventures. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda(
+      "Consolidated EBITDA",
+      text,
+      fin({ ...XBRL, ShareBasedCompensation: 12 * M }),
+    );
+    expect(o.supported).not.toBeNull();
+    // NI 100 + D&A 50 + IE 30 + tax 20 + SBC 12 = 212; (D)/(F)/(2) omitted (two-sided / unmapped).
+    expect(Number(o.supported)).toBe(100 * M + 50 * M + 30 * M + 20 * M + 12 * M);
+    expect(o.addBacks.find((a) => a.label === "(A)")?.coverage).not.toBe("NONE");
+    expect(o.addBacks.find((a) => a.label === "(B)")?.coverage).not.toBe("NONE");
+    expect(o.addBacks.find((a) => a.label === "(C)")?.coverage).not.toBe("NONE");
+  });
+
+  it("formula-only 'earnings before interest…' reconstructs NI+IE+tax+D&A from filings (lower bound)", () => {
+    const text =
+      `"Adjusted EBITDA" means earnings before interest, taxes, depreciation, amortization and non-cash losses, charges or expenses, including non-cash compensation expense, calculated in accordance with GAAP. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda(
+      "Adjusted EBITDA",
+      text,
+      fin({ ...XBRL, ShareBasedCompensation: 12 * M }),
+    );
+    expect(o.base).not.toBeNull();
+    expect(o.supported).not.toBeNull();
+    // Reconstructed core only; non-cash lead residue stays open (invent-absence).
+    expect(Number(o.supported)).toBe(100 * M + 30 * M + 20 * M + 50 * M);
+    expect(o.maximum).toBeNull();
+  });
+
+  it("formula-only earnings-before stays NEEDS_INPUT when tax TTM is missing (fail-closed)", () => {
+    const text =
+      `"Adjusted EBITDA" means earnings before interest, taxes, depreciation, amortization and non-cash charges. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda(
+      "Adjusted EBITDA",
+      text,
+      fin({ NetIncomeLoss: 100 * M, InterestExpense: 30 * M, DepreciationDepletionAndAmortization: 50 * M }),
+    );
+    expect(o.supported).toBeNull();
+    expect(o.maximum).toBeNull();
+    expect(o.reason).toMatch(/earnings-before formula|missing/i);
+  });
+
 });

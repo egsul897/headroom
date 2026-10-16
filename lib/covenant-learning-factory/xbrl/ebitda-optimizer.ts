@@ -152,8 +152,10 @@ const usd = (n: bigint) => n.toString();
 /** Group sign per enumerated item, by the same rules as evaluateDefinition (used when the base fails and no items come back). */
 function itemSigns(segs: Array<{ text: string }>): Array<{ sign: "+" | "-"; header: boolean }> {
   let sign: "+" | "-" | "?" = "+";
-  for (const m of markers(segs[0]!.text)) sign = m;
-  if (/\bincreas/i.test(segs[0]!.text) && !/\bdecreas|deducted/i.test(segs[0]!.text)) sign = "-";
+  const lead0 = segs[0]!.text;
+  for (const m of markers(lead0)) sign = m;
+  if (/\bincreas/i.test(lead0) && !/\bdecreas|deducted/i.test(lead0)) sign = "-";
+  if (/net\s+income/i.test(lead0) && /\bexcluding\s+the\s+following\b/i.test(lead0) && /to\s+the\s+extent\s+included/i.test(lead0)) sign = "+";
   return segs.slice(1).map((s) => {
     const t = s.text;
     const header = /\bthe\s+following\b|:\s*$/.test(t) && t.length < 300;
@@ -192,9 +194,11 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     return merged;
   };
   if (!segs) return out({ needsInput: [`"${term}" definition`] });
-  const aligned = ev.items.length === segs.length - 1;
+  // Meta items ((base)/(net)/(cap)/(formula)) are not enumerated schedule lines — exclude from alignment.
+  const lineItems = ev.items.filter((i) => !/^\((?:base|net|cap|formula)\)$/i.test(i.label));
+  const aligned = lineItems.length === segs.length - 1;
   const signs = itemSigns(segs);
-  const raw = segs.slice(1).map((s, i) => ({ full: s.text, it: aligned ? { ...ev.items[i]! } : { label: s.label, text: s.text, sign: signs[i]!.sign, coverage: signs[i]!.header ? "HEADER" as const : "NONE" as const, concepts: [] as Array<{ concept: string; value: string }>, value: "0", note: "" } }));
+  const raw = segs.slice(1).map((s, i) => ({ full: s.text, it: aligned ? { ...lineItems[i]! } : { label: s.label, text: s.text, sign: signs[i]!.sign, coverage: signs[i]!.header ? "HEADER" as const : "NONE" as const, concepts: [] as Array<{ concept: string; value: string }>, value: "0", note: "" } }));
   // Sub-clauses inside a line item ("provided that (A) … (C) the aggregate … shall not exceed", "including (i) … (ii)")
   // belong to that item: an enumerator of a different style from the item list, not introduced by a sign connector.
   const style = (l: string) => /^\((?:[ivxl]+)\)$/.test(l) ? "roman" : /^\([a-z]{1,2}\)$/.test(l) ? "lower" : /^\([A-Z]{1,2}\)$/.test(l) ? "upper" : "digit";

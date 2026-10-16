@@ -280,6 +280,19 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
       const v = firstItem(fin, ["ProfitLoss", "NetIncomeLoss"]);
       if (!v) return res("NEEDS_INPUT", "no exact TTM profit/net income in XBRL");
       base = v;
+    } else if (/earnings\s+before\s+interest/i.test(lead)) {
+      // Formula-only "earnings before interest, taxes, depreciation, amortization" — reconstruct from filings.
+      const ni = firstItem(fin, ["NetIncomeLoss", "ProfitLoss"]);
+      const ie = firstItem(fin, IE);
+      const tax = firstItem(fin, ["IncomeTaxExpenseBenefit"]);
+      const da = firstItem(fin, DA);
+      if (!ni || !ie || !tax || !da) return res("NEEDS_INPUT", "earnings-before formula: missing NI/interest/tax/D&A in XBRL");
+      const parts = [ni, ie, tax.value > 0n ? tax : { concept: tax.concept, value: 0n }, da];
+      base = { concept: `earnings before IE/tax/D&A (${parts.map((p) => p.concept).join("+")})`, value: parts.reduce((a, p) => a + (p.value > 0n ? p.value : 0n), 0n) };
+      // Further lead add-backs (non-cash charges, etc.) stay open — never invent them.
+      if (/non-?cash|impairment|stock|equity|share[- ]based|write-?(?:offs?|downs?)/i.test(lead)) {
+        items.push({ label: "(base)", text: lead.slice(0, 200), sign: "+", coverage: "PARTIAL", concepts: [], value: "0", note: "formula EBITDA reconstructed from filings; further lead add-backs need input" });
+      }
     } else return res("NEEDS_INPUT", "definition does not start from net income or a defined EBIT");
   } else {
     if (!/interest/i.test(lead)) return res("NEEDS_INPUT", "interest definition has no interest-expense base");
@@ -297,6 +310,9 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
   let sign: ItemSign = "+";
   for (const m of markers(lead)) sign = m;
   if (kind === "EBITDA" && /\bincreas/i.test(lead) && !/\bdecreas|deducted/i.test(lead)) sign = "-";
+  // "net income … excluding the following (but only to the extent included in NI): (A) D&A; (B) interest; (C) tax"
+  // — "excluding" here means add-back (REIT/indenture drafting), not a subtraction from the sum.
+  if (kind === "EBITDA" && /net\s+income/i.test(lead) && /\bexcluding\s+the\s+following\b/i.test(lead) && /to\s+the\s+extent\s+included/i.test(lead)) sign = "+";
   const used = new Set<string>();
   for (const s of segs.slice(1)) {
     const t = s.text;
