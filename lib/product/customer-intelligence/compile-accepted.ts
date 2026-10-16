@@ -11,6 +11,7 @@ import {
   type CovenantSummaryItem,
 } from "../covenant-intelligence/summarize";
 import { parseMoneyMillions } from "./money";
+import { buildCapacityFormulas } from "./capacity-formulas";
 
 export type CompileStatus =
   | "COMPILED"
@@ -492,39 +493,10 @@ export async function syncDocumentCapacityFormulas(companyId: string, documentId
   const debtCodes = perms.filter((p) => p.grantType === "DEBT_INCURRENCE" && p.code).map((p) => p.code!);
   const lienCodes = perms.filter((p) => p.grantType === "LIEN" && p.code).map((p) => p.code!);
 
-  const ref = (code: string) => ({ op: "REF" as const, code });
-  const capacityFormulas: Record<string, unknown> = {};
-
-  if (debtCodes.length && lienCodes.length) {
-    capacityFormulas.secured = {
-      op: "MIN",
-      label: "Secured capacity (counsel-compiled debt ∩ lien)",
-      items: [
-        { op: "SUM", items: debtCodes.map(ref), label: "Debt baskets" },
-        { op: "SUM", items: lienCodes.map(ref), label: "Lien baskets" },
-      ],
-    };
-  } else if (debtCodes.length) {
-    capacityFormulas.secured = {
-      op: "SUM",
-      label: "Secured capacity (debt baskets — lien regime not yet counsel-compiled)",
-      items: debtCodes.map(ref),
-    };
-  } else if (lienCodes.length) {
-    capacityFormulas.secured = {
-      op: "SUM",
-      label: "Secured capacity (lien baskets — debt regime not yet counsel-compiled)",
-      items: lienCodes.map(ref),
-    };
-  }
-
-  if (debtCodes.length) {
-    capacityFormulas.unsecured = {
-      op: "SUM",
-      label: "Unsecured debt baskets (counsel-compiled)",
-      items: debtCodes.map(ref),
-    };
-  }
+  // Secured requires BOTH legs (buildCapacityFormulas mints no secured
+  // formula when one leg is missing — the missing leg is unknown,
+  // not unconstrained).
+  const capacityFormulas = buildCapacityFormulas(debtCodes, lienCodes);
 
   await prisma.document.update({
     where: { id: documentId },
