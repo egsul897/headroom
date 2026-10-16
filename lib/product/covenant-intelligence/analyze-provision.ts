@@ -417,7 +417,16 @@ function relatedDefinitions(
   const hits: Array<{ term: string; excerpt: string; resolved: boolean }> = [];
   for (const d of defs.slice(0, 300)) {
     if (d.term.length < 3) continue;
-    if (!excerpt.toLowerCase().includes(d.term.toLowerCase())) continue;
+    // Rule 199: match the term as a whole word/phrase, not a
+    // substring. The old `includes` matched "SEC" inside
+    // "unsecured" and attached a noise definition ("Controlling
+    // defined terms: SEC") to every unsecured-debt item. The
+    // lookarounds require a non-alphanumeric on both sides (a
+    // word-boundary regex would fail on terms with punctuation
+    // edges); internal whitespace is `\s+` so a term split
+    // across a line break in the excerpt still matches.
+    const escaped = d.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+    if (!new RegExp(`(?<![A-Za-z0-9])${escaped}(?![A-Za-z0-9])`, "i").test(excerpt)) continue;
     hits.push({
       term: d.term,
       excerpt: clip(d.excerpt ?? "", 220),

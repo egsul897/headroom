@@ -49,6 +49,7 @@ function analyze(
   heading: string,
   families: KnowledgeTaxonomyFamily[],
   candidateId = "c-general",
+  definitions: Array<{ term: string; excerpt: string }> = [],
 ) {
   return analyzeProvision({
     sourceId: "test:general",
@@ -63,7 +64,7 @@ function analyze(
       representationLevel: "DISCOVERED_CANDIDATE",
       discoveryScore: 8,
     },
-    definitions: [],
+    definitions: definitions.map((d) => ({ ...d, sourceId: "test:general", nodeId: "n-general", charStart: 0, charEnd: 0 })),
     structuralNodes: [node("n-general", "7.02", heading, 0, 100)],
   });
 }
@@ -814,5 +815,25 @@ describe("rule 187: no junk Except permission from a bare chapeau colon", () => 
       ["RESTRICTED_PAYMENTS"],
     );
     expect(a.permissions).toEqual([]);
+  });
+});
+
+/** Rule 199: defined terms match as whole words/phrases, not substrings. */
+describe("rule 199: defined-term word-boundary matching", () => {
+  const defs = [
+    { term: "SEC", excerpt: "\u201cSEC\u201d means the Securities and Exchange Commission of the U.S." },
+    { term: "Threshold Amount", excerpt: "\u201cThreshold Amount\u201d means $ 750,000." },
+  ];
+  it("SEC does not attach when the excerpt only says 'unsecured'", () => {
+    const a = analyze("(k) other unsecured Indebtedness in an aggregate principal amount not exceeding the Threshold Amount.", "6.01(k)", ["INDEBTEDNESS"], "c-199a", defs);
+    expect(a.applicableDefinitions.map((d) => d.term)).not.toContain("SEC");
+  });
+  it("SEC attaches when the excerpt mentions the SEC standalone", () => {
+    const a = analyze("The Borrower shall file reports with the SEC as required by law.", "5.01", ["OTHER"], "c-199b", defs);
+    expect(a.applicableDefinitions.map((d) => d.term)).toContain("SEC");
+  });
+  it("a multi-word term attaches across a line break in the excerpt", () => {
+    const a = analyze("(k) other unsecured Indebtedness not exceeding the Threshold\nAmount at any time.", "6.01(k)", ["INDEBTEDNESS"], "c-199c", defs);
+    expect(a.applicableDefinitions.map((d) => d.term)).toContain("Threshold Amount");
   });
 });
