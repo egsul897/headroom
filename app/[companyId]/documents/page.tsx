@@ -81,6 +81,11 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
           )}
           {amendment.provisionChangeSignals.length > 0 && (
             <div style={{ marginTop: 8 }}>
+              {amendment.provisionChangeSignals.length > 6 && (
+                <div className="row-note">
+                  (+{amendment.provisionChangeSignals.length - 6} more change signals)
+                </div>
+              )}
               {amendment.provisionChangeSignals.slice(0, 6).map((s, i) => (
                 <div key={i} className="row-note">
                   <Chip tone="navy">{s.kind}</Chip> {s.evidence}

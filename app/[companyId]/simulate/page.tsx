@@ -224,6 +224,9 @@ export default async function SimulatePage({
             • Missing: {m}
           </div>
         ))}
+        {ns4Financial.missingInputs.length > 4 && (
+          <div className="row-note">(+{ns4Financial.missingInputs.length - 4} more missing inputs)</div>
+        )}
         <div className="button-row" style={{ marginTop: 12 }}>
           <Link className="button" href={`/${companyId}/dashboard`}>
             Dashboard (same NS-4 identity)

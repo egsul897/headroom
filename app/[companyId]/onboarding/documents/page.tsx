@@ -86,7 +86,10 @@ async function ContractAnalysisStatusCard({ companyId }: { companyId: string }) 
       )}
       {failureLogs.length > 0 && (
         <div style={{ marginTop: 6 }}>
-          <div className="row-note">{failureLogs.length} pre-analysis failure(s) (occurred before a run could be started):</div>
+          <div className="row-note">
+            {failureLogs.length} pre-analysis failure(s) (occurred before a run could be started)
+            {failureLogs.length > 5 ? ` — showing first 5` : ""}:
+          </div>
           {failureLogs.slice(0, 5).map((log) => (
             <div key={log.id} className="row-note" style={{ color: "var(--color-danger, #b91c1c)" }}>
               {fmtDate(log.createdAt)} · {log.errorClass} — {log.message}

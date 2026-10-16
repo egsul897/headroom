@@ -195,6 +195,9 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
             {review.dependencyGraph.edgeCount} source-backed relationship hint(s). Permission under one covenant is not
             permission under every related covenant.
           </div>
+          {review.dependencyGraph.edgeCount > 12 && (
+            <div className="row-note">Showing first 12 of {review.dependencyGraph.edgeCount} relationship hints.</div>
+          )}
           {review.dependencyGraph.edges.slice(0, 12).map((e, i) => (
             <div key={i} className="row-note" style={{ marginTop: 8 }}>
               <Chip tone="navy">{e.kind}</Chip> §{e.fromSectionRef} → §{e.toSectionRef}: {e.rationale}
@@ -254,6 +257,9 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         <Card key={block.category}>
           <div className="card-title">{block.categoryLabel}</div>
           <div className="card-subtitle">{block.items.length} analyzed provision(s)</div>
+          {block.items.length > 24 && (
+            <div className="row-note">Showing first 24 of {block.items.length} provisions.</div>
+          )}
           {block.items.slice(0, 24).map((item, idx) => (
             <div
               key={`${item.sourceId}-${item.sectionRef}-${idx}`}

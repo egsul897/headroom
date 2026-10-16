@@ -192,6 +192,9 @@ export default async function DocumentSourcePage({
           <div className="card-subtitle">
             Plain-English substance with citations. DISCOVERED ≠ VERIFIED.
           </div>
+          {summaryItems.length > 40 && (
+            <div className="row-note">Showing first 40 of {summaryItems.length} covenant summaries.</div>
+          )}
           {summaryItems.slice(0, 40).map((item, idx) => (
             <div
               key={`${item.sectionRef}-${idx}`}
@@ -221,6 +224,7 @@ export default async function DocumentSourcePage({
               {(item.permissions?.length ?? 0) > 0 && (
                 <div className="row-note">
                   Permissions / exceptions: {item.permissions!.slice(0, 4).join(" · ")}
+                  {item.permissions!.length > 4 && ` (+${item.permissions!.length - 4} more)`}
                 </div>
               )}
               {(item.coveredEntities?.length ?? 0) > 0 && (
@@ -235,7 +239,10 @@ export default async function DocumentSourcePage({
                 </div>
               )}
               {(item.conditions?.length ?? 0) > 0 && (
-                <div className="row-note">Conditions: {item.conditions!.slice(0, 3).join(" · ")}</div>
+                <div className="row-note">
+                  Conditions: {item.conditions!.slice(0, 3).join(" · ")}
+                  {item.conditions!.length > 3 && ` (+${item.conditions!.length - 3} more)`}
+                </div>
               )}
               {item.dependencies?.length > 0 && (
                 <div className="row-note">Dependencies: {item.dependencies.join(" · ")}</div>
