@@ -149,7 +149,10 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
   const r: MapResult = { concepts: [], residueStop: [] };
   const add = (c: { concept: string; value: bigint } | null, re: RegExp) => { if (c) { r.concepts.push(c); r.residueStop.push(re); } };
   if (/\bextraordinary\b/i.test(t) && !/non-?recurring|unusual/i.test(t)) { r.concepts.push({ concept: "extraordinary items (eliminated from US GAAP by ASU 2015-01)", value: 0n }); r.residueStop.push(/extraordinary\s+(?:loss(?:es)?|items?|charges?)(?:\s+in\s+accordance\s+with\s+GAAP)?/gi); }
-  if (/interest/i.test(t) && !/interest\s+income/i.test(t.replace(/net\s+of\s+interest\s+income/i, ""))) {
+  // "penalties and interest relating to such taxes" is tax, not InterestExpense — do not steal IE.
+  const taxPenaltyInterest = /\b(?:penalties?\s+and\s+)?interest\s+(?:relating\s+to|on|with\s+respect\s+to)\s+(?:such\s+)?(?:taxes?|Tax)|\btaxes?\b[^.;]{0,80}\b(?:penalties?\s+and\s+)?interest\b/i.test(t);
+  const interestExpenseCue = /\binterest\s+(?:expense|charges?)\b|\bInterest\s+Expense\b|\bFixed\s+Charges\b/i.test(t);
+  if (/interest/i.test(t) && !/interest\s+income/i.test(t.replace(/net\s+of\s+interest\s+income/i, "")) && (interestExpenseCue || !taxPenaltyInterest)) {
     const term = /"?((?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense)"?/.exec(t)?.[1];
     if (term && /[A-Z]/.test(term[0]!) && depth < 2) {
       const ev = evaluateDefinition("INTEREST", term, text, fin, depth + 1);
@@ -169,9 +172,14 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
       const ie = firstItem(fin, IE);
       if (/net\s+of\s+interest\s+income/i.test(t)) {
         const ii = firstItem(fin, II);
-        if (!ie || !ii) return "TWO_SIDED";
-        r.concepts.push(ie, { concept: ii.concept, value: -ii.value });
-        r.residueStop.push(/(?:consolidated\s+)?interest\s+expense|\(?net\s+of\s+interest\s+income\)?/gi);
+        if (ie && ii) {
+          r.concepts.push(ie, { concept: ii.concept, value: -ii.value });
+          r.residueStop.push(/(?:consolidated\s+)?interest\s+expense|\(?net\s+of\s+interest\s+income\)?/gi);
+        } else if (ie && /\b(?:total\s+)?interest\s+expense\b/i.test(t) && /to\s+the\s+extent\s+not\s+reflected\s+in\s+such\s+(?:total\s+)?interest\s+expense/i.test(t)) {
+          // "net of interest income" qualifies the hedge residue after the interest-expense core — claim IE.
+          add(ie, /(?:consolidated\s+)?(?:total\s+)?interest\s+(?:expense|charges)/gi);
+          (r as MapResult & { lowerBound?: boolean }).lowerBound = true;
+        } else if (!ie || !ii) return "TWO_SIDED";
       } else add(ie, /(?:consolidated\s+)?(?:total\s+)?interest\s+(?:expense|charges)/gi);
     }
   }
@@ -182,9 +190,12 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
   }
   if (/\btax(?:es)?\b/i.test(t) && !/tax\s+(?:credits?|benefits?|refunds?)/i.test(t)) add(firstItem(fin, ["IncomeTaxExpenseBenefit"]), /(?:consolidated\s+)?(?:provision\s+for\s+)?(?:income\s+)?tax(?:es)?(?:\s+expense)?(?:,?\s+to\s+the\s+extent\s+based\s+on\s+income\s+or\s+profits)?|based\s+on\s+income|profits?/gi);
   const daAll = /depreciation/i.test(t);
-  const amortFinancing = /amortization\s+of\s+(?:deferred\s+)?(?:financing|debt|original\s+issue|OID|discount)/i.test(t);
+  // Amortization of premiums / deferred financing fees lives inside interest expense — not D&A.
+  const amortFinancing = /amortization\s+of\s+(?:premiums?|(?:deferred\s+)?(?:financing|debt|original\s+issue|OID|discount))/i.test(t)
+    || (/amortization/i.test(t) && /(?:deferred\s+)?financing\s+fees?/i.test(t));
+  const interestExpenseLine = /\binterest\s+(?:expense|charges?)\b/i.test(t) && !daAll;
   if (daAll) add(firstItem(fin, DA), /(?:all\s+amounts\s+attributable\s+to\s+)?(?:depreciation|amortization|depletion)(?:,?\s+(?:and|or)\s+(?:depreciation|amortization|depletion))*(?:\s+expense)?/gi);
-  else if (/amortization/i.test(t) && !amortFinancing) add(firstItem(fin, /intangible/i.test(t) ? ["AmortizationOfIntangibleAssets"] : DA), /amortization(?:\s+expense)?(?:\s+of\s+(?:other\s+)?intangibles?(?:\s+assets)?)?/gi);
+  else if (/amortization/i.test(t) && !amortFinancing && !interestExpenseLine) add(firstItem(fin, /intangible/i.test(t) ? ["AmortizationOfIntangibleAssets"] : DA), /amortization(?:\s+expense)?(?:\s+of\s+(?:other\s+)?intangibles?(?:\s+assets)?)?/gi);
   if (/(?:stock|equity|share)[- ]based\s+compensation|stock\s+options?|equity\s+awards?/i.test(t)) add(firstItem(fin, ["ShareBasedCompensation", "AllocatedShareBasedCompensationExpense"]), /(?:non-?cash\s+)?(?:expense\s+recorded\s+with\s+respect\s+to\s+)?(?:stock|equity|share)[- ]based\s+compensation(?:\s+expense)?|stock\s+options?(?:\s+or\s+other\s+equity-based\s+compensation)?|equity\s+awards?/gi);
   if (/impairment/i.test(t)) {
     if (/goodwill/i.test(t)) add(firstItem(fin, ["GoodwillImpairmentLoss"]), /(?:non-?cash\s+)?impairment(?:\s+loss(?:es)?)?(?:\s+of)?\s+goodwill/gi);

@@ -53,6 +53,8 @@ export function categorize(t: string): AddBackCategory {
   // Interest expense lines often say "inclusive of amortization of premiums / deferred financing" — that is INTEREST, not D&A.
   if (/\binterest\s+(?:expense|charges?)\b|\bFixed\s+Charges\b/i.test(t)) return "INTEREST";
   if (/depreciation|amortization(?!\s+of\s+(?:deferred\s+)?(?:financing|debt|premiums?|discount|OID))/i.test(t) && !/non-?cash\s+charges/i.test(t)) return "D&A";
+  // "penalties and interest relating to such taxes" is TAXES, not INTEREST.
+  if (/\btax(?:es)?\b/i.test(t) && !/\binterest\s+(?:expense|charges?)\b/i.test(t)) return "TAXES";
   if (/\binterest\b/i.test(t)) return "INTEREST";
   if (/\btax(?:es)?\b/i.test(t)) return "TAXES";
   if (/extinguishment/i.test(t)) return "DEBT_EXTINGUISHMENT";
@@ -215,11 +217,12 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     else if (!capSpec && (it.coverage === "FULL" || it.coverage === "PARTIAL")) {
       concepts = it.concepts.map((c) => ({ concept: c.concept, value: BigInt(c.value) }));
       coverage = it.coverage === "FULL" ? "FULL" : concepts.length ? "PARTIAL" : "NONE";
-    } else if (!QUALIFIED.test(scopeText)) {
+    } else if (!/\bother\s+than\b|\bexcluding\b|\bexcept(?:\s+for)?\b/i.test(scopeText)) {
       const m = mapEbitdaItem(scopeText, fin, text, 0);
+      // Soft QUALIFIED (net of / solely) still maps; hard carve-outs above stay fail-closed.
       // Even when the line also has two-sided language (e.g. hedge gains/losses), claim mapped one-sided
       // filing evidence (interest / tax / D&A); the indeterminate residue stays NEEDS_INPUT.
-      if (m && m !== "TWO_SIDED") { concepts = m.concepts; coverage = "PARTIAL"; if (ambiguous) mapNote = "two-sided residue omitted; filing-supported core claimed"; }
+      if (m && m !== "TWO_SIDED") { concepts = m.concepts; coverage = "PARTIAL"; if (ambiguous || QUALIFIED.test(scopeText)) mapNote = "qualified/two-sided residue omitted; filing-supported core claimed"; }
       else if (m === "TWO_SIDED" && ambiguous) mapNote = "two-sided or indeterminate add-back; omitted from supported floor";
     }
     if (!bi && !concepts.length && !QUALIFIED.test(scopeText)) {

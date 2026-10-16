@@ -76,4 +76,49 @@ describe("core INTEREST / D&A / TAXES add-backs map from filings", () => {
     expect(fc.coverage).not.toBe("NONE");
     expect(Number(fc.evidenced)).toBe(30 * M);
   });
+
+  it("tax provision mentioning penalties and interest categorizes as TAXES and does not consume InterestExpense", () => {
+    const taxLine =
+      "provision for taxes based on income or profits, including penalties and interest relating to such taxes or arising from any tax examinations";
+    expect(categorize(taxLine)).toBe("TAXES");
+    const m = mapEbitdaItem(taxLine, fin(XBRL), "", 0);
+    expect(m && typeof m === "object" && !m.concepts.some((c) => /InterestExpense/i.test(c.concept))).toBe(true);
+    expect(m && typeof m === "object" && m.concepts.some((c) => /IncomeTax/i.test(c.concept))).toBe(true);
+
+    const text =
+      `"Consolidated Net Income" means the net income of the Issuer. ` +
+      `"Consolidated EBITDA" means Consolidated Net Income plus (a) provision for taxes based on income, including penalties and interest relating to such taxes; plus (b) Consolidated Interest Expense; plus (c) depreciation and amortization. ` +
+      `"Consolidated Interest Expense" means interest expense. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL));
+    const tax = o.addBacks.find((a) => a.label === "(a)")!;
+    const interest = o.addBacks.find((a) => a.label === "(b)")!;
+    expect(tax.category).toBe("TAXES");
+    expect(interest.category).toBe("INTEREST");
+    expect(interest.coverage).not.toBe("NONE");
+    expect(Number(interest.evidenced)).toBe(30 * M);
+  });
+
+  it("interest expense inclusive of amortization of premiums does not claim D&A", () => {
+    const line = "total interest expense (inclusive of amortization of premiums, deferred financing fees and other original issue discount)";
+    const m = mapEbitdaItem(line, fin(XBRL), "", 0);
+    expect(m && typeof m === "object").toBe(true);
+    if (m && typeof m === "object") {
+      expect(m.concepts.some((c) => /InterestExpense/i.test(c.concept))).toBe(true);
+      expect(m.concepts.some((c) => /Depreciation|Amortization/i.test(c.concept) && !/Interest/i.test(c.concept))).toBe(false);
+    }
+
+    const text =
+      `"Consolidated Net Income" means the net income of the Issuer. ` +
+      `"Consolidated EBITDA" means Consolidated Net Income plus (1) total interest expense (inclusive of amortization of premiums, deferred financing fees); plus (2) all depreciation and amortization expense. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin({ ...XBRL, InterestAndDebtExpense: 30 * M }));
+    const interest = o.addBacks.find((a) => a.label === "(1)")!;
+    const da = o.addBacks.find((a) => a.label === "(2)")!;
+    expect(interest.category).toBe("INTEREST");
+    expect(interest.coverage).not.toBe("NONE");
+    expect(da.category).toBe("D&A");
+    expect(da.coverage).not.toBe("NONE");
+    expect(Number(da.evidenced)).toBe(50 * M);
+  });
 });
