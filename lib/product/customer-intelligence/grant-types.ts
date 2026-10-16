@@ -247,6 +247,32 @@ export function resolveDefinedTermCap(item: {
   return money;
 }
 
+/**
+ * Rule 198 (audit-driven): a Guarantee is not a debt incurrence.
+ * Strata 6.04(e) permits "Guarantees constituting Indebtedness
+ * permitted by Section 6.01" capped at the Threshold Amount
+ * ($750k). Rule 197 newly resolved that cap, and the DEBT grant
+ * fired on "Indebtedness" + cap frame — minting a $750k DEBT
+ * Permission. But the clause permits GUARANTEEING debt that is
+ * already permitted by Section 6.01; the $750k is a guarantee
+ * cap, not an incurrence basket, and counting it as debt
+ * capacity double-counts (the guaranteed debt is already
+ * counted under its own Section 6.01 basket). The distinguisher
+ * is position: in a guarantee permission the guarantee word
+ * PRECEDES the debt word (the debt is the guaranteed
+ * obligation, the object); in a debt basket that merely lists
+ * guarantees as a form of Indebtedness ("Indebtedness,
+ * including Guarantees of ...") the debt word comes first and
+ * the DEBT grant stands. Checked per text (hay and excerpt
+ * separately) — the concatenation order must not decide it.
+ */
+function isGuaranteePermission(text: string): boolean {
+  const g = text.match(/\bGUARANTEES?\s+(?:CONSTITUTING|OF)\b/);
+  if (!g || g.index == null) return false;
+  const d = text.match(/\b(?:INDEBTEDNESS|DEBT)\b/);
+  return !d || d.index == null || g.index < d.index;
+}
+
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
   // Rule 166: an event-of-default trigger is a consequence, never a
   // grant of capacity. A Defaults article genuinely contains the
@@ -314,7 +340,12 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   // signal, so an RP item that merely MENTIONS Indebtedness without
   // permission evidence still returns RP-only instead of falling
   // through into a spurious DEBT grant.
-  const hasDebtPermission = hasDebtWord && hasDebtPermissionEvidence(hay);
+  // Rule 198: a guarantee permission (guarantee word precedes the
+  // debt word) is not a debt incurrence — the $750k guarantee cap
+  // in Strata 6.04(e) is not an incurrence basket.
+  const isGuarantee =
+    isGuaranteePermission(hay) || isGuaranteePermission((item.operativeLanguageExcerpt ?? "").toUpperCase());
+  const hasDebtPermission = hasDebtWord && hasDebtPermissionEvidence(hay) && !isGuarantee;
   const hasLienWord = /\bLIENS?\b|\bSECURED\b|\bCOLLATERAL\b/.test(hay);
 
   // Restricted payments / investments — do not default these into DEBT_INCURRENCE.

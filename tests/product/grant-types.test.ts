@@ -205,3 +205,36 @@ describe("rule 197: defined-term cap resolution", () => {
     ).toBe(0.75);
   });
 });
+
+/** Rule 198: a Guarantee is not a debt incurrence. */
+describe("rule 198: guarantee permission does not mint DEBT", () => {
+  function item(plainEnglish: string, excerpt?: string) {
+    return {
+      sectionRef: "6.04(e)", heading: "Investments", category: "NEGATIVE_COVENANTS", plainEnglish,
+      operativeLanguageExcerpt: excerpt ?? plainEnglish,
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [],
+    } as any;
+  }
+  it("a guarantee clause capped at a defined term mints no DEBT", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem(item(
+      "(e) Guarantees constituting Indebtedness permitted by Section 6.01, provided that the aggregate principal amount of Indebtedness Guaranteed shall not exceed the Threshold Amount.",
+    ));
+    expect(grants).not.toContain("DEBT_INCURRENCE");
+  });
+  it("a debt basket that lists guarantees as a form of Indebtedness keeps DEBT", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem(item(
+      "The Borrower may incur Indebtedness, including Guarantees of Indebtedness of Subsidiaries, in an aggregate principal amount not to exceed $10,000,000.",
+    ));
+    expect(grants).toContain("DEBT_INCURRENCE");
+  });
+  it("a pure guarantee clause (Guarantees of Indebtedness) mints no DEBT", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem(item(
+      "The Borrower may provide Guarantees of Indebtedness of its Subsidiaries in an aggregate principal amount not to exceed $5,000,000.",
+    ));
+    expect(grants).not.toContain("DEBT_INCURRENCE");
+  });
+});
