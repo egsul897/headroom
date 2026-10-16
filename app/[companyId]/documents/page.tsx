@@ -14,6 +14,7 @@ import {
   analysisStatusTone,
   isAnalysisPending,
 } from "@/lib/product/customer-intelligence/analysis-status";
+import { isUnclassifiedDocument } from "@/lib/product/customer-intelligence/document-class";
 import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
@@ -163,6 +164,14 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
                       <>
                         {" "}
                         <Chip tone="trip">TYPE MISMATCH — declared {intel.declaredType}, analyzed as {intel.documentClass}</Chip>
+                      </>
+                    )}
+                    {/* Rule 160: unclassified documents get a chip on the
+                        list too — the mismatch chip never fires for them. */}
+                    {isUnclassifiedDocument(intel) && (
+                      <>
+                        {" "}
+                        <Chip tone="trip">UNCLASSIFIED — confirm document type</Chip>
                       </>
                     )}
                   </>

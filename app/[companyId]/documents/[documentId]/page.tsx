@@ -9,6 +9,10 @@ import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import { summaryCapDisclosure } from "@/lib/product/covenant-intelligence/summarize";
 import {
+  isUnclassifiedDocument,
+  unclassifiedDocumentNote,
+} from "@/lib/product/customer-intelligence/document-class";
+import {
   analysisPendingNote,
   analysisStatusOf,
   analysisStatusTone,
@@ -140,6 +144,14 @@ export default async function DocumentSourcePage({
             Type mismatch: declared as {intel.declaredType}, but analysis classifies this document as{" "}
             {intel.documentClass}. The analysis class governs operative resolution. If the declaration is
             correct, confirm the document type in the review queue.
+          </div>
+        )}
+        {/* Rule 160: UNKNOWN with no declared type never triggered the
+            mismatch note above, so an untyped document sailed through
+            with no warning. Say it is unclassified. */}
+        {intel && isUnclassifiedDocument(intel) && (
+          <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+            {unclassifiedDocumentNote()}
           </div>
         )}
         {accession && (
