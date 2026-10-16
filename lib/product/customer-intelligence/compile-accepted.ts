@@ -13,6 +13,7 @@ import {
 import { parseMoneyMillions, parsePctOf } from "./money";
 import { buildCapacityFormulas } from "./capacity-formulas";
 import { buildRpWaterfall } from "./rp-waterfall";
+import { grantTypesForItem } from "./grant-types";
 
 export type CompileStatus =
   | "COMPILED"
@@ -22,7 +23,8 @@ export type CompileStatus =
   | "SKIPPED"
   | "FAILED";
 
-export type CounselGrantType = "DEBT_INCURRENCE" | "LIEN" | "RESTRICTED_PAYMENT" | "INVESTMENT";
+import type { CounselGrantType } from "./grant-types";
+export type { CounselGrantType };
 
 export interface CompileAcceptedResult {
   status: CompileStatus;
@@ -41,37 +43,6 @@ function parseRatio(text: string): number | null {
   if (!m) return null;
   const n = Number(m[1]);
   return Number.isFinite(n) ? n : null;
-}
-
-function grantTypesForItem(item: CovenantSummaryItem, category: string): CounselGrantType[] {
-  const hay = `${category} ${item.category} ${item.heading} ${item.families.join(" ")} ${item.plainEnglish}`.toUpperCase();
-
-  // Restricted payments / investments — do not default these into DEBT_INCURRENCE.
-  const isRpFamily = /RESTRICTED.?PAYMENT|DIVIDEND|SHARE.?REPURCHASE|\bRP\b|AVAILABLE AMOUNT/.test(hay);
-  const isInvestmentFamily = /INVESTMENT|ACQUISITION|PERMITTED INVESTMENT/.test(hay);
-  if (isRpFamily && isInvestmentFamily) {
-    // Shared RP/Investment article — mint both grant types when baskets mention both.
-    const out: CounselGrantType[] = [];
-    if (/DIVIDEND|RESTRICTED PAYMENT|SHARE.?REPURCHASE|\bRP\b/.test(hay)) out.push("RESTRICTED_PAYMENT");
-    if (/INVESTMENT|ACQUISITION/.test(hay)) out.push("INVESTMENT");
-    if (out.length) return [...new Set(out)];
-  }
-  if (isRpFamily && !/INDEBTEDNESS|DEBT INCURRENCE|INCREMENTAL/.test(hay)) {
-    return ["RESTRICTED_PAYMENT"];
-  }
-  if (isInvestmentFamily && !/INDEBTEDNESS|DEBT INCURRENCE|LIEN|INCREMENTAL/.test(hay)) {
-    return ["INVESTMENT"];
-  }
-
-  const out: CounselGrantType[] = [];
-  if (/LIEN|SECURED|COLLATERAL/.test(hay)) out.push("LIEN");
-  if (/DEBT|INDEBTEDNESS|INCURRENCE|INCREMENTAL|BORROW/.test(hay)) out.push("DEBT_INCURRENCE");
-  // Secured debt scenarios need both regimes when both families are present.
-  if (/LIEN|SECURED/.test(hay) && /DEBT|INDEBTEDNESS/.test(hay)) {
-    return ["DEBT_INCURRENCE", "LIEN"];
-  }
-  if (!out.length) out.push("DEBT_INCURRENCE");
-  return [...new Set(out)];
 }
 
 function entityScopeTags(item: CovenantSummaryItem): string[] {
@@ -333,6 +304,18 @@ export async function compileAcceptedInterpretation(params: {
   }
 
   const grants = grantTypesForItem(item, params.category);
+  if (!grants.length) {
+    // No grant-type signal (e.g. asset-sale / merger covenant) — do
+    // not mint a wrong-typed Permission. Previously this defaulted
+    // to DEBT_INCURRENCE and inflated debt capacity.
+    return [
+      {
+        status: "INCOMPLETE",
+        missingFields: ["grantType"],
+        message: "No counsel grant type matches this item (not a debt/lien/RP/investment permission) — not compiled.",
+      },
+    ];
+  }
   const results: CompileAcceptedResult[] = [];
   const action =
     item.plainEnglish?.slice(0, 500) ||
