@@ -33,7 +33,7 @@ export interface AddBackFlag {
    * and maxLeverage × that (debt). UNCAPPED_NEEDS_INPUT: no cap and no filed figure — unknown, never estimated.
    * COUNTED: the filed figure is already counted in full; nothing further to unlock.
    */
-  potential: { basis: "CAP_HEADROOM" | "UNCAPPED_NEEDS_INPUT" | "COUNTED" | "LOWERS_EBITDA"; ebitda: string | null; debt: string | null };
+  potential: { basis: "CAP_HEADROOM" | "UNCAPPED_NEEDS_INPUT" | "COUNTED" | "SIGNED_NEEDS_INPUT"; ebitda: string | null; debt: string | null };
   bindingTier?: "CONFIRMED" | "LOWER_CONFIDENCE";
 }
 
@@ -100,7 +100,7 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
       category: "OTHER", clause: { label: key.slice(4), text: "net-income exclusion required by the definition; not in filings" }, cap: null, sources: [], status: "NEEDS_INPUT",
       amount: null, movement: null, capHeadroom: null, ebitdaDelta: null, debtCapacityDelta: null, confidence: "LOW",
       note: "net-income exclusion — CFO input (signed: gains positive, losses negative)", inputKey: key,
-      potential: { basis: "LOWERS_EBITDA", ebitda: null, debt: null },
+      potential: { basis: "SIGNED_NEEDS_INPUT", ebitda: null, debt: null },
       ...(opt.bindingTier ? { bindingTier: opt.bindingTier } : {}),
     });
   }
@@ -122,7 +122,7 @@ function potentialOf(headroom: string | null, counted: boolean, lev: string | nu
  * lines already fully counted last.
  */
 export function rankFlags(flags: readonly AddBackFlag[]): Array<AddBackFlag & { rank: number }> {
-  const tier = (f: AddBackFlag) => (f.potential.basis === "CAP_HEADROOM" ? 0 : f.potential.basis === "UNCAPPED_NEEDS_INPUT" ? 1 : f.potential.basis === "LOWERS_EBITDA" ? 2 : 3);
+  const tier = (f: AddBackFlag) => (f.potential.basis === "CAP_HEADROOM" ? 0 : f.potential.basis === "UNCAPPED_NEEDS_INPUT" ? 1 : f.potential.basis === "SIGNED_NEEDS_INPUT" ? 2 : 3);
   const mag = (f: AddBackFlag) => BigInt(f.potential.debt ?? f.potential.ebitda ?? "0");
   return [...flags].map((f, i) => ({ f, i })).sort((a, b) => tier(a.f) - tier(b.f) || (mag(b.f) > mag(a.f) ? 1 : mag(b.f) < mag(a.f) ? -1 : 0) || a.i - b.i).map(({ f }, i) => ({ ...f, rank: i + 1 }));
 }
