@@ -17,7 +17,7 @@ import { CAPPED, COST_LIKE, HEADER, QUALIFIED, STOP, TWO_SIDED, definitionSegmen
 
 export type AddBackCategory = "INTEREST" | "TAXES" | "D&A" | "STOCK_COMP" | "IMPAIRMENT" | "RESTRUCTURING" | "SEVERANCE" | "TRANSACTION_COSTS" | "INTEGRATION"
   | "DEBT_EXTINGUISHMENT" | "RUN_RATE_SYNERGIES" | "NON_RECURRING" | "NON_CASH" | "OTHER";
-export interface CapSpec { text: string; kind: "FIXED" | "PERCENT" | "GREATER_OF" | "LESSER_OF" | "UNKNOWN"; dollars: bigint[]; percents: Array<{ num: bigint; den: bigint }>; giving: "BEFORE" | "AFTER" | "UNSTATED"; sharedWith: string[] }
+export interface CapSpec { text: string; kind: "FIXED" | "PERCENT" | "GREATER_OF" | "LESSER_OF" | "UNKNOWN"; dollars: bigint[]; percents: Array<{ num: bigint; den: bigint }>; giving: "BEFORE" | "AFTER" | "UNSTATED"; sharedWith: string[]; tiers?: Array<{ through: string | null; amount: bigint }> }
 export interface AddBackLine {
   label: string; text: string; category: AddBackCategory;
   /** Filing evidence for the item (USD, TTM); null when nothing in the filings maps. */
@@ -29,6 +29,8 @@ export interface AddBackLine {
   status: "CLAIMED" | "CAPPED" | "NEEDS_INPUT";
   /** The most this line could still add once evidenced (its cap less what is claimed); null when uncapped or unknown. */
   headroomToCap: string | null;
+  /** The add-back needs lender/agent approval or consent: not counted unless a borrower input confirms it. */
+  conditional?: "LENDER_APPROVAL"; conditionText?: string;
   /** Clauses sharing this line's cap (one limit across all of them), including this line; null when uncapped / sole. */
   capGroup?: string[] | null;
   /** Positions (indices in addBacks) of the clauses sharing the cap — labels can repeat across nesting levels. */
@@ -110,7 +112,29 @@ function percentOfEbitda(s: string): { num: bigint; den: bigint } | null {
   return { num: d.num, den: d.den * 100n };
 }
 
+const MONTHS: Record<string, string> = { january: "01", february: "02", march: "03", april: "04", may: "05", june: "06", july: "07", august: "08", september: "09", october: "10", november: "11", december: "12" };
+const isoDate = (d: string): string | null => { const m = /([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})/.exec(d); const mo = m && MONTHS[m[1]!.toLowerCase()]; return m && mo ? `${m[3]}-${mo}-${m[2]!.padStart(2, "0")}` : null; };
+const DATE = "[A-Z][a-z]+\\s+\\d{1,2},\\s*\\d{4}";
+/** Date-tiered amounts ("… ending on or prior to June 30, 2026, $1,000,000, … ending after June 30, 2026 but on or prior to January 31, 2027, $900,000, and … ending thereafter, $750,000"). */
+export function parseCapTiers(s: string): Array<{ through: string | null; amount: bigint }> | null {
+  // Pair the i-th period phrase with the i-th amount; works whether amounts precede or follow their dates.
+  const pre = new RegExp(`(?:ending|ended)\\s+(?:after\\s+${DATE}\\s+(?:but|and)\\s+on\\s+or\\s+(?:prior\\s+to|before)\\s+(${DATE})|(?:on\\s+or\\s+(?:prior\\s+to|before)|before|through)\\s+(${DATE})|after\\s+${DATE}|thereafter)|(?:period|fiscal\\s+quarter)s?\\s+thereafter`, "gi");
+  const periods = [...s.matchAll(pre)].map((m) => { const d = m[1] ?? m[2]; return d ? isoDate(d) : null; });
+  const amts = [...s.matchAll(/\$\s*[\d,]+(?:\.\d+)?(?:\s*(?:billion|million|thousand))?/gi)].map((m) => dollars(m[0]));
+  if (periods.length < 2 || periods.length !== amts.length || amts.some((a) => a == null)) return null;
+  if (periods.slice(0, -1).some((p) => p == null)) return null;
+  return periods.map((through, k) => ({ through, amount: amts[k]! }));
+}
+
 export function parseCap(t: string, from = 0): CapSpec | null {
+  const c = parseCap0(t, from);
+  if (!c) return c;
+  const m0 = CAP_RE.exec(t.slice(from));
+  const tiers = m0 ? parseCapTiers(t.slice(from + m0.index, from + m0.index + 700).split(/;|\.\s+[A-Z“"]/)[0]!) : null;
+  return tiers ? { ...c, kind: "FIXED", dollars: tiers.map((x) => x.amount), percents: [], tiers } : c;
+}
+
+function parseCap0(t: string, from = 0): CapSpec | null {
   const m0 = CAP_RE.exec(t.slice(from));
   if (!m0) return null;
   const m = Object.assign([...m0], { index: m0.index + from }) as unknown as RegExpExecArray;
@@ -171,7 +195,18 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
 }
 
 /** Cap amount in USD given EBITDA before the capped add-backs (e0). AFTER: x ≤ p(e0 + x) ⇒ x ≤ p·e0 / (1 − p). */
-export function capAmount(c: CapSpec, e0: bigint | null): { amount: bigint | null; note: string } {
+export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | null = null): { amount: bigint | null; note: string } {
+  // Date-tiered cap: the tier covering the measured period end; unknown period end → the lowest tier (safe).
+  if (c.tiers?.length) {
+    const ordered = [...c.tiers];
+    if (!periodEnd || !/^\d{4}-\d{2}-\d{2}$/.test(periodEnd) || ordered.some((x, i) => x.through == null && i < ordered.length - 1)) {
+      const lo = ordered.reduce((a, x) => (x.amount < a ? x.amount : a), ordered[0]!.amount);
+      return { amount: lo, note: "date-tiered cap: period end not determinable; lowest tier used" };
+    }
+    const tier = ordered.find((x) => x.through != null && periodEnd <= x.through) ?? ordered.find((x) => x.through == null);
+    if (!tier) return { amount: null, note: "date-tiered cap: no tier covers the period end" };
+    return { amount: tier.amount, note: `date-tiered cap: tier for period ending ${periodEnd}` };
+  }
   if (c.kind === "UNKNOWN" && !c.dollars.length && !c.percents.length) return { amount: null, note: "cap amount not determinable from the definition" };
   const pcts = c.percents.map((p) => {
     if (e0 == null) return null;
@@ -190,6 +225,22 @@ export function capAmount(c: CapSpec, e0: bigint | null): { amount: bigint | nul
 }
 
 const usd = (n: bigint) => n.toString();
+/** Add-back conditioned on lender / agent approval or consent. */
+export const NEEDS_APPROVAL = /\b(?:approved|consented\s+to|verified)\b(?:\s+(?:and|or)\s+(?:approved|verified))?(?:\s+in\s+writing)?\s+by\s+(?:the\s+)?(?:Administrative\s+|Collateral\s+)?(?:Agent|Lenders?|Required\s+Lenders|Majority\s+Lenders)\b|\b(?:with|subject\s+to|upon)\s+the\s+(?:prior\s+)?(?:written\s+)?(?:consent|approval)\s+of\s+(?:the\s+)?(?:Administrative\s+)?(?:Agent|Lenders?|Required\s+Lenders|Majority\s+Lenders)\b|\b(?:reasonably\s+)?(?:acceptable|satisfactory)\s+to\s+(?:the\s+)?(?:Administrative\s+)?(?:Agent|Lenders?|Required\s+Lenders)\b/gi;
+/** First approval condition on the add-back itself (not on a third party, e.g. an accounting firm acceptable to the Agent). */
+export function approvalCondition(full: string): string | null {
+  // Only the clause's own sentence; an alternative route ("… or (E) approved by the Agent", "otherwise acceptable to the
+  // Agent") or an evidentiary standard ("evidence reasonably satisfactory to the Agent") is not an approval requirement.
+  const own = full.slice(0, /\.\s+(?:[A-Z(“"]|For\b)/.exec(full)?.index ?? full.length);
+  for (const m of own.matchAll(NEEDS_APPROVAL)) {
+    const before = own.slice(Math.max(0, m.index! - 100), m.index!);
+    if (/(?:\bor|\botherwise)\s+(?:\([A-Za-z\d]{1,4}\)\s*)?(?:(?:in\s+a\s+manner\s+)?otherwise\s+)?(?:as\s+)?(?:reasonably\s+)?$/i.test(before)) continue;
+    if (/\b(?:evidence|documentation|support)\b[^;]{0,30}$/i.test(before)) continue;
+    if (/\b(?:firm|accountants?|auditors?|consultants?|advisors?|appraisers?|report|person|institution|bank|provider)s?\b[^;]{0,60}$/i.test(before)) continue;
+    return own.slice(Math.max(0, m.index! - 150), m.index! + m[0].length).replace(/\s+/g, " ").trim();
+  }
+  return null;
+}
 
 /** Group sign per enumerated item, by the same rules as evaluateDefinition (used when the base fails and no items come back). */
 function itemSigns(segs: Array<{ text: string }>): Array<{ sign: "+" | "-"; header: boolean }> {
@@ -390,7 +441,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     const fresh = concepts.filter((c) => !used.has(c.concept));
     fresh.forEach((c) => used.add(c.concept));
     // Only charges that reduced net income can be added back: a net credit adds nothing (signed lines keep their sign).
-    const evid = signed && fresh.length ? signed.value : fresh.reduce((a, c) => a + (c.value > 0n ? c.value : 0n), 0n);
+    let evid = signed && fresh.length ? signed.value : fresh.reduce((a, c) => a + (c.value > 0n ? c.value : 0n), 0n);
     // Mapped concepts already claimed on an earlier line (e.g. amort after full D&A): covered, not a gap.
     let covOut: AddBackLine["coverage"] = fresh.length ? coverage : "NONE";
     let noteExtra = "";
@@ -409,8 +460,13 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     // "other income items", tax equity income) is never closed by a mapped/deduplicated tax figure: it stays open.
     if (covOut === "FULL" && fresh.some((c) => /\(losses only\)/.test(c.concept))) { covOut = "PARTIAL"; noteExtra = [noteExtra, "losses-only figure from a net fact: floor, not exact"].filter(Boolean).join("; "); }
     if (covOut === "FULL" && !signed && !bi && namesGainOrIncome(scopeText)) { covOut = "PARTIAL"; noteExtra = [noteExtra, "names income/gains beyond a pure tax base; stays open"].filter(Boolean).join("; "); }
-    lines.push({ label: it.label, text: full.slice(0, 200), category: cat, evidenced: fresh.length ? usd(evid) : (concepts.length ? "0" : null), concepts: fresh.map((c) => ({ concept: c.concept, value: usd(c.value) })),
-      coverage: covOut, cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null,
+    // Lender/agent approval or consent: the filing figure does not prove the add-back was approved — counted only when a
+    // borrower input confirms it.
+    const apm = bi ? null : approvalCondition(full);
+    const conditional = apm != null;
+    if (conditional) { for (const c of fresh) used.delete(c.concept); evid = 0n; if (covOut === "FULL") covOut = "PARTIAL"; noteExtra = [noteExtra, `requires lender/agent approval (\"${apm!.slice(-80)}\"); not counted without confirmation`].filter(Boolean).join("; "); }
+    lines.push({ label: it.label, text: full.slice(0, 200), category: cat, evidenced: fresh.length ? usd(evid) : (concepts.length ? "0" : null), concepts: conditional ? [] : fresh.map((c) => ({ concept: c.concept, value: usd(c.value) })),
+      coverage: conditional && covOut === "FULL" ? "PARTIAL" : covOut, cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null, ...(conditional ? { conditional: "LENDER_APPROVAL" as const, conditionText: apm! } : {}),
       note: [it.note, mapNote, noteExtra].filter(Boolean).join("; ") || it.note, evid, capSpec, caps, full });
   }
 
@@ -454,7 +510,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   // A sub-clause cap ("(d) (x) … and (y) …; … this clause (y) shall not exceed $10M") bounds only that part: the clause
   // is split into parts (one per capped sub-clause plus the rest), each part bounded by its own evidence; whole-clause
   // and shared caps bound the sum of the parts. Part evidence = the clause's filed concepts that the sub-clause names.
-  const all: Cap[] = capRaw.map((c) => { const { amount, note } = capAmount(c.spec, e0); return { owner: c.owner, spec: c.spec, members: c.members.filter((x) => !capOnly.has(x)), amount, note: c.subOf ? [note, `limits sub-clause ${c.subOf} only`].filter(Boolean).join("; ") : note, subOf: c.subOf }; }).filter((c) => c.members.length);
+  const all: Cap[] = capRaw.map((c) => { const { amount, note } = capAmount(c.spec, e0, fin.anchor ?? null); return { owner: c.owner, spec: c.spec, members: c.members.filter((x) => !capOnly.has(x)), amount, note: c.subOf ? [note, `limits sub-clause ${c.subOf} only`].filter(Boolean).join("; ") : note, subOf: c.subOf }; }).filter((c) => c.members.length);
   const subText = new Map(capRaw.filter((c) => c.subOf).map((c) => [c.spec, c.subText ?? ""]));
   const capsOf = (g: Ln) => all.filter((c) => c.members.includes(g));
   const lnVars = [...inCap].sort((x, y) => lines.indexOf(x) - lines.indexOf(y));

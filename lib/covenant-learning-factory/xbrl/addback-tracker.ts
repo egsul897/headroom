@@ -13,7 +13,9 @@ export interface AddBackFlag {
   cap: { text: string; amount: string | null } | null;
   /** Filed facts backing the line: concept, current TTM value, prior TTM value (null if not filed), period ends. */
   sources: Array<{ concept: string; current: string; prior: string | null; currentPeriodEnd: string | null; priorPeriodEnd: string | null }>;
-  status: "DETECTED" | "NEEDS_INPUT";
+  status: "DETECTED" | "NEEDS_INPUT" | "CONDITIONAL";
+  /** Requires lender/agent approval; excluded from supported totals without a CFO confirmation. */
+  conditional?: "LENDER_APPROVAL";
   /** Amount evidenced for the current TTM (null = NEEDS_INPUT). */
   amount: string | null;
   /** Current minus prior evidenced amount (null when either side is not filed). */
@@ -90,7 +92,7 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
       clause: { label: l.label, text: l.text.slice(0, 200) },
       cap: l.cap ? { text: l.cap.text, amount: l.cap.amount } : null,
       sources,
-      status: detected ? "DETECTED" : "NEEDS_INPUT",
+      status: l.conditional ? "CONDITIONAL" : detected ? "DETECTED" : "NEEDS_INPUT", ...(l.conditional ? { conditional: l.conditional } : {}),
       amount,
       movement,
       capHeadroom: l.headroomToCap,
