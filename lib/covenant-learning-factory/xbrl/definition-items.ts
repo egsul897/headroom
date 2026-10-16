@@ -175,6 +175,11 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
       } else add(ie, /(?:consolidated\s+)?(?:total\s+)?interest\s+(?:expense|charges)/gi);
     }
   }
+  // Fixed Charges ≥ interest expense in ordinary definitions: XBRL interest is a lower bound on that add-back.
+  if (/\bFixed\s+Charges\b/i.test(t) && !r.concepts.length) {
+    const ie = firstItem(fin, IE);
+    if (ie) { add(ie, /\bFixed\s+Charges\b/gi); (r as MapResult & { lowerBound?: boolean }).lowerBound = true; }
+  }
   if (/\btax(?:es)?\b/i.test(t) && !/tax\s+(?:credits?|benefits?|refunds?)/i.test(t)) add(firstItem(fin, ["IncomeTaxExpenseBenefit"]), /(?:consolidated\s+)?(?:provision\s+for\s+)?(?:income\s+)?tax(?:es)?(?:\s+expense)?(?:,?\s+to\s+the\s+extent\s+based\s+on\s+income\s+or\s+profits)?|based\s+on\s+income|profits?/gi);
   const daAll = /depreciation/i.test(t);
   const amortFinancing = /amortization\s+of\s+(?:deferred\s+)?(?:financing|debt|original\s+issue|OID|discount)/i.test(t);

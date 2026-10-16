@@ -202,17 +202,13 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   const lines: Array<AddBackLine & { evid: bigint; capSpec: CapSpec | null }> = [];
   for (const { it, full } of pairs) {
     if (it.coverage === "HEADER" || it.sign === "-") continue;
-    if (ambiguousAddBack({ it, full })) {
-      lines.push({ label: it.label, text: full.slice(0, 200), category: categorize(full), evidenced: null, concepts: [],
-        coverage: "NONE", cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null,
-        note: "two-sided or indeterminate add-back; omitted from supported floor", evid: 0n, capSpec: null });
-      continue;
-    }
+    const ambiguous = ambiguousAddBack({ it, full });
     const capSpec = CAPPED.test(full) ? parseCap(full) : null;
     const scopeText = capSpec ? full.replace(capSpec.text, " ") : full;
     const cat = categorize(scopeText);
     let concepts: Array<{ concept: string; value: bigint }> = [];
     let coverage: AddBackLine["coverage"] = "NONE";
+    let mapNote = "";
     // A borrower-supplied amount (with its source) answers the whole line, like a filing figure.
     const bi = borrowerInput(fin, [`ADDBACK:${it.label}`, cat === "OTHER" ? "" : `ADDBACK:${cat}`].filter((k) => k && !consumedInputs.has(k.toUpperCase())));
     if (bi) { consumedInputs.add(bi.key.toUpperCase()); concepts = [{ concept: `borrower:${bi.key} [${bi.source}]`, value: BigInt(bi.value) }]; coverage = "FULL"; }
@@ -221,7 +217,10 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
       coverage = it.coverage === "FULL" ? "FULL" : concepts.length ? "PARTIAL" : "NONE";
     } else if (!QUALIFIED.test(scopeText)) {
       const m = mapEbitdaItem(scopeText, fin, text, 0);
-      if (m && m !== "TWO_SIDED") { concepts = m.concepts; coverage = "PARTIAL"; }
+      // Even when the line also has two-sided language (e.g. hedge gains/losses), claim mapped one-sided
+      // filing evidence (interest / tax / D&A); the indeterminate residue stays NEEDS_INPUT.
+      if (m && m !== "TWO_SIDED") { concepts = m.concepts; coverage = "PARTIAL"; if (ambiguous) mapNote = "two-sided residue omitted; filing-supported core claimed"; }
+      else if (m === "TWO_SIDED" && ambiguous) mapNote = "two-sided or indeterminate add-back; omitted from supported floor";
     }
     if (!bi && !concepts.length && !QUALIFIED.test(scopeText)) {
       for (const x of EXTRA) if (x.re.test(scopeText)) for (const c of x.concepts) { const v = fin.values.find((f) => f.metric === "item" && f.concept === c); if (v) { concepts.push({ concept: c, value: BigInt(v.value) }); coverage = "PARTIAL"; } }
@@ -231,7 +230,8 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     // Only charges that reduced net income can be added back: a net credit adds nothing.
     const evid = fresh.reduce((a, c) => a + (c.value > 0n ? c.value : 0n), 0n);
     lines.push({ label: it.label, text: full.slice(0, 200), category: cat, evidenced: fresh.length ? usd(evid) : null, concepts: fresh.map((c) => ({ concept: c.concept, value: usd(c.value) })),
-      coverage: fresh.length ? coverage : "NONE", cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null, note: it.note, evid, capSpec });
+      coverage: fresh.length ? coverage : "NONE", cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null,
+      note: [it.note, mapNote, !fresh.length && ambiguous ? "two-sided or indeterminate add-back; omitted from supported floor" : ""].filter(Boolean).join("; ") || it.note, evid, capSpec });
   }
 
   // ---- totals ----

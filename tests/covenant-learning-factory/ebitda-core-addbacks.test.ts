@@ -50,4 +50,30 @@ describe("core INTEREST / D&A / TAXES add-backs map from filings", () => {
   it("total interest expense (inclusive of amortization of premiums) categorizes as INTEREST, not D&A", () => {
     expect(categorize("total interest expense (inclusive of amortization of premiums, deferred financing fees)")).toBe("INTEREST");
   });
+
+  it("interest expense line that also mentions hedge losses still claims XBRL interest", () => {
+    const text =
+      `"Consolidated Net Income" means the net income of the Borrower. ` +
+      `"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted: (a) taxes; plus (b) total interest expense and, to the extent not reflected in such total interest expense, any losses on hedging obligations; plus (c) depreciation and amortization expense. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL));
+    const interest = o.addBacks.find((a) => a.label === "(b)")!;
+    expect(interest.category).toBe("INTEREST");
+    expect(interest.coverage).not.toBe("NONE");
+    expect(Number(interest.evidenced)).toBe(30 * M);
+    expect(interest.status).toBe("NEEDS_INPUT"); // hedge-loss residue still open
+  });
+
+  it("Fixed Charges add-back claims XBRL interest as a lower bound", () => {
+    const text =
+      `"Consolidated Net Income" means the net income of the Borrower. ` +
+      `"Fixed Charges" means, for any period, the sum of Consolidated Interest Expense and cash dividends on preferred stock. ` +
+      `"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus (a) taxes; plus (b) Fixed Charges; plus (c) depreciation and amortization expense. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL));
+    const fc = o.addBacks.find((a) => a.label === "(b)")!;
+    expect(fc.category).toBe("INTEREST");
+    expect(fc.coverage).not.toBe("NONE");
+    expect(Number(fc.evidenced)).toBe(30 * M);
+  });
 });
