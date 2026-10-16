@@ -653,6 +653,22 @@ export function analyzeProvision(params: {
   }
   unresolved.push("Whether this provision is currently operative after amendments is unresolved");
   unresolved.push("Numerical capacity/utilization is unresolved without approved financial inputs and ledger");
+  // Rule 157: a summary built from an ambiguous structural node must say
+  // so. Phase-2 precedent aggregates showed 6,913 of 37,790 structural
+  // nodes (~18%) flagged ambiguous, and candidate discovery deliberately
+  // keeps ambiguous sections when they carry a usable sectionRef — but
+  // nothing downstream disclosed that the section boundaries and
+  // attribution came from ambiguous structure. The disclosure rides on
+  // `unresolved`, which the document page renders and Ask surfaces, so
+  // counsel sees it wherever the summary is read.
+  const sourceNode = params.candidate.nodeId
+    ? params.structuralNodes.find((n) => n.nodeId === params.candidate.nodeId)
+    : undefined;
+  if (sourceNode?.ambiguous) {
+    unresolved.push(
+      "Source structure for this section was flagged ambiguous during parsing — verify section boundaries and attribution before relying on this summary",
+    );
+  }
 
   const plainEnglish = buildPlainEnglish({
     sectionRef,
