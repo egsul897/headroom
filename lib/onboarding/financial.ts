@@ -352,26 +352,53 @@ function priorFactGroupsFromState(state: { balanceSheetFacts: unknown; incomeSta
  * matching legacy FinancialSnapshot row (lib/covenant-engine) from the SAME
  * human input - the onboarding wizard's Financials stage. See
  * ManualFinancialStateInput's own comment for why both are written.
+ *
+ * Rule 92: upsert by (companyId, asOfDate), never blind insert.
+ * The old code created a NEW row on every submit, so re-submitting
+ * the form for the same date (the normal correction flow) produced
+ * duplicate same-date rows — and the cohort resolver treats ANY
+ * same-date multiplicity as AMBIGUOUS, withholding capacity
+ * everywhere with no resolution UI. Exactly one existing row per
+ * table is updated in place; multiple existing rows refuse
+ * (fail closed — the ambiguity must be resolved, not deepened).
  */
 export async function createManualFinancialState(input: ManualFinancialStateInput) {
   const { companyId, asOfDate } = input;
   const notes = composeFinancialNotes(input);
 
-  await prisma.financialSnapshot.create({
-    data: { companyId, asOfDate, ...snapshotFieldsFromInput(input), notes },
-  });
-  // First insert. No prior same-date state is read, so every wrapper is a
-  // fresh fact() — a different row's provenance is not copied onto this one.
-  return prisma.financialState.create({
-    data: {
-      companyId,
-      asOfDate,
-      periodType: "ACTUAL",
-      scope: "CONSOLIDATED",
-      ...financialStateJson(input),
-      notes,
-    },
-  });
+  const [existingSnapshots, existingStates] = await Promise.all([
+    prisma.financialSnapshot.findMany({ where: { companyId, asOfDate } }),
+    prisma.financialState.findMany({ where: { companyId, asOfDate } }),
+  ]);
+  if (existingSnapshots.length > 1 || existingStates.length > 1) {
+    throw new Error(
+      `Multiple financial rows already exist for ${asOfDate.toISOString().slice(0, 10)} ` +
+        `(${existingSnapshots.length} snapshot(s), ${existingStates.length} state(s)) — ` +
+        `resolve the ambiguity before re-submitting; Headroom will not pick a winner or add another row.`,
+    );
+  }
+
+  const snapshotData = { companyId, asOfDate, ...snapshotFieldsFromInput(input), notes };
+  if (existingSnapshots.length === 1) {
+    await prisma.financialSnapshot.update({ where: { id: existingSnapshots[0]!.id }, data: snapshotData });
+  } else {
+    await prisma.financialSnapshot.create({ data: snapshotData });
+  }
+  // Re-submission is a full re-entry (all required fields), so the
+  // wrappers are fresh fact()s from the new input — a different row's
+  // provenance is not copied onto this one.
+  const stateData = {
+    companyId,
+    asOfDate,
+    periodType: "ACTUAL" as const,
+    scope: "CONSOLIDATED" as const,
+    ...financialStateJson(input),
+    notes,
+  };
+  if (existingStates.length === 1) {
+    return prisma.financialState.update({ where: { id: existingStates[0]!.id }, data: stateData });
+  }
+  return prisma.financialState.create({ data: stateData });
 }
 
 // ---------------------------------------------------------------------------
