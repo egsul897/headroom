@@ -14,6 +14,7 @@ import type { AmendmentPackageView } from "../customer-intelligence/amendment-pa
 import { isSubstantiveFinancingPrecedent } from "./corpus-quality";
 import { retrievalTruncationNote } from "./retrieval-truncation-note";
 import { staleAnalysisNote } from "./ask-stale-note";
+import { matchingProvisionsTruncationNote } from "./ask-truncation-note";
 import { parseProposedAmount } from "./parse-proposed-amount";
 
 export interface AskCitation {
@@ -315,6 +316,8 @@ function composeAnswer(params: {
   items: Array<CovenantSummaryItem & { sourceId: string; score: number }>;
   researchOnly: boolean;
   amendmentNote?: string;
+  /** Pre-cap count of matching provisions (rule 56 disclosure). */
+  totalMatchedBeforeCap?: number;
 }): AskRetrieveAnswer {
   const top = params.items.slice(0, 6);
   const proposedAmount = parseProposedAmount(params.question);
@@ -470,6 +473,10 @@ function composeAnswer(params: {
     (i) => i.reviewerDecision === "ACCEPTED" || i.reviewerDecision === "EDITED",
   );
 
+  // Rule 56: disclose when matching provisions beyond the top
+  // shown were omitted from the composed answer.
+  const truncationNote = matchingProvisionsTruncationNote(top.length, params.totalMatchedBeforeCap ?? top.length);
+
   return {
     kind: "answered",
     headline: counselTouched
@@ -488,6 +495,7 @@ function composeAnswer(params: {
         : "Workspace-isolated — public corpus language is not substituted for this package",
       "Missing financial inputs yield conditional analysis, not invented numbers",
       "promotedToLegalTruth remains 0 until counsel/compiler promotion",
+      ...(truncationNote ? [truncationNote] : []),
     ],
     amendmentNote: params.amendmentNote,
     promotedToLegalTruth: 0,
@@ -550,6 +558,7 @@ export function answerFromSummaryItems(params: {
     items: scored.slice(0, params.limit ?? 6),
     researchOnly: params.researchOnly ?? true,
     amendmentNote: params.amendmentNote,
+    totalMatchedBeforeCap: scored.length,
   });
 }
 
