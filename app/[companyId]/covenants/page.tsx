@@ -137,11 +137,17 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
                 <div className="row-value">{review.operativeResolution.effectiveDate}</div>
               </div>
             )}
-            {review.operativeResolution.bindings.slice(0, 20).map((b, i) => (
-              <div key={`${b.sectionRef}-${i}`} className="row-note" style={{ marginTop: 6 }}>
-                §{b.sectionRef} → {b.operativeSourceId} ({b.changeKind}) — {b.rationale}
-              </div>
-            ))}
+            {review.operativeResolution.bindings.slice(0, 20).map((b, i) => {
+              // Rule 104: bindings named a raw sourceId (opaque) —
+              // resolve to the document title so a reader can tell
+              // WHICH document governs each section.
+              const operativeDoc = review.documents.find((d) => d.sourceId === b.operativeSourceId);
+              return (
+                <div key={`${b.sectionRef}-${i}`} className="row-note" style={{ marginTop: 6 }}>
+                  §{b.sectionRef} → {operativeDoc ? operativeDoc.filename : b.operativeSourceId} ({b.changeKind}) — {b.rationale}
+                </div>
+              );
+            })}
             {/* Rule 89: truncation disclosed — never silently drop bindings. */}
             {review.operativeResolution.bindings.length > 20 && (
               <div className="row-note" style={{ marginTop: 6 }}>
