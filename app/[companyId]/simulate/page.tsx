@@ -284,6 +284,16 @@ export default async function SimulatePage({
         <CfoSecuredDebtWorkflowPanel entry={cfoSecuredDebtEntry} />
       )}
 
+      {/* Rule 86: never silently assume an amount. The cross-domain
+          panel models a $150M acquisition when no amount was
+          supplied — say so, so the CFO does not read the default
+          as their transaction. */}
+      {amountMillions <= 0 && (
+        <div className="card-subtitle" style={{ marginTop: 8 }}>
+          Illustrative $150M acquisition below — no amount was supplied, so this panel models a default scenario.
+          Enter an amount to model your transaction.
+        </div>
+      )}
       <CrossDomainSimulatePanel evaluation={crossDomainAcquisition} />
 
       <SimulateClient
