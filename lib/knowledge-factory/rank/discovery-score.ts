@@ -32,6 +32,18 @@ const SIGNALS: RankSignal[] = [
   { name: "unrestricted_subsidiaries", family: "UNRESTRICTED_SUBSIDIARIES", weight: 2.5, re: /\bUnrestricted\s+Subsidiar/i },
   { name: "events_of_default", family: "EVENTS_OF_DEFAULT", weight: 2, re: /\bEvents?\s+of\s+Default\b/i },
   { name: "mandatory_prepayments", family: "MANDATORY_PREPAYMENTS", weight: 2.5, re: /\bMandatory\s+Prepayments?\b/i },
+  // Rule 193: a cap expressed through a DEFINED TERM ("not
+  // exceeding the Threshold Amount", "not to exceed the
+  // Available Amount") is a real basket clause even though it
+  // carries no dollar amount — without this signal the clause
+  // scores 0 and the summary's 120-item cap drops it (the
+  // real Strata 6.01(k) was invisible for exactly this reason).
+  // Two or more Capitalized words after the cap frame: a single
+  // Capitalized word is usually a party ("not exceed the
+  // Borrower"), not a defined-term cap. No family: a cap frame
+  // is generic (debt, lien, or RP) — the classifier/inheritance
+  // assigns the family, not this signal.
+  { name: "defined_term_cap", weight: 3, re: /\bnot\s+(?:to\s+)?exceed(?:ing)?\b[^.]{0,80}?\b(?:[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)\b/ },
 ];
 
 export function scoreDiscoveryPotential(text: string, metaHaystack = ""): DiscoveryRankResult {

@@ -256,6 +256,27 @@ export function discoverCovenantCandidates(
   // Calumet amendment lost its availability + sublimit clauses).
   const allSorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
   const coveredRefs = new Set<string>();
+  // Parent coverage (Rule 193): a candidate's excerpt end
+  // (4000-char cap), span end, and the node type that produced
+  // it — the skip rule below depends on the parent's node type.
+  const coveredSpanEnd = new Map<string, number>();
+  const coveredNodeType = new Map<string, string>();
+  // Rule 193: clause candidates inherit their parent's families
+  // when their own classification is UNKNOWN (below). The parent
+  // section's families describe the covenant the clause belongs
+  // to; a bare "(k) other unsecured Indebtedness not exceeding
+  // the Threshold Amount" classifies UNKNOWN on its own (no
+  // amount signal) and would be dropped by the score filter even
+  // though it is a real basket clause of a known debt section.
+  const coveredFamilies = new Map<string, ReturnType<typeof classifyFamiliesFromText>>();
+  // Rule 193: a covered parent suppresses its clauses only for
+  // the text its excerpt actually reaches. The excerpt is
+  // capped at 4000 chars, so a clause sitting past the cap
+  // (Strata 6.01(k), near the end of a long 6.01) is NOT
+  // covered by the parent's candidate — it gets its own chance
+  // through the gates below. Map: parent ref -> its excerpt
+  // end (min(span.end, span.start + 4000)).
+  const coveredExcerptEnd = new Map<string, number>();
   const clauseNodes = nodes
     .filter(
       (n) =>
@@ -277,16 +298,62 @@ export function discoverCovenantCandidates(
   ];
 
   for (const { node, spanNodes } of orderedNodes) {
-    // Clause fallback (CLAUSE/SUBCLAUSE nodes only): skip when the
-    // parent already produced a candidate — the parent's excerpt
-    // covers this content. When the parent produced nothing (pointer
-    // subsection), the clause gets its own chance through the same
-    // gates below. SECTION/ARTICLE/SUBSECTION nodes are never
-    // skipped here: a section and its subsection are distinct
-    // content (a §6.01 candidate must not suppress §6.01(e)).
-    if (node.nodeType === "CLAUSE" || node.nodeType === "SUBCLAUSE") {
+    // Parent-skip (Rule 174 + Rule 193): a child node is
+    // skipped when its parent already produced a candidate.
+    // - Parent is SECTION/ARTICLE: a SUBSECTION child is a
+    //   direct clause — NEVER skipped (a §6.01 candidate must
+    //   not suppress §6.01(e)); a CLAUSE/SUBCLAUSE child is
+    //   skipped only if the parent's EXCERPT reaches it (the
+    //   excerpt is capped at 4000 chars, so a clause past the
+    //   cap — e.g. a future 6.11(t) — is not covered and gets
+    //   its own candidate).
+    // - Parent is SUBSECTION: a child is a fragment within a
+    //   clause — ALWAYS skipped when the parent produced a
+    //   candidate, even if the fragment sits past the parent's
+    //   span. The parser misattributes later sections' clauses
+    //   to a stale SUBSECTION parent ref (the real Strata
+    //   6.02(l)(a)-(n) nodes are §§6.03-6.08 clauses sitting
+    //   past §6.03); surfacing them under the wrong ref is a
+    //   provenance error, so they stay hidden until the
+    //   parser's clause-ref tracking is fixed. Deliberately
+    //   fail-closed, not a coverage choice.
+    // - Parent is CLAUSE/SUBCLAUSE: a child is a nested fragment
+    //   — skipped if within the parent's SPAN. Past the span it
+    //   is orphaned content (the real Calumet 1(c)(b)(j) sits
+    //   past its parent clause's span) and gets its own chance.
+    // When the parent produced nothing (pointer subsection),
+    // the node gets its own chance through the gates below.
+    if (
+      node.nodeType === "CLAUSE" ||
+      node.nodeType === "SUBCLAUSE" ||
+      node.nodeType === "SUBSECTION"
+    ) {
       const parent = parentRefOf(node.sectionRef);
-      if (parent && coveredRefs.has(parent)) continue;
+      // NOTE: a child of a SKIPPED fragment is NOT skipped here.
+      // The real Strata 6.02(l)(e)(A) escapes this way (its
+      // parent (e) was blanket-skipped), but cascading the skip
+      // to skipped parents loses real content: the Calumet
+      // 1(c)(b)(j) chain has the identical shape (a skipped
+      // parent (b) + a child (j) that is genuine orphaned
+      // §1(c) content). The two cases are indistinguishable at
+      // the skip level; the (e)(A) ref error belongs to the
+      // parser's clause-ref tracking, not to discovery. The
+      // (e)(A) item surfaces with a wrong ref (real §6.03/§6.04
+      // text, INCOMPLETE grant) — documented, not hidden.
+      if (parent && coveredRefs.has(parent)) {
+        const parentType = coveredNodeType.get(parent);
+        if (parentType === "SECTION" || parentType === "ARTICLE") {
+          if (node.nodeType !== "SUBSECTION") {
+            if ((coveredExcerptEnd.get(parent) ?? Number.POSITIVE_INFINITY) > node.charStart) {
+              continue;
+            }
+          }
+        } else if (parentType === "SUBSECTION") {
+          continue;
+        } else if ((coveredSpanEnd.get(parent) ?? Number.POSITIVE_INFINITY) > node.charStart) {
+          continue;
+        }
+      }
     }
     const span = operativeSpan(node, spanNodes, text.length);
     const excerpt = text.slice(span.start, Math.min(span.end, span.start + 4000));
@@ -294,7 +361,25 @@ export function discoverCovenantCandidates(
     // even though their headings name covenant families.
     if (isTableOfContentsSpan(node, excerpt, text)) continue;
     if (isAdministrativeProvision(node.heading, excerpt)) continue;
-    const families = classifyFamiliesFromText(excerpt, node.heading);
+    let families = classifyFamiliesFromText(excerpt, node.heading);
+    // Rule 193: a node whose own text classifies UNKNOWN
+    // inherits its parent section's families — the node is part
+    // of that section's covenant, and its bare marker heading
+    // ("6.01(k)") carries no classification signal of its own.
+    // Only when the parent produced a candidate (so the
+    // parent's families are known); a node with its own specific
+    // family keeps it. No nodeType restriction: a SUBSECTION
+    // "(k)" has the same bare-marker problem as a CLAUSE "(k)"
+    // (Strata 6.01(k) is a SUBSECTION node dropped by the score
+    // filter); SECTION/ARTICLE nodes have no parent ref
+    // (parentRefOf returns null) so they never inherit.
+    if (families.length === 1 && families[0] === "UNKNOWN") {
+      const parent = parentRefOf(node.sectionRef);
+      const inherited = parent ? coveredFamilies.get(parent) : undefined;
+      if (inherited && !(inherited.length === 1 && inherited[0] === "UNKNOWN")) {
+        families = inherited;
+      }
+    }
     if (families.length === 1 && families[0] === "UNKNOWN") {
       // Keep UNKNOWN only when heading still looks covenant-relevant.
       // Rule 164: headings use PLURAL forms — "COVENANTS",
@@ -329,6 +414,10 @@ export function discoverCovenantCandidates(
       discoveryScore: rank.score,
     });
     coveredRefs.add(node.sectionRef);
+    coveredExcerptEnd.set(node.sectionRef, Math.min(span.end, span.start + 4000));
+    coveredSpanEnd.set(node.sectionRef, span.end);
+    coveredNodeType.set(node.sectionRef, node.nodeType);
+    coveredFamilies.set(node.sectionRef, mergedFamilies);
   }
 
   // Document-level fallback when structure is sparse but text is rich.
