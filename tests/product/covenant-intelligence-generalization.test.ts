@@ -837,3 +837,38 @@ describe("rule 199: defined-term word-boundary matching", () => {
     expect(a.applicableDefinitions.map((d) => d.term)).toContain("Threshold Amount");
   });
 });
+
+/** Rule 200: a heading split across source lines is one line. */
+describe("rule 200: heading whitespace normalization", () => {
+  it("collapses a newline inside a node heading", () => {
+    const a = analyzeProvision({
+      sourceId: "test:general",
+      documentTitle: "Test Agreement",
+      candidate: {
+        candidateId: "c-200",
+        sourceId: "test:general",
+        nodeId: "n-200",
+        families: ["OTHER"],
+        signals: [],
+        excerpt: "Additional Guarantors shall execute a joinder.",
+        representationLevel: "DISCOVERED_CANDIDATE",
+        discoveryScore: 8,
+      },
+      definitions: [],
+      structuralNodes: [
+        {
+          nodeId: "n-200",
+          sourceId: "test:general",
+          nodeType: "SECTION",
+          sectionRef: "6.17",
+          heading: "Additional\nGuarantors",
+          charStart: 0,
+          charEnd: 100,
+          ambiguous: false,
+        } as any,
+      ],
+    });
+    expect(a.heading).toBe("Additional Guarantors");
+    expect(a.heading).not.toContain("\n");
+  });
+});

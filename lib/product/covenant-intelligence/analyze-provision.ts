@@ -104,9 +104,14 @@ function sectionForNode(
 ): { sectionRef: string; heading: string } {
   if (!nodeId) return { sectionRef: "n/a", heading: "Document body" };
   const n = nodes.find((x) => x.nodeId === nodeId);
+  // Rule 200: a heading split across two source lines carries a
+  // literal newline (Aon 6.17 rendered "Additional\nGuarantors").
+  // A heading is one line — collapse internal whitespace. The
+  // sectionRef fallback gets the same treatment (a missing
+  // sectionRef must not become a multi-line ref).
   return {
-    sectionRef: n?.sectionRef || n?.heading || nodeId,
-    heading: n?.heading || n?.sectionRef || "Untitled provision",
+    sectionRef: normalizeWs(n?.sectionRef || n?.heading || nodeId),
+    heading: normalizeWs(n?.heading || n?.sectionRef || "Untitled provision"),
   };
 }
 
