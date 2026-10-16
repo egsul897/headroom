@@ -383,3 +383,35 @@ describe("rule 192: mid-line heading whose terminator sits past the first line",
     expect(nodes.filter((x) => x.sectionRef === "6.14")).toHaveLength(0);
   });
 });
+
+describe("rule 194: ambiguous section headings bound clause regions", () => {
+  it("an ambiguous 6.03 does not let 6.02's clause tree swallow its clauses", () => {
+    // 6.02 is a clean confident heading; 6.03 has the glued-title
+    // shape (Rule 188: "Fundamental Changes The Borrower...") so
+    // it triages AMBIGUOUS, like the real Strata 6.03. Before
+    // this fix, 6.02's clause region ran past 6.03 (the next
+    // confident node was 6.04) and buildClauseTree nested 6.03's
+    // (a)-(c) under 6.02(l) as "6.02(l)(a)-(c)".
+    const text = [
+      "6.02. Liens. The Borrower will not create any Lien except: (a) Liens for taxes; (b) Liens on acquired property; (c) Liens securing the Obligations; (d) Liens on property at the time of acquisition; (e) Liens in favor of the Administrative Agent; (f) Liens on cash collateral; (g) Liens for judgments; (h) Liens arising by operation of law; (i) Liens on insurance proceeds; (j) Liens securing Permitted Indebtedness; (k) Liens on assets of Foreign Subsidiaries; (l) other Liens incurred in the ordinary course of business.",
+      "",
+      "6.03. Fundamental Changes The Borrower will not, nor will it permit any Subsidiary to, merge into or consolidate with any other Person, except: (a) a Subsidiary may merge into the Borrower; (b) a Subsidiary may merge into another Subsidiary; (c) the Borrower may merge in connection with a Permitted Acquisition.",
+      "",
+      "6.04. Investments. The Borrower will not make any Investment except: (a) Investments in cash equivalents; (b) Investments in Subsidiaries.",
+    ].join("\n");
+    const { nodes } = extractStructure("rule194-test", text);
+    const refs = nodes.map((n) => n.sectionRef);
+    // The ambiguous 6.03 node itself surfaces (as an ambiguous node).
+    const s603 = nodes.find((n) => n.sectionRef === "6.03" && n.nodeType === "SECTION");
+    expect(s603).toBeDefined();
+    expect(s603!.ambiguous).toBe(true);
+    // Its clauses carry 6.03 refs — never nested under 6.02(l).
+    expect(refs).toContain("6.03(a)");
+    expect(refs).toContain("6.03(b)");
+    expect(refs).toContain("6.03(c)");
+    expect(refs.filter((r) => r.startsWith("6.02(l)("))).toHaveLength(0);
+    // 6.02's own clauses are still split, ending at (l).
+    expect(refs).toContain("6.02(l)");
+    expect(refs).toContain("6.04(a)");
+  });
+});

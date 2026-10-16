@@ -1345,7 +1345,25 @@ function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleM
  * `applyStructuralAmbiguityOverrides` below) can reuse this exact,
  * already-certified mechanical construction instead of duplicating it.
  */
-function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, articleMatches: RegExpExecArray[], sectionMatches: RegExpExecArray[]): StructuralNode[] {
+function buildStructuralNodesFromAcceptedMatches(
+  doc: CompilerDocumentInput,
+  articleMatches: RegExpExecArray[],
+  sectionMatches: RegExpExecArray[],
+  opts?: {
+    /** Extra clause-region bounds: charStarts of heading-like matches
+     * that are NOT confident nodes (ambiguous candidates). Without
+     * them a confident section's clause region swallows the next
+     * ambiguous section's text (Rule 194). */
+    regionBoundStarts?: readonly number[];
+    /** Heading-like SECTION matches that are NOT confident nodes
+     * (ambiguous candidates): their clauses are still split, with
+     * correct refs, so the clauses belong to the ambiguous section
+     * instead of nesting under the previous confident section's
+     * last clause. The ambiguous section itself is NOT added as a
+     * node here — the triage path adds it separately. */
+    clauseSectionMatches?: readonly RegExpExecArray[];
+  },
+): StructuralNode[] {
   const raws: RawNode[] = [];
   for (const m of articleMatches) {
     raws.push({
@@ -1374,12 +1392,42 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
   // Parse nested SUBSECTION/CLAUSE/SUBCLAUSE markers within each SECTION's
   // own raw region (up to the next top-level node, or document end).
   // Definitions sections are segmented by top-level defined-term declarations.
+  // Rule 194: the region is bounded by the next HEADING-LIKE match,
+  // not just the next confident node. An AMBIGUOUS section heading
+  // (e.g. Strata 6.03 "Fundamental", truncated title + body glued
+  // on one line) is a real section boundary: without the bound,
+  // the preceding confident section's clause tree swallows the
+  // ambiguous section's text and nests its clauses under the
+  // previous section's last clause (the real 6.02(l)(a)-(n) nodes
+  // were §§6.03-6.08 clauses mislabeled as 6.02(l) children).
   const topLevel = raws.slice();
+  const bounds = [...(opts?.regionBoundStarts ?? []), ...topLevel.map((n) => n.charStart)].sort((a, b) => a - b);
+  const regionEndAfter = (charStart: number): number => {
+    for (const b of bounds) if (b > charStart) return b;
+    return doc.text.length;
+  };
   for (let i = 0; i < topLevel.length; i++) {
     const node = topLevel[i]!;
     if (node.nodeType !== "SECTION") continue;
-    const regionEnd = topLevel[i + 1]?.charStart ?? doc.text.length;
-    appendClauseRawsForSection(doc, node, regionEnd, raws);
+    appendClauseRawsForSection(doc, node, regionEndAfter(node.charStart), raws);
+  }
+  // Rule 194 (second half): split clauses for AMBIGUOUS section
+  // headings too, with correct refs. The ambiguous section's own
+  // node comes from the triage path; its clauses belong to it,
+  // not to the previous confident section. A clause inside the
+  // ambiguous section's excerpt is covered by that section's
+  // candidate (discovery's parent-skip); a clause past the
+  // excerpt gets its own candidate with the CORRECT ref.
+  for (const m of opts?.clauseSectionMatches ?? []) {
+    const synthetic: RawNode = {
+      nodeType: "SECTION",
+      heading: truncateTitleAtBodyStart((m[2] ?? "").trim()),
+      sectionRef: normalizeOcrSectionNumber((m[1] ?? "").trim()),
+      charStart: m.index,
+      parentSectionRef: null,
+      nestRank: RANK.SECTION,
+    };
+    appendClauseRawsForSection(doc, synthetic, regionEndAfter(m.index), raws);
   }
   raws.sort((a, b) => a.charStart - b.charStart);
 
@@ -2044,7 +2092,16 @@ export function parseDocumentStructureWithTriage(doc: CompilerDocumentInput): St
   const candidates = decideRawStructuralCandidates(doc);
   const confidentArticles = candidates.filter((c) => c.candidateType === "ARTICLE" && c.triage.decision === "CONFIDENT_HEADING").map((c) => c.match);
   const confidentSections = candidates.filter((c) => c.candidateType === "SECTION" && c.triage.decision === "CONFIDENT_HEADING").map((c) => c.match);
-  const nodes = buildStructuralNodesFromAcceptedMatches(doc, confidentArticles, confidentSections);
+  // Rule 194: ambiguous heading-like matches bound clause regions
+  // and get their own clause splitting (they are real section
+  // boundaries even though they are not confident nodes).
+  const headingLike = candidates.filter((c) => c.triage.decision === "CONFIDENT_HEADING" || c.triage.decision === "AMBIGUOUS");
+  const nodes = buildStructuralNodesFromAcceptedMatches(doc, confidentArticles, confidentSections, {
+    regionBoundStarts: headingLike.map((c) => c.match.index),
+    clauseSectionMatches: candidates
+      .filter((c) => c.candidateType === "SECTION" && c.triage.decision === "AMBIGUOUS")
+      .map((c) => c.match),
+  });
 
   const confidentHeadingsSorted = candidates
     .filter((c) => c.triage.decision === "CONFIDENT_HEADING")
@@ -2087,5 +2144,12 @@ export function applyStructuralAmbiguityOverrides(doc: CompilerDocumentInput, ov
   };
   const acceptedArticles = candidates.filter((c) => c.candidateType === "ARTICLE" && isAccepted(c)).map((c) => c.match);
   const acceptedSections = candidates.filter((c) => c.candidateType === "SECTION" && isAccepted(c)).map((c) => c.match);
-  return buildStructuralNodesFromAcceptedMatches(doc, acceptedArticles, acceptedSections);
+  // Rule 194: unresolved ambiguous headings still bound clause
+  // regions (fail-closed: they might be real); rejected ones
+  // (prose) do not. Accepted ambiguous sections are already in
+  // acceptedSections, so no extra clause splitting is needed.
+  const regionBoundStarts = candidates
+    .filter((c) => c.triage.decision === "CONFIDENT_HEADING" || (c.triage.decision === "AMBIGUOUS" && overrides.get(structuralCandidateKey(c.candidateType, c.match.index)) !== false))
+    .map((c) => c.match.index);
+  return buildStructuralNodesFromAcceptedMatches(doc, acceptedArticles, acceptedSections, { regionBoundStarts });
 }
