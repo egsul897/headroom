@@ -12,20 +12,24 @@ import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRe
 const TOC_LEADER_LINE = /^\s*(?:Section|§)\s*[\dA-Za-z.()-]+\s+.+\.{3,}\s*\d+\s*$/m;
 /** A bare TOC entry: "6.05 Limitation on Liens 58" or "VII. Limitation on Indebtedness 35" — ref + title + page number, no "Section", no dotted leader. */
 const TOC_BARE_ENTRY =
-  /^\s*(?:\d+(?:\.\d+)+(?:\([a-z0-9]+\))?|M{0,4}(?:C[MD]|D?C{0,3})(?:X[CL]|L?X{0,3})(?:I[XV]|V?I{0,3})\.?)\s+[A-Za-z].*\S\s+\d+\s*$/;
+  /^\s*(?:\d+(?:\.\d+)+(?:\([a-z0-9]+\))?|M{0,4}(?:C[MD]|D?C{0,3})(?:X[CL]|L?X{0,3})(?:I[XV]|V?I{0,3})\.?)\s+[A-Za-z].*\S\s+(?:\d+|[ivxlcdm]{2,})\s*$/;
 /**
  * Rule 163: Section-prefixed bare TOC entry — "Section 6.01. Limitation
  * on Indebtedness 109". EDGAR HTML puts the ref, title, and page
  * number on separate lines, so the line-based patterns above never see
  * this shape; it is matched against whitespace-collapsed span text.
+ * Rule 172: the trailing page token may be a lowercase roman numeral
+ * (front matter) — "Section 7.01. Events of Default 119 iii" — or a
+ * bare roman page ("Section 6.01. Indebtedness iii"). Lowercase-only
+ * and 2+ chars so "Part II" / "Civil" can never match.
  */
-const TOC_SECTION_ENTRY = /^\s*(?:Section|§)\s*[\dA-Za-z.()-]+\s+[A-Za-z].*\S\s+\d+\s*$/;
+const TOC_SECTION_ENTRY = /^\s*(?:Section|§)\s*[\dA-Za-z.()-]+\s+[A-Za-z].*\S\s+(?:\d+|[ivxlcdm]{2,})\s*$/;
 /**
  * Rule 163: article-level bare TOC entry — "ARTICLE IV Conditions
  * Precedent 45". Same multi-line EDGAR shape as TOC_SECTION_ENTRY,
  * one level up; body article headings carry no trailing page number.
  */
-const TOC_ARTICLE_ENTRY = /^\s*ARTICLE\s+[IVXLC]+\s+[A-Za-z].*\S\s+\d+\s*$/i;
+const TOC_ARTICLE_ENTRY = /^\s*ARTICLE\s+[IVXLC]+\s+[A-Za-z].*\S\s+(?:\d+|[ivxlcdm]{2,})\s*$/i;
 /**
  * Rule 163: one entry inside a TOC list — "5.1. Corporate Existence
  * and Standing 48". Titles stop at a period or semicolon so the
@@ -33,7 +37,7 @@ const TOC_ARTICLE_ENTRY = /^\s*ARTICLE\s+[IVXLC]+\s+[A-Za-z].*\S\s+\d+\s*$/i;
  * "Sections 5.6 and 5.18" may fake one entry, never three.
  */
 const TOC_LIST_ENTRY =
-  /(?:(?:Section|§|ARTICLE)\s+)?(?:\d+(?:\.\d+)*\.?|[IVXLC]+\.?)\s+[A-Za-z][^.;]{1,80}?\s+\d+(?=\s|$)/gi;
+  /(?:(?:Section|§|ARTICLE)\s+)?(?:\d+(?:\.\d+)*\.?|[IVXLC]+\.?)\s+[A-Za-z][^.;]{1,80}?\s+(?:\d+|[ivxlcdm]{2,})(?=\s|$)/gi;
 const OPERATIVE_VERB = /\b(?:shall|will|must|may)\b/i;
 
 /**

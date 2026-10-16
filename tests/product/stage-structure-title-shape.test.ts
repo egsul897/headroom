@@ -132,3 +132,49 @@ describe("rule 167c: bare heading with number and title on adjacent lines", () =
     expect(nodes.filter((n) => n.sectionRef === "6.16")).toHaveLength(0);
   });
 });
+
+describe("rule 172: TOC entries with roman-numeral page tokens", () => {
+  // discoverCovenantCandidates is the gate under test: a TOC node whose
+  // collapsed span ends in a roman front-matter page ("119 iii") must
+  // be suppressed, while the body section for the same ref survives.
+  it("a TOC entry ending '119 iii' is suppressed; the body section survives", async () => {
+    const { discoverCovenantCandidates } = await import("../../lib/knowledge-factory/pipeline/candidates");
+    const text = [
+      "Section 7.01.",
+      "Events of Default",
+      "119",
+      "",
+      "iii",
+      "",
+      "Section 7.01.       Events",
+      "of Default . If any of the following events shall occur:",
+      "",
+      "(a) the Borrowers shall fail to pay any principal of any Loan when and as the same shall become due and payable,",
+    ].join("\n");
+    const tocStart = text.indexOf("Section 7.01.");
+    const bodyStart = text.indexOf("Section 7.01.       Events");
+    const nodes = [
+      { nodeId: "toc-701", sectionRef: "7.01", nodeType: "SECTION", heading: "Section 7.01.\nEvents of Default", charStart: tocStart, charEnd: tocStart + 31, ambiguous: true },
+      { nodeId: "body-701", sectionRef: "7.01", nodeType: "SECTION", heading: "Section 7.01.       Events", charStart: bodyStart, charEnd: bodyStart + 27, ambiguous: true },
+    ] as never;
+    const candidates = discoverCovenantCandidates("rule172-test", text, nodes);
+    const excerpts = candidates.map((c) => c.excerpt);
+    expect(excerpts.some((e) => e.includes("shall fail to pay any principal"))).toBe(true);
+    expect(excerpts.some((e) => e.includes("119"))).toBe(false);
+    expect(candidates).toHaveLength(1);
+  });
+
+  it("a bare roman page ('Indebtedness iii') is a TOC entry", async () => {
+    const { discoverCovenantCandidates } = await import("../../lib/knowledge-factory/pipeline/candidates");
+    const text = ["Section 6.01.", "Indebtedness", "iii", "", "Section 6.02. Liens . The Borrower shall not permit any Lien."].join("\n");
+    const tocStart = text.indexOf("Section 6.01.");
+    const bodyStart = text.indexOf("Section 6.02.");
+    const nodes = [
+      { nodeId: "toc-601", sectionRef: "6.01", nodeType: "SECTION", heading: "Section 6.01.\nIndebtedness", charStart: tocStart, charEnd: tocStart + 20, ambiguous: true },
+      { nodeId: "body-602", sectionRef: "6.02", nodeType: "SECTION", heading: "Section 6.02. Liens .", charStart: bodyStart, charEnd: bodyStart + 20, ambiguous: false },
+    ] as never;
+    const candidates = discoverCovenantCandidates("rule172-test-2", text, nodes);
+    expect(candidates.map((c) => c.excerpt).some((e) => e.includes("Indebtedness") && !e.includes("shall not"))).toBe(false);
+    expect(candidates.some((c) => c.excerpt.includes("shall not permit any Lien"))).toBe(true);
+  });
+});
