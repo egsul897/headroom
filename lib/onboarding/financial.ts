@@ -814,6 +814,25 @@ export interface CreateFacilityInput {
 
 /** Creates a Facility row with a human-confirmed originatingPermissionIds mapping - the onboarding wizard's own write for deliverable 5. */
 export async function createFacilityWithMapping(input: CreateFacilityInput): Promise<PrismaFacility> {
+  // Rule 129: the action passes originatingPermissionIds straight
+  // from FormData — a crafted request could link a facility to
+  // ANOTHER company's permissions (rule-93 class: the action
+  // authorizes the URL company but never verified the referenced
+  // rows belong to it). Every linked permission must resolve to
+  // a Permission row in this company, or the write refuses.
+  if (input.originatingPermissionIds.length > 0) {
+    const rows = await prisma.permission.findMany({
+      where: { companyId: input.companyId, id: { in: input.originatingPermissionIds } },
+      select: { id: true },
+    });
+    const found = new Set(rows.map((r) => r.id));
+    const foreign = input.originatingPermissionIds.filter((id) => !found.has(id));
+    if (foreign.length > 0) {
+      throw new Error(
+        `originatingPermissionIds do not belong to this company: ${foreign.join(", ")} — refusing facility creation.`,
+      );
+    }
+  }
   return prisma.facility.create({
     data: {
       companyId: input.companyId,
