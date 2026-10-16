@@ -27,7 +27,7 @@ import { buildPermissionGraph } from "./graph";
 import { buildPermissionPaths, computeElectionMaxCapacityBisected, enumerateElections, evaluateElection, permissionAsProvision, type EligibilityContext } from "./election";
 import { evaluateProvision } from "../covenant-engine";
 import { assembleSolverResult, searchLimitExceededResult } from "./result";
-import { evaluateRatioTests } from "./ratio";
+import { applyRatioCeiling, evaluateRatioTests } from "./ratio";
 import { buildStateDelta } from "./statedelta";
 import type {
   ActivationState,
@@ -153,6 +153,17 @@ function computeMaximumCapacityFromEvaluations(
       );
     }
     if (amount === undefined) continue;
+
+    // Rule 189: cap the candidate maximum by the maintenance-ratio
+    // ceiling BEFORE election re-validation. A lower amount can
+    // only improve every ratio, so re-validation at the capped
+    // amount can never re-breach a ratio; an UNKNOWN ratio test
+    // is amount-independent, so no ceiling can be proven at all.
+    const ratioCap = applyRatioCeiling(amount, params.ratioProvisions ?? [], params.financials, params.transaction.secured);
+    if (ratioCap.kind === "INDETERMINATE") {
+      return { kind: "REVIEW_REQUIRED", reason: ratioCap.reason };
+    }
+    amount = ratioCap.amount;
 
     // Re-validate at the candidate maximum — probe-level CLEAR must not promote
     // an EXACT max that fails lien/debt/shared-utilization gates at that amount.

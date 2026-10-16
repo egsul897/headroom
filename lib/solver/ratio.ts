@@ -18,12 +18,21 @@
  * diverges from the legacy math is a bug in one of the two —
  * the agreement test in tests/solver/ratio.test.ts pins it.
  *
- * Scope: status gating + reporting only. `maximumCapacity`
- * remains election-derived and is NOT capped by the
- * ratio-implied ceiling (capping would require re-evaluating
- * the winning election at the capped amount and rebuilding its
- * path); a TESTED amount's status is exact, the ceiling may
- * exceed the ratio-implied max.
+ * Scope: status gating + reporting, plus the maximum-capacity
+ * ceiling (Rule 189). `maximumCapacity` is capped by the
+ * ratio-implied ceiling: the largest amount at which every
+ * APPLICABLE maintenance test still passes. The cap is applied
+ * BEFORE the election re-validation in
+ * `computeMaximumCapacityFromEvaluations`, so the capped
+ * amount is re-validated as an election amount exactly like
+ * any other candidate maximum (a lower amount can only
+ * improve every ratio — leverage post-ratio rises with
+ * amount, coverage post-ratio falls — so re-validation never
+ * re-breaches a ratio). A test that is UNKNOWN at the
+ * candidate amount (coverage with no assumed new-debt rate)
+ * is amount-independent, so NO ceiling can be proven and the
+ * maximum-capacity answer degrades to REVIEW_REQUIRED
+ * (fail-closed, consistent with the status gating).
  */
 import type { FinancialSnapshotInput } from "../covenant-engine";
 import type { RatioProvision, RatioTestResult } from "./types";
@@ -88,4 +97,56 @@ export function evaluateRatioTests(
     }
   }
   return results;
+}
+
+/**
+ * Rule 189: the maintenance-ratio ceiling for a candidate
+ * maximum-capacity amount. Returns the candidate unchanged
+ * when every applicable test already passes at it; bisects
+ * [0, amount] for the largest amount where all applicable
+ * tests pass when any test fails at it (valid because each
+ * test's post-transaction ratio is monotone in amount:
+ * leverage rises, coverage falls); INDETERMINATE when any
+ * applicable test is UNKNOWN (coverage with a missing/zero
+ * assumed new-debt rate is amount-independent, so no
+ * ceiling can be proven at any amount).
+ */
+export type RatioCeilingResult =
+  | { kind: "UNCAPPED"; amount: number }
+  | { kind: "CAPPED"; amount: number }
+  | { kind: "INDETERMINATE"; reason: string };
+
+export function applyRatioCeiling(
+  amount: number,
+  provisions: RatioProvision[],
+  financials: FinancialSnapshotInput,
+  secured: boolean,
+): RatioCeilingResult {
+  if (provisions.length === 0) return { kind: "UNCAPPED", amount };
+  const applicableAt = (a: number): RatioTestResult[] =>
+    evaluateRatioTests(provisions, financials, a, secured).filter((t) => t.applies);
+  const atAmount = applicableAt(amount);
+  const unknown = atAmount.find((t) => t.status === "UNKNOWN");
+  if (unknown) {
+    return {
+      kind: "INDETERMINATE",
+      reason: `Maintenance ratio test ${unknown.sectionRef} (${unknown.basketName}) cannot be evaluated (missing assumed new-debt rate); no ratio-safe capacity ceiling can be proven.`,
+    };
+  }
+  if (atAmount.every((t) => t.status === "SATISFIED")) return { kind: "UNCAPPED", amount };
+  let lo = 0;
+  let hi = amount;
+  for (let i = 0; i < 40; i += 1) {
+    const mid = (lo + hi) / 2;
+    const tests = applicableAt(mid);
+    if (tests.some((t) => t.status === "UNKNOWN")) {
+      return {
+        kind: "INDETERMINATE",
+        reason: "A maintenance ratio test became unevaluable while bisecting the ratio-safe ceiling; no ratio-safe capacity ceiling can be proven.",
+      };
+    }
+    if (tests.every((t) => t.status === "SATISFIED")) lo = mid;
+    else hi = mid;
+  }
+  return { kind: "CAPPED", amount: lo };
 }

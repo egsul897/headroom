@@ -141,3 +141,59 @@ describe("Rule 185: solver-native ratio tests", () => {
     expect(res.solverResult!.constraintsEvaluated.ratioTests[0]!.provisionId).toBe("r1");
   });
 });
+
+describe("Rule 189: maximumCapacity is capped by the maintenance-ratio ceiling", () => {
+  const leverage = (threshold: number, debtBasis: "secured" | "total" = "total"): RatioProvision => ({
+    id: "r1", documentId: "doc-1", basketName: "Leverage", sectionRef: "6.14",
+    formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: threshold, debtBasis,
+  });
+  function maxCapacityFor(ratioProvisions: RatioProvision[], fin = FIN, secured = false) {
+    const result = runSolver({
+      eligiblePermissions: [perm("p1")], relationships: [], sharedConstraints: [],
+      collateralScopes: [], ruleActivationConditions: [], ratioProvisions,
+      financials: fin, transaction: transaction(100, secured), entityClasses: [], activationState, asOfDate: new Date("2026-10-16"),
+    });
+    return result.overall.maximumCapacity;
+  }
+
+  it("a binding leverage test caps the election maximum at the ratio ceiling", () => {
+    // Ceiling: (1200 + A - 100) / 500 <= 4.00  =>  A <= 900. Election max is 5000.
+    const max = maxCapacityFor([leverage(4.0)]);
+    expect(max?.kind).toBe("EXACT");
+    if (max?.kind === "EXACT") expect(max.amount).toBeCloseTo(900, 6);
+  });
+
+  it("a non-binding test leaves the election maximum alone", () => {
+    // Ceiling: 15x => (1200 + A - 100)/500 <= 15 => A <= 6400 > 5000 election max.
+    const max = maxCapacityFor([leverage(15.0)]);
+    expect(max?.kind).toBe("EXACT");
+    if (max?.kind === "EXACT") expect(max.amount).toBeCloseTo(5000, 6);
+  });
+
+  it("an unevaluable coverage test (zero rate) makes maximumCapacity REVIEW_REQUIRED", () => {
+    const coverage: RatioProvision = { id: "r2", documentId: "doc-1", basketName: "Coverage", sectionRef: "6.14", formulaType: "COVERAGE_RATIO_ROOM", thresholdValue: 2.5 };
+    const max = maxCapacityFor([coverage], { ...FIN, assumedNewDebtRatePct: 0 });
+    expect(max?.kind).toBe("REVIEW_REQUIRED");
+  });
+
+  it("an already-breached maintenance test caps maximumCapacity at zero", () => {
+    // Pre-ratio (1200 - 100)/500 = 2.2 > 1.0: no new debt is ratio-safe.
+    const max = maxCapacityFor([leverage(1.0)]);
+    expect(max?.kind).toBe("EXACT");
+    if (max?.kind === "EXACT") expect(max.amount).toBeCloseTo(0, 6);
+  });
+
+  it("a secured-basis test does not cap an unsecured deal", () => {
+    const max = maxCapacityFor([leverage(1.0, "secured")], FIN, false);
+    expect(max?.kind).toBe("EXACT");
+    if (max?.kind === "EXACT") expect(max.amount).toBeCloseTo(5000, 6);
+  });
+
+  it("a coverage test caps at the coverage-implied ceiling", () => {
+    // Coverage: 500 / (80 + A*0.06) >= 2.5  =>  A <= (200 - 80)/0.06 = 2000.
+    const coverage: RatioProvision = { id: "r2", documentId: "doc-1", basketName: "Coverage", sectionRef: "6.14", formulaType: "COVERAGE_RATIO_ROOM", thresholdValue: 2.5 };
+    const max = maxCapacityFor([coverage]);
+    expect(max?.kind).toBe("EXACT");
+    if (max?.kind === "EXACT") expect(max.amount).toBeCloseTo(2000, 6);
+  });
+});
