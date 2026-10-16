@@ -8,6 +8,7 @@ import {
   appendContractLedgerUsage,
   supersedeContractLedgerUsage,
 } from "@/lib/product/north-star-workflow";
+import { defaultManualUsageId } from "@/lib/product/north-star-workflow/usage-ids";
 
 const VALID_BASKETS: LedgerBasket[] = ["EQUITY", "DEBT_INCUR", "DEBT_REPAY", "ASSET_SALE", "DIVIDEND", "INVESTMENT"];
 const VALID_DIRECTIONS: LedgerDirection[] = ["CREDIT", "DEBIT"];
@@ -70,7 +71,7 @@ export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND
 /** Append attributed Phase 4C contract-ledger usage (North Star — distinct from legacy LedgerEntry). */
 export async function addContractLedgerUsageAction(companyId: string, formData: FormData) {
   await requireTenantAction(companyId);
-  const usageId = String(formData.get("usageId") || "").trim() || `usage-${companyId}-${Date.now()}`;
+  const usageId = String(formData.get("usageId") || "").trim() || defaultManualUsageId(companyId);
   const amount = String(formData.get("amount") || "").trim();
   const currency = String(formData.get("currency") || "USD").trim() || "USD";
   const ruleId = String(formData.get("ruleId") || "").trim();
