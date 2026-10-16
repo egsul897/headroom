@@ -4,7 +4,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { listCustomerDocumentIntelligence } from "./load";
+import { listCustomerDocumentIntelligence, getLatestAmendmentPackage } from "./load";
 import { loadCapacityReadiness } from "./capacity-readiness";
 import { listReviewerApprovals } from "./reviewer-approvals";
 import { verifiedPermissionCount } from "./rulebook-permission-counts";
@@ -25,7 +25,7 @@ export interface RulebookReadiness {
 }
 
 export async function loadRulebookReadiness(companyId: string): Promise<RulebookReadiness> {
-  const [docs, capacity, permissions, provisions, goldenVerified, counselApprovals] = await Promise.all([
+  const [docs, capacity, permissions, provisions, goldenVerified, counselApprovals, amendment] = await Promise.all([
     listCustomerDocumentIntelligence(companyId),
     loadCapacityReadiness(companyId),
     prisma.permission.findMany({
@@ -37,6 +37,7 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
       where: { companyId, status: "VERIFIED" },
     }),
     listReviewerApprovals(companyId),
+    getLatestAmendmentPackage(companyId),
   ]);
 
   const discoveredSummaries = docs.reduce((n, d) => n + (d.summary?.items.length ?? 0), 0);
@@ -74,11 +75,22 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   if (goldenVerified === 0 && executablePermissions > 0) {
     blockers.push("No verified golden tests for this workspace (optional confidence signal).");
   }
+  // Rule 67: unresolved amendment precedence caps the ladder at
+  // REVIEWED. VERIFIED Permissions + capacity are not enough
+  // when the operative text itself is uncertain — the live
+  // Permissions may be compiled from a superseded document's
+  // sections. Same package source the monitoring feed uses.
+  const precedenceUnresolved = amendment?.operativeResolution === "UNRESOLVED_PRECEDENCE";
+  if (precedenceUnresolved) {
+    blockers.push(
+      "Amendment precedence unresolved — the operative rulebook is uncertain; EXECUTABLE withheld until precedence resolves.",
+    );
+  }
 
   let stage: RulebookStage = "DISCOVERED";
   if (interpretedProvisions > 0) stage = "INTERPRETED";
   if (reviewedPermissions > 0) stage = "REVIEWED";
-  if (capacity.canEvaluateExecutableCapacity && executablePermissions > 0 && reviewedPermissions > 0) {
+  if (capacity.canEvaluateExecutableCapacity && executablePermissions > 0 && reviewedPermissions > 0 && !precedenceUnresolved) {
     stage = "EXECUTABLE";
   }
 
