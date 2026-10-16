@@ -294,8 +294,18 @@ export async function getReviewProgress(companyId: string): Promise<ReviewProgre
 }
 
 /** One chunk's full text, for the "click through to view the excerpt in context" requirement - the review workspace's citation-drilldown. */
-export async function getChunkContext(chunkId: string) {
-  return prisma.documentChunk.findUniqueOrThrow({ where: { id: chunkId } });
+export async function getChunkContext(chunkId: string, companyId?: string) {
+  const chunk = await prisma.documentChunk.findUniqueOrThrow({ where: { id: chunkId } });
+  // Rule 131: a chunk is another company's document text — the
+  // chunk page previously loaded ANY chunk by id with no company
+  // binding and rendered its full text. When a company is given,
+  // the chunk's document must belong to it, or null is returned
+  // (the page renders notFound).
+  if (companyId) {
+    const doc = await prisma.document.findFirst({ where: { id: chunk.documentId, companyId }, select: { id: true } });
+    if (!doc) return null;
+  }
+  return chunk;
 }
 
 /** Every review-decision event for a company's candidates, grouped by candidateId - the review workspace's inline "full edit history" panel, one query instead of one-per-card. */
