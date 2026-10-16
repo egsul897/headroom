@@ -98,7 +98,7 @@ The shell that shipped:
 - Contextual tabs, only on the section you are in — Covenants / Rulebook / Intelligence, or Capacity / Ledger / Certificates.
 - Finish setup — only while `companyNavItems` includes Onboarding. The palette still says Onboarding.
 
-The rail is a pale Maya blue, `#e3f1fc`, with hover `#d6eafa`. Nav text is `#3e4d5e` (7.52:1). The wordmark is `#12151a` (15.90:1). The active chip and the primary button are navy `#1a365d`, with white text (12.14:1) and a Maya blue mark `#73c2fb`. Charts use navy, Maya blue `#73c2fb`, and peach `#f2c3a8`. Status green `#0e6b43`, amber `#7c4a00`, and red `#9d2c24` stay the status colors. Two other Maya sets were rendered on the sample dashboard: slate with sand, and indigo with a gray sage hint. Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser. Under it, the sidebar reads “Clarity. Control. Confidence.” in the muted rail text.
+The rail is Oxford navy, `#1c2838`. The wordmark is ivory `#f3efe6` (12.98:1). Nav text and the line “Clarity. Control. Confidence.” are `#c4bfb4` (8.13:1). The active chip is `#2c3c52` with that ivory (9.76:1) and a brass mark `#c0ae58`. The primary button is the same navy, ivory label 13.44:1. The field is ivory `#f6f3ec`. Charts step through navy, steel `#4a5c72`, pale steel `#8ea0b4`, and brass. Status green `#0e6b43`, amber `#7c4a00`, and red `#9d2c24` stay the status colors. Brass sits at hue about 50°, lighter and less saturated than amber. Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser.
 
 | Item | Before | After |
 | --- | --- | --- |
@@ -141,7 +141,7 @@ Headers are small, uppercase, muted. Numeric columns are right-aligned with tabu
 
 | Change | Why |
 | --- | --- |
-| Slogan under the sidebar ("Clarity. Control. Confidence.") | It does not answer compliance or capacity. |
+| Slogan under the sidebar, then restored | It does not answer a covenant question. It sits in muted type under the user card as the product’s quiet mark. |
 | Chooser cards for "Connect" and "Research" as equal peers of the company list | The page has one job: open a company. Connect remains the primary action. Corpus remains a quiet link with its caveat. |
 | Nine covenant buttons in a row | Upload stays visible. Exports, ask, documents, and precedent compare move into More actions. Same destinations, one primary. |
 | Repeated capacity link rows on two cards | One Covenant review button and one More actions menu for certificates, ledger, ask, and upload. |
@@ -150,7 +150,7 @@ Headers are small, uppercase, muted. Numeric columns are right-aligned with tabu
 | Sidebar's separate hex palette | It made the product look assembled from two skins. |
 | Fourteen equal sidebar rows | They hid Overview, Covenants, Capacity, Simulate, and Ask. The other routes stay one keystroke away. |
 | Alerts as a nav row with no count | A bell in the header is the signal. A number on it would invent an alert count. |
-| Warm paper field | It competed with amber. The canvas is now neutral so status color means something. |
+| Saturated warm paper | A yellow field competed with amber. The canvas is now a pale ivory; amber stays the dark status color. |
 | Sidebar that wrapped into a second row on a phone | It pushed the answer below a pile of links. The drawer stays closed until asked. |
 
 Locked overview regions, empty-state copy, and every computed value are unchanged. Loading skeletons are bars with no digits. Motion is limited to color, transform, and the skeleton shimmer, and it is off when `prefers-reduced-motion` is set.

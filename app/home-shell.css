@@ -11,16 +11,16 @@ main:has(.app-shell) {
 }
 
 .app-shell {
-  /* Pale Maya blue rail. Dark ink on the field. The active chip is navy.
-     Measured for WCAG AA in docs/DESIGN_SYSTEM.md. Status colors are not set here. */
-  --shell-sidebar: #e3f1fc;
-  --shell-sidebar-ink: #12151a;
-  --shell-sidebar-muted: #3e4d5e;
-  --shell-sidebar-hover: #d6eafa;
-  --shell-sidebar-active: #1a365d;
-  --shell-sidebar-active-ink: #ffffff;
-  --shell-sidebar-card: #f7fbfe;
-  --shell-sidebar-line: #c5dff3;
+  /* Oxford navy rail. Ivory text. Measured for WCAG AA in docs/DESIGN_SYSTEM.md.
+     Status colors are not set here. */
+  --shell-sidebar: #1c2838;
+  --shell-sidebar-ink: #f3efe6;
+  --shell-sidebar-muted: #c4bfb4;
+  --shell-sidebar-hover: #243246;
+  --shell-sidebar-active: #2c3c52;
+  --shell-sidebar-active-ink: #f3efe6;
+  --shell-sidebar-card: #16202e;
+  --shell-sidebar-line: #121c2a;
   --shell-canvas: var(--paper);
   --shell-card: var(--card);
   --shell-line: var(--line);
@@ -40,7 +40,7 @@ main:has(.app-shell) {
   min-height: 100vh;
   padding: 18px 12px 14px;
   background: var(--shell-sidebar);
-  border-right: 1px solid #c5dff3;
+  border-right: 1px solid var(--shell-sidebar-line);
   color: var(--shell-sidebar-muted);
   position: sticky;
   top: 0;
@@ -151,7 +151,7 @@ main:has(.app-shell) {
 }
 
 .app-company-card:hover {
-  border-color: #9ec4e4;
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .app-company-icon {
@@ -206,8 +206,8 @@ main:has(.app-shell) {
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  background: #d6eafa;
-  color: #12151a;
+  background: var(--accent-signal);
+  color: var(--shell-sidebar);
   font-size: 13px;
   font-weight: 650;
   flex-shrink: 0;
@@ -280,8 +280,8 @@ main:has(.app-shell) {
 }
 
 .home-setup-banner {
-  border-color: #b7d0d6;
-  background: #f4fafb;
+  border-color: var(--line);
+  background: var(--card);
 }
 
 .home-authority-note {
@@ -728,8 +728,8 @@ main:has(.app-shell) {
   text-align: center;
   padding: 24px 16px;
   border-radius: 12px;
-  border: 1px dashed #c5dde2;
-  background: #f4fafb;
+  border: 1px dashed var(--line);
+  background: var(--shell-card);
 }
 
 .home-chart-well .home-empty {
@@ -771,11 +771,11 @@ main:has(.app-shell) {
 }
 
 .home-table tbody tr:nth-child(even) {
-  background: #f4fafb;
+  background: color-mix(in srgb, var(--ink) 4%, var(--card));
 }
 
 .home-table tbody tr:hover {
-  background: var(--navy-soft);
+  background: color-mix(in srgb, var(--ink) 7%, var(--card));
 }
 
 .tools-list {

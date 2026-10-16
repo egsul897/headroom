@@ -25,7 +25,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
   const brand = searchParams.brand === "navy" || searchParams.brand === "olive" || searchParams.brand === "teal" ? searchParams.brand : undefined;
   const teal = searchParams.teal === "1" || searchParams.teal === "2" || searchParams.teal === "3" ? searchParams.teal : undefined;
   const light = searchParams.light === "a" || searchParams.light === "b" || searchParams.light === "c" ? searchParams.light : undefined;
-  const palette = searchParams.palette === "1" || searchParams.palette === "2" || searchParams.palette === "3" ? searchParams.palette : undefined;
+  const palette = searchParams.palette === "1" || searchParams.palette === "2" || searchParams.palette === "3" || searchParams.palette === "4" ? searchParams.palette : undefined;
 
   if (screen === "portfolio") {
     return (
