@@ -392,12 +392,17 @@ export default async function DebtIntelligencePage({
                   .map((x) => `${x.domain}:${x.status}`)
                   .slice(0, 6)
                   .join(" · ")}
+                {sc.domains.filter((x) => x.status !== "not_applicable").length > 6 &&
+                  ` (+${sc.domains.filter((x) => x.status !== "not_applicable").length - 6} more domains)`}
               </div>
               {sc.packageLimitations.slice(0, 3).map((lim, i) => (
                 <div className="row-note" key={`${sc.scenario.kind}-lim-${i}`}>
                   {lim}
                 </div>
               ))}
+              {sc.packageLimitations.length > 3 && (
+                <div className="row-note">(+{sc.packageLimitations.length - 3} more limitations)</div>
+              )}
               <div className="button-row" style={{ marginTop: 6 }}>
                 <Link
                   className="button"
@@ -445,6 +450,7 @@ export default async function DebtIntelligencePage({
                   • {n}
                 </div>
               ))}
+              {p.notes.length > 4 && <div className="row-note">(+{p.notes.length - 4} more notes)</div>}
             </div>
           ))
         )}
@@ -473,9 +479,14 @@ export default async function DebtIntelligencePage({
                   • [{p.status}] §{p.sectionRef} {p.family}
                   {p.capacityMillions != null ? ` · $${p.capacityMillions}M` : ""}
                   {p.reviewDecision ? ` · counsel ${p.reviewDecision}` : " · AI-proposed"}
-                  {p.formulaHint ? ` — ${p.formulaHint.slice(0, 120)}` : ""}
+                  {p.formulaHint
+                    ? ` — ${p.formulaHint.slice(0, 120)}${p.formulaHint.length > 120 ? "…" : ""}`
+                    : ""}
                 </div>
               ))}
+              {mp.paths.length > 8 && (
+                <div className="row-note">Showing first 8 of {mp.paths.length} pathways.</div>
+              )}
               <div className="row-note" style={{ marginTop: 6 }}>
                 {mp.combination.note}
               </div>
