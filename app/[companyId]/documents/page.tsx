@@ -158,6 +158,15 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
                     </Chip>{" "}
                     {intel.covenantItemCount} covenant summaries · {intel.extractionStatus}
                     {intel.processingStatus ? ` · ${intel.processingStatus}` : ""}
+                    {/* Rule 88: staleness must surface on the list, not
+                        only on the document page — a stale summary
+                        otherwise reads as fresh ANALYZED. */}
+                    {intel.analysisStale && (
+                      <>
+                        {" "}
+                        <Chip tone="trip">STALE — re-analyze</Chip>
+                      </>
+                    )}
                   </>
                 ) : (
                   <Chip tone="idle">Not yet analyzed</Chip>
@@ -181,10 +190,10 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               <Link className="button" href={`/${companyId}/covenants`}>
                 View covenants
               </Link>
-              {intel && !intel.analysisOk && intel.storageRef && (
+              {intel && (!intel.analysisOk || intel.analysisStale) && intel.storageRef && (
                 <form action={retryCustomerAnalysisAction.bind(null, companyId, d.id)}>
                   <button className="button" type="submit">
-                    Retry analysis
+                    {intel.analysisStale && intel.analysisOk ? "Re-analyze (stale)" : "Retry analysis"}
                   </button>
                 </form>
               )}
