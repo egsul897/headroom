@@ -436,3 +436,92 @@ describe("generalization: rule 166 — default triggers never mint capacity", ()
     ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
   });
 });
+
+describe("generalization: rule 168 — maintenance covenants never mint capacity", () => {
+  const grantItem = (heading: string, plainEnglish: string, category: string) =>
+    ({ heading, plainEnglish, families: [], category }) as unknown as Parameters<typeof grantTypesForItem>[0];
+
+  it("a leverage maintenance covenant with acquisition language mints no grant", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "Financial Covenants (a) Consolidated Adjusted EBITDA to Consolidated Interest Expense",
+          "Section 6.14 is a financial maintenance covenant. The Parent will maintain a ratio of Consolidated Adjusted EBITDA to Consolidated Interest Expense of not less than 4.0 to 1.0. Conditions: provided that, upon the written notice of the Parent, upon an acquisition the maximum ratio shall be increased.",
+          "FINANCIAL_MAINTENANCE",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("ratio-gated incurrence in a covenants item still compiles as debt", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "6.01(k)",
+          "The Borrower may incur Indebtedness so long as the Consolidated Leverage Ratio does not exceed 4.0 to 1.0 after giving effect to such incurrence.",
+          "OTHER",
+        ),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+  });
+});
+
+describe("generalization: rule 169 — DEBT needs affirmative borrowing permission", () => {
+  const grantItem = (heading: string, plainEnglish: string, category = "OTHER") =>
+    ({ heading, plainEnglish, families: [], category }) as unknown as Parameters<typeof grantTypesForItem>[0];
+
+  it("a pure prohibition mints no DEBT grant", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "6.16. Indebtedness",
+          "The Parent will not permit any Subsidiary to create, incur, assume or suffer to exist any Indebtedness.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("an unrelated monetary threshold mints no DEBT grant", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "7.5. Cross-Default",
+          "Indebtedness in excess of $200,000,000 shall constitute an Event of Default.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("an evidence-of-indebtedness section mints no DEBT grant (Noteless shape)", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "Noteless Agreement; Evidence of Indebtedness",
+          "Section 2.13 is a general debt incurrence prohibition covering Borrower. shall not in any manner affect the obligation of the Borrower to repay the Obligations in accordance with their terms; provided It is subject to enumerated exceptions/permissions, including: (b) The Administrative Agent shall also maintain accounts in which it will record the amount of each Loan. (d) Any Lender may request that its Loans be evidenced by a promissory note.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("a prohibition with an express exception mints DEBT (6.16 shape)", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "6.16. Indebtedness",
+          "Section 6.16 is a general debt incurrence prohibition covering Loan Parties. create, incur, assume or suffer to exist any Indebtedness, except as expressly permitted. It is subject to enumerated exceptions, including: (l) other Indebtedness in an aggregate principal amount outstanding at no time exceeding an amount equal to the greater of $1,000,000,000.",
+        ),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+  });
+
+  it("an RP item that merely mentions Indebtedness returns RP-only", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "7.05. Restricted Payments",
+          "The Borrower may pay Dividends and make Restricted Payments. Indebtedness under the Credit Agreement shall be repaid in full before any such payment.",
+        ),
+      ),
+    ).toEqual(["RESTRICTED_PAYMENT"]);
+  });
+});

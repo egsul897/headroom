@@ -62,6 +62,43 @@ function operativeText(plainEnglish: string): string {
   return plainEnglish.slice(0, end);
 }
 
+/**
+ * Rule 169 (audit-driven): a DEBT grant needs affirmative evidence of
+ * an actual borrowing permission, not just debt-related keywords. A
+ * "Noteless Agreement; Evidence of Indebtedness" section mentions
+ * Indebtedness throughout but grants no borrowing; a pure prohibition
+ * ("shall not create, incur ... any Indebtedness") grants nothing;
+ * an unrelated monetary threshold ("Indebtedness in excess of $200M
+ * constitutes an Event of Default") is a trigger, not capacity. The
+ * evidence is structural, not a word list: either a CAP on incurrence
+ * ("shall not exceed $X", "not exceeding ... $X", "up to $X") with a
+ * debt word in the same clause, or a permission modal ("except",
+ * "permitted", "permission", "may incur/create/issue/borrow") with a
+ * debt word in the same clause. Bounded words only — the summary
+ * template's plural "exceptions/permissions" does not match the
+ * singular modal patterns, so template boilerplate cannot launder
+ * a grant. Failing closed: no permission evidence → no DEBT grant.
+ */
+function hasDebtPermissionEvidence(hay: string): boolean {
+  // Cap frame: a cap on incurrence ("shall not exceed $X", "not
+  // exceeding ... $X", "up to $X", "maximum ... $X") plus a debt
+  // word ANYWHERE in the item's operative text. No proximity window:
+  // the summary interleaves template sentences and basket tails
+  // between the cap and the debt word (a real 6.01(e) item has ~280
+  // chars between them), so a tight window false-negatives genuine
+  // baskets. The item is a single provision, so a cap + a debt word
+  // in the same item is presumptively a cap on that debt. The NOT...
+  // EXCEED pattern itself stays sentence-bounded ([^.]).
+  const capFrame =
+    /\bNOT\b[^.]{0,30}\bEXCEED(ING)?\b/.test(hay) ||
+    /\bUP\s+TO\s+\$/.test(hay) ||
+    /\bMAXIMUM\b[^.]{0,40}\$/.test(hay);
+  if (capFrame) return true;
+  const modal =
+    /\b(EXCEPT|PERMITTED|PERMISSION|MAY\s+(INCUR|CREATE|ISSUE|BORROW))\b[^.]{0,120}\b(INDEBTEDNESS|DEBT)\b|\b(INDEBTEDNESS|DEBT)\b[^.]{0,120}\b(EXCEPT|PERMITTED|PERMISSION|MAY\s+(INCUR|CREATE|ISSUE|BORROW))\b/.test(hay);
+  return modal;
+}
+
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
   // Rule 166: an event-of-default trigger is a consequence, never a
   // grant of capacity. A Defaults article genuinely contains the
@@ -75,9 +112,27 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   // the signal: EVENTS_OF_DEFAULT items never mint any grant type.
   if (item.category === "EVENTS_OF_DEFAULT") return [];
 
+  // Rule 168: a financial-maintenance covenant is a test the borrower
+  // must PASS ("will maintain ... ratio ... not less than 4.0"), not a
+  // grant of capacity. Its operative text genuinely contains
+  // "Acquisition" (a Covenant Reset Period for acquisitions), which
+  // minted an INVESTMENT Permission from a leverage covenant — a
+  // nonsense combination (an "investment permission" with a
+  // leverage-ratio formula). Maintenance items never mint any grant
+  // type; ratio-gated incurrence (category OTHER, "may incur ... so
+  // long as leverage ...") still compiles through the ratio branch.
+  if (item.category === "FINANCIAL_MAINTENANCE") return [];
+
   const hay = `${item.heading} ${operativeText(item.plainEnglish)}`.toUpperCase();
 
   const hasDebtWord = /\bINDEBTEDNESS\b|\bDEBT\b|\bINCUR(RING|RED|RENCE)?\b|\bINCREMENTAL\b/.test(hay);
+  // Rule 169: debt words alone are not a grant — they must carry
+  // affirmative borrowing-permission evidence (cap frame or modal).
+  // The RP/Investment early returns below key off this guarded
+  // signal, so an RP item that merely MENTIONS Indebtedness without
+  // permission evidence still returns RP-only instead of falling
+  // through into a spurious DEBT grant.
+  const hasDebtPermission = hasDebtWord && hasDebtPermissionEvidence(hay);
   const hasLienWord = /\bLIENS?\b|\bSECURED\b|\bCOLLATERAL\b/.test(hay);
 
   // Restricted payments / investments — do not default these into DEBT_INCURRENCE.
@@ -90,18 +145,18 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
     if (/\bINVESTMENTS?\b|\bACQUISITIONS?\b/.test(hay)) out.push("INVESTMENT");
     if (out.length) return [...new Set(out)];
   }
-  if (isRpFamily && !hasDebtWord && !hasLienWord) {
+  if (isRpFamily && !hasDebtPermission && !hasLienWord) {
     return ["RESTRICTED_PAYMENT"];
   }
-  if (isInvestmentFamily && !hasDebtWord && !hasLienWord) {
+  if (isInvestmentFamily && !hasDebtPermission && !hasLienWord) {
     return ["INVESTMENT"];
   }
 
   const out: CounselGrantType[] = [];
   if (hasLienWord) out.push("LIEN");
-  if (hasDebtWord) out.push("DEBT_INCURRENCE");
+  if (hasDebtPermission) out.push("DEBT_INCURRENCE");
   // Secured debt scenarios need both regimes when both families are present.
-  if (hasLienWord && hasDebtWord) {
+  if (hasLienWord && hasDebtPermission) {
     return ["DEBT_INCURRENCE", "LIEN"];
   }
   return [...new Set(out)];

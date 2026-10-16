@@ -16,7 +16,7 @@ describe("covenant summaries", () => {
           families: ["RESTRICTED_PAYMENTS"],
           signals: [],
           excerpt: "The Borrower shall not declare or pay any Restricted Payment...",
-          representationLevel: "DISCOVERED_CANDIDATE",
+          representationLevel: "DISCOVERED_CANDIDATE" as const,
           discoveryScore: 8,
         },
       ],
@@ -70,10 +70,10 @@ describe("rule 159: capped summaries disclose the cap", () => {
       candidateId: `c${i}`,
       sourceId: "test:doc",
       nodeId: `n${i}`,
-      families: ["RESTRICTED_PAYMENTS"],
+      families: ["RESTRICTED_PAYMENTS" as const],
       signals: [] as string[],
       excerpt: "The Borrower shall not declare or pay any Restricted Payment...",
-      representationLevel: "DISCOVERED_CANDIDATE",
+      representationLevel: "DISCOVERED_CANDIDATE" as const,
       discoveryScore: 8,
     }));
     const structuralNodes = candidates.map((c, i) => ({

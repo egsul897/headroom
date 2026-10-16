@@ -108,6 +108,8 @@ function readiness(companyId: string, n: number): CapacityReadiness {
     contractLedgerActiveCount: 0,
     phase3TrustedUnitCount: 0,
     phase3TrustedRuleCount: 0,
+    // VE/fixture compile: no stored analyses in scope, so none can be stale.
+    staleAnalyzedDocumentCount: 0,
     headline: "Operative package VE → Position (GROSS/MODELED only)",
     blockers: [
       "No NS-4 APPROVED financial snapshot on this feed.",
@@ -127,6 +129,7 @@ function rulebook(companyId: string, n: number): RulebookReadiness {
     reviewedPermissions: 0,
     executablePermissions: 0,
     provisionRows: n,
+    staleDiscoveredSummaries: 0,
     blockers: ["No counsel REVIEWED permissions on VE Position feed."],
     headline: "Generic operative package compile (not counsel-reviewed)",
     note: "PROVISIONAL — GROSS/MODELED only.",

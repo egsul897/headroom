@@ -194,6 +194,23 @@ const SECTION_PATTERNS = [
   // common in HTML→text extracts (e.g. " 7.01    Liens .") and must not zero out
   // the structural index for an otherwise well-formed agreement.
   /^[ \t\u00a0\u202f]*(\d+\.\d+)(?![A-Za-z])[\t \u00a0\u202f]+([A-Z][^\n]*)$/gm,
+  // Mid-line bare decimal (Rule 167, audit-driven): EDGAR HTML to text
+  // often loses the line break before a bare-numbered heading, so the
+  // line-anchored bare pattern above goes blind on a real heading
+  // sitting mid-line ("...regulation. 6.14. Financial Covenants (a)
+  // Consolidated Adjusted EBITDA ... . The Parent will maintain ...")
+  // - the same class of defect this file's own doc-comments describe
+  // for line-anchored patterns, now in the bare-numbered shape. The
+  // lookbehind requires a sentence-terminal boundary (or line start)
+  // before the number, and the title must be Title-Case, <=90 chars,
+  // and end in its own terminal period - so ordinary prose decimals
+  // ("4.50 to 1.00", "6.14(b) shall ...", "see 6.14.") cannot match.
+  // Triage/plausibility still gate every candidate this pattern finds.
+  // Number-to-title gap is BOUNDED_GAP (same as the keyword patterns):
+  // EDGAR puts the number and title on adjacent lines ("6.16.\n
+  // Indebtedness ."), never separated by a blank line — a bare
+  // paragraph break would be a TOC entry, not a heading.
+  new RegExp(`(?<=^|[.:;!?]\\s)(\\d+\\.\\d+)\\.?(?![A-Za-z])${BOUNDED_GAP}([A-Z][^\\n]{0,90}?)(?:\\s*\\.(?!\\d)|\\s*\\([a-z]\\)(?=\\s))`, "gm"),
 ];
 
 /**

@@ -65,6 +65,8 @@ function readinessVeOnly(companyId: string, feedingCount: number): CapacityReadi
     contractLedgerActiveCount: 0,
     phase3TrustedUnitCount: 0,
     phase3TrustedRuleCount: 0,
+    // VE-only feed: no stored analyses in scope, so none can be stale.
+    staleAnalyzedDocumentCount: 0,
     headline: "Verified fixed-dollar VE → Position (GROSS only; no financial fixture)",
     blockers: [
       "No NS-4 APPROVED financial snapshot.",
@@ -85,6 +87,7 @@ function rulebookVeOnly(companyId: string, feedingCount: number): RulebookReadin
     reviewedPermissions: 0,
     executablePermissions: 0,
     provisionRows: feedingCount,
+    staleDiscoveredSummaries: 0,
     blockers: [
       "No counsel REVIEWED permissions.",
       "VE fixed-dollar IR only — ratio/complex structures unsupported on this feed.",
