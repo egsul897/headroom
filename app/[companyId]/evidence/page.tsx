@@ -30,7 +30,9 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
   const { companyId } = await params;
   await assertCfoPageAccessOrNotFound({ companyId });
 
-  const [candidates, documents, intelligence, amendment, review, approvals, readiness] = await Promise.all([
+  // Rule 97: the candidates list caps at 50 — count the full
+  // open set so the cap is disclosed, not silent.
+  const [candidates, totalOpenCandidates, documents, intelligence, amendment, review, approvals, readiness] = await Promise.all([
     prisma.extractionCandidate.findMany({
       where: {
         companyId,
@@ -39,6 +41,9 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
       take: 50,
       orderBy: { createdAt: "desc" },
       include: { sourceDocument: true },
+    }),
+    prisma.extractionCandidate.count({
+      where: { companyId, reviewStatus: { in: ["PENDING", "REVIEW_REQUIRED"] } },
     }),
     getDocumentDetails(companyId),
     listCustomerDocumentIntelligence(companyId),
@@ -51,6 +56,9 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
   const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
   const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}`, a]));
 
+  // Rule 97: clauses cap at 8 per category — total disclosed
+  // below so counsel knows when items sit beyond the cap.
+  const totalClauseItems = review?.categories.reduce((n, c) => n + c.items.length, 0) ?? 0;
   const clauses =
     review?.categories.flatMap((c) =>
       c.items.slice(0, 8).map((item) => {
@@ -197,6 +205,11 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
       <Card>
         <div className="card-title">Extracted clauses & definitions</div>
         <div className="card-subtitle">{view.definitionsNote}</div>
+        {totalClauseItems > view.clauses.length && (
+          <div className="row-note" style={{ marginBottom: 8 }}>
+            Showing first {view.clauses.length} of {totalClauseItems} clauses (8 per category cap).
+          </div>
+        )}
         {view.clauses.length === 0 ? (
           <div className="row-note">No interpreted covenant clauses loaded for review.</div>
         ) : (
@@ -340,6 +353,11 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
 
       <Card>
         <div className="card-title">Extraction candidates needing review</div>
+        {totalOpenCandidates > candidates.length && (
+          <div className="row-note" style={{ marginBottom: 8 }}>
+            Showing first {candidates.length} of {totalOpenCandidates} open extraction candidates.
+          </div>
+        )}
         {candidates.length === 0 ? (
           <div className="card-subtitle">No open extraction candidates.</div>
         ) : (
