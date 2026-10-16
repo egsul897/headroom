@@ -42,6 +42,17 @@ export function buildSimulateHandoffHref(companyId: string, draft: SimulateHando
   return `/${companyId}/simulate?${params.toString()}`;
 }
 
+/** True for a real YYYY-MM-DD calendar date (same check as the certified bridge). */
+function isValidIsoDate(date: string): boolean {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!m) return false;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+  const dt = new Date(Date.UTC(y, mo - 1, d));
+  return dt.getUTCFullYear() === y && dt.getUTCMonth() === mo - 1 && dt.getUTCDate() === d;
+}
+
 /** Parse Simulate page search params into a handoff draft (fail closed on garbage). */
 export function parseSimulateHandoffSearchParams(
   searchParams: Record<string, string | string[] | undefined> | URLSearchParams,
@@ -54,7 +65,10 @@ export function parseSimulateHandoffSearchParams(
   const actionRaw = get("action");
   const amountRaw = get("amount");
   const securedRaw = get("secured");
-  const asOf = get("asOf") ?? null;
+  const asOfRaw = get("asOf");
+  // asOf was previously passed through verbatim ("not-a-date",
+  // "2026-02-30" became evaluationDate). Fail closed on garbage.
+  const asOf = asOfRaw && isValidIsoDate(asOfRaw) ? asOfRaw : null;
   const sourceRaw = get("from");
 
   const action =
