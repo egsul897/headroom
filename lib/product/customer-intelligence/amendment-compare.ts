@@ -22,6 +22,13 @@ export interface AmendmentCompareView {
   rows: AmendmentCompareRow[];
   unresolvedReasons: string[];
   note: string;
+  /**
+   * General rule: silent truncation is a lie (mirrors the summary
+   * shape from rule 7). totalRowsBeforeCap is the pre-cap row
+   * count; truncated is true when the 40-row cap dropped rows.
+   */
+  totalRowsBeforeCap: number;
+  truncated: boolean;
 }
 
 type ItemWithDoc = CovenantSummaryItem & { sourceId: string; documentTitle: string };
@@ -37,6 +44,8 @@ export function compareAmendmentSummaries(params: {
       rows: [],
       unresolvedReasons: ap?.unresolvedReasons ?? ["No base+amendment pair available for comparison."],
       note: "Upload a base agreement and an amendment to enable before/after comparison.",
+      totalRowsBeforeCap: 0,
+      truncated: false,
     };
   }
 
@@ -102,5 +111,7 @@ export function compareAmendmentSummaries(params: {
     rows: rows.slice(0, 40),
     unresolvedReasons: ap.unresolvedReasons,
     note: "Before/after rows are discovery comparisons of persisted analyses. UNRESOLVED_PRECEDENCE means Headroom will not select the operative version.",
+    totalRowsBeforeCap: rows.length,
+    truncated: rows.length > 40,
   };
 }
