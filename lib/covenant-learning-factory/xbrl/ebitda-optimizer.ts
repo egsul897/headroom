@@ -50,12 +50,14 @@ const EXTRA: Array<{ cat: AddBackCategory; re: RegExp; concepts: string[] }> = [
 export function categorize(t: string): AddBackCategory {
   if (/run[- ]rate|cost\s+savings|synerg|operating\s+expense\s+reductions/i.test(t)) return "RUN_RATE_SYNERGIES";
   if (/(?:stock|equity|share)[- ]based\s+compensation|stock\s+options?|equity\s+awards?/i.test(t)) return "STOCK_COMP";
+  // "minority / non-controlling interest" (incl. "minority interest expense") is equity attribution, not borrowing cost.
+  const minorityInterest = /\b(?:minority|non-?controlling)\s+interest\b/i.test(t);
   // Interest expense lines often say "inclusive of amortization of premiums / deferred financing" — that is INTEREST, not D&A.
-  if (/\binterest\s+(?:expense|charges?)\b|\bFixed\s+Charges\b/i.test(t)) return "INTEREST";
+  if (!minorityInterest && (/\binterest\s+(?:expense|charges?)\b/i.test(t) || /\bFixed\s+Charges\b/i.test(t))) return "INTEREST";
   if (/depreciation|amortization(?!\s+of\s+(?:deferred\s+)?(?:financing|debt|premiums?|discount|OID))/i.test(t) && !/non-?cash\s+charges/i.test(t)) return "D&A";
   // "penalties and interest relating to such taxes" is TAXES, not INTEREST.
   if (/\btax(?:es)?\b/i.test(t) && !/\binterest\s+(?:expense|charges?)\b/i.test(t)) return "TAXES";
-  if (/\binterest\b/i.test(t)) return "INTEREST";
+  if (!minorityInterest && /\binterest\b/i.test(t)) return "INTEREST";
   if (/\btax(?:es)?\b/i.test(t)) return "TAXES";
   if (/extinguishment/i.test(t)) return "DEBT_EXTINGUISHMENT";
   if (/restructuring/i.test(t)) return "RESTRUCTURING";

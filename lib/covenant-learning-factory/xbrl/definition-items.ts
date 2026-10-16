@@ -149,10 +149,11 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
   const r: MapResult = { concepts: [], residueStop: [] };
   const add = (c: { concept: string; value: bigint } | null, re: RegExp) => { if (c) { r.concepts.push(c); r.residueStop.push(re); } };
   if (/\bextraordinary\b/i.test(t) && !/non-?recurring|unusual/i.test(t)) { r.concepts.push({ concept: "extraordinary items (eliminated from US GAAP by ASU 2015-01)", value: 0n }); r.residueStop.push(/extraordinary\s+(?:loss(?:es)?|items?|charges?)(?:\s+in\s+accordance\s+with\s+GAAP)?/gi); }
-  // "penalties and interest relating to such taxes" is tax, not InterestExpense — do not steal IE.
+  // "penalties and interest relating to such taxes" / minority interest are not InterestExpense — do not steal IE.
   const taxPenaltyInterest = /\b(?:penalties?\s+and\s+)?interest\s+(?:relating\s+to|on|with\s+respect\s+to)\s+(?:such\s+)?(?:taxes?|Tax)|\btaxes?\b[^.;]{0,80}\b(?:penalties?\s+and\s+)?interest\b/i.test(t);
-  const interestExpenseCue = /\binterest\s+(?:expense|charges?)\b|\bInterest\s+Expense\b|\bFixed\s+Charges\b/i.test(t);
-  if (/interest/i.test(t) && !/interest\s+income/i.test(t.replace(/net\s+of\s+interest\s+income/i, "")) && (interestExpenseCue || !taxPenaltyInterest)) {
+  const minorityInterest = /\b(?:minority|non-?controlling)\s+interest\b/i.test(t);
+  const interestExpenseCue = /\binterest\s+(?:expense|charges?)\b|\bInterest\s+Expense\b|\bFixed\s+Charges\b/i.test(t) && !minorityInterest;
+  if (/interest/i.test(t) && !minorityInterest && !/interest\s+income/i.test(t.replace(/net\s+of\s+interest\s+income/i, "")) && (interestExpenseCue || !taxPenaltyInterest)) {
     const term = /"?((?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense)"?/.exec(t)?.[1];
     if (term && /[A-Z]/.test(term[0]!) && depth < 2) {
       const ev = evaluateDefinition("INTEREST", term, text, fin, depth + 1);

@@ -122,3 +122,11 @@ describe("core INTEREST / D&A / TAXES add-backs map from filings", () => {
     expect(Number(da.evidenced)).toBe(50 * M);
   });
 });
+
+describe("categorize edge cases", () => {
+  it("minority / non-controlling interest is not INTEREST", () => {
+    expect(categorize("the amount of any minority interest expense consisting of Subsidiary income attributable to minority equity interests")).toBe("OTHER");
+    expect(categorize("non-controlling interest expense")).toBe("OTHER");
+    expect(categorize("Consolidated Interest Expense")).toBe("INTEREST");
+  });
+});
