@@ -231,7 +231,12 @@ export function buildDocumentCovenantSummary(params: {
 export function summarizeFromStoredMetadata(metadata: unknown): DocumentCovenantSummary | null {
   if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) return null;
   const cs = (metadata as Record<string, unknown>).covenantSummary;
-  if (!cs || typeof cs !== "object") return null;
+  if (!cs || typeof cs !== "object" || Array.isArray(cs)) return null;
+  // Stored summaries are untrusted input: a summary missing its items
+  // array (older version, partial write, corrupt metadata) must
+  // degrade to "not analyzed", not crash callers on items.length.
+  const items = (cs as Record<string, unknown>).items;
+  if (!Array.isArray(items)) return null;
   return cs as DocumentCovenantSummary;
 }
 
