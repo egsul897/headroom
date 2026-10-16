@@ -185,3 +185,40 @@ describe("hard QUALIFIED carve-outs and D&A dedupe", () => {
     expect(amort.note).toMatch(/already included/i);
   });
 });
+
+describe("base promotion and invent-safe CNI extinguishment", () => {
+  it("folds Consolidated Net Income from under a sum-of wrapper into the lead", () => {
+    const text =
+      `"Consolidated Net Income" means the net income of the Issuer. ` +
+      `"Consolidated EBITDA" means, with respect to any Person for any period, (i) the sum (without duplication) of (a) Consolidated Net Income for such period, plus (b) interest expense, plus (c) provision for taxes based on income, plus (d) depreciation and amortization expense. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL));
+    expect(o.base).not.toBeNull();
+    expect(o.supported).not.toBeNull();
+    expect(Number(o.supported)).toBe(100 * M + 30 * M + 20 * M + 50 * M);
+  });
+
+  it("operating income as reported maps to OperatingIncomeLoss (no CNI)", () => {
+    const text =
+      `"Consolidated EBITDA" means, with respect to the Borrower and its Subsidiaries on a consolidated basis, the sum of (without duplication): operating income as reported in the Borrower's consolidated financial statements; plus (i) depreciation; plus (ii) amortization; plus (iii) interest expense; plus (iv) taxes. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda(
+      "Consolidated EBITDA",
+      text,
+      fin({ ...XBRL, OperatingIncomeLoss: 80 * M, DepreciationDepletionAndAmortization: 50 * M }),
+    );
+    expect(o.base?.concept).toMatch(/OperatingIncomeLoss/);
+    expect(o.supported).not.toBeNull();
+  });
+
+  it("CNI extinguishment exclusion with no XBRL extinguishment line is a no-op", () => {
+    const text =
+      `"Consolidated Net Income" means the net income of the Issuer determined in accordance with GAAP; provided that there shall be excluded (a) any gain or loss on extinguishment of debt. ` +
+      `"Consolidated EBITDA" means Consolidated Net Income for such period plus (a) taxes; plus (b) interest expense; plus (c) depreciation and amortization. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL)); // no GainsLossesOnExtinguishmentOfDebt
+    expect(o.reason).not.toMatch(/extinguishment/i);
+    expect(o.supported).not.toBeNull();
+    expect(Number(o.supported)).toBe(100 * M + 20 * M + 30 * M + 50 * M);
+  });
+});

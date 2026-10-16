@@ -353,7 +353,9 @@ export function leverageDebtCapacity(opt: EbitdaOptimization, maxLeverage: strin
   if (!debt || !/^-?\d+$/.test(debt.value) || debt.lowerBound) return { ...base, status: "NEEDS_INPUT", capacity: null, bound: null, reason: debt?.lowerBound ? "debt figure is only a lower bound" : "current debt not determinable" };
   const [i, f = ""] = maxLeverage.split(".");
   const room = (BigInt(i! + f) * BigInt(base.ebitda)) / 10n ** BigInt(f.length) - BigInt(debt.value);
-  return { ...base, status: "COMPUTED", capacity: room.toString(), bound: opt.maximum ? "EXACT" : "AT_LEAST", reason: `${maxLeverage}x × ${base.ebitdaBasis} EBITDA ${base.ebitda} − debt ${debt.value}` };
+  const bound = opt.maximum ? "EXACT" as const : "AT_LEAST" as const;
+  const basisNote = opt.maximum ? "exact maximum (every add-back evidenced)" : "supported floor (more evidenced add-backs can only raise capacity)";
+  return { ...base, status: "COMPUTED", capacity: room.toString(), bound, reason: `${maxLeverage}x × ${base.ebitdaBasis} EBITDA ${base.ebitda} − debt ${debt.value} [${bound}: ${basisNote}]` };
 }
 
 /** Current total debt from filings for leverageDebtCapacity (lower-bound captions are flagged). */

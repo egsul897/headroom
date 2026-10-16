@@ -219,9 +219,15 @@ export function definitionSegments(kind: DefinitionKind, term: string, text: str
   if (!def) return null;
   const body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*,?\s*/i, "").replace(/^(?:for|with\s+respect\s+to)\s+any\s+(?:period|Person)[^,]{0,120},\s*/i, "");
   const segs = segments(body);
-  // "(i) EBIT, plus (ii) …": when the lead names no base, the first enumerated item is the base.
+  // "(i) the sum of (a) CNI plus (b)…": when the lead names no base, fold the first NI/EBIT/operating-income
+  // item into the lead (may sit under a "sum of" wrapper, not only at segs[1]).
   const baseRe = kind === "EBITDA" ? /net\s+income|\bEBIT\b|operating\s+income/i : /interest/i;
-  if (!baseRe.test(segs[0]!.text) && segs[1] && baseRe.test(segs[1].text)) { segs[0] = { ...segs[0]!, text: `${segs[0]!.text} ${segs[1].text}` }; segs.splice(1, 1); }
+  if (kind === "EBITDA" && !baseRe.test(segs[0]!.text)) {
+    const idx = segs.findIndex((s, i) => i > 0 && baseRe.test(s.text));
+    if (idx > 0) { segs[0] = { ...segs[0]!, text: `${segs[0]!.text} ${segs[idx]!.text}` }; segs.splice(idx, 1); }
+  } else if (!baseRe.test(segs[0]!.text) && segs[1] && baseRe.test(segs[1].text)) {
+    segs[0] = { ...segs[0]!, text: `${segs[0]!.text} ${segs[1].text}` }; segs.splice(1, 1);
+  }
   return segs;
 }
 
@@ -238,6 +244,7 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
   if (kind === "EBITDA") {
     const niTerm = /"?((?:Consolidated\s+)?(?:Adjusted\s+)?Net\s+Income)"?/i.exec(lead)?.[1];
     const ebit = /\b(EBIT|Consolidated\s+EBIT|Consolidated\s+Operating\s+Income)\b/.exec(lead)?.[1];
+    const bareOperatingIncome = !niTerm && !ebit && /\boperating\s+income\b/i.test(lead);
     if (niTerm) {
       const capital = /^[A-Z]/.test(niTerm) && /[A-Z]/.test(niTerm.split(/\s+/).at(-1)![0]!);
       if (capital) {
@@ -263,6 +270,11 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
       if (ev.status === "NEEDS_INPUT") return res("NEEDS_INPUT", `base "${ebit}": ${ev.reason}`);
       base = { concept: `${ebit} (${ev.status})`, value: BigInt(ev.value!) };
       if (ev.status === "LOWER_BOUND") items.push({ label: "(base)", text: ebit, sign: "+", coverage: "PARTIAL", concepts: [], value: "0", note: `base is a lower bound: ${ev.missing.join("; ")}` });
+    } else if (bareOperatingIncome) {
+      // "operating income as reported in the Borrower's consolidated financial statements"
+      const v = firstItem(fin, ["OperatingIncomeLoss"]);
+      if (!v) return res("NEEDS_INPUT", "no exact TTM operating income in XBRL");
+      base = v;
     } else return res("NEEDS_INPUT", "definition does not start from net income or a defined EBIT");
   } else {
     if (!/interest/i.test(lead)) return res("NEEDS_INPUT", "interest definition has no interest-expense base");
@@ -382,7 +394,13 @@ export function cniAdjustments(body: string, fin: IssuerFinancials): { adjust: A
       continue;
     }
     const gainsAndLosses = /\bgains?\b/i.test(t) && /\bloss(?:es)?\b/i.test(t);
-    if (gainsAndLosses && /extinguishment|early\s+(?:retirement|repayment|redemption)|repurchase\s+of\s+(?:debt|Indebtedness)/i.test(t) && !/non-?recurring|unusual|asset|sale/i.test(t)) { const e = take(EXTINGUISH, "gain or loss on extinguishment of debt", "EXTINGUISHMENT"); if (e) return { reason: e }; continue; }
+    if (gainsAndLosses && /extinguishment|early\s+(?:retirement|repayment|redemption)|repurchase\s+of\s+(?:debt|Indebtedness)/i.test(t) && !/non-?recurring|unusual|asset|sale/i.test(t)) {
+      // No extinguishment line in the period's filings → exclusion is a no-op (exact 0), not NEEDS_INPUT.
+      const it = firstItem(fin, EXTINGUISH);
+      if (it) { if (!used.has(it.concept)) { used.add(it.concept); adjust.push(it); } }
+      else if (supplied("EXTINGUISHMENT")) { /* sourced borrower figure */ }
+      continue;
+    }
     if (gainsAndLosses && /(?:sale|disposition|disposal)s?\s+of\s+(?:any\s+)?(?:assets?|property|properties)|asset\s+(?:sales?|dispositions?)/i.test(t) && !/non-?recurring|unusual|extinguishment|hedg|currency|securities|discontinued/i.test(t)) { const e = take(ASSET_SALE, "gain or loss on asset sales", "ASSET_SALE"); if (e) return { reason: e }; continue; }
     // Excluding only losses / charges / expenses can only raise the contract figure.
     const cat = /Unrestricted\s+Subsidiar/i.test(t) ? "UNRESTRICTED_SUBSIDIARY" : /non-?recurring|unusual|infrequent|exceptional|one-?time|extraordinary/i.test(t) ? "NON_RECURRING" : /discontinued/i.test(t) ? "DISCONTINUED_OPERATIONS" : /equity\s+method|any\s+Person/i.test(t) ? "EQUITY_METHOD" : "OTHER";
