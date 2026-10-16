@@ -95,7 +95,17 @@ export async function loadMonitoringFeed(companyId: string): Promise<MonitoringF
     });
   }
 
-  if (financialCount === 0 || !capacity.hasFinancialSnapshot) {
+  // Rule 85: "no approved financial snapshot" must mean no
+  // financial snapshot in ANY store. The old condition
+  // (legacy FinancialState count + legacy UNIQUE resolution)
+  // fired a false alert for a company with APPROVED NS-4
+  // snapshots but no legacy FinancialState rows. AMBIGUOUS
+  // legacy rows still surface via CAPACITY_NOT_DETERMINABLE.
+  const hasAnyFinancialEvidence =
+    financialCount > 0 ||
+    capacity.ns4ApprovedSnapshotCount > 0 ||
+    capacity.approvedNorthStarSnapshotCount > 0;
+  if (!hasAnyFinancialEvidence) {
     alerts.push({
       kind: "MISSING_FINANCIALS",
       severity: "attention",
