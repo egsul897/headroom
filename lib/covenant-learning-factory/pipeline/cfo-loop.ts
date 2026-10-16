@@ -58,7 +58,7 @@ function gainOf(before: CapacitySnapshot, after: CapacitySnapshot): NonNullable<
 }
 
 /** Apply each CFO input on its own (per-flag gain) and report before/after capacity; flags come back ranked. */
-export function cfoRecompute(args: Args, inputs: readonly BorrowerInput[]): { flags: Array<AddBackFlag & { rank: number }>; results: CfoGain[] } {
+export function cfoRecompute(args: Args, inputs: readonly BorrowerInput[]): { flags: Array<AddBackFlag & { rank: number }>; results: CfoGain[]; combined: CfoGain | null } {
   const base = runAgreementPipeline(args);
   const before = capacitySnapshot(base);
   const keys = new Set(((base.xbrl as { addBackTracker?: Array<{ inputKey: string }> } | null)?.addBackTracker ?? []).map((f) => f.inputKey.toUpperCase()));
@@ -73,5 +73,13 @@ export function cfoRecompute(args: Args, inputs: readonly BorrowerInput[]): { fl
     const after = capacitySnapshot(runAgreementPipeline({ ...args, financials: fin }));
     results.push({ input, accepted: true, reason: "recomputed with the CFO-confirmed figure", before, after, gain: gainOf(before, after) });
   }
-  return { flags: rankFlags(((base.xbrl as { addBackTracker?: AddBackFlag[] } | null)?.addBackTracker) ?? []), results };
+  // All accepted inputs together: shared caps bind across clauses (the optimizer applies one limit per cap group), so the
+  // combined gain is what the CFO's figures unlock in total — never the sum of per-flag gains when they share a cap.
+  const ok = results.filter((r) => r.accepted).map((r) => r.input);
+  let combined: CfoGain | null = null;
+  if (ok.length && args.financials) {
+    const after = capacitySnapshot(runAgreementPipeline({ ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...ok] } }));
+    combined = { input: { key: ok.map((i) => i.key).join("+"), value: ok.reduce((a, i) => a + BigInt(i.value), 0n).toString(), source: ok.map((i) => i.source).join(" | ") }, accepted: true, reason: "all accepted CFO figures applied together (shared caps enforced across clauses)", before, after, gain: gainOf(before, after) };
+  }
+  return { combined, flags: rankFlags(((base.xbrl as { addBackTracker?: AddBackFlag[] } | null)?.addBackTracker) ?? []), results };
 }

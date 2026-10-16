@@ -33,7 +33,13 @@ export interface AddBackFlag {
    * and maxLeverage × that (debt). UNCAPPED_NEEDS_INPUT: no cap and no filed figure — unknown, never estimated.
    * COUNTED: the filed figure is already counted in full; nothing further to unlock.
    */
-  potential: { basis: "CAP_HEADROOM" | "UNCAPPED_NEEDS_INPUT" | "COUNTED" | "SIGNED_NEEDS_INPUT"; ebitda: string | null; debt: string | null };
+  potential: { basis: "CAP_HEADROOM" | "UNCAPPED_NEEDS_INPUT" | "COUNTED" | "SIGNED_NEEDS_INPUT" | "SHARED_CAP"; ebitda: string | null; debt: string | null };
+  /**
+   * One cap shared by several clauses: the room is shown once, on the group leader (first clause); the other members
+   * carry basis SHARED_CAP (no separate amount) and point to the same group. Confirming several members can never add
+   * more than the shared room in total.
+   */
+  capGroup: { id: string; labels: string[]; leader: string; room: string | null } | null;
   bindingTier?: "CONFIRMED" | "LOWER_CONFIDENCE";
 }
 
@@ -89,8 +95,21 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
       note: detected ? (l.coverage === "FULL" || l.status !== "NEEDS_INPUT" ? (l.status === "CAPPED" ? "exact filed figure; cap applied" : "exact filed figure") : "partly evidenced; remainder needs input") : "permitted by the definition; no filed movement detected — available, check with CFO",
       inputKey: `ADDBACK:${l.label}`,
       potential: potentialOf(l.headroomToCap, detected && (l.coverage === "FULL" || l.status !== "NEEDS_INPUT"), lev),
+      capGroup: l.capGroup && l.capGroup.length > 1 ? { id: `CAP:${l.capGroup.join("+")}`, labels: l.capGroup, leader: l.capGroup[0]!, room: l.headroomToCap } : null,
       ...(opt.bindingTier ? { bindingTier: opt.bindingTier } : {}),
     });
+  }
+  // Shared caps: the room is counted once. The leader is the first clause in the group still open (else the first).
+  const groups = new Map<string, AddBackFlag[]>();
+  for (const f of flags) if (f.capGroup) groups.set(f.capGroup.id, [...(groups.get(f.capGroup.id) ?? []), f]);
+  for (const members of groups.values()) {
+    const leader = members.find((m) => m.potential.basis === "CAP_HEADROOM" && m.potential.ebitda !== "0") ?? members[0]!;
+    const room = members.map((m) => m.potential).find((p) => p.basis === "CAP_HEADROOM") ?? leader.potential;
+    for (const m of members) {
+      m.capGroup = { ...m.capGroup!, leader: leader.clause.label, room: room.ebitda };
+      if (m === leader) { m.potential = room; continue; }
+      if (m.potential.basis === "CAP_HEADROOM") m.potential = { basis: "SHARED_CAP", ebitda: null, debt: null };
+    }
   }
   // Net-income exclusions the definition needs but filings lack: the CFO can fill them by key (CNI:…). Such an item can
   // raise or lower EBITDA, so no direction or amount is assumed.
@@ -100,7 +119,7 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
       category: "OTHER", clause: { label: key.slice(4), text: "net-income exclusion required by the definition; not in filings" }, cap: null, sources: [], status: "NEEDS_INPUT",
       amount: null, movement: null, capHeadroom: null, ebitdaDelta: null, debtCapacityDelta: null, confidence: "LOW",
       note: "net-income exclusion — CFO input (signed: gains positive, losses negative)", inputKey: key,
-      potential: { basis: "SIGNED_NEEDS_INPUT", ebitda: null, debt: null },
+      potential: { basis: "SIGNED_NEEDS_INPUT", ebitda: null, debt: null }, capGroup: null,
       ...(opt.bindingTier ? { bindingTier: opt.bindingTier } : {}),
     });
   }
@@ -122,9 +141,13 @@ function potentialOf(headroom: string | null, counted: boolean, lev: string | nu
  * lines already fully counted last.
  */
 export function rankFlags(flags: readonly AddBackFlag[]): Array<AddBackFlag & { rank: number }> {
-  const tier = (f: AddBackFlag) => (f.potential.basis === "CAP_HEADROOM" ? 0 : f.potential.basis === "UNCAPPED_NEEDS_INPUT" ? 1 : f.potential.basis === "SIGNED_NEEDS_INPUT" ? 2 : 3);
-  const mag = (f: AddBackFlag) => BigInt(f.potential.debt ?? f.potential.ebitda ?? "0");
-  return [...flags].map((f, i) => ({ f, i })).sort((a, b) => tier(a.f) - tier(b.f) || (mag(b.f) > mag(a.f) ? 1 : mag(b.f) < mag(a.f) ? -1 : 0) || a.i - b.i).map(({ f }, i) => ({ ...f, rank: i + 1 }));
+  const leaderOf = (f: AddBackFlag) => (f.capGroup ? flags.find((x) => x.capGroup?.id === f.capGroup!.id && x.clause.label === f.capGroup!.leader) ?? f : f);
+  const eff = (f: AddBackFlag) => (f.potential.basis === "SHARED_CAP" ? leaderOf(f) : f);
+  const tier = (f0: AddBackFlag) => { const f = eff(f0); return f.potential.basis === "CAP_HEADROOM" ? 0 : f.potential.basis === "UNCAPPED_NEEDS_INPUT" ? 1 : f.potential.basis === "SIGNED_NEEDS_INPUT" ? 2 : 3; };
+  const mag = (f0: AddBackFlag) => { const f = eff(f0); return BigInt(f.potential.debt ?? f.potential.ebitda ?? "0"); };
+  const grp = (f: AddBackFlag) => f.capGroup?.id ?? `#${flags.indexOf(f)}`;
+  const isMember = (f: AddBackFlag) => (f.potential.basis === "SHARED_CAP" ? 1 : 0);
+  return [...flags].map((f, i) => ({ f, i })).sort((a, b) => tier(a.f) - tier(b.f) || (mag(b.f) > mag(a.f) ? 1 : mag(b.f) < mag(a.f) ? -1 : 0) || (grp(a.f) < grp(b.f) ? -1 : grp(a.f) > grp(b.f) ? 1 : 0) || isMember(a.f) - isMember(b.f) || a.i - b.i).map(({ f }, i) => ({ ...f, rank: i + 1 }));
 }
 
 /** Prior-year snapshot date: one year before the current anchor (filings filed on or before it). */

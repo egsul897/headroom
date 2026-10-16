@@ -28,6 +28,8 @@ export interface AddBackLine {
   status: "CLAIMED" | "CAPPED" | "NEEDS_INPUT";
   /** The most this line could still add once evidenced (its cap less what is claimed); null when uncapped or unknown. */
   headroomToCap: string | null;
+  /** Clauses sharing this line's cap (one limit across all of them), including this line; null when uncapped / sole. */
+  capGroup?: string[] | null;
   note: string;
 }
 export interface EbitdaOptimization {
@@ -353,6 +355,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     if (room === 0n) for (const g of group) if (g.status === "NEEDS_INPUT") { g.status = BigInt(g.claimed) < g.evid ? "CAPPED" : "CLAIMED"; g.note = "cap reached"; }
     const left = room == null ? null : room;
     for (const g of group) g.headroomToCap = left == null ? null : g.status === "NEEDS_INPUT" ? usd(left) : "0";
+    if (group.length > 1) { const labels = [...group].sort((a, b) => lines.indexOf(a) - lines.indexOf(b)).map((x) => x.label); for (const g of group) g.capGroup = labels; }
   }
   const addBacks: AddBackLine[] = lines.map(({ evid: _e, capSpec: _c, ...l }) => l);
   const open = addBacks.filter((l) => l.status === "NEEDS_INPUT");

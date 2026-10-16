@@ -55,3 +55,28 @@ describe("CFO loop: input keys, ranking, recompute", () => {
     expect(results.every((r) => r.gain == null)).toBe(true);
   });
 });
+
+describe("CFO loop: shared caps counted once", () => {
+  const SHARED = DOC.replace(
+    "plus (d) restructuring charges in an aggregate amount not to exceed $5,000,000 for any period; plus (e) transaction costs and expenses incurred in connection with any acquisition.",
+    "plus (d) restructuring charges; plus (e) integration costs; provided that the aggregate amount added back pursuant to clauses (d) and (e) shall not exceed $5,000,000 for any period.");
+  const sargs = { ...args, text: SHARED };
+  it("groups clauses under one cap and shows the combined room once", () => {
+    const { flags } = cfoRecompute(sargs, []);
+    const d = flags.find((f) => f.clause.label === "(d)")!, e = flags.find((f) => f.clause.label === "(e)")!;
+    expect(d.capGroup?.labels).toEqual(["(d)", "(e)"]);
+    expect(e.capGroup?.id).toBe(d.capGroup?.id);
+    expect(d.potential).toMatchObject({ basis: "CAP_HEADROOM", ebitda: String(5 * M) });
+    expect(e.potential).toEqual({ basis: "SHARED_CAP", ebitda: null, debt: null });
+    const total = flags.reduce((a, f) => a + BigInt(f.potential.ebitda ?? "0"), 0n);
+    expect(total).toBe(BigInt(5 * M));
+    expect(Math.abs(d.rank - e.rank)).toBe(1);
+  });
+  it("cfoRecompute enforces the shared cap across clauses", () => {
+    const src = "Q2 2026 compliance certificate";
+    const { results, combined } = cfoRecompute(sargs, [{ key: "ADDBACK:(d)", value: String(4 * M), source: src }, { key: "ADDBACK:(e)", value: String(4 * M), source: src }]);
+    expect(results.map((r) => r.gain?.ebitda)).toEqual([String(4 * M), String(4 * M)]);
+    expect(combined?.gain?.ebitda).toBe(String(5 * M));
+    expect(combined?.gain?.leverageCapacity).toBe(String(22.5 * M));
+  });
+});
