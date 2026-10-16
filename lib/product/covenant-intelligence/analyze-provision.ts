@@ -226,7 +226,17 @@ function extractBaskets(excerpt: string): string[] {
     ...excerpt.matchAll(
       // Limb markers vary by drafter: (x)/(y), (i)/(ii), (1)/(2).
       // The old regex hard-coded x/y and silently dropped the rest.
-      /greater of\s*\(?(?:[a-z0-9]{1,3}\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:[a-z0-9]{1,3}\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
+      // Rule 191: the old regex also required the limb separator
+      // to be "and"/"," and the percent to be a bare numeral —
+      // real drafting is "greater of $1B or ten percent (10%) of
+      // Consolidated Net Worth". The "or" separator and the
+      // words + parenthesized-numeral percent ("ten percent
+      // (10%)") are the standard forms; missing them dropped the
+      // grower leg and the compiler minted a flat amount for a
+      // greater-of basket (Aon 6.16(l) compiled to FLAT $1B).
+      // Words-only percents ("ten percent" with no numeral) are
+      // still not parsed — a known gap, not silently assumed.
+      /greater of\s*\(?(?:[a-z0-9]{1,3}\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|or|,)\s*\(?(?:[a-z0-9]{1,3}\)\s*)?(?:[A-Za-z]+\s+percent\s*)?\(?\s*([\d.]+)\s*%\s*\)?\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
     ),
   ];
   const greaterOf = greaterOfMatches.slice(0, 16);
@@ -244,7 +254,10 @@ function extractBaskets(excerpt: string): string[] {
     // $150,000,000 limb, not a $150.0 limb. Dropping "million" understated
     // the basket a million-fold in the live Quila output.
     const unit = m[2] ? ` ${m[2]}` : "";
-    out.push(`Greater-of basket: $${m[1]}${unit} and ${m[3]}% of ${normalizeWs(m[4] ?? "")}`);
+    // "Greater of" with a SPACE: the compiler's greater-of
+    // branch matches /greater of/i on the baskets text, and
+    // "Greater-of" (hyphen) does not contain "greater of".
+    out.push(`Greater of basket: $${m[1]}${unit} and ${m[3]}% of ${normalizeWs(m[4] ?? "")}`);
   }
   // Preserve the unit on every dollar amount: "$150.0 million" stays
   // "$150.0 million", never bare "$150.0".
