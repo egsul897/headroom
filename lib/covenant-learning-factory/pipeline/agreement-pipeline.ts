@@ -24,7 +24,7 @@ import type { ComputedRatio } from "../../contract-model/covenant-computation/ty
 import type { IssuerFinancials } from "../xbrl/companyfacts";
 import { basketUsage, type FacilityFact } from "../xbrl/instance-debt";
 import { decide, toMetricInput, type BindDecision } from "../xbrl/bind";
-import { debtFromFinancials, leverageDebtCapacity, maxLeverageLimit, optimizeConsolidatedEbitda, type EbitdaOptimization, type LeverageCapacity } from "../xbrl/ebitda-optimizer";
+import { debtFromFinancials, leverageDebtCapacity, maxLeverageLimit, optimizeConsolidatedEbitda, ratioCapacity, type EbitdaOptimization, type LeverageCapacity, type RatioCapacity } from "../xbrl/ebitda-optimizer";
 import { findEbitdaMeasureTerm } from "../xbrl/definition-items";
 import { extractDocumentIdentity } from "../../contract-model/compiler/package-graph/document-identity";
 
@@ -79,6 +79,8 @@ export interface AgreementPipelineResult {
     ebitda?: EbitdaOptimization;
     /** maxLeverage × EBITDA − debt, only when exactly one total-leverage MAX limit and a debt figure are available. */
     leverageCapacity?: LeverageCapacity;
+    /** Incurrence-ratio capacity (leverage / secured leverage / interest coverage): exactly one limit per ratio, else refused. */
+    ratioCapacity?: RatioCapacity[];
     /**
      * Amendment (or other package doc) names a dated base facility but no in-text EBITDA schedule was found.
      * Fail-closed: packages need the base agreement text before definitions can resolve (package-graph).
@@ -128,6 +130,49 @@ export function namedDatedFacilityReference(text: string): string | null {
   );
   const m = re.exec(window);
   return m ? m[0].replace(/\s+/g, " ").trim() : null;
+}
+
+/** Decimal string for a ratio limit ("4.5", "9/2" → "4.5"); null if not a terminating decimal within 6 places. */
+function limitDecimal(num: number, den: number): string | null {
+  if (!(num > 0) || !(den > 0)) return null;
+  const v = num / den;
+  const s = Number(v.toFixed(6));
+  if (Math.abs(s - v) > 1e-9) return null;
+  return String(s);
+}
+
+/**
+ * Capacity before each incurrence ratio is hit. LEVERAGE = one debt-like numerator / one EBITDA denominator with a
+ * maximum; COVERAGE = one EBITDA numerator / one interest denominator with a minimum. Exactly one distinct limit
+ * per ratio (thresholds stated in the agreement); anything else is refused (NEEDS_INPUT).
+ */
+export function incurrenceRatioCapacity(ratios: readonly ComputedRatio[], text: string, decisions: readonly BindDecision[]): RatioCapacity[] {
+  const out: RatioCapacity[] = [];
+  const dec = (name: string) => decisions.find((d) => d.metricName.toLowerCase() === name.toLowerCase()) ?? null;
+  const op = (d: BindDecision | null) => (d ? { status: d.status, value: d.input?.value ?? null } : null);
+  const seen = new Set<string>();
+  for (const r of ratios) {
+    if (seen.has(r.displayName)) continue;
+    seen.add(r.displayName);
+    const lev = /leverage/i.test(r.displayName), cov = /coverage/i.test(r.displayName) && /interest|EBITDA/i.test(r.displayName + r.denominator.map((d) => d.metricName).join(" "));
+    if (!lev && !cov) continue;
+    if (r.numerator.length !== 1 || r.denominator.length !== 1) continue;
+    const num = r.numerator[0]!.metricName, den = r.denominator[0]!.metricName;
+    const kind = lev ? "LEVERAGE" as const : "COVERAGE" as const;
+    const ebitdaName = kind === "LEVERAGE" ? den : num, otherName = kind === "LEVERAGE" ? num : den;
+    if (!/EBITDA/i.test(ebitdaName)) continue;
+    if (kind === "COVERAGE" && !/interest/i.test(otherName)) continue;
+    const want = kind === "LEVERAGE" ? "MAX" : "MIN";
+    let limits = r.thresholds.filter((t) => t.direction === want).map((t) => { const [a, b = "1"] = t.canonical.split("/"); return limitDecimal(Number(a), Number(b)); });
+    if (!r.thresholds.length) limits = covenantRatioThresholds(text, r.displayName, [num], [den]).filter((f) => (want === "MAX" ? f.comparator !== "AT_LEAST" : f.comparator === "AT_LEAST")).map((f) => limitDecimal(f.num, f.den));
+    const distinct = [...new Set(limits)];
+    if (distinct.length !== 1 || distinct[0] == null) {
+      if (limits.length) out.push({ name: r.displayName, kind, limit: distinct.filter(Boolean).join("|") || "?", status: "NEEDS_INPUT", capacity: null, capacityOf: kind === "LEVERAGE" ? "DEBT" : "INTEREST_EXPENSE", bound: null, reason: "ratio limit ambiguous (not exactly one); refused" });
+      continue;
+    }
+    out.push(ratioCapacity({ name: r.displayName, kind, limit: distinct[0]!, ebitda: op(dec(ebitdaName)), other: op(dec(otherName)) }));
+  }
+  return out;
 }
 
 export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null; facilityFacts?: readonly FacilityFact[] | null }): AgreementPipelineResult {
@@ -280,6 +325,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
           levRows.push({ kind: "RATIO", name: r.displayName, direction: "MAX", limit });
         }
       }
+      xbrl.ratioCapacity = incurrenceRatioCapacity(result.ratios, tree.text, xbrl.decisions);
       const lev = maxLeverageLimit(levRows);
       const debt = debtFromFinancials(args.financials);
       if (lev != null && debt != null) xbrl.leverageCapacity = leverageDebtCapacity(ebitda, lev, debt);

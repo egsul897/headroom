@@ -12,6 +12,7 @@
 import { metricInput, money, rationalFromString, type MetricInput } from "../../contract-model/definition-execution";
 import type { FinancialValue, HeadroomInput, IssuerFinancials } from "./companyfacts";
 import { evaluateDefinition, type DefinitionEvaluation } from "./definition-items";
+import { optimizeConsolidatedEbitda, optimizerMetricBound } from "./ebitda-optimizer";
 
 export const XBRL_SOURCE_PREFIX = "sec-xbrl:";
 
@@ -124,6 +125,17 @@ export function decide(metricName: string, text: string, fin: IssuerFinancials):
       term = inner;
     }
     const ev = evaluateDefinition(family, term, text, fin);
+    // EBITDA family: the optimizer sizes the agreement's own schedule (caps, filing add-backs). MAXIMUM → exact;
+    // a supported floor with no omitted two-sided line → lower bound. Anything weaker stays NEEDS_INPUT.
+    if (family === "EBITDA" && ev.status !== "EXACT") {
+      const ob = optimizerMetricBound(optimizeConsolidatedEbitda(term, text, fin));
+      if (ob && (ob.status === "BOUND" || ev.status === "NEEDS_INPUT" || ev.value == null || BigInt(ob.value) > BigInt(ev.value))) {
+        const input: FinancialValue = { metric: "reportedEbitdaBase", concept: `optimizer: ${metricName} (${ob.basis})`, periodType: "TTM", periodStart: null, periodEnd: fin.anchor ?? "", value: ob.value, unit: "USD",
+          accession: [...new Set(fin.values.filter((v) => v.metric === "item").map((v) => v.accession))].slice(0, 1).join(""), form: "", filed: "", derivation: `EBITDA optimizer ${ob.basis}: ${ob.reason}` };
+        return { metricName, family, status: ob.status, reason: `EBITDA optimizer ${ob.basis}: ${ob.reason}`, definition: null, input,
+          evaluation: { kind: "EBITDA", term, status: ob.status === "BOUND" ? "EXACT" : "LOWER_BOUND", value: ob.value, base: null, items: [], missing: ob.missing, reason: ob.reason, periodEnd: fin.anchor ?? null } };
+      }
+    }
     if (ev.status === "NEEDS_INPUT" || ev.value == null) return { metricName, family, status: "NEEDS_INPUT", reason: ev.reason, definition: null, evaluation: ev };
     const input: FinancialValue = { metric: family === "EBITDA" ? "reportedEbitdaBase" : "interestExpense", concept: `parsed definition: ${metricName}`, periodType: "TTM", periodStart: null, periodEnd: ev.periodEnd ?? "", value: ev.value, unit: "USD",
       accession: [...new Set(fin.values.filter((v) => v.metric === "item").map((v) => v.accession))].slice(0, 1).join(""), form: "", filed: "", derivation: `${ev.status}: ${ev.base?.concept} ${ev.base?.value} ${ev.items.filter((i) => i.value !== "0").map((i) => `${BigInt(i.value) < 0n ? "-" : "+"} ${i.concepts.map((c) => c.concept).join("/")} ${i.value.replace("-", "")}`).join(" ")}` };

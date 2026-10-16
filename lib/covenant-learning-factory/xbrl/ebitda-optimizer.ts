@@ -33,6 +33,8 @@ export interface AddBackLine {
 export interface EbitdaOptimization {
   term: string; periodEnd: string | null;
   status: "MAXIMIZED" | "NEEDS_INPUT";
+  /** Labels of open add-backs that could lower the total (two-sided / income-like). Set on a supported result; empty = floor is a safe lower bound. */
+  omittedTwoSided?: string[];
   /** Maximum Consolidated EBITDA; only when every add-back is evidenced and every cap determinable. */
   maximum: string | null;
   /** Base + exact deductions + evidenced (capped) add-backs; null when the base or a deduction is not derivable. */
@@ -330,7 +332,8 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   if (!baseOk) return out({ addBacks, needsInput: [`base/deductions: ${lowerReason}`, ...needsInput], reason: `NEEDS_INPUT: ${lowerReason}` });
   const supported = e0! + addBacks.filter((l) => uncapped.every((u) => u.label !== l.label)).reduce((a, l) => a + BigInt(l.claimed), 0n);
   const complete = !open.length && !ev.items.some((i) => i.label === "(base)" && i.coverage === "PARTIAL");
-  return out({ status: complete ? "MAXIMIZED" : "NEEDS_INPUT", maximum: complete ? usd(supported) : null, supported: usd(supported), deductions: usd(deductions!), addBacks, needsInput,
+  const ambiguousOpen = pairs.filter((p) => ambiguousAddBack(p) && open.some((l) => l.label === p.it.label)).map((p) => p.it.label);
+  return out({ status: complete ? "MAXIMIZED" : "NEEDS_INPUT", maximum: complete ? usd(supported) : null, supported: usd(supported), deductions: usd(deductions!), addBacks, needsInput, omittedTwoSided: ambiguousOpen,
     reason: complete ? "every permitted add-back is evidenced and every cap applied" : `${open.length} add-back(s) not evidenced in filings; supported figure is what the filings prove` });
 }
 
@@ -372,4 +375,48 @@ export function debtFromFinancials(fin: IssuerFinancials): { value: string; sour
 export function maxLeverageLimit(rows: ReadonlyArray<{ kind: string; name: string; direction: string | null; limit: string | null }>): string | null {
   const limits = new Set(rows.filter((r) => r.kind === "RATIO" && /leverage/i.test(r.name) && !/secured|senior|first\s+lien|interest/i.test(r.name) && r.direction === "MAX" && r.limit && /^\d+(?:\.\d+)?$/.test(r.limit)).map((r) => r.limit!));
   return limits.size === 1 ? [...limits][0]! : null;
+}
+
+/**
+ * EBITDA as a metric input for baskets / ratios. MAXIMUM → BOUND (exact). SUPPORTED → LOWER_BOUND only when no
+ * omitted line could lower the total (no two-sided / indeterminate add-back left out); otherwise null (NEEDS_INPUT).
+ */
+export function optimizerMetricBound(opt: EbitdaOptimization): { status: "BOUND" | "LOWER_BOUND"; basis: "MAXIMUM" | "SUPPORTED"; value: string; reason: string; missing: string[] } | null {
+  if (opt.maximum) return { status: "BOUND", basis: "MAXIMUM", value: opt.maximum, reason: opt.reason, missing: [] };
+  if (!opt.supported) return null;
+  // Omitted lines that could lower the total (two-sided / income-like): the supported figure is not a safe lower bound.
+  if (opt.omittedTwoSided == null || opt.omittedTwoSided.length) return null;
+  return { status: "LOWER_BOUND", basis: "SUPPORTED", value: opt.supported, reason: opt.reason, missing: opt.needsInput.slice(0, 6) };
+}
+
+// ---------------- ratio-based incurrence capacity ----------------
+export interface RatioCapacity {
+  name: string; kind: "LEVERAGE" | "COVERAGE"; limit: string; status: "COMPUTED" | "NEEDS_INPUT";
+  /** LEVERAGE: additional numerator (debt) before limit×EBITDA. COVERAGE: additional interest expense before EBITDA/limit. */
+  capacity: string | null; capacityOf: "DEBT" | "INTEREST_EXPENSE"; bound: "EXACT" | "AT_LEAST" | null; reason: string;
+}
+
+/**
+ * Capacity before an incurrence ratio is hit, from EBITDA (optimizer-backed decision) and the other operand.
+ * LEVERAGE (debt / EBITDA ≤ L): L × EBITDA − debt. COVERAGE (EBITDA / interest ≥ C): EBITDA / C − interest.
+ * The non-EBITDA operand must be exact (a lower-bound debt or interest would overstate capacity). EBITDA exact →
+ * EXACT; EBITDA lower bound → AT_LEAST (capacity rises with EBITDA in both forms).
+ */
+export function ratioCapacity(args: { name: string; kind: "LEVERAGE" | "COVERAGE"; limit: string;
+  ebitda: { status: "BOUND" | "LOWER_BOUND" | "NEEDS_INPUT"; value: string | null } | null;
+  other: { status: "BOUND" | "LOWER_BOUND" | "NEEDS_INPUT"; value: string | null } | null }): RatioCapacity {
+  const capacityOf = args.kind === "LEVERAGE" ? "DEBT" as const : "INTEREST_EXPENSE" as const;
+  const na = (reason: string): RatioCapacity => ({ name: args.name, kind: args.kind, limit: args.limit, status: "NEEDS_INPUT", capacity: null, capacityOf, bound: null, reason });
+  if (!/^\d+(?:\.\d+)?$/.test(args.limit) || Number(args.limit) <= 0) return na("ratio limit not determinable");
+  const e = args.ebitda;
+  if (!e || e.status === "NEEDS_INPUT" || !e.value || !/^-?\d+$/.test(e.value)) return na("EBITDA operand not derivable");
+  if (BigInt(e.value) <= 0n) return na("EBITDA not positive; capacity not meaningful");
+  const o = args.other;
+  if (!o || o.status !== "BOUND" || !o.value || !/^-?\d+$/.test(o.value)) return na(o?.status === "LOWER_BOUND" ? `${capacityOf.toLowerCase()} operand is only a lower bound (would overstate capacity)` : `${capacityOf.toLowerCase()} operand not derivable`);
+  const [i, f = ""] = args.limit.split(".");
+  const L = BigInt(i! + f), s = 10n ** BigInt(f.length);
+  const cap = args.kind === "LEVERAGE" ? (L * BigInt(e.value)) / s - BigInt(o.value) : (BigInt(e.value) * s) / L - BigInt(o.value);
+  const bound = e.status === "BOUND" ? "EXACT" as const : "AT_LEAST" as const;
+  return { name: args.name, kind: args.kind, limit: args.limit, status: "COMPUTED", capacity: cap.toString(), capacityOf, bound,
+    reason: args.kind === "LEVERAGE" ? `${args.limit}x × EBITDA ${e.value} − debt ${o.value} [${bound}]` : `EBITDA ${e.value} / ${args.limit}x − interest ${o.value} [${bound}]` };
 }
