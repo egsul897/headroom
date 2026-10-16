@@ -99,6 +99,30 @@ function hasDebtPermissionEvidence(hay: string): boolean {
   return modal;
 }
 
+/**
+ * Rule 170 (audit-driven): an INVESTMENT grant needs affirmative
+ * evidence of an actual investment permission, mirroring Rule 169's
+ * DEBT guard. A real agreement's §16.3(xiv) is an EBITDA add-back
+ * ("any fees, costs and expenses ... in connection with any proposed
+ * or completed acquisition, investment, disposition ...") — it
+ * mentions acquisition/investment but permits no investment, and
+ * minted an INVESTMENT grant. The evidence is a permission modal
+ * ("may make/acquire/invest", "permitted investments", "except",
+ * "permission") with an investment word in the same clause, or a
+ * cap on investments ("investments not exceeding $X", "up to $X
+ * in investments"). Failing closed: no permission evidence → no
+ * INVESTMENT grant.
+ */
+function hasInvestmentPermissionEvidence(hay: string): boolean {
+  const capFrame =
+    /\b(INVESTMENTS?|ACQUISITIONS?)\b[^.]{0,120}\bNOT\b[^.]{0,30}\bEXCEED(ING)?\b|\bNOT\b[^.]{0,30}\bEXCEED(ING)?\b[^.]{0,120}\b(INVESTMENTS?|ACQUISITIONS?)\b/.test(hay) ||
+    /\bUP\s+TO\s+\$[^.]{0,120}\b(INVESTMENTS?|ACQUISITIONS?)\b|\b(INVESTMENTS?|ACQUISITIONS?)\b[^.]{0,120}\bUP\s+TO\s+\$/.test(hay);
+  if (capFrame) return true;
+  const modal =
+    /\b(MAY\s+(MAKE|ACQUIRE|INVEST)|PERMITTED|EXCEPT|PERMISSION)\b[^.]{0,120}\b(INVESTMENTS?|ACQUISITIONS?)\b|\b(INVESTMENTS?|ACQUISITIONS?)\b[^.]{0,120}\b(MAY\s+(MAKE|ACQUIRE|INVEST)|PERMITTED|EXCEPT|PERMISSION)\b/.test(hay);
+  return modal;
+}
+
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
   // Rule 166: an event-of-default trigger is a consequence, never a
   // grant of capacity. A Defaults article genuinely contains the
@@ -148,7 +172,9 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   if (isRpFamily && !hasDebtPermission && !hasLienWord) {
     return ["RESTRICTED_PAYMENT"];
   }
-  if (isInvestmentFamily && !hasDebtPermission && !hasLienWord) {
+  // Rule 170: investment words alone are not a grant — they must
+  // carry affirmative investment-permission evidence.
+  if (isInvestmentFamily && !hasDebtPermission && !hasLienWord && hasInvestmentPermissionEvidence(hay)) {
     return ["INVESTMENT"];
   }
 

@@ -525,3 +525,38 @@ describe("generalization: rule 169 — DEBT needs affirmative borrowing permissi
     ).toEqual(["RESTRICTED_PAYMENT"]);
   });
 });
+
+describe("generalization: rule 170 — INVESTMENT needs affirmative permission", () => {
+  const grantItem = (heading: string, plainEnglish: string, category = "OTHER") =>
+    ({ heading, plainEnglish, families: [], category }) as unknown as Parameters<typeof grantTypesForItem>[0];
+
+  it("an EBITDA add-back mentioning acquisition/investment mints no grant (16.3(xiv) shape)", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "16.3(xiv)",
+          "Section 16.3(xiv) operates as a enumerated permission. Permission substance: (xiv) any fees, costs and expenses (including, without limitation, any issuance costs, advisory and professional fees, any transaction incentives or retention bonuses or similar payments, earnouts or other contingent consideration, and purchase price adjustments), or any amortization thereof, in connection with any proposed or completed acquisition, investment, disposition, issuance, repayment.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("a genuine permitted-investments basket still compiles", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "Section 7.06. Investments",
+          "The Borrower may make Permitted Investments in Subsidiaries.",
+        ),
+      ),
+    ).toEqual(["INVESTMENT"]);
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "7.06(k)",
+          "Investments in Subsidiaries not exceeding $50,000,000 in the aggregate at any time outstanding.",
+        ),
+      ),
+    ).toEqual(["INVESTMENT"]);
+  });
+});
