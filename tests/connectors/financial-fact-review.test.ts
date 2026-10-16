@@ -51,7 +51,7 @@ describe("FINANCIAL_FACT candidates through the existing review workspace (unmod
 
   it("reviewCandidate(APPROVE) works unmodified for a FINANCIAL_FACT candidate, with a CandidateReviewEvent audit row", async () => {
     const [id] = candidateIds;
-    const updated = await reviewCandidate({ candidateId: id!, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
+    const updated = await reviewCandidate({ companyId: COMPANY_ID, candidateId: id!, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
     expect(updated.reviewStatus).toBe("APPROVED");
     expect(updated.reviewedBy).toBe("test-reviewer@headroom.app");
 
@@ -68,18 +68,18 @@ describe("FINANCIAL_FACT candidates through the existing review workspace (unmod
     const originalProposedValue = before.proposedValue;
 
     const editedValue = { metricName: "covenant_ebitda", value: 21.5, asOfDate: "2026-06-30", canonicalUnit: "USD_MILLIONS", originalValue: 21500000, originalUnit: "USD" };
-    const updated = await reviewCandidate({ candidateId: id, action: "EDIT", editedValue, reviewedBy: "test-reviewer@headroom.app" });
+    const updated = await reviewCandidate({ companyId: COMPANY_ID, candidateId: id, action: "EDIT", editedValue, reviewedBy: "test-reviewer@headroom.app" });
     expect(updated.reviewStatus).toBe("EDITED");
     expect(updated.reviewerEditedValue).toMatchObject(editedValue);
     expect(updated.proposedValue).toEqual(originalProposedValue); // untouched, permanently
 
     // An invalid edit (wrong shape) is rejected, not silently coerced.
-    await expect(reviewCandidate({ candidateId: id, action: "EDIT", editedValue: { metricName: "" }, reviewedBy: "test-reviewer@headroom.app" })).rejects.toThrow();
+    await expect(reviewCandidate({ companyId: COMPANY_ID, candidateId: id, action: "EDIT", editedValue: { metricName: "" }, reviewedBy: "test-reviewer@headroom.app" })).rejects.toThrow();
   });
 
   it("reviewCandidate(REJECT) works unmodified for a FINANCIAL_FACT candidate", async () => {
     const id = candidateIds[2]!;
-    const updated = await reviewCandidate({ candidateId: id, action: "REJECT", reviewedBy: "test-reviewer@headroom.app" });
+    const updated = await reviewCandidate({ companyId: COMPANY_ID, candidateId: id, action: "REJECT", reviewedBy: "test-reviewer@headroom.app" });
     expect(updated.reviewStatus).toBe("REJECTED");
   });
 
@@ -92,6 +92,6 @@ describe("FINANCIAL_FACT candidates through the existing review workspace (unmod
   });
 
   it("reviewCandidate refuses without a reviewedBy - never fabricated, same as every other kind", async () => {
-    await expect(reviewCandidate({ candidateId: candidateIds[0]!, action: "APPROVE", reviewedBy: "" })).rejects.toThrow(/reviewedBy/);
+    await expect(reviewCandidate({ companyId: COMPANY_ID, candidateId: candidateIds[0]!, action: "APPROVE", reviewedBy: "" })).rejects.toThrow(/reviewedBy/);
   });
 });

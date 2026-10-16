@@ -74,6 +74,13 @@ export class MissingReviewerError extends Error {
 export interface ReviewCandidateParams {
   candidateId: string;
   action: ReviewAction;
+  /**
+   * Rule 93: the acting company. The candidate must belong to it —
+   * the server action authorizes the URL company, but the candidate
+   * is loaded by id, so without this check a caller could review
+   * another company's candidate by id.
+   */
+  companyId: string;
   /** Required and validated for EDIT; ignored for every other action. */
   editedValue?: unknown;
   note?: string;
@@ -92,6 +99,11 @@ export async function reviewCandidate(params: ReviewCandidateParams): Promise<Ex
   if (!reviewedBy) throw new MissingReviewerError();
 
   const candidate = await prisma.extractionCandidate.findUniqueOrThrow({ where: { id: candidateId } });
+  // Rule 93: tenant binding — a review decision on another
+  // company's candidate must fail, not silently apply.
+  if (candidate.companyId !== params.companyId) {
+    throw new Error(`ExtractionCandidate ${candidateId} does not belong to company ${params.companyId}`);
+  }
   if (candidate.promotedAt) {
     throw new Error(`ExtractionCandidate ${candidateId} was already promoted at ${candidate.promotedAt.toISOString()} - a promoted candidate's review decision is final.`);
   }
