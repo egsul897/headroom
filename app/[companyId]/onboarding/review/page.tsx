@@ -7,7 +7,7 @@ import { approveCandidateAction, rejectCandidateAction, markReviewRequiredAction
 import type { ExtractionCandidateKind, ExtractionCandidateReviewStatus } from "@prisma/client";
 import { getAnalysisReadinessForCompany } from "@/lib/contract-model/analysis";
 import { getClaimReviewItemsForCompany } from "@/lib/contract-model/compiler/safe-failure";
-import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
+import { listCustomerDocumentIntelligence, type CustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 
 export const metadata = { title: "Headroom — Review extraction candidates" };
 export const dynamic = "force-dynamic";
@@ -53,7 +53,7 @@ function ValueTable({ value }: { value: unknown }) {
   );
 }
 
-function CandidateCard({ companyId, candidate, history, sourceAnalysisStale }: { companyId: string; candidate: CandidateForReview; history: { action: string; previousStatus: string; newStatus: string; reviewedBy: string | null; note: string | null; createdAt: Date }[]; sourceAnalysisStale: boolean }) {
+function CandidateCard({ companyId, candidate, history, sourceAnalysisStale, sourceTypeMismatch }: { companyId: string; candidate: CandidateForReview; history: { action: string; previousStatus: string; newStatus: string; reviewedBy: string | null; note: string | null; createdAt: Date }[]; sourceAnalysisStale: boolean; sourceTypeMismatch: string | null }) {
   const isFinal = !!candidate.promotedAt;
   const approve = approveCandidateAction.bind(null, companyId, candidate.id);
   const reject = rejectCandidateAction.bind(null, companyId, candidate.id);
@@ -71,6 +71,10 @@ function CandidateCard({ companyId, candidate, history, sourceAnalysisStale }: {
               may change it. Staleness is a warning, never an
               error, but a binding decision deserves the signal. */}
           {sourceAnalysisStale && <Chip tone="tight">STALE — re-analyze</Chip>}
+          {/* Rule 120: same pattern as staleness — a candidate from
+              a type-mismatched document is reviewed under the wrong
+              class assumption unless counsel sees the mismatch. */}
+          {sourceTypeMismatch && <Chip tone="tight">TYPE MISMATCH — {sourceTypeMismatch}</Chip>}
           {candidate.confidence != null && <span className="row-note"> · confidence {(candidate.confidence * 100).toFixed(0)}%</span>}
         </div>
         <div className="row-note">
@@ -184,6 +188,14 @@ export default async function ReviewPage({ params }: { params: Promise<{ company
     listCustomerDocumentIntelligence(companyId).catch(() => []),
   ]);
   const staleByDocumentId = new Map(intelligence.map((i) => [i.documentId, i.analysisStale]));
+  // Rule 120: rule 118's mismatch on the review queue — counsel
+  // makes binding decisions here, so the signal must travel with
+  // the candidate, not only live on the document pages.
+  const mismatchByDocumentId = new Map(
+    (intelligence as CustomerDocumentIntelligence[])
+      .filter((i) => i.declaredType && i.documentClass && i.documentClass !== i.declaredType)
+      .map((i) => [i.documentId, `declared ${i.declaredType}, analyzed as ${i.documentClass}`] as const),
+  );
 
   return (
     <div className="stack">
@@ -258,7 +270,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ company
               {KIND_LABELS[kind]} <span className="row-note">({list.length})</span>
             </div>
             {list.map((c) => (
-              <CandidateCard key={c.id} companyId={companyId} candidate={c} history={historyByCandidateId.get(c.id) ?? []} sourceAnalysisStale={staleByDocumentId.get(c.sourceDocumentId) === true} />
+              <CandidateCard key={c.id} companyId={companyId} candidate={c} history={historyByCandidateId.get(c.id) ?? []} sourceAnalysisStale={staleByDocumentId.get(c.sourceDocumentId) === true} sourceTypeMismatch={mismatchByDocumentId.get(c.sourceDocumentId) ?? null} />
             ))}
           </Card>
         );
