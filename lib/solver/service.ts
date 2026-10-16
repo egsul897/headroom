@@ -50,6 +50,8 @@ export interface RunSolverParams {
   sharedConstraints: SharedConstraint[];
   collateralScopes: PermissionCollateralScope[];
   ruleActivationConditions: RuleActivationCondition[];
+  /** Compiled maintenance ratio provisions for this document (Rule 185). Evaluated once per run, not per election. */
+  ratioProvisions?: RatioProvision[];
   financials: FinancialSnapshotInput;
   transaction: Transaction;
   entityClasses: EntityClass[];
