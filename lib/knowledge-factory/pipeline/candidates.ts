@@ -318,6 +318,10 @@ export function discoverCovenantCandidates(
       candidateId: candidateId(sourceId, node.nodeId),
       sourceId,
       nodeId: node.nodeId,
+      // Rule 192: flag a PREFIX excerpt — the operative span
+      // ran past the 4000-char cap, so tail clauses (e.g. Aon
+      // 6.11(t)'s greater-of basket) are not in this excerpt.
+      excerptTruncated: span.end - span.start > 4000,
       families: mergedFamilies,
       signals: [...rank.signals, ...detectPatternsInText(excerpt).map((p) => `pattern:${p}`)],
       excerpt: excerpt.slice(0, 4000),

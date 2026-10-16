@@ -202,15 +202,37 @@ const SECTION_PATTERNS = [
   // - the same class of defect this file's own doc-comments describe
   // for line-anchored patterns, now in the bare-numbered shape. The
   // lookbehind requires a sentence-terminal boundary (or line start)
-  // before the number, and the title must be Title-Case, <=90 chars,
-  // and end in its own terminal period - so ordinary prose decimals
-  // ("4.50 to 1.00", "6.14(b) shall ...", "see 6.14.") cannot match.
-  // Triage/plausibility still gate every candidate this pattern finds.
-  // Number-to-title gap is BOUNDED_GAP (same as the keyword patterns):
-  // EDGAR puts the number and title on adjacent lines ("6.16.\n
-  // Indebtedness ."), never separated by a blank line — a bare
-  // paragraph break would be a TOC entry, not a heading.
-  new RegExp(`(?<=^|[.:;!?]\\s)(\\d+\\.\\d+)\\.?(?![A-Za-z])${BOUNDED_GAP}([A-Z][^\\n]{0,90}?)(?:\\s*\\.(?!\\d)|\\s*\\([a-z]\\)(?=\\s))`, "gm"),
+  // before the number, and the title must be Title-Case and end in
+  // its own terminal period or first subsection marker - so ordinary
+  // prose decimals ("4.50 to 1.00", "6.14(b) shall ...", "see 6.14.")
+  // cannot match. Triage/plausibility still gate every candidate
+  // this pattern finds. Number-to-title gap is BOUNDED_GAP (same as
+  // the keyword patterns): EDGAR puts the number and title on
+  // adjacent lines ("6.16.\n Indebtedness ."), never separated by a
+  // blank line — a bare paragraph break would be a TOC entry, not a
+  // heading.
+  // Rule 192: the title may span the chapeau's CONTINUATION lines
+  // to reach its terminator. Real negative covenants glue heading
+  // + chapeau + "except:" across lines: Aon 6.11 is "6.11. Liens
+  // The Parent will not, ... except:\n(a) Liens for taxes ..."
+  // (the (a) is two lines down), and 6.9's first terminal period
+  // is 635 chars out. The old single-line 90-char title went blind
+  // on all of Article VI except the sections whose terminator
+  // happened to sit on the first line (6.2/6.4/6.14/6.15/6.16) —
+  // 6.1/6.3/6.5-6.13/6.17 produced no node at all. The title is
+  // still lazy (stops at the FIRST terminator), still capped (650
+  // chars, the longest chapeau in the real evidence plus margin),
+  // and still may not cross a BLANK line (single newlines only:
+  // `\\n(?!\\n)`) — a paragraph break means the section's own
+  // text ended, and swallowing the next paragraph to find a
+  // terminator would overrun the section. Long body-glued titles
+  // route AMBIGUOUS via the seam check (ABSORBED_SENTENCE), where
+  // Rule 188's body-start truncation recovers the real heading —
+  // the same path 6.4 already takes. The lookbehind, the [A-Z]
+  // title start, and TOC suppression still bound the prose
+  // false-positive surface (a ratio "4.50 to 1.00" fails on the
+  // lowercase "to"; "Section 6.14." fails the lookbehind).
+  new RegExp(`(?<=^|[.:;!?]\\s)(\\d+\\.\\d+)\\.?(?![A-Za-z])${BOUNDED_GAP}([A-Z](?:[^\\n]|\\n(?!\\n)){0,650}?)(?:\\s*\\.(?!\\d)|\\s*\\([a-z]\\)(?=\\s))`, "gm"),
 ];
 
 /**

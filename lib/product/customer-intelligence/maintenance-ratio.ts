@@ -30,6 +30,10 @@ export interface MaintenanceRatio {
 }
 
 export function parseMaintenanceRatio(item: CovenantSummaryItem): MaintenanceRatio | null {
+  // Rule 192: a truncated excerpt may show one test while the
+  // tail hides others — no single-test provision from a partial
+  // excerpt. EDITED items are exempt (counsel-supplied text).
+  if (item.operativeExcerptTruncated && item.reviewerDecision !== "EDITED") return null;
   // Exactly one distinct ratio threshold across the item's baskets.
   const basketRatios = [...new Set(
     (item.materialBasketsThresholds ?? [])

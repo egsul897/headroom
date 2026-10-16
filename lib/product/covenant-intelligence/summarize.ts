@@ -54,6 +54,11 @@ export interface CovenantSummaryItem {
   materialBasketsThresholds: string[];
   draftingPatterns: string[];
   operativeLanguageExcerpt: string;
+  /** Rule 192: the analyzer's excerpt is a prefix of a longer
+   * operative span — tail clauses are missing. The compiler
+   * must not mint a formula from it (except when counsel EDITED
+   * the item, supplying the controlling text). */
+  operativeExcerptTruncated?: boolean;
   sourceCitation: string;
   governingAgreement: string;
   families: string[];
@@ -164,6 +169,7 @@ function itemFromAnalysis(
     materialBasketsThresholds: analysis.basketsAndThresholds,
     draftingPatterns: analysis.draftingPatterns,
     operativeLanguageExcerpt: analysis.operativeLanguageExcerpt,
+    operativeExcerptTruncated: analysis.operativeExcerptTruncated,
     sourceCitation: analysis.sourceCitation,
     governingAgreement,
     families: analysis.families,

@@ -331,3 +331,55 @@ describe("rule 188: section title truncated at its own body-start", () => {
     expect(headings.find((h) => h.ref === "10.3")!.heading).toBe("Payment of Principal");
   });
 });
+
+describe("rule 192: mid-line heading whose terminator sits past the first line", () => {
+  it("recovers a heading + chapeau + except: whose (a) is two lines down (Aon 6.11 shape)", () => {
+    const text = [
+      "The Parent shall not dispose of assets.",
+      "",
+      "6.11. Liens The Parent will not, nor will it permit any other Loan Party to, create, incur, or suffer to exist any Lien in, of or on the",
+      "Property of the Parent or any other Loan Party, except:",
+      "(a) Liens for taxes, assessments or governmental charges or levies that are not delinquent.",
+      "",
+      "6.12. Affiliates The Parent will not enter into affiliate transactions.",
+    ].join("\n");
+    const { nodes } = extractStructure("rule192-test", text);
+    const n = nodes.find((x) => x.sectionRef === "6.11");
+    expect(n).toBeDefined();
+    expect(n!.heading).toBe("Liens");
+  });
+
+  it("recovers a heading whose first terminal period is ~600 chars out (Aon 6.9 shape)", () => {
+    const body =
+      "The Parent will, and will cause each Subsidiary to, permit the Administrative Agent and its representatives, upon reasonable prior notice and during normal business hours, to visit and inspect the properties and books and records of the Parent and each Subsidiary, to examine and make copies of such books and records, and to discuss the affairs of the Parent and each Subsidiary with officers thereof.";
+    expect(body.length).toBeGreaterThan(400);
+    const text = [
+      "The Parent shall maintain its properties.",
+      "",
+      `6.9. Inspection ${body}`,
+      "",
+      "6.10. Merger The Parent will not merge.",
+    ].join("\n");
+    const { nodes } = extractStructure("rule192-test-2", text);
+    const n = nodes.find((x) => x.sectionRef === "6.9");
+    expect(n).toBeDefined();
+    expect(n!.heading).toBe("Inspection");
+  });
+
+  it("does not mint a node from a TOC entry split across blank lines", () => {
+    const text = ["Article VI COVENANTS", "", "6.11.", "", "Liens", "", "58", "", "6.12.", "", "Affiliates", "", "60"].join("\n");
+    const { nodes } = extractStructure("rule192-test-3", text);
+    expect(nodes.filter((x) => x.sectionRef === "6.11")).toHaveLength(0);
+    expect(nodes.filter((x) => x.sectionRef === "6.12")).toHaveLength(0);
+  });
+
+  it("the wider window does not mint a node from a mid-sentence citation", () => {
+    const text = [
+      "The Borrower shall deliver reports.",
+      "",
+      "The Borrower shall comply with Section 6.14. Financial Covenants (a) Consolidated Adjusted EBITDA to Consolidated Interest Expense of not less than 4.0 to 1.00, and shall maintain such ratio at all times.",
+    ].join("\n");
+    const { nodes } = extractStructure("rule192-test-4", text);
+    expect(nodes.filter((x) => x.sectionRef === "6.14")).toHaveLength(0);
+  });
+});

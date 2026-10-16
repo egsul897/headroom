@@ -154,3 +154,58 @@ describe("compile-accepted formula parsing", () => {
     expect(parsed.missingFields.length).toBeGreaterThan(0);
   });
 });
+
+describe("Rule 192: truncated-excerpt guard (compiler half)", () => {
+  const base = {
+    category: "DEBT_INCURRENCE",
+    categoryLabel: "Debt incurrence",
+    sectionRef: "6.11",
+    heading: "Liens",
+    posture: "GENERAL_PROHIBITION",
+    plainEnglish: "Section 6.11 (Liens) prohibits Liens except as permitted. Material baskets/thresholds identified: Amount/threshold: $5,000,000.",
+    restriction: "No Liens except as permitted.",
+    permissions: [] as string[],
+    coveredEntities: [] as string[],
+    exceptions: [] as string[],
+    conditions: [] as string[],
+    materialBasketsThresholds: ["Amount/threshold: $5,000,000"],
+    draftingPatterns: [] as string[],
+    operativeLanguageExcerpt: "6.11. Liens. The Parent will not create any Lien except: (a) Liens for taxes.",
+    sourceCitation: "fixture · 6.11",
+    governingAgreement: "fixture",
+    families: [] as string[],
+    relatedDefinedTerms: [] as string[],
+    applicableDefinitions: [] as never[],
+    crossReferences: [] as string[],
+    dependencies: [] as string[],
+    epistemicStatus: "DISCOVERED_CANDIDATE",
+    interpretationNote: "",
+    unresolvedQuestions: [] as string[],
+    alternativeInterpretations: [] as string[],
+    assumptions: [] as string[],
+    judgmentCalls: [] as string[],
+  } as never;
+
+  it("fails closed on a truncated excerpt instead of minting a partial flat amount", () => {
+    const parsed = parseCounselFormulaForTest({ ...base, operativeExcerptTruncated: true });
+    expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
+    expect(parsed.missingFields).toContain("operativeExcerptTruncated");
+    expect(parsed.thresholdValue).toBe(0);
+  });
+
+  it("parses normally when the excerpt is not truncated", () => {
+    const parsed = parseCounselFormulaForTest({ ...base, operativeExcerptTruncated: false });
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.thresholdValue).toBe(5);
+  });
+
+  it("exempts EDITED items — counsel supplied the controlling text", () => {
+    const parsed = parseCounselFormulaForTest({
+      ...base,
+      operativeExcerptTruncated: true,
+      reviewerDecision: "EDITED",
+    });
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.thresholdValue).toBe(5);
+  });
+});

@@ -26,6 +26,9 @@ export type ProvisionPosture =
   | "UNRESOLVED";
 
 export interface ProvisionAnalysis {
+  /** Rule 192: the candidate excerpt is a prefix of a longer
+   * operative span (4000-char cap) — tail clauses are missing. */
+  operativeExcerptTruncated?: boolean;
   sectionRef: string;
   heading: string;
   category: CovenantCategoryKey;
@@ -688,6 +691,14 @@ export function analyzeProvision(params: {
       "Source structure for this section was flagged ambiguous during parsing — verify section boundaries and attribution before relying on this summary",
     );
   }
+  // Rule 192: disclose a PREFIX excerpt — the operative span ran
+  // past the 4000-char cap, so clauses beyond the cap (which may
+  // carry their own baskets) are not in this summary.
+  if (params.candidate.excerptTruncated) {
+    unresolved.push(
+      "Operative excerpt truncated at 4000 characters — clauses beyond the cap are not in this summary; verify the full section before relying on this item",
+    );
+  }
 
   const plainEnglish = buildPlainEnglish({
     sectionRef,
@@ -716,6 +727,7 @@ export function analyzeProvision(params: {
   });
 
   return {
+    operativeExcerptTruncated: params.candidate.excerptTruncated,
     sectionRef,
     heading,
     category,

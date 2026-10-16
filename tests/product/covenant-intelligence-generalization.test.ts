@@ -715,6 +715,36 @@ describe("generalization: rule 180 — maintenance ratio provisions", () => {
     ).toEqual({ formulaType: "COVERAGE_RATIO_ROOM", thresholdValue: 2.5 });
   });
 
+  it("Rule 192: refuses a single-test provision from a truncated excerpt (the tail may hide more tests)", async () => {
+    const { parseMaintenanceRatio } = await import(
+      "../../lib/product/customer-intelligence/maintenance-ratio"
+    );
+    expect(
+      parseMaintenanceRatio(
+        ratioItem(
+          "The Borrower shall not permit the Total Net Leverage Ratio to exceed 4.00 to 1.00 at any quarter end.",
+          ["Ratio threshold: 4.00 to 1.00"],
+        ) as unknown as Parameters<
+          typeof import("../../lib/product/customer-intelligence/maintenance-ratio").parseMaintenanceRatio
+        >[0],
+      ),
+    ).toEqual({ formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 4, debtBasis: "total" });
+    const truncated = {
+      ...ratioItem(
+        "The Borrower shall not permit the Total Net Leverage Ratio to exceed 4.00 to 1.00 at any quarter end.",
+        ["Ratio threshold: 4.00 to 1.00"],
+      ),
+      operativeExcerptTruncated: true,
+    };
+    expect(parseMaintenanceRatio(truncated as never)).toBeNull();
+    const edited = { ...truncated, reviewerDecision: "EDITED" as const };
+    expect(parseMaintenanceRatio(edited as never)).toEqual({
+      formulaType: "LEVERAGE_RATIO_ROOM",
+      thresholdValue: 4,
+      debtBasis: "total",
+    });
+  });
+
   it("refuses a stepped schedule (several distinct thresholds)", async () => {
     const { parseMaintenanceRatio } = await import(
       "../../lib/product/customer-intelligence/maintenance-ratio"

@@ -69,6 +69,26 @@ interface ParsedFormula {
 }
 
 function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
+  // Rule 192: the item's excerpt is a PREFIX of a longer operative
+  // span (4000-char cap) — tail clauses are missing. A formula
+  // parsed from it would attribute an early clause's amount to
+  // the whole section (Aon 6.11 minted a FLAT $5M LIEN Permission
+  // from an early clause while the (t) greater-of basket sat
+  // beyond the cap). Fail closed: no formula from a truncated
+  // excerpt. EDITED items are exempt — counsel supplied the
+  // controlling text, so the analyzer's excerpt is not what
+  // the formula parses.
+  if (item.operativeExcerptTruncated && item.reviewerDecision !== "EDITED") {
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: 0,
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: ["Operative excerpt truncated — tail clauses not visible; no formula minted from a partial excerpt."],
+      modelingStatus: "KNOWN_NOT_MODELED",
+      missingFields: ["thresholdValue", "formulaType", "operativeExcerptTruncated"],
+    };
+  }
   const basketText = [
     ...(item.materialBasketsThresholds ?? []),
     ...(item.permissions ?? []),

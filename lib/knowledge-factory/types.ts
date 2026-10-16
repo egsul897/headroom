@@ -187,6 +187,12 @@ export interface CovenantCandidateRecord {
   families: KnowledgeTaxonomyFamily[];
   signals: string[];
   excerpt: string;
+  /** Rule 192: the operative span exceeded the 4000-char excerpt
+   * cap, so this excerpt is a PREFIX of the section — clauses
+   * beyond the cap are not in this summary. The compiler must
+   * not mint a formula from a truncated excerpt (it would
+   * attribute an early clause's amount to the whole section). */
+  excerptTruncated?: boolean;
   representationLevel: KnowledgeRepresentationLevel;
   discoveryScore: number;
 }
