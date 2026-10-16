@@ -15,6 +15,8 @@ export interface RulebookReadiness {
   companyId: string;
   stage: RulebookStage;
   discoveredSummaries: number;
+  /** Discovered summary items from analyses predating the current analyzer build (rule 162). */
+  staleDiscoveredSummaries: number;
   interpretedProvisions: number;
   reviewedPermissions: number;
   executablePermissions: number;
@@ -22,6 +24,17 @@ export interface RulebookReadiness {
   blockers: string[];
   headline: string;
   note: string;
+}
+
+/**
+ * Rule 162: headline note for stale summaries feeding the rulebook
+ * ladder. Same gap as capacity (rule 161): discoveredSummaries and
+ * interpretedProvisions counted stale items with no disclosure.
+ * Disclosure, not a blocker — the old analyses still exist.
+ */
+export function rulebookStaleNote(staleDiscoveredSummaries: number): string {
+  if (staleDiscoveredSummaries <= 0) return "";
+  return ` ${staleDiscoveredSummaries} discovered summary items come from analyses predating the current analyzer build — re-analyze for current results.`;
 }
 
 export async function loadRulebookReadiness(companyId: string): Promise<RulebookReadiness> {
@@ -41,6 +54,10 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   ]);
 
   const discoveredSummaries = docs.reduce((n, d) => n + (d.summary?.items.length ?? 0), 0);
+  // Rule 162: stale items count toward the ladder unless disclosed.
+  const staleDiscoveredSummaries = docs
+    .filter((d) => d.analysisStale)
+    .reduce((n, d) => n + (d.summary?.items.length ?? 0), 0);
   const interpretedProvisions = docs
     .flatMap((d) => d.summary?.items ?? [])
     .filter((i) => i.plainEnglish && !/appears to address/i.test(i.plainEnglish)).length;
@@ -94,7 +111,7 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
     stage = "EXECUTABLE";
   }
 
-  const headline =
+  const headlineBase =
     stage === "EXECUTABLE"
       ? "Executable rulebook path available for supported permissions only."
       : stage === "REVIEWED"
@@ -102,11 +119,13 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
         : stage === "INTERPRETED"
           ? "AI interpretations ready for customer counsel review — not blocked on external legal verification."
           : "Only discovery (or empty) state — no interpreted rulebook yet.";
+  const headline = headlineBase + rulebookStaleNote(staleDiscoveredSummaries);
 
   return {
     companyId,
     stage,
     discoveredSummaries,
+    staleDiscoveredSummaries,
     interpretedProvisions,
     reviewedPermissions,
     executablePermissions,
