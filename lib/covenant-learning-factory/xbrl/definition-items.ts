@@ -64,28 +64,36 @@ function ebitdaMeasureRank(term: string): number | null {
   const n = term.replace(/\s+/g, " ").trim();
   // Period wrappers / components / excess cash flow / ratios — never the primary schedule.
   if (/^(?:LTM|TTM|Trailing|Four\s+Quarter)\s+/i.test(n)) return null;
-  if (/\b(?:Acquired|Disposed|Pro\s+Forma|Closing\s+Date|Annualized)\s+/i.test(n)) return null;
+  if (/\b(?:Acquired|Disposed|Pro\s+Forma|Closing\s+Date|Annualized|Specified|Commensurate|Budgeted|Lost)\b/i.test(n)) return null;
   if (/Excess\s+Cash\s+Flow|Retained\s+Excess|Cash\s+Flow\s+(?:Period|Amount|Application|Priority)|Available\s+for\s+Debt/i.test(n)) return null;
   if (/\bRatio\b|\bCoverage\b|\bLeverage\b|\bMultiple\b/i.test(n)) return null;
   if (/^Consolidated\s+EBITDA$/i.test(n)) return 100;
   if (/^Consolidated\s+Adjusted\s+EBITDA$/i.test(n) || /^Adjusted\s+Consolidated\s+EBITDA$/i.test(n)) return 90;
+  if (/^Consolidated\s+EBITDAR$/i.test(n)) return 88;
   if (/^Consolidated\s+EBITDAX$/i.test(n)) return 85;
+  if (/^EBITDAR$/i.test(n)) return 82;
   if (/^EBITDAX$/i.test(n)) return 80;
   if (/^EBITDA$/i.test(n)) return 78;
   if (/^Operating\s+EBITDA$/i.test(n)) return 70;
+  if (/^Adjusted\s+Cash\s+EBITDA$/i.test(n)) return 65;
   if (/^Adjusted\s+EBITDA$/i.test(n)) return 60;
   if (/^Consolidated\s+Cash\s+Flow$/i.test(n)) return 50;
+  // Other "* EBITDA(R|X)" labels (e.g. segment EBITDA) only when the body passes the schedule gate.
+  if (/EBITDA[RX]?$/i.test(n)) return 55;
   return null;
 }
 
 /** Definition body must read as NI/EBIT + interest-or-tax + D&A/depletion add-backs (not a mere wrapper). */
 function looksLikeEbitdaSchedule(def: string): boolean {
   const body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\s*,?\s*/i, "");
-  if (!/net\s+income|\bEBIT\b|operating\s+income/i.test(body)) return false;
-  if (!(/\binterest\b|fixed\s+charges/i.test(body) || /\btax(?:es|able)?\b/i.test(body))) return false;
-  if (!/depreciation|amortization|depletion/i.test(body)) return false;
+  // Base: net income / EBIT / operating income; UK-style "consolidated profits"; formula "earnings before interest".
+  if (!/net\s+income|\bEBIT\b|operating\s+income|consolidated\s+profits?\b|earnings\s+before\s+interest/i.test(body)) return false;
+  if (!(/\binterest\b|fixed\s+charges|finance\s+charges/i.test(body) || /\btax(?:es|able|ation)?\b/i.test(body))) return false;
+  // Indentures often say "Consolidated Non-Cash Charges" instead of spelling depreciation/amortization.
+  if (!/depreciation|amortization|depletion|non-?cash\s+charges/i.test(body)) return false;
+  const addBack = /\bplus\b|\bincreased\b|\badding\s+thereto\b|\badding\b|\badjusted\s+by\b|\bthe\s+sum\b|before\s+deducting/i.test(body);
   // Pro Forma wrapper of another EBITDA term with no own add-back schedule.
-  if (/\bon\s+a\s+Pro\s+Forma\s+Basis\b/i.test(body) && !/\bplus\b|\bincreased\b/i.test(body)) return false;
+  if (/\bon\s+a\s+Pro\s+Forma\s+Basis\b/i.test(body) && !addBack) return false;
   return true;
 }
 
