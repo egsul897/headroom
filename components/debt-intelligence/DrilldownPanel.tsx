@@ -11,9 +11,9 @@ export function DrilldownPanel({ d }: { d: DashboardDrilldown }) {
       style={{
         marginTop: 10,
         padding: 12,
-        border: "1px solid var(--border, #e5e7eb)",
+        border: "1px solid var(--line)",
         borderRadius: 6,
-        background: "var(--surface-2, #fafafa)",
+        background: "var(--card)",
       }}
     >
       <div className="row">

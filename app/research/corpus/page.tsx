@@ -97,25 +97,25 @@ export default async function ResearchCorpusPage({
             name="q"
             defaultValue={q}
             placeholder="Defined term, family, issuer, title…"
-            style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)", width: "100%" }}
+            style={{ padding: "10px 12px", border: "1px solid var(--line)", width: "100%" }}
           />
           <input
             name="family"
             defaultValue={family}
             placeholder="Covenant family filter (optional)"
-            style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)", width: "100%" }}
+            style={{ padding: "10px 12px", border: "1px solid var(--line)", width: "100%" }}
           />
           <input
             name="issuer"
             defaultValue={issuer}
             placeholder="Issuer ticker or name"
-            style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)", width: "100%" }}
+            style={{ padding: "10px 12px", border: "1px solid var(--line)", width: "100%" }}
           />
           <input
             name="documentClass"
             defaultValue={documentClass}
             placeholder="Document class (e.g. CREDIT_AGREEMENT, INDENTURE)"
-            style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)", width: "100%" }}
+            style={{ padding: "10px 12px", border: "1px solid var(--line)", width: "100%" }}
           />
           <div className="button-row" style={{ gap: 8, flexWrap: "wrap" }}>
             <input
@@ -123,14 +123,14 @@ export default async function ResearchCorpusPage({
               type="date"
               defaultValue={dateFrom}
               aria-label="Filing date from"
-              style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)" }}
+              style={{ padding: "10px 12px", border: "1px solid var(--line)" }}
             />
             <input
               name="dateTo"
               type="date"
               defaultValue={dateTo}
               aria-label="Filing date to"
-              style={{ padding: "10px 12px", border: "1px solid var(--border, #ccc)" }}
+              style={{ padding: "10px 12px", border: "1px solid var(--line)" }}
             />
             <label style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <input type="checkbox" name="analysis" value="ready" defaultChecked={analysisReady} />

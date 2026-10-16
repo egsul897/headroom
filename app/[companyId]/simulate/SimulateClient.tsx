@@ -365,7 +365,7 @@ function DebtPanel({
           )}
         </div>
         {sim.status === "blocked" && sim.binding && sim.next && (sim.next.capacity ?? Infinity) > (sim.binding.capacity ?? 0) && (
-          <div style={{ marginTop: 10, background: "#fff", border: "1px solid var(--line)", borderRadius: 6, padding: "10px 12px", fontSize: 13 }}>
+          <div style={{ marginTop: 10, background: "var(--card)", border: "1px solid var(--line)", borderRadius: 6, padding: "10px 12px", fontSize: 13 }}>
             <b>Amendment unlock:</b> relaxing the binding covenant in {sim.binding.documentName} would raise
             capacity to <span className="mono" style={{ fontWeight: 600 }}>{fmtM(sim.next.capacity!)}</span>, where{" "}
             {sim.next.documentName} becomes the constraint.

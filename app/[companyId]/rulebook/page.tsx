@@ -125,7 +125,7 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
           candidates.slice(0, 50).map((c, i) => (
             <div
               key={`${c.sourceId}-${c.sectionRef}-${i}`}
-              style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--border, #e5e7eb)" }}
+              style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--line)" }}
             >
               <div className="row">
                 <div className="row-label">

@@ -48,12 +48,12 @@ They need the same portfolio list, with customer companies kept apart from evalu
 
 ### Color
 
-Three palettes were rendered on the same unloaded screens. The one that shipped is **cool precision**.
+The product default is **Graphite Ledger**: stone field `#f3f0eb`, graphite rail `#2a2c2e`, oxblood action `#54243c`. Earlier cool and navy trials are sample-only.
 
 | Option | Field | Why it did or did not ship |
 | --- | --- | --- |
 | Paper, refined | Warm `#f6f5f0`, amber darkened to `#7c4a00` so the badge passes WCAG AA | Closest to the previous skin. Still reads as a document, and the warm field competes with amber. |
-| Cool precision | Canvas `#f4f6f8`, card white, ink `#12151a`, navy `#1a365d` | **Shipped.** A financing decision needs a quiet field. Green, amber, and red are then the only saturated signals. Navy is selection and information, never a status pass. |
+| Cool precision | Canvas `#f4f6f8`, card white, ink `#12151a`, navy `#1a365d` | Earlier trial. A quiet field, and then set aside. |
 | Ink rail | Light canvas, sidebar `#1b2430` | Bolder, and it splits the product. A dark rail next to red and green status makes the chrome compete with the answer. |
 
 Status pairs are measured for normal text (WCAG AA, 4.5:1) against their soft backgrounds:
@@ -63,10 +63,10 @@ Status pairs are measured for normal text (WCAG AA, 4.5:1) against their soft ba
 | clear | `#0e6b43` / `#e5f4ec` | 5.77 | This check is in a good state. Read the hint. Green is not "borrow this," and it is not the nav selection color. |
 | attention | `#7c4a00` / `#fbf3df` | 6.69 | A person has to finish something before the number can be relied on. The previous amber `#96690f` on `#f4ecdb` was 4.13 and failed AA. |
 | stop | `#9d2c24` / `#fdeceb` | 6.52 | Do not treat this as allowed. |
-| info | `#1a365d` / `#e8eef6` | 10.40 | Context. Not a pass and not a failure. |
-| unknown | `#3e4651` / `#eef1f4` | 8.81 | Nothing was invented. |
+| info | `#2a2c2e` / `#e6e1da` | 10.78 | Context. Graphite, not oxblood, so a clause citation is not a stop. |
+| unknown | `#5e5852` / `#e8e3dc` | 5.50 | Nothing was invented. |
 
-Body muted `#4a5360` on canvas `#f4f6f8` is 7.19. A prohibition clause stays navy, not red. The clause restricts; that is not the same as a breach.
+Body muted `#5e5852` on canvas `#f3f0eb` is 6.17. A prohibition clause stays graphite, not red. The clause restricts; that is not the same as a breach.
 
 ### Type
 
@@ -98,7 +98,7 @@ The shell that shipped:
 - Contextual tabs, only on the section you are in — Covenants / Rulebook / Intelligence, or Capacity / Ledger / Certificates.
 - Finish setup — only while `companyNavItems` includes Onboarding. The palette still says Onboarding.
 
-The rail is Oxford navy, `#1c2838`. The wordmark is ivory `#f3efe6` (12.98:1). Nav text and the line “Clarity. Control. Confidence.” are `#c4bfb4` (8.13:1). The active chip is `#2c3c52` with that ivory (9.76:1) and a brass mark `#c0ae58`. The primary button is the same navy, ivory label 13.44:1. The field is ivory `#f6f3ec`. Charts step through navy, steel `#4a5c72`, pale steel `#8ea0b4`, and brass. Status green `#0e6b43`, amber `#7c4a00`, and red `#9d2c24` stay the status colors. Brass sits at hue about 50°, lighter and less saturated than amber. Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser.
+The rail is graphite, `#2a2c2e`. The wordmark is stone `#f4f1ec` (12.44:1). Nav text and the line “Clarity. Control. Confidence.” are `#c8c4be` (8.07:1). The active chip is oxblood `#54243c` with white text (12.39:1) and a stone mark `#f4f1ec`. The primary button is that oxblood, white label 12.39:1, hover `#6b3050` at 9.71:1. The field is warm stone `#f3f0eb`. Charts step through graphite `#2a2c2e`, warm charcoal `#5e5854`, stone `#a39c94`, and oxblood. Status green `#0e6b43`, amber `#7c4a00`, and red `#9d2c24` stay the status colors. Oxblood sits at hue 330°, so it is not the brick status red. Information chips use graphite on `#e6e1da` (10.78:1), not oxblood. Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser.
 
 | Item | Before | After |
 | --- | --- | --- |

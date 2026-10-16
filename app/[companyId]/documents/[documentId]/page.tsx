@@ -205,7 +205,7 @@ export default async function DocumentSourcePage({
               style={{
                 marginTop: 16,
                 paddingTop: 12,
-                borderTop: "1px solid var(--border, #e5e7eb)",
+                borderTop: "1px solid var(--line)",
               }}
             >
               <div className="row">
@@ -262,7 +262,7 @@ export default async function DocumentSourcePage({
                 style={{
                   margin: "8px 0 0",
                   padding: "8px 12px",
-                  borderLeft: "3px solid var(--color-navy, #1e3a5f)",
+                  borderLeft: "3px solid var(--accent)",
                   fontSize: 12,
                   lineHeight: 1.45,
                   whiteSpace: "pre-wrap",

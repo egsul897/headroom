@@ -1,29 +1,30 @@
 :root {
-  /* Ivory field. Green, amber, and red stay the only saturated status signals. */
-  --paper: #f6f3ec;
-  --card: #fffdf9;
-  --ink: #1c1914;
-  --muted: #5c564c;
-  --line: #e4ddd0;
+  /* Warm stone field. Green, amber, and red stay the only saturated status signals. */
+  --paper: #f3f0eb;
+  --card: #fffcf8;
+  --ink: #1a1816;
+  --muted: #5e5852;
+  --line: #e3ddd4;
   --green: #0e6b43;
   --green-soft: #e5f4ec;
   --red: #9d2c24;
   --red-soft: #fdeceb;
   --amber: #7c4a00;
   --amber-soft: #fbf3df;
-  --navy: #1a365d;
-  --navy-soft: #e8eef6;
-  /* Oxford navy button. Ivory label on #1c2838 is 13.44:1. Brass signal, hue ~50°. */
-  --accent: #1c2838;
-  --accent-hover: #2c3c52;
-  --accent-ink: #f6f3ec;
-  --accent-signal: #c0ae58;
-  --chart-1: #1c2838;
-  --chart-2: #4a5c72;
-  --chart-3: #8ea0b4;
-  --chart-4: #c0ae58;
-  --chart-track: #e4ddd0;
-  --idle-soft: #eef1f4;
+  /* Graphite is information and selection. Oxblood is the action. They are not status colors. */
+  --navy: #2a2c2e;
+  --navy-soft: #e6e1da;
+  /* Oxblood button. White label on #54243c is 12.39:1. Hover #6b3050 is 9.71:1. */
+  --accent: #54243c;
+  --accent-hover: #6b3050;
+  --accent-ink: #ffffff;
+  --accent-signal: #f4f1ec;
+  --chart-1: #2a2c2e;
+  --chart-2: #5e5854;
+  --chart-3: #a39c94;
+  --chart-4: #54243c;
+  --chart-track: #e6e1da;
+  --idle-soft: #e8e3dc;
   --input-bg: #ffffff;
 
   /*
@@ -45,8 +46,8 @@
   --status-stop-soft: var(--red-soft);
   --status-info: var(--navy);
   --status-info-soft: var(--navy-soft);
-  --status-unknown: #3e4651;
-  --status-unknown-soft: #eef1f4;
+  --status-unknown: #5e5852;
+  --status-unknown-soft: #e8e3dc;
 
   /* Spacing scale. Use these steps; do not invent one-off gaps. */
   --space-1: 4px;
@@ -57,12 +58,12 @@
   --space-6: 32px;
   --space-7: 48px;
 
-  --shadow-rest: 0 1px 2px rgba(18, 21, 26, 0.05);
+  --shadow-rest: 0 1px 2px rgba(26, 24, 22, 0.06);
   --radius: 10px;
 }
 
 ::selection {
-  background: #d6e2f2;
+  background: #e6dfd4;
   color: var(--ink);
 }
 
@@ -353,7 +354,7 @@ main {
   border: 1px solid var(--line);
   border-radius: 4px;
   padding: 6px 10px;
-  background: #fcfbf8;
+  background: var(--card);
 }
 
 .trace-term summary {
@@ -448,7 +449,7 @@ main {
 
 .progress-track {
   height: 7px;
-  background: #ecead1;
+  background: var(--chart-track);
   border-radius: 2px;
   margin-top: 7px;
   overflow: hidden;
@@ -565,9 +566,9 @@ input[type="range"] {
 }
 
 .button-danger {
-  background: #fff;
-  color: #a33;
-  border-color: #d9a3a3;
+  background: var(--card);
+  color: var(--red);
+  border-color: color-mix(in srgb, var(--red) 35%, var(--line));
 }
 
 .button:hover {
@@ -1304,7 +1305,7 @@ footer.app-footer {
 }
 
 .data-table tbody tr:nth-child(even) {
-  background: #f7f9fb;
+  background: color-mix(in srgb, var(--ink) 3%, var(--card));
 }
 
 .data-table tbody tr:hover {
@@ -1312,7 +1313,7 @@ footer.app-footer {
 }
 
 .covenant-row:hover {
-  background: rgba(26, 54, 93, 0.05);
+  background: color-mix(in srgb, var(--ink) 4%, var(--card));
 }
 
 .status-badge {
@@ -1550,7 +1551,7 @@ footer.app-footer {
 }
 
 .portfolio-table tbody tr:hover td {
-  background: #f7f9fb;
+  background: color-mix(in srgb, var(--ink) 4%, var(--card));
 }
 
 .portfolio-name {
@@ -1629,12 +1630,12 @@ footer.app-footer {
 }
 
 .redline-base {
-  background: #f7f9fb;
+  background: color-mix(in srgb, var(--ink) 3%, var(--card));
 }
 
 .redline-amend {
-  background: #f3f7f2;
-  border-color: #d5e6db;
+  background: color-mix(in srgb, var(--accent) 7%, var(--card));
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--line));
 }
 
 .redline-label {

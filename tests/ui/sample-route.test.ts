@@ -18,10 +18,10 @@ describe("dev sample route", () => {
     expect(page + fixture).not.toMatch(/prisma|listCompanies|getCompanyDashboard|@\/lib\/dashboard-service/);
     expect(page).toContain('searchParams.brand === "navy"');
     expect(source("app/dev/sample/brands.css")).toContain('data-brand="olive"');
-    expect(source("app/globals.css")).toContain("--paper: #f6f3ec");
+    expect(source("app/globals.css")).toContain("--paper: #f3f0eb");
     expect(source("app/globals.css")).not.toContain("sample-brand");
-    expect(source("app/home-shell.css")).toContain("--shell-sidebar: #1c2838");
-    expect(source("app/globals.css")).toContain("--accent: #1c2838");
+    expect(source("app/home-shell.css")).toContain("--shell-sidebar: #2a2c2e");
+    expect(source("app/globals.css")).toContain("--accent: #54243c");
     expect(source("app/globals.css")).toContain("--green: #0e6b43");
     expect(source("app/home-shell.css")).not.toContain("sample-brand");
     for (const rel of ["app/page.tsx", "app/[companyId]/page.tsx", "app/[companyId]/covenants/page.tsx", "app/[companyId]/capacity/page.tsx"]) {

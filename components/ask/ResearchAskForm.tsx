@@ -21,7 +21,7 @@ export function ResearchAskForm({
         defaultValue={defaultQuestion}
         rows={4}
         placeholder="e.g. What restrictions apply to restricted payments?"
-        style={{ width: "100%", padding: 10, border: "1px solid var(--border, #ccc)" }}
+        style={{ width: "100%", padding: 10, border: "1px solid var(--line)" }}
       />
       <button className="button button-primary" type="submit">
         Retrieve cited answer
