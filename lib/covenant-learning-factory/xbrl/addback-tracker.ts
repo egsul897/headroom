@@ -26,6 +26,14 @@ export interface AddBackFlag {
   /** HIGH: exact filed figure fully covers the line. MEDIUM: partly evidenced. LOW: nothing filed — check with CFO. */
   confidence: "HIGH" | "MEDIUM" | "LOW";
   note: string;
+  /** The exact borrower-input key a CFO-confirmed, sourced figure would fill (ADDBACK:<clause> or CNI:<clause/category>). */
+  inputKey: string;
+  /**
+   * Upper limit on what confirming this flag could still add. CAP_HEADROOM: the clause's remaining cap room (EBITDA)
+   * and maxLeverage × that (debt). UNCAPPED_NEEDS_INPUT: no cap and no filed figure — unknown, never estimated.
+   * COUNTED: the filed figure is already counted in full; nothing further to unlock.
+   */
+  potential: { basis: "CAP_HEADROOM" | "UNCAPPED_NEEDS_INPUT" | "COUNTED" | "LOWERS_EBITDA"; ebitda: string | null; debt: string | null };
   bindingTier?: "CONFIRMED" | "LOWER_CONFIDENCE";
 }
 
@@ -79,10 +87,44 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
       debtCapacityDelta: lev && ebitdaDelta != null ? mulLimit(lev, BigInt(ebitdaDelta)).toString() : null,
       confidence: detected ? (l.coverage === "FULL" || l.status !== "NEEDS_INPUT" ? "HIGH" : "MEDIUM") : "LOW",
       note: detected ? (l.coverage === "FULL" || l.status !== "NEEDS_INPUT" ? (l.status === "CAPPED" ? "exact filed figure; cap applied" : "exact filed figure") : "partly evidenced; remainder needs input") : "permitted by the definition; no filed movement detected — available, check with CFO",
+      inputKey: `ADDBACK:${l.label}`,
+      potential: potentialOf(l.headroomToCap, detected && (l.coverage === "FULL" || l.status !== "NEEDS_INPUT"), lev),
+      ...(opt.bindingTier ? { bindingTier: opt.bindingTier } : {}),
+    });
+  }
+  // Net-income exclusions the definition needs but filings lack: the CFO can fill them by key (CNI:…). Such an item can
+  // raise or lower EBITDA, so no direction or amount is assumed.
+  for (const key of opt.needsBorrowerInput ?? []) {
+    if (!/^CNI:/i.test(key) || flags.some((f) => f.inputKey.toUpperCase() === key.toUpperCase())) continue;
+    flags.push({
+      category: "OTHER", clause: { label: key.slice(4), text: "net-income exclusion required by the definition; not in filings" }, cap: null, sources: [], status: "NEEDS_INPUT",
+      amount: null, movement: null, capHeadroom: null, ebitdaDelta: null, debtCapacityDelta: null, confidence: "LOW",
+      note: "net-income exclusion — CFO input (signed: gains positive, losses negative)", inputKey: key,
+      potential: { basis: "LOWERS_EBITDA", ebitda: null, debt: null },
       ...(opt.bindingTier ? { bindingTier: opt.bindingTier } : {}),
     });
   }
   return flags;
+}
+
+function potentialOf(headroom: string | null, counted: boolean, lev: string | null): AddBackFlag["potential"] {
+  if (headroom != null && /^-?\d+$/.test(headroom)) {
+    const h = BigInt(headroom) > 0n ? BigInt(headroom) : 0n;
+    return { basis: "CAP_HEADROOM", ebitda: h.toString(), debt: lev ? mulLimit(lev, h).toString() : null };
+  }
+  if (counted) return { basis: "COUNTED", ebitda: "0", debt: lev ? "0" : null };
+  return { basis: "UNCAPPED_NEEDS_INPUT", ebitda: null, debt: null };
+}
+
+/**
+ * Rank flags by potential capacity impact: known cap headroom first (largest debt, else EBITDA, room first); then
+ * uncapped lines needing input and net-income exclusions (unknown, unranked among themselves — no invented amounts);
+ * lines already fully counted last.
+ */
+export function rankFlags(flags: readonly AddBackFlag[]): Array<AddBackFlag & { rank: number }> {
+  const tier = (f: AddBackFlag) => (f.potential.basis === "CAP_HEADROOM" ? 0 : f.potential.basis === "UNCAPPED_NEEDS_INPUT" ? 1 : f.potential.basis === "LOWERS_EBITDA" ? 2 : 3);
+  const mag = (f: AddBackFlag) => BigInt(f.potential.debt ?? f.potential.ebitda ?? "0");
+  return [...flags].map((f, i) => ({ f, i })).sort((a, b) => tier(a.f) - tier(b.f) || (mag(b.f) > mag(a.f) ? 1 : mag(b.f) < mag(a.f) ? -1 : 0) || a.i - b.i).map(({ f }, i) => ({ ...f, rank: i + 1 }));
 }
 
 /** Prior-year snapshot date: one year before the current anchor (filings filed on or before it). */
