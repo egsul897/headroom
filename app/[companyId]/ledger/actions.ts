@@ -61,10 +61,14 @@ export async function supersedeLedgerEntry(companyId: string, id: string) {
 }
 
 /** Mirrors the "commit to ledger" buttons on the Simulate tab - a cleared dividend/Investment becomes a real DEBIT entry against the shared restricted-payment pool. */
-export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND" | "INVESTMENT", amount: number, documentId: string) {
+export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND" | "INVESTMENT", amount: number, documentId: string, createdBy: string) {
   await requireTenantAction(companyId);
   if (!Number.isFinite(amount) || amount <= 0) throw new Error("Amount must be a positive number");
   if (!documentId) throw new Error("documentId is required");
+  // Rule 140: the commit writes a capacity-affecting ledger row
+  // (rule 139's createdBy) — the committer must be named, never
+  // defaulted.
+  if (!createdBy?.trim()) throw new Error("createdBy (your name/email) is required");
   // Rule 134: the Simulate UI only shows the commit button when the
   // CLIENT-side engine verdict is "clear" — but this action
   // previously trusted that verdict and wrote a capacity-affecting
@@ -91,6 +95,7 @@ export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND
       amount,
       direction: "DEBIT",
       source: "Simulate tab",
+      createdBy: createdBy.trim(),
     },
   });
   revalidatePath(`/${companyId}`, "layout");
