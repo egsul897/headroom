@@ -67,3 +67,24 @@ describe("findDefinitionText: long Consolidated EBITDA definitions are not trunc
     expect(Number(o.supported ?? o.maximum ?? 0)).toBeGreaterThanOrEqual(200 * M + 7 * M);
   });
 });
+
+import { findDefinition } from "@/lib/covenant-learning-factory/xbrl/bind";
+
+describe("bind.findDefinition: long definitions are not truncated at 2.5k/6k", () => {
+  it("keeps the full definition through a late clause when the next term is past 6k", () => {
+    const padUnit =
+      "including without limitation costs related to facility consolidations, strategic initiatives, and personnel relocation in evaluating operating performance, ";
+    let pad = "";
+    while (pad.length < 7_000) pad += padUnit;
+    const text =
+      `"Consolidated Total Assets" means the total assets of the Borrower and its Restricted Subsidiaries on a consolidated basis: (a) cash and cash equivalents; plus (b) accounts receivable; plus ` +
+      pad +
+      `(c) property plant and equipment net of accumulated depreciation. ` +
+      `"Default" means any event.`;
+    const def = findDefinition(text, "Consolidated Total Assets");
+    expect(def).not.toBeNull();
+    expect(def!.length).toBeGreaterThan(6_000);
+    expect(def!).toContain("property plant and equipment");
+    expect(def!).not.toContain('"Default"');
+  });
+});

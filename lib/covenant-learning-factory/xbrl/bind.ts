@@ -84,9 +84,12 @@ export function findDefinition(text: string, term: string): string | null {
     const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
     const m = new RegExp(`"\\s*${esc}\\s*"\\s*(?:shall\\s+)?(?:mean|means|shall\\s+have\\s+the\\s+meaning)\\b`, "i").exec(t);
     if (!m) return null;
-    const rest = t.slice(m.index, m.index + 6000);
-    const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(rest.slice(m[0].length));
-    return rest.slice(0, next ? m[0].length + next.index : 2500).trim();
+    // Same as findDefinitionText: long schedules exceed 6k; search the remainder for the next
+    // defined-term opener (no 6k/2.5k cutoffs).
+    const after = t.slice(m.index + m[0].length);
+    const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(after);
+    const end = next ? m[0].length + next.index : Math.min(m[0].length + after.length, 100_000);
+    return t.slice(m.index, m.index + end).trim();
   };
   return tryTerm(term) ?? (() => { const s = stripPossessiveOwner(term); return s !== term ? tryTerm(s) : null; })();
 }
