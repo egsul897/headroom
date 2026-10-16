@@ -74,7 +74,12 @@ export function compareAmendmentSummaries(params: {
     } else if (a && b) {
       const basketShift =
         JSON.stringify(b.materialBasketsThresholds) !== JSON.stringify(a.materialBasketsThresholds);
-      const textShift = b.operativeLanguageExcerpt.slice(0, 120) !== a.operativeLanguageExcerpt.slice(0, 120);
+      // Compare normalized FULL excerpts: the old 120-char prefix
+      // comparison missed proviso/condition changes after char 120
+      // (identical opening, different tail) and reported
+      // BOTH_PRESENT — so the resolver never bound the amended text.
+      const norm = (s: string) => s.replace(/\s+/g, " ").trim();
+      const textShift = norm(b.operativeLanguageExcerpt) !== norm(a.operativeLanguageExcerpt);
       rows.push({
         sectionRef: sec,
         category: a.category,
