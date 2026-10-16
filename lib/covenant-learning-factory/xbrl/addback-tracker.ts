@@ -48,8 +48,14 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
     if (l.category === "INTEREST" || l.category === "TAXES" || l.category === "D&A") continue;
     // A discretionary add-back is never sourced from a core concept (interest, income tax, D&A): such a match is a
     // mis-mapping, not evidence of the add-back.
-    const CORE = /^(?:Interest|IncomeTaxExpense|Depreciation|DepreciationDepletion|DepreciationAndAmortization|DepreciationAmortization)/;
-    const sources = l.concepts.filter((c) => !c.concept.startsWith("borrower:") && !CORE.test(baseConcept(c.concept))).map((c) => {
+    // A core concept is kept only when the clause itself names that item (a "non-cash charges, including depreciation and
+    // amortization" line is evidenced by D&A; "equity interests" is not interest).
+    const lineText = l.text.replace(/\b(?:equity|minority|non-?controlling|profits?|ownership|membership|partnership)\s+interests?\b|\binterests\b/gi, " ");
+    const coreOk = (concept: string) =>
+      /^Interest/.test(concept) ? /\binterest\b/i.test(lineText) :
+      /^IncomeTax/.test(concept) ? /\btax(?:es)?\b/i.test(lineText) :
+      /^Depreciation/.test(concept) ? /depreciation|amortization|depletion/i.test(lineText) : true;
+    const sources = l.concepts.filter((c) => !c.concept.startsWith("borrower:") && coreOk(baseConcept(c.concept))).map((c) => {
       const concept = baseConcept(c.concept);
       const cur = factOf(current, concept), pri = factOf(prior, concept);
       return { concept, current: c.value, prior: pri ? pri.value : null, currentPeriodEnd: cur?.periodEnd ?? null, priorPeriodEnd: pri?.periodEnd ?? null };
