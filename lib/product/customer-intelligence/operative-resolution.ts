@@ -70,14 +70,20 @@ export function extractEffectiveDateHint(text: string): string | null {
   const iso = text.match(/\b(20\d{2}-\d{2}-\d{2})\b/);
   if (iso) return iso[1]!;
   const mdy = text.match(
-    /\b(?:dated\s+as\s+of|as\s+of|effective\s+(?:as\s+of\s+)?)([A-Z][a-z]+ \d{1,2},?\s+20\d{2})\b/i,
+    /\b(?:dated\s+as\s+of|as\s+of|effective\s+(?:as\s+of\s+)?)\s*([A-Z][a-z]+ \d{1,2},?\s+20\d{2})\b/i,
   );
   if (mdy) {
     const d = new Date(mdy[1]!);
     if (!Number.isNaN(d.getTime())) return d.toISOString().slice(0, 10);
   }
-  const bare = text.match(/\b(20\d{2})\b/);
-  return bare ? `${bare[1]}-01-01` : null;
+  // No bare-year fallback: a bare 4-digit year in a title is usually
+  // a maturity year ("8.5% Notes due 2031"), a facility year, or a
+  // fiscal year — not the effective date. Inventing Jan 1 of that
+  // year corrupted chronology checks and as-of gating (a
+  // restatement titled with a 2031 maturity year was treated as
+  // "not yet effective" until 2031). Callers fall back to the
+  // filing date (a real date) when this returns null.
+  return null;
 }
 
 export function extractAmendedSectionRefs(text: string): string[] {
