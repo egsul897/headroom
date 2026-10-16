@@ -128,7 +128,9 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
       <div className="row-note" style={{ marginTop: 8 }}>
         Cutoff: {authoritative.cutoff.state}
         {authoritative.cutoff.reportingPeriodKey ? ` · ${authoritative.cutoff.reportingPeriodKey}` : ""}
-        {authoritative.cutoff.approvedSnapshotId ? ` · snapshot ${authoritative.cutoff.approvedSnapshotId}` : ""} ·
+        {authoritative.cutoff.cutoffSnapshotId
+          ? ` · snapshot ${authoritative.cutoff.cutoffSnapshotId} (${authoritative.cutoff.cutoffSnapshotStatus})`
+          : ""} ·
         APPROVED snapshots: {authoritative.approvedSnapshotCount} · Active 4C usages:{" "}
         {authoritative.activeLedgerUsageCount}
       </div>

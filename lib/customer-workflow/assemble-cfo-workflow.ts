@@ -133,7 +133,9 @@ export function ns4EvidenceLines(auth: AuthoritativeCapacityResult): string[] {
   const lines: string[] = [
     `NS-4/NS APPROVED snapshots: ${auth.approvedSnapshotCount}`,
     `Cutoff: ${auth.cutoff.state}${auth.cutoff.asOf ? ` asOf ${auth.cutoff.asOf}` : ""}${
-      auth.cutoff.approvedSnapshotId ? ` snapshot=${auth.cutoff.approvedSnapshotId}` : ""
+      auth.cutoff.cutoffSnapshotId
+        ? ` snapshot=${auth.cutoff.cutoffSnapshotId} (${auth.cutoff.cutoffSnapshotStatus})`
+        : ""
     }`,
     `Active attributed 4C ledger usages: ${auth.activeLedgerUsageCount}`,
     `Authoritative capacity status: ${auth.status} (${auth.authority})`,
