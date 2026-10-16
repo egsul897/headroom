@@ -1,5 +1,6 @@
 "use server";
 import { requireTenantAction } from "@/lib/auth/guard";
+import { shouldFallbackAfterFceRefusal } from "@/lib/product/north-star-workflow/approve-fallback-guard";
 
 import { revalidatePath } from "next/cache";
 import {
@@ -71,7 +72,11 @@ export async function approveCertificateAction(
     };
   }
 
-  // Prefer FCE attributable path (refuses BLOCKED); fall back to workspace approve for synthetic seeds.
+  // Prefer FCE attributable path (refuses BLOCKED reconciliation when
+  // the caller supplies one); fall back to workspace approve for
+  // synthetic seeds / already-approved idempotency. Rule 82: a
+  // safety refusal (BLOCKED) must never fall through to the
+  // workspace path, which has no reconciliation check.
   const fce = await approveFceProposedCertificate({
     companyId,
     snapshotId,
@@ -81,6 +86,14 @@ export async function approveCertificateAction(
   if (fce.ok) {
     revalidateCertificateSurfaces(companyId);
     return fce;
+  }
+  if (!shouldFallbackAfterFceRefusal(fce.issues)) {
+    return {
+      ok: false as const,
+      snapshotId,
+      status: "REJECTED",
+      issues: fce.issues,
+    };
   }
 
   const result = await approveWorkspaceCertificate({
