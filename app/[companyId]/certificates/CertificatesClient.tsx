@@ -157,10 +157,10 @@ export function CertificatesClient({
                 <button
                   type="button"
                   className="button"
-                  disabled={pending}
+                  disabled={pending || !reviewedBy.trim()}
                   onClick={() =>
                     start(async () => {
-                      const r = await restateCertificateAction(companyId, s.snapshotId);
+                      const r = await restateCertificateAction(companyId, s.snapshotId, reviewedBy);
                       setMessage(r.ok ? r.label : `Restatement failed: ${(r.issues ?? []).join("; ")}`);
                       router.refresh();
                     })

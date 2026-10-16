@@ -48,14 +48,19 @@ export async function addLedgerEntry(companyId: string, formData: FormData) {
  * does not write a reversing entry, and leaves supersededById null because
  * there is no successor fact. A second call fails closed.
  */
-export async function supersedeLedgerEntry(companyId: string, id: string) {
+export async function supersedeLedgerEntry(companyId: string, id: string, formData: FormData) {
   await requireTenantAction(companyId);
+  // Rule 142: supersession is a decision on a capacity-affecting
+  // row — the superseder must be named (same class as rule 141's
+  // feed resolutions and rule 115's contract-ledger supersession).
+  const supersededBy = String(formData.get("supersededBy") || "").trim();
+  if (!supersededBy) throw new Error("supersededBy (your name/email) is required");
   const entry = await prisma.ledgerEntry.findUniqueOrThrow({ where: { id } });
   if (entry.companyId !== companyId) throw new Error(`Ledger entry ${id} does not belong to this company`);
   if (entry.status === "SUPERSEDED") throw new Error(`Ledger entry ${id} is already superseded`);
   await prisma.ledgerEntry.update({
     where: { id },
-    data: { status: "SUPERSEDED", supersededAt: new Date(), supersededById: null },
+    data: { status: "SUPERSEDED", supersededAt: new Date(), supersededById: null, supersededBy },
   });
   revalidatePath(`/${companyId}`, "layout");
 }

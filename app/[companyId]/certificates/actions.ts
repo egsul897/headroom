@@ -134,12 +134,17 @@ export async function appendHistoricalUsageAction(
   return result;
 }
 
-export async function restateCertificateAction(companyId: string, predecessorSnapshotId: string) {
+export async function restateCertificateAction(companyId: string, predecessorSnapshotId: string, reviewedBy: string) {
   await requireTenantAction(companyId);
+  // Rule 142: the restatement note was hardcoded to the generic
+  // "workspace restatement" — fabricated attribution (rules
+  // 113–115 class). The restater must be named, like the
+  // approver on the same page.
+  if (!reviewedBy?.trim()) throw new Error("reviewedBy (your name/email) is required");
   const result = await proposeCertificateRestatement({
     companyId,
     predecessorSnapshotId,
-    reviewedByNote: "workspace restatement",
+    reviewedByNote: reviewedBy.trim(),
   });
   revalidatePath(`/${companyId}/certificates`);
   revalidatePath(`/${companyId}/capacity`);

@@ -559,6 +559,11 @@ model LedgerEntry {
   status         LedgerEntryStatus @default(ACTIVE)
   supersededAt   DateTime?
   supersededById String?
+  // Rule 142: who superseded this entry. Distinct from
+  // supersededById (the successor entry's id, still unused —
+  // legacy supersession names no successor). Nullable because
+  // historical rows predate attribution.
+  supersededBy   String?
   // Rule 139: who logged this entry. Nullable because
   // historical rows predate attribution; every NEW manual entry
   // must carry it (the action refuses without it).

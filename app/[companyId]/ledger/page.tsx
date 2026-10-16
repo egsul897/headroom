@@ -34,6 +34,7 @@ function LiveLedgerList({ companyId, entries, supersededCount }: { companyId: st
               {fmtM(Math.abs(Number(e.amount)))}
             </span>
             <form action={supersedeLedgerEntry.bind(null, companyId, e.id)}>
+              <input name="supersededBy" placeholder="Superseded by (your name/email)" required style={{ marginRight: 6 }} />
               <button type="submit" className="button">
                 Supersede
               </button>
