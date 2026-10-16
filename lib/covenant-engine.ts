@@ -1375,6 +1375,63 @@ export interface PostTransactionCapacitySimulation {
  *    governing rule: "Never produce zero merely because testedAmount equals
  *    the transaction result's capacity field").
  */
+/**
+ * Rule 190: the company-level maintenance-ratio ceiling for the
+ * LEGACY capacity path. Ratios are company-level financial
+ * tests, not per-document grants: the post-transaction ratio
+ * depends on TOTAL new debt, so the ceiling is the largest
+ * total new-debt amount at which every APPLICABLE maintenance
+ * test (across all documents) still passes. Bisects with
+ * `buildDebtRatioTests` itself as the oracle, so the ceiling
+ * cannot diverge from the legacy test semantics (including
+ * its edge cases, e.g. a zero/negative EBITDA) the way a
+ * re-derived closed form could. `hi` must be >= every legacy
+ * capacity figure: callers pass the max of the position's
+ * per-document and cross-document capacities, so "passes at
+ * hi" genuinely means no cap is needed. An unevaluable test
+ * (coverage with a missing/zero assumed new-debt rate) is
+ * amount-independent, so no ceiling can be proven at all.
+ */
+export type LegacyRatioCeiling =
+  | { kind: "UNCAPPED" }
+  | { kind: "CAPPED"; amount: number }
+  | { kind: "INDETERMINATE"; reason: string };
+
+export function computeLegacyRatioCeiling(
+  data: CompanyCovenantData,
+  position: CovenantPosition,
+  secured: boolean,
+  hi: number,
+): LegacyRatioCeiling {
+  const applicableAt = (a: number): RatioTestResult[] =>
+    buildDebtRatioTests(data, position, a, secured).filter((t) => t.applies);
+  const atHi = applicableAt(hi);
+  if (atHi.length === 0) return { kind: "UNCAPPED" };
+  const unknown = atHi.find((t) => t.status === "review_required");
+  if (unknown) {
+    return {
+      kind: "INDETERMINATE",
+      reason: `Maintenance ratio test ${unknown.sectionRef} (${unknown.basketName}) cannot be evaluated (missing assumed new-debt rate); no ratio-safe legacy capacity can be proven.`,
+    };
+  }
+  if (atHi.every((t) => t.status === "clear")) return { kind: "UNCAPPED" };
+  let lo = 0;
+  let hiBound = hi;
+  for (let i = 0; i < 40; i += 1) {
+    const mid = (lo + hiBound) / 2;
+    const tests = applicableAt(mid);
+    if (tests.some((t) => t.status === "review_required")) {
+      return {
+        kind: "INDETERMINATE",
+        reason: "A maintenance ratio test became unevaluable while bisecting the ratio-safe ceiling; no ratio-safe legacy capacity can be proven.",
+      };
+    }
+    if (tests.every((t) => t.status === "clear")) lo = mid;
+    else hiBound = mid;
+  }
+  return { kind: "CAPPED", amount: lo };
+}
+
 export function computeRemainingCapacityAfterDebtIncurrence(
   data: CompanyCovenantData,
   position: CovenantPosition,
@@ -1385,6 +1442,22 @@ export function computeRemainingCapacityAfterDebtIncurrence(
   const fin = data.financials;
   const side: "secured" | "unsecured" = secured ? "secured" : "unsecured";
   const postFin: FinancialSnapshotInput = { ...fin, totalDebt: fin.totalDebt + amount, securedDebt: fin.securedDebt + (secured ? amount : 0) };
+
+  // Rule 190: the legacy figures below (per-document
+  // LEGACY_DECLARED_MINUS_TESTED_AMOUNT + cross-document
+  // packageModeled) are capped by the company-level
+  // maintenance-ratio ceiling. The solver-native branch is
+  // already capped by Rule 189 and is untouched here. `hi`
+  // bounds every legacy capacity figure, from the position
+  // itself, so "passes at hi" means no cap is needed.
+  const legacyCaps: number[] = [amount];
+  const crossForHi = secured ? position.crossDocumentSecured : position.crossDocumentUnsecured;
+  if (crossForHi.capacity !== undefined) legacyCaps.push(crossForHi.capacity);
+  for (const d of position.documents) {
+    const cap = secured ? d.securedCapacity : d.unsecuredCapacity;
+    if (cap !== undefined) legacyCaps.push(cap);
+  }
+  const ratioCeiling = computeLegacyRatioCeiling(data, position, secured, Math.max(0, ...legacyCaps));
 
   const perDocument: PerDocumentRemainingCapacity[] = position.documents.map((d) => {
     const status = secured ? d.securedStatus : d.unsecuredStatus;
@@ -1452,11 +1525,26 @@ export function computeRemainingCapacityAfterDebtIncurrence(
         reason: `${d.documentName} is "${status}" for this side - no declared legacy capacity to subtract from.`,
       };
     }
+    // Rule 190: an unevaluable maintenance test makes the
+    // legacy figure unprovable; otherwise cap the remaining
+    // capacity by the ratio room left after this transaction
+    // (the ceiling is total new debt; remaining = ceiling -
+    // amount, floored by the same min as the legacy figure).
+    if (ratioCeiling.kind === "INDETERMINATE") {
+      return {
+        documentId: d.documentId,
+        documentName: d.documentName,
+        method: "NOT_DETERMINABLE",
+        reason: ratioCeiling.reason,
+      };
+    }
+    const cappedLegacyRemaining =
+      ratioCeiling.kind === "CAPPED" ? Math.min(legacyRemaining, ratioCeiling.amount - amount) : legacyRemaining;
     return {
       documentId: d.documentId,
       documentName: d.documentName,
       method: "LEGACY_DECLARED_MINUS_TESTED_AMOUNT",
-      remainingCapacity: legacyRemaining,
+      remainingCapacity: cappedLegacyRemaining,
       bindingConstraint: legacyBinding,
     };
   });
@@ -1467,8 +1555,16 @@ export function computeRemainingCapacityAfterDebtIncurrence(
   const solverNativeRemaining = binding?.remainingCapacity ?? null;
 
   const cross = secured ? position.crossDocumentSecured : position.crossDocumentUnsecured;
-  const packageModeled =
+  let packageModeled =
     cross.status === "modeled" && cross.capacity !== undefined ? cross.capacity - amount : null;
+  // Rule 190: same ratio cap as the per-document legacy
+  // figures; an unevaluable test voids the legacy package
+  // figure (the solver-native fallback is already handled
+  // by Rule 189's REVIEW_REQUIRED maximumCapacity).
+  if (ratioCeiling.kind === "INDETERMINATE") packageModeled = null;
+  else if (ratioCeiling.kind === "CAPPED" && packageModeled !== null) {
+    packageModeled = Math.min(packageModeled, ratioCeiling.amount - amount);
+  }
   const solverIsFalseFavorable =
     solverNativeRemaining !== null &&
     packageModeled !== null &&
