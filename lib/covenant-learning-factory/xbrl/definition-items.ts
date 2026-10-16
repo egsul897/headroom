@@ -275,6 +275,9 @@ export function cniAdjustments(body: string, fin: IssuerFinancials): { adjust: A
   for (const raw of parts) {
     const t = raw.replace(/^(?:excluding|exclusive\s+of|but\s+excluding|provided[^:()]*?(?:excluded|that)|there\s+shall\s+(?:be\s+)?excluded)[,:]?\s*(?:\(?\s*without\s+duplication\s*\)?,?\s*)?/i, "");
     if (t.length < 8) continue;
+    // Connective text between exclusions ("(and excluding the effect of), without duplication:", "there shall be
+    // excluded:", "[reserved]") names no item: it neither raises nor lowers net income.
+    if (/^\[\s*reserved\s*\]/i.test(t.replace(/^\(?\w{1,4}\)\s*/, "")) || !t.replace(/\(?\s*(?:and\s+)?(?:excluding|exclusive\s+of)\s+(?:the\s+effect\s+of)?\s*\)?|\(?\s*without\s+duplication\s*\)?|(?:in\s+(?:computing|calculating)\s+(?:such\s+amount|(?:such\s+)?Consolidated\s+Net\s+Income)[^,:]*,?\s*)?there\s+(?:shall|will)\s+(?:not\s+)?be\s+(?:excluded|included)(?:\s+(?:therefrom|from\s+(?:the\s+calculation\s+of\s+)?(?:such\s+)?Consolidated\s+Net\s+Income|in\s+(?:such\s+)?Consolidated\s+Net\s+Income))?|to\s+the\s+extent\s+otherwise\s+included|the\s+effects?\s+of|Consolidated\s+Net\s+Income\s+shall\s+exclude|the\s+following(?:\s+will\s+be\s+excluded\s+in\s+computing\s+Consolidated\s+Net\s+Income)?/gi, " ").replace(/[^A-Za-z]+/g, "").length) continue;
     if (/cumulative\s+effect/i.test(t) && !/\bgains?\b[^.;]{0,40}(?:sale|disposition)|non-?recurring|unusual|Unrestricted/i.test(t)) continue;
     if (/\bextraordinary\b/i.test(t) && !/non-?recurring|unusual|infrequent|\bsales?\b|disposition/i.test(t)) continue;
     if (/equity\s+method|any\s+Person\s+(?:\(other\s+than|other\s+than|that\s+is\s+not)|not\s+a\s+(?:Restricted\s+)?Subsidiary|in\s+which\s+any\s+other\s+Person/i.test(t) && !/Unrestricted\s+Subsidiar/i.test(t)) {

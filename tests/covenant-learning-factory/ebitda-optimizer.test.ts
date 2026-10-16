@@ -109,3 +109,20 @@ describe("Consolidated EBITDA optimizer (general rules, agreement's own add-back
     expect(ttmAt([q], "2026-06-30")).toBeNull();
   });
 });
+
+describe("net-income base: connective text between exclusions is not an exclusion", () => {
+  const ebitda = `"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in calculating Consolidated Net Income: (a) provision for taxes based on income; plus (b) interest expense; plus (c) depreciation and amortization expense. "Default" means any event.`;
+  const f = fin(BASE);
+  it.each([
+    `"Consolidated Net Income" means the net income of the Borrower and its Subsidiaries determined in accordance with GAAP (and excluding the effect of), without duplication: (a) [reserved]; (b) any cumulative effect of a change in accounting principles. `,
+    `"Consolidated Net Income" means the net income of the Borrower and its Subsidiaries determined in accordance with GAAP; provided that there shall be excluded therefrom: (1) [ reserved ]; (2) any extraordinary items. `,
+  ])("computes the base: %#", (cni) => {
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", cni + ebitda, f);
+    expect(o.status).toBe("MAXIMIZED");
+    expect(o.maximum).toBe(String(200 * M));
+  });
+  it("a real two-sided exclusion (non-recurring gains) still blocks", () => {
+    const cni = `"Consolidated Net Income" means the net income of the Borrower determined in accordance with GAAP; provided that there shall be excluded: (a) extraordinary, non-recurring or unusual gains or losses. `;
+    expect(optimizeConsolidatedEbitda("Consolidated EBITDA", cni + ebitda, f).maximum).toBeNull();
+  });
+});
