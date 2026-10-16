@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { classifyDebtDocument, stripIdentityTokens } from "../../lib/knowledge-factory/classify/debt-document";
 import { scoreDiscoveryPotential } from "../../lib/knowledge-factory/rank/discovery-score";
-import { classifyFamiliesFromText } from "../../lib/knowledge-factory/taxonomy/families";
+import { classifyFamiliesFromText, stripCatchAllFallback } from "../../lib/knowledge-factory/taxonomy/families";
+import { discoverCovenantCandidates } from "../../lib/knowledge-factory/pipeline/candidates";
+import type { StructuralNodeRecord } from "../../lib/knowledge-factory/types";
 import { detectPatternsInText } from "../../lib/knowledge-factory/patterns/library";
 import {
   assertKnowledgeFactoryCannotWriteCapacity,
@@ -74,6 +76,58 @@ describe("discovery ranking + taxonomy + patterns", () => {
     expect(patterns).toContain("greater-of-basket");
     expect(patterns).toContain("builder-basket");
     expect(patterns).toContain("no-default-condition");
+  });
+});
+
+describe("rule 155: catch-all family is a fallback, never a co-label", () => {
+  it("drops the catch-all when a specific family matched via the heading", () => {
+    // "Conditions to Borrowing" trips the catch-all heading pattern
+    // /\bConditions?\b/i, but the body is Indebtedness language.
+    const families = classifyFamiliesFromText(
+      "The Borrower shall not incur Indebtedness except Permitted Indebtedness.",
+      "Section 4.01 Conditions to Borrowing",
+    );
+    expect(families).toContain("INDEBTEDNESS");
+    expect(families).not.toContain("GENERAL_CONDITIONS_AND_EXCEPTIONS");
+  });
+
+  it("keeps the catch-all when nothing specific matched", () => {
+    const families = classifyFamiliesFromText(
+      "The obligations are subject to the following conditions precedent: delivery of certificates.",
+      "Section 3.01 Conditions Precedent",
+    );
+    expect(families).toEqual(["GENERAL_CONDITIONS_AND_EXCEPTIONS"]);
+  });
+
+  it("stripCatchAllFallback keeps UNKNOWN-only lists untouched", () => {
+    expect(stripCatchAllFallback(["UNKNOWN"])).toEqual(["UNKNOWN"]);
+    expect(stripCatchAllFallback(["GENERAL_CONDITIONS_AND_EXCEPTIONS", "UNKNOWN"])).toEqual([
+      "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+      "UNKNOWN",
+    ]);
+  });
+
+  it("candidate merge drops the ranker re-injected catch-all", () => {
+    // The ranker's amendments_cross_refs signal matches any bare
+    // "Section X.Y", so without the rule this candidate would carry
+    // GENERAL_CONDITIONS_AND_EXCEPTIONS alongside INDEBTEDNESS.
+    const text =
+      "Section 7.01 Indebtedness. The Borrower shall not incur Indebtedness except Permitted Indebtedness, including the greater of $50,000,000 and 10% of Consolidated EBITDA. See Section 7.02.";
+    const nodes: StructuralNodeRecord[] = [
+      {
+        nodeId: "n1",
+        sourceId: "src-1",
+        nodeType: "SECTION",
+        sectionRef: "7.01",
+        heading: "Section 7.01 Indebtedness",
+        charStart: 0,
+        charEnd: text.length,
+      },
+    ];
+    const candidates = discoverCovenantCandidates("src-1", text, nodes);
+    expect(candidates).toHaveLength(1);
+    expect(candidates[0]!.families).toContain("INDEBTEDNESS");
+    expect(candidates[0]!.families).not.toContain("GENERAL_CONDITIONS_AND_EXCEPTIONS");
   });
 });
 

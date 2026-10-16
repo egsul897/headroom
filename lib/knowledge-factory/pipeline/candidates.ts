@@ -3,7 +3,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { classifyFamiliesFromText, isAdministrativeProvision } from "../taxonomy/families";
+import { classifyFamiliesFromText, isAdministrativeProvision, stripCatchAllFallback } from "../taxonomy/families";
 import { scoreDiscoveryPotential } from "../rank/discovery-score";
 import { detectPatternsInText } from "../patterns/library";
 import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRecord } from "../types";
@@ -212,7 +212,11 @@ function uniqueFamilies(families: KnowledgeTaxonomyFamily[]): KnowledgeTaxonomyF
     seen.add(f);
     out.push(f);
   }
-  return out.length ? out : ["UNKNOWN"];
+  // Rule 155: the discovery ranker re-injects GENERAL_CONDITIONS_AND_EXCEPTIONS
+  // via generic signals (bare "Section X.Y", "Negative Covenants" heading),
+  // so the merged classifier+ranker list gets the same fallback treatment.
+  const stripped = stripCatchAllFallback(out);
+  return stripped.length ? stripped : ["UNKNOWN"];
 }
 
 function candidateId(sourceId: string, nodeId: string): string {

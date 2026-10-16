@@ -240,5 +240,30 @@ export function classifyFamiliesFromText(text: string, heading = ""): KnowledgeT
   }
   families.push(...headingFamilies, ...bodyFamilies);
   if (families.length === 0) return ["UNKNOWN"];
-  return families;
+  return stripCatchAllFallback(families);
+}
+
+/**
+ * Rule 155: GENERAL_CONDITIONS_AND_EXCEPTIONS is a fallback label, never a
+ * co-label. Phase-2 precedent aggregates showed it on 3,472 of 4,590
+ * candidates (~76%) — not because three quarters of covenant language is
+ * "general conditions", but because the catch-all is injected by generic
+ * signals: the classifier's heading pattern `/\bConditions?\b/i` (matches
+ * "Conditions to Borrowing", "Conditions Precedent", ...) and the
+ * discovery ranker's `amendments_cross_refs` signal (matches any bare
+ * "Section X.Y") and `negative_covenants` signal (matches the article
+ * heading that contains the specific covenants). When a specific family
+ * also matched, the catch-all must drop out — otherwise downstream
+ * consumers that read families[0] (analyzeProvision) or count family
+ * frequency see a catch-all-dominated taxonomy. When nothing specific
+ * matched, the catch-all is kept: it is still the best available label.
+ */
+export function stripCatchAllFallback(
+  families: KnowledgeTaxonomyFamily[],
+): KnowledgeTaxonomyFamily[] {
+  const hasSpecific = families.some(
+    (f) => f !== "GENERAL_CONDITIONS_AND_EXCEPTIONS" && f !== "UNKNOWN",
+  );
+  if (!hasSpecific) return families;
+  return families.filter((f) => f !== "GENERAL_CONDITIONS_AND_EXCEPTIONS");
 }
