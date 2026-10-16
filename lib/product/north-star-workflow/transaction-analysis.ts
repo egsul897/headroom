@@ -37,6 +37,7 @@ import {
   type CrossDocumentPermissionLayers,
 } from "@/lib/product/covenant-intelligence/cross-document-permission-layers";
 import { parseTransactionDraft, type TransactionDraft } from "./parse-transaction-draft";
+import { legacyKindFromQuestion } from "./legacy-kind";
 export { parseTransactionDraft, type TransactionDraft };
 
 /** Ask does not invent a financial snapshot — numerical capacity stays labeled deferred. */
@@ -184,17 +185,10 @@ export async function analyzeContemplatedTransaction(args: {
       : null;
 
   let legacySimulation: TransactionAnalysisResult["legacySimulation"] = null;
-  const q = args.question.toLowerCase();
-  const legacyKind: Parameters<typeof runLegacyEngineSimulation>[0]["kind"] | null = /repay|prepay|pay down/.test(q)
-    ? "DEBT_REPAYMENT"
-    : /equity contribution|eligible equity|equity infusion/.test(q)
-      ? "ELIGIBLE_EQUITY_CONTRIBUTION"
-      : draft.kind === "SECURED_DEBT" ||
-          draft.kind === "UNSECURED_DEBT" ||
-          draft.kind === "RESTRICTED_PAYMENT" ||
-          draft.kind === "INVESTMENT"
-        ? draft.kind
-        : null;
+  // Rule 62: the repayment override lives in legacy-kind — a
+  // "repay" mention that is only the use of proceeds (incur debt
+  // TO repay notes) must not flip the simulation to repayment.
+  const legacyKind = legacyKindFromQuestion(args.question, draft.kind);
   if (legacyKind && draft.amountMillions != null) {
     legacySimulation = await runLegacyEngineSimulation({
       companyId: args.companyId,
