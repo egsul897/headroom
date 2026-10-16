@@ -25,7 +25,14 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
       `File exceeds ${Math.floor(MAX_CUSTOMER_UPLOAD_BYTES / (1024 * 1024))}MB limit. Split the package or upload a smaller exhibit.`,
     );
   }
-  const declaredType = String(formData.get("declaredType") ?? "OTHER") as DocumentType;
+  // Rule 109: an empty or unexpected declared type is OTHER
+  // (unknown), never a pre-chosen Credit Agreement.
+  const declaredRaw = String(formData.get("declaredType") || "OTHER");
+  const declaredType = (
+    ["CREDIT_AGREEMENT", "INDENTURE", "AMENDMENT", "INTERCREDITOR_AGREEMENT", "COMPLIANCE_CERTIFICATE", "FINANCIAL_STATEMENT", "OTHER"].includes(declaredRaw)
+      ? declaredRaw
+      : "OTHER"
+  ) as DocumentType;
   const governs = String(formData.get("governs") ?? "") || undefined;
 
   const buffer = Buffer.from(await file.arrayBuffer());
