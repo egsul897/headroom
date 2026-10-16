@@ -9,10 +9,11 @@
  */
 
 import { prisma } from "../../prisma";
-import { summarizeFromStoredMetadata, type CovenantSummaryItem, type DocumentCovenantSummary } from "./summarize";
+import { isSummaryStale, summarizeFromStoredMetadata, type CovenantSummaryItem, type DocumentCovenantSummary } from "./summarize";
 import type { AmendmentPackageView } from "../customer-intelligence/amendment-package";
 import { isSubstantiveFinancingPrecedent } from "./corpus-quality";
 import { retrievalTruncationNote } from "./retrieval-truncation-note";
+import { staleAnalysisNote } from "./ask-stale-note";
 import { parseProposedAmount } from "./parse-proposed-amount";
 
 export interface AskCitation {
@@ -608,9 +609,12 @@ export async function answerFromCorpus(params: {
   }
 
   const items: Array<CovenantSummaryItem & { sourceId: string }> = [];
+  const staleTitles: string[] = [];
   for (const row of scoped) {
     const summary = summarizeFromStoredMetadata(row.metadata);
     if (!summary) continue;
+    // Rule 55: Ask must disclose stale analyses it relied on.
+    if (isSummaryStale(summary)) staleTitles.push(row.documentTitle);
     const meta =
       row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
         ? (row.metadata as Record<string, unknown>)
@@ -646,15 +650,16 @@ export async function answerFromCorpus(params: {
   const ask = excellence.bridged.ask;
   // The 120-row fetch cap silently excluded older documents before;
   // disclose the truncation on the final answer (rule 37).
-  const truncationNote =
-    !params.sourceId
-      ? retrievalTruncationNote({ totalCount, searchedCount: rows.length })
-      : null;
-  if (!truncationNote) return ask;
+  // Stale analyses relied on are disclosed the same way (rule 55).
+  const extraNotes = [
+    !params.sourceId ? retrievalTruncationNote({ totalCount, searchedCount: rows.length }) : null,
+    staleAnalysisNote(staleTitles),
+  ].filter((n): n is string => n != null);
+  if (extraNotes.length === 0) return ask;
   return {
     ...ask,
-    detail: `${ask.detail}\n\n${truncationNote}`,
-    limitations: [...ask.limitations, truncationNote],
+    detail: `${ask.detail}\n\n${extraNotes.join("\n\n")}`,
+    limitations: [...ask.limitations, ...extraNotes],
   };
 }
 
