@@ -399,7 +399,11 @@ describe("generalization: rule 165 — compiler grants need operative text + par
       grantTypesForItem(
         grantItem("6.02(l)", "Section 6.02(l) operates as a permission. other Liens incurred in the ordinary course of business securing Indebtedness that do not in the aggregate exceed $250,000 at any time outstanding."),
       ),
-    ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+      // Rule 201: the $250k caps the lien / secured obligation, not a
+      // new debt basket — the debt is already counted under its
+      // Section 6.01 basket. The secured sim clears via Rule 196
+      // residual pairing, not a dual-grant LINK.
+    ).toEqual(["LIEN"]);
   });
 
   it("genuine RP and Investment items still compile", () => {
@@ -434,7 +438,8 @@ describe("generalization: rule 166 — default triggers never mint capacity", ()
           "OTHER",
         ),
       ),
-    ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+      // Rule 201: lien-only (see the Rule 165 test above).
+    ).toEqual(["LIEN"]);
   });
 });
 
@@ -870,5 +875,49 @@ describe("rule 200: heading whitespace normalization", () => {
     });
     expect(a.heading).toBe("Additional Guarantors");
     expect(a.heading).not.toContain("\n");
+  });
+});
+
+/** Rule 205: basket-shaped candidates survive the 120-item cap. */
+describe("rule 205: basket-shaped candidates rank first in the cap", () => {
+  it("a low-score basket candidate survives the cap over higher-scored noise", async () => {
+    const { buildDocumentCovenantSummary } = await import("../../lib/product/covenant-intelligence/summarize");
+    const candidates: any[] = [];
+    const nodes: any[] = [];
+    for (let i = 0; i < 120; i++) {
+      candidates.push({
+        candidateId: `c-fill-${i}`,
+        sourceId: "test:205",
+        nodeId: `n-fill-${i}`,
+        families: ["UNKNOWN"],
+        signals: [],
+        excerpt: `Section 9.${i} Miscellaneous administrative provision with no dollar amount.`,
+        representationLevel: "DISCOVERED_CANDIDATE",
+        discoveryScore: 10,
+      });
+      nodes.push({ nodeId: `n-fill-${i}`, sourceId: "test:205", nodeType: "SECTION", sectionRef: `9.${i}`, heading: `Section 9.${i}`, charStart: i * 100, charEnd: i * 100 + 50, ambiguous: false });
+    }
+    candidates.push({
+      candidateId: "c-basket",
+      sourceId: "test:205",
+      nodeId: "n-basket",
+      families: ["INDEBTEDNESS"],
+      signals: [],
+      excerpt: "(f) Indebtedness of any Person that becomes a Subsidiary of the Borrower after the date hereof in an aggregate principal amount not to exceed $5,000,000.",
+      representationLevel: "DISCOVERED_CANDIDATE",
+      discoveryScore: 0,
+    });
+    nodes.push({ nodeId: "n-basket", sourceId: "test:205", nodeType: "SUBSECTION", sectionRef: "7.02(f)", heading: "7.02(f)", charStart: 0, charEnd: 100, ambiguous: false });
+    const summary = buildDocumentCovenantSummary({
+      sourceId: "test:205",
+      documentTitle: "Test Agreement",
+      issuerCik: "0000123456",
+      documentClass: "CREDIT_AGREEMENT",
+      candidates,
+      definitions: [],
+      structuralNodes: nodes,
+    });
+    expect(summary.items.length).toBe(120);
+    expect(summary.items.some((i) => i.sectionRef === "7.02(f)")).toBe(true);
   });
 });

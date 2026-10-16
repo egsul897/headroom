@@ -217,7 +217,45 @@ export function buildDocumentCovenantSummary(params: {
   const headingOf = (c: (typeof params.candidates)[number]): string =>
     (c.nodeId ? (headingByNodeId.get(c.nodeId) ?? "") : "");
 
+  // Rule 205: basket-shaped candidates rank FIRST, before the
+  // peripheral demotion and the discovery score. Asure 7.02(f)
+  // — "Indebtedness of any Person that becomes a Subsidiary
+  // ... not to exceed ... $5,000,000", a genuine $5M acquired-
+  // subsidiary debt basket — scored only 3 (amount_cap alone)
+  // and lost the 120-cap to higher-scored noise, understating
+  // debt capacity by $5M. A candidate with a dollar amount +
+  // a cap frame + a covenant family IS an operative basket;
+  // the cap must never drop one while noise survives. The
+  // predicate is deliberately narrow (a $ amount AND a cap
+  // frame AND a basket family) — a definition condition with
+  // a $ cap also matches, but it occupies an item slot without
+  // minting a grant (Rule 204), so it cannot corrupt capacity.
+  const BASKET_FAMILIES = new Set([
+    "INDEBTEDNESS",
+    "LIENS",
+    "RESTRICTED_PAYMENTS",
+    "INVESTMENTS",
+    "ASSET_SALES",
+    "INCREMENTAL_DEBT_AND_FACILITIES",
+    "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+    "RATIO_BASED_PERMISSIONS",
+    "SHARED_CAPACITY_PROVISIONS",
+    "FINANCIAL_MAINTENANCE_COVENANTS",
+    "JUNIOR_DEBT_PREPAYMENTS",
+    "MANDATORY_PREPAYMENTS",
+  ]);
+  const isBasketShaped = (c: (typeof params.candidates)[number]): boolean => {
+    const ex = c.excerpt ?? "";
+    return (
+      /\$\s*[\d,]+/.test(ex) &&
+      /\bnot\s+(?:to\s+)?exceed(?:ing)?\b|\bup\s+to\s+\$/i.test(ex) &&
+      c.families.some((f) => BASKET_FAMILIES.has(f))
+    );
+  };
   const ranked = [...params.candidates].sort((a, b) => {
+    const ab = isBasketShaped(a) ? 0 : 1;
+    const bb = isBasketShaped(b) ? 0 : 1;
+    if (ab !== bb) return ab - bb; // baskets before everything — the cap must not drop one
     const ap = peripheralHeading.test(headingOf(a)) ? 1 : 0;
     const bp = peripheralHeading.test(headingOf(b)) ? 1 : 0;
     if (ap !== bp) return ap - bp; // primary covenants before peripheral

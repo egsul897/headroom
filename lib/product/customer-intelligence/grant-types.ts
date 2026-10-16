@@ -299,7 +299,12 @@ function isGuaranteePermission(text: string): boolean {
  * (fail-closed) — that shape is rare.
  */
 function isLienSecuredObligation(text: string): boolean {
-  return /\bLIENS?\b[^.]{0,80}?\bSECURING\s+(?:INDEBTEDNESS|DEBT)\b/.test(text);
+  // The gap bound is 200, not 80: the real Strata 6.02(l) has ~85
+  // chars between "Liens" and "securing Indebtedness" ("incurred
+  // in the ordinary course of business of the Borrowers and
+  // their Subsidiaries"). The [^.] already blocks cross-sentence
+  // matches, so a wider same-sentence gap is safe.
+  return /\bLIENS?\b[^.]{0,200}?\bSECURING\s+(?:INDEBTEDNESS|DEBT)\b/.test(text);
 }
 
 /**
