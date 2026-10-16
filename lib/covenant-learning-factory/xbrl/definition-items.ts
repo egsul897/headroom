@@ -165,7 +165,13 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
         // Defined Interest Expense often excludes MTM hedges etc.; when the full definition is not
         // derivable, XBRL interest expense still evidences the core add-back (partial / floor).
         const ie = firstItem(fin, IE);
-        if (!ie) return "TWO_SIDED";
+        if (!ie) {
+          // No XBRL interest: a referenced definition that is plain (gross) interest expense, with no netting of
+          // income / gains, is non-negative — an unevidenced one-sided add-back (claim 0), not a two-sided line.
+          const def = findDefinitionText(text, term);
+          const oneSided = !!def && !/\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|\bgains?\b|\bincome\s+from\b/i.test(def.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " "));
+          return oneSided ? null : "TWO_SIDED";
+        }
         add(ie, /(?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense/gi);
         (r as MapResult & { lowerBound?: boolean }).lowerBound = true;
       }

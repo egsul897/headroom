@@ -99,3 +99,19 @@ describe("incurrence-ratio capacity", () => {
     expect(c?.capacity).toBeNull();
   });
 });
+
+describe("gross interest add-back with no XBRL interest is one-sided (safe lower bound)", () => {
+  const text = `"Consolidated Net Income" means the net income of the Borrower. ` +
+    `"Consolidated Interest Expense" means, for any period, the gross interest expense of the Borrower and its Subsidiaries deducted in the calculation of Consolidated Net Income, determined in accordance with GAAP. ` +
+    `"Consolidated EBITDA" means, for any period, Consolidated Net Income plus, to the extent deducted: (i) Consolidated Interest Expense for such period; (ii) income tax expense for such period; plus (iii) depreciation and amortization. "Default" means any event.`;
+  const noIe = (): IssuerFinancials => ({ ...fin(), values: fin().values.filter((v) => !/Interest/i.test(v.concept)) });
+  it("decide binds the supported floor as LOWER_BOUND", () => {
+    const d = decide("Consolidated EBITDA", text, noIe());
+    expect(d.status).toBe("LOWER_BOUND");
+    expect(d.input?.value).toBe(String(170 * M));
+  });
+  it("net-of-interest-income definition stays two-sided (NEEDS_INPUT)", () => {
+    const net = text.replace("the gross interest expense", "interest expense net of interest income");
+    expect(decide("Consolidated EBITDA", net, noIe()).status).toBe("NEEDS_INPUT");
+  });
+});
