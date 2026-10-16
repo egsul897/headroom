@@ -16,6 +16,10 @@ import {
 } from "@/lib/contract-model/north-star-bridge";
 import { NS4_PRODUCT_CUTOFF_SELECTOR } from "./approved-financial-inputs";
 import {
+  labelCutoffSnapshot,
+  type CutoffSnapshotStatus,
+} from "./cutoff-snapshot-label";
+import {
   evaluateVerifiedCapacity,
   simulateVerifiedTransaction,
   type VerifiedExecutionPackage,
@@ -39,7 +43,11 @@ export interface CertifiedTransactionAttempt {
   evaluationDate: string | null;
   cutoffState: string;
   reportingPeriodKey: string | null;
+  /** Cutoff-bound snapshot id, only when actually APPROVED (see rule 81). */
   approvedSnapshotId: string | null;
+  /** Raw cutoff-bound snapshot id — APPROVED or SUPERSEDED. */
+  cutoffSnapshotId: string | null;
+  cutoffSnapshotStatus: CutoffSnapshotStatus;
   ledgerUsageCount: number;
   /** Present only when a VerifiedExecutionPackage was supplied by the caller. */
   verifiedPackagePresent: boolean;
@@ -84,6 +92,8 @@ export async function attemptCertifiedTransaction(args: {
       cutoffState: "NEEDS_INPUT",
       reportingPeriodKey: null,
       approvedSnapshotId: null,
+      cutoffSnapshotId: null,
+      cutoffSnapshotStatus: null,
       ledgerUsageCount: activeLedger.length,
       verifiedPackagePresent: Boolean(args.verifiedPackage),
       capacity: null,
@@ -116,10 +126,19 @@ export async function attemptCertifiedTransaction(args: {
 
   const cutoffState = cutoff.state;
   const reportingPeriodKey = cutoff.reportingPeriodKey;
-  let approvedSnapshotId: string | null = cutoff.snapshotId;
-  if (cutoff.state !== "RESOLVED" || !approvedSnapshotId) {
+  // Rule 81: the cutoff may bind a SUPERSEDED snapshot (eligible
+  // pool is APPROVED ∪ SUPERSEDED). approvedSnapshotId must be
+  // the bound id ONLY when actually APPROVED; the raw bound id
+  // still flows into evaluation, where the resolver's
+  // APPROVED-only policy refuses superseded facts (fail closed).
+  const cutoffLabel = labelCutoffSnapshot(
+    cutoff.snapshotId,
+    approvedAll.map((s) => s.snapshotId),
+  );
+  const approvedSnapshotId = cutoffLabel.approvedSnapshotId;
+  const boundSnapshotId = cutoffLabel.cutoffSnapshotId;
+  if (cutoff.state !== "RESOLVED" || !boundSnapshotId) {
     blockers.push("CUTOFF_UNRESOLVED");
-    approvedSnapshotId = null;
   }
 
   const pkg = args.verifiedPackage ?? null;
@@ -134,13 +153,15 @@ export async function attemptCertifiedTransaction(args: {
     blockers.push("VEP_COMPANY_MISMATCH");
   }
 
-  if (blockers.length > 0 || !pkg || !approvedSnapshotId) {
+  if (blockers.length > 0 || !pkg || !boundSnapshotId) {
     return {
       companyId,
       evaluationDate: args.evaluationDate,
       cutoffState,
       reportingPeriodKey,
       approvedSnapshotId,
+      cutoffSnapshotId: boundSnapshotId,
+      cutoffSnapshotStatus: cutoffLabel.cutoffSnapshotStatus,
       ledgerUsageCount: activeLedger.length,
       verifiedPackagePresent: Boolean(pkg),
       capacity: null,
@@ -151,7 +172,7 @@ export async function attemptCertifiedTransaction(args: {
     };
   }
 
-  const boundSnap = cutoffEligible.find((s) => s.snapshotId === approvedSnapshotId);
+  const boundSnap = cutoffEligible.find((s) => s.snapshotId === boundSnapshotId);
   // Cutoff already selected the reporting period. Neutralize period identity for
   // METRIC_REFERENCE resolution so certificate facts (VERBATIM period keys) bind
   // — same pattern as Dashboard IR leverage. Neon rows are not mutated.
@@ -210,6 +231,8 @@ export async function attemptCertifiedTransaction(args: {
     cutoffState,
     reportingPeriodKey,
     approvedSnapshotId,
+    cutoffSnapshotId: boundSnapshotId,
+    cutoffSnapshotStatus: cutoffLabel.cutoffSnapshotStatus,
     ledgerUsageCount: activeLedger.length,
     verifiedPackagePresent: true,
     capacity,
