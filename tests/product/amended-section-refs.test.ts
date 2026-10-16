@@ -48,3 +48,20 @@ describe("amended section refs", () => {
     ).toEqual(["6.01", "6.02"]);
   });
 });
+
+describe("rule 183a: existing / amended-and-restated instrument bridge", () => {
+  it("detects Section 1.01 of the Existing Credit Agreement", () => {
+    expect(
+      extractAmendedSectionRefs(
+        "Section 1.01 of the Existing Credit Agreement is hereby amended as follows:",
+      ),
+    ).toEqual(["1.01"]);
+  });
+  it("detects Section 6.01 of the Amended and Restated Credit Agreement", () => {
+    expect(
+      extractAmendedSectionRefs(
+        "Section 6.01 of the Amended and Restated Credit Agreement is hereby amended.",
+      ),
+    ).toEqual(["6.01"]);
+  });
+});

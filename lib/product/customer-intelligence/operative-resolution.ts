@@ -100,7 +100,12 @@ export function extractEffectiveDateHint(text: string): string | null {
 
 export function extractAmendedSectionRefs(text: string): string[] {
   const out = new Set<string>();
-  const ofThe = String.raw`(?:of\s+the\s+(?:20\d{2}\s+)?(?:Credit\s+Agreement|Indenture)\s+)?`;
+  // "of the Existing Credit Agreement" is the standard amendment
+  // phrasing — the bridge must admit the adjectives drafters put
+  // between "the" and the instrument noun, or explicit amendatory
+  // language ("Section 1.01 of the Existing Credit Agreement is
+  // hereby amended") is never detected.
+  const ofThe = String.raw`(?:of\s+the\s+(?:Existing\s+|Amended\s+and\s+Restated\s+)?(?:20\d{2}\s+)?(?:Credit\s+Agreement|Indenture)\s+)?`;
   let m: RegExpExecArray | null;
   // Specific patterns first: the general singular regex would
   // otherwise grab the SECOND ref of a repeated/plural clause
@@ -199,7 +204,16 @@ export function resolveOperativePrecedence(params: {
   }
 
   // Full restatement / amended-and-restated supersession (RESTATEMENT is also a "base" class)
-  if (restatementSources.length === 1 && nonRestatementBases.length === 1) {
+  // Rule 182: the restatement and the base must be DIFFERENT
+  // documents. An Amended and Restated base agreement matches
+  // isRestatementTitle on its own title — without the sourceId
+  // check it "superseded itself" and the resolver returned
+  // RESOLVED with the base as its own operative document.
+  if (
+    restatementSources.length === 1 &&
+    nonRestatementBases.length === 1 &&
+    restatementSources[0]!.sourceId !== nonRestatementBases[0]!.sourceId
+  ) {
     const baseId = nonRestatementBases[0]!.sourceId;
     const restatement = restatementSources[0]!;
     const baseSource = params.sources.find((x) => x.sourceId === baseId);
@@ -442,8 +456,51 @@ export function resolveOperativePrecedence(params: {
     };
   }
 
+  // Rule 183: an amendment document's sections are instructions
+  // or amendment-internal scaffolding unless they demonstrably
+  // restate a base section. Binding an ADDED row's own ref would
+  // install the instruction/scaffolding as the operative section:
+  // amendment §2.1 ("Section 1.01 ... is hereby amended") is NOT
+  // the operative §2.1 (Commitments), and amendment §3 (Conditions
+  // Precedent to the amendment's effectiveness) is NOT the
+  // operative Article III (Representations). The REAL change is
+  // bound via explicitSecs below (the TARGET section, §1.01).
+  // Scaffolding articles are derived from the amendment's own
+  // article-level items (e.g. an amendment item [3] headed
+  // "Conditions Precedent" makes Article 3 scaffolding, so [3.4]
+  // — a condition-precedent subsection — is scaffolding too).
+  const scaffoldingArticles = new Set<string>();
+  for (const r of params.compare.rows) {
+    if (r.changeKind !== "ADDED_IN_AMENDMENT") continue;
+    if (/[.(]/.test(r.sectionRef)) continue; // article-level only
+    // Headings carry newlines ("Conditions\nPrecedent") and can be
+    // truncated mid-phrase ("Section 3. Conditions") — normalize
+    // whitespace and test heading + excerpt, or scaffolding is
+    // never detected on real documents.
+    const headingNorm = `${r.amendmentHeading ?? ""} ${r.amendmentExcerpt ?? ""}`.replace(/\s+/g, " ").trim();
+    if (
+      /\bconditions precedent\b|\brepresentations and warranties\b|\bmiscellaneous\b|\beffectiveness\b|\bgeneral provisions\b|\bcounterparts\b|\bgoverning law\b|\bnotices\b|\bdefined terms\b|^\s*amendments?\s*$/i.test(
+        headingNorm,
+      )
+    ) {
+      scaffoldingArticles.add(r.sectionRef);
+    }
+  }
+  const isInstructionRow = (row: (typeof changed)[number]): boolean => {
+    const excerpt = row.amendmentExcerpt ?? "";
+    if (extractAmendedSectionRefs(excerpt).length > 0) return true;
+    // Defined-term amendment: "The defined term "Maturity Date" is
+    // amended and restated in its entirety..." (no Section ref).
+    if (/\bdefined term\b[^.]{0,80}\bis\s+amended\b/i.test(excerpt)) return true;
+    return false;
+  };
   const bindings: OperativeSectionBinding[] = [];
   for (const row of changed) {
+    if (row.changeKind === "ADDED_IN_AMENDMENT" && isInstructionRow(row)) continue;
+    if (row.changeKind === "ADDED_IN_AMENDMENT") {
+      const article = row.sectionRef.split(/[.(]/)[0] ?? row.sectionRef;
+      if (scaffoldingArticles.has(article)) continue;
+    }
     bindings.push({
       sectionRef: row.sectionRef,
       operativeSourceId: amd.sourceId,
