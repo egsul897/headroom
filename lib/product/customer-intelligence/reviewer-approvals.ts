@@ -197,6 +197,16 @@ export async function recordReviewerDecision(params: {
     data: { metadata: JSON.parse(JSON.stringify(meta)) },
   });
 
+  // Rule 171: counsel-review completion attests coverage. Runs after
+  // compile so scopes reflect the post-decision Permission set. Must
+  // never block counsel Persist / compile (same pattern as feedback).
+  try {
+    const { evaluateCounselCoverage } = await import("./counsel-coverage");
+    await evaluateCounselCoverage(prisma, { companyId: params.companyId, sourceId: params.sourceId });
+  } catch {
+    // Coverage evaluation must not block counsel Persist / compile.
+  }
+
   // Workspace-scoped reusable feedback (never cross-customer auto-transfer).
   try {
     const { captureCounselFeedback } = await import("../legal-reasoning/counsel-feedback");

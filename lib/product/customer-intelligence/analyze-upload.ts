@@ -701,6 +701,16 @@ export async function analyzeCustomerDocument(params: {
       },
     });
 
+    // Rule 171: re-analysis can add undecided items, which must flip
+    // a previously-complete coverage declaration back to incomplete.
+    // Must never fail the upload (same pattern as feedback capture).
+    try {
+      const { evaluateCounselCoverage } = await import("./counsel-coverage");
+      await evaluateCounselCoverage(prisma, { companyId: params.companyId, sourceId });
+    } catch {
+      // Coverage evaluation must not fail the upload.
+    }
+
     const analysisSucceeded =
       (processed.source.extractionStatus === "CANDIDATES_DISCOVERED" ||
         processed.source.extractionStatus === "TEXT_EXTRACTED" ||
