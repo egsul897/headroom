@@ -342,7 +342,8 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   //  - open two-sided / income-like add-backs;
   //  - open lines that name gains or income ("gains, losses … from the sale of …");
   //  - any deduction ("minus … non-cash income") not fully modelled from filings (from the evaluator or the schedule).
-  const namesGainOrIncome = (s: string) => /\bgains?\b|\bincome\b/i.test(s.replace(/\b(?:Consolidated\s+)?Net\s+Income\b|\bincome\s+tax(?:es)?\b|\bbased\s+on\s+income\b|\bnet\s+income\s+\(loss\)/gi, " "));
+  // Tax lines ("foreign income and franchise taxes", "Taxes (including … income …)") name income only as a tax base.
+  const namesGainOrIncome = (s: string) => (/\btax(?:es)?\b/i.test(s) && !/\bgains?\b/i.test(s)) ? false : /\bgains?\b|\bincome\b/i.test(s.replace(/\b(?:Consolidated\s+)?Net\s+Income\b|\bincome\s+tax(?:es)?\b|\bbased\s+on\s+income\b|\bnet\s+income\s+\(loss\)/gi, " "));
   const ambiguousOpen = [...new Set([
     ...pairs.filter((p) => (ambiguousAddBack(p) || p.it.sign === "?") && open.some((l) => l.label === p.it.label)).map((p) => p.it.label),
     ...open.filter((l) => namesGainOrIncome(l.text)).map((l) => l.label),

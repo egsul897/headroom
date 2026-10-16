@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { runAgreementPipeline } from "@/lib/covenant-learning-factory/pipeline/agreement-pipeline";
+import { optimizeConsolidatedEbitda, optimizerMetricBound } from "@/lib/covenant-learning-factory/xbrl/ebitda-optimizer";
 import { decide } from "@/lib/covenant-learning-factory/xbrl/bind";
 import type { IssuerFinancials } from "@/lib/covenant-learning-factory/xbrl/companyfacts";
 
@@ -165,8 +166,16 @@ describe("regression: lines that could lower EBITDA block the lower bound", () =
   // Pattern from a credit agreement: "plus (iv) extraordinary, non-operating or non-cash charges … minus (c) extraordinary,
   // non-operating or non-cash income" — the unmodelled deduction makes the supported figure unsafe as a floor.
   it("unmodelled 'minus … non-cash income' deduction → NEEDS_INPUT", () => {
-    const text = `"Consolidated Net Income" means the net income of the Borrower. "Consolidated EBITDA" means, for any period, the sum of (a) Consolidated Net Income for such period, plus (b) to the extent deducted in determining such Consolidated Net Income for such period, the sum of (i) income tax expense for such period, (ii) depreciation and amortization for such period and (iii) the aggregate amount of extraordinary, non-operating or non-cash charges for such period, minus (c) the aggregate amount of extraordinary, non-operating or non-cash income during such period. "Default" means any event.`;
+    const text = `"Consolidated EBITDA" means, for any period, (a) the Consolidated Net Income for such period plus (b) to the extent deducted in determining such Consolidated Net Income for such period, the sum of the following for such period: (i) Consolidated Interest Expense for such period, (ii) income tax expense for such period, (iii) depreciation and amortization for such period and (iv) the aggregate amount of extraordinary, non-operating or non-cash charges for such period and minus, without duplication, (c) the aggregate amount of extraordinary, non-operating or non-cash income during such period. "Consolidated Interest Expense" means, for any period, the gross interest expense of the Borrower and its Subsidiaries deducted in the calculation of Consolidated Net Income for such period, determined on a consolidated basis in accordance with GAAP. "Consolidated Net Income" means, for any period, the consolidated net income (or loss) of the Borrower and its Subsidiaries for such period, determined on a consolidated basis in accordance with GAAP. "Default" means any event.`;
+    // The sample has a supported figure (it was wrongly a LOWER_BOUND at 3520df2a); the deduction must block the bound.
+    expect(optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin()).supported).toBe(String(200 * M));
     expect(decide("Consolidated EBITDA", text, fin()).status).toBe("NEEDS_INPUT");
+  });
+  it("tax lines that mention income are not treated as income-like (supported floor stays a lower bound)", () => {
+    for (const tax of ["foreign income and franchise taxes", "Taxes (including federal, state, local and foreign income, franchise and similar taxes)"]) {
+      const text = `"Consolidated Net Income" means the net income of the Borrower. "Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, to the extent deducted in determining such Consolidated Net Income: (a) ${tax}; plus (b) interest expense; plus (c) depreciation and amortization expense; plus (d) transaction costs incurred in connection with any acquisition. "Default" means any event.`;
+      expect(optimizerMetricBound(optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin()))?.status).toBe("LOWER_BOUND");
+    }
   });
   // Pattern from a REIT indenture: excluding-list line "(D) extraordinary or nonrecurring items, including gains, losses,
   // charges or expenses from the sale of operating Properties" names gains; signing line (F) must not flip it to a bound.
