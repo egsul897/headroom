@@ -12,6 +12,7 @@ import { prisma } from "../../prisma";
 import { summarizeFromStoredMetadata, type CovenantSummaryItem, type DocumentCovenantSummary } from "./summarize";
 import type { AmendmentPackageView } from "../customer-intelligence/amendment-package";
 import { isSubstantiveFinancingPrecedent } from "./corpus-quality";
+import { parseProposedAmount } from "./parse-proposed-amount";
 
 export interface AskCitation {
   sourceId: string;
@@ -303,18 +304,8 @@ function amendmentFromMetadata(metadata: unknown): AmendmentPackageView | null {
   return ap as AmendmentPackageView;
 }
 
-function parseProposedAmount(question: string): string | null {
-  const m =
-    question.match(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?/i) ||
-    question.match(/\b([\d,]+(?:\.\d+)?)\s*(million|billion)\s+(?:of\s+)?(?:secured\s+)?debt\b/i);
-  if (!m) return null;
-  const n = Number((m[1] ?? "").replace(/,/g, ""));
-  if (!Number.isFinite(n)) return null;
-  const unit = (m[2] ?? "").toLowerCase();
-  if (unit === "billion") return `$${n} billion`;
-  if (unit === "million") return `$${n} million`;
-  return `$${n.toLocaleString("en-US")}`;
-}
+/** Proposed-amount parsing lives in a prisma-free module so it is unit-testable. */
+export { parseProposedAmount };
 
 function composeAnswer(params: {
   question: string;
