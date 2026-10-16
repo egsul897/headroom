@@ -203,7 +203,9 @@ export function buildDocumentCovenantSummary(params: {
     const ai = preferredOrder.indexOf(a.category);
     const bi = preferredOrder.indexOf(b.category);
     if (ai !== bi) return ai - bi;
-    return a.sectionRef.localeCompare(b.sectionRef);
+    // Numeric collation: plain lexicographic order put "10.01"
+    // before "6.02" (Article 10 listed before Article 6).
+    return a.sectionRef.localeCompare(b.sectionRef, undefined, { numeric: true });
   });
 
   return {
