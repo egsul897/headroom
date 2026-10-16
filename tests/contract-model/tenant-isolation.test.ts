@@ -79,7 +79,7 @@ describe("Tenant/workspace isolation (task §29/§80)", () => {
     const instrumentsA = await getInstruments(COMPANY_A);
     expect(instrumentsA).toHaveLength(1);
     expect(instrumentsA[0]!.id).toBe(instrumentA.id);
-    const membersA = await getDocumentsForInstrument(instrumentA.id);
+    const membersA = await getDocumentsForInstrument(instrumentA.id, COMPANY_A);
     expect(membersA.map((d) => d.id)).toEqual([DOCUMENT_A]);
 
     // Deliberately misconfigured: a Company A relationship edge pointing at Company B's document.

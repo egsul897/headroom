@@ -91,7 +91,7 @@ describe("Package graph persistence + query API + incrementality (task §13/§20
   it("getInstruments/getDocumentsForInstrument/getBaseDocuments reflect the one real instrument grouping all four documents", async () => {
     const instruments = await getInstruments(COMPANY_ID);
     expect(instruments).toHaveLength(1);
-    const members = await getDocumentsForInstrument(instruments[0]!.id);
+    const members = await getDocumentsForInstrument(instruments[0]!.id, COMPANY_ID);
     expect(new Set(members.map((d) => d.id))).toEqual(new Set([CA_ID, AMEND1_ID, AMEND2_ID, JOINDER_ID]));
 
     const baseDocs = await getBaseDocuments(COMPANY_ID);
@@ -99,7 +99,7 @@ describe("Package graph persistence + query API + incrementality (task §13/§20
   });
 
   it("getAmendmentsForDocument/getSupplementsForDocument/getRelatedDocuments/getDocumentRelationships correctly answer from the persisted edge graph", async () => {
-    const amendments = await getAmendmentsForDocument(CA_ID);
+    const amendments = await getAmendmentsForDocument(CA_ID, COMPANY_ID);
     expect(new Set(amendments.map((e) => e.sourceDocumentId))).toEqual(new Set([AMEND1_ID, AMEND2_ID]));
 
     const supplements = await getSupplementsForDocument(CA_ID);
