@@ -166,14 +166,14 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
         // Defined Interest Expense often excludes MTM hedges etc.; when the full definition is not
         // derivable, XBRL interest expense still evidences the core add-back (partial / floor).
         const ie = firstItem(fin, IE);
-        const defNets = (() => { const d = findDefinitionText(text, term); return !!d && /\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|\bgains?\b|\bincome\s+from\b/i.test(d.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " ")); })();
+        const defNets = (() => { const d = findDefinitionText(text, term); return !!d && /\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|(?:net\s+of|less|minus|reduced\s+by|offset\s+by)[^.;]{0,80}\bgains?\b|\bincome\s+from\b/i.test(d.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " ")); })();
         // Gross filed interest overstates a defined net-of-income figure: not a floor → two-sided (fail closed).
         if (ie && defNets) return "TWO_SIDED";
         if (!ie) {
           // No XBRL interest: a referenced definition that is plain (gross) interest expense, with no netting of
           // income / gains, is non-negative — an unevidenced one-sided add-back (claim 0), not a two-sided line.
           const def = findDefinitionText(text, term);
-          const oneSided = !!def && !/\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|\bgains?\b|\bincome\s+from\b/i.test(def.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " "));
+          const oneSided = !!def && !/\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|(?:net\s+of|less|minus|reduced\s+by|offset\s+by)[^.;]{0,80}\bgains?\b|\bincome\s+from\b/i.test(def.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " "));
           return oneSided ? null : "TWO_SIDED";
         }
         add(ie, /(?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense/gi);
@@ -199,7 +199,7 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
     const ie = firstItem(fin, IE);
     if (ie) { add(ie, /\bFixed\s+Charges\b|\b(?:net\s+)?finance\s+charges?\b/gi); (r as MapResult & { lowerBound?: boolean }).lowerBound = true; }
   }
-  if (/\btax(?:es)?\b/i.test(t) && !/tax\s+(?:credits?|benefits?|refunds?)/i.test(t)) add(firstItem(fin, ["IncomeTaxExpenseBenefit"]), /(?:consolidated\s+)?(?:provision\s+for\s+)?(?:income\s+)?tax(?:es)?(?:\s+expense)?(?:,?\s+to\s+the\s+extent\s+based\s+on\s+income\s+or\s+profits)?|based\s+on\s+income|profits?/gi);
+  if (/\btax(?:es)?\b/i.test(t) && !/tax\s+(?:credits?|benefits?|refunds?)/i.test(t)) add(firstItem(fin, ["IncomeTaxExpenseBenefit"]), /(?:consolidated\s+)?(?:provision\s+for\s+)?(?:(?:federal|state|local|foreign|provincial|national)(?:,|\s+and|\s+or)?\s+)*(?:income\s+)?tax(?:es)?(?:\s+expense)?(?:,?\s+to\s+the\s+extent\s+based\s+on\s+income\s+or\s+profits)?|based\s+on\s+income|profits?/gi);
   const daAll = /depreciation/i.test(t);
   // Amortization of premiums / deferred financing fees lives inside interest expense — not D&A.
   const amortFinancing = /amortization\s+of\s+(?:premiums?|(?:deferred\s+)?(?:financing|debt|original\s+issue|OID|discount))/i.test(t)

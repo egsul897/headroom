@@ -36,11 +36,28 @@ describe("reviewer FAIL at 16dc459d: fail closed", () => {
   });
   it("one-sided add-backs mentioning gains/income only as a condition are not income-like", () => {
     expect(namesGainOrIncome("cash receipts (or any netting arrangements resulting in reduced cash expenditures) not included in the calculation of Consolidated Net Income in any period to the extent non-cash gains relating to such income were deducted in the calculation of Consolidated EBITDA pursuant to clause (2) below for any previous period and not added back")).toBe(false);
-    expect(namesGainOrIncome("total interest expense and, to the extent not reflected in such total interest expense, any losses on Hedging Obligations or other derivative instruments entered into for the purpose of hedging interest rate risk, net of interest income and gains on such Hedging Obligations or such derivative instruments")).toBe(false);
+    // Same-instrument netting without interest income stays one-sided.
+    expect(namesGainOrIncome("any losses on Hedging Obligations or other derivative instruments, net of gains on such Hedging Obligations")).toBe(false);
   });
   it("lines that actually net income stay income-like", () => {
     expect(namesGainOrIncome("any other non-cash charges less other non-cash items of income increasing Consolidated Net Income")).toBe(true);
     expect(namesGainOrIncome("taxes paid, net of any income therefrom")).toBe(true);
     expect(namesGainOrIncome("income from tax equity investments")).toBe(true);
+  });
+  it("same-instrument netting stops at interest income (stays two-sided)", () => {
+    expect(namesGainOrIncome("any losses on Hedging Obligations, net of interest income and gains on such Hedging Obligations")).toBe(true);
+  });
+  const IDEF = (tail: string) => `${CNI}"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, to the extent deducted in calculating Consolidated Net Income: (a) provision for taxes based on income; plus (b) Consolidated Interest Expense; plus (c) depreciation and amortization expense. "Consolidated Interest Expense" means total interest expense (other than amortization of deferred financing fees) of the Borrower and its Subsidiaries${tail}.`;
+  it("interest definition: gains outside the interest measure do not make the line two-sided", () => {
+    expect(decide("Consolidated EBITDA", IDEF("; provided that gains on asset sales shall not be included in Consolidated Net Income for this purpose"), fin()).status).toBe("LOWER_BOUND");
+  });
+  it("interest definition: gains netted in the interest measure keep it two-sided", () => {
+    expect(decide("Consolidated EBITDA", IDEF(", net of interest income and gains on interest rate hedges"), fin()).status).toBe("NEEDS_INPUT");
+  });
+  it("pure income-tax list maps exactly; franchise taxes (not in income tax expense) stay a floor", () => {
+    const T = (a: string) => `${CNI}"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, to the extent deducted in calculating Consolidated Net Income: (a) ${a}; plus (b) interest expense; plus (c) depreciation and amortization expense.`;
+    const d = decide("Consolidated EBITDA", T("federal, state, local and foreign income taxes"), fin());
+    expect(d.status).toBe("BOUND"); expect(d.input?.value).toBe(String(200 * M));
+    expect(decide("Consolidated EBITDA", T("foreign income and franchise taxes"), fin()).status).toBe("LOWER_BOUND");
   });
 });
