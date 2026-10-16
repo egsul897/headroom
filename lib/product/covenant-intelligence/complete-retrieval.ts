@@ -178,17 +178,15 @@ export function expandRetrievalSet(params: {
           toRetrieved(r, "RELATED_COVENANT", `Cross-covenant peer of ${hit.category} (§${hit.sectionRef})`),
         );
       }
-      if (related.length === 0 && (hit.posture === "GENERAL_PROHIBITION" || hit.posture === "ENUMERATED_PERMISSION")) {
-        // Only flag when the corpus has ANY item in that peer family elsewhere — otherwise silence.
-        const anywhere = params.corpus.some((c) => c.sourceId === hit.sourceId && c.category === cat);
-        if (anywhere) {
-          omissions.push({
-            kind: "MISSING_RELATED_FAMILY",
-            detail: `Initial set for §${hit.sectionRef} (${hit.category}) did not include peer family ${cat}, which exists in the same document.`,
-            severity: "MEDIUM",
-          });
-        }
-      }
+      // Rule 70: no MISSING_RELATED_FAMILY omission here. The
+      // loop above adds unseen peers (up to 3) and every other
+      // peer is already in the retrieval set (seen) — so a
+      // "family exists in corpus but related.length === 0" check
+      // could only fire when the peer family IS already present,
+      // and the omission would falsely claim the initial set
+      // omitted it. The adversarial verifier turns this omission
+      // into a MATERIAL OMISSION_FROM_RETRIEVAL finding, so the
+      // false alarm cried wolf on verified answers.
     }
 
     // Shared-cap peers ("together with … Section X")
