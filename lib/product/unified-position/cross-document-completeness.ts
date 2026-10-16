@@ -50,7 +50,28 @@ export function classifyCrossDocumentCompleteness(args: {
   }>;
 }): CrossDocumentCompleteness {
   const onFile = args.documentsOnFile;
-  const evaluatedIds = new Set(args.evaluated.map((e) => e.documentId));
+  const onFileIds = new Set(onFile.map((d) => d.id));
+  // Rule 63: count DISTINCT documents, not entries. A document
+  // evaluated twice (e.g. debt + lien regimes) used to inflate
+  // documentsEvaluated and the "permitted by all N" summary, and
+  // an evaluated entry for a document NOT on file counted
+  // toward permission. Per document, the worst status wins
+  // (blocked > review_required > not_tested > clear); foreign
+  // entries cannot support this package.
+  const rank: Record<TransactionStatus, number> = {
+    blocked: 0,
+    review_required: 1,
+    not_tested: 2,
+    clear: 3,
+  };
+  const byDoc = new Map<string, (typeof args.evaluated)[number]>();
+  for (const e of args.evaluated) {
+    if (!onFileIds.has(e.documentId)) continue;
+    const prev = byDoc.get(e.documentId);
+    if (!prev || rank[e.status] < rank[prev.status]) byDoc.set(e.documentId, e);
+  }
+  const evaluated = [...byDoc.values()];
+  const evaluatedIds = new Set(evaluated.map((e) => e.documentId));
   const notTested: DocumentRestrictionOutcome[] = onFile
     .filter((d) => !evaluatedIds.has(d.id))
     .map((d) => ({
@@ -60,20 +81,20 @@ export function classifyCrossDocumentCompleteness(args: {
       reason: "Basket / restriction for this transaction type not configured on this document.",
     }));
 
-  const prohibited = args.evaluated
+  const prohibited = evaluated
     .filter((e) => e.status === "blocked")
     .map((e) => ({ ...e }));
-  const conditional = args.evaluated
+  const conditional = evaluated
     .filter((e) => e.status === "review_required")
     .map((e) => ({ ...e }));
-  const permitted = args.evaluated
+  const permitted = evaluated
     .filter((e) => e.status === "clear")
     .map((e) => ({ ...e }));
-  const notDeterminable = args.evaluated
+  const notDeterminable = evaluated
     .filter((e) => e.status === "not_tested")
     .map((e) => ({ ...e }));
 
-  const documentsEvaluated = args.evaluated.length;
+  const documentsEvaluated = evaluated.length;
   const documentsNotTested = notTested.length + notDeterminable.length;
   const documentsOnFile = onFile.length;
 
