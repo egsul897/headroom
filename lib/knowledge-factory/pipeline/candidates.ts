@@ -13,7 +13,38 @@ const TOC_LEADER_LINE = /^\s*(?:Section|§)\s*[\dA-Za-z.()-]+\s+.+\.{3,}\s*\d+\s
 /** A bare TOC entry: "6.05 Limitation on Liens 58" or "VII. Limitation on Indebtedness 35" — ref + title + page number, no "Section", no dotted leader. */
 const TOC_BARE_ENTRY =
   /^\s*(?:\d+(?:\.\d+)+(?:\([a-z0-9]+\))?|M{0,4}(?:C[MD]|D?C{0,3})(?:X[CL]|L?X{0,3})(?:I[XV]|V?I{0,3})\.?)\s+[A-Za-z].*\S\s+\d+\s*$/;
+/**
+ * Rule 163: Section-prefixed bare TOC entry — "Section 6.01. Limitation
+ * on Indebtedness 109". EDGAR HTML puts the ref, title, and page
+ * number on separate lines, so the line-based patterns above never see
+ * this shape; it is matched against whitespace-collapsed span text.
+ */
+const TOC_SECTION_ENTRY = /^\s*(?:Section|§)\s*[\dA-Za-z.()-]+\s+[A-Za-z].*\S\s+\d+\s*$/;
+/**
+ * Rule 163: article-level bare TOC entry — "ARTICLE IV Conditions
+ * Precedent 45". Same multi-line EDGAR shape as TOC_SECTION_ENTRY,
+ * one level up; body article headings carry no trailing page number.
+ */
+const TOC_ARTICLE_ENTRY = /^\s*ARTICLE\s+[IVXLC]+\s+[A-Za-z].*\S\s+\d+\s*$/i;
+/**
+ * Rule 163: one entry inside a TOC list — "5.1. Corporate Existence
+ * and Standing 48". Titles stop at a period or semicolon so the
+ * pattern cannot span body sentences; cross-reference pairs like
+ * "Sections 5.6 and 5.18" may fake one entry, never three.
+ */
+const TOC_LIST_ENTRY =
+  /(?:(?:Section|§|ARTICLE)\s+)?(?:\d+(?:\.\d+)*\.?|[IVXLC]+\.?)\s+[A-Za-z][^.;]{1,80}?\s+\d+(?=\s|$)/gi;
 const OPERATIVE_VERB = /\b(?:shall|will|must|may)\b/i;
+
+/**
+ * Rule 164: covenant-relevance gate for UNKNOWN-family candidates.
+ * Headings use plural forms, so every keyword matches its plural;
+ * "Subsidiary" needs the y/ies alternation ("Subsidiaries" is not
+ * "Subsidiary" + "s"). "Guarantor" is included alongside
+ * "Guarantee" — guaranty articles are covenant-relevant.
+ */
+const COVENANT_HEADING_KEYWORDS =
+  /\b(?:Indebtedness|Lien|Restricted|Investment|Disposition|Affiliate|Covenant|Default|Guarantee|Guarantor|Prepayment|Incremental|Available Amount|Sale|Fundamental)s?\b|\bSubsidiar(?:y|ies)\b/i;
 
 /**
  * True when a node's span is table-of-contents material, not operative
@@ -37,6 +68,38 @@ function isTableOfContentsSpan(
     for (const line of spanText.split("\n")) {
       if (isBareTocLine(line)) return true;
     }
+  }
+  // Rule 163: EDGAR HTML splits one TOC entry across lines — ref,
+  // title, and page number on separate lines ("Section 6.01.\n
+  // Indebtedness\n109") — so no single line matches the patterns
+  // above and the TOC node survives as a duplicate of the body
+  // section (same sectionRef, different excerpt, so dedup keeps
+  // both). Collapse the span and test the entry shape. The length
+  // cap + verb guard keep body sections out: operative spans are
+  // long and verb-bearing; only a short, verb-less "ref + title +
+  // page number" span is a TOC entry.
+  const collapsedSpan = spanText.replace(/\s+/g, " ").trim();
+  if (
+    collapsedSpan.length > 0 &&
+    collapsedSpan.length <= 300 &&
+    !OPERATIVE_VERB.test(collapsedSpan) &&
+    (TOC_SECTION_ENTRY.test(collapsedSpan) ||
+      TOC_ARTICLE_ENTRY.test(collapsedSpan) ||
+      TOC_BARE_ENTRY.test(collapsedSpan))
+  ) {
+    return true;
+  }
+  // Rule 163 (TOC lists): an article-level TOC block enumerates
+  // many "ref + title + page" entries in one span (e.g. "Article V
+  // ... 48 5.1. Corporate Existence ... 48 5.2. ... 49"), so the
+  // single-entry shape above misses it. Count entries instead: a
+  // span with three or more list entries and no operative verb is
+  // a TOC block, not operative text. Body excerpts are excluded by
+  // the verb guard and by the entry shape (titles stop at sentence
+  // periods, so cross-reference pairs cannot fake three entries).
+  if (!OPERATIVE_VERB.test(spanText)) {
+    const entries = collapsedSpan.match(TOC_LIST_ENTRY);
+    if (entries && entries.length >= 3) return true;
   }
   return false;
 }
@@ -162,7 +225,13 @@ export function discoverCovenantCandidates(
     const families = classifyFamiliesFromText(excerpt, node.heading);
     if (families.length === 1 && families[0] === "UNKNOWN") {
       // Keep UNKNOWN only when heading still looks covenant-relevant.
-      if (!/\b(?:Indebtedness|Lien|Restricted|Investment|Disposition|Affiliate|Covenant|Default|Guarantee|Subsidiary|Prepayment|Incremental|Available Amount|Sale|Fundamental)\b/i.test(node.heading + excerpt.slice(0, 400))) {
+      // Rule 164: headings use PLURAL forms — "COVENANTS",
+      // "Guarantees", "Subsidiaries". A singular-only \b…\b gate
+      // dropped the entire Article VI of a real credit agreement
+      // (heading "ARTICLE VI COVENANTS", excerpt "…its
+      // Subsidiaries…") while the TOC artifact for the same article
+      // passed via "Notice of Default" in the TOC listing.
+      if (!COVENANT_HEADING_KEYWORDS.test(node.heading + excerpt.slice(0, 400))) {
         continue;
       }
     }
