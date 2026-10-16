@@ -52,6 +52,7 @@ function deferredAskNumericalLayer(): CrossDocumentNumericalLayer {
       securedDebt: 0,
       cash: 0,
       totalAssets: null,
+      netWorth: null,
     },
     pathwayCapacities: [],
     documentSummaries: [],
