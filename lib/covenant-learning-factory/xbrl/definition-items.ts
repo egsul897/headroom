@@ -221,7 +221,7 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
   return r.concepts.length ? r : null;
 }
 
-const STOP = /\b(?:the|a|an|of|and|or|any|all|such|its|their|in|for|to|on|with|by|from|that|this|each|case|period|amount|amounts|consolidated|person|borrower|parent|company|subsidiaries|subsidiary|group|restricted|required|taken|pursuant|gaap|accordance|recorded|respect|other|non-?cash|expense|expenses|charges?|losses?|attributable|which|was|were|is|be|been|deducted|determining|net|income|calculating|arriving|at|as|so|without|duplication|extent|solely|aggregate)\b/gi;
+export const STOP = /\b(?:the|a|an|of|and|or|any|all|such|its|their|in|for|to|on|with|by|from|that|this|each|case|period|amount|amounts|consolidated|person|borrower|parent|company|subsidiaries|subsidiary|group|restricted|required|taken|pursuant|gaap|accordance|recorded|respect|other|non-?cash|expense|expenses|charges?|losses?|attributable|which|was|were|is|be|been|deducted|determining|net|income|calculating|arriving|at|as|so|without|duplication|extent|solely|aggregate)\b/gi;
 
 /** The definition split into its lead (base) and enumerated line items; items[i] of evaluateDefinition is segs[i + 1]. */
 export function definitionSegments(kind: DefinitionKind, term: string, text: string): Array<{ label: string; text: string; lead: string }> | null {

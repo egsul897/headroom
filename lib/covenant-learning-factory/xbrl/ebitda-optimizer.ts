@@ -12,7 +12,7 @@
  *     "needsInput" lists what would raise it.
  */
 import { borrowerInput, type IssuerFinancials } from "./companyfacts";
-import { CAPPED, COST_LIKE, HEADER, QUALIFIED, TWO_SIDED, definitionSegments, markers, evaluateDefinition, mapEbitdaItem, type DefinitionEvaluation } from "./definition-items";
+import { CAPPED, COST_LIKE, HEADER, QUALIFIED, STOP, TWO_SIDED, definitionSegments, markers, evaluateDefinition, mapEbitdaItem, type DefinitionEvaluation } from "./definition-items";
 
 export type AddBackCategory = "INTEREST" | "TAXES" | "D&A" | "STOCK_COMP" | "IMPAIRMENT" | "RESTRUCTURING" | "SEVERANCE" | "TRANSACTION_COSTS" | "INTEGRATION"
   | "DEBT_EXTINGUISHMENT" | "RUN_RATE_SYNERGIES" | "NON_RECURRING" | "NON_CASH" | "OTHER";
@@ -265,6 +265,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     let concepts: Array<{ concept: string; value: bigint }> = [];
     let coverage: AddBackLine["coverage"] = "NONE";
     let mapNote = "";
+    let ownFull = false; // the line is wholly the mapped filing item(s) (no unmapped remainder)
     // A borrower-supplied amount (with its source) answers the whole line, like a filing figure.
     const bi = borrowerInput(fin, [`ADDBACK:${it.label}`, cat === "OTHER" ? "" : `ADDBACK:${cat}`].filter((k) => k && !consumedInputs.has(k.toUpperCase())));
     if (bi) { consumedInputs.add(bi.key.toUpperCase()); concepts = [{ concept: `borrower:${bi.key} [${bi.source}]`, value: BigInt(bi.value) }]; coverage = "FULL"; }
@@ -282,7 +283,10 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
       // under QUALIFIED.excluding — rematerialize from mapEbitdaItem here).
       // Even when the line also has two-sided language (e.g. hedge gains/losses), claim mapped one-sided
       // filing evidence (interest / tax / D&A); the indeterminate residue stays NEEDS_INPUT.
-      if (m && m !== "TWO_SIDED") { concepts = m.concepts; coverage = "PARTIAL"; if (ambiguous || QUALIFIED.test(scopeText)) mapNote = "qualified/two-sided residue omitted; filing-supported core claimed"; }
+      if (m && m !== "TWO_SIDED") {
+        let rest = scopeText; for (const re of m.residueStop) rest = rest.replace(re, " ");
+        ownFull = !QUALIFIED.test(scopeText) && rest.replace(/\([^)]*\)/g, " ").replace(STOP, " ").replace(/[^A-Za-z]+/g, " ").trim().length <= 12;
+        concepts = m.concepts; coverage = "PARTIAL"; if (ambiguous || QUALIFIED.test(scopeText)) mapNote = "qualified/two-sided residue omitted; filing-supported core claimed"; }
       else if (m === "TWO_SIDED" && ambiguous) mapNote = "two-sided or indeterminate add-back; omitted from supported floor";
     } else {
       mapNote = "hard carve-out (other than / excluding / except) — full filing line would overstate; NEEDS_INPUT";
@@ -304,7 +308,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     if (!fresh.length && concepts.length) {
       // Deduplicated against a prior line: covered only if this line's own mapping was complete; a partly mapped
       // line stays open (one-sided remainder needs input).
-      covOut = coverage === "FULL" ? "FULL" : "PARTIAL";
+      covOut = coverage === "FULL" || ownFull ? "FULL" : "PARTIAL";
       noteExtra = "already included in a prior add-back (same filing concept); no double count";
     } else if (!fresh.length && coverage === "FULL") {
       covOut = "FULL";
