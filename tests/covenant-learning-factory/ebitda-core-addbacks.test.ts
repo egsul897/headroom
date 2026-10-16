@@ -311,4 +311,14 @@ describe("base promotion and invent-safe CNI extinguishment", () => {
     expect(o.reason).toMatch(/earnings-before formula|missing/i);
   });
 
+  it("bare 'non-cash losses including write-offs' never maps to AssetImpairmentCharges; explicit impairment does", () => {
+    const f = fin({ ...XBRL, AssetImpairmentCharges: 9 * M });
+    const bare = mapEbitdaItem("all non-cash losses, charges and expenses, including any write-offs or write-downs;", f, "", 0);
+    expect(bare && typeof bare === "object" && bare.concepts.some((c) => c.concept === "AssetImpairmentCharges")).toBeFalsy();
+    const explicit = mapEbitdaItem("non-cash impairments of long lived assets,", f, "", 0);
+    expect(explicit && typeof explicit === "object" && explicit.concepts.some((c) => c.concept === "AssetImpairmentCharges")).toBe(true);
+    const absent = mapEbitdaItem("non-cash impairments of long lived assets,", fin(XBRL), "", 0);
+    expect(absent).toBeNull();
+  });
+
 });
