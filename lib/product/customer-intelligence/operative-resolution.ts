@@ -66,10 +66,30 @@ function instrumentFamily(
   return null;
 }
 
+function isValidIsoDate(date: string): boolean {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!m) return false;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+  const dt = new Date(Date.UTC(y, mo - 1, d));
+  return dt.getUTCFullYear() === y && dt.getUTCMonth() === mo - 1 && dt.getUTCDate() === d;
+}
+
 /** Parse dates like "as of March 15, 2024" / "dated as of 2024-03-15" / ISO from titles. */
 export function extractEffectiveDateHint(text: string): string | null {
-  const iso = text.match(/\b(20\d{2}-\d{2}-\d{2})\b/);
-  if (iso) return iso[1]!;
+  // Prefer a phrase-attached ISO date ("dated as of 2024-03-15").
+  const phraseIso = text.match(/(?:dated\s+as\s+of|as\s+of|effective(?:\s+as\s+of)?)\s*(20\d{2}-\d{2}-\d{2})\b/i);
+  if (phraseIso && isValidIsoDate(phraseIso[1]!)) return phraseIso[1]!;
+  // Bare ISO: first ISO date NOT preceded by maturity language.
+  // "Notes due 2031-06-01" is a maturity date, not an effective
+  // date (rule 28 class: a maturity year/date mistaken for the
+  // effective date corrupted chronology and as-of gating).
+  for (const m of text.matchAll(/\b(20\d{2}-\d{2}-\d{2})\b/g)) {
+    const before = text.slice(Math.max(0, (m.index ?? 0) - 30), m.index ?? 0).toLowerCase();
+    if (/\b(due|maturing|maturity|redeemable|payable|expires?)\b/.test(before)) continue;
+    if (isValidIsoDate(m[1]!)) return m[1]!;
+  }
   const mdy = text.match(
     /\b(?:dated\s+as\s+of|as\s+of|effective\s+(?:as\s+of\s+)?)\s*([A-Z][a-z]+ \d{1,2},?\s+20\d{2})\b/i,
   );

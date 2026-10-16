@@ -33,6 +33,19 @@ describe("extractEffectiveDateHint", () => {
     expect(extractEffectiveDateHint("Amended and Restated Credit Agreement dated as of March 15, 2024")).toBe("2024-03-15");
     expect(extractEffectiveDateHint("Supplemental Indenture 2024-06-01")).toBe("2024-06-01");
   });
+
+  it("skips an ISO maturity date and takes the phrase-attached effective date", () => {
+    // Rule 53: the old code took the FIRST ISO date anywhere —
+    // a "due 2031-06-01" maturity date became the effective date.
+    expect(
+      extractEffectiveDateHint("8.5% Senior Notes due 2031-06-01 — Indenture dated as of 2020-01-01"),
+    ).toBe("2020-01-01");
+    expect(extractEffectiveDateHint("Notes due 2031-06-01")).toBeNull();
+  });
+
+  it("rejects a non-calendar ISO date", () => {
+    expect(extractEffectiveDateHint("Supplemental Indenture 2024-02-30")).toBeNull();
+  });
 });
 
 function src(sourceId: string, documentClass: string, documentTitle: string, filingDate: string): KnowledgeSourceRecord {
