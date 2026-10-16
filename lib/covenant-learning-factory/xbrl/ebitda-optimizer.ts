@@ -47,6 +47,11 @@ const EXTRA: Array<{ cat: AddBackCategory; re: RegExp; concepts: string[] }> = [
   { cat: "SEVERANCE", re: /\bseverance\b/i, concepts: ["SeveranceCosts1"] },
 ];
 
+/** True when the head add-back is reduced by (other than|excluding|except …): claiming the full XBRL line would overstate. */
+export function hardAddBackCarveOut(t: string): boolean {
+  return /\b(?:interest\s+(?:expense|charges?)|(?:consolidated\s+)?depreciation(?:\s+and\s+amortization)?(?:\s+expense)?|(?:consolidated\s+)?amortization(?:\s+expense)?|fixed\s+charges)\b[^.;]{0,100}\(\s*(?:other\s+than|excluding|except)/i.test(t);
+}
+
 export function categorize(t: string): AddBackCategory {
   if (/run[- ]rate|cost\s+savings|synerg|operating\s+expense\s+reductions/i.test(t)) return "RUN_RATE_SYNERGIES";
   if (/(?:stock|equity|share)[- ]based\s+compensation|stock\s+options?|equity\s+awards?/i.test(t)) return "STOCK_COMP";
@@ -54,7 +59,9 @@ export function categorize(t: string): AddBackCategory {
   const minorityInterest = /\b(?:minority|non-?controlling)\s+interest\b/i.test(t);
   // Interest expense lines often say "inclusive of amortization of premiums / deferred financing" — that is INTEREST, not D&A.
   if (!minorityInterest && (/\binterest\s+(?:expense|charges?)\b/i.test(t) || /\bFixed\s+Charges\b/i.test(t))) return "INTEREST";
-  if (/depreciation|amortization(?!\s+of\s+(?:deferred\s+)?(?:financing|debt|premiums?|discount|OID))/i.test(t) && !/non-?cash\s+charges/i.test(t)) return "D&A";
+  // Strip "(other than depreciation/amortization…)" so transaction-cost lines are not miscategorized as D&A.
+  const withoutOtherThanDa = t.replace(/\(\s*(?:other\s+than|excluding|except(?:\s+for)?)[^)]*(?:depreciation|amortization)[^)]*\)/gi, " ");
+  if (/depreciation|amortization(?!\s+of\s+(?:deferred\s+)?(?:financing|debt|premiums?|discount|OID))/i.test(withoutOtherThanDa) && !/non-?cash\s+charges/i.test(t)) return "D&A";
   // "penalties and interest relating to such taxes" is TAXES, not INTEREST.
   if (/\btax(?:es)?\b/i.test(t) && !/\binterest\s+(?:expense|charges?)\b/i.test(t)) return "TAXES";
   if (!minorityInterest && /\binterest\b/i.test(t)) return "INTEREST";
@@ -216,16 +223,24 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     // A borrower-supplied amount (with its source) answers the whole line, like a filing figure.
     const bi = borrowerInput(fin, [`ADDBACK:${it.label}`, cat === "OTHER" ? "" : `ADDBACK:${cat}`].filter((k) => k && !consumedInputs.has(k.toUpperCase())));
     if (bi) { consumedInputs.add(bi.key.toUpperCase()); concepts = [{ concept: `borrower:${bi.key} [${bi.source}]`, value: BigInt(bi.value) }]; coverage = "FULL"; }
-    else if (!capSpec && (it.coverage === "FULL" || it.coverage === "PARTIAL")) {
+    else if (!capSpec && (it.coverage === "FULL" || it.coverage === "PARTIAL") && it.concepts.length) {
       concepts = it.concepts.map((c) => ({ concept: c.concept, value: BigInt(c.value) }));
-      coverage = it.coverage === "FULL" ? "FULL" : concepts.length ? "PARTIAL" : "NONE";
-    } else if (!/\bother\s+than\b|\bexcluding\b|\bexcept(?:\s+for)?\b/i.test(scopeText)) {
+      coverage = it.coverage === "FULL" ? "FULL" : "PARTIAL";
+    } else if (!capSpec && it.coverage === "FULL" && !it.concepts.length) {
+      // evaluateDefinition: fully covered with nothing new (e.g. amort already in prior D&A total).
+      coverage = "FULL";
+      mapNote = "already included in a prior add-back (same filing concept); no double count";
+    } else if (!hardAddBackCarveOut(scopeText)) {
       const m = mapEbitdaItem(scopeText, fin, text, 0);
-      // Soft QUALIFIED (net of / solely) still maps; hard carve-outs above stay fail-closed.
+      // Head carve-outs (interest expense (other than …)) stay fail-closed; definitional
+      // "including … but excluding prepaid amort" still maps (evaluateDefinition may have zeroed them
+      // under QUALIFIED.excluding — rematerialize from mapEbitdaItem here).
       // Even when the line also has two-sided language (e.g. hedge gains/losses), claim mapped one-sided
       // filing evidence (interest / tax / D&A); the indeterminate residue stays NEEDS_INPUT.
       if (m && m !== "TWO_SIDED") { concepts = m.concepts; coverage = "PARTIAL"; if (ambiguous || QUALIFIED.test(scopeText)) mapNote = "qualified/two-sided residue omitted; filing-supported core claimed"; }
       else if (m === "TWO_SIDED" && ambiguous) mapNote = "two-sided or indeterminate add-back; omitted from supported floor";
+    } else {
+      mapNote = "hard carve-out (other than / excluding / except) — full filing line would overstate; NEEDS_INPUT";
     }
     if (!bi && !concepts.length && !QUALIFIED.test(scopeText)) {
       for (const x of EXTRA) if (x.re.test(scopeText)) for (const c of x.concepts) { const v = fin.values.find((f) => f.metric === "item" && f.concept === c); if (v) { concepts.push({ concept: c, value: BigInt(v.value) }); coverage = "PARTIAL"; } }
@@ -234,9 +249,21 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     fresh.forEach((c) => used.add(c.concept));
     // Only charges that reduced net income can be added back: a net credit adds nothing.
     const evid = fresh.reduce((a, c) => a + (c.value > 0n ? c.value : 0n), 0n);
-    lines.push({ label: it.label, text: full.slice(0, 200), category: cat, evidenced: fresh.length ? usd(evid) : null, concepts: fresh.map((c) => ({ concept: c.concept, value: usd(c.value) })),
-      coverage: fresh.length ? coverage : "NONE", cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null,
-      note: [it.note, mapNote, !fresh.length && ambiguous ? "two-sided or indeterminate add-back; omitted from supported floor" : ""].filter(Boolean).join("; ") || it.note, evid, capSpec });
+    // Mapped concepts already claimed on an earlier line (e.g. amort after full D&A): covered, not a gap.
+    let covOut: AddBackLine["coverage"] = fresh.length ? coverage : "NONE";
+    let noteExtra = "";
+    if (!fresh.length && concepts.length) {
+      covOut = "FULL";
+      noteExtra = "already included in a prior add-back (same filing concept); no double count";
+    } else if (!fresh.length && coverage === "FULL") {
+      covOut = "FULL";
+      noteExtra = mapNote || "already included in a prior add-back (same filing concept); no double count";
+    } else if (!fresh.length && ambiguous) {
+      noteExtra = "two-sided or indeterminate add-back; omitted from supported floor";
+    }
+    lines.push({ label: it.label, text: full.slice(0, 200), category: cat, evidenced: fresh.length ? usd(evid) : (concepts.length ? "0" : null), concepts: fresh.map((c) => ({ concept: c.concept, value: usd(c.value) })),
+      coverage: covOut, cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null,
+      note: [it.note, mapNote, noteExtra].filter(Boolean).join("; ") || it.note, evid, capSpec });
   }
 
   // ---- totals ----

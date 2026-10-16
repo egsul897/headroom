@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { mapEbitdaItem, TWO_SIDED } from "@/lib/covenant-learning-factory/xbrl/definition-items";
-import { categorize, optimizeConsolidatedEbitda } from "@/lib/covenant-learning-factory/xbrl/ebitda-optimizer";
+import { categorize, hardAddBackCarveOut, optimizeConsolidatedEbitda } from "@/lib/covenant-learning-factory/xbrl/ebitda-optimizer";
 import type { IssuerFinancials } from "@/lib/covenant-learning-factory/xbrl/companyfacts";
 
 const M = 1_000_000;
@@ -128,5 +128,60 @@ describe("categorize edge cases", () => {
     expect(categorize("the amount of any minority interest expense consisting of Subsidiary income attributable to minority equity interests")).toBe("OTHER");
     expect(categorize("non-controlling interest expense")).toBe("OTHER");
     expect(categorize("Consolidated Interest Expense")).toBe("INTEREST");
+  });
+});
+
+describe("hard QUALIFIED carve-outs and D&A dedupe", () => {
+  it("definitional excluding prepaid amort still maps D&A; head carve-outs stay blocked", () => {
+    const definitional =
+      "depreciation, amortization (including amortization of intangibles but excluding amortization of prepaid cash expenses that were paid in a prior period)";
+    expect(hardAddBackCarveOut(definitional)).toBe(false);
+    expect(hardAddBackCarveOut("interest expense (other than interest expense attributable to securities lending)")).toBe(true);
+    expect(hardAddBackCarveOut("Consolidated Depreciation and Amortization Expense of such Person for such period (other than amortization related to MSRs)")).toBe(true);
+
+    const text =
+      `"Consolidated Net Income" means the net income of the Issuer. ` +
+      `"Consolidated EBITDA" means Consolidated Net Income plus (1) interest expense; plus (2) ` + definitional + `; plus (3) taxes. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL));
+    const da = o.addBacks.find((a) => a.label === "(2)")!;
+    expect(da.category).toBe("D&A");
+    expect(da.coverage).not.toBe("NONE");
+    expect(Number(da.evidenced)).toBe(50 * M);
+  });
+
+  it("transaction costs other than D&A are not categorized as D&A", () => {
+    expect(categorize("any expenses or charges (other than depreciation or amortization expense) related to any Equity Offering")).toBe("TRANSACTION_COSTS");
+    expect(categorize("any fees (other than Consolidated Depreciation and Amortization Expense) related to any acquisition")).toBe("TRANSACTION_COSTS");
+    expect(categorize("any fees (other than Consolidated Depreciation and Amortization Expense) related to any Investment")).not.toBe("D&A");
+  });
+
+  it("interest expense other than securities lending stays NEEDS_INPUT (would overstate)", () => {
+    const text =
+      `"Consolidated Net Income" means the net income of the Issuer. ` +
+      `"Consolidated EBITDA" means Consolidated Net Income plus (a) taxes; plus (b) interest expense (other than interest expense attributable to securities lending); plus (c) depreciation and amortization. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL));
+    const interest = o.addBacks.find((a) => a.label === "(b)")!;
+    expect(interest.category).toBe("INTEREST");
+    expect(interest.coverage).toBe("NONE");
+    expect(interest.status).toBe("NEEDS_INPUT");
+  });
+
+  it("trailing amortization after full D&A claim is covered, not a NONE gap", () => {
+    const text =
+      `"Consolidated Net Income" means the net income of the Issuer. ` +
+      `"Consolidated EBITDA" means Consolidated Net Income plus (i) taxes; plus (ii) interest expense; plus (iii) depreciation and amortization expense; plus (iv) amortization expense. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL));
+    const da = o.addBacks.find((a) => a.label === "(iii)")!;
+    const amort = o.addBacks.find((a) => a.label === "(iv)")!;
+    expect(da.coverage).not.toBe("NONE");
+    expect(Number(da.evidenced)).toBe(50 * M);
+    expect(amort.category).toBe("D&A");
+    expect(amort.coverage).toBe("FULL");
+    expect(amort.status).toBe("CLAIMED");
+    expect(Number(amort.claimed)).toBe(0);
+    expect(amort.note).toMatch(/already included/i);
   });
 });
