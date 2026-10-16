@@ -65,3 +65,17 @@ describe("tracker: discretionary add-backs are never sourced from core concepts"
     expect(flags.filter((fl) => ["(d)", "(e)"].includes(fl.clause.label)).every((fl) => fl.status !== "DETECTED")).toBe(true);
   });
 });
+
+describe("tracker: core-concept sources need the clause to name the item", () => {
+  it("drops interest sourced on an 'equity interests' line; keeps D&A on a line naming depreciation", async () => {
+    const { trackAddBacks } = await import("@/lib/covenant-learning-factory/xbrl/addback-tracker");
+    const row = (concept: string, v: number) => ({ metric: "item" as const, concept, periodType: "TTM" as const, periodStart: "2025-07-01", periodEnd: "2026-06-30", value: String(v), unit: "USD" as const, accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test" });
+    const f = { cik: "1", entityName: "T", missing: [], anchor: "2026-06-30", values: [row("InterestExpense", 30e6), row("DepreciationDepletionAndAmortization", 50e6)] };
+    const line = (label: string, text: string, category: string, concept: string, value: string) => ({ label, text, category, evidenced: value, concepts: [{ concept, value }], coverage: "PARTIAL", cap: null, claimed: value, status: "NEEDS_INPUT", headroomToCap: null, note: "" });
+    const opt = { term: "Consolidated EBITDA", periodEnd: "2026-06-30", status: "NEEDS_INPUT", maximum: null, supported: null, base: null, deductions: null, needsInput: [], reason: "", needsBorrowerInput: [],
+      addBacks: [line("(d)", "the repurchase of equity interests of any Parent Company from employees", "OTHER", "InterestExpense", "30000000"), line("(e)", "non-cash charges, including depreciation and amortization", "NON_CASH", "DepreciationDepletionAndAmortization", "50000000")] };
+    const flags = trackAddBacks(opt as never, f, null, null);
+    expect(flags.find((x) => x.clause.label === "(d)")?.status).not.toBe("DETECTED");
+    expect(flags.find((x) => x.clause.label === "(e)")?.status).toBe("DETECTED");
+  });
+});
