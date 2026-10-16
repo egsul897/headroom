@@ -51,7 +51,7 @@ export function extractStructure(sourceId: string, text: string): StructuralExtr
       sourceId,
       nodeType: amb.candidateType,
       sectionRef: amb.candidateNumber || "AMBIGUOUS",
-      heading: amb.candidateText?.slice(0, 160) || "(ambiguous structural candidate)",
+      heading: amb.candidateTitle || amb.candidateText?.slice(0, 160) || "(ambiguous structural candidate)",
       charStart: amb.charStart,
       charEnd: amb.charEnd,
       ambiguous: true,

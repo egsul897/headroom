@@ -1004,6 +1004,33 @@ function extractTitleLikeSpan(rawTitle: string): string {
   return (rawTitle.match(/^[A-Za-z ,&';-]*/)?.[0] ?? "").trim();
 }
 
+/**
+ * Rule 188: a captured SECTION title that runs into its own body
+ * text. EDGAR HTML often underlines the heading (`<U>Conduct of
+ * Business</U>`) with the body on the same line, and tag
+ * stripping erases the boundary — so the parser captured
+ * "Conduct of Business The Parent will, and will cause each
+ * Subsidiary to, (a)" as the §6.4 heading. Section titles are
+ * noun phrases; body text begins with a party subject + a
+ * modal/verb ("The Parent will", "No Loan Party shall",
+ * "Each Lender agrees"). Truncate the title at the first such
+ * body-start. Case-sensitive by design: body modals are
+ * lowercase ("will", "shall"), title words are capitalized,
+ * so a title legitimately containing "Guarantor
+ * Representations" or "Notices to the Borrower" (no modal
+ * follows) never matches. A title that IS entirely body text
+ * (body-start at position 0) is left untouched — truncating
+ * it to empty would be worse than the pollution.
+ */
+const BODY_START_RE =
+  /\b(?:The|Each|No|Any|All|Such)\s+(?:Parent|Borrower|Company|Loan Party|Loan Parties|Guarantor|Guarantors|Lender|Lenders|Administrative Agent|Agent|Collateral Agent|Subsidiary|Subsidiaries|Borrowers|Obligor|Obligors|Issuer)\b\s+(?:will|shall|may|must|agrees?|represents?|covenants?|acknowledges?|consents?|undertakes?|hereby)\b/;
+function truncateTitleAtBodyStart(title: string): string {
+  const m = BODY_START_RE.exec(title);
+  if (!m || m.index === 0) return title;
+  const truncated = title.slice(0, m.index).trim().replace(/[.:;]+$/, "").trim();
+  return truncated.length > 0 ? truncated : title;
+}
+
 function bestMatches(text: string, patterns: RegExp[]): RegExpExecArray[] {
   let best: RegExpExecArray[] = [];
   for (const pattern of patterns) {
@@ -1313,7 +1340,7 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
     const parentArticle = [...articleMatches].reverse().find((a) => a.index < m.index);
     raws.push({
       nodeType: "SECTION",
-      heading: (m[2] ?? "").trim(),
+      heading: truncateTitleAtBodyStart((m[2] ?? "").trim()),
       sectionRef,
       charStart: m.index,
       parentSectionRef: parentArticle ? (parentArticle[1] ?? "").trim() : null,
@@ -1855,6 +1882,14 @@ export interface AmbiguousStructuralCandidate {
   /** The regex-captured number/label (e.g. "6.09", "VI") - real, already-visible text, never a parser judgment. */
   candidateNumber: string;
   candidateText: string;
+  /**
+   * Rule 188: the candidate's TITLE (group 2), cleaned the same way
+   * confident nodes' headings are (body-start truncation for
+   * SECTIONs, title-like span for ARTICLEs) — for DISPLAY as a
+   * node heading. candidateText (the full match) is untouched:
+   * it stays the classifier's source evidence.
+   */
+  candidateTitle: string;
   charStart: number;
   charEnd: number;
   precedingWindow: string;
@@ -1956,6 +1991,10 @@ function buildAmbiguousCandidateRecord(doc: CompilerDocumentInput, candidate: Tr
     candidateKey: structuralCandidateKey(candidateType, charStart),
     candidateNumber: (match[1] ?? "").trim(),
     candidateText: match[0],
+    candidateTitle:
+      candidateType === "SECTION"
+        ? truncateTitleAtBodyStart((match[2] ?? "").trim())
+        : extractTitleLikeSpan(match[2] ?? ""),
     charStart,
     charEnd,
     precedingWindow: doc.text.slice(Math.max(0, charStart - TRIAGE_WINDOW_CHARS), charStart),

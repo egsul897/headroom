@@ -292,3 +292,42 @@ describe("rule 175: operative amendment phrasing admits amendment content", () =
     expect(c).toHaveLength(0);
   });
 });
+
+describe("rule 188: section title truncated at its own body-start", () => {
+  function headingsFor(text: string) {
+    const { nodes } = extractStructure("rule188-test", text);
+    // Both confident nodes and ambiguous-candidate nodes surface here;
+    // the heading must be the cleaned title in either case.
+    return nodes.filter((n) => n.nodeType === "SECTION").map((n) => ({ ref: n.sectionRef, heading: n.heading, ambiguous: n.ambiguous }));
+  }
+
+  it("an underlined heading glued to its chapeau truncates to the noun-phrase title", () => {
+    const text = [
+      "6.3. Maintenance of Properties The Parent will maintain its properties.",
+      "",
+      "6.4. Conduct of Business The Parent will, and will cause each Subsidiary to, (a) carry on and conduct its business in substantially the same manner, and (b) do all things necessary to preserve its existence.",
+      "",
+      "6.5. Taxes The Borrower shall pay all taxes.",
+    ].join("\n");
+    const headings = headingsFor(text);
+    const h64 = headings.find((h) => h.ref === "6.4");
+    expect(h64).toBeDefined();
+    expect(h64!.heading).toBe("Conduct of Business");
+    expect(headings.find((h) => h.ref === "6.3")!.heading).toBe("Maintenance of Properties");
+    expect(headings.find((h) => h.ref === "6.5")!.heading).toBe("Taxes");
+  });
+
+  it("a title legitimately containing a party name without a modal is untouched", () => {
+    const text = [
+      "10.1. Notices to the Borrower. All notices shall be in writing.",
+      "",
+      "10.2. Guarantor Representations. Each Guarantor represents as follows.",
+      "",
+      "10.3. Payment of Principal. The Borrower shall pay principal when due.",
+    ].join("\n");
+    const headings = headingsFor(text);
+    expect(headings.find((h) => h.ref === "10.1")!.heading).toBe("Notices to the Borrower");
+    expect(headings.find((h) => h.ref === "10.2")!.heading).toBe("Guarantor Representations");
+    expect(headings.find((h) => h.ref === "10.3")!.heading).toBe("Payment of Principal");
+  });
+});
