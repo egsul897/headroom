@@ -29,6 +29,7 @@
  * (documented, not a partial-transaction failure), never a half-applied write.
  */
 
+import { documentClassFromConfirmedType } from "../product/customer-intelligence/document-class";
 import { Prisma, type ExtractionCandidate, type ExtractionCandidateKind, type GrantType, type OnboardingStatus, type PrismaClient } from "@prisma/client";
 import { prisma } from "../prisma";
 import { recordSystemReviewRequired, VALUE_SCHEMA_BY_KIND } from "./review";
@@ -269,13 +270,7 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
       // typeConfirmedByUser + the candidate's review history),
       // and a later re-analysis falls back to the confirmed
       // type rather than the original possibly-wrong declaration.
-      const confirmedClass =
-        item.documentType === "CREDIT_AGREEMENT" ||
-        item.documentType === "INDENTURE" ||
-        item.documentType === "AMENDMENT" ||
-        item.documentType === "INTERCREDITOR_AGREEMENT"
-          ? item.documentType
-          : "OTHER_DEBT_RELATED";
+      const confirmedClass = documentClassFromConfirmedType(item.documentType);
       const sources = await tx.knowledgeSource.findMany({
         where: { companyId, documentId: item.candidate.sourceDocumentId },
         select: { sourceId: true, metadata: true },

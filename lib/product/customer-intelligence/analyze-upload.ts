@@ -15,6 +15,7 @@ import { PostgresDocumentStorageProvider } from "../../document-storage/postgres
 import type { DebtDocumentClass } from "../../knowledge-factory/types";
 import { buildDocumentCovenantSummary } from "../covenant-intelligence/summarize";
 import { analyzeAmendmentPackage } from "./amendment-package";
+import { documentClassFromConfirmedType } from "./document-class";
 import {
   mergePreservedReviewerDecisions,
   type ReviewerApproval,
@@ -426,10 +427,25 @@ export async function analyzeCustomerDocument(params: {
       };
     }
 
-    const documentClass = documentClassFromDeclared(
-      params.declaredType,
-      processed.source.documentClass,
-    );
+    // Rule 128: a counsel-confirmed type must survive re-analysis.
+    // Without this, re-analyzing a document whose class counsel
+    // corrected (rule 127) recomputes the class from the
+    // classifier verdict alone and silently undoes the
+    // correction — the mismatch returns and operative
+    // resolution flips back to the classifier's (wrong) class.
+    // The confirmed Document.type wins; the classifier verdict
+    // is used only when no confirmation exists.
+    const confirmedDoc = await prisma.document.findFirst({
+      where: { id: params.documentId, companyId: params.companyId },
+      select: { type: true, typeConfirmedByUser: true },
+    });
+    const confirmedClass =
+      confirmedDoc?.typeConfirmedByUser && confirmedDoc.type
+        ? documentClassFromConfirmedType(confirmedDoc.type)
+        : null;
+    const documentClass =
+      confirmedClass ??
+      documentClassFromDeclared(params.declaredType, processed.source.documentClass);
     processed.source.documentClass = documentClass;
     store.upsertSource({ ...processed.source, documentClass });
 
