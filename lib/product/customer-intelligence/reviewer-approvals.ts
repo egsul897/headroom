@@ -150,7 +150,12 @@ export async function recordReviewerDecision(params: {
         ...item,
         plainEnglish: plain,
         reviewerDecision: params.decision,
-        interpretationNote: `${item.interpretationNote ?? ""} [Workspace counsel ${params.decision.toLowerCase()} ${next.reviewedAt}]`.trim(),
+        // Rule 144: the note previously stamped the generic
+        // "Workspace counsel" — the same fabricated-attribution
+        // class as rule 143's fallback. The decision now carries
+        // a real reviewer (rule 143 refuses without one), so the
+        // note names that reviewer.
+        interpretationNote: `${item.interpretationNote ?? ""} [${next.reviewerLabel} ${params.decision.toLowerCase()} ${next.reviewedAt}]`.trim(),
       };
     });
     meta.covenantSummary = { ...summary, items };
