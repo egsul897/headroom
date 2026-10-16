@@ -1,5 +1,6 @@
 "use server";
 import { requireTenantAction } from "@/lib/auth/guard";
+import { assertRuleIdResolves } from "@/lib/product/north-star-workflow/rule-id-resolves";
 import { shouldFallbackAfterFceRefusal } from "@/lib/product/north-star-workflow/approve-fallback-guard";
 
 import { revalidatePath } from "next/cache";
@@ -110,6 +111,12 @@ export async function appendHistoricalUsageAction(
   if (missing.length > 0) {
     return { ok: false, issues: [`Manual ledger entry refused — missing: ${missing.join(", ")}`] };
   }
+  // Rule 137: same orphan-bucket hole as rules 135/136 — this
+  // second manual entry point took ruleId as free text with no
+  // resolves check. The ledger page got the guard; this one did
+  // not. Refuse unless the ruleId names a real Permission or
+  // CovenantProvision for this company.
+  await assertRuleIdResolves(companyId, form.ruleId);
   const result = await appendContractLedgerUsage({
     companyId,
     usageId: form.usageId,

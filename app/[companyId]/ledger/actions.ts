@@ -12,6 +12,7 @@ import { defaultManualUsageId } from "@/lib/product/north-star-workflow/usage-id
 import { loadCovenantDataOrEmpty } from "@/lib/covenant-overview-service";
 import { computeCovenantPosition, simulateRestrictedPayment } from "@/lib/covenant-engine";
 import { resolveCanonicalFinancialAsOf } from "@/lib/product/canonical-financial-asof";
+import { assertRuleIdResolves } from "@/lib/product/north-star-workflow/rule-id-resolves";
 
 const VALID_BASKETS: LedgerBasket[] = ["EQUITY", "DEBT_INCUR", "DEBT_REPAY", "ASSET_SALE", "DIVIDEND", "INVESTMENT"];
 const VALID_DIRECTIONS: LedgerDirection[] = ["CREDIT", "DEBIT"];
@@ -87,24 +88,6 @@ export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND
     },
   });
   revalidatePath(`/${companyId}`, "layout");
-}
-
-/** Rule 135/136 shared: a RULE capacity path whose ruleId
- * matches nothing lands in a bucket no capacity query ever reads,
- * so the usage is recorded but silently never counts. Refuse
- * unless the ruleId names a real Permission (id/code) or
- * CovenantProvision (code) for this company. */
-async function assertRuleIdResolves(companyId: string, ruleId: string): Promise<void> {
-  const [permById, permByCode, provByCode] = await Promise.all([
-    prisma.permission.findFirst({ where: { companyId, id: ruleId }, select: { id: true } }),
-    prisma.permission.findFirst({ where: { companyId, code: ruleId }, select: { id: true } }),
-    prisma.covenantProvision.findFirst({ where: { companyId, code: ruleId }, select: { id: true } }),
-  ]);
-  if (!permById && !permByCode && !provByCode) {
-    throw new Error(
-      `ruleId "${ruleId}" matches no Permission (id/code) or CovenantProvision (code) for this company — usage refused; a mistyped rule id would record usage that never counts against any capacity.`,
-    );
-  }
 }
 
 /** Append attributed Phase 4C contract-ledger usage (North Star — distinct from legacy LedgerEntry). */
