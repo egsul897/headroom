@@ -102,14 +102,18 @@ describe("CFO secured-debt product entry (#351)", () => {
     expect(entry.evidenceBlockers).toContain("MISSING_AUTHENTIC_PACKAGE");
   });
 
-  it("wires Simulate page to the product entry (not CLI-only)", () => {
+  it("does NOT wire the fixture CFO entry into the product Simulate page (rule 151)", () => {
     const simulatePage = readFileSync(
       path.join(process.cwd(), "app/[companyId]/simulate/page.tsx"),
       "utf8",
     );
-    expect(simulatePage).toContain("loadCfoSecuredDebtProductEntry");
-    expect(simulatePage).toContain("CfoSecuredDebtWorkflowPanel");
-    expect(simulatePage).toContain("isMatthewsCfoSecuredDebtCompany");
+    // Rule 151: the Matthews-only CFO secured-debt panel evaluated a
+    // hardcoded Matthews package (no companyId) — it must not be
+    // wired into the product Simulate page. The lib workflow and
+    // panel component remain as test-covered evaluation utilities.
+    expect(simulatePage).not.toContain("loadCfoSecuredDebtProductEntry");
+    expect(simulatePage).not.toContain("CfoSecuredDebtWorkflowPanel");
+    expect(simulatePage).not.toContain("isMatthewsCfoSecuredDebtCompany");
 
     const panel = readFileSync(
       path.join(
