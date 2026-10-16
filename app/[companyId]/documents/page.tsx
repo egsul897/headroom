@@ -4,8 +4,6 @@ import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney"
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { getDocumentDetails } from "@/lib/dashboard-service";
 import { fmtDate } from "@/lib/format";
-import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
-import { listConmedPackageFacts } from "@/lib/product/conmed-demo/covenant-catalog";
 import {
   getLatestAmendmentPackage,
   listCustomerDocumentIntelligence,
@@ -27,8 +25,6 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
   const intelligence = await listCustomerDocumentIntelligence(companyId);
   const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
   const amendment = await getLatestAmendmentPackage(companyId);
-  const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
-  const facts = isConmed ? listConmedPackageFacts() : [];
 
   return (
     <div className="stack">
@@ -107,11 +103,6 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               Create / upload in workspace
             </Link>
           </div>
-          {isConmed && (
-            <div className="row-note" style={{ marginTop: 8 }}>
-              Run <code>npm run product:setup-conmed-demo</code> (dry-run) then authorize live setup to persist the authentic CONMED package.
-            </div>
-          )}
         </Card>
       )}
 
@@ -217,27 +208,6 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
         );
       })}
 
-      {facts.length > 0 && (
-        <Card>
-          <div className="card-title">Package relationships</div>
-          <div className="card-subtitle">Source-backed package facts — not capacity determinations.</div>
-          {facts.map((f) => (
-            <div className="row" key={f.id}>
-              <div>
-                <div className="row-label">{f.id}</div>
-                <div className="row-note">{f.fact}</div>
-                <div className="row-note">
-                  Citation: {f.evidenceCitation}{" "}
-                  <Chip tone="navy">{f.clarity}</Chip>
-                </div>
-              </div>
-              <Link className="button" href={`/${companyId}/documents/${f.demoDocumentId}`}>
-                Source
-              </Link>
-            </div>
-          ))}
-        </Card>
-      )}
     </div>
   );
 }

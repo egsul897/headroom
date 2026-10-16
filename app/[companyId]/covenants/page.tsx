@@ -1,31 +1,11 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
-import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
-import {
-  listConmedCovenantExplorerRows,
-  type CapacityDeterminationStatus,
-} from "@/lib/product/conmed-demo/covenant-catalog";
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
 import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 
 export const metadata = { title: "Headroom — Covenants" };
-
-function statusTone(status: CapacityDeterminationStatus): "navy" | "tight" | "idle" {
-  switch (status) {
-    case "PROHIBITION_STRUCTURE":
-    case "STRUCTURE_ONLY":
-      return "navy";
-    case "NEEDS_FINANCIAL_INPUTS":
-    case "RATIO_GATED_UNRESOLVED":
-    case "SCHEDULE_DEPENDENT_UNRESOLVED":
-    case "OUT_OF_PACKAGE_UNRESOLVED":
-      return "tight";
-    default:
-      return "idle";
-  }
-}
 
 export default async function CovenantsPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
@@ -42,7 +22,6 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
       .filter((i) => i.declaredType && i.documentClass && i.documentClass !== i.declaredType)
       .map((i) => [i.documentId, `declared ${i.declaredType}, analyzed as ${i.documentClass}`] as const),
   );
-  const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
   const provisions = await prisma.covenantProvision.findMany({
     where: { companyId },
     include: { document: true },
@@ -326,44 +305,6 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         </Card>
       ))}
 
-      {isConmed && (
-        <>
-          <Card>
-            <div className="card-title">CONMED ground-truth explorer</div>
-            <div className="card-subtitle">
-              Human-authored Article VII catalog (capacity still STRUCTURE_ONLY / NEEDS_FINANCIAL_INPUTS).
-            </div>
-          </Card>
-          {[...new Set(listConmedCovenantExplorerRows().map((r) => r.family))].map((family) => (
-            <Card key={family}>
-              <div className="card-title">{family.replace(/_/g, " ")}</div>
-              {listConmedCovenantExplorerRows()
-                .filter((r) => r.family === family)
-                .map((r) => (
-                  <div className="row" key={r.id} style={{ alignItems: "flex-start" }}>
-                    <div style={{ flex: 1 }}>
-                      <div className="row-label">
-                        §{r.sectionRef} {r.isBasketLevel ? "(basket)" : ""}
-                      </div>
-                      <div className="row-note">{r.summary}</div>
-                      {r.realFigures.length > 0 && (
-                        <div className="row-note">Figures: {r.realFigures.join("; ")}</div>
-                      )}
-                      <div className="row-note" style={{ marginTop: 4 }}>
-                        <Chip tone={statusTone(r.capacityStatus)}>{r.capacityStatus}</Chip>{" "}
-                        {r.capacityExplanation}
-                      </div>
-                    </div>
-                    <Link className="button" href={`/${companyId}/documents/${r.demoDocumentId}`}>
-                      Source
-                    </Link>
-                  </div>
-                ))}
-            </Card>
-          ))}
-        </>
-      )}
-
       {provisions.length > 0 && (
         <Card>
           <div className="card-title">Engine-modeled provisions</div>
@@ -389,7 +330,7 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         </Card>
       )}
 
-      {review.analyzedOkCount === 0 && provisions.length === 0 && !isConmed && (
+      {review.analyzedOkCount === 0 && provisions.length === 0 && (
         <Card>
           <div className="card-subtitle">
             Upload a credit agreement, indenture, or amendment to generate substantive covenant summaries.

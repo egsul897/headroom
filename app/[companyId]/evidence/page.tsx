@@ -3,8 +3,6 @@ import { Card, Chip } from "@/components/ui";
 import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { prisma } from "@/lib/prisma";
-import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
-import { listConmedPackageFacts } from "@/lib/product/conmed-demo/covenant-catalog";
 import {
   getLatestAmendmentPackage,
   listCustomerDocumentIntelligence,
@@ -120,8 +118,6 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
     amendmentResolved: !view.amendment?.conflicting,
   });
 
-  const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
-  const facts = isConmed ? listConmedPackageFacts() : [];
 
   return (
     <div className="stack">
@@ -306,50 +302,6 @@ export default async function EvidencePage({ params }: { params: Promise<{ compa
           ))
         )}
       </Card>
-
-      {isConmed && (
-        <Card>
-          <div className="card-title">Known unresolved (package)</div>
-          <div className="row">
-            <div className="row-label">Doc C target</div>
-            <div className="row-value">
-              <Chip tone="tight">OUT OF PACKAGE</Chip> Amends Seventh A&R (not in workspace)
-            </div>
-          </div>
-          <div className="row">
-            <div className="row-label">Numeric capacity</div>
-            <div className="row-value">
-              <StatusChip code="NEEDS_INPUT" compact /> No approved snapshot / utilization ledger
-            </div>
-          </div>
-          <div className="row" style={{ borderBottom: "none" }}>
-            <div className="row-label">Schedule-dependent baskets</div>
-            <div className="row-value">
-              <StatusChip code="UNSUPPORTED" compact /> e.g. Schedule 7.2(e) not fully modeled
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {facts.length > 0 && (
-        <Card>
-          <div className="card-title">Source-backed package facts</div>
-          {facts.map((f) => (
-            <div className="row" key={f.id}>
-              <div>
-                <div className="row-label">{f.id}</div>
-                <div className="row-note">{f.fact}</div>
-                <div className="row-note">
-                  {f.evidenceCitation} · <Chip tone="navy">{f.clarity}</Chip>
-                </div>
-              </div>
-              <Link className="button" href={`/${companyId}/documents/${f.demoDocumentId}`}>
-                Open source
-              </Link>
-            </div>
-          ))}
-        </Card>
-      )}
 
       <Card>
         <div className="card-title">Extraction candidates needing review</div>
