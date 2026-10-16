@@ -25,6 +25,7 @@ describe("borrower-supplied inputs (with source) for items filings do not carry"
     expect(o.maximum).toBeNull();
     expect(o.supported).toBeNull();
     expect(o.reason).toMatch(/borrower input CNI:NON_RECURRING/);
+    expect(o.needsBorrowerInput.some((k) => /^CNI:NON_RECURRING$/i.test(k))).toBe(true);
   });
 
   it("with sourced inputs: a real maximum; inputs are recorded with their source", () => {

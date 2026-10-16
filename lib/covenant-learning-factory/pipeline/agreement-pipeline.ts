@@ -26,6 +26,7 @@ import { basketUsage, type FacilityFact } from "../xbrl/instance-debt";
 import { decide, toMetricInput, type BindDecision } from "../xbrl/bind";
 import { debtFromFinancials, leverageDebtCapacity, maxLeverageLimit, optimizeConsolidatedEbitda, type EbitdaOptimization, type LeverageCapacity } from "../xbrl/ebitda-optimizer";
 import { findEbitdaMeasureTerm } from "../xbrl/definition-items";
+import { extractDocumentIdentity } from "../../contract-model/compiler/package-graph/document-identity";
 
 export const PIPELINE_VERSION = "agreement-pipeline-1";
 
@@ -78,6 +79,11 @@ export interface AgreementPipelineResult {
     ebitda?: EbitdaOptimization;
     /** maxLeverage × EBITDA − debt, only when exactly one total-leverage MAX limit and a debt figure are available. */
     leverageCapacity?: LeverageCapacity;
+    /**
+     * Amendment (or other package doc) names a dated base facility but no in-text EBITDA schedule was found.
+     * Fail-closed: packages need the base agreement text before definitions can resolve (package-graph).
+     */
+    ebitdaBaseHold?: { reason: "AMENDMENT_NEEDS_BASE_TEXT"; namedBase: string; missing: string };
   };
   families: FamilySummary[];
   stats: { nodes: number; sections: number; clauses: number; xrefs: number; xrefResolved: number; baskets: number };
@@ -109,6 +115,19 @@ function checklistFamilyOf(f: string): string {
   if (/PREPAY|JUNIOR/.test(u)) return "PREPAYMENTS";
   if (/RATIO|FINANCIAL/.test(u)) return "FINANCIAL_RATIOS";
   return u;
+}
+
+
+/** Dated Credit/Loan/Indenture reference from amendment preamble — evidence only, never a definition. */
+export function namedDatedFacilityReference(text: string): string | null {
+  const MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December";
+  const window = text.slice(0, 12_000).replace(/\s+/g, " ");
+  const re = new RegExp(
+    `\\b(?:the|that certain|a|an)\\s+((?:(?:First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth)\\s+Amended and Restated\\s+|Amended and Restated\\s+|First Lien\\s+|Second Lien\\s+|Senior\\s+|Subordinated\\s+)?(?:(?:ABL|Term(?:\\s+Loan)?|Revolving(?:\\s+Credit)?|Bridge|Senior Secured(?:\\s+First Lien)?)\\s+)?(?:Credit Agreement|Loan Agreement|Indenture))\\s*,?\\s*dated\\s+(?:as\\s+of\\s+)?(?:the\\s+)?((?:${MONTHS})\\s+\\d{1,2},\\s*\\d{4})`,
+    "i",
+  );
+  const m = re.exec(window);
+  return m ? m[0].replace(/\s+/g, " ").trim() : null;
 }
 
 export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null; facilityFacts?: readonly FacilityFact[] | null }): AgreementPipelineResult {
@@ -264,6 +283,18 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
       const lev = maxLeverageLimit(levRows);
       const debt = debtFromFinancials(args.financials);
       if (lev != null && debt != null) xbrl.leverageCapacity = leverageDebtCapacity(ebitda, lev, debt);
+    } else {
+      // Fail-closed: name the dated base facility when an amendment has no in-text EBITDA schedule.
+      // package-graph can resolve definitions once that base text is in the package — never invent it.
+      const namedBase = namedDatedFacilityReference(tree.text)
+        ?? extractDocumentIdentity({ documentId: args.sourceId, text: tree.text }).originalAgreementReferenceHint;
+      if (namedBase) {
+        xbrl.ebitdaBaseHold = {
+          reason: "AMENDMENT_NEEDS_BASE_TEXT",
+          namedBase,
+          missing: "base credit/loan agreement text not in package (package-graph cannot bind definitions)",
+        };
+      }
     }
   }
 

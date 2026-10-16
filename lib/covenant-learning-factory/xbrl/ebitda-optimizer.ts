@@ -39,6 +39,8 @@ export interface EbitdaOptimization {
   supported: string | null;
   base: { concept: string; value: string } | null; deductions: string | null;
   addBacks: AddBackLine[]; needsInput: string[]; reason: string;
+  /** Sourced borrower-input keys the product can collect (CNI:… / ADDBACK:…); empty when none are named. */
+  needsBorrowerInput: string[];
 }
 
 const EXTRA: Array<{ cat: AddBackCategory; re: RegExp; concepts: string[] }> = [
@@ -163,10 +165,32 @@ function itemSigns(segs: Array<{ text: string }>): Array<{ sign: "+" | "-"; head
   });
 }
 
+/** Pull CNI:/ADDBACK: keys named in optimizer reasons (product path when filings lack the figure). */
+export function borrowerInputKeysFromText(...parts: Array<string | null | undefined>): string[] {
+  const out: string[] = [];
+  const seen = new Set<string>();
+  for (const p of parts) {
+    if (!p) continue;
+    for (const m of p.matchAll(/\b((?:CNI|ADDBACK):[A-Za-z0-9_()<-][A-Za-z0-9_()<>-]*)/g)) {
+      const k = m[1]!.replace(/<clause>/gi, "").replace(/<>/g, "").replace(/_+$/, "");
+      if (!k.includes(":") || k.endsWith(":") || seen.has(k.toUpperCase())) continue;
+      // Drop placeholder forms like CNI:<clause>
+      if (/[<>]/.test(k)) continue;
+      seen.add(k.toUpperCase());
+      out.push(k);
+    }
+  }
+  return out;
+}
+
 export function optimizeConsolidatedEbitda(term: string, text: string, fin: IssuerFinancials): EbitdaOptimization {
   const ev: DefinitionEvaluation = evaluateDefinition("EBITDA", term, text, fin);
   const segs = definitionSegments("EBITDA", term, text);
-  const out = (o: Partial<EbitdaOptimization>): EbitdaOptimization => ({ term, periodEnd: fin.anchor ?? null, status: "NEEDS_INPUT", maximum: null, supported: null, base: ev.base, deductions: null, addBacks: [], needsInput: [], reason: ev.reason, ...o });
+  const out = (o: Partial<EbitdaOptimization>): EbitdaOptimization => {
+    const merged = { term, periodEnd: fin.anchor ?? null, status: "NEEDS_INPUT" as const, maximum: null, supported: null, base: ev.base, deductions: null, addBacks: [], needsInput: [] as string[], reason: ev.reason, needsBorrowerInput: [] as string[], ...o };
+    if (!o.needsBorrowerInput) merged.needsBorrowerInput = borrowerInputKeysFromText(merged.reason, ...merged.needsInput);
+    return merged;
+  };
   if (!segs) return out({ needsInput: [`"${term}" definition`] });
   const aligned = ev.items.length === segs.length - 1;
   const signs = itemSigns(segs);
