@@ -735,8 +735,11 @@ export async function getCoverageSnapshot(companyId: string, asOfDate: Date = ne
 
 /**
  * Declares a SolverCoverageDeclaration for every (documentId, grantType) that
- * now has at least one promoted (MODELED) Permission, and sets
- * Company.onboardingStatus based on whether every such scope is complete.
+ * now has at least one promoted (MODELED) Permission, AND for every
+ * (documentId, grantType) that still has an un-promoted, non-rejected
+ * PERMISSION candidate (gap-only scope — declared INCOMPLETE, never
+ * silently absent). Sets Company.onboardingStatus based on whether every
+ * such scope is complete.
  * DEBT_INCURRENCE scopes get both a "secured" and an "unsecured" declaration
  * (matching this codebase's own established convention - see
  * scripts/populate-coherent-solver-native.ts §10 - since
