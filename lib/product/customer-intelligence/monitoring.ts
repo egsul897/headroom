@@ -12,6 +12,7 @@ import { getLatestAmendmentPackage, listCustomerDocumentIntelligence } from "./l
 export type MonitoringAlertKind =
   | "MISSING_DOCUMENTS"
   | "ANALYSIS_FAILED"
+  | "STALE_ANALYSIS"
   | "AMENDMENT_UNRESOLVED"
   | "RULEBOOK_NOT_EXECUTABLE"
   | "MISSING_FINANCIALS"
@@ -25,6 +26,8 @@ export interface MonitoringAlert {
   detail: string;
   sourceRefs: string[];
 }
+
+import { staleAnalysisAlerts } from "./stale-analysis-alerts";
 
 export interface MonitoringFeed {
   companyId: string;
@@ -63,6 +66,8 @@ export async function loadMonitoringFeed(companyId: string): Promise<MonitoringF
       sourceRefs: [d.sourceId],
     });
   }
+
+  alerts.push(...staleAnalysisAlerts(docs));
 
   if (amendment?.operativeResolution === "UNRESOLVED_PRECEDENCE") {
     alerts.push({
