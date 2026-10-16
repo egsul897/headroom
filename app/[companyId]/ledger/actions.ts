@@ -143,7 +143,22 @@ export async function supersedeContractLedgerUsageAction(companyId: string, form
   // the predecessor is marked SUPERSEDED while a mistyped
   // successor ruleId lands in a bucket no capacity query reads,
   // so counted usage silently disappears from capacity.
-  await assertRuleIdResolves(companyId, ruleId);
+  // Rule 138: inheriting the predecessor's OWN path is always
+  // legitimate — certificate-promoted predecessors carry a
+  // basketKey ruleId that may match no modeled Permission or
+  // Provision, and supersession must not strand them. Only a
+  // successor ruleId that CHANGES the path must resolve.
+  const pred = await prisma.contractLedgerUsage.findFirst({
+    where: { companyId, usageId: predecessorUsageId },
+    select: { capacityPathJson: true },
+  });
+  const predRuleId =
+    pred && typeof pred.capacityPathJson === "object" && pred.capacityPathJson !== null
+      ? (pred.capacityPathJson as { kind?: unknown; ruleId?: unknown }).ruleId
+      : undefined;
+  if (predRuleId !== ruleId) {
+    await assertRuleIdResolves(companyId, ruleId);
+  }
   const result = await supersedeContractLedgerUsage({
     companyId,
     predecessorUsageId,
