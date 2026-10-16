@@ -101,6 +101,23 @@ export async function addContractLedgerUsageAction(companyId: string, formData: 
   // fabricated generic "company" — require the user's real value.
   const instrumentKey = String(formData.get("instrumentKey") || "").trim();
   if (!amount || !ruleId || !effectiveAsOf || !instrumentKey) throw new Error("amount, ruleId, effectiveAsOf, and instrumentKey are required");
+  // Rule 135: a RULE capacity path with a ruleId that matches
+  // nothing lands in a bucket no capacity query ever reads —
+  // the usage is recorded but silently never counts against any
+  // capacity. The manual form's ruleId is free text ("permission
+  // / basket rule id"), so a typo orphans the usage. Refuse
+  // unless the ruleId names a real Permission (id or code) or a
+  // real CovenantProvision (code) for this company. (The
+  // certificate-promotion path is exempt: its basketKeys are
+  // system-derived from the certificate itself.)
+  const [permById, permByCode, provByCode] = await Promise.all([
+    prisma.permission.findFirst({ where: { companyId, id: ruleId }, select: { id: true } }),
+    prisma.permission.findFirst({ where: { companyId, code: ruleId }, select: { id: true } }),
+    prisma.covenantProvision.findFirst({ where: { companyId, code: ruleId }, select: { id: true } }),
+  ]);
+  if (!permById && !permByCode && !provByCode) {
+    throw new Error(`ruleId "${ruleId}" matches no Permission (id/code) or CovenantProvision (code) for this company — usage refused; a mistyped rule id would record usage that never counts against any capacity.`);
+  }
   const result = await appendContractLedgerUsage({
     companyId,
     usageId,
