@@ -637,8 +637,38 @@ export type MaxCapacityResult =
 // §N - Explainability / result object
 // ---------------------------------------------------------------------------
 
+/**
+ * A compiled maintenance ratio test (Rule 180): a CovenantProvision
+ * with a ratio formulaType, never a Permission. Carried into
+ * `runSolver` so solver-native elections test maintenance
+ * covenants (Rule 185) instead of reporting `ratioTests: []`.
+ */
+export interface RatioProvision {
+  id: string;
+  documentId: string;
+  basketName: string;
+  sectionRef: string;
+  formulaType: "LEVERAGE_RATIO_ROOM" | "COVERAGE_RATIO_ROOM";
+  thresholdValue: number;
+  /** Leverage only: which debt basis the test applies to. */
+  debtBasis?: "secured" | "total";
+}
+
 export interface RatioTestResult {
+  /**
+   * Maintenance tests belong to a provision, not a Permission —
+   * `permissionId` is "" and `provisionId` carries the
+   * CovenantProvision id. (The field stays required so
+   * ratio-gated-incurrence results attached to a Permission keep
+   * their existing shape.)
+   */
   permissionId: string;
+  provisionId?: string;
+  documentId?: string;
+  sectionRef?: string;
+  basketName?: string;
+  /** A secured-basis test does not apply to an unsecured deal. */
+  applies?: boolean;
   measure: string;
   preTransactionRatio: number;
   postTransactionRatio?: number;

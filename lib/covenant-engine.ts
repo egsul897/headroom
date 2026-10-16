@@ -55,6 +55,7 @@ import type {
   PermissionCollateralScope,
   PermissionPath,
   PermissionRelationship,
+  RatioProvision,
   RuleActivationCondition,
   SharedConstraint,
   SolverResult,
@@ -939,6 +940,8 @@ export interface SolverNativeCompanyContext {
   collateralScopes: PermissionCollateralScope[];
   ruleActivationConditions: RuleActivationCondition[];
   coverageDeclarations: CoverageDeclaration[];
+  /** Compiled maintenance ratio provisions (Rule 180/185). */
+  ratioProvisions: RatioProvision[];
   activationState: ActivationState;
   asOfDate: Date;
   /** The incurring entity's own EntityClass memberships, for §C.1 entityScope/§G ENTITY_CLASS_FILTER checks. */
@@ -1096,6 +1099,7 @@ export function runSolverForDocument(
     collateralScopes: ctx.collateralScopes.filter((s) => eligibleIds.has(s.permissionId)),
     ruleActivationConditions: ctx.ruleActivationConditions,
     financials: fin,
+    ratioProvisions: ctx.ratioProvisions.filter((r) => r.documentId === documentId),
     transaction: buildLiveTransaction(amount, secured, ctx),
     entityClasses: ctx.entityClasses,
     activationState: ctx.activationState,
@@ -1883,6 +1887,8 @@ export interface SolverNativeStaticData {
   collateralScopes: PermissionCollateralScope[];
   ruleActivationConditions: RuleActivationCondition[];
   coverageDeclarations: CoverageDeclaration[];
+  /** Compiled maintenance ratio provisions (Rule 180/185). */
+  ratioProvisions: RatioProvision[];
 }
 
 interface DbPermissionRow {
@@ -1980,6 +1986,7 @@ export interface SolverNativePrismaClient {
   permissionCollateralScope: { findMany(args: any): Promise<DbPermissionCollateralScopeRow[]> };
   ruleActivationCondition: { findMany(args: any): Promise<DbRuleActivationConditionRow[]> };
   solverCoverageDeclaration: { findMany(args: any): Promise<DbSolverCoverageDeclarationRow[]> };
+  covenantProvision: { findMany(args: any): Promise<DbProvisionRow[]> };
 }
 
 export interface LoadCompanySolverStaticOptions {
@@ -2041,7 +2048,7 @@ export async function loadCompanySolverStaticData(
   options?: LoadCompanySolverStaticOptions,
 ): Promise<SolverNativeStaticData> {
   const dateFilter = effectiveDateFilter(asOfDate);
-  const [permissionRows, relationshipRows, constraintRows, constraintMemberRows, collateralScopeRows, activationRows, declarationRows] = await Promise.all([
+  const [permissionRows, relationshipRows, constraintRows, constraintMemberRows, collateralScopeRows, activationRows, declarationRows, ratioProvisionRows] = await Promise.all([
     prisma.permission.findMany({ where: { companyId, ...dateFilter } }),
     prisma.permissionRelationship.findMany({ where: { companyId } }),
     prisma.sharedCapacityConstraint.findMany({ where: { companyId } }),
@@ -2049,6 +2056,12 @@ export async function loadCompanySolverStaticData(
     prisma.permissionCollateralScope.findMany({ where: { permission: { companyId } } }),
     prisma.ruleActivationCondition.findMany({ where: { companyId } }),
     prisma.solverCoverageDeclaration.findMany({ where: { companyId } }),
+    // Rule 185: maintenance ratio provisions (Rule 180) for
+    // solver-native ratio tests. Same date filter as Permissions:
+    // a superseded (effectiveTo set) provision drops out.
+    prisma.covenantProvision.findMany({
+      where: { companyId, ...dateFilter, formulaType: { in: ["LEVERAGE_RATIO_ROOM", "COVERAGE_RATIO_ROOM"] } },
+    }),
   ]);
   const membersByConstraintId = new Map<string, DbSharedCapacityConstraintMemberRow[]>();
   for (const m of constraintMemberRows) {
@@ -2163,6 +2176,23 @@ export async function loadCompanySolverStaticData(
     isComplete: d.isComplete,
   }));
 
-  return { permissions, relationships, sharedConstraints, collateralScopes, ruleActivationConditions, coverageDeclarations };
+  // Debt-basis for leverage tests lives in params (set by the
+  // Rule 180 compiler); anything else defaults to total.
+  const ratioProvisions: RatioProvision[] = ratioProvisionRows.map((r) => {
+    const params = (r.params ?? {}) as { debtBasis?: unknown };
+    return {
+      id: r.id,
+      documentId: r.documentId,
+      basketName: r.basketName,
+      sectionRef: r.sectionRef,
+      formulaType: r.formulaType as "LEVERAGE_RATIO_ROOM" | "COVERAGE_RATIO_ROOM",
+      thresholdValue: toNumber(r.thresholdValue),
+      ...(r.formulaType === "LEVERAGE_RATIO_ROOM"
+        ? { debtBasis: params.debtBasis === "secured" ? ("secured" as const) : ("total" as const) }
+        : {}),
+    };
+  });
+
+  return { permissions, relationships, sharedConstraints, collateralScopes, ruleActivationConditions, coverageDeclarations, ratioProvisions };
 }
 

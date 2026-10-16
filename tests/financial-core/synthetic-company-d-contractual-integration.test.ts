@@ -178,6 +178,7 @@ describe("Synthetic Company D - contractual integration (task §22)", () => {
           { documentId: DOC_BLOCKED, side: "unsecured", grantType: "DEBT_INCURRENCE", isComplete: true },
           { documentId: DOC_REVIEW, side: "unsecured", grantType: "DEBT_INCURRENCE", isComplete: true },
         ],
+        ratioProvisions: [],
       },
       activationState: buildActivationState(),
       asOfDate: AS_OF,

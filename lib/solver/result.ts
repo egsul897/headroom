@@ -10,7 +10,25 @@
  */
 
 import { aggregateOverallStatus, rejectedAlternatives, selectWinningPath } from "./status";
-import type { MaxCapacityResult, PermissionPath, ReviewReasonCategory, SearchStats, SharedConstraint, SolverResult, SourceCitation } from "./types";
+import type { MaxCapacityResult, PathStatus, PermissionPath, RatioTestResult, ReviewReasonCategory, SearchStats, SharedConstraint, SolverResult, SourceCitation } from "./types";
+
+/**
+ * Rule 185: ratio tests GATE the overall status — they are
+ * document-level maintenance tests, not one more election.
+ * `aggregateOverallStatus` returns CLEAR if ANY path clears, so
+ * appending ratio statuses to the path list would let a clearing
+ * Permission path override a breached maintenance test. Instead:
+ * a FAILED applicable ratio test blocks the whole result; an
+ * UNKNOWN applicable ratio test forces REVIEW_REQUIRED; only
+ * when every applicable ratio test satisfies does the path
+ * aggregation stand.
+ */
+export function combineWithRatioTests(pathOverall: PathStatus, ratioTests: RatioTestResult[]): PathStatus {
+  const applicable = ratioTests.filter((t) => t.applies !== false);
+  if (applicable.some((t) => t.status === "FAILED")) return "BLOCKED";
+  if (applicable.some((t) => t.status === "UNKNOWN")) return "REVIEW_REQUIRED";
+  return pathOverall;
+}
 
 function dedupeSources(sources: SourceCitation[]): SourceCitation[] {
   const seen = new Set<string>();
@@ -31,12 +49,13 @@ export interface AssembleSolverResultParams {
   sharedConstraints: SharedConstraint[];
   searchStats: SearchStats;
   maximumCapacity?: MaxCapacityResult;
+  ratioTests?: RatioTestResult[];
 }
 
 export function assembleSolverResult(params: AssembleSolverResultParams): SolverResult {
-  const { paths, amountTested, sharedConstraints, searchStats, maximumCapacity } = params;
+  const { paths, amountTested, sharedConstraints, searchStats, maximumCapacity, ratioTests = [] } = params;
   const winner = selectWinningPath(paths);
-  const overallStatus = aggregateOverallStatus(paths.map((p) => p.status));
+  const overallStatus = combineWithRatioTests(aggregateOverallStatus(paths.map((p) => p.status)), ratioTests);
   const alternatives = rejectedAlternatives(paths, winner);
 
   const allConditions = paths.flatMap((p) => p.conditionsTested);
@@ -51,7 +70,7 @@ export function assembleSolverResult(params: AssembleSolverResultParams): Solver
     permissionPathUsed: winner,
     constraintsEvaluated: {
       sharedConstraints,
-      ratioTests: [],
+      ratioTests,
       eligibilityConditions: allConditions,
       entityCollateralPriorityRequirements: allConditions.filter((c) => c.class === "PRIORITY_CONDITION" || c.class === "COLLATERAL_SCOPE"),
     },

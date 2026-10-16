@@ -79,6 +79,7 @@ export function toSolverNativeCompanyContext(params: ToSolverNativeContextParams
     collateralScopes: params.staticData.collateralScopes,
     ruleActivationConditions: params.staticData.ruleActivationConditions,
     coverageDeclarations: params.staticData.coverageDeclarations,
+    ratioProvisions: params.staticData.ratioProvisions,
     activationState: params.activationState,
     asOfDate: params.asOfDate,
     entityClasses: params.entityClasses,

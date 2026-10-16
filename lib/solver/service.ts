@@ -27,6 +27,7 @@ import { buildPermissionGraph } from "./graph";
 import { buildPermissionPaths, computeElectionMaxCapacityBisected, enumerateElections, evaluateElection, permissionAsProvision, type EligibilityContext } from "./election";
 import { evaluateProvision } from "../covenant-engine";
 import { assembleSolverResult, searchLimitExceededResult } from "./result";
+import { evaluateRatioTests } from "./ratio";
 import { buildStateDelta } from "./statedelta";
 import type {
   ActivationState,
@@ -35,6 +36,7 @@ import type {
   Permission,
   PermissionCollateralScope,
   PermissionRelationship,
+  RatioProvision,
   RuleActivationCondition,
   SearchStats,
   SharedConstraint,
@@ -103,7 +105,12 @@ export function runSolver(params: RunSolverParams): SolverResult {
 
   const maximumCapacity = computeMaximumCapacityFromEvaluations(evaluations, params, graph);
 
-  return assembleSolverResult({ paths, amountTested: params.transaction.amount, sharedConstraints: params.sharedConstraints, searchStats, maximumCapacity });
+  // Rule 185: maintenance ratio tests are evaluated once per
+  // run (document-level), not per election. They gate the
+  // overall status in assembleSolverResult.
+  const ratioTests = evaluateRatioTests(params.ratioProvisions ?? [], params.financials, params.transaction.amount, params.transaction.secured);
+
+  return assembleSolverResult({ paths, amountTested: params.transaction.amount, sharedConstraints: params.sharedConstraints, searchStats, maximumCapacity, ratioTests });
 }
 
 /**
