@@ -197,10 +197,16 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               <Link className="button" href={`/${companyId}/covenants`}>
                 View covenants
               </Link>
-              {intel && (!intel.analysisOk || intel.analysisStale) && intel.storageRef && (
+              {/* Fix 7: a document whose staging never produced an
+                  intelligence row (e.g. a deferred large-upload analysis
+                  that failed before staging) still has bytes in storage
+                  and the retry action falls back to the Document row's
+                  own storageRef — so the Retry button must not require
+                  an intelligence row to appear. */}
+              {((!intel && d.storageRef) || (intel && (!intel.analysisOk || intel.analysisStale) && intel.storageRef)) && (
                 <form action={retryCustomerAnalysisAction.bind(null, companyId, d.id)}>
                   <button className="button" type="submit">
-                    {intel.analysisStale && intel.analysisOk ? "Re-analyze (stale)" : "Retry analysis"}
+                    {intel?.analysisStale && intel.analysisOk ? "Re-analyze (stale)" : "Retry analysis"}
                   </button>
                 </form>
               )}
