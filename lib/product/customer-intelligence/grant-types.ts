@@ -80,7 +80,17 @@ function stripClassificationLead(plainEnglish: string): string {
   const sentenceEnd = afterQuote.indexOf(". ");
   if (sentenceEnd === -1 || sentenceEnd > 400) return plainEnglish;
   const lead = plainEnglish.slice(0, closeQuote + 2 + sentenceEnd);
-  if (!/\b(operates as|is a general|states an?|is an?)\b/i.test(lead)) return plainEnglish;
+  // Rule 202: the analyzer also frames classification as
+  // "imposes an affirmative or ongoing obligation related to
+  // [regime]" — the regime label ("related to restricted
+  // payments and investments") launders into grants (Asure
+  // 7.03(p), a pure Investments clause, minted a false RP
+  // Permission from it). The verb is narrow: "imposes a lien"
+  // or "imposes a restriction" does not match.
+  if (
+    !/\b(operates as|is a general|states an?|is an?|imposes an? (?:affirmative|ongoing))\b/i.test(lead)
+  )
+    return plainEnglish;
   return plainEnglish.slice(closeQuote + 2 + sentenceEnd + 2);
 }
 
@@ -273,6 +283,64 @@ function isGuaranteePermission(text: string): boolean {
   return !d || d.index == null || g.index < d.index;
 }
 
+/**
+ * Rule 201 (audit-driven): a lien clause capping "Liens securing
+ * Indebtedness" does not mint DEBT. Asure 7.01(t) permits
+ * "other Liens securing Indebtedness outstanding in an
+ * aggregate principal amount not to exceed $5,000,000" — the
+ * $5M is a LIEN cap (liens on up to $5M of already-permitted
+ * Indebtedness), not an incurrence basket. The Indebtedness
+ * is the secured obligation (the object of "securing"), not a
+ * new incurrence. A debt basket secured by liens ("Indebtedness
+ * ... secured by Liens") has the debt word first and says
+ * "secured by", not "Liens securing" — the pattern does not
+ * fire there. A combined clause ("Liens securing Indebtedness
+ * AND Indebtedness not to exceed $X") loses its DEBT grant
+ * (fail-closed) — that shape is rare.
+ */
+function isLienSecuredObligation(text: string): boolean {
+  return /\bLIENS?\b[^.]{0,80}?\bSECURING\s+(?:INDEBTEDNESS|DEBT)\b/.test(text);
+}
+
+/**
+ * Rule 204 (audit-driven): the definitions article never grants
+ * capacity. Asure 1.01(f)(i)(d)(n) — a CONDITION inside the
+ * "Permitted Acquisition" definition ("the aggregate Cost of
+ * Acquisition ... does not exceed $10,000,000") — minted a
+ * LIEN $10M Permission from the word "Collateral" in its
+ * excerpt. A definition condition is not a permission; it
+ * constrains a defined term, it does not grant capacity. In
+ * US credit agreements the definitions article is Section
+ * 1.01 ("Defined Terms") — a structural convention, not an
+ * agreement-specific pattern. A document whose definitions
+ * live elsewhere is simply not covered (the guard is
+ * incomplete, not wrong).
+ */
+function isDefinitionsArticleItem(item: CovenantSummaryItem): boolean {
+  return /^1\.01(?![0-9])/.test(item.sectionRef ?? "");
+}
+
+/**
+ * Rule 203 tightening: an excerpt counts as a single clause
+ * only if it carries no sub-clause markers after its own
+ * leading marker is stripped. Strata 6.08(a)'s excerpt is a
+ * composite (the (a) clause PLUS its (i)/(ii) exceptions,
+ * one of which mentions Indebtedness) — reading it as
+ * evidence laundered a false DEBT grant into an RP clause.
+ * Asure 7.03(p)'s excerpt is a single clause (no markers
+ * after its own "(p)") — evidence still applies there.
+ */
+function excerptHasSubClauses(excerpt: string, sectionRef: string): boolean {
+  let rest = excerpt.trim();
+  const ownSuffix = sectionRef.match(/\(([^)]+)\)\s*$/)?.[1];
+  if (ownSuffix) {
+    const escaped = ownSuffix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const m = rest.match(new RegExp(`^\\(\\s*${escaped}\\s*\\)`));
+    if (m) rest = rest.slice(m[0].length);
+  }
+  return /\(\s*(?:[a-zA-Z]|[ivxlcdmIVXLCDM]+|[0-9]+)\s*\)/.test(rest);
+}
+
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
   // Rule 166: an event-of-default trigger is a consequence, never a
   // grant of capacity. A Defaults article genuinely contains the
@@ -313,6 +381,9 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   // sentence is stripped and the distilled substance kept. EDITED
   // items are exempt: counsel's edited plainEnglish IS the
   // provision's words (Rule 60), so its first sentence is kept.
+  // Rule 204: the definitions article never grants capacity.
+  if (isDefinitionsArticleItem(item)) return [];
+
   const sourceText =
     item.reviewerDecision === "EDITED"
       ? operativeText(item.plainEnglish)
@@ -333,7 +404,27 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   if (isGrandfatheringOnly(guardHay)) return [];
   if (isDefaultTrigger(guardHay)) return [];
 
-  const hasDebtWord = /\bINDEBTEDNESS\b|\bDEBT\b|\bINCUR(RING|RED|RENCE)?\b|\bINCREMENTAL\b/.test(hay);
+  // Rule 203: a CLAUSE item's own operative excerpt is grant
+  // evidence. The analyzer's plainEnglish sometimes summarizes
+  // a cap as a basket ("Amount/threshold: $500,000") without
+  // the operative "not exceeding" language (Asure 7.03(p) — a
+  // genuine $500k Investment basket whose plainEnglish carries
+  // no investment evidence, so it minted nothing). The clause's
+  // excerpt IS its operative text (the parser bounds the span
+  // to the clause), so reading it as evidence is sound. A
+  // CHAPEAU item's excerpt is a composite of all its
+  // sub-clauses — reading it as evidence would launder a
+  // sub-clause's permission into the parent (the Rule 176
+  // concern) — so chapeau items stay plainEnglish-only. A
+  // clause ref ends with a parenthesized group.
+  const isClauseItem = /\([^)]+\)\s*$/.test(item.sectionRef ?? "");
+  // Rule 203 tightening: excerpt evidence only when the
+  // excerpt is a single clause (no sub-clause markers).
+  const evidenceHay =
+    isClauseItem && !excerptHasSubClauses(item.operativeLanguageExcerpt ?? "", item.sectionRef ?? "")
+      ? `${hay} ${(item.operativeLanguageExcerpt ?? "").toUpperCase()}`
+      : hay;
+  const hasDebtWord = /\bINDEBTEDNESS\b|\bDEBT\b|\bINCUR(RING|RED|RENCE)?\b|\bINCREMENTAL\b/.test(evidenceHay);
   // Rule 169: debt words alone are not a grant — they must carry
   // affirmative borrowing-permission evidence (cap frame or modal).
   // The RP/Investment early returns below key off this guarded
@@ -345,7 +436,11 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   // in Strata 6.04(e) is not an incurrence basket.
   const isGuarantee =
     isGuaranteePermission(hay) || isGuaranteePermission((item.operativeLanguageExcerpt ?? "").toUpperCase());
-  const hasDebtPermission = hasDebtWord && hasDebtPermissionEvidence(hay) && !isGuarantee;
+  // Rule 201: a lien clause capping "Liens securing
+  // Indebtedness" is not a debt incurrence.
+  const isLienSecured =
+    isLienSecuredObligation(hay) || isLienSecuredObligation((item.operativeLanguageExcerpt ?? "").toUpperCase());
+  const hasDebtPermission = hasDebtWord && hasDebtPermissionEvidence(evidenceHay) && !isGuarantee && !isLienSecured;
   const hasLienWord = /\bLIENS?\b|\bSECURED\b|\bCOLLATERAL\b/.test(hay);
 
   // Restricted payments / investments — do not default these into DEBT_INCURRENCE.
@@ -363,7 +458,7 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   }
   // Rule 170: investment words alone are not a grant — they must
   // carry affirmative investment-permission evidence.
-  if (isInvestmentFamily && !hasDebtPermission && !hasLienWord && hasInvestmentPermissionEvidence(hay)) {
+  if (isInvestmentFamily && !hasDebtPermission && !hasLienWord && hasInvestmentPermissionEvidence(evidenceHay)) {
     return ["INVESTMENT"];
   }
 

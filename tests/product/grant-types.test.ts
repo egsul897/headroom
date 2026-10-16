@@ -238,3 +238,122 @@ describe("rule 198: guarantee permission does not mint DEBT", () => {
     expect(grants).not.toContain("DEBT_INCURRENCE");
   });
 });
+
+/** Rule 201: a lien clause capping "Liens securing Indebtedness" does not mint DEBT. */
+describe("rule 201: lien-secured obligation does not mint DEBT", () => {
+  function item(plainEnglish: string, excerpt?: string) {
+    return {
+      sectionRef: "7.01(t)", heading: "Liens", category: "NEGATIVE_COVENANTS", plainEnglish,
+      operativeLanguageExcerpt: excerpt ?? plainEnglish,
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [],
+    } as any;
+  }
+  it("other Liens securing Indebtedness capped at $5M mints LIEN only", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem(item(
+      "(t) other Liens securing Indebtedness outstanding in an aggregate principal amount not to exceed $5,000,000, provided that no such Lien shall extend to or cover any Collateral.",
+    ));
+    expect(grants).toEqual(["LIEN"]);
+  });
+  it("a debt basket secured by liens keeps DEBT", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem(item(
+      "The Borrower may incur Indebtedness in an aggregate principal amount not to exceed $10,000,000, secured by Liens on the Collateral.",
+    ));
+    expect(grants).toContain("DEBT_INCURRENCE");
+  });
+});
+
+/** Rule 202: the "imposes an affirmative or ongoing obligation" lead is a classification lead. */
+describe("rule 202: regime-label lead does not launder an RP grant", () => {
+  it("a pure Investments clause with an RP regime label mints INVESTMENT only", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem({
+      sectionRef: "7.03(p)", heading: "Investments", category: "NEGATIVE_COVENANTS",
+      plainEnglish:
+        "Section 7.03(p) (\u201c7.03(p)\u201d) imposes an affirmative or ongoing obligation related to restricted payments and investments for Borrower, Loan Parties, Subsidiaries. Permission substance: (p) other Investments not exceeding, in the aggregate in any fiscal year of the Borrower, $500,000, so long as no Default has occurred.",
+      operativeLanguageExcerpt:
+        "(p) other Investments not exceeding, in the aggregate in any fiscal year of the Borrower, $500,000, so long as no Default has occurred and is continuing.",
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [],
+    } as any);
+    expect(grants).toEqual(["INVESTMENT"]);
+  });
+  it("a genuine combined RP + Investment clause still mints both", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem({
+      sectionRef: "7.03(q)", heading: "Investments", category: "NEGATIVE_COVENANTS",
+      plainEnglish:
+        "Section 7.03(q) (\u201c7.03(q)\u201d) imposes an affirmative or ongoing obligation related to restricted payments and investments. Permission substance: (q) Restricted Payments and Investments not exceeding $1,000,000 in the aggregate.",
+      operativeLanguageExcerpt:
+        "(q) Restricted Payments and Investments not exceeding $1,000,000 in the aggregate.",
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [],
+    } as any);
+    expect(grants).toContain("RESTRICTED_PAYMENT");
+    expect(grants).toContain("INVESTMENT");
+  });
+});
+
+/** Rule 203: a clause item's own operative excerpt is grant evidence. */
+describe("rule 203: clause excerpt is grant evidence; chapeau excerpt is not", () => {
+  function item(sectionRef: string, plainEnglish: string, excerpt: string) {
+    return {
+      sectionRef, heading: "Investments", category: "NEGATIVE_COVENANTS", plainEnglish,
+      operativeLanguageExcerpt: excerpt,
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [],
+    } as any;
+  }
+  it("a clause item whose plainEnglish summarizes away the cap still mints INVESTMENT from its excerpt", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem(item(
+      "7.03(p)",
+      "Section 7.03(p) (\u201c7.03(p)\u201d) imposes an affirmative or ongoing obligation related to restricted payments and investments. Material baskets/thresholds identified: Amount/threshold: $500,000. Conditions: no Default has occurred.",
+      "(p) other Investments not exceeding, in the aggregate in any fiscal year of the Borrower, $500,000, so long as no Default has occurred.",
+    ));
+    expect(grants).toEqual(["INVESTMENT"]);
+  });
+  it("a chapeau item does not mint a grant from a sub-clause's cap in its excerpt", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem(item(
+      "7.03",
+      "Section 7.03 (\u201c7.03\u201d) is a general investments article. The article sets out the investment regime.",
+      "Section 7.03. Investments. The Borrower shall not make Investments except: (a) Investments in Cash Equivalents; (p) other Investments not exceeding $500,000 in the aggregate.",
+    ));
+    expect(grants).not.toContain("INVESTMENT");
+  });
+});
+
+/** Rule 204: the definitions article never grants capacity. */
+describe("rule 204: definitions-article items never mint grants", () => {
+  it("a 1.01 definition condition with a Collateral mention mints nothing", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem({
+      sectionRef: "1.01(f)(i)(d)(n)", heading: "1.01(f)(i)(d)(n)", category: "NEGATIVE_COVENANTS",
+      plainEnglish: "Section 1.01(f)(i)(d)(n) defines a condition of Permitted Acquisition.",
+      operativeLanguageExcerpt:
+        "(n) with respect to any such Acquisition of assets that do not become Collateral, the aggregate Cost of Acquisition does not exceed $10,000,000 in any fiscal year.",
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [],
+    } as any);
+    expect(grants).toEqual([]);
+  });
+});
+
+/** Rule 203 tightening: excerpt evidence only for single-clause excerpts. */
+describe("rule 203 tightening: composite excerpts are not evidence", () => {
+  it("a clause with sub-clause exceptions in its excerpt does not mint from the sub-clause", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem({
+      sectionRef: "6.08(a)", heading: "Restricted Payments", category: "NEGATIVE_COVENANTS",
+      plainEnglish: "Section 6.08(a) prohibits Restricted Payments except as permitted.",
+      operativeLanguageExcerpt:
+        "No Loan Party will declare or make any Restricted Payment except (i) dividends payable in shares and (ii) Indebtedness permitted under Section 6.01 not exceeding $750,000.",
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [],
+    } as any);
+    expect(grants).not.toContain("DEBT_INCURRENCE");
+  });
+});
