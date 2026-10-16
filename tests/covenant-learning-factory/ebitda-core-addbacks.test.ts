@@ -221,4 +221,27 @@ describe("base promotion and invent-safe CNI extinguishment", () => {
     expect(o.supported).not.toBeNull();
     expect(Number(o.supported)).toBe(100 * M + 20 * M + 30 * M + 50 * M);
   });
+
+  it("UK consolidated profits before taxation maps to ProfitLoss/NetIncomeLoss", () => {
+    const text =
+      `"Consolidated EBITDA" means, for any Relevant Period, the consolidated profits of the Restricted Group from ordinary activities before taxation in respect of that Relevant Period and (without double counting): (a) before deducting any Consolidated Net Finance Charges; (b) before deducting tax; (c) before deducting depreciation and amortization. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda(
+      "Consolidated EBITDA",
+      text,
+      fin({ ProfitLoss: 100 * M, InterestExpense: 30 * M, IncomeTaxExpenseBenefit: 20 * M, DepreciationDepletionAndAmortization: 50 * M }),
+    );
+    expect(o.base).not.toBeNull();
+    expect(o.supported).not.toBeNull();
+  });
+
+  it("CNI asset-sale exclusion with no XBRL disposition gain/loss is a no-op", () => {
+    const text =
+      `"Consolidated Net Income" means the net income of the Issuer; provided that there shall be excluded (a) any gain or loss on sales of assets. ` +
+      `"Consolidated EBITDA" means Consolidated Net Income plus (a) taxes; plus (b) interest expense; plus (c) depreciation and amortization. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL));
+    expect(o.reason).not.toMatch(/asset sales/i);
+    expect(o.supported).not.toBeNull();
+  });
 });

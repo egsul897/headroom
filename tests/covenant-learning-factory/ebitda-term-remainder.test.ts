@@ -17,7 +17,7 @@ const fin = (): IssuerFinancials => ({
 
 describe("EBITDA term recognition: remainder-corpus safe expansions", () => {
   it("indenture Non-Cash Charges stand in for D&A in the schedule gate", () => {
-    // Verbatim pattern from TUNABLE indentures (e.g. CIK 1776197 / 41719): taxes + interest + Consolidated Non-Cash Charges.
+    // Verbatim pattern from common indenture drafting: taxes + interest + Consolidated Non-Cash Charges.
     const text =
       `"Consolidated Net Income" means the net income of the Issuer. ` +
       `"Consolidated EBITDA" means, with respect to any Person for any period, the Consolidated Net Income of such Person for such period plus, without duplication, to the extent deducted in calculating Consolidated Net Income: (1) Consolidated Taxes; plus (2) Consolidated Interest Expense; plus (3) Consolidated Non-Cash Charges; plus (4) business optimization expenses. ` +

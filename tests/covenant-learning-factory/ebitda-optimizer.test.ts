@@ -125,4 +125,17 @@ describe("net-income base: connective text between exclusions is not an exclusio
     const cni = `"Consolidated Net Income" means the net income of the Borrower determined in accordance with GAAP; provided that there shall be excluded: (a) extraordinary, non-recurring or unusual gains or losses. `;
     expect(optimizeConsolidatedEbitda("Consolidated EBITDA", cni + ebitda, f).maximum).toBeNull();
   });
+
+  it("lesser-of: evidenced amount is capped at the smaller limb", () => {
+    const text =
+      `"Consolidated Net Income" means the net income of the Borrower. ` +
+      `"Consolidated EBITDA" means Consolidated Net Income plus (a) taxes; plus (b) interest expense; plus (c) depreciation and amortization; plus (d) restructuring charges; provided that the aggregate amount added back pursuant to this clause (d) shall not exceed the lesser of (i) $40.0 million and (ii) 10% of Consolidated EBITDA for such period (calculated prior to giving effect to any increase pursuant to this clause (d)). ` +
+      `"Default" means any event.`;
+    // E0 = 200M; 10% = 20M; lesser of 40M and 20M = 20M; XBRL restructuring 60M → claim 20M
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin({ ...BASE, RestructuringCharges: 60 * M }));
+    const d = o.addBacks.find((a) => a.label === "(d)")!;
+    expect(d.cap?.amount).toBe(String(20 * M));
+    expect(Number(d.claimed)).toBe(20 * M);
+  });
+
 });

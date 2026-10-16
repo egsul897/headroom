@@ -60,7 +60,7 @@ export function categorize(t: string): AddBackCategory {
   // "minority / non-controlling interest" (incl. "minority interest expense") is equity attribution, not borrowing cost.
   const minorityInterest = /\b(?:minority|non-?controlling)\s+interest\b/i.test(t);
   // Interest expense lines often say "inclusive of amortization of premiums / deferred financing" — that is INTEREST, not D&A.
-  if (!minorityInterest && (/\binterest\s+(?:expense|charges?)\b/i.test(t) || /\bFixed\s+Charges\b/i.test(t))) return "INTEREST";
+  if (!minorityInterest && (/\binterest\s+(?:expense|charges?)\b/i.test(t) || /\bFixed\s+Charges\b/i.test(t) || /\b(?:net\s+)?finance\s+charges?\b/i.test(t))) return "INTEREST";
   // Strip "(other than depreciation/amortization…)" so transaction-cost lines are not miscategorized as D&A.
   const withoutOtherThanDa = t.replace(/\(\s*(?:other\s+than|excluding|except(?:\s+for)?)[^)]*(?:depreciation|amortization)[^)]*\)/gi, " ");
   if (/depreciation|amortization(?!\s+of\s+(?:deferred\s+)?(?:financing|debt|premiums?|discount|OID))/i.test(withoutOtherThanDa) && !/non-?cash\s+charges/i.test(t)) return "D&A";

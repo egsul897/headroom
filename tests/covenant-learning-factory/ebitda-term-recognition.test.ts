@@ -66,4 +66,11 @@ describe("findEbitdaMeasureTerm: primary earnings measure under alternate labels
       `"Default" means any event.`;
     expect(findEbitdaMeasureTerm(text)).toBeNull();
   });
+
+  it("fail-closed: arbitrary *EBITDA labels are not primary even with a schedule body", () => {
+    const text =
+      `"PSG EBITDA" means, for any period, Consolidated Net Income for such period plus (a) taxes; plus (b) interest expense; plus (c) depreciation and amortization expense. ` +
+      `"Default" means x.`;
+    expect(findEbitdaMeasureTerm(text)).toBeNull();
+  });
 });

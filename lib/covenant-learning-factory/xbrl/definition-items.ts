@@ -78,8 +78,7 @@ function ebitdaMeasureRank(term: string): number | null {
   if (/^Adjusted\s+Cash\s+EBITDA$/i.test(n)) return 65;
   if (/^Adjusted\s+EBITDA$/i.test(n)) return 60;
   if (/^Consolidated\s+Cash\s+Flow$/i.test(n)) return 50;
-  // Other "* EBITDA(R|X)" labels (e.g. segment EBITDA) only when the body passes the schedule gate.
-  if (/EBITDA[RX]?$/i.test(n)) return 55;
+  // Fail-closed: no catch-all "*EBITDA*" — segment/issuer-specific wrappers (PSG EBITDA, etc.) stay null.
   return null;
 }
 
@@ -129,9 +128,10 @@ export function markers(text: string): ItemSign[] {
   let depth = 0, flat = "";
   for (const ch of text) { if (ch === "(") depth++; else if (ch === ")") depth = Math.max(0, depth - 1); else if (depth === 0) flat += ch; }
   const out: ItemSign[] = [];
-  for (const m of flat.matchAll(/\b(plus|minus|less|reduced\s+by|deducting|subtracting|to\s+the\s+extent\s+(?:deducted|decreasing|reducing|included\s+as\s+an?\s+expense)|to\s+the\s+extent\s+(?:increasing|added|included\s+in\s+(?:arriving|determining|calculating))|excluding|net\s+of|including)\b/gi)) {
+  for (const m of flat.matchAll(/\b(plus|minus|less|reduced\s+by|before\s+deducting|deducting|subtracting|to\s+the\s+extent\s+(?:deducted|decreasing|reducing|included\s+as\s+an?\s+expense)|to\s+the\s+extent\s+(?:increasing|added|included\s+in\s+(?:arriving|determining|calculating))|excluding|net\s+of|including)\b/gi)) {
     const w = m[1]!.toLowerCase();
-    out.push(/^(plus|including)|deducted|decreasing|reducing|as an? expense/.test(w) ? "+" : "-");
+    // "before deducting X" is an add-back (UK LMA style), not a subtraction.
+    out.push(/^(plus|including|before\s+deducting)|deducted|decreasing|reducing|as an? expense/.test(w) ? "+" : "-");
   }
   return out;
 }
@@ -184,10 +184,10 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
       } else add(ie, /(?:consolidated\s+)?(?:total\s+)?interest\s+(?:expense|charges)/gi);
     }
   }
-  // Fixed Charges ≥ interest expense in ordinary definitions: XBRL interest is a lower bound on that add-back.
-  if (/\bFixed\s+Charges\b/i.test(t) && !r.concepts.length) {
+  // Fixed Charges / finance charges ≥ interest expense: XBRL interest is a lower bound on that add-back.
+  if (/(?:\bFixed\s+Charges\b|\b(?:net\s+)?finance\s+charges?\b)/i.test(t) && !r.concepts.length) {
     const ie = firstItem(fin, IE);
-    if (ie) { add(ie, /\bFixed\s+Charges\b/gi); (r as MapResult & { lowerBound?: boolean }).lowerBound = true; }
+    if (ie) { add(ie, /\bFixed\s+Charges\b|\b(?:net\s+)?finance\s+charges?\b/gi); (r as MapResult & { lowerBound?: boolean }).lowerBound = true; }
   }
   if (/\btax(?:es)?\b/i.test(t) && !/tax\s+(?:credits?|benefits?|refunds?)/i.test(t)) add(firstItem(fin, ["IncomeTaxExpenseBenefit"]), /(?:consolidated\s+)?(?:provision\s+for\s+)?(?:income\s+)?tax(?:es)?(?:\s+expense)?(?:,?\s+to\s+the\s+extent\s+based\s+on\s+income\s+or\s+profits)?|based\s+on\s+income|profits?/gi);
   const daAll = /depreciation/i.test(t);
@@ -274,6 +274,11 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
       // "operating income as reported in the Borrower's consolidated financial statements"
       const v = firstItem(fin, ["OperatingIncomeLoss"]);
       if (!v) return res("NEEDS_INPUT", "no exact TTM operating income in XBRL");
+      base = v;
+    } else if (/\bconsolidated\s+profits?\b/i.test(lead) && /before\s+taxation|before\s+tax/i.test(lead)) {
+      // UK-style "consolidated profits … before taxation" — same economic base as net income / ProfitLoss.
+      const v = firstItem(fin, ["ProfitLoss", "NetIncomeLoss"]);
+      if (!v) return res("NEEDS_INPUT", "no exact TTM profit/net income in XBRL");
       base = v;
     } else return res("NEEDS_INPUT", "definition does not start from net income or a defined EBIT");
   } else {
@@ -401,7 +406,12 @@ export function cniAdjustments(body: string, fin: IssuerFinancials): { adjust: A
       else if (supplied("EXTINGUISHMENT")) { /* sourced borrower figure */ }
       continue;
     }
-    if (gainsAndLosses && /(?:sale|disposition|disposal)s?\s+of\s+(?:any\s+)?(?:assets?|property|properties)|asset\s+(?:sales?|dispositions?)/i.test(t) && !/non-?recurring|unusual|extinguishment|hedg|currency|securities|discontinued/i.test(t)) { const e = take(ASSET_SALE, "gain or loss on asset sales", "ASSET_SALE"); if (e) return { reason: e }; continue; }
+    if (gainsAndLosses && /(?:sale|disposition|disposal)s?\s+of\s+(?:any\s+)?(?:assets?|property|properties)|asset\s+(?:sales?|dispositions?)/i.test(t) && !/non-?recurring|unusual|extinguishment|hedg|currency|securities|discontinued/i.test(t)) {
+      const it = firstItem(fin, ASSET_SALE);
+      if (it) { if (!used.has(it.concept)) { used.add(it.concept); adjust.push(it); } }
+      else if (supplied("ASSET_SALE")) { /* sourced borrower figure */ }
+      continue;
+    }
     // Excluding only losses / charges / expenses can only raise the contract figure.
     const cat = /Unrestricted\s+Subsidiar/i.test(t) ? "UNRESTRICTED_SUBSIDIARY" : /non-?recurring|unusual|infrequent|exceptional|one-?time|extraordinary/i.test(t) ? "NON_RECURRING" : /discontinued/i.test(t) ? "DISCONTINUED_OPERATIONS" : /equity\s+method|any\s+Person/i.test(t) ? "EQUITY_METHOD" : "OTHER";
     if (supplied(cat)) continue;
