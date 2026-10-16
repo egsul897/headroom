@@ -102,10 +102,10 @@ describe("Package graph persistence + query API + incrementality (task §13/§20
     const amendments = await getAmendmentsForDocument(CA_ID, COMPANY_ID);
     expect(new Set(amendments.map((e) => e.sourceDocumentId))).toEqual(new Set([AMEND1_ID, AMEND2_ID]));
 
-    const supplements = await getSupplementsForDocument(CA_ID);
+    const supplements = await getSupplementsForDocument(CA_ID, COMPANY_ID);
     expect(supplements).toHaveLength(0); // no SUPPLEMENTAL_INDENTURE in this package
 
-    const related = await getRelatedDocuments(CA_ID);
+    const related = await getRelatedDocuments(CA_ID, COMPANY_ID);
     expect(new Set(related.map((d) => d.id))).toEqual(new Set([AMEND1_ID, AMEND2_ID, JOINDER_ID]));
 
     const allEdges = await getDocumentRelationships(COMPANY_ID);
@@ -115,13 +115,13 @@ describe("Package graph persistence + query API + incrementality (task §13/§20
   });
 
   it("getModificationCandidates returns Amendment 1's covenant-modification candidate with the right target", async () => {
-    const candidates = await getModificationCandidates(AMEND1_ID);
+    const candidates = await getModificationCandidates(AMEND1_ID, COMPANY_ID);
     expect(candidates).toHaveLength(1);
     expect(candidates[0]).toMatchObject({ effectType: "REPLACE_TEXT", targetDocumentId: CA_ID, targetSectionRef: "6.01" });
   });
 
   it("findDocumentsReferencing(CA) returns every document with an edge pointing at it", async () => {
-    const referencing = await findDocumentsReferencing(CA_ID);
+    const referencing = await findDocumentsReferencing(CA_ID, COMPANY_ID);
     expect(new Set(referencing.map((d) => d.id))).toEqual(new Set([AMEND1_ID, AMEND2_ID, JOINDER_ID]));
   });
 
@@ -135,9 +135,9 @@ describe("Package graph persistence + query API + incrementality (task §13/§20
 
   it("changing Amendment 2's unrelated body text updates ONLY its own modification candidate, leaving the Credit Agreement's, Amendment 1's, and the Joinder's own persisted rows byte-identical (task §20)", async () => {
     const beforeCaEdges = await prisma.documentRelationshipEdge.findMany({ where: { companyId: COMPANY_ID, sourceDocumentId: { in: [AMEND1_ID, JOINDER_ID] } }, orderBy: { id: "asc" } });
-    const beforeAmend1Candidates = await getModificationCandidates(AMEND1_ID);
+    const beforeAmend1Candidates = await getModificationCandidates(AMEND1_ID, COMPANY_ID);
     const beforeInstruments = await getInstruments(COMPANY_ID);
-    const beforeAmend2Candidates = await getModificationCandidates(AMEND2_ID);
+    const beforeAmend2Candidates = await getModificationCandidates(AMEND2_ID, COMPANY_ID);
     expect(beforeAmend2Candidates[0]!.sourceSectionRef).toContain("restructuring charges");
     expect(beforeAmend2Candidates[0]!.sourceSectionRef).not.toContain("one-time transaction expenses");
 
@@ -146,7 +146,7 @@ describe("Package graph persistence + query API + incrementality (task §13/§20
     await persistPackageGraph(COMPANY_ID, result);
 
     const afterCaEdges = await prisma.documentRelationshipEdge.findMany({ where: { companyId: COMPANY_ID, sourceDocumentId: { in: [AMEND1_ID, JOINDER_ID] } }, orderBy: { id: "asc" } });
-    const afterAmend1Candidates = await getModificationCandidates(AMEND1_ID);
+    const afterAmend1Candidates = await getModificationCandidates(AMEND1_ID, COMPANY_ID);
     const afterInstruments = await getInstruments(COMPANY_ID);
 
     expect(afterCaEdges).toEqual(beforeCaEdges);
@@ -154,7 +154,7 @@ describe("Package graph persistence + query API + incrementality (task §13/§20
     expect(afterInstruments).toEqual(beforeInstruments);
 
     // Amendment 2's own modification-candidate row picks up the new excerpt text - its own derived row DOES change.
-    const afterAmend2Candidates = await getModificationCandidates(AMEND2_ID);
+    const afterAmend2Candidates = await getModificationCandidates(AMEND2_ID, COMPANY_ID);
     expect(afterAmend2Candidates).toHaveLength(1);
     expect(afterAmend2Candidates[0]!.sourceSectionRef).toContain("one-time transaction expenses");
   });
