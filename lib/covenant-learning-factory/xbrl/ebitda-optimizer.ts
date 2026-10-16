@@ -30,6 +30,8 @@ export interface AddBackLine {
   headroomToCap: string | null;
   /** Clauses sharing this line's cap (one limit across all of them), including this line; null when uncapped / sole. */
   capGroup?: string[] | null;
+  /** Positions (indices in addBacks) of the clauses sharing the cap — labels can repeat across nesting levels. */
+  capGroupAt?: number[] | null;
   note: string;
 }
 export interface EbitdaOptimization {
@@ -330,16 +332,32 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   // ---- totals ----
   const base = baseOk ? BigInt(ev.base!.value) : null;
   const deductions = baseOk ? pairs.filter((p) => p.it.sign === "-" && p.it.coverage !== "HEADER").reduce((a, p) => a + BigInt(p.it.value), 0n) : null;
-  const uncapped = lines.filter((l) => !l.capSpec && !lines.some((o) => o.capSpec?.sharedWith.includes(l.label)));
+  // Resolve each cap's named clauses to specific lines by position, not label alone: definitions reuse labels at
+  // different nesting levels ("(i)" twice). A reference resolves to the nearest preceding line with that label (the
+  // clause a proviso refers back to), else the nearest following one.
+  const capMembers = new Map<(typeof lines)[number], Set<(typeof lines)[number]>>();
+  lines.forEach((l, idx) => {
+    if (!l.capSpec) return;
+    const set = new Set<(typeof lines)[number]>();
+    for (const lab of l.capSpec.sharedWith) {
+      const cands = lines.map((o, j) => ({ o, j })).filter((x) => x.o !== l && x.o.label === lab);
+      const before = cands.filter((x) => x.j < idx).pop(), after = cands.find((x) => x.j > idx);
+      const pick = before ?? after;
+      if (pick) set.add(pick.o);
+    }
+    capMembers.set(l, set);
+  });
+  const sharedMember = new Set([...capMembers.values()].flatMap((s) => [...s]));
+  const uncapped = lines.filter((l) => !l.capSpec && !sharedMember.has(l));
   for (const l of uncapped) { l.claimed = usd(l.evid); l.status = l.coverage === "FULL" ? "CLAIMED" : "NEEDS_INPUT"; if (l.coverage !== "FULL") l.note = l.coverage === "PARTIAL" ? "partly evidenced; remainder needs input" : "not evidenced in filings"; }
   const e0 = base != null && deductions != null ? base + deductions + uncapped.reduce((a, l) => a + l.evid, 0n) : null;
   const capOpen = uncapped.some((l) => l.coverage !== "FULL");
   // Capped groups: a cap and every clause it names share one limit.
-  const done = new Set<string>();
+  const done = new Set<(typeof lines)[number]>();
   for (const l of lines.filter((x) => x.capSpec)) {
-    if (done.has(l.label)) continue;
-    const group = [l, ...lines.filter((o) => o !== l && l.capSpec!.sharedWith.includes(o.label))];
-    group.forEach((g) => done.add(g.label));
+    if (done.has(l)) continue;
+    const group = [l, ...[...(capMembers.get(l) ?? [])].filter((o) => !done.has(o))];
+    group.forEach((g) => done.add(g));
     const { amount, note } = capAmount(l.capSpec!, e0);
     let room = amount;
     for (const g of group) {
@@ -355,7 +373,8 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     if (room === 0n) for (const g of group) if (g.status === "NEEDS_INPUT") { g.status = BigInt(g.claimed) < g.evid ? "CAPPED" : "CLAIMED"; g.note = "cap reached"; }
     const left = room == null ? null : room;
     for (const g of group) g.headroomToCap = left == null ? null : g.status === "NEEDS_INPUT" ? usd(left) : "0";
-    if (group.length > 1) { const labels = [...group].sort((a, b) => lines.indexOf(a) - lines.indexOf(b)).map((x) => x.label); for (const g of group) g.capGroup = labels; }
+    if (group.length > 1) { const labels = [...group].sort((a, b) => lines.indexOf(a) - lines.indexOf(b)).map((x) => x.label); for (const g of group) g.capGroup = labels;
+      for (const g of group) g.capGroupAt = [...group].map((x) => lines.indexOf(x)).sort((a, b) => a - b); }
   }
   const addBacks: AddBackLine[] = lines.map(({ evid: _e, capSpec: _c, ...l }) => l);
   const open = addBacks.filter((l) => l.status === "NEEDS_INPUT");
