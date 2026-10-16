@@ -67,7 +67,12 @@ export function cfoRecompute(args: Args, inputs: readonly BorrowerInput[]): { fl
     const refuse = (reason: string) => results.push({ input, accepted: false, reason, before, after: null, gain: null });
     if (!input.source?.trim()) { refuse("no source document named"); continue; }
     if (!/^-?\d+$/.test(input.value)) { refuse("value is not an integer amount"); continue; }
-    if (!keys.has(input.key.toUpperCase())) { refuse(`no tracker flag names input key ${input.key}`); continue; }
+    if (!keys.has(input.key.toUpperCase())) {
+      const m = /^ADDBACK:(\([^)]+\))$/i.exec(input.key.trim());
+      const positional = m ? [...keys].filter((k) => k.startsWith(`ADDBACK:${m[1]!.toUpperCase()}@`)) : [];
+      refuse(positional.length > 1 ? `ambiguous input key ${input.key}: the label repeats in this definition; use one of ${positional.map((k) => k.replace(/^ADDBACK:/, "ADDBACK:")).join(", ")}` : `no tracker flag names input key ${input.key}`);
+      continue;
+    }
     if (!args.financials) { refuse("no issuer financials"); continue; }
     const fin = { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), input] };
     const after = capacitySnapshot(runAgreementPipeline({ ...args, financials: fin }));

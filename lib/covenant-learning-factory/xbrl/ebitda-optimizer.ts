@@ -206,6 +206,12 @@ const NON_OPERATIVE_GAIN = [
 ];
 export const namesGainOrIncome = (s: string): boolean => /\bgains?\b|\bincome\b/i.test(NON_OPERATIVE_GAIN.reduce((a, re) => (re.test(a) && /\blosses?\b|cash\s+receipts/i.test(a) ? a.replace(re, " ") : a), s).replace(TAX_BASE, " ").replace(/\b(?:Consolidated\s+)?Net\s+Income\b|\bbased\s+on\s+income\b|\bnet\s+income\s+\(loss\)/gi, " "));
 
+/** The input key for an add-back line: plain when its label is unique in the schedule, position-specific otherwise. */
+export function addBackInputKey(addBacks: ReadonlyArray<{ label: string }>, position: number): string {
+  const label = addBacks[position]!.label;
+  return addBacks.filter((l) => l.label === label).length > 1 ? `ADDBACK:${label}@${position}` : `ADDBACK:${label}`;
+}
+
 export function optimizeConsolidatedEbitda(term: string, text: string, fin: IssuerFinancials): EbitdaOptimization {
   const ev: DefinitionEvaluation = evaluateDefinition("EBITDA", term, text, fin);
   const segs = definitionSegments("EBITDA", term, text);
@@ -260,8 +266,12 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   // ---- add-backs: evidence and caps per line ----
   const used = new Set<string>(), consumedInputs = new Set<string>();
   const lines: Array<AddBackLine & { evid: bigint; capSpec: CapSpec | null }> = [];
-  for (const { it, full } of pairs) {
-    if (it.coverage === "HEADER" || it.sign === "-") continue;
+  // Input keys: ADDBACK:<label> when the label is unique among add-back lines; ADDBACK:<label>@<position> always works
+  // and is required when the label repeats (a plain key for a repeated label is ambiguous and is not applied).
+  const addPairs = pairs.filter((p) => p.it.coverage !== "HEADER" && p.it.sign !== "-");
+  const labelCount = new Map<string, number>();
+  for (const p of addPairs) labelCount.set(p.it.label, (labelCount.get(p.it.label) ?? 0) + 1);
+  for (const [position, { it, full }] of addPairs.entries()) {
     const ambiguous = ambiguousAddBack({ it, full });
     const capSpec = CAPPED.test(full) ? parseCap(full) : null;
     const scopeText = capSpec ? full.replace(capSpec.text, " ") : full;
@@ -271,7 +281,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     let mapNote = "";
     let ownFull = false; // the line is wholly the mapped filing item(s) (no unmapped remainder)
     // A borrower-supplied amount (with its source) answers the whole line, like a filing figure.
-    const bi = borrowerInput(fin, [`ADDBACK:${it.label}`, cat === "OTHER" ? "" : `ADDBACK:${cat}`].filter((k) => k && !consumedInputs.has(k.toUpperCase())));
+    const bi = borrowerInput(fin, [`ADDBACK:${it.label}@${position}`, (labelCount.get(it.label) ?? 0) > 1 ? "" : `ADDBACK:${it.label}`, cat === "OTHER" ? "" : `ADDBACK:${cat}`].filter((k) => k && !consumedInputs.has(k.toUpperCase())));
     if (bi) { consumedInputs.add(bi.key.toUpperCase()); concepts = [{ concept: `borrower:${bi.key} [${bi.source}]`, value: BigInt(bi.value) }]; coverage = "FULL"; }
     else if (!capSpec && (it.coverage === "FULL" || it.coverage === "PARTIAL") && it.concepts.length) {
       concepts = it.concepts.map((c) => ({ concept: c.concept, value: BigInt(c.value) }));

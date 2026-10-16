@@ -4,7 +4,7 @@
  * No amounts are invented: a category with no exact filed figure is NEEDS_INPUT ("available, check with CFO").
  */
 import type { IssuerFinancials } from "./companyfacts";
-import type { AddBackCategory, EbitdaOptimization } from "./ebitda-optimizer";
+import { addBackInputKey, type AddBackCategory, type EbitdaOptimization } from "./ebitda-optimizer";
 
 export interface AddBackFlag {
   category: AddBackCategory;
@@ -95,7 +95,7 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
       debtCapacityDelta: lev && ebitdaDelta != null ? mulLimit(lev, BigInt(ebitdaDelta)).toString() : null,
       confidence: detected ? (l.coverage === "FULL" || l.status !== "NEEDS_INPUT" ? "HIGH" : "MEDIUM") : "LOW",
       note: detected ? (l.coverage === "FULL" || l.status !== "NEEDS_INPUT" ? (l.status === "CAPPED" ? "exact filed figure; cap applied" : "exact filed figure") : "partly evidenced; remainder needs input") : "permitted by the definition; no filed movement detected — available, check with CFO",
-      inputKey: `ADDBACK:${l.label}`,
+      inputKey: addBackInputKey(opt.addBacks, position),
       potential: potentialOf(l.headroomToCap, detected && (l.coverage === "FULL" || l.status !== "NEEDS_INPUT"), lev),
       position,
       capGroup: l.capGroup && l.capGroup.length > 1 ? { id: `CAP@${(l.capGroupAt ?? []).join("+")}:${l.capGroup.join("+")}`, labels: l.capGroup, leader: l.capGroup[0]!, room: l.headroomToCap, positions: l.capGroupAt ?? [], leaderPosition: (l.capGroupAt ?? [position])[0]! } : null,

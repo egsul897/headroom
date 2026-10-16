@@ -23,3 +23,30 @@ describe("shared caps resolve clause references by position, not label", () => {
     expect(second!.l.cap).toBeNull();
   });
 });
+
+describe("position-specific input keys when labels repeat", () => {
+  it("tracker keys carry @position for repeated labels; plain keys stay for unique ones; ambiguous plain key refused", async () => {
+    const { cfoRecompute } = await import("@/lib/covenant-learning-factory/pipeline/cfo-loop");
+    const doc = `ARTICLE I DEFINITIONS\n${TEXT}\n"Default" means any event of default.\n`;
+    const args = { sourceId: "pos-keys", text: doc, issuerCik: "1", financials: fin };
+    const { flags } = cfoRecompute(args, []);
+    const iKeys = flags.filter((f) => f.clause.label === "(i)").map((f) => f.inputKey);
+    expect(iKeys.length).toBe(2);
+    expect(iKeys.every((k) => /^ADDBACK:\(i\)@\d+$/.test(k))).toBe(true);
+    expect(new Set(iKeys).size).toBe(2);
+    expect(flags.find((f) => f.clause.label === "(l)")?.inputKey).toBe("ADDBACK:(l)");
+    const nested = flags.filter((f) => f.clause.label === "(i)").sort((a, b) => a.position - b.position)[1]!;
+    const src = "Q2 2026 compliance certificate";
+    const { results } = cfoRecompute(args, [
+      { key: "ADDBACK:(i)", value: String(3 * M), source: src },
+      { key: nested.inputKey, value: String(3 * M), source: src },
+      { key: "ADDBACK:(l)", value: String(2 * M), source: src },
+    ]);
+    expect(results[0]!.accepted).toBe(false);
+    expect(results[0]!.reason).toMatch(/ambiguous/);
+    expect(results[1]!.accepted).toBe(true);
+    expect(results[1]!.gain?.ebitda).toBe(String(3 * M));
+    expect(results[2]!.accepted).toBe(true);
+    expect(results[2]!.gain?.ebitda).toBe(String(2 * M));
+  });
+});
