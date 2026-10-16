@@ -7,6 +7,7 @@ import {
   type CapacityDeterminationStatus,
 } from "@/lib/product/conmed-demo/covenant-catalog";
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
+import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 
 export const metadata = { title: "Headroom — Covenants" };
@@ -28,10 +29,19 @@ function statusTone(status: CapacityDeterminationStatus): "navy" | "tight" | "id
 
 export default async function CovenantsPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [review, rulebook] = await Promise.all([
+  const [review, rulebook, intelligence] = await Promise.all([
     loadCovenantReviewWorkspace(companyId),
     loadRulebookReadiness(companyId),
+    listCustomerDocumentIntelligence(companyId).catch(() => []),
   ]);
+  // Rule 122: rule 118's mismatch on the covenants page — these
+  // engine-modeled provisions are the executable path, so a
+  // provision from a type-mismatched document must say so.
+  const mismatchByDocumentId = new Map(
+    (intelligence as { documentId: string; declaredType: string | null; documentClass: string }[])
+      .filter((i) => i.declaredType && i.documentClass && i.documentClass !== i.declaredType)
+      .map((i) => [i.documentId, `declared ${i.declaredType}, analyzed as ${i.documentClass}`] as const),
+  );
   const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
   const provisions = await prisma.covenantProvision.findMany({
     where: { companyId },
@@ -366,6 +376,9 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
                 </div>
                 <div className="row-note">
                   {p.document.name} · {p.formulaType} · code {p.code}
+                  {mismatchByDocumentId.get(p.documentId) && (
+                    <> · <span style={{ color: "var(--color-warning, #92400e)" }}>TYPE MISMATCH — {mismatchByDocumentId.get(p.documentId)}</span></>
+                  )}
                 </div>
               </div>
               <Link className="button" href={`/${companyId}/documents/${p.documentId}`}>
