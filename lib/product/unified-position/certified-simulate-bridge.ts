@@ -225,16 +225,48 @@ export async function attemptVerifiedSimulate(args: VerifiedSimulateRequest): Pr
   });
   const inputBlockers = inputValidation.ok ? [] : inputValidation.blockers;
 
-  const emptyEnumeration = (): ReturnType<typeof enumerateCertifiedPaths> => ({
+  const emptyEnumeration = (reasons?: string[]): ReturnType<typeof enumerateCertifiedPaths> => ({
     authority: "NOT_CERTIFIED_4E",
     transactionKind: args.kind,
     secured: args.secured ?? null,
     paths: [],
     stackingAssumed: false,
-    incompleteReasons: inputBlockers.length > 0 ? [...inputBlockers] : ["NO_VERIFIED_EXECUTION_PACKAGE"],
+    incompleteReasons: reasons ?? (inputBlockers.length > 0 ? [...inputBlockers] : ["NO_VERIFIED_EXECUTION_PACKAGE"]),
     unsupportedReasons: [],
     note: "Enumeration skipped — inputs invalid or verified package absent.",
   });
+
+  // Rule 61: a VEP bound to a different company must never be
+  // evaluated — its rules would govern this company's
+  // transaction while this company's financials/ledger feed
+  // the inputs. Fail closed BEFORE enumeration so foreign path
+  // labels/ruleIds never leak into the result either.
+  if (args.verifiedPackage && args.verifiedPackage.companyId !== args.companyId) {
+    const certified: CertifiedTransactionAttempt = {
+      companyId: args.companyId,
+      evaluationDate: args.evaluationDate,
+      cutoffState: "NEEDS_INPUT",
+      reportingPeriodKey: null,
+      approvedSnapshotId: null,
+      ledgerUsageCount: 0,
+      verifiedPackagePresent: true,
+      capacity: null,
+      simulation: null,
+      blockers: ["VEP_COMPANY_MISMATCH"] as CertifiedTransactionAttempt["blockers"],
+      authorityNote:
+        "CERTIFIED path blocked: verified package belongs to a different company — Headroom never evaluates one company's transaction against another company's rulebook.",
+    };
+    return {
+      certified,
+      pathEnumeration: emptyEnumeration(["VEP_COMPANY_MISMATCH"]),
+      selectedPathId: null,
+      selectedPath: null,
+      transaction: null,
+      executable: false,
+      refusalSummary: ["VEP_COMPANY_MISMATCH"],
+      pathAutoSelected: false,
+    };
+  }
 
   // Reject malformed amount/date before path enumeration or transaction construction.
   if (!inputValidation.ok) {

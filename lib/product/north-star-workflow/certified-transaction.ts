@@ -31,7 +31,8 @@ export type CertifiedTransactionBlocker =
   | "NO_APPROVED_SNAPSHOT"
   | "NO_VERIFIED_EXECUTION_PACKAGE"
   | "VERIFIED_CAPACITY_REFUSED"
-  | "SIMULATION_REFUSED";
+  | "SIMULATION_REFUSED"
+  | "VEP_COMPANY_MISMATCH";
 
 export interface CertifiedTransactionAttempt {
   companyId: string;
@@ -124,6 +125,13 @@ export async function attemptCertifiedTransaction(args: {
   const pkg = args.verifiedPackage ?? null;
   if (!pkg) {
     blockers.push("NO_VERIFIED_EXECUTION_PACKAGE");
+  }
+  // Rule 61: the VEP's rules must belong to the company being
+  // evaluated. A mismatched VEP would govern this company's
+  // transaction with another company's rulebook while this
+  // company's financials/ledger feed the inputs.
+  if (pkg && pkg.companyId !== companyId) {
+    blockers.push("VEP_COMPANY_MISMATCH");
   }
 
   if (blockers.length > 0 || !pkg || !approvedSnapshotId) {

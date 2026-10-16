@@ -420,8 +420,23 @@ describe("attemptVerifiedSimulate integration (provider-free refusals)", () => {
     expect(r.transaction).toBeNull();
   });
 
-  it("invalid amount refuses before constructing a transaction", async () => {
+  it("VEP bound to another company refuses before enumeration (no foreign paths)", async () => {
+    const foreignPkg = { companyId: "other-co", instrumentKey: "inst" } as VerifiedExecutionPackage;
     const r = await attemptVerifiedSimulate({
+      companyId: "co",
+      evaluationDate: "2026-06-30",
+      amountMillions: 50,
+      kind: "SECURED_DEBT",
+      secured: true,
+      verifiedPackage: foreignPkg,
+    });
+    expect(r.executable).toBe(false);
+    expect(r.refusalSummary).toContain("VEP_COMPANY_MISMATCH");
+    expect(r.transaction).toBeNull();
+    expect(r.pathEnumeration.paths).toEqual([]);
+  });
+
+  it("invalid amount refuses before constructing a transaction", async () => {    const r = await attemptVerifiedSimulate({
       companyId: "co",
       evaluationDate: "2026-06-30",
       amountMillions: NaN,
