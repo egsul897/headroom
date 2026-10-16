@@ -67,3 +67,70 @@ describe("grant-type classification ignores caller category", () => {
     ).toEqual(["LIEN"]);
   });
 });
+
+/**
+ * Rule 195 (audit-driven): grandfathering-only and default-trigger
+ * clauses grant nothing.
+ *
+ * Aon 6.11(l) — "Liens existing on the Effective Date; provided
+ * that ... such Lien ... in excess of $5,000,000 ... is set forth
+ * on Schedule 6.11" — grandfathers existing liens; the $5M is a
+ * disclosure threshold, not a basket. It minted DEBT + LIEN FLAT
+ * $5M. A mixed clause with a creation verb keeps its grants.
+ *
+ * Strata 5.02(c) — "any Lien (other than Permitted Encumbrances)
+ * or claim made or asserted against ... Collateral ... in excess
+ * of $150,000" — an Event-of-Default trigger, not a lien
+ * permission. It minted a LIEN $150k Permission. A permission
+ * with a no-default CONDITION ("provided no Event of Default
+ * has occurred") is not a trigger and keeps its grant.
+ */
+describe("rule 195: grandfathering-only and default-trigger clauses grant nothing", () => {
+  it("pure grandfathering (existing liens, disclosure threshold) mints nothing", () => {
+    expect(
+      grantTypesForItem(
+        item(
+          "6.11(l)",
+          "LIENS_SECURED_DEBT",
+          "(l) Liens existing on the Effective Date; provided that, with respect to each such Lien securing Indebtedness or other obligations in an aggregate committed or principal amount in excess of $5,000,000, such Lien is set forth on Schedule 6.11.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("a mixed clause with a creation verb keeps its grants", () => {
+    expect(
+      grantTypesForItem(
+        item(
+          "6.11(l)",
+          "LIENS_SECURED_DEBT",
+          "(l) Liens existing on the Effective Date and Liens created to refinance such Liens, in an aggregate principal amount not to exceed $10,000,000.",
+        ),
+      ),
+    ).toContain("LIEN");
+  });
+
+  it("a default trigger (lien/claim asserted against Collateral) mints nothing", () => {
+    expect(
+      grantTypesForItem(
+        item(
+          "5.02(c)",
+          "OTHER",
+          "(c) any Lien (other than Permitted Encumbrances) or claim made or asserted against any of the Collateral securing obligations in excess of $150,000.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("a permission with a no-default condition keeps its grant", () => {
+    expect(
+      grantTypesForItem(
+        item(
+          "6.01(j)",
+          "DEBT_INCURRENCE",
+          "(j) The Borrower may incur Indebtedness, provided that no Event of Default has occurred, in an aggregate principal amount not to exceed $20,000,000.",
+        ),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+  });
+});

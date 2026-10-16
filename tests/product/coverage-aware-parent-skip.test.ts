@@ -100,3 +100,15 @@ describe("Rule 193: defined-term-cap ranker signal", () => {
     expect(r2.signals).not.toContain("defined_term_cap");
   });
 });
+
+describe("Rule 195: amount-cap ranker signal", () => {
+  it("a cap through a dollar amount scores like a real basket clause", async () => {
+    const { scoreDiscoveryPotential } = await import("../../lib/knowledge-factory/rank/discovery-score");
+    const r = scoreDiscoveryPotential("(j) other Indebtedness in an aggregate principal amount not to exceed $20,000,000.", "6.01(j)");
+    expect(r.signals).toContain("amount_cap");
+    expect(r.score).toBeGreaterThanOrEqual(3);
+    // "in excess of" alone (a trigger threshold, not a cap) is not an amount cap.
+    const r2 = scoreDiscoveryPotential("any Lien or claim made or asserted against Collateral in excess of $150,000.", "");
+    expect(r2.signals).not.toContain("amount_cap");
+  });
+});

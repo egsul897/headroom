@@ -153,6 +153,45 @@ function hasInvestmentPermissionEvidence(hay: string): boolean {
   return modal;
 }
 
+/**
+ * Rule 195 (audit-driven): a grandfathering clause grants nothing
+ * new. "Liens existing on the Effective Date" (Aon 6.11(l)) merely
+ * grandfathers liens that already exist — and its $5M is a
+ * DISCLOSURE threshold (liens over $5M must be listed on
+ * Schedule 6.11), not a basket cap. Minting DEBT + LIEN FLAT $5M
+ * from it fabricates capacity. The guard fires only when the
+ * clause is PURELY about existing liens/debt (no creation verb):
+ * a mixed clause ("existing Liens and Liens created to
+ * refinance them") keeps its grants — the refinance permission
+ * is evaluated normally.
+ */
+function isGrandfatheringOnly(hay: string): boolean {
+  const existing = /\b(?:LIENS?|INDEBTEDNESS)\s+(?:EXISTING|OUTSTANDING)\s+(?:ON|AS\s+OF)\b/.test(hay);
+  if (!existing) return false;
+  // A creation / acquisition / refinance verb means the clause
+  // also permits NEW liens/debt (a mixed clause) — only pure
+  // grandfathering (existing liens/debt, no new permission)
+  // returns true.
+  const creates = /\b(?:CREAT\w*|INCUR\w*|ISSU\w*|BORROW\w*|ACQUIR\w*|REFINANC\w*)\b/.test(hay);
+  return !creates;
+}
+
+/**
+ * Rule 195 (audit-driven): a default trigger grants nothing. A
+ * lien/claim "made or asserted against" Collateral (Strata
+ * 5.02(c)) is an Event-of-Default trigger — it does not permit
+ * liens, yet the bare LIEN word minted a $150k LIEN Permission
+ * from it. The guard fires on trigger phrasing (constitutes a
+ * default, failure to pay/observe/perform/comply, asserted
+ * against) — but NOT when the text carries a no-default
+ * CONDITION ("provided no Event of Default has occurred"), which
+ * is a permission with a condition, not a trigger.
+ */
+function isDefaultTrigger(hay: string): boolean {
+  if (/\bNO\s+(?:EVENT\s+OF\s+)?DEFAULT\b/.test(hay)) return false;
+  return /\b(?:CONSTITUTES?\s+(?:AN?\s+)?(?:EVENT\s+OF\s+)?DEFAULT|FAILURE\s+TO\s+(?:PAY|OBSERVE|PERFORM|COMPLY)|ASSERTED\s+AGAINST)\b/.test(hay);
+}
+
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
   // Rule 166: an event-of-default trigger is a consequence, never a
   // grant of capacity. A Defaults article genuinely contains the
@@ -198,6 +237,20 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
       ? operativeText(item.plainEnglish)
       : stripClassificationLead(operativeText(item.plainEnglish));
   const hay = `${item.heading} ${sourceText}`.toUpperCase();
+
+  // Rule 195: grandfathering-only and default-trigger clauses
+  // grant nothing. The guards read the cleaned haystack PLUS
+  // the operative excerpt: the analyzer's plainEnglish sometimes
+  // drops the ground-truth phrase (Aon 6.11(l)'s plainEnglish
+  // never says "existing on the Effective Date" — only the
+  // excerpt does). The guards are RESTRICTIVE-only (they can
+  // only remove grants, never mint them), so the excerpt's
+  // incidental mentions cannot launder a grant here — unlike
+  // the grant-evidence checks below, which stay plainEnglish-only
+  // per Rule 176.
+  const guardHay = `${hay} ${(item.operativeLanguageExcerpt ?? "").toUpperCase()}`;
+  if (isGrandfatheringOnly(guardHay)) return [];
+  if (isDefaultTrigger(guardHay)) return [];
 
   const hasDebtWord = /\bINDEBTEDNESS\b|\bDEBT\b|\bINCUR(RING|RED|RENCE)?\b|\bINCREMENTAL\b/.test(hay);
   // Rule 169: debt words alone are not a grant — they must carry
