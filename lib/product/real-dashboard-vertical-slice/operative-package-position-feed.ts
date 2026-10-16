@@ -102,6 +102,7 @@ function readiness(companyId: string, n: number): CapacityReadiness {
     unverifiedPermissionCount: 0,
     provisionCount: n,
     hasFinancialSnapshot: false,
+    financialSnapshotStatus: "UNKNOWN",
     ns4ApprovedSnapshotCount: 0,
     approvedNorthStarSnapshotCount: 0,
     contractLedgerActiveCount: 0,

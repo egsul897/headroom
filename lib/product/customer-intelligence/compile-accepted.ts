@@ -506,7 +506,7 @@ export async function syncDocumentRpWaterfall(companyId: string, documentId: str
 
   await prisma.document.update({
     where: { id: documentId },
-    data: { rpWaterfall: rpWaterfall ? (rpWaterfall as Prisma.InputJsonValue) : Prisma.JsonNull },
+    data: { rpWaterfall: rpWaterfall ? (rpWaterfall as unknown as Prisma.InputJsonValue) : Prisma.JsonNull },
   });
 }
 

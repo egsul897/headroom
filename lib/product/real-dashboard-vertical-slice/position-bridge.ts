@@ -83,6 +83,7 @@ function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
     unverifiedPermissionCount: 0,
     provisionCount: slice.covenants.length,
     hasFinancialSnapshot: slice.financialEvidence.metricsPresent.length > 0,
+    financialSnapshotStatus: "UNKNOWN",
     ns4ApprovedSnapshotCount: 0,
     approvedNorthStarSnapshotCount: 0,
     contractLedgerActiveCount: 0,

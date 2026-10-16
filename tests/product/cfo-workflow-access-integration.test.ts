@@ -65,6 +65,7 @@ const emptyReadiness = (companyId: string): CapacityReadiness => ({
   unverifiedPermissionCount: 0,
   provisionCount: 0,
   hasFinancialSnapshot: false,
+  financialSnapshotStatus: "UNKNOWN",
   ns4ApprovedSnapshotCount: 0,
   approvedNorthStarSnapshotCount: 0,
   contractLedgerActiveCount: 0,

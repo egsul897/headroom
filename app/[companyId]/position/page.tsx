@@ -232,6 +232,7 @@ export default async function PositionPage({
     unverifiedPermissionCount: 0,
     provisionCount: 0,
     hasFinancialSnapshot: false,
+    financialSnapshotStatus: "UNKNOWN" as const,
     ns4ApprovedSnapshotCount: 0,
     approvedNorthStarSnapshotCount: 0,
     contractLedgerActiveCount: 0,
