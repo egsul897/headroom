@@ -757,3 +757,32 @@ describe("generalization: rule 180 — maintenance ratio provisions", () => {
     ).toBeNull();
   });
 });
+
+describe("rule 187: no junk Except permission from a bare chapeau colon", () => {
+  it("a chapeau ending in 'except:' (clauses in child items) mints no permission", () => {
+    const a = analyze(
+      "Section 6.01 Indebtedness. No Loan Party will, nor will it permit any Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:",
+      "Indebtedness",
+      ["RESTRICTED_PAYMENTS"],
+    );
+    expect(a.permissions).toEqual([]);
+  });
+
+  it("'except' with substantive remainder still mints the Except permission", () => {
+    const a = analyze(
+      "Section 7.02 Negative Pledge. The Borrower shall not create any Lien except as set forth in Section 5.2.",
+      "Negative Pledge",
+      ["RESTRICTED_PAYMENTS"],
+    );
+    expect(a.permissions).toEqual(["Except: as set forth in Section 5.2."]);
+  });
+
+  it("'except' with a bare pointer remainder mints no permission", () => {
+    const a = analyze(
+      "Section 6.01 Indebtedness. No Loan Party will incur any Indebtedness, except (a).",
+      "Indebtedness",
+      ["RESTRICTED_PAYMENTS"],
+    );
+    expect(a.permissions).toEqual([]);
+  });
+});

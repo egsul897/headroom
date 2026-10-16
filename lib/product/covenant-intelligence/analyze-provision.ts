@@ -322,8 +322,14 @@ function extractPermissions(
       perms.push(clause);
     }
     if (perms.length === 0 && /\bexcept\b/i.test(excerpt)) {
-      const after = excerpt.split(/\bexcept\b/i)[1];
-      if (after) perms.push(clip(`Except: ${after}`, 280));
+      // Rule 187: a chapeau excerpt often ENDS with "except:" — the
+      // letter clauses live in child items, not in this excerpt.
+      // Minting "Except: :" from the bare colon (or "Except: (a)"
+      // from a bare pointer) is junk, not a permission. Require
+      // substantive words after the "except" before minting.
+      const after = excerpt.split(/\bexcept\b/i)[1] ?? "";
+      const rest = after.replace(/^[\s:;,.\u2014\u2013-]+/, "").trim();
+      if (rest && /[A-Za-z]{3,}/.test(rest)) perms.push(clip(`Except: ${rest}`, 280));
     }
   }
   return perms.slice(0, 12);
