@@ -11,6 +11,7 @@ import { resolveCanonicalFinancialIdentity } from "@/lib/financial-identity";
 import { loadApprovedSnapshotsFromPrisma, loadLedgerUsagesFromPrisma } from "@/lib/contract-model/north-star-bridge";
 import { listCustomerDocumentIntelligence } from "./load";
 import { loadPhase3TrustedRulebookStatus } from "./phase3-trusted-rulebook";
+import { financialSnapshotBlocker } from "./financial-snapshot-blocker";
 
 export type CapacityReadinessStatus =
   | "EXECUTABLE_PATH_AVAILABLE"
@@ -39,6 +40,13 @@ export interface CapacityReadiness {
   unverifiedPermissionCount: number;
   provisionCount: number;
   hasFinancialSnapshot: boolean;
+  /**
+   * Raw financial-identity resolution: UNIQUE | AMBIGUOUS |
+   * UNKNOWN. AMBIGUOUS means conflicting rows exist — not a
+   * missing snapshot. Consumers must not read hasFinancialSnapshot
+   * === false as "no snapshot" without checking this.
+   */
+  financialSnapshotStatus: "UNIQUE" | "AMBIGUOUS" | "UNKNOWN";
   /** NS-4 APPROVED ContractInput snapshots (0 when table empty / unavailable). */
   ns4ApprovedSnapshotCount: number;
   /** North-Star Phase 4B APPROVED snapshot count (via bridge; may equal ns4 when wired). */
@@ -104,9 +112,11 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     );
   }
   if (!hasFinancialSnapshot) {
-    blockers.push(
-      "No dated FinancialState on the legacy path — ratio/grower tests and engine capacity cannot be evaluated (Phase 4B APPROVED snapshots are a separate North-Star store).",
-    );
+    // AMBIGUOUS is not "missing": conflicting rows exist and need
+    // resolving to one canonical snapshot. financialSnapshotBlocker
+    // names the real defect (rule 35).
+    const snapshotBlocker = financialSnapshotBlocker(financialResolution);
+    if (snapshotBlocker) blockers.push(snapshotBlocker);
   }
   // Missing Phase 3 VERIFIED units / NS-4 APPROVED snapshots are reported in the
   // headline note, not as capacity blockers — the legacy executable path may still run honestly.
@@ -150,7 +160,9 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     : status === "DISCOVERY_ONLY"
       ? `AI covenant interpretations are available for counsel review. Numerical capacity stays blank until an executable rulebook and financial inputs exist.${phase3Note}`
       : status === "NO_FINANCIAL_SNAPSHOT"
-        ? `AI interpretations are available; financial snapshot missing — numerical capacity cannot be evaluated without inventing inputs.${phase3Note}`
+        ? financialResolution.status === "AMBIGUOUS"
+          ? `AI interpretations are available; ${financialResolution.matchCount} conflicting FinancialStates in the latest cohort — resolve to a single canonical snapshot before capacity can be evaluated; Headroom will not pick one.${phase3Note}`
+          : `AI interpretations are available; financial snapshot missing — numerical capacity cannot be evaluated without inventing inputs.${phase3Note}`
         : phase3TrustedUnitCount > 0
           ? `Phase 3 trusted semantic units on file (${phase3TrustedUnitCount} VERIFIED) without an executable Permission/financial path yet — not package CERTIFIED · not Phase 4E capacity.`
           : "Upload financing documents and financials to begin. Headroom will not invent headroom figures.";
@@ -169,6 +181,7 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     unverifiedPermissionCount,
     provisionCount,
     hasFinancialSnapshot,
+    financialSnapshotStatus: financialResolution.status,
     ns4ApprovedSnapshotCount,
     approvedNorthStarSnapshotCount,
     contractLedgerActiveCount,
