@@ -607,6 +607,9 @@ model FeedQueueItem {
   payload     Json
   status      FeedQueueStatus @default(PENDING)
   resolvedAt  DateTime?
+  // Rule 141: who approved/dismissed this item. Nullable
+  // because historical resolutions predate attribution.
+  resolvedBy  String?
 
   createdAt DateTime @default(now())
 

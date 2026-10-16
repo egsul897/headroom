@@ -78,8 +78,13 @@ function completeSnapshotUpdate(payload: FeedQueueSnapshotPayload): { ok: true; 
   };
 }
 
-export async function approveFeedItem(companyId: string, id: string) {
+export async function approveFeedItem(companyId: string, id: string, formData: FormData) {
   await requireTenantAction(companyId);
+  // Rule 141: approving a queued item writes capacity-affecting
+  // data (snapshot or ledger entry) — the approver must be named,
+  // never defaulted. The resolution records who decided.
+  const resolvedBy = String(formData.get("resolvedBy") || "").trim();
+  if (!resolvedBy) throw new Error("resolvedBy (your name/email) is required");
   const item = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id } });
   if (item.status !== "PENDING") throw new Error(`Feed item ${id} is already ${item.status.toLowerCase()}`);
   if (item.companyId !== companyId) throw new Error(`Feed item ${id} does not belong to this company`);
@@ -162,15 +167,19 @@ export async function approveFeedItem(companyId: string, id: string) {
     throw new Error(`Unknown feed queue kind: ${item.kind}`);
   }
 
-  await prisma.feedQueueItem.update({ where: { id }, data: { status: "APPLIED", resolvedAt: new Date() } });
+  await prisma.feedQueueItem.update({ where: { id }, data: { status: "APPLIED", resolvedAt: new Date(), resolvedBy } });
   revalidatePath(`/${companyId}`, "layout");
 }
 
-export async function dismissFeedItem(companyId: string, id: string) {
+export async function dismissFeedItem(companyId: string, id: string, formData: FormData) {
   await requireTenantAction(companyId);
+  // Rule 141: same attribution requirement as approval — a
+  // dismissal is a decision on a queued item.
+  const resolvedBy = String(formData.get("resolvedBy") || "").trim();
+  if (!resolvedBy) throw new Error("resolvedBy (your name/email) is required");
   const item = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id } });
   if (item.companyId !== companyId) throw new Error(`Feed item ${id} does not belong to this company`);
   if (item.status !== "PENDING") throw new Error(`Feed item ${id} is already ${item.status.toLowerCase()}`);
-  await prisma.feedQueueItem.update({ where: { id }, data: { status: "DISMISSED", resolvedAt: new Date() } });
+  await prisma.feedQueueItem.update({ where: { id }, data: { status: "DISMISSED", resolvedAt: new Date(), resolvedBy } });
   revalidatePath(`/${companyId}`, "layout");
 }
