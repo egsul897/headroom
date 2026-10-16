@@ -15,7 +15,7 @@ import { buildCapacityFormulas, type SharedCapGroup } from "./capacity-formulas"
 import { detectSharedCapGroup } from "./shared-cap";
 import { parseMaintenanceRatio } from "./maintenance-ratio";
 import { buildRpWaterfall } from "./rp-waterfall";
-import { grantTypesForItem, isResidualLienBasket } from "./grant-types";
+import { grantTypesForItem, isResidualLienBasket, resolveDefinedTermCap } from "./grant-types";
 import { permissionCode, permissionCodePrefix } from "./permission-code";
 
 export type CompileStatus =
@@ -238,6 +238,24 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
       amountKind: "FIXED",
       measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
       notes: ["Compiled fixed-dollar basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  // Rule 197: the clause caps by a defined term whose definition is
+  // a bare dollar amount (Strata 6.01(k): "not exceeding the
+  // Threshold Amount" + "Threshold Amount means $ 750,000.").
+  // Resolve it to a FLAT_AMOUNT. A formula/conditional
+  // definition does not resolve — fail closed below.
+  const definedCap = resolveDefinedTermCap(item);
+  if (definedCap != null) {
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: definedCap,
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled fixed-dollar basket from a defined-term cap resolved against the document's definitions"],
       modelingStatus: "MODELED",
       missingFields: [],
     };

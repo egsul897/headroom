@@ -3,6 +3,7 @@
  * Kept free of prisma imports so it is unit-testable in isolation.
  */
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
+import { parseMoneyMillions } from "./money";
 
 export type CounselGrantType = "DEBT_INCURRENCE" | "LIEN" | "RESTRICTED_PAYMENT" | "INVESTMENT";
 
@@ -208,6 +209,42 @@ function isDefaultTrigger(hay: string): boolean {
 export function isResidualLienBasket(item: { plainEnglish?: string; operativeLanguageExcerpt?: string | null }): boolean {
   const text = `${item.plainEnglish ?? ""} ${item.operativeLanguageExcerpt ?? ""}`;
   return /\bother\s+Liens\b/i.test(text);
+}
+
+/**
+ * Rule 197 (audit-driven): resolve a cap stated as a defined term.
+ * Strata 6.01(k) caps "other unsecured Indebtedness" at "the
+ * Threshold Amount" — no dollar figure in the clause, so the
+ * compiler minted INCOMPLETE, even though the document defines
+ * "Threshold Amount" as $750,000. When the clause's operative
+ * excerpt caps by a defined term AND the item carries that term's
+ * definition AND the definition is a BARE dollar amount
+ * ("means $ 750,000."), return the amount in $M. Any other
+ * definition shape — formula ("the greater of $X or Y%"),
+ * conditional ("$X, as adjusted"), percentage — fails closed
+ * (null). The first "means" in the definition excerpt is the
+ * definition's own; a later definition's amount in the same
+ * excerpt is never borrowed.
+ */
+export function resolveDefinedTermCap(item: {
+  operativeLanguageExcerpt?: string | null;
+  applicableDefinitions?: Array<{ term: string; excerpt: string }> | null;
+}): number | null {
+  const excerpt = item.operativeLanguageExcerpt ?? "";
+  const capMatch = excerpt.match(/\bnot\s+(?:to\s+)?exceed(?:ing)?\s+(?:the\s+)?([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+)+)/);
+  if (!capMatch) return null;
+  const term = capMatch[1]!.replace(/\s+/g, " ").trim().toLowerCase();
+  const def = (item.applicableDefinitions ?? []).find(
+    (d) => d.term.replace(/\s+/g, " ").trim().toLowerCase() === term,
+  );
+  if (!def) return null;
+  const meansIdx = def.excerpt.search(/\bmeans\b/i);
+  if (meansIdx < 0) return null;
+  const afterMeans = def.excerpt.slice(meansIdx);
+  const amountMatch = afterMeans.match(/^\s*means\s*\$\s*([\d,]+(?:\.\d{2})?)\s*\./i);
+  if (!amountMatch) return null;
+  const money = parseMoneyMillions(`$${amountMatch[1]}`);
+  return money;
 }
 
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {

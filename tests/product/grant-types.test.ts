@@ -153,3 +153,55 @@ describe("rule 196: residual lien baskets", () => {
     expect(isResidualLienBasket({ plainEnglish: "any Lien other than Permitted Liens asserted against Collateral." })).toBe(false);
   });
 });
+
+/**
+ * Rule 197: a cap stated as a defined term resolves when the
+ * definition is a bare dollar amount; anything else fails closed.
+ */
+describe("rule 197: defined-term cap resolution", () => {
+  it("resolves 'not exceeding the Threshold Amount' + 'means $ 750,000.' to 0.75", async () => {
+    const { resolveDefinedTermCap } = await import("../../lib/product/customer-intelligence/grant-types");
+    expect(
+      resolveDefinedTermCap({
+        operativeLanguageExcerpt: "(k) other unsecured Indebtedness in an aggregate principal amount not exceeding the Threshold Amount at any time outstanding.",
+        applicableDefinitions: [{ term: "Threshold Amount", excerpt: "\u201c Threshold Amount \u201d means $ 750,000. \u201c Total Assets \u201d means, as of the date of any determination thereof, total assets." }],
+      }),
+    ).toBe(0.75);
+  });
+  it("a formula definition (greater of $X or Y%) does not resolve", async () => {
+    const { resolveDefinedTermCap } = await import("../../lib/product/customer-intelligence/grant-types");
+    expect(
+      resolveDefinedTermCap({
+        operativeLanguageExcerpt: "(k) Indebtedness not exceeding the Threshold Amount.",
+        applicableDefinitions: [{ term: "Threshold Amount", excerpt: "\u201cThreshold Amount\u201d means the greater of $750,000 or 10% of Consolidated Net Worth." }],
+      }),
+    ).toBeNull();
+  });
+  it("a conditional definition ($X, as adjusted) does not resolve", async () => {
+    const { resolveDefinedTermCap } = await import("../../lib/product/customer-intelligence/grant-types");
+    expect(
+      resolveDefinedTermCap({
+        operativeLanguageExcerpt: "(k) Indebtedness not exceeding the Threshold Amount.",
+        applicableDefinitions: [{ term: "Threshold Amount", excerpt: "\u201cThreshold Amount\u201d means $750,000, as adjusted from time to time." }],
+      }),
+    ).toBeNull();
+  });
+  it("a later definition's amount in the same excerpt is never borrowed", async () => {
+    const { resolveDefinedTermCap } = await import("../../lib/product/customer-intelligence/grant-types");
+    expect(
+      resolveDefinedTermCap({
+        operativeLanguageExcerpt: "(k) Indebtedness not exceeding the Threshold Amount.",
+        applicableDefinitions: [{ term: "Threshold Amount", excerpt: "\u201cThreshold Amount\u201d means the greater of $100 or 10% of X. \u201cOther Term\u201d means $200." }],
+      }),
+    ).toBeNull();
+  });
+  it("a term with a newline in the stored definition still matches", async () => {
+    const { resolveDefinedTermCap } = await import("../../lib/product/customer-intelligence/grant-types");
+    expect(
+      resolveDefinedTermCap({
+        operativeLanguageExcerpt: "(k) Indebtedness not exceeding the Threshold Amount.",
+        applicableDefinitions: [{ term: "Threshold\nAmount", excerpt: "\u201c Threshold Amount \u201d means $ 750,000." }],
+      }),
+    ).toBe(0.75);
+  });
+});
