@@ -867,6 +867,7 @@ export async function createFacilityWithMapping(input: CreateFacilityInput): Pro
 // ---------------------------------------------------------------------------
 
 export interface CertifyExternalInputParams {
+  companyId: string;
   externalInputRecordId: string;
   value: number;
   asOfDate: Date;
@@ -874,7 +875,15 @@ export interface CertifyExternalInputParams {
 }
 
 export async function certifyExternalInputRecord(params: CertifyExternalInputParams) {
+  // Rule 130: this is the ONLY place an ExternalInputRecord becomes
+  // VERIFIED — it previously loaded the record by id with no
+  // company check, so a future caller could certify another
+  // company's placeholder. The record must belong to the acting
+  // company or the certification refuses.
   const record = await prisma.externalInputRecord.findUniqueOrThrow({ where: { id: params.externalInputRecordId } });
+  if (record.companyId !== params.companyId) {
+    throw new Error(`ExternalInputRecord ${params.externalInputRecordId} does not belong to this company — certification refused.`);
+  }
   return prisma.externalInputRecord.update({
     where: { id: record.id },
     data: {

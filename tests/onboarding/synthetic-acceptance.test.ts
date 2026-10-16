@@ -284,7 +284,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
     expect(placeholder.value).toBeNull();
     expect(placeholder.reviewStatus).toBe("UNVERIFIED");
 
-    const certified = await certifyExternalInputRecord({ externalInputRecordId: placeholder.id, value: 312.5, asOfDate: new Date("2026-06-30"), sourceRef: "Q2 2026 Compliance Certificate" });
+    const certified = await certifyExternalInputRecord({ companyId: COMPANY_ID, externalInputRecordId: placeholder.id, value: 312.5, asOfDate: new Date("2026-06-30"), sourceRef: "Q2 2026 Compliance Certificate" });
     expect(Number(certified.value)).toBe(312.5);
     expect(certified.reviewStatus).toBe("VERIFIED");
   });
