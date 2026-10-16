@@ -109,6 +109,7 @@ export default async function PositionPage({
               <Chip tone="tight">BLOCKER</Chip>
             </div>
           ))}
+          {blockers.length > 8 && <div className="row-note">(+{blockers.length - 8} more blockers — see full challenge report)</div>}
         </Card>
 
         <Card>
@@ -119,6 +120,7 @@ export default async function PositionPage({
               <div className="row-note">{f.statement}</div>
             </div>
           ))}
+          {facts.length > 6 && <div className="row-note">(+{facts.length - 6} more facts)</div>}
         </Card>
       </div>
     );
@@ -431,6 +433,9 @@ export default async function PositionPage({
             • Missing: {m}
           </div>
         ))}
+        {ns4Financial.missingInputs.length > 4 && (
+          <div className="row-note">(+{ns4Financial.missingInputs.length - 4} more missing inputs)</div>
+        )}
         <div className="row-note" style={{ marginTop: 8 }}>
           Reusable for: {ns4Financial.reusableFor.join(", ")}
         </div>
@@ -548,6 +553,11 @@ export default async function PositionPage({
             · {note}
           </div>
         ))}
+        {view.sides.flatMap((s) => s.methodNotes).length > 6 && (
+          <div className="row-note">
+            (+{view.sides.flatMap((s) => s.methodNotes).length - 6} more method notes)
+          </div>
+        )}
       </Card>
 
       {authenticSlice ? (
@@ -653,7 +663,8 @@ export default async function PositionPage({
                 </div>
                 <div className="row-note">
                   families: {c.familySignals.join(", ") || "—"} · thresholds:{" "}
-                  {c.thresholdSignals.slice(0, 3).join(", ") || "—"} · OA:{" "}
+                  {c.thresholdSignals.slice(0, 3).join(", ") || "—"}
+                  {c.thresholdSignals.length > 3 && ` (+${c.thresholdSignals.length - 3} more)`} · OA:{" "}
                   {c.operativeAuthorityClassification ?? "—"} · governing:{" "}
                   {c.governingDocumentId ?? "null"}
                 </div>
