@@ -6,6 +6,7 @@
 import type { KnowledgeSourceRecord } from "../../knowledge-factory/types";
 import type { AmendmentPackageView } from "./amendment-package";
 import type { AmendmentCompareRow, AmendmentCompareView } from "./amendment-compare";
+import { isRestatementTitle } from "./restatement-title";
 
 export type OperativeResolutionStatus =
   | AmendmentPackageView["operativeResolution"]
@@ -156,7 +157,12 @@ export function resolveOperativePrecedence(params: {
   const restatementSources = params.sources.filter(
     (s) =>
       s.documentClass === "RESTATEMENT" ||
-      /\bamended and restated\b|\brestate/i.test(s.documentTitle || ""),
+      // Rule 52: shared isRestatementTitle — an "Amendment ...
+      // to [the Amended and Restated ...]" is an amendment to a
+      // restated base, not itself a restatement. The old bare
+      // title test treated such an amendment as a full
+      // restatement superseding the entire base agreement.
+      isRestatementTitle(s.documentTitle || ""),
   );
   const nonRestatementBases = ap.baseCandidates.filter((b) => b.documentClass !== "RESTATEMENT");
 
@@ -290,8 +296,7 @@ export function resolveOperativePrecedence(params: {
   const restatement = params.sources.find(
     (s) =>
       s.sourceId !== baseId &&
-      (s.documentClass === "RESTATEMENT" ||
-        /\bamended and restated\b|\brestate/i.test(s.documentTitle || "")),
+      (s.documentClass === "RESTATEMENT" || isRestatementTitle(s.documentTitle || "")),
   );
   if (restatement) {
     const restatementFamily = instrumentFamily(restatement.documentTitle, restatement.documentClass);

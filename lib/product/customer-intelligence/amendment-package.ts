@@ -4,6 +4,7 @@
  */
 
 import type { KnowledgeRelationshipRecord, KnowledgeSourceRecord } from "../../knowledge-factory/types";
+import { isRestatementTitle } from "./restatement-title";
 
 export interface ProvisionChangeSignal {
   kind: "AMENDED" | "REPLACED" | "DELETED" | "ADDED" | "UNRESOLVED";
@@ -66,13 +67,10 @@ function inferChangeSignals(
   const amendments = sources.filter((s) => AMENDMENT_CLASSES.has(s.documentClass));
   for (const a of amendments) {
     const title = (a.documentTitle || a.exhibitFilename || "").toLowerCase();
-    // An "Amendment ... to [the Amended and Restated ...]" is an
-    // AMENDMENT to a restated base — not itself a restatement.
-    // The old /\brestate|\bamended and restated\b/ test matched
-    // the BASE's description in the title and emitted REPLACED.
-    // "Amendment and Restatement" (no "to") IS a restatement.
-    const amendmentToSomething = /^\s*(?:\w+\s+)?amendment\s+(?:no\.?\s*|number\s*|#\s*)?\d|^\s*(?:\w+\s+)?amendment\s+to\b/.test(title);
-    if (!amendmentToSomething && (/\brestate|\bamended and restated\b/.test(title))) {
+    // Rule 52: shared isRestatementTitle — an "Amendment ... to
+    // [the Amended and Restated ...]" is an amendment to a
+    // restated base, not itself a restatement.
+    if (isRestatementTitle(title)) {
       signals.push({
         kind: "REPLACED",
         evidence: `Document title suggests restatement/replacement: ${a.documentTitle}`,
