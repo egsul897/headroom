@@ -14,6 +14,7 @@ import { parseMoneyMillions, parsePctOf, parseRatio } from "./money";
 import { buildCapacityFormulas } from "./capacity-formulas";
 import { buildRpWaterfall } from "./rp-waterfall";
 import { grantTypesForItem } from "./grant-types";
+import { permissionCode, permissionCodePrefix } from "./permission-code";
 
 export type CompileStatus =
   | "COMPILED"
@@ -194,11 +195,6 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   };
 }
 
-function permissionCode(sourceId: string, sectionRef: string, grantType: string): string {
-  const safe = `${sourceId}:${sectionRef}:${grantType}`.replace(/[^a-zA-Z0-9:_.-]/g, "_").slice(0, 180);
-  return `counsel:${safe}`;
-}
-
 /**
  * After counsel ACCEPT/EDIT, attempt to compile executable Permission(s).
  * REJECT supersedes prior counsel-compiled permissions for that section.
@@ -244,7 +240,10 @@ export async function compileAcceptedInterpretation(params: {
   }
 
   if (params.decision === "REJECTED") {
-    const prefix = `counsel:${params.sourceId}:${params.sectionRef}:`;
+    // Rule 59: the prefix MUST use the same sanitization as
+    // permissionCode — a raw prefix never matches codes minted
+    // from section refs with parens (e.g. "6.01(a)").
+    const prefix = permissionCodePrefix(params.sourceId, params.sectionRef);
     const existing = await prisma.permission.findMany({
       where: { companyId: params.companyId, code: { startsWith: prefix } },
     });
