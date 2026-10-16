@@ -97,10 +97,23 @@ export async function appendHistoricalUsageAction(
   },
 ) {
   await requireTenantAction(companyId);
+  // Rule 106: never default a missing instrument key to a
+  // fabricated generic ("company") or accept a missing date —
+  // a manual ledger entry must carry the user's real values.
+  const missing = [
+    !form.usageId && "usageId",
+    !form.amount && "amount",
+    !form.ruleId && "ruleId",
+    !form.effectiveAsOf && "effectiveAsOf",
+    !form.instrumentKey && "instrumentKey",
+  ].filter(Boolean);
+  if (missing.length > 0) {
+    return { ok: false, issues: [`Manual ledger entry refused — missing: ${missing.join(", ")}`] };
+  }
   const result = await appendContractLedgerUsage({
     companyId,
     usageId: form.usageId,
-    instrumentKey: form.instrumentKey || "company",
+    instrumentKey: form.instrumentKey,
     effectiveAsOf: form.effectiveAsOf,
     amount: form.amount,
     currency: form.currency || "USD",

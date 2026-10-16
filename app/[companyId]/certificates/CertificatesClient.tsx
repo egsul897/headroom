@@ -40,8 +40,13 @@ export function CertificatesClient({
   const [pending, start] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
   const [reviewedBy, setReviewedBy] = useState("workspace-counsel");
-  const [usageAmount, setUsageAmount] = useState("10000000");
-  const [usageRule, setUsageRule] = useState("rule-general-investments-basket");
+  const [usageAmount, setUsageAmount] = useState("");
+  const [usageRule, setUsageRule] = useState("");
+  // Rule 106: instrument key + effective date were hardcoded
+  // ("synthetic-term-loan-a" / 2026-05-01) — invented ledger
+  // data. They are now required inputs with no default.
+  const [usageInstrumentKey, setUsageInstrumentKey] = useState("");
+  const [usageEffectiveAsOf, setUsageEffectiveAsOf] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [certificateText, setCertificateText] = useState("");
   const [statementText, setStatementText] = useState("");
@@ -206,20 +211,38 @@ export function CertificatesClient({
             placeholder="Rule id"
             style={{ maxWidth: 280 }}
           />
+          <input
+            className="input"
+            value={usageInstrumentKey}
+            onChange={(e) => setUsageInstrumentKey(e.target.value)}
+            placeholder="Instrument key (e.g. term-loan-b)"
+            style={{ maxWidth: 280 }}
+          />
+          <input
+            className="input"
+            type="date"
+            value={usageEffectiveAsOf}
+            onChange={(e) => setUsageEffectiveAsOf(e.target.value)}
+            style={{ maxWidth: 180 }}
+          />
           <button
             type="button"
             className="button"
             disabled={pending}
             onClick={() =>
               start(async () => {
+                if (!usageAmount || !usageRule || !usageInstrumentKey || !usageEffectiveAsOf) {
+                  setMessage("Enter amount, rule id, instrument key, and effective date — none are defaulted.");
+                  return;
+                }
                 const usageId = `manual-${companyId}-${Date.now()}`;
                 const r = await appendHistoricalUsageAction(companyId, {
                   usageId,
                   amount: usageAmount,
                   currency: "USD",
                   ruleId: usageRule,
-                  effectiveAsOf: "2026-05-01",
-                  instrumentKey: "synthetic-term-loan-a",
+                  effectiveAsOf: usageEffectiveAsOf,
+                  instrumentKey: usageInstrumentKey,
                 });
                 setMessage(r.ok ? `Appended ${usageId}` : `Append failed: ${(r.issues ?? []).join("; ")}`);
                 router.refresh();
