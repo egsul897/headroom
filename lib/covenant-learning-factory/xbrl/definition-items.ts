@@ -45,7 +45,7 @@ const II = ["InvestmentIncomeInterest", "InterestIncomeOther"];
 /** Enumerators "(a)", "(ii)", "(B)", "(3)" that start a line item (not "clause (k)" / "Section 7.01(b)" references). */
 const ENUM = /\((?:[ivxl]{1,5}|[a-z]{1,2}|[A-Z]{1,2}|\d{1,2})\)(?=\s)/g;
 
-function segments(body: string): Array<{ label: string; text: string; lead: string }> {
+export function segments(body: string): Array<{ label: string; text: string; lead: string }> {
   const out: Array<{ label: string; text: string; lead: string }> = [];
   const hits: Array<{ at: number; label: string }> = [];
   for (const m of body.matchAll(ENUM)) {
@@ -60,7 +60,7 @@ function segments(body: string): Array<{ label: string; text: string; lead: stri
 }
 
 /** Group-level sign markers outside parentheses in a segment, in order. */
-function markers(text: string): ItemSign[] {
+export function markers(text: string): ItemSign[] {
   let depth = 0, flat = "";
   for (const ch of text) { if (ch === "(") depth++; else if (ch === ")") depth = Math.max(0, depth - 1); else if (depth === 0) flat += ch; }
   const out: ItemSign[] = [];
@@ -72,15 +72,15 @@ function markers(text: string): ItemSign[] {
 }
 
 const GAIN_LIKE = /\b(?:gains?|income|credits?|benefits?|refunds?|reversals?)\b/i;
-const COST_LIKE = /\b(?:expenses?|loss(?:es)?|charges?|costs?|fees?|deductions?|write-?(?:offs?|downs?)|impairments?|amortization|depreciation|depletion|taxes|tax\s+expense|provision|compensation|savings|synerg\w*|premiums?|commissions?|interest)\b/i;
-const TWO_SIDED = /\bpro\s+forma\b(?![^.;]{0,80}\b(?:cost\s+savings|synerg|run[- ]rate))|\b(?:acquired|disposed|acquisition|disposition)\b[^.;]{0,120}\b(?:as\s+if|beginning\s+of)\b|\bgains?\s+(?:or|and|\/)\s+loss|\bloss(?:es)?\s+(?:or|and|\/)\s+gains?|\bincome\s+\(?(?:or|and)\s+loss|\(loss\)|\bforeign\s+(?:currency|exchange)|\bmark[- ]to[- ]market|\bhedg/i;
-const CAPPED = /\bnot\s+(?:to\s+)?exceed|\bshall\s+not\s+exceed|\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not|up\s+to)|\bcapped\b|\bmaximum\s+of\b/i;
-const QUALIFIED = /\bother\s+than\b|\bexcluding\b|\bexcept\b|\bsolely\b|\bonly\s+to\s+the\s+extent\b|\bcash\s+portion|\bnet\s+of\b/i;
-const HEADER = /^(?:,|\s)*(?:(?:the\s+)?following(?:\s+(?:items|amounts))?|without\s+duplication|\(?\s*(?:and\s+)?(?:excluding|including)\s+(?:the\s+effect\s+of)?\s*\)?|to\s+the\s+extent|the\s+sum\s+of|in\s+each\s+case|plus|minus|less|and|for\s+such\s+period|of\s+such\s+Person|:|,|\s)+/i;
+export const COST_LIKE = /\b(?:expenses?|loss(?:es)?|charges?|costs?|fees?|deductions?|write-?(?:offs?|downs?)|impairments?|amortization|depreciation|depletion|taxes|tax\s+expense|provision|compensation|savings|synerg\w*|premiums?|commissions?|interest)\b/i;
+export const TWO_SIDED = /\bpro\s+forma\b(?![^.;]{0,80}\b(?:cost\s+savings|synerg|run[- ]rate))|\b(?:acquired|disposed|acquisition|disposition)\b[^.;]{0,120}\b(?:as\s+if|beginning\s+of)\b|\bgains?\s+(?:or|and|\/)\s+loss|\bloss(?:es)?\s+(?:or|and|\/)\s+gains?|\bincome\s+\(?(?:or|and)\s+loss|\(loss\)|\bforeign\s+(?:currency|exchange)|\bmark[- ]to[- ]market|\bhedg/i;
+export const CAPPED = /\bnot\s+(?:to\s+)?exceed|\bshall\s+not\s+exceed|\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not|up\s+to)|\bcapped\b|\bmaximum\s+of\b/i;
+export const QUALIFIED = /\bother\s+than\b|\bexcluding\b|\bexcept\b|\bsolely\b|\bonly\s+to\s+the\s+extent\b|\bcash\s+portion|\bnet\s+of\b/i;
+export const HEADER = /^(?:,|\s)*(?:(?:the\s+)?following(?:\s+(?:items|amounts))?|without\s+duplication|\(?\s*(?:and\s+)?(?:excluding|including)\s+(?:the\s+effect\s+of)?\s*\)?|to\s+the\s+extent|the\s+sum\s+of|in\s+each\s+case|plus|minus|less|and|for\s+such\s+period|of\s+such\s+Person|:|,|\s)+/i;
 
-interface MapResult { concepts: Array<{ concept: string; value: bigint }>; residueStop: RegExp[] }
+export interface MapResult { concepts: Array<{ concept: string; value: bigint }>; residueStop: RegExp[] }
 
-function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, depth: number): MapResult | "TWO_SIDED" | null {
+export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, depth: number): MapResult | "TWO_SIDED" | null {
   const r: MapResult = { concepts: [], residueStop: [] };
   const add = (c: { concept: string; value: bigint } | null, re: RegExp) => { if (c) { r.concepts.push(c); r.residueStop.push(re); } };
   if (/\bextraordinary\b/i.test(t) && !/non-?recurring|unusual/i.test(t)) { r.concepts.push({ concept: "extraordinary items (eliminated from US GAAP by ASU 2015-01)", value: 0n }); r.residueStop.push(/extraordinary\s+(?:loss(?:es)?|items?|charges?)(?:\s+in\s+accordance\s+with\s+GAAP)?/gi); }
@@ -123,16 +123,23 @@ function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, depth: nu
 
 const STOP = /\b(?:the|a|an|of|and|or|any|all|such|its|their|in|for|to|on|with|by|from|that|this|each|case|period|amount|amounts|consolidated|person|borrower|parent|company|subsidiaries|subsidiary|group|restricted|required|taken|pursuant|gaap|accordance|recorded|respect|other|non-?cash|expense|expenses|charges?|losses?|attributable|which|was|were|is|be|been|deducted|determining|net|income|calculating|arriving|at|as|so|without|duplication|extent|solely|aggregate)\b/gi;
 
-export function evaluateDefinition(kind: DefinitionKind, term: string, text: string, fin: IssuerFinancials, depth = 0): DefinitionEvaluation {
-  const res = (status: DefinitionEvaluation["status"], reason: string, extra: Partial<DefinitionEvaluation> = {}): DefinitionEvaluation =>
-    ({ kind, term, status, value: null, base: null, items: [], missing: [], reason, periodEnd: fin.anchor ?? null, ...extra });
+/** The definition split into its lead (base) and enumerated line items; items[i] of evaluateDefinition is segs[i + 1]. */
+export function definitionSegments(kind: DefinitionKind, term: string, text: string): Array<{ label: string; text: string; lead: string }> | null {
   const def = findDefinitionText(text, term);
-  if (!def) return res("NEEDS_INPUT", `"${term}" is not defined in the agreement text`);
+  if (!def) return null;
   const body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*,?\s*/i, "").replace(/^(?:for|with\s+respect\s+to)\s+any\s+(?:period|Person)[^,]{0,120},\s*/i, "");
   const segs = segments(body);
   // "(i) EBIT, plus (ii) …": when the lead names no base, the first enumerated item is the base.
   const baseRe = kind === "EBITDA" ? /net\s+income|\bEBIT\b|operating\s+income/i : /interest/i;
   if (!baseRe.test(segs[0]!.text) && segs[1] && baseRe.test(segs[1].text)) { segs[0] = { ...segs[0]!, text: `${segs[0]!.text} ${segs[1].text}` }; segs.splice(1, 1); }
+  return segs;
+}
+
+export function evaluateDefinition(kind: DefinitionKind, term: string, text: string, fin: IssuerFinancials, depth = 0): DefinitionEvaluation {
+  const res = (status: DefinitionEvaluation["status"], reason: string, extra: Partial<DefinitionEvaluation> = {}): DefinitionEvaluation =>
+    ({ kind, term, status, value: null, base: null, items: [], missing: [], reason, periodEnd: fin.anchor ?? null, ...extra });
+  const segs = definitionSegments(kind, term, text);
+  if (!segs) return res("NEEDS_INPUT", `"${term}" is not defined in the agreement text`);
   const lead = segs[0]!.text;
 
   // ---- base ----

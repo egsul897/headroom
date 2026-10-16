@@ -33,6 +33,8 @@ export const ITEM_CONCEPTS = [
   "InterestExpenseDebt", "InterestAndDebtExpense", "IncomeTaxExpenseBenefit", "NetIncomeLoss", "ProfitLoss", "OperatingIncomeLoss",
   "DepreciationDepletionAndAmortization", "DepreciationAndAmortization", "DepreciationAmortizationAndAccretionNet",
   "IncomeLossFromEquityMethodInvestments", "IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions", "GainLossOnDispositionOfAssets", "GainLossOnSaleOfPropertyPlantEquipment", "GainLossOnDispositionOfAssets1",
+  // Common Consolidated EBITDA add-backs with no other home (EBITDA optimizer evidence).
+  "BusinessCombinationAcquisitionRelatedCosts", "BusinessCombinationIntegrationRelatedCosts", "SeveranceCosts1",
 ] as const;
 
 export interface FinancialValue {
