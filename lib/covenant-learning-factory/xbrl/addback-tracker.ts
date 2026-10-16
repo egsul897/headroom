@@ -67,10 +67,12 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
     // A core concept is kept only when the clause itself names that item (a "non-cash charges, including depreciation and
     // amortization" line is evidenced by D&A; "equity interests" is not interest).
     const lineText = l.text.replace(/\b(?:equity|minority|non-?controlling|profits?|ownership|membership|partnership)\s+interests?\b|\binterests\b/gi, " ");
+    // Total interest expense and income tax are never a discretionary add-back's own figure (a fees line "including any
+    // interest expense" covers only part of it): dropped. D&A counts only when named outside parentheticals.
     const coreOk = (concept: string) =>
-      /^Interest/.test(concept) ? /\binterest\b/i.test(lineText) :
-      /^IncomeTax/.test(concept) ? /\btax(?:es)?\b/i.test(lineText) :
-      /^Depreciation/.test(concept) ? /depreciation|amortization|depletion/i.test(lineText) : true;
+      /^Interest/.test(concept) ? false :
+      /^IncomeTax/.test(concept) ? false :
+      /^Depreciation/.test(concept) ? /depreciation|amortization|depletion/i.test(lineText.replace(/\([^)]*\)/g, " ")) : true;
     const sources = l.concepts.filter((c) => !c.concept.startsWith("borrower:") && coreOk(baseConcept(c.concept))).map((c) => {
       const concept = baseConcept(c.concept);
       const cur = factOf(current, concept), pri = factOf(prior, concept);

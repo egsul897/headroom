@@ -208,7 +208,7 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
     // the filed income-tax figure → the line is a one-sided floor.
     const rest = t.replace(/\btax(?:es)?(?:\s+expense)?\s+(?:(?:based\s+on|measured\s+by)\s+(?:income|profits)(?:,?\s+(?:or|and)\s+(?:profits|capital|income))*|imposed\s+on\s+(?:income|profits))/gi, " ")
       .replace(/\b(?:(?:federal|state|local|foreign|provincial|national|U\.?S\.?)(?:,|\s+and|\s+or)?\s+)*income\s+tax(?:es)?(?:\s+(?:expense|provision))?/gi, " ");
-    if (/\btax(?:es)?\b|franchise/i.test(rest)) (r as MapResult & { lowerBound?: boolean }).lowerBound = true;
+    if (/\btax(?:es)?\b|franchise/i.test(rest) || /\b(?:based\s+on|measured\s+by)\b[^;.]{0,40}\bcapital\b/i.test(t)) (r as MapResult & { lowerBound?: boolean }).lowerBound = true;
   }
   if (/\btax(?:es)?\b/i.test(t) && !/tax\s+(?:credits?|benefits?|refunds?)/i.test(t)) add(firstItem(fin, ["IncomeTaxExpenseBenefit"]), /(?:consolidated\s+)?(?:provision\s+for\s+)?(?:(?:federal|state|local|foreign|provincial|national)(?:,|\s+and|\s+or)?\s+)*(?:income\s+)?tax(?:es)?(?:\s+expense)?(?:,?\s+to\s+the\s+extent\s+based\s+on\s+income\s+or\s+profits)?|based\s+on\s+income|profits?/gi);
   const daAll = /depreciation/i.test(t);
