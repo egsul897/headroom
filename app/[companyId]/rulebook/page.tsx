@@ -6,6 +6,7 @@ import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/ruleb
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
+import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import { ReviewerNameField } from "@/components/ReviewerNameField";
 import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { reviewProvisionAction } from "./actions";
@@ -19,12 +20,21 @@ export const dynamic = "force-dynamic";
  */
 export default async function RulebookPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [rulebook, review, capacity, approvals] = await Promise.all([
+  const [rulebook, review, capacity, approvals, intelligence] = await Promise.all([
     loadRulebookReadiness(companyId),
     loadCovenantReviewWorkspace(companyId),
     loadCapacityReadiness(companyId),
     listReviewerApprovals(companyId),
+    listCustomerDocumentIntelligence(companyId).catch(() => []),
   ]);
+  // Rule 121: rule 118's mismatch on the rulebook — these decisions
+  // compile executable Permissions, so the signal must travel with
+  // the interpretation being accepted, not only live on document pages.
+  const mismatchBySourceId = new Map(
+    (intelligence as { sourceId: string; declaredType: string | null; documentClass: string }[])
+      .filter((i) => i.declaredType && i.documentClass && i.documentClass !== i.declaredType)
+      .map((i) => [i.sourceId, `declared ${i.declaredType}, analyzed as ${i.documentClass}`] as const),
+  );
   const decide = reviewProvisionAction.bind(null, companyId);
   const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}`, a]));
 
@@ -48,6 +58,7 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
       assumptions: item.assumptions ?? item.analysis?.assumptions ?? [],
       citation: item.sourceCitation,
       documentTitle: item.documentTitle,
+      typeMismatch: mismatchBySourceId.get(item.sourceId) ?? null,
       decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}`),
     })),
   );
@@ -153,6 +164,7 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                     <Chip tone="idle">AI DRAFT</Chip>
                   )}{" "}
                   {c.posture && <Chip tone="navy">{c.posture}</Chip>}
+                  {c.typeMismatch && <Chip tone="tight">TYPE MISMATCH — {c.typeMismatch}</Chip>}
                 </div>
               </div>
               <div className="row-note">
