@@ -406,7 +406,10 @@ export async function attemptVerifiedSimulate(args: VerifiedSimulateRequest): Pr
     transaction,
     certified,
     pathSelectionError: selection.error,
-    inputBlockers: [],
+    // Rule 83: pass the REAL input blockers. A hardcoded [] here
+    // would let malformed amount/date reach an EXECUTABLE verdict
+    // if the early return above were ever bypassed or refactored.
+    inputBlockers,
   });
 
   return {

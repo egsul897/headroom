@@ -284,6 +284,38 @@ describe("isAffirmativelyExecutable — capacity EXECUTED ≠ permission", () =>
     ).toBe(false);
   });
 
+  it("input blockers prevent EXECUTABLE even when everything else passes (rule 83)", () => {
+    const passing = {
+      verifiedPackage: stubPkg,
+      selectedPathId: "path:rule-a",
+      selectedPath: built.selectedPath,
+      transaction: built.transaction,
+      certified: stubCertified({
+        simulation: {
+          outcome: "EXECUTED",
+          policy: "REQUIRE",
+          packageHash: "h",
+          envelope: {} as never,
+          coverage: {} as never,
+          capacity: {} as never,
+          simulation: {
+            simulationStatus: "SIMULATED",
+            selectedPathResult: "SATISFIED",
+            commitPlan: { committable: true },
+          } as never,
+        },
+      }),
+      pathSelectionError: null,
+    };
+    expect(isAffirmativelyExecutable(passing)).toBe(true);
+    expect(
+      isAffirmativelyExecutable({
+        ...passing,
+        inputBlockers: ["INVALID_AMOUNT_NEGATIVE"],
+      }),
+    ).toBe(false);
+  });
+
   it("outstanding blockers prevent EXECUTABLE", () => {
     expect(
       isAffirmativelyExecutable({
