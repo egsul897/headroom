@@ -28,9 +28,12 @@ export function findDefinitionText(text: string, term: string): string | null {
   const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
   const m = new RegExp(`"\\s*${esc}\\s*"\\s*(?:shall\\s+)?(?:mean|means|shall\\s+have\\s+the\\s+meaning)\\b`, "i").exec(t);
   if (!m) return null;
-  const rest = t.slice(m.index, m.index + 8000);
-  const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(rest.slice(m[0].length));
-  return rest.slice(0, next ? m[0].length + next.index : 3000).trim();
+  // Real Consolidated EBITDA schedules routinely run 8k–25k+ chars of add-backs before the next
+  // defined term. Search the remainder for the next `"Term" means` opener (no 8k/3k cutoffs).
+  const after = t.slice(m.index + m[0].length);
+  const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(after);
+  const end = next ? m[0].length + next.index : Math.min(m[0].length + after.length, 100_000);
+  return t.slice(m.index, m.index + end).trim();
 }
 
 const item = (fin: IssuerFinancials, concept: string): bigint | null => {
