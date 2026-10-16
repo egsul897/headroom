@@ -122,8 +122,8 @@ describe("compile-accepted formula parsing", () => {
     const { evaluateProvision, computeLeverageMetrics } = await import("../../lib/covenant-engine");
     const provision = {
       id: "t", documentId: "d", code: "grower-nw", basketName: "General debt", sectionRef: "6.16",
-      formulaType: "GREATER_OF_FLAT_OR_PCT_NET_WORTH", thresholdValue: 1000, params: { pctNetWorth: 0.1 },
-    } as never;
+      formulaType: "GREATER_OF_FLAT_OR_PCT_NET_WORTH" as const, thresholdValue: 1000, params: { pctNetWorth: 0.1 },
+    };
     const fin = {
       ebitda: 500, cash: 100, interestExpense: 80, cumulativeNetIncome: 400,
       equityProceedsSinceIssue: 0, assumedNewDebtRatePct: 6, totalDebt: 1200, securedDebt: 800,
@@ -132,9 +132,9 @@ describe("compile-accepted formula parsing", () => {
     const evaluated = evaluateProvision(provision, fin, computeLeverageMetrics(fin));
     expect(evaluated.status).toBe("modeled");
     expect(evaluated.capacity).toBe(1500); // max(1000, 0.10*15000)
-    const noNw = evaluateProvision(provision, { ...fin, netWorth: undefined } as never, computeLeverageMetrics(fin));
+    const noNw = evaluateProvision(provision, { ...fin, netWorth: undefined }, computeLeverageMetrics(fin));
     expect(noNw.status).toBe("review_required");
-    const noPct = evaluateProvision({ ...provision, params: {} } as never, fin, computeLeverageMetrics(fin));
+    const noPct = evaluateProvision({ ...provision, params: {} }, fin, computeLeverageMetrics(fin));
     expect(noPct.status).toBe("review_required");
   });
 

@@ -143,6 +143,13 @@ function independentCapacity(
       }
       return { status: "modeled", capacityMillions: Math.max(threshold, pct * fin.totalAssets) };
     }
+    case "GREATER_OF_FLAT_OR_PCT_NET_WORTH": {
+      const pct = p.pctNetWorth ?? 0;
+      if (fin.netWorth == null || !Number.isFinite(fin.netWorth) || fin.netWorth < 0) {
+        return { status: "review_required", capacityMillions: null, reason: "Consolidated Net Worth missing on financial snapshot" };
+      }
+      return { status: "modeled", capacityMillions: Math.max(threshold, pct * fin.netWorth) };
+    }
     case "LEVERAGE_RATIO_ROOM": {
       const basis = p.debtBasis === "secured" ? metrics.netSecured : metrics.netDebt;
       return { status: "modeled", capacityMillions: Math.max(0, threshold * fin.ebitda - basis) };
@@ -184,6 +191,7 @@ function mechanicOf(formulaType: FormulaType, grant: string, code: string): stri
   switch (formulaType) {
     case "GREATER_OF_FLAT_OR_PCT_EBITDA":
     case "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS":
+    case "GREATER_OF_FLAT_OR_PCT_NET_WORTH":
       return "greater_of_grower";
     case "LEVERAGE_RATIO_ROOM":
     case "COVERAGE_RATIO_ROOM":
@@ -379,6 +387,8 @@ function formulaNarrative(p: CovenantProvisionInput): string {
       return `max(${p.thresholdValue}, ${(params.pctEbitda ?? 0) * 100}%×EBITDA) + ${(params.cniSharePct ?? 0) * 100}%×CNI${params.includeEquityProceeds ? " + equity proceeds" : ""}`;
     case "RATIO_GATE":
       return `unlimited if ${params.debtBasis ?? "total"} leverage ≤ ${p.thresholdValue}x, else 0`;
+    case "GREATER_OF_FLAT_OR_PCT_NET_WORTH":
+      return `max(${p.thresholdValue}, ${(params.pctNetWorth ?? 0) * 100}%×Consolidated Net Worth)`;
     default:
       return assertNeverFormulaType(p.formulaType);
   }

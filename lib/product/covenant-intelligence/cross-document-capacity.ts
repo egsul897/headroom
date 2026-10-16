@@ -60,6 +60,7 @@ export interface CrossDocumentNumericalLayer {
     securedDebt: number;
     cash: number;
     totalAssets: number | null;
+    netWorth: number | null;
   };
   pathwayCapacities: PathwayCapacity[];
   documentSummaries: DocumentCapacitySummary[];
