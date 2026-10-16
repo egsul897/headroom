@@ -18,7 +18,8 @@ export type MonitoringAlertKind =
   | "RULEBOOK_NOT_EXECUTABLE"
   | "MISSING_FINANCIALS"
   | "CAPACITY_NOT_DETERMINABLE"
-  | "REVIEW_REQUIRED";
+  | "REVIEW_REQUIRED"
+  | "TYPE_MISMATCH";
 
 export interface MonitoringAlert {
   kind: MonitoringAlertKind;
@@ -30,6 +31,7 @@ export interface MonitoringAlert {
 
 import { staleAnalysisAlerts } from "./stale-analysis-alerts";
 import { stalledAnalysisAlerts } from "./stalled-analysis-alerts";
+import { typeMismatchAlerts } from "./type-mismatch-alerts";
 
 export interface MonitoringFeed {
   companyId: string;
@@ -71,6 +73,7 @@ export async function loadMonitoringFeed(companyId: string): Promise<MonitoringF
 
   alerts.push(...staleAnalysisAlerts(docs));
   alerts.push(...stalledAnalysisAlerts(docs));
+  alerts.push(...typeMismatchAlerts(docs));
 
   if (amendment?.operativeResolution === "UNRESOLVED_PRECEDENCE") {
     alerts.push({
