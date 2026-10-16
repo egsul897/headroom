@@ -13,6 +13,7 @@ import {
   type EnumeratedCertifiedPath,
 } from "@/lib/product/north-star-workflow/verified-path-enumeration";
 import { selectEnumeratedPath } from "./path-selection";
+import { buildConsumeTransaction } from "./consume-transaction";
 import type {
   HypotheticalTransaction,
   SelectedPath,
@@ -133,9 +134,8 @@ export function validateVerifiedSimulateInputs(args: {
   };
 }
 
-function moneyCapNode(ruleId: string): string {
-  return `capacity:rule:${ruleId}`;
-}
+/** Consume-transaction builder lives in a prisma-free module so it is unit-testable. */
+export { buildConsumeTransaction };
 
 /**
  * Affirmative EXECUTABLE criteria. Capacity evaluation EXECUTED is necessary
@@ -168,69 +168,6 @@ export function isAffirmativelyExecutable(args: {
   // REVIEW_REQUIRED / INSUFFICIENT_CAPACITY / NOT_SATISFIED are never EXECUTABLE.
   if (sim.selectedPathResult !== "SATISFIED") return false;
   return true;
-}
-
-/**
- * Build CONSUME_CAPACITY hypothetical for a single selected rule path.
- * Debt repayment uses RESTORE_CAPACITY only when an attributed usageId is supplied.
- */
-export function buildConsumeTransaction(args: {
-  companyId: string;
-  instrumentKey: string;
-  evaluationDate: string;
-  /** Whole USD dollars as decimal string (Phase 4A MONEY). */
-  amountDollars: string;
-  ruleId: string;
-  label: string;
-  /** When set, emit RESTORE_CAPACITY (debt repayment) instead of CONSUME. */
-  restoreUsageId?: string | null;
-  /** Optional stable transaction identity for replay; defaults to derived id. */
-  transactionId?: string;
-}): { transaction: HypotheticalTransaction; selectedPath: SelectedPath } {
-  const nodeId = moneyCapNode(args.ruleId);
-  const amount = args.amountDollars;
-  const effects = args.restoreUsageId
-    ? [
-        {
-          effectId: "e-restore-1",
-          kind: "RESTORE_CAPACITY" as const,
-          usageId: args.restoreUsageId,
-          reason: "Debt repayment / capacity restore (caller-supplied usage)",
-        },
-      ]
-    : [
-        {
-          effectId: "e-consume-1",
-          kind: "CONSUME_CAPACITY" as const,
-          capacityNodeId: nodeId,
-          amount: { type: "MONEY" as const, amount, currency: "USD" },
-        },
-      ];
-  const transactionId =
-    args.transactionId ??
-    `ask-sim-${args.companyId}-${args.evaluationDate}-${args.ruleId}-${amount}`.slice(0, 120);
-  const transaction: HypotheticalTransaction = {
-    transactionId,
-    companyId: args.companyId,
-    instrumentKey: args.instrumentKey,
-    effectiveAsOf: args.evaluationDate,
-    category: null,
-    label: args.label,
-    intendedAmount: { type: "MONEY", amount, currency: "USD" },
-    effects,
-    provenance: {
-      source: "unified-position certified-simulate-bridge",
-      sourceVersion: "1",
-      approvalRef: null,
-    },
-  };
-  const selectedPath: SelectedPath = {
-    capacityNodeIds: [nodeId],
-    ruleIds: [args.ruleId],
-    sharedCapacityIds: [],
-    reclassificationElectionIds: [],
-  };
-  return { transaction, selectedPath };
 }
 
 /** Compact product-facing summary for Simulate / Ask UI. */
