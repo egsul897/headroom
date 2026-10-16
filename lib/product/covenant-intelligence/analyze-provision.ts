@@ -228,7 +228,7 @@ function extractBaskets(excerpt: string): string[] {
       /greater of\s*\(?(?:[a-z0-9]{1,3}\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:[a-z0-9]{1,3}\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
     ),
   ];
-  for (const m of greaterOf.slice(0, 8)) {
+  for (const m of greaterOf.slice(0, 16)) {
     // Preserve the fixed limb's unit: "greater of (x) $150.0 million" is a
     // $150,000,000 limb, not a $150.0 limb. Dropping "million" understated
     // the basket a million-fold in the live Quila output.
@@ -238,14 +238,14 @@ function extractBaskets(excerpt: string): string[] {
   // Preserve the unit on every dollar amount: "$150.0 million" stays
   // "$150.0 million", never bare "$150.0".
   const amounts = [...excerpt.matchAll(/\$\s?[\d,]+(?:\.\d+)?\s*(million|billion|thousand)?/gi)];
-  for (const m of amounts.slice(0, 10)) {
+  for (const m of amounts.slice(0, 40)) {
     const amount = normalizeWs(m[0] ?? "");
     if (!out.some((x) => x.includes(amount))) {
       out.push(`Amount/threshold: ${amount}`);
     }
   }
   const ratios = excerpt.match(/\d+(?:\.\d+)?\s+to\s+1\.00/gi) ?? [];
-  for (const r of ratios.slice(0, 4)) out.push(`Ratio threshold: ${normalizeWs(r)}`);
+  for (const r of ratios.slice(0, 8)) out.push(`Ratio threshold: ${normalizeWs(r)}`);
   if (/\bAvailable Amount\b|\bCumulative Credit\b|\bbuilder\b/i.test(excerpt)) {
     out.push("Builder / Available Amount construct referenced.");
   }
@@ -255,7 +255,10 @@ function extractBaskets(excerpt: string): string[] {
   if (/\bper fiscal year\b|\bin any fiscal year\b/i.test(excerpt)) {
     out.push("Cap measured on a per-fiscal-year basis.");
   }
-  return out.slice(0, 10);
+  // Caps bound display size, set well above any real section's basket
+  // count: silently dropping the 11th basket (old cap: 10) was worse
+  // than a long list.
+  return out.slice(0, 40);
 }
 
 function extractRestriction(excerpt: string, heading: string, posture: ProvisionPosture, categoryLabel: string): string | null {
