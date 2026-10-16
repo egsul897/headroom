@@ -96,6 +96,7 @@ async function seedApprovedFinancialFacts() {
   expect(candidates).toHaveLength(8);
   for (const c of candidates) {
     await reviewCandidate({
+      companyId: COMPANY_ID,
       candidateId: c.id,
       action: "APPROVE",
       reviewedBy: "test-reviewer@headroom.app",

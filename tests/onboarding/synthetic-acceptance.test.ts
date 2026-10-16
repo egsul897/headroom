@@ -130,7 +130,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
 
     // APPROVE the document-structure and defined-term proposals.
     for (const c of [...byKind.DOCUMENT_RELATIONSHIP, ...byKind.DEFINED_TERM, ...byKind.RELATIONSHIP, ...byKind.EXTERNAL_INPUT_REQUIREMENT]) {
-      await reviewCandidate({ candidateId: c.id, action: "APPROVE", reviewedBy: "test-reviewer@example.com" });
+      await reviewCandidate({ companyId: COMPANY_ID, candidateId: c.id, action: "APPROVE", reviewedBy: "test-reviewer@example.com" });
     }
 
     // EDIT the §2.1 debt-incurrence permission's threshold before approving it,
@@ -138,7 +138,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
     const debtPermission = byKind.PERMISSION.find((c) => (c.proposedValue as { sectionRef: string }).sectionRef === "2.1")!;
     const originalProposedValue = debtPermission.proposedValue;
     const editedValue = { ...(debtPermission.proposedValue as Record<string, unknown>), thresholdValue: 550 };
-    const afterEdit = await reviewCandidate({ candidateId: debtPermission.id, action: "EDIT", editedValue, reviewedBy: "test-reviewer@example.com", note: "Corrected threshold per manual cross-check against the executed document." });
+    const afterEdit = await reviewCandidate({ companyId: COMPANY_ID, candidateId: debtPermission.id, action: "EDIT", editedValue, reviewedBy: "test-reviewer@example.com", note: "Corrected threshold per manual cross-check against the executed document." });
     expect(afterEdit.reviewStatus).toBe("EDITED");
     expect(afterEdit.proposedValue).toEqual(originalProposedValue); // never overwritten
     expect((afterEdit.reviewerEditedValue as { thresholdValue: number }).thresholdValue).toBe(550);
@@ -150,14 +150,14 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
     expect(history[0]!.newStatus).toBe("EDITED");
 
     // A second review decision on the same candidate is a NEW event, not an overwrite.
-    await reviewCandidate({ candidateId: debtPermission.id, action: "APPROVE", reviewedBy: "second-reviewer@example.com", note: "Confirmed the correction." });
+    await reviewCandidate({ companyId: COMPANY_ID, candidateId: debtPermission.id, action: "APPROVE", reviewedBy: "second-reviewer@example.com", note: "Confirmed the correction." });
     const historyAfterSecond = await getCandidateReviewHistory(debtPermission.id);
     expect(historyAfterSecond.length).toBe(2);
     expect(historyAfterSecond[1]!.action).toBe("APPROVE");
 
     // Approve the §2.2 lien permission as-is.
     const lienPermission = byKind.PERMISSION.find((c) => (c.proposedValue as { sectionRef: string }).sectionRef === "2.2")!;
-    await reviewCandidate({ candidateId: lienPermission.id, action: "APPROVE", reviewedBy: "test-reviewer@example.com" });
+    await reviewCandidate({ companyId: COMPANY_ID, candidateId: lienPermission.id, action: "APPROVE", reviewedBy: "test-reviewer@example.com" });
 
     // APPROVE the §2.3 KNOWN_NOT_MODELED gap candidate too - simulating a
     // reviewer confirming "yes, this really is an unmodeled gap." This is
@@ -166,7 +166,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
     // approved it.
     const gap = byKind.PERMISSION.find((c) => (c.proposedValue as { sectionRef: string }).sectionRef === "2.3")!;
     expect(gap.reviewStatus).toBe("REVIEW_REQUIRED");
-    await reviewCandidate({ candidateId: gap.id, action: "APPROVE", reviewedBy: "test-reviewer@example.com", note: "Confirmed this really is an unmodeled gap for now." });
+    await reviewCandidate({ companyId: COMPANY_ID, candidateId: gap.id, action: "APPROVE", reviewedBy: "test-reviewer@example.com", note: "Confirmed this really is an unmodeled gap for now." });
 
     const progress = await getReviewProgress(COMPANY_ID);
     expect(progress.pending).toBe(0);
@@ -177,7 +177,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
   it("MissingReviewerError: a review decision is refused without a real reviewer identifier (never fabricated)", async () => {
     const byKind = await getCandidatesForReview(COMPANY_ID);
     const anyCandidate = byKind.DEFINED_TERM[0]!;
-    await expect(reviewCandidate({ candidateId: anyCandidate.id, action: "APPROVE", reviewedBy: "" })).rejects.toThrow(/reviewedBy is required/);
+    await expect(reviewCandidate({ companyId: COMPANY_ID, candidateId: anyCandidate.id, action: "APPROVE", reviewedBy: "" })).rejects.toThrow(/reviewedBy is required/);
   });
 
   it("PROMOTE: transactionally writes real Permission/PermissionRelationship rows, excludes the KNOWN_NOT_MODELED gap, and lands ACTIVE_WITH_LIMITATIONS while the gap is unresolved", async () => {
@@ -223,7 +223,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
 
   it("resolving the documented gap (human REJECTs it) and re-promoting clears the coverage gate to ACTIVE", async () => {
     const gapCandidate = await prisma.extractionCandidate.findFirstOrThrow({ where: { companyId: COMPANY_ID, kind: "PERMISSION", sourceSectionRef: "2.3" } });
-    await reviewCandidate({ candidateId: gapCandidate.id, action: "REJECT", reviewedBy: "test-reviewer@example.com", note: "Confirmed this is ordinary-course language, not a real additional debt basket - correctly left unmodeled." });
+    await reviewCandidate({ companyId: COMPANY_ID, candidateId: gapCandidate.id, action: "REJECT", reviewedBy: "test-reviewer@example.com", note: "Confirmed this is ordinary-course language, not a real additional debt basket - correctly left unmodeled." });
 
     const result = await promoteCompanyCandidates(COMPANY_ID);
     expect(result.onboardingStatus).toBe("ACTIVE");
@@ -233,7 +233,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
 
   it("a promoted candidate's review decision is final - reviewCandidate refuses to touch it again", async () => {
     const promoted = await prisma.extractionCandidate.findFirstOrThrow({ where: { companyId: COMPANY_ID, kind: "PERMISSION", sourceSectionRef: "2.1" } });
-    await expect(reviewCandidate({ candidateId: promoted.id, action: "REJECT", reviewedBy: "test-reviewer@example.com" })).rejects.toThrow(/already promoted/);
+    await expect(reviewCandidate({ companyId: COMPANY_ID, candidateId: promoted.id, action: "REJECT", reviewedBy: "test-reviewer@example.com" })).rejects.toThrow(/already promoted/);
   });
 
   it("FINANCIALS: manual entry writes a real FinancialState via lib/financial-core/** types", async () => {

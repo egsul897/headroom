@@ -124,6 +124,7 @@ async function main() {
     if (c.kind === "PERMISSION" && value.modelingStatus === "KNOWN_NOT_MODELED") {
       try {
         await reviewCandidate({
+          companyId: COMPANY_ID,
           candidateId: c.id,
           action: "REJECT",
           reviewedBy: "saas-setup-e2e@headroom.app",
@@ -137,6 +138,7 @@ async function main() {
     }
     try {
       await reviewCandidate({
+        companyId: COMPANY_ID,
         candidateId: c.id,
         action: "APPROVE",
         reviewedBy: "saas-setup-e2e@headroom.app",

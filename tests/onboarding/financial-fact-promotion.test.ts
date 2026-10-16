@@ -71,7 +71,7 @@ describe("FINANCIAL_FACT promotion", () => {
     candidateIds = candidates.map((c) => c.id);
 
     for (const id of candidateIds) {
-      await reviewCandidate({ candidateId: id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
+      await reviewCandidate({ companyId: COMPANY_ID, candidateId: id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
     }
   }, 60_000);
 
