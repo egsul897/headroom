@@ -138,6 +138,8 @@ function stubLoaders(counters: { n: number }) {
           reportingPeriodKey: null,
           asOf: null,
           approvedSnapshotId: null,
+          cutoffSnapshotId: null,
+          cutoffSnapshotStatus: null,
         },
         approvedSnapshotCount: 0,
         activeLedgerUsageCount: 0,
