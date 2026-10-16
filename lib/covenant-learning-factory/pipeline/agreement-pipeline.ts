@@ -24,6 +24,7 @@ import type { ComputedRatio } from "../../contract-model/covenant-computation/ty
 import type { IssuerFinancials } from "../xbrl/companyfacts";
 import { basketUsage, type FacilityFact } from "../xbrl/instance-debt";
 import { decide, toMetricInput, type BindDecision } from "../xbrl/bind";
+import { debtFromFinancials, leverageDebtCapacity, maxLeverageLimit, optimizeConsolidatedEbitda, type EbitdaOptimization, type LeverageCapacity } from "../xbrl/ebitda-optimizer";
 
 export const PIPELINE_VERSION = "agreement-pipeline-1";
 
@@ -72,6 +73,10 @@ export interface AgreementPipelineResult {
     bounds: Array<{ stableKey: string; kind: "AT_LEAST" | "AT_MOST"; metric: string; missing: string[] }>;
     /** Computed only because of a lower bound in a direction that cannot be bounded: reverted to NEEDS_INPUT. */
     reverted: string[];
+    /** Consolidated EBITDA under the agreement's own definition (filings + optional sourced borrower inputs). */
+    ebitda?: EbitdaOptimization;
+    /** maxLeverage × EBITDA − debt, only when exactly one total-leverage MAX limit and a debt figure are available. */
+    leverageCapacity?: LeverageCapacity;
   };
   families: FamilySummary[];
   stats: { nodes: number; sections: number; clauses: number; xrefs: number; xrefResolved: number; baskets: number };
@@ -235,6 +240,27 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
       Object.assign(row, { status: "COMPUTED", usage: u.usage.toString(), usageBound: "EXACT", headroom: hs, headroomBound: (b.capBound ?? capBound) === "AT_LEAST" ? "AT_LEAST" : (b.capBound ?? capBound) === "AT_MOST" ? "AT_MOST" : "EXACT", missing: [], usageSource: `${u.facility} → ${u.fact.concept} [${u.fact.member}] ${u.fact.instant} accn ${u.fact.accession}` });
     }
     headroom.push(row);
+  }
+
+  // Consolidated EBITDA optimizer → leverage debt capacity (general rules; no invented inputs).
+  if (args.financials && xbrl) {
+    const ebitda = optimizeConsolidatedEbitda("Consolidated EBITDA", tree.text, args.financials);
+    xbrl.ebitda = ebitda;
+    const levRows: Array<{ kind: string; name: string; direction: string | null; limit: string | null }> = headroom.filter((h) => h.kind === "RATIO");
+    for (const r of result.ratios) {
+      if (!/leverage/i.test(r.displayName) || /secured|senior|first\s+lien|interest/i.test(r.displayName)) continue;
+      if (levRows.some((x) => x.name === r.displayName && x.limit != null)) continue;
+      const found = covenantRatioThresholds(tree.text, r.displayName, r.numerator.map((n) => n.metricName), r.denominator.map((n) => n.metricName));
+      for (const f of found) {
+        if (f.comparator !== "NO_GREATER_THAN" || !(f.den > 0)) continue;
+        const limit = f.den === 1 ? String(f.num) : String(f.num / f.den);
+        if (!/^\d+(?:\.\d+)?$/.test(limit)) continue;
+        levRows.push({ kind: "RATIO", name: r.displayName, direction: "MAX", limit });
+      }
+    }
+    const lev = maxLeverageLimit(levRows);
+    const debt = debtFromFinancials(args.financials);
+    if (lev != null && debt != null) xbrl.leverageCapacity = leverageDebtCapacity(ebitda, lev, debt);
   }
 
   const families: FamilySummary[] = [];
