@@ -88,9 +88,39 @@ export function extractEffectiveDateHint(text: string): string | null {
 
 export function extractAmendedSectionRefs(text: string): string[] {
   const out = new Set<string>();
-  const re =
-    /\bSection\s+(\d+(?:\.\d+)*)\s+(?:of\s+the\s+(?:Credit\s+Agreement|Indenture)\s+)?(?:is|are)\s+hereby\s+(?:amended|deleted|restated)/gi;
+  const ofThe = String.raw`(?:of\s+the\s+(?:20\d{2}\s+)?(?:Credit\s+Agreement|Indenture)\s+)?`;
   let m: RegExpExecArray | null;
+  // Specific patterns first: the general singular regex would
+  // otherwise grab the SECOND ref of a repeated/plural clause
+  // before the list patterns see the first, scrambling order.
+  const reRepeated = new RegExp(
+    String.raw`\bSection\s+(\d+(?:\.\d+)*(?:\([a-z0-9]+\))?)\s+and\s+Section\s+(\d+(?:\.\d+)*(?:\([a-z0-9]+\))?)\s+` +
+      ofThe +
+      String.raw`(?:are)\s+hereby\s+(?:amended|deleted|restated)`,
+    "gi",
+  );
+  while ((m = reRepeated.exec(text)) !== null) {
+    out.add(m[1]!);
+    out.add(m[2]!);
+  }
+  // Plural list: "Sections 6.01, 6.02 and 6.03 are hereby amended".
+  // The list grammar only accepts refs, commas, and "and", so a
+  // bare year elsewhere in the clause ("of the 2024 Credit
+  // Agreement") cannot leak in as a ref.
+  const refInList = /\d+(?:\.\d+)*(?:\([a-z0-9]+\))?/gi;
+  const rePlural = new RegExp(
+    String.raw`\bSections\s+((?:\d+(?:\.\d+)*(?:\([a-z0-9]+\))?\s*(?:,\s*|\s+and\s+))+\d+(?:\.\d+)*(?:\([a-z0-9]+\))?)\s+` +
+      ofThe +
+      String.raw`(?:are)\s+hereby\s+(?:amended|deleted|restated)`,
+    "gi",
+  );
+  while ((m = rePlural.exec(text)) !== null) {
+    for (const r of m[1]!.match(refInList) ?? []) out.add(r);
+  }
+  const re = new RegExp(
+    String.raw`\bSection\s+(\d+(?:\.\d+)*)\s+` + ofThe + String.raw`(?:is|are)\s+hereby\s+(?:amended|deleted|restated)`,
+    "gi",
+  );
   while ((m = re.exec(text)) !== null) out.add(m[1]!);
   const re2 = /\bSection\s+(\d+(?:\.\d+)*)\s+is\s+amended\s+to\s+read/gi;
   while ((m = re2.exec(text)) !== null) out.add(m[1]!);
