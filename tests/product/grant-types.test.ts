@@ -357,3 +357,18 @@ describe("rule 203 tightening: composite excerpts are not evidence", () => {
     expect(grants).not.toContain("DEBT_INCURRENCE");
   });
 });
+
+/** Rule 201 gap: the real Strata 6.02(l) has ~85 chars between "Liens" and "securing Indebtedness". */
+describe("rule 201 gap: long-gap lien-secured clause still suppresses DEBT", () => {
+  it("a lien clause with ~85 chars between Liens and securing Indebtedness mints LIEN only", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const grants = grantTypesForItem({
+      sectionRef: "6.02(l)", heading: "6.02(l)", category: "LIENS_SECURED_DEBT",
+      plainEnglish: "Section 6.02(l) operates as a permission. (l) other Liens incurred in the ordinary course of business of the Borrowers and their Subsidiaries securing Indebtedness and other obligations that do not in the aggregate exceed $250,000 at any time outstanding.",
+      operativeLanguageExcerpt: "(l) other Liens incurred in the ordinary course of business of the Borrowers and their Subsidiaries securing Indebtedness and other obligations that do not in the aggregate exceed $250,000 at any time outstanding.",
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [],
+    } as any);
+    expect(grants).toEqual(["LIEN"]);
+  });
+});
