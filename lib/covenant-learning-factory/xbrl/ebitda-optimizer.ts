@@ -275,10 +275,14 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     if (!bi && !concepts.length && !QUALIFIED.test(scopeText)) {
       for (const x of EXTRA) if (x.re.test(scopeText)) for (const c of x.concepts) { const v = fin.values.find((f) => f.metric === "item" && f.concept === c); if (v) { concepts.push({ concept: c, value: BigInt(v.value) }); coverage = "PARTIAL"; } }
     }
+    // Two-sided line that is exactly one filed, signed figure (equity-method income, FX gain/loss, NCI share):
+    // the adjustment is that exact figure with its sign. Absent fact or compound line → stays NEEDS_INPUT.
+    const signed = !bi && !capSpec && (ambiguous || it.sign === "?") ? signedTwoSided(scopeText, fin) : null;
+    if (signed) { concepts = [signed]; coverage = "FULL"; mapNote = "two-sided line signed from the exact filed figure"; }
     const fresh = concepts.filter((c) => !used.has(c.concept));
     fresh.forEach((c) => used.add(c.concept));
-    // Only charges that reduced net income can be added back: a net credit adds nothing.
-    const evid = fresh.reduce((a, c) => a + (c.value > 0n ? c.value : 0n), 0n);
+    // Only charges that reduced net income can be added back: a net credit adds nothing (signed lines keep their sign).
+    const evid = signed && fresh.length ? signed.value : fresh.reduce((a, c) => a + (c.value > 0n ? c.value : 0n), 0n);
     // Mapped concepts already claimed on an earlier line (e.g. amort after full D&A): covered, not a gap.
     let covOut: AddBackLine["coverage"] = fresh.length ? coverage : "NONE";
     let noteExtra = "";
@@ -332,7 +336,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   if (!baseOk) return out({ addBacks, needsInput: [`base/deductions: ${lowerReason}`, ...needsInput], reason: `NEEDS_INPUT: ${lowerReason}` });
   const supported = e0! + addBacks.filter((l) => uncapped.every((u) => u.label !== l.label)).reduce((a, l) => a + BigInt(l.claimed), 0n);
   const complete = !open.length && !ev.items.some((i) => i.label === "(base)" && i.coverage === "PARTIAL");
-  const ambiguousOpen = pairs.filter((p) => ambiguousAddBack(p) && open.some((l) => l.label === p.it.label)).map((p) => p.it.label);
+  const ambiguousOpen = pairs.filter((p) => (ambiguousAddBack(p) || p.it.sign === "?") && open.some((l) => l.label === p.it.label)).map((p) => p.it.label);
   return out({ status: complete ? "MAXIMIZED" : "NEEDS_INPUT", maximum: complete ? usd(supported) : null, supported: usd(supported), deductions: usd(deductions!), addBacks, needsInput, omittedTwoSided: ambiguousOpen,
     reason: complete ? "every permitted add-back is evidenced and every cap applied" : `${open.length} add-back(s) not evidenced in filings; supported figure is what the filings prove` });
 }
@@ -419,4 +423,31 @@ export function ratioCapacity(args: { name: string; kind: "LEVERAGE" | "COVERAGE
   const bound = e.status === "BOUND" ? "EXACT" as const : "AT_LEAST" as const;
   return { name: args.name, kind: args.kind, limit: args.limit, status: "COMPUTED", capacity: cap.toString(), capacityOf, bound,
     reason: args.kind === "LEVERAGE" ? `${args.limit}x × EBITDA ${e.value} − debt ${o.value} [${bound}]` : `EBITDA ${e.value} / ${args.limit}x − interest ${o.value} [${bound}]` };
+}
+
+/**
+ * A two-sided EBITDA line that names exactly one filed, signed figure. Returns the adjustment to add (signed):
+ *  - equity in (net) income (loss) of joint ventures / unconsolidated / equity-method investees → −IncomeLossFromEquityMethodInvestments
+ *  - (gains) losses from foreign currency transactions / exchange → −ForeignCurrencyTransactionGainLossBeforeTax
+ *  - minority / noncontrolling interest (expense) → +NetIncomeLossAttributableToNoncontrollingInterest
+ * The whole line must be that item (no other operative words); otherwise null.
+ */
+export function signedTwoSided(t: string, fin: IssuerFinancials): { concept: string; value: bigint } | null {
+  const v = (c: string) => { const x = fin.values.find((f) => f.metric === "item" && f.concept === c); return x ? BigInt(x.value) : null; };
+  const flat = t.replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+  const rest = (re: RegExp) => flat.replace(re, " ").replace(/\b(?:any|all|the|of|its|such|Person|Person's|for|period|and|or|in|each|case|plus|minus|to|extent|included|deducted|calculating|determining|computing|Consolidated|Net|Income|Borrower|Company|Issuer|Subsidiaries|Restricted|Parent|amount|aggregate|net|loss|losses|gain|gains|income)\b|[^A-Za-z]+/gi, " ").trim();
+  const EQ = /\bequity\s+in\s+(?:the\s+)?(?:net\s+)?(?:income|earnings|\(?loss(?:es)?\)?)[^;]{0,40}?\b(?:Joint\s+Ventures?|unconsolidated\s+(?:affiliates?|subsidiaries|entities|investees)|equity[- ]method\s+investees?)\b/i;
+  if (EQ.test(flat) && !rest(EQ)) { const x = v("IncomeLossFromEquityMethodInvestments"); return x == null ? null : { concept: "IncomeLossFromEquityMethodInvestments (signed, excluded)", value: -x }; }
+  const FX = /\b(?:losses?|gains?)\s*(?:\(?\s*(?:or|and|\/)\s*(?:gains?|losses?)\s*\)?)?\s+(?:arising\s+from|from|on|resulting\s+from|attributable\s+to)\s+(?:fluctuations\s+in\s+)?foreign\s+(?:currency|exchange)(?:\s+(?:transactions?|translation|rates?|exchange))?\b/i;
+  if (FX.test(flat) && !/translation/i.test(flat) && !rest(FX).replace(/\b(?:fluctuations|currency|exchange|foreign|transactions?|rates?|arising|from|on)\b/gi, "").trim()) {
+    const x = v("ForeignCurrencyTransactionGainLossBeforeTax"); if (x == null) return null;
+    const losses = /\blosses?\b/i.test(flat), gains = /\bgains?\b/i.test(flat);
+    // Losses only: add back the loss (a net gain adds nothing). Gains only: not an add-back line → null. Both: signed.
+    if (losses && !gains) return { concept: "ForeignCurrencyTransactionGainLossBeforeTax (losses only)", value: x < 0n ? -x : 0n };
+    if (gains && !losses) return null;
+    return { concept: "ForeignCurrencyTransactionGainLossBeforeTax (signed, excluded)", value: -x };
+  }
+  const NCI = /\b(?:minority|non-?controlling)\s+interests?(?:\s+(?:expense|income))?\b/i;
+  if (NCI.test(flat) && !rest(NCI).replace(/\b(?:minority|non-?controlling|interests?|expense)\b/gi, "").trim()) { const x = v("NetIncomeLossAttributableToNoncontrollingInterest"); return x == null ? null : { concept: "NetIncomeLossAttributableToNoncontrollingInterest (signed)", value: x }; }
+  return null;
 }

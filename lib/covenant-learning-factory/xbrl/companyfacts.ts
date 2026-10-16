@@ -35,6 +35,8 @@ export const ITEM_CONCEPTS = [
   "IncomeLossFromEquityMethodInvestments", "IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions", "GainLossOnDispositionOfAssets", "GainLossOnSaleOfPropertyPlantEquipment", "GainLossOnDispositionOfAssets1",
   // Common Consolidated EBITDA add-backs with no other home (EBITDA optimizer evidence).
   "BusinessCombinationAcquisitionRelatedCosts", "BusinessCombinationIntegrationRelatedCosts", "SeveranceCosts1",
+  // Signed two-sided EBITDA lines (FX transaction gain/loss, noncontrolling-interest share): exact TTM only.
+  "ForeignCurrencyTransactionGainLossBeforeTax", "NetIncomeLossAttributableToNoncontrollingInterest",
 ] as const;
 
 export interface FinancialValue {

@@ -136,3 +136,27 @@ Section 7.02 Restricted Payments. The Borrower will not make any Restricted Paym
     expect(c?.limit).toBe("3");
   });
 });
+
+describe("two-sided lines signed from exact filed figures", () => {
+  const S = (line: string) => `"Consolidated Net Income" means the net income of the Borrower. "Consolidated EBITDA" means, for any period, Consolidated Net Income plus, to the extent deducted: (a) provision for taxes based on income; plus (b) interest expense; plus (c) depreciation and amortization expense; plus (d) ${line}. "Default" means any event.`;
+  it("REIT excluding-list: equity in net income (loss) of Joint Ventures = −equity-method income (exact)", () => {
+    const text = `"Consolidated EBITDA" means, with respect to a Person for any period and without duplication, the sum of: (1) net income (loss) of such Person for such period determined on a consolidated basis excluding the following (but only to the extent included in determining net income (loss) for such period): (A) depreciation and amortization; (B) interest expense; (C) income tax expense; and (F) equity in net income (loss) of its Joint Ventures. "Default" means any event.`;
+    const d = decide("Consolidated EBITDA", text, fin({ IncomeLossFromEquityMethodInvestments: 15 * M }));
+    expect(d.status).toBe("BOUND");
+    expect(d.input?.value).toBe(String(185 * M));
+  });
+  it("same line with no filed equity-method figure stays NEEDS_INPUT", () => {
+    const text = `"Consolidated EBITDA" means, with respect to a Person for any period and without duplication, the sum of: (1) net income (loss) of such Person for such period determined on a consolidated basis excluding the following (but only to the extent included in determining net income (loss) for such period): (A) depreciation and amortization; (B) interest expense; (C) income tax expense; and (F) equity in net income (loss) of its Joint Ventures. "Default" means any event.`;
+    expect(decide("Consolidated EBITDA", text, fin()).status).toBe("NEEDS_INPUT");
+  });
+  it("FX losses-only line: a net filed gain adds 0; a net loss adds the loss", () => {
+    const line = "losses arising from fluctuations in foreign currency exchange rates for such period";
+    expect(decide("Consolidated EBITDA", S(line), fin({ ForeignCurrencyTransactionGainLossBeforeTax: 4 * M })).input?.value).toBe(String(200 * M));
+    expect(decide("Consolidated EBITDA", S(line), fin({ ForeignCurrencyTransactionGainLossBeforeTax: -4 * M })).input?.value).toBe(String(204 * M));
+  });
+  it("FX gains-or-losses line signed exactly; absent fact → NEEDS_INPUT", () => {
+    const line = "gains or losses on foreign currency transactions";
+    expect(decide("Consolidated EBITDA", S(line), fin({ ForeignCurrencyTransactionGainLossBeforeTax: 4 * M })).input?.value).toBe(String(196 * M));
+    expect(decide("Consolidated EBITDA", S(line), fin()).status).toBe("NEEDS_INPUT");
+  });
+});
