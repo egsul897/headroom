@@ -19,8 +19,6 @@ import { SeparatedCapacityPanel } from "@/components/customer-workflow/Separated
 import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
 import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
 import { loadSharedNs4FinancialIdentity } from "@/lib/product/ns4-shared-financial-identity";
-import {
-} from "@/lib/customer-workflow/cfo-secured-debt-entry";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };

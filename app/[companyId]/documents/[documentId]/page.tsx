@@ -5,7 +5,6 @@ import path from "node:path";
 import { Card, Chip } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
 import { getDocumentStorageProvider } from "@/lib/document-storage";
-import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import { summaryCapDisclosure } from "@/lib/product/covenant-intelligence/summarize";
 import {
@@ -45,14 +44,10 @@ async function loadSourceText(documentId: string, storageRef: string | null, not
     }
   }
 
-  const spec = CONMED_DEMO_DOCUMENTS.find((d) => d.id === documentId);
-  if (spec) {
-    const abs = path.join(process.cwd(), spec.rawRelativePath);
-    if (existsSync(abs)) {
-      return loadSourceTextFromBytes(readFileSync(abs), path.basename(abs), `repository fixture (${spec.rawRelativePath})`);
-    }
-  }
-
+  // Integration fix: no demo-fixture fallback. A real customer's
+  // document page must never render CONMED demo bytes when storage
+  // is unavailable — fail closed with "unavailable" (the page
+  // renders "Source origin: unavailable" + "Source text unavailable.").
   return { text: "", origin: "unavailable", truncated: false };
 }
 

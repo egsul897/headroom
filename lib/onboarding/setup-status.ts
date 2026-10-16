@@ -8,6 +8,9 @@ import { prisma } from "@/lib/prisma";
 import { getReviewProgress } from "@/lib/onboarding/review";
 import { getAnalysisReadinessForCompany } from "@/lib/contract-model/analysis";
 import { loadPhase3TrustedRulebookStatus } from "@/lib/product/customer-intelligence/phase3-trusted-rulebook";
+import { loadRulebookReadiness, type RulebookStage } from "@/lib/product/customer-intelligence/rulebook-readiness";
+import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
+import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import type { OnboardingStatus } from "@prisma/client";
 
 export interface CompanySetupStatus {
@@ -35,6 +38,18 @@ export interface CompanySetupStatus {
   /** Promoted Permission rows still UNVERIFIED. */
   unverifiedPermissions: number;
   /**
+   * Deterministic (no-LLM) counsel-review path: documents whose
+   * customer-intelligence analysis succeeded, summary items produced,
+   * and reviewer decisions recorded via the Rulebook. The wizard
+   * routes review through the Rulebook (not the LLM extraction
+   * queue) because the Rulebook works with no LLM credential.
+   */
+  deterministicAnalyzed: number;
+  deterministicItems: number;
+  deterministicDecisions: number;
+  rulebookStage: RulebookStage;
+  rulebookExecutablePermissions: number;
+  /**
    * True when the legacy executable path can run. Never means Phase 3 CERTIFIED
    * or Phase 4E-certified capacity.
    */
@@ -58,6 +73,9 @@ export async function getCompanySetupStatus(companyId: string): Promise<CompanyS
     ns4ApprovedSnapshots,
     readyToPromote,
     phase3,
+    rulebook,
+    approvals,
+    intelligence,
   ] = await Promise.all([
     prisma.document.count({ where: { companyId } }),
     prisma.extractionRun.count({ where: { companyId } }),
@@ -72,6 +90,9 @@ export async function getCompanySetupStatus(companyId: string): Promise<CompanyS
       where: { companyId, reviewStatus: { in: ["APPROVED", "EDITED"] }, promotedAt: null },
     }),
     loadPhase3TrustedRulebookStatus(companyId).catch(() => null),
+    loadRulebookReadiness(companyId).catch(() => null),
+    listReviewerApprovals(companyId).catch(() => []),
+    listCustomerDocumentIntelligence(companyId).catch(() => []),
   ]);
 
   const dashboardReady =
@@ -97,6 +118,11 @@ export async function getCompanySetupStatus(companyId: string): Promise<CompanyS
     phase3TrustedRuleCount: phase3?.trustedRuleCount ?? 0,
     permissions,
     unverifiedPermissions,
+    deterministicAnalyzed: intelligence.filter((i) => i.analysisOk).length,
+    deterministicItems: rulebook?.discoveredSummaries ?? 0,
+    deterministicDecisions: approvals.length,
+    rulebookStage: rulebook?.stage ?? "DISCOVERED",
+    rulebookExecutablePermissions: rulebook?.executablePermissions ?? 0,
     dashboardReady,
     capacityCertified: false,
   };
@@ -115,16 +141,42 @@ export function nextSetupStep(status: CompanySetupStatus): {
       detail: "Add the credit agreement, indenture, and latest compliance certificate or financials.",
     };
   }
-  if (status.extractedDocuments === 0 || !status.analysisReady) {
+  // Integration fix: "read" is satisfied when EITHER the deterministic
+  // analysis ran on upload (no LLM credential needed) OR the LLM
+  // extraction + contract analysis ran. A no-LLM company whose upload
+  // analyzed deterministically must not be told to "run extraction"
+  // — that action throws without an LLM key.
+  if (status.deterministicAnalyzed === 0 && (status.extractedDocuments === 0 || !status.analysisReady)) {
     return {
       href: `/${id}/onboarding/documents`,
       label: "Read documents",
       detail: status.analysisReady
         ? "Run analysis so Headroom can extract covenants and proposed financial figures."
-        : `Contract analysis is not ready yet (${status.analysisReason}). Run extraction on every uploaded document before review.`,
+        : `No successful analysis yet (${status.analysisReason}). Re-analyze the uploaded documents from the Documents page; LLM extraction is optional.`,
     };
   }
-  if (status.pendingReview > 0 || (status.readyToPromote === 0 && status.promoted === 0)) {
+  // Deterministic counsel review: the Rulebook. Fires when the
+  // deterministic analysis produced summary items that still lack
+  // reviewer decisions. This is the review path that works with no
+  // LLM credential — decisions here compile executable Permissions.
+  if (status.deterministicItems > 0 && status.deterministicDecisions < status.deterministicItems) {
+    return {
+      href: `/${id}/rulebook`,
+      label: "Review interpretations",
+      detail: `${status.deterministicDecisions} of ${status.deterministicItems} AI interpretations reviewed. Accept, edit, or reject each one — reviewed interpretations compile the executable rulebook.`,
+    };
+  }
+  // LLM extraction-candidate review: only when the LLM analysis is
+  // ready (otherwise the review page redirects back to documents)
+  // and the queue has work — or when nothing is promoted anywhere
+  // yet and the LLM path is the one with a ready analysis.
+  if (
+    status.pendingReview > 0 ||
+    (status.analysisReady &&
+      status.readyToPromote === 0 &&
+      status.promoted === 0 &&
+      status.permissions === 0)
+  ) {
     return {
       href: `/${id}/onboarding/review`,
       label: "Review findings",

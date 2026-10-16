@@ -243,8 +243,8 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
 
       <Card>
         <div className="button-row">
-          <Link href={`/${companyId}/onboarding/review`} className="button button-primary" style={{ textDecoration: "none" }}>
-            Continue to Review
+          <Link href={`/${companyId}/rulebook`} className="button button-primary" style={{ textDecoration: "none" }}>
+            Continue to Review (Rulebook)
           </Link>
           <Link href={`/${companyId}/onboarding`} className="button" style={{ textDecoration: "none" }}>
             Back to onboarding wizard
