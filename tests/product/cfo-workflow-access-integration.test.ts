@@ -365,8 +365,43 @@ describe("P0 — assembler access gating (injectable identity; Neon unreachable 
     expect(counters.n).toBeGreaterThan(0);
   });
 
-  it("authenticated customer workspace read succeeds in-scope", async () => {
-    const principal = await mintScopedPrincipal(CUSTOMER_CO, [
+  it("review/approvals load failures are flagged, not silently treated as empty", async () => {
+    const counters = { n: 0 };
+    const loaders = stubLoaders(counters);
+    const failing = {
+      ...loaders,
+      loadCovenantReviewWorkspace: async (): Promise<never> => {
+        throw new Error("review workspace DB failure");
+      },
+      listReviewerApprovals: async (): Promise<never> => {
+        throw new Error("approvals DB failure");
+      },
+    };
+    const allowed = await assembleCfoWorkflow({
+      companyId: EVAL_CO,
+      companyIdentityLoader: identityLoader,
+      loaders: failing,
+    });
+    expect(allowed.ok).toBe(true);
+    if (!allowed.ok) return;
+    expect(allowed.reviewLoadFailed).toBe(true);
+    expect(allowed.approvalsLoadFailed).toBe(true);
+  });
+
+  it("review/approvals load successes report no failure", async () => {
+    const counters = { n: 0 };
+    const allowed = await assembleCfoWorkflow({
+      companyId: EVAL_CO,
+      companyIdentityLoader: identityLoader,
+      loaders: stubLoaders(counters),
+    });
+    expect(allowed.ok).toBe(true);
+    if (!allowed.ok) return;
+    expect(allowed.reviewLoadFailed).toBe(false);
+    expect(allowed.approvalsLoadFailed).toBe(false);
+  });
+
+  it("authenticated customer workspace read succeeds in-scope", async () => {    const principal = await mintScopedPrincipal(CUSTOMER_CO, [
       ...PERMISSION_BUNDLES.EVIDENCE_REVIEWER,
     ]);
     const counters = { n: 0 };
