@@ -755,11 +755,32 @@ async function evaluatePostPromotionCoverage(tx: Prisma.TransactionClient, compa
   // permanently excluded as KNOWN_NOT_MODELED).
   const gapCandidates = await tx.extractionCandidate.findMany({
     where: { companyId, kind: "PERMISSION", promotedAt: null, reviewStatus: { not: "REJECTED" } },
-    select: { sourceDocumentId: true },
   });
   const documentsWithGaps = new Set(gapCandidates.map((g) => g.sourceDocumentId));
 
-  let anyGap = false;
+  // Rule 101: scopes used to come ONLY from promoted permissions, so a
+  // document whose PERMISSION candidates were ALL still pending (or
+  // KNOWN_NOT_MODELED) got NO declaration at all — no incomplete
+  // declaration, no coverage result, and onboardingStatus could read
+  // ACTIVE while an entire document's permissions were unreviewed.
+  // Gap candidates' own grant types now contribute scopes, so a
+  // gap-only document gets an explicit INCOMPLETE declaration.
+  const VALID_GRANT_TYPES = new Set(["DEBT_INCURRENCE", "LIEN", "RESTRICTED_PAYMENT", "INVESTMENT"]);
+  for (const g of gapCandidates) {
+    const value = resolveEffectiveValue(g) as { grantType?: unknown } | null;
+    if (typeof value?.grantType === "string" && VALID_GRANT_TYPES.has(value.grantType)) {
+      scopes.add(`${g.sourceDocumentId}:${value.grantType}`);
+    }
+  }
+  // A gap candidate whose value fails validation has no trustworthy
+  // grant type, so it contributes no scope — but it must still block
+  // an ACTIVE verdict (fail closed).
+  const hasOrphanGap = gapCandidates.some((g) => {
+    for (const key of scopes) if (key.startsWith(`${g.sourceDocumentId}:`)) return false;
+    return true;
+  });
+
+  let anyGap = hasOrphanGap;
   for (const scopeKey of scopes) {
     const [documentId, grantType] = scopeKey.split(":") as [string, GrantType];
     const isComplete = !documentsWithGaps.has(documentId);
