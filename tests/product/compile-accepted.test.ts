@@ -4,6 +4,8 @@ import { extractStructure, discoverDefinitions, discoverCrossReferences } from "
 import { discoverCovenantCandidates } from "../../lib/knowledge-factory/pipeline/candidates";
 import { buildDocumentCovenantSummary } from "../../lib/product/covenant-intelligence/summarize";
 import { parseCounselFormulaForTest } from "../../lib/product/customer-intelligence/compile-accepted";
+import type { CovenantSummaryItem } from "../../lib/product/covenant-intelligence/summarize";
+import type { ProvisionAnalysis } from "../../lib/product/covenant-intelligence/analyze-provision";
 
 const CONMED_VII = readFileSync(
   "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
@@ -156,7 +158,11 @@ describe("compile-accepted formula parsing", () => {
 });
 
 describe("Rule 192: truncated-excerpt guard (compiler half)", () => {
-  const base = {
+  // Typed as the real CovenantSummaryItem (never `as never` —
+  // spreading a `never` fails CI's TS2698). entityScope +
+  // analysis are required by the type but not read by the
+  // formula parser on these paths.
+  const base: CovenantSummaryItem = {
     category: "DEBT_INCURRENCE",
     categoryLabel: "Debt incurrence",
     sectionRef: "6.11",
@@ -184,7 +190,15 @@ describe("Rule 192: truncated-excerpt guard (compiler half)", () => {
     alternativeInterpretations: [] as string[],
     assumptions: [] as string[],
     judgmentCalls: [] as string[],
-  } as never;
+    entityScope: {
+      borrower: true,
+      guarantor: false,
+      restrictedSubsidiary: false,
+      unrestrictedSubsidiary: false,
+      notes: [],
+    },
+    analysis: {} as ProvisionAnalysis,
+  };
 
   it("fails closed on a truncated excerpt instead of minting a partial flat amount", () => {
     const parsed = parseCounselFormulaForTest({ ...base, operativeExcerptTruncated: true });
