@@ -570,6 +570,10 @@ async function supersedeCounselPermissionsOnAmendedDocs(
   }
   if (prior.length) {
     await syncDocumentCapacityFormulas(companyId, doc.supersedesDocumentId);
+    // Symmetric: the superseded doc's RP waterfall must also rebuild
+    // from remaining operative permissions (or clear) — otherwise it
+    // keeps gating RP transactions with ended baskets.
+    await syncDocumentRpWaterfall(companyId, doc.supersedesDocumentId);
   }
 }
 
