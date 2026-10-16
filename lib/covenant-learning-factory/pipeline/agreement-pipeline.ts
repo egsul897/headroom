@@ -26,6 +26,7 @@ import { basketUsage, type FacilityFact } from "../xbrl/instance-debt";
 import { decide, toMetricInput, type BindDecision } from "../xbrl/bind";
 import { debtFromFinancials, leverageDebtCapacity, maxLeverageLimit, optimizeConsolidatedEbitda, ratioCapacity, type EbitdaOptimization, type LeverageCapacity, type RatioCapacity } from "../xbrl/ebitda-optimizer";
 import { findEbitdaMeasureTerm } from "../xbrl/definition-items";
+import { trackAddBacks, type AddBackFlag } from "../xbrl/addback-tracker";
 import { extractDocumentIdentity } from "../../contract-model/compiler/package-graph/document-identity";
 import { buildPackageGraph } from "../../contract-model/compiler/package-graph/pipeline";
 
@@ -91,6 +92,8 @@ export interface AgreementPipelineResult {
      * EBITDA measure taken from a base agreement bound by package-graph. CONFIRMED = RESOLVED link; LOWER_CONFIDENCE =
      * REVIEW_REQUIRED link (supporting-evidence / date-mismatch). Carried on every output derived from that EBITDA.
      */
+    /** Per-agreement add-back tracker (this agreement's definition × this issuer's filings, period over period). */
+    addBackTracker?: AddBackFlag[];
     ebitdaBinding?: { tier: "CONFIRMED" | "LOWER_CONFIDENCE"; baseDocumentId: string; relationship: string; resolutionMethod: string };
   };
   families: FamilySummary[];
@@ -205,7 +208,7 @@ export function bindAmendmentBase(amendText: string, base: { documentId: string;
   return ok ? { tier: ok.status === "RESOLVED" ? "CONFIRMED" : "LOWER_CONFIDENCE", relationship: ok.relationshipType, resolutionMethod: ok.resolutionMethod } : null;
 }
 
-export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null; facilityFacts?: readonly FacilityFact[] | null; baseDocuments?: ReadonlyArray<{ documentId: string; text: string }> | null }): AgreementPipelineResult {
+export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null; facilityFacts?: readonly FacilityFact[] | null; baseDocuments?: ReadonlyArray<{ documentId: string; text: string }> | null; priorFinancials?: IssuerFinancials | null }): AgreementPipelineResult {
   const raw = args.text ?? "";
   const tree = parseDocumentTree(raw);
   const roles = new Map<string, ClauseRole>();
@@ -380,6 +383,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
       xbrl.ratioCapacity = incurrenceRatioCapacity(result.ratios, tree.text, xbrl.decisions, args.financials).map((c) => (binding ? { ...c, bindingTier: binding.tier } : c));
       const lev = maxLeverageLimit(levRows);
       const debt = debtFromFinancials(args.financials);
+      xbrl.addBackTracker = trackAddBacks(ebitda, args.financials, args.priorFinancials ?? null, lev);
       if (lev != null && debt != null) xbrl.leverageCapacity = { ...leverageDebtCapacity(ebitda, lev, debt), ...(binding ? { bindingTier: binding.tier } : {}) };
       // Baskets sized from this EBITDA carry the binding tier too.
       if (binding) for (const row of headroom) if (row.kind === "BASKET" && /EBITDA/i.test(row.citation ?? "")) row.bindingTier = binding.tier;
