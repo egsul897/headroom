@@ -12,6 +12,7 @@ import {
 } from "../covenant-intelligence/summarize";
 import { parseMoneyMillions, parsePctOf } from "./money";
 import { buildCapacityFormulas } from "./capacity-formulas";
+import { buildRpWaterfall } from "./rp-waterfall";
 
 export type CompileStatus =
   | "COMPILED"
@@ -508,7 +509,9 @@ export async function syncDocumentCapacityFormulas(companyId: string, documentId
 /**
  * Rebuild Document.rpWaterfall from counsel-compiled RESTRICTED_PAYMENT / INVESTMENT
  * Permissions. Steps are ordered builder → flat → other; ratio gates attached when present.
- * Does not invent ratio-gate codes when none were compiled.
+ * Does not invent ratio-gate codes when none were compiled. An empty
+ * build clears rpWaterfall (a stale waterfall must not survive its
+ * permissions — e.g. after counsel REJECTED them all).
  */
 export async function syncDocumentRpWaterfall(companyId: string, documentId: string): Promise<void> {
   const perms = await prisma.permission.findMany({
@@ -521,42 +524,13 @@ export async function syncDocumentRpWaterfall(companyId: string, documentId: str
       OR: [{ effectiveTo: null }, { effectiveTo: { gt: new Date() } }],
     },
   });
-  if (!perms.length) return;
-
-  const rank = (p: (typeof perms)[number]): number => {
-    if (p.formulaType === "BUILDER_BASKET") return 0;
-    if (p.formulaType === "FLAT_AMOUNT" || String(p.formulaType).includes("GREATER_OF")) return 1;
-    if (p.formulaType === "RATIO_GATE" || p.formulaType === "LEVERAGE_RATIO_ROOM") return 9;
-    return 5;
-  };
-
-  const stepPerms = perms
-    .filter((p) => p.formulaType !== "RATIO_GATE" && p.code)
-    .sort((a, b) => rank(a) - rank(b) || a.sectionRef.localeCompare(b.sectionRef));
-  const steps = stepPerms.map((p) => ({ code: p.code! }));
-  if (!steps.length) return;
-
-  const ratioGates = perms.filter((p) => p.formulaType === "RATIO_GATE" && p.code);
-  const dividendGate =
-    ratioGates.find((p) => p.grantType === "RESTRICTED_PAYMENT")?.code ??
-    ratioGates[0]?.code ??
-    steps[steps.length - 1]!.code;
-  const investmentGate =
-    ratioGates.find((p) => p.grantType === "INVESTMENT")?.code ??
-    ratioGates[0]?.code ??
-    steps[steps.length - 1]!.code;
-
-  const rpWaterfall = {
-    steps,
-    ratioGateCodeByKind: {
-      dividend: dividendGate,
-      investment: investmentGate,
-    },
-  };
+  const rpWaterfall = buildRpWaterfall(
+    perms.map((p) => ({ code: p.code, grantType: p.grantType, formulaType: p.formulaType, sectionRef: p.sectionRef })),
+  );
 
   await prisma.document.update({
     where: { id: documentId },
-    data: { rpWaterfall: rpWaterfall as Prisma.InputJsonValue },
+    data: { rpWaterfall: rpWaterfall ? (rpWaterfall as Prisma.InputJsonValue) : Prisma.JsonNull },
   });
 }
 

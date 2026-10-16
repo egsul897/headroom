@@ -197,8 +197,8 @@ export type RestrictedPaymentKind = "dividend" | "investment";
 export interface RpWaterfallConfig {
   /** Ordered basket steps drawn down before the ratio gate (e.g. builder basket, then general basket). */
   steps: { code: string }[];
-  /** Which RATIO_GATE provision code gates unlimited capacity for each kind of payment. */
-  ratioGateCodeByKind: Record<RestrictedPaymentKind, string>;
+  /** Which RATIO_GATE provision code gates unlimited capacity for each kind of payment. Null when no gate was compiled for that kind — never invented. */
+  ratioGateCodeByKind: Record<RestrictedPaymentKind, string | null>;
 }
 
 export interface AssetSaleConfig {
