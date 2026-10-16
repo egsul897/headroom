@@ -144,6 +144,9 @@ export async function approveFeedItem(companyId: string, id: string) {
         `LEDGER_ENTRY ${id} is incomplete/invalid (bad ${ledgerProblems.join(", ")}). Refused — item left PENDING.`,
       );
     }
+    // Narrowing guard: the problems check above already threw on a
+    // bad date, but TS cannot connect the two — make it explicit.
+    if (!ledgerDate) throw new Error(`LEDGER_ENTRY ${id} has no valid date. Refused — item left PENDING.`);
     await prisma.ledgerEntry.create({
       data: {
         companyId,
