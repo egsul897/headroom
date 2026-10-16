@@ -13,6 +13,7 @@ export type MonitoringAlertKind =
   | "MISSING_DOCUMENTS"
   | "ANALYSIS_FAILED"
   | "STALE_ANALYSIS"
+  | "STALLED_ANALYSIS"
   | "AMENDMENT_UNRESOLVED"
   | "RULEBOOK_NOT_EXECUTABLE"
   | "MISSING_FINANCIALS"
@@ -28,6 +29,7 @@ export interface MonitoringAlert {
 }
 
 import { staleAnalysisAlerts } from "./stale-analysis-alerts";
+import { stalledAnalysisAlerts } from "./stalled-analysis-alerts";
 
 export interface MonitoringFeed {
   companyId: string;
@@ -68,6 +70,7 @@ export async function loadMonitoringFeed(companyId: string): Promise<MonitoringF
   }
 
   alerts.push(...staleAnalysisAlerts(docs));
+  alerts.push(...stalledAnalysisAlerts(docs));
 
   if (amendment?.operativeResolution === "UNRESOLVED_PRECEDENCE") {
     alerts.push({

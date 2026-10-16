@@ -28,6 +28,8 @@ export interface CustomerDocumentIntelligence {
   analysisOk: boolean;
   analysisError: string | null;
   declaredType: string | null;
+  /** Row last-write time — monitoring uses it to detect stalled PENDING analyses. */
+  updatedAt: string;
   /** True when a stored summary predates the current analyzer build. */
   analysisStale: boolean;
 }
@@ -81,6 +83,7 @@ export async function listCustomerDocumentIntelligence(
       analysisOk,
       analysisError: analysisErrorFromMetadata(row.metadata),
       declaredType: typeof meta.declaredType === "string" ? meta.declaredType : null,
+      updatedAt: row.updatedAt.toISOString(),
       analysisStale: isSummaryStale(summary),
     };
   });
