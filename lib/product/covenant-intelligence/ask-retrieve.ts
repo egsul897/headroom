@@ -13,7 +13,7 @@ import { isSummaryStale, summarizeFromStoredMetadata, type CovenantSummaryItem, 
 import type { AmendmentPackageView } from "../customer-intelligence/amendment-package";
 import { isSubstantiveFinancingPrecedent } from "./corpus-quality";
 import { retrievalTruncationNote } from "./retrieval-truncation-note";
-import { staleAnalysisNote } from "./ask-stale-note";
+import { staleAnalysisNote, typeMismatchNote } from "./ask-stale-note";
 import { matchingProvisionsTruncationNote } from "./ask-truncation-note";
 import { parseProposedAmount } from "./parse-proposed-amount";
 
@@ -619,11 +619,23 @@ export async function answerFromCorpus(params: {
 
   const items: Array<CovenantSummaryItem & { sourceId: string }> = [];
   const staleTitles: string[] = [];
+  const mismatchTitles: string[] = [];
   for (const row of scoped) {
     const summary = summarizeFromStoredMetadata(row.metadata);
     if (!summary) continue;
     // Rule 55: Ask must disclose stale analyses it relied on.
     if (isSummaryStale(summary)) staleTitles.push(row.documentTitle);
+    // Rule 124: same pattern for declared-vs-classified mismatch —
+    // the answer cites this document, so the answer must carry
+    // the signal. declaredType lives in row metadata (rule 118).
+    const rowMeta =
+      row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+        ? (row.metadata as Record<string, unknown>)
+        : {};
+    const declared = typeof rowMeta.declaredType === "string" ? rowMeta.declaredType : null;
+    if (declared && row.documentClass && row.documentClass !== declared) {
+      mismatchTitles.push(`${row.documentTitle} (declared ${declared}, analyzed as ${row.documentClass})`);
+    }
     const meta =
       row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
         ? (row.metadata as Record<string, unknown>)
@@ -663,6 +675,7 @@ export async function answerFromCorpus(params: {
   const extraNotes = [
     !params.sourceId ? retrievalTruncationNote({ totalCount, searchedCount: rows.length }) : null,
     staleAnalysisNote(staleTitles),
+    typeMismatchNote(mismatchTitles),
   ].filter((n): n is string => n != null);
   if (extraNotes.length === 0) return ask;
   return {
