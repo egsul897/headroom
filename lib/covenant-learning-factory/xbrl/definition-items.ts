@@ -36,6 +36,60 @@ export function findDefinitionText(text: string, term: string): string | null {
   return t.slice(m.index, m.index + end).trim();
 }
 
+/**
+ * The agreement's primary EBITDA-family earnings measure: a defined term whose body is a net-income
+ * (or EBIT) schedule with interest/tax and D&A-style add-backs. Labels vary (EBITDA, Consolidated
+ * Adjusted EBITDA, Consolidated Cash Flow, EBITDAX, …). Excess Cash Flow, Acquired/Disposed EBITDA,
+ * LTM wrappers, and Pro Forma-only wrappers are never selected. Prefer Consolidated EBITDA when present.
+ */
+export function findEbitdaMeasureTerm(text: string): string | null {
+  const t = plainText(text);
+  const hits: Array<{ term: string; rank: number }> = [];
+  const opener = /"\s*([^"]{2,80}?)\s*"\s*(?:shall\s+)?(?:mean|means|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\b/gi;
+  for (const m of t.matchAll(opener)) {
+    const term = m[1]!.replace(/\s+/g, " ").trim();
+    const rank = ebitdaMeasureRank(term);
+    if (rank == null) continue;
+    const def = findDefinitionText(text, term);
+    if (!def || !looksLikeEbitdaSchedule(def)) continue;
+    hits.push({ term, rank });
+  }
+  if (!hits.length) return null;
+  hits.sort((a, b) => b.rank - a.rank || a.term.length - b.term.length);
+  return hits[0]!.term;
+}
+
+/** Higher = more preferred primary measure. null = not a candidate label. */
+function ebitdaMeasureRank(term: string): number | null {
+  const n = term.replace(/\s+/g, " ").trim();
+  // Period wrappers / components / excess cash flow / ratios — never the primary schedule.
+  if (/^(?:LTM|TTM|Trailing|Four\s+Quarter)\s+/i.test(n)) return null;
+  if (/\b(?:Acquired|Disposed|Pro\s+Forma|Closing\s+Date|Annualized)\s+/i.test(n)) return null;
+  if (/Excess\s+Cash\s+Flow|Retained\s+Excess|Cash\s+Flow\s+(?:Period|Amount|Application|Priority)|Available\s+for\s+Debt/i.test(n)) return null;
+  if (/\bRatio\b|\bCoverage\b|\bLeverage\b|\bMultiple\b/i.test(n)) return null;
+  if (/^Consolidated\s+EBITDA$/i.test(n)) return 100;
+  if (/^Consolidated\s+Adjusted\s+EBITDA$/i.test(n) || /^Adjusted\s+Consolidated\s+EBITDA$/i.test(n)) return 90;
+  if (/^Consolidated\s+EBITDAX$/i.test(n)) return 85;
+  if (/^EBITDAX$/i.test(n)) return 80;
+  if (/^EBITDA$/i.test(n)) return 78;
+  if (/^Operating\s+EBITDA$/i.test(n)) return 70;
+  if (/^Adjusted\s+EBITDA$/i.test(n)) return 60;
+  if (/^Consolidated\s+Cash\s+Flow$/i.test(n)) return 50;
+  return null;
+}
+
+/** Definition body must read as NI/EBIT + interest-or-tax + D&A/depletion add-backs (not a mere wrapper). */
+function looksLikeEbitdaSchedule(def: string): boolean {
+  const body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\s*,?\s*/i, "");
+  if (!/net\s+income|\bEBIT\b|operating\s+income/i.test(body)) return false;
+  if (!(/\binterest\b|fixed\s+charges/i.test(body) || /\btax(?:es|able)?\b/i.test(body))) return false;
+  if (!/depreciation|amortization|depletion/i.test(body)) return false;
+  // Pro Forma wrapper of another EBITDA term with no own add-back schedule.
+  if (/\bon\s+a\s+Pro\s+Forma\s+Basis\b/i.test(body) && !/\bplus\b|\bincreased\b/i.test(body)) return false;
+  return true;
+}
+
+
 const item = (fin: IssuerFinancials, concept: string): bigint | null => {
   const v = fin.values.find((x) => x.metric === "item" && x.concept === concept);
   return v ? BigInt(v.value) : null;

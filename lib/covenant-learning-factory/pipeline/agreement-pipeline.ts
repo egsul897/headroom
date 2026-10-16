@@ -25,6 +25,7 @@ import type { IssuerFinancials } from "../xbrl/companyfacts";
 import { basketUsage, type FacilityFact } from "../xbrl/instance-debt";
 import { decide, toMetricInput, type BindDecision } from "../xbrl/bind";
 import { debtFromFinancials, leverageDebtCapacity, maxLeverageLimit, optimizeConsolidatedEbitda, type EbitdaOptimization, type LeverageCapacity } from "../xbrl/ebitda-optimizer";
+import { findEbitdaMeasureTerm } from "../xbrl/definition-items";
 
 export const PIPELINE_VERSION = "agreement-pipeline-1";
 
@@ -244,23 +245,26 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
 
   // Consolidated EBITDA optimizer → leverage debt capacity (general rules; no invented inputs).
   if (args.financials && xbrl) {
-    const ebitda = optimizeConsolidatedEbitda("Consolidated EBITDA", tree.text, args.financials);
-    xbrl.ebitda = ebitda;
-    const levRows: Array<{ kind: string; name: string; direction: string | null; limit: string | null }> = headroom.filter((h) => h.kind === "RATIO");
-    for (const r of result.ratios) {
-      if (!/leverage/i.test(r.displayName) || /secured|senior|first\s+lien|interest/i.test(r.displayName)) continue;
-      if (levRows.some((x) => x.name === r.displayName && x.limit != null)) continue;
-      const found = covenantRatioThresholds(tree.text, r.displayName, r.numerator.map((n) => n.metricName), r.denominator.map((n) => n.metricName));
-      for (const f of found) {
-        if (f.comparator !== "NO_GREATER_THAN" || !(f.den > 0)) continue;
-        const limit = f.den === 1 ? String(f.num) : String(f.num / f.den);
-        if (!/^\d+(?:\.\d+)?$/.test(limit)) continue;
-        levRows.push({ kind: "RATIO", name: r.displayName, direction: "MAX", limit });
+    const term = findEbitdaMeasureTerm(tree.text);
+    if (term) {
+      const ebitda = optimizeConsolidatedEbitda(term, tree.text, args.financials);
+      xbrl.ebitda = ebitda;
+      const levRows: Array<{ kind: string; name: string; direction: string | null; limit: string | null }> = headroom.filter((h) => h.kind === "RATIO");
+      for (const r of result.ratios) {
+        if (!/leverage/i.test(r.displayName) || /secured|senior|first\s+lien|interest/i.test(r.displayName)) continue;
+        if (levRows.some((x) => x.name === r.displayName && x.limit != null)) continue;
+        const found = covenantRatioThresholds(tree.text, r.displayName, r.numerator.map((n) => n.metricName), r.denominator.map((n) => n.metricName));
+        for (const f of found) {
+          if (f.comparator !== "NO_GREATER_THAN" || !(f.den > 0)) continue;
+          const limit = f.den === 1 ? String(f.num) : String(f.num / f.den);
+          if (!/^\d+(?:\.\d+)?$/.test(limit)) continue;
+          levRows.push({ kind: "RATIO", name: r.displayName, direction: "MAX", limit });
+        }
       }
+      const lev = maxLeverageLimit(levRows);
+      const debt = debtFromFinancials(args.financials);
+      if (lev != null && debt != null) xbrl.leverageCapacity = leverageDebtCapacity(ebitda, lev, debt);
     }
-    const lev = maxLeverageLimit(levRows);
-    const debt = debtFromFinancials(args.financials);
-    if (lev != null && debt != null) xbrl.leverageCapacity = leverageDebtCapacity(ebitda, lev, debt);
   }
 
   const families: FamilySummary[] = [];
