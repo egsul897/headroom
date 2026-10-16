@@ -156,9 +156,9 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
     if (!spec) break;
     let seg = full.slice(prevEnd, m.index);
     seg = seg.slice(seg.lastIndexOf(";") + 1).slice(-300);
-    const sm = [...seg.matchAll(SCOPE_RE)].pop();
-    // "clause (b)(viii)" is one path: keep the innermost label of each adjacent run.
-    let labels = sm ? [...sm[1]!.matchAll(/(?:\([ivxlA-Za-z\d]{1,5}\))+/g)].map((x) => x[0].slice(x[0].lastIndexOf("("))) : [];
+    // Every scope phrase since the previous condition ("pursuant to this clause (1)(l), together with … pursuant to clauses
+    // (1)(k) and (1)(q)"). "clause (b)(viii)" is one path: keep the innermost label of each adjacent run.
+    let labels = [...seg.matchAll(SCOPE_RE)].flatMap((sm) => [...sm[1]!.matchAll(/(?:\([ivxlA-Za-z\d]{1,5}\))+/g)].map((x) => x[0].slice(x[0].lastIndexOf("("))));
     let withHost = !labels.length;
     const tw = /together\s+with[^,;]{0,200}/i.exec(full.slice(m.index, m.index + 450));
     if (tw) { for (const lm of tw[0].matchAll(LABEL_LIST)) for (const l of lm[1]!.matchAll(/\([ivxlA-Za-z\d]{1,5}\)/g)) labels.push(l[0]); withHost = true; }
@@ -266,10 +266,28 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   // The item list is the style with the longest strictly increasing ordinal run ((a)…(f) beats repeated (i),(ii)).
   const ROMAN: Record<string, number> = { i: 1, v: 5, x: 10, l: 50 };
   const ordinal = (l: string) => { const x = l.slice(1, -1); if (/^\d+$/.test(x)) return +x; if (style(l) === "roman") { let n = 0; for (let k = 0; k < x.length; k++) { const v = ROMAN[x[k]!]!, nx = ROMAN[x[k + 1] ?? ""] ?? 0; n += v < nx ? -v : v; } return n; } return x.toLowerCase().charCodeAt(0) - 96 + 26 * (x.length - 1); };
+  // Letter vs roman by sequence context: "(i)" right after "(h)" (or "(v)" after "(u)", "(x)" after "(w)", "(l)" after
+  // "(k)"), or followed by the next letter ("(x)" then "(y)"), is a letter, unless the following label continues a roman run ("(i)" then "(ii)").
+  const ROMAN_NEXT: Record<string, string> = { "(i)": "(ii)", "(v)": "(vi)", "(x)": "(xi)", "(l)": "(li)" };
+  const meta = new Map<(typeof raw)[number], { st: string; ord: number }>();
+  let lastLower = 0;
+  raw.forEach((r, i) => {
+    const l = r.it.label;
+    let st = style(l), ord = ordinal(l);
+    if (/^\([ivxl]\)$/.test(l)) {
+      const letter = l.charCodeAt(1) - 96;
+      const nextLetter = `(${String.fromCharCode(l.charCodeAt(1) + 1)})`;
+      if ((lastLower === letter - 1 || raw[i + 1]?.it.label === nextLetter) && raw[i + 1]?.it.label !== ROMAN_NEXT[l]) { st = "lower"; ord = letter; }
+    }
+    // Only labels continuing the item sequence move it ("(x)"/"(y)" sub-lists inside an item do not).
+    if (st === "lower" && (ord === 1 || (ord > lastLower && ord <= lastLower + 2))) lastLower = ord;
+    meta.set(r, { st, ord });
+  });
+  const stOf = (r: (typeof raw)[number]) => meta.get(r)!.st, ordOf = (r: (typeof raw)[number]) => meta.get(r)!.ord;
   const run = new Map<string, { last: number; len: number; best: number }>();
   for (const r of raw) {
-    const st = style(r.it.label), o = ordinal(r.it.label), cur = run.get(st) ?? { last: 0, len: 0, best: 0 };
-    cur.len = o === cur.last + 1 ? cur.len + 1 : o === 1 ? 1 : cur.len; cur.last = o === cur.last + 1 || o === 1 ? o : cur.last; cur.best = Math.max(cur.best, cur.len); run.set(st, cur);
+    const st = stOf(r), o = ordOf(r), cur = run.get(st) ?? { last: 0, len: 0, best: 0 };
+    const step = o > cur.last && o <= cur.last + 2; cur.len = step ? cur.len + 1 : o === 1 ? 1 : cur.len; cur.last = step || o === 1 ? o : cur.last; cur.best = Math.max(cur.best, cur.len); run.set(st, cur);
   }
   const top = [...run.entries()].sort((a, b) => b[1].best - a[1].best)[0]?.[0];
   const signTail = /\b(?:plus|minus|less|(?:increased|reduced|decreased)\s+by)\W*$/i;
@@ -277,16 +295,18 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   for (const r of raw) {
     const prev = pairs.at(-1);
     // "the limitation in subclause (ii) above …": a cross-reference, not a new clause — part of the previous segment.
-    if (prev && /\b(?:sub-?)?(?:clauses?|paragraphs?|sections?)\s*$/i.test(prev.full.trim()) && /^\s*(?:above|below|hereof|of\s+this|shall|does|is|are|and|or|,)/i.test(r.full)) { prev.full = `${prev.full} ${r.it.label} ${r.full}`; continue; }
+    // A compound reference "clause (1)(l)" / "clauses (1)(k), (1)(q)" splits at its inner label: rejoin it.
+    const compound = prev && /\b(?:sub-?)?clauses?\b[^;]{0,400}\(\d{1,2}\)\s*$/i.test(prev.full.trim()) && /^\([a-zA-Z]{1,4}\)$/.test(r.it.label);
+    if (prev && (compound || (/\b(?:sub-?)?(?:clauses?|paragraphs?|sections?)\s*$/i.test(prev.full.trim()) && /^\s*(?:above|below|hereof|of\s+this|shall|does|is|are|and|or|,|\))/i.test(r.full)))) { prev.full = `${prev.full}${r.it.label} ${r.full}`.replace(/\((\d{1,2})\)\s+(\([a-zA-Z]{1,4}\))/g, "($1)$2"); continue; }
     // "(d) (x) … and (y) …": a label of the item style that jumps ahead of the item sequence and continues an enumeration
-    // already open inside the previous item ((x) → (y)) is that item's sub-clause, not a new item.
-    if (prev && style(r.it.label) === top && style(prev.it.label) === top && ordinal(r.it.label) > ordinal(prev.it.label) + 2) {
+    // already open inside the previous item ((x) → (y)), or opens an (x)/(y)/(z) list, is that item's sub-clause.
+    if (prev && stOf(r) === top && stOf(prev) === top && ordOf(r) > ordOf(prev) + 2) {
       const before = `(${String.fromCharCode(r.it.label.charCodeAt(1) - 1)}${r.it.label.slice(2, -1)})`;
       const opened = new RegExp(`(?<!clauses?\\s{1,3})${before.replace(/[()]/g, "\\$&")}`).test(`${prev.it.label} ${prev.full}`);
-      if (r.it.label.length === 3 && opened) { prev.full = `${prev.full} ${r.it.label} ${r.full}`; if (r.it.concepts.length && r.it.coverage !== "HEADER") prev.it = { ...prev.it, concepts: [...prev.it.concepts, ...r.it.concepts.filter((c) => !prev.it.concepts.some((x) => x.concept === c.concept))], value: String(BigInt(prev.it.value) + r.it.concepts.filter((c) => !prev.it.concepts.some((x) => x.concept === c.concept)).reduce((a, c) => a + BigInt(c.value), 0n)) }; if (r.it.coverage !== "HEADER" && r.it.coverage !== "FULL" && prev.it.coverage === "FULL") prev.it = { ...prev.it, coverage: "PARTIAL" }; continue; }
+      if (r.it.label.length === 3 && (opened || r.it.label === "(x)")) { if (prev.full.trim().length < 3) prev.it = { ...r.it, label: prev.it.label, sign: prev.it.sign, coverage: r.it.coverage === "HEADER" ? "NONE" : r.it.coverage, concepts: [], value: "0" }; prev.full = `${prev.full} ${r.it.label} ${r.full}`; if (r.it.concepts.length && r.it.coverage !== "HEADER") prev.it = { ...prev.it, concepts: [...prev.it.concepts, ...r.it.concepts.filter((c) => !prev.it.concepts.some((x) => x.concept === c.concept))], value: String(BigInt(prev.it.value) + r.it.concepts.filter((c) => !prev.it.concepts.some((x) => x.concept === c.concept)).reduce((a, c) => a + BigInt(c.value), 0n)) }; if (r.it.coverage !== "HEADER" && r.it.coverage !== "FULL" && prev.it.coverage === "FULL") prev.it = { ...prev.it, coverage: "PARTIAL" }; continue; }
     }
     const emptyLabel = prev && prev.full.trim().length < 3; // "(e) (i) …": the item's text starts with its own sub-clauses
-    if (prev && style(r.it.label) !== top && style(prev.it.label) === top && (prev.it.coverage !== "HEADER" || emptyLabel) && !signTail.test(prev.full)) {
+    if (prev && stOf(r) !== top && stOf(prev) === top && (prev.it.coverage !== "HEADER" || emptyLabel) && !signTail.test(prev.full)) {
       if (emptyLabel) prev.it = { ...r.it, label: prev.it.label, sign: prev.it.sign, coverage: r.it.coverage === "HEADER" ? "NONE" : r.it.coverage };
       prev.full = `${prev.full} ${r.it.label} ${r.full}`;
       if (r.it.coverage !== "HEADER" && r.it.coverage !== "FULL" && prev.it.coverage === "FULL") prev.it = { ...prev.it, coverage: "PARTIAL" };
@@ -323,7 +343,9 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     const capSpec = capSpec0 ? unknownIfExempt(capSpec0) : null;
     // Further caps in the same clause (an own cap plus a shared aggregate cap) all bind; a later cap that names no other
     // clause and repeats the first is the same limit restated.
-    const caps = capSpec ? extractCaps(full, it.label).map((c) => ({ ...c, spec: unknownIfExempt(c.spec) })) : [];
+    // A cap phrase whose amount cannot be parsed is still a cap: indeterminate, never unlimited (claims 0, NEEDS_INPUT).
+    const parsedCaps = capSpec ? extractCaps(full, it.label).map((c) => ({ ...c, spec: unknownIfExempt(c.spec) })) : [];
+    const caps: CapCondition[] = parsedCaps.length || !CAPPED.test(full) ? parsedCaps : [{ spec: { text: "", kind: "UNKNOWN", dollars: [], percents: [], giving: "UNSTATED", sharedWith: [] }, labels: [], withHost: true, at: 0 }];
     let scopeText = full; for (const c of caps) scopeText = scopeText.replace(c.spec.text, " ");
     const cat = categorize(scopeText);
     let concepts: Array<{ concept: string; value: bigint }> = [];
@@ -362,6 +384,9 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     // the adjustment is that exact figure with its sign. Absent fact or compound line → stays NEEDS_INPUT.
     const signed = !bi && !capSpec && (ambiguous || it.sign === "?") ? signedTwoSided(scopeText, fin) : null;
     if (signed) { concepts = [signed]; coverage = "FULL"; mapNote = "two-sided line signed from the exact filed figure"; }
+    // Interest named only inside a parenthetical ("fees … (including any interest expense) related to a receivables
+    // financing") is a slice of interest, never the total interest figure.
+    if (!bi && /\binterest\b/i.test(scopeText) && !/\binterest\b/i.test(scopeText.replace(/\([^()]*\)/g, " "))) concepts = concepts.filter((c) => !/^Interest/i.test(c.concept));
     const fresh = concepts.filter((c) => !used.has(c.concept));
     fresh.forEach((c) => used.add(c.concept));
     // Only charges that reduced net income can be added back: a net credit adds nothing (signed lines keep their sign).

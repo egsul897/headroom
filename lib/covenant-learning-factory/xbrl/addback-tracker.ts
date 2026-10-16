@@ -31,9 +31,10 @@ export interface AddBackFlag {
   /**
    * Upper limit on what confirming this flag could still add. CAP_HEADROOM: the clause's remaining cap room (EBITDA)
    * and maxLeverage × that (debt). UNCAPPED_NEEDS_INPUT: no cap and no filed figure — unknown, never estimated.
+   * CAP_UNKNOWN: under a cap whose amount cannot be determined (bounded, by an unknown amount).
    * COUNTED: the filed figure is already counted in full; nothing further to unlock.
    */
-  potential: { basis: "CAP_HEADROOM" | "UNCAPPED_NEEDS_INPUT" | "COUNTED" | "SIGNED_NEEDS_INPUT" | "SHARED_CAP"; ebitda: string | null; debt: string | null };
+  potential: { basis: "CAP_HEADROOM" | "CAP_UNKNOWN" | "UNCAPPED_NEEDS_INPUT" | "COUNTED" | "SIGNED_NEEDS_INPUT" | "SHARED_CAP"; ebitda: string | null; debt: string | null };
   /**
    * One cap shared by several clauses: the room is shown once, on the group leader (first clause); the other members
    * carry basis SHARED_CAP (no separate amount) and point to the same group. Confirming several members can never add
@@ -98,7 +99,7 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
       confidence: detected ? (l.coverage === "FULL" || l.status !== "NEEDS_INPUT" ? "HIGH" : "MEDIUM") : "LOW",
       note: detected ? (l.coverage === "FULL" || l.status !== "NEEDS_INPUT" ? (l.status === "CAPPED" ? "exact filed figure; cap applied" : "exact filed figure") : "partly evidenced; remainder needs input") : "permitted by the definition; no filed movement detected — available, check with CFO",
       inputKey: addBackInputKey(opt.addBacks, position),
-      potential: potentialOf(l.headroomToCap, detected && (l.coverage === "FULL" || l.status !== "NEEDS_INPUT"), lev),
+      potential: potentialOf(l.headroomToCap, detected && (l.coverage === "FULL" || l.status !== "NEEDS_INPUT"), lev, l.cap != null),
       position,
       capGroup: l.capGroup && l.capGroup.length > 1 ? { id: `CAP@${(l.capGroupAt ?? []).join("+")}:${l.capGroup.join("+")}`, labels: l.capGroup, leader: l.capGroup[0]!, room: l.headroomToCap, positions: l.capGroupAt ?? [], leaderPosition: (l.capGroupAt ?? [position])[0]! } : null,
       ...(opt.bindingTier ? { bindingTier: opt.bindingTier } : {}),
@@ -131,12 +132,14 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
   return flags;
 }
 
-function potentialOf(headroom: string | null, counted: boolean, lev: string | null): AddBackFlag["potential"] {
+function potentialOf(headroom: string | null, counted: boolean, lev: string | null, capped = false): AddBackFlag["potential"] {
   if (headroom != null && /^-?\d+$/.test(headroom)) {
     const h = BigInt(headroom) > 0n ? BigInt(headroom) : 0n;
     return { basis: "CAP_HEADROOM", ebitda: h.toString(), debt: lev ? mulLimit(lev, h).toString() : null };
   }
   if (counted) return { basis: "COUNTED", ebitda: "0", debt: lev ? "0" : null };
+  // Under a cap whose room cannot be determined: limited, but by an unknown amount (never treated as uncapped).
+  if (capped) return { basis: "CAP_UNKNOWN", ebitda: null, debt: null };
   return { basis: "UNCAPPED_NEEDS_INPUT", ebitda: null, debt: null };
 }
 
@@ -148,7 +151,7 @@ function potentialOf(headroom: string | null, counted: boolean, lev: string | nu
 export function rankFlags(flags: readonly AddBackFlag[]): Array<AddBackFlag & { rank: number }> {
   const leaderOf = (f: AddBackFlag) => (f.capGroup ? flags.find((x) => x.capGroup?.id === f.capGroup!.id && x.position === f.capGroup!.leaderPosition) ?? f : f);
   const eff = (f: AddBackFlag) => (f.potential.basis === "SHARED_CAP" ? leaderOf(f) : f);
-  const tier = (f0: AddBackFlag) => { const f = eff(f0); return f.potential.basis === "CAP_HEADROOM" ? 0 : f.potential.basis === "UNCAPPED_NEEDS_INPUT" ? 1 : f.potential.basis === "SIGNED_NEEDS_INPUT" ? 2 : 3; };
+  const tier = (f0: AddBackFlag) => { const f = eff(f0); return f.potential.basis === "CAP_HEADROOM" ? 0 : f.potential.basis === "UNCAPPED_NEEDS_INPUT" || f.potential.basis === "CAP_UNKNOWN" ? 1 : f.potential.basis === "SIGNED_NEEDS_INPUT" ? 2 : 3; };
   const mag = (f0: AddBackFlag) => { const f = eff(f0); return BigInt(f.potential.debt ?? f.potential.ebitda ?? "0"); };
   const grp = (f: AddBackFlag) => f.capGroup?.id ?? `#${flags.indexOf(f)}`;
   const isMember = (f: AddBackFlag) => (f.potential.basis === "SHARED_CAP" ? 1 : 0);

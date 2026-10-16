@@ -13,9 +13,10 @@ const div = (a: Q, b: Q) => q(a.n * b.d, a.d * b.n);
 const cmp = (a: Q, b: Q) => { const x = a.n * b.d - b.n * a.d; return x < 0n ? -1 : x > 0n ? 1 : 0; };
 const ZERO = q(0n);
 
+export const MAX_ITER = 10_000;
 export interface CapLpResult { x: bigint[]; value: bigint; integral: boolean; exactValue: { num: bigint; den: bigint } }
 
-export function solveCapLp(upper: readonly bigint[], caps: ReadonlyArray<{ members: readonly number[]; amount: bigint }>): CapLpResult {
+export function solveCapLp(upper: readonly bigint[], caps: ReadonlyArray<{ members: readonly number[]; amount: bigint }>, maxIter = MAX_ITER): CapLpResult {
   const n = upper.length;
   const rows: Array<{ a: bigint[]; b: bigint }> = [
     ...upper.map((u, i) => ({ a: upper.map((_, j) => (j === i ? 1n : 0n)), b: u < 0n ? 0n : u })),
@@ -25,9 +26,11 @@ export function solveCapLp(upper: readonly bigint[], caps: ReadonlyArray<{ membe
   const T: Q[][] = rows.map((r, i) => [...r.a.map((v) => q(v)), ...Array.from({ length: m }, (_, k) => q(k === i ? 1n : 0n)), q(r.b)]);
   const z: Q[] = [...Array.from({ length: n }, () => q(-1n)), ...Array.from({ length: m }, () => ZERO), ZERO]; // z_j − c_j
   const basis = Array.from({ length: m }, (_, i) => n + i);
-  for (let iter = 0; iter < 10_000; iter++) {
+  for (let iter = 0; ; iter++) {
     const enter = z.slice(0, cols).findIndex((v) => cmp(v, ZERO) < 0);
     if (enter < 0) break;
+    // Bland's rule cannot cycle; hitting the guard means a bug — never return an unproven allocation.
+    if (iter >= maxIter) throw new Error(`cap LP did not converge within ${maxIter} pivots`);
     let leave = -1; let best: Q | null = null;
     for (let i = 0; i < m; i++) {
       if (cmp(T[i]![enter]!, ZERO) <= 0) continue;
