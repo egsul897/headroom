@@ -172,6 +172,16 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
                         <Chip tone="trip">STALE — re-analyze</Chip>
                       </>
                     )}
+                    {/* Rule 119: rule 118's type mismatch must surface
+                        on the list too — triage happens here, and a
+                        mismatch hidden behind each detail page is easy
+                        to miss. */}
+                    {intel.declaredType && intel.documentClass && intel.documentClass !== intel.declaredType && (
+                      <>
+                        {" "}
+                        <Chip tone="trip">TYPE MISMATCH — declared {intel.declaredType}, analyzed as {intel.documentClass}</Chip>
+                      </>
+                    )}
                   </>
                 ) : (
                   <Chip tone="idle">Not yet analyzed</Chip>
