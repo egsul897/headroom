@@ -54,14 +54,42 @@ export function compareAmendmentSummaries(params: {
   const baseItems = params.items.filter((i) => baseIds.has(i.sourceId));
   const amdItems = params.items.filter((i) => amdIds.has(i.sourceId));
 
-  const baseBySec = new Map(baseItems.map((i) => [i.sectionRef, i]));
-  const amdBySec = new Map(amdItems.map((i) => [i.sectionRef, i]));
+  // Group by ref — do NOT collapse with a Map keyed by ref: one
+  // document can legitimately carry two items under the same ref
+  // (base + amendment versions of §6.01 in a single PDF), and two
+  // base docs can share a ref. Collapsing silently picked one and
+  // could emit a bindable SHIFT/ADDED row from an arbitrary pick.
+  const groupByRef = (list: ItemWithDoc[]): Map<string, ItemWithDoc[]> => {
+    const m = new Map<string, ItemWithDoc[]>();
+    for (const i of list) m.set(i.sectionRef, [...(m.get(i.sectionRef) ?? []), i]);
+    return m;
+  };
+  const baseBySec = groupByRef(baseItems);
+  const amdBySec = groupByRef(amdItems);
   const allSecs = Array.from(new Set([...baseBySec.keys(), ...amdBySec.keys()])).sort();
 
   const rows: AmendmentCompareRow[] = [];
   for (const sec of allSecs) {
-    const b = baseBySec.get(sec);
-    const a = amdBySec.get(sec);
+    const bList = baseBySec.get(sec) ?? [];
+    const aList = amdBySec.get(sec) ?? [];
+    const b = bList[0];
+    const a = aList[0];
+    if (bList.length > 1 || aList.length > 1) {
+      // Duplicate refs on either side: the comparison is ambiguous.
+      // Emit BOTH_PRESENT (never a bindable kind) with a duplicate
+      // note so the resolver cannot bind from a collapsed pick.
+      rows.push({
+        sectionRef: sec,
+        category: (a ?? b)!.category,
+        changeKind: "BOTH_PRESENT",
+        baseHeading: b?.heading,
+        amendmentHeading: a?.heading,
+        baseExcerpt: b?.operativeLanguageExcerpt.slice(0, 180),
+        amendmentExcerpt: a?.operativeLanguageExcerpt.slice(0, 180),
+        note: `Section ${sec} appears ${bList.length > 1 ? `${bList.length} times in base analysis` : ""}${bList.length > 1 && aList.length > 1 ? " and " : ""}${aList.length > 1 ? `${aList.length} times in amendment analysis` : ""} (duplicate section refs) — comparison not bound; counsel review required.`,
+      });
+      continue;
+    }
     if (b && !a) {
       rows.push({
         sectionRef: sec,
