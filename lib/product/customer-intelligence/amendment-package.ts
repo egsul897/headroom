@@ -154,7 +154,20 @@ export function analyzeAmendmentPackage(params: {
     operativeResolution = "NO_DOCUMENTS";
     unresolvedReasons.push("No customer documents analyzed yet.");
   } else if (sources.length === 1) {
-    operativeResolution = "SINGLE_DOCUMENT";
+    // A lone amendment-type document is NOT a resolved single-doc
+    // package: by class it amends a base agreement that is not in
+    // the package. SINGLE_DOCUMENT would bypass the
+    // unresolved-precedence guards. A lone RESTATEMENT stays
+    // SINGLE_DOCUMENT — a restatement IS the full agreement.
+    const only = sources[0]!;
+    if (AMENDMENT_CLASSES.has(only.documentClass) && only.documentClass !== "RESTATEMENT") {
+      operativeResolution = "UNRESOLVED_PRECEDENCE";
+      unresolvedReasons.push(
+        "Only an amendment-type document is present — the base agreement it amends is not in the package, so operative precedence cannot be resolved.",
+      );
+    } else {
+      operativeResolution = "SINGLE_DOCUMENT";
+    }
   } else if (bases.length === 0) {
     operativeResolution = "UNRESOLVED_PRECEDENCE";
     unresolvedReasons.push("No clear base credit agreement / indenture identified among uploads.");
