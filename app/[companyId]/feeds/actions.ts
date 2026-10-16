@@ -127,10 +127,27 @@ export async function approveFeedItem(companyId: string, id: string) {
     }
   } else if (item.kind === "LEDGER_ENTRY") {
     const payload = item.payload as unknown as FeedQueueLedgerPayload;
+    // Rule 117: the SNAPSHOT_UPDATE branch validates its payload
+    // fail-closed — the ledger branch must too, instead of
+    // letting a malformed queued payload die opaquely at Prisma.
+    const validBaskets = ["EQUITY", "DEBT_INCUR", "DEBT_REPAY", "ASSET_SALE", "DIVIDEND", "INVESTMENT"];
+    const ledgerDate = typeof payload?.date === "string" && payload.date.trim() !== "" ? new Date(payload.date) : null;
+    const ledgerProblems: string[] = [];
+    if (!ledgerDate || Number.isNaN(ledgerDate.getTime())) ledgerProblems.push("date");
+    if (typeof payload?.description !== "string" || payload.description.trim() === "") ledgerProblems.push("description");
+    if (!validBaskets.includes(payload?.basket)) ledgerProblems.push("basket");
+    if (typeof payload?.amount !== "number" || !Number.isFinite(payload.amount) || payload.amount <= 0) ledgerProblems.push("amount");
+    if (payload?.direction !== "CREDIT" && payload?.direction !== "DEBIT") ledgerProblems.push("direction");
+    if (typeof payload?.source !== "string" || payload.source.trim() === "") ledgerProblems.push("source");
+    if (ledgerProblems.length > 0) {
+      throw new Error(
+        `LEDGER_ENTRY ${id} is incomplete/invalid (bad ${ledgerProblems.join(", ")}). Refused — item left PENDING.`,
+      );
+    }
     await prisma.ledgerEntry.create({
       data: {
         companyId,
-        date: new Date(payload.date),
+        date: ledgerDate,
         description: payload.description,
         basket: payload.basket,
         amount: payload.amount,
