@@ -675,3 +675,85 @@ describe("generalization: rule 179 — shared aggregate caps are one basket", ()
     expect(group.items[0]).toEqual({ op: "CONST", value: 20, label: "Shared aggregate cap (6.01(e))" });
   });
 });
+
+describe("generalization: rule 180 — maintenance ratio provisions", () => {
+  const ratioItem = (plainEnglish: string, baskets: string[], excerpt = "") =>
+    ({
+      heading: "6.14",
+      plainEnglish,
+      materialBasketsThresholds: baskets,
+      operativeLanguageExcerpt: excerpt,
+    }) as unknown as Parameters<
+      typeof import("../../lib/product/customer-intelligence/maintenance-ratio").parseMaintenanceRatio
+    >[0];
+
+  it("mints a flat leverage test", async () => {
+    const { parseMaintenanceRatio } = await import(
+      "../../lib/product/customer-intelligence/maintenance-ratio"
+    );
+    expect(
+      parseMaintenanceRatio(
+        ratioItem(
+          "The Borrower shall not permit the Total Net Leverage Ratio to exceed 4.00 to 1.00 at any quarter end.",
+          ["Ratio threshold: 4.00 to 1.00"],
+        ),
+      ),
+    ).toEqual({ formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 4, debtBasis: "total" });
+  });
+
+  it("mints a flat coverage test", async () => {
+    const { parseMaintenanceRatio } = await import(
+      "../../lib/product/customer-intelligence/maintenance-ratio"
+    );
+    expect(
+      parseMaintenanceRatio(
+        ratioItem(
+          "The Borrower shall maintain a Consolidated Interest Coverage Ratio of not less than 2.50 to 1.00.",
+          ["Ratio threshold: 2.50 to 1.00"],
+        ),
+      ),
+    ).toEqual({ formulaType: "COVERAGE_RATIO_ROOM", thresholdValue: 2.5 });
+  });
+
+  it("refuses a stepped schedule (several distinct thresholds)", async () => {
+    const { parseMaintenanceRatio } = await import(
+      "../../lib/product/customer-intelligence/maintenance-ratio"
+    );
+    expect(
+      parseMaintenanceRatio(
+        ratioItem(
+          "Leverage Ratio shall not exceed 4.75 to 1.00, then 4.50 to 1.00, then 4.25 to 1.00.",
+          ["Ratio threshold: 4.75 to 1.00", "Ratio threshold: 4.50 to 1.00", "Ratio threshold: 4.25 to 1.00"],
+        ),
+      ),
+    ).toBeNull();
+  });
+
+  it("refuses conflated tests (leverage + coverage in one item)", async () => {
+    const { parseMaintenanceRatio } = await import(
+      "../../lib/product/customer-intelligence/maintenance-ratio"
+    );
+    expect(
+      parseMaintenanceRatio(
+        ratioItem(
+          "The Borrower shall maintain an Interest Coverage Ratio of not less than 2.00 to 1.00 and shall not permit the Total Net Leverage Ratio to exceed 2.00 to 1.00.",
+          ["Ratio threshold: 2.00 to 1.00"],
+        ),
+      ),
+    ).toBeNull();
+  });
+
+  it("refuses a leverage test with a coverage direction", async () => {
+    const { parseMaintenanceRatio } = await import(
+      "../../lib/product/customer-intelligence/maintenance-ratio"
+    );
+    expect(
+      parseMaintenanceRatio(
+        ratioItem(
+          "The Borrower shall maintain a Total Net Leverage Ratio of not less than 4.00 to 1.00.",
+          ["Ratio threshold: 4.00 to 1.00"],
+        ),
+      ),
+    ).toBeNull();
+  });
+});

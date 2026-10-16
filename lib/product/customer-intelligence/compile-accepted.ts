@@ -13,6 +13,7 @@ import {
 import { parseMoneyMillions, parsePctOf, parseRatio } from "./money";
 import { buildCapacityFormulas, type SharedCapGroup } from "./capacity-formulas";
 import { detectSharedCapGroup } from "./shared-cap";
+import { parseMaintenanceRatio } from "./maintenance-ratio";
 import { buildRpWaterfall } from "./rp-waterfall";
 import { grantTypesForItem } from "./grant-types";
 import { permissionCode, permissionCodePrefix } from "./permission-code";
@@ -352,6 +353,18 @@ export async function compileAcceptedInterpretation(params: {
         relationshipType: "AUTOMATIC_LINKED_PERMISSION",
       },
     });
+    // Rule 180: a rejected section's maintenance ratio provision
+    // is superseded too (it has no Permission, so the loop above
+    // never touches it — without this a rejected ratio test would
+    // keep gating transactions).
+    await prisma.covenantProvision.updateMany({
+      where: {
+        companyId: params.companyId,
+        code: permissionCode(params.sourceId, params.sectionRef, "RATIO"),
+        effectiveTo: null,
+      },
+      data: { effectiveTo: now },
+    });
     // Rule 179: a rejected section leaves its shared-cap group
     // (other members may remain) but drops its own membership —
     // a superseded Permission must not bind the group's elections.
@@ -390,6 +403,50 @@ export async function compileAcceptedInterpretation(params: {
 
   const grants = grantTypesForItem(item);
   if (!grants.length) {
+    // Rule 180: a financial-maintenance covenant is a TEST, not a
+    // grant — it never mints a Permission. When it carries exactly
+    // one unambiguous ratio test it mints a CovenantProvision that
+    // buildDebtRatioTests evaluates pro forma. Stepped schedules
+    // and conflated tests return null (fail-closed, no provision).
+    if (params.category === "FINANCIAL_MAINTENANCE") {
+      const ratio = parseMaintenanceRatio(item);
+      if (!ratio) {
+        return [
+          {
+            status: "INCOMPLETE",
+            missingFields: ["single unambiguous ratio test"],
+            message:
+              "Maintenance item has no single unambiguous ratio test (stepped schedule, conflated tests, or ambiguous direction) — no ratio provision minted; counsel must split or clarify it.",
+          },
+        ];
+      }
+      const ratioCode = permissionCode(params.sourceId, params.sectionRef, "RATIO");
+      const existingRatio = await prisma.covenantProvision.findFirst({
+        where: { companyId: params.companyId, documentId, code: ratioCode, effectiveTo: null },
+      });
+      await upsertCounselProvision({
+        companyId: params.companyId,
+        documentId,
+        code: ratioCode,
+        basketName: `${item.heading} (maintenance ratio test)`.slice(0, 200),
+        sectionRef: params.sectionRef,
+        formulaType: ratio.formulaType,
+        thresholdValue: ratio.thresholdValue,
+        params: ratio.formulaType === "LEVERAGE_RATIO_ROOM" ? { debtBasis: ratio.debtBasis ?? "total" } : {},
+        notes: `Counsel ${params.decision} ${new Date().toISOString()}. Maintenance ratio test — not a grant of capacity; evaluated by buildDebtRatioTests. Source ${params.sourceId}. ${item.sourceCitation ?? ""}`.trim(),
+      });
+      return [
+        {
+          status: existingRatio ? "UPDATED" : "COMPILED",
+          code: ratioCode,
+          formulaType: ratio.formulaType,
+          thresholdValue: ratio.thresholdValue,
+          modelingStatus: "MODELED",
+          missingFields: [],
+          message: `Compiled maintenance ratio provision ${ratioCode}`,
+        },
+      ];
+    }
     // No grant-type signal (e.g. asset-sale / merger covenant) — do
     // not mint a wrong-typed Permission. Previously this defaulted
     // to DEBT_INCURRENCE and inflated debt capacity.
