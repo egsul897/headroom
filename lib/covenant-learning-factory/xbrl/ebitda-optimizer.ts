@@ -56,7 +56,7 @@ export function hardAddBackCarveOut(t: string): boolean {
 
 export function categorize(t: string): AddBackCategory {
   if (/run[- ]rate|cost\s+savings|synerg|operating\s+expense\s+reductions/i.test(t)) return "RUN_RATE_SYNERGIES";
-  if (/(?:stock|equity|share)[- ]based\s+compensation|stock\s+options?|equity\s+awards?/i.test(t)) return "STOCK_COMP";
+  if (/(?:stock|equity|share)[- ]based\s+compensation|stock\s+options?|equity\s+awards?|non-?cash\s+(?:stock\s+)?compensation|stock\s+compensation/i.test(t)) return "STOCK_COMP";
   // "minority / non-controlling interest" (incl. "minority interest expense") is equity attribution, not borrowing cost.
   const minorityInterest = /\b(?:minority|non-?controlling)\s+interest\b/i.test(t);
   // Interest expense lines often say "inclusive of amortization of premiums / deferred financing" — that is INTEREST, not D&A.

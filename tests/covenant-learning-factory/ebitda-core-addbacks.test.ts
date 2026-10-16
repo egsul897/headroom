@@ -244,4 +244,22 @@ describe("base promotion and invent-safe CNI extinguishment", () => {
     expect(o.reason).not.toMatch(/asset sales/i);
     expect(o.supported).not.toBeNull();
   });
+
+  it("non-cash / stock compensation maps to ShareBasedCompensation", () => {
+    expect(categorize("stock compensation expense")).toBe("STOCK_COMP");
+    expect(categorize("the amount of any non-cash compensation deduction")).toBe("STOCK_COMP");
+    const text =
+      `"Consolidated Net Income" means the net income of the Issuer. ` +
+      `"Consolidated EBITDA" means Consolidated Net Income plus (a) taxes; plus (b) interest expense; plus (c) depreciation and amortization; plus (d) stock compensation expense. ` +
+      `"Default" means any event.`;
+    const o = optimizeConsolidatedEbitda(
+      "Consolidated EBITDA",
+      text,
+      fin({ ...XBRL, ShareBasedCompensation: 12 * M }),
+    );
+    const sc = o.addBacks.find((a) => a.label === "(d)")!;
+    expect(sc.category).toBe("STOCK_COMP");
+    expect(sc.coverage).not.toBe("NONE");
+    expect(Number(sc.evidenced)).toBe(12 * M);
+  });
 });
