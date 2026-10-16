@@ -308,6 +308,17 @@ export default async function DocumentSourcePage({
         </Card>
       )}
 
+      {intel && intel.analysisOk && summaryItems.length === 0 && (
+        <Card>
+          <div className="card-title">No covenant summaries</div>
+          <div className="card-subtitle">
+            Analysis completed without producing covenant summaries. This does not mean the document
+            has no covenants — if this is a financing document, its covenants were not captured;
+            request review.
+          </div>
+        </Card>
+      )}
+
       <div id="source-text">
       <Card>
         <div className="card-title">Source text</div>

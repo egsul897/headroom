@@ -34,7 +34,7 @@ vi.mock("../../lib/prisma", () => {
 
 process.env.CLF_AGREEMENT_PIPELINE = "0";
 
-import { analyzeCustomerDocument } from "../../lib/product/customer-intelligence/analyze-upload";
+import { analyzeCustomerDocument, emptyAnalysisReason, isEmptyAnalysis } from "../../lib/product/customer-intelligence/analyze-upload";
 
 const EMPTY_DOC = "This is a cover letter. Please find enclosed our annual report. Thank you for your time.";
 
@@ -77,5 +77,58 @@ describe("upload empty-analysis rule", () => {
     });
     expect(result.ok).toBe(true);
     expect(result.covenantItemCount).toBeGreaterThan(0);
+  });
+});
+
+describe("rule 156: structured but covenantless is a discovery failure", () => {
+  it("isEmptyAnalysis fires on substantial structure with zero covenant items", () => {
+    expect(isEmptyAnalysis({ covenantItemCount: 0, structuralNodeCount: 25, definitionCount: 0 })).toBe(true);
+    expect(emptyAnalysisReason({ covenantItemCount: 0, structuralNodeCount: 25, definitionCount: 0 })).toMatch(
+      /no covenant items despite parsing 25 structural nodes/i,
+    );
+  });
+
+  it("isEmptyAnalysis fires when candidates all got dropped by summarization", () => {
+    expect(
+      isEmptyAnalysis({ covenantItemCount: 0, structuralNodeCount: 5, definitionCount: 0, covenantCandidateCount: 3 }),
+    ).toBe(true);
+  });
+
+  it("isEmptyAnalysis still passes a short waiver with a small section tree", () => {
+    expect(isEmptyAnalysis({ covenantItemCount: 0, structuralNodeCount: 5, definitionCount: 0 })).toBe(false);
+  });
+
+  it("isEmptyAnalysis still passes when at least one covenant item exists", () => {
+    expect(isEmptyAnalysis({ covenantItemCount: 1, structuralNodeCount: 25, definitionCount: 0 })).toBe(false);
+  });
+
+  it("fails a large administrative document with many sections but no covenants", async () => {
+    // 30 administrative sections: plenty of parsed structure, zero
+    // covenant items. Before rule 156 this succeeded with an empty
+    // covenant list — "ANALYZED · 0 summaries" — indistinguishable
+    // from "this document has no covenants."
+    const headings = [
+      "Notices", "Governing Law", "Counterparts", "Severability", "Miscellaneous",
+      "Trustee", "Paying Agent", "Registrar", "Authenticating Agent", "Waiver of Jury Trial",
+    ];
+    const sections: string[] = [];
+    for (let i = 0; i < 30; i++) {
+      const num = `1.${String(i + 1).padStart(2, "0")}`;
+      sections.push(
+        `Section ${num} ${headings[i % headings.length]}. All communications under this instrument shall be delivered in writing to the address set forth in the notice provisions. Any party may change its address by written notice to the other parties. Delivery shall be deemed effective upon receipt during normal business hours.`,
+      );
+    }
+    const result = await analyzeCustomerDocument({
+      companyId: "co-1",
+      documentId: "doc-admin",
+      bytes: Buffer.from(sections.join("\n\n"), "utf8"),
+      filename: "administrative-provisions.txt",
+    });
+    expect(result.structuralNodeCount).toBeGreaterThanOrEqual(20);
+    expect(result.covenantItemCount).toBe(0);
+    expect(result.ok).toBe(false);
+    expect(result.error).toMatch(/no covenant items despite parsing/i);
+    const meta = upsertCalls.at(-1)?.metadata as Record<string, unknown> | undefined;
+    expect(meta?.processingStatus).toBe("FAILED_RETRYABLE");
   });
 });

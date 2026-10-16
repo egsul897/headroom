@@ -38,15 +38,57 @@ function customerSourceId(companyId: string, documentId: string, contentHash: st
  * "we could not read the document." A document with structure but no
  * covenants (e.g. a short waiver with a section tree) still succeeds —
  * the rule fires only on total emptiness.
+ *
+ * Rule 156: total emptiness is not the only silent-success shape.
+ * Phase-2 precedent aggregates showed discovery failure at scale
+ * (DISCOVERY_GAP the dominant scoreboard class, 13,581 findings): a
+ * large structured document whose covenant discovery finds NOTHING
+ * used to succeed with an empty covenant list, because the old guard
+ * fired only when structural nodes were also zero. A real indenture
+ * or credit agreement has hundreds of nodes and always carries
+ * covenants; a short waiver has a handful. Zero covenant items with
+ * substantial parsed structure — or candidates that all got dropped
+ * by summarization — is a discovery failure, not a covenant-free
+ * document, and fails the same way.
  */
+/** Parsed-structure count above which "zero covenant items" means discovery failed. */
+export const SUBSTANTIAL_STRUCTURE_NODES = 20;
+
+export function emptyAnalysisReason(args: {
+  covenantItemCount: number;
+  structuralNodeCount: number;
+  definitionCount: number;
+  covenantCandidateCount?: number;
+}): string | null {
+  if (
+    args.covenantItemCount === 0 &&
+    args.structuralNodeCount === 0 &&
+    args.definitionCount === 0
+  ) {
+    return "Analysis found no covenant structure (no covenant items, no structural nodes, no definitions) — document may not be a debt document or extraction failed. Re-upload or request review.";
+  }
+  if (
+    args.covenantItemCount === 0 &&
+    args.structuralNodeCount >= SUBSTANTIAL_STRUCTURE_NODES
+  ) {
+    return `Analysis found no covenant items despite parsing ${args.structuralNodeCount} structural nodes — covenant discovery failed for this document. Re-upload or request review; do not treat the empty list as "no covenants".`;
+  }
+  if (
+    args.covenantItemCount === 0 &&
+    (args.covenantCandidateCount ?? 0) > 0
+  ) {
+    return `Analysis found ${args.covenantCandidateCount} covenant candidates but none survived summarization — covenant discovery failed for this document. Re-upload or request review; do not treat the empty list as "no covenants".`;
+  }
+  return null;
+}
+
 export function isEmptyAnalysis(args: {
   covenantItemCount: number;
   structuralNodeCount: number;
   definitionCount: number;
+  covenantCandidateCount?: number;
 }): boolean {
-  return (
-    args.covenantItemCount === 0 && args.structuralNodeCount === 0 && args.definitionCount === 0
-  );
+  return emptyAnalysisReason(args) !== null;
 }
 
 /** Map human-declared DocumentType onto KF debt classes when classifier returns UNKNOWN. */function documentClassFromDeclared(
@@ -578,11 +620,13 @@ export async function analyzeCustomerDocument(params: {
       priorApprovals,
     });
 
-    const foundNothing = isEmptyAnalysis({
+    const emptyReason = emptyAnalysisReason({
       covenantItemCount: summary.items.length,
       structuralNodeCount: processed.structuralNodeCount,
       definitionCount: processed.definitionCount,
+      covenantCandidateCount: processed.candidateCount,
     });
+    const foundNothing = emptyReason !== null;
 
     const metadata = JSON.parse(
       JSON.stringify({
@@ -604,8 +648,7 @@ export async function analyzeCustomerDocument(params: {
         processingStatus: foundNothing ? "FAILED_RETRYABLE" : "ANALYZED",
         ...(foundNothing
           ? {
-              analysisError:
-                "Analysis found no covenant structure (no covenant items, no structural nodes, no definitions) — document may not be a debt document or extraction failed. Re-upload or request review.",
+              analysisError: emptyReason,
             }
           : {}),
         promotedToLegalTruth: 0,
@@ -676,8 +719,7 @@ export async function analyzeCustomerDocument(params: {
       structuralNodeCount: processed.structuralNodeCount,
       ...(foundNothing
         ? {
-            error:
-              "Analysis found no covenant structure (no covenant items, no structural nodes, no definitions) — document may not be a debt document or extraction failed. Re-upload or request review.",
+            error: emptyReason,
           }
         : {}),
       promotedToLegalTruth: 0,
