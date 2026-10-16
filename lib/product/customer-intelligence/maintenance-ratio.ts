@@ -39,6 +39,7 @@ export function parseMaintenanceRatio(item: CovenantSummaryItem): MaintenanceRat
   )];
   if (basketRatios.length !== 1) return null;
   const threshold = basketRatios[0];
+  if (threshold === undefined) return null; // noUncheckedIndexedAccess guard
 
   const text = [
     ...(item.materialBasketsThresholds ?? []),

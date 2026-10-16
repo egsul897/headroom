@@ -42,14 +42,19 @@ export function detectSharedCapGroup(item: CovenantSummaryItem): {
   if (!/\bindebtedness\b/i.test(text)) return null;
   const capMatch = text.match(/shall not exceed \$([\d,]+(?:\.\d+)?)\s*(million|billion)?/i);
   if (!capMatch) return null;
-  const rawCap = parseFloat(capMatch[1].replace(/,/g, ""));
+  const capText = capMatch[1];
+  if (!capText) return null;
+  const rawCap = parseFloat(capText.replace(/,/g, ""));
   // Amounts are $M throughout the compiler (money.ts convention):
   // a bare "$20,000,000" is 20; "$20 million" is 20; "$1.5 billion" is 1500.
   const capMillions =
     capMatch[2]?.toLowerCase() === "billion" ? rawCap * 1000 : capMatch[2]?.toLowerCase() === "million" ? rawCap : rawCap / 1_000_000;
   const refs = [
     ...text.matchAll(/permitted by (?:this )?clause \(([a-zA-Z0-9]+)\)/gi),
-  ].map((m) => m[1].toLowerCase());
+  ]
+    .map((m) => m[1])
+    .filter((v): v is string => Boolean(v))
+    .map((v) => v.toLowerCase());
   const unique = [...new Set(refs)];
   if (unique.length < 2) return null;
   const parent = item.sectionRef.replace(/\([^)]*\)$/, "") || item.sectionRef;

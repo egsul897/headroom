@@ -60,7 +60,7 @@ export function buildCapacityFormulas(
   // the aggregate proviso caps the SUM, so neither the bare cap
   // nor the bare sum alone is right.
   const grouped = new Set<string>();
-  const debtItems: CapacityFormulasBuilt["unsecured"]["items"] = [];
+  const debtItems: FormulaItem[] = [];
   for (const g of [...sharedGroups].sort((a, b) => a.capMillions - b.capMillions)) {
     const members = g.memberCodes.filter((c) => debtCodes.includes(c) && !grouped.has(c));
     if (members.length < 2) continue; // a 1-member "group" is just that basket
