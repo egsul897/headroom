@@ -233,7 +233,7 @@ export function CertificatesClient({
                       {f.locator
                         ? ` · loc p${String(f.locator.page ?? "—")}/${String(f.locator.section ?? "—")}/${String(f.locator.table ?? "—")}/${String(f.locator.row ?? "—")}`
                         : " · locator stub"}
-                      {f.note ? ` · ${f.note.slice(0, 120)}` : ""}
+                      {f.note ? ` · ${f.note.slice(0, 120)}${f.note.length > 120 ? "…" : ""}` : ""}
                     </div>
                   ))
                 )}
