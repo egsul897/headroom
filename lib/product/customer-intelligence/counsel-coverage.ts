@@ -29,22 +29,20 @@
  *   to incomplete. Never blocks either caller (try/catch at call site).
  */
 export interface CounselCoverageDb {
+  // `args: any` is deliberate: the generated Prisma client methods
+  // carry generic SelectSubset/XOR arg types that TypeScript cannot
+  // prove assignable to a narrow args shape (the real PrismaClient
+  // then fails to satisfy this interface). Same pattern as
+  // SolverNativePrismaClient in lib/covenant-engine.ts. Return
+  // types stay narrow — the helper only reads these fields.
   knowledgeSource: {
-    findUnique(args: {
-      where: { sourceId: string };
-    }): Promise<{ documentId: string | null; metadata: unknown } | null>;
+    findUnique(args: any): Promise<{ documentId: string | null; metadata: unknown } | null>;
   };
   permission: {
-    findMany(args: {
-      where: { companyId: string; documentId: string; modelingStatus: string };
-    }): Promise<{ grantType: string }[]>;
+    findMany(args: any): Promise<{ grantType: string }[]>;
   };
   solverCoverageDeclaration: {
-    upsert(args: {
-      where: { documentId_side_grantType: { documentId: string; side: string; grantType: string } };
-      create: { companyId: string; documentId: string; side: string; grantType: string; isComplete: boolean; notes: string };
-      update: { isComplete: boolean; notes: string };
-    }): Promise<unknown>;
+    upsert(args: any): Promise<unknown>;
   };
 }
 
