@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { getDocumentStorageProvider } from "@/lib/document-storage";
 import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
-import { loadSourceTextFromBytes } from "@/lib/product/customer-intelligence/source-text";
+import { loadSourceTextFromBytes, resolveCuratedSourceTextPath } from "@/lib/product/customer-intelligence/source-text";
 import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 
 export const metadata = { title: "Headroom — Document source" };
@@ -17,11 +17,10 @@ async function loadSourceText(documentId: string, storageRef: string | null, not
   origin: string;
   truncated: boolean;
 }> {
-  const curatedMatch = notes?.match(/^curated=(.+)$/m);
-  if (curatedMatch?.[1]) {
-    const abs = path.join(process.cwd(), curatedMatch[1]);
-    if (existsSync(abs)) {
-      return loadSourceTextFromBytes(readFileSync(abs), path.basename(abs), `curated excerpt (${curatedMatch[1]})`);
+  const curatedPath = resolveCuratedSourceTextPath(notes);
+  if (curatedPath) {
+    if (existsSync(curatedPath)) {
+      return loadSourceTextFromBytes(readFileSync(curatedPath), path.basename(curatedPath), `curated excerpt (${notes?.match(/^curated=(.+)$/m)?.[1]})`);
     }
   }
 
