@@ -5,8 +5,6 @@ import { useState, useTransition } from "react";
 import {
   approveCertificateAction,
   appendHistoricalUsageAction,
-  seedSyntheticCertificateAction,
-  seedAuthenticCertificateFixtureAction,
   proposeUploadedCertificateTextAction,
   restateCertificateAction,
 } from "./actions";
@@ -50,61 +48,8 @@ export function CertificatesClient({
 
   return (
     <div className="stack" style={{ gap: 16 }}>
-      <div className="button-row" style={{ flexWrap: "wrap", gap: 8 }}>
-        <button
-          type="button"
-          className="button"
-          disabled={pending}
-          onClick={() =>
-            start(async () => {
-              const r = await seedSyntheticCertificateAction(companyId);
-              setMessage(r.ok ? `${r.label} · ${r.snapshotId} (${r.status})` : `Failed: ${(r.issues ?? []).join("; ")}`);
-              router.refresh();
-            })
-          }
-        >
-          Seed synthetic certificate (DRAFT)
-        </button>
-        <button
-          type="button"
-          className="button button-primary"
-          disabled={pending}
-          onClick={() =>
-            start(async () => {
-              const r = await seedAuthenticCertificateFixtureAction(companyId, "matthews_q1_fy2025");
-              setMessage(
-                r.ok
-                  ? `${r.label} · ${r.snapshotId} (${r.status}) · authority ${r.fixtureAuthority?.kind ?? "—"}`
-                  : `Failed: ${r.issues.join("; ")}`,
-              );
-              router.refresh();
-            })
-          }
-        >
-          Propose Matthews Q1 FY2025 certificate (FCE → DRAFT)
-        </button>
-        <button
-          type="button"
-          className="button button-primary"
-          disabled={pending}
-          onClick={() =>
-            start(async () => {
-              const r = await seedAuthenticCertificateFixtureAction(companyId, "coherent_fy2026");
-              setMessage(
-                r.ok
-                  ? `${r.label} · ${r.snapshotId} (${r.status}) · authority ${r.fixtureAuthority?.kind ?? "—"}`
-                  : `Failed: ${r.issues.join("; ")}`,
-              );
-              router.refresh();
-            })
-          }
-        >
-          Propose Coherent FY2026 certificate (FCE → DRAFT)
-        </button>
-      </div>
       <div className="row-note">
         FCE proposals extract from certificate text into NS-4 as DRAFT / REVIEW_REQUIRED only. Never auto-approved.
-        Matthews = AUTHENTIC_SOURCE_DERIVED (EDGAR accession 0000063296-25-000006). Coherent = SEED_ALIGNED_MODELED.
         Attributable Approve is required before Dashboard IR leverage uses the snapshot.
       </div>
 

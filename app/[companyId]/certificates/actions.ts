@@ -6,12 +6,9 @@ import { revalidatePath } from "next/cache";
 import {
   approveWorkspaceCertificate,
   appendContractLedgerUsage,
-  proposeSyntheticCertificateForCompany,
   proposeCertificateRestatement,
-  proposeAuthenticCertificateFixtureForCompany,
   proposeCertificateTextForCompany,
   approveFceProposedCertificate,
-  type CertificateFixtureIssuer,
 } from "@/lib/product/north-star-workflow";
 
 function revalidateCertificateSurfaces(companyId: string) {
@@ -20,24 +17,6 @@ function revalidateCertificateSurfaces(companyId: string) {
   revalidatePath(`/${companyId}/ask`);
   revalidatePath(`/${companyId}/dashboard`);
   revalidatePath(`/${companyId}/intelligence`);
-}
-
-export async function seedSyntheticCertificateAction(companyId: string) {
-  await requireTenantAction(companyId);
-  const result = await proposeSyntheticCertificateForCompany(companyId);
-  revalidateCertificateSurfaces(companyId);
-  return result;
-}
-
-/** Propose NS-4 DRAFT from committed Matthews / Coherent certificate fixtures via FCE. Never APPROVED. */
-export async function seedAuthenticCertificateFixtureAction(
-  companyId: string,
-  issuer: CertificateFixtureIssuer,
-) {
-  await requireTenantAction(companyId);
-  const result = await proposeAuthenticCertificateFixtureForCompany(companyId, issuer);
-  revalidateCertificateSurfaces(companyId);
-  return result;
 }
 
 /** Propose NS-4 DRAFT from pasted / uploaded certificate (+ optional statement) text via FCE. */
