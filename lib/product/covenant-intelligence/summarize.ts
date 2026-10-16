@@ -112,6 +112,28 @@ export interface DocumentCovenantSummary {
   truncated: boolean;
 }
 
+/**
+ * Rule 159: user-facing cap disclosure for a covenant summary. The
+ * summary object has carried truncated + totalItemsBeforeCap, but no
+ * page read them — a 150-item document showed "first 40 of 120" and
+ * the 30 dropped items were invisible. Returns the disclosure string
+ * when the cap dropped items, else null. Category counts reflect ALL
+ * items; only the listed items are capped — the note says both.
+ */
+export function summaryCapDisclosure(summary: {
+  truncated: boolean;
+  totalItemsBeforeCap: number;
+  items: unknown[];
+}): string | null {
+  if (!summary.truncated) return null;
+  const dropped = summary.totalItemsBeforeCap - summary.items.length;
+  return (
+    `Summary capped at ${summary.items.length} of ${summary.totalItemsBeforeCap} covenant items — ` +
+    `${dropped} items were not included in the list below. ` +
+    `Category counts above reflect all ${summary.totalItemsBeforeCap} items.`
+  );
+}
+
 function entityScopeFromAnalysis(a: ProvisionAnalysis): CovenantSummaryItem["entityScope"] {
   const joined = a.coveredEntities.join(" ").toLowerCase();
   return {

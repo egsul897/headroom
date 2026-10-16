@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { getDocumentStorageProvider } from "@/lib/document-storage";
 import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
+import { summaryCapDisclosure } from "@/lib/product/covenant-intelligence/summarize";
 import {
   analysisPendingNote,
   analysisStatusOf,
@@ -66,6 +67,7 @@ export default async function DocumentSourcePage({
   const unresolved = doc.notes?.match(/^unresolved=(.+)$/m)?.[1];
   const accession = doc.notes?.match(/^accession=(.+)$/m)?.[1];
   const summaryItems = intel?.summary?.items ?? [];
+  const capNote = intel?.summary ? summaryCapDisclosure(intel.summary) : null;
   const categories = intel?.summary ? Object.entries(intel.summary.countsByCategory) : [];
 
   return (
@@ -219,6 +221,16 @@ export default async function DocumentSourcePage({
           <div className="card-subtitle">
             Plain-English substance with citations. DISCOVERED ≠ VERIFIED.
           </div>
+          {/* Rule 159: the summary object carries truncated +
+              totalItemsBeforeCap, but no page read them — a 150-item
+              document showed "first 40 of 120" and the 30 dropped items
+              were invisible. The category counts above reflect ALL
+              items; the list below is capped. Say both. */}
+          {capNote && (
+            <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+              {capNote}
+            </div>
+          )}
           {summaryItems.length > 40 && (
             <div className="row-note">Showing first 40 of {summaryItems.length} covenant summaries.</div>
           )}
