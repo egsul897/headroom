@@ -16,7 +16,7 @@ import {
 } from "../../contract-model/section-tree/semantics";
 import { runCovenantComputation } from "../../contract-model/covenant-computation";
 import { covenantRatioThresholds } from "../../contract-model/covenant-computation/ratio-terms";
-import { attachHeadroom } from "../../contract-model/covenant-computation/ratios";
+import { attachHeadroom, parseDefinitions } from "../../contract-model/covenant-computation/ratios";
 import type { ComputedBasket } from "../../contract-model/covenant-computation/types";
 import { buildComputationPackage } from "../sweep/build-package";
 import { emptyRuleSet } from "../learned-rules/types";
@@ -146,9 +146,23 @@ function limitDecimal(num: number, den: number): string | null {
  * maximum; COVERAGE = one EBITDA numerator / one interest denominator with a minimum. Exactly one distinct limit
  * per ratio (thresholds stated in the agreement); anything else is refused (NEEDS_INPUT).
  */
-export function incurrenceRatioCapacity(ratios: readonly ComputedRatio[], text: string, decisions: readonly BindDecision[]): RatioCapacity[] {
+export function incurrenceRatioCapacity(ratios: readonly ComputedRatio[], text: string, decisions: readonly BindDecision[], fin?: IssuerFinancials | null): RatioCapacity[] {
   const out: RatioCapacity[] = [];
-  const dec = (name: string) => decisions.find((d) => d.metricName.toLowerCase() === name.toLowerCase()) ?? null;
+  const cache = new Map<string, BindDecision | null>();
+  const dec = (name: string) => {
+    const hit = decisions.find((d) => d.metricName.toLowerCase() === name.toLowerCase());
+    if (hit || !fin) return hit ?? null;
+    if (!cache.has(name)) cache.set(name, decide(name, text, fin));
+    return cache.get(name)!;
+  };
+  // Operands from each ratio's own definition text ("the ratio of (a) X to (b) Y"), when the catalog row has none.
+  const parsed = new Map(parseDefinitions({ documentId: "doc", role: "CREDIT_AGREEMENT", text }).filter((d) => !d.subtrahendMetrics.length).map((d) => [d.ratioName, d]));
+  const withOps: Array<Pick<ComputedRatio, "displayName" | "numerator" | "denominator" | "thresholds">> = ratios.map((r) => {
+    const d = !r.numerator.length && !r.denominator.length ? parsed.get(r.displayName) : undefined;
+    return d ? { ...r, numerator: d.numeratorMetrics.map((metricName) => ({ metricName }) as ComputedRatio["numerator"][number]), denominator: d.denominatorMetrics.map((metricName) => ({ metricName }) as ComputedRatio["denominator"][number]) } : r;
+  });
+  for (const d of parsed.values()) if (!withOps.some((r) => r.displayName === d.ratioName)) withOps.push({ displayName: d.ratioName, numerator: d.numeratorMetrics.map((metricName) => ({ metricName }) as ComputedRatio["numerator"][number]), denominator: d.denominatorMetrics.map((metricName) => ({ metricName }) as ComputedRatio["denominator"][number]), thresholds: [] });
+  ratios = withOps as unknown as readonly ComputedRatio[];
   const op = (d: BindDecision | null) => (d ? { status: d.status, value: d.input?.value ?? null } : null);
   const seen = new Set<string>();
   for (const r of ratios) {
@@ -325,7 +339,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
           levRows.push({ kind: "RATIO", name: r.displayName, direction: "MAX", limit });
         }
       }
-      xbrl.ratioCapacity = incurrenceRatioCapacity(result.ratios, tree.text, xbrl.decisions);
+      xbrl.ratioCapacity = incurrenceRatioCapacity(result.ratios, tree.text, xbrl.decisions, args.financials);
       const lev = maxLeverageLimit(levRows);
       const debt = debtFromFinancials(args.financials);
       if (lev != null && debt != null) xbrl.leverageCapacity = leverageDebtCapacity(ebitda, lev, debt);

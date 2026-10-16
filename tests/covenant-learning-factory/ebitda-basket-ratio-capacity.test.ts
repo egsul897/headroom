@@ -115,3 +115,24 @@ describe("gross interest add-back with no XBRL interest is one-sided (safe lower
     expect(decide("Consolidated EBITDA", net, noIe()).status).toBe("NEEDS_INPUT");
   });
 });
+
+describe("ratio operands parsed from the ratio's own definition", () => {
+  const SCHED = `"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in calculating Consolidated Net Income: (a) provision for taxes based on income; plus (b) interest expense; plus (c) depreciation and amortization expense; plus (d) restructuring charges in an aggregate amount not to exceed $5,000,000 for any period.`;
+  const text = `
+ARTICLE I DEFINITIONS
+"Consolidated Net Income" means the net income of the Borrower and its Subsidiaries determined on a consolidated basis in accordance with GAAP.
+${SCHED}
+"Consolidated Cash Interest Charges" means consolidated interest expense of the Borrower and its Subsidiaries determined in accordance with GAAP.
+"Consolidated Fixed Coverage Ratio" means, as of any date, the ratio of (a) Consolidated EBITDA to (b) Consolidated Cash Interest Charges, in each case for the most recent four fiscal quarters.
+"Default" means any event of default.
+
+ARTICLE VII NEGATIVE COVENANTS
+Section 7.02 Restricted Payments. The Borrower will not make any Restricted Payment unless the Consolidated Fixed Coverage Ratio would be at least 3.00 to 1.00.
+`;
+  it("non-catalog coverage ratio gets operands from its definition and a capacity", () => {
+    const r = runAgreementPipeline({ sourceId: "t", text, financials: fin({ RestructuringCharges: 8 * M }) });
+    const c = r.xbrl?.ratioCapacity?.find((x) => x.name === "Consolidated Fixed Coverage Ratio");
+    expect(c).toBeDefined();
+    expect(c?.limit).toBe("3");
+  });
+});
