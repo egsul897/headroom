@@ -53,6 +53,36 @@ const BOILERPLATE_MARKERS = [
   "Unresolved:",
 ];
 
+/**
+ * Rule 176 helper: strip the analyzer's classification lead sentence
+ * ("Section X (\"heading\") operates as ... / is a general ... /
+ * states ... .") from the plainEnglish haystack. The lead sentence
+ * names the analyzer's category ("liens and secured debt regime",
+ * "debt incurrence prohibition") — category words that would
+ * otherwise launder into grants. The lead ends at the first ". "
+ * after the heading's closing quote; headings never contain a
+ * period+space, so that boundary is safe. Bounded (<=400 chars,
+ * must contain a classification verb) — anything else is left
+ * untouched rather than risk stripping real substance.
+ */
+function stripClassificationLead(plainEnglish: string): string {
+  // The analyzer writes the heading with curly quotes
+  // ("1(c)(b)(j)") — an ASCII-only search never matches real
+  // items (that is exactly how the first version of this strip
+  // shipped passing its tests but not fixing the real item).
+  const closes = [plainEnglish.indexOf('")'), plainEnglish.indexOf("\u201d)")].filter(
+    (i) => i !== -1,
+  );
+  if (!closes.length) return plainEnglish;
+  const closeQuote = Math.min(...closes);
+  const afterQuote = plainEnglish.slice(closeQuote + 2);
+  const sentenceEnd = afterQuote.indexOf(". ");
+  if (sentenceEnd === -1 || sentenceEnd > 400) return plainEnglish;
+  const lead = plainEnglish.slice(0, closeQuote + 2 + sentenceEnd);
+  if (!/\b(operates as|is a general|states an?|is an?)\b/i.test(lead)) return plainEnglish;
+  return plainEnglish.slice(closeQuote + 2 + sentenceEnd + 2);
+}
+
 function operativeText(plainEnglish: string): string {
   let end = plainEnglish.length;
   for (const marker of BOILERPLATE_MARKERS) {
@@ -147,7 +177,27 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   // long as leverage ...") still compiles through the ratio branch.
   if (item.category === "FINANCIAL_MAINTENANCE") return [];
 
-  const hay = `${item.heading} ${operativeText(item.plainEnglish)}`.toUpperCase();
+  // Rule 176 (audit-driven, corrected): grant evidence comes from
+  // the plainEnglish MINUS the analyzer's classification lead
+  // sentence. That sentence — "operates as a enumerated permission
+  // within the liens and secured debt regime" — is itself
+  // grant-shaped: it contains "permission" + "debt" + "liens", and
+  // minted DEBT + LIEN from a conditions-precedent clause whose
+  // substance ("Agent shall have received searches ... evidence
+  // that no Liens exist thereon other than Permitted Liens") grants
+  // nothing. The first attempt at this rule preferred the raw
+  // excerpt as the haystack, but the excerpt's incidental mentions
+  // ("other than Liens permitted under Section 6.02") then minted
+  // a spurious LIEN on a genuine debt basket — the plainEnglish
+  // paraphrase distills to operative substance, so the lead
+  // sentence is stripped and the distilled substance kept. EDITED
+  // items are exempt: counsel's edited plainEnglish IS the
+  // provision's words (Rule 60), so its first sentence is kept.
+  const sourceText =
+    item.reviewerDecision === "EDITED"
+      ? operativeText(item.plainEnglish)
+      : stripClassificationLead(operativeText(item.plainEnglish));
+  const hay = `${item.heading} ${sourceText}`.toUpperCase();
 
   const hasDebtWord = /\bINDEBTEDNESS\b|\bDEBT\b|\bINCUR(RING|RED|RENCE)?\b|\bINCREMENTAL\b/.test(hay);
   // Rule 169: debt words alone are not a grant — they must carry

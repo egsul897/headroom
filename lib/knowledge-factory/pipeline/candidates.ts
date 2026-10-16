@@ -56,9 +56,16 @@ const OPERATIVE_VERB = /\b(?:shall|will|must|may)\b/i;
  * "Borrowing Base" is a capacity input by definition. These terms
  * admit the item as an informational summary item; they do not
  * mint grants (grant-types.ts still requires permission evidence).
+ * Rule 175: operative amendment phrasing — "hereby amended" /
+ * "amended and restated" — admits the amendment that actually
+ * changes terms (the real Expand amendment's §2.1 + §2(a) extend
+ * the Maturity Date to 2031; both were invisible). Bare
+ * "Amendment" is deliberately NOT a keyword: a base agreement's
+ * "Amendments; Waivers" section ("may not be amended except by
+ * ...") is procedural, not operative, and stays out.
  */
 const COVENANT_HEADING_KEYWORDS =
-  /\b(?:Indebtedness|Lien|Restricted|Investment|Disposition|Affiliate|Covenant|Default|Guarantee|Guarantor|Prepayment|Incremental|Available Amount|Sale|Fundamental|Commitment|Availability|Sublimit|Borrowing Base)s?\b|\bSubsidiar(?:y|ies)\b/i;
+  /\b(?:Indebtedness|Lien|Restricted|Investment|Disposition|Affiliate|Covenant|Default|Guarantee|Guarantor|Prepayment|Incremental|Available Amount|Sale|Fundamental|Commitment|Availability|Sublimit|Borrowing Base)s?\b|\bSubsidiar(?:y|ies)\b|\b(?:hereby amended|amended and restated)\b/i;
 
 /**
  * True when a node's span is table-of-contents material, not operative

@@ -28,7 +28,7 @@ const SIGNALS: RankSignal[] = [
   { name: "available_amount", family: "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS", weight: 4, re: /\bAvailable\s+Amount\b|\bbuilder\s+basket\b/i },
   { name: "incremental_facilities", family: "INCREMENTAL_DEBT_AND_FACILITIES", weight: 3.5, re: /\bIncremental\s+(?:Facility|Equivalent|Commitments?)\b/i },
   { name: "shared_baskets", family: "SHARED_CAPACITY_PROVISIONS", weight: 4, re: /\b(?:shared|aggregate(?:d)?)\s+(?:basket|capacity|amount)\b|\bcombined\s+with\b/i },
-  { name: "amendments_cross_refs", family: "GENERAL_CONDITIONS_AND_EXCEPTIONS", weight: 2, re: /\b(?:Amendment|amends|Section\s+\d+\.\d+)\b/i },
+  { name: "amendments_cross_refs", family: "GENERAL_CONDITIONS_AND_EXCEPTIONS", weight: 2, re: /\b(?:Amendment|amends|hereby amended|amended and restated|Section\s+\d+\.\d+)\b/i },
   { name: "unrestricted_subsidiaries", family: "UNRESTRICTED_SUBSIDIARIES", weight: 2.5, re: /\bUnrestricted\s+Subsidiar/i },
   { name: "events_of_default", family: "EVENTS_OF_DEFAULT", weight: 2, re: /\bEvents?\s+of\s+Default\b/i },
   { name: "mandatory_prepayments", family: "MANDATORY_PREPAYMENTS", weight: 2.5, re: /\bMandatory\s+Prepayments?\b/i },

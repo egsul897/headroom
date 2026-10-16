@@ -265,3 +265,30 @@ describe("rule 174: clause fallback when the parent produces nothing", () => {
     expect(candidates.some((c) => c.nodeId === "cl-1cb")).toBe(true);
   });
 });
+
+describe("rule 175: operative amendment phrasing admits amendment content", () => {
+  async function candidatesFor(heading: string, body: string) {
+    const { discoverCovenantCandidates } = await import("../../lib/knowledge-factory/pipeline/candidates");
+    const text = `${heading}\n${body}`;
+    const nodes = [
+      { nodeId: "n1", sectionRef: "2.1", nodeType: "SECTION", heading, charStart: 0, charEnd: heading.length, ambiguous: false },
+    ] as never;
+    return discoverCovenantCandidates("rule175-test", text, nodes);
+  }
+
+  it("an operative amendment ('hereby amended') is admitted", async () => {
+    const c = await candidatesFor(
+      "2.1 Amendments to Section 1.01",
+      "Section 1.01 of the Existing Credit Agreement is hereby amended as follows: the defined term Maturity Date is amended and restated in its entirety to read as follows: Maturity Date means September 30, 2031.",
+    );
+    expect(c).toHaveLength(1);
+  });
+
+  it("a procedural amendments section ('may not be amended') stays out", async () => {
+    const c = await candidatesFor(
+      "10.02 Amendments; Waivers",
+      "This Agreement may not be amended, waived or otherwise modified except by an instrument in writing signed by the Required Lenders and the Borrower.",
+    );
+    expect(c).toHaveLength(0);
+  });
+});

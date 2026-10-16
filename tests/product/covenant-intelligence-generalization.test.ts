@@ -560,3 +560,55 @@ describe("generalization: rule 170 — INVESTMENT needs affirmative permission",
     ).toEqual(["INVESTMENT"]);
   });
 });
+
+describe("generalization: rule 176 (corrected) — strip the analyzer lead sentence", () => {
+  const grantItem = (heading: string, plainEnglish: string, extra: Record<string, unknown> = {}) =>
+    ({ heading, plainEnglish, families: [], category: "OTHER", ...extra }) as unknown as Parameters<typeof grantTypesForItem>[0];
+  const ANALYZER_TEMPLATE =
+    'Section 1(c)(b)(j) ("1(c)(b)(j)") operates as a enumerated permission within the liens and secured debt regime for Guarantor(s). Permission substance: (j) Agent shall have received searches of UCC, judgment lien, tax lien and litigation lien search reports and evidence that no Liens exist thereon other than Permitted Liens.';
+
+  it("a conditions-precedent clause does not mint DEBT from the lead sentence", () => {
+    expect(grantTypesForItem(grantItem("1(c)(b)(j)", ANALYZER_TEMPLATE))).toEqual(["LIEN"]);
+    // Real analyzer output uses curly quotes around the heading.
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "1(c)(b)(j)",
+          "Section 1(c)(b)(j) (\u201c1(c)(b)(j)\u201d) operates as a enumerated permission within the liens and secured debt regime for Guarantor(s). Permission substance: (j) Agent shall have received searches and evidence that no Liens exist thereon other than Permitted Liens.",
+        ),
+      ),
+    ).toEqual(["LIEN"]);
+  });
+
+  it("an EDITED item keeps its first sentence (counsel's words)", () => {
+    expect(
+      grantTypesForItem(
+        grantItem("6.01(k)", "The Borrower may incur Indebtedness up to $50,000,000.", {
+          reviewerDecision: "EDITED",
+        }),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+  });
+
+  it("a genuine debt basket still compiles after the lead strip", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "6.01(e)",
+          'Section 6.01(e) ("6.01(e)") is a general debt incurrence prohibition covering Borrower. shall not exceed $20,000,000 at any time outstanding; such Indebtedness is incurred prior to acquisition.',
+        ),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+  });
+
+  it("a lead sentence naming the liens regime does not mint DEBT on a lien-only item", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "6.02(a)",
+          'Section 6.02(a) ("6.02(a)") is a general lien prohibition covering Borrower. shall not permit any Liens on its Property.',
+        ),
+      ),
+    ).toEqual(["LIEN"]);
+  });
+});
