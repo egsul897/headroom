@@ -118,6 +118,9 @@ function ContractLedgerSection({
               <input type="hidden" name="currency" value={u.amount.currency} />
               <input name="successorAmount" placeholder="Corrected amount" defaultValue={u.amount.amount} className="input" style={{ width: 120 }} />
               <input name="effectiveAsOf" placeholder="YYYY-MM-DD" defaultValue={u.effectiveAsOf} className="input" style={{ width: 120 }} />
+              {/* Rule 115: supersession is a material ledger mutation —
+                  it needs the real actor, not the "workspace-user" default. */}
+              <input name="supersededBy" placeholder="Superseded by (your name/email)" className="input" style={{ width: 200 }} required />
               <button type="submit" className="button">
                 Supersede
               </button>

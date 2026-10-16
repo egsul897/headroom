@@ -106,9 +106,11 @@ export async function supersedeContractLedgerUsageAction(companyId: string, form
   const ruleId = String(formData.get("ruleId") || "").trim();
   const effectiveAsOf = String(formData.get("effectiveAsOf") || "").trim();
   const supersessionRef = String(formData.get("supersessionRef") || "").trim() || `sup-${predecessorUsageId}`;
-  const supersededBy = String(formData.get("supersededBy") || "").trim() || "workspace-user";
-  if (!predecessorUsageId || !successorAmount || !ruleId || !effectiveAsOf) {
-    throw new Error("predecessorUsageId, successorAmount, ruleId, and effectiveAsOf are required");
+  // Rule 115: supersession attribution must be real — never
+  // default to the generic "workspace-user".
+  const supersededBy = String(formData.get("supersededBy") || "").trim();
+  if (!predecessorUsageId || !successorAmount || !ruleId || !effectiveAsOf || !supersededBy) {
+    throw new Error("predecessorUsageId, successorAmount, ruleId, effectiveAsOf, and supersededBy are required");
   }
   const result = await supersedeContractLedgerUsage({
     companyId,
