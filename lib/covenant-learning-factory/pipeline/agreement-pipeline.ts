@@ -333,7 +333,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
       // Fail-closed: name the dated base facility when an amendment has no in-text EBITDA schedule.
       // package-graph can resolve definitions once that base text is in the package — never invent it.
       const namedBase = namedDatedFacilityReference(tree.text)
-        ?? extractDocumentIdentity({ documentId: args.sourceId, text: tree.text }).originalAgreementReferenceHint;
+        ?? extractDocumentIdentity({ documentId: args.sourceId, label: args.sourceId, text: tree.text }).originalAgreementReferenceHint;
       if (namedBase) {
         xbrl.ebitdaBaseHold = {
           reason: "AMENDMENT_NEEDS_BASE_TEXT",
