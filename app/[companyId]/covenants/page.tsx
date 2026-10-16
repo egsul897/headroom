@@ -142,6 +142,12 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
                 §{b.sectionRef} → {b.operativeSourceId} ({b.changeKind}) — {b.rationale}
               </div>
             ))}
+            {/* Rule 89: truncation disclosed — never silently drop bindings. */}
+            {review.operativeResolution.bindings.length > 20 && (
+              <div className="row-note" style={{ marginTop: 6 }}>
+                Showing first 20 of {review.operativeResolution.bindings.length} bindings.
+              </div>
+            )}
           </Card>
         )}
 
@@ -149,6 +155,18 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         <Card>
           <div className="card-title">Amendment before / after (discovery)</div>
           <div className="card-subtitle">{review.amendmentCompare.note}</div>
+          {/* Rule 89: both truncations disclosed — the page shows 16
+              of the compare's 40-row cap, which itself may have
+              dropped rows (totalRowsBeforeCap). */}
+          {(review.amendmentCompare.rows.length > 16 || review.amendmentCompare.truncated) && (
+            <div className="row-note" style={{ marginTop: 6 }}>
+              Showing first 16 of {review.amendmentCompare.rows.length} compare rows
+              {review.amendmentCompare.truncated
+                ? ` (compare capped at 40 of ${review.amendmentCompare.totalRowsBeforeCap} total)`
+                : ""}
+              .
+            </div>
+          )}
           {review.amendmentCompare.rows.slice(0, 16).map((row, i) => (
             <div
               key={`${row.sectionRef}-${i}`}
@@ -256,6 +274,7 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
               {(item.permissions?.length ?? 0) > 0 && (
                 <div className="row-note">
                   Permissions: {item.permissions!.slice(0, 3).join(" · ")}
+                  {item.permissions!.length > 3 ? ` (+${item.permissions!.length - 3} more)` : ""}
                 </div>
               )}
               {(item.materialBasketsThresholds?.length ?? 0) > 0 && (
@@ -267,7 +286,10 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
                 <div className="row-note">Entities: {item.coveredEntities!.join(", ")}</div>
               )}
               {(item.dependencies?.length ?? 0) > 0 && (
-                <div className="row-note">Dependencies: {item.dependencies.slice(0, 3).join(" · ")}</div>
+                <div className="row-note">
+                  Dependencies: {item.dependencies.slice(0, 3).join(" · ")}
+                  {item.dependencies.length > 3 ? ` (+${item.dependencies.length - 3} more)` : ""}
+                </div>
               )}
               <div className="button-row" style={{ marginTop: 8 }}>
                 {item.documentId && (
