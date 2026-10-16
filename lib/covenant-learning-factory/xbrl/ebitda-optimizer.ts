@@ -192,7 +192,15 @@ export function borrowerInputKeysFromText(...parts: Array<string | null | undefi
 // "income" counts only as a tax base inside a pure tax phrase ("foreign income and franchise taxes", "income, franchise
 // and similar taxes", "based on income"); anything else naming income or gains stays open (fail closed).
 const TAX_BASE = /\bincome(?:,?\s+(?:and|or|franchise|withholding|excise|capital|gross\s+receipts|similar|other|foreign|state|local|federal|provincial))*\s+tax(?:es)?\b(?!\s+(?:receivable|equity))/gi;
-export const namesGainOrIncome = (s: string): boolean => /\bgains?\b|\bincome\b/i.test(s.replace(TAX_BASE, " ").replace(/\b(?:Consolidated\s+)?Net\s+Income\b|\bbased\s+on\s+income\b|\bnet\s+income\s+\(loss\)/gi, " "));
+// Mentions that do not make an add-back line two-sided:
+//  - a recapture condition ("cash receipts … to the extent non-cash gains relating to such income were deducted … for
+//    any previous period") — the add-back is the receipt, conditioned on prior gains;
+//  - "losses on <instrument> … net of … gains on such <instrument>" — a net-losses add-back on the same instrument.
+const NON_OPERATIVE_GAIN = [
+  /\bto\s+the\s+extent\b[^;]{0,40}\bgains?\b[^;]{0,120}?\b(?:were|was)\s+(?:deducted|excluded)\b[^;]{0,160}?\b(?:previous|prior)\s+(?:fiscal\s+)?periods?\b/gi,
+  /\bnet\s+of\b[^;]{0,80}?\bgains?\s+on\s+such\s+(?:[A-Za-z]+\s+){0,3}?(?:Obligations?|instruments?|agreements?|arrangements?|contracts?)\b/gi,
+];
+export const namesGainOrIncome = (s: string): boolean => /\bgains?\b|\bincome\b/i.test(NON_OPERATIVE_GAIN.reduce((a, re) => (re.test(a) && /\blosses?\b|cash\s+receipts/i.test(a) ? a.replace(re, " ") : a), s).replace(TAX_BASE, " ").replace(/\b(?:Consolidated\s+)?Net\s+Income\b|\bbased\s+on\s+income\b|\bnet\s+income\s+\(loss\)/gi, " "));
 
 export function optimizeConsolidatedEbitda(term: string, text: string, fin: IssuerFinancials): EbitdaOptimization {
   const ev: DefinitionEvaluation = evaluateDefinition("EBITDA", term, text, fin);
@@ -294,7 +302,9 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     let covOut: AddBackLine["coverage"] = fresh.length ? coverage : "NONE";
     let noteExtra = "";
     if (!fresh.length && concepts.length) {
-      covOut = "FULL";
+      // Deduplicated against a prior line: covered only if this line's own mapping was complete; a partly mapped
+      // line stays open (one-sided remainder needs input).
+      covOut = coverage === "FULL" ? "FULL" : "PARTIAL";
       noteExtra = "already included in a prior add-back (same filing concept); no double count";
     } else if (!fresh.length && coverage === "FULL") {
       covOut = "FULL";
@@ -304,6 +314,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     }
     // A line naming income or gains beyond a pure tax base (tax receivable agreements, "net of any income therefrom",
     // "other income items", tax equity income) is never closed by a mapped/deduplicated tax figure: it stays open.
+    if (covOut === "FULL" && fresh.some((c) => /\(losses only\)/.test(c.concept))) { covOut = "PARTIAL"; noteExtra = [noteExtra, "losses-only figure from a net fact: floor, not exact"].filter(Boolean).join("; "); }
     if (covOut === "FULL" && !signed && !bi && namesGainOrIncome(scopeText)) { covOut = "PARTIAL"; noteExtra = [noteExtra, "names income/gains beyond a pure tax base; stays open"].filter(Boolean).join("; "); }
     lines.push({ label: it.label, text: full.slice(0, 200), category: cat, evidenced: fresh.length ? usd(evid) : (concepts.length ? "0" : null), concepts: fresh.map((c) => ({ concept: c.concept, value: usd(c.value) })),
       coverage: covOut, cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null,
@@ -464,6 +475,7 @@ export function signedTwoSided(t: string, fin: IssuerFinancials): { concept: str
     const x = v("ForeignCurrencyTransactionGainLossBeforeTax"); if (x == null) return null;
     const losses = /\blosses?\b/i.test(flat), gains = /\bgains?\b/i.test(flat);
     // Losses only: add back the loss (a net gain adds nothing). Gains only: not an add-back line → null. Both: signed.
+    // Losses-only vs a net filed figure: gross losses not filed → a floor; the optimizer keeps the line PARTIAL (open).
     if (losses && !gains) return { concept: "ForeignCurrencyTransactionGainLossBeforeTax (losses only)", value: x < 0n ? -x : 0n };
     if (gains && !losses) return null;
     return { concept: "ForeignCurrencyTransactionGainLossBeforeTax (signed, excluded)", value: -x };

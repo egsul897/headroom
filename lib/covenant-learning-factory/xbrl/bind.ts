@@ -127,6 +127,12 @@ export function decide(metricName: string, text: string, fin: IssuerFinancials):
     const ev = evaluateDefinition(family, term, text, fin);
     // EBITDA family: the optimizer sizes the agreement's own schedule (caps, filing add-backs). MAXIMUM → exact;
     // a supported floor with no omitted two-sided line → lower bound. Anything weaker stays NEEDS_INPUT.
+    if (family === "EBITDA") {
+      const opt = optimizeConsolidatedEbitda(term, text, fin);
+      // The optimizer's open-line block (lines that could lower the total, not modelled from filings) also binds the
+      // legacy evaluator: no LOWER_BOUND / EXACT from it while such a line is open.
+      if (opt.status !== "MAXIMIZED" && opt.omittedTwoSided?.length) return { metricName, family, status: "NEEDS_INPUT", reason: `EBITDA: lines that could lower the total are open: ${opt.omittedTwoSided.slice(0, 6).join(", ")}`, definition: null, evaluation: ev };
+    }
     if (family === "EBITDA" && ev.status !== "EXACT") {
       const ob = optimizerMetricBound(optimizeConsolidatedEbitda(term, text, fin));
       if (ob && (ob.status === "BOUND" || ev.status === "NEEDS_INPUT" || ev.value == null || BigInt(ob.value) > BigInt(ev.value))) {

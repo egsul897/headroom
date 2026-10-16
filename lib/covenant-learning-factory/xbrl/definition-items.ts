@@ -166,6 +166,9 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
         // Defined Interest Expense often excludes MTM hedges etc.; when the full definition is not
         // derivable, XBRL interest expense still evidences the core add-back (partial / floor).
         const ie = firstItem(fin, IE);
+        const defNets = (() => { const d = findDefinitionText(text, term); return !!d && /\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|\bgains?\b|\bincome\s+from\b/i.test(d.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " ")); })();
+        // Gross filed interest overstates a defined net-of-income figure: not a floor → two-sided (fail closed).
+        if (ie && defNets) return "TWO_SIDED";
         if (!ie) {
           // No XBRL interest: a referenced definition that is plain (gross) interest expense, with no netting of
           // income / gains, is non-negative — an unevidenced one-sided add-back (claim 0), not a two-sided line.
@@ -307,7 +310,7 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
     if (!v) return res("NEEDS_INPUT", "no exact TTM interest expense in XBRL");
     base = v;
     if (TWO_SIDED.test(lead)) return res("NEEDS_INPUT", "interest base carries a two-sided adjustment");
-    const paren = /\((?:excluding|other\s+than|net\s+of|less)\b[^)]*\)/i.exec(lead);
+    const paren = /\((?:excluding|other\s+than|net\s+of|less)\b[^)]*\)/i.exec(lead) ?? /,?\s*(?:net\s+of|less)\s+(?:any\s+)?(?:cash\s+)?interest\s+income\b/i.exec(lead);
     if (paren && !/interest\s+income/i.test(paren[0])) return res("NEEDS_INPUT", `interest base excludes an item not in XBRL: "${paren[0].slice(0, 100)}"`);
     if (paren) { const ii = firstItem(fin, II); if (!ii) return res("NEEDS_INPUT", "net of interest income, but no XBRL interest income"); items.push({ label: "(net)", text: paren[0], sign: "-", coverage: "FULL", concepts: [{ concept: ii.concept, value: ii.value.toString() }], value: (-ii.value).toString(), note: "" }); }
     if (/capitaliz/i.test(lead)) { const c = firstItem(fin, ["InterestCostsCapitalized"]); items.push({ label: "(cap)", text: "capitalized interest", sign: "+", coverage: c ? "FULL" : "NONE", concepts: c ? [{ concept: c.concept, value: c.value.toString() }] : [], value: (c?.value ?? 0n).toString(), note: "GAAP InterestExpense is net of capitalized interest" }); }
@@ -360,7 +363,9 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
     let residue = t; for (const re of mapped.residueStop) residue = residue.replace(re, " ");
     residue = residue.replace(/\([^)]*\)/g, " ").replace(STOP, " ").replace(/[^A-Za-z]+/g, " ").trim();
     const lb = (mapped as MapResult & { lowerBound?: boolean }).lowerBound;
-    it.coverage = residue.length <= 12 && !QUALIFIED.test(t) && !lb ? "FULL" : "PARTIAL";
+    // A losses-only figure read from a net gain/(loss) fact understates gross losses: a floor, never exact.
+    const lossesOnly = fresh.some((c) => /\(losses only\)/.test(c.concept));
+    it.coverage = residue.length <= 12 && !QUALIFIED.test(t) && !lb && !lossesOnly ? "FULL" : "PARTIAL";
     if (QUALIFIED.test(t)) { it.coverage = "PARTIAL"; it.concepts = []; it.value = "0"; it.note = "qualified add-back (other than / solely …): mapped amount may overstate, counted as 0"; continue; }
     it.note = it.coverage === "FULL" ? "mapped" : `partly mapped; unmapped remainder "${residue.slice(0, 60)}"`;
   }
