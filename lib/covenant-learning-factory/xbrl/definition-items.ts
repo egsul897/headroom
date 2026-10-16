@@ -138,7 +138,7 @@ export function markers(text: string): ItemSign[] {
 
 const GAIN_LIKE = /\b(?:gains?|income|credits?|benefits?|refunds?|reversals?)\b/i;
 export const COST_LIKE = /\b(?:expenses?|loss(?:es)?|charges?|costs?|fees?|deductions?|write-?(?:offs?|downs?)|impairments?|amortization|depreciation|depletion|taxes|tax\s+expense|provision|compensation|savings|synerg\w*|premiums?|commissions?|interest)\b/i;
-export const TWO_SIDED = /\bpro\s+forma\b(?![^.;]{0,80}\b(?:cost\s+savings|synerg|run[- ]rate))|\b(?:acquired|disposed|acquisition|disposition)\b[^.;]{0,120}\b(?:as\s+if|beginning\s+of)\b|\bgains?\s+(?:or|and|\/)\s+loss|\bloss(?:es)?\s+(?:or|and|\/)\s+gains?|\bincome\s+\(?(?:or|and)\s+loss|\(loss\)|\bforeign\s+(?:currency|exchange)|\bmark[- ]to[- ]market|\bhedg/i;
+export const TWO_SIDED = /\bpro\s+forma\b(?![^.;]{0,80}\b(?:cost\s+savings|synerg|run[- ]rate))|\b(?:acquired|disposed|acquisition|disposition)\b[^.;]{0,120}\b(?:as\s+if|beginning\s+of)\b|\bgains?\s+(?:or|and|\/)\s+loss|\bloss(?:es)?\s+(?:or|and|\/)\s+gains?|\bincome\s+\(?(?:or|and)\s+loss|\(loss\)|\bforeign\s+(?:currency|exchange)|\bmark[- ]to[- ]market(?:\s+valuation)?(?:\s+of\s+(?:any\s+)?Hedg\w*)?|\b(?:gains?|losses?|income)\b[^.;]{0,40}\bHedg\w*|\bHedg\w*[^.;]{0,40}\b(?:gains?|losses?|income|mark[- ]to[- ]market)/i;
 export const CAPPED = /\bnot\s+(?:to\s+)?exceed|\bshall\s+not\s+exceed|\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not|up\s+to)|\bcapped\b|\bmaximum\s+of\b/i;
 export const QUALIFIED = /\bother\s+than\b|\bexcluding\b|\bexcept\b|\bsolely\b|\bonly\s+to\s+the\s+extent\b|\bcash\s+portion|\bnet\s+of\b/i;
 export const HEADER = /^(?:,|\s)*(?:(?:the\s+)?following(?:\s+(?:items|amounts))?|without\s+duplication|\(?\s*(?:and\s+)?(?:excluding|including)\s+(?:the\s+effect\s+of)?\s*\)?|to\s+the\s+extent|the\s+sum\s+of|in\s+each\s+case|plus|minus|less|and|for\s+such\s+period|of\s+such\s+Person|:|,|\s)+/i;
@@ -153,10 +153,18 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
     const term = /"?((?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense)"?/.exec(t)?.[1];
     if (term && /[A-Z]/.test(term[0]!) && depth < 2) {
       const ev = evaluateDefinition("INTEREST", term, text, fin, depth + 1);
-      if (ev.status === "NEEDS_INPUT") return "TWO_SIDED";
-      add({ concept: `${term} (${ev.status})`, value: BigInt(ev.value!) }, /(?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense/gi);
-      if (ev.status === "LOWER_BOUND") r.residueStop.push(/^$/); // marker handled by caller via note
-      (r as MapResult & { lowerBound?: boolean }).lowerBound = ev.status === "LOWER_BOUND";
+      if (ev.status !== "NEEDS_INPUT" && ev.value != null) {
+        add({ concept: `${term} (${ev.status})`, value: BigInt(ev.value) }, /(?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense/gi);
+        if (ev.status === "LOWER_BOUND") r.residueStop.push(/^$/);
+        (r as MapResult & { lowerBound?: boolean }).lowerBound = ev.status === "LOWER_BOUND";
+      } else {
+        // Defined Interest Expense often excludes MTM hedges etc.; when the full definition is not
+        // derivable, XBRL interest expense still evidences the core add-back (partial / floor).
+        const ie = firstItem(fin, IE);
+        if (!ie) return "TWO_SIDED";
+        add(ie, /(?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense/gi);
+        (r as MapResult & { lowerBound?: boolean }).lowerBound = true;
+      }
     } else {
       const ie = firstItem(fin, IE);
       if (/net\s+of\s+interest\s+income/i.test(t)) {
