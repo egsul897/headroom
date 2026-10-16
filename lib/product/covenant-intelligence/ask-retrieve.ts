@@ -12,6 +12,7 @@ import { prisma } from "../../prisma";
 import { summarizeFromStoredMetadata, type CovenantSummaryItem, type DocumentCovenantSummary } from "./summarize";
 import type { AmendmentPackageView } from "../customer-intelligence/amendment-package";
 import { isSubstantiveFinancingPrecedent } from "./corpus-quality";
+import { retrievalTruncationNote } from "./retrieval-truncation-note";
 import { parseProposedAmount } from "./parse-proposed-amount";
 
 export interface AskCitation {
@@ -581,11 +582,15 @@ export async function answerFromCorpus(params: {
       ? { storageRef: { not: null }, companyId: null as string | null }
       : { storageRef: { not: null }, companyId: params.companyId };
 
-  const rows = await prisma.knowledgeSource.findMany({
-    where,
-    take: params.sourceId ? 1 : 120,
-    orderBy: { filingDate: "desc" },
-  });
+  const take = params.sourceId ? 1 : 120;
+  const [rows, totalCount] = await Promise.all([
+    prisma.knowledgeSource.findMany({
+      where,
+      take,
+      orderBy: { filingDate: "desc" },
+    }),
+    prisma.knowledgeSource.count({ where }),
+  ]);
 
   const scoped = researchOnly
     ? rows.filter((r) => r.companyId == null && isSubstantiveFinancingPrecedent(r))
@@ -638,7 +643,19 @@ export async function answerFromCorpus(params: {
     transactionDescription: q,
     limit: params.limit ?? 6,
   });
-  return excellence.bridged.ask;
+  const ask = excellence.bridged.ask;
+  // The 120-row fetch cap silently excluded older documents before;
+  // disclose the truncation on the final answer (rule 37).
+  const truncationNote =
+    !params.sourceId
+      ? retrievalTruncationNote({ totalCount, searchedCount: rows.length })
+      : null;
+  if (!truncationNote) return ask;
+  return {
+    ...ask,
+    detail: `${ask.detail}\n\n${truncationNote}`,
+    limitations: [...ask.limitations, truncationNote],
+  };
 }
 
 export async function listSummariesInNeon(limit = 50): Promise<
