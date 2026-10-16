@@ -5,8 +5,13 @@ import { revalidatePath } from "next/cache";
 import { createManualFinancialState } from "@/lib/onboarding/financial";
 
 function num(formData: FormData, name: string): number {
-  const v = Number(formData.get(name));
-  if (Number.isNaN(v)) throw new Error(`"${name}" must be a number.`);
+  // Rule 110: Number("") and Number(null) are both 0 — a missing
+  // or blank required financial field must refuse, never write
+  // an invented zero into the snapshot.
+  const raw = formData.get(name);
+  if (raw === null || String(raw).trim() === "") throw new Error(`"${name}" is required.`);
+  const v = Number(raw);
+  if (!Number.isFinite(v)) throw new Error(`"${name}" must be a number.`);
   return v;
 }
 
@@ -20,7 +25,12 @@ export async function submitFinancialsAction(companyId: string, formData: FormDa
   await requireTenantAction(companyId);
   await createManualFinancialState({
     companyId,
-    asOfDate: new Date(String(formData.get("asOfDate"))),
+    asOfDate: (() => {
+      const raw = String(formData.get("asOfDate") ?? "").trim();
+      const d = new Date(raw);
+      if (!raw || Number.isNaN(d.getTime())) throw new Error(`"asOfDate" is required and must be a valid date.`);
+      return d;
+    })(),
     ebitda: num(formData, "ebitda"),
     cash: num(formData, "cash"),
     totalDebtPrincipal: num(formData, "totalDebtPrincipal"),
