@@ -8,10 +8,10 @@ const fin = (extra: Record<string, number> = {}): IssuerFinancials => ({
   cik: "0000000001", entityName: "Test Borrower", missing: [], anchor: "2026-06-30",
   values: [
     ...Object.entries({ NetIncomeLoss: 100 * M, IncomeTaxExpenseBenefit: 20 * M, InterestExpense: 30 * M, DepreciationDepletionAndAmortization: 50 * M, ...extra }).map(([concept, v]) => ({
-      metric: "item" as const, concept, periodType: "TTM", periodStart: "2025-07-01", periodEnd: "2026-06-30",
-      value: String(v), unit: "USD", accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test",
+      metric: "item" as const, concept, periodType: "TTM" as const, periodStart: "2025-07-01", periodEnd: "2026-06-30",
+      value: String(v), unit: "USD" as const, accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test",
     })),
-    { metric: "interestExpense", concept: "InterestExpense", periodType: "TTM", periodStart: "2025-07-01", periodEnd: "2026-06-30", value: String(30 * M), unit: "USD", accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test" },
+    { metric: "interestExpense", concept: "InterestExpense", periodType: "TTM" as const, periodStart: "2025-07-01", periodEnd: "2026-06-30", value: String(30 * M), unit: "USD" as const, accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test" },
   ],
 });
 
@@ -158,5 +158,20 @@ describe("two-sided lines signed from exact filed figures", () => {
     const line = "gains or losses on foreign currency transactions";
     expect(decide("Consolidated EBITDA", S(line), fin({ ForeignCurrencyTransactionGainLossBeforeTax: 4 * M })).input?.value).toBe(String(196 * M));
     expect(decide("Consolidated EBITDA", S(line), fin()).status).toBe("NEEDS_INPUT");
+  });
+});
+
+describe("regression: lines that could lower EBITDA block the lower bound", () => {
+  // Pattern from a credit agreement: "plus (iv) extraordinary, non-operating or non-cash charges … minus (c) extraordinary,
+  // non-operating or non-cash income" — the unmodelled deduction makes the supported figure unsafe as a floor.
+  it("unmodelled 'minus … non-cash income' deduction → NEEDS_INPUT", () => {
+    const text = `"Consolidated Net Income" means the net income of the Borrower. "Consolidated EBITDA" means, for any period, the sum of (a) Consolidated Net Income for such period, plus (b) to the extent deducted in determining such Consolidated Net Income for such period, the sum of (i) income tax expense for such period, (ii) depreciation and amortization for such period and (iii) the aggregate amount of extraordinary, non-operating or non-cash charges for such period, minus (c) the aggregate amount of extraordinary, non-operating or non-cash income during such period. "Default" means any event.`;
+    expect(decide("Consolidated EBITDA", text, fin()).status).toBe("NEEDS_INPUT");
+  });
+  // Pattern from a REIT indenture: excluding-list line "(D) extraordinary or nonrecurring items, including gains, losses,
+  // charges or expenses from the sale of operating Properties" names gains; signing line (F) must not flip it to a bound.
+  it("open line naming gains (sale of properties) → NEEDS_INPUT even when the JV line is signed from filings", () => {
+    const text = `"Consolidated EBITDA" means, with respect to a Person for any period and without duplication, the sum of: (1) net income (loss) of such Person for such period determined on a consolidated basis excluding the following (but only to the extent included in determining net income (loss) for such period): (A) depreciation and amortization; (B) interest expense; (C) income tax expense; (D) extraordinary or nonrecurring items, including, without limitation, gains, losses, charges or expenses from the sale of operating Properties; and (F) equity in net income (loss) of its Joint Ventures. "Default" means any event.`;
+    expect(decide("Consolidated EBITDA", text, fin({ IncomeLossFromEquityMethodInvestments: 15 * M })).status).toBe("NEEDS_INPUT");
   });
 });

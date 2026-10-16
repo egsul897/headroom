@@ -338,7 +338,17 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   if (!baseOk) return out({ addBacks, needsInput: [`base/deductions: ${lowerReason}`, ...needsInput], reason: `NEEDS_INPUT: ${lowerReason}` });
   const supported = e0! + addBacks.filter((l) => uncapped.every((u) => u.label !== l.label)).reduce((a, l) => a + BigInt(l.claimed), 0n);
   const complete = !open.length && !ev.items.some((i) => i.label === "(base)" && i.coverage === "PARTIAL");
-  const ambiguousOpen = pairs.filter((p) => (ambiguousAddBack(p) || p.it.sign === "?") && open.some((l) => l.label === p.it.label)).map((p) => p.it.label);
+  // Lines that could lower the total, so the supported figure is not a safe lower bound:
+  //  - open two-sided / income-like add-backs;
+  //  - open lines that name gains or income ("gains, losses … from the sale of …");
+  //  - any deduction ("minus … non-cash income") not fully modelled from filings (from the evaluator or the schedule).
+  const namesGainOrIncome = (s: string) => /\bgains?\b|\bincome\b/i.test(s.replace(/\b(?:Consolidated\s+)?Net\s+Income\b|\bincome\s+tax(?:es)?\b|\bbased\s+on\s+income\b|\bnet\s+income\s+\(loss\)/gi, " "));
+  const ambiguousOpen = [...new Set([
+    ...pairs.filter((p) => (ambiguousAddBack(p) || p.it.sign === "?") && open.some((l) => l.label === p.it.label)).map((p) => p.it.label),
+    ...open.filter((l) => namesGainOrIncome(l.text)).map((l) => l.label),
+    ...pairs.filter((p) => p.it.sign === "-" && p.it.coverage !== "HEADER" && p.it.coverage !== "FULL").map((p) => p.it.label),
+    ...ev.items.filter((i) => i.sign === "-" && i.coverage !== "HEADER" && i.coverage !== "FULL").map((i) => i.label),
+  ])];
   return out({ status: complete ? "MAXIMIZED" : "NEEDS_INPUT", maximum: complete ? usd(supported) : null, supported: usd(supported), deductions: usd(deductions!), addBacks, needsInput, omittedTwoSided: ambiguousOpen,
     reason: complete ? "every permitted add-back is evidenced and every cap applied" : `${open.length} add-back(s) not evidenced in filings; supported figure is what the filings prove` });
 }

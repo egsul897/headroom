@@ -7,8 +7,8 @@ const M = 1_000_000;
 const fin = (items: Record<string, number>, end = "2026-06-30"): IssuerFinancials => ({
   cik: "0000000001", entityName: "t", missing: [], anchor: end,
   values: [
-    ...Object.entries(items).map(([concept, v]) => ({ metric: "item" as const, concept, periodType: "TTM", periodStart: null as unknown as string, periodEnd: end, value: String(v), unit: "USD", accession: "x", form: "10-Q", filed: end, derivation: "test" })),
-    { metric: "totalDebt" as const, concept: "LongTermDebt", periodType: "instant", periodStart: null as unknown as string, periodEnd: end, value: String(600 * M), unit: "USD", accession: "x", form: "10-Q", filed: end, derivation: "exact" },
+    ...Object.entries(items).map(([concept, v]) => ({ metric: "item" as const, concept, periodType: "TTM" as const, periodStart: null as unknown as string, periodEnd: end, value: String(v), unit: "USD" as const, accession: "x", form: "10-Q", filed: end, derivation: "test" })),
+    { metric: "totalDebt" as const, concept: "LongTermDebt", periodType: "INSTANT" as const, periodStart: null as unknown as string, periodEnd: end, value: String(600 * M), unit: "USD" as const, accession: "x", form: "10-Q", filed: end, derivation: "exact" },
   ],
 });
 const CORE = { NetIncomeLoss: 100 * M, IncomeTaxExpenseBenefit: 20 * M, InterestExpense: 30 * M, DepreciationDepletionAndAmortization: 50 * M };

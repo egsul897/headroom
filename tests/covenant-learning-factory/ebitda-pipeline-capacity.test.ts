@@ -12,12 +12,12 @@ const fin = (debt = 600 * M, lowerBound = false): IssuerFinancials => ({
       InterestExpense: 30 * M,
       DepreciationDepletionAndAmortization: 50 * M,
     }).map(([concept, v]) => ({
-      metric: "item" as const, concept, periodType: "TTM", periodStart: "2025-07-01", periodEnd: "2026-06-30",
-      value: String(v), unit: "USD", accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test",
+      metric: "item" as const, concept, periodType: "TTM" as const, periodStart: "2025-07-01", periodEnd: "2026-06-30",
+      value: String(v), unit: "USD" as const, accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test",
     })),
     {
-      metric: "totalDebt", concept: "LongTermDebt", periodType: "instant", periodStart: null as unknown as string,
-      periodEnd: "2026-06-30", value: String(debt), unit: "USD", accession: "x", form: "10-Q", filed: "2026-08-01",
+      metric: "totalDebt", concept: "LongTermDebt", periodType: "INSTANT" as const, periodStart: null as unknown as string,
+      periodEnd: "2026-06-30", value: String(debt), unit: "USD" as const, accession: "x", form: "10-Q", filed: "2026-08-01",
       derivation: lowerBound ? "lower bound from long-term debt" : "exact",
     },
   ],
