@@ -223,7 +223,9 @@ function extractBaskets(excerpt: string): string[] {
   const out: string[] = [];
   const greaterOf = [
     ...excerpt.matchAll(
-      /greater of\s*\(?(?:x\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:y\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
+      // Limb markers vary by drafter: (x)/(y), (i)/(ii), (1)/(2).
+      // The old regex hard-coded x/y and silently dropped the rest.
+      /greater of\s*\(?(?:[a-z0-9]{1,3}\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:[a-z0-9]{1,3}\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
     ),
   ];
   for (const m of greaterOf.slice(0, 8)) {
