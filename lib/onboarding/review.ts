@@ -202,8 +202,10 @@ export async function recordSystemReviewRequired(client: ReviewDb, params: { can
   await write(client);
 }
 
-/** Full, ordered review history for one candidate - the audit trail the task requires beyond reviewedAt/reviewedBy's own "latest decision only" scope. */
-export async function getCandidateReviewHistory(candidateId: string) {
+/** Full, ordered review history for one candidate - the audit trail the task requires beyond reviewedAt/reviewedBy's own "latest decision only" scope. Rule 148: the lookup previously took only the candidate id, so a caller holding another company's candidate id got its review history. The company is now required and the candidate's ownership is verified first; a mismatch returns no events. */
+export async function getCandidateReviewHistory(candidateId: string, companyId: string) {
+  const candidate = await prisma.extractionCandidate.findUnique({ where: { id: candidateId }, select: { companyId: true } });
+  if (!candidate || candidate.companyId !== companyId) return [];
   return prisma.candidateReviewEvent.findMany({ where: { candidateId }, orderBy: { createdAt: "asc" } });
 }
 

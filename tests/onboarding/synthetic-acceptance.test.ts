@@ -143,7 +143,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
     expect(afterEdit.proposedValue).toEqual(originalProposedValue); // never overwritten
     expect((afterEdit.reviewerEditedValue as { thresholdValue: number }).thresholdValue).toBe(550);
 
-    const history = await getCandidateReviewHistory(debtPermission.id);
+    const history = await getCandidateReviewHistory(debtPermission.id, COMPANY_ID);
     expect(history.length).toBe(1);
     expect(history[0]!.action).toBe("EDIT");
     expect(history[0]!.previousStatus).toBe("PENDING");
@@ -151,7 +151,7 @@ describe("synthetic-company onboarding acceptance (full real workflow, zero comp
 
     // A second review decision on the same candidate is a NEW event, not an overwrite.
     await reviewCandidate({ companyId: COMPANY_ID, candidateId: debtPermission.id, action: "APPROVE", reviewedBy: "second-reviewer@example.com", note: "Confirmed the correction." });
-    const historyAfterSecond = await getCandidateReviewHistory(debtPermission.id);
+    const historyAfterSecond = await getCandidateReviewHistory(debtPermission.id, COMPANY_ID);
     expect(historyAfterSecond.length).toBe(2);
     expect(historyAfterSecond[1]!.action).toBe("APPROVE");
 
