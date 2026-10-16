@@ -53,14 +53,24 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
     getLatestAmendmentPackage(companyId),
   ]);
 
-  const discoveredSummaries = docs.reduce((n, d) => n + (d.summary?.items.length ?? 0), 0);
+  // Fix 6: count unique reviewable units (sectionRef, category),
+  // not raw items — the summary may carry two items with the same
+  // (ref, category) (parser duplicates); decisions, the Rulebook
+  // queue, and coverage all key on (ref, category), so the ladder
+  // must count the same units or it can never clear.
+  const unitKey = (i: { sectionRef: string; category: string }) => `${i.sectionRef}::${i.category}`;
+  const uniqueUnits = (items: { sectionRef: string; category: string }[]) =>
+    new Set(items.map(unitKey)).size;
+  const discoveredSummaries = docs.reduce((n, d) => n + uniqueUnits(d.summary?.items ?? []), 0);
   // Rule 162: stale items count toward the ladder unless disclosed.
   const staleDiscoveredSummaries = docs
     .filter((d) => d.analysisStale)
-    .reduce((n, d) => n + (d.summary?.items.length ?? 0), 0);
-  const interpretedProvisions = docs
-    .flatMap((d) => d.summary?.items ?? [])
-    .filter((i) => i.plainEnglish && !/appears to address/i.test(i.plainEnglish)).length;
+    .reduce((n, d) => n + uniqueUnits(d.summary?.items ?? []), 0);
+  const interpretedProvisions = uniqueUnits(
+    docs
+      .flatMap((d) => d.summary?.items ?? [])
+      .filter((i) => i.plainEnglish && !/appears to address/i.test(i.plainEnglish)),
+  );
 
   const counselReviewed = counselApprovals.filter(
     (a) => a.decision === "ACCEPTED" || a.decision === "EDITED",

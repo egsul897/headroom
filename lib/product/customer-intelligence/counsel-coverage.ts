@@ -79,12 +79,20 @@ export async function evaluateCounselCoverage(
   const summary = meta.covenantSummary as { items?: { sectionRef: string }[] } | undefined;
   const items = Array.isArray(summary?.items) ? summary.items : [];
   const approvals = Array.isArray(meta.reviewerApprovals)
-    ? (meta.reviewerApprovals as { sectionRef?: unknown }[])
+    ? (meta.reviewerApprovals as { sectionRef?: unknown; category?: unknown }[])
     : [];
-  const decidedRefs = new Set(
-    approvals.filter((a) => typeof a.sectionRef === "string").map((a) => a.sectionRef as string),
+  // Fix 6: decidedness keys on (sectionRef, category) — a decision on
+  // the EVENTS_OF_DEFAULT reading of a section must not mark the OTHER
+  // reading decided. True duplicates (same ref + category) share a key,
+  // so one decision covers both (they compile to the same unit).
+  const decidedKeys = new Set(
+    approvals
+      .filter((a) => typeof a.sectionRef === "string")
+      .map((a) => `${a.sectionRef as string}::${typeof a.category === "string" ? a.category : ""}`),
   );
-  const decidedCount = items.filter((i) => decidedRefs.has(i.sectionRef)).length;
+  const decidedCount = items.filter((i) =>
+    decidedKeys.has(`${i.sectionRef}::${(i as { category?: unknown }).category ?? ""}`),
+  ).length;
   const reviewComplete = items.length > 0 && decidedCount === items.length;
 
   // Scopes come from MODELED Permissions only: a scope with no

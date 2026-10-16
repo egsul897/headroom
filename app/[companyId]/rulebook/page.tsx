@@ -52,7 +52,9 @@ export default async function RulebookPage({
       .map((i) => [i.sourceId, `declared ${i.declaredType}, analyzed as ${i.documentClass}`] as const),
   );
   const decide = reviewProvisionAction.bind(null, companyId);
-  const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}`, a]));
+  // Fix 6: decision lookup keys on category — two queue rows sharing
+  // a sectionRef but in different categories are distinct decisions.
+  const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}|${a.category}`, a]));
 
   const candidates = review.categories.flatMap((c) =>
     c.items.map((item) => ({
@@ -71,7 +73,7 @@ export default async function RulebookPage({
       citation: item.sourceCitation,
       documentTitle: item.documentTitle,
       typeMismatch: mismatchBySourceId.get(item.sourceId) ?? null,
-      decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}`),
+      decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}|${item.category}`),
     })),
   );
 

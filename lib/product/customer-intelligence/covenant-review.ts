@@ -87,11 +87,22 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
 
   const byCategory = new Map<CovenantCategoryKey, CovenantReviewCategoryBlock>();
   let totalSummaries = 0;
+  // Fix 6: the queue is the review surface — one row per compilable
+  // unit (sourceId, sectionRef, category). The summary itself may
+  // carry two items with the same (ref, category) but different text
+  // (parser duplicates); the compile layer only ever uses the first
+  // match, so a second row is a display redundancy that could never
+  // be decided independently (its decision would overwrite the
+  // first's). Keep the first.
+  const seenQueueKeys = new Set<string>();
 
   for (const doc of documents) {
     if (!doc.summary) continue;
     for (const item of doc.summary.items) {
       totalSummaries += 1;
+      const queueKey = `${doc.sourceId}|${item.sectionRef}|${item.category}`;
+      if (seenQueueKeys.has(queueKey)) continue;
+      seenQueueKeys.add(queueKey);
       const cat = item.category;
       let block = byCategory.get(cat);
       if (!block) {

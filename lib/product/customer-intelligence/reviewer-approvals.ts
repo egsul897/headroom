@@ -84,11 +84,19 @@ export async function recordReviewerDecision(params: {
     ? ([...meta.reviewerDecisionHistory] as ReviewerApproval[])
     : [];
 
+  // Integration fix (Fix 6): decisions key on (sourceId, sectionRef,
+  // CATEGORY). The old key ignored category, so two summary items
+  // sharing a sectionRef (e.g. 1.01(g)(c)(c) as EVENTS_OF_DEFAULT and
+  // as OTHER) overwrote each other's decisions — counsel could never
+  // complete review of a doc with duplicate refs, and the wizard's
+  // decisions < items gate never cleared.
   const existing = prior.find(
-    (a) => a.sectionRef === params.sectionRef && a.sourceId === params.sourceId,
+    (a) => a.sectionRef === params.sectionRef && a.sourceId === params.sourceId && a.category === params.category,
   );
   const summary = summarizeFromStoredMetadata(meta);
-  const currentItem = summary?.items.find((i) => i.sectionRef === params.sectionRef);
+  const currentItem = summary?.items.find(
+    (i) => i.sectionRef === params.sectionRef && i.category === params.category,
+  );
   // Rule 112: compile already refuses a section with no summary
   // item — but the decision row was still recorded, leaving a
   // phantom approval that matches nothing. Refuse up front so no
@@ -131,7 +139,7 @@ export async function recordReviewerDecision(params: {
 
   if (existing) history.push(existing);
   const filtered = prior.filter(
-    (a) => !(a.sectionRef === next.sectionRef && a.sourceId === next.sourceId),
+    (a) => !(a.sectionRef === next.sectionRef && a.sourceId === next.sourceId && a.category === next.category),
   );
   filtered.push(next);
 
