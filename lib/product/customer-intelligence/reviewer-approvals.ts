@@ -47,39 +47,8 @@ export async function listReviewerApprovals(companyId: string): Promise<Reviewer
   return out;
 }
 
-/** Overlay counsel decisions onto summary items for Ask / display. */
-export function applyReviewerOverlayToItems(
-  items: Array<CovenantSummaryItem & { sourceId?: string }>,
-  approvals: ReviewerApproval[],
-): Array<CovenantSummaryItem & { sourceId?: string }> {
-  return items
-    .map((item) => {
-      const approval =
-        approvals.find(
-          (a) =>
-            a.sectionRef === item.sectionRef &&
-            (!item.sourceId || a.sourceId === item.sourceId),
-        ) ??
-        (approvals.filter((a) => a.sectionRef === item.sectionRef).length === 1
-          ? approvals.find((a) => a.sectionRef === item.sectionRef)
-          : undefined);
-      if (!approval) return item;
-      if (approval.decision === "REJECTED") {
-        return { ...item, reviewerDecision: "REJECTED" as const };
-      }
-      const plain =
-        approval.decision === "EDITED" && approval.editedPlainEnglish?.trim()
-          ? approval.editedPlainEnglish.trim()
-          : item.plainEnglish;
-      return {
-        ...item,
-        plainEnglish: plain,
-        reviewerDecision: approval.decision,
-        interpretationNote: `${item.interpretationNote ?? ""} [Workspace counsel ${approval.decision.toLowerCase()} ${approval.reviewedAt}]`.trim(),
-      };
-    })
-    .filter((item) => item.reviewerDecision !== "REJECTED");
-}
+/** Overlay lives in a prisma-free module so it is unit-testable. */
+export { applyReviewerOverlayToItems } from "./reviewer-overlay";
 
 /**
  * After AI reanalysis, re-apply counsel edits/accepts onto the new summary and

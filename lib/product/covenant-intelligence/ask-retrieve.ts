@@ -623,7 +623,7 @@ export async function answerFromCorpus(params: {
       ? (meta.reviewerApprovals as import("../customer-intelligence/reviewer-approvals").ReviewerApproval[])
       : [];
     const { applyReviewerOverlayToItems } = await import(
-      "../customer-intelligence/reviewer-approvals"
+      "../customer-intelligence/reviewer-overlay"
     );
     const overlaid = researchOnly
       ? summary.items
