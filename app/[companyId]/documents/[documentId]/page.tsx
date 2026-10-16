@@ -7,6 +7,12 @@ import { prisma } from "@/lib/prisma";
 import { getDocumentStorageProvider } from "@/lib/document-storage";
 import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
+import {
+  analysisPendingNote,
+  analysisStatusOf,
+  analysisStatusTone,
+  isAnalysisPending,
+} from "@/lib/product/customer-intelligence/analysis-status";
 import { loadSourceTextFromBytes, resolveCuratedSourceTextPath } from "@/lib/product/customer-intelligence/source-text";
 import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 
@@ -87,8 +93,12 @@ export default async function DocumentSourcePage({
           <div className="row-value">
             {intel ? (
               <>
-                <Chip tone={intel.analysisOk ? "pass" : "trip"}>
-                  {intel.analysisOk ? "ANALYZED" : "FAILED"}
+                {/* Rule 158: pending is not failed — the chip used to
+                    show FAILED for STAGED/ANALYZING documents. Status
+                    label and tone come from the shared helper so this
+                    page can never disagree with the documents list. */}
+                <Chip tone={analysisStatusTone(analysisStatusOf(intel))}>
+                  {analysisStatusOf(intel)}
                 </Chip>{" "}
                 {intel.extractionStatus} · {intel.covenantItemCount} summaries
               </>
@@ -97,6 +107,9 @@ export default async function DocumentSourcePage({
             )}
           </div>
         </div>
+        {intel && isAnalysisPending(intel) && (
+          <div className="row-note">{analysisPendingNote()}</div>
+        )}
         {intel?.analysisError && (
           <div className="row-note" style={{ color: "var(--color-danger, #b91c1c)" }}>
             Analysis failed: {intel.analysisError}. This document has not been successfully analyzed.
@@ -298,7 +311,7 @@ export default async function DocumentSourcePage({
         </Card>
       )}
 
-      {intel && intel.analysisOk === false && summaryItems.length === 0 && (
+      {intel && intel.analysisOk === false && !isAnalysisPending(intel) && summaryItems.length === 0 && (
         <Card>
           <div className="card-title">No covenant summaries</div>
           <div className="card-subtitle">

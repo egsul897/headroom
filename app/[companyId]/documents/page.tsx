@@ -8,6 +8,12 @@ import {
   getLatestAmendmentPackage,
   listCustomerDocumentIntelligence,
 } from "@/lib/product/customer-intelligence/load";
+import {
+  analysisPendingNote,
+  analysisStatusOf,
+  analysisStatusTone,
+  isAnalysisPending,
+} from "@/lib/product/customer-intelligence/analysis-status";
 import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
@@ -132,25 +138,11 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               <div className="row-value">
                 {intel ? (
                   <>
-                    <Chip
-                      tone={
-                        intel.analysisOk
-                          ? "pass"
-                          : intel.processingStatus === "STAGED_PENDING_ANALYSIS" ||
-                              intel.processingStatus === "ANALYZING"
-                            ? "navy"
-                            : "trip"
-                      }
-                    >
-                      {intel.analysisOk
-                        ? "ANALYZED"
-                        : intel.processingStatus === "STAGED_PENDING_ANALYSIS"
-                          ? "STAGED"
-                          : intel.processingStatus === "ANALYZING"
-                            ? "ANALYZING"
-                            : intel.processingStatus === "FAILED_RETRYABLE"
-                              ? "RETRYABLE"
-                              : "FAILED"}
+                    {/* Rule 158: status label/tone from the shared helper —
+                        identical output to the inline ternaries this
+                        replaced, so list and detail can never diverge. */}
+                    <Chip tone={analysisStatusTone(analysisStatusOf(intel))}>
+                      {analysisStatusOf(intel)}
                     </Chip>{" "}
                     {intel.covenantItemCount} covenant summaries · {intel.extractionStatus}
                     {intel.processingStatus ? ` · ${intel.processingStatus}` : ""}
@@ -181,8 +173,8 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
             </div>
             {intel && !intel.analysisOk && (
               <div className="row-note" style={{ color: "var(--color-danger, #b91c1c)" }}>
-                {intel.processingStatus === "STAGED_PENDING_ANALYSIS" || intel.processingStatus === "ANALYZING"
-                  ? "Durable bytes are saved; analysis is in progress or queued. Refresh shortly."
+                {isAnalysisPending(intel)
+                  ? analysisPendingNote()
                   : `Analysis did not succeed${intel.analysisError ? `: ${intel.analysisError}` : "."} Original bytes are preserved — retry without re-upload.`}
               </div>
             )}
