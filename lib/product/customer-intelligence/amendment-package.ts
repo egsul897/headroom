@@ -66,7 +66,13 @@ function inferChangeSignals(
   const amendments = sources.filter((s) => AMENDMENT_CLASSES.has(s.documentClass));
   for (const a of amendments) {
     const title = (a.documentTitle || a.exhibitFilename || "").toLowerCase();
-    if (/\brestate|\bamended and restated\b/.test(title)) {
+    // An "Amendment ... to [the Amended and Restated ...]" is an
+    // AMENDMENT to a restated base — not itself a restatement.
+    // The old /\brestate|\bamended and restated\b/ test matched
+    // the BASE's description in the title and emitted REPLACED.
+    // "Amendment and Restatement" (no "to") IS a restatement.
+    const amendmentToSomething = /^\s*(?:\w+\s+)?amendment\s+(?:no\.?\s*|number\s*|#\s*)?\d|^\s*(?:\w+\s+)?amendment\s+to\b/.test(title);
+    if (!amendmentToSomething && (/\brestate|\bamended and restated\b/.test(title))) {
       signals.push({
         kind: "REPLACED",
         evidence: `Document title suggests restatement/replacement: ${a.documentTitle}`,
