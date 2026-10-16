@@ -102,6 +102,20 @@ export async function recordReviewerDecision(params: {
     };
   }
 
+  // Rule 143: the reviewer label previously defaulted to the
+  // generic "workspace-counsel" when missing — fabricated
+  // attribution (rules 113–115/142 class). A decision without
+  // a real reviewer is refused; the one remaining caller that
+  // relied on the fallback (the workflow demo script) now passes
+  // an explicit demo label.
+  if (!params.reviewerLabel?.trim()) {
+    return {
+      ok: false,
+      error: "A reviewer name/email is required — no decision recorded",
+      approvalCount: prior.length,
+    };
+  }
+
   const next: ReviewerApproval = {
     sourceId: params.sourceId,
     sectionRef: params.sectionRef,
@@ -111,7 +125,7 @@ export async function recordReviewerDecision(params: {
     priorPlainEnglish: currentItem?.plainEnglish,
     note: params.note?.trim() || undefined,
     reviewedAt: new Date().toISOString(),
-    reviewerLabel: params.reviewerLabel?.trim() || "workspace-counsel",
+    reviewerLabel: params.reviewerLabel.trim(),
     version: (existing?.version ?? 0) + 1,
   };
 
