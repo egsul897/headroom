@@ -24,28 +24,46 @@ function item(heading: string, category = "OTHER", plainEnglish = ""): CovenantS
 
 describe("grant-type classification", () => {
   it("asset-sale covenant matches NO grant type (not DEBT_INCURRENCE)", () => {
-    expect(grantTypesForItem(item("Limitation on Asset Sales", "OTHER", "No Asset Sale shall exceed $10.0 million in proceeds."), "OTHER")).toEqual([]);
+    expect(grantTypesForItem(item("Limitation on Asset Sales", "OTHER", "No Asset Sale shall exceed $10.0 million in proceeds."))).toEqual([]);
   });
 
   it("merger covenant matches NO grant type", () => {
-    expect(grantTypesForItem(item("Merger, Consolidation or Sale of Assets", "OTHER", "The Company shall not merge with another Person."), "OTHER")).toEqual([]);
+    expect(grantTypesForItem(item("Merger, Consolidation or Sale of Assets", "OTHER", "The Company shall not merge with another Person."))).toEqual([]);
   });
 
   it("debt covenant still maps to DEBT_INCURRENCE", () => {
     expect(
-      grantTypesForItem(item("Limitation on Indebtedness", "DEBT_INCURRENCE", "Indebtedness not to exceed $150.0 million."), "DEBT_INCURRENCE"),
+      grantTypesForItem(item("Limitation on Indebtedness", "DEBT_INCURRENCE", "Indebtedness not to exceed $150.0 million.")),
     ).toEqual(["DEBT_INCURRENCE"]);
   });
 
   it("secured-debt covenant maps to both DEBT_INCURRENCE and LIEN", () => {
     expect(
-      grantTypesForItem(item("Limitation on Liens", "LIENS_SECURED_DEBT", "Secured Indebtedness and Liens permitted."), "LIENS_SECURED_DEBT"),
+      grantTypesForItem(item("Limitation on Liens", "LIENS_SECURED_DEBT", "Secured Indebtedness and Liens permitted.")),
     ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
   });
 
   it("dividend covenant maps to RESTRICTED_PAYMENT", () => {
     expect(
-      grantTypesForItem(item("Limitation on Restricted Payments", "RESTRICTED_PAYMENTS", "Dividends permitted from the builder basket."), "RESTRICTED_PAYMENTS"),
+      grantTypesForItem(item("Limitation on Restricted Payments", "RESTRICTED_PAYMENTS", "Dividends permitted from the builder basket.")),
     ).toEqual(["RESTRICTED_PAYMENT"]);
+  });
+});
+
+/**
+ * Rule 60 — grant-type classification uses ONLY the item's own
+ * evidence, never a caller-supplied category.
+ *
+ * The classifier used to take a `category` param fed straight
+ * from the client's FormData (rulebook/actions.ts). Passing
+ * "DEBT_INCURRENCE" for a liens-only covenant minted a
+ * DEBT_INCURRENCE Permission from a liens covenant. The param
+ * is gone; a liens-only item maps to LIEN alone.
+ */
+describe("grant-type classification ignores caller category", () => {
+  it("liens-only item maps to LIEN alone", () => {
+    expect(
+      grantTypesForItem(item("Limitation on Liens", "LIENS", "No Liens shall be created on any assets.")),
+    ).toEqual(["LIEN"]);
   });
 });

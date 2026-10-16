@@ -304,7 +304,7 @@ export async function compileAcceptedInterpretation(params: {
     ];
   }
 
-  const grants = grantTypesForItem(item, params.category);
+  const grants = grantTypesForItem(item);
   if (!grants.length) {
     // No grant-type signal (e.g. asset-sale / merger covenant) — do
     // not mint a wrong-typed Permission. Previously this defaulted

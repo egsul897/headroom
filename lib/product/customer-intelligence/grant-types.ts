@@ -14,9 +14,19 @@ export type CounselGrantType = "DEBT_INCURRENCE" | "LIEN" | "RESTRICTED_PAYMENT"
  * nor investment) to DEBT_INCURRENCE, so an asset-sale basket was
  * compiled as a debt-incurrence permission and inflated debt
  * capacity. No signal → no grant → no permission minted.
+ *
+ * Rule 60: the classifier uses ONLY the item's own evidence
+ * (its category, heading, families, plain English). It must
+ * NEVER take a caller-supplied category: that category arrives
+ * from the client's FormData (rulebook/actions.ts) and would
+ * let a wrong/stale/tampered category mint a wrong-typed
+ * Permission — e.g. "DEBT_INCURRENCE" passed for a liens-only
+ * covenant mints a debt permission. Counsel's signal flows
+ * through the item text (an EDITED plainEnglish is already in
+ * the item when compile runs), not through the category param.
  */
-export function grantTypesForItem(item: CovenantSummaryItem, category: string): CounselGrantType[] {
-  const hay = `${category} ${item.category} ${item.heading} ${item.families.join(" ")} ${item.plainEnglish}`.toUpperCase();
+export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
+  const hay = `${item.category} ${item.heading} ${item.families.join(" ")} ${item.plainEnglish}`.toUpperCase();
 
   // Restricted payments / investments — do not default these into DEBT_INCURRENCE.
   const isRpFamily = /RESTRICTED.?PAYMENT|DIVIDEND|SHARE.?REPURCHASE|\bRP\b|AVAILABLE AMOUNT/.test(hay);
