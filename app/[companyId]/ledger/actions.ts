@@ -24,13 +24,19 @@ export async function addLedgerEntry(companyId: string, formData: FormData) {
   const direction = String(formData.get("direction"));
   const amount = Number(formData.get("amount"));
   const description = String(formData.get("description") || "").trim() || "Untitled entry";
+  // Rule 139: a capacity-affecting manual entry with no actor is
+  // unattributed provenance (rules 113–115 class). The LedgerEntry
+  // model had no actor column at all; it now does, and the action
+  // refuses without a real value.
+  const createdBy = String(formData.get("createdBy") || "").trim();
+  if (!createdBy) throw new Error("createdBy (your name/email) is required");
 
   if (!VALID_BASKETS.includes(basket as LedgerBasket)) throw new Error(`Invalid basket: ${basket}`);
   if (!VALID_DIRECTIONS.includes(direction as LedgerDirection)) throw new Error(`Invalid direction: ${direction}`);
   if (!Number.isFinite(amount) || amount <= 0) throw new Error("Amount must be a positive number");
 
   await prisma.ledgerEntry.create({
-    data: { companyId, date: new Date(), description, basket: basket as LedgerBasket, amount, direction: direction as LedgerDirection, source: "manual" },
+    data: { companyId, date: new Date(), description, basket: basket as LedgerBasket, amount, direction: direction as LedgerDirection, source: "manual", createdBy },
   });
 
   revalidatePath(`/${companyId}`, "layout");

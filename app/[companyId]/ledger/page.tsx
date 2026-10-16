@@ -25,6 +25,7 @@ function LiveLedgerList({ companyId, entries, supersededCount }: { companyId: st
             <div className="row-note">
               <span className="mono">{fmtDate(e.date)}</span> · {LEDGER_BASKET_LABELS[e.basket]}
               {e.source ? ` · ${e.source}` : ""}
+              {e.createdBy ? ` · logged by ${e.createdBy}` : ""}
             </div>
           </div>
           <div style={{ display: "flex", gap: 10, alignItems: "center", flexShrink: 0 }}>
@@ -57,6 +58,7 @@ function SupersededLedgerHistory({ entries }: { entries: LedgerRow[] }) {
             <div className="row-note">
               <span className="mono">{fmtDate(e.date)}</span> · {LEDGER_BASKET_LABELS[e.basket]}
               {e.source ? ` · ${e.source}` : ""}
+              {e.createdBy ? ` · logged by ${e.createdBy}` : ""}
               {e.supersededAt ? ` · superseded ${fmtDate(e.supersededAt)}` : ""}
             </div>
           </div>
@@ -341,6 +343,12 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
               </div>
             </label>
           </div>
+          <label className="field">
+            <span className="field-label">Logged by</span>
+            <div className="field-control">
+              <input type="text" name="createdBy" placeholder="Your name or email" required />
+            </div>
+          </label>
           <button type="submit" className="button-primary" style={{ padding: "11px 16px", border: "none", borderRadius: 5 }}>
             Log entry
           </button>
