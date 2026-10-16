@@ -4,8 +4,11 @@ import { getReviewProgress } from "@/lib/onboarding/review";
 import { getCoverageSnapshot } from "@/lib/onboarding/promotion";
 import { prisma } from "@/lib/prisma";
 import { onboardingStatusLabel } from "@/lib/status-labels";
-import { promoteAction, generateGoldenTestsAction } from "./actions";
+import { promoteAction, generateGoldenTestsAction, activateDeterministicAction } from "./actions";
 import { getAnalysisReadinessForCompany } from "@/lib/contract-model/analysis";
+import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
+import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
+import { deterministicActivationGate } from "@/lib/onboarding/deterministic-activation";
 
 export const metadata = { title: "Headroom — Activate company" };
 export const dynamic = "force-dynamic";
@@ -16,20 +19,72 @@ const STATUS_LABEL: Record<string, string> = { SOLVER_NATIVE: "Solver-native", L
 
 export default async function ActivatePage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [company, progress, goldenTests, readiness] = await Promise.all([
-    prisma.company.findUniqueOrThrow({ where: { id: companyId } }),
-    getReviewProgress(companyId),
-    prisma.goldenTest.findMany({ where: { companyId } }),
-    getAnalysisReadinessForCompany(companyId).catch(() => ({ ready: false, reason: "READINESS_CHECK_FAILED" })),
-  ]);
+  const [company, progress, goldenTests, readiness, rulebook, approvals, financialSnapshots, declarations] =
+    await Promise.all([
+      prisma.company.findUniqueOrThrow({ where: { id: companyId } }),
+      getReviewProgress(companyId),
+      prisma.goldenTest.findMany({ where: { companyId } }),
+      getAnalysisReadinessForCompany(companyId).catch(() => ({ ready: false, reason: "READINESS_CHECK_FAILED" })),
+      loadRulebookReadiness(companyId).catch(() => null),
+      listReviewerApprovals(companyId).catch(() => []),
+      prisma.financialState.count({ where: { companyId } }),
+      prisma.solverCoverageDeclaration.findMany({ where: { companyId }, select: { isComplete: true } }).catch(() => []),
+    ]);
   const coverage = await getCoverageSnapshot(companyId).catch(() => []);
   const promote = promoteAction.bind(null, companyId);
   const generateGoldenTests = generateGoldenTestsAction.bind(null, companyId);
+  const activateDeterministic = activateDeterministicAction.bind(null, companyId);
+  // Deterministic (no-LLM) activation gate — counsel review +
+  // financials. The LLM Promote card below stays for the LLM path.
+  const detGate = deterministicActivationGate({
+    rulebookStage: rulebook?.stage ?? "DISCOVERED",
+    discoveredSummaries: rulebook?.discoveredSummaries ?? 0,
+    decisions: approvals.length,
+    financialSnapshots,
+    declarationsComplete: declarations.length > 0 && declarations.every((d) => d.isComplete),
+  });
 
   const readyToPromote = progress.approved + progress.edited;
 
   return (
     <div className="stack">
+      <Card>
+        <div className="card-title">Activate workspace (Rulebook path)</div>
+        <div className="card-subtitle">
+          Deterministic review — no LLM credential needed. Counsel decisions in the Rulebook compile the executable
+          rulebook; activation marks the workspace live.
+        </div>
+        <div className="row-note">
+          Rulebook: {rulebook?.stage ?? "DISCOVERED"} · {approvals.length} of {rulebook?.discoveredSummaries ?? 0}{" "}
+          interpretations reviewed · {rulebook?.executablePermissions ?? 0} executable permission(s) ·{" "}
+          {financialSnapshots} financial snapshot(s).
+        </div>
+        {!detGate.ready &&
+          detGate.blockers.map((b) => (
+            <div key={b} className="row-note" style={{ marginTop: 6 }}>
+              {b}
+            </div>
+          ))}
+        {company.onboardingStatus !== "ONBOARDING" && (
+          <div className="row-note" style={{ marginTop: 6 }}>
+            Already activated ({onboardingStatusLabel(company.onboardingStatus)}).
+          </div>
+        )}
+        <form action={activateDeterministic} style={{ marginTop: 10 }}>
+          <button
+            type="submit"
+            className="button-primary"
+            disabled={!detGate.ready || company.onboardingStatus !== "ONBOARDING"}
+          >
+            {company.onboardingStatus === "ONBOARDING"
+              ? detGate.status === "ACTIVE_WITH_LIMITATIONS"
+                ? "Activate workspace (with limitations)"
+                : "Activate workspace"
+              : "Already activated"}
+          </button>
+        </form>
+      </Card>
+
       <Card>
         <div className="card-title">Activate {company.name}</div>
         <div className="card-subtitle">

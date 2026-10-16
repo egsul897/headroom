@@ -43,7 +43,7 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
     loadCapacityReadiness(companyId),
     prisma.permission.findMany({
       where: { companyId },
-      select: { id: true, reviewStatus: true },
+      select: { id: true, reviewStatus: true, modelingStatus: true },
     }),
     prisma.covenantProvision.count({ where: { companyId } }),
     prisma.goldenTest.count({
@@ -71,7 +71,11 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   // compiler-minted (default UNVERIFIED) row counted.
   const verifiedPermissions = verifiedPermissionCount(permissions.map((p) => String(p.reviewStatus)));
   const reviewedPermissions = verifiedPermissions + counselReviewed;
-  const executablePermissions = verifiedPermissions;
+  // Integration fix: executable = MODELED (the engine executes
+  // MODELED Permissions compiled from counsel decisions), not
+  // VERIFIED — no code path ever sets a Permission to VERIFIED,
+  // so the old count was always 0 and EXECUTABLE unreachable.
+  const executablePermissions = permissions.filter((p) => p.modelingStatus === "MODELED").length;
 
   const blockers: string[] = [];
   if (discoveredSummaries === 0) blockers.push("No discovered covenant summaries yet.");

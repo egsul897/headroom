@@ -5,6 +5,9 @@ import { revalidatePath } from "next/cache";
 import { promoteCompanyCandidates } from "@/lib/onboarding/promotion";
 import { getAnalysisReadinessForCompany } from "@/lib/contract-model/analysis";
 import { generateGoldenTestProposals } from "@/lib/onboarding/golden-tests";
+import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
+import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
+import { deterministicActivationGate } from "@/lib/onboarding/deterministic-activation";
 import { prisma } from "@/lib/prisma";
 
 export async function promoteAction(companyId: string) {
@@ -25,6 +28,38 @@ export async function promoteAction(companyId: string) {
   revalidatePath(`/${companyId}/onboarding`);
   revalidatePath(`/${companyId}`);
   // Legacy dashboard stays under Deal setup & tools. Invalidate its cache; it is not the home destination.
+  revalidatePath(`/${companyId}/dashboard`);
+}
+
+/**
+ * Deterministic (no-LLM) activation: the Rulebook path. Counsel
+ * review + financials are the gate; the status mirrors the LLM
+ * promotion verdict (ACTIVE only when every solver-coverage
+ * declaration is complete). Fail closed — refuses with the
+ * missing pieces named.
+ */
+export async function activateDeterministicAction(companyId: string) {
+  await requireTenantAction(companyId);
+  const [rulebook, approvals, financialSnapshots, declarations] = await Promise.all([
+    loadRulebookReadiness(companyId),
+    listReviewerApprovals(companyId),
+    prisma.financialState.count({ where: { companyId } }),
+    prisma.solverCoverageDeclaration.findMany({ where: { companyId }, select: { isComplete: true } }),
+  ]);
+  const gate = deterministicActivationGate({
+    rulebookStage: rulebook.stage,
+    discoveredSummaries: rulebook.discoveredSummaries,
+    decisions: approvals.length,
+    financialSnapshots,
+    declarationsComplete: declarations.length > 0 && declarations.every((d) => d.isComplete),
+  });
+  if (!gate.ready) {
+    throw new Error(`Activation refused: ${gate.blockers.join(" ")}`);
+  }
+  await prisma.company.update({ where: { id: companyId }, data: { onboardingStatus: gate.status } });
+  revalidatePath(`/${companyId}/onboarding/activate`);
+  revalidatePath(`/${companyId}/onboarding`);
+  revalidatePath(`/${companyId}`);
   revalidatePath(`/${companyId}/dashboard`);
 }
 

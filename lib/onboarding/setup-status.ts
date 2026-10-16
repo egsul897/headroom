@@ -95,11 +95,20 @@ export async function getCompanySetupStatus(companyId: string): Promise<CompanyS
     listCustomerDocumentIntelligence(companyId).catch(() => []),
   ]);
 
+  // Integration fix: the dashboard is ready when the company is
+  // ACTIVE* + financials + Permissions + EITHER the LLM analysis is
+  // ready OR the deterministic review is complete (rulebook
+  // EXECUTABLE, or every discovered item has a reviewer decision).
+  // The old form required analysis.ready (LLM-only), so the home
+  // page's setup CTA nagged forever on the deterministic path.
+  const deterministicReady =
+    rulebook?.stage === "EXECUTABLE" ||
+    ((rulebook?.discoveredSummaries ?? 0) > 0 && approvals.length >= (rulebook?.discoveredSummaries ?? 0));
   const dashboardReady =
     (company.onboardingStatus === "ACTIVE" || company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS") &&
     financialSnapshots > 0 &&
     permissions > 0 &&
-    analysis.ready;
+    (analysis.ready || deterministicReady);
 
   return {
     companyId,
