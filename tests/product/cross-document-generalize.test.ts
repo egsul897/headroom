@@ -278,6 +278,51 @@ describe("P1 — sequential state integration (hypothetical isolation)", () => {
 });
 
 describe("P2 — canonical product integration", () => {
+  it("same-ref provisions get distinct codes and correct family filtering (rule 73)", () => {
+    const scenario = AUTHENTIC_PACKAGE_SCENARIOS.find(
+      (s) => s.scenarioId === "auth-gibraltar-general-debt-basket",
+    )!;
+    const run = runAuthenticPackageScenario(scenario);
+    const fact = (
+      family: "DEBT_INCURRENCE" | "LIENS" | "INVESTMENTS",
+      capacityUsd: number,
+    ): import("@/lib/product/covenant-intelligence/cross-document-covenant").OperativeProvisionFact => ({
+      documentId: "doc-1",
+      documentLabel: "Test Credit Agreement",
+      documentRole: "CREDIT_AGREEMENT",
+      sectionRef: "7.2",
+      family,
+      posture: "PERMISSION",
+      statement: `${family} permission under §7.2.`,
+      excerpt: "Test excerpt.",
+      capacityUsd,
+      conditions: [],
+      definitionRefs: [],
+      crossDocumentTargets: [],
+    });
+    // Two permissions under the SAME sectionRef: the old code
+    // mapped both to code "7_2", so the engine's (documentId,
+    // code) Map kept only the second (40M) and MAX(60, 40)
+    // collapsed to 40M.
+    const numerical = attachNumericalCapacity({
+      verdict: run.verdict,
+      provisions: [fact("DEBT_INCURRENCE", 60_000_000), fact("LIENS", 40_000_000)],
+      financials: scenario.financials,
+    });
+    expect(numerical.documentSummaries).toHaveLength(1);
+    expect(numerical.documentSummaries[0]!.unsecuredCapacityMillions).toBe(60);
+    // Family lookup half: the FIRST same-ref fact is INVESTMENTS
+    // (not a debt family). The old re-lookup by (sectionRef,
+    // documentId) returned it for BOTH provisions, excluding the
+    // LIENS permission from the debt formula entirely.
+    const numerical2 = attachNumericalCapacity({
+      verdict: run.verdict,
+      provisions: [fact("INVESTMENTS", 100_000_000), fact("LIENS", 40_000_000)],
+      financials: scenario.financials,
+    });
+    expect(numerical2.documentSummaries[0]!.unsecuredCapacityMillions).toBe(40);
+  });
+
   it("numerical attach remains postsToLedger=false and conditionsSeparatelyEvaluated", () => {
     const scenario = AUTHENTIC_PACKAGE_SCENARIOS.find((s) => s.scenarioId === "auth-gibraltar-general-debt-basket")!;
     const run = runAuthenticPackageScenario(scenario);
