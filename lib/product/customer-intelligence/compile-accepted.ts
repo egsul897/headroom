@@ -10,6 +10,11 @@ import {
   summarizeFromStoredMetadata,
   type CovenantSummaryItem,
 } from "../covenant-intelligence/summarize";
+import { parseMoneyMillions, parsePctOf, parseRatio } from "./money";
+import { buildCapacityFormulas } from "./capacity-formulas";
+import { buildRpWaterfall } from "./rp-waterfall";
+import { grantTypesForItem } from "./grant-types";
+import { permissionCode, permissionCodePrefix } from "./permission-code";
 
 export type CompileStatus =
   | "COMPILED"
@@ -19,7 +24,8 @@ export type CompileStatus =
   | "SKIPPED"
   | "FAILED";
 
-export type CounselGrantType = "DEBT_INCURRENCE" | "LIEN" | "RESTRICTED_PAYMENT" | "INVESTMENT";
+import type { CounselGrantType } from "./grant-types";
+export type { CounselGrantType };
 
 export interface CompileAcceptedResult {
   status: CompileStatus;
@@ -31,62 +37,6 @@ export interface CompileAcceptedResult {
   modelingStatus?: "MODELED" | "KNOWN_NOT_MODELED";
   missingFields: string[];
   message: string;
-}
-
-function parseMoneyMillions(text: string): number | null {
-  const m = text.match(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?/i);
-  if (!m) return null;
-  let n = Number(m[1]!.replace(/,/g, ""));
-  if (!Number.isFinite(n)) return null;
-  if (/billion/i.test(m[2] ?? "")) n *= 1000;
-  else if (!m[2] && n >= 1_000_000) n = n / 1_000_000; // raw dollars → $M
-  else if (!m[2] && n > 10_000) n = n / 1_000_000;
-  return n;
-}
-
-function parsePct(text: string): number | null {
-  const m = text.match(/(\d+(?:\.\d+)?)\s*%/);
-  if (!m) return null;
-  const n = Number(m[1]) / 100;
-  return Number.isFinite(n) ? n : null;
-}
-
-function parseRatio(text: string): number | null {
-  const m = text.match(/(\d+(?:\.\d+)?)\s*(?:to|:)\s*1(?:\.0+)?/i) || text.match(/(\d+(?:\.\d+)?)\s*x\b/i);
-  if (!m) return null;
-  const n = Number(m[1]);
-  return Number.isFinite(n) ? n : null;
-}
-
-function grantTypesForItem(item: CovenantSummaryItem, category: string): CounselGrantType[] {
-  const hay = `${category} ${item.category} ${item.heading} ${item.families.join(" ")} ${item.plainEnglish}`.toUpperCase();
-
-  // Restricted payments / investments — do not default these into DEBT_INCURRENCE.
-  const isRpFamily = /RESTRICTED.?PAYMENT|DIVIDEND|SHARE.?REPURCHASE|\bRP\b|AVAILABLE AMOUNT/.test(hay);
-  const isInvestmentFamily = /INVESTMENT|ACQUISITION|PERMITTED INVESTMENT/.test(hay);
-  if (isRpFamily && isInvestmentFamily) {
-    // Shared RP/Investment article — mint both grant types when baskets mention both.
-    const out: CounselGrantType[] = [];
-    if (/DIVIDEND|RESTRICTED PAYMENT|SHARE.?REPURCHASE|\bRP\b/.test(hay)) out.push("RESTRICTED_PAYMENT");
-    if (/INVESTMENT|ACQUISITION/.test(hay)) out.push("INVESTMENT");
-    if (out.length) return [...new Set(out)];
-  }
-  if (isRpFamily && !/INDEBTEDNESS|DEBT INCURRENCE|INCREMENTAL/.test(hay)) {
-    return ["RESTRICTED_PAYMENT"];
-  }
-  if (isInvestmentFamily && !/INDEBTEDNESS|DEBT INCURRENCE|LIEN|INCREMENTAL/.test(hay)) {
-    return ["INVESTMENT"];
-  }
-
-  const out: CounselGrantType[] = [];
-  if (/LIEN|SECURED|COLLATERAL/.test(hay)) out.push("LIEN");
-  if (/DEBT|INDEBTEDNESS|INCURRENCE|INCREMENTAL|BORROW/.test(hay)) out.push("DEBT_INCURRENCE");
-  // Secured debt scenarios need both regimes when both families are present.
-  if (/LIEN|SECURED/.test(hay) && /DEBT|INDEBTEDNESS/.test(hay)) {
-    return ["DEBT_INCURRENCE", "LIEN"];
-  }
-  if (!out.length) out.push("DEBT_INCURRENCE");
-  return [...new Set(out)];
 }
 
 function entityScopeTags(item: CovenantSummaryItem): string[] {
@@ -126,7 +76,11 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   const notes: string[] = [];
   const missingFields: string[] = [];
   const money = parseMoneyMillions(basketText);
-  const pct = parsePct(basketText);
+  // Grower %s are base-attached: the % modifying EBITDA / Total
+  // Assets — never the first % anywhere in the text (an unrelated
+  // "50% ownership" in the same section is not the grower).
+  const pctEbitda = parsePctOf(basketText, "EBITDA");
+  const pctAssets = parsePctOf(basketText, "TOTAL_ASSETS");
   const ratio = parseRatio(basketText);
   const greaterOf = /greater of/i.test(basketText);
   const ebitdaBase = /EBITDA/i.test(basketText);
@@ -135,27 +89,36 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   const outstanding = /outstanding amount at any time|currently outstanding/i.test(basketText);
 
   if (builder && money != null) {
+    const cniMentioned = /net income|CNI/i.test(basketText);
+    const cniShare = parsePctOf(basketText, "CNI");
     return {
       formulaType: "BUILDER_BASKET",
       thresholdValue: money,
       params: {
-        pctEbitda: ebitdaBase && pct != null ? pct : 0,
-        cniSharePct: /net income|CNI/i.test(basketText) ? 0.5 : undefined,
+        // Rule 58: never invent percentages. An unparseable
+        // grower % is undefined + missingFields, NOT 0 (which
+        // silently zeroes the grower) and NOT 0.5 for CNI
+        // (which ADDED 0.5 × max(0, CNI) of invented capacity).
+        pctEbitda: ebitdaBase && pctEbitda != null ? pctEbitda : undefined,
+        cniSharePct: cniShare ?? undefined,
         includeEquityProceeds: /equity/i.test(basketText),
       },
       amountKind: "FIXED",
       measurementBasis: "CUMULATIVE_INCURRED",
       notes: ["Compiled builder/available-amount starter from counsel-accepted analysis"],
       modelingStatus: "MODELED",
-      missingFields: ebitdaBase && pct == null ? ["builder pct of EBITDA"] : [],
+      missingFields: [
+        ...(ebitdaBase && pctEbitda == null ? ["builder pct of EBITDA"] : []),
+        ...(cniMentioned && cniShare == null ? ["builder cni share %"] : []),
+      ],
     };
   }
 
-  if (greaterOf && money != null && ebitdaBase && pct != null) {
+  if (greaterOf && money != null && ebitdaBase && pctEbitda != null) {
     return {
       formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA",
       thresholdValue: money,
-      params: { pctEbitda: pct },
+      params: { pctEbitda },
       amountKind: "FIXED",
       measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
       notes: ["Compiled greater-of flat / % EBITDA basket from counsel-accepted analysis"],
@@ -164,11 +127,11 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
     };
   }
 
-  if (greaterOf && money != null && assetsBase && pct != null) {
+  if (greaterOf && money != null && assetsBase && pctAssets != null) {
     return {
       formulaType: "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
       thresholdValue: money,
-      params: { pctTotalAssets: pct },
+      params: { pctTotalAssets: pctAssets },
       amountKind: "FIXED",
       measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
       notes: [
@@ -232,11 +195,6 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   };
 }
 
-function permissionCode(sourceId: string, sectionRef: string, grantType: string): string {
-  const safe = `${sourceId}:${sectionRef}:${grantType}`.replace(/[^a-zA-Z0-9:_.-]/g, "_").slice(0, 180);
-  return `counsel:${safe}`;
-}
-
 /**
  * After counsel ACCEPT/EDIT, attempt to compile executable Permission(s).
  * REJECT supersedes prior counsel-compiled permissions for that section.
@@ -282,7 +240,10 @@ export async function compileAcceptedInterpretation(params: {
   }
 
   if (params.decision === "REJECTED") {
-    const prefix = `counsel:${params.sourceId}:${params.sectionRef}:`;
+    // Rule 59: the prefix MUST use the same sanitization as
+    // permissionCode — a raw prefix never matches codes minted
+    // from section refs with parens (e.g. "6.01(a)").
+    const prefix = permissionCodePrefix(params.sourceId, params.sectionRef);
     const existing = await prisma.permission.findMany({
       where: { companyId: params.companyId, code: { startsWith: prefix } },
     });
@@ -343,7 +304,19 @@ export async function compileAcceptedInterpretation(params: {
     ];
   }
 
-  const grants = grantTypesForItem(item, params.category);
+  const grants = grantTypesForItem(item);
+  if (!grants.length) {
+    // No grant-type signal (e.g. asset-sale / merger covenant) — do
+    // not mint a wrong-typed Permission. Previously this defaulted
+    // to DEBT_INCURRENCE and inflated debt capacity.
+    return [
+      {
+        status: "INCOMPLETE",
+        missingFields: ["grantType"],
+        message: "No counsel grant type matches this item (not a debt/lien/RP/investment permission) — not compiled.",
+      },
+    ];
+  }
   const results: CompileAcceptedResult[] = [];
   const action =
     item.plainEnglish?.slice(0, 500) ||
@@ -502,39 +475,10 @@ export async function syncDocumentCapacityFormulas(companyId: string, documentId
   const debtCodes = perms.filter((p) => p.grantType === "DEBT_INCURRENCE" && p.code).map((p) => p.code!);
   const lienCodes = perms.filter((p) => p.grantType === "LIEN" && p.code).map((p) => p.code!);
 
-  const ref = (code: string) => ({ op: "REF" as const, code });
-  const capacityFormulas: Record<string, unknown> = {};
-
-  if (debtCodes.length && lienCodes.length) {
-    capacityFormulas.secured = {
-      op: "MIN",
-      label: "Secured capacity (counsel-compiled debt ∩ lien)",
-      items: [
-        { op: "SUM", items: debtCodes.map(ref), label: "Debt baskets" },
-        { op: "SUM", items: lienCodes.map(ref), label: "Lien baskets" },
-      ],
-    };
-  } else if (debtCodes.length) {
-    capacityFormulas.secured = {
-      op: "SUM",
-      label: "Secured capacity (debt baskets — lien regime not yet counsel-compiled)",
-      items: debtCodes.map(ref),
-    };
-  } else if (lienCodes.length) {
-    capacityFormulas.secured = {
-      op: "SUM",
-      label: "Secured capacity (lien baskets — debt regime not yet counsel-compiled)",
-      items: lienCodes.map(ref),
-    };
-  }
-
-  if (debtCodes.length) {
-    capacityFormulas.unsecured = {
-      op: "SUM",
-      label: "Unsecured debt baskets (counsel-compiled)",
-      items: debtCodes.map(ref),
-    };
-  }
+  // Secured requires BOTH legs (buildCapacityFormulas mints no secured
+  // formula when one leg is missing — the missing leg is unknown,
+  // not unconstrained).
+  const capacityFormulas = buildCapacityFormulas(debtCodes, lienCodes);
 
   await prisma.document.update({
     where: { id: documentId },
@@ -549,7 +493,9 @@ export async function syncDocumentCapacityFormulas(companyId: string, documentId
 /**
  * Rebuild Document.rpWaterfall from counsel-compiled RESTRICTED_PAYMENT / INVESTMENT
  * Permissions. Steps are ordered builder → flat → other; ratio gates attached when present.
- * Does not invent ratio-gate codes when none were compiled.
+ * Does not invent ratio-gate codes when none were compiled. An empty
+ * build clears rpWaterfall (a stale waterfall must not survive its
+ * permissions — e.g. after counsel REJECTED them all).
  */
 export async function syncDocumentRpWaterfall(companyId: string, documentId: string): Promise<void> {
   const perms = await prisma.permission.findMany({
@@ -562,42 +508,13 @@ export async function syncDocumentRpWaterfall(companyId: string, documentId: str
       OR: [{ effectiveTo: null }, { effectiveTo: { gt: new Date() } }],
     },
   });
-  if (!perms.length) return;
-
-  const rank = (p: (typeof perms)[number]): number => {
-    if (p.formulaType === "BUILDER_BASKET") return 0;
-    if (p.formulaType === "FLAT_AMOUNT" || String(p.formulaType).includes("GREATER_OF")) return 1;
-    if (p.formulaType === "RATIO_GATE" || p.formulaType === "LEVERAGE_RATIO_ROOM") return 9;
-    return 5;
-  };
-
-  const stepPerms = perms
-    .filter((p) => p.formulaType !== "RATIO_GATE" && p.code)
-    .sort((a, b) => rank(a) - rank(b) || a.sectionRef.localeCompare(b.sectionRef));
-  const steps = stepPerms.map((p) => ({ code: p.code! }));
-  if (!steps.length) return;
-
-  const ratioGates = perms.filter((p) => p.formulaType === "RATIO_GATE" && p.code);
-  const dividendGate =
-    ratioGates.find((p) => p.grantType === "RESTRICTED_PAYMENT")?.code ??
-    ratioGates[0]?.code ??
-    steps[steps.length - 1]!.code;
-  const investmentGate =
-    ratioGates.find((p) => p.grantType === "INVESTMENT")?.code ??
-    ratioGates[0]?.code ??
-    steps[steps.length - 1]!.code;
-
-  const rpWaterfall = {
-    steps,
-    ratioGateCodeByKind: {
-      dividend: dividendGate,
-      investment: investmentGate,
-    },
-  };
+  const rpWaterfall = buildRpWaterfall(
+    perms.map((p) => ({ code: p.code, grantType: p.grantType, formulaType: p.formulaType, sectionRef: p.sectionRef })),
+  );
 
   await prisma.document.update({
     where: { id: documentId },
-    data: { rpWaterfall: rpWaterfall as Prisma.InputJsonValue },
+    data: { rpWaterfall: rpWaterfall ? (rpWaterfall as unknown as Prisma.InputJsonValue) : Prisma.JsonNull },
   });
 }
 
@@ -637,6 +554,10 @@ async function supersedeCounselPermissionsOnAmendedDocs(
   }
   if (prior.length) {
     await syncDocumentCapacityFormulas(companyId, doc.supersedesDocumentId);
+    // Symmetric: the superseded doc's RP waterfall must also rebuild
+    // from remaining operative permissions (or clear) — otherwise it
+    // keeps gating RP transactions with ended baskets.
+    await syncDocumentRpWaterfall(companyId, doc.supersedesDocumentId);
   }
 }
 

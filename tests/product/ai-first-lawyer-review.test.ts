@@ -54,6 +54,8 @@ describe("AI-first lawyer review", () => {
       promotedToLegalTruth: 0,
       note: "",
       countsByCategory: {},
+      totalItemsBeforeCap: 1,
+      truncated: false,
       items: [
         {
           sectionRef: "6.01",

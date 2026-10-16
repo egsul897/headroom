@@ -12,19 +12,19 @@ function readReviewedBy(formData: FormData): string {
 
 export async function approveCandidateAction(companyId: string, candidateId: string, formData: FormData) {
   await requireTenantAction(companyId);
-  await reviewCandidate({ candidateId, action: "APPROVE", reviewedBy: readReviewedBy(formData), note: String(formData.get("note") ?? "") || undefined });
+  await reviewCandidate({ companyId, candidateId, action: "APPROVE", reviewedBy: readReviewedBy(formData), note: String(formData.get("note") ?? "") || undefined });
   revalidatePath(`/${companyId}/onboarding/review`);
 }
 
 export async function rejectCandidateAction(companyId: string, candidateId: string, formData: FormData) {
   await requireTenantAction(companyId);
-  await reviewCandidate({ candidateId, action: "REJECT", reviewedBy: readReviewedBy(formData), note: String(formData.get("note") ?? "") || undefined });
+  await reviewCandidate({ companyId, candidateId, action: "REJECT", reviewedBy: readReviewedBy(formData), note: String(formData.get("note") ?? "") || undefined });
   revalidatePath(`/${companyId}/onboarding/review`);
 }
 
 export async function markReviewRequiredAction(companyId: string, candidateId: string, formData: FormData) {
   await requireTenantAction(companyId);
-  await reviewCandidate({ candidateId, action: "REVIEW_REQUIRED", reviewedBy: readReviewedBy(formData), note: String(formData.get("note") ?? "") || undefined });
+  await reviewCandidate({ companyId, candidateId, action: "REVIEW_REQUIRED", reviewedBy: readReviewedBy(formData), note: String(formData.get("note") ?? "") || undefined });
   revalidatePath(`/${companyId}/onboarding/review`);
 }
 
@@ -45,6 +45,6 @@ export async function editCandidateAction(companyId: string, candidateId: string
   } catch {
     throw new Error("Edited value must be valid JSON.");
   }
-  await reviewCandidate({ candidateId, action: "EDIT", editedValue, reviewedBy: readReviewedBy(formData), note: String(formData.get("note") ?? "") || undefined });
+  await reviewCandidate({ companyId, candidateId, action: "EDIT", editedValue, reviewedBy: readReviewedBy(formData), note: String(formData.get("note") ?? "") || undefined });
   revalidatePath(`/${companyId}/onboarding/review`);
 }

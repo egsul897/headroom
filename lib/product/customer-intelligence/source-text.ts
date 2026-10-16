@@ -8,6 +8,7 @@
  * returns empty text (with an honest origin) when extraction yields nothing.
  */
 import { extractTextAsync } from "../../knowledge-factory/pipeline/text";
+import path from "node:path";
 
 export interface SourceTextResult {
   text: string;
@@ -16,6 +17,26 @@ export interface SourceTextResult {
 }
 
 const MAX_DISPLAY_CHARS = 120_000;
+
+/**
+ * Resolve the `curated=<relative path>` line from a document's notes
+ * to an absolute path, containment-checked. The page used to join a
+ * DB field straight into path.join(process.cwd(), value) with no
+ * validation, so `curated=../../etc/passwd` (or an absolute path)
+ * would read an arbitrary server file and render its extracted text.
+ * Legit values are relative paths under the repo (tests/fixtures/…),
+ * so absolute paths and anything escaping process.cwd() return null.
+ */
+export function resolveCuratedSourceTextPath(notes: string | null | undefined): string | null {
+  const match = notes?.match(/^curated=(.+)$/m);
+  const rel = match?.[1]?.trim();
+  if (!rel) return null;
+  if (path.isAbsolute(rel)) return null;
+  const abs = path.resolve(process.cwd(), rel);
+  const root = path.resolve(process.cwd());
+  if (abs !== root && !abs.startsWith(root + path.sep)) return null;
+  return abs;
+}
 
 export async function loadSourceTextFromBytes(
   bytes: Buffer,

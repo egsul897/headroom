@@ -29,6 +29,7 @@
  * (documented, not a partial-transaction failure), never a half-applied write.
  */
 
+import { documentClassFromConfirmedType } from "../product/customer-intelligence/document-class";
 import { Prisma, type ExtractionCandidate, type ExtractionCandidateKind, type GrantType, type OnboardingStatus, type PrismaClient } from "@prisma/client";
 import { prisma } from "../prisma";
 import { recordSystemReviewRequired, VALUE_SCHEMA_BY_KIND } from "./review";
@@ -254,6 +255,37 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
           amendmentRelationshipConfirmedByUser: true,
         },
       });
+      // Rule 127: the confirmed type must propagate to the
+      // analysis class. Promotion previously updated ONLY the
+      // Document row — KnowledgeSource.documentClass (which
+      // governs operative resolution, Ask retrieval, and every
+      // rule-118–124 mismatch signal) kept the classifier's
+      // verdict forever. Counsel confirming INDENTURE in the
+      // review queue therefore never remediated a mismatch:
+      // operative resolution kept using CREDIT_AGREEMENT and
+      // every mismatch signal kept firing. The confirmed type
+      // is now the class; metadata.declaredType is updated to
+      // the same confirmed value so the mismatch signals
+      // self-heal (the adjudication itself is preserved by
+      // typeConfirmedByUser + the candidate's review history),
+      // and a later re-analysis falls back to the confirmed
+      // type rather than the original possibly-wrong declaration.
+      const confirmedClass = documentClassFromConfirmedType(item.documentType);
+      const sources = await tx.knowledgeSource.findMany({
+        where: { companyId, documentId: item.candidate.sourceDocumentId },
+        select: { sourceId: true, metadata: true },
+      });
+      for (const src of sources) {
+        const meta =
+          src.metadata && typeof src.metadata === "object" && !Array.isArray(src.metadata)
+            ? { ...(src.metadata as Record<string, unknown>) }
+            : {};
+        meta.declaredType = item.documentType;
+        await tx.knowledgeSource.update({
+          where: { sourceId: src.sourceId },
+          data: { documentClass: confirmedClass as never, metadata: JSON.parse(JSON.stringify(meta)) },
+        });
+      }
       // Propagate the amendment's effectiveFrom onto the BASE (superseded)
       // document's own effectiveTo - this is what actually makes
       // loadCompanyCovenantData's date-range filter (lib/covenant-engine.ts)
@@ -735,8 +767,11 @@ export async function getCoverageSnapshot(companyId: string, asOfDate: Date = ne
 
 /**
  * Declares a SolverCoverageDeclaration for every (documentId, grantType) that
- * now has at least one promoted (MODELED) Permission, and sets
- * Company.onboardingStatus based on whether every such scope is complete.
+ * now has at least one promoted (MODELED) Permission, AND for every
+ * (documentId, grantType) that still has an un-promoted, non-rejected
+ * PERMISSION candidate (gap-only scope — declared INCOMPLETE, never
+ * silently absent). Sets Company.onboardingStatus based on whether every
+ * such scope is complete.
  * DEBT_INCURRENCE scopes get both a "secured" and an "unsecured" declaration
  * (matching this codebase's own established convention - see
  * scripts/populate-coherent-solver-native.ts §10 - since
@@ -755,11 +790,32 @@ async function evaluatePostPromotionCoverage(tx: Prisma.TransactionClient, compa
   // permanently excluded as KNOWN_NOT_MODELED).
   const gapCandidates = await tx.extractionCandidate.findMany({
     where: { companyId, kind: "PERMISSION", promotedAt: null, reviewStatus: { not: "REJECTED" } },
-    select: { sourceDocumentId: true },
   });
   const documentsWithGaps = new Set(gapCandidates.map((g) => g.sourceDocumentId));
 
-  let anyGap = false;
+  // Rule 101: scopes used to come ONLY from promoted permissions, so a
+  // document whose PERMISSION candidates were ALL still pending (or
+  // KNOWN_NOT_MODELED) got NO declaration at all — no incomplete
+  // declaration, no coverage result, and onboardingStatus could read
+  // ACTIVE while an entire document's permissions were unreviewed.
+  // Gap candidates' own grant types now contribute scopes, so a
+  // gap-only document gets an explicit INCOMPLETE declaration.
+  const VALID_GRANT_TYPES = new Set(["DEBT_INCURRENCE", "LIEN", "RESTRICTED_PAYMENT", "INVESTMENT"]);
+  for (const g of gapCandidates) {
+    const value = resolveEffectiveValue(g) as { grantType?: unknown } | null;
+    if (typeof value?.grantType === "string" && VALID_GRANT_TYPES.has(value.grantType)) {
+      scopes.add(`${g.sourceDocumentId}:${value.grantType}`);
+    }
+  }
+  // A gap candidate whose value fails validation has no trustworthy
+  // grant type, so it contributes no scope — but it must still block
+  // an ACTIVE verdict (fail closed).
+  const hasOrphanGap = gapCandidates.some((g) => {
+    for (const key of scopes) if (key.startsWith(`${g.sourceDocumentId}:`)) return false;
+    return true;
+  });
+
+  let anyGap = hasOrphanGap;
   for (const scopeKey of scopes) {
     const [documentId, grantType] = scopeKey.split(":") as [string, GrantType];
     const isComplete = !documentsWithGaps.has(documentId);

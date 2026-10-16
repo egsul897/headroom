@@ -114,18 +114,14 @@ function decideVerdict(milestones: AcceptanceMilestones): RealDashboardVerticalS
 export async function loadAuthenticDashboardSlice(
   companyId: string,
 ): Promise<AuthenticPositionSlice | null> {
-  if (companyId === MATTHEWS_POSITION_COMPANY_ID) {
-    const leaf = connectSliceToPosition(evaluateMatthewsVerticalSlice());
-    const op = await loadOperativePackagePositionSlice(companyId);
-    if (!op) return leaf;
-    return {
-      ...leaf,
-      verifiedExecutableMetrics: op.slice.verifiedExecutableMetrics,
-      verifiedExecutableCompile: op.slice.verifiedExecutableCompile,
-      verifiedExecutableUnitsFeedingPosition: op.slice.verifiedExecutableUnitsFeedingPosition,
-      missingInputs: [...new Set([...leaf.missingInputs, ...op.canonical.sharedConstraints])],
-    };
-  }
+  // Rule 153: the Matthews branch previously merged a fixture
+  // evaluation leaf (evaluateMatthewsVerticalSlice) into the
+  // Position feed for one hardcoded company, while every other
+  // company went through the shared operative-package path.
+  // Matthews is in the operative-package registry, so it now
+  // takes the same path as everyone else — the operative slice
+  // already supplied the verifiedExecutable* fields the merge
+  // overrode the leaf with.
   if (hasOperativePositionPackage(companyId)) {
     const op = await loadOperativePackagePositionSlice(companyId);
     return op?.slice ?? null;
@@ -133,9 +129,9 @@ export async function loadAuthenticDashboardSlice(
   return null;
 }
 
-/** True when Position can load Matthews leaf and/or operative-package VE feed. */
+/** True when Position can load an operative-package VE feed for the company. */
 export function hasAuthenticPositionSlice(companyId: string): boolean {
-  return companyId === MATTHEWS_POSITION_COMPANY_ID || hasOperativePositionPackage(companyId);
+  return hasOperativePositionPackage(companyId);
 }
 
 export function runRealDashboardVerticalSlice(): RealDashboardVerticalSliceResult {

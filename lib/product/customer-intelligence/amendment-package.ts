@@ -4,6 +4,7 @@
  */
 
 import type { KnowledgeRelationshipRecord, KnowledgeSourceRecord } from "../../knowledge-factory/types";
+import { isRestatementTitle } from "./restatement-title";
 
 export interface ProvisionChangeSignal {
   kind: "AMENDED" | "REPLACED" | "DELETED" | "ADDED" | "UNRESOLVED";
@@ -49,6 +50,15 @@ const AMENDMENT_CLASSES = new Set([
   "RESTATEMENT",
 ]);
 
+/**
+ * Classes that carry no precedence information: the document's
+ * relationship to the base agreement is unknown by definition. A
+ * package containing one can never resolve to RESOLVED on this
+ * function's evidence — the sibling might be an unrecognized
+ * amendment, supplement, or unrelated exhibit.
+ */
+const UNCLASSIFIED_CLASSES = new Set(["UNKNOWN", "OTHER_DEBT_RELATED"]);
+
 function inferChangeSignals(
   sources: KnowledgeSourceRecord[],
   edges: AmendmentPackageView["amendmentEdges"],
@@ -57,7 +67,10 @@ function inferChangeSignals(
   const amendments = sources.filter((s) => AMENDMENT_CLASSES.has(s.documentClass));
   for (const a of amendments) {
     const title = (a.documentTitle || a.exhibitFilename || "").toLowerCase();
-    if (/\brestate|\bamended and restated\b/.test(title)) {
+    // Rule 52: shared isRestatementTitle — an "Amendment ... to
+    // [the Amended and Restated ...]" is an amendment to a
+    // restated base, not itself a restatement.
+    if (isRestatementTitle(title)) {
       signals.push({
         kind: "REPLACED",
         evidence: `Document title suggests restatement/replacement: ${a.documentTitle}`,
@@ -91,6 +104,15 @@ function inferChangeSignals(
         evidence: `Discovered amendment edge (${e.evidenceStatus})`,
         fromSourceId: e.fromSourceId,
         toSourceId: e.toSourceId,
+      });
+    }
+  }
+  for (const s of sources) {
+    if (UNCLASSIFIED_CLASSES.has(s.documentClass)) {
+      signals.push({
+        kind: "UNRESOLVED",
+        evidence: `Document with unclassified relationship to the base agreement: ${s.documentTitle || s.exhibitFilename} (${s.documentClass})`,
+        toSourceId: s.sourceId,
       });
     }
   }
@@ -136,7 +158,20 @@ export function analyzeAmendmentPackage(params: {
     operativeResolution = "NO_DOCUMENTS";
     unresolvedReasons.push("No customer documents analyzed yet.");
   } else if (sources.length === 1) {
-    operativeResolution = "SINGLE_DOCUMENT";
+    // A lone amendment-type document is NOT a resolved single-doc
+    // package: by class it amends a base agreement that is not in
+    // the package. SINGLE_DOCUMENT would bypass the
+    // unresolved-precedence guards. A lone RESTATEMENT stays
+    // SINGLE_DOCUMENT — a restatement IS the full agreement.
+    const only = sources[0]!;
+    if (AMENDMENT_CLASSES.has(only.documentClass) && only.documentClass !== "RESTATEMENT") {
+      operativeResolution = "UNRESOLVED_PRECEDENCE";
+      unresolvedReasons.push(
+        "Only an amendment-type document is present — the base agreement it amends is not in the package, so operative precedence cannot be resolved.",
+      );
+    } else {
+      operativeResolution = "SINGLE_DOCUMENT";
+    }
   } else if (bases.length === 0) {
     operativeResolution = "UNRESOLVED_PRECEDENCE";
     unresolvedReasons.push("No clear base credit agreement / indenture identified among uploads.");
@@ -151,6 +186,15 @@ export function analyzeAmendmentPackage(params: {
     operativeResolution = "UNRESOLVED_PRECEDENCE";
     unresolvedReasons.push(
       "Amendment package detected — operative bindings require section-level change evidence and consistent chronology (auto-resolved when present).",
+    );
+  } else if (sources.some((s) => UNCLASSIFIED_CLASSES.has(s.documentClass))) {
+    // Fail-closed: an unclassified sibling's relationship to the base is
+    // unknown by definition. The old fallthrough returned RESOLVED here,
+    // silently treating an UNKNOWN / OTHER_DEBT_RELATED document as if
+    // it could not affect operative precedence.
+    operativeResolution = "UNRESOLVED_PRECEDENCE";
+    unresolvedReasons.push(
+      "Document(s) with unclassified relationship to the base agreement (UNKNOWN / OTHER_DEBT_RELATED) — precedence cannot be resolved until classified.",
     );
   } else {
     operativeResolution = "RESOLVED";

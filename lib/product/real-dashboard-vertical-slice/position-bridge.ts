@@ -83,6 +83,7 @@ function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
     unverifiedPermissionCount: 0,
     provisionCount: slice.covenants.length,
     hasFinancialSnapshot: slice.financialEvidence.metricsPresent.length > 0,
+    financialSnapshotStatus: "UNKNOWN",
     ns4ApprovedSnapshotCount: 0,
     approvedNorthStarSnapshotCount: 0,
     contractLedgerActiveCount: 0,
@@ -393,16 +394,3 @@ export function connectSliceToPosition(slice: VerticalSliceEvaluation): Authenti
   };
 }
 
-/**
- * @deprecated Prefer `hasAuthenticPositionSlice` from `./run-slice` (Matthews leaf
- * + multipackage VE registry). Kept as Matthews-only predicate for callers that
- * specifically mean the full leaf dashboard path.
- */
-export function hasMatthewsLeafPositionSlice(companyId: string): boolean {
-  return companyId === MATTHEWS_POSITION_COMPANY_ID;
-}
-
-/** @deprecated Use run-slice.hasAuthenticPositionSlice (includes MHK VE feed). */
-export function hasAuthenticPositionSlice(companyId: string): boolean {
-  return companyId === MATTHEWS_POSITION_COMPANY_ID;
-}

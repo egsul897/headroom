@@ -25,7 +25,14 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
       `File exceeds ${Math.floor(MAX_CUSTOMER_UPLOAD_BYTES / (1024 * 1024))}MB limit. Split the package or upload a smaller exhibit.`,
     );
   }
-  const declaredType = String(formData.get("declaredType") ?? "OTHER") as DocumentType;
+  // Rule 109: an empty or unexpected declared type is OTHER
+  // (unknown), never a pre-chosen Credit Agreement.
+  const declaredRaw = String(formData.get("declaredType") || "OTHER");
+  const declaredType = (
+    ["CREDIT_AGREEMENT", "INDENTURE", "AMENDMENT", "INTERCREDITOR_AGREEMENT", "COMPLIANCE_CERTIFICATE", "FINANCIAL_STATEMENT", "OTHER"].includes(declaredRaw)
+      ? declaredRaw
+      : "OTHER"
+  ) as DocumentType;
   const governs = String(formData.get("governs") ?? "") || undefined;
 
   const buffer = Buffer.from(await file.arrayBuffer());
@@ -49,6 +56,11 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
     documentId = artifact?.documentId ?? undefined;
   }
   if (documentId) {
+    // The staged sourceId, so a failed analysis can stamp
+    // FAILED_RETRYABLE instead of leaving the row STAGED ("in
+    // progress") forever. There is no background worker for staged
+    // rows — only upload and manual retry drive analysis.
+    let stagedSourceId: string | null = null;
     try {
       const doc = await prisma.document.findFirst({ where: { id: documentId, companyId } });
       const staged = await stageCustomerDocument({
@@ -59,6 +71,7 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
         declaredType,
         existingStorageRef: doc?.storageRef,
       });
+      stagedSourceId = staged.sourceId;
 
       // Large files: upload returns after durable stage; analysis runs from storage (retryable).
       if (buffer.length >= LARGE_UPLOAD_DEFER_BYTES) {
@@ -79,19 +92,48 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
           `[uploadDocumentAction] deferred analysis sourceId=${staged.sourceId} bytes=${buffer.length}`,
         );
       } else {
-        await analyzeCustomerDocument({
+        const result = await analyzeCustomerDocument({
           companyId,
           documentId,
           bytes: buffer,
           filename: file.name,
           declaredType,
         });
+        if (!result.ok) {
+          // Durable failure: the direct path must stamp FAILED_RETRYABLE
+          // like the reanalyze path does — discarding the return value
+          // left the row STAGED ("in progress") forever.
+          const { markCustomerProcessingStatus } = await import(
+            "@/lib/product/customer-intelligence/analyze-upload"
+          );
+          await markCustomerProcessingStatus({
+            sourceId: staged.sourceId,
+            status: "FAILED_RETRYABLE",
+            error: result.error,
+          });
+        }
       }
     } catch (err) {
       console.error(
         `[analyzeCustomerDocument] unexpected error for company ${companyId} document ${documentId}:`,
         err,
       );
+      // Thrown errors must also stamp FAILED_RETRYABLE (best-effort,
+      // never masking the original error).
+      if (stagedSourceId) {
+        try {
+          const { markCustomerProcessingStatus } = await import(
+            "@/lib/product/customer-intelligence/analyze-upload"
+          );
+          await markCustomerProcessingStatus({
+            sourceId: stagedSourceId,
+            status: "FAILED_RETRYABLE",
+            error: err instanceof Error ? err.message : String(err),
+          });
+        } catch {
+          // Best-effort: the log above still reports the failure.
+        }
+      }
     }
   }
 

@@ -129,6 +129,7 @@ async function main() {
     category: debtItem.category,
     decision: "ACCEPTED",
     note: "Demo counsel acceptance — compile executable debt basket",
+    reviewerLabel: "demo-reviewer@example.com",
   });
   const acceptLien = lienItem
     ? await recordReviewerDecision({
@@ -139,6 +140,7 @@ async function main() {
         decision: "EDITED",
         editedPlainEnglish: `${lienItem.plainEnglish} [Counsel clarifies: securing newly incurred debt requires an independent Permitted Lien basket.]`,
         note: "Demo counsel edit on lien regime",
+        reviewerLabel: "demo-reviewer@example.com",
       })
     : null;
 
@@ -156,6 +158,7 @@ async function main() {
         category: rpItem.category,
         decision: "ACCEPTED",
         note: "Demo counsel acceptance — compile RP/investment basket into executable Permission + rpWaterfall",
+        reviewerLabel: "demo-reviewer@example.com",
       })
     : null;
 

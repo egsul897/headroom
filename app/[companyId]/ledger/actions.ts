@@ -8,6 +8,11 @@ import {
   appendContractLedgerUsage,
   supersedeContractLedgerUsage,
 } from "@/lib/product/north-star-workflow";
+import { defaultManualUsageId } from "@/lib/product/north-star-workflow/usage-ids";
+import { loadCovenantDataOrEmpty } from "@/lib/covenant-overview-service";
+import { computeCovenantPosition, simulateRestrictedPayment } from "@/lib/covenant-engine";
+import { resolveCanonicalFinancialAsOf } from "@/lib/product/canonical-financial-asof";
+import { assertRuleIdResolves } from "@/lib/product/north-star-workflow/rule-id-resolves";
 
 const VALID_BASKETS: LedgerBasket[] = ["EQUITY", "DEBT_INCUR", "DEBT_REPAY", "ASSET_SALE", "DIVIDEND", "INVESTMENT"];
 const VALID_DIRECTIONS: LedgerDirection[] = ["CREDIT", "DEBIT"];
@@ -19,13 +24,19 @@ export async function addLedgerEntry(companyId: string, formData: FormData) {
   const direction = String(formData.get("direction"));
   const amount = Number(formData.get("amount"));
   const description = String(formData.get("description") || "").trim() || "Untitled entry";
+  // Rule 139: a capacity-affecting manual entry with no actor is
+  // unattributed provenance (rules 113–115 class). The LedgerEntry
+  // model had no actor column at all; it now does, and the action
+  // refuses without a real value.
+  const createdBy = String(formData.get("createdBy") || "").trim();
+  if (!createdBy) throw new Error("createdBy (your name/email) is required");
 
   if (!VALID_BASKETS.includes(basket as LedgerBasket)) throw new Error(`Invalid basket: ${basket}`);
   if (!VALID_DIRECTIONS.includes(direction as LedgerDirection)) throw new Error(`Invalid direction: ${direction}`);
   if (!Number.isFinite(amount) || amount <= 0) throw new Error("Amount must be a positive number");
 
   await prisma.ledgerEntry.create({
-    data: { companyId, date: new Date(), description, basket: basket as LedgerBasket, amount, direction: direction as LedgerDirection, source: "manual" },
+    data: { companyId, date: new Date(), description, basket: basket as LedgerBasket, amount, direction: direction as LedgerDirection, source: "manual", createdBy },
   });
 
   revalidatePath(`/${companyId}`, "layout");
@@ -37,22 +48,49 @@ export async function addLedgerEntry(companyId: string, formData: FormData) {
  * does not write a reversing entry, and leaves supersededById null because
  * there is no successor fact. A second call fails closed.
  */
-export async function supersedeLedgerEntry(companyId: string, id: string) {
+export async function supersedeLedgerEntry(companyId: string, id: string, formData: FormData) {
   await requireTenantAction(companyId);
+  // Rule 142: supersession is a decision on a capacity-affecting
+  // row — the superseder must be named (same class as rule 141's
+  // feed resolutions and rule 115's contract-ledger supersession).
+  const supersededBy = String(formData.get("supersededBy") || "").trim();
+  if (!supersededBy) throw new Error("supersededBy (your name/email) is required");
   const entry = await prisma.ledgerEntry.findUniqueOrThrow({ where: { id } });
   if (entry.companyId !== companyId) throw new Error(`Ledger entry ${id} does not belong to this company`);
   if (entry.status === "SUPERSEDED") throw new Error(`Ledger entry ${id} is already superseded`);
   await prisma.ledgerEntry.update({
     where: { id },
-    data: { status: "SUPERSEDED", supersededAt: new Date(), supersededById: null },
+    data: { status: "SUPERSEDED", supersededAt: new Date(), supersededById: null, supersededBy },
   });
   revalidatePath(`/${companyId}`, "layout");
 }
 
 /** Mirrors the "commit to ledger" buttons on the Simulate tab - a cleared dividend/Investment becomes a real DEBIT entry against the shared restricted-payment pool. */
-export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND" | "INVESTMENT", amount: number) {
+export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND" | "INVESTMENT", amount: number, documentId: string, createdBy: string) {
   await requireTenantAction(companyId);
   if (!Number.isFinite(amount) || amount <= 0) throw new Error("Amount must be a positive number");
+  if (!documentId) throw new Error("documentId is required");
+  // Rule 140: the commit writes a capacity-affecting ledger row
+  // (rule 139's createdBy) — the committer must be named, never
+  // defaulted.
+  if (!createdBy?.trim()) throw new Error("createdBy (your name/email) is required");
+  // Rule 134: the Simulate UI only shows the commit button when the
+  // CLIENT-side engine verdict is "clear" — but this action
+  // previously trusted that verdict and wrote a capacity-affecting
+  // ledger entry for ANY positive amount. A crafted direct call (or
+  // a stale page) could commit a transaction the engine would block,
+  // and legacy LedgerEntry rows feed restricted-payment capacity.
+  // Re-run the same simulation server-side against the same
+  // document waterfall and refuse unless it clears.
+  const asOfDate = await resolveCanonicalFinancialAsOf(companyId).catch(() => new Date());
+  const data = await loadCovenantDataOrEmpty(companyId, asOfDate);
+  const position = computeCovenantPosition(data);
+  const sim = simulateRestrictedPayment(data, position, documentId, amount, kind === "DIVIDEND" ? "dividend" : "investment");
+  if (sim.status !== "clear") {
+    throw new Error(
+      `Commit refused: server-side simulation did not clear (status ${sim.status})${sim.reason ? `: ${sim.reason}` : ""}.`,
+    );
+  }
   await prisma.ledgerEntry.create({
     data: {
       companyId,
@@ -62,6 +100,7 @@ export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND
       amount,
       direction: "DEBIT",
       source: "Simulate tab",
+      createdBy: createdBy.trim(),
     },
   });
   revalidatePath(`/${companyId}`, "layout");
@@ -70,13 +109,20 @@ export async function commitRestrictedPayment(companyId: string, kind: "DIVIDEND
 /** Append attributed Phase 4C contract-ledger usage (North Star — distinct from legacy LedgerEntry). */
 export async function addContractLedgerUsageAction(companyId: string, formData: FormData) {
   await requireTenantAction(companyId);
-  const usageId = String(formData.get("usageId") || "").trim() || `usage-${companyId}-${Date.now()}`;
+  const usageId = String(formData.get("usageId") || "").trim() || defaultManualUsageId(companyId);
   const amount = String(formData.get("amount") || "").trim();
   const currency = String(formData.get("currency") || "USD").trim() || "USD";
   const ruleId = String(formData.get("ruleId") || "").trim();
   const effectiveAsOf = String(formData.get("effectiveAsOf") || "").trim();
-  const instrumentKey = String(formData.get("instrumentKey") || "company").trim() || "company";
-  if (!amount || !ruleId || !effectiveAsOf) throw new Error("amount, ruleId, and effectiveAsOf are required");
+  // Rule 107: never default a missing instrument key to the
+  // fabricated generic "company" — require the user's real value.
+  const instrumentKey = String(formData.get("instrumentKey") || "").trim();
+  if (!amount || !ruleId || !effectiveAsOf || !instrumentKey) throw new Error("amount, ruleId, effectiveAsOf, and instrumentKey are required");
+  // Rule 135: the manual form's ruleId is free text — refuse
+  // unless it resolves (see assertRuleIdResolves). The
+  // certificate-promotion path is exempt: its basketKeys are
+  // system-derived from the certificate itself.
+  await assertRuleIdResolves(companyId, ruleId);
   const result = await appendContractLedgerUsage({
     companyId,
     usageId,
@@ -103,9 +149,31 @@ export async function supersedeContractLedgerUsageAction(companyId: string, form
   const ruleId = String(formData.get("ruleId") || "").trim();
   const effectiveAsOf = String(formData.get("effectiveAsOf") || "").trim();
   const supersessionRef = String(formData.get("supersessionRef") || "").trim() || `sup-${predecessorUsageId}`;
-  const supersededBy = String(formData.get("supersededBy") || "").trim() || "workspace-user";
-  if (!predecessorUsageId || !successorAmount || !ruleId || !effectiveAsOf) {
-    throw new Error("predecessorUsageId, successorAmount, ruleId, and effectiveAsOf are required");
+  // Rule 115: supersession attribution must be real — never
+  // default to the generic "workspace-user".
+  const supersededBy = String(formData.get("supersededBy") || "").trim();
+  if (!predecessorUsageId || !successorAmount || !ruleId || !effectiveAsOf || !supersededBy) {
+    throw new Error("predecessorUsageId, successorAmount, ruleId, effectiveAsOf, and supersededBy are required");
+  }
+  // Rule 136: same orphan-bucket hole as rule 135, worse —
+  // the predecessor is marked SUPERSEDED while a mistyped
+  // successor ruleId lands in a bucket no capacity query reads,
+  // so counted usage silently disappears from capacity.
+  // Rule 138: inheriting the predecessor's OWN path is always
+  // legitimate — certificate-promoted predecessors carry a
+  // basketKey ruleId that may match no modeled Permission or
+  // Provision, and supersession must not strand them. Only a
+  // successor ruleId that CHANGES the path must resolve.
+  const pred = await prisma.contractLedgerUsage.findFirst({
+    where: { companyId, usageId: predecessorUsageId },
+    select: { capacityPathJson: true },
+  });
+  const predRuleId =
+    pred && typeof pred.capacityPathJson === "object" && pred.capacityPathJson !== null
+      ? (pred.capacityPathJson as { kind?: unknown; ruleId?: unknown }).ruleId
+      : undefined;
+  if (predRuleId !== ruleId) {
+    await assertRuleIdResolves(companyId, ruleId);
   }
   const result = await supersedeContractLedgerUsage({
     companyId,

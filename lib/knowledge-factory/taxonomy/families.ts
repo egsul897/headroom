@@ -190,11 +190,21 @@ export function isAdministrativeProvision(heading = "", _text = ""): boolean {
   return ADMINISTRATIVE_HEADING.test(heading) || ADMINISTRATIVE_HEADING_PREFIX.test(heading);
 }
 
-/** An event-of-default trigger: "… shall constitute an Event of Default". */
-const EOD_TRIGGER = /\bconstitutes?\s+an\s+Event\s+of\s+Default\b/i;
+/**
+ * An event-of-default trigger. Drafters write it several ways, not
+ * only "constitutes an Event of Default": "shall be an Event of
+ * Default", "is an Event of Default", "shall be deemed (to be) an
+ * Event of Default", and "shall constitute a Default" are all
+ * trigger phrasings. "Shall NOT be an Event of Default" (waiver
+ * language) is deliberately not matched — the "shall be" adjacency
+ * requirement excludes it.
+ */
+const EOD_TRIGGER = /\bconstitutes?\s+(?:an\s+Event\s+of\s+Default|a\s+Default)\b/i;
+const EOD_BE_TRIGGER =
+  /\b(?:shall\s+be|is|shall\s+be\s+deemed\s+(?:to\s+be\s+)?)\s+(?:an\s+)?Event\s+of\s+Default\b/i;
 
 export function isEventOfDefaultTrigger(heading = "", text = ""): boolean {
-  return EOD_TRIGGER.test(text) || /\bEvents?\s+of\s+Default\b/i.test(heading);
+  return EOD_TRIGGER.test(text) || EOD_BE_TRIGGER.test(text) || /\bEvents?\s+of\s+Default\b/i.test(heading);
 }
 
 export function classifyFamiliesFromText(text: string, heading = ""): KnowledgeTaxonomyFamily[] {
@@ -207,16 +217,53 @@ export function classifyFamiliesFromText(text: string, heading = ""): KnowledgeT
   // the Indebtedness is the trigger's subject, not a permission).
   if (isEventOfDefaultTrigger(heading, text)) return ["EVENTS_OF_DEFAULT"];
   const families: KnowledgeTaxonomyFamily[] = [];
+  // Rule 69: heading evidence outranks body evidence. The old
+  // code returned families in taxonomy order, so a body-pattern
+  // match for an early-taxonomy family beat a heading match for
+  // the section's true family — e.g. a GUARANTEES section whose
+  // body mentioned "reinvestment" came back [ASSET_SALES,
+  // GUARANTEES], and analyzeProvision takes families[0] as the
+  // primary family, miscategorizing the section as ASSET_SALES.
+  // The heading is the section's identity; heading matches list
+  // first (in taxonomy order), then body-only matches.
+  const headingFamilies: KnowledgeTaxonomyFamily[] = [];
+  const bodyFamilies: KnowledgeTaxonomyFamily[] = [];
   for (const def of TAXONOMY_FAMILIES) {
     // Heading patterns match only the section's own heading. They used to
     // also match the first 400 chars of body text, so a table-of-contents
     // excerpt — which lists many sections' headings — collected every
     // family named in the TOC.
-    const hit =
-      def.headingPatterns.some((re) => re.test(heading)) ||
-      def.bodyPatterns.some((re) => re.test(text));
-    if (hit) families.push(def.family);
+    const headingHit = def.headingPatterns.some((re) => re.test(heading));
+    const bodyHit = def.bodyPatterns.some((re) => re.test(text));
+    if (headingHit) headingFamilies.push(def.family);
+    else if (bodyHit) bodyFamilies.push(def.family);
   }
+  families.push(...headingFamilies, ...bodyFamilies);
   if (families.length === 0) return ["UNKNOWN"];
-  return families;
+  return stripCatchAllFallback(families);
+}
+
+/**
+ * Rule 155: GENERAL_CONDITIONS_AND_EXCEPTIONS is a fallback label, never a
+ * co-label. Phase-2 precedent aggregates showed it on 3,472 of 4,590
+ * candidates (~76%) — not because three quarters of covenant language is
+ * "general conditions", but because the catch-all is injected by generic
+ * signals: the classifier's heading pattern `/\bConditions?\b/i` (matches
+ * "Conditions to Borrowing", "Conditions Precedent", ...) and the
+ * discovery ranker's `amendments_cross_refs` signal (matches any bare
+ * "Section X.Y") and `negative_covenants` signal (matches the article
+ * heading that contains the specific covenants). When a specific family
+ * also matched, the catch-all must drop out — otherwise downstream
+ * consumers that read families[0] (analyzeProvision) or count family
+ * frequency see a catch-all-dominated taxonomy. When nothing specific
+ * matched, the catch-all is kept: it is still the best available label.
+ */
+export function stripCatchAllFallback(
+  families: KnowledgeTaxonomyFamily[],
+): KnowledgeTaxonomyFamily[] {
+  const hasSpecific = families.some(
+    (f) => f !== "GENERAL_CONDITIONS_AND_EXCEPTIONS" && f !== "UNKNOWN",
+  );
+  if (!hasSpecific) return families;
+  return families.filter((f) => f !== "GENERAL_CONDITIONS_AND_EXCEPTIONS");
 }

@@ -15,6 +15,7 @@ import { PostgresDocumentStorageProvider } from "../../document-storage/postgres
 import type { DebtDocumentClass } from "../../knowledge-factory/types";
 import { buildDocumentCovenantSummary } from "../covenant-intelligence/summarize";
 import { analyzeAmendmentPackage } from "./amendment-package";
+import { documentClassFromConfirmedType } from "./document-class";
 import {
   mergePreservedReviewerDecisions,
   type ReviewerApproval,
@@ -28,8 +29,69 @@ function customerSourceId(companyId: string, documentId: string, contentHash: st
   return `customer:${companyId}:${documentId}:${contentHash.slice(0, 16)}`;
 }
 
-/** Map human-declared DocumentType onto KF debt classes when classifier returns UNKNOWN. */
-function documentClassFromDeclared(
+/**
+ * General rule: an analysis that found NO covenant items, NO structural
+ * nodes, and NO definitions found nothing at all — either the document
+ * is not a debt document or extraction failed. That is a review/failure
+ * state, never a silent ANALYZED success: presenting an empty covenant
+ * list as success tells the customer "no covenants" when the truth is
+ * "we could not read the document." A document with structure but no
+ * covenants (e.g. a short waiver with a section tree) still succeeds —
+ * the rule fires only on total emptiness.
+ *
+ * Rule 156: total emptiness is not the only silent-success shape.
+ * Phase-2 precedent aggregates showed discovery failure at scale
+ * (DISCOVERY_GAP the dominant scoreboard class, 13,581 findings): a
+ * large structured document whose covenant discovery finds NOTHING
+ * used to succeed with an empty covenant list, because the old guard
+ * fired only when structural nodes were also zero. A real indenture
+ * or credit agreement has hundreds of nodes and always carries
+ * covenants; a short waiver has a handful. Zero covenant items with
+ * substantial parsed structure — or candidates that all got dropped
+ * by summarization — is a discovery failure, not a covenant-free
+ * document, and fails the same way.
+ */
+/** Parsed-structure count above which "zero covenant items" means discovery failed. */
+export const SUBSTANTIAL_STRUCTURE_NODES = 20;
+
+export function emptyAnalysisReason(args: {
+  covenantItemCount: number;
+  structuralNodeCount: number;
+  definitionCount: number;
+  covenantCandidateCount?: number;
+}): string | null {
+  if (
+    args.covenantItemCount === 0 &&
+    args.structuralNodeCount === 0 &&
+    args.definitionCount === 0
+  ) {
+    return "Analysis found no covenant structure (no covenant items, no structural nodes, no definitions) — document may not be a debt document or extraction failed. Re-upload or request review.";
+  }
+  if (
+    args.covenantItemCount === 0 &&
+    args.structuralNodeCount >= SUBSTANTIAL_STRUCTURE_NODES
+  ) {
+    return `Analysis found no covenant items despite parsing ${args.structuralNodeCount} structural nodes — covenant discovery failed for this document. Re-upload or request review; do not treat the empty list as "no covenants".`;
+  }
+  if (
+    args.covenantItemCount === 0 &&
+    (args.covenantCandidateCount ?? 0) > 0
+  ) {
+    return `Analysis found ${args.covenantCandidateCount} covenant candidates but none survived summarization — covenant discovery failed for this document. Re-upload or request review; do not treat the empty list as "no covenants".`;
+  }
+  return null;
+}
+
+export function isEmptyAnalysis(args: {
+  covenantItemCount: number;
+  structuralNodeCount: number;
+  definitionCount: number;
+  covenantCandidateCount?: number;
+}): boolean {
+  return emptyAnalysisReason(args) !== null;
+}
+
+/** Map human-declared DocumentType onto KF debt classes when classifier returns UNKNOWN. */function documentClassFromDeclared(
   declaredType: string | undefined,
   classified: DebtDocumentClass,
 ): DebtDocumentClass {
@@ -112,6 +174,25 @@ export async function stageCustomerDocument(params: {
     }),
   );
 
+  // General rule: staging must never clobber a prior analysis. The stage
+  // upsert is keyed by sourceId = (companyId, documentId, contentHash),
+  // so an update here means IDENTICAL bytes — the prior analysis is for
+  // these exact bytes and stays valid until the new analysis replaces it.
+  // Without this merge, a re-upload (or a retry after a transient
+  // failure) wiped covenantSummary/amendmentPackage/reviewer decisions,
+  // and a failed re-analysis left the row with no analysis at all.
+  // The fresh attempt supersedes a prior analysisError, but keeps the
+  // prior analysis payload.
+  const priorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
+  const priorMeta =
+    priorRow?.metadata && typeof priorRow.metadata === "object" && !Array.isArray(priorRow.metadata)
+      ? { ...(priorRow.metadata as Record<string, unknown>) }
+      : {};
+  const stagedMeta = JSON.parse(
+    JSON.stringify({ ...priorMeta, ...pendingMeta }),
+  );
+  delete stagedMeta.analysisError;
+
   await prisma.knowledgeSource.upsert({
     where: { sourceId },
     create: {
@@ -137,7 +218,7 @@ export async function stageCustomerDocument(params: {
       usageRightsReviewStatus: "UNREVIEWED",
       byteSize: params.bytes.length,
       storageRef,
-      metadata: pendingMeta,
+      metadata: stagedMeta,
     },
     update: {
       companyId: params.companyId,
@@ -146,7 +227,7 @@ export async function stageCustomerDocument(params: {
       byteSize: params.bytes.length,
       issuerName: company.name,
       issuerTicker: company.ticker,
-      metadata: pendingMeta,
+      metadata: stagedMeta,
     },
   });
 
@@ -311,8 +392,25 @@ export async function analyzeCustomerDocument(params: {
       processed.source.extractionStatus === "FAILED" ||
       processed.source.extractionStatus === "UNSUPPORTED_FORMAT"
     ) {
+      // Rule 66: a failed re-analysis must NOT wipe the prior
+      // analysis (rule-4 bug class in the FAILED branch). The
+      // success branch preserves reviewer decisions and the
+      // staging branch merges priorMeta — but this branch built
+      // failMeta from scratch and replaced the whole metadata,
+      // destroying covenantSummary / amendmentPackage /
+      // reviewerApprovals / compile results for a previously
+      // analyzed document. Merge: the fresh attempt supersedes
+      // the error field, the prior analysis payload survives
+      // (it is for these exact bytes — sourceId includes the
+      // content hash). The caller stamps FAILED_RETRYABLE.
+      const failedPriorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
+      const failedPriorMeta =
+        failedPriorRow?.metadata && typeof failedPriorRow.metadata === "object" && !Array.isArray(failedPriorRow.metadata)
+          ? { ...(failedPriorRow.metadata as Record<string, unknown>) }
+          : {};
       const failMeta = JSON.parse(
         JSON.stringify({
+          ...failedPriorMeta,
           workspaceScope: "CUSTOMER",
           companyId: params.companyId,
           documentId: params.documentId,
@@ -371,10 +469,25 @@ export async function analyzeCustomerDocument(params: {
       };
     }
 
-    const documentClass = documentClassFromDeclared(
-      params.declaredType,
-      processed.source.documentClass,
-    );
+    // Rule 128: a counsel-confirmed type must survive re-analysis.
+    // Without this, re-analyzing a document whose class counsel
+    // corrected (rule 127) recomputes the class from the
+    // classifier verdict alone and silently undoes the
+    // correction — the mismatch returns and operative
+    // resolution flips back to the classifier's (wrong) class.
+    // The confirmed Document.type wins; the classifier verdict
+    // is used only when no confirmation exists.
+    const confirmedDoc = await prisma.document.findFirst({
+      where: { id: params.documentId, companyId: params.companyId },
+      select: { type: true, typeConfirmedByUser: true },
+    });
+    const confirmedClass =
+      confirmedDoc?.typeConfirmedByUser && confirmedDoc.type
+        ? documentClassFromConfirmedType(confirmedDoc.type)
+        : null;
+    const documentClass =
+      confirmedClass ??
+      documentClassFromDeclared(params.declaredType, processed.source.documentClass);
     processed.source.documentClass = documentClass;
     store.upsertSource({ ...processed.source, documentClass });
 
@@ -507,6 +620,14 @@ export async function analyzeCustomerDocument(params: {
       priorApprovals,
     });
 
+    const emptyReason = emptyAnalysisReason({
+      covenantItemCount: summary.items.length,
+      structuralNodeCount: processed.structuralNodeCount,
+      definitionCount: processed.definitionCount,
+      covenantCandidateCount: processed.candidateCount,
+    });
+    const foundNothing = emptyReason !== null;
+
     const metadata = JSON.parse(
       JSON.stringify({
         workspaceScope: "CUSTOMER",
@@ -524,7 +645,12 @@ export async function analyzeCustomerDocument(params: {
         amendmentPackage: amendment,
         agreementPipeline,
         storageProvider: stored.provider,
-        processingStatus: "ANALYZED",
+        processingStatus: foundNothing ? "FAILED_RETRYABLE" : "ANALYZED",
+        ...(foundNothing
+          ? {
+              analysisError: emptyReason,
+            }
+          : {}),
         promotedToLegalTruth: 0,
         reviewerApprovals: priorApprovals,
         reviewerDecisionHistory: priorMeta.reviewerDecisionHistory ?? [],
@@ -576,9 +702,10 @@ export async function analyzeCustomerDocument(params: {
     });
 
     const analysisSucceeded =
-      processed.source.extractionStatus === "CANDIDATES_DISCOVERED" ||
-      processed.source.extractionStatus === "TEXT_EXTRACTED" ||
-      processed.structuralNodeCount > 0;
+      (processed.source.extractionStatus === "CANDIDATES_DISCOVERED" ||
+        processed.source.extractionStatus === "TEXT_EXTRACTED" ||
+        processed.structuralNodeCount > 0) &&
+      !foundNothing;
 
     return {
       ok: analysisSucceeded,
@@ -590,6 +717,11 @@ export async function analyzeCustomerDocument(params: {
       covenantItemCount: summary.items.length,
       definitionCount: processed.definitionCount,
       structuralNodeCount: processed.structuralNodeCount,
+      ...(foundNothing
+        ? {
+            error: emptyReason,
+          }
+        : {}),
       promotedToLegalTruth: 0,
     };
   } catch (err) {

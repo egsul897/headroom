@@ -47,87 +47,10 @@ export async function listReviewerApprovals(companyId: string): Promise<Reviewer
   return out;
 }
 
-/** Overlay counsel decisions onto summary items for Ask / display. */
-export function applyReviewerOverlayToItems(
-  items: Array<CovenantSummaryItem & { sourceId?: string }>,
-  approvals: ReviewerApproval[],
-): Array<CovenantSummaryItem & { sourceId?: string }> {
-  return items
-    .map((item) => {
-      const approval =
-        approvals.find(
-          (a) =>
-            a.sectionRef === item.sectionRef &&
-            (!item.sourceId || a.sourceId === item.sourceId),
-        ) ??
-        (approvals.filter((a) => a.sectionRef === item.sectionRef).length === 1
-          ? approvals.find((a) => a.sectionRef === item.sectionRef)
-          : undefined);
-      if (!approval) return item;
-      if (approval.decision === "REJECTED") {
-        return { ...item, reviewerDecision: "REJECTED" as const };
-      }
-      const plain =
-        approval.decision === "EDITED" && approval.editedPlainEnglish?.trim()
-          ? approval.editedPlainEnglish.trim()
-          : item.plainEnglish;
-      return {
-        ...item,
-        plainEnglish: plain,
-        reviewerDecision: approval.decision,
-        interpretationNote: `${item.interpretationNote ?? ""} [Workspace counsel ${approval.decision.toLowerCase()} ${approval.reviewedAt}]`.trim(),
-      };
-    })
-    .filter((item) => item.reviewerDecision !== "REJECTED");
-}
-
-/**
- * After AI reanalysis, re-apply counsel edits/accepts onto the new summary and
- * flag conflicts when the AI plain English materially changed under an ACCEPTED item.
- */
-export function mergePreservedReviewerDecisions(params: {
-  summary: DocumentCovenantSummary;
-  priorApprovals: ReviewerApproval[];
-}): { summary: DocumentCovenantSummary; conflicts: string[] } {
-  const conflicts: string[] = [];
-  if (!params.priorApprovals.length) return { summary: params.summary, conflicts };
-
-  const items = params.summary.items.map((item) => {
-    const approval = params.priorApprovals.find((a) => a.sectionRef === item.sectionRef);
-    if (!approval || approval.decision === "REJECTED") return item;
-    if (approval.decision === "EDITED" && approval.editedPlainEnglish?.trim()) {
-      return {
-        ...item,
-        plainEnglish: approval.editedPlainEnglish.trim(),
-        reviewerDecision: "EDITED" as const,
-        interpretationNote: `${item.interpretationNote ?? ""} [Counsel edit preserved after reanalysis ${approval.reviewedAt}]`.trim(),
-      };
-    }
-    if (approval.decision === "ACCEPTED") {
-      const prior = approval.priorPlainEnglish ?? approval.editedPlainEnglish;
-      if (prior && normalize(prior) !== normalize(item.plainEnglish)) {
-        conflicts.push(
-          `§${item.sectionRef}: AI text changed after counsel acceptance — review again (prior acceptance retained as flag).`,
-        );
-      }
-      return {
-        ...item,
-        reviewerDecision: "ACCEPTED" as const,
-        interpretationNote: `${item.interpretationNote ?? ""} [Prior counsel acceptance ${approval.reviewedAt}${conflicts.length ? "; AI text may have changed — conflict flagged" : ""}]`.trim(),
-      };
-    }
-    return item;
-  });
-
-  return {
-    summary: { ...params.summary, items },
-    conflicts,
-  };
-}
-
-function normalize(s: string): string {
-  return s.replace(/\s+/g, " ").trim().toLowerCase();
-}
+/** Overlay lives in a prisma-free module so it is unit-testable. */
+/** Merge lives in a prisma-free module so it is unit-testable. */
+export { mergePreservedReviewerDecisions } from "./reviewer-merge";
+export { applyReviewerOverlayToItems } from "./reviewer-overlay";
 
 export async function recordReviewerDecision(params: {
   companyId: string;
@@ -166,6 +89,32 @@ export async function recordReviewerDecision(params: {
   );
   const summary = summarizeFromStoredMetadata(meta);
   const currentItem = summary?.items.find((i) => i.sectionRef === params.sectionRef);
+  // Rule 112: compile already refuses a section with no summary
+  // item — but the decision row was still recorded, leaving a
+  // phantom approval that matches nothing. Refuse up front so no
+  // decision is ever recorded for a section this document's
+  // analysis does not contain.
+  if (!currentItem) {
+    return {
+      ok: false,
+      error: `Section ${params.sectionRef} not found in this document's analysis — no decision recorded`,
+      approvalCount: prior.length,
+    };
+  }
+
+  // Rule 143: the reviewer label previously defaulted to the
+  // generic "workspace-counsel" when missing — fabricated
+  // attribution (rules 113–115/142 class). A decision without
+  // a real reviewer is refused; the one remaining caller that
+  // relied on the fallback (the workflow demo script) now passes
+  // an explicit demo label.
+  if (!params.reviewerLabel?.trim()) {
+    return {
+      ok: false,
+      error: "A reviewer name/email is required — no decision recorded",
+      approvalCount: prior.length,
+    };
+  }
 
   const next: ReviewerApproval = {
     sourceId: params.sourceId,
@@ -176,7 +125,7 @@ export async function recordReviewerDecision(params: {
     priorPlainEnglish: currentItem?.plainEnglish,
     note: params.note?.trim() || undefined,
     reviewedAt: new Date().toISOString(),
-    reviewerLabel: params.reviewerLabel?.trim() || "workspace-counsel",
+    reviewerLabel: params.reviewerLabel.trim(),
     version: (existing?.version ?? 0) + 1,
   };
 
@@ -201,7 +150,12 @@ export async function recordReviewerDecision(params: {
         ...item,
         plainEnglish: plain,
         reviewerDecision: params.decision,
-        interpretationNote: `${item.interpretationNote ?? ""} [Workspace counsel ${params.decision.toLowerCase()} ${next.reviewedAt}]`.trim(),
+        // Rule 144: the note previously stamped the generic
+        // "Workspace counsel" — the same fabricated-attribution
+        // class as rule 143's fallback. The decision now carries
+        // a real reviewer (rule 143 refuses without one), so the
+        // note names that reviewer.
+        interpretationNote: `${item.interpretationNote ?? ""} [${next.reviewerLabel} ${params.decision.toLowerCase()} ${next.reviewedAt}]`.trim(),
       };
     });
     meta.covenantSummary = { ...summary, items };

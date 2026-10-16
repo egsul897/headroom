@@ -117,7 +117,7 @@ describe("Phase B synthetic-company acceptance (zero company-specific code)", ()
     const byKind = await getCandidatesForReview(COMPANY_ID);
     const allCandidateIds = Object.values(byKind).flat().map((c) => c.id);
     for (const id of allCandidateIds) {
-      await reviewCandidate({ candidateId: id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
+      await reviewCandidate({ companyId: COMPANY_ID, candidateId: id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
     }
 
     const result = await promoteCompanyCandidates(COMPANY_ID, new Date(AS_OF));

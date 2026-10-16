@@ -4,8 +4,6 @@ import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney"
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { getDocumentDetails } from "@/lib/dashboard-service";
 import { fmtDate } from "@/lib/format";
-import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
-import { listConmedPackageFacts } from "@/lib/product/conmed-demo/covenant-catalog";
 import {
   getLatestAmendmentPackage,
   listCustomerDocumentIntelligence,
@@ -27,8 +25,6 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
   const intelligence = await listCustomerDocumentIntelligence(companyId);
   const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
   const amendment = await getLatestAmendmentPackage(companyId);
-  const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
-  const facts = isConmed ? listConmedPackageFacts() : [];
 
   return (
     <div className="stack">
@@ -81,6 +77,11 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
           )}
           {amendment.provisionChangeSignals.length > 0 && (
             <div style={{ marginTop: 8 }}>
+              {amendment.provisionChangeSignals.length > 6 && (
+                <div className="row-note">
+                  (+{amendment.provisionChangeSignals.length - 6} more change signals)
+                </div>
+              )}
               {amendment.provisionChangeSignals.slice(0, 6).map((s, i) => (
                 <div key={i} className="row-note">
                   <Chip tone="navy">{s.kind}</Chip> {s.evidence}
@@ -102,11 +103,6 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               Create / upload in workspace
             </Link>
           </div>
-          {isConmed && (
-            <div className="row-note" style={{ marginTop: 8 }}>
-              Run <code>npm run product:setup-conmed-demo</code> (dry-run) then authorize live setup to persist the authentic CONMED package.
-            </div>
-          )}
         </Card>
       )}
 
@@ -158,6 +154,25 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
                     </Chip>{" "}
                     {intel.covenantItemCount} covenant summaries · {intel.extractionStatus}
                     {intel.processingStatus ? ` · ${intel.processingStatus}` : ""}
+                    {/* Rule 88: staleness must surface on the list, not
+                        only on the document page — a stale summary
+                        otherwise reads as fresh ANALYZED. */}
+                    {intel.analysisStale && (
+                      <>
+                        {" "}
+                        <Chip tone="trip">STALE — re-analyze</Chip>
+                      </>
+                    )}
+                    {/* Rule 119: rule 118's type mismatch must surface
+                        on the list too — triage happens here, and a
+                        mismatch hidden behind each detail page is easy
+                        to miss. */}
+                    {intel.declaredType && intel.documentClass && intel.documentClass !== intel.declaredType && (
+                      <>
+                        {" "}
+                        <Chip tone="trip">TYPE MISMATCH — declared {intel.declaredType}, analyzed as {intel.documentClass}</Chip>
+                      </>
+                    )}
                   </>
                 ) : (
                   <Chip tone="idle">Not yet analyzed</Chip>
@@ -181,10 +196,10 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               <Link className="button" href={`/${companyId}/covenants`}>
                 View covenants
               </Link>
-              {intel && !intel.analysisOk && intel.storageRef && (
+              {intel && (!intel.analysisOk || intel.analysisStale) && intel.storageRef && (
                 <form action={retryCustomerAnalysisAction.bind(null, companyId, d.id)}>
                   <button className="button" type="submit">
-                    Retry analysis
+                    {intel.analysisStale && intel.analysisOk ? "Re-analyze (stale)" : "Retry analysis"}
                   </button>
                 </form>
               )}
@@ -193,27 +208,6 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
         );
       })}
 
-      {facts.length > 0 && (
-        <Card>
-          <div className="card-title">Package relationships</div>
-          <div className="card-subtitle">Source-backed package facts — not capacity determinations.</div>
-          {facts.map((f) => (
-            <div className="row" key={f.id}>
-              <div>
-                <div className="row-label">{f.id}</div>
-                <div className="row-note">{f.fact}</div>
-                <div className="row-note">
-                  Citation: {f.evidenceCitation}{" "}
-                  <Chip tone="navy">{f.clarity}</Chip>
-                </div>
-              </div>
-              <Link className="button" href={`/${companyId}/documents/${f.demoDocumentId}`}>
-                Source
-              </Link>
-            </div>
-          ))}
-        </Card>
-      )}
     </div>
   );
 }

@@ -3,7 +3,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { classifyFamiliesFromText, isAdministrativeProvision } from "../taxonomy/families";
+import { classifyFamiliesFromText, isAdministrativeProvision, stripCatchAllFallback } from "../taxonomy/families";
 import { scoreDiscoveryPotential } from "../rank/discovery-score";
 import { detectPatternsInText } from "../patterns/library";
 import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRecord } from "../types";
@@ -55,19 +55,35 @@ function dedupKeyFor(sectionRef: string): string | null {
   return norm;
 }
 
+/** True when two excerpts are the same text (or one contains the other) — a parser re-emit, not a different version. */
+function isDuplicateExcerpt(a: string, b: string): boolean {
+  const na = a.replace(/\s+/g, " ").trim();
+  const nb = b.replace(/\s+/g, " ").trim();
+  if (!na || !nb) return false;
+  return na.includes(nb) || nb.includes(na);
+}
+
 /**
- * One candidate per section ref. A section legitimately appears twice in a
- * document — once in the table of contents, once in the body — and the
- * structural parser emits a node for each. Without dedup the same section
- * (e.g. §6.01) surfaces twice with different excerpts. Keep the strongest
- * candidate (highest discovery score, then longest excerpt). Distinct
- * subsections keep distinct refs ("6.01(1)" vs "6.01(2)") and are untouched.
+ * One candidate per section ref — but only for TRUE duplicates. A
+ * section legitimately appears twice in a document — once in the
+ * table of contents, once in the body — and the structural parser
+ * emits a node for each. Without dedup the same section (e.g. §6.01)
+ * surfaces twice with different excerpts. Keep the strongest
+ * candidate (highest discovery score, then longest excerpt) when the
+ * excerpts are the same text (or one contains the other).
+ *
+ * The same ref can also carry DIFFERENT text in one document — e.g. a
+ * single PDF holding both a base agreement and an amendment that
+ * restates §6.01 with a new cap. Those are different versions, not
+ * duplicates: collapsing them silently dropped one version's baskets.
+ * Distinct subsections keep distinct refs ("6.01(1)" vs "6.01(2)")
+ * and are untouched.
  */
 function dedupBySectionRef(
   candidates: CovenantCandidateRecord[],
   nodesById: Map<string, StructuralNodeRecord>,
 ): CovenantCandidateRecord[] {
-  const bestByKey = new Map<string, CovenantCandidateRecord>();
+  const keptByKey = new Map<string, CovenantCandidateRecord[]>();
   const out: CovenantCandidateRecord[] = [];
   for (const c of candidates) {
     const ref = c.nodeId ? nodesById.get(c.nodeId)?.sectionRef : undefined;
@@ -76,19 +92,22 @@ function dedupBySectionRef(
       out.push(c);
       continue;
     }
-    const prev = bestByKey.get(key);
-    if (!prev) {
-      bestByKey.set(key, c);
+    const kept = keptByKey.get(key) ?? [];
+    const dupIdx = kept.findIndex((k) => isDuplicateExcerpt(k.excerpt, c.excerpt));
+    if (dupIdx === -1) {
+      kept.push(c);
+      keptByKey.set(key, kept);
       out.push(c);
       continue;
     }
+    const prev = kept[dupIdx]!;
     const prevScore = prev.discoveryScore;
     const nextScore = c.discoveryScore;
     if (
       nextScore > prevScore ||
       (nextScore === prevScore && c.excerpt.length > prev.excerpt.length)
     ) {
-      bestByKey.set(key, c);
+      kept[dupIdx] = c;
       out[out.indexOf(prev)] = c;
     }
   }
@@ -108,10 +127,11 @@ function operativeSpan(
   if (nextStart != null && nextStart > start) {
     return { start, end: Math.min(textLen, nextStart) };
   }
-  // Sparse structure: take at least 2.5k chars of body beyond the heading span.
+  // Sparse structure: take at least 4k chars of body beyond the heading span,
+  // matching the section-span cap in discoverCovenantCandidates.
   return {
     start,
-    end: Math.min(textLen, Math.max(node.charEnd, node.charStart + 2500)),
+    end: Math.min(textLen, Math.max(node.charEnd, node.charStart + 4000)),
   };
 }
 
@@ -149,13 +169,17 @@ export function discoverCovenantCandidates(
     const rank = scoreDiscoveryPotential(excerpt, node.heading);
     if (rank.score < 2 && families[0] === "UNKNOWN") continue;
     const mergedFamilies = uniqueFamilies([...families, ...rank.families]);
+    // Excerpt cap matches the 4000-char section span: basket/cap
+    // extraction runs on this excerpt, so a tighter cap silently
+    // dropped caps living late in a long section (rule 11). Display
+    // excerpts are clipped separately downstream (700 chars).
     out.push({
       candidateId: candidateId(sourceId, node.nodeId),
       sourceId,
       nodeId: node.nodeId,
       families: mergedFamilies,
       signals: [...rank.signals, ...detectPatternsInText(excerpt).map((p) => `pattern:${p}`)],
-      excerpt: excerpt.slice(0, 1600),
+      excerpt: excerpt.slice(0, 4000),
       representationLevel: "DISCOVERED_CANDIDATE",
       discoveryScore: rank.score,
     });
@@ -188,7 +212,11 @@ function uniqueFamilies(families: KnowledgeTaxonomyFamily[]): KnowledgeTaxonomyF
     seen.add(f);
     out.push(f);
   }
-  return out.length ? out : ["UNKNOWN"];
+  // Rule 155: the discovery ranker re-injects GENERAL_CONDITIONS_AND_EXCEPTIONS
+  // via generic signals (bare "Section X.Y", "Negative Covenants" heading),
+  // so the merged classifier+ranker list gets the same fallback treatment.
+  const stripped = stripCatchAllFallback(out);
+  return stripped.length ? stripped : ["UNKNOWN"];
 }
 
 function candidateId(sourceId: string, nodeId: string): string {

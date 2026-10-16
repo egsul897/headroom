@@ -140,6 +140,8 @@ describe("absorption matrix — #340 PRODUCTION strip + product-bridge", () => {
         reportingPeriodKey: MATTHEWS_PKG.measurementPeriod,
         asOf: MATTHEWS_PKG.asOf,
         approvedSnapshotId: snap.snapshotId,
+        cutoffSnapshotId: snap.snapshotId,
+        cutoffSnapshotStatus: "APPROVED",
       },
       boundSnapshotId: snap.snapshotId,
       boundSnapshot: snap,

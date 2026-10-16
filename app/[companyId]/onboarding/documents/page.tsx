@@ -86,7 +86,10 @@ async function ContractAnalysisStatusCard({ companyId }: { companyId: string }) 
       )}
       {failureLogs.length > 0 && (
         <div style={{ marginTop: 6 }}>
-          <div className="row-note">{failureLogs.length} pre-analysis failure(s) (occurred before a run could be started):</div>
+          <div className="row-note">
+            {failureLogs.length} pre-analysis failure(s) (occurred before a run could be started)
+            {failureLogs.length > 5 ? ` — showing first 5` : ""}:
+          </div>
           {failureLogs.slice(0, 5).map((log) => (
             <div key={log.id} className="row-note" style={{ color: "var(--color-danger, #b91c1c)" }}>
               {fmtDate(log.createdAt)} · {log.errorClass} — {log.message}
@@ -124,7 +127,13 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
           <div className="field">
             <div className="field-label">Declared type (best guess — extraction may propose a correction for review)</div>
             <div className="field-control">
-              <select name="declaredType" defaultValue="CREDIT_AGREEMENT">
+              {/* Rule 109: never pre-declare every upload a Credit
+                  Agreement — an indenture uploaded with the default
+                  would be misdeclared until review catches it. */}
+              <select name="declaredType" defaultValue="" required>
+                <option value="" disabled>
+                  Select document type
+                </option>
                 {DOCUMENT_TYPES.map((t) => (
                   <option key={t.value} value={t.value}>
                     {t.label}

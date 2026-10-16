@@ -22,6 +22,13 @@ export interface AmendmentCompareView {
   rows: AmendmentCompareRow[];
   unresolvedReasons: string[];
   note: string;
+  /**
+   * General rule: silent truncation is a lie (mirrors the summary
+   * shape from rule 7). totalRowsBeforeCap is the pre-cap row
+   * count; truncated is true when the 40-row cap dropped rows.
+   */
+  totalRowsBeforeCap: number;
+  truncated: boolean;
 }
 
 type ItemWithDoc = CovenantSummaryItem & { sourceId: string; documentTitle: string };
@@ -37,6 +44,8 @@ export function compareAmendmentSummaries(params: {
       rows: [],
       unresolvedReasons: ap?.unresolvedReasons ?? ["No base+amendment pair available for comparison."],
       note: "Upload a base agreement and an amendment to enable before/after comparison.",
+      totalRowsBeforeCap: 0,
+      truncated: false,
     };
   }
 
@@ -45,14 +54,44 @@ export function compareAmendmentSummaries(params: {
   const baseItems = params.items.filter((i) => baseIds.has(i.sourceId));
   const amdItems = params.items.filter((i) => amdIds.has(i.sourceId));
 
-  const baseBySec = new Map(baseItems.map((i) => [i.sectionRef, i]));
-  const amdBySec = new Map(amdItems.map((i) => [i.sectionRef, i]));
-  const allSecs = Array.from(new Set([...baseBySec.keys(), ...amdBySec.keys()])).sort();
+  // Group by ref — do NOT collapse with a Map keyed by ref: one
+  // document can legitimately carry two items under the same ref
+  // (base + amendment versions of §6.01 in a single PDF), and two
+  // base docs can share a ref. Collapsing silently picked one and
+  // could emit a bindable SHIFT/ADDED row from an arbitrary pick.
+  const groupByRef = (list: ItemWithDoc[]): Map<string, ItemWithDoc[]> => {
+    const m = new Map<string, ItemWithDoc[]>();
+    for (const i of list) m.set(i.sectionRef, [...(m.get(i.sectionRef) ?? []), i]);
+    return m;
+  };
+  const baseBySec = groupByRef(baseItems);
+  const amdBySec = groupByRef(amdItems);
+  const allSecs = Array.from(new Set([...baseBySec.keys(), ...amdBySec.keys()])).sort((a, b) =>
+    a.localeCompare(b, undefined, { numeric: true }),
+  );
 
   const rows: AmendmentCompareRow[] = [];
   for (const sec of allSecs) {
-    const b = baseBySec.get(sec);
-    const a = amdBySec.get(sec);
+    const bList = baseBySec.get(sec) ?? [];
+    const aList = amdBySec.get(sec) ?? [];
+    const b = bList[0];
+    const a = aList[0];
+    if (bList.length > 1 || aList.length > 1) {
+      // Duplicate refs on either side: the comparison is ambiguous.
+      // Emit BOTH_PRESENT (never a bindable kind) with a duplicate
+      // note so the resolver cannot bind from a collapsed pick.
+      rows.push({
+        sectionRef: sec,
+        category: (a ?? b)!.category,
+        changeKind: "BOTH_PRESENT",
+        baseHeading: b?.heading,
+        amendmentHeading: a?.heading,
+        baseExcerpt: b?.operativeLanguageExcerpt.slice(0, 180),
+        amendmentExcerpt: a?.operativeLanguageExcerpt.slice(0, 180),
+        note: `Section ${sec} appears ${bList.length > 1 ? `${bList.length} times in base analysis` : ""}${bList.length > 1 && aList.length > 1 ? " and " : ""}${aList.length > 1 ? `${aList.length} times in amendment analysis` : ""} (duplicate section refs) — comparison not bound; counsel review required.`,
+      });
+      continue;
+    }
     if (b && !a) {
       rows.push({
         sectionRef: sec,
@@ -74,7 +113,12 @@ export function compareAmendmentSummaries(params: {
     } else if (a && b) {
       const basketShift =
         JSON.stringify(b.materialBasketsThresholds) !== JSON.stringify(a.materialBasketsThresholds);
-      const textShift = b.operativeLanguageExcerpt.slice(0, 120) !== a.operativeLanguageExcerpt.slice(0, 120);
+      // Compare normalized FULL excerpts: the old 120-char prefix
+      // comparison missed proviso/condition changes after char 120
+      // (identical opening, different tail) and reported
+      // BOTH_PRESENT — so the resolver never bound the amended text.
+      const norm = (s: string) => s.replace(/\s+/g, " ").trim();
+      const textShift = norm(b.operativeLanguageExcerpt) !== norm(a.operativeLanguageExcerpt);
       rows.push({
         sectionRef: sec,
         category: a.category,
@@ -97,5 +141,7 @@ export function compareAmendmentSummaries(params: {
     rows: rows.slice(0, 40),
     unresolvedReasons: ap.unresolvedReasons,
     note: "Before/after rows are discovery comparisons of persisted analyses. UNRESOLVED_PRECEDENCE means Headroom will not select the operative version.",
+    totalRowsBeforeCap: rows.length,
+    truncated: rows.length > 40,
   };
 }

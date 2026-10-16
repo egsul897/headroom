@@ -7,7 +7,8 @@ import { prisma } from "@/lib/prisma";
 import { getDocumentStorageProvider } from "@/lib/document-storage";
 import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
-import { loadSourceTextFromBytes } from "@/lib/product/customer-intelligence/source-text";
+import { loadSourceTextFromBytes, resolveCuratedSourceTextPath } from "@/lib/product/customer-intelligence/source-text";
+import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 
 export const metadata = { title: "Headroom — Document source" };
 
@@ -16,11 +17,10 @@ async function loadSourceText(documentId: string, storageRef: string | null, not
   origin: string;
   truncated: boolean;
 }> {
-  const curatedMatch = notes?.match(/^curated=(.+)$/m);
-  if (curatedMatch?.[1]) {
-    const abs = path.join(process.cwd(), curatedMatch[1]);
-    if (existsSync(abs)) {
-      return loadSourceTextFromBytes(readFileSync(abs), path.basename(abs), `curated excerpt (${curatedMatch[1]})`);
+  const curatedPath = resolveCuratedSourceTextPath(notes);
+  if (curatedPath) {
+    if (existsSync(curatedPath)) {
+      return loadSourceTextFromBytes(readFileSync(curatedPath), path.basename(curatedPath), `curated excerpt (${notes?.match(/^curated=(.+)$/m)?.[1]})`);
     }
   }
 
@@ -102,6 +102,31 @@ export default async function DocumentSourcePage({
             Analysis failed: {intel.analysisError}. This document has not been successfully analyzed.
           </div>
         )}
+        {intel?.analysisStale && (
+          <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+            This analysis was produced by an older version of Headroom and may not include the latest
+            corrections. Re-analyze for current results.
+            <form action={retryCustomerAnalysisAction.bind(null, companyId, documentId)} style={{ marginTop: 8 }}>
+              <button className="button" type="submit">
+                Re-analyze document
+              </button>
+            </form>
+          </div>
+        )}
+        {/* Rule 118: the classifier's class governs operative
+            resolution — when it disagrees with the declared type,
+            say so. The declared type was only a fallback for
+            UNKNOWN/OTHER_DEBT_RELATED; a confident classifier
+            verdict silently wins, and the user previously had no
+            way to see that the system treats this document as a
+            different kind than they declared. */}
+        {intel && intel.declaredType && intel.documentClass && intel.documentClass !== intel.declaredType && (
+          <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+            Type mismatch: declared as {intel.declaredType}, but analysis classifies this document as{" "}
+            {intel.documentClass}. The analysis class governs operative resolution. If the declaration is
+            correct, confirm the document type in the review queue.
+          </div>
+        )}
         {accession && (
           <div className="row">
             <div className="row-label">Accession</div>
@@ -181,6 +206,9 @@ export default async function DocumentSourcePage({
           <div className="card-subtitle">
             Plain-English substance with citations. DISCOVERED ≠ VERIFIED.
           </div>
+          {summaryItems.length > 40 && (
+            <div className="row-note">Showing first 40 of {summaryItems.length} covenant summaries.</div>
+          )}
           {summaryItems.slice(0, 40).map((item, idx) => (
             <div
               key={`${item.sectionRef}-${idx}`}
@@ -210,6 +238,7 @@ export default async function DocumentSourcePage({
               {(item.permissions?.length ?? 0) > 0 && (
                 <div className="row-note">
                   Permissions / exceptions: {item.permissions!.slice(0, 4).join(" · ")}
+                  {item.permissions!.length > 4 && ` (+${item.permissions!.length - 4} more)`}
                 </div>
               )}
               {(item.coveredEntities?.length ?? 0) > 0 && (
@@ -224,7 +253,10 @@ export default async function DocumentSourcePage({
                 </div>
               )}
               {(item.conditions?.length ?? 0) > 0 && (
-                <div className="row-note">Conditions: {item.conditions!.slice(0, 3).join(" · ")}</div>
+                <div className="row-note">
+                  Conditions: {item.conditions!.slice(0, 3).join(" · ")}
+                  {item.conditions!.length > 3 && ` (+${item.conditions!.length - 3} more)`}
+                </div>
               )}
               {item.dependencies?.length > 0 && (
                 <div className="row-note">Dependencies: {item.dependencies.join(" · ")}</div>
@@ -272,6 +304,17 @@ export default async function DocumentSourcePage({
           <div className="card-subtitle">
             Extraction did not produce usable covenant candidates. Re-upload a supported PDF/HTML/DOCX
             financing document, or re-run analysis after fixing parse errors.
+          </div>
+        </Card>
+      )}
+
+      {intel && intel.analysisOk && summaryItems.length === 0 && (
+        <Card>
+          <div className="card-title">No covenant summaries</div>
+          <div className="card-subtitle">
+            Analysis completed without producing covenant summaries. This does not mean the document
+            has no covenants — if this is a financing document, its covenants were not captured;
+            request review.
           </div>
         </Card>
       )}

@@ -89,7 +89,7 @@ describe("getCanonicalCompanyState", () => {
 
     const csvCandidate = await prisma.extractionCandidate.findFirstOrThrow({ where: { companyId: COMPANY_ID, kind: "FINANCIAL_FACT", reviewStatus: "PENDING" } });
     // Not promotable alone (only "cash" among the 8 required fields) - this test only checks getCanonicalCompanyState's own composition behaves sanely around a skip, not that the dashboard fully populates (see tests/onboarding/financial-fact-promotion.test.ts for the full-batch success case).
-    await reviewCandidate({ candidateId: csvCandidate.id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
+    await reviewCandidate({ companyId: COMPANY_ID, candidateId: csvCandidate.id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
     const promotion = await promoteCompanyCandidates(COMPANY_ID, new Date(TODAY));
     expect(promotion.promotedCount).toBe(0);
     expect(promotion.skipped[0]!.reason).toMatch(/Prior-date snapshots are not used as a seed/);

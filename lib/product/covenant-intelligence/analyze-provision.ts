@@ -171,7 +171,8 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
   // "Neither X nor Y shall ..." is a prohibition with no "not" — a common
   // drafting form in credit agreements and indentures alike. Without this
   // it falls through to OBLIGATION, inverting the covenant's meaning.
-  if (/\bneither\b.{0,120}\bshall\b/i.test(hay)) {
+  // [\s\S] (not ".") spans newlines: PDF excerpts break lines mid-sentence.
+  if (/\bneither\b[\s\S]{0,120}\bshall\b/i.test(hay)) {
     return "GENERAL_PROHIBITION";
   }
   // A bare letter-clause "(a) …" is not by itself a permission — EoD
@@ -221,12 +222,24 @@ function extractEntities(excerpt: string, heading: string): {
 
 function extractBaskets(excerpt: string): string[] {
   const out: string[] = [];
-  const greaterOf = [
+  const greaterOfMatches = [
     ...excerpt.matchAll(
-      /greater of\s*\(?(?:x\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:y\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
+      // Limb markers vary by drafter: (x)/(y), (i)/(ii), (1)/(2).
+      // The old regex hard-coded x/y and silently dropped the rest.
+      /greater of\s*\(?(?:[a-z0-9]{1,3}\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:[a-z0-9]{1,3}\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
     ),
   ];
-  for (const m of greaterOf.slice(0, 8)) {
+  const greaterOf = greaterOfMatches.slice(0, 16);
+  // Spans of the (capped) greater-of matches: a bare amount inside
+  // one of these spans IS the limb — skip it. A bare amount at a
+  // different position is a separate basket and must be kept (the
+  // old string-inclusion dedup dropped a distinct $150M clause-(b)
+  // basket because the greater-of entry's text contained "$150M").
+  const greaterOfSpans: Array<[number, number]> = greaterOf.map((m) => [
+    m.index ?? 0,
+    (m.index ?? 0) + (m[0]?.length ?? 0),
+  ]);
+  for (const m of greaterOf) {
     // Preserve the fixed limb's unit: "greater of (x) $150.0 million" is a
     // $150,000,000 limb, not a $150.0 limb. Dropping "million" understated
     // the basket a million-fold in the live Quila output.
@@ -236,14 +249,16 @@ function extractBaskets(excerpt: string): string[] {
   // Preserve the unit on every dollar amount: "$150.0 million" stays
   // "$150.0 million", never bare "$150.0".
   const amounts = [...excerpt.matchAll(/\$\s?[\d,]+(?:\.\d+)?\s*(million|billion|thousand)?/gi)];
-  for (const m of amounts.slice(0, 10)) {
+  for (const m of amounts.slice(0, 40)) {
     const amount = normalizeWs(m[0] ?? "");
-    if (!out.some((x) => x.includes(amount))) {
+    const idx = m.index ?? 0;
+    const insideGreaterOf = greaterOfSpans.some(([s, e]) => idx >= s && idx < e);
+    if (!insideGreaterOf) {
       out.push(`Amount/threshold: ${amount}`);
     }
   }
   const ratios = excerpt.match(/\d+(?:\.\d+)?\s+to\s+1\.00/gi) ?? [];
-  for (const r of ratios.slice(0, 4)) out.push(`Ratio threshold: ${normalizeWs(r)}`);
+  for (const r of ratios.slice(0, 8)) out.push(`Ratio threshold: ${normalizeWs(r)}`);
   if (/\bAvailable Amount\b|\bCumulative Credit\b|\bbuilder\b/i.test(excerpt)) {
     out.push("Builder / Available Amount construct referenced.");
   }
@@ -253,7 +268,10 @@ function extractBaskets(excerpt: string): string[] {
   if (/\bper fiscal year\b|\bin any fiscal year\b/i.test(excerpt)) {
     out.push("Cap measured on a per-fiscal-year basis.");
   }
-  return out.slice(0, 10);
+  // Caps bound display size, set well above any real section's basket
+  // count: silently dropping the 11th basket (old cap: 10) was worse
+  // than a long list.
+  return out.slice(0, 40);
 }
 
 function extractRestriction(excerpt: string, heading: string, posture: ProvisionPosture, categoryLabel: string): string | null {
@@ -535,7 +553,7 @@ function buildAlternativesAndAssumptions(params: {
     );
     judgmentCalls.push("Classification of provisos as conditions precedent versus ongoing covenants involves judgment.");
   }
-  if (/\b(?:or|,)\s*(?:at the option of|in the Borrower's discretion)\b/i.test(hay) || /\beither\b.+\bor\b/i.test(hay)) {
+  if (/\b(?:or|,)\s*(?:at the option of|in the Borrower's discretion)\b/i.test(hay) || /\beither\b[\s\S]+\bor\b/i.test(hay)) {
     alternativeInterpretations.push(
       "The provision appears to offer alternative paths; the strongest supported path is reported first, but counsel should confirm which path is intended for the contemplated transaction.",
     );

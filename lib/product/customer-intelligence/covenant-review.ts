@@ -24,6 +24,7 @@ import {
   type OperativeResolutionView,
 } from "./operative-resolution";
 import type { KnowledgeSourceRecord } from "../../knowledge-factory/types";
+import { executiveUnresolved } from "./executive-unresolved";
 
 export interface CovenantReviewCategoryBlock {
   category: CovenantCategoryKey;
@@ -116,17 +117,13 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
     .map((c) => byCategory.get(c)!)
     .map((block) => ({
       ...block,
-      items: [...block.items].sort((a, b) => a.sectionRef.localeCompare(b.sectionRef)),
+      items: [...block.items].sort((a, b) => a.sectionRef.localeCompare(b.sectionRef, undefined, { numeric: true })),
     }));
 
   const allItems = categories.flatMap((c) => c.items);
   const materialRestrictions = pickMaterial(allItems, 8);
   const materialPermissions = pickPermissions(allItems, 8);
-  const unresolved = Array.from(
-    new Set(
-      allItems.flatMap((i) => (i.unresolvedQuestions ?? []).slice(0, 1).map((u) => `§${i.sectionRef}: ${u}`)),
-    ),
-  ).slice(0, 8);
+  const unresolved = executiveUnresolved(allItems);
 
   const headline =
     analyzedOkCount === 0

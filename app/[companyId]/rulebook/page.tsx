@@ -6,6 +6,8 @@ import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/ruleb
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
+import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
+import { ReviewerNameField } from "@/components/ReviewerNameField";
 import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { reviewProvisionAction } from "./actions";
 
@@ -18,15 +20,28 @@ export const dynamic = "force-dynamic";
  */
 export default async function RulebookPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [rulebook, review, capacity, approvals] = await Promise.all([
+  const [rulebook, review, capacity, approvals, intelligence] = await Promise.all([
     loadRulebookReadiness(companyId),
     loadCovenantReviewWorkspace(companyId),
     loadCapacityReadiness(companyId),
     listReviewerApprovals(companyId),
+    listCustomerDocumentIntelligence(companyId).catch(() => []),
   ]);
+  // Rule 121: rule 118's mismatch on the rulebook — these decisions
+  // compile executable Permissions, so the signal must travel with
+  // the interpretation being accepted, not only live on document pages.
+  const mismatchBySourceId = new Map(
+    (intelligence as { sourceId: string; declaredType: string | null; documentClass: string }[])
+      .filter((i) => i.declaredType && i.documentClass && i.documentClass !== i.declaredType)
+      .map((i) => [i.sourceId, `declared ${i.declaredType}, analyzed as ${i.documentClass}`] as const),
+  );
   const decide = reviewProvisionAction.bind(null, companyId);
   const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}`, a]));
 
+  // Rule 90: the queue caps at 10 items per category and 50
+  // total — counsel must know when interpretations beyond the
+  // cap still await review, or the ladder stalls silently.
+  const totalCandidates = review.categories.reduce((n, c) => n + c.items.length, 0);
   const candidates = review.categories.flatMap((c) =>
     c.items.slice(0, 10).map((item) => ({
       sourceId: item.sourceId,
@@ -43,6 +58,7 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
       assumptions: item.assumptions ?? item.analysis?.assumptions ?? [],
       citation: item.sourceCitation,
       documentTitle: item.documentTitle,
+      typeMismatch: mismatchBySourceId.get(item.sourceId) ?? null,
       decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}`),
     })),
   );
@@ -122,7 +138,14 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
             legal verification.
           </div>
         ) : (
-          candidates.slice(0, 50).map((c, i) => (
+          <>
+            {totalCandidates > 50 && (
+              <div className="row-note" style={{ marginTop: 8 }}>
+                Showing first 50 of {totalCandidates} interpretations (10 per category cap) — more await review below
+                the cap.
+              </div>
+            )}
+            {candidates.slice(0, 50).map((c, i) => (
             <div
               key={`${c.sourceId}-${c.sectionRef}-${i}`}
               style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--border, #e5e7eb)" }}
@@ -141,6 +164,7 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                     <Chip tone="idle">AI DRAFT</Chip>
                   )}{" "}
                   {c.posture && <Chip tone="navy">{c.posture}</Chip>}
+                  {c.typeMismatch && <Chip tone="tight">TYPE MISMATCH — {c.typeMismatch}</Chip>}
                 </div>
               </div>
               <div className="row-note">
@@ -154,21 +178,33 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                   Alternative: {a}
                 </div>
               ))}
+              {c.alternatives.length > 2 && (
+                <div className="row-note">(+{c.alternatives.length - 2} more alternatives — see source document)</div>
+              )}
               {c.assumptions.slice(0, 2).map((a, j) => (
                 <div key={`as${j}`} className="row-note">
                   Assumption: {a}
                 </div>
               ))}
+              {c.assumptions.length > 2 && (
+                <div className="row-note">(+{c.assumptions.length - 2} more assumptions — see source document)</div>
+              )}
               {c.baskets.slice(0, 3).map((b, j) => (
                 <div key={j} className="row-note">
                   Basket: {b}
                 </div>
               ))}
+              {c.baskets.length > 3 && (
+                <div className="row-note">(+{c.baskets.length - 3} more baskets — see source document)</div>
+              )}
               {c.conditions.slice(0, 2).map((b, j) => (
                 <div key={`c${j}`} className="row-note">
                   Condition: {b}
                 </div>
               ))}
+              {c.conditions.length > 2 && (
+                <div className="row-note">(+{c.conditions.length - 2} more conditions — see source document)</div>
+              )}
               <div className="row-note">Citation: {c.citation}</div>
               {c.decision?.note ? <div className="row-note">Prior note: {c.decision.note}</div> : null}
 
@@ -193,6 +229,10 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                     />
                   </div>
                 </div>
+                {/* Rule 113: rulebook decisions compile executable
+                    Permissions — they need a real reviewer, not the
+                    hardcoded "workspace-counsel" label. */}
+                <ReviewerNameField id={`reviewedBy-rulebook-${c.sourceId}-${c.sectionRef}`} />
                 <div className="button-row">
                   <button className="button" type="submit" name="decision" value="ACCEPTED">
                     Accept
@@ -206,7 +246,8 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                 </div>
               </form>
             </div>
-          ))
+          ))}
+          </>
         )}
       </Card>
     </div>

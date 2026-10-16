@@ -4,9 +4,10 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { listCustomerDocumentIntelligence } from "./load";
+import { listCustomerDocumentIntelligence, getLatestAmendmentPackage } from "./load";
 import { loadCapacityReadiness } from "./capacity-readiness";
 import { listReviewerApprovals } from "./reviewer-approvals";
+import { verifiedPermissionCount } from "./rulebook-permission-counts";
 
 export type RulebookStage = "DISCOVERED" | "INTERPRETED" | "REVIEWED" | "EXECUTABLE";
 
@@ -24,7 +25,7 @@ export interface RulebookReadiness {
 }
 
 export async function loadRulebookReadiness(companyId: string): Promise<RulebookReadiness> {
-  const [docs, capacity, permissions, provisions, goldenVerified, counselApprovals] = await Promise.all([
+  const [docs, capacity, permissions, provisions, goldenVerified, counselApprovals, amendment] = await Promise.all([
     listCustomerDocumentIntelligence(companyId),
     loadCapacityReadiness(companyId),
     prisma.permission.findMany({
@@ -36,6 +37,7 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
       where: { companyId, status: "VERIFIED" },
     }),
     listReviewerApprovals(companyId),
+    getLatestAmendmentPackage(companyId),
   ]);
 
   const discoveredSummaries = docs.reduce((n, d) => n + (d.summary?.items.length ?? 0), 0);
@@ -46,10 +48,13 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   const counselReviewed = counselApprovals.filter(
     (a) => a.decision === "ACCEPTED" || a.decision === "EDITED",
   ).length;
-  const reviewedPermissions =
-    permissions.filter((p) => /VERIFIED|REVIEWED|APPROVED/i.test(String(p.reviewStatus))).length +
-    counselReviewed;
-  const executablePermissions = permissions.length;
+  // Rule 47: only VERIFIED Permission rows count as reviewed /
+  // executable. The old /VERIFIED|REVIEWED|APPROVED/i regex
+  // matched "UNVERIFIED" as a substring, so every
+  // compiler-minted (default UNVERIFIED) row counted.
+  const verifiedPermissions = verifiedPermissionCount(permissions.map((p) => String(p.reviewStatus)));
+  const reviewedPermissions = verifiedPermissions + counselReviewed;
+  const executablePermissions = verifiedPermissions;
 
   const blockers: string[] = [];
   if (discoveredSummaries === 0) blockers.push("No discovered covenant summaries yet.");
@@ -70,11 +75,22 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   if (goldenVerified === 0 && executablePermissions > 0) {
     blockers.push("No verified golden tests for this workspace (optional confidence signal).");
   }
+  // Rule 67: unresolved amendment precedence caps the ladder at
+  // REVIEWED. VERIFIED Permissions + capacity are not enough
+  // when the operative text itself is uncertain — the live
+  // Permissions may be compiled from a superseded document's
+  // sections. Same package source the monitoring feed uses.
+  const precedenceUnresolved = amendment?.operativeResolution === "UNRESOLVED_PRECEDENCE";
+  if (precedenceUnresolved) {
+    blockers.push(
+      "Amendment precedence unresolved — the operative rulebook is uncertain; EXECUTABLE withheld until precedence resolves.",
+    );
+  }
 
   let stage: RulebookStage = "DISCOVERED";
   if (interpretedProvisions > 0) stage = "INTERPRETED";
   if (reviewedPermissions > 0) stage = "REVIEWED";
-  if (capacity.canEvaluateExecutableCapacity && executablePermissions > 0 && reviewedPermissions > 0) {
+  if (capacity.canEvaluateExecutableCapacity && executablePermissions > 0 && reviewedPermissions > 0 && !precedenceUnresolved) {
     stage = "EXECUTABLE";
   }
 

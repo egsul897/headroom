@@ -199,6 +199,8 @@ describe("party identity + structural quality", () => {
             governingAgreement: "CA",
             issuerCik: "0000000001",
             documentClass: "CREDIT_AGREEMENT",
+            totalItemsBeforeCap: 2,
+            truncated: false,
             items: [
               item({ sectionRef: "7.01", category: "DEBT_INCURRENCE" }),
               item({
@@ -305,6 +307,8 @@ describe("provision graph / quality / exercise factory", () => {
         promotedToLegalTruth: 0,
         note: "",
         countsByCategory: {},
+        totalItemsBeforeCap: 1,
+        truncated: false,
         definedTermsSample: [{ term: "EBITDA", excerpt: "means" }],
         items: [
           item({ sectionRef: "7.01", category: "DEBT_INCURRENCE" }),

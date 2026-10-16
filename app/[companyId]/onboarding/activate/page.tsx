@@ -5,6 +5,7 @@ import { getCoverageSnapshot } from "@/lib/onboarding/promotion";
 import { prisma } from "@/lib/prisma";
 import { onboardingStatusLabel } from "@/lib/status-labels";
 import { promoteAction, generateGoldenTestsAction } from "./actions";
+import { getAnalysisReadinessForCompany } from "@/lib/contract-model/analysis";
 
 export const metadata = { title: "Headroom — Activate company" };
 export const dynamic = "force-dynamic";
@@ -15,10 +16,11 @@ const STATUS_LABEL: Record<string, string> = { SOLVER_NATIVE: "Solver-native", L
 
 export default async function ActivatePage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [company, progress, goldenTests] = await Promise.all([
+  const [company, progress, goldenTests, readiness] = await Promise.all([
     prisma.company.findUniqueOrThrow({ where: { id: companyId } }),
     getReviewProgress(companyId),
     prisma.goldenTest.findMany({ where: { companyId } }),
+    getAnalysisReadinessForCompany(companyId).catch(() => ({ ready: false, reason: "READINESS_CHECK_FAILED" })),
   ]);
   const coverage = await getCoverageSnapshot(companyId).catch(() => []);
   const promote = promoteAction.bind(null, companyId);
@@ -36,8 +38,16 @@ export default async function ActivatePage({ params }: { params: Promise<{ compa
         <div className="row-note">
           {readyToPromote} candidate(s) approved/edited and ready to promote. Promotion writes legacy Permission / financial rows after Phase 3 contract analysis is ready — promoted Permissions stay UNVERIFIED. Phase 3 VERIFIED semantic units (when analysis produces them) are surfaced separately and are not package CERTIFIED or Phase 4E capacity. A KNOWN_NOT_MODELED permission is excluded even if approved.
         </div>
+        {/* Rule 103: same readiness gate as the review page —
+            never promote against a stale document set. */}
+        {!readiness.ready && (
+          <div className="row-note" style={{ marginTop: 10 }}>
+            <Chip tone="trip">PROMOTION BLOCKED</Chip> Contract-model analysis is not current ({readiness.reason}). Re-run analysis before promoting — a newly uploaded
+            document may otherwise sit entirely unanalyzed while the rulebook claims coverage.
+          </div>
+        )}
         <form action={promote} style={{ marginTop: 10 }}>
-          <button type="submit" className="button-primary" disabled={readyToPromote === 0}>
+          <button type="submit" className="button-primary" disabled={readyToPromote === 0 || !readiness.ready}>
             Promote {readyToPromote} candidate(s)
           </button>
         </form>

@@ -83,11 +83,13 @@ function PendingItem({ companyId, item, data }: { companyId: string; item: FeedQ
 
       <div className="button-row" style={{ marginTop: 14 }}>
         <form action={approveFeedItem.bind(null, companyId, item.id)}>
+          <input name="resolvedBy" placeholder="Your name or email" required style={{ marginRight: 8 }} />
           <button type="submit" className="button-primary" style={{ border: "none" }}>
             Approve — apply to model
           </button>
         </form>
         <form action={dismissFeedItem.bind(null, companyId, item.id)}>
+          <input name="resolvedBy" placeholder="Your name or email" required style={{ marginRight: 8 }} />
           <button type="submit" className="button">
             Dismiss
           </button>

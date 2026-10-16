@@ -578,8 +578,12 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
   for (const doc of covenantData.documents) {
     if (doc.rpWaterfall) {
       for (const s of doc.rpWaterfall.steps) referencedCodes.add(`${doc.id}:${s.code}`);
-      referencedCodes.add(`${doc.id}:${doc.rpWaterfall.ratioGateCodeByKind.dividend}`);
-      referencedCodes.add(`${doc.id}:${doc.rpWaterfall.ratioGateCodeByKind.investment}`);
+      if (doc.rpWaterfall.ratioGateCodeByKind.dividend) {
+        referencedCodes.add(`${doc.id}:${doc.rpWaterfall.ratioGateCodeByKind.dividend}`);
+      }
+      if (doc.rpWaterfall.ratioGateCodeByKind.investment) {
+        referencedCodes.add(`${doc.id}:${doc.rpWaterfall.ratioGateCodeByKind.investment}`);
+      }
     }
     if (doc.assetSale) referencedCodes.add(`${doc.id}:${doc.assetSale.thresholdCode}`);
   }

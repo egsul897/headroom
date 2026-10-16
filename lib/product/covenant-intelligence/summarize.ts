@@ -88,11 +88,28 @@ export interface DocumentCovenantSummary {
   issuerCik: string;
   documentClass: string;
   generatedAt: string;
+  /**
+   * Build that produced this summary (Vercel git commit SHA, "dev"
+   * elsewhere). General rule: every computed artifact records its
+   * producer build, so the UI can tell a stale analysis (produced by
+   * older code, e.g. before a correctness fix) from a current one.
+   * Absent on summaries stored before this rule — those are stale.
+   */
+  analyzerBuild?: string;
   promotedToLegalTruth: 0;
   note: string;
   countsByCategory: Record<string, number>;
   items: CovenantSummaryItem[];
   definedTermsSample: Array<{ term: string; excerpt: string }>;
+  /**
+   * General rule: silent truncation is a lie. countsByCategory counts
+   * EVERY candidate, but items is capped at 120 — without these fields
+   * the counts and the listed items disagreed with no explanation.
+   * totalItemsBeforeCap is the pre-cap item count; truncated is true
+   * when the cap dropped items.
+   */
+  totalItemsBeforeCap: number;
+  truncated: boolean;
 }
 
 function entityScopeFromAnalysis(a: ProvisionAnalysis): CovenantSummaryItem["entityScope"] {
@@ -160,11 +177,21 @@ export function buildDocumentCovenantSummary(params: {
   const peripheralHeading =
     /\b(?:notice|notices|miscellaneous|governing law|counterpart|severability|waivers? of jury|expenses|indemnif|assignments?|successors|effectiveness|conditions?\s+precedent|representations|schedules?|exhibits?)\b/i;
 
+  // Rule 68: demote by HEADING, not by excerpt mention. The old
+  // code tested this regex against the excerpt + signals, so a
+  // substantive covenant merely MENTIONING "governing law",
+  // "expenses", or "successors and assigns" (nearly every
+  // merger covenant) was demoted into the peripheral bucket
+  // and could be cut by the 120-item cap while lower-scored
+  // peripheral items survived. The heading is the section's
+  // identity; a mention inside the text is not.
+  const headingByNodeId = new Map(params.structuralNodes.map((n) => [n.nodeId, n.heading ?? ""]));
+  const headingOf = (c: (typeof params.candidates)[number]): string =>
+    (c.nodeId ? (headingByNodeId.get(c.nodeId) ?? "") : "");
+
   const ranked = [...params.candidates].sort((a, b) => {
-    const ah = `${a.excerpt ?? ""} ${(a.signals ?? []).join(" ")}`;
-    const bh = `${b.excerpt ?? ""} ${(b.signals ?? []).join(" ")}`;
-    const ap = peripheralHeading.test(ah) ? 1 : 0;
-    const bp = peripheralHeading.test(bh) ? 1 : 0;
+    const ap = peripheralHeading.test(headingOf(a)) ? 1 : 0;
+    const bp = peripheralHeading.test(headingOf(b)) ? 1 : 0;
     if (ap !== bp) return ap - bp; // primary covenants before peripheral
     return b.discoveryScore - a.discoveryScore;
   });
@@ -182,11 +209,24 @@ export function buildDocumentCovenantSummary(params: {
   }
 
   const preferredOrder = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];
-  items.sort((a, b) => {
+  // Rule 68 (second half): the cap must apply in RANKED order
+  // (primary covenants first), not in display order. The old
+  // code display-sorted items by category/sectionRef and THEN
+  // sliced to 120 — so the peripheral ranking above was dead
+  // code for cap purposes, and a merger covenant (7th category)
+  // was cut while 120 debt-incurrence fillers survived,
+  // regardless of score or peripherality. Cap first, then sort
+  // the survivors for display.
+  const totalItemsBeforeCap = items.length;
+  const truncated = items.length > 120;
+  const capped = items.slice(0, 120);
+  capped.sort((a, b) => {
     const ai = preferredOrder.indexOf(a.category);
     const bi = preferredOrder.indexOf(b.category);
     if (ai !== bi) return ai - bi;
-    return a.sectionRef.localeCompare(b.sectionRef);
+    // Numeric collation: plain lexicographic order put "10.01"
+    // before "6.02" (Article 10 listed before Article 6).
+    return a.sectionRef.localeCompare(b.sectionRef, undefined, { numeric: true });
   });
 
   return {
@@ -197,10 +237,13 @@ export function buildDocumentCovenantSummary(params: {
     issuerCik: params.issuerCik,
     documentClass: params.documentClass,
     generatedAt: new Date().toISOString(),
+    analyzerBuild: currentAnalyzerBuild(),
     promotedToLegalTruth: 0,
     note: "AI-first interpretations for customer counsel review. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
-    items: items.slice(0, 120),
+    items: capped,
+    totalItemsBeforeCap,
+    truncated,
     definedTermsSample: params.definitions.slice(0, 40).map((d) => ({
       term: d.term,
       excerpt: (d.excerpt ?? "").slice(0, 240),
@@ -211,6 +254,33 @@ export function buildDocumentCovenantSummary(params: {
 export function summarizeFromStoredMetadata(metadata: unknown): DocumentCovenantSummary | null {
   if (!metadata || typeof metadata !== "object" || Array.isArray(metadata)) return null;
   const cs = (metadata as Record<string, unknown>).covenantSummary;
-  if (!cs || typeof cs !== "object") return null;
+  if (!cs || typeof cs !== "object" || Array.isArray(cs)) return null;
+  // Stored summaries are untrusted input: a summary missing its items
+  // array (older version, partial write, corrupt metadata) must
+  // degrade to "not analyzed", not crash callers on items.length.
+  const items = (cs as Record<string, unknown>).items;
+  if (!Array.isArray(items)) return null;
   return cs as DocumentCovenantSummary;
+}
+
+/**
+ * Build identifier for the analyzer code producing summaries. Vercel
+ * injects the git commit SHA at build and runtime; anything else is
+ * "dev". Stable within a deploy, changes on every deploy — exactly
+ * what staleness detection needs. (The older KNOWLEDGE_FACTORY_VERSION
+ * constant never changes, so it cannot serve this purpose.)
+ */
+export function currentAnalyzerBuild(): string {
+  return process.env.VERCEL_GIT_COMMIT_SHA ?? "dev";
+}
+
+/**
+ * True when a stored summary was produced by older analyzer code (or
+ * predates build stamping entirely). A missing summary is not stale —
+ * it is absent. Callers surface this as "re-analyze for the latest
+ * corrections", never as an error.
+ */
+export function isSummaryStale(summary: DocumentCovenantSummary | null): boolean {
+  if (!summary) return false;
+  return !summary.analyzerBuild || summary.analyzerBuild !== currentAnalyzerBuild();
 }

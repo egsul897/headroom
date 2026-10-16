@@ -20,6 +20,7 @@ import {
   type NamedContractualSelector,
 } from "@/lib/contract-model/north-star-bridge";
 import { loadCapacityReadiness, type CapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
+import { labelCutoffSnapshot } from "./cutoff-snapshot-label";
 
 export type WorkflowStepStatus = "READY" | "MISSING" | "PARTIAL" | "LEGACY_ONLY";
 
@@ -105,6 +106,19 @@ export async function loadTransactionWorkflowReadiness(
   if (cutoff && cutoff.state !== "RESOLVED") {
     blockers.push(`Contractual cutoff not resolved (${cutoff.state}): ${cutoff.reason ?? "missing evidence"}`);
   }
+  // Rule 84: the cutoff may bind a SUPERSEDED snapshot while a
+  // DIFFERENT approved snapshot exists. "Has an APPROVED
+  // cutoff-bound snapshot" means the BOUND snapshot is APPROVED,
+  // not merely that some approved snapshot exists somewhere.
+  const cutoffLabel = labelCutoffSnapshot(
+    cutoff?.snapshotId ?? null,
+    approved.map((s) => s.snapshotId),
+  );
+  if (cutoff?.state === "RESOLVED" && cutoffLabel.approvedSnapshotId === null) {
+    blockers.push(
+      `Contractual cutoff bound snapshot ${cutoff.snapshotId ?? "—"} (${cutoffLabel.cutoffSnapshotStatus ?? "UNKNOWN"}), not an APPROVED snapshot — approve a current compliance certificate for this cutoff.`,
+    );
+  }
   if (activeLedger.length === 0) {
     blockers.push("No attributed contract-ledger usage yet — import certificate basket schedules or enter historical usage (optional for first Ask, required for accurate remaining capacity).");
   }
@@ -120,7 +134,8 @@ export async function loadTransactionWorkflowReadiness(
   const canRunTransactionWorkflow =
     legacyCapacity.permissionCount > 0 &&
     approved.length > 0 &&
-    cutoff?.state === "RESOLVED";
+    cutoff?.state === "RESOLVED" &&
+    cutoffLabel.approvedSnapshotId !== null;
 
   const nextActions: TransactionWorkflowReadiness["nextActions"] = [];
   if (steps.documentsUploaded === "MISSING") {

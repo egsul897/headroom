@@ -59,6 +59,7 @@ function readinessVeOnly(companyId: string, feedingCount: number): CapacityReadi
     unverifiedPermissionCount: 0,
     provisionCount: feedingCount,
     hasFinancialSnapshot: false,
+    financialSnapshotStatus: "UNKNOWN",
     ns4ApprovedSnapshotCount: 0,
     approvedNorthStarSnapshotCount: 0,
     contractLedgerActiveCount: 0,

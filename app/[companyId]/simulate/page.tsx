@@ -19,10 +19,7 @@ import { SeparatedCapacityPanel } from "@/components/customer-workflow/Separated
 import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
 import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
 import { loadSharedNs4FinancialIdentity } from "@/lib/product/ns4-shared-financial-identity";
-import { CfoSecuredDebtWorkflowPanel } from "@/components/customer-workflow/CfoSecuredDebtWorkflowPanel";
 import {
-  isMatthewsCfoSecuredDebtCompany,
-  loadCfoSecuredDebtProductEntry,
 } from "@/lib/customer-workflow/cfo-secured-debt-entry";
 import { SimulateClient } from "./SimulateClient";
 
@@ -109,26 +106,13 @@ export default async function SimulatePage({
     evaluationDate,
     utilizationAuthority: null,
   });
-  const cfoSecuredDebtEntry = isMatthewsCfoSecuredDebtCompany(companyId)
-    ? await loadCfoSecuredDebtProductEntry({
-        companyId,
-        ask:
-          amountMillions > 0
-            ? `As of ${evaluationDate}, is a proposed $${amountMillions} million secured debt transaction permitted under our Indenture and Credit Agreement?`
-            : undefined,
-        amountMillions: amountMillions > 0 ? amountMillions : 50,
-        evaluationDate,
-      })
-    : null;
-
   return (
     <div className="stack">
       <Card>
         <div className="card-title">Simulate</div>
         <WorkflowJourney companyId={companyId} current="simulate" />
         <div className="card-subtitle" style={{ marginTop: 8 }}>
-          {readiness.headline} Uses the <strong>same capacity state</strong> as Position. Simulations never
-          modify the live customer ledger.
+          {readiness.headline} Uses the <strong>same capacity state</strong> as Position. Simulations never modify the live transaction ledger.
         </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Status</div>
@@ -225,6 +209,9 @@ export default async function SimulatePage({
             • Missing: {m}
           </div>
         ))}
+        {ns4Financial.missingInputs.length > 4 && (
+          <div className="row-note">(+{ns4Financial.missingInputs.length - 4} more missing inputs)</div>
+        )}
         <div className="button-row" style={{ marginTop: 12 }}>
           <Link className="button" href={`/${companyId}/dashboard`}>
             Dashboard (same NS-4 identity)
@@ -281,10 +268,16 @@ export default async function SimulatePage({
 
       <VerifiedSimulatePanel summary={verifiedSummary} evaluationDate={evaluationDate} />
 
-      {cfoSecuredDebtEntry?.routeEligible && (
-        <CfoSecuredDebtWorkflowPanel entry={cfoSecuredDebtEntry} />
+      {/* Rule 86: never silently assume an amount. The cross-domain
+          panel models a $150M acquisition when no amount was
+          supplied — say so, so the CFO does not read the default
+          as their transaction. */}
+      {amountMillions <= 0 && (
+        <div className="card-subtitle" style={{ marginTop: 8 }}>
+          Illustrative $150M acquisition below — no amount was supplied, so this panel models a default scenario.
+          Enter an amount to model your transaction.
+        </div>
       )}
-
       <CrossDomainSimulatePanel evaluation={crossDomainAcquisition} />
 
       <SimulateClient
