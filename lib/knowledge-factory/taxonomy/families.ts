@@ -217,16 +217,28 @@ export function classifyFamiliesFromText(text: string, heading = ""): KnowledgeT
   // the Indebtedness is the trigger's subject, not a permission).
   if (isEventOfDefaultTrigger(heading, text)) return ["EVENTS_OF_DEFAULT"];
   const families: KnowledgeTaxonomyFamily[] = [];
+  // Rule 69: heading evidence outranks body evidence. The old
+  // code returned families in taxonomy order, so a body-pattern
+  // match for an early-taxonomy family beat a heading match for
+  // the section's true family — e.g. a GUARANTEES section whose
+  // body mentioned "reinvestment" came back [ASSET_SALES,
+  // GUARANTEES], and analyzeProvision takes families[0] as the
+  // primary family, miscategorizing the section as ASSET_SALES.
+  // The heading is the section's identity; heading matches list
+  // first (in taxonomy order), then body-only matches.
+  const headingFamilies: KnowledgeTaxonomyFamily[] = [];
+  const bodyFamilies: KnowledgeTaxonomyFamily[] = [];
   for (const def of TAXONOMY_FAMILIES) {
     // Heading patterns match only the section's own heading. They used to
     // also match the first 400 chars of body text, so a table-of-contents
     // excerpt — which lists many sections' headings — collected every
     // family named in the TOC.
-    const hit =
-      def.headingPatterns.some((re) => re.test(heading)) ||
-      def.bodyPatterns.some((re) => re.test(text));
-    if (hit) families.push(def.family);
+    const headingHit = def.headingPatterns.some((re) => re.test(heading));
+    const bodyHit = def.bodyPatterns.some((re) => re.test(text));
+    if (headingHit) headingFamilies.push(def.family);
+    else if (bodyHit) bodyFamilies.push(def.family);
   }
+  families.push(...headingFamilies, ...bodyFamilies);
   if (families.length === 0) return ["UNKNOWN"];
   return families;
 }
