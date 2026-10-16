@@ -27,6 +27,10 @@ import {
 } from "@/lib/financial-certificate-engine";
 import { computeNs4ContractualNetLeverage, type Ns4LeverageIrTrace } from "@/lib/dashboard/ns4-leverage-ir";
 import { loadTransactionWorkflowReadiness } from "./transaction-readiness";
+import {
+  labelCutoffSnapshot,
+  type CutoffSnapshotStatus,
+} from "./cutoff-snapshot-label";
 
 /** Default selector shared by Dashboard / capacity / simulation after NS-4 vertical slice. */
 export const NS4_PRODUCT_CUTOFF_SELECTOR: NamedContractualSelector =
@@ -35,7 +39,8 @@ export const NS4_PRODUCT_CUTOFF_SELECTOR: NamedContractualSelector =
 export type ApprovedFinancialInputBundleStatus =
   | "NEEDS_INPUT"
   | "APPROVED_INVENTORY"
-  | "APPROVED_BOUND";
+  | "APPROVED_BOUND"
+  | "SUPERSEDED_BOUND";
 
 export interface ApprovedFinancialInputBundle {
   companyId: string;
@@ -47,12 +52,17 @@ export interface ApprovedFinancialInputBundle {
     reportingPeriodKey: string | null;
     asOf: string | null;
     approvedSnapshotId: string | null;
+    /** Raw cutoff-bound snapshot id — APPROVED or SUPERSEDED (see rule 78). */
+    cutoffSnapshotId: string | null;
+    cutoffSnapshotStatus: CutoffSnapshotStatus;
   };
   boundSnapshotId: string | null;
   /**
    * Cutoff-bound NS-4 FinancialSnapshot identity shared with Dashboard / Position /
    * Simulate and package-wide financial-metric-resolver provenance binding.
-   * Null when not APPROVED_BOUND. Never invents facts.
+   * Null when not bound. May be SUPERSEDED for historical evals (rule 78) —
+   * consumers must check `boundSnapshot.status` before claiming
+   * APPROVED_SNAPSHOT provenance. Never invents facts.
    */
   boundSnapshot: FinancialSnapshot | null;
   /** Content fingerprint — changes when bound APPROVED facts/version change. */
@@ -150,11 +160,17 @@ export async function loadApprovedFinancialInputBundle(args: {
     missingInputs.push("contractual_cutoff");
   }
 
+  const cutoffLabel = labelCutoffSnapshot(
+    readiness.cutoff?.snapshotId ?? null,
+    approved.map((s) => s.snapshotId),
+  );
   const cutoff = {
     state: readiness.cutoff?.state ?? "NEEDS_INPUT",
     reportingPeriodKey: readiness.cutoff?.reportingPeriodKey ?? null,
     asOf: readiness.cutoff?.asOf ?? null,
-    approvedSnapshotId: readiness.cutoff?.snapshotId ?? null,
+    approvedSnapshotId: cutoffLabel.approvedSnapshotId,
+    cutoffSnapshotId: cutoffLabel.cutoffSnapshotId,
+    cutoffSnapshotStatus: cutoffLabel.cutoffSnapshotStatus,
   };
 
   const emptyAuthority = classifyApprovedSnapshotAuthority({
@@ -236,9 +252,16 @@ export async function loadApprovedFinancialInputBundle(args: {
     ...verifiedMissing,
   ];
 
+  // Rule 78: the cutoff may bind a SUPERSEDED predecessor that was
+  // eligible at evaluationDate (historical delivery binding). That
+  // binding is intentional, but it must never be labeled
+  // APPROVED_BOUND / "Bound APPROVED snapshot" — the facts are
+  // superseded, not current approved facts.
+  const boundIsApproved = bound.status === "APPROVED";
+
   return {
     companyId,
-    status: "APPROVED_BOUND",
+    status: boundIsApproved ? "APPROVED_BOUND" : "SUPERSEDED_BOUND",
     evaluationDate: args.evaluationDate ?? null,
     selector,
     cutoff,
@@ -251,7 +274,9 @@ export async function loadApprovedFinancialInputBundle(args: {
     verifiedCapacity,
     missingInputs: [...new Set(mergedMissing)],
     evidence: [
-      `Bound APPROVED snapshot ${bound.snapshotId} fingerprint=${fp.slice(0, 16)}…`,
+      boundIsApproved
+        ? `Bound APPROVED snapshot ${bound.snapshotId} fingerprint=${fp.slice(0, 16)}…`
+        : `Bound SUPERSEDED snapshot ${bound.snapshotId} fingerprint=${fp.slice(0, 16)}… — historical delivery binding for this period; NOT current approved facts.`,
       `Authority: ${authority.kind} — ${authority.disclosure}`,
       ...leverageIr.evidence.slice(0, 4),
       "Reusable across debt/liens/investments/RP capacity and transaction simulation via the same bound snapshot identity — not Dashboard-only.",
