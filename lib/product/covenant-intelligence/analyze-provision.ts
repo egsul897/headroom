@@ -222,14 +222,24 @@ function extractEntities(excerpt: string, heading: string): {
 
 function extractBaskets(excerpt: string): string[] {
   const out: string[] = [];
-  const greaterOf = [
+  const greaterOfMatches = [
     ...excerpt.matchAll(
       // Limb markers vary by drafter: (x)/(y), (i)/(ii), (1)/(2).
       // The old regex hard-coded x/y and silently dropped the rest.
       /greater of\s*\(?(?:[a-z0-9]{1,3}\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:[a-z0-9]{1,3}\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
     ),
   ];
-  for (const m of greaterOf.slice(0, 16)) {
+  const greaterOf = greaterOfMatches.slice(0, 16);
+  // Spans of the (capped) greater-of matches: a bare amount inside
+  // one of these spans IS the limb — skip it. A bare amount at a
+  // different position is a separate basket and must be kept (the
+  // old string-inclusion dedup dropped a distinct $150M clause-(b)
+  // basket because the greater-of entry's text contained "$150M").
+  const greaterOfSpans: Array<[number, number]> = greaterOf.map((m) => [
+    m.index ?? 0,
+    (m.index ?? 0) + (m[0]?.length ?? 0),
+  ]);
+  for (const m of greaterOf) {
     // Preserve the fixed limb's unit: "greater of (x) $150.0 million" is a
     // $150,000,000 limb, not a $150.0 limb. Dropping "million" understated
     // the basket a million-fold in the live Quila output.
@@ -241,7 +251,9 @@ function extractBaskets(excerpt: string): string[] {
   const amounts = [...excerpt.matchAll(/\$\s?[\d,]+(?:\.\d+)?\s*(million|billion|thousand)?/gi)];
   for (const m of amounts.slice(0, 40)) {
     const amount = normalizeWs(m[0] ?? "");
-    if (!out.some((x) => x.includes(amount))) {
+    const idx = m.index ?? 0;
+    const insideGreaterOf = greaterOfSpans.some(([s, e]) => idx >= s && idx < e);
+    if (!insideGreaterOf) {
       out.push(`Amount/threshold: ${amount}`);
     }
   }
