@@ -117,7 +117,7 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
     .map((c) => byCategory.get(c)!)
     .map((block) => ({
       ...block,
-      items: [...block.items].sort((a, b) => a.sectionRef.localeCompare(b.sectionRef)),
+      items: [...block.items].sort((a, b) => a.sectionRef.localeCompare(b.sectionRef, undefined, { numeric: true })),
     }));
 
   const allItems = categories.flatMap((c) => c.items);

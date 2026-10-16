@@ -66,7 +66,9 @@ export function compareAmendmentSummaries(params: {
   };
   const baseBySec = groupByRef(baseItems);
   const amdBySec = groupByRef(amdItems);
-  const allSecs = Array.from(new Set([...baseBySec.keys(), ...amdBySec.keys()])).sort();
+  const allSecs = Array.from(new Set([...baseBySec.keys(), ...amdBySec.keys()])).sort((a, b) =>
+    a.localeCompare(b, undefined, { numeric: true }),
+  );
 
   const rows: AmendmentCompareRow[] = [];
   for (const sec of allSecs) {

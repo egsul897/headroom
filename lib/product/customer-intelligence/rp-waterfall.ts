@@ -39,7 +39,7 @@ export function buildRpWaterfall(perms: RpWaterfallPerm[]): RpWaterfallBuilt | n
 
   const stepPerms = perms
     .filter((p) => p.formulaType !== "RATIO_GATE" && p.code)
-    .sort((a, b) => rank(a) - rank(b) || a.sectionRef.localeCompare(b.sectionRef));
+    .sort((a, b) => rank(a) - rank(b) || a.sectionRef.localeCompare(b.sectionRef, undefined, { numeric: true }));
   const steps = stepPerms.map((p) => ({ code: p.code! }));
   if (!steps.length) return null;
 
