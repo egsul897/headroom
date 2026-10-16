@@ -154,7 +154,8 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
   const taxPenaltyInterest = /\b(?:penalties?\s+and\s+)?interest\s+(?:relating\s+to|on|with\s+respect\s+to)\s+(?:such\s+)?(?:taxes?|Tax)|\btaxes?\b[^.;]{0,80}\b(?:penalties?\s+and\s+)?interest\b/i.test(t);
   const minorityInterest = /\b(?:minority|non-?controlling)\s+interest\b/i.test(t);
   const interestExpenseCue = /\binterest\s+(?:expense|charges?)\b|\bInterest\s+Expense\b|\bFixed\s+Charges\b/i.test(t) && !minorityInterest;
-  if (/interest/i.test(t) && !minorityInterest && !/interest\s+income/i.test(t.replace(/net\s+of\s+interest\s+income/i, "")) && (interestExpenseCue || !taxPenaltyInterest)) {
+  const tI = t.replace(/\b(?:equity|minority|non-?controlling|profits?|ownership|membership|partnership|carried|economic|voting)\s+interests?\b|\binterests?\s+(?:in|of)\s+(?:any|such|the)\b|\binterests\b/gi, " ");
+  if (/\binterest\b/i.test(tI) && !minorityInterest && !/interest\s+income/i.test(t.replace(/net\s+of\s+interest\s+income/i, "")) && (interestExpenseCue || !taxPenaltyInterest)) {
     const term = /"?((?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense)"?/.exec(t)?.[1];
     if (term && /[A-Z]/.test(term[0]!) && depth < 2) {
       const ev = evaluateDefinition("INTEREST", term, text, fin, depth + 1);
@@ -166,14 +167,17 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
         // Defined Interest Expense often excludes MTM hedges etc.; when the full definition is not
         // derivable, XBRL interest expense still evidences the core add-back (partial / floor).
         const ie = firstItem(fin, IE);
-        const defNets = (() => { const d = findDefinitionText(text, term); return !!d && /\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|(?:net\s+of|less|minus|reduced\s+by|offset\s+by)[^.;]{0,80}\bgains?\b|\bincome\s+from\b/i.test(d.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " ")); })();
+        const defNets = (() => { const d = findDefinitionText(text, term); return !!d && /\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|\bgains?\b|\bincome\s+from\b/i.test(d.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " ")); })();
         // Gross filed interest overstates a defined net-of-income figure: not a floor → two-sided (fail closed).
-        if (ie && defNets) return "TWO_SIDED";
+        // An exclusion ("excluding the non-cash amortization of deferred financing fees", "other than …") shrinks the
+        // defined figure below gross filed interest: gross is not a floor either.
+        const defExcludes = (() => { const d = findDefinitionText(text, term); return !!d && /\bexclud|\bother\s+than\b|\bexcept\b|\bshall\s+not\s+include\b/i.test(d); })();
+        if (ie && (defNets || defExcludes)) return "TWO_SIDED";
         if (!ie) {
           // No XBRL interest: a referenced definition that is plain (gross) interest expense, with no netting of
           // income / gains, is non-negative — an unevidenced one-sided add-back (claim 0), not a two-sided line.
           const def = findDefinitionText(text, term);
-          const oneSided = !!def && !/\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|(?:net\s+of|less|minus|reduced\s+by|offset\s+by)[^.;]{0,80}\bgains?\b|\bincome\s+from\b/i.test(def.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " "));
+          const oneSided = !!def && !/\bNet\s+Interest\b|net\s+of|interest\s+income|\bless\b|\bminus\b|\bgains?\b|\bincome\s+from\b/i.test(def.replace(/deducted\s+in\s+(?:the\s+)?(?:calculation|computation|determination)\s+of\s+(?:Consolidated\s+)?Net\s+Income/gi, " "));
           return oneSided ? null : "TWO_SIDED";
         }
         add(ie, /(?:Consolidated\s+)?(?:Total\s+)?(?:Net\s+)?Interest\s+Expense/gi);
@@ -198,6 +202,13 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
   if (/(?:\bFixed\s+Charges\b|\b(?:net\s+)?finance\s+charges?\b)/i.test(t) && !r.concepts.length) {
     const ie = firstItem(fin, IE);
     if (ie) { add(ie, /\bFixed\s+Charges\b|\b(?:net\s+)?finance\s+charges?\b/gi); (r as MapResult & { lowerBound?: boolean }).lowerBound = true; }
+  }
+  if (/\btax(?:es)?\b/i.test(t) && !/tax\s+(?:credits?|benefits?|refunds?)/i.test(t)) {
+    // Exact only when every tax named is an income tax; other taxes (franchise, withholding, "other taxes") are not in
+    // the filed income-tax figure → the line is a one-sided floor.
+    const rest = t.replace(/\btax(?:es)?(?:\s+expense)?\s+(?:(?:based\s+on|measured\s+by)\s+(?:income|profits)(?:,?\s+(?:or|and)\s+(?:profits|capital|income))*|imposed\s+on\s+(?:income|profits))/gi, " ")
+      .replace(/\b(?:(?:federal|state|local|foreign|provincial|national|U\.?S\.?)(?:,|\s+and|\s+or)?\s+)*income\s+tax(?:es)?(?:\s+(?:expense|provision))?/gi, " ");
+    if (/\btax(?:es)?\b|franchise/i.test(rest)) (r as MapResult & { lowerBound?: boolean }).lowerBound = true;
   }
   if (/\btax(?:es)?\b/i.test(t) && !/tax\s+(?:credits?|benefits?|refunds?)/i.test(t)) add(firstItem(fin, ["IncomeTaxExpenseBenefit"]), /(?:consolidated\s+)?(?:provision\s+for\s+)?(?:(?:federal|state|local|foreign|provincial|national)(?:,|\s+and|\s+or)?\s+)*(?:income\s+)?tax(?:es)?(?:\s+expense)?(?:,?\s+to\s+the\s+extent\s+based\s+on\s+income\s+or\s+profits)?|based\s+on\s+income|profits?/gi);
   const daAll = /depreciation/i.test(t);
@@ -309,7 +320,8 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
     const v = firstItem(fin, IE);
     if (!v) return res("NEEDS_INPUT", "no exact TTM interest expense in XBRL");
     base = v;
-    if (TWO_SIDED.test(lead)) return res("NEEDS_INPUT", "interest base carries a two-sided adjustment");
+    if (TWO_SIDED.test(lead) || /\bgains?\b/i.test(lead)) return res("NEEDS_INPUT", "interest base carries a two-sided adjustment");
+    if (/\bexclud|\bshall\s+not\s+include\b/i.test(lead.replace(/\([^)]*\)/g, " "))) return res("NEEDS_INPUT", "interest definition excludes an item not in XBRL");
     const paren = /\((?:excluding|other\s+than|net\s+of|less)\b[^)]*\)/i.exec(lead) ?? /,?\s*(?:net\s+of|less)\s+(?:any\s+)?(?:cash\s+)?interest\s+income\b/i.exec(lead);
     if (paren && !/interest\s+income/i.test(paren[0])) return res("NEEDS_INPUT", `interest base excludes an item not in XBRL: "${paren[0].slice(0, 100)}"`);
     if (paren) { const ii = firstItem(fin, II); if (!ii) return res("NEEDS_INPUT", "net of interest income, but no XBRL interest income"); items.push({ label: "(net)", text: paren[0], sign: "-", coverage: "FULL", concepts: [{ concept: ii.concept, value: ii.value.toString() }], value: (-ii.value).toString(), note: "" }); }

@@ -198,7 +198,7 @@ const TAX_BASE = /\bincome(?:,?\s+(?:and|or|franchise|withholding|excise|capital
 //  - "losses on <instrument> … net of … gains on such <instrument>" — a net-losses add-back on the same instrument.
 const NON_OPERATIVE_GAIN = [
   /\bto\s+the\s+extent\b[^;]{0,40}\bgains?\b[^;]{0,120}?\b(?:were|was)\s+(?:deducted|excluded)\b[^;]{0,160}?\b(?:previous|prior)\s+(?:fiscal\s+)?periods?\b/gi,
-  /\bnet\s+of\b(?:(?!\binterest\s+income\b)[^;]){0,80}?\bgains?\s+on\s+such\s+(?:[A-Za-z]+\s+){0,3}?(?:Obligations?|instruments?|agreements?|arrangements?|contracts?)\b/gi,
+  /\bnet\s+of\b(?:(?!\bincome\b)[^;]){0,80}?\bgains?\s+on\s+such\s+(?:[A-Za-z]+\s+){0,3}?(?:Obligations?|instruments?|agreements?|arrangements?|contracts?)\b/gi,
 ];
 export const namesGainOrIncome = (s: string): boolean => /\bgains?\b|\bincome\b/i.test(NON_OPERATIVE_GAIN.reduce((a, re) => (re.test(a) && /\blosses?\b|cash\s+receipts/i.test(a) ? a.replace(re, " ") : a), s).replace(TAX_BASE, " ").replace(/\b(?:Consolidated\s+)?Net\s+Income\b|\bbased\s+on\s+income\b|\bnet\s+income\s+\(loss\)/gi, " "));
 

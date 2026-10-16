@@ -51,3 +51,17 @@ describe("add-back tracker (per agreement, period over period)", () => {
     expect(priorAsOf("2026-06-30")).toBe("2025-09-13");
   });
 });
+
+describe("tracker: discretionary add-backs are never sourced from core concepts", () => {
+  it("'equity interests' / 'minority interests' lines do not pick up interest expense", async () => {
+    const { optimizeConsolidatedEbitda } = await import("@/lib/covenant-learning-factory/xbrl/ebitda-optimizer");
+    const { trackAddBacks } = await import("@/lib/covenant-learning-factory/xbrl/addback-tracker");
+    const M = 1_000_000;
+    const row = (concept: string, v: number) => ({ metric: "item" as const, concept, periodType: "TTM" as const, periodStart: "2025-07-01", periodEnd: "2026-06-30", value: String(v), unit: "USD" as const, accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test" });
+    const f = { cik: "0000000001", entityName: "T", missing: [], anchor: "2026-06-30", values: [row("NetIncomeLoss", 100 * M), row("IncomeTaxExpenseBenefit", 20 * M), row("InterestExpense", 30 * M), row("DepreciationDepletionAndAmortization", 50 * M)] };
+    const text = `"Consolidated Net Income" means the net income of the Borrower and its Subsidiaries determined on a consolidated basis in accordance with GAAP.\n"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, to the extent deducted in calculating Consolidated Net Income: (a) provision for taxes based on income; plus (b) interest expense; plus (c) depreciation and amortization expense; plus (d) any costs or expenses incurred pursuant to any management equity plan or stock option plan, to the extent funded with cash proceeds contributed to the capital of the Borrower or net cash proceeds of an issuance of Equity Interests; plus (e) charges consisting of income attributable to minority interests and non-controlling interests of third parties.`;
+    const flags = trackAddBacks(optimizeConsolidatedEbitda("Consolidated EBITDA", text, f), f, null, null);
+    for (const fl of flags) expect(fl.sources.some((s) => /^Interest/.test(s.concept))).toBe(false);
+    expect(flags.filter((fl) => ["(d)", "(e)"].includes(fl.clause.label)).every((fl) => fl.status !== "DETECTED")).toBe(true);
+  });
+});

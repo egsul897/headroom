@@ -46,7 +46,10 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
   for (const l of opt.addBacks) {
     // Base / tax / interest / D&A are the definition's core, not discretionary add-backs to track.
     if (l.category === "INTEREST" || l.category === "TAXES" || l.category === "D&A") continue;
-    const sources = l.concepts.filter((c) => !c.concept.startsWith("borrower:")).map((c) => {
+    // A discretionary add-back is never sourced from a core concept (interest, income tax, D&A): such a match is a
+    // mis-mapping, not evidence of the add-back.
+    const CORE = /^(?:Interest|IncomeTaxExpense|Depreciation|DepreciationDepletion|DepreciationAndAmortization|DepreciationAmortization)/;
+    const sources = l.concepts.filter((c) => !c.concept.startsWith("borrower:") && !CORE.test(baseConcept(c.concept))).map((c) => {
       const concept = baseConcept(c.concept);
       const cur = factOf(current, concept), pri = factOf(prior, concept);
       return { concept, current: c.value, prior: pri ? pri.value : null, currentPeriodEnd: cur?.periodEnd ?? null, priorPeriodEnd: pri?.periodEnd ?? null };

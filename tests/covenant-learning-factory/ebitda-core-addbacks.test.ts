@@ -14,21 +14,17 @@ const fin = (items: Record<string, number>): IssuerFinancials => ({
 const XBRL = { NetIncomeLoss: 100 * M, IncomeTaxExpenseBenefit: 20 * M, InterestExpense: 30 * M, DepreciationDepletionAndAmortization: 50 * M };
 
 describe("core INTEREST / D&A / TAXES add-backs map from filings", () => {
-  it("'Consolidated Interest Expense' add-back uses XBRL interest when the defined term has hedge exclusions", () => {
-    // Real indenture pattern: CIE ≈ GAAP interest expense, excluding MTM hedge movement (exclusion, not a two-sided add-back).
+  it("'Consolidated Interest Expense' with an exclusion is not sized from gross XBRL interest (fail closed)", () => {
+    // Real indenture pattern: CIE excludes MTM hedge interest; the exclusion can move the defined figure either way, so
+    // gross filed interest is neither exact nor a floor (reviewer FAIL at 1a14da1a).
     const text =
       `"Consolidated Net Income" means the net income of the Issuer. ` +
       `"Consolidated Interest Expense" means, with respect to any Person for any period, consolidated interest expense of such Person for such period, whether paid or accrued, including amortization of original issue discount, non-cash interest payments (but excluding any non-cash interest expense attributable to the movement in mark-to-market valuation of any Hedging obligations or other derivative instruments pursuant to GAAP). ` +
       `"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in calculating Consolidated Net Income: (a) Consolidated Interest Expense; plus (b) provision for taxes based on income; plus (c) depreciation and amortization expense. ` +
       `"Default" means any event.`;
-    const m = mapEbitdaItem("Consolidated Interest Expense;", fin(XBRL), text, 0);
-    expect(m).not.toBe("TWO_SIDED");
-    expect(m && typeof m === "object" && m.concepts.some((c) => /InterestExpense/i.test(c.concept))).toBe(true);
+    expect(mapEbitdaItem("Consolidated Interest Expense;", fin(XBRL), text, 0)).toBe("TWO_SIDED");
     const o = optimizeConsolidatedEbitda("Consolidated EBITDA", text, fin(XBRL));
-    const interest = o.addBacks.find((a) => a.label === "(a)")!;
-    expect(interest.category).toBe("INTEREST");
-    expect(interest.coverage).not.toBe("NONE");
-    expect(Number(interest.evidenced)).toBe(30 * M);
+    expect(o.maximum).toBeNull();
   });
 
   it("D&A line that mentions Hedging Obligations fees is not wiped as two-sided", () => {

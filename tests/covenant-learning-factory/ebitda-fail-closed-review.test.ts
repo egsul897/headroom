@@ -48,16 +48,28 @@ describe("reviewer FAIL at 16dc459d: fail closed", () => {
     expect(namesGainOrIncome("any losses on Hedging Obligations, net of interest income and gains on such Hedging Obligations")).toBe(true);
   });
   const IDEF = (tail: string) => `${CNI}"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, to the extent deducted in calculating Consolidated Net Income: (a) provision for taxes based on income; plus (b) Consolidated Interest Expense; plus (c) depreciation and amortization expense. "Consolidated Interest Expense" means total interest expense (other than amortization of deferred financing fees) of the Borrower and its Subsidiaries${tail}.`;
-  it("interest definition: gains outside the interest measure do not make the line two-sided", () => {
-    expect(decide("Consolidated EBITDA", IDEF("; provided that gains on asset sales shall not be included in Consolidated Net Income for this purpose"), fin()).status).toBe("LOWER_BOUND");
-  });
   it("interest definition: gains netted in the interest measure keep it two-sided", () => {
     expect(decide("Consolidated EBITDA", IDEF(", net of interest income and gains on interest rate hedges"), fin()).status).toBe("NEEDS_INPUT");
   });
-  it("pure income-tax list maps exactly; franchise taxes (not in income tax expense) stay a floor", () => {
-    const T = (a: string) => `${CNI}"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, to the extent deducted in calculating Consolidated Net Income: (a) ${a}; plus (b) interest expense; plus (c) depreciation and amortization expense.`;
-    const d = decide("Consolidated EBITDA", T("federal, state, local and foreign income taxes"), fin());
-    expect(d.status).toBe("BOUND"); expect(d.input?.value).toBe(String(200 * M));
-    expect(decide("Consolidated EBITDA", T("foreign income and franchise taxes"), fin()).status).toBe("LOWER_BOUND");
+
+  // Interest definitions that exclude / include / give effect to gains or losses stay two-sided; exclusions shrink the
+  // defined figure below gross filed interest, so gross is not a floor.
+  const IPLAIN = (body: string) => `${CNI}"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, to the extent deducted in calculating Consolidated Net Income: (a) provision for taxes based on income; plus (b) Consolidated Interest Expense; plus (c) depreciation and amortization expense. "Consolidated Interest Expense" means ${body}.`;
+  for (const body of [
+    "total interest expense of the Borrower and its Subsidiaries, excluding all gains and losses on Hedging Obligations",
+    "total interest expense of the Borrower and its Subsidiaries, which shall exclude all after-tax gains and losses",
+    "total interest expense of the Borrower and its Subsidiaries after giving effect to gains and losses on Hedging Obligations",
+    "total interest expense of the Borrower and its Subsidiaries, including gains and losses on Hedging Obligations",
+    "total interest expense of the Borrower and its Subsidiaries, excluding the non-cash amortization of deferred financing fees",
+    "total interest expense (other than amortization of deferred financing fees) of the Borrower and its Subsidiaries",
+  ]) it(`interest definition not bound from gross filed interest: ${body.slice(55, 120)}`, () => {
+    expect(decide("Consolidated EBITDA", IPLAIN(body), fin()).status).toBe("NEEDS_INPUT");
   });
+  for (const s of ["any losses on Hedging Obligations, net of income and gains on such Hedging Obligations", "any losses on Hedging Obligations, net of investment income and gains on such Hedging Obligations"])
+    it(`hedge netting exemption stops at any income: ${s.slice(36)}`, () => expect(namesGainOrIncome(s)).toBe(true));
+  const T = (a: string) => `${CNI}"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, to the extent deducted in calculating Consolidated Net Income: (a) ${a}; plus (b) interest expense; plus (c) depreciation and amortization expense.`;
+  for (const a of ["income taxes and other taxes", "income and other taxes", "income taxes and withholding taxes", "franchise taxes", "foreign income and franchise taxes"])
+    it(`non-pure tax line is not EXACT from the income-tax fact: ${a}`, () => expect(decide("Consolidated EBITDA", T(a), fin()).status).not.toBe("BOUND"));
+  for (const a of ["federal, state, local and foreign income taxes", "provision for taxes based on income", "provision for income taxes"])
+    it(`pure income-tax line maps exactly: ${a}`, () => { const d = decide("Consolidated EBITDA", T(a), fin()); expect(d.status).toBe("BOUND"); expect(d.input?.value).toBe(String(200 * M)); });
 });
