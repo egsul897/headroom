@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { listCustomerDocumentIntelligence } from "./load";
 import { loadCapacityReadiness } from "./capacity-readiness";
 import { listReviewerApprovals } from "./reviewer-approvals";
+import { verifiedPermissionCount } from "./rulebook-permission-counts";
 
 export type RulebookStage = "DISCOVERED" | "INTERPRETED" | "REVIEWED" | "EXECUTABLE";
 
@@ -46,10 +47,13 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   const counselReviewed = counselApprovals.filter(
     (a) => a.decision === "ACCEPTED" || a.decision === "EDITED",
   ).length;
-  const reviewedPermissions =
-    permissions.filter((p) => /VERIFIED|REVIEWED|APPROVED/i.test(String(p.reviewStatus))).length +
-    counselReviewed;
-  const executablePermissions = permissions.length;
+  // Rule 47: only VERIFIED Permission rows count as reviewed /
+  // executable. The old /VERIFIED|REVIEWED|APPROVED/i regex
+  // matched "UNVERIFIED" as a substring, so every
+  // compiler-minted (default UNVERIFIED) row counted.
+  const verifiedPermissions = verifiedPermissionCount(permissions.map((p) => String(p.reviewStatus)));
+  const reviewedPermissions = verifiedPermissions + counselReviewed;
+  const executablePermissions = verifiedPermissions;
 
   const blockers: string[] = [];
   if (discoveredSummaries === 0) blockers.push("No discovered covenant summaries yet.");
