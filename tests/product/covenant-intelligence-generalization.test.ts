@@ -612,3 +612,66 @@ describe("generalization: rule 176 (corrected) — strip the analyzer lead sente
     ).toEqual(["LIEN"]);
   });
 });
+
+describe("generalization: rule 179 — shared aggregate caps are one basket", () => {
+  it("detects the aggregate proviso and resolves member clauses", async () => {
+    const { detectSharedCapGroup } = await import(
+      "../../lib/product/customer-intelligence/shared-cap"
+    );
+    const item = {
+      sectionRef: "6.01(e)",
+      plainEnglish:
+        'Section 6.01(e) ("6.01(e)") is a general debt incurrence prohibition. the aggregate principal amount of Indebtedness permitted by this clause (e) and any Aircraft Financing permitted by clause (j) below, together with any Refinance Indebtedness in respect thereof permitted by clause (f) below, shall not exceed $20,000,000 at any time outstanding.',
+      conditions: [],
+    } as unknown as Parameters<typeof detectSharedCapGroup>[0];
+    const group = detectSharedCapGroup(item);
+    expect(group?.capMillions).toBe(20);
+    expect(group?.memberSectionRefs).toEqual(["6.01(e)", "6.01(j)", "6.01(f)"]);
+  });
+
+  it("detects the group from the excerpt when the summary truncated the proviso", async () => {
+    const { detectSharedCapGroup } = await import(
+      "../../lib/product/customer-intelligence/shared-cap"
+    );
+    const item = {
+      sectionRef: "6.01(e)",
+      plainEnglish: "shall not exceed $20,000,000 at any time outstanding.",
+      conditions: [],
+      operativeLanguageExcerpt:
+        "(e) Indebtedness of any Borrower incurred to finance the acquisition of fixed assets; provided that (i) such Indebtedness is incurred prior to or within 90 days after such acquisition and (ii) the aggregate principal amount of Indebtedness permitted by this clause (e) and any Aircraft Financing permitted by clause (j) below, together with any Refinance Indebtedness in respect thereof permitted by clause (f) below, shall not exceed $20,000,000 at any time outstanding;",
+    } as unknown as Parameters<typeof detectSharedCapGroup>[0];
+    const group = detectSharedCapGroup(item);
+    expect(group?.capMillions).toBe(20);
+    expect(group?.memberSectionRefs).toEqual(["6.01(e)", "6.01(j)", "6.01(f)"]);
+  });
+
+  it("does not detect a standalone cap as a shared group", async () => {
+    const { detectSharedCapGroup } = await import(
+      "../../lib/product/customer-intelligence/shared-cap"
+    );
+    const item = {
+      sectionRef: "6.01(e)",
+      plainEnglish:
+        "Indebtedness of the Borrower shall not exceed $20,000,000 at any time outstanding.",
+      conditions: [],
+    } as unknown as Parameters<typeof detectSharedCapGroup>[0];
+    expect(detectSharedCapGroup(item)).toBeNull();
+  });
+
+  it("the legacy formula counts a shared group once", async () => {
+    const { buildCapacityFormulas } = await import(
+      "../../lib/product/customer-intelligence/capacity-formulas"
+    );
+    const formulas = buildCapacityFormulas(
+      ["counsel:doc:6.01_e_:DEBT", "counsel:doc:6.01_j_:DEBT", "counsel:doc:6.02_l_:DEBT"],
+      ["counsel:doc:6.02_l_:LIEN"],
+      [{ capMillions: 20, memberCodes: ["counsel:doc:6.01_e_:DEBT", "counsel:doc:6.01_j_:DEBT"], label: "Shared aggregate cap (6.01(e))" }],
+    );
+    // unsecured = MIN(20, 20+20) + 0.25, not 20+20+0.25
+    const unsecured = formulas.unsecured!;
+    expect(unsecured.items).toHaveLength(2);
+    const group = unsecured.items.find((i) => i.op === "MIN") as { op: "MIN"; items: unknown[] };
+    expect(group).toBeDefined();
+    expect(group.items[0]).toEqual({ op: "CONST", value: 20, label: "Shared aggregate cap (6.01(e))" });
+  });
+});

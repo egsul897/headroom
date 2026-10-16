@@ -11,7 +11,8 @@ import {
   type CovenantSummaryItem,
 } from "../covenant-intelligence/summarize";
 import { parseMoneyMillions, parsePctOf, parseRatio } from "./money";
-import { buildCapacityFormulas } from "./capacity-formulas";
+import { buildCapacityFormulas, type SharedCapGroup } from "./capacity-formulas";
+import { detectSharedCapGroup } from "./shared-cap";
 import { buildRpWaterfall } from "./rp-waterfall";
 import { grantTypesForItem } from "./grant-types";
 import { permissionCode, permissionCodePrefix } from "./permission-code";
@@ -199,6 +200,73 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
  * After counsel ACCEPT/EDIT, attempt to compile executable Permission(s).
  * REJECT supersedes prior counsel-compiled permissions for that section.
  */
+/**
+ * Rule 179 — persist the shared-cap group as a
+ * SharedCapacityConstraint + member rows so the solver-native
+ * elections enforce it exactly (a member's allocation is capped
+ * by the group's remaining cap). The constraint is keyed by a
+ * stable name (document + sorted member refs + cap), so the
+ * second clause's compile finds the first clause's constraint
+ * and joins it instead of creating a duplicate. Members
+ * accumulate as each clause compiles.
+ */
+async function syncSharedCapConstraint(params: {
+  companyId: string;
+  sourceId: string;
+  sectionRef: string;
+  documentId: string;
+  debtPermissionId: string;
+  group: NonNullable<ReturnType<typeof detectSharedCapGroup>>;
+}): Promise<void> {
+  const sorted = [...params.group.memberSectionRefs].sort();
+  const name = `shared-cap:${params.documentId}:${sorted.join("+")}:${params.group.capMillions}`;
+  let constraint = await prisma.sharedCapacityConstraint.findFirst({
+    where: { companyId: params.companyId, name },
+  });
+  if (!constraint) {
+    constraint = await prisma.sharedCapacityConstraint.create({
+      data: {
+        companyId: params.companyId,
+        name,
+        capAmount: new Prisma.Decimal(params.group.capMillions),
+        aggregationRule: "NAMED_MEMBER_CLAUSES",
+        measurementBasis: "CURRENTLY_OUTSTANDING",
+        followsRefinancing: false,
+        sourceSectionRef: params.sectionRef,
+      },
+    });
+  }
+  // Resolve EVERY member clause to its operative DEBT Permission, not
+  // just the compiling item's: a twin clause's own text may have
+  // lost the proviso (summary truncation / 700-char excerpt cap —
+  // a real 6.01(e) excerpt cuts off mid-proviso), so only the twin
+  // detects the group. The group names all its members; the twin's
+  // compile pulls the silent clause in. Order-independent: whether
+  // (e) or (j) compiles first, both end up members. Clauses that
+  // never compile (e.g. a refinancing clause with no $ cap) simply
+  // have no Permission and no member row.
+  const memberPerms = await prisma.permission.findMany({
+    where: {
+      companyId: params.companyId,
+      documentId: params.documentId,
+      sectionRef: { in: params.group.memberSectionRefs },
+      grantType: "DEBT_INCURRENCE",
+      modelingStatus: "MODELED",
+      OR: [{ effectiveTo: null }, { effectiveTo: { gt: new Date() } }],
+    },
+  });
+  for (const perm of memberPerms) {
+    const member = await prisma.sharedCapacityConstraintMember.findFirst({
+      where: { constraintId: constraint.id, permissionId: perm.id },
+    });
+    if (!member) {
+      await prisma.sharedCapacityConstraintMember.create({
+        data: { constraintId: constraint.id, permissionId: perm.id },
+      });
+    }
+  }
+}
+
 export async function compileAcceptedInterpretation(params: {
   companyId: string;
   sourceId: string;
@@ -274,6 +342,22 @@ export async function compileAcceptedInterpretation(params: {
         missingFields: [],
       });
     }
+    // Rule 177: a rejected section's dual-grant link dies with its
+    // Permissions (both endpoints are superseded above; the link
+    // would never be traversed, but leaving it is stale state).
+    await prisma.permissionRelationship.deleteMany({
+      where: {
+        companyId: params.companyId,
+        sourceSectionRef: params.sectionRef,
+        relationshipType: "AUTOMATIC_LINKED_PERMISSION",
+      },
+    });
+    // Rule 179: a rejected section leaves its shared-cap group
+    // (other members may remain) but drops its own membership —
+    // a superseded Permission must not bind the group's elections.
+    await prisma.sharedCapacityConstraintMember.deleteMany({
+      where: { permissionId: { in: existing.map((p) => p.id) } },
+    });
     for (const id of docIds) {
       await syncDocumentCapacityFormulas(params.companyId, id);
       await syncDocumentRpWaterfall(params.companyId, id);
@@ -327,7 +411,20 @@ export async function compileAcceptedInterpretation(params: {
     ...(item.applicableDefinitions ?? []).map((d) => d.term),
   ].filter(Boolean).slice(0, 24);
   const entityScope = entityScopeTags(item);
-  const conditions = (item.conditions ?? []).slice(0, 12).map((c) => ({ text: c }));
+  // Rule 178: eligibility conditions must carry the solver's shape
+  // ({ id, description, kind }), not { text }. The old { text }
+  // shape made the solver report 'Eligibility condition "undefined"
+  // (kind undefined)' — counsel saw an UNKNOWN with no idea what
+  // the condition actually was. The condition text is a
+  // plain-language paraphrase with no mechanical evaluation, so it
+  // maps to CUSTOM_STATE_PREDICATE without a
+  // ruleActivationConditionId: the solver still fails it closed to
+  // UNKNOWN, but now with the real condition text in the message.
+  const conditions = (item.conditions ?? []).slice(0, 12).map((c, i) => ({
+    id: `${params.sourceId}:${params.sectionRef}:cond:${i}`,
+    description: String(c).slice(0, 500),
+    kind: "CUSTOM_STATE_PREDICATE" as const,
+  }));
 
   for (const grantType of grants) {
     const code = permissionCode(params.sourceId, params.sectionRef, grantType);
@@ -412,6 +509,59 @@ export async function compileAcceptedInterpretation(params: {
     });
   }
 
+  // Rule 177: a single provision that compiles to BOTH a DEBT_INCURRENCE
+  // Permission and a LIEN Permission (one cap covering secured debt,
+  // e.g. a real 6.02(l): Indebtedness and Liens both capped at
+  // $250,000) must link them with AUTOMATIC_LINKED_PERMISSION from
+  // the debt leg to the lien leg. The solver pulls linked liens into
+  // a debt election ONLY through this edge (lib/solver/graph.ts);
+  // without it the lien never joins the election and every secured
+  // transaction fails the lien check — even a $0.25M secured deal
+  // that fits the provision exactly. The link is sound by
+  // construction: both Permissions share this item's single parsed
+  // threshold (one cap). Stale links for this section are deleted
+  // first, so a re-compile that stops producing one grant removes
+  // the link instead of leaving a dead-lien edge. Both endpoints
+  // live or die together (same document, same compile), so a
+  // superseded document's links are never traversed from an
+  // operative leg.
+  await prisma.permissionRelationship.deleteMany({
+    where: {
+      companyId: params.companyId,
+      sourceSectionRef: params.sectionRef,
+      relationshipType: "AUTOMATIC_LINKED_PERMISSION",
+    },
+  });
+  const debtPerm = results.find((r) => r.grantType === "DEBT_INCURRENCE" && r.permissionId);
+  const lienPerm = results.find((r) => r.grantType === "LIEN" && r.permissionId);
+  if (debtPerm?.permissionId && lienPerm?.permissionId) {
+    await prisma.permissionRelationship.create({
+      data: {
+        companyId: params.companyId,
+        fromPermissionId: debtPerm.permissionId,
+        toPermissionId: lienPerm.permissionId,
+        relationshipType: "AUTOMATIC_LINKED_PERMISSION",
+        sourceSectionRef: params.sectionRef,
+        notes: `Same provision ${params.sectionRef} compiles both a debt and a lien Permission on one cap (${parsed.thresholdValue}); the lien automatically covers the debt leg.`,
+      },
+    });
+  }
+
+  // Rule 179: a shared aggregate cap joins (or creates) the group's
+  // SharedCapacityConstraint so solver elections enforce one basket.
+  const debtResult = results.find((r) => r.grantType === "DEBT_INCURRENCE" && r.permissionId);
+  const sharedGroup = debtResult?.permissionId ? detectSharedCapGroup(item) : null;
+  if (sharedGroup && debtResult?.permissionId) {
+    await syncSharedCapConstraint({
+      companyId: params.companyId,
+      sourceId: params.sourceId,
+      sectionRef: params.sectionRef,
+      documentId,
+      debtPermissionId: debtResult.permissionId,
+      group: sharedGroup,
+    });
+  }
+
   await syncDocumentCapacityFormulas(params.companyId, documentId);
   await syncDocumentRpWaterfall(params.companyId, documentId);
   await supersedeCounselPermissionsOnAmendedDocs(params.companyId, documentId, params.sectionRef);
@@ -475,10 +625,36 @@ export async function syncDocumentCapacityFormulas(companyId: string, documentId
   const debtCodes = perms.filter((p) => p.grantType === "DEBT_INCURRENCE" && p.code).map((p) => p.code!);
   const lienCodes = perms.filter((p) => p.grantType === "LIEN" && p.code).map((p) => p.code!);
 
+  // Rule 179: load the document's shared-cap groups so the legacy
+  // formula counts each shared basket once (MIN(cap, SUM(members)))
+  // instead of once per member clause. Members are resolved to
+  // codes through the currently-operative Permissions; a member
+  // whose Permission is superseded simply drops out of the group.
+  const sharedGroups: SharedCapGroup[] = [];
+  try {
+    const constraints = await prisma.sharedCapacityConstraint.findMany({ where: { companyId } });
+    const codeByPermissionId = new Map(perms.filter((p) => p.code).map((p) => [p.id, p.code!]));
+    for (const c of constraints) {
+      const members = await prisma.sharedCapacityConstraintMember.findMany({ where: { constraintId: c.id } });
+      const memberCodes = members
+        .map((m) => codeByPermissionId.get(m.permissionId ?? ""))
+        .filter((code): code is string => Boolean(code));
+      if (memberCodes.length >= 2 && c.capAmount !== null && c.capAmount !== undefined) {
+        sharedGroups.push({
+          capMillions: Number(c.capAmount),
+          memberCodes,
+          label: `Shared aggregate cap (${c.sourceSectionRef})`,
+        });
+      }
+    }
+  } catch {
+    // Shared-cap grouping must not break the legacy formula sync.
+  }
+
   // Secured requires BOTH legs (buildCapacityFormulas mints no secured
   // formula when one leg is missing — the missing leg is unknown,
   // not unconstrained).
-  const capacityFormulas = buildCapacityFormulas(debtCodes, lienCodes);
+  const capacityFormulas = buildCapacityFormulas(debtCodes, lienCodes, sharedGroups);
 
   await prisma.document.update({
     where: { id: documentId },

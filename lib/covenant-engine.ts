@@ -183,6 +183,11 @@ export interface CovenantProvisionInput {
  */
 export type CapacityExpr =
   | { op: "REF"; code: string; label?: string }
+  // Rule 179: a literal cap for a shared aggregate basket —
+  // MIN(CONST(cap), SUM(member REFs)) counts a shared basket once
+  // instead of once per member clause. No REF can express it: the
+  // cap is a property of the GROUP, not of any single provision.
+  | { op: "CONST"; value: number; label?: string }
   | { op: "SUM"; items: CapacityExpr[]; label?: string }
   | { op: "MIN"; items: CapacityExpr[]; label?: string }
   | { op: "MAX"; items: CapacityExpr[]; label?: string };
@@ -496,6 +501,10 @@ function evalExpr(
   let result: ExprEvalResult;
 
   switch (expr.op) {
+    case "CONST": {
+      result = { status: "modeled", value: expr.value };
+      break;
+    }
     case "REF": {
       const evaluated = capacities.get(expr.code);
       if (!evaluated) {
