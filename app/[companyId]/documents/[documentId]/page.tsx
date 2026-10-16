@@ -113,6 +113,20 @@ export default async function DocumentSourcePage({
             </form>
           </div>
         )}
+        {/* Rule 118: the classifier's class governs operative
+            resolution — when it disagrees with the declared type,
+            say so. The declared type was only a fallback for
+            UNKNOWN/OTHER_DEBT_RELATED; a confident classifier
+            verdict silently wins, and the user previously had no
+            way to see that the system treats this document as a
+            different kind than they declared. */}
+        {intel && intel.declaredType && intel.documentClass && intel.documentClass !== intel.declaredType && (
+          <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+            Type mismatch: declared as {intel.declaredType}, but analysis classifies this document as{" "}
+            {intel.documentClass}. The analysis class governs operative resolution. If the declaration is
+            correct, confirm the document type in the review queue.
+          </div>
+        )}
         {accession && (
           <div className="row">
             <div className="row-label">Accession</div>
