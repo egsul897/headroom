@@ -12,6 +12,7 @@
  *     "needsInput" lists what would raise it.
  */
 import { borrowerInput, type IssuerFinancials } from "./companyfacts";
+import { solveCapLp } from "./cap-lp";
 import { CAPPED, COST_LIKE, HEADER, QUALIFIED, STOP, TWO_SIDED, definitionSegments, markers, evaluateDefinition, mapEbitdaItem, type DefinitionEvaluation } from "./definition-items";
 
 export type AddBackCategory = "INTEREST" | "TAXES" | "D&A" | "STOCK_COMP" | "IMPAIRMENT" | "RESTRUCTURING" | "SEVERANCE" | "TRANSACTION_COSTS" | "INTEGRATION"
@@ -137,16 +138,34 @@ export function parseCap(t: string, from = 0): CapSpec | null {
   return { text: w, kind: l.dollars.length ? "FIXED" : "PERCENT", ...l, giving, sharedWith };
 }
 
-/** Every cap stated in a clause, in order ("not to exceed $10M; … aggregate under clauses (d) and (e) shall not exceed $100M"). */
-export function parseCaps(t: string): CapSpec[] {
-  const out: CapSpec[] = [];
-  let from = 0;
-  while (from < t.length && out.length < 6) {
-    const c = parseCap(t, from);
-    if (!c) break;
-    out.push(c);
-    const at = t.indexOf(c.text, from);
-    from = (at < 0 ? from : at) + Math.max(1, c.text.length);
+/** One cap condition in a clause: its amount and the clauses it names (empty = the clause that states it). */
+export interface CapCondition { spec: CapSpec; labels: string[]; withHost: boolean; at: number }
+const SCOPE_RE = /(?:pursuant\s+to|under|in\s+reliance\s+on|in\s+respect\s+of)\s+(?:this\s+|such\s+)?(?:sub-?)?clauses?\s+((?:\([ivxlA-Za-z\d]{1,5}\)(?:\s*(?:,|and|or|through|to)\s*)*)+)/gi;
+/**
+ * Every cap condition in a clause, each extracted on its own wherever it is written ("… clauses (d) and (e) shall not
+ * exceed $100M and … clauses (e) and (f) shall not exceed $50M"). A condition's scope is the "pursuant to clauses …"
+ * phrase written since the previous condition; "together with amounts under clause (e)" adds (e) to the stating clause;
+ * no named clause means the stating clause itself.
+ */
+export function extractCaps(full: string, ownLabel: string): CapCondition[] {
+  const out: CapCondition[] = [];
+  const g = new RegExp(CAP_RE.source, "gi");
+  let prevEnd = 0;
+  for (let m = g.exec(full); m && out.length < 8; m = g.exec(full)) {
+    const spec = parseCap(full, m.index);
+    if (!spec) break;
+    let seg = full.slice(prevEnd, m.index);
+    seg = seg.slice(seg.lastIndexOf(";") + 1).slice(-300);
+    const sm = [...seg.matchAll(SCOPE_RE)].pop();
+    // "clause (b)(viii)" is one path: keep the innermost label of each adjacent run.
+    let labels = sm ? [...sm[1]!.matchAll(/(?:\([ivxlA-Za-z\d]{1,5}\))+/g)].map((x) => x[0].slice(x[0].lastIndexOf("("))) : [];
+    let withHost = !labels.length;
+    const tw = /together\s+with[^,;]{0,200}/i.exec(full.slice(m.index, m.index + 450));
+    if (tw) { for (const lm of tw[0].matchAll(LABEL_LIST)) for (const l of lm[1]!.matchAll(/\([ivxlA-Za-z\d]{1,5}\)/g)) labels.push(l[0]); withHost = true; }
+    if (labels.some((l) => l.toUpperCase() === ownLabel.toUpperCase())) withHost = true;
+    labels = [...new Set(labels.filter((l) => l.toUpperCase() !== ownLabel.toUpperCase()))];
+    out.push({ spec: { ...spec, sharedWith: labels }, labels, withHost, at: m.index });
+    prevEnd = m.index + m[0].length;
   }
   return out;
 }
@@ -259,6 +278,13 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     const prev = pairs.at(-1);
     // "the limitation in subclause (ii) above …": a cross-reference, not a new clause — part of the previous segment.
     if (prev && /\b(?:sub-?)?(?:clauses?|paragraphs?|sections?)\s*$/i.test(prev.full.trim()) && /^\s*(?:above|below|hereof|of\s+this|shall|does|is|are|and|or|,)/i.test(r.full)) { prev.full = `${prev.full} ${r.it.label} ${r.full}`; continue; }
+    // "(d) (x) … and (y) …": a label of the item style that jumps ahead of the item sequence and continues an enumeration
+    // already open inside the previous item ((x) → (y)) is that item's sub-clause, not a new item.
+    if (prev && style(r.it.label) === top && style(prev.it.label) === top && ordinal(r.it.label) > ordinal(prev.it.label) + 2) {
+      const before = `(${String.fromCharCode(r.it.label.charCodeAt(1) - 1)}${r.it.label.slice(2, -1)})`;
+      const opened = new RegExp(`(?<!clauses?\\s{1,3})${before.replace(/[()]/g, "\\$&")}`).test(`${prev.it.label} ${prev.full}`);
+      if (r.it.label.length === 3 && opened) { prev.full = `${prev.full} ${r.it.label} ${r.full}`; if (r.it.concepts.length && r.it.coverage !== "HEADER") prev.it = { ...prev.it, concepts: [...prev.it.concepts, ...r.it.concepts.filter((c) => !prev.it.concepts.some((x) => x.concept === c.concept))], value: String(BigInt(prev.it.value) + r.it.concepts.filter((c) => !prev.it.concepts.some((x) => x.concept === c.concept)).reduce((a, c) => a + BigInt(c.value), 0n)) }; if (r.it.coverage !== "HEADER" && r.it.coverage !== "FULL" && prev.it.coverage === "FULL") prev.it = { ...prev.it, coverage: "PARTIAL" }; continue; }
+    }
     const emptyLabel = prev && prev.full.trim().length < 3; // "(e) (i) …": the item's text starts with its own sub-clauses
     if (prev && style(r.it.label) !== top && style(prev.it.label) === top && (prev.it.coverage !== "HEADER" || emptyLabel) && !signTail.test(prev.full)) {
       if (emptyLabel) prev.it = { ...r.it, label: prev.it.label, sign: prev.it.sign, coverage: r.it.coverage === "HEADER" ? "NONE" : r.it.coverage };
@@ -282,7 +308,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
 
   // ---- add-backs: evidence and caps per line ----
   const used = new Set<string>(), consumedInputs = new Set<string>();
-  const lines: Array<AddBackLine & { evid: bigint; capSpec: CapSpec | null; capSpecs: CapSpec[] }> = [];
+  const lines: Array<AddBackLine & { evid: bigint; capSpec: CapSpec | null; caps: CapCondition[]; full: string }> = [];
   // Input keys: ADDBACK:<label> when the label is unique among add-back lines; ADDBACK:<label>@<position> always works
   // and is required when the label repeats (a plain key for a repeated label is ambiguous and is not applied).
   const addPairs = pairs.filter((p) => p.it.coverage !== "HEADER" && p.it.sign !== "-");
@@ -297,11 +323,8 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     const capSpec = capSpec0 ? unknownIfExempt(capSpec0) : null;
     // Further caps in the same clause (an own cap plus a shared aggregate cap) all bind; a later cap that names no other
     // clause and repeats the first is the same limit restated.
-    // A further cap scoped to a sub-clause of this clause ("(x) … not exceed $2.5M, and (y) … pursuant to this clause (y)
-    // shall not exceed $1M") limits only that part, not the whole clause or another clause sharing the label.
-    const subClauseCap = (c: CapSpec) => c.sharedWith.length > 0 && c.sharedWith.every((lab) => lab.toUpperCase() !== it.label.toUpperCase() && full.replace(c.text, " ").includes(lab));
-    const capSpecs = capSpec ? [capSpec, ...parseCaps(full).slice(1).filter((c) => !subClauseCap(c)).map(unknownIfExempt)] : [];
-    let scopeText = full; for (const c of capSpecs) scopeText = scopeText.replace(c.text, " ");
+    const caps = capSpec ? extractCaps(full, it.label).map((c) => ({ ...c, spec: unknownIfExempt(c.spec) })) : [];
+    let scopeText = full; for (const c of caps) scopeText = scopeText.replace(c.spec.text, " ");
     const cat = categorize(scopeText);
     let concepts: Array<{ concept: string; value: bigint }> = [];
     let coverage: AddBackLine["coverage"] = "NONE";
@@ -363,51 +386,89 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     if (covOut === "FULL" && !signed && !bi && namesGainOrIncome(scopeText)) { covOut = "PARTIAL"; noteExtra = [noteExtra, "names income/gains beyond a pure tax base; stays open"].filter(Boolean).join("; "); }
     lines.push({ label: it.label, text: full.slice(0, 200), category: cat, evidenced: fresh.length ? usd(evid) : (concepts.length ? "0" : null), concepts: fresh.map((c) => ({ concept: c.concept, value: usd(c.value) })),
       coverage: covOut, cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null,
-      note: [it.note, mapNote, noteExtra].filter(Boolean).join("; ") || it.note, evid, capSpec, capSpecs });
+      note: [it.note, mapNote, noteExtra].filter(Boolean).join("; ") || it.note, evid, capSpec, caps, full });
   }
 
   // ---- totals ----
   const base = baseOk ? BigInt(ev.base!.value) : null;
   const deductions = baseOk ? pairs.filter((p) => p.it.sign === "-" && p.it.coverage !== "HEADER").reduce((a, p) => a + BigInt(p.it.value), 0n) : null;
   // Resolve each cap's named clauses to specific lines by position, not label alone: definitions reuse labels at
-  // different nesting levels ("(i)" twice). A reference resolves to the nearest preceding line with that label (the
-  // clause a proviso refers back to), else the nearest following one. The clause's own label is the clause itself.
+  // different nesting levels ("(i)" twice). A label that is a sub-clause of the stating clause ("(d) (x) … and (y) …;
+  // … this clause (y) shall not exceed $10M") is that part of the clause; otherwise a reference resolves to the nearest
+  // preceding line with that label, else the nearest following one.
   type Ln = (typeof lines)[number];
-  type Cap = { owner: Ln; spec: CapSpec; members: Ln[]; amount: bigint | null; note: string; room: bigint | null };
-  const caps: Array<Omit<Cap, "amount" | "note" | "room">> = [];
+  type Cap = { owner: Ln; spec: CapSpec; members: Ln[]; amount: bigint | null; note: string; subOf: string | null };
+  const capRaw: Array<Omit<Cap, "amount" | "note"> & { subText: string | null }> = [];
   lines.forEach((l, idx) => {
-    for (const spec of l.capSpecs) {
-      const set = new Set<Ln>([l]);
-      for (const lab of spec.sharedWith) {
-        if (lab.toUpperCase() === l.label.toUpperCase()) continue;
+    for (const c of l.caps) {
+      const set = new Set<Ln>(c.withHost ? [l] : []);
+      let subOf: string | null = null, subText: string | null = null, subN = 0;
+      for (const lab of c.labels) {
+        const esc = lab.replace(/[()]/g, "\\$&");
+        // Cross-references ("clauses (d) and (e)") are blanked to equal length so positions are kept.
+        const hostText = l.full.slice(0, c.at).replace(new RegExp(LABEL_LIST.source, "gi"), (x) => " ".repeat(x.length));
+        const inHost = new RegExp(esc).exec(hostText);
+        if (inHost) { subN++; subOf = lab; subText = l.full.slice(inHost.index + lab.length, c.at); set.add(l); continue; }
         const cands = lines.map((o, j) => ({ o, j })).filter((x) => x.o !== l && x.o.label.toUpperCase() === lab.toUpperCase());
         const pick = cands.filter((x) => x.j < idx).pop() ?? cands.find((x) => x.j > idx);
         if (pick) set.add(pick.o);
       }
-      caps.push({ owner: l, spec, members: [...set].sort((x, y) => lines.indexOf(x) - lines.indexOf(y)) });
+      if (!set.size) set.add(l);
+      capRaw.push({ owner: l, spec: c.spec, members: [...set].sort((x, y) => lines.indexOf(x) - lines.indexOf(y)), subOf: subOf && subN === 1 && set.size === 1 ? subOf : null, subText });
     }
   });
-  const inCap = new Set(caps.flatMap((c) => c.members));
-  const uncapped = lines.filter((l) => !inCap.has(l));
+  // A clause that only states a cap on other clauses ("(d) the aggregate amount of add-backs pursuant to clauses (e) and
+  // (f) below, which shall not exceed $100M") adds nothing itself.
+  const capOnly = new Set(lines.filter((l) => l.caps.length && capRaw.filter((c) => c.owner === l).every((c) => !c.members.includes(l)) && /^\W*(?:the\s+)?(?:aggregate\s+)?amount\s+of\s+(?:[\w-]+\s+){0,4}?(?:add-?backs|adjustments|added(?:\s+back)?\s+pursuant)\b/i.test(l.full)));
+  for (const l of capOnly) { l.claimed = "0"; l.status = "CLAIMED"; l.coverage = "FULL"; l.evid = 0n; l.note = "states a cap on other clauses; no add-back of its own"; }
+  const inCap = new Set(capRaw.flatMap((c) => c.members).filter((l) => !capOnly.has(l)));
+  const uncapped = lines.filter((l) => !inCap.has(l) && !capOnly.has(l));
   for (const l of uncapped) { l.claimed = usd(l.evid); l.status = l.coverage === "FULL" ? "CLAIMED" : "NEEDS_INPUT"; if (l.coverage !== "FULL") l.note = l.coverage === "PARTIAL" ? "partly evidenced; remainder needs input" : "not evidenced in filings"; }
   const e0 = base != null && deductions != null ? base + deductions + uncapped.reduce((a, l) => a + l.evid, 0n) : null;
   const capOpen = uncapped.some((l) => l.coverage !== "FULL");
-  // Joint allocation: every clause's own cap and every shared cap bind at once (maximize the capped add-backs subject to
-  // all caps). Deterministic greedy: clauses under fewer known caps take first, then by position. For nested or disjoint
-  // caps (the usual layouts) this is the exact maximum; for overlapping caps it never exceeds any cap. A clause under a
-  // cap whose amount cannot be determined claims nothing (the cap could be lower than the evidence).
-  const all: Cap[] = caps.map((c) => { const { amount, note } = capAmount(c.spec, e0); return { ...c, amount, note, room: amount }; });
+  // A sub-clause cap ("(d) (x) … and (y) …; … this clause (y) shall not exceed $10M") bounds only that part: the clause
+  // is split into parts (one per capped sub-clause plus the rest), each part bounded by its own evidence; whole-clause
+  // and shared caps bound the sum of the parts. Part evidence = the clause's filed concepts that the sub-clause names.
+  const all: Cap[] = capRaw.map((c) => { const { amount, note } = capAmount(c.spec, e0); return { owner: c.owner, spec: c.spec, members: c.members.filter((x) => !capOnly.has(x)), amount, note: c.subOf ? [note, `limits sub-clause ${c.subOf} only`].filter(Boolean).join("; ") : note, subOf: c.subOf }; }).filter((c) => c.members.length);
+  const subText = new Map(capRaw.filter((c) => c.subOf).map((c) => [c.spec, c.subText ?? ""]));
   const capsOf = (g: Ln) => all.filter((c) => c.members.includes(g));
-  const order = [...inCap].sort((x, y) => capsOf(x).filter((c) => c.amount != null).length - capsOf(y).filter((c) => c.amount != null).length || lines.indexOf(x) - lines.indexOf(y));
-  for (const g of order) {
-    const cs = capsOf(g);
-    const unknown = cs.some((c) => c.amount == null);
-    let take = unknown ? 0n : g.evid;
-    for (const c of cs) if (c.room != null && c.room < take) take = c.room;
-    if (take < 0n) take = 0n;
-    for (const c of cs) if (c.room != null) c.room -= take;
-    g.claimed = usd(take);
+  const lnVars = [...inCap].sort((x, y) => lines.indexOf(x) - lines.indexOf(y));
+  const blocked = new Set(lnVars.filter((g) => capsOf(g).some((c) => c.amount == null)));
+  type V = { line: Ln; part: Cap | null; u: bigint };
+  const restless = new Set<Ln>();
+  const vars: V[] = [];
+  for (const g of lnVars) {
+    const total = blocked.has(g) || g.evid < 0n ? 0n : g.evid;
+    let rest = total;
+    for (const c of all.filter((x) => x.subOf && x.members[0] === g)) {
+      const m = mapEbitdaItem(subText.get(c.spec) ?? "", fin, text, 0);
+      const names = new Set(m && m !== "TWO_SIDED" ? m.concepts.map((x) => x.concept) : []);
+      let pe = (g.concepts ?? []).filter((x) => names.has(x.concept)).reduce((a, x) => a + BigInt(x.value), 0n);
+      if (pe > rest) pe = rest;
+      rest -= pe;
+      vars.push({ line: g, part: c, u: pe });
+    }
+    // The rest of the clause exists unless the clause is wholly its capped sub-clauses ("(d) (x) … ≤ $2.5M and (y) … ≤ $1M").
+    const subs = all.filter((x) => x.subOf && x.members[0] === g).map((x) => x.subOf!.toUpperCase());
+    // … i.e. nothing of substance precedes the first capped sub-clause and no uncapped sibling sub-clause ((ii) next to (i),
+    // (y) next to (x)) exists.
+    const plain = g.full.replace(new RegExp(LABEL_LIST.source, "gi"), (x) => " ".repeat(x.length));
+    const firstAt = Math.min(...subs.map((sl) => { const k = plain.toUpperCase().indexOf(sl); return k < 0 ? Infinity : k; }));
+    const pre = Number.isFinite(firstAt) ? plain.slice(0, firstAt).replace(/\[\s*reserved\s*\]|-?\d+-?/gi, " ") : "x";
+    const sib = (lab: string, d: number) => { const x = lab.slice(1, -1); if (/^[ivxl]+$/i.test(x)) { const R = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x"]; const k = R.indexOf(x.toLowerCase()); return k >= 0 && R[k + d] ? `(${R[k + d]})` : null; } return x.length === 1 ? `(${String.fromCharCode(x.charCodeAt(0) + d)})` : null; };
+    const siblings = subs.flatMap((sl) => [sib(sl, 1), sib(sl, -1)]).filter((x): x is string => !!x).map((x) => x.toUpperCase()).filter((x) => !subs.includes(x));
+    const wholly = subs.length > 0 && !/[A-Za-z]{2}/.test(pre) && !siblings.some((x) => plain.toUpperCase().includes(x));
+    vars.push({ line: g, part: null, u: wholly ? 0n : rest });
+    if (wholly) restless.add(g);
   }
+  const known = all.filter((c) => c.amount != null);
+  const lpCaps = known.map((c) => ({ members: c.subOf ? vars.flatMap((v, i) => (v.part === c ? [i] : [])) : vars.flatMap((v, i) => (c.members.includes(v.line) ? [i] : [])), amount: c.amount! }));
+  const upper = vars.map((v) => v.u);
+  const sol = solveCapLp(upper, lpCaps);
+  let capProven = sol.integral;
+  const claimedOf = (g: Ln, x: bigint[]) => vars.reduce((a, v, i) => (v.line === g ? a + x[i]! : a), 0n);
+  for (const g of lnVars) g.claimed = usd(claimedOf(g, sol.x));
+  const BIG = known.reduce((a, c) => a + c.amount!, 0n) + upper.reduce((a, b) => a + b, 0n) + 1n;
   // Connected shared caps form one cap group (the tracker counts a group's room once).
   const comp = new Map<Ln, Set<Ln>>();
   for (const c of all) if (c.members.length > 1) {
@@ -415,33 +476,38 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     for (const m of c.members) for (const x of comp.get(m) ?? []) merged.add(x);
     for (const m of merged) comp.set(m, merged);
   }
-  for (const g of inCap) {
+  lnVars.forEach((g) => {
     const cs = capsOf(g);
     const unknown = cs.find((c) => c.amount == null);
-    const known = cs.filter((c) => c.amount != null);
-    const take = BigInt(g.claimed);
-    const reached = known.some((c) => c.room === 0n);
-    const shown = cs.find((c) => c.owner === g && c.members.length === 1) ?? cs[0]!;
+    const take = claimedOf(g, sol.x);
+    const shown = cs.find((c) => c.owner === g && c.members.length === 1 && !c.subOf) ?? cs.find((c) => !c.subOf) ?? cs[0]!;
     const others = cs.filter((c) => c !== shown);
     const peers = [...new Set(cs.flatMap((c) => c.members))].filter((x) => x !== g);
     g.cap = { text: shown.spec.text.slice(0, 200), amount: shown.amount == null ? null : usd(shown.amount), note: [shown.note, capOpen && cs.some((c) => c.spec.percents.length) ? "cap base excludes add-backs that still need input (cap may be higher)" : "", peers.length ? `shared with ${peers.map((x) => x.label).join(", ")}` : "", ...others.map((c) => `also under: ${c.spec.text.slice(0, 80)}${c.amount == null ? "" : ` (${usd(c.amount)})`}`)].filter(Boolean).join("; ") };
-    if (unknown) { g.status = "NEEDS_INPUT"; g.note = unknown.note; g.headroomToCap = null; }
-    else if (take < g.evid) { g.status = "CAPPED"; g.note = "evidenced amount exceeds the cap; cap applied"; }
-    else if (g.coverage === "FULL") { g.status = "CLAIMED"; g.note = "mapped"; }
-    else if (reached) { g.status = "CLAIMED"; g.note = "cap reached"; }
-    else { g.status = "NEEDS_INPUT"; g.note = g.coverage === "NONE" ? "not evidenced in filings" : "partly evidenced; remainder needs input"; }
-    if (!unknown) { const left = known.reduce<bigint | null>((a, c) => (a == null || c.room! < a ? c.room! : a), null); g.headroomToCap = left == null ? null : g.status === "NEEDS_INPUT" ? usd(left) : "0"; }
+    g.headroomToCap = null;
+    if (unknown) { g.status = "NEEDS_INPUT"; g.note = unknown.note; return; }
+    if (take < g.evid) { g.status = "CAPPED"; g.note = "evidenced amount exceeds the cap; cap applied"; g.headroomToCap = "0"; return; }
+    if (g.coverage === "FULL") { g.status = "CLAIMED"; g.note = "mapped"; g.headroomToCap = "0"; return; }
+    // More of this add-back (beyond the filed figure): how much could it still raise the optimum under every cap?
+    const more = solveCapLp(upper.map((u, j) => (vars[j]!.line === g && (vars[j]!.part || !restless.has(g)) ? BIG : u)), lpCaps);
+    if (!more.integral) capProven = false;
+    const gain = more.value - sol.value;
+    if (more.value >= BIG) { g.status = "NEEDS_INPUT"; g.note = "part of this clause is not under any cap; remainder needs input"; return; }
+    if (gain <= 0n && more.integral) { g.status = "CAPPED"; g.note = "cap reached: more of this add-back cannot raise the total under its caps"; g.headroomToCap = "0"; }
+    else { g.status = "NEEDS_INPUT"; g.note = g.coverage === "NONE" ? "not evidenced in filings" : "partly evidenced; remainder needs input"; g.headroomToCap = usd(gain > 0n ? gain : 0n); }
+  });
+  for (const g of lnVars) {
     const grp = comp.get(g);
     if (grp) { const sorted = [...grp].sort((a, b) => lines.indexOf(a) - lines.indexOf(b)); g.capGroup = sorted.map((x) => x.label); g.capGroupAt = sorted.map((x) => lines.indexOf(x)); }
   }
-  const addBacks: AddBackLine[] = lines.map(({ evid: _e, capSpec: _c, capSpecs: _cs, ...l }) => l);
+  const addBacks: AddBackLine[] = lines.map(({ evid: _e, capSpec: _c, caps: _cs, full: _f, ...l }) => l);
   const open = addBacks.filter((l) => l.status === "NEEDS_INPUT");
   const needsInput = open.map((l) => `${l.label} ${l.category}${l.headroomToCap ? ` (up to ${l.headroomToCap} more under cap)` : l.cap ? "" : " (uncapped)"}`);
   if (!aligned && ev.base != null) return out({ addBacks, needsInput, reason: "definition items could not be aligned; refusing" });
   if (!baseOk) return out({ addBacks, needsInput: [`base/deductions: ${lowerReason}`, ...needsInput], reason: `NEEDS_INPUT: ${lowerReason}` });
   const uncappedAt = new Set(uncapped.map((u) => lines.indexOf(u)));
   const supported = e0! + addBacks.filter((_, i) => !uncappedAt.has(i)).reduce((a, l) => a + BigInt(l.claimed), 0n);
-  const complete = !open.length && !ev.items.some((i) => i.label === "(base)" && i.coverage === "PARTIAL");
+  const complete = capProven && !open.length && !ev.items.some((i) => i.label === "(base)" && i.coverage === "PARTIAL");
   // Lines that could lower the total, so the supported figure is not a safe lower bound:
   //  - open two-sided / income-like add-backs;
   //  - open lines that name gains or income ("gains, losses … from the sale of …");

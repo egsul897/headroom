@@ -53,9 +53,9 @@ describe("caps resolve to the right clauses", () => {
     const capped = o.addBacks.filter((l) => l.cap?.amount === String(2.5 * M));
     expect(capped.map((l) => l.text.slice(0, 20))).toEqual(capped.map(() => "acquisition costs; p".slice(0, 20)));
   });
-  it("a sub-clause cap inside a clause does not cap the whole clause", () => {
+  it("sub-clause caps bound only their parts and add up", () => {
     const o = run("; plus (d) (x) public company costs; provided that all such amounts pursuant to this clause (x) shall not exceed $2,500,000 for any period, and (y) litigation expenses; provided that all such amounts pursuant to this clause (y) shall not exceed $1,000,000 for any period", fin({}));
     const d = o.addBacks.find((l) => l.label === "(d)")!;
-    expect(d.headroomToCap).toBe(String(2.5 * M));
+    expect(d.headroomToCap).toBe(String(3.5 * M)); // sub-clause caps add: (x) ≤ 2.5M + (y) ≤ 1M
   });
 });

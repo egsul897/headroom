@@ -16,9 +16,9 @@ describe("shared caps resolve clause references by position, not label", () => {
     const is = o.addBacks.map((l, j) => ({ l, j })).filter((x) => x.l.label === "(i)");
     expect(is.length).toBe(2);
     const [first, second] = is;
-    const z = o.addBacks.find((l) => l.label === "(z)")!;
-    expect(z.capGroupAt).toContain(first!.j);
-    expect(z.capGroupAt).not.toContain(second!.j);
+    // (z) only states the cap; it binds the clause it names (the earlier (i)), not (z) itself and not the nested (i).
+    expect(first!.l.cap?.amount).toBe(String(10 * M));
+    expect(o.addBacks.find((l) => l.label === "(z)")!.cap ?? null).toBeNull();
     expect(second!.l.capGroup ?? null).toBeNull();
     expect(second!.l.cap).toBeNull();
   });
