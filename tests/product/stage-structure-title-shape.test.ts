@@ -178,3 +178,90 @@ describe("rule 172: TOC entries with roman-numeral page tokens", () => {
     expect(candidates.some((c) => c.excerpt.includes("shall not permit any Lien"))).toBe(true);
   });
 });
+
+describe("rule 173: facility/capacity terms admit UNKNOWN candidates", () => {
+  async function candidatesFor(heading: string, body: string) {
+    const { discoverCovenantCandidates } = await import("../../lib/knowledge-factory/pipeline/candidates");
+    const text = `${heading}\n${body}`;
+    const nodes = [
+      { nodeId: "n1", sectionRef: "1(b)", nodeType: "SUBSECTION", heading, charStart: 0, charEnd: heading.length, ambiguous: false },
+    ] as never;
+    return discoverCovenantCandidates("rule173-test", text, nodes);
+  }
+
+  it("a Revolver Commitment definition is admitted", async () => {
+    const c = await candidatesFor(
+      "",
+      "(b)\nSection 1.1 of the Credit Agreement is hereby amended by amending and restating in its entirety the following definition:\n\n“Revolver Commitment” - for any Lender, its obligation to make Revolver Loans and to participate in LC Obligations up to the maximum principal amount shown on Schedule 1.1A.",
+    );
+    expect(c).toHaveLength(1);
+  });
+
+  it("an Availability test amendment is admitted", async () => {
+    const c = await candidatesFor(
+      "",
+      "(a) Notwithstanding the provisions set forth in Section 1.4 of the Credit Agreement, the fixed Dollar component of Availability tests set forth in the definitions of “Cash Dominion Trigger Event” shall remain in effect.",
+    );
+    expect(c).toHaveLength(1);
+  });
+
+  it("a Swingline Sublimit amendment is admitted", async () => {
+    const c = await candidatesFor(
+      "",
+      "(b) Notwithstanding the provisions set forth in Section 4.1.3 of the Credit Agreement, the Swingline Sublimit shall remain equal to the Dollar Equivalent Amount of $42,500,000 unless and until the Borrowers and the Agent agree to the contrary.",
+    );
+    expect(c).toHaveLength(1);
+  });
+
+  it("an unrelated UNKNOWN item is still dropped", async () => {
+    const c = await candidatesFor("", "(a) The parties hereto agree to meet annually to discuss general business matters and exchange copies of public filings.");
+    expect(c).toHaveLength(0);
+  });
+});
+
+describe("rule 174: clause fallback when the parent produces nothing", () => {
+  it("a pointer subsection's clauses surface; a covered parent's clauses do not", async () => {
+    const { discoverCovenantCandidates } = await import("../../lib/knowledge-factory/pipeline/candidates");
+    // Mirrors the real Calumet shape: the parent subsection is a bare
+    // pointer ("See Annex A."), a §2 heading intervenes, and the
+    // clause children carry the operative text (Availability tests,
+    // Swingline Sublimit). The parent's section-span ends at §2, so
+    // it fails the gates and does not cover its clauses.
+    const text = [
+      "(c)",
+      "See Annex A.",
+      "",
+      "2.",
+      "Acknowledgements of Impact of Amendments.",
+      "",
+      "(a) Notwithstanding the provisions set forth in Section 1.4 of the Credit Agreement, the fixed Dollar component of Availability tests shall remain in effect.",
+      "",
+      "(b) Notwithstanding the provisions set forth in Section 4.1.3 of the Credit Agreement, the Swingline Sublimit shall remain equal to the Dollar Equivalent Amount of $42,500,000.",
+      "",
+      "6.01(e)",
+      "Indebtedness. The Borrower shall not create, incur, assume or suffer to exist any Indebtedness except Permitted Indebtedness. Permitted Indebtedness includes Indebtedness in an aggregate principal amount not to exceed $20,000,000.",
+      "",
+      "(i) This clause merely restates the cap above and carries no new substance.",
+    ].join("\n");
+    const idx = (s: string) => text.indexOf(s);
+    const nodes = [
+      { nodeId: "sub-1c", sectionRef: "1(c)", nodeType: "SUBSECTION", heading: "", charStart: idx("(c)"), charEnd: idx("(c)") + 3, ambiguous: false },
+      { nodeId: "sec-2", sectionRef: "2", nodeType: "SECTION", heading: "Acknowledgements of Impact of Amendments.", charStart: idx("2."), charEnd: idx("2.") + 2, ambiguous: false },
+      { nodeId: "cl-1ca", sectionRef: "1(c)(a)", nodeType: "CLAUSE", heading: "", charStart: idx("(a) Notwithstanding"), charEnd: idx("(a) Notwithstanding") + 3, ambiguous: false },
+      { nodeId: "cl-1cb", sectionRef: "1(c)(b)", nodeType: "CLAUSE", heading: "", charStart: idx("(b) Notwithstanding"), charEnd: idx("(b) Notwithstanding") + 3, ambiguous: false },
+      { nodeId: "sub-601e", sectionRef: "6.01(e)", nodeType: "SUBSECTION", heading: "6.01(e) Indebtedness.", charStart: idx("6.01(e)"), charEnd: idx("6.01(e)") + 6, ambiguous: false },
+      { nodeId: "cl-601ei", sectionRef: "6.01(e)(i)", nodeType: "CLAUSE", heading: "", charStart: idx("(i) This clause"), charEnd: idx("(i) This clause") + 3, ambiguous: false },
+    ] as never;
+    const candidates = discoverCovenantCandidates("rule174-test", text, nodes);
+    const excerpts = candidates.map((c) => c.excerpt);
+    expect(excerpts.some((e) => e.includes("Availability tests"))).toBe(true);
+    expect(excerpts.some((e) => e.includes("Swingline Sublimit"))).toBe(true);
+    expect(excerpts.some((e) => e.includes("Permitted Indebtedness"))).toBe(true);
+    // The covered parent's restating clause must not surface as its
+    // own candidate (the parent's excerpt legitimately contains the
+    // clause text — the parent covers it).
+    expect(candidates.some((c) => c.nodeId === "cl-601ei")).toBe(false);
+    expect(candidates.some((c) => c.nodeId === "cl-1ca")).toBe(true);
+    expect(candidates.some((c) => c.nodeId === "cl-1cb")).toBe(true);
+  });
+});

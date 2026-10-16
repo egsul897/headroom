@@ -46,9 +46,19 @@ const OPERATIVE_VERB = /\b(?:shall|will|must|may)\b/i;
  * "Subsidiary" needs the y/ies alternation ("Subsidiaries" is not
  * "Subsidiary" + "s"). "Guarantor" is included alongside
  * "Guarantee" — guaranty articles are covenant-relevant.
+ * Rule 173: facility/capacity terms are operative financial content
+ * too. An amendment that restates the "Revolver Commitment"
+ * definition, resets "Availability" tests, or fixes a "Swingline
+ * Sublimit" at $42.5M carries the numbers capacity is computed
+ * from — dropping it because no covenant keyword appears leaves
+ * the whole amendment invisible (the real Calumet amendment
+ * surfaced exactly one item, by luck of a "Guarantor" mention).
+ * "Borrowing Base" is a capacity input by definition. These terms
+ * admit the item as an informational summary item; they do not
+ * mint grants (grant-types.ts still requires permission evidence).
  */
 const COVENANT_HEADING_KEYWORDS =
-  /\b(?:Indebtedness|Lien|Restricted|Investment|Disposition|Affiliate|Covenant|Default|Guarantee|Guarantor|Prepayment|Incremental|Available Amount|Sale|Fundamental)s?\b|\bSubsidiar(?:y|ies)\b/i;
+  /\b(?:Indebtedness|Lien|Restricted|Investment|Disposition|Affiliate|Covenant|Default|Guarantee|Guarantor|Prepayment|Incremental|Available Amount|Sale|Fundamental|Commitment|Availability|Sublimit|Borrowing Base)s?\b|\bSubsidiar(?:y|ies)\b/i;
 
 /**
  * True when a node's span is table-of-contents material, not operative
@@ -202,6 +212,19 @@ function operativeSpan(
   };
 }
 
+/**
+ * Rule 174: parent ref of a nested clause — strip the last
+ * parenthesized group: "1(c)(a)" -> "1(c)", "1(c)" -> "1",
+ * "6.01(e)" -> "6.01". Refs without a paren group ("6.01", "VII")
+ * have no parent in this scheme and always get their own chance.
+ */
+function parentRefOf(sectionRef: string): string | null {
+  const m = /\(([^()]*)\)$/.exec(sectionRef.trim());
+  if (!m) return null;
+  const parent = sectionRef.trim().slice(0, sectionRef.trim().length - m[0].length);
+  return parent || null;
+}
+
 export function discoverCovenantCandidates(
   sourceId: string,
   text: string,
@@ -218,9 +241,47 @@ export function discoverCovenantCandidates(
         (!n.ambiguous || /^[\dA-Za-z.()-]+$/.test(n.sectionRef)),
     )
     .sort((a, b) => a.charStart - b.charStart);
+  // Rule 174: clause fallback (see parentRefOf). A subsection that is
+  // only a pointer ("Schedule 1.1A is hereby amended ... as set forth
+  // on Annex A") carries no substance itself, but its clause children
+  // may ("Availability tests ...", "Swingline Sublimit ... $42.5M").
+  // Without the fallback the whole subtree vanishes (the real
+  // Calumet amendment lost its availability + sublimit clauses).
+  const allSorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
+  const coveredRefs = new Set<string>();
+  const clauseNodes = nodes
+    .filter(
+      (n) =>
+        (n.nodeType === "CLAUSE" || n.nodeType === "SUBCLAUSE") &&
+        (!n.ambiguous || /^[\dA-Za-z.()-]+$/.test(n.sectionRef)),
+    )
+    .sort((a, b) => a.charStart - b.charStart);
+  // Process parents before children (SECTION/ARTICLE/SUBSECTION, then
+  // CLAUSE, then SUBCLAUSE) so a covered parent suppresses its clauses
+  // and a clause that survives covers its own subclauses.
+  const orderedNodes: { node: (typeof nodes)[number]; spanNodes: (typeof nodes)[number][] }[] = [
+    ...sectionNodes.map((node) => ({ node, spanNodes: sectionNodes })),
+    ...clauseNodes
+      .filter((n) => n.nodeType === "CLAUSE")
+      .map((node) => ({ node, spanNodes: allSorted })),
+    ...clauseNodes
+      .filter((n) => n.nodeType === "SUBCLAUSE")
+      .map((node) => ({ node, spanNodes: allSorted })),
+  ];
 
-  for (const node of sectionNodes) {
-    const span = operativeSpan(node, sectionNodes, text.length);
+  for (const { node, spanNodes } of orderedNodes) {
+    // Clause fallback (CLAUSE/SUBCLAUSE nodes only): skip when the
+    // parent already produced a candidate — the parent's excerpt
+    // covers this content. When the parent produced nothing (pointer
+    // subsection), the clause gets its own chance through the same
+    // gates below. SECTION/ARTICLE/SUBSECTION nodes are never
+    // skipped here: a section and its subsection are distinct
+    // content (a §6.01 candidate must not suppress §6.01(e)).
+    if (node.nodeType === "CLAUSE" || node.nodeType === "SUBCLAUSE") {
+      const parent = parentRefOf(node.sectionRef);
+      if (parent && coveredRefs.has(parent)) continue;
+    }
+    const span = operativeSpan(node, spanNodes, text.length);
     const excerpt = text.slice(span.start, Math.min(span.end, span.start + 4000));
     // TOC entries and administrative provisions are not covenant candidates,
     // even though their headings name covenant families.
@@ -256,6 +317,7 @@ export function discoverCovenantCandidates(
       representationLevel: "DISCOVERED_CANDIDATE",
       discoveryScore: rank.score,
     });
+    coveredRefs.add(node.sectionRef);
   }
 
   // Document-level fallback when structure is sparse but text is rich.
