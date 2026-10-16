@@ -35,7 +35,7 @@ function candidate(
     families,
     signals: [],
     excerpt,
-    representationLevel: "TEXT_EXTRACTED",
+    representationLevel: "DISCOVERED_CANDIDATE",
     discoveryScore,
   };
 }
