@@ -32,6 +32,7 @@ import {
   type OperativeResolutionView,
 } from "../customer-intelligence/operative-resolution";
 import { extractUnlessGate } from "./unless-gate";
+import { fccrConditionSatisfied } from "./fccr-condition";
 
 export const CROSS_DOCUMENT_COVENANT_VERSION = "product.cross-document-covenant.v1";
 
@@ -423,9 +424,11 @@ function evaluateFactAgainstTxn(
           satisfied = true;
         }
         if (/made in cash|in cash/i.test(c) && /cash/i.test(txn.description)) satisfied = true;
-        if (typeof known.fccr === "number" && /Fixed Charge Coverage Ratio|FCCR/i.test(c)) {
-          const m = c.match(/(\d+(?:\.\d+)?)/);
-          if (m && known.fccr >= Number(m[1])) satisfied = true;
+        if (typeof known.fccr === "number") {
+          // Qualifier-aware threshold (rule 43): the old first-number
+          // heuristic read a section ref ("6.10") or period length
+          // ("12 months") as the threshold.
+          if (fccrConditionSatisfied(c, known.fccr) === true) satisfied = true;
         }
         for (const [k, v] of Object.entries(known)) {
           if (v === true && k !== "noDefault" && new RegExp(k.replace(/_/g, " "), "i").test(c)) {
