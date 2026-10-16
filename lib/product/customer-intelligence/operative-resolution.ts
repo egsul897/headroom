@@ -7,6 +7,7 @@ import type { KnowledgeSourceRecord } from "../../knowledge-factory/types";
 import type { AmendmentPackageView } from "./amendment-package";
 import type { AmendmentCompareRow, AmendmentCompareView } from "./amendment-compare";
 import { isRestatementTitle } from "./restatement-title";
+import { isValidIsoDate } from "../iso-date";
 
 export type OperativeResolutionStatus =
   | AmendmentPackageView["operativeResolution"]
@@ -64,16 +65,6 @@ function instrumentFamily(
   )
     return "CREDIT";
   return null;
-}
-
-function isValidIsoDate(date: string): boolean {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
-  if (!m) return false;
-  const y = Number(m[1]);
-  const mo = Number(m[2]);
-  const d = Number(m[3]);
-  const dt = new Date(Date.UTC(y, mo - 1, d));
-  return dt.getUTCFullYear() === y && dt.getUTCMonth() === mo - 1 && dt.getUTCDate() === d;
 }
 
 /** Parse dates like "as of March 15, 2024" / "dated as of 2024-03-15" / ISO from titles. */

@@ -2,6 +2,7 @@
  * Ask → Simulate deep-link handoff.
  * Seeds the shared SimulateClient with structured draft fields — no second engine.
  */
+import { isValidIsoDate } from "../iso-date";
 
 export type SimulateActionType = "debt" | "rp" | "investment" | "assetSale";
 
@@ -40,17 +41,6 @@ export function buildSimulateHandoffHref(companyId: string, draft: SimulateHando
   if (draft.evaluationDate) params.set("asOf", draft.evaluationDate);
   if (draft.source) params.set("from", draft.source);
   return `/${companyId}/simulate?${params.toString()}`;
-}
-
-/** True for a real YYYY-MM-DD calendar date (same check as the certified bridge). */
-function isValidIsoDate(date: string): boolean {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
-  if (!m) return false;
-  const y = Number(m[1]);
-  const mo = Number(m[2]);
-  const d = Number(m[3]);
-  const dt = new Date(Date.UTC(y, mo - 1, d));
-  return dt.getUTCFullYear() === y && dt.getUTCMonth() === mo - 1 && dt.getUTCDate() === d;
 }
 
 /** Parse Simulate page search params into a handoff draft (fail closed on garbage). */
