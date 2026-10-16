@@ -184,17 +184,28 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     pairs.push(r);
   }
 
-  // Base must be derivable; every top-level item that could lower the figure must be exact. Sub-clauses merged into an
-  // add-back (provisos, cap limbs) do not count as separate items; the merged add-back itself is checked for two-sidedness.
-  const lowering = pairs.filter((p) => p.it.coverage !== "HEADER" && (p.it.sign === "-" ? p.it.coverage !== "FULL" : p.it.sign === "?" || TWO_SIDED.test(p.full.replace(CAPPED.test(p.full) ? (parseCap(p.full)?.text ?? "") : "", " "))));
-  const baseOk = aligned && ev.base != null && !lowering.length;
-  const lowerReason = ev.base == null ? ev.reason : lowering.length ? `items that could lower the total are not in filings: ${lowering.slice(0, 3).map((p) => `${p.it.label} ${p.full.slice(0, 60)}`).join("; ")}` : ev.reason;
+  // Base must be derivable. Unmapped deductions (sign "-") block the floor — omitting them would overstate.
+  // Two-sided / unknown add-backs (sign "?" or gains-or-losses language) do not: omit them (claim 0, NEEDS_INPUT) and
+  // still report a supported floor from the base + evidenced add-backs. Invent-absence: never fill those lines.
+  const blockingDeduction = pairs.filter((p) => p.it.coverage !== "HEADER" && p.it.sign === "-" && p.it.coverage !== "FULL");
+  const ambiguousAddBack = (p: (typeof pairs)[number]) =>
+    p.it.coverage !== "HEADER" && p.it.sign !== "-" && (p.it.sign === "?" || TWO_SIDED.test(p.full.replace(CAPPED.test(p.full) ? (parseCap(p.full)?.text ?? "") : "", " ")));
+  const baseOk = aligned && ev.base != null && !blockingDeduction.length;
+  const lowerReason = ev.base == null ? ev.reason
+    : blockingDeduction.length ? `items that could lower the total are not in filings: ${blockingDeduction.slice(0, 3).map((p) => `${p.it.label} ${p.full.slice(0, 60)}`).join("; ")}`
+    : ev.reason;
 
   // ---- add-backs: evidence and caps per line ----
   const used = new Set<string>(), consumedInputs = new Set<string>();
   const lines: Array<AddBackLine & { evid: bigint; capSpec: CapSpec | null }> = [];
   for (const { it, full } of pairs) {
-    if (it.coverage === "HEADER" || it.sign === "-" || (it.sign === "?" && !aligned)) continue;
+    if (it.coverage === "HEADER" || it.sign === "-") continue;
+    if (ambiguousAddBack({ it, full })) {
+      lines.push({ label: it.label, text: full.slice(0, 200), category: categorize(full), evidenced: null, concepts: [],
+        coverage: "NONE", cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null,
+        note: "two-sided or indeterminate add-back; omitted from supported floor", evid: 0n, capSpec: null });
+      continue;
+    }
     const capSpec = CAPPED.test(full) ? parseCap(full) : null;
     const scopeText = capSpec ? full.replace(capSpec.text, " ") : full;
     const cat = categorize(scopeText);
