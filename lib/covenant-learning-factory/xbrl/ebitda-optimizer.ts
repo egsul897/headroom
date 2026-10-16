@@ -35,6 +35,8 @@ export interface EbitdaOptimization {
   status: "MAXIMIZED" | "NEEDS_INPUT";
   /** Labels of open add-backs that could lower the total (two-sided / income-like). Set on a supported result; empty = floor is a safe lower bound. */
   omittedTwoSided?: string[];
+  /** Set when the definition came from a package-bound base agreement (CONFIRMED / LOWER_CONFIDENCE link). */
+  bindingTier?: "CONFIRMED" | "LOWER_CONFIDENCE";
   /** Maximum Consolidated EBITDA; only when every add-back is evidenced and every cap determinable. */
   maximum: string | null;
   /** Base + exact deductions + evidenced (capped) add-backs; null when the base or a deduction is not derivable. */
@@ -350,6 +352,7 @@ export interface LeverageCapacity {
   ebitda: string | null; maxLeverage: string; debt: string | null; debtSource: string | null;
   /** maxLeverage × EBITDA − debt, USD (floored). Negative = over the limit. */
   capacity: string | null; bound: "EXACT" | "AT_LEAST" | null; reason: string;
+  bindingTier?: "CONFIRMED" | "LOWER_CONFIDENCE";
 }
 
 /**
@@ -398,6 +401,7 @@ export interface RatioCapacity {
   name: string; kind: "LEVERAGE" | "COVERAGE"; limit: string; status: "COMPUTED" | "NEEDS_INPUT";
   /** LEVERAGE: additional numerator (debt) before limit×EBITDA. COVERAGE: additional interest expense before EBITDA/limit. */
   capacity: string | null; capacityOf: "DEBT" | "INTEREST_EXPENSE"; bound: "EXACT" | "AT_LEAST" | null; reason: string;
+  bindingTier?: "CONFIRMED" | "LOWER_CONFIDENCE";
 }
 
 /**

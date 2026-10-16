@@ -27,6 +27,7 @@ import { decide, toMetricInput, type BindDecision } from "../xbrl/bind";
 import { debtFromFinancials, leverageDebtCapacity, maxLeverageLimit, optimizeConsolidatedEbitda, ratioCapacity, type EbitdaOptimization, type LeverageCapacity, type RatioCapacity } from "../xbrl/ebitda-optimizer";
 import { findEbitdaMeasureTerm } from "../xbrl/definition-items";
 import { extractDocumentIdentity } from "../../contract-model/compiler/package-graph/document-identity";
+import { buildPackageGraph } from "../../contract-model/compiler/package-graph/pipeline";
 
 export const PIPELINE_VERSION = "agreement-pipeline-1";
 
@@ -85,7 +86,12 @@ export interface AgreementPipelineResult {
      * Amendment (or other package doc) names a dated base facility but no in-text EBITDA schedule was found.
      * Fail-closed: packages need the base agreement text before definitions can resolve (package-graph).
      */
-    ebitdaBaseHold?: { reason: "AMENDMENT_NEEDS_BASE_TEXT"; namedBase: string; missing: string };
+    ebitdaBaseHold?: { reason: "AMENDMENT_NEEDS_BASE_TEXT" | "BASE_NOT_BOUND" | "AMENDED_DEFINITION"; namedBase: string; missing: string };
+    /**
+     * EBITDA measure taken from a base agreement bound by package-graph. CONFIRMED = RESOLVED link; LOWER_CONFIDENCE =
+     * REVIEW_REQUIRED link (supporting-evidence / date-mismatch). Carried on every output derived from that EBITDA.
+     */
+    ebitdaBinding?: { tier: "CONFIRMED" | "LOWER_CONFIDENCE"; baseDocumentId: string; relationship: string; resolutionMethod: string };
   };
   families: FamilySummary[];
   stats: { nodes: number; sections: number; clauses: number; xrefs: number; xrefResolved: number; baskets: number };
@@ -100,6 +106,8 @@ export interface HeadroomRow {
   limitBound?: "EXACT" | "AT_LEAST" | "AT_MOST";
   /** Filing locator for a basket usage figure. */
   usageSource?: string;
+  /** EBITDA came from a package-bound base agreement at this confidence tier. */
+  bindingTier?: "CONFIRMED" | "LOWER_CONFIDENCE";
 }
 
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
@@ -189,7 +197,15 @@ export function incurrenceRatioCapacity(ratios: readonly ComputedRatio[], text: 
   return out;
 }
 
-export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null; facilityFacts?: readonly FacilityFact[] | null }): AgreementPipelineResult {
+/** Bind an amendment to a package base document. UNRESOLVED (recital-only) links never bind. */
+export function bindAmendmentBase(amendText: string, base: { documentId: string; text: string }): { tier: "CONFIRMED" | "LOWER_CONFIDENCE"; relationship: string; resolutionMethod: string } | null {
+  const g = buildPackageGraph("pkg", "pkg", [{ documentId: "__amendment__", label: "amendment", text: amendText }, { documentId: base.documentId, label: "base agreement", text: base.text }]);
+  const rels = g.relationshipCandidates.filter((x) => x.sourceDocumentId === "__amendment__" && x.targetDocumentId === base.documentId && /AMENDS|RESTATES|SUPPLEMENTS|MODIFIES/.test(x.relationshipType));
+  const ok = rels.find((x) => x.status === "RESOLVED") ?? rels.find((x) => x.status === "REVIEW_REQUIRED");
+  return ok ? { tier: ok.status === "RESOLVED" ? "CONFIRMED" : "LOWER_CONFIDENCE", relationship: ok.relationshipType, resolutionMethod: ok.resolutionMethod } : null;
+}
+
+export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null; facilityFacts?: readonly FacilityFact[] | null; baseDocuments?: ReadonlyArray<{ documentId: string; text: string }> | null }): AgreementPipelineResult {
   const raw = args.text ?? "";
   const tree = parseDocumentTree(raw);
   const roles = new Map<string, ClauseRole>();
@@ -323,9 +339,31 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
 
   // Consolidated EBITDA optimizer → leverage debt capacity (general rules; no invented inputs).
   if (args.financials && xbrl) {
-    const term = findEbitdaMeasureTerm(tree.text);
+    let term = findEbitdaMeasureTerm(tree.text);
+    let defText = tree.text;
+    let binding: NonNullable<AgreementPipelineResult["xbrl"]>["ebitdaBinding"];
+    let baseHold: NonNullable<AgreementPipelineResult["xbrl"]>["ebitdaBaseHold"];
+    if (!term && args.baseDocuments?.length) {
+      const namedBase = namedDatedFacilityReference(tree.text) ?? "base agreement";
+      for (const b of args.baseDocuments) {
+        const bt = parseDocumentTree(b.text).text;
+        const bterm = findEbitdaMeasureTerm(bt);
+        const bind = bindAmendmentBase(tree.text, { documentId: b.documentId, text: bt });
+        if (!bind) { baseHold ??= { reason: "BASE_NOT_BOUND", namedBase, missing: "package-graph did not bind the amendment to the supplied base (recital-only / no link)" }; continue; }
+        if (!bterm) continue;
+        // Fail-closed: an amendment that rewrites the measure or its net-income base needs a conformed text.
+        const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        if ([bterm, "Consolidated Net Income", "Net Income"].some((x) => new RegExp(`["“]\\s*${esc(x)}\\s*["”]|definition\\s+of\\s+["“]?${esc(x)}`, "i").test(tree.text))) {
+          baseHold = { reason: "AMENDED_DEFINITION", namedBase, missing: `amendment rewrites "${bterm}" or its net-income base; conformed text needed` };
+          continue;
+        }
+        term = bterm; defText = bt; binding = { tier: bind.tier, baseDocumentId: b.documentId, relationship: bind.relationship, resolutionMethod: bind.resolutionMethod }; baseHold = undefined;
+        break;
+      }
+    }
     if (term) {
-      const ebitda = optimizeConsolidatedEbitda(term, tree.text, args.financials);
+      const ebitda = optimizeConsolidatedEbitda(term, defText, args.financials);
+      if (binding) { xbrl.ebitdaBinding = binding; ebitda.bindingTier = binding.tier; }
       xbrl.ebitda = ebitda;
       const levRows: Array<{ kind: string; name: string; direction: string | null; limit: string | null }> = headroom.filter((h) => h.kind === "RATIO");
       for (const r of result.ratios) {
@@ -339,10 +377,14 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
           levRows.push({ kind: "RATIO", name: r.displayName, direction: "MAX", limit });
         }
       }
-      xbrl.ratioCapacity = incurrenceRatioCapacity(result.ratios, tree.text, xbrl.decisions, args.financials);
+      xbrl.ratioCapacity = incurrenceRatioCapacity(result.ratios, tree.text, xbrl.decisions, args.financials).map((c) => (binding ? { ...c, bindingTier: binding.tier } : c));
       const lev = maxLeverageLimit(levRows);
       const debt = debtFromFinancials(args.financials);
-      if (lev != null && debt != null) xbrl.leverageCapacity = leverageDebtCapacity(ebitda, lev, debt);
+      if (lev != null && debt != null) xbrl.leverageCapacity = { ...leverageDebtCapacity(ebitda, lev, debt), ...(binding ? { bindingTier: binding.tier } : {}) };
+      // Baskets sized from this EBITDA carry the binding tier too.
+      if (binding) for (const row of headroom) if (row.kind === "BASKET" && /EBITDA/i.test(row.citation ?? "")) row.bindingTier = binding.tier;
+    } else if (baseHold) {
+      xbrl.ebitdaBaseHold = baseHold;
     } else {
       // Fail-closed: name the dated base facility when an amendment has no in-text EBITDA schedule.
       // package-graph can resolve definitions once that base text is in the package — never invent it.
