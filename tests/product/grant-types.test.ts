@@ -134,3 +134,22 @@ describe("rule 195: grandfathering-only and default-trigger clauses grant nothin
     ).toEqual(["DEBT_INCURRENCE"]);
   });
 });
+
+/**
+ * Rule 196: a residual ("other Liens") basket is pairable with an
+ * independent DEBT Permission; a specific-purpose basket is not.
+ */
+describe("rule 196: residual lien baskets", () => {
+  it("other Liens (residual catch-all) is residual", async () => {
+    const { isResidualLienBasket } = await import("../../lib/product/customer-intelligence/grant-types");
+    expect(isResidualLienBasket({ plainEnglish: "(t) other Liens securing an aggregate principal amount of obligations at no time exceeding the greater of $1,000,000,000." })).toBe(true);
+  });
+  it("a specific-purpose basket (Liens for taxes) is not residual", async () => {
+    const { isResidualLienBasket } = await import("../../lib/product/customer-intelligence/grant-types");
+    expect(isResidualLienBasket({ plainEnglish: "(a) Liens for taxes, assessments or governmental charges." })).toBe(false);
+  });
+  it("an exclusion (Liens other than Permitted Liens) is not residual", async () => {
+    const { isResidualLienBasket } = await import("../../lib/product/customer-intelligence/grant-types");
+    expect(isResidualLienBasket({ plainEnglish: "any Lien other than Permitted Liens asserted against Collateral." })).toBe(false);
+  });
+});

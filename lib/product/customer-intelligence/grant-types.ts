@@ -192,6 +192,24 @@ function isDefaultTrigger(hay: string): boolean {
   return /\b(?:CONSTITUTES?\s+(?:AN?\s+)?(?:EVENT\s+OF\s+)?DEFAULT|FAILURE\s+TO\s+(?:PAY|OBSERVE|PERFORM|COMPLY)|ASSERTED\s+AGAINST)\b/.test(hay);
 }
 
+/**
+ * Rule 196 (audit-driven): a LIEN clause is a RESIDUAL basket when
+ * its operative text grants "other Liens" — the standard drafting
+ * convention for the catch-all lien basket (Aon 6.11(t): "other
+ * Liens securing an aggregate principal amount..."). A residual
+ * basket permits liens generally, so it may pair with an
+ * independent DEBT Permission for a secured election. A
+ * specific-purpose basket ("Liens for taxes", "purchase-money
+ * Liens", "Liens on acquired property") never pairs — it permits
+ * liens only for its named purpose. The adjacent "other Liens"
+ * phrasing is the signal: "Liens other than Permitted Liens" (an
+ * exclusion, not a residual basket) does not match.
+ */
+export function isResidualLienBasket(item: { plainEnglish?: string; operativeLanguageExcerpt?: string | null }): boolean {
+  const text = `${item.plainEnglish ?? ""} ${item.operativeLanguageExcerpt ?? ""}`;
+  return /\bother\s+Liens\b/i.test(text);
+}
+
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
   // Rule 166: an event-of-default trigger is a consequence, never a
   // grant of capacity. A Defaults article genuinely contains the

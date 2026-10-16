@@ -143,17 +143,26 @@ export interface ProvisionLegalConditionFlags {
   automaticLinkOnly: boolean;
   /** Automatic-link capacity further restricted to a named asset scope. */
   assetScopeRestricted: boolean;
+  /** Rule 196: a LIEN Permission from a residual ("other Liens")
+   * basket may pair with an independent DEBT Permission in the
+   * same document for a secured election. Specific-purpose lien
+   * baskets (tax liens, purchase-money liens) never pair — only
+   * the residual catch-all does. The coverage check (lien capacity
+   * >= allocation) still gates the pair; this flag only admits
+   * the election. */
+  pairableWithDebt: boolean;
 }
 
 /** Extract legal-condition flags from raw provision/permission params JSON. */
 export function readProvisionLegalConditionFlags(raw: unknown): ProvisionLegalConditionFlags {
   if (raw == null || typeof raw !== "object" || Array.isArray(raw)) {
-    return { automaticLinkOnly: false, assetScopeRestricted: false };
+    return { automaticLinkOnly: false, assetScopeRestricted: false, pairableWithDebt: false };
   }
   const o = raw as Record<string, unknown>;
   return {
     automaticLinkOnly: o.automaticLinkOnly === true,
     assetScopeRestricted: o.assetScopeRestricted === true,
+    pairableWithDebt: o.pairableWithDebt === true,
   };
 }
 

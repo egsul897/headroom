@@ -15,7 +15,7 @@ import { buildCapacityFormulas, type SharedCapGroup } from "./capacity-formulas"
 import { detectSharedCapGroup } from "./shared-cap";
 import { parseMaintenanceRatio } from "./maintenance-ratio";
 import { buildRpWaterfall } from "./rp-waterfall";
-import { grantTypesForItem } from "./grant-types";
+import { grantTypesForItem, isResidualLienBasket } from "./grant-types";
 import { permissionCode, permissionCodePrefix } from "./permission-code";
 
 export type CompileStatus =
@@ -557,6 +557,15 @@ export async function compileAcceptedInterpretation(params: {
       where: { companyId: params.companyId, code },
     });
 
+    // Rule 196: a residual ("other Liens") LIEN basket carries
+    // pairableWithDebt in its params so the solver may pair it with
+    // an independent DEBT Permission for a secured election.
+    // Per-grant params (never mutate parsed.params — it is shared
+    // across this item's grants).
+    const grantParams =
+      grantType === "LIEN" && isResidualLienBasket(item)
+        ? { ...(parsed.params ?? {}), pairableWithDebt: true }
+        : parsed.params;
     const data = {
       companyId: params.companyId,
       documentId,
@@ -567,7 +576,7 @@ export async function compileAcceptedInterpretation(params: {
       entityScope: entityScope as never[],
       formulaType: parsed.formulaType,
       thresholdValue: new Prisma.Decimal(parsed.thresholdValue),
-      params: (parsed.params as Prisma.InputJsonValue) ?? Prisma.JsonNull,
+      params: (grantParams as Prisma.InputJsonValue) ?? Prisma.JsonNull,
       eligibilityConditions: (conditions.length ? conditions : null) as Prisma.InputJsonValue,
       termConditions: Prisma.JsonNull,
       measurementBasis: parsed.measurementBasis,
