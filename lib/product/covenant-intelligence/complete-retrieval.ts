@@ -103,6 +103,23 @@ function sectionKey(ref: string): string {
   return ref.replace(/^§/, "").replace(/\s+/g, "").toLowerCase();
 }
 
+/**
+ * Rule 71: section-ref prefix match with a segment boundary.
+ * Bare startsWith let §6.10 count as a child/target of §6.1
+ * ("6.10".startsWith("6.1")), so a prohibition at §6.1 saw
+ * §6.10's permissions as its own and suppressed the
+ * MISSING_PERMISSION_UNDER_PROHIBITION omission, and a
+ * cross-reference to §6.1 resolved to §6.10's provision.
+ * A child must equal the base or continue it at a segment
+ * boundary ("." or "("): §6.01(b) is under §6.01; §6.10 is not
+ * under §6.1.
+ */
+function sectionRefStartsWith(child: string, base: string): boolean {
+  const c = sectionKey(child);
+  const b = sectionKey(base);
+  return c === b || c.startsWith(`${b}.`) || c.startsWith(`${b}(`);
+}
+
 /** Expand the initial ranked set with related covenants, definitions, and cross-ref targets present in the corpus. */
 export function expandRetrievalSet(params: {
   question: string;
@@ -147,7 +164,7 @@ export function expandRetrievalSet(params: {
       const target = m?.[1];
       if (!target) continue;
       const peer = params.corpus.find(
-        (c) => c.sourceId === hit.sourceId && sectionKey(c.sectionRef).startsWith(sectionKey(target)),
+        (c) => c.sourceId === hit.sourceId && sectionRefStartsWith(c.sectionRef, target),
       );
       if (peer) {
         const key = `${peer.sourceId}::${sectionKey(peer.sectionRef)}`;
@@ -194,7 +211,7 @@ export function expandRetrievalSet(params: {
     for (const m of hay.matchAll(/together with[^.;]{0,80}Section\s*([\d.]+(?:\([^)]+\))?)/gi)) {
       const target = m[1]!;
       const peer = params.corpus.find(
-        (c) => c.sourceId === hit.sourceId && sectionKey(c.sectionRef).startsWith(sectionKey(target)),
+        (c) => c.sourceId === hit.sourceId && sectionRefStartsWith(c.sectionRef, target),
       );
       if (peer) {
         const key = `${peer.sourceId}::${sectionKey(peer.sectionRef)}`;
@@ -223,7 +240,7 @@ export function expandRetrievalSet(params: {
           c.sourceId === hit.sourceId &&
           c.category === hit.category &&
           (c.posture === "ENUMERATED_PERMISSION" || c.posture === "CONDITIONAL_PERMISSION") &&
-          sectionKey(c.sectionRef).startsWith(sectionKey(hit.sectionRef).replace(/\([^)]*\)$/, "")),
+          sectionRefStartsWith(c.sectionRef, hit.sectionRef.replace(/\([^)]*\)$/, "")),
       );
       for (const p of childPerms.slice(0, 6)) {
         const key = `${p.sourceId}::${sectionKey(p.sectionRef)}`;

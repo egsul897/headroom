@@ -77,3 +77,41 @@ describe("expandRetrievalSet related-family omissions", () => {
     expect(omissions.filter((o) => o.kind === "MISSING_RELATED_FAMILY")).toHaveLength(0);
   });
 });
+
+describe("expandRetrievalSet section-ref boundary matching (rule 71)", () => {
+  it("does not treat §6.10 as a child of a §6.1 prohibition", () => {
+    const prohibition = item("6.1", "DEBT_INCURRENCE", "GENERAL_PROHIBITION");
+    const otherSectionPerm = item("6.10", "DEBT_INCURRENCE", "ENUMERATED_PERMISSION");
+    const { omissions } = expandRetrievalSet({
+      question: "Can we incur debt?",
+      initial: [prohibition],
+      corpus: [prohibition, otherSectionPerm],
+    });
+    expect(omissions.filter((o) => o.kind === "MISSING_PERMISSION_UNDER_PROHIBITION")).toHaveLength(1);
+  });
+
+  it("still treats §6.01(b) as a child of a §6.01(a) prohibition", () => {
+    const prohibition = item("6.01(a)", "DEBT_INCURRENCE", "GENERAL_PROHIBITION");
+    const childPerm = item("6.01(b)", "DEBT_INCURRENCE", "ENUMERATED_PERMISSION");
+    const { expanded, omissions } = expandRetrievalSet({
+      question: "Can we incur debt?",
+      initial: [prohibition],
+      corpus: [prohibition, childPerm],
+    });
+    expect(expanded.some((e) => e.sectionRef === "6.01(b)" && e.role === "PERMISSION")).toBe(true);
+    expect(omissions.filter((o) => o.kind === "MISSING_PERMISSION_UNDER_PROHIBITION")).toHaveLength(0);
+  });
+
+  it("does not resolve a cross-reference to §6.1 to §6.10's provision", () => {
+    const hit = item("5.01", "DEBT_INCURRENCE", "GENERAL_PROHIBITION");
+    hit.crossReferences = ["Section 6.1"];
+    const other = item("6.10", "DEBT_INCURRENCE", "ENUMERATED_PERMISSION");
+    const { expanded, omissions } = expandRetrievalSet({
+      question: "Can we incur debt?",
+      initial: [hit],
+      corpus: [hit, other],
+    });
+    expect(expanded.some((e) => e.sectionRef === "6.10" && e.role === "CROSS_REFERENCE")).toBe(false);
+    expect(omissions.filter((o) => o.kind === "MISSING_CROSS_REF_TARGET")).toHaveLength(1);
+  });
+});
