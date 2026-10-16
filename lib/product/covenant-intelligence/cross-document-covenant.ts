@@ -31,6 +31,7 @@ import {
   extractEffectiveDateHint,
   type OperativeResolutionView,
 } from "../customer-intelligence/operative-resolution";
+import { extractUnlessGate } from "./unless-gate";
 
 export const CROSS_DOCUMENT_COVENANT_VERSION = "product.cross-document-covenant.v1";
 
@@ -333,9 +334,9 @@ function evaluateFactAgainstTxn(
   if (fact.posture === "PROHIBITION" && fact.capacityUsd == null && fact.conditions.length === 0) {
     // Absolute prohibition (e.g. RP unless no Default) — condition-gated prohibition.
     if (fact.conditions.length === 0 && /shall not|will not|may not/i.test(fact.statement)) {
-      const gate = fact.statement.match(/unless (.+)$/i);
+      const gate = extractUnlessGate(fact.statement);
       if (gate) {
-        conditions.push(gate[1]!.replace(/\.$/, ""));
+        conditions.push(gate);
         return { stance: "CONDITIONAL", permissions, prohibitions, conditions, unknowns };
       }
       prohibitions.push(`${fact.documentLabel} §${fact.sectionRef}: ${fact.statement}`);
