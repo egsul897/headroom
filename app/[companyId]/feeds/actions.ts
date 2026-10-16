@@ -93,21 +93,38 @@ export async function approveFeedItem(companyId: string, id: string) {
       );
     }
     const supplied = completed.value;
-    await prisma.financialSnapshot.create({
-      data: {
-        companyId,
-        asOfDate: supplied.asOfDate,
-        ebitda: supplied.ebitda,
-        cash: supplied.cash,
-        interestExpense: supplied.interestExpense,
-        cumulativeNetIncome: supplied.cumulativeNetIncome,
-        equityProceedsSinceIssue: supplied.equityProceedsSinceIssue,
-        assumedNewDebtRatePct: supplied.assumedNewDebtRatePct,
-        totalDebt: supplied.totalDebt,
-        securedDebt: supplied.securedDebt,
-        notes: supplied.notes,
-      },
+    // Rule 116: same upsert discipline as rule 92's manual
+    // financials — a blind create here would mint a duplicate
+    // same-date snapshot row, and the cohort resolver treats ANY
+    // same-date multiplicity as AMBIGUOUS, withholding capacity
+    // everywhere. Exactly one existing row updates in place;
+    // multiple refuse fail-closed.
+    const existing = await prisma.financialSnapshot.findMany({
+      where: { companyId, asOfDate: supplied.asOfDate },
     });
+    if (existing.length > 1) {
+      throw new Error(
+        `SNAPSHOT_UPDATE ${id} refused: ${existing.length} FinancialSnapshot rows already exist for ${supplied.asOfDate.toISOString().slice(0, 10)} — resolve the ambiguity before approving. Item left PENDING.`,
+      );
+    }
+    const snapshotData = {
+      companyId,
+      asOfDate: supplied.asOfDate,
+      ebitda: supplied.ebitda,
+      cash: supplied.cash,
+      interestExpense: supplied.interestExpense,
+      cumulativeNetIncome: supplied.cumulativeNetIncome,
+      equityProceedsSinceIssue: supplied.equityProceedsSinceIssue,
+      assumedNewDebtRatePct: supplied.assumedNewDebtRatePct,
+      totalDebt: supplied.totalDebt,
+      securedDebt: supplied.securedDebt,
+      notes: supplied.notes,
+    };
+    if (existing.length === 1) {
+      await prisma.financialSnapshot.update({ where: { id: existing[0]!.id }, data: snapshotData });
+    } else {
+      await prisma.financialSnapshot.create({ data: snapshotData });
+    }
   } else if (item.kind === "LEDGER_ENTRY") {
     const payload = item.payload as unknown as FeedQueueLedgerPayload;
     await prisma.ledgerEntry.create({
