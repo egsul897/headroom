@@ -65,3 +65,32 @@ describe("rule 183a: existing / amended-and-restated instrument bridge", () => {
     ).toEqual(["6.01"]);
   });
 });
+
+describe("rule 184: wider amendatory phrasings", () => {
+  it("detects 'definition of X in Section 1.01 is amended by deleting'", () => {
+    expect(
+      extractAmendedSectionRefs(
+        'The definition of "Letter of Credit Sublimit" in Section 1.01 is amended by deleting "$150,000,000" and replacing it with "$325,000,000".',
+      ),
+    ).toContain("1.01");
+  });
+  it("detects 'second sentence in Section 2.14(a) is replaced'", () => {
+    expect(
+      extractAmendedSectionRefs(
+        "The second sentence in Section 2.14(a) is replaced in its entirety as follows:",
+      ),
+    ).toContain("2.14(a)");
+  });
+  it("detects 'Section 1.01 is amended by deleting' (no hereby)", () => {
+    expect(
+      extractAmendedSectionRefs("Section 1.01 is amended by deleting the reference to $150,000,000."),
+    ).toContain("1.01");
+  });
+  it("detects Schedule amendments", () => {
+    expect(
+      extractAmendedSectionRefs(
+        "Schedule 2.01 to the Original Credit Agreement is hereby amended and restated in its entirety.",
+      ),
+    ).toContain("Schedule 2.01");
+  });
+});
