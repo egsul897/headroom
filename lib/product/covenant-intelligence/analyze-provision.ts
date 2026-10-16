@@ -171,7 +171,8 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
   // "Neither X nor Y shall ..." is a prohibition with no "not" — a common
   // drafting form in credit agreements and indentures alike. Without this
   // it falls through to OBLIGATION, inverting the covenant's meaning.
-  if (/\bneither\b.{0,120}\bshall\b/i.test(hay)) {
+  // [\s\S] (not ".") spans newlines: PDF excerpts break lines mid-sentence.
+  if (/\bneither\b[\s\S]{0,120}\bshall\b/i.test(hay)) {
     return "GENERAL_PROHIBITION";
   }
   // A bare letter-clause "(a) …" is not by itself a permission — EoD
