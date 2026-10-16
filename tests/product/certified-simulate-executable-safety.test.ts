@@ -54,6 +54,8 @@ function stubCertified(over: Partial<CertifiedTransactionAttempt> = {}): Certifi
     cutoffState: "RESOLVED",
     reportingPeriodKey: "2026Q2",
     approvedSnapshotId: "snap-1",
+    cutoffSnapshotId: "snap-1",
+    cutoffSnapshotStatus: "APPROVED",
     ledgerUsageCount: 0,
     verifiedPackagePresent: true,
     capacity: { outcome: "EXECUTED" } as CertifiedTransactionAttempt["capacity"],
