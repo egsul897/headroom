@@ -74,6 +74,46 @@ describe("grower % attached to its base", () => {
 });
 
 /**
+ * Rule 58 — CNI share % must be the % attached to CNI, never
+ * the hardcoded 0.5 the compiler used to invent.
+ *
+ * The old compile-accepted builder branch set
+ * cniSharePct = /net income|CNI/ ? 0.5 : undefined — any mention
+ * of net income/CNI added 0.5 × max(0, CNI) of invented
+ * capacity. The share is now parsed from the text
+ * ("50% of Consolidated Net Income" → 0.5) and is undefined +
+ * missingFields when mentioned but unparseable.
+ */
+describe("CNI share % attached to its base", () => {
+  it("parses 50% of Consolidated Net Income", () => {
+    expect(parsePctOf("Available Amount plus 50% of Consolidated Net Income.", "CNI")).toBeCloseTo(0.5, 9);
+  });
+
+  it("parses a non-50% CNI share (100% is not 50%)", () => {
+    expect(
+      parsePctOf("Available Amount plus 100% of Consolidated Net Income.", "CNI"),
+    ).toBeCloseTo(1.0, 9);
+  });
+
+  it("parses the bare CNI abbreviation", () => {
+    expect(parsePctOf("Available Amount plus 75% of CNI.", "CNI")).toBeCloseTo(0.75, 9);
+  });
+
+  it("ignores an unrelated earlier %", () => {
+    expect(
+      parsePctOf(
+        "The Company must maintain at least 50% ownership of each Subsidiary. Available Amount plus 25% of Consolidated Net Income.",
+        "CNI",
+      ),
+    ).toBeCloseTo(0.25, 9);
+  });
+
+  it("returns null when CNI is mentioned without an attached %", () => {
+    expect(parsePctOf("Available Amount plus Consolidated Net Income.", "CNI")).toBeNull();
+  });
+});
+
+/**
  * Rule 24 — the "Xx" ratio form only counts in a leverage sentence.
  *
  * The old parseRatio took the first "Xx" anywhere, so an

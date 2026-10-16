@@ -88,19 +88,28 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   const outstanding = /outstanding amount at any time|currently outstanding/i.test(basketText);
 
   if (builder && money != null) {
+    const cniMentioned = /net income|CNI/i.test(basketText);
+    const cniShare = parsePctOf(basketText, "CNI");
     return {
       formulaType: "BUILDER_BASKET",
       thresholdValue: money,
       params: {
-        pctEbitda: ebitdaBase && pctEbitda != null ? pctEbitda : 0,
-        cniSharePct: /net income|CNI/i.test(basketText) ? 0.5 : undefined,
+        // Rule 58: never invent percentages. An unparseable
+        // grower % is undefined + missingFields, NOT 0 (which
+        // silently zeroes the grower) and NOT 0.5 for CNI
+        // (which ADDED 0.5 × max(0, CNI) of invented capacity).
+        pctEbitda: ebitdaBase && pctEbitda != null ? pctEbitda : undefined,
+        cniSharePct: cniShare ?? undefined,
         includeEquityProceeds: /equity/i.test(basketText),
       },
       amountKind: "FIXED",
       measurementBasis: "CUMULATIVE_INCURRED",
       notes: ["Compiled builder/available-amount starter from counsel-accepted analysis"],
       modelingStatus: "MODELED",
-      missingFields: ebitdaBase && pctEbitda == null ? ["builder pct of EBITDA"] : [],
+      missingFields: [
+        ...(ebitdaBase && pctEbitda == null ? ["builder pct of EBITDA"] : []),
+        ...(cniMentioned && cniShare == null ? ["builder cni share %"] : []),
+      ],
     };
   }
 

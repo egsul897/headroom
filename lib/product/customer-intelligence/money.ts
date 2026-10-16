@@ -29,11 +29,15 @@ export function parseMoneyMillions(text: string): number | null {
  * in the same section became the greater-of grower instead of the
  * true "10% of EBITDA". The % must be the one modifying the base.
  */
-export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS"): number | null {
+export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS" | "CNI"): number | null {
   const re =
     base === "EBITDA"
       ? /(\d+(?:\.\d+)?)\s*%\s*of\s+(?:[A-Za-z]+\s+){0,2}EBITDA/i
-      : /(\d+(?:\.\d+)?)\s*%\s*of\s+(?:[A-Za-z]+\s+){0,2}Total\s+Assets/i;
+      : base === "CNI"
+        // "Consolidated Net Income" is three words, so the gap
+        // allows up to two qualifier words ("the Borrower's").
+        ? /(\d+(?:\.\d+)?)\s*%\s*of\s+(?:[A-Za-z]+(?:'s)?\s+){0,2}?(?:Consolidated\s+Net\s+Income|CNI)\b/i
+        : /(\d+(?:\.\d+)?)\s*%\s*of\s+(?:[A-Za-z]+\s+){0,2}Total\s+Assets/i;
   const m = text.match(re);
   if (!m) return null;
   const n = Number(m[1]) / 100;
