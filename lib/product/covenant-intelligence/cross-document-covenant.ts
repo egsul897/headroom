@@ -501,6 +501,24 @@ function evaluateFactAgainstTxn(
         );
         return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns };
       }
+      // Rule 74: a capped prohibition does not prohibit a
+      // within-cap amount. The old fallthrough returned
+      // PROHIBITS for amount <= capacity, falsely prohibiting
+      // permitted transactions — and, as an AND constraint, it
+      // poisoned the whole document verdict to PROHIBITED.
+      // Conditions still need evidence (fail closed).
+      permissions.push(
+        `${fact.documentLabel} §${fact.sectionRef}: amount within ceiling $${fact.capacityUsd.toLocaleString("en-US")}.`,
+      );
+      if (conditions.length > 0) {
+        for (const c of conditions) {
+          unknowns.push(
+            `${fact.documentLabel} §${fact.sectionRef}: condition not evidenced as satisfied — ${c}`,
+          );
+        }
+        return { stance: "CONDITIONAL", permissions, prohibitions, conditions, unknowns };
+      }
+      return { stance: "PERMITS", permissions, prohibitions, conditions, unknowns };
     }
     prohibitions.push(`${fact.documentLabel} §${fact.sectionRef}: ${fact.statement}`);
     return { stance: "PROHIBITS", permissions, prohibitions, conditions, unknowns };
