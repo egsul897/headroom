@@ -10,6 +10,7 @@
  *     acquisition / disposition adjustments, net amounts that can turn negative), or an undefined / adjusted base.
  */
 import { borrowerInput, type IssuerFinancials } from "./companyfacts";
+import { gainDeduction } from "./ebitda-optimizer";
 
 export type DefinitionKind = "EBITDA" | "INTEREST";
 export type ItemSign = "+" | "-" | "?";
@@ -343,7 +344,12 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
     }
     if (TWO_SIDED.test(t)) { it.sign = "?"; it.note = "two-sided adjustment"; continue; }
     if (groupSign === "+" && GAIN_LIKE.test(t.replace(/net\s+of\s+interest\s+income|based\s+on\s+income|income\s+tax(?:es)?|determining\s+(?:Consolidated\s+)?Net\s+Income|(?:Consolidated\s+)?Net\s+Income|decreasing\s+\w+\s+Net\s+Income/gi, "")) && !COST_LIKE.test(t)) { it.sign = "?"; it.note = "income/gain-like item in an add-back group"; continue; }
-    if (groupSign === "-") { it.note = "unmapped deduction"; continue; }
+    if (groupSign === "-") {
+      // A deduction that is exactly one filed gain item is modelled from filings (gain deducted; a net loss deducts 0).
+      const gd = gainDeduction(t, fin);
+      if (gd) { it.coverage = "FULL"; it.concepts.push({ concept: gd.concept, value: gd.value.toString() }); it.value = (-gd.value).toString(); it.note = "deduction from exact filed gain"; continue; }
+      it.note = "unmapped deduction"; continue;
+    }
     const mapped = CAPPED.test(t) ? null : mapEbitdaItem(t, fin, text, depth);
     if (mapped === "TWO_SIDED") { it.sign = "?"; it.note = "referenced definition not derivable (could lower the total)"; continue; }
     if (!mapped) { it.note = CAPPED.test(t) ? "capped add-back (counted as 0 in the lower bound)" : COST_LIKE.test(t) ? "unmapped add-back" : "unclassified item"; if (!COST_LIKE.test(t)) it.sign = "?"; continue; }

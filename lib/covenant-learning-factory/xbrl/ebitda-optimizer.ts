@@ -461,7 +461,45 @@ export function signedTwoSided(t: string, fin: IssuerFinancials): { concept: str
     if (gains && !losses) return null;
     return { concept: "ForeignCurrencyTransactionGainLossBeforeTax (signed, excluded)", value: -x };
   }
+  const g = gainLossItem(flat, fin);
+  if (g) {
+    const losses = /\blosses?\b/i.test(flat), gains = /\bgains?\b/i.test(flat);
+    if (losses && !gains) return { concept: `${g.concept} (losses only)`, value: g.value < 0n ? -g.value : 0n };
+    if (gains && losses) return { concept: `${g.concept} (signed, excluded)`, value: -g.value };
+    return null;
+  }
   const NCI = /\b(?:minority|non-?controlling)\s+interests?(?:\s+(?:expense|income))?\b/i;
   if (NCI.test(flat) && !rest(NCI).replace(/\b(?:minority|non-?controlling|interests?|expense)\b/gi, "").trim()) { const x = v("NetIncomeLossAttributableToNoncontrollingInterest"); return x == null ? null : { concept: "NetIncomeLossAttributableToNoncontrollingInterest (signed)", value: x }; }
+  return null;
+}
+
+/**
+ * A line that is exactly one filed gain/(loss) item: sale / disposition of assets or property, or extinguishment of
+ * debt. Returns the filed signed figure (positive = gain). Any other operative word (extraordinary, non-cash,
+ * non-operating, unusual, …) → null: the filed figure would not be the whole line.
+ */
+export function gainLossItem(flat: string, fin: IssuerFinancials): { concept: string; value: bigint } | null {
+  const v = (cs: string[]) => { for (const c of cs) { const x = fin.values.find((f) => f.metric === "item" && f.concept === c); if (x) return { concept: c, value: BigInt(x.value) }; } return null; };
+  const s = flat.replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ");
+  if (/extraordinary|non-?cash|non-?operating|unusual|non-?recurring|infrequent|other\s+than|including|write|impair|casualty|discontinued|hedg|currency|equity\s+in/i.test(s)) return null;
+  const residue = (re: RegExp) => s.replace(re, " ").replace(/\b(?:any|all|the|of|its|such|Person|for|period|and|or|in|each|case|plus|minus|less|to|extent|included|deducted|added|calculating|determining|computing|Consolidated|Net|Income|Borrower|Company|Issuer|Subsidiaries|Restricted|amount|aggregate|net|realized|resulting|from|on|with|respect|thereto|attributable|arising|other|gains?|loss(?:es)?|\(?or\)?|\/|outside|ordinary|course|business)\b|[^A-Za-z]+/gi, " ").trim();
+  const SALE = /\b(?:sales?|dispositions?|disposals?|transfers?)\s+(?:of\s+)?(?:any\s+)?(?:assets?|property|properties|real\s+estate|investments?|fixed\s+assets|capital\s+assets|property,?\s+plant\s+(?:and|&)\s+equipment)\b/i;
+  if (SALE.test(s) && !residue(SALE)) return v(["GainLossOnDispositionOfAssets", "GainLossOnDispositionOfAssets1", "GainLossOnSaleOfPropertyPlantEquipment"]);
+  const EXT = /\b(?:early\s+)?(?:extinguishment|retirement|repurchase|redemption)\s+of\s+(?:any\s+)?(?:debt|Indebtedness)\b/i;
+  if (EXT.test(s) && !residue(EXT)) return v(["GainsLossesOnExtinguishmentOfDebt"]);
+  return null;
+}
+
+/**
+ * Deduction line ("minus gains on sales of assets") that is exactly one filed gain item: the amount deducted is the
+ * filed gain (0 when the filing shows a net loss — a loss is not a gain to deduct). Equity-method income likewise.
+ */
+export function gainDeduction(t: string, fin: IssuerFinancials): { concept: string; value: bigint } | null {
+  const flat = t.replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+  if (/\blosses?\b/i.test(flat) && !/\bgains?\b/i.test(flat)) return null;
+  const g = gainLossItem(flat, fin);
+  if (g) return { concept: `${g.concept} (gains only, deducted)`, value: g.value > 0n ? g.value : 0n };
+  const signed = signedTwoSided(flat, fin);
+  if (signed && /EquityMethod/.test(signed.concept)) { const x = -signed.value; return { concept: "IncomeLossFromEquityMethodInvestments (income only, deducted)", value: x > 0n ? x : 0n }; }
   return null;
 }
