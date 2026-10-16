@@ -144,9 +144,12 @@ export function SimulateClient({
     [solverContext]
   );
 
-  function commit(kind: "DIVIDEND" | "INVESTMENT", amount: number) {
+  // Rule 134: the server re-verifies the simulation before
+  // committing, so the client must pass the document whose
+  // waterfall was actually tested — not just the amount.
+  function commit(kind: "DIVIDEND" | "INVESTMENT", amount: number, documentId: string) {
     startTransition(async () => {
-      await commitRestrictedPayment(companyId, kind, amount);
+      await commitRestrictedPayment(companyId, kind, amount, documentId);
       router.refresh();
     });
   }
@@ -214,7 +217,7 @@ export function SimulateClient({
           amount={rpAmt}
           setAmount={setRpAmt}
           kind="dividend"
-          onCommit={(amt) => commit("DIVIDEND", amt)}
+          onCommit={(amt, documentId) => commit("DIVIDEND", amt, documentId)}
           pending={isPending}
           definedTermsByProvision={definedTermsByProvision}
         />
@@ -228,7 +231,7 @@ export function SimulateClient({
           amount={invAmt}
           setAmount={setInvAmt}
           kind="investment"
-          onCommit={(amt) => commit("INVESTMENT", amt)}
+          onCommit={(amt, documentId) => commit("INVESTMENT", amt, documentId)}
           pending={isPending}
           definedTermsByProvision={definedTermsByProvision}
         />
@@ -453,7 +456,7 @@ function RpPanel({
   amount: number;
   setAmount: (n: number) => void;
   kind: RestrictedPaymentKind;
-  onCommit: (amount: number) => void;
+  onCommit: (amount: number, documentId: string) => void;
   pending: boolean;
   definedTermsByProvision: DefinedTermsMap;
 }) {
@@ -536,7 +539,7 @@ function RpPanel({
             className="button-primary"
             style={{ marginTop: 12, padding: "9px 14px", border: "none", borderRadius: 5 }}
             disabled={pending}
-            onClick={() => onCommit(amount)}
+            onClick={() => onCommit(amount, doc.id)}
           >
             {pending ? "Committing…" : "Commit to ledger — reduces shared pool"}
           </button>
