@@ -49,6 +49,9 @@ export function projectToLegacySnapshot(state: FinancialState): LegacySnapshotPr
       ...(state.balanceSheetFacts.totalAssets?.value != null
         ? { totalAssets: state.balanceSheetFacts.totalAssets.value }
         : {}),
+      ...(state.covenantMetricFacts.netWorth?.value != null
+        ? { netWorth: state.covenantMetricFacts.netWorth.value }
+        : {}),
     },
   };
 }

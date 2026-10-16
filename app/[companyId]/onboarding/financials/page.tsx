@@ -21,6 +21,7 @@ const FIELDS: { name: string; label: string; step?: string; required?: boolean }
   { name: "assumedNewDebtRatePct", label: "Assumed new-debt coupon (%)", step: "0.01", required: true },
   { name: "fixedCharges", label: "Fixed charges ($M, optional)", required: false },
   { name: "totalAssets", label: "Consolidated total assets ($M, optional — growers)", required: false },
+  { name: "netWorth", label: "Consolidated net worth ($M, optional — growers; the agreement's defined Net Worth, not GAAP equity)", required: false },
 ];
 
 export default async function OnboardingFinancialsPage({ params }: { params: Promise<{ companyId: string }> }) {

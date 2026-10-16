@@ -71,6 +71,23 @@ describe("grower % attached to its base", () => {
   it("returns null when the base has no attached %", () => {
     expect(parsePctOf("Fixed basket of $150.0 million.", "EBITDA")).toBeNull();
   });
+
+  it("Net Worth grower: bare, parenthesized, and qualified forms (Rule 186)", () => {
+    // Aon 6.16(l) real language: "ten percent (10%) of Consolidated Net Worth".
+    expect(parsePctOf("other Indebtedness in an aggregate principal amount outstanding at no time exceeding an amount equal to the greater of $1,000,000,000 or ten percent (10%) of Consolidated Net Worth at such time.", "NET_WORTH")).toBeCloseTo(0.1, 9);
+    expect(parsePctOf("greater of $50 million and 15% of Net Worth", "NET_WORTH")).toBeCloseTo(0.15, 9);
+    expect(parsePctOf("greater of $50 million and (12.5%) of the Borrower's Consolidated Net Worth", "NET_WORTH")).toBeCloseTo(0.125, 9);
+  });
+
+  it("Net Worth never matches Net Income (separate defined terms)", () => {
+    expect(parsePctOf("greater of $50 million and 50% of Consolidated Net Income", "NET_WORTH")).toBeNull();
+    expect(parsePctOf("greater of $50 million and 10% of Consolidated Net Worth", "CNI")).toBeNull();
+  });
+
+  it("parenthesized form works for the older bases too (Rule 186)", () => {
+    expect(parsePctOf("greater of $150.0 million and twenty percent (20%) of Consolidated EBITDA", "EBITDA")).toBeCloseTo(0.2, 9);
+    expect(parsePctOf("Liens not to exceed five percent (5%) of Consolidated Total Assets.", "TOTAL_ASSETS")).toBeCloseTo(0.05, 9);
+  });
 });
 
 /**

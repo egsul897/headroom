@@ -295,6 +295,7 @@ export function attachNumericalCapacity(params: {
       securedDebt: params.financials.securedDebt,
       cash: params.financials.cash,
       totalAssets: params.financials.totalAssets ?? null,
+      netWorth: params.financials.netWorth ?? null,
     },
     pathwayCapacities,
     documentSummaries,

@@ -80,6 +80,64 @@ describe("compile-accepted formula parsing", () => {
     expect(evaluated.capacity).toBe(84); // max(50, 0.03*2800)
   });
 
+  it("parses the real Aon greater-of Net Worth basket (Rule 186)", () => {
+    const item = {
+      sectionRef: "6.16",
+      heading: "Indebtedness",
+      category: "OTHER",
+      materialBasketsThresholds: [
+        "other Indebtedness in an aggregate principal amount outstanding at no time exceeding an amount equal to the greater of $1,000,000,000 or ten percent (10%) of Consolidated Net Worth at such time.",
+      ],
+      permissions: ["The Borrower may incur Indebtedness not exceeding the greater of $1,000,000,000 or ten percent (10%) of Consolidated Net Worth."],
+      plainEnglish: "Permits other Indebtedness up to the greater of $1,000,000,000 or ten percent (10%) of Consolidated Net Worth.",
+      operativeLanguageExcerpt: "other Indebtedness in an aggregate principal amount outstanding at no time exceeding an amount equal to the greater of $1,000,000,000 or ten percent (10%) of Consolidated Net Worth at such time.",
+    } as never;
+    const parsed = parseCounselFormulaForTest(item);
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("GREATER_OF_FLAT_OR_PCT_NET_WORTH");
+    expect(parsed.thresholdValue).toBe(1000);
+    expect(parsed.params?.pctNetWorth).toBeCloseTo(0.1, 9);
+    expect(parsed.missingFields).toEqual([]);
+  });
+
+  it("Net Worth grower with unparseable % falls back to the flat floor with a missing-field disclosure (Rule 186)", () => {
+    const item = {
+      sectionRef: "6.16",
+      heading: "Indebtedness",
+      category: "OTHER",
+      materialBasketsThresholds: [
+        "other Indebtedness not exceeding the greater of $1,000,000,000 or a percentage of Consolidated Net Worth to be determined.",
+      ],
+      permissions: ["The Borrower may incur Indebtedness not exceeding the greater of $1,000,000,000 or a percentage of Consolidated Net Worth."],
+      plainEnglish: "Permits other Indebtedness up to the greater of $1,000,000,000 or a percentage of Consolidated Net Worth.",
+      operativeLanguageExcerpt: "other Indebtedness not exceeding the greater of $1,000,000,000 or a percentage of Consolidated Net Worth.",
+    } as never;
+    const parsed = parseCounselFormulaForTest(item);
+    expect(parsed.formulaType).toBe("FLAT_AMOUNT");
+    expect(parsed.thresholdValue).toBe(1000);
+    expect(parsed.missingFields).toContain("grower_%_net_worth");
+  });
+
+  it("evaluates the Net Worth grower via the covenant engine; missing Net Worth is review_required (Rule 186)", async () => {
+    const { evaluateProvision, computeLeverageMetrics } = await import("../../lib/covenant-engine");
+    const provision = {
+      id: "t", documentId: "d", code: "grower-nw", basketName: "General debt", sectionRef: "6.16",
+      formulaType: "GREATER_OF_FLAT_OR_PCT_NET_WORTH", thresholdValue: 1000, params: { pctNetWorth: 0.1 },
+    } as never;
+    const fin = {
+      ebitda: 500, cash: 100, interestExpense: 80, cumulativeNetIncome: 400,
+      equityProceedsSinceIssue: 0, assumedNewDebtRatePct: 6, totalDebt: 1200, securedDebt: 800,
+      netWorth: 15000,
+    };
+    const evaluated = evaluateProvision(provision, fin, computeLeverageMetrics(fin));
+    expect(evaluated.status).toBe("modeled");
+    expect(evaluated.capacity).toBe(1500); // max(1000, 0.10*15000)
+    const noNw = evaluateProvision(provision, { ...fin, netWorth: undefined } as never, computeLeverageMetrics(fin));
+    expect(noNw.status).toBe("review_required");
+    const noPct = evaluateProvision({ ...provision, params: {} } as never, fin, computeLeverageMetrics(fin));
+    expect(noPct.status).toBe("review_required");
+  });
+
   it("refuses MODELED compile when no numeric threshold exists", () => {
     const bare = summary.items.find(
       (i) => !(i.materialBasketsThresholds ?? []).length && !(i.permissions ?? []).some((p) => /\$/.test(p)),

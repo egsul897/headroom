@@ -73,6 +73,7 @@ export type FormulaType =
   | "FLAT_NET_OF_DEBT"
   | "GREATER_OF_FLAT_OR_PCT_EBITDA"
   | "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
+  | "GREATER_OF_FLAT_OR_PCT_NET_WORTH"
   | "LEVERAGE_RATIO_ROOM"
   | "COVERAGE_RATIO_ROOM"
   | "BUILDER_BASKET"
@@ -112,6 +113,8 @@ export interface FormulaParams {
   pctEbitda?: number;
   /** GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS: percentage of Consolidated Total Assets (e.g. 0.03 for 3%). */
   pctTotalAssets?: number;
+  /** GREATER_OF_FLAT_OR_PCT_NET_WORTH: percentage of Consolidated Net Worth (e.g. 0.10 for 10%). */
+  pctNetWorth?: number;
   /** LEVERAGE_RATIO_ROOM, RATIO_GATE: which net-leverage measure to test ("total" default, or "secured"). */
   debtBasis?: DebtBasis;
   /** FLAT_NET_OF_DEBT: which gross debt outstanding to net the flat basket against. */
@@ -250,6 +253,16 @@ export interface FinancialSnapshotInput {
    * Required to model GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS growers; absent → review_required.
    */
   totalAssets?: number;
+  /**
+   * Consolidated Net Worth ($M, the agreement's defined term) when
+   * supplied on the financial snapshot. Required to model
+   * GREATER_OF_FLAT_OR_PCT_NET_WORTH growers; absent →
+   * review_required. Deliberately NOT defaulted from GAAP total
+   * equity: covenant Net Worth definitions routinely adjust GAAP
+   * equity (intangibles, minority interests, ...), so the two
+   * are not the same number.
+   */
+  netWorth?: number;
 }
 
 export type LedgerBasket = "EQUITY" | "DEBT_INCUR" | "DEBT_REPAY" | "ASSET_SALE" | "DIVIDEND" | "INVESTMENT";
@@ -395,6 +408,36 @@ export function evaluateProvision(
             label: `${(pct * 100).toFixed(1)}% of Consolidated Total Assets`,
             sectionRef: p.sectionRef,
             value: pct * fin.totalAssets,
+          },
+        ],
+      };
+    }
+    case "GREATER_OF_FLAT_OR_PCT_NET_WORTH": {
+      if (params.pctNetWorth === undefined || params.pctNetWorth === null) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Worth basket — params.pctNetWorth is missing; refusing rather than assuming 0%.`,
+        };
+      }
+      const pct = params.pctNetWorth;
+      if (fin.netWorth == null || !Number.isFinite(fin.netWorth) || fin.netWorth < 0) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Worth basket — enter Consolidated Net Worth (the agreement's defined term, not GAAP equity) on the financial snapshot to evaluate the grower leg (fixed floor $${p.thresholdValue}M is not presented alone as remaining capacity).`,
+        };
+      }
+      return {
+        provision: p,
+        status: "modeled",
+        capacity: Math.max(p.thresholdValue, pct * fin.netWorth),
+        components: [
+          { label: "Fixed-dollar floor", sectionRef: p.sectionRef, value: p.thresholdValue },
+          {
+            label: `${(pct * 100).toFixed(1)}% of Consolidated Net Worth`,
+            sectionRef: p.sectionRef,
+            value: pct * fin.netWorth,
           },
         ],
       };
@@ -1819,6 +1862,7 @@ export async function loadCompanyCovenantData(
   }
   const snapshot = snapshotResolution.row;
   const totalAssets = extractTotalAssetsFromStates(financialStates);
+  const netWorth = extractNetWorthFromStates(financialStates);
 
   return {
     companyId,
@@ -1852,12 +1896,32 @@ export async function loadCompanyCovenantData(
       totalDebt: toNumber(snapshot.totalDebt),
       securedDebt: toNumber(snapshot.securedDebt),
       ...(totalAssets != null ? { totalAssets } : {}),
+      ...(netWorth != null ? { netWorth } : {}),
     },
     ledger: ledger.map((e) => ({ basket: e.basket, amount: toNumber(e.amount), direction: e.direction })),
   };
 }
 
 /** Read Consolidated Total Assets ($M) from the newest FinancialState balanceSheetFacts, if present. */
+/**
+ * Read covenant-defined Consolidated Net Worth ($M) from the
+ * newest FinancialState's covenantMetricFacts, if present. The
+ * GAAP total-equity figure is deliberately NOT used: covenant
+ * Net Worth definitions adjust GAAP equity, so the two are not
+ * the same number (see FinancialSnapshotInput.netWorth).
+ */
+function extractNetWorthFromStates(
+  states: Array<{ asOfDate: Date; covenantMetricFacts?: unknown; balanceSheetFacts?: unknown }>,
+): number | undefined {
+  for (const state of states) {
+    const facts = state.covenantMetricFacts as { netWorth?: { value?: unknown } } | null;
+    const raw = facts?.netWorth?.value;
+    const n = typeof raw === "number" ? raw : typeof raw === "string" ? Number(raw) : NaN;
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  return undefined;
+}
+
 function extractTotalAssetsFromStates(
   states: Array<{ asOfDate: Date; balanceSheetFacts: unknown }>,
 ): number | undefined {

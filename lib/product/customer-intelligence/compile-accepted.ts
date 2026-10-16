@@ -83,10 +83,12 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   // "50% ownership" in the same section is not the grower).
   const pctEbitda = parsePctOf(basketText, "EBITDA");
   const pctAssets = parsePctOf(basketText, "TOTAL_ASSETS");
+  const pctNetWorth = parsePctOf(basketText, "NET_WORTH");
   const ratio = parseRatio(basketText);
   const greaterOf = /greater of/i.test(basketText);
   const ebitdaBase = /EBITDA/i.test(basketText);
   const assetsBase = /Total Assets|Consolidated Total Assets/i.test(basketText);
+  const netWorthBase = /Net Worth/i.test(basketText);
   const builder = /Available Amount|builder basket|Cumulative Credit/i.test(basketText);
   const outstanding = /outstanding amount at any time|currently outstanding/i.test(basketText);
 
@@ -157,6 +159,41 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
       notes,
       modelingStatus: "MODELED",
       missingFields: ["grower_%_total_assets"],
+    };
+  }
+
+  // Rule 186: greater-of flat / % Consolidated Net Worth (the
+  // Aon 6.16(l) / 6.11(t) shape: "greater of $1,000,000,000 or
+  // ten percent (10%) of Consolidated Net Worth"). Previously
+  // fell through to a silent FLAT_AMOUNT — the grower leg was
+  // dropped with no disclosure, understating capacity whenever
+  // Net Worth made the % leg the larger one.
+  if (greaterOf && money != null && netWorthBase && pctNetWorth != null) {
+    return {
+      formulaType: "GREATER_OF_FLAT_OR_PCT_NET_WORTH",
+      thresholdValue: money,
+      params: { pctNetWorth },
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled greater-of flat / % Consolidated Net Worth basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  if (greaterOf && money != null && netWorthBase) {
+    // Same floor-only fallback as the Total Assets branch.
+    notes.push(
+      "Grower component (% of Consolidated Net Worth) referenced but percentage not parsed; fixed-dollar floor modeled only.",
+    );
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: money,
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes,
+      modelingStatus: "MODELED",
+      missingFields: ["grower_%_net_worth"],
     };
   }
 
