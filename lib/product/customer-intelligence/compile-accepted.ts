@@ -10,7 +10,7 @@ import {
   summarizeFromStoredMetadata,
   type CovenantSummaryItem,
 } from "../covenant-intelligence/summarize";
-import { parseMoneyMillions, parsePctOf } from "./money";
+import { parseMoneyMillions, parsePctOf, parseRatio } from "./money";
 import { buildCapacityFormulas } from "./capacity-formulas";
 import { buildRpWaterfall } from "./rp-waterfall";
 import { grantTypesForItem } from "./grant-types";
@@ -36,13 +36,6 @@ export interface CompileAcceptedResult {
   modelingStatus?: "MODELED" | "KNOWN_NOT_MODELED";
   missingFields: string[];
   message: string;
-}
-
-function parseRatio(text: string): number | null {
-  const m = text.match(/(\d+(?:\.\d+)?)\s*(?:to|:)\s*1(?:\.0+)?/i) || text.match(/(\d+(?:\.\d+)?)\s*x\b/i);
-  if (!m) return null;
-  const n = Number(m[1]);
-  return Number.isFinite(n) ? n : null;
 }
 
 function entityScopeTags(item: CovenantSummaryItem): string[] {

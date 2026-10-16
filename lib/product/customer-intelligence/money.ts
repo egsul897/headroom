@@ -39,3 +39,27 @@ export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS"): numbe
   const n = Number(m[1]) / 100;
   return Number.isFinite(n) ? n : null;
 }
+
+/**
+ * Parse a leverage ratio from text. The "4.00 to 1.00" form is
+ * leverage-specific and wins. The "4.5x" form only counts in a
+ * sentence that mentions leverage — otherwise an interest-coverage
+ * multiple ("Coverage Ratio of at least 2.00x") would become the
+ * leverage ratio. The old code took the first "Xx" anywhere.
+ */
+export function parseRatio(text: string): number | null {
+  const to1 = text.match(/(\d+(?:\.\d+)?)\s*(?:to|:)\s*1(?:\.0+)?/i);
+  if (to1) {
+    const n = Number(to1[1]);
+    return Number.isFinite(n) ? n : null;
+  }
+  for (const sentence of text.split(/[.;]\s+/)) {
+    if (!/leverage/i.test(sentence)) continue;
+    const m = sentence.match(/(\d+(?:\.\d+)?)\s*x\b/i);
+    if (m) {
+      const n = Number(m[1]);
+      return Number.isFinite(n) ? n : null;
+    }
+  }
+  return null;
+}

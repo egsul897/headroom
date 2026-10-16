@@ -26,7 +26,7 @@
  * matches only a % modifying EBITDA / Total Assets.
  */
 import { describe, expect, it } from "vitest";
-import { parseMoneyMillions, parsePctOf } from "../../lib/product/customer-intelligence/money";
+import { parseMoneyMillions, parsePctOf, parseRatio } from "../../lib/product/customer-intelligence/money";
 
 describe("counsel-compile money parsing", () => {
   it("bare $5,000 is raw dollars → 0.005 ($M), not 5000", () => {
@@ -70,5 +70,32 @@ describe("grower % attached to its base", () => {
 
   it("returns null when the base has no attached %", () => {
     expect(parsePctOf("Fixed basket of $150.0 million.", "EBITDA")).toBeNull();
+  });
+});
+
+/**
+ * Rule 24 — the "Xx" ratio form only counts in a leverage sentence.
+ *
+ * The old parseRatio took the first "Xx" anywhere, so an
+ * interest-coverage multiple ("Coverage Ratio of at least 2.00x")
+ * became the leverage ratio. The "to 1.00" form is
+ * leverage-specific and still wins; the "Xx" form now requires
+ * "leverage" in the same sentence.
+ */
+describe("leverage ratio parsing", () => {
+  it("prefers the 'to 1.00' form", () => {
+    expect(
+      parseRatio("Interest Coverage Ratio of at least 2.00x. Total Leverage Ratio shall not exceed 4.00 to 1.00."),
+    ).toBeCloseTo(4.0, 9);
+  });
+
+  it("takes Xx from a leverage sentence, not a coverage sentence", () => {
+    expect(
+      parseRatio("Interest Coverage Ratio of at least 2.00x. The leverage test requires the ratio not exceed 4.5x."),
+    ).toBeCloseTo(4.5, 9);
+  });
+
+  it("returns null when Xx appears only in a non-leverage sentence", () => {
+    expect(parseRatio("Interest Coverage Ratio of at least 2.00x. No leverage test applies.")).toBeNull();
   });
 });
