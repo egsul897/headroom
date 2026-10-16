@@ -14,14 +14,14 @@ const BASE = `"Consolidated EBITDA" means, for any period, Consolidated Net Inco
 const run = (tail: string, f: IssuerFinancials) => optimizerMetricBound(optimizeConsolidatedEbitda("Consolidated EBITDA", `"Consolidated Net Income" means the net income of the Borrower and its Subsidiaries determined on a consolidated basis in accordance with GAAP.\n${BASE}${tail}.`, f));
 
 describe("two-sided gain lines evidenced from exact filed facts", () => {
-  it("deduction of gains on sales of assets uses the filed gain", () => {
-    const b = run(`; minus (d) gains on sales of assets`, fin({ GainLossOnDispositionOfAssets: 7 * M }));
-    expect(b?.status).toBe("BOUND");
-    expect(b && "value" in b ? b.value : null).toBe(String(193 * M));
+  it("'gains only' deduction is not closed from a filed net gain (gross gains may be larger)", () => {
+    expect(run(`; minus (d) gains on sales of assets`, fin({ GainLossOnDispositionOfAssets: 7 * M }))?.status ?? "NONE").not.toMatch(/BOUND/);
   });
-  it("filed net loss deducts zero", () => {
-    const b = run(`; minus (d) gains on sales of assets`, fin({ GainLossOnDispositionOfAssets: -4 * M }));
-    expect(b && "value" in b ? b.value : null).toBe(String(200 * M));
+  it("'gains only' deduction with a filed net loss is not EXACT 0", () => {
+    expect(run(`; minus (d) gains on sales of assets`, fin({ GainLossOnDispositionOfAssets: -4 * M }))?.status ?? "NONE").not.toMatch(/BOUND/);
+  });
+  it("'losses only' add-back is not closed from a filed net figure", () => {
+    expect(run(`; plus (d) losses on sales of assets`, fin({ GainLossOnDispositionOfAssets: -4 * M }))?.status).not.toBe("BOUND");
   });
   it("no filed fact stays unbound (no invention)", () => {
     expect(run(`; minus (d) gains on sales of assets`, fin())?.status ?? "NONE").not.toMatch(/BOUND/);
@@ -33,4 +33,9 @@ describe("two-sided gain lines evidenced from exact filed facts", () => {
   it("compound lines are not treated as exact", () => {
     expect(run(`; minus (d) extraordinary gains and gains on sales of assets`, fin({ GainLossOnDispositionOfAssets: 7 * M }))?.status ?? "NONE").not.toMatch(/BOUND/);
   });
+  for (const line of ["charges and income relating to tax receivable agreements", "taxes paid, net of any income therefrom", "withholding taxes and other income items", "income from tax equity investments"]) {
+    it(`non-pure tax line stays open: ${line}`, () => {
+      expect(run(`; plus (d) ${line}`, fin())?.status ?? "NONE").not.toMatch(/BOUND/);
+    });
+  }
 });

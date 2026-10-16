@@ -189,6 +189,11 @@ export function borrowerInputKeysFromText(...parts: Array<string | null | undefi
   return out;
 }
 
+// "income" counts only as a tax base inside a pure tax phrase ("foreign income and franchise taxes", "income, franchise
+// and similar taxes", "based on income"); anything else naming income or gains stays open (fail closed).
+const TAX_BASE = /\bincome(?:,?\s+(?:and|or|franchise|withholding|excise|capital|gross\s+receipts|similar|other|foreign|state|local|federal|provincial))*\s+tax(?:es)?\b(?!\s+(?:receivable|equity))/gi;
+export const namesGainOrIncome = (s: string): boolean => /\bgains?\b|\bincome\b/i.test(s.replace(TAX_BASE, " ").replace(/\b(?:Consolidated\s+)?Net\s+Income\b|\bbased\s+on\s+income\b|\bnet\s+income\s+\(loss\)/gi, " "));
+
 export function optimizeConsolidatedEbitda(term: string, text: string, fin: IssuerFinancials): EbitdaOptimization {
   const ev: DefinitionEvaluation = evaluateDefinition("EBITDA", term, text, fin);
   const segs = definitionSegments("EBITDA", term, text);
@@ -297,6 +302,9 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     } else if (!fresh.length && ambiguous) {
       noteExtra = "two-sided or indeterminate add-back; omitted from supported floor";
     }
+    // A line naming income or gains beyond a pure tax base (tax receivable agreements, "net of any income therefrom",
+    // "other income items", tax equity income) is never closed by a mapped/deduplicated tax figure: it stays open.
+    if (covOut === "FULL" && !signed && !bi && namesGainOrIncome(scopeText)) { covOut = "PARTIAL"; noteExtra = [noteExtra, "names income/gains beyond a pure tax base; stays open"].filter(Boolean).join("; "); }
     lines.push({ label: it.label, text: full.slice(0, 200), category: cat, evidenced: fresh.length ? usd(evid) : (concepts.length ? "0" : null), concepts: fresh.map((c) => ({ concept: c.concept, value: usd(c.value) })),
       coverage: covOut, cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null,
       note: [it.note, mapNote, noteExtra].filter(Boolean).join("; ") || it.note, evid, capSpec });
@@ -342,8 +350,6 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   //  - open two-sided / income-like add-backs;
   //  - open lines that name gains or income ("gains, losses … from the sale of …");
   //  - any deduction ("minus … non-cash income") not fully modelled from filings (from the evaluator or the schedule).
-  // Tax lines ("foreign income and franchise taxes", "Taxes (including … income …)") name income only as a tax base.
-  const namesGainOrIncome = (s: string) => (/\btax(?:es)?\b/i.test(s) && !/\bgains?\b/i.test(s)) ? false : /\bgains?\b|\bincome\b/i.test(s.replace(/\b(?:Consolidated\s+)?Net\s+Income\b|\bincome\s+tax(?:es)?\b|\bbased\s+on\s+income\b|\bnet\s+income\s+\(loss\)/gi, " "));
   const ambiguousOpen = [...new Set([
     ...pairs.filter((p) => (ambiguousAddBack(p) || p.it.sign === "?") && open.some((l) => l.label === p.it.label)).map((p) => p.it.label),
     ...open.filter((l) => namesGainOrIncome(l.text)).map((l) => l.label),
@@ -465,7 +471,7 @@ export function signedTwoSided(t: string, fin: IssuerFinancials): { concept: str
   const g = gainLossItem(flat, fin);
   if (g) {
     const losses = /\blosses?\b/i.test(flat), gains = /\bgains?\b/i.test(flat);
-    if (losses && !gains) return { concept: `${g.concept} (losses only)`, value: g.value < 0n ? -g.value : 0n };
+    // One-sided line vs a net filed figure: gross gains/losses are not filed → not exact (fail closed).
     if (gains && losses) return { concept: `${g.concept} (signed, excluded)`, value: -g.value };
     return null;
   }
@@ -495,12 +501,8 @@ export function gainLossItem(flat: string, fin: IssuerFinancials): { concept: st
  * Deduction line ("minus gains on sales of assets") that is exactly one filed gain item: the amount deducted is the
  * filed gain (0 when the filing shows a net loss — a loss is not a gain to deduct). Equity-method income likewise.
  */
-export function gainDeduction(t: string, fin: IssuerFinancials): { concept: string; value: bigint } | null {
-  const flat = t.replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
-  if (/\blosses?\b/i.test(flat) && !/\bgains?\b/i.test(flat)) return null;
-  const g = gainLossItem(flat, fin);
-  if (g) return { concept: `${g.concept} (gains only, deducted)`, value: g.value > 0n ? g.value : 0n };
-  const signed = signedTwoSided(flat, fin);
-  if (signed && /EquityMethod/.test(signed.concept)) { const x = -signed.value; return { concept: "IncomeLossFromEquityMethodInvestments (income only, deducted)", value: x > 0n ? x : 0n }; }
+export function gainDeduction(_t: string, _fin: IssuerFinancials): { concept: string; value: bigint } | null {
+  // A "gains only" deduction cannot be closed from a net gain/(loss) fact: gross gains may exceed the net figure (a net
+  // gain understates the deduction; a net loss does not mean zero gains). Neither is exact or lower-bound safe → open.
   return null;
 }
