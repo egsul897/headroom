@@ -553,7 +553,7 @@ function buildAlternativesAndAssumptions(params: {
     );
     judgmentCalls.push("Classification of provisos as conditions precedent versus ongoing covenants involves judgment.");
   }
-  if (/\b(?:or|,)\s*(?:at the option of|in the Borrower's discretion)\b/i.test(hay) || /\beither\b.+\bor\b/i.test(hay)) {
+  if (/\b(?:or|,)\s*(?:at the option of|in the Borrower's discretion)\b/i.test(hay) || /\beither\b[\s\S]+\bor\b/i.test(hay)) {
     alternativeInterpretations.push(
       "The provision appears to offer alternative paths; the strongest supported path is reported first, but counsel should confirm which path is intended for the contemplated transaction.",
     );
