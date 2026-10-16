@@ -12,8 +12,12 @@ import {
   enumerateCertifiedPaths,
   type EnumeratedCertifiedPath,
 } from "@/lib/product/north-star-workflow/verified-path-enumeration";
-import type { VerifiedExecutionPackage } from "@/lib/contract-model/verified-execution";
-import type { HypotheticalTransaction, SelectedPath } from "@/lib/contract-model/verified-execution";
+import { selectEnumeratedPath } from "./path-selection";
+import type {
+  HypotheticalTransaction,
+  SelectedPath,
+  VerifiedExecutionPackage,
+} from "@/lib/contract-model/verified-execution";
 
 export type UnifiedTxnKind =
   | "SECURED_DEBT"
@@ -61,47 +65,9 @@ export interface VerifiedSimulateResult {
   pathAutoSelected: boolean;
 }
 
-export type PathSelectionResult = {
-  chosen: EnumeratedCertifiedPath | null;
-  error: string | null;
-  autoSelected: boolean;
-};
-
-/**
- * Exact path identity. Caller-supplied pathId must match an eligible candidate
- * exactly; unmatched IDs fail closed (no silent fallback to "the only other" path).
- *
- * When no pathId is supplied: auto-select only if exactly one eligible candidate.
- */
-export function selectEnumeratedPath(
-  candidates: readonly EnumeratedCertifiedPath[],
-  pathId?: string | null,
-): PathSelectionResult {
-  const explicit = pathId != null && String(pathId).trim() !== "";
-  if (explicit) {
-    const want = String(pathId).trim();
-    const match = candidates.find((p) => p.pathId === want) ?? null;
-    if (!match) {
-      return {
-        chosen: null,
-        error: `PATH_NOT_FOUND:${want}`,
-        autoSelected: false,
-      };
-    }
-    return { chosen: match, error: null, autoSelected: false };
-  }
-  if (candidates.length === 1) {
-    return { chosen: candidates[0]!, error: null, autoSelected: true };
-  }
-  if (candidates.length === 0) {
-    return { chosen: null, error: "NO_CANDIDATE_PATHS", autoSelected: false };
-  }
-  return {
-    chosen: null,
-    error: `PATH_SELECTION_REQUIRED:${candidates.length}_candidates`,
-    autoSelected: false,
-  };
-}
+/** Path selection lives in a prisma-free module so it is unit-testable. */
+export { selectEnumeratedPath };
+export type { PathSelectionResult } from "./path-selection";
 
 const ISO_DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
