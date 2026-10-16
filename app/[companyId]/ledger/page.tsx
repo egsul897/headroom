@@ -139,7 +139,8 @@ function ContractLedgerSection({
         <input name="amount" placeholder="amount (decimal string)" className="input" required />
         <input name="currency" placeholder="USD" defaultValue="USD" className="input" />
         <input name="effectiveAsOf" placeholder="effective as-of YYYY-MM-DD" className="input" required />
-        <input name="instrumentKey" placeholder="instrument key" defaultValue="company" className="input" />
+        {/* Rule 107: no fabricated default — instrument key is the user's real value. */}
+        <input name="instrumentKey" placeholder="instrument key" className="input" required />
         <button type="submit" className="button">
           Append contract usage
         </button>
@@ -300,7 +301,7 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
         <form action={addLedgerEntry.bind(null, companyId)} style={{ display: "grid", gap: 10 }}>
           <div className="button-row">
             <label className="button" style={{ cursor: "pointer" }}>
-              <input type="radio" name="direction" value="CREDIT" defaultChecked style={{ marginRight: 6 }} />
+              <input type="radio" name="direction" value="CREDIT" required style={{ marginRight: 6 }} />
               Credit (adds)
             </label>
             <label className="button" style={{ cursor: "pointer" }}>
@@ -311,7 +312,10 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
           <label className="field">
             <span className="field-label">Category</span>
             <div className="field-control">
-              <select name="basket" defaultValue="EQUITY">
+              <select name="basket" defaultValue="" required>
+                <option value="" disabled>
+                  Select category
+                </option>
                 {Object.entries(LEDGER_BASKET_LABELS).map(([code, label]) => (
                   <option key={code} value={code}>
                     {label}
@@ -324,7 +328,7 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
             <label className="field">
               <span className="field-label">Amount ($M)</span>
               <div className="field-control">
-                <input type="number" name="amount" defaultValue={50} min={0} step="any" />
+                <input type="number" name="amount" placeholder="e.g. 50" min={0} step="any" required />
               </div>
             </label>
             <label className="field">

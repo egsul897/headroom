@@ -76,8 +76,10 @@ export async function addContractLedgerUsageAction(companyId: string, formData: 
   const currency = String(formData.get("currency") || "USD").trim() || "USD";
   const ruleId = String(formData.get("ruleId") || "").trim();
   const effectiveAsOf = String(formData.get("effectiveAsOf") || "").trim();
-  const instrumentKey = String(formData.get("instrumentKey") || "company").trim() || "company";
-  if (!amount || !ruleId || !effectiveAsOf) throw new Error("amount, ruleId, and effectiveAsOf are required");
+  // Rule 107: never default a missing instrument key to the
+  // fabricated generic "company" — require the user's real value.
+  const instrumentKey = String(formData.get("instrumentKey") || "").trim();
+  if (!amount || !ruleId || !effectiveAsOf || !instrumentKey) throw new Error("amount, ruleId, effectiveAsOf, and instrumentKey are required");
   const result = await appendContractLedgerUsage({
     companyId,
     usageId,
