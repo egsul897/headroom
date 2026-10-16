@@ -10,6 +10,7 @@ import {
   summarizeFromStoredMetadata,
   type CovenantSummaryItem,
 } from "../covenant-intelligence/summarize";
+import { parseMoneyMillions } from "./money";
 
 export type CompileStatus =
   | "COMPILED"
@@ -31,17 +32,6 @@ export interface CompileAcceptedResult {
   modelingStatus?: "MODELED" | "KNOWN_NOT_MODELED";
   missingFields: string[];
   message: string;
-}
-
-function parseMoneyMillions(text: string): number | null {
-  const m = text.match(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?/i);
-  if (!m) return null;
-  let n = Number(m[1]!.replace(/,/g, ""));
-  if (!Number.isFinite(n)) return null;
-  if (/billion/i.test(m[2] ?? "")) n *= 1000;
-  else if (!m[2] && n >= 1_000_000) n = n / 1_000_000; // raw dollars → $M
-  else if (!m[2] && n > 10_000) n = n / 1_000_000;
-  return n;
 }
 
 function parsePct(text: string): number | null {
