@@ -177,11 +177,21 @@ export function buildDocumentCovenantSummary(params: {
   const peripheralHeading =
     /\b(?:notice|notices|miscellaneous|governing law|counterpart|severability|waivers? of jury|expenses|indemnif|assignments?|successors|effectiveness|conditions?\s+precedent|representations|schedules?|exhibits?)\b/i;
 
+  // Rule 68: demote by HEADING, not by excerpt mention. The old
+  // code tested this regex against the excerpt + signals, so a
+  // substantive covenant merely MENTIONING "governing law",
+  // "expenses", or "successors and assigns" (nearly every
+  // merger covenant) was demoted into the peripheral bucket
+  // and could be cut by the 120-item cap while lower-scored
+  // peripheral items survived. The heading is the section's
+  // identity; a mention inside the text is not.
+  const headingByNodeId = new Map(params.structuralNodes.map((n) => [n.nodeId, n.heading ?? ""]));
+  const headingOf = (c: (typeof params.candidates)[number]): string =>
+    (c.nodeId ? (headingByNodeId.get(c.nodeId) ?? "") : "");
+
   const ranked = [...params.candidates].sort((a, b) => {
-    const ah = `${a.excerpt ?? ""} ${(a.signals ?? []).join(" ")}`;
-    const bh = `${b.excerpt ?? ""} ${(b.signals ?? []).join(" ")}`;
-    const ap = peripheralHeading.test(ah) ? 1 : 0;
-    const bp = peripheralHeading.test(bh) ? 1 : 0;
+    const ap = peripheralHeading.test(headingOf(a)) ? 1 : 0;
+    const bp = peripheralHeading.test(headingOf(b)) ? 1 : 0;
     if (ap !== bp) return ap - bp; // primary covenants before peripheral
     return b.discoveryScore - a.discoveryScore;
   });
@@ -199,7 +209,18 @@ export function buildDocumentCovenantSummary(params: {
   }
 
   const preferredOrder = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];
-  items.sort((a, b) => {
+  // Rule 68 (second half): the cap must apply in RANKED order
+  // (primary covenants first), not in display order. The old
+  // code display-sorted items by category/sectionRef and THEN
+  // sliced to 120 — so the peripheral ranking above was dead
+  // code for cap purposes, and a merger covenant (7th category)
+  // was cut while 120 debt-incurrence fillers survived,
+  // regardless of score or peripherality. Cap first, then sort
+  // the survivors for display.
+  const totalItemsBeforeCap = items.length;
+  const truncated = items.length > 120;
+  const capped = items.slice(0, 120);
+  capped.sort((a, b) => {
     const ai = preferredOrder.indexOf(a.category);
     const bi = preferredOrder.indexOf(b.category);
     if (ai !== bi) return ai - bi;
@@ -220,9 +241,9 @@ export function buildDocumentCovenantSummary(params: {
     promotedToLegalTruth: 0,
     note: "AI-first interpretations for customer counsel review. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
-    items: items.slice(0, 120),
-    totalItemsBeforeCap: items.length,
-    truncated: items.length > 120,
+    items: capped,
+    totalItemsBeforeCap,
+    truncated,
     definedTermsSample: params.definitions.slice(0, 40).map((d) => ({
       term: d.term,
       excerpt: (d.excerpt ?? "").slice(0, 240),
