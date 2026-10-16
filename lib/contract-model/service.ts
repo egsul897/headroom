@@ -269,7 +269,11 @@ export async function getDocumentsForInstrument(instrumentId: string): Promise<D
 export async function getBaseDocuments(companyId: string): Promise<Document[]> {
   const [instruments, ungrouped] = await Promise.all([prisma.debtInstrument.findMany({ where: { companyId }, select: { baseDocumentId: true } }), prisma.document.findMany({ where: { companyId, instrumentId: null } })]);
   const baseIds = instruments.map((i) => i.baseDocumentId).filter((id): id is string => !!id);
-  const baseDocs = baseIds.length > 0 ? await prisma.document.findMany({ where: { id: { in: baseIds } } }) : [];
+  // Rule 145: the ID-list load had no company filter — a
+  // misattributed instrument row (baseDocumentId pointing at
+  // another company's document) would pull that foreign document
+  // into this company's base set. Scope the load to the company.
+  const baseDocs = baseIds.length > 0 ? await prisma.document.findMany({ where: { id: { in: baseIds }, companyId } }) : [];
   const byId = new Map([...baseDocs, ...ungrouped].map((d) => [d.id, d] as const));
   return [...byId.values()];
 }
