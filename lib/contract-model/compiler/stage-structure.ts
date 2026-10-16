@@ -1219,6 +1219,7 @@ function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleM
   // both paths converge, never a special case bolted onto signal (C).
   const isPlausible = (m: RegExpExecArray) => {
     const matchEnd = m.index + m[0].length;
+    if (!titleStartsLikeHeading(m[0], m[1] ?? "")) return false;
     if (!titleBodySeparationHolds(doc.text, m.index, matchEnd)) return false;
     if (isContentsListingMatch(doc.text, m)) return false; // IPV-11: TOC rows are never headings
     return isPlausibleByPositionalSignals(doc.text, m.index, matchEnd) || isImmediatelyAfterPlausibleArticle(doc.text, m.index, plausibleArticleEnds);
@@ -1549,6 +1550,27 @@ export interface StructuralCandidateTriageResult {
  * mid-title sentence break unless the numbering's own period is excluded
  * first).
  */
+/**
+ * Rule 165 (audit-driven, two real agreements): a heading's own title
+ * never starts with punctuation or a lowercase word. An in-text
+ * citation whose "title" is sentence continuation ("Section 6.14 ,
+ * provided that in the event of ...", "Section 6.14 provided that
+ * ...") sits at a line start after a sentence boundary, so the
+ * positional gate alone cannot tell it from a real heading — and
+ * the triage seam logic routes it AMBIGUOUS, which the candidate
+ * pipeline then admits as a real section (candidates.ts admits
+ * ambiguous nodes with a usable sectionRef). From there it becomes
+ * a summary item and, with a dollar amount nearby, an executable
+ * Permission for a provision that does not exist. General
+ * typographic rule, no agreement-specific content: a title starts
+ * with an uppercase letter, a digit, or an opening bracket/paren.
+ */
+function titleStartsLikeHeading(matchText: string, candidateNumber: string): boolean {
+  const title = extractTitlePortionForSeamCheck(matchText, candidateNumber).trim();
+  if (!title) return false;
+  return /^[A-Z0-9\(\[]/.test(title);
+}
+
 function extractTitlePortionForSeamCheck(matchText: string, candidateNumber: string): string {
   if (!candidateNumber) return matchText;
   const numIdx = matchText.indexOf(candidateNumber);
@@ -1757,6 +1779,9 @@ function evaluateStructuralCandidateTriage(text: string, matchIndex: number, mat
     continuationShape: classifyContinuationShapeForTriage(text, seam.continuationOffset),
   };
 
+  if (!titleStartsLikeHeading(matchText, candidateNumber)) {
+    return { decision: "CONFIDENT_PROSE_REFERENCE", reason: "the candidate's own title portion starts with punctuation or a lowercase word — sentence continuation, not a heading title.", signals };
+  }
   if (signals.seamValidation !== "VALIDATED_TERMINATED") {
     // Checked BEFORE the lowercase-continuation check below, deliberately:
     // when the seam itself is not validated, `continuationShape` was read at

@@ -17,6 +17,7 @@ import type {
   StructuralNodeRecord,
 } from "../../lib/knowledge-factory/types";
 import { analyzeProvision } from "../../lib/product/covenant-intelligence/analyze-provision";
+import { grantTypesForItem } from "../../lib/product/customer-intelligence/grant-types";
 
 function node(
   nodeId: string,
@@ -330,5 +331,108 @@ describe("generalization: TOC shapes", () => {
       node("body-10", "10", "MISCELLANEOUS", body.start, body.end),
     ]);
     expect(candidates).toHaveLength(0);
+  });
+});
+
+describe("generalization: rule 165 — compiler grants need operative text + parser title shape", () => {
+  const grantItem = (heading: string, plainEnglish: string, families: string[] = []) =>
+    ({ heading, plainEnglish, families, category: "OTHER" }) as unknown as Parameters<typeof grantTypesForItem>[0];
+
+  it("Borrower alone mints no DEBT grant (Successors shape)", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "Section 9.04. Successors",
+          "Section 9.04 states an event-of-default trigger covering Borrower. shall not be less than $5,000,000 unless each of the Borrower Representative and the Administrative Agent otherwise consent.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("attorney-client mints no LIEN grant (GAAP fragment shape)", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "Section 6.14 , provided that in the event of any change",
+          "Section 6.14 imposes an affirmative obligation for Borrower. subject to attorney-client or similar privilege. Material baskets/thresholds identified: Amount/threshold: $100,000,000.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("unsecured and Borrowing Base mint no grant", () => {
+    // "unsecured" must not fire SECURED (no word boundary inside it);
+    // "Borrowing Base" is a defined term, not incurrence.
+    expect(grantTypesForItem(grantItem("Section 6.02. Other Obligations", "The Borrower shall not permit unsecured obligations to exceed the Borrowing Base."))).toEqual([]);
+    expect(grantTypesForItem(grantItem("Section 2.06. Letters", "The Borrower Representative may request Letters of Credit. shall not exceed the lesser of (x) the Aggregate Revolving Commitment and (y) the Borrowing Base."))).toEqual([]);
+    // ...while a genuine Liens heading is still legitimate LIEN evidence.
+    expect(grantTypesForItem(grantItem("Section 6.02. Liens", "The Borrower shall not permit obligations to exceed the applicable cap."))).toEqual(["LIEN"]);
+  });
+
+  it("defined-terms tail mints no grant (Acquisition Agreement is metadata)", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "Section 6.14. Reporting",
+          "The Borrower shall deliver reports. Controlling defined terms: Acquisition, Acquisition Agreement, Administrative Agent.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("a wrong LIENS family cannot launder a LIEN grant (Representations shape)", () => {
+    expect(
+      grantTypesForItem(
+        grantItem("REPRESENTATIONS AND WARRANTIES", "Section V states an event-of-default trigger covering Loan Parties. Material baskets/thresholds identified: Amount/threshold: $200,000,000.", ["EVENTS_OF_DEFAULT", "LIENS"]),
+      ),
+    ).toEqual([]);
+  });
+
+  it("genuine debt and lien baskets still compile", () => {
+    expect(
+      grantTypesForItem(
+        grantItem("6.01(e)", "Section 6.01(e) is a prohibition covering Borrower. shall not exceed $20,000,000 at any time outstanding; such Indebtedness is incurred prior to or within 90 days after such acquisition."),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+    expect(
+      grantTypesForItem(
+        grantItem("6.02(l)", "Section 6.02(l) operates as a permission. other Liens incurred in the ordinary course of business securing Indebtedness that do not in the aggregate exceed $250,000 at any time outstanding."),
+      ),
+    ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+  });
+
+  it("genuine RP and Investment items still compile", () => {
+    expect(grantTypesForItem(grantItem("Section 7.05. Restricted Payments", "The Borrower may pay Dividends and make Restricted Payments up to the Available Amount."))).toEqual(["RESTRICTED_PAYMENT"]);
+    expect(grantTypesForItem(grantItem("Section 7.06. Investments", "The Borrower may make Permitted Investments in Subsidiaries."))).toEqual(["INVESTMENT"]);
+  });
+
+});
+
+describe("generalization: rule 166 — default triggers never mint capacity", () => {
+  const grantItem = (heading: string, plainEnglish: string, category: string) =>
+    ({ heading, plainEnglish, families: [], category }) as unknown as Parameters<typeof grantTypesForItem>[0];
+
+  it("a Defaults article with secured-Indebtedness language mints no grant", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "DEFAULTS",
+          "Section VII states an event-of-default trigger covering Loan Parties. shall not apply to secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the Property securing such Indebtedness. It does not itself permit or prohibit the underlying activity; it defines when the described failure or default becomes an Event of Default. Material baskets/thresholds identified: Amount/threshold: $200,000,000.",
+          "EVENTS_OF_DEFAULT",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("the same language in a covenants item still compiles", () => {
+    expect(
+      grantTypesForItem(
+        grantItem(
+          "6.02(l)",
+          "Section 6.02(l) operates as a permission. other Liens incurred in the ordinary course of business securing Indebtedness that do not in the aggregate exceed $250,000 at any time outstanding.",
+          "OTHER",
+        ),
+      ),
+    ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
   });
 });
