@@ -6,6 +6,7 @@ import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/ruleb
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
+import { ReviewerNameField } from "@/components/ReviewerNameField";
 import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { reviewProvisionAction } from "./actions";
 
@@ -216,6 +217,10 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                     />
                   </div>
                 </div>
+                {/* Rule 113: rulebook decisions compile executable
+                    Permissions — they need a real reviewer, not the
+                    hardcoded "workspace-counsel" label. */}
+                <ReviewerNameField id={`reviewedBy-rulebook-${c.sourceId}-${c.sectionRef}`} />
                 <div className="button-row">
                   <button className="button" type="submit" name="decision" value="ACCEPTED">
                     Accept
