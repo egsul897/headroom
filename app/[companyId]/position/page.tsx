@@ -7,8 +7,6 @@ import { SeparatedCapacityPanel } from "@/components/customer-workflow/Separated
 import { getCompanyDashboard } from "@/lib/dashboard-service";
 import { FinancialIdentityError } from "@/lib/financial-identity";
 import { fmtM } from "@/lib/format";
-import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
-import { runPackageLegalPath } from "@/lib/product/legal-intelligence/run-package-path";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 import { buildPositionView } from "@/lib/customer-workflow/position-view";
@@ -44,88 +42,6 @@ export default async function PositionPage({
   const { companyId } = await params;
   const sp = searchParams ? await searchParams : {};
   await assertCfoPageAccessOrNotFound({ companyId });
-  const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
-
-  if (isConmed) {
-    const path = await runPackageLegalPath(CONMED_DEMO_COMPANY_ID);
-    const blockers = path.challenges.filter((c) => c.severity === "BLOCKER");
-    const facts = path.conclusions.filter((c) => c.kind === "PACKAGE_FACT");
-
-    return (
-      <div className="stack">
-        <Card>
-          <div className="card-title">Position</div>
-          <WorkflowJourney companyId={companyId} current="position" />
-          <div className="card-subtitle" style={{ marginTop: 8 }}>
-            CONMED authentic package — integrated legal path + autonomous challenge. Capacity is{" "}
-            <strong>not determinable</strong>.
-          </div>
-          <div className="row" style={{ marginTop: 12 }}>
-            <div className="row-label">Numeric capacity</div>
-            <div className="row-value">
-              <StatusChip code="UNKNOWN" />
-            </div>
-          </div>
-          <div className="row">
-            <div className="row-label">Executable conclusions surviving challenge</div>
-            <div className="row-value">{path.survivingExecutableConclusions}</div>
-          </div>
-          <div className="row">
-            <div className="row-label">Path</div>
-            <div className="row-value" style={{ fontSize: 12 }}>
-              {path.pathExecuted.join(" → ")}
-            </div>
-          </div>
-          <div className="row" style={{ borderBottom: "none" }}>
-            <div className="row-label">Utilized capacity</div>
-            <div className="row-value">
-              <StatusChip code="UNKNOWN" compact /> — not defaulted to zero
-            </div>
-          </div>
-          <div className="button-row" style={{ marginTop: 12 }}>
-            <Link className="button button-primary" href={`/${companyId}/covenants`}>
-              Explore covenants
-            </Link>
-            <Link className="button" href={`/${companyId}/simulate`}>
-              Open simulate
-            </Link>
-            <Link className="button" href={`/${companyId}/evidence`}>
-              Evidence & review
-            </Link>
-          </div>
-        </Card>
-
-        <Card>
-          <div className="card-title">Challenge findings (blockers)</div>
-          <div className="card-subtitle">
-            Autonomous challenge against proposed conclusions — not a research memo.
-          </div>
-          {blockers.slice(0, 8).map((b) => (
-            <div className="row" key={b.id}>
-              <div>
-                <div className="row-label">{b.category}</div>
-                <div className="row-note">{b.statement}</div>
-              </div>
-              <Chip tone="tight">BLOCKER</Chip>
-            </div>
-          ))}
-          {blockers.length > 8 && <div className="row-note">(+{blockers.length - 8} more blockers — see full challenge report)</div>}
-        </Card>
-
-        <Card>
-          <div className="card-title">Package facts (source-backed)</div>
-          <div className="card-subtitle">Not capacity determinations.</div>
-          {facts.slice(0, 6).map((f) => (
-            <div className="row" key={f.id}>
-              <div className="row-note">{f.statement}</div>
-            </div>
-          ))}
-          {facts.length > 6 && <div className="row-note">(+{facts.length - 6} more facts)</div>}
-        </Card>
-      </div>
-    );
-  }
-
   // Authentic evidence → Position bridge (fixture-backed; no Neon writes).
   // VE feed uses compileOperativeCovenantPackage (generic discovery).
   // Access-gated above — package registry lookup only, no tenant DB scrape.
