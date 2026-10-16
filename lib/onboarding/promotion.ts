@@ -254,6 +254,43 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
           amendmentRelationshipConfirmedByUser: true,
         },
       });
+      // Rule 127: the confirmed type must propagate to the
+      // analysis class. Promotion previously updated ONLY the
+      // Document row — KnowledgeSource.documentClass (which
+      // governs operative resolution, Ask retrieval, and every
+      // rule-118–124 mismatch signal) kept the classifier's
+      // verdict forever. Counsel confirming INDENTURE in the
+      // review queue therefore never remediated a mismatch:
+      // operative resolution kept using CREDIT_AGREEMENT and
+      // every mismatch signal kept firing. The confirmed type
+      // is now the class; metadata.declaredType is updated to
+      // the same confirmed value so the mismatch signals
+      // self-heal (the adjudication itself is preserved by
+      // typeConfirmedByUser + the candidate's review history),
+      // and a later re-analysis falls back to the confirmed
+      // type rather than the original possibly-wrong declaration.
+      const confirmedClass =
+        item.documentType === "CREDIT_AGREEMENT" ||
+        item.documentType === "INDENTURE" ||
+        item.documentType === "AMENDMENT" ||
+        item.documentType === "INTERCREDITOR_AGREEMENT"
+          ? item.documentType
+          : "OTHER_DEBT_RELATED";
+      const sources = await tx.knowledgeSource.findMany({
+        where: { companyId, documentId: item.candidate.sourceDocumentId },
+        select: { sourceId: true, metadata: true },
+      });
+      for (const src of sources) {
+        const meta =
+          src.metadata && typeof src.metadata === "object" && !Array.isArray(src.metadata)
+            ? { ...(src.metadata as Record<string, unknown>) }
+            : {};
+        meta.declaredType = item.documentType;
+        await tx.knowledgeSource.update({
+          where: { sourceId: src.sourceId },
+          data: { documentClass: confirmedClass as never, metadata: JSON.parse(JSON.stringify(meta)) },
+        });
+      }
       // Propagate the amendment's effectiveFrom onto the BASE (superseded)
       // document's own effectiveTo - this is what actually makes
       // loadCompanyCovenantData's date-range filter (lib/covenant-engine.ts)
