@@ -39,7 +39,10 @@ export function CertificatesClient({
   const router = useRouter();
   const [pending, start] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
-  const [reviewedBy, setReviewedBy] = useState("workspace-counsel");
+  // Rule 114: no pre-filled generic reviewer — the server refuses
+  // blank attribution, and a pre-filled "workspace-counsel" would
+  // defeat that requirement with an unattributed approval.
+  const [reviewedBy, setReviewedBy] = useState("");
   const [usageAmount, setUsageAmount] = useState("");
   const [usageRule, setUsageRule] = useState("");
   // Rule 106: instrument key + effective date were hardcoded
@@ -131,6 +134,10 @@ export function CertificatesClient({
                     disabled={pending}
                     onClick={() =>
                       start(async () => {
+                        if (!reviewedBy.trim()) {
+                          setMessage("Enter your name/email — approvals must be attributable.");
+                          return;
+                        }
                         const r = await approveCertificateAction(
                           companyId,
                           s.snapshotId,
