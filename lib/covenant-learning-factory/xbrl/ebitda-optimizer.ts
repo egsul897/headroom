@@ -11,7 +11,7 @@
  *   - "maximum" is set only when every add-back is fully evidenced; otherwise "supported" is the evidenced figure and
  *     "needsInput" lists what would raise it.
  */
-import type { IssuerFinancials } from "./companyfacts";
+import { borrowerInput, type IssuerFinancials } from "./companyfacts";
 import { CAPPED, COST_LIKE, HEADER, QUALIFIED, TWO_SIDED, definitionSegments, markers, evaluateDefinition, mapEbitdaItem, type DefinitionEvaluation } from "./definition-items";
 
 export type AddBackCategory = "INTEREST" | "TAXES" | "D&A" | "STOCK_COMP" | "IMPAIRMENT" | "RESTRUCTURING" | "SEVERANCE" | "TRANSACTION_COSTS" | "INTEGRATION"
@@ -191,7 +191,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   const lowerReason = ev.base == null ? ev.reason : lowering.length ? `items that could lower the total are not in filings: ${lowering.slice(0, 3).map((p) => `${p.it.label} ${p.full.slice(0, 60)}`).join("; ")}` : ev.reason;
 
   // ---- add-backs: evidence and caps per line ----
-  const used = new Set<string>();
+  const used = new Set<string>(), consumedInputs = new Set<string>();
   const lines: Array<AddBackLine & { evid: bigint; capSpec: CapSpec | null }> = [];
   for (const { it, full } of pairs) {
     if (it.coverage === "HEADER" || it.sign === "-" || (it.sign === "?" && !aligned)) continue;
@@ -200,14 +200,17 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     const cat = categorize(scopeText);
     let concepts: Array<{ concept: string; value: bigint }> = [];
     let coverage: AddBackLine["coverage"] = "NONE";
-    if (!capSpec && (it.coverage === "FULL" || it.coverage === "PARTIAL")) {
+    // A borrower-supplied amount (with its source) answers the whole line, like a filing figure.
+    const bi = borrowerInput(fin, [`ADDBACK:${it.label}`, cat === "OTHER" ? "" : `ADDBACK:${cat}`].filter((k) => k && !consumedInputs.has(k.toUpperCase())));
+    if (bi) { consumedInputs.add(bi.key.toUpperCase()); concepts = [{ concept: `borrower:${bi.key} [${bi.source}]`, value: BigInt(bi.value) }]; coverage = "FULL"; }
+    else if (!capSpec && (it.coverage === "FULL" || it.coverage === "PARTIAL")) {
       concepts = it.concepts.map((c) => ({ concept: c.concept, value: BigInt(c.value) }));
       coverage = it.coverage === "FULL" ? "FULL" : concepts.length ? "PARTIAL" : "NONE";
     } else if (!QUALIFIED.test(scopeText)) {
       const m = mapEbitdaItem(scopeText, fin, text, 0);
       if (m && m !== "TWO_SIDED") { concepts = m.concepts; coverage = "PARTIAL"; }
     }
-    if (!concepts.length && !QUALIFIED.test(scopeText)) {
+    if (!bi && !concepts.length && !QUALIFIED.test(scopeText)) {
       for (const x of EXTRA) if (x.re.test(scopeText)) for (const c of x.concepts) { const v = fin.values.find((f) => f.metric === "item" && f.concept === c); if (v) { concepts.push({ concept: c, value: BigInt(v.value) }); coverage = "PARTIAL"; } }
     }
     const fresh = concepts.filter((c) => !used.has(c.concept));
@@ -256,4 +259,42 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   const complete = !open.length && !ev.items.some((i) => i.label === "(base)" && i.coverage === "PARTIAL");
   return out({ status: complete ? "MAXIMIZED" : "NEEDS_INPUT", maximum: complete ? usd(supported) : null, supported: usd(supported), deductions: usd(deductions!), addBacks, needsInput,
     reason: complete ? "every permitted add-back is evidenced and every cap applied" : `${open.length} add-back(s) not evidenced in filings; supported figure is what the filings prove` });
+}
+
+
+// ---------------- debt capacity from Consolidated EBITDA ----------------
+export interface LeverageCapacity {
+  status: "COMPUTED" | "NEEDS_INPUT";
+  /** MAXIMUM: every add-back evidenced (exact). SUPPORTED: filings/inputs prove at least this EBITDA (capacity is a floor). */
+  ebitdaBasis: "MAXIMUM" | "SUPPORTED" | null;
+  ebitda: string | null; maxLeverage: string; debt: string | null; debtSource: string | null;
+  /** maxLeverage × EBITDA − debt, USD (floored). Negative = over the limit. */
+  capacity: string | null; bound: "EXACT" | "AT_LEAST" | null; reason: string;
+}
+
+/**
+ * Additional debt the leverage covenant allows: maxLeverage × Consolidated EBITDA − current debt. Uses the optimizer's
+ * maximum when available (EXACT), else its supported figure (AT_LEAST: more evidenced add-backs can only raise it).
+ * Debt must be an exact figure (a lower-bound debt caption would overstate capacity → NEEDS_INPUT).
+ */
+export function leverageDebtCapacity(opt: EbitdaOptimization, maxLeverage: string, debt: { value: string; source: string; lowerBound?: boolean } | null): LeverageCapacity {
+  const base = { maxLeverage, ebitda: opt.maximum ?? opt.supported, ebitdaBasis: opt.maximum ? "MAXIMUM" as const : opt.supported ? "SUPPORTED" as const : null, debt: debt?.value ?? null, debtSource: debt?.source ?? null };
+  if (!/^\d+(?:\.\d+)?$/.test(maxLeverage)) return { ...base, status: "NEEDS_INPUT", capacity: null, bound: null, reason: "maximum leverage ratio not determinable" };
+  if (!base.ebitda) return { ...base, status: "NEEDS_INPUT", capacity: null, bound: null, reason: `Consolidated EBITDA: ${opt.reason}` };
+  if (!debt || !/^-?\d+$/.test(debt.value) || debt.lowerBound) return { ...base, status: "NEEDS_INPUT", capacity: null, bound: null, reason: debt?.lowerBound ? "debt figure is only a lower bound" : "current debt not determinable" };
+  const [i, f = ""] = maxLeverage.split(".");
+  const room = (BigInt(i! + f) * BigInt(base.ebitda)) / 10n ** BigInt(f.length) - BigInt(debt.value);
+  return { ...base, status: "COMPUTED", capacity: room.toString(), bound: opt.maximum ? "EXACT" : "AT_LEAST", reason: `${maxLeverage}x × ${base.ebitdaBasis} EBITDA ${base.ebitda} − debt ${debt.value}` };
+}
+
+/** Current total debt from filings for leverageDebtCapacity (lower-bound captions are flagged). */
+export function debtFromFinancials(fin: IssuerFinancials): { value: string; source: string; lowerBound: boolean } | null {
+  const d = fin.values.find((v) => v.metric === "totalDebt");
+  return d ? { value: d.value, source: `${d.concept} ${d.periodEnd} accn ${d.accession}`, lowerBound: /lower\s+bound/i.test(d.derivation) } : null;
+}
+
+/** The single maximum-leverage limit among the pipeline's ratio rows (null when none or ambiguous). */
+export function maxLeverageLimit(rows: ReadonlyArray<{ kind: string; name: string; direction: string | null; limit: string | null }>): string | null {
+  const limits = new Set(rows.filter((r) => r.kind === "RATIO" && /leverage/i.test(r.name) && !/secured|senior|first\s+lien|interest/i.test(r.name) && r.direction === "MAX" && r.limit && /^\d+(?:\.\d+)?$/.test(r.limit)).map((r) => r.limit!));
+  return limits.size === 1 ? [...limits][0]! : null;
 }

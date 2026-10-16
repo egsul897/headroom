@@ -54,7 +54,20 @@ export interface FinancialValue {
   derivation: string;
 }
 
-export interface IssuerFinancials { cik: string; entityName: string; values: FinancialValue[]; missing: Array<{ metric: HeadroomInput; reason: string }>; anchor?: string | null; asOf?: string | null }
+/**
+ * A figure the borrower supplies for an item public filings do not carry (e.g. non-recurring gains from a compliance
+ * certificate). Optional; never defaulted. key: "CNI:<CATEGORY>" / "CNI:<clause label>" for a net-income exclusion
+ * (value = the amount of that item included in net income: gains positive, losses negative) or "ADDBACK:<CATEGORY>" /
+ * "ADDBACK:<clause label>" for an EBITDA add-back (value = the charge, positive). source must name the document.
+ */
+export interface BorrowerInput { key: string; value: string; source: string }
+export interface IssuerFinancials { cik: string; entityName: string; values: FinancialValue[]; missing: Array<{ metric: HeadroomInput; reason: string }>; anchor?: string | null; asOf?: string | null; borrowerInputs?: BorrowerInput[] }
+
+/** The borrower input for the first matching key; inputs without a source or with a non-integer value are ignored. */
+export function borrowerInput(fin: IssuerFinancials, keys: string[]): BorrowerInput | null {
+  for (const k of keys) { const b = fin.borrowerInputs?.find((x) => x.key.toUpperCase() === k.toUpperCase() && x.source.trim().length > 0 && /^-?\d+$/.test(x.value)); if (b) return b; }
+  return null;
+}
 
 const FLOW_CONCEPTS: Array<[HeadroomInput, string[]]> = [
   ["netIncome", ["NetIncomeLoss", "ProfitLoss"]],

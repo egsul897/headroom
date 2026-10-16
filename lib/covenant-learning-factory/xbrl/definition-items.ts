@@ -9,7 +9,7 @@
  *     can only raise the total. NEEDS_INPUT: any unmapped deduction, any two-sided item (gains or losses, pro forma
  *     acquisition / disposition adjustments, net amounts that can turn negative), or an undefined / adjusted base.
  */
-import type { IssuerFinancials } from "./companyfacts";
+import { borrowerInput, type IssuerFinancials } from "./companyfacts";
 
 export type DefinitionKind = "EBITDA" | "INTEREST";
 export type ItemSign = "+" | "-" | "?";
@@ -271,8 +271,14 @@ export function cniAdjustments(body: string, fin: IssuerFinancials): { adjust: A
   const rest = flat.slice(cut);
   const parts = rest.split(/(?:;|,)\s*(?:and\s+|or\s+|plus\s+)?(?=\((?:[ivxl]{1,5}|[a-z]{1,2}|\d{1,2})\)\s)/i).flatMap((x) => x.split(/\s(?=\((?:[ivxl]{1,5}|[a-z]{1,2}|\d{1,2})\)\s)/i)).map((x) => x.trim()).filter((x) => x.length > 8);
   const adjust: Array<{ concept: string; value: bigint }> = [], lower: string[] = [], used = new Set<string>();
-  const take = (cs: string[], what: string) => { const it = firstItem(fin, cs); if (!it) return `${what} is excluded, but the filing reports no ${cs[0]} for the period`; if (!used.has(it.concept)) { used.add(it.concept); adjust.push(it); } return null; };
+  // Borrower-supplied figure for an exclusion (by clause label or category), recorded with its source.
+  let label = "";
+  const consumed = new Set<string>();
+  // One input answers one clause: a category key is used once; "OTHER" items need their clause label.
+  const supplied = (cat: string) => { const b = borrowerInput(fin, [label && `CNI:${label}`, cat !== "OTHER" && `CNI:${cat}`].filter((k): k is string => !!k && !consumed.has(k.toUpperCase()))); if (!b) return false; consumed.add(b.key.toUpperCase()); const c = `borrower:${b.key} [${b.source}]`; if (!used.has(c)) { used.add(c); adjust.push({ concept: c, value: BigInt(b.value) }); } return true; };
+  const take = (cs: string[], what: string, cat: string) => { const it = firstItem(fin, cs); if (!it) return supplied(cat) ? null : `${what} is excluded, but the filing reports no ${cs[0]} for the period (borrower input CNI:${cat} accepted)`; if (!used.has(it.concept)) { used.add(it.concept); adjust.push(it); } return null; };
   for (const raw of parts) {
+    label = /^\(([ivxl]{1,5}|[a-z]{1,2}|\d{1,2})\)/i.exec(raw)?.[0] ?? "";
     const t = raw.replace(/^(?:excluding|exclusive\s+of|but\s+excluding|provided[^:()]*?(?:excluded|that)|there\s+shall\s+(?:be\s+)?excluded)[,:]?\s*(?:\(?\s*without\s+duplication\s*\)?,?\s*)?/i, "");
     if (t.length < 8) continue;
     // Connective text between exclusions ("(and excluding the effect of), without duplication:", "there shall be
@@ -281,16 +287,18 @@ export function cniAdjustments(body: string, fin: IssuerFinancials): { adjust: A
     if (/cumulative\s+effect/i.test(t) && !/\bgains?\b[^.;]{0,40}(?:sale|disposition)|non-?recurring|unusual|Unrestricted/i.test(t)) continue;
     if (/\bextraordinary\b/i.test(t) && !/non-?recurring|unusual|infrequent|\bsales?\b|disposition/i.test(t)) continue;
     if (/equity\s+method|any\s+Person\s+(?:\(other\s+than|other\s+than|that\s+is\s+not)|not\s+a\s+(?:Restricted\s+)?Subsidiary|in\s+which\s+any\s+other\s+Person/i.test(t) && !/Unrestricted\s+Subsidiar/i.test(t)) {
-      const e = take(EQUITY_METHOD, "equity-method income"); if (e) return { reason: e };
+      const e = take(EQUITY_METHOD, "equity-method income", "EQUITY_METHOD"); if (e) return { reason: e };
       if (/dividends?|distributions?/i.test(t)) lower.push("dividends from equity investees added back are not in XBRL");
       continue;
     }
     const gainsAndLosses = /\bgains?\b/i.test(t) && /\bloss(?:es)?\b/i.test(t);
-    if (gainsAndLosses && /extinguishment|early\s+(?:retirement|repayment|redemption)|repurchase\s+of\s+(?:debt|Indebtedness)/i.test(t) && !/non-?recurring|unusual|asset|sale/i.test(t)) { const e = take(EXTINGUISH, "gain or loss on extinguishment of debt"); if (e) return { reason: e }; continue; }
-    if (gainsAndLosses && /(?:sale|disposition|disposal)s?\s+of\s+(?:any\s+)?(?:assets?|property|properties)|asset\s+(?:sales?|dispositions?)/i.test(t) && !/non-?recurring|unusual|extinguishment|hedg|currency|securities|discontinued/i.test(t)) { const e = take(ASSET_SALE, "gain or loss on asset sales"); if (e) return { reason: e }; continue; }
+    if (gainsAndLosses && /extinguishment|early\s+(?:retirement|repayment|redemption)|repurchase\s+of\s+(?:debt|Indebtedness)/i.test(t) && !/non-?recurring|unusual|asset|sale/i.test(t)) { const e = take(EXTINGUISH, "gain or loss on extinguishment of debt", "EXTINGUISHMENT"); if (e) return { reason: e }; continue; }
+    if (gainsAndLosses && /(?:sale|disposition|disposal)s?\s+of\s+(?:any\s+)?(?:assets?|property|properties)|asset\s+(?:sales?|dispositions?)/i.test(t) && !/non-?recurring|unusual|extinguishment|hedg|currency|securities|discontinued/i.test(t)) { const e = take(ASSET_SALE, "gain or loss on asset sales", "ASSET_SALE"); if (e) return { reason: e }; continue; }
     // Excluding only losses / charges / expenses can only raise the contract figure.
-    if (!/\bgains?\b|\bincome\b|\bcredits?\b|\bbenefits?\b|\bincreas|\bwrite-?ups?\b|Unrestricted\s+Subsidiar|dividends?|distributions?|pro\s+forma|acquired|accru/i.test(t) && /\bloss(?:es)?\b|\bcharges?\b|\bexpenses?\b|\bcosts?\b|\bwrite-?(?:offs?|downs?)\b|\bimpairments?\b/i.test(t)) { lower.push(`excluded losses/charges not in XBRL: ${t.slice(0, 60)}`); continue; }
-    return { reason: `excludes an item that can lower net income and is not in filings: "${t.slice(0, 90)}"` };
+    const cat = /Unrestricted\s+Subsidiar/i.test(t) ? "UNRESTRICTED_SUBSIDIARY" : /non-?recurring|unusual|infrequent|exceptional|one-?time|extraordinary/i.test(t) ? "NON_RECURRING" : /discontinued/i.test(t) ? "DISCONTINUED_OPERATIONS" : /equity\s+method|any\s+Person/i.test(t) ? "EQUITY_METHOD" : "OTHER";
+    if (supplied(cat)) continue;
+if (!/\bgains?\b|\bincome\b|\bcredits?\b|\bbenefits?\b|\bincreas|\bwrite-?ups?\b|Unrestricted\s+Subsidiar|dividends?|distributions?|pro\s+forma|acquired|accru/i.test(t) && /\bloss(?:es)?\b|\bcharges?\b|\bexpenses?\b|\bcosts?\b|\bwrite-?(?:offs?|downs?)\b|\bimpairments?\b/i.test(t)) { lower.push(`excluded losses/charges not in XBRL: ${t.slice(0, 60)}`); continue; }
+    return { reason: `excludes an item that can lower net income and is not in filings: "${t.slice(0, 90)}" (borrower input CNI:${cat} or CNI:${label || "<clause>"} accepted)` };
   }
   return { adjust, lower };
 }
