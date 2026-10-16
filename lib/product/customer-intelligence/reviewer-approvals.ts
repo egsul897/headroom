@@ -89,6 +89,18 @@ export async function recordReviewerDecision(params: {
   );
   const summary = summarizeFromStoredMetadata(meta);
   const currentItem = summary?.items.find((i) => i.sectionRef === params.sectionRef);
+  // Rule 112: compile already refuses a section with no summary
+  // item — but the decision row was still recorded, leaving a
+  // phantom approval that matches nothing. Refuse up front so no
+  // decision is ever recorded for a section this document's
+  // analysis does not contain.
+  if (!currentItem) {
+    return {
+      ok: false,
+      error: `Section ${params.sectionRef} not found in this document's analysis — no decision recorded`,
+      approvalCount: prior.length,
+    };
+  }
 
   const next: ReviewerApproval = {
     sourceId: params.sourceId,
