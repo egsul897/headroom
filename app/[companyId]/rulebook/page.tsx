@@ -27,6 +27,10 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
   const decide = reviewProvisionAction.bind(null, companyId);
   const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}`, a]));
 
+  // Rule 90: the queue caps at 10 items per category and 50
+  // total — counsel must know when interpretations beyond the
+  // cap still await review, or the ladder stalls silently.
+  const totalCandidates = review.categories.reduce((n, c) => n + c.items.length, 0);
   const candidates = review.categories.flatMap((c) =>
     c.items.slice(0, 10).map((item) => ({
       sourceId: item.sourceId,
@@ -122,7 +126,14 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
             legal verification.
           </div>
         ) : (
-          candidates.slice(0, 50).map((c, i) => (
+          <>
+            {totalCandidates > 50 && (
+              <div className="row-note" style={{ marginTop: 8 }}>
+                Showing first 50 of {totalCandidates} interpretations (10 per category cap) — more await review below
+                the cap.
+              </div>
+            )}
+            {candidates.slice(0, 50).map((c, i) => (
             <div
               key={`${c.sourceId}-${c.sectionRef}-${i}`}
               style={{ marginTop: 14, paddingTop: 10, borderTop: "1px solid var(--border, #e5e7eb)" }}
@@ -154,21 +165,33 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                   Alternative: {a}
                 </div>
               ))}
+              {c.alternatives.length > 2 && (
+                <div className="row-note">(+{c.alternatives.length - 2} more alternatives — see source document)</div>
+              )}
               {c.assumptions.slice(0, 2).map((a, j) => (
                 <div key={`as${j}`} className="row-note">
                   Assumption: {a}
                 </div>
               ))}
+              {c.assumptions.length > 2 && (
+                <div className="row-note">(+{c.assumptions.length - 2} more assumptions — see source document)</div>
+              )}
               {c.baskets.slice(0, 3).map((b, j) => (
                 <div key={j} className="row-note">
                   Basket: {b}
                 </div>
               ))}
+              {c.baskets.length > 3 && (
+                <div className="row-note">(+{c.baskets.length - 3} more baskets — see source document)</div>
+              )}
               {c.conditions.slice(0, 2).map((b, j) => (
                 <div key={`c${j}`} className="row-note">
                   Condition: {b}
                 </div>
               ))}
+              {c.conditions.length > 2 && (
+                <div className="row-note">(+{c.conditions.length - 2} more conditions — see source document)</div>
+              )}
               <div className="row-note">Citation: {c.citation}</div>
               {c.decision?.note ? <div className="row-note">Prior note: {c.decision.note}</div> : null}
 
@@ -206,7 +229,8 @@ export default async function RulebookPage({ params }: { params: Promise<{ compa
                 </div>
               </form>
             </div>
-          ))
+          ))}
+          </>
         )}
       </Card>
     </div>
