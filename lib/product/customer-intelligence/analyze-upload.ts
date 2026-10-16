@@ -349,8 +349,25 @@ export async function analyzeCustomerDocument(params: {
       processed.source.extractionStatus === "FAILED" ||
       processed.source.extractionStatus === "UNSUPPORTED_FORMAT"
     ) {
+      // Rule 66: a failed re-analysis must NOT wipe the prior
+      // analysis (rule-4 bug class in the FAILED branch). The
+      // success branch preserves reviewer decisions and the
+      // staging branch merges priorMeta — but this branch built
+      // failMeta from scratch and replaced the whole metadata,
+      // destroying covenantSummary / amendmentPackage /
+      // reviewerApprovals / compile results for a previously
+      // analyzed document. Merge: the fresh attempt supersedes
+      // the error field, the prior analysis payload survives
+      // (it is for these exact bytes — sourceId includes the
+      // content hash). The caller stamps FAILED_RETRYABLE.
+      const failedPriorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
+      const failedPriorMeta =
+        failedPriorRow?.metadata && typeof failedPriorRow.metadata === "object" && !Array.isArray(failedPriorRow.metadata)
+          ? { ...(failedPriorRow.metadata as Record<string, unknown>) }
+          : {};
       const failMeta = JSON.parse(
         JSON.stringify({
+          ...failedPriorMeta,
           workspaceScope: "CUSTOMER",
           companyId: params.companyId,
           documentId: params.documentId,
