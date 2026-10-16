@@ -108,10 +108,11 @@ function operativeSpan(
   if (nextStart != null && nextStart > start) {
     return { start, end: Math.min(textLen, nextStart) };
   }
-  // Sparse structure: take at least 2.5k chars of body beyond the heading span.
+  // Sparse structure: take at least 4k chars of body beyond the heading span,
+  // matching the section-span cap in discoverCovenantCandidates.
   return {
     start,
-    end: Math.min(textLen, Math.max(node.charEnd, node.charStart + 2500)),
+    end: Math.min(textLen, Math.max(node.charEnd, node.charStart + 4000)),
   };
 }
 
@@ -149,13 +150,17 @@ export function discoverCovenantCandidates(
     const rank = scoreDiscoveryPotential(excerpt, node.heading);
     if (rank.score < 2 && families[0] === "UNKNOWN") continue;
     const mergedFamilies = uniqueFamilies([...families, ...rank.families]);
+    // Excerpt cap matches the 4000-char section span: basket/cap
+    // extraction runs on this excerpt, so a tighter cap silently
+    // dropped caps living late in a long section (rule 11). Display
+    // excerpts are clipped separately downstream (700 chars).
     out.push({
       candidateId: candidateId(sourceId, node.nodeId),
       sourceId,
       nodeId: node.nodeId,
       families: mergedFamilies,
       signals: [...rank.signals, ...detectPatternsInText(excerpt).map((p) => `pattern:${p}`)],
-      excerpt: excerpt.slice(0, 1600),
+      excerpt: excerpt.slice(0, 4000),
       representationLevel: "DISCOVERED_CANDIDATE",
       discoveryScore: rank.score,
     });
