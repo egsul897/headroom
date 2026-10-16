@@ -544,6 +544,26 @@ export async function compileAcceptedInterpretation(params: {
     ...(item.applicableDefinitions ?? []).map((d) => d.term),
   ].filter(Boolean).slice(0, 24);
   const entityScope = entityScopeTags(item);
+  // Rule 206: a "provided that" clause that merely RESTATES the
+  // Permission's own modeled cap is not an additional eligibility
+  // requirement — the threshold already enforces it. Minting it as a
+  // CUSTOM_STATE_PREDICATE (UNKNOWN, fail-closed) double-counts the cap
+  // and makes the basket never clear (Asure 7.02(c): the proviso "the
+  // aggregate amount ... shall not exceed $5,000,000" is the $5M cap
+  // itself). Drop the condition only when the text names a dollar
+  // amount equal to the modeled threshold AND a cap verb; a proviso
+  // with a different amount, a floor ("at least"), or no amount at all
+  // (Asure 7.02(f)'s refinancing proviso, 7.01(t)'s no-Collateral
+  // proviso) is a genuine condition and stays UNKNOWN.
+  const conditions = (item.conditions ?? [])
+    .slice(0, 12)
+    .filter((c) => !isCapRestatementCondition(String(c), parsed.thresholdValue))
+    .map((c, i) => ({
+      id: `${params.sourceId}:${params.sectionRef}:cond:${i}`,
+      description: String(c).slice(0, 500),
+      kind: "CUSTOM_STATE_PREDICATE" as const,
+    }));
+
   // Rule 178: eligibility conditions must carry the solver's shape
   // ({ id, description, kind }), not { text }. The old { text }
   // shape made the solver report 'Eligibility condition "undefined"
@@ -553,12 +573,6 @@ export async function compileAcceptedInterpretation(params: {
   // maps to CUSTOM_STATE_PREDICATE without a
   // ruleActivationConditionId: the solver still fails it closed to
   // UNKNOWN, but now with the real condition text in the message.
-  const conditions = (item.conditions ?? []).slice(0, 12).map((c, i) => ({
-    id: `${params.sourceId}:${params.sectionRef}:cond:${i}`,
-    description: String(c).slice(0, 500),
-    kind: "CUSTOM_STATE_PREDICATE" as const,
-  }));
-
   for (const grantType of grants) {
     const code = permissionCode(params.sourceId, params.sectionRef, grantType);
     const notes = [
@@ -880,6 +894,18 @@ async function supersedeCounselPermissionsOnAmendedDocs(
 }
 
 /** Pure helper for tests — parse without DB. */
+/** Rule 206: true when a condition text merely restates the modeled cap. */
+export function isCapRestatementCondition(text: string, thresholdValue: number | null): boolean {
+  if (thresholdValue == null) return false;
+  const capVerb = /\b(?:not\s+exceed(?:ing)?|does\s+not\s+exceed|shall\s+not\s+exceed|up\s+to\s+\$|maximum\b[^.]{0,40}\$|no\s+more\s+than\s+\$|capped\s+at\s+\$)/i.test(text);
+  if (!capVerb) return false;
+  const amounts = text.match(/\$\s*[\d,]+(?:\.\d+)?/g) ?? [];
+  return amounts.some((a) => {
+    const v = parseMoneyMillions(a);
+    return v != null && Math.abs(v - thresholdValue) < 1e-6;
+  });
+}
+
 export function parseCounselFormulaForTest(item: CovenantSummaryItem) {
   return parseFormulaFromItem(item);
 }

@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { extractStructure, discoverDefinitions, discoverCrossReferences } from "../../lib/knowledge-factory/pipeline/structural";
 import { discoverCovenantCandidates } from "../../lib/knowledge-factory/pipeline/candidates";
 import { buildDocumentCovenantSummary } from "../../lib/product/covenant-intelligence/summarize";
-import { parseCounselFormulaForTest } from "../../lib/product/customer-intelligence/compile-accepted";
+import { isCapRestatementCondition, parseCounselFormulaForTest } from "../../lib/product/customer-intelligence/compile-accepted";
 import type { CovenantSummaryItem } from "../../lib/product/covenant-intelligence/summarize";
 import type { ProvisionAnalysis } from "../../lib/product/covenant-intelligence/analyze-provision";
 
@@ -221,5 +221,47 @@ describe("Rule 192: truncated-excerpt guard (compiler half)", () => {
     });
     expect(parsed.modelingStatus).toBe("MODELED");
     expect(parsed.thresholdValue).toBe(5);
+  });
+});
+
+describe("Rule 206: a condition that restates the modeled cap is not an eligibility condition", () => {
+  it("drops the Asure 7.02(c) cap-restating proviso", () => {
+    expect(
+      isCapRestatementCondition(
+        "provided_that: provided that the aggregate amount of all such Indebtedness at any time outstanding shall not exceed $5,000,000",
+        5,
+      ),
+    ).toBe(true);
+  });
+
+  it("keeps the Asure 7.02(f) refinancing proviso (no amount, not a cap)", () => {
+    expect(
+      isCapRestatementCondition(
+        "provided_that: provided that the amount of such Indebtedness is not increased at the time of such refinancing, refunding, renewal or extension",
+        5,
+      ),
+    ).toBe(false);
+  });
+
+  it("keeps the Asure 7.01(t) no-Collateral proviso (no amount, not a cap)", () => {
+    expect(
+      isCapRestatementCondition("provided_that: provided that no such Lien shall extend to or cover any Collateral.", 5),
+    ).toBe(false);
+  });
+
+  it("keeps a proviso naming a DIFFERENT amount than the threshold", () => {
+    expect(
+      isCapRestatementCondition("provided that the aggregate amount shall not exceed $10,000,000", 5),
+    ).toBe(false);
+  });
+
+  it("keeps a floor proviso (at least) even at the threshold amount", () => {
+    expect(isCapRestatementCondition("provided that the amount is at least $5,000,000", 5)).toBe(false);
+  });
+
+  it("keeps everything when there is no modeled threshold", () => {
+    expect(
+      isCapRestatementCondition("provided that the aggregate amount shall not exceed $5,000,000", null),
+    ).toBe(false);
   });
 });
