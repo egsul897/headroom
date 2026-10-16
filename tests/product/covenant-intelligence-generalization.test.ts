@@ -829,7 +829,7 @@ describe("rule 199: defined-term word-boundary matching", () => {
     expect(a.applicableDefinitions.map((d) => d.term)).not.toContain("SEC");
   });
   it("SEC attaches when the excerpt mentions the SEC standalone", () => {
-    const a = analyze("The Borrower shall file reports with the SEC as required by law.", "5.01", ["OTHER"], "c-199b", defs);
+    const a = analyze("The Borrower shall file reports with the SEC as required by law.", "5.01", ["GENERAL_CONDITIONS_AND_EXCEPTIONS"], "c-199b", defs);
     expect(a.applicableDefinitions.map((d) => d.term)).toContain("SEC");
   });
   it("a multi-word term attaches across a line break in the excerpt", () => {
@@ -848,7 +848,7 @@ describe("rule 200: heading whitespace normalization", () => {
         candidateId: "c-200",
         sourceId: "test:general",
         nodeId: "n-200",
-        families: ["OTHER"],
+        families: ["GENERAL_CONDITIONS_AND_EXCEPTIONS"],
         signals: [],
         excerpt: "Additional Guarantors shall execute a joinder.",
         representationLevel: "DISCOVERED_CANDIDATE",
