@@ -10,7 +10,7 @@ import {
   summarizeFromStoredMetadata,
   type CovenantSummaryItem,
 } from "../covenant-intelligence/summarize";
-import { parseMoneyMillions } from "./money";
+import { parseMoneyMillions, parsePctOf } from "./money";
 import { buildCapacityFormulas } from "./capacity-formulas";
 
 export type CompileStatus =
@@ -33,13 +33,6 @@ export interface CompileAcceptedResult {
   modelingStatus?: "MODELED" | "KNOWN_NOT_MODELED";
   missingFields: string[];
   message: string;
-}
-
-function parsePct(text: string): number | null {
-  const m = text.match(/(\d+(?:\.\d+)?)\s*%/);
-  if (!m) return null;
-  const n = Number(m[1]) / 100;
-  return Number.isFinite(n) ? n : null;
 }
 
 function parseRatio(text: string): number | null {
@@ -117,7 +110,11 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   const notes: string[] = [];
   const missingFields: string[] = [];
   const money = parseMoneyMillions(basketText);
-  const pct = parsePct(basketText);
+  // Grower %s are base-attached: the % modifying EBITDA / Total
+  // Assets — never the first % anywhere in the text (an unrelated
+  // "50% ownership" in the same section is not the grower).
+  const pctEbitda = parsePctOf(basketText, "EBITDA");
+  const pctAssets = parsePctOf(basketText, "TOTAL_ASSETS");
   const ratio = parseRatio(basketText);
   const greaterOf = /greater of/i.test(basketText);
   const ebitdaBase = /EBITDA/i.test(basketText);
@@ -130,7 +127,7 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
       formulaType: "BUILDER_BASKET",
       thresholdValue: money,
       params: {
-        pctEbitda: ebitdaBase && pct != null ? pct : 0,
+        pctEbitda: ebitdaBase && pctEbitda != null ? pctEbitda : 0,
         cniSharePct: /net income|CNI/i.test(basketText) ? 0.5 : undefined,
         includeEquityProceeds: /equity/i.test(basketText),
       },
@@ -138,15 +135,15 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
       measurementBasis: "CUMULATIVE_INCURRED",
       notes: ["Compiled builder/available-amount starter from counsel-accepted analysis"],
       modelingStatus: "MODELED",
-      missingFields: ebitdaBase && pct == null ? ["builder pct of EBITDA"] : [],
+      missingFields: ebitdaBase && pctEbitda == null ? ["builder pct of EBITDA"] : [],
     };
   }
 
-  if (greaterOf && money != null && ebitdaBase && pct != null) {
+  if (greaterOf && money != null && ebitdaBase && pctEbitda != null) {
     return {
       formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA",
       thresholdValue: money,
-      params: { pctEbitda: pct },
+      params: { pctEbitda },
       amountKind: "FIXED",
       measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
       notes: ["Compiled greater-of flat / % EBITDA basket from counsel-accepted analysis"],
@@ -155,11 +152,11 @@ function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
     };
   }
 
-  if (greaterOf && money != null && assetsBase && pct != null) {
+  if (greaterOf && money != null && assetsBase && pctAssets != null) {
     return {
       formulaType: "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
       thresholdValue: money,
-      params: { pctTotalAssets: pct },
+      params: { pctTotalAssets: pctAssets },
       amountKind: "FIXED",
       measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
       notes: [

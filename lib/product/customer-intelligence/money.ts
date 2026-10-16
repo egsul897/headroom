@@ -21,3 +21,21 @@ export function parseMoneyMillions(text: string): number | null {
   else if (!m[2]) n /= 1_000_000; // bare = raw dollars
   return n;
 }
+
+/**
+ * Parse the grower % attached to a base: "10.0% of Consolidated
+ * EBITDA" → 0.10, "7.5% of Total Assets" → 0.075. The old code took
+ * the FIRST % anywhere in the text, so an unrelated "50% ownership"
+ * in the same section became the greater-of grower instead of the
+ * true "10% of EBITDA". The % must be the one modifying the base.
+ */
+export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS"): number | null {
+  const re =
+    base === "EBITDA"
+      ? /(\d+(?:\.\d+)?)\s*%\s*of\s+(?:[A-Za-z]+\s+){0,2}EBITDA/i
+      : /(\d+(?:\.\d+)?)\s*%\s*of\s+(?:[A-Za-z]+\s+){0,2}Total\s+Assets/i;
+  const m = text.match(re);
+  if (!m) return null;
+  const n = Number(m[1]) / 100;
+  return Number.isFinite(n) ? n : null;
+}

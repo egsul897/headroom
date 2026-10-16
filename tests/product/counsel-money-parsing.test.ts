@@ -16,9 +16,17 @@
  *      — a thousand-fold overstatement.
  * The parser now lives in a prisma-free module (money.ts) so it is
  * directly unit-testable.
+ *
+ * Rule 20 — grower % must be the % attached to its base.
+ *
+ * The old parsePct took the FIRST % anywhere in the joined text,
+ * so an unrelated "50% ownership" in the same section became the
+ * greater-of grower instead of the true "10% of EBITDA"
+ * (verified empirically: old code returned 0.50). parsePctOf
+ * matches only a % modifying EBITDA / Total Assets.
  */
 import { describe, expect, it } from "vitest";
-import { parseMoneyMillions } from "../../lib/product/customer-intelligence/money";
+import { parseMoneyMillions, parsePctOf } from "../../lib/product/customer-intelligence/money";
 
 describe("counsel-compile money parsing", () => {
   it("bare $5,000 is raw dollars → 0.005 ($M), not 5000", () => {
@@ -43,5 +51,24 @@ describe("counsel-compile money parsing", () => {
 
   it("$2.5 billion → 2500 ($M)", () => {
     expect(parseMoneyMillions("Amount/threshold: $2.5 billion")).toBeCloseTo(2500, 9);
+  });
+});
+
+describe("grower % attached to its base", () => {
+  const text =
+    "The Company must maintain at least 50% ownership of each Subsidiary. " +
+    "Indebtedness not to exceed the greater of $150.0 million and 10.0% of Consolidated EBITDA. " +
+    "Liens not to exceed 7.5% of Consolidated Total Assets.";
+
+  it("EBITDA grower ignores an unrelated earlier %", () => {
+    expect(parsePctOf(text, "EBITDA")).toBeCloseTo(0.1, 9);
+  });
+
+  it("Total Assets grower finds its own %", () => {
+    expect(parsePctOf(text, "TOTAL_ASSETS")).toBeCloseTo(0.075, 9);
+  });
+
+  it("returns null when the base has no attached %", () => {
+    expect(parsePctOf("Fixed basket of $150.0 million.", "EBITDA")).toBeNull();
   });
 });
