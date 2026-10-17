@@ -99,7 +99,7 @@ export function categorize(t: string): AddBackCategory {
 const CAP_RE = new RegExp(String.raw`${IN_NO_EVENT}|\b(?:(?:shall|may|does|do|will)\s+)?not\s*(?:to\s+)?${CAP_ADVERB}exceed(?:ing)?\b|` + /\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not\s+(?:in\s+excess\s+of|to\s+exceed)|up\s+to)\b|\bcapped\s+at\b|\bmaximum\s+of\b/.source, "i");
 /**
  * Clause-reference grammar shared by every cap scope: label paths ("(b)(vii)"), lists joined by commas / and / or,
- * repeated "clause" words ("clause (b)(ix) and clause (b)(x)") and ranges ("(A) through (F)", "(d)–(f)", "(d) to (f)").
+ * repeated "clause" words ("clause (c)(iii) and clause (c)(v)") and ranges ("(A) through (F)", "(d)–(f)", "(d) to (f)").
  */
 const REF_LABEL = String.raw`\([ivxlA-Za-z\d]{1,5}\)`;
 const REF_RUN = String.raw`(?:${REF_LABEL})+`;
@@ -138,6 +138,12 @@ function labelsBetween(a: string, b: string): string[][] {
  * of a range, the one whose labels all exist is kept. A range with no single supported reading is reported in
  * `unresolvedRanges` (the caller treats the cap's scope as unresolved).
  */
+/** Enumerator style of a reference label; "(i)" / "(v)" / "(x)" count as roman (the ambiguous reading is the common one). */
+function refStyle(l: string): string {
+  const x = l.slice(1, -1);
+  return /^\d+$/.test(x) ? "digit" : /^[ivxl]+$/.test(x) ? "roman" : /^[a-z]+$/.test(x) ? "lower" : /^[A-Z]+$/.test(x) ? "upper" : "other";
+}
+
 export function clauseRefPaths(list: string, has: (label: string) => boolean = () => true): { paths: string[][]; unresolvedRanges: string[] } {
   const paths: string[][] = [];
   const unresolvedRanges: string[] = [];
@@ -153,6 +159,12 @@ export function clauseRefPaths(list: string, has: (label: string) => boolean = (
       const pick = supported.length === 1 ? supported[0]! : null;
       if (pick) { const outer = path.length > 1 ? path.slice(0, -1) : prev.slice(0, -1); for (const l of pick) paths.push([...outer, l]); }
       else unresolvedRanges.push(`${prev.join("")}–${path.join("")}`);
+    }
+    // "(vi)(A) and (B)": a bare label in the style of the previous path's last label continues that path's parent.
+    const prev = paths.at(-1);
+    if (path.length === 1 && prev && prev.length > 1 && refStyle(path[0]!) === refStyle(prev.at(-1)!) && refStyle(path[0]!) !== refStyle(prev.at(-2)!)) {
+      paths.push([...prev.slice(0, -1), path[0]!]);
+      continue;
     }
     paths.push(path);
   }
@@ -255,9 +267,12 @@ function parseCap0(t: string, from = 0): CapSpec | null {
   return { text: w, kind: l.dollars.length ? "FIXED" : "PERCENT", ...l, giving, sharedWith };
 }
 
+/** A self-reference without a label: the clause that states the cap. */
+const SELF_REF = /\bthis\s+(?:sub-?)?(?:clause|paragraph)\b(?!\s*\()|\bthe\s+foregoing\b(?!\s+(?:sub-?)?(?:clauses?|paragraphs?)\b)|\bsuch\s+(?:amounts?|add-?backs?|costs|expenses|charges)\b|\bhereunder\b/i;
+
 /** One cap condition in a clause: its amount and the clauses it names (empty = the clause that states it). */
 export interface CapCondition { spec: CapSpec; labels: string[]; withHost: boolean; at: number;
-  /** The raw clause-reference lists the condition names ("(d) through (f)", "(b)(ix) and clause (b)(x)"), resolved against the definition's lines by the optimizer. */
+  /** The raw clause-reference lists the condition names ("(d) through (f)", "(c)(iii) and clause (c)(v)"), resolved against the definition's lines by the optimizer. */
   refLists?: string[];
   /** Same lists, flagged when written deictically ("this clause (i)"): the reference is to the clause that contains the statement. */
   refs?: Array<{ list: string; deictic: boolean }>;
@@ -300,7 +315,11 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
     seg = seg.replace(/\((?:other\s+than|excluding|not\s+including|except)\b[^()]*(?:\([^()]*\)[^()]*)*\)/gi, (x) => " ".repeat(x.length));
     // Every scope phrase since the previous condition ("pursuant to this clause (1)(l), together with … pursuant to clauses
     // (1)(k) and (1)(q)"). "clause (b)(viii)" is one path: keep the innermost label of each adjacent run.
-    const found: Array<{ list: string; deictic: boolean; external: boolean; at?: number }> = [...seg.matchAll(SCOPE_RE)].map((sm) => ({ list: sm[2]!, deictic: /^this\b/i.test(sm[1] ?? ""), external: EXTERNAL_TAIL.test(seg.slice(sm.index! + sm[0].length)), at: sm.index! }));
+    const found: Array<{ list: string; deictic: boolean; external: boolean; at?: number }> = [...seg.matchAll(SCOPE_RE)].map((sm) => {
+      // "clauses (A) and (B) of this clause (vi)": the parent follows the list.
+      const parent = /^\s*of\s+(?:this\s+)?(?:sub-?)?(?:clause|paragraph)\s+((?:\([ivxlA-Za-z\d]{1,5}\))+)/i.exec(seg.slice(sm.index! + sm[0].length) + full.slice(m.index, m.index + 80));
+      return { list: parent ? `${parent[1]}${sm[2]!}` : sm[2]!, deictic: /^this\b/i.test(sm[1] ?? ""), external: EXTERNAL_TAIL.test(seg.slice(sm.index! + sm[0].length)), at: sm.index! };
+    });
     if (farSelf && !found.some((r) => r.deictic)) found.unshift({ list: farSelf[2]!, deictic: true, external: false, at: 0 });
     // "in no event shall <subject> exceed": every clause list in the subject is the scope, whatever word introduces it.
     if (isInNoEventSubject(m[0])) {
@@ -318,8 +337,15 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
     const refLists = refs.map((r) => r.list);
     let labels = refLists.flatMap((l) => clauseRefPaths(l).paths.map((p) => p.at(-1)!));
     let withHost = !labels.length;
-    const tw = /together\s+with[^,;]{0,200}/i.exec(full.slice(m.index, m.index + 450));
-    if (tw) { for (const lm of tw[0].matchAll(LABEL_LIST)) { if (EXTERNAL_TAIL.test(tw[0].slice(lm.index! + lm[0].length))) { external.push(lm[1]!); continue; } refLists.push(lm[1]!); refs.push({ list: lm[1]!, deictic: false }); for (const p of clauseRefPaths(lm[1]!).paths) labels.push(p.at(-1)!); } withHost = true; }
+    // The stating clause named without a label ("this clause", "the foregoing amounts", "such amounts", "hereunder")
+    // is part of the scope, next to whatever other clauses the condition names.
+    const subject = `${seg} ${isInNoEventSubject(m[0]) ? m[0] : ""}`;
+    if (SELF_REF.test(subject)) withHost = true;
+    // "together with" may come before the verb ("the foregoing amounts, together with amounts under clauses (d) and
+    // (e), shall not exceed") or after it.
+    // "Together with" adds the clauses it names; it does not by itself name the stating clause.
+    const tw = /together\s+with[^;]{0,200}/i.exec(subject) ?? /together\s+with[^,;]{0,200}/i.exec(full.slice(m.index, m.index + 450));
+    if (tw) { for (const lm of tw[0].matchAll(LABEL_LIST)) { if (EXTERNAL_TAIL.test(tw[0].slice(lm.index! + lm[0].length))) { external.push(lm[1]!); continue; } refLists.push(lm[1]!); refs.push({ list: lm[1]!, deictic: false }); for (const p of clauseRefPaths(lm[1]!).paths) labels.push(p.at(-1)!); } }
     if (labels.some((l) => l.toUpperCase() === ownLabel.toUpperCase())) withHost = true;
     labels = [...new Set(labels.filter((l) => l.toUpperCase() !== ownLabel.toUpperCase()))];
     // Lifetime language in the scope phrase or the cap itself ("… pursuant to this clause (v) during the term of this
@@ -753,6 +779,19 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
       const outer = path.at(-2)!;
       const q = cands.filter((x) => { const pt = parentTop(x.o); return pt != null && sameLabel(pt, outer) && !isTop.get(x.o); });
       if (q.length === 1) return { line: q[0]!.o };
+      // The outer clause is a header that produced no line of its own ("(vi) charges … in connection with the
+      // following: (A) … (B) …"): the candidate between it and its next sibling.
+      const rawIdx = (o: Ln) => raw.indexOf(lineRaw.get(o)!);
+      const under = raw.map((r, k) => ({ r, k })).filter((x) => sameLabel(x.r.it.label, outer) && !lines.some((o) => lineRaw.get(o) === x.r)).map(({ k }) => {
+        const st = labelStyle(raw[k]!.it.label);
+        let n = raw.length;
+        for (let j = k + 1; j < raw.length; j++) if (labelStyle(raw[j]!.it.label) === st) { n = j; break; }
+        return { k, c: cands.filter((x) => rawIdx(x.o) > k && rawIdx(x.o) < n) };
+      }).filter((x) => x.c.length === 1);
+      // Several such headers: the nearest one before the statement (a reference reads back to the clause above it).
+      const at = l ? rawIdx(l) : -1;
+      const near = under.length > 1 && at >= 0 ? under.filter((x) => x.k < at).pop() : under.length === 1 ? under[0] : undefined;
+      if (near) return { line: near.c[0]!.o };
     }
     if (cands.length === 1) return { line: cands[0]!.o };
     if (cands.length > 1) {
@@ -798,6 +837,9 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     for (let j = lines.indexOf(o) + 1; j > 0 && j < lines.length; j++) {
       const x = lines[j]!;
       if (isTop.get(x) || labelStyle(x.label) === st) break;
+      // A heading in o's own style that produced no line ("(f) the sum of (i) … (ii) …") ends o's clause.
+      const r0 = raw.indexOf(lineRaw.get(lines[j - 1]!)!), r1 = raw.indexOf(lineRaw.get(x)!);
+      if (r0 >= 0 && r1 > r0 && raw.slice(r0 + 1, r1).some((r) => labelStyle(r.it.label) === st)) break;
       // Sub-clauses start their own count at one; "(c)" right after a clause continues an outer list instead.
       if (!out.length && ordinalOf(x.label) !== 1) break;
       if (out.length && labelStyle(x.label) === labelStyle(out[0]!.label) && ordinalOf(x.label) !== ordinalOf(out.at(-1)!.label) + 1) break;
