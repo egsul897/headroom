@@ -174,8 +174,8 @@ export async function runExtractionAction(companyId: string, documentId: string)
   try {
     const doc = await prisma.document.findFirst({ where: { id: documentId, companyId } });
     if (doc?.storageRef) {
-      const { getDocumentStorageProvider } = await import("@/lib/document-storage");
-      const bytes = await getDocumentStorageProvider().retrieve(doc.storageRef);
+      const { getDocumentStorageProviderForRef } = await import("@/lib/document-storage");
+      const bytes = await getDocumentStorageProviderForRef(doc.storageRef).retrieve(doc.storageRef);
       await analyzeCustomerDocument({
         companyId,
         documentId,

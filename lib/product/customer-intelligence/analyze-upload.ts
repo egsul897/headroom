@@ -289,8 +289,8 @@ export async function reanalyzeCustomerDocumentFromStorage(params: {
   }
   if (row) await markCustomerProcessingStatus({ sourceId: row.sourceId, status: "ANALYZING" });
   try {
-    const { getDocumentStorageProvider } = await import("../../document-storage");
-    const bytes = await getDocumentStorageProvider().retrieve(storageRef);
+    const { getDocumentStorageProviderForRef } = await import("../../document-storage");
+    const bytes = await getDocumentStorageProviderForRef(storageRef).retrieve(storageRef);
     const result = await analyzeCustomerDocument({
       companyId: params.companyId,
       documentId: params.documentId,

@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { Card, Chip } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
-import { getDocumentStorageProvider } from "@/lib/document-storage";
+import { getDocumentStorageProviderForRef } from "@/lib/document-storage";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import { summaryCapDisclosure } from "@/lib/product/covenant-intelligence/summarize";
 import {
@@ -36,7 +36,7 @@ async function loadSourceText(documentId: string, storageRef: string | null, not
 
   if (storageRef) {
     try {
-      const provider = getDocumentStorageProvider();
+      const provider = getDocumentStorageProviderForRef(storageRef);
       const buf = await provider.retrieve(storageRef);
       return loadSourceTextFromBytes(buf, filename, `stored object (${storageRef})`);
     } catch {
