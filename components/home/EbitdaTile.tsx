@@ -4,10 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
 import { DetailDrawer } from "@/components/motion/DetailDrawer";
 import { useToast } from "@/components/motion/Toast";
+import { sessionAuthorizationHeaders } from "@/lib/capacity/identity/browser-session";
+import { createConfirmKeys, ebitdaCallError, isPreparingMiss, type ConfirmKind } from "@/lib/home/ebitda-confirm";
 import {
   canConfirm,
   ebitdaTotals,
   formatUsd,
+  isIntegerAmount,
   listBadge,
   type EbitdaAddBack,
 } from "@/lib/home/ebitda-tile";
@@ -25,6 +28,8 @@ export function EbitdaTile({
   initialView = null,
   companyId = null,
   documents = null,
+  preparingIds = null,
+  inlineError = null,
 }: {
   base?: string | null;
   items?: readonly EbitdaAddBack[] | null;
@@ -32,11 +37,13 @@ export function EbitdaTile({
   initialView?: string | null;
   companyId?: string | null;
   documents?: readonly { id: string; name: string }[] | null;
+  preparingIds?: readonly string[] | null;
+  inlineError?: string | null;
 }) {
   if (!sample && base == null && companyId && documents && documents.length > 0) {
-    return <EbitdaApiTile companyId={companyId} documents={documents} initialView={initialView} />;
+    return <EbitdaApiTile companyId={companyId} documents={documents} initialView={initialView} preparingIds={preparingIds ?? []} />;
   }
-  return <EbitdaLocalTile base={base} items={items} sample={sample} initialView={initialView} />;
+  return <EbitdaLocalTile base={base} items={items} sample={sample} initialView={initialView} inlineError={inlineError} />;
 }
 
 function EbitdaLocalTile({
@@ -44,11 +51,13 @@ function EbitdaLocalTile({
   items = null,
   sample = false,
   initialView = null,
+  inlineError = null,
 }: {
   base?: string | null;
   items?: readonly EbitdaAddBack[] | null;
   sample?: boolean;
   initialView?: string | null;
+  inlineError?: string | null;
 }) {
   const loaded = base != null && items != null;
   const [confirmed, setConfirmed] = useState<ReadonlySet<string>>(() => new Set());
@@ -111,6 +120,7 @@ function EbitdaLocalTile({
       </button>
 
       <DetailDrawer open={drawerOpen} title={title} onClose={() => setView(null)}>
+        {inlineError ? <p className="ebitda-inline-error">{inlineError}</p> : null}
         {!loaded || !items ? (
           <p className="drawer-note">No add-backs are loaded.</p>
         ) : openItem ? (
@@ -172,60 +182,108 @@ function EbitdaApiTile({
   companyId,
   documents,
   initialView,
+  preparingIds,
 }: {
   companyId: string;
   documents: readonly { id: string; name: string }[];
   initialView?: string | null;
+  preparingIds: readonly string[];
 }) {
   const [documentId, setDocumentId] = useState(documents[0]?.id ?? "");
   const [box, setBox] = useState<EbitdaBoxPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [preparing, setPreparing] = useState(preparingIds.includes(documents[0]?.id ?? ""));
   const [view, setView] = useState<string | null>(initialView);
   const [pending, setPending] = useState(false);
+  const keys = useMemo(() => createConfirmKeys(), []);
   const document = documents.find((row) => row.id === documentId) ?? documents[0];
+  const scheduled = preparingIds.includes(documentId);
 
   useEffect(() => {
     let cancel = false;
+    let timer = 0;
     setBox(null);
     setError(null);
-    fetch(`/api/companies/${companyId}/documents/${documentId}/ebitda`)
-      .then(async (res) => {
-        const body = (await res.json()) as EbitdaBoxPayload & { error?: string };
+    async function load(attempt: number) {
+      if (scheduled || attempt > 0) setPreparing(true);
+      try {
+        const res = await fetch(`/api/companies/${companyId}/documents/${documentId}/ebitda`, {
+          headers: sessionAuthorizationHeaders(),
+        });
+        const body = (await res.json()) as EbitdaBoxPayload & { error?: string; status?: string };
         if (cancel) return;
-        if (!res.ok) {
-          setError(body.error ?? "No EBITDA box for this document.");
+        if (res.ok && body.status === "SCHEDULED") {
+          setPreparing(true);
+          setBox(null);
+          if (attempt < 8) timer = window.setTimeout(() => load(attempt + 1), 2000);
           return;
         }
+        if (!res.ok) {
+          if (isPreparingMiss(res.status, body.error) && attempt < 8) {
+            setPreparing(true);
+            setError(null);
+            timer = window.setTimeout(() => load(attempt + 1), 2000);
+            return;
+          }
+          setPreparing(false);
+          setError(ebitdaCallError(res.status, body.error).text);
+          return;
+        }
+        setPreparing(false);
         setBox(body);
-      })
-      .catch(() => {
-        if (!cancel) setError("The EBITDA box could not be loaded.");
-      });
+      } catch {
+        if (!cancel) {
+          setPreparing(false);
+          setError("The EBITDA box could not be loaded.");
+        }
+      }
+    }
+    void load(0);
     return () => {
       cancel = true;
+      window.clearTimeout(timer);
     };
-  }, [companyId, documentId]);
+  }, [companyId, documentId, scheduled]);
 
   const attention = box?.items.filter((item) => item.status === "PENDING" || item.status === "CONDITIONAL").length ?? 0;
   const openItem = box?.items.find((item) => item.inputKey === view) ?? null;
 
   async function confirm(item: EbitdaBoxItem) {
-    const source = item.source[0]?.ref;
-    if (!isIntegerAmount(item.amount) || !source) return;
+    const source = item.source[0]?.ref ?? "";
+    const kind: ConfirmKind = item.status === "CONDITIONAL" ? "LENDER_APPROVAL" : "AMOUNT";
+    if (kind === "AMOUNT" && !isIntegerAmount(item.amount)) return;
+    const idempotencyKey = keys.forClick(item.inputKey, kind);
     setPending(true);
     setError(null);
     try {
       const res = await fetch(`/api/companies/${companyId}/documents/${documentId}/ebitda/confirm`, {
         method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ inputKey: item.inputKey, value: item.amount, source }),
+        headers: { "content-type": "application/json", ...sessionAuthorizationHeaders() },
+        body: JSON.stringify({
+          inputKey: item.inputKey,
+          value: kind === "LENDER_APPROVAL" ? undefined : item.amount,
+          source,
+          kind,
+          idempotencyKey,
+        }),
       });
-      const body = (await res.json()) as { error?: string; box?: EbitdaBoxPayload };
-      if (!res.ok || !body.box) {
-        setError(body.error ?? "Confirm was refused.");
+      const body = (await res.json()) as { error?: string; box?: EbitdaBoxPayload; replayed?: boolean };
+      if (res.status === 409) {
+        const fresh = await fetch(`/api/companies/${companyId}/documents/${documentId}/ebitda`, {
+          headers: sessionAuthorizationHeaders(),
+        });
+        const current = (await fresh.json()) as EbitdaBoxPayload & { error?: string };
+        if (fresh.ok) setBox(current);
+        setError(ebitdaCallError(409, body.error).text);
         return;
       }
+      if (!res.ok || !body.box) {
+        setError(ebitdaCallError(res.status, body.error).text);
+        return;
+      }
+      keys.finish(item.inputKey, kind);
       setBox(body.box);
+      setError(body.replayed ? "This confirmation was already recorded." : null);
       setView("list");
     } catch {
       setError("Confirm was refused.");
@@ -241,14 +299,20 @@ function EbitdaApiTile({
           <span className="home-eyebrow">Consolidated EBITDA</span>
           {attention > 0 ? <span className="need-chip">{attention === 1 ? "1 item needs you" : `${attention} items need you`}</span> : null}
         </span>
-        <span className={box?.totalEbitda ? "ebitda-hero" : "ebitda-hero is-missing"}>{formatUsd(box?.totalEbitda) ?? "Needs input"}</span>
+        {preparing ? (
+          <span className="ebitda-skeleton">Preparing EBITDA…</span>
+        ) : (
+          <>
+            <span className={box?.totalEbitda ? "ebitda-hero" : "ebitda-hero is-missing"}>{formatUsd(box?.totalEbitda) ?? "Needs input"}</span>
+            <span className="ebitda-secondary">
+              <span className={box && formatUsd(box.extraAvailableIfConfirmed) ? undefined : "is-missing"}>
+                {box ? formatUsd(box.extraAvailableIfConfirmed) ?? "Needs input" : "Needs input"}
+              </span>
+              <span className="ebitda-caption">Additional available</span>
+            </span>
+          </>
+        )}
         <span className="ebitda-caption">{document?.name ?? "Agreement"}</span>
-        <span className="ebitda-secondary">
-          <span className={box && formatUsd(box.extraAvailableIfConfirmed) ? undefined : "is-missing"}>
-            {box ? formatUsd(box.extraAvailableIfConfirmed) ?? "Needs input" : "Needs input"}
-          </span>
-          <span className="ebitda-caption">Additional available</span>
-        </span>
       </button>
       {documents.length > 1 ? (
         <label className="ebitda-caption">
@@ -262,9 +326,12 @@ function EbitdaApiTile({
           </select>
         </label>
       ) : null}
-      {error ? <p className="drawer-note">{error}</p> : null}
+      {error && view == null ? <p className="ebitda-inline-error">{error}</p> : null}
       <DetailDrawer open={view != null} title={openItem?.label ?? "Add-backs"} onClose={() => setView(null)}>
-        {!box ? (
+        {error ? <p className="ebitda-inline-error">{error}</p> : null}
+        {preparing ? (
+          <p className="ebitda-skeleton">Preparing EBITDA…</p>
+        ) : !box ? (
           <p className="drawer-note">{error ?? "Loading the EBITDA box."}</p>
         ) : openItem ? (
           <ApiItem item={openItem} pending={pending} onBack={() => setView("list")} onConfirm={() => confirm(openItem)} />
@@ -306,7 +373,7 @@ function ApiItem({
   onConfirm: () => void;
 }) {
   const source = item.source[0];
-  const allowed = item.status !== "CONFIRMED" && isIntegerAmount(item.amount) && Boolean(source?.ref);
+  const allowed = item.status === "CONDITIONAL" ? Boolean(source?.ref || item.clause) : item.status !== "CONFIRMED" && isIntegerAmount(item.amount) && Boolean(source?.ref);
   return (
     <div className="ebitda-sheet">
       <button type="button" className="button button-quiet" onClick={onBack}>

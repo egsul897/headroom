@@ -1,4 +1,5 @@
 import { CompanyOverview } from "@/components/home/Overview";
+import { scheduledEbitdaDocumentIds } from "@/lib/home/ebitda-confirm";
 import { loadCompanyOverview } from "@/lib/home/load-overview";
 import { prisma } from "@/lib/prisma";
 // UNWIRED_OVERVIEW_LOAD remains the invent-absence baseline for Overview defaults / tests.
@@ -20,6 +21,9 @@ export default async function CompanyIndexPage({ params }: { params: Promise<{ c
   const documents = await prisma.document
     .findMany({ where: { companyId }, select: { id: true, name: true }, orderBy: { name: "asc" } })
     .catch(() => []);
+  const sources = await prisma.knowledgeSource
+    .findMany({ where: { companyId }, select: { documentId: true, metadata: true } })
+    .catch(() => []);
   return (
     <CompanyOverview
       companyId={companyId}
@@ -29,6 +33,7 @@ export default async function CompanyIndexPage({ params }: { params: Promise<{ c
       authorityNote={overview.authorityNote}
       setupCta={overview.setupCta}
       documents={documents}
+      preparingIds={scheduledEbitdaDocumentIds(sources)}
     />
   );
 }

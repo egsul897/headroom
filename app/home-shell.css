@@ -1008,6 +1008,27 @@ main:has(.app-shell) {
   margin-top: 18px;
 }
 
+.ebitda-inline-error {
+  margin: 8px 0 0;
+  color: var(--status-stop);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.ebitda-skeleton {
+  display: block;
+  margin: 10px 0 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--chart-track), var(--shell-line), var(--chart-track));
+  background-size: 200% 100%;
+  animation: shell-shimmer 1.4s ease-in-out infinite;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.4;
+  max-width: 220px;
+}
+
 .home-card {
   background: var(--shell-card);
   border: 1px solid var(--shell-line);

@@ -34,6 +34,7 @@ export function CompanyOverview({
   authorityNote = null,
   setupCta = null,
   documents = null,
+  preparingIds = null,
 }: {
   companyId: string;
   identityName?: string | null;
@@ -42,6 +43,7 @@ export function CompanyOverview({
   authorityNote?: string | null;
   setupCta?: { href: string; label: string; detail: string } | null;
   documents?: readonly { id: string; name: string }[] | null;
+  preparingIds?: readonly string[] | null;
 }) {
   const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
   const alerts = presentAlerts(slots.alerts);
@@ -117,7 +119,7 @@ export function CompanyOverview({
         <div className="home-split">
           <StatusTable state={slots.statusTable} />
           <div className="home-stack">
-            <EbitdaTile companyId={companyId} documents={documents} />
+            <EbitdaTile companyId={companyId} documents={documents} preparingIds={preparingIds} />
             <DriversCard state={slots.drivers} />
           </div>
         </div>

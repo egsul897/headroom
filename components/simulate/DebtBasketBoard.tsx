@@ -8,6 +8,7 @@ import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components
 import { fmtM, fmtX } from "@/lib/format";
 import {
   simulateDebtIncurrenceByBasket,
+  type CapacityBound,
   type CompanyCovenantData,
   type CovenantPosition,
   type DebtBasketAllocation,
@@ -26,11 +27,32 @@ type Amounts = Record<DebtBasketKind, SideAmounts>;
 type BasketMode = "secured" | "unsecured" | "combined";
 
 const NO_BASKET = "This agreement has no such basket";
+const KIND_WORD: Record<DebtBasketKind, string> = {
+  INCREMENTAL: "the incremental facility",
+  GENERAL: "the general debt basket",
+  RATIO_DEBT: "ratio debt",
+};
 
-function money(value: number | undefined): string {
-  if (value === undefined) return "Not evaluated";
-  if (!Number.isFinite(value)) return "Unlimited";
+export function boundText(bound: CapacityBound | undefined, value: number | undefined): string {
+  if (bound === "UNLIMITED") return "No cap";
+  if (value === undefined || !Number.isFinite(value)) return "Not evaluated";
+  if (bound === "AT_LEAST") return `at least ${fmtM(value)}`;
   return fmtM(value);
+}
+
+function sliderSlot(kind: DebtBasketKind, side: "secured" | "unsecured", mode: BasketMode): number {
+  let index = 0;
+  for (const row of KINDS) {
+    if (mode !== "unsecured") {
+      if (row.id === kind && side === "secured") return index;
+      index += 1;
+    }
+    if (mode !== "secured") {
+      if (row.id === kind && side === "unsecured") return index;
+      index += 1;
+    }
+  }
+  return -1;
 }
 
 function ratioText(value: number | null): string {
@@ -71,6 +93,7 @@ export function DebtBasketBoard({
     () => simulateDebtIncurrenceByBasket(data, position, allocations),
     [data, position, allocations],
   );
+  const blocked = sim.invalidAllocations.length > 0;
 
   function setSide(kind: DebtBasketKind, side: "secured" | "unsecured", amount: number) {
     const next = {
@@ -99,6 +122,7 @@ export function DebtBasketBoard({
           </button>
         ))}
       </div>
+      {blocked ? null : (
       <section className="home-card basket-slider" aria-label="Combined result">
         <div className="basket-slider-head">
           <h3 className="home-eyebrow">Combined</h3>
@@ -136,19 +160,24 @@ export function DebtBasketBoard({
           </p>
         ))}
       </section>
+      )}
       {KINDS.map((kind) => {
         const basket = sim.baskets.find((row) => row.kind === kind.id);
         const row = amounts[kind.id];
+        const securedError = sim.invalidAllocations.find((item) => item.index === sliderSlot(kind.id, "secured", mode))?.reason;
+        const unsecuredError = sim.invalidAllocations.find((item) => item.index === sliderSlot(kind.id, "unsecured", mode))?.reason;
+        const kindBlocked = Boolean(securedError || unsecuredError);
         return (
           <section key={kind.id} className="home-card basket-slider" aria-label={kind.label}>
             <div className="basket-slider-head">
               <h3 className="home-eyebrow">{kind.label}</h3>
-              {basket ? <StatusBadge status={basket.status} /> : <StatusBadge status="NEEDS_INPUT" />}
+              {kindBlocked ? null : basket ? <StatusBadge status={basket.status} /> : <StatusBadge status="NEEDS_INPUT" />}
             </div>
             {mode !== "unsecured" ? (
               <Slider
                 label={`${kind.label} secured`}
                 amount={row.secured}
+                error={securedError}
                 onChange={(amount) => setSide(kind.id, "secured", amount)}
               />
             ) : null}
@@ -156,9 +185,11 @@ export function DebtBasketBoard({
               <Slider
                 label={`${kind.label} unsecured`}
                 amount={row.unsecured}
+                error={unsecuredError}
                 onChange={(amount) => setSide(kind.id, "unsecured", amount)}
               />
             ) : null}
+            {kindBlocked ? null : (
             <ul className="basket-covenants">
               {(basket?.documents ?? []).map((doc) => (
                 <li key={doc.documentId}>
@@ -176,11 +207,11 @@ export function DebtBasketBoard({
                     <StatusBadge status="NOT_IDENTIFIED" />
                   ) : (
                     <>
-                      <LiveFigure text={money(doc.remaining)} />
+                      <LiveFigure text={boundText(doc.bound, doc.remaining)} />
                       <StatusBadge status={doc.status} />
                       {doc.provision ? (
                         <OpenProvenanceButton
-                          className="button button-quiet"
+                          className="button button-quiet basket-clause-chip"
                           title={doc.provision.basketName}
                           source={doc.documentName || UNLOADED_SOURCE}
                           clause={
@@ -189,9 +220,13 @@ export function DebtBasketBoard({
                               : UNLOADED_CLAUSE
                           }
                           history={UNLOADED_HISTORY}
-                          note="Capacity, used, and remaining are the basket simulation. Nothing was recalculated here."
+                          note={
+                            doc.sharedWith && doc.sharedWith.length > 0
+                              ? `Shared with ${doc.sharedWith.map((item) => KIND_WORD[item]).join(", ")}.`
+                              : "Capacity, used, and remaining are the basket simulation. Nothing was recalculated here."
+                          }
                         >
-                          Clause
+                          {doc.provisionUsed !== undefined && Number.isFinite(doc.provisionUsed) ? fmtM(doc.provisionUsed) : doc.provision.sectionRef}
                         </OpenProvenanceButton>
                       ) : null}
                     </>
@@ -199,6 +234,7 @@ export function DebtBasketBoard({
                 </li>
               ))}
             </ul>
+            )}
           </section>
         );
       })}
@@ -206,12 +242,32 @@ export function DebtBasketBoard({
   );
 }
 
-function Slider({ label, amount, onChange }: { label: string; amount: number; onChange: (amount: number) => void }) {
+function Slider({
+  label,
+  amount,
+  error,
+  onChange,
+}: {
+  label: string;
+  amount: number;
+  error?: string;
+  onChange: (amount: number) => void;
+}) {
   return (
     <label className="basket-amount-field">
       <span>{label}</span>
-      <LiveFigure text={fmtM(amount)} />
-      <input type="range" min={0} max={2000} step={10} value={amount} aria-label={label} onChange={(event) => onChange(Number(event.target.value))} />
+      <LiveFigure text={Number.isFinite(amount) ? fmtM(amount) : "Not a number"} />
+      <input
+        type="range"
+        min={Math.min(0, Number.isFinite(amount) ? amount : 0)}
+        max={2000}
+        step={10}
+        value={Number.isFinite(amount) ? amount : 0}
+        aria-label={label}
+        aria-invalid={error ? true : undefined}
+        onChange={(event) => onChange(Number(event.target.value))}
+      />
+      {error ? <p className="ebitda-inline-error">{error}</p> : null}
     </label>
   );
 }
