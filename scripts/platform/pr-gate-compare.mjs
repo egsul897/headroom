@@ -112,6 +112,17 @@ function rowFrom(rec) {
   };
 }
 
+/** True when `file` has at least one test on this run and every one of them passed (none skipped/todo/failed). */
+function suiteNowPasses(index, file) {
+  let n = 0;
+  for (const rec of index.values()) {
+    if (rec.file !== file) continue;
+    if (rec.status !== "passed") return false;
+    n++;
+  }
+  return n > 0;
+}
+
 export function compareRuns(baseReport, headReport) {
   const base = indexReport(baseReport);
   const head = indexReport(headReport);
@@ -131,6 +142,9 @@ export function compareRuns(baseReport, headReport) {
       regressions.push(rowFrom(h));
     } else if (baseFailed && h?.status === "passed") {
       fixed.push(rowFrom(b));
+    } else if (baseFailed && !h && id.endsWith("\n<suite>") && suiteNowPasses(head, b.file)) {
+      // The file failed to load on the base; on the PR it loads and EVERY test in it passed (at least one).
+      fixed.push({ ...rowFrom(b), detail: "suite loads on PR; all its tests passed" });
     } else if (baseFailed) {
       suppressed.push({
         file: b.file,

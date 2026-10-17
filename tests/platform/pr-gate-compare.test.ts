@@ -21,6 +21,26 @@ function report(tests: { file: string; fullName: string; status: string; message
 }
 
 describe("pr-gate compare", () => {
+  it("a suite that failed to load on the base counts as fixed only when it loads on the PR and every test in it passes", () => {
+    const base = { testResults: [{ name: "/repo/tests/b.test.ts", status: "failed", message: "ReferenceError: Cannot access 'x' before initialization", assertionResults: [] }] };
+    const allPass = report([
+      { file: "tests/b.test.ts", fullName: "one", status: "passed" },
+      { file: "tests/b.test.ts", fullName: "two", status: "passed" },
+    ]);
+    const r1 = compareRuns(base, allPass);
+    expect(r1.fail).toBe(false);
+    expect(r1.fixed.map((f) => f.fullName)).toEqual(["<suite failed to load>"]);
+    // loads but a test is skipped: still a hidden base failure
+    const r2 = compareRuns(base, report([
+      { file: "tests/b.test.ts", fullName: "one", status: "passed" },
+      { file: "tests/b.test.ts", fullName: "two", status: "skipped" },
+    ]));
+    expect(r2.fail).toBe(true);
+    expect(r2.suppressed).toHaveLength(1);
+    // file deleted on the PR: hidden
+    expect(compareRuns(base, report([{ file: "tests/other.test.ts", fullName: "x", status: "passed" }])).suppressed).toHaveLength(1);
+  });
+
   it("does not fail the gate for a test that already fails on the base", () => {
     const base = report([{ file: "tests/a.test.ts", fullName: "suite keeps failing", status: "failed", message: "AssertionError: expected 1 to be 2" }]);
     const head = report([{ file: "tests/a.test.ts", fullName: "suite keeps failing", status: "failed", message: "AssertionError: expected 1 to be 2" }]);
