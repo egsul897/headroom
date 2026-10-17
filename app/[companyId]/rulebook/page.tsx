@@ -24,7 +24,7 @@ export default async function RulebookPage({
   searchParams,
 }: {
   params: Promise<{ companyId: string }>;
-  searchParams?: Promise<{ page?: string }>;
+  searchParams?: Promise<{ page?: string; view?: string }>;
 }) {
   const { companyId } = await params;
   const sp = searchParams ? await searchParams : {};
@@ -37,6 +37,11 @@ export default async function RulebookPage({
   const PAGE_SIZE = 50;
   const requestedPage = Number.parseInt(typeof sp.page === "string" ? sp.page : "", 10);
   const page = Number.isFinite(requestedPage) && requestedPage > 0 ? Math.floor(requestedPage) : 1;
+  // Jobs rule: the Rulebook opens on the work — the items needing
+  // a decision. Already-decided items live on a separate view
+  // (?view=decided), one click away, so pagination never mixes
+  // the two and the action list shrinks as counsel works.
+  const view = sp.view === "decided" ? "decided" : "action";
   const [rulebook, review, capacity, approvals, intelligence] = await Promise.all([
     loadRulebookReadiness(companyId),
     loadCovenantReviewWorkspace(companyId),
@@ -81,12 +86,13 @@ export default async function RulebookPage({
     })),
   );
   // Jobs rule: counsel's time goes to the items that need it.
-  // Undecided items first (the action list); already-decided
-  // items (SYSTEM auto-accept + counsel decisions) after, so
-  // page 1 is the work, not a scroll through 120 rows.
+  // The default view is the action list (undecided items only);
+  // already-decided items (SYSTEM auto-accept + counsel decisions)
+  // live on ?view=decided, one click away — never mixed into the
+  // action list by pagination.
   const actionItems = candidates.filter((c) => !c.decision);
   const decidedItems = candidates.filter((c) => c.decision);
-  const orderedCandidates = [...actionItems, ...decidedItems];
+  const visibleCandidates = view === "decided" ? decidedItems : actionItems;
   const systemDecided = decidedItems.filter((c) => c.decision?.reviewerKind === "SYSTEM").length;
   const counselDecided = decidedItems.length - systemDecided;
   const flaggedCount = actionItems.filter((c) => c.proposal.needsAttention).length;
@@ -166,16 +172,33 @@ export default async function RulebookPage({
           decided ({systemDecided} system-accepted, {counselDecided} counsel-decided)
         </div>
         <div className="row-note" style={{ marginTop: 4 }}>
-          {review.totalDiscovered} provisions discovered · {review.totalSummaries} analyzed
+          {review.totalDiscovered} provisions found in documents · {review.totalSummaries} analyzed
           {review.awaitingAnalysis > 0 && (
             <>
-              {" "}· {review.awaitingAnalysis} discovered, awaiting analysis — not reviewed, not rejected, not
-              irrelevant. Capacity is computed from analyzed provisions only and may be incomplete until these are
-              analyzed.
+              {" "}· {review.awaitingAnalysis} awaiting analysis — not reviewed, not rejected, not irrelevant.
             </>
+          )}{" "}
+          · {candidates.length} interpretations to review
+          {candidates.length !== review.totalSummaries && (
+            <> ({review.totalSummaries - candidates.length} duplicate rows merged)</>
           )}
+          . Capacity is computed from analyzed provisions only and may be incomplete until awaiting items are analyzed.
         </div>
-        {orderedCandidates.length === 0 ? (
+        <div className="button-row" style={{ marginTop: 8 }}>
+          <Link
+            className={view === "action" ? "button button-primary" : "button"}
+            href={`/${companyId}/rulebook`}
+          >
+            Needs your decision ({actionItems.length})
+          </Link>
+          <Link
+            className={view === "decided" ? "button button-primary" : "button"}
+            href={`/${companyId}/rulebook?view=decided`}
+          >
+            Already decided ({decidedItems.length})
+          </Link>
+        </div>
+        {visibleCandidates.length === 0 ? (
           <div className="row-note">
             No interpreted provisions yet — upload financing documents; AI analysis runs without waiting for external
             legal verification.
@@ -183,19 +206,19 @@ export default async function RulebookPage({
         ) : (
           <>
             {(() => {
-              const pageCount = Math.max(1, Math.ceil(orderedCandidates.length / PAGE_SIZE));
+              const pageCount = Math.max(1, Math.ceil(visibleCandidates.length / PAGE_SIZE));
               const safePage = Math.min(page, pageCount);
               const start = (safePage - 1) * PAGE_SIZE;
-              const pageItems = orderedCandidates.slice(start, start + PAGE_SIZE);
+              const pageItems = visibleCandidates.slice(start, start + PAGE_SIZE);
               return (
                 <>
                   <div className="row-note" style={{ marginTop: 8 }}>
-                    Showing {start + 1}–{Math.min(start + pageItems.length, orderedCandidates.length)} of{" "}
-                    {orderedCandidates.length} interpretations · page {safePage} of {pageCount} · undecided items first
+                    Showing {start + 1}–{Math.min(start + pageItems.length, visibleCandidates.length)} of{" "}
+                    {visibleCandidates.length} interpretations · page {safePage} of {pageCount}
                   </div>
                   {safePage > 1 && (
                     <div className="button-row" style={{ marginTop: 8 }}>
-                      <Link className="button" href={`/${companyId}/rulebook?page=${safePage - 1}`}>
+                      <Link className="button" href={`/${companyId}/rulebook?view=${view}&page=${safePage - 1}`}>
                         ← Previous page
                       </Link>
                     </div>
@@ -322,7 +345,7 @@ export default async function RulebookPage({
                   ))}
                   {safePage < pageCount && (
                     <div className="button-row" style={{ marginTop: 12 }}>
-                      <Link className="button button-primary" href={`/${companyId}/rulebook?page=${safePage + 1}`}>
+                      <Link className="button button-primary" href={`/${companyId}/rulebook?view=${view}&page=${safePage + 1}`}>
                         Next page →
                       </Link>
                     </div>

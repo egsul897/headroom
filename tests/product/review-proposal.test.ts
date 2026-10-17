@@ -115,6 +115,19 @@ describe("proposeReviewDecision", () => {
     expect(p.needsAttention).toBe(true);
   });
 
+  it("an implausibly small parsed threshold proposes NEEDS_INPUT, never ACCEPT", () => {
+    const p = proposeReviewDecision(
+      item({
+        plainEnglish: "The Borrower may incur Indebtedness not to exceed $30.",
+        materialBasketsThresholds: ["Amount/threshold: $30"],
+        operativeLanguageExcerpt: "The Borrower may incur Indebtedness not to exceed $30.",
+      }),
+    );
+    expect(p.decision).toBe("NEEDS_INPUT");
+    expect(p.needsAttention).toBe(true);
+    expect(p.reason).toMatch(/implausibly small|parsing artifact/i);
+  });
+
   it("a pure cap-restatement condition does not block an ACCEPT", () => {
     const p = proposeReviewDecision(
       item({ conditions: ["provided_that: provided that the aggregate amount shall not exceed $50,000,000"] }),

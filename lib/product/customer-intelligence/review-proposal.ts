@@ -78,6 +78,23 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
   if (isRoutineItem(item)) {
     const grants = grantTypesForItem(item);
     const terms = compiledTerms(item);
+    // A parsed basket threshold below $1,000 is not a real basket
+    // in any financing document — it is a parsing artifact (e.g.
+    // a day-count or section number read as money, like "$30").
+    // Never propose ACCEPT for one; flag it for counsel instead.
+    // The $1,000 floor is a sanity bound, not a business rule:
+    // no operative basket in leveraged finance is under $1,000.
+    if (grants.length > 0) {
+      const parsed = parseFormulaFromItem(item);
+      if (parsed.modelingStatus === "MODELED" && parsed.thresholdValue > 0 && parsed.thresholdValue < 0.001) {
+        return {
+          decision: "NEEDS_INPUT",
+          reason: `Parsed basket threshold ($${parsed.thresholdValue}M) is implausibly small — likely a parsing artifact, not a real basket. Counsel to confirm the true terms or reject it.`,
+          terms: null,
+          needsAttention: true,
+        };
+      }
+    }
     if (terms != null) {
       return {
         decision: "ACCEPTED",

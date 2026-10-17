@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card, Chip, type ChipTone } from "@/components/ui";
+import { PendingSubmitButton } from "@/components/PendingSubmitButton";
 import { getDocumentsWithExtractionStatus } from "@/lib/onboarding/documents";
 import { getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailureLogsForCompany } from "@/lib/contract-model/analysis";
 import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
@@ -113,8 +114,8 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
       <Card>
         <div className="card-title">Upload a financing document</div>
         <div className="card-subtitle">
-          Credit agreements, indentures, amendments, and compliance certificates. PDF, HTML, DOCX, or TXT. After upload,
-          click &ldquo;Run extraction&rdquo; so Headroom can read covenants and propose financial figures. Failures are shown
+          Credit agreements, indentures, amendments, and compliance certificates. PDF, HTML, DOCX, or TXT. Analysis runs
+          automatically on upload — Headroom reads covenants and proposes interpretations for review. Failures are shown
           honestly — Headroom never claims analysis succeeded when extraction failed.
         </div>
         <form action={upload} className="stack" style={{ gap: 10 }}>
@@ -148,9 +149,7 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
               <input type="text" name="governs" />
             </div>
           </div>
-          <button type="submit" className="button-primary" style={{ width: "fit-content" }}>
-            Upload &amp; analyze
-          </button>
+          <PendingSubmitButton label="Upload & analyze" pendingLabel="Uploading & analyzing…" />
         </form>
       </Card>
 
@@ -168,9 +167,7 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
               <input type="file" name="file" accept=".csv,text/csv" required />
             </div>
           </div>
-          <button type="submit" className="button" style={{ width: "fit-content" }}>
-            Upload financial CSV
-          </button>
+          <PendingSubmitButton label="Upload financial CSV" pendingLabel="Uploading…" className="button" />
         </form>
       </Card>
 
