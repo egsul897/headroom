@@ -59,6 +59,9 @@ export function describeFormula(p: CovenantProvisionInput): string {
     case "RATIO_GATE":
       return `Unlimited capacity, so long as ${ratioMeasure(params.debtBasis)} is at or below ${p.thresholdValue.toFixed(2)}x.`;
 
+    case "NONE_UNCAPPED":
+      return `No finite cap in this clause: the clause grants the permission without a numeric ceiling, subject to its stated conditions and the agreement's other provisions.`;
+
     default: {
       const exhaustive: never = p.formulaType;
       return `Formula not described (${String(exhaustive)}).`;

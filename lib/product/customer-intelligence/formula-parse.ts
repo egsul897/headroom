@@ -8,7 +8,7 @@
  */
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
 import { parseMoneyMillions, parsePctOf, parseRatio } from "./money";
-import { resolveDefinedTermCap } from "./grant-types";
+import { grantTypesForItem, resolveDefinedTermCap } from "./grant-types";
 
 export interface ParsedFormula {
   formulaType:
@@ -18,7 +18,8 @@ export interface ParsedFormula {
     | "GREATER_OF_FLAT_OR_PCT_NET_WORTH"
     | "LEVERAGE_RATIO_ROOM"
     | "RATIO_GATE"
-    | "BUILDER_BASKET";
+    | "BUILDER_BASKET"
+    | "NONE_UNCAPPED";
   thresholdValue: number;
   params?: Record<string, unknown>;
   amountKind: "FIXED" | "INCURRENCE_BASED";
@@ -285,6 +286,51 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
     };
   }
 
+  // ── Affirmative UNCAPPED determination (formula-representation
+  // step 1) ──────────────────────────────────────────────────────
+  // Every priced branch above failed: the scanned contract text
+  // carries no parseable amount, percentage-of-base, ratio, builder
+  // amount, or resolvable defined-term cap. For a grant-bearing
+  // item in a PERMISSION posture, that absence can itself be the
+  // determinate answer — many carve-outs genuinely grant without a
+  // numeric ceiling (intercompany debt, tax liens, Cash
+  // Equivalents, guarantees of permitted debt) — but ONLY when the
+  // text affirmatively grants and points at no cap anywhere else.
+  // The determination is never a default: any cap language, cap
+  // structure, or reference to a cap outside the clause keeps the
+  // item KNOWN_NOT_MODELED (with the named reason referenceExternal
+  // when the clause points at the cap's location).
+  const uncapped = uncappedEvaluation(item, basketText, { builder });
+  if (uncapped.kind === "UNCAPPED") {
+    return {
+      formulaType: "NONE_UNCAPPED",
+      thresholdValue: 0,
+      params: { qualitativeConditions: [...(item.conditions ?? [])] },
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        ...notes,
+        "No finite cap in this clause: the operative text affirmatively grants the permission without a numeric ceiling — no amount, percentage-of-base, ratio, builder amount, or cap reference appears in the clause's contract text. Determinate as NONE_UNCAPPED; the clause's stated qualitative conditions (attached) and the agreement's other clauses still apply.",
+      ],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+  if (uncapped.kind === "REFERENCE_EXTERNAL") {
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: 0,
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        ...notes,
+        `The clause points at a cap outside its own text (${uncapped.label}). It stays KNOWN_NOT_MODELED with missing field referenceExternal until reference-following resolves the pointed-to cap — never defaulted to uncapped.`,
+      ],
+      modelingStatus: "KNOWN_NOT_MODELED",
+      missingFields: ["referenceExternal", "thresholdValue", "formulaType"],
+    };
+  }
+
   missingFields.push("thresholdValue", "formulaType");
   return {
     formulaType: "FLAT_AMOUNT",
@@ -295,6 +341,122 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
     modelingStatus: "KNOWN_NOT_MODELED",
     missingFields,
   };
+}
+
+type UncappedEvaluation =
+  | { kind: "UNCAPPED" }
+  | { kind: "REFERENCE_EXTERNAL"; label: string }
+  | { kind: "NOT_UNCAPPED" };
+
+/**
+ * Screens for the affirmative-uncapped determination. All evidence
+ * comes from the item's scanned contract text (the same basketText
+ * the priced extractors saw) plus the analyzer's posture, the
+ * extracted permission phrases, and grant detection. Fail-closed:
+ * every ambiguity resolves to NOT_UNCAPPED or REFERENCE_EXTERNAL.
+ */
+function uncappedEvaluation(
+  item: CovenantSummaryItem,
+  basketText: string,
+  flags: { builder: boolean },
+): UncappedEvaluation {
+  // (a) The item must actually grant, and the analyzer must have
+  // extracted an affirmative permission phrase — keyword-derived
+  // grants over a fragment are not an affirmative grant statement.
+  if (grantTypesForItem(item).length === 0) return { kind: "NOT_UNCAPPED" };
+  if ((item.permissions ?? []).length === 0) return { kind: "NOT_UNCAPPED" };
+  // (e) Permission postures only: a prohibition-only or maintenance
+  // item never becomes an uncapped permission.
+  if (item.posture !== "ENUMERATED_PERMISSION" && item.posture !== "CONDITIONAL_PERMISSION") {
+    return { kind: "NOT_UNCAPPED" };
+  }
+  // A "[reserved]" clause grants nothing — it is not an uncapped
+  // permission (grant detection flagging it is a precision issue
+  // handled elsewhere; the parse must not bless it).
+  const permissionTexts = item.permissions ?? [];
+  if (
+    permissionTexts.length > 0 &&
+    permissionTexts.every((p) => /\[reserved\]/i.test(p) && p.replace(/\[reserved\]/gi, "").replace(/\([a-z0-9]+\)/gi, "").trim().length < 12)
+  ) {
+    return { kind: "NOT_UNCAPPED" };
+  }
+
+  // (d) References to a cap outside the clause's own text. Any hit
+  // keeps the item KNOWN_NOT_MODELED with the named reason.
+  const referenceScreens: { re: RegExp; label: string }[] = [
+    {
+      // Rule 197's shape, enumeration-tolerant: the term cap exists
+      // but its definition did not resolve to a bare dollar amount.
+      re: /not\s+(?:to\s+)?exceed(?:ing)?\s+(?:\([a-z0-9]+\)\s+)?(?:the\s+)?[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+){1,5}/,
+      label: "a defined-term cap the engine could not resolve to a bare amount",
+    },
+    {
+      re: /\b(?:set forth|listed|described|specified)\s+(?:in|on)\s+(?:Schedule|Exhibit)\b/i,
+      label: "amounts set forth in a schedule or exhibit",
+    },
+    {
+      re: /\bexisting on the (?:Closing Date|date hereof|Effective Date)\b/i,
+      label: "a permission for an existing closing-date set, whose amounts live in the closing balances or a schedule",
+    },
+    {
+      re: /does not increase the[^.]{0,60}amount/i,
+      label: "a refinancing self-cap (the amount being refinanced)",
+    },
+    {
+      re: /not\s+(?:to\s+)?exceed(?:ing)?\s+the\s+(?:aggregate\s+)?(?:principal\s+)?amount\s+of\s+(?:the\s+)?(?:Indebtedness|Obligations|Loans|debt)\s+being/i,
+      label: "a refinancing self-cap (the amount being refinanced)",
+    },
+    {
+      re: /face amount of (?:such|the|any|a)\s+Letter of Credit/i,
+      label: "the face amount of a Letter of Credit",
+    },
+    {
+      re: /permitted\s+(?:under|pursuant\s+to|by)\s+(?:this\s+)?(?:Section|clause|Article)\s/i,
+      label: "a permission granted by reference to another provision, whose own caps govern",
+    },
+  ];
+  for (const screen of referenceScreens) {
+    if (screen.re.test(basketText)) return { kind: "REFERENCE_EXTERNAL", label: screen.label };
+  }
+  // A builder reference with no parseable amount: the cap is the
+  // Available Amount / Cumulative Credit balance, a defined-term
+  // construct governed by its definition — external to this clause.
+  if (flags.builder) {
+    return { kind: "REFERENCE_EXTERNAL", label: "an Available Amount / builder balance defined elsewhere in the agreement" };
+  }
+
+  // The clause incorporates conditions "set forth in this clause"
+  // that the item does not carry: the operative conditions are
+  // unexamined, so the grant is not affirmatively uncapped — the
+  // unseen conditions may contain the cap (the narration audit's
+  // conduit pin: with the conditions field removed, the item must
+  // stay KNOWN_NOT_MODELED).
+  if (
+    (item.conditions ?? []).length === 0 &&
+    /subject to (?:satisfaction of )?the conditions (?:precedent )?(?:set forth|specified|contained) in (?:this|such) (?:clause|Section)/i.test(basketText)
+  ) {
+    return { kind: "NOT_UNCAPPED" };
+  }
+
+  // (c) Cap language or cap structure present but unquantified,
+  // anywhere in the scanned contract text (a proviso stating a
+  // percentage-of-assets limit is a cap statement, not a mere
+  // gate): the clause states a ceiling the extractors could not
+  // price — it is not uncapped, it is unparsed.
+  const capLanguage =
+    /\bnot\s+(?:to\s+)?exceed/i.test(basketText) ||
+    /\bexceeding\b/i.test(basketText) ||
+    /\bno more than\b/i.test(basketText) ||
+    /\bmaximum aggregate\b/i.test(basketText) ||
+    /greater of/i.test(basketText) ||
+    parsePctOf(basketText, "EBITDA") != null ||
+    parsePctOf(basketText, "TOTAL_ASSETS") != null ||
+    parsePctOf(basketText, "NET_WORTH") != null ||
+    parsePctOf(basketText, "CNI") != null ||
+    parseRatio(basketText) != null;
+  if (capLanguage) return { kind: "NOT_UNCAPPED" };
+
+  return { kind: "UNCAPPED" };
 }
 
 const INDEPENDENT_REQUIREMENT_RE =

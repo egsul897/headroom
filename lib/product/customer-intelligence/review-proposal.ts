@@ -67,6 +67,12 @@ function compiledTerms(item: CovenantSummaryItem): string | null {
   if (grants.length > 0) {
     const parsed = parseFormulaFromItem(item);
     if (parsed.modelingStatus !== "MODELED") return null;
+    if (parsed.formulaType === "NONE_UNCAPPED") {
+      // Never "$0M" and never bare "unlimited capacity": the clause
+      // sets no finite cap; its conditions and the agreement's other
+      // clauses still apply.
+      return `${grants.join(" / ")} — no finite cap in this clause (NONE_UNCAPPED)`;
+    }
     const threshold =
       parsed.formulaType.startsWith("GREATER_OF")
         ? `greater of $${parsed.thresholdValue}M or ${parsed.formulaType.replace("GREATER_OF_FLAT_OR_PCT_", "")}`
@@ -104,10 +110,12 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
       }
     }
     if (terms != null) {
+      const uncapped = grants.length > 0 && parseFormulaFromItem(item).formulaType === "NONE_UNCAPPED";
       return {
         decision: "ACCEPTED",
-        reason:
-          grants.length > 0
+        reason: uncapped
+          ? "The clause affirmatively grants this permission with no finite cap in the clause — its stated conditions and the agreement's other clauses still apply."
+          : grants.length > 0
             ? "Compiles cleanly to a MODELED Permission with no unresolved conditions."
             : "Clean single-test maintenance ratio with no unresolved conditions.",
         terms,
@@ -193,6 +201,15 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
         decision: "NEEDS_INPUT",
         reason:
           "A parsed amount in this provision is below $1,000 — no real basket is that small, so it is likely a unit misread (a dropped scale, e.g. \"$30 million\" read as $30). Counsel to confirm the amount from the source text.",
+        terms: null,
+        needsAttention: true,
+      };
+    }
+    if (parsed.missingFields.includes("referenceExternal")) {
+      return {
+        decision: "NEEDS_INPUT",
+        reason:
+          "The clause's cap is set outside its own text — a schedule or exhibit, another provision, a defined term the engine could not resolve to an amount, the amount being refinanced, or a letter-of-credit face amount (missing: referenceExternal). Counsel to supply the terms or reject it.",
         terms: null,
         needsAttention: true,
       };

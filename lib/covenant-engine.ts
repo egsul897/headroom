@@ -78,7 +78,8 @@ export type FormulaType =
   | "LEVERAGE_RATIO_ROOM"
   | "COVERAGE_RATIO_ROOM"
   | "BUILDER_BASKET"
-  | "RATIO_GATE";
+  | "RATIO_GATE"
+  | "NONE_UNCAPPED";
 
 export type DebtBasis = "total" | "secured";
 
@@ -589,6 +590,17 @@ export function evaluateProvision(
       // capacity if this ratio condition holds" - the database is asserting
       // the uncapped result, not defaulting to it from absent config.
       return { provision: p, status: "modeled", capacity: open ? Infinity : 0, gate: { open, measure } };
+    }
+    case "NONE_UNCAPPED": {
+      // The clause affirmatively grants this permission with NO finite cap
+      // in its own text (NONE_UNCAPPED is minted only from that affirmative
+      // determination in parseFormulaFromItem — never as a default for a
+      // missing cap). Infinity is legitimate for the same reason as
+      // RATIO_GATE: the record asserts the uncapped result. It is NOT a
+      // blanket permission: the permission's eligibility conditions still
+      // gate elections in the solver, and the agreement's other clauses
+      // still bind. thresholdValue carries no number for this type.
+      return { provision: p, status: "modeled", capacity: Infinity };
     }
     default: {
       const exhaustive: never = p.formulaType;
