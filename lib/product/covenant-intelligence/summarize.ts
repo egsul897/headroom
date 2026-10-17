@@ -598,8 +598,11 @@ export function buildDocumentCovenantSummary(params: {
       if (subject || title) sectionContext.set(sectionId, { subjectCategory: subject, title });
     }
   }
-  for (const c of ranked) {
-    const analysis = analyzeProvision({
+  const runAnalysis = (
+    c: (typeof params.candidates)[number],
+    rollup?: { category: CovenantCategoryKey; nonCovenantSubtype?: NonCovenantSubtype },
+  ) =>
+    analyzeProvision({
       sourceId: params.sourceId,
       documentTitle: params.documentTitle,
       candidate: c,
@@ -608,8 +611,91 @@ export function buildDocumentCovenantSummary(params: {
       crossReferences: params.crossReferences,
       parentChapeau: parentChapeauOf(c),
       sectionContext,
+      rollup,
     });
-    countsByCategory[analysis.category] = (countsByCategory[analysis.category] ?? 0) + 1;
+  const pass1 = ranked.map((c) => runAnalysis(c));
+  // Step 7: stem rollup. A SECTION or ARTICLE stem whose own
+  // text is only a title / chapeau (its operative content lives
+  // in separately-classified descendants) takes a determinate
+  // category from exactly two sources: (A) for an ARTICLE item,
+  // the article's own title identity (a definitions article IS
+  // definitions; an events-of-default article IS events of
+  // default — the title is the determination, its descendants
+  // are triggers, grace periods, and remedies by design); or
+  // (B) UNANIMOUS determinate descendants — every classified
+  // descendant item agrees on one category. A mixed descendant
+  // population (a negative-covenants article chapeau above
+  // debt, liens, RP, and merger sections) determines nothing
+  // and the stem stays OTHER.
+  const rollupByNodeId = new Map<
+    string,
+    { category: CovenantCategoryKey; nonCovenantSubtype?: NonCovenantSubtype }
+  >();
+  {
+    const catByNodeId = new Map(ranked.map((c, i) => [c.nodeId ?? "", pass1[i].category]));
+    const isDescendantOf = (nodeId: string, ancestorId: string): boolean => {
+      let node = nodeById.get(nodeId);
+      const seen = new Set<string>();
+      while (node?.parentNodeId && !seen.has(node.nodeId)) {
+        seen.add(node.nodeId);
+        if (node.parentNodeId === ancestorId) return true;
+        node = nodeById.get(node.parentNodeId);
+      }
+      return false;
+    };
+    ranked.forEach((c, i) => {
+      if (pass1[i].category !== "OTHER" || !c.nodeId) return;
+      const node = nodeById.get(c.nodeId);
+      if (!node || (node.nodeType !== "SECTION" && node.nodeType !== "ARTICLE")) return;
+      if (node.nodeType === "ARTICLE") {
+        const title =
+          recoverSectionTitle(c.excerpt ?? "", node.heading ?? "") ?? node.heading ?? "";
+        const despaced = `${title} ${(c.excerpt ?? "").slice(0, 160)}`
+          .replace(/\s+/g, "")
+          .toUpperCase();
+        if (despaced.includes("EVENTSOFDEFAULT")) {
+          rollupByNodeId.set(c.nodeId, { category: "EVENTS_OF_DEFAULT" });
+          return;
+        }
+        if (despaced.includes("DEFINITIONS")) {
+          rollupByNodeId.set(c.nodeId, {
+            category: "NON_COVENANT",
+            nonCovenantSubtype: "DEFINITION",
+          });
+          return;
+        }
+        if (despaced.includes("REPRESENTATIONS")) {
+          rollupByNodeId.set(c.nodeId, {
+            category: "NON_COVENANT",
+            nonCovenantSubtype: "REPRESENTATION",
+          });
+          return;
+        }
+        if (despaced.includes("AFFIRMATIVECOVENANTS")) {
+          rollupByNodeId.set(c.nodeId, { category: "AFFIRMATIVE" });
+          return;
+        }
+      }
+      const descCats = new Set<CovenantCategoryKey>();
+      let determinate = 0;
+      for (const o of ranked) {
+        if (!o.nodeId || o.nodeId === c.nodeId) continue;
+        if (!isDescendantOf(o.nodeId, c.nodeId)) continue;
+        const cat = catByNodeId.get(o.nodeId);
+        if (cat && cat !== "OTHER") {
+          descCats.add(cat);
+          determinate += 1;
+        }
+      }
+      const minimum = node.nodeType === "ARTICLE" ? 3 : 1;
+      if (determinate >= minimum && descCats.size === 1) {
+        rollupByNodeId.set(c.nodeId, { category: [...descCats][0] });
+      }
+    });
+  }
+  ranked.forEach((c, i) => {
+    const rollup = c.nodeId ? rollupByNodeId.get(c.nodeId) : undefined;
+    const analysis = rollup ? runAnalysis(c, rollup) : pass1[i];
     const itemNode = c.nodeId ? nodeById.get(c.nodeId) : undefined;
     items.push(
       itemFromAnalysis(
@@ -622,7 +708,8 @@ export function buildDocumentCovenantSummary(params: {
           : undefined,
       ),
     );
-  }
+  });
+  for (const it of items) countsByCategory[it.category] = (countsByCategory[it.category] ?? 0) + 1;
 
   const preferredOrder = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];
   // Rule 68 (second half): the cap must apply in RANKED order

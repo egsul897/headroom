@@ -2231,7 +2231,16 @@ export function analyzeProvision(params: {
               ? "OTHER"
             : (demotedCategory ??
               inheritedCategory ??
-              (FAMILY_TO_CATEGORY[effectivePrimary] ?? "OTHER"));
+              // The rollup fills exactly the OTHER outcome:
+              // FAMILY_TO_CATEGORY maps several families TO
+              // "OTHER" (a string, not nullish), so a plain ??
+              // chain would shadow the rollup behind them.
+              (FAMILY_TO_CATEGORY[effectivePrimary] !== undefined &&
+              FAMILY_TO_CATEGORY[effectivePrimary] !== "OTHER"
+                ? FAMILY_TO_CATEGORY[effectivePrimary]
+                : (params.rollup?.category ??
+                  FAMILY_TO_CATEGORY[effectivePrimary] ??
+                  "OTHER")));
   const categoryLabel = CATEGORY_LABELS[category];
   // A NON_COVENANT item has no covenant posture: UNRESOLVED is
   // the honest determinate statement (it is not a prohibition,
@@ -2385,7 +2394,10 @@ export function analyzeProvision(params: {
     heading,
     category,
     categoryLabel,
-    nonCovenantSubtype: nonCovenantSubtype ?? undefined,
+    nonCovenantSubtype:
+      nonCovenantSubtype ??
+      (category === "NON_COVENANT" ? params.rollup?.nonCovenantSubtype : undefined) ??
+      undefined,
     affirmativeKind: affirmativeKind ?? undefined,
     families: params.candidate.families,
     posture,
