@@ -371,6 +371,21 @@ export function selfCheckComputation(args: {
   now?: string;
   /** Section-tree locator (optional). When present, structural agreement uses tree sections. */
   locator?: TreeLocator;
+  /**
+   * Scorer-only credit guard (optional; the sweep and the product never pass it). Returns null when a basket may
+   * earn match credit, or the reason it may not (e.g. a learned capture matching the document it was seeded from).
+   * Refused baskets still run every sanity check below (UNSUPPORTED_SEMANTICS etc.); they only stop counting as
+   * evidence that a candidate, definition or condition was found. `creditStats` counts every item whose credit was
+   * refused, i.e. it would have been found with the refused baskets and is not found without them.
+   */
+  creditRefusal?: (basket: ComputationResult["baskets"][number]) => string | null;
+  creditStats?: Record<string, number>;
+  /**
+   * Scorer-only (optional): a tag for a basket that may earn credit (e.g. a learned capture outside its seed
+   * documents). A candidate credited only by baskets carrying one tag is counted under that tag in `creditedStats`.
+   */
+  creditTag?: (basket: ComputationResult["baskets"][number]) => string | null;
+  creditedStats?: Record<string, number>;
 }): LearningErrorRecord[] {
   const now = args.now ?? new Date().toISOString();
   const errors: LearningErrorRecord[] = [];
@@ -411,7 +426,21 @@ export function selfCheckComputation(args: {
 
   // Missed precedent candidates: excerpt not reflected in any computed basket citation.
   // This is the dominant learning signal — rules must capture the missed text.
-  const baskets = args.result.baskets;
+  const allBaskets = args.result.baskets;
+  const refusalOf = new Map(allBaskets.map((b) => [b, args.creditRefusal ? args.creditRefusal(b) : null] as const));
+  const baskets = args.creditRefusal ? allBaskets.filter((b) => refusalOf.get(b) == null) : allBaskets;
+  /** Record why an item that is not credited would have been credited by refused baskets alone. */
+  const noteRefused = (wouldHit: (b: (typeof allBaskets)[number]) => boolean) => {
+    if (!args.creditRefusal || !args.creditStats) return;
+    const reasons = new Set<string>();
+    for (const b of allBaskets) {
+      const r = refusalOf.get(b);
+      if (r != null && wouldHit(b)) reasons.add(r);
+    }
+    // One item counts once, under the first reason in sorted order (deterministic).
+    const r = [...reasons].sort()[0];
+    if (r) args.creditStats[r] = (args.creditStats[r] ?? 0) + 1;
+  };
   for (const cand of args.candidates) {
     if (!cand.excerpt || cand.excerpt.length < 24) continue;
     const excerpt = norm(cand.excerpt);
@@ -427,8 +456,33 @@ export function selfCheckComputation(args: {
         },
       ),
     );
+    if (hit && args.creditTag && args.creditedStats) {
+      // Which baskets credit this candidate; count it under a tag only when every crediting basket carries that tag.
+      const tags = new Set<string | null>();
+      for (const b of baskets) {
+        if (
+          strictCandidateMatch(
+            { excerpt, sectionRef: cand.sectionRef ?? null, family: cand.family ?? null, treeSection: candTree },
+            { cite: norm(b.citationExcerpt), sectionRef: b.sectionRef, family: b.covenantFamily, treeSection: args.locator ? basketTreeSection(args.locator, b.citationExcerpt) : null },
+          )
+        ) tags.add(args.creditTag(b));
+      }
+      const only = tags.size === 1 ? [...tags][0] : null;
+      if (only) args.creditedStats[only] = (args.creditedStats[only] ?? 0) + 1;
+    }
     if (!hit && outOfCovenantScope(args.locator, candTree, cand.excerpt)) continue;
     if (!hit) {
+      noteRefused((b) =>
+        strictCandidateMatch(
+          { excerpt, sectionRef: cand.sectionRef ?? null, family: cand.family ?? null, treeSection: candTree },
+          {
+            cite: norm(b.citationExcerpt),
+            sectionRef: b.sectionRef,
+            family: b.covenantFamily,
+            treeSection: args.locator ? basketTreeSection(args.locator, b.citationExcerpt) : null,
+          },
+        ),
+      );
       const cause = process.env.CLF_DIAG === "1" ? ` [cause=${discoveryGapCause(cand, excerpt, candTree, baskets, args.locator ?? null)}]` : "";
       push(
         "DISCOVERY_GAP",
@@ -446,7 +500,7 @@ export function selfCheckComputation(args: {
   }
 
   // Unit / sign sanity on computed baskets
-  for (const b of baskets) {
+  for (const b of allBaskets) {
     if (b.capStatus === "COMPUTED" && b.capCanonical != null) {
       const n = Number(b.capCanonical);
       if (!Number.isFinite(n)) {
@@ -497,6 +551,7 @@ export function selfCheckComputation(args: {
       baskets.some((b) => norm(b.citationExcerpt).includes(term)) ||
       args.result.ratios.some((r) => norm(r.definitionExcerpt ?? "").includes(term));
     if (!cited && /permitted|leverage|coverage|ebitda|fixed charge/i.test(def.term)) {
+      noteRefused((b) => norm(b.citationExcerpt).includes(term));
       push(
         "DISCOVERY_GAP",
         `definition "${def.term}" not cited in computation`,
@@ -518,6 +573,7 @@ export function selfCheckComputation(args: {
       const hit = baskets.some((b) => conditionBound(cond.excerpt!, b.citationExcerpt));
       if (!hit && outOfCovenantScope(args.locator, args.locator ? args.locator.citationSection(cond.excerpt) : null, cond.excerpt)) continue;
       if (!hit) {
+        noteRefused((b) => conditionBound(cond.excerpt!, b.citationExcerpt));
         // Skip mass noise: only record if we already have other errors for this source
         // (caller can filter). Record as LOW COVERAGE_GAP with NEEDS_INPUT framing.
         push(

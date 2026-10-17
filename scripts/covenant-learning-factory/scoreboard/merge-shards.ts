@@ -16,7 +16,17 @@ const reports = inputs.map((p) => JSON.parse(readFileSync(p, "utf8")) as Scorebo
 const info = verifyShardSet(reports);
 const perSource = reports.flatMap((r) => r.perSource);
 const r0 = reports[0]!;
-const merged = aggregate(perSource, { mode: r0.mode, rulesetVersion: r0.rulesetVersion, rulesetSha256: r0.identity?.rulesetSha256, scorerConfig: r0.identity?.scorerConfig ?? null });
+// Every shard must have used the same seed provenance and guard state.
+const guardKey = (r: ScoreboardReport) => JSON.stringify(r.selfCredit ? [r.selfCredit.provenanceSha256, r.selfCredit.rulesWithoutProvenance, r.selfCredit.unboundReason] : null);
+if (new Set(reports.map(guardKey)).size !== 1) throw new Error("shards disagree on the self-credit guard (seed provenance / unbound state)");
+const sc = r0.selfCredit;
+const merged = aggregate(perSource, {
+  mode: r0.mode,
+  rulesetVersion: r0.rulesetVersion,
+  rulesetSha256: r0.identity?.rulesetSha256,
+  scorerConfig: r0.identity?.scorerConfig ?? null,
+  selfCredit: sc ? { provenanceSha256: sc.provenanceSha256, rulesWithoutProvenance: sc.rulesWithoutProvenance, unboundReason: sc.unboundReason } : null,
+});
 if (merged.identity?.snapshotSha256 !== info.snapshotSha256) throw new Error(`merged snapshot identity ${merged.identity?.snapshotSha256 ?? "NONE"} != recorded full snapshot ${info.snapshotSha256}`);
 writeFileSync(out, JSON.stringify(merged, null, 2) + "\n");
 console.log(JSON.stringify({ out, sources: perSource.length, snapshotSha256: merged.identity?.snapshotSha256 ?? null, totals: merged.totals }));

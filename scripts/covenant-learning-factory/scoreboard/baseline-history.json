@@ -172,6 +172,37 @@
       },
       "reason": "PR #368 region-boundary fix (covenant regions bounded at the next cross-article bare heading). Reviewer findings: 8 HELDOUT sources move on COVERAGE_GAP/UNSUPPORTED_SEMANTICS: COVERAGE_GAP +13, UNSUPPORTED_SEMANTICS -29. Of the 13 COVERAGE_GAP, 8 are direct overrun (exceptions previously 'bound' only by clauses whose citations overran into later articles) and 5 are overrun plus a false match on the 30-character opening. The 30-character-opening false match is a separate scorer weakness, tracked as a follow-up. The new errors are boilerplate (LLC member/distribution, assignment, amendment and agency text), not covenant gaps. Material per-source increases accepted: exhibit1013q24 10->15, ss171930_ex1001 19->21. Also, 4 sources have DISCOVERY_GAP -7. HELDOUT total 2618->2595, UNSUPPORTED 144->115; thresholds and membership unchanged. Evidence: docs/clf-scoreboard/pr368-region-overrun-evidence.md",
       "approver": "owner (approved in chat 2026-10-15 00:49 UTC: 'Yes, approve the exception')"
+    },
+    {
+      "seq": 8,
+      "recordedAt": "2026-10-17T20:30:00Z",
+      "file": "scripts/covenant-learning-factory/scoreboard/baselines/0008-identity-05b2234708d0-selfcredit-guard-v1.json",
+      "reportSha256": "b637ac27d160ac3ccfa74326e7ccace5f1546f3da800ae27b9962c9cf11cd270",
+      "prevEntrySha256": "04785855fa14f44fbea8c437f2f16b898c02b148de401f337da0bd98a63e4e64",
+      "sourceCommit": "e50360b5",
+      "legacy": false,
+      "identity": {
+        "rulesetVersion": 2,
+        "rulesetSha256": "6bc7b606993b1eec8b9ea136b07adb66777233de2e66a4292fa6e58d754620bf",
+        "snapshotSha256": "05b2234708d0f43f1445ae9adba4a100627a54ee59dcd9fb184daba6d2555846"
+      },
+      "heldout": {
+        "sources": 137,
+        "total": 4472,
+        "UNSUPPORTED_SEMANTICS": 65
+      },
+      "thresholds": {
+        "heldoutTotalMaxIncrease": 0,
+        "heldoutUnsupportedMaxIncrease": 0,
+        "perSourceMaterialAbs": 2,
+        "perSourceMaterialRel": 0.1
+      },
+      "reason": "Owner-approved rebaseline (2026-10-17). Conditions: the self-credit guard lands first (it did in PR #433 at e50360b5: exact-text seed provenance, rule-seed-provenance.json v2, 2675/2675 capture rules resolved, 0 without provenance) and the no-learned-rules score is always reported alongside. Old: seq 7 HELDOUT 2595 (US 115), at scorer identity tree=on;mode=agree. The RC grok/rc-integration@a302c4e1 without the guard scores HELDOUT 4250 (US 65), DEV 717; most of the change from 2595 is the RC scorer changes measured in the 2026-10-17 bisect. New (scorerConfig tree=on;mode=agree;selfCredit=guard-v1): HELDOUT 4472 (US 65), DEV 751. No-learned-rules: HELDOUT 4462 (US 62), DEV 763. Refused self-credit: HELDOUT {\"SELF_SEEDED\":222}, DEV {\"SELF_SEEDED\":34}. Kept learned credit outside seed documents: HELDOUT {\"LEARNED_SAME_ISSUER_OTHER_DOCUMENT\":1}, DEV {}. With the guard, learned rules give no net HELDOUT gain over no rules. No rule was tuned toward held-out data; HELDOUT membership and thresholds are unchanged. Reproduce: from a clean checkout of this commit, run npx tsx scripts/covenant-learning-factory/scoreboard.ts --snapshot=scripts/covenant-learning-factory/scoreboard/snapshot.json.gz --rules-file=scripts/covenant-learning-factory/scoreboard/ruleset.json --write-report=OUT.json. OUT.json is byte-identical to baselines/0008-*.json.",
+      "approver": "owner (Egzon, approved 2026-10-17: rebaseline after the self-credit guard lands, no-learned-rules score always reported alongside)",
+      "thresholdMigration": {
+        "reason": "Owner-approved rebaseline (2026-10-17): the scorer identity changed (selfCredit=guard-v1), so the HELDOUT baseline moves. Thresholds are unchanged.",
+        "approver": "owner (Egzon, approved 2026-10-17: rebaseline after the self-credit guard lands, no-learned-rules score always reported alongside)"
+      }
     }
   ]
 }

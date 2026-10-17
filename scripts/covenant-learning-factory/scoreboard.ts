@@ -20,6 +20,10 @@
  *   --rules=v0             extractor-only: empty learned ruleset (v0)
  *   --write-findings=PATH  candidate-level JSONL: one row per scored error (class, candidateId, family, excerpt)
  *   --write-rules=PATH     write the ruleset actually used (pin it for offline replay)
+ *   --seed-provenance=PATH learned-rule seed provenance (default scoreboard/rule-seed-provenance.json; regenerate with
+ *                          scoreboard/derive-seed-provenance.ts). Self-credit guard, always on: a learned capture earns no
+ *                          match credit in a document it was seeded from; with missing / unbound provenance it earns none.
+ *   Every run also scores each source with NO learned rules and reports it alongside (noRulesTotals).
  *
  * Benchmark integrity (applies whenever --baseline is given; see docs/clf-scoreboard/README.md):
  *   --history=PATH         append-only baseline history (default scoreboard/baseline-history.json);
@@ -45,6 +49,11 @@ import {
   type BenchmarkMigration,
   readSnapshot,
   scoreSource,
+  selfCreditGuard,
+  deriveSeedProvenance,
+  verifyCommittedProvenance,
+  provenanceSha256,
+  type SeedProvenanceFile,
   snapshotIdentitySha256,
   sourceInputSha256,
   type ShardInfo,
@@ -106,7 +115,9 @@ async function loadNeonInputs(onSource: (i: ScoreboardSourceInput) => Promise<vo
 function scorerConfig(): string {
   const tree = process.env.CLF_SCOREBOARD_TREE === "0" ? "off" : "on";
   const mode = process.env.CLF_SCOREBOARD_TREE_MODE === "override" ? "override" : "agree";
-  return tree === "off" ? "tree=off" : `tree=on;mode=${mode}`;
+  // The self-credit guard is always on and changes results, so it is part of the evaluation identity.
+  // guard-v2: verified (re-derived) provenance, identity completeness, same-issuer refusal.
+  return (tree === "off" ? "tree=off" : `tree=on;mode=${mode}`) + ";selfCredit=guard-v2";
 }
 
 function printSummary(report: ScoreboardReport): void {
@@ -125,6 +136,21 @@ function printSummary(report: ScoreboardReport): void {
     }
     console.log(`EXCLUDED (doc type OTHER, still counted in the gate totals above): ${report.excluded?.length ?? 0}`);
     for (const e of report.excluded ?? []) console.log(`  excluded ${e.split} ${e.sourceId} errors=${e.total}`);
+  }
+  if (report.noRulesTotals) {
+    for (const split of ["DEV", "HELDOUT"] as const) {
+      const t = report.noRulesTotals[split];
+      console.log(
+        `NO-RULES ${split.padEnd(8)} sources=${t.sources} total=${t.total} COVERAGE_GAP=${t.COVERAGE_GAP} DISCOVERY_GAP=${t.DISCOVERY_GAP} UNSUPPORTED_SEMANTICS=${t.UNSUPPORTED_SEMANTICS}`,
+      );
+    }
+  }
+  if (report.selfCredit) {
+    const sc = report.selfCredit;
+    console.log(
+      `SELF-CREDIT refused DEV=${JSON.stringify(sc.refused.DEV)} HELDOUT=${JSON.stringify(sc.refused.HELDOUT)} kept(learned, outside seed docs) DEV=${JSON.stringify(sc.credited?.DEV ?? {})} HELDOUT=${JSON.stringify(sc.credited?.HELDOUT ?? {})} rulesWithoutProvenance=${sc.rulesWithoutProvenance}` +
+        (sc.unboundReason ? ` (provenance unusable: ${sc.unboundReason})` : ""),
+    );
   }
 }
 
@@ -162,13 +188,35 @@ async function main(): Promise<void> {
 
   const perSource: SourceScore[] = [];
   let shardInfo: ShardInfo | null = null;
+  const provPath = resolve(argStr("seed-provenance") ?? "scripts/covenant-learning-factory/scoreboard/rule-seed-provenance.json");
+  // Raw text only: the committed file is never trusted as data. Snapshot mode re-derives provenance and accepts the
+  // file only when it is byte-identical to the re-derivation (tampered / stale / corrupt → fail closed, reported).
+  const provText = existsSync(provPath) ? readFileSync(provPath, "utf8") : null;
+  let provenance: SeedProvenanceFile | null = null;
+  let provError: string | null = null;
+  const rulesetSha = rulesetIdentity(rules).rulesetSha256;
+  // Neon mode streams sources, so there is no whole-input identity to bind provenance to: the guard fails closed there.
+  let guard = selfCreditGuard(rules, null, { rulesetSha256: rulesetSha, snapshotSha256: null, unboundReason: "neon mode: no whole-input identity to bind seed provenance to" });
+  const scoreOpts = () => ({ guard, noRules: true });
   if (snapshotPath) {
     const snap = readSnapshot(resolve(snapshotPath));
+    const fullSnapshotSha = snapshotIdentitySha256(snap.sources.map((input) => [input.source.sourceId, sourceInputSha256(input)] as const));
+    const derived = deriveSeedProvenance(rules, snap.sources, { rulesetSha256: rulesetSha, snapshotSha256: fullSnapshotSha });
+    const verified = verifyCommittedProvenance(provText, derived);
+    provenance = verified.provenance;
+    provError = verified.unboundReason;
+    if (provError) console.error(`ERROR: seed provenance unusable (${provError}); every learned capture rule counts as NO_PROVENANCE (fail closed). The no-rules score is still reported.`);
+    guard = selfCreditGuard(rules, provenance, {
+      rulesetSha256: rulesetSha,
+      snapshotSha256: fullSnapshotSha,
+      unboundReason: provError,
+      knownSources: new Map(snap.sources.map((i) => [i.source.sourceId, i.source] as const)),
+    });
     // --shard=i/n: score only sources with index % n === i (parallel offline replay; merge reports after).
     const shard = argStr("shard");
     const [si, sn] = shard ? shard.split("/").map(Number) : [0, 1];
     snap.sources.forEach((input, idx) => {
-      if (idx % sn! === si) perSource.push(scoreSource(input, rules, manifest, TEXT_VERIFIED));
+      if (idx % sn! === si) perSource.push(scoreSource(input, rules, manifest, TEXT_VERIFIED, scoreOpts()));
     });
     const pairs = snap.sources.map((input) => [input.source.sourceId, sourceInputSha256(input)] as const);
     shardInfo = { index: si!, count: sn!, snapshotSha256: snapshotIdentitySha256(pairs), snapshotSourceIds: pairs.map((p) => p[0]).sort() };
@@ -188,7 +236,7 @@ async function main(): Promise<void> {
     const only = argStr("only");
     const captured: ScoreboardSourceInput[] = [];
     await loadNeonInputs(async (input) => {
-      const s = scoreSource(input, rules, manifest, TEXT_VERIFIED);
+      const s = scoreSource(input, rules, manifest, TEXT_VERIFIED, scoreOpts());
       perSource.push(s);
       if (progress) appendFileSync(progress, JSON.stringify({ ...s, findings: undefined }) + "\n");
       if (capture && (!only || only.toUpperCase() === s.split || (only === "dev" && s.split === "DEV"))) captured.push(input);
@@ -209,7 +257,17 @@ async function main(): Promise<void> {
   }
   for (const s of perSource) delete s.findings;
   const rid = rulesetIdentity(rules);
-  const report = aggregate(perSource, { mode: neon ? "neon" : "snapshot", rulesetVersion: rules.rulesetVersion, rulesetSha256: rid.rulesetSha256, scorerConfig: scorerConfig() });
+  const report = aggregate(perSource, {
+    mode: neon ? "neon" : "snapshot",
+    rulesetVersion: rules.rulesetVersion,
+    rulesetSha256: rid.rulesetSha256,
+    scorerConfig: scorerConfig(),
+    selfCredit: {
+      provenanceSha256: provenance ? provenanceSha256(provenance) : null,
+      rulesWithoutProvenance: guard.rulesWithoutProvenance,
+      unboundReason: guard.unboundReason,
+    },
+  });
   if (shardInfo) report.shard = shardInfo;
   printSummary(report);
   console.log(
@@ -217,6 +275,8 @@ async function main(): Promise<void> {
   );
   const out = argStr("write-report");
   if (out) writeFileSync(out, JSON.stringify(report, null, 2) + "\n");
+  // Unusable committed provenance in snapshot mode is an error (after everything, including NO-RULES, was printed).
+  if (provError) process.exitCode = 4;
 
   const baselinePath = argStr("baseline");
   if (baselinePath) {
@@ -257,7 +317,22 @@ async function main(): Promise<void> {
       gate.reasons.push(...hist.reasons);
       gate.pass = false;
     }
-    console.log(JSON.stringify({ event: "clf.scoreboard.gate", pass: gate.pass, reasons: gate.reasons, thresholds: hist.thresholds, historyEntries: hist.latest?.seq ?? 0, heldout: [gate.heldoutBefore, gate.heldoutAfter], dev: [gate.devBefore, gate.devAfter], byClass: gate.byClass }, null, 2));
+    console.log(JSON.stringify({
+      event: "clf.scoreboard.gate",
+      pass: gate.pass,
+      reasons: gate.reasons,
+      thresholds: hist.thresholds,
+      historyEntries: hist.latest?.seq ?? 0,
+      heldout: [gate.heldoutBefore, gate.heldoutAfter],
+      dev: [gate.devBefore, gate.devAfter],
+      byClass: gate.byClass,
+      // Report-only: the same sources with NO learned rules, and refused self-credit (null = not in that report).
+      noRules: {
+        heldout: [baseline.noRulesTotals?.HELDOUT.total ?? null, report.noRulesTotals?.HELDOUT.total ?? null],
+        dev: [baseline.noRulesTotals?.DEV.total ?? null, report.noRulesTotals?.DEV.total ?? null],
+      },
+      selfCredit: report.selfCredit ? { refused: report.selfCredit.refused, credited: report.selfCredit.credited, rulesWithoutProvenance: report.selfCredit.rulesWithoutProvenance } : null,
+    }, null, 2));
     for (const d of gate.deltas.slice(0, 40)) console.log(`  Δ ${d.delta > 0 ? "+" : ""}${d.delta} ${d.split} ${d.sourceId} ${JSON.stringify(d.byClass)}`);
     if (!gate.pass) process.exit(1);
   }
