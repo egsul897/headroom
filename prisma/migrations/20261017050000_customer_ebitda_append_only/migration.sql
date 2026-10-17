@@ -2,6 +2,11 @@
 -- confirmations (kind), idempotency key + stored original response, FKs, document-belongs-to-company, check constraints.
 -- IDEMPOTENT: every step is guarded (IF [NOT] EXISTS / catalog checks), so re-running is a no-op. No rows are deleted.
 -- Rollback: down.sql in this directory (applied by hand; prisma migrate deploy reads only migration.sql).
+-- History: this migration and 20261017030000 were never applied anywhere (not on Neon, not on any preview database)
+-- before this file was last edited, so editing it in place changes no recorded checksum.
+-- CONCURRENTLY: Prisma runs a migration file as one transaction block, where CREATE INDEX CONCURRENTLY is not allowed,
+-- so these indexes are built normally. The EBITDA tables are new and small; documents_id_companyId_key takes a short
+-- write lock on "documents" while it builds (id is already the primary key, so it cannot fail on duplicates).
 
 ALTER TABLE "customer_ebitda_confirmations" ADD COLUMN IF NOT EXISTS "kind" TEXT NOT NULL DEFAULT 'AMOUNT';
 ALTER TABLE "customer_ebitda_confirmations" ADD COLUMN IF NOT EXISTS "idempotencyKey" TEXT;
@@ -34,8 +39,9 @@ BEGIN
     -- document with CFO confirmations cannot be deleted out from under its audit trail.
     ('customer_ebitda_boxes', 'customer_ebitda_boxes_companyId_fkey', $c$FOREIGN KEY ("companyId") REFERENCES "companies"("id") ON DELETE CASCADE ON UPDATE CASCADE NOT VALID$c$),
     ('customer_ebitda_boxes', 'customer_ebitda_boxes_documentId_companyId_fkey', $c$FOREIGN KEY ("documentId", "companyId") REFERENCES "documents"("id", "companyId") ON DELETE CASCADE ON UPDATE CASCADE NOT VALID$c$),
-    ('customer_ebitda_confirmations', 'customer_ebitda_confirmations_companyId_fkey', $c$FOREIGN KEY ("companyId") REFERENCES "companies"("id") ON DELETE RESTRICT ON UPDATE CASCADE NOT VALID$c$),
-    ('customer_ebitda_confirmations', 'customer_ebitda_confirmations_documentId_companyId_fkey', $c$FOREIGN KEY ("documentId", "companyId") REFERENCES "documents"("id", "companyId") ON DELETE RESTRICT ON UPDATE CASCADE NOT VALID$c$)
+    ('customer_ebitda_confirmations', 'customer_ebitda_confirmations_companyId_fkey', $c$FOREIGN KEY ("companyId") REFERENCES "companies"("id") ON DELETE RESTRICT ON UPDATE RESTRICT NOT VALID$c$),
+    -- ON UPDATE RESTRICT: a document's company (or a company id) cannot change while confirmation history refers to it.
+    ('customer_ebitda_confirmations', 'customer_ebitda_confirmations_documentId_companyId_fkey', $c$FOREIGN KEY ("documentId", "companyId") REFERENCES "documents"("id", "companyId") ON DELETE RESTRICT ON UPDATE RESTRICT NOT VALID$c$)
   ) AS t(tbl, name, def)
   LOOP
     IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = c.name AND conrelid = format('%I', c.tbl)::regclass) THEN

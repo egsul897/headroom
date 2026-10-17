@@ -4731,10 +4731,11 @@ model CustomerEbitdaConfirmation {
   response       Json?
   createdAt      DateTime @default(now()) @db.Timestamptz(6)
   updatedAt      DateTime @updatedAt @db.Timestamptz(6)
-  /// RESTRICT: confirmation history is an audit trail; its company/document cannot be deleted out from under it.
-  company        Company  @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  /// RESTRICT (delete and update): confirmation history is an audit trail; its company/document cannot be deleted, and a
+  /// document cannot move to another company, while history refers to it.
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   /// Composite FK: the document must belong to the same company.
-  document       Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Restrict)
+  document       Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict)
 
   @@unique([companyId, documentId, idempotencyKey])
   @@index([companyId, documentId, inputKey, createdAt])
