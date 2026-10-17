@@ -6,6 +6,7 @@ import { CountUp } from "@/components/motion/CountUp";
 import { ProvenanceDrawer } from "@/components/motion/ProvenanceDrawer";
 import { EbitdaTile } from "@/components/home/EbitdaTile";
 import { SAMPLE_ADD_BACKS, SAMPLE_EBITDA_BASE } from "./ebitda";
+import { VIZ_PALETTES, type VizId } from "./viz";
 
 const SAMPLE_ROWS = [
   {
@@ -67,16 +68,35 @@ function rowPanel(item: (typeof SAMPLE_ROWS)[number]): Panel {
   };
 }
 
+function VizStrip({ id }: { id: VizId }) {
+  const palette = VIZ_PALETTES[id];
+  return (
+    <div className="viz-strip" aria-label={`${palette.name} chart colors`}>
+      <span className="viz-strip-name">{id} · {palette.name}</span>
+      <ol>
+        {palette.colors.map((hex) => (
+          <li key={hex}>
+            <i style={{ background: hex }} />
+            <span>{hex}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 /**
  * Sample answer, then the reference widgets underneath.
  * Every figure on this page is an illustration. Nothing here is a company result.
  */
 export function SampleDashboard({
+  viz = null,
   initialDetail = false,
   initialEbitda = null,
   failedReason = null,
   staleSince = null,
 }: {
+  viz?: VizId | null;
   initialDetail?: boolean;
   initialEbitda?: string | null;
   failedReason?: string | null;
@@ -95,14 +115,17 @@ export function SampleDashboard({
 
   return (
     <div className="home-overview">
-      <header className="home-top">
-        <div className="home-greeting-block">
-          <h1 className="home-greeting">How much headroom can we rely on?</h1>
-        </div>
-        <a className="home-quiet-link" href="/dev/sample?screen=covenants">
-          Read the clause
-        </a>
-      </header>
+      <div className="home-intro">
+        {viz ? <VizStrip id={viz} /> : null}
+        <header className="home-top">
+          <div className="home-greeting-block">
+            <h1 className="home-greeting">How much headroom can we rely on?</h1>
+          </div>
+          <a className="home-quiet-link" href="/dev/sample?screen=covenants">
+            Read the clause
+          </a>
+        </header>
+      </div>
 
       <div className="home-board">
         <div className="home-kpis">

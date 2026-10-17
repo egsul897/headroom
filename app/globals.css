@@ -19,10 +19,19 @@
   --accent-hover: #6b3050;
   --accent-ink: #ffffff;
   --accent-signal: #f4f1ec;
-  --chart-1: #2a2c2e;
-  --chart-2: #5e5854;
-  --chart-3: #a39c94;
-  --chart-4: #54243c;
+  /*
+   * Data-viz slots. No palette is chosen yet.
+   * These match the current chart inks. /dev/sample?viz=A|B|C overrides them.
+   */
+  --viz-1: #2a2c2e;
+  --viz-2: #5e5854;
+  --viz-3: #a39c94;
+  --viz-4: #54243c;
+  --viz-5: #54243c;
+  --chart-1: var(--viz-1);
+  --chart-2: var(--viz-2);
+  --chart-3: var(--viz-3);
+  --chart-4: var(--viz-4);
   --chart-track: #e6e1da;
   --idle-soft: #e8e3dc;
   --input-bg: #ffffff;

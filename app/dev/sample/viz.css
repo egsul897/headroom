@@ -1,0 +1,95 @@
+/*
+ * Chart palettes for /dev/sample?viz=A|B|C.
+ * Shell, ink, and oxblood are untouched. No option is the default.
+ * Each color is mid-tone and at least 3:1 on the #fffcf8 card.
+ */
+
+[data-viz="A"] {
+  /* Slate & Sand. Dusty slate, warm sand, soft stone, muted mauve, a warm fifth. */
+  --viz-1: #588cad;
+  --viz-2: #9a835d;
+  --viz-3: #918a85;
+  --viz-4: #886f89;
+  --viz-5: #9d7267;
+  --chart-1: #588cad;
+  --chart-2: #9a835d;
+  --chart-3: #918a85;
+  --chart-4: #886f89;
+}
+
+[data-viz="B"] {
+  /* Mist & Plum. Blue-grey mist, pale stone, soft steel, light plum, a deeper stone. */
+  --viz-1: #497e91;
+  --viz-2: #978d7d;
+  --viz-3: #608e91;
+  --viz-4: #926c7d;
+  --viz-5: #7f766c;
+  --chart-1: #497e91;
+  --chart-2: #978d7d;
+  --chart-3: #608e91;
+  --chart-4: #926c7d;
+}
+
+[data-viz="C"] {
+  /* Harbor. Muted steel, a lighter steel, pale graphite, light clay, faint sage last. */
+  --viz-1: #4e7e8d;
+  --viz-2: #75939e;
+  --viz-3: #73787c;
+  --viz-4: #ae7a67;
+  --viz-5: #778b7c;
+  --chart-1: #4e7e8d;
+  --chart-2: #75939e;
+  --chart-3: #73787c;
+  --chart-4: #ae7a67;
+}
+
+.viz-strip {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 28px;
+}
+
+.viz-strip-name {
+  flex: none;
+  color: var(--shell-ink);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.viz-strip ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.viz-strip li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--shell-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0.01em;
+}
+
+.viz-strip i {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex: none;
+}
+
+.home-intro {
+  display: contents;
+}
+
+.home-intro:has(.viz-strip) {
+  display: grid;
+  gap: 8px;
+}
