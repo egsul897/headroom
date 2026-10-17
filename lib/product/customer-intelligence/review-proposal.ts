@@ -33,7 +33,7 @@
  * decision (counsel or SYSTEM auto-accept) changes state.
  */
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
-import { isCapRestatementCondition, parseFormulaFromItem } from "./formula-parse";
+import { parseFormulaFromItem, remainingConditionsForItem } from "./formula-parse";
 import { grantTypesForItem } from "./grant-types";
 import { parseMaintenanceRatio } from "./maintenance-ratio";
 import { isRoutineItem } from "./routine-review";
@@ -50,12 +50,15 @@ export interface ReviewProposal {
   needsAttention: boolean;
 }
 
-/** Remaining (non-cap-restatement) conditions — UNKNOWN predicates counsel must resolve. */
+/**
+ * Remaining conditions — UNKNOWN predicates counsel must
+ * resolve. This is the SHARED computation (remainingConditionsForItem):
+ * the proposer and the isRoutineItem gate must always agree on
+ * what remains, so neither re-implements the cap-restatement /
+ * mechanical-proviso filters locally.
+ */
 function remainingConditions(item: CovenantSummaryItem): string[] {
-  const parsed = parseFormulaFromItem(item);
-  return (item.conditions ?? []).filter(
-    (c) => !isCapRestatementCondition(String(c), parsed.thresholdValue),
-  );
+  return remainingConditionsForItem(item);
 }
 
 /** The exact terms an ACCEPT would mint, or null when nothing compiles. */

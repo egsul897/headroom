@@ -128,6 +128,31 @@ describe("proposeReviewDecision", () => {
     expect(p.reason).toMatch(/implausibly small|parsing artifact/i);
   });
 
+  it("P1: a complete no-Default proviso does not block an ACCEPT (gate and proposer in lockstep)", () => {
+    const p = proposeReviewDecision(
+      item({
+        conditions: [
+          "no_default: no Default or Event of Default shall have occurred and be continuing or would result from the incurrence of such Indebtedness",
+        ],
+      }),
+    );
+    expect(p.decision).toBe("ACCEPTED");
+    expect(p.needsAttention).toBe(false);
+  });
+
+  it("P1: a no-Default proviso with a certificate clause proposes NEEDS_INPUT naming the condition", () => {
+    const p = proposeReviewDecision(
+      item({
+        conditions: [
+          "no_default: no Default or Event of Default shall have occurred and be continuing, and the Borrower shall deliver an Officer's Certificate evidencing compliance",
+        ],
+      }),
+    );
+    expect(p.decision).toBe("NEEDS_INPUT");
+    expect(p.needsAttention).toBe(true);
+    expect(p.reason).toMatch(/condition.*cannot resolve/i);
+  });
+
   it("a pure cap-restatement condition does not block an ACCEPT", () => {
     const p = proposeReviewDecision(
       item({ conditions: ["provided_that: provided that the aggregate amount shall not exceed $50,000,000"] }),

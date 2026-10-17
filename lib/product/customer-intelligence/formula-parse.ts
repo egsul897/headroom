@@ -250,6 +250,122 @@ export function isCapRestatementCondition(text: string, thresholdValue: number |
   });
 }
 
+/**
+ * Veto content for the mechanical-proviso filter: the
+ * INDEPENDENT_REQUIREMENT_RE alternatives OTHER than the two
+ * mechanical provisos themselves (no-Default / pro forma
+ * compliance), plus delivery-of-evidence markers. A condition
+ * carrying any of these is a substantive requirement counsel
+ * must resolve, never a mechanical proviso.
+ */
+const MECHANICAL_PROVISO_VETO_RE =
+  /\brepresentation|\bwarrant|\bsolvency|\bsolvent\b|\bno\s+(?:breach|violation)\b|\bcompliance\s+with\s+(?:the\s+)?(?:covenants?|terms|provisions)|\bcertificates?\b|\bopinions?\b|\bdeliver\w*\b|\bfurnish\w*\b|\bevidence\s+of\b|\bevidencing\b/i;
+
+/**
+ * The standard no-Default proviso core: a negated Default /
+ * Event of Default plus its state verb. The terse fragment
+ * "no Default has occurred" does NOT qualify on its own — the
+ * completeness check below additionally requires the
+ * continuing / would-result / shall-exist element that makes
+ * the proviso the complete, fixed-meaning eligibility test.
+ */
+const NO_DEFAULT_PROVISO_CORE_RE =
+  /^(?:provided\s*,?\s*(?:however\s*,?\s*)?that\s*[:,]?\s*)?(?:so\s+long\s+as\s+)?no\s+(?:default|event\s+of\s+default)(?:\s+or\s+(?:default|event\s+of\s+default))?\s+(?:shall\s+have\s+occurred|has\s+occurred|have\s+occurred|shall\s+exist|exists?|is\s+continuing)/i;
+
+const NO_DEFAULT_PROVISO_COMPLETE_RE = /\bcontinuing\b|\bwould\s+result\b|\bshall\s+exist\b|\bexists\b/i;
+
+/**
+ * Words that may appear AFTER the no-Default core in the
+ * standard proviso ("... and be continuing or would result
+ * from the incurrence of such Indebtedness after giving effect
+ * thereto"). Any other word in the residue means the condition
+ * says more than the mechanical proviso — fail closed.
+ */
+const NO_DEFAULT_TAIL_WORDS = new Set([
+  "and", "or", "be", "is", "was", "continuing", "would", "will",
+  "result", "results", "resulting", "therefrom", "thereof",
+  "thereto", "herefrom", "after", "before", "giving", "effect",
+  "effects", "to", "the", "a", "an", "incurrence", "incurring",
+  "incurred", "of", "such", "indebtedness", "debt", "loans",
+  "loan", "extensions", "extension", "credit", "on", "date",
+  "at", "time", "in", "connection", "with", "as", "immediately",
+  "prior", "from", "by", "reason",
+]);
+
+function isNoDefaultProviso(body: string): boolean {
+  const core = body.match(NO_DEFAULT_PROVISO_CORE_RE);
+  if (!core) return false;
+  if (!NO_DEFAULT_PROVISO_COMPLETE_RE.test(body)) return false;
+  const residue = body.slice(core[0].length).replace(/[.\s]+$/, "");
+  if (!residue.trim()) return true;
+  const words = residue
+    .toLowerCase()
+    .split(/\s+/)
+    .map((w) => w.replace(/[^a-z]/g, ""))
+    .filter(Boolean);
+  return words.every((w) => NO_DEFAULT_TAIL_WORDS.has(w));
+}
+
+function isProFormaComplianceProviso(body: string): boolean {
+  const m = body.match(
+    /^(?:provided\s*,?\s*(?:however\s*,?\s*)?that\s*[:,]?\s*)?pro\s+forma\s+compliance\s+with\s+([\s\S]+)$/i,
+  );
+  if (!m) return false;
+  const object = m[1] ?? "";
+  // The object names the test complied with (a covenant, ratio,
+  // or section). A second clause (semicolon, or a fresh
+  // Borrower-shall obligation) is a separate requirement.
+  if (/;/.test(object)) return false;
+  if (/\b(?:and|or)\s+(?:the\s+)?(?:borrower|company)\s+shall\b/i.test(object)) return false;
+  return true;
+}
+
+/**
+ * P1: a MECHANICAL proviso — a condition whose entire content is
+ * one of the two fixed-meaning eligibility provisos of leveraged
+ * finance: (a) no Default / Event of Default continuing (or
+ * would-result), or (b) pro forma compliance with a named test.
+ * Condition strings are stored as "<signal>: <excerpt>"; the
+ * signal prefix is stripped and the remaining text must be
+ * SOLELY the proviso — no veto content (representations,
+ * solvency, certificates, opinions, delivery/furnishing duties,
+ * evidence-of markers), nothing left over.
+ *
+ * Safety basis: the condition text is fully extracted and
+ * quoted, and compile carries it verbatim onto the Permission
+ * as an eligibility condition the solver already fails closed
+ * on at evaluation (an UNKNOWN predicate is never cleared).
+ * Filtering it from the remaining-conditions gate asserts only
+ * the INTERPRETATION (this basket's proviso is the standard
+ * one), never that the proviso is satisfied. Anything that is
+ * not recognizably the complete standard proviso — including
+ * the terse fragment "no Default has occurred" — stays a
+ * remaining condition for counsel (fail closed).
+ */
+export function isMechanicalProvisoCondition(text: string): boolean {
+  const body = String(text).replace(/^[a-z_]+(?:,[a-z_]+)*:\s*/i, "").trim();
+  if (!body) return false;
+  if (MECHANICAL_PROVISO_VETO_RE.test(body)) return false;
+  return isNoDefaultProviso(body) || isProFormaComplianceProviso(body);
+}
+
+/**
+ * The SHARED remaining-conditions computation for the review
+ * gate (isRoutineItem) and the proposer (proposeReviewDecision):
+ * an item's conditions minus pure cap restatements (Rule 206)
+ * and mechanical provisos (P1). Both consumers MUST use this
+ * one function so the gate and the proposal can never disagree
+ * about what is left for counsel to resolve.
+ */
+export function remainingConditionsForItem(item: CovenantSummaryItem): string[] {
+  const parsed = parseFormulaFromItem(item);
+  return (item.conditions ?? []).filter(
+    (c) =>
+      !isCapRestatementCondition(String(c), parsed.thresholdValue) &&
+      !isMechanicalProvisoCondition(String(c)),
+  );
+}
+
 export function parseCounselFormulaForTest(item: CovenantSummaryItem) {
   return parseFormulaFromItem(item);
 }

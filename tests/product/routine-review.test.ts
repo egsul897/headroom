@@ -62,6 +62,78 @@ describe("isRoutineItem", () => {
     expect(isRoutineItem(item({ posture: "UNRESOLVED" }))).toBe(false);
   });
 
+  it("P1: a MODELED basket whose only condition is a complete no-Default proviso is routine", () => {
+    // The standard eligibility proviso, fully extracted: compile
+    // carries it verbatim onto the Permission and the solver
+    // fails closed on it at evaluation — auto-accept asserts
+    // only the interpretation, never that the proviso holds.
+    expect(
+      isRoutineItem(
+        item({
+          conditions: [
+            "no_default: no Default or Event of Default shall have occurred and be continuing or would result from the incurrence of such Indebtedness",
+          ],
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it("P1: the provided-that record of the same no-Default proviso is also mechanical", () => {
+    expect(
+      isRoutineItem(
+        item({
+          conditions: [
+            "provided_that: provided that no Default or Event of Default shall have occurred and be continuing or would result therefrom",
+          ],
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it("P1: a MODELED basket whose only condition is a pro forma compliance proviso is routine", () => {
+    expect(
+      isRoutineItem(
+        item({
+          conditions: ["pro_forma_compliance: pro forma compliance with the Consolidated Leverage Ratio"],
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it("P1: a no-Default proviso carrying a certificate-delivery clause in the same string is an exception", () => {
+    expect(
+      isRoutineItem(
+        item({
+          conditions: [
+            "no_default: no Default or Event of Default shall have occurred and be continuing, and the Borrower shall deliver an Officer's Certificate evidencing compliance",
+          ],
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it("P1: a no-Default proviso carrying a solvency clause in the same string is an exception", () => {
+    expect(
+      isRoutineItem(
+        item({
+          conditions: [
+            "no_default: no Default or Event of Default shall have occurred and be continuing and the Borrower shall be Solvent after giving effect thereto",
+          ],
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it("P1: a bespoke subject-to proviso is an exception", () => {
+    expect(
+      isRoutineItem(
+        item({
+          conditions: ["subject_to: subject to the satisfaction of all conditions precedent set forth in Section 4.01"],
+        }),
+      ),
+    ).toBe(false);
+  });
+
   it("a DEBT grant on a MERGERS-category item (classifier disagreement) is an exception", () => {
     // Successors-clause shape: "successor shall assume Indebtedness"
     // mints a DEBT grant, but the section is a merger provision, not

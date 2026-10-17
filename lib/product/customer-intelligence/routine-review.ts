@@ -12,10 +12,14 @@
  * - it carries grant types AND compiles cleanly to a MODELED
  *   Permission (formula + threshold, no missing fields), OR to a
  *   testable maintenance-ratio provision; AND
- * - after Rule 206 drops pure cap restatements, it carries NO
- *   remaining eligibility conditions (any remaining condition
- *   maps to an UNKNOWN CUSTOM_STATE_PREDICATE — counsel must
- *   resolve it before the basket can clear); AND
+ * - after the shared remaining-conditions filter drops pure cap
+ *   restatements (Rule 206) and mechanical provisos (P1: a
+ *   complete no-Default or pro-forma-compliance proviso, whose
+ *   text compile carries verbatim onto the Permission as an
+ *   eligibility condition the solver fails closed on), it
+ *   carries NO remaining eligibility conditions (any remaining
+ *   condition maps to an UNKNOWN CUSTOM_STATE_PREDICATE —
+ *   counsel must resolve it before the basket can clear); AND
  * - its posture is determined (an UNRESOLVED-posture item with a
  *   clear amount still needs counsel to confirm what the
  *   provision does).
@@ -33,7 +37,7 @@
  * their compile.
  */
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
-import { isCapRestatementCondition, parseFormulaFromItem } from "./formula-parse";
+import { parseFormulaFromItem, remainingConditionsForItem } from "./formula-parse";
 import { grantTypesForItem } from "./grant-types";
 import { parseMaintenanceRatio } from "./maintenance-ratio";
 
@@ -102,12 +106,11 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
     item.category === "BASKETS_EXCEPTIONS_CONDITIONS" ||
     grants.some((g) => (GRANT_CATEGORIES[g] ?? []).includes(item.category));
   if (!categoryAgrees) return false;
-  // MODELED with a remaining (UNKNOWN) condition still needs counsel.
-  const parsed = parseFormulaFromItem(item);
-  const remainingConditions = (item.conditions ?? []).filter(
-    (c) => !isCapRestatementCondition(String(c), parsed.thresholdValue),
-  );
-  if (remainingConditions.length > 0) return false;
+  // MODELED with a remaining (UNKNOWN) condition still needs
+  // counsel. The remaining set comes from the SHARED computation
+  // (remainingConditionsForItem) so this gate and the Rulebook
+  // proposer always agree on what is left to resolve.
+  if (remainingConditionsForItem(item).length > 0) return false;
   // Undetermined posture needs counsel confirmation even when the
   // amount parses (e.g. a thin lien item whose DEBT grant was
   // laundered by boilerplate — the amount is clear but what the
