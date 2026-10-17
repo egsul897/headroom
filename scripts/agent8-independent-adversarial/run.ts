@@ -39,6 +39,7 @@ import {
   shared,
   usage,
 } from "./helpers";
+import { artifactPath } from "../../lib/platform/artifact-output";
 
 export type OutcomeClass =
   | "CORRECT_EXECUTABLE"
@@ -1043,7 +1044,7 @@ async function main(): Promise<void> {
   runAdditionalLegalCases();
   runAuthenticCases();
   const summary = summarize();
-  const outDir = path.resolve("docs/agent8-independent-adversarial");
+  const outDir = artifactPath(process.cwd(), "docs/agent8-independent-adversarial");
   fs.mkdirSync(outDir, { recursive: true });
   const artifact = {
     schemaVersion: "agent8-independent-adversarial.v1",

@@ -1,5 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
-import { buildEnvelope, captureError, isErrorTrackingEnabled, parseDsn, scrubSecrets } from "@/lib/platform/error-tracking";
+import {
+  buildEnvelope,
+  captureError,
+  configuredDsn,
+  isErrorTrackingEnabled,
+  messageFingerprint,
+  parseDsn,
+  scrubSecrets,
+  stackFrameLocations,
+  structuralTags,
+} from "@/lib/platform/error-tracking";
 
 const DSN = "https://abc123@o1.ingest.example.com/42";
 
@@ -41,8 +51,66 @@ describe("scrubbing", () => {
     expect(s).not.toContain("sk_live_123abc");
     expect(s).not.toContain("xyz");
   });
-  it("envelope carries no raw connection string from the error message or extras", () => {
-    const env = buildEnvelope(new Error("connect postgres://user:pw@neon.example/db failed"), { where: "t", extra: { DATABASE_URL: "postgres://a:b@c/d", note: "postgres://a:b@c/d" } }, parseDsn(DSN)!, "e1");
-    expect(env).not.toMatch(/user:pw@|a:b@c/);
+  it("envelope carries no raw connection string from the error message or tags", () => {
+    const env = buildEnvelope(new Error("connect postgres://user:pw@neon.example/db failed"), { where: "t", tags: { DATABASE_URL: "postgres://a:b@c/d" } }, parseDsn(DSN)!, "e1");
+    expect(env).not.toMatch(/user:pw@|a:b@c|neon\.example/);
+  });
+});
+
+describe("structural-only payload (no agreement text leaves the process)", () => {
+  const AGREEMENT = "Consolidated Fixed Charge Coverage Ratio shall not be less than 1.25 to 1.00 for Borrower Acme Holdings";
+  it("never ships the message text, extras or stack text; only type, fingerprint and frame locations", () => {
+    const err = new TypeError(`${AGREEMENT}\n    at Leak (secret clause text:1:2)`);
+    const body = buildEnvelope(err, { where: "upload.deferred-analysis", tags: { stage: "parse", note: AGREEMENT } }, parseDsn(DSN)!, "e1");
+    expect(body).not.toContain("Fixed Charge");
+    expect(body).not.toContain("Acme");
+    expect(body).not.toContain("secret clause");
+    expect(body).not.toContain("Leak");
+    const event = JSON.parse(body.trim().split("\n")[2]!) as {
+      tags: Record<string, string>;
+      fingerprint: string[];
+      exception: { values: { type: string; value: string; stacktrace?: { frames: { filename: string; lineno?: number; function?: string }[] } }[] };
+      extra?: unknown;
+    };
+    expect(event.extra).toBeUndefined();
+    expect(event.tags).toEqual({ where: "upload.deferred-analysis", stage: "parse" });
+    const ex = event.exception.values[0]!;
+    expect(ex.type).toBe("TypeError");
+    expect(ex.value).toBe(`[message withheld] fp=${messageFingerprint(err.message)} len=${err.message.length}`);
+    expect(event.fingerprint).toEqual(["TypeError", messageFingerprint(err.message)]);
+    const frames = ex.stacktrace!.frames;
+    expect(frames.length).toBeGreaterThan(0);
+    expect(frames.some((f) => f.filename === "tests/platform/error-tracking.test.ts")).toBe(true);
+    for (const f of frames) expect(typeof f.lineno).toBe("number");
+  });
+  it("non-Error throws send only their JS type", () => {
+    const body = buildEnvelope({ clause: AGREEMENT }, { where: "t" }, parseDsn(DSN)!, "e2");
+    expect(body).not.toContain("Fixed Charge");
+    expect(body).toContain('"type":"NonError:object"');
+  });
+  it("tags that are not identifier-like are dropped, and a free-text where is replaced", () => {
+    expect(structuralTags("has spaces in it", { ok: "v1", "bad key": "x", long: "x".repeat(65), url: "postgres://a:b@c/d" })).toEqual({ where: "invalid-where", ok: "v1" });
+  });
+  it("frame parsing keeps only function identifiers and repo-relative paths", () => {
+    const stack = ["Error: boom", "    at async runJob (/repo/lib/platform/background.ts:48:13)", "    at /repo/node_modules/x/index.js:1:2", "    at weird name with spaces (/repo/a.ts:1:1)"].join("\n");
+    expect(stackFrameLocations(stack, "boom", "/repo")).toEqual([
+      { filename: "a.ts", lineno: 1, colno: 1 },
+      { filename: "node_modules/x/index.js", lineno: 1, colno: 2 },
+      { filename: "lib/platform/background.ts", lineno: 48, colno: 13, function: "runJob" },
+    ]);
+  });
+});
+
+describe("DSN resolution", () => {
+  it("an empty or blank HEADROOM_ERROR_DSN falls through to SENTRY_DSN", async () => {
+    for (const blank of ["", "   "]) {
+      expect(configuredDsn({ HEADROOM_ERROR_DSN: blank, SENTRY_DSN: DSN })).toBe(DSN);
+      expect(isErrorTrackingEnabled({ HEADROOM_ERROR_DSN: blank, SENTRY_DSN: DSN })).toBe(true);
+      const fetchImpl = vi.fn(async () => ({ ok: true, status: 200 }));
+      expect((await captureError(new Error("x"), { where: "t" }, { env: { HEADROOM_ERROR_DSN: blank, SENTRY_DSN: DSN }, fetchImpl })).sent).toBe(true);
+    }
+  });
+  it("a set HEADROOM_ERROR_DSN wins over SENTRY_DSN", () => {
+    expect(configuredDsn({ HEADROOM_ERROR_DSN: "https://k@h.example/1", SENTRY_DSN: DSN })).toBe("https://k@h.example/1");
   });
 });

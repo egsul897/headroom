@@ -7,13 +7,19 @@
  * `{ sent: false, reason }` — it never throws, never blocks the caller's
  * own error handling, and never invents a destination.
  *
- * Payloads are scrubbed before they leave the process: database connection
- * strings, bearer tokens, and `key=value` secrets are redacted, so a Neon
- * URL inside an error message is never shipped to a third party.
+ * Payloads are STRUCTURAL ONLY. Error messages and stack text in this app can
+ * quote agreement language, borrower figures or connection strings, so none of
+ * that free text leaves the process. An event carries: the error class name,
+ * a fingerprint (sha256 prefix) of the message, stack frame locations
+ * (function identifier, repo-relative file, line, column), the `where` label
+ * and allowlisted tags (short identifier-like keys and values; anything else is
+ * dropped). There is no free-form `extra`.
  *
  * No AI, no paid inference — plain HTTPS POST to whatever DSN the operator
  * configured.
  */
+
+import { createHash } from "node:crypto";
 
 export interface ParsedDsn {
   publicKey: string;
@@ -52,8 +58,14 @@ export function parseDsn(dsn: string | undefined | null): ParsedDsn | null {
   };
 }
 
+/** The configured DSN string: HEADROOM_ERROR_DSN, else SENTRY_DSN. An empty/blank value counts as unset. */
+export function configuredDsn(env: Env = process.env): string | null {
+  for (const v of [env.HEADROOM_ERROR_DSN, env.SENTRY_DSN]) if (v && v.trim()) return v.trim();
+  return null;
+}
+
 export function resolveErrorTrackingDsn(env: Env = process.env): ParsedDsn | null {
-  return parseDsn(env.HEADROOM_ERROR_DSN ?? env.SENTRY_DSN);
+  return parseDsn(configuredDsn(env));
 }
 
 export function isErrorTrackingEnabled(env: Env = process.env): boolean {
@@ -69,20 +81,6 @@ export function scrubSecrets(text: string): string {
     .replace(/\b((?:api[_-]?key|token|secret|password|passwd|pwd)\s*[=:]\s*)[^\s&'",;]+/gi, "$1[REDACTED]");
 }
 
-function scrubValue(v: unknown, depth = 0): unknown {
-  if (depth > 6) return "[TRUNCATED]";
-  if (typeof v === "string") return scrubSecrets(v).slice(0, 4000);
-  if (Array.isArray(v)) return v.slice(0, 50).map((x) => scrubValue(x, depth + 1));
-  if (v && typeof v === "object") {
-    const out: Record<string, unknown> = {};
-    for (const [k, val] of Object.entries(v as Record<string, unknown>).slice(0, 50)) {
-      out[k] = /secret|password|token|authorization|cookie|dsn|database_url/i.test(k) ? "[REDACTED]" : scrubValue(val, depth + 1);
-    }
-    return out;
-  }
-  return v;
-}
-
 function randomEventId(): string {
   const bytes = new Uint8Array(16);
   globalThis.crypto.getRandomValues(bytes);
@@ -90,14 +88,75 @@ function randomEventId(): string {
 }
 
 export interface CaptureContext {
-  /** Short stable label for where the error happened, e.g. "upload.deferred-analysis". */
+  /** Short stable label for where the error happened, e.g. "upload.deferred-analysis". Must be identifier-like. */
   where: string;
+  /** Structural tags only; keys/values that are not short identifier-like strings are dropped. */
   tags?: Record<string, string>;
-  extra?: Record<string, unknown>;
+}
+
+export interface StackFrameLocation {
+  function?: string;
+  filename: string;
+  lineno?: number;
+  colno?: number;
+}
+
+const TAG_KEY = /^[A-Za-z][A-Za-z0-9_.-]{0,31}$/;
+const TAG_VALUE = /^[A-Za-z0-9_.:-]{1,64}$/;
+const IDENT = /^[A-Za-z_$][A-Za-z0-9_$.<>]{0,99}$/;
+
+/** sha256 prefix of the message: lets identical errors group without shipping their text. */
+export function messageFingerprint(message: string): string {
+  return createHash("sha256").update(message).digest("hex").slice(0, 16);
+}
+
+/** Keep only identifier-like tags (structural context); everything else is dropped, not scrubbed. */
+export function structuralTags(where: string, tags: Record<string, string> = {}): Record<string, string> {
+  const out: Record<string, string> = { where: TAG_VALUE.test(where) ? where : "invalid-where" };
+  for (const [k, v] of Object.entries(tags).slice(0, 20)) {
+    if (k === "where") continue;
+    if (TAG_KEY.test(k) && typeof v === "string" && TAG_VALUE.test(v)) out[k] = v;
+  }
+  return out;
+}
+
+/**
+ * Stack frame LOCATIONS from a V8 stack: function identifier, file (repo-relative when possible), line, column.
+ * The header line (which repeats the message) and any frame that does not parse are dropped.
+ */
+export function stackFrameLocations(stack: string | undefined, message = "", cwd: string = process.cwd()): StackFrameLocation[] {
+  if (!stack) return [];
+  const frames: StackFrameLocation[] = [];
+  // V8's header is "<name>: <message>"; skip every line the message spans so message text shaped like a frame is never parsed.
+  const headerLines = message.split("\n").length;
+  for (const line of stack.split("\n").slice(headerLines)) {
+    const m = /^\s*at (?:(.+?) \()?(.+?):(\d+):(\d+)\)?\s*$/.exec(line);
+    if (!m) continue;
+    const [, fn, rawFile, ln, col] = m;
+    let file = (rawFile ?? "").replace(/^file:\/\//, "");
+    if (file.startsWith(cwd + "/")) file = file.slice(cwd.length + 1);
+    const nm = file.lastIndexOf("node_modules/");
+    if (nm >= 0) file = file.slice(nm);
+    if (!/^[A-Za-z0-9_.\/@:\-[\]()]{1,300}$/.test(file)) file = "[unrecognised-path]";
+    const frame: StackFrameLocation = { filename: file, lineno: Number(ln), colno: Number(col) };
+    const name = fn?.replace(/^async /, "").replace(/^new /, "");
+    if (name && IDENT.test(name)) frame.function = name;
+    frames.push(frame);
+    if (frames.length >= 50) break;
+  }
+  // Sentry wants innermost frame last.
+  return frames.reverse();
+}
+
+function errorTypeName(err: unknown): string {
+  if (err instanceof Error) return IDENT.test(err.name || "") ? err.name : "Error";
+  return `NonError:${typeof err}`;
 }
 
 export function buildEnvelope(err: unknown, ctx: CaptureContext, dsn: ParsedDsn, eventId: string, now = new Date()): string {
-  const e = err instanceof Error ? err : new Error(typeof err === "string" ? err : JSON.stringify(scrubValue(err)));
+  const message = err instanceof Error ? String(err.message ?? "") : "";
+  const fingerprint = messageFingerprint(message);
+  const type = errorTypeName(err);
   const event = {
     event_id: eventId,
     timestamp: now.toISOString(),
@@ -105,14 +164,15 @@ export function buildEnvelope(err: unknown, ctx: CaptureContext, dsn: ParsedDsn,
     level: "error",
     environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? "unknown",
     release: process.env.VERCEL_GIT_COMMIT_SHA ?? undefined,
-    tags: { where: ctx.where, ...(ctx.tags ?? {}) },
-    extra: scrubValue(ctx.extra ?? {}),
+    tags: structuralTags(ctx.where, ctx.tags),
+    fingerprint: [type, fingerprint],
     exception: {
       values: [
         {
-          type: e.name || "Error",
-          value: scrubSecrets(e.message ?? "").slice(0, 2000),
-          stacktrace: e.stack ? { frames: [{ filename: "stack", function: scrubSecrets(e.stack).slice(0, 4000) }] } : undefined,
+          type,
+          // Message text withheld (may quote agreement text / figures / secrets); only its fingerprint and length go out.
+          value: `[message withheld] fp=${fingerprint} len=${message.length}`,
+          stacktrace: err instanceof Error ? { frames: stackFrameLocations(err.stack, message) } : undefined,
         },
       ],
     },
@@ -131,8 +191,8 @@ export async function captureError(
   opts: { env?: Env; fetchImpl?: FetchLike } = {},
 ): Promise<CaptureResult> {
   const env = opts.env ?? process.env;
-  const raw = env.HEADROOM_ERROR_DSN ?? env.SENTRY_DSN;
-  if (!raw || !raw.trim()) return { sent: false, reason: "DISABLED" };
+  const raw = configuredDsn(env);
+  if (!raw) return { sent: false, reason: "DISABLED" };
   const dsn = parseDsn(raw);
   if (!dsn) return { sent: false, reason: "INVALID_DSN" };
   const eventId = randomEventId();

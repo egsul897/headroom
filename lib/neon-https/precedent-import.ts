@@ -12,6 +12,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import type { NeonHttpsExecutor } from "../covenant-learning-factory/store/neon-transport";
 import { scanOriginalByteCandidates } from "../knowledge-factory/consolidation/scan-original-bytes";
+import { artifactPath } from "../platform/artifact-output";
 
 export const MASS_LIVE_ENV = "KF_MASS_PRECEDENT_LIVE_WRITE";
 export const MASS_LIVE_TOKEN = "I_AUTHORIZE_NEON_BULK_WRITE";
@@ -599,7 +600,7 @@ export async function importPrecedentsOverHttps(
       : `dry-run only; set ${MASS_LIVE_ENV}=${MASS_LIVE_TOKEN} to write`,
   };
 
-  const outDir = path.join(repoRoot, "docs/knowledge-factory/mass-precedent");
+  const outDir = artifactPath(repoRoot, "docs/knowledge-factory/mass-precedent");
   mkdirSync(outDir, { recursive: true });
   writeFileSync(
     path.join(outDir, "https-import-result.json"),
