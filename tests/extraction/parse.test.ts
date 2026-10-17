@@ -57,13 +57,16 @@ describe("parseDocument", () => {
   });
 
   it("drops struck (blackline-deleted) text from EDGAR HTML instead of treating it as operative", async () => {
-    // The deleted $75,000,000 is not the operative cap; $127,500,000 is.
+    // Synthetic figures only (Grok cross-review on PR #428, 2026-10-17:
+    // the previous figures came from the accuracy-census sample, which is
+    // contaminated for tuning and must not be baked into a regression test).
+    // The deleted $43,000,000 is not the operative cap; $68,500,000 is.
     const html =
-      "<html><body><p>China Facility basket shall not exceed <strike>$75,000,000</strike> $127,500,000</p>" +
+      "<html><body><p>General basket shall not exceed <strike>$43,000,000</strike> $68,500,000</p>" +
       "<p><del>removed clause</del> <s>also removed</s> surviving clause</p></body></html>";
     const parsed = await parseDocument(Buffer.from(html, "utf-8"), "text/html");
-    expect(parsed.fullText).toContain("$127,500,000");
-    expect(parsed.fullText).not.toContain("75,000,000");
+    expect(parsed.fullText).toContain("$68,500,000");
+    expect(parsed.fullText).not.toContain("43,000,000");
     expect(parsed.fullText).not.toContain("removed clause");
     expect(parsed.fullText).toContain("surviving clause");
   });
