@@ -71,9 +71,13 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   // document's §6.01 must not satisfy the other's. Without the
   // sourceId, the second document's review was silently satisfied
   // by the first's decisions.
-  const unitKey = (sourceId: string, i: { sectionRef: string; category: string }) =>
-    `${sourceId}::${i.sectionRef}::${i.category}`;
-  const uniqueUnits = (sourceId: string, items: { sectionRef: string; category: string }[]) =>
+  // Phase C (D11): a review unit is (sourceId, ref, category,
+  // nodeId). Two items sharing (ref, category) are distinct
+  // occurrences (CA §5.01 vs Guaranty §5.01; definition
+  // fragments sharing a ref) with distinct decisions.
+  const unitKey = (sourceId: string, i: { sectionRef: string; category: string; nodeId?: string }) =>
+    `${sourceId}::${i.sectionRef}::${i.category}::${i.nodeId ?? ""}`;
+  const uniqueUnits = (sourceId: string, items: { sectionRef: string; category: string; nodeId?: string }[]) =>
     new Set(items.map((i) => unitKey(sourceId, i))).size;
   const discoveredSummaries = docs.reduce((n, d) => n + uniqueUnits(d.sourceId, d.summary?.items ?? []), 0);
   // Rule 162: stale items count toward the ladder unless disclosed.
@@ -104,7 +108,7 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   const exceptionItems = exceptionKeys.size;
   const decisionKeys = new Set(
     counselApprovals
-      .map((a) => `${a.sourceId ?? ""}::${a.sectionRef}::${a.category}`)
+      .map((a) => `${a.sourceId ?? ""}::${a.sectionRef}::${a.category}::${(a as { nodeId?: string }).nodeId ?? ""}`)
       .filter((k) => unitMap.has(k)),
   );
   const exceptionDecisions = [...decisionKeys].filter((k) => exceptionKeys.has(k)).length;

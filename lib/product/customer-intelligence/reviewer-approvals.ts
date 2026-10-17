@@ -19,6 +19,15 @@ export interface ReviewerApproval {
   sourceId: string;
   sectionRef: string;
   category: string;
+  /**
+   * Phase C (D11): the structural node's occurrence identity.
+   * The decision key is (sourceId, sectionRef, category, nodeId)
+   * — two occurrences sharing a label (CA §5.01 vs Guaranty
+   * §5.01) hold separate decisions, and compile matches the
+   * exact item. Legacy rows without nodeId match only legacy
+   * decisions without nodeId.
+   */
+  nodeId?: string;
   decision: ReviewDecision;
   /**
    * Who made the decision. COUNSEL = a human reviewer (recordReviewerDecision).
@@ -64,6 +73,7 @@ export async function recordReviewerDecision(params: {
   sourceId: string;
   sectionRef: string;
   category: string;
+  nodeId?: string;
   decision: ReviewDecision;
   editedPlainEnglish?: string;
   note?: string;
@@ -97,12 +107,14 @@ export async function recordReviewerDecision(params: {
   // as OTHER) overwrote each other's decisions — counsel could never
   // complete review of a doc with duplicate refs, and the wizard's
   // decisions < items gate never cleared.
+  // Phase C (D11): decision key includes nodeId (occurrence).
+  const sameOccurrence = (aNodeId?: string) => (aNodeId ?? undefined) === (params.nodeId ?? undefined);
   const existing = prior.find(
-    (a) => a.sectionRef === params.sectionRef && a.sourceId === params.sourceId && a.category === params.category,
+    (a) => a.sectionRef === params.sectionRef && a.sourceId === params.sourceId && a.category === params.category && sameOccurrence(a.nodeId),
   );
   const summary = summarizeFromStoredMetadata(meta);
   const currentItem = summary?.items.find(
-    (i) => i.sectionRef === params.sectionRef && i.category === params.category,
+    (i) => i.sectionRef === params.sectionRef && i.category === params.category && (params.nodeId ? i.nodeId === params.nodeId : true),
   );
   // Rule 112: compile already refuses a section with no summary
   // item — but the decision row was still recorded, leaving a
@@ -135,6 +147,7 @@ export async function recordReviewerDecision(params: {
     sourceId: params.sourceId,
     sectionRef: params.sectionRef,
     category: params.category,
+    nodeId: params.nodeId ?? undefined,
     decision: params.decision,
     editedPlainEnglish: params.editedPlainEnglish?.trim() || undefined,
     priorPlainEnglish: currentItem?.plainEnglish,
@@ -146,7 +159,7 @@ export async function recordReviewerDecision(params: {
 
   if (existing) history.push(existing);
   const filtered = prior.filter(
-    (a) => !(a.sectionRef === next.sectionRef && a.sourceId === next.sourceId && a.category === next.category),
+    (a) => !(a.sectionRef === next.sectionRef && a.sourceId === next.sourceId && a.category === next.category && (a.nodeId ?? undefined) === (next.nodeId ?? undefined)),
   );
   filtered.push(next);
 
@@ -160,7 +173,7 @@ export async function recordReviewerDecision(params: {
       // section must not patch the other reading's plainEnglish /
       // reviewerDecision (two items can share a sectionRef with
       // different categories).
-      if (item.sectionRef !== params.sectionRef || item.category !== params.category) return item;
+      if (item.sectionRef !== params.sectionRef || item.category !== params.category || (params.nodeId ? item.nodeId !== params.nodeId : false)) return item;
       const plain =
         params.decision === "EDITED" && params.editedPlainEnglish?.trim()
           ? params.editedPlainEnglish.trim()
@@ -184,7 +197,7 @@ export async function recordReviewerDecision(params: {
     const items = summary.items.map((item) => {
       // Category isolation (same as the accept/edit patch above):
       // a rejection of one reading must not reject the other.
-      if (item.sectionRef !== params.sectionRef || item.category !== params.category) return item;
+      if (item.sectionRef !== params.sectionRef || item.category !== params.category || (params.nodeId ? item.nodeId !== params.nodeId : false)) return item;
       return { ...item, reviewerDecision: "REJECTED" as const };
     });
     meta.covenantSummary = { ...summary, items };
@@ -206,6 +219,7 @@ export async function recordReviewerDecision(params: {
     sourceId: params.sourceId,
     sectionRef: params.sectionRef,
     category: params.category,
+    nodeId: params.nodeId ?? undefined,
     decision: params.decision,
     approvalNote: params.note,
   });
@@ -282,7 +296,8 @@ export async function autoAcceptRoutineInterpretations(params: {
   const prior = Array.isArray(meta.reviewerApprovals)
     ? ([...meta.reviewerApprovals] as ReviewerApproval[])
     : [];
-  const decided = new Set(prior.map((a) => `${a.sectionRef}::${a.category}`));
+  // Phase C (D11): decision key includes nodeId (occurrence).
+  const decided = new Set(prior.map((a) => `${a.sectionRef}::${a.category}::${a.nodeId ?? ""}`));
   let accepted = 0;
   let skipped = 0;
   const approvals = [...prior];
@@ -291,10 +306,10 @@ export async function autoAcceptRoutineInterpretations(params: {
       skipped += 1;
       continue;
     }
-    // True duplicates (same ref + category, two items) share one
-    // decision key — the second unit is already decided. Count it
-    // as skipped so accepted + skipped === items.length.
-    if (decided.has(`${item.sectionRef}::${item.category}`)) {
+    // Phase C (D11): two items sharing (ref, category) are
+    // distinct occurrences with distinct decisions (keyed by
+    // nodeId). The second is NOT already decided.
+    if (decided.has(`${item.sectionRef}::${item.category}::${item.nodeId ?? ""}`)) {
       skipped += 1;
       continue;
     }
@@ -302,6 +317,7 @@ export async function autoAcceptRoutineInterpretations(params: {
       sourceId: params.sourceId,
       sectionRef: item.sectionRef,
       category: item.category,
+      nodeId: item.nodeId ?? undefined,
       decision: "ACCEPTED",
       reviewerKind: "SYSTEM",
       note: "System auto-accepted — routine supported interpretation, not counsel-verified.",
@@ -310,7 +326,7 @@ export async function autoAcceptRoutineInterpretations(params: {
       version: 1,
     };
     approvals.push(next);
-    decided.add(`${item.sectionRef}::${item.category}`);
+    decided.add(`${item.sectionRef}::${item.category}::${item.nodeId ?? ""}`);
     // Persist the approval row BEFORE compiling so the compile
     // reads a summary whose decisions include this acceptance.
     meta.reviewerApprovals = approvals;
@@ -324,6 +340,10 @@ export async function autoAcceptRoutineInterpretations(params: {
         sourceId: params.sourceId,
         sectionRef: item.sectionRef,
         category: item.category,
+        // Phase C (D11): compile the exact item, not first-match
+        // by (ref, category) — duplicate occurrences would fail
+        // closed without the nodeId.
+        nodeId: item.nodeId ?? undefined,
         decision: "ACCEPTED",
         reviewerKind: "SYSTEM",
       });

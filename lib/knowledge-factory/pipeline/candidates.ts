@@ -177,7 +177,18 @@ function dedupBySectionRef(
       continue;
     }
     const kept = keptByKey.get(key) ?? [];
-    const dupIdx = kept.findIndex((k) => isDuplicateExcerpt(k.excerpt, c.excerpt));
+    // Phase C (D9): same-ref + contained excerpt is NOT a duplicate
+    // when the two nodes sit at disjoint spans — they are distinct
+    // provisions (e.g. CA §5.01 and Guaranty §5.01 in one exhibit).
+    // Only dedup when the nodes' spans overlap (a parser re-emit
+    // of the same physical occurrence).
+    const cNode = c.nodeId ? nodesById.get(c.nodeId) : undefined;
+    const dupIdx = kept.findIndex((k) => {
+      if (!isDuplicateExcerpt(k.excerpt, c.excerpt)) return false;
+      const kNode = k.nodeId ? nodesById.get(k.nodeId) : undefined;
+      if (!cNode || !kNode) return false;
+      return cNode.charStart < kNode.charEnd && kNode.charStart < cNode.charEnd;
+    });
     if (dupIdx === -1) {
       kept.push(c);
       keptByKey.set(key, kept);
@@ -219,19 +230,6 @@ function operativeSpan(
   };
 }
 
-/**
- * Rule 174: parent ref of a nested clause — strip the last
- * parenthesized group: "1(c)(a)" -> "1(c)", "1(c)" -> "1",
- * "6.01(e)" -> "6.01". Refs without a paren group ("6.01", "VII")
- * have no parent in this scheme and always get their own chance.
- */
-function parentRefOf(sectionRef: string): string | null {
-  const m = /\(([^()]*)\)$/.exec(sectionRef.trim());
-  if (!m) return null;
-  const parent = sectionRef.trim().slice(0, sectionRef.trim().length - m[0].length);
-  return parent || null;
-}
-
 export function discoverCovenantCandidates(
   sourceId: string,
   text: string,
@@ -248,14 +246,20 @@ export function discoverCovenantCandidates(
         (!n.ambiguous || /^[\dA-Za-z.()-]+$/.test(n.sectionRef)),
     )
     .sort((a, b) => a.charStart - b.charStart);
-  // Rule 174: clause fallback (see parentRefOf). A subsection that is
+  // Rule 174: clause fallback (parent = node.parentNodeId). A subsection that is
   // only a pointer ("Schedule 1.1A is hereby amended ... as set forth
   // on Annex A") carries no substance itself, but its clause children
   // may ("Availability tests ...", "Swingline Sublimit ... $42.5M").
   // Without the fallback the whole subtree vanishes (the real
   // Calumet amendment lost its availability + sublimit clauses).
   const allSorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
-  const coveredRefs = new Set<string>();
+  // Phase C (D8): coverage is keyed by node OCCURRENCE (nodeId),
+  // never by sectionRef label. Keying by label merged distinct
+  // provisions across instruments (CA §5.01 suppressing Guaranty
+  // §5.01(a) children) and inherited families from the wrong
+  // instrument. The parent is node.parentNodeId (parser-validated),
+  // never parentRefOf string surgery.
+  const coveredNodeIds = new Set<string>();
   // Parent coverage (Rule 193): a candidate's excerpt end
   // (4000-char cap), span end, and the node type that produced
   // it — the skip rule below depends on the parent's node type.
@@ -328,7 +332,7 @@ export function discoverCovenantCandidates(
       node.nodeType === "SUBCLAUSE" ||
       node.nodeType === "SUBSECTION"
     ) {
-      const parent = parentRefOf(node.sectionRef);
+      const parent = node.parentNodeId ?? null;
       // NOTE: a child of a SKIPPED fragment is NOT skipped here.
       // The real Strata 6.02(l)(e)(A) escapes this way (its
       // parent (e) was blanket-skipped), but cascading the skip
@@ -340,7 +344,7 @@ export function discoverCovenantCandidates(
       // parser's clause-ref tracking, not to discovery. The
       // (e)(A) item surfaces with a wrong ref (real §6.03/§6.04
       // text, INCOMPLETE grant) — documented, not hidden.
-      if (parent && coveredRefs.has(parent)) {
+      if (parent && coveredNodeIds.has(parent)) {
         const parentType = coveredNodeType.get(parent);
         if (parentType === "SECTION" || parentType === "ARTICLE") {
           if (node.nodeType !== "SUBSECTION") {
@@ -372,9 +376,9 @@ export function discoverCovenantCandidates(
     // "(k)" has the same bare-marker problem as a CLAUSE "(k)"
     // (Strata 6.01(k) is a SUBSECTION node dropped by the score
     // filter); SECTION/ARTICLE nodes have no parent ref
-    // (parentRefOf returns null) so they never inherit.
+    // (parentNodeId is null) so they never inherit.
     if (families.length === 1 && families[0] === "UNKNOWN") {
-      const parent = parentRefOf(node.sectionRef);
+      const parent = node.parentNodeId ?? null;
       const inherited = parent ? coveredFamilies.get(parent) : undefined;
       if (inherited && !(inherited.length === 1 && inherited[0] === "UNKNOWN")) {
         families = inherited;
@@ -413,11 +417,11 @@ export function discoverCovenantCandidates(
       representationLevel: "DISCOVERED_CANDIDATE",
       discoveryScore: rank.score,
     });
-    coveredRefs.add(node.sectionRef);
-    coveredExcerptEnd.set(node.sectionRef, Math.min(span.end, span.start + 4000));
-    coveredSpanEnd.set(node.sectionRef, span.end);
-    coveredNodeType.set(node.sectionRef, node.nodeType);
-    coveredFamilies.set(node.sectionRef, mergedFamilies);
+    coveredNodeIds.add(node.nodeId);
+    coveredExcerptEnd.set(node.nodeId, Math.min(span.end, span.start + 4000));
+    coveredSpanEnd.set(node.nodeId, span.end);
+    coveredNodeType.set(node.nodeId, node.nodeType);
+    coveredFamilies.set(node.nodeId, mergedFamilies);
   }
 
   // Document-level fallback when structure is sparse but text is rich.

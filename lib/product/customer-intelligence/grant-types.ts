@@ -335,7 +335,13 @@ function isLienSecuredObligation(text: string): boolean {
  * incomplete, not wrong).
  */
 function isDefinitionsArticleItem(item: CovenantSummaryItem): boolean {
-  return /^1\.01(?![0-9])/.test(item.sectionRef ?? "");
+  if (/^1\.01(?![0-9])/.test(item.sectionRef ?? "")) return true;
+  // Phase C: a whole Definitions article grants nothing, whatever
+  // its number. The articleHeading comes from the parser's
+  // validated parent chain (D6), so this is a structural fact,
+  // not a label guess. Tenable 1.02(d) ("dividends" in the
+  // Definitions article) minted a false RP grant without it.
+  return /\bDefinitions?\b|\bDefined\s+Terms\b/i.test(item.articleHeading ?? "");
 }
 
 /**

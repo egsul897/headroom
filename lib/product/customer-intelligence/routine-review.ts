@@ -49,6 +49,12 @@ export function compilesCleanly(item: CovenantSummaryItem): boolean {
 
 /** True when the item needs NO counsel decision (routine supported interpretation). */
 export function isRoutineItem(item: CovenantSummaryItem): boolean {
+  // Phase E (D10): a structurally unresolved item (ambiguous
+  // heading or integrity violation on its own node) is NEVER
+  // routine — it is a counsel exception. Auto-accepting it
+  // would certify an invented or uncertain structural
+  // relationship as a SYSTEM decision with no human review.
+  if (item.structuralUnresolved === true) return false;
   const grants = grantTypesForItem(item);
   if (grants.length === 0) {
     // No grants: a maintenance-ratio item still compiles (to a

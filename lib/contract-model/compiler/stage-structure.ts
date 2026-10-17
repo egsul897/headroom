@@ -24,6 +24,7 @@ import { hashParts } from "./hashing";
 import { computeStableKey } from "../stable-keys";
 import { buildClauseTree } from "./clause-hierarchy";
 import { findTopLevelDefinitionStarts } from "./structural-definitions";
+import { isRefDescendant } from "./structural-integrity";
 import { STRUCTURAL_INDEX_VERSION, type CompilerDocumentInput, type StageRunResult, type StructuralNode } from "./types";
 
 /**
@@ -1143,6 +1144,8 @@ interface RawNode {
   parentSectionRef: string | null;
   /** Stack rank for ownership/parentage; see RANK comment above. */
   nestRank: number;
+  /** True when this raw came from an AMBIGUOUS (not confident) heading match. */
+  ambiguous?: boolean;
 }
 
 /**
@@ -1362,6 +1365,26 @@ function buildStructuralNodesFromAcceptedMatches(
      * last clause. The ambiguous section itself is NOT added as a
      * node here — the triage path adds it separately. */
     clauseSectionMatches?: readonly RegExpExecArray[];
+    /**
+     * Phase C: AMBIGUOUS article-heading matches. An ambiguous
+     * article is a real boundary (Rule 194) — its sections need
+     * it as a parent anchor, or they all go parentless (the
+     * Tenable CA Articles V–VII failure). These become ARTICLE
+     * nodes with ambiguous=true: real nodes for parentage and
+     * spans, but flagged so downstream never treats them (or
+     * their subtree) as structurally confident.
+     */
+    ambiguousArticleMatches?: readonly RegExpExecArray[];
+    /**
+     * Phase C: AMBIGUOUS section-heading matches (same rationale as
+     * ambiguousArticleMatches). An ambiguous section is a real
+     * boundary whose clauses need it as a parent anchor — without
+     * it, §7.01(a) falls through to Article VII. Its clauses are
+     * still split via clauseSectionMatches (below), not via
+     * topLevel, so promoting the section node never
+     * double-splits its clauses.
+     */
+    ambiguousSectionMatches?: readonly RegExpExecArray[];
   },
 ): StructuralNode[] {
   const raws: RawNode[] = [];
@@ -1375,15 +1398,42 @@ function buildStructuralNodesFromAcceptedMatches(
       nestRank: RANK.ARTICLE,
     });
   }
+  for (const m of opts?.ambiguousArticleMatches ?? []) {
+    raws.push({
+      nodeType: "ARTICLE",
+      heading: extractTitleLikeSpan(m[2] ?? ""),
+      sectionRef: (m[1] ?? "").trim(),
+      charStart: m.index,
+      parentSectionRef: null,
+      nestRank: RANK.ARTICLE,
+      ambiguous: true,
+    });
+  }
+  for (const m of opts?.ambiguousSectionMatches ?? []) {
+    raws.push({
+      nodeType: "SECTION",
+      heading: truncateTitleAtBodyStart((m[2] ?? "").trim()),
+      sectionRef: normalizeOcrSectionNumber((m[1] ?? "").trim()),
+      charStart: m.index,
+      parentSectionRef: null,
+      nestRank: RANK.SECTION,
+      ambiguous: true,
+    });
+  }
   for (const m of sectionMatches) {
     const sectionRef = normalizeOcrSectionNumber((m[1] ?? "").trim());
-    const parentArticle = [...articleMatches].reverse().find((a) => a.index < m.index);
+    // Phase C: parentSectionRef is DERIVED from the validated
+    // parent assignment below (containment + ref-consistency),
+    // never from the nearest preceding ARTICLE match (D2). A
+    // section whose article cannot be established
+    // deterministically gets parent null — unresolved, not
+    // re-parented to the previous article.
     raws.push({
       nodeType: "SECTION",
       heading: truncateTitleAtBodyStart((m[2] ?? "").trim()),
       sectionRef,
       charStart: m.index,
-      parentSectionRef: parentArticle ? (parentArticle[1] ?? "").trim() : null,
+      parentSectionRef: null,
       nestRank: RANK.SECTION,
     });
   }
@@ -1411,34 +1461,19 @@ function buildStructuralNodesFromAcceptedMatches(
     if (node.nodeType !== "SECTION") continue;
     appendClauseRawsForSection(doc, node, regionEndAfter(node.charStart), raws);
   }
-  // Rule 194 (second half): split clauses for AMBIGUOUS section
-  // headings too, with correct refs. The ambiguous section's own
-  // node comes from the triage path; its clauses belong to it,
-  // not to the previous confident section. A clause inside the
-  // ambiguous section's excerpt is covered by that section's
-  // candidate (discovery's parent-skip); a clause past the
-  // excerpt gets its own candidate with the CORRECT ref.
-  for (const m of opts?.clauseSectionMatches ?? []) {
-    const synthetic: RawNode = {
-      nodeType: "SECTION",
-      heading: truncateTitleAtBodyStart((m[2] ?? "").trim()),
-      sectionRef: normalizeOcrSectionNumber((m[1] ?? "").trim()),
-      charStart: m.index,
-      parentSectionRef: null,
-      nestRank: RANK.SECTION,
-    };
-    appendClauseRawsForSection(doc, synthetic, regionEndAfter(m.index), raws);
-  }
+  // Phase C: the old Rule-194 second-half loop (split clauses for
+  // AMBIGUOUS section headings via a synthetic section) is
+  // REMOVED — ambiguous sections are now real nodes in topLevel
+  // (ambiguousSectionMatches above), so their clauses are split
+  // by the topLevel loop. Keeping the synthetic loop double-split
+  // the same section's clauses, minting empty-span duplicate
+  // clause nodes (Aon 6.16(l) twice at one charStart) that the
+  // integrity contract then correctly flagged.
   raws.sort((a, b) => a.charStart - b.charStart);
 
-  // Sibling ordinal - position among nodes sharing the same direct parent, in document order (never a global index across the whole document).
-  const ordinalByParent = new Map<string, number>();
-  const ordinals = raws.map((r) => {
-    const key = r.parentSectionRef ?? " ROOT";
-    const ord = ordinalByParent.get(key) ?? 0;
-    ordinalByParent.set(key, ord + 1);
-    return ord;
-  });
+  // Phase C — parent assignment is computed AFTER spans (below),
+  // by containment + ref-consistency. Ordinals are keyed by
+  // parent OCCURRENCE (parentNodeId), never by parent label (D5).
 
   // Phase 3F.1.2 - the unique PHYSICAL SOURCE OCCURRENCE identity for each raw
   // node, computed up front from documentId + nodeType + charStart (the
@@ -1453,21 +1488,78 @@ function buildStructuralNodesFromAcceptedMatches(
   // overlapping matches into the same candidate set).
   const nodeIds = raws.map((r) => computeStableKey("structural-node", doc.documentId, r.nodeType, String(r.charStart)));
 
-  // Owned text span (own text + every descendant) AND the true physical
-  // parent occurrence via one nestRank-based stack pass - O(n), no per-node
-  // rescanning. nestRank (not clamped nodeType RANK) keeps depth > 3
-  // SUBCLAUSE nodes as children of their depth-3 parents for ownership.
+  // Owned text span (own text + every descendant) via one nestRank-based
+  // stack pass - O(n), no per-node rescanning. nestRank (not clamped
+  // nodeType RANK) keeps depth > 3 SUBCLAUSE nodes as children of their
+  // depth-3 parents for ownership. NOTE: this pass computes SPANS only.
+  // Parentage is assigned separately below (containment + ref-consistency),
+  // never by stack order (D3): rank + charStart order is not nesting, and
+  // a dropped heading must not re-parent everything after it.
   const charEndByIndex = new Map<number, number>();
-  const parentIndexByIndex = new Map<number, number>();
   const stack: number[] = [];
   raws.forEach((r, i) => {
     while (stack.length > 0 && raws[stack[stack.length - 1]!]!.nestRank >= r.nestRank) {
       charEndByIndex.set(stack.pop()!, r.charStart);
     }
-    if (stack.length > 0) parentIndexByIndex.set(i, stack[stack.length - 1]!);
     stack.push(i);
   });
   while (stack.length > 0) charEndByIndex.set(stack.pop()!, doc.text.length);
+
+  // Phase C — parent assignment by CONTAINMENT + REF-CONSISTENCY
+  // (Hardening Initiative, D2/D3/D4). For each non-ARTICLE node, the
+  // parent is the deepest node (scanning backward from the child,
+  // the first container is the deepest, because containers nest)
+  // whose span contains the child's span AND whose sectionRef is
+  // a valid ancestor of the child's ref (isRefDescendant: article
+  // numeral matches section major; child ref = parent ref + a
+  // valid continuation segment). If no such node exists, the
+  // parent is NULL — structurally unresolved (the Phase B validator
+  // flags ROOT_VALIDITY), never repaired to the nearest preceding
+  // heading. A bled span (a missed heading extending the previous
+  // node's span) cannot mis-parent, because the ref check fails:
+  // §7.01 inside a bled Article VI span is unresolved, not
+  // Article VI's child. parentSectionRef is DERIVED from the
+  // assigned parent (single authoritative parent, D4) — never
+  // computed independently.
+  const parentIndexByIndex = new Map<number, number>();
+  const parentSectionRefByIndex = new Map<number, string | null>();
+  raws.forEach((r, i) => {
+    if (r.nodeType === "ARTICLE") {
+      parentSectionRefByIndex.set(i, null);
+      return;
+    }
+    const childStart = r.charStart;
+    const childEnd = charEndByIndex.get(i) ?? doc.text.length;
+    let parentIdx: number | null = null;
+    for (let j = i - 1; j >= 0; j--) {
+      const cand = raws[j]!;
+      const candEnd = charEndByIndex.get(j) ?? doc.text.length;
+      if (cand.charStart > childStart || candEnd < childEnd) continue;
+      if (cand.charStart === childStart && candEnd === childEnd) continue; // identical span: not a parent
+      if (isRefDescendant(cand.sectionRef, cand.nodeType, r.sectionRef) !== true) continue;
+      parentIdx = j;
+      break; // backward scan: first containing + ref-consistent node is the deepest
+    }
+    if (parentIdx !== null) {
+      parentIndexByIndex.set(i, parentIdx);
+      parentSectionRefByIndex.set(i, raws[parentIdx]!.sectionRef);
+    } else {
+      parentSectionRefByIndex.set(i, null);
+    }
+  });
+
+  // Sibling ordinal - position among nodes sharing the same direct
+  // parent OCCURRENCE (parentNodeId), in document order (never a
+  // global index, never keyed by the parent label, D5: two physical
+  // §5.01 occurrences in different instruments must not share an
+  // ordinal namespace).
+  const ordinalByParent = new Map<string, number>();
+  const ordinals = raws.map((r, i) => {
+    const key = parentIndexByIndex.has(i) ? nodeIds[parentIndexByIndex.get(i)!]! : "ROOT";
+    const ord = ordinalByParent.get(key) ?? 0;
+    ordinalByParent.set(key, ord + 1);
+    return ord;
+  });
 
   // Explicit definition-boundary intervals keyed to each physical definitions
   // SECTION span [section.charStart, regionEnd). Includes the preamble gap
@@ -1520,10 +1612,11 @@ function buildStructuralNodesFromAcceptedMatches(
         sectionRef: r.sectionRef,
         nodeKey: `${doc.documentId}::${r.sectionRef.replace(/\s+/g, "")}`,
         nodeId: nodeIds[i]!,
+        ambiguous: r.ambiguous ?? false,
         charStart: r.charStart,
         charEnd,
         ordinal: ordinals[i]!,
-        parentSectionRef: r.parentSectionRef,
+        parentSectionRef: parentSectionRefByIndex.get(i) ?? null,
         parentNodeId: parentIndexByIndex.has(i) ? nodeIds[parentIndexByIndex.get(i)!]! : null,
       };
     })
@@ -2099,6 +2192,12 @@ export function parseDocumentStructureWithTriage(doc: CompilerDocumentInput): St
   const nodes = buildStructuralNodesFromAcceptedMatches(doc, confidentArticles, confidentSections, {
     regionBoundStarts: headingLike.map((c) => c.match.index),
     clauseSectionMatches: candidates
+      .filter((c) => c.candidateType === "SECTION" && c.triage.decision === "AMBIGUOUS")
+      .map((c) => c.match),
+    ambiguousArticleMatches: candidates
+      .filter((c) => c.candidateType === "ARTICLE" && c.triage.decision === "AMBIGUOUS")
+      .map((c) => c.match),
+    ambiguousSectionMatches: candidates
       .filter((c) => c.candidateType === "SECTION" && c.triage.decision === "AMBIGUOUS")
       .map((c) => c.match),
   });

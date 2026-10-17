@@ -6,6 +6,7 @@
  */
 
 import { parseDocumentStructureWithTriage } from "../../contract-model/compiler/stage-structure";
+import { validateStructuralIntegrity } from "../../contract-model/compiler/structural-integrity";
 import { buildStructuralIndex } from "../../contract-model/compiler/structural-index";
 import { detectStructuralDefinitions } from "../../contract-model/compiler/structural-definitions";
 import { detectStructuralReferences } from "../../contract-model/compiler/structural-references";
@@ -33,6 +34,20 @@ export function extractStructure(sourceId: string, text: string): StructuralExtr
   const triage = parseDocumentStructureWithTriage(doc);
   const compilerNodes: StructuralNode[] = triage.nodes;
 
+  // Phase B: validate the structural-integrity contract at the
+  // index boundary, before downstream interpretation. Violations
+  // are never repaired here — affected nodes are marked
+  // structurally unresolved (ambiguous + diagnostics) so no
+  // downstream consumer treats a guessed parentage as authority.
+  const integrity = validateStructuralIntegrity(compilerNodes, text.length);
+  const violationsByNode = new Map<string, string[]>();
+  for (const v of integrity.violations) {
+    if (!v.nodeId) continue;
+    const list = violationsByNode.get(v.nodeId) ?? [];
+    list.push(`${v.invariant}: ${v.diagnostic}`);
+    violationsByNode.set(v.nodeId, list);
+  }
+
   const nodes: StructuralNodeRecord[] = compilerNodes.map((n) => ({
     nodeId: n.nodeId,
     sourceId,
@@ -42,10 +57,26 @@ export function extractStructure(sourceId: string, text: string): StructuralExtr
     charStart: n.charStart,
     charEnd: n.charEnd,
     parentNodeId: n.parentNodeId ?? undefined,
-    ambiguous: false,
+    // A node is structurally unresolved when its own heading is
+    // ambiguous (Phase C anchor promotion) OR it violates the
+    // integrity contract (Phase B). Either way, downstream must
+    // not treat it (or relationships through it) as authority.
+    ambiguous: n.ambiguous === true || (violationsByNode.get(n.nodeId)?.length ?? 0) > 0,
+    ...(violationsByNode.has(n.nodeId)
+      ? { structuralViolations: violationsByNode.get(n.nodeId) }
+      : {}),
   }));
 
+  // Phase C: the compiler now promotes ambiguous ARTICLE/SECTION
+  // matches to real (ambiguous=true) nodes, so the synthetic
+  // append below must skip candidates already covered by a
+  // compiler node (same sectionRef + charStart) — otherwise the
+  // same heading appears twice (once as a real anchor node,
+  // once as a parentless synthetic), and consumers reading the
+  // synthetic see a parentless duplicate.
+  const compilerKeys = new Set(compilerNodes.map((n) => `${n.sectionRef}::${n.charStart}`));
   for (const amb of triage.ambiguousCandidates) {
+    if (compilerKeys.has(`${amb.candidateNumber || "AMBIGUOUS"}::${amb.charStart}`)) continue;
     nodes.push({
       nodeId: `ambiguous:${sourceId}:${amb.charStart}`,
       sourceId,

@@ -60,7 +60,8 @@ export default async function RulebookPage({
   const decide = reviewProvisionAction.bind(null, companyId);
   // Fix 6: decision lookup keys on category — two queue rows sharing
   // a sectionRef but in different categories are distinct decisions.
-  const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}|${a.category}`, a]));
+  // Phase C (D11): decision key includes nodeId (occurrence).
+  const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}|${a.category}|${a.nodeId ?? ""}`, a]));
 
   const candidates = review.categories.flatMap((c) =>
     c.items.map((item) => ({
@@ -68,6 +69,7 @@ export default async function RulebookPage({
       category: c.category,
       categoryLabel: c.categoryLabel,
       sectionRef: item.sectionRef,
+      nodeId: item.nodeId,
       heading: item.heading,
       posture: item.posture,
       plainEnglish: item.plainEnglish,
@@ -79,7 +81,7 @@ export default async function RulebookPage({
       citation: item.sourceCitation,
       documentTitle: item.documentTitle,
       typeMismatch: mismatchBySourceId.get(item.sourceId) ?? null,
-      decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}|${item.category}`),
+      decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}|${item.category}|${item.nodeId ?? ""}`),
       // Headroom proposes a decision for EVERY item — counsel
       // confirms or edits, never decides from scratch.
       proposal: proposeReviewDecision(item),
@@ -308,6 +310,7 @@ export default async function RulebookPage({
                         <input type="hidden" name="sourceId" value={c.sourceId} />
                         <input type="hidden" name="sectionRef" value={c.sectionRef} />
                         <input type="hidden" name="category" value={c.category} />
+                        <input type="hidden" name="nodeId" value={c.nodeId ?? ""} />
                         <div className="field">
                           <div className="field-label">Edit / replace interpretation (required for Save edit)</div>
                           <div className="field-control">

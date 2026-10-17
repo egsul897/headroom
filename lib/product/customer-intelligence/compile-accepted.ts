@@ -129,6 +129,13 @@ export async function compileAcceptedInterpretation(params: {
   sectionRef: string;
   category: string;
   decision: "ACCEPTED" | "EDITED" | "REJECTED";
+  /**
+   * Phase C (D11): the structural nodeId (occurrence identity)
+   * of the item the decision refers to. Compile matches the
+   * exact item; without it, an ambiguous (ref, category) match
+   * fails closed.
+   */
+  nodeId?: string;
   approvalNote?: string;
   /**
    * Who made the decision. SYSTEM = exception-based auto-accept
@@ -252,12 +259,23 @@ export async function compileAcceptedInterpretation(params: {
   }
 
   const summary = summarizeFromStoredMetadata(row.metadata);
-  // Category isolation: the decision is for (sectionRef, category)
-  // — compiling the FIRST item with that ref (any category) would
-  // compile the wrong reading's formula when two items share a ref.
-  const item = summary?.items.find((i) => i.sectionRef === params.sectionRef && i.category === params.category);
+  // Phase C (D11): match the EXACT item the decision refers to.
+  // Decisions carry the structural nodeId (occurrence identity)
+  // since the hardening initiative. First-match by (ref,
+  // category) merged distinct occurrences sharing a label (CA
+  // §5.01 vs Guaranty §5.01) and compiled the wrong item's
+  // formula. Legacy decisions without a nodeId fall back to
+  // (ref, category) ONLY when exactly one item matches — an
+  // ambiguous legacy match fails closed instead of compiling
+  // the first item.
+  const matches = summary?.items.filter((i) => i.sectionRef === params.sectionRef && i.category === params.category) ?? [];
+  const item = params.nodeId
+    ? matches.find((i) => i.nodeId === params.nodeId)
+    : matches.length === 1
+      ? matches[0]
+      : undefined;
   if (!item) {
-    return [{ status: "FAILED", missingFields: ["summaryItem"], message: "Summary item not found for section" }];
+    return [{ status: "FAILED", missingFields: ["summaryItem"], message: params.nodeId ? "Summary item not found for section + nodeId" : matches.length > 1 ? "Ambiguous summary item for section + category (multiple occurrences share the label); decision must carry nodeId" : "Summary item not found for section" }];
   }
 
   const parsed = parseFormulaFromItem(item);

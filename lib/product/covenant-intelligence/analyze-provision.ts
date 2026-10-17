@@ -236,7 +236,19 @@ function detectPosture(excerpt: string, heading: string, families: string[], par
   // guard that already ran. A sub-clause with its own "shall not"
   // or "shall" is caught by the rules above and never reaches here.
   if (parentChapeau) {
-    const ownSignal = /\b(?:shall|will|may)\s+not\b|\bneither\b|\bmay\b|\bpermitted\b|\bentitled\b|\ballowed\b|\bnot\s+to\s+exceed\b|\bgreater\s+of\b/i.test(excerpt);
+    // A cross-reference ("permitted by Section 7.02(aa)") is a
+    // pointer to another section's permission, not an own
+    // permission signal. Strip xref-framed "permitted" before
+    // the own-signal test (Tenable 7.01(kk) "permitted by Section
+    // 7.02(aa)" is a cross-reference, not an own signal). A
+    // genuine own "permitted" frame ("permitted to incur") is
+    // untouched — the strip only fires on "permitted by/under/
+    // pursuant to Section/§".
+    const excerptSansXref = excerpt.replace(
+      /\bpermitted\s+(?:by|under|pursuant\s+to)\s+(?:Section|§|Sections)\b[^.;]{0,40}/gi,
+      "",
+    );
+    const ownSignal = /\b(?:shall|will|may)\s+not\b|\bneither\b|\bmay\b|\bpermitted\b|\bentitled\b|\ballowed\b|\bnot\s+to\s+exceed\b|\bgreater\s+of\b/i.test(excerptSansXref);
     // Prohibition-with-except frame: either an explicit "shall not ...
     // except/other than" or a bare negative-covenant stem (see
     // PROHIBITION_STEM) whose "shall not" lives in the Article
@@ -689,25 +701,17 @@ export function analyzeProvision(params: {
   // accepting it must not mint a Permission from its incidental
   // "Liens"/"Investment" words.
   //
-  // Two sources, precedence matters: the parser's parent links
-  // are UNRELIABLE (Aon 6.16(l) links directly to Article V,
-  // Representations — skipping Article VI, Covenants). The
-  // section numbering is structural: sections are numbered
-  // Article.Section ("Section 6.16" is in "Article VI"), so for
-  // dotted refs the numbering-derived article WINS over the walk.
-  // The walk is the backup for non-dotted refs (schedules,
-  // exhibits, bare numbers) where numbering says nothing.
-  // Fail-closed: no matching ARTICLE node → undefined.
+  // Phase C (Hardening Initiative, D6): articleHeading comes ONLY
+  // from the parser's validated parent chain (containment +
+  // ref-consistency, stage-structure.ts). The old dotted-ref
+  // numbering fallback (first-match ARTICLE by label) is removed:
+  // in a bundled document with two Article Vs it returns the
+  // wrong instrument's heading, defeating the Representations
+  // guard in the wrong direction (Tenable 5.07). With the fixed
+  // parser, Aon 6.16(l) parents to Article VI by containment +
+  // ref, so the fallback is no longer needed. No ARTICLE
+  // ancestor → undefined (unresolved), never a label guess.
   const articleHeading = (() => {
-    const leading = /^(\d+)\./.exec(sectionRef)?.[1];
-    if (leading) {
-      const n = Number(leading);
-      const roman = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"][n];
-      const article = params.structuralNodes.find(
-        (s) => s.nodeType === "ARTICLE" && (s.sectionRef === roman || s.sectionRef === leading),
-      );
-      if (article) return article.heading;
-    }
     const byId = new Map(params.structuralNodes.map((n) => [n.nodeId, n]));
     const seen = new Set<string>();
     let node = params.candidate.nodeId ? byId.get(params.candidate.nodeId) : undefined;

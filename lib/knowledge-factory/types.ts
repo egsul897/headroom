@@ -178,6 +178,14 @@ export interface StructuralNodeRecord {
   charEnd: number;
   parentNodeId?: string;
   ambiguous?: boolean;
+  /**
+   * Phase B structural-integrity violations (see
+   * structural-integrity.ts). Present when the node's parentage,
+   * span, ref, or ordering failed validation — the relationship
+   * is unresolved, not repaired. Downstream consumers must
+   * treat such a node as structurally unresolved.
+   */
+  structuralViolations?: string[];
 }
 
 export interface CovenantCandidateRecord {

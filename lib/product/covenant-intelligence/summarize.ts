@@ -42,6 +42,24 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
 export interface CovenantSummaryItem {
   category: CovenantCategoryKey;
   categoryLabel: string;
+  /**
+   * Phase C (D11): the structural node's occurrence identity
+   * (nodeId), carried so compile matches the EXACT item the
+   * decision refers to — never first-match by (ref, category),
+   * which merges distinct occurrences sharing a label (CA §5.01
+   * vs Guaranty §5.01). Optional for backward compat with
+   * stored summaries minted before this field existed.
+   */
+  nodeId?: string;
+  /**
+   * Phase E (D10): true when the item's own structural node is
+   * unresolved — its heading triaged AMBIGUOUS or it violates
+   * the structural-integrity contract. Such an item NEVER
+   * auto-accepts as SYSTEM; it is a counsel exception. The
+   * item's own node is what matters (an ambiguous parent
+   * section does not taint its confident sub-clauses).
+   */
+  structuralUnresolved?: boolean;
   sectionRef: string;
   heading: string;
   posture: ProvisionPosture;
@@ -169,8 +187,12 @@ function entityScopeFromAnalysis(a: ProvisionAnalysis): CovenantSummaryItem["ent
 function itemFromAnalysis(
   analysis: ProvisionAnalysis,
   governingAgreement: string,
+  nodeId?: string,
+  structuralUnresolved?: boolean,
 ): CovenantSummaryItem {
   return {
+    nodeId,
+    structuralUnresolved,
     category: analysis.category,
     categoryLabel: analysis.categoryLabel,
     sectionRef: analysis.sectionRef,
@@ -294,6 +316,27 @@ export function buildDocumentCovenantSummary(params: {
     const node = c.nodeId ? nodeById.get(c.nodeId) : undefined;
     const parentId = node?.parentNodeId;
     if (!parentId || parentId === c.nodeId) return undefined;
+    // Phase C (D7): the parent excerpt IS the parent section's own
+    // span (the candidate excerpt is sliced from the parent node's
+    // span), so reading it is reading the section's own chapeau —
+    // not a parent pointer's guess. The gate that matters is
+    // structural confidence: never inherit a chapeau through an
+    // ambiguous parent (its heading/identity is uncertain) or a
+    // parent with integrity violations (its parentage is
+    // unresolved). With the fixed parser the parentNodeId is
+    // containment + ref validated; the old failure mode (a
+    // mis-parented clause inheriting another section's frame)
+    // is closed at the parser, and this gate closes the
+    // ambiguous-parent variant.
+    const parentNode = nodeById.get(parentId);
+    if (!parentNode) return undefined;
+    // Gate on parentage validity, not on the parent's heading
+    // confidence: an ambiguous heading (inline, uncorroborated)
+    // still has a validated span + ref-consistent parentage, and
+    // its excerpt is real text from that span. A parent with
+    // integrity violations has unresolved parentage — never
+    // inherit through it.
+    if ((parentNode.structuralViolations?.length ?? 0) > 0) return undefined;
     const parentExcerpt = excerptByNodeId.get(parentId);
     if (!parentExcerpt) return undefined;
     return (parentExcerpt.split(/\n\s*\([a-z0-9]{1,3}\)\s/)[0] ?? parentExcerpt).slice(0, 1500);
@@ -309,7 +352,15 @@ export function buildDocumentCovenantSummary(params: {
       parentChapeau: parentChapeauOf(c),
     });
     countsByCategory[analysis.category] = (countsByCategory[analysis.category] ?? 0) + 1;
-    items.push(itemFromAnalysis(analysis, params.documentTitle));
+    const itemNode = c.nodeId ? nodeById.get(c.nodeId) : undefined;
+    items.push(
+      itemFromAnalysis(
+        analysis,
+        params.documentTitle,
+        c.nodeId,
+        itemNode ? itemNode.ambiguous === true || (itemNode.structuralViolations?.length ?? 0) > 0 : undefined,
+      ),
+    );
   }
 
   const preferredOrder = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];
