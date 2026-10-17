@@ -274,6 +274,9 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
     if (!spec) break;
     let seg = full.slice(prevEnd, m.index);
     seg = seg.slice(seg.lastIndexOf(";") + 1).slice(-400);
+    // The scope is the cap's subject. A parenthetical describing how the cap base is measured ("(determined prior to
+    // giving effect to all amounts that increase Consolidated EBITDA pursuant to this clause (b))") names no scope.
+    seg = seg.replace(/\((?:[^()]|\([^()]*\))*?\b(?:giving\s+effect|calculated|determined|computed|measured|before|prior\s+to|after)\b(?:[^()]|\([^()]*\))*\)/gi, (x) => " ".repeat(x.length));
     // Every scope phrase since the previous condition ("pursuant to this clause (1)(l), together with … pursuant to clauses
     // (1)(k) and (1)(q)"). "clause (b)(viii)" is one path: keep the innermost label of each adjacent run.
     const refs = [...seg.matchAll(SCOPE_RE)].map((sm) => ({ list: sm[2]!, deictic: /^this\b/i.test(sm[1] ?? "") }));
@@ -549,6 +552,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   const labelCount = new Map<string, number>();
   for (const p of addPairs) labelCount.set(p.it.label.toUpperCase(), (labelCount.get(p.it.label.toUpperCase()) ?? 0) + 1);
   const isTop = new Map<object, boolean>();
+  const lineRaw = new Map<object, (typeof raw)[number]>();
   for (const [position, pr] of addPairs.entries()) {
     const { it, full } = pr;
     const ambiguous = ambiguousAddBack({ it, full });
@@ -637,6 +641,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
       coverage: conditional && covOut === "FULL" ? "PARTIAL" : covOut, cap: null, claimed: "0", status: "NEEDS_INPUT", headroomToCap: null, ...(conditional ? { conditional: "LENDER_APPROVAL" as const, conditionText: apm! } : {}),
       note: [it.note, mapNote, noteExtra].filter(Boolean).join("; ") || it.note, evid, capSpec, caps, full });
     isTop.set(lines.at(-1)!, meta.has(pr) && stOf(pr) === top);
+    lineRaw.set(lines.at(-1)!, pr);
   }
 
   // ---- totals ----
@@ -653,27 +658,66 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   // A reference binds to exactly one line or it is unresolved. Unresolved scope never leaves a named line uncapped and
   // never silently drops it: the cap becomes capped-unknown (amount undetermined) on every line it does bind.
   const escRe = (lab: string) => new RegExp(`(?<![A-Za-z\\d])${lab.replace(/[()]/g, "\\$&")}`);
-  const parentTop = (o: Ln): string | null => { for (let j = lines.indexOf(o); j >= 0; j--) if (isTop.get(lines[j]!)) return lines[j]!.label.toUpperCase(); return null; };
-  type Res = { host: string } | { line: Ln } | null;
+  // "(B)" and "(b)" are different clauses when the definition uses both letter cases; otherwise case is not significant.
+  const caseSignificant = (() => { const ls = raw.map((r) => r.it.label); return ls.some((x) => /^\([a-z]{1,2}\)$/.test(x) && !/^\([ivxl]+\)$/.test(x)) && ls.some((x) => /^\([A-Z]{1,2}\)$/.test(x)); })();
+  const sameLabel = (a: string, b: string) => a === b || (!caseSignificant && a.toUpperCase() === b.toUpperCase());
+  const parentTop = (o: Ln): string | null => { for (let j = lines.indexOf(o); j >= 0; j--) if (isTop.get(lines[j]!)) return lines[j]!.label; return null; };
+  const isTopLabel = (lab: string) => lines.some((o) => isTop.get(o) && sameLabel(o.label, lab));
+  // A heading-only enumerator ("(x) (A) restructuring … (F) casualty events; (y) (A) signing bonuses …") is not a line of
+  // its own: a reference to it is a reference to every line under it, up to its next sibling or a higher-level label.
+  const childrenOf = (lab: string, deictic: boolean, boundary: number): Ln[] | null => {
+    const heads = raw.map((r, k) => ({ r, k })).filter((x) => sameLabel(x.r.it.label, lab) && x.r.full.trim().length < 3);
+    if (!heads.length) return null;
+    const lineAt = (k: number) => lines.find((o) => lineRaw.get(o) === raw[k]);
+    const kids = heads.map(({ k }) => {
+      const out: Ln[] = [];
+      for (let j = k + 1; j < raw.length; j++) {
+        const st = meta.get(raw[j]!)?.st;
+        if (st === meta.get(raw[k]!)?.st || st === top) break;
+        const o = lineAt(j); if (o) out.push(o);
+      }
+      return out;
+    }).filter((x) => x.length);
+    if (kids.length === 1) return kids[0]!;
+    if (kids.length > 1 && deictic) { const pre = kids.filter((x) => lines.indexOf(x[0]!) < boundary).pop(); if (pre) return pre; }
+    return kids.length ? kids.flat() : null;
+  };
+  // A reference resolves to one line (or a heading's lines), or it is ambiguous: then every candidate is capped-unknown.
+  type Res = { host: string } | { line: Ln } | { lines: Ln[]; ambiguous: boolean } | null;
   const resolveRef = (path: string[], deictic: boolean, l: Ln | null, boundary: number, hostText: string): Res => {
     const lab = path.at(-1)!;
     if (l && escRe(lab).test(hostText)) return { host: lab };
-    const cands = lines.map((o, j) => ({ o, j })).filter((x) => x.o !== l && x.o.label.toUpperCase() === lab.toUpperCase());
+    const cands = lines.map((o, j) => ({ o, j })).filter((x) => x.o !== l && sameLabel(x.o.label, lab));
+    if (path.length > 1) {
+      // "clause (a)(v)": the (v) under (a).
+      const outer = path.at(-2)!;
+      const q = cands.filter((x) => { const pt = parentTop(x.o); return pt != null && sameLabel(pt, outer) && !isTop.get(x.o); });
+      if (q.length === 1) return { line: q[0]!.o };
+    }
     if (cands.length === 1) return { line: cands[0]!.o };
     if (cands.length > 1) {
       // "this clause (i)": the clause containing the statement — the nearest preceding line with that label.
       if (deictic) { const pre = cands.filter((x) => x.j < boundary).pop(); if (pre) return { line: pre.o }; }
-      // "clause (a)(v)": the (v) under (a).
-      if (path.length > 1) { const outer = path.at(-2)!.toUpperCase(); const q = cands.filter((x) => parentTop(x.o) === outer && !isTop.get(x.o)); if (q.length === 1) return { line: q[0]!.o }; }
       // One candidate on the definition's item level, the others nested sub-clauses split out as lines.
       const tops = cands.filter((x) => isTop.get(x.o));
       if (path.length === 1 && tops.length === 1) return { line: tops[0]!.o };
-      return null;
+      return { lines: cands.map((x) => x.o), ambiguous: true };
     }
+    const kids = childrenOf(lab, deictic, boundary);
+    if (kids) return { lines: kids, ambiguous: false };
     // "clause (d)(i)" where (i) is inside line (d) (not a line of its own): the cap binds part of (d); bounding the whole
     // line by it can only under-count.
-    if (path.length > 1) { const outer = path.at(-2)!.toUpperCase(); const oc = lines.filter((o) => o !== l && o.label.toUpperCase() === outer && escRe(lab).test(o.full)); if (oc.length === 1) return { line: oc[0]! }; }
+    if (path.length > 1) { const outer = path.at(-2)!; const oc = lines.filter((o) => o !== l && sameLabel(o.label, outer) && escRe(lab).test(o.full)); if (oc.length === 1) return { line: oc[0]! }; }
     return null;
+  };
+  // "pursuant to this clause (b)(vi)" written in line (vi): the stating line itself, unless the outer label names a
+  // different item-level clause than the one the stating line sits under.
+  const selfRef = (path: string[], l: Ln): boolean => {
+    if (!sameLabel(path.at(-1)!, l.label)) return false;
+    if (path.length === 1) return true;
+    const outer = path.at(-2)!, pt = parentTop(l);
+    if (isTop.get(l)) return !isTopLabel(outer) || sameLabel(outer, l.label);
+    return pt == null || sameLabel(pt, outer) || !isTopLabel(outer);
   };
   const unboundCaps: string[] = [];
   const bindCondition = (c: CapCondition, l: Ln | null, boundary: number, hostFull: string) => {
@@ -682,15 +726,16 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     let subOf: string | null = null, subText: string | null = null, subN = 0;
     // Cross-references ("clauses (d) and (e)") are blanked to equal length so positions are kept.
     const hostText = hostFull.slice(0, c.at).replace(new RegExp(LABEL_LIST.source, "gi"), (x) => " ".repeat(x.length));
-    const has = (lab: string) => lines.some((o) => o.label.toUpperCase() === lab.toUpperCase()) || escRe(lab).test(hostText);
+    const has = (lab: string) => lines.some((o) => sameLabel(o.label, lab)) || raw.some((r) => sameLabel(r.it.label, lab)) || escRe(lab).test(hostText);
     const refs = c.refs?.length ? c.refs : c.labels.map((x) => ({ list: x, deictic: false }));
     for (const r of refs) {
       const { paths, unresolvedRanges } = clauseRefPaths(r.list, has);
       unresolved.push(...unresolvedRanges);
       for (const path of paths) {
-        if (l && path.at(-1)!.toUpperCase() === l.label.toUpperCase() && path.length === 1) { set.add(l); continue; }
+        if (l && selfRef(path, l)) { set.add(l); continue; }
         const res = resolveRef(path, r.deictic, l, boundary, hostText);
         if (!res) { unresolved.push(path.join("")); continue; }
+        if ("lines" in res) { for (const o of res.lines) set.add(o); if (res.ambiguous) unresolved.push(path.join("")); continue; }
         if ("host" in res) { subN++; subOf = res.host; const k = escRe(res.host).exec(hostText)!.index; subText = hostFull.slice(k + res.host.length, c.at); set.add(l!); continue; }
         set.add(res.line);
       }
