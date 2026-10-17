@@ -98,6 +98,9 @@ function readiness(companyId: string, n: number): CapacityReadiness {
     capacityAuthority: "LEGACY_ENGINE",
     analyzedDocumentCount: 1,
     summaryCount: n,
+    // VE/fixture compile: summaries are the whole discovered set — nothing beyond the cap.
+    discoveredCount: n,
+    awaitingAnalysisCount: 0,
     permissionCount: 0,
     unverifiedPermissionCount: 0,
     provisionCount: n,

@@ -45,6 +45,8 @@ const readinessBase: CapacityReadiness = {
   capacityAuthority: "DISCOVERY_ONLY",
   analyzedDocumentCount: 0,
   summaryCount: 0,
+  discoveredCount: 0,
+  awaitingAnalysisCount: 0,
   permissionCount: 0,
   unverifiedPermissionCount: 0,
   provisionCount: 0,

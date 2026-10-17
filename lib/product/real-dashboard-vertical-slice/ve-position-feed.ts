@@ -55,6 +55,9 @@ function readinessVeOnly(companyId: string, feedingCount: number): CapacityReadi
     capacityAuthority: "LEGACY_ENGINE",
     analyzedDocumentCount: 1,
     summaryCount: feedingCount,
+    // VE-only feed: summaries are the whole discovered set — nothing beyond the cap.
+    discoveredCount: feedingCount,
+    awaitingAnalysisCount: 0,
     permissionCount: 0,
     unverifiedPermissionCount: 0,
     provisionCount: feedingCount,

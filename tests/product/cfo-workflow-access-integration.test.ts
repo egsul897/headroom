@@ -61,6 +61,8 @@ const emptyReadiness = (companyId: string): CapacityReadiness => ({
   capacityAuthority: "NONE",
   analyzedDocumentCount: 0,
   summaryCount: 0,
+  discoveredCount: 0,
+  awaitingAnalysisCount: 0,
   permissionCount: 0,
   unverifiedPermissionCount: 0,
   provisionCount: 0,

@@ -79,6 +79,9 @@ function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
     capacityAuthority: "LEGACY_ENGINE",
     analyzedDocumentCount: 2,
     summaryCount: slice.covenants.length,
+    // Restricted fixture slice: summaries are the whole discovered set — nothing beyond the cap.
+    discoveredCount: slice.covenants.length,
+    awaitingAnalysisCount: 0,
     permissionCount: 0,
     unverifiedPermissionCount: 0,
     provisionCount: slice.covenants.length,
