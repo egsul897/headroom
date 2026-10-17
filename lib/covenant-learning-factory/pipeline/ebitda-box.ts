@@ -216,7 +216,7 @@ export async function loadConfirmations(db: EbitdaBoxStore, scope: { companyId: 
 
 export type ConfirmOutcome =
   | { ok: true; box: EbitdaBox; gain: CfoGain["gain"]; boxId: string; replayed?: boolean }
-  | { ok: false; status: 400 | 404 | 409 | 422; error: string; code?: "NEEDS_BASE" | "IDEMPOTENCY_CONFLICT" | "OUT_OF_RANGE" };
+  | { ok: false; status: 400 | 404 | 409 | 422; error: string; code?: "NEEDS_BASE" | "IDEMPOTENCY_CONFLICT" | "OUT_OF_RANGE" | "CAP_UNRESOLVED" };
 
 /** Hard ceiling for any confirmed amount (USD); also bounded by 10× the reported base EBITDA when that is known. */
 export const MAX_CONFIRMED_USD = 10n ** 12n;
@@ -279,6 +279,10 @@ export async function confirmEbitdaItem(
   const others = prior.filter((c) => !(canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === kind));
   const priorArgs: PipelineArgs = { ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...others.map(asBorrowerInput)] } };
   if (kind === "AMOUNT") {
+    // A line under a cap whose amount or scope is unresolved (shared cap that could not be bound, cumulative "during the
+    // term" cap, unparsed amount) is capped by an unknown amount: it is never bounded by base- or revenue-derived
+    // plausibility and never counted as if uncapped. The CFO resolves the cap first.
+    if (flag && (flag.potential?.basis === "CAP_UNKNOWN" || (flag.cap != null && flag.cap.amount == null))) return { ok: false, status: 422, code: "CAP_UNRESOLVED", error: "this add-back is under a cap whose amount or scope could not be determined from the agreement; it cannot be counted until the cap is resolved" };
     const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, flag);
     if (!lim.ok) return { ok: false, status: 422, code: "NEEDS_BASE", error: lim.error };
     if (BigInt(value) > lim.bound) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value exceeds the plausible maximum (${lim.basis})` };
