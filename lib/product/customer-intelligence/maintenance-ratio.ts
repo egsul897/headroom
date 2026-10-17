@@ -21,12 +21,65 @@
  */
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
 import { parseRatio } from "./money";
+import {
+  findRatioTokens,
+  isRatioShapedToken,
+  parseCovenantLevel,
+  type CovenantLevelMetric,
+} from "../../contract-model/covenant-computation/covenant-levels";
+import { rationalFromString, toCanonicalString } from "../../contract-model/runtime/decimal";
 
 export interface MaintenanceRatio {
   formulaType: "LEVERAGE_RATIO_ROOM" | "COVERAGE_RATIO_ROOM";
   thresholdValue: number;
   /** Leverage only: which debt basis the test applies to. */
   debtBasis?: "secured" | "total";
+  /**
+   * The agreement-defined metric the unified covenant-level parser
+   * identified for this test — recorded ONLY when the parser fully
+   * agrees with this rule (DETERMINED, MAINTENANCE, same level, same
+   * direction) AND the parser's metric is exactly the measure the
+   * engine computes for the row (net leverage on the total basis,
+   * secured leverage on the secured basis, interest coverage for a
+   * coverage test). A Fixed Charge Coverage test, for example, is
+   * never recorded: the engine computes interest coverage, so the
+   * agreement-defined metric stays unset rather than mislabeled.
+   */
+  agreementMetric?: CovenantLevelMetric;
+}
+
+/**
+ * The unified parser's metric for this item when it agrees with Rule
+ * 180 on kind, level and direction and names the measure the engine
+ * actually computes; otherwise undefined (metric stays unset).
+ */
+function agreementMetricFor(
+  item: CovenantSummaryItem,
+  formulaType: MaintenanceRatio["formulaType"],
+  threshold: number,
+  debtBasis: "secured" | "total" | undefined,
+): CovenantLevelMetric | undefined {
+  const parsed = parseCovenantLevel({
+    text: item.operativeLanguageExcerpt ?? "",
+    sectionHeading: item.heading,
+    sectionFamily: item.category,
+  });
+  if (parsed.status !== "DETERMINED" || parsed.testKind !== "MAINTENANCE" || !parsed.metric) return undefined;
+  let expectedLevel: string;
+  try {
+    expectedLevel = toCanonicalString(rationalFromString(String(threshold)));
+  } catch {
+    return undefined;
+  }
+  if (parsed.level !== expectedLevel) return undefined;
+  if (formulaType === "LEVERAGE_RATIO_ROOM") {
+    if (parsed.direction !== "MAX") return undefined;
+    if (parsed.metric === "NET_LEVERAGE" && debtBasis === "total") return parsed.metric;
+    if (parsed.metric === "SECURED_LEVERAGE" && debtBasis === "secured") return parsed.metric;
+    return undefined;
+  }
+  if (parsed.direction !== "MIN") return undefined;
+  return parsed.metric === "INTEREST_COVERAGE" ? parsed.metric : undefined;
 }
 
 export function parseMaintenanceRatio(item: CovenantSummaryItem): MaintenanceRatio | null {
@@ -39,12 +92,15 @@ export function parseMaintenanceRatio(item: CovenantSummaryItem): MaintenanceRat
   // items are exempt (counsel-supplied text), as under Rule 192.
   if (item.redlineAmbiguous && item.reviewerDecision !== "EDITED") return null;
   // Exactly one distinct ratio threshold across the item's baskets.
+  // The labels are read with the unified covenant-level tokenizer, so
+  // a threshold the analyzer labeled from "4.50:1.00" or "9.00:2.00"
+  // counts the same as one labeled from "4.50 to 1" (the old label
+  // regex only understood the "N to 1" spelling and missed the rest).
   const basketRatios = [...new Set(
     (item.materialBasketsThresholds ?? [])
-      .map((b) => /Ratio threshold:\s*([\d.]+)\s*to\s*1/i.exec(b)?.[1])
-      .filter((v): v is string => Boolean(v))
-      .map(Number),
-  )];
+      .filter((b) => /Ratio threshold:/i.test(b))
+      .flatMap((b) => findRatioTokens(b).filter((t) => !t.bare && isRatioShapedToken(t)).map((t) => t.numericValue)),
+  )].filter(Number.isFinite);
   if (basketRatios.length !== 1) return null;
   const threshold = basketRatios[0];
   if (threshold === undefined) return null; // noUncheckedIndexedAccess guard
@@ -71,7 +127,7 @@ export function parseMaintenanceRatio(item: CovenantSummaryItem): MaintenanceRat
   // passing is genuinely ambiguous for single-threshold
   // compilation, so fail-closed (null — counsel splits it) is the
   // correct outcome for it too.
-  const allRatios = [...new Set([...text.matchAll(/(\d+(?:\.\d+)?)\s*(?:to|:)\s*1(?:\.0+)?/gi)].map((m) => Number(m[1])))].filter(Number.isFinite);
+  const allRatios = [...new Set(findRatioTokens(text).filter((t) => !t.bare && isRatioShapedToken(t)).map((t) => t.numericValue))].filter(Number.isFinite);
   if (allRatios.length !== 1 || allRatios[0] !== threshold) return null;
   if (parseRatio(text) !== threshold) return null;
 
@@ -90,12 +146,20 @@ export function parseMaintenanceRatio(item: CovenantSummaryItem): MaintenanceRat
 
   if (coverageWords) {
     if (!atOrAbove) return null; // a coverage floor must be "not less than"
-    return { formulaType: "COVERAGE_RATIO_ROOM", thresholdValue: threshold };
+    const agreementMetric = agreementMetricFor(item, "COVERAGE_RATIO_ROOM", threshold, undefined);
+    return {
+      formulaType: "COVERAGE_RATIO_ROOM",
+      thresholdValue: threshold,
+      ...(agreementMetric ? { agreementMetric } : {}),
+    };
   }
   if (!atOrBelow) return null; // a leverage cap must be "shall not exceed"
+  const debtBasis: "secured" | "total" = /\bsecured\b|\bfirst.?lien\b/i.test(text) ? "secured" : "total";
+  const agreementMetric = agreementMetricFor(item, "LEVERAGE_RATIO_ROOM", threshold, debtBasis);
   return {
     formulaType: "LEVERAGE_RATIO_ROOM",
     thresholdValue: threshold,
-    debtBasis: /\bsecured\b|\bfirst.?lien\b/i.test(text) ? "secured" : "total",
+    debtBasis,
+    ...(agreementMetric ? { agreementMetric } : {}),
   };
 }

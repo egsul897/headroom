@@ -20,9 +20,16 @@
 import type { CandidateContractRule } from "../types";
 import type { ContractAnalysisResult, ContractAnalyzerInput } from "./schema";
 import type { ContractAnalyzerProvider } from "./provider";
+import { findRatioTokens } from "../covenant-computation/covenant-levels";
 
 const GROWER_BASKET_RE = /the greater of \$?([\d,]+(?:\.\d+)?)\s*(?:million|,000,000)?\s*and\s+(\d+(?:\.\d+)?)%\s+of\s+([A-Za-z][A-Za-z ’']*(?:EBITDA|EBITDAR|Net Income|Adjusted[A-Za-z ]*)?)/gi;
-const RATIO_TEST_RE = /shall not permit[^.]*?\bto (?:be greater than|exceed|be less than)\b[^.]*?(\d+\.\d{2}):1\.00/gi;
+/**
+ * The ratio-test FRAME this analyzer recognizes (unchanged), but the
+ * level itself is read by the unified covenant-level tokenizer
+ * (findRatioTokens): the old pattern only accepted "N.NN:1.00" and
+ * silently missed "4.5:1", "4.50 to 1" and non-1 denominators.
+ */
+const RATIO_TEST_FRAME_RE = /shall not permit[^.]*?\bto (?:be greater than|exceed|be less than)\b/gi;
 const SECTION_MARKER_RE = /Section (6\.\d{2})(?:\(([a-z])\))?/g;
 
 function nearestPrecedingSection(text: string, index: number): string | null {
@@ -89,9 +96,17 @@ export class SyntheticContractAnalyzer implements ContractAnalyzerProvider {
       });
     }
 
-    RATIO_TEST_RE.lastIndex = 0;
+    RATIO_TEST_FRAME_RE.lastIndex = 0;
     n = 0;
-    while ((m = RATIO_TEST_RE.exec(text)) !== null) {
+    while ((m = RATIO_TEST_FRAME_RE.exec(text)) !== null) {
+      // The level is the first explicit (non-bare) ratio token after the
+      // frame comparator, inside the same sentence — the frame regex
+      // itself never crosses a period, and neither may the token search.
+      const rest = text.slice(m.index, m.index + 600);
+      const sentenceEnd = rest.search(/\.\s+[A-Z“"(]/);
+      const window = sentenceEnd >= 0 ? rest.slice(0, sentenceEnd + 1) : rest;
+      const token = findRatioTokens(window).find((t) => !t.bare);
+      if (!token) continue;
       n += 1;
       const sourceSectionRef = nearestPrecedingSection(text, m.index) ?? `unknown-ratio-${n}`;
       rules.push({
@@ -101,7 +116,7 @@ export class SyntheticContractAnalyzer implements ContractAnalyzerProvider {
         action: "SATISFY_RATIO",
         entityScope: [],
         entityScopeExcluded: [],
-        thresholdValue: Number(m[1]),
+        thresholdValue: token.numericValue,
         thresholdUnit: "RATIO",
         conditions: [],
         exceptions: [],

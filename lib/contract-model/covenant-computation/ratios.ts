@@ -14,6 +14,7 @@ import { rational, rationalFromNumber, rationalFromString, subtract, toCanonical
 import type { MetricInput, SerializedRuntimeValue } from "../runtime/types";
 import type { EvaluationResult } from "../runtime/types";
 import { classifyRatioIncurrencePermission } from "../compiler/ratio-incurrence/classify";
+import { parseCovenantLevel } from "./covenant-levels";
 import type {
   BasketClause,
   CitedAmount,
@@ -371,6 +372,21 @@ function collectThresholds(pkg: ComputationPackage): Map<RatioKey, RatioThreshol
         rationalFromNumber(classified.thresholdDenominator).num * rationalFromNumber(classified.thresholdNumerator).den,
       ),
     );
+    // Unified-grammar confirmation (PR #383 wiring): the covenant-level
+    // parser reads the same clause with its section family. When it
+    // fully agrees this is an INCURRENCE level at the same value, the
+    // row carries testKind. When it instead determines — at the same
+    // value — that the clause is a MAINTENANCE level, the clause is
+    // not an incurrence threshold at all and must not be collected as
+    // one (it surfaces through maintenanceLevels instead). Any other
+    // outcome leaves the row exactly as the classifier built it, with
+    // testKind unconfirmed.
+    const parsed = parseCovenantLevel({
+      text: basket.operativeText,
+      sectionFamily: basket.covenantFamily,
+      ratioName: classified.ratioName,
+    });
+    if (parsed.status === "DETERMINED" && parsed.level === canonical && parsed.testKind === "MAINTENANCE") continue;
     const row: RatioThreshold = {
       sectionRef: basket.sectionRef,
       sourceDocumentId: basket.documentId,
@@ -379,6 +395,9 @@ function collectThresholds(pkg: ComputationPackage): Map<RatioKey, RatioThreshol
       canonical,
       direction,
       comparator: classified.comparator,
+      ...(parsed.status === "DETERMINED" && parsed.level === canonical && parsed.testKind === "INCURRENCE"
+        ? { testKind: "INCURRENCE" as const }
+        : {}),
       headroomStatus: "NEEDS_INPUT",
       headroomCanonical: null,
     };

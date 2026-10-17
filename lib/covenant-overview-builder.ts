@@ -108,6 +108,29 @@ export interface RatioRow {
   reviewState: ReviewStateLabel;
   tier: RowTier;
   reason?: string;
+  /**
+   * MAINTENANCE only for Rule 180 maintenance-ratio provisions (their
+   * code carries the FINANCIAL_MAINTENANCE section category);
+   * INCURRENCE for restricted-payment / investment ratio gates.
+   * Unset when the row's kind is not established by provenance —
+   * never inferred from the ratio's shape (PR #413 agreement).
+   */
+  testKind?: "MAINTENANCE" | "INCURRENCE";
+  /**
+   * AS-OF compliance verdict: stated only for a MAINTENANCE row with
+   * status MODELED, comparing the CURRENT ratio to the limit. It is
+   * not a transaction verdict (those come from buildDebtRatioTests)
+   * and is never set for incurrence gates (PR #413 agreement).
+   */
+  complianceVerdict?: "IN_COMPLIANCE" | "NOT_IN_COMPLIANCE";
+  /**
+   * The agreement-defined metric for this row, set only when the
+   * provision recorded one at compile time (unified covenant-level
+   * parser confirmed, Rule 180) AND it equals the measure this row
+   * actually computes. Otherwise unset — the row's own metricName
+   * remains an engine measure label, not an agreement claim.
+   */
+  agreementDefinedMetric?: "GROSS_LEVERAGE" | "NET_LEVERAGE" | "SECURED_LEVERAGE" | "INTEREST_COVERAGE" | "FIXED_CHARGE_COVERAGE";
 }
 
 export type OverviewRow = CapacityRow | RatioRow;
@@ -394,13 +417,38 @@ function buildCapacityRowFromProvision(
 function buildRatioRowFromTest(test: RatioTestResult, documentName: string): RatioRow {
   const status: RowStatus = test.status === "clear" || test.status === "blocked" ? "MODELED" : test.status === "review_required" ? "REVIEW_REQUIRED" : "NOT_TESTED";
   const headroom = status === "MODELED" ? (test.comparisonDirection === "at_or_below" ? test.threshold - test.preTransactionRatio : test.preTransactionRatio - test.threshold) : null;
+  const currentRatio = status === "MODELED" ? test.preTransactionRatio : null;
+  // testKind by provenance, never by ratio shape: Rule 180 provisions
+  // carry the FINANCIAL_MAINTENANCE category inside their code.
+  const testKind = test.provision.code.includes("FINANCIAL_MAINTENANCE") ? ("MAINTENANCE" as const) : undefined;
+  const complianceVerdict =
+    testKind === "MAINTENANCE" && status === "MODELED" && currentRatio !== null
+      ? test.comparisonDirection === "at_or_below"
+        ? currentRatio <= test.threshold
+          ? ("IN_COMPLIANCE" as const)
+          : ("NOT_IN_COMPLIANCE" as const)
+        : currentRatio >= test.threshold
+          ? ("IN_COMPLIANCE" as const)
+          : ("NOT_IN_COMPLIANCE" as const)
+      : undefined;
+  // The measure THIS row computes, for comparison with the recorded
+  // agreement-defined metric (buildDebtRatioTests: total basis is net
+  // of cash; the coverage test is EBITDA / interest expense).
+  const engineMeasure =
+    test.provision.formulaType === "LEVERAGE_RATIO_ROOM"
+      ? test.provision.params?.debtBasis === "secured"
+        ? "SECURED_LEVERAGE"
+        : "NET_LEVERAGE"
+      : "INTEREST_COVERAGE";
+  const recordedMetric = test.provision.params?.agreementMetric;
+  const agreementDefinedMetric = recordedMetric === engineMeasure ? recordedMetric : undefined;
   return {
     kind: "RATIO",
     stableKey: `ratio:${test.provisionId}`,
     name: `${test.metricName} — ${test.basketName}`,
     documentName,
     sectionRef: test.sectionRef,
-    currentRatio: status === "MODELED" ? test.preTransactionRatio : null,
+    currentRatio,
     ratioLimit: test.threshold,
     ratioHeadroom: headroom,
     comparisonDirection: test.comparisonDirection,
@@ -409,6 +457,9 @@ function buildRatioRowFromTest(test: RatioTestResult, documentName: string): Rat
     reviewState: "NOT_TRACKED",
     tier: "PRIMARY",
     reason: test.reason,
+    ...(testKind ? { testKind } : {}),
+    ...(complianceVerdict ? { complianceVerdict } : {}),
+    ...(agreementDefinedMetric ? { agreementDefinedMetric } : {}),
   };
 }
 
@@ -430,6 +481,10 @@ function buildRatioRowFromGate(provision: CovenantProvisionInput, documentName: 
     reviewState: "NOT_TRACKED",
     tier: "PRIMARY",
     reason: evaluated.reason,
+    // RP / investment ratio gates are incurrence tests by construction;
+    // no as-of compliance verdict and no agreement-defined metric are
+    // claimed for a gate row (PR #413 agreement).
+    testKind: "INCURRENCE",
   };
 }
 

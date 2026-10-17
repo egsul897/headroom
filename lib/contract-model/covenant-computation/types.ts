@@ -105,6 +105,12 @@ export interface RatioThreshold {
   canonical: string;
   direction: RatioDirection;
   comparator: "AT_LEAST" | "NO_GREATER_THAN" | "GREATER_THAN" | "LESS_THAN";
+  /**
+   * Set only when the unified covenant-level parser confirmed the
+   * kind for this threshold's own clause (same level, DETERMINED).
+   * Unset means unconfirmed — never inferred from the ratio's shape.
+   */
+  testKind?: "MAINTENANCE" | "INCURRENCE";
   headroomStatus: ComputationStatus;
   /** actual−threshold (MIN) or threshold−actual (MAX). Null when the ratio itself is not computed. */
   headroomCanonical: string | null;

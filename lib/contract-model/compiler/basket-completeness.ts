@@ -29,6 +29,7 @@
  * requirement.
  */
 import type { CandidateContractRule } from "../types";
+import { findRatioTokens, isRatioShapedToken } from "../covenant-computation/covenant-levels";
 
 export interface SectionClauseSegment {
   /** The lettered sub-clause ("a", "b", ...) or null when the section has no lettered sub-clauses at all (single-basket section). */
@@ -89,8 +90,13 @@ function extractRealNumbers(text: string): { value: number; raw: string }[] {
   for (const m of text.matchAll(/(\d+(?:\.\d+)?)\s?%/g)) {
     out.push({ value: Number(m[1]), raw: m[0] });
   }
-  for (const m of text.matchAll(/(\d+\.\d{2}):1\.00/g)) {
-    out.push({ value: Number(m[1]), raw: m[0] });
+  // Ratio figures via the unified covenant-level tokenizer (every
+  // NUM SEP NUM form, non-1 denominators normalized exactly), not the
+  // old strict "N.NN:1.00"-only pattern, which silently missed levels
+  // written "4.5:1" or "4.50 to 1". Time-shaped tokens ("10:30" — no
+  // decimal point and a non-1 denominator) are not ratios and stay out.
+  for (const t of findRatioTokens(text)) {
+    if (isRatioShapedToken(t)) out.push({ value: t.numericValue, raw: t.raw });
   }
   return out.filter((n) => !Number.isNaN(n.value));
 }

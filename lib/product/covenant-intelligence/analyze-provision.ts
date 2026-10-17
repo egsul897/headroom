@@ -16,6 +16,7 @@ import type {
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
 import type { AffirmativeKind, CovenantCategoryKey, NonCovenantSubtype } from "./summarize";
+import { findRatioTokens, isRatioShapedToken } from "../../contract-model/covenant-computation/covenant-levels";
 
 export type ProvisionPosture =
   | "GENERAL_PROHIBITION"
@@ -1056,8 +1057,14 @@ function extractBaskets(excerpt: string): string[] {
       out.push(`Amount/threshold: ${amount}`);
     }
   }
-  const ratios = excerpt.match(/\d+(?:\.\d+)?\s+to\s+1\.00/gi) ?? [];
-  for (const r of ratios.slice(0, 8)) out.push(`Ratio threshold: ${normalizeWs(r)}`);
+  // Ratio thresholds via the unified covenant-level tokenizer: the old
+  // pattern only saw "N to 1.00", so a level written "4.50:1.00" or
+  // "4.5 to 1" never became a "Ratio threshold:" label and Rule 180
+  // never saw the covenant. Bare x/times tokens are multiples in basket
+  // text, not levels, and time-shaped tokens are not ratios; both stay
+  // out, exactly as the completeness checker's filter.
+  const ratios = findRatioTokens(excerpt).filter((t) => !t.bare && isRatioShapedToken(t));
+  for (const r of ratios.slice(0, 8)) out.push(`Ratio threshold: ${normalizeWs(r.raw)}`);
   if (/\bAvailable Amount\b|\bCumulative Credit\b|\bbuilder\b/i.test(excerpt)) {
     out.push("Builder / Available Amount construct referenced.");
   }

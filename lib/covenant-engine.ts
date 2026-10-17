@@ -133,6 +133,15 @@ export interface FormulaParams {
   capBasis?: string;
   /** LEVERAGE_RATIO_ROOM, RATIO_GATE: which net-leverage measure to test ("total" default, or "secured"). */
   debtBasis?: DebtBasis;
+  /**
+   * The agreement-defined metric for a maintenance ratio test, as
+   * identified by the unified covenant-level parser and recorded at
+   * compile time ONLY when it names the exact measure the engine
+   * computes for the row. Unset (the common case) means no
+   * agreement-defined metric has been established — consumers must
+   * not infer one from the row's formula type.
+   */
+  agreementMetric?: "GROSS_LEVERAGE" | "NET_LEVERAGE" | "SECURED_LEVERAGE" | "INTEREST_COVERAGE" | "FIXED_CHARGE_COVERAGE";
   /** FLAT_NET_OF_DEBT: which gross debt outstanding to net the flat basket against. */
   netOfBasis?: DebtBasis;
   /** BUILDER_BASKET: share of cumulative net income added to the basket (e.g. 0.5 for 50%). */
