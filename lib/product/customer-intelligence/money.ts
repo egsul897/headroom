@@ -34,7 +34,7 @@ export function parseMoneyMillions(text: string): number | null {
  * in the same section became the greater-of grower instead of the
  * true "10% of EBITDA". The % must be the one modifying the base.
  */
-export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS" | "CNI" | "NET_WORTH"): number | null {
+export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS" | "CNI" | "NET_WORTH" | "CNTA"): number | null {
   // Credit agreements write the percentage words-first with the
   // numeral in parentheses — "ten percent (10%) of Consolidated
   // Net Worth" — so the % token matches BOTH the bare form
@@ -51,7 +51,12 @@ export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS" | "CNI"
           // "Consolidated Net Worth" — the defined term is Net
           // Worth, never Net Income (a separate base).
           ? new RegExp(pct + String.raw`(?:[A-Za-z]+(?:'s)?\s+){0,2}?(?:Consolidated\s+)?Net\s+Worth\b`, "i")
-          : new RegExp(pct + String.raw`(?:[A-Za-z]+\s+){0,2}Total\s+Assets`, "i");
+          : base === "CNTA"
+            // "Consolidated Net Tangible Assets" — a distinct base
+            // from Total Assets (tangible, net of intangibles and
+            // liabilities as the agreement defines it).
+            ? new RegExp(pct + String.raw`(?:[A-Za-z]+(?:'s)?\s+){0,2}?(?:Consolidated\s+)?Net\s+Tangible\s+Assets\b`, "i")
+            : new RegExp(pct + String.raw`(?:[A-Za-z]+\s+){0,2}Total\s+Assets`, "i");
   const m = text.match(re);
   if (!m) return null;
   const raw = m[1] ?? m[2];

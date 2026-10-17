@@ -65,6 +65,13 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
   // would certify an invented or uncertain structural
   // relationship as a SYSTEM decision with no human review.
   if (item.structuralUnresolved === true) return false;
+  // Formula representation (step 3): a section stem is never
+  // routine. Its "decision" has no capacity effect of its own —
+  // the section's operative clauses are separate items and are
+  // decided on their own merits — so the stem is proposed as a
+  // no-effect REJECTED bookkeeping decision for counsel, never a
+  // SYSTEM auto-accept.
+  if ((item.sectionStemChildRefs?.length ?? 0) > 0) return false;
   const grants = grantTypesForItem(item);
   if (grants.length === 0) {
     // No grants: a maintenance-ratio item still compiles (to a

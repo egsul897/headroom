@@ -420,6 +420,14 @@ export function discoverCovenantCandidates(
       // ran past the 4000-char cap, so tail clauses (e.g. Aon
       // 6.11(t)'s greater-of basket) are not in this excerpt.
       excerptTruncated: span.end - span.start > 4000,
+      // Full operative span for the formula parse (step 3): only
+      // when the excerpt is a truncated prefix, and only within a
+      // storage bound — an unbounded span (a whole article sliced
+      // as one node) is not attached, and the parse of that item
+      // stays fail-closed.
+      ...(span.end - span.start > 4000 && span.end - span.start <= 60000
+        ? { fullSpanText: text.slice(span.start, span.end) }
+        : {}),
       families: mergedFamilies,
       signals: [...rank.signals, ...detectPatternsInText(excerpt).map((p) => `pattern:${p}`)],
       excerpt: excerpt.slice(0, 4000),

@@ -67,6 +67,37 @@ function compiledTerms(item: CovenantSummaryItem): string | null {
   if (grants.length > 0) {
     const parsed = parseFormulaFromItem(item);
     if (parsed.modelingStatus !== "MODELED") return null;
+    if (parsed.formulaType === "SECTION_STEM") return null;
+    if (parsed.formulaType === "NONE_UNCAPPED") {
+      // Never "$0M" and never bare "unlimited capacity": the clause
+      // sets no finite cap; its conditions and the agreement's other
+      // clauses still apply.
+      return `${grants.join(" / ")} — no finite cap in this clause (NONE_UNCAPPED)`;
+    }
+    if (parsed.formulaType === "VALUE_CAP") {
+      const basis =
+        parsed.params?.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : parsed.params?.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : parsed.params?.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return `${grants.join(" / ")} — capped at the ${basis} of the financed property (VALUE_CAP; the property's value is required to evaluate)`;
+    }
+    if (parsed.formulaType === "PCT_OF_CNTA") {
+      const pct = (((parsed.params?.pctCnta as number) ?? parsed.thresholdValue) * 100).toFixed(1).replace(/\.0$/, "");
+      return `${grants.join(" / ")} — ${pct}% of Consolidated Net Tangible Assets (PCT_OF_CNTA)`;
+    }
+    if (parsed.formulaType === "PCT_OF_COST") {
+      return `${grants.join(" / ")} — up to ${(((parsed.params?.pctOfCost as number) ?? 0) * 100).toFixed(0)}% of the cost of the financed assets (PCT_OF_COST)`;
+    }
+    if (parsed.formulaType === "PCT_OF_CONSIDERATION") {
+      return `${grants.join(" / ")} — up to ${(((parsed.params?.pctOfConsideration as number) ?? 0) * 100).toFixed(0)}% of the aggregate consideration (PCT_OF_CONSIDERATION)`;
+    }
+    if (parsed.formulaType === "UTILIZATION_GATE") {
+      return `${grants.join(" / ")} — utilization gate at ${(parsed.thresholdValue * 100).toFixed(0)}% (UTILIZATION_GATE)`;
+    }
     const threshold =
       parsed.formulaType.startsWith("GREATER_OF")
         ? `greater of $${parsed.thresholdValue}M or ${parsed.formulaType.replace("GREATER_OF_FLAT_OR_PCT_", "")}`
@@ -120,10 +151,12 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
       }
     }
     if (terms != null) {
+      const uncapped = grants.length > 0 && parseFormulaFromItem(item).formulaType === "NONE_UNCAPPED";
       return {
         decision: "ACCEPTED",
-        reason:
-          grants.length > 0
+        reason: uncapped
+          ? "The clause affirmatively grants this permission with no finite cap in the clause — its stated conditions and the agreement's other clauses still apply."
+          : grants.length > 0
             ? "Compiles cleanly to a MODELED Permission with no unresolved conditions."
             : "Clean single-test maintenance ratio with no unresolved conditions.",
         terms,
@@ -162,6 +195,24 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
           : ""),
       terms: null,
       needsAttention: true,
+    };
+  }
+
+  // Formula representation (step 3): a section stem has no
+  // capacity effect of its own — the section's operative clauses
+  // are itemized separately and carry the terms. Propose the
+  // no-effect decision and name the clauses, so the stem does not
+  // sit in the queue as a bare grant item with no terms. (A stem
+  // REJECT cannot supersede its clauses' Permissions: the reject
+  // prefix is keyed on (sourceId, sectionRef, category) with a
+  // trailing colon, and clause refs continue with "(" — verified
+  // in permission-code.ts.)
+  if ((item.sectionStemChildRefs?.length ?? 0) > 0) {
+    return {
+      decision: "REJECTED",
+      reason: `Section stem — no capacity effect of its own: the section's operative clauses are itemized separately (${(item.sectionStemChildRefs ?? []).join(", ")}) and carry the terms; rejecting the stem's standalone interpretation avoids double-counting them.`,
+      terms: null,
+      needsAttention: false,
     };
   }
 
@@ -209,6 +260,15 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
         decision: "NEEDS_INPUT",
         reason:
           "A parsed amount in this provision is below $1,000 — no real basket is that small, so it is likely a unit misread (a dropped scale, e.g. \"$30 million\" read as $30). Counsel to confirm the amount from the source text.",
+        terms: null,
+        needsAttention: true,
+      };
+    }
+    if (parsed.missingFields.includes("referenceExternal")) {
+      return {
+        decision: "NEEDS_INPUT",
+        reason:
+          "The clause's cap is set outside its own text — a schedule or exhibit, another provision, a defined term the engine could not resolve to an amount, the amount being refinanced, or a letter-of-credit face amount (missing: referenceExternal). Counsel to supply the terms or reject it.",
         terms: null,
         needsAttention: true,
       };
