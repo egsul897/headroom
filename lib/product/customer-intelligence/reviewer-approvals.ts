@@ -298,6 +298,44 @@ export async function autoAcceptRoutineInterpretations(params: {
     : [];
   // Phase C (D11): decision key includes nodeId (occurrence).
   const decided = new Set(prior.map((a) => `${a.sectionRef}::${a.category}::${a.nodeId ?? ""}`));
+  // P0 (recording integrity): orphaned SYSTEM approvals. A
+  // re-analysis can re-mint a summary whose items carry NEW
+  // nodeIds for the same (sectionRef, category); the SYSTEM row
+  // recorded against the old nodeId then matches no current item
+  // (orphaned) and the item looks undecided, so a naive re-run
+  // would push a SECOND SYSTEM row for the same provision.
+  // Re-match follows compile's rule: match by (ref, category)
+  // only when unambiguous — exactly one current item AND exactly
+  // one orphaned SYSTEM row for that (ref, category) — and then
+  // REPLACE the orphaned row (new nodeId, version bumped) rather
+  // than duplicating it. Counsel rows are never re-matched or
+  // touched. Ambiguous cases are left alone: items get fresh
+  // rows and the orphan stays as history.
+  const currentKeys = new Set(
+    summary.items.map((i) => `${i.sectionRef}::${i.category}::${i.nodeId ?? ""}`),
+  );
+  const itemCountByRefCat = new Map<string, number>();
+  for (const i of summary.items) {
+    const rc = `${i.sectionRef}::${i.category}`;
+    itemCountByRefCat.set(rc, (itemCountByRefCat.get(rc) ?? 0) + 1);
+  }
+  const orphansByRefCat = new Map<string, ReviewerApproval[]>();
+  for (const a of prior) {
+    if (a.reviewerKind !== "SYSTEM" || a.decision !== "ACCEPTED") continue;
+    if (currentKeys.has(`${a.sectionRef}::${a.category}::${a.nodeId ?? ""}`)) continue;
+    const rc = `${a.sectionRef}::${a.category}`;
+    const list = orphansByRefCat.get(rc) ?? [];
+    list.push(a);
+    orphansByRefCat.set(rc, list);
+  }
+  const takeOrphanFor = (item: CovenantSummaryItem): ReviewerApproval | undefined => {
+    const rc = `${item.sectionRef}::${item.category}`;
+    if (itemCountByRefCat.get(rc) !== 1) return undefined;
+    const list = orphansByRefCat.get(rc);
+    if (!list || list.length !== 1) return undefined;
+    orphansByRefCat.delete(rc);
+    return list[0];
+  };
   let accepted = 0;
   let skipped = 0;
   const approvals = [...prior];
@@ -309,9 +347,15 @@ export async function autoAcceptRoutineInterpretations(params: {
     // Phase C (D11): two items sharing (ref, category) are
     // distinct occurrences with distinct decisions (keyed by
     // nodeId). The second is NOT already decided.
-    if (decided.has(`${item.sectionRef}::${item.category}::${item.nodeId ?? ""}`)) {
+    const itemKey = `${item.sectionRef}::${item.category}::${item.nodeId ?? ""}`;
+    if (decided.has(itemKey)) {
       skipped += 1;
       continue;
+    }
+    const orphan = takeOrphanFor(item);
+    if (orphan) {
+      const oi = approvals.indexOf(orphan);
+      if (oi >= 0) approvals.splice(oi, 1);
     }
     const next: ReviewerApproval = {
       sourceId: params.sourceId,
@@ -323,18 +367,21 @@ export async function autoAcceptRoutineInterpretations(params: {
       note: "System auto-accepted — routine supported interpretation, not counsel-verified.",
       reviewedAt: new Date().toISOString(),
       reviewerLabel: "system:auto-accept",
-      version: 1,
+      version: orphan ? orphan.version + 1 : 1,
     };
     approvals.push(next);
-    decided.add(`${item.sectionRef}::${item.category}::${item.nodeId ?? ""}`);
-    // Persist the approval row BEFORE compiling so the compile
-    // reads a summary whose decisions include this acceptance.
-    meta.reviewerApprovals = approvals;
-    await prisma.knowledgeSource.update({
-      where: { sourceId: params.sourceId },
-      data: { metadata: JSON.parse(JSON.stringify(meta)) },
-    });
+    decided.add(itemKey);
     try {
+      // Persist the approval row BEFORE compiling so the compile
+      // reads a summary whose decisions include this acceptance.
+      // P0: the persist lives INSIDE the per-item try — previously
+      // it sat outside, so one persistence throw aborted the whole
+      // loop and every later item was never attempted.
+      meta.reviewerApprovals = approvals;
+      await prisma.knowledgeSource.update({
+        where: { sourceId: params.sourceId },
+        data: { metadata: JSON.parse(JSON.stringify(meta)) },
+      });
       const results = await compileAcceptedInterpretation({
         companyId: params.companyId,
         sourceId: params.sourceId,
@@ -368,12 +415,19 @@ export async function autoAcceptRoutineInterpretations(params: {
     } catch {
       // Per-item failure stays an exception for counsel (the
       // approval row already exists — it is removed so the item
-      // is not wrongly marked decided).
+      // is not wrongly marked decided). The removal matches the
+      // exact occurrence (nodeId included): with duplicate
+      // (ref, category) occurrences, removing the first SYSTEM
+      // row could delete a DIFFERENT occurrence's valid decision.
       const idx = approvals.findIndex(
-        (a) => a.sectionRef === item.sectionRef && a.category === item.category && a.reviewerKind === "SYSTEM",
+        (a) =>
+          a.sectionRef === item.sectionRef &&
+          a.category === item.category &&
+          (a.nodeId ?? undefined) === (item.nodeId ?? undefined) &&
+          a.reviewerKind === "SYSTEM",
       );
       if (idx >= 0) approvals.splice(idx, 1);
-      decided.delete(`${item.sectionRef}::${item.category}`);
+      decided.delete(itemKey);
       meta.reviewerApprovals = approvals;
       try {
         await prisma.knowledgeSource.update({
@@ -387,4 +441,59 @@ export async function autoAcceptRoutineInterpretations(params: {
     }
   }
   return { accepted, skipped };
+}
+
+/**
+ * P0 convergence sweep: re-run auto-accept over EVERY analyzed
+ * document in a workspace. Auto-accept is idempotent (decided
+ * items are skipped without writes), so the sweep is a repair /
+ * convergence pass, not a second decision-maker:
+ * - documents whose auto-accept loop was interrupted mid-document
+ *   by a persistence failure (pre-P0 recording bug) converge;
+ * - documents analyzed before a routine-class widening (or a
+ *   re-mint of nodeIds) pick up their SYSTEM decisions without
+ *   anyone re-uploading them — orphaned SYSTEM rows are
+ *   re-matched by autoAcceptRoutineInterpretations itself.
+ * Per-document isolation: one document's failure never blocks
+ * the rest of the workspace. Never throws.
+ */
+export async function sweepAutoAcceptForWorkspace(params: {
+  companyId: string;
+}): Promise<{ documents: number; accepted: number; skipped: number }> {
+  const rows = await prisma.knowledgeSource.findMany({
+    where: { companyId: params.companyId },
+    select: { sourceId: true, metadata: true },
+  });
+  let documents = 0;
+  let accepted = 0;
+  let skipped = 0;
+  for (const row of rows) {
+    // Only analyzed documents (a stored covenant summary) can
+    // hold routine items; everything else is skipped cheaply.
+    if (!summarizeFromStoredMetadata(row.metadata)) continue;
+    documents += 1;
+    try {
+      const res = await autoAcceptRoutineInterpretations({
+        companyId: params.companyId,
+        sourceId: row.sourceId,
+      });
+      accepted += res.accepted;
+      skipped += res.skipped;
+      // Auto-accepts change the decided set — re-evaluate
+      // coverage for any document the sweep actually changed
+      // (same pattern as the analysis path). Must never block
+      // convergence.
+      if (res.accepted > 0) {
+        try {
+          const { evaluateCounselCoverage } = await import("./counsel-coverage");
+          await evaluateCounselCoverage(prisma, { companyId: params.companyId, sourceId: row.sourceId });
+        } catch {
+          // Coverage evaluation must not block the sweep.
+        }
+      }
+    } catch {
+      // Per-document isolation — keep sweeping the workspace.
+    }
+  }
+  return { documents, accepted, skipped };
 }
