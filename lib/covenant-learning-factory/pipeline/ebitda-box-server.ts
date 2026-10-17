@@ -51,3 +51,13 @@ export async function refreshEbitdaBox(companyId: string, documentId: string, kn
 }
 
 export { store as ebitdaBoxStore };
+
+/** Production wiring for the EBITDA API handlers. */
+export function ebitdaApiDeps(): import("./ebitda-box-api").EbitdaApiDeps {
+  return {
+    store,
+    documentBelongsTo: async (companyId, documentId) => (await prisma.document.findFirst({ where: { id: documentId, companyId }, select: { id: true } })) != null,
+    pipelineArgsFor: (c, d) => pipelineArgsFor(c, d),
+    refresh: (c, d) => refreshEbitdaBox(c, d),
+  };
+}
