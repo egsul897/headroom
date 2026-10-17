@@ -499,12 +499,19 @@ async function replayOf(db: EbitdaBoxStore, scope: { companyId: string; document
  * 1e12 is only an outer ceiling on top of a sourced bound, never the bound itself; the message names whichever applied.
  */
 /**
- * m in "bound <= m x reconciled filed (OI + D&A)", for add-backs bounded by an ERP-evidenced revenue: m = 1/2.
- * Why: the revenue rule allows an add-back up to 50% of revenue. OI + D&A is an EBITDA proxy, and EBITDA = revenue minus
- * cash operating costs, which are never negative. So OI + D&A <= true revenue, and 50% x (OI + D&A) <= 50% x true
- * revenue: the cap is never above the TRUE revenue-derived bound, whatever scale error the ERP revenue carries and at
- * any margin. A larger m would let a revenue error through at high margins; m is derived from the rule, not fit to
- * fixtures. (It is far below the 10x-base-EBITDA rule used when the agreement's own base is known.)
+ * m in "bound <= m x EBITDA proxy", for add-backs bounded by an ERP-evidenced revenue: m = 1/2.
+ * Why: the revenue rule allows an add-back up to 50% of revenue. The proxy (see ebitdaProxyFor in erp/suggest.ts)
+ * is filed operating income NET of the tagged non-revenue credits inside it (equity-method income, disposition
+ * gains) plus filed D&A, each over a full 12 months. An earlier version of this note claimed OI + D&A <= true
+ * revenue because "EBITDA = revenue minus cash operating costs, which are never negative"; that proof is FALSE —
+ * operating gains, equity-method income and other non-revenue credits sit inside operating income without being
+ * revenue, and they can carry OI + D&A above true revenue, so the unadjusted sum bounded nothing. The bound now
+ * rests on the subtraction, and on the proxy refusing to form when it cannot be made sound from the filed fields:
+ * no annual filed figure (a shorter period is never annualized up), or the adjusted proxy still exceeds a filed
+ * revenue for the same period (a credit the filings do not tag — then this function answers NEEDS_ERP_EVIDENCE
+ * naming the missing decomposition). With the proxy so formed, 50% x proxy is the cap this rule derives from the
+ * proxy's own revenue-scale magnitude, at any margin; m is derived from the rule, not fit to fixtures. (It is far
+ * below the 10x-base-EBITDA rule used when the agreement's own base is known.)
  */
 export const EBITDA_PROXY_BOUND_NUM = 1n;
 export const EBITDA_PROXY_BOUND_DEN = 2n;
@@ -520,12 +527,13 @@ function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: Add
   if (rev != null && rev > 0n) return within(rev / 2n, "50% of the issuer's reported revenue");
   if (cfoRevenue != null && cfoRevenue.revenue > 0n) {
     // An ERP-evidenced revenue can carry an undetected scale error (see REVENUE_UPPER_RATIO_LIMIT). So it authorizes
-    // nothing on its own: the bound is also capped by EBITDA_PROXY_BOUND x reconciled filed (OI + D&A). Without that
-    // proxy the box allows exactly what it would without ERP: nothing.
+    // nothing on its own: the bound is also capped by EBITDA_PROXY_BOUND x the EBITDA proxy (filed operating income
+    // net of tagged non-revenue credits + D&A, over a full 12 months). Without that proxy the box allows exactly
+    // what it would without ERP: nothing.
     if (cfoRevenue.proxy == null) return { ok: false, code: "NEEDS_ERP_EVIDENCE", error: `NEEDS_ERP_EVIDENCE: a revenue-derived bound needs filed operating income and D&A reconciled with the ERP (${cfoRevenue.proxyNote || "missing"}); base EBITDA is missing or not positive, so nothing else bounds this line` };
     const byRevenue = cfoRevenue.revenue / 2n;
     const byProxy = (cfoRevenue.proxy * EBITDA_PROXY_BOUND_NUM) / EBITDA_PROXY_BOUND_DEN;
-    return byProxy < byRevenue ? within(byProxy, "50% of the reconciled filed operating income + D&A (caps the ERP-evidenced revenue bound)") : within(byRevenue, "50% of the CFO-confirmed revenue (ERP evidence)");
+    return byProxy < byRevenue ? within(byProxy, "50% of the EBITDA proxy (filed operating income net of tagged non-revenue credits + D&A; caps the ERP-evidenced revenue bound)") : within(byRevenue, "50% of the CFO-confirmed revenue (ERP evidence)");
   }
   return { ok: false, error: "NEEDS_BASE: base EBITDA is missing or not positive and no other sourced figure (a dollar cap, revenue) bounds this line; the figure cannot be checked for plausibility" };
 }
