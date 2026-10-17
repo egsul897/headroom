@@ -8,19 +8,31 @@ No AI, no paid inference. `HEADROOM_MONITORING=0` disables.
    polling). The first sweep records a baseline and alerts nothing.
 2. **Add-back tracker refresh**: a new 10-K/10-Q/20-F/40-F re-runs `refreshEbitdaBox` for every
    agreement that has an EBITDA box (#398). It alerts on success or failure; a failure keeps the last good figures.
-3. **Covenant bands**: Healthy / Moderate / Danger / Breach / Not determinable, computed from the
-   engine's own actual vs limit (`headroom = (limit − actual)/limit`, direction-aware). Every
-   change is appended to `covenant_band_events` and alerted ("Healthy to Moderate"). A lost actual
-   is a change to *Not determinable*. It's never shown as Healthy.
-   Thresholds are classification policy, not financial figures. They come from the covenant row, then the
-   workspace `"*"` row, then the product default (Moderate < 20%, Danger < 10%). The source is labelled on every band.
+3. **Covenant bands** (#414 `BandCutoffs` / `BandReading`): Healthy / Moderate / Danger from the engine's own
+   actual against **the CFO's cutoffs on the ratio's own scale** (`healthyUntil`, `moderateUntil`, direction from the
+   covenant's own test, limit from the engine row). **There is no default cutoff.** Without CFO settings a covenant is
+   `NEEDS_INPUT` ("Band thresholds not set") and the sweep records no band events and sends no band alerts.
+   Cutoffs that are mis-ordered or past the covenant limit are refused (422 on PUT; NEEDS_INPUT if stored ones
+   no longer fit a changed limit). No engine actual or a non-MODELED row ⇒ `NOT_EVALUATED`. Every evaluated
+   change is appended to `covenant_band_events` and alerted ("Healthy to Moderate"). Losing the actual after a band
+   was evaluated is alerted as "… to Not evaluated". `previousBand` and `trendingToward` come only from recorded history.
+   Past the limit stays `Danger` with `pastLimit: true`. That's a display flag, not a compliance determination.
+   Agreement-sourced cutoffs: none of the engine outputs carry them today, so only CFO settings are used.
 
 ## API (all tenant-gated with `requireTenantAction`, 403 with no data)
 
 - `GET /{companyId}/monitoring/changes?since=ISO` is the morning-brief feed (default: last 24h): notifications,
   band changes and new filings. A store failure returns 503, never an empty brief.
-- `GET /{companyId}/monitoring/bands` returns the current bands plus history. `PUT` sets thresholds (422 unless
-  0 < dangerBelow < moderateBelow ≤ 1).
+- `GET /{companyId}/monitoring/bands` returns the current `CovenantBand`s (thresholds, band, previousBand,
+  trendingToward, status) plus history. `PUT {covenantKey, direction, healthyUntil, moderateUntil}` sets
+  per-covenant cutoffs. It returns 422 on bad ordering (lower-is-safer: healthyUntil < moderateUntil; higher-is-safer:
+  healthyUntil > moderateUntil). There is no workspace-wide `"*"` row.
+- `GET /{companyId}/monitoring/brief` returns `{lastVisitAt, changes[], needsYouCount, nextTest{date, daysRemaining}}`.
+  A source that can't be read gives `null`, never 0 or []. `needsYouCount` = PENDING + CONDITIONAL add-back items in the
+  latest EBITDA box per agreement. `POST` records "visited now" for the caller (`workspace_visits`).
+- `GET /{companyId}/monitoring/calendar` returns `{testDates, reportingDeadlines, cureEndDates}` of `CalendarItem`. It's a
+  read-only projection of `contract_event_obligations`. Only a stored FIXED_DATE gets a date. Relative deadlines
+  ("45 days after fiscal quarter end") are never dated from an assumed fiscal calendar. Empty ⇒ NEEDS_INPUT.
 - `GET|POST /{companyId}/monitoring/notifications` lists notifications and marks them read (scoped by companyId).
 
 ## Email

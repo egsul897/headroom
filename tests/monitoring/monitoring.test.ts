@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import { bandFor, headroomFraction, resolveThresholds, validateThresholds, type RatioRowInput } from "@/lib/monitoring/bands";
+import { bandFor, cutoffsFor, validateCutoffOrder, withHistory, type RatioRowInput, type ThresholdRow } from "@/lib/monitoring/bands";
+import { buildCovenantCalendar, nextTest, type ObligationRowLike } from "@/lib/monitoring/calendar";
+import { buildMorningBrief } from "@/lib/monitoring/brief";
 import { diffNewFilings, fetchRecentFilings, normalizeCik } from "@/lib/monitoring/filings";
 import { emailConfig, sendAlertEmail } from "@/lib/monitoring/email";
 import { runMonitoringSweep, type MonitoringDeps, type NotificationInput } from "@/lib/monitoring/sweep";
@@ -11,29 +13,47 @@ const lev = (actual: number | null, over: Partial<RatioRowInput> = {}): RatioRow
   currentRatio: actual, ratioLimit: 4.5, comparisonDirection: "at_or_below", status: "MODELED", ...over,
 });
 
-describe("bands", () => {
-  it("headroom fraction respects the covenant's direction", () => {
-    expect(headroomFraction(3.6, 4.5, "at_or_below")).toBeCloseTo(0.2);
-    expect(headroomFraction(2.75, 2.5, "at_or_above")).toBeCloseTo(0.1);
-    expect(headroomFraction(1, 0, "at_or_below")).toBeNull();
+const CUT: ThresholdRow[] = [{ covenantKey: "d:LEV", healthyUntil: 3.5, moderateUntil: 4.2 }];
+const fccr = (actual: number | null): RatioRowInput => ({
+  stableKey: "d:FCCR", name: "Min fixed charge coverage", documentName: "Credit Agreement", sectionRef: "§7.11(b)",
+  currentRatio: actual, ratioLimit: 1.25, comparisonDirection: "at_or_above", status: "MODELED",
+});
+
+describe("bands (#414 BandCutoffs / BandReading)", () => {
+  it("NO default cutoffs: without CFO settings the band is NEEDS_INPUT, never Healthy", () => {
+    const b = bandFor(lev(3.0), []);
+    expect(b).toMatchObject({ status: "NEEDS_INPUT", band: null, thresholds: null, reason: "Band thresholds not set" });
+    expect(b.actual).toBe(3.0); // the engine actual is still shown
   });
-  it("product-default thresholds: Healthy / Moderate / Danger / Breach, labelled PRODUCT_DEFAULT", () => {
-    expect(bandFor(lev(3.0), []).band).toBe("HEALTHY");
-    expect(bandFor(lev(3.8), []).band).toBe("MODERATE");
-    expect(bandFor(lev(4.3), [])).toMatchObject({ band: "DANGER", thresholdSource: "PRODUCT_DEFAULT" });
-    expect(bandFor(lev(4.6), []).band).toBe("BREACH");
+  it("CFO cutoffs on the ratio's own scale: Healthy / Moderate / Danger for a max test", () => {
+    expect(bandFor(lev(3.0), CUT)).toMatchObject({ status: "EVALUATED", band: "Healthy", thresholdSource: "CFO_SETTINGS" });
+    expect(bandFor(lev(3.8), CUT).band).toBe("Moderate");
+    expect(bandFor(lev(4.3), CUT)).toMatchObject({ band: "Danger", pastLimit: false });
+    expect(bandFor(lev(4.6), CUT)).toMatchObject({ band: "Danger", pastLimit: true });
+    expect(bandFor(lev(3.0), CUT).thresholds).toEqual({ direction: "lower-is-safer", healthyUntil: 3.5, moderateUntil: 4.2, limit: 4.5, limitLabel: "4.50x max" });
   });
-  it("no computed actual or not MODELED ⇒ NOT_DETERMINABLE, never Healthy", () => {
-    expect(bandFor(lev(null), []).band).toBe("NOT_DETERMINABLE");
-    expect(bandFor(lev(1.0, { status: "REVIEW_REQUIRED" }), []).band).toBe("NOT_DETERMINABLE");
+  it("min test (higher-is-safer) uses mirrored ordering", () => {
+    const t = [{ covenantKey: "d:FCCR", healthyUntil: 1.6, moderateUntil: 1.4 }];
+    expect(bandFor(fccr(2.0), t).band).toBe("Healthy");
+    expect(bandFor(fccr(1.5), t).band).toBe("Moderate");
+    expect(bandFor(fccr(1.3), t).band).toBe("Danger");
   });
-  it("covenant thresholds beat workspace default beat product default; invalid rows ignored", () => {
-    const rows = [{ covenantKey: "*", moderateBelow: 0.5, dangerBelow: 0.3 }, { covenantKey: "d:LEV", moderateBelow: 0.15, dangerBelow: 0.05 }];
-    expect(resolveThresholds("d:LEV", rows).source).toBe("COVENANT");
-    expect(resolveThresholds("other", rows).source).toBe("WORKSPACE_DEFAULT");
-    expect(resolveThresholds("d:LEV", [{ covenantKey: "d:LEV", moderateBelow: 0.1, dangerBelow: 0.2 }]).source).toBe("PRODUCT_DEFAULT");
-    expect(validateThresholds({ moderateBelow: 1.5, dangerBelow: 0.1 })).toBeNull();
-    expect(validateThresholds({ moderateBelow: "x", dangerBelow: 0.1 })).toBeNull();
+  it("invalid ordering or cutoffs beyond the limit are refused (NEEDS_INPUT), not repaired", () => {
+    expect(validateCutoffOrder("lower-is-safer", 4.2, 3.5)).toBeNull();
+    expect(validateCutoffOrder("higher-is-safer", 1.4, 1.6)).toBeNull();
+    expect(validateCutoffOrder("lower-is-safer", "x", 3)).toBeNull();
+    expect(cutoffsFor(lev(3), { covenantKey: "d:LEV", healthyUntil: 3.5, moderateUntil: 5.0 })).toBeNull();
+    expect(bandFor(lev(3), [{ covenantKey: "d:LEV", healthyUntil: 3.5, moderateUntil: 5.0 }]).status).toBe("NEEDS_INPUT");
+  });
+  it("no computed actual or not MODELED ⇒ NOT_EVALUATED", () => {
+    expect(bandFor(lev(null), CUT)).toMatchObject({ status: "NOT_EVALUATED", band: null });
+    expect(bandFor(lev(1.0, { status: "REVIEW_REQUIRED" }), CUT).status).toBe("NOT_EVALUATED");
+  });
+  it("previousBand and trendingToward come from recorded history only", () => {
+    const b = withHistory(bandFor(lev(3.8), CUT), [{ toBand: "Healthy", actual: 3.2 }]);
+    expect(b).toMatchObject({ band: "Moderate", previousBand: "Healthy", trendingToward: "Danger" });
+    expect(withHistory(bandFor(lev(3.8), CUT), [])).toMatchObject({ previousBand: null, trendingToward: null });
+    expect(withHistory(bandFor(lev(3.0), []), [{ toBand: "Healthy", actual: 3.2 }])).toMatchObject({ previousBand: null, trendingToward: null });
   });
 });
 
@@ -78,7 +98,7 @@ function memDeps(over: Partial<MonitoringDeps> & { filings?: SecFiling[]; ratio?
   const seen = new Map<string, Set<string>>();
   const notes: NotificationInput[] = [];
   const events: Array<{ key: string; from: string | null; to: string }> = [];
-  const last = new Map<string, string>();
+  const last = new Map<string, { toBand: string; actual: number | null }>();
   const refreshed: string[] = [];
   let ratio = over.ratio === undefined ? 3.0 : over.ratio;
   let filings = over.filings ?? [{ accessionNumber: "q1", form: "10-Q", filingDate: "2026-05-01" }];
@@ -90,9 +110,9 @@ function memDeps(over: Partial<MonitoringDeps> & { filings?: SecFiling[]; ratio?
     ebitdaDocuments: async () => ["doc1"],
     refreshEbitdaBox: async (_c, d) => { refreshed.push(d); return { status: "READY", totalEbitda: "100" }; },
     loadRatioRows: async () => ({ asOfDate: "2026-06-30", rows: [lev(ratio)] }),
-    thresholds: async () => [],
+    thresholds: async () => CUT,
     lastBands: async () => new Map(last),
-    appendBandEvent: async (_c, b, from) => { events.push({ key: b.covenantKey, from, to: b.band }); last.set(b.covenantKey, b.band); },
+    appendBandEvent: async (_c, b, from, to) => { events.push({ key: b.covenantKey, from, to }); last.set(b.covenantKey, { toBand: to, actual: b.actual }); },
     createNotification: async (n) => { if (notes.some((x) => x.dedupeKey === n.dedupeKey)) return false; notes.push(n); return true; },
     recipients: async () => ["cfo@acme.co"],
     sendEmail: async () => "NOT_SENT_DISABLED",
@@ -108,7 +128,7 @@ describe("monitoring sweep", () => {
     const [r] = await runMonitoringSweep(m.deps);
     expect(r!.filings.status).toBe("BASELINE");
     expect(m.notes).toHaveLength(0);
-    expect(m.events).toEqual([{ key: "d:LEV", from: null, to: "HEALTHY" }]);
+    expect(m.events).toEqual([{ key: "d:LEV", from: null, to: "Healthy" }]);
     expect(m.refreshed).toHaveLength(0);
   });
   it("a new 10-Q alerts, refreshes the EBITDA box, and a band change alerts 'Healthy to Moderate'", async () => {
@@ -153,12 +173,28 @@ describe("monitoring sweep", () => {
     expect(r!.filings).toMatchObject({ status: "SKIPPED", reason: "SEC_UA_UNSET" });
     expect(r!.bands.evaluated).toBe(1);
   });
-  it("losing the actual ratio is a change to NOT_DETERMINABLE and is alerted, not hidden", async () => {
+  it("no CFO cutoffs ⇒ no band events or band alerts at all (NEEDS_INPUT, not a guess)", async () => {
+    const m = memDeps({ thresholds: async () => [] });
+    await runMonitoringSweep(m.deps);
+    m.setRatio(4.4);
+    await runMonitoringSweep(m.deps);
+    expect(m.events).toHaveLength(0);
+    expect(m.notes.filter((n) => n.kind === "BAND_CHANGE")).toHaveLength(0);
+  });
+  it("a new actual in the same band is history only, no alert", async () => {
+    const m = memDeps();
+    await runMonitoringSweep(m.deps);
+    m.setRatio(3.1);
+    await runMonitoringSweep(m.deps);
+    expect(m.events).toHaveLength(2);
+    expect(m.notes).toHaveLength(0);
+  });
+  it("losing the actual ratio is a change to Not evaluated and is alerted, not hidden", async () => {
     const m = memDeps();
     await runMonitoringSweep(m.deps);
     m.setRatio(null);
     await runMonitoringSweep(m.deps);
-    expect(m.notes.at(-1)!.title).toBe("Max total net leverage: Healthy to Not determinable");
+    expect(m.notes.at(-1)!.title).toBe("Max total net leverage: Healthy to Not evaluated");
   });
   it("engine load failure ⇒ bands NOT_DETERMINABLE, no events written", async () => {
     const m = memDeps({ loadRatioRows: async () => { throw new Error("no financial state"); } });
@@ -170,6 +206,46 @@ describe("monitoring sweep", () => {
     const m = memDeps({ fetchFilings: async () => { throw new Error("postgres://u:p@h/db down"); } });
     const [r] = await runMonitoringSweep(m.deps);
     expect(r!.filings.reason).toBe("SWEEP_ERROR: Error");
+  });
+});
+
+const ob = (o: Partial<ObligationRowLike>): ObligationRowLike => ({
+  stableKey: "k", eventType: "FISCAL_QUARTER_END", conditionDescription: null, deadlineKind: "DAYS_AFTER_EVENT", deadlineDays: 45, deadlineDate: null,
+  requiredAction: "Deliver quarterly financial statements", satisfactionState: "OPEN", sourceSectionRef: "§6.01(b)", reviewStatus: "PENDING_REVIEW", ...o,
+});
+
+describe("calendar {testDates, reportingDeadlines, cureEndDates}", () => {
+  it("relative deadlines are never dated; fixed dates are; empty is NEEDS_INPUT", () => {
+    const cal = buildCovenantCalendar("co", [
+      ob({ stableKey: "r" }),
+      ob({ stableKey: "t", eventType: "COVENANT_TEST_DATE", requiredAction: "Covenant test", deadlineKind: "FIXED_DATE", deadlineDate: new Date("2026-12-31T00:00:00Z") }),
+      ob({ stableKey: "c", eventType: "EQUITY_CURE", requiredAction: "Cure contribution", deadlineDays: 10 }),
+    ]);
+    expect(cal.reportingDeadlines[0]).toMatchObject({ id: "r", kind: "reporting", date: null, relativeRule: "45 days after fiscal quarter end" });
+    expect(cal.testDates[0]).toMatchObject({ id: "t", kind: "test", date: "2026-12-31" });
+    expect(cal.cureEndDates[0]).toMatchObject({ kind: "cure", date: null });
+    expect(nextTest(cal, new Date("2026-10-17T09:00:00Z"))).toEqual({ date: "2026-12-31", daysRemaining: 75 });
+    expect(buildCovenantCalendar("co", []).status).toBe("NEEDS_INPUT");
+  });
+});
+
+describe("morning brief", () => {
+  const now = new Date("2026-10-17T09:00:00Z");
+  it("counts needs-you items (PENDING + CONDITIONAL) and lists changes since last visit", async () => {
+    const since: Date[] = [];
+    const b = await buildMorningBrief("co", {
+      lastVisitAt: async () => new Date("2026-10-16T08:00:00Z"),
+      notificationTitlesSince: async (s) => { since.push(s); return ["Max total net leverage: Healthy to Moderate"]; },
+      latestBoxItemStatuses: async () => [["CONFIRMED", "PENDING", "CONDITIONAL"], ["EVIDENCED", "PENDING"]],
+      obligations: async () => [],
+    }, now);
+    expect(b).toMatchObject({ lastVisitAt: "2026-10-16T08:00:00.000Z", changes: ["Max total net leverage: Healthy to Moderate"], needsYouCount: 3, nextTest: null, nextTestStatus: "NEEDS_INPUT" });
+    expect(since[0]!.toISOString()).toBe("2026-10-16T08:00:00.000Z");
+  });
+  it("unreadable sources are null / NOT_DETERMINABLE, never 0 or []", async () => {
+    const boom = async () => { throw new Error("db"); };
+    const b = await buildMorningBrief("co", { lastVisitAt: boom, notificationTitlesSince: boom, latestBoxItemStatuses: boom, obligations: boom }, now);
+    expect(b).toMatchObject({ lastVisitAt: null, changes: null, needsYouCount: null, nextTest: null, nextTestStatus: "NOT_DETERMINABLE" });
   });
 });
 

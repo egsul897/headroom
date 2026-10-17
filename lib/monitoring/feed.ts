@@ -24,7 +24,7 @@ export async function loadChangesSince(db: PrismaClient, companyId: string, sinc
     generatedAt: new Date().toISOString(),
     counts: { notifications: notifications.length, bandChanges: bandEvents.length, newFilings: filings.length },
     notifications: notifications.map((n) => ({ id: n.id, kind: n.kind, title: n.title, body: n.body, link: n.link, createdAt: n.createdAt, readAt: n.readAt })),
-    bandChanges: bandEvents.map((e) => ({ covenantKey: e.covenantKey, covenant: e.covenantName, documentName: e.documentName, sectionRef: e.sectionRef, from: e.fromBand, to: e.toBand, headroomPct: e.headroomPct, actual: e.actual, limit: e.limitValue, asOfDate: e.asOfDate, thresholdSource: e.thresholdSource, observedAt: e.observedAt })),
+    bandChanges: bandEvents.map((e) => ({ covenantKey: e.covenantKey, covenant: e.covenantName, documentName: e.documentName, sectionRef: e.sectionRef, from: e.fromBand, to: e.toBand, actual: e.actual, limit: e.limitValue, direction: e.direction, healthyUntil: e.healthyUntil, moderateUntil: e.moderateUntil, thresholdSource: "CFO_SETTINGS", asOfDate: e.asOfDate, observedAt: e.observedAt })),
     newFilings: filings.map((f) => ({ form: f.form, filingDate: f.filingDate, accessionNumber: f.accessionNumber, detectedAt: f.detectedAt })),
   };
 }

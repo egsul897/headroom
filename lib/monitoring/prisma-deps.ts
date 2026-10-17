@@ -38,28 +38,28 @@ export function createPrismaMonitoringDeps(db: PrismaClient, env: Record<string,
       for (const fam of o.covenantFamilies) for (const r of fam.rows) if (r.kind === "RATIO") rows.push(r);
       return { asOfDate: o.asOfDate.toISOString().slice(0, 10), rows };
     },
-    thresholds: (companyId) => db.covenantBandThreshold.findMany({ where: { companyId }, select: { covenantKey: true, moderateBelow: true, dangerBelow: true } }),
+    thresholds: (companyId) => db.covenantBandThreshold.findMany({ where: { companyId }, select: { covenantKey: true, healthyUntil: true, moderateUntil: true } }),
     async lastBands(companyId) {
-      const rows = await db.covenantBandEvent.findMany({ where: { companyId }, orderBy: { observedAt: "desc" }, select: { covenantKey: true, toBand: true } });
-      const m = new Map<string, string>();
-      for (const r of rows) if (!m.has(r.covenantKey)) m.set(r.covenantKey, r.toBand);
+      const rows = await db.covenantBandEvent.findMany({ where: { companyId }, orderBy: { observedAt: "desc" }, select: { covenantKey: true, toBand: true, actual: true } });
+      const m = new Map<string, { toBand: string; actual: number | null }>();
+      for (const r of rows) if (!m.has(r.covenantKey)) m.set(r.covenantKey, { toBand: r.toBand, actual: r.actual });
       return m;
     },
-    async appendBandEvent(companyId, b: CovenantBand, fromBand, asOfDate) {
+    async appendBandEvent(companyId, b: CovenantBand, fromBand, toBand, asOfDate) {
       await db.covenantBandEvent.create({
         data: {
           companyId,
           covenantKey: b.covenantKey,
-          covenantName: b.covenantName,
+          covenantName: b.name,
           documentName: b.documentName,
           sectionRef: b.sectionRef,
           fromBand,
-          toBand: b.band,
-          headroomPct: b.headroomPct,
+          toBand,
           actual: b.actual,
           limitValue: b.limit,
-          comparison: b.comparison,
-          thresholdSource: b.thresholdSource,
+          healthyUntil: b.thresholds?.healthyUntil ?? null,
+          moderateUntil: b.thresholds?.moderateUntil ?? null,
+          direction: b.direction,
           asOfDate,
         },
       });

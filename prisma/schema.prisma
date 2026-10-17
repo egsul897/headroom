@@ -4814,14 +4814,14 @@ model MonitoredFiling {
   @@map("monitored_filings")
 }
 
-/// Per-covenant band thresholds as headroom fractions of the limit (0 < dangerBelow < moderateBelow <= 1).
-/// covenantKey "*" is the workspace default. No row ⇒ the documented product default is used and labelled.
+/// CFO-set band cutoffs per covenant, on the ratio's own scale (no product default exists).
+/// lower-is-safer (max test): healthyUntil < moderateUntil <= limit; higher-is-safer: healthyUntil > moderateUntil >= limit.
 model CovenantBandThreshold {
   id            String   @id @default(cuid())
   companyId     String
   covenantKey   String
-  moderateBelow Float
-  dangerBelow   Float
+  healthyUntil  Float
+  moderateUntil Float
   updatedBy     String
   updatedAt     DateTime @updatedAt
   createdAt     DateTime @default(now())
@@ -4830,27 +4830,38 @@ model CovenantBandThreshold {
   @@map("covenant_band_thresholds")
 }
 
-/// Append-only band history per covenant (Healthy / Moderate / Danger / Not determinable).
+/// Append-only band history per covenant. toBand: Healthy | Moderate | Danger | NOT_EVALUATED.
 model CovenantBandEvent {
-  id              String   @id @default(cuid())
-  companyId       String
-  covenantKey     String
-  covenantName    String
-  documentName    String
-  sectionRef      String
-  fromBand        String?
-  toBand          String
-  headroomPct     Float?
-  actual          Float?
-  limitValue      Float
-  comparison      String
-  thresholdSource String
-  asOfDate        String
-  observedAt      DateTime @default(now())
+  id            String   @id @default(cuid())
+  companyId     String
+  covenantKey   String
+  covenantName  String
+  documentName  String
+  sectionRef    String
+  fromBand      String?
+  toBand        String
+  actual        Float?
+  limitValue    Float
+  healthyUntil  Float?
+  moderateUntil Float?
+  direction     String
+  asOfDate      String
+  observedAt    DateTime @default(now())
 
   @@index([companyId, observedAt])
   @@index([companyId, covenantKey, observedAt])
   @@map("covenant_band_events")
+}
+
+/// Last time a user opened the workspace brief (morning brief "since your last visit").
+model WorkspaceVisit {
+  id          String   @id @default(cuid())
+  companyId   String
+  userId      String
+  lastVisitAt DateTime
+
+  @@unique([companyId, userId])
+  @@map("workspace_visits")
 }
 
 /// In-app notification for a workspace. dedupeKey makes every producer idempotent.

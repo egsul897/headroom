@@ -1,4 +1,4 @@
--- Grok lane 2: filings monitoring, covenant bands, CFO notifications. Additive only.
+-- Grok lane 2: filings monitoring, covenant bands, CFO notifications, brief visits. Additive only.
 -- NOT applied to Neon by this PR; Egzon applies migrations.
 -- CreateTable
 CREATE TABLE "monitored_filings" (
@@ -18,8 +18,8 @@ CREATE TABLE "covenant_band_thresholds" (
     "id" TEXT NOT NULL,
     "companyId" TEXT NOT NULL,
     "covenantKey" TEXT NOT NULL,
-    "moderateBelow" DOUBLE PRECISION NOT NULL,
-    "dangerBelow" DOUBLE PRECISION NOT NULL,
+    "healthyUntil" DOUBLE PRECISION NOT NULL,
+    "moderateUntil" DOUBLE PRECISION NOT NULL,
     "updatedBy" TEXT NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -37,15 +37,25 @@ CREATE TABLE "covenant_band_events" (
     "sectionRef" TEXT NOT NULL,
     "fromBand" TEXT,
     "toBand" TEXT NOT NULL,
-    "headroomPct" DOUBLE PRECISION,
     "actual" DOUBLE PRECISION,
     "limitValue" DOUBLE PRECISION NOT NULL,
-    "comparison" TEXT NOT NULL,
-    "thresholdSource" TEXT NOT NULL,
+    "healthyUntil" DOUBLE PRECISION,
+    "moderateUntil" DOUBLE PRECISION,
+    "direction" TEXT NOT NULL,
     "asOfDate" TEXT NOT NULL,
     "observedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "covenant_band_events_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "workspace_visits" (
+    "id" TEXT NOT NULL,
+    "companyId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "lastVisitAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "workspace_visits_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -78,6 +88,9 @@ CREATE INDEX "covenant_band_events_companyId_observedAt_idx" ON "covenant_band_e
 
 -- CreateIndex
 CREATE INDEX "covenant_band_events_companyId_covenantKey_observedAt_idx" ON "covenant_band_events"("companyId", "covenantKey", "observedAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "workspace_visits_companyId_userId_key" ON "workspace_visits"("companyId", "userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "workspace_notifications_dedupeKey_key" ON "workspace_notifications"("dedupeKey");

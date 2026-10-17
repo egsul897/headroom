@@ -1,28 +1,32 @@
 /**
- * Covenant bands — Healthy / Moderate / Danger — from the engine's OWN
- * actual vs limit. Pure; no figure is computed except the headroom fraction
- * from those two engine values.
+ * Covenant bands (Healthy / Moderate / Danger), matching the Designer's
+ * `BandCutoffs` / `BandReading` contract on #414 (lib/ux/present.ts).
  *
- * headroom fraction = (limit − actual) / limit   for "at_or_below" (max) tests
- *                   = (actual − limit) / limit   for "at_or_above" (min) tests
- * Band: < 0 ⇒ BREACH; < dangerBelow ⇒ DANGER; < moderateBelow ⇒ MODERATE; else HEALTHY.
- * No computed actual, or the engine says the row isn't MODELED ⇒ NOT_DETERMINABLE
- * (never Healthy by default).
+ * Cutoffs are on the ratio's own scale and come ONLY from the CFO's settings
+ * for that covenant (covenant_band_thresholds). There is NO product default:
+ * no cutoffs ⇒ band null, status NEEDS_INPUT ("Band thresholds not set").
+ * Agreements rarely state band cutoffs; when an extraction path supplies
+ * them it can feed the same `BandCutoffs` shape.
  *
- * Thresholds are classification policy, not financial figures: a workspace may
- * set them per covenant (or "*" for all); otherwise the documented product
- * default applies and is labelled PRODUCT_DEFAULT on every band.
+ * direction: "lower-is-safer" for maximum tests (at_or_below),
+ *            "higher-is-safer" for minimum tests (at_or_above).
+ * Valid cutoffs: lower-is-safer  ⇒ healthyUntil < moderateUntil ≤ limit
+ *                higher-is-safer ⇒ healthyUntil > moderateUntil ≥ limit
+ * Band (same rule as present.ts currentBand): within healthyUntil ⇒ Healthy,
+ * within moderateUntil ⇒ Moderate, else Danger. Past the limit is still
+ * Danger, with pastLimit = true.
+ * No computed actual, or the engine row isn't MODELED ⇒ band null, NOT_EVALUATED.
  */
-export type Band = "HEALTHY" | "MODERATE" | "DANGER" | "BREACH" | "NOT_DETERMINABLE";
+export type BandName = "Healthy" | "Moderate" | "Danger";
+export type Direction = "lower-is-safer" | "higher-is-safer";
 
-export const PRODUCT_DEFAULT_THRESHOLDS = { moderateBelow: 0.2, dangerBelow: 0.1 } as const;
-
-export interface BandThresholds {
-  moderateBelow: number;
-  dangerBelow: number;
+export interface BandCutoffs {
+  direction: Direction;
+  healthyUntil: number;
+  moderateUntil: number;
+  limit: number;
+  limitLabel: string;
 }
-
-export type ThresholdSource = "COVENANT" | "WORKSPACE_DEFAULT" | "PRODUCT_DEFAULT";
 
 export interface RatioRowInput {
   stableKey: string;
@@ -36,72 +40,134 @@ export interface RatioRowInput {
   reason?: string;
 }
 
+export interface ThresholdRow {
+  covenantKey: string;
+  healthyUntil: number;
+  moderateUntil: number;
+}
+
+export type BandStatus = "EVALUATED" | "NEEDS_INPUT" | "NOT_EVALUATED";
+
+/** One covenant's band, a superset of the Designer's BandReading. */
 export interface CovenantBand {
   covenantKey: string;
-  covenantName: string;
+  name: string;
   documentName: string;
   sectionRef: string;
-  band: Band;
-  headroomPct: number | null;
-  actual: number | null;
+  /** The covenant's own limit and direction from the engine row (always present). */
   limit: number;
-  comparison: "at_or_below" | "at_or_above";
-  thresholds: BandThresholds;
-  thresholdSource: ThresholdSource;
+  direction: Direction;
+  actual: number | null;
+  actualLabel: string | null;
+  thresholds: BandCutoffs | null;
+  /** Current band; null unless status is EVALUATED. */
+  band: BandName | null;
+  previousBand: BandName | null;
+  trendingToward: BandName | null;
+  pastLimit: boolean;
+  status: BandStatus;
+  thresholdSource: "CFO_SETTINGS" | null;
   reason: string | null;
 }
 
-export function validateThresholds(t: { moderateBelow: unknown; dangerBelow: unknown }): BandThresholds | null {
-  const m = Number(t.moderateBelow);
-  const d = Number(t.dangerBelow);
-  if (!Number.isFinite(m) || !Number.isFinite(d)) return null;
-  if (!(d > 0 && d < m && m <= 1)) return null;
-  return { moderateBelow: m, dangerBelow: d };
+export const directionOf = (c: "at_or_below" | "at_or_above"): Direction => (c === "at_or_below" ? "lower-is-safer" : "higher-is-safer");
+
+export const fmtX = (n: number) => `${n.toFixed(2)}x`;
+
+export function limitLabelFor(limit: number, direction: Direction): string {
+  return `${fmtX(limit)} ${direction === "lower-is-safer" ? "max" : "min"}`;
 }
 
-export function resolveThresholds(
-  covenantKey: string,
-  rows: ReadonlyArray<{ covenantKey: string; moderateBelow: number; dangerBelow: number }>,
-): { thresholds: BandThresholds; source: ThresholdSource } {
-  const own = rows.find((r) => r.covenantKey === covenantKey);
-  const ownValid = own ? validateThresholds(own) : null;
-  if (ownValid) return { thresholds: ownValid, source: "COVENANT" };
-  const ws = rows.find((r) => r.covenantKey === "*");
-  const wsValid = ws ? validateThresholds(ws) : null;
-  if (wsValid) return { thresholds: wsValid, source: "WORKSPACE_DEFAULT" };
-  return { thresholds: { ...PRODUCT_DEFAULT_THRESHOLDS }, source: "PRODUCT_DEFAULT" };
+/** Ordering check without the limit (used when saving). */
+export function validateCutoffOrder(direction: Direction, healthyUntil: unknown, moderateUntil: unknown): { healthyUntil: number; moderateUntil: number } | null {
+  const h = Number(healthyUntil);
+  const m = Number(moderateUntil);
+  if (!Number.isFinite(h) || !Number.isFinite(m) || h <= 0 || m <= 0) return null;
+  if (direction === "lower-is-safer" ? !(h < m) : !(h > m)) return null;
+  return { healthyUntil: h, moderateUntil: m };
 }
 
-export function headroomFraction(actual: number, limit: number, comparison: "at_or_below" | "at_or_above"): number | null {
-  if (!Number.isFinite(actual) || !Number.isFinite(limit) || limit <= 0) return null;
-  return comparison === "at_or_below" ? (limit - actual) / limit : (actual - limit) / limit;
+/** Full check against the covenant's own limit; null when inconsistent. */
+export function cutoffsFor(row: RatioRowInput, t: ThresholdRow | undefined): BandCutoffs | null {
+  if (!t || !Number.isFinite(row.ratioLimit) || row.ratioLimit <= 0) return null;
+  const direction = directionOf(row.comparisonDirection);
+  const ok = validateCutoffOrder(direction, t.healthyUntil, t.moderateUntil);
+  if (!ok) return null;
+  if (direction === "lower-is-safer" ? ok.moderateUntil > row.ratioLimit : ok.moderateUntil < row.ratioLimit) return null;
+  return { direction, ...ok, limit: row.ratioLimit, limitLabel: limitLabelFor(row.ratioLimit, direction) };
 }
 
-export function bandFor(row: RatioRowInput, thresholdRows: ReadonlyArray<{ covenantKey: string; moderateBelow: number; dangerBelow: number }>): CovenantBand {
-  const { thresholds, source } = resolveThresholds(row.stableKey, thresholdRows);
-  const base = {
+export function bandOf(actual: number, c: BandCutoffs): BandName {
+  if (c.direction === "lower-is-safer") {
+    if (actual <= c.healthyUntil) return "Healthy";
+    if (actual <= c.moderateUntil) return "Moderate";
+    return "Danger";
+  }
+  if (actual >= c.healthyUntil) return "Healthy";
+  if (actual >= c.moderateUntil) return "Moderate";
+  return "Danger";
+}
+
+const WORSE: Record<BandName, BandName | null> = { Healthy: "Moderate", Moderate: "Danger", Danger: null };
+const BETTER: Record<BandName, BandName | null> = { Healthy: null, Moderate: "Healthy", Danger: "Moderate" };
+
+/**
+ * Trend from the two most recent engine actuals only (no forecast): moving
+ * toward the limit ⇒ the next worse band; away ⇒ the next better band.
+ */
+export function trendFrom(band: BandName, actual: number, previousActual: number | null, c: BandCutoffs): BandName | null {
+  if (previousActual === null || !Number.isFinite(previousActual) || previousActual === actual) return null;
+  const worsening = c.direction === "lower-is-safer" ? actual > previousActual : actual < previousActual;
+  return worsening ? WORSE[band] : BETTER[band];
+}
+
+export function bandFor(
+  row: RatioRowInput,
+  thresholds: readonly ThresholdRow[],
+  prior: { band: BandName | null; actual: number | null } = { band: null, actual: null },
+): CovenantBand {
+  const cut = cutoffsFor(row, thresholds.find((t) => t.covenantKey === row.stableKey));
+  const actual = row.status === "MODELED" && typeof row.currentRatio === "number" && Number.isFinite(row.currentRatio) ? row.currentRatio : null;
+  const base: CovenantBand = {
     covenantKey: row.stableKey,
-    covenantName: row.name,
+    name: row.name,
     documentName: row.documentName,
     sectionRef: row.sectionRef,
     limit: row.ratioLimit,
-    comparison: row.comparisonDirection,
-    thresholds,
-    thresholdSource: source,
+    direction: directionOf(row.comparisonDirection),
+    actual,
+    actualLabel: actual === null ? null : fmtX(actual),
+    thresholds: cut,
+    band: null,
+    previousBand: prior.band,
+    trendingToward: null,
+    pastLimit: false,
+    status: "NOT_EVALUATED",
+    thresholdSource: cut ? "CFO_SETTINGS" : null,
+    reason: null,
   };
-  const actual = row.status === "MODELED" && typeof row.currentRatio === "number" && Number.isFinite(row.currentRatio) ? row.currentRatio : null;
-  const pct = actual === null ? null : headroomFraction(actual, row.ratioLimit, row.comparisonDirection);
-  if (actual === null || pct === null) {
-    return { ...base, band: "NOT_DETERMINABLE", headroomPct: null, actual: null, reason: row.reason ?? "Actual ratio not computed by the engine." };
+  if (actual === null) return { ...base, reason: row.reason ?? "Actual ratio not computed by the engine." };
+  if (!cut) {
+    const set = thresholds.some((t) => t.covenantKey === row.stableKey);
+    return { ...base, status: "NEEDS_INPUT", reason: set ? "Band thresholds are inconsistent with this covenant's limit." : "Band thresholds not set" };
   }
-  const band: Band = pct < 0 ? "BREACH" : pct < thresholds.dangerBelow ? "DANGER" : pct < thresholds.moderateBelow ? "MODERATE" : "HEALTHY";
-  return { ...base, band, headroomPct: pct, actual, reason: null };
+  const band = bandOf(actual, cut);
+  const pastLimit = cut.direction === "lower-is-safer" ? actual > cut.limit : actual < cut.limit;
+  return { ...base, band, pastLimit, status: "EVALUATED", trendingToward: trendFrom(band, actual, prior.actual, cut) };
 }
 
-export const BAND_LABEL: Record<Band, string> = {
-  HEALTHY: "Healthy",
-  MODERATE: "Moderate",
-  DANGER: "Danger",
-  BREACH: "Breach",
-  NOT_DETERMINABLE: "Not determinable",
-};
+/**
+ * Fill previousBand / trendingToward from recorded history (newest first).
+ * previousBand = the most recent recorded band that differs from the current one.
+ * Trend compares the current actual with the most recent recorded actual that differs.
+ */
+export function withHistory(b: CovenantBand, events: ReadonlyArray<{ toBand: string; actual: number | null }>): CovenantBand {
+  if (b.status !== "EVALUATED" || !b.band || !b.thresholds || b.actual === null) return { ...b, previousBand: null, trendingToward: null };
+  const prev = events.find((e) => e.toBand !== b.band && e.toBand !== "NOT_EVALUATED");
+  const prevActual = events.find((e) => e.actual !== null && e.actual !== b.actual)?.actual ?? null;
+  return {
+    ...b,
+    previousBand: prev ? (prev.toBand as BandName) : null,
+    trendingToward: trendFrom(b.band, b.actual, prevActual, b.thresholds),
+  };
+}

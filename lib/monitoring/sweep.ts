@@ -9,7 +9,7 @@
  *      append a band event + alert on every band change ("Healthy to Moderate").
  * Every notification has a deterministic dedupeKey, so a re-run is a no-op.
  */
-import { BAND_LABEL, bandFor, type CovenantBand, type RatioRowInput } from "./bands";
+import { bandFor, type BandName, type CovenantBand, type RatioRowInput, type ThresholdRow } from "./bands";
 import { diffNewFilings, FINANCIAL_FORMS, type SecFiling, type SubmissionsResult } from "./filings";
 import type { EmailStatus } from "./email";
 
@@ -37,9 +37,10 @@ export interface MonitoringDeps {
   refreshEbitdaBox(companyId: string, documentId: string): Promise<{ status: string; totalEbitda: string | null } | null>;
   /** Ratio rows + as-of from the existing covenant overview; null when the engine cannot load. */
   loadRatioRows(companyId: string): Promise<{ asOfDate: string; rows: RatioRowInput[] } | null>;
-  thresholds(companyId: string): Promise<Array<{ covenantKey: string; moderateBelow: number; dangerBelow: number }>>;
-  lastBands(companyId: string): Promise<Map<string, string>>;
-  appendBandEvent(companyId: string, band: CovenantBand, fromBand: string | null, asOfDate: string): Promise<void>;
+  thresholds(companyId: string): Promise<ThresholdRow[]>;
+  /** Latest recorded band event per covenant: toBand (Healthy|Moderate|Danger|NOT_EVALUATED) + actual. */
+  lastBands(companyId: string): Promise<Map<string, { toBand: string; actual: number | null }>>;
+  appendBandEvent(companyId: string, band: CovenantBand, fromBand: string | null, toBand: string, asOfDate: string): Promise<void>;
   /** Insert unless dedupeKey exists; returns true when created. */
   createNotification(n: NotificationInput): Promise<boolean>;
   recipients(companyId: string): Promise<string[]>;
@@ -128,32 +129,37 @@ export async function sweepCompany(deps: MonitoringDeps, c: TrackedCompany): Pro
     }
   }
 
-  // 3. Bands
+  // 3. Bands — only covenants with CFO-set cutoffs can change band; no cutoffs ⇒ NEEDS_INPUT, no events.
   const loaded = await deps.loadRatioRows(c.id).catch(() => null);
   if (loaded) {
     const thresholds = await deps.thresholds(c.id);
     const last = await deps.lastBands(c.id);
     out.bands.status = "OK";
     for (const row of loaded.rows) {
-      const b = bandFor(row, thresholds);
+      const prevRec = last.get(row.stableKey) ?? null;
+      const prevBand = prevRec && prevRec.toBand !== "NOT_EVALUATED" ? (prevRec.toBand as BandName) : null;
+      const b = bandFor(row, thresholds, { band: prevBand, actual: prevRec?.actual ?? null });
       out.bands.evaluated++;
-      const prev = last.get(b.covenantKey) ?? null;
-      if (prev === b.band) continue;
-      await deps.appendBandEvent(c.id, b, prev, loaded.asOfDate);
-      if (prev === null) continue; // first observation is the baseline, not a change
+      let toBand: string | null = null;
+      if (b.status === "EVALUATED") toBand = b.band!;
+      else if (b.status === "NOT_EVALUATED" && prevBand) toBand = "NOT_EVALUATED"; // lost the actual: a real change
+      if (toBand === null) continue; // NEEDS_INPUT (no cutoffs) or never evaluated: nothing to record
+      const prev = prevRec?.toBand ?? null;
+      if (prev === toBand && (prevRec?.actual ?? null) === b.actual) continue;
+      await deps.appendBandEvent(c.id, b, prev, toBand, loaded.asOfDate);
+      if (prev === null || prev === toBand) continue; // baseline or same band with a new actual: history only
       out.bands.changes++;
-      const from = BAND_LABEL[prev as keyof typeof BAND_LABEL] ?? prev;
-      const to = BAND_LABEL[b.band];
+      const label = (x: string) => (x === "NOT_EVALUATED" ? "Not evaluated" : x);
       out.notifications += await notify(deps, {
         companyId: c.id,
         kind: "BAND_CHANGE",
-        title: `${b.covenantName}: ${from} to ${to}`,
+        title: `${b.name}: ${label(prev)} to ${label(toBand)}`,
         body:
-          b.band === "NOT_DETERMINABLE"
-            ? `${b.covenantName} (${b.documentName} ${b.sectionRef}) can no longer be determined: ${b.reason}`
-            : `${b.covenantName} (${b.documentName} ${b.sectionRef}) is ${b.actual} against a ${b.comparison === "at_or_below" ? "maximum" : "minimum"} of ${b.limit} — headroom ${(b.headroomPct! * 100).toFixed(1)}% as of ${loaded.asOfDate}. Band thresholds: ${b.thresholdSource.replace(/_/g, " ").toLowerCase()}.`,
+          toBand === "NOT_EVALUATED"
+            ? `${b.name} (${b.documentName} ${b.sectionRef}) can no longer be evaluated: ${b.reason}`
+            : `${b.name} (${b.documentName} ${b.sectionRef}) is ${b.actualLabel} of ${b.thresholds!.limitLabel} as of ${loaded.asOfDate}${b.pastLimit ? " — past the covenant limit" : ""}. Band cutoffs are your settings (Healthy within ${b.thresholds!.healthyUntil.toFixed(2)}x, Moderate within ${b.thresholds!.moderateUntil.toFixed(2)}x).`,
         link: `/${c.id}/covenants`,
-        dedupeKey: `band:${c.id}:${b.covenantKey}:${loaded.asOfDate}:${prev}->${b.band}`,
+        dedupeKey: `band:${c.id}:${b.covenantKey}:${loaded.asOfDate}:${prev}->${toBand}`,
       });
     }
   }

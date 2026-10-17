@@ -5,6 +5,9 @@ const db = {
   covenantBandEvent: { findMany: vi.fn() },
   covenantBandThreshold: { findMany: vi.fn(), upsert: vi.fn() },
   monitoredFiling: { findMany: vi.fn() },
+  workspaceVisit: { findUnique: vi.fn(), upsert: vi.fn() },
+  customerEbitdaBox: { findMany: vi.fn(), findFirst: vi.fn() },
+  contractEventObligation: { findMany: vi.fn() },
 };
 vi.mock("@/lib/auth/guard", () => ({
   requireTenantAction: vi.fn(async (id: string) => {
@@ -25,14 +28,25 @@ describe("monitoring routes: tenant gate before any read/write", () => {
     const req = (m = "GET", body?: unknown) => new Request("http://x/", { method: m, body: body ? JSON.stringify(body) : undefined });
     expect((await changes.GET(req(), ctx("co_other"))).status).toBe(403);
     expect((await bands.GET(req(), ctx("co_other"))).status).toBe(403);
-    expect((await bands.PUT(req("PUT", { covenantKey: "*", moderateBelow: 0.2, dangerBelow: 0.1 }), ctx("co_other"))).status).toBe(403);
+    expect((await bands.PUT(req("PUT", { covenantKey: "d:LEV", direction: "lower-is-safer", healthyUntil: 3.5, moderateUntil: 4.2 }), ctx("co_other"))).status).toBe(403);
     expect((await notes.GET(req(), ctx("co_other"))).status).toBe(403);
     expect((await notes.POST(req("POST", { ids: ["n1"] }), ctx("co_other"))).status).toBe(403);
+    const brief = await import("@/app/[companyId]/monitoring/brief/route");
+    const cal = await import("@/app/[companyId]/monitoring/calendar/route");
+    expect((await brief.GET(req(), ctx("co_other"))).status).toBe(403);
+    expect((await brief.POST(req("POST"), ctx("co_other"))).status).toBe(403);
+    expect((await cal.GET(req(), ctx("co_other"))).status).toBe(403);
     expect(touched()).toBe(false);
+  });
+  it("visit is recorded for the caller in the caller's workspace only", async () => {
+    db.workspaceVisit.upsert.mockResolvedValue({});
+    const brief = await import("@/app/[companyId]/monitoring/brief/route");
+    await brief.POST(new Request("http://x/", { method: "POST" }), ctx("co_mine"));
+    expect(db.workspaceVisit.upsert.mock.calls[0]![0].where).toEqual({ companyId_userId: { companyId: "co_mine", userId: "u1" } });
   });
   it("PUT thresholds validates ordering (422) before writing", async () => {
     const bands = await import("@/app/[companyId]/monitoring/bands/route");
-    const res = await bands.PUT(new Request("http://x/", { method: "PUT", body: JSON.stringify({ covenantKey: "*", moderateBelow: 0.1, dangerBelow: 0.2 }) }), ctx("co_mine"));
+    const res = await bands.PUT(new Request("http://x/", { method: "PUT", body: JSON.stringify({ covenantKey: "d:LEV", direction: "lower-is-safer", healthyUntil: 4.2, moderateUntil: 3.5 }) }), ctx("co_mine"));
     expect(res.status).toBe(422);
     expect(db.covenantBandThreshold.upsert).not.toHaveBeenCalled();
   });
