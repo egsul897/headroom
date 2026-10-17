@@ -4835,56 +4835,6 @@ model CustomerEbitdaProposal {
   @@map("customer_ebitda_proposals")
 }
 
-// --- Billing (Grok lane 1, docs/billing/README.md) ---
-// Additive only. One subscription row per workspace (Company = the tenant
-// boundary). Plain companyId column (no Prisma relation) so the Company
-// model is untouched; the row is written ONLY by the verified Stripe
-// webhook — never by a client request, never with an invented id/status.
-enum WorkspaceSubscriptionStatus {
-  INCOMPLETE
-  TRIALING
-  ACTIVE
-  PAST_DUE
-  CANCELED
-  UNPAID
-  PAUSED
-  UNKNOWN
-
-  @@map("workspace_subscription_status")
-}
-
-model WorkspaceSubscription {
-  id                   String                      @id @default(cuid())
-  companyId            String                      @unique
-  stripeCustomerId     String?
-  stripeSubscriptionId String?                     @unique
-  /// Plan key from STRIPE_PRICE_IDS (e.g. "standard"); null when the price is not a configured plan.
-  plan                 String?
-  stripePriceId        String?
-  status               WorkspaceSubscriptionStatus @default(INCOMPLETE)
-  currentPeriodEnd     DateTime?
-  cancelAtPeriodEnd    Boolean                     @default(false)
-  /// Stripe event.created (unix seconds) of the last applied event; older events never overwrite newer state.
-  lastEventCreated     Int?
-  createdAt            DateTime                    @default(now())
-  updatedAt            DateTime                    @updatedAt
-
-  @@index([stripeCustomerId])
-  @@map("workspace_subscriptions")
-}
-
-/// Append-only receipt of verified Stripe webhook events (idempotency: the event id is the primary key).
-model StripeWebhookEvent {
-  id          String    @id
-  type        String
-  companyId   String?
-  receivedAt  DateTime  @default(now())
-  processedAt DateTime?
-  outcome     String?
-
-  @@map("stripe_webhook_events")
-}
-
 // --- Monitoring + CFO alerts (Grok lane 2, docs/monitoring/README.md) ---
 // Additive only. Plain companyId columns (no Prisma relation) so the Company
 // model is untouched. Written only by the monitoring sweep and the tenant-gated
