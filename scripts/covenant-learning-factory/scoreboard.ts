@@ -20,6 +20,7 @@
  *   --rules=v0             extractor-only: empty learned ruleset (v0)
  *   --write-findings=PATH  candidate-level JSONL: one row per scored error (class, candidateId, family, excerpt)
  *   --write-rules=PATH     write the ruleset actually used (pin it for offline replay)
+ *   --relabels=PATH        apply the append-only reference-label corrections log (opt-in; bound into scorer config)
  *
  * Benchmark integrity (applies whenever --baseline is given; see docs/clf-scoreboard/README.md):
  *   --history=PATH         append-only baseline history (default scoreboard/baseline-history.json);
@@ -57,6 +58,14 @@ import {
 } from "../../lib/covenant-learning-factory/scoreboard";
 import { loadLatestLearnedRules } from "../../lib/covenant-learning-factory/learned-rules/load";
 import { normalizeLearnedRuleSet } from "../../lib/covenant-learning-factory/learned-rules/types";
+import { applyRelabels, indexRelabels, relabelLogSha256, type ReferenceRelabelLog } from "../../lib/covenant-learning-factory/scoreboard/reference-relabels";
+
+/** --relabels=PATH (opt-in; committed log: scoreboard/reference-relabels.json). Off by default so the gate stays
+ *  comparable to the recorded baseline; when on, the log sha is bound into the scorer config (a different evaluation). */
+const relabelArg = process.argv.find((a) => a.startsWith("--relabels="))?.slice("--relabels=".length) ?? "none";
+const relabelLog: ReferenceRelabelLog | null = relabelArg === "none" ? null : (JSON.parse(readFileSync(resolve(relabelArg), "utf8")) as ReferenceRelabelLog);
+const relabelIdx = relabelLog ? indexRelabels(relabelLog) : null;
+const relabel = (i: ScoreboardSourceInput): ScoreboardSourceInput => (relabelIdx ? applyRelabels(i, relabelIdx) : i);
 
 /** Read-only: SELECT the latest ruleset. Never bootstraps / writes (unlike loadLatestRulesetFromNeon). */
 async function loadLiveRulesReadOnly() {
@@ -106,7 +115,8 @@ async function loadNeonInputs(onSource: (i: ScoreboardSourceInput) => Promise<vo
 function scorerConfig(): string {
   const tree = process.env.CLF_SCOREBOARD_TREE === "0" ? "off" : "on";
   const mode = process.env.CLF_SCOREBOARD_TREE_MODE === "override" ? "override" : "agree";
-  return tree === "off" ? "tree=off" : `tree=on;mode=${mode}`;
+  const base = tree === "off" ? "tree=off" : `tree=on;mode=${mode}`;
+  return relabelLog && relabelLog.entries.length ? `${base};relabels=${relabelLogSha256(relabelLog).slice(0, 16)}` : base;
 }
 
 function printSummary(report: ScoreboardReport): void {
@@ -168,9 +178,9 @@ async function main(): Promise<void> {
     const shard = argStr("shard");
     const [si, sn] = shard ? shard.split("/").map(Number) : [0, 1];
     snap.sources.forEach((input, idx) => {
-      if (idx % sn! === si) perSource.push(scoreSource(input, rules, manifest, TEXT_VERIFIED));
+      if (idx % sn! === si) perSource.push(scoreSource(relabel(input), rules, manifest, TEXT_VERIFIED));
     });
-    const pairs = snap.sources.map((input) => [input.source.sourceId, sourceInputSha256(input)] as const);
+    const pairs = snap.sources.map((input) => [input.source.sourceId, sourceInputSha256(relabel(input))] as const);
     shardInfo = { index: si!, count: sn!, snapshotSha256: snapshotIdentitySha256(pairs), snapshotSourceIds: pairs.map((p) => p[0]).sort() };
   } else {
     const progress = argStr("progress");
@@ -188,7 +198,7 @@ async function main(): Promise<void> {
     const only = argStr("only");
     const captured: ScoreboardSourceInput[] = [];
     await loadNeonInputs(async (input) => {
-      const s = scoreSource(input, rules, manifest, TEXT_VERIFIED);
+      const s = scoreSource(relabel(input), rules, manifest, TEXT_VERIFIED);
       perSource.push(s);
       if (progress) appendFileSync(progress, JSON.stringify({ ...s, findings: undefined }) + "\n");
       if (capture && (!only || only.toUpperCase() === s.split || (only === "dev" && s.split === "DEV"))) captured.push(input);
@@ -218,7 +228,12 @@ async function main(): Promise<void> {
   const out = argStr("write-report");
   if (out) writeFileSync(out, JSON.stringify(report, null, 2) + "\n");
 
-  const baselinePath = argStr("baseline");
+  // --relabels gates against the relabels track (scoreboard/baseline-relabels.json = latest relabels history entry).
+  const baselineArg = argStr("baseline");
+  const baselinePath = baselineArg && relabelLog && baselineArg.endsWith("scoreboard/baseline.json")
+    ? baselineArg.replace(/baseline\.json$/, "baseline-relabels.json")
+    : baselineArg;
+  if (baselinePath && baselinePath !== baselineArg) console.log(`--relabels: gating against ${baselinePath} (relabels track)`);
   if (baselinePath) {
     const baselineText = readFileSync(resolve(baselinePath));
     const baseline = JSON.parse(baselineText.toString("utf8")) as ScoreboardReport;
@@ -237,7 +252,7 @@ async function main(): Promise<void> {
     const hist = verifyHistory(
       readJson<BaselineHistory>(historyPath),
       (rel) => (existsSync(resolve(rel)) ? readFileSync(resolve(rel)) : null),
-      { baselineText, baseHistory: historyBase ? readJson<BaselineHistory>(historyBase) : null },
+      { baselineText, baseHistory: historyBase ? readJson<BaselineHistory>(historyBase) : null, track: relabelLog ? "relabels" : "default" },
     );
     let gate;
     try {
