@@ -296,7 +296,7 @@ export function buildDocumentCovenantSummary(params: {
     if (!parentId || parentId === c.nodeId) return undefined;
     const parentExcerpt = excerptByNodeId.get(parentId);
     if (!parentExcerpt) return undefined;
-    return parentExcerpt.split(/\n\s*\([a-z0-9]{1,3}\)\s/)[0].slice(0, 1500);
+    return (parentExcerpt.split(/\n\s*\([a-z0-9]{1,3}\)\s/)[0] ?? parentExcerpt).slice(0, 1500);
   };
   for (const c of ranked) {
     const analysis = analyzeProvision({

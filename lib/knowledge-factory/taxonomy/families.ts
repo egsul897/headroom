@@ -46,7 +46,7 @@ const EOD_BE_TRIGGER =
 const EOD_TITLE =
   /^\s*(?:ARTICLE|Article|SECTION|Section|\u00a7)?\s*(?:[IVXLC\d.]+\s*(?:[-:\u2013\u2014]\s*)?)?Events?\s+of\s+Default(?:\s*[-:\u2013\u2014]\s*.{0,40})?\s*$/i;
 
-const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
+export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
   {
     family: "INDEBTEDNESS",
     label: "Indebtedness",
