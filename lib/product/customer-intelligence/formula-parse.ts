@@ -19,7 +19,8 @@ export interface ParsedFormula {
     | "LEVERAGE_RATIO_ROOM"
     | "RATIO_GATE"
     | "BUILDER_BASKET"
-    | "NONE_UNCAPPED";
+    | "NONE_UNCAPPED"
+    | "SECTION_STEM";
   thresholdValue: number;
   params?: Record<string, unknown>;
   amountKind: "FIXED" | "INCURRENCE_BASED";
@@ -30,6 +31,69 @@ export interface ParsedFormula {
 }
 
 export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
+  // Formula representation (step 3): a section stem whose operative
+  // sub-clauses are separately present as items is determinate as
+  // a stem — its clauses carry the terms with per-clause
+  // provenance, and nothing is minted from the stem itself
+  // (compile returns SKIPPED for it). The determination applies
+  // only when the stem carries NO terms of its own: a stem whose
+  // own fields already price a formula (or resolve a defined-term
+  // cap) keeps that parse — the stem state must never remove a
+  // mintable formula the item already had. Counsel-EDITED items
+  // are exempt: counsel supplied controlling text for the item,
+  // so it parses as an ordinary item below.
+  if (item.reviewerDecision !== "EDITED" && (item.sectionStemChildRefs?.length ?? 0) > 0) {
+    const stemOwnText = [
+      ...(item.materialBasketsThresholds ?? []),
+      ...(item.permissions ?? []),
+      ...(item.conditions ?? []),
+      item.operativeLanguageExcerpt ?? "",
+    ].join("\n");
+    // Rule 192 still binds a truncated stem: never quick-price
+    // from a partial excerpt — the stem state (mints nothing) is
+    // the only determination a truncated stem gets here.
+    const stemOwn = item.operativeExcerptTruncated ? null : scanBranches(stemOwnText, "RETURN");
+    if (stemOwn) return stemOwn;
+    const stemDefined = resolveDefinedTermCap(item);
+    if (stemDefined != null && stemDefined >= 0.001) {
+      return {
+        formulaType: "FLAT_AMOUNT",
+        thresholdValue: stemDefined,
+        amountKind: "FIXED",
+        measurementBasis: /outstanding amount at any time|currently outstanding/i.test(stemOwnText)
+          ? "CURRENTLY_OUTSTANDING"
+          : "CUMULATIVE_INCURRED",
+        notes: ["Compiled fixed-dollar basket from a defined-term cap resolved against the document's definitions"],
+        modelingStatus: "MODELED",
+        missingFields: [],
+      };
+    }
+    if (stemDefined != null && stemDefined > 0) {
+      return {
+        formulaType: "FLAT_AMOUNT",
+        thresholdValue: 0,
+        amountKind: "FIXED",
+        measurementBasis: "CUMULATIVE_INCURRED",
+        notes: [
+          `Suspected unit misread: the defined-term cap of $${Number((stemDefined * 1_000_000).toFixed(2)).toLocaleString("en-US")} is below $1,000 — no real basket is that small (a dropped scale is the likely cause). Not modeled; counsel to confirm the amount from the source text.`,
+        ],
+        modelingStatus: "KNOWN_NOT_MODELED",
+        missingFields: ["thresholdValue"],
+      };
+    }
+    return {
+      formulaType: "SECTION_STEM",
+      thresholdValue: 0,
+      params: { childSectionRefs: [...(item.sectionStemChildRefs ?? [])] },
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        `Section stem: this item is the section's introductory text; its operative clauses are separate items (${(item.sectionStemChildRefs ?? []).join(", ")}) and carry the terms. No Permission is minted from the stem — that would double-count the clause items.`,
+      ],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
   // Rule 192: the item's excerpt is a PREFIX of a longer operative
   // span (4000-char cap) — tail clauses are missing. A formula
   // parsed from it would attribute an early clause's amount to
@@ -39,7 +103,81 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   // excerpt. EDITED items are exempt — counsel supplied the
   // controlling text, so the analyzer's excerpt is not what
   // the formula parses.
+  //
+  // Step 3 narrows the gate WITHOUT loosening it: two reference
+  // legs may still resolve a truncated item, because neither can
+  // attribute a stray amount to the item —
+  //   (1) a defined-term cap referenced in the available text
+  //       (prefix excerpt, or the full span when attached),
+  //       resolved by Rule 197's bare-dollar resolver against the
+  //       item's attached definitions;
+  //   (2) for CLAUSE-LEVEL items only, a scan of the full span
+  //       restricted to cap-framed windows (amounts outside a
+  //       cap frame — minimum denominations, thresholds of other
+  //       tests — never enter the scan). A section-level span
+  //       covers sibling clauses with independent caps, so it
+  //       gets leg (1) only.
+  // The summary/display excerpt and the Rule 192 disclosure on
+  // the item are unchanged, and a truncated item NEVER becomes
+  // routine via these legs (the routine gate keeps its own
+  // truncated-excerpt exception).
   if (item.operativeExcerptTruncated && item.reviewerDecision !== "EDITED") {
+    // The reference legs serve grant-bearing items only: a
+    // definitions-article entry (Rule 204: never grants) or other
+    // non-grant item gains nothing from a resolved cap — its span
+    // IS a definition or a test, not a basket.
+    const hasGrants = grantTypesForItem(item).length > 0;
+    const definedCap = !hasGrants
+      ? null
+      : (resolveDefinedTermCap(item) ??
+        (item.operativeFullSpan
+          ? resolveDefinedTermCap({ ...item, operativeLanguageExcerpt: item.operativeFullSpan })
+          : null));
+    if (definedCap != null && definedCap >= 0.001) {
+      return {
+        formulaType: "FLAT_AMOUNT",
+        thresholdValue: definedCap,
+        amountKind: "FIXED",
+        measurementBasis: "CUMULATIVE_INCURRED",
+        notes: [
+          "Compiled fixed-dollar basket from a defined-term cap referenced in the item's available text and resolved against the document's definitions. The stored excerpt is a truncated prefix (Rule 192 disclosure unchanged); the cap reference itself is inside the available text.",
+        ],
+        modelingStatus: "MODELED",
+        missingFields: [],
+      };
+    }
+    if (definedCap != null && definedCap > 0) {
+      // Sub-$1k defined-term cap on a truncated item: the P4
+      // unit-misread guard applies exactly as on the full parse.
+      return {
+        formulaType: "FLAT_AMOUNT",
+        thresholdValue: 0,
+        amountKind: "FIXED",
+        measurementBasis: "CUMULATIVE_INCURRED",
+        notes: [
+          `Suspected unit misread: the defined-term cap of $${Number((definedCap * 1_000_000).toFixed(2)).toLocaleString("en-US")} is below $1,000 — no real basket is that small (a dropped scale is the likely cause). Not modeled; counsel to confirm the amount from the source text.`,
+        ],
+        modelingStatus: "KNOWN_NOT_MODELED",
+        missingFields: ["thresholdValue"],
+      };
+    }
+    if (
+      hasGrants &&
+      item.operativeFullSpan &&
+      (item.operativeNodeType === "CLAUSE" || item.operativeNodeType === "SUBSECTION")
+    ) {
+      const spanParsed = scanBranches(capFramedWindows(item.operativeFullSpan), "NULL");
+      if (spanParsed && spanParsed.modelingStatus === "MODELED") {
+        return {
+          ...spanParsed,
+          params: { ...(spanParsed.params ?? {}), spanSource: "FULL_SPAN" },
+          notes: [
+            ...spanParsed.notes,
+            "Compiled from the item's full operative span under cap-frame discipline (only amounts inside a cap frame were scanned); the stored excerpt is a truncated prefix and the Rule 192 disclosure on the item is unchanged.",
+          ],
+        };
+      }
+    }
     return {
       formulaType: "FLAT_AMOUNT",
       thresholdValue: 0,
@@ -286,6 +424,53 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
     };
   }
 
+  // Formula representation (step 3): the clause's own text priced
+  // nothing and Rule 197 did not resolve — try the parent section's
+  // chapeau as an explicit contract field. A cap stated in the stem
+  // can govern its clauses (Asure 2.16(e)'s $30M incremental cap
+  // lives in the §2.16 stem, a permission stem: "may establish
+  // Incremental Facilities ... not to exceed $30,000,000"). The
+  // clause's own text always wins — this runs only after it
+  // failed — and a chapeau-compiled formula carries its provenance
+  // in params.
+  //
+  // GUARD — prohibition-trigger stems do NOT feed: when the stem
+  // is a prohibition whose amount is its TRIGGER ("Enter into any
+  // transaction ... with a fair market value in excess of the
+  // greater of $12,500,000 and 2.5% of EBITDA ..., other than:"),
+  // the sub-clauses are EXCEPTIONS to the prohibition, not baskets
+  // capped by the threshold (Solaris/Tenable §7.07 affiliate
+  // transactions). Stamping the trigger onto each exception would
+  // invent a cap the exception does not carry. Such clauses stay
+  // KNOWN_NOT_MODELED with the named reason chapeauCap (below).
+  const chapeau = (item.parentChapeau ?? "").trim();
+  const chapeauHasCapLanguage =
+    chapeau.length > 0 &&
+    (parseMoneyMillions(chapeau) != null ||
+      /greater of/i.test(chapeau) ||
+      parsePctOf(chapeau, "EBITDA") != null ||
+      parsePctOf(chapeau, "TOTAL_ASSETS") != null ||
+      parsePctOf(chapeau, "NET_WORTH") != null ||
+      parseRatio(chapeau) != null ||
+      /\bnot\s+(?:to\s+)?exceed/i.test(chapeau) ||
+      /\bexceeding\b/i.test(chapeau) ||
+      /\bmaximum aggregate\b/i.test(chapeau) ||
+      /\bin excess of\s+(?:the\s+greater\s+of|\$)/i.test(chapeau));
+  const chapeauProhibitionTrigger = hasProhibitionTrigger(chapeau);
+  if (chapeau && !chapeauProhibitionTrigger && grantTypesForItem(item).length > 0) {
+    const chapeauParsed = scanBranches(chapeau, "NULL");
+    if (chapeauParsed && chapeauParsed.modelingStatus === "MODELED") {
+      return {
+        ...chapeauParsed,
+        params: { ...(chapeauParsed.params ?? {}), capSource: "CHAPEAU" },
+        notes: [
+          "Cap text is in the section chapeau (stem) governing this clause, not in the clause's own text.",
+          ...chapeauParsed.notes,
+        ],
+      };
+    }
+  }
+
   // ── Affirmative UNCAPPED determination (formula-representation
   // step 1) ──────────────────────────────────────────────────────
   // Every priced branch above failed: the scanned contract text
@@ -300,7 +485,27 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   // structure, or reference to a cap outside the clause keeps the
   // item KNOWN_NOT_MODELED (with the named reason referenceExternal
   // when the clause points at the cap's location).
-  const uncapped = uncappedEvaluation(item, basketText, { builder });
+  // The uncapped screens read the clause's text AND its governing
+  // chapeau (each text separately — a screen must match inside one
+  // text, never across the join boundary): a cap stated in the
+  // stem means the clause is governed, not uncapped.
+  const uncapped = uncappedEvaluation(item, basketText, chapeau, {
+    builder: builder || /Available Amount|builder basket|Cumulative Credit/i.test(chapeau),
+  });
+  if (uncapped.kind === "UNCAPPED" && chapeauHasCapLanguage) {
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: 0,
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        ...notes,
+        "The clause is governed by a cap stated in its section stem (chapeau) that the clause-level compile cannot adopt as the clause's own cap (a prohibition threshold, or a stem cap in a form the scan could not price). It stays KNOWN_NOT_MODELED with missing field chapeauCap — never defaulted to uncapped.",
+      ],
+      modelingStatus: "KNOWN_NOT_MODELED",
+      missingFields: ["chapeauCap", "thresholdValue", "formulaType"],
+    };
+  }
   if (uncapped.kind === "UNCAPPED") {
     return {
       formulaType: "NONE_UNCAPPED",
@@ -343,6 +548,229 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   };
 }
 
+/**
+ * True when the text phrases an amount as a prohibition TRIGGER
+ * ("...with a fair market value in excess of $100,000,000 for any
+ * individual transaction, other than:") rather than as a cap
+ * ("by an aggregate amount not in excess of $30,000,000" — the
+ * negated form is the standard not-to-exceed cap and must NOT
+ * trip this check).
+ */
+function hasProhibitionTrigger(text: string): boolean {
+  const re = /in excess of\s+(?:the\s+greater\s+of|\$)/gi;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    const before = text.slice(Math.max(0, m.index - 10), m.index);
+    if (/not\s+(?:be\s+)?$/i.test(before)) continue;
+    return true;
+  }
+  return false;
+}
+
+/**
+ * The priced branch logic over an arbitrary contract text — used
+ * for the two step-3 auxiliary scans (the parent chapeau, and a
+ * truncated item's cap-framed full-span windows). The item's OWN
+ * text keeps the original inline path in parseFormulaFromItem;
+ * this helper mirrors its branch order and return shapes exactly.
+ * Returns null when the text prices nothing. The P4 unit-misread
+ * guard returns the fail-closed KNM object for the primary scan
+ * ("RETURN") and null for auxiliary scans ("NULL") — a suspect
+ * amount in a chapeau or span must not mint, but it also must not
+ * poison the item's own evaluation.
+ */
+function scanBranches(text: string, onUnitMisread: "RETURN" | "NULL"): ParsedFormula | null {
+  const notes: string[] = [];
+  const money = parseMoneyMillions(text);
+  const pctEbitda = parsePctOf(text, "EBITDA");
+  const pctAssets = parsePctOf(text, "TOTAL_ASSETS");
+  const pctNetWorth = parsePctOf(text, "NET_WORTH");
+  const ratio = parseRatio(text);
+  const greaterOf = /greater of/i.test(text);
+  const ebitdaBase = /EBITDA/i.test(text);
+  const assetsBase = /Total Assets|Consolidated Total Assets/i.test(text);
+  const netWorthBase = /Net Worth/i.test(text);
+  const builder = /Available Amount|builder basket|Cumulative Credit/i.test(text);
+  const outstanding = /outstanding amount at any time|currently outstanding/i.test(text);
+
+  const ratioDriven = ratio != null && /leverage|incurrence|ratio debt|pro forma/i.test(text);
+  if (money != null && money > 0 && money < 0.001 && !ratioDriven) {
+    if (onUnitMisread === "NULL") return null;
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: 0,
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        `Suspected unit misread: the parsed amount of $${Number((money * 1_000_000).toFixed(2)).toLocaleString("en-US")} is below $1,000 — no real basket is that small (a dropped scale, e.g. "$30 million" read as $30, is the likely cause). Not modeled; counsel to confirm the amount from the source text.`,
+      ],
+      modelingStatus: "KNOWN_NOT_MODELED",
+      missingFields: ["thresholdValue"],
+    };
+  }
+
+  if (builder && money != null) {
+    const cniMentioned = /net income|CNI/i.test(text);
+    const cniShare = parsePctOf(text, "CNI");
+    return {
+      formulaType: "BUILDER_BASKET",
+      thresholdValue: money,
+      params: {
+        pctEbitda: ebitdaBase && pctEbitda != null ? pctEbitda : undefined,
+        cniSharePct: cniShare ?? undefined,
+        includeEquityProceeds: /equity/i.test(text),
+      },
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: ["Compiled builder/available-amount starter from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [
+        ...(ebitdaBase && pctEbitda == null ? ["builder pct of EBITDA"] : []),
+        ...(cniMentioned && cniShare == null ? ["builder cni share %"] : []),
+      ],
+    };
+  }
+
+  if (greaterOf && money != null && ebitdaBase && pctEbitda != null) {
+    return {
+      formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA",
+      thresholdValue: money,
+      params: { pctEbitda },
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled greater-of flat / % EBITDA basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  if (greaterOf && money != null && assetsBase && pctAssets != null) {
+    return {
+      formulaType: "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS",
+      thresholdValue: money,
+      params: { pctTotalAssets: pctAssets },
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled greater-of flat / % Consolidated Total Assets basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  if (greaterOf && money != null && assetsBase) {
+    notes.push(
+      "Grower component (% of Consolidated Total Assets) referenced but percentage not parsed; fixed-dollar floor modeled only.",
+    );
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: money,
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes,
+      modelingStatus: "MODELED",
+      missingFields: ["grower_%_total_assets"],
+    };
+  }
+
+  if (greaterOf && money != null && netWorthBase && pctNetWorth != null) {
+    return {
+      formulaType: "GREATER_OF_FLAT_OR_PCT_NET_WORTH",
+      thresholdValue: money,
+      params: { pctNetWorth },
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled greater-of flat / % Consolidated Net Worth basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  if (greaterOf && money != null && netWorthBase) {
+    notes.push(
+      "Grower component (% of Consolidated Net Worth) referenced but percentage not parsed; fixed-dollar floor modeled only.",
+    );
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: money,
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes,
+      modelingStatus: "MODELED",
+      missingFields: ["grower_%_net_worth"],
+    };
+  }
+
+  if (ratio != null && /leverage|incurrence|ratio debt|pro forma/i.test(text)) {
+    return {
+      formulaType: /unlimited|so long as/i.test(text) ? "RATIO_GATE" : "LEVERAGE_RATIO_ROOM",
+      thresholdValue: ratio,
+      params: { debtBasis: /secured|first.?lien/i.test(text) ? "secured" : "total" },
+      amountKind: "INCURRENCE_BASED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: ["Compiled ratio permission/gate from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  if (money != null) {
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: money,
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled fixed-dollar basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  return null;
+}
+
+/**
+ * Cap-frame discipline for a truncated item's full span: build
+ * the scan text from cap-frame SEGMENTS only — for each cap frame
+ * (not exceed / exceeding / greater of / lesser of / up to /
+ * maximum), the text from the frame up to its first money amount
+ * (or a bounded tail when the frame's payload is a percentage or
+ * ratio; a greater-of segment keeps both legs). Amounts outside a
+ * cap frame — minimum denominations ("not less than $5,000,000",
+ * "integral multiple of $1,000,000"), other tests' thresholds —
+ * never enter the scan, and the first segment in document order
+ * carries the clause's own cap. This is what keeps the full-span
+ * leg from repeating the Rule 192 misattribution on a longer
+ * text: an early NON-cap amount cannot win, because it is never
+ * scanned.
+ */
+function capFramedWindows(text: string): string {
+  const re = /not\s+(?:to\s+)?exceed|exceeding|greater of|lesser of|up to|maximum/gi;
+  const segments: string[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    const start = m.index;
+    const isGreaterOf = /greater of|lesser of/i.test(m[0]);
+    // A greater-of segment keeps both legs. Any other frame keeps
+    // only its payload window (64 chars): the frame's own amount
+    // or term sits there ("not to exceed $X", "not exceeding the
+    // Threshold Amount"), while a LONGER tail would swallow the
+    // next sentence's amounts — e.g. the denomination sentence
+    // after a ratio frame ("...shall not exceed 3.75:1.00. Each
+    // Incremental Facility shall be in an integral multiple of
+    // $1,000,000...", the $ ~85 chars past the frame), which is
+    // how a minimum denomination would otherwise mint as the
+    // clause's cap.
+    const bound = Math.min(text.length, start + (isGreaterOf ? 340 : 64));
+    let end = bound;
+    if (!isGreaterOf) {
+      const moneyMatch = /\$[\d,]+(?:\.\d+)?/.exec(text.slice(start, bound));
+      if (moneyMatch) end = start + moneyMatch.index + moneyMatch[0].length + 6;
+    }
+    segments.push(text.slice(start, end));
+  }
+  return segments.join("\n");
+}
+
 type UncappedEvaluation =
   | { kind: "UNCAPPED" }
   | { kind: "REFERENCE_EXTERNAL"; label: string }
@@ -358,8 +786,16 @@ type UncappedEvaluation =
 function uncappedEvaluation(
   item: CovenantSummaryItem,
   basketText: string,
+  chapeauText: string,
   flags: { builder: boolean },
 ): UncappedEvaluation {
+  // Screens run over each text SEPARATELY: a pattern must match
+  // inside one text, never across the boundary between the
+  // clause's text and its chapeau (a permission phrase ending
+  // "...permitted pursuant to" joined to a chapeau beginning
+  // "Section ..." would otherwise fabricate a reference).
+  const texts = chapeauText ? [basketText, chapeauText] : [basketText];
+  const anyText = (re: RegExp): boolean => texts.some((t) => re.test(t));
   // (a) The item must actually grant, and the analyzer must have
   // extracted an affirmative permission phrase — keyword-derived
   // grants over a fragment are not an affirmative grant statement.
@@ -416,7 +852,7 @@ function uncappedEvaluation(
     },
   ];
   for (const screen of referenceScreens) {
-    if (screen.re.test(basketText)) return { kind: "REFERENCE_EXTERNAL", label: screen.label };
+    if (anyText(screen.re)) return { kind: "REFERENCE_EXTERNAL", label: screen.label };
   }
   // A builder reference with no parseable amount: the cap is the
   // Available Amount / Cumulative Credit balance, a defined-term

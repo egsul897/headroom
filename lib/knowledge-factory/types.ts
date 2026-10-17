@@ -214,6 +214,18 @@ export interface CovenantCandidateRecord {
    * not mint a formula from a truncated excerpt (it would
    * attribute an early clause's amount to the whole section). */
   excerptTruncated?: boolean;
+  /**
+   * The candidate's FULL operative span text, attached only when
+   * the excerpt is a truncated prefix (span > 4000 chars) and the
+   * span is within the storage bound. The summary/display excerpt
+   * stays the prefix and the Rule 192 disclosure is unchanged;
+   * this field exists so the FORMULA parse can consult the whole
+   * span under cap-frame discipline (formula-parse step 3) and so
+   * a defined-term cap reference past the prefix can resolve.
+   * Absent when the span exceeds the bound — the parse then stays
+   * fail-closed on the truncated item.
+   */
+  fullSpanText?: string;
   representationLevel: KnowledgeRepresentationLevel;
   discoveryScore: number;
 }

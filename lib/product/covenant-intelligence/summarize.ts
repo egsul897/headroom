@@ -82,6 +82,23 @@ export interface CovenantSummaryItem {
    * must not mint a formula from it (except when counsel EDITED
    * the item, supplying the controlling text). */
   operativeExcerptTruncated?: boolean;
+  /** Formula representation (step 3): parent section chapeau text,
+   * carried for the formula scan (a cap may be stated in the stem
+   * governing this clause). Contract text; additive. */
+  parentChapeau?: string;
+  /** The item's full operative span when its excerpt is a
+   * truncated prefix (formula parse only; the display excerpt
+   * and Rule 192 disclosure are unchanged). */
+  operativeFullSpan?: string;
+  /** Structural node type of the item's own node (formula
+   * parse's full-span guard). */
+  operativeNodeType?: string;
+  /** Formula representation (step 3): when this item IS a section
+   * stem whose operative sub-clauses are separately present as
+   * items, the sub-clauses' section refs. The stem carries no
+   * terms of its own — its clauses do (per-clause provenance is
+   * preserved; nothing is minted from the stem). */
+  sectionStemChildRefs?: string[];
   /** Heading of the enclosing ARTICLE node, if any (powers the representations guard in grant-types). */
   articleHeading?: string;
   sourceCitation: string;
@@ -230,6 +247,9 @@ function itemFromAnalysis(
     draftingPatterns: analysis.draftingPatterns,
     operativeLanguageExcerpt: analysis.operativeLanguageExcerpt,
     operativeExcerptTruncated: analysis.operativeExcerptTruncated,
+    parentChapeau: analysis.parentChapeau,
+    operativeFullSpan: analysis.operativeFullSpan,
+    operativeNodeType: analysis.operativeNodeType,
     articleHeading: analysis.articleHeading,
     sourceCitation: analysis.sourceCitation,
     governingAgreement,
@@ -408,6 +428,32 @@ export function buildDocumentCovenantSummary(params: {
   const totalItemsBeforeCap = items.length;
   const truncated = items.length > SUMMARY_ITEM_CAP;
   const capped = items.slice(0, SUMMARY_ITEM_CAP);
+  // Formula representation (step 3): stamp section stems on the
+  // FINAL item list. An item is a stem when other items' nodes are
+  // its structural children — the section's operative clauses are
+  // itemized separately and carry the terms, so the stem itself
+  // must not sit in the queue as a bare grant item with no terms
+  // (nor mint a Permission duplicating its clauses'). Evaluated
+  // after the cap: a child cut by the cap is not "separately
+  // present", and the summary-cap disclosure already covers it.
+  {
+    const itemNodeIds = new Set(capped.map((i) => i.nodeId).filter(Boolean) as string[]);
+    const childRefsByParent = new Map<string, string[]>();
+    for (const child of capped) {
+      if (!child.nodeId) continue;
+      const parentId = nodeById.get(child.nodeId)?.parentNodeId;
+      if (parentId && parentId !== child.nodeId && itemNodeIds.has(parentId)) {
+        const list = childRefsByParent.get(parentId) ?? [];
+        list.push(child.sectionRef);
+        childRefsByParent.set(parentId, list);
+      }
+    }
+    for (const it of capped) {
+      if (!it.nodeId) continue;
+      const refs = childRefsByParent.get(it.nodeId);
+      if (refs && refs.length > 0) it.sectionStemChildRefs = refs;
+    }
+  }
   capped.sort((a, b) => {
     const ai = preferredOrder.indexOf(a.category);
     const bi = preferredOrder.indexOf(b.category);

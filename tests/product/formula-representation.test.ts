@@ -357,6 +357,326 @@ describe("step 1 — review gates and proposal language", () => {
   });
 });
 
+// ── Step 3: chapeau / stem / full-span ─────────────────────────
+
+describe("step 3 — chapeau feed and section stems (summarize integration)", () => {
+  const CHAPEAU =
+    "Section 2.16. Incremental Facilities. The Borrowers may from time to time establish Incremental Facilities in an aggregate principal amount not to exceed $30,000,000, subject to the following:";
+  const nodes = [
+    { nodeId: "n-stem", sourceId: "src-chapeau", nodeType: "SECTION", sectionRef: "2.16", heading: "Incremental Facilities", charStart: 0, charEnd: 200, parentNodeId: null },
+    { nodeId: "n-clause", sourceId: "src-chapeau", nodeType: "CLAUSE", sectionRef: "2.16(e)", heading: "2.16(e)", charStart: 200, charEnd: 400, parentNodeId: "n-stem" },
+  ] as never[];
+  const candidates = [
+    {
+      candidateId: "c-stem",
+      sourceId: "src-chapeau",
+      nodeId: "n-stem",
+      families: ["INDEBTEDNESS"],
+      signals: [],
+      excerpt: CHAPEAU,
+      representationLevel: "DISCOVERED_CANDIDATE",
+      discoveryScore: 5,
+    },
+    {
+      candidateId: "c-clause",
+      sourceId: "src-chapeau",
+      nodeId: "n-clause",
+      families: ["LIENS"],
+      signals: [],
+      excerpt: "(e) Liens securing Incremental Facilities and Incremental Equivalent Debt incurred under this Section 2.16;",
+      representationLevel: "DISCOVERED_CANDIDATE",
+      discoveryScore: 5,
+    },
+  ] as never[];
+
+  it("carries the chapeau onto the clause item, stamps the stem, and compiles the clause from the chapeau", async () => {
+    const { buildDocumentCovenantSummary } = await import("../../lib/product/covenant-intelligence/summarize");
+    const summary = buildDocumentCovenantSummary({
+      sourceId: "src-chapeau",
+      documentTitle: "Synthetic CA",
+      issuerCik: "0000000000",
+      documentClass: "CREDIT_AGREEMENT" as never,
+      candidates,
+      definitions: [],
+      structuralNodes: nodes,
+      crossReferences: [],
+    });
+    const clause = summary.items.find((i) => i.sectionRef === "2.16(e)");
+    const stem = summary.items.find((i) => i.sectionRef === "2.16");
+    expect(clause).toBeTruthy();
+    expect(stem).toBeTruthy();
+    expect(clause!.parentChapeau).toContain("$30,000,000");
+    expect(stem!.sectionStemChildRefs).toEqual(["2.16(e)"]);
+
+    // The clause's own text has no cap; the stem's chapeau does.
+    const parsedClause = parseFormulaFromItem(clause!);
+    expect(parsedClause.modelingStatus).toBe("MODELED");
+    expect(parsedClause.formulaType).toBe("FLAT_AMOUNT");
+    expect(parsedClause.thresholdValue).toBe(30);
+    expect(parsedClause.params?.capSource).toBe("CHAPEAU");
+
+    // This stem's own chapeau text carries the cap, so the stem
+    // item prices it from its own fields (status quo preserved —
+    // the stem state never removes a formula the item already
+    // had). A stem with NO terms of its own is the SECTION_STEM
+    // case (pinned in the compile/routine tests below).
+    const parsedStem = parseFormulaFromItem(stem!);
+    expect(parsedStem.modelingStatus).toBe("MODELED");
+    expect(parsedStem.formulaType).toBe("FLAT_AMOUNT");
+    expect(parsedStem.thresholdValue).toBe(30);
+  });
+
+  it("a stem is never routine, and its proposal is the no-effect REJECTED naming its clauses", () => {
+    const stemItem = item({
+      sectionRef: "6.01",
+      heading: "Indebtedness",
+      posture: "GENERAL_PROHIBITION",
+      plainEnglish:
+        "Section 6.01 operates as a general prohibition within the debt incurrence regime. No Loan Party will incur any Indebtedness, except:",
+      permissions: [],
+      operativeLanguageExcerpt: "No Loan Party will, nor will it permit any Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:",
+      sectionStemChildRefs: ["6.01(a)", "6.01(b)"],
+    } as Partial<CovenantSummaryItem>);
+    // A term-less stem is determinate as SECTION_STEM.
+    const parsedStem = parseFormulaFromItem(stemItem);
+    expect(parsedStem.modelingStatus).toBe("MODELED");
+    expect(parsedStem.formulaType).toBe("SECTION_STEM");
+    expect(isRoutineItem(stemItem)).toBe(false);
+    const proposal = proposeReviewDecision(stemItem);
+    expect(proposal.decision).toBe("REJECTED");
+    expect(proposal.needsAttention).toBe(false);
+    expect(proposal.reason).toContain("Section stem");
+    expect(proposal.reason).toContain("6.01(a)");
+  });
+});
+
+describe("step 3 — truncated items: reference legs under Rule 192", () => {
+  const TRUNC_BASE = {
+    sectionRef: "2.14(a)",
+    category: "DEBT_INCURRENCE" as const,
+    posture: "GENERAL_PROHIBITION" as const,
+    plainEnglish:
+      "Section 2.14(a) operates as a general prohibition within the debt incurrence regime. The Borrowers may add Incremental Facilities in an aggregate principal amount not exceeding the Threshold Amount.",
+    permissions: ["(a) Incremental Facilities in an aggregate principal amount not exceeding the Threshold Amount"],
+    operativeExcerptTruncated: true,
+    operativeLanguageExcerpt:
+      "(a) At any time and from time to time, the Borrowers may add Incremental Facilities in an aggregate principal amount not exceeding the Threshold Amount, plus additional amounts subject to the conditions set forth in this Section 2.14(a) and the further provisos therein...",
+    applicableDefinitions: [{ term: "Threshold Amount", excerpt: "“ Threshold Amount ” means $ 750,000." }] as never,
+  };
+
+  it("leg 1: a defined-term cap referenced in the available text resolves despite truncation", () => {
+    const parsed = parseFormulaFromItem(item({ ...TRUNC_BASE, operativeNodeType: "SUBSECTION" } as Partial<CovenantSummaryItem>));
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("FLAT_AMOUNT");
+    expect(parsed.thresholdValue).toBeCloseTo(0.75, 9);
+    expect(parsed.notes.join(" ")).toContain("truncated prefix");
+  });
+
+  it("leg 2: a clause-level item compiles a cap-framed amount that sits past the prefix in its full span", () => {
+    const spanText =
+      "(a) The Borrowers may incur Incremental Term Loans and other Indebtedness under this clause (a), subject to the terms hereof, in an aggregate principal amount that is not less than $5,000,000 in the case of each tranche, and the aggregate principal amount of all Indebtedness incurred under this clause (a) shall not exceed $10,000,000 at any time outstanding.";
+    const parsed = parseFormulaFromItem(
+      item({
+        ...TRUNC_BASE,
+        permissions: ["(a) Incremental Facilities"],
+        applicableDefinitions: [] as never,
+        operativeFullSpan: spanText,
+        operativeNodeType: "SUBSECTION",
+      } as Partial<CovenantSummaryItem>),
+    );
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("FLAT_AMOUNT");
+    // The cap-framed $10M wins; the $5M minimum denomination (also
+    // cap-frame-adjacent language "not less than") must not mint.
+    expect(parsed.thresholdValue).toBe(10);
+    expect(parsed.params?.spanSource).toBe("FULL_SPAN");
+  });
+
+  it("cap-frame discipline: amounts outside a cap frame never mint from a span (denominations only → still KNM)", () => {
+    const spanText =
+      "(a) Each Incremental Facility shall be in an integral multiple of $1,000,000 and be in an aggregate principal amount that is not less than $5,000,000 in the case of Incremental Term Loans. The Borrowers shall deliver a notice not less than three Business Days prior to the proposed incurrence date.";
+    const parsed = parseFormulaFromItem(
+      item({
+        ...TRUNC_BASE,
+        permissions: ["(a) Incremental Facilities"],
+        applicableDefinitions: [] as never,
+        operativeFullSpan: spanText,
+        operativeNodeType: "SUBSECTION",
+      } as Partial<CovenantSummaryItem>),
+    );
+    expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
+    expect(parsed.missingFields).toContain("operativeExcerptTruncated");
+  });
+
+  it("guard: a SECTION-level truncated item does NOT full-span compile (its span covers sibling clauses)", () => {
+    const spanText =
+      "Section 6.11. Liens. No Loan Party shall create any Lien, except: (a) Liens in an aggregate amount not to exceed $5,000,000; (b) other Liens in an aggregate amount not to exceed the greater of $40,000,000 and 10% of Consolidated EBITDA.";
+    const parsed = parseFormulaFromItem(
+      item({
+        ...TRUNC_BASE,
+        sectionRef: "6.11",
+        permissions: ["Liens"],
+        applicableDefinitions: [] as never,
+        operativeFullSpan: spanText,
+        operativeNodeType: "SECTION",
+      } as Partial<CovenantSummaryItem>),
+    );
+    expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
+    expect(parsed.missingFields).toContain("operativeExcerptTruncated");
+  });
+
+  it("no span attached → the Rule 192 outcome is byte-identical to before step 3", () => {
+    const parsed = parseFormulaFromItem(item({ ...TRUNC_BASE, applicableDefinitions: [] as never } as Partial<CovenantSummaryItem>));
+    expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
+    expect(parsed.missingFields).toEqual(["thresholdValue", "formulaType", "operativeExcerptTruncated"]);
+  });
+
+  it("a truncated STEM resolves as a stem (mints nothing), not via the span legs", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        ...TRUNC_BASE,
+        applicableDefinitions: [] as never,
+        operativeFullSpan: "(a) amounts not to exceed $99,000,000;",
+        operativeNodeType: "SECTION",
+        sectionStemChildRefs: ["2.14(b)"],
+      } as Partial<CovenantSummaryItem>),
+    );
+    expect(parsed.formulaType).toBe("SECTION_STEM");
+    expect(parsed.modelingStatus).toBe("MODELED");
+  });
+});
+
+describe("step 3 — chapeau guards (prohibition triggers, join boundaries, denominations)", () => {
+  it("a prohibition-TRIGGER chapeau does not feed its threshold onto exception clauses (Solaris/Tenable 7.07 shape)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "7.07(f)",
+        category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+        plainEnglish:
+          "Section 7.07(f) operates as an enumerated permission within the restricted payments and investments regime. Investments consisting of equity issuances, repurchases and retirements of Equity Interests permitted under Section 7.06.",
+        permissions: ["(f) equity issuances, repurchases, redemptions, retirements or other acquisitions or retirements of Equity Interests by the Parent Borrower or any Restricted Subsidiary"],
+        operativeLanguageExcerpt:
+          "(f) equity issuances, repurchases, redemptions, retirements or other acquisitions or retirements of Equity Interests by the Parent Borrower or any Restricted Subsidiary;",
+        parentChapeau:
+          "Section 7.07. Transactions with Affiliates. Enter into any transaction of any kind with any Affiliate of the Borrower with a fair market value in excess of the greater of (x) $12,500,000 and (y) 2.5% of TTM Consolidated EBITDA of the Borrower and its Restricted Subsidiaries for any individual transaction, whether or not in the ordinary course of business, other than:",
+      } as Partial<CovenantSummaryItem>),
+    );
+    // NOT the greater-of (the trigger is not the exception's cap),
+    // NOT uncapped (the stem governs it) — KNM naming the chapeau.
+    expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
+    expect(parsed.missingFields).toContain("chapeauCap");
+  });
+
+  it("a 'not in excess of' chapeau cap DOES feed (Asure 2.16 shape — the negated form is a cap, not a trigger)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "2.16(e)",
+        category: "OTHER",
+        plainEnglish:
+          "Section 2.16(e) operates as an enumerated permission within the liens and secured debt regime. Liens securing Incremental Commitments established pursuant to this Section 2.16.",
+        permissions: ["(e) Liens securing Incremental Commitments established pursuant to this Section 2.16"],
+        operativeLanguageExcerpt:
+          "(e) The Loans and Commitments established pursuant to this clause (e) shall constitute Loans and Commitments under this Agreement.",
+        parentChapeau:
+          "2.16 Increase in Commitments. The Borrower may elect to request an increase to the existing Commitments, by an aggregate amount not in excess of $30,000,000. Each Incremental Commitment shall be in an aggregate amount of $5,000,000 or any whole multiple of $1,000,000 in excess thereof;",
+      } as Partial<CovenantSummaryItem>),
+    );
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("FLAT_AMOUNT");
+    expect(parsed.thresholdValue).toBe(30);
+    expect(parsed.params?.capSource).toBe("CHAPEAU");
+  });
+
+  it("screens never match across the clause/chapeau join boundary (Solaris 7.01(m) shape)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "7.01(m)",
+        category: "LIENS_SECURED_DEBT",
+        plainEnglish:
+          "Section 7.01(m) operates as an enumerated permission within the liens and secured debt regime. Liens on cash advances in favor of the seller of any property to be acquired in an Investment.",
+        permissions: ["(m) Liens (i) on cash advances in favor of the seller of any property to be acquired in an Investment permitted pursuant to"],
+        operativeLanguageExcerpt: "(m) Liens (i) on cash advances in favor of the seller of any property to be acquired in an Investment permitted pursuant to",
+        parentChapeau:
+          "Section 7.01. Liens. Create, incur or assume any Lien upon any of its property, assets or revenues, whether now owned or hereafter acquired, other than the following (collectively, “ Permitted Liens ”):",
+      } as Partial<CovenantSummaryItem>),
+    );
+    expect(parsed.formulaType).toBe("NONE_UNCAPPED");
+  });
+
+  it("a denomination after a ratio frame in the span never mints (Tenable 2.14(a) shape)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "2.14(a)",
+        posture: "GENERAL_PROHIBITION",
+        plainEnglish:
+          "Section 2.14(a) operates as a general prohibition within the debt incurrence regime. The Borrowers may add Incremental Facilities subject to the Incremental Incurrence Test.",
+        permissions: ["(a) Incremental Facilities"],
+        operativeExcerptTruncated: true,
+        operativeLanguageExcerpt: "(a) At any time and from time to time, the Borrowers may add Incremental Facilities...",
+        operativeFullSpan:
+          "(a) the aggregate principal amount of all Incremental Equivalent Debt so incurred, together with the aggregate principal amount of all Incremental Facilities, shall not exceed 3.75:1.00. Each Incremental Facility shall be in an integral multiple of $1,000,000 and be in an aggregate principal amount that is not less than $5,000,000 in case of Incremental Term Loans.",
+        operativeNodeType: "SUBSECTION",
+      } as Partial<CovenantSummaryItem>),
+    );
+    expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
+    expect(parsed.thresholdValue).toBe(0);
+    expect(parsed.missingFields).toContain("operativeExcerptTruncated");
+  });
+
+  it("a truncated item with NO grants never resolves via the span legs (definitions-article shape)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "1.01(f)",
+        category: "OTHER",
+        posture: "UNRESOLVED",
+        plainEnglish: "Definition entry.",
+        permissions: [],
+        operativeExcerptTruncated: true,
+        operativeLanguageExcerpt: "“Unrestricted Incremental Amount” means, with respect to any incurrence, an amount not to exceed the greater of (x) $334,000,000 an...",
+        operativeFullSpan:
+          "“Unrestricted Incremental Amount” means, with respect to any incurrence, an amount not to exceed the greater of (x) $334,000,000 and (y) 100% of Consolidated EBITDA.",
+        operativeNodeType: "CLAUSE",
+      } as Partial<CovenantSummaryItem>),
+    );
+    expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
+    expect(parsed.missingFields).toContain("operativeExcerptTruncated");
+  });
+});
+
+describe("step 3 — compile SKIPs a section stem (no Permission minted)", () => {
+  it("compileAcceptedInterpretation returns SKIPPED and creates no Permission for a stem", async () => {
+    const stemItem = item({
+      sectionRef: "6.01",
+      heading: "Indebtedness",
+      posture: "GENERAL_PROHIBITION",
+      plainEnglish:
+        "Section 6.01 operates as a general prohibition within the debt incurrence regime. No Loan Party will incur any Indebtedness, except:",
+      permissions: [],
+      operativeLanguageExcerpt: "No Loan Party will incur any Indebtedness, except:",
+      sectionStemChildRefs: ["6.01(a)"],
+    } as Partial<CovenantSummaryItem>);
+    storedItems.splice(0, storedItems.length, stemItem);
+    const upsertsBefore = compileCalls.permissionUpserts.length;
+    const provisionsBefore = compileCalls.provisionCreates.length;
+    const { compileAcceptedInterpretation } = await import("../../lib/product/customer-intelligence/compile-accepted");
+    const results = await compileAcceptedInterpretation({
+      companyId: "co-1",
+      sourceId: "src-1",
+      sectionRef: "6.01",
+      category: "DEBT_INCURRENCE",
+      decision: "ACCEPTED",
+      reviewerKind: "COUNSEL",
+    });
+    expect(results).toHaveLength(1);
+    expect(results[0]!.status).toBe("SKIPPED");
+    expect(results[0]!.formulaType).toBe("SECTION_STEM");
+    expect(compileCalls.permissionUpserts.length).toBe(upsertsBefore);
+    expect(compileCalls.provisionCreates.length).toBe(provisionsBefore);
+    // restore for any later describes
+    storedItems.splice(0, storedItems.length, storedItem);
+  });
+});
+
 // ── Compile: an uncapped item mints a Permission with NO finite
 // limit from this clause; its conditions still attach. Prisma and
 // @prisma/client are mocked so the pin runs without a database
@@ -371,6 +691,8 @@ const storedItem = item({
   posture: "CONDITIONAL_PERMISSION",
   conditions: ["provided_that: provided that such Indebtedness is incurred in the ordinary course of business"],
 });
+/** Mutable: later describes swap the stored summary's items. */
+const storedItems: CovenantSummaryItem[] = [storedItem];
 vi.mock("@prisma/client", () => ({
   Prisma: {
     Decimal: class Decimal {
@@ -390,7 +712,7 @@ vi.mock("@/lib/prisma", () => ({
     knowledgeSource: {
       findFirst: async () => ({
         documentId: "doc-1",
-        metadata: { covenantSummary: { items: [storedItem] } },
+        metadata: { covenantSummary: { items: storedItems } },
       }),
     },
     document: {

@@ -67,6 +67,7 @@ function compiledTerms(item: CovenantSummaryItem): string | null {
   if (grants.length > 0) {
     const parsed = parseFormulaFromItem(item);
     if (parsed.modelingStatus !== "MODELED") return null;
+    if (parsed.formulaType === "SECTION_STEM") return null;
     if (parsed.formulaType === "NONE_UNCAPPED") {
       // Never "$0M" and never bare "unlimited capacity": the clause
       // sets no finite cap; its conditions and the agreement's other
@@ -154,6 +155,24 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
           : ""),
       terms: null,
       needsAttention: true,
+    };
+  }
+
+  // Formula representation (step 3): a section stem has no
+  // capacity effect of its own — the section's operative clauses
+  // are itemized separately and carry the terms. Propose the
+  // no-effect decision and name the clauses, so the stem does not
+  // sit in the queue as a bare grant item with no terms. (A stem
+  // REJECT cannot supersede its clauses' Permissions: the reject
+  // prefix is keyed on (sourceId, sectionRef, category) with a
+  // trailing colon, and clause refs continue with "(" — verified
+  // in permission-code.ts.)
+  if ((item.sectionStemChildRefs?.length ?? 0) > 0) {
+    return {
+      decision: "REJECTED",
+      reason: `Section stem — no capacity effect of its own: the section's operative clauses are itemized separately (${(item.sectionStemChildRefs ?? []).join(", ")}) and carry the terms; rejecting the stem's standalone interpretation avoids double-counting them.`,
+      terms: null,
+      needsAttention: false,
     };
   }
 

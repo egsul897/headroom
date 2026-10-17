@@ -64,6 +64,22 @@ export interface ProvisionAnalysis {
   /** Rule 192: the candidate excerpt is a prefix of a longer
    * operative span (4000-char cap) — tail clauses are missing. */
   operativeExcerptTruncated?: boolean;
+  /**
+   * Formula representation (step 3): the parent section's chapeau
+   * text (the same text detectPosture inherits), carried so the
+   * formula scan can read a cap stated in the stem that governs
+   * this clause. Contract text from the parent node's own span.
+   */
+  parentChapeau?: string;
+  /** The candidate's full operative span when the excerpt is a
+   * truncated prefix (formula parse only; display excerpt and the
+   * Rule 192 disclosure are unchanged). */
+  operativeFullSpan?: string;
+  /** The structural node type of this item's own node — the
+   * formula parse's full-span guard reads it (clause-level spans
+   * only; a section-level span covers sibling clauses with
+   * independent caps). */
+  operativeNodeType?: string;
   /** Heading of the enclosing ARTICLE node (walked via parentNodeId), if any. Powers the representations guard: a section in a pure Representations article states facts, it does not grant capacity. */
   articleHeading?: string;
   sectionRef: string;
@@ -1155,6 +1171,9 @@ export function analyzeProvision(params: {
 
   return {
     operativeExcerptTruncated: params.candidate.excerptTruncated,
+    parentChapeau: params.parentChapeau,
+    operativeFullSpan: params.candidate.fullSpanText,
+    operativeNodeType: sourceNode?.nodeType,
     articleHeading,
     sectionRef,
     heading,
