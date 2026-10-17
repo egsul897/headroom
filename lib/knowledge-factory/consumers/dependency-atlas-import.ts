@@ -10,7 +10,7 @@ import type {
   ConsumerStructuralNode,
 } from "../export/consumer-contract";
 
-export const DEPENDENCY_ATLAS_ADAPTER_VERSION = "covenant-dependency-atlas-ckf-import.v1";
+export const DEPENDENCY_ATLAS_ADAPTER_VERSION = "covenant-dependency-atlas-ckf-import.v2";
 
 export interface AtlasImportedNode {
   nodeId: string;
@@ -127,8 +127,20 @@ export class DependencyAtlasImportStore {
         });
         nodesUpserted += 1;
       }
-      const toNodeId = `ref:${e.sourceId}:${e.rawReference.slice(0, 80)}`;
+      // v2: prefer the export's resolved target — a RESOLVED edge
+      // names the real structural node, so link to it directly.
+      // Only an edge without a target keeps the synthetic ref:
+      // label node (an unresolved/ambiguous target is a label,
+      // not a node).
+      const toNodeId = e.targetNodeId ?? `ref:${e.sourceId}:${e.rawReference.slice(0, 80)}`;
       if (!this.nodes.has(toNodeId)) {
+        if (e.targetNodeId) {
+          // A resolved target that is absent from the export's own
+          // structural nodes is an inconsistent export — surface
+          // it rather than inventing a node record for the id.
+          errors.push(`edge ${e.edgeId} resolved target ${e.targetNodeId} missing from export nodes`);
+          continue;
+        }
         this.nodes.set(toNodeId, {
           nodeId: toNodeId,
           sourceId: e.sourceId,

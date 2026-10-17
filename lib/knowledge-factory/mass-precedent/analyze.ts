@@ -152,6 +152,14 @@ export async function analyzeCommittedSource(params: {
         });
       } else if (stage === "DEPENDENCY_MAP") {
         const xrefs = store.loadCrossReferences(params.sourceId);
+        // Stage 0 instrumentation: surface the extraction-level
+        // resolution breakdown the records already carry (resolved =
+        // unique target identified; ambiguous = multiple physical
+        // occurrences, never guessed; notFound = no matching node,
+        // incl. schedule/exhibit refs unresolved by design).
+        const resolvedRefs = xrefs.filter((x) => x.resolved).length;
+        const ambiguousRefs = xrefs.filter((x) => !x.resolved && x.targetAmbiguous).length;
+        const notFoundRefs = xrefs.length - resolvedRefs - ambiguousRefs;
         records.push({
           sourceId: params.sourceId,
           stage,
@@ -160,7 +168,7 @@ export async function analyzeCommittedSource(params: {
           inputHash: contentHash,
           startedAt,
           finishedAt: new Date().toISOString(),
-          diagnostics: `crossReferences=${xrefs.length} (intra-document); package-graph pending for multi-doc packages`,
+          diagnostics: `crossReferences=${xrefs.length} (intra-document); resolved=${resolvedRefs}; ambiguous=${ambiguousRefs}; notFound=${notFoundRefs}; package-graph pending for multi-doc packages`,
           promotedToLegalTruth: 0,
         });
       } else if (stage === "AMENDMENT_RELATION") {
