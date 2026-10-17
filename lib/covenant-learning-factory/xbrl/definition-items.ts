@@ -218,8 +218,15 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
   const interestExpenseLine = /\binterest\s+(?:expense|charges?)\b/i.test(t) && !daAll;
   if (daAll) add(firstItem(fin, DA), /(?:all\s+amounts\s+attributable\s+to\s+)?(?:depreciation|amortization|depletion)(?:,?\s+(?:and|or)\s+(?:depreciation|amortization|depletion))*(?:\s+expense)?/gi);
   else if (/amortization/i.test(t) && !amortFinancing && !interestExpenseLine) add(firstItem(fin, /intangible/i.test(t) ? ["AmortizationOfIntangibleAssets"] : DA), /amortization(?:\s+expense)?(?:\s+of\s+(?:other\s+)?intangibles?(?:\s+assets)?)?/gi);
-  // Costs limited to those funded with cash equity proceeds are not stock comp generally.
-  const equityFundedOnly = /\b(?:funded|paid|financed)\b[^;]{0,80}?\bproceeds\b[^;]{0,80}?\b(?:Equity\s+Interests|equity|Capital\s+Stock|capital\s+of)\b/i.test(t);
+  // Stock comp is credited only by a (sub-)clause that covers stock/equity-based compensation generally. Not by one limited
+  // to costs funded with cash equity proceeds, nor by one for payments to option/SAR holders made because of a
+  // distribution to equityholders. Each sub-clause ((i), (ii), …) is judged on its own text.
+  const SBC_WORDS = /(?:stock|equity|share)[- ]based\s+compensation|stock\s+options?|equity\s+awards?|non-?cash\s+(?:stock\s+)?compensation|stock\s+compensation/i;
+  const EQUITY_FUNDED = /\b(?:funded|paid|financed)\b[^;]{0,80}?\bproceeds\b[^;]{0,80}?\b(?:Equity\s+Interests|equity|Capital\s+Stock|capital\s+of)\b/i;
+  // The sub-clause's subject is payments to option/equity-rights holders on a distribution (not an "including …" aside).
+  const DISTRIBUTION_PAYMENTS = /^\s*(?:the\s+amount\s+of\s+)?(?:any\s+)?(?:(?:costs?|charges?|expenses?)(?:,?\s*(?:or|and)?\s*(?:costs?|charges?|expenses?))*\s+relating\s+to\s+)?payments?\s+made\s+to\b[^;]*?\bdistributions?\b/i;
+  const sbcParts = t.split(/\((?:[ivx]{1,5}|[A-Za-z]|\d{1,2})\)\s/);
+  const equityFundedOnly = SBC_WORDS.test(t) && !sbcParts.some((p) => SBC_WORDS.test(p) && !EQUITY_FUNDED.test(p) && !DISTRIBUTION_PAYMENTS.test(p));
   if (!equityFundedOnly && /(?:stock|equity|share)[- ]based\s+compensation|stock\s+options?|equity\s+awards?|non-?cash\s+(?:stock\s+)?compensation|stock\s+compensation/i.test(t)) add(firstItem(fin, ["ShareBasedCompensation", "AllocatedShareBasedCompensationExpense"]), /(?:non-?cash\s+)?(?:expense\s+recorded\s+with\s+respect\s+to\s+)?(?:stock|equity|share)[- ]based\s+compensation(?:\s+expense)?|non-?cash\s+(?:stock\s+)?compensation(?:\s+(?:expense|deduction))?|stock\s+compensation(?:\s+expense)?|stock\s+options?(?:\s+or\s+other\s+equity-based\s+compensation)?|equity\s+awards?/gi);
   if (/impairment/i.test(t)) {
     if (/goodwill/i.test(t)) add(firstItem(fin, ["GoodwillImpairmentLoss"]), /(?:non-?cash\s+)?impairment(?:\s+loss(?:es)?)?(?:\s+of)?\s+goodwill/gi);

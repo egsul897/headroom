@@ -117,12 +117,22 @@ const isoDate = (d: string): string | null => { const m = /([A-Za-z]+)\s+(\d{1,2
 const DATE = "[A-Z][a-z]+\\s+\\d{1,2},\\s*\\d{4}";
 /** Date-tiered amounts ("… ending on or prior to June 30, 2026, $1,000,000, … ending after June 30, 2026 but on or prior to January 31, 2027, $900,000, and … ending thereafter, $750,000"). */
 export function parseCapTiers(s: string): Array<{ through: string | null; amount: bigint }> | null {
-  // Pair the i-th period phrase with the i-th amount; works whether amounts precede or follow their dates.
-  const pre = new RegExp(`(?:ending|ended)\\s+(?:after\\s+${DATE}\\s+(?:but|and)\\s+on\\s+or\\s+(?:prior\\s+to|before)\\s+(${DATE})|(?:on\\s+or\\s+(?:prior\\s+to|before)|before|through)\\s+(${DATE})|after\\s+${DATE}|thereafter)|(?:period|fiscal\\s+quarter)s?\\s+thereafter`, "gi");
-  const periods = [...s.matchAll(pre)].map((m) => { const d = m[1] ?? m[2]; return d ? isoDate(d) : null; });
+  // Pair the i-th period phrase with the i-th amount; works whether amounts precede or follow their dates. Tiers may be
+  // stated in any order; capAmount orders them by date. "fiscal year 2026" (fiscal year end not stated) is ambiguous.
+  const pre = new RegExp([
+    `(?:ending|ended)\\s+after\\s+${DATE}\\s+(?:but|and)\\s+on\\s+or\\s+(?:prior\\s+to|before)\\s+(${DATE})`,
+    `(?:ending|ended)\\s+(?:on\\s+or\\s+(?:prior\\s+to|before)|before|through)\\s+(${DATE})`,
+    `(?:fiscal\\s+(?:year|quarter)|period|Test\\s+Period)s?\\s+(?:ending|ended)\\s+(?:on\\s+)?(${DATE})`,
+    `fiscal\\s+year\\s+(\\d{4})\\b`,
+    `(?:ending|ended)\\s+after\\s+${DATE}|(?:ending\\s+)?thereafter`,
+  ].join("|"), "gi");
+  const periods = [...s.matchAll(pre)].map((m) => { const d = m[1] ?? m[2] ?? m[3]; return d ? isoDate(d) : m[4] ? `FY${m[4]}` : null; });
   const amts = [...s.matchAll(/\$\s*[\d,]+(?:\.\d+)?(?:\s*(?:billion|million|thousand))?/gi)].map((m) => dollars(m[0]));
-  if (periods.length < 2 || periods.length !== amts.length || amts.some((a) => a == null)) return null;
-  if (periods.slice(0, -1).some((p) => p == null)) return null;
+  if (amts.length < 2 || amts.some((a) => a == null)) return null;
+  const dated = periods.length > 0 || new RegExp(DATE).test(s);
+  if (!dated) return null;
+  // Periods and amounts do not pair up: keep the amounts with no usable period (capAmount then takes the lowest).
+  if (periods.length !== amts.length) return amts.map((amount) => ({ through: "?", amount: amount! }));
   return periods.map((through, k) => ({ through, amount: amts[k]! }));
 }
 
@@ -198,13 +208,15 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
 export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | null = null): { amount: bigint | null; note: string } {
   // Date-tiered cap: the tier covering the measured period end; unknown period end → the lowest tier (safe).
   if (c.tiers?.length) {
-    const ordered = [...c.tiers];
-    if (!periodEnd || !/^\d{4}-\d{2}-\d{2}$/.test(periodEnd) || ordered.some((x, i) => x.through == null && i < ordered.length - 1)) {
-      const lo = ordered.reduce((a, x) => (x.amount < a ? x.amount : a), ordered[0]!.amount);
-      return { amount: lo, note: "date-tiered cap: period end not determinable; lowest tier used" };
-    }
-    const tier = ordered.find((x) => x.through != null && periodEnd <= x.through) ?? ordered.find((x) => x.through == null);
-    if (!tier) return { amount: null, note: "date-tiered cap: no tier covers the period end" };
+    const lowest = () => ({ amount: c.tiers!.reduce((a, x) => (x.amount < a ? x.amount : a), c.tiers![0]!.amount), note: "date-tiered cap: tier not determinable; lowest tier used" });
+    const iso = (x: string | null) => x != null && /^\d{4}-\d{2}-\d{2}$/.test(x);
+    const open = c.tiers.filter((x) => x.through == null);
+    if (!periodEnd || !iso(periodEnd) || c.tiers.some((x) => x.through != null && !iso(x.through)) || open.length > 1) return lowest();
+    // Any stated order: dated tiers ascending, the "thereafter" tier last.
+    const ordered = c.tiers.filter((x) => x.through != null).sort((a, b) => (a.through! < b.through! ? -1 : a.through! > b.through! ? 1 : 0));
+    if (new Set(ordered.map((x) => x.through)).size !== ordered.length) return lowest();
+    const tier = ordered.find((x) => periodEnd <= x.through!) ?? open[0];
+    if (!tier) return lowest();
     return { amount: tier.amount, note: `date-tiered cap: tier for period ending ${periodEnd}` };
   }
   if (c.kind === "UNKNOWN" && !c.dollars.length && !c.percents.length) return { amount: null, note: "cap amount not determinable from the definition" };
@@ -226,7 +238,7 @@ export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | nul
 
 const usd = (n: bigint) => n.toString();
 /** Add-back conditioned on lender / agent approval or consent. */
-export const NEEDS_APPROVAL = /\b(?:approved|consented\s+to|verified)\b(?:\s+(?:and|or)\s+(?:approved|verified))?(?:\s+in\s+writing)?\s+by\s+(?:the\s+)?(?:Administrative\s+|Collateral\s+)?(?:Agent|Lenders?|Required\s+Lenders|Majority\s+Lenders)\b|\b(?:with|subject\s+to|upon)\s+the\s+(?:prior\s+)?(?:written\s+)?(?:consent|approval)\s+of\s+(?:the\s+)?(?:Administrative\s+)?(?:Agent|Lenders?|Required\s+Lenders|Majority\s+Lenders)\b|\b(?:reasonably\s+)?(?:acceptable|satisfactory)\s+to\s+(?:the\s+)?(?:Administrative\s+)?(?:Agent|Lenders?|Required\s+Lenders)\b/gi;
+export const NEEDS_APPROVAL = new RegExp(String.raw`\b(?:approved|consented\s+to|verified)\b(?:\s+(?:and|or)\s+(?:approved|verified))?(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*\s+by\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*|\b(?:with|subject\s+to|upon|requires?|requiring)\s+(?:the\s+)?(?:prior\s+)?(?:written\s+)?(?:consent|approval)\s+of\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b|\b(?:reasonably\s+)?(?:mutually\s+)?(?:acceptable|satisfactory)\s+to\s+(?:the\s+Borrower\s+and\s+)?(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b`, "gi");
 /** First approval condition on the add-back itself (not on a third party, e.g. an accounting firm acceptable to the Agent). */
 export function approvalCondition(full: string): string | null {
   // Only the clause's own sentence; an alternative route ("… or (E) approved by the Agent", "otherwise acceptable to the
