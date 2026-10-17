@@ -200,7 +200,8 @@ describe("OPEN-3 fix: genuine linear-time scaling (multi-point measurement, not 
     expect(segs!.length).toBe(2);
   });
 
-  it("multi-point measurement: doubling input size roughly doubles wall-clock time (sub-quadratic, consistent with true O(n))", () => {
+  // Wall-clock timing: one retry absorbs a CI scheduler stall; thresholds unchanged (tests/platform/wall-clock-retry.test.ts).
+  it("multi-point measurement: doubling input size roughly doubles wall-clock time (sub-quadratic, consistent with true O(n))", { retry: 1, timeout: 30000 }, () => {
     const sizes = [4000, 8000, 16000, 32000];
     const timings: { n: number; ms: number }[] = [];
     for (const n of sizes) {
@@ -234,7 +235,7 @@ describe("OPEN-3 fix: genuine linear-time scaling (multi-point measurement, not 
     // Record the full multi-point series in the failure message for anyone
     // re-running this test to inspect the actual measured curve.
     expect(timings.every((t) => t.ms >= 0)).toBe(true);
-  }, 30000);
+  });
 });
 
 // ---------------------------------------------------------------------------

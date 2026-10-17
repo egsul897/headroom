@@ -16,6 +16,21 @@ const TIMING_TESTS = [
     title: "14. CTX-01 (generalized, cycle protection)",
     threshold: "expect(elapsedMs).toBeLessThan(2000);",
   },
+  {
+    file: "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts",
+    title: "measured multi-point scaling is consistent with O(n), not O(n^2)",
+    threshold: "expect(slope).toBeLessThan(1.7);",
+  },
+  {
+    file: "tests/contract-model/open-3-n-way-claim-decomposition.test.ts",
+    title: "multi-point measurement: doubling input size roughly doubles wall-clock time",
+    threshold: "expect(timeRatio).toBeLessThan(sizeRatio * sizeRatio * 0.5);",
+  },
+  {
+    file: "tests/contract-model/runtime/capacity/forensic-regression.test.ts",
+    title: "supplemental: wall-clock log-log slope over materially increasing n is far below the audited 1.81",
+    threshold: "expect(slope).toBeLessThan(1.5);",
+  },
 ];
 
 describe("wall-clock timing tests: one retry, threshold unchanged", () => {

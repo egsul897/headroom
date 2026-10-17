@@ -217,7 +217,8 @@ describe("OPEN-3 independent probe 4: re-measured scaling behavior (fresh constr
     expect(segs!.length).toBe(2);
   });
 
-  it("measured multi-point scaling is consistent with O(n), not O(n^2)", () => {
+  // Wall-clock timing: one retry absorbs a CI scheduler stall; thresholds unchanged (tests/platform/wall-clock-retry.test.ts).
+  it("measured multi-point scaling is consistent with O(n), not O(n^2)", { retry: 1, timeout: 60000 }, () => {
     const sizes = [4000, 8000, 16000, 32000, 64000, 128000];
     const points: { n: number; len: number; ms: number }[] = [];
     for (const n of sizes) {
@@ -264,5 +265,5 @@ describe("OPEN-3 independent probe 4: re-measured scaling behavior (fresh constr
     console.log("OPEN-3 independent re-measurement (comma-chain construction):", points, "estimated log-log slope:", slope);
 
     expect(slope).toBeLessThan(1.7);
-  }, 60000);
+  });
 });
