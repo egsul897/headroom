@@ -289,6 +289,8 @@ export async function confirmEbitdaItem(
   const value = kind !== "LENDER_APPROVAL" ? BigInt(rawValue).toString() : "1";
   const baseMetric = kind === "BASE_METRIC" ? metricOfInputKey(input.inputKey) : null;
   if (kind === "BASE_METRIC" && !baseMetric) return { ok: false, status: 400, error: "a BASE_METRIC confirmation takes inputKey METRIC:REVENUE" };
+  // Bound before anything else touches it: the row's CHECK would otherwise turn an oversized figure into a 500.
+  if (kind === "BASE_METRIC" && BigInt(value) > MAX_CONFIRMED_USD) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value exceeds the ${MAX_CONFIRMED_USD} USD ceiling for a confirmed figure` };
   if (!args.financials) return { ok: false, status: 422, error: "no issuer financials for this company (set the company CIK)" };
   const idem = input.idempotencyKey?.trim() || null;
   if (idem && idem.length > 200) return { ok: false, status: 400, error: "idempotencyKey is too long (max 200)" };
@@ -366,8 +368,10 @@ function confirmedRevenue(cs: readonly ConfirmationView[]): bigint | null {
  * server for this request: the filings must not report the metric for the period (they win; ERP is reconciled against
  * them, never substituted), the ERP LTM suggestion must be SUGGESTED (admitted, tiled, not blocked by an UNRECONCILED
  * period), and either the source quotes the suggestion's exact reference with its exact value, or (a figure from another
- * document) the value is within 10x either way of the ERP figure.
+ * document) the value is within BASE_METRIC_DOC_TOLERANCE_BPS of the ERP figure.
  */
+/** A non-ERP-sourced base figure must agree with the reconciled ERP LTM figure to within 2%. */
+export const BASE_METRIC_DOC_TOLERANCE_BPS = 200;
 function checkBaseMetric(boxArgs: BoxArgs, base: AgreementPipelineResult, metric: NonNullable<ReturnType<typeof metricOfInputKey>>, value: string, source: string): ConfirmOutcome | null {
   const fin = boxArgs.financials!;
   if (BigInt(value) <= 0n) return { ok: false, status: 422, code: "NEEDS_INPUT", error: `${metric} must be positive; a zero ${metric} is not a confirmable base` };
@@ -381,7 +385,9 @@ function checkBaseMetric(boxArgs: BoxArgs, base: AgreementPipelineResult, metric
     if (source !== s.sourceRef || value !== s.value) return { ok: false, status: 422, code: "ERP_EVIDENCE_MISMATCH", error: "an ERP-sourced figure must quote the current suggestion's source reference and value exactly" };
     return null;
   }
-  if (e <= 0n || v * 10n < e || v > e * 10n) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value is not within 10x of the ERP ${metric} for the period` };
+  // |v − e| ≤ e × tolerance (in bps), integer-exact.
+  const diff = v > e ? v - e : e - v;
+  if (e <= 0n || diff * 10_000n > e * BigInt(BASE_METRIC_DOC_TOLERANCE_BPS)) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value is not within ${BASE_METRIC_DOC_TOLERANCE_BPS / 100}% of the ERP ${metric} for the period (${s.value}); quote the ERP suggestion or a document that agrees with it` };
   return null;
 }
 

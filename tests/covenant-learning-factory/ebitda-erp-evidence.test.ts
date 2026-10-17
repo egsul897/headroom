@@ -8,7 +8,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { admitErpFact, admitErpFacts, erpEvidenceSource, NO_ERP_EVIDENCE, registerErpEvidenceSource, type ErpEvidenceFact } from "@/lib/covenant-learning-factory/erp/contract";
 import { reconcileErpWithFilings, sumOverWindow } from "@/lib/covenant-learning-factory/erp/reconcile";
 import { erpEvidenceForBox, ltmWindow } from "@/lib/covenant-learning-factory/erp/suggest";
-import { computeEbitdaBox, confirmEbitdaItem, type BoxArgs } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
+import { computeEbitdaBox, confirmEbitdaItem, MAX_CONFIRMED_USD, type BoxArgs } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
 import { companyErpFacts } from "@/lib/covenant-learning-factory/pipeline/ebitda-box-server";
 import type { FinancialValue, IssuerFinancials } from "@/lib/covenant-learning-factory/xbrl/companyfacts";
 import { M, args, fakeStore, fin } from "./ebitda-box-fixture";
@@ -203,10 +203,20 @@ describe("EBITDA box integration", () => {
     expect(await confirmEbitdaItem(db, scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: s.value!, source: "erp:NETSUITE:conn1:made-up@2026-06-30", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "ERP_EVIDENCE_MISMATCH" });
     expect(db.rows).toHaveLength(0);
   });
-  it("another document's figure must be within 10x of the ERP figure", async () => {
-    const x = a(ERP());
-    expect((await confirmEbitdaItem(fakeStore(), scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(290 * M), source: "FY audited statements", confirmedBy: "cfo" })).ok).toBe(true);
-    expect(await confirmEbitdaItem(fakeStore(), scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(3001 * M), source: "FY audited statements", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "OUT_OF_RANGE" });
+  it("(2) another document's figure must agree with the ERP figure to within 2% (was 10x)", async () => {
+    const x = a(ERP()); // ERP LTM revenue $300M
+    const c = (v: number) => confirmEbitdaItem(fakeStore(), scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(v), source: "FY audited statements", confirmedBy: "cfo" });
+    for (const v of [294 * M, 306 * M, 300 * M]) expect((await c(v)).ok).toBe(true);
+    for (const v of [294 * M - 1, 306 * M + 1, 290 * M, 31 * M, 2999 * M]) expect(await c(v)).toMatchObject({ ok: false, status: 422, code: "OUT_OF_RANGE" });
+  });
+  it("(3) BASE_METRIC above MAX_CONFIRMED_USD is a 422 OUT_OF_RANGE before any write, for any source", async () => {
+    const db = fakeStore();
+    const big = (MAX_CONFIRMED_USD + 1n).toString();
+    for (const source of ["FY audited statements", "erp:NETSUITE:conn-1:x@2026-06-30"]) {
+      expect(await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: big, source, confirmedBy: "cfo" })).toMatchObject({ ok: false, status: 422, code: "OUT_OF_RANGE" });
+    }
+    expect(await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: "9".repeat(40), source: "doc", confirmedBy: "cfo" })).toMatchObject({ ok: false, status: 422, code: "OUT_OF_RANGE" });
+    expect(db.rows).toHaveLength(0);
   });
   it("(6) a BASE_METRIC revenue of 0 is NEEDS_INPUT (422) and writes nothing", async () => {
     const db = fakeStore();
