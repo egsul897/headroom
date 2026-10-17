@@ -29,7 +29,7 @@ describe("clause-reference grammar", () => {
     expect(clauseRefPaths("(d) through (g)").paths.map((p) => p.join(""))).toEqual(["(d)", "(e)", "(f)", "(g)"]);
     expect(clauseRefPaths("(ii)–(iv)").paths.map((p) => p.join(""))).toEqual(["(ii)", "(iii)", "(iv)"]);
     expect(clauseRefPaths("(3) to (5)").paths.map((p) => p.join(""))).toEqual(["(3)", "(4)", "(5)"]);
-    expect(clauseRefPaths("(b)(vi), (b)(ix) and clause (b)(xi)").paths.map((p) => p.join(""))).toEqual(["(b)(vi)", "(b)(ix)", "(b)(xi)"]);
+    expect(clauseRefPaths("(c)(ii), (c)(v) and clause (c)(viii)").paths.map((p) => p.join(""))).toEqual(["(c)(ii)", "(c)(v)", "(c)(viii)"]);
     expect(clauseRefPaths("(A) through (D)").paths.map((p) => p.join(""))).toEqual(["(A)", "(B)", "(C)", "(D)"]);
   });
   it("a range readable two ways is kept only when the definition's labels support one reading", () => {
@@ -51,10 +51,10 @@ describe("shared caps bind every clause the sentence names", () => {
     expect(o.addBacks.filter((l) => l.label === "(f)").length).toBe(1);
     for (const l of ["(d)", "(e)", "(f)"]) expect(line(o, l).cap?.amount).toBe(String(5 * M));
   });
-  it("'this clause (d) and clause (e) below, taken together' binds both", () => {
-    const o = run("plus (d) severance charges; provided that the aggregate amount added in reliance on this clause (d) and clause (e) below, taken together, shall not exceed $6,000,000 for any period; plus (e) projected cost savings and synergies; plus (f) non-cash stock-based compensation expense.");
-    expect(grp(o, "(d)")).toBe("(d),(e)");
-    expect(grp(o, "(e)")).toBe("(d),(e)");
+  it("a deictic self-reference joined with a later clause binds the stating line and the later one", () => {
+    const o = run("plus (g) costs of consolidating warehouses; plus (h) lease termination payments, provided that amounts included under this clause (h) and clause (j) below, collectively, shall not exceed $2,750,000 in any Test Period; plus (i) amortization of deferred financing fees; plus (j) expected synergies from acquisitions.");
+    expect(grp(o, "(h)")).toBe("(h),(j)");
+    expect(grp(o, "(j)")).toBe("(h),(j)");
   });
   it("a cap written inside a deduction clause still binds the add-backs it names", () => {
     const o = run("plus (d) severance charges; plus (e) integration costs; plus (f) non-cash stock-based compensation expense; minus (g) non-cash gains included in Consolidated Net Income; provided that the aggregate amount added back pursuant to clauses (d) and (e) shall not exceed $4,000,000 in any period.");
@@ -148,25 +148,25 @@ describe("reference resolution: self-references, headings, ambiguity, letter cas
     expect(line(o, "(v)").cap).toBeNull();
   });
 
-  it("a parenthetical describing the cap base ('determined prior to giving effect to … this clause (b)') is not the cap's scope", () => {
-    const o = nested("(iv) transaction costs, provided that the amount added back pursuant to this clause (iv) shall not exceed 10% of Consolidated EBITDA (determined prior to giving effect to all amounts added pursuant to this clause (b)) and such amount shall not exceed $4,000,000 in such period; (v) integration costs, provided that the aggregate amount added back pursuant to this clause (v) shall not exceed $1,000,000 in such period;");
+  it("a parenthetical naming the parent clause only to define the cap's measure is not the cap's scope", () => {
+    const o = nested("(iv) costs of system conversions, provided that the amount included under this clause (iv) shall not exceed 7.5% of Consolidated EBITDA (calculated before any amounts included under this clause (b)) and such amount shall not exceed $3,250,000 in such period; (v) fees paid to outside consultants, provided that the aggregate amount included under this clause (v) shall not exceed $1,750,000 in such period;");
     expect(line(o, "(iv)").cap?.note ?? "").not.toMatch(/unresolved/);
     expect(o.needsInput.join(" ")).not.toMatch(/\(b\) not/);
-    expect(line(o, "(v)").cap?.amount).toBe("1000000");
+    expect(line(o, "(v)").cap?.amount).toBe("1750000");
     for (const lab of ["(i)", "(ii)", "(iii)"]) expect(line(o, lab).cap).toBeNull();
   });
 
   it("a reference to a heading-only enumerator binds every line under it", () => {
     const o = optimizeConsolidatedEbitda("Consolidated EBITDA", `ARTICLE I DEFINITIONS
 "Consolidated Net Income" means the net income of the Borrower determined on a consolidated basis in accordance with GAAP.
-"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in calculating Consolidated Net Income: (1) provision for taxes based on income; plus (2) interest expense; plus (3) depreciation and amortization expense; plus (4) unusual or non-recurring items; plus (5) (x) (A) restructuring charges, (B) business optimization expenses, (C) costs of opening new facilities and (D) litigation settlements, provided that the aggregate amount added back pursuant to this clause (x) for any period shall not exceed $3,000,000, and (y) (A) signing bonuses and (B) relocation expenses; plus (6) non-cash stock-based compensation expense.
+"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in calculating Consolidated Net Income: (1) provision for taxes based on income; plus (2) interest expense; plus (3) depreciation and amortization expense; plus (4) unusual or non-recurring items; plus (5) (m) (P) costs of closing call centres, (Q) data migration expenses and (R) recruiting fees, provided that the aggregate amount included under this clause (m) for any period shall not exceed $1,850,000, and (n) (P) retention payments and (Q) moving costs of employees; plus (6) non-cash stock-based compensation expense.
 "Default" means any event of default.
 `, fin);
-    // (x) is folded into item (5): the cap limits that part of (5); whichever way the heading is segmented, the lines
-    // under (x) are never left uncapped and the cap never reaches a neighbouring item.
-    const underX = o.addBacks.filter((a) => a.label === "(5)" || /^\([A-D]\)$/.test(a.label));
-    expect(underX.length).toBeGreaterThan(0);
-    for (const a of underX) expect(a.cap?.text ?? "").toContain("3,000,000");
+    // (m) is folded into item (5): the cap limits that part of (5); whichever way the heading is segmented, the lines
+    // under (m) are never left uncapped and the cap never reaches a neighbouring item.
+    const underM = o.addBacks.filter((a) => a.label === "(5)" || /^\([P-R]\)$/.test(a.label));
+    expect(underM.length).toBeGreaterThan(0);
+    for (const a of underM) expect(a.cap?.text ?? "").toContain("1,850,000");
     expect(line(o, "(6)").cap).toBeNull();
     expect(line(o, "(4)").cap).toBeNull();
   });
@@ -179,9 +179,9 @@ describe("reference resolution: self-references, headings, ambiguity, letter cas
     expect(o.status).not.toBe("MAXIMIZED");
   });
 
-  it("'(i)(B)' does not bind clause (b) when the definition uses both letter cases", () => {
-    const o = run("plus (d) (A) restructuring charges and (B) run-rate cost savings; plus (e) non-cash stock-based compensation expense; provided that the aggregate amount added back pursuant to clauses (d)(B) and (e) shall not exceed 20% of Consolidated EBITDA;");
-    expect(line(o, "(b)").cap).toBeNull();
+  it("a mixed-case path names the upper-case sub-item, never the same lower-case letter at the top level", () => {
+    const o = run("plus (d) (B) write-offs of capitalized software and (C) expected benefits of supplier renegotiations; plus (e) earn-out payments; provided that the aggregate amount included under clauses (d)(C) and (e) shall not exceed 12.5% of Consolidated EBITDA;");
+    expect(line(o, "(c)").cap).toBeNull();
     expect(line(o, "(e)").cap).not.toBeNull();
   });
 });

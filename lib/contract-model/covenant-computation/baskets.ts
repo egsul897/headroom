@@ -7,6 +7,7 @@
  * unless the clause states that conversion (it does not, here).
  */
 
+import { nonUsdCurrency } from "./currency";
 import { xbrlInUnit } from "@/lib/covenant-learning-factory/xbrl/bind";
 import { FORMULA_TAXONOMY } from "@/lib/basket-formula-corpus";
 import type { FormulaKind } from "@/lib/basket-formula-corpus";
@@ -127,8 +128,18 @@ export function evaluateBasket(
                         note: "Reclassification is named. No election record is bound, so no amount is transferred.",
                       }
                     : numericButOpen(clause);
+  const fx = nonUsdCurrency(clause.operativeText);
+  if (fx && (partial.capCanonical != null || partial.capCurrency === "USD")) {
+    return present(clause, {
+      ...base,
+      ...partial,
+      ...capShell("NEEDS_INPUT", "NONE", null, null, [`currency conversion ${fx} to USD (sourced rate)`], null),
+      note: `The cap is stated in ${fx}, not US dollars. It is held until it is converted at a sourced rate; the figure is never read as USD.`,
+    });
+  }
   return present(clause, { ...base, ...partial });
 }
+
 
 /**
  * "The Company will not permit, as of the end of any fiscal quarter, X to have an aggregate of over 25% of Total
@@ -176,8 +187,8 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   // Both extremes in the cap expression (nested max/min): neither bound direction holds without reading the nesting.
   if (lesserCap >= 0 && greaterAt >= 0 && Math.abs(greaterAt - lesserCap) < 300) return "UNKNOWN";
   if (/\bgreater\s+of\b/i.test(text)) return "GROWER_GREATER_OF";
-  // Merge of #398 and release-1: a lesser-of counts only when it is the cap (#398 capExtremeAt guard);
-  // evaluation then tries release-1's exact min(fixed, metric limb) and falls back to #398's AT_MOST bound.
+  // Merge of PR 398 and release-1: a lesser-of counts only when it is the cap (PR 398 capExtremeAt guard);
+  // evaluation then tries release-1's exact min(fixed, metric limb) and falls back to PR 398's AT_MOST bound.
   if (lesserCap >= 0 && /\$\s*[\d,]+/.test(text)) return "LESSER_OF";
   const ratio = classifyRatioIncurrencePermission(text);
   if (ratio.class !== "NOT_RATIO_INCURRENCE") return "RATIO_BASED";
@@ -901,9 +912,9 @@ function evalMultiple(
 }
 
 /**
- * Lesser-of cap (merge of #398 and release-1). The exact release-1 evaluation is used only when the
- * lesser-of it parses is the same one #398's guard identified as the cap and it COMPUTED; otherwise the
- * #398 fixed-limb AT_MOST bound (or its NEEDS_INPUT) applies. Never a fixed limb reported as the exact cap.
+ * Lesser-of cap (merge of PR 398 and release-1). The exact release-1 evaluation is used only when the
+ * lesser-of it parses is the same one PR 398's guard identified as the cap and it COMPUTED; otherwise the
+ * PR 398 fixed-limb AT_MOST bound (or its NEEDS_INPUT) applies. Never a fixed limb reported as the exact cap.
  */
 function evalLesserCombined(
   pkg: ComputationPackage,
