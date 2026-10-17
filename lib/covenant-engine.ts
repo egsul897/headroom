@@ -570,15 +570,13 @@ export function evaluateProvision(
       return { provision: p, status: "modeled", capacity };
     }
     case "BUILDER_BASKET": {
-      // PAI-09: builder grower % missing → review_required (align with IR adapter honesty).
-      if (params.pctEbitda === undefined || params.pctEbitda === null) {
-        return {
-          provision: p,
-          status: "review_required",
-          reason: `"${p.basketName}" (${p.sectionRef}) is a builder basket — params.pctEbitda is missing; refusing rather than assuming 0% grower.`,
-        };
-      }
-      const pct = params.pctEbitda;
+      // A builder's EBITDA grower is an OPTIONAL limb: starter + CNI share +
+      // equity proceeds fully specify a builder with no grower, and the IR
+      // adapter models a missing pctEbitda as 0 (legacy-adapter.ts). This is
+      // NOT the GREATER_OF case (PAI-09): there the percentage is a required
+      // limb of the formula, so its absence is incomplete coverage and still
+      // refuses. Refusing here made every grower-less builder unmodelable.
+      const pct = params.pctEbitda ?? 0;
       const base = Math.max(p.thresholdValue, pct * fin.ebitda);
       const cniContribution = (params.cniSharePct ?? 0) * Math.max(0, fin.cumulativeNetIncome);
       const equityContribution = params.includeEquityProceeds ? fin.equityProceedsSinceIssue : 0;
