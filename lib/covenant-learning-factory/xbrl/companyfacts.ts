@@ -63,7 +63,9 @@ export interface FinancialValue {
  * "ADDBACK:<clause label>" for an EBITDA add-back (value = the charge, positive). source must name the document.
  */
 export interface BorrowerInput { key: string; value: string; source: string }
-export interface IssuerFinancials { cik: string; entityName: string; values: FinancialValue[]; missing: Array<{ metric: HeadroomInput; reason: string }>; anchor?: string | null; asOf?: string | null; borrowerInputs?: BorrowerInput[] }
+export interface IssuerFinancials { cik: string; entityName: string; values: FinancialValue[]; missing: Array<{ metric: HeadroomInput; reason: string }>; anchor?: string | null; asOf?: string | null; borrowerInputs?: BorrowerInput[];
+  /** Fiscal year (DocumentFiscalYearFocus, companyfacts `fy`) of the first 10-Q/10-K reporting the anchor period. */
+  fiscalYear?: number | null }
 
 /** The borrower input for the first matching key; inputs without a source or with a non-integer value are ignored. */
 export function borrowerInput(fin: IssuerFinancials, keys: string[]): BorrowerInput | null {
@@ -215,7 +217,14 @@ export function extractFinancials(cf: CompanyFacts, cikPadded: string, opts: { a
   }
   const prem = inst("DebtInstrumentUnamortizedPremium");
   if (prem) pushInst("debtPremium", "DebtInstrumentUnamortizedPremium", [prem]);
-  return { cik: cikPadded, entityName: cf.entityName, values, missing, anchor, asOf: opts.asOf ?? null };
+  // The filing that first reported the anchor period carries its fiscal-year focus (later filings repeat the period as
+  // a comparative under their own fy, so only the earliest filing counts).
+  let fiscalYear: number | null = null;
+  if (anchor) {
+    const first = ["NetIncomeLoss", "ProfitLoss", "Revenues"].flatMap((c) => cf.facts["us-gaap"]?.[c]?.units?.USD ?? []).filter((f) => !opts.asOf || f.filed <= opts.asOf).filter((f) => f.end === anchor && f.fy != null && /^10-[QK]/.test(f.form)).sort((a, b) => (a.filed < b.filed ? -1 : a.filed > b.filed ? 1 : 0))[0];
+    fiscalYear = first?.fy ?? null;
+  }
+  return { cik: cikPadded, entityName: cf.entityName, values, missing, anchor, asOf: opts.asOf ?? null, fiscalYear };
 }
 
 // ---------------- fetch ----------------

@@ -14,7 +14,7 @@ const capOf = (tail: string, anchor: string | null) => run(tail, fin({}, anchor)
 const ESC = "; plus (d) non-cash compensation expenses arising from the grant of stock-based awards not to exceed $2.0 million during the 2024 Fiscal Year and increasing by $200,000 for each Fiscal Year thereafter";
 describe("escalating caps", () => {
   it("base year", () => expect(capOf(ESC, "2024-12-31")).toBe(String(2 * M)));
-  it("two fiscal years later", () => expect(capOf(ESC, "2026-06-30")).toBe(String(2.4 * M)));
+  it("no fiscal-year source: lowest candidate year (2026-06-30 → FY2025)", () => expect(capOf(ESC, "2026-06-30")).toBe(String(2.2 * M)));
   it("52/53-week year ending early January counts as the prior fiscal year", () => expect(capOf(ESC, "2025-01-05")).toBe(String(2 * M)));
   it("before the base year: base amount", () => expect(capOf(ESC, "2023-12-31")).toBe(String(2 * M)));
   it("unknown period end: base amount", () => expect(capOf(ESC, null)).toBe(String(2 * M)));

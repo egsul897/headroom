@@ -216,18 +216,35 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
 }
 
 /** Cap amount in USD given EBITDA before the capped add-backs (e0). AFTER: x ≤ p(e0 + x) ⇒ x ≤ p·e0 / (1 − p). */
-export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | null = null): { amount: bigint | null; note: string } {
+/**
+ * Fiscal year label of a period end from the agreement's "Fiscal Year" definition: only when it states a fixed calendar
+ * year end (e.g. "December 31") and how years are numbered (calendar year ending December 31 is unambiguous; otherwise a
+ * clause tying a numbered Fiscal Year to the calendar year in which it ends). Else null.
+ */
+export function agreementFiscalYear(text: string, periodEnd: string | null): number | null {
+  if (!periodEnd || !/^\d{4}-\d{2}-\d{2}$/.test(periodEnd)) return null;
+  const def = /[“"]Fiscal\s+Year[”"]\s+(?:means|shall\s+mean)([^.;]{0,300})/i.exec(text)?.[1];
+  if (!def || /\b(?:closest|nearest|last\s+(?:Sunday|Saturday|Friday))\b|52|53/i.test(def)) return null;
+  const m = new RegExp(`end(?:ing|s)?\\s+(?:on\\s+)?([A-Z][a-z]+\\s+\\d{1,2})\\b`).exec(def);
+  const iso = m ? isoDate(`${m[1]}, 2000`) : null;
+  if (!iso) return null;
+  const endMd = iso.slice(5), y = +periodEnd.slice(0, 4);
+  const endsInYear = endMd === "12-31" || /(?:Fiscal\s+Year\s+(?:ending|ended)\s+(?:in|during)|corresponding\s+to)[^.;]{0,80}calendar\s+year|calendar\s+year\s+in\s+which\s+(?:such\s+)?Fiscal\s+Year\s+ends/i.test(text);
+  if (!endsInYear) return null;
+  return periodEnd.slice(5) <= endMd ? y : y + 1;
+}
+
+export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | null = null, fiscalYear: number | null = null): { amount: bigint | null; note: string } {
   // Date-tiered cap: the tier covering the measured period end; unknown period end → the lowest tier (safe).
-  // Escalating cap: base amount in the base fiscal year plus the step for each later fiscal year. The fiscal year is taken
-  // as the calendar year of the measured period end — never later than the fiscal-year label it falls in (labels follow
-  // the year a fiscal year ends), so the amount is never overstated. Unknown period end → the base amount.
+  // Escalating cap: base amount in the base fiscal year plus the step for each later fiscal year. The fiscal year is the
+  // filer's XBRL fiscal-year focus for the measured period, else one derived from the agreement's Fiscal Year definition;
+  // otherwise the lowest year the period end could be labelled (the year before its calendar year). Unknown period → base.
   if (c.escalation) {
     const { base, baseYear, step } = c.escalation;
-    if (!periodEnd || !/^\d{4}-\d{2}-\d{2}$/.test(periodEnd)) return { amount: base, note: "escalating cap: period end not determinable; base amount used" };
-    // 52/53-week years ending in early January are labelled by the prior year: step back a month before taking the year.
-    const d = new Date(`${periodEnd}T00:00:00Z`); d.setUTCDate(d.getUTCDate() - 31);
-    const n = BigInt(Math.max(0, d.getUTCFullYear() - baseYear));
-    return { amount: base + step * n, note: `escalating cap: ${baseYear} base + ${n} fiscal-year step(s) for period ending ${periodEnd}` };
+    const fy = fiscalYear ?? (periodEnd && /^\d{4}-\d{2}-\d{2}$/.test(periodEnd) ? +periodEnd.slice(0, 4) - 1 : null);
+    if (fy == null) return { amount: base, note: "escalating cap: fiscal year not determinable; base amount used" };
+    const n = BigInt(Math.max(0, fy - baseYear));
+    return { amount: base + step * n, note: `escalating cap: fiscal year ${fy}${fiscalYear == null ? " (lowest candidate)" : ""}; ${baseYear} base + ${n} step(s)` };
   }
   if (c.tiers?.length) {
     const lowest = () => ({ amount: c.tiers!.reduce((a, x) => (x.amount < a ? x.amount : a), c.tiers![0]!.amount), note: "date-tiered cap: tier not determinable; lowest tier used" });
@@ -260,7 +277,7 @@ export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | nul
 
 const usd = (n: bigint) => n.toString();
 /** Add-back conditioned on lender / agent approval or consent. */
-export const NEEDS_APPROVAL = new RegExp(String.raw`\b(?:approved|consented\s+to|verified)\b(?:\s+(?:and|or)\s+(?:approved|verified))?(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*\s+by\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*|\b(?:with|subject\s+to|upon|requires?|requiring)\s+(?:the\s+)?(?:prior\s+)?(?:written\s+)?(?:consent|approval)\s+of\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b|\b(?:reasonably\s+)?(?:mutually\s+)?(?:acceptable|satisfactory)\s+to\s+(?:the\s+Borrower\s+and\s+)?(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b|\b(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\s+(?:has|have|shall\s+have)\s+(?:(?:previously|expressly)\s+)?(?:consented|approved|agreed)\b(?:\s+(?:thereto|to\s+such|in\s+writing))?`, "gi");
+export const NEEDS_APPROVAL = new RegExp(String.raw`\b(?:approved|consented\s+to|verified)\b(?:\s+(?:and|or)\s+(?:approved|verified))?(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*\s+by\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*|\b(?:with|subject\s+to|upon|requires?|requiring)\s+(?:the\s+)?(?:prior\s+)?(?:written\s+)?(?:consent|approval)\s+of\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b|\b(?:reasonably\s+)?(?:mutually\s+)?(?:acceptable|satisfactory)\s+to\s+(?:the\s+Borrower\s+and\s+)?(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b|\b(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\s+(?:has|have|shall\s+have)\s+(?:(?:previously|expressly)\s+)?(?:consented|approved|agreed)\b(?:\s+(?:thereto|to\s+such|in\s+writing))?|\b(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\s+(?:has|have|shall\s+have|did|do|does)\s+not\s+(?:objected|object|disapproved|disapprove)\b(?:\s+(?:thereto|to\s+such))?`, "gi");
 /** First approval condition on the add-back itself (not on a third party, e.g. an accounting firm acceptable to the Agent). */
 export function approvalCondition(full: string): string | null {
   // Only the clause's own sentence; an alternative route ("… or (E) approved by the Agent", "otherwise acceptable to the
@@ -568,7 +585,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   // A sub-clause cap ("(d) (x) … and (y) …; … this clause (y) shall not exceed $10M") bounds only that part: the clause
   // is split into parts (one per capped sub-clause plus the rest), each part bounded by its own evidence; whole-clause
   // and shared caps bound the sum of the parts. Part evidence = the clause's filed concepts that the sub-clause names.
-  const all: Cap[] = capRaw.map((c) => { const { amount, note } = capAmount(c.spec, e0, fin.anchor ?? null); return { owner: c.owner, spec: c.spec, members: c.members.filter((x) => !capOnly.has(x)), amount, note: c.subOf ? [note, `limits sub-clause ${c.subOf} only`].filter(Boolean).join("; ") : note, subOf: c.subOf }; }).filter((c) => c.members.length);
+  const all: Cap[] = capRaw.map((c) => { const { amount, note } = capAmount(c.spec, e0, fin.anchor ?? null, fin.fiscalYear ?? agreementFiscalYear(text, fin.anchor ?? null)); return { owner: c.owner, spec: c.spec, members: c.members.filter((x) => !capOnly.has(x)), amount, note: c.subOf ? [note, `limits sub-clause ${c.subOf} only`].filter(Boolean).join("; ") : note, subOf: c.subOf }; }).filter((c) => c.members.length);
   const subText = new Map(capRaw.filter((c) => c.subOf).map((c) => [c.spec, c.subText ?? ""]));
   const capsOf = (g: Ln) => all.filter((c) => c.members.includes(g));
   const lnVars = [...inCap].sort((x, y) => lines.indexOf(x) - lines.indexOf(y));
