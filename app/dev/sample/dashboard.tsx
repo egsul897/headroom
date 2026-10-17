@@ -7,7 +7,8 @@ import { ProofDrawer } from "@/components/ux/ProofDrawer";
 import { MorningBrief } from "@/components/ux/MorningBrief";
 import { EbitdaTile } from "@/components/home/EbitdaTile";
 import { SAMPLE_ADD_BACKS, SAMPLE_EBITDA_BASE } from "./ebitda";
-import { SAMPLE_BRIEF, SAMPLE_HEADROOM_PROOF } from "./ux-sample";
+import { KeyRatios } from "@/components/ux/KeyRatios";
+import { SAMPLE_BRIEF, SAMPLE_HEADROOM_PROOF, SAMPLE_KEY_RATIOS } from "./ux-sample";
 import type { FigureProof } from "@/lib/ux/present";
 
 const SAMPLE_ROWS = [
@@ -173,6 +174,7 @@ export function SampleDashboard({
             staleSince={staleSince}
           />
         </div>
+        <KeyRatios ratios={SAMPLE_KEY_RATIOS} />
 
         <div className="home-split">
           <section className="home-card home-chart-card" aria-label="Headroom over time" onClick={() => setPanel(sampleProof("Headroom over time", "$86 million sample"))}>

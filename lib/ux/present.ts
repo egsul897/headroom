@@ -12,6 +12,7 @@
  * 4. Scenarios — server persistence. The browser store is a stand-in.
  * 5. Calendar — test dates, reporting deadlines, and cure-period end dates. Do not infer them.
  * 6. Thresholds — band cutoffs, the prior band, and a trend toward the next band.
+ * 7. Key ratios — a distinct fixed-charge coverage figure. Gross, net, secured, and interest coverage come from generic position metrics when that position is loaded. Band cutoffs are not on those metrics.
  */
 
 export type MorningBriefModel = {
@@ -173,6 +174,69 @@ export function isIsoDate(value: string | null): value is string {
 export function datedItems(items: readonly CalendarItem[]): CalendarItem[] {
   return items.filter((item) => isIsoDate(item.date));
 }
+
+export type KeyRatioId = "gross" | "net" | "secured" | "interest" | "fccr";
+
+export type KeyRatioModel = {
+  id: KeyRatioId;
+  label: string;
+  /** Null when the position did not return a finite ratio. */
+  value: number | null;
+  /** Already worded, for example "4.00x max". Null when no covenant limit is on the row. */
+  limitLabel: string | null;
+  thresholds: BandCutoffs | null;
+  clause: string | null;
+  source: string | null;
+};
+
+export function formatRatio(value: number | null): string {
+  if (value == null || !Number.isFinite(value)) return "Missing input";
+  return `${value.toFixed(2)}x`;
+}
+
+export function keyRatioProof(ratio: KeyRatioModel): FigureProof {
+  const shown = formatRatio(ratio.value);
+  return {
+    figure: ratio.label,
+    value: shown === "Missing input" ? null : shown,
+    inputs: [
+      { label: ratio.label, value: shown === "Missing input" ? null : shown, source: ratio.source },
+      { label: "Covenant limit", value: ratio.limitLabel, source: ratio.clause },
+      {
+        label: "Band thresholds",
+        value: ratio.thresholds ? ratio.thresholds.limitLabel : null,
+        source: ratio.thresholds ? "Cutoffs supplied with this ratio." : null,
+      },
+    ],
+    clause: ratio.clause,
+    page: null,
+    review: ratio.thresholds ? null : "Band thresholds not set",
+  };
+}
+
+const KEY_RATIO_LABEL: Record<KeyRatioId, string> = {
+  gross: "Gross leverage",
+  net: "Net leverage",
+  secured: "Secured leverage",
+  interest: "Interest coverage",
+  fccr: "Fixed charge coverage",
+};
+
+export function emptyKeyRatio(id: KeyRatioId): KeyRatioModel {
+  return {
+    id,
+    label: KEY_RATIO_LABEL[id],
+    value: null,
+    limitLabel: null,
+    thresholds: null,
+    clause: null,
+    source: null,
+  };
+}
+
+export const UNLOADED_KEY_RATIOS: readonly KeyRatioModel[] = (
+  ["gross", "net", "secured", "interest", "fccr"] as const
+).map(emptyKeyRatio);
 
 export type BandName = "Healthy" | "Moderate" | "Danger";
 

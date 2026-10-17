@@ -1,5 +1,75 @@
 /* Six presentation surfaces. Graphite Ledger type, Plum & Slate only on the band meter. */
 
+.key-ratios {
+  display: grid;
+  gap: 8px;
+}
+
+.key-ratios-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.key-ratio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  min-height: 0;
+  padding: 10px 12px 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.key-ratio:hover {
+  border-color: var(--viz-1);
+}
+
+.key-ratio-label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.key-ratio-value {
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.key-ratio-value.is-missing {
+  color: var(--muted);
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.key-ratio-limit {
+  min-height: 1.15em;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.key-ratio .band-wrap {
+  margin-top: 4px;
+}
+
+.key-ratio .band-caption {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
 .brief {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.7fr) minmax(0, 0.9fr);
@@ -382,7 +452,8 @@
 @media (max-width: 800px) {
   .brief,
   .calendar-layout,
-  .band-list li {
+  .band-list li,
+  .key-ratios-grid {
     grid-template-columns: 1fr;
   }
 }

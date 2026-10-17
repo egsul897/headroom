@@ -1,15 +1,19 @@
 import { describe, expect, it } from "vitest";
+import { keyRatiosFromPosition } from "@/lib/home/key-ratios";
 import {
   bandSentence,
   certificateCsv,
   currentBand,
   datedItems,
+  formatRatio,
+  keyRatioProof,
   missingInputLabels,
   presentMorningBrief,
   presentVerdict,
   scenarioDelta,
   unevaluatedLine,
   UNLOADED_BRIEF,
+  UNLOADED_KEY_RATIOS,
   type BandReading,
   type FigureProof,
 } from "@/lib/ux/present";
@@ -81,6 +85,51 @@ describe("bands", () => {
     expect(bandSentence(reading)).toBe("Net leverage moved Healthy → Moderate (3.1x of 4.0x max).");
     expect(bandSentence({ ...reading, thresholds: null })).toBeNull();
     expect(currentBand({ ...reading, thresholds: null })).toBeNull();
+  });
+});
+
+describe("key ratios", () => {
+  it("prints missing input and does not invent a band or a limit", () => {
+    expect(formatRatio(null)).toBe("Missing input");
+    expect(formatRatio(1.64)).toBe("1.64x");
+    const ratios = keyRatiosFromPosition(null, []);
+    expect(ratios.map((ratio) => ratio.value)).toEqual([null, null, null, null, null]);
+    expect(ratios.every((ratio) => ratio.thresholds == null && ratio.limitLabel == null)).toBe(true);
+    expect(keyRatioProof(UNLOADED_KEY_RATIOS[0]!).value).toBeNull();
+  });
+
+  it("keeps a modeled limit and leaves fixed-charge coverage empty without a covenant row", () => {
+    const ratios = keyRatiosFromPosition(
+      {
+        companyId: "co",
+        asOfDate: new Date("2026-06-30"),
+        genericGrossLeverage: { status: "OK", value: 1.92 },
+        genericNetLeverage: { status: "OK", value: 1.23 },
+        genericSecuredLeverage: { status: "UNAVAILABLE_MISSING_INPUT", value: null, detail: "Missing EBITDA" },
+        genericInterestCoverage: { status: "OK", value: 4.1 },
+        ebitdaMarginPct: { status: "UNAVAILABLE_MISSING_INPUT", value: null },
+      },
+      [
+        {
+          kind: "RATIO",
+          stableKey: "tnl",
+          name: "Total net leverage",
+          documentName: "Credit agreement",
+          sectionRef: "§7.01",
+          currentRatio: 1.23,
+          ratioLimit: 4,
+          ratioHeadroom: 2.77,
+          comparisonDirection: "at_or_below",
+          bindingState: "BINDING",
+          status: "MODELED",
+          reviewState: "NOT_TRACKED",
+          tier: "PRIMARY",
+        },
+      ],
+    );
+    expect(ratios.find((ratio) => ratio.id === "net")).toMatchObject({ value: 1.23, limitLabel: "4.00x max" });
+    expect(ratios.find((ratio) => ratio.id === "secured")?.value).toBeNull();
+    expect(ratios.find((ratio) => ratio.id === "fccr")?.value).toBeNull();
   });
 });
 

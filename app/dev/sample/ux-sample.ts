@@ -1,6 +1,65 @@
-import type { BandReading, CalendarItem, CertificateModel, FigureProof, MorningBriefModel, SavedScenario } from "@/lib/ux/present";
+import { computeLeverageMetrics } from "@/lib/covenant-engine";
+import type { BandReading, CalendarItem, CertificateModel, FigureProof, KeyRatioModel, MorningBriefModel, SavedScenario } from "@/lib/ux/present";
+import { SAMPLE_COVENANT_DATA } from "./simulate-fixture";
+
+const SAMPLE_LEVERAGE = computeLeverageMetrics(SAMPLE_COVENANT_DATA.financials);
 
 /** Illustrations for /dev/sample only. Every string says it is a sample. */
+
+/** Sample position. Net, secured, and interest coverage are computeLeverageMetrics on the sample fixture. Gross leverage and a separate fixed-charge coverage are not on that result. */
+export const SAMPLE_KEY_RATIOS: KeyRatioModel[] = [
+  {
+    id: "gross",
+    label: "Gross leverage",
+    value: null,
+    limitLabel: null,
+    thresholds: null,
+    clause: null,
+    source: "Sample fixture. Gross leverage is not on the covenant leverage metrics.",
+  },
+  {
+    id: "net",
+    label: "Net leverage",
+    value: SAMPLE_LEVERAGE.totalNetLeverage,
+    limitLabel: "4.00x max",
+    thresholds: {
+      direction: "lower-is-safer",
+      healthyUntil: 2.5,
+      moderateUntil: 3.5,
+      limit: 4,
+      limitLabel: "4.00x max",
+    },
+    clause: "Sample agreement §5.1(a). Sample language, not an operative clause.",
+    source: "Sample financials via computeLeverageMetrics. Band cutoffs are a sample setting.",
+  },
+  {
+    id: "secured",
+    label: "Secured leverage",
+    value: SAMPLE_LEVERAGE.seniorSecuredNetLeverage,
+    limitLabel: "2.50x max",
+    thresholds: null,
+    clause: "Sample agreement §2.1(c). Sample language, not an operative clause.",
+    source: "Sample financials via computeLeverageMetrics.",
+  },
+  {
+    id: "interest",
+    label: "Interest coverage",
+    value: SAMPLE_LEVERAGE.fixedChargeCoverage,
+    limitLabel: "2.00x min",
+    thresholds: null,
+    clause: "Sample agreement §5.1(b). Sample language, not an operative clause.",
+    source: "Sample financials. The covenant engine reports this as fixed-charge coverage and also uses it as interest coverage.",
+  },
+  {
+    id: "fccr",
+    label: "Fixed charge coverage",
+    value: null,
+    limitLabel: null,
+    thresholds: null,
+    clause: null,
+    source: "No separate fixed-charges input is on the sample snapshot.",
+  },
+];
 
 export const SAMPLE_BRIEF: MorningBriefModel = {
   lastVisitLabel: "Oct 16",
