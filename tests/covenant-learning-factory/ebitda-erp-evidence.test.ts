@@ -132,11 +132,44 @@ describe("LTM suggestions", () => {
   it("(1) revenue is not confirmable without a RECONCILED filed flow overlapping the window", () => {
     const e = ev([...monthly("revenue", 25 * M), ...monthly("netIncome", -1 * M)]); // no filed flow at all
     expect(e.suggestions.find((s) => s.metric === "revenue")).toMatchObject({ status: "NEEDS_INPUT", value: null, confirmable: false });
-    expect(e.suggestions.find((s) => s.metric === "revenue")?.reason).toMatch(/reconciled filing anchor/);
+    expect(e.suggestions.find((s) => s.metric === "revenue")?.reason).toMatch(/strongly enough to anchor/);
     const notOverlapping = withFin({ values: [...fin.values, flow("netIncome", -1 * M, "2024-07-01", "2024-07-31")] });
     const e2 = ev([...monthly("revenue", 25 * M), fact({ metric: "netIncome", externalId: "ni-2024-07", periodStart: "2024-07-01", periodEnd: "2024-07-31", amount: String(-1 * M) })], notOverlapping);
     expect(e2.reconciliation[0]?.status).toBe("RECONCILED");
     expect(e2.suggestions.find((s) => s.metric === "revenue")?.status).toBe("NEEDS_INPUT");
+  });
+  describe("(1b) the anchor must be strong: each weak-anchor attack leaves revenue NEEDS_INPUT", () => {
+    const REV = () => monthly("revenue", 25 * M);
+    const revOf = (facts: ErpEvidenceFact[], f: IssuerFinancials) => { const e = ev(facts, f); return { e, r: e.suggestions.find((x) => x.metric === "revenue")! }; };
+    it("a $500 taxes flow reconciled only on the $1k absolute tolerance", () => {
+      const { e, r } = revOf([...REV(), ...monthly("incomeTaxes", 100, "7000")], withFin({ values: [...fin.values, flow("incomeTaxes", 500)] }));
+      expect(e.reconciliation.find((x) => x.metric === "incomeTaxes")?.status).toBe("RECONCILED"); // 1,200 vs 500: inside $1k
+      expect(r).toMatchObject({ status: "NEEDS_INPUT", value: null });
+    });
+    it("a 0-vs-0 flow", () => {
+      const { e, r } = revOf([...REV(), ...monthly("operatingIncome", 0, "8000")], withFin({ values: [...fin.values, flow("operatingIncome", 0)] }));
+      expect(e.reconciliation.find((x) => x.metric === "operatingIncome")?.status).toBe("RECONCILED");
+      expect(r.status).toBe("NEEDS_INPUT");
+    });
+    it("a quarter overlapping the window by one day; coverage must be >= 75% of LTM days", () => {
+      const q = fact({ metric: "netIncome", externalId: "ni-q", periodStart: "2025-04-02", periodEnd: "2025-07-01", amount: String(-3 * M) });
+      const { e, r } = revOf([...REV(), q], withFin({ values: [...fin.values, flow("netIncome", -3 * M, "2025-04-02", "2025-07-01")] }));
+      expect(e.reconciliation[0]?.status).toBe("RECONCILED");
+      expect(r.status).toBe("NEEDS_INPUT");
+      const span = (start: string) => {
+        const months = MONTHS.filter((ym) => `${ym}-01` >= start);
+        const facts = months.map((ym) => fact({ metric: "netIncome", externalId: `ni:${ym}`, periodStart: `${ym}-01`, periodEnd: lastDay(ym), amount: String(-1 * M) }));
+        return revOf([...REV(), ...facts], withFin({ values: [...fin.values, flow("netIncome", -months.length * M, start, "2026-06-30")] })).r.status;
+      };
+      expect(span("2025-10-01")).toBe("NEEDS_INPUT"); // 273 of 365 days = 74.8%
+      expect(span("2025-09-01")).toBe("SUGGESTED"); // 303 of 365 days = 83%
+    });
+    it("an anchor from a different ERP connection", () => {
+      const { e, r } = revOf([...REV(), ...monthly("netIncome", -1 * M, "9000", { connectionId: "conn2" })], anchored);
+      expect(e.reconciliation.find((x) => x.metric === "netIncome")).toMatchObject({ status: "RECONCILED", erp: { connectionId: "conn2" } });
+      expect(r.status).toBe("NEEDS_INPUT");
+      expect(revOf([...REV(), ...monthly("netIncome", -1 * M, "9000")], anchored).r.status).toBe("SUGGESTED");
+    });
   });
   it("(6) ERP LTM revenue <= 0 → NEEDS_INPUT, never a suggestion", () => {
     for (const amt of [0, -25 * M]) {
@@ -263,6 +296,22 @@ describe("EBITDA box integration", () => {
     expect(computeEbitdaBox({ ...a(null), erp: { companyId: C, facts: ERP(), fetchedAt: "2026-10-17T09:00:00Z" } }).erpEvidence?.fetchedAt).toBe("2026-10-17T09:00:00.000Z");
     for (const junk of [undefined, null, "yesterday", "2026-13-45T00:00:00Z"]) expect(computeEbitdaBox({ ...a(null), erp: { companyId: C, facts: ERP(), fetchedAt: junk as never } }).erpEvidence?.fetchedAt).toBeNull();
     expect(erpEvidenceForBox({ companyId: C, facts: ERP(), financials: noBaseFin, periodEnd: null, baseNeedsEvidence: false, fetchedAt: "2026-10-17T09:00:00.000Z" })).toMatchObject({ status: "NO_PERIOD", fetchedAt: "2026-10-17T09:00:00.000Z" });
+  });
+  it.each([[1n, "SUGGESTED"], [10n, "NEEDS_INPUT"], [100n, "NEEDS_INPUT"], [1000n, "NEEDS_INPUT"]] as const)("(1b) end to end: ERP revenue at %sx with NI reconciled → %s; a $100B add-back is always refused", async (mult, want) => {
+    const db = fakeStore();
+    const x = a([...monthly("revenue", Number(25n * BigInt(M) * mult)), ...monthly("netIncome", -1 * M)]);
+    const sug = revSuggestion(x);
+    expect(sug.status).toBe(want);
+    expect(computeEbitdaBox(x).erpEvidence?.reconciliation.find((r) => r.metric === "netIncome")?.status).toBe("RECONCILED");
+    const inflated = (300n * BigInt(M) * mult).toString();
+    const ref = sug.sourceRef ?? `erp:NETSUITE:conn1:ltm.revenue.forged@2026-06-30`;
+    const confirm = await confirmEbitdaItem(db, scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: sug.value ?? inflated, source: ref, confirmedBy: "cfo" });
+    if (want === "SUGGESTED") expect(confirm.ok).toBe(true);
+    else expect(confirm).toMatchObject({ ok: false, status: 422, code: "NEEDS_ERP_EVIDENCE" });
+    const addBack = await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(100_000 * M), source: "x", confirmedBy: "cfo" });
+    expect(addBack).toMatchObject({ ok: false, status: 422 });
+    expect(["OUT_OF_RANGE", "NEEDS_BASE"]).toContain((addBack as { code?: string }).code);
+    expect(db.rows.filter((r) => r.kind === "AMOUNT")).toHaveLength(0);
   });
   it("(6) a BASE_METRIC revenue of 0 is NEEDS_INPUT (422) and writes nothing", async () => {
     const db = fakeStore();

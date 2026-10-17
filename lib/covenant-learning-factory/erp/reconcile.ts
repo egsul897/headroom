@@ -70,7 +70,8 @@ export interface ReconciliationEntry {
   status: "RECONCILED" | "UNRECONCILED" | "NOT_COMPARABLE";
   code: ReconcileCode;
   filing: { value: string; concept: string; form: string; accession: string };
-  erp: { value: string | null; refs: string[] };
+  /** The ERP side: its sum and refs, and the connection it came from (null when no sum could be formed). */
+  erp: { value: string | null; refs: string[]; provider: string | null; connectionId: string | null };
   /** (ERP − filing) / |filing| in basis points, truncated; null when not comparable or the filing figure is 0. */
   deltaBps: string | null;
   note: string;
@@ -108,10 +109,10 @@ export function reconcileErpWithFilings(facts: readonly AdmittedErpFact[], fins:
     const filing = BigInt(v.value);
     const base = { metric, periodStart: v.periodStart!, periodEnd: v.periodEnd, filing: { value: v.value, concept: v.concept, form: v.form, accession: v.accession } };
     const s = sumOverWindow(facts, metric, v.periodStart!, v.periodEnd);
-    if (!s.ok) return { ...base, status: "NOT_COMPARABLE", code: s.code, erp: { value: null, refs: [] }, deltaBps: null, note: s.reason };
+    if (!s.ok) return { ...base, status: "NOT_COMPARABLE", code: s.code, erp: { value: null, refs: [], provider: null, connectionId: null }, deltaBps: null, note: s.reason };
     const erp = s.value;
     const deltaBps = filing !== 0n ? (((erp - filing) * 10_000n) / abs(filing)).toString() : null;
-    const out = (status: ReconciliationEntry["status"], code: ReconcileCode, note: string): ReconciliationEntry => ({ ...base, status, code, erp: { value: erp.toString(), refs: s.refs }, deltaBps, note });
+    const out = (status: ReconciliationEntry["status"], code: ReconcileCode, note: string): ReconciliationEntry => ({ ...base, status, code, erp: { value: erp.toString(), refs: s.refs, provider: s.provider, connectionId: s.connectionId }, deltaBps, note });
     if (abs(erp - filing) <= tolUsd || near(erp, filing, tolBps)) return out("RECONCILED", "WITHIN_TOLERANCE", `ERP ${metric} matches the ${v.form} figure within tolerance`);
     if (abs(filing) >= 1_000n && abs(erp) >= 1_000n) {
       for (const [k, hi, lo] of [[1_000n, "SCALE_ERP_1000X", "SCALE_ERP_DIV_1000"], [1_000_000n, "SCALE_ERP_1000000X", "SCALE_ERP_DIV_1000000"]] as const) {

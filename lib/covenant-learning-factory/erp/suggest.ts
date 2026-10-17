@@ -39,7 +39,8 @@ export interface ErpSuggestion {
   /** Every ERP record the figure sums (erp:<PROVIDER>:<connectionId>:<externalId>@<periodEnd>). */
   refs: string[];
   /** RECONCILED when at least one filed flow overlapping the window reconciled with this ERP; NOT_COMPARED otherwise.
-   *  A confirmable suggestion is SUGGESTED only when RECONCILED (and the ratio check passes). */
+   *  Only qualifying anchors count (same connection, >= 75% coverage, material, within bps). A confirmable suggestion is
+   *  SUGGESTED only when RECONCILED and the two-sided ratio check passes. */
   reconciliation: "RECONCILED" | "NOT_COMPARED";
   confirmable: boolean;
   reason: string;
@@ -72,6 +73,44 @@ export function ltmWindow(endIso: string): { start: string; end: string } | null
 
 /** A reconciled filed flow (scaled to 12 months) larger than this multiple of the ERP revenue fails the ratio check. */
 export const REVENUE_RATIO_LIMIT = 10n;
+/**
+ * Upper bound: ERP LTM revenue may be at most this multiple of the largest anchor magnitude (12-month scaled). Why 100:
+ * the anchors are net income, operating income, interest, income taxes and D&A. For a leveraged borrower (the only kind
+ * Headroom serves), the largest of these is at least about 1% of revenue: D&A alone usually runs 2-6%, and interest on
+ * funded debt rarely falls below 1%. So 100x leaves real thin-margin borrowers headroom and refuses every 1,000x units
+ * error. It also refuses 100x and 10x revenue inflation whenever the largest anchor is above 1% (resp. 10%) of true
+ * revenue. When a real borrower trips it, the result is NEEDS_INPUT (fail-closed): the CFO enters revenue from a document.
+ */
+export const REVENUE_UPPER_RATIO_LIMIT = 100n;
+/** An anchor must overlap at least this share of the LTM window's days. */
+export const ANCHOR_MIN_COVERAGE_PCT = 75;
+/** An anchor's filed figure must be at least this large (|USD|): zero and token flows (a $500 tax line) never anchor. */
+export const ANCHOR_MIN_USD = 1_000_000n;
+/** An anchor must reconcile within this relative tolerance of its own magnitude (the $1k absolute allowance alone is not enough). */
+export const ANCHOR_TOLERANCE_BPS = 50n;
+
+/**
+ * Reconciled filed flows that may anchor a confirmable ERP figure from connection `s`: same provider and connection;
+ * non-zero and material (|filing| >= ANCHOR_MIN_USD); ERP within ANCHOR_TOLERANCE_BPS of |filing| (not only the absolute
+ * allowance); and covering at least ANCHOR_MIN_COVERAGE_PCT of the window's days. Each comes back with its magnitude
+ * scaled to the LTM length.
+ */
+function qualifyingAnchors(reconciliation: readonly ReconciliationEntry[], s: { provider: string; connectionId: string }, w: { start: string; end: string }, ltmDays: number): Array<{ entry: ReconciliationEntry; scaled: bigint }> {
+  const ws = epochDay(w.start)!, we = epochDay(w.end)!;
+  const out: Array<{ entry: ReconciliationEntry; scaled: bigint }> = [];
+  for (const r of reconciliation) {
+    if (r.status !== "RECONCILED" || r.erp.value == null) continue;
+    if (r.erp.provider !== s.provider || r.erp.connectionId !== s.connectionId) continue;
+    const filing = BigInt(r.filing.value), erp = BigInt(r.erp.value);
+    if (abs(filing) < ANCHOR_MIN_USD) continue;
+    if (abs(erp - filing) * 10_000n > ANCHOR_TOLERANCE_BPS * abs(filing)) continue;
+    const rs = epochDay(r.periodStart)!, re = epochDay(r.periodEnd)!;
+    const overlap = Math.min(re, we) - Math.max(rs, ws) + 1;
+    if (overlap * 100 < ltmDays * ANCHOR_MIN_COVERAGE_PCT) continue;
+    out.push({ entry: r, scaled: (abs(filing) * BigInt(ltmDays)) / BigInt(re - rs + 1) });
+  }
+  return out;
+}
 const abs = (x: bigint) => (x < 0n ? -x : x);
 
 const digest = (parts: string[]) => createHash("sha256").update(parts.join("\n")).digest("hex").slice(0, 16);
@@ -102,20 +141,21 @@ export function suggestLtm(admitted: readonly AdmittedErpFact[], reconciliation:
   if (bad.length) return none("BLOCKED_UNRECONCILED", `ERP figures for this window do not reconcile with the filings: ${bad.map((b) => `${b.metric} ${b.periodStart}..${b.periodEnd} ${b.code}`).join("; ")}`);
   const s = sumOverWindow(admitted, metric, w.start, w.end);
   if (!s.ok) return none("NEEDS_INPUT", s.reason);
-  const anchors = reconciliation.filter((r) => r.status === "RECONCILED" && overlaps(r.periodStart, r.periodEnd, w.start, w.end));
   if (confirmable && s.value <= 0n) return none("NEEDS_INPUT", `ERP LTM ${metric} is ${s.value}; a non-positive ${metric} is not a confirmable base (and cannot bound add-backs)`);
+  const ltmDays = epochDay(w.end)! - epochDay(w.start)! + 1;
+  const anchors = qualifyingAnchors(reconciliation, s, w, ltmDays);
   if (confirmable) {
-    // A confirmable figure needs a reconciled anchor: at least one filed flow overlapping the window that the same ERP
-    // ledger matched. Without one, nothing ties this ERP's units, scope or sign to the filer's.
-    if (!anchors.length) return none("NEEDS_INPUT", `no filed figure overlapping ${w.start}..${w.end} reconciles with this ERP; an ERP ${metric} is confirmable only against a reconciled filing anchor`);
-    // Ratio sanity: no reconciled filed flow, scaled to the LTM length, may exceed RATIO_LIMIT x the ERP revenue (a
-    // units slip on the revenue accounts alone would otherwise pass, since the anchor reconciled on other accounts).
-    const ltmDays = BigInt(epochDay(w.end)! - epochDay(w.start)! + 1);
-    for (const r of anchors) {
-      const days = BigInt(epochDay(r.periodEnd)! - epochDay(r.periodStart)! + 1);
-      const scaled = (abs(BigInt(r.filing.value)) * ltmDays) / days;
-      if (scaled > s.value * REVENUE_RATIO_LIMIT) return none("NEEDS_INPUT", `ratio check failed: filed ${r.metric} ${r.periodStart}..${r.periodEnd} (${scaled} over 12 months) exceeds ${REVENUE_RATIO_LIMIT}x the ERP LTM ${metric} (${s.value})`);
+    // A confirmable figure needs a strong anchor (see qualifyingAnchors). Without one, nothing ties this ERP's units,
+    // scope or sign to the filer's.
+    if (!anchors.length) return none("NEEDS_INPUT", `no filed flow reconciles with this ERP connection strongly enough to anchor ${metric} for ${w.start}..${w.end} (needs: same connection, >= ${ANCHOR_MIN_COVERAGE_PCT}% of the window, |figure| >= ${ANCHOR_MIN_USD} USD, within ${ANCHOR_TOLERANCE_BPS} bps)`);
+    // Two-sided ratio check against the anchors, each scaled to the LTM length. A units slip confined to the revenue
+    // accounts passes reconciliation on the other accounts; it shows up as an implausible revenue-to-flow ratio.
+    let largest = 0n;
+    for (const a of anchors) {
+      if (a.scaled > s.value * REVENUE_RATIO_LIMIT) return none("NEEDS_INPUT", `ratio check failed: filed ${a.entry.metric} ${a.entry.periodStart}..${a.entry.periodEnd} (${a.scaled} over 12 months) exceeds ${REVENUE_RATIO_LIMIT}x the ERP LTM ${metric} (${s.value})`);
+      if (a.scaled > largest) largest = a.scaled;
     }
+    if (s.value > largest * REVENUE_UPPER_RATIO_LIMIT) return none("NEEDS_INPUT", `ratio check failed: ERP LTM ${metric} (${s.value}) exceeds ${REVENUE_UPPER_RATIO_LIMIT}x the largest reconciled filed flow (${largest} over 12 months); a units or scope error on the ${metric} accounts is likely`);
   }
   const rec = anchors.length > 0;
   const value = s.value.toString();
