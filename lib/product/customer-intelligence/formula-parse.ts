@@ -49,10 +49,35 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
       missingFields: ["thresholdValue", "formulaType", "operativeExcerptTruncated"],
     };
   }
+  // Narration trust boundary: this scan is the sole input to every
+  // formula extractor below, and extractors take the FIRST figure
+  // they find — so the scan may contain ONLY contract-derived text.
+  // item.plainEnglish is analyzer-GENERATED narration and is
+  // excluded: it republishes full-excerpt (<=4000 char) extractions
+  // while operativeLanguageExcerpt below is only a 700-char prefix,
+  // it carries extractBaskets' canonical REFORMATS of greater-ofs
+  // (a rewrite, not a quote), and one narration-carried condition
+  // clip already severed "$10,000,000" into "$10,000,0…" in the
+  // corpus — a string that parses as $100,000, a figure nowhere in
+  // the contract (narration audit, 2026-10-17: 0/1,688 corpus items
+  // compile from narration today, but counterfactual narration
+  // mutations mint MODELED Permissions, so the channel is closed,
+  // not merely unused). Conditions and restriction text used to
+  // reach this scan ONLY through that narration; conditions are
+  // now an explicit scanned field — they are verbatim excerpt
+  // clips with signal prefixes (extractConditionsAndExceptions),
+  // i.e. contract text. item.restriction is deliberately NOT
+  // scanned: its operative branches are excerpt clips already
+  // reachable via the fields above, and its GENERAL_PROHIBITION
+  // fallback interpolates the section heading into template text,
+  // so the field as a whole cannot be certified figure-free.
+  // Narration remains in use everywhere else it belongs — posture /
+  // conditions context in the review gates and customer
+  // disclosure; only this formula scan excludes it.
   const basketText = [
     ...(item.materialBasketsThresholds ?? []),
     ...(item.permissions ?? []),
-    item.plainEnglish,
+    ...(item.conditions ?? []),
     item.operativeLanguageExcerpt ?? "",
   ].join("\n");
 
