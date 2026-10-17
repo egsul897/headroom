@@ -284,6 +284,16 @@ export interface CorpusManifestStats {
   covenantCandidates: number;
   definitions: number;
   crossReferences: number;
+  /** Extraction-level cross-reference resolution (Stage 0 instrumentation):
+   * resolved = unique same-document target identified; ambiguous = more
+   * than one physical occurrence matched (never guessed); notFound = no
+   * matching node (incl. schedule/exhibit refs, unresolved by design).
+   * The three counts always sum to crossReferences. These are structural
+   * facts only — they assert nothing about legal applicability or
+   * executable authority. */
+  resolvedCrossReferences: number;
+  ambiguousCrossReferences: number;
+  notFoundCrossReferences: number;
   unsupportedFormats: number;
   duplicateRate: number;
   errors: number;

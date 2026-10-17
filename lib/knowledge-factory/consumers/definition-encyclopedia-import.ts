@@ -4,7 +4,12 @@
  */
 
 import { createHash } from "node:crypto";
-import type { CanonicalConsumerExport, ConsumerDefinition, ConsumerSourceRecord } from "../export/consumer-contract";
+import {
+  CONSUMER_EXPORT_SCHEMA_VERSION,
+  type CanonicalConsumerExport,
+  type ConsumerDefinition,
+  type ConsumerSourceRecord,
+} from "../export/consumer-contract";
 
 export const DEFINITION_ENCYCLOPEDIA_ADAPTER_VERSION = "definition-encyclopedia-kf-adapter.v1";
 
@@ -54,7 +59,19 @@ export class DefinitionEncyclopediaImportStore {
     let definitionsUpserted = 0;
     let definitionsSkipped = 0;
 
-    if (exportDoc.schemaVersion !== "knowledge-factory.consumer-export.v1") {
+    // Accept the versions this consumer understands: v1 (committed
+    // artifacts) and the current contract version. The encyclopedia
+    // does not consume dependency edges, so the v2 edge widening
+    // does not change its inputs.
+    // The export arrives as parsed data, so its declared literal type is
+    // a claim, not a guarantee: compare through a widened string so both
+    // accepted versions are real runtime branches (v1 committed
+    // artifacts, and the current contract version).
+    const schemaVersion: string = exportDoc.schemaVersion;
+    if (
+      schemaVersion !== "knowledge-factory.consumer-export.v1" &&
+      schemaVersion !== CONSUMER_EXPORT_SCHEMA_VERSION
+    ) {
       errors.push(`unexpected schemaVersion ${exportDoc.schemaVersion}`);
     }
 
