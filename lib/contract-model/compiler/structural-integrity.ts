@@ -178,7 +178,11 @@ export function validateStructuralIntegrity(
 
   for (const n of nodes) {
     // PARENT_EXISTS + SAME_SEGMENT + PARENT_CONTAINMENT + REF_CONSISTENCY
-    if (n.parentNodeId !== null) {
+    // Phase F (held-out): parentNodeId may be null (compiler nodes)
+    // OR undefined (KF/persisted records) for a root — both mean
+    // "no parent". Checking only !== null flagged every root of a
+    // persisted record set as PARENT_EXISTS (UBS: 35 false positives).
+    if (n.parentNodeId !== null && n.parentNodeId !== undefined) {
       const parent = byId.get(n.parentNodeId);
       if (!parent) {
         violations.push({
