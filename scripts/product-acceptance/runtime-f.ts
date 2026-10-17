@@ -67,7 +67,15 @@ export function runRuntimeF(pkg: CorpusPackage, L: Ledger): void {
   const draft = snapshot("snap-f-draft", "DRAFT", "2026-09-30", 120_000_000);
   const resolver = (snaps: FinancialSnapshot[]) => snaps.length ? snapshotInputResolver({ snapshots: snaps, rules, definitions, companyId: ORG, instrumentKey: INST }) : EMPTY_RESOLVER;
   const graph = buildCapacityGraph({ rules, sharedCapacities: shared, definitions, companyId: ORG, instrumentKey: INST, asOf });
-  const evaluate = (snaps: FinancialSnapshot[], led: LedgerUsageRecord[], at: string = asOf) => evaluateCapacityState({ graph, rules, sharedCapacities: shared, definitions, inputs: resolver(snaps), ledger: led, asOf: at });
+  // PAI-04 attestation: every ledger evaluated here is the closed fixture
+  // ledger built in this function (the literal array above, or an explicit
+  // variant of it constructed in-line below) — no usage records exist
+  // anywhere else in this fixture world, so the presented ledger is
+  // complete by construction and a rule with no records (7.01(c)) has
+  // attested zero usage. Rules with records are unaffected: their usage is
+  // determined from the records, and the attestation only governs the
+  // undetermined-usage case.
+  const evaluate = (snaps: FinancialSnapshot[], led: LedgerUsageRecord[], at: string = asOf) => evaluateCapacityState({ graph, rules, sharedCapacities: shared, definitions, inputs: resolver(snaps), ledger: led, asOf: at, utilizationCompleteness: "VERIFIED_EMPTY" });
   const entry = (state: CapacityState, ruleId: string) => state.capacities.find((c) => c.ruleId === ruleId);
   const MODE = "PRODUCTION" as const;
   const check = (caseId: string, ok: boolean, expected: string, actual: string, severity: Parameters<Ledger["fail"]>[4]["severity"], repro: string, outcome: Parameters<Ledger["fail"]>[4]["outcomeClass"] = "INCORRECT_RESULT") => {
