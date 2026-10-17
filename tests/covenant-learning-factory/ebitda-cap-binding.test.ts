@@ -114,3 +114,53 @@ describe("per-period vs cumulative caps", () => {
     expect(line(o, "(d)").claimed).toBe(String(4 * M));
   });
 });
+
+describe("reference resolution: self-references, headings, ambiguity, letter case, measure clauses", () => {
+  const nested = (items: string) =>
+    optimizeConsolidatedEbitda("Consolidated EBITDA", def(`(a) Consolidated Net Income for such period, plus (b) without duplication, (i) provision for taxes based on income; (ii) interest expense; (iii) depreciation and amortization expense; ${items} minus (c) non-cash gains;`), fin);
+
+  it("'this clause (b)(iv)' written in line (iv) under (b) is the stating line's own cap, with its amount", () => {
+    const o = nested("(iv) severance charges, provided that the amount added back pursuant to this clause (b)(iv) shall not exceed $2,000,000 for such period; (v) non-cash stock-based compensation expense;");
+    const l = line(o, "(iv)");
+    expect(l.cap?.amount).toBe("2000000");
+    expect(l.cap?.note ?? "").not.toMatch(/unresolved/);
+    expect(line(o, "(v)").cap).toBeNull();
+  });
+
+  it("a parenthetical describing the cap base ('determined prior to giving effect to … this clause (b)') is not the cap's scope", () => {
+    const o = nested("(iv) transaction costs, provided that the amount added back pursuant to this clause (iv) shall not exceed 10% of Consolidated EBITDA (determined prior to giving effect to all amounts added pursuant to this clause (b)) and such amount shall not exceed $4,000,000 in such period; (v) integration costs, provided that the aggregate amount added back pursuant to this clause (v) shall not exceed $1,000,000 in such period;");
+    expect(line(o, "(iv)").cap?.note ?? "").not.toMatch(/unresolved/);
+    expect(o.needsInput.join(" ")).not.toMatch(/\(b\) not/);
+    expect(line(o, "(v)").cap?.amount).toBe("1000000");
+    for (const lab of ["(i)", "(ii)", "(iii)"]) expect(line(o, lab).cap).toBeNull();
+  });
+
+  it("a reference to a heading-only enumerator binds every line under it", () => {
+    const o = optimizeConsolidatedEbitda("Consolidated EBITDA", `ARTICLE I DEFINITIONS
+"Consolidated Net Income" means the net income of the Borrower determined on a consolidated basis in accordance with GAAP.
+"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in calculating Consolidated Net Income: (1) provision for taxes based on income; plus (2) interest expense; plus (3) depreciation and amortization expense; plus (4) unusual or non-recurring items; plus (5) (x) (A) restructuring charges, (B) business optimization expenses, (C) costs of opening new facilities and (D) litigation settlements, provided that the aggregate amount added back pursuant to this clause (x) for any period shall not exceed $3,000,000, and (y) (A) signing bonuses and (B) relocation expenses; plus (6) non-cash stock-based compensation expense.
+"Default" means any event of default.
+`, fin);
+    // (x) is folded into item (5): the cap limits that part of (5); whichever way the heading is segmented, the lines
+    // under (x) are never left uncapped and the cap never reaches a neighbouring item.
+    const underX = o.addBacks.filter((a) => a.label === "(5)" || /^\([A-D]\)$/.test(a.label));
+    expect(underX.length).toBeGreaterThan(0);
+    for (const a of underX) expect(a.cap?.text ?? "").toContain("3,000,000");
+    expect(line(o, "(6)").cap).toBeNull();
+    expect(line(o, "(4)").cap).toBeNull();
+  });
+
+  it("an ambiguous reference never leaves a named clause uncapped and blocks MAXIMIZED", () => {
+    const o = run("plus (d) (i) restructuring charges and (ii) integration costs; plus (e) (i) severance charges and (ii) relocation expenses; plus (f) costs of opening new facilities; provided that the aggregate amount added back pursuant to clauses (f) and (ii) shall not exceed $5,000,000;");
+    const twos = o.addBacks.filter((a) => a.label === "(ii)");
+    if (twos.length > 1) for (const t of twos) { expect(t.cap).not.toBeNull(); expect(t.claimed).toBe("0"); }
+    expect(line(o, "(f)").cap).not.toBeNull();
+    expect(o.status).not.toBe("MAXIMIZED");
+  });
+
+  it("'(i)(B)' does not bind clause (b) when the definition uses both letter cases", () => {
+    const o = run("plus (d) (A) restructuring charges and (B) run-rate cost savings; plus (e) non-cash stock-based compensation expense; provided that the aggregate amount added back pursuant to clauses (d)(B) and (e) shall not exceed 20% of Consolidated EBITDA;");
+    expect(line(o, "(b)").cap).toBeNull();
+    expect(line(o, "(e)").cap).not.toBeNull();
+  });
+});
