@@ -857,7 +857,14 @@ main:has(.app-shell) {
 .home-stack {
   display: grid;
   gap: 20px;
-  align-content: start;
+  align-content: stretch;
+  height: 100%;
+}
+
+.home-stack > .home-card,
+.home-pair > .home-card,
+.home-split > .home-card {
+  height: 100%;
 }
 
 .ebitda-panel {
@@ -2213,10 +2220,16 @@ button.ebitda-signin-button:disabled:hover {
 }
 
 .home-overview .home-greeting {
-  font-size: 22px;
-  font-weight: 560;
-  letter-spacing: -0.022em;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
   line-height: 1.2;
+  color: var(--shell-ink);
+}
+
+.home-overview .home-top {
+  align-items: center;
+  width: 100%;
 }
 
 .home-overview .home-greeting-sub {
@@ -2234,14 +2247,25 @@ button.ebitda-signin-button:disabled:hover {
 }
 
 .home-quiet-link {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  margin-left: auto;
+  padding: 0 10px;
+  border: 1px solid var(--shell-line);
+  border-radius: 8px;
+  background: transparent;
   color: var(--shell-muted);
   font-size: 13px;
+  font-weight: 520;
+  line-height: 1;
   text-decoration: none;
   white-space: nowrap;
 }
 
 .home-quiet-link:hover {
   color: var(--ink);
+  border-color: color-mix(in srgb, var(--ink) 18%, var(--line));
 }
 
 .home-board {
@@ -2376,11 +2400,9 @@ button.ebitda-signin-button:disabled:hover {
   height: 16px;
 }
 
-.home-kpi .status-badge {
-  position: absolute;
-  top: 34px;
-  right: 12px;
-  max-width: 46%;
+.home-kpi .home-kpi-caption .status-badge {
+  position: static;
+  max-width: 100%;
 }
 
 .home-kpis .home-empty .home-headline,
@@ -2537,15 +2559,148 @@ button.ebitda-signin-button:disabled:hover {
   margin-bottom: 8px;
 }
 
+.home-overview .home-table-wrap {
+  overflow: visible;
+}
+
+.home-overview .home-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
 .home-overview .home-table th,
 .home-overview .home-table td {
-  padding: 6px 8px;
+  padding: 0 8px;
   font-size: 13px;
+  height: 44px;
+  white-space: nowrap;
 }
 
 .home-overview .home-table th {
   font-size: 12px;
-  padding-top: 0;
+  height: 28px;
+}
+
+.home-overview .home-table th:first-child,
+.home-overview .home-table td:first-child {
+  width: 52%;
+}
+
+.covenant-cell {
+  max-width: 0;
+}
+
+.covenant-name,
+.covenant-meta {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.covenant-name {
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 520;
+  line-height: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.covenant-meta {
+  margin-top: 1px;
+  color: var(--shell-muted);
+  font-size: 12px;
+  font-weight: 450;
+  line-height: 14px;
+}
+
+.driver-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.driver-feed li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--shell-line);
+}
+
+.driver-feed li:last-child {
+  border-bottom: none;
+}
+
+.driver-feed .row-detail {
+  font-size: 13px;
+  font-weight: 450;
+  line-height: 1.3;
+}
+
+.driver-amt {
+  color: var(--shell-muted);
+  font-size: 13px;
+  font-weight: 450;
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.driver-amt.is-up {
+  color: var(--green);
+}
+
+.driver-amt.is-down {
+  color: var(--status-stop);
+}
+
+.sample-facilities li {
+  grid-template-columns: 8px minmax(72px, 1fr) 96px 40px;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.facility-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.facility-amt,
+.facility-pct {
+  color: var(--shell-muted);
+  font-size: 13px;
+  font-weight: 450;
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: right;
+}
+
+.sample-plot {
+  position: relative;
+}
+
+.chart-tip {
+  position: absolute;
+  top: 4px;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 4px 8px;
+  border: 1px solid var(--shell-line);
+  border-radius: 8px;
+  background: var(--shell-card);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .home-view-all {

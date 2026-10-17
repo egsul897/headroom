@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CountUp } from "@/components/motion/CountUp";
 import { ProvenanceDrawer } from "@/components/motion/ProvenanceDrawer";
@@ -35,9 +35,9 @@ const SAMPLE_ROWS = [
 ] as const;
 
 const DRIVERS = [
-  { name: "Sample EBITDA move", note: "Made-up part of the sample figure.", amount: "+ $40 million sample" },
-  { name: "Sample paydown", note: "Made-up part of the sample figure.", amount: "+ $28 million sample" },
-  { name: "Sample cash", note: "Made-up part of the sample figure.", amount: "+ $18 million sample" },
+  { name: "Sample EBITDA move", note: "Made-up part of the sample figure.", amount: "+$40 million" },
+  { name: "Sample paydown", note: "Made-up part of the sample figure.", amount: "+$28 million" },
+  { name: "Sample cash", note: "Made-up part of the sample figure.", amount: "+$18 million" },
 ] as const;
 
 const ALERTS = [
@@ -146,14 +146,13 @@ export function SampleDashboard({
               })
             }
           >
-            <div className="kpi-head">
-              <h2 className="home-eyebrow">Covenants at risk</h2>
-              <StatusBadge status="REVIEW_REQUIRED" />
-            </div>
+            <h2 className="home-eyebrow">Covenants at risk</h2>
             <p className="home-kpi-value">
               <CountUp text="1" />
             </p>
-            <p className="home-kpi-caption">Needs a person.</p>
+            <p className="home-kpi-caption">
+              <StatusBadge status="REVIEW_REQUIRED" />
+            </p>
           </section>
           <section
             className="home-card home-kpi"
@@ -209,18 +208,21 @@ export function SampleDashboard({
               <ul className="sample-facilities">
                 <li>
                   <span className="sample-dot" />
-                  <span>Sample revolver</span>
-                  <strong>$100 million · 50%</strong>
+                  <span className="facility-name">Revolver</span>
+                  <span className="facility-amt">$100 million</span>
+                  <span className="facility-pct">50%</span>
                 </li>
                 <li>
                   <span className="sample-dot" style={{ background: "var(--chart-2)" }} />
-                  <span>Sample term loan</span>
-                  <strong>$70 million · 35%</strong>
+                  <span className="facility-name">Term loan</span>
+                  <span className="facility-amt">$70 million</span>
+                  <span className="facility-pct">35%</span>
                 </li>
                 <li>
                   <span className="sample-dot" style={{ background: "var(--chart-3)" }} />
-                  <span>Sample other</span>
-                  <strong>$30 million · 15%</strong>
+                  <span className="facility-name">Other</span>
+                  <span className="facility-amt">$30 million</span>
+                  <span className="facility-pct">15%</span>
                 </li>
               </ul>
             </div>
@@ -240,30 +242,27 @@ export function SampleDashboard({
                 <thead>
                   <tr>
                     <th scope="col">Covenant</th>
-                    <th scope="col">Facility / document</th>
                     <th scope="col">Status</th>
                     <th scope="col" className="num">
                       Headroom
                     </th>
-                    <th scope="col">Trend</th>
-                    <th scope="col">Next test</th>
                   </tr>
                 </thead>
                 <tbody>
                   {SAMPLE_ROWS.slice(0, 5).map((item) => (
                     <tr key={item.covenant}>
-                      <td>
-                    <button type="button" className="row-detail" onClick={() => setPanel(rowPanel(item))}>
-                      {item.covenant}
-                    </button>
+                      <td className="covenant-cell">
+                        <button type="button" className="covenant-name" title={item.covenant} onClick={() => setPanel(rowPanel(item))}>
+                          {item.covenant}
+                        </button>
+                        <span className="covenant-meta" title={item.facility}>
+                          {item.facility}
+                        </span>
                       </td>
-                      <td>{item.facility}</td>
                       <td>
                         <StatusBadge status={item.status} />
                       </td>
                       <td className="num">{item.headroom}</td>
-                      <td>{item.trend}</td>
-                      <td>{item.next}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -273,10 +272,9 @@ export function SampleDashboard({
           <div className="home-stack">
           <section className="home-card" aria-label="Top headroom drivers">
             <h2 className="home-eyebrow">Top headroom drivers</h2>
-            <ul className="sample-feed">
+            <ul className="driver-feed">
               {DRIVERS.slice(0, 5).map((item) => (
                 <li key={item.name}>
-                  <span className="sample-dot" />
                   <button
                     type="button"
                     className="row-detail"
@@ -292,7 +290,7 @@ export function SampleDashboard({
                   >
                     {item.name}
                   </button>
-                  <strong>{item.amount}</strong>
+                  <span className="driver-amt">{item.amount}</span>
                 </li>
               ))}
             </ul>
@@ -369,35 +367,73 @@ export function SampleDashboard({
   );
 }
 
+const MONTHS = ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
+const HEADROOM_M = [48, 54, 52, 66, 74, 86] as const;
+const UTIL_PCT = [44, 48, 50, 52, 55, 57] as const;
+
 function Plot() {
+  const [hover, setHover] = useState<number | null>(null);
+  const width = 640;
+  const height = 200;
+  const left = 40;
+  const right = 8;
+  const top = 10;
+  const bottom = 26;
+  const innerW = width - left - right;
+  const innerH = height - top - bottom;
+  const yMin = 40;
+  const yMax = 100;
+  const yOf = (value: number) => top + ((yMax - value) / (yMax - yMin)) * innerH;
+  const xOf = (index: number) => left + (index / (MONTHS.length - 1)) * innerW;
+  const headroom = HEADROOM_M.map((value, index) => `${xOf(index)},${yOf(value)}`).join(" ");
+  const utilization = UTIL_PCT.map((value, index) => `${xOf(index)},${yOf(value)}`).join(" ");
+  const baseline = yOf(yMin);
+
+  function hoverAt(event: MouseEvent<SVGRectElement>) {
+    const svg = event.currentTarget.ownerSVGElement;
+    const matrix = svg?.getScreenCTM();
+    if (!svg || !matrix) return;
+    const point = svg.createSVGPoint();
+    point.x = event.clientX;
+    point.y = event.clientY;
+    const local = point.matrixTransform(matrix.inverse());
+    const index = Math.round(((local.x - left) / innerW) * (MONTHS.length - 1));
+    setHover(Math.max(0, Math.min(MONTHS.length - 1, index)));
+  }
+
   return (
-    <div className="sample-plot">
-      <svg viewBox="0 0 640 200" preserveAspectRatio="none" role="img" aria-label="Sample headroom and utilization lines">
-        {[40, 80, 120, 160].map((y) => (
-          <line key={y} x1="36" x2="624" y1={y} y2={y} stroke="var(--chart-track)" strokeWidth="1" />
+    <div className="sample-plot" onMouseLeave={() => setHover(null)}>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Sample headroom and utilization lines">
+        {[100, 80, 60, 40].map((tick) => (
+          <g key={tick}>
+            <line x1={left} x2={width - right} y1={yOf(tick)} y2={yOf(tick)} stroke="var(--chart-track)" strokeWidth="1" />
+            <text x={left - 8} y={yOf(tick) + 3} textAnchor="end" fill="var(--shell-muted)" fontSize="11">
+              ${tick}
+            </text>
+          </g>
         ))}
-        <polyline
-          points="48,150 144,138 240,142 336,118 432,108 528,86 616,62"
-          fill="none"
-          stroke="var(--chart-1)"
-          strokeWidth="2.25"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-        <polyline
-          points="48,168 144,164 240,160 336,156 432,150 528,146 616,140"
-          fill="none"
-          stroke="var(--chart-4)"
-          strokeWidth="2.25"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-        {["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map((label, index) => (
-          <text key={label} x={48 + index * 96} y="208" fill="var(--shell-muted)" fontSize="11">
-            {label}
+        <line x1={left} x2={width - right} y1={baseline} y2={baseline} stroke="var(--shell-line)" strokeWidth="1.25" />
+        <polyline points={utilization} fill="none" stroke="var(--chart-4)" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
+        <polyline points={headroom} fill="none" stroke="var(--chart-1)" strokeWidth="2.25" strokeLinejoin="round" strokeLinecap="round" />
+        {MONTHS.map((month, index) => (
+          <text key={month} x={xOf(index)} y={height - 6} textAnchor="middle" fill="var(--shell-muted)" fontSize="11">
+            {month}
           </text>
         ))}
+        {hover != null ? <line x1={xOf(hover)} x2={xOf(hover)} y1={top} y2={baseline} stroke="var(--shell-line)" strokeWidth="1" /> : null}
+        <rect x={left} y={top} width={innerW} height={innerH} fill="transparent" onMouseMove={hoverAt} />
       </svg>
+      {hover != null ? (
+        <p
+          className="chart-tip"
+          style={{
+            left: `${(xOf(hover) / width) * 100}%`,
+            transform: hover >= MONTHS.length - 2 ? "translateX(-100%)" : hover === 0 ? "translateX(0)" : "translateX(-50%)",
+          }}
+        >
+          {MONTHS[hover]} · Headroom ${HEADROOM_M[hover]} million · Utilization {UTIL_PCT[hover]}%
+        </p>
+      ) : null}
     </div>
   );
 }
