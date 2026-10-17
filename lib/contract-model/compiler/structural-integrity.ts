@@ -125,7 +125,11 @@ export function isRefDescendant(
   if (!c.startsWith(p)) return false;
   const rest = c.slice(p.length);
   if (rest.length === 0) return false; // identical refs: not parent/child
-  return /^(\.\d+|\([a-z0-9]{1,3}\))+$/.test(rest);
+  // Phase D (adversarial): continuation markers are case-insensitive —
+  // (A), (B), (I), (II) are standard clause markers. The original
+  // [a-z0-9] without /i rejected them, so 7.01(a)(i)(A) fell through
+  // to the ARTICLE instead of its immediate parent 7.01(a)(i).
+  return /^(\.\d+|\([a-zA-Z0-9]{1,3}\))+$/.test(rest);
 }
 
 export function validateStructuralIntegrity(

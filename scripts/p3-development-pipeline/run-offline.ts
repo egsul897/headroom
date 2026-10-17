@@ -347,8 +347,12 @@ export async function runOfflineDevelopmentPipeline(input: DevelopmentPackageInp
     const cached = resolutionCache.get(sectionRef);
     if (cached) return cached;
     const resolved = index.resolveUniqueNodeByRef(input.documentId, sectionRef);
+    // Phase C (D14): an UNRESOLVABLE citation does not resolve —
+    // report it as NOT_FOUND (count 0) in this dev script's
+    // three-way display type; the index layer preserves the
+    // distinction.
     const value = {
-      status: resolved.status,
+      status: resolved.status === "UNRESOLVABLE" ? ("NOT_FOUND" as const) : resolved.status,
       count: resolved.status === "AMBIGUOUS" ? resolved.candidates.length : resolved.status === "UNIQUE" ? 1 : 0,
     };
     resolutionCache.set(sectionRef, value);

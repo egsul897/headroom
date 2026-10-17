@@ -187,7 +187,7 @@ function unparsedArticlePreamble(index: StructuralIndex, documentId: string, top
     while (cur && !seen.has(cur.nodeId)) {
       seen.add(cur.nodeId);
       if (cur.nodeType === "ARTICLE") return cur.nodeId;
-      const p = cur.parentNodeId ? index.getParent(cur.nodeId) : undefined;
+      const p: StructuralNode | undefined = cur.parentNodeId ? index.getParent(cur.nodeId) : undefined;
       cur = p ?? undefined;
       // getParent returns the parent node; if the chain leaves the
       // document, stop. (getParent returns undefined for roots.)
