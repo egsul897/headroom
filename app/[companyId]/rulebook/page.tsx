@@ -7,6 +7,7 @@ import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
 import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
+import { proposeReviewDecision } from "@/lib/product/customer-intelligence/review-proposal";
 import { ReviewerNameField } from "@/components/ReviewerNameField";
 import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { reviewProvisionAction } from "./actions";
@@ -74,8 +75,21 @@ export default async function RulebookPage({
       documentTitle: item.documentTitle,
       typeMismatch: mismatchBySourceId.get(item.sourceId) ?? null,
       decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}|${item.category}`),
+      // Headroom proposes a decision for EVERY item — counsel
+      // confirms or edits, never decides from scratch.
+      proposal: proposeReviewDecision(item),
     })),
   );
+  // Jobs rule: counsel's time goes to the items that need it.
+  // Undecided items first (the action list); already-decided
+  // items (SYSTEM auto-accept + counsel decisions) after, so
+  // page 1 is the work, not a scroll through 120 rows.
+  const actionItems = candidates.filter((c) => !c.decision);
+  const decidedItems = candidates.filter((c) => c.decision);
+  const orderedCandidates = [...actionItems, ...decidedItems];
+  const systemDecided = decidedItems.filter((c) => c.decision?.reviewerKind === "SYSTEM").length;
+  const counselDecided = decidedItems.length - systemDecided;
+  const flaggedCount = actionItems.filter((c) => c.proposal.needsAttention).length;
 
   return (
     <div className="stack">
@@ -142,11 +156,26 @@ export default async function RulebookPage({
       <Card>
         <div className="card-title">Review queue</div>
         <div className="card-subtitle">
-          Accept, edit/replace, or reject AI-generated interpretations. Counsel edits become the controlling workspace
-          text for Ask, summaries, and downstream workflows. Numerical capacity still requires a counsel-reviewed
-          executable rulebook and financial inputs — missing numbers stay conditional, never invented.
+          Headroom proposes a decision for every interpretation — counsel confirms, edits, or rejects. Only flagged
+          items genuinely need your attention; the rest are one-click confirms. Numerical capacity still requires a
+          counsel-reviewed executable rulebook and financial inputs — missing numbers stay conditional, never invented.
         </div>
-        {candidates.length === 0 ? (
+        <div className="row-note" style={{ marginTop: 8 }}>
+          {actionItems.length} need your decision
+          {flaggedCount > 0 && <> · {flaggedCount} flagged for your attention</>} · {decidedItems.length} already
+          decided ({systemDecided} system-accepted, {counselDecided} counsel-decided)
+        </div>
+        <div className="row-note" style={{ marginTop: 4 }}>
+          {review.totalDiscovered} provisions discovered · {review.totalSummaries} analyzed
+          {review.awaitingAnalysis > 0 && (
+            <>
+              {" "}· {review.awaitingAnalysis} discovered, awaiting analysis — not reviewed, not rejected, not
+              irrelevant. Capacity is computed from analyzed provisions only and may be incomplete until these are
+              analyzed.
+            </>
+          )}
+        </div>
+        {orderedCandidates.length === 0 ? (
           <div className="row-note">
             No interpreted provisions yet — upload financing documents; AI analysis runs without waiting for external
             legal verification.
@@ -154,15 +183,15 @@ export default async function RulebookPage({
         ) : (
           <>
             {(() => {
-              const pageCount = Math.max(1, Math.ceil(candidates.length / PAGE_SIZE));
+              const pageCount = Math.max(1, Math.ceil(orderedCandidates.length / PAGE_SIZE));
               const safePage = Math.min(page, pageCount);
               const start = (safePage - 1) * PAGE_SIZE;
-              const pageItems = candidates.slice(start, start + PAGE_SIZE);
+              const pageItems = orderedCandidates.slice(start, start + PAGE_SIZE);
               return (
                 <>
                   <div className="row-note" style={{ marginTop: 8 }}>
-                    Showing {start + 1}–{Math.min(start + pageItems.length, candidates.length)} of {candidates.length}{" "}
-                    interpretations · page {safePage} of {pageCount}
+                    Showing {start + 1}–{Math.min(start + pageItems.length, orderedCandidates.length)} of{" "}
+                    {orderedCandidates.length} interpretations · page {safePage} of {pageCount} · undecided items first
                   </div>
                   {safePage > 1 && (
                     <div className="button-row" style={{ marginTop: 8 }}>
@@ -198,6 +227,21 @@ export default async function RulebookPage({
                       </div>
                       <div className="row-note">
                         {c.categoryLabel} · {c.documentTitle}
+                      </div>
+                      <div
+                        className="row-note"
+                        style={{
+                          marginTop: 6,
+                          fontWeight: c.proposal.needsAttention ? 600 : undefined,
+                        }}
+                      >
+                        {c.proposal.needsAttention ? "⚠ Needs your input — " : "Headroom proposes: "}
+                        {c.proposal.decision === "ACCEPTED"
+                          ? "Accept"
+                          : c.proposal.decision === "REJECTED"
+                            ? "Reject"
+                            : "Needs your input"}
+                        {c.proposal.terms ? ` — ${c.proposal.terms}` : ""} · {c.proposal.reason}
                       </div>
                       <div className="row-note" style={{ marginTop: 6 }}>
                         {c.plainEnglish}

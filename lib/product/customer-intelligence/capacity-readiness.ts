@@ -35,6 +35,14 @@ export interface CapacityReadiness {
   capacityAuthority: CapacityAuthority;
   analyzedDocumentCount: number;
   summaryCount: number;
+  /** Total discovered provisions (pre-cap). Every discovered item is
+   * accounted for, even ones beyond the summary cap. */
+  discoveredCount: number;
+  /** Discovered provisions beyond the summary cap: awaiting analysis —
+   * NOT reviewed, NOT rejected, NOT irrelevant. Capacity computed
+   * from analyzed provisions only may be incomplete until these are
+   * analyzed. */
+  awaitingAnalysisCount: number;
   /** Documents whose analysisOk summary predates the current analyzer build (rule 161). */
   staleAnalyzedDocumentCount: number;
   permissionCount: number;
@@ -111,6 +119,11 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
   // outdated analyses — predating correctness fixes — showed no warning.
   const staleAnalyzedDocumentCount = documents.filter((d) => d.analysisOk && d.analysisStale).length;
   const summaryCount = documents.reduce((n, d) => n + (d.summary?.items.length ?? 0), 0);
+  const discoveredCount = documents.reduce(
+    (n, d) => n + (d.summary?.totalItemsBeforeCap ?? d.summary?.items.length ?? 0),
+    0,
+  );
+  const awaitingAnalysisCount = Math.max(0, discoveredCount - summaryCount);
   const hasFinancialSnapshot = financialResolution.status === "UNIQUE";
   const hasExecutableModel = permissionCount > 0 || provisionCount > 0;
   const phase3TrustedUnitCount = phase3?.trustedUnitCount ?? 0;
@@ -172,6 +185,10 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
       ? ` Active contract-ledger usages: ${contractLedgerActiveCount}.`
       : "";
   const staleNote = capacityStaleNote(staleAnalyzedDocumentCount);
+  const awaitingNote =
+    awaitingAnalysisCount > 0
+      ? ` ${awaitingAnalysisCount} discovered provision(s) are awaiting analysis (not reviewed, not rejected, not irrelevant) — capacity is computed from the ${summaryCount} analyzed provisions only and may be incomplete.`
+      : "";
 
   const headlineBase = canEvaluateExecutableCapacity
     ? `Executable capacity path available — covenant-engine figures over uploaded documents and financials (LEGACY_ENGINE · capacityAuthority=${capacityAuthority} · not Phase 3 package CERTIFIED · not certified Phase 4E).${ns4Note}${phase3Note}${unverifiedNote}${ledgerNote}`
@@ -184,7 +201,7 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
         : phase3TrustedUnitCount > 0
           ? `Phase 3 trusted semantic units on file (${phase3TrustedUnitCount} VERIFIED) without an executable Permission/financial path yet — not package CERTIFIED · not Phase 4E capacity.`
           : "Upload financing documents and financials to begin. Headroom will not invent headroom figures.";
-  const headline = headlineBase + staleNote;
+  const headline = headlineBase + staleNote + awaitingNote;
 
   const guidance =
     "AI-first: analysis appears for counsel review without waiting for outside counsel. DISCOVERED ≠ counsel-approved. Promoted Permission rows are UNVERIFIED and are not the Phase 3 certified rulebook. Phase 3 VERIFIED SemanticTruthRecord units are trusted semantic outputs when present — they do not alone certify package-level or Phase 4E capacity. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. LEGACY_ENGINE ≠ certified Phase 4A–4E. Missing inputs stay blank — never fabricated remaining capacity.";
@@ -196,6 +213,8 @@ export async function loadCapacityReadiness(companyId: string): Promise<Capacity
     capacityAuthority,
     analyzedDocumentCount,
     summaryCount,
+    discoveredCount,
+    awaitingAnalysisCount,
     staleAnalyzedDocumentCount,
     permissionCount,
     unverifiedPermissionCount,

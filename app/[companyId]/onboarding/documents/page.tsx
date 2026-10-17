@@ -192,6 +192,18 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
                 </Chip>
                 <Chip tone="idle">{intel.covenantItemCount} covenant summaries</Chip>
                 <Chip tone="idle">{intel.extractionStatus}</Chip>
+                {(() => {
+                  // Every discovered item is accounted for: items
+                  // beyond the summary cap are awaiting analysis —
+                  // never labeled reviewed, rejected, or irrelevant.
+                  const discovered = intel.summary?.totalItemsBeforeCap ?? intel.covenantItemCount;
+                  const awaiting = discovered - intel.covenantItemCount;
+                  return awaiting > 0 ? (
+                    <Chip tone="tight">
+                      {awaiting} discovered, awaiting analysis — not reviewed, not rejected
+                    </Chip>
+                  ) : null;
+                })()}
               </>
             ) : (
               <Chip tone="idle">Intelligence: pending / not run</Chip>
@@ -210,6 +222,13 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
           {d.latestRun ? (
             <>
               <div className="row-note" style={{ marginBottom: 4 }}>
+                {/* Deterministic analysis (the Intelligence status
+                    above) is the source of truth and already ran.
+                    These LLM extraction stages are optional and
+                    never block: a stuck LLM run must not read as
+                    "analysis not ready" when Headroom has already
+                    analyzed the document. */}
+                Optional LLM extraction (not required — deterministic analysis above is the source of truth) ·
                 provider: {d.latestRun.provider} · model: {d.latestRun.model}
               </div>
               <div className="button-row" style={{ marginBottom: 8 }}>
@@ -230,11 +249,17 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
           ) : (
             <div className="row-note" style={{ marginBottom: 8 }}>No extraction run yet.</div>
           )}
-          <form action={runExtractionAction.bind(null, companyId, d.id)}>
-            <button type="submit" className="button">
-              {d.latestRun ? "Re-run pending/failed stages" : "Run extraction"}
-            </button>
-          </form>
+          {intel?.analysisOk ? (
+            <div className="row-note" style={{ marginBottom: 8 }}>
+              Deterministic analysis complete — LLM extraction not required.
+            </div>
+          ) : (
+            <form action={runExtractionAction.bind(null, companyId, d.id)}>
+              <button type="submit" className="button">
+                {d.latestRun ? "Re-run pending/failed stages" : "Run extraction"}
+              </button>
+            </form>
+          )}
         </Card>
         );
       })}
