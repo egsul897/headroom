@@ -114,7 +114,14 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
   // BASKETS bucket is family-agnostic by definition, so any grant
   // there agrees.
   const GRANT_CATEGORIES: Record<string, string[]> = {
-    DEBT_INCURRENCE: ["DEBT_INCURRENCE"],
+    // P3: a DEBT grant also agrees with a GUARANTEES-category
+    // item. Rule 198 strips the pure guarantee-permission shape
+    // at grant-minting (guarantee word preceding the debt word),
+    // so a DEBT grant SURVIVING on a GUARANTEES item passed a
+    // position-evidence test — it is debt-first evidence (a
+    // basket that includes guarantee capacity), not the
+    // guarantee-of-permitted-debt shape that double-counts.
+    DEBT_INCURRENCE: ["DEBT_INCURRENCE", "GUARANTEES"],
     LIEN: ["LIENS_SECURED_DEBT"],
     RESTRICTED_PAYMENT: ["RESTRICTED_PAYMENTS_INVESTMENTS"],
     INVESTMENT: ["RESTRICTED_PAYMENTS_INVESTMENTS"],

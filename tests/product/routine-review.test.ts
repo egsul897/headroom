@@ -152,6 +152,43 @@ describe("isRoutineItem", () => {
     ).toBe(false);
   });
 
+  it("P3: a GUARANTEES-category item with debt-first evidence is routine (DEBT grant agrees)", () => {
+    // Debt word precedes the guarantee word: a debt basket that
+    // includes guarantee capacity. Rule 198 strips only the
+    // guarantee-first shape, so this DEBT grant survived a
+    // position-evidence test and agrees with the category.
+    const guarItem = item({
+      category: "GUARANTEES",
+      sectionRef: "6.04(a)",
+      heading: "6.04 Guarantees",
+      plainEnglish:
+        "The Borrower may incur Indebtedness, including Guarantees of Indebtedness of its Subsidiaries, in an aggregate principal amount not to exceed $50,000,000.",
+      materialBasketsThresholds: ["Amount/threshold: $50,000,000"],
+      operativeLanguageExcerpt:
+        "The Borrower may incur Indebtedness, including Guarantees of Indebtedness, not to exceed $50,000,000.",
+    });
+    expect(grantTypesForItem(guarItem)).toContain("DEBT_INCURRENCE");
+    expect(isRoutineItem(guarItem)).toBe(true);
+  });
+
+  it("P3: the Rule 198 guarantee-first shape still mints no DEBT grant and stays an exception", () => {
+    // Guarantee word precedes the debt word: the clause permits
+    // guaranteeing debt permitted elsewhere — the cap is a
+    // guarantee cap, not an incurrence basket.
+    const guarFirst = item({
+      category: "GUARANTEES",
+      sectionRef: "6.04(e)",
+      heading: "6.04(e)",
+      plainEnglish:
+        "Guarantees constituting Indebtedness permitted by Section 6.01, provided that the aggregate principal amount of Indebtedness Guaranteed shall not exceed $750,000.",
+      materialBasketsThresholds: ["Amount/threshold: $750,000"],
+      operativeLanguageExcerpt:
+        "(e) Guarantees constituting Indebtedness permitted by Section 6.01, provided that the aggregate principal amount of Indebtedness Guaranteed shall not exceed the Threshold Amount.",
+    });
+    expect(grantTypesForItem(guarFirst)).not.toContain("DEBT_INCURRENCE");
+    expect(isRoutineItem(guarFirst)).toBe(false);
+  });
+
   it("a dual-grant (DEBT + linked LIEN) item in a debt section stays routine", () => {
     // Rule 177: the linked LIEN does not make the item an exception
     // when the DEBT grant agrees with the category.
