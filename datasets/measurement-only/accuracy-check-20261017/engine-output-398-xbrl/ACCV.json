@@ -1,0 +1,2089 @@
+{
+ "id": "ACCV",
+ "hasFacts": true,
+ "financials": {
+  "asOf": "2026-10-17",
+  "anchor": null,
+  "values": [],
+  "missing": [
+   {
+    "metric": "netIncome",
+    "reason": "no 10-K/10-Q duration facts"
+   },
+   {
+    "metric": "interestExpense",
+    "reason": "no 10-K/10-Q duration facts"
+   },
+   {
+    "metric": "incomeTaxes",
+    "reason": "no 10-K/10-Q duration facts"
+   },
+   {
+    "metric": "depreciationAmortization",
+    "reason": "no 10-K/10-Q duration facts"
+   },
+   {
+    "metric": "operatingIncome",
+    "reason": "no 10-K/10-Q duration facts"
+   },
+   {
+    "metric": "revenue",
+    "reason": "no 10-K/10-Q duration facts"
+   },
+   {
+    "metric": "reportedEbitdaBase",
+    "reason": "a component (net income / interest / taxes / D&A) has no exact TTM"
+   },
+   {
+    "metric": "totalAssets",
+    "reason": "no Assets instant"
+   },
+   {
+    "metric": "cash",
+    "reason": "no CashAndCashEquivalentsAtCarryingValue at null"
+   },
+   {
+    "metric": "totalDebt",
+    "reason": "no LongTermDebt, noncurrent + current pair, or borrowing caption at null"
+   }
+  ]
+ },
+ "ebitda": {
+  "term": "Consolidated EBITDA",
+  "periodEnd": null,
+  "status": "NEEDS_INPUT",
+  "maximum": null,
+  "supported": null,
+  "base": null,
+  "deductions": null,
+  "addBacks": [
+   {
+    "label": "(i)",
+    "text": "increased (without duplication) and, except in the case of clauses (i)(i), (i)(l), (i)(o) or (i)(s), to the extent deducted (and not added back) in such period in calculating Consolidated Net Income b",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(a)",
+    "text": "provision for taxes based on income, profits, revenue or capital, including federal, state, local and provincial income, franchise, excise, value added and similar taxes based on income, profits, reve",
+    "category": "TAXES",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(b)",
+    "text": "Consolidated Interest Expense of such Person for such period (including (1) net losses on Hedging Obligations or other derivative instruments entered into for the purpose of hedging interest rate risk",
+    "category": "INTEREST",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": {
+     "text": "shall not exceed 27.5% of Consolidated EBITDA for such period (with such calculation being made after giving effect to such add-backs and adjustments and, for the avoidance of doubt, after giving Pro ",
+     "amount": null,
+     "note": "% of Consolidated EBITDA cap needs a determinable EBITDA; cap base excludes add-backs that still need input (cap may be higher); shared with (t), (u), (x)"
+    },
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "% of Consolidated EBITDA cap needs a determinable EBITDA",
+    "capGroup": [
+     "(b)",
+     "(t)",
+     "(u)",
+     "(x)"
+    ],
+    "capGroupAt": [
+     2,
+     20,
+     21,
+     33
+    ]
+   },
+   {
+    "label": "(c)",
+    "text": "Consolidated Depreciation and Amortization Expense of such Person for such period, plus",
+    "category": "D&A",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(d)",
+    "text": "any expenses, fees, charges, or losses (other than depreciation or amortization expense) related to any Equity Offering, Permitted Reorganization, Change of Control, Permitted Investment, Restricted P",
+    "category": "TRANSACTION_COSTS",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(e)",
+    "text": "any other non-cash charges, including without limitation any write offs, write downs, expenses, losses, any effects of adjustments resulting from the application of purchase accounting, purchase price",
+    "category": "NON_CASH",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(f)",
+    "text": "the amount of any net income (loss) attributable to non-controlling interests in any non-Wholly-Owned Subsidiary, plus",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(g)",
+    "text": "the amount of financial advisory, consulting, financing, underwriting or placement services and similar fees, expenses and indemnities paid or accrued in such -19- period to the Sponsor or its Affilia",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(h)",
+    "text": "costs of surety bonds incurred in such period in connection with financing activities, plus",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(i)",
+    "text": "the amount of any \"run rate\" cost savings, operating expense reductions, operating enhancements and other cost synergies (in each case, net of the amount of actual benefits realized prior to or during",
+    "category": "RUN_RATE_SYNERGIES",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(j)",
+    "text": "any costs, charges or expenses incurred by the Borrower or a Restricted Subsidiary pursuant to any management equity plan or stock option or phantom equity plan or any other management or employee ben",
+    "category": "STOCK_COMP",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(k)",
+    "text": "the amount of costs, expenses and charges relating to payments made to option, phantom equity or profits interest holders of the Borrower or any of its any direct or indirect subsidiaries or parent co",
+    "category": "STOCK_COMP",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(l)",
+    "text": "with respect to any joint venture that is not a Restricted Subsidiary, an amount equal to the proportion of those items described in clauses (a) (b) and (c) above relating to such joint venture corres",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(m)",
+    "text": "cash receipts (or any netting arrangements resulting in reduced cash expenses) not included in Consolidated EBITDA in any period solely to the extent that the corresponding non-cash gains relating to ",
+    "category": "NON_CASH",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(n)",
+    "text": "any expenses and charges that are reimbursed by indemnification or other similar provisions in connection with any investment or any sale, conveyance, transfer, or other disposition of assets (in each",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(o)",
+    "text": "charges, expenses and other items included in the Financial Model, plus",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(p)",
+    "text": "any net pension or other post-employment benefit costs representing amortization of unrecognized prior service costs, actuarial losses, including amortization of such amounts arising in prior periods,",
+    "category": "D&A",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(q)",
+    "text": "retention, recruiting, relocation, expansion and signing bonuses or completion bonuses and expenses, stock option and other equity-based compensation expenses, expenses related to cost savings initiat",
+    "category": "RUN_RATE_SYNERGIES",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(r)",
+    "text": "other accruals and expenses (including rationalization, legal, tax, structuring and other costs and expenses) related to the Transactions, Permitted Acquisitions, Investments, Restricted Payments and ",
+    "category": "TAXES",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(s)",
+    "text": "adjustments set forth in any quality of earnings reports delivered to the Administrative Agent in connection with Permitted Acquisitions or similar Investments consummated after the Closing Date that ",
+    "category": "TRANSACTION_COSTS",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(t)",
+    "text": "non-recurring litigation or claim settlement charges or expenses; plus",
+    "category": "NON_RECURRING",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": {
+     "text": "shall not exceed 27.5% of Consolidated EBITDA for such period (with such calculation being made after giving effect to such add-backs and adjustments and, for the avoidance of doubt, after giving Pro ",
+     "amount": null,
+     "note": "% of Consolidated EBITDA cap needs a determinable EBITDA; cap base excludes add-backs that still need input (cap may be higher); shared with (b), (u), (x)"
+    },
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "% of Consolidated EBITDA cap needs a determinable EBITDA",
+    "capGroup": [
+     "(b)",
+     "(t)",
+     "(u)",
+     "(x)"
+    ],
+    "capGroupAt": [
+     2,
+     20,
+     21,
+     33
+    ]
+   },
+   {
+    "label": "(u)",
+    "text": "pre-opening expenses and \"start-up costs\" (as determined by the Borrower) related to the acquisition, opening and organizing of any new facility or new business line and all other location-specific co",
+    "category": "TRANSACTION_COSTS",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": {
+     "text": "shall not exceed 27.5% of Consolidated EBITDA for such period (with such calculation being made after giving effect to such add-backs and adjustments and, for the avoidance of doubt, after giving Pro ",
+     "amount": null,
+     "note": "% of Consolidated EBITDA cap needs a determinable EBITDA; cap base excludes add-backs that still need input (cap may be higher); shared with (b), (t), (x)"
+    },
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "% of Consolidated EBITDA cap needs a determinable EBITDA",
+    "capGroup": [
+     "(b)",
+     "(t)",
+     "(u)",
+     "(x)"
+    ],
+    "capGroupAt": [
+     2,
+     20,
+     21,
+     33
+    ]
+   },
+   {
+    "label": "(v)",
+    "text": " (A) severance, relocation costs, integration and facilities’ or bases’ opening costs, costs related to closure/consolidation of facilities and other business optimization expenses (including related ",
+    "category": "RUN_RATE_SYNERGIES",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(w)",
+    "text": "[reserved]; plus",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(x)",
+    "text": "one-time integration, separation or carve-out charges, expenses or losses; plus",
+    "category": "INTEGRATION",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(y)",
+    "text": "any cost, charge or expense in connection with new hires subject to non- compete or non-solicit agreements, new offices and new lines of business; plus",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(z)",
+    "text": "[reserved]; plus",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(aa)",
+    "text": "letter of credit fees; plus",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(bb)",
+    "text": "any net loss from disposed, abandoned, transferred, closed or discontinued operations (excluding held for sale discontinued operations until actually disposed of); plus",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(cc)",
+    "text": "the amount of board of director and similar non-salaried persons of Borrower, Holdings or their affiliates fees and expenses (including out of pocket director -22- fees and expenses) actually paid by ",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(dd)",
+    "text": "Public Company Costs; plus",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(ee)",
+    "text": "costs or expenses associated with, or preparation for, the Transactions (whether incurred before, on or after the Closing Date), including (1) any bonuses, transaction payments, retention payments, ch",
+    "category": "RESTRUCTURING",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(ff)",
+    "text": "the amount of loss or discount on sale of",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(x)",
+    "text": "receivables and related assets to the Receivables Subsidiary in connection with a Receivables Facility and",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": {
+     "text": "shall not exceed 27.5% of Consolidated EBITDA for such period (with such calculation being made after giving effect to such add-backs and adjustments and, for the avoidance of doubt, after giving Pro ",
+     "amount": null,
+     "note": "% of Consolidated EBITDA cap needs a determinable EBITDA; cap base excludes add-backs that still need input (cap may be higher); shared with (b), (t), (u)"
+    },
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "% of Consolidated EBITDA cap needs a determinable EBITDA",
+    "capGroup": [
+     "(b)",
+     "(t)",
+     "(u)",
+     "(x)"
+    ],
+    "capGroupAt": [
+     2,
+     20,
+     21,
+     33
+    ]
+   },
+   {
+    "label": "(y)",
+    "text": "Securitization Assets and related assets in connection with a Qualified Securitization Financing. provided , that the aggregate amount included in Consolidated EBITDA pursuant to clauses (i)(B), (t) ,",
+    "category": "NON_CASH",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   },
+   {
+    "label": "(a)",
+    "text": "any net gain or loss resulting in such period from currency gains or losses related to Indebtedness, intercompany balances, and other balance sheet items, plus or minus, as the case may be, and",
+    "category": "OTHER",
+    "evidenced": null,
+    "concepts": [],
+    "coverage": "NONE",
+    "cap": null,
+    "claimed": "0",
+    "status": "NEEDS_INPUT",
+    "headroomToCap": null,
+    "note": "not evidenced in filings"
+   }
+  ],
+  "needsInput": [
+   "base/deductions: base \"Consolidated Net Income\": excludes an item that can lower net income and is not in filings: \"(i) extraordinary, exceptional, infrequent, non-recurring or unusual gains or losses (less\" (borrower input CNI:NON_RECURRING or CNI:(i) accepted)",
+   "(i) OTHER (uncapped)",
+   "(a) TAXES (uncapped)",
+   "(b) INTEREST",
+   "(c) D&A (uncapped)",
+   "(d) TRANSACTION_COSTS (uncapped)",
+   "(e) NON_CASH (uncapped)",
+   "(f) OTHER (uncapped)",
+   "(g) OTHER (uncapped)",
+   "(h) OTHER (uncapped)",
+   "(i) RUN_RATE_SYNERGIES (uncapped)",
+   "(j) STOCK_COMP (uncapped)",
+   "(k) STOCK_COMP (uncapped)",
+   "(l) OTHER (uncapped)",
+   "(m) NON_CASH (uncapped)",
+   "(n) OTHER (uncapped)",
+   "(o) OTHER (uncapped)",
+   "(p) D&A (uncapped)",
+   "(q) RUN_RATE_SYNERGIES (uncapped)",
+   "(r) TAXES (uncapped)",
+   "(s) TRANSACTION_COSTS (uncapped)",
+   "(t) NON_RECURRING",
+   "(u) TRANSACTION_COSTS",
+   "(v) RUN_RATE_SYNERGIES (uncapped)",
+   "(w) OTHER (uncapped)",
+   "(x) INTEGRATION (uncapped)",
+   "(y) OTHER (uncapped)",
+   "(z) OTHER (uncapped)",
+   "(aa) OTHER (uncapped)",
+   "(bb) OTHER (uncapped)",
+   "(cc) OTHER (uncapped)",
+   "(dd) OTHER (uncapped)",
+   "(ee) RESTRUCTURING (uncapped)",
+   "(ff) OTHER (uncapped)",
+   "(x) OTHER",
+   "(y) NON_CASH (uncapped)",
+   "(a) OTHER (uncapped)"
+  ],
+  "reason": "NEEDS_INPUT: base \"Consolidated Net Income\": excludes an item that can lower net income and is not in filings: \"(i) extraordinary, exceptional, infrequent, non-recurring or unusual gains or losses (less\" (borrower input CNI:NON_RECURRING or CNI:(i) accepted)",
+  "needsBorrowerInput": [
+   "CNI:NON_RECURRING",
+   "CNI:(i)"
+  ]
+ },
+ "ratioCapacity": [],
+ "addBackTracker": [
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(i)",
+    "text": "increased (without duplication) and, except in the case of clauses (i)(i), (i)(l), (i)(o) or (i)(s), to the extent deducted (and not added back) in such period in calculating Consolidated Net Income b"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(i)@0",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 0,
+   "capGroup": null
+  },
+  {
+   "category": "TRANSACTION_COSTS",
+   "clause": {
+    "label": "(d)",
+    "text": "any expenses, fees, charges, or losses (other than depreciation or amortization expense) related to any Equity Offering, Permitted Reorganization, Change of Control, Permitted Investment, Restricted P"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(d)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 4,
+   "capGroup": null
+  },
+  {
+   "category": "NON_CASH",
+   "clause": {
+    "label": "(e)",
+    "text": "any other non-cash charges, including without limitation any write offs, write downs, expenses, losses, any effects of adjustments resulting from the application of purchase accounting, purchase price"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(e)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 5,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(f)",
+    "text": "the amount of any net income (loss) attributable to non-controlling interests in any non-Wholly-Owned Subsidiary, plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(f)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 6,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(g)",
+    "text": "the amount of financial advisory, consulting, financing, underwriting or placement services and similar fees, expenses and indemnities paid or accrued in such -19- period to the Sponsor or its Affilia"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(g)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 7,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(h)",
+    "text": "costs of surety bonds incurred in such period in connection with financing activities, plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(h)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 8,
+   "capGroup": null
+  },
+  {
+   "category": "RUN_RATE_SYNERGIES",
+   "clause": {
+    "label": "(i)",
+    "text": "the amount of any \"run rate\" cost savings, operating expense reductions, operating enhancements and other cost synergies (in each case, net of the amount of actual benefits realized prior to or during"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(i)@9",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 9,
+   "capGroup": null
+  },
+  {
+   "category": "STOCK_COMP",
+   "clause": {
+    "label": "(j)",
+    "text": "any costs, charges or expenses incurred by the Borrower or a Restricted Subsidiary pursuant to any management equity plan or stock option or phantom equity plan or any other management or employee ben"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(j)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 10,
+   "capGroup": null
+  },
+  {
+   "category": "STOCK_COMP",
+   "clause": {
+    "label": "(k)",
+    "text": "the amount of costs, expenses and charges relating to payments made to option, phantom equity or profits interest holders of the Borrower or any of its any direct or indirect subsidiaries or parent co"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(k)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 11,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(l)",
+    "text": "with respect to any joint venture that is not a Restricted Subsidiary, an amount equal to the proportion of those items described in clauses (a) (b) and (c) above relating to such joint venture corres"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(l)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 12,
+   "capGroup": null
+  },
+  {
+   "category": "NON_CASH",
+   "clause": {
+    "label": "(m)",
+    "text": "cash receipts (or any netting arrangements resulting in reduced cash expenses) not included in Consolidated EBITDA in any period solely to the extent that the corresponding non-cash gains relating to "
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(m)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 13,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(n)",
+    "text": "any expenses and charges that are reimbursed by indemnification or other similar provisions in connection with any investment or any sale, conveyance, transfer, or other disposition of assets (in each"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(n)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 14,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(o)",
+    "text": "charges, expenses and other items included in the Financial Model, plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(o)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 15,
+   "capGroup": null
+  },
+  {
+   "category": "RUN_RATE_SYNERGIES",
+   "clause": {
+    "label": "(q)",
+    "text": "retention, recruiting, relocation, expansion and signing bonuses or completion bonuses and expenses, stock option and other equity-based compensation expenses, expenses related to cost savings initiat"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(q)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 17,
+   "capGroup": null
+  },
+  {
+   "category": "TRANSACTION_COSTS",
+   "clause": {
+    "label": "(s)",
+    "text": "adjustments set forth in any quality of earnings reports delivered to the Administrative Agent in connection with Permitted Acquisitions or similar Investments consummated after the Closing Date that "
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(s)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 19,
+   "capGroup": null
+  },
+  {
+   "category": "NON_RECURRING",
+   "clause": {
+    "label": "(t)",
+    "text": "non-recurring litigation or claim settlement charges or expenses; plus"
+   },
+   "cap": {
+    "text": "shall not exceed 27.5% of Consolidated EBITDA for such period (with such calculation being made after giving effect to such add-backs and adjustments and, for the avoidance of doubt, after giving Pro ",
+    "amount": null
+   },
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(t)",
+   "potential": {
+    "basis": "CAP_UNKNOWN",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 20,
+   "capGroup": {
+    "id": "CAP@2+20+21+33:(b)+(t)+(u)+(x)",
+    "labels": [
+     "(b)",
+     "(t)",
+     "(u)",
+     "(x)"
+    ],
+    "leader": "(t)",
+    "room": null,
+    "positions": [
+     2,
+     20,
+     21,
+     33
+    ],
+    "leaderPosition": 20
+   }
+  },
+  {
+   "category": "TRANSACTION_COSTS",
+   "clause": {
+    "label": "(u)",
+    "text": "pre-opening expenses and \"start-up costs\" (as determined by the Borrower) related to the acquisition, opening and organizing of any new facility or new business line and all other location-specific co"
+   },
+   "cap": {
+    "text": "shall not exceed 27.5% of Consolidated EBITDA for such period (with such calculation being made after giving effect to such add-backs and adjustments and, for the avoidance of doubt, after giving Pro ",
+    "amount": null
+   },
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(u)",
+   "potential": {
+    "basis": "CAP_UNKNOWN",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 21,
+   "capGroup": {
+    "id": "CAP@2+20+21+33:(b)+(t)+(u)+(x)",
+    "labels": [
+     "(b)",
+     "(t)",
+     "(u)",
+     "(x)"
+    ],
+    "leader": "(t)",
+    "room": null,
+    "positions": [
+     2,
+     20,
+     21,
+     33
+    ],
+    "leaderPosition": 20
+   }
+  },
+  {
+   "category": "RUN_RATE_SYNERGIES",
+   "clause": {
+    "label": "(v)",
+    "text": " (A) severance, relocation costs, integration and facilities’ or bases’ opening costs, costs related to closure/consolidation of facilities and other business optimization expenses (including related "
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(v)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 22,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(w)",
+    "text": "[reserved]; plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(w)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 23,
+   "capGroup": null
+  },
+  {
+   "category": "INTEGRATION",
+   "clause": {
+    "label": "(x)",
+    "text": "one-time integration, separation or carve-out charges, expenses or losses; plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(x)@24",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 24,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(y)",
+    "text": "any cost, charge or expense in connection with new hires subject to non- compete or non-solicit agreements, new offices and new lines of business; plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(y)@25",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 25,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(z)",
+    "text": "[reserved]; plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(z)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 26,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(aa)",
+    "text": "letter of credit fees; plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(aa)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 27,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(bb)",
+    "text": "any net loss from disposed, abandoned, transferred, closed or discontinued operations (excluding held for sale discontinued operations until actually disposed of); plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(bb)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 28,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(cc)",
+    "text": "the amount of board of director and similar non-salaried persons of Borrower, Holdings or their affiliates fees and expenses (including out of pocket director -22- fees and expenses) actually paid by "
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(cc)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 29,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(dd)",
+    "text": "Public Company Costs; plus"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(dd)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 30,
+   "capGroup": null
+  },
+  {
+   "category": "RESTRUCTURING",
+   "clause": {
+    "label": "(ee)",
+    "text": "costs or expenses associated with, or preparation for, the Transactions (whether incurred before, on or after the Closing Date), including (1) any bonuses, transaction payments, retention payments, ch"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(ee)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 31,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(ff)",
+    "text": "the amount of loss or discount on sale of"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(ff)",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 32,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(x)",
+    "text": "receivables and related assets to the Receivables Subsidiary in connection with a Receivables Facility and"
+   },
+   "cap": {
+    "text": "shall not exceed 27.5% of Consolidated EBITDA for such period (with such calculation being made after giving effect to such add-backs and adjustments and, for the avoidance of doubt, after giving Pro ",
+    "amount": null
+   },
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(x)@33",
+   "potential": {
+    "basis": "CAP_UNKNOWN",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 33,
+   "capGroup": {
+    "id": "CAP@2+20+21+33:(b)+(t)+(u)+(x)",
+    "labels": [
+     "(b)",
+     "(t)",
+     "(u)",
+     "(x)"
+    ],
+    "leader": "(t)",
+    "room": null,
+    "positions": [
+     2,
+     20,
+     21,
+     33
+    ],
+    "leaderPosition": 20
+   }
+  },
+  {
+   "category": "NON_CASH",
+   "clause": {
+    "label": "(y)",
+    "text": "Securitization Assets and related assets in connection with a Qualified Securitization Financing. provided , that the aggregate amount included in Consolidated EBITDA pursuant to clauses (i)(B), (t) ,"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(y)@34",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 34,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(a)",
+    "text": "any net gain or loss resulting in such period from currency gains or losses related to Indebtedness, intercompany balances, and other balance sheet items, plus or minus, as the case may be, and"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "permitted by the definition; no filed movement detected — available, check with CFO",
+   "inputKey": "ADDBACK:(a)@35",
+   "potential": {
+    "basis": "UNCAPPED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "position": 35,
+   "capGroup": null
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "NON_RECURRING",
+    "text": "net-income exclusion required by the definition; not in filings"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "net-income exclusion — CFO input (signed: gains positive, losses negative)",
+   "inputKey": "CNI:NON_RECURRING",
+   "potential": {
+    "basis": "SIGNED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "capGroup": null,
+   "position": -1
+  },
+  {
+   "category": "OTHER",
+   "clause": {
+    "label": "(i)",
+    "text": "net-income exclusion required by the definition; not in filings"
+   },
+   "cap": null,
+   "sources": [],
+   "status": "NEEDS_INPUT",
+   "amount": null,
+   "movement": null,
+   "capHeadroom": null,
+   "ebitdaDelta": null,
+   "debtCapacityDelta": null,
+   "confidence": "LOW",
+   "note": "net-income exclusion — CFO input (signed: gains positive, losses negative)",
+   "inputKey": "CNI:(i)",
+   "potential": {
+    "basis": "SIGNED_NEEDS_INPUT",
+    "ebitda": null,
+    "debt": null
+   },
+   "capGroup": null,
+   "position": -1
+  }
+ ],
+ "computedRatios": [
+  {
+   "stableKey": "clf-sweep:acc-ACCV:TOTAL_NET_LEVERAGE",
+   "ratioKey": "TOTAL_NET_LEVERAGE",
+   "displayName": "Total Net Leverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:TOTAL_GROSS_LEVERAGE",
+   "ratioKey": "TOTAL_GROSS_LEVERAGE",
+   "displayName": "Total Leverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:SECURED_NET_LEVERAGE",
+   "ratioKey": "SECURED_NET_LEVERAGE",
+   "displayName": "Secured Net Leverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:SECURED_GROSS_LEVERAGE",
+   "ratioKey": "SECURED_GROSS_LEVERAGE",
+   "displayName": "Secured Leverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:FIRST_LIEN_NET_LEVERAGE",
+   "ratioKey": "FIRST_LIEN_NET_LEVERAGE",
+   "displayName": "First Lien Net Leverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:FIRST_LIEN_GROSS_LEVERAGE",
+   "ratioKey": "FIRST_LIEN_GROSS_LEVERAGE",
+   "displayName": "First Lien Leverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:FIXED_CHARGE_COVERAGE",
+   "ratioKey": "FIXED_CHARGE_COVERAGE",
+   "displayName": "Fixed Charge Coverage Ratio",
+   "status": "NEEDS_INPUT",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": "\" Consolidated Fixed Charge Coverage Ratio \" shall mean, as of any date of determination, the ratio of (a) (i) Consolidated EBITDA for the Test Period most recently ended on or prior to such date of determination, less (ii) Consolidated Maintenance Capital Expenditures for such Test Period (other than those financed with long term indebtedness (other than revolving indebtedness)), less (iii) the aggregate amount of federal, state, local and foreign income taxes paid in cash and Tax Distributions (including, for the avoidance of doubt, payments made pursuant to the Tax Receivable Agreement), in each case, of or by the Borrower and its Restricted Subsidiaries during such Test Period, less (iv) Restricted Payments (other than (w) Tax Distributions, (x) any distributions declared, required, committed to be made, or paid on or prior to the Closing Date, (y) any Restricted Payments made in connection with the Transactions (including the initial public offering of Ultimate Parent and the other transactions contemplated thereby), and (z) any distributions or dividends funded with, or made from, the proceeds of any secondary offering of Capital Stock of Holdings (or any direct or indirect parent company thereof))) paid in cash by the Borrower during such Test Period to (b) Fixed Charges of the Borrower and its Restricted Subsidiaries on consolidated basis for such Test Period; provided , that, notwithstanding the foregoing, for purposes of calculating Fixed Charges under clause (b) for the Test Period ending (i) March 31, 2027 shall be Fixed Charges of the Borrower and the Restricted Subsidiaries for the period beginning January 1, 2027 and ending March 31, 2027 multiplied by four, (ii) June 30, 2027 shall be Fixed Charges for the period beginning January 1, 2027 and ending June 30, 2027 multiplied by two, and (iii) September 30, 2027 shall be Fixed Charges for the period beginning January 1, 2027 and ending September 30, 2027 multiplied by 4/3.",
+   "definitionDocumentId": "acc-ACCV",
+   "expression": null,
+   "missingInputs": [
+    "Consolidated EBITDA",
+    "Fixed Charges"
+   ],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Definition is cite-bound. Unbound operands: Consolidated EBITDA, Fixed Charges. No proxy was substituted."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:INTEREST_COVERAGE",
+   "ratioKey": "INTEREST_COVERAGE",
+   "displayName": "Interest Coverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:LEVERAGE",
+   "ratioKey": "LEVERAGE",
+   "displayName": "Leverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:SENIOR_LEVERAGE",
+   "ratioKey": "SENIOR_LEVERAGE",
+   "displayName": "Senior Leverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:NET_LEVERAGE",
+   "ratioKey": "NET_LEVERAGE",
+   "displayName": "Net Leverage Ratio",
+   "status": "UNKNOWN",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": null,
+   "definitionDocumentId": null,
+   "expression": null,
+   "missingInputs": [],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Ratio name is not in the bound package texts."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:DEFINED:Consolidated First Lien Secured Debt to Consolidated EBITDA Ratio",
+   "ratioKey": "DEFINED:Consolidated First Lien Secured Debt to Consolidated EBITDA Ratio",
+   "displayName": "Consolidated First Lien Secured Debt to Consolidated EBITDA Ratio",
+   "status": "NEEDS_INPUT",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": "\" Consolidated First Lien Secured Debt to Consolidated EBITDA Ratio \" shall mean, as of any date of determination, the ratio of (a) Consolidated First Lien Secured Debt as of such date of determination, minus unrestricted cash and Cash Equivalents (in each case, free and clear of all Liens other than Permitted Liens) of the Borrower and the Restricted Subsidiaries to (b) Consolidated EBITDA for the Test Period most recently ended on or prior to such date of determination, in each case with such pro forma adjustments to Consolidated First Lien Secured Debt and Consolidated EBITDA as are appropriate and consistent with the pro forma adjustment provisions set forth in the definition of Pro Forma Basis.",
+   "definitionDocumentId": "acc-ACCV",
+   "expression": null,
+   "missingInputs": [
+    "Consolidated First Lien Secured Debt",
+    "Cash Equivalents",
+    "Consolidated EBITDA"
+   ],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Definition is cite-bound. Unbound operands: Consolidated First Lien Secured Debt, Cash Equivalents, Consolidated EBITDA. No proxy was substituted."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:DEFINED:Consolidated Senior Secured Debt to Consolidated EBITDA Ratio",
+   "ratioKey": "DEFINED:Consolidated Senior Secured Debt to Consolidated EBITDA Ratio",
+   "displayName": "Consolidated Senior Secured Debt to Consolidated EBITDA Ratio",
+   "status": "NEEDS_INPUT",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": "\" Consolidated Senior Secured Debt to Consolidated EBITDA Ratio \" shall mean, as of any date of determination, the ratio of (a) Consolidated Senior Secured Debt as of such date of determination, minus unrestricted cash and Cash Equivalents (in each case, free and clear of all Liens other than Permitted Liens) of the Borrower and the Restricted Subsidiaries as of such date of determination to (b) Consolidated EBITDA of the Borrower for the Test Period most recently ended on or prior to such date of determination, in each case with such pro forma adjustments to Consolidated Senior Secured Debt and Consolidated EBITDA as are appropriate and consistent with the pro forma adjustment provisions set forth in the definition of Pro Forma Basis.",
+   "definitionDocumentId": "acc-ACCV",
+   "expression": null,
+   "missingInputs": [
+    "Consolidated Senior Secured Debt",
+    "Cash Equivalents",
+    "Consolidated EBITDA"
+   ],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Definition is cite-bound. Unbound operands: Consolidated Senior Secured Debt, Cash Equivalents, Consolidated EBITDA. No proxy was substituted."
+  },
+  {
+   "stableKey": "clf-sweep:acc-ACCV:DEFINED:Consolidated Total Debt to Consolidated EBITDA Ratio",
+   "ratioKey": "DEFINED:Consolidated Total Debt to Consolidated EBITDA Ratio",
+   "displayName": "Consolidated Total Debt to Consolidated EBITDA Ratio",
+   "status": "NEEDS_INPUT",
+   "certification": "COMPUTED_NOT_CERTIFIED",
+   "canonical": null,
+   "numerator": [],
+   "denominator": [],
+   "definitionExcerpt": "\" Consolidated Total Debt to Consolidated EBITDA Ratio \" shall mean, as of any date of determination, the ratio of (i) Consolidated Total Debt as of such date of determination, minus unrestricted cash and Cash Equivalents (in each case, free and clear of all Liens other than Permitted Liens) of the Borrower and the Restricted Subsidiaries as of such date of determination to (ii) Consolidated EBITDA of the Borrower for the Test Period most recently ended on or prior to such date of determination, in each case with such pro forma adjustments to Consolidated Total Debt and Consolidated EBITDA as are appropriate and consistent with the pro forma adjustment provisions set forth in the definition of Pro Forma Basis.",
+   "definitionDocumentId": "acc-ACCV",
+   "expression": null,
+   "missingInputs": [
+    "Consolidated Total Debt",
+    "Cash Equivalents",
+    "Consolidated EBITDA"
+   ],
+   "thresholds": [],
+   "refusedReported": null,
+   "note": "Definition is cite-bound. Unbound operands: Consolidated Total Debt, Cash Equivalents, Consolidated EBITDA. No proxy was substituted."
+  }
+ ],
+ "headroom": [
+  {
+   "stableKey": "acc-accv-asset-sale-t",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "Asset Sale (t)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "47600000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(t) a disposition or discount of accounts receivable, notes receivable or participations therein, including any disposition of Securitization Assets, if applicable, and related assets, in each case, in connection with any Receivables Facility or Qualified Securitization Financing; provided , that the aggregate maximum permitted amount for all such arrangements at any time in effect shall not exceed the greater of (x) $47,600,000 and (y) 35% of Consolidated EBITDA for the most recently ended Test Period (calculated on a Pro Forma Basis);",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-asset-sale-u",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "Asset Sale (u)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "17000000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(u) other dispositions with a Fair Market Value not to exceed the greater of (x) $17,000,000 and (y) 12.5% of Consolidated EBITDA for the most recently ended Test Period (calculated on a Pro Forma Basis) in any fiscal year (with unused amounts in any fiscal year being carried forward to the immediately succeeding fiscal year, but not any fiscal year thereafter);",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-permitted-liens-c",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "Permitted Liens (c)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "47600000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(c) the satisfaction or discharge of such Indebtedness is expressly permitted hereunder; (xxiii) with respect to any Foreign Subsidiary, other Liens and privileges arising mandatorily by any Requirements of Law; (xxiv) to the extent arising pursuant to a Requirement of Law, Liens on cash or Cash Equivalents securing Hedge Agreements in the ordinary course of business; (xxv) other Liens; provided that the aggregate outstanding face amount of obligations secured by Liens existing in reliance on this clause (xxv) shall not exceed the greater of $47,600,000 and 35% of Consolidated EBITDA for the most recently ended Test Period (calculated on a Pro Forma Basis) as of such time of incurrence; (xxvi) Liens on equipment of the Borrower or any Restricted Subsidiary granted in the ordinary course of business to the Borrower’s or such Restricted Subsidiary’s client at which such equipment is located; (xxvii) Liens on Receivables Assets incurred in connection with a Receivables Facility and Liens on Securitization Assets and related assets arising in connection with a Qualified Securitization Financing permitted under clause (t) of the definition of “ Asset Sale ”; (xxviii) zoning by-laws and other land use restrictions, including, without limitation, site plan agreements, development agreements, and contract zoning agreements; (xxix) [reserved]; (xxx) Liens on property of any Restricted Subsidiary that is not a Credit Party, which Liens secure Indebtedness of such Restricted Subsidiary or another Restricted Subsidiary that is not a Credit Party, in each case, to the extent permitted under Section 10.1 ; (xxxi) Liens arising from Uniform Commercial Code financing statement filings regarding operating leases or consignments entered into by the Borrower or any Restricted Subsidiary in the ordinary course of business; (xxxii) Liens on goods purchased in the ordinary course of business, the purchase price of which is financed by a documentary letter of credit issued for the account of the Borrower or any of its Subsidiaries; and (xxxiii) Liens or rights of set-off against credit balances of the Borrower or any of the Restricted Subsidiaries with credit card issuers or credit card processors or amounts owing by such credit card issuers or credit card processors to the Borrower or any Restricted Subsidiaries in the ordinary course of business to secure the obligations of any Subsidiary to the credit card issuers or credit card processors as a result of fees and charges; (xxxiv) Liens securing Indebtedness incurred or assumed in connection with any Permitted Acquisition (so long as, in the case of any such Indebtedness assumed, such Indebtedness was not assumed in contemplation thereof); provided that such Liens with respect to any assumed Indebtedness shall be limited to the property or assets acquired . -59-",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-1-limitation-on-indebtedness-c",
+   "kind": "BASKET",
+   "name": "FIXED_DOLLAR",
+   "sectionRef": "§10.1 Limitation on Indebtedness (c)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "2000000",
+   "limitBound": "EXACT",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(c) Indebtedness (including any unused commitment and any Capitalized Lease Obligations) outstanding on the Closing Date (i) in an aggregate principal or committed amount not in excess of $2,000,000 individually or (ii) listed on Schedule 10.1 (together with any Refinancing Indebtedness in respect thereof);",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-1-limitation-on-indebtedness-o",
+   "kind": "BASKET",
+   "name": "FIXED_DOLLAR",
+   "sectionRef": "§10.1 Limitation on Indebtedness (o)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "750000",
+   "limitBound": "EXACT",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(o) (i) Indebtedness supported by a letter of credit, in a principal amount not in excess of the stated amount of such letter of credit so long as such letter of credit is otherwise permitted to be incurred pursuant to this Section 10.1 , (ii) obligations in respect of letters of support, guarantees or similar obligations issued, made or incurred for the benefit of any Subsidiary of the Borrower to the extent required by law or in connection with any statutory filing or the delivery of audit opinions performed in jurisdictions other than within the United States or (iii) Indebtedness in respect of letters of credit obtained other than pursuant to this Agreement, so long as the aggregate undrawn face amount thereof does not exceed $750,000 at any time outstanding;",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-1-limitation-on-indebtedness-q",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "§10.1 Limitation on Indebtedness (q)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "20400000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(q) Indebtedness of Restricted Subsidiaries that are not Guarantors (together with any Refinancing Indebtedness in respect thereof ) in the aggregate not to exceed the greater of (x) $20,400,000 and (y) 15% of Consolidated EBITDA for the most recently ended Test Period (calculated on a Pro Forma Basis) at the time of incurrence;",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-1-limitation-on-indebtedness-z-i",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "§10.1 Limitation on Indebtedness (z)(i)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "34000000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "not to exceed (i) the greater of (x) $34,000,000 and (y) 25% of Consolidated EBITDA",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-2-limitation-on-liens-c",
+   "kind": "BASKET",
+   "name": "FIXED_DOLLAR",
+   "sectionRef": "§10.2 Limitation on Liens (c)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "2000000",
+   "limitBound": "EXACT",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(c) Liens existing on the Closing Date (i) securing obligations in an aggregate amount not in excess of $2,000,000 or (ii) listed on Schedule 10.2(c) and, in each case, any modifications, replacements, renewals, refinancings or extensions thereof;",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-2-limitation-on-liens-i",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "§10.2 Limitation on Liens (i)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "13600000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(i) (i) Liens securing (A) Secured Hedge Obligations and Secured Cash Management Obligations and (B) the Hedging Obligations and Cash Management Services existing on the Closing Date as listed on Schedule 10.2(i) and (ii) Liens securing other Hedging Obligations and Cash Management Services so long as the aggregate amount of all such Hedging Obligations and Cash Management Services secured pursuant to this clause (ii) does not exceed the greater of $13,600,000 and 10% of Consolidated EBITDA for the most recently ended Test Period (calculated on a Pro Forma Basis);",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-4-limitation-on-sale-of-assets-c-iv",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "§10.4 Limitation on Sale of Assets (c)(iv)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "27200000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(iv) any Designated Non-Cash Consideration received by the Borrower or such Restricted Subsidiary in such Asset Sale having an aggregate Fair Market Value, taken together with all other Designated Non-Cash Consideration received pursuant to this clause (iv) that is at that time outstanding, not to exceed the greater of $27,200,000 and 20% of Consolidated EBITDA for the most recently ended Test Period (calculated on a Pro Forma Basis) at the time of the receipt of such Designated Non-Cash Consideration, with the Fair Market Value of each item of Designated Non-Cash Consideration being measured at the time received and without giving effect to subsequent changes in value, shall be deemed to be cash for purposes of this clause (c) of this provision and for no other purpose;",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-5-limitation-on-restricted-payments-r",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "§10.5 Limitation on Restricted Payments (r)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "34000000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(r) so long as no Event of Default shall have occurred or be continuing at the time of payment thereof, other Restricted Payments, taken together with all other Restricted Payments made pursuant to this clause, in an aggregate amount not to exceed the greater of (x) $34,000,000 and (y) 25% of Consolidated EBITDA for the most recently ended Test Period (calculated on a Pro Forma Basis);",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-6-limitation-on-investments-e",
+   "kind": "BASKET",
+   "name": "FIXED_DOLLAR",
+   "sectionRef": "§10.6 Limitation on Investments (e)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "2000000",
+   "limitBound": "EXACT",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(e) (i) any Investment existing or contemplated on the Closing Date (x) in an aggregate amount not in excess of $2,000,000 or (y) listed on Schedule 10.6 and (ii) Investments consisting of any modification, replacement, renewal, refinancing, reinvestment, restructuring or extension of any such Investment; provided except as permitted under this Agreement, that the amount of any such Investment is not increased from the amount of such Investment on the Closing Date except (x) pursuant to the terms of such Investment (including in respect of any unused commitment), plus any accrued but unpaid interest (including any portion thereof which is payable in kind in accordance with the terms of such modified, extended, renewed, refinanced or replaced Investment) and premium payable by the terms of such Indebtedness thereon and fees and expenses associated therewith as of the Closing Date or (y) as otherwise permitted by this Section 10.6 ; -158-",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-6-limitation-on-investments-k",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "§10.6 Limitation on Investments (k)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "20400000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(k) loans and advances to or guarantees of Indebtedness of officers, directors, managers and employees not to exceed the greater of $20,400,000 and 15% of Consolidated EBITDA for the most recently ended Test Period, at any time outstanding;",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-7-limitation-on-prepayments-of-junior-debt-a",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "§10.7 Limitation on Prepayments of Junior Debt(a)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "6800000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "The Borrower will not, and will not permit any of its Restricted Subsidiaries to, make any payment or other distribution (whether in cash, securities or other property) of or in respect of any Junior Debt (“ Restricted Debt Payments ”) in an aggregate principal amount exceeding the greater of $6,800,000 and 5% of Consolidated EBITDA of the most recently ended Test Period (calculated on a Pro Forma Basis) of the Borrower or any Restricted Subsidiary, including any sinking fund or similar deposit, on account of the purchase, redemption, retirement, acquisition, cancellation or termination in respect of any Junior Debt except for: -161- (a) Refinancing Indebtedness, (b) payments of regularly scheduled interest and payment of principal on the scheduled maturity date of any Junior Debt;",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "acc-accv-s10-7-limitation-on-prepayments-of-junior-debt-x",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "§10.7 Limitation on Prepayments of Junior Debt(x)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "40800000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "in an aggregate amount, not to exceed the greater of (x) $40,800,000 and (y) 30% of Consolidated EBITDA",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "tree:10.1(gg)",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "10.1(gg)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "34000000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(gg) Indebtedness incurred for the benefit of joint ventures (regardless of the form of legal\nentity) in an aggregate principal amount not to exceed (i) the greater of (x) $34,000,000 and (y) 25% of\nConsolidated EBITDA for the most recently ended Test Period (calculated on a Pro Forma Basis)\noutstanding at any time and (ii) any Refinancing Indebtedness in respect thereof;",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  },
+  {
+   "stableKey": "tree:10.5(d)",
+   "kind": "BASKET",
+   "name": "GROWER_GREATER_OF",
+   "sectionRef": "10.5(d)",
+   "status": "NEEDS_INPUT",
+   "usage": null,
+   "usageBound": "EXACT",
+   "limit": "13200000",
+   "limitBound": "AT_LEAST",
+   "direction": "MAX",
+   "headroom": null,
+   "headroomBound": null,
+   "citation": "(d) the Borrower may make Restricted Payments to pay for the repurchase, retirement or\nother acquisition or retirement for value of Capital Stock of the Borrower or any direct or indirect Parent\nEntity or management investment vehicle held by any future, present or former employee, director,\nmanager or consultant of the Borrower or any of its Subsidiaries, or their estates, descendants, family,\nspouse or former spouse pursuant to any management equity plan or stock option or phantom equity plan\nor any other management or employee benefit plan or agreement, or any stock subscription or shareholder\nagreement; provided that the aggregate Restricted Payments made under this clause (d) subsequent to the\nClosing Date do not exceed the greater of (x) $13,200,000 and (y) 10% of Consolidated EBITDA for the\nmost recently ended Test Period (calculated on a Pro Forma Basis) in any calendar year (with unused\namounts up to the greater of (x) $13,200,000 and (y) 10% of Consolidated EBITDA for the most recently\nended Test Period (calculated on a Pro Forma Basis) being carried forward to any succeeding calendar\nyear; provided , further , that Restricted Payments made in respect of the repurchase or withholding of\n\n-154-\n\nCapital Stock deemed to occur upon the exercise of stock options or warrants or upon the vesting or\nsettlement of restricted stock units or other equity-based awards, in each case to the extent such Capital\nStock represents a portion of the exercise price of, or withholding taxes (including estimated taxes)\npayable by the applicable employee, director, manager or consultant in connection with the exercise,\nvesting or settlement of, such stock options, warrants, restricted stock units or other equity-based awards,\nshall not be subject to the limitations set forth in the immediately preceding proviso;",
+   "missing": [
+    "basket usage (amount already used under this basket)"
+   ]
+  }
+ ]
+}
