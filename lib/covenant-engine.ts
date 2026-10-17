@@ -79,7 +79,13 @@ export type FormulaType =
   | "COVERAGE_RATIO_ROOM"
   | "BUILDER_BASKET"
   | "RATIO_GATE"
-  | "NONE_UNCAPPED";
+  | "NONE_UNCAPPED"
+  | "PCT_OF_CNTA"
+  | "GREATER_OF_FLAT_OR_PCT_CNTA"
+  | "PCT_OF_COST"
+  | "PCT_OF_CONSIDERATION"
+  | "UTILIZATION_GATE"
+  | "VALUE_CAP";
 
 export type DebtBasis = "total" | "secured";
 
@@ -117,6 +123,14 @@ export interface FormulaParams {
   pctTotalAssets?: number;
   /** GREATER_OF_FLAT_OR_PCT_NET_WORTH: percentage of Consolidated Net Worth (e.g. 0.10 for 10%). */
   pctNetWorth?: number;
+  /** PCT_OF_CNTA, GREATER_OF_FLAT_OR_PCT_CNTA: percentage of Consolidated Net Tangible Assets (e.g. 0.15 for 15%). */
+  pctCnta?: number;
+  /** PCT_OF_COST: percentage of the cost of the financed assets (e.g. 0.9 for 90%). */
+  pctOfCost?: number;
+  /** PCT_OF_CONSIDERATION: percentage of the aggregate consideration (e.g. 0.05 for 5%). */
+  pctOfConsideration?: number;
+  /** VALUE_CAP: the non-numeric cap basis (COST | FAIR_MARKET_VALUE | PURCHASE_PRICE | COST_OR_FAIR_MARKET_VALUE). */
+  capBasis?: string;
   /** LEVERAGE_RATIO_ROOM, RATIO_GATE: which net-leverage measure to test ("total" default, or "secured"). */
   debtBasis?: DebtBasis;
   /** FLAT_NET_OF_DEBT: which gross debt outstanding to net the flat basket against. */
@@ -590,6 +604,75 @@ export function evaluateProvision(
       // capacity if this ratio condition holds" - the database is asserting
       // the uncapped result, not defaulting to it from absent config.
       return { provision: p, status: "modeled", capacity: open ? Infinity : 0, gate: { open, measure } };
+    }
+    case "PCT_OF_CNTA": {
+      // Determinate at parse (a % of Consolidated Net Tangible
+      // Assets), but the financial snapshot carries no CNTA input —
+      // never invent one. NEEDS_INPUT at evaluation time.
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at ${((params.pctCnta ?? 0) * 100).toFixed(1)}% of Consolidated Net Tangible Assets — enter Consolidated Net Tangible Assets to evaluate this basket; the snapshot does not carry it.`,
+      };
+    }
+    case "GREATER_OF_FLAT_OR_PCT_CNTA": {
+      if (params.pctCnta === undefined || params.pctCnta === null) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Tangible Assets basket — params.pctCnta is missing; refusing rather than assuming 0%.`,
+        };
+      }
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Tangible Assets basket — enter Consolidated Net Tangible Assets to evaluate the grower leg; the snapshot does not carry it.`,
+      };
+    }
+    case "PCT_OF_COST": {
+      // The cap is a % of the cost of the assets being financed —
+      // a per-transaction input, not a snapshot quantity.
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at ${((params.pctOfCost ?? 0) * 100).toFixed(1)}% of the cost of the financed assets — the cost of the specific assets being financed is required to evaluate a transaction under this basket.`,
+      };
+    }
+    case "PCT_OF_CONSIDERATION": {
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at ${((params.pctOfConsideration ?? 0) * 100).toFixed(1)}% of the aggregate consideration — the aggregate consideration of the specific transaction is required to evaluate it under this basket.`,
+      };
+    }
+    case "UTILIZATION_GATE": {
+      // A utilization-percentage test (e.g. revolver utilization
+      // at incurrence), not a basket cap. The snapshot carries no
+      // utilization measure — never invent one.
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is a utilization gate at ${((p.thresholdValue ?? 0) * 100).toFixed(1)}% — the Utilization Percentage at the time of the transaction is required to evaluate it; the snapshot does not carry it.`,
+      };
+    }
+    case "VALUE_CAP": {
+      // A NON-NUMERIC cap: the clause limits the amount to the
+      // cost / fair market value / purchase price of the financed
+      // property. Determinate as a representation, never a number:
+      // evaluation needs the specific property's value.
+      const basis =
+        params.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : params.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : params.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at the ${basis} of the financed property (VALUE_CAP) — the value of the specific property is required to evaluate a transaction under this basket.`,
+      };
     }
     case "NONE_UNCAPPED": {
       // The clause affirmatively grants this permission with NO finite cap

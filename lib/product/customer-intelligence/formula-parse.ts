@@ -20,7 +20,13 @@ export interface ParsedFormula {
     | "RATIO_GATE"
     | "BUILDER_BASKET"
     | "NONE_UNCAPPED"
-    | "SECTION_STEM";
+    | "SECTION_STEM"
+    | "PCT_OF_CNTA"
+    | "GREATER_OF_FLAT_OR_PCT_CNTA"
+    | "PCT_OF_COST"
+    | "PCT_OF_CONSIDERATION"
+    | "UTILIZATION_GATE"
+    | "VALUE_CAP";
   thresholdValue: number;
   params?: Record<string, unknown>;
   amountKind: "FIXED" | "INCURRENCE_BASED";
@@ -164,7 +170,14 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
     if (
       hasGrants &&
       item.operativeFullSpan &&
-      (item.operativeNodeType === "CLAUSE" || item.operativeNodeType === "SUBSECTION")
+      (item.operativeNodeType === "CLAUSE" || item.operativeNodeType === "SUBSECTION") &&
+      // A span containing a defined-term introduction ("“ Specified
+      // Communications ” has the meaning …") is (partly) a
+      // definitions fragment, not an operative clause — amounts
+      // inside it are not this item's basket (hand-audit finding:
+      // Solaris 7.03(iv) is such a fragment and its span sweeps a
+      // neighboring amount into a cap frame).
+      !/["“][^"”]{1,80}["”]\s+(?:has the meaning|means|shall mean)/.test(item.operativeFullSpan)
     ) {
       const spanParsed = scanBranches(capFramedWindows(item.operativeFullSpan), "NULL");
       if (spanParsed && spanParsed.modelingStatus === "MODELED") {
@@ -229,11 +242,13 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   const pctEbitda = parsePctOf(basketText, "EBITDA");
   const pctAssets = parsePctOf(basketText, "TOTAL_ASSETS");
   const pctNetWorth = parsePctOf(basketText, "NET_WORTH");
+  const pctCnta = parsePctOf(basketText, "CNTA");
   const ratio = parseRatio(basketText);
   const greaterOf = /greater of/i.test(basketText);
   const ebitdaBase = /EBITDA/i.test(basketText);
   const assetsBase = /Total Assets|Consolidated Total Assets/i.test(basketText);
   const netWorthBase = /Net Worth/i.test(basketText);
+  const cntaBase = /Net Tangible Assets/i.test(basketText);
   const builder = /Available Amount|builder basket|Cumulative Credit/i.test(basketText);
   const outstanding = /outstanding amount at any time|currently outstanding/i.test(basketText);
 
@@ -366,6 +381,38 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
     };
   }
 
+  // Step 4: greater-of flat / % Consolidated Net Tangible Assets —
+  // same shape family as the Net Worth branch (Rule 186 pattern);
+  // without it the item fell through to a silent FLAT_AMOUNT and
+  // dropped the CNTA grower leg.
+  if (greaterOf && money != null && cntaBase && pctCnta != null) {
+    return {
+      formulaType: "GREATER_OF_FLAT_OR_PCT_CNTA",
+      thresholdValue: money,
+      params: { pctCnta },
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled greater-of flat / % Consolidated Net Tangible Assets basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  if (greaterOf && money != null && cntaBase) {
+    notes.push(
+      "Grower component (% of Consolidated Net Tangible Assets) referenced but percentage not parsed; fixed-dollar floor modeled only.",
+    );
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: money,
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes,
+      modelingStatus: "MODELED",
+      missingFields: ["grower_%_cnta"],
+    };
+  }
+
   if (ratio != null && /leverage|incurrence|ratio debt|pro forma/i.test(basketText)) {
     return {
       formulaType: /unlimited|so long as/i.test(basketText) ? "RATIO_GATE" : "LEVERAGE_RATIO_ROOM",
@@ -424,6 +471,104 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
     };
   }
 
+  // ── Step 4: narrow vocabulary ──────────────────────────────────
+  // Determinate shapes the priced branches do not cover. All are
+  // reached only when no dollar amount priced the item.
+  if (!greaterOf && cntaBase && pctCnta != null) {
+    return {
+      formulaType: "PCT_OF_CNTA",
+      thresholdValue: pctCnta,
+      params: { pctCnta },
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: [
+        "Compiled percentage-of-Consolidated Net Tangible Assets basket. Determinate at parse; evaluation requires the CNTA input (the financial snapshot does not carry it).",
+      ],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  const utilizationMatch = basketText.match(
+    /utilization\s+percentage\s+shall\s+be\s+(?:less\s+than\s+or\s+equal\s+to|not\s+(?:to\s+)?exceed(?:ing)?|at\s+or\s+below)\s*(\d+(?:\.\d+)?)\s*%/i,
+  );
+  if (utilizationMatch) {
+    const gate = Number(utilizationMatch[1]) / 100;
+    return {
+      formulaType: "UTILIZATION_GATE",
+      thresholdValue: gate,
+      params: { measure: "UTILIZATION_PERCENTAGE", comparator: "LTE", pct: gate },
+      amountKind: "INCURRENCE_BASED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        "Compiled utilization gate: the clause conditions the permission on the Utilization Percentage being at or below the stated level. A gate, not a basket cap — determinate at parse; evaluation requires the utilization input at transaction time.",
+      ],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  const pctCostMatch = basketText.match(/(\d+(?:\.\d+)?)\s*%\s+of the (?:aggregate )?cost of/i);
+  if (pctCostMatch) {
+    const pct = Number(pctCostMatch[1]) / 100;
+    return {
+      formulaType: "PCT_OF_COST",
+      thresholdValue: pct,
+      params: { pctOfCost: pct, basis: "COST_OF_FINANCED_ASSETS" },
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        "Compiled percentage-of-cost cap: the amount is limited to the stated percentage of the cost of the assets being financed. Determinate at parse; evaluation requires the specific assets' cost.",
+      ],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  const pctConsiderationMatch = basketText.match(/(\d+(?:\.\d+)?)\s*%\s+of the aggregate consideration/i);
+  if (pctConsiderationMatch) {
+    const pct = Number(pctConsiderationMatch[1]) / 100;
+    return {
+      formulaType: "PCT_OF_CONSIDERATION",
+      thresholdValue: pct,
+      params: { pctOfConsideration: pct },
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        "Compiled percentage-of-consideration cap. Determinate at parse; evaluation requires the specific transaction's aggregate consideration.",
+      ],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  const valueCapMatch = basketText.match(
+    /(?:does not exceed|shall not exceed|not (?:to )?exceed(?:ing)?)\s+(?:the\s+)?(cost or fair market value|fair market value|cost|purchase price)\b/i,
+  );
+  if (valueCapMatch) {
+    const basisRaw = (valueCapMatch[1] ?? "cost").toLowerCase();
+    const capBasis =
+      basisRaw === "cost or fair market value"
+        ? "COST_OR_FAIR_MARKET_VALUE"
+        : basisRaw === "fair market value"
+          ? "FAIR_MARKET_VALUE"
+          : basisRaw === "purchase price"
+            ? "PURCHASE_PRICE"
+            : "COST";
+    return {
+      formulaType: "VALUE_CAP",
+      thresholdValue: 0,
+      params: { capBasis },
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        `Compiled value cap: the amount is limited to the ${basisRaw} of the financed property — an explicit NON-NUMERIC cap (never a number). Determinate at parse; evaluation requires the specific property's value.`,
+      ],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
   // Formula representation (step 3): the clause's own text priced
   // nothing and Rule 197 did not resolve — try the parent section's
   // chapeau as an explicit contract field. A cap stated in the stem
@@ -451,6 +596,7 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
       parsePctOf(chapeau, "EBITDA") != null ||
       parsePctOf(chapeau, "TOTAL_ASSETS") != null ||
       parsePctOf(chapeau, "NET_WORTH") != null ||
+      parsePctOf(chapeau, "CNTA") != null ||
       parseRatio(chapeau) != null ||
       /\bnot\s+(?:to\s+)?exceed/i.test(chapeau) ||
       /\bexceeding\b/i.test(chapeau) ||
@@ -585,11 +731,13 @@ function scanBranches(text: string, onUnitMisread: "RETURN" | "NULL"): ParsedFor
   const pctEbitda = parsePctOf(text, "EBITDA");
   const pctAssets = parsePctOf(text, "TOTAL_ASSETS");
   const pctNetWorth = parsePctOf(text, "NET_WORTH");
+  const pctCnta = parsePctOf(text, "CNTA");
   const ratio = parseRatio(text);
   const greaterOf = /greater of/i.test(text);
   const ebitdaBase = /EBITDA/i.test(text);
   const assetsBase = /Total Assets|Consolidated Total Assets/i.test(text);
   const netWorthBase = /Net Worth/i.test(text);
+  const cntaBase = /Net Tangible Assets/i.test(text);
   const builder = /Available Amount|builder basket|Cumulative Credit/i.test(text);
   const outstanding = /outstanding amount at any time|currently outstanding/i.test(text);
 
@@ -697,6 +845,34 @@ function scanBranches(text: string, onUnitMisread: "RETURN" | "NULL"): ParsedFor
       notes,
       modelingStatus: "MODELED",
       missingFields: ["grower_%_net_worth"],
+    };
+  }
+
+  if (greaterOf && money != null && cntaBase && pctCnta != null) {
+    return {
+      formulaType: "GREATER_OF_FLAT_OR_PCT_CNTA",
+      thresholdValue: money,
+      params: { pctCnta },
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes: ["Compiled greater-of flat / % Consolidated Net Tangible Assets basket from counsel-accepted analysis"],
+      modelingStatus: "MODELED",
+      missingFields: [],
+    };
+  }
+
+  if (greaterOf && money != null && cntaBase) {
+    notes.push(
+      "Grower component (% of Consolidated Net Tangible Assets) referenced but percentage not parsed; fixed-dollar floor modeled only.",
+    );
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: money,
+      amountKind: "FIXED",
+      measurementBasis: outstanding ? "CURRENTLY_OUTSTANDING" : "CUMULATIVE_INCURRED",
+      notes,
+      modelingStatus: "MODELED",
+      missingFields: ["grower_%_cnta"],
     };
   }
 

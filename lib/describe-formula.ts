@@ -62,6 +62,33 @@ export function describeFormula(p: CovenantProvisionInput): string {
     case "NONE_UNCAPPED":
       return `No finite cap in this clause: the clause grants the permission without a numeric ceiling, subject to its stated conditions and the agreement's other provisions.`;
 
+    case "PCT_OF_CNTA":
+      return `Capped at ${pct(params.pctCnta ?? 0)} of Consolidated Net Tangible Assets.`;
+
+    case "GREATER_OF_FLAT_OR_PCT_CNTA":
+      return `The greater of ${money(p.thresholdValue)} or ${pct(params.pctCnta ?? 0)} of Consolidated Net Tangible Assets.`;
+
+    case "PCT_OF_COST":
+      return `Capped at ${pct(params.pctOfCost ?? 0)} of the cost of the financed assets.`;
+
+    case "PCT_OF_CONSIDERATION":
+      return `Capped at ${pct(params.pctOfConsideration ?? 0)} of the aggregate consideration for the transaction.`;
+
+    case "UTILIZATION_GATE":
+      return `Permitted only while the Utilization Percentage is at or below ${pct(p.thresholdValue)}.`;
+
+    case "VALUE_CAP": {
+      const basis =
+        params.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : params.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : params.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return `Capped at the ${basis} of the financed property (a value cap — no fixed dollar amount).`;
+    }
+
     default: {
       const exhaustive: never = p.formulaType;
       return `Formula not described (${String(exhaustive)}).`;

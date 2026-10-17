@@ -74,6 +74,30 @@ function compiledTerms(item: CovenantSummaryItem): string | null {
       // clauses still apply.
       return `${grants.join(" / ")} — no finite cap in this clause (NONE_UNCAPPED)`;
     }
+    if (parsed.formulaType === "VALUE_CAP") {
+      const basis =
+        parsed.params?.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : parsed.params?.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : parsed.params?.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return `${grants.join(" / ")} — capped at the ${basis} of the financed property (VALUE_CAP; the property's value is required to evaluate)`;
+    }
+    if (parsed.formulaType === "PCT_OF_CNTA") {
+      const pct = (((parsed.params?.pctCnta as number) ?? parsed.thresholdValue) * 100).toFixed(1).replace(/\.0$/, "");
+      return `${grants.join(" / ")} — ${pct}% of Consolidated Net Tangible Assets (PCT_OF_CNTA)`;
+    }
+    if (parsed.formulaType === "PCT_OF_COST") {
+      return `${grants.join(" / ")} — up to ${(((parsed.params?.pctOfCost as number) ?? 0) * 100).toFixed(0)}% of the cost of the financed assets (PCT_OF_COST)`;
+    }
+    if (parsed.formulaType === "PCT_OF_CONSIDERATION") {
+      return `${grants.join(" / ")} — up to ${(((parsed.params?.pctOfConsideration as number) ?? 0) * 100).toFixed(0)}% of the aggregate consideration (PCT_OF_CONSIDERATION)`;
+    }
+    if (parsed.formulaType === "UTILIZATION_GATE") {
+      return `${grants.join(" / ")} — utilization gate at ${(parsed.thresholdValue * 100).toFixed(0)}% (UTILIZATION_GATE)`;
+    }
     const threshold =
       parsed.formulaType.startsWith("GREATER_OF")
         ? `greater of $${parsed.thresholdValue}M or ${parsed.formulaType.replace("GREATER_OF_FLAT_OR_PCT_", "")}`

@@ -677,6 +677,182 @@ describe("step 3 — compile SKIPs a section stem (no Permission minted)", () =>
   });
 });
 
+// ── Step 4: narrow vocabulary ──────────────────────────────────
+
+describe("step 4 — narrow vocabulary shapes compile determinate", () => {
+  it("percentage of Consolidated Net Tangible Assets (Expand 6.02(ee) shape)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "6.02(ee)",
+        permissions: ["(ee) other Indebtedness in an aggregate principal amount not to exceed 15% of Consolidated Net Tangible Assets at any time outstanding"],
+        operativeLanguageExcerpt:
+          "(ee) other Indebtedness in an aggregate principal amount not to exceed 15% of Consolidated Net Tangible Assets at any time outstanding.",
+      }),
+    );
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("PCT_OF_CNTA");
+    expect(parsed.thresholdValue).toBeCloseTo(0.15, 9);
+    expect(parsed.params?.pctCnta).toBeCloseTo(0.15, 9);
+    expect(parsed.missingFields).toEqual([]);
+  });
+
+  it("greater-of flat / % CNTA compiles both legs (no silent FLAT drop of the grower)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "6.02(x)",
+        permissions: ["(x) Indebtedness not to exceed the greater of (x) $25,000,000 and (y) 10% of Consolidated Net Tangible Assets"],
+        materialBasketsThresholds: ["Greater of basket: $25,000,000 and 10% of Consolidated Net Tangible Assets"],
+        operativeLanguageExcerpt:
+          "(x) Indebtedness in an aggregate principal amount not to exceed the greater of (x) $25,000,000 and (y) 10% of Consolidated Net Tangible Assets.",
+      }),
+    );
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("GREATER_OF_FLAT_OR_PCT_CNTA");
+    expect(parsed.thresholdValue).toBe(25);
+    expect(parsed.params?.pctCnta).toBeCloseTo(0.1, 9);
+  });
+
+  it("percentage-of-cost cap (Strata 6.02(d) shape)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "6.02(d)",
+        posture: "CONDITIONAL_PERMISSION",
+        permissions: ["(d) Indebtedness incurred to finance the acquisition, construction or improvement of any fixed or capital assets"],
+        conditions: [
+          "provided_that: provided that the aggregate amount of such Indebtedness does not exceed 90% of the cost of acquiring, constructing or improving such fixed or capital assets",
+        ],
+        operativeLanguageExcerpt:
+          "(d) Indebtedness incurred to finance the acquisition, construction or improvement of any fixed or capital assets, provided that the aggregate amount of such Indebtedness does not exceed 90% of the cost of acquiring, constructing or improving such assets.",
+      }),
+    );
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("PCT_OF_COST");
+    expect(parsed.params?.pctOfCost).toBeCloseTo(0.9, 9);
+  });
+
+  it("percentage-of-consideration cap (Aon 6.14(xiv) shape)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "6.14(xiv)",
+        category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+        permissions: ["(xiv) fees and expenses in connection with any Permitted Acquisition in an aggregate amount not to exceed 5% of the aggregate consideration for such acquisition"],
+        operativeLanguageExcerpt:
+          "(xiv) fees and expenses in connection with any Permitted Acquisition in an aggregate amount not to exceed 5% of the aggregate consideration for such acquisition.",
+      }),
+    );
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("PCT_OF_CONSIDERATION");
+    expect(parsed.params?.pctOfConsideration).toBeCloseTo(0.05, 9);
+  });
+
+  it("utilization gate is its own determinate type, not a basket cap (Solaris 7.02(z) shape)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "7.02(z)",
+        category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+        posture: "CONDITIONAL_PERMISSION",
+        permissions: ["(z) other Investments not otherwise permitted under this Section 7.02"],
+        conditions: [
+          "provided_that: provided that, immediately after giving effect to any such Investment, the Utilization Percentage shall be less than or equal to 75%",
+        ],
+        operativeLanguageExcerpt:
+          "(z) other Investments, provided that the Utilization Percentage shall be less than or equal to 75% at such time.",
+      }),
+    );
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("UTILIZATION_GATE");
+    expect(parsed.thresholdValue).toBeCloseTo(0.75, 9);
+    expect(parsed.params?.measure).toBe("UTILIZATION_PERCENTAGE");
+  });
+
+  it("value cap is an explicit NON-NUMERIC representation (Asure 7.01(i) shape)", () => {
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "7.01(i)",
+        category: "LIENS_SECURED_DEBT",
+        posture: "CONDITIONAL_PERMISSION",
+        permissions: ["(i) Liens securing Indebtedness incurred to finance the acquisition or construction of any property"],
+        conditions: [
+          "provided_that: provided that the Indebtedness secured thereby does not exceed the cost or fair market value of the property so acquired or constructed",
+        ],
+        operativeLanguageExcerpt:
+          "(i) Liens securing Indebtedness incurred to finance the acquisition of any property, provided that the Indebtedness secured thereby does not exceed the cost or fair market value of the property.",
+      }),
+    );
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("VALUE_CAP");
+    // Never a number: thresholdValue carries nothing for this type.
+    expect(parsed.thresholdValue).toBe(0);
+    expect(parsed.params?.capBasis).toBe("COST_OR_FAIR_MARKET_VALUE");
+  });
+});
+
+describe("step 4 — engine and proposal semantics for the new types", () => {
+  const fin = {
+    ebitda: 100,
+    cash: 10,
+    interestExpense: 5,
+    cumulativeNetIncome: 50,
+    equityProceedsSinceIssue: 0,
+    assumedNewDebtRatePct: 6,
+    totalDebt: 400,
+    securedDebt: 200,
+    totalAssets: 900,
+  };
+  const evalOf = (formulaType: string, thresholdValue: number, params: Record<string, unknown>) =>
+    evaluateProvision(
+      { id: "t", documentId: "d", code: "c", basketName: "Basket", sectionRef: "0.00", formulaType: formulaType as never, thresholdValue, params },
+      fin,
+      computeLeverageMetrics(fin),
+    );
+
+  it("VALUE_CAP evaluates NEEDS_INPUT (review_required), never a number and never zero capacity", () => {
+    const r = evalOf("VALUE_CAP", 0, { capBasis: "COST_OR_FAIR_MARKET_VALUE" });
+    expect(r.status).toBe("review_required");
+    expect(r.capacity).toBeUndefined();
+    expect(r.reason).toContain("cost or fair market value");
+  });
+
+  it("PCT_OF_CNTA / PCT_OF_COST / UTILIZATION_GATE evaluate NEEDS_INPUT naming the missing input", () => {
+    expect(evalOf("PCT_OF_CNTA", 0.15, { pctCnta: 0.15 }).reason).toContain("Consolidated Net Tangible Assets");
+    expect(evalOf("PCT_OF_COST", 0.9, { pctOfCost: 0.9 }).status).toBe("review_required");
+    const gate = evalOf("UTILIZATION_GATE", 0.75, { measure: "UTILIZATION_PERCENTAGE" });
+    expect(gate.status).toBe("review_required");
+    expect(gate.reason).toContain("Utilization Percentage");
+  });
+
+  it("proposal terms for a value cap name the basis and never print $0M", () => {
+    const proposal = proposeReviewDecision(
+      item({
+        sectionRef: "7.01(i)",
+        category: "LIENS_SECURED_DEBT",
+        posture: "CONDITIONAL_PERMISSION",
+        plainEnglish:
+          "Section 7.01(i) operates as a conditional permission within the liens and secured debt regime. Liens securing Indebtedness incurred to finance the acquisition of any property, provided the Indebtedness does not exceed the cost or fair market value of the property.",
+        permissions: ["(i) Liens securing Indebtedness incurred to finance the acquisition or construction of any property"],
+        conditions: [
+          "provided_that: provided that the Indebtedness secured thereby does not exceed the cost or fair market value of the property so acquired or constructed",
+        ],
+        operativeLanguageExcerpt:
+          "(i) Liens securing Indebtedness incurred to finance the acquisition of any property, provided that the Indebtedness secured thereby does not exceed the cost or fair market value of the property.",
+      }),
+    );
+    // The bespoke condition keeps it an exception (NEEDS_INPUT) —
+    // terms are asserted at the parse/compiledTerms level instead:
+    const parsed = parseFormulaFromItem(
+      item({
+        sectionRef: "7.01(i)",
+        category: "LIENS_SECURED_DEBT",
+        permissions: ["(i) Liens securing Indebtedness incurred to finance the acquisition of any property"],
+        operativeLanguageExcerpt:
+          "(i) Liens securing Indebtedness, provided that the Indebtedness secured thereby does not exceed the cost or fair market value of the property.",
+      }),
+    );
+    expect(parsed.formulaType).toBe("VALUE_CAP");
+    expect(proposal.decision).toBe("NEEDS_INPUT");
+  });
+});
+
 // ── Compile: an uncapped item mints a Permission with NO finite
 // limit from this clause; its conditions still attach. Prisma and
 // @prisma/client are mocked so the pin runs without a database
