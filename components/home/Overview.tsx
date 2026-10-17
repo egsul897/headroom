@@ -118,12 +118,12 @@ export function CompanyOverview({
           <CapacitySummaryCard state={slots.capacitySummary} />
         </div>
         <div className="home-split">
-          <StatusTable state={slots.statusTable} />
+          <StatusTable state={slots.statusTable} viewAllHref={`/${companyId}/covenants`} />
           <DriversCard state={slots.drivers} />
         </div>
         <div className="home-pair">
-          <AlertsCard state={alerts} />
-          <TransactionsCard state={slots.transactions} />
+          <AlertsCard state={alerts} viewAllHref={`/${companyId}/alerts`} />
+          <TransactionsCard state={slots.transactions} viewAllHref={`/${companyId}/ledger`} />
         </div>
       </div>
       {authorityNote ? (

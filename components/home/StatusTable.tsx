@@ -9,9 +9,10 @@ import { EmptyCopy, RegionCard } from "./RegionCard";
 
 const COLUMNS = ["Covenant", "Facility / Document", "Status", "Headroom", "Trend", "Next test"] as const;
 
-export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState }) {
+export function StatusTable({ state = UNKNOWN_STATE, viewAllHref = null }: { state?: StatusLoadState; viewAllHref?: string | null }) {
   const presented = presentStatus(state);
   const rows = presented.kind === "VERIFIED_POPULATED" ? presented.rows : [];
+  const visible = rows.slice(0, 5);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const open = openIndex == null ? null : rows[openIndex] ?? null;
 
@@ -26,8 +27,12 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
     );
   }
 
-  return (
-    <RegionCard region="headroom-status" eyebrow="Headroom status">
+    return (
+      <RegionCard
+        region="headroom-status"
+        eyebrow="Headroom status"
+        toolbar={viewAllHref ? <a className="home-view-all" href={viewAllHref}>View all</a> : null}
+      >
       <div className="home-table-wrap">
         <table className="home-table">
           <thead>
@@ -40,7 +45,7 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, index) => (
+            {visible.map((row, index) => (
               <tr key={`${row.covenant}-${row.facility}-${row.headroom}`} data-load-kind="VERIFIED_POPULATED">
                 <td>
                   <button type="button" className="row-detail" onClick={() => setOpenIndex(index)}>

@@ -29,15 +29,17 @@ export function AdjustedEbitdaCard({
     <section className="home-card ebitda-kpi" data-region="ebitda" aria-label="Adjusted EBITDA">
       <button type="button" className="ebitda-kpi-button" onClick={onOpen} aria-expanded={open}>
         <span className="home-eyebrow">Adjusted EBITDA</span>
+        {badge ? (
+          <span className="need-chip" aria-label={badge}>
+            {needingYou}
+          </span>
+        ) : null}
         {preparing ? (
           <span className="ebitda-skeleton">Preparing EBITDA…</span>
         ) : (
           <span className={figure === "Needs input" ? "home-kpi-value is-missing" : "home-kpi-value"}>{figure}</span>
         )}
-        <span className="home-kpi-caption ebitda-kpi-caption">
-          Pro forma
-          {badge ? <span className="need-chip">{badge}</span> : null}
-        </span>
+        <span className="home-kpi-caption">Pro forma</span>
       </button>
       {children}
     </section>

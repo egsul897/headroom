@@ -2191,3 +2191,395 @@ button.ebitda-signin-button:disabled:hover {
   .ask-harvey { grid-template-columns: 1fr; }
   .ask-source { position: static; }
 }
+
+/* Dashboard craft. One rhythm: 24px between regions, hairline cards, four type sizes. */
+@media (min-width: 861px) {
+  .app-content {
+    padding: 20px 32px 48px;
+  }
+}
+
+.app-content > .sample-banner {
+  margin: 0 0 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.home-overview {
+  gap: 24px;
+}
+
+.home-overview .home-greeting {
+  font-size: 22px;
+  font-weight: 560;
+  letter-spacing: -0.022em;
+  line-height: 1.2;
+}
+
+.home-overview .home-greeting-sub {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.home-overview .home-ask-link {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.home-quiet-link {
+  color: var(--shell-muted);
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.home-quiet-link:hover {
+  color: var(--ink);
+}
+
+.home-board {
+  gap: 24px;
+}
+
+.home-split,
+.home-pair {
+  gap: 24px;
+  align-items: stretch;
+}
+
+.home-overview .home-card {
+  box-shadow: none;
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+.home-overview .home-hero .home-card {
+  padding: 0;
+}
+
+.home-overview .home-hero .home-kpi-value-hero,
+.home-overview .home-hero .home-headline {
+  font-size: 32px;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.home-overview .home-hero .home-detail,
+.home-overview .home-hero .home-kpi-caption {
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+.home-overview .home-hero .home-kpi-caption + .home-kpi-caption,
+.home-overview .home-hero .home-source,
+.home-overview .home-hero .detail-open {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.home-kpis {
+  gap: 16px;
+}
+
+.home-kpis .home-card,
+.home-kpi {
+  position: relative;
+  height: 104px;
+  min-height: 104px;
+  max-height: 112px;
+  padding: 14px 16px 12px;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.home-kpi,
+.ebitda-kpi-button {
+  display: grid;
+  grid-template-rows: 16px 32px 16px;
+  align-content: space-between;
+}
+
+.home-kpis .home-card.ebitda-kpi {
+  padding: 0;
+}
+
+.home-kpi {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.kpi-head {
+  display: contents;
+}
+
+.home-kpis .home-eyebrow,
+.home-kpi .home-eyebrow,
+.ebitda-kpi-button .home-eyebrow {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 16px;
+  height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-kpis .home-kpi-value,
+.home-kpis .home-kpi-value-hero,
+.home-kpis .home-kpi-value-sm,
+.home-kpi .home-kpi-value,
+.ebitda-kpi .home-kpi-value {
+  margin: 0;
+  height: 32px;
+  font-size: 28px;
+  font-weight: 560;
+  letter-spacing: -0.04em;
+  line-height: 32px;
+  white-space: nowrap;
+}
+
+.home-kpis .home-kpi-caption,
+.home-kpi .home-kpi-caption,
+.ebitda-kpi .home-kpi-caption {
+  margin: auto 0 0;
+  font-size: 12px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-kpi .sample-ring {
+  position: absolute;
+  right: 14px;
+  top: 38px;
+  width: 28px;
+  height: 28px;
+}
+
+.home-kpi .sample-ring i {
+  width: 16px;
+  height: 16px;
+}
+
+.home-kpi .status-badge {
+  position: absolute;
+  top: 34px;
+  right: 12px;
+  max-width: 46%;
+}
+
+.home-kpis .home-empty .home-headline,
+.home-kpis .detail-open,
+.home-kpis .home-risk-list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.home-kpis .home-detail {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.home-kpis .home-util {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  text-align: left;
+  gap: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.home-kpis .home-util-ring {
+  width: auto;
+  height: auto;
+  background: none !important;
+  display: block;
+}
+
+.home-kpis .home-util-ring-hole {
+  width: auto;
+  height: auto;
+  background: transparent;
+  display: block;
+}
+
+.home-kpis .home-util-pct {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ebitda-kpi-button {
+  position: relative;
+  height: 104px;
+  padding: 14px 16px 12px;
+  gap: 0;
+}
+
+.ebitda-kpi .need-chip {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ebitda-kpi-button .home-eyebrow {
+  padding-right: 28px;
+}
+
+.home-chart-card {
+  height: 252px;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px 12px;
+}
+
+.home-chart-card .home-card-head {
+  margin-bottom: 4px;
+}
+
+.home-chart-card .sample-plot {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+}
+
+.home-chart-card .sample-plot svg {
+  width: 100%;
+  height: 196px;
+}
+
+.home-chart-card .sample-legend {
+  margin: 0;
+  gap: 12px;
+}
+
+.home-chart-card .sample-capacity {
+  flex: 1;
+  align-items: center;
+  gap: 16px;
+  min-height: 0;
+}
+
+.sample-ring-lg {
+  width: 104px;
+  height: 104px;
+}
+
+.sample-ring-lg i {
+  width: 68px;
+  height: 68px;
+  font-size: 12px;
+}
+
+.home-capacity {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  padding-top: 0;
+}
+
+.home-capacity-donut {
+  width: 112px;
+  height: 112px;
+  flex: none;
+}
+
+.home-capacity-donut-hole {
+  width: 72px;
+  height: 72px;
+}
+
+.home-chart-well {
+  min-height: 188px;
+  height: 188px;
+  padding: 12px;
+}
+
+.home-overview .home-card-head {
+  margin-bottom: 8px;
+}
+
+.home-overview .home-table th,
+.home-overview .home-table td {
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+.home-overview .home-table th {
+  font-size: 12px;
+  padding-top: 0;
+}
+
+.home-view-all {
+  color: var(--shell-muted);
+  font-size: 12px;
+  font-weight: 560;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.home-view-all:hover {
+  color: var(--ink);
+}
+
+.sample-feed li {
+  padding: 7px 0;
+  align-items: center;
+}
+
+.sample-feed strong,
+.sample-facilities strong,
+.home-table td.num,
+.home-capacity-amt {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: 560;
+  text-align: right;
+}
+
+.sample-aside {
+  color: var(--shell-muted);
+  font-size: 12px;
+  text-align: right;
+}
+
+.sample-facilities li {
+  padding: 6px 0;
+}
