@@ -2,7 +2,11 @@ import Link from "next/link";
 import { ActionMenu } from "@/components/ActionMenu";
 import { StatusBadge } from "@/components/StatusBadge";
 import { Card, Chip } from "@/components/ui";
+import { CertificateSheet } from "@/components/ux/CertificateSheet";
+import { CovenantCalendar } from "@/components/ux/CovenantCalendar";
+import { ThresholdAlerts } from "@/components/ux/ThresholdAlerts";
 import { prisma } from "@/lib/prisma";
+import { unevaluatedLine, type BandReading, type CalendarItem, type CertificateLine } from "@/lib/ux/present";
 import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
 import { listConmedCovenantExplorerRows } from "@/lib/product/conmed-demo/covenant-catalog";
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
@@ -17,11 +21,37 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
     loadRulebookReadiness(companyId),
   ]);
   const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
+  const company = await prisma.company.findUnique({ where: { id: companyId }, select: { name: true } });
   const provisions = await prisma.covenantProvision.findMany({
     where: { companyId },
     include: { document: true },
     orderBy: [{ sectionRef: "asc" }, { code: "asc" }],
   });
+
+  const analyzedLines: CertificateLine[] = review.categories.flatMap((block) =>
+    block.items.slice(0, 24).map((item) => unevaluatedLine(item.heading?.trim() || `§${item.sectionRef}`, item.sourceCitation ?? null)),
+  );
+  const certificateLines: CertificateLine[] =
+    analyzedLines.length > 0
+      ? analyzedLines
+      : provisions.map((provision) => unevaluatedLine(`${provision.basketName} §${provision.sectionRef}`, provision.document.name));
+  const names = certificateLines.map((line) => line.name);
+  const calendarItems: CalendarItem[] =
+    names.length === 0
+      ? []
+      : [
+          ...names.slice(0, 8).map((name, index) => ({ id: `test-${index}`, kind: "test" as const, label: name, date: null })),
+          { id: "reporting", kind: "reporting", label: "Reporting deadline", date: null },
+          { id: "cure", kind: "cure", label: "Cure period", date: null },
+        ];
+  const bandReadings: BandReading[] = names.slice(0, 8).map((name) => ({
+    name,
+    actual: null,
+    actualLabel: null,
+    thresholds: null,
+    previousBand: null,
+    trendingToward: null,
+  }));
 
   return (
     <div className="page-frame">
@@ -32,6 +62,9 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
           <p className="page-answer">{review.executive.headline}</p>
         </div>
       </header>
+      <CertificateSheet model={{ company: company?.name?.trim() || companyId, period: null, lines: certificateLines }} />
+      <CovenantCalendar items={calendarItems} today={new Date().toISOString().slice(0, 10)} />
+      <ThresholdAlerts readings={bandReadings} />
       <Card>
         <div className="page-toolbar">
           <Link className="button button-primary" href={`/${companyId}/onboarding/documents`}>

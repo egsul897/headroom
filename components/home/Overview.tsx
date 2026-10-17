@@ -17,6 +17,8 @@ import { HeadroomOverTimeCard } from "./HeadroomOverTimeCard";
 import { BellIcon, ExportIcon } from "./icons";
 import { NextTestCard } from "./NextTestCard";
 import { StatusTable } from "./StatusTable";
+import { MorningBrief } from "@/components/ux/MorningBrief";
+import { UNLOADED_BRIEF, type MorningBriefModel } from "@/lib/ux/present";
 import { TotalHeadroomCard } from "./TotalHeadroomCard";
 import { TransactionsCard } from "./TransactionsCard";
 import { UtilizationCard } from "./UtilizationCard";
@@ -35,6 +37,7 @@ export function CompanyOverview({
   setupCta = null,
   documents = null,
   preparingIds = null,
+  brief = UNLOADED_BRIEF,
 }: {
   companyId: string;
   identityName?: string | null;
@@ -44,6 +47,8 @@ export function CompanyOverview({
   setupCta?: { href: string; label: string; detail: string } | null;
   documents?: readonly { id: string; name: string }[] | null;
   preparingIds?: readonly string[] | null;
+  /** Change feed, needs-you count, and next test. Default is unloaded. */
+  brief?: MorningBriefModel;
 }) {
   const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
   const alerts = presentAlerts(slots.alerts);
@@ -90,6 +95,8 @@ export function CompanyOverview({
           </button>
         </div>
       </header>
+
+      <MorningBrief model={brief} />
 
       {setupCta ? (
         <section className="home-card home-setup-banner" data-region="setup">

@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
 import { LiveFigure } from "@/components/motion/LiveFigure";
 import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
+import { ProofTrigger } from "@/components/ux/ProofDrawer";
+import { FIGURE_INPUTS, unloadedProof } from "@/lib/ux/present";
 import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
 import { fmtM, fmtX } from "@/lib/format";
 import {
@@ -132,25 +134,43 @@ export function DebtBasketBoard({
           <div>
             <dt>Total net leverage</dt>
             <dd>
-              <LiveFigure text={ratioText(sim.proForma.totalNetLeverage)} />
+              <ProofTrigger className="figure-hit" proof={unloadedProof("Total net leverage", ratioText(sim.proForma.totalNetLeverage), FIGURE_INPUTS.simulateRatio, { review: sim.status })}>
+                <LiveFigure text={ratioText(sim.proForma.totalNetLeverage)} />
+              </ProofTrigger>
             </dd>
           </div>
           <div>
             <dt>Senior secured net leverage</dt>
             <dd>
-              <LiveFigure text={ratioText(sim.proForma.seniorSecuredNetLeverage)} />
+              <ProofTrigger className="figure-hit" proof={unloadedProof("Senior secured net leverage", ratioText(sim.proForma.seniorSecuredNetLeverage), FIGURE_INPUTS.simulateRatio, { review: sim.status })}>
+                <LiveFigure text={ratioText(sim.proForma.seniorSecuredNetLeverage)} />
+              </ProofTrigger>
             </dd>
           </div>
           <div>
             <dt>Fixed charge coverage</dt>
             <dd>
-              <LiveFigure text={ratioText(sim.proForma.fixedChargeCoverage)} />
+              <ProofTrigger className="figure-hit" proof={unloadedProof("Fixed charge coverage", ratioText(sim.proForma.fixedChargeCoverage), FIGURE_INPUTS.simulateRatio, { review: sim.status })}>
+                <LiveFigure text={ratioText(sim.proForma.fixedChargeCoverage)} />
+              </ProofTrigger>
             </dd>
           </div>
           <div>
             <dt>Proposed</dt>
             <dd>
-              <LiveFigure text={fmtM(sim.totals.amount)} />
+              <ProofTrigger
+                className="figure-hit"
+                proof={{
+                  figure: "Proposed amount",
+                  value: fmtM(sim.totals.amount),
+                  inputs: [{ label: "Proposed amount", value: fmtM(sim.totals.amount), source: "Amount entered on this screen" }],
+                  clause: null,
+                  page: null,
+                  review: sim.status,
+                }}
+              >
+                <LiveFigure text={fmtM(sim.totals.amount)} />
+              </ProofTrigger>
             </dd>
           </div>
         </dl>
@@ -207,7 +227,9 @@ export function DebtBasketBoard({
                     <StatusBadge status="NOT_IDENTIFIED" />
                   ) : (
                     <>
-                      <LiveFigure text={boundText(doc.bound, doc.remaining)} />
+                      <ProofTrigger className="figure-hit" proof={unloadedProof(doc.documentName || "Remaining", boundText(doc.bound, doc.remaining), FIGURE_INPUTS.capacityRemaining, { clause: doc.provision?.sectionRef ? `Section ${doc.provision.sectionRef}` : null, review: doc.status })}>
+                        <LiveFigure text={boundText(doc.bound, doc.remaining)} />
+                      </ProofTrigger>
                       <StatusBadge status={doc.status} />
                       {doc.provision ? (
                         <OpenProvenanceButton

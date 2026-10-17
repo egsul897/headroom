@@ -5,13 +5,18 @@ import { AppShell } from "@/components/shell/AppShell";
 import { BrandMark } from "@/components/home/icons";
 import { Card } from "@/components/ui";
 import "../../home-shell.css";
+import "../../ux-features.css";
 import "./rails.css";
 import "./brands.css";
 import "./palettes.css";
 import { CountUp } from "@/components/motion/CountUp";
-import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
-import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
+import { ProofTrigger } from "@/components/ux/ProofDrawer";
+import type { FigureProof } from "@/lib/ux/present";
+import { CertificateSheet } from "@/components/ux/CertificateSheet";
+import { CovenantCalendar } from "@/components/ux/CovenantCalendar";
+import { ThresholdAlerts } from "@/components/ux/ThresholdAlerts";
 import { SampleClauses } from "./clauses";
+import { SAMPLE_BANDS, SAMPLE_CALENDAR, SAMPLE_CERTIFICATE } from "./ux-sample";
 import { SampleDashboard } from "./dashboard";
 import { SampleSimulate } from "./simulate";
 import { SampleAsk } from "./ask-preview";
@@ -24,7 +29,7 @@ export const metadata = { title: "Headroom — sample data" };
  * Development illustration. Production builds take notFound().
  * This module does not import Prisma, Neon, or the dashboard service.
  */
-export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string; detail?: string; ebitda?: string; amt?: string; inc?: string; gen?: string; ratio?: string } }) {
+export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string; detail?: string; proof?: string; certificate?: string; compare?: string; ebitda?: string; amt?: string; inc?: string; gen?: string; ratio?: string } }) {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") notFound();
   const screen = searchParams.screen ?? "overview";
   const brand = searchParams.brand === "navy" || searchParams.brand === "olive" || searchParams.brand === "teal" ? searchParams.brand : undefined;
@@ -124,7 +129,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
       >
         <SampleBanner />
         {screen === "covenants" ? (
-          <CovenantsSample brand={brand} initialDetail={searchParams.detail === "1"} />
+          <CovenantsSample brand={brand} initialDetail={searchParams.detail === "1"} certificateOpen={searchParams.certificate === "1"} />
         ) : screen === "capacity" ? (
           <CapacitySample />
         ) : screen === "simulate" ? (
@@ -133,7 +138,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
           <SampleAsk />
         ) : (
           <SampleDashboard
-            initialDetail={searchParams.detail === "1"}
+            initialProof={searchParams.proof === "1" || searchParams.detail === "1"}
             initialEbitda={searchParams.ebitda === "1" || searchParams.ebitda === "failed" ? "list" : searchParams.ebitda === "error" ? "a" : searchParams.ebitda ?? null}
             failedReason={searchParams.ebitda === "failed" ? "SEC companyfacts 503" : null}
             staleSince={searchParams.ebitda === "failed" ? "2026-10-16T18:00:00.000Z" : null}
@@ -161,7 +166,15 @@ function SampleBanner() {
   );
 }
 
-function CovenantsSample({ brand, initialDetail = false }: { brand?: string; initialDetail?: boolean }) {
+function CovenantsSample({
+  brand,
+  initialDetail = false,
+  certificateOpen = false,
+}: {
+  brand?: string;
+  initialDetail?: boolean;
+  certificateOpen?: boolean;
+}) {
   return (
     <div className="page-frame">
       <header className="page-head">
@@ -174,6 +187,9 @@ function CovenantsSample({ brand, initialDetail = false }: { brand?: string; ini
           Back to sample summary
         </Link>
       </header>
+      <CertificateSheet model={SAMPLE_CERTIFICATE} initialOpen={certificateOpen} />
+      <CovenantCalendar items={SAMPLE_CALENDAR} today="2026-10-17" />
+      <ThresholdAlerts readings={SAMPLE_BANDS} />
       <SampleClauses initialDetail={initialDetail} />
     </div>
   );
@@ -195,11 +211,16 @@ function CapacitySample() {
             label="Secured, sample"
             value="$40 million"
             caption="Illustrative remaining. Not a certified path."
-            detail={{
-              title: "Secured, sample",
-              source: "Sample secured notes. No source document is attached.",
+            proof={{
+              figure: "Secured, sample",
+              value: "$40 million",
+              inputs: [
+                { label: "Sample maximum", value: "$100 million", source: "Sample secured notes. No source document is attached." },
+                { label: "Amount tested", value: null, source: null },
+              ],
               clause: "Sample section 4.09. Sample language, not an operative clause.",
-              history: "Sample date March 31, 2024. Not a loaded history.",
+              page: "Sample page 12",
+              review: "Sample illustration.",
             }}
           />
         </div>
@@ -208,28 +229,42 @@ function CapacitySample() {
             label="Unsecured, sample"
             value="Not evaluated"
             caption="No sample path. Not zero and not unlimited."
-            detail={{ title: "Unsecured, sample", source: UNLOADED_SOURCE, clause: UNLOADED_CLAUSE, history: UNLOADED_HISTORY }}
+            proof={{
+              figure: "Unsecured, sample",
+              value: null,
+              inputs: [
+                { label: "Maximum capacity", value: null, source: null },
+                { label: "Amount tested", value: null, source: null },
+              ],
+              clause: null,
+              page: null,
+              review: null,
+            }}
           />
           <SampleKpi
             label="Authority"
             value="Legacy engine"
             caption="A production number appears only when an executable path returns one."
-            detail={{
-              title: "Authority",
-              source: UNLOADED_SOURCE,
-              clause: UNLOADED_CLAUSE,
-              history: UNLOADED_HISTORY,
+            proof={{
+              figure: "Authority",
+              value: "Legacy engine",
+              inputs: [{ label: "Certified path", value: null, source: null }],
+              clause: null,
+              page: null,
+              review: "Legacy engine",
             }}
           />
           <SampleKpi
             label="Citation"
             value="§4.09"
             caption="Sample secured notes. Snapshot sample-snapshot-001, March 31, 2024."
-            detail={{
-              title: "Citation",
-              source: "Sample secured notes. No source document is attached.",
+            proof={{
+              figure: "Citation",
+              value: "§4.09",
+              inputs: [{ label: "Page locator", value: "Sample page 12", source: "Sample secured notes. No source document is attached." }],
               clause: "Sample section 4.09. Sample language, not an operative clause.",
-              history: "Sample date March 31, 2024. Not a loaded history.",
+              page: "Sample page 12",
+              review: "Sample illustration.",
             }}
           />
         </div>
@@ -242,23 +277,22 @@ function SampleKpi({
   label,
   value,
   caption,
-  detail,
+  proof,
 }: {
   label: string;
   value: string;
   caption: string;
-  detail: { title: string; source: string; clause: string; history: string };
+  proof: FigureProof;
 }) {
   return (
     <section className="home-card">
       <h2 className="home-eyebrow">{label}</h2>
-      <p className="sample-figure">
-        <CountUp text={value} />
-      </p>
+      <ProofTrigger className="figure-hit" proof={proof}>
+        <p className="sample-figure">
+          <CountUp text={value} />
+        </p>
+      </ProofTrigger>
       <p className="sample-caption">{caption}</p>
-      <OpenProvenanceButton title={detail.title} source={detail.source} clause={detail.clause} history={detail.history}>
-        Open detail
-      </OpenProvenanceButton>
     </section>
   );
 }

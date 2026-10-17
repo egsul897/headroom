@@ -137,7 +137,7 @@ function EbitdaLocalTile({
 
   return (
     <AdjustedEbitdaCard figure={figure} needingYou={loaded ? attention : null} open={drawerOpen} onOpen={() => setView("list")}>
-      <DetailDrawer open={drawerOpen} title={title} onClose={() => setView(null)}>
+      <DetailDrawer open={drawerOpen} title={openItem ? title : "How we got this"} onClose={() => setView(null)}>
         {inlineError ? <p className="ebitda-inline-error">{inlineError}</p> : null}
         {openItem ? (
           <ItemSheet
@@ -180,6 +180,11 @@ function EbitdaLocalTile({
                 })}
               </ul>
             )}
+            <div className="proof-meta">
+              <span className="proof-chip">Clause is not loaded</span>
+              <span>Page is not loaded</span>
+              <span>Needs input</span>
+            </div>
           </>
         )}
       </DetailDrawer>
@@ -401,7 +406,7 @@ function EbitdaApiTile({
           </select>
         </label>
       ) : null}
-      <DetailDrawer open={view != null} title={openItem?.label ?? "Adjusted EBITDA"} onClose={() => setView(null)}>
+      <DetailDrawer open={view != null} title={openItem?.label ?? "How we got this"} onClose={() => setView(null)}>
         {error ? <p className="ebitda-inline-error">{error}</p> : null}
         {openItem ? (
           <ApiItem item={openItem} pending={pending} signIn={needsSignIn} onBack={() => setView("list")} onConfirm={() => confirm(openItem)} />
@@ -443,6 +448,11 @@ function EbitdaApiTile({
                 })}
               </ul>
             )}
+            <div className="proof-meta">
+              <span className="proof-chip">Clause is not loaded</span>
+              <span>Page is not loaded</span>
+              <span>Needs input</span>
+            </div>
           </>
         )}
       </DetailDrawer>
