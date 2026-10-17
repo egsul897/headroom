@@ -63,6 +63,7 @@ model Company {
   debtTranches       DebtTranche[]
   ledgerEntries      LedgerEntry[]
   feedQueueItems     FeedQueueItem[]
+  erpFactApplications ErpFactApplication[]
   goldenTests        GoldenTest[]
 
   // --- Solver-native contract model (docs/solver-architecture-design.md §R) ---
@@ -622,6 +623,92 @@ model FeedQueueItem {
   company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@map("feed_queue_items")
+}
+
+enum ErpFactApplicationKind {
+  // An ERP-reported transaction (debt incurrence, dividend, investment,
+  // asset sale, ...) applied to basket usage via a LedgerEntry.
+  BASKET_TRANSACTION
+  // An ERP-reported amount tagged to an EBITDA add-back category, recorded
+  // as UNVERIFIED evidence for the CFO confirmation flow. Never a
+  // LedgerEntry, never an input to any computed total.
+  EBITDA_ADDBACK_EVIDENCE
+
+  @@map("erp_fact_application_kind")
+}
+
+enum ErpFactApplicationDisposition {
+  // Basket transaction matched a known basket/permission and was written
+  // to the ledger (ledgerEntryId is set).
+  APPLIED
+  // Add-back evidence recorded with reviewStatus UNVERIFIED.
+  EVIDENCE_RECORDED
+  // No known basket/permission matched. Surfaced for a human; never
+  // force-matched, never silently dropped, no ledger write.
+  UNMATCHED
+  // Same (companyId, connectionId, externalId) re-delivered with a
+  // different payload. Fail closed: no new ledger write, any earlier
+  // application is left in place and named in `detail` for a human.
+  CONFLICT
+  // Invalid fact or wrong tenant/connection. Refused; the row exists only
+  // as the audit trail of the refusal.
+  REJECTED
+
+  @@map("erp_fact_application_disposition")
+}
+
+// ERP application layer (lib/erp/**): the durable record of ONE normalized
+// ERP fact's application to product state. ERP-1 (ingestion) owns getting
+// facts in the door; this table owns what the application layer DID with a
+// fact - the audit trail for basket usage writes and add-back evidence
+// intake, and the idempotency backbone: (companyId, connectionId,
+// externalId) is unique, so a re-delivery can never double-consume a
+// basket. Identical re-deliveries bump deliveryCount on the same row;
+// conflicting re-deliveries flip the row to CONFLICT and keep the new
+// payload in conflictPayload. Rows are never deleted.
+model ErpFactApplication {
+  id           String                        @id @default(cuid())
+  companyId    String
+  connectionId String
+  externalId   String
+  kind         ErpFactApplicationKind
+  disposition  ErpFactApplicationDisposition
+  // ERP-1's fact taxonomy key, carried through verbatim (provenance, not
+  // interpreted by the application layer).
+  factKey      String
+  // The full normalized fact as delivered (JSON-safe; dates are ISO
+  // strings inside the payload).
+  payload      Json
+  // sha256 of the canonical (key-sorted) JSON of `payload`. Equality of
+  // this hash is what "identical re-delivery" means.
+  payloadHash  String
+  amount       Decimal?                      @db.Decimal(18, 6)
+  currency     String?
+  // Transaction date (basket facts) or period end (add-back evidence).
+  asOf         DateTime?
+  // Basket applications only: the ledger row the application wrote and
+  // the covenant target it matched. Null on every other disposition.
+  ledgerEntryId       String?
+  matchedProvisionId  String?
+  matchedPermissionId String?
+  matchedDocumentId   String?
+  // Add-back evidence only: repo review vocabulary (UNVERIFIED at intake;
+  // this layer never writes VERIFIED).
+  reviewStatus String?
+  // Human-readable outcome / refusal / conflict explanation.
+  detail          String?
+  conflictPayload Json?
+  deliveryCount   Int      @default(1)
+  lastDeliveredAt DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, connectionId, externalId])
+  @@index([companyId, disposition])
+  @@map("erp_fact_applications")
 }
 
 enum DefinedTermStatus {
