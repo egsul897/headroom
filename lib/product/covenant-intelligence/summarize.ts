@@ -59,6 +59,8 @@ export interface CovenantSummaryItem {
    * must not mint a formula from it (except when counsel EDITED
    * the item, supplying the controlling text). */
   operativeExcerptTruncated?: boolean;
+  /** Heading of the enclosing ARTICLE node, if any (powers the representations guard in grant-types). */
+  articleHeading?: string;
   sourceCitation: string;
   governingAgreement: string;
   families: string[];
@@ -184,6 +186,7 @@ function itemFromAnalysis(
     draftingPatterns: analysis.draftingPatterns,
     operativeLanguageExcerpt: analysis.operativeLanguageExcerpt,
     operativeExcerptTruncated: analysis.operativeExcerptTruncated,
+    articleHeading: analysis.articleHeading,
     sourceCitation: analysis.sourceCitation,
     governingAgreement,
     families: analysis.families,

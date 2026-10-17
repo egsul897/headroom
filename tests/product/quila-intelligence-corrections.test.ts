@@ -329,6 +329,14 @@ describe("chapeau inheritance: bare sub-clauses under a prohibition-with-except 
     expect(subClause("(a) Liens for taxes not yet due.").posture).toBe("UNRESOLVED");
   });
 
+  it("a 'Make any Investments, except:' chapeau also frames permissions", () => {
+    expect(
+      subClause(
+        "(c) Investments in the ordinary course of business.",
+        "Make any Investments, except:",
+      ).posture,
+    ).toBe("ENUMERATED_PERMISSION");
+  });
   it("a bare-stem chapeau (Create, incur or assume ... other than) also frames permissions", () => {
     expect(
       subClause(
@@ -387,5 +395,72 @@ describe("chapeau inheritance: bare sub-clauses under a prohibition-with-except 
     });
     const child = summary.items.find((i) => i.sectionRef === "7.01(a)");
     expect(child?.posture).toBe("ENUMERATED_PERMISSION");
+  });
+});
+
+describe("representations guard: a Representations-article section grants nothing", () => {
+  it("grantTypesForItem returns [] for a pure Representations article", async () => {
+    const { grantTypesForItem } = await import(
+      "../../lib/product/customer-intelligence/grant-types"
+    );
+    const item = {
+      sectionRef: "5.12",
+      heading: "Margin Regulations; Investment Company Act",
+      category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+      plainEnglish:
+        "Section 5.12 relates to restricted payments and investments. No Loan Party is engaged in the business of purchasing margin stock.",
+      operativeLanguageExcerpt:
+        "(a) No Loan Party is engaged in the business of purchasing or carrying margin stock.",
+      articleHeading: "ARTICLE V — REPRESENTATIONS AND WARRANTIES",
+    } as any;
+    expect(grantTypesForItem(item)).toEqual([]);
+  });
+
+  it("a mixed Representations-and-Covenants article is NOT guarded", async () => {
+    const { grantTypesForItem } = await import(
+      "../../lib/product/customer-intelligence/grant-types"
+    );
+    const item = {
+      sectionRef: "5.12",
+      heading: "Margin Regulations; Investment Company Act",
+      category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+      plainEnglish:
+        "Section 5.12 relates to restricted payments and investments. Investments in margin stock are permitted up to $5,000,000.",
+      operativeLanguageExcerpt: "Investments in margin stock are permitted up to $5,000,000.",
+      articleHeading: "Representations, Warranties and Covenants",
+    } as any;
+    expect(grantTypesForItem(item)).not.toEqual([]);
+  });
+
+  it("the summarizer carries the ARTICLE heading onto the item", async () => {
+    const { buildDocumentCovenantSummary } = await import(
+      "../../lib/product/covenant-intelligence/summarize"
+    );
+    const summary = buildDocumentCovenantSummary({
+      sourceId: "test:quila",
+      documentTitle: "Test Credit Agreement",
+      issuerCik: "0000000001",
+      documentClass: "CREDIT_AGREEMENT",
+      candidates: [
+        {
+          candidateId: "c-rep",
+          sourceId: "test:quila",
+          nodeId: "n-sec",
+          families: ["RESTRICTED_PAYMENTS"],
+          signals: [],
+          excerpt: "(a) No Loan Party is engaged in the business of purchasing or carrying margin stock.",
+          representationLevel: "DISCOVERED_CANDIDATE",
+          discoveryScore: 5,
+        },
+      ],
+      definitions: [],
+      structuralNodes: [
+        { nodeId: "n-art", sourceId: "test:quila", nodeType: "ARTICLE", sectionRef: "V", heading: "Representations and Warranties", charStart: 0, charEnd: 500 },
+        { nodeId: "n-sec", sourceId: "test:quila", nodeType: "SECTION", sectionRef: "5.12", heading: "Margin Regulations", charStart: 0, charEnd: 200, parentNodeId: "n-art" },
+      ],
+    });
+    const item = summary.items.find((i) => i.sectionRef === "5.12");
+    expect(item?.articleHeading).toBe("Representations and Warranties");
+    expect(item?.unresolvedQuestions.join(" ")).toMatch(/Representations article/);
   });
 });

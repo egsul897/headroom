@@ -29,6 +29,8 @@ export interface ProvisionAnalysis {
   /** Rule 192: the candidate excerpt is a prefix of a longer
    * operative span (4000-char cap) — tail clauses are missing. */
   operativeExcerptTruncated?: boolean;
+  /** Heading of the enclosing ARTICLE node (walked via parentNodeId), if any. Powers the representations guard: a section in a pure Representations article states facts, it does not grant capacity. */
+  articleHeading?: string;
   sectionRef: string;
   heading: string;
   category: CovenantCategoryKey;
@@ -124,8 +126,35 @@ function clip(s: string, n: number): string {
   return t.length > n ? `${t.slice(0, n)}…` : t;
 }
 
+/** True when an ARTICLE heading is a PURE Representations article ("Representations [and Warranties]" — no "Covenants"). Mixed articles and headings with extra words do NOT match (fail-closed). */
+export function isRepresentationArticle(heading: string | undefined): boolean {
+  if (!heading) return false;
+  // EDGAR HTML extraction splits words into a single letter + rest
+  // ("R EPRESENTATIONS AND W ARRANTIES"). Join a lone capital
+  // letter to a following all-caps word before testing — applied
+  // only here, only for this test.
+  const despace = heading.replace(/\b([A-Z])\s+([A-Z]{2,})\b/g, "$1$2");
+  return /^\s*(?:ARTICLE|Article|SECTION|Section|§)?\s*(?:[IVXLC\d.]+\s*(?:[-:–—]\s*)?)?Representations?(?:\s+and\s+Warranties?)?\s*$/i.test(
+    despace,
+  );
+}
+
 /** Interpretation language ("shall not be construed …") is not a covenant. */
 const CONSTRUED_RE = /\bshall\s+not\s+be\s+(?:construed|deemed|interpreted)\b/i;
+
+/**
+ * Bare negative-covenant stems: the chapeau states the prohibited
+ * act without a "shall not" (the "shall not" lives in the Article
+ * chapeau). "Create, incur [or assume] [or suffer to exist]" (liens
+ * / debt), "Make any Restricted Payment" (RP), "Make any
+ * Investment(s)" (investments), "Enter into or suffer to exist"
+ * (misc.). Shared by the GENERAL_PROHIBITION rule and the chapeau
+ * frame test — the two must agree on what counts as a prohibition
+ * frame, or a chapeau the analyzer calls a prohibition would not
+ * frame its sub-clauses as permissions.
+ */
+const PROHIBITION_STEM =
+  /\bCreate,\s*incur(?:\s*,?\s*(?:or\s+)?assume)?(?:\s+or\s+suffer\s+to\s+exist)?\b|\bMake\s+any\s+(?:Restricted\s+Payments?|Investments?)\b|\bEnter\s+into\s+or\s+suffer\s+to\s+exist\b/i;
 
 /**
  * True when a provision must not be presented as a prohibition, permission,
@@ -150,13 +179,8 @@ function detectPosture(excerpt: string, heading: string, families: string[], par
   // guard the letter-clause rule below labeled it ENUMERATED_PERMISSION.
   if (isNonOperative(excerpt, heading, families)) return "UNRESOLVED";
   // Classic negative-covenant stem (shall-not often lives in the Article chapeau).
-  // The bare stem also frames a prohibition: "Create, incur or assume
-  // any Lien ... other than" (Solaris 7.01) is the same frame as
-  // "... or suffer to exist" — the "suffer to exist" tail is optional.
   if (
-    /\bCreate,\s*incur(?:\s*,?\s*(?:or\s+)?assume)?(?:\s+or\s+suffer\s+to\s+exist)?\b/i.test(hay) ||
-    /\bMake any Restricted Payment\b/i.test(hay) ||
-    /\bEnter into or suffer to exist\b/i.test(hay) ||
+    PROHIBITION_STEM.test(hay) ||
     (/\bLimitation on\b/i.test(heading) && /\bexcept\s*:/i.test(hay))
   ) {
     return "GENERAL_PROHIBITION";
@@ -214,13 +238,15 @@ function detectPosture(excerpt: string, heading: string, families: string[], par
   if (parentChapeau) {
     const ownSignal = /\b(?:shall|will|may)\s+not\b|\bneither\b|\bmay\b|\bpermitted\b|\bentitled\b|\ballowed\b|\bnot\s+to\s+exceed\b|\bgreater\s+of\b/i.test(excerpt);
     // Prohibition-with-except frame: either an explicit "shall not ...
-    // except/other than" or the bare negative-covenant stem
-    // ("Create, incur [or assume] ... other than") whose "shall not"
-    // lives in the Article chapeau (Solaris 7.01). Both are the
-    // universal chapeau-prohibition + excepted-sub-clauses structure.
+    // except/other than" or a bare negative-covenant stem (see
+    // PROHIBITION_STEM) whose "shall not" lives in the Article
+    // chapeau (Solaris 7.01 "Create, incur or assume ... other
+    // than"; Solaris 7.02 "Make any Investments, except:"). Both
+    // are the universal chapeau-prohibition + excepted-sub-clauses
+    // structure.
     const chapeauProhibitsWithExcept =
       (/\b(?:shall|will|may)\s+not\b/i.test(parentChapeau) ||
-        /\bCreate,\s*incur(?:\s*,?\s*(?:or\s+)?assume)?(?:\s+or\s+suffer\s+to\s+exist)?\b/i.test(parentChapeau)) &&
+        PROHIBITION_STEM.test(parentChapeau)) &&
       /\bexcept\b|\bother\s+than\b/i.test(parentChapeau);
     if (!ownSignal && chapeauProhibitsWithExcept) {
       return /\bprovided\s+that\b|\bso\s+long\s+as\b|\bno\s+Default\b|\bpro\s+forma\b/i.test(excerpt)
@@ -656,6 +682,42 @@ export function analyzeProvision(params: {
   parentChapeau?: string;
 }): ProvisionAnalysis {
   const { sectionRef, heading } = sectionForNode(params.candidate.nodeId, params.structuralNodes);
+  // Enclosing ARTICLE heading: powers the representations guard.
+  // A section in a pure Representations article (Solaris Art. V:
+  // 5.07 title, 5.12 margin-stock, 5.24 outbound-investment)
+  // states facts — it does not grant capacity, and counsel
+  // accepting it must not mint a Permission from its incidental
+  // "Liens"/"Investment" words.
+  //
+  // Two sources, precedence matters: the parser's parent links
+  // are UNRELIABLE (Aon 6.16(l) links directly to Article V,
+  // Representations — skipping Article VI, Covenants). The
+  // section numbering is structural: sections are numbered
+  // Article.Section ("Section 6.16" is in "Article VI"), so for
+  // dotted refs the numbering-derived article WINS over the walk.
+  // The walk is the backup for non-dotted refs (schedules,
+  // exhibits, bare numbers) where numbering says nothing.
+  // Fail-closed: no matching ARTICLE node → undefined.
+  const articleHeading = (() => {
+    const leading = /^(\d+)\./.exec(sectionRef)?.[1];
+    if (leading) {
+      const n = Number(leading);
+      const roman = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"][n];
+      const article = params.structuralNodes.find(
+        (s) => s.nodeType === "ARTICLE" && (s.sectionRef === roman || s.sectionRef === leading),
+      );
+      if (article) return article.heading;
+    }
+    const byId = new Map(params.structuralNodes.map((n) => [n.nodeId, n]));
+    const seen = new Set<string>();
+    let node = params.candidate.nodeId ? byId.get(params.candidate.nodeId) : undefined;
+    while (node?.parentNodeId && !seen.has(node.nodeId)) {
+      seen.add(node.nodeId);
+      node = byId.get(node.parentNodeId);
+      if (node?.nodeType === "ARTICLE") return node.heading;
+    }
+    return undefined;
+  })();
   const excerpt = params.candidate.excerpt || "";
   const primary = params.candidate.families[0] ?? "UNKNOWN";
   const nonOperative = isNonOperative(excerpt, heading, params.candidate.families);
@@ -710,6 +772,13 @@ export function analyzeProvision(params: {
   }
 
   const unresolved: string[] = [...entityScopeNotes.filter((n) => /unresolved/i.test(n))];
+  // Representations note: a section in a pure Representations
+  // article states facts — counsel sees why it grants nothing.
+  if (isRepresentationArticle(articleHeading)) {
+    unresolved.push(
+      "Section sits in the Representations article — a statement of fact, not a grant of capacity; it mints no Permission even when accepted.",
+    );
+  }
   if (!restriction && posture === "UNRESOLVED") {
     unresolved.push("Could not determine whether the provision is a prohibition, permission, or maintenance test");
   }
@@ -777,6 +846,7 @@ export function analyzeProvision(params: {
 
   return {
     operativeExcerptTruncated: params.candidate.excerptTruncated,
+    articleHeading,
     sectionRef,
     heading,
     category,

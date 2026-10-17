@@ -3,6 +3,7 @@
  * Kept free of prisma imports so it is unit-testable in isolation.
  */
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
+import { isRepresentationArticle } from "../covenant-intelligence/analyze-provision";
 import { parseMoneyMillions } from "./money";
 
 export type CounselGrantType = "DEBT_INCURRENCE" | "LIEN" | "RESTRICTED_PAYMENT" | "INVESTMENT";
@@ -429,6 +430,22 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   // provision's words (Rule 60), so its first sentence is kept.
   // Rule 204: the definitions article never grants capacity.
   if (isDefinitionsArticleItem(item)) return [];
+
+  // Representations guard: a section in a PURE Representations
+  // article (article heading is "Representations [and
+  // Warranties]" — no "Covenants") states facts; it does not grant
+  // capacity. Solaris 5.12 (margin-stock / Investment Company Act
+  // representations), 5.07 (title representation), 5.24 (outbound
+  // investment representation) all minted false RP / INVESTMENT /
+  // LIEN grants from incidental words ("investment company",
+  // "Liens" in a title-representation heading). Counsel accepting
+  // such an item must not mint a Permission from it. Fail-closed:
+  // mixed articles ("Representations, Warranties and Covenants")
+  // and headings with extra words do NOT match — those items
+  // keep today's behavior and counsel decides.
+  if (isRepresentationArticle(item.articleHeading)) {
+    return [];
+  }
 
   // Rule 207: an incremental-facility provision never grants capacity.
   if (isIncrementalFacilityItem(item)) return [];
