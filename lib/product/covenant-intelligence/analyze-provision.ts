@@ -410,6 +410,7 @@ function classifyNonCovenant(params: {
   primary: string;
   isEod: boolean;
   position: StructuralPosition;
+  documentClass?: string;
 }): NonCovenantSubtype | null {
   const { excerpt, heading, families, primary, isEod, position } = params;
   if (isReservedPlaceholder(excerpt, heading)) return "RESERVED";
@@ -418,6 +419,43 @@ function classifyNonCovenant(params: {
   // An ARTICLE node item is the article head/chapeau itself —
   // never gated by its own article's class.
   if (position.candidateNode?.nodeType === "ARTICLE") return null;
+
+  // Jury-waiver text shape (step 8): a jury-trial waiver is
+  // boilerplate in any position — including unpositioned
+  // fragments of bundled joinder forms, which no article class
+  // reaches. The operative shape (waive + jury) is the whole
+  // content of such a fragment.
+  if (/\bwaiv\w*\s+(?:trial\s+by\s+)?jury\b/i.test(excerpt)) return "BOILERPLATE";
+
+  // Amendment-document shapes (step 8), scoped to documents
+  // the pipeline itself classed AMENDMENT — an amendment's
+  // provisions operate ON the base agreement, and three of
+  // its recurring shapes are determinate without it:
+  if (params.documentClass === "AMENDMENT") {
+    // A restated defined term is a definition.
+    if (
+      /defined\s+term\s+["“][^"”]{1,80}["”]\s+is\s+(?:hereby\s+)?amended\s+and\s+restated/i.test(excerpt)
+    ) {
+      return "DEFINITION";
+    }
+    // The no-default effectiveness condition, when it LEADS
+    // its section, is amendment mechanics (a bare condition
+    // on the amendment's own effectiveness).
+    if (
+      /No\s+Default\s+or\s+Event\s+of\s+Default\s+shall\s+exist/i.test(excerpt.slice(0, 240)) &&
+      /Amendment\s+Effective\s+Date/.test(excerpt)
+    ) {
+      return "MECHANICS";
+    }
+    // An expenses-payment section in an amendment routes to
+    // the base agreement's expenses provision — mechanics.
+    if (
+      /payment\s+of\s+expenses/i.test(heading) ||
+      /payment\s+of\s+expenses/i.test(excerpt.slice(0, 160))
+    ) {
+      return "MECHANICS";
+    }
+  }
 
   const cls = position.positionClass;
 
@@ -1743,6 +1781,16 @@ export function analyzeProvision(params: {
    * fragment. Keyed by SECTION nodeId. Optional; absent →
    * heading/title arbitration only. */
   sectionContext?: Map<string, { subjectCategory?: CovenantCategoryKey; title?: string }>;
+  /** Step 7 (stem rollup): a category determined by the
+   * summary builder from the item's DESCENDANTS or its
+   * article's own title identity, applied only when the
+   * item's own classification is OTHER (the fallback chain
+   * consults it last, so it can never override evidence from
+   * the item's own text). */
+  rollup?: { category: CovenantCategoryKey; nonCovenantSubtype?: NonCovenantSubtype };
+  /** The pipeline's document class for the source document
+   * (step 8: amendment-document shapes are scoped to it). */
+  documentClass?: string;
 }): ProvisionAnalysis {
   const { sectionRef, heading } = sectionForNode(params.candidate.nodeId, params.structuralNodes);
   // Enclosing ARTICLE heading: powers the representations guard.
@@ -1796,6 +1844,7 @@ export function analyzeProvision(params: {
     primary,
     isEod,
     position: structuralPos,
+    documentClass: params.documentClass,
   });
   // Classification census step 2: AFFIRMATIVE classification —
   // operative affirmative covenants (reporting, notices,
@@ -2056,19 +2105,56 @@ export function analyzeProvision(params: {
     if (leadSubject && !isPureCrossReference) {
       const conflictsSection = sectionCats.length > 0 && !sectionCats.includes(leadSubject);
       const textHead = excerpt.replace(/\s+/g, " ").slice(0, 500);
-      const speaksFrame = sectionCats.some(
-        (cat) =>
-          LEAD_SUBJECTS.some(([re, c]) => c === cat && re.test(textHead)) ||
-          // The affiliate frame's signature condition is the
-          // arm's-length standard — a prong conditioned on it
-          // speaks the frame even without the word "Affiliate".
-          (cat === "AFFILIATE_TRANSACTIONS" && /\barms?\W{0,2}length\b/i.test(textHead)),
-      );
+      // A SELF-reference ("permitted under this Section") is
+      // home-frame evidence, the opposite of an exit phrase:
+      // the clause's permissions are the section's own, so a
+      // foreign lead subject does not carry it away (a
+      // guarantees prong guaranteeing debt permitted under its
+      // own Investments section is a mismatch that stays
+      // unresolved, per the step-3 pin).
+      const selfReference =
+        /\bpermitted\s+(?:by|under|pursuant\s+to)\s+this\s+(?:Section|§)/i.test(textHead);
+      const speaksFrame =
+        selfReference ||
+        sectionCats.some(
+          (cat) =>
+            LEAD_SUBJECTS.some(([re, c]) => c === cat && re.test(textHead)) ||
+            // The affiliate frame's signature condition is the
+            // arm's-length standard — a prong conditioned on it
+            // speaks the frame even without the word "Affiliate".
+            (cat === "AFFILIATE_TRANSACTIONS" && /\barms?\W{0,2}length\b/i.test(textHead)),
+        );
       const exitPhrase =
         /\bin reliance on\b|\bpermitted\s+(?:by|under|pursuant\s+to)\s+(?:Section|§)/i.test(
           textHead,
         );
-      if (!conflictsSection || exitPhrase || !speaksFrame) {
+      // Under a NEUTRAL section (no section subject) OUTSIDE
+      // the covenant articles, competing mappable categories
+      // stay unresolved — the lead alone does not arbitrate
+      // between two detected covenant families (the step-3
+      // pin: path (4) enforces by unanimity outside the
+      // covenant articles, and the lead path must not bypass
+      // it there). The competition must OUTRANK the lead's
+      // own family in the classifier's ordered list. Inside
+      // the covenant articles the lead promotion is the
+      // masking mechanism's home turf — a clause's operative
+      // lead subject arbitrates among its detected families —
+      // and this guard does not apply (the dual of path (4),
+      // which serves the outside-covenant-article population).
+      const leadFamilyIdx = mappable.findIndex((f) => FAMILY_TO_CATEGORY[f] === leadSubject);
+      const inCovenantArticle =
+        structuralPos.positionClass === "NEGATIVE" ||
+        structuralPos.positionClass === "COVENANTS" ||
+        structuralPos.positionClass === "AFFIRMATIVE" ||
+        structuralPos.positionClass === "CREDITS";
+      const neutralCompetition =
+        sectionCats.length === 0 &&
+        !inCovenantArticle &&
+        leadFamilyIdx > 0 &&
+        mappable
+          .slice(0, leadFamilyIdx)
+          .some((f) => FAMILY_TO_CATEGORY[f] !== leadSubject);
+      if ((!conflictsSection || exitPhrase || !speaksFrame) && !neutralCompetition) {
         const f = mappable.find((f) => FAMILY_TO_CATEGORY[f] === leadSubject);
         if (f) return f;
       }
@@ -2184,7 +2270,7 @@ export function analyzeProvision(params: {
       const present = params.candidate.families.some(
         (f) => FAMILY_TO_CATEGORY[f] === subjects[0],
       );
-      if (present && leadSubject !== primaryCat) return subjects[0];
+      if (present && leadSubject !== primaryCat) return subjects[0] ?? null;
     }
     return null;
   })();

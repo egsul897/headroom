@@ -612,6 +612,7 @@ export function buildDocumentCovenantSummary(params: {
       parentChapeau: parentChapeauOf(c),
       sectionContext,
       rollup,
+      documentClass: params.documentClass,
     });
   const pass1 = ranked.map((c) => runAnalysis(c));
   // Step 7: stem rollup. A SECTION or ARTICLE stem whose own
@@ -632,7 +633,7 @@ export function buildDocumentCovenantSummary(params: {
     { category: CovenantCategoryKey; nonCovenantSubtype?: NonCovenantSubtype }
   >();
   {
-    const catByNodeId = new Map(ranked.map((c, i) => [c.nodeId ?? "", pass1[i].category]));
+    const catByNodeId = new Map(ranked.map((c, i) => [c.nodeId ?? "", pass1[i]?.category ?? "OTHER"]));
     const isDescendantOf = (nodeId: string, ancestorId: string): boolean => {
       let node = nodeById.get(nodeId);
       const seen = new Set<string>();
@@ -644,7 +645,7 @@ export function buildDocumentCovenantSummary(params: {
       return false;
     };
     ranked.forEach((c, i) => {
-      if (pass1[i].category !== "OTHER" || !c.nodeId) return;
+      if (pass1[i]?.category !== "OTHER" || !c.nodeId) return;
       const node = nodeById.get(c.nodeId);
       if (!node || (node.nodeType !== "SECTION" && node.nodeType !== "ARTICLE")) return;
       if (node.nodeType === "ARTICLE") {
@@ -688,14 +689,15 @@ export function buildDocumentCovenantSummary(params: {
         }
       }
       const minimum = node.nodeType === "ARTICLE" ? 3 : 1;
-      if (determinate >= minimum && descCats.size === 1) {
-        rollupByNodeId.set(c.nodeId, { category: [...descCats][0] });
+      const onlyCat = [...descCats][0];
+      if (determinate >= minimum && descCats.size === 1 && onlyCat) {
+        rollupByNodeId.set(c.nodeId, { category: onlyCat });
       }
     });
   }
   ranked.forEach((c, i) => {
     const rollup = c.nodeId ? rollupByNodeId.get(c.nodeId) : undefined;
-    const analysis = rollup ? runAnalysis(c, rollup) : pass1[i];
+    const analysis = rollup ? runAnalysis(c, rollup) : pass1[i]!;
     const itemNode = c.nodeId ? nodeById.get(c.nodeId) : undefined;
     items.push(
       itemFromAnalysis(
