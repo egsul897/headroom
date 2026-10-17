@@ -54,6 +54,11 @@ export interface FamilySummary {
   sectionPaths: string[];
   baskets: Array<{ sectionRef: string; category: string; capStatus: string; cap: string | null; /** AT_LEAST: cap computed from a lower-bound metric (capacity is at least `cap`). */ capBound?: "AT_LEAST"; currency: string | null; missingInputs: string[]; citation: string }>;
   needsInputs: string[];
+  /**
+   * When set, the checklist absence is from this document only (amendment / 8-K / incorporating instrument).
+   * Package-wide outcome is never ABSENT_VERIFIED in that case: the base agreement has not been read.
+   */
+  absentScope?: ChecklistItem["absentScope"];
 }
 
 export interface AgreementPipelineResult {
@@ -434,11 +439,16 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     if (baskets.some((b) => b.capStatus === "COMPUTED" && b.cap && b.cap !== "UNLIMITED_EXPLICIT")) outcome = "CAP_COMPUTED";
     else if (baskets.some((b) => b.capStatus === "NEEDS_INPUT" || b.capStatus === "UNKNOWN") || ck?.status === "NEEDS_INPUT") outcome = "NEEDS_INPUT";
     else if (baskets.some((b) => b.cap === "UNLIMITED_EXPLICIT")) outcome = "UNLIMITED_EXPLICIT";
-    else if (ck?.status === "ABSENT_VERIFIED") outcome = "ABSENT_VERIFIED";
+    else if (ck?.status === "ABSENT_VERIFIED" && !ck.absentScope) outcome = "ABSENT_VERIFIED";
+    // Document-only absence (partial filing / incorporated-by-reference): the package is unresolved until the base is read.
+    else if (ck?.status === "ABSENT_VERIFIED" && ck.absentScope) outcome = "MISSING";
     else if (ck && ck.status !== "MISSING") outcome = ck.status === "CAP_FOUND" ? "NEEDS_INPUT" : "CONDITIONS_LIMITED";
     else outcome = "MISSING";
     if (outcome === "MISSING" && !ck) continue;
-    families.push({ family, outcome, checklistStatus: ck?.status ?? "N/A", sectionPaths: ck?.sectionPaths ?? [], baskets, needsInputs });
+    families.push({
+      family, outcome, checklistStatus: ck?.status ?? "N/A", sectionPaths: ck?.sectionPaths ?? [], baskets, needsInputs,
+      ...(ck?.absentScope ? { absentScope: ck.absentScope } : {}),
+    });
   }
 
   return {
@@ -592,6 +602,7 @@ export async function persistCustomerAgreementRun(
       const runId = row.id;
       const n = await tx.customerTreeNode.createMany({ data: r.tree.nodes.map((x) => ({ runId, nodeId: x.id, parentId: x.parentId, kind: x.kind, label: x.label, path: x.path, sectionNumber: x.sectionNumber, title: x.title, level: x.level, start: x.start, headingEnd: x.headingEnd, end: x.end, depth: x.depth, status: x.status, role: r.roles.get(x.id) ?? null, issues: x.issues })) });
       const xr = await tx.customerTreeXref.createMany({ data: xrefRows(r).map((k) => ({ runId, spanStart: k.spanStart, spanEnd: k.spanEnd, spanSha256: k.spanSha256, fromNodeId: k.x.fromNodeId, raw: k.x.raw, target: k.x.target, status: k.x.status, targetNodeId: k.x.targetNodeId })) });
+      // absentScope lives on FamilySummary (persisted in customer_agreement_runs.families JSON); the checklist table has no column yet.
       const cl = await tx.customerTreeChecklist.createMany({ data: r.checklist.map((c) => ({ runId, family: c.family, status: c.status, sectionPaths: c.sectionPaths, parts: c.parts, needsInputs: c.needsInputs, note: c.note })) });
       return { status: "OK" as const, runId, textSha256: r.textSha256, stored: { nodes: n.count, xrefs: xr.count, checklist: cl.count } };
     });

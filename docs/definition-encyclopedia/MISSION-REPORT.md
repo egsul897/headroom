@@ -2,11 +2,11 @@
 
 ## Counts
 
-- Total definition examples: **5491**
-- Additional vs Phase-1 baseline (120): **5371**
-- Source documents: **82** (acquired **67**, issuers **67**)
-- Dependency edges: **3476**
-- Forwarding resolved/unresolved: **589** / **1135**
+- Total definition examples: **1547**
+- Additional vs Phase-1 baseline (120): **1427**
+- Source documents: **15** (acquired **0**, issuers **0**)
+- Dependency edges: **1336**
+- Forwarding resolved/unresolved: **169** / **402**
 - Import replay ok: **true**
 
 ## Exact gap coverage (exact terms only)
@@ -15,13 +15,13 @@
 - Cumulative Credit: 0
 - Incremental Cap: 1
 - Free and Clear Incremental Amount: 0
-- Permitted Acquisition: 11
-- Permitted Ratio Debt: 4
-- Permitted Refinancing: 8
-- Designated Non-Cash Consideration: 9
+- Permitted Acquisition: 6
+- Permitted Ratio Debt: 3
+- Permitted Refinancing: 1
+- Designated Non-Cash Consideration: 2
 - Consolidated First Lien Debt: 1
 - Consolidated Net Leverage Ratio: 0
-- Pro Forma Basis: 11
-- Pro Forma Effect: 1
-- Excess Cash Flow: 8
+- Pro Forma Basis: 0
+- Pro Forma Effect: 0
+- Excess Cash Flow: 4
 - Applicable Amount: 0

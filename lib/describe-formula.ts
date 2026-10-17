@@ -36,6 +36,9 @@ export function describeFormula(p: CovenantProvisionInput): string {
     case "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS":
       return `The greater of ${money(p.thresholdValue)} or ${pct(params.pctTotalAssets ?? 0)} of Consolidated Total Assets.`;
 
+    case "GREATER_OF_FLAT_OR_PCT_NET_WORTH":
+      return `The greater of ${money(p.thresholdValue)} or ${pct(params.pctNetWorth ?? 0)} of Consolidated Net Worth.`;
+
     case "LEVERAGE_RATIO_ROOM":
       return `The additional debt that keeps ${ratioMeasure(params.debtBasis)} at or below ${p.thresholdValue.toFixed(2)}x Consolidated EBITDA.`;
 

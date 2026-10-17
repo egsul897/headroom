@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import { Card } from "@/components/ui";
 import { GlobalBrand } from "@/components/GlobalBrand";
 import { listCompanies } from "@/lib/dashboard-service";
+import { requireAdminOrRedirect } from "@/lib/auth/guard";
 
 export const metadata = { title: "Headroom — Admin" };
 // Same Vercel build-time-prerender fix as app/page.tsx - see that file's own
@@ -10,36 +10,18 @@ export const metadata = { title: "Headroom — Admin" };
 export const dynamic = "force-dynamic";
 
 /**
- * Internal/admin/development mode (docs/headroom-master-product-architecture.md
- * §D - "preserve Coherent, Matthews and synthetic/evaluation companies... move
- * company switching to admin/internal/development mode"). This is the ONLY
- * place in the product that enumerates every tenant regardless of kind and
- * offers "+ New" company creation - none of it belongs on the
- * customer-facing root (app/page.tsx). The legacy Coherent-only pages this
- * used to link to (app/position, app/simulate, app/docs, app/ledger,
- * app/feeds) were removed (task "UNIVERSAL HEADROOM PRODUCT EXPERIENCE" §4
- * generalization audit - PRODUCTION_RISK: hardcoded to Coherent via omitted
- * companyId args, fully superseded by app/[companyId]/*).
+ * Internal/admin mode (docs/headroom-master-product-architecture.md §D).
+ * This is the ONLY place in the product that enumerates every tenant
+ * regardless of kind and offers "+ New" company creation - none of it
+ * belongs on the customer-facing root (app/page.tsx).
  *
- * Admin safety mitigation (task §31, docs/contract-model-foundation-phase-b.md §31):
- * this route is unlinked from any customer-facing surface, but "unlinked" is
- * not a real safeguard against a direct request in production - a small,
- * safe, fail-closed gate that needs no new auth infrastructure. On Vercel
- * (`process.env.VERCEL`), the page requires `?token=<ADMIN_ACCESS_TOKEN>` to
- * match a real value configured in the Vercel dashboard; with no
- * ADMIN_ACCESS_TOKEN configured at all (the default, until an operator sets
- * one), production access is completely disabled (404, never a login
- * prompt that would itself confirm the route exists) rather than left open.
- * Local dev (VERCEL unset) is unaffected - this is not a login system, only
- * a stopgap for "do not leave an openly reachable customer-list surface in
- * production if a small safe mitigation exists" until real admin auth ships.
+ * Gated by real admin auth (ADMIN-role session). This replaces the old
+ * ?token=<ADMIN_ACCESS_TOKEN> stopgap, whose own comment said it existed
+ * only "until real admin auth ships" — it has now shipped. The token env
+ * var is no longer read anywhere.
  */
-export default async function AdminPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
-  if (process.env.VERCEL) {
-    const { token } = await searchParams;
-    const required = process.env.ADMIN_ACCESS_TOKEN;
-    if (!required || token !== required) notFound();
-  }
+export default async function AdminPage() {
+  await requireAdminOrRedirect();
 
   const companies = await listCompanies();
   const customer = companies.filter((c) => c.tenantKind === "CUSTOMER");

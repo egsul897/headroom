@@ -161,7 +161,40 @@ model Company {
   ebitdaBoxes         CustomerEbitdaBox[]
   ebitdaConfirmations CustomerEbitdaConfirmation[]
 
+  // --- SaaS accounts (auth) ---
+  // Additive only. Each user belongs to exactly one company — the tenant
+  // boundary. There is no cross-tenant user and no company switcher.
+  users User[]
+
   @@map("companies")
+}
+
+// SaaS account role. USER: a customer user, scoped to one company.
+// ADMIN: Egzon's team only — gates the provisioning surfaces
+// (/companies/new, /companies/[id]/delete, /admin). ADMIN confers NO
+// cross-tenant dashboard access; tenant checks compare companyId only.
+enum UserRole {
+  USER
+  ADMIN
+
+  @@map("user_role")
+}
+
+// SaaS account. Provisioned offline by Egzon's team
+// (scripts/provision-company-account.ts) — no self-serve signup.
+// passwordHash is a scrypt hash (lib/auth/password.ts); the plaintext
+// password is never stored.
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         UserRole @default(USER)
+  companyId    String
+  company      Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("users")
 }
 
 enum DocumentType {
@@ -379,6 +412,7 @@ enum FormulaType {
   FLAT_NET_OF_DEBT
   GREATER_OF_FLAT_OR_PCT_EBITDA
   GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS
+  GREATER_OF_FLAT_OR_PCT_NET_WORTH
   LEVERAGE_RATIO_ROOM
   COVERAGE_RATIO_ROOM
   BUILDER_BASKET
@@ -531,6 +565,15 @@ model LedgerEntry {
   status         LedgerEntryStatus @default(ACTIVE)
   supersededAt   DateTime?
   supersededById String?
+  // Rule 142: who superseded this entry. Distinct from
+  // supersededById (the successor entry's id, still unused —
+  // legacy supersession names no successor). Nullable because
+  // historical rows predate attribution.
+  supersededBy   String?
+  // Rule 139: who logged this entry. Nullable because
+  // historical rows predate attribution; every NEW manual entry
+  // must carry it (the action refuses without it).
+  createdBy      String?
 
   createdAt DateTime @default(now())
 
@@ -575,6 +618,9 @@ model FeedQueueItem {
   payload     Json
   status      FeedQueueStatus @default(PENDING)
   resolvedAt  DateTime?
+  // Rule 141: who approved/dismissed this item. Nullable
+  // because historical resolutions predate attribution.
+  resolvedBy  String?
 
   createdAt DateTime @default(now())
 

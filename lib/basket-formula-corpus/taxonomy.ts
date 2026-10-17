@@ -186,4 +186,26 @@ export const FORMULA_TAXONOMY: FormulaTaxonomyEntry[] = [
     requiredInputs: ["as_stated_in_source"],
     commonFailureModes: ["Forcing an OTHER shape into a named FormulaType without source support"],
   },
+  {
+    formulaKind: "MULTIPLE_OF_METRIC",
+    label: "Multiple of metric",
+    description: "Ceiling expressed as a multiple of a financial metric (for example, 3.0x Consolidated EBITDA). Not a ratio test: the multiple is an amount cap on incurrence, not a maintenance threshold.",
+    typicalBasketFamilies: ["GENERAL_DEBT", "GENERAL_LIEN", "INVESTMENT"],
+    requiredInputs: ["metric_value_at_measurement_date", "outstanding_or_usage_to_date"],
+    commonFailureModes: [
+      "Converting a ratio maintenance test (Leverage Ratio shall not exceed 3.0x) into a dollar cap",
+      "Binding the multiple to GAAP EBITDA instead of the contract-defined metric",
+    ],
+  },
+  {
+    formulaKind: "LESSER_OF_FIXED_AND_MULTIPLE",
+    label: "Lesser of fixed dollar and multiple / percent of metric",
+    description: "Capacity is the lesser of a stated fixed amount and a stated multiple or percentage of a financial metric. Conjunctive: both limbs bind, so the smaller governs.",
+    typicalBasketFamilies: ["GENERAL_DEBT", "GENERAL_LIEN", "INVESTMENT"],
+    requiredInputs: ["metric_value_at_measurement_date", "outstanding_or_usage_to_date"],
+    commonFailureModes: [
+      "Reporting the fixed limb alone when the metric limb is smaller",
+      "Treating an unmarked 'dollar and multiple' pair as a lesser-of without the words 'lesser of'",
+    ],
+  },
 ];

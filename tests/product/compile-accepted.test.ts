@@ -3,7 +3,9 @@ import { readFileSync } from "node:fs";
 import { extractStructure, discoverDefinitions, discoverCrossReferences } from "../../lib/knowledge-factory/pipeline/structural";
 import { discoverCovenantCandidates } from "../../lib/knowledge-factory/pipeline/candidates";
 import { buildDocumentCovenantSummary } from "../../lib/product/covenant-intelligence/summarize";
-import { parseCounselFormulaForTest } from "../../lib/product/customer-intelligence/compile-accepted";
+import { isCapRestatementCondition, parseCounselFormulaForTest } from "../../lib/product/customer-intelligence/compile-accepted";
+import type { CovenantSummaryItem } from "../../lib/product/covenant-intelligence/summarize";
+import type { ProvisionAnalysis } from "../../lib/product/covenant-intelligence/analyze-provision";
 
 const CONMED_VII = readFileSync(
   "tests/fixtures/unseen-packages/conmed-2025-credit-facility/curated/base-credit-agreement-article-vii-negative-covenants.txt",
@@ -80,6 +82,64 @@ describe("compile-accepted formula parsing", () => {
     expect(evaluated.capacity).toBe(84); // max(50, 0.03*2800)
   });
 
+  it("parses the real Aon greater-of Net Worth basket (Rule 186)", () => {
+    const item = {
+      sectionRef: "6.16",
+      heading: "Indebtedness",
+      category: "OTHER",
+      materialBasketsThresholds: [
+        "other Indebtedness in an aggregate principal amount outstanding at no time exceeding an amount equal to the greater of $1,000,000,000 or ten percent (10%) of Consolidated Net Worth at such time.",
+      ],
+      permissions: ["The Borrower may incur Indebtedness not exceeding the greater of $1,000,000,000 or ten percent (10%) of Consolidated Net Worth."],
+      plainEnglish: "Permits other Indebtedness up to the greater of $1,000,000,000 or ten percent (10%) of Consolidated Net Worth.",
+      operativeLanguageExcerpt: "other Indebtedness in an aggregate principal amount outstanding at no time exceeding an amount equal to the greater of $1,000,000,000 or ten percent (10%) of Consolidated Net Worth at such time.",
+    } as never;
+    const parsed = parseCounselFormulaForTest(item);
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.formulaType).toBe("GREATER_OF_FLAT_OR_PCT_NET_WORTH");
+    expect(parsed.thresholdValue).toBe(1000);
+    expect(parsed.params?.pctNetWorth).toBeCloseTo(0.1, 9);
+    expect(parsed.missingFields).toEqual([]);
+  });
+
+  it("Net Worth grower with unparseable % falls back to the flat floor with a missing-field disclosure (Rule 186)", () => {
+    const item = {
+      sectionRef: "6.16",
+      heading: "Indebtedness",
+      category: "OTHER",
+      materialBasketsThresholds: [
+        "other Indebtedness not exceeding the greater of $1,000,000,000 or a percentage of Consolidated Net Worth to be determined.",
+      ],
+      permissions: ["The Borrower may incur Indebtedness not exceeding the greater of $1,000,000,000 or a percentage of Consolidated Net Worth."],
+      plainEnglish: "Permits other Indebtedness up to the greater of $1,000,000,000 or a percentage of Consolidated Net Worth.",
+      operativeLanguageExcerpt: "other Indebtedness not exceeding the greater of $1,000,000,000 or a percentage of Consolidated Net Worth.",
+    } as never;
+    const parsed = parseCounselFormulaForTest(item);
+    expect(parsed.formulaType).toBe("FLAT_AMOUNT");
+    expect(parsed.thresholdValue).toBe(1000);
+    expect(parsed.missingFields).toContain("grower_%_net_worth");
+  });
+
+  it("evaluates the Net Worth grower via the covenant engine; missing Net Worth is review_required (Rule 186)", async () => {
+    const { evaluateProvision, computeLeverageMetrics } = await import("../../lib/covenant-engine");
+    const provision = {
+      id: "t", documentId: "d", code: "grower-nw", basketName: "General debt", sectionRef: "6.16",
+      formulaType: "GREATER_OF_FLAT_OR_PCT_NET_WORTH" as const, thresholdValue: 1000, params: { pctNetWorth: 0.1 },
+    };
+    const fin = {
+      ebitda: 500, cash: 100, interestExpense: 80, cumulativeNetIncome: 400,
+      equityProceedsSinceIssue: 0, assumedNewDebtRatePct: 6, totalDebt: 1200, securedDebt: 800,
+      netWorth: 15000,
+    };
+    const evaluated = evaluateProvision(provision, fin, computeLeverageMetrics(fin));
+    expect(evaluated.status).toBe("modeled");
+    expect(evaluated.capacity).toBe(1500); // max(1000, 0.10*15000)
+    const noNw = evaluateProvision(provision, { ...fin, netWorth: undefined }, computeLeverageMetrics(fin));
+    expect(noNw.status).toBe("review_required");
+    const noPct = evaluateProvision({ ...provision, params: {} }, fin, computeLeverageMetrics(fin));
+    expect(noPct.status).toBe("review_required");
+  });
+
   it("refuses MODELED compile when no numeric threshold exists", () => {
     const bare = summary.items.find(
       (i) => !(i.materialBasketsThresholds ?? []).length && !(i.permissions ?? []).some((p) => /\$/.test(p)),
@@ -94,5 +154,136 @@ describe("compile-accepted formula parsing", () => {
     });
     expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
     expect(parsed.missingFields.length).toBeGreaterThan(0);
+  });
+});
+
+describe("Rule 192: truncated-excerpt guard (compiler half)", () => {
+  // Typed as the real CovenantSummaryItem (never `as never` —
+  // spreading a `never` fails CI's TS2698). entityScope +
+  // analysis are required by the type but not read by the
+  // formula parser on these paths.
+  const base: CovenantSummaryItem = {
+    category: "DEBT_INCURRENCE",
+    categoryLabel: "Debt incurrence",
+    sectionRef: "6.11",
+    heading: "Liens",
+    posture: "GENERAL_PROHIBITION",
+    plainEnglish: "Section 6.11 (Liens) prohibits Liens except as permitted. Material baskets/thresholds identified: Amount/threshold: $5,000,000.",
+    restriction: "No Liens except as permitted.",
+    permissions: [] as string[],
+    coveredEntities: [] as string[],
+    exceptions: [] as string[],
+    conditions: [] as string[],
+    materialBasketsThresholds: ["Amount/threshold: $5,000,000"],
+    draftingPatterns: [] as string[],
+    operativeLanguageExcerpt: "6.11. Liens. The Parent will not create any Lien except: (a) Liens for taxes.",
+    sourceCitation: "fixture · 6.11",
+    governingAgreement: "fixture",
+    families: [] as string[],
+    relatedDefinedTerms: [] as string[],
+    applicableDefinitions: [] as never[],
+    crossReferences: [] as string[],
+    dependencies: [] as string[],
+    epistemicStatus: "DISCOVERED_CANDIDATE",
+    interpretationNote: "",
+    unresolvedQuestions: [] as string[],
+    alternativeInterpretations: [] as string[],
+    assumptions: [] as string[],
+    judgmentCalls: [] as string[],
+    entityScope: {
+      borrower: true,
+      guarantor: false,
+      restrictedSubsidiary: false,
+      unrestrictedSubsidiary: false,
+      notes: [],
+    },
+    analysis: {} as ProvisionAnalysis,
+  };
+
+  it("fails closed on a truncated excerpt instead of minting a partial flat amount", () => {
+    const parsed = parseCounselFormulaForTest({ ...base, operativeExcerptTruncated: true });
+    expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
+    expect(parsed.missingFields).toContain("operativeExcerptTruncated");
+    expect(parsed.thresholdValue).toBe(0);
+  });
+
+  it("parses normally when the excerpt is not truncated", () => {
+    const parsed = parseCounselFormulaForTest({ ...base, operativeExcerptTruncated: false });
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.thresholdValue).toBe(5);
+  });
+
+  it("exempts EDITED items — counsel supplied the controlling text", () => {
+    const parsed = parseCounselFormulaForTest({
+      ...base,
+      operativeExcerptTruncated: true,
+      reviewerDecision: "EDITED",
+    });
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.thresholdValue).toBe(5);
+  });
+});
+
+describe("Rule 206: a condition that restates the modeled cap is not an eligibility condition", () => {
+  it("drops the Asure 7.02(c) cap-restating proviso", () => {
+    expect(
+      isCapRestatementCondition(
+        "provided_that: provided that the aggregate amount of all such Indebtedness at any time outstanding shall not exceed $5,000,000",
+        5,
+      ),
+    ).toBe(true);
+  });
+
+  it("keeps the Asure 7.02(f) refinancing proviso (no amount, not a cap)", () => {
+    expect(
+      isCapRestatementCondition(
+        "provided_that: provided that the amount of such Indebtedness is not increased at the time of such refinancing, refunding, renewal or extension",
+        5,
+      ),
+    ).toBe(false);
+  });
+
+  it("keeps the Asure 7.01(t) no-Collateral proviso (no amount, not a cap)", () => {
+    expect(
+      isCapRestatementCondition("provided_that: provided that no such Lien shall extend to or cover any Collateral.", 5),
+    ).toBe(false);
+  });
+
+  it("keeps a MIXED proviso (no-default + the cap amount) — the independent requirement is not a cap restatement", () => {
+    // The genuine gap: the condition extractor emits one string per
+    // proviso window, so a mixed proviso arrives as a single
+    // condition. Dropping it would silently delete the no-default
+    // requirement along with the redundant cap language.
+    expect(
+      isCapRestatementCondition(
+        "provided_that: provided that no Default or Event of Default has occurred and is continuing and the aggregate amount of all such Indebtedness shall not exceed $5,000,000",
+        5,
+      ),
+    ).toBe(false);
+  });
+
+  it("keeps a MIXED proviso (pro forma compliance + the cap amount)", () => {
+    expect(
+      isCapRestatementCondition(
+        "provided_that: provided that the Borrower shall be in pro forma compliance with the financial covenants and the aggregate amount shall not exceed $5,000,000",
+        5,
+      ),
+    ).toBe(false);
+  });
+
+  it("keeps a proviso naming a DIFFERENT amount than the threshold", () => {
+    expect(
+      isCapRestatementCondition("provided that the aggregate amount shall not exceed $10,000,000", 5),
+    ).toBe(false);
+  });
+
+  it("keeps a floor proviso (at least) even at the threshold amount", () => {
+    expect(isCapRestatementCondition("provided that the amount is at least $5,000,000", 5)).toBe(false);
+  });
+
+  it("keeps everything when there is no modeled threshold", () => {
+    expect(
+      isCapRestatementCondition("provided that the aggregate amount shall not exceed $5,000,000", null),
+    ).toBe(false);
   });
 });

@@ -629,6 +629,10 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           if (generic.status !== "UNIQUE_AFTER_DEGENERATE_EXCLUSION" || !generic.node) return refuse(`section reference "${sectionRef}" matches ${resolution.candidates.length} distinct physical locations in this document (e.g. a cross-reference mention and the section's real header can share the same number) - cannot serve this as uniquely-resolved evidence; try getReferencedProvision with a fromNodeId for a context-scoped resolution, or narrow the reference`);
           node = generic.node;
           degenerate = { status: generic.status, note: generic.note, excludedDegenerateNodeIds: generic.excludedDegenerateNodeIds };
+        } else if (resolution.status === "UNRESOLVABLE") {
+          // Phase C (D14): the citation could not be normalized
+          // into a ref at all — refuse, never serve a guessed node.
+          return refuse(`section reference "${sectionRef}" could not be normalized into a canonical ref (UNRESOLVABLE) - the citation itself is malformed, distinct from the section being absent`);
         } else {
           node = resolution.node;
         }

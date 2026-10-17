@@ -74,6 +74,13 @@ export class MissingReviewerError extends Error {
 export interface ReviewCandidateParams {
   candidateId: string;
   action: ReviewAction;
+  /**
+   * Rule 93: the acting company. The candidate must belong to it —
+   * the server action authorizes the URL company, but the candidate
+   * is loaded by id, so without this check a caller could review
+   * another company's candidate by id.
+   */
+  companyId: string;
   /** Required and validated for EDIT; ignored for every other action. */
   editedValue?: unknown;
   note?: string;
@@ -92,6 +99,11 @@ export async function reviewCandidate(params: ReviewCandidateParams): Promise<Ex
   if (!reviewedBy) throw new MissingReviewerError();
 
   const candidate = await prisma.extractionCandidate.findUniqueOrThrow({ where: { id: candidateId } });
+  // Rule 93: tenant binding — a review decision on another
+  // company's candidate must fail, not silently apply.
+  if (candidate.companyId !== params.companyId) {
+    throw new Error(`ExtractionCandidate ${candidateId} does not belong to company ${params.companyId}`);
+  }
   if (candidate.promotedAt) {
     throw new Error(`ExtractionCandidate ${candidateId} was already promoted at ${candidate.promotedAt.toISOString()} - a promoted candidate's review decision is final.`);
   }
@@ -190,8 +202,10 @@ export async function recordSystemReviewRequired(client: ReviewDb, params: { can
   await write(client);
 }
 
-/** Full, ordered review history for one candidate - the audit trail the task requires beyond reviewedAt/reviewedBy's own "latest decision only" scope. */
-export async function getCandidateReviewHistory(candidateId: string) {
+/** Full, ordered review history for one candidate - the audit trail the task requires beyond reviewedAt/reviewedBy's own "latest decision only" scope. Rule 148: the lookup previously took only the candidate id, so a caller holding another company's candidate id got its review history. The company is now required and the candidate's ownership is verified first; a mismatch returns no events. */
+export async function getCandidateReviewHistory(candidateId: string, companyId: string) {
+  const candidate = await prisma.extractionCandidate.findUnique({ where: { id: candidateId }, select: { companyId: true } });
+  if (!candidate || candidate.companyId !== companyId) return [];
   return prisma.candidateReviewEvent.findMany({ where: { candidateId }, orderBy: { createdAt: "asc" } });
 }
 
@@ -282,8 +296,18 @@ export async function getReviewProgress(companyId: string): Promise<ReviewProgre
 }
 
 /** One chunk's full text, for the "click through to view the excerpt in context" requirement - the review workspace's citation-drilldown. */
-export async function getChunkContext(chunkId: string) {
-  return prisma.documentChunk.findUniqueOrThrow({ where: { id: chunkId } });
+export async function getChunkContext(chunkId: string, companyId?: string) {
+  const chunk = await prisma.documentChunk.findUniqueOrThrow({ where: { id: chunkId } });
+  // Rule 131: a chunk is another company's document text — the
+  // chunk page previously loaded ANY chunk by id with no company
+  // binding and rendered its full text. When a company is given,
+  // the chunk's document must belong to it, or null is returned
+  // (the page renders notFound).
+  if (companyId) {
+    const doc = await prisma.document.findFirst({ where: { id: chunk.documentId, companyId }, select: { id: true } });
+    if (!doc) return null;
+  }
+  return chunk;
 }
 
 /** Every review-decision event for a company's candidates, grouped by candidateId - the review workspace's inline "full edit history" panel, one query instead of one-per-card. */

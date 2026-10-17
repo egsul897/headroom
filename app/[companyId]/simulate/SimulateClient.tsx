@@ -144,9 +144,12 @@ export function SimulateClient({
     [solverContext]
   );
 
-  function commit(kind: "DIVIDEND" | "INVESTMENT", amount: number) {
+  // Rule 134: the server re-verifies the simulation before
+  // committing, so the client must pass the document whose
+  // waterfall was actually tested — not just the amount.
+  function commit(kind: "DIVIDEND" | "INVESTMENT", amount: number, documentId: string, createdBy: string) {
     startTransition(async () => {
-      await commitRestrictedPayment(companyId, kind, amount);
+      await commitRestrictedPayment(companyId, kind, amount, documentId, createdBy);
       router.refresh();
     });
   }
@@ -214,7 +217,7 @@ export function SimulateClient({
           amount={rpAmt}
           setAmount={setRpAmt}
           kind="dividend"
-          onCommit={(amt) => commit("DIVIDEND", amt)}
+          onCommit={(amt, documentId, createdBy) => commit("DIVIDEND", amt, documentId, createdBy)}
           pending={isPending}
           definedTermsByProvision={definedTermsByProvision}
         />
@@ -228,7 +231,7 @@ export function SimulateClient({
           amount={invAmt}
           setAmount={setInvAmt}
           kind="investment"
-          onCommit={(amt) => commit("INVESTMENT", amt)}
+          onCommit={(amt, documentId, createdBy) => commit("INVESTMENT", amt, documentId, createdBy)}
           pending={isPending}
           definedTermsByProvision={definedTermsByProvision}
         />
@@ -453,10 +456,13 @@ function RpPanel({
   amount: number;
   setAmount: (n: number) => void;
   kind: RestrictedPaymentKind;
-  onCommit: (amount: number) => void;
+  onCommit: (amount: number, documentId: string, createdBy: string) => void;
   pending: boolean;
   definedTermsByProvision: DefinedTermsMap;
 }) {
+  // Rule 140: the commit writes a capacity-affecting ledger row
+  // (rule 139's createdBy) — the committer must be named.
+  const [committedBy, setCommittedBy] = useState("");
   const candidates: DocumentInput[] = documentsWithRpWaterfall(data);
   const [selectedId, setSelectedId] = useState<string | undefined>(candidates[0]?.id);
   const doc = candidates.find((d) => d.id === selectedId) ?? candidates[0];
@@ -531,15 +537,28 @@ function RpPanel({
           )}
         </div>
         {sim.status === "clear" && amount > 0 && (
-          <button
-            type="button"
-            className="button-primary"
-            style={{ marginTop: 12, padding: "9px 14px", border: "none", borderRadius: 5 }}
-            disabled={pending}
-            onClick={() => onCommit(amount)}
-          >
-            {pending ? "Committing…" : "Commit to ledger — reduces shared pool"}
-          </button>
+          <>
+            <label className="field" style={{ marginTop: 12 }}>
+              <span className="field-label">Commit as</span>
+              <div className="field-control">
+                <input
+                  type="text"
+                  placeholder="Your name or email"
+                  value={committedBy}
+                  onChange={(e) => setCommittedBy(e.target.value)}
+                />
+              </div>
+            </label>
+            <button
+              type="button"
+              className="button-primary"
+              style={{ marginTop: 12, padding: "9px 14px", border: "none", borderRadius: 5 }}
+              disabled={pending || !committedBy.trim()}
+              onClick={() => onCommit(amount, doc.id, committedBy.trim())}
+            >
+              {pending ? "Committing…" : "Commit to ledger — reduces shared pool"}
+            </button>
+          </>
         )}
       </div>
 

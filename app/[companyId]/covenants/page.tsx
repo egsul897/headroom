@@ -1,38 +1,27 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
-import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
-import {
-  listConmedCovenantExplorerRows,
-  type CapacityDeterminationStatus,
-} from "@/lib/product/conmed-demo/covenant-catalog";
 import { loadCovenantReviewWorkspace } from "@/lib/product/customer-intelligence/covenant-review";
+import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
 
 export const metadata = { title: "Headroom — Covenants" };
 
-function statusTone(status: CapacityDeterminationStatus): "navy" | "tight" | "idle" {
-  switch (status) {
-    case "PROHIBITION_STRUCTURE":
-    case "STRUCTURE_ONLY":
-      return "navy";
-    case "NEEDS_FINANCIAL_INPUTS":
-    case "RATIO_GATED_UNRESOLVED":
-    case "SCHEDULE_DEPENDENT_UNRESOLVED":
-    case "OUT_OF_PACKAGE_UNRESOLVED":
-      return "tight";
-    default:
-      return "idle";
-  }
-}
-
 export default async function CovenantsPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [review, rulebook] = await Promise.all([
+  const [review, rulebook, intelligence] = await Promise.all([
     loadCovenantReviewWorkspace(companyId),
     loadRulebookReadiness(companyId),
+    listCustomerDocumentIntelligence(companyId).catch(() => []),
   ]);
-  const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
+  // Rule 122: rule 118's mismatch on the covenants page — these
+  // engine-modeled provisions are the executable path, so a
+  // provision from a type-mismatched document must say so.
+  const mismatchByDocumentId = new Map(
+    (intelligence as { documentId: string; declaredType: string | null; documentClass: string }[])
+      .filter((i) => i.declaredType && i.documentClass && i.documentClass !== i.declaredType)
+      .map((i) => [i.documentId, `declared ${i.declaredType}, analyzed as ${i.documentClass}`] as const),
+  );
   const provisions = await prisma.covenantProvision.findMany({
     where: { companyId },
     include: { document: true },
@@ -137,11 +126,23 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
                 <div className="row-value">{review.operativeResolution.effectiveDate}</div>
               </div>
             )}
-            {review.operativeResolution.bindings.slice(0, 20).map((b, i) => (
-              <div key={`${b.sectionRef}-${i}`} className="row-note" style={{ marginTop: 6 }}>
-                §{b.sectionRef} → {b.operativeSourceId} ({b.changeKind}) — {b.rationale}
+            {review.operativeResolution.bindings.slice(0, 20).map((b, i) => {
+              // Rule 104: bindings named a raw sourceId (opaque) —
+              // resolve to the document title so a reader can tell
+              // WHICH document governs each section.
+              const operativeDoc = review.documents.find((d) => d.sourceId === b.operativeSourceId);
+              return (
+                <div key={`${b.sectionRef}-${i}`} className="row-note" style={{ marginTop: 6 }}>
+                  §{b.sectionRef} → {operativeDoc ? operativeDoc.filename : b.operativeSourceId} ({b.changeKind}) — {b.rationale}
+                </div>
+              );
+            })}
+            {/* Rule 89: truncation disclosed — never silently drop bindings. */}
+            {review.operativeResolution.bindings.length > 20 && (
+              <div className="row-note" style={{ marginTop: 6 }}>
+                Showing first 20 of {review.operativeResolution.bindings.length} bindings.
               </div>
-            ))}
+            )}
           </Card>
         )}
 
@@ -149,6 +150,18 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         <Card>
           <div className="card-title">Amendment before / after (discovery)</div>
           <div className="card-subtitle">{review.amendmentCompare.note}</div>
+          {/* Rule 89: both truncations disclosed — the page shows 16
+              of the compare's 40-row cap, which itself may have
+              dropped rows (totalRowsBeforeCap). */}
+          {(review.amendmentCompare.rows.length > 16 || review.amendmentCompare.truncated) && (
+            <div className="row-note" style={{ marginTop: 6 }}>
+              Showing first 16 of {review.amendmentCompare.rows.length} compare rows
+              {review.amendmentCompare.truncated
+                ? ` (compare capped at 40 of ${review.amendmentCompare.totalRowsBeforeCap} total)`
+                : ""}
+              .
+            </div>
+          )}
           {review.amendmentCompare.rows.slice(0, 16).map((row, i) => (
             <div
               key={`${row.sectionRef}-${i}`}
@@ -177,6 +190,9 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
             {review.dependencyGraph.edgeCount} source-backed relationship hint(s). Permission under one covenant is not
             permission under every related covenant.
           </div>
+          {review.dependencyGraph.edgeCount > 12 && (
+            <div className="row-note">Showing first 12 of {review.dependencyGraph.edgeCount} relationship hints.</div>
+          )}
           {review.dependencyGraph.edges.slice(0, 12).map((e, i) => (
             <div key={i} className="row-note" style={{ marginTop: 8 }}>
               <Chip tone="navy">{e.kind}</Chip> §{e.fromSectionRef} → §{e.toSectionRef}: {e.rationale}
@@ -236,6 +252,9 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         <Card key={block.category}>
           <div className="card-title">{block.categoryLabel}</div>
           <div className="card-subtitle">{block.items.length} analyzed provision(s)</div>
+          {block.items.length > 24 && (
+            <div className="row-note">Showing first 24 of {block.items.length} provisions.</div>
+          )}
           {block.items.slice(0, 24).map((item, idx) => (
             <div
               key={`${item.sourceId}-${item.sectionRef}-${idx}`}
@@ -256,6 +275,7 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
               {(item.permissions?.length ?? 0) > 0 && (
                 <div className="row-note">
                   Permissions: {item.permissions!.slice(0, 3).join(" · ")}
+                  {item.permissions!.length > 3 ? ` (+${item.permissions!.length - 3} more)` : ""}
                 </div>
               )}
               {(item.materialBasketsThresholds?.length ?? 0) > 0 && (
@@ -267,7 +287,10 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
                 <div className="row-note">Entities: {item.coveredEntities!.join(", ")}</div>
               )}
               {(item.dependencies?.length ?? 0) > 0 && (
-                <div className="row-note">Dependencies: {item.dependencies.slice(0, 3).join(" · ")}</div>
+                <div className="row-note">
+                  Dependencies: {item.dependencies.slice(0, 3).join(" · ")}
+                  {item.dependencies.length > 3 ? ` (+${item.dependencies.length - 3} more)` : ""}
+                </div>
               )}
               <div className="button-row" style={{ marginTop: 8 }}>
                 {item.documentId && (
@@ -282,44 +305,6 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         </Card>
       ))}
 
-      {isConmed && (
-        <>
-          <Card>
-            <div className="card-title">CONMED ground-truth explorer</div>
-            <div className="card-subtitle">
-              Human-authored Article VII catalog (capacity still STRUCTURE_ONLY / NEEDS_FINANCIAL_INPUTS).
-            </div>
-          </Card>
-          {[...new Set(listConmedCovenantExplorerRows().map((r) => r.family))].map((family) => (
-            <Card key={family}>
-              <div className="card-title">{family.replace(/_/g, " ")}</div>
-              {listConmedCovenantExplorerRows()
-                .filter((r) => r.family === family)
-                .map((r) => (
-                  <div className="row" key={r.id} style={{ alignItems: "flex-start" }}>
-                    <div style={{ flex: 1 }}>
-                      <div className="row-label">
-                        §{r.sectionRef} {r.isBasketLevel ? "(basket)" : ""}
-                      </div>
-                      <div className="row-note">{r.summary}</div>
-                      {r.realFigures.length > 0 && (
-                        <div className="row-note">Figures: {r.realFigures.join("; ")}</div>
-                      )}
-                      <div className="row-note" style={{ marginTop: 4 }}>
-                        <Chip tone={statusTone(r.capacityStatus)}>{r.capacityStatus}</Chip>{" "}
-                        {r.capacityExplanation}
-                      </div>
-                    </div>
-                    <Link className="button" href={`/${companyId}/documents/${r.demoDocumentId}`}>
-                      Source
-                    </Link>
-                  </div>
-                ))}
-            </Card>
-          ))}
-        </>
-      )}
-
       {provisions.length > 0 && (
         <Card>
           <div className="card-title">Engine-modeled provisions</div>
@@ -332,6 +317,9 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
                 </div>
                 <div className="row-note">
                   {p.document.name} · {p.formulaType} · code {p.code}
+                  {mismatchByDocumentId.get(p.documentId) && (
+                    <> · <span style={{ color: "var(--color-warning, #92400e)" }}>TYPE MISMATCH — {mismatchByDocumentId.get(p.documentId)}</span></>
+                  )}
                 </div>
               </div>
               <Link className="button" href={`/${companyId}/documents/${p.documentId}`}>
@@ -342,7 +330,7 @@ export default async function CovenantsPage({ params }: { params: Promise<{ comp
         </Card>
       )}
 
-      {review.analyzedOkCount === 0 && provisions.length === 0 && !isConmed && (
+      {review.analyzedOkCount === 0 && provisions.length === 0 && (
         <Card>
           <div className="card-subtitle">
             Upload a credit agreement, indenture, or amendment to generate substantive covenant summaries.

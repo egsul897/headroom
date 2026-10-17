@@ -17,6 +17,10 @@ import { attemptCertifiedTransaction } from "./certified-transaction";
 import { loadTransactionWorkflowReadiness } from "./transaction-readiness";
 import { loadCapacityReadiness, type CapacityAuthority } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { NS4_PRODUCT_CUTOFF_SELECTOR } from "./approved-financial-inputs";
+import {
+  labelCutoffSnapshot,
+  type CutoffSnapshotStatus,
+} from "./cutoff-snapshot-label";
 
 export type AuthoritativeCapacityStatus =
   | "CERTIFIED_EXECUTED"
@@ -35,6 +39,9 @@ export interface AuthoritativeCapacityResult {
     reportingPeriodKey: string | null;
     asOf: string | null;
     approvedSnapshotId: string | null;
+    /** Raw cutoff-bound snapshot id — APPROVED or SUPERSEDED (see rule 76). */
+    cutoffSnapshotId: string | null;
+    cutoffSnapshotStatus: CutoffSnapshotStatus;
   };
   approvedSnapshotCount: number;
   activeLedgerUsageCount: number;
@@ -89,6 +96,13 @@ export async function loadAuthoritativeCapacity(args: {
   const active = ledger.filter((u) => u.status !== "SUPERSEDED");
   const boundId = readiness.cutoff?.snapshotId ?? null;
   const bound = boundId ? approved.find((s) => s.snapshotId === boundId) : null;
+  // Rule 76: the cutoff-bound snapshot may be SUPERSEDED (eligible
+  // pool is APPROVED ∪ SUPERSEDED). Never label it approved
+  // unless it is actually in the APPROVED list.
+  const cutoffLabel = labelCutoffSnapshot(
+    boundId,
+    approved.map((s) => s.snapshotId),
+  );
 
   const certified = await attemptCertifiedTransaction({
     companyId,
@@ -151,7 +165,9 @@ export async function loadAuthoritativeCapacity(args: {
       state: readiness.cutoff?.state ?? "NEEDS_INPUT",
       reportingPeriodKey: readiness.cutoff?.reportingPeriodKey ?? null,
       asOf: readiness.cutoff?.asOf ?? null,
-      approvedSnapshotId: boundId,
+      approvedSnapshotId: cutoffLabel.approvedSnapshotId,
+      cutoffSnapshotId: cutoffLabel.cutoffSnapshotId,
+      cutoffSnapshotStatus: cutoffLabel.cutoffSnapshotStatus,
     },
     approvedSnapshotCount: approved.length,
     activeLedgerUsageCount: active.length,

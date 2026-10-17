@@ -12,11 +12,14 @@ import { getLatestAmendmentPackage, listCustomerDocumentIntelligence } from "./l
 export type MonitoringAlertKind =
   | "MISSING_DOCUMENTS"
   | "ANALYSIS_FAILED"
+  | "STALE_ANALYSIS"
+  | "STALLED_ANALYSIS"
   | "AMENDMENT_UNRESOLVED"
   | "RULEBOOK_NOT_EXECUTABLE"
   | "MISSING_FINANCIALS"
   | "CAPACITY_NOT_DETERMINABLE"
-  | "REVIEW_REQUIRED";
+  | "REVIEW_REQUIRED"
+  | "TYPE_MISMATCH";
 
 export interface MonitoringAlert {
   kind: MonitoringAlertKind;
@@ -25,6 +28,10 @@ export interface MonitoringAlert {
   detail: string;
   sourceRefs: string[];
 }
+
+import { staleAnalysisAlerts } from "./stale-analysis-alerts";
+import { stalledAnalysisAlerts } from "./stalled-analysis-alerts";
+import { typeMismatchAlerts } from "./type-mismatch-alerts";
 
 export interface MonitoringFeed {
   companyId: string;
@@ -64,6 +71,10 @@ export async function loadMonitoringFeed(companyId: string): Promise<MonitoringF
     });
   }
 
+  alerts.push(...staleAnalysisAlerts(docs));
+  alerts.push(...stalledAnalysisAlerts(docs));
+  alerts.push(...typeMismatchAlerts(docs));
+
   if (amendment?.operativeResolution === "UNRESOLVED_PRECEDENCE") {
     alerts.push({
       kind: "AMENDMENT_UNRESOLVED",
@@ -87,7 +98,17 @@ export async function loadMonitoringFeed(companyId: string): Promise<MonitoringF
     });
   }
 
-  if (financialCount === 0 || !capacity.hasFinancialSnapshot) {
+  // Rule 85: "no approved financial snapshot" must mean no
+  // financial snapshot in ANY store. The old condition
+  // (legacy FinancialState count + legacy UNIQUE resolution)
+  // fired a false alert for a company with APPROVED NS-4
+  // snapshots but no legacy FinancialState rows. AMBIGUOUS
+  // legacy rows still surface via CAPACITY_NOT_DETERMINABLE.
+  const hasAnyFinancialEvidence =
+    financialCount > 0 ||
+    capacity.ns4ApprovedSnapshotCount > 0 ||
+    capacity.approvedNorthStarSnapshotCount > 0;
+  if (!hasAnyFinancialEvidence) {
     alerts.push({
       kind: "MISSING_FINANCIALS",
       severity: "attention",

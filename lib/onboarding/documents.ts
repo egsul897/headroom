@@ -148,7 +148,21 @@ export async function getDocumentsWithExtractionStatus(companyId: string): Promi
  * a new run is only created the FIRST time a document is extracted.
  */
 export async function runExtractionForDocument(params: { companyId: string; documentId: string; provider: ContractExtractionProvider; providerName: string; model: string; promptVersion?: string; schemaVersion?: string }) {
-  const existing = await prisma.extractionRun.findFirst({ where: { documentId: params.documentId }, orderBy: { startedAt: "desc" } });
+  // Rule 132: the existing-run lookup was by documentId ALONE and
+  // nothing verified the document belongs to the acting company —
+  // a crafted trigger for another company's documentId would reuse
+  // (or create, misattributed to this company) an extraction run
+  // over that company's document, leaking its text into this
+  // company's candidates. Refuse unless the document is this
+  // company's, and scope the run lookup to the company too.
+  const doc = await prisma.document.findFirst({
+    where: { id: params.documentId, companyId: params.companyId },
+    select: { id: true },
+  });
+  if (!doc) {
+    throw new Error(`Document ${params.documentId} does not belong to company ${params.companyId} — extraction refused.`);
+  }
+  const existing = await prisma.extractionRun.findFirst({ where: { documentId: params.documentId, companyId: params.companyId }, orderBy: { startedAt: "desc" } });
   const run =
     existing ??
     (await createExtractionRun({

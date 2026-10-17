@@ -67,3 +67,18 @@ describe("detectStructuralDefinitions", () => {
     expect(def.sourceNodeKey).toBe(section.nodeKey);
   });
 });
+
+/** Rule 197: a defined term split across two source lines is one phrase. */
+describe("rule 197: definition term whitespace collapse", () => {
+  it("collapses a newline inside a quoted term to a single space", () => {
+    const defs = detectStructuralDefinitions("doc-1", "\u201c Threshold\nAmount \u201d means $ 750,000. \u201c Total Assets \u201d means total assets.", []);
+    const found = defs.find((d) => d.normalizedTerm === "threshold amount");
+    expect(found).toBeDefined();
+    expect(found!.exactTerm).toBe("Threshold Amount");
+    expect(found!.exactTerm).not.toContain("\n");
+  });
+  it("a term with no internal line break is unchanged", () => {
+    const defs = detectStructuralDefinitions("doc-1", "\u201c Threshold Amount \u201d means $ 750,000.", []);
+    expect(defs.find((d) => d.normalizedTerm === "threshold amount")?.exactTerm).toBe("Threshold Amount");
+  });
+});

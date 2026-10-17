@@ -25,6 +25,7 @@ function LiveLedgerList({ companyId, entries, supersededCount }: { companyId: st
             <div className="row-note">
               <span className="mono">{fmtDate(e.date)}</span> · {LEDGER_BASKET_LABELS[e.basket]}
               {e.source ? ` · ${e.source}` : ""}
+              {e.createdBy ? ` · logged by ${e.createdBy}` : ""}
             </div>
           </div>
           <div style={{ display: "flex", gap: 10, alignItems: "center", flexShrink: 0 }}>
@@ -33,6 +34,7 @@ function LiveLedgerList({ companyId, entries, supersededCount }: { companyId: st
               {fmtM(Math.abs(Number(e.amount)))}
             </span>
             <form action={supersedeLedgerEntry.bind(null, companyId, e.id)}>
+              <input name="supersededBy" placeholder="Superseded by (your name/email)" required style={{ marginRight: 6 }} />
               <button type="submit" className="button">
                 Supersede
               </button>
@@ -57,6 +59,7 @@ function SupersededLedgerHistory({ entries }: { entries: LedgerRow[] }) {
             <div className="row-note">
               <span className="mono">{fmtDate(e.date)}</span> · {LEDGER_BASKET_LABELS[e.basket]}
               {e.source ? ` · ${e.source}` : ""}
+              {e.createdBy ? ` · logged by ${e.createdBy}` : ""}
               {e.supersededAt ? ` · superseded ${fmtDate(e.supersededAt)}` : ""}
             </div>
           </div>
@@ -118,6 +121,9 @@ function ContractLedgerSection({
               <input type="hidden" name="currency" value={u.amount.currency} />
               <input name="successorAmount" placeholder="Corrected amount" defaultValue={u.amount.amount} className="input" style={{ width: 120 }} />
               <input name="effectiveAsOf" placeholder="YYYY-MM-DD" defaultValue={u.effectiveAsOf} className="input" style={{ width: 120 }} />
+              {/* Rule 115: supersession is a material ledger mutation —
+                  it needs the real actor, not the "workspace-user" default. */}
+              <input name="supersededBy" placeholder="Superseded by (your name/email)" className="input" style={{ width: 200 }} required />
               <button type="submit" className="button">
                 Supersede
               </button>
@@ -139,7 +145,8 @@ function ContractLedgerSection({
         <input name="amount" placeholder="amount (decimal string)" className="input" required />
         <input name="currency" placeholder="USD" defaultValue="USD" className="input" />
         <input name="effectiveAsOf" placeholder="effective as-of YYYY-MM-DD" className="input" required />
-        <input name="instrumentKey" placeholder="instrument key" defaultValue="company" className="input" />
+        {/* Rule 107: no fabricated default — instrument key is the user's real value. */}
+        <input name="instrumentKey" placeholder="instrument key" className="input" required />
         <button type="submit" className="button">
           Append contract usage
         </button>
@@ -300,7 +307,7 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
         <form action={addLedgerEntry.bind(null, companyId)} style={{ display: "grid", gap: 10 }}>
           <div className="button-row">
             <label className="button" style={{ cursor: "pointer" }}>
-              <input type="radio" name="direction" value="CREDIT" defaultChecked style={{ marginRight: 6 }} />
+              <input type="radio" name="direction" value="CREDIT" required style={{ marginRight: 6 }} />
               Credit (adds)
             </label>
             <label className="button" style={{ cursor: "pointer" }}>
@@ -311,7 +318,10 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
           <label className="field">
             <span className="field-label">Category</span>
             <div className="field-control">
-              <select name="basket" defaultValue="EQUITY">
+              <select name="basket" defaultValue="" required>
+                <option value="" disabled>
+                  Select category
+                </option>
                 {Object.entries(LEDGER_BASKET_LABELS).map(([code, label]) => (
                   <option key={code} value={code}>
                     {label}
@@ -324,7 +334,7 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
             <label className="field">
               <span className="field-label">Amount ($M)</span>
               <div className="field-control">
-                <input type="number" name="amount" defaultValue={50} min={0} step="any" />
+                <input type="number" name="amount" placeholder="e.g. 50" min={0} step="any" required />
               </div>
             </label>
             <label className="field">
@@ -334,6 +344,12 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
               </div>
             </label>
           </div>
+          <label className="field">
+            <span className="field-label">Logged by</span>
+            <div className="field-control">
+              <input type="text" name="createdBy" placeholder="Your name or email" required />
+            </div>
+          </label>
           <button type="submit" className="button-primary" style={{ padding: "11px 16px", border: "none", borderRadius: 5 }}>
             Log entry
           </button>

@@ -83,6 +83,14 @@ export interface CovenantEbitdaAddback {
 export interface CovenantMetricFacts {
   covenantEbitda?: { value: number; addbacks: CovenantEbitdaAddback[]; provenance: ProvencancedFact<number> };
   assumedNewDebtRatePct: ProvencancedFact<number>;
+  /**
+   * Covenant-defined Consolidated Net Worth ($M, the agreement's
+   * defined term) for greater-of flat / % Net Worth growers
+   * (Rule 186). NOT GAAP total equity: covenant Net Worth
+   * definitions adjust GAAP equity, so the two are not the same
+   * number — never default this from balanceSheetFacts.totalEquity.
+   */
+  netWorth?: ProvencancedFact<number>;
 }
 
 /**

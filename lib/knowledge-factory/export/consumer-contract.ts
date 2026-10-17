@@ -52,7 +52,9 @@ export interface ConsumerStructuralNode {
   heading: string;
   charStart: number;
   charEnd: number;
-  parentNodeId?: string;
+  // P0 correction: null is a valid value (the parser emits null
+  // for roots). Both null and undefined mean "no parent".
+  parentNodeId?: string | null;
   ambiguous?: boolean;
 }
 

@@ -447,7 +447,7 @@ export function auditScenarioCompleteness(scenarioId: string): CompletenessAudit
     scenarioId,
     packageId: scenario.packageId,
     independentlyEnumerated,
-    headroomSectionRefs: [...hits.sectionRefs].sort(),
+    headroomSectionRefs: [...hits.sectionRefs].sort((a, b) => a.localeCompare(b, undefined, { numeric: true })),
     headroomFamilies: [...hits.families].sort(),
     missedRestrictions,
     falseNonApplicability,

@@ -176,8 +176,21 @@ export interface StructuralNodeRecord {
   heading: string;
   charStart: number;
   charEnd: number;
-  parentNodeId?: string;
+  // P0 correction: null is a valid value (the parser emits null
+  // for roots; StructuralNode.parentNodeId is string | null).
+  // The old string-only type could not represent a root and
+  // forced null-carrying records into a lie. Both null and
+  // undefined mean "no parent" (unresolved).
+  parentNodeId?: string | null;
   ambiguous?: boolean;
+  /**
+   * Phase B structural-integrity violations (see
+   * structural-integrity.ts). Present when the node's parentage,
+   * span, ref, or ordering failed validation — the relationship
+   * is unresolved, not repaired. Downstream consumers must
+   * treat such a node as structurally unresolved.
+   */
+  structuralViolations?: string[];
 }
 
 export interface CovenantCandidateRecord {
@@ -187,6 +200,12 @@ export interface CovenantCandidateRecord {
   families: KnowledgeTaxonomyFamily[];
   signals: string[];
   excerpt: string;
+  /** Rule 192: the operative span exceeded the 4000-char excerpt
+   * cap, so this excerpt is a PREFIX of the section — clauses
+   * beyond the cap are not in this summary. The compiler must
+   * not mint a formula from a truncated excerpt (it would
+   * attribute an early clause's amount to the whole section). */
+  excerptTruncated?: boolean;
   representationLevel: KnowledgeRepresentationLevel;
   discoveryScore: number;
 }

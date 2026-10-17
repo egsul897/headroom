@@ -105,6 +105,8 @@ export interface ScoreboardReport {
   duplicates?: { sourceId: string; duplicateOf: string; total: number }[];
   /** Report-only (never gates until the owner approves): checklist MISSED per family on TEXT_VERIFIED docs. */
   checklistMissed?: Record<Split, ChecklistMissedTotals>;
+  /** --shard runs: which shard, and the identity of the whole snapshot it was cut from (additive). */
+  shard?: import("./integrity").ShardInfo | null;
   perSource: SourceScore[];
 }
 

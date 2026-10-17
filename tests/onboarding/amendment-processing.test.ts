@@ -118,11 +118,11 @@ describe("amendment processing - full pipeline", () => {
     const byKind = await getCandidatesForReview(COMPANY_ID);
     const baseCandidate = byKind.DOCUMENT_RELATIONSHIP.find((c) => c.sourceDocumentId === baseDocumentId)!;
     const amendmentCandidate = byKind.DOCUMENT_RELATIONSHIP.find((c) => c.sourceDocumentId === amendmentDocumentId)!;
-    await reviewCandidate({ candidateId: baseCandidate.id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
-    await reviewCandidate({ candidateId: amendmentCandidate.id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
+    await reviewCandidate({ companyId: COMPANY_ID, candidateId: baseCandidate.id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
+    await reviewCandidate({ companyId: COMPANY_ID, candidateId: amendmentCandidate.id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
     // Also approve every other proposal so promotion has nothing left dangling for this test's own assertions below. (This fixture's base document has no Lien section, so byKind.RELATIONSHIP/COLLATERAL_SCOPE are legitimately absent - `?? []` handles any candidate kind this fixture didn't produce.)
     for (const c of [...(byKind.DEFINED_TERM ?? []), ...(byKind.PERMISSION ?? []), ...(byKind.RELATIONSHIP ?? []), ...(byKind.EXTERNAL_INPUT_REQUIREMENT ?? [])]) {
-      await reviewCandidate({ candidateId: c.id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
+      await reviewCandidate({ companyId: COMPANY_ID, candidateId: c.id, action: "APPROVE", reviewedBy: "test-reviewer@headroom.app" });
     }
 
     await promoteCompanyCandidates(COMPANY_ID);

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui";
+import { PendingSubmitButton } from "@/components/PendingSubmitButton";
 import { prisma } from "@/lib/prisma";
 import { fmtDate, fmtM } from "@/lib/format";
 import { submitFinancialsAction } from "./actions";
@@ -21,6 +22,7 @@ const FIELDS: { name: string; label: string; step?: string; required?: boolean }
   { name: "assumedNewDebtRatePct", label: "Assumed new-debt coupon (%)", step: "0.01", required: true },
   { name: "fixedCharges", label: "Fixed charges ($M, optional)", required: false },
   { name: "totalAssets", label: "Consolidated total assets ($M, optional — growers)", required: false },
+  { name: "netWorth", label: "Consolidated net worth ($M, optional — growers; the agreement's defined Net Worth, not GAAP equity)", required: false },
 ];
 
 export default async function OnboardingFinancialsPage({ params }: { params: Promise<{ companyId: string }> }) {
@@ -87,9 +89,7 @@ export default async function OnboardingFinancialsPage({ params }: { params: Pro
               />
             </div>
           </div>
-          <button type="submit" className="button-primary" style={{ width: "fit-content" }}>
-            Save financial state
-          </button>
+          <PendingSubmitButton label="Save financial state" pendingLabel="Saving…" />
         </form>
       </Card>
 

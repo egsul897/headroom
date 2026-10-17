@@ -79,15 +79,21 @@ function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
     capacityAuthority: "LEGACY_ENGINE",
     analyzedDocumentCount: 2,
     summaryCount: slice.covenants.length,
+    // Restricted fixture slice: summaries are the whole discovered set — nothing beyond the cap.
+    discoveredCount: slice.covenants.length,
+    awaitingAnalysisCount: 0,
     permissionCount: 0,
     unverifiedPermissionCount: 0,
     provisionCount: slice.covenants.length,
     hasFinancialSnapshot: slice.financialEvidence.metricsPresent.length > 0,
+    financialSnapshotStatus: "UNKNOWN",
     ns4ApprovedSnapshotCount: 0,
     approvedNorthStarSnapshotCount: 0,
     contractLedgerActiveCount: 0,
     phase3TrustedUnitCount: 0,
     phase3TrustedRuleCount: 0,
+    // Restricted fixture slice: no stored analyses in scope, so none can be stale.
+    staleAnalyzedDocumentCount: 0,
     headline: "Authentic Matthews evidence — modeled/gross fixture capacity (not production-executable)",
     blockers: [
       "No NS-4 APPROVED financial snapshot — production remaining unavailable.",
@@ -111,6 +117,10 @@ function rulebookFromSlice(slice: VerticalSliceEvaluation): RulebookReadiness {
     reviewedPermissions: 0,
     executablePermissions: 0,
     provisionRows: slice.covenants.length,
+    staleDiscoveredSummaries: 0,
+    exceptionItems: 0,
+    exceptionDecisions: 0,
+    reviewComplete: false,
     blockers: [
       "No counsel REVIEWED permissions — leaf evaluateProvision path only.",
       "Phase-3 certified executable IR not bound for this package.",
@@ -393,16 +403,3 @@ export function connectSliceToPosition(slice: VerticalSliceEvaluation): Authenti
   };
 }
 
-/**
- * @deprecated Prefer `hasAuthenticPositionSlice` from `./run-slice` (Matthews leaf
- * + multipackage VE registry). Kept as Matthews-only predicate for callers that
- * specifically mean the full leaf dashboard path.
- */
-export function hasMatthewsLeafPositionSlice(companyId: string): boolean {
-  return companyId === MATTHEWS_POSITION_COMPANY_ID;
-}
-
-/** @deprecated Use run-slice.hasAuthenticPositionSlice (includes MHK VE feed). */
-export function hasAuthenticPositionSlice(companyId: string): boolean {
-  return companyId === MATTHEWS_POSITION_COMPANY_ID;
-}

@@ -54,6 +54,8 @@ export default async function AlertsPage({ params }: { params: Promise<{ company
             {a.sourceRefs.length > 0 && (
               <div className="row-note" style={{ marginTop: 6 }}>
                 Sources: {a.sourceRefs.slice(0, 4).join(" · ")}
+                {/* Rule 87: truncation disclosed — never silently drop refs. */}
+                {a.sourceRefs.length > 4 ? ` (+${a.sourceRefs.length - 4} more)` : ""}
               </div>
             )}
           </Card>

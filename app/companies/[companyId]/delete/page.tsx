@@ -4,12 +4,15 @@ import { Banner, Card } from "@/components/ui";
 import { GlobalBrand } from "@/components/GlobalBrand";
 import { getCompanySummary } from "@/lib/dashboard-service";
 import { PROTECTED_COMPANY_IDS } from "@/lib/coherent";
+import { requireAdminOrRedirect } from "@/lib/auth/guard";
 import { deleteCompanyAction } from "./actions";
 
 export const metadata = { title: "Headroom — Delete company" };
 export const dynamic = "force-dynamic";
 
+/** Admin-only. The action itself also requires ADMIN (page gates alone do not stop direct POSTs). */
 export default async function DeleteCompanyPage({ params }: { params: Promise<{ companyId: string }> }) {
+  await requireAdminOrRedirect();
   const { companyId } = await params;
   const company = await getCompanySummary(companyId).catch(() => null);
   if (!company) notFound();

@@ -74,6 +74,17 @@ export interface AssembledCfoWorkflowOk {
   workflow: CfoWorkflowState;
   trustedIdentityStatus: typeof TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status;
   /**
+   * Rule 65: loader-failure honesty. When the covenant-review
+   * workspace or the reviewer-approvals load throws, the
+   * assembler still builds the workflow (review evidence is
+   * not a hard gate), but it must NOT pretend the data is
+   * empty — counsel decisions would silently vanish and items
+   * would look undecided. Consumers must treat decision
+   * states as unknown when the corresponding flag is true.
+   */
+  reviewLoadFailed: boolean;
+  approvalsLoadFailed: boolean;
+  /**
    * NS-4 / North-Star APPROVED snapshot + cutoff + 4C ledger evidence for Position/Simulate.
    * Never upgrades production remaining authority by itself.
    */
@@ -122,7 +133,9 @@ export function ns4EvidenceLines(auth: AuthoritativeCapacityResult): string[] {
   const lines: string[] = [
     `NS-4/NS APPROVED snapshots: ${auth.approvedSnapshotCount}`,
     `Cutoff: ${auth.cutoff.state}${auth.cutoff.asOf ? ` asOf ${auth.cutoff.asOf}` : ""}${
-      auth.cutoff.approvedSnapshotId ? ` snapshot=${auth.cutoff.approvedSnapshotId}` : ""
+      auth.cutoff.cutoffSnapshotId
+        ? ` snapshot=${auth.cutoff.cutoffSnapshotId} (${auth.cutoff.cutoffSnapshotStatus})`
+        : ""
     }`,
     `Active attributed 4C ledger usages: ${auth.activeLedgerUsageCount}`,
     `Authoritative capacity status: ${auth.status} (${auth.authority})`,
@@ -241,17 +254,31 @@ export async function assembleCfoWorkflow(args: {
     documents,
     intelligence,
     amendment,
-    reviewWs,
-    approvals,
+    reviewResult,
+    approvalsResult,
   ] = await Promise.all([
     loaders.loadCapacityReadiness(companyId),
     loaders.loadRulebookReadiness(companyId),
     loaders.getDocumentDetails(companyId),
     loaders.listCustomerDocumentIntelligence(companyId),
     loaders.getLatestAmendmentPackage(companyId),
-    loaders.loadCovenantReviewWorkspace(companyId).catch(() => null),
-    loaders.listReviewerApprovals(companyId).catch(() => []),
+    // Rule 65: do NOT silently substitute empty data when the
+    // review/approvals loads fail — a DB error would make
+    // counsel decisions vanish and items look undecided.
+    // allSettled records the failure; the flags below surface it.
+    loaders.loadCovenantReviewWorkspace(companyId).then(
+      (value) => ({ ok: true as const, value }),
+      () => ({ ok: false as const, value: null }),
+    ),
+    loaders.listReviewerApprovals(companyId).then(
+      (value) => ({ ok: true as const, value }),
+      () => ({ ok: false as const, value: [] as Awaited<ReturnType<typeof loaders.listReviewerApprovals>> }),
+    ),
   ]);
+  const reviewWs = reviewResult.ok ? reviewResult.value : null;
+  const approvals = approvalsResult.ok ? approvalsResult.value : [];
+  const reviewLoadFailed = !reviewResult.ok;
+  const approvalsLoadFailed = !approvalsResult.ok;
 
   const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
 
@@ -492,5 +519,7 @@ export async function assembleCfoWorkflow(args: {
     workflow,
     trustedIdentityStatus: TRUSTED_IDENTITY_PRODUCTION_ACTIVATION.status,
     authoritativeCapacity: authoritative,
+    reviewLoadFailed,
+    approvalsLoadFailed,
   };
 }

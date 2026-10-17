@@ -4,12 +4,17 @@ import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney"
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { getDocumentDetails } from "@/lib/dashboard-service";
 import { fmtDate } from "@/lib/format";
-import { CONMED_DEMO_COMPANY_ID } from "@/lib/product/conmed-demo/package";
-import { listConmedPackageFacts } from "@/lib/product/conmed-demo/covenant-catalog";
 import {
   getLatestAmendmentPackage,
   listCustomerDocumentIntelligence,
 } from "@/lib/product/customer-intelligence/load";
+import {
+  analysisPendingNote,
+  analysisStatusOf,
+  analysisStatusTone,
+  isAnalysisPending,
+} from "@/lib/product/customer-intelligence/analysis-status";
+import { isUnclassifiedDocument } from "@/lib/product/customer-intelligence/document-class";
 import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 import { mapEngineLabelToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { assertCfoPageAccessOrNotFound } from "@/lib/customer-workflow/assert-page-access";
@@ -27,8 +32,6 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
   const intelligence = await listCustomerDocumentIntelligence(companyId);
   const intelByDoc = new Map(intelligence.map((i) => [i.documentId, i]));
   const amendment = await getLatestAmendmentPackage(companyId);
-  const isConmed = companyId === CONMED_DEMO_COMPANY_ID;
-  const facts = isConmed ? listConmedPackageFacts() : [];
 
   return (
     <div className="stack">
@@ -81,6 +84,11 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
           )}
           {amendment.provisionChangeSignals.length > 0 && (
             <div style={{ marginTop: 8 }}>
+              {amendment.provisionChangeSignals.length > 6 && (
+                <div className="row-note">
+                  (+{amendment.provisionChangeSignals.length - 6} more change signals)
+                </div>
+              )}
               {amendment.provisionChangeSignals.slice(0, 6).map((s, i) => (
                 <div key={i} className="row-note">
                   <Chip tone="navy">{s.kind}</Chip> {s.evidence}
@@ -102,11 +110,6 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               Create / upload in workspace
             </Link>
           </div>
-          {isConmed && (
-            <div className="row-note" style={{ marginTop: 8 }}>
-              Run <code>npm run product:setup-conmed-demo</code> (dry-run) then authorize live setup to persist the authentic CONMED package.
-            </div>
-          )}
         </Card>
       )}
 
@@ -136,28 +139,41 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               <div className="row-value">
                 {intel ? (
                   <>
-                    <Chip
-                      tone={
-                        intel.analysisOk
-                          ? "pass"
-                          : intel.processingStatus === "STAGED_PENDING_ANALYSIS" ||
-                              intel.processingStatus === "ANALYZING"
-                            ? "navy"
-                            : "trip"
-                      }
-                    >
-                      {intel.analysisOk
-                        ? "ANALYZED"
-                        : intel.processingStatus === "STAGED_PENDING_ANALYSIS"
-                          ? "STAGED"
-                          : intel.processingStatus === "ANALYZING"
-                            ? "ANALYZING"
-                            : intel.processingStatus === "FAILED_RETRYABLE"
-                              ? "RETRYABLE"
-                              : "FAILED"}
+                    {/* Rule 158: status label/tone from the shared helper —
+                        identical output to the inline ternaries this
+                        replaced, so list and detail can never diverge. */}
+                    <Chip tone={analysisStatusTone(analysisStatusOf(intel))}>
+                      {analysisStatusOf(intel)}
                     </Chip>{" "}
                     {intel.covenantItemCount} covenant summaries · {intel.extractionStatus}
                     {intel.processingStatus ? ` · ${intel.processingStatus}` : ""}
+                    {/* Rule 88: staleness must surface on the list, not
+                        only on the document page — a stale summary
+                        otherwise reads as fresh ANALYZED. */}
+                    {intel.analysisStale && (
+                      <>
+                        {" "}
+                        <Chip tone="trip">STALE — re-analyze</Chip>
+                      </>
+                    )}
+                    {/* Rule 119: rule 118's type mismatch must surface
+                        on the list too — triage happens here, and a
+                        mismatch hidden behind each detail page is easy
+                        to miss. */}
+                    {intel.declaredType && intel.documentClass && intel.documentClass !== intel.declaredType && (
+                      <>
+                        {" "}
+                        <Chip tone="trip">TYPE MISMATCH — declared {intel.declaredType}, analyzed as {intel.documentClass}</Chip>
+                      </>
+                    )}
+                    {/* Rule 160: unclassified documents get a chip on the
+                        list too — the mismatch chip never fires for them. */}
+                    {isUnclassifiedDocument(intel) && (
+                      <>
+                        {" "}
+                        <Chip tone="trip">UNCLASSIFIED — confirm document type</Chip>
+                      </>
+                    )}
                   </>
                 ) : (
                   <Chip tone="idle">Not yet analyzed</Chip>
@@ -166,8 +182,8 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
             </div>
             {intel && !intel.analysisOk && (
               <div className="row-note" style={{ color: "var(--color-danger, #b91c1c)" }}>
-                {intel.processingStatus === "STAGED_PENDING_ANALYSIS" || intel.processingStatus === "ANALYZING"
-                  ? "Durable bytes are saved; analysis is in progress or queued. Refresh shortly."
+                {isAnalysisPending(intel)
+                  ? analysisPendingNote()
                   : `Analysis did not succeed${intel.analysisError ? `: ${intel.analysisError}` : "."} Original bytes are preserved — retry without re-upload.`}
               </div>
             )}
@@ -181,10 +197,16 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
               <Link className="button" href={`/${companyId}/covenants`}>
                 View covenants
               </Link>
-              {intel && !intel.analysisOk && intel.storageRef && (
+              {/* Fix 7: a document whose staging never produced an
+                  intelligence row (e.g. a deferred large-upload analysis
+                  that failed before staging) still has bytes in storage
+                  and the retry action falls back to the Document row's
+                  own storageRef — so the Retry button must not require
+                  an intelligence row to appear. */}
+              {((!intel && d.storageRef) || (intel && (!intel.analysisOk || intel.analysisStale) && intel.storageRef)) && (
                 <form action={retryCustomerAnalysisAction.bind(null, companyId, d.id)}>
                   <button className="button" type="submit">
-                    Retry analysis
+                    {intel?.analysisStale && intel.analysisOk ? "Re-analyze (stale)" : "Retry analysis"}
                   </button>
                 </form>
               )}
@@ -193,27 +215,6 @@ export default async function DocumentsPage({ params }: { params: Promise<{ comp
         );
       })}
 
-      {facts.length > 0 && (
-        <Card>
-          <div className="card-title">Package relationships</div>
-          <div className="card-subtitle">Source-backed package facts — not capacity determinations.</div>
-          {facts.map((f) => (
-            <div className="row" key={f.id}>
-              <div>
-                <div className="row-label">{f.id}</div>
-                <div className="row-note">{f.fact}</div>
-                <div className="row-note">
-                  Citation: {f.evidenceCitation}{" "}
-                  <Chip tone="navy">{f.clarity}</Chip>
-                </div>
-              </div>
-              <Link className="button" href={`/${companyId}/documents/${f.demoDocumentId}`}>
-                Source
-              </Link>
-            </div>
-          ))}
-        </Card>
-      )}
     </div>
   );
 }

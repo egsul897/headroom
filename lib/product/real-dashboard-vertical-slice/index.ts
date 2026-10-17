@@ -25,7 +25,6 @@ export {
 
 export {
   connectSliceToPosition,
-  hasMatthewsLeafPositionSlice,
   type AuthenticPositionSlice,
   type DashboardConnectedMetric,
 } from "./position-bridge";

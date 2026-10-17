@@ -13,7 +13,7 @@ export { PRIORITY_FORM_TYPES, collectDebtSignals, isPriorityForm } from "./edgar
 
 export { classifyDebtDocument, stripIdentityTokens } from "./classify/debt-document";
 export { scoreDiscoveryPotential } from "./rank/discovery-score";
-export { TAXONOMY_VERSION, TAXONOMY_FAMILIES, classifyFamiliesFromText } from "./taxonomy/families";
+export { TAXONOMY_VERSION, TAXONOMY_FAMILIES, classifyFamiliesFromText, stripCatchAllFallback } from "./taxonomy/families";
 export { PATTERN_LIBRARY_VERSION, SEED_PATTERNS, detectPatternsInText, allPatterns, getPattern } from "./patterns/library";
 export { canTransition, assertNotSilentPromotion, describeLevel } from "./representation/levels";
 

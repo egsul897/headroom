@@ -12,11 +12,22 @@ function escapePdfText(s: string): string {
 
 export function renderCovenantReviewPdf(review: CovenantReviewWorkspace): Buffer {
   const md = renderCovenantReviewMarkdown(review);
-  const lines = md
-    .split("\n")
-    .map((l) => l.replace(/\t/g, " ").slice(0, 110))
-    .filter((l) => l.trim().length > 0)
+  const rawLines = md.split("\n").filter((l) => l.trim().length > 0);
+  // Rule 100: the PDF is a single-page stream capped at 180
+  // lines with lines cut at 110 chars. A truncated export
+  // must SAY it is truncated — it must not end mid-document
+  // looking complete, and a cut line must not read as whole.
+  const lines = rawLines
+    .map((l) => {
+      const clean = l.replace(/\t/g, " ");
+      return clean.length > 110 ? `${clean.slice(0, 110)}…` : clean;
+    })
     .slice(0, 180);
+  if (rawLines.length > 180) {
+    lines.push(
+      `[TRUNCATED — this PDF shows the first 180 of ${rawLines.length} lines; download the Markdown export for the complete review.]`,
+    );
+  }
 
   const contentLines: string[] = ["BT", "/F1 10 Tf", "50 780 Td", "14 TL"];
   for (let i = 0; i < lines.length; i++) {

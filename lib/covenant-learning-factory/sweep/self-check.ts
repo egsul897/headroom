@@ -1,3 +1,4 @@
+import { stripPageNumberLines } from "../../contract-model/text/page-furniture";
 /**
  * Mechanical self-check: cross-validate computed results against Neon
  * kf_precedent signals (and engine consistency). This is NOT independent legal
@@ -8,7 +9,8 @@
 import { createHash } from "node:crypto";
 import type { ComputationResult } from "../../contract-model/covenant-computation/types";
 import type { LearningErrorRecord } from "../types";
-import { AMBIGUOUS, type TreeLocator } from "./tree-locator";
+import { AFFIRMATIVE_LEAD, AMBIGUOUS, type TreeLocator } from "./tree-locator";
+import { isProhibitive } from "../../contract-model/section-tree/semantics";
 
 export interface PrecedentCandidate {
   candidateId: string;
@@ -51,7 +53,7 @@ function eid(parts: string[]): string {
 }
 
 export function norm(s: string): string {
-  return s.replace(/\s+/g, " ").trim().toLowerCase();
+  return stripPageNumberLines(s).replace(/\s+/g, " ").trim().toLowerCase();
 }
 
 /**
@@ -311,12 +313,50 @@ export function discoveryGapCause(cand: PrecedentCandidate, excerpt: string, can
  */
 export function conditionBound(condExcerpt: string, cite: string): boolean {
   const c = norm(condExcerpt), b = norm(cite);
-  if (process.env.CLF_STRICT_CONDITION_MATCH === "1") return strictTextReflected(c, b);
+  if (process.env.CLF_STRICT_CONDITION_MATCH === "1") return strictConditionReflected(c, b);
   return b.includes(c.slice(0, 30));
 }
 
-export function outOfCovenantScope(loc: TreeLocator | null | undefined, section: string | null): boolean {
+/**
+ * Boilerplate that recurs across unrelated clauses (MAE / consent / committee-discretion language, clause
+ * markers). Shared text made only of this is not evidence that a basket binds a condition.
+ */
+const CONDITION_BOILERPLATE = [
+  /^\s*\(?[a-z0-9]{1,4}\)\s*/i,
+  /\bno (?:consent|approval|waiver|notice)\b[^.;]{0,40}/gi,
+  /\b(?:the )?committee may,? in its sole (?:and absolute )?discretion,?/gi,
+  /\bin its sole (?:and absolute )?discretion\b/gi,
+  /\b(?:has had|could reasonably be expected to have|would have) a material adverse (?:effect|change)\b/gi,
+  /\bmaterial adverse (?:effect|change)\b/gi,
+  /\bexcept as (?:otherwise )?(?:provided|permitted|set forth|expressly provided) (?:in|by|herein|under)\b(?: this agreement| this section)?/gi,
+  /\bnotwithstanding (?:anything|the foregoing)(?: to the contrary)?(?: herein| contained herein| in this agreement)?\b/gi,
+];
+export function conditionBoilerplateStripped(t: string): string {
+  let out = t;
+  for (const re of CONDITION_BOILERPLATE) out = out.replace(re, " ");
+  return out.replace(/\s+/g, " ").trim();
+}
+
+/** Strict condition binding: the citation contains the condition's opening (up to 120 chars) AND that opening carries >= 4 distinctive tokens once boilerplate is removed; or the citation contains the whole condition. */
+export function strictConditionReflected(c: string, b: string): boolean {
+  // Longest opening of the condition that the citation contains (the legacy check used a fixed 30 chars).
+  if (c.length < 24 || !b.includes(c.slice(0, 24))) return false;
+  let lo = 24, hi = c.length;
+  while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (b.includes(c.slice(0, mid))) lo = mid; else hi = mid - 1; }
+  const run = c.slice(0, lo);
+  // Bind when the shared text carries >= 4 distinctive tokens once boilerplate is removed; a run made only of
+  // generic / boilerplate tokens never binds.
+  return distinctiveTokenCount(conditionBoilerplateStripped(run)) >= 4;
+}
+
+/** Obligor-bound covenant wording in the item itself (affirmative or negative). */
+const ITEM_OBLIGATION = /\b(?:the\s+)?(?:company|borrower|issuer|parent|guarantor|loan part(?:y|ies)|obligors?)\s+(?:shall|will)\s+(?:not\b|cause|maintain|deliver|furnish|keep|comply|preserve|pay|use)/i;
+
+export function outOfCovenantScope(loc: TreeLocator | null | undefined, section: string | null, itemText?: string | null): boolean {
   if (process.env.CLF_SCOPE_COVENANT !== "1" || !loc?.isCovenantSection) return false;
+  // An item whose own words are an operative prohibition ("shall not, and shall not permit … to") stays in
+  // scope wherever it sits (e.g. a negative pledge inside a section the classifier calls non-covenant).
+  if (itemText && (isProhibitive(itemText) || ITEM_OBLIGATION.test(itemText) || AFFIRMATIVE_LEAD.test(itemText.replace(/^\s*(?:section\s+)?\d+\.\d+\s*[^.]{0,80}\.\s*/i, "")) || /\bno\s+[^.;]{1,80}?\bshall\s+be\s+(?:made|paid|incurred|declared)\b/i.test(itemText))) return false;
   return loc.isCovenantSection(section) === false;
 }
 
@@ -387,7 +427,7 @@ export function selfCheckComputation(args: {
         },
       ),
     );
-    if (!hit && outOfCovenantScope(args.locator, candTree)) continue;
+    if (!hit && outOfCovenantScope(args.locator, candTree, cand.excerpt)) continue;
     if (!hit) {
       const cause = process.env.CLF_DIAG === "1" ? ` [cause=${discoveryGapCause(cand, excerpt, candTree, baskets, args.locator ?? null)}]` : "";
       push(
@@ -476,7 +516,7 @@ export function selfCheckComputation(args: {
     // Keep light — do not flood ledger; only when kind suggests covenant gate
     if (cond.kind && /exception|proviso|carve.?out/i.test(cond.kind)) {
       const hit = baskets.some((b) => conditionBound(cond.excerpt!, b.citationExcerpt));
-      if (!hit && outOfCovenantScope(args.locator, args.locator ? args.locator.citationSection(cond.excerpt) : null)) continue;
+      if (!hit && outOfCovenantScope(args.locator, args.locator ? args.locator.citationSection(cond.excerpt) : null, cond.excerpt)) continue;
       if (!hit) {
         // Skip mass noise: only record if we already have other errors for this source
         // (caller can filter). Record as LOW COVERAGE_GAP with NEEDS_INPUT framing.
