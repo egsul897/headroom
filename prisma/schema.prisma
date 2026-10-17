@@ -160,6 +160,7 @@ model Company {
   ns4FinancialSyncs   Ns4FinancialSync[]
   ebitdaBoxes         CustomerEbitdaBox[]
   ebitdaConfirmations CustomerEbitdaConfirmation[]
+  ebitdaProposals     CustomerEbitdaProposal[]
 
   // --- SaaS accounts (auth) ---
   // Additive only. Each user belongs to exactly one company — the tenant
@@ -367,6 +368,7 @@ model Document {
   amendmentEffectsTargetingMe AmendmentEffect[]            @relation("AmendmentEffectTargetDocument")
   ebitdaBoxes                 CustomerEbitdaBox[]
   ebitdaConfirmations         CustomerEbitdaConfirmation[]
+  ebitdaProposals             CustomerEbitdaProposal[]
 
   @@unique([id, companyId])
   @@map("documents")
@@ -4773,6 +4775,11 @@ model CustomerEbitdaConfirmation {
   /// Whole USD as a decimal string (exact; never estimated). "1" for LENDER_APPROVAL.
   value          String
   source         String
+  /// Evidence kind behind the figure (migration 20261017090000): SEC_FILING | OFFICERS_CERTIFICATE | ERP |
+  /// CFO_ENTERED. Null on rows written before the column existed (read as CFO_ENTERED).
+  sourceKind     String?
+  /// Reference for the evidence: filing accession, certificate date/period, ERP reference.
+  sourceRef      String?
   /// Server-side session principal id.
   confirmedBy    String?
   idempotencyKey String
@@ -4792,4 +4799,38 @@ model CustomerEbitdaConfirmation {
   @@index([companyId, documentId, inputKey, createdAt])
   @@index([companyId, documentId, seq])
   @@map("customer_ebitda_confirmations")
+}
+
+/// CFO-proposed add-back items (migration 20261017090000). APPEND-ONLY: rows are never updated or deleted; the
+/// latest row per (companyId, documentId, label) is current (re-proposing a label is the edit). A proposal is NOT
+/// a confirmation: it never counts toward EBITDA. It counts only after its label is matched to a permitted
+/// category in the agreement's own EBITDA definition and its amount is confirmed via CustomerEbitdaConfirmation.
+model CustomerEbitdaProposal {
+  id             String   @id @default(cuid())
+  companyId      String
+  documentId     String
+  /// The CFO's name for the add-back (clause label, category, or the clause's opening words).
+  label          String
+  /// Proposed whole USD as a decimal string (exact; never estimated). Never counted without a confirmation.
+  amount         String
+  source         String
+  /// SEC_FILING | OFFICERS_CERTIFICATE | ERP | CFO_ENTERED
+  sourceKind     String
+  sourceRef      String?
+  /// Server-side session principal id.
+  proposedBy     String?
+  idempotencyKey String
+  /// Original response ({ boxId }) returned verbatim on an idempotent replay.
+  response       Json?
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(6)
+  seq            BigInt   @unique @default(autoincrement())
+  /// RESTRICT, like confirmations: proposal history is part of the audit trail.
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  /// Composite FK: the document must belong to the same company.
+  document       Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([companyId, documentId, idempotencyKey])
+  @@index([companyId, documentId, seq])
+  @@map("customer_ebitda_proposals")
 }
