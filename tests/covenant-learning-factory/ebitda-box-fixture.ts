@@ -1,5 +1,5 @@
 /** Shared fixture for the EBITDA box tests: a small agreement, issuer financials, and an in-memory append-only store. */
-import type { ConfirmationRow, EbitdaBoxStore } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
+import type { ConfirmationRow, EbitdaBoxStore, EbitdaProposalRow } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
 import type { IssuerFinancials } from "@/lib/covenant-learning-factory/xbrl/companyfacts";
 
 export const M = 1_000_000;
@@ -12,7 +12,7 @@ export const TEXT = `ARTICLE I DEFINITIONS
 export const args = { sourceId: "s1", text: TEXT, issuerCik: "1", financials: fin };
 
 export type FakeStore = EbitdaBoxStore & {
-  boxes: Array<{ id: string; status?: string; payload: unknown }>; rows: ConfirmationRow[]; updates: number; transactions: number; locks: string[];
+  boxes: Array<{ id: string; status?: string; payload: unknown }>; rows: ConfirmationRow[]; proposals: EbitdaProposalRow[]; updates: number; transactions: number; locks: string[];
   beforeCreate?: (data: Omit<ConfirmationRow, "id" | "createdAt">) => void | Promise<void>;
   /** Throw from the next box write (simulates a connection reset mid-transaction). */
   failBoxWrite?: Error | null;
@@ -44,11 +44,12 @@ function ordered<T extends Ordered>(rows: T[], orderBy: unknown): T[] {
 export function fakeStore(): FakeStore {
   const boxes: Array<{ id: string; companyId: string; documentId: string; status?: string; payload: unknown; createdAt: Date; seq: bigint }> = [];
   const rows: ConfirmationRow[] = [];
+  const proposals: EbitdaProposalRow[] = [];
   let t = 0, seq = 0n;
   const now = () => new Date((s.frozenClock ? t : ++t) * 1000);
   let chain: Promise<void> = Promise.resolve();
   const s = {
-    boxes, rows, updates: 0, transactions: 0, locks: [],
+    boxes, rows, proposals, updates: 0, transactions: 0, locks: [],
     customerEbitdaBox: {
       create: async ({ data }) => {
         if (s.failBoxWrite) { const e = s.failBoxWrite; s.failBoxWrite = null; throw e; }
@@ -75,6 +76,15 @@ export function fakeStore(): FakeStore {
         rows.push(r); return { id: r.id };
       },
     } as EbitdaBoxStore["customerEbitdaConfirmation"],
+    customerEbitdaProposal: {
+      create: async ({ data }) => {
+        if (proposals.some((r) => r.companyId === data.companyId && r.documentId === data.documentId && r.idempotencyKey === data.idempotencyKey)) throw Object.assign(new Error("Unique constraint failed on the fields: (`companyId`,`documentId`,`idempotencyKey`)"), { code: "P2002" });
+        const r = { id: `p${String(proposals.length).padStart(4, "0")}`, ...data, createdAt: now(), seq: ++seq } as EbitdaProposalRow & Ordered;
+        proposals.push(r); return { id: r.id };
+      },
+      findMany: async ({ where, orderBy }) => ordered(proposals as Array<EbitdaProposalRow & Ordered>, orderBy).filter((r) => r.companyId === where.companyId && r.documentId === where.documentId).map((r) => ({ ...r, updatedAt: r.createdAt })),
+      findFirst: async ({ where }) => proposals.find((r) => r.companyId === where.companyId && r.documentId === where.documentId && r.idempotencyKey === where.idempotencyKey) ?? null,
+    },
     // Interactive transaction: serialised (like the per-document advisory lock) and rolled back on throw. The store is
     // append-only, so rollback = truncate to the lengths at BEGIN.
     $transaction: async <T,>(fn: (tx: EbitdaBoxStore) => Promise<T>) => {
@@ -83,8 +93,8 @@ export function fakeStore(): FakeStore {
       chain = new Promise<void>((r) => (release = r));
       await prev;
       s.transactions++;
-      const nb = boxes.length, nr = rows.length;
-      try { return await fn(s); } catch (e) { boxes.length = nb; rows.length = nr; throw e; } finally { release(); }
+      const nb = boxes.length, nr = rows.length, np = proposals.length;
+      try { return await fn(s); } catch (e) { boxes.length = nb; rows.length = nr; proposals.length = np; throw e; } finally { release(); }
     },
     $queryRawUnsafe: async (_sql: string, ...v: unknown[]) => { s.locks.push(String(v[0])); await s.onLock?.(); return [{ "?column?": 1 }]; },
   } as FakeStore;

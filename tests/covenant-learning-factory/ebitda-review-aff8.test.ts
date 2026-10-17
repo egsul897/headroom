@@ -28,9 +28,12 @@ describe("blocker 1: CFO confirm", () => {
   it("approval alone does not count it; amount + approval does; approval on a non-conditional item is 422", async () => {
     const db = fakeStore();
     const k = keyOf("(f)");
+    // Approval-first stays allowed (recording the approval before any amount exists has nothing to conflict with),
+    // but under symmetric separation of duties (Egzon decision, 2026-10-17) the amount that follows must come from
+    // a DIFFERENT principal than the approver — hence u1 approves and u2 confirms the amount.
     const a = await confirmEbitdaItem(db, scope, args, { inputKey: k, kind: "LENDER_APPROVAL", source: "Agent consent 2026-07-15", confirmedBy: "u1" });
     expect(a.ok && a.box.items.find((i) => i.label === "(f)")!.status).toBe("CONDITIONAL");
-    const b = await confirmEbitdaItem(db, scope, args, { inputKey: k, value: String(2 * M), source: "Q2 accounts", confirmedBy: "u1" });
+    const b = await confirmEbitdaItem(db, scope, args, { inputKey: k, value: String(2 * M), source: "Q2 accounts", confirmedBy: "u2" });
     expect(b.ok && b.box.items.find((i) => i.label === "(f)")).toMatchObject({ status: "CONFIRMED", counted: String(2 * M) });
     expect(await confirmEbitdaItem(fakeStore(), scope, args, { inputKey: keyOf("(e)"), kind: "LENDER_APPROVAL", source: "x", confirmedBy: "u1" })).toMatchObject({ ok: false, status: 422 });
   });

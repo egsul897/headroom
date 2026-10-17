@@ -52,7 +52,8 @@ describe("CFO confirm flow (persisted, recomputed)", () => {
     const db = fakeStore();
     const key = computeEbitdaBox(args).items.find((i) => i.label === "(f)")!.inputKey;
     await confirmEbitdaItem(db, scope, args, { inputKey: key, value: String(2 * M), source: "Q2 management accounts", confirmedBy: "cfo@x" });
-    const out = await confirmEbitdaItem(db, scope, args, { inputKey: key, kind: "LENDER_APPROVAL", source: "Agent approval letter 2026-07-15", confirmedBy: "cfo@x" });
+    // Separation of duties (workstream E part 3): the approval is recorded by a different principal than the amount's.
+    const out = await confirmEbitdaItem(db, scope, args, { inputKey: key, kind: "LENDER_APPROVAL", source: "Agent approval letter 2026-07-15", confirmedBy: "treasurer@x" });
     expect(out.ok && out.box.items.find((i) => i.label === "(f)")!.status).toBe("CONFIRMED");
   });
   it("refuses: no source, non-integer, unknown key; nothing persisted", async () => {
