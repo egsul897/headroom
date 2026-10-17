@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Select } from "@/components/Select";
 import { Banner, Card, Chip, ProgressBar, SectionRef, type ChipTone } from "@/components/ui";
 import { ProvisionTrace } from "@/components/ProvisionTrace";
+import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
+import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { fmtCapacity, fmtM, fmtX } from "@/lib/format";
 import type { DefinedTermLite } from "@/lib/coherent";
@@ -33,6 +35,37 @@ type DocumentRow = { id: string; name: string; notes: string | null };
 
 interface SerializableSolverContext extends Omit<SolverNativeCompanyContext, "activationState"> {
   activationState: Omit<SolverNativeCompanyContext["activationState"], "unknownKeys"> & { unknownKeysArray: string[] };
+}
+
+function basketClause(sectionRef?: string | null, basketName?: string | null): string {
+  const section = sectionRef?.trim();
+  if (!section) return UNLOADED_CLAUSE;
+  const name = basketName?.trim();
+  return `Section ${section}${name ? ` · ${name}` : ""}. Clause text is not loaded on this step.`;
+}
+
+function BasketDetail({
+  title,
+  source,
+  sectionRef,
+  basketName,
+}: {
+  title: string;
+  source?: string | null;
+  sectionRef?: string | null;
+  basketName?: string | null;
+}) {
+  return (
+    <OpenProvenanceButton
+      title={title}
+      source={source?.trim() ? source : UNLOADED_SOURCE}
+      clause={basketClause(sectionRef, basketName)}
+      history={UNLOADED_HISTORY}
+      note="This is the basket already on the step. Nothing new was loaded."
+    >
+      Open detail
+    </OpenProvenanceButton>
+  );
 }
 
 const RESULT_TONE: Record<TransactionStatus, "ok" | "blocked" | "review"> = {
@@ -364,6 +397,14 @@ function DebtPanel({
             <>{sim.reason ?? "Not enough modeled configuration to evaluate this transaction."}</>
           )}
         </div>
+        {sim.binding?.bindingProvision ? (
+          <BasketDetail
+            title={sim.binding.bindingProvision.basketName}
+            source={sim.binding.documentName}
+            sectionRef={sim.binding.bindingProvision.sectionRef}
+            basketName={sim.binding.bindingProvision.basketName}
+          />
+        ) : null}
         {sim.status === "blocked" && sim.binding && sim.next && (sim.next.capacity ?? Infinity) > (sim.binding.capacity ?? 0) && (
           <div style={{ marginTop: 10, background: "var(--card)", border: "1px solid var(--line)", borderRadius: 6, padding: "10px 12px", fontSize: 13 }}>
             <b>Amendment unlock:</b> relaxing the binding covenant in {sim.binding.documentName} would raise
@@ -385,12 +426,20 @@ function DebtPanel({
             </div>
             {d.capacity !== undefined && <ProgressBar pct={(simAmt / Math.max(1, d.capacity)) * 100} ok={d.status === "clear"} />}
             {d.bindingProvision ? (
-              <ProvisionTrace
-                provision={d.bindingProvision}
-                definedTerms={definedTermsByProvision[`${d.bindingProvision.documentId}:${d.bindingProvision.code}`] ?? []}
-                value={fmtCapacity(d.status === "clear" || d.status === "blocked" ? "modeled" : d.status, d.capacity)}
-                note="governing test"
-              />
+              <>
+                <ProvisionTrace
+                  provision={d.bindingProvision}
+                  definedTerms={definedTermsByProvision[`${d.bindingProvision.documentId}:${d.bindingProvision.code}`] ?? []}
+                  value={fmtCapacity(d.status === "clear" || d.status === "blocked" ? "modeled" : d.status, d.capacity)}
+                  note="governing test"
+                />
+                <BasketDetail
+                  title={d.bindingProvision.basketName}
+                  source={d.documentName}
+                  sectionRef={d.bindingProvision.sectionRef}
+                  basketName={d.bindingProvision.basketName}
+                />
+              </>
             ) : (
               <div className="row-note" style={{ marginTop: 6 }}>
                 {d.capacity !== undefined ? (
@@ -415,8 +464,8 @@ function DebtPanel({
             const tone: ChipTone = !r.applies ? "idle" : r.status === "clear" ? "pass" : r.status === "blocked" ? "trip" : "tight";
             const toneLabel = !r.applies ? "n/a" : r.status === "clear" ? "ok" : r.status === "blocked" ? "fails" : "review";
             return (
+              <div key={r.provisionId}>
               <ProvisionTrace
-                key={r.provisionId}
                 provision={r.provision}
                 definedTerms={definedTermsByProvision[`${r.documentId}:${r.provision.code}`] ?? []}
                 note={`${r.metricName} pro forma${!r.applies ? " — not applicable to this incurrence" : ""}${r.reason ? ` — ${r.reason}` : ""}`}
@@ -429,6 +478,13 @@ function DebtPanel({
                   </span>
                 }
               />
+              <BasketDetail
+                title={r.basketName}
+                source={r.documentName}
+                sectionRef={r.sectionRef}
+                basketName={r.basketName}
+              />
+              </div>
             );
           })}
         </Card>
@@ -470,6 +526,7 @@ function RpPanel({
         <Banner tone="red">
           Not tested here: no document for this company has a restricted-payment basket configuration entered.
         </Banner>
+        <BasketDetail title={title} />
       </Card>
     );
   }
@@ -564,6 +621,7 @@ function RpPanel({
                   <span className="mono" style={{ float: "right" }}>{fmtM(s.allocated)}</span>
                 </div>
               )}
+              <BasketDetail title={s.basketName} source={doc.name} sectionRef={s.sectionRef} basketName={s.basketName} />
               <div style={{ height: 6, background: "rgba(0,0,0,0.06)", borderRadius: 2, marginBottom: 10, overflow: "hidden" }}>
                 <div style={{ width: `${Math.min(100, (s.allocated / Math.max(1, amount)) * 100)}%`, height: "100%", background: "var(--green)" }} />
               </div>
@@ -611,6 +669,7 @@ function AssetSalePanel({
         <Banner tone="red">
           Not tested here: no document for this company has an asset-sale threshold configuration entered.
         </Banner>
+        <BasketDetail title="Asset sale" />
       </Card>
     );
   }
@@ -682,11 +741,19 @@ function AssetSalePanel({
             )}
           </div>
           {thresholdProvision && (
-            <ProvisionTrace
-              provision={thresholdProvision}
-              definedTerms={definedTermsByProvision[`${doc.id}:${doc.assetSale?.thresholdCode}`] ?? []}
-              value={fmtM(sim.excessProceedsThreshold ?? 0)}
-            />
+            <>
+              <ProvisionTrace
+                provision={thresholdProvision}
+                definedTerms={definedTermsByProvision[`${doc.id}:${doc.assetSale?.thresholdCode}`] ?? []}
+                value={fmtM(sim.excessProceedsThreshold ?? 0)}
+              />
+              <BasketDetail
+                title={thresholdProvision.basketName}
+                source={doc.name}
+                sectionRef={thresholdProvision.sectionRef}
+                basketName={thresholdProvision.basketName}
+              />
+            </>
           )}
         </div>
       )}

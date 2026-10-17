@@ -245,13 +245,13 @@ main:has(.app-shell) {
 
 .home-overview {
   display: grid;
-  gap: 40px;
-  max-width: 960px;
+  gap: 32px;
+  max-width: 1180px;
 }
 
-.home-answer {
+.home-board {
   display: grid;
-  gap: 28px;
+  gap: 20px;
 }
 
 .home-hero .home-card {
@@ -275,58 +275,180 @@ main:has(.app-shell) {
 }
 
 .home-hero .home-detail,
-.home-hero .home-kpi-caption {
+.home-hero .home-kpi-caption,
+.home-hero .home-source {
   max-width: 36rem;
   margin-top: 12px;
   font-size: 15px;
   line-height: 1.45;
 }
 
-.home-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
-  padding-top: 22px;
-  border-top: 1px solid var(--shell-line);
+.home-source {
+  margin: 8px 0 0;
+  color: var(--shell-muted);
+  font-size: 13px;
 }
 
-.home-facts .home-card {
-  border: none;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
-  min-height: 0;
+.sample-kpi-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.home-rest {
-  display: grid;
+.sample-spark,
+.sample-spark svg {
+  width: 96px;
+  height: 36px;
+  display: block;
+  color: var(--chart-1);
 }
 
-.home-rest .home-card:has(.home-empty) {
-  display: grid;
-  grid-template-columns: minmax(140px, 200px) minmax(0, 1fr);
-  gap: 8px 24px;
-  align-items: baseline;
-  border: none;
-  border-bottom: 1px solid var(--shell-line);
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  padding: 18px 0;
-  min-height: 0;
+.sample-plot {
+  margin-top: 8px;
 }
 
-.home-rest .home-card:has(.home-empty) .home-card-head {
+.sample-plot svg {
+  width: 100%;
+  height: 220px;
+  display: block;
+}
+
+.sample-window {
   margin: 0;
+  color: var(--shell-muted);
+  font-size: 12px;
+  font-weight: 560;
+  letter-spacing: 0.02em;
 }
 
-.home-rest .home-card:has(.home-empty) .home-empty .home-headline {
-  font-size: 15px;
+.sample-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--shell-muted);
+  font-size: 12px;
+}
+
+.sample-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sample-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--chart-1);
+}
+
+.sample-swatch-2 {
+  background: var(--chart-4);
+}
+
+.sample-ring {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: conic-gradient(var(--chart-4) 0 57%, var(--chart-track) 57% 100%);
+}
+
+.sample-ring-lg {
+  width: 148px;
+  height: 148px;
+  background: conic-gradient(var(--chart-1) 0 50%, var(--chart-2) 50% 85%, var(--chart-3) 85% 100%);
+}
+
+.sample-ring i {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--shell-card);
+  font-style: normal;
+}
+
+.sample-ring-lg i {
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--shell-ink);
+  font-size: 13px;
+  font-weight: 560;
+  line-height: 1.25;
+}
+
+.sample-capacity {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.sample-facilities {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.sample-facilities li {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--shell-line);
+  font-size: 13px;
+}
+
+.sample-facilities li:last-child {
+  border-bottom: none;
+}
+
+.sample-facilities strong {
   font-weight: 560;
 }
 
-.home-rest .home-card:has(.home-empty) .home-detail {
-  margin-top: 2px;
+.sample-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--chart-1);
+  align-self: center;
+}
+
+.sample-feed {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+.sample-feed li {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--shell-line);
+}
+
+.sample-feed li:last-child {
+  border-bottom: none;
+}
+
+.sample-feed p {
+  margin: 2px 0 0;
+  color: var(--shell-muted);
+  font-size: 12px;
 }
 
 .home-top {
@@ -713,6 +835,12 @@ main:has(.app-shell) {
   gap: 20px;
 }
 
+.home-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
 .home-split {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
@@ -723,6 +851,161 @@ main:has(.app-shell) {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
+}
+
+.home-stack {
+  display: grid;
+  gap: 20px;
+  align-content: start;
+}
+
+.ebitda-tile {
+  padding: 0;
+}
+
+.ebitda-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  width: 100%;
+  padding: 22px 24px 24px;
+  border: none;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ebitda-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.ebitda-hero {
+  font-size: 28px;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ebitda-hero.is-missing,
+.is-missing {
+  color: var(--shell-muted);
+  font-weight: 500;
+}
+
+.ebitda-caption {
+  display: block;
+  color: var(--shell-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.ebitda-secondary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+}
+
+.need-chip {
+  flex: none;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--card));
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 560;
+}
+
+.need-dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+.need-dot.is-quiet {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--shell-line);
+}
+
+.ebitda-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ebitda-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid var(--shell-line);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ebitda-row-name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+  font-weight: 560;
+}
+
+.ebitda-row-amount {
+  color: var(--shell-muted);
+  font-size: 13px;
+  font-weight: 450;
+  font-variant-numeric: tabular-nums;
+}
+
+.ebitda-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.ebitda-clause {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--chart-1);
+  background: var(--chart-track);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.sheet-label {
+  margin: 18px 0 6px;
+  font-size: 11px;
+  font-weight: 680;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ebitda-action {
+  margin-top: 18px;
 }
 
 .home-card {
@@ -947,8 +1230,7 @@ main:has(.app-shell) {
   .home-split,
   .home-pair,
   .home-kpis,
-  .home-facts,
-  .home-rest .home-card:has(.home-empty) {
+  .home-facts {
     grid-template-columns: 1fr;
     display: grid;
   }
@@ -1326,6 +1608,10 @@ main:has(.app-shell) {
   line-height: 1.5;
 }
 
+.detail-open {
+  margin-top: 12px;
+}
+
 .clause-actions {
   display: flex;
 }
@@ -1456,16 +1742,26 @@ main:has(.app-shell) {
     box-shadow: 0 14px 32px rgba(26, 24, 22, 0.08);
   }
 
-  .home-hero .home-card:hover,
-  .home-facts .home-card:hover,
-  .home-rest .home-card:has(.home-empty):hover {
+  .home-hero .home-card:hover {
     transform: none;
     box-shadow: none;
+  }
+
+  .sample-chart polyline {
+    stroke-dasharray: 900;
+    stroke-dashoffset: 900;
+    animation: chart-draw 900ms ease forwards;
   }
 
   .skeleton-bar,
   .skeleton-card {
     animation: shell-shimmer 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes chart-draw {
+  to {
+    stroke-dashoffset: 0;
   }
 }
 

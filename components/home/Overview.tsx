@@ -12,6 +12,7 @@ import { AlertsCard } from "./AlertsCard";
 import { CapacitySummaryCard } from "./CapacitySummaryCard";
 import { CovenantsAtRiskCard } from "./CovenantsAtRiskCard";
 import { DriversCard } from "./DriversCard";
+import { EbitdaTile } from "./EbitdaTile";
 import { HeadroomOverTimeCard } from "./HeadroomOverTimeCard";
 import { BellIcon, ExportIcon } from "./icons";
 import { NextTestCard } from "./NextTestCard";
@@ -97,23 +98,31 @@ export function CompanyOverview({
         </section>
       ) : null}
 
-      <div className="home-answer">
-        <div className="home-hero">
+      <div className="home-hero">
+        <TotalHeadroomCard state={slots.totalHeadroom} />
+      </div>
+      <div className="home-board">
+        <div className="home-kpis">
           <TotalHeadroomCard state={slots.totalHeadroom} />
-        </div>
-        <div className="home-facts">
           <UtilizationCard state={slots.utilization} />
           <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
           <NextTestCard state={slots.nextTest} />
         </div>
-      </div>
-      <div className="home-rest">
-        <HeadroomOverTimeCard state={slots.headroomOverTime} />
-        <CapacitySummaryCard state={slots.capacitySummary} />
-        <StatusTable state={slots.statusTable} />
-        <DriversCard state={slots.drivers} />
-        <AlertsCard state={alerts} />
-        <TransactionsCard state={slots.transactions} />
+        <div className="home-split">
+          <HeadroomOverTimeCard state={slots.headroomOverTime} />
+          <CapacitySummaryCard state={slots.capacitySummary} />
+        </div>
+        <div className="home-split">
+          <StatusTable state={slots.statusTable} />
+          <div className="home-stack">
+            <EbitdaTile />
+            <DriversCard state={slots.drivers} />
+          </div>
+        </div>
+        <div className="home-pair">
+          <AlertsCard state={alerts} />
+          <TransactionsCard state={slots.transactions} />
+        </div>
       </div>
       {authorityNote ? (
         <p className="home-authority-note" data-authority-note>

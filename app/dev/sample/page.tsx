@@ -9,6 +9,8 @@ import "./rails.css";
 import "./brands.css";
 import "./palettes.css";
 import { CountUp } from "@/components/motion/CountUp";
+import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
+import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
 import { SampleClauses } from "./clauses";
 import { SampleDashboard } from "./dashboard";
 import { SAMPLE_BANNER, SAMPLE_COMPANY, SAMPLE_TICKER } from "./fixture";
@@ -20,7 +22,7 @@ export const metadata = { title: "Headroom — sample data" };
  * Development illustration. Production builds take notFound().
  * This module does not import Prisma, Neon, or the dashboard service.
  */
-export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string; detail?: string } }) {
+export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string; detail?: string; ebitda?: string } }) {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") notFound();
   const screen = searchParams.screen ?? "overview";
   const brand = searchParams.brand === "navy" || searchParams.brand === "olive" || searchParams.brand === "teal" ? searchParams.brand : undefined;
@@ -121,7 +123,10 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
         ) : screen === "capacity" ? (
           <CapacitySample />
         ) : (
-          <SampleDashboard initialDetail={searchParams.detail === "1"} />
+          <SampleDashboard
+            initialDetail={searchParams.detail === "1"}
+            initialEbitda={searchParams.ebitda === "1" ? "list" : searchParams.ebitda ?? null}
+          />
         )}
       </AppShell>
     </div>
@@ -175,19 +180,64 @@ function CapacitySample() {
       </header>
       <div className="home-answer">
         <div className="home-hero">
-          <SampleKpi label="Secured, sample" value="$40 million" caption="Illustrative remaining. Not a certified path." />
+          <SampleKpi
+            label="Secured, sample"
+            value="$40 million"
+            caption="Illustrative remaining. Not a certified path."
+            detail={{
+              title: "Secured, sample",
+              source: "Sample secured notes. No source document is attached.",
+              clause: "Sample section 4.09. Sample language, not an operative clause.",
+              history: "Sample date March 31, 2024. Not a loaded history.",
+            }}
+          />
         </div>
         <div className="home-facts">
-          <SampleKpi label="Unsecured, sample" value="Not evaluated" caption="No sample path. Not zero and not unlimited." />
-          <SampleKpi label="Authority" value="Legacy engine" caption="A production number appears only when an executable path returns one." />
-          <SampleKpi label="Citation" value="§4.09" caption="Sample secured notes. Snapshot sample-snapshot-001, March 31, 2024." />
+          <SampleKpi
+            label="Unsecured, sample"
+            value="Not evaluated"
+            caption="No sample path. Not zero and not unlimited."
+            detail={{ title: "Unsecured, sample", source: UNLOADED_SOURCE, clause: UNLOADED_CLAUSE, history: UNLOADED_HISTORY }}
+          />
+          <SampleKpi
+            label="Authority"
+            value="Legacy engine"
+            caption="A production number appears only when an executable path returns one."
+            detail={{
+              title: "Authority",
+              source: UNLOADED_SOURCE,
+              clause: UNLOADED_CLAUSE,
+              history: UNLOADED_HISTORY,
+            }}
+          />
+          <SampleKpi
+            label="Citation"
+            value="§4.09"
+            caption="Sample secured notes. Snapshot sample-snapshot-001, March 31, 2024."
+            detail={{
+              title: "Citation",
+              source: "Sample secured notes. No source document is attached.",
+              clause: "Sample section 4.09. Sample language, not an operative clause.",
+              history: "Sample date March 31, 2024. Not a loaded history.",
+            }}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-function SampleKpi({ label, value, caption }: { label: string; value: string; caption: string }) {
+function SampleKpi({
+  label,
+  value,
+  caption,
+  detail,
+}: {
+  label: string;
+  value: string;
+  caption: string;
+  detail: { title: string; source: string; clause: string; history: string };
+}) {
   return (
     <section className="home-card">
       <h2 className="home-eyebrow">{label}</h2>
@@ -195,6 +245,9 @@ function SampleKpi({ label, value, caption }: { label: string; value: string; ca
         <CountUp text={value} />
       </p>
       <p className="sample-caption">{caption}</p>
+      <OpenProvenanceButton title={detail.title} source={detail.source} clause={detail.clause} history={detail.history}>
+        Open detail
+      </OpenProvenanceButton>
     </section>
   );
 }

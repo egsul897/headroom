@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
-import { DetailDrawer } from "@/components/motion/DetailDrawer";
+import { OpenProvenanceButton, ProvenanceDrawer } from "@/components/motion/ProvenanceDrawer";
+import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
 import { UNKNOWN_STATE, presentStatus, type StatusLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
@@ -18,6 +19,9 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
     return (
       <RegionCard region="headroom-status" eyebrow="Headroom status">
         <EmptyCopy slot="statusTable" state={presented} />
+        <OpenProvenanceButton title="Headroom status" note="Rows stay on the card. This panel did not load a source, a clause, or a history.">
+          Open detail
+        </OpenProvenanceButton>
       </RegionCard>
     );
   }
@@ -55,35 +59,19 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
           </tbody>
         </table>
       </div>
-      <DetailDrawer open={open != null} title={open?.covenant ?? "Detail"} onClose={() => setOpenIndex(null)}>
-        {open ? (
-          <dl className="drawer-facts">
-            <div>
-              <dt>Facility</dt>
-              <dd>{open.facility}</dd>
-            </div>
-            <div>
-              <dt>Status</dt>
-              <dd>
-                <StatusBadge status={open.status} />
-              </dd>
-            </div>
-            <div>
-              <dt>Headroom</dt>
-              <dd>{open.headroom}</dd>
-            </div>
-            <div>
-              <dt>Trend</dt>
-              <dd>{open.trend && open.trend !== "—" ? open.trend : "Unknown"}</dd>
-            </div>
-            <div>
-              <dt>Next test</dt>
-              <dd>{open.nextTest}</dd>
-            </div>
-          </dl>
-        ) : null}
-        <p className="drawer-note">These are the fields already on this row. Nothing new was loaded.</p>
-      </DetailDrawer>
+      <ProvenanceDrawer
+        open={open != null}
+        title={open?.covenant ?? "Detail"}
+        onClose={() => setOpenIndex(null)}
+        source={open?.facility?.trim() ? open.facility : UNLOADED_SOURCE}
+        clause={UNLOADED_CLAUSE}
+        history={UNLOADED_HISTORY}
+        note={
+          open
+            ? `Status ${open.status}. Headroom ${open.headroom}. Next test ${open.nextTest}. Trend ${open.trend && open.trend !== "—" ? open.trend : "Unknown"}. These are the fields already on this row. Nothing new was loaded.`
+            : undefined
+        }
+      />
     </RegionCard>
   );
 }
