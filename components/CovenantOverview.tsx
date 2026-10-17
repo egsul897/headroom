@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Card, WarningList } from "@/components/ui";
 import { presentedCapacityUsedCaption } from "@/lib/dashboard/load-state";
+import { STRUCTURAL_UNRESOLVED_NOTICE } from "@/lib/covenant-engine";
 import { fmtDate, fmtM, fmtMaxCapacity, maxCapacityDetail } from "@/lib/format";
 import type { AttentionItem, BindingState, CovenantFamilySection, CovenantOverview, OverviewRow, ReviewStateLabel, RowStatus, RowTier } from "@/lib/covenant-overview-service";
 
@@ -292,6 +293,11 @@ function CapacityRowView({ row }: { row: Extract<OverviewRow, { kind: "CAPACITY"
       <div className="covenant-row" style={{ paddingTop: 0 }}>
         <CapacityBar row={row} />
       </div>
+      {row.structuralUnresolved && (
+        <div className="row-note" style={{ paddingTop: 0 }}>
+          {STRUCTURAL_UNRESOLVED_NOTICE}
+        </div>
+      )}
     </>
   );
 }

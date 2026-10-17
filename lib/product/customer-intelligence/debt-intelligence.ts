@@ -292,7 +292,12 @@ function buildDrilldown(params: {
     sectionCitation: item ? `${item.sourceCitation}` : null,
     definitions: (item?.applicableDefinitions ?? []).slice(0, 8).map((d) => ({
       term: d.term,
-      excerpt: (d.excerpt ?? "").slice(0, 220),
+      // An unresolved entry has no definition text; say so instead
+      // of rendering the bare term as if it were a definition.
+      excerpt:
+        d.resolved === false
+          ? "(definition not resolved in this document)"
+          : (d.excerpt ?? "").slice(0, 220),
     })),
     contractualFormula: params.formula ?? (item?.materialBasketsThresholds ?? [])[0] ?? null,
     financialInputs: params.inputs ?? [],

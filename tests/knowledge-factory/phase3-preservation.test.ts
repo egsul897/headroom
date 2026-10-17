@@ -99,7 +99,11 @@ describe("phase3 preservation + consumer contract", () => {
 
   it("exports canonical consumer package and validates two independent imports", () => {
     const exportDoc = buildCanonicalConsumerExport(store, { compact: true, durabilityClaim: "NONE" });
-    expect(exportDoc.schemaVersion).toBe("knowledge-factory.consumer-export.v1");
+    // Deliberate update (H2 Stage 1): freshly built exports are v2.
+    // The committed v1 artifacts under docs/knowledge-factory/export/v1
+    // keep asserting v1 in the artifacts describe-block below — that
+    // file is a historical export and is not regenerated.
+    expect(exportDoc.schemaVersion).toBe("knowledge-factory.consumer-export.v2");
     expect(exportDoc.safety.automaticLegalVerification).toBe(false);
     expect(exportDoc.safety.automaticCapacityPromotion).toBe(false);
     expect(exportDoc.counts.sources).toBe(1);

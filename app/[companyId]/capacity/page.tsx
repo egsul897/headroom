@@ -2,13 +2,58 @@ import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
 import { getCompanyDashboard } from "@/lib/dashboard-service";
 import { fmtM, maxCapacityDetail } from "@/lib/format";
-import type { PerDocumentRemainingCapacity } from "@/lib/covenant-engine";
+import { STRUCTURAL_UNRESOLVED_NOTICE, type PerDocumentRemainingCapacity } from "@/lib/covenant-engine";
 import { FinancialIdentityError } from "@/lib/financial-identity";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
+import { loadStructuralUnresolvedPermissionIds } from "@/lib/product/customer-intelligence/structural-flags";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
-import { loadAuthoritativeCapacity } from "@/lib/product/north-star-workflow";
+import { loadAuthoritativeCapacity, type AuthoritativeCapacityResult } from "@/lib/product/north-star-workflow";
 
 export const metadata = { title: "Headroom — Capacity" };
+
+/**
+ * The North-Star authoritative read must never take the whole page down
+ * behind the generic error boundary, and must never be replaced with
+ * invented figures either: on failure the card renders NEEDS_INPUT with
+ * the load failure disclosed as evidence, and the readiness / rulebook
+ * sections below still render from their own loaders. Certified capacity
+ * is unavailable — never zero, never unlimited.
+ */
+function unavailableAuthoritativeCapacity(companyId: string, err: unknown): AuthoritativeCapacityResult {
+  const message = err instanceof Error ? err.message : String(err);
+  return {
+    companyId,
+    evaluationDate: null,
+    status: "NEEDS_INPUT",
+    authority: "NOT_CERTIFIED_4E",
+    cutoff: {
+      state: "UNAVAILABLE",
+      reportingPeriodKey: null,
+      asOf: null,
+      approvedSnapshotId: null,
+      cutoffSnapshotId: null,
+      cutoffSnapshotStatus: null,
+    },
+    approvedSnapshotCount: 0,
+    activeLedgerUsageCount: 0,
+    ledgerUsages: [],
+    snapshotFactKeys: [],
+    certified: {
+      packagePresent: false,
+      capacityOutcome: null,
+      blockers: ["AUTHORITATIVE_CAPACITY_LOAD_FAILED"],
+      authorityNote:
+        "Authoritative capacity could not be loaded, so no certified capacity is asserted. The load failure is disclosed below; treat certified capacity as unavailable, not as zero.",
+    },
+    legacy: {
+      capacityAuthority: "NONE",
+      canEvaluateExecutableCapacity: false,
+      note: "Authoritative capacity loader failed; no North-Star capacity conclusion is drawn from this card.",
+    },
+    missingInputs: ["authoritative_capacity_load"],
+    evidence: [`loadAuthoritativeCapacity failed: ${message}`],
+  };
+}
 
 function methodLabel(method: PerDocumentRemainingCapacity["method"]): string {
   switch (method) {
@@ -25,7 +70,17 @@ function methodLabel(method: PerDocumentRemainingCapacity["method"]): string {
   }
 }
 
-function DocumentCapacityRow({ d }: { d: PerDocumentRemainingCapacity }) {
+function DocumentCapacityRow({
+  d,
+  structuralUnresolvedIds,
+}: {
+  d: PerDocumentRemainingCapacity;
+  /** Phase E: permissions whose source provision's structural relationship is unresolved (display only). */
+  structuralUnresolvedIds: Set<string>;
+}) {
+  const bindingStructurallyUnresolved = (d.bindingConstraint ?? []).some(
+    (c) => c.permissionId != null && structuralUnresolvedIds.has(c.permissionId),
+  );
   return (
     <div className="row" key={d.documentId}>
       <div>
@@ -42,6 +97,7 @@ function DocumentCapacityRow({ d }: { d: PerDocumentRemainingCapacity }) {
               .join("; ")}
           </div>
         )}
+        {bindingStructurallyUnresolved && <div className="row-note">{STRUCTURAL_UNRESOLVED_NOTICE}</div>}
         {maxCapacityDetail(d.maximumCapacity) && <div className="row-note">{maxCapacityDetail(d.maximumCapacity)}</div>}
       </div>
       <div className="row-value">{d.remainingCapacity !== undefined ? fmtM(d.remainingCapacity) : "Not evaluated"}</div>
@@ -107,7 +163,7 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
   const [readiness, rulebook, authoritative] = await Promise.all([
     loadCapacityReadiness(companyId),
     loadRulebookReadiness(companyId),
-    loadAuthoritativeCapacity({ companyId }),
+    loadAuthoritativeCapacity({ companyId }).catch((err) => unavailableAuthoritativeCapacity(companyId, err)),
   ]);
 
   const northStarCard = (
@@ -237,6 +293,9 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
   }
 
   const { capacity } = dash;
+  // Phase E provenance for the binding citations below (display only —
+  // no figure on this page reads this set).
+  const structuralUnresolvedIds = await loadStructuralUnresolvedPermissionIds(companyId);
 
   return (
     <div className="stack">
@@ -258,7 +317,7 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
           {capacity.secured.binding && <Chip tone="navy">binding: {capacity.secured.binding.documentName}</Chip>}
         </div>
         {capacity.secured.perDocument.map((d) => (
-          <DocumentCapacityRow key={d.documentId} d={d} />
+          <DocumentCapacityRow key={d.documentId} d={d} structuralUnresolvedIds={structuralUnresolvedIds} />
         ))}
       </Card>
 
@@ -272,7 +331,7 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
           {capacity.unsecured.binding && <Chip tone="navy">binding: {capacity.unsecured.binding.documentName}</Chip>}
         </div>
         {capacity.unsecured.perDocument.map((d) => (
-          <DocumentCapacityRow key={d.documentId} d={d} />
+          <DocumentCapacityRow key={d.documentId} d={d} structuralUnresolvedIds={structuralUnresolvedIds} />
         ))}
       </Card>
 

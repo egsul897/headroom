@@ -9,7 +9,12 @@ import type {
   DefinitionRecord,
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
-import { analyzeProvision, type ProvisionAnalysis, type ProvisionPosture } from "./analyze-provision";
+import {
+  analyzeProvision,
+  type CrossReferenceResolution,
+  type ProvisionAnalysis,
+  type ProvisionPosture,
+} from "./analyze-provision";
 
 export type CovenantCategoryKey =
   | "DEBT_INCURRENCE"
@@ -83,7 +88,24 @@ export interface CovenantSummaryItem {
   governingAgreement: string;
   families: string[];
   relatedDefinedTerms: string[];
-  applicableDefinitions: Array<{ term: string; excerpt: string; resolved?: boolean }>;
+  applicableDefinitions: Array<{
+    term: string;
+    excerpt: string;
+    resolved?: boolean;
+    /** Differing duplicate definitions in the document — the entry
+     * is unresolved because picking one would be a guess. */
+    ambiguous?: boolean;
+  }>;
+  /** Additive (H3): structural resolution per cross-reference —
+   * resolved only on a unique same-document target; ambiguity and
+   * non-resolution carry reasons. Older stored summaries lack the
+   * field and keep reading via `crossReferences` alone. */
+  crossReferenceResolutions?: CrossReferenceResolution[];
+  /** Additive (H3): the provision references more defined terms
+   * than the per-provision listing bound; unlisted mentions are
+   * unresolved, not absent (disclosed in unresolvedQuestions). */
+  definitionCoverageIncomplete?: boolean;
+  definitionMentionsOmitted?: number;
   entityScope: {
     borrower: boolean;
     guarantor: boolean;
@@ -216,6 +238,9 @@ function itemFromAnalysis(
     applicableDefinitions: analysis.applicableDefinitions,
     entityScope: entityScopeFromAnalysis(analysis),
     crossReferences: analysis.crossReferences,
+    crossReferenceResolutions: analysis.crossReferenceResolutions,
+    definitionCoverageIncomplete: analysis.definitionCoverageIncomplete,
+    definitionMentionsOmitted: analysis.definitionMentionsOmitted,
     dependencies: analysis.dependencies,
     epistemicStatus: analysis.epistemicStatus,
     interpretationNote: analysis.interpretationNote,

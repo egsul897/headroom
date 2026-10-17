@@ -268,8 +268,14 @@ function scoreItem(item: CovenantSummaryItem, intent: QuestionIntent, tokens: st
     if (/foreign subsidiar|not a loan party|non-guarantor/i.test(hay)) score += 5;
   }
   if (intent === "LEVERAGE_DEFINITIONS") {
-    const defHit = (item.applicableDefinitions ?? []).some((d) =>
-      /leverage|ebitda|coverage|consolidated total debt|total net leverage/i.test(d.term),
+    // A definition HIT requires a located definition: an entry the
+    // summary marks unresolved (used here, not defined here — or
+    // ambiguously defined) must not boost the item as if it
+    // supplied the definition.
+    const defHit = (item.applicableDefinitions ?? []).some(
+      (d) =>
+        d.resolved !== false &&
+        /leverage|ebitda|coverage|consolidated total debt|total net leverage/i.test(d.term),
     );
     if (defHit) score += 10;
     if (/definition|means|shall mean/i.test(hay) && /leverage|ebitda|coverage/i.test(hay)) score += 8;
@@ -427,7 +433,11 @@ function composeAnswer(params: {
     if (defs.length > 0) {
       bits.push(
         `Material definitions: ${defs
-          .map((d) => `${d.term}${d.excerpt ? ` — “${d.excerpt.slice(0, 160)}”` : ""}`)
+          .map((d) =>
+            d.resolved === false
+              ? `${d.term} (definition not resolved in this document)`
+              : `${d.term}${d.excerpt ? ` — “${d.excerpt.slice(0, 160)}”` : ""}`,
+          )
           .join("; ")}.`,
       );
     } else if ((item.relatedDefinedTerms ?? []).length > 0) {
