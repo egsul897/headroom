@@ -321,7 +321,7 @@ export async function confirmEbitdaItem(
     if (refused) return refused;
   } else if (kind === "AMOUNT") {
     const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, flag, revenueBound(confirmedRevenue(prior), boxArgs, base));
-    if (!lim.ok) return { ok: false, status: 422, code: "NEEDS_BASE", error: lim.error };
+    if (!lim.ok) return { ok: false, status: 422, code: lim.code ?? "NEEDS_BASE", error: lim.error };
     if (BigInt(value) > lim.bound) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value exceeds the plausible maximum (${lim.basis})` };
     const check = cfoRecompute(priorArgs, [{ key: inputKey, value, source: input.source.trim() }]);
     const res = check.results[0]!;
@@ -364,14 +364,21 @@ export async function confirmEbitdaItem(
   return { ok: true, box, gain, boxId };
 }
 
-/** The revenue that bounds add-backs: the CFO-confirmed figure, lowered to the current ERP suggestion when that is
- *  smaller (ERP evidence can only tighten the bound, never widen it). */
-function revenueBound(confirmed: bigint | null, boxArgs: BoxArgs, base: AgreementPipelineResult): bigint | null {
+/** The ERP-evidenced revenue that bounds add-backs, with the reconciled EBITDA proxy that caps it. The revenue is the
+ *  CFO-confirmed figure, lowered to the current ERP suggestion when that is smaller (ERP evidence can only tighten the
+ *  bound, never widen it). */
+function revenueBound(confirmed: bigint | null, boxArgs: BoxArgs, base: AgreementPipelineResult): { revenue: bigint; proxy: bigint | null; proxyNote: string } | null {
   if (confirmed == null) return null;
   const opt = (base.xbrl as Xbrl | null)?.ebitda;
-  const s = erpEvidenceFor(boxArgs, { periodEnd: opt?.periodEnd ?? boxArgs.financials?.anchor ?? null, base: opt?.base ?? null })?.suggestions.find((x) => x.metric === "revenue" && x.status === "SUGGESTED");
+  const ev = erpEvidenceFor(boxArgs, { periodEnd: opt?.periodEnd ?? boxArgs.financials?.anchor ?? null, base: opt?.base ?? null });
+  const s = ev?.suggestions.find((x) => x.metric === "revenue" && x.status === "SUGGESTED");
   const e = s?.value != null ? BigInt(s.value) : null;
-  return e != null && e > 0n && e < confirmed ? e : confirmed;
+  const p = ev?.ebitdaProxy;
+  return {
+    revenue: e != null && e > 0n && e < confirmed ? e : confirmed,
+    proxy: p?.status === "RECONCILED" ? BigInt(p.value) : null,
+    proxyNote: !ev ? "no ERP evidence is available now" : p?.status === "MISSING" ? p.reason : "",
+  };
 }
 
 /** Latest CFO-confirmed revenue (BASE_METRIC METRIC:REVENUE), if any. */
@@ -491,7 +498,18 @@ async function replayOf(db: EbitdaBoxStore, scope: { companyId: string; document
  *  - otherwise nothing bounds it: NEEDS_BASE.
  * 1e12 is only an outer ceiling on top of a sourced bound, never the bound itself; the message names whichever applied.
  */
-function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: AddBackFlag | undefined, cfoRevenue: bigint | null = null): { ok: true; bound: bigint; basis: string } | { ok: false; error: string } {
+/**
+ * m in "bound <= m x reconciled filed (OI + D&A)", for add-backs bounded by an ERP-evidenced revenue: m = 1/2.
+ * Why: the revenue rule allows an add-back up to 50% of revenue. OI + D&A is an EBITDA proxy, and EBITDA = revenue minus
+ * cash operating costs, which are never negative. So OI + D&A <= true revenue, and 50% x (OI + D&A) <= 50% x true
+ * revenue: the cap is never above the TRUE revenue-derived bound, whatever scale error the ERP revenue carries and at
+ * any margin. A larger m would let a revenue error through at high margins; m is derived from the rule, not fit to
+ * fixtures. (It is far below the 10x-base-EBITDA rule used when the agreement's own base is known.)
+ */
+export const EBITDA_PROXY_BOUND_NUM = 1n;
+export const EBITDA_PROXY_BOUND_DEN = 2n;
+
+function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: AddBackFlag | undefined, cfoRevenue: { revenue: bigint; proxy: bigint | null; proxyNote: string } | null = null): { ok: true; bound: bigint; basis: string } | { ok: false; error: string; code?: "NEEDS_ERP_EVIDENCE" } {
   const int = (v: string | null | undefined) => (v != null && /^-?\d+$/.test(v) ? BigInt(v) : null);
   const within = (b: bigint, basis: string) => (b < MAX_CONFIRMED_USD ? { ok: true as const, bound: b, basis } : { ok: true as const, bound: MAX_CONFIRMED_USD, basis: "the 1e12 USD absolute ceiling" });
   const base = int(baseValue);
@@ -500,7 +518,15 @@ function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: Add
   if (c != null && c > 0n) return within(10n * c, "10x the clause's dollar cap");
   const rev = int(fin.values.find((v) => v.metric === "revenue")?.value);
   if (rev != null && rev > 0n) return within(rev / 2n, "50% of the issuer's reported revenue");
-  if (cfoRevenue != null && cfoRevenue > 0n) return within(cfoRevenue / 2n, "50% of the CFO-confirmed revenue (ERP evidence)");
+  if (cfoRevenue != null && cfoRevenue.revenue > 0n) {
+    // An ERP-evidenced revenue can carry an undetected scale error (see REVENUE_UPPER_RATIO_LIMIT). So it authorizes
+    // nothing on its own: the bound is also capped by EBITDA_PROXY_BOUND x reconciled filed (OI + D&A). Without that
+    // proxy the box allows exactly what it would without ERP: nothing.
+    if (cfoRevenue.proxy == null) return { ok: false, code: "NEEDS_ERP_EVIDENCE", error: `NEEDS_ERP_EVIDENCE: a revenue-derived bound needs filed operating income and D&A reconciled with the ERP (${cfoRevenue.proxyNote || "missing"}); base EBITDA is missing or not positive, so nothing else bounds this line` };
+    const byRevenue = cfoRevenue.revenue / 2n;
+    const byProxy = (cfoRevenue.proxy * EBITDA_PROXY_BOUND_NUM) / EBITDA_PROXY_BOUND_DEN;
+    return byProxy < byRevenue ? within(byProxy, "50% of the reconciled filed operating income + D&A (caps the ERP-evidenced revenue bound)") : within(byRevenue, "50% of the CFO-confirmed revenue (ERP evidence)");
+  }
   return { ok: false, error: "NEEDS_BASE: base EBITDA is missing or not positive and no other sourced figure (a dollar cap, revenue) bounds this line; the figure cannot be checked for plausibility" };
 }
 

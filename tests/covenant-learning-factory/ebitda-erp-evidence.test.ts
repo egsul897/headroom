@@ -217,19 +217,38 @@ describe("EBITDA box integration", () => {
     expect(withErp.erpEvidence?.status).toBe("READY");
     expect({ ...withErp, erpEvidence: undefined }).toEqual({ ...plain, erpEvidence: undefined });
   });
-  it("NEEDS_BASE → CFO confirms ERP LTM revenue (exact ref + value) → the add-back is bounded by 50% of it", async () => {
-    const x = a(ERP());
+  // Filed OI $60M (20%) and D&A $9M (3%), reconciled with the same ERP connection: the EBITDA proxy is $69M.
+  const withProxy = (oi = 60 * M, da = 9 * M) => withFin({ values: [...noBaseFin.values, flow("operatingIncome", oi), flow("depreciationAmortization", da)] });
+  const ERP_PROXY = (oi = 60 * M, da = 9 * M) => [...ERP(), ...monthly("operatingIncome", oi / 12, "6000"), ...monthly("depreciationAmortization", da / 12, "6100")];
+  it("NEEDS_BASE → CFO confirms ERP LTM revenue → the add-back is bounded by min(50% revenue, 50% reconciled OI + D&A)", async () => {
+    const x = a(ERP_PROXY(), withProxy());
     const db = fakeStore();
     expect(await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(2 * M), source: "x", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "NEEDS_BASE" });
     const s = revSuggestion(x);
+    expect(computeEbitdaBox(x).erpEvidence?.ebitdaProxy).toMatchObject({ status: "RECONCILED", value: String(69 * M), operatingIncome: String(60 * M), depreciationAmortization: String(9 * M) });
     const before = computeEbitdaBox(x).totalEbitda;
     const r = await confirmEbitdaItem(db, scope, x, { inputKey: "metric:revenue", kind: "BASE_METRIC", value: s.value!, source: s.sourceRef!, confirmedBy: "cfo" });
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.box.totalEbitda).toBe(before);
     expect(db.rows.at(-1)).toMatchObject({ inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(300 * M), confirmedBy: "cfo" });
-    expect(await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(150 * M + 1), source: "x", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "OUT_OF_RANGE" });
-    expect((await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(2 * M), source: "x", confirmedBy: "cfo" })).ok).toBe(true);
+    expect(await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(34.5 * M + 1), source: "x", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "OUT_OF_RANGE" });
+    expect((await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(34.5 * M), source: "x", confirmedBy: "cfo" })).ok).toBe(true);
+  });
+  it("without reconciled OI + D&A a confirmed ERP revenue authorizes nothing (NEEDS_ERP_EVIDENCE), as without ERP", async () => {
+    const db = fakeStore();
+    for (const [facts, f] of [[ERP(), noBaseFin], [[...ERP(), ...monthly("operatingIncome", 5 * M, "6000")], withFin({ values: [...noBaseFin.values, flow("operatingIncome", 60 * M)] })], [ERP_PROXY(-20 * M, 9 * M), withProxy(-20 * M, 9 * M)]] as const) {
+      const x = a([...facts], f);
+      const s = revSuggestion(x);
+      expect((await confirmEbitdaItem(db, scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: s.value!, source: s.sourceRef!, confirmedBy: "cfo" })).ok).toBe(true);
+      expect(computeEbitdaBox(x).erpEvidence?.ebitdaProxy.status).toBe("MISSING");
+      expect(await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: "1", source: "x", confirmedBy: "cfo" })).toMatchObject({ ok: false, status: 422, code: "NEEDS_ERP_EVIDENCE" });
+    }
+    expect(db.rows.filter((r) => r.kind === "AMOUNT")).toHaveLength(0);
+  });
+  it("the EBITDA proxy needs the revenue's own ERP connection", () => {
+    const facts = [...ERP(), ...monthly("operatingIncome", 5 * M, "6000", { connectionId: "conn2" }), ...monthly("depreciationAmortization", 0.75 * M, "6100", { connectionId: "conn2" })];
+    expect(computeEbitdaBox(a(facts, withProxy())).erpEvidence?.ebitdaProxy.status).toBe("MISSING");
   });
   it("an erp: source must quote the current suggestion exactly", async () => {
     const x = a(ERP()), s = revSuggestion(x), db = fakeStore();
@@ -310,7 +329,7 @@ describe("EBITDA box integration", () => {
     else expect(confirm).toMatchObject({ ok: false, status: 422, code: "NEEDS_ERP_EVIDENCE" });
     const addBack = await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(100_000 * M), source: "x", confirmedBy: "cfo" });
     expect(addBack).toMatchObject({ ok: false, status: 422 });
-    expect(["OUT_OF_RANGE", "NEEDS_BASE"]).toContain((addBack as { code?: string }).code);
+    expect(["OUT_OF_RANGE", "NEEDS_BASE", "NEEDS_ERP_EVIDENCE"]).toContain((addBack as { code?: string }).code);
     expect(db.rows.filter((r) => r.kind === "AMOUNT")).toHaveLength(0);
   });
   it("(minor) fetchedAt: impossible calendar dates and malformed instants are rejected (null), not normalized", () => {
@@ -338,12 +357,14 @@ describe("EBITDA box integration", () => {
     }
     expect(db.rows).toHaveLength(0);
   });
-  it("(optional) plausibleMax uses min(confirmed revenue, current ERP suggestion)", async () => {
+  it("(optional) the revenue bound uses min(confirmed revenue, current ERP suggestion)", async () => {
+    // Synthetic: OI + D&A ($321M) above revenue so the proxy cap is not the binding one and the min(...) is visible.
+    const x = a(ERP_PROXY(312 * M, 9 * M), withProxy(312 * M, 9 * M));
     const db = fakeStore();
-    // A document figure 2% above ERP is accepted ($306M); the add-back bound is then 50% of the ERP $300M, not $306M.
-    expect((await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(306 * M), source: "FY audited statements", confirmedBy: "cfo" })).ok).toBe(true);
-    expect(await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: keyOf("(f)"), value: String(150 * M + 1), source: "x", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "OUT_OF_RANGE" });
-    expect((await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: keyOf("(f)"), value: String(150 * M), source: "x", confirmedBy: "cfo" })).ok).toBe(true);
+    // A document figure 2% above ERP is accepted ($306M); the bound is then 50% of the ERP $300M, not of $306M.
+    expect((await confirmEbitdaItem(db, scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(306 * M), source: "FY audited statements", confirmedBy: "cfo" })).ok).toBe(true);
+    expect(await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(150 * M + 1), source: "x", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "OUT_OF_RANGE" });
+    expect((await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(150 * M), source: "x", confirmedBy: "cfo" })).ok).toBe(true);
   });
   it("(6) a BASE_METRIC revenue of 0 is NEEDS_INPUT (422) and writes nothing", async () => {
     const db = fakeStore();

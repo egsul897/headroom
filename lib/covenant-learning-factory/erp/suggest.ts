@@ -46,8 +46,15 @@ export interface ErpSuggestion {
   reason: string;
 }
 
+/** Filed operating income + D&A over the LTM window, each reconciled with the revenue's ERP connection (a strong anchor,
+ *  see qualifyingAnchors). The EBITDA proxy that bounds revenue-derived add-backs in the box; MISSING fails closed. */
+export type ErpEbitdaProxy =
+  | { status: "RECONCILED"; value: string; operatingIncome: string; depreciationAmortization: string; provider: string; connectionId: string; periods: string[] }
+  | { status: "MISSING"; reason: string };
+
 export interface ErpEvidence {
   status: "READY" | "NO_PERIOD";
+  ebitdaProxy: ErpEbitdaProxy;
   /** End of the LTM window (the box's filing period end). */
   asOf: string | null;
   /** When these ERP facts were read from the connector (ISO 8601, UTC); null when the caller did not say. Shown so the
@@ -74,12 +81,12 @@ export function ltmWindow(endIso: string): { start: string; end: string } | null
 /** A reconciled filed flow (scaled to 12 months) larger than this multiple of the ERP revenue fails the ratio check. */
 export const REVENUE_RATIO_LIMIT = 10n;
 /**
- * Upper bound: ERP LTM revenue may be at most this multiple of the largest anchor magnitude (12-month scaled). Why 100:
- * the anchors are net income, operating income, interest, income taxes and D&A. For a leveraged borrower (the only kind
- * Headroom serves), the largest of these is at least about 1% of revenue: D&A alone usually runs 2-6%, and interest on
- * funded debt rarely falls below 1%. So 100x leaves real thin-margin borrowers headroom and refuses every 1,000x units
- * error. It also refuses 100x and 10x revenue inflation whenever the largest anchor is above 1% (resp. 10%) of true
- * revenue. When a real borrower trips it, the result is NEEDS_INPUT (fail-closed): the CFO enters revenue from a document.
+ * Units backstop: ERP LTM revenue may be at most this multiple of the largest anchor magnitude (12-month scaled). This
+ * catches a revenue error factor f only when f > 100 x (largest anchor / true revenue). Every 1,000x units error is
+ * caught (no anchor exceeds 10x revenue, enforced by the lower check). 10x inflation is caught only when the largest
+ * anchor is below 10% of true revenue, which is common for NI or D&A but not for operating income at typical margins.
+ * So this check is NOT the add-back plausibility bound. That bound is EBITDA_PROXY_BOUND, applied in the box to every
+ * add-back limit derived from an ERP-evidenced revenue. NEEDS_INPUT when it trips (fail-closed).
  */
 export const REVENUE_UPPER_RATIO_LIMIT = 100n;
 /** An anchor must overlap at least this share of the LTM window's days. */
@@ -177,6 +184,28 @@ export function strictInstant(v: unknown): string | null {
   return Number.isFinite(t) ? new Date(t).toISOString() : null;
 }
 
+/**
+ * OI + D&A from the filings, each a strong anchor (same connection as the ERP revenue, >= 75% window coverage, material,
+ * within 50 bps), scaled to the LTM length. The best-covering anchor per metric is used. MISSING when either metric has
+ * no such anchor or the sum is not positive.
+ */
+export function ebitdaProxyFor(admitted: readonly AdmittedErpFact[], reconciliation: readonly ReconciliationEntry[], periodEnd: string): ErpEbitdaProxy {
+  const w = ltmWindow(periodEnd);
+  if (!w) return { status: "MISSING", reason: `period end ${periodEnd} is not an ISO date` };
+  const rev = sumOverWindow(admitted, "revenue", w.start, w.end);
+  if (!rev.ok) return { status: "MISSING", reason: `no ERP revenue connection for ${w.start}..${w.end}: ${rev.reason}` };
+  const ltmDays = epochDay(w.end)! - epochDay(w.start)! + 1;
+  const anchors = qualifyingAnchors(reconciliation, rev, w, ltmDays);
+  const pick = (m: ErpEvidenceMetric) => anchors.filter((a) => a.entry.metric === m)
+    .sort((a, b) => (epochDay(b.entry.periodEnd)! - epochDay(b.entry.periodStart)!) - (epochDay(a.entry.periodEnd)! - epochDay(a.entry.periodStart)!) || b.entry.periodEnd.localeCompare(a.entry.periodEnd))[0];
+  const oi = pick("operatingIncome"), da = pick("depreciationAmortization");
+  if (!oi || !da) return { status: "MISSING", reason: `no reconciled filed ${!oi ? "operating income" : "D&A"} from this ERP connection covers the LTM window` };
+  const signed = (a: { entry: ReconciliationEntry; scaled: bigint }) => (BigInt(a.entry.filing.value) < 0n ? -a.scaled : a.scaled);
+  const v = signed(oi) + signed(da);
+  if (v <= 0n) return { status: "MISSING", reason: `reconciled filed OI + D&A is ${v}; it cannot bound an add-back` };
+  return { status: "RECONCILED", value: v.toString(), operatingIncome: signed(oi).toString(), depreciationAmortization: signed(da).toString(), provider: rev.provider, connectionId: rev.connectionId, periods: [oi, da].map((a) => `${a.entry.metric} ${a.entry.periodStart}..${a.entry.periodEnd}`) };
+}
+
 /** Build the box's ERP evidence. With no facts there is nothing to say: callers omit the field. */
 export function erpEvidenceForBox(input: ErpEvidenceInput): ErpEvidence {
   const { admitted, rejected } = admitErpFacts(input.facts, input.companyId);
@@ -185,13 +214,13 @@ export function erpEvidenceForBox(input: ErpEvidenceInput): ErpEvidence {
   const fetchedAt = strictInstant(input.fetchedAt);
   const common = { fetchedAt, reconciliation, unreconciledPeriods, rejected: rejected.slice(0, 50), rejectedCount: rejected.length };
   if (!input.periodEnd || epochDay(input.periodEnd) == null) {
-    return { status: "NO_PERIOD", asOf: null, suggestions: [], ...common, note: "no filing period to anchor an LTM window; ERP figures are shown only as reconciliation" };
+    return { status: "NO_PERIOD", asOf: null, suggestions: [], ebitdaProxy: { status: "MISSING", reason: "no filing period" }, ...common, note: "no filing period to anchor an LTM window; ERP figures are shown only as reconciliation" };
   }
   const suggestions: ErpSuggestion[] = [];
   for (const m of CONFIRMABLE_ERP_METRICS) if (!filedHas(input.financials, m)) suggestions.push(suggestLtm(admitted, reconciliation, m, input.periodEnd, true));
   if (input.baseNeedsEvidence) for (const m of BASE_COMPONENT_METRICS) suggestions.push(suggestLtm(admitted, reconciliation, m, input.periodEnd, false));
   return {
-    status: "READY", asOf: input.periodEnd, suggestions, ...common,
+    status: "READY", asOf: input.periodEnd, suggestions, ebitdaProxy: ebitdaProxyFor(admitted, reconciliation, input.periodEnd), ...common,
     note: unreconciledPeriods ? `${unreconciledPeriods} filed period(s) do not reconcile with the ERP; overlapping ERP suggestions are blocked` : "ERP figures are evidence; nothing counts until the CFO confirms it",
   };
 }
