@@ -335,6 +335,7 @@ model Document {
   ebitdaBoxes                 CustomerEbitdaBox[]
   ebitdaConfirmations         CustomerEbitdaConfirmation[]
 
+  @@unique([id, companyId])
   @@map("documents")
 }
 
@@ -4702,7 +4703,8 @@ model CustomerEbitdaBox {
   payload    Json
   createdAt  DateTime @default(now()) @db.Timestamptz(6)
   company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  /// Composite FK: the document must belong to the same company.
+  document   Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Cascade)
 
   @@index([companyId, documentId, createdAt])
   @@map("customer_ebitda_boxes")
@@ -4725,10 +4727,14 @@ model CustomerEbitdaConfirmation {
   /// Server-side session principal id.
   confirmedBy    String?
   idempotencyKey String
+  /// Original response ({ boxId, gain }) returned verbatim on an idempotent replay.
+  response       Json?
   createdAt      DateTime @default(now()) @db.Timestamptz(6)
   updatedAt      DateTime @updatedAt @db.Timestamptz(6)
-  company        Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  /// RESTRICT: confirmation history is an audit trail; its company/document cannot be deleted out from under it.
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  /// Composite FK: the document must belong to the same company.
+  document       Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Restrict)
 
   @@unique([companyId, documentId, idempotencyKey])
   @@index([companyId, documentId, inputKey, createdAt])
