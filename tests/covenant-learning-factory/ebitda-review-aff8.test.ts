@@ -161,7 +161,7 @@ describe("note: EBITDA box runs after the upload response", () => {
   });
   it("task errors are reported, never thrown", async () => {
     const errs: unknown[] = []; const handed: Promise<unknown>[] = [];
-    runAfterResponse(async () => { throw new Error("sec down"); }, (e) => errs.push(e), (p) => handed.push(p));
+    runAfterResponse(async () => { throw new Error("sec down"); }, (e) => { errs.push(e); }, (p) => handed.push(p));
     await handed[0];
     expect(String(errs[0])).toMatch(/sec down/);
   });

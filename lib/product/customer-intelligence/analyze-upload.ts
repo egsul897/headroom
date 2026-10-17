@@ -499,10 +499,16 @@ export async function analyzeCustomerDocument(params: {
       if (outcome.status === "OK" && agreementText && process.env.CLF_EBITDA_BOX !== "0") {
         const known = { text: agreementText as string, sourceId };
         const { runAfterResponse } = await import("../../covenant-learning-factory/pipeline/after-response");
+        const scope = { companyId: params.companyId, documentId: params.documentId };
         runAfterResponse(async () => {
           const { refreshEbitdaBox } = await import("../../covenant-learning-factory/pipeline/ebitda-box-server");
-          await refreshEbitdaBox(params.companyId, params.documentId, known);
-        }, (err) => console.warn(`[ebitda-box] ${params.companyId}/${params.documentId}: ${err instanceof Error ? err.message : String(err)}`));
+          if (!(await refreshEbitdaBox(scope.companyId, scope.documentId, known))) throw new Error("agreement text not available for this document");
+        }, async (err) => {
+          // Persisted as a FAILED box so GET /ebitda surfaces the reason (best effort; never throws into the upload).
+          console.warn(`[ebitda-box] ${scope.companyId}/${scope.documentId}: ${err instanceof Error ? err.message : String(err)}`);
+          const [{ recordEbitdaBoxFailure }, { ebitdaBoxStore }] = await Promise.all([import("../../covenant-learning-factory/pipeline/ebitda-box"), import("../../covenant-learning-factory/pipeline/ebitda-box-server")]);
+          await recordEbitdaBoxFailure(ebitdaBoxStore(), scope, err);
+        });
         agreementPipeline = { ...agreementPipeline, ebitdaBox: { status: "SCHEDULED" } };
       }
     }

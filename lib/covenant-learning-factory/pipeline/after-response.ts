@@ -11,9 +11,9 @@ function platformWaitUntil(): WaitUntil | null {
   return typeof w === "function" ? w : null;
 }
 
-export function runAfterResponse(task: () => Promise<unknown>, onError: (err: unknown) => void = () => {}, waitUntil: WaitUntil | null = platformWaitUntil()): void {
+export function runAfterResponse(task: () => Promise<unknown>, onError: (err: unknown) => void | Promise<void> = () => {}, waitUntil: WaitUntil | null = platformWaitUntil()): void {
   // Deferred to a macrotask so nothing in the task runs inside the caller's (response) path.
-  const p = new Promise<void>((resolve) => setTimeout(resolve, 0)).then(task).then(() => undefined, (err) => { try { onError(err); } catch { /* never throw */ } });
+  const p = new Promise<void>((resolve) => setTimeout(resolve, 0)).then(task).then(() => undefined, async (err) => { try { await onError(err); } catch { /* never throw */ } });
   if (waitUntil) {
     try { waitUntil(p); } catch { /* detached */ }
   }
