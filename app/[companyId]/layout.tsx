@@ -4,6 +4,7 @@ import { getCompanySummary } from "@/lib/dashboard-service";
 import { AppShell } from "@/components/shell/AppShell";
 import { requireTenantOrRedirect } from "@/lib/auth/guard";
 import "../home-shell.css";
+import "../ux-features.css";
 
 /**
  * Company shell. The company card is the database name. The shell does not

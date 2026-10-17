@@ -1,0 +1,482 @@
+/* Six presentation surfaces. Graphite Ledger type, Plum & Slate only on the band meter. */
+
+.key-ratios {
+  display: grid;
+  gap: 8px;
+}
+
+.key-ratios-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.key-ratio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  min-height: 0;
+  padding: 10px 12px 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.key-ratio:hover {
+  border-color: var(--viz-1);
+}
+
+.key-ratio-label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.key-ratio-value {
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.key-ratio-value.is-missing {
+  color: var(--muted);
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.key-ratio-limit {
+  min-height: 1.15em;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.key-ratio .band-wrap {
+  margin-top: 4px;
+}
+
+.key-ratio .band-caption {
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.brief {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.7fr) minmax(0, 0.9fr);
+  gap: 28px;
+  margin: 4px 0 18px;
+  padding: 2px 0 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brief h2 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.brief p,
+.brief a {
+  margin: 6px 0 0;
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.brief a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.proof-trigger,
+.figure-hit {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.proof-trigger {
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.figure-hit {
+  color: inherit;
+  font-size: inherit;
+  text-decoration: none;
+}
+
+.proof-trigger:hover,
+.figure-hit:hover {
+  color: var(--accent);
+}
+
+.proof-figure {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.proof-value {
+  margin: 4px 0 16px;
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+.proof-kicker,
+.ux-block h2,
+.calendar-upcoming h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.proof-steps {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.proof-steps li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 2px 16px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.proof-step-name {
+  font-weight: 600;
+}
+
+.proof-step-source,
+.proof-missing,
+.ux-note,
+.band-caption,
+.calendar-missing {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.proof-step-source {
+  grid-column: 1 / -1;
+}
+
+.proof-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.proof-chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 8px;
+  color: var(--ink);
+}
+
+.ux-block {
+  margin: 16px 0;
+  padding: 16px 18px 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.ux-block-head,
+.scenario-save,
+.certificate-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ux-block-head p,
+.scenario-list span,
+.band-actual {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.certificate-sheet {
+  margin-top: 14px;
+  padding: 22px 22px 16px;
+  background: var(--card);
+  border: 1px solid var(--ink);
+}
+
+.certificate-head h3 {
+  margin: 8px 0 0;
+  font-size: 22px;
+  font-weight: 560;
+  letter-spacing: -0.02em;
+}
+
+.certificate-head p:last-child {
+  margin: 4px 0 16px;
+}
+
+.certificate-table,
+.scenario-compare {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.certificate-table th,
+.certificate-table td,
+.scenario-compare th,
+.scenario-compare td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.certificate-table td[data-verdict="NOT EVALUATED"] {
+  color: var(--muted);
+}
+
+.certificate-table td[data-verdict="FAIL"] {
+  color: var(--accent);
+}
+
+.certificate-sign {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 8px 12px;
+  margin-top: 22px;
+  max-width: 420px;
+}
+
+.certificate-sign p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.certificate-sign span {
+  border-bottom: 1px solid var(--ink);
+  min-height: 1.2em;
+}
+
+.certificate-actions {
+  justify-content: flex-start;
+  margin-top: 18px;
+}
+
+.scenario-save {
+  justify-content: flex-start;
+  margin: 12px 0;
+}
+
+.scenario-save input,
+.rules-list input {
+  display: block;
+  margin-top: 4px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--ink);
+  font: inherit;
+}
+
+.scenario-list,
+.band-list,
+.band-feed,
+.rules-list,
+.calendar-upcoming ul {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.scenario-list li,
+.band-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 16px;
+  padding: 8px 0;
+  border-top: 1px solid var(--line);
+}
+
+.band-list li {
+  grid-template-columns: minmax(0, 1.2fr) auto auto;
+  align-items: center;
+}
+
+.scenario-compare td.is-delta {
+  background: color-mix(in srgb, var(--viz-5) 55%, var(--card));
+}
+
+.calendar-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 12px;
+}
+
+.calendar-week,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-week {
+  margin-bottom: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.calendar-day {
+  position: relative;
+  min-height: 32px;
+  color: var(--muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.calendar-day.is-today span {
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--card);
+}
+
+.calendar-mark {
+  position: absolute;
+  left: 8px;
+  bottom: 2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--viz-1);
+}
+
+.calendar-upcoming li {
+  display: flex;
+  gap: 10px;
+  padding: 6px 0;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.calendar-upcoming li span {
+  min-width: 76px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.calendar-upcoming time {
+  margin-left: auto;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.band-meter {
+  display: inline-flex;
+  gap: 3px;
+  width: 72px;
+}
+
+.band-meter i {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--chart-track);
+}
+
+.band-meter[data-band="Healthy"] i:nth-child(1) {
+  background: var(--viz-4);
+}
+
+.band-meter[data-band="Moderate"] i:nth-child(-n + 2) {
+  background: var(--viz-2);
+}
+
+.band-meter[data-band="Danger"] i {
+  background: var(--viz-1);
+}
+
+.band-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rules-list li {
+  display: grid;
+  gap: 4px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 800px) {
+  .brief,
+  .calendar-layout,
+  .band-list li,
+  .key-ratios-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  body:has(.certificate-printing) * {
+    visibility: hidden;
+  }
+
+  body:has(.certificate-printing) .certificate-sheet,
+  body:has(.certificate-printing) .certificate-sheet * {
+    visibility: visible;
+  }
+
+  body:has(.certificate-printing) .certificate-sheet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: 0;
+  }
+
+  .certificate-actions {
+    display: none;
+  }
+}

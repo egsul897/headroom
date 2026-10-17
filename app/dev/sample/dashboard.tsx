@@ -3,9 +3,13 @@
 import { useState, type MouseEvent } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CountUp } from "@/components/motion/CountUp";
-import { ProvenanceDrawer } from "@/components/motion/ProvenanceDrawer";
+import { ProofDrawer } from "@/components/ux/ProofDrawer";
+import { MorningBrief } from "@/components/ux/MorningBrief";
 import { EbitdaTile } from "@/components/home/EbitdaTile";
 import { SAMPLE_ADD_BACKS, SAMPLE_EBITDA_BASE } from "./ebitda";
+import { KeyRatios } from "@/components/ux/KeyRatios";
+import { SAMPLE_BRIEF, SAMPLE_HEADROOM_PROOF, SAMPLE_KEY_RATIOS } from "./ux-sample";
+import type { FigureProof } from "@/lib/ux/present";
 
 const SAMPLE_ROWS = [
   {
@@ -55,15 +59,31 @@ const ALERTS = [
   },
 ] as const;
 
-type Panel = { title: string; source: string; clause: string; history: string; note?: string };
-
-function rowPanel(item: (typeof SAMPLE_ROWS)[number]): Panel {
+function rowProof(item: (typeof SAMPLE_ROWS)[number]): FigureProof {
   return {
-    title: item.covenant,
-    source: "Sample agreement. No source document is attached.",
+    figure: item.covenant,
+    value: item.headroom,
+    inputs: [
+      { label: "Required level", value: null, source: null },
+      { label: "Actual level", value: null, source: null },
+    ],
     clause: `${item.facility}. Sample language, not an operative clause.`,
-    history: "History has not been loaded.",
-    note: `Status ${item.status}. Headroom ${item.headroom}. Next test ${item.next}. Trend ${item.trend}. The same sample row. No company result.`,
+    page: null,
+    review: `${item.status}. Sample row. Not a company result.`,
+  };
+}
+
+function sampleProof(figure: string, value: string, clause: string | null = null): FigureProof {
+  return {
+    figure,
+    value,
+    inputs: [
+      { label: "Sample input", value, source: "Sample illustration. No source document is attached." },
+      { label: "Engine input", value: null, source: null },
+    ],
+    clause,
+    page: clause ? "Sample page 42" : null,
+    review: "Sample review. Not a company result.",
   };
 }
 
@@ -72,25 +92,20 @@ function rowPanel(item: (typeof SAMPLE_ROWS)[number]): Panel {
  * Every figure on this page is an illustration. Nothing here is a company result.
  */
 export function SampleDashboard({
-  initialDetail = false,
+  initialProof = false,
   initialEbitda = null,
   failedReason = null,
   staleSince = null,
 }: {
-  initialDetail?: boolean;
+  initialProof?: boolean;
   initialEbitda?: string | null;
   failedReason?: string | null;
   staleSince?: string | null;
 }) {
-  const [panel, setPanel] = useState<Panel | null>(initialDetail ? rowPanel(SAMPLE_ROWS[0]) : null);
+  const [panel, setPanel] = useState<FigureProof | null>(initialProof ? SAMPLE_HEADROOM_PROOF : null);
 
   function openHeadroom() {
-    setPanel({
-      title: "Total headroom",
-      source: "Sample illustration. No source document is attached.",
-      clause: "Sample agreement §6.04. Sample language, not an operative clause.",
-      history: "Sample spark from a made-up prior period. Not a loaded history.",
-    });
+    setPanel(SAMPLE_HEADROOM_PROOF);
   }
 
   return (
@@ -103,6 +118,7 @@ export function SampleDashboard({
           Read the clause
         </a>
       </header>
+      <MorningBrief model={SAMPLE_BRIEF} />
 
       <div className="home-board">
         <div className="home-kpis">
@@ -116,14 +132,7 @@ export function SampleDashboard({
           <section
             className="home-card home-kpi"
             aria-label="Utilization"
-            onClick={() =>
-              setPanel({
-                title: "Utilization",
-                source: "Sample illustration. No source document is attached.",
-                clause: "No clause is loaded for this sample figure.",
-                history: "History has not been loaded.",
-              })
-            }
+            onClick={() => setPanel(sampleProof("Utilization", "57% sample"))}
           >
             <h2 className="home-eyebrow">Utilization</h2>
             <p className="home-kpi-value">
@@ -137,14 +146,7 @@ export function SampleDashboard({
           <section
             className="home-card home-kpi"
             aria-label="Covenants at risk"
-            onClick={() =>
-              setPanel({
-                title: "Covenants at risk",
-                source: "Sample agreement. No source document is attached.",
-                clause: "Sample agreement §6.08. Sample language, not an operative clause.",
-                history: "History has not been loaded.",
-              })
-            }
+            onClick={() => setPanel(sampleProof("Covenants at risk", "1 sample", "Sample agreement §6.08. Sample language, not an operative clause."))}
           >
             <h2 className="home-eyebrow">Covenants at risk</h2>
             <p className="home-kpi-value">
@@ -157,14 +159,7 @@ export function SampleDashboard({
           <section
             className="home-card home-kpi"
             aria-label="Next test"
-            onClick={() =>
-              setPanel({
-                title: "Next test",
-                source: "No source document is attached.",
-                clause: "Sample agreement §7.01. Sample language, not an operative clause.",
-                history: "Sample date Dec 31, 2024. Not a loaded history.",
-              })
-            }
+            onClick={() => setPanel(sampleProof("Next test", "Dec 31, 2024 sample", "Sample agreement §7.01. Sample language, not an operative clause."))}
           >
             <h2 className="home-eyebrow">Next test</h2>
             <p className="home-kpi-value">Dec 31</p>
@@ -179,9 +174,10 @@ export function SampleDashboard({
             staleSince={staleSince}
           />
         </div>
+        <KeyRatios ratios={SAMPLE_KEY_RATIOS} />
 
         <div className="home-split">
-          <section className="home-card home-chart-card" aria-label="Headroom over time">
+          <section className="home-card home-chart-card" aria-label="Headroom over time" onClick={() => setPanel(sampleProof("Headroom over time", "$86 million sample"))}>
             <div className="home-card-head">
               <h2 className="home-eyebrow">Headroom over time</h2>
               <ul className="sample-legend">
@@ -195,7 +191,7 @@ export function SampleDashboard({
             </div>
             <Plot />
           </section>
-          <section className="home-card home-chart-card" aria-label="Capacity summary">
+          <section className="home-card home-chart-card" aria-label="Capacity summary" onClick={() => setPanel(sampleProof("Capacity summary", "$200 million sample"))}>
             <h2 className="home-eyebrow">Capacity summary</h2>
             <div className="sample-capacity">
               <span className="sample-ring sample-ring-lg" aria-hidden="true">
@@ -252,7 +248,7 @@ export function SampleDashboard({
                   {SAMPLE_ROWS.slice(0, 5).map((item) => (
                     <tr key={item.covenant}>
                       <td className="covenant-cell">
-                        <button type="button" className="covenant-name" title={item.covenant} onClick={() => setPanel(rowPanel(item))}>
+                        <button type="button" className="covenant-name" title={item.covenant} onClick={() => setPanel(rowProof(item))}>
                           {item.covenant}
                         </button>
                         <span className="covenant-meta" title={item.facility}>
@@ -278,15 +274,7 @@ export function SampleDashboard({
                   <button
                     type="button"
                     className="row-detail"
-                    onClick={() =>
-                      setPanel({
-                        title: item.name,
-                        source: "Sample illustration. No source document is attached.",
-                        clause: "No clause is loaded for this sample driver.",
-                        history: "History has not been loaded.",
-                        note: `${item.note} ${item.amount}. No company result.`,
-                      })
-                    }
+                    onClick={() => setPanel(sampleProof(item.name, item.amount))}
                   >
                     {item.name}
                   </button>
@@ -313,15 +301,7 @@ export function SampleDashboard({
                   <button
                     type="button"
                     className="row-detail"
-                    onClick={() =>
-                      setPanel({
-                        title: item.name,
-                        source: "Sample agreement. No source document is attached.",
-                        clause: item.clause,
-                        history: "History has not been loaded.",
-                        note: `${item.note} No company result.`,
-                      })
-                    }
+                    onClick={() => setPanel(sampleProof(item.name, item.note, item.clause))}
                   >
                     {item.name}
                   </button>
@@ -354,15 +334,7 @@ export function SampleDashboard({
         </div>
       </div>
 
-      <ProvenanceDrawer
-        open={panel != null}
-        title={panel?.title ?? "Detail"}
-        onClose={() => setPanel(null)}
-        source={panel?.source ?? ""}
-        clause={panel?.clause ?? ""}
-        history={panel?.history ?? ""}
-        note={panel?.note}
-      />
+      <ProofDrawer open={panel != null} proof={panel} onClose={() => setPanel(null)} />
     </div>
   );
 }

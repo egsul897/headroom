@@ -1,4 +1,6 @@
+import { ProofTrigger } from "@/components/ux/ProofDrawer";
 import { UNKNOWN_STATE, presentFigure, type FigureLoadState } from "@/lib/home/load-state";
+import { FIGURE_INPUTS, unloadedProof } from "@/lib/ux/present";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
 const SEGMENT_COLORS = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)", "var(--chart-1)"];
@@ -38,6 +40,7 @@ export function CapacitySummaryCard({ state = UNKNOWN_STATE }: { state?: FigureL
     return (
       <RegionCard region="capacity-summary" eyebrow="Capacity summary">
         <EmptyCopy slot="capacitySummary" state={presented} />
+        <ProofTrigger proof={unloadedProof("Capacity summary", null, FIGURE_INPUTS.capacitySummary)}>How we got this</ProofTrigger>
       </RegionCard>
     );
   }
@@ -60,10 +63,10 @@ export function CapacitySummaryCard({ state = UNKNOWN_STATE }: { state?: FigureL
           }}
           aria-hidden="true"
         >
-          <div className="home-capacity-donut-hole">
+          <ProofTrigger className="figure-hit home-capacity-donut-hole" proof={unloadedProof("Capacity summary", total, FIGURE_INPUTS.capacitySummary, { review: presented.display })}>
             <span className="home-capacity-total">{total}</span>
             <span className="home-capacity-total-label">Total capacity</span>
-          </div>
+          </ProofTrigger>
         </div>
         <ul className="home-capacity-legend">
           {segments.map((s, i) => (

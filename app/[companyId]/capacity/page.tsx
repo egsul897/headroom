@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { ActionMenu } from "@/components/ActionMenu";
 import { StatusBadge } from "@/components/StatusBadge";
-import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
-import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
+import { ProofTrigger } from "@/components/ux/ProofDrawer";
+import { FIGURE_INPUTS, unloadedProof } from "@/lib/ux/present";
 import { Card, Chip } from "@/components/ui";
 import { getCompanyDashboard } from "@/lib/dashboard-service";
 import { fmtM, maxCapacityDetail } from "@/lib/format";
@@ -74,11 +74,11 @@ function methodLabel(method: PerDocumentRemainingCapacity["method"]): string {
   }
 }
 
-function capacityClause(d: PerDocumentRemainingCapacity): string {
+function capacityClause(d: PerDocumentRemainingCapacity): string | null {
   const cites = (d.bindingConstraint ?? [])
     .map((c) => `${c.sectionRef}${c.permissionId ? ` (${c.permissionId})` : ""}`)
     .filter((cite) => cite.trim().length > 0);
-  if (cites.length === 0) return UNLOADED_CLAUSE;
+  if (cites.length === 0) return null;
   return `${cites.join("; ")}. Clause text is not loaded.`;
 }
 
@@ -111,17 +111,18 @@ function DocumentCapacityRow({
         )}
         {bindingStructurallyUnresolved && <div className="row-note">{STRUCTURAL_UNRESOLVED_NOTICE}</div>}
         {maxCapacityDetail(d.maximumCapacity) && <div className="row-note">{maxCapacityDetail(d.maximumCapacity)}</div>}
-        <OpenProvenanceButton
-          title={d.documentName || "Capacity"}
-          source={d.documentName?.trim() ? d.documentName : UNLOADED_SOURCE}
-          clause={capacityClause(d)}
-          history={UNLOADED_HISTORY}
-          note="The remaining figure on this row is unchanged. Nothing new was loaded."
-        >
-          Open detail
-        </OpenProvenanceButton>
       </div>
-      <div className="row-value num">{d.remainingCapacity !== undefined ? fmtM(d.remainingCapacity) : "Not evaluated"}</div>
+      <ProofTrigger
+        className="row-value num figure-hit"
+        proof={unloadedProof(
+          d.documentName || "Capacity",
+          d.remainingCapacity !== undefined ? fmtM(d.remainingCapacity) : null,
+          FIGURE_INPUTS.capacityRemaining,
+          { clause: capacityClause(d), review: methodLabel(d.method) },
+        )}
+      >
+        {d.remainingCapacity !== undefined ? fmtM(d.remainingCapacity) : "Not evaluated"}
+      </ProofTrigger>
     </div>
   );
 }
@@ -274,9 +275,9 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
           <div className="card-subtitle">
             <StatusBadge status="NOT DETERMINABLE" /> — no executable capacity evaluation for this workspace.
           </div>
-          <OpenProvenanceButton title="Secured / unsecured debt capacity" note="Capacity is not determinable. This panel did not load a source, a clause, or a history.">
-            Open detail
-          </OpenProvenanceButton>
+          <ProofTrigger proof={unloadedProof("Secured / unsecured debt capacity", null, FIGURE_INPUTS.capacityRemaining, { review: "Not determinable" })}>
+            How we got this
+          </ProofTrigger>
           <div className="row-note" style={{ marginTop: 8 }}>
             Discovery-level covenant summaries (if any) explain restrictions and baskets in text; they do not establish
             remaining contractual headroom. Required for a supported capacity figure: (1) operative amendment resolution,
@@ -341,15 +342,16 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
           {capacity.secured.remainingCapacity !== undefined ? fmtM(capacity.secured.remainingCapacity) : "Not evaluated"}{" "}
           {capacity.secured.binding && <Chip tone="navy">binding: {capacity.secured.binding.documentName}</Chip>}
         </div>
-        <OpenProvenanceButton
-          title="Secured debt capacity"
-          source={capacity.secured.binding?.documentName?.trim() ? capacity.secured.binding.documentName : UNLOADED_SOURCE}
-          clause={UNLOADED_CLAUSE}
-          history={UNLOADED_HISTORY}
-          note="The overall figure on this card is unchanged. Nothing new was loaded."
+        <ProofTrigger
+          proof={unloadedProof(
+            "Secured debt capacity",
+            capacity.secured.remainingCapacity !== undefined ? fmtM(capacity.secured.remainingCapacity) : null,
+            FIGURE_INPUTS.capacityRemaining,
+            { review: "Legacy engine" },
+          )}
         >
-          Open detail
-        </OpenProvenanceButton>
+          How we got this
+        </ProofTrigger>
         {capacity.secured.perDocument.map((d) => (
           <DocumentCapacityRow key={d.documentId} d={d} structuralUnresolvedIds={structuralUnresolvedIds} />
         ))}
@@ -364,15 +366,16 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
             : "Not evaluated"}{" "}
           {capacity.unsecured.binding && <Chip tone="navy">binding: {capacity.unsecured.binding.documentName}</Chip>}
         </div>
-        <OpenProvenanceButton
-          title="Unsecured debt capacity"
-          source={capacity.unsecured.binding?.documentName?.trim() ? capacity.unsecured.binding.documentName : UNLOADED_SOURCE}
-          clause={UNLOADED_CLAUSE}
-          history={UNLOADED_HISTORY}
-          note="The overall figure on this card is unchanged. Nothing new was loaded."
+        <ProofTrigger
+          proof={unloadedProof(
+            "Unsecured debt capacity",
+            capacity.unsecured.remainingCapacity !== undefined ? fmtM(capacity.unsecured.remainingCapacity) : null,
+            FIGURE_INPUTS.capacityRemaining,
+            { review: "Legacy engine" },
+          )}
         >
-          Open detail
-        </OpenProvenanceButton>
+          How we got this
+        </ProofTrigger>
         {capacity.unsecured.perDocument.map((d) => (
           <DocumentCapacityRow key={d.documentId} d={d} structuralUnresolvedIds={structuralUnresolvedIds} />
         ))}
