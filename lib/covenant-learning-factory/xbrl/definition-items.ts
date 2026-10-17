@@ -29,19 +29,63 @@ export function plainText(text: string): string {
  * What follows a quoted defined term: a defining verb ("means", "shall mean", "shall have the meaning",
  * "has the meaning") or the colon convention ("Term": ...), a colon then whitespace.
  */
-const DEFINES = String.raw`(?:\s*(?:shall\s+)?(?:mean|means|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\b|\s*:(?=\s))`;
+const MEANS = String.raw`\s*(?:shall\s+)?(?:mean|means|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\b`;
+const DEFINES = String.raw`(?:${MEANS}|\s*:(?=\s))`;
+/** A colon-convention opener only at the start of an entry (start of text or after ". ", "; ", a line break), never inside a parenthesis. */
+const COLON_LEAD = String.raw`(?:^|(?<=[.;:]\s{0,4})|(?<=\n\s{0,4}))`;
+/** "has the meaning given in Schedule 1" / "assigned to such term in the Credit Agreement": a pointer, not a definition. */
+const STUB = /^\s*(?:shall\s+)?(?:have|has)\s+the\s+meaning(?:s)?\s+(?:given|assigned|set\s+forth|specified|provided|ascribed|attributed)\b(?:[^.;]|\.(?=\d)){0,160}?\b(?:in|to|under|by)\b(?:[^.;]|\.(?=\d)){0,200}[.;]?\s*$/i;
 
+type Opener = { at: number; head: number; colon: boolean };
+function openers(t: string, esc: string): Opener[] {
+  const out: Opener[] = [];
+  for (const m of t.matchAll(new RegExp(`"\\s*${esc}\\s*"(?=${MEANS})`, "gi"))) out.push({ at: m.index!, head: m[0].length, colon: false });
+  for (const m of t.matchAll(new RegExp(`${COLON_LEAD}"\\s*${esc}\\s*"\\s*:(?=\\s)`, "gim"))) {
+    if (t[m.index! - 1] === "(") continue;
+    out.push({ at: m.index!, head: m[0].length, colon: true });
+  }
+  return out.sort((a, b) => a.at - b.at);
+}
+/** End of the entry that starts at `from`: the next defined-term opener (a colon opener only when the document uses that convention). */
+function entryEnd(t: string, from: number, colonDocs: boolean): number {
+  const after = t.slice(from);
+  const means = new RegExp(`"\\s*[A-Z][^"]{1,80}"${MEANS}`).exec(after);
+  const colon = colonDocs ? new RegExp(`${COLON_LEAD}"\\s*[A-Z][^"]{1,80}"\\s*:(?=\\s)`, "m").exec(after) : null;
+  const cands = [means, colon].filter((x): x is RegExpExecArray => !!x && (x.index! > 0 || x !== colon)).map((x) => x.index!);
+  const k = cands.length ? Math.min(...cands) : Math.min(after.length, 100_000);
+  return from + k;
+}
+
+/**
+ * The definition of `term`. The "means" form is preferred; the colon form ("Term": …) is used only when there is no
+ * "means" definition. A pointer ("has the meaning given in Schedule 1") is used only when no real definition exists.
+ * Colon headings and table-of-contents lines (no prose body) are not definitions, and a colon inside the body (a
+ * parenthetical defined term, "the following:") never ends it.
+ */
 export function findDefinitionText(text: string, term: string): string | null {
   const t = plainText(text);
   const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
-  const m = new RegExp(`"\\s*${esc}\\s*"${DEFINES}`, "i").exec(t);
-  if (!m) return null;
-  // Real Consolidated EBITDA schedules routinely run 8k–25k+ chars of add-backs before the next
-  // defined term. Search the remainder for the next `"Term" means` opener (no 8k/3k cutoffs).
-  const after = t.slice(m.index + m[0].length);
-  const next = new RegExp(`"\\s*[A-Z][^"]{1,80}"${DEFINES}`).exec(after);
-  const end = next ? m[0].length + next.index : Math.min(m[0].length + after.length, 100_000);
-  return t.slice(m.index, m.index + end).trim();
+  const all = openers(t, esc);
+  if (!all.length) return null;
+  const colonDocs = all.some((o) => o.colon);
+  const entries = all.map((o) => {
+    const end = entryEnd(t, o.at + o.head, o.colon && colonDocs);
+    const body = t.slice(o.at + o.head, end);
+    return { o, text: t.slice(o.at, end).trim(), body };
+  });
+  // Real Consolidated EBITDA schedules routinely run 8k–25k+ chars of add-backs before the next defined term.
+  const real = (e: (typeof entries)[number]) => !STUB.test(e.body) && (!e.o.colon || isColonBody(e.body));
+  const pick = entries.find((e) => !e.o.colon && real(e)) ?? entries.find((e) => e.o.colon && real(e)) ?? entries.find((e) => !e.o.colon);
+  return pick ? pick.text : null;
+}
+
+/** A colon entry with a prose body: not a heading, a page number or a run of table-of-contents entries. */
+function isColonBody(body: string): boolean {
+  const b = body.trim();
+  if (b.length < 30) return false;
+  if (/^(?:\d{1,4}|[ivxl]{1,6})\b/i.test(b)) return false;
+  if (/^"[^"]{1,80}"\s*:/.test(b)) return false;
+  return /[a-z]{3,}\s+[a-z]{2,}\s+[a-z]{2,}/i.test(b.slice(0, 200));
 }
 
 /**
