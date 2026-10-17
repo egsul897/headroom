@@ -83,7 +83,16 @@ describe("GS1-GS4 governing scope is a typed structural chain of ancestor lead-i
     // refuses the cross-article parentage the old rank-stack
     // assigned). 9.2 is a root; the chain is [9.2] (distance
     // 1) + the unparsed preamble beyond it (distance 2). The
-    // preamble recovery itself is unchanged.
+    // preamble recovery itself is unchanged. This is NOT a
+    // weakening: live-7-2c-governing-replay (real certified
+    // replay on real data, "the parser produced no Article
+    // VII node", chain [7.2]) expects the IDENTICAL
+    // missing-article preamble at distance 2. DOC_A@3 and
+    // live-7-2c@2 cannot both hold under correct parentage;
+    // the real-data replay is authoritative, so DOC_A is
+    // aligned to it. The substantive assertions below
+    // (preamble text, entity scope, action, prohibition)
+    // are unchanged.
     expect(g.ancestorRegions.map((r) => [r.role, r.derivation, r.sectionRef, r.ancestorDistance])).toEqual([["PARENT_SCOPE", "STRUCTURAL_ANCESTOR_LEAD_IN", "9.2", 1], ["GOVERNING_SCOPE", "UNPARSED_ARTICLE_PREAMBLE", "article-group:9", 2]]);
     expect(g.ancestorRegions[0]!.text).toBe("SECTION 9.2 Limitation on Indebtedness . Create, incur, assume or suffer to exist any Indebtedness, except:");
     expect(g.ancestorRegions[1]!.text).toBe(`NEGATIVE COVENANTS\n${PREAMBLE}`);
@@ -95,8 +104,11 @@ describe("GS1-GS4 governing scope is a typed structural chain of ancestor lead-i
     expect(g.governingProhibition).toMatchObject({ sectionRef: "article-group:9", role: "GOVERNING_SCOPE" });
     // Phase C (Hardening): ARTICLE I is no longer an ancestor
     // (9.x sections are not parented to it), so there is no
-    // heading-only-ancestor note. The preamble fallback note
-    // (no ARTICLE ancestor -> major-number grouping) is present.
+    // heading-only-ancestor note — that note required the
+    // defective parentage. The preamble fallback note (no
+    // ARTICLE ancestor -> major-number grouping) is present.
+    // live-7-2c asserts no such nearest-article note for the
+    // identical missing-article case.
     expect(g.notes).toEqual(["outermost non-article ancestor 9.2 has no ARTICLE ancestor; falling back to major-number grouping for preamble recovery (certified missing-article path — the article node is missing, not mis-attributed)"]);
   });
   it("GS1 (parsed ARTICLE, B): the ARTICLE node's own preamble is the governing region; an unqualified 'Restricted Subsidiary' denotes exactly the two restricted classes the enum splits it into - no RESTRICTED_SUBSIDIARY tag exists or is invented", () => {

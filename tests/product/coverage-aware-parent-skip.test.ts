@@ -27,7 +27,10 @@ function buildText(clauseAt: number): { text: string; clauseStart: number } {
 function nodesFor(clauseStart: number): StructuralNodeRecord[] {
   return [
     { nodeId: "n-parent", sourceId: "src", nodeType: "SECTION", sectionRef: "6.01", heading: "Indebtedness", charStart: 0, charEnd: 30 },
-    { nodeId: "n-clause", sourceId: "src", nodeType: "CLAUSE", sectionRef: "6.01(k)", heading: "6.01(k)", charStart: clauseStart, charEnd: clauseStart + 60 },
+    // P0 correction: the parent link is structural authority
+    // (parentNodeId), never ref inference. The clause is a
+    // validated child of n-parent.
+    { nodeId: "n-clause", sourceId: "src", nodeType: "CLAUSE", sectionRef: "6.01(k)", heading: "6.01(k)", charStart: clauseStart, charEnd: clauseStart + 60, parentNodeId: "n-parent" },
   ];
 }
 
@@ -52,7 +55,7 @@ describe("Rule 193: coverage-aware parent-skip", () => {
     const { text, clauseStart } = buildText(2000);
     const cands = discoverCovenantCandidates("src", text, [
       { nodeId: "n-parent", sourceId: "src", nodeType: "SECTION", sectionRef: "6.01", heading: "Indebtedness", charStart: 0, charEnd: 30 },
-      { nodeId: "n-sub", sourceId: "src", nodeType: "SUBSECTION", sectionRef: "6.01(k)", heading: "6.01(k)", charStart: clauseStart, charEnd: clauseStart + 60 },
+      { nodeId: "n-sub", sourceId: "src", nodeType: "SUBSECTION", sectionRef: "6.01(k)", heading: "6.01(k)", charStart: clauseStart, charEnd: clauseStart + 60, parentNodeId: "n-parent" },
     ]);
     const refs = cands.map((c) => c.nodeId);
     expect(refs).toContain("n-sub");
@@ -69,8 +72,8 @@ describe("Rule 193: coverage-aware parent-skip", () => {
     const { text } = buildText(4500);
     const cands = discoverCovenantCandidates("src", text, [
       { nodeId: "n-parent", sourceId: "src", nodeType: "SECTION", sectionRef: "6.02", heading: "Liens", charStart: 0, charEnd: 30 },
-      { nodeId: "n-clause", sourceId: "src", nodeType: "SUBSECTION", sectionRef: "6.02(l)", heading: "6.02(l)", charStart: 100, charEnd: 160 },
-      { nodeId: "n-frag", sourceId: "src", nodeType: "CLAUSE", sectionRef: "6.02(l)(a)", heading: "6.02(l)(a)", charStart: 4500, charEnd: 4560 },
+      { nodeId: "n-clause", sourceId: "src", nodeType: "SUBSECTION", sectionRef: "6.02(l)", heading: "6.02(l)", charStart: 100, charEnd: 160, parentNodeId: "n-parent" },
+      { nodeId: "n-frag", sourceId: "src", nodeType: "CLAUSE", sectionRef: "6.02(l)(a)", heading: "6.02(l)(a)", charStart: 4500, charEnd: 4560, parentNodeId: "n-clause" },
       // A following SECTION node bounds the (l) span at 6000.
       { nodeId: "n-next", sourceId: "src", nodeType: "SECTION", sectionRef: "6.03", heading: "Other", charStart: 6000, charEnd: 6060 },
     ]);

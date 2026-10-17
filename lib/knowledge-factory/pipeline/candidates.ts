@@ -7,7 +7,6 @@ import { classifyFamiliesFromText, isAdministrativeProvision, stripCatchAllFallb
 import { scoreDiscoveryPotential } from "../rank/discovery-score";
 import { detectPatternsInText } from "../patterns/library";
 import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRecord } from "../types";
-import { isRefDescendant } from "../../contract-model/compiler/structural-integrity";
 
 /** A dotted-leader page-number line, e.g. "Section 6.01 Limitation on Indebtedness .... 45". */
 const TOC_LEADER_LINE = /^\s*(?:Section|§)\s*[\dA-Za-z.()-]+\s+.+\.{3,}\s*\d+\s*$/m;
@@ -254,35 +253,21 @@ export function discoverCovenantCandidates(
   // Without the fallback the whole subtree vanishes (the real
   // Calumet amendment lost its availability + sublimit clauses).
   const allSorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
-  // Phase C (D8): coverage is keyed by node OCCURRENCE (nodeId),
-  // never by sectionRef label. Keying by label merged distinct
-  // provisions across instruments (CA §5.01 suppressing Guaranty
-  // §5.01(a) children) and inherited families from the wrong
-  // instrument. The parent is node.parentNodeId (parser-validated),
-  // never parentRefOf string surgery.
-  // Phase C (D8) follow-up — bounded fallback for parentless
-  // nodes (Rule 193). parentNodeId is authoritative; when a
-  // node has NO parent pointer (legacy / hand-constructed /
-  // test nodes), infer the parent by ref: the deepest
-  // (longest-ref) same-document node whose ref is a valid
-  // ancestor of this node's ref (isRefDescendant, so the
-  // 7.011-is-not-a-child-of-7.01 trap cannot fire). The
-  // fallback NEVER overrides a present parentNodeId, so a
-  // real Guaranty 6.01(k) with a pointer to Guaranty 6.01
-  // cannot inherit CA 6.01's families through the label.
-  const inferredParentId = (node: StructuralNodeRecord): string | null => {
-    if (node.parentNodeId !== null && node.parentNodeId !== undefined) return node.parentNodeId;
-    let best: StructuralNodeRecord | null = null;
-    for (const cand of allSorted) {
-      if (cand.nodeId === node.nodeId) continue;
-      if (cand.sourceId !== node.sourceId) continue;
-      if (cand.charStart >= node.charStart) continue; // nearest preceding only
-      if (isRefDescendant(cand.sectionRef, cand.nodeType, node.sectionRef) !== true) continue;
-      if (!best || cand.sectionRef.length > best.sectionRef.length) best = cand;
-    }
-    return best?.nodeId ?? null;
-  };
-
+  // Phase C (D8, corrected P0): coverage is keyed by node
+  // OCCURRENCE (nodeId), never by sectionRef label, and the
+  // parent is ONLY node.parentNodeId (parser-validated
+  // structural authority). There is NO ref-based parent
+  // inference: reconstructing parentage from sectionRefs +
+  // source positions cannot establish instrument boundaries
+  // or span containment, so an inferred relationship must
+  // never drive coverage suppression or family inheritance.
+  // A node with no parent pointer (null / undefined /
+  // dangling) is UNRESOLVED — it is never suppressed and
+  // never inherits; it keeps its own classification and
+  // gets its own candidate (fail-closed). Keying by label
+  // merged distinct provisions across instruments (CA
+  // §5.01 suppressing Guaranty §5.01(a) children) and
+  // inherited families from the wrong instrument.
   const coveredNodeIds = new Set<string>();
   // Parent coverage (Rule 193): a candidate's excerpt end
   // (4000-char cap), span end, and the node type that produced
@@ -356,7 +341,7 @@ export function discoverCovenantCandidates(
       node.nodeType === "SUBCLAUSE" ||
       node.nodeType === "SUBSECTION"
     ) {
-      const parent = inferredParentId(node);
+      const parent = node.parentNodeId ?? null;
       // NOTE: a child of a SKIPPED fragment is NOT skipped here.
       // The real Strata 6.02(l)(e)(A) escapes this way (its
       // parent (e) was blanket-skipped), but cascading the skip
@@ -402,7 +387,7 @@ export function discoverCovenantCandidates(
     // filter); SECTION/ARTICLE nodes have no parent ref
     // (parentNodeId is null) so they never inherit.
     if (families.length === 1 && families[0] === "UNKNOWN") {
-      const parent = inferredParentId(node);
+      const parent = node.parentNodeId ?? null;
       const inherited = parent ? coveredFamilies.get(parent) : undefined;
       if (inherited && !(inherited.length === 1 && inherited[0] === "UNKNOWN")) {
         families = inherited;
