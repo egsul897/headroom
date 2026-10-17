@@ -1,10 +1,60 @@
+"use client";
+
+import { useState } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
+import { CountUp } from "@/components/motion/CountUp";
+import { DetailDrawer } from "@/components/motion/DetailDrawer";
+import { useToast } from "@/components/motion/Toast";
 
 /**
  * Illustration of the dashboard grid. Every figure is sample copy.
  * Production overview never imports this module.
  */
-export function SampleDashboard() {
+const SAMPLE_ROWS = [
+  {
+    covenant: "Sample maintenance covenant",
+    facility: "Sample agreement §7.01",
+    status: "NEEDS_INPUT",
+    headroom: "Not evaluated",
+    trend: "Unknown",
+    next: "Sample date",
+  },
+  {
+    covenant: "Sample indebtedness covenant",
+    facility: "Sample agreement §6.04",
+    status: "DISCOVERED",
+    headroom: "$40 million sample",
+    trend: "Unknown",
+    next: "Unknown",
+  },
+  {
+    covenant: "Sample restricted payment",
+    facility: "Sample agreement §6.08",
+    status: "REVIEW_REQUIRED",
+    headroom: "Not evaluated",
+    trend: "Unknown",
+    next: "Unknown",
+  },
+] as const;
+
+const SAMPLE_ALERTS = [
+  "Sample alert: a clause still needs a person.",
+  "Sample alert: a document is discovered, not approved.",
+];
+
+export function SampleDashboard({ initialDetail = false }: { initialDetail?: boolean }) {
+  const [row, setRow] = useState<number | null>(initialDetail ? 0 : null);
+  const [hiddenAlerts, setHiddenAlerts] = useState<number[]>([]);
+  const toast = useToast();
+  const open = row == null ? null : SAMPLE_ROWS[row];
+
+  function hideAlert(index: number) {
+    setHiddenAlerts((current) => (current.includes(index) ? current : [...current, index]));
+    toast("Hidden on this screen. The sample alert is still sample text.", () => {
+      setHiddenAlerts((current) => current.filter((item) => item !== index));
+    });
+  }
+
   return (
     <div className="home-overview">
       <header className="home-top">
@@ -31,7 +81,9 @@ export function SampleDashboard() {
       <div className="home-kpis">
         <section className="home-card" aria-label="Total Headroom">
           <h2 className="home-eyebrow">Total headroom</h2>
-          <p className="home-kpi-value home-kpi-value-hero">$86 million</p>
+          <p className="home-kpi-value home-kpi-value-hero">
+            <CountUp text="$86 million" />
+          </p>
           <p className="home-kpi-caption">Sample incremental. Not engine-backed.</p>
           <p className="home-kpi-caption">Sample change versus a made-up prior period.</p>
           <div className="sample-chart" aria-hidden="true">
@@ -45,7 +97,9 @@ export function SampleDashboard() {
           <div className="home-util">
             <div className="home-util-ring" style={{ background: "conic-gradient(var(--chart-1) 0deg 194deg, var(--chart-track) 194deg 360deg)" }} aria-hidden="true">
               <div className="home-util-ring-hole">
-                <span className="home-util-pct">54%</span>
+                <span className="home-util-pct">
+                  <CountUp text="54%" />
+                </span>
               </div>
             </div>
             <p className="home-kpi-caption">Sample used against a sample cap.</p>
@@ -53,7 +107,9 @@ export function SampleDashboard() {
         </section>
         <section className="home-card" aria-label="Covenants at risk">
           <h2 className="home-eyebrow">Covenants at risk</h2>
-          <p className="home-kpi-value home-kpi-value-hero">1</p>
+          <p className="home-kpi-value home-kpi-value-hero">
+            <CountUp text="1" />
+          </p>
           <p className="home-kpi-caption">Sample count. One clause needs a person.</p>
           <p className="home-kpi-caption">
             <StatusBadge status="REVIEW_REQUIRED" />
@@ -91,7 +147,9 @@ export function SampleDashboard() {
               aria-hidden="true"
             >
               <div className="home-capacity-donut-hole">
-                <span className="home-capacity-total">$160 million</span>
+                <span className="home-capacity-total">
+                  <CountUp text="$160 million" />
+                </span>
                 <span className="home-capacity-total-label">Sample total</span>
               </div>
             </div>
@@ -134,36 +192,22 @@ export function SampleDashboard() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Sample maintenance covenant</td>
-                  <td>Sample agreement §7.01</td>
-                  <td>
-                    <StatusBadge status="NEEDS_INPUT" />
-                  </td>
-                  <td className="num">Not evaluated</td>
-                  <td>Unknown</td>
-                  <td>Sample date</td>
-                </tr>
-                <tr>
-                  <td>Sample indebtedness covenant</td>
-                  <td>Sample agreement §6.04</td>
-                  <td>
-                    <StatusBadge status="DISCOVERED" />
-                  </td>
-                  <td className="num">$40 million sample</td>
-                  <td>Unknown</td>
-                  <td>Unknown</td>
-                </tr>
-                <tr>
-                  <td>Sample restricted payment</td>
-                  <td>Sample agreement §6.08</td>
-                  <td>
-                    <StatusBadge status="REVIEW_REQUIRED" />
-                  </td>
-                  <td className="num">Not evaluated</td>
-                  <td>Unknown</td>
-                  <td>Unknown</td>
-                </tr>
+                {SAMPLE_ROWS.map((item, index) => (
+                  <tr key={item.covenant}>
+                    <td>
+                      <button type="button" className="row-detail" onClick={() => setRow(index)}>
+                        {item.covenant}
+                      </button>
+                    </td>
+                    <td>{item.facility}</td>
+                    <td>
+                      <StatusBadge status={item.status} />
+                    </td>
+                    <td className="num">{item.headroom}</td>
+                    <td>{item.trend}</td>
+                    <td>{item.next}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -182,8 +226,16 @@ export function SampleDashboard() {
         <section className="home-card" aria-label="Recent alerts">
           <h2 className="home-eyebrow">Recent alerts</h2>
           <ul className="home-loaded">
-            <li>Sample alert: a clause still needs a person.</li>
-            <li>Sample alert: a document is discovered, not approved.</li>
+            {SAMPLE_ALERTS.map((alert, index) =>
+              hiddenAlerts.includes(index) ? null : (
+                <li key={alert} className="home-dismiss-row">
+                  <span>{alert}</span>
+                  <button type="button" className="button button-quiet" onClick={() => hideAlert(index)}>
+                    Hide
+                  </button>
+                </li>
+              ),
+            )}
           </ul>
         </section>
         <section className="home-card" aria-label="Recent transactions">
@@ -194,6 +246,35 @@ export function SampleDashboard() {
           </ul>
         </section>
       </div>
+      <DetailDrawer open={open != null} title={open?.covenant ?? "Detail"} onClose={() => setRow(null)}>
+        {open ? (
+          <dl className="drawer-facts">
+            <div>
+              <dt>Facility</dt>
+              <dd>{open.facility}</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>
+                <StatusBadge status={open.status} />
+              </dd>
+            </div>
+            <div>
+              <dt>Headroom</dt>
+              <dd>{open.headroom}</dd>
+            </div>
+            <div>
+              <dt>Trend</dt>
+              <dd>{open.trend}</dd>
+            </div>
+            <div>
+              <dt>Next test</dt>
+              <dd>{open.next}</dd>
+            </div>
+          </dl>
+        ) : null}
+        <p className="drawer-note">This panel repeats the sample row. It does not open another page, and it is not a company result.</p>
+      </DetailDrawer>
     </div>
   );
 }

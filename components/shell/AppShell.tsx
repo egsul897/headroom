@@ -165,7 +165,9 @@ export function AppShell({
             })}
           </nav>
         ) : null}
-        <div className="app-content stack">{children}</div>
+        <div key={pathname} className="app-stage">
+          <div className="app-content stack">{children}</div>
+        </div>
       </div>
       <CommandPalette open={paletteOpen} links={palette} onClose={() => setPaletteOpen(false)} />
     </div>

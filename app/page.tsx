@@ -43,7 +43,7 @@ export default async function Home() {
   const openHref = companyOpenHref;
 
   return (
-    <div className="chooser">
+    <div className="chooser page-fade">
       <GlobalBrand />
       <header className="page-head">
         <div>

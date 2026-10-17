@@ -100,6 +100,8 @@ The shell that shipped:
 
 The rail is graphite, `#2a2c2e`. The wordmark is stone `#f4f1ec` (12.44:1). Nav text and the line “Clarity. Control. Confidence.” are `#c8c4be` (8.07:1). The active chip is oxblood `#54243c` with white text (12.39:1) and a stone mark `#f4f1ec`. The primary button is that oxblood, white label 12.39:1, hover `#6b3050` at 9.71:1. The field is warm stone `#f3f0eb`. Charts step through graphite `#2a2c2e`, warm charcoal `#5e5854`, stone `#a39c94`, and oxblood. Status green `#0e6b43`, amber `#7c4a00`, and red `#9d2c24` stay the status colors. Oxblood sits at hue 330°, so it is not the brick status red. Information chips use graphite on `#e6e1da` (10.78:1), not oxblood. Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser.
 
+Motion stays in the presentation layer. A route change fades the page in. Cards lift on hover. A figure that is already one number counts up on load; unknown copy and dates do not. A row or clause opens a drawer with the text already on the page. Hiding a sample alert shows a toast with undo and does not change stored data. Jump to lists keyboard hints and marks the query. Skeletons shimmer only when motion is allowed. `prefers-reduced-motion: reduce` drops the animation.
+
 | Item | Before | After |
 | --- | --- | --- |
 | Overview | Sidebar | Sidebar |

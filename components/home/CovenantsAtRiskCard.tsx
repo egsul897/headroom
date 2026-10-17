@@ -1,3 +1,4 @@
+import { CountUp } from "@/components/motion/CountUp";
 import { HOME_RISK_NEEDS_REVIEW } from "@/lib/home/copy";
 import { UNKNOWN_STATE, presentRisk, type RiskLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
@@ -22,7 +23,9 @@ export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoa
     return (
       <RegionCard region="covenants-at-risk" eyebrow="Covenants at risk">
         <div className="home-kpi-figure" data-load-kind="VERIFIED_POPULATED" data-slot="covenantsAtRisk">
-          <p className="home-kpi-value home-kpi-value-hero">{Number.isFinite(n) ? String(n) : count}</p>
+          <p className="home-kpi-value home-kpi-value-hero">
+            <CountUp text={Number.isFinite(n) ? String(n) : count} />
+          </p>
           <p className="home-kpi-caption">
             {high > 0 ? `${high} high risk` : null}
             {high > 0 && mod > 0 ? ", " : null}

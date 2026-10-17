@@ -9,6 +9,8 @@ import "../../home-shell.css";
 import "./rails.css";
 import "./brands.css";
 import "./palettes.css";
+import { CountUp } from "@/components/motion/CountUp";
+import { SampleClauses } from "./clauses";
 import { SampleDashboard } from "./dashboard";
 import { SAMPLE_BANNER, SAMPLE_COMPANY, SAMPLE_TICKER } from "./fixture";
 
@@ -19,7 +21,7 @@ export const metadata = { title: "Headroom — sample data" };
  * Development illustration. Production builds take notFound().
  * This module does not import Prisma, Neon, or the dashboard service.
  */
-export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string } }) {
+export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string; detail?: string } }) {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") notFound();
   const screen = searchParams.screen ?? "overview";
   const brand = searchParams.brand === "navy" || searchParams.brand === "olive" || searchParams.brand === "teal" ? searchParams.brand : undefined;
@@ -115,7 +117,13 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
         user={{ name: "Sample reviewer", role: "Illustration only" }}
       >
         <SampleBanner />
-        {screen === "covenants" ? <CovenantsSample brand={brand} /> : screen === "capacity" ? <CapacitySample /> : <SampleDashboard />}
+        {screen === "covenants" ? (
+          <CovenantsSample brand={brand} initialDetail={searchParams.detail === "1"} />
+        ) : screen === "capacity" ? (
+          <CapacitySample />
+        ) : (
+          <SampleDashboard initialDetail={searchParams.detail === "1"} />
+        )}
       </AppShell>
     </div>
   );
@@ -138,7 +146,7 @@ function SampleBanner() {
   );
 }
 
-function CovenantsSample({ brand }: { brand?: string }) {
+function CovenantsSample({ brand, initialDetail = false }: { brand?: string; initialDetail?: boolean }) {
   return (
     <div className="page-frame">
       <header className="page-head">
@@ -147,7 +155,7 @@ function CovenantsSample({ brand }: { brand?: string }) {
           <h1 className="page-question">What do the documents restrict?</h1>
           <p className="page-answer">Counsel starts at the clause and the redline. This text is sample language, not an agreement.</p>
         </div>
-        <Link className="button button-primary" href={sampleHref("overview", brand)}>
+        <Link className="button button-quiet" href={sampleHref("overview", brand)}>
           Back to sample summary
         </Link>
       </header>
@@ -173,44 +181,8 @@ function CovenantsSample({ brand }: { brand?: string }) {
       </Card>
       <Card>
         <div className="card-title">Indebtedness</div>
-        <div className="card-subtitle">1 sample provision</div>
-        <article className="clause">
-          <div className="clause-head">
-            <div>
-              <div className="clause-sec">§6.04</div>
-              <div className="card-subtitle">Limitation on indebtedness</div>
-            </div>
-            <div className="clause-badges">
-              <StatusBadge status="PROHIBITION" />
-              <StatusBadge status="DISCOVERED" />
-            </div>
-          </div>
-          <p className="row-note">
-            Sample reading: incremental debt is permitted only inside the sample basket. Discovered is not counsel-approved, and it is not remaining capacity.
-          </p>
-          <div className="clause-cite">
-            <span>Citation</span>
-            <span>Sample agreement, section 6.04, illustrative page 84</span>
-            <span>No source document is attached</span>
-          </div>
-        </article>
-        <article className="clause">
-          <div className="clause-head">
-            <div>
-              <div className="clause-sec">§7.01</div>
-              <div className="card-subtitle">Sample maintenance test</div>
-            </div>
-            <div className="clause-badges">
-              <StatusBadge status="MAINTENANCE_TEST" />
-              <StatusBadge status="REVIEW_REQUIRED" />
-            </div>
-          </div>
-          <p className="row-note">Sample reading: a person still has to finish the inputs before anyone relies on a pass or a fail.</p>
-          <div className="clause-cite">
-            <span>Citation</span>
-            <span>Sample agreement, section 7.01</span>
-          </div>
-        </article>
+        <div className="card-subtitle">Two sample provisions. Open one without leaving the page.</div>
+        <SampleClauses initialDetail={initialDetail} />
       </Card>
     </div>
   );
@@ -261,7 +233,9 @@ function SampleKpi({ label, value, caption }: { label: string; value: string; ca
   return (
     <section className="home-card">
       <h2 className="home-eyebrow">{label}</h2>
-      <p className="sample-figure">{value}</p>
+      <p className="sample-figure">
+        <CountUp text={value} />
+      </p>
       <p className="sample-caption">{caption}</p>
     </section>
   );

@@ -111,14 +111,40 @@ export function CommandPalette({
                   onMouseEnter={() => setActive(index)}
                   onClick={() => go(link)}
                 >
-                  <span>{link.label}</span>
+                  <span>{highlight(link.label, query)}</span>
                   <span className="cmdk-item-group">{link.group}</span>
                 </button>
               </li>
             );
           })}
         </ul>
+        <div className="cmdk-foot">
+          <span>
+            <kbd>↑</kbd>
+            <kbd>↓</kbd> move
+          </span>
+          <span>
+            <kbd>↵</kbd> open
+          </span>
+          <span>
+            <kbd>esc</kbd> close
+          </span>
+        </div>
       </div>
     </div>
+  );
+}
+
+function highlight(label: string, query: string) {
+  const needle = query.trim();
+  if (!needle) return label;
+  const index = label.toLowerCase().indexOf(needle.toLowerCase());
+  if (index < 0) return label;
+  return (
+    <>
+      {label.slice(0, index)}
+      <mark>{label.slice(index, index + needle.length)}</mark>
+      {label.slice(index + needle.length)}
+    </>
   );
 }

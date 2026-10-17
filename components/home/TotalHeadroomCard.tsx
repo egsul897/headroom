@@ -1,3 +1,4 @@
+import { CountUp } from "@/components/motion/CountUp";
 import { UNKNOWN_STATE, presentFigure, type FigureLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
@@ -7,7 +8,9 @@ export function TotalHeadroomCard({ state = UNKNOWN_STATE }: { state?: FigureLoa
     <RegionCard region="total-headroom" eyebrow="Total Headroom">
       {presented.kind === "VERIFIED_POPULATED" ? (
         <div className="home-kpi-figure" data-load-kind="VERIFIED_POPULATED" data-slot="totalHeadroom">
-          <p className="home-kpi-value home-kpi-value-hero">{presented.display}</p>
+          <p className="home-kpi-value home-kpi-value-hero">
+            <CountUp text={presented.display} />
+          </p>
           <p className="home-kpi-caption">Secured incremental capacity, when the engine returns it.</p>
           <p className="home-kpi-caption">Change versus the prior period is not loaded.</p>
         </div>

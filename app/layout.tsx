@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Inter } from "next/font/google";
+import { ToastProvider } from "@/components/motion/Toast";
 import "./globals.css";
 
 export const metadata = {
@@ -37,7 +38,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <body>
-        <main>{children}</main>
+        <ToastProvider>
+          <main>{children}</main>
+        </ToastProvider>
       </body>
     </html>
   );

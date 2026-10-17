@@ -1,3 +1,4 @@
+import { CountUp } from "@/components/motion/CountUp";
 import { UNKNOWN_STATE, presentFigure, type FigureLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
@@ -31,7 +32,9 @@ export function UtilizationCard({ state = UNKNOWN_STATE }: { state?: FigureLoadS
             aria-hidden="true"
           >
             <div className="home-util-ring-hole">
-              <span className="home-util-pct">{pct.toFixed(1)}%</span>
+              <span className="home-util-pct">
+                <CountUp text={`${pct.toFixed(1)}%`} />
+              </span>
             </div>
           </div>
         ) : (

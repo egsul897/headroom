@@ -237,16 +237,16 @@ main:has(.app-shell) {
 
 .app-content {
   width: 100%;
-  max-width: 1180px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 28px 32px 72px;
+  padding: 40px 40px 88px;
   min-width: 0;
 }
 
 .home-overview {
   display: grid;
-  gap: 16px;
-  max-width: 1240px;
+  gap: 28px;
+  max-width: 1120px;
 }
 
 .home-top {
@@ -259,10 +259,10 @@ main:has(.app-shell) {
 .home-greeting {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 560;
   letter-spacing: -0.03em;
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .home-greeting-sub {
@@ -630,26 +630,26 @@ main:has(.app-shell) {
 .home-kpis {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  gap: 20px;
 }
 
 .home-split {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
-  gap: 14px;
+  gap: 20px;
 }
 
 .home-pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 20px;
 }
 
 .home-card {
   background: var(--shell-card);
   border: 1px solid var(--shell-line);
-  border-radius: 12px;
-  padding: 16px 18px 18px;
+  border-radius: 16px;
+  padding: 22px 24px 24px;
   box-shadow: var(--shadow-rest);
   min-width: 0;
 }
@@ -1029,11 +1029,11 @@ main:has(.app-shell) {
 }
 
 .cmdk {
-  width: min(560px, 100%);
+  width: min(640px, 100%);
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 14px;
-  box-shadow: 0 24px 64px rgba(18, 21, 26, 0.18);
+  border-radius: 18px;
+  box-shadow: 0 28px 80px rgba(26, 24, 22, 0.18);
   overflow: hidden;
 }
 
@@ -1054,7 +1054,7 @@ main:has(.app-shell) {
 
 .cmdk-input:focus-visible {
   outline: none;
-  box-shadow: inset 0 -2px 0 var(--navy);
+  box-shadow: inset 0 -2px 0 var(--accent);
 }
 
 .cmdk-list {
@@ -1103,9 +1103,177 @@ main:has(.app-shell) {
 }
 
 .cmdk-empty {
-  padding: 16px 12px;
+  padding: 20px 12px;
   color: var(--muted);
   font-size: 14px;
+}
+
+.cmdk-foot {
+  display: flex;
+  gap: 16px;
+  padding: 10px 16px 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.cmdk-foot kbd,
+.cmdk mark {
+  font: inherit;
+}
+
+.cmdk-foot kbd {
+  display: inline-block;
+  margin-right: 4px;
+  padding: 1px 5px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.cmdk mark {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: inherit;
+  border-radius: 3px;
+}
+
+.row-detail {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 620;
+  text-align: left;
+  cursor: pointer;
+}
+
+.row-detail:hover {
+  color: var(--accent);
+}
+
+.home-dismiss-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.drawer-root {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+}
+
+.drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(26, 24, 22, 0.28);
+  cursor: pointer;
+}
+
+.drawer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border-left: 1px solid var(--line);
+  box-shadow: -16px 0 48px rgba(26, 24, 22, 0.12);
+}
+
+.drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 28px 24px 12px;
+}
+
+.drawer-head h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 560;
+  letter-spacing: -0.03em;
+}
+
+.drawer-body {
+  padding: 8px 24px 32px;
+  overflow: auto;
+}
+
+.drawer-facts {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+}
+
+.drawer-facts div {
+  display: grid;
+  gap: 4px;
+}
+
+.drawer-facts dt {
+  font-size: 11px;
+  font-weight: 680;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.drawer-facts dd {
+  margin: 0;
+  font-size: 15px;
+}
+
+.drawer-note {
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.clause-actions {
+  display: flex;
+}
+
+.toast-stack {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 90;
+  display: grid;
+  gap: 10px;
+  width: min(360px, calc(100% - 32px));
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 14px 14px 16px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 16px 40px rgba(26, 24, 22, 0.2);
+  font-size: 14px;
+}
+
+.toast-undo {
+  border: none;
+  background: transparent;
+  color: var(--paper);
+  font: inherit;
+  font-weight: 680;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .shell-sr {
@@ -1122,7 +1290,7 @@ main:has(.app-shell) {
 
 .shell-skeleton {
   display: grid;
-  gap: 14px;
+  gap: 28px;
 }
 
 .shell-skeleton-gate {
@@ -1151,11 +1319,11 @@ main:has(.app-shell) {
 .skeleton-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  gap: 20px;
 }
 
 .skeleton-card {
-  height: 112px;
+  height: 148px;
 }
 
 .skeleton-wide {
@@ -1171,13 +1339,71 @@ main:has(.app-shell) {
   .app-search,
   .button,
   .card,
-  .home-card {
-    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 180ms ease, box-shadow 180ms ease;
+  .home-card,
+  .drawer,
+  .toast {
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 220ms ease, box-shadow 220ms ease, opacity 220ms ease;
+  }
+
+  .app-stage,
+  .page-fade {
+    animation: stage-in 320ms ease;
+  }
+
+  .cmdk-backdrop {
+    animation: stage-in 180ms ease;
+  }
+
+  .drawer {
+    animation: drawer-in 280ms ease;
+  }
+
+  .toast {
+    animation: toast-in 240ms ease;
+  }
+
+  .home-card:hover,
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(26, 24, 22, 0.08);
   }
 
   .skeleton-bar,
   .skeleton-card {
     animation: shell-shimmer 1.4s ease-in-out infinite;
+  }
+}
+
+@keyframes stage-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
