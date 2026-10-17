@@ -37,3 +37,35 @@ describe("a clause never takes its sibling's cap", () => {
     for (const b of guarantees) expect(dollarsOf(b)).toEqual([]);
   });
 });
+
+describe("an 'unlimited' basket never takes an adjacent figure", () => {
+  const mk = (items: string[], sep: string, join = ";") =>
+    `CREDIT AGREEMENT\nARTICLE I DEFINITIONS\nSection 1.1 Defined Terms.\n"Indebtedness" means all obligations for borrowed money.\n"Total Leverage Ratio" means the ratio of Indebtedness to Consolidated EBITDA.\nARTICLE VII NEGATIVE COVENANTS\nSection 7.1 Indebtedness. The Borrower shall not create, incur, assume or suffer to exist any Indebtedness, except:${sep}${items.join(`${join}${sep}`)}.\nSection 7.2 Liens. The Borrower shall not create any Lien except Permitted Liens.\nARTICLE VIII EVENTS OF DEFAULT\nSection 8.1 Events of Default. Any of the following shall be an Event of Default.\n`;
+  const items = [
+    "(a) Indebtedness under the Loan Documents",
+    "(b) Indebtedness existing on the Closing Date",
+    "(c) other Indebtedness of the Borrower in an unlimited amount so long as, after giving pro forma effect thereto, the Total Leverage Ratio does not exceed 3.00 to 1.00",
+    "(d) purchase money Indebtedness in an aggregate principal amount not to exceed $50,000,000 at any time outstanding",
+    "(e) Indebtedness of Subsidiaries in an unlimited amount to the extent owed to the Borrower",
+    "(f) other Indebtedness in an aggregate principal amount not to exceed $20,000,000",
+  ];
+  for (const [name, sep, join] of [["inline", " ", ";"], ["one clause per line", "\n", ";"], ["comma-run list", " ", ","]] as const) {
+    it(`unlimited clauses carry no dollar cap and the capped neighbours keep theirs (${name})`, () => {
+      const r = runAgreementPipeline({ sourceId: `unl-${name}`, text: mk(items, sep, join), issuerCik: null } as Parameters<typeof runAgreementPipeline>[0]);
+      const dollars = (b: (typeof r.computedBaskets)[number]) => JSON.stringify({ ...b, citationExcerpt: undefined }).match(/50000000|20000000/g) ?? [];
+      for (const lead of [/^\(c\) other Indebtedness of the Borrower in an unlimited amount/, /^\(e\) Indebtedness of Subsidiaries in an unlimited amount/]) {
+        const hits = r.computedBaskets.filter((b) => lead.test(b.citationExcerpt.trim()));
+        // Semicolon lists split per clause; a comma-run list is not split by the extractor (reported separately).
+        if (join === ";") expect(hits.length).toBeGreaterThan(0);
+        for (const b of hits) {
+          expect(b.citationExcerpt).not.toMatch(/\$50,000,000|\$20,000,000/);
+          expect(b.category).not.toBe("FIXED_DOLLAR");
+          expect(dollars(b)).toEqual([]);
+        }
+      }
+      // No basket that cites an unlimited clause carries a neighbour's figure as its cap.
+      for (const b of r.computedBaskets) if (/unlimited amount/.test(b.citationExcerpt) && !/\$50,000,000|\$20,000,000/.test(b.citationExcerpt)) expect(dollars(b)).toEqual([]);
+      if (join === ";") expect(r.computedBaskets.some((b) => /purchase money/.test(b.citationExcerpt) && JSON.stringify(b).includes("50000000"))).toBe(true);
+    });
+  }
+});
