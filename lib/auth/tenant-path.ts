@@ -47,8 +47,23 @@
  *               middleware matcher excludes /api outright; reserved
  *               here as defense in depth
  *   "_next"     framework assets (also excluded by the matcher)
- *   plus the well-known static files below; any other segment
- *   containing a "." is treated as a static file the same way.
+ *   plus the well-known static files below. Any other first segment
+ *   containing a "." is treated as a static file ONLY when nothing
+ *   follows it (single-segment paths like /site.webmanifest): with
+ *   deeper path parts, Next routes the path to app/[companyId]/*, so
+ *   a dotted first segment there is a tenant-route attempt and is
+ *   gated like any other segment (see tenantSegment).
+ *
+ * INVARIANT the static-file rule relies on: a real company id NEVER
+ * contains a ".". Company ids are cuids (prisma/schema.prisma:
+ * Company.id is @default(cuid()) — lowercase alphanumeric) or, for
+ * admin-provisioned companies, slugs from slugify() in
+ * app/companies/new/actions.ts, which maps every run of non-[a-z0-9]
+ * characters to "-". This gate silently depended on that invariant
+ * until it was named here (N1, from Grok's RC review on PR #383,
+ * 2026-10-17): the multi-segment case now fails closed regardless,
+ * but if id generation ever changes to allow dots, single-segment
+ * dotted paths would pass this gate ungated — revisit then.
  */
 export const NON_TENANT_SEGMENTS: ReadonlySet<string> = new Set([
   "",
@@ -70,7 +85,8 @@ export const NON_TENANT_SEGMENTS: ReadonlySet<string> = new Set([
  * app's own routing/404 handling applies instead.
  */
 export function tenantSegment(pathname: string): string | null {
-  const raw = pathname.split("/")[1] ?? "";
+  const parts = pathname.split("/");
+  const raw = parts[1] ?? "";
   let seg = raw;
   try {
     seg = decodeURIComponent(raw);
@@ -81,7 +97,14 @@ export function tenantSegment(pathname: string): string | null {
     // throwing inside middleware.
     seg = raw;
   }
-  if (NON_TENANT_SEGMENTS.has(seg) || seg.includes(".")) return null;
+  if (NON_TENANT_SEGMENTS.has(seg)) return null;
+  // Dotted first segment: a static file only when nothing follows it.
+  // With deeper parts (/<anything.dotted>/covenants) the path routes
+  // to app/[companyId]/*, so the segment is returned and gated — it
+  // can never equal a real company id (see the invariant above), so
+  // the decision fails closed instead of passing ungated.
+  const hasDeeperParts = parts.slice(2).some((part) => part !== "");
+  if (seg.includes(".") && !hasDeeperParts) return null;
   return seg;
 }
 

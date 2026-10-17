@@ -50,6 +50,20 @@ describe("tenantSegment", () => {
     expect(tenantSegment("/some-file.css")).toBeNull();
   });
 
+  it("still treats a dotted single-segment path as a static file, trailing slash included", () => {
+    expect(tenantSegment("/site.webmanifest")).toBeNull();
+    expect(tenantSegment("/x.y")).toBeNull();
+    expect(tenantSegment("/x.y/")).toBeNull();
+  });
+
+  it("returns a dotted first segment when deeper path parts follow it (a tenant-route attempt)", () => {
+    expect(tenantSegment("/x.y/covenants")).toBe("x.y");
+    expect(tenantSegment("/x.y/dashboard")).toBe("x.y");
+    // The dot check runs on the DECODED segment, so a %2E-encoded dot
+    // is seen as a dot too.
+    expect(tenantSegment("/acme%2Ecorp/covenants")).toBe("acme.corp");
+  });
+
   it("decodes percent-encoded segments so encoded ids match the JWT claim", () => {
     expect(tenantSegment("/acme%20corp/covenants")).toBe("acme corp");
   });
@@ -129,6 +143,48 @@ describe("decideTenantPath — tenant paths", () => {
       kind: "REDIRECT",
       to: "/login",
     });
+  });
+});
+
+describe("decideTenantPath — dotted first segments (N1 hardening)", () => {
+  it("gates a dotted first segment with deeper parts: no session → /login", () => {
+    expect(decideTenantPath("/x.y/covenants", null)).toEqual({
+      kind: "REDIRECT",
+      to: "/login",
+    });
+    expect(decideTenantPath("/x.y/dashboard", undefined)).toEqual({
+      kind: "REDIRECT",
+      to: "/login",
+    });
+  });
+
+  it("gates a dotted first segment with deeper parts: cross-tenant session → its OWN dashboard", () => {
+    expect(decideTenantPath("/x.y/covenants", token(OWN))).toEqual({
+      kind: "REDIRECT",
+      to: `/${OWN}/dashboard`,
+    });
+    expect(decideTenantPath("/x.y/covenants", token(OTHER))).toEqual({
+      kind: "REDIRECT",
+      to: `/${OTHER}/dashboard`,
+    });
+  });
+
+  it("gates percent-encoded dots (%2E) in a multi-segment path the same way", () => {
+    expect(decideTenantPath("/acme%2Ecorp/covenants", null)).toEqual({
+      kind: "REDIRECT",
+      to: "/login",
+    });
+    expect(decideTenantPath("/acme%2Ecorp/covenants", token(OWN))).toEqual({
+      kind: "REDIRECT",
+      to: `/${OWN}/dashboard`,
+    });
+  });
+
+  it("still passes dotted single-segment paths (static files) for any session state", () => {
+    for (const p of ["/x.y", "/x.y/", "/site.webmanifest", "/logo.svg"]) {
+      expect(decideTenantPath(p, null), p).toEqual({ kind: "PASS" });
+      expect(decideTenantPath(p, token(OTHER)), p).toEqual({ kind: "PASS" });
+    }
   });
 });
 
