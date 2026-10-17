@@ -132,6 +132,33 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     ],
   },
   {
+    // Census step 6: the restrictive-agreements covenant (the
+    // "burdensome agreements" / subsidiary-distributions
+    // covenant) had NO family: its stem and its exception
+    // clauses carried only mention families, so the whole
+    // covenant population sat in OTHER across agreements.
+    // Titles as drafted: "Restrictive Agreements",
+    // "Burdensome Agreements", and the functional title
+    // "Subsidiary Distributions" (the covenant restricts
+    // agreements that block subsidiaries' distributions,
+    // loans, and transfers to the borrower).
+    family: "RESTRICTIVE_AGREEMENTS",
+    label: "Restrictive agreements",
+    aliases: ["burdensome agreements", "subsidiary distributions"],
+    headingPatterns: [
+      /\bRestrictive\s+Agreements?\b/i,
+      /\bBurdensome\s+Agreements?\b/i,
+      /\bSubsidiary\s+Distributions?\b/i,
+    ],
+    bodyPatterns: [
+      // The chapeau shape: entering into any agreement that
+      // prohibits or limits a subsidiary's ability to pay
+      // dividends / make distributions / transfer assets.
+      /\benter into\b[^.;]{0,90}\b(?:prohibits?|limits?|restricts?)\b[^.;]{0,50}\bability\b/i,
+      /\bprohibits?\s+or\s+limits?\b[^.;]{0,60}\bability\b/i,
+    ],
+  },
+  {
     family: "FUNDAMENTAL_CHANGES",
     label: "Fundamental changes",
     aliases: ["mergers", "consolidations"],

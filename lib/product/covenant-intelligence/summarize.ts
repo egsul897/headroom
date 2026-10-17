@@ -25,6 +25,7 @@ export type CovenantCategoryKey =
   | "RESTRICTED_PAYMENTS_INVESTMENTS"
   | "ASSET_SALES"
   | "AFFILIATE_TRANSACTIONS"
+  | "RESTRICTIVE_AGREEMENTS"
   | "GUARANTEES"
   | "MERGERS_FUNDAMENTAL_CHANGES"
   | "FINANCIAL_MAINTENANCE"
@@ -77,6 +78,7 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   RESTRICTED_PAYMENTS_INVESTMENTS: "Restricted payments and investments",
   ASSET_SALES: "Asset sales",
   AFFILIATE_TRANSACTIONS: "Affiliate transactions",
+  RESTRICTIVE_AGREEMENTS: "Restrictive agreements",
   GUARANTEES: "Guarantees",
   MERGERS_FUNDAMENTAL_CHANGES: "Mergers and fundamental changes",
   FINANCIAL_MAINTENANCE: "Financial maintenance covenants",
