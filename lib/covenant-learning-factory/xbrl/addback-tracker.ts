@@ -111,7 +111,7 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
   const groups = new Map<string, AddBackFlag[]>();
   for (const f of flags) if (f.capGroup) groups.set(f.capGroup.id, [...(groups.get(f.capGroup.id) ?? []), f]);
   for (const members of groups.values()) {
-    const leader = members.find((m) => m.potential.basis === "CAP_HEADROOM" && m.potential.ebitda !== "0") ?? members[0]!;
+    const leader = members.find((m) => m.potential.basis === "CAP_HEADROOM" && m.potential.ebitda !== "0" && m.status !== "CONDITIONAL") ?? members.find((m) => m.potential.basis === "CAP_HEADROOM" && m.potential.ebitda !== "0") ?? members[0]!;
     const room = members.map((m) => m.potential).find((p) => p.basis === "CAP_HEADROOM") ?? leader.potential;
     for (const m of members) {
       m.capGroup = { ...m.capGroup!, leader: leader.clause.label, leaderPosition: leader.position, room: room.ebitda };
@@ -132,6 +132,17 @@ export function trackAddBacks(opt: EbitdaOptimization, current: IssuerFinancials
     });
   }
   return flags;
+}
+
+/**
+ * Canonical cap-room total: known cap headroom (basis CAP_HEADROOM, room > 0), each shared cap counted once through its
+ * leader (members are SHARED_CAP), excluding CAP_UNKNOWN, COUNTED, uncapped/signed lines and CONDITIONAL
+ * (lender-approval) rows. The only room-total definition; reports and scripts must use it.
+ */
+export function capRoomTotal(flags: readonly AddBackFlag[]): bigint {
+  let t = 0n;
+  for (const f of flags) if (f.potential.basis === "CAP_HEADROOM" && f.status !== "CONDITIONAL" && f.potential.ebitda != null && BigInt(f.potential.ebitda) > 0n) t += BigInt(f.potential.ebitda);
+  return t;
 }
 
 function potentialOf(headroom: string | null, counted: boolean, lev: string | null, capped = false): AddBackFlag["potential"] {
