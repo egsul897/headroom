@@ -4,7 +4,7 @@
  *
  * 1. Struck-through text is deleted text. Conformed copies and amendment
  *    exhibits filed on EDGAR show deletions as <s>, <strike>, <del> or a
- *    `text-decoration: line-through` style; reading that text as in force
+ *    `text-decoration: line-through` style (inline or through a <style> class); reading that text as in force
  *    produces figures and terms the parties removed. It is dropped.
  *    Insertions (<ins>, underline) are kept: they are in force.
  * 2. Numeric character references, decimal (&#8220;) and hexadecimal
@@ -17,10 +17,28 @@ const LINE_THROUGH = /text-decoration(?:-line)?\s*:[^;"'>]*\bline-through\b/i;
 const VOID_TAGS = new Set(["br", "hr", "img", "meta", "link", "input", "col", "area", "base", "wbr", "source", "param", "embed", "track"]);
 const TAG = /<(\/?)([a-zA-Z][a-zA-Z0-9:-]*)\b([^>]*)>/g;
 
-function isStruckOpen(name: string, attrs: string): boolean {
+function isStruckOpen(name: string, attrs: string, struckClasses: ReadonlySet<string> = new Set()): boolean {
   if (STRUCK_TAGS.has(name)) return true;
   const style = /\bstyle\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/i.exec(attrs);
-  return !!style && LINE_THROUGH.test(style[1]!);
+  if (style && LINE_THROUGH.test(style[1]!)) return true;
+  if (!struckClasses.size) return false;
+  const cls = /\bclass\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/i.exec(attrs);
+  return !!cls && cls[1]!.replace(/^["']|["']$/g, "").split(/\s+/).some((c) => struckClasses.has(c));
+}
+
+/** Class names a <style> block renders struck through (".del, p.x2 { text-decoration: line-through }"). */
+export function struckClassNames(html: string): Set<string> {
+  const out = new Set<string>();
+  for (const block of html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)) {
+    for (const rule of block[1]!.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
+      if (!LINE_THROUGH.test(rule[2]!)) continue;
+      for (const sel of rule[1]!.split(",")) {
+        const m = /\.([A-Za-z_][\w-]*)\s*$/.exec(sel.trim());
+        if (m) out.add(m[1]!);
+      }
+    }
+  }
+  return out;
 }
 
 /**
@@ -32,6 +50,7 @@ function isStruckOpen(name: string, attrs: string): boolean {
  */
 export function dropStruckHtml(html: string): string {
   if (!/<(?:s|strike|del)\b|line-through/i.test(html)) return html;
+  const struckClasses = struckClassNames(html);
   let out = "";
   let last = 0;
   TAG.lastIndex = 0;
@@ -39,7 +58,7 @@ export function dropStruckHtml(html: string): string {
   while ((m = TAG.exec(html))) {
     const [, slash, rawName, attrs] = m;
     const name = rawName!.toLowerCase();
-    if (slash || VOID_TAGS.has(name) || /\/\s*$/.test(attrs!) || !isStruckOpen(name, attrs!)) continue;
+    if (slash || VOID_TAGS.has(name) || /\/\s*$/.test(attrs!) || !isStruckOpen(name, attrs!, struckClasses)) continue;
     const end = matchingCloseEnd(html, name, TAG.lastIndex);
     if (end < 0) continue;
     // A space, not nothing: "exceed<s>$75</s>$100" must not glue the neighbours together.
