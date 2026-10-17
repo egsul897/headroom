@@ -3,6 +3,7 @@
  * Structural input type so the builder is testable without Prisma.
  */
 import { REPORT_DISCLAIMER, type CertificateRow, type ComplianceReport, type FigureProof, type LineStatus, type ReportLine, type SourceRef } from "./types";
+import type { CertificateModel, ProofInput } from "./ux-contract";
 
 export interface OverviewCapacityRowLike {
   kind: "CAPACITY";
@@ -52,14 +53,21 @@ function docRef(documentName: string, sectionRef: string): SourceRef | null {
   return { kind: "DOCUMENT", documentName, sectionRef };
 }
 
-function proofFor(formula: string | null, citation: SourceRef | null): FigureProof {
-  return {
-    formula,
-    citation,
-    steps: "NEEDS_INPUT",
-    inputs: "NEEDS_INPUT",
-    note: "Step-by-step arithmetic and per-input source locators are not exposed by the current engine output.",
-  };
+export const citeText = (c: SourceRef | null): string | null =>
+  c ? (c.kind === "DOCUMENT" ? `${c.documentName} ${c.sectionRef}`.trim() : (c.engine ?? null)) : null;
+const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
+export const ratioText = (n: number) => `${n.toFixed(2)}x`;
+export const limitText = (limit: number, dir: "at_or_below" | "at_or_above") => `${ratioText(limit)} ${dir === "at_or_above" ? "min" : "max"}`;
+const ENGINE = "Headroom covenant engine (covenant overview)";
+
+/**
+ * #414 FigureProof from what the engine row already carries. Inputs the engine
+ * does not expose per figure (numerator/denominator, usage evidence) are listed
+ * with value null so `missingInputLabels` reports them; nothing is reconstructed.
+ * clause text and page are not on engine rows today ⇒ null. review = engine reviewState verbatim.
+ */
+function proofFor(figure: string, shown: string | null, inputs: ProofInput[], review: string | null): FigureProof {
+  return { figure, value: shown, inputs, clause: null, page: null, review: review ?? null };
 }
 
 /** Row status from the engine's own status. MODELED + a sourced value ⇒ COMPUTED. */
@@ -90,7 +98,7 @@ export function buildComplianceReport(
           unit: "USD" as const,
           reviewState: row.reviewState ?? null,
           source: cite,
-          proof: proofFor(modeled ? row.formulaDisplay : null, cite),
+          formula: modeled ? row.formulaDisplay : null,
         };
         const gStatus = lineStatus(row.status, row.currentCapacity, row.capacityUnlimited, cite !== null);
         lines.push({
@@ -102,6 +110,15 @@ export function buildComplianceReport(
           status: gStatus,
           engineState: row.bindingState,
           reason: gStatus === "COMPUTED" ? null : (row.reason ?? (cite ? "Capacity not computed by the engine." : "No governing section citation.")),
+          proof: proofFor(
+            `${row.name} — contractual capacity`,
+            gStatus === "COMPUTED" ? (row.capacityUnlimited ? "Unlimited" : usd(row.currentCapacity!)) : null,
+            [
+              { label: "Capacity formula", value: modeled ? row.formulaDisplay : null, source: citeText(cite) },
+              { label: "Maximum capacity", value: gStatus === "COMPUTED" ? (row.capacityUnlimited ? "Unlimited" : usd(row.currentCapacity!)) : null, source: gStatus === "COMPUTED" ? ENGINE : null },
+            ],
+            row.reviewState,
+          ),
         });
         // Remaining is only a figure when the engine publishes SUPPORTED_REMAINING.
         const supported = row.publicationLabel === "SUPPORTED_REMAINING" && finite(row.remaining) && gStatus === "COMPUTED";
@@ -113,6 +130,15 @@ export function buildComplianceReport(
           status: supported ? "COMPUTED" : row.status === "UNMODELED" ? "UNMODELED" : "NEEDS_INPUT",
           engineState: row.publicationLabel ?? "NOT_TRACKED",
           reason: supported ? null : "Usage against this basket is not fully evidenced; remaining needs usage input.",
+          proof: proofFor(
+            `${row.name} — remaining after known usage`,
+            supported ? usd(row.remaining!) : null,
+            [
+              { label: "Maximum capacity", value: gStatus === "COMPUTED" && !row.capacityUnlimited ? usd(row.currentCapacity!) : null, source: gStatus === "COMPUTED" ? ENGINE : null },
+              { label: "Amount used", value: supported && finite(row.used) ? usd(row.used) : null, source: supported ? ENGINE : null },
+            ],
+            row.reviewState,
+          ),
         });
       } else {
         const actualOk = row.status === "MODELED" && finite(row.currentRatio) && cite !== null;
@@ -130,7 +156,17 @@ export function buildComplianceReport(
           reviewState: row.reviewState ?? null,
           source: cite,
           reason: actualOk ? null : (row.reason ?? "Ratio inputs not available."),
-          proof: proofFor(null, cite),
+          formula: null,
+          proof: proofFor(
+            `${row.name} — actual ratio`,
+            actualOk ? ratioText(row.currentRatio!) : null,
+            [
+              { label: "Numerator", value: null, source: null },
+              { label: "Denominator", value: null, source: null },
+              { label: "Covenant limit", value: finite(row.ratioLimit) && cite ? limitText(row.ratioLimit, row.comparisonDirection) : null, source: citeText(cite) },
+            ],
+            row.reviewState,
+          ),
         });
         if (cite && finite(row.ratioLimit)) {
           const actual = actualOk ? row.currentRatio : null;
@@ -198,5 +234,25 @@ export function notDeterminableReport(companyId: string, blocker: string, opts: 
     certificate: [],
     counts: { computed: 0, needsInput: 0, notDeterminable: 0, unmodeled: 0 },
     warnings: [],
+  };
+}
+
+/**
+ * #414 CertificateModel. evaluated is PASS/FAIL only when the engine computed the
+ * actual (MODELED, cited); otherwise null ⇒ presentVerdict renders NOT EVALUATED.
+ * period = the engine's as-of date (test date), never a guessed fiscal period.
+ */
+export function toCertificateModel(r: ComplianceReport): CertificateModel {
+  return {
+    company: r.companyName ?? r.companyId,
+    period: r.asOfDate,
+    lines: r.certificate.map((c) => ({
+      name: c.covenant,
+      required: limitText(c.required, c.comparison),
+      actual: c.actual === null ? null : ratioText(c.actual),
+      headroom: c.headroom === null ? null : ratioText(c.headroom),
+      evaluated: c.result === "IN_COMPLIANCE" ? "PASS" : c.result === "NOT_IN_COMPLIANCE" ? "FAIL" : null,
+      citation: citeText(c.citation),
+    })),
   };
 }

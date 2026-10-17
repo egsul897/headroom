@@ -21,7 +21,7 @@ describe("report routes enforce the tenant gate before any data load", () => {
   for (const [name, path] of [
     ["compliance", "@/app/[companyId]/reports/compliance/route"],
     ["certificate", "@/app/[companyId]/reports/certificate/route"],
-    ["calendar", "@/app/[companyId]/reports/calendar/route"],
+    ["key-ratios", "@/app/[companyId]/reports/key-ratios/route"],
   ] as const) {
     it(`${name}: cross-tenant ⇒ 403 and no load`, async () => {
       const mod = await import(path);
@@ -44,11 +44,5 @@ describe("report routes enforce the tenant gate before any data load", () => {
     expect(bad.status).toBe(400);
     const badDate = await mod.GET(new Request("http://x/co_mine/reports/compliance?asOf=2026-13-01"), ctx("co_mine"));
     expect(badDate.status).toBe(400);
-  });
-  it("calendar: store failure ⇒ 503 NOT_DETERMINABLE, not an empty calendar", async () => {
-    findMany.mockRejectedValue(new Error("db down"));
-    const mod = await import("@/app/[companyId]/reports/calendar/route");
-    const res = await mod.GET(new Request("http://x/co_mine/reports/calendar"), ctx("co_mine"));
-    expect(res.status).toBe(503);
   });
 });
