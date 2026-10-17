@@ -1,0 +1,55 @@
+# PROPOSED .github/workflows/pr-gate.yml — NOT ACTIVE.
+# Kept here because the pushing token for this branch lacks the GitHub
+# `workflow` scope; a workflow-scoped push (Cursor cloud agent or Egzon) must
+# copy this file to .github/workflows/pr-gate.yml verbatim.
+#
+# Why: canonical-compiler only triggers on pull_request for a path list
+# (lib/app/components/scripts/tests/tsconfig). A PR that changes only
+# prisma/**, package.json, vercel.json, next.config.mjs or docs gets NO
+# typecheck and NO tests. This gate runs on EVERY pull_request, with no
+# secrets and no paid provider keys, and runs the vitest suites related to
+# the files the PR changes (module-graph based, `vitest --changed`).
+name: pr-gate
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: pr-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: typecheck + related tests (provider-free)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+      DATABASE_URL: ""
+      STRIPE_SECRET_KEY: ""
+      HEADROOM_ERROR_DSN: ""
+      SENTRY_DSN: ""
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: prisma schema validates
+        run: npx prisma validate
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      - name: typecheck
+        run: npx tsc --noEmit -p .
+      - name: tests related to this PR's changes
+        run: npx vitest run --changed "origin/${{ github.base_ref }}" --passWithNoTests
+      - name: platform/product-surface suites
+        run: npx vitest run tests/platform --passWithNoTests

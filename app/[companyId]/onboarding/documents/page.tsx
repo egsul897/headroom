@@ -10,6 +10,9 @@ import { uploadDocumentAction, runExtractionAction, uploadFinancialCsvAction } f
 
 export const metadata = { title: "Headroom — Onboarding documents" };
 export const dynamic = "force-dynamic";
+// Server actions inherit this segment's maxDuration: the deferred large-upload
+// analysis (runInBackground/waitUntil in ./actions.ts) runs inside it.
+export const maxDuration = 300;
 
 const DOCUMENT_TYPES: { value: string; label: string }[] = [
   { value: "CREDIT_AGREEMENT", label: "Credit Agreement" },
