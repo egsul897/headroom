@@ -13,16 +13,18 @@
  */
 import { borrowerInput, type IssuerFinancials } from "./companyfacts";
 import { solveCapLp } from "./cap-lp";
-import { CAP_ADVERB } from "./cap-verb";
-import { CAPPED, COST_LIKE, HEADER, QUALIFIED, STOP, TWO_SIDED, definitionSegments, markers, evaluateDefinition, mapEbitdaItem, type DefinitionEvaluation } from "./definition-items";
+import { CAP_ADVERB, IN_NO_EVENT, isInNoEventSubject } from "./cap-verb";
+import { CAPPED, COST_LIKE, HEADER, QUALIFIED, STOP, TWO_SIDED, definitionSegments, labelStyle, markers, evaluateDefinition, mapEbitdaItem, signHeader, type DefinitionEvaluation } from "./definition-items";
 
 export type AddBackCategory = "INTEREST" | "TAXES" | "D&A" | "STOCK_COMP" | "IMPAIRMENT" | "RESTRUCTURING" | "SEVERANCE" | "TRANSACTION_COSTS" | "INTEGRATION"
   | "DEBT_EXTINGUISHMENT" | "RUN_RATE_SYNERGIES" | "NON_RECURRING" | "NON_CASH" | "OTHER";
-export interface CapSpec { text: string; kind: "FIXED" | "PERCENT" | "GREATER_OF" | "LESSER_OF" | "UNKNOWN"; dollars: bigint[]; percents: Array<{ num: bigint; den: bigint }>; giving: "BEFORE" | "AFTER" | "UNSTATED"; sharedWith: string[]; tiers?: Array<{ through: string | null; amount: bigint }>; escalation?: { base: bigint; baseYear: number; step: bigint };
+export interface CapSpec { text: string; kind: "FIXED" | "PERCENT" | "GREATER_OF" | "LESSER_OF" | "SUM" | "UNKNOWN"; dollars: bigint[]; percents: Array<{ num: bigint; den: bigint }>; giving: "BEFORE" | "AFTER" | "UNSTATED"; sharedWith: string[]; tiers?: Array<{ through: string | null; amount: bigint }>; escalation?: { base: bigint; baseYear: number; step: bigint };
   /** Cumulative cap over the life of the agreement ("during the term of this Agreement"): the room left depends on usage in prior periods, so the per-period amount is not determinable from the text. */
   lifetime?: boolean;
   /** Clause references the cap names that could not be bound to exactly one line: the cap's scope is unresolved (capped by an unknown amount, never uncapped). */
-  unresolved?: string[] }
+  unresolved?: string[];
+  /** A multi-limb cap ("greater of $X and Y% of Total Assets", "lesser of $X and Excess Availability", "$X plus the amount of …") with a limb the text cannot compute: the cap is held, never reduced to the limbs that parse. */
+  unknownLimbs?: string[] }
 export interface AddBackLine {
   label: string; text: string; category: AddBackCategory;
   /** Filing evidence for the item (USD, TTM); null when nothing in the filings maps. */
@@ -95,7 +97,7 @@ export function categorize(t: string): AddBackCategory {
   return "OTHER";
 }
 
-const CAP_RE = new RegExp(String.raw`\b(?:(?:shall|may|does|do|will)\s+)?not\s+(?:to\s+)?${CAP_ADVERB}exceed(?:ing)?\b|` + /\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not\s+(?:in\s+excess\s+of|to\s+exceed)|up\s+to)\b|\bcapped\s+at\b|\bmaximum\s+of\b/.source, "i");
+const CAP_RE = new RegExp(String.raw`${IN_NO_EVENT}|\b(?:(?:shall|may|does|do|will)\s+)?not\s+(?:to\s+)?${CAP_ADVERB}exceed(?:ing)?\b|` + /\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not\s+(?:in\s+excess\s+of|to\s+exceed)|up\s+to)\b|\bcapped\s+at\b|\bmaximum\s+of\b/.source, "i");
 /**
  * Clause-reference grammar shared by every cap scope: label paths ("(b)(vii)"), lists joined by commas / and / or,
  * repeated "clause" words ("clause (b)(ix) and clause (b)(x)") and ranges ("(A) through (F)", "(d)–(f)", "(d) to (f)").
@@ -219,17 +221,22 @@ export function parseCap(t: string, from = 0): CapSpec | null {
   return tiers ? { ...c, kind: "FIXED", dollars: tiers.map((x) => x.amount), percents: [], tiers } : c;
 }
 
+/** "plus" opening another limb of the same cap amount ($, a percentage, "the amount of …"), not the next add-back clause. */
+const LIMB_PLUS = /\bplus\s*,?\s+(?:\((?:[ivx]{1,4}|[a-zA-Z]|\d)\)\s*)?(?=\$|\d[\d.,]*\s*(?:%|percent)|(?:the|an|any)\s+(?:additional\s+|aggregate\s+)?amount\b|[a-z-]+\s+(?:percent|per\s+cent)\b)/gi;
 function parseCap0(t: string, from = 0): CapSpec | null {
   const m0 = CAP_RE.exec(t.slice(from));
   if (!m0) return null;
   const m = Object.assign([...m0], { index: m0.index + from }) as unknown as RegExpExecArray;
   const pre = t.slice(Math.max(0, m.index - 300), m.index);
-  let w = t.slice(m.index, m.index + 450);
+  // "in no event shall <subject> exceed X": the amount follows the verb; the subject is kept in the cap text (it is the
+  // cap's scope, never part of what the clause adds back).
+  const verbAt = isInNoEventSubject(m[0]) ? m[0].toLowerCase().lastIndexOf("exceed") : 0;
+  let w = t.slice(m.index, m.index + verbAt + 450);
   w = w.slice(0, (/;|\.\s+[A-Z]|,\s*\((?:[ivxl]{1,5}|[a-z]{1,2}|\d{1,2})\)\s/.exec(w.slice(m[0].length))?.index ?? w.length) + m[0].length);
   const sharedWith: string[] = [];
   const scope = `${/(?:pursuant\s+to|under|in\s+reliance\s+on)\s+(?:this\s+)?clauses?[^;]*$/i.exec(pre)?.[0] ?? ""} ${/together\s+with[^,;]{0,200}/i.exec(w)?.[0] ?? ""}`;
   for (const lm of scope.matchAll(LABEL_LIST)) for (const p of clauseRefPaths(lm[1]!).paths) sharedWith.push(p.at(-1)!);
-  const body = w.replace(/together\s+with[^,;]{0,200}?,/i, " ");
+  const body = w.slice(verbAt).replace(/together\s+with[^,;]{0,200}?,/i, " ");
   const giving: CapSpec["giving"] = /after\s+giving\s+effect/i.test(w) ? "AFTER" : /(?:before|prior\s+to|without)\s+giving\s+effect/i.test(w) ? "BEFORE" : "UNSTATED";
   const limbs = (s: string) => {
     const d = dollars(s), p = percentOfEbitda(s);
@@ -237,10 +244,21 @@ function parseCap0(t: string, from = 0): CapSpec | null {
   };
   const go = /the\s+(greater|lesser)\s+of\s+(.*)/i.exec(body);
   if (go) {
-    const parts = go[2]!.split(/\s+and\s+(?=\(?(?:ii|b|2|y)\)|\$|\d)/i).slice(0, 2).map(limbs);
+    // Every limb is kept; a limb that does not parse (a non-EBITDA base, an undefined amount) holds the whole cap.
+    const texts = go[2]!.split(/\s+and\s+(?=\(?(?:ii|iii|b|c|2|3|y|z)\)|\$|\d)|,\s*(?=\((?:ii|iii|b|c|2|3|y|z)\)\s)/i).slice(0, 3);
+    const parts = texts.map(limbs);
     const kind = go[1]!.toLowerCase() === "greater" ? "GREATER_OF" : "LESSER_OF";
-    if (parts.length < 2 || parts.some((p) => !p.known)) return { text: w, kind: kind === "GREATER_OF" && parts.some((p) => p.known) ? "GREATER_OF" : "UNKNOWN", dollars: parts.flatMap((p) => p.dollars), percents: parts.flatMap((p) => p.percents), giving, sharedWith };
-    return { text: w, kind, dollars: parts.flatMap((p) => p.dollars), percents: parts.flatMap((p) => p.percents), giving, sharedWith };
+    const unknownLimbs = texts.filter((_, k) => !parts[k]!.known).map((x) => x.trim().slice(0, 80));
+    if (parts.length < 2) unknownLimbs.push("second limb not found");
+    return { text: w, kind: parts.some((p) => p.known) ? kind : "UNKNOWN", dollars: parts.flatMap((p) => p.dollars), percents: parts.flatMap((p) => p.percents), giving, sharedWith, ...(unknownLimbs.length ? { unknownLimbs } : {}) };
+  }
+  // "$X plus Y% of Consolidated EBITDA", "$X plus the amount of …": the limbs add. A limb that does not parse holds the cap.
+  const plusAt = [...body.matchAll(LIMB_PLUS)].map((x) => x.index!).filter((k) => k > 0);
+  if (plusAt.length) {
+    const texts = [0, ...plusAt].map((k, j, a) => body.slice(k, a[j + 1] ?? body.length));
+    const parts = texts.map(limbs);
+    const unknownLimbs = texts.filter((_, k) => !parts[k]!.known).map((x) => x.trim().slice(0, 80));
+    return { text: w, kind: parts.some((p) => p.known) ? "SUM" : "UNKNOWN", dollars: parts.flatMap((p) => p.dollars), percents: parts.flatMap((p) => p.percents), giving, sharedWith, ...(unknownLimbs.length ? { unknownLimbs } : {}) };
   }
   const l = limbs(body);
   if (/\[\s*\*+\s*\]/.test(body) || !l.known) return { text: w, kind: "UNKNOWN", dollars: [], percents: [], giving, sharedWith };
@@ -266,6 +284,7 @@ export const LIFETIME_CAP = /\b(?:during|over|throughout)\s+the\s+(?:term|life)\
  * phrase written since the previous condition; "together with amounts under clause (e)" adds (e) to the stating clause;
  * no named clause means the stating clause itself.
  */
+const MEASURE_PAREN = /\((?:[^()]|\([^()]*\))*?\b(?:giving\s+effect|calculated|determined|computed|measured|before|prior\s+to|after)\b(?:[^()]|\([^()]*\))*\)/gi;
 export function extractCaps(full: string, ownLabel: string): CapCondition[] {
   const out: CapCondition[] = [];
   const g = new RegExp(CAP_RE.source, "gi");
@@ -277,10 +296,16 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
     seg = seg.slice(seg.lastIndexOf(";") + 1).slice(-400);
     // The scope is the cap's subject. A parenthetical describing how the cap base is measured ("(determined prior to
     // giving effect to all amounts that increase Consolidated EBITDA pursuant to this clause (b))") names no scope.
-    seg = seg.replace(/\((?:[^()]|\([^()]*\))*?\b(?:giving\s+effect|calculated|determined|computed|measured|before|prior\s+to|after)\b(?:[^()]|\([^()]*\))*\)/gi, (x) => " ".repeat(x.length));
+    seg = seg.replace(MEASURE_PAREN, (x) => " ".repeat(x.length));
     // Every scope phrase since the previous condition ("pursuant to this clause (1)(l), together with … pursuant to clauses
     // (1)(k) and (1)(q)"). "clause (b)(viii)" is one path: keep the innermost label of each adjacent run.
     const refs = [...seg.matchAll(SCOPE_RE)].map((sm) => ({ list: sm[2]!, deictic: /^this\b/i.test(sm[1] ?? "") }));
+    // "in no event shall the aggregate amount of the add-backs in clauses (b)(vi), (b)(vii) … exceed": every clause list in
+    // the subject is the scope, whatever preposition introduces it.
+    if (isInNoEventSubject(m[0])) {
+      const subj = m[0].replace(MEASURE_PAREN, (x) => " ".repeat(x.length));
+      for (const lm of subj.matchAll(new RegExp(String.raw`(this\s+|such\s+)?\b(?:sub-?)?clauses?\s+(${REF_LIST_SOURCE})`, "gi"))) refs.push({ list: lm[2]!, deictic: /^this\b/i.test(lm[1] ?? "") });
+    }
     const refLists = refs.map((r) => r.list);
     let labels = refLists.flatMap((l) => clauseRefPaths(l).paths.map((p) => p.at(-1)!));
     let withHost = !labels.length;
@@ -351,19 +376,20 @@ export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | nul
     return { amount: tier.amount, note: `date-tiered cap: tier for period ending ${periodEnd}` };
   }
   if (c.kind === "UNKNOWN" && !c.dollars.length && !c.percents.length) return { amount: null, note: "cap amount not determinable from the definition" };
+  const floor = c.kind === "GREATER_OF" && c.dollars.length ? `; cap is at least $${c.dollars.reduce((a, b) => (a > b ? a : b)).toString()} (needs input)` : "";
+  if (c.unknownLimbs?.length) return { amount: null, note: `multi-limb cap (${c.kind === "SUM" ? "plus" : c.kind === "LESSER_OF" ? "lesser of" : c.kind === "GREATER_OF" ? "greater of" : "limbs"}): limb not computable from the text ("${c.unknownLimbs[0]}"); held${floor}` };
   const pcts = c.percents.map((p) => {
     if (e0 == null) return null;
     if (e0 <= 0n) return 0n;
     return c.giving === "AFTER" ? (p.num * e0) / (p.den - p.num) : (p.num * e0) / p.den;
   });
-  if (pcts.some((x) => x == null)) {
-    if (c.kind === "GREATER_OF" && c.dollars.length) return { amount: c.dollars.reduce((a, b) => (a > b ? a : b)), note: "greater-of: % limb needs EBITDA; fixed limb used (cap may be higher)" };
-    return { amount: null, note: "% of Consolidated EBITDA cap needs a determinable EBITDA" };
-  }
+  // Every limb is needed: a greater-of / lesser-of / plus cap with a % limb that cannot be computed is held, never
+  // reduced to its fixed limb.
+  if (pcts.some((x) => x == null)) return { amount: null, note: `% of Consolidated EBITDA cap needs a determinable EBITDA${c.dollars.length && c.kind !== "FIXED" ? floor || "; every limb is needed" : ""}` };
+  if (c.kind === "UNKNOWN") return { amount: null, note: "cap with an undeterminable limb: held (needs input)" };
   const all = [...c.dollars, ...(pcts as bigint[])];
-  const amt = c.kind === "LESSER_OF" ? all.reduce((a, b) => (a < b ? a : b)) : all.reduce((a, b) => (a > b ? a : b));
-  const note = c.kind === "UNKNOWN" ? "greater-of with an undeterminable limb: known limb used (cap may be higher)"
-    : c.percents.length && c.giving === "UNSTATED" ? "% cap: computed before giving effect to the capped add-backs (conservative)" : "";
+  const amt = c.kind === "SUM" ? all.reduce((a, b) => a + b, 0n) : c.kind === "LESSER_OF" ? all.reduce((a, b) => (a < b ? a : b)) : all.reduce((a, b) => (a > b ? a : b));
+  const note = c.percents.length && c.giving === "UNSTATED" ? "% cap: computed before giving effect to the capped add-backs (conservative)" : "";
   return { amount: amt, note };
 }
 
@@ -389,17 +415,21 @@ export function approvalCondition(full: string): string | null {
 }
 
 /** Group sign per enumerated item, by the same rules as evaluateDefinition (used when the base fails and no items come back). */
-function itemSigns(segs: Array<{ text: string }>): Array<{ sign: "+" | "-"; header: boolean }> {
+function itemSigns(segs: Array<{ text: string; label: string }>): Array<{ sign: "+" | "-"; header: boolean }> {
   let sign: "+" | "-" | "?" = "+";
   const lead0 = segs[0]!.text;
   for (const m of markers(lead0)) sign = m;
   if (/\bincreas/i.test(lead0) && !/\bdecreas|deducted/i.test(lead0)) sign = "-";
   if (/net\s+income/i.test(lead0) && /\bexcluding\s+the\s+following\b/i.test(lead0) && /to\s+the\s+extent\s+included/i.test(lead0)) sign = "+";
+  let lock: string | null = null; // style of an open deduction header (see evaluateDefinition)
   return segs.slice(1).map((s) => {
     const t = s.text;
-    const header = /\bthe\s+following\b|:\s*$/.test(t) && t.length < 300;
-    if (header) { for (const m of markers(t)) sign = m; if (/\bto\s+the\s+extent\s+(?:increasing|included\s+in)/i.test(t)) sign = "-"; }
-    const g = sign === "-" ? "-" : "+";
+    if (lock && labelStyle(s.label) === lock) lock = null;
+    const sh = signHeader(t);
+    const header = sh != null || (/\bthe\s+following\b|:\s*$/.test(t) && t.length < 300);
+    if (header && sh) { sign = sh; lock = sh === "-" ? labelStyle(s.label) : null; }
+    else if (header) { for (const m of markers(t)) sign = m; if (/\bto\s+the\s+extent\s+(?:increasing|included\s+in)/i.test(t)) sign = "-"; }
+    const g = lock && !(header && sh) ? "-" : sign === "-" ? "-" : "+";
     if (!header) for (const m of markers(t.slice(-30))) sign = m;
     const descr = t.replace(HEADER, "").trim();
     return { sign: g, header: header || descr.length < 3 || (!COST_LIKE.test(descr) && HEADER.test(t)) };
@@ -503,7 +533,8 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
       if (r.it.label.length === 3 && (opened || r.it.label === "(x)")) { if (prev.full.trim().length < 3) prev.it = { ...r.it, label: prev.it.label, sign: prev.it.sign, coverage: r.it.coverage === "HEADER" ? "NONE" : r.it.coverage, concepts: [], value: "0" }; prev.full = `${prev.full} ${r.it.label} ${r.full}`; if (r.it.concepts.length && r.it.coverage !== "HEADER") prev.it = { ...prev.it, concepts: [...prev.it.concepts, ...r.it.concepts.filter((c) => !prev.it.concepts.some((x) => x.concept === c.concept))], value: String(BigInt(prev.it.value) + r.it.concepts.filter((c) => !prev.it.concepts.some((x) => x.concept === c.concept)).reduce((a, c) => a + BigInt(c.value), 0n)) }; if (r.it.coverage !== "HEADER" && r.it.coverage !== "FULL" && prev.it.coverage === "FULL") prev.it = { ...prev.it, coverage: "PARTIAL" }; continue; }
     }
     const emptyLabel = prev && prev.full.trim().length < 3; // "(e) (i) …": the item's text starts with its own sub-clauses
-    if (prev && stOf(r) !== top && stOf(prev) === top && (prev.it.coverage !== "HEADER" || emptyLabel) && !signTail.test(prev.full)) {
+    // A deduction/add-back header on an outer enumerator ("(2) decreased by") opens a new group: never part of the item before it.
+    if (prev && stOf(r) !== top && stOf(prev) === top && (prev.it.coverage !== "HEADER" || emptyLabel) && !signTail.test(prev.full) && !signHeader(r.full)) {
       if (emptyLabel) prev.it = { ...r.it, label: prev.it.label, sign: prev.it.sign, coverage: r.it.coverage === "HEADER" ? "NONE" : r.it.coverage };
       prev.full = `${prev.full} ${r.it.label} ${r.full}`;
       if (r.it.coverage !== "HEADER" && r.it.coverage !== "FULL" && prev.it.coverage === "FULL") prev.it = { ...prev.it, coverage: "PARTIAL" };
@@ -667,9 +698,11 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   // A heading-only enumerator ("(x) (A) restructuring … (F) casualty events; (y) (A) signing bonuses …") is not a line of
   // its own: a reference to it is a reference to every line under it, up to its next sibling or a higher-level label.
   const childrenOf = (lab: string, deictic: boolean, boundary: number): Ln[] | null => {
-    const heads = raw.map((r, k) => ({ r, k })).filter((x) => sameLabel(x.r.it.label, lab) && x.r.full.trim().length < 3);
-    if (!heads.length) return null;
     const lineAt = (k: number) => lines.find((o) => lineRaw.get(o) === raw[k]);
+    // A heading is an enumerator with no line of its own: empty ("(x) (A) …"), or a group header ("(b) the sum of
+    // (i) …", "(e) the following: (A) …"). A cap on the heading covers every line under it.
+    const heads = raw.map((r, k) => ({ r, k })).filter((x) => sameLabel(x.r.it.label, lab) && (x.r.full.trim().length < 3 || (!lineAt(x.k) && pairs.includes(x.r))));
+    if (!heads.length) return null;
     const kids = heads.map(({ k }) => {
       const out: Ln[] = [];
       for (let j = k + 1; j < raw.length; j++) {
@@ -760,7 +793,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   }
   // A clause that only states a cap on other clauses ("(d) the aggregate amount of add-backs pursuant to clauses (e) and
   // (f) below, which shall not exceed $100M") adds nothing itself.
-  const capOnly = new Set(lines.filter((l) => l.caps.length && capRaw.filter((c) => c.owner === l).every((c) => !c.members.includes(l)) && /^\W*(?:the\s+)?(?:aggregate\s+)?amount\s+of\s+(?:[\w-]+\s+){0,4}?(?:add-?backs|adjustments|added(?:\s+back)?\s+pursuant)\b/i.test(l.full)));
+  const capOnly = new Set(lines.filter((l) => l.caps.length && capRaw.filter((c) => c.owner === l).every((c) => !c.members.includes(l)) && /^\W*(?:(?:notwithstanding\s+(?:anything\s+to\s+the\s+contrary|the\s+foregoing)[^,]{0,80},\s*)?in\s+no\s+event\s+(?:shall|will|may)\s+)?(?:the\s+)?(?:aggregate\s+)?amount\s+of\s+(?:[\w-]+\s+){0,4}?(?:add-?backs|adjustments|added(?:\s+back)?\s+pursuant)\b/i.test(l.full)));
   for (const l of capOnly) { l.claimed = "0"; l.status = "CLAIMED"; l.coverage = "FULL"; l.evid = 0n; l.note = "states a cap on other clauses; no add-back of its own"; }
   const inCap = new Set(capRaw.flatMap((c) => c.members).filter((l) => !capOnly.has(l)));
   const uncapped = lines.filter((l) => !inCap.has(l) && !capOnly.has(l));

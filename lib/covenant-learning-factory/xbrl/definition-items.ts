@@ -11,7 +11,7 @@
  */
 import { borrowerInput, type IssuerFinancials } from "./companyfacts";
 import { gainDeduction } from "./ebitda-optimizer";
-import { CAP_ADVERB } from "./cap-verb";
+import { CAP_ADVERB, IN_NO_EVENT } from "./cap-verb";
 
 export type DefinitionKind = "EBITDA" | "INTEREST";
 export type ItemSign = "+" | "-" | "?";
@@ -136,18 +136,34 @@ export function markers(text: string): ItemSign[] {
   let depth = 0, flat = "";
   for (const ch of text) { if (ch === "(") depth++; else if (ch === ")") depth = Math.max(0, depth - 1); else if (depth === 0) flat += ch; }
   const out: ItemSign[] = [];
-  for (const m of flat.matchAll(/\b(plus|minus|less|reduced\s+by|before\s+deducting|deducting|subtracting|to\s+the\s+extent\s+(?:deducted|decreasing|reducing|included\s+as\s+an?\s+expense)|to\s+the\s+extent\s+(?:increasing|added|included\s+in\s+(?:arriving|determining|calculating))|excluding|net\s+of|including)\b/gi)) {
+  for (const m of flat.matchAll(/\b(plus|minus|less|reduced\s+by|decreased\s+by|increased\s+by|before\s+deducting|deducting|subtracting|to\s+the\s+extent\s+(?:deducted|decreasing|reducing|included\s+as\s+an?\s+expense)|to\s+the\s+extent\s+(?:increasing|added|included\s+in\s+(?:arriving|determining|calculating))|excluding|net\s+of|including)\b/gi)) {
     const w = m[1]!.toLowerCase();
     // "before deducting X" is an add-back (UK LMA style), not a subtraction.
-    out.push(/^(plus|including|before\s+deducting)|deducted|decreasing|reducing|as an? expense/.test(w) ? "+" : "-");
+    out.push(/^(plus|including|before\s+deducting|increased)|deducted|decreasing|reducing|as an? expense/.test(w) ? "+" : "-");
   }
   return out;
+}
+
+/**
+ * A segment that only opens a signed group ("decreased (without duplication) by", "increased by, to the extent deducted
+ * in calculating Consolidated Net Income, the following:", "minus"): the sign of every item under it. null otherwise.
+ */
+export function signHeader(t: string): ItemSign | null {
+  const flat = t.replace(/\([^()]*\)/g, " ").replace(/\s+/g, " ").trim();
+  if (flat.length > 260) return null;
+  const m = /^(?:[,;]|and\b|\s)*(increased|decreased|reduced|plus|minus|less)\b(?:\s+by)?(?:\s*,?\s*(?:without\s+duplication|in\s+each\s+case|to\s+the\s+extent\b[^;:]{0,160}?|(?:the\s+)?(?:sum\s+of\s+(?:the\s+)?)?following(?:\s+(?:items|amounts))?|for\s+such\s+period|and|,))*\s*:?\s*$/i.exec(flat);
+  if (!m) return null;
+  return /^(?:increased|plus)$/i.test(m[1]!) ? "+" : "-";
+}
+/** Enumerator style for grouping ("(2)" digit, "(a)" lower, "(A)" upper, "(iv)" roman). */
+export function labelStyle(l: string): "digit" | "lower" | "upper" | "roman" {
+  return /^\(\d+\)$/.test(l) ? "digit" : /^\([ivxl]+\)$/.test(l) ? "roman" : /^\([a-z]{1,2}\)$/.test(l) ? "lower" : "upper";
 }
 
 const GAIN_LIKE = /\b(?:gains?|income|credits?|benefits?|refunds?|reversals?)\b/i;
 export const COST_LIKE = /\b(?:expenses?|loss(?:es)?|charges?|costs?|fees?|deductions?|write-?(?:offs?|downs?)|impairments?|amortization|depreciation|depletion|taxes|tax\s+expense|provision|compensation|savings|synerg\w*|premiums?|commissions?|interest)\b/i;
 export const TWO_SIDED = /\bpro\s+forma\b(?![^.;]{0,80}\b(?:cost\s+savings|synerg|run[- ]rate))|\b(?:acquired|disposed|acquisition|disposition)\b[^.;]{0,120}\b(?:as\s+if|beginning\s+of)\b|\bgains?\s+(?:or|and|\/)\s+loss|\bloss(?:es)?\s+(?:or|and|\/)\s+gains?|\bincome\s+\(?(?:or|and)\s+loss|\(loss\)|\bforeign\s+(?:currency|exchange)|\bmark[- ]to[- ]market(?:\s+valuation)?(?:\s+of\s+(?:any\s+)?Hedg\w*)?|\b(?:gains?|losses?|income)\b[^.;]{0,40}\bHedg\w*|\bHedg\w*[^.;]{0,40}\b(?:gains?|losses?|income|mark[- ]to[- ]market)/i;
-export const CAPPED = new RegExp(String.raw`\bnot\s+(?:to\s+)?${CAP_ADVERB}exceed|` + /\bshall\s+not\s+exceed|\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not|up\s+to)|\bcapped\b|\bmaximum\s+of\b/.source, "i");
+export const CAPPED = new RegExp(String.raw`${IN_NO_EVENT}|\bnot\s+(?:to\s+)?${CAP_ADVERB}exceed|` + /\bshall\s+not\s+exceed|\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not|up\s+to)|\bcapped\b|\bmaximum\s+of\b/.source, "i");
 export const QUALIFIED = /\bother\s+than\b|\bexcluding\b|\bexcept\b|\bsolely\b|\bonly\s+to\s+the\s+extent\b|\bcash\s+portion|\bnet\s+of\b/i;
 export const HEADER = /^(?:,|\s)*(?:(?:the\s+)?following(?:\s+(?:items|amounts))?|without\s+duplication|\(?\s*(?:and\s+)?(?:excluding|including)\s+(?:the\s+effect\s+of)?\s*\)?|to\s+the\s+extent|the\s+sum\s+of|in\s+each\s+case|plus|minus|less|and|for\s+such\s+period|of\s+such\s+Person|:|,|\s)+/i;
 
@@ -250,12 +266,14 @@ export function mapEbitdaItem(t: string, fin: IssuerFinancials, text: string, de
 
 export const STOP = /\b(?:the|a|an|of|and|or|any|all|such|its|their|in|for|to|on|with|by|from|that|this|each|case|period|amount|amounts|consolidated|person|borrower|parent|company|subsidiaries|subsidiary|group|restricted|required|taken|pursuant|gaap|accordance|recorded|respect|other|non-?cash|expense|expenses|charges?|losses?|attributable|which|was|were|is|be|been|deducted|determining|net|income|calculating|arriving|at|as|so|without|duplication|extent|solely|aggregate)\b/gi;
 
+export const normalizeEnumerators = (s: string): string => s.replace(/\(\s*([ivxlA-Za-z]{1,5}|\d{1,2})\s*\)/g, (x, l: string) => (x.length === l.length + 2 ? x : `(${l})`));
 /** The definition split into its lead (base) and enumerated line items; items[i] of evaluateDefinition is segs[i + 1]. */
 export function definitionSegments(kind: DefinitionKind, term: string, text: string): Array<{ label: string; text: string; lead: string }> | null {
   const def = findDefinitionText(text, term);
   if (!def) return null;
   const body = def.replace(/^"[^"]+"\s*(?:shall\s+)?(?:means?|shall\s+have\s+the\s+meaning)\s*,?\s*/i, "").replace(/^(?:for|with\s+respect\s+to)\s+any\s+(?:period|Person)[^,]{0,120},\s*/i, "");
-  const segs = segments(body);
+  // "(b)(viii )", "( c )": whitespace inside an enumerator is a typesetting artefact, not a different label.
+  const segs = segments(normalizeEnumerators(body));
   // "(i) the sum of (a) CNI plus (b)…": when the lead names no base, fold the first NI/EBIT/operating-income
   // item into the lead (may sit under a "sum of" wrapper, not only at segs[1]).
   const baseRe = kind === "EBITDA" ? /net\s+income|\bEBIT\b|operating\s+income/i : /interest/i;
@@ -352,14 +370,22 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
   // — "excluding" here means add-back (REIT/indenture drafting), not a subtraction from the sum.
   if (kind === "EBITDA" && /net\s+income/i.test(lead) && /\bexcluding\s+the\s+following\b/i.test(lead) && /to\s+the\s+extent\s+included/i.test(lead)) sign = "+";
   const used = new Set<string>();
+  // A deduction header on an outer enumerator ("(2) decreased (without duplication) by (a) …; plus (b) …; plus (c) …")
+  // signs every item under it: connectors between its items join them inside the group and never flip it to an
+  // add-back. The group ends at the next label of the header's own style.
+  let lock: { style: string; sign: ItemSign } | null = null;
   for (const s of segs.slice(1)) {
     const t = s.text;
-    const header = /\bthe\s+following\b|:\s*$/.test(t) && t.length < 300;
+    if (lock && labelStyle(s.label) === lock.style) lock = null;
+    const sh = signHeader(t);
+    const header = sh != null || (/\bthe\s+following\b|:\s*$/.test(t) && t.length < 300);
     // A group header ("(b) the following, to the extent included in calculating Net Income:") sets the sign of the
     // items under it. Inside an item, qualifiers ("excluding", "net of") do not flip the group; only a trailing
     // connector ("…; minus") does.
-    if (header) { for (const m of markers(t)) sign = m; if (/\bto\s+the\s+extent\s+(?:increasing|included\s+in)/i.test(t)) sign = "-"; }
-    const groupSign = sign;
+    // Only a deduction group is sticky: a "minus" written inside an add-back group still flips (the cautious reading).
+    if (header && sh) { sign = sh; lock = sh === "-" ? { style: labelStyle(s.label), sign: sh } : null; }
+    else if (header) { for (const m of markers(t)) sign = m; if (/\bto\s+the\s+extent\s+(?:increasing|included\s+in)/i.test(t)) sign = "-"; }
+    const groupSign = lock && !(header && sh) ? lock.sign : sign;
     if (!header) for (const m of markers(t.slice(-30))) sign = m;
     if (header) { items.push({ label: s.label, text: t.slice(0, 160), sign: groupSign, coverage: "HEADER", concepts: [], value: "0", note: "group header" }); continue; }
     const descr = t.replace(HEADER, "").trim();
@@ -373,14 +399,16 @@ export function evaluateDefinition(kind: DefinitionKind, term: string, text: str
       if (GAIN_LIKE.test(t) && !COST_LIKE.test(t)) { it.sign = "?"; it.note = "income-like item"; continue; }
       it.note = "unmapped inclusion (raises interest expense)"; continue;
     }
-    if (TWO_SIDED.test(t)) { it.sign = "?"; it.note = "two-sided adjustment"; continue; }
-    if (groupSign === "+" && GAIN_LIKE.test(t.replace(/net\s+of\s+interest\s+income|based\s+on\s+income|income\s+tax(?:es)?|determining\s+(?:Consolidated\s+)?Net\s+Income|(?:Consolidated\s+)?Net\s+Income|decreasing\s+\w+\s+Net\s+Income/gi, "")) && !COST_LIKE.test(t)) { it.sign = "?"; it.note = "income/gain-like item in an add-back group"; continue; }
+    // An item in a deduction group is a deduction whatever it names (two-sided "gains or losses" included): it can only
+    // lower the total, never become an add-back.
     if (groupSign === "-") {
       // A deduction that is exactly one filed gain item is modelled from filings (gain deducted; a net loss deducts 0).
-      const gd = gainDeduction(t, fin);
+      const gd = TWO_SIDED.test(t) ? null : gainDeduction(t, fin);
       if (gd) { it.coverage = "FULL"; it.concepts.push({ concept: gd.concept, value: gd.value.toString() }); it.value = (-gd.value).toString(); it.note = "deduction from exact filed gain"; continue; }
-      it.note = "unmapped deduction"; continue;
+      it.note = TWO_SIDED.test(t) ? "two-sided deduction (unmapped)" : "unmapped deduction"; continue;
     }
+    if (TWO_SIDED.test(t)) { it.sign = "?"; it.note = "two-sided adjustment"; continue; }
+    if (groupSign === "+" && GAIN_LIKE.test(t.replace(/net\s+of\s+interest\s+income|based\s+on\s+income|income\s+tax(?:es)?|determining\s+(?:Consolidated\s+)?Net\s+Income|(?:Consolidated\s+)?Net\s+Income|decreasing\s+\w+\s+Net\s+Income/gi, "")) && !COST_LIKE.test(t)) { it.sign = "?"; it.note = "income/gain-like item in an add-back group"; continue; }
     const mapped = CAPPED.test(t) ? null : mapEbitdaItem(t, fin, text, depth);
     if (mapped === "TWO_SIDED") { it.sign = "?"; it.note = "referenced definition not derivable (could lower the total)"; continue; }
     if (!mapped) { it.note = CAPPED.test(t) ? "capped add-back (counted as 0 in the lower bound)" : COST_LIKE.test(t) ? "unmapped add-back" : "unclassified item"; if (!COST_LIKE.test(t)) it.sign = "?"; continue; }
