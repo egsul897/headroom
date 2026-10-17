@@ -48,6 +48,16 @@ export async function connectSource(params: ConnectSourceParams): Promise<Compan
   let provider: string;
   let resolvedConfig: Record<string, unknown> = params.config ?? {};
 
+  if ((connectorType as string) === "ERP") {
+    // ERP connections carry an inbound ingestion secret (stored only as a
+    // hash) that this generic path does not manage - creating one here
+    // would produce a connection that can never authenticate. Fail closed
+    // and point at the ERP provisioning path instead. (Compared as a string
+    // so this compiles against generated clients that predate the ERP enum
+    // value as well as those that include it.)
+    throw new UnsupportedConnectorConfigError("connectSource: ERP connections are provisioned via lib/erp/connections.ts's createErpConnection (they carry an inbound ingestion secret this path does not manage).");
+  }
+
   if (connectorType === "EDGAR") {
     const ticker = typeof resolvedConfig.ticker === "string" ? resolvedConfig.ticker : undefined;
     if (!ticker) {
@@ -141,6 +151,15 @@ export async function getOrCreateUploadConnection(companyId: string): Promise<Co
  * factory to be immediately usable.
  */
 export function getConnectorForConnection(connection: CompanySourceConnection): SourceConnector {
+  if ((connection.connectorType as string) === "ERP") {
+    // ERP-1 is push-based: facts arrive via lib/erp/ingest.ts's endpoint,
+    // there is no pull SourceConnector yet. ERP-3's provider adapters
+    // implement syncSince against the cursor contract in lib/erp/types.ts.
+    // Fail closed with that explanation rather than returning a connector
+    // that would silently sync nothing. (String comparison: compiles
+    // against generated clients with or without the ERP enum value.)
+    throw new UnsupportedConnectorConfigError(`getConnectorForConnection: ERP connection ${connection.id} is push-based (lib/erp/ingest.ts) - no pull SourceConnector exists for it yet.`);
+  }
   switch (connection.connectorType) {
     case "EDGAR": {
       const config = (connection.config as { cik?: string; ticker?: string } | null) ?? {};
