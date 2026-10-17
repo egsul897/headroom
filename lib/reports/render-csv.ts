@@ -36,7 +36,7 @@ export function renderComplianceCsv(r: ComplianceReport): string {
   out.push(row(["Section", "Item", "Document", "Section ref", "Value", "Unit", "Status", "Engine state", "Review state", "Source", "Formula", "Reason"]));
   for (const l of r.lines) {
     const src = l.source ? (l.source.kind === "DOCUMENT" ? `${l.source.documentName} ${l.source.sectionRef}` : l.source.engine) : "";
-    out.push(row([l.section, l.label, l.documentName ?? "", l.sectionRef ?? "", shown(l.value, l.status, l.unlimited), l.unit, l.status.replace(/_/g, " "), l.engineState ?? "", l.reviewState ?? "", src, l.proof.formula ?? "", l.reason ?? ""]));
+    out.push(row([l.section, l.label, l.documentName ?? "", l.sectionRef ?? "", shown(l.value, l.status, l.unlimited), l.unit, l.status.replace(/_/g, " "), l.engineState ?? "", l.reviewState ?? "", src, l.formula ?? "", l.reason ?? ""]));
   }
   if (r.warnings.length) {
     out.push("");

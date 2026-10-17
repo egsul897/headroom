@@ -16,20 +16,8 @@ export interface SourceRef {
   engine?: string;
 }
 
-/**
- * Proof payload per figure (read-only). Only what the engine output already
- * carries: the formula as the engine describes it and the governing
- * citation. Step-by-step arithmetic and per-input source locators are not
- * exposed by the current engine output, so they are NEEDS_INPUT (owned by
- * the formula/compute lane) — never reconstructed here.
- */
-export interface FigureProof {
-  formula: string | null;
-  citation: SourceRef | null;
-  steps: "NEEDS_INPUT";
-  inputs: "NEEDS_INPUT";
-  note: string;
-}
+export type { FigureProof, ProofInput } from "./ux-contract";
+import type { FigureProof } from "./ux-contract";
 
 export interface ReportLine {
   section: string;
@@ -47,6 +35,9 @@ export interface ReportLine {
   reviewState: string | null;
   source: SourceRef | null;
   reason: string | null;
+  /** Engine's formula description (capacity rows), verbatim; null when not modeled. */
+  formula: string | null;
+  /** PR 414 FigureProof. Inputs the engine does not expose are listed with value null (never reconstructed). */
   proof: FigureProof;
 }
 
