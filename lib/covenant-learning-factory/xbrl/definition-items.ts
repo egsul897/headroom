@@ -24,15 +24,21 @@ export function plainText(text: string): string {
     .replace(/&([a-z]+);/gi, (m, n: string) => ENT[n.toLowerCase()] ?? m).replace(/[“”\u0093\u0094]/g, '"').replace(/\s+/g, " ");
 }
 
+/**
+ * What follows a quoted defined term: a defining verb ("means", "shall mean", "shall have the meaning",
+ * "has the meaning") or the colon convention ("Term": ...), a colon then whitespace.
+ */
+const DEFINES = String.raw`(?:\s*(?:shall\s+)?(?:mean|means|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\b|\s*:(?=\s))`;
+
 export function findDefinitionText(text: string, term: string): string | null {
   const t = plainText(text);
   const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
-  const m = new RegExp(`"\\s*${esc}\\s*"\\s*(?:shall\\s+)?(?:mean|means|shall\\s+have\\s+the\\s+meaning)\\b`, "i").exec(t);
+  const m = new RegExp(`"\\s*${esc}\\s*"${DEFINES}`, "i").exec(t);
   if (!m) return null;
   // Real Consolidated EBITDA schedules routinely run 8k–25k+ chars of add-backs before the next
   // defined term. Search the remainder for the next `"Term" means` opener (no 8k/3k cutoffs).
   const after = t.slice(m.index + m[0].length);
-  const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(after);
+  const next = new RegExp(`"\\s*[A-Z][^"]{1,80}"${DEFINES}`).exec(after);
   const end = next ? m[0].length + next.index : Math.min(m[0].length + after.length, 100_000);
   return t.slice(m.index, m.index + end).trim();
 }
@@ -46,7 +52,7 @@ export function findDefinitionText(text: string, term: string): string | null {
 export function findEbitdaMeasureTerm(text: string): string | null {
   const t = plainText(text);
   const hits: Array<{ term: string; rank: number }> = [];
-  const opener = /"\s*([^"]{2,80}?)\s*"\s*(?:shall\s+)?(?:mean|means|shall\s+have\s+the\s+meaning|has\s+the\s+meaning)\b/gi;
+  const opener = new RegExp(`"\\s*([^"]{2,80}?)\\s*"${DEFINES}`, "gi");
   for (const m of t.matchAll(opener)) {
     const term = m[1]!.replace(/\s+/g, " ").trim();
     const rank = ebitdaMeasureRank(term);
