@@ -15,7 +15,7 @@ import type {
   DefinitionRecord,
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
-import type { CovenantCategoryKey } from "./summarize";
+import type { CovenantCategoryKey, NonCovenantSubtype } from "./summarize";
 
 export type ProvisionPosture =
   | "GENERAL_PROHIBITION"
@@ -60,6 +60,448 @@ export interface CrossReferenceResolution {
   reason?: string;
 }
 
+/**
+ * Structural classification, classification census steps 1–3.
+ * Assigns the NON_COVENANT category (with a subtype) from
+ * STRUCTURE-SHAPED signals only — article position, instrument
+ * identity, node type, and clause shape — never from
+ * agreement-specific strings. Family keyword scoring cannot
+ * override it: a definition clause that mentions "Indebtedness"
+ * is a definition, not a debt covenant.
+ *
+ * Fail-closed throughout: anything ambiguous stays OTHER /
+ * UNKNOWN and enters the covenant decision queue.
+ */
+
+/** Structural article classes that gate NON_COVENANT classification. */
+type StructuralArticleClass =
+  | "DEFINITION"
+  | "REPRESENTATION"
+  | "AGENT"
+  | "CONDITIONS"
+  | "CREDITS"
+  | "TAXES"
+  | "ASSIGNMENTS"
+  | "AMENDMENTS"
+  | "MISCELLANEOUS"
+  | "NEGATIVE"
+  | "OTHER_ARTICLE";
+
+/** EDGAR split-letter repair for article headings, generalized
+ * from isRepresentationArticle's local version: a lone capital
+ * letter followed by an all-caps word joins it ("D EFINITIONS"
+ * → "DEFINITIONS"). Applied token-wise. */
+function despaceHeadingText(heading: string): string {
+  const tokens = heading.split(/\s+/);
+  const out: string[] = [];
+  for (const t of tokens) {
+    const prev = out[out.length - 1];
+    if (prev !== undefined && /^[A-Z]$/.test(prev) && /^[A-Z]{2,}/.test(t)) {
+      out[out.length - 1] = prev + t;
+    } else {
+      out.push(t);
+    }
+  }
+  return out.join(" ");
+}
+
+/** Classify an ARTICLE heading into its structural role. Pure
+ * predicates on the (despaced, uppercased) heading — never on
+ * agreement-specific strings. Mixed articles (e.g. an article
+ * titled both Representations and Covenants) match nothing:
+ * fail-closed. */
+function structuralArticleClass(heading: string | undefined): StructuralArticleClass | null {
+  if (!heading) return null;
+  const h = despaceHeadingText(heading).replace(/\s+/g, " ").trim().toUpperCase();
+  const has = (re: RegExp) => re.test(h);
+  if (has(/\bDEFINITIONS?\b/) || has(/\bDEFINED TERMS\b/)) return "DEFINITION";
+  if (has(/\bREPRESENTATIONS?\b/) && !has(/\bCOVENANTS?\b/)) return "REPRESENTATION";
+  if (has(/\bADMINISTRATIVE AGENT\b/) || has(/\bOTHER AGENTS\b/) || /^(THE\s+)?ADMINISTRATIVE$/.test(h)) {
+    return "AGENT";
+  }
+  if (has(/\bCONDITIONS\b/) && !has(/\bCOVENANTS?\b/)) return "CONDITIONS";
+  if (has(/\bTHE CREDITS\b/) || has(/\bCOMMITMENTS\b/)) return "CREDITS";
+  if (has(/\bTAXES\b/) || has(/\bYIELD PROTECTION\b/) || has(/\bINCREASED COSTS\b/)) return "TAXES";
+  if (has(/\bASSIGNMENTS\b/) || has(/\bBENEFIT OF AGREEMENT\b/) || has(/\bBORROWER REPRESENTATIVE\b/) || has(/\bGENERAL PROVISIONS\b/)) {
+    return "ASSIGNMENTS";
+  }
+  if (has(/\bAMENDMENTS\b/) || has(/\bWAIVERS\b/)) return "AMENDMENTS";
+  if (has(/\bMISCELLANEOUS\b/)) return "MISCELLANEOUS";
+  if (has(/\bNEGATIVE\b/)) return "NEGATIVE";
+  return "OTHER_ARTICLE";
+}
+
+const ROMAN_VALUES: Record<string, number> = {
+  I: 1, II: 2, III: 3, IV: 4, V: 5, VI: 6, VII: 7, VIII: 8, IX: 9, X: 10, XI: 11, XII: 12, XIII: 13,
+};
+
+/** The article numeral from an ARTICLE node's sectionRef
+ * ("I", "ARTICLE VII", "1" all parse). */
+function articleNumeral(sectionRef: string | undefined): number | null {
+  if (!sectionRef) return null;
+  const token = sectionRef.trim().toUpperCase().split(/\s+/).pop() ?? "";
+  const roman = ROMAN_VALUES[token];
+  if (roman !== undefined) return roman;
+  const digits = parseInt(token, 10);
+  return Number.isFinite(digits) ? digits : null;
+}
+
+/** Leading integer of a provision's sectionRef ("7.03(f)" → 7). */
+function leadingRefNumber(sectionRef: string | undefined): number | null {
+  if (!sectionRef) return null;
+  const m = sectionRef.trim().match(/^(\d+)/);
+  const g = m?.[1];
+  return g ? parseInt(g, 10) : null;
+}
+
+/** Structural position of a candidate: the enclosing ARTICLE by
+ * validated parentage (existing articleHeading semantics), a
+ * span-containment fallback (never contradicting parentage), and
+ * whether the item sits in a bundled instrument's region. */
+interface StructuralPosition {
+  candidateNode: StructuralNodeRecord | undefined;
+  /** Validated ancestor chain, self first, root last. */
+  chain: StructuralNodeRecord[];
+  /** Heading of the nearest SECTION node in the chain (self or
+   * ancestor) — the section the provision belongs to. */
+  sectionHeading: string | undefined;
+  /** ARTICLE ancestor by validated parent chain (ancestors only). */
+  articleNode: StructuralNodeRecord | null;
+  /** Smallest ARTICLE span containing the candidate's span — used
+   * ONLY when the parentage walk finds no ARTICLE. */
+  containedArticle: StructuralNodeRecord | null;
+  /** True when the candidate's span starts at/after the first
+   * article-sequence restart (a bundled guaranty / security /
+   * intercreditor instrument inside one file). */
+  inBundledInstrumentRegion: boolean;
+  /** The article whose class gates classification: parentage
+   * first; containment only when ref-consistent or bundled. */
+  positionArticle: StructuralNodeRecord | null;
+  /** Structural classes of the position article, or null. */
+  positionClass: StructuralArticleClass | null;
+}
+
+function structuralPositionOf(
+  candidateNode: StructuralNodeRecord | undefined,
+  candidateSectionRef: string,
+  structuralNodes: StructuralNodeRecord[],
+): StructuralPosition {
+  const nodesById = new Map(structuralNodes.map((n) => [n.nodeId, n]));
+  const chain: StructuralNodeRecord[] = [];
+  {
+    const seen = new Set<string>();
+    let node = candidateNode;
+    while (node && !seen.has(node.nodeId)) {
+      seen.add(node.nodeId);
+      chain.push(node);
+      node = node.parentNodeId ? nodesById.get(node.parentNodeId) : undefined;
+    }
+  }
+  // Ancestors only (chain[0] is the candidate's own node) —
+  // matches the existing articleHeading walk.
+  const articleNode = chain.slice(1).find((n) => n.nodeType === "ARTICLE") ?? null;
+  let containedArticle: StructuralNodeRecord | null = null;
+  if (!articleNode && candidateNode) {
+    const cs = candidateNode.charStart;
+    const ce = candidateNode.charEnd;
+    let best: StructuralNodeRecord | null = null;
+    let bestSpan = Infinity;
+    for (const n of structuralNodes) {
+      if (n.nodeType !== "ARTICLE") continue;
+      if (n.charStart <= cs && ce <= n.charEnd) {
+        const span = n.charEnd - n.charStart;
+        if (span < bestSpan) {
+          bestSpan = span;
+          best = n;
+        }
+      }
+    }
+    containedArticle = best;
+  }
+  // Bundled-instrument region. The parser emits one ARTICLE
+  // sequence per instrument in the file, plus (in EDGAR files) a
+  // miniature duplicate sequence for the table of contents.
+  // Split the articles (span order) into numeral-ascending runs;
+  // the run with the greatest total span is the primary
+  // instrument (the credit agreement body — the TOC run is tiny
+  // by comparison). A later non-primary run is a bundled
+  // instrument (guaranty / security / intercreditor): the region
+  // starts at its first article. Runs BEFORE the primary run
+  // (the TOC) never start a bundled region.
+  const articlesBySpan = structuralNodes
+    .filter((n) => n.nodeType === "ARTICLE")
+    .sort((a, b) => a.charStart - b.charStart);
+  let bundledStart: number | null = null;
+  {
+    const runs: Array<{ start: number; totalSpan: number }> = [];
+    let prev: number | null = null;
+    for (const a of articlesBySpan) {
+      const num = articleNumeral(a.sectionRef);
+      if (num == null) continue;
+      if (prev == null || num <= prev || runs.length === 0) {
+        runs.push({ start: a.charStart, totalSpan: 0 });
+      }
+      const current = runs[runs.length - 1];
+      if (current) current.totalSpan += Math.max(0, a.charEnd - a.charStart);
+      prev = num;
+    }
+    if (runs.length > 1) {
+      let primaryIdx = 0;
+      for (let i = 1; i < runs.length; i++) {
+        const run = runs[i];
+        const primary = runs[primaryIdx];
+        if (run && primary && run.totalSpan > primary.totalSpan) primaryIdx = i;
+      }
+      for (let i = primaryIdx + 1; i < runs.length; i++) {
+        const run = runs[i];
+        if (run && (bundledStart == null || run.start < bundledStart)) bundledStart = run.start;
+      }
+    }
+  }
+  const inBundledInstrumentRegion =
+    bundledStart != null && candidateNode != null && candidateNode.charStart >= bundledStart;
+  // Containment is admissible only when it does not contradict
+  // the section reference: the provision's leading section
+  // number must match the containing article's numeral (the
+  // parser's own containment + ref-consistency principle), or
+  // the item must sit in a bundled instrument's region (whose
+  // instruments restart their own numbering).
+  let positionArticle: StructuralNodeRecord | null = articleNode;
+  if (!positionArticle && containedArticle) {
+    const containedNum = articleNumeral(containedArticle.sectionRef);
+    const leading = leadingRefNumber(candidateSectionRef);
+    if (inBundledInstrumentRegion) {
+      positionArticle = containedArticle;
+    } else if (containedNum != null && leading != null && containedNum === leading) {
+      positionArticle = containedArticle;
+    }
+  }
+  return {
+    candidateNode,
+    chain,
+    sectionHeading: chain.find((n) => n.nodeType === "SECTION")?.heading,
+    articleNode,
+    containedArticle,
+    inBundledInstrumentRegion,
+    positionArticle,
+    positionClass: structuralArticleClass(positionArticle?.heading ?? undefined),
+  };
+}
+
+/** A chapeau/title-only item: the excerpt carries nothing beyond
+ * the section title (segmentation stems whose clauses are separate
+ * items, e.g. "Section 2.09. Termination of Commitment ...").
+ * Such items are never classified from article position — the
+ * clauses below them carry the substance. */
+const OPERATIVE_VERB =
+  /\b(shall|will|may|must|agree|waiv|deliver|furnish|maintain|permit|represent|warrant|covenant|undertak|pay|giv|provid|notif|incur|creat|enter)/i;
+
+function isChapeauOnlyExcerpt(excerpt: string, heading: string): boolean {
+  const norm = excerpt.replace(/\s+/g, " ").trim();
+  let rest = norm
+    .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+    .replace(/^[0-9]+(?:\.[0-9]+)*[.\s]+/, "");
+  const h = heading.replace(/\s+/g, " ").trim().toLowerCase();
+  if (h.length > 3 && rest.toLowerCase().startsWith(h)) rest = rest.slice(h.length);
+  rest = rest.replace(/^[\s.:;—–-]+/, "").trim();
+  if (rest.length <= 30) return true;
+  // A truncated heading ("Termination") may strip only part of
+  // the title ("Termination of Commitment; Increase in
+  // Revolving Commitments ."). The remainder is still a title
+  // when the whole excerpt is short and carries no operative
+  // verb — a one-sentence operative clause ("Each Guarantor
+  // waives notice ...") always carries one.
+  return norm.length <= 120 && !OPERATIVE_VERB.test(norm);
+}
+
+/** A "[Reserved]" placeholder — no operative text. */
+function isReservedPlaceholder(excerpt: string, heading: string): boolean {
+  const norm = excerpt.replace(/\s+/g, " ").trim();
+  const body = norm
+    .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+    .replace(/^[0-9]+(?:\.[0-9]+)*[.\s]+/, "")
+    // Clause-marker prefixes: "(j) [Reserved]." / "(d) Reserved ."
+    .replace(/^\([a-z0-9]{1,3}\)\s*/i, "")
+    .trim();
+  return /^\[?reserved\]?\.?$/i.test(body) || /\[reserved\]/i.test(heading);
+}
+
+/** Families that make an item covenant-mappable for the masking
+ * gates: they carry a substantive covenant category (not OTHER,
+ * not the generic baskets bucket). */
+function hasMappableSubstantiveFamily(families: string[]): boolean {
+  return families.some((f) => {
+    const cat = FAMILY_TO_CATEGORY[f];
+    return (
+      cat !== undefined &&
+      cat !== "OTHER" &&
+      cat !== "BASKETS_EXCEPTIONS_CONDITIONS"
+    );
+  });
+}
+
+/** A schedules/exhibits index parsed as a section item — a list
+ * of schedule and exhibit titles, not a provision. Shape: the
+ * excerpt is dominated by Schedule/Exhibit enumerations and
+ * carries no operative verb. Never classified NON_COVENANT: it
+ * is parser residue, explicitly unresolved. */
+function isScheduleIndexText(excerpt: string): boolean {
+  const markers = (excerpt.match(/\bSchedule\s+[0-9A-Z]/g) ?? []).length +
+    (excerpt.match(/\bExhibit\s+[A-Z0-9]/g) ?? []).length;
+  return markers >= 4 && !/\bshall\b|\bwill\b/i.test(excerpt);
+}
+
+/** Mandatory-prepayment shape: an obligation to prepay ("the
+ * Borrowers shall prepay", "shall ... prepay"). Voluntary
+ * prepayment rights ("may prepay", "shall have the right to
+ * prepay") and application waterfalls ("shall be applied") do
+ * NOT match — fail-closed. */
+function isMandatoryPrepaymentShape(excerpt: string): boolean {
+  if (/\bshall\s+have\s+the\s+right\b/i.test(excerpt)) return false;
+  return (
+    /\bshall\s*,?\s*(?:\w+\s+){0,2}prepay\b/i.test(excerpt) ||
+    /\bshall\b[^.;]{0,60}\bprepay\b/i.test(excerpt) ||
+    // "shall, immediately after such Net Proceeds are received
+    // ..., prepay" — the comma-adjunct obligation shape.
+    /\bshall\s*,[^.;]{0,110}\bprepay\b/i.test(excerpt) ||
+    /\bmandatory\s+prepayment/i.test(excerpt)
+  );
+}
+
+/**
+ * Step 1: the NON_COVENANT classification. Runs BEFORE family
+ * keyword scoring can label definitions, representations,
+ * mechanics, boilerplate, or [reserved] placeholders as
+ * covenants. Returns the subtype, or null when the item must go
+ * through covenant classification.
+ *
+ * Guards (fail-closed): items carrying a substantive mappable
+ * family are kept out of the mechanics/boilerplate gates in
+ * Miscellaneous and Credits articles (the masking population);
+ * chapeau-only stems are never gated; an EoD-shaped item is never
+ * gated (isEod is passed in so the gate cannot claim a trigger).
+ */
+function classifyNonCovenant(params: {
+  excerpt: string;
+  heading: string;
+  families: string[];
+  primary: string;
+  isEod: boolean;
+  position: StructuralPosition;
+}): NonCovenantSubtype | null {
+  const { excerpt, heading, families, primary, isEod, position } = params;
+  if (isReservedPlaceholder(excerpt, heading)) return "RESERVED";
+  if (isEod) return null;
+  if (isScheduleIndexText(excerpt)) return null;
+  // An ARTICLE node item is the article head/chapeau itself —
+  // never gated by its own article's class.
+  if (position.candidateNode?.nodeType === "ARTICLE") return null;
+
+  const cls = position.positionClass;
+
+  // Subsidiary-designation machinery: operates the
+  // restricted/unrestricted subsidiary regime — it is not a
+  // covenant grant. Shape: the enclosing SECTION is a
+  // designation section and the item's primary family is a
+  // designation family. Never inside a Negative Covenants
+  // article (there designations run as operative limitations),
+  // and never chapeau-only (the section stem carries the
+  // regime's framing, classified elsewhere).
+  if (
+    cls !== "NEGATIVE" &&
+    ["RESTRICTED_SUBSIDIARIES", "UNRESTRICTED_SUBSIDIARIES", "DESIGNATIONS"].includes(primary) &&
+    position.sectionHeading !== undefined &&
+    /\bdesignation of\b|\bsubsidiary designation\b/i.test(
+      despaceHeadingText(position.sectionHeading),
+    ) &&
+    !isChapeauOnlyExcerpt(excerpt, heading)
+  ) {
+    return "MECHANICS";
+  }
+
+  switch (cls) {
+    case "DEFINITION":
+      return "DEFINITION";
+    case "REPRESENTATION":
+      return "REPRESENTATION";
+    case "AGENT":
+    case "CONDITIONS":
+    case "TAXES":
+    case "ASSIGNMENTS":
+    case "AMENDMENTS":
+      return "MECHANICS";
+    case "MISCELLANEOUS": {
+      // Carve-out: a guaranty-obligations section embedded in
+      // the miscellaneous article (the "obligations absolute" /
+      // guaranty waiver provisions) is an operative guarantee
+      // provision, not boilerplate — its GUARANTEES family is
+      // the operative subject, and step 3 promotes it. Shape:
+      // the enclosing section names the guaranty regime and the
+      // GUARANTEES family is present.
+      const section = despaceHeadingText(position.sectionHeading ?? "");
+      if (
+        /\b(obligations\s+absolute|guaranty|guarantees?)\b/i.test(section) &&
+        families.includes("GUARANTEES")
+      ) {
+        return null;
+      }
+      // A representations section inside a bundled instrument
+      // whose span containment lands in an overreaching
+      // miscellaneous span is representation content.
+      if (isRepresentationArticle(position.sectionHeading)) return "REPRESENTATION";
+      return "BOILERPLATE";
+    }
+    case "CREDITS":
+      if (hasMappableSubstantiveFamily(families)) return null;
+      if (isMandatoryPrepaymentShape(excerpt)) return null;
+      if (isChapeauOnlyExcerpt(excerpt, heading)) return null;
+      // Incremental-facility clauses are the operative terms of
+      // a debt permission, not facility mechanics — when the
+      // INCREMENTAL family goes undetected they must stay in
+      // the covenant queue (fail-closed). Shape: the excerpt
+      // works an "Incremental" defined-term regime (or the
+      // enclosing section is the incremental section).
+      if (
+        (excerpt.match(/\bIncremental\b/g) ?? []).length >= 2 ||
+        /\bincremental\b/i.test(position.sectionHeading ?? "")
+      ) {
+        return null;
+      }
+      return "MECHANICS";
+    default:
+      break;
+  }
+
+  // Bundled-instrument rule: a provision of a bundled guaranty /
+  // security / intercreditor instrument (or an exhibit form)
+  // whose primary family maps to no covenant category is content
+  // of THAT instrument, not a covenant of the credit agreement —
+  // explicitly classified as mechanics of the bundled
+  // instrument. Families beyond the primary are the instrument's
+  // own subject matter (an intercreditor clause is ABOUT liens);
+  // they do not make it a credit-agreement covenant. Items whose
+  // PRIMARY family maps (a security agreement's lien grant, a
+  // guaranty's guarantee) keep their covenant classification:
+  // the gate claims only the otherwise-OTHER population.
+  if (
+    position.inBundledInstrumentRegion &&
+    (FAMILY_TO_CATEGORY[primary] ?? "OTHER") === "OTHER" &&
+    !isChapeauOnlyExcerpt(excerpt, heading)
+  ) {
+    // Carve-out: a guaranty contribution/subrogation section is
+    // a substantive guarantee provision (it allocates guarantor
+    // liability), not instrument mechanics — its GUARANTEES
+    // family is the operative subject; step 3 promotes it.
+    const section = despaceHeadingText(position.sectionHeading ?? "");
+    if (/\b(contribution|subrogation)\b/i.test(section) && families.includes("GUARANTEES")) {
+      return null;
+    }
+    if (isRepresentationArticle(position.sectionHeading)) return "REPRESENTATION";
+    return "MECHANICS";
+  }
+  return null;
+}
+
 export interface ProvisionAnalysis {
   /** Rule 192: the candidate excerpt is a prefix of a longer
    * operative span (4000-char cap) — tail clauses are missing. */
@@ -70,6 +512,10 @@ export interface ProvisionAnalysis {
   heading: string;
   category: CovenantCategoryKey;
   categoryLabel: string;
+  /** Classification census step 1: for NON_COVENANT items, the
+   * structural reason the item is not an operative covenant.
+   * Absent for covenant items. */
+  nonCovenantSubtype?: NonCovenantSubtype;
   families: string[];
   posture: ProvisionPosture;
   /** Genuine plain-English explanation of operative substance. */
@@ -141,6 +587,7 @@ const CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   FINANCIAL_MAINTENANCE: "Financial maintenance covenants",
   EVENTS_OF_DEFAULT: "Events of default",
   BASKETS_EXCEPTIONS_CONDITIONS: "Relevant baskets, exceptions, conditions and defined terms",
+  NON_COVENANT: "Non-covenant provision",
   OTHER: "Other provisions",
 };
 
@@ -1019,20 +1466,52 @@ export function analyzeProvision(params: {
   const isEod =
     params.candidate.families.includes("EVENTS_OF_DEFAULT") ||
     isEventOfDefaultTrigger(heading, excerpt);
+  // Classification census step 1: structural NON_COVENANT
+  // classification runs BEFORE family keyword scoring — article
+  // position, instrument identity, and node shape are stronger
+  // evidence than keyword families (a definition clause that
+  // mentions "Indebtedness" is a definition, not a debt
+  // covenant). The gate never claims an EoD-shaped item.
+  const candidateNode = params.candidate.nodeId
+    ? params.structuralNodes.find((n) => n.nodeId === params.candidate.nodeId)
+    : undefined;
+  const structuralPos = structuralPositionOf(candidateNode, sectionRef, params.structuralNodes);
+  const nonCovenantSubtype = classifyNonCovenant({
+    excerpt,
+    heading,
+    families: params.candidate.families,
+    primary,
+    isEod,
+    position: structuralPos,
+  });
   // Category follows substance, not just the first family tag: an EoD
   // trigger stays EVENTS_OF_DEFAULT even if the classifier also tagged a
   // subject family, and an administrative provision is OTHER.
-  const category = isAdministrativeProvision(heading, excerpt)
-    ? "OTHER"
-    : isEod
-      ? "EVENTS_OF_DEFAULT"
-      : (FAMILY_TO_CATEGORY[primary] ?? "OTHER");
+  const category: CovenantCategoryKey = nonCovenantSubtype
+    ? "NON_COVENANT"
+    : isAdministrativeProvision(heading, excerpt)
+      ? "OTHER"
+      : isEod
+        ? "EVENTS_OF_DEFAULT"
+        : (FAMILY_TO_CATEGORY[primary] ?? "OTHER");
   const categoryLabel = CATEGORY_LABELS[category];
-  const posture = detectPosture(excerpt, heading, params.candidate.families, params.parentChapeau);
+  // A NON_COVENANT item has no covenant posture: UNRESOLVED is
+  // the honest determinate statement (it is not a prohibition,
+  // permission, or maintenance test), and it keeps the item out
+  // of every routine/auto-accept path.
+  const posture =
+    category === "NON_COVENANT"
+      ? "UNRESOLVED"
+      : detectPosture(excerpt, heading, params.candidate.families, params.parentChapeau);
   const { coveredEntities, entityScopeNotes } = extractEntities(excerpt, heading);
   const basketsAndThresholds = extractBaskets(excerpt);
-  const restriction = extractRestriction(excerpt, heading, posture, categoryLabel);
-  const permissions = extractPermissions(excerpt, posture, nonOperative);
+  // A NON_COVENANT item restricts nothing — never surface a
+  // restriction string mined from its incidental text.
+  const restriction =
+    category === "NON_COVENANT"
+      ? null
+      : extractRestriction(excerpt, heading, posture, categoryLabel);
+  const permissions = extractPermissions(excerpt, posture, nonOperative || category === "NON_COVENANT");
 
   const condRecords = extractConditionsAndExceptions(params.sourceId, excerpt, params.structuralNodes, 40);
   const conditions = condRecords
@@ -1079,7 +1558,12 @@ export function analyzeProvision(params: {
       "Section sits in the Representations article — a statement of fact, not a grant of capacity; it mints no Permission even when accepted.",
     );
   }
-  if (!restriction && posture === "UNRESOLVED") {
+  if (category === "NON_COVENANT" && nonCovenantSubtype) {
+    unresolved.push(
+      `Classified non-covenant (${nonCovenantSubtype.toLowerCase()}) from structural position — not an operative covenant; no covenant decision is required for this item.`,
+    );
+  }
+  if (!restriction && posture === "UNRESOLVED" && category !== "NON_COVENANT") {
     unresolved.push("Could not determine whether the provision is a prohibition, permission, or maintenance test");
   }
   if (posture === "GENERAL_PROHIBITION" && permissions.length === 0 && exceptions.length === 0) {
@@ -1160,6 +1644,7 @@ export function analyzeProvision(params: {
     heading,
     category,
     categoryLabel,
+    nonCovenantSubtype: nonCovenantSubtype ?? undefined,
     families: params.candidate.families,
     posture,
     plainEnglish,

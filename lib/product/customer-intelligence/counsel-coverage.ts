@@ -91,7 +91,14 @@ export async function evaluateCounselCoverage(
       ? (row.metadata as Record<string, unknown>)
       : {};
   const summary = meta.covenantSummary as { items?: { sectionRef: string }[] } | undefined;
-  const items = Array.isArray(summary?.items) ? summary.items : [];
+  // Classification census step 1: NON_COVENANT items require no
+  // decision — coverage is computed over decision-requiring
+  // items only, or a document could never be coverage-complete
+  // (nobody "decides" a definition). They remain counted in the
+  // summary's own accounting (countsByCategory / totals).
+  const items = (Array.isArray(summary?.items) ? summary.items : []).filter(
+    (i) => (i as { category?: unknown }).category !== "NON_COVENANT",
+  );
   const approvals = Array.isArray(meta.reviewerApprovals)
     ? (meta.reviewerApprovals as { sectionRef?: unknown; category?: unknown }[])
     : [];

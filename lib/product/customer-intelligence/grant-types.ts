@@ -438,6 +438,14 @@ function isIncrementalFacilityItem(item: CovenantSummaryItem): boolean {
 }
 
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
+  // Classification census step 1: a NON_COVENANT item
+  // (definition / representation / mechanics / boilerplate /
+  // [reserved]) mints NO basket grants — belt-and-braces at the
+  // grant layer, so no consumer can mint a Permission from an
+  // item the classifier has already determined is not a basket
+  // grant.
+  if (item.category === "NON_COVENANT") return [];
+
   // Rule 166: an event-of-default trigger is a consequence, never a
   // grant of capacity. A Defaults article genuinely contains the
   // words "secured Indebtedness" (cross-default carve-outs, default

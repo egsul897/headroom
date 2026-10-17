@@ -63,8 +63,16 @@ export default async function RulebookPage({
   // Phase C (D11): decision key includes nodeId (occurrence).
   const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}|${a.category}|${a.nodeId ?? ""}`, a]));
 
+  // Classification census step 1: NON_COVENANT items are
+  // explicitly classified document content (definitions,
+  // representations, mechanics, boilerplate, [reserved]) — they
+  // are not interpretations awaiting a decision and never enter
+  // the counsel decision queue. They stay visible in the
+  // document summaries and category counts.
   const candidates = review.categories.flatMap((c) =>
-    c.items.map((item) => ({
+    c.items
+      .filter((item) => item.category !== "NON_COVENANT")
+      .map((item) => ({
       sourceId: item.sourceId,
       category: c.category,
       categoryLabel: c.categoryLabel,

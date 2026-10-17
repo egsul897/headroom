@@ -27,7 +27,26 @@ export type CovenantCategoryKey =
   | "FINANCIAL_MAINTENANCE"
   | "EVENTS_OF_DEFAULT"
   | "BASKETS_EXCEPTIONS_CONDITIONS"
+  | "NON_COVENANT"
   | "OTHER";
+
+/**
+ * Why an item is classified NON_COVENANT — the determinate
+ * classification for document content that is not an operative
+ * covenant (classification census steps 1–3): definitions,
+ * representations, facility/agent mechanics, conditions
+ * checklists, boilerplate, and [reserved] placeholders. Assigned
+ * from structural position (article / instrument / node shape),
+ * never from keyword scoring. NON_COVENANT items are accounted
+ * for and explicitly classified; they mint no grants and enter
+ * no covenant decision queue.
+ */
+export type NonCovenantSubtype =
+  | "DEFINITION"
+  | "REPRESENTATION"
+  | "MECHANICS"
+  | "BOILERPLATE"
+  | "RESERVED";
 
 export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   DEBT_INCURRENCE: "Debt incurrence",
@@ -40,6 +59,7 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   FINANCIAL_MAINTENANCE: "Financial maintenance covenants",
   EVENTS_OF_DEFAULT: "Events of default",
   BASKETS_EXCEPTIONS_CONDITIONS: "Relevant baskets, exceptions, conditions and defined terms",
+  NON_COVENANT: "Non-covenant provision",
   OTHER: "Other provisions",
 };
 
@@ -47,6 +67,10 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
 export interface CovenantSummaryItem {
   category: CovenantCategoryKey;
   categoryLabel: string;
+  /** Additive (classification census step 1): for NON_COVENANT
+   * items, why the item is not an operative covenant. Null/absent
+   * for covenant items. Older stored summaries lack the field. */
+  nonCovenantSubtype?: NonCovenantSubtype | null;
   /**
    * Phase C (D11): the structural node's occurrence identity
    * (nodeId), carried so compile matches the EXACT item the
@@ -217,6 +241,7 @@ function itemFromAnalysis(
     structuralUnresolved,
     category: analysis.category,
     categoryLabel: analysis.categoryLabel,
+    nonCovenantSubtype: analysis.nonCovenantSubtype ?? null,
     sectionRef: analysis.sectionRef,
     heading: analysis.heading,
     posture: analysis.posture,

@@ -98,6 +98,14 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   const unitMap = new Map<string, unknown>();
   for (const d of docs) {
     for (const item of d.summary?.items ?? []) {
+      // Classification census step 1: NON_COVENANT items are
+      // explicitly classified document content — they are NOT
+      // review units (no decision exists for them to await).
+      // They still count in discoveredSummaries above (every
+      // discovered item is accounted for); they are excluded
+      // only from the decision-unit set, so reviewComplete is
+      // reachable without counsel "deciding" definitions.
+      if (item.category === "NON_COVENANT") continue;
       const key = unitKey(d.sourceId, item);
       if (!unitMap.has(key)) unitMap.set(key, item);
     }
