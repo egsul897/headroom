@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Dev-set coverage report (baseline metric for the product target on #383):
+ * Dev-set coverage report (baseline metric for the product target on PR 383):
  *   - provision categorization: share of customer-summary items categorized OTHER, with their recorded otherReason;
  *   - limited baskets: share computed / needs-input / uncomputed per agreement;
  *   - financial covenant levels: every maintenance level / level-by-date schedule the pipeline emits, and every
