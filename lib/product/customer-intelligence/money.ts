@@ -14,7 +14,7 @@
  * unit-misread class). A bare "M"/"k" is NOT accepted (ambiguous).
  * A BARE amount (no unit) is raw dollars → ÷1e6, never assumed
  * millions: "$5,000" is $0.005M, not $5,000M. A missing unit must
- * never be read as "million" (the #391 unit-loss lesson).
+ * never be read as "million" (the PR 391 unit-loss lesson).
  */
 export function parseMoneyMillions(text: string): number | null {
   const m = text.match(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand|mm|bn)?/i);
