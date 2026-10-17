@@ -117,7 +117,7 @@ export default async function DocumentSourcePage({
           </div>
         )}
         {intel?.analysisStale && (
-          <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+          <div className="row-note" style={{ color: "var(--amber)" }}>
             This analysis was produced by an older version of Headroom and may not include the latest
             corrections. Re-analyze for current results.
             <form action={retryCustomerAnalysisAction.bind(null, companyId, documentId)} style={{ marginTop: 8 }}>
@@ -135,7 +135,7 @@ export default async function DocumentSourcePage({
             way to see that the system treats this document as a
             different kind than they declared. */}
         {intel && intel.declaredType && intel.documentClass && intel.documentClass !== intel.declaredType && (
-          <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+          <div className="row-note" style={{ color: "var(--amber)" }}>
             Type mismatch: declared as {intel.declaredType}, but analysis classifies this document as{" "}
             {intel.documentClass}. The analysis class governs operative resolution. If the declaration is
             correct, confirm the document type in the review queue.
@@ -145,7 +145,7 @@ export default async function DocumentSourcePage({
             mismatch note above, so an untyped document sailed through
             with no warning. Say it is unclassified. */}
         {intel && isUnclassifiedDocument(intel) && (
-          <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+          <div className="row-note" style={{ color: "var(--amber)" }}>
             {unclassifiedDocumentNote()}
           </div>
         )}
@@ -234,7 +234,7 @@ export default async function DocumentSourcePage({
               were invisible. The category counts above reflect ALL
               items; the list below is capped. Say both. */}
           {capNote && (
-            <div className="row-note" style={{ color: "var(--color-warning, #92400e)" }}>
+            <div className="row-note" style={{ color: "var(--amber)" }}>
               {capNote}
             </div>
           )}
@@ -247,7 +247,7 @@ export default async function DocumentSourcePage({
               style={{
                 marginTop: 16,
                 paddingTop: 12,
-                borderTop: "1px solid var(--border, #e5e7eb)",
+                borderTop: "1px solid var(--line)",
               }}
             >
               <div className="row">

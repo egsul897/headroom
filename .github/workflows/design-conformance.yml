@@ -1,0 +1,23 @@
+name: Design conformance
+
+# PR/merge gate: new UI must use the design tokens and StatusBadge —
+# no ad-hoc colors, no retired font stacks (docs/DESIGN_SYSTEM.md).
+on:
+  pull_request:
+    paths:
+      - "app/**"
+      - "components/**"
+      - "scripts/design-conformance.mjs"
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Design conformance (tokens + no ad-hoc colors)
+        run: node scripts/design-conformance.mjs origin/${{ github.base_ref }}

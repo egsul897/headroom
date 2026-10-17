@@ -1,0 +1,98 @@
+/*
+ * Graphite Ledger — Headroom design system tokens (docs/DESIGN_SYSTEM.md, PR #392 spec).
+ *
+ * MINIMAL ADOPTION, not the full #392 shell: this file only adopts the
+ * token layer (palette + type + StatusBadge + opt-in table utilities)
+ * so new UI uses the system. The shell (AppShell / CommandPalette /
+ * five-item sidebar / alerts bell) lands with PR #392 itself, which
+ * Egzon merges — this file deliberately does not duplicate it.
+ *
+ * Imported AFTER globals.css in app/layout.tsx, so these :root values
+ * win the cascade for every existing var() consumer. Status colors are
+ * never used for branding; oxblood (#54243c) is the action color only.
+ */
+:root {
+  /* Canvas / surfaces */
+  --paper: #f3f0eb;
+  --card: #fffcf8;
+  --ink: #1a1816;
+  --muted: #5e5852;
+  --rail: #2a2c2e;
+  --line: #ddd8cf;
+
+  /* Action (oxblood, hue 330° — not the brick status red) */
+  --primary: #54243c;
+  --primary-hover: #6b3050;
+
+  /* Status pairs (WCAG AA against their soft backgrounds) */
+  --green: #0e6b43;
+  --green-soft: #e5f4ec;
+  --amber: #7c4a00;
+  --amber-soft: #fbf3df;
+  --red: #9d2c24;
+  --red-soft: #fdeceb;
+  --info-ink: #2a2c2e;
+  --info-soft: #e6e1da;
+  --unknown-ink: #5e5852;
+  --unknown-soft: #e8e3dc;
+
+  /* Type: Inter everywhere; tabular numerals for all figures.
+   * --font-inter-src is the next/font variable from app/layout.tsx.
+   * The retired Newsreader / Public Sans / Spline stacks resolve to
+   * Inter too, so legacy var(--font-serif) / var(--font-mono)
+   * consumers pick up the system without a per-file rewrite. */
+  --font-sans: var(--font-inter-src), Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-serif: var(--font-inter-src), Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-inter-src), Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+  font-variant-numeric: tabular-nums;
+}
+
+/* StatusBadge (docs/DESIGN_SYSTEM.md): plain-language label, raw code
+ * on data-status, hint as tooltip. Tones use the status pairs only. */
+.status-badge {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.status-badge-clear {
+  color: var(--green);
+  background: var(--green-soft);
+}
+.status-badge-attention {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+.status-badge-stop {
+  color: var(--red);
+  background: var(--red-soft);
+}
+.status-badge-info {
+  color: var(--info-ink);
+  background: var(--info-soft);
+}
+.status-badge-unknown {
+  color: var(--unknown-ink);
+  background: var(--unknown-soft);
+}
+
+/* Opt-in table utilities (design system): headers small, uppercase,
+ * muted; numeric columns right-aligned with tabular figures. */
+.ds-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  text-align: left;
+}
+.ds-table td.numeric,
+.ds-table th.numeric {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
