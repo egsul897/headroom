@@ -15,7 +15,14 @@ import {
   type ChecklistItem, type ClauseRole, type CrossRef,
 } from "../../contract-model/section-tree/semantics";
 import { runCovenantComputation } from "../../contract-model/covenant-computation";
-import type { ComputedBasket } from "../../contract-model/covenant-computation/types";
+import type { ComputedBasket, ComputedRatio } from "../../contract-model/covenant-computation/types";
+import {
+  findRatioTokens,
+  parseCovenantLevel,
+  type CovenantLevelDirection,
+  type CovenantLevelMetric,
+  type CovenantTestKind,
+} from "../../contract-model/covenant-computation/covenant-levels";
 import { buildComputationPackage } from "../sweep/build-package";
 import { emptyRuleSet } from "../learned-rules/types";
 
@@ -50,6 +57,27 @@ export interface FamilySummary {
   absentScope?: ChecklistItem["absentScope"];
 }
 
+/**
+ * One financial-covenant level read from a FINANCIAL_RATIOS section by
+ * the unified covenant-level parser. Every level-bearing clause is
+ * carried — DETERMINED and NEEDS_INPUT alike, with the missing inputs
+ * named — so a level the parser could not resolve is visible here
+ * rather than silently absent (baseline behavior: no levels at all).
+ */
+export interface PipelineMaintenanceLevel {
+  sectionRef: string;
+  testKind: CovenantTestKind | null;
+  metric: CovenantLevelMetric | null;
+  ratioName: string | null;
+  direction: CovenantLevelDirection | null;
+  levelStatus: "DETERMINED" | "NEEDS_INPUT";
+  level: string | null;
+  schedule: Array<{ from: string | null; to: string | null; level: string }>;
+  modifiers: Array<{ kind: string; amount: string | null }>;
+  missing: string[];
+  citation: string | null;
+}
+
 export interface AgreementPipelineResult {
   pipelineVersion: string;
   parserVersion: string;
@@ -61,6 +89,10 @@ export interface AgreementPipelineResult {
   crossRefs: CrossRef[];
   checklist: ChecklistItem[];
   computedBaskets: ComputedBasket[];
+  /** Computed ratios with their thresholds (threshold rows carry testKind when the unified parser confirmed it). */
+  ratios: ComputedRatio[];
+  /** Financial-covenant levels from FINANCIAL_RATIOS sections, via the unified covenant-level parser. */
+  maintenanceLevels: PipelineMaintenanceLevel[];
   families: FamilySummary[];
   stats: { nodes: number; sections: number; clauses: number; xrefs: number; xrefResolved: number; baskets: number };
 }
@@ -123,7 +155,48 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     if (key.length < 20 || cited.includes(key)) continue;
     pkg.baskets.push({ stableKey: `tree:${n.path}`, sectionRef: n.path, covenantFamily: family, documentId: pkg.baskets[0]?.documentId ?? args.sourceId, operativeText: own, role: "PERMISSION" });
   }
-  const computed = runCovenantComputation(pkg, { rules, createdAt: "1970-01-01T00:00:00.000Z" }).baskets;
+  const computation = runCovenantComputation(pkg, { rules, createdAt: "1970-01-01T00:00:00.000Z" });
+  const computed = computation.baskets;
+
+  // Financial-covenant levels: every level-bearing clause of every
+  // FINANCIAL_RATIOS section, read by the ONE covenant-level parser.
+  // NEEDS_INPUT parses are carried with their named missing inputs —
+  // a stepped schedule without an as-of date is disclosed here, not
+  // dropped and not flattened to a single row.
+  const maintenanceLevels: PipelineMaintenanceLevel[] = [];
+  const finPaths = new Set(checklist.find((c) => c.family === "FINANCIAL_RATIOS")?.sectionPaths ?? []);
+  if (finPaths.size) {
+    for (const node of tree.nodes) {
+      if (node.kind !== "SECTION" || !finPaths.has(node.path)) continue;
+      const parent = node.parentId ? tree.byId.get(node.parentId) : undefined;
+      const clauses = node.childIds
+        .map((id) => tree.byId.get(id))
+        .filter((k): k is NonNullable<typeof k> => !!k && k.kind === "CLAUSE");
+      for (const unit of clauses.length ? clauses : [node]) {
+        const unitText = ownText(tree, tree.text, unit);
+        if (!findRatioTokens(unitText).length && !/\bratio\b|\bleverage\b|\bcoverage\b/i.test(unitText)) continue;
+        const parsed = parseCovenantLevel({
+          text: unitText,
+          sectionHeading: node.title,
+          articleHeading: parent?.title ?? null,
+          sectionFamily: "FINANCIAL_RATIOS",
+        });
+        maintenanceLevels.push({
+          sectionRef: unit.path,
+          testKind: parsed.testKind,
+          metric: parsed.metric,
+          ratioName: parsed.ratioName,
+          direction: parsed.direction,
+          levelStatus: parsed.status,
+          level: parsed.level,
+          schedule: parsed.schedule.map((s) => ({ from: s.effectiveFrom, to: s.effectiveTo, level: s.level })),
+          modifiers: parsed.modifiers.map((mod) => ({ kind: mod.kind, amount: mod.amount })),
+          missing: parsed.missing,
+          citation: parsed.citation,
+        });
+      }
+    }
+  }
 
   const families: FamilySummary[] = [];
   const byFam = new Map<string, ComputedBasket[]>();
@@ -172,7 +245,7 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     textSha256: sha(raw),
     basis: tree.basis,
     textLength: raw.length,
-    tree, roles, crossRefs, checklist, computedBaskets: computed, families,
+    tree, roles, crossRefs, checklist, computedBaskets: computed, ratios: computation.ratios, maintenanceLevels, families,
     stats: {
       nodes: tree.nodes.length,
       sections: tree.nodes.filter((n) => n.kind === "SECTION").length,

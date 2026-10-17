@@ -341,7 +341,15 @@ export async function compileAcceptedInterpretation(params: {
         sectionRef: params.sectionRef,
         formulaType: ratio.formulaType,
         thresholdValue: ratio.thresholdValue,
-        params: ratio.formulaType === "LEVERAGE_RATIO_ROOM" ? { debtBasis: ratio.debtBasis ?? "total" } : {},
+        params: {
+          ...(ratio.formulaType === "LEVERAGE_RATIO_ROOM" ? { debtBasis: ratio.debtBasis ?? "total" } : {}),
+          // The agreement-defined metric, recorded only when the
+          // unified covenant-level parser agreed with Rule 180 AND
+          // names the measure the engine computes for the row (Rule
+          // 180's agreementMetric contract). Absent = unset, never
+          // a guessed metric.
+          ...(ratio.agreementMetric ? { agreementMetric: ratio.agreementMetric } : {}),
+        },
         notes: `${params.reviewerKind === "SYSTEM" ? "System auto-accepted — routine supported interpretation, not counsel-verified" : `Counsel ${params.decision}`} ${new Date().toISOString()}. Maintenance ratio test — not a grant of capacity; evaluated by buildDebtRatioTests. Source ${params.sourceId}. ${item.sourceCitation ?? ""}`.trim(),
       });
       return [
