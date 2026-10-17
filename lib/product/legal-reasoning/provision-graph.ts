@@ -45,9 +45,11 @@ export function discoverProvisionEdgesFromItems(
 ): ProvisionGraphEdge[] {
   const out: ProvisionGraphEdge[] = [];
   const bySection = new Map<string, CovenantSummaryItem & { sourceId: string }>();
+  const byNodeId = new Map<string, CovenantSummaryItem & { sourceId: string }>();
   for (const item of items) {
     bySection.set(`${item.sourceId}::${item.sectionRef}`.toLowerCase(), item);
     bySection.set(item.sectionRef.toLowerCase(), item);
+    if (item.nodeId) byNodeId.set(item.nodeId, item);
   }
 
   for (const item of items) {
@@ -65,21 +67,52 @@ export function discoverProvisionEdgesFromItems(
         confidence: d.resolved === false ? 0.4 : 0.7,
       });
     }
-    for (const xref of item.crossReferences ?? []) {
-      const ref = parseSectionRef(xref);
-      const target = ref
-        ? bySection.get(`${item.sourceId}::${ref}`.toLowerCase()) ?? bySection.get(ref.toLowerCase())
-        : undefined;
-      out.push({
-        fromSourceId: item.sourceId,
-        fromSectionRef: item.sectionRef,
-        toSourceId: target?.sourceId ?? item.sourceId,
-        toSectionRef: ref,
-        toTerm: null,
-        kind: "PROVISION_CROSS_REFERENCE",
-        rationale: `Cross-reference: ${xref.slice(0, 160)}`,
-        confidence: target ? 0.75 : 0.45,
-      });
+    // H3: when the summary carries structural cross-reference
+    // resolutions, edges come from THEM — the target is the
+    // structurally resolved node, never a by-string guess, and
+    // ambiguous/unresolved refs stay unlinked with their reason
+    // named. Legacy summaries (no field) keep the string-parse
+    // path below.
+    const resolutions = item.crossReferenceResolutions;
+    if (resolutions) {
+      for (const r of resolutions) {
+        const targetItem =
+          r.resolved && r.targetNodeId ? byNodeId.get(r.targetNodeId) : undefined;
+        out.push({
+          fromSourceId: item.sourceId,
+          fromSectionRef: item.sectionRef,
+          toSourceId: targetItem?.sourceId ?? item.sourceId,
+          toSectionRef:
+            targetItem?.sectionRef ?? r.targetSectionRef ?? parseSectionRef(r.ref),
+          toTerm: null,
+          kind: "PROVISION_CROSS_REFERENCE",
+          rationale: r.resolved
+            ? targetItem
+              ? `Cross-reference: ${r.ref.slice(0, 160)} (structurally resolved to its target provision)`
+              : `Cross-reference: ${r.ref.slice(0, 160)} (structurally resolved; target is not a covenant summary item)`
+            : r.ambiguous
+              ? `Cross-reference: ${r.ref.slice(0, 160)} — target ambiguous in the source structure; not linked to a single provision`
+              : `Cross-reference: ${r.ref.slice(0, 160)} — target not resolved in the source structure${r.reason ? ` (${r.reason})` : ""}`,
+          confidence: r.resolved ? (targetItem ? 0.75 : 0.5) : 0.3,
+        });
+      }
+    } else {
+      for (const xref of item.crossReferences ?? []) {
+        const ref = parseSectionRef(xref);
+        const target = ref
+          ? bySection.get(`${item.sourceId}::${ref}`.toLowerCase()) ?? bySection.get(ref.toLowerCase())
+          : undefined;
+        out.push({
+          fromSourceId: item.sourceId,
+          fromSectionRef: item.sectionRef,
+          toSourceId: target?.sourceId ?? item.sourceId,
+          toSectionRef: ref,
+          toTerm: null,
+          kind: "PROVISION_CROSS_REFERENCE",
+          rationale: `Cross-reference: ${xref.slice(0, 160)}`,
+          confidence: target ? 0.75 : 0.45,
+        });
+      }
     }
     for (const ex of item.exceptions ?? []) {
       out.push({

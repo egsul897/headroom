@@ -55,6 +55,7 @@ import type {
   PermissionCollateralScope,
   PermissionPath,
   PermissionRelationship,
+  RatioProvision,
   RuleActivationCondition,
   SharedConstraint,
   SolverResult,
@@ -62,6 +63,7 @@ import type {
   Transaction,
 } from "./solver/types";
 import { computeSharedConstraintCurrentUsage } from "./solver/shared-usage";
+import { permissionCodePrefix } from "./product/customer-intelligence/permission-code";
 
 // ---------------------------------------------------------------------------
 // Types mirroring the Prisma schema (decimal fields as `number`)
@@ -72,10 +74,18 @@ export type FormulaType =
   | "FLAT_NET_OF_DEBT"
   | "GREATER_OF_FLAT_OR_PCT_EBITDA"
   | "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS"
+  | "GREATER_OF_FLAT_OR_PCT_NET_WORTH"
   | "LEVERAGE_RATIO_ROOM"
   | "COVERAGE_RATIO_ROOM"
   | "BUILDER_BASKET"
-  | "RATIO_GATE";
+  | "RATIO_GATE"
+  | "NONE_UNCAPPED"
+  | "PCT_OF_CNTA"
+  | "GREATER_OF_FLAT_OR_PCT_CNTA"
+  | "PCT_OF_COST"
+  | "PCT_OF_CONSIDERATION"
+  | "UTILIZATION_GATE"
+  | "VALUE_CAP";
 
 export type DebtBasis = "total" | "secured";
 
@@ -111,6 +121,16 @@ export interface FormulaParams {
   pctEbitda?: number;
   /** GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS: percentage of Consolidated Total Assets (e.g. 0.03 for 3%). */
   pctTotalAssets?: number;
+  /** GREATER_OF_FLAT_OR_PCT_NET_WORTH: percentage of Consolidated Net Worth (e.g. 0.10 for 10%). */
+  pctNetWorth?: number;
+  /** PCT_OF_CNTA, GREATER_OF_FLAT_OR_PCT_CNTA: percentage of Consolidated Net Tangible Assets (e.g. 0.15 for 15%). */
+  pctCnta?: number;
+  /** PCT_OF_COST: percentage of the cost of the financed assets (e.g. 0.9 for 90%). */
+  pctOfCost?: number;
+  /** PCT_OF_CONSIDERATION: percentage of the aggregate consideration (e.g. 0.05 for 5%). */
+  pctOfConsideration?: number;
+  /** VALUE_CAP: the non-numeric cap basis (COST | FAIR_MARKET_VALUE | PURCHASE_PRICE | COST_OR_FAIR_MARKET_VALUE). */
+  capBasis?: string;
   /** LEVERAGE_RATIO_ROOM, RATIO_GATE: which net-leverage measure to test ("total" default, or "secured"). */
   debtBasis?: DebtBasis;
   /** FLAT_NET_OF_DEBT: which gross debt outstanding to net the flat basket against. */
@@ -139,18 +159,87 @@ export interface ProvisionLegalConditionFlags {
   automaticLinkOnly: boolean;
   /** Automatic-link capacity further restricted to a named asset scope. */
   assetScopeRestricted: boolean;
+  /** Rule 196: a LIEN Permission from a residual ("other Liens")
+   * basket may pair with an independent DEBT Permission in the
+   * same document for a secured election. Specific-purpose lien
+   * baskets (tax liens, purchase-money liens) never pair — only
+   * the residual catch-all does. The coverage check (lien capacity
+   * >= allocation) still gates the pair; this flag only admits
+   * the election. */
+  pairableWithDebt: boolean;
 }
 
 /** Extract legal-condition flags from raw provision/permission params JSON. */
 export function readProvisionLegalConditionFlags(raw: unknown): ProvisionLegalConditionFlags {
   if (raw == null || typeof raw !== "object" || Array.isArray(raw)) {
-    return { automaticLinkOnly: false, assetScopeRestricted: false };
+    return { automaticLinkOnly: false, assetScopeRestricted: false, pairableWithDebt: false };
   }
   const o = raw as Record<string, unknown>;
   return {
     automaticLinkOnly: o.automaticLinkOnly === true,
     assetScopeRestricted: o.assetScopeRestricted === true,
+    pairableWithDebt: o.pairableWithDebt === true,
   };
+}
+
+/**
+ * Structural provenance stamped onto a compiled Permission's params JSON by
+ * the compile step (Phase E / D11, lib/product/customer-intelligence/
+ * compile-accepted.ts): the structural node the source provision anchored
+ * to, the article heading that anchor resolved under, and whether that
+ * structural relationship was UNRESOLVED — the provision's parentage /
+ * placement in the document tree could not be established deterministically
+ * (parent pointer missing, dangling, or non-containing). Like
+ * {@link ProvisionLegalConditionFlags}, these are NOT numerical formula
+ * inputs: they are provenance about how much the permission's placement
+ * can be trusted. Read them via {@link readStructuralProvenanceFlags};
+ * display surfaces surface `structuralUnresolved` verbatim — the flag is
+ * never folded into a figure, a status, or a gate.
+ */
+export interface StructuralProvenanceFlags {
+  structuralNodeId: string | null;
+  structuralArticleHeading: string | null;
+  structuralUnresolved: boolean;
+}
+
+/** Extract structural provenance flags from raw permission params JSON. */
+export function readStructuralProvenanceFlags(raw: unknown): StructuralProvenanceFlags {
+  if (raw == null || typeof raw !== "object" || Array.isArray(raw)) {
+    return { structuralNodeId: null, structuralArticleHeading: null, structuralUnresolved: false };
+  }
+  const o = raw as Record<string, unknown>;
+  return {
+    structuralNodeId: typeof o.structuralNodeId === "string" ? o.structuralNodeId : null,
+    structuralArticleHeading: typeof o.structuralArticleHeading === "string" ? o.structuralArticleHeading : null,
+    // The compile step writes `true` or omits the key entirely — only an
+    // exact boolean true counts; a truthy string/number is not evidence.
+    structuralUnresolved: o.structuralUnresolved === true,
+  };
+}
+
+/** Plain-words marker shown wherever a structurally unresolved permission is displayed. Display only. */
+export const STRUCTURAL_UNRESOLVED_NOTICE =
+  "Structural relationship unresolved — treat this permission's placement in the document structure as uncertain.";
+
+/**
+ * `${documentId}:${code}` keys (the same identity `computeCovenantPosition`
+ * keys evaluated provisions by) of every permission whose params carry
+ * structuralUnresolved. Lets a display that renders the provision
+ * representation of a permission (Simulate traces, RP waterfall steps)
+ * flag the exact permission it is showing. Permissions without a code
+ * cannot be joined and are skipped — never fuzzy-matched by section label.
+ */
+export function structuralUnresolvedProvisionKeys(
+  permissions: readonly { documentId: string; code?: string | null; params?: unknown }[],
+): Set<string> {
+  const keys = new Set<string>();
+  for (const p of permissions) {
+    if (!p.code) continue;
+    if (readStructuralProvenanceFlags(p.params).structuralUnresolved) {
+      keys.add(`${p.documentId}:${p.code}`);
+    }
+  }
+  return keys;
 }
 
 /** One line item inside a composite basket's total (currently: BUILDER_BASKET). */
@@ -183,6 +272,11 @@ export interface CovenantProvisionInput {
  */
 export type CapacityExpr =
   | { op: "REF"; code: string; label?: string }
+  // Rule 179: a literal cap for a shared aggregate basket —
+  // MIN(CONST(cap), SUM(member REFs)) counts a shared basket once
+  // instead of once per member clause. No REF can express it: the
+  // cap is a property of the GROUP, not of any single provision.
+  | { op: "CONST"; value: number; label?: string }
   | { op: "SUM"; items: CapacityExpr[]; label?: string }
   | { op: "MIN"; items: CapacityExpr[]; label?: string }
   | { op: "MAX"; items: CapacityExpr[]; label?: string };
@@ -197,8 +291,8 @@ export type RestrictedPaymentKind = "dividend" | "investment";
 export interface RpWaterfallConfig {
   /** Ordered basket steps drawn down before the ratio gate (e.g. builder basket, then general basket). */
   steps: { code: string }[];
-  /** Which RATIO_GATE provision code gates unlimited capacity for each kind of payment. */
-  ratioGateCodeByKind: Record<RestrictedPaymentKind, string>;
+  /** Which RATIO_GATE provision code gates unlimited capacity for each kind of payment. Null when no gate was compiled for that kind — never invented. */
+  ratioGateCodeByKind: Record<RestrictedPaymentKind, string | null>;
 }
 
 export interface AssetSaleConfig {
@@ -225,6 +319,23 @@ export interface DocumentInput {
   name: string;
   type: DocumentType;
   governs?: string | null;
+  /**
+   * True when this document's analysis carries restriction-bearing
+   * summary items (baskets / conditions / permissions) whose
+   * operative effects are NOT evidenced as incorporated: undecided,
+   * or ACCEPTED/EDITED with no live compiled artifact (Permission
+   * mirror / ratio provision) for exactly that (sourceId,
+   * sectionRef, category). REJECTED items count as incorporated
+   * (counsel determined no operative effect). An AMENDMENT with
+   * unincorporated restrictions must not be skipped by Fix 8 — its
+   * effect is unknown, so the package capacity stays
+   * NOT_DETERMINABLE (fail-closed) until the effects are compiled
+   * or counsel rejects them. Computed by
+   * loadCompanyCovenantData from the KnowledgeSource metadata +
+   * live provisions. Absent (unknown) is treated as unresolved by
+   * isNonCapacityAmendment only for AMENDMENT documents.
+   */
+  hasUnresolvedRestrictions?: boolean;
   capacityFormulas?: CapacityFormulas | null;
   rpWaterfall?: RpWaterfallConfig | null;
   assetSale?: AssetSaleConfig | null;
@@ -244,6 +355,16 @@ export interface FinancialSnapshotInput {
    * Required to model GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS growers; absent → review_required.
    */
   totalAssets?: number;
+  /**
+   * Consolidated Net Worth ($M, the agreement's defined term) when
+   * supplied on the financial snapshot. Required to model
+   * GREATER_OF_FLAT_OR_PCT_NET_WORTH growers; absent →
+   * review_required. Deliberately NOT defaulted from GAAP total
+   * equity: covenant Net Worth definitions routinely adjust GAAP
+   * equity (intangibles, minority interests, ...), so the two
+   * are not the same number.
+   */
+  netWorth?: number;
 }
 
 export type LedgerBasket = "EQUITY" | "DEBT_INCUR" | "DEBT_REPAY" | "ASSET_SALE" | "DIVIDEND" | "INVESTMENT";
@@ -393,6 +514,36 @@ export function evaluateProvision(
         ],
       };
     }
+    case "GREATER_OF_FLAT_OR_PCT_NET_WORTH": {
+      if (params.pctNetWorth === undefined || params.pctNetWorth === null) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Worth basket — params.pctNetWorth is missing; refusing rather than assuming 0%.`,
+        };
+      }
+      const pct = params.pctNetWorth;
+      if (fin.netWorth == null || !Number.isFinite(fin.netWorth) || fin.netWorth < 0) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Worth basket — enter Consolidated Net Worth (the agreement's defined term, not GAAP equity) on the financial snapshot to evaluate the grower leg (fixed floor $${p.thresholdValue}M is not presented alone as remaining capacity).`,
+        };
+      }
+      return {
+        provision: p,
+        status: "modeled",
+        capacity: Math.max(p.thresholdValue, pct * fin.netWorth),
+        components: [
+          { label: "Fixed-dollar floor", sectionRef: p.sectionRef, value: p.thresholdValue },
+          {
+            label: `${(pct * 100).toFixed(1)}% of Consolidated Net Worth`,
+            sectionRef: p.sectionRef,
+            value: pct * fin.netWorth,
+          },
+        ],
+      };
+    }
     case "LEVERAGE_RATIO_ROOM": {
       const basis = leverageBasisValue(params.debtBasis, metrics);
       return { provision: p, status: "modeled", capacity: Math.max(0, p.thresholdValue * fin.ebitda - basis) };
@@ -454,6 +605,86 @@ export function evaluateProvision(
       // the uncapped result, not defaulting to it from absent config.
       return { provision: p, status: "modeled", capacity: open ? Infinity : 0, gate: { open, measure } };
     }
+    case "PCT_OF_CNTA": {
+      // Determinate at parse (a % of Consolidated Net Tangible
+      // Assets), but the financial snapshot carries no CNTA input —
+      // never invent one. NEEDS_INPUT at evaluation time.
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at ${((params.pctCnta ?? 0) * 100).toFixed(1)}% of Consolidated Net Tangible Assets — enter Consolidated Net Tangible Assets to evaluate this basket; the snapshot does not carry it.`,
+      };
+    }
+    case "GREATER_OF_FLAT_OR_PCT_CNTA": {
+      if (params.pctCnta === undefined || params.pctCnta === null) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Tangible Assets basket — params.pctCnta is missing; refusing rather than assuming 0%.`,
+        };
+      }
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Tangible Assets basket — enter Consolidated Net Tangible Assets to evaluate the grower leg; the snapshot does not carry it.`,
+      };
+    }
+    case "PCT_OF_COST": {
+      // The cap is a % of the cost of the assets being financed —
+      // a per-transaction input, not a snapshot quantity.
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at ${((params.pctOfCost ?? 0) * 100).toFixed(1)}% of the cost of the financed assets — the cost of the specific assets being financed is required to evaluate a transaction under this basket.`,
+      };
+    }
+    case "PCT_OF_CONSIDERATION": {
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at ${((params.pctOfConsideration ?? 0) * 100).toFixed(1)}% of the aggregate consideration — the aggregate consideration of the specific transaction is required to evaluate it under this basket.`,
+      };
+    }
+    case "UTILIZATION_GATE": {
+      // A utilization-percentage test (e.g. revolver utilization
+      // at incurrence), not a basket cap. The snapshot carries no
+      // utilization measure — never invent one.
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is a utilization gate at ${((p.thresholdValue ?? 0) * 100).toFixed(1)}% — the Utilization Percentage at the time of the transaction is required to evaluate it; the snapshot does not carry it.`,
+      };
+    }
+    case "VALUE_CAP": {
+      // A NON-NUMERIC cap: the clause limits the amount to the
+      // cost / fair market value / purchase price of the financed
+      // property. Determinate as a representation, never a number:
+      // evaluation needs the specific property's value.
+      const basis =
+        params.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : params.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : params.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at the ${basis} of the financed property (VALUE_CAP) — the value of the specific property is required to evaluate a transaction under this basket.`,
+      };
+    }
+    case "NONE_UNCAPPED": {
+      // The clause affirmatively grants this permission with NO finite cap
+      // in its own text (NONE_UNCAPPED is minted only from that affirmative
+      // determination in parseFormulaFromItem — never as a default for a
+      // missing cap). Infinity is legitimate for the same reason as
+      // RATIO_GATE: the record asserts the uncapped result. It is NOT a
+      // blanket permission: the permission's eligibility conditions still
+      // gate elections in the solver, and the agreement's other clauses
+      // still bind. thresholdValue carries no number for this type.
+      return { provision: p, status: "modeled", capacity: Infinity };
+    }
     default: {
       const exhaustive: never = p.formulaType;
       throw new Error(`Unknown formula type: ${String(exhaustive)}`);
@@ -496,6 +727,10 @@ function evalExpr(
   let result: ExprEvalResult;
 
   switch (expr.op) {
+    case "CONST": {
+      result = { status: "modeled", value: expr.value };
+      break;
+    }
     case "REF": {
       const evaluated = capacities.get(expr.code);
       if (!evaluated) {
@@ -557,6 +792,10 @@ function evalExpr(
 export interface DocumentCapacityResult {
   documentId: string;
   documentName: string;
+  /** The Document row's declared type — drives Fix 8's amendment skip. */
+  documentType: DocumentType;
+  /** Mirrors DocumentInput.hasUnresolvedRestrictions for the position. */
+  hasUnresolvedRestrictions: boolean;
 
   securedStatus: EvaluationStatus;
   securedCapacity?: number;
@@ -619,10 +858,102 @@ export interface CovenantPosition {
   crossDocumentUnsecured: CrossDocumentCapacity;
 }
 
+/**
+ * Fix 8: an AMENDMENT document that contributes no capacity constraint
+ * (neither side modeled — it amends the base but carries no basket of
+ * its own) must not poison the package's capacity. Its effect flows
+ * through the operative bindings on the base, not through a standalone
+ * capacity figure. An amendment WITH a modeled side (it added a basket)
+ * still participates. A restatement (AMENDED_AND_RESTATED_AGREEMENT)
+ * is never skipped — it IS the full agreement. Unknown/missing type
+ * never skips (fail-closed).
+ */
+export function isNonCapacityAmendment(d: DocumentCapacityResult): boolean {
+  // An amendment with unresolved restrictions is never a
+  // non-capacity amendment: its effect is unknown, so excluding it
+  // would silently drop restrictions that may tighten the base.
+  // It stays in the aggregation as NOT_DETERMINABLE (fail-closed)
+  // until counsel reviews its restriction-bearing items.
+  if (d.hasUnresolvedRestrictions) return false;
+  return d.documentType === "AMENDMENT" && d.securedStatus !== "modeled" && d.unsecuredStatus !== "modeled";
+}
+
+/**
+ * Pure helper for the Issue 5 flag: does this analysis carry a
+ * restriction-bearing summary item with no reviewer decision?
+ * Restriction-bearing = has a basket/threshold, a condition/
+ * proviso, or a permission string — the signals that the item may
+ * constrain capacity. A pure boilerplate item (none of these) is
+ * not a restriction. Decisions match on (sectionRef, category)
+ * (Fix 6 isolation); a decision for another category does not
+ * resolve this item.
+ */
+/**
+ * Pure helper for the amendment-exclusion flag: does this analysis
+ * carry a restriction-bearing summary item whose operative effect
+ * is NOT evidenced as incorporated?
+ *
+ * A reviewer decision alone is NOT incorporation evidence. An
+ * amendment item that counsel ACCEPTED but that compiled
+ * INCOMPLETE (no Permission, no provision) has an unknown effect
+ * — excluding the amendment on the strength of the decision alone
+ * would silently drop a restriction the base agreement never had.
+ * Incorporation evidence is one of:
+ * - REJECTED: counsel determined the item has no operative effect
+ *   (the determination itself is the evidence); or
+ * - ACCEPTED/EDITED with a LIVE compiled artifact for exactly this
+ *   (sourceId, sectionRef, category): a CovenantProvision whose
+ *   code starts with the item's counsel prefix. The compile
+ *   mirrors every MODELED Permission into a CovenantProvision with
+ *   the same code, and ratio provisions carry the RATIO code, so
+ *   the provision rows (date-filtered, effectiveTo=null) cover
+ *   both grant and ratio artifacts. A superseded artifact
+ *   (effectiveTo set) does not count — it is not operative.
+ * Undecided items are never incorporated.
+ */
+export function hasUnincorporatedRestrictionsForSource(
+  items: Array<{
+    sectionRef: string;
+    category: string;
+    materialBasketsThresholds?: unknown;
+    conditions?: unknown;
+    permissions?: unknown;
+  }>,
+  approvals: Array<{ sectionRef?: unknown; category?: unknown; decision?: unknown }>,
+  provisions: Array<{ code: string; documentId: string }>,
+  sourceId: string,
+  documentId: string,
+): boolean {
+  const byKey = new Map(
+    approvals
+      .filter((a) => typeof a.sectionRef === "string")
+      .map((a) => [
+        `${a.sectionRef as string}::${typeof a.category === "string" ? a.category : ""}`,
+        a.decision,
+      ]),
+  );
+  return items.some((item) => {
+    const restrictionBearing =
+      (Array.isArray(item.materialBasketsThresholds) && item.materialBasketsThresholds.length > 0) ||
+      (Array.isArray(item.conditions) && item.conditions.length > 0) ||
+      (Array.isArray(item.permissions) && item.permissions.length > 0);
+    if (!restrictionBearing) return false;
+    const decision = byKey.get(`${item.sectionRef}::${item.category ?? ""}`);
+    if (decision === undefined) return true; // undecided — never incorporated
+    if (decision === "REJECTED") return false; // counsel determined no operative effect
+    // ACCEPTED / EDITED (counsel or system): require a live compiled
+    // artifact for exactly this (sourceId, sectionRef, category).
+    const prefix = permissionCodePrefix(sourceId, item.sectionRef, item.category ?? "");
+    return !provisions.some((p) => p.documentId === documentId && p.code.startsWith(prefix));
+  });
+}
+
 function combineCrossDocument(documents: DocumentCapacityResult[], side: "secured" | "unsecured"): CrossDocumentCapacity {
-  if (documents.length === 0) {
+  const governing = documents.filter((d) => !isNonCapacityAmendment(d));
+  if (governing.length === 0) {
     return { status: "not_tested", reason: "No governing documents are modeled for this company." };
   }
+  documents = governing;
   const statuses = documents.map((d) => (side === "secured" ? d.securedStatus : d.unsecuredStatus));
   const worst = worstStatus(statuses);
   if (worst !== "modeled") {
@@ -669,18 +1000,29 @@ export function computeCovenantPosition(data: CompanyCovenantData): CovenantPosi
     const secured = evaluateDocumentSide(doc.capacityFormulas?.secured, scoped, "secured", doc.name);
     const unsecured = evaluateDocumentSide(doc.capacityFormulas?.unsecured, scoped, "unsecured", doc.name);
 
+    // An amendment with unresolved restrictions keeps its
+    // NOT_DETERMINABLE reasons honest: the exclusion is not
+    // trusted until counsel reviews the restriction-bearing
+    // items, so the reason must say why the document is not
+    // contributing capacity.
+    const unresolvedNote =
+      doc.type === "AMENDMENT" && doc.hasUnresolvedRestrictions
+        ? " Amendment has unresolved restrictions (restriction-bearing summary items with no reviewer decision) — counsel review required before its exclusion can be trusted."
+        : "";
     return {
       documentId: doc.id,
       documentName: doc.name,
+      documentType: doc.type,
+      hasUnresolvedRestrictions: doc.hasUnresolvedRestrictions ?? false,
       securedStatus: secured.status,
       securedCapacity: secured.capacity,
-      securedReason: secured.reason,
+      securedReason: `${secured.reason ?? ""}${unresolvedNote}`.trim() || undefined,
       securedBindingCode: secured.bindingCode,
       securedBindingProvision: secured.bindingProvision,
       securedLabeledSubtotals: secured.labeled,
       unsecuredStatus: unsecured.status,
       unsecuredCapacity: unsecured.capacity,
-      unsecuredReason: unsecured.reason,
+      unsecuredReason: `${unsecured.reason ?? ""}${unresolvedNote}`.trim() || undefined,
       unsecuredBindingCode: unsecured.bindingCode,
       unsecuredBindingProvision: unsecured.bindingProvision,
       unsecuredLabeledSubtotals: unsecured.labeled,
@@ -930,6 +1272,8 @@ export interface SolverNativeCompanyContext {
   collateralScopes: PermissionCollateralScope[];
   ruleActivationConditions: RuleActivationCondition[];
   coverageDeclarations: CoverageDeclaration[];
+  /** Compiled maintenance ratio provisions (Rule 180/185). */
+  ratioProvisions: RatioProvision[];
   activationState: ActivationState;
   asOfDate: Date;
   /** The incurring entity's own EntityClass memberships, for §C.1 entityScope/§G ENTITY_CLASS_FILTER checks. */
@@ -1087,6 +1431,20 @@ export function runSolverForDocument(
     collateralScopes: ctx.collateralScopes.filter((s) => eligibleIds.has(s.permissionId)),
     ruleActivationConditions: ctx.ruleActivationConditions,
     financials: fin,
+    // Cross-document ratios (company-level, matching Rule 190's legacy
+    // ceiling): a maintenance ratio in ANY document of the package
+    // constrains TOTAL debt, so it caps every document's solver-native
+    // capacity — not just its own document's. The previous per-document
+    // filter silently dropped a ratio carried by a document with no
+    // modeled debt baskets of its own (e.g. an amendment that
+    // tightens the leverage ratio, or a ratio-only schedule), so the
+    // package's solver-native capacity ignored it. Ratios are
+    // evaluated against company financials (total debt), so applying
+    // all of them here is the same company-level semantics the
+    // legacy ceiling already uses. Over-application (a
+    // subsidiary-scoped ratio capping an unrelated document) can
+    // only understate capacity, never overstate it — fail-closed.
+    ratioProvisions: ctx.ratioProvisions,
     transaction: buildLiveTransaction(amount, secured, ctx),
     entityClasses: ctx.entityClasses,
     activationState: ctx.activationState,
@@ -1239,7 +1597,8 @@ export interface PerDocumentRemainingCapacity {
     | "SOLVER_NATIVE_RECOMPUTED"
     | "LEGACY_DECLARED_MINUS_TESTED_AMOUNT"
     | "SOLVER_CLAMPED_TO_LEGACY"
-    | "NOT_DETERMINABLE";
+    | "NOT_DETERMINABLE"
+    | "SKIPPED_AMENDMENT";
   /** This document/side's remaining capacity AFTER giving effect to the tested transaction. Undefined - never fabricated as 0 - when not determinable. */
   remainingCapacity?: number;
   /** Present only for SOLVER_NATIVE_RECOMPUTED - the full post-transaction MaxCapacityResult `remainingCapacity` was read from (design doc §O). */
@@ -1319,6 +1678,63 @@ export interface PostTransactionCapacitySimulation {
  *    governing rule: "Never produce zero merely because testedAmount equals
  *    the transaction result's capacity field").
  */
+/**
+ * Rule 190: the company-level maintenance-ratio ceiling for the
+ * LEGACY capacity path. Ratios are company-level financial
+ * tests, not per-document grants: the post-transaction ratio
+ * depends on TOTAL new debt, so the ceiling is the largest
+ * total new-debt amount at which every APPLICABLE maintenance
+ * test (across all documents) still passes. Bisects with
+ * `buildDebtRatioTests` itself as the oracle, so the ceiling
+ * cannot diverge from the legacy test semantics (including
+ * its edge cases, e.g. a zero/negative EBITDA) the way a
+ * re-derived closed form could. `hi` must be >= every legacy
+ * capacity figure: callers pass the max of the position's
+ * per-document and cross-document capacities, so "passes at
+ * hi" genuinely means no cap is needed. An unevaluable test
+ * (coverage with a missing/zero assumed new-debt rate) is
+ * amount-independent, so no ceiling can be proven at all.
+ */
+export type LegacyRatioCeiling =
+  | { kind: "UNCAPPED" }
+  | { kind: "CAPPED"; amount: number }
+  | { kind: "INDETERMINATE"; reason: string };
+
+export function computeLegacyRatioCeiling(
+  data: CompanyCovenantData,
+  position: CovenantPosition,
+  secured: boolean,
+  hi: number,
+): LegacyRatioCeiling {
+  const applicableAt = (a: number): RatioTestResult[] =>
+    buildDebtRatioTests(data, position, a, secured).filter((t) => t.applies);
+  const atHi = applicableAt(hi);
+  if (atHi.length === 0) return { kind: "UNCAPPED" };
+  const unknown = atHi.find((t) => t.status === "review_required");
+  if (unknown) {
+    return {
+      kind: "INDETERMINATE",
+      reason: `Maintenance ratio test ${unknown.sectionRef} (${unknown.basketName}) cannot be evaluated (missing assumed new-debt rate); no ratio-safe legacy capacity can be proven.`,
+    };
+  }
+  if (atHi.every((t) => t.status === "clear")) return { kind: "UNCAPPED" };
+  let lo = 0;
+  let hiBound = hi;
+  for (let i = 0; i < 40; i += 1) {
+    const mid = (lo + hiBound) / 2;
+    const tests = applicableAt(mid);
+    if (tests.some((t) => t.status === "review_required")) {
+      return {
+        kind: "INDETERMINATE",
+        reason: "A maintenance ratio test became unevaluable while bisecting the ratio-safe ceiling; no ratio-safe legacy capacity can be proven.",
+      };
+    }
+    if (tests.every((t) => t.status === "clear")) lo = mid;
+    else hiBound = mid;
+  }
+  return { kind: "CAPPED", amount: lo };
+}
+
 export function computeRemainingCapacityAfterDebtIncurrence(
   data: CompanyCovenantData,
   position: CovenantPosition,
@@ -1330,7 +1746,33 @@ export function computeRemainingCapacityAfterDebtIncurrence(
   const side: "secured" | "unsecured" = secured ? "secured" : "unsecured";
   const postFin: FinancialSnapshotInput = { ...fin, totalDebt: fin.totalDebt + amount, securedDebt: fin.securedDebt + (secured ? amount : 0) };
 
+  // Rule 190: the legacy figures below (per-document
+  // LEGACY_DECLARED_MINUS_TESTED_AMOUNT + cross-document
+  // packageModeled) are capped by the company-level
+  // maintenance-ratio ceiling. The solver-native branch is
+  // already capped by Rule 189 and is untouched here. `hi`
+  // bounds every legacy capacity figure, from the position
+  // itself, so "passes at hi" means no cap is needed.
+  const legacyCaps: number[] = [amount];
+  const crossForHi = secured ? position.crossDocumentSecured : position.crossDocumentUnsecured;
+  if (crossForHi.capacity !== undefined) legacyCaps.push(crossForHi.capacity);
+  for (const d of position.documents) {
+    const cap = secured ? d.securedCapacity : d.unsecuredCapacity;
+    if (cap !== undefined) legacyCaps.push(cap);
+  }
+  const ratioCeiling = computeLegacyRatioCeiling(data, position, secured, Math.max(0, ...legacyCaps));
+
   const perDocument: PerDocumentRemainingCapacity[] = position.documents.map((d) => {
+    // Fix 8: a non-capacity amendment is disclosed as skipped, not
+    // NOT_DETERMINABLE — it must not poison the package binding.
+    if (isNonCapacityAmendment(d)) {
+      return {
+        documentId: d.documentId,
+        documentName: d.documentName,
+        method: "SKIPPED_AMENDMENT" as const,
+        reason: `${d.documentName} is an amendment with no modeled capacity of its own — its effect flows through the operative bindings on the base agreement, not a standalone capacity figure.`,
+      };
+    }
     const status = secured ? d.securedStatus : d.unsecuredStatus;
     const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
     const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;
@@ -1396,11 +1838,26 @@ export function computeRemainingCapacityAfterDebtIncurrence(
         reason: `${d.documentName} is "${status}" for this side - no declared legacy capacity to subtract from.`,
       };
     }
+    // Rule 190: an unevaluable maintenance test makes the
+    // legacy figure unprovable; otherwise cap the remaining
+    // capacity by the ratio room left after this transaction
+    // (the ceiling is total new debt; remaining = ceiling -
+    // amount, floored by the same min as the legacy figure).
+    if (ratioCeiling.kind === "INDETERMINATE") {
+      return {
+        documentId: d.documentId,
+        documentName: d.documentName,
+        method: "NOT_DETERMINABLE",
+        reason: ratioCeiling.reason,
+      };
+    }
+    const cappedLegacyRemaining =
+      ratioCeiling.kind === "CAPPED" ? Math.min(legacyRemaining, ratioCeiling.amount - amount) : legacyRemaining;
     return {
       documentId: d.documentId,
       documentName: d.documentName,
       method: "LEGACY_DECLARED_MINUS_TESTED_AMOUNT",
-      remainingCapacity: legacyRemaining,
+      remainingCapacity: cappedLegacyRemaining,
       bindingConstraint: legacyBinding,
     };
   });
@@ -1411,8 +1868,16 @@ export function computeRemainingCapacityAfterDebtIncurrence(
   const solverNativeRemaining = binding?.remainingCapacity ?? null;
 
   const cross = secured ? position.crossDocumentSecured : position.crossDocumentUnsecured;
-  const packageModeled =
+  let packageModeled =
     cross.status === "modeled" && cross.capacity !== undefined ? cross.capacity - amount : null;
+  // Rule 190: same ratio cap as the per-document legacy
+  // figures; an unevaluable test voids the legacy package
+  // figure (the solver-native fallback is already handled
+  // by Rule 189's REVIEW_REQUIRED maximumCapacity).
+  if (ratioCeiling.kind === "INDETERMINATE") packageModeled = null;
+  else if (ratioCeiling.kind === "CAPPED" && packageModeled !== null) {
+    packageModeled = Math.min(packageModeled, ratioCeiling.amount - amount);
+  }
   const solverIsFalseFavorable =
     solverNativeRemaining !== null &&
     packageModeled !== null &&
@@ -1695,6 +2160,8 @@ export interface CovenantEnginePrismaClient {
   ledgerEntry: { findMany(args: any): Promise<DbLedgerRow[]> };
   /** Optional: used to resolve Consolidated Total Assets for Total-Assets growers. */
   financialState?: { findMany(args: any): Promise<Array<{ asOfDate: Date; balanceSheetFacts: unknown }>> };
+  /** Optional: used to compute hasUnresolvedRestrictions per document (Issue 5). */
+  knowledgeSource?: { findMany(args: any): Promise<Array<{ documentId: string | null; sourceId: string; metadata: unknown }>> };
 }
 
 interface DecimalLike {
@@ -1774,7 +2241,7 @@ export async function loadCompanyCovenantData(
   asOfDate: Date = new Date()
 ): Promise<CompanyCovenantData> {
   const dateFilter = effectiveDateFilter(asOfDate);
-  const [documents, provisions, snapshotResolution, ledger, financialStates] = await Promise.all([
+  const [documents, provisions, snapshotResolution, ledger, financialStates, knowledgeSources] = await Promise.all([
     prisma.document.findMany({ where: { companyId, ...dateFilter } }),
     prisma.covenantProvision.findMany({ where: { companyId, ...dateFilter } }),
     resolveCanonicalFinancialIdentity<DbSnapshotRow>(
@@ -1792,6 +2259,9 @@ export async function loadCompanyCovenantData(
           take: 5,
         })
       : Promise.resolve([] as Array<{ asOfDate: Date; balanceSheetFacts: unknown }>),
+    prisma.knowledgeSource
+      ? prisma.knowledgeSource.findMany({ where: { companyId } })
+      : Promise.resolve([] as Array<{ documentId: string | null; sourceId: string; metadata: unknown }>),
   ]);
 
   if (snapshotResolution.status === "AMBIGUOUS") {
@@ -1806,6 +2276,52 @@ export async function loadCompanyCovenantData(
   }
   const snapshot = snapshotResolution.row;
   const totalAssets = extractTotalAssetsFromStates(financialStates);
+  const netWorth = extractNetWorthFromStates(financialStates);
+
+  // Amendment-exclusion flag: per-document unincorporated-
+  // restrictions, from the KnowledgeSource metadata (summary items
+  // + reviewer decisions) and the live CovenantProvisions
+  // (compiled artifacts). Per analysis row (a document's rows
+  // share its documentId but carry distinct sourceIds; decisions
+  // are per-source, so match approvals to items within the same
+  // row). A decision alone is NOT incorporation evidence — an
+  // ACCEPTED-but-INCOMPLETE item has no compiled artifact, so its
+  // effect is unknown and the amendment must not be excluded.
+  // A document with no KnowledgeSource row has no analysis — its
+  // restrictions are unknown, so the flag is true (fail-closed: an
+  // amendment with no analysis is never silently skipped).
+  const unresolvedByDocumentId = new Map<string, boolean>();
+  for (const row of knowledgeSources) {
+    if (!row.documentId) continue;
+    const meta =
+      row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+        ? (row.metadata as Record<string, unknown>)
+        : {};
+    const summary = meta.covenantSummary as { items?: Array<Record<string, unknown>> } | undefined;
+    const items = (Array.isArray(summary?.items) ? summary.items : []).map((i) => ({
+      sectionRef: typeof i.sectionRef === "string" ? i.sectionRef : "",
+      category: typeof i.category === "string" ? i.category : "",
+      materialBasketsThresholds: i.materialBasketsThresholds,
+      conditions: i.conditions,
+      permissions: i.permissions,
+    }));
+    const approvals = (Array.isArray(meta.reviewerApprovals) ? meta.reviewerApprovals : []).filter(
+      (a): a is { sectionRef?: unknown; category?: unknown; decision?: unknown } =>
+        !!a && typeof a === "object" && (a as { sourceId?: unknown }).sourceId === row.sourceId,
+    );
+    // Live provisions (date-filtered by the loader's query) are
+    // the incorporation evidence: the compile mirrors every
+    // MODELED Permission into a CovenantProvision with the same
+    // code, and ratio provisions carry the RATIO code.
+    const unresolved = hasUnincorporatedRestrictionsForSource(
+      items,
+      approvals as never,
+      provisions.map((p) => ({ code: p.code, documentId: p.documentId })),
+      row.sourceId,
+      row.documentId,
+    );
+    unresolvedByDocumentId.set(row.documentId, (unresolvedByDocumentId.get(row.documentId) ?? false) || unresolved);
+  }
 
   return {
     companyId,
@@ -1814,6 +2330,8 @@ export async function loadCompanyCovenantData(
       name: d.name,
       type: d.type,
       governs: d.governs,
+      // No KnowledgeSource row = no analysis = restrictions unknown.
+      hasUnresolvedRestrictions: unresolvedByDocumentId.get(d.id) ?? true,
       capacityFormulas: d.capacityFormulas as CapacityFormulas | null,
       rpWaterfall: d.rpWaterfall as RpWaterfallConfig | null,
       assetSale: d.assetSale as AssetSaleConfig | null,
@@ -1839,12 +2357,32 @@ export async function loadCompanyCovenantData(
       totalDebt: toNumber(snapshot.totalDebt),
       securedDebt: toNumber(snapshot.securedDebt),
       ...(totalAssets != null ? { totalAssets } : {}),
+      ...(netWorth != null ? { netWorth } : {}),
     },
     ledger: ledger.map((e) => ({ basket: e.basket, amount: toNumber(e.amount), direction: e.direction })),
   };
 }
 
 /** Read Consolidated Total Assets ($M) from the newest FinancialState balanceSheetFacts, if present. */
+/**
+ * Read covenant-defined Consolidated Net Worth ($M) from the
+ * newest FinancialState's covenantMetricFacts, if present. The
+ * GAAP total-equity figure is deliberately NOT used: covenant
+ * Net Worth definitions adjust GAAP equity, so the two are not
+ * the same number (see FinancialSnapshotInput.netWorth).
+ */
+function extractNetWorthFromStates(
+  states: Array<{ asOfDate: Date; covenantMetricFacts?: unknown; balanceSheetFacts?: unknown }>,
+): number | undefined {
+  for (const state of states) {
+    const facts = state.covenantMetricFacts as { netWorth?: { value?: unknown } } | null;
+    const raw = facts?.netWorth?.value;
+    const n = typeof raw === "number" ? raw : typeof raw === "string" ? Number(raw) : NaN;
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  return undefined;
+}
+
 function extractTotalAssetsFromStates(
   states: Array<{ asOfDate: Date; balanceSheetFacts: unknown }>,
 ): number | undefined {
@@ -1874,6 +2412,8 @@ export interface SolverNativeStaticData {
   collateralScopes: PermissionCollateralScope[];
   ruleActivationConditions: RuleActivationCondition[];
   coverageDeclarations: CoverageDeclaration[];
+  /** Compiled maintenance ratio provisions (Rule 180/185). */
+  ratioProvisions: RatioProvision[];
 }
 
 interface DbPermissionRow {
@@ -1971,6 +2511,7 @@ export interface SolverNativePrismaClient {
   permissionCollateralScope: { findMany(args: any): Promise<DbPermissionCollateralScopeRow[]> };
   ruleActivationCondition: { findMany(args: any): Promise<DbRuleActivationConditionRow[]> };
   solverCoverageDeclaration: { findMany(args: any): Promise<DbSolverCoverageDeclarationRow[]> };
+  covenantProvision: { findMany(args: any): Promise<DbProvisionRow[]> };
 }
 
 export interface LoadCompanySolverStaticOptions {
@@ -2032,7 +2573,7 @@ export async function loadCompanySolverStaticData(
   options?: LoadCompanySolverStaticOptions,
 ): Promise<SolverNativeStaticData> {
   const dateFilter = effectiveDateFilter(asOfDate);
-  const [permissionRows, relationshipRows, constraintRows, constraintMemberRows, collateralScopeRows, activationRows, declarationRows] = await Promise.all([
+  const [permissionRows, relationshipRows, constraintRows, constraintMemberRows, collateralScopeRows, activationRows, declarationRows, ratioProvisionRows] = await Promise.all([
     prisma.permission.findMany({ where: { companyId, ...dateFilter } }),
     prisma.permissionRelationship.findMany({ where: { companyId } }),
     prisma.sharedCapacityConstraint.findMany({ where: { companyId } }),
@@ -2040,6 +2581,12 @@ export async function loadCompanySolverStaticData(
     prisma.permissionCollateralScope.findMany({ where: { permission: { companyId } } }),
     prisma.ruleActivationCondition.findMany({ where: { companyId } }),
     prisma.solverCoverageDeclaration.findMany({ where: { companyId } }),
+    // Rule 185: maintenance ratio provisions (Rule 180) for
+    // solver-native ratio tests. Same date filter as Permissions:
+    // a superseded (effectiveTo set) provision drops out.
+    prisma.covenantProvision.findMany({
+      where: { companyId, ...dateFilter, formulaType: { in: ["LEVERAGE_RATIO_ROOM", "COVERAGE_RATIO_ROOM"] } },
+    }),
   ]);
   const membersByConstraintId = new Map<string, DbSharedCapacityConstraintMemberRow[]>();
   for (const m of constraintMemberRows) {
@@ -2154,6 +2701,23 @@ export async function loadCompanySolverStaticData(
     isComplete: d.isComplete,
   }));
 
-  return { permissions, relationships, sharedConstraints, collateralScopes, ruleActivationConditions, coverageDeclarations };
+  // Debt-basis for leverage tests lives in params (set by the
+  // Rule 180 compiler); anything else defaults to total.
+  const ratioProvisions: RatioProvision[] = ratioProvisionRows.map((r) => {
+    const params = (r.params ?? {}) as { debtBasis?: unknown };
+    return {
+      id: r.id,
+      documentId: r.documentId,
+      basketName: r.basketName,
+      sectionRef: r.sectionRef,
+      formulaType: r.formulaType as "LEVERAGE_RATIO_ROOM" | "COVERAGE_RATIO_ROOM",
+      thresholdValue: toNumber(r.thresholdValue),
+      ...(r.formulaType === "LEVERAGE_RATIO_ROOM"
+        ? { debtBasis: params.debtBasis === "secured" ? ("secured" as const) : ("total" as const) }
+        : {}),
+    };
+  });
+
+  return { permissions, relationships, sharedConstraints, collateralScopes, ruleActivationConditions, coverageDeclarations, ratioProvisions };
 }
 

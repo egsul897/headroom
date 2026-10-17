@@ -19,6 +19,14 @@ export default async function CorpusDocumentPage({
   const sourceId = decodeURIComponent(raw);
   const row = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
   if (!row) notFound();
+  // Rule 133: this is the PUBLIC research corpus page — the corpus
+  // list and research Ask already restrict to companyId IS NULL,
+  // but this detail page loaded ANY source by id and rendered its
+  // covenant excerpts. A customer sourceId is deterministic
+  // (customer-{companyId}-{documentId}-{hash}), so a computed id
+  // could expose a company's covenant excerpts with no auth.
+  // Customer sources are not public research corpus: notFound.
+  if (row.companyId) notFound();
 
   const summary = summarizeFromStoredMetadata(row.metadata);
   const categories = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];

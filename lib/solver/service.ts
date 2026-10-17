@@ -27,6 +27,7 @@ import { buildPermissionGraph } from "./graph";
 import { buildPermissionPaths, computeElectionMaxCapacityBisected, enumerateElections, evaluateElection, permissionAsProvision, type EligibilityContext } from "./election";
 import { evaluateProvision } from "../covenant-engine";
 import { assembleSolverResult, searchLimitExceededResult } from "./result";
+import { applyRatioCeiling, evaluateRatioTests } from "./ratio";
 import { buildStateDelta } from "./statedelta";
 import type {
   ActivationState,
@@ -35,6 +36,7 @@ import type {
   Permission,
   PermissionCollateralScope,
   PermissionRelationship,
+  RatioProvision,
   RuleActivationCondition,
   SearchStats,
   SharedConstraint,
@@ -48,6 +50,8 @@ export interface RunSolverParams {
   sharedConstraints: SharedConstraint[];
   collateralScopes: PermissionCollateralScope[];
   ruleActivationConditions: RuleActivationCondition[];
+  /** Compiled maintenance ratio provisions for this document (Rule 185). Evaluated once per run, not per election. */
+  ratioProvisions?: RatioProvision[];
   financials: FinancialSnapshotInput;
   transaction: Transaction;
   entityClasses: EntityClass[];
@@ -103,7 +107,12 @@ export function runSolver(params: RunSolverParams): SolverResult {
 
   const maximumCapacity = computeMaximumCapacityFromEvaluations(evaluations, params, graph);
 
-  return assembleSolverResult({ paths, amountTested: params.transaction.amount, sharedConstraints: params.sharedConstraints, searchStats, maximumCapacity });
+  // Rule 185: maintenance ratio tests are evaluated once per
+  // run (document-level), not per election. They gate the
+  // overall status in assembleSolverResult.
+  const ratioTests = evaluateRatioTests(params.ratioProvisions ?? [], params.financials, params.transaction.amount, params.transaction.secured);
+
+  return assembleSolverResult({ paths, amountTested: params.transaction.amount, sharedConstraints: params.sharedConstraints, searchStats, maximumCapacity, ratioTests });
 }
 
 /**
@@ -144,6 +153,17 @@ function computeMaximumCapacityFromEvaluations(
       );
     }
     if (amount === undefined) continue;
+
+    // Rule 189: cap the candidate maximum by the maintenance-ratio
+    // ceiling BEFORE election re-validation. A lower amount can
+    // only improve every ratio, so re-validation at the capped
+    // amount can never re-breach a ratio; an UNKNOWN ratio test
+    // is amount-independent, so no ceiling can be proven at all.
+    const ratioCap = applyRatioCeiling(amount, params.ratioProvisions ?? [], params.financials, params.transaction.secured);
+    if (ratioCap.kind === "INDETERMINATE") {
+      return { kind: "REVIEW_REQUIRED", reason: ratioCap.reason };
+    }
+    amount = ratioCap.amount;
 
     // Re-validate at the candidate maximum — probe-level CLEAR must not promote
     // an EXACT max that fails lien/debt/shared-utilization gates at that amount.

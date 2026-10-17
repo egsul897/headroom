@@ -151,6 +151,14 @@ export interface KnowledgeSourceRecord {
   provenance: string;
   usageRightsReviewStatus: UsageRightsReviewStatus;
   discoveryScore?: number;
+  /**
+   * D12: structural-index health ERROR count computed by
+   * extractStructure for this document, persisted at process time
+   * so run outputs and the corpus manifest can surface it without
+   * recomputation. Absent on records processed before the field
+   * existed (aggregates treat absent as 0).
+   */
+  structuralHealthErrors?: number;
   byteSize?: number;
   storagePath?: string;
   companyId?: string;
@@ -176,8 +184,21 @@ export interface StructuralNodeRecord {
   heading: string;
   charStart: number;
   charEnd: number;
-  parentNodeId?: string;
+  // P0 correction: null is a valid value (the parser emits null
+  // for roots; StructuralNode.parentNodeId is string | null).
+  // The old string-only type could not represent a root and
+  // forced null-carrying records into a lie. Both null and
+  // undefined mean "no parent" (unresolved).
+  parentNodeId?: string | null;
   ambiguous?: boolean;
+  /**
+   * Phase B structural-integrity violations (see
+   * structural-integrity.ts). Present when the node's parentage,
+   * span, ref, or ordering failed validation — the relationship
+   * is unresolved, not repaired. Downstream consumers must
+   * treat such a node as structurally unresolved.
+   */
+  structuralViolations?: string[];
 }
 
 export interface CovenantCandidateRecord {
@@ -187,6 +208,24 @@ export interface CovenantCandidateRecord {
   families: KnowledgeTaxonomyFamily[];
   signals: string[];
   excerpt: string;
+  /** Rule 192: the operative span exceeded the 4000-char excerpt
+   * cap, so this excerpt is a PREFIX of the section — clauses
+   * beyond the cap are not in this summary. The compiler must
+   * not mint a formula from a truncated excerpt (it would
+   * attribute an early clause's amount to the whole section). */
+  excerptTruncated?: boolean;
+  /**
+   * The candidate's FULL operative span text, attached only when
+   * the excerpt is a truncated prefix (span > 4000 chars) and the
+   * span is within the storage bound. The summary/display excerpt
+   * stays the prefix and the Rule 192 disclosure is unchanged;
+   * this field exists so the FORMULA parse can consult the whole
+   * span under cap-frame discipline (formula-parse step 3) and so
+   * a defined-term cap reference past the prefix can resolve.
+   * Absent when the span exceeds the bound — the parse then stays
+   * fail-closed on the truncated item.
+   */
+  fullSpanText?: string;
   representationLevel: KnowledgeRepresentationLevel;
   discoveryScore: number;
 }
@@ -257,9 +296,23 @@ export interface CorpusManifestStats {
   covenantCandidates: number;
   definitions: number;
   crossReferences: number;
+  /** Extraction-level cross-reference resolution (Stage 0 instrumentation):
+   * resolved = unique same-document target identified; ambiguous = more
+   * than one physical occurrence matched (never guessed); notFound = no
+   * matching node (incl. schedule/exhibit refs, unresolved by design).
+   * The three counts always sum to crossReferences. These are structural
+   * facts only — they assert nothing about legal applicability or
+   * executable authority. */
+  resolvedCrossReferences: number;
+  ambiguousCrossReferences: number;
+  notFoundCrossReferences: number;
   unsupportedFormats: number;
   duplicateRate: number;
   errors: number;
+  /** D12: total structural-index health ERRORs across sources. */
+  structuralHealthErrors: number;
+  /** D12: stored structural nodes carrying ≥1 integrity violation. */
+  structuralViolationNodes: number;
   measuredProcessingMs: number;
   actualPaidSpendUsd: number;
 }

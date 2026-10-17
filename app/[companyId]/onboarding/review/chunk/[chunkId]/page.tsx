@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 /** The "click through to view the excerpt in context" requirement - the full DocumentChunk text a candidate's sourceChunkIds points at, not just the trimmed sourceExcerpt. */
 export default async function ChunkContextPage({ params }: { params: Promise<{ companyId: string; chunkId: string }> }) {
   const { companyId, chunkId } = await params;
-  const chunk = await getChunkContext(chunkId).catch(() => null);
+  const chunk = await getChunkContext(chunkId, companyId).catch(() => null);
   if (!chunk) notFound();
 
   return (

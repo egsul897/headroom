@@ -9,9 +9,14 @@ export async function reviewProvisionAction(companyId: string, formData: FormDat
   const sourceId = String(formData.get("sourceId") ?? "");
   const sectionRef = String(formData.get("sectionRef") ?? "");
   const category = String(formData.get("category") ?? "");
+  const nodeId = String(formData.get("nodeId") ?? "") || undefined;
   const decision = String(formData.get("decision") ?? "") as ReviewDecision;
   const editedPlainEnglish = String(formData.get("editedPlainEnglish") ?? "") || undefined;
   const note = String(formData.get("note") ?? "") || undefined;
+  // Rule 113: match the candidate-review attribution standard —
+  // a rulebook decision without a real reviewer is refused.
+  const reviewerLabel = String(formData.get("reviewedBy") ?? "").trim();
+  if (!reviewerLabel) throw new Error("A reviewer name/email is required.");
   if (!sourceId || !sectionRef || !["ACCEPTED", "EDITED", "REJECTED"].includes(decision)) {
     throw new Error("Invalid review decision payload");
   }
@@ -20,10 +25,11 @@ export async function reviewProvisionAction(companyId: string, formData: FormDat
     sourceId,
     sectionRef,
     category,
+    nodeId,
     decision,
     editedPlainEnglish,
     note,
-    reviewerLabel: "workspace-counsel",
+    reviewerLabel,
   });
   if (!result.ok) {
     throw new Error(result.error ?? "Review failed");

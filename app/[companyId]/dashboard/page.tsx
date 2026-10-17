@@ -1,9 +1,12 @@
+import Link from "next/link";
+import { Card, Chip } from "@/components/ui";
 import { DashboardClient } from "@/components/DashboardClient";
 import { facilitiesQueryFromPosition, maturitiesQueryFromPosition } from "@/lib/dashboard/load-state";
 import { loadNs4DashboardFinancialState } from "@/lib/dashboard/ns4-financial-panel";
 import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
 import { loadContractualMetricsForDashboard } from "@/lib/product/contractual-metrics/service";
 import { toContractualMetricsView } from "@/lib/product/contractual-metrics/serialize";
+import { FinancialIdentityError } from "@/lib/financial-identity";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
@@ -39,7 +42,32 @@ export default async function DashboardPage({
 
   // Overview load first — invent-absence: mint facilities/maturities queries only
   // after this returns. NS-4 band is a separate Neon read (fail-closed).
-  const inputs = await loadCovenantOverviewInputs(companyId);
+  // A company with no authenticated financial snapshot renders an honest
+  // NOT DETERMINABLE empty state (matching Capacity) — it must not throw
+  // into the error boundary ("This page needs attention"), which reads as
+  // a broken page rather than an unfinished setup.
+  let inputs: Awaited<ReturnType<typeof loadCovenantOverviewInputs>>;
+  try {
+    inputs = await loadCovenantOverviewInputs(companyId);
+  } catch (err) {
+    if (err instanceof FinancialIdentityError) {
+      return (
+        <div className="stack">
+          <Card>
+            <div className="card-subtitle">
+              <Chip tone="tight">NOT DETERMINABLE</Chip> — {err.message}
+            </div>
+            <p>
+              No authenticated financial snapshot exists for this company yet, so the dashboard cannot be
+              computed without inventing figures.{" "}
+              <Link href={`/${companyId}/onboarding/financials`}>Add financials</Link> to finish setup.
+            </p>
+          </Card>
+        </div>
+      );
+    }
+    throw err;
+  }
   const {
     company,
     asOfDate,

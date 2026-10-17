@@ -19,11 +19,6 @@ import { SeparatedCapacityPanel } from "@/components/customer-workflow/Separated
 import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
 import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
 import { loadSharedNs4FinancialIdentity } from "@/lib/product/ns4-shared-financial-identity";
-import { CfoSecuredDebtWorkflowPanel } from "@/components/customer-workflow/CfoSecuredDebtWorkflowPanel";
-import {
-  isMatthewsCfoSecuredDebtCompany,
-  loadCfoSecuredDebtProductEntry,
-} from "@/lib/customer-workflow/cfo-secured-debt-entry";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
@@ -109,26 +104,13 @@ export default async function SimulatePage({
     evaluationDate,
     utilizationAuthority: null,
   });
-  const cfoSecuredDebtEntry = isMatthewsCfoSecuredDebtCompany(companyId)
-    ? await loadCfoSecuredDebtProductEntry({
-        companyId,
-        ask:
-          amountMillions > 0
-            ? `As of ${evaluationDate}, is a proposed $${amountMillions} million secured debt transaction permitted under our Indenture and Credit Agreement?`
-            : undefined,
-        amountMillions: amountMillions > 0 ? amountMillions : 50,
-        evaluationDate,
-      })
-    : null;
-
   return (
     <div className="stack">
       <Card>
         <div className="card-title">Simulate</div>
         <WorkflowJourney companyId={companyId} current="simulate" />
         <div className="card-subtitle" style={{ marginTop: 8 }}>
-          {readiness.headline} Uses the <strong>same capacity state</strong> as Position. Simulations never
-          modify the live customer ledger.
+          {readiness.headline} Uses the <strong>same capacity state</strong> as Position. Simulations never modify the live transaction ledger.
         </div>
         <div className="row" style={{ marginTop: 8 }}>
           <div className="row-label">Status</div>
@@ -187,6 +169,61 @@ export default async function SimulatePage({
       </Card>
 
       <Card>
+        <div className="card-title">Model a transaction</div>
+        <div className="card-subtitle">
+          Enter what you want to do — Headroom checks it against your capacity and shows the answer with sources. The
+          result below updates when you check a transaction.
+        </div>
+        <form method="get" action={`/${companyId}/simulate`} className="stack" style={{ gap: 10, marginTop: 10 }}>
+          <div className="field">
+            <div className="field-label">Transaction</div>
+            <div className="field-control">
+              <select
+                name="action"
+                defaultValue={handoff.action === "rp" || handoff.action === "investment" ? handoff.action : "debt"}
+              >
+                <option value="debt">Borrow</option>
+                <option value="rp">Pay a dividend / distribution (restricted payment)</option>
+                <option value="investment">Make an investment</option>
+              </select>
+            </div>
+          </div>
+          <div className="field">
+            <div className="field-label">Amount ($M)</div>
+            <div className="field-control">
+              <input
+                type="number"
+                name="amount"
+                step="0.01"
+                min="0"
+                defaultValue={amountMillions > 0 ? amountMillions : ""}
+                placeholder="e.g. 50"
+                required
+              />
+            </div>
+          </div>
+          <div className="field">
+            <div className="field-label">Security (borrowing only)</div>
+            <div className="field-control">
+              <select name="secured" defaultValue={handoff.secured === false ? "0" : "1"}>
+                <option value="1">Secured</option>
+                <option value="0">Unsecured</option>
+              </select>
+            </div>
+          </div>
+          <div className="field">
+            <div className="field-label">As-of date (optional)</div>
+            <div className="field-control">
+              <input type="date" name="asOf" defaultValue={handoff.evaluationDate ?? ""} />
+            </div>
+          </div>
+          <button type="submit" className="button-primary" style={{ width: "fit-content" }}>
+            Check this transaction
+          </button>
+        </form>
+      </Card>
+
+      <Card>
         <div className="card-title" data-slot="ns4-approved-financial-inputs">
           APPROVED NS-4 financial inputs (shared with Position / Dashboard)
         </div>
@@ -225,6 +262,9 @@ export default async function SimulatePage({
             • Missing: {m}
           </div>
         ))}
+        {ns4Financial.missingInputs.length > 4 && (
+          <div className="row-note">(+{ns4Financial.missingInputs.length - 4} more missing inputs)</div>
+        )}
         <div className="button-row" style={{ marginTop: 12 }}>
           <Link className="button" href={`/${companyId}/dashboard`}>
             Dashboard (same NS-4 identity)
@@ -281,10 +321,16 @@ export default async function SimulatePage({
 
       <VerifiedSimulatePanel summary={verifiedSummary} evaluationDate={evaluationDate} />
 
-      {cfoSecuredDebtEntry?.routeEligible && (
-        <CfoSecuredDebtWorkflowPanel entry={cfoSecuredDebtEntry} />
+      {/* Rule 86: never silently assume an amount. The cross-domain
+          panel models a $150M acquisition when no amount was
+          supplied — say so, so the CFO does not read the default
+          as their transaction. */}
+      {amountMillions <= 0 && (
+        <div className="card-subtitle" style={{ marginTop: 8 }}>
+          Illustrative $150M acquisition below — no amount was supplied, so this panel models a default scenario.
+          Enter an amount to model your transaction.
+        </div>
       )}
-
       <CrossDomainSimulatePanel evaluation={crossDomainAcquisition} />
 
       <SimulateClient

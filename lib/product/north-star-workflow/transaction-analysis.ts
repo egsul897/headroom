@@ -36,6 +36,9 @@ import {
   projectPermissionLayers,
   type CrossDocumentPermissionLayers,
 } from "@/lib/product/covenant-intelligence/cross-document-permission-layers";
+import { parseTransactionDraft, type TransactionDraft } from "./parse-transaction-draft";
+import { legacyKindFromQuestion } from "./legacy-kind";
+export { parseTransactionDraft, type TransactionDraft };
 
 /** Ask does not invent a financial snapshot — numerical capacity stays labeled deferred. */
 function deferredAskNumericalLayer(): CrossDocumentNumericalLayer {
@@ -49,6 +52,7 @@ function deferredAskNumericalLayer(): CrossDocumentNumericalLayer {
       securedDebt: 0,
       cash: 0,
       totalAssets: null,
+      netWorth: null,
     },
     pathwayCapacities: [],
     documentSummaries: [],
@@ -60,15 +64,6 @@ function deferredAskNumericalLayer(): CrossDocumentNumericalLayer {
     note:
       "Ask surface: numerical capacity deferred to Simulate/Position on the same draft — not treated as certified package permission.",
   };
-}
-
-export interface TransactionDraft {
-  rawQuestion: string;
-  evaluationDate: string | null;
-  amountMillions: number | null;
-  kind: "SECURED_DEBT" | "UNSECURED_DEBT" | "RESTRICTED_PAYMENT" | "INVESTMENT" | "ACQUISITION" | "UNKNOWN";
-  secured: boolean | null;
-  missingConfirmations: string[];
 }
 
 export interface TransactionAnalysisResult {
@@ -118,70 +113,6 @@ export interface TransactionAnalysisResult {
     headline: string;
     detail: string;
     limitations: string[];
-  };
-}
-
-function extractEvaluationDate(question: string): string | null {
-  const m = question.match(/\b(20\d{2}-\d{2}-\d{2})\b/);
-  return m?.[1] ?? null;
-}
-
-function extractAmountMillions(question: string): number | null {
-  const m = question.match(/\$?\s*(\d+(?:\.\d+)?)\s*(million|m)\b/i);
-  if (m) return Number(m[1]);
-  const b = question.match(/\$?\s*(\d+(?:\.\d+)?)\s*(billion|bn)\b/i);
-  if (b) return Number(b[1]) * 1000;
-  return null;
-}
-
-function inferKind(question: string): TransactionDraft["kind"] {
-  const q = question.toLowerCase();
-  if (/acquisit|purchase.*target|buy.*company/.test(q)) return "ACQUISITION";
-  if (/dividend|restricted payment|repurchase|buyback/.test(q)) return "RESTRICTED_PAYMENT";
-  if (/investment|contribute|equity infusion/.test(q) && !/equity contribution|eligible equity/.test(q)) {
-    return "INVESTMENT";
-  }
-  // Check unsecured before secured — "unsecured" contains the substring "secured".
-  if (/\bunsecured\b/.test(q) && /debt|borrow|incur|loan|notes?/.test(q)) return "UNSECURED_DEBT";
-  if (/\bsecured\b|\blien\b|\bcollateral\b/.test(q) && /debt|borrow|incur|loan|notes?/.test(q)) return "SECURED_DEBT";
-  if (/debt|borrow|incur|loan|notes?/.test(q)) return "UNSECURED_DEBT";
-  return "UNKNOWN";
-}
-
-/** Parse a contemplated transaction into a structured draft (no inventing of missing fields). */
-export function parseTransactionDraft(question: string): TransactionDraft {
-  const evaluationDate = extractEvaluationDate(question);
-  const amountMillions = extractAmountMillions(question);
-  const kind = inferKind(question);
-  const q = question.toLowerCase();
-  const secured =
-    kind === "SECURED_DEBT"
-      ? true
-      : kind === "UNSECURED_DEBT"
-        ? false
-        : kind === "ACQUISITION"
-          ? /\bunsecured\b/.test(q)
-            ? false
-            : true
-          : /\bunsecured\b/.test(q)
-            ? false
-            : /\bsecured\b|\blien\b/.test(q)
-              ? true
-              : null;
-  const missingConfirmations: string[] = [];
-  if (!evaluationDate) missingConfirmations.push("evaluationDate (YYYY-MM-DD)");
-  if (amountMillions == null) missingConfirmations.push("transaction amount");
-  if (kind === "UNKNOWN") missingConfirmations.push("transaction kind (debt / RP / investment / acquisition)");
-  if (secured == null && (kind === "SECURED_DEBT" || kind === "UNSECURED_DEBT" || kind === "ACQUISITION")) {
-    missingConfirmations.push("secured vs unsecured");
-  }
-  return {
-    rawQuestion: question,
-    evaluationDate,
-    amountMillions,
-    kind,
-    secured,
-    missingConfirmations,
   };
 }
 
@@ -255,17 +186,10 @@ export async function analyzeContemplatedTransaction(args: {
       : null;
 
   let legacySimulation: TransactionAnalysisResult["legacySimulation"] = null;
-  const q = args.question.toLowerCase();
-  const legacyKind: Parameters<typeof runLegacyEngineSimulation>[0]["kind"] | null = /repay|prepay|pay down/.test(q)
-    ? "DEBT_REPAYMENT"
-    : /equity contribution|eligible equity|equity infusion/.test(q)
-      ? "ELIGIBLE_EQUITY_CONTRIBUTION"
-      : draft.kind === "SECURED_DEBT" ||
-          draft.kind === "UNSECURED_DEBT" ||
-          draft.kind === "RESTRICTED_PAYMENT" ||
-          draft.kind === "INVESTMENT"
-        ? draft.kind
-        : null;
+  // Rule 62: the repayment override lives in legacy-kind — a
+  // "repay" mention that is only the use of proceeds (incur debt
+  // TO repay notes) must not flip the simulation to repayment.
+  const legacyKind = legacyKindFromQuestion(args.question, draft.kind);
   if (legacyKind && draft.amountMillions != null) {
     legacySimulation = await runLegacyEngineSimulation({
       companyId: args.companyId,

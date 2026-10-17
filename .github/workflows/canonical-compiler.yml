@@ -19,6 +19,18 @@ on:
       - "package.json"
       - "package-lock.json"
       - ".github/workflows/canonical-compiler.yml"
+      # General rule: this workflow runs the REPO-WIDE typecheck
+      # (`tsc --noEmit -p .`), so it must trigger on every TypeScript
+      # change — not just contract-model paths. Before this, a PR
+      # touching only lib/product/** or lib/knowledge-factory/** got NO
+      # typecheck in CI at all (only Vercel), and type errors shipped
+      # until someone manually dispatched the workflow.
+      - "lib/**"
+      - "app/**"
+      - "components/**"
+      - "scripts/**"
+      - "tests/**"
+      - "tsconfig*.json"
   pull_request:
     paths:
       - "lib/contract-model/**"
@@ -26,6 +38,14 @@ on:
       - "tests/contract-model/**"
       - "tests/phase-3-conmed-pilot/**"
       - "docs/phase-3-conmed-population-verified/**"
+      # Same repo-wide-typecheck rule as push: every TS change triggers.
+      - "lib/**"
+      - "app/**"
+      - "components/**"
+      - "scripts/**"
+      - "tests/**"
+      - "tsconfig*.json"
+      - ".github/workflows/canonical-compiler.yml"
 
 concurrency:
   group: canonical-compiler-${{ github.ref }}

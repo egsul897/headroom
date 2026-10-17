@@ -49,6 +49,9 @@ export function projectToLegacySnapshot(state: FinancialState): LegacySnapshotPr
       ...(state.balanceSheetFacts.totalAssets?.value != null
         ? { totalAssets: state.balanceSheetFacts.totalAssets.value }
         : {}),
+      ...(state.covenantMetricFacts.netWorth?.value != null
+        ? { netWorth: state.covenantMetricFacts.netWorth.value }
+        : {}),
     },
   };
 }
@@ -79,6 +82,7 @@ export function toSolverNativeCompanyContext(params: ToSolverNativeContextParams
     collateralScopes: params.staticData.collateralScopes,
     ruleActivationConditions: params.staticData.ruleActivationConditions,
     coverageDeclarations: params.staticData.coverageDeclarations,
+    ratioProvisions: params.staticData.ratioProvisions,
     activationState: params.activationState,
     asOfDate: params.asOfDate,
     entityClasses: params.entityClasses,

@@ -259,7 +259,10 @@ export async function appendContractLedgerUsage(args: {
         source: "customer-certificate-or-manual",
         sourceVersion: null,
         approvalRef: args.approvalRef,
-        approvalState: "APPROVED",
+        // Rule 91: a manually typed entry was never approved —
+        // stamping APPROVED here would be false provenance.
+        // Certificate-promoted lines keep APPROVED (they were).
+        approvalState: "MANUAL",
       },
     },
   });

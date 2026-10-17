@@ -21,6 +21,11 @@ const DEFAULT_CAPABILITIES: Record<ConnectorType, ConnectorCapability[]> = {
   EDGAR: ["DOCUMENTS"],
   CSV_FINANCIAL: ["FINANCIAL_FACTS", "DEBT_BALANCES", "CASH_BALANCES"],
   DOCUMENT_UPLOAD: ["DOCUMENTS"],
+  // ERP connections are provisioned via lib/erp/connections.ts (connectSource
+  // below refuses them on this generic path) and deliver period financial
+  // facts via lib/erp/ingest.ts's push endpoint - FINANCIAL_FACTS is the
+  // capability this registry records for them.
+  ERP: ["FINANCIAL_FACTS"],
 };
 
 export class UnknownTickerError extends Error {}
@@ -47,6 +52,16 @@ export async function connectSource(params: ConnectSourceParams): Promise<Compan
 
   let provider: string;
   let resolvedConfig: Record<string, unknown> = params.config ?? {};
+
+  if ((connectorType as string) === "ERP") {
+    // ERP connections carry an inbound ingestion secret (stored only as a
+    // hash) that this generic path does not manage - creating one here
+    // would produce a connection that can never authenticate. Fail closed
+    // and point at the ERP provisioning path instead. (Compared as a string
+    // so this compiles against generated clients that predate the ERP enum
+    // value as well as those that include it.)
+    throw new UnsupportedConnectorConfigError("connectSource: ERP connections are provisioned via lib/erp/connections.ts's createErpConnection (they carry an inbound ingestion secret this path does not manage).");
+  }
 
   if (connectorType === "EDGAR") {
     const ticker = typeof resolvedConfig.ticker === "string" ? resolvedConfig.ticker : undefined;
@@ -141,7 +156,25 @@ export async function getOrCreateUploadConnection(companyId: string): Promise<Co
  * factory to be immediately usable.
  */
 export function getConnectorForConnection(connection: CompanySourceConnection): SourceConnector {
-  switch (connection.connectorType) {
+  if ((connection.connectorType as string) === "ERP") {
+    // ERP-1 is push-based: facts arrive via lib/erp/ingest.ts's endpoint,
+    // there is no pull SourceConnector yet. ERP-3's provider adapters
+    // implement syncSince against the cursor contract in lib/erp/types.ts.
+    // Fail closed with that explanation rather than returning a connector
+    // that would silently sync nothing. (String comparison: compiles
+    // against generated clients with or without the ERP enum value.)
+    throw new UnsupportedConnectorConfigError(`getConnectorForConnection: ERP connection ${connection.id} is push-based (lib/erp/ingest.ts) - no pull SourceConnector exists for it yet.`);
+  }
+  // The guard above has already thrown for ERP, so the discriminant can be
+  // narrowed to the non-ERP union for the switch: the default branch's
+  // exhaustiveness check then keeps compiling - and keeps biting if a new
+  // ConnectorType is ever added without a case here. Exclude<> keeps this
+  // compiling against generated clients that predate the ERP enum value as
+  // well as those that include it, the same reason the guard above compares
+  // as string. The cast is sound: it removes exactly the value the guard
+  // just excluded at runtime.
+  const connectorType = connection.connectorType as Exclude<ConnectorType, "ERP">;
+  switch (connectorType) {
     case "EDGAR": {
       const config = (connection.config as { cik?: string; ticker?: string } | null) ?? {};
       if (!config.cik) {
@@ -154,7 +187,7 @@ export function getConnectorForConnection(connection: CompanySourceConnection): 
     case "DOCUMENT_UPLOAD":
       return new UploadConnector({ filename: "" });
     default: {
-      const exhaustive: never = connection.connectorType;
+      const exhaustive: never = connectorType;
       throw new UnsupportedConnectorConfigError(`getConnectorForConnection: unhandled connectorType ${String(exhaustive)}.`);
     }
   }

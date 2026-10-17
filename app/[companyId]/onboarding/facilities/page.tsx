@@ -40,11 +40,15 @@ export default async function OnboardingFacilitiesPage({ params, searchParams }:
             <input type="hidden" name="name" value={name} />
             {suggestions.length > 0 && (
               <div className="field">
-                <div className="field-label">Candidate permissions (ranked by textual similarity — check every one that authorized this instrument)</div>
+                <div className="field-label">Candidate permissions (ranked by textual similarity — check every one that authorized this instrument; none are pre-checked)</div>
                 <div className="field-control stack" style={{ gap: 4 }}>
                   {suggestions.map((s) => (
                     <label key={s.permission.id} style={{ display: "flex", gap: 8, alignItems: "baseline", fontSize: 13 }}>
-                      <input type="checkbox" name="originatingPermissionIds" value={s.permission.id} defaultChecked={s.score > 0.15} />
+                      {/* Rule 108: never pre-check a permission link on a
+                          text-similarity heuristic — the mapping asserts
+                          a legal fact (this permission authorized this
+                          instrument) and must be an explicit human check. */}
+                      <input type="checkbox" name="originatingPermissionIds" value={s.permission.id} />
                       <span>
                         <b>{s.permission.code ?? s.permission.id}</b> — {s.permission.action} ({s.permission.document.name}) — match score {(s.score * 100).toFixed(0)}%
                       </span>
@@ -56,7 +60,10 @@ export default async function OnboardingFacilitiesPage({ params, searchParams }:
             <div className="field">
               <div className="field-label">Facility type</div>
               <div className="field-control">
-                <select name="facilityType" defaultValue="TERM_LOAN">
+                <select name="facilityType" defaultValue="" required>
+                  <option value="" disabled>
+                    Select facility type
+                  </option>
                   <option value="TERM_LOAN">Term Loan</option>
                   <option value="REVOLVER">Revolver</option>
                   <option value="NOTES">Notes</option>
@@ -77,7 +84,10 @@ export default async function OnboardingFacilitiesPage({ params, searchParams }:
             <div className="field">
               <div className="field-label">Coupon type</div>
               <div className="field-control">
-                <select name="couponType" defaultValue="FLOATING">
+                <select name="couponType" defaultValue="" required>
+                  <option value="" disabled>
+                    Select coupon type
+                  </option>
                   <option value="FLOATING">Floating</option>
                   <option value="FIXED">Fixed</option>
                 </select>

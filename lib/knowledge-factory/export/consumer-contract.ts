@@ -6,7 +6,7 @@
 import { KNOWLEDGE_FACTORY_VERSION } from "../types";
 import { STRUCTURAL_INDEX_VERSION } from "../../contract-model/compiler/types";
 
-export const CONSUMER_EXPORT_SCHEMA_VERSION = "knowledge-factory.consumer-export.v1";
+export const CONSUMER_EXPORT_SCHEMA_VERSION = "knowledge-factory.consumer-export.v2";
 export const CONSUMER_EXPORT_KIND = "ckf-canonical-readonly-corpus";
 
 export interface ConsumerExportSafety {
@@ -52,7 +52,9 @@ export interface ConsumerStructuralNode {
   heading: string;
   charStart: number;
   charEnd: number;
-  parentNodeId?: string;
+  // P0 correction: null is a valid value (the parser emits null
+  // for roots). Both null and undefined mean "no parent".
+  parentNodeId?: string | null;
   ambiguous?: boolean;
 }
 
@@ -84,7 +86,31 @@ export interface ConsumerDependencyEdge {
   charStart: number;
   charEnd: number;
   kind: "PROVISION_CROSS_REFERENCE";
-  resolution: "UNRESOLVED";
+  /**
+   * v2: extraction-level target resolution, mapped verbatim from
+   * the stored CrossReferenceRecord. The four layers are never
+   * conflated — this field asserts ONLY (i) a reference was
+   * extracted and (ii) whether a unique target was identified:
+   * - "RESOLVED": exactly one same-document node matched
+   *   (targetNodeId / targetSectionRef carry that target).
+   * - "AMBIGUOUS": the target matched more than one physical
+   *   occurrence; never guessed, no targetNodeId.
+   * - "UNRESOLVED": no matching node (unresolvedReason carries the
+   *   stored basis; schedule/exhibit and cross-document references
+   *   are unresolved by design).
+   * It asserts NOTHING about (iii) legal applicability or
+   * (iv) executable authority: legalTruth stays false, and no
+   * confidence/validation field is minted for any edge — a
+   * RESOLVED edge is a structural fact, not a verification.
+   */
+  resolution: "RESOLVED" | "AMBIGUOUS" | "UNRESOLVED";
+  /** Unique target node when resolution is "RESOLVED". */
+  targetNodeId?: string;
+  /** Normalized target ref as stored on the record (the attempted
+   * scope for AMBIGUOUS / UNRESOLVED edges). */
+  targetSectionRef?: string;
+  /** Stored basis for non-resolution (AMBIGUOUS / UNRESOLVED). */
+  unresolvedReason?: string;
   legalTruth: false;
 }
 

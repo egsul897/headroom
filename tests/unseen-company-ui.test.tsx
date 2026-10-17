@@ -160,6 +160,7 @@ const emptySolverContext: SolverNativeCompanyContext = {
   collateralScopes: [],
   ruleActivationConditions: [],
   coverageDeclarations: [],
+  ratioProvisions: [],
   activationState: { asOfDate: AS_OF, series: {}, events: [], usageCounts: {}, unknownKeys: new Set() },
   asOfDate: AS_OF,
   entityClasses: ["BORROWER"],

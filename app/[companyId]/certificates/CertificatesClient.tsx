@@ -5,8 +5,6 @@ import { useState, useTransition } from "react";
 import {
   approveCertificateAction,
   appendHistoricalUsageAction,
-  seedSyntheticCertificateAction,
-  seedAuthenticCertificateFixtureAction,
   proposeUploadedCertificateTextAction,
   restateCertificateAction,
 } from "./actions";
@@ -41,70 +39,25 @@ export function CertificatesClient({
   const router = useRouter();
   const [pending, start] = useTransition();
   const [message, setMessage] = useState<string | null>(null);
-  const [reviewedBy, setReviewedBy] = useState("workspace-counsel");
-  const [usageAmount, setUsageAmount] = useState("10000000");
-  const [usageRule, setUsageRule] = useState("rule-general-investments-basket");
+  // Rule 114: no pre-filled generic reviewer — the server refuses
+  // blank attribution, and a pre-filled "workspace-counsel" would
+  // defeat that requirement with an unattributed approval.
+  const [reviewedBy, setReviewedBy] = useState("");
+  const [usageAmount, setUsageAmount] = useState("");
+  const [usageRule, setUsageRule] = useState("");
+  // Rule 106: instrument key + effective date were hardcoded
+  // ("synthetic-term-loan-a" / 2026-05-01) — invented ledger
+  // data. They are now required inputs with no default.
+  const [usageInstrumentKey, setUsageInstrumentKey] = useState("");
+  const [usageEffectiveAsOf, setUsageEffectiveAsOf] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [certificateText, setCertificateText] = useState("");
   const [statementText, setStatementText] = useState("");
 
   return (
     <div className="stack" style={{ gap: 16 }}>
-      <div className="button-row" style={{ flexWrap: "wrap", gap: 8 }}>
-        <button
-          type="button"
-          className="button"
-          disabled={pending}
-          onClick={() =>
-            start(async () => {
-              const r = await seedSyntheticCertificateAction(companyId);
-              setMessage(r.ok ? `${r.label} · ${r.snapshotId} (${r.status})` : `Failed: ${(r.issues ?? []).join("; ")}`);
-              router.refresh();
-            })
-          }
-        >
-          Seed synthetic certificate (DRAFT)
-        </button>
-        <button
-          type="button"
-          className="button button-primary"
-          disabled={pending}
-          onClick={() =>
-            start(async () => {
-              const r = await seedAuthenticCertificateFixtureAction(companyId, "matthews_q1_fy2025");
-              setMessage(
-                r.ok
-                  ? `${r.label} · ${r.snapshotId} (${r.status}) · authority ${r.fixtureAuthority?.kind ?? "—"}`
-                  : `Failed: ${r.issues.join("; ")}`,
-              );
-              router.refresh();
-            })
-          }
-        >
-          Propose Matthews Q1 FY2025 certificate (FCE → DRAFT)
-        </button>
-        <button
-          type="button"
-          className="button button-primary"
-          disabled={pending}
-          onClick={() =>
-            start(async () => {
-              const r = await seedAuthenticCertificateFixtureAction(companyId, "coherent_fy2026");
-              setMessage(
-                r.ok
-                  ? `${r.label} · ${r.snapshotId} (${r.status}) · authority ${r.fixtureAuthority?.kind ?? "—"}`
-                  : `Failed: ${r.issues.join("; ")}`,
-              );
-              router.refresh();
-            })
-          }
-        >
-          Propose Coherent FY2026 certificate (FCE → DRAFT)
-        </button>
-      </div>
       <div className="row-note">
         FCE proposals extract from certificate text into NS-4 as DRAFT / REVIEW_REQUIRED only. Never auto-approved.
-        Matthews = AUTHENTIC_SOURCE_DERIVED (EDGAR accession 0000063296-25-000006). Coherent = SEED_ALIGNED_MODELED.
         Attributable Approve is required before Dashboard IR leverage uses the snapshot.
       </div>
 
@@ -181,6 +134,10 @@ export function CertificatesClient({
                     disabled={pending}
                     onClick={() =>
                       start(async () => {
+                        if (!reviewedBy.trim()) {
+                          setMessage("Enter your name/email — approvals must be attributable.");
+                          return;
+                        }
                         const r = await approveCertificateAction(
                           companyId,
                           s.snapshotId,
@@ -200,10 +157,10 @@ export function CertificatesClient({
                 <button
                   type="button"
                   className="button"
-                  disabled={pending}
+                  disabled={pending || !reviewedBy.trim()}
                   onClick={() =>
                     start(async () => {
-                      const r = await restateCertificateAction(companyId, s.snapshotId);
+                      const r = await restateCertificateAction(companyId, s.snapshotId, reviewedBy);
                       setMessage(r.ok ? r.label : `Restatement failed: ${(r.issues ?? []).join("; ")}`);
                       router.refresh();
                     })
@@ -233,7 +190,7 @@ export function CertificatesClient({
                       {f.locator
                         ? ` · loc p${String(f.locator.page ?? "—")}/${String(f.locator.section ?? "—")}/${String(f.locator.table ?? "—")}/${String(f.locator.row ?? "—")}`
                         : " · locator stub"}
-                      {f.note ? ` · ${f.note.slice(0, 120)}` : ""}
+                      {f.note ? ` · ${f.note.slice(0, 120)}${f.note.length > 120 ? "…" : ""}` : ""}
                     </div>
                   ))
                 )}
@@ -261,20 +218,38 @@ export function CertificatesClient({
             placeholder="Rule id"
             style={{ maxWidth: 280 }}
           />
+          <input
+            className="input"
+            value={usageInstrumentKey}
+            onChange={(e) => setUsageInstrumentKey(e.target.value)}
+            placeholder="Instrument key (e.g. term-loan-b)"
+            style={{ maxWidth: 280 }}
+          />
+          <input
+            className="input"
+            type="date"
+            value={usageEffectiveAsOf}
+            onChange={(e) => setUsageEffectiveAsOf(e.target.value)}
+            style={{ maxWidth: 180 }}
+          />
           <button
             type="button"
             className="button"
             disabled={pending}
             onClick={() =>
               start(async () => {
+                if (!usageAmount || !usageRule || !usageInstrumentKey || !usageEffectiveAsOf) {
+                  setMessage("Enter amount, rule id, instrument key, and effective date — none are defaulted.");
+                  return;
+                }
                 const usageId = `manual-${companyId}-${Date.now()}`;
                 const r = await appendHistoricalUsageAction(companyId, {
                   usageId,
                   amount: usageAmount,
                   currency: "USD",
                   ruleId: usageRule,
-                  effectiveAsOf: "2026-05-01",
-                  instrumentKey: "synthetic-term-loan-a",
+                  effectiveAsOf: usageEffectiveAsOf,
+                  instrumentKey: usageInstrumentKey,
                 });
                 setMessage(r.ok ? `Appended ${usageId}` : `Append failed: ${(r.issues ?? []).join("; ")}`);
                 router.refresh();

@@ -4,62 +4,50 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { Card, Chip } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
-import { getDocumentStorageProvider } from "@/lib/document-storage";
-import { CONMED_DEMO_DOCUMENTS } from "@/lib/product/conmed-demo/package";
+import { getDocumentStorageProviderForRef } from "@/lib/document-storage";
 import { getCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
+import { summaryCapDisclosure } from "@/lib/product/covenant-intelligence/summarize";
+import {
+  isUnclassifiedDocument,
+  unclassifiedDocumentNote,
+} from "@/lib/product/customer-intelligence/document-class";
+import {
+  analysisPendingNote,
+  analysisStatusOf,
+  analysisStatusTone,
+  isAnalysisPending,
+} from "@/lib/product/customer-intelligence/analysis-status";
+import { loadSourceTextFromBytes, resolveCuratedSourceTextPath } from "@/lib/product/customer-intelligence/source-text";
+import { retryCustomerAnalysisAction } from "@/app/[companyId]/onboarding/documents/actions";
 
 export const metadata = { title: "Headroom — Document source" };
 
-async function loadSourceText(documentId: string, storageRef: string | null, notes: string | null): Promise<{
+async function loadSourceText(documentId: string, storageRef: string | null, notes: string | null, filename = ""): Promise<{
   text: string;
   origin: string;
   truncated: boolean;
 }> {
-  const curatedMatch = notes?.match(/^curated=(.+)$/m);
-  if (curatedMatch?.[1]) {
-    const abs = path.join(process.cwd(), curatedMatch[1]);
-    if (existsSync(abs)) {
-      const text = readFileSync(abs, "utf8");
-      return { text, origin: `curated excerpt (${curatedMatch[1]})`, truncated: false };
+  const curatedPath = resolveCuratedSourceTextPath(notes);
+  if (curatedPath) {
+    if (existsSync(curatedPath)) {
+      return loadSourceTextFromBytes(readFileSync(curatedPath), path.basename(curatedPath), `curated excerpt (${notes?.match(/^curated=(.+)$/m)?.[1]})`);
     }
   }
 
   if (storageRef) {
     try {
-      const provider = getDocumentStorageProvider();
+      const provider = getDocumentStorageProviderForRef(storageRef);
       const buf = await provider.retrieve(storageRef);
-      const raw = buf.toString("utf8");
-      const max = 120_000;
-      if (raw.length > max) {
-        return {
-          text: raw.slice(0, max) + "\n\n… [truncated for display — full bytes remain in storage] …",
-          origin: `stored object (${storageRef})`,
-          truncated: true,
-        };
-      }
-      return { text: raw, origin: `stored object (${storageRef})`, truncated: false };
+      return loadSourceTextFromBytes(buf, filename, `stored object (${storageRef})`);
     } catch {
       // fall through
     }
   }
 
-  const spec = CONMED_DEMO_DOCUMENTS.find((d) => d.id === documentId);
-  if (spec) {
-    const abs = path.join(process.cwd(), spec.rawRelativePath);
-    if (existsSync(abs)) {
-      const raw = readFileSync(abs, "utf8");
-      const max = 120_000;
-      if (raw.length > max) {
-        return {
-          text: raw.slice(0, max) + "\n\n… [truncated for display] …",
-          origin: `repository fixture (${spec.rawRelativePath})`,
-          truncated: true,
-        };
-      }
-      return { text: raw, origin: `repository fixture (${spec.rawRelativePath})`, truncated: false };
-    }
-  }
-
+  // Integration fix: no demo-fixture fallback. A real customer's
+  // document page must never render CONMED demo bytes when storage
+  // is unavailable — fail closed with "unavailable" (the page
+  // renders "Source origin: unavailable" + "Source text unavailable.").
   return { text: "", origin: "unavailable", truncated: false };
 }
 
@@ -72,12 +60,13 @@ export default async function DocumentSourcePage({
   const doc = await prisma.document.findFirst({ where: { id: documentId, companyId } });
   if (!doc) notFound();
 
-  const source = await loadSourceText(doc.id, doc.storageRef, doc.notes);
+  const source = await loadSourceText(doc.id, doc.storageRef, doc.notes, doc.originalFilename || doc.name);
   const intel = await getCustomerDocumentIntelligence(companyId, documentId);
   const sourceUrl = doc.notes?.match(/^sourceUrl=(.+)$/m)?.[1];
   const unresolved = doc.notes?.match(/^unresolved=(.+)$/m)?.[1];
   const accession = doc.notes?.match(/^accession=(.+)$/m)?.[1];
   const summaryItems = intel?.summary?.items ?? [];
+  const capNote = intel?.summary ? summaryCapDisclosure(intel.summary) : null;
   const categories = intel?.summary ? Object.entries(intel.summary.countsByCategory) : [];
 
   return (
@@ -105,8 +94,12 @@ export default async function DocumentSourcePage({
           <div className="row-value">
             {intel ? (
               <>
-                <Chip tone={intel.analysisOk ? "pass" : "trip"}>
-                  {intel.analysisOk ? "ANALYZED" : "FAILED"}
+                {/* Rule 158: pending is not failed — the chip used to
+                    show FAILED for STAGED/ANALYZING documents. Status
+                    label and tone come from the shared helper so this
+                    page can never disagree with the documents list. */}
+                <Chip tone={analysisStatusTone(analysisStatusOf(intel))}>
+                  {analysisStatusOf(intel)}
                 </Chip>{" "}
                 {intel.extractionStatus} · {intel.covenantItemCount} summaries
               </>
@@ -115,9 +108,45 @@ export default async function DocumentSourcePage({
             )}
           </div>
         </div>
+        {intel && isAnalysisPending(intel) && (
+          <div className="row-note">{analysisPendingNote()}</div>
+        )}
         {intel?.analysisError && (
           <div className="row-note" style={{ color: "var(--color-danger, #b91c1c)" }}>
             Analysis failed: {intel.analysisError}. This document has not been successfully analyzed.
+          </div>
+        )}
+        {intel?.analysisStale && (
+          <div className="row-note" style={{ color: "var(--amber)" }}>
+            This analysis was produced by an older version of Headroom and may not include the latest
+            corrections. Re-analyze for current results.
+            <form action={retryCustomerAnalysisAction.bind(null, companyId, documentId)} style={{ marginTop: 8 }}>
+              <button className="button" type="submit">
+                Re-analyze document
+              </button>
+            </form>
+          </div>
+        )}
+        {/* Rule 118: the classifier's class governs operative
+            resolution — when it disagrees with the declared type,
+            say so. The declared type was only a fallback for
+            UNKNOWN/OTHER_DEBT_RELATED; a confident classifier
+            verdict silently wins, and the user previously had no
+            way to see that the system treats this document as a
+            different kind than they declared. */}
+        {intel && intel.declaredType && intel.documentClass && intel.documentClass !== intel.declaredType && (
+          <div className="row-note" style={{ color: "var(--amber)" }}>
+            Type mismatch: declared as {intel.declaredType}, but analysis classifies this document as{" "}
+            {intel.documentClass}. The analysis class governs operative resolution. If the declaration is
+            correct, confirm the document type in the review queue.
+          </div>
+        )}
+        {/* Rule 160: UNKNOWN with no declared type never triggered the
+            mismatch note above, so an untyped document sailed through
+            with no warning. Say it is unclassified. */}
+        {intel && isUnclassifiedDocument(intel) && (
+          <div className="row-note" style={{ color: "var(--amber)" }}>
+            {unclassifiedDocumentNote()}
           </div>
         )}
         {accession && (
@@ -199,13 +228,26 @@ export default async function DocumentSourcePage({
           <div className="card-subtitle">
             Plain-English substance with citations. DISCOVERED ≠ VERIFIED.
           </div>
+          {/* Rule 159: the summary object carries truncated +
+              totalItemsBeforeCap, but no page read them — a 150-item
+              document showed "first 40 of 120" and the 30 dropped items
+              were invisible. The category counts above reflect ALL
+              items; the list below is capped. Say both. */}
+          {capNote && (
+            <div className="row-note" style={{ color: "var(--amber)" }}>
+              {capNote}
+            </div>
+          )}
+          {summaryItems.length > 40 && (
+            <div className="row-note">Showing first 40 of {summaryItems.length} covenant summaries.</div>
+          )}
           {summaryItems.slice(0, 40).map((item, idx) => (
             <div
               key={`${item.sectionRef}-${idx}`}
               style={{
                 marginTop: 16,
                 paddingTop: 12,
-                borderTop: "1px solid var(--border, #e5e7eb)",
+                borderTop: "1px solid var(--line)",
               }}
             >
               <div className="row">
@@ -228,6 +270,7 @@ export default async function DocumentSourcePage({
               {(item.permissions?.length ?? 0) > 0 && (
                 <div className="row-note">
                   Permissions / exceptions: {item.permissions!.slice(0, 4).join(" · ")}
+                  {item.permissions!.length > 4 && ` (+${item.permissions!.length - 4} more)`}
                 </div>
               )}
               {(item.coveredEntities?.length ?? 0) > 0 && (
@@ -242,7 +285,10 @@ export default async function DocumentSourcePage({
                 </div>
               )}
               {(item.conditions?.length ?? 0) > 0 && (
-                <div className="row-note">Conditions: {item.conditions!.slice(0, 3).join(" · ")}</div>
+                <div className="row-note">
+                  Conditions: {item.conditions!.slice(0, 3).join(" · ")}
+                  {item.conditions!.length > 3 && ` (+${item.conditions!.length - 3} more)`}
+                </div>
               )}
               {item.dependencies?.length > 0 && (
                 <div className="row-note">Dependencies: {item.dependencies.join(" · ")}</div>
@@ -250,7 +296,15 @@ export default async function DocumentSourcePage({
               {item.applicableDefinitions?.length > 0 && (
                 <div className="row-note">
                   Definitions:{" "}
-                  {item.applicableDefinitions.map((d) => d.term).join(", ")}
+                  {item.applicableDefinitions
+                    .map((d) =>
+                      d.resolved === false
+                        ? d.ambiguous
+                          ? `${d.term} (defined inconsistently in this document)`
+                          : `${d.term} (not defined in this document)`
+                        : d.term,
+                    )
+                    .join(", ")}
                 </div>
               )}
               {item.crossReferences?.length > 0 && (
@@ -284,12 +338,23 @@ export default async function DocumentSourcePage({
         </Card>
       )}
 
-      {intel && intel.analysisOk === false && summaryItems.length === 0 && (
+      {intel && intel.analysisOk === false && !isAnalysisPending(intel) && summaryItems.length === 0 && (
         <Card>
           <div className="card-title">No covenant summaries</div>
           <div className="card-subtitle">
             Extraction did not produce usable covenant candidates. Re-upload a supported PDF/HTML/DOCX
             financing document, or re-run analysis after fixing parse errors.
+          </div>
+        </Card>
+      )}
+
+      {intel && intel.analysisOk && summaryItems.length === 0 && (
+        <Card>
+          <div className="card-title">No covenant summaries</div>
+          <div className="card-subtitle">
+            Analysis completed without producing covenant summaries. This does not mean the document
+            has no covenants — if this is a financing document, its covenants were not captured;
+            request review.
           </div>
         </Card>
       )}

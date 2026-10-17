@@ -2,6 +2,7 @@
  * Ask → Simulate deep-link handoff.
  * Seeds the shared SimulateClient with structured draft fields — no second engine.
  */
+import { isValidIsoDate } from "../iso-date";
 
 export type SimulateActionType = "debt" | "rp" | "investment" | "assetSale";
 
@@ -54,7 +55,10 @@ export function parseSimulateHandoffSearchParams(
   const actionRaw = get("action");
   const amountRaw = get("amount");
   const securedRaw = get("secured");
-  const asOf = get("asOf") ?? null;
+  const asOfRaw = get("asOf");
+  // asOf was previously passed through verbatim ("not-a-date",
+  // "2026-02-30" became evaluationDate). Fail closed on garbage.
+  const asOf = asOfRaw && isValidIsoDate(asOfRaw) ? asOfRaw : null;
   const sourceRaw = get("from");
 
   const action =

@@ -128,6 +128,15 @@ export interface StructuralNode {
    * physical occurrences that happen to share a label.
    */
   parentNodeId: string | null;
+  /**
+   * Phase C (Hardening Initiative): true when the node's own heading
+   * triaged AMBIGUOUS (a real heading-shaped match that lacked the
+   * two corroborating signals for CONFIDENT_HEADING). The node is a
+   * real boundary (its sections may parent to it), but its heading
+   * is not confident — downstream must treat the node and its
+   * subtree as structurally unresolved, never auto-accept from it.
+   */
+  ambiguous?: boolean;
 }
 
 export type ProvisionInventoryClass = "MATERIAL_RULE_CANDIDATE" | "DEFINITION" | "QUALITATIVE_OBLIGATION" | "BOILERPLATE_NOT_APPLICABLE" | "UNCERTAIN" | "UNHANDLED";

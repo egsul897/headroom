@@ -20,6 +20,38 @@ interface ClassifyContext {
   filename: string;
   headingSample: string;
   textSample: string;
+  /** The document's own title line (first substantial line of its text). */
+  selfTitle: string;
+}
+
+/**
+ * The document's own title line: the first substantial line of its
+ * text, with leading EDGAR/exhibit labels stripped. Only the first
+ * ~60 chars count as the title — the opening sentence follows the
+ * title on the same line in collapsed text, and a base agreement's
+ * opening sentence may mention a prior amendment ("as amended by
+ * Amendment No. 1") without BEING an amendment.
+ */
+function extractSelfTitle(text: string): string {
+  // Leading debris tokens, stripped repeatedly: EDGAR headers
+  // collapse into one line ("EX-10.1 2 tm2627119d1_ex10-1.htm
+  // EXHIBIT 10.1 Exhibit 10.1 Execution Version AMENDMENT NO. 1
+  // ...") and the page number / filename push the real title past
+  // any fixed window if they are not all removed.
+  const DEBRIS =
+    /^(?:EX-?\s?\d+[\w.\-]*|EXHIBIT\s+\d+(?:\.\d+)?|Execution Version|Conformed Submission|Table of Contents|\d+|[A-Za-z0-9_.\-]+\.htm[l]?(?=\s|$))(?:\s+|$)/i;
+  for (const raw of text.slice(0, 2000).split(/\n+/)) {
+    let line = raw.replace(/\s+/g, " ").trim();
+    let prev = "";
+    while (prev !== line) {
+      prev = line;
+      line = line.replace(DEBRIS, "").trim();
+    }
+    if (line.length < 8) continue;
+    if (/^\d+$/.test(line)) continue;
+    return line.slice(0, 160);
+  }
+  return "";
 }
 
 const RULES: Rule[] = [
@@ -124,7 +156,17 @@ const RULES: Rule[] = [
     weight: 0.75,
     signal: "amendment",
     test: (c) => {
-      const hay = `${c.title} ${c.description}`;
+      // Rule 181: the document's own title line is an amendment
+      // signal. A customer upload named "EX-10.1.htm" carries no
+      // "amendment" in its metadata, but the document titles itself
+      // "AMENDMENT NO. 1" — without this the amendment classified as
+      // CREDIT_AGREEMENT (its body quotes the base agreement) and
+      // the whole base+amendment package saw two bases, zero
+      // amendments. Only the first 60 chars of the title line
+      // count (a base agreement's opening sentence may mention a
+      // prior amendment without being one).
+      const titleLine = c.selfTitle.slice(0, 60);
+      const hay = `${c.title} ${c.description} ${titleLine}`;
       if (!/\bamendment\b/i.test(hay)) return false;
       // Exclude common non-debt "amendment" false positives (corporate governance).
       if (/\b(?:tax\s+benefit|rights\s+plan|stockholder|shareholder|bylaw|certificate\s+of\s+incorporation|employment)\b/i.test(hay)) {
@@ -221,6 +263,7 @@ export function classifyDebtDocument(input: ClassifyDebtDocumentInput): Classifi
     filename: input.filename ?? "",
     headingSample,
     textSample: textSample.slice(0, 8000),
+    selfTitle: extractSelfTitle(textSample),
   };
 
   const combinedMeta = `${ctx.title} ${ctx.description} ${ctx.filename} ${ctx.exhibitType}`.trim();
@@ -253,7 +296,7 @@ export function classifyDebtDocument(input: ClassifyDebtDocumentInput): Classifi
       // Title-level amendment/restatement/waiver signals outrank body-only
       // "credit agreement" mentions (amendment bodies quote the base agreement).
       let score = rule.weight;
-      const titleHay = `${ctx.title} ${ctx.description}`;
+      const titleHay = `${ctx.title} ${ctx.description} ${ctx.selfTitle.slice(0, 60)}`;
       if (rule.documentClass === "AMENDMENT" && /\bamendment\b/i.test(titleHay)) score += 0.2;
       if (rule.documentClass === "RESTATEMENT" && /\bamended\s+and\s+restated\b/i.test(titleHay)) score += 0.15;
       if (
@@ -270,7 +313,27 @@ export function classifyDebtDocument(input: ClassifyDebtDocumentInput): Classifi
     }
   }
 
-  if (!best) {
+  if (!best || best.rule.signal === "debt_related_structural") {
+    // Body-structure fallback (general rule from precedent evidence: 28%
+    // of the public corpus sat at UNKNOWN because titles were generic
+    // exhibit labels). Title/metadata silence + a covenant-structured body
+    // with unambiguous party roles classifies at capped confidence.
+    // It also overrides the weak "debt_related_structural"
+    // OTHER_DEBT_RELATED heuristic (weight 0.55): unambiguous party roles
+    // + ≥2 covenant-family headings are stronger evidence than an
+    // "Article VII + Indebtedness" heuristic. It never overrides a
+    // specific title rule (e.g. a Senior Notes title stays
+    // OTHER_DEBT_RELATED even with Issuer/Trustee body language).
+    const bodyFallback = classifyFromBodyStructure(ctx);
+    if (bodyFallback) return bodyFallback;
+    if (best) {
+      return {
+        documentClass: best.rule.documentClass,
+        confidence: best.score,
+        signals: fired,
+        rationale: `Matched deterministic signal "${best.rule.signal}" (confidence ${best.score}). Classification is a discovery aid, not operative legal authority.`,
+      };
+    }
     // Exhibit 10 alone is insufficient.
     if (/^EX-10/i.test(ctx.exhibitType)) {
       return {
@@ -296,8 +359,80 @@ export function classifyDebtDocument(input: ClassifyDebtDocumentInput): Classifi
   };
 }
 
-function extractHeadingSample(text: string): string {
-  const headings: string[] = [];
+/**
+ * Body-structure fallback: classify from covenant structure + party roles
+ * when title/metadata are silent. Requires ≥2 DISTINCT covenant-family
+ * headings (a single heading is not enough structure) AND unambiguous
+ * party roles: Issuer + Trustee = indenture; Borrower + (Lender |
+ * Administrative Agent) = credit agreement. Both/neither role sets, or
+ * fewer than 2 family headings, stay UNKNOWN (fail-closed). Confidence is
+ * capped at 0.6 and the fallback is recorded in signals — a discovery
+ * aid, not operative authority.
+ */
+const BODY_FAMILY_HEADINGS: Array<[string, RegExp]> = [
+  ["INDEBTEDNESS", /\bLimitation on (?:Indebtedness|Debt)\b/i],
+  ["LIENS", /\b(?:Limitation on Liens|Negative Pledge)\b/i],
+  ["RESTRICTED_PAYMENTS", /\bLimitation on Restricted Payments\b/i],
+  ["ASSET_SALES", /\bLimitation on (?:Asset Sales|Dispositions)\b/i],
+  ["INVESTMENTS", /\bLimitation on Investments\b/i],
+  ["AFFILIATE_TRANSACTIONS", /\bLimitation on Affiliate Transactions\b/i],
+  ["EVENTS_OF_DEFAULT", /\bEvents of Default\b/i],
+  ["FUNDAMENTAL_CHANGES", /\b(?:Merger|Consolidation|Fundamental Changes)\b/i],
+  ["SALE_LEASEBACK", /\bLimitation on Sale[-\s]?Leaseback\b/i],
+];
+
+/**
+ * Bare covenant headings ("Section 7.01 Indebtedness") carry no
+ * "Limitation on" phrasing, so they count only when operative
+ * prohibition language follows within 200 chars — a definitions entry
+ * ("'Indebtedness' means ...") has no such language. The Section/Article
+ * prefix keeps stray body mentions from counting as headings.
+ */
+const BARE_FAMILY_HEADINGS: Array<[string, RegExp]> = [
+  ["INDEBTEDNESS", /(?:Section|§|Article)\s+[\dA-Z.]+\s+Indebtedness\b[\s\S]{0,200}\bshall\s+not\b/i],
+  ["LIENS", /(?:Section|§|Article)\s+[\dA-Z.]+\s+Liens?\b[\s\S]{0,200}\bshall\s+not\b/i],
+  [
+    "RESTRICTED_PAYMENTS",
+    /(?:Section|§|Article)\s+[\dA-Z.]+\s+Restricted Payments?\b[\s\S]{0,200}\bshall\s+not\b/i,
+  ],
+  [
+    "ASSET_SALES",
+    /(?:Section|§|Article)\s+[\dA-Z.]+\s+(?:Asset Sales|Dispositions)\b[\s\S]{0,200}\bshall\s+not\b/i,
+  ],
+  [
+    "INVESTMENTS",
+    /(?:Section|§|Article)\s+[\dA-Z.]+\s+Investments?\b[\s\S]{0,200}\bshall\s+not\b/i,
+  ],
+  [
+    "AFFILIATE_TRANSACTIONS",
+    /(?:Section|§|Article)\s+[\dA-Z.]+\s+Affiliate Transactions?\b[\s\S]{0,200}\bshall\s+not\b/i,
+  ],
+];
+
+function classifyFromBodyStructure(ctx: ClassifyContext): ClassificationResult | null {
+  const hay = `${ctx.headingSample}\n${ctx.textSample}`;
+  const found = new Set(
+    [...BODY_FAMILY_HEADINGS, ...BARE_FAMILY_HEADINGS]
+      .filter(([, re]) => re.test(hay))
+      .map(([name]) => name),
+  );
+  if (found.size < 2) return null;
+  const indenture = /\bIssuer\b/i.test(hay) && /\bTrustee\b/i.test(hay);
+  const credit =
+    /\bBorrower\b/i.test(hay) &&
+    (/\bLenders?\b/i.test(hay) || /\bAdministrative Agent\b/i.test(hay));
+  if (indenture === credit) return null;
+  const documentClass: DebtDocumentClass = indenture ? "INDENTURE" : "CREDIT_AGREEMENT";
+  const roles = indenture ? "Issuer + Trustee" : "Borrower + Lender/Administrative Agent";
+  return {
+    documentClass,
+    confidence: 0.6,
+    signals: ["body_covenant_structure_fallback"],
+    rationale: `Title/metadata silent; body carries ${found.size} distinct covenant-family headings with unambiguous ${roles} party roles. Capped confidence; classification is a discovery aid, not operative legal authority.`,
+  };
+}
+
+function extractHeadingSample(text: string): string {  const headings: string[] = [];
   const re = /\b(?:ARTICLE|Article|SECTION|Section)\s+[A-Z0-9.]+[^\n.]{0,80}/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(text)) !== null && headings.length < 40) {

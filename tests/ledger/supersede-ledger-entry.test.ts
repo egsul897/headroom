@@ -72,7 +72,9 @@ describe("P3-R0 C10 — ledger supersession preserves history", () => {
     const before = await loadCompanyCovenantData(prisma, COMPANY_ID, new Date("2026-12-31T00:00:00.000Z"));
     expect(before.ledger).toHaveLength(2);
 
-    await supersedeLedgerEntry(COMPANY_ID, withdraw.id);
+    const form = new FormData();
+    form.set("supersededBy", "test-superseder@example.com");
+    await supersedeLedgerEntry(COMPANY_ID, withdraw.id, form);
 
     const preserved = await prisma.ledgerEntry.findUniqueOrThrow({ where: { id: withdraw.id } });
     expect(preserved.status).toBe("SUPERSEDED");
@@ -92,8 +94,12 @@ describe("P3-R0 C10 — ledger supersession preserves history", () => {
     const history = await prisma.ledgerEntry.findMany({ where: { companyId: COMPANY_ID, status: "SUPERSEDED" } });
     expect(history.map((e) => e.id)).toEqual([withdraw.id]);
 
-    await expect(supersedeLedgerEntry(COMPANY_ID, withdraw.id)).rejects.toThrow(/already superseded/);
-    await expect(supersedeLedgerEntry(OTHER_COMPANY_ID, keep.id)).rejects.toThrow(/does not belong to this company/);
+    const form2 = new FormData();
+    form2.set("supersededBy", "test-superseder@example.com");
+    await expect(supersedeLedgerEntry(COMPANY_ID, withdraw.id, form2)).rejects.toThrow(/already superseded/);
+    const form3 = new FormData();
+    form3.set("supersededBy", "test-superseder@example.com");
+    await expect(supersedeLedgerEntry(OTHER_COMPANY_ID, keep.id, form3)).rejects.toThrow(/does not belong to this company/);
 
     const stillLive = await prisma.ledgerEntry.findUniqueOrThrow({ where: { id: keep.id } });
     expect(stillLive.status).toBe("ACTIVE");

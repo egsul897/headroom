@@ -60,6 +60,7 @@ export interface CrossDocumentNumericalLayer {
     securedDebt: number;
     cash: number;
     totalAssets: number | null;
+    netWorth: number | null;
   };
   pathwayCapacities: PathwayCapacity[];
   documentSummaries: DocumentCapacitySummary[];
@@ -109,21 +110,42 @@ function buildCompanyData(
   financials: FinancialSnapshotInput,
   txn: ContemplatedTransaction,
 ): CompanyCovenantData {
-  const mapped = provisions
-    .map((f, i) => factToProvision(f, i))
-    .filter((p): p is CovenantProvisionInput => p != null);
+  // Rule 73: provision codes must be unique per document. The
+  // engine keys provisions by (documentId, code) in a Map, so
+  // two facts sharing a sectionRef (e.g. a debt permission and
+  // a lien permission both recorded under §7.2) mapped to the
+  // same code silently overwrote each other, and a MAX over
+  // [code, code] evaluated one basket twice. Dedupe with a
+  // numeric suffix on collision. The family is carried through
+  // with its own provision instead of re-found by
+  // (sectionRef, documentId) — that lookup returned the FIRST
+  // same-ref fact, so a LIENS provision could be excluded (or
+  // an INVESTMENTS provision included) based on a sibling's
+  // family.
+  const usedCodes = new Set<string>();
+  const mappedWithFamily = provisions
+    .map((f, i) => {
+      const provision = factToProvision(f, i);
+      if (!provision) return null;
+      let code = provision.code;
+      let n = 1;
+      while (usedCodes.has(`${f.documentId}::${code}`)) code = `${provision.code}_${n++}`;
+      usedCodes.add(`${f.documentId}::${code}`);
+      return { provision: { ...provision, code }, family: f.family };
+    })
+    .filter(
+      (x): x is { provision: CovenantProvisionInput; family: OperativeProvisionFact["family"] } =>
+        x != null,
+    );
+  const mapped = mappedWithFamily.map((x) => x.provision);
 
   const docIds = [...new Set(provisions.map((p) => p.documentId))];
   const documents: DocumentInput[] = docIds.map((id) => {
     const label = provisions.find((p) => p.documentId === id)?.documentLabel ?? id;
     const debtFamilies = new Set(["DEBT_INCURRENCE", "LIENS", "SHARED_CAPACITY"]);
-    const debtCodes = mapped
-      .filter((p) => {
-        if (p.documentId !== id) return false;
-        const fact = provisions.find((f) => f.sectionRef === p.sectionRef && f.documentId === id);
-        return fact ? debtFamilies.has(fact.family) : true;
-      })
-      .map((p) => p.code);
+    const debtCodes = mappedWithFamily
+      .filter((x) => x.provision.documentId === id && debtFamilies.has(x.family))
+      .map((x) => x.provision.code);
     const expr =
       debtCodes.length === 0
         ? undefined
@@ -274,6 +296,7 @@ export function attachNumericalCapacity(params: {
       securedDebt: params.financials.securedDebt,
       cash: params.financials.cash,
       totalAssets: params.financials.totalAssets ?? null,
+      netWorth: params.financials.netWorth ?? null,
     },
     pathwayCapacities,
     documentSummaries,

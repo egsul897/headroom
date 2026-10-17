@@ -35,10 +35,18 @@ export function statedAsMillions(excerpt: string): boolean {
   return /\bmillion\b/i.test(excerpt);
 }
 
+/** Whitespace in source text, including the HTML space entities EDGAR filings use (`&nbsp;`, `&#160;`). */
+const HTML_SPACE = String.raw`(?:\s|&nbsp;|&#160;|&#xA0;)`;
+
 /** True when this dollar token is written as "$N million", not as a full dollar figure. */
 export function dollarAmountIsMillions(text: string, token: string): boolean {
   // A page marker ("-46-") may sit between the number and the word million.
-  const re = /\$\s*([\d,]+(?:\.\d+)?)\s+(?:-\s*\d{1,3}\s*-\s+)?million\b/gi;
+  // An HTML space entity ("$36.0&nbsp;million") is a separator too: treating it as
+  // a full dollar figure would understate the cap a million-fold.
+  const re = new RegExp(
+    `\\$\\s*([\\d,]+(?:\\.\\d+)?)${HTML_SPACE}+(?:-\\s*\\d{1,3}\\s*-\\s+)?million\\b`,
+    "gi",
+  );
   for (const match of text.matchAll(re)) {
     if (match[1]!.replace(/,/g, "") === token) return true;
   }

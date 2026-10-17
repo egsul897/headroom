@@ -89,7 +89,9 @@ describe("P3-R0 C5 — SNAPSHOT_UPDATE approval does not carry prior facts forwa
       },
     });
 
-    await expect(approveFeedItem(COMPANY_ID, item.id)).rejects.toThrow(/incomplete.*left PENDING/s);
+    const form = new FormData();
+    form.set("resolvedBy", "test-approver@example.com");
+    await expect(approveFeedItem(COMPANY_ID, item.id, form)).rejects.toThrow(/incomplete.*left PENDING/s);
 
     const still = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id: item.id } });
     expect(still.status).toBe("PENDING");
@@ -119,7 +121,9 @@ describe("P3-R0 C5 — SNAPSHOT_UPDATE approval does not carry prior facts forwa
       },
     });
 
-    await approveFeedItem(COMPANY_ID, item.id);
+    const form2 = new FormData();
+    form2.set("resolvedBy", "test-approver@example.com");
+    await approveFeedItem(COMPANY_ID, item.id, form2);
 
     const applied = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id: item.id } });
     expect(applied.status).toBe("APPLIED");
@@ -160,7 +164,9 @@ describe("P3-R0 C5 — SNAPSHOT_UPDATE approval does not carry prior facts forwa
           payload: { ...COMPLETE, asOfDate: "2026-03-31", notes: "supplied note" },
         },
       });
-      await approveFeedItem(freshId, item.id);
+      const form3 = new FormData();
+      form3.set("resolvedBy", "test-approver@example.com");
+      await approveFeedItem(freshId, item.id, form3);
       const created = await prisma.financialSnapshot.findFirstOrThrow({ where: { companyId: freshId } });
       expect(created.notes).toBe("supplied note");
       expect(created.ebitda.toNumber()).toBe(COMPLETE.ebitda);

@@ -307,14 +307,13 @@ describe("Foundation Audit Job 1 - identical-drafting cross-instrument attack, O
     // the id even belongs to the company the caller believes it is
     // operating in. Since these ids are unpredictable server-generated
     // cuids in real (non-fixture) rows, this is not exploitable via
-    // guessing today - but it is real evidence that these two functions
-    // provide zero defense-in-depth of their own; they rely entirely on
-    // the caller already having verified the id's tenant ownership
-    // upstream, which invariant #19's "under any code path" language does
-    // not carve out.
-    const alphaMembers = await getDocumentsForInstrument((await prisma.debtInstrument.findFirstOrThrow({ where: { companyId: INSTR_CO, baseDocumentId: FACILITY_ALPHA_DOC } })).id);
+    // Rule 146: getDocumentsForInstrument / getAmendmentsForDocument
+    // now take the company and scope their queries to it, so they no
+    // longer rely entirely on the caller having verified the id's
+    // tenant ownership upstream.
+    const alphaMembers = await getDocumentsForInstrument((await prisma.debtInstrument.findFirstOrThrow({ where: { companyId: INSTR_CO, baseDocumentId: FACILITY_ALPHA_DOC } })).id, INSTR_CO);
     expect(alphaMembers.map((d) => d.id)).toEqual([FACILITY_ALPHA_DOC]);
-    const amendments = await getAmendmentsForDocument(FACILITY_ALPHA_DOC);
+    const amendments = await getAmendmentsForDocument(FACILITY_ALPHA_DOC, INSTR_CO);
     expect(amendments).toEqual([]); // no AMENDS edge exists in this fixture - confirms the function runs, not that it is safe.
   });
 });

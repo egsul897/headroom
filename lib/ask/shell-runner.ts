@@ -1,6 +1,10 @@
 import { ASK_CASES, type AskCaseId } from "./copy";
 import { answerFromCorpus, type AskRetrieveAnswer } from "../product/covenant-intelligence/ask-retrieve";
 import {
+  buildTransactionWorkflowSummary,
+  type TransactionWorkflowSummary,
+} from "./transaction-workflow-summary";
+import {
   attemptCertifiedTransaction,
   loadTransactionWorkflowReadiness,
 } from "@/lib/product/north-star-workflow";
@@ -23,14 +27,7 @@ export interface AskShellResult {
   permissions?: string[];
   unresolved?: string[];
   /** Present when the question looks like a contemplated transaction. */
-  transactionWorkflow?: {
-    canRun: boolean;
-    cutoffState?: string;
-    reportingPeriodKey?: string | null;
-    approvedSnapshotId?: string | null;
-    nextActions: Array<{ label: string; href: string }>;
-    authorityNote: string;
-  };
+  transactionWorkflow?: TransactionWorkflowSummary;
 }
 
 const TRANSACTION_HINT =
@@ -80,14 +77,7 @@ export async function answerAsk(input: {
       evaluationDate,
       selector: "MOST_RECENTLY_ENDED_FISCAL_QUARTER",
     });
-    const tw = {
-      canRun: workflow.canRunTransactionWorkflow,
-      cutoffState: workflow.cutoff?.state,
-      reportingPeriodKey: workflow.cutoff?.reportingPeriodKey,
-      approvedSnapshotId: workflow.cutoff?.snapshotId ?? workflow.northStar.approvedSnapshotIds[0] ?? null,
-      nextActions: workflow.nextActions,
-      authorityNote: workflow.authorityNote,
-    };
+    const tw = buildTransactionWorkflowSummary(workflow);
     if (!workflow.canRunTransactionWorkflow) {
       return {
         kind: "insufficient_evidence",

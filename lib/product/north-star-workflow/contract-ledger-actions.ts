@@ -42,7 +42,10 @@ export async function supersedeContractLedgerUsage(args: {
         source: "product-ledger-supersession",
         sourceVersion: null,
         approvalRef: args.supersessionRef,
-        approvalState: "APPROVED",
+        // Rule 91: a user-typed correction was never approved —
+        // stamping APPROVED here would be false provenance, even
+        // when it corrects a certificate-approved predecessor.
+        approvalState: "MANUAL",
       },
     },
     supersessionRef: args.supersessionRef,

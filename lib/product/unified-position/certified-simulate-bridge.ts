@@ -12,8 +12,13 @@ import {
   enumerateCertifiedPaths,
   type EnumeratedCertifiedPath,
 } from "@/lib/product/north-star-workflow/verified-path-enumeration";
-import type { VerifiedExecutionPackage } from "@/lib/contract-model/verified-execution";
-import type { HypotheticalTransaction, SelectedPath } from "@/lib/contract-model/verified-execution";
+import { selectEnumeratedPath } from "./path-selection";
+import { buildConsumeTransaction } from "./consume-transaction";
+import type {
+  HypotheticalTransaction,
+  SelectedPath,
+  VerifiedExecutionPackage,
+} from "@/lib/contract-model/verified-execution";
 
 export type UnifiedTxnKind =
   | "SECURED_DEBT"
@@ -61,47 +66,9 @@ export interface VerifiedSimulateResult {
   pathAutoSelected: boolean;
 }
 
-export type PathSelectionResult = {
-  chosen: EnumeratedCertifiedPath | null;
-  error: string | null;
-  autoSelected: boolean;
-};
-
-/**
- * Exact path identity. Caller-supplied pathId must match an eligible candidate
- * exactly; unmatched IDs fail closed (no silent fallback to "the only other" path).
- *
- * When no pathId is supplied: auto-select only if exactly one eligible candidate.
- */
-export function selectEnumeratedPath(
-  candidates: readonly EnumeratedCertifiedPath[],
-  pathId?: string | null,
-): PathSelectionResult {
-  const explicit = pathId != null && String(pathId).trim() !== "";
-  if (explicit) {
-    const want = String(pathId).trim();
-    const match = candidates.find((p) => p.pathId === want) ?? null;
-    if (!match) {
-      return {
-        chosen: null,
-        error: `PATH_NOT_FOUND:${want}`,
-        autoSelected: false,
-      };
-    }
-    return { chosen: match, error: null, autoSelected: false };
-  }
-  if (candidates.length === 1) {
-    return { chosen: candidates[0]!, error: null, autoSelected: true };
-  }
-  if (candidates.length === 0) {
-    return { chosen: null, error: "NO_CANDIDATE_PATHS", autoSelected: false };
-  }
-  return {
-    chosen: null,
-    error: `PATH_SELECTION_REQUIRED:${candidates.length}_candidates`,
-    autoSelected: false,
-  };
-}
+/** Path selection lives in a prisma-free module so it is unit-testable. */
+export { selectEnumeratedPath };
+export type { PathSelectionResult } from "./path-selection";
 
 const ISO_DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
 
@@ -167,9 +134,8 @@ export function validateVerifiedSimulateInputs(args: {
   };
 }
 
-function moneyCapNode(ruleId: string): string {
-  return `capacity:rule:${ruleId}`;
-}
+/** Consume-transaction builder lives in a prisma-free module so it is unit-testable. */
+export { buildConsumeTransaction };
 
 /**
  * Affirmative EXECUTABLE criteria. Capacity evaluation EXECUTED is necessary
@@ -202,69 +168,6 @@ export function isAffirmativelyExecutable(args: {
   // REVIEW_REQUIRED / INSUFFICIENT_CAPACITY / NOT_SATISFIED are never EXECUTABLE.
   if (sim.selectedPathResult !== "SATISFIED") return false;
   return true;
-}
-
-/**
- * Build CONSUME_CAPACITY hypothetical for a single selected rule path.
- * Debt repayment uses RESTORE_CAPACITY only when an attributed usageId is supplied.
- */
-export function buildConsumeTransaction(args: {
-  companyId: string;
-  instrumentKey: string;
-  evaluationDate: string;
-  /** Whole USD dollars as decimal string (Phase 4A MONEY). */
-  amountDollars: string;
-  ruleId: string;
-  label: string;
-  /** When set, emit RESTORE_CAPACITY (debt repayment) instead of CONSUME. */
-  restoreUsageId?: string | null;
-  /** Optional stable transaction identity for replay; defaults to derived id. */
-  transactionId?: string;
-}): { transaction: HypotheticalTransaction; selectedPath: SelectedPath } {
-  const nodeId = moneyCapNode(args.ruleId);
-  const amount = args.amountDollars;
-  const effects = args.restoreUsageId
-    ? [
-        {
-          effectId: "e-restore-1",
-          kind: "RESTORE_CAPACITY" as const,
-          usageId: args.restoreUsageId,
-          reason: "Debt repayment / capacity restore (caller-supplied usage)",
-        },
-      ]
-    : [
-        {
-          effectId: "e-consume-1",
-          kind: "CONSUME_CAPACITY" as const,
-          capacityNodeId: nodeId,
-          amount: { type: "MONEY" as const, amount, currency: "USD" },
-        },
-      ];
-  const transactionId =
-    args.transactionId ??
-    `ask-sim-${args.companyId}-${args.evaluationDate}-${args.ruleId}-${amount}`.slice(0, 120);
-  const transaction: HypotheticalTransaction = {
-    transactionId,
-    companyId: args.companyId,
-    instrumentKey: args.instrumentKey,
-    effectiveAsOf: args.evaluationDate,
-    category: null,
-    label: args.label,
-    intendedAmount: { type: "MONEY", amount, currency: "USD" },
-    effects,
-    provenance: {
-      source: "unified-position certified-simulate-bridge",
-      sourceVersion: "1",
-      approvalRef: null,
-    },
-  };
-  const selectedPath: SelectedPath = {
-    capacityNodeIds: [nodeId],
-    ruleIds: [args.ruleId],
-    sharedCapacityIds: [],
-    reclassificationElectionIds: [],
-  };
-  return { transaction, selectedPath };
 }
 
 /** Compact product-facing summary for Simulate / Ask UI. */
@@ -322,16 +225,50 @@ export async function attemptVerifiedSimulate(args: VerifiedSimulateRequest): Pr
   });
   const inputBlockers = inputValidation.ok ? [] : inputValidation.blockers;
 
-  const emptyEnumeration = (): ReturnType<typeof enumerateCertifiedPaths> => ({
+  const emptyEnumeration = (reasons?: string[]): ReturnType<typeof enumerateCertifiedPaths> => ({
     authority: "NOT_CERTIFIED_4E",
     transactionKind: args.kind,
     secured: args.secured ?? null,
     paths: [],
     stackingAssumed: false,
-    incompleteReasons: inputBlockers.length > 0 ? [...inputBlockers] : ["NO_VERIFIED_EXECUTION_PACKAGE"],
+    incompleteReasons: reasons ?? (inputBlockers.length > 0 ? [...inputBlockers] : ["NO_VERIFIED_EXECUTION_PACKAGE"]),
     unsupportedReasons: [],
     note: "Enumeration skipped — inputs invalid or verified package absent.",
   });
+
+  // Rule 61: a VEP bound to a different company must never be
+  // evaluated — its rules would govern this company's
+  // transaction while this company's financials/ledger feed
+  // the inputs. Fail closed BEFORE enumeration so foreign path
+  // labels/ruleIds never leak into the result either.
+  if (args.verifiedPackage && args.verifiedPackage.companyId !== args.companyId) {
+    const certified: CertifiedTransactionAttempt = {
+      companyId: args.companyId,
+      evaluationDate: args.evaluationDate,
+      cutoffState: "NEEDS_INPUT",
+      reportingPeriodKey: null,
+      approvedSnapshotId: null,
+      cutoffSnapshotId: null,
+      cutoffSnapshotStatus: null,
+      ledgerUsageCount: 0,
+      verifiedPackagePresent: true,
+      capacity: null,
+      simulation: null,
+      blockers: ["VEP_COMPANY_MISMATCH"] as CertifiedTransactionAttempt["blockers"],
+      authorityNote:
+        "CERTIFIED path blocked: verified package belongs to a different company — Headroom never evaluates one company's transaction against another company's rulebook.",
+    };
+    return {
+      certified,
+      pathEnumeration: emptyEnumeration(["VEP_COMPANY_MISMATCH"]),
+      selectedPathId: null,
+      selectedPath: null,
+      transaction: null,
+      executable: false,
+      refusalSummary: ["VEP_COMPANY_MISMATCH"],
+      pathAutoSelected: false,
+    };
+  }
 
   // Reject malformed amount/date before path enumeration or transaction construction.
   if (!inputValidation.ok) {
@@ -341,6 +278,8 @@ export async function attemptVerifiedSimulate(args: VerifiedSimulateRequest): Pr
       cutoffState: "NEEDS_INPUT",
       reportingPeriodKey: null,
       approvedSnapshotId: null,
+      cutoffSnapshotId: null,
+      cutoffSnapshotStatus: null,
       ledgerUsageCount: 0,
       verifiedPackagePresent: Boolean(args.verifiedPackage),
       capacity: null,
@@ -414,6 +353,8 @@ export async function attemptVerifiedSimulate(args: VerifiedSimulateRequest): Pr
         cutoffState: "NEEDS_INPUT",
         reportingPeriodKey: null,
         approvedSnapshotId: null,
+        cutoffSnapshotId: null,
+        cutoffSnapshotStatus: null,
         ledgerUsageCount: 0,
         verifiedPackagePresent: Boolean(args.verifiedPackage),
         capacity: null,
@@ -465,7 +406,10 @@ export async function attemptVerifiedSimulate(args: VerifiedSimulateRequest): Pr
     transaction,
     certified,
     pathSelectionError: selection.error,
-    inputBlockers: [],
+    // Rule 83: pass the REAL input blockers. A hardcoded [] here
+    // would let malformed amount/date reach an EXECUTABLE verdict
+    // if the early return above were ever bypassed or refactored.
+    inputBlockers,
   });
 
   return {

@@ -115,17 +115,25 @@ export function analyzeCrossCovenant(params: {
       item,
       amendmentProvenance: params.amendmentProvenance,
     });
+    // Rule 75: shared/reclass language ADDS a marker entry — it
+    // must not RELABEL the item's own family. The old code pushed
+    // every mapped family as SHARED_CAPACITY (or
+    // RECLASSIFICATION), so a shared-capacity debt item lost its
+    // DEBT_INCURRENCE restriction from the set and the
+    // conjunction consumer no longer saw the debt restriction.
+    const base = {
+      sectionRef: item.sectionRef,
+      sourceId: item.sourceId,
+      statement: item.restriction ?? item.plainEnglish.split(". ")[0] ?? item.heading,
+      independentlyApplicable: true as const,
+      representation,
+    };
     for (const f of families.length ? families : (["DEBT_INCURRENCE"] as CrossCovenantFamily[])) {
-      if (!wanted.has(f) && !shared && !reclass) continue;
-      applicable.push({
-        family: shared ? "SHARED_CAPACITY" : reclass ? "RECLASSIFICATION" : f,
-        sectionRef: item.sectionRef,
-        sourceId: item.sourceId,
-        statement: item.restriction ?? item.plainEnglish.split(". ")[0] ?? item.heading,
-        independentlyApplicable: true,
-        representation,
-      });
+      if (!wanted.has(f)) continue;
+      applicable.push({ ...base, family: f });
     }
+    if (shared) applicable.push({ ...base, family: "SHARED_CAPACITY" });
+    if (reclass) applicable.push({ ...base, family: "RECLASSIFICATION" });
 
     for (const m of text.matchAll(/together with[^.;]{0,80}Section\s*([\d.]+(?:\([^)]+\))?)/gi)) {
       sharedCapacityLinks.push({

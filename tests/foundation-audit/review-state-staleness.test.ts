@@ -110,7 +110,7 @@ describe("4b. A promoted ExtractionCandidate's review decision is genuinely fina
       },
     });
 
-    await expect(reviewCandidate({ candidateId: candidate.id, action: "REJECT", reviewedBy: "test-reviewer@example.com" })).rejects.toThrow(/already promoted/);
+    await expect(reviewCandidate({ companyId: COMPANY_ID, candidateId: candidate.id, action: "REJECT", reviewedBy: "test-reviewer@example.com" })).rejects.toThrow(/already promoted/);
 
     // Confirm the row's reviewStatus genuinely never changed.
     const after = await prisma.extractionCandidate.findUniqueOrThrow({ where: { id: candidate.id } });

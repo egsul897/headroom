@@ -80,8 +80,8 @@ export interface DashboardClientProps {
   companyId?: string;
 }
 
-/** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets stay out of this editor). */
-type EditableFinancialKey = Exclude<keyof FinancialsInput, "totalAssets" | "totalDebt" | "securedDebt">;
+/** Required LTM fields edited on the dashboard card (optional grower inputs like totalAssets/netWorth stay out of this editor). */
+type EditableFinancialKey = Exclude<keyof FinancialsInput, "totalAssets" | "totalDebt" | "securedDebt" | "netWorth">;
 
 const FIELD_DEFS: { key: EditableFinancialKey; label: string; suffix: string }[] = [
   { key: "ebitda", label: "Consolidated EBITDA (covenant, est.)", suffix: "$M" },

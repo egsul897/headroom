@@ -78,8 +78,13 @@ function completeSnapshotUpdate(payload: FeedQueueSnapshotPayload): { ok: true; 
   };
 }
 
-export async function approveFeedItem(companyId: string, id: string) {
+export async function approveFeedItem(companyId: string, id: string, formData: FormData) {
   await requireTenantAction(companyId);
+  // Rule 141: approving a queued item writes capacity-affecting
+  // data (snapshot or ledger entry) — the approver must be named,
+  // never defaulted. The resolution records who decided.
+  const resolvedBy = String(formData.get("resolvedBy") || "").trim();
+  if (!resolvedBy) throw new Error("resolvedBy (your name/email) is required");
   const item = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id } });
   if (item.status !== "PENDING") throw new Error(`Feed item ${id} is already ${item.status.toLowerCase()}`);
   if (item.companyId !== companyId) throw new Error(`Feed item ${id} does not belong to this company`);
@@ -93,27 +98,64 @@ export async function approveFeedItem(companyId: string, id: string) {
       );
     }
     const supplied = completed.value;
-    await prisma.financialSnapshot.create({
-      data: {
-        companyId,
-        asOfDate: supplied.asOfDate,
-        ebitda: supplied.ebitda,
-        cash: supplied.cash,
-        interestExpense: supplied.interestExpense,
-        cumulativeNetIncome: supplied.cumulativeNetIncome,
-        equityProceedsSinceIssue: supplied.equityProceedsSinceIssue,
-        assumedNewDebtRatePct: supplied.assumedNewDebtRatePct,
-        totalDebt: supplied.totalDebt,
-        securedDebt: supplied.securedDebt,
-        notes: supplied.notes,
-      },
+    // Rule 116: same upsert discipline as rule 92's manual
+    // financials — a blind create here would mint a duplicate
+    // same-date snapshot row, and the cohort resolver treats ANY
+    // same-date multiplicity as AMBIGUOUS, withholding capacity
+    // everywhere. Exactly one existing row updates in place;
+    // multiple refuse fail-closed.
+    const existing = await prisma.financialSnapshot.findMany({
+      where: { companyId, asOfDate: supplied.asOfDate },
     });
+    if (existing.length > 1) {
+      throw new Error(
+        `SNAPSHOT_UPDATE ${id} refused: ${existing.length} FinancialSnapshot rows already exist for ${supplied.asOfDate.toISOString().slice(0, 10)} — resolve the ambiguity before approving. Item left PENDING.`,
+      );
+    }
+    const snapshotData = {
+      companyId,
+      asOfDate: supplied.asOfDate,
+      ebitda: supplied.ebitda,
+      cash: supplied.cash,
+      interestExpense: supplied.interestExpense,
+      cumulativeNetIncome: supplied.cumulativeNetIncome,
+      equityProceedsSinceIssue: supplied.equityProceedsSinceIssue,
+      assumedNewDebtRatePct: supplied.assumedNewDebtRatePct,
+      totalDebt: supplied.totalDebt,
+      securedDebt: supplied.securedDebt,
+      notes: supplied.notes,
+    };
+    if (existing.length === 1) {
+      await prisma.financialSnapshot.update({ where: { id: existing[0]!.id }, data: snapshotData });
+    } else {
+      await prisma.financialSnapshot.create({ data: snapshotData });
+    }
   } else if (item.kind === "LEDGER_ENTRY") {
     const payload = item.payload as unknown as FeedQueueLedgerPayload;
+    // Rule 117: the SNAPSHOT_UPDATE branch validates its payload
+    // fail-closed — the ledger branch must too, instead of
+    // letting a malformed queued payload die opaquely at Prisma.
+    const validBaskets = ["EQUITY", "DEBT_INCUR", "DEBT_REPAY", "ASSET_SALE", "DIVIDEND", "INVESTMENT"];
+    const ledgerDate = typeof payload?.date === "string" && payload.date.trim() !== "" ? new Date(payload.date) : null;
+    const ledgerProblems: string[] = [];
+    if (!ledgerDate || Number.isNaN(ledgerDate.getTime())) ledgerProblems.push("date");
+    if (typeof payload?.description !== "string" || payload.description.trim() === "") ledgerProblems.push("description");
+    if (!validBaskets.includes(payload?.basket)) ledgerProblems.push("basket");
+    if (typeof payload?.amount !== "number" || !Number.isFinite(payload.amount) || payload.amount <= 0) ledgerProblems.push("amount");
+    if (payload?.direction !== "CREDIT" && payload?.direction !== "DEBIT") ledgerProblems.push("direction");
+    if (typeof payload?.source !== "string" || payload.source.trim() === "") ledgerProblems.push("source");
+    if (ledgerProblems.length > 0) {
+      throw new Error(
+        `LEDGER_ENTRY ${id} is incomplete/invalid (bad ${ledgerProblems.join(", ")}). Refused — item left PENDING.`,
+      );
+    }
+    // Narrowing guard: the problems check above already threw on a
+    // bad date, but TS cannot connect the two — make it explicit.
+    if (!ledgerDate) throw new Error(`LEDGER_ENTRY ${id} has no valid date. Refused — item left PENDING.`);
     await prisma.ledgerEntry.create({
       data: {
         companyId,
-        date: new Date(payload.date),
+        date: ledgerDate,
         description: payload.description,
         basket: payload.basket,
         amount: payload.amount,
@@ -125,15 +167,19 @@ export async function approveFeedItem(companyId: string, id: string) {
     throw new Error(`Unknown feed queue kind: ${item.kind}`);
   }
 
-  await prisma.feedQueueItem.update({ where: { id }, data: { status: "APPLIED", resolvedAt: new Date() } });
+  await prisma.feedQueueItem.update({ where: { id }, data: { status: "APPLIED", resolvedAt: new Date(), resolvedBy } });
   revalidatePath(`/${companyId}`, "layout");
 }
 
-export async function dismissFeedItem(companyId: string, id: string) {
+export async function dismissFeedItem(companyId: string, id: string, formData: FormData) {
   await requireTenantAction(companyId);
+  // Rule 141: same attribution requirement as approval — a
+  // dismissal is a decision on a queued item.
+  const resolvedBy = String(formData.get("resolvedBy") || "").trim();
+  if (!resolvedBy) throw new Error("resolvedBy (your name/email) is required");
   const item = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id } });
   if (item.companyId !== companyId) throw new Error(`Feed item ${id} does not belong to this company`);
   if (item.status !== "PENDING") throw new Error(`Feed item ${id} is already ${item.status.toLowerCase()}`);
-  await prisma.feedQueueItem.update({ where: { id }, data: { status: "DISMISSED", resolvedAt: new Date() } });
+  await prisma.feedQueueItem.update({ where: { id }, data: { status: "DISMISSED", resolvedAt: new Date(), resolvedBy } });
   revalidatePath(`/${companyId}`, "layout");
 }

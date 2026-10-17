@@ -143,6 +143,13 @@ function independentCapacity(
       }
       return { status: "modeled", capacityMillions: Math.max(threshold, pct * fin.totalAssets) };
     }
+    case "GREATER_OF_FLAT_OR_PCT_NET_WORTH": {
+      const pct = p.pctNetWorth ?? 0;
+      if (fin.netWorth == null || !Number.isFinite(fin.netWorth) || fin.netWorth < 0) {
+        return { status: "review_required", capacityMillions: null, reason: "Consolidated Net Worth missing on financial snapshot" };
+      }
+      return { status: "modeled", capacityMillions: Math.max(threshold, pct * fin.netWorth) };
+    }
     case "LEVERAGE_RATIO_ROOM": {
       const basis = p.debtBasis === "secured" ? metrics.netSecured : metrics.netDebt;
       return { status: "modeled", capacityMillions: Math.max(0, threshold * fin.ebitda - basis) };
@@ -168,6 +175,35 @@ function independentCapacity(
         ? { status: "unlimited", capacityMillions: null, unlimited: true }
         : { status: "modeled", capacityMillions: 0 };
     }
+    case "NONE_UNCAPPED":
+      // The record affirmatively asserts no finite cap in the clause (an
+      // affirmative determination, never a default for a missing
+      // threshold) — the same "unlimited" shape an open RATIO_GATE
+      // returns, with no gate measure attached.
+      return { status: "unlimited", capacityMillions: null, unlimited: true };
+    case "PCT_OF_CNTA":
+      // FinancialSnapshotInput carries no CNTA field at all — the input
+      // cannot be derived, exactly as the leaf engine's review_required.
+      return { status: "review_required", capacityMillions: null, reason: "Consolidated Net Tangible Assets missing on financial snapshot — the snapshot carries no CNTA input" };
+    case "GREATER_OF_FLAT_OR_PCT_CNTA":
+      return { status: "review_required", capacityMillions: null, reason: "Consolidated Net Tangible Assets missing on financial snapshot — the snapshot carries no CNTA input, so the grower leg cannot be derived (returning the flat leg alone would understate the cap)" };
+    case "PCT_OF_COST":
+      return { status: "review_required", capacityMillions: null, reason: "the cost of the specific assets being financed is required to evaluate a transaction under this basket — a per-transaction input, not a snapshot quantity" };
+    case "PCT_OF_CONSIDERATION":
+      return { status: "review_required", capacityMillions: null, reason: "the aggregate consideration of the specific transaction is required to evaluate it under this basket — a per-transaction input, not a snapshot quantity" };
+    case "UTILIZATION_GATE":
+      return { status: "review_required", capacityMillions: null, reason: "the Utilization Percentage at the time of the transaction is required to evaluate this gate — the snapshot carries no utilization measure" };
+    case "VALUE_CAP": {
+      const basis =
+        p.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : p.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : p.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return { status: "review_required", capacityMillions: null, reason: `capped at the ${basis} of the financed property (VALUE_CAP) — the value of the specific property is required to evaluate a transaction under this basket` };
+    }
     default:
       return assertNeverFormulaType(formulaType);
   }
@@ -184,6 +220,8 @@ function mechanicOf(formulaType: FormulaType, grant: string, code: string): stri
   switch (formulaType) {
     case "GREATER_OF_FLAT_OR_PCT_EBITDA":
     case "GREATER_OF_FLAT_OR_PCT_TOTAL_ASSETS":
+    case "GREATER_OF_FLAT_OR_PCT_NET_WORTH":
+    case "GREATER_OF_FLAT_OR_PCT_CNTA":
       return "greater_of_grower";
     case "LEVERAGE_RATIO_ROOM":
     case "COVERAGE_RATIO_ROOM":
@@ -192,6 +230,18 @@ function mechanicOf(formulaType: FormulaType, grant: string, code: string): stri
     case "FLAT_AMOUNT":
     case "FLAT_NET_OF_DEBT":
       return "fixed_basket";
+    case "NONE_UNCAPPED":
+      return "uncapped_permission";
+    case "PCT_OF_CNTA":
+      return "pct_of_cnta";
+    case "PCT_OF_COST":
+      return "pct_of_cost";
+    case "PCT_OF_CONSIDERATION":
+      return "pct_of_consideration";
+    case "UTILIZATION_GATE":
+      return "utilization_gate";
+    case "VALUE_CAP":
+      return "value_cap";
     default:
       return assertNeverFormulaType(formulaType);
   }
@@ -379,6 +429,31 @@ function formulaNarrative(p: CovenantProvisionInput): string {
       return `max(${p.thresholdValue}, ${(params.pctEbitda ?? 0) * 100}%×EBITDA) + ${(params.cniSharePct ?? 0) * 100}%×CNI${params.includeEquityProceeds ? " + equity proceeds" : ""}`;
     case "RATIO_GATE":
       return `unlimited if ${params.debtBasis ?? "total"} leverage ≤ ${p.thresholdValue}x, else 0`;
+    case "GREATER_OF_FLAT_OR_PCT_NET_WORTH":
+      return `max(${p.thresholdValue}, ${(params.pctNetWorth ?? 0) * 100}%×Consolidated Net Worth)`;
+    case "NONE_UNCAPPED":
+      return `no finite cap in this clause (uncapped, subject to its stated conditions)`;
+    case "PCT_OF_CNTA":
+      return `${(params.pctCnta ?? 0) * 100}% × Consolidated Net Tangible Assets`;
+    case "GREATER_OF_FLAT_OR_PCT_CNTA":
+      return `max(${p.thresholdValue}, ${(params.pctCnta ?? 0) * 100}% × Consolidated Net Tangible Assets)`;
+    case "PCT_OF_COST":
+      return `${(params.pctOfCost ?? 0) * 100}% × cost of the financed assets`;
+    case "PCT_OF_CONSIDERATION":
+      return `${(params.pctOfConsideration ?? 0) * 100}% × aggregate consideration for the transaction`;
+    case "UTILIZATION_GATE":
+      return `permitted only while Utilization Percentage ≤ ${(p.thresholdValue ?? 0) * 100}%`;
+    case "VALUE_CAP": {
+      const basis =
+        params.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : params.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : params.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return `capped at the ${basis} of the financed property (value cap — no fixed dollar amount)`;
+    }
     default:
       return assertNeverFormulaType(p.formulaType);
   }
