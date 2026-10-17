@@ -8,6 +8,10 @@ CREATE TABLE "saved_scenarios" (
     "name" TEXT NOT NULL,
     "lines" JSONB NOT NULL,
     "savedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "asOfDate" TIMESTAMP(3),
+    "financialStateId" TEXT,
+    "financialStateUpdatedAt" TIMESTAMP(3),
+    "engineVersion" TEXT,
 
     CONSTRAINT "saved_scenarios_pkey" PRIMARY KEY ("id")
 );

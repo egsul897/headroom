@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { toSavedScenario, validateScenarioInput } from "@/lib/scenarios/validate";
 
-const db = { savedScenario: { findMany: vi.fn(), count: vi.fn(), create: vi.fn(), deleteMany: vi.fn() } };
+const db = {
+  savedScenario: { findMany: vi.fn(), count: vi.fn(), create: vi.fn(), deleteMany: vi.fn() },
+  financialState: { findMany: vi.fn() },
+  $executeRaw: vi.fn(async () => 0),
+  $transaction: vi.fn(async (fn: (tx: unknown) => Promise<unknown>) => fn(db)),
+};
 vi.mock("@/lib/auth/guard", () => ({
   requireTenantAction: vi.fn(async (id: string) => {
     if (id !== "co_mine") throw new Error("Forbidden");
@@ -29,7 +34,12 @@ describe("validation (display values stored verbatim, bounded)", () => {
 });
 
 describe("routes: tenant gate first, workspace-scoped", () => {
-  beforeEach(() => Object.values(db.savedScenario).forEach((f) => f.mockReset()));
+  beforeEach(() => {
+    Object.values(db.savedScenario).forEach((f) => f.mockReset());
+    db.financialState.findMany.mockReset().mockResolvedValue([]);
+    db.$executeRaw.mockClear();
+    db.$transaction.mockClear();
+  });
   it("cross-tenant ⇒ 403 with no DB access on GET/POST/DELETE", async () => {
     const list = await import("@/app/[companyId]/simulate/scenarios/route");
     const one = await import("@/app/[companyId]/simulate/scenarios/[scenarioId]/route");
@@ -37,6 +47,7 @@ describe("routes: tenant gate first, workspace-scoped", () => {
     expect((await list.POST(req("POST", { name: "x", lines: [{ label: "a", value: "b" }] }), ctx({ companyId: "co_other" }))).status).toBe(403);
     expect((await one.DELETE(req("DELETE"), ctx({ companyId: "co_other", scenarioId: "s1" }))).status).toBe(403);
     expect(Object.values(db.savedScenario).some((f) => f.mock.calls.length)).toBe(false);
+    expect(db.financialState.findMany).not.toHaveBeenCalled();
   });
   it("POST stores under the caller's workspace and user; bad body 400 before any write", async () => {
     const list = await import("@/app/[companyId]/simulate/scenarios/route");
@@ -47,6 +58,7 @@ describe("routes: tenant gate first, workspace-scoped", () => {
     const res = await list.POST(req("POST", { name: "Add-on", lines: [{ label: "Net leverage", value: "4.10x" }] }), ctx({ companyId: "co_mine" }));
     expect(res.status).toBe(201);
     expect(db.savedScenario.create.mock.calls[0]![0].data).toMatchObject({ companyId: "co_mine", createdBy: "u1" });
+    // Response SavedScenario is exactly the PR 414 shape; basis/freshness ride alongside.
     expect((await res.json()).scenario).toEqual({ id: "s1", name: "Add-on", savedAt: "2026-10-17T00:00:00.000Z", lines: [{ label: "Net leverage", value: "4.10x" }] });
   });
   it("workspace cap ⇒ 409", async () => {
