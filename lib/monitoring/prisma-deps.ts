@@ -6,9 +6,19 @@ import type { MonitoringDeps } from "./sweep";
 
 export function createPrismaMonitoringDeps(db: PrismaClient, env: Record<string, string | undefined> = process.env): MonitoringDeps {
   return {
-    async listTrackedCompanies() {
-      const rows = await db.company.findMany({ where: { tenantKind: "CUSTOMER", cik: { not: null } }, select: { id: true, name: true, cik: true }, orderBy: { id: "asc" } });
-      return rows;
+    async listTrackedCompanies({ afterId, take }) {
+      return db.company.findMany({
+        where: { tenantKind: "CUSTOMER", cik: { not: null }, ...(afterId ? { id: { gt: afterId } } : {}) },
+        select: { id: true, name: true, cik: true },
+        orderBy: { id: "asc" },
+        take,
+      });
+    },
+    async getSweepCursor() {
+      return (await db.monitoringSweepCursor.findUnique({ where: { key: "monitoring" } }))?.lastCompanyId ?? null;
+    },
+    async setSweepCursor(lastCompanyId) {
+      await db.monitoringSweepCursor.upsert({ where: { key: "monitoring" }, create: { key: "monitoring", lastCompanyId }, update: { lastCompanyId } });
     },
     fetchFilings: (cik) => fetchRecentFilings(cik, { userAgent: env.SEC_EDGAR_USER_AGENT }),
     async seenAccessions(companyId) {
@@ -74,7 +84,10 @@ export function createPrismaMonitoringDeps(db: PrismaClient, env: Record<string,
       }
     },
     async recipients(companyId) {
-      const users = await db.user.findMany({ where: { companyId }, select: { email: true } });
+      // Opted-in finance members only, and only users that still belong to this workspace.
+      const members = await db.workspaceFinanceMember.findMany({ where: { companyId, alertEmails: true }, select: { userId: true } });
+      if (!members.length) return [];
+      const users = await db.user.findMany({ where: { companyId, id: { in: members.map((m) => m.userId) } }, select: { email: true } });
       return users.map((u) => u.email);
     },
     sendEmail: (msg) => sendAlertEmail(msg, { env }),

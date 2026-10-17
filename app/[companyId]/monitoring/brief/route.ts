@@ -6,7 +6,7 @@
 import { NextResponse } from "next/server";
 import { requireTenantAction } from "@/lib/auth/guard";
 import { prisma } from "@/lib/prisma";
-import { buildMorningBrief } from "@/lib/monitoring/brief";
+import { buildMorningBrief, goodBoxItemStatuses } from "@/lib/monitoring/brief";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,11 +27,10 @@ export async function GET(_req: Request, ctx: Ctx) {
       (await prisma.workspaceNotification.findMany({ where: { companyId, createdAt: { gt: since } }, orderBy: { createdAt: "desc" }, take: 50, select: { title: true } })).map((n) => n.title),
     latestBoxItemStatuses: async () => {
       const docs = await prisma.customerEbitdaBox.findMany({ where: { companyId }, select: { documentId: true }, distinct: ["documentId"] });
-      const out: string[][] = [];
+      const out: Array<string[] | null> = [];
       for (const d of docs) {
-        const box = await prisma.customerEbitdaBox.findFirst({ where: { companyId, documentId: d.documentId }, orderBy: { seq: "desc" }, select: { payload: true } });
-        const items = (box?.payload as { items?: Array<{ status?: unknown }> } | null)?.items ?? [];
-        out.push(items.map((i) => String(i.status)));
+        const boxes = await prisma.customerEbitdaBox.findMany({ where: { companyId, documentId: d.documentId }, orderBy: { seq: "desc" }, take: 20, select: { status: true, payload: true } });
+        out.push(goodBoxItemStatuses(boxes));
       }
       return out;
     },

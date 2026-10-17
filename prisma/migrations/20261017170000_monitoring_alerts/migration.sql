@@ -1,5 +1,5 @@
--- Grok lane 2: filings monitoring, covenant bands, CFO notifications, brief visits. Additive only.
--- NOT applied to Neon by this PR; Egzon applies migrations.
+-- Grok lane 2: filings monitoring, covenant bands, CFO notifications, brief visits, finance members, sweep cursor. Additive only.
+-- NOT applied to Neon by this PR; Egzon applies migrations. Rollback: down.sql in this folder.
 -- CreateTable
 CREATE TABLE "monitored_filings" (
     "id" TEXT NOT NULL,
@@ -74,6 +74,26 @@ CREATE TABLE "workspace_notifications" (
     CONSTRAINT "workspace_notifications_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "workspace_finance_members" (
+    "id" TEXT NOT NULL,
+    "companyId" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "alertEmails" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "workspace_finance_members_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "monitoring_sweep_cursors" (
+    "key" TEXT NOT NULL,
+    "lastCompanyId" TEXT,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "monitoring_sweep_cursors_pkey" PRIMARY KEY ("key")
+);
+
 -- CreateIndex
 CREATE INDEX "monitored_filings_companyId_detectedAt_idx" ON "monitored_filings"("companyId", "detectedAt");
 
@@ -97,4 +117,7 @@ CREATE UNIQUE INDEX "workspace_notifications_dedupeKey_key" ON "workspace_notifi
 
 -- CreateIndex
 CREATE INDEX "workspace_notifications_companyId_createdAt_idx" ON "workspace_notifications"("companyId", "createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "workspace_finance_members_companyId_userId_key" ON "workspace_finance_members"("companyId", "userId");
 

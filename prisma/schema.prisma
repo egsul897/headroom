@@ -5056,3 +5056,26 @@ model WorkspaceNotification {
   @@index([companyId, createdAt])
   @@map("workspace_notifications")
 }
+
+/// Finance-role members of a workspace (CFO / treasurer / controller), provisioned offline like
+/// accounts. Membership allows editing band cutoffs; alertEmails is the explicit opt-in for alert
+/// email (band alerts carry covenant figures, so email never goes to every user).
+model WorkspaceFinanceMember {
+  id          String   @id @default(cuid())
+  companyId   String
+  userId      String
+  alertEmails Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@unique([companyId, userId])
+  @@map("workspace_finance_members")
+}
+
+/// Round-robin position of the monitoring sweep (key "monitoring"): id of the last company swept.
+model MonitoringSweepCursor {
+  key           String   @id
+  lastCompanyId String?
+  updatedAt     DateTime @updatedAt
+
+  @@map("monitoring_sweep_cursors")
+}

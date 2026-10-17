@@ -8,7 +8,13 @@ const db = {
   workspaceVisit: { findUnique: vi.fn(), upsert: vi.fn() },
   customerEbitdaBox: { findMany: vi.fn(), findFirst: vi.fn() },
   contractEventObligation: { findMany: vi.fn() },
+  workspaceFinanceMember: { count: vi.fn() },
 };
+const overviewRows = vi.fn(() => [
+  { kind: "RATIO", stableKey: "d:LEV", name: "Max total net leverage", documentName: "CA", sectionRef: "§7.11", currentRatio: 3, ratioLimit: 4.5, comparisonDirection: "at_or_below", status: "MODELED", testKind: "MAINTENANCE" },
+  { kind: "RATIO", stableKey: "ratio:rd", name: "Total Net Leverage — Ratio Debt", documentName: "CA", sectionRef: "§7.03(r)", currentRatio: 5, ratioLimit: 3, comparisonDirection: "at_or_below", status: "MODELED" },
+]);
+vi.mock("@/lib/covenant-overview-service", () => ({ getCovenantOverview: vi.fn(async () => ({ asOfDate: new Date("2026-06-30"), covenantFamilies: [{ family: "FINANCIAL_COVENANTS", rows: overviewRows() }] })) }));
 vi.mock("@/lib/auth/guard", () => ({
   requireTenantAction: vi.fn(async (id: string) => {
     if (id !== "co_mine") throw new Error("Forbidden");
@@ -44,7 +50,28 @@ describe("monitoring routes: tenant gate before any read/write", () => {
     await brief.POST(new Request("http://x/", { method: "POST" }), ctx("co_mine"));
     expect(db.workspaceVisit.upsert.mock.calls[0]![0].where).toEqual({ companyId_userId: { companyId: "co_mine", userId: "u1" } });
   });
+  it("N3: PUT requires ADMIN or a workspace finance member; key must be a real maintenance covenant", async () => {
+    const bands = await import("@/app/[companyId]/monitoring/bands/route");
+    const put = (b: unknown) => bands.PUT(new Request("http://x/", { method: "PUT", body: JSON.stringify(b) }), ctx("co_mine"));
+    db.workspaceFinanceMember.count.mockResolvedValueOnce(0);
+    expect((await put({ covenantKey: "d:LEV", healthyUntil: 3.5, moderateUntil: 4.2 })).status).toBe(403);
+    expect(db.workspaceFinanceMember.count.mock.calls.at(-1)![0]).toEqual({ where: { companyId: "co_mine", userId: "u1" } });
+    db.workspaceFinanceMember.count.mockResolvedValue(1);
+    expect((await put({ covenantKey: "made-up", healthyUntil: 3.5, moderateUntil: 4.2 })).status).toBe(422);
+    const inc = await put({ covenantKey: "ratio:rd", healthyUntil: 2.5, moderateUntil: 2.8 });
+    expect(inc.status).toBe(422);
+    expect((await inc.json()).error).toBe("NOT_A_MAINTENANCE_COVENANT");
+    expect((await put({ covenantKey: "d:LEV", direction: "higher-is-safer", healthyUntil: 3.5, moderateUntil: 4.2 })).status).toBe(422);
+    expect((await put({ covenantKey: "d:LEV", healthyUntil: 3.5, moderateUntil: 5.0 })).status).toBe(422);
+    expect(db.covenantBandThreshold.upsert).not.toHaveBeenCalled();
+    db.covenantBandThreshold.upsert.mockResolvedValue({ covenantKey: "d:LEV", healthyUntil: 3.5, moderateUntil: 4.2 });
+    const ok = await put({ covenantKey: "d:LEV", healthyUntil: 3.5, moderateUntil: 4.2 });
+    expect(ok.status).toBe(200);
+    expect((await ok.json()).direction).toBe("lower-is-safer");
+    db.covenantBandThreshold.upsert.mockReset();
+  });
   it("PUT thresholds validates ordering (422) before writing", async () => {
+    db.workspaceFinanceMember.count.mockResolvedValue(1);
     const bands = await import("@/app/[companyId]/monitoring/bands/route");
     const res = await bands.PUT(new Request("http://x/", { method: "PUT", body: JSON.stringify({ covenantKey: "d:LEV", direction: "lower-is-safer", healthyUntil: 4.2, moderateUntil: 3.5 }) }), ctx("co_mine"));
     expect(res.status).toBe(422);

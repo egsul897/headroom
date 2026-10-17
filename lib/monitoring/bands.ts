@@ -38,7 +38,16 @@ export interface RatioRowInput {
   comparisonDirection: "at_or_below" | "at_or_above";
   status: string;
   reason?: string;
+  /**
+   * Engine-supplied classification, read verbatim (never inferred by name). Bands and band
+   * alerts run ONLY on rows the engine flags MAINTENANCE: an incurrence ratio-basket or RP
+   * gate test is not a covenant that can be "in Danger". The overview RatioRow does not
+   * carry this flag yet, so today every row is NOT_EVALUATED (Reviewer #420 N1).
+   */
+  testKind?: "MAINTENANCE" | "INCURRENCE";
 }
+
+export const NOT_MAINTENANCE_REASON = "Not banded: the covenant engine does not mark this test as a maintenance financial covenant.";
 
 export interface ThresholdRow {
   covenantKey: string;
@@ -146,6 +155,7 @@ export function bandFor(
     thresholdSource: cut ? "CFO_SETTINGS" : null,
     reason: null,
   };
+  if (row.testKind !== "MAINTENANCE") return { ...base, actual: null, actualLabel: null, thresholds: null, thresholdSource: null, reason: NOT_MAINTENANCE_REASON };
   if (actual === null) return { ...base, reason: row.reason ?? "Actual ratio not computed by the engine." };
   if (!cut) {
     const set = thresholds.some((t) => t.covenantKey === row.stableKey);

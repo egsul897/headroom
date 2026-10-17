@@ -20,7 +20,11 @@ export interface MorningBrief {
 export interface BriefSources {
   lastVisitAt(): Promise<Date | null>;
   notificationTitlesSince(since: Date): Promise<string[]>;
-  latestBoxItemStatuses(): Promise<string[][]>;
+  /**
+   * Per agreement: item statuses of the latest NON-FAILED EBITDA box, or null when that
+   * agreement has no good box (e.g. only a FAILED one) — unknown, never 0.
+   */
+  latestBoxItemStatuses(): Promise<Array<string[] | null>>;
   obligations(): Promise<ObligationRowLike[]>;
 }
 
@@ -52,8 +56,19 @@ export async function buildMorningBrief(companyId: string, src: BriefSources, no
     lastVisitAt: lastVisit ? lastVisit.toISOString() : null,
     since: since.toISOString(),
     changes: changes.ok ? changes.v : null,
-    needsYouCount: boxes.ok ? boxes.v.reduce((n, items) => n + items.filter((s) => s === "PENDING" || s === "CONDITIONAL").length, 0) : null,
+    needsYouCount:
+      boxes.ok && boxes.v.every((items) => items !== null)
+        ? boxes.v.reduce((n, items) => n + items!.filter((s) => s === "PENDING" || s === "CONDITIONAL").length, 0)
+        : null,
     nextTest: nt,
     nextTestStatus: ntStatus,
   };
+}
+
+/** From one agreement's boxes (newest first): the latest good box's item statuses, else null. */
+export function goodBoxItemStatuses(boxesNewestFirst: ReadonlyArray<{ status: string; payload: unknown }>): string[] | null {
+  const good = boxesNewestFirst.find((b) => b.status !== "FAILED");
+  if (!good) return null;
+  const items = (good.payload as { items?: Array<{ status?: unknown }> } | null)?.items;
+  return Array.isArray(items) ? items.map((i) => String(i.status)) : null;
 }

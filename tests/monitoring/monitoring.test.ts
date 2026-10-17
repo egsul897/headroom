@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import { bandFor, cutoffsFor, validateCutoffOrder, withHistory, type RatioRowInput, type ThresholdRow } from "@/lib/monitoring/bands";
 import { buildCovenantCalendar, nextTest, type ObligationRowLike } from "@/lib/monitoring/calendar";
-import { buildMorningBrief } from "@/lib/monitoring/brief";
-import { diffNewFilings, fetchRecentFilings, normalizeCik } from "@/lib/monitoring/filings";
+import { buildMorningBrief, goodBoxItemStatuses } from "@/lib/monitoring/brief";
+import { assertMonitoringCronAuthorized } from "@/lib/monitoring/cron-auth";
+import { createThrottle, diffNewFilings, fetchRecentFilings, normalizeCik, parseRetryAfter } from "@/lib/monitoring/filings";
 import { emailConfig, sendAlertEmail } from "@/lib/monitoring/email";
 import { runMonitoringSweep, type MonitoringDeps, type NotificationInput } from "@/lib/monitoring/sweep";
 import { parseSince } from "@/lib/monitoring/feed";
@@ -10,13 +11,13 @@ import type { SecFiling } from "@/lib/monitoring/filings";
 
 const lev = (actual: number | null, over: Partial<RatioRowInput> = {}): RatioRowInput => ({
   stableKey: "d:LEV", name: "Max total net leverage", documentName: "Credit Agreement", sectionRef: "§7.11(a)",
-  currentRatio: actual, ratioLimit: 4.5, comparisonDirection: "at_or_below", status: "MODELED", ...over,
+  currentRatio: actual, ratioLimit: 4.5, comparisonDirection: "at_or_below", status: "MODELED", testKind: "MAINTENANCE", ...over,
 });
 
 const CUT: ThresholdRow[] = [{ covenantKey: "d:LEV", healthyUntil: 3.5, moderateUntil: 4.2 }];
 const fccr = (actual: number | null): RatioRowInput => ({
   stableKey: "d:FCCR", name: "Min fixed charge coverage", documentName: "Credit Agreement", sectionRef: "§7.11(b)",
-  currentRatio: actual, ratioLimit: 1.25, comparisonDirection: "at_or_above", status: "MODELED",
+  currentRatio: actual, ratioLimit: 1.25, comparisonDirection: "at_or_above", status: "MODELED", testKind: "MAINTENANCE",
 });
 
 describe("bands (PR 414 BandCutoffs / BandReading)", () => {
@@ -71,7 +72,7 @@ describe("filings", () => {
     expect((f.mock.calls[0] as unknown as [string])[0]).toBe("https://data.sec.gov/submissions/CIK0000320193.json");
   });
   it("HTTP/malformed errors are reported, not treated as 'no filings'", async () => {
-    expect(await fetchRecentFilings("1", { userAgent: "a@b.c", fetchImpl: async () => ({ status: 503, json: async () => ({}) }) })).toMatchObject({ ok: false, reason: "SEC_HTTP_ERROR" });
+    expect(await fetchRecentFilings("1", { userAgent: "a@b.c", fetchImpl: async () => ({ status: 500, json: async () => ({}) }), throttle: async () => {} })).toMatchObject({ ok: false, reason: "SEC_HTTP_ERROR" });
     expect(await fetchRecentFilings("1", { userAgent: "a@b.c", fetchImpl: async () => ({ status: 200, json: async () => ({}) }) })).toMatchObject({ ok: false, reason: "SEC_MALFORMED" });
     expect(normalizeCik("abc")).toBeNull();
   });
@@ -103,7 +104,9 @@ function memDeps(over: Partial<MonitoringDeps> & { filings?: SecFiling[]; ratio?
   let ratio = over.ratio === undefined ? 3.0 : over.ratio;
   let filings = over.filings ?? [{ accessionNumber: "q1", form: "10-Q", filingDate: "2026-05-01" }];
   const deps: MonitoringDeps = {
-    listTrackedCompanies: async () => [{ id: "co", name: "Acme", cik: "320193" }],
+    listTrackedCompanies: async ({ afterId }) => (afterId === null || afterId < "co" ? [{ id: "co", name: "Acme", cik: "320193" }] : []),
+    getSweepCursor: async () => null,
+    setSweepCursor: async () => {},
     fetchFilings: async () => ({ ok: true, filings }),
     seenAccessions: async (c) => new Set(seen.get(c) ?? []),
     recordFilings: async (c, _cik, fs) => { const s = seen.get(c) ?? new Set(); fs.forEach((f) => s.add(f.accessionNumber)); seen.set(c, s); },
@@ -246,6 +249,113 @@ describe("morning brief", () => {
     const boom = async () => { throw new Error("db"); };
     const b = await buildMorningBrief("co", { lastVisitAt: boom, notificationTitlesSince: boom, latestBoxItemStatuses: boom, obligations: boom }, now);
     expect(b).toMatchObject({ lastVisitAt: null, changes: null, needsYouCount: null, nextTest: null, nextTestStatus: "NOT_DETERMINABLE" });
+  });
+});
+
+describe("Reviewer #420 round 2", () => {
+  it("N1: rows the engine does not flag MAINTENANCE are never banded (incurrence tests, unflagged rows)", () => {
+    expect(bandFor(lev(4.4, { testKind: "INCURRENCE" }), CUT)).toMatchObject({ status: "NOT_EVALUATED", band: null, actual: null });
+    expect(bandFor(lev(4.4, { testKind: undefined }), CUT).reason).toMatch(/maintenance financial covenant/);
+  });
+  it("N1: sweep records no band event / alert for incurrence rows; past-limit text is not a compliance claim", async () => {
+    const m = memDeps({ loadRatioRows: async () => ({ asOfDate: "2026-06-30", rows: [lev(3.0, { testKind: "INCURRENCE" })] }) });
+    await runMonitoringSweep(m.deps);
+    expect(m.events).toHaveLength(0);
+    const k = memDeps();
+    await runMonitoringSweep(k.deps);
+    k.setRatio(4.6);
+    await runMonitoringSweep(k.deps);
+    const body = k.notes.find((n) => n.kind === "BAND_CHANGE")!.body;
+    expect(body).not.toMatch(/past the covenant limit/);
+    expect(body).toMatch(/not a compliance determination/);
+  });
+  it("N2: throttle spaces requests >= 100 ms (<= 10 req/s)", async () => {
+    let t = 0;
+    const waits: number[] = [];
+    const th = createThrottle(100, () => t, async (ms) => { waits.push(ms); t += ms; });
+    for (let i = 0; i < 5; i++) await th();
+    expect(waits).toEqual([100, 100, 100, 100]);
+  });
+  it("N2: 429 honours Retry-After once, then reports SEC_RATE_LIMITED (not 'no filings')", async () => {
+    const slept: number[] = [];
+    const h = (v: string | null) => ({ get: () => v });
+    let n = 0;
+    const once = async () => (n++ === 0 ? { status: 429, json: async () => ({}), headers: h("2") } : { status: 200, json: async () => ({ filings: { recent: { form: ["10-Q"], accessionNumber: ["a"], filingDate: ["d"] } } }) });
+    expect(await fetchRecentFilings("1", { userAgent: "a@b.c", fetchImpl: once, throttle: async () => {}, sleep: async (ms) => { slept.push(ms); } })).toMatchObject({ ok: true });
+    expect(slept).toEqual([2000]);
+    const always = async () => ({ status: 429, json: async () => ({}), headers: h("1") });
+    expect(await fetchRecentFilings("1", { userAgent: "a@b.c", fetchImpl: always, throttle: async () => {}, sleep: async () => {} })).toMatchObject({ ok: false, reason: "SEC_RATE_LIMITED" });
+    const noHeader = async () => ({ status: 429, json: async () => ({}) });
+    expect(await fetchRecentFilings("1", { userAgent: "a@b.c", fetchImpl: noHeader, throttle: async () => {}, sleep: async () => {} })).toMatchObject({ reason: "SEC_RATE_LIMITED" });
+    expect(parseRetryAfter("120")).toBe(120_000);
+    expect(parseRetryAfter("soon")).toBeNull();
+  });
+  it("N2: once rate-limited, the rest of the run skips SEC polling (bands still run)", async () => {
+    const calls: string[] = [];
+    const m = memDeps({
+      listTrackedCompanies: async ({ afterId }) => ["a", "b", "c"].filter((id) => afterId === null || id > afterId).map((id) => ({ id, name: id, cik: "1" })),
+      fetchFilings: async (cik) => { calls.push(String(cik)); return { ok: false, reason: "SEC_RATE_LIMITED" }; },
+    });
+    const r = await runMonitoringSweep(m.deps);
+    expect(calls).toHaveLength(1);
+    expect(r.map((x) => x.filings.reason)).toEqual(["SEC_RATE_LIMITED", "SEC_RATE_LIMITED", "SEC_RATE_LIMITED"]);
+    expect(r.every((x) => x.bands.status === "OK")).toBe(true);
+  });
+  it("N2: all companies are reached via cursor pagination + round-robin under a time budget (no first-page starvation)", async () => {
+    const ids = Array.from({ length: 7 }, (_, i) => `c${i}`);
+    let cursor: string | null = null;
+    let t = 0;
+    const m = memDeps({
+      listTrackedCompanies: async ({ afterId, take }) => ids.filter((id) => afterId === null || id > afterId).slice(0, take).map((id) => ({ id, name: id, cik: "1" })),
+      getSweepCursor: async () => cursor,
+      setSweepCursor: async (c) => { cursor = c; },
+      fetchFilings: async () => { t += 10; return { ok: false, reason: "SEC_UA_UNSET" }; },
+    });
+    const seen: string[] = [];
+    for (let run = 0; run < 3; run++) {
+      const r = await runMonitoringSweep(m.deps, { pageSize: 2, budgetMs: 25, now: () => t });
+      seen.push(...r.map((x) => x.companyId));
+    }
+    expect(new Set(seen)).toEqual(new Set(ids));
+    expect(seen.slice(0, 3)).toEqual(["c0", "c1", "c2"]);
+    expect(seen.slice(3, 6)).toEqual(["c3", "c4", "c5"]);
+  });
+  it("N2: an EBITDA refresh deferred by the time budget is retried next run (filing not marked seen)", async () => {
+    let t = 0;
+    const m = memDeps({ refreshEbitdaBox: async () => ({ status: "READY", totalEbitda: "1" }) });
+    await runMonitoringSweep(m.deps, { now: () => t });
+    m.setFilings([{ accessionNumber: "q1", form: "10-Q", filingDate: "x" }, { accessionNumber: "q2", form: "10-Q", filingDate: "y" }]);
+    // budget already exhausted when the refresh would start
+    const r1 = await runMonitoringSweep({ ...m.deps, ebitdaDocuments: async () => { t = 1e9; return ["doc1"]; } }, { now: () => t, budgetMs: 1e6 });
+    expect(r1[0]!.ebitda).toMatchObject({ deferred: 1, refreshed: 0 });
+    t = 0;
+    const r2 = await runMonitoringSweep(m.deps, { now: () => t });
+    expect(r2[0]!.filings.newCount).toBe(1);
+    expect(r2[0]!.ebitda.refreshed).toBe(1);
+  });
+  it("N4: a FAILED box with no prior good box is unknown (null), not 0", async () => {
+    expect(goodBoxItemStatuses([{ status: "FAILED", payload: { items: [] } }])).toBeNull();
+    expect(goodBoxItemStatuses([{ status: "FAILED", payload: { items: [] } }, { status: "READY", payload: { items: [{ status: "PENDING" }] } }])).toEqual(["PENDING"]);
+    const b = await buildMorningBrief("co", { lastVisitAt: async () => null, notificationTitlesSince: async () => [], latestBoxItemStatuses: async () => [["PENDING"], null], obligations: async () => [] });
+    expect(b.needsYouCount).toBeNull();
+  });
+  it("N5: alert email goes only to opted-in finance members still in the workspace, never every user", async () => {
+    const { createPrismaMonitoringDeps } = await import("@/lib/monitoring/prisma-deps");
+    const fm = vi.fn(async () => [{ userId: "u_cfo" }]);
+    const users = vi.fn(async () => [{ email: "cfo@acme.co" }]);
+    const deps = createPrismaMonitoringDeps({ workspaceFinanceMember: { findMany: fm }, user: { findMany: users } } as never, {});
+    expect(await deps.recipients("co")).toEqual(["cfo@acme.co"]);
+    expect((fm.mock.calls[0] as unknown[])[0]).toEqual({ where: { companyId: "co", alertEmails: true }, select: { userId: true } });
+    expect((users.mock.calls[0] as unknown[])[0]).toEqual({ where: { companyId: "co", id: { in: ["u_cfo"] } }, select: { email: true } });
+    const none = createPrismaMonitoringDeps({ workspaceFinanceMember: { findMany: async () => [] }, user: { findMany: users } } as never, {});
+    expect(await none.recipients("co")).toEqual([]);
+  });
+  it("N6: cron auth is Bearer-only and constant-time; ?secret= is refused", () => {
+    const env = { CRON_SECRET: "s3cret" };
+    expect(assertMonitoringCronAuthorized(new Request("http://x/?secret=s3cret"), env)).toMatchObject({ ok: false, status: 401 });
+    expect(assertMonitoringCronAuthorized(new Request("http://x/", { headers: { authorization: "Bearer s3cret" } }), env)).toEqual({ ok: true });
+    expect(assertMonitoringCronAuthorized(new Request("http://x/", { headers: { authorization: "Bearer s3cre" } }), env)).toMatchObject({ ok: false });
+    expect(assertMonitoringCronAuthorized(new Request("http://x/"), {})).toMatchObject({ status: 503 });
   });
 });
 
