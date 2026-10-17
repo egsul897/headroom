@@ -160,6 +160,9 @@ export function erpEvidenceFor(args: BoxArgs, box: Pick<EbitdaBox, "periodEnd" |
 }
 const withErp = (box: EbitdaBox, args: BoxArgs): EbitdaBox => { const ev = erpEvidenceFor(args, box); return ev ? { ...box, erpEvidence: ev } : box; };
 const pipelineOnly = ({ erp: _erp, ...rest }: BoxArgs): PipelineArgs => rest;
+/** ERP facts loaded for another company than the one being written must never reach a box or a confirmation. */
+export const erpScopeMismatch = (args: BoxArgs, scope: { companyId: string }): boolean => args.erp != null && args.erp.companyId !== scope.companyId;
+export class ErpScopeError extends Error { constructor() { super("ERP evidence was loaded for a different company than the box being written"); this.name = "ErpScopeError"; } }
 
 /** Run the pipeline with the confirmed figures applied and build the box. */
 export function computeEbitdaBox(boxArgs: BoxArgs, confirmations: readonly ConfirmationView[] = []): EbitdaBox {
@@ -242,7 +245,7 @@ export async function loadConfirmations(db: EbitdaBoxStore, scope: { companyId: 
 
 export type ConfirmOutcome =
   | { ok: true; box: EbitdaBox; gain: CfoGain["gain"]; boxId: string; replayed?: boolean }
-  | { ok: false; status: 400 | 404 | 409 | 422; error: string; code?: "NEEDS_BASE" | "IDEMPOTENCY_CONFLICT" | "OUT_OF_RANGE" | "FILING_PRESENT" | "NEEDS_ERP_EVIDENCE" | "ERP_EVIDENCE_MISMATCH" | "NEEDS_INPUT" };
+  | { ok: false; status: 400 | 404 | 409 | 422; error: string; code?: "NEEDS_BASE" | "IDEMPOTENCY_CONFLICT" | "OUT_OF_RANGE" | "FILING_PRESENT" | "NEEDS_ERP_EVIDENCE" | "ERP_EVIDENCE_MISMATCH" | "NEEDS_INPUT" | "ERP_SCOPE_MISMATCH" };
 
 /** Hard ceiling for any confirmed amount (USD); also bounded by 10× the reported base EBITDA when that is known. */
 export const MAX_CONFIRMED_USD = 10n ** 12n;
@@ -275,6 +278,7 @@ export async function confirmEbitdaItem(
   boxArgs: BoxArgs,
   input: ConfirmInput,
 ): Promise<ConfirmOutcome> {
+  if (erpScopeMismatch(boxArgs, scope)) return { ok: false, status: 422, code: "ERP_SCOPE_MISMATCH", error: "ERP evidence does not belong to this company; nothing was confirmed" };
   const args = pipelineOnly(boxArgs);
   const kind: ConfirmationKind = input.kind ?? "AMOUNT";
   if (kind !== "AMOUNT" && kind !== "LENDER_APPROVAL" && kind !== "BASE_METRIC") return { ok: false, status: 400, error: "kind must be AMOUNT, LENDER_APPROVAL or BASE_METRIC" };
@@ -434,6 +438,7 @@ export async function refreshBoxCommitted(db: EbitdaBoxStore, scope: { companyId
   let args: BoxArgs | null;
   try { args = await load(); } catch (err) { return recordEbitdaBoxFailure(db, scope, err, { generation }); }
   if (!args) return null;
+  if (erpScopeMismatch(args, scope)) return recordEbitdaBoxFailure(db, scope, new ErpScopeError(), { generation });
   const a = args;
   try {
     return await withDocumentTransaction(db, scope, async (tx) => {

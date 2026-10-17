@@ -8,7 +8,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { admitErpFact, admitErpFacts, erpEvidenceSource, NO_ERP_EVIDENCE, registerErpEvidenceSource, type ErpEvidenceFact } from "@/lib/covenant-learning-factory/erp/contract";
 import { reconcileErpWithFilings, sumOverWindow } from "@/lib/covenant-learning-factory/erp/reconcile";
 import { erpEvidenceForBox, ltmWindow } from "@/lib/covenant-learning-factory/erp/suggest";
-import { computeEbitdaBox, confirmEbitdaItem, MAX_CONFIRMED_USD, type BoxArgs } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
+import { computeEbitdaBox, confirmEbitdaItem, MAX_CONFIRMED_USD, refreshBoxCommitted, type BoxArgs } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
 import { companyErpFacts } from "@/lib/covenant-learning-factory/pipeline/ebitda-box-server";
 import type { FinancialValue, IssuerFinancials } from "@/lib/covenant-learning-factory/xbrl/companyfacts";
 import { M, args, fakeStore, fin } from "./ebitda-box-fixture";
@@ -217,6 +217,19 @@ describe("EBITDA box integration", () => {
     }
     expect(await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: "9".repeat(40), source: "doc", confirmedBy: "cfo" })).toMatchObject({ ok: false, status: 422, code: "OUT_OF_RANGE" });
     expect(db.rows).toHaveLength(0);
+  });
+  it("(4) args.erp.companyId must equal scope.companyId: confirm is a 422 with no write; refresh records FAILED, no evidence saved", async () => {
+    const db = fakeStore();
+    const leaked: BoxArgs = { ...a(ERP()), erp: { companyId: "other-co", facts: ERP() } };
+    for (const kind of ["BASE_METRIC", "AMOUNT"] as const) {
+      expect(await confirmEbitdaItem(db, scope, leaked, { inputKey: kind === "BASE_METRIC" ? "METRIC:REVENUE" : keyOf("(f)"), kind, value: String(300 * M), source: "doc", confirmedBy: "cfo" })).toMatchObject({ ok: false, status: 422, code: "ERP_SCOPE_MISMATCH" });
+    }
+    expect(db.rows).toHaveLength(0);
+    const r = await refreshBoxCommitted(db, scope, async () => leaked);
+    expect(r?.box.status).toBe("FAILED");
+    expect(r?.box.erpEvidence).toBeUndefined();
+    expect(db.boxes.every((b) => !(b.payload as { erpEvidence?: unknown }).erpEvidence)).toBe(true);
+    expect((await refreshBoxCommitted(db, scope, async () => a(ERP())))?.box.erpEvidence?.status).toBe("READY");
   });
   it("(6) a BASE_METRIC revenue of 0 is NEEDS_INPUT (422) and writes nothing", async () => {
     const db = fakeStore();
