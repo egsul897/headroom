@@ -538,9 +538,12 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     // "other income items", tax equity income) is never closed by a mapped/deduplicated tax figure: it stays open.
     if (covOut === "FULL" && fresh.some((c) => /\(losses only\)/.test(c.concept))) { covOut = "PARTIAL"; noteExtra = [noteExtra, "losses-only figure from a net fact: floor, not exact"].filter(Boolean).join("; "); }
     if (covOut === "FULL" && !signed && !bi && namesGainOrIncome(scopeText)) { covOut = "PARTIAL"; noteExtra = [noteExtra, "names income/gains beyond a pure tax base; stays open"].filter(Boolean).join("; "); }
-    // Lender/agent approval or consent: the filing figure does not prove the add-back was approved — counted only when a
-    // borrower input confirms it.
-    const apm = bi ? null : approvalCondition(full);
+    // Lender/agent approval or consent: neither the filing figure nor a CFO amount proves the add-back was approved — it
+    // is counted only when the CFO amount AND a separate, sourced confirmation of the approval itself (APPROVAL:<key>,
+    // value 1) are both present.
+    const approvalNeeded = approvalCondition(full);
+    const approved = approvalNeeded != null && bi != null && borrowerInput(fin, [bi.key.replace(/^ADDBACK:/i, "APPROVAL:")])?.value === "1";
+    const apm = approved ? null : approvalNeeded;
     const conditional = apm != null;
     if (conditional) { for (const c of fresh) used.delete(c.concept); evid = 0n; if (covOut === "FULL") covOut = "PARTIAL"; noteExtra = [noteExtra, `requires lender/agent approval (\"${apm!.slice(-80)}\"); not counted without confirmation`].filter(Boolean).join("; "); }
     lines.push({ label: it.label, text: full.slice(0, 200), category: cat, evidenced: fresh.length ? usd(evid) : (concepts.length ? "0" : null), concepts: conditional ? [] : fresh.map((c) => ({ concept: c.concept, value: usd(c.value) })),

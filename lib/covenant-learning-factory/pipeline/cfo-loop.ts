@@ -43,7 +43,7 @@ export interface CfoGain {
   gain: { ebitda: string | null; growerTotal: string | null; growerByBasket: Record<string, string | null>; leverageCapacity: string | null; ratioCapacity: Record<string, string | null> } | null;
 }
 
-function gainOf(before: CapacitySnapshot, after: CapacitySnapshot): NonNullable<CfoGain["gain"]> {
+export function gainOf(before: CapacitySnapshot, after: CapacitySnapshot): NonNullable<CfoGain["gain"]> {
   const keys = new Set([...Object.keys(before.growerCaps), ...Object.keys(after.growerCaps)]);
   const growerByBasket: Record<string, string | null> = {};
   let total: bigint | null = 0n;
