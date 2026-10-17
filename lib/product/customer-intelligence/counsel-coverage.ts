@@ -52,6 +52,17 @@ export interface CounselCoverageDb {
 export interface CounselCoverageResult {
   documentId: string | null;
   reviewComplete: boolean;
+  /**
+   * True when at least one COUNSEL decision attests this document.
+   * SYSTEM auto-accepts alone never satisfy it: the declaration
+   * gates solver-native evaluation (human-certified coverage), so
+   * a document no human ever looked at stays LEGACY even when
+   * every item is system-decided. Routine items still execute
+   * (their Permissions compile) — only the solver-native
+   * attestation requires a human. Absent reviewerKind (legacy
+   * rows) counts as COUNSEL.
+   */
+  humanAttested: boolean;
   decidedCount: number;
   itemCount: number;
   scopes: { grantType: string; sides: string[]; isComplete: boolean }[];
@@ -73,7 +84,7 @@ export async function evaluateCounselCoverage(
   const row = await db.knowledgeSource.findUnique({ where: { sourceId: params.sourceId } });
   const documentId = row?.documentId ?? null;
   if (!row || !documentId) {
-    return { documentId, reviewComplete: false, decidedCount: 0, itemCount: 0, scopes: [] };
+    return { documentId, reviewComplete: false, humanAttested: false, decidedCount: 0, itemCount: 0, scopes: [] };
   }
   const meta =
     row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
@@ -97,6 +108,17 @@ export async function evaluateCounselCoverage(
     decidedKeys.has(`${i.sectionRef}::${(i as { category?: unknown }).category ?? ""}`),
   ).length;
   const reviewComplete = items.length > 0 && decidedCount === items.length;
+  // Human attestation: at least one COUNSEL decision on this
+  // document. SYSTEM auto-accepts alone must not silently satisfy
+  // the coverage gate (see the CounselCoverageResult doc).
+  // Exception-based review is preserved: when exceptions exist,
+  // reviewComplete already implies every exception was
+  // counsel-decided; this bar only bites for all-routine documents
+  // no human ever looked at.
+  const humanAttested = approvals.some(
+    (a) => (a as { reviewerKind?: unknown }).reviewerKind !== "SYSTEM",
+  );
+  const coverageComplete = reviewComplete && humanAttested;
 
   // Scopes come from MODELED Permissions only: a scope with no
   // MODELED Permission has nothing solver-native to evaluate, so it
@@ -109,7 +131,7 @@ export async function evaluateCounselCoverage(
   const scopes: CounselCoverageResult["scopes"] = [];
   for (const grantType of grantTypes) {
     const sides = sidesFor(grantType);
-    scopes.push({ grantType, sides, isComplete: reviewComplete });
+    scopes.push({ grantType, sides, isComplete: coverageComplete });
     for (const side of sides) {
       await db.solverCoverageDeclaration.upsert({
         where: { documentId_side_grantType: { documentId, side, grantType } },
@@ -118,19 +140,23 @@ export async function evaluateCounselCoverage(
           documentId,
           side,
           grantType,
-          isComplete: reviewComplete,
-          notes: reviewComplete
+          isComplete: coverageComplete,
+          notes: coverageComplete
             ? "Declared complete by exception-based review — routine interpretations system-accepted (not counsel-verified); exception items counsel-decided (accepted/edited/rejected)."
+            : reviewComplete
+              ? "Declared INCOMPLETE — review is complete by system auto-accept alone; no counsel decision attests this document, so solver-native evaluation is withheld (LEGACY stands) until counsel decides at least one item."
             : `Declared INCOMPLETE by exception-based review — ${items.length - decidedCount} of ${items.length} summary items still await a decision (exception items need counsel; routine items auto-accept on analysis).`,
         },
         update: {
-          isComplete: reviewComplete,
-          notes: reviewComplete
+          isComplete: coverageComplete,
+          notes: coverageComplete
             ? "Declared complete by exception-based review (re-evaluated) — routine interpretations system-accepted (not counsel-verified); exception items counsel-decided."
+            : reviewComplete
+              ? "Declared INCOMPLETE (re-evaluated) — review is complete by system auto-accept alone; no counsel decision attests this document, so solver-native evaluation is withheld (LEGACY stands) until counsel decides at least one item."
             : `Declared INCOMPLETE by exception-based review (re-evaluated) — ${items.length - decidedCount} of ${items.length} summary items still await a decision (exception items need counsel; routine items auto-accept on analysis).`,
         },
       });
     }
   }
-  return { documentId, reviewComplete, decidedCount, itemCount: items.length, scopes };
+  return { documentId, reviewComplete, humanAttested, decidedCount, itemCount: items.length, scopes };
 }

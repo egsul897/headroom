@@ -33,7 +33,7 @@ export interface ReviewerApproval {
   note?: string;
   reviewedAt: string;
   reviewerLabel: string;
-  /** Monotonic version within (sourceId, sectionRef). */
+  /** Monotonic version within (sourceId, sectionRef, category). */
   version: number;
 }
 
@@ -156,7 +156,11 @@ export async function recordReviewerDecision(params: {
     summary
   ) {
     const items = summary.items.map((item) => {
-      if (item.sectionRef !== params.sectionRef) return item;
+      // Category isolation: an edit/accept on one reading of a
+      // section must not patch the other reading's plainEnglish /
+      // reviewerDecision (two items can share a sectionRef with
+      // different categories).
+      if (item.sectionRef !== params.sectionRef || item.category !== params.category) return item;
       const plain =
         params.decision === "EDITED" && params.editedPlainEnglish?.trim()
           ? params.editedPlainEnglish.trim()
@@ -178,7 +182,9 @@ export async function recordReviewerDecision(params: {
 
   if (params.decision === "REJECTED" && summary) {
     const items = summary.items.map((item) => {
-      if (item.sectionRef !== params.sectionRef) return item;
+      // Category isolation (same as the accept/edit patch above):
+      // a rejection of one reading must not reject the other.
+      if (item.sectionRef !== params.sectionRef || item.category !== params.category) return item;
       return { ...item, reviewerDecision: "REJECTED" as const };
     });
     meta.covenantSummary = { ...summary, items };
@@ -205,7 +211,7 @@ export async function recordReviewerDecision(params: {
   });
   meta.counselCompileResults = [
     ...(Array.isArray(meta.counselCompileResults) ? (meta.counselCompileResults as unknown[]) : []),
-    { at: next.reviewedAt, sectionRef: params.sectionRef, decision: params.decision, results: compileResults },
+    { at: next.reviewedAt, sectionRef: params.sectionRef, category: params.category, decision: params.decision, results: compileResults },
   ].slice(-100);
   await prisma.knowledgeSource.update({
     where: { sourceId: params.sourceId },
@@ -262,6 +268,7 @@ export async function autoAcceptRoutineInterpretations(params: {
 }): Promise<{ accepted: number; skipped: number }> {
   const { isRoutineItem } = await import("./routine-review");
   const { compileAcceptedInterpretation } = await import("./compile-accepted");
+  const { grantTypesForItem } = await import("./grant-types");
   const row = await prisma.knowledgeSource.findFirst({
     where: { companyId: params.companyId, sourceId: params.sourceId },
   });
@@ -312,7 +319,7 @@ export async function autoAcceptRoutineInterpretations(params: {
       data: { metadata: JSON.parse(JSON.stringify(meta)) },
     });
     try {
-      await compileAcceptedInterpretation({
+      const results = await compileAcceptedInterpretation({
         companyId: params.companyId,
         sourceId: params.sourceId,
         sectionRef: item.sectionRef,
@@ -320,6 +327,23 @@ export async function autoAcceptRoutineInterpretations(params: {
         decision: "ACCEPTED",
         reviewerKind: "SYSTEM",
       });
+      // Non-throwing failures are still failures: a routine item
+      // whose compile returns INCOMPLETE/FAILED (classification
+      // and compile disagree, or a transient fault) is NOT
+      // successfully auto-compiled — it stays unresolved for
+      // counsel. Grant items need a COMPILED/UPDATED Permission per
+      // grant. No-grant items (boilerplate: nothing to mint;
+      // ratio: a provision) succeed on any non-FAILED result —
+      // INCOMPLETE there means "nothing to compile", not a miss.
+      const grants = grantTypesForItem(item);
+      const compiled =
+        results.length > 0 &&
+        results.every((r) =>
+          grants.length > 0
+            ? r.status === "COMPILED" || r.status === "UPDATED"
+            : r.status !== "FAILED",
+        );
+      if (!compiled) throw new Error(`Auto-accept compile did not produce an executable artifact for ${item.sectionRef} (${item.category}): ${results.map((r) => r.status).join(",")}`);
       accepted += 1;
     } catch {
       // Per-item failure stays an exception for counsel (the

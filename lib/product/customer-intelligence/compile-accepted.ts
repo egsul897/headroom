@@ -252,7 +252,10 @@ export async function compileAcceptedInterpretation(params: {
   }
 
   const summary = summarizeFromStoredMetadata(row.metadata);
-  const item = summary?.items.find((i) => i.sectionRef === params.sectionRef);
+  // Category isolation: the decision is for (sectionRef, category)
+  // — compiling the FIRST item with that ref (any category) would
+  // compile the wrong reading's formula when two items share a ref.
+  const item = summary?.items.find((i) => i.sectionRef === params.sectionRef && i.category === params.category);
   if (!item) {
     return [{ status: "FAILED", missingFields: ["summaryItem"], message: "Summary item not found for section" }];
   }
@@ -589,7 +592,12 @@ export async function syncDocumentCapacityFormulas(companyId: string, documentId
       const memberCodes = members
         .map((m) => codeByPermissionId.get(m.permissionId ?? ""))
         .filter((code): code is string => Boolean(code));
-      if (memberCodes.length >= 2 && c.capAmount !== null && c.capAmount !== undefined) {
+      // A group forms with ONE compiled member: the aggregate cap
+      // binds that member even when its twins have not compiled yet
+      // (or never do). Requiring >= 2 members silently dropped the
+      // aggregate cap for the single compiled member — its own
+      // (higher) threshold then stood alone and overstated capacity.
+      if (memberCodes.length >= 1 && c.capAmount !== null && c.capAmount !== undefined) {
         sharedGroups.push({
           capMillions: Number(c.capAmount),
           memberCodes,
@@ -597,8 +605,17 @@ export async function syncDocumentCapacityFormulas(companyId: string, documentId
         });
       }
     }
-  } catch {
-    // Shared-cap grouping must not break the legacy formula sync.
+  } catch (err) {
+    // A shared-cap retrieval failure must NOT silently remove an
+    // operative aggregate cap: falling through with sharedGroups
+    // [] would rebuild the legacy formulas with each member
+    // counted independently (stacking), overstating capacity.
+    // Fail the sync loudly — the previous formulas stay in place
+    // (no write happens) and the caller treats the item as
+    // unresolved instead of publishing uncapped formulas.
+    throw new Error(
+      `Shared-capacity grouping failed while rebuilding legacy formulas for document ${documentId} — refusing to publish formulas without the aggregate cap: ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 
   // Secured requires BOTH legs (buildCapacityFormulas mints no secured

@@ -50,6 +50,9 @@ describe("reviewer decision category key (Fix 6)", () => {
   it("rulebook readiness counts unique (sectionRef, category) units", () => {
     const s = source("lib/product/customer-intelligence/rulebook-readiness.ts");
     expect(s).toContain("uniqueUnits");
-    expect(s).toContain("`${i.sectionRef}::${i.category}`");
+    // Review identity is (sourceId, sectionRef, category): two
+    // documents sharing a section reference are separate units.
+    expect(s).toContain("`${sourceId}::${i.sectionRef}::${i.category}`");
+    expect(s).toContain('`${a.sourceId ?? ""}::${a.sectionRef}::${a.category}`');
   });
 });

@@ -25,7 +25,17 @@ export function mergePreservedReviewerDecisions(params: {
   if (!params.priorApprovals.length) return { summary: params.summary, conflicts };
 
   const items = params.summary.items.map((item) => {
-    const approval = params.priorApprovals.find((a) => a.sectionRef === item.sectionRef);
+    // Category + source isolation (same wildcard pattern as the
+    // overlay): a preserved decision for one reading of a section
+    // must not re-apply to the other reading after reanalysis.
+    // A missing category/sourceId on either side (legacy rows) is
+    // a wildcard; in production both sides always carry them.
+    const approval = params.priorApprovals.find(
+      (a) =>
+        a.sectionRef === item.sectionRef &&
+        (!a.category || !item.category || a.category === item.category) &&
+        (!a.sourceId || !params.summary.sourceId || a.sourceId === params.summary.sourceId),
+    );
     if (!approval || approval.decision === "REJECTED") return item;
     if (approval.decision === "EDITED" && approval.editedPlainEnglish?.trim()) {
       return {

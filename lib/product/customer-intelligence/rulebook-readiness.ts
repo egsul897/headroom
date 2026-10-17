@@ -60,32 +60,41 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
     getLatestAmendmentPackage(companyId),
   ]);
 
-  // Fix 6: count unique reviewable units (sectionRef, category),
-  // not raw items — the summary may carry two items with the same
-  // (ref, category) (parser duplicates); decisions, the Rulebook
-  // queue, and coverage all key on (ref, category), so the ladder
-  // must count the same units or it can never clear.
-  const unitKey = (i: { sectionRef: string; category: string }) => `${i.sectionRef}::${i.category}`;
-  const uniqueUnits = (items: { sectionRef: string; category: string }[]) =>
-    new Set(items.map(unitKey)).size;
-  const discoveredSummaries = docs.reduce((n, d) => n + uniqueUnits(d.summary?.items ?? []), 0);
+  // Fix 6: count unique reviewable units (sourceId, sectionRef,
+  // category), not raw items — the summary may carry two items
+  // with the same (ref, category) (parser duplicates); decisions,
+  // the Rulebook queue, and coverage all key on (sourceId, ref,
+  // category), so the ladder must count the same units or it can
+  // never clear. The sourceId is load-bearing: two documents with
+  // the same section reference (e.g. §6.01 in a base agreement and
+  // §6.01 in its amendment) are DIFFERENT units — a decision on one
+  // document's §6.01 must not satisfy the other's. Without the
+  // sourceId, the second document's review was silently satisfied
+  // by the first's decisions.
+  const unitKey = (sourceId: string, i: { sectionRef: string; category: string }) =>
+    `${sourceId}::${i.sectionRef}::${i.category}`;
+  const uniqueUnits = (sourceId: string, items: { sectionRef: string; category: string }[]) =>
+    new Set(items.map((i) => unitKey(sourceId, i))).size;
+  const discoveredSummaries = docs.reduce((n, d) => n + uniqueUnits(d.sourceId, d.summary?.items ?? []), 0);
   // Rule 162: stale items count toward the ladder unless disclosed.
   const staleDiscoveredSummaries = docs
     .filter((d) => d.analysisStale)
-    .reduce((n, d) => n + uniqueUnits(d.summary?.items ?? []), 0);
-  const interpretedProvisions = uniqueUnits(
-    docs
-      .flatMap((d) => d.summary?.items ?? [])
-      .filter((i) => i.plainEnglish && !/appears to address/i.test(i.plainEnglish)),
-  );
+    .reduce((n, d) => n + uniqueUnits(d.sourceId, d.summary?.items ?? []), 0);
+  const interpretedProvisions = new Set(
+    docs.flatMap((d) =>
+      (d.summary?.items ?? [])
+        .filter((i) => i.plainEnglish && !/appears to address/i.test(i.plainEnglish))
+        .map((i) => unitKey(d.sourceId, i)),
+    ),
+  ).size;
 
-  // Exception-based review: dedup units by (ref, category) keeping
-  // the first item per key (same unit the Rulebook queue uses),
-  // classify each unit, and count decisions on exception units.
+  // Exception-based review: dedup units by (sourceId, ref, category)
+  // keeping the first item per key (same unit the Rulebook queue
+  // uses), classify each unit, and count decisions on exception units.
   const unitMap = new Map<string, unknown>();
   for (const d of docs) {
     for (const item of d.summary?.items ?? []) {
-      const key = unitKey(item);
+      const key = unitKey(d.sourceId, item);
       if (!unitMap.has(key)) unitMap.set(key, item);
     }
   }
@@ -94,7 +103,9 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   );
   const exceptionItems = exceptionKeys.size;
   const decisionKeys = new Set(
-    counselApprovals.map((a) => `${a.sectionRef}::${a.category}`).filter((k) => unitMap.has(k)),
+    counselApprovals
+      .map((a) => `${a.sourceId ?? ""}::${a.sectionRef}::${a.category}`)
+      .filter((k) => unitMap.has(k)),
   );
   const exceptionDecisions = [...decisionKeys].filter((k) => exceptionKeys.has(k)).length;
   const reviewComplete = unitMap.size > 0 && decisionKeys.size >= unitMap.size;

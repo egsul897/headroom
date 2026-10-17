@@ -77,7 +77,7 @@ describe("rule 171: counsel coverage", () => {
     expect(upserts).toHaveLength(0);
   });
 
-  it("a SYSTEM auto-accept counts as decided; the complete note says exception-based (never counsel-verified)", async () => {
+  it("SYSTEM-only decisions complete the review but do NOT attest coverage (solver-native withheld)", async () => {
     const { db, upserts } = fakeDb({ items: ["6.01(e)"], decided: [], modeledGrants: ["DEBT_INCURRENCE"] });
     db.knowledgeSource.findUnique = async () => ({
       documentId: "doc-1",
@@ -87,7 +87,33 @@ describe("rule 171: counsel coverage", () => {
       },
     });
     const res = await evaluateCounselCoverage(db, { companyId: "co-1", sourceId: "src-1" });
+    // Review is complete (every item decided) but no human attested
+    // it — the declaration must NOT satisfy the human-certified
+    // coverage gate.
     expect(res.reviewComplete).toBe(true);
+    expect(res.humanAttested).toBe(false);
+    expect(upserts).toHaveLength(2);
+    expect(upserts.every((u) => !u.isComplete)).toBe(true);
+    expect(upserts[0]?.notes).toContain("system auto-accept alone");
+    expect(upserts[0]?.notes).toContain("LEGACY stands");
+  });
+
+  it("one COUNSEL decision + rest SYSTEM attests coverage (exceptions were human-decided)", async () => {
+    const { db, upserts } = fakeDb({ items: ["6.01(e)", "6.01(j)"], decided: [], modeledGrants: ["DEBT_INCURRENCE"] });
+    db.knowledgeSource.findUnique = async () => ({
+      documentId: "doc-1",
+      metadata: {
+        covenantSummary: { items: [{ sectionRef: "6.01(e)" }, { sectionRef: "6.01(j)" }] },
+        reviewerApprovals: [
+          { sectionRef: "6.01(e)", decision: "ACCEPTED", reviewerKind: "SYSTEM", reviewerLabel: "system:auto-accept" },
+          { sectionRef: "6.01(j)", decision: "ACCEPTED", reviewerKind: "COUNSEL", reviewerLabel: "counsel@example.com" },
+        ],
+      },
+    });
+    const res = await evaluateCounselCoverage(db, { companyId: "co-1", sourceId: "src-1" });
+    expect(res.reviewComplete).toBe(true);
+    expect(res.humanAttested).toBe(true);
+    expect(upserts.every((u) => u.isComplete)).toBe(true);
     expect(upserts[0]?.notes).toContain("exception-based review");
     expect(upserts[0]?.notes).toContain("not counsel-verified");
   });

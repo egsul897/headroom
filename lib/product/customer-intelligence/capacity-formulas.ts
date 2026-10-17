@@ -63,7 +63,14 @@ export function buildCapacityFormulas(
   const debtItems: FormulaItem[] = [];
   for (const g of [...sharedGroups].sort((a, b) => a.capMillions - b.capMillions)) {
     const members = g.memberCodes.filter((c) => debtCodes.includes(c) && !grouped.has(c));
-    if (members.length < 2) continue; // a 1-member "group" is just that basket
+    if (members.length === 0) continue;
+    // A 1-member group still binds: the aggregate cap limits the
+    // SUM of the members, and the single compiled member's amount
+    // is a lower bound on that sum — so the member alone cannot
+    // exceed the cap. MIN(cap, member) is the correct, fail-closed
+    // group capacity (the old "< 2 skip" let a single compiled
+    // member stand on its own, possibly higher, threshold and
+    // silently dropped the operative aggregate cap).
     for (const c of members) grouped.add(c);
     debtItems.push({
       op: "MIN",

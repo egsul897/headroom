@@ -63,6 +63,7 @@ import type {
   Transaction,
 } from "./solver/types";
 import { computeSharedConstraintCurrentUsage } from "./solver/shared-usage";
+import { permissionCodePrefix } from "./product/customer-intelligence/permission-code";
 
 // ---------------------------------------------------------------------------
 // Types mirroring the Prisma schema (decimal fields as `number`)
@@ -245,13 +246,18 @@ export interface DocumentInput {
   governs?: string | null;
   /**
    * True when this document's analysis carries restriction-bearing
-   * summary items (baskets / conditions / permissions) with no
-   * reviewer decision yet. An AMENDMENT with unresolved restrictions
-   * must not be skipped by Fix 8 — its effect is unknown, so the
-   * package capacity stays NOT_DETERMINABLE (fail-closed) until
-   * counsel reviews those items. Computed by
-   * loadCompanyCovenantData from the KnowledgeSource metadata.
-   * Absent (unknown) is treated as unresolved by
+   * summary items (baskets / conditions / permissions) whose
+   * operative effects are NOT evidenced as incorporated: undecided,
+   * or ACCEPTED/EDITED with no live compiled artifact (Permission
+   * mirror / ratio provision) for exactly that (sourceId,
+   * sectionRef, category). REJECTED items count as incorporated
+   * (counsel determined no operative effect). An AMENDMENT with
+   * unincorporated restrictions must not be skipped by Fix 8 — its
+   * effect is unknown, so the package capacity stays
+   * NOT_DETERMINABLE (fail-closed) until the effects are compiled
+   * or counsel rejects them. Computed by
+   * loadCompanyCovenantData from the KnowledgeSource metadata +
+   * live provisions. Absent (unknown) is treated as unresolved by
    * isNonCapacityAmendment only for AMENDMENT documents.
    */
   hasUnresolvedRestrictions?: boolean;
@@ -727,7 +733,30 @@ export function isNonCapacityAmendment(d: DocumentCapacityResult): boolean {
  * (Fix 6 isolation); a decision for another category does not
  * resolve this item.
  */
-export function hasUnresolvedRestrictionsForSource(
+/**
+ * Pure helper for the amendment-exclusion flag: does this analysis
+ * carry a restriction-bearing summary item whose operative effect
+ * is NOT evidenced as incorporated?
+ *
+ * A reviewer decision alone is NOT incorporation evidence. An
+ * amendment item that counsel ACCEPTED but that compiled
+ * INCOMPLETE (no Permission, no provision) has an unknown effect
+ * — excluding the amendment on the strength of the decision alone
+ * would silently drop a restriction the base agreement never had.
+ * Incorporation evidence is one of:
+ * - REJECTED: counsel determined the item has no operative effect
+ *   (the determination itself is the evidence); or
+ * - ACCEPTED/EDITED with a LIVE compiled artifact for exactly this
+ *   (sourceId, sectionRef, category): a CovenantProvision whose
+ *   code starts with the item's counsel prefix. The compile
+ *   mirrors every MODELED Permission into a CovenantProvision with
+ *   the same code, and ratio provisions carry the RATIO code, so
+ *   the provision rows (date-filtered, effectiveTo=null) cover
+ *   both grant and ratio artifacts. A superseded artifact
+ *   (effectiveTo set) does not count — it is not operative.
+ * Undecided items are never incorporated.
+ */
+export function hasUnincorporatedRestrictionsForSource(
   items: Array<{
     sectionRef: string;
     category: string;
@@ -735,12 +764,18 @@ export function hasUnresolvedRestrictionsForSource(
     conditions?: unknown;
     permissions?: unknown;
   }>,
-  approvals: Array<{ sectionRef?: unknown; category?: unknown }>,
+  approvals: Array<{ sectionRef?: unknown; category?: unknown; decision?: unknown }>,
+  provisions: Array<{ code: string; documentId: string }>,
+  sourceId: string,
+  documentId: string,
 ): boolean {
-  const decided = new Set(
+  const byKey = new Map(
     approvals
       .filter((a) => typeof a.sectionRef === "string")
-      .map((a) => `${a.sectionRef as string}::${typeof a.category === "string" ? a.category : ""}`),
+      .map((a) => [
+        `${a.sectionRef as string}::${typeof a.category === "string" ? a.category : ""}`,
+        a.decision,
+      ]),
   );
   return items.some((item) => {
     const restrictionBearing =
@@ -748,7 +783,13 @@ export function hasUnresolvedRestrictionsForSource(
       (Array.isArray(item.conditions) && item.conditions.length > 0) ||
       (Array.isArray(item.permissions) && item.permissions.length > 0);
     if (!restrictionBearing) return false;
-    return !decided.has(`${item.sectionRef}::${item.category ?? ""}`);
+    const decision = byKey.get(`${item.sectionRef}::${item.category ?? ""}`);
+    if (decision === undefined) return true; // undecided — never incorporated
+    if (decision === "REJECTED") return false; // counsel determined no operative effect
+    // ACCEPTED / EDITED (counsel or system): require a live compiled
+    // artifact for exactly this (sourceId, sectionRef, category).
+    const prefix = permissionCodePrefix(sourceId, item.sectionRef, item.category ?? "");
+    return !provisions.some((p) => p.documentId === documentId && p.code.startsWith(prefix));
   });
 }
 
@@ -2082,14 +2123,18 @@ export async function loadCompanyCovenantData(
   const totalAssets = extractTotalAssetsFromStates(financialStates);
   const netWorth = extractNetWorthFromStates(financialStates);
 
-  // Issue 5: per-document unresolved-restrictions flag, from the
-  // KnowledgeSource metadata (summary items + reviewer decisions).
-  // Per analysis row (a document's rows share its documentId but
-  // carry distinct sourceIds; decisions are per-source, so match
-  // approvals to items within the same row). A document with no
-  // KnowledgeSource row has no analysis — its restrictions are
-  // unknown, so the flag is true (fail-closed: an amendment with
-  // no analysis is never silently skipped).
+  // Amendment-exclusion flag: per-document unincorporated-
+  // restrictions, from the KnowledgeSource metadata (summary items
+  // + reviewer decisions) and the live CovenantProvisions
+  // (compiled artifacts). Per analysis row (a document's rows
+  // share its documentId but carry distinct sourceIds; decisions
+  // are per-source, so match approvals to items within the same
+  // row). A decision alone is NOT incorporation evidence — an
+  // ACCEPTED-but-INCOMPLETE item has no compiled artifact, so its
+  // effect is unknown and the amendment must not be excluded.
+  // A document with no KnowledgeSource row has no analysis — its
+  // restrictions are unknown, so the flag is true (fail-closed: an
+  // amendment with no analysis is never silently skipped).
   const unresolvedByDocumentId = new Map<string, boolean>();
   for (const row of knowledgeSources) {
     if (!row.documentId) continue;
@@ -2106,10 +2151,20 @@ export async function loadCompanyCovenantData(
       permissions: i.permissions,
     }));
     const approvals = (Array.isArray(meta.reviewerApprovals) ? meta.reviewerApprovals : []).filter(
-      (a): a is { sectionRef?: unknown; category?: unknown } =>
+      (a): a is { sectionRef?: unknown; category?: unknown; decision?: unknown } =>
         !!a && typeof a === "object" && (a as { sourceId?: unknown }).sourceId === row.sourceId,
     );
-    const unresolved = hasUnresolvedRestrictionsForSource(items, approvals as never);
+    // Live provisions (date-filtered by the loader's query) are
+    // the incorporation evidence: the compile mirrors every
+    // MODELED Permission into a CovenantProvision with the same
+    // code, and ratio provisions carry the RATIO code.
+    const unresolved = hasUnincorporatedRestrictionsForSource(
+      items,
+      approvals as never,
+      provisions.map((p) => ({ code: p.code, documentId: p.documentId })),
+      row.sourceId,
+      row.documentId,
+    );
     unresolvedByDocumentId.set(row.documentId, (unresolvedByDocumentId.get(row.documentId) ?? false) || unresolved);
   }
 
