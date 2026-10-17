@@ -52,11 +52,14 @@ fails on drift). Workflow changes need a workflow-scoped push. The gate has:
   Evidence is (1) the explicit list `PROTECTED_PATHS` in `protected-paths.mjs`
   (`tests/contract-model/certified/`, `docs/phase-3-reliability-stratified-certification/`,
   the scoreboard's baseline/baselines/snapshot/ruleset/fresh-tunable/held-out and other
-  data files), and (2) token rules for held-out / holdout / blind / frozen / ground-truth /
-  baseline(s) / sealed / unit-dump(s): a token directory protects everything under it;
-  a token-named file is protected unless it is source code (.ts/.mjs/.sh/...), which is
-  only listed as a warning (e.g. `scripts/p3-conmed-pilot/recovery-preflight-baseline.ts`).
-  The job re-runs on `labeled` / `unlabeled`.
+  data files, and seven frozen evidence files written as source: the unseen-packages
+  `human-ground-truth.ts` fixtures, the context-retrieval ground-truth fixtures,
+  `held-out-oracles.test.ts`, `phase-3b-baseline.ts`), and (2) token rules for held-out /
+  holdout / blind / frozen / ground-truth / baseline(s) / sealed / unit-dump(s): a token
+  directory protects everything under it, and a token-named file is protected whatever its
+  extension. Only an exact entry in `SOURCE_WARN_ALLOWLIST` (source under `scripts/`, empty
+  by default) downgrades a token-named file to a warning. A symlink the PR adds or changes is
+  protected when its target is protected or lies outside the repo.
 - **Clean tree.** After the PR test run, `git status --porcelain` must be empty.
   Tests and the scripts they spawn write generated artifacts through
   `lib/platform/artifact-output.ts`, which redirects to

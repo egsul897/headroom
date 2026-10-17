@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { changedPathsBetween, checkProtectedPaths, classifyPath, isProtectedPath, OWNER_LABEL, parseLabels, PROTECTED_PATHS } from "../../scripts/platform/protected-paths.mjs";
+import { changedPathsBetween, checkProtectedPaths, classifyPath, isProtectedPath, OWNER_LABEL, parseLabels, PROTECTED_PATHS, resolveLinkTarget, SOURCE_WARN_ALLOWLIST, symlinkIsProtected, symlinksBetween } from "../../scripts/platform/protected-paths.mjs";
 
 describe("pr-gate protected-path check", () => {
   it("flags held-out / blind / baseline / frozen / ground-truth / sealed paths", () => {
@@ -64,7 +64,7 @@ describe("pr-gate protected-path check", () => {
     for (const p of ["docs/x/baselines/run.ts", "tests/fixtures/held_out/loader.ts", "docs/covenant-learning-factory/unit-dumps/x.ts", "a/blind/b.mjs", "a/sealed/b.sh"])
       expect(classifyPath(p).status, p).toBe("protected");
   });
-  it("token-named data files are protected; token-named source files only warn", () => {
+  it("token-named files are protected whatever their extension; source included (fail closed)", () => {
     for (const p of [
       "docs/phase-3-conmed-benchmark-recovery-preflight/01-red-baselines.json",
       "docs/a/run-baseline.jsonl",
@@ -75,16 +75,81 @@ describe("pr-gate protected-path check", () => {
       "docs/a/baseline.txt",
       "docs/a/baseline.json.gz",
       "docs/a/baseline.yaml",
-      "docs/a/baseline", // no extension: not recognised as source, so protected
-    ]) expect(classifyPath(p).status, p).toBe("protected");
-    for (const p of [
+      "docs/a/baseline",
       "scripts/p3-conmed-pilot/recovery-preflight-baseline.ts",
       "scripts/x/frozen-check.mjs",
       "tests/x/ground-truth-loader.test.ts",
-      "scripts/x/baseline.sh",
-    ]) expect(classifyPath(p).status, p).toBe("warn");
+      "lib/x/replay-from-frozen-cache.ts",
+      "docs/x/_holdout-sample-build-script.py",
+    ]) expect(classifyPath(p).status, p).toBe("protected");
     const r = checkProtectedPaths(["scripts/p3-conmed-pilot/recovery-preflight-baseline.ts", "lib/a.ts"], []);
-    expect(r).toEqual({ ok: true, approved: false, protectedChanged: [], warnings: ["scripts/p3-conmed-pilot/recovery-preflight-baseline.ts"] });
+    expect(r).toEqual({ ok: false, approved: false, protectedChanged: ["scripts/p3-conmed-pilot/recovery-preflight-baseline.ts"], warnings: [] });
+  });
+  it("the seven frozen source-form evidence files are listed explicitly and fail the gate", () => {
+    const seven = [
+      "tests/fixtures/unseen-packages/conmed-2025-credit-facility/human-ground-truth.ts",
+      "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/human-ground-truth.ts",
+      "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/human-ground-truth.ts",
+      "tests/fixtures/context-retrieval-benchmark/fwrg-context-ground-truth.ts",
+      "tests/fixtures/context-retrieval-benchmark/lsb-context-ground-truth.ts",
+      "tests/autonomous-financial-computation/held-out-oracles.test.ts",
+      "tests/contract-model/semantic-compiler/phase-3b-baseline.ts",
+    ];
+    for (const p of seven) {
+      expect(PROTECTED_PATHS, p).toContain(p);
+      expect(classifyPath(p), p).toEqual({ status: "protected", reason: `listed: ${p}` });
+      // even an allowlist entry cannot release them
+      expect(classifyPath(p, { warnAllowlist: [p] }).status, p).toBe("protected");
+      expect(checkProtectedPaths([p], []).ok, p).toBe(false);
+    }
+  });
+  it("only an explicit allowlist releases a token-named file, and only a source file under scripts/", () => {
+    expect(SOURCE_WARN_ALLOWLIST).toEqual([]);
+    const allow = ["scripts/x/red-baseline.ts", "tests/x/held-out-eval.test.ts", "docs/x/frozen.py", "scripts/x/baseline.json"];
+    expect(classifyPath("scripts/x/red-baseline.ts", { warnAllowlist: allow }).status).toBe("warn");
+    expect(classifyPath("tests/x/held-out-eval.test.ts", { warnAllowlist: allow }).status).toBe("protected");
+    expect(classifyPath("docs/x/frozen.py", { warnAllowlist: allow }).status).toBe("protected");
+    expect(classifyPath("scripts/x/baseline.json", { warnAllowlist: allow }).status).toBe("protected");
+    expect(classifyPath("scripts/x/other-baseline.ts", { warnAllowlist: allow }).status).toBe("protected");
+  });
+  it("every tracked file the 220a6123 matcher protected is still protected (no file was released)", () => {
+    // PROTECTED_PATTERN exactly as it stood at 220a6123 (copied verbatim, so this needs no git history)
+    const oldPattern = /(?:(?:^|[/_.\-])(?:held[-_]?out|hold[-_]?out|frozen|ground[-_]?truth|baselines?|sealed|unit[-_]?dumps?)(?=[/_.\-]|$))|blind/i;
+    const tracked = execFileSync("git", ["ls-files"], { encoding: "utf8" }).split("\n").filter(Boolean);
+    const before = tracked.filter((f) => oldPattern.test(f));
+    expect(before.length).toBeGreaterThan(35);
+    const released = before.filter((f) => !isProtectedPath(f));
+    expect(released).toEqual([]);
+  });
+  it("symlinks: a link to a protected file or directory, or out of the repo, is protected; a link to ordinary source is not", () => {
+    expect(symlinkIsProtected({ link: "lib/gt.ts", target: "../tests/fixtures/unseen-packages/conmed-2025-credit-facility/human-ground-truth.ts" })).toBe(true);
+    expect(symlinkIsProtected({ link: "docs/x/data.json", target: "../covenant-learning-factory/unit-dumps/mhk.units.json" })).toBe(true);
+    expect(symlinkIsProtected({ link: "lib/certified", target: "../tests/contract-model/certified" })).toBe(true);
+    expect(symlinkIsProtected({ link: "lib/a.ts", target: "/etc/passwd" })).toBe(true);
+    expect(symlinkIsProtected({ link: "lib/a.ts", target: "../../outside" })).toBe(true);
+    expect(symlinkIsProtected({ link: "lib/a.ts", target: "./b.ts" })).toBe(false);
+    expect(resolveLinkTarget("lib/x/a.ts", "../b.ts")).toBe("lib/b.ts");
+  });
+  it("a NEW symlink to a protected file fails the gate end to end through git", () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "pp-link-"));
+    const git = (...a: string[]) => execFileSync("git", ["-c", "user.email=t@t", "-c", "user.name=t", ...a], { cwd: dir, encoding: "utf8" });
+    git("init", "-q", "-b", "main");
+    fs.mkdirSync(path.join(dir, "tests/fixtures/x"), { recursive: true });
+    fs.mkdirSync(path.join(dir, "lib"));
+    fs.writeFileSync(path.join(dir, "tests/fixtures/x/human-ground-truth.ts"), "export {}\n");
+    fs.writeFileSync(path.join(dir, "lib/ok.ts"), "export {}\n");
+    git("add", "-A");
+    git("commit", "-qm", "base");
+    git("checkout", "-qb", "pr");
+    fs.symlinkSync("../tests/fixtures/x/human-ground-truth.ts", path.join(dir, "lib/answers.ts"));
+    fs.symlinkSync("ok.ts", path.join(dir, "lib/alias.ts"));
+    git("add", "-A");
+    git("commit", "-qm", "links");
+    const links = symlinksBetween("main", "HEAD", dir);
+    expect(links).toEqual(expect.arrayContaining([{ link: "lib/answers.ts", target: "../tests/fixtures/x/human-ground-truth.ts" }, { link: "lib/alias.ts", target: "ok.ts" }]));
+    const r = checkProtectedPaths(changedPathsBetween("main", "HEAD", dir), [], links);
+    expect(r.ok).toBe(false);
+    expect(r.protectedChanged).toEqual(["lib/answers.ts"]);
   });
   it("parses labels from the workflow's JSON (names or label objects)", () => {
     expect(parseLabels(undefined)).toEqual([]);
