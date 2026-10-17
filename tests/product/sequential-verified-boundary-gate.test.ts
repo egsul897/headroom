@@ -88,6 +88,11 @@ describe("shared-capacity identity matching does not admit unverified pools", ()
       inputs: w.inputs,
       ledger: [],
       asOf: w.asOf,
+      // PAI-04 attestation: this constructed world carries no usage records
+      // anywhere (the world builder's ledger is []), so the empty ledger is
+      // complete by construction — the same fact the sequential half below
+      // attests via utilizationAffirmedComplete.
+      utilizationCompleteness: "VERIFIED_EMPTY",
     });
     expect(cap.outcome).toBe("EXECUTED");
     if (cap.outcome !== "EXECUTED") throw new Error("unreachable");
