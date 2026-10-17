@@ -258,7 +258,7 @@ export default async function RulebookPage({
                           fontWeight: c.proposal.needsAttention ? 600 : undefined,
                         }}
                       >
-                        {c.proposal.needsAttention ? "⚠ Needs your input — " : "Headroom proposes: "}
+                        {c.proposal.needsAttention ? "⚠ Headroom proposes: Needs your input — " : "Headroom proposes: "}
                         {c.proposal.decision === "ACCEPTED"
                           ? "Accept"
                           : c.proposal.decision === "REJECTED"
