@@ -1,10 +1,9 @@
 import { CountUp } from "@/components/motion/CountUp";
-import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
+import { ProofTrigger } from "@/components/ux/ProofDrawer";
 import { HOME_RISK_NEEDS_REVIEW } from "@/lib/home/copy";
 import { UNKNOWN_STATE, presentRisk, type RiskLoadState } from "@/lib/home/load-state";
+import { FIGURE_INPUTS, unloadedProof } from "@/lib/ux/present";
 import { EmptyCopy, RegionCard } from "./RegionCard";
-
-const NOTE = "The count on the card is already shown. This panel did not load a source, a clause, or a history.";
 
 export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoadState }) {
   const presented = presentRisk(state);
@@ -14,9 +13,7 @@ export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoa
         <div className="home-empty" data-load-kind="VERIFIED_POPULATED" data-slot="covenantsAtRisk">
           <p className="home-headline">{HOME_RISK_NEEDS_REVIEW.headline}</p>
           <p className="home-detail">{HOME_RISK_NEEDS_REVIEW.detail}</p>
-          <OpenProvenanceButton title="Covenants at risk" note={NOTE}>
-            Open detail
-          </OpenProvenanceButton>
+          <ProofTrigger proof={unloadedProof("Covenants at risk", null, FIGURE_INPUTS.covenantsAtRisk)}>How we got this</ProofTrigger>
         </div>
       </RegionCard>
     );
@@ -29,9 +26,14 @@ export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoa
     return (
       <RegionCard region="covenants-at-risk" eyebrow="Covenants at risk">
         <div className="home-kpi-figure" data-load-kind="VERIFIED_POPULATED" data-slot="covenantsAtRisk">
-          <p className="home-kpi-value home-kpi-value-hero">
-            <CountUp text={Number.isFinite(n) ? String(n) : (count ?? "")} />
-          </p>
+          <ProofTrigger
+            className="figure-hit"
+            proof={unloadedProof("Covenants at risk", Number.isFinite(n) ? String(n) : (count ?? null), FIGURE_INPUTS.covenantsAtRisk)}
+          >
+            <p className="home-kpi-value home-kpi-value-hero">
+              <CountUp text={Number.isFinite(n) ? String(n) : (count ?? "")} />
+            </p>
+          </ProofTrigger>
           <p className="home-kpi-caption">
             {high > 0 ? `${high} high risk` : null}
             {high > 0 && mod > 0 ? ", " : null}
@@ -43,9 +45,6 @@ export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoa
               <li key={item}>{item}</li>
             ))}
           </ul>
-          <OpenProvenanceButton title="Covenants at risk" note={NOTE}>
-            Open detail
-          </OpenProvenanceButton>
         </div>
       </RegionCard>
     );
@@ -54,18 +53,14 @@ export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoa
     return (
       <RegionCard region="covenants-at-risk" eyebrow="Covenants at risk">
         <EmptyCopy slot="covenantsAtRisk" state={presented} />
-        <OpenProvenanceButton title="Covenants at risk" note={NOTE}>
-          Open detail
-        </OpenProvenanceButton>
+        <ProofTrigger proof={unloadedProof("Covenants at risk", null, FIGURE_INPUTS.covenantsAtRisk)}>How we got this</ProofTrigger>
       </RegionCard>
     );
   }
   return (
     <RegionCard region="covenants-at-risk" eyebrow="Covenants at risk">
       <EmptyCopy slot="covenantsAtRisk" state={presented} />
-      <OpenProvenanceButton title="Covenants at risk" note={NOTE}>
-        Open detail
-      </OpenProvenanceButton>
+      <ProofTrigger proof={unloadedProof("Covenants at risk", null, FIGURE_INPUTS.covenantsAtRisk)}>How we got this</ProofTrigger>
     </RegionCard>
   );
 }

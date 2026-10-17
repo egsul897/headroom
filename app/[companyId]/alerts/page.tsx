@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
+import { ThresholdAlerts } from "@/components/ux/ThresholdAlerts";
 import { loadMonitoringFeed } from "@/lib/product/customer-intelligence/monitoring";
 
 export const metadata = { title: "Headroom — Alerts" };
@@ -36,6 +37,8 @@ export default async function AlertsPage({ params }: { params: Promise<{ company
           {feed.note}
         </div>
       </Card>
+
+      <ThresholdAlerts readings={[]} />
 
       {feed.alerts.length === 0 ? (
         <Card>

@@ -34,6 +34,7 @@ export default async function CompanyIndexPage({ params }: { params: Promise<{ c
       setupCta={overview.setupCta}
       documents={documents}
       preparingIds={scheduledEbitdaDocumentIds(sources)}
+      ratios={overview.keyRatios}
     />
   );
 }

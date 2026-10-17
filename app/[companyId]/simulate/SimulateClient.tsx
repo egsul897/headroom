@@ -28,6 +28,7 @@ import {
 import { mapSimulateStatusToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { commitRestrictedPayment } from "../ledger/actions";
 import { DebtBasketBoard } from "@/components/simulate/DebtBasketBoard";
+import { ScenarioBook } from "@/components/ux/ScenarioBook";
 
 type ActionType = "debt" | "rp" | "investment" | "assetSale";
 type DefinedTermsMap = Record<string, DefinedTermLite[]>;
@@ -227,6 +228,27 @@ export function SimulateClient({
           ))}
         </div>
       </Card>
+
+      <ScenarioBook
+        companyId={companyId}
+        draftLines={[
+          {
+            label: "Action",
+            value:
+              actionType === "debt"
+                ? "Debt incurrence"
+                : actionType === "rp"
+                  ? "Dividend / buyback"
+                  : actionType === "investment"
+                    ? "Investment"
+                    : "Asset sale",
+          },
+          {
+            label: "Amount",
+            value: String(actionType === "debt" ? simAmt : actionType === "rp" ? rpAmt : actionType === "investment" ? invAmt : saleAmt),
+          },
+        ]}
+      />
 
       {actionType === "debt" && (
         <DebtPanel

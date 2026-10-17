@@ -17,6 +17,9 @@ import { HeadroomOverTimeCard } from "./HeadroomOverTimeCard";
 import { BellIcon, ExportIcon } from "./icons";
 import { NextTestCard } from "./NextTestCard";
 import { StatusTable } from "./StatusTable";
+import { KeyRatios } from "@/components/ux/KeyRatios";
+import { MorningBrief } from "@/components/ux/MorningBrief";
+import { UNLOADED_BRIEF, UNLOADED_KEY_RATIOS, type KeyRatioModel, type MorningBriefModel } from "@/lib/ux/present";
 import { TotalHeadroomCard } from "./TotalHeadroomCard";
 import { TransactionsCard } from "./TransactionsCard";
 import { UtilizationCard } from "./UtilizationCard";
@@ -35,6 +38,8 @@ export function CompanyOverview({
   setupCta = null,
   documents = null,
   preparingIds = null,
+  brief = UNLOADED_BRIEF,
+  ratios = UNLOADED_KEY_RATIOS,
 }: {
   companyId: string;
   identityName?: string | null;
@@ -44,6 +49,10 @@ export function CompanyOverview({
   setupCta?: { href: string; label: string; detail: string } | null;
   documents?: readonly { id: string; name: string }[] | null;
   preparingIds?: readonly string[] | null;
+  /** Change feed, needs-you count, and next test. Default is unloaded. */
+  brief?: MorningBriefModel;
+  /** Position ratios. Missing cells stay "Missing input". */
+  ratios?: readonly KeyRatioModel[];
 }) {
   const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
   const alerts = presentAlerts(slots.alerts);
@@ -91,6 +100,8 @@ export function CompanyOverview({
         </div>
       </header>
 
+      <MorningBrief model={brief} />
+
       {setupCta ? (
         <section className="home-card home-setup-banner" data-region="setup">
           <h2 className="home-eyebrow">Set up this workspace</h2>
@@ -113,6 +124,7 @@ export function CompanyOverview({
           <NextTestCard state={slots.nextTest} />
           <EbitdaTile companyId={companyId} documents={documents} preparingIds={preparingIds} />
         </div>
+        <KeyRatios ratios={ratios} />
         <div className="home-split">
           <HeadroomOverTimeCard state={slots.headroomOverTime} />
           <CapacitySummaryCard state={slots.capacitySummary} />
