@@ -6,6 +6,7 @@ import {
   createConfirmKeys,
   ebitdaCallError,
   isPreparingMiss,
+  lastUpdatedLabel,
   scheduledEbitdaDocumentIds,
 } from "@/lib/home/ebitda-confirm";
 
@@ -35,6 +36,13 @@ describe("EBITDA confirm wiring", () => {
     });
     expect(isPreparingMiss(404, "no EBITDA box yet for this document")).toBe(true);
     expect(isPreparingMiss(404, "document not found for this company")).toBe(false);
+    expect(ebitdaCallError(503, "SEC data unavailable: companyfacts", "SEC_UNAVAILABLE")).toMatchObject({
+      text: "SEC data temporarily unavailable, try again",
+      refetch: false,
+      signIn: false,
+    });
+    expect(lastUpdatedLabel("2026-10-16T18:00:00.000Z")).toBe("Last updated Oct 16, 2026");
+    expect(lastUpdatedLabel(null)).toBeNull();
   });
 
   it("reuses one idempotency key until a 2xx retires it", () => {

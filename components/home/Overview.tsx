@@ -111,6 +111,7 @@ export function CompanyOverview({
           <UtilizationCard state={slots.utilization} />
           <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
           <NextTestCard state={slots.nextTest} />
+          <EbitdaTile companyId={companyId} documents={documents} preparingIds={preparingIds} />
         </div>
         <div className="home-split">
           <HeadroomOverTimeCard state={slots.headroomOverTime} />
@@ -120,7 +121,6 @@ export function CompanyOverview({
           <StatusTable state={slots.statusTable} />
           <DriversCard state={slots.drivers} />
         </div>
-        <EbitdaTile companyId={companyId} documents={documents} preparingIds={preparingIds} />
         <div className="home-pair">
           <AlertsCard state={alerts} />
           <TransactionsCard state={slots.transactions} />

@@ -831,8 +831,9 @@ main:has(.app-shell) {
 
 .home-kpis {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 20px;
+  align-items: stretch;
 }
 
 .home-facts {
@@ -1099,9 +1100,12 @@ main:has(.app-shell) {
 }
 
 .ebitda-row-amount {
-  color: var(--shell-muted);
-  font-size: 13px;
-  font-weight: 450;
+  margin-left: auto;
+  text-align: right;
+  white-space: nowrap;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 560;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1193,6 +1197,90 @@ button.ebitda-signin-button:disabled:hover {
 
 .home-kpis .home-card {
   min-height: 148px;
+  height: 100%;
+}
+
+.home-kpis .home-card.ebitda-kpi {
+  padding: 0;
+}
+
+.home-kpis .home-kpi-value,
+.home-kpis .home-kpi-value-hero {
+  font-size: 22px;
+}
+
+.ebitda-kpi {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.ebitda-kpi-button {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 22px 24px 24px;
+  border: none;
+  border-radius: inherit;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ebitda-kpi-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.ebitda-kpi-button .home-eyebrow,
+.ebitda-kpi-top .home-eyebrow {
+  margin: 0;
+}
+
+.ebitda-kpi-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.ebitda-drawer-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 16px;
+  margin: 0 0 16px;
+}
+
+.ebitda-drawer-metrics strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 560;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.ebitda-failed-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 14px;
+  margin: 0;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.ebitda-failed-line span:last-child {
+  color: var(--muted);
+  font-weight: 450;
 }
 
 .home-eyebrow {

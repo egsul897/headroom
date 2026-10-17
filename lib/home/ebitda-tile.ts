@@ -49,6 +49,18 @@ export function formatUsd(value: string | null | undefined): string | null {
   return `${negative ? "−" : ""}$${grouped}`;
 }
 
+/** KPI-row figure. A whole number of millions reads like the other boxes. */
+export function formatKpiUsd(value: string | null | undefined): string | null {
+  if (!isIntegerAmount(value)) return null;
+  const amount = BigInt(value);
+  const abs = amount < 0n ? -amount : amount;
+  if (abs >= 1_000_000n && abs % 1_000_000n === 0n) {
+    const millions = (abs / 1_000_000n).toString();
+    return `${amount < 0n ? "−" : ""}$${millions} million`;
+  }
+  return formatUsd(value);
+}
+
 /** One badge on the list. The sheet shows the flag and the line separately. */
 export function listBadge(item: EbitdaAddBack): AddBackFlagStatus | AddBackLineStatus {
   if (item.flagStatus === "CONDITIONAL") return "CONDITIONAL";

@@ -15,9 +15,21 @@ export function outOfRangeText(message: string | undefined): string {
   return message?.trim() || "That figure is outside the allowed range.";
 }
 
+/** "Last updated Oct 16, 2026" from a FAILED box's staleSince. Null when there is no last good box. */
+export function lastUpdatedLabel(staleSince: string | null | undefined): string | null {
+  if (!staleSince) return null;
+  const date = new Date(staleSince);
+  if (Number.isNaN(date.getTime())) return null;
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
+  return `Last updated ${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
+}
+
 /** Quiet copy for the panel. A 401 is the sign-in state. Never a success message. */
 export function ebitdaCallError(status: number, message: string | undefined, code?: string | null): EbitdaCallError {
   if (status === 401) return { status, text: "Sign in to confirm", refetch: false, signIn: true };
+  if (status === 503 || code === "SEC_UNAVAILABLE") {
+    return { status: 503, text: "SEC data temporarily unavailable, try again", refetch: false, signIn: false };
+  }
   if (code === "NEEDS_BASE") return { status, text: "Needs base EBITDA first", refetch: false, signIn: false };
   if (code === "OUT_OF_RANGE") return { status, text: outOfRangeText(message), refetch: false, signIn: false };
   if (code === "IDEMPOTENCY_CONFLICT" || status === 409) {

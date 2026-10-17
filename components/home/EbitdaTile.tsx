@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
-import { EbitdaGrid, type EbitdaCardModel } from "@/components/home/EbitdaGrid";
+import { AdjustedEbitdaCard, CouldntCompute, EbitdaDrawerHeader } from "@/components/home/EbitdaGrid";
 import { LockIcon } from "@/components/home/icons";
 import { DetailDrawer } from "@/components/motion/DetailDrawer";
 import { useToast } from "@/components/motion/Toast";
@@ -12,6 +12,7 @@ import {
   canConfirm,
   confirmedAddBackTotal,
   ebitdaTotals,
+  formatKpiUsd,
   formatUsd,
   isIntegerAmount,
   listBadge,
@@ -54,6 +55,7 @@ export function EbitdaTile({
   preparingIds = null,
   inlineError = null,
   failedReason = null,
+  staleSince = null,
 }: {
   base?: string | null;
   items?: readonly EbitdaAddBack[] | null;
@@ -64,11 +66,22 @@ export function EbitdaTile({
   preparingIds?: readonly string[] | null;
   inlineError?: string | null;
   failedReason?: string | null;
+  staleSince?: string | null;
 }) {
   if (!sample && base == null && companyId && documents && documents.length > 0) {
     return <EbitdaApiTile companyId={companyId} documents={documents} initialView={initialView} preparingIds={preparingIds ?? []} />;
   }
-  return <EbitdaLocalTile base={base} items={items} sample={sample} initialView={initialView} inlineError={inlineError} failedReason={failedReason} />;
+  return (
+    <EbitdaLocalTile
+      base={base}
+      items={items}
+      sample={sample}
+      initialView={initialView}
+      inlineError={inlineError}
+      failedReason={failedReason}
+      staleSince={staleSince}
+    />
+  );
 }
 
 function EbitdaLocalTile({
@@ -78,6 +91,7 @@ function EbitdaLocalTile({
   initialView = null,
   inlineError = null,
   failedReason = null,
+  staleSince = null,
 }: {
   base?: string | null;
   items?: readonly EbitdaAddBack[] | null;
@@ -85,18 +99,19 @@ function EbitdaLocalTile({
   initialView?: string | null;
   inlineError?: string | null;
   failedReason?: string | null;
+  staleSince?: string | null;
 }) {
   const loaded = base != null && items != null;
   const hasSession = useHasSession();
   const [confirmed, setConfirmed] = useState<ReadonlySet<string>>(() => new Set());
-  const [view, setView] = useState<string | null>(initialView && initialView !== "list" ? initialView : null);
+  const [view, setView] = useState<string | null>(initialView);
   const pushToast = useToast();
   const totals = loaded ? ebitdaTotals(base, items, confirmed) : null;
   const openItem = loaded && view && view !== "list" ? items.find((item) => item.id === view) ?? null : null;
   const drawerOpen = view != null;
   const attention = totals?.attention ?? 0;
 
-  const title = openItem ? openItem.name : "Add-backs";
+  const title = openItem ? openItem.name : "Adjusted EBITDA";
 
   function confirm(item: EbitdaAddBack) {
     if (!readSessionHandle() || !canConfirm(item) || confirmed.has(item.id)) return;
@@ -118,35 +133,11 @@ function EbitdaLocalTile({
     });
   }
 
-  const cards: EbitdaCardModel[] = loaded
-    ? items.map((item) => ({
-        id: item.id,
-        name: item.name,
-        amount: formatUsd(item.amount),
-        status: listBadge(item),
-        source: item.source?.concept ?? null,
-      }))
-    : [];
+  const figure = loaded && totals ? formatKpiUsd(totals.total) ?? "Needs input" : "Needs input";
 
   return (
-    <EbitdaGrid
-      summary={
-        loaded && totals
-          ? {
-              base,
-              confirmed: confirmedAddBackTotal(items, confirmed),
-              proForma: totals.total,
-              additional: totals.additional,
-              needingYou: attention,
-            }
-          : null
-      }
-      cards={cards}
-      onOpen={setView}
-      failedReason={failedReason}
-      onRetry={() => undefined}
-    >
-      <DetailDrawer open={drawerOpen && openItem != null} title={title} onClose={() => setView(null)}>
+    <AdjustedEbitdaCard figure={figure} needingYou={loaded ? attention : null} open={drawerOpen} onOpen={() => setView("list")}>
+      <DetailDrawer open={drawerOpen} title={title} onClose={() => setView(null)}>
         {inlineError ? <p className="ebitda-inline-error">{inlineError}</p> : null}
         {openItem ? (
           <ItemSheet
@@ -154,13 +145,45 @@ function EbitdaLocalTile({
             confirmed={confirmed.has(openItem.id)}
             sample={sample}
             signIn={!hasSession}
-            onBack={() => setView(null)}
+            onBack={() => setView("list")}
             onConfirm={() => confirm(openItem)}
             onUndo={() => undo(openItem)}
           />
-        ) : null}
+        ) : (
+          <>
+            <EbitdaDrawerHeader
+              base={loaded ? base : null}
+              confirmed={loaded ? confirmedAddBackTotal(items, confirmed) : null}
+              additional={loaded && totals ? totals.additional : null}
+            />
+            {failedReason ? <CouldntCompute reason={failedReason} staleSince={staleSince} onRetry={() => undefined} /> : null}
+            {!loaded || !items ? (
+              <p className="drawer-note">No add-backs are loaded.</p>
+            ) : (
+              <ul className="ebitda-list">
+                {items.map((item) => {
+                  const needs = !confirmed.has(item.id);
+                  const amount = formatUsd(item.amount);
+                  return (
+                    <li key={item.id}>
+                      <button type="button" className="ebitda-row" onClick={() => setView(item.id)}>
+                        {needs ? <span className="need-dot" title="Needs you" /> : <span className="need-dot is-quiet" aria-hidden="true" />}
+                        <span className="ebitda-row-name">
+                          {item.name}
+                          <span className="ebitda-source-chip">{item.source?.concept ?? "No source"}</span>
+                        </span>
+                        <span className="ebitda-row-amount">{amount ?? "Needs input"}</span>
+                        <StatusBadge status={listBadge(item)} />
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </>
+        )}
       </DetailDrawer>
-    </EbitdaGrid>
+    </AdjustedEbitdaCard>
   );
 }
 
@@ -184,6 +207,8 @@ type EbitdaBoxPayload = {
   confirmedAddBacks?: string;
   base?: { concept: string; value: string } | null;
   reason: string;
+  staleSince?: string | null;
+  lastGoodBoxId?: string | null;
   items: EbitdaBoxItem[];
 };
 
@@ -205,7 +230,7 @@ function EbitdaApiTile({
   const hasSession = useHasSession();
   const needsSignIn = !hasSession || rejected;
   const [preparing, setPreparing] = useState(preparingIds.includes(documents[0]?.id ?? ""));
-  const [view, setView] = useState<string | null>(initialView && initialView !== "list" ? initialView : null);
+  const [view, setView] = useState<string | null>(initialView);
   const [pending, setPending] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const keys = useMemo(() => createConfirmKeys(), []);
@@ -354,36 +379,15 @@ function EbitdaApiTile({
   }
 
   const failed = box?.status === "FAILED";
-  const cards: EbitdaCardModel[] =
-    box && !failed
-      ? box.items.map((item) => ({
-          id: item.inputKey,
-          name: item.label,
-          amount: formatUsd(item.amount),
-          status: item.status,
-          source: item.source[0]?.ref ?? null,
-        }))
-      : [];
+  const figure = formatKpiUsd(box?.totalEbitda) ?? "Needs input";
 
   return (
-    <EbitdaGrid
-      summary={
-        box && !failed
-          ? {
-              base: box.base?.value ?? null,
-              confirmed: box.confirmedAddBacks ?? null,
-              proForma: box.totalEbitda,
-              additional: box.extraAvailableIfConfirmed,
-              needingYou: attention,
-            }
-          : null
-      }
-      cards={cards}
-      onOpen={setView}
+    <AdjustedEbitdaCard
+      figure={figure}
+      needingYou={box ? attention : null}
       preparing={preparing}
-      failedReason={failed ? box?.reason || "The EBITDA box could not be computed." : null}
-      retrying={retrying}
-      onRetry={() => void retry()}
+      open={view != null}
+      onOpen={() => setView("list")}
     >
       {documents.length > 1 ? (
         <label className="ebitda-caption">
@@ -397,17 +401,52 @@ function EbitdaApiTile({
           </select>
         </label>
       ) : null}
-      {error ? <p className="ebitda-inline-error">{error}</p> : null}
-      {document ? <p className="ebitda-caption">{document.name}</p> : null}
-      <DetailDrawer open={openItem != null} title={openItem?.label ?? "Add-backs"} onClose={() => setView(null)}>
+      <DetailDrawer open={view != null} title={openItem?.label ?? "Adjusted EBITDA"} onClose={() => setView(null)}>
         {error ? <p className="ebitda-inline-error">{error}</p> : null}
         {openItem ? (
-          <ApiItem item={openItem} pending={pending} signIn={needsSignIn} onBack={() => setView(null)} onConfirm={() => confirm(openItem)} />
-        ) : needsSignIn ? (
-          <SignInToConfirm />
-        ) : null}
+          <ApiItem item={openItem} pending={pending} signIn={needsSignIn} onBack={() => setView("list")} onConfirm={() => confirm(openItem)} />
+        ) : (
+          <>
+            <EbitdaDrawerHeader
+              base={box?.base?.value ?? null}
+              confirmed={box?.confirmedAddBacks ?? null}
+              additional={box?.extraAvailableIfConfirmed ?? null}
+            />
+            {failed ? (
+              <CouldntCompute
+                reason={box?.reason || "The EBITDA box could not be computed."}
+                staleSince={box?.staleSince}
+                retrying={retrying}
+                onRetry={() => void retry()}
+              />
+            ) : null}
+            {needsSignIn ? <SignInToConfirm /> : null}
+            {!box || box.items.length === 0 ? (
+              <p className="drawer-note">{preparing ? "Preparing EBITDA…" : "No add-backs are loaded."}</p>
+            ) : (
+              <ul className="ebitda-list">
+                {box.items.map((item) => {
+                  const needs = item.status === "PENDING" || item.status === "CONDITIONAL" || item.status === "NEEDS_INPUT";
+                  return (
+                    <li key={item.inputKey}>
+                      <button type="button" className="ebitda-row" onClick={() => setView(item.inputKey)}>
+                        {needs ? <span className="need-dot" title="Needs you" /> : <span className="need-dot is-quiet" aria-hidden="true" />}
+                        <span className="ebitda-row-name">
+                          {item.label}
+                          <span className="ebitda-source-chip">{item.source[0]?.ref ?? "No source"}</span>
+                        </span>
+                        <span className="ebitda-row-amount">{formatUsd(item.amount) ?? "Needs input"}</span>
+                        <StatusBadge status={item.status} />
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </>
+        )}
       </DetailDrawer>
-    </EbitdaGrid>
+    </AdjustedEbitdaCard>
   );
 }
 

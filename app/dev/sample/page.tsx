@@ -134,8 +134,9 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
         ) : (
           <SampleDashboard
             initialDetail={searchParams.detail === "1"}
-            initialEbitda={searchParams.ebitda === "1" || searchParams.ebitda === "failed" ? null : searchParams.ebitda === "error" ? "a" : searchParams.ebitda ?? null}
+            initialEbitda={searchParams.ebitda === "1" || searchParams.ebitda === "failed" ? "list" : searchParams.ebitda === "error" ? "a" : searchParams.ebitda ?? null}
             failedReason={searchParams.ebitda === "failed" ? "SEC companyfacts 503" : null}
+            staleSince={searchParams.ebitda === "failed" ? "2026-10-16T18:00:00.000Z" : null}
           />
         )}
       </AppShell>

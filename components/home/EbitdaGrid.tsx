@@ -1,124 +1,98 @@
 import type { ReactNode } from "react";
-import { StatusBadge } from "@/components/StatusBadge";
+import { lastUpdatedLabel } from "@/lib/home/ebitda-confirm";
 import { formatUsd } from "@/lib/home/ebitda-tile";
 
-export type EbitdaSummary = {
-  base: string | null;
-  confirmed: string | null;
-  proForma: string | null;
-  additional: string | null;
-  needingYou: number | null;
-};
-
-export type EbitdaCardModel = {
-  id: string;
-  name: string;
-  amount: string | null;
-  status: string;
-  source: string | null;
-};
-
-const SUMMARY: { key: keyof Omit<EbitdaSummary, "needingYou">; label: string }[] = [
-  { key: "base", label: "Base EBITDA" },
-  { key: "confirmed", label: "Confirmed add-backs" },
-  { key: "proForma", label: "Pro forma EBITDA" },
-  { key: "additional", label: "Additional available" },
-];
-
-function figure(value: string | null): string {
+function shown(value: string | null | undefined): string {
   return formatUsd(value) ?? "Needs input";
 }
 
 /**
- * One baseline of summary boxes, then an aligned add-back grid.
- * The boxes share the dashboard card chrome and the same gutter.
+ * One dashboard KPI box. The add-backs live in the slide-over, not on the board.
  */
-export function EbitdaGrid({
-  summary,
-  cards,
-  onOpen,
+export function AdjustedEbitdaCard({
+  figure,
+  needingYou,
   preparing = false,
-  failedReason = null,
-  retrying = false,
-  onRetry,
+  open = false,
+  onOpen,
   children,
 }: {
-  summary: EbitdaSummary | null;
-  cards: readonly EbitdaCardModel[];
-  onOpen: (id: string) => void;
+  figure: string;
+  needingYou: number | null;
   preparing?: boolean;
-  failedReason?: string | null;
-  retrying?: boolean;
-  onRetry?: () => void;
+  open?: boolean;
+  onOpen: () => void;
   children?: ReactNode;
 }) {
+  const badge = needingYou != null && needingYou > 0 ? (needingYou === 1 ? "1 needs you" : `${needingYou} need you`) : null;
   return (
-    <section className="ebitda-panel" data-region="ebitda" aria-label="Consolidated EBITDA">
-      <header className="ebitda-panel-head">
-        <h2 className="home-eyebrow">Consolidated EBITDA</h2>
-      </header>
-      {failedReason ? (
-        <article className="home-card ebitda-failed">
-          <h3 className="home-eyebrow">Couldn't compute</h3>
-          <p>{failedReason}</p>
-          <button type="button" className="button" disabled={retrying} onClick={onRetry}>
-            {retrying ? "Retrying…" : "Retry"}
-          </button>
-        </article>
-      ) : preparing ? (
-        <div className="ebitda-summary" aria-busy="true">
-          {SUMMARY.map((row) => (
-            <article key={row.key} className="home-card ebitda-box">
-              <h3 className="home-eyebrow">{row.label}</h3>
-              <p className="ebitda-skeleton">Preparing EBITDA…</p>
-            </article>
-          ))}
-          <article className="home-card ebitda-box">
-            <h3 className="home-eyebrow">Items needing you</h3>
-            <p className="ebitda-skeleton">Preparing EBITDA…</p>
-          </article>
-        </div>
-      ) : (
-        <>
-          <div className="ebitda-summary">
-            {SUMMARY.map((row) => {
-              const text = figure(summary?.[row.key] ?? null);
-              return (
-                <article key={row.key} className="home-card ebitda-box">
-                  <h3 className="home-eyebrow">{row.label}</h3>
-                  <p className={text === "Needs input" ? "ebitda-box-value is-missing" : "ebitda-box-value"}>{text}</p>
-                </article>
-              );
-            })}
-            <article className="home-card ebitda-box">
-              <h3 className="home-eyebrow">Items needing you</h3>
-              <p className="ebitda-box-value">{summary?.needingYou == null ? "Needs input" : String(summary.needingYou)}</p>
-              {summary?.needingYou != null && summary.needingYou > 0 ? (
-                <span className="need-chip">{summary.needingYou === 1 ? "1 item" : `${summary.needingYou} items`}</span>
-              ) : null}
-            </article>
-          </div>
-          {cards.length > 0 ? (
-            <div className="ebitda-cards">
-              {cards.map((card) => (
-                <button key={card.id} type="button" className="ebitda-card" onClick={() => onOpen(card.id)}>
-                  <span className="ebitda-card-top">
-                    <span className="ebitda-card-name">{card.name}</span>
-                    <span className={card.amount ? "ebitda-card-amount" : "ebitda-card-amount is-missing"}>{card.amount ?? "Needs input"}</span>
-                  </span>
-                  <span className="ebitda-card-meta">
-                    <StatusBadge status={card.status} />
-                    <span className="ebitda-source-chip">{card.source ?? "No source"}</span>
-                  </span>
-                </button>
-              ))}
-            </div>
-          ) : (
-            <p className="drawer-note">The credit agreement has not been read yet.</p>
-          )}
-        </>
-      )}
+    <section className="home-card ebitda-kpi" data-region="ebitda" aria-label="Adjusted EBITDA">
+      <button type="button" className="ebitda-kpi-button" onClick={onOpen} aria-expanded={open}>
+        <span className="home-eyebrow">Adjusted EBITDA</span>
+        {preparing ? (
+          <span className="ebitda-skeleton">Preparing EBITDA…</span>
+        ) : (
+          <span className={figure === "Needs input" ? "home-kpi-value is-missing" : "home-kpi-value"}>{figure}</span>
+        )}
+        <span className="home-kpi-caption ebitda-kpi-caption">
+          Pro forma
+          {badge ? <span className="need-chip">{badge}</span> : null}
+        </span>
+      </button>
       {children}
     </section>
+  );
+}
+
+/** Base, confirmed, and available, as a compact header inside the slide-over. */
+export function EbitdaDrawerHeader({
+  base,
+  confirmed,
+  additional,
+}: {
+  base: string | null;
+  confirmed: string | null;
+  additional: string | null;
+}) {
+  const rows = [
+    ["Base", shown(base)],
+    ["Confirmed", shown(confirmed)],
+    ["Available", shown(additional)],
+  ] as const;
+  return (
+    <div className="ebitda-drawer-metrics">
+      {rows.map(([label, value]) => (
+        <div key={label}>
+          <span className="ebitda-caption">{label}</span>
+          <strong className={value === "Needs input" ? "is-missing" : undefined}>{value}</strong>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function CouldntCompute({
+  reason,
+  staleSince,
+  retrying = false,
+  onRetry,
+}: {
+  reason: string;
+  staleSince?: string | null;
+  retrying?: boolean;
+  onRetry?: () => void;
+}) {
+  const updated = lastUpdatedLabel(staleSince);
+  return (
+    <div className="ebitda-failed">
+      <p className="ebitda-failed-line">
+        <span>Couldn't compute</span>
+        {updated ? <span>{updated}</span> : null}
+      </p>
+      <p>{reason}</p>
+      <button type="button" className="button" disabled={retrying} onClick={onRetry}>
+        {retrying ? "Retrying…" : "Retry"}
+      </button>
+    </div>
   );
 }
