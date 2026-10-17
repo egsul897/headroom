@@ -27,6 +27,7 @@ import {
 } from "@/lib/covenant-engine";
 import { mapSimulateStatusToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { commitRestrictedPayment } from "../ledger/actions";
+import { DebtBasketBoard } from "@/components/simulate/DebtBasketBoard";
 
 type ActionType = "debt" | "rp" | "investment" | "assetSale";
 type DefinedTermsMap = Record<string, DefinedTermLite[]>;
@@ -308,7 +309,11 @@ function DebtPanel({
   // client-side ratio-consistency recheck: `sim.status` is the sole verdict.
   // `solverContext` lets a solver-native document (no legacy capacity
   // formula) be evaluated too, not just legacy-formula documents.
-  const sim: DebtIncurrenceSimulation = simulateDebtIncurrence(data, position, simAmt, simSecured, solverContext);
+  const [securedAmt, setSecuredAmt] = useState(simSecured ? simAmt : 500);
+  const [unsecuredAmt, setUnsecuredAmt] = useState(simSecured ? 200 : simAmt);
+  const [focusSecured, setFocusSecured] = useState(simSecured);
+  const focusAmt = focusSecured ? securedAmt : unsecuredAmt;
+  const sim: DebtIncurrenceSimulation = simulateDebtIncurrence(data, position, focusAmt, focusSecured, solverContext);
   const tone = RESULT_TONE[sim.status];
   const blockedRatioTests = sim.ratioTests.filter((r) => r.applies && r.status === "blocked");
   const customerStatus = mapSimulateStatusToCustomerStatus(sim.status, {
@@ -324,35 +329,25 @@ function DebtPanel({
           Tested pro forma against every governing document and every applicable ratio test. Results are{" "}
           <StatusChip code="HYPOTHETICAL" compact /> — not production-authoritative capacity.
         </div>
-        <div style={{ marginTop: 14 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-            <span className="field-label">Amount</span>
-            <span className="mono" style={{ fontSize: 20, fontWeight: 600 }}>{fmtM(simAmt)}</span>
-          </div>
-          <input
-            type="range"
-            min={0}
-            max={8000}
-            step={100}
-            value={simAmt}
-            onChange={(e) => setSimAmt(Number(e.target.value))}
-          />
-        </div>
-        <div className="button-row" style={{ marginTop: 12 }}>
-          {[
-            ["Secured", true],
-            ["Unsecured", false],
-          ].map(([label, val]) => (
-            <button
-              key={String(val)}
-              type="button"
-              className={`button ${simSecured === val ? "active" : ""}`}
-              onClick={() => setSimSecured(val as boolean)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <DebtBasketBoard
+          data={data}
+          position={position}
+          solverContext={solverContext}
+          securedAmount={securedAmt}
+          unsecuredAmount={unsecuredAmt}
+          onSecuredAmount={(amount) => {
+            setSecuredAmt(amount);
+            setFocusSecured(true);
+            setSimAmt(amount);
+            setSimSecured(true);
+          }}
+          onUnsecuredAmount={(amount) => {
+            setUnsecuredAmt(amount);
+            setFocusSecured(false);
+            setSimAmt(amount);
+            setSimSecured(false);
+          }}
+        />
       </Card>
 
       <div className={`result-panel ${tone === "ok" ? "ok" : tone === "blocked" ? "blocked" : ""}`} style={tone === "review" ? { background: "var(--amber-soft)", borderColor: "var(--amber)" } : undefined} data-simulate-status={customerStatus}>

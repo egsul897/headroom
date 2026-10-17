@@ -13,6 +13,8 @@ import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
 import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
 import { SampleClauses } from "./clauses";
 import { SampleDashboard } from "./dashboard";
+import { SampleSimulate } from "./simulate";
+import { SampleAsk } from "./ask-preview";
 import { SAMPLE_BANNER, SAMPLE_COMPANY, SAMPLE_TICKER } from "./fixture";
 
 export const dynamic = "force-dynamic";
@@ -22,7 +24,7 @@ export const metadata = { title: "Headroom — sample data" };
  * Development illustration. Production builds take notFound().
  * This module does not import Prisma, Neon, or the dashboard service.
  */
-export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string; detail?: string; ebitda?: string } }) {
+export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string; detail?: string; ebitda?: string; amt?: string } }) {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") notFound();
   const screen = searchParams.screen ?? "overview";
   const brand = searchParams.brand === "navy" || searchParams.brand === "olive" || searchParams.brand === "teal" ? searchParams.brand : undefined;
@@ -104,7 +106,9 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
     );
   }
 
-  const path = screen === "covenants" ? "/sample/covenants" : screen === "capacity" ? "/sample/capacity" : "/sample";
+  const path = screen === "covenants" ? "/sample/covenants" : screen === "capacity" ? "/sample/capacity" : screen === "simulate" ? "/sample/simulate" : screen === "ask" ? "/sample/ask" : "/sample";
+  const securedAmount = Number(searchParams.amt);
+  const initialSecured = Number.isFinite(securedAmount) ? securedAmount : 200;
   const rail = searchParams.rail === "deep" || searchParams.rail === "mid" || searchParams.rail === "soft" ? searchParams.rail : undefined;
 
   return (
@@ -122,6 +126,10 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
           <CovenantsSample brand={brand} initialDetail={searchParams.detail === "1"} />
         ) : screen === "capacity" ? (
           <CapacitySample />
+        ) : screen === "simulate" ? (
+          <SampleSimulate initialSecured={initialSecured} />
+        ) : screen === "ask" ? (
+          <SampleAsk />
         ) : (
           <SampleDashboard
             initialDetail={searchParams.detail === "1"}
