@@ -31,3 +31,13 @@ Enforce ON + Stripe OFF ⇒ gated features are **denied** (fail closed).
 - Create the Stripe account, products/prices, and webhook endpoint (`/api/billing/webhook`, events `checkout.session.completed`, `customer.subscription.created|updated|deleted`), then set the env vars above.
 - Apply the migration.
 - Decide which features call `checkWorkspacePlan` and the pricing UI (Designer).
+
+## Webhook correctness (Reviewer round 2)
+
+- **One transaction per event.** Each webhook event is handled in a single DB transaction: the receipt row (`INSERT … ON CONFLICT DO NOTHING` and then `SELECT … FOR UPDATE`), a per-workspace advisory lock, the order check, the subscription upsert, and `processedAt`. If anything fails, the whole transaction rolls back, including the receipt. Stripe's retry then processes the event again. An event counts as a duplicate only once `processedAt` is committed.
+- **CANCELED is terminal for a subscription id.** A same-second `active` update can't resurrect it, because Stripe's `created` field is whole seconds. A new subscription id applies normally.
+- **`lastEventCreated` is BIGINT.**
+- **Store read errors are reported as 503 `BILLING_STORE_UNAVAILABLE`.** The gate denies with `STORE_UNAVAILABLE` and never reports `NO_SUBSCRIPTION` for a read failure. Checkout makes no Stripe call when our own store can't be read.
+- **Who can check out.** Only a platform `ADMIN` or a user listed in `workspace_billing_owners` can start a checkout for their workspace. UserRole has no OWNER value, and that table is provisioned offline.
+- **Rollback.** `prisma/migrations/20261017160000_workspace_billing/down.sql` is a manual, destructive rollback and needs owner approval.
+- **Real-Postgres tests.** `BILLING_TEST_DATABASE_URL=… npx vitest run tests/billing/prisma-store.pg.test.ts` checks atomicity, concurrent duplicate delivery, concurrent older/newer delivery, and BIGINT.

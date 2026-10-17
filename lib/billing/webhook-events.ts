@@ -1,8 +1,17 @@
 /**
  * Apply verified Stripe webhook events to the workspace subscription row.
  *
- * - Idempotent: the Stripe event id is recorded first; a replay is a no-op.
- * - Ordered: an event older than the row's lastEventCreated never overwrites it.
+ * - Atomic + idempotent: the receipt row, the order check and the subscription
+ *   write happen in ONE store transaction. A failure anywhere rolls the receipt
+ *   back too, so Stripe's retry re-processes the event (never "DUPLICATE" for an
+ *   event that was not applied). A receipt only counts as a duplicate once
+ *   processedAt is set.
+ * - Serialised per workspace: the transaction takes a per-company lock before the
+ *   order check, so check + upsert cannot interleave with another delivery.
+ * - Ordered: an event older than the row's lastEventCreated never overwrites it,
+ *   and CANCELED is terminal for that subscription id (Stripe never reactivates a
+ *   canceled subscription; `created` is whole seconds, so a same-second "active"
+ *   update must not resurrect it). A new subscription id applies normally.
  * - Tenant binding comes ONLY from metadata.companyId / client_reference_id
  *   that our own checkout set, and the company must exist. An event that
  *   cannot be bound is recorded as UNBOUND and changes nothing.
@@ -31,14 +40,28 @@ export interface SubscriptionPatch {
   lastEventCreated: number;
 }
 
-export interface BillingStore {
-  /** Insert the event receipt; return false when this id was already recorded. */
-  recordEvent(e: { id: string; type: string; companyId: string | null }): Promise<boolean>;
+export interface OrderState {
+  lastEventCreated: number | null;
+  status: SubscriptionStatus | null;
+  stripeSubscriptionId: string | null;
+}
+
+/** Store operations available inside one transaction. */
+export interface BillingTx {
+  /** Insert the receipt if absent and lock it; "DONE" only when it was already processed. */
+  claimEvent(e: { id: string; type: string; companyId: string | null }): Promise<"FRESH" | "DONE">;
   markEventProcessed(id: string, outcome: string): Promise<void>;
   companyExists(companyId: string): Promise<boolean>;
   findCompanyIdBySubscription(stripeSubscriptionId: string): Promise<string | null>;
-  getLastEventCreated(companyId: string): Promise<number | null>;
+  /** Serialise event application for this workspace until the transaction ends. */
+  lockCompany(companyId: string): Promise<void>;
+  getOrderState(companyId: string): Promise<OrderState | null>;
   upsertSubscription(patch: SubscriptionPatch): Promise<void>;
+}
+
+export interface BillingStore {
+  /** Run fn atomically: all of its writes commit together or none do. */
+  transaction<T>(fn: (tx: BillingTx) => Promise<T>): Promise<T>;
 }
 
 export type ApplyOutcome = "DUPLICATE" | "IGNORED_TYPE" | "UNBOUND" | "STALE" | "APPLIED";
@@ -80,36 +103,45 @@ const HANDLED = new Set([
 ]);
 
 export async function applyStripeEvent(event: StripeEvent, store: BillingStore, config: BillingConfig): Promise<ApplyOutcome> {
+  return store.transaction((tx) => applyInTx(event, tx, config));
+}
+
+async function applyInTx(event: StripeEvent, tx: BillingTx, config: BillingConfig): Promise<ApplyOutcome> {
   const obj = event.data?.object ?? {};
   let companyId: string | null = null;
+  let incomingSubId: string | null = null;
   if (event.type === "checkout.session.completed") {
     companyId = metadataCompanyId(obj) ?? str(obj.client_reference_id);
+    incomingSubId = idOf(obj.subscription);
   } else if (event.type.startsWith("customer.subscription.")) {
     companyId = metadataCompanyId(obj);
-    const subId = idOf(obj.id);
-    if (!companyId && subId) companyId = await store.findCompanyIdBySubscription(subId);
+    incomingSubId = idOf(obj.id);
+    if (!companyId && incomingSubId) companyId = await tx.findCompanyIdBySubscription(incomingSubId);
   }
 
-  const fresh = await store.recordEvent({ id: event.id, type: event.type, companyId });
-  if (!fresh) return "DUPLICATE";
+  if ((await tx.claimEvent({ id: event.id, type: event.type, companyId })) === "DONE") return "DUPLICATE";
 
   const finish = async (o: ApplyOutcome) => {
-    await store.markEventProcessed(event.id, o);
+    await tx.markEventProcessed(event.id, o);
     return o;
   };
 
   if (!HANDLED.has(event.type)) return finish("IGNORED_TYPE");
-  if (!companyId || !(await store.companyExists(companyId))) return finish("UNBOUND");
+  if (!companyId || !(await tx.companyExists(companyId))) return finish("UNBOUND");
 
-  const last = await store.getLastEventCreated(companyId);
-  if (last !== null && event.created < last) return finish("STALE");
+  await tx.lockCompany(companyId);
+  const st = await tx.getOrderState(companyId);
+  if (st?.lastEventCreated != null && event.created < st.lastEventCreated) return finish("STALE");
+  const terminal =
+    st?.status === "CANCELED" && st.stripeSubscriptionId !== null && incomingSubId === st.stripeSubscriptionId && event.type !== "customer.subscription.deleted";
+  if (terminal) return finish("STALE");
 
   if (event.type === "checkout.session.completed") {
     if (obj.mode !== "subscription") return finish("IGNORED_TYPE");
-    await store.upsertSubscription({
+    await tx.upsertSubscription({
       companyId,
       stripeCustomerId: idOf(obj.customer),
-      stripeSubscriptionId: idOf(obj.subscription),
+      stripeSubscriptionId: incomingSubId,
       lastEventCreated: event.created,
       // status/plan arrive with customer.subscription.* — never guessed here.
     });
@@ -117,10 +149,10 @@ export async function applyStripeEvent(event: StripeEvent, store: BillingStore, 
   }
 
   const priceId = subscriptionPriceId(obj);
-  await store.upsertSubscription({
+  await tx.upsertSubscription({
     companyId,
     stripeCustomerId: idOf(obj.customer),
-    stripeSubscriptionId: idOf(obj.id),
+    stripeSubscriptionId: incomingSubId,
     stripePriceId: priceId,
     plan: planForPrice(config, priceId),
     status: event.type === "customer.subscription.deleted" ? "CANCELED" : mapStripeStatus(obj.status),

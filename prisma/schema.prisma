@@ -4763,7 +4763,7 @@ model WorkspaceSubscription {
   currentPeriodEnd     DateTime?
   cancelAtPeriodEnd    Boolean                     @default(false)
   /// Stripe event.created (unix seconds) of the last applied event; older events never overwrite newer state.
-  lastEventCreated     Int?
+  lastEventCreated     BigInt?
   createdAt            DateTime                    @default(now())
   updatedAt            DateTime                    @updatedAt
 
@@ -4781,4 +4781,16 @@ model StripeWebhookEvent {
   outcome     String?
 
   @@map("stripe_webhook_events")
+}
+
+/// Users allowed to start a Stripe checkout for their workspace (besides platform ADMIN).
+/// Provisioned offline, like accounts; there is no self-serve path that writes this table.
+model WorkspaceBillingOwner {
+  id        String   @id @default(cuid())
+  companyId String
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([companyId, userId])
+  @@map("workspace_billing_owners")
 }

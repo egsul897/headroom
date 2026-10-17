@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { getBillingConfig, parsePriceIds, planForPrice } from "@/lib/billing/config";
 import { evaluatePlanGate, mapStripeStatus } from "@/lib/billing/plan-gate";
 import { signStripePayload, verifyStripeSignature } from "@/lib/billing/webhook-signature";
-import { applyStripeEvent, parseStripeEvent, type BillingStore, type StripeEvent, type SubscriptionPatch } from "@/lib/billing/webhook-events";
+import { applyStripeEvent, parseStripeEvent, type BillingStore, type BillingTx, type StripeEvent, type SubscriptionPatch } from "@/lib/billing/webhook-events";
 import { createCheckoutSession, formEncode } from "@/lib/billing/stripe-api";
 
 const FULL_ENV = {
@@ -86,21 +86,47 @@ describe("webhook signature", () => {
   });
 });
 
-function memStore(companies: string[]) {
-  const events = new Map<string, string>();
-  const subs = new Map<string, SubscriptionPatch & Record<string, unknown>>();
+type Row = SubscriptionPatch & Record<string, unknown>;
+/**
+ * In-memory store with real transaction semantics: writes go to a copy that is
+ * committed only if fn resolves (rolled back on throw), and transactions run one
+ * at a time per store (models the per-company lock). `failOnce` injects a throw.
+ */
+function memStore(companies: string[], opts: { failOnce?: "upsert" | "companyExists" | "mark" } = {}) {
+  let events = new Map<string, { processed: boolean; outcome?: string }>();
+  let subs = new Map<string, Row>();
+  let fail = opts.failOnce;
+  let chain: Promise<unknown> = Promise.resolve();
+  const boom = (k: string) => { if (fail === k) { fail = undefined; throw new Error("db down"); } };
   const store: BillingStore = {
-    async recordEvent(e) { if (events.has(e.id)) return false; events.set(e.id, "RECEIVED"); return true; },
-    async markEventProcessed(id, o) { events.set(id, o); },
-    async companyExists(c) { return companies.includes(c); },
-    async findCompanyIdBySubscription(s) { for (const v of subs.values()) if (v.stripeSubscriptionId === s) return v.companyId; return null; },
-    async getLastEventCreated(c) { return (subs.get(c)?.lastEventCreated as number | undefined) ?? null; },
-    async upsertSubscription(p) {
-      const clean = Object.fromEntries(Object.entries(p).filter(([, v]) => v !== undefined)) as SubscriptionPatch;
-      subs.set(p.companyId, { ...(subs.get(p.companyId) ?? {}), ...clean });
+    transaction(fn) {
+      const run = async () => {
+        const ev = new Map([...events].map(([k, v]) => [k, { ...v }]));
+        const sb = new Map([...subs].map(([k, v]) => [k, { ...v }]));
+        const tx: BillingTx = {
+          async claimEvent(e) { const r = ev.get(e.id); if (r?.processed) return "DONE"; if (!r) ev.set(e.id, { processed: false }); return "FRESH"; },
+          async markEventProcessed(id, o) { boom("mark"); ev.set(id, { processed: true, outcome: o }); },
+          async companyExists(c) { boom("companyExists"); return companies.includes(c); },
+          async findCompanyIdBySubscription(s) { for (const v of sb.values()) if (v.stripeSubscriptionId === s) return v.companyId; return null; },
+          async lockCompany() {},
+          async getOrderState(c) { const r = sb.get(c); return r ? { lastEventCreated: (r.lastEventCreated as number) ?? null, status: (r.status as never) ?? null, stripeSubscriptionId: (r.stripeSubscriptionId as string) ?? null } : null; },
+          async upsertSubscription(p) {
+            boom("upsert");
+            const clean = Object.fromEntries(Object.entries(p).filter(([, v]) => v !== undefined)) as unknown as Row;
+            sb.set(p.companyId, { ...(sb.get(p.companyId) ?? {}), ...clean });
+          },
+        };
+        const out = await fn(tx);
+        events = ev;
+        subs = sb;
+        return out;
+      };
+      const next = chain.then(run, run);
+      chain = next.catch(() => undefined);
+      return next;
     },
   };
-  return { store, events, subs };
+  return { store, get events() { return events; }, get subs() { return subs; } };
 }
 
 const cfg = getBillingConfig(FULL_ENV);
@@ -111,46 +137,85 @@ const subEvent = (id: string, created: number, over: Record<string, unknown> = {
 
 describe("applyStripeEvent", () => {
   it("checkout.session.completed binds customer+subscription to the workspace, sets no status/plan", async () => {
-    const { store, subs } = memStore(["co_1"]);
+    const m = memStore(["co_1"]); const { store } = m;
     const e: StripeEvent = { id: "evt_c", type: "checkout.session.completed", created: 10, data: { object: { mode: "subscription", client_reference_id: "co_1", customer: "cus_1", subscription: "sub_1" } } };
     expect(await applyStripeEvent(e, store, cfg)).toBe("APPLIED");
-    expect(subs.get("co_1")).toMatchObject({ stripeCustomerId: "cus_1", stripeSubscriptionId: "sub_1" });
-    expect(subs.get("co_1")!.status).toBeUndefined();
-    expect(subs.get("co_1")!.plan).toBeUndefined();
+    expect(m.subs.get("co_1")).toMatchObject({ stripeCustomerId: "cus_1", stripeSubscriptionId: "sub_1" });
+    expect(m.subs.get("co_1")!.status).toBeUndefined();
+    expect(m.subs.get("co_1")!.plan).toBeUndefined();
   });
   it("subscription.updated sets plan from configured price and status from Stripe", async () => {
-    const { store, subs } = memStore(["co_1"]);
+    const m = memStore(["co_1"]); const { store } = m;
     expect(await applyStripeEvent(subEvent("evt_1", 10), store, cfg)).toBe("APPLIED");
-    expect(subs.get("co_1")).toMatchObject({ plan: "standard", status: "ACTIVE", stripePriceId: "price_111" });
-    expect((subs.get("co_1")!.currentPeriodEnd as Date).getTime()).toBe(4_000_000_000_000);
+    expect(m.subs.get("co_1")).toMatchObject({ plan: "standard", status: "ACTIVE", stripePriceId: "price_111" });
+    expect((m.subs.get("co_1")!.currentPeriodEnd as Date).getTime()).toBe(4_000_000_000_000);
   });
   it("unconfigured price ⇒ plan null", async () => {
-    const { store, subs } = memStore(["co_1"]);
+    const m = memStore(["co_1"]); const { store } = m;
     await applyStripeEvent(subEvent("evt_1", 10, { items: { data: [{ price: { id: "price_999" } }] } }), store, cfg);
-    expect(subs.get("co_1")!.plan).toBeNull();
+    expect(m.subs.get("co_1")!.plan).toBeNull();
   });
   it("replayed event id is a no-op", async () => {
-    const { store } = memStore(["co_1"]);
+    const m = memStore(["co_1"]); const { store } = m;
     await applyStripeEvent(subEvent("evt_1", 10), store, cfg);
     expect(await applyStripeEvent(subEvent("evt_1", 10), store, cfg)).toBe("DUPLICATE");
   });
   it("older event never overwrites newer state", async () => {
-    const { store, subs } = memStore(["co_1"]);
+    const m = memStore(["co_1"]); const { store } = m;
     await applyStripeEvent(subEvent("evt_2", 20, { status: "canceled" }), store, cfg);
     expect(await applyStripeEvent(subEvent("evt_1", 10, { status: "active" }), store, cfg)).toBe("STALE");
-    expect(subs.get("co_1")!.status).toBe("CANCELED");
+    expect(m.subs.get("co_1")!.status).toBe("CANCELED");
   });
   it("event for an unknown workspace or with no binding changes nothing", async () => {
-    const { store, subs } = memStore(["co_1"]);
+    const m = memStore(["co_1"]); const { store } = m;
     expect(await applyStripeEvent(subEvent("evt_x", 10, { metadata: { companyId: "co_evil" } }), store, cfg)).toBe("UNBOUND");
     expect(await applyStripeEvent(subEvent("evt_y", 10, { id: "sub_other", metadata: {} }), store, cfg)).toBe("UNBOUND");
-    expect(subs.size).toBe(0);
+    expect(m.subs.size).toBe(0);
   });
   it("subscription.deleted ⇒ CANCELED; unhandled types ignored", async () => {
-    const { store, subs } = memStore(["co_1"]);
+    const m = memStore(["co_1"]); const { store } = m;
     await applyStripeEvent(subEvent("evt_d", 30, {}, "customer.subscription.deleted"), store, cfg);
-    expect(subs.get("co_1")!.status).toBe("CANCELED");
+    expect(m.subs.get("co_1")!.status).toBe("CANCELED");
     expect(await applyStripeEvent({ ...subEvent("evt_i", 40), type: "invoice.paid" }, store, cfg)).toBe("IGNORED_TYPE");
+  });
+  it("B1: a store failure after the receipt rolls it back; Stripe's retry applies the event (not DUPLICATE)", async () => {
+    for (const where of ["upsert", "companyExists", "mark"] as const) {
+      const m = memStore(["co_1"], { failOnce: where });
+      await expect(applyStripeEvent(subEvent("evt_1", 10, { status: "past_due" }), m.store, cfg)).rejects.toThrow("db down");
+      expect(m.events.has("evt_1")).toBe(false);
+      expect(await applyStripeEvent(subEvent("evt_1", 10, { status: "past_due" }), m.store, cfg)).toBe("APPLIED");
+      expect(m.subs.get("co_1")!.status).toBe("PAST_DUE");
+      expect(m.events.get("evt_1")).toEqual({ processed: true, outcome: "APPLIED" });
+      expect(await applyStripeEvent(subEvent("evt_1", 10), m.store, cfg)).toBe("DUPLICATE");
+    }
+  });
+  it("N1: same-second 'active' update after deleted does not resurrect the canceled subscription", async () => {
+    const m = memStore(["co_1"]);
+    await applyStripeEvent(subEvent("evt_d", 2000, {}, "customer.subscription.deleted"), m.store, cfg);
+    expect(await applyStripeEvent(subEvent("evt_u", 2000, { status: "active" }), m.store, cfg)).toBe("STALE");
+    expect(await applyStripeEvent(subEvent("evt_u2", 2005, { status: "active" }), m.store, cfg)).toBe("STALE");
+    expect(m.subs.get("co_1")!.status).toBe("CANCELED");
+  });
+  it("N1: a NEW subscription id after a cancel applies normally (re-subscribe)", async () => {
+    const m = memStore(["co_1"]);
+    await applyStripeEvent(subEvent("evt_d", 2000, {}, "customer.subscription.deleted"), m.store, cfg);
+    expect(await applyStripeEvent(subEvent("evt_n", 2100, { id: "sub_2", status: "active" }, "customer.subscription.created"), m.store, cfg)).toBe("APPLIED");
+    expect(m.subs.get("co_1")).toMatchObject({ status: "ACTIVE", stripeSubscriptionId: "sub_2" });
+  });
+  it("N2: concurrent deliveries are serialised, so older-after-newer is STALE whatever the arrival order", async () => {
+    const m = memStore(["co_1"]);
+    const [a, b] = await Promise.all([
+      applyStripeEvent(subEvent("evt_new", 30, { status: "past_due" }), m.store, cfg),
+      applyStripeEvent(subEvent("evt_old", 20, { status: "active" }), m.store, cfg),
+    ]);
+    expect([a, b]).toEqual(["APPLIED", "STALE"]);
+    expect(m.subs.get("co_1")!.status).toBe("PAST_DUE");
+  });
+  it("N3: event.created beyond 2^31 (post-2038) is kept exactly", async () => {
+    const m = memStore(["co_1"]);
+    await applyStripeEvent(subEvent("evt_far", 4_102_444_800), m.store, cfg);
+    expect(m.subs.get("co_1")!.lastEventCreated).toBe(4_102_444_800);
+    expect(await applyStripeEvent(subEvent("evt_older", 4_102_444_799), m.store, cfg)).toBe("STALE");
   });
   it("parseStripeEvent rejects malformed payloads", () => {
     expect(parseStripeEvent("nope")).toBeNull();
