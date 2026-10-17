@@ -19,10 +19,14 @@
  * - NEEDS_INPUT: the item looks capacity-relevant (grant evidence
  *   or a basket/condition/ratio signal) but cannot compile without
  *   counsel resolving something specific — a missing amount, an
- *   UNKNOWN condition, an undetermined posture. `reason` names the
- *   exact blocker. These are the flagged items: the only ones that
- *   genuinely need counsel's attention. Counsel resolves them by
- *   editing (supplying the missing piece) or rejecting.
+ *   UNKNOWN condition, an undetermined posture. Also NEEDS_INPUT,
+ *   regardless of capacity signal: a structurally unresolved item
+ *   (Phase E / D10) whose placement in the agreement hierarchy is
+ *   not certified — counsel must confirm the governing
+ *   article/section. `reason` names the exact blocker. These are
+ *   the flagged items: the only ones that genuinely need counsel's
+ *   attention. Counsel resolves them by editing (supplying the
+ *   missing piece) or rejecting.
  *
  * The proposal never decides anything by itself — it is displayed
  * next to the Accept / Edit / Reject form, and only a recorded
@@ -114,6 +118,30 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
       reason: "No capacity effect — the provision neither grants nor restricts borrowing capacity.",
       terms: null,
       needsAttention: false,
+    };
+  }
+
+  // Phase E (D10) disclosure: a structurally unresolved item is a
+  // counsel exception — isRoutineItem above already refuses it —
+  // but the generic blocker chain below would name only its
+  // conditions / posture / parse state, and the no-signal branch
+  // would even propose a routine REJECT ("no capacity effect").
+  // Neither names the actual blocker: the item's placement in the
+  // agreement hierarchy is not certified. Name it first, in plain
+  // words, and keep any further blocker visible after it. This
+  // changes only the proposal text — never the gate, never a
+  // recorded decision.
+  if (item.structuralUnresolved === true) {
+    const remaining = remainingConditions(item);
+    return {
+      decision: "NEEDS_INPUT",
+      reason:
+        "Structural relationship unresolved: this provision's parent/article could not be established deterministically, so its placement in the agreement hierarchy is not certified. Counsel to confirm the governing article/section before relying on it." +
+        (remaining.length > 0
+          ? ` It also carries a condition Headroom cannot resolve: ${String(remaining[0])}.`
+          : ""),
+      terms: null,
+      needsAttention: true,
     };
   }
 

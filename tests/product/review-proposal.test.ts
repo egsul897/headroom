@@ -135,4 +135,48 @@ describe("proposeReviewDecision", () => {
     expect(p.decision).toBe("ACCEPTED");
     expect(p.needsAttention).toBe(false);
   });
+
+  it("a structurally unresolved basket proposes NEEDS_INPUT naming the unresolved structural relationship", () => {
+    const p = proposeReviewDecision(item({ structuralUnresolved: true }));
+    expect(p.decision).toBe("NEEDS_INPUT");
+    expect(p.needsAttention).toBe(true);
+    expect(p.terms).toBeNull();
+    expect(p.reason).toMatch(/structural relationship unresolved/i);
+    expect(p.reason).toMatch(/not certified/i);
+  });
+
+  it("a structurally unresolved item with no capacity signal is never proposed as a routine REJECT", () => {
+    const p = proposeReviewDecision(
+      item({
+        category: "OTHER",
+        plainEnglish: "The Borrower shall maintain its corporate existence.",
+        materialBasketsThresholds: [],
+        operativeLanguageExcerpt: "The Borrower shall maintain its corporate existence.",
+        structuralUnresolved: true,
+      }),
+    );
+    expect(p.decision).toBe("NEEDS_INPUT");
+    expect(p.needsAttention).toBe(true);
+    expect(p.reason).toMatch(/structural relationship unresolved/i);
+    expect(p.reason).not.toMatch(/no capacity effect/i);
+  });
+
+  it("a structurally unresolved item keeps its condition blocker visible after the structural disclosure", () => {
+    const p = proposeReviewDecision(
+      item({
+        structuralUnresolved: true,
+        conditions: ["provided_that: provided that no Default has occurred"],
+      }),
+    );
+    expect(p.decision).toBe("NEEDS_INPUT");
+    expect(p.needsAttention).toBe(true);
+    expect(p.reason).toMatch(/structural relationship unresolved/i);
+    expect(p.reason).toContain("no Default has occurred");
+  });
+
+  it("a structurally resolved basket carries no structural disclosure (control)", () => {
+    const p = proposeReviewDecision(item());
+    expect(p.decision).toBe("ACCEPTED");
+    expect(p.reason).not.toMatch(/structural/i);
+  });
 });
