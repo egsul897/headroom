@@ -115,6 +115,27 @@ describe("per-period vs cumulative caps", () => {
   });
 });
 
+describe("cap verb with an adverbial between 'not' and 'exceed'", () => {
+  it("'shall not in the aggregate exceed $3,000,000 in any fiscal year' caps the line at $3,000,000", () => {
+    const o = run("plus (d) restructuring charges; provided that amounts added back pursuant to this clause (d) shall not in the aggregate exceed $3,000,000 in any fiscal year; plus (e) non-cash stock-based compensation expense.");
+    expect(line(o, "(d)").cap?.amount).toBe(String(3 * M));
+    expect(line(o, "(d)").claimed).toBe(String(3 * M));
+    expect(line(o, "(e)").cap).toBeFalsy();
+  });
+  it("'shall not cumulatively exceed 10% of Consolidated EBITDA for any Test Period' is a per-period percentage cap", () => {
+    const o = run("plus (d) restructuring charges; provided, further, that the aggregate amount added back pursuant to this clause (d) (excluding one-time integration costs) shall not cumulatively exceed 10% of Consolidated EBITDA for any Test Period; plus (e) non-cash stock-based compensation expense.");
+    const d = line(o, "(d)");
+    expect(d.cap).toBeTruthy();
+    expect(d.note ?? "").not.toMatch(/cumulative/);
+  });
+  it("'shall not cumulatively exceed $2,000,000' with no period is cumulative (no per-period room)", () => {
+    const o = run("plus (d) severance charges; provided that the aggregate amount added back pursuant to this clause (d) shall not cumulatively exceed $2,000,000; plus (e) non-cash stock-based compensation expense.");
+    const d = line(o, "(d)");
+    expect(d.cap?.amount).toBeNull();
+    expect(d.note).toMatch(/cumulative/);
+  });
+});
+
 describe("reference resolution: self-references, headings, ambiguity, letter case, measure clauses", () => {
   const nested = (items: string) =>
     optimizeConsolidatedEbitda("Consolidated EBITDA", def(`(a) Consolidated Net Income for such period, plus (b) without duplication, (i) provision for taxes based on income; (ii) interest expense; (iii) depreciation and amortization expense; ${items} minus (c) non-cash gains;`), fin);

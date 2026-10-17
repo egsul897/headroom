@@ -13,6 +13,7 @@
  */
 import { borrowerInput, type IssuerFinancials } from "./companyfacts";
 import { solveCapLp } from "./cap-lp";
+import { CAP_ADVERB } from "./cap-verb";
 import { CAPPED, COST_LIKE, HEADER, QUALIFIED, STOP, TWO_SIDED, definitionSegments, markers, evaluateDefinition, mapEbitdaItem, type DefinitionEvaluation } from "./definition-items";
 
 export type AddBackCategory = "INTEREST" | "TAXES" | "D&A" | "STOCK_COMP" | "IMPAIRMENT" | "RESTRUCTURING" | "SEVERANCE" | "TRANSACTION_COSTS" | "INTEGRATION"
@@ -94,7 +95,7 @@ export function categorize(t: string): AddBackCategory {
   return "OTHER";
 }
 
-const CAP_RE = /\b(?:(?:shall|may|does|do|will)\s+)?not\s+(?:to\s+)?exceed(?:ing)?\b|\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not\s+(?:in\s+excess\s+of|to\s+exceed)|up\s+to)\b|\bcapped\s+at\b|\bmaximum\s+of\b/i;
+const CAP_RE = new RegExp(String.raw`\b(?:(?:shall|may|does|do|will)\s+)?not\s+(?:to\s+)?${CAP_ADVERB}exceed(?:ing)?\b|` + /\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not\s+(?:in\s+excess\s+of|to\s+exceed)|up\s+to)\b|\bcapped\s+at\b|\bmaximum\s+of\b/.source, "i");
 /**
  * Clause-reference grammar shared by every cap scope: label paths ("(b)(vii)"), lists joined by commas / and / or,
  * repeated "clause" words ("clause (b)(ix) and clause (b)(x)") and ranges ("(A) through (F)", "(d)–(f)", "(d) to (f)").
@@ -258,7 +259,7 @@ const SCOPE_RE = new RegExp(String.raw`(?:pursuant\s+to|under|in\s+reliance\s+on
  * "for all periods", "in the aggregate since the Closing Date". Its per-period room depends on prior usage.
  */
 export const PER_PERIOD_CAP = /\b(?:for|in|during|with\s+respect\s+to)\s+(?:any|each|such|the\s+applicable|a\s+single)\s+(?:such\s+)?(?:(?:four|4)[- ](?:consecutive\s+)?(?:fiscal\s+)?quarters?\s+)?(?:Test\s+|Measurement\s+|Reference\s+|Calculation\s+|Relevant\s+)?(?:period|fiscal\s+(?:year|quarter)|year|quarter)s?\b|\bper\s+(?:fiscal\s+)?(?:year|annum|quarter|period)\b|\bin\s+any\s+(?:fiscal\s+)?year\b/i;
-export const LIFETIME_CAP = /\b(?:during|over|throughout)\s+the\s+(?:term|life)\s+of\s+(?:this|the)\s+(?:Agreement|Facility|Facilities|Credit\s+Facilit(?:y|ies))\b|\bfor\s+all\s+(?:Test\s+|fiscal\s+|Measurement\s+)?periods\b|\bin\s+the\s+aggregate\s+(?:since|after|from)\s+the\s+(?:Closing|Effective|Restatement|Amendment)\s+(?:Effective\s+)?Date\b|\bcumulative(?:ly)?\b(?=[^.;]{0,80}\b(?:shall\s+not|not\s+to)\s+exceed)/i;
+export const LIFETIME_CAP = /\b(?:during|over|throughout)\s+the\s+(?:term|life)\s+of\s+(?:this|the)\s+(?:Agreement|Facility|Facilities|Credit\s+Facilit(?:y|ies))\b|\bfor\s+all\s+(?:Test\s+|fiscal\s+|Measurement\s+)?periods\b|\bin\s+the\s+aggregate\s+(?:since|after|from)\s+the\s+(?:Closing|Effective|Restatement|Amendment)\s+(?:Effective\s+)?Date\b|\bcumulative(?:ly)?\b(?=[^.;]{0,80}\b(?:shall\s+not|not\s+to)\s+exceed)|\bnot\s+(?:to\s+)?cumulatively\s+exceed\b/i;
 /**
  * Every cap condition in a clause, each extracted on its own wherever it is written ("… clauses (d) and (e) shall not
  * exceed $100M and … clauses (e) and (f) shall not exceed $50M"). A condition's scope is the "pursuant to clauses …"
