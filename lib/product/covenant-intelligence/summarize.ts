@@ -27,7 +27,46 @@ export type CovenantCategoryKey =
   | "FINANCIAL_MAINTENANCE"
   | "EVENTS_OF_DEFAULT"
   | "BASKETS_EXCEPTIONS_CONDITIONS"
+  | "NON_COVENANT"
+  | "AFFIRMATIVE"
   | "OTHER";
+
+/**
+ * Why an item is classified NON_COVENANT — the determinate
+ * classification for document content that is not an operative
+ * covenant (classification census steps 1–3): definitions,
+ * representations, facility/agent mechanics, conditions
+ * checklists, boilerplate, and [reserved] placeholders. Assigned
+ * from structural position (article / instrument / node shape),
+ * never from keyword scoring. NON_COVENANT items are accounted
+ * for and explicitly classified; they mint no grants and enter
+ * no covenant decision queue.
+ */
+export type NonCovenantSubtype =
+  | "DEFINITION"
+  | "REPRESENTATION"
+  | "MECHANICS"
+  | "BOILERPLATE"
+  | "RESERVED";
+
+/**
+ * The obligation kind of an AFFIRMATIVE covenant (classification
+ * census step 2) — operative covenants that impose duties
+ * (reporting, notices, maintenance, compliance) rather than
+ * restricting transactions. They stay in the covenant pipeline
+ * (they feed event-obligation extraction) but mint no basket
+ * grants.
+ */
+export type AffirmativeKind =
+  | "REPORTING"
+  | "NOTICE"
+  | "EXISTENCE"
+  | "TAXES"
+  | "PROPERTIES_INSURANCE"
+  | "COMPLIANCE"
+  | "BOOKS_INSPECTION"
+  | "FURTHER_ASSURANCES"
+  | "OTHER_AFFIRMATIVE";
 
 export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   DEBT_INCURRENCE: "Debt incurrence",
@@ -40,6 +79,8 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   FINANCIAL_MAINTENANCE: "Financial maintenance covenants",
   EVENTS_OF_DEFAULT: "Events of default",
   BASKETS_EXCEPTIONS_CONDITIONS: "Relevant baskets, exceptions, conditions and defined terms",
+  NON_COVENANT: "Non-covenant provision",
+  AFFIRMATIVE: "Affirmative covenants",
   OTHER: "Other provisions",
 };
 
@@ -47,6 +88,13 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
 export interface CovenantSummaryItem {
   category: CovenantCategoryKey;
   categoryLabel: string;
+  /** Additive (classification census step 1): for NON_COVENANT
+   * items, why the item is not an operative covenant. Null/absent
+   * for covenant items. Older stored summaries lack the field. */
+  nonCovenantSubtype?: NonCovenantSubtype | null;
+  /** Additive (classification census step 2): for AFFIRMATIVE
+   * items, the obligation kind. Null/absent otherwise. */
+  affirmativeKind?: AffirmativeKind | null;
   /**
    * Phase C (D11): the structural node's occurrence identity
    * (nodeId), carried so compile matches the EXACT item the
@@ -217,6 +265,8 @@ function itemFromAnalysis(
     structuralUnresolved,
     category: analysis.category,
     categoryLabel: analysis.categoryLabel,
+    nonCovenantSubtype: analysis.nonCovenantSubtype ?? null,
+    affirmativeKind: analysis.affirmativeKind ?? null,
     sectionRef: analysis.sectionRef,
     heading: analysis.heading,
     posture: analysis.posture,

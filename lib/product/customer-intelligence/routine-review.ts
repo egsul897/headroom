@@ -53,6 +53,12 @@ export function compilesCleanly(item: CovenantSummaryItem): boolean {
 
 /** True when the item needs NO counsel decision (routine supported interpretation). */
 export function isRoutineItem(item: CovenantSummaryItem): boolean {
+  // Classification census step 1: a NON_COVENANT item is not an
+  // interpretation awaiting a decision at all — it is document
+  // content the classifier has determined is not an operative
+  // covenant. It never auto-accepts (and needs NO decision:
+  // the decision-queue consumers exclude it explicitly).
+  if (item.category === "NON_COVENANT") return false;
   // Phase E (D10): a structurally unresolved item (ambiguous
   // heading or integrity violation on its own node) is NEVER
   // routine — it is a counsel exception. Auto-accepting it

@@ -80,6 +80,22 @@ function compiledTerms(item: CovenantSummaryItem): string | null {
 }
 
 export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal {
+  // Classification census step 1: a NON_COVENANT item needs no
+  // covenant decision — it is explicitly classified document
+  // content (definition / representation / mechanics /
+  // boilerplate / [reserved]), accounted for in the summary and
+  // kept out of the decision queue. If a consumer still asks
+  // for a proposal, the honest one is "no capacity effect"
+  // (the REJECTED kind's documented meaning) with the
+  // classification as the reason — never a counsel action item.
+  if (item.category === "NON_COVENANT") {
+    return {
+      decision: "REJECTED",
+      reason: `Classified non-covenant (${(item.nonCovenantSubtype ?? "mechanics").toLowerCase()}) from structural position — not an operative covenant; no covenant decision is required for this item and it has no capacity effect.`,
+      terms: null,
+      needsAttention: false,
+    };
+  }
   // Confident accept: routine supported interpretation — compiles
   // cleanly, no remaining conditions, posture determined.
   if (isRoutineItem(item)) {
