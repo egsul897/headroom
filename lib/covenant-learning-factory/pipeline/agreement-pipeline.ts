@@ -230,6 +230,9 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
   const famBySection = new Map<string, string>();
   for (const c of checklist) for (const p of c.sectionPaths) if (!famBySection.has(p)) famBySection.set(p, c.family);
   const cited = pkg.baskets.map((b) => b.operativeText.replace(/[^A-Za-z0-9]/g, "")).join("|");
+  // The same clauses back to back: a tree clause that is a whole list the regional extractor already split per clause
+  // ("(a) …, (b) …, (c) …") is cited by those clauses together and is not re-cited as one span.
+  const citedRun = pkg.baskets.map((b) => b.operativeText.replace(/[^A-Za-z0-9]/g, "")).join("");
   const sumSeen = new Set<string>();
   for (const n of tree.nodes) {
     if (n.kind !== "CLAUSE") continue;
@@ -252,6 +255,8 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
     if (own.length < 24) continue;
     const key = own.replace(/[^A-Za-z0-9]/g, "").slice(0, 80);
     if (key.length < 20 || cited.includes(key)) continue;
+    const listItems = own.match(/[,;]\s*(?:and\s+|or\s+)?\((?:[a-z]{1,2}|[ivxl]{1,6}|[A-Z]{1,2}|\d{1,3})\)\s/g)?.length ?? 0;
+    if (listItems >= 2 && citedRun.includes(own.replace(/[^A-Za-z0-9]/g, ""))) continue;
     pkg.baskets.push({ stableKey: `tree:${n.path}`, sectionRef: n.path, covenantFamily: family, documentId: pkg.baskets[0]?.documentId ?? args.sourceId, operativeText: own, role: "PERMISSION" });
   }
   joinSplitGreaterOf(pkg);
