@@ -162,7 +162,13 @@ export class ErpProviderRequestError extends Error {
  *   externalId, so a record may be DELIVERED twice but is APPLIED once).
  * - `lastExternalId` breaks ties at the watermark boundary.
  * - `offset` is present ONLY while a multi-page sync is in flight; a
- *   cursor handed back in a completed page never carries one.
+ *   cursor handed back in a completed page never carries one. What the
+ *   offset MEANS mid-flight is adapter-defined and documented on the
+ *   adapter: for NetSuite transactions it is a row counter marking a
+ *   keyset continuation whose position lives in
+ *   `modifiedSince`/`lastExternalId` (the offset itself never positions
+ *   a query); for NetSuite financial facts it never escapes a single
+ *   fetch call, because snapshots are pulled whole or not at all.
  */
 export interface ErpSyncCursor {
   version: 1;
@@ -193,11 +199,28 @@ export interface ErpRecordProvenance {
  * key form until ERP-1's mapping supersedes it.
  */
 export interface ErpFinancialFact extends ErpRecordProvenance {
-  /** ISO date - the period this fact describes (e.g. period end). */
+  /** ISO date - the period this fact describes. For a cumulative /
+   * balance fact this is the period END (equal to `periodEnd`/`asOf`);
+   * it never claims a bounded span the amount does not cover. */
   period: string;
+  /** ISO date - first day of the span `amount` covers, present only
+   * when the amount is a bounded-period flow over
+   * [periodStart, periodEnd]. ABSENT for cumulative/balance facts: a
+   * balance is a total through `periodEnd`, not a flow over a period,
+   * and stamping it with an invented start date would mislabel it. */
+  periodStart?: string;
+  /** ISO date - last day of the span `amount` covers. For cumulative /
+   * balance facts this equals `asOf` and the amount is the cumulative
+   * total through that date - NOT a single-period figure. */
+  periodEnd?: string;
   /** ISO date - the date the value was true as of. */
   asOf: string;
   factKey: string;
+  /** The amount in the provider's native SIGNED convention, documented
+   * on the concrete adapter (for NetSuite account facts: the net posted
+   * line sum - debits positive, credits negative - so a credit-balance
+   * account such as a liability reads NEGATIVE). Adapters never
+   * absolutize a signed amount into a friendlier-looking lie. */
   amount: number;
   /** ISO 4217 currency code the amount is denominated in. */
   currency: string;

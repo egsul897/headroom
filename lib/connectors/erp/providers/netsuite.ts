@@ -64,18 +64,54 @@
  * authorization-code grant for the same read access.
  *
  * SYNC MODEL:
- * - Transactions: cursor delta. SuiteQL over the `transaction` table
- *   filtered on lastmodifieddate, ascending order so the final page
- *   carries the new watermark.
+ * - Transactions: cursor delta over POSTING transactions only
+ *   (`t.posting = 'T'` - non-posting records such as sales orders and
+ *   estimates never hit the general ledger and are not covenant
+ *   events). The first page of a run filters on lastmodifieddate with
+ *   the cursor overlap window; continuation pages are KEYSET-paged on
+ *   (lastmodifieddate, id) strictly after the greatest row seen so far
+ *   in the run, so a row mutated mid-sync moves later in the order and
+ *   is re-delivered rather than skipped by a shifting offset window,
+ *   and every query stays a limit-bounded slice (offset is never the
+ *   positioning mechanism, which is also what keeps each query far
+ *   inside SuiteQL's documented 100,000-row result cap).
  * - Financial facts: SNAPSHOT. Account balances are derived aggregates,
  *   not records with their own modified timestamps, so facts are a
- *   whole-ledger aggregate (transactionline joined to transaction,
- *   grouped by account + currency) re-pulled each run; the cursor is
- *   validated and advanced to the sync instant but does not filter the
- *   query. Ingestion dedups by externalId, so a snapshot re-pull is
- *   idempotent by construction.
+ *   whole-ledger aggregate over POSTING lines (transactionline joined
+ *   to transaction, grouped by account + currency) re-pulled each run.
+ *   The grouped result is paged THROUGH inside a single fetch call: a
+ *   snapshot that stopped mid-way would present missing accounts as
+ *   zero-activity, so any page failure fails the whole fetch and no
+ *   partial snapshot is ever emitted. Ingestion dedups by externalId,
+ *   so a snapshot re-pull is idempotent by construction.
+ * - PERIOD + SIGN HONESTY (facts): the activity aggregate is a
+ *   CUMULATIVE total through the sync instant - for a balance-sheet
+ *   account that is exactly its balance; it is never a single-period
+ *   flow. Facts therefore carry `periodEnd` = as-of and NO
+ *   `periodStart` (see ErpFinancialFact), and amounts keep NetSuite's
+ *   native line sign (debits positive, credits negative), so a
+ *   credit-balance account reads negative by construction.
+ * - SCOPE: reads are CONSOLIDATED across all subsidiaries on the
+ *   primary accounting book unless config.subsidiaryId /
+ *   config.accountingBookId narrow them. Consolidated is the covenant
+ *   reporting basis (covenants test consolidated figures), so the
+ *   default is a stated scope, not an oversight - a deployment that
+ *   needs entity-level facts sets the config option, and an unscoped
+ *   read is never silently presented as a single entity's.
  * - Webhooks: UNSUPPORTED by design (no native outbound webhooks);
  *   verifyWebhookSignature returns UNSUPPORTED and sync is polling-only.
+ *
+ * HOST SAFETY: every URL below is built by interpolating the configured
+ * accountId as the host's subdomain token, and the token request sends
+ * the client secret (Basic auth) to one of those URLs - so a hostile or
+ * mistyped accountId ("evil.example/x#") would exfiltrate the secret
+ * off-host. readNetSuiteConfig therefore ALLOWLIST-validates accountId
+ * against NetSuite's documented subdomain forms (numeric production id,
+ * "-sb<n>" sandbox, "-rp"/"-rp<n>" release preview - Oracle, "URLs for
+ * Sandbox / Release Preview Accounts"), and the URL builders re-validate
+ * on every call. No other config value can steer a request host:
+ * redirectUri travels as form/query data and clientId as header/query
+ * data; the host comes from accountId alone.
  */
 
 import { cursorWindowStart } from "../cursor";
@@ -111,31 +147,99 @@ export const NETSUITE_DESCRIPTOR: ErpProviderDescriptor = {
  * 100,000-row SuiteQL result cap; REST record pages cap at 1,000. */
 export const NETSUITE_SUITEQL_PAGE_SIZE = 1000;
 
+/** SuiteQL's documented per-query result cap (Estuary SuiteQL reference,
+ * cited in the header). Offset paging cannot be trusted to reach rows
+ * beyond it, so a grouped result that reports more rows than this fails
+ * the run instead of emitting a truncated snapshot. */
+export const NETSUITE_SUITEQL_RESULT_CAP = 100_000;
+
 /** History floor for a first sync with no cursor: NetSuite accounts are
  * long-lived; ingestion backfills further through ERP-1 if ever needed. */
 const NETSUITE_EPOCH_ISO = "2000-01-01T00:00:00.000Z";
 
 export interface NetSuiteConnectionConfig {
-  /** NetSuite account id - the subdomain token in every URL below (e.g. "1234567" or "1234567-sb1" for a sandbox). */
+  /** NetSuite account id - the subdomain token in every URL below (e.g. "1234567" or "1234567-sb1" for a sandbox). Allowlist-validated; see assertNetSuiteAccountId. */
   accountId: string;
   /** Headroom's OAuth callback URL, registered on the customer's integration record. */
   redirectUri: string;
   /** The integration record's client id (consumer key). An identifier, not a secret. */
   clientId: string;
+  /** Optional OneWorld subsidiary internal id (numeric). When set, both SuiteQL queries scope to this subsidiary. When unset, reads are CONSOLIDATED across all subsidiaries - the covenant reporting basis, stated explicitly in the header rather than left implicit. */
+  subsidiaryId?: string;
+  /** Optional accounting book internal id (numeric). When set, queries scope to that book; when unset, the consolidated / primary-book view. */
+  accountingBookId?: string;
+}
+
+/**
+ * NetSuite's documented account-specific subdomain forms (Oracle,
+ * "Understanding NetSuite URLs": production `123456`; sandbox account id
+ * `123456_SB1` renders in the domain as `123456-sb1`; release preview
+ * `123456_RP` renders as `123456-rp` - note the preview suffix carries
+ * NO number in Oracle's own example, so the digit run is optional for
+ * `rp` only; sandbox suffixes are numbered in every documented
+ * example). The account id becomes the HOST of every URL this
+ * adapter builds, including the token endpoint that receives the client
+ * secret as Basic auth - anything outside these forms (dots, slashes,
+ * "#", a full hostname) could steer that secret off-host, so it is
+ * refused, never sanitized into a guess.
+ */
+const NETSUITE_ACCOUNT_ID_RE = /^[0-9]+(-(sb[0-9]+|rp[0-9]*))?$/i;
+
+export function assertNetSuiteAccountId(accountId: string): string {
+  const id = typeof accountId === "string" ? accountId.trim() : "";
+  if (!NETSUITE_ACCOUNT_ID_RE.test(id)) {
+    throw new ErpConfigurationError(
+      `NetSuite accountId "${accountId}" is not a documented NetSuite subdomain token (expected a numeric account id, optionally suffixed "-sb<n>" for a sandbox or "-rp"/"-rp<n>" for release preview - the hyphenated domain form, not the underscored account form). ` +
+        `Refusing to build provider URLs from it: the account id becomes the request host, and the token request carries the client secret.`,
+    );
+  }
+  return id;
+}
+
+/** NetSuite internal ids (subsidiary, accounting book, transaction) are
+ * numeric. Anything else interpolated into SuiteQL would be an injection
+ * surface, so it is refused rather than escaped into a guess. */
+export function netSuiteNumericIdLiteral(raw: string, what: string): string {
+  if (typeof raw !== "string" || !/^[0-9]+$/.test(raw.trim())) {
+    throw new ErpConfigurationError(`NetSuite ${what} "${raw}" is not a numeric internal id - refusing to interpolate it into SuiteQL.`);
+  }
+  return raw.trim();
+}
+
+function readOptionalNumericId(connection: ErpConnectionContext, value: unknown, field: string): string | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value !== "string" && typeof value !== "number") {
+    throw new ErpConfigurationError(`NetSuite connection ${connection.connectionId}: config.${field} must be a numeric internal id.`);
+  }
+  try {
+    return netSuiteNumericIdLiteral(String(value), field);
+  } catch {
+    throw new ErpConfigurationError(`NetSuite connection ${connection.connectionId}: config.${field} "${String(value)}" is not a numeric internal id.`);
+  }
 }
 
 export function readNetSuiteConfig(connection: ErpConnectionContext): NetSuiteConnectionConfig {
-  const { accountId, redirectUri, clientId } = connection.config as Partial<NetSuiteConnectionConfig>;
-  if (typeof accountId !== "string" || accountId.trim() === "") {
+  const raw = connection.config as Partial<NetSuiteConnectionConfig>;
+  const { redirectUri, clientId } = raw;
+  if (typeof raw.accountId !== "string" || raw.accountId.trim() === "") {
     throw new ErpConfigurationError(`NetSuite connection ${connection.connectionId}: config.accountId is required (the account's subdomain token).`);
   }
+  const accountId = assertNetSuiteAccountId(raw.accountId);
   if (typeof redirectUri !== "string" || redirectUri.trim() === "") {
     throw new ErpConfigurationError(`NetSuite connection ${connection.connectionId}: config.redirectUri is required (registered on the integration record).`);
   }
   if (typeof clientId !== "string" || clientId.trim() === "") {
     throw new ErpConfigurationError(`NetSuite connection ${connection.connectionId}: config.clientId is required (the integration record's client id).`);
   }
-  return { accountId, redirectUri, clientId };
+  const subsidiaryId = readOptionalNumericId(connection, raw.subsidiaryId, "subsidiaryId");
+  const accountingBookId = readOptionalNumericId(connection, raw.accountingBookId, "accountingBookId");
+  return {
+    accountId,
+    redirectUri,
+    clientId,
+    ...(subsidiaryId !== undefined ? { subsidiaryId } : {}),
+    ...(accountingBookId !== undefined ? { accountingBookId } : {}),
+  };
 }
 
 function assertConnection(connection: ErpConnectionContext): void {
@@ -144,18 +248,25 @@ function assertConnection(connection: ErpConnectionContext): void {
   }
 }
 
-/** Documented: https://<accountID>.suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token */
+/** Documented: https://<accountID>.suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token
+ * The accountId is re-validated here (not only in readNetSuiteConfig)
+ * because these builders are exported: no call path may mint a
+ * token-endpoint URL - the one that receives the client secret - from an
+ * unvalidated host token. */
 export function netSuiteTokenEndpoint(accountId: string): string {
-  return `https://${accountId}.suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token`;
+  const id = assertNetSuiteAccountId(accountId);
+  return `https://${id}.suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token`;
 }
 
 /** Documented: POST https://<accountId>.suitetalk.api.netsuite.com/services/rest/query/v1/suiteql?limit=<n>&offset=<n> */
 export function netSuiteSuiteQlUrl(accountId: string, page: { limit: number; offset: number }): string {
-  return `https://${accountId}.suitetalk.api.netsuite.com/services/rest/query/v1/suiteql?limit=${page.limit}&offset=${page.offset}`;
+  const id = assertNetSuiteAccountId(accountId);
+  return `https://${id}.suitetalk.api.netsuite.com/services/rest/query/v1/suiteql?limit=${page.limit}&offset=${page.offset}`;
 }
 
 /** Documented authorize host: https://<accountId>.app.netsuite.com/app/login/oauth2/authorize.nl */
 export function buildNetSuiteAuthorizationUrl(config: NetSuiteConnectionConfig, state: string): string {
+  const accountId = assertNetSuiteAccountId(config.accountId);
   const params = new URLSearchParams({
     response_type: "code",
     client_id: config.clientId,
@@ -163,11 +274,15 @@ export function buildNetSuiteAuthorizationUrl(config: NetSuiteConnectionConfig, 
     scope: "rest_webservices",
     state,
   });
-  return `https://${config.accountId}.app.netsuite.com/app/login/oauth2/authorize.nl?${params.toString()}`;
+  return `https://${accountId}.app.netsuite.com/app/login/oauth2/authorize.nl?${params.toString()}`;
 }
 
-/** SuiteQL compares datetime columns with Oracle-style TO_DATE literals;
- * the watermark is rendered in UTC with the documented mask shape. */
+/** SuiteQL compares datetime columns with Oracle-style TO_DATE literals.
+ * The watermark is rendered from its UTC components with an explicit
+ * mask - the literal is a UTC literal by construction, and the row
+ * parser (strictIsoTimestamp) reads SuiteQL's zone-less wall times back
+ * AS UTC, so rendering and parsing round-trip on one stated convention
+ * instead of depending on the host's timezone. */
 export function suiteQlDateLiteral(isoTimestamp: string): string {
   const d = new Date(isoTimestamp);
   if (Number.isNaN(d.getTime())) {
@@ -178,36 +293,84 @@ export function suiteQlDateLiteral(isoTimestamp: string): string {
   return `TO_DATE('${rendered}', 'YYYY-MM-DD HH24:MI:SS')`;
 }
 
+/** Scope clauses shared by both SuiteQL queries. Unset scope =
+ * consolidated across subsidiaries on the primary book (see header);
+ * set scope interpolates ONLY validated numeric internal ids. */
+function scopeClauses(scope: { subsidiaryId?: string; accountingBookId?: string }): string[] {
+  const clauses: string[] = [];
+  if (scope.subsidiaryId !== undefined) {
+    clauses.push(`t.subsidiary = ${netSuiteNumericIdLiteral(scope.subsidiaryId, "subsidiaryId")}`);
+  }
+  if (scope.accountingBookId !== undefined) {
+    clauses.push(`t.accountingbook = ${netSuiteNumericIdLiteral(scope.accountingBookId, "accountingBookId")}`);
+  }
+  return clauses;
+}
+
+export interface NetSuiteDeltaQueryOptions {
+  /** Keyset continuation: rows strictly after this (lastmodifieddate,
+   * id) position. When present, `windowStartIso` is ignored - the
+   * predicate IS the position, so no offset window can shift under a
+   * row that changes mid-sync. */
+  keysetAfter?: { modifiedSinceIso: string; lastExternalId: string };
+  subsidiaryId?: string;
+  accountingBookId?: string;
+}
+
 /**
- * Transactions delta query over the SuiteAnalytics `transaction` table,
- * filtered on lastmodifieddate (the documented SuiteQL delta pattern).
- * Ascending (lastmodifieddate, id) order is load-bearing: the final
- * page's maximum lastmodifieddate becomes the next watermark.
+ * Transactions delta query over the SuiteAnalytics `transaction` table.
+ * POSTING transactions only: non-posting records (sales orders,
+ * estimates, purchase orders) never post to the GL and are not covenant
+ * events. Dates are selected through TO_CHAR in ISO masks so the
+ * response never depends on the account's display date format (a
+ * DD/MM-shaped string parsed by Date.parse would silently become a
+ * different day). Two addressing modes, both ordered ascending by
+ * (lastmodifieddate, id) so the greatest row seen is the position:
+ * - window mode (first page of a run): lastmodifieddate after the
+ *   overlap-adjusted watermark;
+ * - keyset mode (continuations): rows strictly after the
+ *   (lastmodifieddate, id) position the previous page ended at.
  * Column set per the SuiteAnalytics record catalog - see the header's
  * sandbox-validation seam.
  */
-export function buildNetSuiteTransactionDeltaQuery(windowStartIso: string): string {
+export function buildNetSuiteTransactionDeltaQuery(windowStartIso: string, options: NetSuiteDeltaQueryOptions = {}): string {
+  const clauses: string[] = ["t.posting = 'T'"];
+  if (options.keysetAfter) {
+    const literal = suiteQlDateLiteral(options.keysetAfter.modifiedSinceIso);
+    const afterId = netSuiteNumericIdLiteral(options.keysetAfter.lastExternalId, "keyset lastExternalId");
+    clauses.push(`(t.lastmodifieddate > ${literal} OR (t.lastmodifieddate = ${literal} AND t.id > ${afterId}))`);
+  } else {
+    clauses.push(`t.lastmodifieddate > ${suiteQlDateLiteral(windowStartIso)}`);
+  }
+  clauses.push(...scopeClauses(options));
   return (
-    "SELECT t.id, t.tranid, t.trandate, t.type, t.lastmodifieddate, t.foreigntotal, t.memo, c.symbol AS currencysymbol " +
+    "SELECT t.id, t.tranid, TO_CHAR(t.trandate, 'YYYY-MM-DD') AS trandate, t.type, " +
+    "TO_CHAR(t.lastmodifieddate, 'YYYY-MM-DD HH24:MI:SS') AS lastmodifieddate, t.foreigntotal, t.memo, c.symbol AS currencysymbol " +
     "FROM transaction t LEFT JOIN currency c ON t.currency = c.id " +
-    `WHERE t.lastmodifieddate > ${suiteQlDateLiteral(windowStartIso)} ` +
+    `WHERE ${clauses.join(" AND ")} ` +
     "ORDER BY t.lastmodifieddate, t.id"
   );
 }
 
 /**
- * Account-activity aggregate for financial facts: net posted line amount
+ * Account-activity aggregate for financial facts: net POSTED line amount
  * per account + transaction currency, over the WHOLE ledger (snapshot
- * semantics - see header). Grouped output rows are bounded by
- * accounts x currencies, far under the SuiteQL result cap.
+ * semantics - see header: the sum is a cumulative balance through the
+ * sync instant, debits positive / credits negative). The ORDER BY is
+ * load-bearing: the grouped result is offset-paged inside
+ * fetchFinancialFacts, and offset paging over an unordered GROUP BY
+ * could repeat or drop groups between pages.
  */
-export function buildNetSuiteAccountActivityQuery(): string {
+export function buildNetSuiteAccountActivityQuery(options: { subsidiaryId?: string; accountingBookId?: string } = {}): string {
+  const clauses: string[] = ["t.posting = 'T'", ...scopeClauses(options)];
   return (
     "SELECT tl.account AS accountid, c.symbol AS currencysymbol, SUM(tl.foreignamount) AS amount " +
     "FROM transactionline tl " +
     "JOIN transaction t ON tl.transaction = t.id " +
     "LEFT JOIN currency c ON t.currency = c.id " +
-    "GROUP BY tl.account, c.symbol"
+    `WHERE ${clauses.join(" AND ")} ` +
+    "GROUP BY tl.account, c.symbol " +
+    "ORDER BY tl.account, c.symbol"
   );
 }
 
@@ -240,18 +403,77 @@ function finiteNumber(value: unknown): number | null {
   return null;
 }
 
-function isoDateOnly(value: unknown): string | null {
-  if (typeof value !== "string" || value.trim() === "") return null;
-  const ms = Date.parse(value);
-  if (Number.isNaN(ms)) return null;
-  return new Date(ms).toISOString().slice(0, 10);
+/**
+ * STRICT date parsing. Date.parse is deliberately NOT used on provider
+ * strings: it accepts account-locale shapes and guesses - "05/10/2026"
+ * from a DD/MM account parses as May 10, a silently WRONG date, worse
+ * than an unparseable one - and zone-less timestamps parse in the host's
+ * timezone, shifting a watermark by the host's UTC offset. The query
+ * builders select dates through TO_CHAR in ISO masks, so anything that
+ * is not exactly ISO is unprovable and the row is skipped with a reason.
+ * Zone-less ISO timestamps are read as UTC - the same convention
+ * suiteQlDateLiteral renders with - so parse and render round-trip.
+ */
+const ISO_DATE_ONLY_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
+const ISO_TIMESTAMP_RE = /^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})(\.\d{1,9})?(Z|[+-]\d{2}:?\d{2})?$/;
+
+function strictIsoDateOnly(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const m = ISO_DATE_ONLY_RE.exec(value.trim());
+  if (!m) return null;
+  const year = Number(m[1]);
+  const month = Number(m[2]);
+  const day = Number(m[3]);
+  const dt = new Date(Date.UTC(year, month - 1, day));
+  // Round-trip the components so an impossible date (2026-02-31) is
+  // rejected instead of rolling into March.
+  if (dt.getUTCFullYear() !== year || dt.getUTCMonth() !== month - 1 || dt.getUTCDate() !== day) return null;
+  return `${m[1]}-${m[2]}-${m[3]}`;
 }
 
-function isoTimestamp(value: unknown): string | null {
-  if (typeof value !== "string" || value.trim() === "") return null;
-  const ms = Date.parse(value);
+function strictIsoTimestamp(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const v = value.trim();
+  if (ISO_DATE_ONLY_RE.test(v)) {
+    const d = strictIsoDateOnly(v);
+    return d === null ? null : `${d}T00:00:00.000Z`;
+  }
+  const m = ISO_TIMESTAMP_RE.exec(v);
+  if (!m) return null;
+  const zoneRaw = m[8];
+  const zone = zoneRaw === undefined || zoneRaw === "Z" ? "Z" : zoneRaw.replace(/([+-]\d{2})(\d{2})$/, "$1:$2");
+  const ms = Date.parse(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}${m[7] ?? ""}${zone}`);
   if (Number.isNaN(ms)) return null;
-  return new Date(ms).toISOString();
+  const out = new Date(ms);
+  if (zone === "Z") {
+    // Component round-trip: reject rollovers Date.parse would otherwise
+    // normalize (month 13, hour 25).
+    if (
+      out.getUTCFullYear() !== Number(m[1]) ||
+      out.getUTCMonth() + 1 !== Number(m[2]) ||
+      out.getUTCDate() !== Number(m[3]) ||
+      out.getUTCHours() !== Number(m[4]) ||
+      out.getUTCMinutes() !== Number(m[5]) ||
+      out.getUTCSeconds() !== Number(m[6])
+    ) {
+      return null;
+    }
+  }
+  return out.toISOString();
+}
+
+/** Total order over provider external ids for keyset positions: numeric
+ * when both ids are digit strings (NetSuite internal ids are), so "102"
+ * sorts after "99" - a lexicographic compare would invert them and
+ * strand rows at the watermark boundary. */
+function compareExternalIds(a: string, b: string): number {
+  if (/^[0-9]+$/.test(a) && /^[0-9]+$/.test(b)) {
+    const na = a.replace(/^0+/, "") || "0";
+    const nb = b.replace(/^0+/, "") || "0";
+    if (na.length !== nb.length) return na.length - nb.length;
+    return na < nb ? -1 : na > nb ? 1 : 0;
+  }
+  return a < b ? -1 : a > b ? 1 : 0;
 }
 
 function isoCurrencyCode(value: unknown): string | null {
@@ -272,11 +494,33 @@ export function normalizeNetSuiteTransactionPage(
   previous: ErpSyncCursor | null,
   syncStartedAtIso: string,
 ): ErpTransactionPage {
+  const items = envelope.items ?? [];
+  if (envelope.hasMore === true && items.length === 0) {
+    // A page that claims more rows but delivers none gives the keyset
+    // nothing to advance on - paging further could loop or, worse,
+    // conclude with a watermark past rows never seen. Fail the run.
+    throw new ErpProviderRequestError(
+      "NetSuiteAdapter: SuiteQL transaction page claims hasMore but returned zero items - the delta position cannot advance, failing the run instead of risking a silent gap.",
+    );
+  }
   const skipped: ErpSkippedRecord[] = [];
   const transactions: ErpTransaction[] = [];
-  const items = envelope.items ?? [];
-  let maxModified: string | null = previous?.modifiedSince ?? null;
-  let maxModifiedId: string | undefined;
+  // Keyset position: the greatest (lastmodifieddate, id) SEEN in this
+  // run, seeded from the incoming cursor. It advances over SKIPPED rows
+  // too - a refusal is surfaced in `skipped`, and a position that
+  // stopped at an unprovable row would re-fetch it forever; the
+  // watermark may pass a row only because that row was reported, never
+  // silently. (A row whose lastmodifieddate itself is unparseable
+  // cannot define a position and does not advance it; it is reported on
+  // every page that returns it.)
+  let posModified: string | null = previous?.modifiedSince ?? null;
+  let posId: string | undefined = previous?.lastExternalId;
+  const advancePosition = (ts: string, id: string) => {
+    if (posModified === null || ts > posModified || (ts === posModified && (posId === undefined || compareExternalIds(id, posId) > 0))) {
+      posModified = ts;
+      posId = id;
+    }
+  };
 
   for (const row of items) {
     const externalId = typeof row.id === "string" || typeof row.id === "number" ? String(row.id) : null;
@@ -284,6 +528,8 @@ export function normalizeNetSuiteTransactionPage(
       skipped.push({ externalId: null, reason: "SuiteQL transaction row has no id - cannot establish provenance, skipped." });
       continue;
     }
+    const lastModifiedAt = strictIsoTimestamp(row.lastmodifieddate);
+    if (lastModifiedAt !== null) advancePosition(lastModifiedAt, externalId);
     const amount = finiteNumber(row.foreigntotal);
     if (amount === null) {
       skipped.push({ externalId, reason: "Transaction row has no finite foreigntotal - amount not provable, skipped (never treated as 0)." });
@@ -294,10 +540,12 @@ export function normalizeNetSuiteTransactionPage(
       skipped.push({ externalId, reason: "Transaction row has no ISO currency symbol - currency not provable, skipped." });
       continue;
     }
-    const date = isoDateOnly(row.trandate);
-    const lastModifiedAt = isoTimestamp(row.lastmodifieddate);
+    const date = strictIsoDateOnly(row.trandate);
     if (date === null || lastModifiedAt === null) {
-      skipped.push({ externalId, reason: "Transaction row has an unparseable trandate/lastmodifieddate - skipped." });
+      skipped.push({
+        externalId,
+        reason: "Transaction row's trandate/lastmodifieddate is not in the strict ISO form the query selects (TO_CHAR masks) - the account's display format is never guessed at, skipped.",
+      });
       continue;
     }
     transactions.push({
@@ -312,50 +560,78 @@ export function normalizeNetSuiteTransactionPage(
       currency,
       ...(typeof row.memo === "string" && row.memo.trim() !== "" ? { memo: row.memo } : {}),
     });
-    if (maxModified === null || lastModifiedAt > maxModified || (lastModifiedAt === maxModified && (maxModifiedId === undefined || externalId > maxModifiedId))) {
-      maxModified = lastModifiedAt;
-      maxModifiedId = externalId;
-    }
   }
 
   const hasMore = envelope.hasMore === true;
-  const previousOffset = previous?.offset ?? 0;
   const nextCursor: ErpSyncCursor = hasMore
     ? {
         version: 1,
         provider: "NETSUITE",
         stream: "TRANSACTIONS",
-        // Watermark advances ONLY on the final page - mid-run pages keep
-        // the original watermark and page forward by offset.
-        modifiedSince: previous?.modifiedSince ?? NETSUITE_EPOCH_ISO,
-        offset: previousOffset + items.length,
+        // Mid-run the cursor IS the keyset position, not the completed
+        // watermark: the next page queries strictly after it. `offset`
+        // survives only as the in-flight marker (and row counter) that
+        // tells fetchTransactions this cursor is a continuation.
+        modifiedSince: posModified ?? NETSUITE_EPOCH_ISO,
+        ...(posId !== undefined ? { lastExternalId: posId } : {}),
+        offset: (previous?.offset ?? 0) + items.length,
       }
     : {
         version: 1,
         provider: "NETSUITE",
         stream: "TRANSACTIONS",
-        modifiedSince: maxModified ?? syncStartedAtIso,
-        ...(maxModifiedId !== undefined ? { lastExternalId: maxModifiedId } : {}),
+        modifiedSince: posModified ?? syncStartedAtIso,
+        ...(posId !== undefined ? { lastExternalId: posId } : {}),
       };
   return { transactions, hasMore, nextCursor, skipped };
 }
 
 /**
  * Normalize one SuiteQL account-activity page into financial facts.
- * Pure. The factKey is the provisional `account:<externalId>` form -
- * ERP-1's canonical mapping owns the final keys; what this adapter
- * guarantees is provenance, amount, currency, and as-of.
+ * Pure. Identity, stated precisely because ERP-1 dedups on it:
+ * - `factKey` is WHAT the fact measures: `account:<id>:<currency>` -
+ *   the query groups by account + currency, so the same account in two
+ *   currencies is two different facts; omitting the currency (the
+ *   pre-review shape) collided them into one dedup identity and
+ *   silently dropped a currency's balance. ERP-1's canonical mapping
+ *   owns the final keys beyond this provisional form.
+ * - `externalId` is THIS SNAPSHOT's idempotency identity:
+ *   `account:<id>:<currency>:<asOf>` - re-delivering the same snapshot
+ *   dedups, while the next day's snapshot of the same account+currency
+ *   is a distinct fact, never swallowed as a re-delivery.
+ * Period honesty: the amount is the cumulative posted total through
+ * the sync instant, so `period`/`periodEnd` carry the as-of date and
+ * `periodStart` stays absent (see ErpFinancialFact).
+ * The envelope's hasMore is carried through truthfully - hard-coding
+ * false here (the pre-review shape) silently truncated any grouped
+ * result larger than one page.
  */
 export function normalizeNetSuiteAccountActivityPage(
   envelope: SuiteQlEnvelope,
   connection: ErpConnectionContext,
+  previous: ErpSyncCursor | null,
   syncDateIso: string,
 ): ErpFactPage {
+  const items = envelope.items ?? [];
+  if (envelope.hasMore === true && items.length === 0) {
+    throw new ErpProviderRequestError(
+      "NetSuiteAdapter: SuiteQL account-activity page claims hasMore but returned zero items - the snapshot cannot be completed, failing the run instead of emitting a partial one.",
+    );
+  }
+  if (typeof envelope.totalResults === "number" && envelope.totalResults > NETSUITE_SUITEQL_RESULT_CAP) {
+    throw new ErpProviderRequestError(
+      `NetSuiteAdapter: account-activity result reports ${envelope.totalResults} grouped rows, beyond SuiteQL's documented ${NETSUITE_SUITEQL_RESULT_CAP}-row result cap - offset paging cannot be trusted to reach them all, failing the run instead of emitting a truncated snapshot.`,
+    );
+  }
+  const syncTs = strictIsoTimestamp(syncDateIso);
+  if (syncTs === null) {
+    throw new ErpConfigurationError(`NetSuiteAdapter: sync instant "${syncDateIso}" is not an ISO timestamp - cannot date the snapshot.`);
+  }
+  const asOf = syncTs.slice(0, 10);
   const skipped: ErpSkippedRecord[] = [];
   const facts: ErpFinancialFact[] = [];
-  const asOf = isoDateOnly(syncDateIso) ?? syncDateIso.slice(0, 10);
 
-  for (const row of envelope.items ?? []) {
+  for (const row of items) {
     const accountId = typeof row.accountid === "string" || typeof row.accountid === "number" ? String(row.accountid) : null;
     if (accountId === null) {
       skipped.push({ externalId: null, reason: "Account-activity row has no account id - cannot establish provenance, skipped." });
@@ -375,19 +651,29 @@ export function normalizeNetSuiteAccountActivityPage(
       source: "ERP",
       provider: "NETSUITE",
       connectionId: connection.connectionId,
-      externalId: `account:${accountId}`,
+      externalId: `account:${accountId}:${currency}:${asOf}`,
       period: asOf,
+      periodEnd: asOf,
       asOf,
-      factKey: `account:${accountId}`,
+      factKey: `account:${accountId}:${currency}`,
       amount,
       currency,
     });
   }
 
+  const hasMore = envelope.hasMore === true;
   return {
     facts,
-    hasMore: false,
-    nextCursor: { version: 1, provider: "NETSUITE", stream: "FINANCIAL_FACTS", modifiedSince: new Date(syncDateIso).toISOString() },
+    hasMore,
+    nextCursor: {
+      version: 1,
+      provider: "NETSUITE",
+      stream: "FINANCIAL_FACTS",
+      modifiedSince: syncTs,
+      // Mid-snapshot offset lives only inside fetchFinancialFacts'
+      // paging loop; a completed snapshot's cursor never carries one.
+      ...(hasMore ? { offset: (previous?.offset ?? 0) + items.length } : {}),
+    },
     skipped,
   };
 }
@@ -509,9 +795,27 @@ export class NetSuiteErpAdapter implements ErpProviderAdapter {
     if (cursor !== null && (cursor.provider !== "NETSUITE" || cursor.stream !== "TRANSACTIONS")) {
       throw new ErpConfigurationError(`NetSuiteAdapter.fetchTransactions: cursor is for ${cursor.provider}/${cursor.stream}, expected NETSUITE/TRANSACTIONS.`);
     }
+    const config = readNetSuiteConfig(connection);
+    const scope = { subsidiaryId: config.subsidiaryId, accountingBookId: config.accountingBookId };
+    // A cursor carrying an offset is a mid-run KEYSET continuation: its
+    // (modifiedSince, lastExternalId) is the position to resume
+    // strictly after, and the query - not the URL offset - does the
+    // positioning. A continuation without its tiebreak is corrupt:
+    // resuming from the timestamp alone could skip rows sharing it.
+    const isContinuation = cursor?.offset !== undefined;
+    if (isContinuation && cursor.lastExternalId === undefined) {
+      throw new ErpConfigurationError(
+        "NetSuiteAdapter.fetchTransactions: mid-run cursor carries an offset but no lastExternalId keyset tiebreak - refusing to resume from a position that cannot be stated exactly.",
+      );
+    }
     const syncStartedAt = (this.deps.now ? this.deps.now() : new Date()).toISOString();
-    const windowStart = cursorWindowStart(cursor, NETSUITE_EPOCH_ISO);
-    const envelope = await this.runSuiteQl(connection, token, buildNetSuiteTransactionDeltaQuery(windowStart), cursor?.offset ?? 0, "SuiteQL transaction delta query");
+    const query = isContinuation
+      ? buildNetSuiteTransactionDeltaQuery("", {
+          keysetAfter: { modifiedSinceIso: cursor.modifiedSince, lastExternalId: cursor.lastExternalId! },
+          ...scope,
+        })
+      : buildNetSuiteTransactionDeltaQuery(cursorWindowStart(cursor, NETSUITE_EPOCH_ISO), scope);
+    const envelope = await this.runSuiteQl(connection, token, query, 0, "SuiteQL transaction delta query");
     return normalizeNetSuiteTransactionPage(envelope, connection, cursor, syncStartedAt);
   }
 
@@ -524,11 +828,48 @@ export class NetSuiteErpAdapter implements ErpProviderAdapter {
     if (cursor !== null && (cursor.provider !== "NETSUITE" || cursor.stream !== "FINANCIAL_FACTS")) {
       throw new ErpConfigurationError(`NetSuiteAdapter.fetchFinancialFacts: cursor is for ${cursor.provider}/${cursor.stream}, expected NETSUITE/FINANCIAL_FACTS.`);
     }
+    if (cursor?.offset !== undefined) {
+      // Snapshot cursors are only ever handed back COMPLETED (no
+      // offset). An offset here means a partial snapshot was persisted
+      // by something else - resuming it would silently miss its first
+      // pages' accounts, so the caller restarts from the last completed
+      // cursor instead. Whole or not at all.
+      throw new ErpConfigurationError(
+        "NetSuiteAdapter.fetchFinancialFacts: cursor carries an offset - financial-facts snapshots are pulled whole in a single call and never persist a mid-run cursor. Refusing to resume a partial snapshot.",
+      );
+    }
+    const config = readNetSuiteConfig(connection);
     // Snapshot semantics (see header): the cursor does not filter this
-    // query; it is validated above and advanced by the normalizer.
+    // query; it is validated above and advanced to the sync instant.
     const syncStartedAt = (this.deps.now ? this.deps.now() : new Date()).toISOString();
-    const envelope = await this.runSuiteQl(connection, token, buildNetSuiteAccountActivityQuery(), 0, "SuiteQL account activity query");
-    return normalizeNetSuiteAccountActivityPage(envelope, connection, syncStartedAt);
+    const query = buildNetSuiteAccountActivityQuery({ subsidiaryId: config.subsidiaryId, accountingBookId: config.accountingBookId });
+    // Page through the WHOLE grouped result inside this call. A
+    // snapshot is only meaningful complete - accounts on an unfetched
+    // page would read as zero-activity - so any page failure propagates
+    // and no partial page set is ever returned.
+    const facts: ErpFinancialFact[] = [];
+    const skipped: ErpSkippedRecord[] = [];
+    const seenIdentities = new Set<string>();
+    let pageCursor: ErpSyncCursor | null = cursor;
+    let completedCursor: ErpSyncCursor | null = null;
+    for (;;) {
+      const envelope = await this.runSuiteQl(connection, token, query, pageCursor?.offset ?? 0, "SuiteQL account activity query");
+      const page = normalizeNetSuiteAccountActivityPage(envelope, connection, pageCursor, syncStartedAt);
+      for (const fact of page.facts) {
+        if (seenIdentities.has(fact.externalId)) {
+          throw new ErpProviderRequestError(
+            `NetSuiteAdapter: account-activity snapshot returned the group "${fact.externalId}" twice while paging - the snapshot is internally inconsistent, failing the run instead of double-counting or dropping it.`,
+          );
+        }
+        seenIdentities.add(fact.externalId);
+        facts.push(fact);
+      }
+      skipped.push(...page.skipped);
+      completedCursor = page.nextCursor;
+      if (!page.hasMore) break;
+      pageCursor = page.nextCursor;
+    }
+    return { facts, hasMore: false, nextCursor: completedCursor!, skipped };
   }
 
   verifyWebhookSignature(_connection: ErpConnectionContext, _request: ErpWebhookRequest): ErpWebhookVerification {
