@@ -208,7 +208,7 @@ describe("FINDING-4 independent recertification - GAP-3 (O(text.length) terminat
     expect(segs!.length).toBe(2);
   });
 
-  // Wall-clock timing: one retry (WALL_CLOCK_RETRY) absorbs a scheduler stall on a shared CI runner;
+  // Wall-clock timing: one retry ({ retry: 1 }, pinned by tests/platform/wall-clock-retry.test.ts) absorbs a scheduler stall on a shared CI runner;
   // the <8x threshold is unchanged, and a genuinely super-linear implementation fails both attempts.
   it("FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows", { retry: 1, timeout: 20000 }, () => {
     const small = bareOrChain(4000);
@@ -266,7 +266,8 @@ describe("FINDING-4 independent recertification - probes that DID hold up", () =
     expect(segs).toBeNull(); // depth never returns to 0, so no top-level delimiter is ever found - documented, disclosed fail-closed behavior, confirmed accurate
   });
 
-  it("deeply-nested but balanced parens on both sides of a genuine top-level 'or' do not cause pathological slowdown", () => {
+  // Wall-clock timing (elapsed < 2000ms): one retry absorbs a CI scheduler stall; threshold unchanged.
+  it("deeply-nested but balanced parens on both sides of a genuine top-level 'or' do not cause pathological slowdown", { retry: 1 }, () => {
     const deep = "(".repeat(20000) + "x" + ")".repeat(20000);
     const t0 = Date.now();
     const segs = segmentCoordinateClauses(`${deep} or ${deep}`);

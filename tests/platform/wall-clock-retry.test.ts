@@ -31,6 +31,11 @@ const TIMING_TESTS = [
     title: "supplemental: wall-clock log-log slope over materially increasing n is far below the audited 1.81",
     threshold: "expect(slope).toBeLessThan(1.5);",
   },
+  {
+    file: "tests/contract-model/part-b-recert-finding4-independent.test.ts",
+    title: "deeply-nested but balanced parens on both sides of a genuine top-level 'or' do not cause pathological slowdown",
+    threshold: "expect(elapsed).toBeLessThan(2000);",
+  },
 ];
 
 describe("wall-clock timing tests: one retry, threshold unchanged", () => {
@@ -43,6 +48,7 @@ describe("wall-clock timing tests: one retry, threshold unchanged", () => {
       expect(header).toMatch(/\{\s*retry:\s*1\b/);
       expect(header).not.toMatch(/retry:\s*([2-9]|\d{2,})/);
       expect(src).toContain(t.threshold);
+      expect(src).not.toMatch(/WALL_CLOCK_RETRY/);
     });
   }
 });
