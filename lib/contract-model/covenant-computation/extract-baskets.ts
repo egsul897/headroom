@@ -727,16 +727,41 @@ const ROMAN: Record<string, number> = {
 function markerCandidates(body: string, commaRuns = false): Marker[] {
   const out: Marker[] = [];
   const commaLed: Marker[] = [];
+  const raw: Marker[] = [];
   for (const match of body.matchAll(/\(([0-9]{1,3}|[a-z]{1,6}|[A-Z])\)/g)) {
     if (match.index == null || !match[1]) continue;
+    const any = toMarker(match.index, match[1]);
+    if (any) raw.push(any);
     const pre = body.slice(Math.max(0, match.index - 80), match.index);
+    if (refListMember(body, match.index, pre)) continue;
     const strong = preOk(pre);
     if (!strong && !(commaRuns && COMMA_LEAD.test(pre))) continue;
     const marker = toMarker(match.index, match[1]);
     if (marker) (strong ? out : commaLed).push(marker);
   }
-  if (commaLed.length) out.push(...commaRunMembers(body, out, commaLed));
+  if (commaLed.length) out.push(...commaRunMembers(body, out, commaLed, raw));
   return out.sort((a, b) => a.pos - b.pos);
+}
+
+/**
+ * A member of a cross-reference list ("under clauses (a), (b) and (c) of Section 7.3", "paragraphs (2) or (3) above"):
+ * never a clause opener. Either a clause word introduces it, or it follows another enumerator with only a list separator
+ * between them and the list was introduced by a clause word or goes on to name its target ("of Section …", "above").
+ */
+function refListMember(body: string, pos: number, pre: string): boolean {
+  const CLAUSE_WORD = /\b(?:clauses?|paragraphs?|sub-?clauses?|sub-?sections?|subparagraphs?|items?)\s*$/i;
+  if (CLAUSE_WORD.test(pre)) return true;
+  const SEP = /\((?:[0-9]{1,3}|[a-z]{1,6}|[A-Z])\)\s*(?:,\s*)?(?:and\s+|or\s+|and\/or\s+|through\s+|to\s+)?$/;
+  if (!SEP.test(pre)) return false;
+  let head = pre;
+  for (let k = 0; k < 12; k++) {
+    const m = SEP.exec(head);
+    if (!m) break;
+    head = head.slice(0, m.index);
+  }
+  if (CLAUSE_WORD.test(head)) return true;
+  const after = body.slice(pos, pos + 60).replace(/^\([^)]*\)/, "");
+  return /^\s*(?:of|in|under)\s+(?:this\s+)?(?:Section|Article|the\s+definition)\b|^\s*(?:above|below|hereof)\b/i.test(after);
 }
 
 /** "…, (c) " / "…, and (c) " — a comma-led enumerator, structural only inside a comma-run list (commaRunMembers). */
@@ -757,7 +782,7 @@ function itemWords(body: string, pos: number, end: number): number {
  * clause, and (5) the run reaches back to a first item "(a)" / "(1)" at a structural position. Applied only at the
  * top level of a covenant's clause list. Members are accepted in order, so one accepted member can confirm the next.
  */
-function commaRunMembers(body: string, strong: Marker[], commaLed: Marker[]): Marker[] {
+function commaRunMembers(body: string, strong: Marker[], commaLed: Marker[], raw: Marker[] = []): Marker[] {
   const accepted: Marker[] = [];
   const all = [...strong, ...commaLed].sort((a, b) => a.pos - b.pos);
   const pool = () => [...strong, ...accepted];
@@ -767,6 +792,9 @@ function commaRunMembers(body: string, strong: Marker[], commaLed: Marker[]): Ma
   for (const m of commaLed) {
     const prev = findPrev(m, pool());
     if (!prev) continue;
+    // A closer, non-structural predecessor ("received from (a) …, (b) …") means m continues an inline list inside a
+    // clause, not the covenant's clause list.
+    if (raw.some((x) => x.style === m.style && x.order === m.order - 1 && x.pos > prev.pos && x.pos < m.pos)) continue;
     const between = body.slice(prev.pos + prev.raw.length + 2, m.pos);
     const depth = (between.match(/\(/g) ?? []).length - (between.match(/\)/g) ?? []).length;
     if (depth !== 0) continue;

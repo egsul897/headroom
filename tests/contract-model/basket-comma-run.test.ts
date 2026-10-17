@@ -73,3 +73,19 @@ describe("comma-led markers that are not a clause list stay inside their clause"
     expect(b.operativeText).toMatch(/Indebtedness of Subsidiaries/);
   });
 });
+
+describe("cross-reference and inline lists never split the clause list", () => {
+  it("'clauses (a), (b) and (c) of Section 7.3' stays inside its clause, with its figure", () => {
+    const body = "(a) Indebtedness under the Loan Documents; (b) Guarantees of Indebtedness permitted under clauses (a), (b) and (c) of Section 7.3 not to exceed $8,000,000; (c) purchase money Indebtedness not to exceed $35,000,000";
+    const clauses = extractBasketClauses({ documentId: "ref-list", text: doc(body) } as any);
+    const g = clauses.find((c) => /Guarantees of Indebtedness/.test(c.operativeText))!;
+    expect(g.operativeText).toMatch(/of Section 7\.3 not to exceed \$8,000,000/);
+    expect(clauses.some((c) => /^\s*\(c\)\s*of Section/.test(c.operativeText))).toBe(false);
+  });
+  it("an inline list inside a builder ('received from (a) …, (b) …, or (c) …') is not the clause list", () => {
+    const body = "(a) Restricted Payments not to exceed the sum of (i) 50% of Consolidated Net Income, plus (ii) 100% of the net cash proceeds received from (a) the issue of Equity Interests of the Borrower, (b) any contribution to the common equity capital of the Borrower or (c) the issue of convertible Indebtedness later converted into Equity Interests, plus (iii) $42,000,000; (b) dividends payable solely in Equity Interests; (c) Restricted Payments not to exceed $9,000,000 in any fiscal year";
+    const clauses = extractBasketClauses({ documentId: "builder-inline", text: doc(body) } as any);
+    expect(clauses.some((c) => /^\s*\(b\)\s*any contribution/.test(c.operativeText))).toBe(false);
+    expect(clauses.find((c) => /the sum of/.test(c.operativeText))!.operativeText).toMatch(/\$42,000,000/);
+  });
+});
