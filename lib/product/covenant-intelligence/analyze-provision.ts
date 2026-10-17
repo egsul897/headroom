@@ -531,7 +531,21 @@ function classifyNonCovenant(params: {
       // clauses that order prepayment, whose text matches none
       // of the three mechanics shapes).
       if (isMandatoryPrepaymentShape(excerpt)) return null;
-      if (hasMappableSubstantiveFamily(families)) return null;
+      // Past that guard, a MANDATORY_PREPAYMENTS family on the
+      // item is inherited or mentioned, not operative (a mixed
+      // Optional/Mandatory prepayment section's stem excerpt
+      // contains the mandatory subsection's "shall prepay", and
+      // Rule 193 inheritance carries the family onto the
+      // optional subsection's clauses) — it does not block the
+      // mechanics gate. Other substantive families still do
+      // (the masked incremental population).
+      if (
+        hasMappableSubstantiveFamily(
+          families.filter((f) => f !== "MANDATORY_PREPAYMENTS"),
+        )
+      ) {
+        return null;
+      }
       return "MECHANICS";
     case "EOD": {
       // Census step 4 (article context): inside an Events of
@@ -2146,13 +2160,18 @@ export function analyzeProvision(params: {
     if (!primaryCat || primaryCat === "OTHER" || primaryCat === "BASKETS_EXCEPTIONS_CONDITIONS") {
       return null;
     }
-    // (a) A pure cross-reference pointer is classified by the
-    // subject it points at (its lead), not by the family its
-    // enclosing section's vocabulary tagged first ("Guarantees
-    // permitted by Section 7.02" inside §Investments is a
-    // guarantees pointer, not an investments provision).
-    if (isPureCrossReference && leadSubject && leadSubject !== primaryCat) return leadSubject;
-    // (b) Section-subject demotion: the enclosing section's
+    // NOTE on pure cross-reference pointers ("Guarantees
+    // permitted by Section 7.02" inside §Investments; "any
+    // Restricted Payment permitted by Section 6.05" inside the
+    // affiliate covenant): an earlier version of this rule
+    // classified a pointer by its POINTED subject. The census's
+    // standard is the opposite — the pointed subject is a
+    // cross-reference subject, and the pointer is an exception
+    // OF its home covenant ("parent-section context" is the
+    // determination). Pointers therefore take their home
+    // classification (primary / section arbitration) uniformly;
+    // no pointed-subject demotion.
+    // Section-subject demotion: the enclosing section's
     // unique subject is a different covenant, that covenant's
     // family IS detected on the item, and the item's own lead
     // does not corroborate the primary family (an incremental
@@ -2202,10 +2221,12 @@ export function analyzeProvision(params: {
       ? "AFFIRMATIVE"
       : isAdministrativeProvision(heading, excerpt)
         ? "OTHER"
-        : isEod || eodPosition
-          ? "EVENTS_OF_DEFAULT"
-          : fragmentDemoted
-            ? "OTHER"
+        : isScheduleIndexText(excerpt)
+          ? "OTHER"
+          : isEod || eodPosition
+            ? "EVENTS_OF_DEFAULT"
+            : fragmentDemoted
+              ? "OTHER"
             : (demotedCategory ??
               inheritedCategory ??
               (FAMILY_TO_CATEGORY[effectivePrimary] ?? "OTHER"));
