@@ -16,7 +16,7 @@ import {
 } from "../../contract-model/section-tree/semantics";
 import { runCovenantComputation } from "../../contract-model/covenant-computation";
 import { covenantRatioThresholds } from "../../contract-model/covenant-computation/ratio-terms";
-import { attachHeadroom } from "../../contract-model/covenant-computation/ratios";
+import { attachHeadroom, parseDefinitions } from "../../contract-model/covenant-computation/ratios";
 import type { ComputedBasket } from "../../contract-model/covenant-computation/types";
 import { buildComputationPackage } from "../sweep/build-package";
 import { emptyRuleSet } from "../learned-rules/types";
@@ -24,6 +24,11 @@ import type { ComputedRatio } from "../../contract-model/covenant-computation/ty
 import type { IssuerFinancials } from "../xbrl/companyfacts";
 import { basketUsage, type FacilityFact } from "../xbrl/instance-debt";
 import { decide, toMetricInput, type BindDecision } from "../xbrl/bind";
+import { debtFromFinancials, leverageDebtCapacity, maxLeverageLimit, optimizeConsolidatedEbitda, ratioCapacity, type EbitdaOptimization, type LeverageCapacity, type RatioCapacity } from "../xbrl/ebitda-optimizer";
+import { findEbitdaMeasureTerm } from "../xbrl/definition-items";
+import { trackAddBacks, type AddBackFlag } from "../xbrl/addback-tracker";
+import { extractDocumentIdentity } from "../../contract-model/compiler/package-graph/document-identity";
+import { buildPackageGraph } from "../../contract-model/compiler/package-graph/pipeline";
 
 export const PIPELINE_VERSION = "agreement-pipeline-1";
 
@@ -72,6 +77,24 @@ export interface AgreementPipelineResult {
     bounds: Array<{ stableKey: string; kind: "AT_LEAST" | "AT_MOST"; metric: string; missing: string[] }>;
     /** Computed only because of a lower bound in a direction that cannot be bounded: reverted to NEEDS_INPUT. */
     reverted: string[];
+    /** Consolidated EBITDA under the agreement's own definition (filings + optional sourced borrower inputs). */
+    ebitda?: EbitdaOptimization;
+    /** maxLeverage × EBITDA − debt, only when exactly one total-leverage MAX limit and a debt figure are available. */
+    leverageCapacity?: LeverageCapacity;
+    /** Incurrence-ratio capacity (leverage / secured leverage / interest coverage): exactly one limit per ratio, else refused. */
+    ratioCapacity?: RatioCapacity[];
+    /**
+     * Amendment (or other package doc) names a dated base facility but no in-text EBITDA schedule was found.
+     * Fail-closed: packages need the base agreement text before definitions can resolve (package-graph).
+     */
+    ebitdaBaseHold?: { reason: "AMENDMENT_NEEDS_BASE_TEXT" | "BASE_NOT_BOUND" | "AMENDED_DEFINITION"; namedBase: string; missing: string };
+    /**
+     * EBITDA measure taken from a base agreement bound by package-graph. CONFIRMED = RESOLVED link; LOWER_CONFIDENCE =
+     * REVIEW_REQUIRED link (supporting-evidence / date-mismatch). Carried on every output derived from that EBITDA.
+     */
+    /** Per-agreement add-back tracker (this agreement's definition × this issuer's filings, period over period). */
+    addBackTracker?: AddBackFlag[];
+    ebitdaBinding?: { tier: "CONFIRMED" | "LOWER_CONFIDENCE"; baseDocumentId: string; relationship: string; resolutionMethod: string };
   };
   families: FamilySummary[];
   stats: { nodes: number; sections: number; clauses: number; xrefs: number; xrefResolved: number; baskets: number };
@@ -86,6 +109,8 @@ export interface HeadroomRow {
   limitBound?: "EXACT" | "AT_LEAST" | "AT_MOST";
   /** Filing locator for a basket usage figure. */
   usageSource?: string;
+  /** EBITDA came from a package-bound base agreement at this confidence tier. */
+  bindingTier?: "CONFIRMED" | "LOWER_CONFIDENCE";
 }
 
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
@@ -105,7 +130,85 @@ function checklistFamilyOf(f: string): string {
   return u;
 }
 
-export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null; facilityFacts?: readonly FacilityFact[] | null }): AgreementPipelineResult {
+
+/** Dated Credit/Loan/Indenture reference from amendment preamble — evidence only, never a definition. */
+export function namedDatedFacilityReference(text: string): string | null {
+  const MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December";
+  const window = text.slice(0, 12_000).replace(/\s+/g, " ");
+  const re = new RegExp(
+    `\\b(?:the|that certain|a|an)\\s+((?:(?:First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth)\\s+Amended and Restated\\s+|Amended and Restated\\s+|First Lien\\s+|Second Lien\\s+|Senior\\s+|Subordinated\\s+)?(?:(?:ABL|Term(?:\\s+Loan)?|Revolving(?:\\s+Credit)?|Bridge|Senior Secured(?:\\s+First Lien)?)\\s+)?(?:Credit Agreement|Loan Agreement|Indenture))\\s*,?\\s*dated\\s+(?:as\\s+of\\s+)?(?:the\\s+)?((?:${MONTHS})\\s+\\d{1,2},\\s*\\d{4})`,
+    "i",
+  );
+  const m = re.exec(window);
+  return m ? m[0].replace(/\s+/g, " ").trim() : null;
+}
+
+/** Decimal string for a ratio limit ("4.5", "9/2" → "4.5"); null if not a terminating decimal within 6 places. */
+function limitDecimal(num: number, den: number): string | null {
+  if (!(num > 0) || !(den > 0)) return null;
+  const v = num / den;
+  const s = Number(v.toFixed(6));
+  if (Math.abs(s - v) > 1e-9) return null;
+  return String(s);
+}
+
+/**
+ * Capacity before each incurrence ratio is hit. LEVERAGE = one debt-like numerator / one EBITDA denominator with a
+ * maximum; COVERAGE = one EBITDA numerator / one interest denominator with a minimum. Exactly one distinct limit
+ * per ratio (thresholds stated in the agreement); anything else is refused (NEEDS_INPUT).
+ */
+export function incurrenceRatioCapacity(ratios: readonly ComputedRatio[], text: string, decisions: readonly BindDecision[], fin?: IssuerFinancials | null): RatioCapacity[] {
+  const out: RatioCapacity[] = [];
+  const cache = new Map<string, BindDecision | null>();
+  const dec = (name: string) => {
+    const hit = decisions.find((d) => d.metricName.toLowerCase() === name.toLowerCase());
+    if (hit || !fin) return hit ?? null;
+    if (!cache.has(name)) cache.set(name, decide(name, text, fin));
+    return cache.get(name)!;
+  };
+  // Operands from each ratio's own definition text ("the ratio of (a) X to (b) Y"), when the catalog row has none.
+  const parsed = new Map(parseDefinitions({ documentId: "doc", role: "CREDIT_AGREEMENT", text }).filter((d) => !d.subtrahendMetrics.length).map((d) => [d.ratioName, d]));
+  const withOps: Array<Pick<ComputedRatio, "displayName" | "numerator" | "denominator" | "thresholds">> = ratios.map((r) => {
+    const d = !r.numerator.length && !r.denominator.length ? parsed.get(r.displayName) : undefined;
+    return d ? { ...r, numerator: d.numeratorMetrics.map((metricName) => ({ metricName }) as ComputedRatio["numerator"][number]), denominator: d.denominatorMetrics.map((metricName) => ({ metricName }) as ComputedRatio["denominator"][number]) } : r;
+  });
+  for (const d of parsed.values()) if (!withOps.some((r) => r.displayName === d.ratioName)) withOps.push({ displayName: d.ratioName, numerator: d.numeratorMetrics.map((metricName) => ({ metricName }) as ComputedRatio["numerator"][number]), denominator: d.denominatorMetrics.map((metricName) => ({ metricName }) as ComputedRatio["denominator"][number]), thresholds: [] });
+  ratios = withOps as unknown as readonly ComputedRatio[];
+  const op = (d: BindDecision | null) => (d ? { status: d.status, value: d.input?.value ?? null } : null);
+  const seen = new Set<string>();
+  for (const r of ratios) {
+    if (seen.has(r.displayName)) continue;
+    seen.add(r.displayName);
+    const lev = /leverage/i.test(r.displayName), cov = /coverage/i.test(r.displayName) && /interest|EBITDA/i.test(r.displayName + r.denominator.map((d) => d.metricName).join(" "));
+    if (!lev && !cov) continue;
+    if (r.numerator.length !== 1 || r.denominator.length !== 1) continue;
+    const num = r.numerator[0]!.metricName, den = r.denominator[0]!.metricName;
+    const kind = lev ? "LEVERAGE" as const : "COVERAGE" as const;
+    const ebitdaName = kind === "LEVERAGE" ? den : num, otherName = kind === "LEVERAGE" ? num : den;
+    if (!/EBITDA/i.test(ebitdaName)) continue;
+    if (kind === "COVERAGE" && !/interest/i.test(otherName)) continue;
+    const want = kind === "LEVERAGE" ? "MAX" : "MIN";
+    let limits = r.thresholds.filter((t) => t.direction === want).map((t) => { const [a, b = "1"] = t.canonical.split("/"); return limitDecimal(Number(a), Number(b)); });
+    if (!r.thresholds.length) limits = covenantRatioThresholds(text, r.displayName, [num], [den]).filter((f) => (want === "MAX" ? f.comparator !== "AT_LEAST" : f.comparator === "AT_LEAST")).map((f) => limitDecimal(f.num, f.den));
+    const distinct = [...new Set(limits)];
+    if (distinct.length !== 1 || distinct[0] == null) {
+      if (limits.length) out.push({ name: r.displayName, kind, limit: distinct.filter(Boolean).join("|") || "?", status: "NEEDS_INPUT", capacity: null, capacityOf: kind === "LEVERAGE" ? "DEBT" : "INTEREST_EXPENSE", bound: null, reason: "ratio limit ambiguous (not exactly one); refused" });
+      continue;
+    }
+    out.push(ratioCapacity({ name: r.displayName, kind, limit: distinct[0]!, ebitda: op(dec(ebitdaName)), other: op(dec(otherName)) }));
+  }
+  return out;
+}
+
+/** Bind an amendment to a package base document. UNRESOLVED (recital-only) links never bind. */
+export function bindAmendmentBase(amendText: string, base: { documentId: string; text: string }): { tier: "CONFIRMED" | "LOWER_CONFIDENCE"; relationship: string; resolutionMethod: string } | null {
+  const g = buildPackageGraph("pkg", "pkg", [{ documentId: "__amendment__", label: "amendment", text: amendText }, { documentId: base.documentId, label: "base agreement", text: base.text }]);
+  const rels = g.relationshipCandidates.filter((x) => x.sourceDocumentId === "__amendment__" && x.targetDocumentId === base.documentId && /AMENDS|RESTATES|SUPPLEMENTS|MODIFIES/.test(x.relationshipType));
+  const ok = rels.find((x) => x.status === "RESOLVED") ?? rels.find((x) => x.status === "REVIEW_REQUIRED");
+  return ok ? { tier: ok.status === "RESOLVED" ? "CONFIRMED" : "LOWER_CONFIDENCE", relationship: ok.relationshipType, resolutionMethod: ok.resolutionMethod } : null;
+}
+
+export function runAgreementPipeline(args: { sourceId: string; text: string; issuerCik?: string | null; financials?: IssuerFinancials | null; facilityFacts?: readonly FacilityFact[] | null; baseDocuments?: ReadonlyArray<{ documentId: string; text: string }> | null; priorFinancials?: IssuerFinancials | null }): AgreementPipelineResult {
   const raw = args.text ?? "";
   const tree = parseDocumentTree(raw);
   const roles = new Map<string, ClauseRole>();
@@ -235,6 +338,70 @@ export function runAgreementPipeline(args: { sourceId: string; text: string; iss
       Object.assign(row, { status: "COMPUTED", usage: u.usage.toString(), usageBound: "EXACT", headroom: hs, headroomBound: (b.capBound ?? capBound) === "AT_LEAST" ? "AT_LEAST" : (b.capBound ?? capBound) === "AT_MOST" ? "AT_MOST" : "EXACT", missing: [], usageSource: `${u.facility} → ${u.fact.concept} [${u.fact.member}] ${u.fact.instant} accn ${u.fact.accession}` });
     }
     headroom.push(row);
+  }
+
+  // Consolidated EBITDA optimizer → leverage debt capacity (general rules; no invented inputs).
+  if (args.financials && xbrl) {
+    let term = findEbitdaMeasureTerm(tree.text);
+    let defText = tree.text;
+    let binding: NonNullable<AgreementPipelineResult["xbrl"]>["ebitdaBinding"];
+    let baseHold: NonNullable<AgreementPipelineResult["xbrl"]>["ebitdaBaseHold"];
+    if (!term && args.baseDocuments?.length) {
+      const namedBase = namedDatedFacilityReference(tree.text) ?? "base agreement";
+      for (const b of args.baseDocuments) {
+        const bt = parseDocumentTree(b.text).text;
+        const bterm = findEbitdaMeasureTerm(bt);
+        const bind = bindAmendmentBase(tree.text, { documentId: b.documentId, text: bt });
+        if (!bind) { baseHold ??= { reason: "BASE_NOT_BOUND", namedBase, missing: "package-graph did not bind the amendment to the supplied base (recital-only / no link)" }; continue; }
+        if (!bterm) continue;
+        // Fail-closed: an amendment that rewrites the measure or its net-income base needs a conformed text.
+        const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        if ([bterm, "Consolidated Net Income", "Net Income"].some((x) => new RegExp(`["“]\\s*${esc(x)}\\s*["”]|definition\\s+of\\s+["“]?${esc(x)}`, "i").test(tree.text))) {
+          baseHold = { reason: "AMENDED_DEFINITION", namedBase, missing: `amendment rewrites "${bterm}" or its net-income base; conformed text needed` };
+          continue;
+        }
+        term = bterm; defText = bt; binding = { tier: bind.tier, baseDocumentId: b.documentId, relationship: bind.relationship, resolutionMethod: bind.resolutionMethod }; baseHold = undefined;
+        break;
+      }
+    }
+    if (term) {
+      const ebitda = optimizeConsolidatedEbitda(term, defText, args.financials);
+      if (binding) { xbrl.ebitdaBinding = binding; ebitda.bindingTier = binding.tier; }
+      xbrl.ebitda = ebitda;
+      const levRows: Array<{ kind: string; name: string; direction: string | null; limit: string | null }> = headroom.filter((h) => h.kind === "RATIO");
+      for (const r of result.ratios) {
+        if (!/leverage/i.test(r.displayName) || /secured|senior|first\s+lien|interest/i.test(r.displayName)) continue;
+        if (levRows.some((x) => x.name === r.displayName && x.limit != null)) continue;
+        const found = covenantRatioThresholds(tree.text, r.displayName, r.numerator.map((n) => n.metricName), r.denominator.map((n) => n.metricName));
+        for (const f of found) {
+          if (f.comparator !== "NO_GREATER_THAN" || !(f.den > 0)) continue;
+          const limit = f.den === 1 ? String(f.num) : String(f.num / f.den);
+          if (!/^\d+(?:\.\d+)?$/.test(limit)) continue;
+          levRows.push({ kind: "RATIO", name: r.displayName, direction: "MAX", limit });
+        }
+      }
+      xbrl.ratioCapacity = incurrenceRatioCapacity(result.ratios, tree.text, xbrl.decisions, args.financials).map((c) => (binding ? { ...c, bindingTier: binding.tier } : c));
+      const lev = maxLeverageLimit(levRows);
+      const debt = debtFromFinancials(args.financials);
+      xbrl.addBackTracker = trackAddBacks(ebitda, args.financials, args.priorFinancials ?? null, lev);
+      if (lev != null && debt != null) xbrl.leverageCapacity = { ...leverageDebtCapacity(ebitda, lev, debt), ...(binding ? { bindingTier: binding.tier } : {}) };
+      // Baskets sized from this EBITDA carry the binding tier too.
+      if (binding) for (const row of headroom) if (row.kind === "BASKET" && /EBITDA/i.test(row.citation ?? "")) row.bindingTier = binding.tier;
+    } else if (baseHold) {
+      xbrl.ebitdaBaseHold = baseHold;
+    } else {
+      // Fail-closed: name the dated base facility when an amendment has no in-text EBITDA schedule.
+      // package-graph can resolve definitions once that base text is in the package — never invent it.
+      const namedBase = namedDatedFacilityReference(tree.text)
+        ?? extractDocumentIdentity({ documentId: args.sourceId, label: args.sourceId, text: tree.text }).originalAgreementReferenceHint;
+      if (namedBase) {
+        xbrl.ebitdaBaseHold = {
+          reason: "AMENDMENT_NEEDS_BASE_TEXT",
+          namedBase,
+          missing: "base credit/loan agreement text not in package (package-graph cannot bind definitions)",
+        };
+      }
+    }
   }
 
   const families: FamilySummary[] = [];

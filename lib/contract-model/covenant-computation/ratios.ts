@@ -53,7 +53,7 @@ export const RATIO_CATALOG: readonly CatalogEntry[] = [
 ];
 
 
-interface ParsedDefinition {
+export interface ParsedDefinition {
   ratioName: string;
   excerpt: string;
   documentId: string;

@@ -1,0 +1,85 @@
+# EBITDA box / CFO confirmation suite against a real Postgres.
+# Ephemeral Postgres 16 service on the runner only: no secrets, never NEON_DATABASE_URL, no SEC identity
+# (the SEC fetch is mocked in every EBITDA test), no paid provider calls.
+# Steps: apply this repo's migrations with `prisma migrate deploy`; check that the EBITDA sequence migration is
+# idempotent up and down; run every tests/covenant-learning-factory/ebitda-* file, including
+# ebitda-box-postgres.test.ts (real interactive transactions, pg_advisory_xact_lock, the BIGSERIAL ordering and the
+# check constraints). EBITDA_PG_TEST_REQUIRED=1 makes that file fail rather than skip if the URL is missing.
+
+name: ebitda-postgres
+
+on:
+  push:
+    paths:
+      - "lib/covenant-learning-factory/**"
+      - "lib/product/customer-intelligence/analyze-upload.ts"
+      - "app/api/companies/**/ebitda/**"
+      - "tests/covenant-learning-factory/ebitda-*"
+      - "prisma/schema.prisma"
+      - "prisma/migrations/**"
+      - ".github/workflows/ebitda-postgres.yml"
+      - "package.json"
+      - "package-lock.json"
+  pull_request:
+    paths:
+      - "lib/covenant-learning-factory/**"
+      - "lib/product/customer-intelligence/analyze-upload.ts"
+      - "app/api/companies/**/ebitda/**"
+      - "tests/covenant-learning-factory/ebitda-*"
+      - "prisma/schema.prisma"
+      - "prisma/migrations/**"
+      - ".github/workflows/ebitda-postgres.yml"
+      - "package.json"
+      - "package-lock.json"
+
+permissions:
+  contents: read
+
+jobs:
+  ebitda-postgres:
+    name: EBITDA box on real Postgres
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: headroom
+          POSTGRES_PASSWORD: headroom
+          POSTGRES_DB: headroom
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U headroom -d headroom"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      # Ephemeral runner Postgres only. Not NEON_DATABASE_URL.
+      DATABASE_URL: postgresql://headroom:headroom@localhost:5432/headroom?schema=public
+      EBITDA_PG_TEST_URL: postgresql://headroom:headroom@localhost:5432/headroom?schema=public
+      EBITDA_PG_TEST_REQUIRED: "1"
+      PSQL_URL: postgresql://headroom:headroom@localhost:5432/headroom
+      SEC_EDGAR_USER_AGENT: ""
+      SEC_EDGAR_CONTACT_EMAIL: ""
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: apply migrations to the ephemeral Postgres service
+        run: npx prisma migrate deploy
+      - name: EBITDA sequence migration is idempotent (up twice, down twice, up again)
+        run: |
+          M=prisma/migrations/20261017070000_customer_ebitda_seq
+          psql "$PSQL_URL" -q -v ON_ERROR_STOP=1 -f $M/migration.sql
+          psql "$PSQL_URL" -q -v ON_ERROR_STOP=1 -f $M/down.sql
+          psql "$PSQL_URL" -q -v ON_ERROR_STOP=1 -f $M/down.sql
+          psql "$PSQL_URL" -q -v ON_ERROR_STOP=1 -f $M/migration.sql
+          psql "$PSQL_URL" -q -v ON_ERROR_STOP=1 -f $M/migration.sql
+      - name: EBITDA test files (incl. the real-transaction Postgres suite)
+        run: npx vitest run tests/covenant-learning-factory/ebitda-

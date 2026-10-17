@@ -12,6 +12,7 @@
 import { metricInput, money, rationalFromString, type MetricInput } from "../../contract-model/definition-execution";
 import type { FinancialValue, HeadroomInput, IssuerFinancials } from "./companyfacts";
 import { evaluateDefinition, type DefinitionEvaluation } from "./definition-items";
+import { optimizeConsolidatedEbitda, optimizerMetricBound } from "./ebitda-optimizer";
 
 export const XBRL_SOURCE_PREFIX = "sec-xbrl:";
 
@@ -84,9 +85,12 @@ export function findDefinition(text: string, term: string): string | null {
     const esc = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
     const m = new RegExp(`"\\s*${esc}\\s*"\\s*(?:shall\\s+)?(?:mean|means|shall\\s+have\\s+the\\s+meaning)\\b`, "i").exec(t);
     if (!m) return null;
-    const rest = t.slice(m.index, m.index + 6000);
-    const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(rest.slice(m[0].length));
-    return rest.slice(0, next ? m[0].length + next.index : 2500).trim();
+    // Same as findDefinitionText: long schedules exceed 6k; search the remainder for the next
+    // defined-term opener (no 6k/2.5k cutoffs).
+    const after = t.slice(m.index + m[0].length);
+    const next = /"\s*[A-Z][^"]{1,80}"\s*(?:shall\s+)?(?:means?|has the meaning|shall have the meaning)\b/.exec(after);
+    const end = next ? m[0].length + next.index : Math.min(m[0].length + after.length, 100_000);
+    return t.slice(m.index, m.index + end).trim();
   };
   return tryTerm(term) ?? (() => { const s = stripPossessiveOwner(term); return s !== term ? tryTerm(s) : null; })();
 }
@@ -121,6 +125,23 @@ export function decide(metricName: string, text: string, fin: IssuerFinancials):
       term = inner;
     }
     const ev = evaluateDefinition(family, term, text, fin);
+    // EBITDA family: the optimizer sizes the agreement's own schedule (caps, filing add-backs). MAXIMUM → exact;
+    // a supported floor with no omitted two-sided line → lower bound. Anything weaker stays NEEDS_INPUT.
+    if (family === "EBITDA") {
+      const opt = optimizeConsolidatedEbitda(term, text, fin);
+      // The optimizer's open-line block (lines that could lower the total, not modelled from filings) also binds the
+      // legacy evaluator: no LOWER_BOUND / EXACT from it while such a line is open.
+      if (opt.status !== "MAXIMIZED" && opt.omittedTwoSided?.length) return { metricName, family, status: "NEEDS_INPUT", reason: `EBITDA: lines that could lower the total are open: ${opt.omittedTwoSided.slice(0, 6).join(", ")}`, definition: null, evaluation: ev };
+    }
+    if (family === "EBITDA" && ev.status !== "EXACT") {
+      const ob = optimizerMetricBound(optimizeConsolidatedEbitda(term, text, fin));
+      if (ob && (ob.status === "BOUND" || ev.status === "NEEDS_INPUT" || ev.value == null || BigInt(ob.value) > BigInt(ev.value))) {
+        const input: FinancialValue = { metric: "reportedEbitdaBase", concept: `optimizer: ${metricName} (${ob.basis})`, periodType: "TTM", periodStart: null, periodEnd: fin.anchor ?? "", value: ob.value, unit: "USD",
+          accession: [...new Set(fin.values.filter((v) => v.metric === "item").map((v) => v.accession))].slice(0, 1).join(""), form: "", filed: "", derivation: `EBITDA optimizer ${ob.basis}: ${ob.reason}` };
+        return { metricName, family, status: ob.status, reason: `EBITDA optimizer ${ob.basis}: ${ob.reason}`, definition: null, input,
+          evaluation: { kind: "EBITDA", term, status: ob.status === "BOUND" ? "EXACT" : "LOWER_BOUND", value: ob.value, base: null, items: [], missing: ob.missing, reason: ob.reason, periodEnd: fin.anchor ?? null } };
+      }
+    }
     if (ev.status === "NEEDS_INPUT" || ev.value == null) return { metricName, family, status: "NEEDS_INPUT", reason: ev.reason, definition: null, evaluation: ev };
     const input: FinancialValue = { metric: family === "EBITDA" ? "reportedEbitdaBase" : "interestExpense", concept: `parsed definition: ${metricName}`, periodType: "TTM", periodStart: null, periodEnd: ev.periodEnd ?? "", value: ev.value, unit: "USD",
       accession: [...new Set(fin.values.filter((v) => v.metric === "item").map((v) => v.accession))].slice(0, 1).join(""), form: "", filed: "", derivation: `${ev.status}: ${ev.base?.concept} ${ev.base?.value} ${ev.items.filter((i) => i.value !== "0").map((i) => `${BigInt(i.value) < 0n ? "-" : "+"} ${i.concepts.map((c) => c.concept).join("/")} ${i.value.replace("-", "")}`).join(" ")}` };
