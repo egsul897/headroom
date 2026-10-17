@@ -16,6 +16,8 @@ export type FakeStore = EbitdaBoxStore & {
   beforeCreate?: (data: Omit<ConfirmationRow, "id" | "createdAt">) => void | Promise<void>;
   /** Throw from the next box write (simulates a connection reset mid-transaction). */
   failBoxWrite?: Error | null;
+  /** Runs when the per-document lock is acquired (simulates work committed while waiting for the lock). */
+  onLock?: () => void | Promise<void>;
 };
 
 /** In-memory store. Implements the append-only API; a legacy `upsert` (pre-hardening code) is also provided and counted
@@ -64,7 +66,7 @@ export function fakeStore(): FakeStore {
       const nb = boxes.length, nr = rows.length;
       try { return await fn(s); } catch (e) { boxes.length = nb; rows.length = nr; throw e; } finally { release(); }
     },
-    $queryRawUnsafe: async (_sql: string, ...v: unknown[]) => { s.locks.push(String(v[0])); return [{ "?column?": 1 }]; },
+    $queryRawUnsafe: async (_sql: string, ...v: unknown[]) => { s.locks.push(String(v[0])); await s.onLock?.(); return [{ "?column?": 1 }]; },
   } as FakeStore;
   return s;
 }

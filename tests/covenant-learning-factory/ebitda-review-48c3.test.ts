@@ -1,8 +1,12 @@
 /** Reviewer PASS_WITH_NOTES at 48c33d17: transactional confirm (row first, box from committed rows), migration notes,
  *  revenue bound, ceiling wording, FAILED box keeps last committed state, SEC errors are FAILED. */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+// Self-contained: no dependency on SEC_EDGAR_USER_AGENT. The SEC identity is mocked and every fetch below is a mock, so
+// nothing reaches data.sec.gov and no contact email is invented.
+vi.mock("@/lib/edgar-historical-backfill/sec-identity", async (orig) => ({ ...(await orig<typeof import("@/lib/edgar-historical-backfill/sec-identity")>()), resolveSecUserAgentFromEnv: () => "headroom-unit-test (mocked identity; fetch is mocked)" }));
 import { readFileSync } from "node:fs";
-import { computeEbitdaBox, confirmEbitdaItem, financialsForCik, latestEbitdaBox, recordEbitdaBoxFailure, refreshBoxCommitted } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
+import { boxGeneration, computeEbitdaBox, confirmEbitdaItem, financialsForCik, latestEbitdaBox, recordEbitdaBoxFailure, refreshBoxCommitted } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
 import { M, args, fakeStore, fin } from "./ebitda-box-fixture";
 
 const scope = { companyId: "c1", documentId: "d1" };
@@ -58,9 +62,11 @@ describe("confirm: one transaction, row first, box from committed rows", () => {
   it("the saved box is computed from the rows as committed (a row committed concurrently is included)", async () => {
     const db = fakeStore();
     let injected = false;
-    db.beforeCreate = async () => {
+    // Every writer takes the per-document lock, so "committed concurrently" means committed before this request got the
+    // lock (bb0ed766 note: rows are read and the gain computed inside the lock).
+    db.onLock = async () => {
       if (injected) return; injected = true;
-      // another request committed a different key just before this insert
+      // another request committed a different key while this one waited for the lock
       db.rows.push({ id: "r-other", companyId: "c1", documentId: "d1", inputKey: computeEbitdaBox(args).items.find((i) => i.label === "(f)")!.inputKey, kind: "LENDER_APPROVAL", value: "1", source: "consent", confirmedBy: "u9", idempotencyKey: "other", createdAt: new Date(0) });
     };
     const out = await confirmEbitdaItem(db, scope, args, { inputKey: keyE(), value: String(1 * M), source: "a", confirmedBy: "u1" });
@@ -74,7 +80,6 @@ describe("refresh / failure", () => {
     const err503 = (async () => new Response("busy", { status: 403 })) as unknown as typeof fetch;
     await expect(financialsForCik("1", err503)).rejects.toThrow(/SEC 403/);
     const nf = (async () => new Response("", { status: 404 })) as unknown as typeof fetch;
-    process.env.SEC_EDGAR_USER_AGENT ||= "headroom-test test@example.com";
     expect(await financialsForCik("1", nf)).toMatchObject({ financials: null });
     const db = fakeStore();
     const r = await refreshBoxCommitted(db, scope, async () => { throw new Error("SEC 403 for https://data.sec.gov/x"); });
@@ -86,12 +91,12 @@ describe("refresh / failure", () => {
     const db = fakeStore();
     const ok = await confirmEbitdaItem(db, scope, args, { inputKey: keyE(), value: String(3 * M), source: "a", confirmedBy: "u1" });
     expect(ok.ok).toBe(true);
-    await recordEbitdaBoxFailure(db, scope, new Error("SEC 503"));
+    await recordEbitdaBoxFailure(db, scope, new Error("SEC 503"), { generation: await boxGeneration(db, scope) });
     const b = await latestEbitdaBox(db, scope);
     expect(b).toMatchObject({ status: "FAILED", reason: expect.stringMatching(/SEC 503/), totalEbitda: ok.ok ? ok.box.totalEbitda : null });
     expect(b?.confirmations).toEqual([expect.objectContaining({ key: keyE(), value: String(3 * M) })]);
     // a second failure still shows the last good figures, not an empty box
-    await recordEbitdaBoxFailure(db, scope, new Error("SEC 503 again"));
+    await recordEbitdaBoxFailure(db, scope, new Error("SEC 503 again"), { generation: await boxGeneration(db, scope) });
     expect((await latestEbitdaBox(db, scope))?.totalEbitda).toBe(ok.ok ? ok.box.totalEbitda : null);
   });
 });

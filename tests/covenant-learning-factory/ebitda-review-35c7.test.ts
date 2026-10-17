@@ -80,7 +80,7 @@ describe("(4) background failure is persisted and surfaced", () => {
   it("a failed background run saves a FAILED box whose reason GET returns", async () => {
     const db = fakeStore();
     const handed: Promise<unknown>[] = [];
-    runAfterResponse(async () => { throw new Error("SEC companyfacts 503"); }, (err) => recordEbitdaBoxFailure(db, scope, err).then(() => undefined), (p) => handed.push(p));
+    runAfterResponse(async () => { throw new Error("SEC companyfacts 503"); }, (err) => recordEbitdaBoxFailure(db, scope, err, { generation: null }).then(() => undefined), (p) => handed.push(p));
     await handed[0];
     expect(await latestEbitdaBox(db, scope)).toMatchObject({ status: "FAILED", reason: expect.stringMatching(/SEC companyfacts 503/) });
     registerEvaluationAnonymousReadGrant({ companyId: "c1", policyBasis: "test", allowAnonymousRead: true });
