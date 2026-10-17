@@ -63,9 +63,14 @@ export class DefinitionEncyclopediaImportStore {
     // artifacts) and the current contract version. The encyclopedia
     // does not consume dependency edges, so the v2 edge widening
     // does not change its inputs.
+    // The export arrives as parsed data, so its declared literal type is
+    // a claim, not a guarantee: compare through a widened string so both
+    // accepted versions are real runtime branches (v1 committed
+    // artifacts, and the current contract version).
+    const schemaVersion: string = exportDoc.schemaVersion;
     if (
-      exportDoc.schemaVersion !== "knowledge-factory.consumer-export.v1" &&
-      exportDoc.schemaVersion !== CONSUMER_EXPORT_SCHEMA_VERSION
+      schemaVersion !== "knowledge-factory.consumer-export.v1" &&
+      schemaVersion !== CONSUMER_EXPORT_SCHEMA_VERSION
     ) {
       errors.push(`unexpected schemaVersion ${exportDoc.schemaVersion}`);
     }
