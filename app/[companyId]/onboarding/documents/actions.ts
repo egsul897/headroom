@@ -12,6 +12,7 @@ import { analyzeCustomerDocument } from "@/lib/product/customer-intelligence/ana
 import { connectSource } from "@/lib/connectors/registry";
 import { createIngestionJob, runAllPendingIngestionStages } from "@/lib/connectors/ingestion";
 import { prisma } from "@/lib/prisma";
+import { runInBackground } from "@/lib/platform/background";
 import type { DocumentType } from "@prisma/client";
 
 export async function uploadDocumentAction(companyId: string, formData: FormData) {
@@ -75,19 +76,32 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
 
       // Large files: upload returns after durable stage; analysis runs from storage (retryable).
       if (buffer.length >= LARGE_UPLOAD_DEFER_BYTES) {
-        void reanalyzeCustomerDocumentFromStorage({ companyId, documentId })
-          .then(() => {
+        // Registered with waitUntil (lib/platform/background.ts) — a bare
+        // `void promise` is torn down with the serverless instance once
+        // the response returns, leaving the document STAGED forever.
+        const deferredSourceId = staged.sourceId;
+        runInBackground(() => reanalyzeCustomerDocumentFromStorage({ companyId, documentId }), {
+          label: "upload.deferred-analysis",
+          tags: { companyId },
+          onSuccess: () => {
             revalidatePath(`/${companyId}/onboarding/documents`);
             revalidatePath(`/${companyId}/documents`);
             revalidatePath(`/${companyId}/covenants`);
             revalidatePath(`/${companyId}/documents/${documentId}`);
-          })
-          .catch((err) => {
-            console.error(
-              `[reanalyzeCustomerDocumentFromStorage] deferred failure company=${companyId} doc=${documentId}`,
-              err,
+          },
+          // A thrown deferred analysis must stamp FAILED_RETRYABLE (same
+          // rule as the direct path) so the row never reads "in progress".
+          onError: async (err) => {
+            const { markCustomerProcessingStatus } = await import(
+              "@/lib/product/customer-intelligence/analyze-upload"
             );
-          });
+            await markCustomerProcessingStatus({
+              sourceId: deferredSourceId,
+              status: "FAILED_RETRYABLE",
+              error: err instanceof Error ? err.message : String(err),
+            });
+          },
+        });
         console.info(
           `[uploadDocumentAction] deferred analysis sourceId=${staged.sourceId} bytes=${buffer.length}`,
         );
