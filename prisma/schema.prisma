@@ -4969,3 +4969,113 @@ model CustomerEbitdaConfirmation {
   @@index([companyId, documentId, seq])
   @@map("customer_ebitda_confirmations")
 }
+
+// --- Monitoring + CFO alerts (Grok lane 2, docs/monitoring/README.md) ---
+// Additive only. Plain companyId columns (no Prisma relation) so the Company
+// model is untouched. Written only by the monitoring sweep and the tenant-gated
+// threshold/notification routes.
+
+/// SEC filings the monitor has already seen for a tracked company (dedupe by accession).
+model MonitoredFiling {
+  id              String   @id @default(cuid())
+  companyId       String
+  cik             String
+  accessionNumber String
+  form            String
+  filingDate      String
+  detectedAt      DateTime @default(now())
+
+  @@unique([companyId, accessionNumber])
+  @@index([companyId, detectedAt])
+  @@map("monitored_filings")
+}
+
+/// CFO-set band cutoffs per covenant, on the ratio's own scale (no product default exists).
+/// lower-is-safer (max test): healthyUntil < moderateUntil <= limit; higher-is-safer: healthyUntil > moderateUntil >= limit.
+model CovenantBandThreshold {
+  id            String   @id @default(cuid())
+  companyId     String
+  covenantKey   String
+  healthyUntil  Float
+  moderateUntil Float
+  updatedBy     String
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+
+  @@unique([companyId, covenantKey])
+  @@map("covenant_band_thresholds")
+}
+
+/// Append-only band history per covenant. toBand: Healthy | Moderate | Danger | NOT_EVALUATED.
+model CovenantBandEvent {
+  id            String   @id @default(cuid())
+  companyId     String
+  covenantKey   String
+  covenantName  String
+  documentName  String
+  sectionRef    String
+  fromBand      String?
+  toBand        String
+  actual        Float?
+  limitValue    Float
+  healthyUntil  Float?
+  moderateUntil Float?
+  direction     String
+  asOfDate      String
+  observedAt    DateTime @default(now())
+
+  @@index([companyId, observedAt])
+  @@index([companyId, covenantKey, observedAt])
+  @@map("covenant_band_events")
+}
+
+/// Last time a user opened the workspace brief (morning brief "since your last visit").
+model WorkspaceVisit {
+  id          String   @id @default(cuid())
+  companyId   String
+  userId      String
+  lastVisitAt DateTime
+
+  @@unique([companyId, userId])
+  @@map("workspace_visits")
+}
+
+/// In-app notification for a workspace. dedupeKey makes every producer idempotent.
+model WorkspaceNotification {
+  id          String    @id @default(cuid())
+  companyId   String
+  kind        String
+  title       String
+  body        String
+  link        String?
+  dedupeKey   String    @unique
+  createdAt   DateTime  @default(now())
+  readAt      DateTime?
+  emailStatus String    @default("NOT_SENT_DISABLED")
+
+  @@index([companyId, createdAt])
+  @@map("workspace_notifications")
+}
+
+/// Finance-role members of a workspace (CFO / treasurer / controller), provisioned offline like
+/// accounts. Membership allows editing band cutoffs; alertEmails is the explicit opt-in for alert
+/// email (band alerts carry covenant figures, so email never goes to every user).
+model WorkspaceFinanceMember {
+  id          String   @id @default(cuid())
+  companyId   String
+  userId      String
+  alertEmails Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@unique([companyId, userId])
+  @@map("workspace_finance_members")
+}
+
+/// Round-robin position of the monitoring sweep (key "monitoring"): id of the last company swept.
+model MonitoringSweepCursor {
+  key           String   @id
+  lastCompanyId String?
+  updatedAt     DateTime @updatedAt
+
+  @@map("monitoring_sweep_cursors")
+}
