@@ -217,12 +217,20 @@ export function extractFinancials(cf: CompanyFacts, cikPadded: string, opts: { a
   }
   const prem = inst("DebtInstrumentUnamortizedPremium");
   if (prem) pushInst("debtPremium", "DebtInstrumentUnamortizedPremium", [prem]);
-  // The filing that first reported the anchor period carries its fiscal-year focus (later filings repeat the period as
-  // a comparative under their own fy, so only the earliest filing counts).
+  // Fiscal-year focus of a filing whose own current period ends at the anchor (its latest reported period end); a later
+  // filing repeating the period as a comparative does not count. Mis-tag guard: a 10-K's fiscal year cannot be later than
+  // the calendar year its period ends in, a 10-Q's not more than one year later; across qualifying filings the lowest wins.
   let fiscalYear: number | null = null;
   if (anchor) {
-    const first = ["NetIncomeLoss", "ProfitLoss", "Revenues"].flatMap((c) => cf.facts["us-gaap"]?.[c]?.units?.USD ?? []).filter((f) => !opts.asOf || f.filed <= opts.asOf).filter((f) => f.end === anchor && f.fy != null && /^10-[QK]/.test(f.form)).sort((a, b) => (a.filed < b.filed ? -1 : a.filed > b.filed ? 1 : 0))[0];
-    fiscalYear = first?.fy ?? null;
+    const rows = ["NetIncomeLoss", "ProfitLoss", "Revenues"].flatMap((c) => cf.facts["us-gaap"]?.[c]?.units?.USD ?? []).filter((f) => /^10-[QK]/.test(f.form) && (!opts.asOf || f.filed <= opts.asOf));
+    const ownEnd = new Map<string, string>();
+    for (const f of rows) if (!ownEnd.has(f.accn) || f.end > ownEnd.get(f.accn)!) ownEnd.set(f.accn, f.end);
+    const y = +anchor.slice(0, 4);
+    for (const f of rows) {
+      if (f.fy == null || f.end !== anchor || ownEnd.get(f.accn) !== anchor) continue;
+      const fy = Math.min(f.fy, /^10-K/.test(f.form) ? y : y + 1);
+      fiscalYear = fiscalYear == null ? fy : Math.min(fiscalYear, fy);
+    }
   }
   return { cik: cikPadded, entityName: cf.entityName, values, missing, anchor, asOf: opts.asOf ?? null, fiscalYear };
 }
