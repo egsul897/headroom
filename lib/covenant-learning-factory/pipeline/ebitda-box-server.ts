@@ -48,7 +48,7 @@ export async function companyErpFacts(companyId: string, opts: { timeoutMs?: num
   } finally { clearTimeout(timer); }
   if (facts === "timeout") { console.error("[ebitda-box] ERP evidence unavailable", { companyId, reason: "timeout", timeoutMs }); return null; }
   if (!Array.isArray(facts)) { console.error("[ebitda-box] ERP evidence unavailable", { companyId, reason: "invalid_shape" }); return null; }
-  return facts.length ? { companyId, facts: facts as ErpEvidenceFact[] } : null;
+  return facts.length ? { companyId, facts: facts as ErpEvidenceFact[], fetchedAt: new Date().toISOString() } : null;
 }
 
 export async function pipelineArgsFor(companyId: string, documentId: string, known?: { text: string; sourceId: string }): Promise<BoxArgs | null> {

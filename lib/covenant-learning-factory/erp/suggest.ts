@@ -49,6 +49,9 @@ export interface ErpEvidence {
   status: "READY" | "NO_PERIOD";
   /** End of the LTM window (the box's filing period end). */
   asOf: string | null;
+  /** When these ERP facts were read from the connector (ISO 8601, UTC); null when the caller did not say. Shown so the
+   *  CFO can see how fresh the evidence is before confirming; a stale read is re-fetched on the next refresh. */
+  fetchedAt: string | null;
   suggestions: ErpSuggestion[];
   reconciliation: ReconciliationEntry[];
   unreconciledPeriods: number;
@@ -82,6 +85,8 @@ export interface ErpEvidenceInput {
   periodEnd: string | null;
   /** Whether the box's base EBITDA is missing or not positive (then the base components are shown as evidence). */
   baseNeedsEvidence: boolean;
+  /** When the facts were read from the connector (ISO 8601). Anything that is not a valid timestamp becomes null. */
+  fetchedAt?: string | null;
   options?: ReconcileOptions;
 }
 
@@ -127,7 +132,8 @@ export function erpEvidenceForBox(input: ErpEvidenceInput): ErpEvidence {
   const { admitted, rejected } = admitErpFacts(input.facts, input.companyId);
   const reconciliation = reconcileErpWithFilings(admitted, [input.financials, input.priorFinancials], input.options);
   const unreconciledPeriods = reconciliation.filter((r) => r.status === "UNRECONCILED").length;
-  const common = { reconciliation, unreconciledPeriods, rejected: rejected.slice(0, 50), rejectedCount: rejected.length };
+  const fetchedAt = typeof input.fetchedAt === "string" && /^\d{4}-\d{2}-\d{2}T/.test(input.fetchedAt) && Number.isFinite(Date.parse(input.fetchedAt)) ? new Date(Date.parse(input.fetchedAt)).toISOString() : null;
+  const common = { fetchedAt, reconciliation, unreconciledPeriods, rejected: rejected.slice(0, 50), rejectedCount: rejected.length };
   if (!input.periodEnd || epochDay(input.periodEnd) == null) {
     return { status: "NO_PERIOD", asOf: null, suggestions: [], ...common, note: "no filing period to anchor an LTM window; ERP figures are shown only as reconciliation" };
   }

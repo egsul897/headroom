@@ -252,6 +252,17 @@ describe("EBITDA box integration", () => {
       expect(text).toMatch(/invalid_shape/); expect(text).toMatch(/timeout/); expect(text).toMatch(/"reason":"error"/);
     } finally { spy.mockRestore(); }
   });
+  it("(7) erpEvidence carries fetchedAt: stamped by companyErpFacts, passed through the box, junk → null", async () => {
+    registerErpEvidenceSource({ listPeriodFacts: async () => ERP() });
+    const before = Date.now();
+    const loaded = (await companyErpFacts(C))!;
+    expect(Date.parse(loaded.fetchedAt!)).toBeGreaterThanOrEqual(before - 1);
+    const box = computeEbitdaBox({ ...a(null), erp: loaded });
+    expect(box.erpEvidence?.fetchedAt).toBe(loaded.fetchedAt);
+    expect(computeEbitdaBox({ ...a(null), erp: { companyId: C, facts: ERP(), fetchedAt: "2026-10-17T09:00:00Z" } }).erpEvidence?.fetchedAt).toBe("2026-10-17T09:00:00.000Z");
+    for (const junk of [undefined, null, "yesterday", "2026-13-45T00:00:00Z"]) expect(computeEbitdaBox({ ...a(null), erp: { companyId: C, facts: ERP(), fetchedAt: junk as never } }).erpEvidence?.fetchedAt).toBeNull();
+    expect(erpEvidenceForBox({ companyId: C, facts: ERP(), financials: noBaseFin, periodEnd: null, baseNeedsEvidence: false, fetchedAt: "2026-10-17T09:00:00.000Z" })).toMatchObject({ status: "NO_PERIOD", fetchedAt: "2026-10-17T09:00:00.000Z" });
+  });
   it("(6) a BASE_METRIC revenue of 0 is NEEDS_INPUT (422) and writes nothing", async () => {
     const db = fakeStore();
     expect(await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: "0", source: "doc", confirmedBy: "cfo" })).toMatchObject({ ok: false, status: 422, code: "NEEDS_INPUT" });

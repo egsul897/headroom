@@ -143,7 +143,7 @@ function mulFloor(lev: string, n: bigint): string {
 
 export type PipelineArgs = Parameters<typeof runAgreementPipeline>[0];
 /** Pipeline inputs plus the company's ERP facts (from the registered ErpEvidenceSource; absent = no ERP connection). */
-export type BoxArgs = PipelineArgs & { erp?: { companyId: string; facts: readonly ErpEvidenceFact[] } | null };
+export type BoxArgs = PipelineArgs & { erp?: { companyId: string; facts: readonly ErpEvidenceFact[]; fetchedAt?: string | null } | null };
 
 /** Confirmations that feed the optimizer as borrower inputs (base-metric confirmations are bounds, not inputs). */
 export const borrowerInputsOf = (cs: readonly ConfirmationView[]): BorrowerInput[] => cs.filter((c) => c.kind !== "BASE_METRIC").map(asBorrowerInput);
@@ -156,6 +156,7 @@ export function erpEvidenceFor(args: BoxArgs, box: Pick<EbitdaBox, "periodEnd" |
     companyId: args.erp.companyId, facts: args.erp.facts, financials: args.financials, priorFinancials: args.priorFinancials ?? null,
     periodEnd: box.periodEnd ?? args.financials?.anchor ?? null,
     baseNeedsEvidence: !(b != null && /^-?\d+$/.test(b) && BigInt(b) > 0n),
+    fetchedAt: args.erp.fetchedAt ?? null,
   });
 }
 const withErp = (box: EbitdaBox, args: BoxArgs): EbitdaBox => { const ev = erpEvidenceFor(args, box); return ev ? { ...box, erpEvidence: ev } : box; };
