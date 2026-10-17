@@ -1,7 +1,7 @@
 /**
  * Covenant calendar — READ-ONLY projection of obligations extraction has already
  * persisted (contract_event_obligations). Nothing is extracted or inferred here.
- * Shape matches #414 `CalendarItem` ({id, kind: test|reporting|cure, label, date}),
+ * Shape matches PR 414 `CalendarItem` ({id, kind: test|reporting|cure, label, date}),
  * grouped as {testDates, reportingDeadlines, cureEndDates}.
  *
  * - FIXED_DATE with a stored deadlineDate ⇒ date (YYYY-MM-DD).

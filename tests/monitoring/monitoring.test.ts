@@ -19,7 +19,7 @@ const fccr = (actual: number | null): RatioRowInput => ({
   currentRatio: actual, ratioLimit: 1.25, comparisonDirection: "at_or_above", status: "MODELED",
 });
 
-describe("bands (#414 BandCutoffs / BandReading)", () => {
+describe("bands (PR 414 BandCutoffs / BandReading)", () => {
   it("NO default cutoffs: without CFO settings the band is NEEDS_INPUT, never Healthy", () => {
     const b = bandFor(lev(3.0), []);
     expect(b).toMatchObject({ status: "NEEDS_INPUT", band: null, thresholds: null, reason: "Band thresholds not set" });

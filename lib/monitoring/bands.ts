@@ -1,6 +1,6 @@
 /**
  * Covenant bands (Healthy / Moderate / Danger), matching the Designer's
- * `BandCutoffs` / `BandReading` contract on #414 (lib/ux/present.ts).
+ * `BandCutoffs` / `BandReading` contract on PR 414 (lib/ux/present.ts).
  *
  * Cutoffs are on the ratio's own scale and come ONLY from the CFO's settings
  * for that covenant (covenant_band_thresholds). There is NO product default:
