@@ -81,6 +81,8 @@ export interface SourceScore {
   checklist?: Record<string, string> | null;
   /** Self-credit guard: items NOT credited because only refused learned captures matched them, by reason. */
   selfCredit?: Record<string, number>;
+  /** Self-credit guard: candidates credited ONLY by learned captures outside their seed documents, by issuer relation. */
+  learnedCredit?: Record<string, number>;
   /** The same source scored with NO learned rules (extractor only). Always emitted by the CLI. */
   noRules?: { counts: ClassCounts; total: number };
 }
@@ -127,6 +129,8 @@ export interface SelfCreditSummary {
   /** Non-null when the provenance as a whole was unusable (every capture rule then counts as without provenance). */
   unboundReason: string | null;
   refused: Record<Split, Record<string, number>>;
+  /** Candidates credited only by learned captures outside their seed documents (generalization credit kept). */
+  credited: Record<Split, Record<string, number>>;
 }
 
 export interface DevManifest {
@@ -179,7 +183,13 @@ export interface ScoreOptions {
 
 const NO_RULES: LearnedRuleSet = { ...emptyRuleSet(0), updatedAt: FIXED_NOW };
 
-function scoreErrors(input: ScoreboardSourceInput, rules: LearnedRuleSet, guard: SelfCreditGuard | null, creditStats?: Record<string, number>) {
+function scoreErrors(
+  input: ScoreboardSourceInput,
+  rules: LearnedRuleSet,
+  guard: SelfCreditGuard | null,
+  creditStats?: Record<string, number>,
+  creditedStats?: Record<string, number>,
+) {
   const sourceId = input.source.sourceId;
   const pkg = buildComputationPackage({
     source: input.source,
@@ -201,7 +211,14 @@ function scoreErrors(input: ScoreboardSourceInput, rules: LearnedRuleSet, guard:
     // nesting fixes it lowers HELDOUT 3616 -> 2386 (v2) with 16/16 hand-checked flips genuine
     // (docs/clf-scoreboard/section-tree-findings.md). Mode: CLF_SCOREBOARD_TREE_MODE=agree (default) | override.
     locator: process.env.CLF_SCOREBOARD_TREE === "0" ? undefined : buildTreeLocator({ documentText: input.documentText, candidates: input.candidates }),
-    ...(guard ? { creditRefusal: (b: { stableKey: string }) => guard.refusal(b, input.source), creditStats } : {}),
+    ...(guard
+      ? {
+          creditRefusal: (b: { stableKey: string }) => guard.refusal(b, input.source),
+          creditStats,
+          creditTag: (b: { stableKey: string }) => guard.creditTag(b, input.source),
+          creditedStats,
+        }
+      : {}),
   });
 }
 
@@ -217,7 +234,8 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
   const sourceId = input.source.sourceId;
   const guard = opts.guard ?? null;
   const creditStats: Record<string, number> = {};
-  const errors = scoreErrors(input, rules, guard, creditStats);
+  const creditedStats: Record<string, number> = {};
+  const errors = scoreErrors(input, rules, guard, creditStats, creditedStats);
   const { counts, total } = countErrors(errors);
   const docType = classifyDocType({
     sourceId,
@@ -238,7 +256,7 @@ export function scoreSource(input: ScoreboardSourceInput, rules: LearnedRuleSet,
     total,
     textBasis: input.documentText && input.documentText.trim() ? "DOCUMENT" : "COMPOSITE",
     checklist: checklistOf(input, textVerified),
-    ...(guard ? { selfCredit: creditStats } : {}),
+    ...(guard ? { selfCredit: creditStats, learnedCredit: creditedStats } : {}),
     ...(opts.noRules ? { noRules: countErrors(scoreErrors(input, NO_RULES, null)) } : {}),
     findings: errors
       .filter((e) => (SCOREBOARD_CLASSES as readonly string[]).includes(e.class))
@@ -297,7 +315,7 @@ export function aggregate(
     rulesetVersion: number;
     rulesetSha256?: string;
     scorerConfig?: string | null;
-    selfCredit?: Omit<SelfCreditSummary, "refused"> | null;
+    selfCredit?: Omit<SelfCreditSummary, "refused" | "credited"> | null;
   },
 ): ScoreboardReport {
   const totals = {
@@ -348,11 +366,13 @@ export function aggregate(
   let selfCredit: SelfCreditSummary | null = null;
   if (meta.selfCredit) {
     const refused: SelfCreditSummary["refused"] = { DEV: {}, HELDOUT: {} };
+    const credited: SelfCreditSummary["credited"] = { DEV: {}, HELDOUT: {} };
     for (const s of sorted) {
       if (s.duplicateOf) continue;
       for (const [r, n] of Object.entries(s.selfCredit ?? {})) refused[s.split][r] = (refused[s.split][r] ?? 0) + n;
+      for (const [r, n] of Object.entries(s.learnedCredit ?? {})) credited[s.split][r] = (credited[s.split][r] ?? 0) + n;
     }
-    selfCredit = { ...meta.selfCredit, refused };
+    selfCredit = { ...meta.selfCredit, refused, credited };
   }
   return {
     schema: "clf-scoreboard/v1",

@@ -25,7 +25,7 @@ try {
     `## CLF scoreboard vs base: ${g.pass ? "PASS" : "FAIL"}`,
     `HELDOUT ${g.heldoutBefore} → ${g.heldoutAfter}; DEV ${g.devBefore} → ${g.devAfter}`,
     `no-learned-rules (report-only): base ${JSON.stringify(nr(base))} → PR ${JSON.stringify(nr(pr))}`,
-    `refused self-credit (report-only): base ${JSON.stringify(base.selfCredit?.refused ?? null)} → PR ${JSON.stringify(pr.selfCredit?.refused ?? null)}; rules without provenance ${base.selfCredit?.rulesWithoutProvenance ?? "n/a"} → ${pr.selfCredit?.rulesWithoutProvenance ?? "n/a"}`,
+    `refused self-credit (report-only): base ${JSON.stringify(base.selfCredit?.refused ?? null)} → PR ${JSON.stringify(pr.selfCredit?.refused ?? null)}; kept learned credit outside seed docs: base ${JSON.stringify(base.selfCredit?.credited ?? null)} → PR ${JSON.stringify(pr.selfCredit?.credited ?? null)}; rules without provenance ${base.selfCredit?.rulesWithoutProvenance ?? "n/a"} → ${pr.selfCredit?.rulesWithoutProvenance ?? "n/a"}`,
     ...g.reasons.map((r) => `- ${r}`),
     ...g.deltas.slice(0, 40).map((d) => `  Δ ${d.delta > 0 ? "+" : ""}${d.delta} ${d.split} ${d.sourceId} ${JSON.stringify(d.byClass)}`),
   );

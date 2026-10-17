@@ -145,7 +145,7 @@ function printSummary(report: ScoreboardReport): void {
   if (report.selfCredit) {
     const sc = report.selfCredit;
     console.log(
-      `SELF-CREDIT refused DEV=${JSON.stringify(sc.refused.DEV)} HELDOUT=${JSON.stringify(sc.refused.HELDOUT)} rulesWithoutProvenance=${sc.rulesWithoutProvenance}` +
+      `SELF-CREDIT refused DEV=${JSON.stringify(sc.refused.DEV)} HELDOUT=${JSON.stringify(sc.refused.HELDOUT)} kept(learned, outside seed docs) DEV=${JSON.stringify(sc.credited?.DEV ?? {})} HELDOUT=${JSON.stringify(sc.credited?.HELDOUT ?? {})} rulesWithoutProvenance=${sc.rulesWithoutProvenance}` +
         (sc.unboundReason ? ` (provenance unusable: ${sc.unboundReason})` : ""),
     );
   }
@@ -312,7 +312,7 @@ async function main(): Promise<void> {
         heldout: [baseline.noRulesTotals?.HELDOUT.total ?? null, report.noRulesTotals?.HELDOUT.total ?? null],
         dev: [baseline.noRulesTotals?.DEV.total ?? null, report.noRulesTotals?.DEV.total ?? null],
       },
-      selfCredit: report.selfCredit ? { refused: report.selfCredit.refused, rulesWithoutProvenance: report.selfCredit.rulesWithoutProvenance } : null,
+      selfCredit: report.selfCredit ? { refused: report.selfCredit.refused, credited: report.selfCredit.credited, rulesWithoutProvenance: report.selfCredit.rulesWithoutProvenance } : null,
     }, null, 2));
     for (const d of gate.deltas.slice(0, 40)) console.log(`  Δ ${d.delta > 0 ? "+" : ""}${d.delta} ${d.split} ${d.sourceId} ${JSON.stringify(d.byClass)}`);
     if (!gate.pass) process.exit(1);

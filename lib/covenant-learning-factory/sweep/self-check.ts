@@ -380,6 +380,12 @@ export function selfCheckComputation(args: {
    */
   creditRefusal?: (basket: ComputationResult["baskets"][number]) => string | null;
   creditStats?: Record<string, number>;
+  /**
+   * Scorer-only (optional): a tag for a basket that may earn credit (e.g. a learned capture outside its seed
+   * documents). A candidate credited only by baskets carrying one tag is counted under that tag in `creditedStats`.
+   */
+  creditTag?: (basket: ComputationResult["baskets"][number]) => string | null;
+  creditedStats?: Record<string, number>;
 }): LearningErrorRecord[] {
   const now = args.now ?? new Date().toISOString();
   const errors: LearningErrorRecord[] = [];
@@ -450,6 +456,20 @@ export function selfCheckComputation(args: {
         },
       ),
     );
+    if (hit && args.creditTag && args.creditedStats) {
+      // Which baskets credit this candidate; count it under a tag only when every crediting basket carries that tag.
+      const tags = new Set<string | null>();
+      for (const b of baskets) {
+        if (
+          strictCandidateMatch(
+            { excerpt, sectionRef: cand.sectionRef ?? null, family: cand.family ?? null, treeSection: candTree },
+            { cite: norm(b.citationExcerpt), sectionRef: b.sectionRef, family: b.covenantFamily, treeSection: args.locator ? basketTreeSection(args.locator, b.citationExcerpt) : null },
+          )
+        ) tags.add(args.creditTag(b));
+      }
+      const only = tags.size === 1 ? [...tags][0] : null;
+      if (only) args.creditedStats[only] = (args.creditedStats[only] ?? 0) + 1;
+    }
     if (!hit && outOfCovenantScope(args.locator, candTree, cand.excerpt)) continue;
     if (!hit) {
       noteRefused((b) =>
