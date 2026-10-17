@@ -370,10 +370,15 @@ const newIdempotencyKey = () => `srv-${globalThis.crypto.randomUUID()}`;
 /**
  * CFO confirms one item, validated against a fresh pipeline run: the key must name a tracker flag (matched canonically:
  * case and whitespace insensitive; stored as the tracker's key), an AMOUNT must be a non-negative integer within sane
- * bounds, a LENDER_APPROVAL only applies to a CONDITIONAL item, must come from a different principal than the
- * AMOUNT confirmer for the same key (separation of duties), and the source is named. Rows are appended (history kept);
- * the latest per key and kind is current. A CONDITIONAL item counts only once both its amount and its approval are
- * confirmed. The box is then recomputed with all current confirmations and saved.
+ * bounds, a LENDER_APPROVAL only applies to a CONDITIONAL item, and the source is named. Rows are appended (history
+ * kept); the latest per key and kind is current. A CONDITIONAL item counts only once both its amount and its approval
+ * are confirmed. The box is then recomputed with all current confirmations and saved.
+ *
+ * Separation of duties is SYMMETRIC (Egzon decision, 2026-10-17): for a CONDITIONAL item, the amount and the lender
+ * approval must be recorded by two different principals, whichever is recorded second. A LENDER_APPROVAL whose
+ * confirmer equals the current AMOUNT confirmer is refused, and an AMOUNT whose confirmer equals the current
+ * LENDER_APPROVAL confirmer is refused — both 409 SEPARATION_OF_DUTIES, nothing persisted. Recording either one
+ * first stays allowed: the block lands on the second act by the same person.
  */
 export async function confirmEbitdaItem(
   db: EbitdaBoxStore,
@@ -419,6 +424,20 @@ export async function confirmEbitdaItem(
     const check = cfoRecompute(priorArgs, [{ key: inputKey, value, source: input.source.trim() }]);
     const res = check.results[0]!;
     if (!res.accepted) return { ok: false, status: /no tracker flag|ambiguous/.test(res.reason) ? 404 : 400, error: res.reason };
+    // Symmetric separation of duties (Egzon decision, 2026-10-17): the approval-side check below refuses an approval
+    // recorded by the amount's confirmer; this side refuses the mirror image — an AMOUNT whose confirmer already
+    // holds the current LENDER_APPROVAL for the key. Without it, recording the approval first (or re-confirming the
+    // amount after approving) let one principal end up behind both records. The comparison is against the CURRENT
+    // approval row, mirroring how the approval side reads the current amount row, and both identities stay on the
+    // append-only rows for audit.
+    // The gate is the approval row itself, not the tracker flag: an approval row can only exist for an item that
+    // required lender approval when it was recorded (the approval path refuses anything else), while the flag
+    // stops PRESENTING as CONDITIONAL once an amount and an approval are both present — exactly the re-confirm
+    // case this check exists to catch. Unconditional items can hold no approval row, so they are unaffected.
+    const approvalConfirmation = prior.find((c) => canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === "LENDER_APPROVAL");
+    if (approvalConfirmation?.confirmedBy && approvalConfirmation.confirmedBy === input.confirmedBy) {
+      return { ok: false, status: 409, code: "SEPARATION_OF_DUTIES", error: `separation of duties: the amount for ${inputKey} must be confirmed by a different principal than the one who recorded its lender approval (${approvalConfirmation.confirmedBy})` };
+    }
   } else {
     if (!flag) {
       const check = cfoRecompute(priorArgs, [{ key: inputKey, value: "0", source: input.source.trim() }]);

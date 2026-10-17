@@ -1,13 +1,15 @@
-/** Workstream E, Part 3 — LENDER_APPROVAL separation of duties.
+/** Workstream E, Part 3 — LENDER_APPROVAL separation of duties (SYMMETRIC per Egzon decision, 2026-10-17).
  *
  *  A conditional add-back counts only when BOTH its amount and its lender approval are confirmed. The approval
- *  attests an external fact, so it must be recorded by a different principal than the one who confirmed the
- *  amount it unlocks: a LENDER_APPROVAL whose confirmedBy equals the current AMOUNT confirmation's confirmedBy
- *  for the same key is refused (409 SEPARATION_OF_DUTIES) and nothing is persisted. The rule is data-driven —
+ *  attests an external fact, so the two records must come from different principals, whichever is recorded
+ *  second: a LENDER_APPROVAL whose confirmedBy equals the current AMOUNT confirmation's confirmedBy for the
+ *  same key is refused, and an AMOUNT whose confirmedBy equals the current LENDER_APPROVAL confirmation's
+ *  confirmedBy is refused the same way (409 SEPARATION_OF_DUTIES, nothing persisted). Recording either one
+ *  first stays allowed — the block lands on the second act by the same person. The rule is data-driven —
  *  it compares the two identities recorded on the append-only confirmation rows; no user id is hardcoded.
  */
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { computeEbitdaBox, confirmEbitdaItem } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
+import { computeEbitdaBox, confirmEbitdaItem, loadConfirmations } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
 import { handleEbitdaConfirm, type EbitdaApiDeps } from "@/lib/covenant-learning-factory/pipeline/ebitda-box-api";
 import { createTestIdentityHarness, registerServerIdentityProvider, resetTrustedIdentityRuntimeForTests } from "@/lib/capacity";
 import { M, args, fakeStore } from "./ebitda-box-fixture";
@@ -55,6 +57,41 @@ describe("separation of duties on LENDER_APPROVAL", () => {
     const out = await confirmEbitdaItem(db, scope, args, approval("cfo@x"));
     expect(out.ok).toBe(true);
     if (out.ok) expect(out.box.items.find((i) => i.label === "(f)")!).toMatchObject({ status: "CONFIRMED", counted: String(3 * M) });
+  });
+});
+
+describe("symmetric separation of duties on AMOUNT (Egzon decision, 2026-10-17)", () => {
+  it("the principal who recorded the lender approval cannot then confirm the amount (409, nothing persisted)", async () => {
+    const db = fakeStore();
+    expect((await confirmEbitdaItem(db, scope, args, approval("treasurer@x"))).ok).toBe(true); // approval-first stays allowed
+    const out = await confirmEbitdaItem(db, scope, args, amount("treasurer@x"));
+    expect(out).toMatchObject({ ok: false, status: 409, code: "SEPARATION_OF_DUTIES" });
+    expect(db.rows).toHaveLength(1); // only the approval row; the refused amount left no trace
+    expect(db.rows[0]).toMatchObject({ kind: "LENDER_APPROVAL", confirmedBy: "treasurer@x" });
+  });
+
+  it("approval by one principal, amount by another: the item counts once both exist; both identities recorded", async () => {
+    const db = fakeStore();
+    await confirmEbitdaItem(db, scope, args, approval("treasurer@x"));
+    const out = await confirmEbitdaItem(db, scope, args, amount("cfo@x"));
+    expect(out.ok).toBe(true);
+    if (!out.ok) return;
+    expect(out.box.items.find((i) => i.label === "(f)")!).toMatchObject({ status: "CONFIRMED", counted: String(2 * M) });
+    const byKind = new Map(out.box.confirmations.map((c) => [c.kind, c.confirmedBy]));
+    expect(byKind.get("AMOUNT")).toBe("cfo@x");
+    expect(byKind.get("LENDER_APPROVAL")).toBe("treasurer@x");
+    expect(db.rows.map((r) => [r.kind, r.confirmedBy])).toEqual([["LENDER_APPROVAL", "treasurer@x"], ["AMOUNT", "cfo@x"]]);
+  });
+
+  it("after the amount is confirmed by another principal, the approver still cannot re-confirm (edit) the amount", async () => {
+    const db = fakeStore();
+    await confirmEbitdaItem(db, scope, args, approval("treasurer@x"));
+    await confirmEbitdaItem(db, scope, args, amount("cfo@x"));
+    const out = await confirmEbitdaItem(db, scope, args, amount("treasurer@x", 3 * M)); // approver tries to supersede the amount
+    expect(out).toMatchObject({ ok: false, status: 409, code: "SEPARATION_OF_DUTIES" });
+    expect(db.rows).toHaveLength(2); // approval + the other principal's amount; the edit left no trace
+    const cur = await loadConfirmations(db, scope);
+    expect(cur.find((c) => (c.kind ?? "AMOUNT") === "AMOUNT")).toMatchObject({ value: String(2 * M), confirmedBy: "cfo@x" }); // original amount still current
   });
 });
 
