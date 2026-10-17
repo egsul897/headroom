@@ -83,7 +83,7 @@ function stripHtmlToText(html: string): string {
   const withoutNonContent = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
   // Blackline/amendment exhibits mark DELETED text with <strike>, <s> or
   // <del>. Struck text is not operative: keeping it made the engine
-  // compute a deleted $75M basket cap as if it were live (Grok
+  // compute a deleted basket cap as if it were live (Grok
   // independent accuracy check, 2026-10-17). Drop the element AND its
   // contents before tag stripping, like script/style above.
   const withoutStruck = withoutNonContent.replace(/<(strike|s|del)\b[^>]*>[\s\S]*?<\/\1>/gi, " ");
