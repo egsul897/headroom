@@ -17,7 +17,7 @@ import { CAPPED, COST_LIKE, HEADER, QUALIFIED, STOP, TWO_SIDED, definitionSegmen
 
 export type AddBackCategory = "INTEREST" | "TAXES" | "D&A" | "STOCK_COMP" | "IMPAIRMENT" | "RESTRUCTURING" | "SEVERANCE" | "TRANSACTION_COSTS" | "INTEGRATION"
   | "DEBT_EXTINGUISHMENT" | "RUN_RATE_SYNERGIES" | "NON_RECURRING" | "NON_CASH" | "OTHER";
-export interface CapSpec { text: string; kind: "FIXED" | "PERCENT" | "GREATER_OF" | "LESSER_OF" | "UNKNOWN"; dollars: bigint[]; percents: Array<{ num: bigint; den: bigint }>; giving: "BEFORE" | "AFTER" | "UNSTATED"; sharedWith: string[]; tiers?: Array<{ through: string | null; amount: bigint }> }
+export interface CapSpec { text: string; kind: "FIXED" | "PERCENT" | "GREATER_OF" | "LESSER_OF" | "UNKNOWN"; dollars: bigint[]; percents: Array<{ num: bigint; den: bigint }>; giving: "BEFORE" | "AFTER" | "UNSTATED"; sharedWith: string[]; tiers?: Array<{ through: string | null; amount: bigint }>; escalation?: { base: bigint; baseYear: number; step: bigint } }
 export interface AddBackLine {
   label: string; text: string; category: AddBackCategory;
   /** Filing evidence for the item (USD, TTM); null when nothing in the filings maps. */
@@ -136,10 +136,21 @@ export function parseCapTiers(s: string): Array<{ through: string | null; amount
   return periods.map((through, k) => ({ through, amount: amts[k]! }));
 }
 
+const MONEY = String.raw`\$\s*[\d,]+(?:\.\d+)?(?:\s*(?:billion|million|thousand))?`;
+/** "$2.0 million during the 2024 Fiscal Year and increasing by $200,000 for each Fiscal Year thereafter". */
+export function parseCapEscalation(s: string): { base: bigint; baseYear: number; step: bigint } | null {
+  const m = new RegExp(`(${MONEY})\\s+(?:during|for|in)\\s+(?:the\\s+)?(?:(?:Borrower'?s?|Company'?s?)\\s+)?(?:(\\d{4})\\s+Fiscal\\s+Year|Fiscal\\s+Year\\s+(?:ending\\s+in\\s+)?(\\d{4}))\\s*,?\\s+(?:and\\s+)?(?:increasing|increased|to\\s+increase)\\s+by\\s+(${MONEY})\\s+(?:for|in|during)\\s+each\\s+(?:subsequent\\s+)?Fiscal\\s+Year(?:\\s+thereafter)?`, "i").exec(s);
+  if (!m) return null;
+  const base = dollars(m[1]!), step = dollars(m[4]!);
+  return base != null && step != null ? { base, baseYear: +(m[2] ?? m[3])!, step } : null;
+}
+
 export function parseCap(t: string, from = 0): CapSpec | null {
   const c = parseCap0(t, from);
   if (!c) return c;
   const m0 = CAP_RE.exec(t.slice(from));
+  const esc = m0 ? parseCapEscalation(t.slice(from + m0.index, from + m0.index + 400).split(/;/)[0]!) : null;
+  if (esc) return { ...c, kind: "FIXED", dollars: [esc.base], percents: [], escalation: esc };
   const tiers = m0 ? parseCapTiers(t.slice(from + m0.index, from + m0.index + 700).split(/;|\.\s+[A-Z“"]/)[0]!) : null;
   return tiers ? { ...c, kind: "FIXED", dollars: tiers.map((x) => x.amount), percents: [], tiers } : c;
 }
@@ -207,6 +218,17 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
 /** Cap amount in USD given EBITDA before the capped add-backs (e0). AFTER: x ≤ p(e0 + x) ⇒ x ≤ p·e0 / (1 − p). */
 export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | null = null): { amount: bigint | null; note: string } {
   // Date-tiered cap: the tier covering the measured period end; unknown period end → the lowest tier (safe).
+  // Escalating cap: base amount in the base fiscal year plus the step for each later fiscal year. The fiscal year is taken
+  // as the calendar year of the measured period end — never later than the fiscal-year label it falls in (labels follow
+  // the year a fiscal year ends), so the amount is never overstated. Unknown period end → the base amount.
+  if (c.escalation) {
+    const { base, baseYear, step } = c.escalation;
+    if (!periodEnd || !/^\d{4}-\d{2}-\d{2}$/.test(periodEnd)) return { amount: base, note: "escalating cap: period end not determinable; base amount used" };
+    // 52/53-week years ending in early January are labelled by the prior year: step back a month before taking the year.
+    const d = new Date(`${periodEnd}T00:00:00Z`); d.setUTCDate(d.getUTCDate() - 31);
+    const n = BigInt(Math.max(0, d.getUTCFullYear() - baseYear));
+    return { amount: base + step * n, note: `escalating cap: ${baseYear} base + ${n} fiscal-year step(s) for period ending ${periodEnd}` };
+  }
   if (c.tiers?.length) {
     const lowest = () => ({ amount: c.tiers!.reduce((a, x) => (x.amount < a ? x.amount : a), c.tiers![0]!.amount), note: "date-tiered cap: tier not determinable; lowest tier used" });
     const iso = (x: string | null) => x != null && /^\d{4}-\d{2}-\d{2}$/.test(x);
@@ -238,7 +260,7 @@ export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | nul
 
 const usd = (n: bigint) => n.toString();
 /** Add-back conditioned on lender / agent approval or consent. */
-export const NEEDS_APPROVAL = new RegExp(String.raw`\b(?:approved|consented\s+to|verified)\b(?:\s+(?:and|or)\s+(?:approved|verified))?(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*\s+by\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*|\b(?:with|subject\s+to|upon|requires?|requiring)\s+(?:the\s+)?(?:prior\s+)?(?:written\s+)?(?:consent|approval)\s+of\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b|\b(?:reasonably\s+)?(?:mutually\s+)?(?:acceptable|satisfactory)\s+to\s+(?:the\s+Borrower\s+and\s+)?(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b`, "gi");
+export const NEEDS_APPROVAL = new RegExp(String.raw`\b(?:approved|consented\s+to|verified)\b(?:\s+(?:and|or)\s+(?:approved|verified))?(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*\s+by\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b(?:\s+(?:in\s+advance|in\s+writing|in\s+(?:its|their)\s+(?:reasonable\s+|sole\s+)?discretion|prior\s+to\s+(?:such\s+)?\w+))*|\b(?:with|subject\s+to|upon|requires?|requiring)\s+(?:the\s+)?(?:prior\s+)?(?:written\s+)?(?:consent|approval)\s+of\s+(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b|\b(?:reasonably\s+)?(?:mutually\s+)?(?:acceptable|satisfactory)\s+to\s+(?:the\s+Borrower\s+and\s+)?(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\b|\b(?:the\s+|each\s+|all\s+)?(?:(?:Administrative|Collateral)\s+)?(?:Agent|(?:(?:Required|Majority|Requisite|Supermajority|Super-Majority)\s+)?(?:Revolving\s+|Term\s+)?Lenders?)\s+(?:has|have|shall\s+have)\s+(?:(?:previously|expressly)\s+)?(?:consented|approved|agreed)\b(?:\s+(?:thereto|to\s+such|in\s+writing))?`, "gi");
 /** First approval condition on the add-back itself (not on a third party, e.g. an accounting firm acceptable to the Agent). */
 export function approvalCondition(full: string): string | null {
   // Only the clause's own sentence; an alternative route ("… or (E) approved by the Agent", "otherwise acceptable to the
@@ -248,7 +270,10 @@ export function approvalCondition(full: string): string | null {
     const before = own.slice(Math.max(0, m.index! - 100), m.index!);
     if (/(?:\bor|\botherwise)\s+(?:\([A-Za-z\d]{1,4}\)\s*)?(?:(?:in\s+a\s+manner\s+)?otherwise\s+)?(?:as\s+)?(?:reasonably\s+)?$/i.test(before)) continue;
     if (/\b(?:evidence|documentation|support)\b[^;]{0,30}$/i.test(before)) continue;
-    if (/\b(?:firm|accountants?|auditors?|consultants?|advisors?|appraisers?|report|person|institution|bank|provider)s?\b[^;]{0,60}$/i.test(before)) continue;
+    // A third party qualified by the phrase ("any other accounting firm reasonably acceptable to the Agent"); a separate
+    // requirement after a verification step ("verified by the Borrower's accountants and approved by the Lenders") binds.
+    const third = /\b(?:firm|accountants?|auditors?|consultants?|advisors?|appraisers?|report|person|institution|bank|provider)s?\b([^;]{0,60})$/i.exec(before);
+    if (third && !/\b(?:and|but)\s+(?:(?:has|have|shall\s+have|is|are|shall\s+be)\s+(?:been\s+)?)?$/i.test(third[1]!)) continue;
     return own.slice(Math.max(0, m.index! - 150), m.index! + m[0].length).replace(/\s+/g, " ").trim();
   }
   return null;
@@ -376,6 +401,27 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
       continue;
     }
     pairs.push(r);
+  }
+
+  // A clause the segmenter missed: the sequence skips one label ("(i) … (iii)") and the skipped label appears in the
+  // previous clause's text as a fresh enumerator (after "," / ";" / a sign word, followed by a capitalised term, not a
+  // cross-reference such as "Section 6.06(b)(ii)"). Split it off as its own line. The new line starts unevidenced
+  // (claims 0 unless mapped from its own text), so this can only under-count.
+  const ROMANS = ["", "i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx", "xxi", "xxii", "xxiii", "xxiv", "xxv"];
+  const labelAt = (st: string, n: number, like: string) => st === "roman" ? (ROMANS[n] ? `(${ROMANS[n]})` : null) : st === "digit" ? `(${n})` : st === "upper" ? `(${String.fromCharCode(64 + n)})` : n <= 26 ? `(${String.fromCharCode(96 + n)})` : like && null;
+  for (let k = 0; k + 1 < pairs.length; k++) {
+    const a = pairs[k]!, b = pairs[k + 1]!;
+    if (!meta.has(a) || !meta.has(b) || stOf(a) !== stOf(b) || ordOf(b) !== ordOf(a) + 2) continue;
+    const miss = labelAt(stOf(a), ordOf(a) + 1, a.it.label);
+    if (!miss) continue;
+    const m = new RegExp(`(?:[,;]|\\b(?:plus|and|or))\\s*${miss.replace(/[()]/g, "\\$&")}\\s+(?=[A-Z“"])`).exec(a.full);
+    if (!m || /(?:Section|clause|paragraph)s?\s*[\d.]*\s*(?:\([a-zA-Z\d]{1,5}\))*\s*$/i.test(a.full.slice(0, m.index + 1))) continue;
+    const rest = a.full.slice(m.index + m[0].length);
+    a.full = a.full.slice(0, m.index + 1);
+    const nr = { full: rest, it: { label: miss, text: rest, sign: a.it.sign, coverage: "NONE" as const, concepts: [] as Array<{ concept: string; value: string }>, value: "0", note: "split from the preceding clause: label skipped by the enumerated sequence" } } as unknown as (typeof raw)[number];
+    meta.set(nr, { st: stOf(a), ord: ordOf(a) + 1 });
+    pairs.splice(k + 1, 0, nr);
+    k++;
   }
 
   // Base must be derivable. Unmapped deductions (sign "-") block the floor — omitting them would overstate.
