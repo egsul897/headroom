@@ -340,6 +340,51 @@ describe("rule 204: definitions-article items never mint grants", () => {
     } as any);
     expect(grants).toEqual([]);
   });
+
+  it("a 1.01 item under a titled non-definitions article heading is not classified by number alone (D17)", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const operative = {
+      heading: "Limitation on Liens", category: "LIENS_SECURED_DEBT",
+      plainEnglish: "Secured Indebtedness and Liens permitted.",
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [], families: [],
+    } as any;
+    // Control: the same operative item at a covenant-article ref mints.
+    expect(grantTypesForItem({ ...operative, sectionRef: "7.01(a)" })).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+    // At §1.01, a titled non-definitions article heading is
+    // affirmative structural evidence about which article the item
+    // sits in: the §1.01 number convention must not override it
+    // and suppress the grants.
+    expect(
+      grantTypesForItem({ ...operative, sectionRef: "1.01(a)", articleHeading: "ARTICLE I — GUARANTEE" }),
+    ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+    // With no heading evidence, the number fallback still
+    // classifies §1.01 as the definitions article (the Asure
+    // protection in the test above).
+    expect(grantTypesForItem({ ...operative, sectionRef: "1.01(a)" })).toEqual([]);
+    // A bare designator carries no title evidence either.
+    expect(grantTypesForItem({ ...operative, sectionRef: "1.01(a)", articleHeading: "ARTICLE I" })).toEqual([]);
+  });
+
+  it("a definitions article at a non-1.01 number is classified by its heading (Phase C branch)", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const rpItem = {
+      heading: "Limitation on Restricted Payments", category: "RESTRICTED_PAYMENTS",
+      plainEnglish: "Dividends permitted from the builder basket.",
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [], families: [],
+    } as any;
+    // Control: the same grant-bearing item outside a definitions
+    // article mints.
+    expect(
+      grantTypesForItem({ ...rpItem, sectionRef: "6.08(a)", articleHeading: "ARTICLE VI — NEGATIVE COVENANTS" }),
+    ).toEqual(["RESTRICTED_PAYMENT"]);
+    // Under a Definitions heading it mints nothing, whatever its
+    // number (the Tenable 1.02 shape).
+    expect(
+      grantTypesForItem({ ...rpItem, sectionRef: "1.02(d)", articleHeading: "ARTICLE I — DEFINITIONS" }),
+    ).toEqual([]);
+  });
 });
 
 /** Rule 203 tightening: excerpt evidence only for single-clause excerpts. */

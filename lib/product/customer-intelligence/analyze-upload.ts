@@ -742,12 +742,21 @@ export async function analyzeCustomerDocument(params: {
     // edit, or reject any item. Must never fail the upload —
     // auto-accept is idempotent and safe to re-run on re-analysis.
     try {
-      const { autoAcceptRoutineInterpretations } = await import("./reviewer-approvals");
+      const { autoAcceptRoutineInterpretations, sweepAutoAcceptForWorkspace } = await import("./reviewer-approvals");
       await autoAcceptRoutineInterpretations({ companyId: params.companyId, sourceId });
       // Auto-accepts change the decided set — re-evaluate coverage
       // so declarations reflect the system-accepted items.
       const { evaluateCounselCoverage } = await import("./counsel-coverage");
       await evaluateCounselCoverage(prisma, { companyId: params.companyId, sourceId });
+      // P0 convergence sweep: an analysis event is the only
+      // moment summary items change (new analysis, re-minted
+      // nodeIds, widened routine classes). Sweep the workspace
+      // here — the same place the codebase already reconciles
+      // workspace state after analysis (coverage) — so every
+      // OTHER already-analyzed document converges to its correct
+      // SYSTEM-decided set without a re-upload. Idempotent and
+      // write-free for already-decided documents.
+      await sweepAutoAcceptForWorkspace({ companyId: params.companyId });
     } catch {
       // Auto-accept must not fail the upload.
     }

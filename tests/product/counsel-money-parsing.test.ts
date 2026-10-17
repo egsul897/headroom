@@ -27,6 +27,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { parseMoneyMillions, parsePctOf, parseRatio } from "../../lib/product/customer-intelligence/money";
+import { parseFormulaFromItem } from "../../lib/product/customer-intelligence/formula-parse";
 
 describe("counsel-compile money parsing", () => {
   it("bare $5,000 is raw dollars → 0.005 ($M), not 5000", () => {
@@ -51,6 +52,72 @@ describe("counsel-compile money parsing", () => {
 
   it("$2.5 billion → 2500 ($M)", () => {
     expect(parseMoneyMillions("Amount/threshold: $2.5 billion")).toBeCloseTo(2500, 9);
+  });
+
+  it("P4: $30MM carries its scale → 30 ($M), not bare $30", () => {
+    expect(parseMoneyMillions("Amount/threshold: $30MM")).toBeCloseTo(30, 9);
+  });
+
+  it("P4: $2.5bn carries its scale → 2500 ($M)", () => {
+    expect(parseMoneyMillions("Amount/threshold: $2.5bn")).toBeCloseTo(2500, 9);
+  });
+});
+
+describe("P4 unit-misread treatment in formula parsing (Egzon ruling: no basket is below $1,000)", () => {
+  function basketItem(amountText: string) {
+    return {
+      heading: "6.01(a)",
+      sectionRef: "6.01(a)",
+      category: "DEBT_INCURRENCE",
+      posture: "ENUMERATED_PERMISSION",
+      plainEnglish: `The Borrower may incur Indebtedness in an aggregate principal amount not to exceed ${amountText}.`,
+      restriction: null,
+      permissions: [],
+      coveredEntities: [],
+      exceptions: [],
+      conditions: [],
+      materialBasketsThresholds: [`Amount/threshold: ${amountText}`],
+      draftingPatterns: [],
+      operativeLanguageExcerpt: `The Borrower may incur Indebtedness not to exceed ${amountText}.`,
+      sourceCitation: "test",
+      governingAgreement: "test",
+      families: [],
+      relatedDefinedTerms: [],
+      applicableDefinitions: [],
+      entityScope: {},
+    } as unknown as import("../../lib/product/covenant-intelligence/summarize").CovenantSummaryItem;
+  }
+
+  it('"$30 million" → thresholdValue 30 ($M = $30,000,000), MODELED', () => {
+    const parsed = parseFormulaFromItem(basketItem("$30 million"));
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.thresholdValue).toBeCloseTo(30, 9);
+  });
+
+  it('"$30,000,000" → thresholdValue 30 ($M), MODELED', () => {
+    const parsed = parseFormulaFromItem(basketItem("$30,000,000"));
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.thresholdValue).toBeCloseTo(30, 9);
+  });
+
+  it('"$30MM" → thresholdValue 30 ($M), MODELED', () => {
+    const parsed = parseFormulaFromItem(basketItem("$30MM"));
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.thresholdValue).toBeCloseTo(30, 9);
+  });
+
+  it('a bare "$30" with no scale evidence fails closed with the unit-misread reason', () => {
+    const parsed = parseFormulaFromItem(basketItem("$30"));
+    expect(parsed.modelingStatus).toBe("KNOWN_NOT_MODELED");
+    expect(parsed.missingFields).toContain("thresholdValue");
+    expect(parsed.notes.join(" ")).toMatch(/unit misread/i);
+    expect(parsed.thresholdValue).toBe(0);
+  });
+
+  it('a legitimately parsed "$50,000,000" behaves exactly as before', () => {
+    const parsed = parseFormulaFromItem(basketItem("$50,000,000"));
+    expect(parsed.modelingStatus).toBe("MODELED");
+    expect(parsed.thresholdValue).toBeCloseTo(50, 9);
   });
 });
 

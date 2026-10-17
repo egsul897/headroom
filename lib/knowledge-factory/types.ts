@@ -151,6 +151,14 @@ export interface KnowledgeSourceRecord {
   provenance: string;
   usageRightsReviewStatus: UsageRightsReviewStatus;
   discoveryScore?: number;
+  /**
+   * D12: structural-index health ERROR count computed by
+   * extractStructure for this document, persisted at process time
+   * so run outputs and the corpus manifest can surface it without
+   * recomputation. Absent on records processed before the field
+   * existed (aggregates treat absent as 0).
+   */
+  structuralHealthErrors?: number;
   byteSize?: number;
   storagePath?: string;
   companyId?: string;
@@ -276,9 +284,23 @@ export interface CorpusManifestStats {
   covenantCandidates: number;
   definitions: number;
   crossReferences: number;
+  /** Extraction-level cross-reference resolution (Stage 0 instrumentation):
+   * resolved = unique same-document target identified; ambiguous = more
+   * than one physical occurrence matched (never guessed); notFound = no
+   * matching node (incl. schedule/exhibit refs, unresolved by design).
+   * The three counts always sum to crossReferences. These are structural
+   * facts only — they assert nothing about legal applicability or
+   * executable authority. */
+  resolvedCrossReferences: number;
+  ambiguousCrossReferences: number;
+  notFoundCrossReferences: number;
   unsupportedFormats: number;
   duplicateRate: number;
   errors: number;
+  /** D12: total structural-index health ERRORs across sources. */
+  structuralHealthErrors: number;
+  /** D12: stored structural nodes carrying ≥1 integrity violation. */
+  structuralViolationNodes: number;
   measuredProcessingMs: number;
   actualPaidSpendUsd: number;
 }

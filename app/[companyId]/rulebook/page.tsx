@@ -81,6 +81,10 @@ export default async function RulebookPage({
       citation: item.sourceCitation,
       documentTitle: item.documentTitle,
       typeMismatch: mismatchBySourceId.get(item.sourceId) ?? null,
+      // Phase E (D10): carried explicitly so the row can disclose
+      // it — the summary item's unresolvedQuestions carry the same
+      // disclosure in prose, but the queue never rendered them.
+      structuralUnresolved: item.structuralUnresolved === true,
       decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}|${item.category}|${item.nodeId ?? ""}`),
       // Headroom proposes a decision for EVERY item — counsel
       // confirms or edits, never decides from scratch.
@@ -248,6 +252,7 @@ export default async function RulebookPage({
                           )}
                           {c.posture && <Chip tone="navy">{c.posture}</Chip>}
                           {c.typeMismatch && <Chip tone="tight">TYPE MISMATCH — {c.typeMismatch}</Chip>}
+                          {c.structuralUnresolved && <Chip tone="tight">STRUCTURAL RELATIONSHIP UNRESOLVED</Chip>}
                         </div>
                       </div>
                       <div className="row-note">
