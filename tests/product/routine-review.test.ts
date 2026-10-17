@@ -38,6 +38,12 @@ describe("isRoutineItem", () => {
     expect(compilesCleanly(item())).toBe(true);
   });
 
+  it("Phase E (D10) gate unchanged: a structurally unresolved item is never routine, its resolved twin is", () => {
+    expect(isRoutineItem(item({ structuralUnresolved: true }))).toBe(false);
+    expect(isRoutineItem(item({ structuralUnresolved: false }))).toBe(true);
+    expect(isRoutineItem(item())).toBe(true);
+  });
+
   it("a MODELED basket with a remaining (UNKNOWN) condition is an exception", () => {
     expect(
       isRoutineItem(item({ conditions: ["provided_that: provided that no Default has occurred"] })),
