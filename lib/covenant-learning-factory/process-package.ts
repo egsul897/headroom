@@ -15,6 +15,7 @@ import { evaluateCompileIndependently } from "./evaluation";
 import { proposeBoundedImprovements } from "./improvement-loop";
 import { loadPackageDocuments } from "./package-registry";
 import { defaultHonestyClaims, assertAutomatedKnowledgeState } from "./promotion-guards";
+import { artifactPath, isTestRun, type ArtifactEnv } from "../platform/artifact-output";
 import { LearningFileStore } from "./store/file-store";
 import { persistPackageManifestToNeon } from "./store/neon-store";
 import {
@@ -124,10 +125,21 @@ export interface ProcessPackageResult {
   neon: { attempted: boolean; ok: boolean; detail: string };
 }
 
+/**
+ * The unit-dump directory a run actually uses. An explicit unitDumpDir (a path, or null to skip) is honoured as given.
+ * Unset, it is the committed dump dir, except under a test runner, where it is the temp artifact dir
+ * (lib/platform/artifact-output): a test run never rewrites ANY committed dump, held-out or not.
+ */
+export function effectiveUnitDumpDir(unitDumpDir: string | null | undefined, repoRoot: string, env: ArtifactEnv = process.env): string | null | undefined {
+  if (unitDumpDir !== undefined) return unitDumpDir;
+  return isTestRun(env) ? artifactPath(repoRoot, COMMITTED_UNIT_DUMP_DIR, env) : undefined;
+}
+
 export async function processLearningPackage(
   options: ProcessPackageOptions,
 ): Promise<ProcessPackageResult> {
   const repoRoot = options.repoRoot ?? process.cwd();
+  options = { ...options, unitDumpDir: effectiveUnitDumpDir(options.unitDumpDir, repoRoot) };
   const store = options.store ?? new LearningFileStore();
   const spec = options.spec;
   const startedAt = new Date().toISOString();
