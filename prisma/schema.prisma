@@ -159,7 +159,9 @@ model Company {
   // --- NS-4 financial sync outbox (promotion → approved-snapshot reliability) ---
   // Additive only. Records PENDING/FAILED NS-4 writes after legacy financial
   // promotion so recoverable failures cannot strand NS-4 behind legacy state.
-  ns4FinancialSyncs Ns4FinancialSync[]
+  ns4FinancialSyncs   Ns4FinancialSync[]
+  ebitdaBoxes         CustomerEbitdaBox[]
+  ebitdaConfirmations CustomerEbitdaConfirmation[]
 
   // --- SaaS accounts (auth) ---
   // Additive only. Each user belongs to exactly one company — the tenant
@@ -364,8 +366,11 @@ model Document {
   compilerRunDocuments ContractCompilerRunDocument[]
 
   // --- Phase 2C debt package graph (docs/phase-2c-debt-package-graph.md) ---
-  amendmentEffectsTargetingMe AmendmentEffect[] @relation("AmendmentEffectTargetDocument")
+  amendmentEffectsTargetingMe AmendmentEffect[]            @relation("AmendmentEffectTargetDocument")
+  ebitdaBoxes                 CustomerEbitdaBox[]
+  ebitdaConfirmations         CustomerEbitdaConfirmation[]
 
+  @@unique([id, companyId])
   @@map("documents")
 }
 
@@ -4907,4 +4912,60 @@ model CustomerTreeChecklist {
 
   @@id([runId, family])
   @@map("customer_tree_checklist")
+}
+
+/// Dashboard EBITDA box snapshots (lib/covenant-learning-factory/pipeline/ebitda-box.ts), scoped by company + document.
+/// Append-only: each upload analysis or CFO confirmation writes a new snapshot; the latest is served.
+model CustomerEbitdaBox {
+  id         String   @id @default(cuid())
+  companyId  String
+  documentId String
+  status     String
+  version    String
+  payload    Json
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  /// DB-assigned monotonic sequence (migration 20261017070000): "latest box" and the box generation sort by it.
+  seq        BigInt   @unique @default(autoincrement())
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  /// Composite FK: the document must belong to the same company.
+  document   Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Cascade)
+
+  @@index([companyId, documentId, createdAt])
+  @@index([companyId, documentId, seq])
+  @@map("customer_ebitda_boxes")
+}
+
+/// CFO-confirmed, sourced add-back figures and lender-approval confirmations. APPEND-ONLY: rows are never updated or
+/// deleted; the latest row per (companyId, documentId, inputKey, kind) is current, earlier rows are the history.
+/// Check constraints (migration 20261017050000): kind in (AMOUNT, LENDER_APPROVAL), value a non-negative integer
+/// <= 1e12 ("1" for LENDER_APPROVAL), non-empty source, inputKey without whitespace.
+model CustomerEbitdaConfirmation {
+  id             String   @id @default(cuid())
+  companyId      String
+  documentId     String
+  inputKey       String
+  /// AMOUNT | LENDER_APPROVAL
+  kind           String   @default("AMOUNT")
+  /// Whole USD as a decimal string (exact; never estimated). "1" for LENDER_APPROVAL.
+  value          String
+  source         String
+  /// Server-side session principal id.
+  confirmedBy    String?
+  idempotencyKey String
+  /// Original response ({ boxId, gain }) returned verbatim on an idempotent replay.
+  response       Json?
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(6)
+  /// DB-assigned monotonic sequence (migration 20261017070000): "latest row per key" sorts by it.
+  seq            BigInt   @unique @default(autoincrement())
+  /// RESTRICT (delete and update): confirmation history is an audit trail; its company/document cannot be deleted, and a
+  /// document cannot move to another company, while history refers to it.
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  /// Composite FK: the document must belong to the same company.
+  document       Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([companyId, documentId, idempotencyKey])
+  @@index([companyId, documentId, inputKey, createdAt])
+  @@index([companyId, documentId, seq])
+  @@map("customer_ebitda_confirmations")
 }
