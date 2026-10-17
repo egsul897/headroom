@@ -25,8 +25,9 @@ import { buildInput, maxTokensFor, prepare, record, withTimeout, type CandidateR
 import { assertNotPremium } from "./premium-lock";
 import { assertAllowedTimeout, QUALIFICATION_TIMEOUT_MS } from "./timeout-policy";
 import type { GatewayModel } from "./probe-models";
+import { gatewayCataloguePath, pilotPath } from "./pilot-paths";
 
-const OUT = "/tmp/claude-0/pilot/qualify";
+const OUT = pilotPath("qualify");
 
 /** §1 — the approved shortlist, in the authorized order. Nothing else may be dispatched. */
 export const SHORTLIST = [
@@ -218,7 +219,7 @@ async function main() {
   const models: readonly string[] = argvModels.length > 0 ? argvModels : SHORTLIST;
   const activeProbes = skipHard ? FROZEN_PROBES.filter((p) => p.slot !== "C_HARD_LONG") : FROZEN_PROBES;
 
-  const catalogue = JSON.parse(fs.readFileSync("/tmp/claude-0/pilot/models-bakeoff.json", "utf8")).data as GatewayModel[];
+  const catalogue = JSON.parse(fs.readFileSync(gatewayCataloguePath(), "utf8")).data as GatewayModel[];
   const byId = new Map(catalogue.map((m) => [m.id, m]));
   const { stages, bundles, rehydrated } = await prepare();
   const candidateById = new Map(rehydrated.map((c) => [c.discoveryId, c]));

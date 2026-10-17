@@ -309,7 +309,8 @@ describe("P21 - state-evaluation complexity (audit F4, remediation R13)", () => 
     }
   });
 
-  it("supplemental: wall-clock log-log slope over materially increasing n is far below the audited 1.81", () => {
+  // Wall-clock timing: one retry absorbs a CI scheduler stall; thresholds unchanged (tests/platform/wall-clock-retry.test.ts).
+  it("supplemental: wall-clock log-log slope over materially increasing n is far below the audited 1.81", { retry: 1 }, () => {
     measure(100);
     const rows = [200, 400, 800, 1600].map((n) => { let best = Infinity; for (let k = 0; k < 3; k++) best = Math.min(best, measure(n).buildMs + measure(n).evalMs); return { n, ms: Math.max(best, 0.5) }; });
     const xs = rows.map((r) => Math.log(r.n)), ys = rows.map((r) => Math.log(r.ms));

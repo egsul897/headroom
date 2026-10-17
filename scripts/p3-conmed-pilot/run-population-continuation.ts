@@ -19,12 +19,13 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { pilotPath } from "./pilot-paths";
 
 export const ORIGINAL_RUN_DIR = "docs/phase-3-conmed-population-verified/run-original";
-export const ORIGINAL_SCRATCH_DIR = "/tmp/claude-0/pilot/population-verified";
+export const ORIGINAL_SCRATCH_DIR = pilotPath("population-verified");
 export const DOCS_DIR = "docs/phase-3-conmed-population-verified";
 /** Scratch directory of continuation segment n (segment 1 kept its original name). */
-export const continuationScratchDir = (segment: number) => (segment === 1 ? "/tmp/claude-0/pilot/population-continuation" : `/tmp/claude-0/pilot/population-continuation-${segment}`);
+export const continuationScratchDir = (segment: number) => (segment === 1 ? pilotPath("population-continuation") : pilotPath(`population-continuation-${segment}`));
 /** Preserved continuation segments, in order, as found in docs/ (run-continuation-1, run-continuation-2, ...). */
 export function preservedContinuationSegments(docsDir = DOCS_DIR): string[] {
   return fs.readdirSync(docsDir).filter((d) => /^run-continuation-\d+$/.test(d)).sort((a, b) => Number(a.slice(17)) - Number(b.slice(17))).map((d) => path.join(docsDir, d));

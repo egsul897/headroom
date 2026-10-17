@@ -1,8 +1,12 @@
 /** CONMED benchmark recovery harness - pinned offline. Zero paid calls. */
 delete process.env.AI_GATEWAY_API_KEY;
 delete process.env.ANTHROPIC_API_KEY;
-process.env.CONMED_RECOVERY_OUT = "/tmp/claude-0/pilot/benchmark-recovery-test";
+// Scratch under the OS temp dir (was a hard-coded /tmp/claude-0/pilot path that exists only in one container).
+const TEST_SCRATCH = path.join(os.tmpdir(), "headroom-pilot-tests", "benchmark-recovery-test");
+process.env.CONMED_RECOVERY_OUT = TEST_SCRATCH;
 
+import os from "node:os";
+import path from "node:path";
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { AttemptStatus } from "../../scripts/p3-conmed-pilot/population-loop";
@@ -25,7 +29,7 @@ describe("targets and policy constants", () => {
     expect(R.EXCLUDED_REF).toBe("7.11"); expect((R.TARGET_REFS as readonly string[]).includes("7.11")).toBe(false);
     expect(R.RECOVERY_CEILING_USD).toBe(15); expect(R.RECOVERY_STOP_AT_USD).toBe(14.9); expect(R.MAX_ATTEMPTS_PER_CASE).toBe(2);
     expect(R.EVIDENCE_LABEL).toBe("BENCHMARK_RECOVERY");
-    expect(R.OUT).toBe("/tmp/claude-0/pilot/benchmark-recovery-test");
+    expect(R.OUT).toBe(TEST_SCRATCH);
   });
   it("the offline plan resolves the eight population candidate ids in deterministic order and dispatches nothing", async () => {
     const p = await R.main(["--dry-run"]);
@@ -52,7 +56,7 @@ describe("targets and policy constants", () => {
 describe("§12 recovered definition and §13 retry eligibility", () => {
   it("RECOVERED requires compile completed, verifier result, evidence, complete package and valid hash - any verification status", () => {
     // build a real package + evidence pair so the hash re-validates
-    const pkgDir = "/tmp/claude-0/pilot/benchmark-recovery-test/pkg"; fs.mkdirSync(pkgDir, { recursive: true });
+    const pkgDir = path.join(TEST_SCRATCH, "pkg"); fs.mkdirSync(pkgDir, { recursive: true });
     const pkgSrc = "docs/phase-3-conmed-population-verified/run-continuation-2/evidence/verified-units/";
     const file = fs.readdirSync(pkgSrc).find((f) => f.endsWith(".verified-units.json"))!;
     const pkg = JSON.parse(fs.readFileSync(pkgSrc + file, "utf8"));
@@ -160,7 +164,7 @@ describe("resume after the shape guard stopped segment 2 (preserved in docs)", (
   }, 120_000);
   it("a segment that ended COMPLETED, BUDGET_STOP or GATEWAY_CREDIT_EXHAUSTED cannot be resumed", () => {
     const model = { id: "deepseek/deepseek-v4-flash", pricing: { input: "0.00000013", output: "0.00000026" }, max_tokens: 384000 } as unknown as Parameters<typeof R.deriveResumeState>[1];
-    const tmp = "/tmp/claude-0/pilot/benchmark-recovery-test/fake-segment"; fs.mkdirSync(tmp, { recursive: true });
+    const tmp = path.join(TEST_SCRATCH, "fake-segment"); fs.mkdirSync(tmp, { recursive: true });
     for (const f of ["00-plan.json", "01-attempts.json", "02-costs.json", "preflight-health.json"]) fs.copyFileSync(`docs/phase-3-conmed-benchmark-recovery/run-segment-1/${f}`, `${tmp}/${f}`);
     const plan = JSON.parse(fs.readFileSync(`${tmp}/00-plan.json`, "utf8"));
     for (const stopReason of ["COMPLETED", "BUDGET_STOP", "GATEWAY_CREDIT_EXHAUSTED"]) { fs.writeFileSync(`${tmp}/03-run-manifest.json`, JSON.stringify({ stopReason })); expect(() => R.deriveResumeState(tmp, model, plan.targets)).toThrow(/nothing to resume/); }

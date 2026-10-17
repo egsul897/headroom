@@ -12,9 +12,10 @@ import { execSync } from "node:child_process";
 import crypto from "node:crypto";
 import { rescore } from "./rescore";
 import type { CandidateRecord } from "./compile-run";
+import { pilotPath } from "./pilot-paths";
 
 const ROOT = process.cwd();
-const RUN = "/tmp/claude-0/pilot/run";
+const RUN = pilotPath("run");
 const OUT = "docs/phase-3-conmed-low-cost-pilot";
 const GENERATED_AT = "2026-09-21T00:00:00.000Z";
 export const EVIDENCE_LABEL = "LOW_COST_DIAGNOSTIC_PIPELINE";
@@ -182,7 +183,7 @@ export function buildAll() {
       artifact: "§1 — model enumeration, capability filtering and selection.",
       evidenceLabel: EVIDENCE_LABEL,
       generatedAt: GENERATED_AT,
-      ...JSON.parse(fs.readFileSync("/tmp/claude-0/pilot/model-selection.json", "utf8")),
+      ...JSON.parse(fs.readFileSync(pilotPath("model-selection.json"), "utf8")),
     }),
     write("03-population-and-dedup.json", {
       artifact: "§5/§7 — the sealed population and the free savings pass.",

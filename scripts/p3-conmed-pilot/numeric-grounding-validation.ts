@@ -34,6 +34,7 @@ import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest } fr
 import { persistCandidate, VerifiedUnitManifestWriter } from "./evidence";
 import { snapshotUnitsForVerification } from "../../lib/contract-model/verified-units";
 import { LOCKED_MODEL } from "./run-population";
+import { pilotPath } from "./pilot-paths";
 
 /** The two candidates, and nothing else. Both are already in the sealed population. */
 export const VALIDATION_MANIFEST = {
@@ -50,7 +51,7 @@ export const VALIDATION_MANIFEST = {
   prohibitions: ["no retry on any outcome", "no model substitution", "no timeout change", "no second candidate added mid-run", "no premium model, ever"],
 } as const;
 
-const OUT = "/tmp/claude-0/pilot/numeric-grounding-validation";
+const OUT = pilotPath("numeric-grounding-validation");
 
 async function main() {
   if (process.env.NUMERIC_GROUNDING_VALIDATION_AUTHORIZED !== "1") throw new Error("this runner is designed but not authorized: set NUMERIC_GROUNDING_VALIDATION_AUTHORIZED=1 in a mission that explicitly authorizes paid calls");

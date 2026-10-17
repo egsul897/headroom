@@ -6,8 +6,12 @@
 delete process.env.AI_GATEWAY_API_KEY;
 delete process.env.ANTHROPIC_API_KEY;
 // The offline plan is written to a test directory, never over a preserved run's scratch output.
-process.env.CONMED_RUN_OUT = "/tmp/claude-0/pilot/population-verified-test";
+// Scratch under the OS temp dir (was a hard-coded /tmp/claude-0/pilot path that exists only in one container).
+const TEST_SCRATCH = path.join(os.tmpdir(), "headroom-pilot-tests", "population-verified-test");
+process.env.CONMED_RUN_OUT = TEST_SCRATCH;
 
+import os from "node:os";
+import path from "node:path";
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { benchmarkCases, calibrate, denominator, historicalCostTable, LOCKED_MODEL as CAL_MODEL } from "../../scripts/p3-conmed-pilot/resume-calibration";
@@ -31,7 +35,7 @@ describe("model lock and execution policy", () => {
     expect(AUTO_RETRY).toBe(false);
     expect(CONCURRENCY).toBe(1);
     expect(PREMIUM_MODEL_BUDGET_USD).toBe(0);
-    expect(OUT).toBe("/tmp/claude-0/pilot/population-verified-test");
+    expect(OUT).toBe(TEST_SCRATCH);
     expect(DEFAULT_CANDIDATE_TIMEOUT_MS).toBe(480_000);
     expect(manifest.modelLock.model).toBe(LOCKED_MODEL);
     expect(manifest.execution).toMatchObject({ timeoutMs: 480000, concurrency: 1, attemptsPerCandidate: 1, autoRetry: false, timeoutRaisedForLongParents: false });
@@ -117,6 +121,14 @@ describe("empirical cost table and scenarios", () => {
     expect(manifest.budget.hardCeilingUsd).toBe(SPEND_CEILING_USD);
     expect(manifest.budget.stopAtUsd).toBeCloseTo(SPEND_STOP_AT_USD, 6);
     expect(calibrationFile.calibration.recommended.hardCeilingUsd).toBe(SPEND_CEILING_USD);
+  }, 120_000);
+  it("the recorded price source names the catalogue the script actually reads, never a container-only /tmp path", async () => {
+    const cal = calibrate(await denominator(), table);
+    expect(cal.price.source).not.toMatch(/\/tmp\/claude-0/);
+    expect(cal.price.source.startsWith("tests/fixtures/ai-gateway/models-catalogue.json ")).toBe(true);
+    const catalogue = JSON.parse(fs.readFileSync("tests/fixtures/ai-gateway/models-catalogue.json", "utf8"));
+    const m = (catalogue.data ?? catalogue).find((x: { id: string }) => x.id === CAL_MODEL);
+    expect([Number(m.pricing.input) * 1e6, Number(m.pricing.output) * 1e6]).toEqual([cal.price.inputPerMtok, cal.price.outputPerMtok]);
   }, 120_000);
 });
 

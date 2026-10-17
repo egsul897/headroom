@@ -18,9 +18,10 @@ import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest } fr
 import { PER_CANDIDATE_TIMEOUT_MS, CandidateTimeoutError, buildInput, callerFor, loadModel, prepare, realCost, record, withTimeout } from "./compile-run";
 import { classifyOutcome, LOCKED_MODEL, FORBIDDEN_MODEL, CLEAN_RUNS_BEFORE_CONCURRENCY_2 } from "./run-population";
 import { emptyForensicGrounding, groundCompiledResult, type ForensicGroundingResult } from "./forensic-grounding";
+import { pilotPath } from "./pilot-paths";
 
 const OUT = "docs/phase-3-candidate-span-remediation-implementation";
-const RUN = "/tmp/claude-0/pilot/span-validation";
+const RUN = pilotPath("span-validation");
 export const CEILING_USD = 0.40;
 export const STOP_AT_USD = 0.36;
 

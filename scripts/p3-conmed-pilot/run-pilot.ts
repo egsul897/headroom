@@ -24,8 +24,9 @@ import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/disc
 import { INSTRUMENT_KEY, operativeTextFor, sha256 } from "./pipeline";
 import { dedupExact } from "./dedup";
 import { CandidateTimeoutError, PER_CANDIDATE_TIMEOUT_MS, buildInput, callerFor, loadModel, maxTokensFor, prepare, realCost, record, runPool, shouldEscalate, withTimeout, type CandidateRecord } from "./compile-run";
+import { pilotPath } from "./pilot-paths";
 
-const OUT = "/tmp/claude-0/pilot/run";
+const OUT = pilotPath("run");
 const BUDGET_CEILING_USD = 75;
 /** Stop before the ceiling with room for the calls already in flight at the chosen pool size. */
 const BUDGET_STOP_AT_USD = 70;

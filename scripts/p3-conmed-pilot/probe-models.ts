@@ -14,6 +14,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import fs from "node:fs";
 import { AI_GATEWAY_BASE_URL } from "../../lib/contract-model/analyzer/anthropic-analyzer";
+import { gatewayCataloguePath, pilotPath } from "./pilot-paths";
 
 export interface GatewayModel {
   id: string;
@@ -149,7 +150,7 @@ export async function probe(client: Anthropic, m: GatewayModel): Promise<ProbeRe
 
 if (process.argv[1]?.endsWith("probe-models.ts")) {
   void (async () => {
-    const cataloguePath = process.argv[2] ?? "/tmp/claude-0/pilot/models.json";
+    const cataloguePath = process.argv[2] ?? gatewayCataloguePath();
     const limit = Number(process.argv[3] ?? 14);
     const client = new Anthropic({ apiKey: process.env.AI_GATEWAY_API_KEY, baseURL: AI_GATEWAY_BASE_URL });
     const candidates = loadCatalogue(cataloguePath).filter(capable).sort((a, b) => blendedPricePerMtok(a) - blendedPricePerMtok(b));
@@ -161,6 +162,6 @@ if (process.argv[1]?.endsWith("probe-models.ts")) {
       results.push(r);
       console.log(`${r.usable ? "OK  " : "FAIL"} ${r.blendedPricePerMtok.toFixed(3).padStart(7)} ${m.id.padEnd(40)} ${r.failure ?? ""}`);
     }
-    fs.writeFileSync("/tmp/claude-0/pilot/probe-results.json", JSON.stringify(results, null, 2));
+    fs.writeFileSync(pilotPath("probe-results.json"), JSON.stringify(results, null, 2));
   })();
 }

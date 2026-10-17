@@ -27,6 +27,7 @@ import { dedupExact } from "./dedup";
 import { COMPANY_ID, INSTRUMENT_KEY, operativeTextFor } from "./pipeline";
 import { OBSERVED_INPUT_TOKENS_PER_CANDIDATE, PREMIUM_MODEL_BUDGET_USD } from "./premium-lock";
 import { DEFAULT_CANDIDATE_TIMEOUT_MS } from "./timeout-policy";
+import { gatewayCataloguePath } from "./pilot-paths";
 /** The output rate in force when this calibration was frozen (2026-09-24). timeout-policy.ts has since been recalibrated to 200 tok/s (benchmark recovery, 7.16); this document is a historical snapshot and keeps its own figure. */
 const OBSERVED_OUTPUT_TOKENS_PER_SECOND = 125;
 
@@ -153,7 +154,8 @@ export function calibrate(den: Awaited<ReturnType<typeof denominator>>, table: R
   const stopAt = r6(ceiling - (reservation + verifyConservative) * 2);
 
   return {
-    price: { inputPerMtok: 0.13, outputPerMtok: 0.26, source: "/tmp/claude-0/pilot/models.json (gateway catalogue), reconciled against every EXACT row" },
+    // the catalogue the direct-run branch actually checks these prices against (pilot-paths; the committed 01-calibration.json keeps the path it was recorded with)
+    price: { inputPerMtok: 0.13, outputPerMtok: 0.26, source: `${path.relative(process.cwd(), gatewayCataloguePath()) || gatewayCataloguePath()} (gateway catalogue), reconciled against every EXACT row` },
     compileCost: { all: compileAll, shortBand: compileShort, midLongBand: compileMidLong, exactRows: compileExact.length, timeoutRows: compileTimeouts.length, observedTimeoutRate: r6(timeoutRateObserved), shortBandElapsedMs: elapsedShort },
     verifyCost: { layer2Review: verifyStats, calls: verify.length, typicalPerCandidateUsd: r6(verifyTypical), conservativePerCandidateUsd: r6(verifyConservative), note: "the condition-suspicion classifier was not invoked in either observed verification (deterministic evidence forced review), so its cost is bounded by the review call's maximum rather than measured" },
     oneTime,
@@ -192,7 +194,7 @@ export function benchmarkCases(rows: CandidateRow[]) {
 
 if (process.argv[1]?.endsWith("resume-calibration.ts")) {
   void (async () => {
-    const catalogue = JSON.parse(fs.readFileSync("/tmp/claude-0/pilot/models.json", "utf8"));
+    const catalogue = JSON.parse(fs.readFileSync(gatewayCataloguePath(), "utf8"));
     const m = (catalogue.data ?? catalogue).find((x: { id: string }) => x.id === LOCKED_MODEL);
     if (!m || Number(m.pricing.input) !== PRICE.input || Number(m.pricing.output) !== PRICE.output) throw new Error("locked model price in the catalogue does not match the calibration constants");
     const den = await denominator();

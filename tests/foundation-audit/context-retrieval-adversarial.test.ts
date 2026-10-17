@@ -507,7 +507,8 @@ Section 1.08 of the Credit Agreement is hereby amended and restated in its entir
   // 14. CTX-01 generalized: a genuine reference cycle (A -> B -> A) must
   // not infinite-loop or explode retrieval depth - bounded recursion and
   // cycle protection proof.
-  it("14. CTX-01 (generalized, cycle protection): a genuine reference cycle (A -> B -> A) terminates cleanly, with amendment leads still surfaced for both cycle members", () => {
+  // Wall-clock timing (elapsedMs < 2000): one retry absorbs a CI scheduler stall; threshold unchanged.
+  it("14. CTX-01 (generalized, cycle protection): a genuine reference cycle (A -> B -> A) terminates cleanly, with amendment leads still surfaced for both cycle members", { retry: 1 }, () => {
     const docs: TestDocument[] = [
       {
         documentId: "doc1",

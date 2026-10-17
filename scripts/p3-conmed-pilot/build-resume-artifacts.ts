@@ -14,9 +14,10 @@ import { rescore } from "./rescore";
 import { costModel } from "./cost-model";
 import { classifyFailure, type ExecutionFailureKind } from "./resume";
 import type { CandidateRecord } from "./compile-run";
+import { pilotPath } from "./pilot-paths";
 
 const ROOT = process.cwd();
-const RUN = "/tmp/claude-0/pilot/resume";
+const RUN = pilotPath("resume");
 const OUT = "docs/phase-3-conmed-low-cost-pilot-complete";
 const GENERATED_AT = "2026-09-21T00:00:00.000Z";
 export const EVIDENCE_LABEL = "LOW_COST_DIAGNOSTIC_PIPELINE";

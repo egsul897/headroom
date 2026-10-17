@@ -9,6 +9,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { artifactPath } from "@/lib/platform/artifact-output";
 import { describe, expect, it } from "vitest";
 import { analyzeMultiPathTransaction } from "@/lib/product/customer-intelligence/multi-path-analysis";
 import { evaluateVerifiedCapacity } from "@/lib/contract-model/verified-execution";
@@ -41,13 +42,9 @@ import {
   runFixtureCertifiedPath,
 } from "@/lib/product/north-star-workflow/fixture-verified-package";
 
-const OUT_JSON = path.join(
-  "docs",
-  "product",
-  "customer-workflow",
-  "certified-vs-legacy-demo-report.json",
-);
-const OUT_MD = path.join("docs", "product", "customer-workflow", "certified-vs-legacy-demo.md");
+// Written to a temp artifact dir under the test runner (never over the committed copies); see lib/platform/artifact-output.
+const OUT_JSON = artifactPath(process.cwd(), "docs/product/customer-workflow/certified-vs-legacy-demo-report.json");
+const OUT_MD = artifactPath(process.cwd(), "docs/product/customer-workflow/certified-vs-legacy-demo.md");
 
 function certifiedRowFromRun(
   run: ReturnType<typeof runFixtureCertifiedPath>,

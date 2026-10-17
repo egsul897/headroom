@@ -11,10 +11,12 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { artifactPath } from "@/lib/platform/artifact-output";
 import { describe, expect, it } from "vitest";
 
 const ROOT = path.resolve(__dirname, "../..");
-const RESULTS = path.join(ROOT, "docs/agent8-independent-adversarial/01-results.json");
+// The script writes to the test artifact dir under vitest (env is inherited), never over the committed copy.
+const RESULTS = artifactPath(ROOT, "docs/agent8-independent-adversarial/01-results.json");
 
 describe("Agent 8 independent adversarial suite", () => {
   it(

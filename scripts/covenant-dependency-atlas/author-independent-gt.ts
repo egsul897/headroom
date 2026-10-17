@@ -8,6 +8,7 @@
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { artifactPath } from "../../lib/platform/artifact-output";
 
 const ROOT = resolve(__dirname, "../..");
 
@@ -315,7 +316,7 @@ export function authorIndependentGroundTruth(): {
   const byIssuer = Object.fromEntries([...new Set(edges.map((e) => e.issuer))].map((i) => [i, edges.filter((e) => e.issuer === i).length]));
   const byKind = Object.fromEntries([...new Set(edges.map((e) => e.kind))].map((k) => [k, edges.filter((e) => e.kind === k).length]));
 
-  const outDir = join(ROOT, "tests/fixtures/covenant-dependency-atlas/authored-edges");
+  const outDir = artifactPath(ROOT, "tests/fixtures/covenant-dependency-atlas/authored-edges");
   mkdirSync(outDir, { recursive: true });
   const path = join(outDir, "independent-ground-truth-phase3.json");
   const payload = {
