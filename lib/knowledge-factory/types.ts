@@ -151,6 +151,14 @@ export interface KnowledgeSourceRecord {
   provenance: string;
   usageRightsReviewStatus: UsageRightsReviewStatus;
   discoveryScore?: number;
+  /**
+   * D12: structural-index health ERROR count computed by
+   * extractStructure for this document, persisted at process time
+   * so run outputs and the corpus manifest can surface it without
+   * recomputation. Absent on records processed before the field
+   * existed (aggregates treat absent as 0).
+   */
+  structuralHealthErrors?: number;
   byteSize?: number;
   storagePath?: string;
   companyId?: string;
@@ -279,6 +287,10 @@ export interface CorpusManifestStats {
   unsupportedFormats: number;
   duplicateRate: number;
   errors: number;
+  /** D12: total structural-index health ERRORs across sources. */
+  structuralHealthErrors: number;
+  /** D12: stored structural nodes carrying ≥1 integrity violation. */
+  structuralViolationNodes: number;
   measuredProcessingMs: number;
   actualPaidSpendUsd: number;
 }

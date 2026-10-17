@@ -122,6 +122,8 @@ export async function analyzeCommittedSource(params: {
           covenantCandidates: processed.candidateCount,
           crossReferences: processed.crossReferenceCount,
           conditionExceptions: processed.conditionExceptionCount,
+          structuralHealthErrors: processed.structuralHealthErrors,
+          structuralViolationNodes: processed.structuralViolationNodes,
           processingMs: processed.processingMs,
         };
         records.push({
@@ -133,7 +135,7 @@ export async function analyzeCommittedSource(params: {
           startedAt,
           finishedAt: new Date().toISOString(),
           representationLevel: processed.source.representationLevel,
-          diagnostics: `extractionStatus=${processed.source.extractionStatus}; nodes=${processed.structuralNodeCount}; defs=${processed.definitionCount}; candidates=${processed.candidateCount}; xrefs=${processed.crossReferenceCount}; ms=${processed.processingMs}`,
+          diagnostics: `extractionStatus=${processed.source.extractionStatus}; nodes=${processed.structuralNodeCount}; defs=${processed.definitionCount}; candidates=${processed.candidateCount}; xrefs=${processed.crossReferenceCount}; healthErrors=${processed.structuralHealthErrors}; violationNodes=${processed.structuralViolationNodes}; ms=${processed.processingMs}`,
           promotedToLegalTruth: 0,
         });
       } else if (stage === "DEFINITIONS" || stage === "COVENANT_DISCOVERY") {
