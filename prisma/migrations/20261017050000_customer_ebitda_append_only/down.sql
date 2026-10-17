@@ -29,8 +29,8 @@ BEGIN
   END IF;
 END $$;
 
-DROP INDEX IF EXISTS "customer_ebitda_confirmations_companyId_documentId_inputKey_createdAt_idx";
-DROP INDEX IF EXISTS "customer_ebitda_confirmations_companyId_documentId_idempotencyKey_key";
+DROP INDEX IF EXISTS "customer_ebitda_confirmations_companyId_documentId_inputKey_idx";
+DROP INDEX IF EXISTS "customer_ebitda_confirmations_companyId_documentId_idempote_key";
 CREATE UNIQUE INDEX IF NOT EXISTS "customer_ebitda_confirmations_companyId_documentId_inputKey_key" ON "customer_ebitda_confirmations" ("companyId", "documentId", "inputKey");
 ALTER TABLE "customer_ebitda_confirmations" DROP COLUMN IF EXISTS "response";
 ALTER TABLE "customer_ebitda_confirmations" DROP COLUMN IF EXISTS "idempotencyKey";

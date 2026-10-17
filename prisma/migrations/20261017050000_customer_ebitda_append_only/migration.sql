@@ -16,8 +16,8 @@ ALTER TABLE "customer_ebitda_confirmations" ALTER COLUMN "idempotencyKey" SET NO
 
 -- One row per key was the old model; append-only needs many. The idempotency key is unique per document instead.
 DROP INDEX IF EXISTS "customer_ebitda_confirmations_companyId_documentId_inputKey_key";
-CREATE UNIQUE INDEX IF NOT EXISTS "customer_ebitda_confirmations_companyId_documentId_idempotencyKey_key" ON "customer_ebitda_confirmations" ("companyId", "documentId", "idempotencyKey");
-CREATE INDEX IF NOT EXISTS "customer_ebitda_confirmations_companyId_documentId_inputKey_createdAt_idx" ON "customer_ebitda_confirmations" ("companyId", "documentId", "inputKey", "createdAt");
+CREATE UNIQUE INDEX IF NOT EXISTS "customer_ebitda_confirmations_companyId_documentId_idempote_key" ON "customer_ebitda_confirmations" ("companyId", "documentId", "idempotencyKey");
+CREATE INDEX IF NOT EXISTS "customer_ebitda_confirmations_companyId_documentId_inputKey_idx" ON "customer_ebitda_confirmations" ("companyId", "documentId", "inputKey", "createdAt");
 
 -- (id, companyId) is unique on documents (id is the PK), so child rows can reference both: a box or confirmation can
 -- only name a document of the same company.

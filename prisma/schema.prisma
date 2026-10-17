@@ -4702,11 +4702,14 @@ model CustomerEbitdaBox {
   version    String
   payload    Json
   createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  /// DB-assigned monotonic sequence (migration 20261017070000): "latest box" and the box generation sort by it.
+  seq        BigInt   @unique @default(autoincrement())
   company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   /// Composite FK: the document must belong to the same company.
   document   Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Cascade)
 
   @@index([companyId, documentId, createdAt])
+  @@index([companyId, documentId, seq])
   @@map("customer_ebitda_boxes")
 }
 
@@ -4731,6 +4734,8 @@ model CustomerEbitdaConfirmation {
   response       Json?
   createdAt      DateTime @default(now()) @db.Timestamptz(6)
   updatedAt      DateTime @updatedAt @db.Timestamptz(6)
+  /// DB-assigned monotonic sequence (migration 20261017070000): "latest row per key" sorts by it.
+  seq            BigInt   @unique @default(autoincrement())
   /// RESTRICT (delete and update): confirmation history is an audit trail; its company/document cannot be deleted, and a
   /// document cannot move to another company, while history refers to it.
   company        Company  @relation(fields: [companyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
@@ -4739,5 +4744,6 @@ model CustomerEbitdaConfirmation {
 
   @@unique([companyId, documentId, idempotencyKey])
   @@index([companyId, documentId, inputKey, createdAt])
+  @@index([companyId, documentId, seq])
   @@map("customer_ebitda_confirmations")
 }
