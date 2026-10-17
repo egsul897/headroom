@@ -136,18 +136,26 @@ describe("Section 11: fresh real ingest (real FWRG Article 6 text, current produ
     });
   }
 
-  it("REAL FINDING (root cause, generalizable, not previously named in prior phase audits): resolveUniquePersistedNodeByRef never normalizes a 'Section '/'Article ' citation prefix before matching against the structural index's own bare section-number format - a rule citing 'Section 6.01' silently gets sourceNodeId=null even though '6.01' uniquely, genuinely exists", async () => {
+  it("Phase C (D14, fixed): resolveUniquePersistedNodeByRef normalizes a 'Section '/'Article ' citation prefix before matching — the prefixed citation form resolves to the same unique node as the bare ref", async () => {
     const prefixedRule = candidateRule("Section 6.01", "INCUR_DEBT", ["Restricted Subsidiary"]);
     const nodes = parseDocumentStructure({ documentId: DOCUMENT_ID, label: "FWRG", text: REAL_TEXT });
     const nodeIndex = await persistStructuralNodes(COMPANY, nodes); // idempotent re-persist of the same real nodes (upsert), safe to call again.
     // Positive control: the bare, real parser-produced sectionRef resolves cleanly.
     expect(resolveUniquePersistedNodeByRef(nodeIndex, DOCUMENT_ID, "6.01")).toBeDefined();
-    // REAL FINDING: the "Section "-prefixed citation form - the EXACT literal
-    // format already found live in this certification's own real Postgres
+    // Fixed: the "Section "-prefixed citation form — the EXACT literal
+    // format found live in this certification's own real Postgres
     // instance (fixture-fwrg-2021-credit-agreement-co's real ContractRule
-    // rows persist sourceSectionRef as "Section 6.01") - silently fails to
-    // resolve, indistinguishable from genuine ambiguity/absence.
-    expect(resolveUniquePersistedNodeByRef(nodeIndex, DOCUMENT_ID, prefixedRule.sourceSectionRef)).toBeUndefined();
+    // rows persist sourceSectionRef as "Section 6.01") — now resolves
+    // to the same unique node instead of silently failing.
+    expect(resolveUniquePersistedNodeByRef(nodeIndex, DOCUMENT_ID, prefixedRule.sourceSectionRef)).toBe(
+      resolveUniquePersistedNodeByRef(nodeIndex, DOCUMENT_ID, "6.01"),
+    );
+    // Roman/arabic equivalence: "Article VI" resolves like "6" for the article node.
+    const articleNodes = nodes.filter((n) => n.nodeType === "ARTICLE");
+    if (articleNodes.length > 0) {
+      const art = articleNodes[0]!;
+      expect(resolveUniquePersistedNodeByRef(nodeIndex, DOCUMENT_ID, `Article ${art.sectionRef}`)).toBeDefined();
+    }
   });
 });
 

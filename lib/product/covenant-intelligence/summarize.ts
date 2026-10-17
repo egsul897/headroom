@@ -219,7 +219,15 @@ function itemFromAnalysis(
     dependencies: analysis.dependencies,
     epistemicStatus: analysis.epistemicStatus,
     interpretationNote: analysis.interpretationNote,
-    unresolvedQuestions: analysis.unresolved,
+    // Phase E: structural uncertainty is preserved through every
+    // layer — it surfaces in unresolvedQuestions (read by the
+    // Rulebook, Ask, and counsel review), never silently dropped.
+    unresolvedQuestions: structuralUnresolved
+      ? [
+          ...analysis.unresolved,
+          "Structural relationship unresolved: this provision's parent/article could not be established deterministically from span containment + ref-consistency. Its excerpt is real text, but its placement in the hierarchy is not certified — confirm the governing article/section before relying on it.",
+        ]
+      : analysis.unresolved,
     alternativeInterpretations: analysis.alternativeInterpretations,
     assumptions: analysis.assumptions,
     judgmentCalls: analysis.judgmentCalls,

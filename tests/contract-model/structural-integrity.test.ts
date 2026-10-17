@@ -17,7 +17,6 @@ function node(over: Partial<StructuralNode> & { nodeId: string }): StructuralNod
     heading: "Test",
     sectionRef: "7.01",
     nodeKey: "doc-1::7.01",
-    nodeId: over.nodeId,
     charStart: 100,
     charEnd: 200,
     ordinal: 0,

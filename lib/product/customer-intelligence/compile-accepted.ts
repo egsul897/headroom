@@ -413,6 +413,18 @@ export async function compileAcceptedInterpretation(params: {
       grantType === "LIEN" && isResidualLienBasket(item)
         ? { ...(parsed.params ?? {}), pairableWithDebt: true }
         : parsed.params;
+    // Phase E (D11): carry structural provenance on the minted
+    // Permission so capacity / simulate / dashboard can surface
+    // it. A Permission compiled from a structurally unresolved
+    // item (counsel accepted it anyway) stays flagged — the
+    // uncertainty is preserved through every layer, never
+    // laundered into a clean number.
+    const provenanceParams = {
+      ...(grantParams ?? {}),
+      structuralNodeId: item.nodeId ?? undefined,
+      structuralArticleHeading: item.articleHeading ?? undefined,
+      structuralUnresolved: item.structuralUnresolved === true ? true : undefined,
+    };
     const data = {
       companyId: params.companyId,
       documentId,
@@ -423,7 +435,7 @@ export async function compileAcceptedInterpretation(params: {
       entityScope: entityScope as never[],
       formulaType: parsed.formulaType,
       thresholdValue: new Prisma.Decimal(parsed.thresholdValue),
-      params: (grantParams as Prisma.InputJsonValue) ?? Prisma.JsonNull,
+      params: (provenanceParams as Prisma.InputJsonValue) ?? Prisma.JsonNull,
       eligibilityConditions: (conditions.length ? conditions : null) as Prisma.InputJsonValue,
       termConditions: Prisma.JsonNull,
       measurementBasis: parsed.measurementBasis,

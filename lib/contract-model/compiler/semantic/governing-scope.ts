@@ -174,7 +174,36 @@ function unparsedArticlePreamble(index: StructuralIndex, documentId: string, top
   const text = index.getDocumentText(documentId);
   if (!text) { notes.push("no document text available; unparsed article preamble recovery not attempted"); return null; }
   const parent = index.getParent(top.nodeId);
-  const pool = (parent ? index.getChildren(parent.nodeId) : index.roots()).filter((n) => n.documentId === documentId).sort((a, b) => a.charStart - b.charStart);
+  // Phase C (D18): the sibling pool must share top's ARTICLE
+  // ancestor (via the validated parent chain), not just its
+  // major number. Grouping by major alone merged CA 5.x and
+  // Guaranty 5.x into one "article group" in a bundled exhibit,
+  // so the previous instrument's closing paragraph could govern
+  // a candidate. Without a shared article ancestor, the group
+  // is top alone (no cross-instrument preamble).
+  const articleAncestorOf = (n: StructuralNode): string | null => {
+    let cur: StructuralNode | undefined = n;
+    const seen = new Set<string>();
+    while (cur && !seen.has(cur.nodeId)) {
+      seen.add(cur.nodeId);
+      if (cur.nodeType === "ARTICLE") return cur.nodeId;
+      const p = cur.parentNodeId ? index.getParent(cur.nodeId) : undefined;
+      cur = p ?? undefined;
+      // getParent returns the parent node; if the chain leaves the
+      // document, stop. (getParent returns undefined for roots.)
+      if (cur && cur.nodeId === n.nodeId) break;
+    }
+    return null;
+  };
+  const topArticle = articleAncestorOf(top);
+  if (topArticle === null) {
+    notes.push(`outermost non-article ancestor ${top.sectionRef} has no ARTICLE ancestor; no article group exists to recover a preamble from (a missing article must not borrow another instrument's preamble)`);
+    return null;
+  }
+  const pool = (parent ? index.getChildren(parent.nodeId) : index.roots())
+    .filter((n) => n.documentId === documentId)
+    .filter((n) => articleAncestorOf(n) === topArticle)
+    .sort((a, b) => a.charStart - b.charStart);
   const pos = pool.findIndex((n) => n.nodeId === top.nodeId);
   if (pos < 0) { notes.push(`outermost non-article ancestor ${top.sectionRef} is not in its sibling pool; unparsed article preamble recovery not attempted`); return null; }
   const major = majorOf(top.sectionRef);

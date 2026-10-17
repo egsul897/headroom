@@ -53,6 +53,7 @@ import { prisma } from "../../prisma";
 import { computeStableKey } from "../stable-keys";
 import type { CandidateContractRule, CandidateDefinedTerm, CandidateContractReference, CandidateRuleRelationship } from "../types";
 import type { StructuralNode } from "./types";
+import { normalizeRef } from "./structural-index";
 import type { DetectedReference } from "./structural-references";
 import type { DetectedDefinition } from "./structural-definitions";
 import type { EntityClassTag } from "@prisma/client";
@@ -68,7 +69,13 @@ import type { EntityClassTag } from "@prisma/client";
  * use it to construct a singleton lookup.
  */
 export function nodeLookupKey(documentId: string, sectionRef: string): string {
-  return `${documentId}::${sectionRef.replace(/\s+/g, "")}`;
+  // Phase C (D14): the persisted lookup uses the same canonical
+  // normalization as the in-memory index (normalizeRef) — "Section
+  // 6.01" == "6.01", "VI" == "6". An unnormalizable ref keys to
+  // a sentinel that can never match a stored node (never NOT_FOUND
+  // masquerading as a real key).
+  const norm = normalizeRef(sectionRef);
+  return `${documentId}::${norm ?? "\u0000UNRESOLVABLE"}`;
 }
 
 /**
