@@ -98,7 +98,21 @@ The shell that shipped:
 - Contextual tabs, only on the section you are in — Covenants / Rulebook / Intelligence, or Capacity / Ledger / Certificates.
 - Finish setup — only while `companyNavItems` includes Onboarding. The palette still says Onboarding.
 
-The rail is graphite, `#2a2c2e`. The wordmark is stone `#f4f1ec` (12.44:1). Nav text and the line “Clarity. Control. Confidence.” are `#c8c4be` (8.07:1). The active chip is oxblood `#54243c` with white text (12.39:1) and a stone mark `#f4f1ec`. The primary button is that oxblood, white label 12.39:1, hover `#6b3050` at 9.71:1. The field is warm stone `#f3f0eb`. Charts step through graphite `#2a2c2e`, warm charcoal `#5e5854`, stone `#a39c94`, and oxblood. Status green `#0e6b43`, amber `#7c4a00`, and red `#9d2c24` stay the status colors. Oxblood sits at hue 330°, so it is not the brick status red. Information chips use graphite on `#e6e1da` (10.78:1), not oxblood. Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser.
+The rail is graphite, `#2a2c2e`. The wordmark is stone `#f4f1ec` (12.44:1). Nav text and the line “Clarity. Control. Confidence.” are `#c8c4be` (8.07:1). The active chip is oxblood `#54243c` with white text (12.39:1) and a stone mark `#f4f1ec`. The primary button is that oxblood, white label 12.39:1, hover `#6b3050` at 9.71:1. The field is warm stone `#f3f0eb`. Status green `#0e6b43`, amber `#7c4a00`, and red `#9d2c24` stay the status colors. Oxblood sits at hue 330°, so it is not the brick status red. Information chips use graphite on `#e6e1da` (10.78:1), not oxblood. Below 860px the sidebar is an off-canvas drawer. The company card still shows the database name and returns to the chooser.
+
+### Chart palette
+
+Plum & Slate. It is the only chart palette. Tokens live on `:root` as `--viz-1` through `--viz-5`. `--chart-1` through `--chart-4` alias the first four, so a line, donut, bar, or sparkline that already uses `--chart-*` follows them. `--chart-track` stays `#e6e1da`. The rail, canvas, card, ink, and the oxblood action are not chart colors. Status green, amber, and red are not chart colors.
+
+| Token | Hex | Role | On `#fffcf8` |
+| --- | --- | --- | --- |
+| `--viz-1` | `#9a687f` | Hero series. The headroom line, the primary donut slice, the first mark, sparklines. A mid plum from the `#54243c` family, lighter than the action button. | 4.4:1 |
+| `--viz-2` | `#9e8564` | Second series mark. Warm sand. A donut slice or a companion mark that still has to be read on its own. | 3.4:1 |
+| `--viz-3` | `#bbaea3` | Fill. Pale stone for a secondary donut slice or a quiet area. It sits next to a label. It is not a line by itself. | 2.1:1 |
+| `--viz-4` | `#61869d` | Comparison series. The utilization line and any second line that has to be told apart from the hero. Dusty slate. | 3.8:1 |
+| `--viz-5` | `#d2b3c2` | Light plum tint. Area fills, the small ring, backgrounds. It does not carry a figure alone. | 1.9:1 |
+
+A hero line or a comparison line uses `--viz-1` or `--viz-4`. A slice or wash that is named beside it may use `--viz-2`, `--viz-3`, or `--viz-5`. Do not draw the hero in green, and do not introduce a bright blue.
 
 Motion stays in the presentation layer. A route change fades the page in. Cards lift on hover. A figure that is already one number counts up on load; unknown copy and dates do not. A row or clause opens a drawer with the text already on the page. Hiding a sample alert shows a toast with undo and does not change stored data. Jump to lists keyboard hints and marks the query. Skeletons shimmer only when motion is allowed. `prefers-reduced-motion: reduce` drops the animation.
 

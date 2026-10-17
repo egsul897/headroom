@@ -19,10 +19,19 @@
   --accent-hover: #6b3050;
   --accent-ink: #ffffff;
   --accent-signal: #f4f1ec;
-  --chart-1: #2a2c2e;
-  --chart-2: #5e5854;
-  --chart-3: #a39c94;
-  --chart-4: #54243c;
+  /*
+   * Plum & Slate. Chart ink only. The rail, card, and oxblood action stay Graphite Ledger.
+   * Hero and comparison marks clear 3:1 on #fffcf8. Stone and the light plum are fills.
+   */
+  --viz-1: #9a687f;
+  --viz-2: #9e8564;
+  --viz-3: #bbaea3;
+  --viz-4: #61869d;
+  --viz-5: #d2b3c2;
+  --chart-1: var(--viz-1);
+  --chart-2: var(--viz-2);
+  --chart-3: var(--viz-3);
+  --chart-4: var(--viz-4);
   --chart-track: #e6e1da;
   --idle-soft: #e8e3dc;
   --input-bg: #ffffff;

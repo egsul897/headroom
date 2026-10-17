@@ -22,6 +22,9 @@ describe("dev sample route", () => {
     expect(source("app/globals.css")).not.toContain("sample-brand");
     expect(source("app/home-shell.css")).toContain("--shell-sidebar: #2a2c2e");
     expect(source("app/globals.css")).toContain("--accent: #54243c");
+    expect(source("app/globals.css")).toMatch(/--viz-1:\s*#9a687f/);
+    expect(source("app/globals.css")).toMatch(/--viz-5:\s*#d2b3c2/);
+    expect(source("app/globals.css")).toContain("--chart-1: var(--viz-1)");
     expect(source("app/globals.css")).toContain("--green: #0e6b43");
     expect(source("app/home-shell.css")).not.toContain("sample-brand");
     for (const rel of ["app/page.tsx", "app/[companyId]/page.tsx", "app/[companyId]/covenants/page.tsx", "app/[companyId]/capacity/page.tsx"]) {
