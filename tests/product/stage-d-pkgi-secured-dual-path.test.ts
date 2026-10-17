@@ -50,7 +50,10 @@ describe("Stage D secured dual-path (Cycle 6)", () => {
     const debt = pkg.rules.find((r) => r.sourceSectionRef === "7.01(b)")!;
     const lien = pkg.rules.find((r) => r.sourceSectionRef === "7.02(b)")!;
     expect(isCompanionRequiresDischargeable(lien, pkg.rules)).toBe(true);
-    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs: inputsFor(pkg), ledger: [], asOf: AS_OF });
+    // PAI-04 attestation: the committed fixture package carries no
+    // utilization records anywhere, so the empty ledger is the complete
+    // ledger of this fixture world by construction.
+    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs: inputsFor(pkg), ledger: [], asOf: AS_OF, utilizationCompleteness: "VERIFIED_EMPTY" });
     expect(capacity.outcome).toBe("EXECUTED");
     if (capacity.outcome !== "EXECUTED") throw new Error("expected EXECUTED");
     const debtCap = capacity.state.capacities.find((c) => c.ruleId === debt.ruleId)!;
@@ -64,7 +67,8 @@ describe("Stage D secured dual-path (Cycle 6)", () => {
     const pkg = loadPkg();
     const debt = pkg.rules.find((r) => r.sourceSectionRef === "7.01(b)")!;
     const lien = pkg.rules.find((r) => r.sourceSectionRef === "7.02(b)")!;
-    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs: inputsFor(pkg), ledger: [], asOf: AS_OF });
+    // PAI-04 attestation: same complete-by-construction empty fixture ledger.
+    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs: inputsFor(pkg), ledger: [], asOf: AS_OF, utilizationCompleteness: "VERIFIED_EMPTY" });
     if (capacity.outcome !== "EXECUTED") throw new Error("expected EXECUTED");
     const debtCap = capacity.state.capacities.find((c) => c.ruleId === debt.ruleId)!;
     const lienCap = capacity.state.capacities.find((c) => c.ruleId === lien.ruleId)!;
@@ -74,6 +78,9 @@ describe("Stage D secured dual-path (Cycle 6)", () => {
       inputs: inputsFor(pkg),
       ledger: [],
       asOf: AS_OF,
+      // Same PAI-04 attestation: the sim's internal capacity evaluation
+      // sees the same complete empty ledger.
+      utilizationCompleteness: "VERIFIED_EMPTY",
       transaction: {
         transactionId: "test-secured-15m",
         companyId: pkg.companyId,
@@ -81,6 +88,10 @@ describe("Stage D secured dual-path (Cycle 6)", () => {
         effectiveAsOf: AS_OF,
         category: "INCUR_DEBT",
         label: "test dual",
+        // PAI-07: the actor is the borrower itself incurring secured debt
+        // under its own §7.01(b)/§7.02(b) baskets (both scopes include
+        // BORROWER).
+        entities: ["BORROWER"],
         effects: [
           { effectId: "e-debt", kind: "CONSUME_CAPACITY", capacityNodeId: debtCap.capacityNodeId, amount: { type: "MONEY", amount: "15000000", currency: "USD" } },
           { effectId: "e-lien", kind: "CONSUME_CAPACITY", capacityNodeId: lienCap.capacityNodeId, amount: { type: "MONEY", amount: "15000000", currency: "USD" } },
@@ -155,7 +166,11 @@ describe("Stage D secured dual-path (Cycle 6)", () => {
       },
     };
     const mutated = { ...pkg, rules: pkg.rules.map((r) => (r.ruleId === lien.ruleId ? unsafeLien : r)) };
-    const capacity = evaluateVerifiedCapacity({ package: mutated, inputs: inputsFor(mutated), ledger: [], asOf: AS_OF });
+    // PAI-04 attestation: same complete-by-construction empty fixture
+    // ledger. This lifts only the utilization floor — the mutated
+    // unwitnessed lien must stay REVIEW_REQUIRED on its entity-scope
+    // limitation, which is orthogonal to PAI-04.
+    const capacity = evaluateVerifiedCapacity({ package: mutated, inputs: inputsFor(mutated), ledger: [], asOf: AS_OF, utilizationCompleteness: "VERIFIED_EMPTY" });
     expect(capacity.outcome).toBe("EXECUTED");
     if (capacity.outcome !== "EXECUTED") throw new Error("expected EXECUTED");
     const debtCap = capacity.state.capacities.find((c) => c.ruleId === debt.ruleId)!;
