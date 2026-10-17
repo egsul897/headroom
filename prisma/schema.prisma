@@ -4686,3 +4686,35 @@ model CustomerTreeChecklist {
   @@id([runId, family])
   @@map("customer_tree_checklist")
 }
+
+/// Dashboard EBITDA box snapshots (lib/covenant-learning-factory/pipeline/ebitda-box.ts), scoped by company + document.
+/// Append-only: each upload analysis or CFO confirmation writes a new snapshot; the latest is served.
+model CustomerEbitdaBox {
+  id         String   @id @default(cuid())
+  companyId  String
+  documentId String
+  status     String
+  version    String
+  payload    Json
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([companyId, documentId, createdAt])
+  @@map("customer_ebitda_boxes")
+}
+
+/// CFO-confirmed, sourced add-back figures (one current figure per company + document + input key).
+model CustomerEbitdaConfirmation {
+  id          String   @id @default(cuid())
+  companyId   String
+  documentId  String
+  inputKey    String
+  /// Whole USD as a decimal string (exact; never estimated).
+  value       String
+  source      String
+  confirmedBy String?
+  createdAt   DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
+
+  @@unique([companyId, documentId, inputKey])
+  @@map("customer_ebitda_confirmations")
+}

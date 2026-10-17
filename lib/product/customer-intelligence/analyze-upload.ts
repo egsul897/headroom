@@ -480,17 +480,30 @@ export async function analyzeCustomerDocument(params: {
       );
       const { extractTextAsync } = await import("../../knowledge-factory/pipeline/text");
       let summary: { stats: unknown; families: unknown } | null = null;
+      let agreementText: string | null = null;
       const outcome = await persistCustomerAgreementRun(
         prisma as never,
         { companyId: params.companyId, documentId: params.documentId, sourceId },
         async () => {
           const text = (await extractTextAsync(params.bytes, params.filename)).text;
+          agreementText = text;
           const r = runAgreementPipeline({ sourceId, text });
           summary = { stats: r.stats, families: r.families };
           return r;
         },
       );
       agreementPipeline = { ...outcome, ...(outcome.status === "OK" && summary ? summary : {}) };
+      // Dashboard EBITDA box (definition × company filings × CFO confirmations), persisted to customer_ebitda_boxes.
+      // Needs the company CIK for filings; never fails the upload. Disable with CLF_EBITDA_BOX=0.
+      if (outcome.status === "OK" && agreementText && process.env.CLF_EBITDA_BOX !== "0") {
+        try {
+          const { refreshEbitdaBox } = await import("../../covenant-learning-factory/pipeline/ebitda-box-server");
+          const r = await refreshEbitdaBox(params.companyId, params.documentId, { text: agreementText, sourceId });
+          if (r) agreementPipeline = { ...agreementPipeline, ebitdaBox: { id: r.id, status: r.box.status, totalEbitda: r.box.totalEbitda } };
+        } catch (err) {
+          agreementPipeline = { ...agreementPipeline, ebitdaBox: { status: "FAILED", error: err instanceof Error ? err.message : String(err) } };
+        }
+      }
     }
 
     // Preserve counsel decisions across reanalysis; flag conflicts when AI text drifts.
