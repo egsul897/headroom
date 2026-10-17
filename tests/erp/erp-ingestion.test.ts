@@ -25,7 +25,8 @@ import { createErpConnection, ErpConnectionExistsError, rotateErpConnectionSecre
 import { ingestErpFinancialFacts, parseErpPayload } from "../../lib/erp/ingest";
 import { listErpFactsNeedingAttention, listErpSyncEvents } from "../../lib/erp/queries";
 import { erpTokenFromHeaders, generateErpSecret, hashErpSecret, verifyErpSecret } from "../../lib/erp/secret";
-import type { ErpFinancialFactsPayload } from "../../lib/erp/types";
+import type { ErpFinancialFactInput, ErpFinancialFactsPayload } from "../../lib/erp/types";
+import type { FinancialUnit } from "../../lib/connectors/units";
 
 // ---------------------------------------------------------------------------
 // In-memory Prisma fake
@@ -176,8 +177,8 @@ const COMPANY_B = "co-erp-b";
 const AS_OF = "2026-06-30";
 
 /** The full 8-metric promotable set, declared in raw USD + PERCENT (canonical $M values: 4.2 / 52 / 30 / 18 / 2.1 / 9 / 5 / 7.5). */
-function completeFacts(overrides: Record<string, number> = {}) {
-  const values: Record<string, { value: number; unit: string }> = {
+function completeFacts(overrides: Record<string, number> = {}): ErpFinancialFactInput[] {
+  const values: Record<string, { value: number; unit: FinancialUnit }> = {
     cash: { value: 4_200_000, unit: "USD" },
     total_debt: { value: 52_000_000, unit: "USD" },
     secured_debt: { value: 30_000_000, unit: "USD" },
@@ -544,7 +545,7 @@ describe("ingest mapping honesty", () => {
   it("ERP-native keys promote only via the connection's explicit metricKeyMap; an unmapped key is stored verbatim and surfaced", async () => {
     const { db, store } = makeFakeDb();
     const { connection, secret } = await setupConnection(db, COMPANY_A, KEY_MAP);
-    const rawValues: Record<string, { value: number; unit: string }> = {
+    const rawValues: Record<string, { value: number; unit: FinancialUnit }> = {
       "1000": { value: 4_200_000, unit: "USD" },
       "2000": { value: 52_000_000, unit: "USD" },
       "2100": { value: 30_000_000, unit: "USD" },
@@ -554,7 +555,7 @@ describe("ingest mapping honesty", () => {
       "6000": { value: 5_000_000, unit: "USD" },
       "7000": { value: 7.5, unit: "PERCENT" },
     };
-    const facts = Object.entries(rawValues).map(([key, { value, unit }]) => ({ key, value, unit }));
+    const facts: ErpFinancialFactInput[] = Object.entries(rawValues).map(([key, { value, unit }]) => ({ key, value, unit }));
     facts.push({ key: "acct_9999_misc", value: 12345, unit: "USD" });
     const result = await ingestErpFinancialFacts({ connectionId: connection.id, rawBody: body({ asOfDate: AS_OF, facts }), presentedToken: secret, idempotencyKey: "d1", client: db });
     expect(result.outcome).toBe("APPLIED");
@@ -589,7 +590,7 @@ describe("ingest mapping honesty", () => {
   it("an incompatible declared unit for a recognized metric refuses that fact (never silently converted)", async () => {
     const { db, store } = makeFakeDb();
     const { connection, secret } = await setupConnection(db);
-    const facts = completeFacts().map((f) => (f.key === "cash" ? { ...f, unit: "PERCENT" } : f));
+    const facts: ErpFinancialFactInput[] = completeFacts().map((f) => (f.key === "cash" ? { ...f, unit: "PERCENT" as const } : f));
     const result = await ingestErpFinancialFacts({ connectionId: connection.id, rawBody: body({ asOfDate: AS_OF, facts }), presentedToken: secret, idempotencyKey: "d1", client: db });
     const cash = store.facts.find((f) => f.sourceKey === "cash");
     expect(cash!.status).toBe("REFUSED");
@@ -602,7 +603,7 @@ describe("ingest mapping honesty", () => {
   it("a value outside the sanity ceiling is refused, not promoted (the unit-scale bug class)", async () => {
     const { db, store } = makeFakeDb();
     const { connection, secret } = await setupConnection(db);
-    const facts = completeFacts().map((f) => (f.key === "cash" ? { ...f, value: 20_000_000, unit: "USD_MILLIONS" } : f));
+    const facts: ErpFinancialFactInput[] = completeFacts().map((f) => (f.key === "cash" ? { ...f, value: 20_000_000, unit: "USD_MILLIONS" as const } : f));
     await ingestErpFinancialFacts({ connectionId: connection.id, rawBody: body({ asOfDate: AS_OF, facts }), presentedToken: secret, idempotencyKey: "d1", client: db });
     const cash = store.facts.find((f) => f.sourceKey === "cash");
     expect(cash!.status).toBe("REFUSED");

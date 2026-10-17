@@ -21,6 +21,11 @@ const DEFAULT_CAPABILITIES: Record<ConnectorType, ConnectorCapability[]> = {
   EDGAR: ["DOCUMENTS"],
   CSV_FINANCIAL: ["FINANCIAL_FACTS", "DEBT_BALANCES", "CASH_BALANCES"],
   DOCUMENT_UPLOAD: ["DOCUMENTS"],
+  // ERP connections are provisioned via lib/erp/connections.ts (connectSource
+  // below refuses them on this generic path) and deliver period financial
+  // facts via lib/erp/ingest.ts's push endpoint - FINANCIAL_FACTS is the
+  // capability this registry records for them.
+  ERP: ["FINANCIAL_FACTS"],
 };
 
 export class UnknownTickerError extends Error {}
@@ -160,7 +165,16 @@ export function getConnectorForConnection(connection: CompanySourceConnection): 
     // against generated clients with or without the ERP enum value.)
     throw new UnsupportedConnectorConfigError(`getConnectorForConnection: ERP connection ${connection.id} is push-based (lib/erp/ingest.ts) - no pull SourceConnector exists for it yet.`);
   }
-  switch (connection.connectorType) {
+  // The guard above has already thrown for ERP, so the discriminant can be
+  // narrowed to the non-ERP union for the switch: the default branch's
+  // exhaustiveness check then keeps compiling - and keeps biting if a new
+  // ConnectorType is ever added without a case here. Exclude<> keeps this
+  // compiling against generated clients that predate the ERP enum value as
+  // well as those that include it, the same reason the guard above compares
+  // as string. The cast is sound: it removes exactly the value the guard
+  // just excluded at runtime.
+  const connectorType = connection.connectorType as Exclude<ConnectorType, "ERP">;
+  switch (connectorType) {
     case "EDGAR": {
       const config = (connection.config as { cik?: string; ticker?: string } | null) ?? {};
       if (!config.cik) {
@@ -173,7 +187,7 @@ export function getConnectorForConnection(connection: CompanySourceConnection): 
     case "DOCUMENT_UPLOAD":
       return new UploadConnector({ filename: "" });
     default: {
-      const exhaustive: never = connection.connectorType;
+      const exhaustive: never = connectorType;
       throw new UnsupportedConnectorConfigError(`getConnectorForConnection: unhandled connectorType ${String(exhaustive)}.`);
     }
   }
