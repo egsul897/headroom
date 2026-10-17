@@ -15,6 +15,7 @@ import { evaluateCompileIndependently } from "./evaluation";
 import { proposeBoundedImprovements } from "./improvement-loop";
 import { loadPackageDocuments } from "./package-registry";
 import { defaultHonestyClaims, assertAutomatedKnowledgeState } from "./promotion-guards";
+import { artifactPath, isTestRun } from "../platform/artifact-output";
 import { LearningFileStore } from "./store/file-store";
 import { persistPackageManifestToNeon } from "./store/neon-store";
 import {
@@ -275,7 +276,10 @@ export async function processLearningPackage(
 
     // Persist unit dump for refusal audits. HELD_OUT dumps are never written into the committed dump directory (the
     // held-out evidence is frozen); see unitDumpTarget.
-    const dumpPath = unitDumpTarget(spec, repoRoot, options.unitDumpDir);
+    // Under a test runner the default goes to the temp artifact dir (lib/platform/artifact-output), so a test run never
+    // rewrites ANY committed dump (held-out or not); an explicit unitDumpDir (or null) is honoured as given.
+    const dumpDir = options.unitDumpDir !== undefined ? options.unitDumpDir : isTestRun() ? artifactPath(repoRoot, COMMITTED_UNIT_DUMP_DIR) : undefined;
+    const dumpPath = unitDumpTarget(spec, repoRoot, dumpDir);
     if (dumpPath) mkdirSync(path.dirname(dumpPath), { recursive: true });
     if (dumpPath) writeFileSync(
       dumpPath,

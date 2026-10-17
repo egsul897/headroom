@@ -48,7 +48,7 @@ scope). It adds:
   PR under `pull_request`; making it tamper-proof needs a branch-protection
   required workflow, which is a repo setting.)
 - **Protected paths.** Any added/modified/deleted/renamed path matching
-  held-out / holdout / blind / frozen / ground-truth / baseline(s) / sealed
+  held-out / holdout / blind / frozen / ground-truth / baseline(s) / sealed / unit-dumps
   fails the gate unless the PR has the label `owner-approved-protected-paths`.
   The job re-runs on `labeled` / `unlabeled`.
 - **Clean tree.** After the PR test run, `git status --porcelain` must be empty.

@@ -19,6 +19,9 @@ describe("pr-gate protected-path check", () => {
       "docs/x/_frozen-sample-labels-v3-SEALED.json",
       "docs/ground_truth/a.md",
       "docs/open4/02-holdout-manifest.json",
+      // any change under unit-dumps, whatever the package name (release-1 commits rewrote the mhk dump timestamp-only)
+      "docs/covenant-learning-factory/unit-dumps/mhk-2026-credit-agreement.units.json",
+      "docs/covenant-learning-factory/unit-dumps/chwy.units.json",
     ]) expect(isProtectedPath(p), p).toBe(true);
   });
   it("does not flag ordinary paths", () => {

@@ -3,11 +3,11 @@
  * PR-gate protected-path check.
  *
  * Fails when a PR adds, modifies, deletes or renames any path whose name marks it as
- * frozen evidence (held-out / blind sets, sealed baselines, FROZEN fixtures, ground truth),
+ * frozen evidence (held-out / blind sets, sealed baselines, FROZEN fixtures, ground truth, CLF unit dumps),
  * unless the PR carries the explicit owner label OWNER_LABEL.
  *
  * Matching is case-insensitive and general (no file list to keep in sync). Tokens held-out /
- * holdout / frozen / ground-truth / baseline(s) / sealed must be delimited by "/", "_", "-", "."
+ * holdout / frozen / ground-truth / baseline(s) / sealed / unit-dump(s) must be delimited by "/", "_", "-", "."
  * or the string ends; "blind" matches anywhere (BLINDED, firstblind). It errs toward flagging:
  * a false positive costs one owner label, a false negative costs frozen evidence.
  *
@@ -22,7 +22,7 @@ import { pathToFileURL } from "node:url";
 export const OWNER_LABEL = "owner-approved-protected-paths";
 
 export const PROTECTED_PATTERN =
-  /(?:(?:^|[/_.\-])(?:held[-_]?out|hold[-_]?out|frozen|ground[-_]?truth|baselines?|sealed)(?=[/_.\-]|$))|blind/i;
+  /(?:(?:^|[/_.\-])(?:held[-_]?out|hold[-_]?out|frozen|ground[-_]?truth|baselines?|sealed|unit[-_]?dumps?)(?=[/_.\-]|$))|blind/i;
 
 /** @param {string} file */
 export function isProtectedPath(file) {

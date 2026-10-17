@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import path from "node:path";
 import { existsSync, mkdtempSync, readFileSync } from "node:fs";
 import { unitDumpTarget } from "../../lib/covenant-learning-factory/process-package";
+import { artifactPath } from "../../lib/platform/artifact-output";
 import { tmpdir } from "node:os";
 import {
   getLearningPackage,
@@ -52,6 +53,10 @@ describe("covenant learning factory — process package smoke", () => {
     // A default-path run (no unitDumpDir) of the HELD_OUT package must not write the committed dump either.
     await processLearningPackage({ spec: spec!, store: new LearningFileStore(defaultLearningStorePaths(mkdtempSync(path.join(tmpdir(), "clf-")))), skipIfUnchanged: false, persistNeon: false });
     if (frozen) expect(Buffer.compare(readFileSync(committedDump), frozen)).toBe(0);
+    // ...it goes to the test artifact dir instead (temp, outside the repo), so a test run leaves the tree clean.
+    const tempDump = artifactPath(process.cwd(), "docs/covenant-learning-factory/unit-dumps/mhk-2026-credit-agreement.units.json");
+    expect(tempDump.startsWith(process.cwd() + path.sep)).toBe(false);
+    expect(existsSync(tempDump)).toBe(true);
   }, 180_000);
 
   it("unitDumpTarget refuses HELD_OUT/BLIND writes into the committed dump dir, by default or explicitly", () => {
