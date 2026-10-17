@@ -275,6 +275,26 @@ export function buildDocumentCovenantSummary(params: {
     if (ap !== bp) return ap - bp; // primary covenants before peripheral
     return b.discoveryScore - a.discoveryScore;
   });
+  // Chapeau inheritance: map nodeId -> candidate excerpt, so a
+  // sub-clause candidate can inherit its parent chapeau's
+  // prohibition-with-except frame (see detectPosture). The chapeau
+  // is the parent excerpt's text before the first sub-clause
+  // marker; when the parent candidate IS the chapeau alone (its
+  // excerpt ends at the colon, no sub-clauses inside), the whole
+  // parent excerpt is the chapeau. Capped at 1500 chars — a
+  // chapeau is a short opening frame; the frame test in
+  // detectPosture (shall-not + except, or bare stem + other than)
+  // is the real guard.
+  const excerptByNodeId = new Map(params.candidates.map((c) => [c.nodeId, c.excerpt ?? ""]));
+  const nodeById = new Map(params.structuralNodes.map((n) => [n.nodeId, n]));
+  const parentChapeauOf = (c: (typeof params.candidates)[number]): string | undefined => {
+    const node = c.nodeId ? nodeById.get(c.nodeId) : undefined;
+    const parentId = node?.parentNodeId;
+    if (!parentId || parentId === c.nodeId) return undefined;
+    const parentExcerpt = excerptByNodeId.get(parentId);
+    if (!parentExcerpt) return undefined;
+    return parentExcerpt.split(/\n\s*\([a-z0-9]{1,3}\)\s/)[0].slice(0, 1500);
+  };
   for (const c of ranked) {
     const analysis = analyzeProvision({
       sourceId: params.sourceId,
@@ -283,6 +303,7 @@ export function buildDocumentCovenantSummary(params: {
       definitions: params.definitions,
       structuralNodes: params.structuralNodes,
       crossReferences: params.crossReferences,
+      parentChapeau: parentChapeauOf(c),
     });
     countsByCategory[analysis.category] = (countsByCategory[analysis.category] ?? 0) + 1;
     items.push(itemFromAnalysis(analysis, params.documentTitle));

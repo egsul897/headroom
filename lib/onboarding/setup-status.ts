@@ -100,16 +100,22 @@ export async function getCompanySetupStatus(companyId: string): Promise<CompanyS
   ]);
 
   // Integration fix: the dashboard is ready when the company is
-  // ACTIVE* + financials + Permissions + EITHER the LLM analysis is
-  // ready OR the deterministic review is complete (rulebook
-  // EXECUTABLE, or every discovered item has a reviewer decision).
+  // ACTIVE* + financials + EITHER the LLM analysis is ready OR
+  // the deterministic review is complete (rulebook EXECUTABLE, or
+  // every discovered item has a reviewer decision). It does NOT
+  // require a modeled Permission: a completed review whose
+  // agreement has no computable baskets (all qualitative,
+  // carve-out-only — the Expand base's 6.02(bb) CERCLA carve-out
+  // carries a $60M disqualifier threshold, not a basket cap) still
+  // reaches the dashboard, which honestly shows NOT_DETERMINABLE.
+  // Requiring a Permission would trap such a company at "not
+  // ready" forever, with no further setup step that could fix it.
   // The old form required analysis.ready (LLM-only), so the home
   // page's setup CTA nagged forever on the deterministic path.
   const deterministicReady = rulebook?.stage === "EXECUTABLE" || rulebook?.reviewComplete === true;
   const dashboardReady =
     (company.onboardingStatus === "ACTIVE" || company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS") &&
     financialSnapshots > 0 &&
-    permissions > 0 &&
     (analysis.ready || deterministicReady);
 
   return {

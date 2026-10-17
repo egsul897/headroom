@@ -902,7 +902,9 @@ describe("rule 205: basket-shaped candidates rank first in the cap", () => {
     const { buildDocumentCovenantSummary } = await import("../../lib/product/covenant-intelligence/summarize");
     const candidates: any[] = [];
     const nodes: any[] = [];
-    for (let i = 0; i < 120; i++) {
+    // Cap is 1000 (raised from 120): 1000 noise + 1 basket = 1001
+    // candidates, so the cap binds and the basket must survive it.
+    for (let i = 0; i < 1000; i++) {
       candidates.push({
         candidateId: `c-fill-${i}`,
         sourceId: "test:205",
@@ -935,7 +937,7 @@ describe("rule 205: basket-shaped candidates rank first in the cap", () => {
       definitions: [],
       structuralNodes: nodes,
     });
-    expect(summary.items.length).toBe(120);
+    expect(summary.items.length).toBe(1000);
     expect(summary.items.some((i) => i.sectionRef === "7.02(f)")).toBe(true);
   });
 });

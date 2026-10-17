@@ -249,7 +249,7 @@ describe("unit-preserving amounts", () => {
       structuralNodes: [node("n-go", "6.01", "Limitation on Indebtedness", 0, 100)],
     });
     expect(analysis.basketsAndThresholds.join(" ")).toContain(
-      "Greater-of basket: $150.0 million and 5.0% of Consolidated EBITDA",
+      "Greater of basket: $150.0 million and 5.0% of Consolidated EBITDA",
     );
   });
 });
@@ -278,5 +278,114 @@ describe("source text is extracted text, never raw PDF bytes", () => {
       "document.txt",
     );
     expect(out.text).toContain("Section 6.01");
+  });
+});
+
+describe("chapeau inheritance: bare sub-clauses under a prohibition-with-except chapeau are permissions", () => {
+  const chapeau = "The Borrower shall not create, incur, assume or suffer to exist any Lien except:";
+  function subClause(excerpt: string, parentChapeau?: string) {
+    return analyzeProvision({
+      sourceId: "test:quila",
+      documentTitle: "Test Credit Agreement",
+      candidate: {
+        candidateId: "c-sub",
+        sourceId: "test:quila",
+        nodeId: "n-sub",
+        families: ["LIENS"],
+        signals: [],
+        excerpt,
+        representationLevel: "DISCOVERED_CANDIDATE",
+        discoveryScore: 5,
+      },
+      definitions: [],
+      structuralNodes: [node("n-sub", "7.01(a)", "(a) Liens for taxes", 0, 100)],
+      parentChapeau,
+    });
+  }
+
+  it("a bare sub-clause under a shall-not/except chapeau is an enumerated permission", () => {
+    expect(subClause("(a) Liens for taxes not yet due.", chapeau).posture).toBe("ENUMERATED_PERMISSION");
+  });
+
+  it("a bare sub-clause with its own provided-that is a conditional permission", () => {
+    expect(
+      subClause("(a) Liens for taxes not yet due, provided that no Default has occurred.", chapeau).posture,
+    ).toBe("CONDITIONAL_PERMISSION");
+  });
+
+  it("a sub-clause with its own shall-not stays a prohibition (own signal wins)", () => {
+    expect(
+      subClause("(a) The Borrower shall not create Liens for taxes.", chapeau).posture,
+    ).toBe("GENERAL_PROHIBITION");
+  });
+
+  it("no inheritance when the chapeau has no except frame", () => {
+    expect(
+      subClause("(a) Liens for taxes not yet due.", "The Borrower shall not create any Lien.").posture,
+    ).toBe("UNRESOLVED");
+  });
+
+  it("no inheritance without a parent chapeau", () => {
+    expect(subClause("(a) Liens for taxes not yet due.").posture).toBe("UNRESOLVED");
+  });
+
+  it("a bare-stem chapeau (Create, incur or assume ... other than) also frames permissions", () => {
+    expect(
+      subClause(
+        "(a) Liens for taxes not yet due.",
+        "Create, incur or assume any Lien upon any property, other than the following:",
+      ).posture,
+    ).toBe("ENUMERATED_PERMISSION");
+  });
+
+  it("the bare-stem chapeau itself is a general prohibition", () => {
+    expect(
+      subClause(
+        "Create, incur or assume any Lien upon any property, other than the following:",
+        undefined,
+      ).posture,
+    ).toBe("GENERAL_PROHIBITION");
+  });
+
+  it("the summarizer wires the parent chapeau to the sub-clause", async () => {
+    const { buildDocumentCovenantSummary } = await import(
+      "../../lib/product/covenant-intelligence/summarize"
+    );
+    const parentExcerpt = `${chapeau}\n(a) Liens for taxes not yet due.\n(b) Liens for carriers.`;
+    const summary = buildDocumentCovenantSummary({
+      sourceId: "test:quila",
+      documentTitle: "Test Credit Agreement",
+      issuerCik: "0000000001",
+      documentClass: "CREDIT_AGREEMENT",
+      candidates: [
+        {
+          candidateId: "c-parent",
+          sourceId: "test:quila",
+          nodeId: "n-parent",
+          families: ["LIENS"],
+          signals: [],
+          excerpt: parentExcerpt,
+          representationLevel: "DISCOVERED_CANDIDATE",
+          discoveryScore: 8,
+        },
+        {
+          candidateId: "c-sub",
+          sourceId: "test:quila",
+          nodeId: "n-sub",
+          families: ["LIENS"],
+          signals: [],
+          excerpt: "(a) Liens for taxes not yet due.",
+          representationLevel: "DISCOVERED_CANDIDATE",
+          discoveryScore: 5,
+        },
+      ],
+      definitions: [],
+      structuralNodes: [
+        { nodeId: "n-parent", sourceId: "test:quila", nodeType: "SECTION", sectionRef: "7.01", heading: "Liens", charStart: 0, charEnd: 200 },
+        { nodeId: "n-sub", sourceId: "test:quila", nodeType: "SUBSECTION", sectionRef: "7.01(a)", heading: "(a) Liens for taxes", charStart: 0, charEnd: 100, parentNodeId: "n-parent" },
+      ],
+    });
+    const child = summary.items.find((i) => i.sectionRef === "7.01(a)");
+    expect(child?.posture).toBe("ENUMERATED_PERMISSION");
   });
 });

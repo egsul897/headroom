@@ -16,7 +16,37 @@ export interface TaxonomyFamilyDef {
   bodyPatterns: RegExp[];
 }
 
-export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
+export /**
+ * An event-of-default trigger. Drafters write it several ways, not
+ * only "constitutes an Event of Default": "shall be an Event of
+ * Default", "is an Event of Default", "shall be deemed (to be) an
+ * Event of Default", and "shall constitute a Default" are all
+ * trigger phrasings. "Shall NOT be an Event of Default" (waiver
+ * language) is deliberately not matched — the "shall be" adjacency
+ * requirement excludes it.
+ *
+ * These two patterns are ALSO the EVENTS_OF_DEFAULT body patterns
+ * below: a body that merely MENTIONS "Event of Default" (a
+ * cross-reference — "not constituting an Event of Default under
+ * Section 8.01(h)" — or a carve-out) is not an EoD trigger, and
+ * tagging it EVENTS_OF_DEFAULT inverts its meaning (a liens
+ * exception becomes "non-operative"). The family means "IS a
+ * trigger", not "mentions EoD".
+ */
+const EOD_TRIGGER = /\bconstitutes?\s+(?:an\s+Event\s+of\s+Default|a\s+Default)\b/i;
+const EOD_BE_TRIGGER =
+  /\b(?:shall\s+be|is|shall\s+be\s+deemed\s+(?:to\s+be\s+)?)\s+(?:an\s+)?Event\s+of\s+Default\b/i;
+// An EoD TITLE heading: "Events of Default", "Article VIII Events of
+// Default", "Section 8.01 Events of Default", "Events of Default —
+// Remedies". The structural parser sometimes uses a clause sentence
+// as the heading ("Liens ... not constituting an Event of Default
+// under Section 8.01(h)") — a bare "Event of Default" mention in
+// such a heading is a cross-reference/negation, not the EoD
+// section, so the heading pattern requires the title form.
+const EOD_TITLE =
+  /^\s*(?:ARTICLE|Article|SECTION|Section|\u00a7)?\s*(?:[IVXLC\d.]+\s*(?:[-:\u2013\u2014]\s*)?)?Events?\s+of\s+Default(?:\s*[-:\u2013\u2014]\s*.{0,40})?\s*$/i;
+
+const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
   {
     family: "INDEBTEDNESS",
     label: "Indebtedness",
@@ -120,8 +150,9 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     family: "EVENTS_OF_DEFAULT",
     label: "Events of default",
     aliases: ["eod"],
-    headingPatterns: [/\bEvents?\s+of\s+Default\b/i],
-    bodyPatterns: [/\bEvent\s+of\s+Default\b/i],
+    headingPatterns: [EOD_TITLE],
+    // Trigger phrasings only — see the EOD_TRIGGER comment above.
+    bodyPatterns: [EOD_TRIGGER, EOD_BE_TRIGGER],
   },
   {
     family: "MANDATORY_PREPAYMENTS",
@@ -190,21 +221,9 @@ export function isAdministrativeProvision(heading = "", _text = ""): boolean {
   return ADMINISTRATIVE_HEADING.test(heading) || ADMINISTRATIVE_HEADING_PREFIX.test(heading);
 }
 
-/**
- * An event-of-default trigger. Drafters write it several ways, not
- * only "constitutes an Event of Default": "shall be an Event of
- * Default", "is an Event of Default", "shall be deemed (to be) an
- * Event of Default", and "shall constitute a Default" are all
- * trigger phrasings. "Shall NOT be an Event of Default" (waiver
- * language) is deliberately not matched — the "shall be" adjacency
- * requirement excludes it.
- */
-const EOD_TRIGGER = /\bconstitutes?\s+(?:an\s+Event\s+of\s+Default|a\s+Default)\b/i;
-const EOD_BE_TRIGGER =
-  /\b(?:shall\s+be|is|shall\s+be\s+deemed\s+(?:to\s+be\s+)?)\s+(?:an\s+)?Event\s+of\s+Default\b/i;
 
 export function isEventOfDefaultTrigger(heading = "", text = ""): boolean {
-  return EOD_TRIGGER.test(text) || EOD_BE_TRIGGER.test(text) || /\bEvents?\s+of\s+Default\b/i.test(heading);
+  return EOD_TRIGGER.test(text) || EOD_BE_TRIGGER.test(text) || EOD_TITLE.test(heading);
 }
 
 export function classifyFamiliesFromText(text: string, heading = ""): KnowledgeTaxonomyFamily[] {

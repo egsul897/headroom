@@ -73,3 +73,33 @@ describe("event-of-default trigger phrasings", () => {
     ).toEqual(["EVENTS_OF_DEFAULT"]);
   });
 });
+
+describe("event-of-default mention is not a trigger", () => {
+  it("a liens exception cross-referencing EoD is LIENS, not EVENTS_OF_DEFAULT", () => {
+    // The structural parser uses the clause sentence as the heading
+    // here — the EoD mention is a negation + cross-reference, not
+    // the EoD section title.
+    const heading =
+      "(h) Liens securing judgments for the payment of money not constituting an Event of Default under Section 8.01(h)";
+    const body =
+      "(h) Liens securing judgments for the payment of money not constituting an Event of Default under Section 8.01(h).";
+    expect(classifyFamiliesFromText(body, heading)).toContain("LIENS");
+    expect(classifyFamiliesFromText(body, heading)).not.toContain("EVENTS_OF_DEFAULT");
+    expect(isEventOfDefaultTrigger(heading, body)).toBe(false);
+  });
+
+  it("a genuine EoD title heading still classifies EVENTS_OF_DEFAULT", () => {
+    expect(isEventOfDefaultTrigger("ARTICLE VIII — EVENTS OF DEFAULT", "")).toBe(true);
+    expect(isEventOfDefaultTrigger("Events of Default", "")).toBe(true);
+    expect(classifyFamiliesFromText("", "Section 8.01 Events of Default")).toContain("EVENTS_OF_DEFAULT");
+  });
+
+  it("a real trigger still classifies EVENTS_OF_DEFAULT", () => {
+    expect(
+      classifyFamiliesFromText(
+        "Failure to pay principal when due shall be an Event of Default.",
+        "Non-Payment",
+      ),
+    ).toContain("EVENTS_OF_DEFAULT");
+  });
+});

@@ -30,7 +30,14 @@ const SIGNALS: RankSignal[] = [
   { name: "shared_baskets", family: "SHARED_CAPACITY_PROVISIONS", weight: 4, re: /\b(?:shared|aggregate(?:d)?)\s+(?:basket|capacity|amount)\b|\bcombined\s+with\b/i },
   { name: "amendments_cross_refs", family: "GENERAL_CONDITIONS_AND_EXCEPTIONS", weight: 2, re: /\b(?:Amendment|amends|hereby amended|amended and restated|Section\s+\d+\.\d+)\b/i },
   { name: "unrestricted_subsidiaries", family: "UNRESTRICTED_SUBSIDIARIES", weight: 2.5, re: /\bUnrestricted\s+Subsidiar/i },
-  { name: "events_of_default", family: "EVENTS_OF_DEFAULT", weight: 2, re: /\bEvents?\s+of\s+Default\b/i },
+  // No family: a bare "Event of Default" MENTION (cross-reference —
+  // "not constituting an Event of Default under Section 8.01(h)")
+  // is not a trigger, and injecting EVENTS_OF_DEFAULT here made
+  // the candidate non-operative (a liens exception became
+  // UNRESOLVED). The classifier assigns EVENTS_OF_DEFAULT only
+  // on trigger phrasing / an EoD title; this signal still boosts
+  // discovery score for EoD content.
+  { name: "events_of_default", weight: 2, re: /\bEvents?\s+of\s+Default\b/i },
   { name: "mandatory_prepayments", family: "MANDATORY_PREPAYMENTS", weight: 2.5, re: /\bMandatory\s+Prepayments?\b/i },
   // Rule 193: a cap expressed through a DEFINED TERM ("not
   // exceeding the Threshold Amount", "not to exceed the

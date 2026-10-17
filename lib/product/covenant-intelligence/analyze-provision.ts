@@ -143,15 +143,18 @@ function isNonOperative(excerpt: string, heading: string, families: string[]): b
   );
 }
 
-function detectPosture(excerpt: string, heading: string, families: string[]): ProvisionPosture {
+function detectPosture(excerpt: string, heading: string, families: string[], parentChapeau?: string): ProvisionPosture {
   const hay = `${heading}\n${excerpt}`;
   // Never invert a trigger / administrative provision into a permission or
   // prohibition. §8.01(j) cross-default starts with "(j)" — without this
   // guard the letter-clause rule below labeled it ENUMERATED_PERMISSION.
   if (isNonOperative(excerpt, heading, families)) return "UNRESOLVED";
   // Classic negative-covenant stem (shall-not often lives in the Article chapeau).
+  // The bare stem also frames a prohibition: "Create, incur or assume
+  // any Lien ... other than" (Solaris 7.01) is the same frame as
+  // "... or suffer to exist" — the "suffer to exist" tail is optional.
   if (
-    /\bCreate,\s*incur,\s*assume or suffer to exist\b/i.test(hay) ||
+    /\bCreate,\s*incur(?:\s*,?\s*(?:or\s+)?assume)?(?:\s+or\s+suffer\s+to\s+exist)?\b/i.test(hay) ||
     /\bMake any Restricted Payment\b/i.test(hay) ||
     /\bEnter into or suffer to exist\b/i.test(hay) ||
     (/\bLimitation on\b/i.test(heading) && /\bexcept\s*:/i.test(hay))
@@ -195,6 +198,36 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
       : "ENUMERATED_PERMISSION";
   }
   if (/\bshall\b/i.test(hay) && !/\bshall\s+not\b/i.test(hay)) return "OBLIGATION";
+  // Chapeau inheritance: a bare sub-clause with NO posture signal of
+  // its own (no shall-not, no may, no shall, no cap) under a
+  // prohibition-with-except chapeau ("shall not ... except:") IS an
+  // enumerated permission — it is one of the chapeau's exceptions.
+  // This is the universal negative-covenant structure (chapeau
+  // prohibition + excepted sub-clauses), not a document pattern:
+  // Solaris 7.01(a)-(m) (bare "(a) Liens for taxes...") all fell
+  // through to UNRESOLVED because the sub-clause excerpt carries no
+  // frame of its own. The parent chapeau supplies it. Fail-closed:
+  // requires a real prohibition+except frame in the chapeau, a
+  // sub-clause with no own prohibition language, and a non-operative
+  // guard that already ran. A sub-clause with its own "shall not"
+  // or "shall" is caught by the rules above and never reaches here.
+  if (parentChapeau) {
+    const ownSignal = /\b(?:shall|will|may)\s+not\b|\bneither\b|\bmay\b|\bpermitted\b|\bentitled\b|\ballowed\b|\bnot\s+to\s+exceed\b|\bgreater\s+of\b/i.test(excerpt);
+    // Prohibition-with-except frame: either an explicit "shall not ...
+    // except/other than" or the bare negative-covenant stem
+    // ("Create, incur [or assume] ... other than") whose "shall not"
+    // lives in the Article chapeau (Solaris 7.01). Both are the
+    // universal chapeau-prohibition + excepted-sub-clauses structure.
+    const chapeauProhibitsWithExcept =
+      (/\b(?:shall|will|may)\s+not\b/i.test(parentChapeau) ||
+        /\bCreate,\s*incur(?:\s*,?\s*(?:or\s+)?assume)?(?:\s+or\s+suffer\s+to\s+exist)?\b/i.test(parentChapeau)) &&
+      /\bexcept\b|\bother\s+than\b/i.test(parentChapeau);
+    if (!ownSignal && chapeauProhibitsWithExcept) {
+      return /\bprovided\s+that\b|\bso\s+long\s+as\b|\bno\s+Default\b|\bpro\s+forma\b/i.test(excerpt)
+        ? "CONDITIONAL_PERMISSION"
+        : "ENUMERATED_PERMISSION";
+    }
+  }
   return "UNRESOLVED";
 }
 
@@ -619,6 +652,8 @@ export function analyzeProvision(params: {
   definitions: DefinitionRecord[];
   structuralNodes: StructuralNodeRecord[];
   crossReferences?: CrossReferenceRecord[];
+  /** Parent chapeau text (text before the first sub-clause marker in the parent candidate's excerpt) — powers chapeau inheritance in detectPosture. Optional; absent → existing behavior. */
+  parentChapeau?: string;
 }): ProvisionAnalysis {
   const { sectionRef, heading } = sectionForNode(params.candidate.nodeId, params.structuralNodes);
   const excerpt = params.candidate.excerpt || "";
@@ -636,7 +671,7 @@ export function analyzeProvision(params: {
       ? "EVENTS_OF_DEFAULT"
       : (FAMILY_TO_CATEGORY[primary] ?? "OTHER");
   const categoryLabel = CATEGORY_LABELS[category];
-  const posture = detectPosture(excerpt, heading, params.candidate.families);
+  const posture = detectPosture(excerpt, heading, params.candidate.families, params.parentChapeau);
   const { coveredEntities, entityScopeNotes } = extractEntities(excerpt, heading);
   const basketsAndThresholds = extractBaskets(excerpt);
   const restriction = extractRestriction(excerpt, heading, posture, categoryLabel);
