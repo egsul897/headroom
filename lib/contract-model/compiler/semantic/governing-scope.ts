@@ -196,13 +196,21 @@ function unparsedArticlePreamble(index: StructuralIndex, documentId: string, top
     return null;
   };
   const topArticle = articleAncestorOf(top);
+  // Phase C (D18), corrected after certified-test failure:
+  // the same-article filter applies ONLY when the article
+  // ancestor exists. When it is null (the article node is
+  // missing — the CONMED case the certification protects),
+  // fall back to the major-number grouping: the preamble
+  // recovery is the only path to the governing scope, and the
+  // content checks (lead-in colon + governing posture phrase)
+  // bound the cross-instrument risk. Returning null here
+  // broke governing-scope-fidelity + live-7-2c replay.
   if (topArticle === null) {
-    notes.push(`outermost non-article ancestor ${top.sectionRef} has no ARTICLE ancestor; no article group exists to recover a preamble from (a missing article must not borrow another instrument's preamble)`);
-    return null;
+    notes.push(`outermost non-article ancestor ${top.sectionRef} has no ARTICLE ancestor; falling back to major-number grouping for preamble recovery (certified CONMED path — the article node is missing, not mis-attributed)`);
   }
   const pool = (parent ? index.getChildren(parent.nodeId) : index.roots())
     .filter((n) => n.documentId === documentId)
-    .filter((n) => articleAncestorOf(n) === topArticle)
+    .filter((n) => topArticle === null || articleAncestorOf(n) === topArticle)
     .sort((a, b) => a.charStart - b.charStart);
   const pos = pool.findIndex((n) => n.nodeId === top.nodeId);
   if (pos < 0) { notes.push(`outermost non-article ancestor ${top.sectionRef} is not in its sibling pool; unparsed article preamble recovery not attempted`); return null; }
