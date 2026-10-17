@@ -4793,3 +4793,79 @@ model CustomerEbitdaConfirmation {
   @@index([companyId, documentId, seq])
   @@map("customer_ebitda_confirmations")
 }
+
+// --- Monitoring + CFO alerts (Grok lane 2, docs/monitoring/README.md) ---
+// Additive only. Plain companyId columns (no Prisma relation) so the Company
+// model is untouched. Written only by the monitoring sweep and the tenant-gated
+// threshold/notification routes.
+
+/// SEC filings the monitor has already seen for a tracked company (dedupe by accession).
+model MonitoredFiling {
+  id              String   @id @default(cuid())
+  companyId       String
+  cik             String
+  accessionNumber String
+  form            String
+  filingDate      String
+  detectedAt      DateTime @default(now())
+
+  @@unique([companyId, accessionNumber])
+  @@index([companyId, detectedAt])
+  @@map("monitored_filings")
+}
+
+/// Per-covenant band thresholds as headroom fractions of the limit (0 < dangerBelow < moderateBelow <= 1).
+/// covenantKey "*" is the workspace default. No row ⇒ the documented product default is used and labelled.
+model CovenantBandThreshold {
+  id            String   @id @default(cuid())
+  companyId     String
+  covenantKey   String
+  moderateBelow Float
+  dangerBelow   Float
+  updatedBy     String
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+
+  @@unique([companyId, covenantKey])
+  @@map("covenant_band_thresholds")
+}
+
+/// Append-only band history per covenant (Healthy / Moderate / Danger / Not determinable).
+model CovenantBandEvent {
+  id              String   @id @default(cuid())
+  companyId       String
+  covenantKey     String
+  covenantName    String
+  documentName    String
+  sectionRef      String
+  fromBand        String?
+  toBand          String
+  headroomPct     Float?
+  actual          Float?
+  limitValue      Float
+  comparison      String
+  thresholdSource String
+  asOfDate        String
+  observedAt      DateTime @default(now())
+
+  @@index([companyId, observedAt])
+  @@index([companyId, covenantKey, observedAt])
+  @@map("covenant_band_events")
+}
+
+/// In-app notification for a workspace. dedupeKey makes every producer idempotent.
+model WorkspaceNotification {
+  id          String    @id @default(cuid())
+  companyId   String
+  kind        String
+  title       String
+  body        String
+  link        String?
+  dedupeKey   String    @unique
+  createdAt   DateTime  @default(now())
+  readAt      DateTime?
+  emailStatus String    @default("NOT_SENT_DISABLED")
+
+  @@index([companyId, createdAt])
+  @@map("workspace_notifications")
+}
