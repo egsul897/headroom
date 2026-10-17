@@ -199,14 +199,14 @@ function unparsedArticlePreamble(index: StructuralIndex, documentId: string, top
   // Phase C (D18), corrected after certified-test failure:
   // the same-article filter applies ONLY when the article
   // ancestor exists. When it is null (the article node is
-  // missing — the CONMED case the certification protects),
+  // missing — the certified missing-article case),
   // fall back to the major-number grouping: the preamble
   // recovery is the only path to the governing scope, and the
   // content checks (lead-in colon + governing posture phrase)
   // bound the cross-instrument risk. Returning null here
   // broke governing-scope-fidelity + live-7-2c replay.
   if (topArticle === null) {
-    notes.push(`outermost non-article ancestor ${top.sectionRef} has no ARTICLE ancestor; falling back to major-number grouping for preamble recovery (certified CONMED path — the article node is missing, not mis-attributed)`);
+    notes.push(`outermost non-article ancestor ${top.sectionRef} has no ARTICLE ancestor; falling back to major-number grouping for preamble recovery (certified missing-article path — the article node is missing, not mis-attributed)`);
   }
   const pool = (parent ? index.getChildren(parent.nodeId) : index.roots())
     .filter((n) => n.documentId === documentId)

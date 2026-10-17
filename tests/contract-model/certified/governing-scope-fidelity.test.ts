@@ -77,8 +77,14 @@ describe("GS1-GS4 governing scope is a typed structural chain of ancestor lead-i
   it("GS1/GS4 (unparsed preamble, A): Article preamble + section lead-in + child exception compose; BORROWER + ANY_SUBSIDIARY, INCUR_DEBT and the governing prohibition are recovered from source, never from the model", () => {
     const g = governing(idxA, "9.2(a)");
     expect(g.version).toBe(GOVERNING_SCOPE_CONTEXT_VERSION);
-    // distance 3: the parser hung every section under a heading-only "ARTICLE I" node (distance 2, no governing material, not a region); the unparsed preamble sits beyond it
-    expect(g.ancestorRegions.map((r) => [r.role, r.derivation, r.sectionRef, r.ancestorDistance])).toEqual([["PARENT_SCOPE", "STRUCTURAL_ANCESTOR_LEAD_IN", "9.2", 1], ["GOVERNING_SCOPE", "UNPARSED_ARTICLE_PREAMBLE", "article-group:9", 3]]);
+    // Phase C (Hardening): distance 2, not 3. The parser no
+    // longer hangs 9.x sections under the heading-only
+    // "ARTICLE I" node (roman I = 1 != 9 — ref-consistency
+    // refuses the cross-article parentage the old rank-stack
+    // assigned). 9.2 is a root; the chain is [9.2] (distance
+    // 1) + the unparsed preamble beyond it (distance 2). The
+    // preamble recovery itself is unchanged.
+    expect(g.ancestorRegions.map((r) => [r.role, r.derivation, r.sectionRef, r.ancestorDistance])).toEqual([["PARENT_SCOPE", "STRUCTURAL_ANCESTOR_LEAD_IN", "9.2", 1], ["GOVERNING_SCOPE", "UNPARSED_ARTICLE_PREAMBLE", "article-group:9", 2]]);
     expect(g.ancestorRegions[0]!.text).toBe("SECTION 9.2 Limitation on Indebtedness . Create, incur, assume or suffer to exist any Indebtedness, except:");
     expect(g.ancestorRegions[1]!.text).toBe(`NEGATIVE COVENANTS\n${PREAMBLE}`);
     expect(DOC_A.slice(g.ancestorRegions[1]!.charStart, g.ancestorRegions[1]!.charEnd)).toBe(g.ancestorRegions[1]!.text);
@@ -87,7 +93,11 @@ describe("GS1-GS4 governing scope is a typed structural chain of ancestor lead-i
     expect(g.inheritedAction).toBe("INCUR_DEBT");
     expect(g.inheritedActionBasis).toMatchObject({ sectionRef: "9.2", role: "PARENT_SCOPE", evidence: "Create, incur, assume or suffer to exist any Indebtedness" });
     expect(g.governingProhibition).toMatchObject({ sectionRef: "article-group:9", role: "GOVERNING_SCOPE" });
-    expect(g.notes).toEqual(["ancestor ARTICLE I has no own lead-in text carrying governing material (heading only or empty); not a region"]);
+    // Phase C (Hardening): ARTICLE I is no longer an ancestor
+    // (9.x sections are not parented to it), so there is no
+    // heading-only-ancestor note. The preamble fallback note
+    // (no ARTICLE ancestor -> major-number grouping) is present.
+    expect(g.notes).toEqual(["outermost non-article ancestor 9.2 has no ARTICLE ancestor; falling back to major-number grouping for preamble recovery (certified missing-article path — the article node is missing, not mis-attributed)"]);
   });
   it("GS1 (parsed ARTICLE, B): the ARTICLE node's own preamble is the governing region; an unqualified 'Restricted Subsidiary' denotes exactly the two restricted classes the enum splits it into - no RESTRICTED_SUBSIDIARY tag exists or is invented", () => {
     const g = governing(idxB, "9.2(a)");
