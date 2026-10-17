@@ -501,6 +501,7 @@ export async function analyzeCustomerDocument(params: {
       definitions: store.loadDefinitions(sourceId),
       structuralNodes: store.loadStructuralNodes(sourceId),
       crossReferences: store.loadCrossReferences(sourceId),
+      redlineAmbiguities: store.loadRedlineAmbiguities(sourceId),
     });
 
     // Workspace-isolated durable bytes — never alias into public research sourceId.

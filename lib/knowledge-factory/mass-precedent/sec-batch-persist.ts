@@ -205,6 +205,7 @@ export async function persistSecManifestBatch(params?: {
         candidates: store.loadCandidates(loc.sourceId),
         definitions: store.loadDefinitions(loc.sourceId),
         structuralNodes: store.loadStructuralNodes(loc.sourceId),
+        redlineAmbiguities: store.loadRedlineAmbiguities(loc.sourceId),
       });
 
       if (live) {
