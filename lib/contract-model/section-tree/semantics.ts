@@ -69,7 +69,8 @@ export interface CrossRef {
   targetNodeId: string | null;
 }
 
-const DEF_RE = /[“"]\s*([A-Z][A-Za-z0-9’'\-&/ ,.()]{1,80}?)\s*[”"]\s+(?:means|shall mean|has the meaning|shall have the meaning)/g;
+// "Term" means ... and the colon convention "Term": ... (a quoted, capitalized term closed by a colon and a space).
+const DEF_RE = /[“"]\s*([A-Z][A-Za-z0-9’'\-&/ ,.()]{1,80}?)\s*[”"](?:\s+(?:means|shall mean|has the meaning|shall have the meaning)|\s*:(?=\s))/g;
 
 export function definedTerms(tree: SectionTree, text: string): DefinedTerm[] {
   const out: DefinedTerm[] = [];

@@ -33,6 +33,7 @@
 
 import { extractText, getDocumentProxy } from "unpdf";
 import mammoth from "mammoth";
+import { decodeNumericEntities, dropStruckHtml } from "./html-hardening";
 
 export interface ParsedPage {
   /** 1-indexed. Always 1 for formats with no real page concept (DOCX, TXT). */
@@ -65,28 +66,29 @@ const HTML_ENTITIES: Record<string, string> = {
   "&lsquo;": "‘",
   "&rdquo;": "”",
   "&ldquo;": "“",
+  "&sect;": "§",
+  "&hellip;": "…",
+  "&bull;": "•",
+  "&middot;": "·",
+  "&shy;": "",
+  "&ensp;": " ",
+  "&emsp;": " ",
+  "&thinsp;": " ",
 };
 
 function decodeHtmlEntities(text: string): string {
-  return text
-    .replace(/&#[xX]([0-9a-fA-F]+);/g, (entity, hex) => {
-      const code = parseInt(hex, 16);
-      // Out-of-range code points are not decodable; leave the entity
-      // untouched rather than throwing or inventing a character.
-      return code <= 0x10ffff ? String.fromCodePoint(code) : entity;
-    })
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(Number(dec)))
-    .replace(/&[a-zA-Z#0-9]+;/g, (entity) => HTML_ENTITIES[entity] ?? entity);
+  // Numeric references, hex (&#x24;) and decimal (&#36;), decode to code points (lib/extraction/html-hardening.ts).
+  return decodeNumericEntities(text).replace(/&[a-zA-Z0-9]+;/g, (entity) => HTML_ENTITIES[entity] ?? HTML_ENTITIES[entity.toLowerCase()] ?? entity);
 }
 
 function stripHtmlToText(html: string): string {
   const withoutNonContent = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
   // Blackline/amendment exhibits mark DELETED text with <strike>, <s> or
-  // <del>. Struck text is not operative: keeping it made the engine
-  // compute a deleted $75M basket cap as if it were live (Grok
-  // independent accuracy check, 2026-10-17). Drop the element AND its
-  // contents before tag stripping, like script/style above.
-  const withoutStruck = withoutNonContent.replace(/<(strike|s|del)\b[^>]*>[\s\S]*?<\/\1>/gi, " ");
+  // <del>, or with a `text-decoration: line-through` style. Struck text is not
+  // operative: keeping it made the engine compute a deleted basket cap as if
+  // it were live. Drop the element AND its contents (nested markup included)
+  // before tag stripping, like script/style above (lib/extraction/html-hardening.ts).
+  const withoutStruck = dropStruckHtml(withoutNonContent);
   const withBreaks = withoutStruck.replace(/<\/(p|div|tr|h[1-6]|li|br)>/gi, "\n").replace(/<br\s*\/?>/gi, "\n");
   const stripped = withBreaks.replace(/<[^>]+>/g, " ");
   const decoded = decodeHtmlEntities(stripped);
