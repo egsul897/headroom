@@ -12,10 +12,14 @@
  * - it carries grant types AND compiles cleanly to a MODELED
  *   Permission (formula + threshold, no missing fields), OR to a
  *   testable maintenance-ratio provision; AND
- * - after Rule 206 drops pure cap restatements, it carries NO
- *   remaining eligibility conditions (any remaining condition
- *   maps to an UNKNOWN CUSTOM_STATE_PREDICATE — counsel must
- *   resolve it before the basket can clear); AND
+ * - after the shared remaining-conditions filter drops pure cap
+ *   restatements (Rule 206) and mechanical provisos (P1: a
+ *   complete no-Default or pro-forma-compliance proviso, whose
+ *   text compile carries verbatim onto the Permission as an
+ *   eligibility condition the solver fails closed on), it
+ *   carries NO remaining eligibility conditions (any remaining
+ *   condition maps to an UNKNOWN CUSTOM_STATE_PREDICATE —
+ *   counsel must resolve it before the basket can clear); AND
  * - its posture is determined (an UNRESOLVED-posture item with a
  *   clear amount still needs counsel to confirm what the
  *   provision does).
@@ -33,8 +37,8 @@
  * their compile.
  */
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
-import { isCapRestatementCondition, parseFormulaFromItem } from "./formula-parse";
-import { grantTypesForItem } from "./grant-types";
+import { parseFormulaFromItem, remainingConditionsForItem } from "./formula-parse";
+import { grantTypesForItem, isDefinitionsArticleItem } from "./grant-types";
 import { parseMaintenanceRatio } from "./maintenance-ratio";
 
 /** True when the item compiles to a MODELED Permission or a testable ratio provision. */
@@ -49,12 +53,31 @@ export function compilesCleanly(item: CovenantSummaryItem): boolean {
 
 /** True when the item needs NO counsel decision (routine supported interpretation). */
 export function isRoutineItem(item: CovenantSummaryItem): boolean {
+  // Classification census step 1: a NON_COVENANT item is not an
+  // interpretation awaiting a decision at all — it is document
+  // content the classifier has determined is not an operative
+  // covenant. It never auto-accepts (and needs NO decision:
+  // the decision-queue consumers exclude it explicitly).
+  if (item.category === "NON_COVENANT") return false;
   // Phase E (D10): a structurally unresolved item (ambiguous
   // heading or integrity violation on its own node) is NEVER
   // routine — it is a counsel exception. Auto-accepting it
   // would certify an invented or uncertain structural
   // relationship as a SYSTEM decision with no human review.
   if (item.structuralUnresolved === true) return false;
+  // Redline port (from PR #428): a redline-ambiguous item (its text
+  // intersects a span following an unmatched struck-through element
+  // — possibly text the parties deleted) is NEVER routine, for the
+  // same reason: auto-accepting it would certify possibly-deleted
+  // text as a SYSTEM decision with no human review.
+  if (item.redlineAmbiguous === true) return false;
+  // Formula representation (step 3): a section stem is never
+  // routine. Its "decision" has no capacity effect of its own —
+  // the section's operative clauses are separate items and are
+  // decided on their own merits — so the stem is proposed as a
+  // no-effect REJECTED bookkeeping decision for counsel, never a
+  // SYSTEM auto-accept.
+  if ((item.sectionStemChildRefs?.length ?? 0) > 0) return false;
   const grants = grantTypesForItem(item);
   if (grants.length === 0) {
     // No grants: a maintenance-ratio item still compiles (to a
@@ -73,13 +96,47 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
     // No capacity signal. Routine only when the item carries no
     // basket/condition signal at all — a basket-shaped item the
     // classifier missed is an exception (it may constrain capacity).
-    const basketShaped =
-      (item.materialBasketsThresholds?.length ?? 0) > 0 ||
-      (item.conditions?.length ?? 0) > 0;
+    // P2: two classes can NEVER hold a grant, by construction —
+    // definitions-article items (Rule 204: grant-minting refuses
+    // them) and EVENTS_OF_DEFAULT items (Rule 166: never mint).
+    // A plain dollar threshold on such an item is a defined-term
+    // amount or a cross-default trigger level, not a missed
+    // basket, so it does not make the item basket-shaped for
+    // queue purposes — UNLESS the thresholds carry a greater-of
+    // entry or a builder marker, which ARE basket structures and
+    // keep the item an exception. The conditions prong is
+    // unchanged: any condition still makes it an exception.
+    const thresholds = item.materialBasketsThresholds ?? [];
+    const hasBasketStructure = thresholds.some((t) => {
+      const s = String(t);
+      return /^greater of basket:/i.test(s) || /\bbuilder\b|available amount/i.test(s);
+    });
+    const impossibleGrantClass =
+      isDefinitionsArticleItem(item) || item.category === "EVENTS_OF_DEFAULT";
+    const thresholdSignal =
+      thresholds.length > 0 && !(impossibleGrantClass && !hasBasketStructure);
+    const basketShaped = thresholdSignal || (item.conditions?.length ?? 0) > 0;
     if (basketShaped) return false;
     return true;
   }
   if (!compilesCleanly(item)) return false;
+  // P4 unit-misread floor (lockstep with the proposer): a
+  // grant-bearing item whose MODELED money threshold is below
+  // $1,000 (0.001 in $M units) is NEVER routine — no real basket
+  // is that small; the figure is a dropped scale. The parse
+  // layer already fails closed on this shape, so this gate is
+  // defense in depth for any future parse path. Ratio formulas
+  // are exempt: their thresholdValue is a multiple, not dollars.
+  const parsedForGate = parseFormulaFromItem(item);
+  if (
+    parsedForGate.modelingStatus === "MODELED" &&
+    parsedForGate.formulaType !== "RATIO_GATE" &&
+    parsedForGate.formulaType !== "LEVERAGE_RATIO_ROOM" &&
+    parsedForGate.thresholdValue > 0 &&
+    parsedForGate.thresholdValue < 0.001
+  ) {
+    return false;
+  }
   // Category/grant agreement: the category classifier and the grant
   // classifier are independent signals. When they disagree — a DEBT
   // grant on a MERGERS/OTHER-category item (e.g. a Successors clause
@@ -93,7 +150,14 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
   // BASKETS bucket is family-agnostic by definition, so any grant
   // there agrees.
   const GRANT_CATEGORIES: Record<string, string[]> = {
-    DEBT_INCURRENCE: ["DEBT_INCURRENCE"],
+    // P3: a DEBT grant also agrees with a GUARANTEES-category
+    // item. Rule 198 strips the pure guarantee-permission shape
+    // at grant-minting (guarantee word preceding the debt word),
+    // so a DEBT grant SURVIVING on a GUARANTEES item passed a
+    // position-evidence test — it is debt-first evidence (a
+    // basket that includes guarantee capacity), not the
+    // guarantee-of-permitted-debt shape that double-counts.
+    DEBT_INCURRENCE: ["DEBT_INCURRENCE", "GUARANTEES"],
     LIEN: ["LIENS_SECURED_DEBT"],
     RESTRICTED_PAYMENT: ["RESTRICTED_PAYMENTS_INVESTMENTS"],
     INVESTMENT: ["RESTRICTED_PAYMENTS_INVESTMENTS"],
@@ -102,12 +166,11 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
     item.category === "BASKETS_EXCEPTIONS_CONDITIONS" ||
     grants.some((g) => (GRANT_CATEGORIES[g] ?? []).includes(item.category));
   if (!categoryAgrees) return false;
-  // MODELED with a remaining (UNKNOWN) condition still needs counsel.
-  const parsed = parseFormulaFromItem(item);
-  const remainingConditions = (item.conditions ?? []).filter(
-    (c) => !isCapRestatementCondition(String(c), parsed.thresholdValue),
-  );
-  if (remainingConditions.length > 0) return false;
+  // MODELED with a remaining (UNKNOWN) condition still needs
+  // counsel. The remaining set comes from the SHARED computation
+  // (remainingConditionsForItem) so this gate and the Rulebook
+  // proposer always agree on what is left to resolve.
+  if (remainingConditionsForItem(item).length > 0) return false;
   // Undetermined posture needs counsel confirmation even when the
   // amount parses (e.g. a thin lien item whose DEBT grant was
   // laundered by boilerplate — the amount is clear but what the

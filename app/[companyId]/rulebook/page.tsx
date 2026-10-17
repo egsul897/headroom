@@ -63,8 +63,16 @@ export default async function RulebookPage({
   // Phase C (D11): decision key includes nodeId (occurrence).
   const decisionByKey = new Map(approvals.map((a) => [`${a.sourceId}|${a.sectionRef}|${a.category}|${a.nodeId ?? ""}`, a]));
 
+  // Classification census step 1: NON_COVENANT items are
+  // explicitly classified document content (definitions,
+  // representations, mechanics, boilerplate, [reserved]) — they
+  // are not interpretations awaiting a decision and never enter
+  // the counsel decision queue. They stay visible in the
+  // document summaries and category counts.
   const candidates = review.categories.flatMap((c) =>
-    c.items.map((item) => ({
+    c.items
+      .filter((item) => item.category !== "NON_COVENANT")
+      .map((item) => ({
       sourceId: item.sourceId,
       category: c.category,
       categoryLabel: c.categoryLabel,
@@ -81,6 +89,10 @@ export default async function RulebookPage({
       citation: item.sourceCitation,
       documentTitle: item.documentTitle,
       typeMismatch: mismatchBySourceId.get(item.sourceId) ?? null,
+      // Phase E (D10): carried explicitly so the row can disclose
+      // it — the summary item's unresolvedQuestions carry the same
+      // disclosure in prose, but the queue never rendered them.
+      structuralUnresolved: item.structuralUnresolved === true,
       decision: decisionByKey.get(`${item.sourceId}|${item.sectionRef}|${item.category}|${item.nodeId ?? ""}`),
       // Headroom proposes a decision for EVERY item — counsel
       // confirms or edits, never decides from scratch.
@@ -248,6 +260,7 @@ export default async function RulebookPage({
                           )}
                           {c.posture && <Chip tone="navy">{c.posture}</Chip>}
                           {c.typeMismatch && <Chip tone="tight">TYPE MISMATCH — {c.typeMismatch}</Chip>}
+                          {c.structuralUnresolved && <Chip tone="tight">STRUCTURAL RELATIONSHIP UNRESOLVED</Chip>}
                         </div>
                       </div>
                       <div className="row-note">

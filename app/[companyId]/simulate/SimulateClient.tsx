@@ -14,8 +14,11 @@ import {
   simulateAssetSale,
   simulateDebtIncurrence,
   simulateRestrictedPayment,
+  STRUCTURAL_UNRESOLVED_NOTICE,
+  structuralUnresolvedProvisionKeys,
   type CompanyCovenantData,
   type CovenantPosition,
+  type CovenantProvisionInput,
   type DebtIncurrenceSimulation,
   type DocumentInput,
   type RestrictedPaymentKind,
@@ -48,6 +51,25 @@ const STATUS_TITLE: Record<TransactionStatus, string> = {
   review_required: "Review required",
   not_tested: "Not tested",
 };
+
+/**
+ * Phase E provenance marker (display only): the permission behind the
+ * displayed provision was compiled from a source provision whose
+ * structural relationship is unresolved. The join is the exact
+ * (documentId, code) identity the engine itself uses across the
+ * Permission / CovenantProvision representations — never a label match.
+ */
+function StructuralUnresolvedNote() {
+  return (
+    <div className="row-note" style={{ marginTop: 6 }}>
+      {STRUCTURAL_UNRESOLVED_NOTICE}
+    </div>
+  );
+}
+
+function provisionStructurallyUnresolved(keys: Set<string>, provision?: CovenantProvisionInput | null): boolean {
+  return !!provision && keys.has(`${provision.documentId}:${provision.code}`);
+}
 
 /**
  * Every OTHER document governing this company that this simulation did NOT
@@ -143,6 +165,13 @@ export function SimulateClient({
     () => ({ ...solverContext, activationState: { ...solverContext.activationState, unknownKeys: new Set(solverContext.activationState.unknownKeysArray) } }),
     [solverContext]
   );
+  // Phase E: (documentId, code) keys of solver permissions minted from
+  // structurally unresolved source provisions — panels flag the exact
+  // displayed provision they join to. Display only; no verdict reads this.
+  const structuralUnresolvedKeys = useMemo(
+    () => structuralUnresolvedProvisionKeys(fullSolverContext.permissions),
+    [fullSolverContext]
+  );
 
   // Rule 134: the server re-verifies the simulation before
   // committing, so the client must pass the document whose
@@ -206,6 +235,7 @@ export function SimulateClient({
           simSecured={simSecured}
           setSimSecured={setSimSecured}
           definedTermsByProvision={definedTermsByProvision}
+          structuralUnresolvedKeys={structuralUnresolvedKeys}
         />
       )}
 
@@ -220,6 +250,7 @@ export function SimulateClient({
           onCommit={(amt, documentId, createdBy) => commit("DIVIDEND", amt, documentId, createdBy)}
           pending={isPending}
           definedTermsByProvision={definedTermsByProvision}
+          structuralUnresolvedKeys={structuralUnresolvedKeys}
         />
       )}
 
@@ -234,6 +265,7 @@ export function SimulateClient({
           onCommit={(amt, documentId, createdBy) => commit("INVESTMENT", amt, documentId, createdBy)}
           pending={isPending}
           definedTermsByProvision={definedTermsByProvision}
+          structuralUnresolvedKeys={structuralUnresolvedKeys}
         />
       )}
 
@@ -247,6 +279,7 @@ export function SimulateClient({
           reinvest={saleReinvest}
           setReinvest={setSaleReinvest}
           definedTermsByProvision={definedTermsByProvision}
+          structuralUnresolvedKeys={structuralUnresolvedKeys}
         />
       )}
     </div>
@@ -262,6 +295,7 @@ function DebtPanel({
   simSecured,
   setSimSecured,
   definedTermsByProvision,
+  structuralUnresolvedKeys,
 }: {
   data: CompanyCovenantData;
   position: CovenantPosition;
@@ -271,6 +305,7 @@ function DebtPanel({
   simSecured: boolean;
   setSimSecured: (b: boolean) => void;
   definedTermsByProvision: DefinedTermsMap;
+  structuralUnresolvedKeys: Set<string>;
 }) {
   // Cross-document capacity AND every applicable ratio test - both computed
   // generically inside the engine, not rechecked here. There is no separate
@@ -358,6 +393,7 @@ function DebtPanel({
                 <div key={r.provisionId}>
                   <b>{r.documentName}</b> — {r.basketName} ({r.sectionRef}) fails: {fmtX(r.postTransactionRatio ?? r.preTransactionRatio)}{" "}
                   {r.comparisonDirection === "at_or_below" ? "must be ≤" : "must be ≥"} {r.threshold.toFixed(2)}x.
+                  {provisionStructurallyUnresolved(structuralUnresolvedKeys, r.provision) && <StructuralUnresolvedNote />}
                 </div>
               ))}
             </>
@@ -366,6 +402,9 @@ function DebtPanel({
             <>{sim.reason ?? "Not enough modeled configuration to evaluate this transaction."}</>
           )}
         </div>
+        {provisionStructurallyUnresolved(structuralUnresolvedKeys, sim.binding?.bindingProvision) && (
+          <StructuralUnresolvedNote />
+        )}
         {sim.status === "blocked" && sim.binding && sim.next && (sim.next.capacity ?? Infinity) > (sim.binding.capacity ?? 0) && (
           <div style={{ marginTop: 10, background: "#fff", border: "1px solid var(--line)", borderRadius: 6, padding: "10px 12px", fontSize: 13 }}>
             <b>Amendment unlock:</b> relaxing the binding covenant in {sim.binding.documentName} would raise
@@ -387,12 +426,17 @@ function DebtPanel({
             </div>
             {d.capacity !== undefined && <ProgressBar pct={(simAmt / Math.max(1, d.capacity)) * 100} ok={d.status === "clear"} />}
             {d.bindingProvision ? (
-              <ProvisionTrace
-                provision={d.bindingProvision}
-                definedTerms={definedTermsByProvision[`${d.bindingProvision.documentId}:${d.bindingProvision.code}`] ?? []}
-                value={fmtCapacity(d.status === "clear" || d.status === "blocked" ? "modeled" : d.status, d.capacity)}
-                note="governing test"
-              />
+              <>
+                <ProvisionTrace
+                  provision={d.bindingProvision}
+                  definedTerms={definedTermsByProvision[`${d.bindingProvision.documentId}:${d.bindingProvision.code}`] ?? []}
+                  value={fmtCapacity(d.status === "clear" || d.status === "blocked" ? "modeled" : d.status, d.capacity)}
+                  note="governing test"
+                />
+                {provisionStructurallyUnresolved(structuralUnresolvedKeys, d.bindingProvision) && (
+                  <StructuralUnresolvedNote />
+                )}
+              </>
             ) : (
               <div className="row-note" style={{ marginTop: 6 }}>
                 {d.capacity !== undefined ? (
@@ -417,20 +461,24 @@ function DebtPanel({
             const tone: ChipTone = !r.applies ? "idle" : r.status === "clear" ? "pass" : r.status === "blocked" ? "trip" : "tight";
             const toneLabel = !r.applies ? "n/a" : r.status === "clear" ? "ok" : r.status === "blocked" ? "fails" : "review";
             return (
-              <ProvisionTrace
-                key={r.provisionId}
-                provision={r.provision}
-                definedTerms={definedTermsByProvision[`${r.documentId}:${r.provision.code}`] ?? []}
-                note={`${r.metricName} pro forma${!r.applies ? " — not applicable to this incurrence" : ""}${r.reason ? ` — ${r.reason}` : ""}`}
-                value={
-                  <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                    <span className="mono" style={{ fontSize: 15, fontWeight: 600, opacity: r.applies ? 1 : 0.6 }}>
-                      {fmtX(r.postTransactionRatio ?? r.preTransactionRatio)}
+              <div key={r.provisionId}>
+                <ProvisionTrace
+                  provision={r.provision}
+                  definedTerms={definedTermsByProvision[`${r.documentId}:${r.provision.code}`] ?? []}
+                  note={`${r.metricName} pro forma${!r.applies ? " — not applicable to this incurrence" : ""}${r.reason ? ` — ${r.reason}` : ""}`}
+                  value={
+                    <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                      <span className="mono" style={{ fontSize: 15, fontWeight: 600, opacity: r.applies ? 1 : 0.6 }}>
+                        {fmtX(r.postTransactionRatio ?? r.preTransactionRatio)}
+                      </span>
+                      <Chip tone={tone}>{toneLabel}</Chip>
                     </span>
-                    <Chip tone={tone}>{toneLabel}</Chip>
-                  </span>
-                }
-              />
+                  }
+                />
+                {provisionStructurallyUnresolved(structuralUnresolvedKeys, r.provision) && (
+                  <StructuralUnresolvedNote />
+                )}
+              </div>
             );
           })}
         </Card>
@@ -449,6 +497,7 @@ function RpPanel({
   onCommit,
   pending,
   definedTermsByProvision,
+  structuralUnresolvedKeys,
 }: {
   data: CompanyCovenantData;
   documents: DocumentRow[];
@@ -459,6 +508,7 @@ function RpPanel({
   onCommit: (amount: number, documentId: string, createdBy: string) => void;
   pending: boolean;
   definedTermsByProvision: DefinedTermsMap;
+  structuralUnresolvedKeys: Set<string>;
 }) {
   // Rule 140: the commit writes a capacity-affecting ledger row
   // (rule 139's createdBy) — the committer must be named.
@@ -536,6 +586,9 @@ function RpPanel({
             <>{sim.reason ?? "Not enough modeled configuration to evaluate this transaction."}</>
           )}
         </div>
+        {provisionStructurallyUnresolved(structuralUnresolvedKeys, rpGate?.provision) && (
+          <StructuralUnresolvedNote />
+        )}
         {sim.status === "clear" && amount > 0 && (
           <>
             <label className="field" style={{ marginTop: 12 }}>
@@ -584,6 +637,9 @@ function RpPanel({
               <div style={{ height: 6, background: "rgba(0,0,0,0.06)", borderRadius: 2, marginBottom: 10, overflow: "hidden" }}>
                 <div style={{ width: `${Math.min(100, (s.allocated / Math.max(1, amount)) * 100)}%`, height: "100%", background: "var(--green)" }} />
               </div>
+              {provisionStructurallyUnresolved(structuralUnresolvedKeys, stepProvision) && (
+                <StructuralUnresolvedNote />
+              )}
             </div>
           );
         })}
@@ -607,6 +663,7 @@ function AssetSalePanel({
   reinvest,
   setReinvest,
   definedTermsByProvision,
+  structuralUnresolvedKeys,
 }: {
   data: CompanyCovenantData;
   documents: DocumentRow[];
@@ -616,6 +673,7 @@ function AssetSalePanel({
   reinvest: boolean;
   setReinvest: (b: boolean) => void;
   definedTermsByProvision: DefinedTermsMap;
+  structuralUnresolvedKeys: Set<string>;
 }) {
   const candidates: DocumentInput[] = documentsWithAssetSale(data);
   const [selectedId, setSelectedId] = useState<string | undefined>(candidates[0]?.id);
@@ -703,6 +761,9 @@ function AssetSalePanel({
               definedTerms={definedTermsByProvision[`${doc.id}:${doc.assetSale?.thresholdCode}`] ?? []}
               value={fmtM(sim.excessProceedsThreshold ?? 0)}
             />
+          )}
+          {provisionStructurallyUnresolved(structuralUnresolvedKeys, thresholdProvision) && (
+            <StructuralUnresolvedNote />
           )}
         </div>
       )}

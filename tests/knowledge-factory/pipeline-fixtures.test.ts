@@ -69,6 +69,11 @@ describe("knowledge factory pipeline (fixtures)", () => {
     expect(stats.structuralNodes).toBeGreaterThan(0);
     expect(stats.covenantCandidates).toBeGreaterThan(0);
     expect(stats.actualPaidSpendUsd).toBe(0);
+    // Stage 0 instrumentation: the extraction-level resolution
+    // breakdown accounts for every cross-reference exactly once.
+    expect(
+      stats.resolvedCrossReferences + stats.ambiguousCrossReferences + stats.notFoundCrossReferences,
+    ).toBe(stats.crossReferences);
 
     const sources = store.listSources();
     expect(sources.every((s) => s.representationLevel !== "CERTIFIED")).toBe(true);

@@ -7,9 +7,15 @@ import type {
   CovenantCandidateRecord,
   CrossReferenceRecord,
   DefinitionRecord,
+  RedlineAmbiguityRecord,
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
-import { analyzeProvision, type ProvisionAnalysis, type ProvisionPosture } from "./analyze-provision";
+import {
+  analyzeProvision,
+  type CrossReferenceResolution,
+  type ProvisionAnalysis,
+  type ProvisionPosture,
+} from "./analyze-provision";
 
 export type CovenantCategoryKey =
   | "DEBT_INCURRENCE"
@@ -22,7 +28,46 @@ export type CovenantCategoryKey =
   | "FINANCIAL_MAINTENANCE"
   | "EVENTS_OF_DEFAULT"
   | "BASKETS_EXCEPTIONS_CONDITIONS"
+  | "NON_COVENANT"
+  | "AFFIRMATIVE"
   | "OTHER";
+
+/**
+ * Why an item is classified NON_COVENANT — the determinate
+ * classification for document content that is not an operative
+ * covenant (classification census steps 1–3): definitions,
+ * representations, facility/agent mechanics, conditions
+ * checklists, boilerplate, and [reserved] placeholders. Assigned
+ * from structural position (article / instrument / node shape),
+ * never from keyword scoring. NON_COVENANT items are accounted
+ * for and explicitly classified; they mint no grants and enter
+ * no covenant decision queue.
+ */
+export type NonCovenantSubtype =
+  | "DEFINITION"
+  | "REPRESENTATION"
+  | "MECHANICS"
+  | "BOILERPLATE"
+  | "RESERVED";
+
+/**
+ * The obligation kind of an AFFIRMATIVE covenant (classification
+ * census step 2) — operative covenants that impose duties
+ * (reporting, notices, maintenance, compliance) rather than
+ * restricting transactions. They stay in the covenant pipeline
+ * (they feed event-obligation extraction) but mint no basket
+ * grants.
+ */
+export type AffirmativeKind =
+  | "REPORTING"
+  | "NOTICE"
+  | "EXISTENCE"
+  | "TAXES"
+  | "PROPERTIES_INSURANCE"
+  | "COMPLIANCE"
+  | "BOOKS_INSPECTION"
+  | "FURTHER_ASSURANCES"
+  | "OTHER_AFFIRMATIVE";
 
 export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   DEBT_INCURRENCE: "Debt incurrence",
@@ -35,6 +80,8 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   FINANCIAL_MAINTENANCE: "Financial maintenance covenants",
   EVENTS_OF_DEFAULT: "Events of default",
   BASKETS_EXCEPTIONS_CONDITIONS: "Relevant baskets, exceptions, conditions and defined terms",
+  NON_COVENANT: "Non-covenant provision",
+  AFFIRMATIVE: "Affirmative covenants",
   OTHER: "Other provisions",
 };
 
@@ -42,6 +89,13 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
 export interface CovenantSummaryItem {
   category: CovenantCategoryKey;
   categoryLabel: string;
+  /** Additive (classification census step 1): for NON_COVENANT
+   * items, why the item is not an operative covenant. Null/absent
+   * for covenant items. Older stored summaries lack the field. */
+  nonCovenantSubtype?: NonCovenantSubtype | null;
+  /** Additive (classification census step 2): for AFFIRMATIVE
+   * items, the obligation kind. Null/absent otherwise. */
+  affirmativeKind?: AffirmativeKind | null;
   /**
    * Phase C (D11): the structural node's occurrence identity
    * (nodeId), carried so compile matches the EXACT item the
@@ -77,13 +131,60 @@ export interface CovenantSummaryItem {
    * must not mint a formula from it (except when counsel EDITED
    * the item, supplying the controlling text). */
   operativeExcerptTruncated?: boolean;
+  /**
+   * Redline port (from PR #428): the item's source span intersects
+   * a redline-ambiguous span — text following an unmatched
+   * struck-through (redline deletion) element whose close tag
+   * never appears, so the span may be text the parties deleted.
+   * The text is preserved as evidence, but the item NEVER
+   * auto-accepts as SYSTEM and the compiler must not mint a
+   * formula from it (except when counsel EDITED the item,
+   * supplying the controlling text — the Rule 192 exception).
+   * Absent on summaries built before the field existed or from
+   * documents with no unmatched redline elements.
+   */
+  redlineAmbiguous?: boolean;
+  /** Formula representation (step 3): parent section chapeau text,
+   * carried for the formula scan (a cap may be stated in the stem
+   * governing this clause). Contract text; additive. */
+  parentChapeau?: string;
+  /** The item's full operative span when its excerpt is a
+   * truncated prefix (formula parse only; the display excerpt
+   * and Rule 192 disclosure are unchanged). */
+  operativeFullSpan?: string;
+  /** Structural node type of the item's own node (formula
+   * parse's full-span guard). */
+  operativeNodeType?: string;
+  /** Formula representation (step 3): when this item IS a section
+   * stem whose operative sub-clauses are separately present as
+   * items, the sub-clauses' section refs. The stem carries no
+   * terms of its own — its clauses do (per-clause provenance is
+   * preserved; nothing is minted from the stem). */
+  sectionStemChildRefs?: string[];
   /** Heading of the enclosing ARTICLE node, if any (powers the representations guard in grant-types). */
   articleHeading?: string;
   sourceCitation: string;
   governingAgreement: string;
   families: string[];
   relatedDefinedTerms: string[];
-  applicableDefinitions: Array<{ term: string; excerpt: string; resolved?: boolean }>;
+  applicableDefinitions: Array<{
+    term: string;
+    excerpt: string;
+    resolved?: boolean;
+    /** Differing duplicate definitions in the document — the entry
+     * is unresolved because picking one would be a guess. */
+    ambiguous?: boolean;
+  }>;
+  /** Additive (H3): structural resolution per cross-reference —
+   * resolved only on a unique same-document target; ambiguity and
+   * non-resolution carry reasons. Older stored summaries lack the
+   * field and keep reading via `crossReferences` alone. */
+  crossReferenceResolutions?: CrossReferenceResolution[];
+  /** Additive (H3): the provision references more defined terms
+   * than the per-provision listing bound; unlisted mentions are
+   * unresolved, not absent (disclosed in unresolvedQuestions). */
+  definitionCoverageIncomplete?: boolean;
+  definitionMentionsOmitted?: number;
   entityScope: {
     borrower: boolean;
     guarantor: boolean;
@@ -124,6 +225,15 @@ export interface DocumentCovenantSummary {
   promotedToLegalTruth: 0;
   note: string;
   countsByCategory: Record<string, number>;
+  /**
+   * Redline port (from PR #428): the document's redline-ambiguous
+   * spans recorded at extraction (unmatched struck-through
+   * elements), carried on the summary so the uncertainty and the
+   * preserved evidence text travel with the analysis. Absent on
+   * summaries built before the field existed; items intersecting
+   * a span are flagged `redlineAmbiguous` individually.
+   */
+  redlineAmbiguities?: RedlineAmbiguityRecord[];
   items: CovenantSummaryItem[];
   definedTermsSample: Array<{ term: string; excerpt: string }>;
   /**
@@ -184,17 +294,24 @@ function entityScopeFromAnalysis(a: ProvisionAnalysis): CovenantSummaryItem["ent
   };
 }
 
+const REDLINE_AMBIGUITY_QUESTION =
+  "Redline ambiguity (unmatched struck-through element): this provision's text intersects a span that follows a struck-through (redline deletion) element whose closing tag is missing, so the span may be text the parties deleted — or live text after a stray tag. The text is preserved as evidence, but it is not treated as certified operative text: the item does not auto-accept and no formula is compiled from it. Confirm against the executed agreement / redline before relying on it.";
+
 function itemFromAnalysis(
   analysis: ProvisionAnalysis,
   governingAgreement: string,
   nodeId?: string,
   structuralUnresolved?: boolean,
+  redlineAmbiguous?: boolean,
 ): CovenantSummaryItem {
   return {
     nodeId,
     structuralUnresolved,
+    redlineAmbiguous: redlineAmbiguous || undefined,
     category: analysis.category,
     categoryLabel: analysis.categoryLabel,
+    nonCovenantSubtype: analysis.nonCovenantSubtype ?? null,
+    affirmativeKind: analysis.affirmativeKind ?? null,
     sectionRef: analysis.sectionRef,
     heading: analysis.heading,
     posture: analysis.posture,
@@ -208,6 +325,9 @@ function itemFromAnalysis(
     draftingPatterns: analysis.draftingPatterns,
     operativeLanguageExcerpt: analysis.operativeLanguageExcerpt,
     operativeExcerptTruncated: analysis.operativeExcerptTruncated,
+    parentChapeau: analysis.parentChapeau,
+    operativeFullSpan: analysis.operativeFullSpan,
+    operativeNodeType: analysis.operativeNodeType,
     articleHeading: analysis.articleHeading,
     sourceCitation: analysis.sourceCitation,
     governingAgreement,
@@ -216,23 +336,68 @@ function itemFromAnalysis(
     applicableDefinitions: analysis.applicableDefinitions,
     entityScope: entityScopeFromAnalysis(analysis),
     crossReferences: analysis.crossReferences,
+    crossReferenceResolutions: analysis.crossReferenceResolutions,
+    definitionCoverageIncomplete: analysis.definitionCoverageIncomplete,
+    definitionMentionsOmitted: analysis.definitionMentionsOmitted,
     dependencies: analysis.dependencies,
     epistemicStatus: analysis.epistemicStatus,
     interpretationNote: analysis.interpretationNote,
     // Phase E: structural uncertainty is preserved through every
     // layer — it surfaces in unresolvedQuestions (read by the
     // Rulebook, Ask, and counsel review), never silently dropped.
-    unresolvedQuestions: structuralUnresolved
-      ? [
-          ...analysis.unresolved,
-          "Structural relationship unresolved: this provision's parent/article could not be established deterministically from span containment + ref-consistency. Its excerpt is real text, but its placement in the hierarchy is not certified — confirm the governing article/section before relying on it.",
-        ]
-      : analysis.unresolved,
+    // Redline port (from PR #428): redline ambiguity is preserved
+    // the same way.
+    unresolvedQuestions: [
+      ...analysis.unresolved,
+      ...(structuralUnresolved
+        ? [
+            "Structural relationship unresolved: this provision's parent/article could not be established deterministically from span containment + ref-consistency. Its excerpt is real text, but its placement in the hierarchy is not certified — confirm the governing article/section before relying on it.",
+          ]
+        : []),
+      ...(redlineAmbiguous ? [REDLINE_AMBIGUITY_QUESTION] : []),
+    ],
     alternativeInterpretations: analysis.alternativeInterpretations,
     assumptions: analysis.assumptions,
     judgmentCalls: analysis.judgmentCalls,
     analysis,
   };
+}
+
+const collapseWs = (s: string): string => s.replace(/\s+/g, " ").trim();
+
+/**
+ * Redline port (from PR #428): does a candidate's source intersect a
+ * redline-ambiguous span? Two independent signals, either suffices:
+ * (1) coordinate overlap — the candidate's structural node span
+ * intersects a located span range (both in normalized document
+ * text coordinates); (2) text containment — the candidate's
+ * excerpt carries a distinctive slice of the span's preserved
+ * text (the fallback when a span could not be located verbatim).
+ * An empty span (unmatched element at end of document) taints
+ * nothing: it carried no text anyone could rely on.
+ */
+function candidateIntersectsRedlineSpan(
+  candidate: CovenantCandidateRecord,
+  node: StructuralNodeRecord | undefined,
+  spans: RedlineAmbiguityRecord[],
+): boolean {
+  const excerptNorm = collapseWs(candidate.excerpt ?? "");
+  for (const span of spans) {
+    if (span.charStart >= 0 && span.charEnd > span.charStart && node) {
+      if (node.charStart < span.charEnd && span.charStart < node.charEnd) return true;
+    }
+    const spanNorm = collapseWs(span.text ?? "");
+    if (spanNorm.length >= 16 && excerptNorm.length >= 16) {
+      if (
+        excerptNorm.includes(spanNorm.slice(0, 64)) ||
+        excerptNorm.includes(spanNorm.slice(-64)) ||
+        spanNorm.includes(excerptNorm.slice(0, 64))
+      ) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 export function buildDocumentCovenantSummary(params: {
@@ -245,6 +410,8 @@ export function buildDocumentCovenantSummary(params: {
   definitions: DefinitionRecord[];
   structuralNodes: StructuralNodeRecord[];
   crossReferences?: CrossReferenceRecord[];
+  /** Redline port (from PR #428): redline-ambiguous spans recorded at extraction for this source, if any. */
+  redlineAmbiguities?: RedlineAmbiguityRecord[];
 }): DocumentCovenantSummary {
   const items: CovenantSummaryItem[] = [];
   const countsByCategory: Record<string, number> = {};
@@ -367,6 +534,9 @@ export function buildDocumentCovenantSummary(params: {
         params.documentTitle,
         c.nodeId,
         itemNode ? itemNode.ambiguous === true || (itemNode.structuralViolations?.length ?? 0) > 0 : undefined,
+        params.redlineAmbiguities && params.redlineAmbiguities.length > 0
+          ? candidateIntersectsRedlineSpan(c, itemNode, params.redlineAmbiguities)
+          : undefined,
       ),
     );
   }
@@ -383,6 +553,32 @@ export function buildDocumentCovenantSummary(params: {
   const totalItemsBeforeCap = items.length;
   const truncated = items.length > SUMMARY_ITEM_CAP;
   const capped = items.slice(0, SUMMARY_ITEM_CAP);
+  // Formula representation (step 3): stamp section stems on the
+  // FINAL item list. An item is a stem when other items' nodes are
+  // its structural children — the section's operative clauses are
+  // itemized separately and carry the terms, so the stem itself
+  // must not sit in the queue as a bare grant item with no terms
+  // (nor mint a Permission duplicating its clauses'). Evaluated
+  // after the cap: a child cut by the cap is not "separately
+  // present", and the summary-cap disclosure already covers it.
+  {
+    const itemNodeIds = new Set(capped.map((i) => i.nodeId).filter(Boolean) as string[]);
+    const childRefsByParent = new Map<string, string[]>();
+    for (const child of capped) {
+      if (!child.nodeId) continue;
+      const parentId = nodeById.get(child.nodeId)?.parentNodeId;
+      if (parentId && parentId !== child.nodeId && itemNodeIds.has(parentId)) {
+        const list = childRefsByParent.get(parentId) ?? [];
+        list.push(child.sectionRef);
+        childRefsByParent.set(parentId, list);
+      }
+    }
+    for (const it of capped) {
+      if (!it.nodeId) continue;
+      const refs = childRefsByParent.get(it.nodeId);
+      if (refs && refs.length > 0) it.sectionStemChildRefs = refs;
+    }
+  }
   capped.sort((a, b) => {
     const ai = preferredOrder.indexOf(a.category);
     const bi = preferredOrder.indexOf(b.category);
@@ -404,6 +600,9 @@ export function buildDocumentCovenantSummary(params: {
     promotedToLegalTruth: 0,
     note: "AI-first interpretations for customer counsel review. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
+    ...(params.redlineAmbiguities && params.redlineAmbiguities.length > 0
+      ? { redlineAmbiguities: params.redlineAmbiguities }
+      : {}),
     items: capped,
     totalItemsBeforeCap,
     truncated,

@@ -165,10 +165,18 @@ describe("Structural node identity proposal - production freeze and historical i
   });
 
   it("no new directory was created under tests/fixtures/unseen-packages/ (no new-package inspection)", () => {
+    // The sanctioned package set is pinned exactly by the seal manifest
+    // (tests/fixtures/unseen-packages.seal.json): the directory must
+    // contain exactly the sealed entries — no additions (a new package
+    // would be new-package inspection) and no removals. This replaces
+    // the previous prefix allowlist, which was stale (it predated
+    // sanctioned packages such as an-2020-2026-credit-facility) and
+    // admitted any new entry starting with a known prefix.
+    const seal = JSON.parse(readFileSync("tests/fixtures/unseen-packages.seal.json", "utf8")) as { entries: string[] };
     const entries = readdirSync("tests/fixtures/unseen-packages");
-    const allowedPrefixes = ["conmed-", "dsgr-", "fwrg-", "lsb-", "phase-2f-", "phase-3b-", "phase-3b1-", "phase-3d-", "phase-3e-", "phase-3f-", "phase-3f1-"];
-    for (const entry of entries) {
-      expect(allowedPrefixes.some((p) => entry.startsWith(p)), `unexpected new entry: ${entry}`).toBe(true);
-    }
+    const unexpected = entries.filter((e) => !seal.entries.includes(e));
+    const missing = seal.entries.filter((e) => !entries.includes(e));
+    expect(unexpected, `unexpected new entries under tests/fixtures/unseen-packages/: ${unexpected.join(", ")}`).toEqual([]);
+    expect(missing, `sealed packages missing from tests/fixtures/unseen-packages/: ${missing.join(", ")}`).toEqual([]);
   });
 });

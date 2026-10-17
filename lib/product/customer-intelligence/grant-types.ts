@@ -133,6 +133,14 @@ function operativeText(plainEnglish: string): string {
  * singular modal patterns, so template boilerplate cannot launder
  * a grant. Failing closed: no permission evidence → no DEBT grant.
  */
+function hasDebtCapFrame(hay: string): boolean {
+  return (
+    /\bNOT\b[^.]{0,30}\bEXCEED(ING)?\b/.test(hay) ||
+    /\bUP\s+TO\s+\$/.test(hay) ||
+    /\bMAXIMUM\b[^.]{0,40}\$/.test(hay)
+  );
+}
+
 function hasDebtPermissionEvidence(hay: string): boolean {
   // Cap frame: a cap on incurrence ("shall not exceed $X", "not
   // exceeding ... $X", "up to $X", "maximum ... $X") plus a debt
@@ -143,11 +151,7 @@ function hasDebtPermissionEvidence(hay: string): boolean {
   // baskets. The item is a single provision, so a cap + a debt word
   // in the same item is presumptively a cap on that debt. The NOT...
   // EXCEED pattern itself stays sentence-bounded ([^.]).
-  const capFrame =
-    /\bNOT\b[^.]{0,30}\bEXCEED(ING)?\b/.test(hay) ||
-    /\bUP\s+TO\s+\$/.test(hay) ||
-    /\bMAXIMUM\b[^.]{0,40}\$/.test(hay);
-  if (capFrame) return true;
+  if (hasDebtCapFrame(hay)) return true;
   const modal =
     /\b(EXCEPT|PERMITTED|PERMISSION|MAY\s+(INCUR|CREATE|ISSUE|BORROW))\b[^.]{0,120}\b(INDEBTEDNESS|DEBT)\b|\b(INDEBTEDNESS|DEBT)\b[^.]{0,120}\b(EXCEPT|PERMITTED|PERMISSION|MAY\s+(INCUR|CREATE|ISSUE|BORROW))\b/.test(hay);
   return modal;
@@ -213,7 +217,117 @@ function isGrandfatheringOnly(hay: string): boolean {
  */
 function isDefaultTrigger(hay: string): boolean {
   if (/\bNO\s+(?:EVENT\s+OF\s+)?DEFAULT\b/.test(hay)) return false;
-  return /\b(?:CONSTITUTES?\s+(?:AN?\s+)?(?:EVENT\s+OF\s+)?DEFAULT|FAILURE\s+TO\s+(?:PAY|OBSERVE|PERFORM|COMPLY)|ASSERTED\s+AGAINST)\b/.test(hay);
+  return (
+    /\b(?:CONSTITUTES?\s+(?:AN?\s+)?(?:EVENT\s+OF\s+)?DEFAULT|FAILURE\s+TO\s+(?:PAY|OBSERVE|PERFORM|COMPLY)|ASSERTED\s+AGAINST)\b/.test(hay) ||
+    // Rule 209h: the payment trigger in its verb form — "any Loan
+    // Party shall fail to make any payment ... in respect of any
+    // Material Indebtedness, when and as the same shall become
+    // due" (Strata 5.02, Events-of-Default text the parser filed
+    // as a §5.02 section) — and the collateral-validity triggers:
+    // a Collateral Document that "shall fail to create a valid
+    // security interest", a Lien that "shall cease to be a
+    // perfected, first priority Lien" (Strata 5.02(p); Asure
+    // 8.01(k)). Both are default EVENTS, not permissions.
+    /\bFAIL(?:URE)?\s+TO\s+(?:MAKE\s+(?:ANY\s+)?PAYMENTS?\b|PAY\b)[^.]{0,140}?\bINDEBTEDNESS\b/.test(hay) ||
+    /\b(?:CEASE\s+TO|FAIL\s+TO)\s+(?:CREATE|BE)\b[^.]{0,80}?\b(?:VALID|PERFECTED|FIRST\s+PRIORITY)\b/.test(hay)
+  );
+}
+
+/**
+ * Rule 209 (audit-driven — representation step 2, grant-detection
+ * precision): the F7 census re-measured on the classification-era
+ * tree found grant instances minted for NON-BASKET provisions —
+ * Events-of-Default text, guaranty/agency mechanics, definitions
+ * fragments, restrictive-agreement exceptions, payment mechanics —
+ * plus wrong-type grants on genuine clauses. Every mechanism in
+ * this rule is structure-shaped and restrictive-only, and was
+ * verified per-item against the 7-agreement corpus (1,688 items):
+ * every removed grant was hand-read against its source text, and
+ * the two gains (an RP clause and an investments clause whose
+ * genuine grants a bogus LIEN signal was suppressing) are pinned
+ * in the test suite. Deliberately NOT a posture gate: genuine
+ * baskets carry OBLIGATION postures (Aon 6.11(o) purchase-money
+ * liens; Asure 7.03(p)), MAINTENANCE_TEST (Solaris 7.02(d), a
+ * modeled greater-of investment basket) and GENERAL_PROHIBITION
+ * (Strata 6.02(c), whose summarizer quote carries no permission
+ * modal at all) — gating on posture would kill genuine grants,
+ * so posture stays evidence, not a grant gate.
+ */
+
+/**
+ * Direct debt-permission evidence for Rule 209e: a cap frame, or
+ * a modal pair whose modal ASSERTS this clause's permission —
+ * a carve-out opener (EXCEPT), a direct permissive verb (MAY
+ * INCUR ...), or PERMITTED standing alone ("Secured Indebtedness
+ * and Liens permitted"). Two modal forms do NOT count: the
+ * reference form ("Indebtedness permitted by / under / pursuant
+ * to Section X", "permitted hereunder", "was permitted to be
+ * secured" — the permission lives in the clause pointed at, or
+ * was conferred in the past by one, not this one) and the PERMISSION
+ * noun (in this corpus it is the summarizer's "Permission
+ * substance:" label, which sits next to whatever the clause
+ * quotes — including clauses that grant something else).
+ */
+function hasDirectDebtPermissionEvidence(hay: string): boolean {
+  if (hasDebtCapFrame(hay)) return true;
+  const modal = "(?:EXCEPT|MAY\\s+(?:INCUR|CREATE|ISSUE|BORROW)|PERMITTED(?!\\s+(?:BY|UNDER|PURSUANT|HEREUNDER|TO)\\b))";
+  return new RegExp(
+    `\\b${modal}\\b[^.]{0,120}\\b(?:INDEBTEDNESS|DEBT)\\b|\\b(?:INDEBTEDNESS|DEBT)\\b[^.]{0,120}\\b${modal}\\b`,
+  ).test(hay);
+}
+
+/**
+ * Lien-permission evidence for Rule 209f: the modal must be a
+ * permission REFERENCE ("any Lien permitted by Section 7.01") or
+ * the PERMISSION noun (including the summarizer's "Permission
+ * substance:" label quote, the same channel Rule 169 relies on) —
+ * a bare "Permitted" adjective ("Permitted Acquisition",
+ * "Permitted Liens" as a defined term) is not evidence that THIS
+ * clause permits a lien.
+ */
+function hasLienPermissionEvidence(hay: string): boolean {
+  return /\b(PERMITTED\s+(?:BY|UNDER|PURSUANT)|PERMISSION)\b[^.]{0,120}\b(LIENS?|COLLATERAL|SECURITY\s+INTERESTS?)\b|\b(LIENS?|COLLATERAL|SECURITY\s+INTERESTS?)\b[^.]{0,120}\b(PERMITTED\s+(?:BY|UNDER|PURSUANT)|PERMISSION)\b/.test(
+    hay,
+  );
+}
+
+/** Rule 209j: the clause's operative head is a restrictions frame. */
+function isRestrictionsFrame(item: CovenantSummaryItem): boolean {
+  const excerpt = (item.operativeLanguageExcerpt ?? "").toUpperCase();
+  return (
+    /^\s*(?:\([A-Z0-9]+\))?\s*(?:ANY\s+)?RESTRICTIONS?\b/.test(excerpt) ||
+    /\bCONTRACTUAL\s+OBLIGATIONS?\b[^.]{0,130}?\b(?:ENCUMBERS?|RESTRICTS?)\b/.test(excerpt)
+  );
+}
+
+/** Rule 209k: the clause's operative head is a fee/expense component. */
+function isFeeComponentClause(item: CovenantSummaryItem): boolean {
+  const excerpt = (item.operativeLanguageExcerpt ?? "").toUpperCase();
+  return /^\s*(?:\([A-Z0-9]+\))?\s*(?:ANY\s+)?(?:FEES|COSTS\s+AND\s+EXPENSES)\b/.test(excerpt);
+}
+
+/** Rule 209l: the clause's operative head is a payment verb frame. */
+function isPaymentFrameClause(item: CovenantSummaryItem): boolean {
+  const excerpt = (item.operativeLanguageExcerpt ?? "").toUpperCase();
+  return /^\s*(?:\([A-Z0-9]+\))?\s*(?:PREPAY|REDEEM|DEFEASE|MANDATORY|REGULARLY\s+SCHEDULED)\b/.test(excerpt);
+}
+
+/** Rule 209m: the excerpt is solely the [reserved] placeholder
+ * (tolerating the filing's page-number tail, "(aa) [reserved]; 118"). */
+function isReservedClause(item: CovenantSummaryItem): boolean {
+  return /^\s*(?:\([A-Z0-9]+\))?\s*\[RESERVED\]\s*[.;]?\s*(?:\d+\s*)?$/i.test(
+    item.operativeLanguageExcerpt ?? "",
+  );
+}
+
+/** Rule 209p: the excerpt introduces two or more defined terms —
+ * definitions text, whatever sectionRef it carries. Quote forms
+ * are the filing's own (straight or curly, spaces tolerated inside
+ * the quotes). */
+function isDefinitionShaped(item: CovenantSummaryItem): boolean {
+  const excerpt = (item.operativeLanguageExcerpt ?? "").toUpperCase();
+  const intros = excerpt.match(/["\u201C][^"\u201D]{1,80}["\u201D]\s+(?:MEANS|HAS THE MEANING|SHALL MEAN)\b/g);
+  return (intros?.length ?? 0) >= 2;
 }
 
 /**
@@ -248,19 +362,32 @@ export function isResidualLienBasket(item: { plainEnglish?: string; operativeLan
  * (null). The first "means" in the definition excerpt is the
  * definition's own; a later definition's amount in the same
  * excerpt is never borrowed.
+ *
+ * H3 honesty: an entry the summary marks `resolved: false` never
+ * supplies a cap — under the honest flag that means the document
+ * does not define the term here, defines it ambiguously
+ * (differing duplicates), or defines it in text the extractor
+ * could not back with a source occurrence. Entries with NO flag
+ * (legacy stored summaries and pinned fixtures) stay eligible, as
+ * before. If several eligible entries carry the term with
+ * DIFFERING excerpts, the term is ambiguous and also fails
+ * closed — a cap is never picked from competing definitions.
  */
 export function resolveDefinedTermCap(item: {
   operativeLanguageExcerpt?: string | null;
-  applicableDefinitions?: Array<{ term: string; excerpt: string }> | null;
+  applicableDefinitions?: Array<{ term: string; excerpt: string; resolved?: boolean }> | null;
 }): number | null {
   const excerpt = item.operativeLanguageExcerpt ?? "";
   const capMatch = excerpt.match(/\bnot\s+(?:to\s+)?exceed(?:ing)?\s+(?:the\s+)?([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+)+)/);
   if (!capMatch) return null;
   const term = capMatch[1]!.replace(/\s+/g, " ").trim().toLowerCase();
-  const def = (item.applicableDefinitions ?? []).find(
-    (d) => d.term.replace(/\s+/g, " ").trim().toLowerCase() === term,
+  const eligible = (item.applicableDefinitions ?? []).filter(
+    (d) =>
+      d.term.replace(/\s+/g, " ").trim().toLowerCase() === term && d.resolved !== false,
   );
-  if (!def) return null;
+  if (eligible.length === 0) return null;
+  if (new Set(eligible.map((d) => (d.excerpt ?? "").trim())).size > 1) return null;
+  const def = eligible[0]!;
   const meansIdx = def.excerpt.search(/\bmeans\b/i);
   if (meansIdx < 0) return null;
   const afterMeans = def.excerpt.slice(meansIdx);
@@ -290,7 +417,15 @@ export function resolveDefinedTermCap(item: {
  * separately) — the concatenation order must not decide it.
  */
 function isGuaranteePermission(text: string): boolean {
-  const g = text.match(/\bGUARANTEES?\s+(?:CONSTITUTING|OF)\b/);
+  // Rule 209c: the frame also fires in the other standard
+  // drafting forms — "Guarantees by any Borrower of
+  // Indebtedness of any other Person" (Strata 6.01(d)) and
+  // "Guarantee Obligations of any Person in respect of
+  // Indebtedness of any other Person" (Solaris / Tenable
+  // 7.03(d)). The position check below (the guarantee word
+  // precedes the debt word) still protects debt baskets that
+  // list guarantees as a form of Indebtedness.
+  const g = text.match(/\bGUARANTEES?\s+(?:CONSTITUTING|OF|BY)\b|\bGUARANTEE\s+OBLIGATIONS\s+OF\b/);
   if (!g || g.index == null) return false;
   const d = text.match(/\b(?:INDEBTEDNESS|DEBT)\b/);
   return !d || d.index == null || g.index < d.index;
@@ -317,7 +452,22 @@ function isLienSecuredObligation(text: string): boolean {
   // in the ordinary course of business of the Borrowers and
   // their Subsidiaries"). The [^.] already blocks cross-sentence
   // matches, so a wider same-sentence gap is safe.
-  return /\bLIENS?\b[^.]{0,200}?\bSECURING\s+(?:INDEBTEDNESS|DEBT)\b/.test(text);
+  // Rule 209d: the verb forms count too — "such Liens secure
+  // Indebtedness permitted by Section 6.01(e)" (Strata 6.02(d),
+  // Expand 6.02(g)) is the same lien-framed shape with "secure"
+  // instead of "securing". Verbs only: the participle adjective
+  // in "Secured Indebtedness" is a defined term for DEBT, and
+  // counting it would pair every "Limitation on Liens" heading
+  // with the debt it names. And so does the lien-RENEWAL frame
+  // ("as a condition to the modification, replacement, renewal
+  // or extension of any Lien permitted by ...", Solaris 7.02(w)
+  // / Tenable 7.01(w)), whose proviso ("the Indebtedness
+  // secured ... is otherwise permitted") is a condition on the
+  // renewal, not an incurrence permission.
+  return (
+    /\bLIENS?\b[^.]{0,200}?\bSECUR(?:ING|ES?)\b\s+(?:INDEBTEDNESS|DEBT)\b/.test(text) ||
+    /\b(?:MODIFICATION|REPLACEMENT|RENEWAL|EXTENSION)\b[^.]{0,160}?\bOF\s+ANY\s+LIEN\b/.test(text)
+  );
 }
 
 /**
@@ -334,14 +484,44 @@ function isLienSecuredObligation(text: string): boolean {
  * live elsewhere is simply not covered (the guard is
  * incomplete, not wrong).
  */
-function isDefinitionsArticleItem(item: CovenantSummaryItem): boolean {
-  if (/^1\.01(?![0-9])/.test(item.sectionRef ?? "")) return true;
+export function isDefinitionsArticleItem(item: CovenantSummaryItem): boolean {
+  const heading = item.articleHeading ?? "";
   // Phase C: a whole Definitions article grants nothing, whatever
   // its number. The articleHeading comes from the parser's
   // validated parent chain (D6), so this is a structural fact,
   // not a label guess. Tenable 1.02(d) ("dividends" in the
   // Definitions article) minted a false RP grant without it.
-  return /\bDefinitions?\b|\bDefined\s+Terms\b/i.test(item.articleHeading ?? "");
+  if (/\bDefinitions?\b|\bDefined\s+Terms\b/i.test(heading)) return true;
+  // D17 narrowing: the §1.01 number rule is a FALLBACK for items
+  // with no structural article evidence, not an override of it.
+  // When the validated parent chain attributes the item to an
+  // article whose heading carries a title, that title is
+  // affirmative structural evidence about which article the item
+  // sits in; a titled heading that does not say Definitions means
+  // the item is not in the definitions article, whatever its
+  // section number — an operative §1.01 (e.g. the operative
+  // provisions of an instrument whose definitions live in §1.02
+  // or another article) must not lose its grants purely by
+  // numbering convention. A bare designator ("ARTICLE I" with no
+  // title) carries no title evidence, so the number rule still
+  // decides there, exactly as it does when no heading was
+  // attributed at all (the Asure case this rule was written for).
+  if (articleHeadingTitle(heading).length > 0) return false;
+  return /^1\.01(?![0-9])/.test(item.sectionRef ?? "");
+}
+
+/**
+ * The title portion of an article heading: a leading article
+ * designator ("ARTICLE I", "Article 2", "ARTICLE VII —") is
+ * stripped, and what remains is the heading's title — or "" when
+ * the heading is absent or is only a designator.
+ */
+function articleHeadingTitle(heading: string): string {
+  const withoutDesignator = heading.replace(
+    /^\s*ARTICLE\s+(?:[IVXLC]+|\d+|One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve)\b/i,
+    "",
+  );
+  return withoutDesignator.replace(/^[^A-Za-z0-9]+/, "").trim();
 }
 
 /**
@@ -395,6 +575,14 @@ function isIncrementalFacilityItem(item: CovenantSummaryItem): boolean {
 }
 
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
+  // Classification census steps 1–2: a NON_COVENANT item
+  // (definition / representation / mechanics / boilerplate /
+  // [reserved]) and an AFFIRMATIVE covenant mint NO basket
+  // grants — belt-and-braces at the grant layer, so no consumer
+  // can mint a Permission from an item the classifier has
+  // already determined is not a basket grant.
+  if (item.category === "NON_COVENANT" || item.category === "AFFIRMATIVE") return [];
+
   // Rule 166: an event-of-default trigger is a consequence, never a
   // grant of capacity. A Defaults article genuinely contains the
   // words "secured Indebtedness" (cross-default carve-outs, default
@@ -456,6 +644,66 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   // Rule 207: an incremental-facility provision never grants capacity.
   if (isIncrementalFacilityItem(item)) return [];
 
+  // Rule 209i: an Events-of-Default ARTICLE grants nothing,
+  // whatever category the classifier filed its clauses under —
+  // Asure 8.01(k) (a Collateral Document ceasing to create a
+  // valid Lien) was filed LIENS_SECURED_DEBT inside the
+  // "EVENTS" article and minted a LIEN Permission from trigger
+  // text. (Rule 166 keys on category; this keys on the article
+  // the parser placed the item in, like the Rule 204 guard.)
+  // A Conditions Precedent article is the same shape the other
+  // way: satisfaction mechanics are conditions, not grants.
+  if (/\bEVENTS?\b/i.test(item.articleHeading ?? "")) return [];
+  if (/\bCONDITIONS?\s+(?:PRECEDENT|TO\s)/i.test(item.articleHeading ?? "")) return [];
+
+  // Rule 209n/o: schedule / definition enumeration fragments
+  // and article-level items grant nothing. The parser labels
+  // Solaris's definitions region with bare-integer refs ("40",
+  // "40(a)") — the "Excluded Property" / "Excluded Subsidiary"
+  // / ERISA-Event definition lists minted LIEN Permissions
+  // (two of them MODELED, from book-value thresholds inside
+  // the definitions) because their narration repeated the
+  // classifier's liens label. Operative covenant sections are
+  // decimal-numbered; a bare integer or a pure roman numeral
+  // names an enumeration or an article, never a basket clause.
+  if (/^\d+\s*(?:\(|$)/.test(item.sectionRef ?? "")) return [];
+  if (/^[IVXLCDM]+$/.test((item.sectionRef ?? "").trim())) return [];
+
+  // Rule 209j: a restrictive-agreements clause grants nothing.
+  // Its exceptions permit RESTRICTIONS in other agreements —
+  // "restrictions imposed by any agreement relating to secured
+  // Indebtedness permitted by this Agreement" (Solaris /
+  // Tenable 7.10(e)/(g)/(m)); the burdensome-agreements
+  // covenant carries the same frame in its text (Asure 7.09).
+  // The permission runs to the restriction; the referenced debt
+  // is permitted, if at all, by the clause it points at.
+  if (isRestrictionsFrame(item)) return [];
+
+  // Rule 209k: a fee/expense component grants nothing. Aon
+  // 6.14(xiv) is an EBITDA add-back component ("any fees, costs
+  // and expenses ... in connection with any proposed or
+  // completed acquisition, investment, disposition, issuance,
+  // repayment, refinancing or amendment ... of any
+  // Indebtedness ..., not to exceed 5% of the aggregate
+  // consideration") — a computation component whose cap frame
+  // and incidental debt word minted a DEBT Permission.
+  if (isFeeComponentClause(item)) return [];
+
+  // Rule 209m: a [reserved] clause grants nothing — Solaris
+  // 7.02(aa) minted RP + INVESTMENT from the classification
+  // lead alone; its entire operative text is the placeholder.
+  if (isReservedClause(item)) return [];
+
+  // Rule 209p: definition-shaped text grants nothing. An item
+  // whose excerpt introduces two or more defined terms is
+  // definitions text whatever its sectionRef claims — Solaris
+  // 7.03(iv) (the tail of the "Indebtedness" definition plus
+  // the "Specified Communications" / "Specified Equity
+  // Contribution" definitions) minted an RP Permission from
+  // boilerplate. Baskets do not define terms; a single inline
+  // basket name stays below the threshold.
+  if (isDefinitionShaped(item)) return [];
+
   const sourceText =
     item.reviewerDecision === "EDITED"
       ? operativeText(item.plainEnglish)
@@ -512,17 +760,114 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   // Indebtedness" is not a debt incurrence.
   const isLienSecured =
     isLienSecuredObligation(hay) || isLienSecuredObligation((item.operativeLanguageExcerpt ?? "").toUpperCase());
-  const hasDebtPermission = hasDebtWord && hasDebtPermissionEvidence(evidenceHay) && !isGuarantee && !isLienSecured;
-  const hasLienWord = /\bLIENS?\b|\bSECURED\b|\bCOLLATERAL\b/.test(hay);
+  let hasDebtPermission = hasDebtWord && hasDebtPermissionEvidence(evidenceHay) && !isGuarantee && !isLienSecured;
+  // Rule 209l: a payment-frame clause grants no incurrence. The
+  // junior-debt-payment covenants (Solaris / Tenable 7.08) and
+  // the mandatory-prepayment mechanics (Asure 2.05(b)) PERMIT
+  // PAYING debt — prepaying, redeeming, defeasing — not
+  // incurring it, yet their "except refinancing ... with
+  // Indebtedness permitted by Section 7.03" exception language
+  // laundered DEBT grants (Tenable 7.08(a) even carried a
+  // neighbor's greater-of formula). The frame is the clause's
+  // operative head: incurrence baskets name the permitted debt
+  // first and never open with a payment verb. ("Purchase" is
+  // deliberately NOT a payment-frame head — purchase-money
+  // clauses are genuine incurrence baskets.)
+  if (hasDebtPermission && isPaymentFrameClause(item)) hasDebtPermission = false;
+  // Rule 209e: on an item whose own category family is LIENS or
+  // GUARANTEES, a DEBT grant needs DIRECT evidence — a cap
+  // frame or a modal that asserts this clause's own permission.
+  // The general modal channel is too weak there: those clauses
+  // reference debt "permitted by Section X" as their OBJECT
+  // (the lien secures it; the guarantee covers it), and the
+  // summarizer's "Permission substance:" label puts a
+  // PERMISSION token next to any debt word — Asure 7.01(f), a
+  // deposits clause in the liens covenant that expressly
+  // EXCLUDES Indebtedness, minted DEBT from the label alone,
+  // and Asure 7.01(s) / Expand 6.02(cc) / Tenable 7.01(kk)
+  // minted it from reference-form modals. A clause that itself
+  // permits the debt ("Secured Indebtedness and Liens
+  // permitted", or a stated cap) keeps its DEBT grant.
+  if (
+    hasDebtPermission &&
+    (item.category === "LIENS_SECURED_DEBT" || item.category === "GUARANTEES") &&
+    !hasDirectDebtPermissionEvidence(evidenceHay)
+  ) {
+    hasDebtPermission = false;
+  }
+  // Rule 209a: "Secured" alone is not a lien signal. It is an
+  // adjective inside defined terms and ratio names — "Secured
+  // Obligations" (the facility's own obligations, Strata
+  // 6.01(a)/(c)), "Secured Net Leverage Ratio" (Solaris
+  // 7.08(a); Solaris 7.06(m), whose genuine RP grant the bogus
+  // LIEN was suppressing), "senior secured notes" as a debt
+  // description (Tenable 7.03(t)) — and on this corpus 18 LIEN
+  // grants rested on it, every one a non-lien provision on
+  // hand inspection. A lien grant needs LIENS or COLLATERAL
+  // in the operative narration.
+  const hasLienWordRaw = /\bLIENS?\b|\bCOLLATERAL\b/.test(hay);
+  // Rule 209f: a LIEN grant on a CLAUSE item filed under a
+  // DIFFERENT family needs lien-permission evidence of its own
+  // (a cap frame, or a permission modal in reference form next
+  // to a lien word), judged on the guard haystack (narration +
+  // excerpt — the restrictive-only channel of Rule 195).
+  // Without it, lien words inside conditions and mechanics
+  // mint capacity: an LC cash-collateralization duty triggered
+  // by an Event of Default (Asure 2.03(q), Strata 2.06(j)), a
+  // payments waterfall (Strata 2.18(b)), a mandatory pledge of
+  // intercompany notes (Asure 7.02(d)), a name-change notice
+  // protecting the Agent's EXISTING security interest (Strata
+  // 6.03(h)). Section-level items are exempt: a stem
+  // summarizes its whole section, its grant's evidence is the
+  // section it heads (stem semantics are owned downstream by
+  // the SECTION_STEM handling), not its own narration.
+  const lienEvidence = hasDebtCapFrame(guardHay) || hasLienPermissionEvidence(guardHay);
+  const hasLienWord =
+    hasLienWordRaw &&
+    !(item.category !== "LIENS_SECURED_DEBT" && isClauseItem && !lienEvidence);
 
   // Restricted payments / investments — do not default these into DEBT_INCURRENCE.
-  const isRpFamily = /\bRESTRICTED\s+PAYMENTS?\b|\bDIVIDENDS?\b|\bSHARE\s+REPURCHASES?\b|\bRP\b|\bAVAILABLE\s+AMOUNT\b/.test(hay);
+  // Rule 209b: the Available Amount is a CAPACITY MEASURE the
+  // RP covenant references ("Restricted Payments up to the
+  // Available Amount"), not an RP act — a mandatory-prepayment
+  // mechanic that merely recomputes it (Solaris 2.05(b)) is
+  // not an RP permission. The RP family requires an RP-act
+  // word, as the branch's own push test already did.
+  const isRpFamily = /\bRESTRICTED\s+PAYMENTS?\b|\bDIVIDENDS?\b|\bSHARE\s+REPURCHASES?\b|\bRP\b/.test(hay);
   const isInvestmentFamily = /\bINVESTMENTS?\b|\bACQUISITIONS?\b|\bPERMITTED\s+INVESTMENTS?\b/.test(hay);
   if (isRpFamily && isInvestmentFamily) {
     // Shared RP/Investment article — mint both grant types when baskets mention both.
     const out: CounselGrantType[] = [];
-    if (/\bDIVIDENDS?\b|\bRESTRICTED\s+PAYMENTS?\b|\bSHARE\s+REPURCHASES?\b|\bRP\b/.test(hay)) out.push("RESTRICTED_PAYMENT");
-    if (/\bINVESTMENTS?\b|\bACQUISITIONS?\b/.test(hay)) out.push("INVESTMENT");
+    // Rule 209g: on a CLAUSE item, a family whose words appear
+    // only in the narration — never in the clause's own text —
+    // is dropped when the clause's own text names the OTHER
+    // family. The unresolved-posture lead ("relates to
+    // restricted payments and investments, but ...") is not in
+    // Rule 202's strip list, so its regime label paired every
+    // clause of an investments-only covenant (Asure 7.03) with
+    // an RP grant the clause never makes. The clause's own
+    // words are the ground truth (Rule 203). When the excerpt
+    // names NEITHER family, both grants are kept (fail-closed:
+    // the support question then belongs to the chapeau, and
+    // chapeau evidence handling is a separate stream's work).
+    // EDITED items are exempt — counsel's text governs (Rule 60).
+    const excerptUpper = (item.operativeLanguageExcerpt ?? "").toUpperCase();
+    const excerptGrounding =
+      isClauseItem &&
+      !excerptHasSubClauses(item.operativeLanguageExcerpt ?? "", item.sectionRef ?? "") &&
+      item.reviewerDecision !== "EDITED";
+    const rpInExcerpt = /\bRESTRICTED\s+PAYMENTS?\b|\bDIVIDENDS?\b|\bSHARE\s+REPURCHASES?\b|\bRP\b/.test(excerptUpper);
+    const invInExcerpt = /\bINVESTMENTS?\b|\bACQUISITIONS?\b/.test(excerptUpper);
+    if (
+      /\bDIVIDENDS?\b|\bRESTRICTED\s+PAYMENTS?\b|\bSHARE\s+REPURCHASES?\b|\bRP\b/.test(hay) &&
+      !(excerptGrounding && !rpInExcerpt && invInExcerpt)
+    )
+      out.push("RESTRICTED_PAYMENT");
+    if (
+      /\bINVESTMENTS?\b|\bACQUISITIONS?\b/.test(hay) &&
+      !(excerptGrounding && !invInExcerpt && rpInExcerpt)
+    )
+      out.push("INVESTMENT");
     if (out.length) return [...new Set(out)];
   }
   if (isRpFamily && !hasDebtPermission && !hasLienWord) {
@@ -530,7 +875,21 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   }
   // Rule 170: investment words alone are not a grant — they must
   // carry affirmative investment-permission evidence.
-  if (isInvestmentFamily && !hasDebtPermission && !hasLienWord && hasInvestmentPermissionEvidence(evidenceHay)) {
+  // Rule 209q: an item the classifier filed as DEBT_INCURRENCE
+  // whose debt evidence FAILED does not fall through to an
+  // INVESTMENT grant on adjective evidence ("Permitted
+  // Acquisition"). Solaris 7.03(v) is a ratio-gated assumed-
+  // indebtedness basket; it minted INVESTMENT from the
+  // acquisition phrase in its text. The debt family's claim on
+  // the item is prior — its permission question is a debt-
+  // evidence question, answered fail-closed.
+  if (
+    isInvestmentFamily &&
+    !hasDebtPermission &&
+    !hasLienWord &&
+    hasInvestmentPermissionEvidence(evidenceHay) &&
+    !(hasDebtWord && item.category === "DEBT_INCURRENCE")
+  ) {
     return ["INVESTMENT"];
   }
 

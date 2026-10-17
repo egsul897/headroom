@@ -292,6 +292,24 @@ export async function compileAcceptedInterpretation(params: {
     ];
   }
 
+  // Formula representation (step 3): a section stem is determinate
+  // but mints NOTHING — the section's operative clauses are
+  // separate items whose Permissions carry the terms. Minting from
+  // the stem would double-count them.
+  if (parsed.formulaType === "SECTION_STEM") {
+    return [
+      {
+        status: "SKIPPED",
+        missingFields: [],
+        formulaType: parsed.formulaType,
+        thresholdValue: parsed.thresholdValue,
+        modelingStatus: "MODELED",
+        message:
+          "Section stem — the section's operative clauses are separate items carrying the terms; no Permission minted from the stem (would double-count the clause Permissions).",
+      },
+    ];
+  }
+
   const grants = grantTypesForItem(item);
   if (!grants.length) {
     // Rule 180: a financial-maintenance covenant is a TEST, not a

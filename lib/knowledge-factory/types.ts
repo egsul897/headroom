@@ -151,6 +151,21 @@ export interface KnowledgeSourceRecord {
   provenance: string;
   usageRightsReviewStatus: UsageRightsReviewStatus;
   discoveryScore?: number;
+  /**
+   * Redline port (from PR #428): count of redline-ambiguous spans in
+   * this document (unmatched struck-through elements — see
+   * RedlineAmbiguityRecord), persisted at process time. Absent on
+   * records processed before the field existed (treated as 0).
+   */
+  redlineAmbiguousSpanCount?: number;
+  /**
+   * D12: structural-index health ERROR count computed by
+   * extractStructure for this document, persisted at process time
+   * so run outputs and the corpus manifest can surface it without
+   * recomputation. Absent on records processed before the field
+   * existed (aggregates treat absent as 0).
+   */
+  structuralHealthErrors?: number;
   byteSize?: number;
   storagePath?: string;
   companyId?: string;
@@ -193,6 +208,30 @@ export interface StructuralNodeRecord {
   structuralViolations?: string[];
 }
 
+/**
+ * Redline port (from PR #428): a span of the document's normalized
+ * text whose operative status is ambiguous because it follows an
+ * unmatched struck-through (redline deletion) element — the
+ * element's close tag never appears, so the span may be text the
+ * parties deleted. The text is preserved in the document as
+ * evidence; this record propagates the uncertainty so provisions
+ * intersecting the span are flagged and no authoritative conclusion
+ * (compiled formula, capacity) rests on them. charStart/charEnd are
+ * offsets into the pipeline's normalized text; -1 when the span
+ * text could not be located verbatim (consumers then match by text
+ * containment).
+ */
+export interface RedlineAmbiguityRecord {
+  sourceId: string;
+  charStart: number;
+  charEnd: number;
+  /** Tag name of the unmatched element ("strike" | "s" | "del" | styled element's tag). */
+  tagName: string;
+  reason: "UNMATCHED_REDLINE_ELEMENT";
+  /** The ambiguous span's text, preserved as evidence. */
+  text: string;
+}
+
 export interface CovenantCandidateRecord {
   candidateId: string;
   sourceId: string;
@@ -206,6 +245,18 @@ export interface CovenantCandidateRecord {
    * not mint a formula from a truncated excerpt (it would
    * attribute an early clause's amount to the whole section). */
   excerptTruncated?: boolean;
+  /**
+   * The candidate's FULL operative span text, attached only when
+   * the excerpt is a truncated prefix (span > 4000 chars) and the
+   * span is within the storage bound. The summary/display excerpt
+   * stays the prefix and the Rule 192 disclosure is unchanged;
+   * this field exists so the FORMULA parse can consult the whole
+   * span under cap-frame discipline (formula-parse step 3) and so
+   * a defined-term cap reference past the prefix can resolve.
+   * Absent when the span exceeds the bound — the parse then stays
+   * fail-closed on the truncated item.
+   */
+  fullSpanText?: string;
   representationLevel: KnowledgeRepresentationLevel;
   discoveryScore: number;
 }
@@ -276,9 +327,23 @@ export interface CorpusManifestStats {
   covenantCandidates: number;
   definitions: number;
   crossReferences: number;
+  /** Extraction-level cross-reference resolution (Stage 0 instrumentation):
+   * resolved = unique same-document target identified; ambiguous = more
+   * than one physical occurrence matched (never guessed); notFound = no
+   * matching node (incl. schedule/exhibit refs, unresolved by design).
+   * The three counts always sum to crossReferences. These are structural
+   * facts only — they assert nothing about legal applicability or
+   * executable authority. */
+  resolvedCrossReferences: number;
+  ambiguousCrossReferences: number;
+  notFoundCrossReferences: number;
   unsupportedFormats: number;
   duplicateRate: number;
   errors: number;
+  /** D12: total structural-index health ERRORs across sources. */
+  structuralHealthErrors: number;
+  /** D12: stored structural nodes carrying ≥1 integrity violation. */
+  structuralViolationNodes: number;
   measuredProcessingMs: number;
   actualPaidSpendUsd: number;
 }

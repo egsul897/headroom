@@ -6,17 +6,22 @@
 
 /**
  * Parse a dollar amount from text into $M (millions). Units:
- * million → as-is; billion → ×1000; thousand → ÷1000. A BARE
- * amount (no unit) is raw dollars → ÷1e6, never assumed millions:
- * "$5,000" is $0.005M, not $5,000M. A missing unit must never be
- * read as "million" (the #391 unit-loss lesson).
+ * million → as-is; billion → ×1000; thousand → ÷1000. The
+ * unambiguous abbreviations the codebase's contract-model
+ * parsers already accept (semantic-verification SCALE_MULTIPLIERS)
+ * count too: mm = million, bn = billion — "$30MM" is $30M, and
+ * dropping the suffix would misread it as bare $30 (the P4
+ * unit-misread class). A bare "M"/"k" is NOT accepted (ambiguous).
+ * A BARE amount (no unit) is raw dollars → ÷1e6, never assumed
+ * millions: "$5,000" is $0.005M, not $5,000M. A missing unit must
+ * never be read as "million" (the PR 391 unit-loss lesson).
  */
 export function parseMoneyMillions(text: string): number | null {
-  const m = text.match(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?/i);
+  const m = text.match(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand|mm|bn)?/i);
   if (!m) return null;
   let n = Number(m[1]!.replace(/,/g, ""));
   if (!Number.isFinite(n)) return null;
-  if (/billion/i.test(m[2] ?? "")) n *= 1000;
+  if (/billion/i.test(m[2] ?? "") || /^bn$/i.test(m[2] ?? "")) n *= 1000;
   else if (/thousand/i.test(m[2] ?? "")) n /= 1000;
   else if (!m[2]) n /= 1_000_000; // bare = raw dollars
   return n;
@@ -29,7 +34,7 @@ export function parseMoneyMillions(text: string): number | null {
  * in the same section became the greater-of grower instead of the
  * true "10% of EBITDA". The % must be the one modifying the base.
  */
-export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS" | "CNI" | "NET_WORTH"): number | null {
+export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS" | "CNI" | "NET_WORTH" | "CNTA"): number | null {
   // Credit agreements write the percentage words-first with the
   // numeral in parentheses — "ten percent (10%) of Consolidated
   // Net Worth" — so the % token matches BOTH the bare form
@@ -46,7 +51,12 @@ export function parsePctOf(text: string, base: "EBITDA" | "TOTAL_ASSETS" | "CNI"
           // "Consolidated Net Worth" — the defined term is Net
           // Worth, never Net Income (a separate base).
           ? new RegExp(pct + String.raw`(?:[A-Za-z]+(?:'s)?\s+){0,2}?(?:Consolidated\s+)?Net\s+Worth\b`, "i")
-          : new RegExp(pct + String.raw`(?:[A-Za-z]+\s+){0,2}Total\s+Assets`, "i");
+          : base === "CNTA"
+            // "Consolidated Net Tangible Assets" — a distinct base
+            // from Total Assets (tangible, net of intangibles and
+            // liabilities as the agreement defines it).
+            ? new RegExp(pct + String.raw`(?:[A-Za-z]+(?:'s)?\s+){0,2}?(?:Consolidated\s+)?Net\s+Tangible\s+Assets\b`, "i")
+            : new RegExp(pct + String.raw`(?:[A-Za-z]+\s+){0,2}Total\s+Assets`, "i");
   const m = text.match(re);
   if (!m) return null;
   const raw = m[1] ?? m[2];

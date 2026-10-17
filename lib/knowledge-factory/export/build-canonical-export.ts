@@ -102,7 +102,15 @@ export function buildCanonicalConsumerExport(
         charStart: e.charStart,
         charEnd: e.charEnd,
         kind: "PROVISION_CROSS_REFERENCE",
-        resolution: "UNRESOLVED",
+        // v2: map the stored record verbatim — never upgrade.
+        // resolved (unique target identified at extraction) →
+        // RESOLVED + target ids; targetAmbiguous → AMBIGUOUS;
+        // otherwise UNRESOLVED + the stored basis. A resolved edge
+        // is a structural fact only: legalTruth stays false.
+        resolution: e.resolved ? "RESOLVED" : e.targetAmbiguous ? "AMBIGUOUS" : "UNRESOLVED",
+        ...(e.resolved && e.targetNodeId ? { targetNodeId: e.targetNodeId } : {}),
+        ...(e.targetSectionRef ? { targetSectionRef: e.targetSectionRef } : {}),
+        ...(!e.resolved && e.unresolvedReason ? { unresolvedReason: e.unresolvedReason } : {}),
         legalTruth: false,
       });
     }

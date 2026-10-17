@@ -78,7 +78,14 @@ export type FormulaType =
   | "LEVERAGE_RATIO_ROOM"
   | "COVERAGE_RATIO_ROOM"
   | "BUILDER_BASKET"
-  | "RATIO_GATE";
+  | "RATIO_GATE"
+  | "NONE_UNCAPPED"
+  | "PCT_OF_CNTA"
+  | "GREATER_OF_FLAT_OR_PCT_CNTA"
+  | "PCT_OF_COST"
+  | "PCT_OF_CONSIDERATION"
+  | "UTILIZATION_GATE"
+  | "VALUE_CAP";
 
 export type DebtBasis = "total" | "secured";
 
@@ -116,6 +123,14 @@ export interface FormulaParams {
   pctTotalAssets?: number;
   /** GREATER_OF_FLAT_OR_PCT_NET_WORTH: percentage of Consolidated Net Worth (e.g. 0.10 for 10%). */
   pctNetWorth?: number;
+  /** PCT_OF_CNTA, GREATER_OF_FLAT_OR_PCT_CNTA: percentage of Consolidated Net Tangible Assets (e.g. 0.15 for 15%). */
+  pctCnta?: number;
+  /** PCT_OF_COST: percentage of the cost of the financed assets (e.g. 0.9 for 90%). */
+  pctOfCost?: number;
+  /** PCT_OF_CONSIDERATION: percentage of the aggregate consideration (e.g. 0.05 for 5%). */
+  pctOfConsideration?: number;
+  /** VALUE_CAP: the non-numeric cap basis (COST | FAIR_MARKET_VALUE | PURCHASE_PRICE | COST_OR_FAIR_MARKET_VALUE). */
+  capBasis?: string;
   /** LEVERAGE_RATIO_ROOM, RATIO_GATE: which net-leverage measure to test ("total" default, or "secured"). */
   debtBasis?: DebtBasis;
   /** FLAT_NET_OF_DEBT: which gross debt outstanding to net the flat basket against. */
@@ -165,6 +180,66 @@ export function readProvisionLegalConditionFlags(raw: unknown): ProvisionLegalCo
     assetScopeRestricted: o.assetScopeRestricted === true,
     pairableWithDebt: o.pairableWithDebt === true,
   };
+}
+
+/**
+ * Structural provenance stamped onto a compiled Permission's params JSON by
+ * the compile step (Phase E / D11, lib/product/customer-intelligence/
+ * compile-accepted.ts): the structural node the source provision anchored
+ * to, the article heading that anchor resolved under, and whether that
+ * structural relationship was UNRESOLVED — the provision's parentage /
+ * placement in the document tree could not be established deterministically
+ * (parent pointer missing, dangling, or non-containing). Like
+ * {@link ProvisionLegalConditionFlags}, these are NOT numerical formula
+ * inputs: they are provenance about how much the permission's placement
+ * can be trusted. Read them via {@link readStructuralProvenanceFlags};
+ * display surfaces surface `structuralUnresolved` verbatim — the flag is
+ * never folded into a figure, a status, or a gate.
+ */
+export interface StructuralProvenanceFlags {
+  structuralNodeId: string | null;
+  structuralArticleHeading: string | null;
+  structuralUnresolved: boolean;
+}
+
+/** Extract structural provenance flags from raw permission params JSON. */
+export function readStructuralProvenanceFlags(raw: unknown): StructuralProvenanceFlags {
+  if (raw == null || typeof raw !== "object" || Array.isArray(raw)) {
+    return { structuralNodeId: null, structuralArticleHeading: null, structuralUnresolved: false };
+  }
+  const o = raw as Record<string, unknown>;
+  return {
+    structuralNodeId: typeof o.structuralNodeId === "string" ? o.structuralNodeId : null,
+    structuralArticleHeading: typeof o.structuralArticleHeading === "string" ? o.structuralArticleHeading : null,
+    // The compile step writes `true` or omits the key entirely — only an
+    // exact boolean true counts; a truthy string/number is not evidence.
+    structuralUnresolved: o.structuralUnresolved === true,
+  };
+}
+
+/** Plain-words marker shown wherever a structurally unresolved permission is displayed. Display only. */
+export const STRUCTURAL_UNRESOLVED_NOTICE =
+  "Structural relationship unresolved — treat this permission's placement in the document structure as uncertain.";
+
+/**
+ * `${documentId}:${code}` keys (the same identity `computeCovenantPosition`
+ * keys evaluated provisions by) of every permission whose params carry
+ * structuralUnresolved. Lets a display that renders the provision
+ * representation of a permission (Simulate traces, RP waterfall steps)
+ * flag the exact permission it is showing. Permissions without a code
+ * cannot be joined and are skipped — never fuzzy-matched by section label.
+ */
+export function structuralUnresolvedProvisionKeys(
+  permissions: readonly { documentId: string; code?: string | null; params?: unknown }[],
+): Set<string> {
+  const keys = new Set<string>();
+  for (const p of permissions) {
+    if (!p.code) continue;
+    if (readStructuralProvenanceFlags(p.params).structuralUnresolved) {
+      keys.add(`${p.documentId}:${p.code}`);
+    }
+  }
+  return keys;
 }
 
 /** One line item inside a composite basket's total (currently: BUILDER_BASKET). */
@@ -529,6 +604,86 @@ export function evaluateProvision(
       // capacity if this ratio condition holds" - the database is asserting
       // the uncapped result, not defaulting to it from absent config.
       return { provision: p, status: "modeled", capacity: open ? Infinity : 0, gate: { open, measure } };
+    }
+    case "PCT_OF_CNTA": {
+      // Determinate at parse (a % of Consolidated Net Tangible
+      // Assets), but the financial snapshot carries no CNTA input —
+      // never invent one. NEEDS_INPUT at evaluation time.
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at ${((params.pctCnta ?? 0) * 100).toFixed(1)}% of Consolidated Net Tangible Assets — enter Consolidated Net Tangible Assets to evaluate this basket; the snapshot does not carry it.`,
+      };
+    }
+    case "GREATER_OF_FLAT_OR_PCT_CNTA": {
+      if (params.pctCnta === undefined || params.pctCnta === null) {
+        return {
+          provision: p,
+          status: "review_required",
+          reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Tangible Assets basket — params.pctCnta is missing; refusing rather than assuming 0%.`,
+        };
+      }
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is a greater-of flat / % Consolidated Net Tangible Assets basket — enter Consolidated Net Tangible Assets to evaluate the grower leg; the snapshot does not carry it.`,
+      };
+    }
+    case "PCT_OF_COST": {
+      // The cap is a % of the cost of the assets being financed —
+      // a per-transaction input, not a snapshot quantity.
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at ${((params.pctOfCost ?? 0) * 100).toFixed(1)}% of the cost of the financed assets — the cost of the specific assets being financed is required to evaluate a transaction under this basket.`,
+      };
+    }
+    case "PCT_OF_CONSIDERATION": {
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at ${((params.pctOfConsideration ?? 0) * 100).toFixed(1)}% of the aggregate consideration — the aggregate consideration of the specific transaction is required to evaluate it under this basket.`,
+      };
+    }
+    case "UTILIZATION_GATE": {
+      // A utilization-percentage test (e.g. revolver utilization
+      // at incurrence), not a basket cap. The snapshot carries no
+      // utilization measure — never invent one.
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is a utilization gate at ${((p.thresholdValue ?? 0) * 100).toFixed(1)}% — the Utilization Percentage at the time of the transaction is required to evaluate it; the snapshot does not carry it.`,
+      };
+    }
+    case "VALUE_CAP": {
+      // A NON-NUMERIC cap: the clause limits the amount to the
+      // cost / fair market value / purchase price of the financed
+      // property. Determinate as a representation, never a number:
+      // evaluation needs the specific property's value.
+      const basis =
+        params.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : params.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : params.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return {
+        provision: p,
+        status: "review_required",
+        reason: `"${p.basketName}" (${p.sectionRef}) is capped at the ${basis} of the financed property (VALUE_CAP) — the value of the specific property is required to evaluate a transaction under this basket.`,
+      };
+    }
+    case "NONE_UNCAPPED": {
+      // The clause affirmatively grants this permission with NO finite cap
+      // in its own text (NONE_UNCAPPED is minted only from that affirmative
+      // determination in parseFormulaFromItem — never as a default for a
+      // missing cap). Infinity is legitimate for the same reason as
+      // RATIO_GATE: the record asserts the uncapped result. It is NOT a
+      // blanket permission: the permission's eligibility conditions still
+      // gate elections in the solver, and the agreement's other clauses
+      // still bind. thresholdValue carries no number for this type.
+      return { provision: p, status: "modeled", capacity: Infinity };
     }
     default: {
       const exhaustive: never = p.formulaType;

@@ -15,7 +15,7 @@ import type {
   DefinitionRecord,
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
-import type { CovenantCategoryKey } from "./summarize";
+import type { AffirmativeKind, CovenantCategoryKey, NonCovenantSubtype } from "./summarize";
 
 export type ProvisionPosture =
   | "GENERAL_PROHIBITION"
@@ -25,16 +25,712 @@ export type ProvisionPosture =
   | "OBLIGATION"
   | "UNRESOLVED";
 
+/**
+ * A defined term attached to a provision. `resolved` is an identity
+ * claim, not a text-length claim: true only when a detected
+ * definition OCCURRENCE in the same document backs the entry (a
+ * DefinitionRecord carrying the definition's own text). A term the provision uses but the document does not define
+ * is attached with `resolved: false` and an empty excerpt — visible,
+ * never silently absent. `ambiguous` marks the distinct failure
+ * where the document carries two or more DIFFERING definitions for
+ * the term: unresolved because picking one would be a guess.
+ */
+export interface ApplicableDefinition {
+  term: string;
+  excerpt: string;
+  resolved: boolean;
+  ambiguous?: boolean;
+}
+
+/**
+ * Structural resolution of one cross-reference, carried additively
+ * alongside the legacy `crossReferences: string[]`. Semantics are
+ * the structural layer's: `resolved` means a UNIQUE same-document
+ * target (targetNodeId set). Ambiguous targets and unresolvable
+ * references stay unresolved with a machine-readable reason —
+ * resolution never guesses, and a resolved edge is a SYSTEM
+ * structural fact, not counsel verification or legal authority.
+ */
+export interface CrossReferenceResolution {
+  ref: string;
+  resolved: boolean;
+  targetNodeId?: string;
+  targetSectionRef?: string;
+  ambiguous?: boolean;
+  reason?: string;
+}
+
+/**
+ * Structural classification, classification census steps 1–3.
+ * Assigns the NON_COVENANT category (with a subtype) from
+ * STRUCTURE-SHAPED signals only — article position, instrument
+ * identity, node type, and clause shape — never from
+ * agreement-specific strings. Family keyword scoring cannot
+ * override it: a definition clause that mentions "Indebtedness"
+ * is a definition, not a debt covenant.
+ *
+ * Fail-closed throughout: anything ambiguous stays OTHER /
+ * UNKNOWN and enters the covenant decision queue.
+ */
+
+/** Structural article classes that gate NON_COVENANT classification. */
+type StructuralArticleClass =
+  | "DEFINITION"
+  | "REPRESENTATION"
+  | "AGENT"
+  | "CONDITIONS"
+  | "CREDITS"
+  | "TAXES"
+  | "ASSIGNMENTS"
+  | "AMENDMENTS"
+  | "MISCELLANEOUS"
+  | "NEGATIVE"
+  | "AFFIRMATIVE"
+  | "COVENANTS"
+  | "OTHER_ARTICLE";
+
+/** EDGAR split-letter repair for article headings, generalized
+ * from isRepresentationArticle's local version: a lone capital
+ * letter followed by an all-caps word joins it ("D EFINITIONS"
+ * → "DEFINITIONS"). Applied token-wise. */
+function despaceHeadingText(heading: string): string {
+  const tokens = heading.split(/\s+/);
+  const out: string[] = [];
+  for (const t of tokens) {
+    const prev = out[out.length - 1];
+    if (prev !== undefined && /^[A-Z]$/.test(prev) && /^[A-Z]{2,}/.test(t)) {
+      out[out.length - 1] = prev + t;
+    } else {
+      out.push(t);
+    }
+  }
+  return out.join(" ");
+}
+
+/** Classify an ARTICLE heading into its structural role. Pure
+ * predicates on the (despaced, uppercased) heading — never on
+ * agreement-specific strings. Mixed articles (e.g. an article
+ * titled both Representations and Covenants) match nothing:
+ * fail-closed. */
+function structuralArticleClass(heading: string | undefined): StructuralArticleClass | null {
+  if (!heading) return null;
+  const h = despaceHeadingText(heading).replace(/\s+/g, " ").trim().toUpperCase();
+  const has = (re: RegExp) => re.test(h);
+  if (has(/\bDEFINITIONS?\b/) || has(/\bDEFINED TERMS\b/)) return "DEFINITION";
+  if (has(/\bREPRESENTATIONS?\b/) && !has(/\bCOVENANTS?\b/)) return "REPRESENTATION";
+  if (has(/\bADMINISTRATIVE AGENT\b/) || has(/\bOTHER AGENTS\b/) || /^(THE\s+)?ADMINISTRATIVE$/.test(h)) {
+    return "AGENT";
+  }
+  if (has(/\bCONDITIONS\b/) && !has(/\bCOVENANTS?\b/)) return "CONDITIONS";
+  if (has(/\bTHE CREDITS\b/) || has(/\bCOMMITMENTS\b/)) return "CREDITS";
+  if (has(/\bTAXES\b/) || has(/\bYIELD PROTECTION\b/) || has(/\bINCREASED COSTS\b/)) return "TAXES";
+  if (has(/\bASSIGNMENTS\b/) || has(/\bBENEFIT OF AGREEMENT\b/) || has(/\bBORROWER REPRESENTATIVE\b/) || has(/\bGENERAL PROVISIONS\b/)) {
+    return "ASSIGNMENTS";
+  }
+  if (has(/\bAMENDMENTS\b/) || has(/\bWAIVERS\b/)) return "AMENDMENTS";
+  if (has(/\bMISCELLANEOUS\b/)) return "MISCELLANEOUS";
+  if (has(/\bNEGATIVE\b/)) return "NEGATIVE";
+  if (has(/\bAFFIRMATIVE\b/)) return "AFFIRMATIVE";
+  if (has(/\bCOVENANTS\b/)) return "COVENANTS";
+  return "OTHER_ARTICLE";
+}
+
+const ROMAN_VALUES: Record<string, number> = {
+  I: 1, II: 2, III: 3, IV: 4, V: 5, VI: 6, VII: 7, VIII: 8, IX: 9, X: 10, XI: 11, XII: 12, XIII: 13,
+};
+
+/** The article numeral from an ARTICLE node's sectionRef
+ * ("I", "ARTICLE VII", "1" all parse). */
+function articleNumeral(sectionRef: string | undefined): number | null {
+  if (!sectionRef) return null;
+  const token = sectionRef.trim().toUpperCase().split(/\s+/).pop() ?? "";
+  const roman = ROMAN_VALUES[token];
+  if (roman !== undefined) return roman;
+  const digits = parseInt(token, 10);
+  return Number.isFinite(digits) ? digits : null;
+}
+
+/** Leading integer of a provision's sectionRef ("7.03(f)" → 7). */
+function leadingRefNumber(sectionRef: string | undefined): number | null {
+  if (!sectionRef) return null;
+  const m = sectionRef.trim().match(/^(\d+)/);
+  const g = m?.[1];
+  return g ? parseInt(g, 10) : null;
+}
+
+/** Structural position of a candidate: the enclosing ARTICLE by
+ * validated parentage (existing articleHeading semantics), a
+ * span-containment fallback (never contradicting parentage), and
+ * whether the item sits in a bundled instrument's region. */
+interface StructuralPosition {
+  candidateNode: StructuralNodeRecord | undefined;
+  /** Validated ancestor chain, self first, root last. */
+  chain: StructuralNodeRecord[];
+  /** Heading of the nearest SECTION node in the chain (self or
+   * ancestor) — the section the provision belongs to. */
+  sectionHeading: string | undefined;
+  /** ARTICLE ancestor by validated parent chain (ancestors only). */
+  articleNode: StructuralNodeRecord | null;
+  /** Smallest ARTICLE span containing the candidate's span — used
+   * ONLY when the parentage walk finds no ARTICLE. */
+  containedArticle: StructuralNodeRecord | null;
+  /** True when the candidate's span starts at/after the first
+   * article-sequence restart (a bundled guaranty / security /
+   * intercreditor instrument inside one file). */
+  inBundledInstrumentRegion: boolean;
+  /** The article whose class gates classification: parentage
+   * first; containment only when ref-consistent or bundled. */
+  positionArticle: StructuralNodeRecord | null;
+  /** Structural classes of the position article, or null. */
+  positionClass: StructuralArticleClass | null;
+}
+
+function structuralPositionOf(
+  candidateNode: StructuralNodeRecord | undefined,
+  candidateSectionRef: string,
+  structuralNodes: StructuralNodeRecord[],
+): StructuralPosition {
+  const nodesById = new Map(structuralNodes.map((n) => [n.nodeId, n]));
+  const chain: StructuralNodeRecord[] = [];
+  {
+    const seen = new Set<string>();
+    let node = candidateNode;
+    while (node && !seen.has(node.nodeId)) {
+      seen.add(node.nodeId);
+      chain.push(node);
+      node = node.parentNodeId ? nodesById.get(node.parentNodeId) : undefined;
+    }
+  }
+  // Ancestors only (chain[0] is the candidate's own node) —
+  // matches the existing articleHeading walk.
+  const articleNode = chain.slice(1).find((n) => n.nodeType === "ARTICLE") ?? null;
+  let containedArticle: StructuralNodeRecord | null = null;
+  if (!articleNode && candidateNode) {
+    const cs = candidateNode.charStart;
+    const ce = candidateNode.charEnd;
+    let best: StructuralNodeRecord | null = null;
+    let bestSpan = Infinity;
+    for (const n of structuralNodes) {
+      if (n.nodeType !== "ARTICLE") continue;
+      if (n.charStart <= cs && ce <= n.charEnd) {
+        const span = n.charEnd - n.charStart;
+        if (span < bestSpan) {
+          bestSpan = span;
+          best = n;
+        }
+      }
+    }
+    containedArticle = best;
+  }
+  // Bundled-instrument region. The parser emits one ARTICLE
+  // sequence per instrument in the file, plus (in EDGAR files) a
+  // miniature duplicate sequence for the table of contents.
+  // Split the articles (span order) into numeral-ascending runs;
+  // the run with the greatest total span is the primary
+  // instrument (the credit agreement body — the TOC run is tiny
+  // by comparison). A later non-primary run is a bundled
+  // instrument (guaranty / security / intercreditor): the region
+  // starts at its first article. Runs BEFORE the primary run
+  // (the TOC) never start a bundled region.
+  const articlesBySpan = structuralNodes
+    .filter((n) => n.nodeType === "ARTICLE")
+    .sort((a, b) => a.charStart - b.charStart);
+  let bundledStart: number | null = null;
+  {
+    const runs: Array<{ start: number; totalSpan: number }> = [];
+    let prev: number | null = null;
+    for (const a of articlesBySpan) {
+      const num = articleNumeral(a.sectionRef);
+      if (num == null) continue;
+      if (prev == null || num <= prev || runs.length === 0) {
+        runs.push({ start: a.charStart, totalSpan: 0 });
+      }
+      const current = runs[runs.length - 1];
+      if (current) current.totalSpan += Math.max(0, a.charEnd - a.charStart);
+      prev = num;
+    }
+    if (runs.length > 1) {
+      let primaryIdx = 0;
+      for (let i = 1; i < runs.length; i++) {
+        const run = runs[i];
+        const primary = runs[primaryIdx];
+        if (run && primary && run.totalSpan > primary.totalSpan) primaryIdx = i;
+      }
+      for (let i = primaryIdx + 1; i < runs.length; i++) {
+        const run = runs[i];
+        if (run && (bundledStart == null || run.start < bundledStart)) bundledStart = run.start;
+      }
+    }
+  }
+  const inBundledInstrumentRegion =
+    bundledStart != null && candidateNode != null && candidateNode.charStart >= bundledStart;
+  // Containment is admissible only when it does not contradict
+  // the section reference: the provision's leading section
+  // number must match the containing article's numeral (the
+  // parser's own containment + ref-consistency principle), or
+  // the item must sit in a bundled instrument's region (whose
+  // instruments restart their own numbering).
+  let positionArticle: StructuralNodeRecord | null = articleNode;
+  if (!positionArticle && containedArticle) {
+    const containedNum = articleNumeral(containedArticle.sectionRef);
+    const leading = leadingRefNumber(candidateSectionRef);
+    if (inBundledInstrumentRegion) {
+      positionArticle = containedArticle;
+    } else if (containedNum != null && leading != null && containedNum === leading) {
+      positionArticle = containedArticle;
+    }
+  }
+  return {
+    candidateNode,
+    chain,
+    sectionHeading: chain.find((n) => n.nodeType === "SECTION")?.heading,
+    articleNode,
+    containedArticle,
+    inBundledInstrumentRegion,
+    positionArticle,
+    positionClass: structuralArticleClass(positionArticle?.heading ?? undefined),
+  };
+}
+
+/** A chapeau/title-only item: the excerpt carries nothing beyond
+ * the section title (segmentation stems whose clauses are separate
+ * items, e.g. "Section 2.09. Termination of Commitment ...").
+ * Such items are never classified from article position — the
+ * clauses below them carry the substance. */
+const OPERATIVE_VERB =
+  /\b(shall|will|may|must|agree|waiv|deliver|furnish|maintain|permit|represent|warrant|covenant|undertak|pay|giv|provid|notif|incur|creat|enter)/i;
+
+/** Strict title-only test: after stripping the section marker
+ * and the heading, nothing substantive remains. Used by step 3,
+ * where the wider chapeau test would also catch operative
+ * verb-less basket prongs. */
+function isTitleOnlyStem(excerpt: string, heading: string): boolean {
+  const norm = excerpt.replace(/\s+/g, " ").trim();
+  let rest = norm
+    .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+    .replace(/^[0-9]+(?:\.[0-9]+)*[.\s]+/, "");
+  const h = heading.replace(/\s+/g, " ").trim().toLowerCase();
+  if (h.length > 3 && rest.toLowerCase().startsWith(h)) rest = rest.slice(h.length);
+  rest = rest.replace(/^[\s.:;—–-]+/, "").trim();
+  return rest.length <= 30;
+}
+
+function isChapeauOnlyExcerpt(excerpt: string, heading: string): boolean {
+  const norm = excerpt.replace(/\s+/g, " ").trim();
+  let rest = norm
+    .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+    .replace(/^[0-9]+(?:\.[0-9]+)*[.\s]+/, "");
+  const h = heading.replace(/\s+/g, " ").trim().toLowerCase();
+  if (h.length > 3 && rest.toLowerCase().startsWith(h)) rest = rest.slice(h.length);
+  rest = rest.replace(/^[\s.:;—–-]+/, "").trim();
+  if (rest.length <= 30) return true;
+  // A truncated heading ("Termination") may strip only part of
+  // the title ("Termination of Commitment; Increase in
+  // Revolving Commitments ."). The remainder is still a title
+  // when the whole excerpt is short and carries no operative
+  // verb — a one-sentence operative clause ("Each Guarantor
+  // waives notice ...") always carries one.
+  return norm.length <= 120 && !OPERATIVE_VERB.test(norm);
+}
+
+/** A "[Reserved]" placeholder — no operative text. */
+function isReservedPlaceholder(excerpt: string, heading: string): boolean {
+  const norm = excerpt.replace(/\s+/g, " ").trim();
+  const body = norm
+    .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+    .replace(/^[0-9]+(?:\.[0-9]+)*[.\s]+/, "")
+    // Clause-marker prefixes: "(j) [Reserved]." / "(d) Reserved ."
+    .replace(/^\([a-z0-9]{1,3}\)\s*/i, "")
+    .trim();
+  return /^\[?reserved\]?[.;]?$/i.test(body) || /\[reserved\]/i.test(heading);
+}
+
+/** Families that make an item covenant-mappable for the masking
+ * gates: they carry a substantive covenant category (not OTHER,
+ * not the generic baskets bucket). */
+function hasMappableSubstantiveFamily(families: string[]): boolean {
+  return families.some((f) => {
+    const cat = FAMILY_TO_CATEGORY[f];
+    return (
+      cat !== undefined &&
+      cat !== "OTHER" &&
+      cat !== "BASKETS_EXCEPTIONS_CONDITIONS"
+    );
+  });
+}
+
+/** A schedules/exhibits index parsed as a section item — a list
+ * of schedule and exhibit titles, not a provision. Shape: the
+ * excerpt is dominated by Schedule/Exhibit enumerations and
+ * carries no operative verb. Never classified NON_COVENANT: it
+ * is parser residue, explicitly unresolved. */
+function isScheduleIndexText(excerpt: string): boolean {
+  const markers = (excerpt.match(/\bSchedule\s+[0-9A-Z]/g) ?? []).length +
+    (excerpt.match(/\bExhibit\s+[A-Z0-9]/g) ?? []).length;
+  return markers >= 4 && !/\bshall\b|\bwill\b/i.test(excerpt);
+}
+
+/** Mandatory-prepayment shape: an obligation to prepay ("the
+ * Borrowers shall prepay", "shall ... prepay"). Voluntary
+ * prepayment rights ("may prepay", "shall have the right to
+ * prepay") and application waterfalls ("shall be applied") do
+ * NOT match — fail-closed. */
+function isMandatoryPrepaymentShape(excerpt: string): boolean {
+  if (/\bshall\s+have\s+the\s+right\b/i.test(excerpt)) return false;
+  return (
+    /\bshall\s*,?\s*(?:\w+\s+){0,2}prepay\b/i.test(excerpt) ||
+    /\bshall\b[^.;]{0,60}\bprepay\b/i.test(excerpt) ||
+    // "shall, immediately after such Net Proceeds are received
+    // ..., prepay" — the comma-adjunct obligation shape.
+    /\bshall\s*,[^.;]{0,110}\bprepay\b/i.test(excerpt) ||
+    /\bmandatory\s+prepayment/i.test(excerpt)
+  );
+}
+
+/**
+ * Step 1: the NON_COVENANT classification. Runs BEFORE family
+ * keyword scoring can label definitions, representations,
+ * mechanics, boilerplate, or [reserved] placeholders as
+ * covenants. Returns the subtype, or null when the item must go
+ * through covenant classification.
+ *
+ * Guards (fail-closed): items carrying a substantive mappable
+ * family are kept out of the mechanics/boilerplate gates in
+ * Miscellaneous and Credits articles (the masking population);
+ * chapeau-only stems are never gated; an EoD-shaped item is never
+ * gated (isEod is passed in so the gate cannot claim a trigger).
+ */
+function classifyNonCovenant(params: {
+  excerpt: string;
+  heading: string;
+  families: string[];
+  primary: string;
+  isEod: boolean;
+  position: StructuralPosition;
+}): NonCovenantSubtype | null {
+  const { excerpt, heading, families, primary, isEod, position } = params;
+  if (isReservedPlaceholder(excerpt, heading)) return "RESERVED";
+  if (isEod) return null;
+  if (isScheduleIndexText(excerpt)) return null;
+  // An ARTICLE node item is the article head/chapeau itself —
+  // never gated by its own article's class.
+  if (position.candidateNode?.nodeType === "ARTICLE") return null;
+
+  const cls = position.positionClass;
+
+  // Subsidiary-designation machinery: operates the
+  // restricted/unrestricted subsidiary regime — it is not a
+  // covenant grant. Shape: the enclosing SECTION is a
+  // designation section and the item's primary family is a
+  // designation family. Never inside a Negative Covenants
+  // article (there designations run as operative limitations),
+  // and never chapeau-only (the section stem carries the
+  // regime's framing, classified elsewhere).
+  if (
+    cls !== "NEGATIVE" &&
+    ["RESTRICTED_SUBSIDIARIES", "UNRESTRICTED_SUBSIDIARIES", "DESIGNATIONS"].includes(primary) &&
+    position.sectionHeading !== undefined &&
+    /\bdesignation of\b|\bsubsidiary designation\b/i.test(
+      despaceHeadingText(position.sectionHeading),
+    ) &&
+    !isChapeauOnlyExcerpt(excerpt, heading)
+  ) {
+    return "MECHANICS";
+  }
+
+  switch (cls) {
+    case "DEFINITION":
+      return "DEFINITION";
+    case "REPRESENTATION":
+      return "REPRESENTATION";
+    case "AGENT":
+    case "CONDITIONS":
+    case "TAXES":
+    case "ASSIGNMENTS":
+    case "AMENDMENTS":
+      return "MECHANICS";
+    case "MISCELLANEOUS": {
+      // Carve-out: a guaranty-obligations section embedded in
+      // the miscellaneous article (the "obligations absolute" /
+      // guaranty waiver provisions) is an operative guarantee
+      // provision, not boilerplate — its GUARANTEES family is
+      // the operative subject, and step 3 promotes it. Shape:
+      // the enclosing section names the guaranty regime and the
+      // GUARANTEES family is present.
+      const section = despaceHeadingText(position.sectionHeading ?? "");
+      if (
+        /\b(obligations\s+absolute|guaranty|guarantees?)\b/i.test(section) &&
+        families.includes("GUARANTEES")
+      ) {
+        return null;
+      }
+      // A representations section inside a bundled instrument
+      // whose span containment lands in an overreaching
+      // miscellaneous span is representation content.
+      if (isRepresentationArticle(position.sectionHeading)) return "REPRESENTATION";
+      return "BOILERPLATE";
+    }
+    case "CREDITS":
+      if (hasMappableSubstantiveFamily(families)) return null;
+      if (isMandatoryPrepaymentShape(excerpt)) return null;
+      if (isChapeauOnlyExcerpt(excerpt, heading)) return null;
+      // Incremental-facility clauses are the operative terms of
+      // a debt permission, not facility mechanics — when the
+      // INCREMENTAL family goes undetected they must stay in
+      // the covenant queue (fail-closed). Shape: the excerpt
+      // works an "Incremental" defined-term regime (or the
+      // enclosing section is the incremental section).
+      if (
+        (excerpt.match(/\bIncremental\b/g) ?? []).length >= 2 ||
+        /\bincremental\b/i.test(position.sectionHeading ?? "")
+      ) {
+        return null;
+      }
+      return "MECHANICS";
+    default:
+      break;
+  }
+
+  // Bundled-instrument rule: a provision of a bundled guaranty /
+  // security / intercreditor instrument (or an exhibit form)
+  // whose primary family maps to no covenant category is content
+  // of THAT instrument, not a covenant of the credit agreement —
+  // explicitly classified as mechanics of the bundled
+  // instrument. Families beyond the primary are the instrument's
+  // own subject matter (an intercreditor clause is ABOUT liens);
+  // they do not make it a credit-agreement covenant. Items whose
+  // PRIMARY family maps (a security agreement's lien grant, a
+  // guaranty's guarantee) keep their covenant classification:
+  // the gate claims only the otherwise-OTHER population.
+  if (
+    position.inBundledInstrumentRegion &&
+    (FAMILY_TO_CATEGORY[primary] ?? "OTHER") === "OTHER" &&
+    !isChapeauOnlyExcerpt(excerpt, heading)
+  ) {
+    // Carve-out: a guaranty contribution/subrogation section is
+    // a substantive guarantee provision (it allocates guarantor
+    // liability), not instrument mechanics — its GUARANTEES
+    // family is the operative subject; step 3 promotes it.
+    const section = despaceHeadingText(position.sectionHeading ?? "");
+    if (/\b(contribution|subrogation)\b/i.test(section) && families.includes("GUARANTEES")) {
+      return null;
+    }
+    if (isRepresentationArticle(position.sectionHeading)) return "REPRESENTATION";
+    return "MECHANICS";
+  }
+  return null;
+}
+
+/** Prohibition frame in the provision's own lead: a bare
+ * prohibition stem, or a "shall/will not" in the opening text.
+ * An affirmative covenant never opens with its prohibition. */
+function hasProhibitionLead(excerpt: string, heading: string): boolean {
+  const hay = `${heading}\n${excerpt.replace(/\s+/g, " ").trim()}`;
+  if (PROHIBITION_STEM.test(hay)) return true;
+  // A "shall/will not" is the provision's frame only when it
+  // LEADS — before any affirmative obligation shape. A
+  // post-closing directive ("shall cause X to be dissolved
+  // and, until so dissolved, such entity shall not conduct...")
+  // carries a subordinate interim restriction, not a
+  // prohibition lead.
+  const lead = hay.slice(0, 400);
+  const notIdx = lead.search(/\b(shall|will)\s+not\b/i);
+  if (notIdx >= 0) {
+    const obligationIdx = Math.min(
+      ...[OBLIGATION_LEAD.exec(lead)?.index ?? Infinity, CAUSE_LEAD.exec(lead)?.index ?? Infinity],
+    );
+    if (obligationIdx === Infinity || notIdx < obligationIdx) return true;
+  }
+  // Line-of-business frame: "will engage only in lines of
+  // business substantially similar to ..." is a RESTRICTION
+  // (the borrower may not enter other lines), however the
+  // agreement files it — including inside an affirmative
+  // article.
+  return /\b(engage|conduct|carry on)\b[^.;]{0,80}\bonly\b/i.test(hay);
+}
+
+/** Tight obligation-verb shapes that open an affirmative
+ * covenant ("shall deliver", "shall maintain", "shall permit
+ * inspection", "will furnish"...). Used only inside a MIXED
+ * covenants article, where article position alone cannot
+ * distinguish affirmative from negative covenants. */
+const OBLIGATION_LEAD =
+  /\b(shall|will)\s+(deliver|furnish|provide|maintain|keep|permit|give|file|pay|promptly\s+(deliver|furnish|provide|give|notify))\b/i;
+/** "Shall cause X to become / execute / deliver / enter into"
+ * (joinder and control-agreement shapes) — a bare "will cause
+ * each Subsidiary to" causative frame is not one. */
+const CAUSE_LEAD = /\b(shall|will)\s+cause\b[^;]{0,80}\b(become|execute|deliver|enter into|comply|agree|dissolv)\w*\b/i;
+
+/** A delivery FRAME: the section's chapeau sentence that only
+ * says deliveries go to the Agent/Lenders — WHAT is delivered
+ * lives in the enumerated descendant clauses (separate items).
+ * Shape: after the title, a short single frame whose verb is
+ * deliver/furnish/provide and which names no delivered object. */
+function isDeliveryFrame(excerpt: string, heading: string, sectionHeading?: string): boolean {
+  void heading;
+  void sectionHeading;
+  const rest = excerpt
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+    .replace(/^[0-9]+(?:\.[0-9]+)*[.\s]+/, "");
+  // Anchor on the first delivery verb. Everything before it
+  // must be title/subject matter (no second operative verb);
+  // everything from it onward is the frame tail, which must be
+  // short and name no delivered object. (The section TITLE
+  // names the objects — "Financial Statements; ... Information"
+  // — so object words are only disqualifying in the tail; a
+  // tail mention of "sufficient copies" is copy count, not
+  // content, and is not an object word here.)
+  const m = /\b(deliver|furnish|provide|supply)\b/i.exec(rest);
+  if (!m || m.index > 160) return false;
+  const head = rest.slice(0, m.index);
+  if (/\b(deliver|furnish|provid|suppl|maintain|permit|represent|warrant|agree|incur|prepay|redeem)\w*\b/i.test(head)) {
+    return false;
+  }
+  const tail = rest.slice(m.index);
+  if (tail.length > 220) return false;
+  return !/\b(financial statements|certificates?|reports?|information|notices?|documents|budgets?|computations?)\b/i.test(
+    tail,
+  );
+}
+
+/** Obligation kind from the enclosing section's heading — the
+ * agreement's own organization of its affirmative covenants. */
+function affirmativeKindFor(sectionHeading: string | undefined): AffirmativeKind {
+  const h = despaceHeadingText(sectionHeading ?? "");
+  if (/\bbooks\b|\brecords\b|\binspection\b|\bvisitation\b/i.test(h)) return "BOOKS_INSPECTION";
+  if (/\bexistence\b|\bqualification\b/i.test(h)) return "EXISTENCE";
+  if (/\btaxes\b|\bpayment of obligations\b/i.test(h)) return "TAXES";
+  if (/\bproperties\b|\binsurance\b/i.test(h)) return "PROPERTIES_INSURANCE";
+  if (
+    /\bfurther assurances\b|\badditional (guarantors|collateral)\b|\bjoinder\b|\bcovenant to guarantee\b|\bguarantee obligations\b/i.test(
+      h,
+    )
+  ) {
+    return "FURTHER_ASSURANCES";
+  }
+  if (/\bcompliance\b|\bmaterial contracts\b|\benvironmental\b/i.test(h)) return "COMPLIANCE";
+  if (/\bnotices?\b/i.test(h)) return "NOTICE";
+  if (/\bfinancial statements\b|\bcertificates?\b|\breports?\b|\breporting\b|\binformation\b|\bbudgets?\b/i.test(h)) {
+    return "REPORTING";
+  }
+  return "OTHER_AFFIRMATIVE";
+}
+
+/**
+ * Step 2: the AFFIRMATIVE classification. Operative affirmative
+ * covenants ARE covenants — they stay in the pipeline — but
+ * they are not negative covenants or basket grants, and OTHER
+ * mislabels them.
+ *
+ * Gate A (pure Affirmative article): article position is the
+ * agreement's own organization — every operative item in it is
+ * an affirmative covenant. Guards (fail-closed): chapeau-only
+ * stems (their clauses are separate items), prohibition leads,
+ * financial-maintenance primaries, EoD-shaped items, and
+ * anything step 1 already classified are never claimed.
+ *
+ * Gate B (mixed "Covenants" article — affirmative and negative
+ * covenants under one article title): position alone cannot
+ * separate them, so an item is claimed only when its section
+ * names an affirmative subject OR its lead carries a tight
+ * obligation-verb shape, and it has no prohibition lead.
+ */
+const AFFIRMATIVE_SECTION_SUBJECT =
+  /\b(financial statements|financial reporting|certificates|other information|notices|existence|taxes|properties|insurance|compliance|material contracts|books|records|inspection|further assurances|additional guarantors|maintenance|reporting)\b/i;
+
+function classifyAffirmative(params: {
+  excerpt: string;
+  heading: string;
+  families: string[];
+  primary: string;
+  isEod: boolean;
+  position: StructuralPosition;
+  candidateNodeType?: string;
+}): AffirmativeKind | null {
+  const { excerpt, heading, families, primary, isEod, position } = params;
+  if (isEod) return null;
+  if (primary === "FINANCIAL_MAINTENANCE_COVENANTS" || families[0] === "EVENTS_OF_DEFAULT") return null;
+  // Fragment inheritance: a CLAUSE fragment under an
+  // affirmative-subject section of an affirmative article is
+  // part of that section's covenant — its operative stem is
+  // the section's own item ("(a) the occurrence of any
+  // Default" under §Notices; a bare infinitive prong
+  // "Perform its obligations under material agreements..."
+  // whose "shall" lives in the stem). SECTION stems
+  // themselves never inherit (they are the stem, separately
+  // accounted). The fragment shapes are: chapeau-only text,
+  // or a lead carrying no shall/will at all.
+  const leadHasNoModal = !/\b(shall|will)\b/i.test(excerpt.replace(/\s+/g, " ").slice(0, 200));
+  if (
+    position.positionClass === "AFFIRMATIVE" &&
+    params.candidateNodeType !== undefined &&
+    params.candidateNodeType !== "SECTION" &&
+    params.candidateNodeType !== "ARTICLE" &&
+    (isChapeauOnlyExcerpt(excerpt, heading) || leadHasNoModal) &&
+    AFFIRMATIVE_SECTION_SUBJECT.test(despaceHeadingText(position.sectionHeading ?? ""))
+  ) {
+    return affirmativeKindFor(position.sectionHeading);
+  }
+  if (isChapeauOnlyExcerpt(excerpt, heading)) return null;
+  if (isDeliveryFrame(excerpt, heading, position.sectionHeading)) return null;
+  if (hasProhibitionLead(excerpt, heading)) return null;
+  // A business-scope section is a restriction by subject,
+  // whichever article files it.
+  if (/\b(nature of business|conduct of business|lines? of business|business activities)\b/i.test(
+    despaceHeadingText(position.sectionHeading ?? ""),
+  )) {
+    return null;
+  }
+  const cls = position.positionClass;
+  if (cls === "AFFIRMATIVE") {
+    return affirmativeKindFor(position.sectionHeading);
+  }
+  if (cls === "COVENANTS") {
+    const section = despaceHeadingText(position.sectionHeading ?? "");
+    const affirmativeSubject = AFFIRMATIVE_SECTION_SUBJECT.test(section);
+    const lead = excerpt.replace(/\s+/g, " ").slice(0, 400);
+    if (affirmativeSubject || OBLIGATION_LEAD.test(lead) || CAUSE_LEAD.test(lead)) {
+      return affirmativeKindFor(position.sectionHeading);
+    }
+  }
+  return null;
+}
+
 export interface ProvisionAnalysis {
   /** Rule 192: the candidate excerpt is a prefix of a longer
    * operative span (4000-char cap) — tail clauses are missing. */
   operativeExcerptTruncated?: boolean;
+  /**
+   * Formula representation (step 3): the parent section's chapeau
+   * text (the same text detectPosture inherits), carried so the
+   * formula scan can read a cap stated in the stem that governs
+   * this clause. Contract text from the parent node's own span.
+   */
+  parentChapeau?: string;
+  /** The candidate's full operative span when the excerpt is a
+   * truncated prefix (formula parse only; display excerpt and the
+   * Rule 192 disclosure are unchanged). */
+  operativeFullSpan?: string;
+  /** The structural node type of this item's own node — the
+   * formula parse's full-span guard reads it (clause-level spans
+   * only; a section-level span covers sibling clauses with
+   * independent caps). */
+  operativeNodeType?: string;
   /** Heading of the enclosing ARTICLE node (walked via parentNodeId), if any. Powers the representations guard: a section in a pure Representations article states facts, it does not grant capacity. */
   articleHeading?: string;
   sectionRef: string;
   heading: string;
   category: CovenantCategoryKey;
   categoryLabel: string;
+  /** Classification census step 1: for NON_COVENANT items, the
+   * structural reason the item is not an operative covenant.
+   * Absent for covenant items. */
+  nonCovenantSubtype?: NonCovenantSubtype;
+  /** Classification census step 2: for AFFIRMATIVE items, the
+   * obligation kind. Absent for non-affirmative items. */
+  affirmativeKind?: AffirmativeKind;
   families: string[];
   posture: ProvisionPosture;
   /** Genuine plain-English explanation of operative substance. */
@@ -47,8 +743,17 @@ export interface ProvisionAnalysis {
   conditions: string[];
   basketsAndThresholds: string[];
   draftingPatterns: string[];
-  applicableDefinitions: Array<{ term: string; excerpt: string; resolved: boolean }>;
+  applicableDefinitions: ApplicableDefinition[];
   crossReferences: string[];
+  /** Additive: structural resolution per cross-reference (see
+   * CrossReferenceResolution). The string[] above stays for
+   * compatibility and is derived from these entries. */
+  crossReferenceResolutions?: CrossReferenceResolution[];
+  /** Additive disclosure (Rule 159 pattern): true when the
+   * provision references more defined terms than the per-provision
+   * listing bound; the omitted mentions are unresolved, not absent. */
+  definitionCoverageIncomplete?: boolean;
+  definitionMentionsOmitted?: number;
   dependencies: string[];
   operativeLanguageExcerpt: string;
   sourceCitation: string;
@@ -97,6 +802,8 @@ const CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   FINANCIAL_MAINTENANCE: "Financial maintenance covenants",
   EVENTS_OF_DEFAULT: "Events of default",
   BASKETS_EXCEPTIONS_CONDITIONS: "Relevant baskets, exceptions, conditions and defined terms",
+  NON_COVENANT: "Non-covenant provision",
+  AFFIRMATIVE: "Affirmative covenants",
   OTHER: "Other provisions",
 };
 
@@ -486,44 +1193,291 @@ function splitLetterClauses(excerpt: string): string[] {
   return out;
 }
 
+/** Per-provision listing bound for attached definition entries.
+ * A resource bound, NOT a scan cap: matching runs over ALL of the
+ * document's definitions. If a pathological provision references
+ * more distinct terms than the bound, the excess mentions are
+ * counted and disclosed as INCOMPLETE coverage on the item (Rule
+ * 159 pattern — silent truncation is a lie) and the affected terms
+ * are treated as unresolved, never as absent. */
+export const MAX_DEFINITION_ENTRIES_PER_PROVISION = 100;
+
+/** Term normalization shared by the definition index and mention
+ * detection: case-folded, whitespace-collapsed, surrounding quotes
+ * and punctuation trimmed — the same discipline Rule 197 applies
+ * when it looks a term up, so producer and consumers agree on term
+ * identity. Grammatical VARIANTS are never unified here:
+ * exact-on-normalized matching only (the structural index's
+ * getDefinition discipline; findDefinedTermVariant is barred from
+ * silent matching). */
+export function normalizeDefinedTermKey(term: string): string {
+  return term
+    .replace(/[“”"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^[.,;:]+|[.,;:]+$/g, "")
+    .toLowerCase();
+}
+
+/** A DefinitionRecord backs an entry only when it carries the
+ * definition's own detected text — a record IS a detected
+ * definition occurrence (span + text from the definitions
+ * article), so a non-empty excerpt is the occurrence's text.
+ * (Before this fix, `resolved` was `excerpt.length > 20` — a
+ * length proxy that certified any long fallback window and
+ * failed short genuine definitions.) */
+function definitionRecordBacks(d: DefinitionRecord): boolean {
+  return (d.excerpt ?? "").trim().length > 0;
+}
+
+interface DefinitionMatchResult {
+  entries: ApplicableDefinition[];
+  coverageIncomplete: boolean;
+  omittedMentions: number;
+}
+
+/**
+ * Attach definitions for a provision, honestly:
+ *
+ * Pass 1 — every definition in the document whose term the excerpt
+ * USES. Matching semantics are Rule 199, unchanged: match the term
+ * as a whole word/phrase, not a substring (the old `includes`
+ * matched "SEC" inside "unsecured"); lookarounds require a
+ * non-alphanumeric on both sides; internal whitespace is `\s+` so a
+ * term split across a line break still matches; case-insensitive.
+ * What changes is COVERAGE and the meaning of `resolved`: the scan
+ * runs over an index of ALL definitions (the old code read only
+ * `defs.slice(0, 300)` and stopped at 10 hits, so on a syndicated
+ * §1.01 with 300+ terms, later terms were silently unmatchable
+ * depending on detector ordering). A token prefilter — a term can
+ * whole-phrase match only when one of its tokens occurs in the
+ * excerpt — keeps the full index affordable without a scan cap.
+ * Duplicate records for one term: identical definitions collapse
+ * to one resolved entry; DIFFERING definitions make the entry
+ * ambiguous (unresolved — picking one would be a guess).
+ *
+ * Pass 2 — defined-term-shaped mentions (quoted terms; capitalized
+ * multi-word phrases in definitional use position) with NO record
+ * in the document become explicit `resolved: false` entries, so
+ * "used but not defined here" is visible and feeds the
+ * unresolved-question and structural-quality rates instead of
+ * producing no entry at all.
+ */
 function relatedDefinitions(
   excerpt: string,
   defs: DefinitionRecord[],
-): Array<{ term: string; excerpt: string; resolved: boolean }> {
-  const hits: Array<{ term: string; excerpt: string; resolved: boolean }> = [];
-  for (const d of defs.slice(0, 300)) {
-    if (d.term.length < 3) continue;
-    // Rule 199: match the term as a whole word/phrase, not a
-    // substring. The old `includes` matched "SEC" inside
-    // "unsecured" and attached a noise definition ("Controlling
-    // defined terms: SEC") to every unsecured-debt item. The
-    // lookarounds require a non-alphanumeric on both sides (a
-    // word-boundary regex would fail on terms with punctuation
-    // edges); internal whitespace is `\s+` so a term split
-    // across a line break in the excerpt still matches.
-    const escaped = d.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
-    if (!new RegExp(`(?<![A-Za-z0-9])${escaped}(?![A-Za-z0-9])`, "i").test(excerpt)) continue;
-    hits.push({
-      term: d.term,
-      excerpt: clip(d.excerpt ?? "", 220),
-      resolved: Boolean(d.excerpt && d.excerpt.length > 20),
-    });
-    if (hits.length >= 10) break;
+): DefinitionMatchResult {
+  const byKey = new Map<string, DefinitionRecord[]>();
+  for (const d of defs) {
+    const key = normalizeDefinedTermKey(d.term);
+    if (key.length < 3) continue;
+    const arr = byKey.get(key);
+    if (arr) arr.push(d);
+    else byKey.set(key, [d]);
   }
-  return hits;
+
+  // Prefilter tokens: alphanumeric runs of the excerpt. A term
+  // whose every token is absent cannot whole-phrase match, so
+  // skipping it discards nothing that could have hit.
+  const excerptTokens = new Set(
+    excerpt.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean),
+  );
+  const termMayMatch = (key: string): boolean =>
+    key
+      .split(/[^a-z0-9]+/)
+      .filter((t) => t.length >= 2)
+      .some((t) => excerptTokens.has(t));
+
+  const matched: Array<{ key: string; index: number }> = [];
+  for (const [key, records] of byKey) {
+    if (!termMayMatch(key)) continue;
+    const term = records[0]!.term;
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+    const m = new RegExp(`(?<![A-Za-z0-9])${escaped}(?![A-Za-z0-9])`, "i").exec(excerpt);
+    if (m) matched.push({ key, index: m.index });
+  }
+  matched.sort(
+    (a, b) => a.index - b.index || b.key.length - a.key.length || (a.key < b.key ? -1 : 1),
+  );
+
+  const positioned: Array<ApplicableDefinition & { position: number }> = [];
+  const matchedKeys = new Set<string>();
+  for (const { key, index } of matched) {
+    matchedKeys.add(key);
+    const records = byKey.get(key)!;
+    const backing = records.filter(definitionRecordBacks);
+    const distinctExcerpts = new Set(backing.map((d) => (d.excerpt ?? "").trim()));
+    if (backing.length > 0 && distinctExcerpts.size === 1) {
+      positioned.push({
+        term: records[0]!.term,
+        excerpt: clip(backing[0]!.excerpt, 220),
+        resolved: true,
+        position: index,
+      });
+    } else if (backing.length > 0) {
+      positioned.push({
+        term: records[0]!.term,
+        excerpt: "",
+        resolved: false,
+        ambiguous: true,
+        position: index,
+      });
+    } else {
+      positioned.push({
+        term: records[0]!.term,
+        excerpt: "",
+        resolved: false,
+        position: index,
+      });
+    }
+  }
+
+  // Pass 2: used-but-undefined mentions.
+  const candidates: Array<{ display: string; key: string; index: number; quoted: boolean }> = [];
+  const quotedRe = /[“"]([^“”"]{2,80})[”"]|"([^"]{2,80})"/g;
+  let qm: RegExpExecArray | null;
+  while ((qm = quotedRe.exec(excerpt)) !== null) {
+    const raw = (qm[1] ?? qm[2] ?? "").trim();
+    if (raw) {
+      candidates.push({ display: raw, key: normalizeDefinedTermKey(raw), index: qm.index, quoted: true });
+    }
+  }
+  const phraseRe = /\b[A-Z][A-Za-z0-9]*(?:[ \t]+(?:[A-Z][A-Za-z0-9]*|of|the|and|for|&))+/g;
+  let pm: RegExpExecArray | null;
+  while ((pm = phraseRe.exec(excerpt)) !== null) {
+    const words = pm[0].split(/[ \t]+/);
+    if (words.filter((w) => /^[A-Z]/.test(w)).length < 2) continue;
+    // "The Borrower" is the term "Borrower" in use position.
+    const display = pm[0].replace(/^(?:The|A|An)[ \t]+/, "");
+    candidates.push({ display, key: normalizeDefinedTermKey(display), index: pm.index, quoted: false });
+  }
+  const USE_PREFIX =
+    /(?:the|any|each|such|a|an|of|under|than|per|in|to|for|with|without|by|as)[ \t]+$/i;
+  candidates.sort((a, b) => a.index - b.index);
+  const seenMention = new Set<string>(matchedKeys);
+  for (const c of candidates) {
+    if (c.key.length < 3 || seenMention.has(c.key)) continue;
+    if (/^(section|article|clause|schedule|exhibit)\b/.test(c.key)) continue;
+    // A term the document DOES define is pass 1's business — never
+    // report it undefined over a mention-shape mismatch.
+    if (byKey.has(c.key)) continue;
+    // A mention immediately followed by its own definition
+    // statement (“X” means …) is defined by this very text.
+    const after = excerpt.slice(c.index + c.display.length, c.index + c.display.length + 24);
+    if (/^[”"]?\s*(?:means|shall mean|has the meaning)/.test(after)) continue;
+    // Unquoted phrases count only in definitional use position
+    // (preceded by a determiner/preposition); a bare capitalized
+    // phrase is as often a party name as a term. Quoted mentions
+    // are unambiguous term signals and skip this guard.
+    if (!c.quoted) {
+      const before = excerpt.slice(Math.max(0, c.index - 12), c.index);
+      if (!USE_PREFIX.test(before)) continue;
+    }
+    seenMention.add(c.key);
+    positioned.push({ term: c.display, excerpt: "", resolved: false, position: c.index });
+  }
+
+  // Listing bound: keep resolved entries preferentially (they feed
+  // executable consumers like Rule 197), count the rest, disclose.
+  let omittedMentions = 0;
+  let kept = positioned;
+  if (positioned.length > MAX_DEFINITION_ENTRIES_PER_PROVISION) {
+    const byPriority = [...positioned].sort(
+      (a, b) => Number(b.resolved) - Number(a.resolved) || a.position - b.position,
+    );
+    kept = byPriority.slice(0, MAX_DEFINITION_ENTRIES_PER_PROVISION);
+    omittedMentions = positioned.length - kept.length;
+  }
+  kept.sort((a, b) => a.position - b.position);
+  return {
+    entries: kept.map(({ position: _position, ...rest }) => rest),
+    coverageIncomplete: omittedMentions > 0,
+    omittedMentions,
+  };
 }
 
-function crossRefsFor(
+/** Cross-reference dedupe key: the designator ("Section",
+ * "Article", "§") and spacing differ between detector records and
+ * raw text for the SAME reference; identity is the reference body. */
+function crossRefKey(ref: string): string {
+  return normalizeWs(ref)
+    .replace(/^(?:section|article|§)\s*/i, "")
+    .toLowerCase();
+}
+
+/**
+ * Structured cross-reference resolutions for one provision, from
+ * the CrossReferenceRecords the upload path already loads.
+ * Semantics are the structural layer's, never upgraded: a ref is
+ * resolved only when a record resolves it to a UNIQUE target node
+ * (targetNodeId). Conflicting records or an ambiguity flag make
+ * it ambiguous; text-only mentions (no structural record) stay
+ * unresolved with a reason — schedules/exhibits and
+ * cross-document references are unresolved by design upstream
+ * and keep their upstream reason here.
+ */
+function crossReferenceResolutionsFor(
   nodeId: string | undefined,
   excerpt: string,
   xrefs: CrossReferenceRecord[],
-): string[] {
-  const fromNode = nodeId
-    ? xrefs.filter((x) => x.fromNodeId === nodeId).map((x) => x.rawReference)
-    : [];
+): CrossReferenceResolution[] {
+  const out: CrossReferenceResolution[] = [];
+  const covered = new Set<string>();
+  if (nodeId) {
+    const groups = new Map<string, CrossReferenceRecord[]>();
+    for (const x of xrefs) {
+      if (x.fromNodeId !== nodeId) continue;
+      const arr = groups.get(x.rawReference);
+      if (arr) arr.push(x);
+      else groups.set(x.rawReference, [x]);
+    }
+    for (const [ref, records] of groups) {
+      covered.add(crossRefKey(ref));
+      const targets = new Map<string, CrossReferenceRecord>();
+      let ambiguousRecord: CrossReferenceRecord | undefined;
+      for (const r of records) {
+        if (r.targetAmbiguous === true && !ambiguousRecord) ambiguousRecord = r;
+        if (r.resolved === true && r.targetNodeId) targets.set(r.targetNodeId, r);
+      }
+      if (ambiguousRecord || targets.size > 1) {
+        out.push({
+          ref,
+          resolved: false,
+          ambiguous: true,
+          targetSectionRef: (ambiguousRecord ?? records[0])?.targetSectionRef ?? undefined,
+          reason: ambiguousRecord?.unresolvedReason ?? "AMBIGUOUS_TARGET",
+        });
+      } else if (targets.size === 1) {
+        const [targetNodeId, rec] = [...targets.entries()][0]!;
+        out.push({
+          ref,
+          resolved: true,
+          targetNodeId,
+          targetSectionRef: rec.targetSectionRef ?? undefined,
+        });
+      } else {
+        const resolvedNoTarget = records.find((r) => r.resolved === true);
+        const rec = resolvedNoTarget ?? records[0]!;
+        out.push({
+          ref,
+          resolved: false,
+          targetSectionRef: rec.targetSectionRef ?? undefined,
+          reason:
+            rec.unresolvedReason ??
+            (resolvedNoTarget ? "RESOLVED_WITHOUT_TARGET" : "TARGET_NOT_FOUND"),
+        });
+      }
+    }
+  }
   const fromText =
     excerpt.match(/\b(?:Section|Article|§)\s*[\dA-Za-z.()-]+/g)?.map((s) => normalizeWs(s)) ?? [];
-  return Array.from(new Set([...fromNode, ...fromText])).slice(0, 12);
+  for (const ref of fromText) {
+    const key = crossRefKey(ref);
+    if (covered.has(key)) continue;
+    covered.add(key);
+    out.push({ ref, resolved: false, reason: "NO_STRUCTURAL_RECORD" });
+  }
+  return out;
 }
 
 function buildPlainEnglish(params: {
@@ -615,7 +1569,7 @@ function buildPlainEnglish(params: {
   const unresolvedDefs = params.definitions.filter((d) => !d.resolved).map((d) => d.term);
   const resolvedDefs = params.definitions.filter((d) => d.resolved).map((d) => d.term);
   if (resolvedDefs.length > 0) {
-    parts.push(`Controlling defined terms (excerpt-matched): ${resolvedDefs.slice(0, 5).join(", ")}.`);
+    parts.push(`Controlling defined terms (definition located in this document): ${resolvedDefs.slice(0, 5).join(", ")}.`);
   }
   if (unresolvedDefs.length > 0) {
     parts.push(`Defined terms referenced but not resolved in-package: ${unresolvedDefs.slice(0, 4).join(", ")}.`);
@@ -728,20 +1682,170 @@ export function analyzeProvision(params: {
   const isEod =
     params.candidate.families.includes("EVENTS_OF_DEFAULT") ||
     isEventOfDefaultTrigger(heading, excerpt);
+  // Classification census step 1: structural NON_COVENANT
+  // classification runs BEFORE family keyword scoring — article
+  // position, instrument identity, and node shape are stronger
+  // evidence than keyword families (a definition clause that
+  // mentions "Indebtedness" is a definition, not a debt
+  // covenant). The gate never claims an EoD-shaped item.
+  const candidateNode = params.candidate.nodeId
+    ? params.structuralNodes.find((n) => n.nodeId === params.candidate.nodeId)
+    : undefined;
+  const structuralPos = structuralPositionOf(candidateNode, sectionRef, params.structuralNodes);
+  const nonCovenantSubtype = classifyNonCovenant({
+    excerpt,
+    heading,
+    families: params.candidate.families,
+    primary,
+    isEod,
+    position: structuralPos,
+  });
+  // Classification census step 2: AFFIRMATIVE classification —
+  // operative affirmative covenants (reporting, notices,
+  // existence, taxes, maintenance, compliance, books/inspection,
+  // further assurances) get their real category instead of OTHER
+  // or a subject-keyword label. Runs after step 1 (a designation
+  // mechanics clause or [reserved] placeholder inside an
+  // affirmative article is NON_COVENANT, not an affirmative
+  // covenant) and before family mapping.
+  const affirmativeKind = nonCovenantSubtype
+    ? null
+    : classifyAffirmative({
+        excerpt,
+        heading,
+        families: params.candidate.families,
+        primary,
+        isEod,
+        position: structuralPos,
+        candidateNodeType: params.structuralNodes.find((n) => n.nodeId === params.candidate.nodeId)
+          ?.nodeType,
+      });
+  // Classification census step 3: covenant-gated primary
+  // selection (masking). When an item IS a covenant item —
+  // steps 1–2 did not claim it, it is not EoD-shaped, not
+  // administrative, and not a title-only stem — and its
+  // position-0 family maps to no covenant category (UNKNOWN /
+  // RESTRICTED_SUBSIDIARIES / UNRESTRICTED_SUBSIDIARIES /
+  // DESIGNATIONS), a MAPPABLE family in its detected list can
+  // still win the category — under arbitration, never by list
+  // position alone. Steps 1–2 running first is what makes this
+  // safe: the census hand-verified that of 493 OTHER items
+  // with a mappable family beyond position 0, only 81 are true
+  // masking — the rest are incidental mentions inside
+  // definitions, representations, CP items, and mechanics,
+  // which steps 1–2 have already classified. Promotion changes
+  // ONLY the category outcome (posture and permission
+  // extraction read the full family list and the operative
+  // text, unchanged).
+  const promotedFamily = ((): string | null => {
+    if (nonCovenantSubtype || affirmativeKind) return null;
+    if (isEod || isAdministrativeProvision(heading, excerpt)) return null;
+    if ((FAMILY_TO_CATEGORY[primary] ?? "OTHER") !== "OTHER") return null;
+    // Title-only stems never promote. NOTE the STRICT title
+    // test (nothing left after the title), not the wider
+    // chapeau test — basket prongs are verb-less noun phrases
+    // by drafting convention ("Dispositions of Accounts in
+    // connection with the compromise or settlement thereof")
+    // and are operative clauses, not titles. The
+    // SECTION-with-descendants stem guard below covers the
+    // prohibition-chapeau stems.
+    if (isTitleOnlyStem(excerpt, heading)) return null;
+    // No article context at all: the item's position is
+    // unresolved (EoD fragments and residue land here) — never
+    // promote on keyword evidence alone.
+    if (!articleHeading) return null;
+    if (/\bevents of default\b/i.test(articleHeading)) return null;
+    // Stem guard: a SECTION item with structural descendants
+    // is a stem — its clauses are separate items and carry the
+    // substance. (A leaf section — a single-paragraph financial
+    // covenant — still promotes.)
+    if (
+      candidateNode?.nodeType === "SECTION" &&
+      params.structuralNodes.some((n) => n.parentNodeId === candidateNode.nodeId)
+    ) {
+      return null;
+    }
+    const mappable = params.candidate.families.slice(1).filter((f) => {
+      const cat = FAMILY_TO_CATEGORY[f];
+      return cat && cat !== "OTHER" && cat !== "BASKETS_EXCEPTIONS_CONDITIONS";
+    });
+    if (mappable.length === 0) return null;
+    // Section–family agreement: the enclosing section's own
+    // subject (the agreement's organization) arbitrates among
+    // the detected families. If the section names a covenant
+    // subject, ONLY a detected family of that subject promotes
+    // — a mismatch means the detected families are incidental
+    // mentions or the item's own family went undetected, and
+    // the item stays unresolved rather than taking a wrong
+    // label. (This is also what picks INVESTMENTS over an
+    // incidental ratio-test family inside §Investments, and
+    // ASSET_SALES over INVESTMENTS inside §Dispositions.)
+    const section = despaceHeadingText(structuralPos.sectionHeading ?? "");
+    const sectionCats: CovenantCategoryKey[] = [];
+    const SUBJECT: Array<[RegExp, CovenantCategoryKey]> = [
+      [/\bindebtedness\b|\bincremental\b|\bincrease\b|\bpriority\b|\bprepayments?\b/i, "DEBT_INCURRENCE"],
+      [/\bliens\b|\bsecured debt\b/i, "LIENS_SECURED_DEBT"],
+      [/\brestricted\b|\binvestments\b/i, "RESTRICTED_PAYMENTS_INVESTMENTS"],
+      [/\basset sales\b|\bdispositions\b|\basset\b|\bip rights\b|\bintellectual property\b/i, "ASSET_SALES"],
+      [/\bguarantee\b|\bguaranty\b/i, "GUARANTEES"],
+      [/\baffiliate/i, "AFFILIATE_TRANSACTIONS"],
+      [/\bfundamental\b|\bmergers\b|\bconsolidation\b/i, "MERGERS_FUNDAMENTAL_CHANGES"],
+      [/\bfinancial\b/i, "FINANCIAL_MAINTENANCE"],
+    ];
+    for (const [re, cat] of SUBJECT) if (re.test(section)) sectionCats.push(cat);
+    if (sectionCats.length > 0) {
+      return mappable.find((f) => sectionCats.includes(FAMILY_TO_CATEGORY[f]!)) ?? null;
+    }
+    // Subject-neutral section: promote only an UNANIMOUS
+    // detected category, and only outside the covenant and
+    // facility articles — inside them a neutral heading means
+    // the item's own covenant type is one the family vocabulary
+    // does not cover (restrictive agreements, swap covenants,
+    // bespoke restrictions), where a detected family is a
+    // mention by construction. Guaranty-article waivers and
+    // obligations clauses are the population this path serves.
+    const distinctCats = new Set(mappable.map((f) => FAMILY_TO_CATEGORY[f]!));
+    if (distinctCats.size !== 1) return null;
+    const cls = structuralPos.positionClass;
+    if (cls === "NEGATIVE" || cls === "AFFIRMATIVE" || cls === "COVENANTS" || cls === "CREDITS") {
+      return null;
+    }
+    if (/\bletters?\b|\bpayments\b|\bbreak funding\b|\bcomput|\binterest\b|\bborrowing/i.test(section)) {
+      return null;
+    }
+    return mappable[0] ?? null;
+  })();
+  const effectivePrimary = promotedFamily ?? primary;
   // Category follows substance, not just the first family tag: an EoD
   // trigger stays EVENTS_OF_DEFAULT even if the classifier also tagged a
   // subject family, and an administrative provision is OTHER.
-  const category = isAdministrativeProvision(heading, excerpt)
-    ? "OTHER"
-    : isEod
-      ? "EVENTS_OF_DEFAULT"
-      : (FAMILY_TO_CATEGORY[primary] ?? "OTHER");
+  const category: CovenantCategoryKey = nonCovenantSubtype
+    ? "NON_COVENANT"
+    : affirmativeKind
+      ? "AFFIRMATIVE"
+      : isAdministrativeProvision(heading, excerpt)
+        ? "OTHER"
+        : isEod
+          ? "EVENTS_OF_DEFAULT"
+          : (FAMILY_TO_CATEGORY[effectivePrimary] ?? "OTHER");
   const categoryLabel = CATEGORY_LABELS[category];
-  const posture = detectPosture(excerpt, heading, params.candidate.families, params.parentChapeau);
+  // A NON_COVENANT item has no covenant posture: UNRESOLVED is
+  // the honest determinate statement (it is not a prohibition,
+  // permission, or maintenance test), and it keeps the item out
+  // of every routine/auto-accept path.
+  const posture =
+    category === "NON_COVENANT"
+      ? "UNRESOLVED"
+      : detectPosture(excerpt, heading, params.candidate.families, params.parentChapeau);
   const { coveredEntities, entityScopeNotes } = extractEntities(excerpt, heading);
   const basketsAndThresholds = extractBaskets(excerpt);
-  const restriction = extractRestriction(excerpt, heading, posture, categoryLabel);
-  const permissions = extractPermissions(excerpt, posture, nonOperative);
+  // A NON_COVENANT item restricts nothing — never surface a
+  // restriction string mined from its incidental text.
+  const restriction =
+    category === "NON_COVENANT"
+      ? null
+      : extractRestriction(excerpt, heading, posture, categoryLabel);
+  const permissions = extractPermissions(excerpt, posture, nonOperative || category === "NON_COVENANT");
 
   const condRecords = extractConditionsAndExceptions(params.sourceId, excerpt, params.structuralNodes, 40);
   const conditions = condRecords
@@ -754,12 +1858,17 @@ export function analyzeProvision(params: {
   const patternIds = detectPatternsInText(`${heading}\n${excerpt}`);
   const draftingPatterns = patternIds.map((id) => getPattern(id)?.name ?? id);
 
-  const applicableDefinitions = relatedDefinitions(excerpt, params.definitions);
-  const crossReferences = crossRefsFor(
+  const definitionResult = relatedDefinitions(excerpt, params.definitions);
+  const applicableDefinitions = definitionResult.entries;
+  const crossReferenceResolutions = crossReferenceResolutionsFor(
     params.candidate.nodeId,
     excerpt,
     params.crossReferences ?? [],
   );
+  // The legacy string[] is derived from the structured resolutions
+  // (record-backed refs in record order, then text-only refs),
+  // preserving its historical contents and cap.
+  const crossReferences = crossReferenceResolutions.map((r) => r.ref).slice(0, 12);
   const dependencies: string[] = [];
   for (const ref of crossReferences.slice(0, 6)) {
     dependencies.push(`Depends on / references ${ref}`);
@@ -783,7 +1892,12 @@ export function analyzeProvision(params: {
       "Section sits in the Representations article — a statement of fact, not a grant of capacity; it mints no Permission even when accepted.",
     );
   }
-  if (!restriction && posture === "UNRESOLVED") {
+  if (category === "NON_COVENANT" && nonCovenantSubtype) {
+    unresolved.push(
+      `Classified non-covenant (${nonCovenantSubtype.toLowerCase()}) from structural position — not an operative covenant; no covenant decision is required for this item.`,
+    );
+  }
+  if (!restriction && posture === "UNRESOLVED" && category !== "NON_COVENANT") {
     unresolved.push("Could not determine whether the provision is a prohibition, permission, or maintenance test");
   }
   if (posture === "GENERAL_PROHIBITION" && permissions.length === 0 && exceptions.length === 0) {
@@ -821,6 +1935,15 @@ export function analyzeProvision(params: {
       "Operative excerpt truncated at 4000 characters — clauses beyond the cap are not in this summary; verify the full section before relying on this item",
     );
   }
+  // Definition-coverage disclosure (Rule 159 pattern): the
+  // provision references more defined terms than the listing
+  // bound. The unlisted mentions are unresolved, not absent —
+  // say so wherever the summary is read.
+  if (definitionResult.coverageIncomplete) {
+    unresolved.push(
+      `Definition coverage incomplete: this provision references more defined terms than the per-provision listing bound (${MAX_DEFINITION_ENTRIES_PER_PROVISION}); ${definitionResult.omittedMentions} mention(s) are not listed and are treated as unresolved, not absent`,
+    );
+  }
 
   const plainEnglish = buildPlainEnglish({
     sectionRef,
@@ -850,11 +1973,16 @@ export function analyzeProvision(params: {
 
   return {
     operativeExcerptTruncated: params.candidate.excerptTruncated,
+    parentChapeau: params.parentChapeau,
+    operativeFullSpan: params.candidate.fullSpanText,
+    operativeNodeType: sourceNode?.nodeType,
     articleHeading,
     sectionRef,
     heading,
     category,
     categoryLabel,
+    nonCovenantSubtype: nonCovenantSubtype ?? undefined,
+    affirmativeKind: affirmativeKind ?? undefined,
     families: params.candidate.families,
     posture,
     plainEnglish,
@@ -868,6 +1996,9 @@ export function analyzeProvision(params: {
     draftingPatterns,
     applicableDefinitions,
     crossReferences,
+    crossReferenceResolutions,
+    definitionCoverageIncomplete: definitionResult.coverageIncomplete || undefined,
+    definitionMentionsOmitted: definitionResult.omittedMentions || undefined,
     dependencies,
     operativeLanguageExcerpt: excerpt.slice(0, 700),
     sourceCitation: `${params.sourceId} · ${sectionRef}`,

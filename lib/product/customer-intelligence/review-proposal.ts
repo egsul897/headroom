@@ -19,17 +19,21 @@
  * - NEEDS_INPUT: the item looks capacity-relevant (grant evidence
  *   or a basket/condition/ratio signal) but cannot compile without
  *   counsel resolving something specific — a missing amount, an
- *   UNKNOWN condition, an undetermined posture. `reason` names the
- *   exact blocker. These are the flagged items: the only ones that
- *   genuinely need counsel's attention. Counsel resolves them by
- *   editing (supplying the missing piece) or rejecting.
+ *   UNKNOWN condition, an undetermined posture. Also NEEDS_INPUT,
+ *   regardless of capacity signal: a structurally unresolved item
+ *   (Phase E / D10) whose placement in the agreement hierarchy is
+ *   not certified — counsel must confirm the governing
+ *   article/section. `reason` names the exact blocker. These are
+ *   the flagged items: the only ones that genuinely need counsel's
+ *   attention. Counsel resolves them by editing (supplying the
+ *   missing piece) or rejecting.
  *
  * The proposal never decides anything by itself — it is displayed
  * next to the Accept / Edit / Reject form, and only a recorded
  * decision (counsel or SYSTEM auto-accept) changes state.
  */
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
-import { isCapRestatementCondition, parseFormulaFromItem } from "./formula-parse";
+import { parseFormulaFromItem, remainingConditionsForItem } from "./formula-parse";
 import { grantTypesForItem } from "./grant-types";
 import { parseMaintenanceRatio } from "./maintenance-ratio";
 import { isRoutineItem } from "./routine-review";
@@ -46,12 +50,15 @@ export interface ReviewProposal {
   needsAttention: boolean;
 }
 
-/** Remaining (non-cap-restatement) conditions — UNKNOWN predicates counsel must resolve. */
+/**
+ * Remaining conditions — UNKNOWN predicates counsel must
+ * resolve. This is the SHARED computation (remainingConditionsForItem):
+ * the proposer and the isRoutineItem gate must always agree on
+ * what remains, so neither re-implements the cap-restatement /
+ * mechanical-proviso filters locally.
+ */
 function remainingConditions(item: CovenantSummaryItem): string[] {
-  const parsed = parseFormulaFromItem(item);
-  return (item.conditions ?? []).filter(
-    (c) => !isCapRestatementCondition(String(c), parsed.thresholdValue),
-  );
+  return remainingConditionsForItem(item);
 }
 
 /** The exact terms an ACCEPT would mint, or null when nothing compiles. */
@@ -60,6 +67,37 @@ function compiledTerms(item: CovenantSummaryItem): string | null {
   if (grants.length > 0) {
     const parsed = parseFormulaFromItem(item);
     if (parsed.modelingStatus !== "MODELED") return null;
+    if (parsed.formulaType === "SECTION_STEM") return null;
+    if (parsed.formulaType === "NONE_UNCAPPED") {
+      // Never "$0M" and never bare "unlimited capacity": the clause
+      // sets no finite cap; its conditions and the agreement's other
+      // clauses still apply.
+      return `${grants.join(" / ")} — no finite cap in this clause (NONE_UNCAPPED)`;
+    }
+    if (parsed.formulaType === "VALUE_CAP") {
+      const basis =
+        parsed.params?.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : parsed.params?.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : parsed.params?.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return `${grants.join(" / ")} — capped at the ${basis} of the financed property (VALUE_CAP; the property's value is required to evaluate)`;
+    }
+    if (parsed.formulaType === "PCT_OF_CNTA") {
+      const pct = (((parsed.params?.pctCnta as number) ?? parsed.thresholdValue) * 100).toFixed(1).replace(/\.0$/, "");
+      return `${grants.join(" / ")} — ${pct}% of Consolidated Net Tangible Assets (PCT_OF_CNTA)`;
+    }
+    if (parsed.formulaType === "PCT_OF_COST") {
+      return `${grants.join(" / ")} — up to ${(((parsed.params?.pctOfCost as number) ?? 0) * 100).toFixed(0)}% of the cost of the financed assets (PCT_OF_COST)`;
+    }
+    if (parsed.formulaType === "PCT_OF_CONSIDERATION") {
+      return `${grants.join(" / ")} — up to ${(((parsed.params?.pctOfConsideration as number) ?? 0) * 100).toFixed(0)}% of the aggregate consideration (PCT_OF_CONSIDERATION)`;
+    }
+    if (parsed.formulaType === "UTILIZATION_GATE") {
+      return `${grants.join(" / ")} — utilization gate at ${(parsed.thresholdValue * 100).toFixed(0)}% (UTILIZATION_GATE)`;
+    }
     const threshold =
       parsed.formulaType.startsWith("GREATER_OF")
         ? `greater of $${parsed.thresholdValue}M or ${parsed.formulaType.replace("GREATER_OF_FLAT_OR_PCT_", "")}`
@@ -73,33 +111,52 @@ function compiledTerms(item: CovenantSummaryItem): string | null {
 }
 
 export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal {
+  // Classification census step 1: a NON_COVENANT item needs no
+  // covenant decision — it is explicitly classified document
+  // content (definition / representation / mechanics /
+  // boilerplate / [reserved]), accounted for in the summary and
+  // kept out of the decision queue. If a consumer still asks
+  // for a proposal, the honest one is "no capacity effect"
+  // (the REJECTED kind's documented meaning) with the
+  // classification as the reason — never a counsel action item.
+  if (item.category === "NON_COVENANT") {
+    return {
+      decision: "REJECTED",
+      reason: `Classified non-covenant (${(item.nonCovenantSubtype ?? "mechanics").toLowerCase()}) from structural position — not an operative covenant; no covenant decision is required for this item and it has no capacity effect.`,
+      terms: null,
+      needsAttention: false,
+    };
+  }
   // Confident accept: routine supported interpretation — compiles
   // cleanly, no remaining conditions, posture determined.
   if (isRoutineItem(item)) {
     const grants = grantTypesForItem(item);
     const terms = compiledTerms(item);
-    // A parsed basket threshold below $1,000 is not a real basket
-    // in any financing document — it is a parsing artifact (e.g.
-    // a day-count or section number read as money, like "$30").
-    // Never propose ACCEPT for one; flag it for counsel instead.
-    // The $1,000 floor is a sanity bound, not a business rule:
-    // no operative basket in leveraged finance is under $1,000.
+    // P4 (Egzon ruling, 2026-10-17): a parsed basket threshold
+    // below $1,000 is not a real basket in any financing
+    // document — it is a UNIT MISREAD (a dropped scale, e.g.
+    // "$30 million" read as $30). Never propose ACCEPT for one;
+    // flag it for counsel with the suspected cause named. The
+    // parse layer fails closed on this shape, so this branch is
+    // the proposer's lockstep guard, mirroring isRoutineItem.
     if (grants.length > 0) {
       const parsed = parseFormulaFromItem(item);
       if (parsed.modelingStatus === "MODELED" && parsed.thresholdValue > 0 && parsed.thresholdValue < 0.001) {
         return {
           decision: "NEEDS_INPUT",
-          reason: `Parsed basket threshold ($${parsed.thresholdValue}M) is implausibly small — likely a parsing artifact, not a real basket. Counsel to confirm the true terms or reject it.`,
+          reason: `Parsed basket threshold of $${Math.round(parsed.thresholdValue * 1_000_000).toLocaleString("en-US")} is below $1,000 — no real basket is that small, so this is likely a unit misread (a dropped scale, e.g. "$30 million" read as $30). Counsel to confirm the amount from the source text.`,
           terms: null,
           needsAttention: true,
         };
       }
     }
     if (terms != null) {
+      const uncapped = grants.length > 0 && parseFormulaFromItem(item).formulaType === "NONE_UNCAPPED";
       return {
         decision: "ACCEPTED",
-        reason:
-          grants.length > 0
+        reason: uncapped
+          ? "The clause affirmatively grants this permission with no finite cap in the clause — its stated conditions and the agreement's other clauses still apply."
+          : grants.length > 0
             ? "Compiles cleanly to a MODELED Permission with no unresolved conditions."
             : "Clean single-test maintenance ratio with no unresolved conditions.",
         terms,
@@ -112,6 +169,48 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
     return {
       decision: "REJECTED",
       reason: "No capacity effect — the provision neither grants nor restricts borrowing capacity.",
+      terms: null,
+      needsAttention: false,
+    };
+  }
+
+  // Phase E (D10) disclosure: a structurally unresolved item is a
+  // counsel exception — isRoutineItem above already refuses it —
+  // but the generic blocker chain below would name only its
+  // conditions / posture / parse state, and the no-signal branch
+  // would even propose a routine REJECT ("no capacity effect").
+  // Neither names the actual blocker: the item's placement in the
+  // agreement hierarchy is not certified. Name it first, in plain
+  // words, and keep any further blocker visible after it. This
+  // changes only the proposal text — never the gate, never a
+  // recorded decision.
+  if (item.structuralUnresolved === true) {
+    const remaining = remainingConditions(item);
+    return {
+      decision: "NEEDS_INPUT",
+      reason:
+        "Structural relationship unresolved: this provision's parent/article could not be established deterministically, so its placement in the agreement hierarchy is not certified. Counsel to confirm the governing article/section before relying on it." +
+        (remaining.length > 0
+          ? ` It also carries a condition Headroom cannot resolve: ${String(remaining[0])}.`
+          : ""),
+      terms: null,
+      needsAttention: true,
+    };
+  }
+
+  // Formula representation (step 3): a section stem has no
+  // capacity effect of its own — the section's operative clauses
+  // are itemized separately and carry the terms. Propose the
+  // no-effect decision and name the clauses, so the stem does not
+  // sit in the queue as a bare grant item with no terms. (A stem
+  // REJECT cannot supersede its clauses' Permissions: the reject
+  // prefix is keyed on (sourceId, sectionRef, category) with a
+  // trailing colon, and clause refs continue with "(" — verified
+  // in permission-code.ts.)
+  if ((item.sectionStemChildRefs?.length ?? 0) > 0) {
+    return {
+      decision: "REJECTED",
+      reason: `Section stem — no capacity effect of its own: the section's operative clauses are itemized separately (${(item.sectionStemChildRefs ?? []).join(", ")}) and carry the terms; rejecting the stem's standalone interpretation avoids double-counting them.`,
       terms: null,
       needsAttention: false,
     };
@@ -154,6 +253,26 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
   }
   if (grants.length > 0) {
     const parsed = parseFormulaFromItem(item);
+    // P4: the parse layer failed closed on a suspected unit
+    // misread — name that cause, not a generic parse failure.
+    if (parsed.notes.some((n) => /unit misread/i.test(n))) {
+      return {
+        decision: "NEEDS_INPUT",
+        reason:
+          "A parsed amount in this provision is below $1,000 — no real basket is that small, so it is likely a unit misread (a dropped scale, e.g. \"$30 million\" read as $30). Counsel to confirm the amount from the source text.",
+        terms: null,
+        needsAttention: true,
+      };
+    }
+    if (parsed.missingFields.includes("referenceExternal")) {
+      return {
+        decision: "NEEDS_INPUT",
+        reason:
+          "The clause's cap is set outside its own text — a schedule or exhibit, another provision, a defined term the engine could not resolve to an amount, the amount being refinanced, or a letter-of-credit face amount (missing: referenceExternal). Counsel to supply the terms or reject it.",
+        terms: null,
+        needsAttention: true,
+      };
+    }
     const missing = parsed.missingFields.length > 0 ? parsed.missingFields.join(", ") : "threshold / formula";
     return {
       decision: "NEEDS_INPUT",

@@ -1,17 +1,20 @@
 /**
- * Shared-capacity handling (residual issue 4) — CI-only: this file
- * imports compile-accepted, whose @prisma/client import the local
- * stale client cannot resolve (CI verifies).
+ * Shared-capacity handling (residual issue 4).
  * - A retrieval failure must not silently remove an operative
  *   aggregate cap: the legacy formula sync fails loudly instead
  *   of publishing independent-basket formulas.
  * - A group with ONE compiled member still binds: the aggregate
  *   cap limits the member (MIN(cap, member)).
+ *
+ * The fake Prisma client lives in vi.hoisted: vi.mock factories are
+ * hoisted above module-level const declarations, so closing over a
+ * plain top-level `fakePrisma` throws "Cannot access 'fakePrisma'
+ * before initialization" and the suite loads ZERO tests. Hoisting
+ * the fake keeps one mutable object the mock returns and the tests
+ * below can reprogram per case.
  */
 import { describe, expect, it, vi } from "vitest";
 
-// vi.mock is hoisted above every top-level statement, so the fake it returns must be created with
-// vi.hoisted (a plain top-level const is still in its TDZ when the mocked module is first imported).
 const { calls, fakePrisma } = vi.hoisted(() => {
   const calls = { documentUpdate: [] as unknown[] };
   const fakePrisma = {

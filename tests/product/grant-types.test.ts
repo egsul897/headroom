@@ -340,6 +340,51 @@ describe("rule 204: definitions-article items never mint grants", () => {
     } as any);
     expect(grants).toEqual([]);
   });
+
+  it("a 1.01 item under a titled non-definitions article heading is not classified by number alone (D17)", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const operative = {
+      heading: "Limitation on Liens", category: "LIENS_SECURED_DEBT",
+      plainEnglish: "Secured Indebtedness and Liens permitted.",
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [], families: [],
+    } as any;
+    // Control: the same operative item at a covenant-article ref mints.
+    expect(grantTypesForItem({ ...operative, sectionRef: "7.01(a)" })).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+    // At §1.01, a titled non-definitions article heading is
+    // affirmative structural evidence about which article the item
+    // sits in: the §1.01 number convention must not override it
+    // and suppress the grants.
+    expect(
+      grantTypesForItem({ ...operative, sectionRef: "1.01(a)", articleHeading: "ARTICLE I — GUARANTEE" }),
+    ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+    // With no heading evidence, the number fallback still
+    // classifies §1.01 as the definitions article (the Asure
+    // protection in the test above).
+    expect(grantTypesForItem({ ...operative, sectionRef: "1.01(a)" })).toEqual([]);
+    // A bare designator carries no title evidence either.
+    expect(grantTypesForItem({ ...operative, sectionRef: "1.01(a)", articleHeading: "ARTICLE I" })).toEqual([]);
+  });
+
+  it("a definitions article at a non-1.01 number is classified by its heading (Phase C branch)", async () => {
+    const { grantTypesForItem } = await import("../../lib/product/customer-intelligence/grant-types");
+    const rpItem = {
+      heading: "Limitation on Restricted Payments", category: "RESTRICTED_PAYMENTS",
+      plainEnglish: "Dividends permitted from the builder basket.",
+      permissions: [], materialBasketsThresholds: [], conditions: [], exceptions: [],
+      relatedDefinedTerms: [], applicableDefinitions: [], families: [],
+    } as any;
+    // Control: the same grant-bearing item outside a definitions
+    // article mints.
+    expect(
+      grantTypesForItem({ ...rpItem, sectionRef: "6.08(a)", articleHeading: "ARTICLE VI — NEGATIVE COVENANTS" }),
+    ).toEqual(["RESTRICTED_PAYMENT"]);
+    // Under a Definitions heading it mints nothing, whatever its
+    // number (the Tenable 1.02 shape).
+    expect(
+      grantTypesForItem({ ...rpItem, sectionRef: "1.02(d)", articleHeading: "ARTICLE I — DEFINITIONS" }),
+    ).toEqual([]);
+  });
 });
 
 /** Rule 203 tightening: excerpt evidence only for single-clause excerpts. */
@@ -438,5 +483,540 @@ describe("Rule 208 (revised): the analyzer's posture meta-phrase is not permissi
     expect(
       grantTypesForItem(item("Limitation on Liens", "LIENS_SECURED_DEBT", "Secured Indebtedness and Liens permitted.")),
     ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+  });
+});
+
+/**
+ * Rule 209 (representation step 2 — grant-detection precision):
+ * non-basket provisions mint no grants, and wrong-type grants on
+ * genuine clauses are corrected. Every fixture is synthetic.
+ * Note on Rule 209e vs the reverted Rule 208 category guard:
+ * the bar is evidence-graded, not categorical — a LIENS/GUARANTEES
+ * item whose text DIRECTLY permits the debt (cap frame, or a
+ * modal asserting this clause's permission) keeps its DEBT grant;
+ * only label-laundered and reference-form evidence is refused.
+ */
+describe("Rule 209: grant-detection precision", () => {
+  function rich(partial: Partial<CovenantSummaryItem>): CovenantSummaryItem {
+    return {
+      heading: "",
+      category: "OTHER",
+      plainEnglish: "",
+      families: [],
+      sectionRef: "",
+      operativeLanguageExcerpt: "",
+      ...partial,
+    } as unknown as CovenantSummaryItem;
+  }
+
+  it("209a: 'Secured' alone (ratio name) mints no LIEN and does not block the genuine RP grant", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "9.06(m)",
+          category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+          sectionRef: "9.06(m)",
+          plainEnglish:
+            "Section 9.06(m) operates as a conditional permission within the restricted payments regime. Permission substance: (m) Restricted Payments when the Secured Leverage Ratio is less than 4.00 to 1.00.",
+        }),
+      ),
+    ).toEqual(["RESTRICTED_PAYMENT"]);
+  });
+
+  it("209a: 'Secured Obligations' as a defined term mints no LIEN", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Limitation on Indebtedness",
+          category: "DEBT_INCURRENCE",
+          sectionRef: "9.03",
+          plainEnglish:
+            "Indebtedness under the revolving facility, together with the Secured Obligations thereunder, shall be repaid at maturity.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209b: the Available Amount alone (a prepayment mechanic) is not an RP grant", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Mandatory Prepayments",
+          category: "OTHER",
+          sectionRef: "9.05(b)",
+          plainEnglish:
+            "If the Available Amount is positive after a mandatory prepayment event, the Borrower shall prepay the Loans in an amount equal thereto.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209c: 'Guarantees by ...' is a guarantee permission, not an incurrence", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Guarantees",
+          category: "GUARANTEES",
+          sectionRef: "9.05(a)",
+          plainEnglish:
+            "Guarantees by any Loan Party of Indebtedness of any other Person, except Guarantees permitted under Section 9.04, are prohibited.",
+          operativeLanguageExcerpt:
+            "(a) Guarantees by any Loan Party of Indebtedness of any other Person, except Guarantees permitted under Section 9.04.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209c: 'Guarantee Obligations of ...' is a guarantee permission, not an incurrence", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Guarantees",
+          category: "GUARANTEES",
+          sectionRef: "9.05(d)",
+          plainEnglish:
+            "Guarantee Obligations of any Person in respect of Indebtedness of any other Person permitted under Section 9.04.",
+          operativeLanguageExcerpt:
+            "(d) Guarantee Obligations of any Person in respect of Indebtedness of any other Person permitted under Section 9.04.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209c preservation: a debt basket listing guarantees as a FORM of Indebtedness keeps DEBT (debt word first)", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Limitation on Indebtedness",
+          category: "DEBT_INCURRENCE",
+          sectionRef: "9.03(k)",
+          plainEnglish:
+            "Indebtedness, including Guarantee Obligations in respect of obligations of others, in an aggregate amount not to exceed $3,000,000.",
+          operativeLanguageExcerpt:
+            "(k) Indebtedness, including Guarantee Obligations in respect of obligations of others, in an aggregate amount not to exceed $3,000,000.",
+        }),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+  });
+
+  it("209d: 'Liens secure Indebtedness' (verb form) mints LIEN only", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Limitation on Liens",
+          category: "LIENS_SECURED_DEBT",
+          sectionRef: "9.01(d)",
+          plainEnglish:
+            "Permission substance: (d) Liens on equipment; provided that such Liens secure Indebtedness permitted by Section 9.02(e).",
+          operativeLanguageExcerpt:
+            "(d) Liens on equipment; provided that such Liens secure Indebtedness permitted by Section 9.02(e).",
+        }),
+      ),
+    ).toEqual(["LIEN"]);
+  });
+
+  it("209d: the lien-renewal frame mints LIEN only", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Limitation on Liens",
+          category: "LIENS_SECURED_DEBT",
+          sectionRef: "9.01(w)",
+          plainEnglish:
+            "Permission substance: (w) the renewal or extension of any Lien permitted by clause (a), so long as the Indebtedness secured thereby is permitted by Section 9.03.",
+          operativeLanguageExcerpt:
+            "(w) the renewal or extension of any Lien permitted by clause (a), so long as the Indebtedness secured thereby is permitted by Section 9.03.",
+        }),
+      ),
+    ).toEqual(["LIEN"]);
+  });
+
+  it("209e: label-laundered DEBT evidence on a LIENS item is refused (LIEN only)", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Limitation on Liens",
+          category: "LIENS_SECURED_DEBT",
+          sectionRef: "9.01(f)",
+          plainEnglish:
+            "Section 9.01(f) operates as a enumerated permission within the liens and secured debt regime. Permission substance: (f) deposits with banks in the ordinary course of business, other than Indebtedness for borrowed money, and Liens arising in connection therewith.",
+          operativeLanguageExcerpt:
+            "(f) deposits with banks in the ordinary course of business, other than Indebtedness for borrowed money.",
+        }),
+      ),
+    ).toEqual(["LIEN"]);
+  });
+
+  it("209e: reference-form DEBT evidence on a LIENS item is refused (LIEN only)", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Limitation on Liens",
+          category: "LIENS_SECURED_DEBT",
+          sectionRef: "9.01(q)",
+          plainEnglish:
+            "Permission substance: (q) Liens on property acquired with Indebtedness permitted under Section 9.02(b).",
+          operativeLanguageExcerpt:
+            "(q) Liens on property acquired with Indebtedness permitted under Section 9.02(b).",
+        }),
+      ),
+    ).toEqual(["LIEN"]);
+  });
+
+  it("209e preservation: a LIENS item that itself caps the debt keeps DEBT+LIEN", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Limitation on Liens",
+          category: "LIENS_SECURED_DEBT",
+          sectionRef: "9.01(u)",
+          plainEnglish:
+            "Permission substance: (u) Indebtedness of any Subsidiary in an aggregate amount not to exceed $3,000,000, secured by Liens on its property.",
+          operativeLanguageExcerpt:
+            "(u) Indebtedness of any Subsidiary in an aggregate amount not to exceed $3,000,000, secured by Liens on its property.",
+        }),
+      ),
+    ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+  });
+
+  it("209f: a cross-category clause whose lien words sit in a condition mints no LIEN", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Letters of Credit",
+          category: "OTHER",
+          sectionRef: "9.03(q)",
+          plainEnglish: "Section 9.03(q) states a general prohibition for the Borrower.",
+          operativeLanguageExcerpt:
+            "(q) upon the occurrence of an Event of Default, the Borrower shall Cash Collateralize all Letter of Credit Outstandings and deposit Collateral with the Agent.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209f preservation: a clause with 'Liens permitted by' evidence keeps its LIEN", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Investments",
+          category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+          sectionRef: "9.02(z)",
+          plainEnglish:
+            "Permission substance: (z) Liens solely on any cash earnest money deposits made by the Borrower in connection with any purchase agreement permitted hereunder.",
+          operativeLanguageExcerpt:
+            "(z) Liens solely on any cash earnest money deposits made by the Borrower in connection with any purchase agreement permitted hereunder.",
+        }),
+      ),
+    ).toEqual(["LIEN"]);
+  });
+
+  it("209f preservation: SECTION-level items are exempt (the stem's evidence is its section)", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Collateral and Guaranty Matters",
+          category: "GUARANTEES",
+          sectionRef: "9.04",
+          plainEnglish:
+            "This Section governs Collateral matters; the Agent may release Liens and Guarantees in accordance with this Section.",
+        }),
+      ),
+    ).toEqual(["LIEN"]);
+  });
+
+  it("209f gain: an investments clause whose only lien signal is an unevidenced condition mints INVESTMENT, not LIEN", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Investments",
+          category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+          sectionRef: "9.04(a)",
+          plainEnglish:
+            "Section 9.04(a) operates as a enumerated permission within the investments regime for Borrower. Material baskets: (a) Investments in Subsidiaries, provided the Agent holds a security interest and Liens on their assets.",
+          operativeLanguageExcerpt:
+            "(a) Investments in Subsidiaries, provided the Agent holds a security interest and Liens on their assets.",
+        }),
+      ),
+    ).toEqual(["INVESTMENT"]);
+  });
+
+  it("209g: combined branch grounds each family in the clause's own text (investments-only clause)", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "9.03(a)",
+          category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+          sectionRef: "9.03(a)",
+          plainEnglish:
+            "Section 9.03(a) relates to restricted payments and investments, but its posture could not be determined. Permission substance: (a) Investments in cash and Cash Equivalents held in deposit accounts.",
+          operativeLanguageExcerpt: "(a) Investments in cash and Cash Equivalents held in deposit accounts;",
+        }),
+      ),
+    ).toEqual(["INVESTMENT"]);
+  });
+
+  it("209g: combined branch grounding (RP-only clause)", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "9.03(b)",
+          category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+          sectionRef: "9.03(b)",
+          plainEnglish:
+            "Section 9.03(b) relates to restricted payments and investments, but its posture could not be determined. Permission substance: (b) Restricted Payments in respect of tax distributions to equity holders.",
+          operativeLanguageExcerpt: "(b) Restricted Payments in respect of tax distributions to equity holders;",
+        }),
+      ),
+    ).toEqual(["RESTRICTED_PAYMENT"]);
+  });
+
+  it("209g fail-closed: a clause whose excerpt names NEITHER family keeps both grants", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "9.03(c)",
+          category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+          sectionRef: "9.03(c)",
+          plainEnglish:
+            "Section 9.03(c) relates to restricted payments and investments, but its posture could not be determined. Permission substance: (c) transactions under the builder basket in an amount not to exceed $3,000,000.",
+          operativeLanguageExcerpt: "(c) the transactions described in this clause;",
+        }),
+      ),
+    ).toEqual(["RESTRICTED_PAYMENT", "INVESTMENT"]);
+  });
+
+  it("209h: a payment-default trigger grants nothing", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Events of Default",
+          category: "OTHER",
+          sectionRef: "9.02(c)",
+          plainEnglish: "Section 9.02(c) states a general prohibition for Loan Parties.",
+          operativeLanguageExcerpt:
+            "(c) any Loan Party shall fail to make any payment in respect of any Material Indebtedness when due and payable.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209h: a collateral-validity trigger grants nothing", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Events of Default",
+          category: "LIENS_SECURED_DEBT",
+          sectionRef: "9.02(p)",
+          plainEnglish: "Section 9.02(p) states a general prohibition for Loan Parties.",
+          operativeLanguageExcerpt:
+            "(p) any Collateral Document shall fail to create a valid security interest in any Collateral purported to be covered thereby.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209i: an item inside an Events-of-Default ARTICLE grants nothing whatever its category", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "9.01(k)",
+          category: "LIENS_SECURED_DEBT",
+          sectionRef: "9.01(k)",
+          articleHeading: "ARTICLE VIII EVENTS OF DEFAULT",
+          plainEnglish:
+            "Liens and Collateral securing the Obligations shall be enforceable by the Agent upon the occurrence of the events described herein.",
+          operativeLanguageExcerpt: "(k) Liens and Collateral securing the Obligations.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209i: an item inside a Conditions Precedent article grants nothing", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Conditions to Loans",
+          category: "DEBT_INCURRENCE",
+          sectionRef: "9.01(a)",
+          articleHeading: "ARTICLE IV CONDITIONS PRECEDENT",
+          plainEnglish:
+            "Indebtedness not to exceed $3,000,000 may be incurred when each condition precedent to the initial Loan is satisfied.",
+          operativeLanguageExcerpt:
+            "(a) Indebtedness not to exceed $3,000,000 may be incurred when each condition precedent is satisfied.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209j: a restrictive-agreements exception grants nothing (the permission runs to the restriction)", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Restrictive Agreements",
+          category: "OTHER",
+          sectionRef: "9.10(e)",
+          plainEnglish:
+            "Permission substance: (e) restrictions imposed by any agreement relating to secured Indebtedness permitted by this Agreement on the date hereof.",
+          operativeLanguageExcerpt:
+            "(e) restrictions imposed by any agreement relating to secured Indebtedness permitted by this Agreement on the date hereof;",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209k: an EBITDA fee/expense add-back component grants nothing", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Consolidated EBITDA",
+          category: "OTHER",
+          sectionRef: "9.14(xiv)",
+          plainEnglish:
+            "Permission substance: (xiv) any fees, costs and expenses in connection with any acquisition or issuance of Indebtedness, in an aggregate amount not to exceed 5% of the aggregate consideration therefor.",
+          operativeLanguageExcerpt:
+            "(xiv) any fees, costs and expenses in connection with any acquisition or issuance of Indebtedness, in an aggregate amount not to exceed 5% of the aggregate consideration therefor;",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209l: a payment-frame clause (prepay/redeem) grants no incurrence", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Optional and Mandatory Prepayments",
+          category: "DEBT_INCURRENCE",
+          sectionRef: "9.08(a)",
+          plainEnglish:
+            "Permission substance: (a) Prepay, redeem, purchase or defease any subordinated Indebtedness, except with the proceeds of Indebtedness permitted by Section 9.03.",
+          operativeLanguageExcerpt:
+            "(a) Prepay, redeem, purchase or defease any subordinated Indebtedness, except with the proceeds of Indebtedness permitted by Section 9.03.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209l preservation: a purchase-money clause still mints DEBT (PURCHASE is not a payment-frame head)", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Limitation on Indebtedness",
+          category: "DEBT_INCURRENCE",
+          sectionRef: "9.03(b)",
+          plainEnglish:
+            "Permission substance: (b) purchase money Indebtedness incurred to finance equipment, in an aggregate amount not to exceed $3,000,000.",
+          operativeLanguageExcerpt:
+            "(b) purchase money Indebtedness incurred to finance equipment, in an aggregate amount not to exceed $3,000,000.",
+        }),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+  });
+
+  it("209m: a [reserved] clause grants nothing", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "9.02(aa)",
+          category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+          sectionRef: "9.02(aa)",
+          plainEnglish:
+            "Section 9.02(aa) relates to restricted payments and investments, but its posture could not be determined.",
+          operativeLanguageExcerpt: "(aa) [reserved]; 118",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209n: a bare-integer sectionRef (definitions enumeration fragment) grants nothing", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Excluded Property",
+          category: "LIENS_SECURED_DEBT",
+          sectionRef: "40(a)",
+          plainEnglish: "Excluded Property shall not include Collateral Interests in real property or Capital Stock.",
+          operativeLanguageExcerpt: "(a) Excluded Property shall not include Collateral Interests in real property.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209o: an article-level (pure roman) sectionRef grants nothing", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Miscellaneous",
+          category: "OTHER",
+          sectionRef: "VI",
+          plainEnglish: "The Collateral Trustee shall hold all Liens for the benefit of the Secured Parties.",
+          operativeLanguageExcerpt: "The Collateral Trustee shall hold all Liens for the benefit of the Secured Parties.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209p: definition-shaped text (two defined-term introductions) grants nothing", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "9.03(iv)",
+          category: "DEBT_INCURRENCE",
+          sectionRef: "9.03(iv)",
+          plainEnglish:
+            "Section 9.03(iv) relates to restricted payments and investments, but its posture could not be determined.",
+          operativeLanguageExcerpt:
+            '(iv) such Person is solvent after giving effect thereto. "Designated Account" means the account specified in Schedule 9.01. "Excluded Subsidiary" has the meaning specified in Section 9.01(b).',
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("209p preservation: a basket naming one defined term inline still mints", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Investments",
+          category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+          sectionRef: "9.03(a)",
+          plainEnglish:
+            "Permission substance: (a) Investments in Designated Subsidiaries in an aggregate amount not to exceed $3,000,000.",
+          operativeLanguageExcerpt:
+            '(a) Investments in "Designated Subsidiaries" (as defined in Section 1.01) in an aggregate amount not to exceed $3,000,000;',
+        }),
+      ),
+    ).toEqual(["INVESTMENT"]);
+  });
+
+  it("209q: a DEBT-filed item whose debt evidence failed does not fall through to INVESTMENT on 'Permitted Acquisition'", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "Limitation on Indebtedness",
+          category: "DEBT_INCURRENCE",
+          sectionRef: "9.03(v)",
+          plainEnglish:
+            "Section 9.03(v) operates as a conditional permission within the debt incurrence regime. Permission substance: (v) Indebtedness assumed in connection with a Permitted Acquisition or other similar Investment not prohibited hereunder, so long as the Total Net Leverage Ratio is not greater than 5.25 to 1.00.",
+          operativeLanguageExcerpt:
+            "(v) Indebtedness assumed in connection with a Permitted Acquisition or other similar Investment not prohibited hereunder, so long as the Total Net Leverage Ratio is not greater than 5.25 to 1.00; and (ii) any Liens securing Indebtedness permitted under this clause shall attach only to the assets so acquired.",
+        }),
+      ),
+    ).toEqual([]);
+  });
+
+  it("no posture gate: an OBLIGATION-posture investment basket still mints (posture is evidence, not a gate)", () => {
+    expect(
+      grantTypesForItem(
+        rich({
+          heading: "9.03(p)",
+          category: "RESTRICTED_PAYMENTS_INVESTMENTS",
+          sectionRef: "9.03(p)",
+          posture: "OBLIGATION",
+          plainEnglish:
+            "Section 9.03(p) imposes an affirmative or ongoing obligation related to restricted payments and investments. Material baskets/thresholds identified: Amount/threshold: $750,000.",
+          operativeLanguageExcerpt:
+            "(p) other Investments not exceeding $750,000 in any fiscal year, so long as no Default has occurred and is continuing.",
+        }),
+      ),
+    ).toEqual(["INVESTMENT"]);
   });
 });

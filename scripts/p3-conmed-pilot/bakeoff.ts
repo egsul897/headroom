@@ -6,12 +6,12 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { buildDeterministicStages, sealedPopulation, rehydrateNodeIds, operativeTextFor } from "./pipeline";
 import { dedupExact } from "./dedup";
 import { estimatedCostPerCandidate, isPremiumById, VIABILITY_CEILING_USD_PER_CANDIDATE, PREFERRED_CEILING_USD_PER_CANDIDATE } from "./premium-lock";
 import type { GatewayModel } from "./probe-models";
 import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/discovery/types";
-import { PRIOR_TIER1_RECORDS, gatewayCataloguePath, pilotPath } from "./pilot-paths";
 
 const ROOT = process.cwd();
 
@@ -40,7 +40,17 @@ export function capabilityFloor(m: GatewayModel): { ok: boolean; reason: string 
   return { ok: true, reason: null };
 }
 
-export function discoverModels(cataloguePath = gatewayCataloguePath()): BakeoffCandidateModel[] {
+/**
+ * Default catalogue / prior-tier-1 inputs: the committed synthetic test
+ * fixtures (the originals were operator scratch files under
+ * /tmp/claude-0/pilot/ and did not survive). CONMED_BAKEOFF_CATALOGUE_PATH
+ * and CONMED_TIER1_PATH point the harness at live operator copies.
+ */
+const FIXTURE_DIR = fileURLToPath(new URL("../../tests/phase-3-conmed-pilot/fixtures/", import.meta.url));
+export const DEFAULT_BAKEOFF_CATALOGUE_PATH = process.env.CONMED_BAKEOFF_CATALOGUE_PATH ?? path.join(FIXTURE_DIR, "models-bakeoff.json");
+export const DEFAULT_TIER1_PATH = process.env.CONMED_TIER1_PATH ?? path.join(FIXTURE_DIR, "03-tier1.json");
+
+export function discoverModels(cataloguePath = DEFAULT_BAKEOFF_CATALOGUE_PATH): BakeoffCandidateModel[] {
   const data = JSON.parse(fs.readFileSync(cataloguePath, "utf8")).data as GatewayModel[];
   return data
     .map((m): BakeoffCandidateModel => {
@@ -112,15 +122,12 @@ export interface ProbeSlot {
   priorOutcome: string;
 }
 
-export function buildProbeSet(priorTier1Path = PRIOR_TIER1_RECORDS): ProbeSlot[] {
+export function buildProbeSet(priorTier1Path = DEFAULT_TIER1_PATH): ProbeSlot[] {
   const stages = buildDeterministicStages();
   const { rehydrated } = rehydrateNodeIds(sealedPopulation().eligible, stages.index);
   const { keep } = dedupExact(rehydrated, (c) => operativeTextFor(c, stages.index));
   const priorAbs = path.isAbsolute(priorTier1Path) ? priorTier1Path : path.join(ROOT, priorTier1Path);
-  type PriorRow = { discoveryId: string; status: string; failureReasons: string[]; sourceSectionRef: string; sourceTextChars: number; inputTokens: number | null };
-  // Either the raw run file (an array) or the committed §8 artifact that wraps the same rows in {records}.
-  const parsed = JSON.parse(fs.readFileSync(priorAbs, "utf8")) as PriorRow[] | { records: PriorRow[] };
-  const prior = Array.isArray(parsed) ? parsed : parsed.records;
+  const prior = JSON.parse(fs.readFileSync(priorAbs, "utf8")) as { discoveryId: string; status: string; failureReasons: string[]; sourceSectionRef: string; sourceTextChars: number; inputTokens: number | null }[];
   const priorById = new Map(prior.map((r) => [r.discoveryId, r]));
 
   const withText = keep
@@ -174,5 +181,5 @@ if (process.argv[1]?.endsWith("bakeoff.ts")) {
   const probes = buildProbeSet();
   console.log(`\nprobe set (${probes.length}):`);
   console.table(probes.map((p) => ({ axis: p.axis, ref: p.sourceSectionRef, chars: p.sourceTextChars, prior: p.priorOutcome })));
-  fs.writeFileSync(pilotPath("bakeoff-plan.json"), JSON.stringify({ models, probes }, null, 2));
+  fs.writeFileSync("/tmp/claude-0/pilot/bakeoff-plan.json", JSON.stringify({ models, probes }, null, 2));
 }

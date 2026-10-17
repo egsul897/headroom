@@ -3,13 +3,13 @@
  * Stages 1–11 without LLM. Paid semantic compilation remains disabled.
  */
 
-import { KNOWLEDGE_FACTORY_VERSION, type CorpusManifestStats, type DiscoveredFilingDocument, type KnowledgeSourceRecord } from "../types";
+import { KNOWLEDGE_FACTORY_VERSION, type CorpusManifestStats, type CrossReferenceRecord, type DiscoveredFilingDocument, type KnowledgeSourceRecord, type RedlineAmbiguityRecord } from "../types";
 import { CorpusStore } from "../store/corpus-store";
 import { EdgarKnowledgeClient } from "../edgar/client";
 import { validateSourceUrl } from "../edgar/client";
 import { classifyDebtDocument } from "../classify/debt-document";
 import { scoreDiscoveryPotential } from "../rank/discovery-score";
-import { extractTextAsync, hashBytes } from "./text";
+import { extractTextAsync, hashBytes, type RedlineSpanInText } from "./text";
 import { extractStructure } from "./structural";
 import { discoverCovenantCandidates } from "./candidates";
 import { extractConditionsAndExceptions } from "./conditions";
@@ -36,10 +36,57 @@ export interface ProcessDocumentResult {
   candidateCount: number;
   definitionCount: number;
   crossReferenceCount: number;
+  /** Extraction-level resolution breakdown of crossReferenceCount
+   * (Stage 0 instrumentation — no behavior change): resolved = a
+   * unique same-document target node was identified; ambiguous =
+   * the target matched more than one physical occurrence and was
+   * never guessed; notFound = no matching node (including
+   * schedule/exhibit references, unresolved by design). The three
+   * counts sum to crossReferenceCount. Structural facts only —
+   * nothing here asserts legal applicability or authority. */
+  resolvedCrossReferenceCount: number;
+  ambiguousCrossReferenceCount: number;
+  notFoundCrossReferenceCount: number;
   conditionExceptionCount: number;
   ambiguousCount: number;
+  /**
+   * Redline port (from PR #428): redline-ambiguous spans recorded at
+   * extraction (unmatched struck-through elements). The spans' text
+   * stays in the document as evidence; provisions intersecting them
+   * are flagged downstream and mint no authoritative conclusions.
+   */
+  redlineAmbiguousSpanCount: number;
+  /**
+   * D12: structural-index health ERROR count computed by
+   * extractStructure for this document. Wired through from the
+   * extraction result (previously computed and dropped here);
+   * 0 on paths where no structure was extracted.
+   */
+  structuralHealthErrors: number;
+  /** D12: nodes carrying ≥1 structural-integrity violation. */
+  structuralViolationNodes: number;
   processingMs: number;
   wasDuplicate: boolean;
+}
+
+/** Bucket stored cross-reference records by their extraction-level
+ * resolution outcome. A record counts as resolved only when the
+ * detector stored resolved=true (unique target); targetAmbiguous
+ * records are never upgraded. */
+export function crossReferenceResolutionCounts(refs: CrossReferenceRecord[]): {
+  resolved: number;
+  ambiguous: number;
+  notFound: number;
+} {
+  let resolved = 0;
+  let ambiguous = 0;
+  let notFound = 0;
+  for (const r of refs) {
+    if (r.resolved) resolved += 1;
+    else if (r.targetAmbiguous) ambiguous += 1;
+    else notFound += 1;
+  }
+  return { resolved, ambiguous, notFound };
 }
 
 export async function processAcquiredDocument(store: CorpusStore, input: ProcessDocumentInput): Promise<ProcessDocumentResult> {
@@ -58,14 +105,24 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
     if (!list.includes(discovered.sourceId)) list.push(discovered.sourceId);
     aliasMeta[existingByHash.sourceId] = list;
     store.writeJson("dedupe-aliases.json", aliasMeta);
+    const existingRefs = store.loadCrossReferences(existingByHash.sourceId);
+    const existingRes = crossReferenceResolutionCounts(existingRefs);
     return {
       source: existingByHash,
       structuralNodeCount: store.loadStructuralNodes(existingByHash.sourceId).length,
       candidateCount: store.loadCandidates(existingByHash.sourceId).length,
       definitionCount: store.loadDefinitions(existingByHash.sourceId).length,
-      crossReferenceCount: store.loadCrossReferences(existingByHash.sourceId).length,
+      crossReferenceCount: existingRefs.length,
+      resolvedCrossReferenceCount: existingRes.resolved,
+      ambiguousCrossReferenceCount: existingRes.ambiguous,
+      notFoundCrossReferenceCount: existingRes.notFound,
       conditionExceptionCount: store.loadConditions(existingByHash.sourceId).length,
       ambiguousCount: store.loadStructuralNodes(existingByHash.sourceId).filter((n) => n.ambiguous).length,
+      redlineAmbiguousSpanCount: store.loadRedlineAmbiguities(existingByHash.sourceId).length,
+      structuralHealthErrors: existingByHash.structuralHealthErrors ?? 0,
+      structuralViolationNodes: store
+        .loadStructuralNodes(existingByHash.sourceId)
+        .filter((n) => (n.structuralViolations?.length ?? 0) > 0).length,
       processingMs: Date.now() - started,
       wasDuplicate: true,
     };
@@ -111,10 +168,12 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
   // Text extraction
   let text: string;
   let normalizedTextHash: string;
+  let redlineSpans: RedlineSpanInText[] = [];
   try {
     const extracted = await extractTextAsync(bytes, discovered.exhibit.filename);
     text = extracted.text;
     normalizedTextHash = extracted.normalizedTextHash;
+    redlineSpans = extracted.redlineAmbiguities;
     source = {
       ...source,
       normalizedTextHash,
@@ -130,8 +189,14 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       candidateCount: 0,
       definitionCount: 0,
       crossReferenceCount: 0,
+      resolvedCrossReferenceCount: 0,
+      ambiguousCrossReferenceCount: 0,
+      notFoundCrossReferenceCount: 0,
       conditionExceptionCount: 0,
       ambiguousCount: 0,
+      redlineAmbiguousSpanCount: 0,
+      structuralHealthErrors: 0,
+      structuralViolationNodes: 0,
       processingMs: Date.now() - started,
       wasDuplicate: false,
     };
@@ -146,8 +211,14 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       candidateCount: 0,
       definitionCount: 0,
       crossReferenceCount: 0,
+      resolvedCrossReferenceCount: 0,
+      ambiguousCrossReferenceCount: 0,
+      notFoundCrossReferenceCount: 0,
       conditionExceptionCount: 0,
       ambiguousCount: 0,
+      redlineAmbiguousSpanCount: 0,
+      structuralHealthErrors: 0,
+      structuralViolationNodes: 0,
       processingMs: Date.now() - started,
       wasDuplicate: false,
     };
@@ -176,6 +247,20 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
   const conditions = extractConditionsAndExceptions(discovered.sourceId, text, structural.nodes);
   store.saveConditions(discovered.sourceId, conditions);
 
+  // Redline port (from PR #428): persist the redline-ambiguity
+  // records produced at extraction, so the summary build (and any
+  // later consumer) can flag provisions whose source intersects an
+  // ambiguous span.
+  const redlineRecords: RedlineAmbiguityRecord[] = redlineSpans.map((s) => ({
+    sourceId: discovered.sourceId,
+    charStart: s.charStart,
+    charEnd: s.charEnd,
+    tagName: s.tagName,
+    reason: "UNMATCHED_REDLINE_ELEMENT",
+    text: s.text,
+  }));
+  store.saveRedlineAmbiguities(discovered.sourceId, redlineRecords);
+
   source = {
     ...source,
     documentClass: classified.documentClass,
@@ -183,6 +268,8 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
     extractionStatus: "CANDIDATES_DISCOVERED",
     representationLevel: candidates.length > 0 ? "DISCOVERED_CANDIDATE" : "STRUCTURALLY_INDEXED",
     normalizedTextHash,
+    redlineAmbiguousSpanCount: redlineRecords.length,
+    structuralHealthErrors: structural.structuralHealthErrors,
   };
   source = attachInstrumentIdentity(source);
   assertRepresentationCannotApproveCapacity(source.representationLevel);
@@ -193,14 +280,21 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
   recordCost(store, "STORAGE_BYTES", bytes.length, "bytes", false, contentHash);
   recordCost(store, "DOWNLOAD_BYTES", bytes.length, "bytes", false, discovered.sourceId);
 
+  const resCounts = crossReferenceResolutionCounts(structural.crossReferences);
   return {
     source,
     structuralNodeCount: structural.nodes.length,
     candidateCount: candidates.length,
     definitionCount: structural.definitions.length,
     crossReferenceCount: structural.crossReferences.length,
+    resolvedCrossReferenceCount: resCounts.resolved,
+    ambiguousCrossReferenceCount: resCounts.ambiguous,
+    notFoundCrossReferenceCount: resCounts.notFound,
     conditionExceptionCount: conditions.length,
     ambiguousCount: structural.ambiguousCount,
+    redlineAmbiguousSpanCount: redlineRecords.length,
+    structuralHealthErrors: structural.structuralHealthErrors,
+    structuralViolationNodes: structural.nodes.filter((n) => (n.structuralViolations?.length ?? 0) > 0).length,
     processingMs,
     wasDuplicate: false,
   };
@@ -341,10 +435,24 @@ export function finalizeCorpusIndex(store: CorpusStore): CorpusManifestStats {
   stats.structuralNodes = sources.reduce((n, s) => n + store.loadStructuralNodes(s.sourceId).length, 0);
   stats.covenantCandidates = allCandidates.length;
   stats.definitions = sources.reduce((n, s) => n + store.loadDefinitions(s.sourceId).length, 0);
-  stats.crossReferences = sources.reduce((n, s) => n + store.loadCrossReferences(s.sourceId).length, 0);
+  const allCrossReferences = sources.flatMap((s) => store.loadCrossReferences(s.sourceId));
+  stats.crossReferences = allCrossReferences.length;
+  const corpusRes = crossReferenceResolutionCounts(allCrossReferences);
+  stats.resolvedCrossReferences = corpusRes.resolved;
+  stats.ambiguousCrossReferences = corpusRes.ambiguous;
+  stats.notFoundCrossReferences = corpusRes.notFound;
   stats.unsupportedFormats = sources.filter((s) => s.extractionStatus === "UNSUPPORTED_FORMAT").length;
   stats.duplicateRate = sources.length === 0 ? 0 : dups.length / sources.length;
   stats.errors = sources.filter((s) => s.extractionStatus === "FAILED").length;
+  // D12: surface the structural health the pipeline computed per
+  // document — health ERRORs persisted on each source record at
+  // process time (absent on legacy records, counted as 0) and
+  // violation-bearing nodes counted from the persisted nodes.
+  stats.structuralHealthErrors = sources.reduce((n, s) => n + (s.structuralHealthErrors ?? 0), 0);
+  stats.structuralViolationNodes = sources.reduce(
+    (n, s) => n + (nodesBySource.get(s.sourceId) ?? []).filter((node) => (node.structuralViolations?.length ?? 0) > 0).length,
+    0,
+  );
   stats.measuredProcessingMs = costs.parsingMs;
   stats.actualPaidSpendUsd = costs.actualPaidUsd;
 
