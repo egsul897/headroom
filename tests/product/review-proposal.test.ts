@@ -12,7 +12,7 @@ function item(overrides: Partial<CovenantSummaryItem> = {}): CovenantSummaryItem
   return {
     heading: "6.01(a)",
     sectionRef: "6.01(a)",
-    category: "INDEBTEDNESS",
+    category: "DEBT_INCURRENCE",
     posture: "ENUMERATED_PERMISSION",
     plainEnglish: "The Borrower may incur Indebtedness in an aggregate principal amount not to exceed $50,000,000.",
     restriction: null,
