@@ -22,14 +22,47 @@ import { AUTHORITY_STATUS, LEARNED_RULES_SCHEMA } from "./types";
 
 export const GENERALIZE_V2_NOTE = "issuer-generalized v2";
 
-/** Independent-issuer key for a source: ticker (normalised), else CIK, else the fixture family slug. */
-export function issuerKey(source: { sourceId: string; issuerCik?: string | null; ticker?: string | null }): string {
+/** CIK → issuer name, and fixture slug → issuer name (e.g. from the DEV manifest's devIssuerCiks). */
+export interface IssuerAliases {
+  byCik: Record<string, string>;
+  bySlug: Record<string, string>;
+}
+
+const normCikKey = (c: string | null | undefined) => (c ?? "").replace(/\D/g, "").replace(/^0+/, "");
+
+/** Build aliases from manifest-style entries: a slug maps to an issuer when it equals the issuer name or starts a word of its evidence. */
+export function issuerAliases(entries: ReadonlyArray<{ cik: string; issuer: string; evidence?: string }>, slugs: readonly string[]): IssuerAliases {
+  const byCik: Record<string, string> = {};
+  for (const e of entries) if (normCikKey(e.cik)) byCik[normCikKey(e.cik)] = e.issuer.toUpperCase();
+  const bySlug: Record<string, string> = {};
+  for (const slug of [...new Set(slugs.map((s) => s.toLowerCase()))].sort()) {
+    const hit = entries.find(
+      (e) => e.issuer.toLowerCase() === slug || (slug.length >= 3 && new RegExp(`(?:^|[^a-z])${slug}`, "i").test(e.evidence ?? "")),
+    );
+    if (hit) bySlug[slug] = hit.issuer.toUpperCase();
+  }
+  return { byCik, bySlug };
+}
+
+/** Fixture family slug of a source id ("fixture:conmed-2025-…" → "conmed", "fdp:CHWY-2026-CA" → "chwy"). */
+export function fixtureSlug(sourceId: string): string | null {
+  const m = /^(?:fixture|fdp):([A-Za-z]+)/.exec(sourceId);
+  return m ? m[1]!.toLowerCase() : null;
+}
+
+/**
+ * Independent-issuer key: the aliased issuer for the CIK, else the ticker, else the aliased fixture slug, else the
+ * raw CIK / slug. Two rows of one company (ticker-less and ticker rows, a second CIK, a fixture) get one key.
+ */
+export function issuerKey(source: { sourceId: string; issuerCik?: string | null; ticker?: string | null }, aliases?: IssuerAliases): string {
+  const cik = normCikKey(source.issuerCik);
+  if (cik && aliases?.byCik[cik]) return `I:${aliases.byCik[cik]}`;
   const t = source.ticker ? source.ticker.toUpperCase().replace(/_(?:ALT|SEL)$/, "") : null;
-  if (t) return `T:${t}`;
-  const cik = (source.issuerCik ?? "").replace(/\D/g, "").replace(/^0+/, "");
+  if (t) return `I:${t}`;
+  const slug = fixtureSlug(source.sourceId);
+  if (slug && aliases?.bySlug[slug]) return `I:${aliases.bySlug[slug]}`;
   if (cik) return `C:${cik}`;
-  const m = /^(?:fixture|fdp):([A-Za-z]+)/.exec(source.sourceId);
-  return m ? `F:${m[1]!.toUpperCase()}` : `S:${source.sourceId}`;
+  return slug ? `F:${slug.toUpperCase()}` : `S:${source.sourceId}`;
 }
 
 export interface SkeletonToken {
@@ -156,18 +189,26 @@ export interface SeedUnit {
 
 export interface GeneralizeOptions {
   minIssuers: number;
+  /** Minimum aligned tokens in a rule. */
   minTokens: number;
+  /** Opening length (tokens) considered per seed. */
   maxTokens: number;
   minContentWords: number;
+  /** Max words skipped between two aligned tokens (drafting variation, e.g. "shall not, nor permit any X to,"). */
+  maxGapWords: number;
+  /** The alignment must start within this many tokens of each seed's opening. */
+  maxLeadTokens: number;
   /** Fixed timestamp so the ruleset hash is reproducible. */
   synthesizedAt: string;
 }
 
 export const DEFAULT_GENERALIZE_OPTIONS: GeneralizeOptions = {
   minIssuers: 2,
-  minTokens: 6,
-  maxTokens: 14,
+  minTokens: 5,
+  maxTokens: 16,
   minContentWords: 3,
+  maxGapWords: 3,
+  maxLeadTokens: 2,
   synthesizedAt: "1970-01-01T00:00:00.000Z",
 };
 
@@ -180,41 +221,103 @@ export interface GeneralizedCandidate {
 
 const ruleIdOf = (signature: string) => `lg2:${createHash("sha256").update(signature).digest("hex").slice(0, 16)}`;
 
-/**
- * Cluster seed units by shared slot-skeleton prefix and emit one PROPOSED rule per skeleton that at least
- * `minIssuers` issuers share. For each unit the longest qualifying prefix is used; identical rules are merged.
- */
-export function synthesizeIssuerGeneralized(units: readonly SeedUnit[], opts: GeneralizeOptions = DEFAULT_GENERALIZE_OPTIONS): GeneralizedCandidate[] {
-  const sk = units.map((u) => skeleton(u.text, opts.maxTokens));
-  // prefix signature → unit indexes
-  const groups = new Map<string, number[]>();
-  sk.forEach((toks, ui) => {
-    for (let k = opts.minTokens; k <= Math.min(opts.maxTokens, toks.length); k++) {
-      const sig = toks.slice(0, k).map((t) => t.id).join(">");
-      let g = groups.get(sig);
-      if (!g) groups.set(sig, (g = []));
-      g.push(ui);
-    }
-  });
-  const issuersOf = (idx: number[]) => new Set(idx.map((i) => units[i]!.issuer));
-  const chosen = new Map<string, number>(); // signature → k
-  sk.forEach((toks, ui) => {
-    for (let k = Math.min(opts.maxTokens, toks.length); k >= opts.minTokens; k--) {
-      const prefix = toks.slice(0, k);
-      if (contentWords(prefix) < opts.minContentWords) continue;
-      const sig = prefix.map((t) => t.id).join(">");
-      if (issuersOf(groups.get(sig) ?? []).size >= opts.minIssuers) {
-        chosen.set(sig, k);
-        break;
+/** Rule step: a token plus whether a few words may be skipped before it. */
+interface Step {
+  tok: SkeletonToken;
+  loose: boolean;
+}
+
+const LOOSE_GAP = (n: number) => String.raw`(?:${GAP}[A-Za-z][A-Za-z'’-]*){0,${n}}?${GAP}`;
+/** A rule starts at a clause start: document start, after sentence/clause punctuation, a list label or a line break. */
+const CLAUSE_START = String.raw`(?<=(?:^|[.;:!?\n]|\((?:[a-z]{1,3}|[ivxl]{1,6}|\d{1,2})\))[\s"“]{0,4})`;
+
+export function stepsPattern(steps: readonly Step[], maxGapWords: number): string {
+  return CLAUSE_START + steps.map((st, i) => (i === 0 ? "" : st.loose ? LOOSE_GAP(maxGapWords) : GAP) + st.tok.pattern).join("");
+}
+export const stepsSignature = (steps: readonly Step[]) => steps.map((st, i) => (i > 0 && st.loose ? "~" : "") + st.tok.id).join(">");
+
+/** Longest common subsequence of two token-id lists under the lead / gap limits; returns aligned steps. */
+export function alignSkeletons(a: readonly SkeletonToken[], b: readonly SkeletonToken[], opts: Pick<GeneralizeOptions, "maxGapWords" | "maxLeadTokens">): Step[] {
+  const n = a.length;
+  const m = b.length;
+  // dp[i][j] = best chain length ending at (i, j) with a[i] == b[j], honouring the gap limit; prev for traceback.
+  const dp: number[][] = Array.from({ length: n }, () => new Array<number>(m).fill(0));
+  const prev: Array<Array<[number, number] | null>> = Array.from({ length: n }, () => new Array<[number, number] | null>(m).fill(null));
+  let best = 0;
+  let end: [number, number] | null = null;
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      if (a[i]!.id !== b[j]!.id) continue;
+      let len = i <= opts.maxLeadTokens && j <= opts.maxLeadTokens ? 1 : 0;
+      let pv: [number, number] | null = null;
+      for (let pi = Math.max(0, i - 1 - opts.maxGapWords); pi < i; pi++) {
+        for (let pj = Math.max(0, j - 1 - opts.maxGapWords); pj < j; pj++) {
+          if (dp[pi]![pj]! > 0 && dp[pi]![pj]! + 1 > len) {
+            len = dp[pi]![pj]! + 1;
+            pv = [pi, pj];
+          }
+        }
+      }
+      dp[i]![j] = len;
+      prev[i]![j] = pv;
+      if (len > best) {
+        best = len;
+        end = [i, j];
       }
     }
+  }
+  const out: Step[] = [];
+  let cur = end;
+  while (cur) {
+    const [i, j] = cur;
+    const p = prev[i]![j];
+    out.unshift({ tok: a[i]!, loose: p ? i - p[0] > 1 || j - p[1] > 1 : false });
+    cur = p;
+  }
+  return out;
+}
+
+/**
+ * Pairwise-align the openings of seeds from different issuers; every alignment that is long and specific enough
+ * becomes a candidate skeleton. A candidate's support is every seed whose own opening it matches; it is kept when
+ * that support spans ≥ `minIssuers` issuers. Candidates with identical support keep the most specific skeleton.
+ */
+export function synthesizeIssuerGeneralized(units: readonly SeedUnit[], opts: GeneralizeOptions = DEFAULT_GENERALIZE_OPTIONS): GeneralizedCandidate[] {
+  const order = [...units.keys()].sort((x, y) => {
+    const a = units[x]!;
+    const b = units[y]!;
+    return a.sourceId < b.sourceId ? -1 : a.sourceId > b.sourceId ? 1 : a.itemId < b.itemId ? -1 : a.itemId > b.itemId ? 1 : 0;
   });
+  const us = order.map((k) => units[k]!);
+  const sk = us.map((u) => skeleton(u.text, opts.maxTokens));
+  const openings = us.map((u) => stripLead(u.text.replace(/\s+/g, " ").trim()).slice(0, 300));
+  const proposals = new Map<string, Step[]>();
+  for (let x = 0; x < us.length; x++) {
+    for (let y = x + 1; y < us.length; y++) {
+      if (us[x]!.issuer === us[y]!.issuer) continue;
+      const steps = alignSkeletons(sk[x]!, sk[y]!, opts);
+      if (steps.length < opts.minTokens || contentWords(steps.map((st) => st.tok)) < opts.minContentWords) continue;
+      const sig = stepsSignature(steps);
+      if (!proposals.has(sig)) proposals.set(sig, steps);
+    }
+  }
+  const bySupport = new Map<string, { sig: string; steps: Step[]; idx: number[] }>();
+  for (const [sig, steps] of [...proposals.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1))) {
+    const re = new RegExp(stepsPattern(steps, opts.maxGapWords));
+    const idx: number[] = [];
+    openings.forEach((o, k) => {
+      const m = re.exec(o);
+      if (m && m.index <= 40) idx.push(k);
+    });
+    if (new Set(idx.map((k) => us[k]!.issuer)).size < opts.minIssuers) continue;
+    const key = idx.join(",");
+    const cur = bySupport.get(key);
+    if (!cur || steps.length > cur.steps.length || (steps.length === cur.steps.length && sig < cur.sig)) bySupport.set(key, { sig, steps, idx });
+  }
   const out: GeneralizedCandidate[] = [];
-  for (const [sig, k] of [...chosen.entries()].sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))) {
-    const idx = groups.get(sig)!;
-    const support = idx.map((i) => units[i]!);
-    const issuers = [...issuersOf(idx)].sort();
-    const tokens = sk[idx[0]!]!.slice(0, k);
+  for (const { sig, steps, idx } of [...bySupport.values()].sort((a, b) => (a.sig < b.sig ? -1 : 1))) {
+    const support = idx.map((k) => us[k]!);
+    const issuers = [...new Set(support.map((u) => u.issuer))].sort();
     const fams = new Map<string, number>();
     for (const u of support) if (u.family) fams.set(u.family, (fams.get(u.family) ?? 0) + 1);
     const family = [...fams.entries()].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))[0]?.[0] ?? "GENERAL_CONDITIONS_AND_EXCEPTIONS";
@@ -227,7 +330,7 @@ export function synthesizeIssuerGeneralized(units: readonly SeedUnit[], opts: Ge
         ruleId: ruleIdOf(sig),
         version: 1,
         kind: "PHRASE_PATTERN",
-        pattern: skeletonPattern(tokens),
+        pattern: stepsPattern(steps, opts.maxGapWords),
         effect: { family },
         state: "PROPOSED",
         provenance: {

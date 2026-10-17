@@ -4,13 +4,15 @@
  * Writes DIR/ruleset-generalized.json (accepted rules, MECHANICALLY_REPLAYED) and DIR/learn-report.json.
  * HELDOUT sources are never read for seeding or acceptance (they are filtered out before anything is scored).
  */
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { readSnapshot, splitFor, type DevManifest, type ScoreboardSourceInput } from "../../../lib/covenant-learning-factory/scoreboard";
 import {
   DEFAULT_ACCEPTANCE,
   DEFAULT_GENERALIZE_OPTIONS,
   heldOutAcceptance,
+  issuerAliases,
+  fixtureSlug,
   issuerKey,
   rulesetOf,
   synthesizeIssuerGeneralized,
@@ -25,8 +27,16 @@ const dir = "scripts/covenant-learning-factory/scoreboard";
 const outDir = resolve(arg("out-dir") ?? "scripts/covenant-learning-factory/learning");
 mkdirSync(outDir, { recursive: true });
 const manifest = JSON.parse(readFileSync(`${dir}/dev-manifest.json`, "utf8")) as DevManifest;
-const opts = { ...DEFAULT_GENERALIZE_OPTIONS, minIssuers: Number(arg("min-issuers") ?? DEFAULT_GENERALIZE_OPTIONS.minIssuers) };
+const num = (n: string, d: number) => (arg(n) != null ? Number(arg(n)) : d);
+const opts = {
+  ...DEFAULT_GENERALIZE_OPTIONS,
+  minIssuers: num("min-issuers", DEFAULT_GENERALIZE_OPTIONS.minIssuers),
+  minTokens: num("min-tokens", DEFAULT_GENERALIZE_OPTIONS.minTokens),
+  maxTokens: num("max-tokens", DEFAULT_GENERALIZE_OPTIONS.maxTokens),
+  minContentWords: num("min-content", DEFAULT_GENERALIZE_OPTIONS.minContentWords),
+};
 const snap = readSnapshot(resolve(`${dir}/snapshot.json.gz`));
+const aliases = issuerAliases(manifest.devIssuerCiks ?? [], snap.sources.map((x) => fixtureSlug(x.source.sourceId)).filter((x): x is string => Boolean(x)));
 const dev: ScoreboardSourceInput[] = snap.sources.filter(
   (i) => splitFor(i.source.sourceId, manifest, i.source.issuerCik) === "DEV" && !manifest.duplicates?.some((d) => d.sourceId === i.source.sourceId),
 );
@@ -35,11 +45,21 @@ log(`DEV sources ${dev.length}`);
 
 // 1. No-rules DEV score → the gaps to learn from.
 const none = rulesetOf([], 0);
-const noRules = new Map(dev.map((i) => [i.source.sourceId, scoreWithAttribution(i, none, () => new Set())] as const));
+// --cache=FILE reuses the (deterministic) no-rules DEV scores between runs.
+const cache = arg("cache");
+type NR = ReturnType<typeof scoreWithAttribution>;
+const noRules: Map<string, NR> =
+  cache && existsSync(cache)
+    ? new Map(Object.entries(JSON.parse(readFileSync(cache, "utf8")) as Record<string, NR>))
+    : new Map(dev.map((i) => [i.source.sourceId, scoreWithAttribution(i, none, () => new Set())] as const));
+if (cache && !existsSync(cache)) writeFileSync(cache, JSON.stringify(Object.fromEntries(noRules)));
+if (process.argv.includes("--synth-only")) {
+  // fall through to synthesis statistics only (no held-out scoring)
+}
 const units: SeedUnit[] = [];
 for (const i of dev) {
   const s = noRules.get(i.source.sourceId)!;
-  const issuer = issuerKey(i.source);
+  const issuer = issuerKey(i.source, aliases);
   const gc = new Set(s.gapCandidateIds);
   const gk = new Set(s.gapConditionIds);
   for (const c of i.candidates) if (gc.has(c.candidateId) && c.excerpt) units.push({ sourceId: i.source.sourceId, issuer, itemId: c.candidateId, kind: "candidate", family: c.family ?? null, text: c.excerpt });
@@ -48,8 +68,14 @@ for (const i of dev) {
 const noRulesTotal = [...noRules.values()].reduce((a, s) => a + s.total, 0);
 log(`no-rules DEV total ${noRulesTotal}; seed units (gaps) ${units.length} from ${new Set(units.map((u) => u.issuer)).size} issuers`);
 
+if (process.argv.includes("--synth-only")) {
+  const all = synthesizeIssuerGeneralized(units, opts);
+  console.log(JSON.stringify({ proposed: all.length, byIssuers: all.reduce((a: Record<number, number>, c) => ((a[c.issuers.length] = (a[c.issuers.length] ?? 0) + 1), a), {}) }));
+  for (const c of all.slice(0, 400)) console.log(c.issuers.join("+"), c.support.length, c.signature);
+  process.exit(0);
+}
 // 2. Leave-one-issuer-out: rules from the other issuers, scored on the held-out issuer.
-const issuers = [...new Set(dev.map((i) => issuerKey(i.source)))].sort();
+const issuers = [...new Set(dev.map((i) => issuerKey(i.source, aliases)))].sort();
 const stats: Record<string, HeldOutRuleStats> = {};
 const folds: unknown[] = [];
 for (const g of issuers) {
@@ -60,7 +86,7 @@ for (const g of issuers) {
   let withRules = 0;
   let base = 0;
   const foldRule: Record<string, { credited: number; unsupported: number; baskets: number }> = {};
-  for (const i of dev.filter((x) => issuerKey(x.source) === g)) {
+  for (const i of dev.filter((x) => issuerKey(x.source, aliases) === g)) {
     const s = scoreWithAttribution(i, rs, (r) => support.get(r) ?? new Set());
     withRules += s.total;
     base += noRules.get(i.source.sourceId)!.total;

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   contentWords,
   heldOutAcceptance,
+  issuerAliases,
   issuerKey,
   skeleton,
   skeletonPattern,
@@ -48,9 +49,26 @@ describe("skeleton", () => {
 
 describe("issuerKey", () => {
   it("prefers ticker, then CIK, then the fixture family", () => {
-    expect(issuerKey({ sourceId: "x", ticker: "abc_alt", issuerCik: "0000123" })).toBe("T:ABC");
+    expect(issuerKey({ sourceId: "x", ticker: "abc_alt", issuerCik: "0000123" })).toBe("I:ABC");
     expect(issuerKey({ sourceId: "x", ticker: null, issuerCik: "0000123" })).toBe("C:123");
     expect(issuerKey({ sourceId: "fixture:zeta-2024-ca:doc", ticker: null, issuerCik: "0000000000" })).toBe("F:ZETA");
+  });
+  it("aliases join ticker-less rows, second CIKs and fixtures of one company into one issuer", () => {
+    const al = issuerAliases(
+      [
+        { cik: "0000123", issuer: "ZZZ", evidence: "Zeta Corp; fixture:zeta-* rows" },
+        { cik: "0000456", issuer: "ZZZ", evidence: "second CIK on a fixture" },
+      ],
+      ["zeta", "zzz", "omega"],
+    );
+    const keys = [
+      issuerKey({ sourceId: "a", ticker: null, issuerCik: "0000123" }, al),
+      issuerKey({ sourceId: "b", ticker: "ZZZ", issuerCik: "0000456" }, al),
+      issuerKey({ sourceId: "fixture:zeta-2024:doc", ticker: null, issuerCik: "0000000000" }, al),
+      issuerKey({ sourceId: "fdp:ZZZ-2025", ticker: null, issuerCik: null }, al),
+    ];
+    expect(new Set(keys)).toEqual(new Set(["I:ZZZ"]));
+    expect(issuerKey({ sourceId: "fixture:omega-1:doc", ticker: null, issuerCik: null }, al)).toBe("F:OMEGA");
   });
 });
 
