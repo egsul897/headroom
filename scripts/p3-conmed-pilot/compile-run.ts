@@ -18,6 +18,7 @@ import type { OperativeContractState, AmendmentEffectCandidate } from "../../lib
 import Anthropic from "@anthropic-ai/sdk";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { AI_GATEWAY_BASE_URL } from "../../lib/contract-model/analyzer/anthropic-analyzer";
 import { RealSemanticCaller } from "../../lib/contract-model/compiler/semantic/caller";
 import { compileCovenantToIR } from "../../lib/contract-model/compiler/semantic/compile";
@@ -188,7 +189,14 @@ export async function runPool<T, R>(items: T[], concurrency: number, fn: (item: 
   return out;
 }
 
-export function loadModel(id: string, cataloguePath = "/tmp/claude-0/pilot/models.json"): GatewayModel {
+/**
+ * Default catalogue: the committed synthetic test fixture (the original
+ * operator scratch copy under /tmp/claude-0/pilot/ did not survive).
+ * CONMED_CATALOGUE_PATH points the harness at a live gateway catalogue.
+ */
+export const DEFAULT_CATALOGUE_PATH = process.env.CONMED_CATALOGUE_PATH ?? fileURLToPath(new URL("../../tests/phase-3-conmed-pilot/fixtures/models.json", import.meta.url));
+
+export function loadModel(id: string, cataloguePath = DEFAULT_CATALOGUE_PATH): GatewayModel {
   const m = loadCatalogue(cataloguePath).find((x) => x.id === id);
   if (!m) throw new Error(`model ${id} not in the gateway catalogue`);
   return m;
