@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "covenant-learning-factory.inventory.v1",
+  "generatedAt": "2026-10-13T19:48:47.770Z",
+  "neon": {
+    "live": false,
+    "detail": "Neon auth failed (auth_failed): credentials rejected for configured user/database. \nInvalid `prisma.$queryRaw()` invocation:\n\n\nUser `neondb_owner` was denied access on the database `neondb.public`",
+    "class": "auth_failed",
+    "originalHost": "ep-shiny-rice-aw903tjv-pooler.c-12.us-east-1.aws.neon.tech",
+    "ipv4": "52.204.15.108"
+  },
+  "capabilityCounts": {
+    "reusable": 18,
+    "incomplete": 3,
+    "fixtureSpecific": 2,
+    "missing": 1
+  },
+  "registeredPackages": [
+    {
+      "packageKey": "chwy-2026-credit-agreement",
+      "issuerCik": "0001766502",
+      "issuerTicker": "CHWY",
+      "cohort": "TRAIN_DEV",
+      "documentCount": 1,
+      "evaluationOnly": false
+    },
+    {
+      "packageKey": "gibraltar-2026-credit-agreement",
+      "issuerCik": "0000912562",
+      "issuerTicker": "ROCK",
+      "cohort": "TRAIN_DEV",
+      "documentCount": 1,
+      "evaluationOnly": false
+    },
+    {
+      "packageKey": "mhk-2026-credit-agreement",
+      "issuerCik": "0000851968",
+      "issuerTicker": "MHK",
+      "cohort": "HELD_OUT",
+      "documentCount": 1,
+      "evaluationOnly": true
+    },
+    {
+      "packageKey": "mtn-2026-tenth-ar-credit-agreement",
+      "issuerCik": "0000812011",
+      "issuerTicker": "MTN",
+      "cohort": "TRAIN_DEV",
+      "documentCount": 3,
+      "evaluationOnly": false
+    },
+    {
+      "packageKey": "wor-2023-2026-credit-facility",
+      "issuerCik": "0000105418",
+      "issuerTicker": "WOR",
+      "cohort": "TRAIN_DEV",
+      "documentCount": 2,
+      "evaluationOnly": false
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "covenant-learning-factory.neon-connect.v1",
+  "generatedAt": "2026-10-13T19:48:12.208Z",
+  "live": false,
+  "class": "auth_failed",
+  "detail": "Neon auth failed (auth_failed): credentials rejected for configured user/database. \nInvalid `prisma.$queryRaw()` invocation:\n\n\nUser `neondb_owner` was denied access on the database `neondb.public`",
+  "originalHost": "ep-shiny-rice-aw903tjv-pooler.c-12.us-east-1.aws.neon.tech",
+  "ipv4": "44.206.211.72",
+  "migrationReady": "prisma/migrations/20261013180000_covenant_learning_factory/",
+  "nextWhenLive": [
+    "npx prisma migrate deploy",
+    "npm run clf:batch -- --persist-neon --max=2",
+    "npm run clf:dashboard"
+  ],
+  "secretRefreshRequired": true
+}

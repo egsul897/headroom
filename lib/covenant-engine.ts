@@ -2157,3 +2157,157 @@ export async function loadCompanySolverStaticData(
   return { permissions, relationships, sharedConstraints, collateralScopes, ruleActivationConditions, coverageDeclarations };
 }
 
+
+// ---------------------------------------------------------------------------
+// Simulate: debt incurrence split across baskets (per-basket sliders)
+// ---------------------------------------------------------------------------
+
+/** Which kind of debt basket a proposed amount draws on. Generic: matched by formula type / basket name, never by code. */
+export type DebtBasketKind = "INCREMENTAL" | "GENERAL" | "RATIO_DEBT";
+
+export interface DebtBasketAllocation {
+  kind: DebtBasketKind;
+  /** $M, same unit as the engine's financials. */
+  amount: number;
+  secured: boolean;
+  /** Optional explicit provision code (per document) when the name match is ambiguous or absent. */
+  provisionCode?: string;
+}
+
+export type BasketSimulationStatus = "clear" | "blocked" | "NEEDS_INPUT";
+/** Per document: NOT_IDENTIFIED = the document has no basket of this kind (it does not decide the basket's status). */
+export type BasketDocumentStatus = BasketSimulationStatus | "NOT_IDENTIFIED";
+
+export interface PerBasketDocumentResult {
+  documentId: string; documentName: string;
+  status: BasketDocumentStatus;
+  provision?: CovenantProvisionInput;
+  /** Basket capacity before the transaction ($M); absent when not modeled. Infinity only for a modeled unlimited gate. */
+  capacity?: number;
+  used: number;
+  remaining?: number;
+  reason?: string;
+}
+
+export interface PerBasketResult {
+  kind: DebtBasketKind;
+  amount: number; securedAmount: number; unsecuredAmount: number;
+  status: BasketSimulationStatus;
+  documents: PerBasketDocumentResult[];
+}
+
+export interface DebtIncurrenceByBasketSimulation {
+  status: BasketSimulationStatus;
+  totals: { amount: number; secured: number; unsecured: number };
+  baskets: PerBasketResult[];
+  /** Document-level secured / unsecured debt capacity (the existing capacity formulas) against the combined amounts. */
+  documentSides: Array<{ documentId: string; documentName: string; side: "secured" | "unsecured"; status: BasketSimulationStatus; capacity?: number; used: number; remaining?: number; reason?: string }>;
+  /** Combined pro forma ratios with every allocation applied together; null fields when an input is missing. */
+  proForma: { totalNetLeverage: number | null; seniorSecuredNetLeverage: number | null; fixedChargeCoverage: number | null; reasons: string[] };
+  ratioTests: RatioTestResult[];
+  reasons: string[];
+}
+
+const BASKET_NAME: Record<Exclude<DebtBasketKind, "RATIO_DEBT">, RegExp> = {
+  INCREMENTAL: /\b(?:incremental|accordion|free[- ]and[- ]clear|incremental\s+equivalent)\b/i,
+  GENERAL: /\bgeneral\b/i,
+};
+const NON_DEBT = /\b(?:liens?|rp|restricted\s+payments?|dividends?|investments?|asset\s+sales?|excess\s+proceeds|builder)\b/i;
+const DEBT_WORD = /\b(?:debt|indebtedness|borrowings?|loans?|facilit(?:y|ies)|incurrence)\b/i;
+
+/** Provisions in one document that a kind of basket can draw on (generic name / formula-type match). */
+function basketCandidates(data: CompanyCovenantData, documentId: string, kind: DebtBasketKind): CovenantProvisionInput[] {
+  return data.provisions.filter((p) => {
+    if (p.documentId !== documentId) return false;
+    const name = `${p.basketName} ${p.code.replace(/_/g, " ")}`;
+    if (NON_DEBT.test(name)) return false;
+    if (kind === "RATIO_DEBT") return (p.formulaType === "LEVERAGE_RATIO_ROOM" || p.formulaType === "COVERAGE_RATIO_ROOM" || p.formulaType === "RATIO_GATE") && DEBT_WORD.test(name) && /\bratio\b/i.test(name);
+    if (p.formulaType === "RATIO_GATE" || p.formulaType === "BUILDER_BASKET") return false;
+    if (kind === "GENERAL" && BASKET_NAME.INCREMENTAL.test(name)) return false;
+    return BASKET_NAME[kind].test(name) && (kind === "INCREMENTAL" || DEBT_WORD.test(name));
+  });
+}
+
+/**
+ * Debt incurrence split across baskets in one call: incremental facility, general debt basket and ratio debt, each
+ * secured or unsecured. Per basket and document: capacity, amount used, remaining (NEEDS_INPUT when the basket is not
+ * identified or not modeled). Plus document-level secured/unsecured capacity against the combined amounts and the
+ * combined pro forma ratios / ratio tests with every allocation applied together. Nothing is assumed: a missing input
+ * (EBITDA, interest rate, basket configuration) yields NEEDS_INPUT, never a default.
+ */
+export function simulateDebtIncurrenceByBasket(data: CompanyCovenantData, position: CovenantPosition, allocations: readonly DebtBasketAllocation[]): DebtIncurrenceByBasketSimulation {
+  const fin = data.financials;
+  const reasons: string[] = [];
+  const valid = allocations.filter((a) => Number.isFinite(a.amount) && a.amount >= 0);
+  if (valid.length !== allocations.length) reasons.push("an allocation amount is negative or not a number; it was ignored");
+  const total = valid.reduce((s, a) => s + a.amount, 0);
+  const secured = valid.filter((a) => a.secured).reduce((s, a) => s + a.amount, 0);
+  const unsecured = total - secured;
+
+  const kinds: DebtBasketKind[] = ["INCREMENTAL", "GENERAL", "RATIO_DEBT"];
+  const baskets: PerBasketResult[] = kinds.filter((k) => valid.some((a) => a.kind === k)).map((kind) => {
+    const mine = valid.filter((a) => a.kind === kind);
+    const amount = mine.reduce((s, a) => s + a.amount, 0);
+    const code = [...new Set(mine.map((a) => a.provisionCode).filter((c): c is string => !!c))];
+    const documents: PerBasketDocumentResult[] = position.documents.map((d) => {
+      const base = { documentId: d.documentId, documentName: d.documentName, used: amount };
+      if (code.length > 1) return { ...base, status: "NEEDS_INPUT" as const, reason: `several provision codes given for the ${kind} basket` };
+      const cands = code.length ? data.provisions.filter((p) => p.documentId === d.documentId && p.code === code[0]) : basketCandidates(data, d.documentId, kind);
+      if (!cands.length) return { ...base, status: "NOT_IDENTIFIED" as BasketDocumentStatus, reason: code.length ? `provision ${code[0]} not found in ${d.documentName}` : `no ${kind.toLowerCase().replace("_", " ")} basket identified in ${d.documentName}; name the provision code` };
+      if (cands.length > 1) return { ...base, status: "NEEDS_INPUT" as const, reason: `several provisions in ${d.documentName} could be the ${kind.toLowerCase().replace("_", " ")} basket (${cands.map((p) => p.code).join(", ")}); name the provision code` };
+      const p = cands[0]!;
+      const ev = position.provisionCapacities.get(`${d.documentId}:${p.code}`);
+      if (!ev || ev.status !== "modeled" || ev.capacity == null) return { ...base, status: "NEEDS_INPUT" as const, provision: p, reason: ev?.reason ?? `"${p.basketName}" is not modeled` };
+      if (p.formulaType === "RATIO_GATE") {
+        if (!ev.gate?.open) return { ...base, status: "blocked" as const, provision: p, capacity: 0, remaining: -amount, reason: `"${p.basketName}" ratio condition is not met` };
+      }
+      const remaining = ev.capacity === Infinity ? Infinity : ev.capacity - amount;
+      return { ...base, status: remaining >= 0 ? ("clear" as const) : ("blocked" as const), provision: p, capacity: ev.capacity, remaining };
+    });
+    const sts = documents.map((x) => x.status).filter((x) => x !== "NOT_IDENTIFIED");
+    return {
+      kind, amount, securedAmount: mine.filter((a) => a.secured).reduce((s, a) => s + a.amount, 0), unsecuredAmount: mine.filter((a) => !a.secured).reduce((s, a) => s + a.amount, 0),
+      status: (sts.includes("blocked") ? "blocked" : sts.includes("NEEDS_INPUT") || !sts.length ? "NEEDS_INPUT" : "clear") as BasketSimulationStatus,
+      documents,
+    };
+  });
+
+  const documentSides: DebtIncurrenceByBasketSimulation["documentSides"] = [];
+  for (const d of position.documents) {
+    for (const side of ["secured", "unsecured"] as const) {
+      const used = side === "secured" ? secured : unsecured;
+      if (used === 0) continue;
+      const st = side === "secured" ? d.securedStatus : d.unsecuredStatus;
+      const cap = side === "secured" ? d.securedCapacity : d.unsecuredCapacity;
+      if (st !== "modeled" || cap == null) { documentSides.push({ documentId: d.documentId, documentName: d.documentName, side, status: "NEEDS_INPUT", used, reason: (side === "secured" ? d.securedReason : d.unsecuredReason) ?? `${side} capacity not modeled` }); continue; }
+      const remaining = cap - used;
+      documentSides.push({ documentId: d.documentId, documentName: d.documentName, side, status: remaining >= 0 ? "clear" : "blocked", capacity: cap, used, remaining });
+    }
+  }
+
+  // Combined ratios: every allocation applied together.
+  const pfReasons: string[] = [];
+  const ebitdaOk = Number.isFinite(fin.ebitda) && fin.ebitda > 0;
+  if (!ebitdaOk) pfReasons.push("EBITDA is missing or not positive; leverage and coverage cannot be computed");
+  const rate = fin.assumedNewDebtRatePct / 100;
+  if (!(rate > 0) && total > 0) pfReasons.push("assumed new-debt interest rate is not set; pro forma coverage cannot be computed");
+  const proForma = {
+    totalNetLeverage: ebitdaOk ? (fin.totalDebt + total - fin.cash) / fin.ebitda : null,
+    seniorSecuredNetLeverage: ebitdaOk ? (fin.securedDebt + secured - fin.cash) / fin.ebitda : null,
+    fixedChargeCoverage: ebitdaOk && (rate > 0 || total === 0) && fin.interestExpense + total * (rate > 0 ? rate : 0) > 0 ? fin.ebitda / (fin.interestExpense + total * (rate > 0 ? rate : 0)) : null,
+    reasons: pfReasons,
+  };
+  let ratioTests: RatioTestResult[] = [];
+  if (ebitdaOk) {
+    const totalRows = buildDebtRatioTests(data, position, total, false);
+    const securedRows = buildDebtRatioTests(data, position, secured, true);
+    ratioTests = totalRows.map((r, i) => (r.provision.formulaType === "LEVERAGE_RATIO_ROOM" && r.provision.params?.debtBasis === "secured" ? { ...securedRows[i]!, applies: secured > 0 } : r));
+  }
+
+  const ratioStatuses = ratioTests.filter((r) => r.applies).map((r) => r.status);
+  const all: string[] = [...baskets.map((b) => b.status), ...documentSides.map((s) => s.status), ...ratioStatuses];
+  // Without a positive EBITDA every EBITDA-derived capacity and ratio is unknown, so nothing can be called blocked or clear.
+  const status: BasketSimulationStatus = !ebitdaOk ? "NEEDS_INPUT" : all.includes("blocked") ? "blocked" : all.some((s) => s === "NEEDS_INPUT" || s === "review_required" || s === "not_tested") || pfReasons.length || !valid.length ? "NEEDS_INPUT" : "clear";
+  if (!valid.length) reasons.push("no allocation amounts given");
+  return { status, totals: { amount: total, secured, unsecured }, baskets, documentSides, proForma, ratioTests, reasons: [...reasons, ...pfReasons] };
+}

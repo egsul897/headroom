@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "covenant-learning-factory.refusal-audit.v1",
+  "generatedAt": "2026-10-13T19:38:54.197Z",
+  "sources": [
+    "docs/covenant-learning-factory/unit-dumps/chwy-2026-credit-agreement.units.json",
+    "docs/covenant-learning-factory/unit-dumps/gibraltar-2026-credit-agreement.units.json",
+    "docs/covenant-learning-factory/unit-dumps/mhk-2026-credit-agreement.units.json",
+    "docs/covenant-learning-factory/unit-dumps/mtn-2026-tenth-ar-credit-agreement.units.json"
+  ],
+  "totals": {
+    "units": 856,
+    "verifiedExecutable": 8,
+    "refusedExecutable": 848
+  },
+  "metricClarification": {
+    "supportedStructureUnits": "Count of units with supportStatus===SUPPORTED_STRUCTURE (catalog support + no unresolved context). Independent of executableAuthority.",
+    "verifiedExecutableUnits": "Count of units elevated by fixed-dollar/greater-of vertical slices after fidelity PASS. May be >0 while supportedStructureUnits===0 when supportStatus is PARTIAL due to unresolved context bundles.",
+    "dangerousOmissions": "Must be NOT_MEASURED unless an independently adjudicated completeness oracle exists for the package."
+  },
+  "refusalRootCauseDistribution": {
+    "NOT_EXCEPTION_CATALOG_CLAUSE": 646,
+    "QUALITATIVE_PERMISSION_NO_NUMERIC_CAP": 185,
+    "FIXED_DOLLAR_COMPLEX_FORMULA_HANDOFF": 10,
+    "VERIFIED_EXECUTABLE": 8,
+    "RATIO_GATED_CAPACITY": 3,
+    "FIXED_DOLLAR_CAP_ROLE_MISSED": 2,
+    "BUILDER_OR_AVAILABLE_AMOUNT": 1,
+    "FIXED_DOLLAR_MULTI_AMOUNT": 1
+  },
+  "legalStructureDistribution": {
+    "GENERAL_PROHIBITION_OR_SECTION_CHAPEAU": 639,
+    "QUALITATIVE_EXCEPTION": 185,
+    "COMPLEX_OR_GROWER_FORMULA": 10,
+    "NON_CLAUSE_DEFINITIONAL_DEPENDENCY_CANDIDATE": 7,
+    "FIXED_DOLLAR_BASKET": 5,
+    "RATIO_INCURRENCE": 3,
+    "GREATER_OF_ASSETS_BASKET": 3,
+    "FIXED_DOLLAR_CAP_VARIANT": 2,
+    "BUILDER_BASKET": 1,
+    "MULTI_DOLLAR_CLAUSE": 1
+  },
+  "supportStatusDistribution": {
+    "PARTIAL": 856
+  },
+  "samples": {
+    "NOT_EXCEPTION_CATALOG_CLAUSE": [
+      {
+        "sourceRef": "1.09",
+        "excerpt": "Section 1.09 Available Amount Transactions 86",
+        "detail": "executable vertical slice only attempts numbered/lettered exception-catalog limbs"
+      },
+      {
+        "sourceRef": "2.07",
+        "excerpt": "Section 2.07 Repayment of Loans; Evidence of Debt 92",
+        "detail": "executable vertical slice only attempts numbered/lettered exception-catalog limbs"
+      },
+      {
+        "sourceRef": "2.09",
+        "excerpt": "Section 2.09 Prepayment of Loans 93",
+        "detail": "executable vertical slice only attempts numbered/lettered exception-catalog limbs"
+      }
+    ],
+    "RATIO_GATED_CAPACITY": [
+      {
+        "sourceRef": "6.01(a)",
+        "excerpt": "(a) the Borrowers shall not, and shall not permit any of their Restricted Subsidiaries to create, incur, issue, assume, guarantee or otherwise become liable, contingently or otherwise (collectively, “ incur ” and collect",
+        "detail": "ratio-gated no fixed dollar"
+      },
+      {
+        "sourceRef": "def:Permitted Liens(20)",
+        "excerpt": "Permitted Liens (20): Liens securing Obligations in respect of any Indebtedness permitted to be incurred pursuant to Section 6.01 hereof; provided that, with respect to Liens securing Obligations permitted under this cla",
+        "detail": "ratio-gated no fixed dollar"
+      },
+      {
+        "sourceRef": "def:Permitted   Investments(34)",
+        "excerpt": "Permitted Investments (34): any other Investment so long as (x) no Event of Default pursuant to Section 8.01(a) , (f) or (g) exists and (y) immediately after giving pro forma effect to the Investment and the incurrence o",
+        "detail": "ratio-gated no fixed dollar"
+      }
+    ],
+    "QUALITATIVE_PERMISSION_NO_NUMERIC_CAP": [
+      {
+        "sourceRef": "def:Permitted Amendment(a)",
+        "excerpt": "Permitted Amendment (a): an extension of a maturity date;",
+        "detail": "no dollar/percent capacity pattern"
+      },
+      {
+        "sourceRef": "def:Permitted Amendment(b)",
+        "excerpt": "Permitted Amendment (b): a change in the Applicable Rate (including any “MFN” provisions) with respect to the Loans and/or Commitments of the Accepting Lenders;",
+        "detail": "no dollar/percent capacity pattern"
+      },
+      {
+        "sourceRef": "def:Permitted Amendment(c)",
+        "excerpt": "Permitted Amendment (c): a change in the fees payable to, or the inclusion of new fees to be payable to, the Accepting Lenders;",
+        "detail": "no dollar/percent capacity pattern"
+      }
+    ],
+    "FIXED_DOLLAR_COMPLEX_FORMULA_HANDOFF": [
+      {
+        "sourceRef": "def:Permitted Investments(b)",
+        "excerpt": "Permitted Investments (b): such Person, in one (1) transaction or a series of related transactions, is merged, consolidated or amalgamated with or into, or transfers or conveys (i) substantially all of its assets to, tra",
+        "detail": "complex_formula_or_grower"
+      },
+      {
+        "sourceRef": "def:Permitted Investments(e)",
+        "excerpt": "Permitted Investments (e): received in compromise or resolution of (a) obligations of trade creditors, suppliers or customers that were incurred in the ordinary course of business of the Restricted Parties or consistent ",
+        "detail": "complex_formula_or_grower"
+      },
+      {
+        "sourceRef": "def:Permitted Liens(21)",
+        "excerpt": "Permitted Liens (21): other Liens securing obligations that any time outstanding do not exceed the greater of (x) $720.0 million and (y) 100% of Consolidated EBITDA for the most recently ended Test Period, calculated on ",
+        "detail": "complex_formula_or_grower"
+      }
+    ],
+    "BUILDER_OR_AVAILABLE_AMOUNT": [
+      {
+        "sourceRef": "def:Permitted Liens(46)",
+        "excerpt": "Permitted Liens (46): (i) Liens in an aggregate amount not to exceed the Available RP Capacity Amount and (ii) Liens in an aggregate amount not to exceed the Available Amount that is Not Otherwise Applied; provided that ",
+        "detail": "builder semantics unsupported"
+      }
+    ],
+    "FIXED_DOLLAR_CAP_ROLE_MISSED": [
+      {
+        "sourceRef": "def:Permitted   Investments(9)",
+        "excerpt": "Permitted Investments (9): Investments (a) existing or pursuant to binding commitments, agreements or arrangements in effect on the Closing Date and, to the extent the outstanding principal amount thereof is in excess of",
+        "detail": "amount=10000000; reasons=dollar_present_but_not_cap_role"
+      },
+      {
+        "sourceRef": "def:Permitted   Liens(11)",
+        "excerpt": "Permitted Liens (11): Liens existing on the Closing Date and, to the extent the outstanding principal amount of the obligations secured thereby is in excess of $10,000,000, listed on Schedule 1.01(d) , including any Lien",
+        "detail": "amount=10000000; reasons=dollar_present_but_not_cap_role"
+      }
+    ],
+    "FIXED_DOLLAR_MULTI_AMOUNT": [
+      {
+        "sourceRef": "def:Permitted Debt(p)",
+        "excerpt": "Permitted Debt (p): in addition to Debt permitted under clauses (a) through (o) above, the 2025 VRI Senior Notes and other senior unsecured Debt (including High-Yield Debt and Convertible Debt Securities) of the Restrict",
+        "detail": "multiple_distinct_dollar_amounts"
+      }
+    ]
+  }
+}

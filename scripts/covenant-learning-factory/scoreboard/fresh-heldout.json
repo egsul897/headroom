@@ -1,0 +1,5341 @@
+{
+ "status": "partially exposed",
+ "note": "Originally frozen in c7954fab (500 CIKs) and used for tuning-adjacent audits. Excluded: issuer overlaps with snapshot, docs quoted by rules, and every doc inspected during development. Remaining docs never inspected, but the set as a whole has been scored repeatedly; treat confirmation results as indicative, not clean held-out.",
+ "excluded": [
+  {
+   "cik": "1014111",
+   "file": "ex10-2.htm",
+   "name": "GlassBridge Enterprises, Inc.  (GLAE)  (CIK 000101",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "106640",
+   "file": "d144434dex41.htm",
+   "name": "WHIRLPOOL CORP /DE/  (WHR, WHR-PA)  (CIK 000010664",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1089819",
+   "file": "exhibit102-power.htm",
+   "name": "Cleco Corporate Holdings LLC  (CIK 0001089819)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1108109",
+   "file": "d929599dex41.htm",
+   "name": "COMMUNITY HEALTH SYSTEMS INC  (CYH)  (CIK 00011081",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1162896",
+   "file": "ex10-2.htm",
+   "name": "Prairie Operating Co.  (PROP)  (CIK 0001162896)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1207179",
+   "file": "glng-2025seniornotesxind.htm",
+   "name": "GOLAR LNG LTD  (GLNG)  (CIK 0001207179)",
+   "why": [
+    "INVESTMENTS FOUND-regression check (informed c7954fab spurious-evidence rules)"
+   ]
+  },
+  {
+   "cik": "1316835",
+   "file": "d771661dex41.htm",
+   "name": "Builders FirstSource, Inc.  (BLDR)  (CIK 000131683",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1334978",
+   "file": "d777525dex41.htm",
+   "name": "Clear Channel Outdoor Holdings, Inc.  (CCO)  (CIK ",
+   "why": [
+    "INVESTMENTS FOUND-regression check (informed c7954fab spurious-evidence rules)"
+   ]
+  },
+  {
+   "cik": "1374881",
+   "file": "king_ex101.htm",
+   "name": "Kingfish Holding Corp  (CIK 0001374881)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1402436",
+   "file": "ssnc-ex4_1.htm",
+   "name": "SS&C Technologies Holdings Inc  (SSNC)  (CIK 00014",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1427570",
+   "file": "rsls-20231231xex10d26.htm",
+   "name": "ReShape Lifesciences Inc.  (RSLS)  (CIK 0001427570",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1517175",
+   "file": "chefs-tenthamendmenttotlcr.htm",
+   "name": "Chefs' Warehouse, Inc.  (CHEF)  (CIK 0001517175)",
+   "why": [
+    "issuer overlap with snapshot cbcfl source (CHEF)"
+   ]
+  },
+  {
+   "cik": "1520262",
+   "file": "alks-ex10_1.htm",
+   "name": "Alkermes plc.  (ALKS)  (CIK 0001520262)",
+   "why": [
+    "issuer overlap with snapshot cbcfl source (ALKS)"
+   ]
+  },
+  {
+   "cik": "1552275",
+   "file": "d73405dex412.htm",
+   "name": "Sunoco LP  (SUN)  (CIK 0001552275)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1552797",
+   "file": "d812656dex41.htm",
+   "name": "Delek Logistics Partners, LP  (DKL)  (CIK 00015527",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1563411",
+   "file": "exhibit48_2024-indenture.htm",
+   "name": "CONSTELLIUM SE  (CSTM)  (CIK 0001563411)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1574197",
+   "file": "d58049dex102.htm",
+   "name": "Five Point Holdings, LLC  (FPH)  (CIK 0001574197)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1580905",
+   "file": "a41ibp-indenture2026exec.htm",
+   "name": "Installed Building Products, Inc.  (IBP)  (CIK 000",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1584509",
+   "file": "ex41-armkeunotesindenture.htm",
+   "name": "Aramark  (ARMK)  (CIK 0001584509)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1590364",
+   "file": "ef20026556_ex4-1.htm",
+   "name": "FTAI Aviation Ltd.  (FTAI, FTAIM, FTAIN, FTAIO, FT",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1590895",
+   "file": "d877683dex41.htm",
+   "name": "Caesars Entertainment, Inc.  (CZR)  (CIK 000159089",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1603923",
+   "file": "wfrd-indentureexecutionver.htm",
+   "name": "Weatherford International plc  (WFRD)  (CIK 000160",
+   "why": [
+    "INVESTMENTS FOUND-regression check (informed c7954fab spurious-evidence rules)"
+   ]
+  },
+  {
+   "cik": "1693736",
+   "file": "filename9.htm",
+   "name": "EquipmentShare.com Inc  (CIK 0001693736)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1698538",
+   "file": "sssht-ex10_1.htm",
+   "name": "Strategic Student & Senior Housing Trust, Inc.  (S",
+   "why": [
+    "quoted by rules in c7954fab/2ab40bc4"
+   ]
+  },
+  {
+   "cik": "1698990",
+   "file": "tm2429486d1_ex4-1.htm",
+   "name": "Magnolia Oil & Gas Corp  (MGY)  (CIK 0001698990)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1721386",
+   "file": "e5541_ex4-1.htm",
+   "name": "Landsea Homes Corp  (LSEA, LSEAW)  (CIK 0001721386",
+   "why": [
+    "INVESTMENTS FOUND-regression check (informed c7954fab spurious-evidence rules)"
+   ]
+  },
+  {
+   "cik": "1736734",
+   "file": "filename12.htm",
+   "name": "Lendbuzz Inc.  (CIK 0001736734)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1770561",
+   "file": "tm2425386d1_ex4-1.htm",
+   "name": "Coronado Global Resources Inc.  (CODQL)  (CIK 0001",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1814974",
+   "file": "ex_702313.htm",
+   "name": "BBX Capital, Inc.  (BBXIA, BBXIB)  (CIK 0001814974",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1823239",
+   "file": "newcreditagreement.htm",
+   "name": "MARAVAI LIFESCIENCES HOLDINGS, INC.  (MRVI)  (CIK ",
+   "why": [
+    "issuer overlap with snapshot cbcfl source (MRVI)"
+   ]
+  },
+  {
+   "cik": "1825088",
+   "file": "ex41-2025seniornotesxdebtc.htm",
+   "name": "Dream Finders Homes, Inc.  (DFH)  (CIK 0001825088)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)",
+    "INVESTMENTS FOUND-regression check (informed c7954fab spurious-evidence rules)"
+   ]
+  },
+  {
+   "cik": "1832332",
+   "file": "avah-ex10_1.htm",
+   "name": "Aveanna Healthcare Holdings, Inc.  (AVAH)  (CIK 00",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1857853",
+   "file": "traeger2025rcfextension-fi.htm",
+   "name": "Traeger, Inc.  (COOK)  (CIK 0001857853)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1869198",
+   "file": "ltf-indenturelwcomments113.htm",
+   "name": "Life Time Group Holdings, Inc.  (LTH)  (CIK 000186",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1898416",
+   "file": "alvo-12312024xexx425.htm",
+   "name": "Alvotech  (ALVO, ALVOW)  (CIK 0001898416)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1898496",
+   "file": "ea026190001ex4-1_getty.htm",
+   "name": "Getty Images Holdings, Inc.  (GETY)  (CIK 00018984",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "1899883",
+   "file": "ef20044242_ex4-1.htm",
+   "name": "FTAI Infrastructure Inc.  (FIP)  (CIK 0001899883)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1941365",
+   "file": "ef20031782_ex4-1.htm",
+   "name": "MasterBrand, Inc.  (MBC)  (CIK 0001941365)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)",
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1951070",
+   "file": "exhibit43-sx1.htm",
+   "name": "McGraw Hill, Inc.  (CIK 0001951070)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "1988894",
+   "file": "as-20231231xex10d18.htm",
+   "name": "Amer Sports, Inc.  (AS)  (CIK 0001988894)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "2020795",
+   "file": "tm2412846d12_ex4-18.htm",
+   "name": "Windstream Parent, Inc.  (CIK 0002020795)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "2026738",
+   "file": "ny20035372x3_ex10-12.htm",
+   "name": "FORTRESS CREDIT REALTY INCOME TRUST  (CIK 00020267",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "2064124",
+   "file": "dp250054_ex0401.htm",
+   "name": "Figure Technology Solutions, Inc.  (FGRS, FIGR)  (",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "37785",
+   "file": "d148295dex41.htm",
+   "name": "FMC CORP  (FMC)  (CIK 0000037785)",
+   "why": [
+    "INVESTMENTS FOUND-regression check (informed c7954fab spurious-evidence rules)"
+   ]
+  },
+  {
+   "cik": "43196",
+   "file": "ex_683079.htm",
+   "name": "GRAY TELEVISION INC  (GTN, GTN-A)  (CIK 0000043196",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "723612",
+   "file": "d763560dex41.htm",
+   "name": "AVIS BUDGET GROUP, INC.  (CAR)  (CIK 0000723612)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)",
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "74303",
+   "file": "exhibit422-fourteenthamend.htm",
+   "name": "OLIN Corp  (OLN)  (CIK 0000074303)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)",
+    "quoted by rules in c7954fab/2ab40bc4"
+   ]
+  },
+  {
+   "cik": "75252",
+   "file": "d100115dex41.htm",
+   "name": "ACCENDRA HEALTH INC/VA/  (ACH)  (CIK 0000075252)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "77543",
+   "file": "tpc-indenture2024conformed.htm",
+   "name": "TUTOR PERINI CORP  (TPC)  (CIK 0000077543)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "797721",
+   "file": "d118183dex41.htm",
+   "name": "VIASAT INC  (VSAT)  (CIK 0000797721)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "832428",
+   "file": "exhibit401-indenture.htm",
+   "name": "E.W. SCRIPPS Co  (SSP)  (CIK 0000832428)",
+   "why": [
+    "inspected in 75d69c66->c61b7fbb confirmation audit (caption rule in c61b7fbb informed by it)"
+   ]
+  },
+  {
+   "cik": "927653",
+   "file": "mck_ex101termloanagreement.htm",
+   "name": "MCKESSON CORP  (MCK)  (CIK 0000927653)",
+   "why": [
+    "issuer overlap with snapshot cbcfl source (MCK)"
+   ]
+  },
+  {
+   "cik": "933036",
+   "file": "tm2415723d1_ex10-1.htm",
+   "name": "UPBOUND GROUP, INC.  (UPBD)  (CIK 0000933036)",
+   "why": [
+    "#374 FINANCIAL_RATIOS M>A hand-check sample (informed c7954fab imperative/min-liquidity evidence)"
+   ]
+  },
+  {
+   "cik": "98222",
+   "file": "tm2519982d1_ex4-1.htm",
+   "name": "TIDEWATER INC  (TDW, TDDWW, TDGMW)  (CIK 000009822",
+   "why": [
+    "INVESTMENTS FOUND-regression check (informed c7954fab spurious-evidence rules)"
+   ]
+  },
+  {
+   "cik": "1874944",
+   "file": "exhibit41-amendmentno1tonpa.htm",
+   "name": "Vacasa, Inc.  (VCSA)  (CIK 0001874944)",
+   "why": [
+    "named by reviewer (Vacasa) as a FINANCIAL_RATIOS/Trulieve example \u2014 exposed"
+   ]
+  },
+  {
+   "cik": "1754195",
+   "file": "trulieveconformedsecondsup.htm",
+   "name": "Trulieve Cannabis Corp.  (TCNNF)  (CIK 0001754195)",
+   "why": [
+    "named by reviewer (Trulieve) as a FINANCIAL_RATIOS/Trulieve example \u2014 exposed"
+   ]
+  },
+  {
+   "cik": "2064307",
+   "file": "ef20060968_ex10-4.htm",
+   "name": "ContextLogic Holdings Inc.  (LOGC)  (CIK 000206430",
+   "why": [
+    "named by reviewer (ContextLogic) as a FINANCIAL_RATIOS/Trulieve example \u2014 exposed"
+   ]
+  },
+  {
+   "cik": "1275014",
+   "file": "uct-eighthamendmentexecu.htm",
+   "name": "Ultra Clean Holdings, Inc.  (UCTT)  (CIK 000127501",
+   "why": [
+    "named by reviewer (Ultra Clean) as a FINANCIAL_RATIOS/Trulieve example \u2014 exposed"
+   ]
+  },
+  {
+   "cik": "1585364",
+   "file": "perrigo-2026facilityxame.htm",
+   "name": "PERRIGO Co plc  (PRGO)  (CIK 0001585364)",
+   "why": [
+    "named by reviewer (Perrigo) as a FINANCIAL_RATIOS/Trulieve example \u2014 exposed"
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "cik": "1745201",
+   "acc": "0001193125-24-087969",
+   "file": "d496227dex108.htm",
+   "type": "EX-10.8",
+   "form": "F-1",
+   "date": "2024-04-05",
+   "name": "Viking Holdings Ltd  (VIK)  (CIK 0001745201)",
+   "sha256": "105109d69c7a4c17604c78d04d4d8dfcf2925a9b15cb7b970ae589af39aa9f79",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1922446",
+   "acc": "0001140361-24-037949",
+   "file": "ny20034190x1_ex10-28.htm",
+   "type": "EX-10.28",
+   "form": "F-1",
+   "date": "2024-08-20",
+   "name": "Diversified Energy Co PLC  (DEC)  (CIK 0001922446)",
+   "sha256": "67b650bdb4760ab7397dc3819729e50d931547eb37c839501d83d1b34f09a0f2",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1026655",
+   "acc": "0001026655-24-000025",
+   "file": "firstamendmenttocreditagre.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-03-11",
+   "name": "CORE MOLDING TECHNOLOGIES INC  (CMT)  (CIK 0001026655)",
+   "sha256": "a46e77529be2ab6b33218d2ea547ceffcd7883736a532d450e7519f808268dcb",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1776197",
+   "acc": "0001193125-24-025866",
+   "file": "d31963dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-02-07",
+   "name": "AKUMIN INC.  (CIK 0001776197)",
+   "sha256": "da6eefebf1f7977d0cf73fb1ecf7dba7fe62decca0312433a052c7c6f69fd689",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "825324",
+   "acc": "0001437749-24-019326",
+   "file": "ex_684073.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-06-05",
+   "name": "Good Times Restaurants Inc.  (GTIM)  (CIK 0000825324)",
+   "sha256": "4bc846e7ad0f85f87b08ca7d0f47dcee2d985bd0f75c3e5c16676248794fa62a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1288403",
+   "acc": "0001104659-24-035220",
+   "file": "tm249062d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-03-18",
+   "name": "W&T OFFSHORE INC  (WTI)  (CIK 0001288403)",
+   "sha256": "75b67391d26134ee770d28706fb698752c8372e44f4ebbe212f2683d0153e2d5",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "874499",
+   "acc": "0001213900-24-078751",
+   "file": "ea021450801ex4-1_gulfport.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-09-16",
+   "name": "GULFPORT ENERGY CORP  (GPOR)  (CIK 0000874499)",
+   "sha256": "207c3195911e5df38f85d49c96deedf7d506134edeef3d08abf7555d5b13944b",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1257640",
+   "acc": "0001257640-24-000009",
+   "file": "kro-20240212xex4d1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-02-12",
+   "name": "KRONOS WORLDWIDE INC  (KRO)  (CIK 0001257640)",
+   "sha256": "f3105ea243b20a0907e6f37643fd803fa73a0934bb1fde85ffd10cb5106eceb4",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1638833",
+   "acc": "0001104659-24-045863",
+   "file": "tm2411508d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-04-10",
+   "name": "Surgery Partners, Inc.  (SGRY)  (CIK 0001638833)",
+   "sha256": "d2a494eea95cb8014ddd8dd8fd5143720a8fda926f90572c1fa727bdcbdbf3ce",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1410636",
+   "acc": "0001410636-24-000043",
+   "file": "ex1012-amendmentno1tosecur.htm",
+   "type": "EX-10.1 2",
+   "form": "8-K",
+   "date": "2024-02-05",
+   "name": "American Water Works Company, Inc.  (AWK)  (CIK 0001410636)",
+   "sha256": "2568cdb689501a44ea72f29b298d5ddd0d734f58f760936e55a0e8bddcb93b02",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1747079",
+   "acc": "0001747079-24-000020",
+   "file": "ex1048-riregulatoryagreeme.htm",
+   "type": "EX-10.48",
+   "form": "10-K",
+   "date": "2024-03-15",
+   "name": "Bally's Corp  (BALY)  (CIK 0001747079)",
+   "sha256": "21902d598e48818b740d3dc7d779b9ce0a917812f887d53c4f939077ec4ba01f",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1622536",
+   "acc": "0001628280-24-029107",
+   "file": "exhibit105-sx1.htm",
+   "type": "EX-10.5",
+   "form": "S-1",
+   "date": "2024-06-20",
+   "name": "Talen Energy Corp  (TLN)  (CIK 0001622536)",
+   "sha256": "0d85b85aff482c3eff4782f913888814c551632469b2ec27addfeb401ab7af0a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1385280",
+   "acc": "0001193125-24-180858",
+   "file": "d817703dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-07-18",
+   "name": "Cinemark Holdings, Inc.  (CNK)  (CIK 0001385280)",
+   "sha256": "eb7a2773e7389aee4222043ff792dcb6b09848eecb2ed6c84dfb3bfae31b2aee",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1893448",
+   "acc": "0001493152-24-003491",
+   "file": "ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-01-23",
+   "name": "Strong Global Entertainment, Inc.  (SGE)  (CIK 0001893448)",
+   "sha256": "e5ff854c5ab42ab59ca462da3ae9b332483dbdddbc7df8cde81fb0e56e39a44b",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1819253",
+   "acc": "0000950170-24-094529",
+   "file": "btmd-ex10_5.htm",
+   "type": "EX-10.5",
+   "form": "10-Q",
+   "date": "2024-08-09",
+   "name": "biote Corp.  (BTMD)  (CIK 0001819253)",
+   "sha256": "8257be560487d112043d7b61bc96ecea6f5e05d8816775ab4ecd1e8915e7fb19",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1058623",
+   "acc": "0001104659-24-049120",
+   "file": "tm2412039d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-04-19",
+   "name": "CUMULUS MEDIA INC  (CMLS)  (CIK 0001058623)",
+   "sha256": "8b4df49e10709c9add619f5571d9d798120c7a3f99690e309b9a1d267f585d81",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1600438",
+   "acc": "0001104659-24-010370",
+   "file": "tm245033d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-02-05",
+   "name": "GMS Inc.  (GMS)  (CIK 0001600438)",
+   "sha256": "a5e1998c299b53db87dc5249b88b96c66525d036ee86c62b6be8c6ec78ae298c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "933136",
+   "acc": "0001193125-24-191559",
+   "file": "d759346dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-08-01",
+   "name": "Mr. Cooper Group Inc.  (COOP)  (CIK 0000933136)",
+   "sha256": "bcd15b809edfd2e16f2b807351be7ad9e96ad4a8d4261b4a761b89bc2c4c7760",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1620280",
+   "acc": "0000950103-24-006836",
+   "file": "dp211353_ex0401.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-05-17",
+   "name": "Uniti Group Inc.  (UNIT)  (CIK 0001620280)",
+   "sha256": "39a99b1edc56956fbf8ed472e5ffb60fd79297b4e0f3614b7b606a2950da863b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1464790",
+   "acc": "0001628280-24-023642",
+   "file": "ex101-firstamendmenttonomu.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-05-15",
+   "name": "B. Riley Financial, Inc.  (RILY, RILYG, RILYK, RILYL, RILYM, RILYN, RILYP, RILYT, RILYZ)  (CIK 0001464790)",
+   "sha256": "721244d3f76d7fc2f031af929e119c71311c7396070cabdbb0b2ebb47f594ed9",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1661181",
+   "acc": "0001193125-24-256699",
+   "file": "d885519dex102.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-11-13",
+   "name": "Organogenesis Holdings Inc.  (ORGO)  (CIK 0001661181)",
+   "sha256": "4c8a064d297217d2296f06faab195e8745852c68fa2c95642125ff66ac7d5f8a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1806347",
+   "acc": "0001104659-24-024575",
+   "file": "tm246306d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-02-15",
+   "name": "Westrock Coffee Co  (WEST, WESTW)  (CIK 0001806347)",
+   "sha256": "a6e685dd90932aedbd39abcbf88288151af4c6421c4fd7065bd08b18cc90fdf9",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1020569",
+   "acc": "0001104659-24-126301",
+   "file": "tm2430275d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-12-06",
+   "name": "IRON MOUNTAIN INC  (IRM)  (CIK 0001020569)",
+   "sha256": "ca429072e72f5bdd40e0f8897b7e6a570b6f1c97b0a9725f157049aea2f0a466",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1781755",
+   "acc": "0001193125-24-149333",
+   "file": "d823548dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-05-29",
+   "name": "Baldwin Insurance Group, Inc.  (BWIN)  (CIK 0001781755)",
+   "sha256": "02c3a2ead27a3952d9a59770a15d98b4803a8cce290d04660708ed100709cd5e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "893538",
+   "acc": "0000893538-24-000085",
+   "file": "exhibit41indenture.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-07-25",
+   "name": "SM Energy Co  (SM)  (CIK 0000893538)",
+   "sha256": "847949f5d5cfa0a6955a4d2644f1bd2b7d5633aeea4737fd60c4054588594337",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1776738",
+   "acc": "0001193125-24-084799",
+   "file": "d809339dex48.htm",
+   "type": "EX-4.8",
+   "form": "S-3",
+   "date": "2024-04-02",
+   "name": "Cannabist Co Holdings Inc.  (CBSTF)  (CIK 0001776738)",
+   "sha256": "7341f60c9dbbddcb5fa7fe79df682e581b73d88b729a659890ef1bc35bae910c",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1597672",
+   "acc": "0001193125-24-001028",
+   "file": "d596153dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-01-03",
+   "name": "RAYONIER ADVANCED MATERIALS INC.  (RYAM)  (CIK 0001597672)",
+   "sha256": "c3e6831ea9f9c8a873d8e463d7235b783c154c57ef75b4b8883878bf4b2a393c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1724965",
+   "acc": "0001193125-24-026669",
+   "file": "d759598dex43.htm",
+   "type": "EX-4.3",
+   "form": "8-K",
+   "date": "2024-02-07",
+   "name": "TALOS ENERGY INC.  (TALO)  (CIK 0001724965)",
+   "sha256": "ef278da91c791837d924a4695911cd5e51d8e1dd7adff3f6f9ec93861216b364",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1653653",
+   "acc": "0001193125-24-067880",
+   "file": "d806794dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-03-14",
+   "name": "Red Rock Resorts, Inc.  (RRR)  (CIK 0001653653)",
+   "sha256": "247d91ba89942d4e88e014e2bec442a5fb7fa2575b99b32960100b563386e801",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1745916",
+   "acc": "0001104659-24-064686",
+   "file": "tm2415344d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-05-23",
+   "name": "PennyMac Financial Services, Inc.  (PFSI)  (CIK 0001745916)",
+   "sha256": "3a886d96cba10b0373b309bb0aa0021eb9a34f7a438ef96f2b53aefb7c86a24e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2042694",
+   "acc": "0001193125-24-255254",
+   "file": "d805110dex107.htm",
+   "type": "EX-10.7",
+   "form": "8-K12G3/A",
+   "date": "2024-11-12",
+   "name": "Primo Brands Corp  (CIK 0002042694)",
+   "sha256": "6106261002ac9898f7c149722b421752da209c2440d4fd964b7cfe6b6f8b4bca",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1647088",
+   "acc": "0001647088-24-000120",
+   "file": "ex41-indenture2029notes.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-06-28",
+   "name": "WillScot Mobile Mini Holdings Corp.  (WSC)  (CIK 0001647088)",
+   "sha256": "755aa5b4916b608d10c62df61302bfc0a70010fc98d91b206a8f60c9ff27ea40",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1821825",
+   "acc": "0001104659-24-063008",
+   "file": "tm2414822d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-05-17",
+   "name": "Organon & Co.  (OGN)  (CIK 0001821825)",
+   "sha256": "02dba313a413b1e8e038d9faf997e2867a147cd3d03ea538cc00346f70952fb1",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1749723",
+   "acc": "0001749723-24-000019",
+   "file": "nfe-indenture.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-03-08",
+   "name": "New Fortress Energy Inc.  (NFE)  (CIK 0001749723)",
+   "sha256": "253a2c2bb11b10df0339eb0f9fccf63afd6a5d8a3bfe750e2f415aefef9950ba",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2011286",
+   "acc": "0000950157-24-001363",
+   "file": "ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K/A",
+   "date": "2024-10-03",
+   "name": "Amentum Holdings, Inc.  (AMTM)  (CIK 0002011286)",
+   "sha256": "f774f5c1ff7855b558bc37932db76b1a890728ed764e95b5aa6d3304364e112c",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1086600",
+   "acc": "0001558370-24-009096",
+   "file": "arlp-20240612xex4d1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-06-12",
+   "name": "ALLIANCE RESOURCE PARTNERS LP  (ARLP)  (CIK 0001086600)",
+   "sha256": "aee128f6d99fb9093c95c2d57ebf83b95a8e7bcef1d4685eb7c1bc10d0e27560",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1616000",
+   "acc": "0001193125-24-265334",
+   "file": "d893294dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-11-26",
+   "name": "Xenia Hotels & Resorts, Inc.  (XHR)  (CIK 0001616000)",
+   "sha256": "de0b22d467d8227c04fbf78507319dd401ad57c3650946961d3537e702035763",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1849253",
+   "acc": "0000950170-24-108156",
+   "file": "ryan-ex4_1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-09-19",
+   "name": "RYAN SPECIALTY HOLDINGS, INC.  (RYAN)  (CIK 0001849253)",
+   "sha256": "0bfcfb489ab3e3696f7b7a53702150d47a69da45168037f260220cb2c02aa936",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1718512",
+   "acc": "0001104659-24-068270",
+   "file": "tm2416310d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-06-04",
+   "name": "Gates Industrial Corp plc  (GTES)  (CIK 0001718512)",
+   "sha256": "9f572acf31c33762c216887513244ca88635e29de16a00026b63db37da2cf1b0",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1537054",
+   "acc": "0001193125-24-273399",
+   "file": "d915976dex102.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-12-09",
+   "name": "Gogo Inc.  (GOGO)  (CIK 0001537054)",
+   "sha256": "f2fd23156a95109ea273aba0da0e2e84c1b9908cfa1de335cf7ca61ebe38cd7b",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1759824",
+   "acc": "0000950170-24-069661",
+   "file": "altg-ex4_1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-06-06",
+   "name": "ALTA EQUIPMENT GROUP INC.  (ALTG, ALTG-PA)  (CIK 0001759824)",
+   "sha256": "50db3f0683daf3769b12634b95a58e913162fd96e5bc8b87d99451f9bc2cbe04",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1617406",
+   "acc": "0001617406-24-000056",
+   "file": "exhibit41-indenturemay20.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-05-16",
+   "name": "Park Hotels & Resorts Inc.  (PK)  (CIK 0001617406)",
+   "sha256": "7a2a8c543141e54bb0cff0905579af7193757265c4ea417cf73d8ca67ae6a4fa",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1641614",
+   "acc": "0001558370-24-009766",
+   "file": "pmts-20240711xex4d1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-07-11",
+   "name": "CPI Card Group Inc.  (PMTS)  (CIK 0001641614)",
+   "sha256": "63e9b2e52662642b7b804ad1c717bfca5bacd5b324d04b2f3919a342c8cf983d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "351817",
+   "acc": "0001628280-24-028825",
+   "file": "exhibit41-pricing8xk.htm",
+   "type": "EX-4.1",
+   "form": "425",
+   "date": "2024-06-18",
+   "name": "SILVERBOW RESOURCES, INC.  (CIK 0000351817)",
+   "sha256": "ac52f5a6e2f46da114de3d9735350f45910ee4718d52918f5e7669602c1739da",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1866175",
+   "acc": "0001628280-24-028816",
+   "file": "exhibit41-pricing8xk.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-06-18",
+   "name": "Crescent Energy Co  (CRGY)  (CIK 0001866175)",
+   "sha256": "ac52f5a6e2f46da114de3d9735350f45910ee4718d52918f5e7669602c1739da",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1122976",
+   "acc": "0001193125-24-222120",
+   "file": "d866752dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-09-19",
+   "name": "AVIENT CORP  (AVNT)  (CIK 0001122976)",
+   "sha256": "9a49efd3f25a489b4d6fbc55aae7cffa43b0eb8f6b2720a873c8e7c2920a5823",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1579298",
+   "acc": "0000950170-24-109645",
+   "file": "burl-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-09-26",
+   "name": "Burlington Stores, Inc.  (BURL)  (CIK 0001579298)",
+   "sha256": "1ea24864c64b08306fee96b9709d98eb7f52dd1937de782f39c656c717eb38c8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "814453",
+   "acc": "0001193125-24-256691",
+   "file": "d853098dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-11-13",
+   "name": "NEWELL BRANDS INC.  (NWL)  (CIK 0000814453)",
+   "sha256": "f540f81358437fa0c8b3099f36836586a6c1368c1f239f26580dc6f1d9d9eabc",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1839839",
+   "acc": "0001193125-24-125223",
+   "file": "d819647dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-04-30",
+   "name": "Janus International Group, Inc.  (JBI)  (CIK 0001839839)",
+   "sha256": "820c492bade0d36b1c67b3333102ae27a95c4d951ceae4aebc6121f875f1bc27",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1174922",
+   "acc": "0001174922-24-000135",
+   "file": "ex1011-exatoamendmentno4am.htm",
+   "type": "EX-10.1 1",
+   "form": "8-K",
+   "date": "2024-09-16",
+   "name": "WYNN RESORTS LTD  (WYNN)  (CIK 0001174922)",
+   "sha256": "227c5d239fec291a68435ae77e645227c1cd009ecf980cac325ab78f7e14f0f2",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1674335",
+   "acc": "0001193125-24-205383",
+   "file": "d861919dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-08-22",
+   "name": "JELD-WEN Holding, Inc.  (JELD)  (CIK 0001674335)",
+   "sha256": "f76f3bbb38147bf9fb581cb8c56b55ac55310241eae3548984a2823bc89bf99d",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1260221",
+   "acc": "0001193125-24-222468",
+   "file": "d887611dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-09-20",
+   "name": "TransDigm Group INC  (TDG)  (CIK 0001260221)",
+   "sha256": "917bf15341ae6ec25ef18de91d594675c5b026280c040ac4653fa09ff0daba13",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "105132",
+   "acc": "0000105132-24-000032",
+   "file": "ex10b.htm",
+   "type": "EX-10.B",
+   "form": "8-K",
+   "date": "2024-05-02",
+   "name": "WD 40 CO  (WDFC)  (CIK 0000105132)",
+   "sha256": "838ddba6ace1fcc51d13a76986ba29b4ca1282f435bde794b3bf767356dde66f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1756655",
+   "acc": "0001193125-24-176379",
+   "file": "d754933dex1012.htm",
+   "type": "EX-10.12",
+   "form": "S-1/A",
+   "date": "2024-07-08",
+   "name": "Ardent Health Partners, LLC  (ARDT)  (CIK 0001756655)",
+   "sha256": "2f85c5206716de7e96bc46938299cf963aab0c7e22ff9235306320230f73cc66",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1783398",
+   "acc": "0001783398-24-000053",
+   "file": "uwm2024-indentureversionfo.htm",
+   "type": "EX-4.11",
+   "form": "8-K",
+   "date": "2024-12-16",
+   "name": "UWM Holdings Corp  (UWMC, UWMC-WT)  (CIK 0001783398)",
+   "sha256": "0d2770652eaeccc646cbedb58feedd1176885d40dc51aae2008d8a0b3cdb9190",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1841804",
+   "acc": "0001193125-24-021865",
+   "file": "d559740dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-02-01",
+   "name": "INSTRUCTURE HOLDINGS, INC.  (INST)  (CIK 0001841804)",
+   "sha256": "57f7f9534888cd6ed8821185bb62ade9ab5146a3620895be68010239ef7d13cc",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1378992",
+   "acc": "0001104659-24-111541",
+   "file": "tm2426880d2_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "425",
+   "date": "2024-10-25",
+   "name": "BERRY GLOBAL GROUP, INC.  (BERY)  (CIK 0001378992)",
+   "sha256": "1f41454fbc6fa5893d5d09f5a9a821658d8119ae87e7513dc7a0d348b6e8d15e",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1618673",
+   "acc": "0001193125-24-217992",
+   "file": "d893270dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-09-12",
+   "name": "Performance Food Group Co  (PFGC)  (CIK 0001618673)",
+   "sha256": "21fa4e809f28085e6334730fb64f8431d921a1226a62f1f3bb9ab403aa6feda2",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1750",
+   "acc": "0001104659-24-029986",
+   "file": "tm246820d2_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-03-01",
+   "name": "AAR CORP  (AIR)  (CIK 0000001750)",
+   "sha256": "284296a452fab074f6ac20cb816c66af42752816681a2f9695839d55f039f587",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "912728",
+   "acc": "0001193125-24-021078",
+   "file": "d348992dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-01-31",
+   "name": "FORWARD AIR CORP  (FWRD)  (CIK 0000912728)",
+   "sha256": "0ca328bd0bc6b6aba6faca36db799176fc4868e0b4b486ffa4b227f69383b354",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1474098",
+   "acc": "0001474098-24-000120",
+   "file": "a100324srnotesindentureex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-10-03",
+   "name": "Pebblebrook Hotel Trust  (PEB, PEB-PE, PEB-PF, PEB-PG, PEB-PH)  (CIK 0001474098)",
+   "sha256": "f7cab6e05562629334f832fa12dba001d4b82765422ec9ebb300f65d758063d7",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1024305",
+   "acc": "0001193125-24-150475",
+   "file": "d35471dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-05-30",
+   "name": "COTY INC.  (COTY)  (CIK 0001024305)",
+   "sha256": "dcce8474e70f979bbc177a04c3df482927a514fb8ba36764bc25f992c65f325c",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "41719",
+   "acc": "0001104659-24-114009",
+   "file": "tm2427380d4_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-11-05",
+   "name": "Magnera Corp  (GLT)  (CIK 0000041719)",
+   "sha256": "8e678de4dbf80fcdc5908cc279f543170e83f8ecbf14f824543575489d3c22ea",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1530804",
+   "acc": "0001140361-24-049849",
+   "file": "ef20040331_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-12-18",
+   "name": "Tronox Holdings plc  (TROX)  (CIK 0001530804)",
+   "sha256": "3dd641c296e9ae3ccc193318862d71a8b1b55a59f96ffb21358fb12300ce3825",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1834494",
+   "acc": "0001834494-24-000087",
+   "file": "exhibit101to5152024formcre.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-05-15",
+   "name": "MeridianLink, Inc.  (MLNK)  (CIK 0001834494)",
+   "sha256": "785ec2e1686e0b5113c340cab08bbe12a8f32a569372198ae96cf2f68095abfc",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1040829",
+   "acc": "0001140361-24-016193",
+   "file": "ny20024154x2_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-03-28",
+   "name": "Ryman Hospitality Properties, Inc.  (RHP)  (CIK 0001040829)",
+   "sha256": "849ae9db89c87ec9da7bcebc4d51973b8d8f04d3ec92cb39a280348705c0926b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "701374",
+   "acc": "0001193125-24-128554",
+   "file": "d822556dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-05-02",
+   "name": "Six Flags Entertainment Corp  (CIK 0000701374)",
+   "sha256": "c52162cc876c1553973495cc4f56e47613d7f3a617edf991bbf210a1e9ee6588",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1735707",
+   "acc": "0000950142-24-001390",
+   "file": "eh240484338_ex0401.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-05-21",
+   "name": "Garrett Motion Inc.  (GTX)  (CIK 0001735707)",
+   "sha256": "7c85d7ff6532dcb40bed27222b8947e93ea48446117bd6a55ac79919f3074314",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1592386",
+   "acc": "0001592386-24-000076",
+   "file": "exhibit41q224.htm",
+   "type": "EX-4.1",
+   "form": "10-Q",
+   "date": "2024-07-26",
+   "name": "Virtu Financial, Inc.  (VIRT)  (CIK 0001592386)",
+   "sha256": "878c122aacd9ce61ac333182ec0c3ef2547d2f89a8a39ce59d1f679ee15ba2f8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1789832",
+   "acc": "0001193125-24-140570",
+   "file": "d836811dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-05-16",
+   "name": "Hess Midstream LP  (HESM)  (CIK 0001789832)",
+   "sha256": "387767c4276ada4253b74e473cdb59cde03d9bfb7b847443e763ff55a69f999a",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "903651",
+   "acc": "0001104659-24-087285",
+   "file": "tm2421053d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-08-08",
+   "name": "INNODATA INC  (INOD)  (CIK 0000903651)",
+   "sha256": "3d954242d00357f1a351fdc2a72696f0d2b59baed62b091ab8b33a94d326487f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1640384",
+   "acc": "0000950170-24-128079",
+   "file": "lmfa-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-11-18",
+   "name": "LM FUNDING AMERICA, INC.  (LMFA)  (CIK 0001640384)",
+   "sha256": "90eb650762ceadf91f1b75521e960ee3fb00e3a55d3a9a776853b322414a2a1c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1530950",
+   "acc": "0001530950-24-000077",
+   "file": "ex4-1xpostxindenturefebrua.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-02-26",
+   "name": "Post Holdings, Inc.  (POST)  (CIK 0001530950)",
+   "sha256": "436f3cb508968044f2d935ec0e1a36b1034ed63e45a5e0492ceef21ba58bd914",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2025410",
+   "acc": "0000950123-24-006842",
+   "file": "filename2.htm",
+   "type": "EX-4.2",
+   "form": "DRS/A",
+   "date": "2024-07-26",
+   "name": "Dynasty Parent Co., Inc.  (CIK 0002025410)",
+   "sha256": "c9a252bb8045e7aff21e0f5bb241984500ec99251002e1cb16908035b5bde8bd",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2007855",
+   "acc": "0000950123-24-012024",
+   "file": "filename101.htm",
+   "type": "EX-10.96",
+   "form": "DRS/A",
+   "date": "2024-11-18",
+   "name": "Venture Global, Inc.  (CIK 0002007855)",
+   "sha256": "9168e6e21e328f4db57d85fa782076e3a991801568498ea63e5ea4c7451bc338",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1171486",
+   "acc": "0001437749-24-031489",
+   "file": "ex_732367.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-10-17",
+   "name": "NATURAL RESOURCE PARTNERS LP  (NRP)  (CIK 0001171486)",
+   "sha256": "6d163ba696401e7bb8cc05f5b04bdf2db05b44f6f182ea4f453cb5e16c578506",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1319229",
+   "acc": "0001104659-24-048196",
+   "file": "tm2411867d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-04-17",
+   "name": "TransMontaigne Partners LLC  (CIK 0001319229)",
+   "sha256": "c263b9505254d5a7802530bbc9d0cd1fe2dd5cab5f51c3f461a623947c8f2776",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1822479",
+   "acc": "0001822479-24-000041",
+   "file": "shc20240630_exhibitx4x1.htm",
+   "type": "EX-4.1",
+   "form": "10-Q",
+   "date": "2024-08-05",
+   "name": "Sotera Health Co  (SHC)  (CIK 0001822479)",
+   "sha256": "8ec4727ed3519d679c6e07c1ce78b69460398fb27d55abed72cc6864e47017ed",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1618756",
+   "acc": "0001618756-24-000104",
+   "file": "a05rbi-rbixindenture1516.htm",
+   "type": "EX-4.20",
+   "form": "8-K",
+   "date": "2024-06-17",
+   "name": "Restaurant Brands International Inc.  (QSR)  (CIK 0001618756)",
+   "sha256": "dfb18427f4b30d32c76945c6fc0d98cb10f5432bae5bc2a0c9b8727d7f39446e",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "840489",
+   "acc": "0001104659-24-026057",
+   "file": "tm246771d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-02-21",
+   "name": "FirstCash Holdings, Inc.  (FCFS)  (CIK 0000840489)",
+   "sha256": "84117cf1a0bc680cdff1492a84f6f2870eed83c557d6c272d03920041ec09c05",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1703056",
+   "acc": "0000950142-24-001403",
+   "file": "eh240486443_ex1001.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-05-24",
+   "name": "ADT Inc.  (ADT)  (CIK 0001703056)",
+   "sha256": "cabe28cd06b2bcfcef27ac82469ecf3202c07e011a395d01bf70d3d9e78c29d2",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1823878",
+   "acc": "0001823878-24-000024",
+   "file": "myps-20240611xexhibit101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-06-12",
+   "name": "PLAYSTUDIOS, Inc.  (MYPS, MYPSW)  (CIK 0001823878)",
+   "sha256": "bbbadef57c2ced9544c7e8658c252448f527dbe6a9beba9746c9bab61fa468c2",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1618755",
+   "acc": "0001618755-24-000044",
+   "file": "a05rbi-rbixindenture1516.htm",
+   "type": "EX-4.20",
+   "form": "8-K",
+   "date": "2024-06-17",
+   "name": "Restaurant Brands International Limited Partnership  (RSTRF)  (CIK 0001618755)",
+   "sha256": "dfb18427f4b30d32c76945c6fc0d98cb10f5432bae5bc2a0c9b8727d7f39446e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1000623",
+   "acc": "0001193125-24-233783",
+   "file": "d811403dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-10-07",
+   "name": "Mativ Holdings, Inc.  (MATV)  (CIK 0001000623)",
+   "sha256": "1f120b5e984c8bc37db1f2fd7118390b82fb70e5f5b8b7b436ed8fc0910e1553",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1368458",
+   "acc": "0001193125-24-048064",
+   "file": "d786952dex42.htm",
+   "type": "EX-4.2",
+   "form": "8-K",
+   "date": "2024-02-27",
+   "name": "Sally Beauty Holdings, Inc.  (SBH)  (CIK 0001368458)",
+   "sha256": "ad7bfc4370bbed21db4f633ff03a043bb4190ab9bda92b54191828d3c0626806",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1845257",
+   "acc": "0000950170-24-022131",
+   "file": "lfst-ex10_19.htm",
+   "type": "EX-10.19",
+   "form": "10-K",
+   "date": "2024-02-28",
+   "name": "LifeStance Health Group, Inc.  (LFST)  (CIK 0001845257)",
+   "sha256": "23b6b630747be5283eccef4614142821266e9b6406f78da05cbeebead425dcb9",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1888447",
+   "acc": "0000950170-24-123531",
+   "file": "ee-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-11-07",
+   "name": "Excelerate Energy, Inc.  (EE)  (CIK 0001888447)",
+   "sha256": "69e7cf518e5b5b4b409428ef26bc02d30473196a0741e7a0fd0c415c079f554a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1564902",
+   "acc": "0000950170-24-100314",
+   "file": "prks-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-08-26",
+   "name": "United Parks & Resorts Inc.  (PRKS)  (CIK 0001564902)",
+   "sha256": "b6a9dc54268087c0d0b2617eea21680122928e5138c5b142d063fc6ba47ce9e6",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1810019",
+   "acc": "0001810019-24-000029",
+   "file": "rxt41_indenture.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-03-12",
+   "name": "Rackspace Technology, Inc.  (RXT)  (CIK 0001810019)",
+   "sha256": "27cfca2998f671fc2a4034c41eb8a0d27f8df8c3e0a0a4556255d8f4387dc158",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1022321",
+   "acc": "0001193125-24-135324",
+   "file": "d818783dex42.htm",
+   "type": "EX-4.2",
+   "form": "8-K",
+   "date": "2024-05-09",
+   "name": "GENESIS ENERGY LP  (GEL, GELPP)  (CIK 0001022321)",
+   "sha256": "3d92e65b0ae7c4fd8db93f5a7b17246c45ff67dcf6e5dd898a20a8de109d8c93",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "716133",
+   "acc": "0000950157-24-000830",
+   "file": "ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-05-31",
+   "name": "CINCINNATI BELL INC  (CIK 0000716133)",
+   "sha256": "8d4aa10ba2d397de956ad2d9946fd17c87bfdaf3d11bf0d466ac627edc70ab5a",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1674168",
+   "acc": "0001193125-24-009277",
+   "file": "d929151dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-01-17",
+   "name": "Hilton Grand Vacations Inc.  (HGV)  (CIK 0001674168)",
+   "sha256": "8ecfdc9a8745724ae4534c14262a28c5764c764d3e33ef98525498f71a6dcdce",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1185348",
+   "acc": "0001193125-24-142861",
+   "file": "d841755dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-05-20",
+   "name": "PRA GROUP INC  (PRAA)  (CIK 0001185348)",
+   "sha256": "4995afba9c5230e8fc0a5b84333d3c5b2f59880e910effbf66eeb700d374e7a7",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1809519",
+   "acc": "0001809519-24-000147",
+   "file": "goodrx6tham-sixthamendment.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-07-11",
+   "name": "GoodRx Holdings, Inc.  (GDRX)  (CIK 0001809519)",
+   "sha256": "6a7b960bb9e26d1df31cc5821286c54ecdf37caf00b4879728c1e28d50d4e11c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1014739",
+   "acc": "0001104659-24-059895",
+   "file": "tm2413986d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-05-10",
+   "name": "Option Care Health, Inc.  (OPCH)  (CIK 0001014739)",
+   "sha256": "8331fa973a0bafc01505a461b26e03b182721a1a3e8480b38d496a450d15ff83",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1679273",
+   "acc": "0001679273-24-000026",
+   "file": "ex10_2conformed-lwxagwes.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-05-08",
+   "name": "Lamb Weston Holdings, Inc.  (LW)  (CIK 0001679273)",
+   "sha256": "75f113d8788f6bbbe27e5fc1e12eefa77b8e5b654179e935b3dd4e5de0085cbd",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1897762",
+   "acc": "0001193125-24-228597",
+   "file": "d126458dex41.htm",
+   "type": "EX-4.1",
+   "form": "S-1",
+   "date": "2024-09-30",
+   "name": "Ingram Micro Holding Corp  (CIK 0001897762)",
+   "sha256": "260cf1cdb6d8cf7b11626412db3ff9ada1d3819bf4ca848af45bcf8c4e5e6048",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1210677",
+   "acc": "0000950170-24-119269",
+   "file": "fa-ex10_2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-10-31",
+   "name": "FIRST ADVANTAGE CORP  (FA)  (CIK 0001210677)",
+   "sha256": "03d50f523cb8f552e15c07247608e0113d6e176316008c819c042cae320e06f0",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1708035",
+   "acc": "0001193125-24-159982",
+   "file": "d852420dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-06-12",
+   "name": "Ecovyst Inc.  (ECVT)  (CIK 0001708035)",
+   "sha256": "899045864aaaf82fac6d37b8ae0c9e7738841d32584663547543b88074439f94",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "822818",
+   "acc": "0000822818-24-000040",
+   "file": "a8-kexhibit.htm",
+   "type": "EX-4.43H",
+   "form": "8-K",
+   "date": "2024-10-11",
+   "name": "CLEAN HARBORS INC  (CLH)  (CIK 0000822818)",
+   "sha256": "435aab3e71db13dc493582cd29935498c3aceea2737edabee5b61adb01ee669a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1831631",
+   "acc": "0001831631-24-000177",
+   "file": "exhibit41-loandepotxindent.htm",
+   "type": "EX-4.1, 2",
+   "form": "8-K",
+   "date": "2024-06-24",
+   "name": "loanDepot, Inc.  (LDI)  (CIK 0001831631)",
+   "sha256": "fc6ec41fe887133b4e0425b1a004d6af2c5ea86fe869b51adafa1a26a1cb1e8b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1766363",
+   "acc": "0000950170-24-056306",
+   "file": "edr-ex10_9.htm",
+   "type": "EX-10.9",
+   "form": "10-Q",
+   "date": "2024-05-09",
+   "name": "Endeavor Group Holdings, Inc.  (EDR)  (CIK 0001766363)",
+   "sha256": "ab93bf51fe45704a78a2965ade611129981c3b249f0ff6f309d1b8844f96f3a6",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1597033",
+   "acc": "0001193125-24-268887",
+   "file": "d868588dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-12-02",
+   "name": "Sabre Corp  (SABR)  (CIK 0001597033)",
+   "sha256": "2197f72ec015c1feec0c5f2524aca83b262a57a53c11fb905b4915473a8f21d4",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1973266",
+   "acc": "0001193125-24-263492",
+   "file": "d867484dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-11-21",
+   "name": "TKO Group Holdings, Inc.  (TKO)  (CIK 0001973266)",
+   "sha256": "99220fa3070b42eb5be2e48fa8773d13b6dc418e5a68800ad429384767c6e7f2",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "750004",
+   "acc": "0001104659-24-004177",
+   "file": "tm243442d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-01-16",
+   "name": "Light & Wonder, Inc.  (LNW, LAWIL)  (CIK 0000750004)",
+   "sha256": "ab84f2e78fcf00d8891b1690880ed23b5d3e5d8fc8bf9ad50a27026f4d49d38a",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1099160",
+   "acc": "0001193125-24-237274",
+   "file": "d861296dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-10-15",
+   "name": "BEASLEY BROADCAST GROUP INC  (BBGI)  (CIK 0001099160)",
+   "sha256": "ac465c27db81676495d547dbb1c8069d26ab59239b10fe32eb8bdcd2a1b53109",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1828937",
+   "acc": "0001193125-24-250678",
+   "file": "d884527dex43.htm",
+   "type": "EX-4.3",
+   "form": "8-K",
+   "date": "2024-11-04",
+   "name": "Finance of America Companies Inc.  (FOA, FOACW)  (CIK 0001828937)",
+   "sha256": "45d72dc7dda5aec8fe437e22aa1cd7795463a547b0ca280fa926c724e3168fd8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1616707",
+   "acc": "0001193125-24-234463",
+   "file": "d844375dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-10-08",
+   "name": "Wayfair Inc.  (W)  (CIK 0001616707)",
+   "sha256": "716f6284790193d6c61818840cf815fdc8f44285e65f08315f59953ad1452751",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2008861",
+   "acc": "0000950123-24-006241",
+   "file": "filename7.htm",
+   "type": "EX-4.2",
+   "form": "DRS/A",
+   "date": "2024-06-14",
+   "name": "Endo, Inc.  (NDOI)  (CIK 0002008861)",
+   "sha256": "371f42a63e89d648693c482802edbf8112f85aba5bf9bba56e8dc20655e9dbfd",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1776661",
+   "acc": "0000950170-24-045245",
+   "file": "adv-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-04-18",
+   "name": "Advantage Solutions Inc.  (ADV, ADVWW)  (CIK 0001776661)",
+   "sha256": "cf6f01f0c27334cd3eeb811f56e8c564a570564bfa3e5e4234243bc42c210509",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1821806",
+   "acc": "0000950170-24-042982",
+   "file": "lesl-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-04-09",
+   "name": "Leslie's, Inc.  (LESL)  (CIK 0001821806)",
+   "sha256": "f40857c901c482c33cdf224538d77949593408cc02f5bf690bec1caf43106c12",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1701051",
+   "acc": "0001104659-24-108346",
+   "file": "tm2426111d1_ex10-2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-10-15",
+   "name": "WideOpenWest, Inc.  (WOW)  (CIK 0001701051)",
+   "sha256": "25fdc2127b5806caddb6ec2db8f2d06401a83dcd5c6670b0a551f43094a0006b",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1432133",
+   "acc": "0001432133-24-000145",
+   "file": "sixthamendmenttocreditagre.htm",
+   "type": "EX-4.3",
+   "form": "10-Q",
+   "date": "2024-08-08",
+   "name": "KALTURA INC  (KLTR)  (CIK 0001432133)",
+   "sha256": "4ebbb53c5a760d78b6b94d8782363645238ae8517d67dcdfa95bddf3cefccbc7",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "28823",
+   "acc": "0001193125-24-282008",
+   "file": "d912603dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-12-19",
+   "name": "DIEBOLD NIXDORF, Inc  (DBD)  (CIK 0000028823)",
+   "sha256": "e8698bdfdb3ea2fa6dbe0b56d408b89c42b156f2efa09bea883c23b5f9f1a823",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1401257",
+   "acc": "0001401257-24-000008",
+   "file": "exhibit101-secondlienselle.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-01-08",
+   "name": "FORUM ENERGY TECHNOLOGIES, INC.  (FET)  (CIK 0001401257)",
+   "sha256": "a04f83776eec884b66985df71c525e4a4baffd76bdd23841b85b5d8a19852e89",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "27996",
+   "acc": "0001104659-24-125074",
+   "file": "tm2428903d2_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-12-03",
+   "name": "DELUXE CORP  (DLX)  (CIK 0000027996)",
+   "sha256": "a78e85c67d24b5307d911e8701027d42f5c3a82a03e15b93be7c05ec4d02a787",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1883313",
+   "acc": "0001883313-24-000028",
+   "file": "exhibit101-combinedcredi.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-06-28",
+   "name": "Savers Value Village, Inc.  (SVV)  (CIK 0001883313)",
+   "sha256": "5d76cba6a86aea33747cd27dc39991eab46bb1e3f7b4eb2280879986e178d5be",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1525769",
+   "acc": "0001104659-24-009502",
+   "file": "tm244605d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-02-01",
+   "name": "Dave & Buster's Entertainment, Inc.  (PLAY)  (CIK 0001525769)",
+   "sha256": "7da3fff081f106d30bc39f0cb9ce6f7106f6468a968dd8f673f42d77f6f4440a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "18926",
+   "acc": "0001193125-24-080820",
+   "file": "d784318dex48.htm",
+   "type": "EX-4.8",
+   "form": "8-K",
+   "date": "2024-03-28",
+   "name": "Lumen Technologies, Inc.  (LUMN)  (CIK 0000018926)",
+   "sha256": "da176ca8d6c4aedd8cf719c93de1d5c9e0a5944cf81260b92624ab87613a1da8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1786108",
+   "acc": "0000950170-24-118600",
+   "file": "trin-ex10_6.htm",
+   "type": "EX-10.6",
+   "form": "10-Q",
+   "date": "2024-10-30",
+   "name": "Trinity Capital Inc.  (TRIN, TRINI, TRINL, TRINZ)  (CIK 0001786108)",
+   "sha256": "70fd97e64d2dea60ad1666efc903e7debcab94a32c780955d196d6b00dd97f16",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "61986",
+   "acc": "0000950170-24-108117",
+   "file": "mtw-ex4_1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-09-19",
+   "name": "MANITOWOC CO INC  (MTW)  (CIK 0000061986)",
+   "sha256": "5f57396262e3dcfa987dfcb454d86e34d045557cdc12e43890e17df66a10b186",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1819928",
+   "acc": "0001104659-24-088519",
+   "file": "tm2421458d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-08-13",
+   "name": "DoubleVerify Holdings, Inc.  (DV)  (CIK 0001819928)",
+   "sha256": "7c0fbe4994594275dc306cc39e5cf41227577ed389876a313e5ad0b85dc3e4db",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "728447",
+   "acc": "0001437749-24-000739",
+   "file": "ex_612026.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-01-05",
+   "name": "EVO Transportation & Energy Services, Inc.  (CIK 0000728447)",
+   "sha256": "c97bd923ee9b59cb22a77b107d785f9fa5e22da9acd9cd1cf2b1681e24d933c2",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1853513",
+   "acc": "0000950170-24-132448",
+   "file": "mcw-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-12-03",
+   "name": "Mister Car Wash, Inc.  (MCW)  (CIK 0001853513)",
+   "sha256": "e2bb9eb55f5a4de79b2ef124be1de4140ac28673c3ca731b5c1aeea7f429caf7",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2030781",
+   "acc": "0000950123-24-009202",
+   "file": "filename3.htm",
+   "type": "EX-10.1",
+   "form": "DRS",
+   "date": "2024-09-12",
+   "name": "SailPoint Parent, LP  (CIK 0002030781)",
+   "sha256": "9b0fb0a1a516c74b42102b38cb92b07ccbf3ec219e2f16678d7c7c763f3fae90",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1621563",
+   "acc": "0000950103-24-000646",
+   "file": "dp205184_ex1003.htm",
+   "type": "EX-10.3",
+   "form": "8-K",
+   "date": "2024-01-12",
+   "name": "Summit Materials, Inc.  (SUM)  (CIK 0001621563)",
+   "sha256": "5b1f02e09662ec1c4bbc753ea76e79d7fdc8cd80b26ba20e34b09dd0bb65a7ad",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1514416",
+   "acc": "0001514416-24-000173",
+   "file": "q32024ex101secondamendment.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-10-31",
+   "name": "Bandwidth Inc.  (BAND)  (CIK 0001514416)",
+   "sha256": "30ddf6b43d664e620f188ae9998fcc7ccec4de2601844fcdfd82b73f0716cfdb",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1609253",
+   "acc": "0001193125-24-155155",
+   "file": "d844238dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-06-05",
+   "name": "California Resources Corp  (CRC, CRCQW)  (CIK 0001609253)",
+   "sha256": "3a8e82c3429fa94641e31c8ed218094160fefe4802ddb4c19965fcaf13229eb0",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1808220",
+   "acc": "0001808220-24-000130",
+   "file": "a106-amendedandrestatedc.htm",
+   "type": "EX-10.6",
+   "form": "10-Q",
+   "date": "2024-11-07",
+   "name": "GoHealth, Inc.  (GOCO)  (CIK 0001808220)",
+   "sha256": "e56dadf62ac88f8f0f4b388cfbe41c98574f1544e8b57d06e8a7c5d773dc3319",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1697500",
+   "acc": "0001193125-24-220668",
+   "file": "d896105dex104.htm",
+   "type": "EX-10.4",
+   "form": "8-K",
+   "date": "2024-09-17",
+   "name": "Solaris Energy Infrastructure, Inc.  (SEI, SOI)  (CIK 0001697500)",
+   "sha256": "fd8b02dfa64298fc87bf27d8649680bc9fa0930842a0d3d4cee027939beca22e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1337634",
+   "acc": "0000950123-24-003530",
+   "file": "filename8.htm",
+   "type": "EX-10.5",
+   "form": "DRS/A",
+   "date": "2024-04-26",
+   "name": "StubHub Holdings, Inc.  (CIK 0001337634)",
+   "sha256": "b25c47dafe81456d34db1a610b4249646187422ea7b51ad2352f29192012c2a9",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1799207",
+   "acc": "0001193125-24-004672",
+   "file": "d585057dex1025.htm",
+   "type": "EX-10.25",
+   "form": "F-1",
+   "date": "2024-01-09",
+   "name": "AUNA S.A.  (AUNA)  (CIK 0001799207)",
+   "sha256": "a7ca7163c0bd0bc82e65904683c6eb51c03f34660963e63e9b23c3cd7078c675",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1521036",
+   "acc": "0001193125-24-284219",
+   "file": "d922033dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-12-23",
+   "name": "Lantheus Holdings, Inc.  (LNTH)  (CIK 0001521036)",
+   "sha256": "4ec66104c93fe6e539ffa86eaf4ece94fb93a4f766755d0b9c422acd6ea16c87",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "883902",
+   "acc": "0000883902-24-000088",
+   "file": "a20240807exhibit41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-08-07",
+   "name": "Cornerstone Building Brands, Inc.  (CIK 0000883902)",
+   "sha256": "102fac228f2d29588f2f34b8f61bf7bc187781f06b492b40f5405364dc08ca8d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1822492",
+   "acc": "0001822492-24-000140",
+   "file": "ex103-hillmanxamendedandre.htm",
+   "type": "EX-10.3",
+   "form": "10-Q",
+   "date": "2024-08-06",
+   "name": "Hillman Solutions Corp.  (HLMN)  (CIK 0001822492)",
+   "sha256": "2247b84e4b2c3a17a382ac0c9ff53a202845eb7cd551eaf8cf88521047eade68",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1968915",
+   "acc": "0001140361-24-017862",
+   "file": "ef20025760_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-04-04",
+   "name": "PHINIA INC.  (PHIN)  (CIK 0001968915)",
+   "sha256": "4847a177d4b6f0a173f828beb38043045a1fd34ed45c6b46ff46bdc130d65662",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2009684",
+   "acc": "0001628280-24-034173",
+   "file": "exhibit106-8xk.htm",
+   "type": "EX-10.6",
+   "form": "8-K",
+   "date": "2024-08-01",
+   "name": "Seaport Entertainment Group Inc.  (SEG)  (CIK 0002009684)",
+   "sha256": "10f7663dac9dbdc7e34caeca8938e427b7f2198ebe7e786586cc840444c510e6",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1853145",
+   "acc": "0001853145-24-000058",
+   "file": "a01evercommerce-amendmen.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-12-16",
+   "name": "EverCommerce Inc.  (EVCM)  (CIK 0001853145)",
+   "sha256": "a28a1dadb7c28ccc729c92734fbbd30f6e830a43ad1c054b143bf24a013767f8",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1834585",
+   "acc": "0001193125-24-125839",
+   "file": "d807583dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-05-01",
+   "name": "JOANN Inc.  (CIK 0001834585)",
+   "sha256": "dbdaf37fe6c0574fc08ba2262dc3406334c89c0a5a0e89d528274d91ec90c1a8",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1623925",
+   "acc": "0001104659-24-004113",
+   "file": "tm243358d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-01-16",
+   "name": "Antero Midstream Corp  (AM)  (CIK 0001623925)",
+   "sha256": "2def4244d1f1b5b34b66b34423a843753690348b22246783048114bcc65a3a25",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1782754",
+   "acc": "0000950170-24-011986",
+   "file": "azek-ex10_3.htm",
+   "type": "EX-10.3",
+   "form": "10-Q",
+   "date": "2024-02-07",
+   "name": "AZEK Co Inc.  (AZEK)  (CIK 0001782754)",
+   "sha256": "e13d3f14956b2d7da5f5ab05120ac972f36e0e809c64e68dc8db318cdd48e78a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1116942",
+   "acc": "0000950170-24-091772",
+   "file": "ttmi-ex10_2.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2024-08-06",
+   "name": "TTM TECHNOLOGIES INC  (TTMI)  (CIK 0001116942)",
+   "sha256": "216f3192372ee04a9c882a4b4c766a55210d033c62113027539509b774a549d7",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "944148",
+   "acc": "0001628280-25-019921",
+   "file": "a2024cffirstamendment.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2025-04-25",
+   "name": "CBIZ, Inc.  (CBZ)  (CIK 0000944148)",
+   "sha256": "1b0c1cc6a2d3455fb7827f5aba60fe4aad3f51cfb84ef2cab7e354d6465c6011",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1236275",
+   "acc": "0001140361-25-016371",
+   "file": "ef20048077_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-04-29",
+   "name": "QXO, Inc.  (QXO)  (CIK 0001236275)",
+   "sha256": "45714e42ae3b6f43ccc81bfe1a18ff4b27c71f664910ee0cbd489bd793eff8c0",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1971213",
+   "acc": "0001193125-25-005700",
+   "file": "d791660dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-01-14",
+   "name": "Sinclair, Inc.  (SBGI)  (CIK 0001971213)",
+   "sha256": "f070f754ad78b35d3ec83aedc91818a087bf028e38c23b594688d0229e0476d3",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1840572",
+   "acc": "0000950103-25-011980",
+   "file": "dp234654_ex0401.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-09-23",
+   "name": "Lucky Strike Entertainment Corp  (LUCK)  (CIK 0001840572)",
+   "sha256": "d1e58ef5b4a28d5b1705340bb9bbbcfff3d6331adc0f65a61c52912dd7d89c5f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "776867",
+   "acc": "0001628280-25-049910",
+   "file": "exhibit102.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2025-11-06",
+   "name": "WHITE MOUNTAINS INSURANCE GROUP LTD  (WTM)  (CIK 0000776867)",
+   "sha256": "1d588986af58e3154067e3bbf8fdffb462ca3623c098852a15eedbcab2d699ec",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "885550",
+   "acc": "0000885550-25-000023",
+   "file": "cacc_8k20250225ia.htm",
+   "type": "EX-4.145",
+   "form": "8-K",
+   "date": "2025-02-28",
+   "name": "CREDIT ACCEPTANCE CORP  (CACC)  (CIK 0000885550)",
+   "sha256": "2ac9b4b8a508029082efc896baefb316bd41b5b746da362f6a97733e6be71093",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "353184",
+   "acc": "0000353184-25-000135",
+   "file": "a107master_loanxagreemen.htm",
+   "type": "EX-10.7",
+   "form": "8-K",
+   "date": "2025-12-01",
+   "name": "AIR T INC  (AIRT, AIRTP)  (CIK 0000353184)",
+   "sha256": "cbec142e0a591274891fa8c2d4864c1fa643d11bd8a914f47c128c2ea1149294",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1723128",
+   "acc": "0000950103-25-009701",
+   "file": "dp232462_ex0401.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-08-01",
+   "name": "Amneal Pharmaceuticals, Inc.  (AMRX)  (CIK 0001723128)",
+   "sha256": "a76c6d829a9f4f08240f32b3205a8051da9412a79b1b552e00ce41e9b1e3b2b9",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1307954",
+   "acc": "0001104659-25-052667",
+   "file": "tm2516127d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-05-27",
+   "name": "Huntsman CORP  (HUN)  (CIK 0001307954)",
+   "sha256": "13a2a6100e2739289a8943002a41e74d9464082240d6bce2f4b1544b60faee3e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1534504",
+   "acc": "0001193125-25-055603",
+   "file": "d810230dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-03-17",
+   "name": "PBF Energy Inc.  (PBF)  (CIK 0001534504)",
+   "sha256": "42729a5471c38849e0cbec8bccc538e63c4b807b819ef1bc391c31478d360fde",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "55529",
+   "acc": "0000055529-25-000048",
+   "file": "pnc-kewauneexfirstamendm.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-12-04",
+   "name": "KEWAUNEE SCIENTIFIC CORP /DE/  (KEQU)  (CIK 0000055529)",
+   "sha256": "df42611b4fcd4a5116fa9beb04ee4cd0254a418fcab75c3a8913a82842de7f05",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2064953",
+   "acc": "0001628280-25-043179",
+   "file": "exhibit41-10x12ba1.htm",
+   "type": "EX-4.1",
+   "form": "10-12B/A",
+   "date": "2025-09-30",
+   "name": "Solstice Advanced Materials Inc.  (SOLS)  (CIK 0002064953)",
+   "sha256": "a1c7818145dd0538d90255b75d2441bd021306ddfb83a907b01a4cb5c7dcf931",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2046386",
+   "acc": "0001193125-25-253020",
+   "file": "d932091dex41.htm",
+   "type": "EX-4.1",
+   "form": "S-1",
+   "date": "2025-10-28",
+   "name": "Medline Inc.  (CIK 0002046386)",
+   "sha256": "37c414ede692e534a2fa2dbb0097c2bf33fc9c4f96933ffa5e8f13fa966ec402",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1632790",
+   "acc": "0001140361-25-035737",
+   "file": "ef20055879_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-09-22",
+   "name": "ENERGIZER HOLDINGS, INC.  (ENR)  (CIK 0001632790)",
+   "sha256": "39b864b5589d9716440457d4136832154983c6e0a5180bce98c6379098d5eb30",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1290677",
+   "acc": "0001437749-25-006480",
+   "file": "ex_786394.htm",
+   "type": "EX-4.3",
+   "form": "10-K",
+   "date": "2025-03-06",
+   "name": "Turning Point Brands, Inc.  (TPB)  (CIK 0001290677)",
+   "sha256": "fdb4b8572c25718c2a5f16327550a66a2f0b944943d187cac3caa4d9793b9cf9",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1142750",
+   "acc": "0000950142-25-002687",
+   "file": "eh250686864_ex0401.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-10-06",
+   "name": "AMN HEALTHCARE SERVICES INC  (AMN)  (CIK 0001142750)",
+   "sha256": "c717ca59d84a4a0de75ba085c02baf89fde3a253c086f28f3aed60f6e84032c4",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "722313",
+   "acc": "0001641172-25-001473",
+   "file": "ex10-12.htm",
+   "type": "EX-10.14",
+   "form": "10-K",
+   "date": "2025-03-31",
+   "name": "NORTECH SYSTEMS INC  (NSYS)  (CIK 0000722313)",
+   "sha256": "0a45ee94547ba8a7b7a33e53905e484f51a9c49b59d01c3107f8e6130b997c63",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2067876",
+   "acc": "0001193125-25-260634",
+   "file": "d894612dex1011.htm",
+   "type": "EX-10.11",
+   "form": "10-12B/A",
+   "date": "2025-10-31",
+   "name": "Versant Media Group, Inc.  (VSNT)  (CIK 0002067876)",
+   "sha256": "d886c360b95335cf5c5474ad67903306a674cc6117e2358aa0dbb373a6a9b0fa",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1571123",
+   "acc": "0001571123-25-000176",
+   "file": "saic8k09252025exhibit41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-09-25",
+   "name": "Science Applications International Corp  (SAIC)  (CIK 0001571123)",
+   "sha256": "980b24519f4628a69903b5e1a63197bb5d5c334cb511154ac79d7caf3112c20d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1769628",
+   "acc": "0001193125-25-044231",
+   "file": "d899798dex1016.htm",
+   "type": "EX-10.16",
+   "form": "S-1",
+   "date": "2025-03-03",
+   "name": "CoreWeave, Inc.  (CIK 0001769628)",
+   "sha256": "d01d54bcd8a814dd27952dc0265a88c0312ba7995daf9bdf82db6baa0cf497dc",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1489393",
+   "acc": "0001489393-25-000048",
+   "file": "exhibit101_amendno1tothird.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-09-11",
+   "name": "LyondellBasell Industries N.V.  (LYB)  (CIK 0001489393)",
+   "sha256": "b042227cc69f366b80cff64faf12f7e19b3ae16625d7c9dfb4c380079ef41544",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1381531",
+   "acc": "0000950170-25-028984",
+   "file": "ck0001381531-ex10_26.htm",
+   "type": "EX-10.26",
+   "form": "10-K",
+   "date": "2025-02-27",
+   "name": "Domtar CORP  (CIK 0001381531)",
+   "sha256": "5abd79113a165cccc72d35c0eea89bb55adb6488356f0a3c98decd673138e9b8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1454938",
+   "acc": "0001140361-25-003851",
+   "file": "ny20037354x9_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-02-11",
+   "name": "Outbrain Inc.  (OB)  (CIK 0001454938)",
+   "sha256": "e7d8936a50677d5c321f3abd944e46fc09248152ea02c8d7a19d1e6b2b6d12b3",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1065837",
+   "acc": "0001193125-25-201846",
+   "file": "d41926dex104.htm",
+   "type": "EX-10.4",
+   "form": "8-K",
+   "date": "2025-09-12",
+   "name": "SKECHERS USA INC  (SKX)  (CIK 0001065837)",
+   "sha256": "253d1e76a2a636af9faa6251dff638a25afb9be7d96b8e2e103edc80178731c1",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1227654",
+   "acc": "0001227654-25-000146",
+   "file": "cmp-q32025xex41indentureda.htm",
+   "type": "EX-4.1",
+   "form": "10-Q",
+   "date": "2025-08-11",
+   "name": "COMPASS MINERALS INTERNATIONAL INC  (CMP)  (CIK 0001227654)",
+   "sha256": "0d7c18d0e6720a32e28afb4aefddf046ba3b5cb2ecb63cb52f0381208f77d985",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1828016",
+   "acc": "0001193125-25-097703",
+   "file": "d886426dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-04-28",
+   "name": "Playtika Holding Corp.  (PLTK)  (CIK 0001828016)",
+   "sha256": "405678547c906ea4b15bda33c1d5ab9bec375dc6a83499b922c2dfa6b555d8a7",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1793229",
+   "acc": "0001104659-25-007656",
+   "file": "tm254813d1_ex10-2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2025-01-30",
+   "name": "MultiPlan Corp  (MPLN, MPLNW)  (CIK 0001793229)",
+   "sha256": "672862edd7e81edf846157637b42fa74c88e581fb2e4baa070516423b6bd39b4",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1830033",
+   "acc": "0001104659-25-060075",
+   "file": "tm2518118d1_ex10-2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2025-06-17",
+   "name": "PureCycle Technologies, Inc.  (PCT, PCTTU, PCTTW)  (CIK 0001830033)",
+   "sha256": "d7890514eaaf5272fc21fd0c0adb39b5a977ef94081407ddfd7c8072ca374dad",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1411579",
+   "acc": "0001104659-25-070547",
+   "file": "tm2521633d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-07-25",
+   "name": "AMC ENTERTAINMENT HOLDINGS, INC.  (AMC)  (CIK 0001411579)",
+   "sha256": "cef8803a2dcf4edbfed75e4b90ea90aa10e5655299eb7faa3f31e5ffbd72350d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "885590",
+   "acc": "0001193125-25-149731",
+   "file": "d949183dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-06-27",
+   "name": "Bausch Health Companies Inc.  (BHC)  (CIK 0000885590)",
+   "sha256": "1073725c5759f947ef70397a69d2f5fa94381c8ef98fa6a14ed532009021d0bb",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1835856",
+   "acc": "0001628280-25-020262",
+   "file": "ex41_betterhomes-2025excha.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-04-28",
+   "name": "Better Home & Finance Holding Co  (BETR, BETRW)  (CIK 0001835856)",
+   "sha256": "22fbc3732dd3d8a568d0281e6f5939e584ce5a0b029c3228498aa2d6bf79980f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1486159",
+   "acc": "0001193125-25-054897",
+   "file": "d929489dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-03-14",
+   "name": "Chord Energy Corp  (CHRD, WLLBW)  (CIK 0001486159)",
+   "sha256": "d01ec85928e83327aeaa3ab8e25c94e6fb84b4f093080b1a32cc53c181b24b84",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2066659",
+   "acc": "0000950142-25-002428",
+   "file": "eh250676432_ex1004.htm",
+   "type": "EX-10.4",
+   "form": "8-K",
+   "date": "2025-09-12",
+   "name": "Beach Acquisition Co Parent, LLC  (CIK 0002066659)",
+   "sha256": "52e3d7d0add787ed933ad1e17084bf7f5d88ca7646e1f7dc1f7f7bb5df6dc9cb",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1368265",
+   "acc": "0001558370-25-006991",
+   "file": "clne-20250331xex10d2.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2025-05-08",
+   "name": "Clean Energy Fuels Corp.  (CLNE)  (CIK 0001368265)",
+   "sha256": "45ba17edc500b1f834289dd0806391f99b7ae589ce3d735e2979ff7d51c888cd",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1860742",
+   "acc": "0001193125-25-149726",
+   "file": "d932769dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-06-27",
+   "name": "Bausch & Lomb Corp  (BLCO)  (CIK 0001860742)",
+   "sha256": "27865a31e5b4593397621358d2ace787f1ad5176c26894cf223edff1a2e72548",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "876523",
+   "acc": "0000876523-25-000040",
+   "file": "ex41ezpw-indentureexecutio.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-03-28",
+   "name": "EZCORP INC  (EZPW)  (CIK 0000876523)",
+   "sha256": "6616a4450f1224b22322b8b6c36f1ee432ff982b87e9a26952a7125e452f6280",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1804745",
+   "acc": "0001804745-25-000050",
+   "file": "a102-amend3xcoveramendme.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2025-05-08",
+   "name": "Driven Brands Holdings Inc.  (DRVN)  (CIK 0001804745)",
+   "sha256": "509cf527ea02a98db0163e750256aa65017879d52dfa34a8dfc9f30994140ed9",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1505155",
+   "acc": "0001505155-25-000080",
+   "file": "exhibit101sp-uplandxcredit.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-07-28",
+   "name": "Upland Software, Inc.  (UPLD)  (CIK 0001505155)",
+   "sha256": "53ea9ebc5f73696b5fd948c8cf76224cda0fe3deafb0558ec58edd80bbfc2ace",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1800227",
+   "acc": "0001104659-25-060270",
+   "file": "tm2517978d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-06-17",
+   "name": "IAC Inc.  (IAC)  (CIK 0001800227)",
+   "sha256": "0fe969bb1def69a2537bc4f2a6ec1f64a2adc3ca75b56baafeb93a7e030f1839",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1145197",
+   "acc": "0001193125-25-059783",
+   "file": "d825270dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-03-21",
+   "name": "INSULET CORP  (PODD)  (CIK 0001145197)",
+   "sha256": "bc02bf3a11cf173b48991d843036a9879760815ce4c8f74c82f6c97cc0b4c54c",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2058873",
+   "acc": "0001193125-25-215621",
+   "file": "d942851dex108.htm",
+   "type": "EX-10.8",
+   "form": "10-12B/A",
+   "date": "2025-09-24",
+   "name": "Qnity Electronics, Inc.  (CIK 0002058873)",
+   "sha256": "cb830bbecd7ff8a12c3bd68b85cef3b6d0da425ed37e5bab34fa24b439245c23",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1880319",
+   "acc": "0001493152-25-029414",
+   "file": "ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-12-29",
+   "name": "Perimeter Solutions, Inc.  (PRM)  (CIK 0001880319)",
+   "sha256": "faaef10abb3b632d73f5234d54879190d3d9a2b8b763ff36be7193d07a016b38",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1493761",
+   "acc": "0001193125-25-337221",
+   "file": "d46329dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-12-30",
+   "name": "Turtle Beach Corp  (TBCH)  (CIK 0001493761)",
+   "sha256": "e2eb429459d90ba71b544643ead5678b947d14a8e745270c563e5cf2ad46d299",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1464343",
+   "acc": "0001437749-25-027466",
+   "file": "ex_855065.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-08-20",
+   "name": "Atlanticus Holdings Corp  (ATLC, ATLCL, ATLCP, ATLCZ)  (CIK 0001464343)",
+   "sha256": "e567266b7a18f29a8eb0335bb8939e6c1fe65177fbcc5a1b4af558d9bcaa25a2",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "811596",
+   "acc": "0001193125-25-267154",
+   "file": "d78226dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-11-05",
+   "name": "KAISER ALUMINUM CORP  (KALU)  (CIK 0000811596)",
+   "sha256": "71c11f8179c8e009bdef5694abd701c0e8a7c3e07c23c1e57765400ec4bba96a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1579157",
+   "acc": "0000950170-25-007775",
+   "file": "vnce-ex10_2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2025-01-22",
+   "name": "VINCE HOLDING CORP.  (VNCE)  (CIK 0001579157)",
+   "sha256": "5811c073021b90401b6c478c64e04f1774d061c066931403d74ec06d1f3e587d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1490281",
+   "acc": "0001628280-25-034072",
+   "file": "projectgranite-ex101xsuppi.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-07-02",
+   "name": "Groupon, Inc.  (GRPN)  (CIK 0001490281)",
+   "sha256": "60fd995ce2fae8a17dc3e70f9be6dde546f48d2103ae332ccc80ece1409eab3a",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1865187",
+   "acc": "0001193125-25-062599",
+   "file": "d943357dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-03-25",
+   "name": "Aris Water Solutions, Inc.  (ARIS)  (CIK 0001865187)",
+   "sha256": "937cfee614302f2ebc81e76c403fe9570cab1137c0b9936efc9198455c082d72",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2046042",
+   "acc": "0001104659-25-051664",
+   "file": "tm2430355d9_ex4-6.htm",
+   "type": "EX-4.6",
+   "form": "S-1",
+   "date": "2025-05-21",
+   "name": "Jefferson Capital, Inc. / DE  (CIK 0002046042)",
+   "sha256": "d6806093dce7d6c57a0b11cbe1c723810a3e8f27301fa353f40e5c0d91aaca2f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2064947",
+   "acc": "0001193125-25-232163",
+   "file": "wbi-ex4_2.htm",
+   "type": "EX-4.2",
+   "form": "8-K",
+   "date": "2025-10-07",
+   "name": "WaterBridge Infrastructure LLC  (WBI)  (CIK 0002064947)",
+   "sha256": "fbd000ecfb5eb78ed005681d9bb3de2266d96e1214de6b933c740f0ef1e20c4e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1090425",
+   "acc": "0001193125-25-226747",
+   "file": "d97349dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-10-01",
+   "name": "LAMAR ADVERTISING CO/NEW  (CIK 0001090425)",
+   "sha256": "3a5909ea2142dcb3999184e2951b5d955d5f506f1275309a71b5b52376f07c86",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1524358",
+   "acc": "0001524358-25-000160",
+   "file": "a41indenture.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-09-19",
+   "name": "MARRIOTT VACATIONS WORLDWIDE Corp  (VAC)  (CIK 0001524358)",
+   "sha256": "008a3616759678b4aa991478efa93d73dc951404af1526f621719c9147914178",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1616533",
+   "acc": "0001193125-25-147869",
+   "file": "d81707dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-06-26",
+   "name": "Penguin Solutions, Inc.  (PENG)  (CIK 0001616533)",
+   "sha256": "5275c43ed9b5fe80dc81ec8b3496449cea5f33a4dea7c6e5c53dfe9ebf85c04e",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1101215",
+   "acc": "0001101215-25-000181",
+   "file": "exhibit41closing11-06x25.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-11-06",
+   "name": "BREAD FINANCIAL HOLDINGS, INC.  (BFH)  (CIK 0001101215)",
+   "sha256": "e393771202911fe633eeb5485fae28864eb37da1c4b28354a4591d8a3725a65f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "895419",
+   "acc": "0001193125-25-224251",
+   "file": "d22768dex43.htm",
+   "type": "EX-4.3",
+   "form": "8-K",
+   "date": "2025-09-30",
+   "name": "WOLFSPEED, INC.  (WOLF)  (CIK 0000895419)",
+   "sha256": "60983c0169e09bdd574d755242a179b12327c96b95d968f3664bd7b6bd66674f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1360214",
+   "acc": "0001493152-25-013268",
+   "file": "ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-09-12",
+   "name": "HARROW, INC.  (HROW, HROWL, HROWM)  (CIK 0001360214)",
+   "sha256": "8d4dafe52e733074db48c595af9695771de10699c46b5791b375c29d7fe6a349",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1529864",
+   "acc": "0001193125-25-249986",
+   "file": "enva-ex10_2.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2025-10-24",
+   "name": "Enova International, Inc.  (ENVA)  (CIK 0001529864)",
+   "sha256": "90c9749c7df0930f34223e5abad7a7d353fb7f16186018766226abd3a298a9b8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1083301",
+   "acc": "0001104659-25-124839",
+   "file": "tm2534384d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-12-29",
+   "name": "TERAWULF INC.  (WULF)  (CIK 0001083301)",
+   "sha256": "a5066d6327f5d13962f485d6fea49937d825e73e6c57fea5c6a2788e6f87b5be",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1398987",
+   "acc": "0001398987-25-000100",
+   "file": "exhibit41indenturegovernin.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-06-27",
+   "name": "Anywhere Real Estate Inc.  (HOUS)  (CIK 0001398987)",
+   "sha256": "6e06c814b045c390aa490d64dc3384b85baa4636e44925bcdadfe5b961243873",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1600222",
+   "acc": "0000950142-25-002961",
+   "file": "eh250704660_ex1001.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-11-13",
+   "name": "Phoenix Education Partners, Inc.  (PXED)  (CIK 0001600222)",
+   "sha256": "536405437a04e5e22a59c3996003e1b9b1733e4d7f4683f90477ae80a49458ba",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1703956",
+   "acc": "0001437749-25-002468",
+   "file": "ex_772711.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-02-03",
+   "name": "Concrete Pumping Holdings, Inc.  (BBCP)  (CIK 0001703956)",
+   "sha256": "cf5c0b29d24508765ca672715356fc07162d3b465ea6e57e68388fef340db6c5",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1802156",
+   "acc": "0001193125-25-311452",
+   "file": "d32941dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-12-08",
+   "name": "Xponential Fitness, Inc.  (XPOF)  (CIK 0001802156)",
+   "sha256": "6f2148d6162c79afa185c2ec777a678dcb197220fd9e3b6048347faf388275ee",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2071288",
+   "acc": "0001193125-25-324774",
+   "file": "d54354dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-12-18",
+   "name": "Lumexa Imaging Holdings, Inc.  (LMRI)  (CIK 0002071288)",
+   "sha256": "92fcd6b2ea2b83466cbde1f48d073b368559015820fc75b35ef12cc0a02c2ba1",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1489096",
+   "acc": "0001104659-25-071742",
+   "file": "tm2521966d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-07-29",
+   "name": "Thermon Group Holdings, Inc.  (THR)  (CIK 0001489096)",
+   "sha256": "ffb1075797359fe072cd282af7b7da34010d4ca8a9d7bd748d15c8dc8b0e8aed",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1377630",
+   "acc": "0000950170-25-008998",
+   "file": "ncmi-ex10.htm",
+   "type": "EX-10",
+   "form": "8-K",
+   "date": "2025-01-27",
+   "name": "National CineMedia, Inc.  (NCMI)  (CIK 0001377630)",
+   "sha256": "f81a9e68362a2e12860d51d962f4772cfc7c080b48f8ea7b5427d73af396aafc",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "723603",
+   "acc": "0000950170-25-086879",
+   "file": "culp-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-06-16",
+   "name": "CULP INC  (CULP)  (CIK 0000723603)",
+   "sha256": "25064fb39ed4b26e7334249f29557872d7453df514b7ef547792f2296f8e6cd3",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1580345",
+   "acc": "0001213900-25-007884",
+   "file": "ea022887301ex10-1_triple.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-01-29",
+   "name": "TriplePoint Venture Growth BDC Corp.  (TPVG)  (CIK 0001580345)",
+   "sha256": "1af8e02e676791ca5c9610a8143cc4645837fc06d89243f9bbeb297d6bbde6d0",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1714174",
+   "acc": "0001714174-25-000147",
+   "file": "bur-20250711xex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-07-11",
+   "name": "Burford Capital Ltd  (BUR)  (CIK 0001714174)",
+   "sha256": "303074ad961b9d53180afab9ced30135edd157af6dd8c2061c0c9fa6db39aea5",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1834488",
+   "acc": "0001834488-25-000178",
+   "file": "n-able8xkxex101x2ndamend.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-11-26",
+   "name": "N-able, Inc.  (NABL)  (CIK 0001834488)",
+   "sha256": "55e9143ad2403bef5e4c988c72a606c0632485ab1ab8359492fed36523c7284d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1570827",
+   "acc": "0001193125-25-218521",
+   "file": "vctr-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-09-26",
+   "name": "Victory Capital Holdings, Inc.  (VCTR)  (CIK 0001570827)",
+   "sha256": "a7a3ba562ea6dbb8794e5555fcbed99e669087413e696801414d72b951da05d8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1795250",
+   "acc": "0001193125-25-151334",
+   "file": "d86547dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-06-27",
+   "name": "Sphere Entertainment Co.  (SPHR)  (CIK 0001795250)",
+   "sha256": "488efc282e69b834e6a3435f14fea76b1651a0f23fd1f020e090a1879f90d7c4",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1995807",
+   "acc": "0001193125-25-297002",
+   "file": "d39508dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-11-25",
+   "name": "LandBridge Co LLC  (LB)  (CIK 0001995807)",
+   "sha256": "c013184b989f08075a9faabcfd02982b050a5400cbbb7f0495df73fbc59fae78",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1220754",
+   "acc": "0001220754-25-000010",
+   "file": "ex42projectnuggets-2lnotes.htm",
+   "type": "EX-4.2",
+   "form": "8-K",
+   "date": "2025-03-11",
+   "name": "ModivCare Inc  (MODV)  (CIK 0001220754)",
+   "sha256": "3c04af60843840996c3478bd69cf95512623e12901dfbcc311a0788258eba52d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1345126",
+   "acc": "0001345126-25-000057",
+   "file": "exhibit101-forbearanceandc.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-10-10",
+   "name": "Compass Diversified Holdings  (CODI, CODI-PA, CODI-PB, CODI-PC)  (CIK 0001345126)",
+   "sha256": "b9b1d5b86ad3e553296435fbf97f3f1d5d06c5ab130e9e8ab7ec0265cdda4b77",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1509589",
+   "acc": "0001104659-25-055975",
+   "file": "tm2516904d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-06-03",
+   "name": "CIVITAS RESOURCES, INC.  (CIVI, CIVII)  (CIK 0001509589)",
+   "sha256": "516ba30643666a0fd891cb95303f9bcc26c6456db92db0cabcc17ade5de6331c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1653384",
+   "acc": "0001104659-25-033086",
+   "file": "tm2511865d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-04-08",
+   "name": "Runway Growth Finance Corp.  (RWAY, RWAYL, RWAYZ)  (CIK 0001653384)",
+   "sha256": "63874926f58140e4b7c072494c7ff1c8b7fc80c7ab71de4a66a22d311d73329c",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1560385",
+   "acc": "0001558370-25-010794",
+   "file": "lmca-20250630xex10d1.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2025-08-07",
+   "name": "Liberty Media Corp  (FWONA, FWONB, FWONK)  (CIK 0001560385)",
+   "sha256": "ab35e6ebdbd6931b38bc7da2282e0e92c9db5bc2d1442c4aece0493ce80a696d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2057463",
+   "acc": "0001104659-25-029933",
+   "file": "tm2510075d2_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "S-1",
+   "date": "2025-03-31",
+   "name": "GCI Liberty, Inc.  (CIK 0002057463)",
+   "sha256": "3e308ece3990b649ce48dc3fd5776643f8a43e333e376b9d6f217570a5e2a179",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1819810",
+   "acc": "0001819810-25-000163",
+   "file": "exhibit101creditagreement.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-06-13",
+   "name": "Redwire Corp  (RDW)  (CIK 0001819810)",
+   "sha256": "335f9f95c0dfddc15a3ff1647572939edee80e8a8a8845e5d6b087ea26fe21ae",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1512499",
+   "acc": "0001104659-25-081021",
+   "file": "tm2523966d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-08-21",
+   "name": "LINDBLAD EXPEDITIONS HOLDINGS, INC.  (LIND)  (CIK 0001512499)",
+   "sha256": "fec02ef41d374dc6f8ab6e8b538d20123c083b0ae079941a72496c26af87179e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1474735",
+   "acc": "0001437749-25-021956",
+   "file": "ex_835740.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-07-02",
+   "name": "GENERAC HOLDINGS INC.  (GNRC)  (CIK 0001474735)",
+   "sha256": "49406f5b13d59cac155c9f727c05a942c326e98425c05a145a56811b540a25b5",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1006837",
+   "acc": "0001006837-25-000097",
+   "file": "a202508048k-exhibit48.htm",
+   "type": "EX-4.8",
+   "form": "8-K",
+   "date": "2025-08-05",
+   "name": "INNOVATE Corp.  (VATE)  (CIK 0001006837)",
+   "sha256": "d1b33e4dfb04c6bcb4ce1169ae3f09c81da282590457ea306ac4890c6a2de670",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1482430",
+   "acc": "0001482430-25-000036",
+   "file": "kbsriiiq12025exhibit102.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2025-05-12",
+   "name": "KBS Real Estate Investment Trust III, Inc.  (KBSR)  (CIK 0001482430)",
+   "sha256": "3063b6ba3d5ce15d96ec4da43f44dbed23ddfc0ad72625fc33b0597b3cf3daf3",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2052568",
+   "acc": "0001193125-25-181698",
+   "file": "d833270dex1010.htm",
+   "type": "EX-10.10",
+   "form": "S-1",
+   "date": "2025-08-15",
+   "name": "Legence Corp.  (CIK 0002052568)",
+   "sha256": "28a9716e8834b9367a85fb9352b1b9959c33ddb42b3c64c7105a8cecf9ba8d64",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1698991",
+   "acc": "0001698991-25-000036",
+   "file": "accel-cibccreditagreements.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-09-12",
+   "name": "Accel Entertainment, Inc.  (ACEL)  (CIK 0001698991)",
+   "sha256": "666ddbf610038a6b328e01d571e7bbe42ed88259345667b5af017325f4a1d435",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1838406",
+   "acc": "0001104659-25-095671",
+   "file": "tm2527332d2_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2025-10-01",
+   "name": "BKV Corp  (BKV)  (CIK 0001838406)",
+   "sha256": "4cc2daadcaef5386e035494df34a5ec23484f083347e31e5a9e43d5e26cdeb08",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1839799",
+   "acc": "0001839799-26-000048",
+   "file": "exhibit413-amendmentno2toc.htm",
+   "type": "EX-4.13",
+   "form": "20-F",
+   "date": "2026-03-19",
+   "name": "Gambling.com Group Ltd  (GAMB)  (CIK 0001839799)",
+   "sha256": "7df4f5d226c51988cb6426b6aa1e1cca25371db66cd100364be642f78691efc6",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1826470",
+   "acc": "0001193125-26-033607",
+   "file": "woof-ex4_1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-02-02",
+   "name": "Petco Health & Wellness Company, Inc.  (WOOF)  (CIK 0001826470)",
+   "sha256": "d5e57ee75034692120b27d1f32c9110958e0f02f97e570a35d912a6aa4509526",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "821026",
+   "acc": "0000821026-26-000122",
+   "file": "thirdamendmenttoamendedand.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2026-08-04",
+   "name": "Andersons, Inc.  (ANDE)  (CIK 0000821026)",
+   "sha256": "4a2a5c5b8db2a1a0b546a5a8a293d9e3dd17e4904a808cae21c8d7cdf130d57d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1320461",
+   "acc": "0001320461-26-000057",
+   "file": "ex41-firstliennotesindentu.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-03-04",
+   "name": "Cooper-Standard Holdings Inc.  (CPS)  (CIK 0001320461)",
+   "sha256": "6cfe55e31b74f8632f94df226deba9a13b5413d10ce128e5e5c5b6f165b028ff",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1573516",
+   "acc": "0001573516-26-000145",
+   "file": "exhibit41musa2026bond-2034.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-05-27",
+   "name": "Murphy USA Inc.  (MUSA)  (CIK 0001573516)",
+   "sha256": "9402552876dc5caf19a667992ce8d6b718cd890b682d7fab4d1c5f3e0869287b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "821483",
+   "acc": "0001193125-26-224142",
+   "file": "d176382dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-05-14",
+   "name": "PAR PACIFIC HOLDINGS, INC.  (PARR)  (CIK 0000821483)",
+   "sha256": "d8280d1d6a1895719adea890794bda37bd1f1b5e1c00902ca48011ee1a4ff31c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1462056",
+   "acc": "0001628280-26-029797",
+   "file": "exhibit101.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2026-05-04",
+   "name": "Backblaze, Inc.  (BLZE)  (CIK 0001462056)",
+   "sha256": "e896d7c78a4e3672e6d1794536ec0b0f3cb6f662e9c871d84267a1d43e27b808",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2045151",
+   "acc": "0001213900-26-077111",
+   "file": "ea028501705ex10-3.htm",
+   "type": "EX-10.3",
+   "form": "S-1",
+   "date": "2026-07-10",
+   "name": "Tailored Brands, Inc. / DE  (CIK 0002045151)",
+   "sha256": "5adf50e064077f6b87a4344828ac763b6654e931dac99e8fd20bca2b574217e3",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1396440",
+   "acc": "0001396440-26-000055",
+   "file": "ex101toxmainxnotepurchasea.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-04-09",
+   "name": "Main Street Capital CORP  (MAIN)  (CIK 0001396440)",
+   "sha256": "f2c8764672e1e9228a238f4de2503fbed31efd826f64b6f00c604b7b73749cd6",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1535778",
+   "acc": "0001535778-26-000048",
+   "file": "msif-notepurchaseagreement.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2026-05-08",
+   "name": "MSC INCOME FUND, INC.  (MSIF)  (CIK 0001535778)",
+   "sha256": "5da1f803b6b2ec27ce1fae207610e89bbbb75ce60a2731380ba8dd87aa3e0445",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1295947",
+   "acc": "0001104659-26-083872",
+   "file": "tm2620415d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-07-15",
+   "name": "Prestige Consumer Healthcare Inc.  (PBH)  (CIK 0001295947)",
+   "sha256": "ca82104590889210d1d6a188124fa66b8fd0b991a134a6f2b06e9b9782b32992",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2133037",
+   "acc": "0001628280-26-059639",
+   "file": "exhibit102-indenturexcosmo.htm",
+   "type": "EX-10.2",
+   "form": "S-1",
+   "date": "2026-09-01",
+   "name": "SB Energy, Inc.  (CIK 0002133037)",
+   "sha256": "f2fb7f85a3249b9e2bd8248cd3cb2be3afa659e42e3d1a0676d71f0a304799e2",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2085187",
+   "acc": "0001628280-26-001455",
+   "file": "exhibit1012-sx1.htm",
+   "type": "EX-10.12",
+   "form": "S-1",
+   "date": "2026-01-09",
+   "name": "Bob's Discount Furniture, Inc.  (CIK 0002085187)",
+   "sha256": "f1a9e93cf7bacf0be614d6eb5bdb20833aa63ee627975da5d08834c85014a224",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1859392",
+   "acc": "0001859392-26-000079",
+   "file": "closing8-kxex41indenture.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-07-28",
+   "name": "Galaxy Digital Inc.  (GLXY)  (CIK 0001859392)",
+   "sha256": "a3f0346660beec0b272a9f0ef4369b105543850a957f7794d954af2a88e36b41",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1013871",
+   "acc": "0001104659-26-008567",
+   "file": "tm264311d1_ex4-2.htm",
+   "type": "EX-4.2",
+   "form": "8-K",
+   "date": "2026-01-30",
+   "name": "NRG ENERGY, INC.  (NRG)  (CIK 0001013871)",
+   "sha256": "35e82cdd47048b5908a8739115a9c88ac22158799f6e79ed5e1af520e6eaf987",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1048477",
+   "acc": "0001193125-26-048736",
+   "file": "d63881dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-02-12",
+   "name": "BIOMARIN PHARMACEUTICAL INC  (BMRN)  (CIK 0001048477)",
+   "sha256": "11fe57c7f5c2632deb850e8f2d6ec612f29fd3672b918920a082a47cffe00f66",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1525221",
+   "acc": "0001193125-26-023418",
+   "file": "d70033dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-01-27",
+   "name": "Bristow Group Inc.  (VTOL)  (CIK 0001525221)",
+   "sha256": "d0d0520f7880fb80616e5da6adada94892a7753064859944d513184e3f488a79",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2029118",
+   "acc": "0001193125-26-118701",
+   "file": "d116380dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-03-23",
+   "name": "INFINITY NATURAL RESOURCES, INC.  (INR)  (CIK 0002029118)",
+   "sha256": "6c866077e556c2708aa11057f12276c8b5db88856c088d4ac38898189f92b636",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1817358",
+   "acc": "0001140361-26-021318",
+   "file": "ef20073235_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-05-14",
+   "name": "Academy Sports & Outdoors, Inc.  (ASO)  (CIK 0001817358)",
+   "sha256": "0f81b3592eb459b32764a33d9846b0615c6085d4f171ca8d1b643f5025c458ac",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1898718",
+   "acc": "0001104659-26-049674",
+   "file": "tm2518736d11_ex10-29.htm",
+   "type": "EX-10.29",
+   "form": "S-1/A",
+   "date": "2026-04-28",
+   "name": "GMR Solutions Inc.  (GMRS)  (CIK 0001898718)",
+   "sha256": "4a43570f407e5af8510b58247c234e21d3600c8a26f93e551163247f7d5b37a8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "798528",
+   "acc": "0001193125-26-146442",
+   "file": "d67670dex103.htm",
+   "type": "EX-10.3",
+   "form": "8-K",
+   "date": "2026-04-08",
+   "name": "ODYSSEY MARINE EXPLORATION INC  (OMEX)  (CIK 0000798528)",
+   "sha256": "54c80b9afe0f8a34aa1ee06a282ecffbbebfe803a39dbac21384cfc10b920f5f",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1796209",
+   "acc": "0001193125-26-229096",
+   "file": "d69397dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-05-18",
+   "name": "APi Group Corp  (APG)  (CIK 0001796209)",
+   "sha256": "d9670883bfce2cf2a62be6f9426b5f99d432aedfb7fba69d822d4874819c1773",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1906324",
+   "acc": "0001906324-26-000036",
+   "file": "exhibit101amendmentno1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-09-23",
+   "name": "QuidelOrtho Corp  (QDEL)  (CIK 0001906324)",
+   "sha256": "6b0cbc5245c1791d4fdf7beed12896d0e08560c7179d116013512167835dad94",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1743881",
+   "acc": "0001140361-26-027445",
+   "file": "ef20077282_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-07-02",
+   "name": "BridgeBio Pharma, Inc.  (BBIO)  (CIK 0001743881)",
+   "sha256": "423f00c519ff2b2ab48b4580489519324af41ad72ea59511475c491994fec3f0",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1142417",
+   "acc": "0001193125-26-139729",
+   "file": "nxst-ex4_1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-04-02",
+   "name": "NEXSTAR MEDIA GROUP, INC.  (NXST)  (CIK 0001142417)",
+   "sha256": "0312ac3340a6f09ccbff344ac69a0b63cf925b2cacb7986a27e949e6e9bf1af8",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1968487",
+   "acc": "0001193125-26-253821",
+   "file": "d435492dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-06-02",
+   "name": "Worthington Steel, Inc.  (WS)  (CIK 0001968487)",
+   "sha256": "7bbdf3fa43d92621b8ac0645557b4351ef8c80c1c6cebad597be49b4087fb952",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1408100",
+   "acc": "0001193125-26-248565",
+   "file": "d147611dex43.htm",
+   "type": "EX-4.3",
+   "form": "8-K",
+   "date": "2026-05-29",
+   "name": "Kennedy-Wilson Holdings, Inc.  (KW)  (CIK 0001408100)",
+   "sha256": "e8449407a094a865d9d28634d25b0911289e539bb14738275cd42e18850eeb68",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2107018",
+   "acc": "0001104659-26-066058",
+   "file": "tm269965d4_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "S-1",
+   "date": "2026-05-26",
+   "name": "DPC Holdings Ltd  (DPC)  (CIK 0002107018)",
+   "sha256": "660a0be94b465e1999e040bf69bdc20642b53bedd9c7c9e57b3593ebcb23a136",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1895262",
+   "acc": "0001895262-26-000134",
+   "file": "noble-indenturejune2026ex.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-06-12",
+   "name": "Noble Corp plc  (NE, NE-WT, NE-WTA)  (CIK 0001895262)",
+   "sha256": "045b67958ad18b383c1383e7e7f0ff198a972a5daaf80a361c685880afa0c67b",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1254699",
+   "acc": "0001104659-26-092407",
+   "file": "tm2622253d2_ex10-2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2026-08-07",
+   "name": "QVC Group, Inc.  (QVCCQ, QVCDQ)  (CIK 0001254699)",
+   "sha256": "42ba2fe8766bc0e70fd5e1e078073312f86bdc0cbcb47eb56bcf85f972373560",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "921738",
+   "acc": "0001104659-26-028502",
+   "file": "tm2530634d5_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-03-16",
+   "name": "PENN Entertainment, Inc.  (PENN)  (CIK 0000921738)",
+   "sha256": "86c862958da1d9f1e389b531046619e9f68413fd3304db77fb830f49fb460d7b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1999001",
+   "acc": "0001193125-26-012924",
+   "file": "d773779dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-01-14",
+   "name": "Six Flags Entertainment Corporation/NEW  (FUN)  (CIK 0001999001)",
+   "sha256": "e535dfe2a9e1a870f6020212d261a85502043452a59e760381aa595566abbc9b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1787117",
+   "acc": "0001104659-26-084856",
+   "file": "tm2513004d11_ex10-26.htm",
+   "type": "EX-10.26",
+   "form": "S-1/A",
+   "date": "2026-07-20",
+   "name": "Reformation Inc.  (REF)  (CIK 0001787117)",
+   "sha256": "7be939beeb2531fabc7654680791dae1a5ffbd99aabe561309b37269b55f122e",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "13156",
+   "acc": "0001193125-26-324517",
+   "file": "d58669dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-07-30",
+   "name": "Galaxy Gaming, Inc.  (GLXZ)  (CIK 0000013156)",
+   "sha256": "420417caaae3fe21193cd9cc70b61b49c61ac5387a1625808da3adb68a7c68ad",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1740332",
+   "acc": "0001213900-26-074244",
+   "file": "ea029642801ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-07-01",
+   "name": "RESIDEO TECHNOLOGIES, INC.  (REZI)  (CIK 0001740332)",
+   "sha256": "65f7fcfa63c41ac8e72068cc11a4237823fa61332ad1291856e0f1759eb0abc1",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1737706",
+   "acc": "0001193125-26-290671",
+   "file": "d106615dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-06-30",
+   "name": "SEADRILL Ltd  (SDRL)  (CIK 0001737706)",
+   "sha256": "ed46bbfd6eb883f0fc8d41bc9e5e2d59c08936cd0137fc04379fc0bbf8008734",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1005229",
+   "acc": "0001193125-26-037694",
+   "file": "d54396dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-02-04",
+   "name": "COLUMBUS MCKINNON CORP  (CMCO)  (CIK 0001005229)",
+   "sha256": "c08ca783c09618332abaa63b1b1fff835ca53cf5ea3f2b00dec8eb5c34d9886f",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "827876",
+   "acc": "0001193125-26-402944",
+   "file": "clsk-ex4_1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-09-25",
+   "name": "CLEANSPARK, INC.  (CLSK, CLSKW)  (CIK 0000827876)",
+   "sha256": "208cea896842755359a4ac9b6bbf6c347617992173e437563c4ea56b80ba7e4a",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "919012",
+   "acc": "0001193125-26-266019",
+   "file": "aeo-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-06-10",
+   "name": "AMERICAN EAGLE OUTFITTERS INC  (AEO)  (CIK 0000919012)",
+   "sha256": "8963aa15d5fa92f925d25fbe74327c6aac84eab6322d39769576e97666703eac",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2105139",
+   "acc": "0001213900-26-074253",
+   "file": "ea029639601ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "10-12B/A",
+   "date": "2026-07-01",
+   "name": "ADI GLOBAL DISTRIBUTION INC.  (ADIG)  (CIK 0002105139)",
+   "sha256": "0529d6160df1fb23109dec065f020de182382b7aeac11036eb8016dd50bc0abb",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2098430",
+   "acc": "0001193125-26-098829",
+   "file": "ck0002098430-ex10_8.htm",
+   "type": "EX-10.8",
+   "form": "S-1",
+   "date": "2026-03-09",
+   "name": "Madison Air Solutions Corp  (CIK 0002098430)",
+   "sha256": "8b32f4c435c3b461aee7a9018ebd2cfac221f269acd02bb687c28fb88fe29b89",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1045942",
+   "acc": "0001437749-26-014595",
+   "file": "ex_953846.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-05-04",
+   "name": "Track Group, Inc.  (TRCK)  (CIK 0001045942)",
+   "sha256": "d28ab6f568b19268c2ee1c79477de64e46f65136133a36130e74f5567f449deb",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2118195",
+   "acc": "0001193125-26-214254",
+   "file": "d25758dex101.htm",
+   "type": "EX-10.1",
+   "form": "S-1",
+   "date": "2026-05-08",
+   "name": "Applied Aerospace & Defense, Inc.  (CIK 0002118195)",
+   "sha256": "d7f5a754ca4aacf139fb8756363c99e2fd78f422b6a51ea77b79301ff7d2214c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1604028",
+   "acc": "0001193125-26-082558",
+   "file": "d113891dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-02-27",
+   "name": "ADVANCED DRAINAGE SYSTEMS, INC.  (WMS)  (CIK 0001604028)",
+   "sha256": "b5a40eb67cd86f469caa4867aa37b765c9143c9fc864d7215d34ac9445a3044f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2089161",
+   "acc": "0001193125-26-151431",
+   "file": "d23359dex101.htm",
+   "type": "EX-10.1",
+   "form": "S-1",
+   "date": "2026-04-10",
+   "name": "Encore Inc.  (CIK 0002089161)",
+   "sha256": "a06c961a78910fd7101f584f58fb768afb75d168c78de1df9ff290665c1d11c8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1273441",
+   "acc": "0001104659-26-018158",
+   "file": "tm266919d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-02-20",
+   "name": "GRAN TIERRA ENERGY INC.  (GTE)  (CIK 0001273441)",
+   "sha256": "be21b4a48548d219a4ecb13c49d1fa1fa080a0144f362d323acb8febe5a57630",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1563190",
+   "acc": "0001563190-26-000057",
+   "file": "anywhereind9750seniornote2.htm",
+   "type": "EX-4.18",
+   "form": "10-K",
+   "date": "2026-02-27",
+   "name": "Compass, Inc.  (COMP)  (CIK 0001563190)",
+   "sha256": "d7128d0cbddd24181629ee40d62e7e141551e4f54bac12c530a5b26d4a91a900",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1144879",
+   "acc": "0001493152-26-009538",
+   "file": "ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-03-10",
+   "name": "Applied Digital Corp.  (APLD)  (CIK 0001144879)",
+   "sha256": "d3894421a4009fb9e5bdec904bd9d3553ef618030de544e5b7df8af7e541012d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2134090",
+   "acc": "0001104659-26-100313",
+   "file": "tmm-ex10d7.htm",
+   "type": "EX-10.7",
+   "form": "F-1",
+   "date": "2026-08-24",
+   "name": "Aggreko Inc.  (CIK 0002134090)",
+   "sha256": "334febf86bc4a9e9ab1c10b2714c29711c87881229e012cc8fd1afe617d382ac",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1832511",
+   "acc": "0001832511-26-000018",
+   "file": "piii-20260427exhibit101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-04-28",
+   "name": "P3 Health Partners Inc.  (PIII, PIIIW)  (CIK 0001832511)",
+   "sha256": "e0b7694fdbfdc93e836d43c99042a743b5b3d541a649ee826f17d0c156caa35d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1091667",
+   "acc": "0001104659-26-003739",
+   "file": "tm263008d1_ex4-2.htm",
+   "type": "EX-4.2",
+   "form": "8-K",
+   "date": "2026-01-14",
+   "name": "CHARTER COMMUNICATIONS, INC. /MO/  (CHTR)  (CIK 0001091667)",
+   "sha256": "f669e3e9ba830dbc9c4ea205d2adaf3a0130f41a13c6af01dc54aebc3fcf4123",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "4127",
+   "acc": "0001104659-26-064614",
+   "file": "tm2614811d3_ex4-9.htm",
+   "type": "EX-4.9",
+   "form": "S-4",
+   "date": "2026-05-20",
+   "name": "SKYWORKS SOLUTIONS, INC.  (SWKS)  (CIK 0000004127)",
+   "sha256": "7455d6fa68528ae2e4d384ce0c16fb710c0dfbb032b2c09ef3fb26579c4c0cab",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1437578",
+   "acc": "0001193125-26-251551",
+   "file": "d139662dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-06-01",
+   "name": "BRIGHT HORIZONS FAMILY SOLUTIONS INC.  (BFAM)  (CIK 0001437578)",
+   "sha256": "6fadee2abda71092497d691d4799aee42dec94abe8a476ce3cc2492ab4a8ffef",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1499505",
+   "acc": "0001499505-26-000069",
+   "file": "exhibit444.htm",
+   "type": "EX-4.44",
+   "form": "20-F",
+   "date": "2026-04-29",
+   "name": "Adecoagro S.A.  (AGRO)  (CIK 0001499505)",
+   "sha256": "f750bb5d4d016124d422861b45331a1136586cf692ea828c5aab0eb071c0442d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1829864",
+   "acc": "0001193125-26-111007",
+   "file": "d15654dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-03-17",
+   "name": "TaskUs, Inc.  (TASK)  (CIK 0001829864)",
+   "sha256": "8d3a61dc249f0814597b5e7794abf2692e10a4e285bd174880debff82e870b8c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1856525",
+   "acc": "0001193125-26-294978",
+   "file": "d150669dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-07-02",
+   "name": "Core & Main, Inc.  (CNM)  (CIK 0001856525)",
+   "sha256": "a3508e95af87b679bb25a63f45bf42b3df659b146b8493f1d948a0bced50cc20",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1715497",
+   "acc": "0001628280-26-055957",
+   "file": "exhibit42amendedagreemen.htm",
+   "type": "EX-4.2",
+   "form": "6-K",
+   "date": "2026-08-12",
+   "name": "Borr Drilling Ltd  (BORR)  (CIK 0001715497)",
+   "sha256": "77fa1720fcdaf083aef81c9b69478487da2e776c14fd91feb361d7e01a7c7fdf",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1819989",
+   "acc": "0000950103-26-008994",
+   "file": "dp248453_ex0401.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-06-15",
+   "name": "Cipher Digital Inc.  (CIFR)  (CIK 0001819989)",
+   "sha256": "b4a30585fa76bf255a38233473e969ae275a0871273916314b6f6f3503fa20a6",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1625297",
+   "acc": "0001193125-26-021660",
+   "file": "d87169dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-01-26",
+   "name": "Indivior Pharmaceuticals, Inc.  (INDV)  (CIK 0001625297)",
+   "sha256": "619de369fc5eace837210fc7b141afcad9f1b9efb4eec4c3279aab46011c6b6e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1083220",
+   "acc": "0001104659-26-044940",
+   "file": "xelb-20260413xex10d1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-04-17",
+   "name": "XCel Brands, Inc.  (XELB)  (CIK 0001083220)",
+   "sha256": "0deffa98d0a86b0349cbfcc805e0083b796caccda98366331b934fb005ba094b",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2096300",
+   "acc": "0001193125-26-119150",
+   "file": "d22113dex101.htm",
+   "type": "EX-10.1",
+   "form": "S-1",
+   "date": "2026-03-23",
+   "name": "AEVEX Corp.  (CIK 0002096300)",
+   "sha256": "7e12dccbbeaa3bc63bc90ba4643b73a02ff86057611fb649f5008b852e895492",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1909747",
+   "acc": "0001628280-26-022436",
+   "file": "exhibit1048fg-jushixloanre.htm",
+   "type": "EX-10.48",
+   "form": "10-K",
+   "date": "2026-03-31",
+   "name": "Jushi Holdings Inc.  (JUSHF)  (CIK 0001909747)",
+   "sha256": "b92cb9fa76203b3d960b3d40051d1dd8d7d0b6abef35f77aa167fb185baacb78",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1166003",
+   "acc": "0001104659-26-068522",
+   "file": "tm2616097d1_ex10-2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2026-06-01",
+   "name": "XPO, Inc.  (XPO)  (CIK 0001166003)",
+   "sha256": "8e4dcc318cef13487a5823a88eaf5e82dff6930d1fa8bfe4f43b29b12862c9ea",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1376139",
+   "acc": "0001376139-26-000010",
+   "file": "exhibit41-indenturefor2031.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-02-12",
+   "name": "CVR ENERGY INC  (CVI)  (CIK 0001376139)",
+   "sha256": "6e65a36ca70e41151df77c2391825a87565636da019f76a93dced7b7f06cde40",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "868857",
+   "acc": "0001104659-26-072942",
+   "file": "tm2617534d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-06-11",
+   "name": "AECOM  (ACM)  (CIK 0000868857)",
+   "sha256": "062ebff9e7322cd0c63f9c45a4a8d792b59c23cfc2e83279580645369b7bd398",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1964789",
+   "acc": "0001104659-26-071952",
+   "file": "tm2617190d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-06-10",
+   "name": "Hut 8 Corp.  (HUT)  (CIK 0001964789)",
+   "sha256": "f84ff458c93165eff3f519a9aa1f2840b4684716d038552b894df77b4149118d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1925283",
+   "acc": "0001628279-26-000087",
+   "file": "filename3.htm",
+   "type": "EX-10.8",
+   "form": "DRS/A",
+   "date": "2026-02-06",
+   "name": "Lincoln International, Inc.  (CIK 0001925283)",
+   "sha256": "3115e751fbaa1e7be3355b73b5f63243037f952173682922b7ea22f9a5a0415e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "861459",
+   "acc": "0001437749-26-019166",
+   "file": "ex_970386.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-06-02",
+   "name": "GRANITE CONSTRUCTION INC  (GVA)  (CIK 0000861459)",
+   "sha256": "4e6c1e48fbc0bc4978d138ce75224b48cc42b6a8dc7a32214d27b0b1f3e4d334",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1579877",
+   "acc": "0001579877-26-000029",
+   "file": "out-ex41xindenturejune2026.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-06-12",
+   "name": "OUTFRONT Media Inc.  (OUT)  (CIK 0001579877)",
+   "sha256": "1a539cdc846564bebb8d4500815029dbaa54e282e0d348dbc074017e216f5a14",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1507079",
+   "acc": "0001628280-26-045555",
+   "file": "fnd-20260624x8kxex102.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2026-06-25",
+   "name": "Floor & Decor Holdings, Inc.  (FND)  (CIK 0001507079)",
+   "sha256": "5ec0f07d6e7fe3ae77a3832a9a489614825fb4824383b3c34f146eb956f1cc55",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1635282",
+   "acc": "0001635282-26-000027",
+   "file": "rmni-ex101toform8xkdated04.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-04-01",
+   "name": "Rimini Street, Inc.  (RMNI)  (CIK 0001635282)",
+   "sha256": "1a0d6f809ae40d9fb5e76ceed47ea33d81da4d97632db46d82fff902d85360cb",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2028464",
+   "acc": "0002028464-26-000018",
+   "file": "filename3.htm",
+   "type": "EX-10.11",
+   "form": "DRS/A",
+   "date": "2026-05-15",
+   "name": "ENTRATA, INC.  (CIK 0002028464)",
+   "sha256": "d311a4c7c75257d32f457e6436e75949165e16891275359216963cd2a2d3528a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1780232",
+   "acc": "0001104659-26-077650",
+   "file": "tm2618407d10_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "6-K",
+   "date": "2026-06-25",
+   "name": "GFL Environmental Inc.  (GFL)  (CIK 0001780232)",
+   "sha256": "c6c13b7d084888208f2a368e0279796faf75f27f1bcd7e342d14f8e6a1546f63",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1333493",
+   "acc": "0001333493-26-000003",
+   "file": "exhibit101comvestcreditagr.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-01-06",
+   "name": "eHealth, Inc.  (EHTH)  (CIK 0001333493)",
+   "sha256": "e2f0b3e85b0df9ebdeaa99b998bfb81f92b5bcbcce0d5c4b425bc0c77be049a3",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1158324",
+   "acc": "0001104659-26-074046",
+   "file": "tm2617890d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-06-15",
+   "name": "COGENT COMMUNICATIONS HOLDINGS, INC.  (CCOI)  (CIK 0001158324)",
+   "sha256": "d665b797165e800465ce27708fbd29b8672a214e902b619107f6a6e5b48c8b83",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1552800",
+   "acc": "0001552800-26-000006",
+   "file": "c800-20251231xex10_25.htm",
+   "type": "EX-10.25",
+   "form": "10-K",
+   "date": "2026-02-26",
+   "name": "TILE SHOP HOLDINGS, INC.  (TTSH)  (CIK 0001552800)",
+   "sha256": "22db83f5887e3d2c29c14dac2ec1d95360b329efdfe9ed541fedee2c7ba85a0d",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1163739",
+   "acc": "0001104659-26-088124",
+   "file": "tm2621313d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-07-29",
+   "name": "NABORS INDUSTRIES LTD  (NBR)  (CIK 0001163739)",
+   "sha256": "c027b86250380405afb37b56af22d613a4da96c8b6c64c824600ca39d7de83aa",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1529274",
+   "acc": "0001529274-26-000036",
+   "file": "alkami-fifthamendmenttoc.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-05-06",
+   "name": "ALKAMI TECHNOLOGY, INC.  (ALKT)  (CIK 0001529274)",
+   "sha256": "34f3ecdf05bad95f6976c3ae41c9e1540975dddec06b401c9af6558cc195b7b3",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1839341",
+   "acc": "0001193125-26-208905",
+   "file": "d47435dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-05-06",
+   "name": "Core Scientific, Inc./tx  (CORZ, CORZR, CORZW, CORZZ)  (CIK 0001839341)",
+   "sha256": "88098b069a9dcf252231c688170aa7490d6cb9c0dba5829ff350366ea4e3b195",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1287865",
+   "acc": "0001193125-26-342713",
+   "file": "d135389dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-08-10",
+   "name": "MEDICAL PROPERTIES TRUST INC  (MPT)  (CIK 0001287865)",
+   "sha256": "4a8168909fefd6cb13af898303d1aee169d01d8e69e5967bf1043b9cace040e7",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1856485",
+   "acc": "0001856485-26-000019",
+   "file": "sylvamoex1092026q1.htm",
+   "type": "EX-10.9",
+   "form": "10-Q",
+   "date": "2026-05-08",
+   "name": "Sylvamo Corp  (SLVM)  (CIK 0001856485)",
+   "sha256": "7f82ac8c07ee8c2933e6495835b8e7a30483ebe5314d53a50302a74b522087e5",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2125355",
+   "acc": "0001628280-26-059433",
+   "file": "exhibit1015-sx1.htm",
+   "type": "EX-10.15",
+   "form": "S-1",
+   "date": "2026-08-28",
+   "name": "Bamboo Insurance Services, Inc.  (CIK 0002125355)",
+   "sha256": "a5f9228d61cc76fa0adde12ea1801e6333bb07c1bb8a609a8fd02a55b9c004ca",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1630472",
+   "acc": "0001193125-26-224430",
+   "file": "d943461dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-05-15",
+   "name": "TPG RE Finance Trust, Inc.  (TRTX, TRTX-PC)  (CIK 0001630472)",
+   "sha256": "51ff7cb61d874c11b0ed601cc2309a9e4d63be8a2cdb085cf409ac538f3c65bf",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1874178",
+   "acc": "0001104659-26-052895",
+   "file": "tm2613102d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-04-30",
+   "name": "Rivian Automotive, Inc. / DE  (RIVN)  (CIK 0001874178)",
+   "sha256": "f3f441aada2a59d580acb0ef015521684cca6821193cf628bcc1d69fdfef4d2e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1820721",
+   "acc": "0001193125-26-057110",
+   "file": "d752776dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-02-18",
+   "name": "Array Technologies, Inc.  (ARRY)  (CIK 0001820721)",
+   "sha256": "e1e3750a55ba119e6622a4ae5b9ccfdb40bc0b107c5582f7b2a14c1e5dd60799",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1504461",
+   "acc": "0001104659-26-027132",
+   "file": "tm268645d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-03-12",
+   "name": "NGL Energy Partners LP  (NGL, NGL-PB, NGL-PC)  (CIK 0001504461)",
+   "sha256": "ecd9aa475f37032685a458e007293e3bf40570b1f01dd8dc8548b01b1560bb6f",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2128185",
+   "acc": "0001628280-26-063550",
+   "file": "exhibit108-fx1.htm",
+   "type": "EX-10.8",
+   "form": "F-1",
+   "date": "2026-09-25",
+   "name": "TFP Group Ltd  (CIK 0002128185)",
+   "sha256": "0fac2882cd5209c43cc8aca2a232a07db46a85ba371c6666ce156104653fed58",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2065636",
+   "acc": "0001193125-26-048814",
+   "file": "d189834dex106.htm",
+   "type": "EX-10.6",
+   "form": "8-K",
+   "date": "2026-02-12",
+   "name": "SOLV Energy, Inc.  (MWH)  (CIK 0002065636)",
+   "sha256": "cce04110686e4789b0983c7beb126f7c156ab9dc2c0a6e873ab83756d40ee5d0",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2031750",
+   "acc": "0001628280-26-029840",
+   "file": "exhibit101bcprenaissancecr.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-05-04",
+   "name": "Ares Core Infrastructure Fund  (CIK 0002031750)",
+   "sha256": "3345b6f6b29f7a0b0f1db2d714c17a7ab19c7e62e8fb20e671ef795b9da24254",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1434265",
+   "acc": "0001434265-26-000014",
+   "file": "exhibit416projectmercator_.htm",
+   "type": "EX-4.16",
+   "form": "20-F",
+   "date": "2026-02-17",
+   "name": "GENMAB A/S  (GMAB, GNMSF)  (CIK 0001434265)",
+   "sha256": "be00fe49b91e9a0e4a1dbd46ad1eeae7d9601a6738e1b60437668fbdbf6bc55b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1498382",
+   "acc": "0001193125-26-168395",
+   "file": "d139552dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-04-22",
+   "name": "TuHURA Biosciences, Inc./NV  (HURA)  (CIK 0001498382)",
+   "sha256": "bf0574d68cdbf899128f91678459bca28d1e44c14786060a984535061142e553",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1104485",
+   "acc": "0001193125-26-368292",
+   "file": "d69273dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-08-26",
+   "name": "NORTHERN OIL & GAS, INC.  (NOG)  (CIK 0001104485)",
+   "sha256": "c497a60efdb0f64862d3efcce297a73f1600516ad35265d7271aec4b200735d1",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1367644",
+   "acc": "0001367644-26-000038",
+   "file": "exhibit101termloancredit.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-04-17",
+   "name": "Emergent BioSolutions Inc.  (EBS)  (CIK 0001367644)",
+   "sha256": "46592edf3badd0396e3292d71c6895c33659ebbcc2fa33fcc7a44444dec3a837",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1601548",
+   "acc": "0001628280-26-039479",
+   "file": "exhibit101-8xkxv2xxrbcxa.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-06-01",
+   "name": "V2X, Inc.  (VVX)  (CIK 0001601548)",
+   "sha256": "fd04c2e604b3ab98f9b07a53fca8f96ffbb4614a1f7fa396d40bbb61d32fe76f",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1084961",
+   "acc": "0001084961-26-000046",
+   "file": "ex41-indenturemay222026.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-05-26",
+   "name": "ENCORE CAPITAL GROUP INC  (ECPG)  (CIK 0001084961)",
+   "sha256": "6791d586bf70f02fc579827d80758429e2dc567e096a056e49342ae3066c0f60",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1850351",
+   "acc": "0001193125-26-011825",
+   "file": "iron-ex10_4.htm",
+   "type": "EX-10.4",
+   "form": "S-1",
+   "date": "2026-01-13",
+   "name": "Liftoff Mobile, Inc.  (CIK 0001850351)",
+   "sha256": "8c8fb4eb4985266601b35a2b6d71143385f1908ec56c9e4971fa592a303f1c55",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1070412",
+   "acc": "0001193125-26-077438",
+   "file": "d45191dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-02-26",
+   "name": "CNX Resources Corp  (CNX)  (CIK 0001070412)",
+   "sha256": "0d571821cd01ac18e38650aa2deec3a91b1021e28162ba0659db1cd919af85bc",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1855447",
+   "acc": "0001213900-26-039446",
+   "file": "ea028455601ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-04-02",
+   "name": "TIGO ENERGY, INC.  (TYGO)  (CIK 0001855447)",
+   "sha256": "325ab3a608059b45a614ab4e38912c55a01007f6e21177b627951bea586524fb",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "884614",
+   "acc": "0001104659-26-065697",
+   "file": "tm2615389d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-05-22",
+   "name": "UGI CORP /PA/  (UGI)  (CIK 0000884614)",
+   "sha256": "03ccf0224fbb6ce76c6053e89fab4d21daf56bc9274653d00f1e46fdf51b3136",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1278027",
+   "acc": "0001104659-26-072323",
+   "file": "tm2617391d1_ex4-1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-06-10",
+   "name": "B&G Foods, Inc.  (BGS)  (CIK 0001278027)",
+   "sha256": "068ccef5e4f6c489530d002cf5c86024c9b47a7b9e2e1d4aeaf92653da4d108a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1868275",
+   "acc": "0001104659-26-001780",
+   "file": "tm2532248d1_ex10-2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2026-01-07",
+   "name": "Constellation Energy Corp  (CEG)  (CIK 0001868275)",
+   "sha256": "93777ff6b688132a6c5de82e6c5685009a98fbc4bc5e1f04321ef1c720b7adab",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1844505",
+   "acc": "0001628280-26-034381",
+   "file": "aq12026ex1063qtimaginghold.htm",
+   "type": "EX-10.63",
+   "form": "10-Q",
+   "date": "2026-05-13",
+   "name": "QT IMAGING HOLDINGS, INC.  (QTI, QTIWW)  (CIK 0001844505)",
+   "sha256": "1184cd1afc777381f95d25cf516dd6fd8436d485373dcd46db1fc763debb8f50",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1690455",
+   "acc": "0001079973-26-001298",
+   "file": "ex10x1.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2026-09-28",
+   "name": "Feel The World, Inc.  (CIK 0001690455)",
+   "sha256": "4e24c247a2500b829b1326ae8fd5f4e1612db159ff8572e0783ccb7eb2d80e3b",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1411207",
+   "acc": "0001193125-26-000343",
+   "file": "d97247dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-01-02",
+   "name": "Allison Transmission Holdings Inc  (ALSN)  (CIK 0001411207)",
+   "sha256": "f1725867572bae33369e98fcfa5001961237e9d99219409fae4d87a7a700ef7a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1823144",
+   "acc": "0000950142-26-000161",
+   "file": "eh260725955_ex0401.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-01-14",
+   "name": "CompoSecure, Inc.  (CMPO)  (CIK 0001823144)",
+   "sha256": "7e67fe0c74c524cf2f34c4f3093dfe74b423595170ec5e211a56a973825d4097",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1549107",
+   "acc": "0001104659-26-110384",
+   "file": "manu-20260630xex4d1.htm",
+   "type": "EX-4.1",
+   "form": "20-F",
+   "date": "2026-09-24",
+   "name": "Manchester United plc  (MANU)  (CIK 0001549107)",
+   "sha256": "cc29623511b520b04167bd67c11a56505998be6ebfcd2e2d01b88ef5b88d6fbf",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1692376",
+   "acc": "0001193125-26-031817",
+   "file": "d77573dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2026-01-30",
+   "name": "Velocity Financial, Inc.  (VEL)  (CIK 0001692376)",
+   "sha256": "c4aadf6d6e4949017a845db2b0cb5a000ba909a69c9b2d3919ddb124c64c24a9",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1101680",
+   "acc": "0001101680-24-000013",
+   "file": "a101-loanagreementexhibit.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-01-05",
+   "name": "DZS INC.  (DZSI)  (CIK 0001101680)",
+   "sha256": "93bfeb46beb960c369281aba42f4c83eb65e8ad0e2f28acc1a9b3ed00f9c07d1",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1962481",
+   "acc": "0001493152-24-034585",
+   "file": "ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-08-30",
+   "name": "BranchOut Food Inc.  (BOF)  (CIK 0001962481)",
+   "sha256": "43ffe804b5ff676be0ae8cd71bf952b2c3910d412d077f3bf50ddd81849b1ed4",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1981462",
+   "acc": "0001213900-24-106648",
+   "file": "ea022402901ex10-2_leddar.htm",
+   "type": "EX-10.2",
+   "form": "6-K",
+   "date": "2024-12-09",
+   "name": "LeddarTech Holdings Inc.  (LDTC, LDTCW)  (CIK 0001981462)",
+   "sha256": "f6473522cbe3208574e020a17213d4bf1bafbbeae99c87212ebacf1ba256e808",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1708176",
+   "acc": "0001213900-24-051802",
+   "file": "ea020764801ex10-5_halloffame.htm",
+   "type": "EX-10.5",
+   "form": "8-K",
+   "date": "2024-06-11",
+   "name": "Hall of Fame Resort & Entertainment Co  (HOFV, HOFVW)  (CIK 0001708176)",
+   "sha256": "f59286790a0c71b7bb5d26803183c8ad0cd793ba0970b31b3a03c9ebc1be7baa",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "788816",
+   "acc": "0001628280-24-037231",
+   "file": "exhibit41_thirteenthamen.htm",
+   "type": "EX-4.1",
+   "form": "10-Q",
+   "date": "2024-08-14",
+   "name": "OGLETHORPE POWER CORP  (CIK 0000788816)",
+   "sha256": "eb2edcd6d82928f34121a390ff13a6375a596022392bb6259fe9bf39d38f728e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1083446",
+   "acc": "0001104659-24-115969",
+   "file": "tm2427779d2_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-11-08",
+   "name": "Astrana Health, Inc.  (ASTH)  (CIK 0001083446)",
+   "sha256": "1133594f7c8e643cb8c10f96c48154298b536d3a715a56a7984e12550871945c",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1770450",
+   "acc": "0001193125-24-263043",
+   "file": "d904059dex41.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-11-21",
+   "name": "Xerox Holdings Corp  (XRX)  (CIK 0001770450)",
+   "sha256": "466db2426d8693f15d1c1bcbe4f89f4478c6ec22cedd6440ac1251a67a891a31",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1137091",
+   "acc": "0001193125-24-214756",
+   "file": "d863479dex102.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-09-06",
+   "name": "POWER SOLUTIONS INTERNATIONAL, INC.  (PSIX)  (CIK 0001137091)",
+   "sha256": "77348674eeaa0bc7d7bb853534f567178dec05b808eab25d229450c32248f37f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1852016",
+   "acc": "0001193125-24-198647",
+   "file": "d761308dex1022.htm",
+   "type": "EX-10.22",
+   "form": "S-4",
+   "date": "2024-08-12",
+   "name": "AltEnergy Acquisition Corp  (AEAE, AEAEU, AEAEW)  (CIK 0001852016)",
+   "sha256": "28595afce8e64bc96da8c6517f3edb811f001ac25814f5fd64f129c8302a0c99",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1000045",
+   "acc": "0000950170-24-123232",
+   "file": "omcc-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-11-07",
+   "name": "OLD MARKET CAPITAL Corp  (OMCC)  (CIK 0001000045)",
+   "sha256": "85b5b5da07d7c8fc31de4da235d77d0be9f1af1e1f6125e86818bb439874aa95",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1895249",
+   "acc": "0001104659-24-013540",
+   "file": "mcac-20230930xex10d27.htm",
+   "type": "EX-10.27",
+   "form": "S-4/A",
+   "date": "2024-02-12",
+   "name": "Monterey Capital Acquisition Corp  (CNTM)  (CIK 0001895249)",
+   "sha256": "6029ffd6e5b97bf68dc0f206082987d597fc64049b3388b3704d772c9760f2d6",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "784539",
+   "acc": "0001104659-24-061253",
+   "file": "tm2414483d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-05-15",
+   "name": "EACO CORP  (EACO)  (CIK 0000784539)",
+   "sha256": "ab19f506986f886f141ddabaea6e9a9430444e1eeff96ba54fc48891a6efc55c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1441236",
+   "acc": "0001193125-24-040432",
+   "file": "d769915dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-02-21",
+   "name": "Clearwater Paper Corp  (CLW)  (CIK 0001441236)",
+   "sha256": "202e089b476caa54bacdc61a7c436bb2c63f66a6d37c9091f259961870ad21b4",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1287750",
+   "acc": "0001287750-24-000018",
+   "file": "arcc03282024-ex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-04-03",
+   "name": "ARES CAPITAL CORP  (ARCC)  (CIK 0001287750)",
+   "sha256": "5eedc187302e7fb3b66117975458b80b01a5f26de3d55ef0310095be17cb8b26",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "746514",
+   "acc": "0001104659-24-123576",
+   "file": "tm2429658d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-11-27",
+   "name": "NEW ENGLAND REALTY ASSOCIATES LIMITED PARTNERSHIP  (NEN)  (CIK 0000746514)",
+   "sha256": "881c9d9b45a9a90722838debc1713744adb36027bda2f16ddb9d6d2860285a52",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2013745",
+   "acc": "0002013745-24-000025",
+   "file": "clmt-20240930xex10d12.htm",
+   "type": "EX-10.12",
+   "form": "10-Q",
+   "date": "2024-11-12",
+   "name": "Calumet, Inc. /DE  (CLMT)  (CIK 0002013745)",
+   "sha256": "8c22c8b33da5bd5102d2cbb193ba4fbb618b4ecc976b2b580e7c2530773430fb",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1498710",
+   "acc": "0000950103-24-016405",
+   "file": "dp220813_ex1003.htm",
+   "type": "EX-10.3",
+   "form": "8-K",
+   "date": "2024-11-18",
+   "name": "Spirit Airlines, Inc.  (SAVE)  (CIK 0001498710)",
+   "sha256": "0cab64beee38aac759225e3812aa48aa6b8402159c39196552872c4037985115",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1976336",
+   "acc": "0001104659-25-027200",
+   "file": "tm2510022d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-03-24",
+   "name": "Antares Private Credit Fund  (CIK 0001976336)",
+   "sha256": "f99e6760aca64e23f7ac205d82f5ac0b603f72e0b4cd26bfbcfbdbfff5aa2279",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1500881",
+   "acc": "0001193125-25-155536",
+   "file": "d24478dex102.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2025-07-03",
+   "name": "enCore Energy Corp.  (EU)  (CIK 0001500881)",
+   "sha256": "1cbd3de717d3d90ac092fa98ceb9c3c54a5e24d44fed007bb4603a0a7c1be00a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "727207",
+   "acc": "0001104659-25-046104",
+   "file": "tm2514448d1_ex10-2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2025-05-08",
+   "name": "Accelerate Diagnostics, Inc  (AXDX)  (CIK 0000727207)",
+   "sha256": "e63eb9161c7d7d6f6acb9badbf593d8ec4994cf406ad63119e7d0852d50842c1",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1326706",
+   "acc": "0001493152-25-006878",
+   "file": "ex10-80.htm",
+   "type": "EX-10.80",
+   "form": "S-1",
+   "date": "2025-02-14",
+   "name": "NanoVibronix, Inc.  (NAOV)  (CIK 0001326706)",
+   "sha256": "0203f19c2be61921f2cf4d97a183b120e9ac5a06febea4d07222028f5a3b7cc8",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1845459",
+   "acc": "0001213900-25-022472",
+   "file": "ea023389801ex10-1_nkgen.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-03-11",
+   "name": "NKGen Biotech, Inc.  (NKGN, NKGNW)  (CIK 0001845459)",
+   "sha256": "13d536fe7da83adf3cd2f7d504185b0820b0abc88531c9b6d8952afc867d8ca5",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1828161",
+   "acc": "0001193125-25-050884",
+   "file": "d940301dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-03-10",
+   "name": "FTC Solar, Inc.  (FTCI)  (CIK 0001828161)",
+   "sha256": "acc9a4cf156d39fc4280cb11289709cc30a52090d01f0ad038c6c2617dc61431",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "38723",
+   "acc": "0000038723-25-000149",
+   "file": "exhibit101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2025-12-29",
+   "name": "1st FRANKLIN FINANCIAL CORP  (CIK 0000038723)",
+   "sha256": "22273566d31686716606318925dbe81b5ba28baa9379079e97d94d108eea692c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1853962",
+   "acc": "0001628280-25-015753",
+   "file": "ex1016supplementarytermsag.htm",
+   "type": "EX-10.16",
+   "form": "10-K",
+   "date": "2025-04-01",
+   "name": "i-80 Gold Corp.  (IAUX)  (CIK 0001853962)",
+   "sha256": "98aba72e88e389bf26353bb093c064b50d66e3aff99ed2dcc1bca902961d0661",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1408710",
+   "acc": "0001408710-26-000026",
+   "file": "fn-2026811x8kex102termloan.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2026-08-17",
+   "name": "Fabrinet  (FN)  (CIK 0001408710)",
+   "sha256": "342028a09b22f8ade60681df1d1f2a9daff0450d11fbf389873b8134bb9035cb",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1960355",
+   "acc": "0001104659-26-058285",
+   "file": "tm2525579d32_ex10-46.htm",
+   "type": "EX-10.46",
+   "form": "S-1/A",
+   "date": "2026-05-11",
+   "name": "Exyn Technologies, Inc.  (EXYN)  (CIK 0001960355)",
+   "sha256": "efacd4561362f7acce74f60487ce2c02628e15022e392aa53f26f654b64e509d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2016221",
+   "acc": "0001213900-26-092711",
+   "file": "ea027349106ex10-13.htm",
+   "type": "EX-10.13",
+   "form": "S-4",
+   "date": "2026-08-21",
+   "name": "Melar Acquisition Corp. I/Cayman  (MACI, MACIU, MACIW)  (CIK 0002016221)",
+   "sha256": "d0faa094023cb5488ee7d6f36f7c5f0ccc3e8180d8c81225ef49f0703320c3c1",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1494582",
+   "acc": "0001437749-26-027703",
+   "file": "ex_1001743.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2026-08-13",
+   "name": "BOSTON OMAHA Corp  (BOC)  (CIK 0001494582)",
+   "sha256": "210c5ad951edc08afd699174242006ef30a28126bac6032f1d1ed5d92dba2619",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1086222",
+   "acc": "0001193125-26-228949",
+   "file": "d123781dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-05-18",
+   "name": "AKAMAI TECHNOLOGIES INC  (AKAM)  (CIK 0001086222)",
+   "sha256": "7246d0272936bdc12f49f88f6acef99d25fcacc62402edd0bcf3a08c7a77ea90",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1379041",
+   "acc": "0001379041-26-000061",
+   "file": "ex101_amendmentno1tocredit.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2026-07-30",
+   "name": "Employers Holdings, Inc.  (EIG)  (CIK 0001379041)",
+   "sha256": "497644f5166c7e1b26d3210851cf6291bd000056aacd14d9b936d206c8d6bcb6",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1505497",
+   "acc": "0001021771-26-000091",
+   "file": "ex10_2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2026-06-12",
+   "name": "BioRestorative Therapies, Inc.  (BRTX)  (CIK 0001505497)",
+   "sha256": "23f510f1703af374c0cacd000d857f4b1a2355082ea480872a607cf2fac95960",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1651721",
+   "acc": "0001193125-26-059431",
+   "file": "gipr-ex10_1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2026-02-19",
+   "name": "GENERATION INCOME PROPERTIES, INC.  (GIPR, GIPRW)  (CIK 0001651721)",
+   "sha256": "55558d1cf9e85a98dc7a582cc97253f61f0dcc62a113681b02e3ee1fc0b7c434",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "2076975",
+   "acc": "0001493152-26-001917",
+   "file": "ex10-10.htm",
+   "type": "EX-10.10",
+   "form": "F-1/A",
+   "date": "2026-01-13",
+   "name": "Braiin Ltd  (BRAI)  (CIK 0002076975)",
+   "sha256": "26d358fdd38a07348f61741b924dc569500d3f586cfc3f33ffa55f1db989eb10",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1794776",
+   "acc": "0001213900-24-030411",
+   "file": "ea020326401ex10-1_palmer.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-04-04",
+   "name": "Palmer Square Capital BDC Inc.  (PSBD)  (CIK 0001794776)",
+   "sha256": "42c4a0932f328cbbae5cd01a9c1937d334ffac39f64394ff9bf04d44a19b36ac",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1409269",
+   "acc": "0001140361-24-027551",
+   "file": "ef20030043_ex10-5.htm",
+   "type": "EX-10.5",
+   "form": "8-K",
+   "date": "2024-05-28",
+   "name": "Venus Concept Inc.  (VERO)  (CIK 0001409269)",
+   "sha256": "373a9effd5ac289ccf47dc4326b2be43b40cfba56a47c1b961ae2cd6c216ee8c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1722438",
+   "acc": "0001437749-24-009918",
+   "file": "ex_647589.htm",
+   "type": "EX-10.4",
+   "form": "DEFA14A",
+   "date": "2024-03-29",
+   "name": "Doma Holdings, Inc.  (DOMA, DOMAW)  (CIK 0001722438)",
+   "sha256": "3d9994863e8fc3177f115bc31c8037e0f58ceab10354d1b81e8a0454cfee5616",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "37996",
+   "acc": "0000037996-24-000235",
+   "file": "exhibit10toforddecember132.htm",
+   "type": "EX-10",
+   "form": "8-K",
+   "date": "2024-12-16",
+   "name": "FORD MOTOR CO  (F, F-PB, F-PC, F-PD)  (CIK 0000037996)",
+   "sha256": "0f45e0078ab009028363a726c0b9b0710f56f4bd1b94d981b053a025650e9e9b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1898795",
+   "acc": "0001898795-24-000039",
+   "file": "executedconvertibleloana.htm",
+   "type": "EX-10.1",
+   "form": "424B3",
+   "date": "2024-02-16",
+   "name": "LiveWire Group, Inc.  (LVWR, LVWR-WT)  (CIK 0001898795)",
+   "sha256": "11ab636d3437418446543a1c5a7876c1765e70d473423fb4324edf3647e87e1c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "8177",
+   "acc": "0001140361-24-025855",
+   "file": "ef20026270_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-05-14",
+   "name": "ATLANTIC AMERICAN CORP  (AAME)  (CIK 0000008177)",
+   "sha256": "3505f40d4a8e21d10e97d2326c8701b84a3a46061a40d86c7c9c47f7444d1ce8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1781162",
+   "acc": "0001140361-24-044359",
+   "file": "ef20037768_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-10-28",
+   "name": "Momentus Inc.  (MNTS, MNTSW)  (CIK 0001781162)",
+   "sha256": "7ead602b9691be04d3437777720d5910ab559be29314dc63cc3566099379bf6a",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1902733",
+   "acc": "0001902733-24-000046",
+   "file": "exhibit101secondamendmentt.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-03-18",
+   "name": "nCino, Inc.  (NCNO)  (CIK 0001902733)",
+   "sha256": "b5135a4b4197ad4068d05e33b247ce25012aaaec8b49aff8b9026c54024e11c1",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1831481",
+   "acc": "0001193125-24-036506",
+   "file": "d737623dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-02-14",
+   "name": "Sable Offshore Corp.  (SOC, SOC-WT)  (CIK 0001831481)",
+   "sha256": "3df01da63cf7a9aed817a71e3395143092dedd554aae82ca75bb16a6b58a2da9",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1786248",
+   "acc": "0001786248-24-000017",
+   "file": "nexpoint-nrefxnexbankloang.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2024-08-08",
+   "name": "NexPoint Real Estate Finance, Inc.  (NREF, NREF-PA)  (CIK 0001786248)",
+   "sha256": "4a961c23572267a6d2d03a4f7c8f4bfacdc7384c62e4e8b10a544629c72bbf3d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1230245",
+   "acc": "0001230245-24-000179",
+   "file": "pscq32024ex101.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-11-07",
+   "name": "PIPER SANDLER COMPANIES  (PIPR)  (CIK 0001230245)",
+   "sha256": "d129ff8934a1287a9c5daeeea1a4908a455872bfeb508150c39615df3db905ec",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "887151",
+   "acc": "0001213900-24-114111",
+   "file": "ea021443304ex10-12_capst.htm",
+   "type": "EX-10.12",
+   "form": "S-1",
+   "date": "2024-12-31",
+   "name": "Capstone Holding Corp.  (CIK 0000887151)",
+   "sha256": "61f2d1632b5226af4285dfe5fab304eefef588a0da0d6a6fce0871950ca6738e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1830029",
+   "acc": "0000950170-24-080678",
+   "file": "grdi-ex10_4.htm",
+   "type": "EX-10.4",
+   "form": "8-K",
+   "date": "2024-07-02",
+   "name": "GRIID Infrastructure Inc.  (GRDI, GRDIW)  (CIK 0001830029)",
+   "sha256": "4da1e6e48c51104140e0784216657bf87fb4cf390e0c8792abf29a56a8bfb1a4",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1934064",
+   "acc": "0001104659-24-058473",
+   "file": "tm2413824d1_ex10-2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-05-08",
+   "name": "ProSomnus, Inc.  (CIK 0001934064)",
+   "sha256": "46c2983be6a1d303a911ca0bad1e63ed5f56c6545fedb039762abefdf7332e67",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1841125",
+   "acc": "0001213900-24-009691",
+   "file": "fs42024ex10-19_goldenarrow.htm",
+   "type": "EX-10.19",
+   "form": "S-4",
+   "date": "2024-02-02",
+   "name": "Golden Arrow Merger Corp.  (BSLK, BSLKW)  (CIK 0001841125)",
+   "sha256": "bda2b699a7e33371bcf0554fbe3d8ded998dc752e0205ce3154092425845cce0",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1867096",
+   "acc": "0001867096-24-000065",
+   "file": "xeris_hayfin-arcreditagr.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-05-09",
+   "name": "Xeris Biopharma Holdings, Inc.  (XERS)  (CIK 0001867096)",
+   "sha256": "be25493db5ce6601c194a73ff0b8f494a3bf2a95c6111e3974e4961288bf6b2f",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1852973",
+   "acc": "0001213900-24-013332",
+   "file": "ea193378ex10-9_borealis.htm",
+   "type": "EX-10.9",
+   "form": "8-K",
+   "date": "2024-02-13",
+   "name": "Borealis Foods Inc.  (BRLS, BRLSW)  (CIK 0001852973)",
+   "sha256": "707e58769e47e74aff59e5c0a8b2245ecac337119fc51053b1f48c900b1af6c7",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1752828",
+   "acc": "0000950170-24-005029",
+   "file": "celu-ex10_5.htm",
+   "type": "EX-10.5",
+   "form": "8-K",
+   "date": "2024-01-17",
+   "name": "Celularity Inc  (CELU, CELUW)  (CIK 0001752828)",
+   "sha256": "f1ed48bd043cff3084061f4b6f77980ce2cdbea72704f2881807e616e3c35aa7",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1102993",
+   "acc": "0001102993-24-000082",
+   "file": "exhibit101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-05-13",
+   "name": "LIVEPERSON INC  (LPSN)  (CIK 0001102993)",
+   "sha256": "4a31fde98a535a047089883cbdf22db50f7096c6e32898129663c3fa918b7720",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1984060",
+   "acc": "0000950170-24-055827",
+   "file": "aesi-ex10_7.htm",
+   "type": "EX-10.7",
+   "form": "10-Q",
+   "date": "2024-05-08",
+   "name": "Atlas Energy Solutions Inc.  (AESI)  (CIK 0001984060)",
+   "sha256": "74f7d4bedfdc399cc2e46936f08b4568d03918f671a0582226766da5a2da3764",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "714256",
+   "acc": "0001493152-24-015133",
+   "file": "ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-04-18",
+   "name": "Sanara MedTech Inc.  (SMTI)  (CIK 0000714256)",
+   "sha256": "12fe9608bd5c4f479ded133fc565c5b9075ebf7586e8cd976e6521ebc3824e1d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1788230",
+   "acc": "0001213900-24-042435",
+   "file": "fs12024ex10-1_heritage.htm",
+   "type": "EX-10.1",
+   "form": "S-1",
+   "date": "2024-05-13",
+   "name": "Heritage Distilling Holding Company, Inc.  (CASK)  (CIK 0001788230)",
+   "sha256": "6901442fda1d5d3f8b88940dab053246cb317929d6a5778402b51af0522b0e97",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1795579",
+   "acc": "0001410578-24-000528",
+   "file": "calt-20231231xex4d22.htm",
+   "type": "EX-4.22",
+   "form": "20-F",
+   "date": "2024-04-24",
+   "name": "Calliditas Therapeutics AB  (CALT)  (CIK 0001795579)",
+   "sha256": "646bac42d833d4ceb690a2c1e4284ac278b11e1d3ef4ace311cab5228270731c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "16058",
+   "acc": "0000016058-24-000207",
+   "file": "caci-tlbxcreditagreement.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-11-05",
+   "name": "CACI INTERNATIONAL INC /DE/  (CACI)  (CIK 0000016058)",
+   "sha256": "3fa008eb0bfec40a88d27962e85933b11f3b0111a3dec4307a5a0b4a7fa55cdb",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1867949",
+   "acc": "0001213900-24-089782",
+   "file": "ea021808301ex10-1_chicago.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-10-23",
+   "name": "Chicago Atlantic Real Estate Finance, Inc.  (REFI)  (CIK 0001867949)",
+   "sha256": "b4a7c081d82c7d0deab1f747e842082190f24e3474f7c226de38af37bc0c222d",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1568385",
+   "acc": "0001628280-24-037170",
+   "file": "exhibit102-annexatothecred.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2024-08-14",
+   "name": "Bright Mountain Media, Inc.  (BMTM)  (CIK 0001568385)",
+   "sha256": "bcf3982c03af0259722455bce3ecdcc2fc734b782ec80bbd1c7660d2334389ef",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "850429",
+   "acc": "0000850429-24-000008",
+   "file": "tg-ex101_20240417xdebtamen.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-04-22",
+   "name": "TREDEGAR CORP  (TG)  (CIK 0000850429)",
+   "sha256": "e6c601951a35912e4f42d69a96b6429c514c19db027fc08e72cb63a8dfe5ce87",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1120370",
+   "acc": "0001437749-24-038268",
+   "file": "ex_759833.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-12-23",
+   "name": "BROADWIND, INC.  (BWEN)  (CIK 0001120370)",
+   "sha256": "8dcb0c4e408ca46ab5a1d1245bd288a1de4f5255ee86ef58b6ed924c02d67c8c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1434868",
+   "acc": "0001104659-24-128212",
+   "file": "tm2430949d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-12-13",
+   "name": "Esperion Therapeutics, Inc.  (ESPR)  (CIK 0001434868)",
+   "sha256": "601d4febba1cf4f05447cac783d3c35954c2779cd514325185f25a15937193f2",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1549966",
+   "acc": "0000950170-24-074975",
+   "file": "samg-ex4_1.htm",
+   "type": "EX-4.1",
+   "form": "8-K",
+   "date": "2024-06-18",
+   "name": "Silvercrest Asset Management Group Inc.  (SAMG)  (CIK 0001549966)",
+   "sha256": "45703df39b2f23ead822c8add747c83d1640621eae4ac8217009adec72a4e63c",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1852633",
+   "acc": "0001104659-24-001803",
+   "file": "tm241884d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-01-05",
+   "name": "Pinstripes Holdings, Inc.  (PNST, PNST-WT)  (CIK 0001852633)",
+   "sha256": "1677ba7e4204d8cbde9210744505f1479c4e71ae20de4a033c4c916cb4d2461a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2001557",
+   "acc": "0001140361-24-044030",
+   "file": "ef20037576_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-10-23",
+   "name": "Innventure, Inc.  (INV, INVLW)  (CIK 0002001557)",
+   "sha256": "0ad3f257564cf557d386a7bf0efc67c4469bd659678e6bd1dedca23a51d2c4cc",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1709164",
+   "acc": "0001709164-24-000055",
+   "file": "exhibit101agreement.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-12-17",
+   "name": "Hamilton Beach Brands Holding Co  (HBB)  (CIK 0001709164)",
+   "sha256": "bd57d4bc2852007c400a5eb8971431f871f85240a834dbab224b11cf47abac7c",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1820302",
+   "acc": "0001820302-24-000119",
+   "file": "exhibit102revolvingcredita.htm",
+   "type": "EX-10.2",
+   "form": "10-Q",
+   "date": "2024-08-14",
+   "name": "Bakkt Holdings, Inc.  (BKKT, BKKT-WT)  (CIK 0001820302)",
+   "sha256": "6e77385c5a89175b5a877fdf8ea0ca799c78b000935dd1f563912237b105d124",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1832487",
+   "acc": "0001437749-24-024724",
+   "file": "ex_708399.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-08-06",
+   "name": "Guerrilla RF, Inc.  (GUER)  (CIK 0001832487)",
+   "sha256": "44b7d1e93d2abb9db64291537ffe9505b39a2e358f23623693559fbb44d6e741",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1175151",
+   "acc": "0001104659-24-077866",
+   "file": "tm2418904d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-07-05",
+   "name": "Cytosorbents Corp  (CTSO)  (CIK 0001175151)",
+   "sha256": "41aa2051eb7e1487a8847a7df73fc8f7a4132537742c791565d30901fc38e19e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "730255",
+   "acc": "0001193125-24-190511",
+   "file": "d874216dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-08-01",
+   "name": "CalAmp Corp.  (CIK 0000730255)",
+   "sha256": "dc5a800bda06978fb6e22705614106b747535febaa867faa5bd1362df1e1ef2d",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1069533",
+   "acc": "0001437749-24-014594",
+   "file": "ex_665701.htm",
+   "type": "EX-10.5",
+   "form": "10-Q",
+   "date": "2024-05-03",
+   "name": "RGC RESOURCES INC  (RGCO)  (CIK 0001069533)",
+   "sha256": "1894eda976db437c3f9cf6eba23cccb4d72db1b5de5967ee6d082a9c447efa28",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "318306",
+   "acc": "0001493152-24-001660",
+   "file": "ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-01-08",
+   "name": "ABEONA THERAPEUTICS INC.  (ABEO)  (CIK 0000318306)",
+   "sha256": "114062bbde9fdc2cd7704fd2de62c53317059329f258863654d5e1631e6e0b4e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1023994",
+   "acc": "0001213900-24-081289",
+   "file": "ea021546101ex10-1_safe.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-09-24",
+   "name": "SAFE & GREEN HOLDINGS CORP.  (SGBX)  (CIK 0001023994)",
+   "sha256": "acd45292b4bee6ed7b5b6c08843b06ee4b22d97824b5c8efb15bead6c3d18cff",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1656634",
+   "acc": "0001193125-24-259815",
+   "file": "d844835dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-11-15",
+   "name": "Gritstone bio, Inc.  (GRTSQ)  (CIK 0001656634)",
+   "sha256": "6d13d8e5dc348886d07806227c23d4fb4ad87061d6efc40a0567c585753e2087",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1875444",
+   "acc": "0001875444-24-000136",
+   "file": "a101executedsecondamendm.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-11-07",
+   "name": "Arhaus, Inc.  (ARHS)  (CIK 0001875444)",
+   "sha256": "27fc1f43112bd33de04cd8b77dcc373befdd333c14252d347be0afbb67ba82d1",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1158172",
+   "acc": "0001158172-24-000111",
+   "file": "exhibit105-creditagreement.htm",
+   "type": "EX-10.5",
+   "form": "10-Q",
+   "date": "2024-11-12",
+   "name": "COMSCORE, INC.  (SCOR)  (CIK 0001158172)",
+   "sha256": "f32c41c463194b373cace2ba4373084663692ca9479be1f3bdcf4cd0dd010f20",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1297937",
+   "acc": "0001493152-24-039587",
+   "file": "ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-10-04",
+   "name": "PARKS AMERICA, INC  (PRKA)  (CIK 0001297937)",
+   "sha256": "77ecf51f5fc4dc0f166920f729c41e6a942c6aac0ab45e404a1266ff2e5afe43",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1733998",
+   "acc": "0001733998-24-000011",
+   "file": "ex4qnotepurchaseagreement.htm",
+   "type": "EX-4.Q",
+   "form": "10-K",
+   "date": "2024-02-23",
+   "name": "Northwest Natural Holding Co  (NWN)  (CIK 0001733998)",
+   "sha256": "1f543280afb622305f8e776946490a51694c4482c44246e274812194347daba5",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1840780",
+   "acc": "0001840780-24-000009",
+   "file": "exhibit106localbounti-subo.htm",
+   "type": "EX-10.6",
+   "form": "10-K",
+   "date": "2024-03-28",
+   "name": "Local Bounti Corporation/DE  (LOCL, LOCLW)  (CIK 0001840780)",
+   "sha256": "d724fdb71074fa34863328f3121dc384079144b2ced6855d24e677e904a2b555",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1953984",
+   "acc": "0001104659-24-131438",
+   "file": "tm2431922d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-12-26",
+   "name": "Binah Capital Group, Inc.  (BCG, BCGWW)  (CIK 0001953984)",
+   "sha256": "6191a46ed44ddeaeeb9b262ef2e58d51f2dd8ee47bde6e667426faf96f87605f",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1615165",
+   "acc": "0000950170-24-057780",
+   "file": "veri-ex10_3.htm",
+   "type": "EX-10.3",
+   "form": "10-Q",
+   "date": "2024-05-10",
+   "name": "Veritone, Inc.  (VERI)  (CIK 0001615165)",
+   "sha256": "3fc8a5be3aa1ff99cce85a9fde3ae29d973a0de36cec4693de2c498d6e78287b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1529377",
+   "acc": "0001628280-24-003512",
+   "file": "exhibit101.htm",
+   "type": "EX-10",
+   "form": "8-K",
+   "date": "2024-02-06",
+   "name": "Ares Commercial Real Estate Corp  (ACRE)  (CIK 0001529377)",
+   "sha256": "5f759adaa2e449440b79c33bc018879a16f7aee880a82969d6d81d86bbb7c2d5",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1018724",
+   "acc": "0001018724-24-000161",
+   "file": "amzn-20240930xex101.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-11-01",
+   "name": "AMAZON COM INC  (AMZN)  (CIK 0001018724)",
+   "sha256": "3d55c73ce40e68d53e3ac227ff93d520cddbdcb33393882b00e148ce23a2e182",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1762359",
+   "acc": "0001762359-24-000083",
+   "file": "acreage-secondamendedandre.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-09-19",
+   "name": "Acreage Holdings, Inc.  (ACRDF, ACRHF)  (CIK 0001762359)",
+   "sha256": "9104ed97a6a9c5605767e666641ad91e3049a8f95f021467b5fd2d1e46f06a3c",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1464423",
+   "acc": "0001193125-24-284302",
+   "file": "d871342dex102.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-12-23",
+   "name": "PennyMac Mortgage Investment Trust  (PMT, PMTU, PMT-PA, PMT-PB, PMT-PC)  (CIK 0001464423)",
+   "sha256": "9c6260eaa479cf18d30b5aaf060b743a097f7c82097d74640436343a266557a0",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1007019",
+   "acc": "0001493152-24-005726",
+   "file": "ex10-27.htm",
+   "type": "EX-10.27",
+   "form": "10-K",
+   "date": "2024-02-09",
+   "name": "COFFEE HOLDING CO INC  (JVA)  (CIK 0001007019)",
+   "sha256": "8a3a2b552503d4ac183d4587107b2a648fa6aee5831381eba48c0f625be0a21b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1794669",
+   "acc": "0001794669-24-000033",
+   "file": "four-20240930ex101.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-11-12",
+   "name": "Shift4 Payments, Inc.  (FOUR)  (CIK 0001794669)",
+   "sha256": "8916abf65456051b4fbcdadca0f0488245c54ad9f81b9f0f8562dd9d4469df53",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1429260",
+   "acc": "0001104659-24-103758",
+   "file": "tm2425082d1_ex10-34.htm",
+   "type": "EX-10.34",
+   "form": "S-1",
+   "date": "2024-09-27",
+   "name": "Fortress Biotech, Inc.  (FBIO, FBIOP)  (CIK 0001429260)",
+   "sha256": "e51392e323972ab6201e22accf21d505e805994c15d52bef9ef496873c53dfc6",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1588972",
+   "acc": "0000950170-24-035480",
+   "file": "sctl-ex10_28.htm",
+   "type": "EX-10.28",
+   "form": "10-K",
+   "date": "2024-03-22",
+   "name": "Societal CDMO, Inc.  (CIK 0001588972)",
+   "sha256": "f572e8c1cf1bdfb79410a90095d477b2e1fb0f08a57f99f2ac8cfd7cfd7524b8",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1737927",
+   "acc": "0001104659-24-068499",
+   "file": "tm2416367d1_ex10-4.htm",
+   "type": "EX-10.4",
+   "form": "8-K",
+   "date": "2024-06-05",
+   "name": "Canopy Growth Corp  (CGC)  (CIK 0001737927)",
+   "sha256": "ce74f9a47542d0ab49e871d100c93ec3bd37183e22b4880a2f66a8fc0348796a",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1816708",
+   "acc": "0001628280-24-040154",
+   "file": "exhibit103-8xk.htm",
+   "type": "EX-10.3",
+   "form": "8-K",
+   "date": "2024-09-11",
+   "name": "Owlet, Inc.  (OWLT, OWLTW)  (CIK 0001816708)",
+   "sha256": "88ca97f250dd52a5c37957cc8fa2eaa3a2c79d97664e11f433f7c57e673fd3bc",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1308547",
+   "acc": "0001193125-24-261743",
+   "file": "d653097dex101.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-11-19",
+   "name": "Dolby Laboratories, Inc.  (DLB)  (CIK 0001308547)",
+   "sha256": "263370d71cc20c796fdd200eefb93f10e7db0cfb3ae08c10fed5cb04f0b495b9",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "813672",
+   "acc": "0000813672-24-000162",
+   "file": "ex102cdns08142024.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-08-15",
+   "name": "CADENCE DESIGN SYSTEMS INC  (CDNS)  (CIK 0000813672)",
+   "sha256": "d53f14a63be2dde5a7a459cad9ff1abc364319b6573a2afbcd74827a2d332b04",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1742313",
+   "acc": "0001104659-24-083950",
+   "file": "tm2420425d1_ex10-1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-07-30",
+   "name": "Monroe Capital Income Plus Corp  (CIK 0001742313)",
+   "sha256": "756912b48a21806d30038a53dd2d96953e19ad85495ee0ec00a74023c54d3795",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "24090",
+   "acc": "0000024090-24-000141",
+   "file": "exhibit101creditagreemen.htm",
+   "type": "EX-10.1",
+   "form": "10-Q",
+   "date": "2024-08-06",
+   "name": "CITIZENS, INC.  (CIA)  (CIK 0000024090)",
+   "sha256": "ed145380934ed018562edf31abb6d4149b28722001dc90c952d7415dd9942803",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1051512",
+   "acc": "0001051512-24-000033",
+   "file": "tds331202410qexhibit41.htm",
+   "type": "EX-4.1",
+   "form": "10-Q",
+   "date": "2024-05-03",
+   "name": "TELEPHONE & DATA SYSTEMS INC /DE/  (TDS, TDS-PU, TDS-PV)  (CIK 0001051512)",
+   "sha256": "ee6d0981c4150e2ba59243f05a92e3a5772be0a73763bdd6dd6775bf9a848339",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1634117",
+   "acc": "0001193125-24-097934",
+   "file": "d819518dex102.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-04-16",
+   "name": "Barnes & Noble Education, Inc.  (BNED)  (CIK 0001634117)",
+   "sha256": "0fdeaec3a481d82a7577bee11282d93e1ae9b91c0d09d5eaec183c84b99773c7",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "61398",
+   "acc": "0001104659-24-081495",
+   "file": "tm2419811d3_ex10-2.htm",
+   "type": "EX-10.2",
+   "form": "8-K",
+   "date": "2024-07-22",
+   "name": "TELLURIAN INC. /DE/  (TELL, TELZ)  (CIK 0000061398)",
+   "sha256": "669b3640f65930a47427a4748392fd301b7c0752380aec3147e5ec52619e6167",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1778129",
+   "acc": "0000950170-24-031450",
+   "file": "tsndf-ex10_15.htm",
+   "type": "EX-10.15",
+   "form": "10-K",
+   "date": "2024-03-14",
+   "name": "TerrAscend Corp.  (TSNDF)  (CIK 0001778129)",
+   "sha256": "c69e65c45cd2bee56821fd1d53f7a003122e7952b989b27f18adf108c008a056",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "1459417",
+   "acc": "0001193125-24-184277",
+   "file": "d875063dex103.htm",
+   "type": "EX-10.3",
+   "form": "8-K",
+   "date": "2024-07-25",
+   "name": "2U, Inc.  (TWOUQ)  (CIK 0001459417)",
+   "sha256": "758dd48b3cec58e6c1cb8ddf6535220bb1a9be7f906a08d96091d928073d8a32",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "46129",
+   "acc": "0001558370-24-003855",
+   "file": "alnt-20240321xex10d1.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-03-25",
+   "name": "ALLIENT INC  (ALNT)  (CIK 0000046129)",
+   "sha256": "d80c3a3bab34fd97494a64ac086377c7f1286c127d66d5366b201aba0e059a1c",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1612720",
+   "acc": "0001628280-24-010236",
+   "file": "ex-1050.htm",
+   "type": "EX-10.50",
+   "form": "10-K",
+   "date": "2024-03-11",
+   "name": "NextDecade Corp.  (NEXT)  (CIK 0001612720)",
+   "sha256": "f68328e510322ba7be314572c8b2861d7e7cf886869e36e99697d29ad4e1906e",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "2026793",
+   "acc": "0001193125-24-229454",
+   "file": "d824889dex1010.htm",
+   "type": "EX-10.10",
+   "form": "F-1/A",
+   "date": "2024-10-01",
+   "name": "Moove Lubricants Holdings  (CIK 0002026793)",
+   "sha256": "3ece71a4b60a2716bb2db1fe9d1e2d7931090005e35ed8d704dda6057e304e8b",
+   "slice": "BLIND"
+  },
+  {
+   "cik": "727273",
+   "acc": "0001213900-24-020294",
+   "file": "ea0201148ex10-1_cadizinc.htm",
+   "type": "EX-10.1",
+   "form": "8-K",
+   "date": "2024-03-06",
+   "name": "CADIZ INC  (CDZI, CDZIP)  (CIK 0000727273)",
+   "sha256": "52e3b718f29c9977434aaaea45fe15496375191c0a1d2d6bf3a4bf2ee82527b6",
+   "slice": "TUNABLE"
+  },
+  {
+   "cik": "1864531",
+   "acc": "0001104659-24-108649",
+   "file": "tm2419985d8_ex10-39.htm",
+   "type": "EX-10.39",
+   "form": "S-1/A",
+   "date": "2024-10-15",
+   "name": "VSEE HEALTH, INC.  (VSEE, VSEEW)  (CIK 0001864531)",
+   "sha256": "8048e44cc9e5b6365c92096ca740eb1598f7919ddce598adcfb109a4d1ae1a99",
+   "slice": "TUNABLE"
+  }
+ ],
+ "split": {
+  "rule": "TUNABLE iff parseInt(sha256(String(cik)).slice(0,8),16) % 10 < 7, else BLIND",
+  "tunable": 306,
+  "blind": 135,
+  "blindPolicy": "Never open, grep, or view per-doc results of BLIND docs; aggregate F/M/A only, at milestones."
+ }
+}
