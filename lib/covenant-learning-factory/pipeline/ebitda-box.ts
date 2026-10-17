@@ -11,6 +11,8 @@ import { capRoomTotal, priorAsOf, rankFlags, type AddBackFlag } from "../xbrl/ad
 import type { EbitdaOptimization, LeverageCapacity } from "../xbrl/ebitda-optimizer";
 import { runAgreementPipeline, type AgreementPipelineResult } from "./agreement-pipeline";
 import { capacitySnapshot, cfoRecompute, gainOf, type CfoGain } from "./cfo-loop";
+import type { ErpEvidenceFact } from "../erp/contract";
+import { erpEvidenceForBox, metricInputKey, metricOfInputKey, type ErpEvidence } from "../erp/suggest";
 
 export const EBITDA_BOX_VERSION = "ebitda-box-1";
 
@@ -82,9 +84,14 @@ export interface EbitdaBox {
   /** FAILED only: the box shown is the last good one (lastGoodBoxId), computed at staleSince; null when none exists. */
   staleSince?: string | null;
   lastGoodBoxId?: string | null;
+  /** ERP evidence (LTM suggestions, reconciliation with filings, refused facts). Present only when an ERP connection
+   *  delivered facts for the company; evidence only — nothing in it is counted until the CFO confirms it. */
+  erpEvidence?: ErpEvidence;
 }
 
-export type ConfirmationKind = "AMOUNT" | "LENDER_APPROVAL";
+/** AMOUNT: an add-back figure. LENDER_APPROVAL: the clause's lender approval. BASE_METRIC: a base figure the filings do
+ *  not carry (METRIC:REVENUE), confirmed from ERP evidence; used only as a plausibility bound, never added to EBITDA. */
+export type ConfirmationKind = "AMOUNT" | "LENDER_APPROVAL" | "BASE_METRIC";
 export type ConfirmationView = BorrowerInput & { confirmedAt?: string | null; kind?: ConfirmationKind; confirmedBy?: string | null; sourceKind?: EvidenceSourceKind; sourceRef?: string | null };
 
 /** A CFO-proposed add-back (append-only record; latest per label is current). */
@@ -216,11 +223,30 @@ function mulFloor(lev: string, n: bigint): string {
 }
 
 export type PipelineArgs = Parameters<typeof runAgreementPipeline>[0];
+/** Pipeline inputs plus the company's ERP facts (from the registered ErpEvidenceSource; absent = no ERP connection). */
+export type BoxArgs = PipelineArgs & { erp?: { companyId: string; facts: readonly ErpEvidenceFact[] } | null };
+
+/** Confirmations that feed the optimizer as borrower inputs (base-metric confirmations are bounds, not inputs). */
+export const borrowerInputsOf = (cs: readonly ConfirmationView[]): BorrowerInput[] => cs.filter((c) => c.kind !== "BASE_METRIC").map(asBorrowerInput);
+
+/** ERP evidence for a box computed from `args` (null when there are no ERP facts). */
+export function erpEvidenceFor(args: BoxArgs, box: Pick<EbitdaBox, "periodEnd" | "base">): ErpEvidence | null {
+  if (!args.erp?.facts.length) return null;
+  const b = box.base?.value;
+  return erpEvidenceForBox({
+    companyId: args.erp.companyId, facts: args.erp.facts, financials: args.financials, priorFinancials: args.priorFinancials ?? null,
+    periodEnd: box.periodEnd ?? args.financials?.anchor ?? null,
+    baseNeedsEvidence: !(b != null && /^-?\d+$/.test(b) && BigInt(b) > 0n),
+  });
+}
+const withErp = (box: EbitdaBox, args: BoxArgs): EbitdaBox => { const ev = erpEvidenceFor(args, box); return ev ? { ...box, erpEvidence: ev } : box; };
+const pipelineOnly = ({ erp: _erp, ...rest }: BoxArgs): PipelineArgs => rest;
 
 /** Run the pipeline with the confirmed figures applied and build the box. */
-export function computeEbitdaBox(args: PipelineArgs, confirmations: readonly ConfirmationView[] = [], proposals: readonly EbitdaProposalRecord[] = []): EbitdaBox {
-  const fin: IssuerFinancials | null | undefined = args.financials ? { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...confirmations.map(asBorrowerInput)] } : args.financials;
-  return ebitdaBoxFromResult(runAgreementPipeline({ ...args, financials: fin }), confirmations, proposals);
+export function computeEbitdaBox(boxArgs: BoxArgs, confirmations: readonly ConfirmationView[] = [], proposals: readonly EbitdaProposalRecord[] = []): EbitdaBox {
+  const args = pipelineOnly(boxArgs);
+  const fin: IssuerFinancials | null | undefined = args.financials ? { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...borrowerInputsOf(confirmations)] } : args.financials;
+  return withErp(ebitdaBoxFromResult(runAgreementPipeline({ ...args, financials: fin }), confirmations, proposals), boxArgs);
 }
 
 // ---------------- persistence (Neon via Prisma) ----------------
@@ -310,7 +336,7 @@ export async function confirmationHistory(db: EbitdaBoxStore, scope: { companyId
 export async function loadConfirmations(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }): Promise<Array<ConfirmationView & { confirmedAt: string }>> {
   const latest = new Map<string, ConfirmationRow>();
   for (const r of await confirmationHistory(db, scope)) latest.set(`${canonicalInputKey(r.inputKey)}|${r.kind}`, r);
-  return [...latest.values()].map((r) => ({ key: r.inputKey, value: String(r.value), source: r.source, confirmedAt: r.createdAt.toISOString(), kind: r.kind === "LENDER_APPROVAL" ? "LENDER_APPROVAL" : "AMOUNT", confirmedBy: r.confirmedBy, sourceKind: isEvidenceSourceKind(r.sourceKind) ? r.sourceKind : "CFO_ENTERED", sourceRef: r.sourceRef ?? null }));
+  return [...latest.values()].map((r) => ({ key: r.inputKey, value: String(r.value), source: r.source, confirmedAt: r.createdAt.toISOString(), kind: r.kind === "LENDER_APPROVAL" || r.kind === "BASE_METRIC" ? r.kind : "AMOUNT", confirmedBy: r.confirmedBy, sourceKind: isEvidenceSourceKind(r.sourceKind) ? r.sourceKind : "CFO_ENTERED", sourceRef: r.sourceRef ?? null }));
 }
 
 /** Every proposal row ever written for the document, oldest first (full audit history). */
@@ -334,7 +360,7 @@ export async function loadProposals(db: EbitdaBoxStore, scope: { companyId: stri
 
 export type ConfirmOutcome =
   | { ok: true; box: EbitdaBox; gain: CfoGain["gain"]; boxId: string; replayed?: boolean }
-  | { ok: false; status: 400 | 404 | 409 | 422; error: string; code?: "NEEDS_BASE" | "IDEMPOTENCY_CONFLICT" | "OUT_OF_RANGE" | "SEPARATION_OF_DUTIES" };
+  | { ok: false; status: 400 | 404 | 409 | 422; error: string; code?: "NEEDS_BASE" | "IDEMPOTENCY_CONFLICT" | "OUT_OF_RANGE" | "SEPARATION_OF_DUTIES" | "FILING_PRESENT" | "NEEDS_ERP_EVIDENCE" | "ERP_EVIDENCE_MISMATCH" };
 
 /** Hard ceiling for any confirmed amount (USD); also bounded by 10× the reported base EBITDA when that is known. */
 export const MAX_CONFIRMED_USD = 10n ** 12n;
@@ -378,32 +404,35 @@ const newIdempotencyKey = () => `srv-${globalThis.crypto.randomUUID()}`;
 export async function confirmEbitdaItem(
   db: EbitdaBoxStore,
   scope: { companyId: string; documentId: string },
-  args: PipelineArgs,
+  boxArgs: BoxArgs,
   input: ConfirmInput,
 ): Promise<ConfirmOutcome> {
+  const args = pipelineOnly(boxArgs);
   const kind: ConfirmationKind = input.kind ?? "AMOUNT";
-  if (kind !== "AMOUNT" && kind !== "LENDER_APPROVAL") return { ok: false, status: 400, error: "kind must be AMOUNT or LENDER_APPROVAL" };
+  if (kind !== "AMOUNT" && kind !== "LENDER_APPROVAL" && kind !== "BASE_METRIC") return { ok: false, status: 400, error: "kind must be AMOUNT, LENDER_APPROVAL or BASE_METRIC" };
   if (typeof input.inputKey !== "string" || !input.inputKey.trim()) return { ok: false, status: 400, error: "inputKey is required" };
   if (typeof input.source !== "string" || !input.source.trim()) return { ok: false, status: 400, error: "source (the document the figure comes from) is required" };
   const evidence = evidenceOf(input);
   if (!evidence) return { ok: false, status: 400, error: "sourceKind must be one of SEC_FILING, OFFICERS_CERTIFICATE, ERP, CFO_ENTERED and sourceRef at most 500 characters" };
   if (!input.confirmedBy?.trim()) return { ok: false, status: 400, error: "confirmedBy (authenticated principal) is required" };
   const rawValue = kind === "LENDER_APPROVAL" ? "1" : String(input.value ?? "").trim();
-  if (kind === "AMOUNT") {
+  if (kind !== "LENDER_APPROVAL") {
     if (/^-\d+$/.test(rawValue)) return { ok: false, status: 422, error: "value must not be negative" };
     if (!/^\d+$/.test(rawValue)) return { ok: false, status: 400, error: "value must be an integer USD amount" };
   }
-  const value = kind === "AMOUNT" ? BigInt(rawValue).toString() : "1";
+  const value = kind !== "LENDER_APPROVAL" ? BigInt(rawValue).toString() : "1";
+  const baseMetric = kind === "BASE_METRIC" ? metricOfInputKey(input.inputKey) : null;
+  if (kind === "BASE_METRIC" && !baseMetric) return { ok: false, status: 400, error: "a BASE_METRIC confirmation takes inputKey METRIC:REVENUE" };
   if (!args.financials) return { ok: false, status: 422, error: "no issuer financials for this company (set the company CIK)" };
   const idem = input.idempotencyKey?.trim() || null;
   if (idem && idem.length > 200) return { ok: false, status: 400, error: "idempotencyKey is too long (max 200)" };
 
   const prior = await loadConfirmations(db, scope);
-  const base = runAgreementPipeline({ ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...prior.map(asBorrowerInput)] } });
+  const base = runAgreementPipeline({ ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...borrowerInputsOf(prior)] } });
   const flags = ((base.xbrl as Xbrl | null)?.addBackTracker ?? []) as AddBackFlag[];
   const want = canonicalInputKey(input.inputKey);
   const flag = flags.find((f) => canonicalInputKey(f.inputKey) === want);
-  const inputKey = flag?.inputKey ?? want;
+  const inputKey = baseMetric ? metricInputKey(baseMetric) : flag?.inputKey ?? want;
 
   if (idem) {
     const seen = await db.customerEbitdaConfirmation.findFirst({ where: { ...scope, idempotencyKey: idem } });
@@ -411,9 +440,12 @@ export async function confirmEbitdaItem(
   }
 
   const others = prior.filter((c) => !(canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === kind));
-  const priorArgs: PipelineArgs = { ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...others.map(asBorrowerInput)] } };
-  if (kind === "AMOUNT") {
-    const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, flag);
+  const priorArgs: PipelineArgs = { ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...borrowerInputsOf(others)] } };
+  if (kind === "BASE_METRIC") {
+    const refused = checkBaseMetric(boxArgs, base, baseMetric!, value, input.source.trim());
+    if (refused) return refused;
+  } else if (kind === "AMOUNT") {
+    const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, flag, confirmedRevenue(prior));
     if (!lim.ok) return { ok: false, status: 422, code: "NEEDS_BASE", error: lim.error };
     if (BigInt(value) > lim.bound) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value exceeds the plausible maximum (${lim.basis})` };
     const check = cfoRecompute(priorArgs, [{ key: inputKey, value, source: input.source.trim() }]);
@@ -448,11 +480,11 @@ export async function confirmEbitdaItem(
     ({ box, gain } = await withDocumentTransaction(db, scope, async (tx) => {
       const committed = await loadConfirmations(tx, scope);
       const rest = committed.filter((c) => !(canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === kind));
-      const withInputs = (cs: readonly ConfirmationView[]): PipelineArgs => ({ ...args, financials: { ...args.financials!, borrowerInputs: [...(args.financials!.borrowerInputs ?? []), ...cs.map(asBorrowerInput)] } });
+      const withInputs = (cs: readonly ConfirmationView[]): PipelineArgs => ({ ...args, financials: { ...args.financials!, borrowerInputs: [...(args.financials!.borrowerInputs ?? []), ...borrowerInputsOf(cs)] } });
       const before = runAgreementPipeline(withInputs(rest));
       const after = runAgreementPipeline(withInputs([...rest, mine]));
       const g = gainOf(capacitySnapshot(before), capacitySnapshot(after));
-      const b = ebitdaBoxFromResult(after, [...rest, mine], await loadProposals(tx, scope));
+      const b = withErp(ebitdaBoxFromResult(after, [...rest, mine], await loadProposals(tx, scope)), boxArgs);
       await tx.customerEbitdaConfirmation.create({ data: { ...scope, inputKey, kind, value, source: mine.source, ...evidence, confirmedBy: input.confirmedBy, idempotencyKey: key, response: { boxId, gain: g } } });
       await saveEbitdaBox(tx, scope, b, boxId);
       return { box: b, gain: g };
@@ -464,6 +496,35 @@ export async function confirmEbitdaItem(
     return replayOf(db, scope, seen, { inputKey, kind, value, source: input.source.trim(), confirmedBy: input.confirmedBy, ...evidence });
   }
   return { ok: true, box, gain, boxId };
+}
+
+/** Latest CFO-confirmed revenue (BASE_METRIC METRIC:REVENUE), if any. */
+function confirmedRevenue(cs: readonly ConfirmationView[]): bigint | null {
+  const r = cs.filter((c) => c.kind === "BASE_METRIC" && canonicalInputKey(c.key) === metricInputKey("revenue") && /^\d+$/.test(c.value)).at(-1);
+  return r ? BigInt(r.value) : null;
+}
+
+/**
+ * A base-metric confirmation (revenue the filings do not carry) is accepted only against ERP evidence re-derived on the
+ * server for this request: the filings must not report the metric for the period (they win; ERP is reconciled against
+ * them, never substituted), the ERP LTM suggestion must be SUGGESTED (admitted, tiled, not blocked by an UNRECONCILED
+ * period), and either the source quotes the suggestion's exact reference with its exact value, or (a figure from another
+ * document) the value is within 10x either way of the ERP figure.
+ */
+function checkBaseMetric(boxArgs: BoxArgs, base: AgreementPipelineResult, metric: NonNullable<ReturnType<typeof metricOfInputKey>>, value: string, source: string): ConfirmOutcome | null {
+  const fin = boxArgs.financials!;
+  if (fin.values.some((v) => v.metric === metric && /^-?\d+$/.test(v.value))) return { ok: false, status: 422, code: "FILING_PRESENT", error: `the filings report ${metric} for this period; ERP figures are reconciled against filings, never substituted for them` };
+  const opt = (base.xbrl as Xbrl | null)?.ebitda;
+  const ev = erpEvidenceFor(boxArgs, { periodEnd: opt?.periodEnd ?? fin.anchor ?? null, base: opt?.base ?? null });
+  const s = ev?.suggestions.find((x) => x.metric === metric && x.inputKey === metricInputKey(metric));
+  if (!s || s.status !== "SUGGESTED" || s.value == null) return { ok: false, status: 422, code: "NEEDS_ERP_EVIDENCE", error: s ? `no usable ERP ${metric} for this period: ${s.reason}` : `no ERP evidence for ${metric} (no ERP connection or no facts)` };
+  const v = BigInt(value), e = BigInt(s.value);
+  if (source.startsWith("erp:")) {
+    if (source !== s.sourceRef || value !== s.value) return { ok: false, status: 422, code: "ERP_EVIDENCE_MISMATCH", error: "an ERP-sourced figure must quote the current suggestion's source reference and value exactly" };
+    return null;
+  }
+  if (e <= 0n || v * 10n < e || v > e * 10n) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value is not within 10x of the ERP ${metric} for the period` };
+  return null;
 }
 
 const newBoxId = () => `ebx_${globalThis.crypto.randomUUID().replace(/-/g, "")}`;
@@ -497,9 +558,12 @@ export interface ProposeInput {
 export async function proposeEbitdaItem(
   db: EbitdaBoxStore,
   scope: { companyId: string; documentId: string },
-  args: PipelineArgs,
+  boxArgs: BoxArgs,
   input: ProposeInput,
 ): Promise<ProposeOutcome> {
+  // RC integration (#410 x #415): proposals take the same BoxArgs as confirmations so the saved box keeps its ERP
+  // evidence, and BASE_METRIC confirmations are never fed to the optimizer as add-back inputs.
+  const args = pipelineOnly(boxArgs);
   if (!db.customerEbitdaProposal) return { ok: false, status: 400, error: "proposal storage is not available for this store" };
   const store = db.customerEbitdaProposal;
   const label = typeof input.label === "string" ? input.label.trim() : "";
@@ -537,9 +601,9 @@ export async function proposeEbitdaItem(
 
   // Plausibility: the same sourced bound as a CFO confirmation (against the mapped clause when one matches).
   const prior = await loadConfirmations(db, scope);
-  const base = runAgreementPipeline({ ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...prior.map(asBorrowerInput)] } });
+  const base = runAgreementPipeline({ ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...borrowerInputsOf(prior)] } });
   const flags = ((base.xbrl as Xbrl | null)?.addBackTracker ?? []) as AddBackFlag[];
-  const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, matchProposalToFlag(label, flags));
+  const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, matchProposalToFlag(label, flags), confirmedRevenue(prior));
   if (!lim.ok) return { ok: false, status: 422, code: "NEEDS_BASE", error: lim.error };
   if (BigInt(value) > lim.bound) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value exceeds the plausible maximum (${lim.basis})` };
 
@@ -552,7 +616,7 @@ export async function proposeEbitdaItem(
       const { id } = await tx.customerEbitdaProposal.create({ data: { ...scope, label, amount: value, source: input.source.trim(), ...evidence, proposedBy: input.proposedBy, idempotencyKey: key, response: { boxId } } });
       const mine: EbitdaProposalRecord = { id, label, amount: value, source: input.source.trim(), ...evidence, proposedBy: input.proposedBy, proposedAt: new Date().toISOString() };
       const committedProps = (await loadProposals(tx, scope)).filter((p) => p.id !== id);
-      const b = computeEbitdaBox(args, await loadConfirmations(tx, scope), [...committedProps, mine]);
+      const b = computeEbitdaBox(boxArgs, await loadConfirmations(tx, scope), [...committedProps, mine]);
       await saveEbitdaBox(tx, scope, b, boxId);
       return { box: b, view: b.proposals.find((p) => p.id === id) ?? { ...mine, status: "NEEDS_INPUT" as const, mappedInputKey: null } };
     });
@@ -601,9 +665,9 @@ export async function boxGeneration(db: EbitdaBoxStore, scope: { companyId: stri
  * Recompute and save the box from committed confirmations (one locked transaction). Loading the inputs (agreement text,
  * SEC filings) or computing may fail: that is recorded as a FAILED box (last committed figures kept) and returned.
  */
-export async function refreshBoxCommitted(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, load: () => Promise<PipelineArgs | null>): Promise<{ box: EbitdaBox; id: string } | null> {
+export async function refreshBoxCommitted(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, load: () => Promise<BoxArgs | null>): Promise<{ box: EbitdaBox; id: string } | null> {
   const generation = await boxGeneration(db, scope);
-  let args: PipelineArgs | null;
+  let args: BoxArgs | null;
   try { args = await load(); } catch (err) { return recordEbitdaBoxFailure(db, scope, err, { generation }); }
   if (!args) return null;
   const a = args;
@@ -641,10 +705,12 @@ async function replayOf(db: EbitdaBoxStore, scope: { companyId: string; document
  *    of revenue — implausible for a filer with a negative or missing base and the typical signature of a units error.
  *    Half (not all) of revenue leaves room for genuine large one-offs (impairments, restructurings) while refusing
  *    figures that would make adjusted EBITDA exceed revenue on their own.
+ *  - else 50% of a CFO-confirmed revenue (BASE_METRIC METRIC:REVENUE, accepted only against ERP evidence when the
+ *    filings carry no revenue — see checkBaseMetric);
  *  - otherwise nothing bounds it: NEEDS_BASE.
  * 1e12 is only an outer ceiling on top of a sourced bound, never the bound itself; the message names whichever applied.
  */
-function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: AddBackFlag | undefined): { ok: true; bound: bigint; basis: string } | { ok: false; error: string } {
+function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: AddBackFlag | undefined, cfoRevenue: bigint | null = null): { ok: true; bound: bigint; basis: string } | { ok: false; error: string } {
   const int = (v: string | null | undefined) => (v != null && /^-?\d+$/.test(v) ? BigInt(v) : null);
   const within = (b: bigint, basis: string) => (b < MAX_CONFIRMED_USD ? { ok: true as const, bound: b, basis } : { ok: true as const, bound: MAX_CONFIRMED_USD, basis: "the 1e12 USD absolute ceiling" });
   const base = int(baseValue);
@@ -653,6 +719,7 @@ function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: Add
   if (c != null && c > 0n) return within(10n * c, "10x the clause's dollar cap");
   const rev = int(fin.values.find((v) => v.metric === "revenue")?.value);
   if (rev != null && rev > 0n) return within(rev / 2n, "50% of the issuer's reported revenue");
+  if (cfoRevenue != null && cfoRevenue > 0n) return within(cfoRevenue / 2n, "50% of the CFO-confirmed revenue (ERP evidence)");
   return { ok: false, error: "NEEDS_BASE: base EBITDA is missing or not positive and no other sourced figure (a dollar cap, revenue) bounds this line; the figure cannot be checked for plausibility" };
 }
 
