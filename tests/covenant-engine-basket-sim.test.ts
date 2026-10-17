@@ -91,3 +91,48 @@ describe("simulateDebtIncurrenceByBasket: per-basket amounts in one call", () =>
     expect(run(COHERENT_DATA, []).status).toBe("NEEDS_INPUT");
   });
 });
+
+describe("simulateDebtIncurrenceByBasket: reviewer notes at aff86f7b", () => {
+  it("a provision drawn by two baskets shares one capacity", () => {
+    const r = run(COHERENT_DATA, [{ kind: "GENERAL", amount: 400, secured: false }, { kind: "INCREMENTAL", amount: 400, secured: false, provisionCode: "general_debt" }]);
+    for (const b of r.baskets) {
+      const d = b.documents.find((x) => x.documentId === IND)!;
+      expect(d.capacity).toBe(680);
+      expect(d.provisionUsed).toBe(800);
+      expect(d.remaining).toBe(-120);
+      expect(d.status).toBe("blocked");
+      expect(d.sharedWith).toEqual([b.kind === "GENERAL" ? "INCREMENTAL" : "GENERAL"]);
+    }
+    expect(r.status).toBe("blocked");
+  });
+
+  it("NaN / negative allocations are reported as input errors and make the result NEEDS_INPUT, never silently dropped", () => {
+    for (const bad of [Number.NaN, -10, Number.POSITIVE_INFINITY]) {
+      const r = run(COHERENT_DATA, [{ kind: "GENERAL", amount: 100, secured: false }, { kind: "RATIO_DEBT", amount: bad, secured: false }]);
+      expect(r.invalidAllocations).toEqual([{ index: 1, reason: expect.stringMatching(/RATIO_DEBT amount/) }]);
+      expect(r.status).toBe("NEEDS_INPUT");
+      expect(r.baskets.find((b) => b.kind === "RATIO_DEBT")!.status).toBe("NEEDS_INPUT");
+      expect(r.totals.amount).toBe(100);
+    }
+  });
+
+  it("a greater-of basket with a missing dollar floor is AT_LEAST its % leg (bound passed through), never a default floor", () => {
+    const d = clone(COHERENT_DATA);
+    const g = d.provisions.find((p) => p.code === "general_debt")!;
+    g.thresholdValue = null as unknown as number;
+    const pctLeg = g.params!.pctEbitda! * d.financials.ebitda;
+    const within = run(d, [{ kind: "GENERAL", amount: Math.floor(pctLeg) - 1, secured: false }]);
+    const w = within.baskets[0]!.documents.find((x) => x.documentId === IND)!;
+    expect(w).toMatchObject({ bound: "AT_LEAST", capacity: pctLeg, status: "clear" });
+    expect(within.baskets[0]!.bound).toBe("AT_LEAST");
+    const over = run(d, [{ kind: "GENERAL", amount: pctLeg + 1, secured: false }]);
+    const o = over.baskets[0]!.documents.find((x) => x.documentId === IND)!;
+    expect(o.status).toBe("NEEDS_INPUT");
+    expect(o.remaining).toBeCloseTo(-1, 9);
+  });
+
+  it("modeled figures carry bound EXACT", () => {
+    const d = run(COHERENT_DATA, [{ kind: "GENERAL", amount: 1, secured: false }]).baskets[0]!.documents.find((x) => x.documentId === IND)!;
+    expect(d.bound).toBe("EXACT");
+  });
+});
