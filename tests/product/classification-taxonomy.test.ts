@@ -365,6 +365,86 @@ describe("step 1 — NON_COVENANT structural classification", () => {
     expect(prohibition.category).toBe("DEBT_INCURRENCE");
   });
 
+  it("step 3: a true covenant item with RS at [0] and INDEBTEDNESS at [1] promotes to DEBT_INCURRENCE", () => {
+    const s = skeleton();
+    const sec = node("SECTION", "7.03", "Indebtedness", 5100, 8900, s.neg.nodeId);
+    const item = node("SUBSECTION", "7.03(k)", "", 5200, 6000, sec.nodeId);
+    const a = analyze(
+      [...s.all, sec, item],
+      item,
+      ["RESTRICTED_SUBSIDIARIES", "INDEBTEDNESS"],
+      "(k) Indebtedness of any Restricted Subsidiary that is not a Loan Party in an aggregate principal amount not to exceed the greater of $50 million and 10% of EBITDA.",
+    );
+    expect(a.category).toBe("DEBT_INCURRENCE");
+  });
+
+  it("step 3: section-family agreement arbitrates — INVESTMENTS wins over an incidental ratio family inside §Investments", () => {
+    const s = skeleton();
+    const sec = node("SECTION", "7.02", "Investments", 5100, 8900, s.neg.nodeId);
+    const item = node("SUBSECTION", "7.02(p)", "", 5200, 6000, sec.nodeId);
+    const a = analyze(
+      [...s.all, sec, item],
+      item,
+      ["RESTRICTED_SUBSIDIARIES", "FINANCIAL_MAINTENANCE_COVENANTS", "INVESTMENTS"],
+      "(p) Investments so long as, after giving pro forma effect thereto, the Borrower is in compliance with the financial covenants set forth in Section 7.11.",
+    );
+    expect(a.category).toBe("RESTRICTED_PAYMENTS_INVESTMENTS");
+  });
+
+  it("step 3: a mismatch stays unresolved — GUARANTEES detected inside §Investments does not promote", () => {
+    const s = skeleton();
+    const sec = node("SECTION", "7.02", "Investments", 5100, 8900, s.neg.nodeId);
+    const item = node("SUBSECTION", "7.02(q)", "", 5200, 6000, sec.nodeId);
+    const a = analyze(
+      [...s.all, sec, item],
+      item,
+      ["RESTRICTED_SUBSIDIARIES", "GUARANTEES"],
+      "(q) Guarantees by any Restricted Subsidiary of Indebtedness permitted under this Section in the ordinary course of business.",
+    );
+    expect(a.category).toBe("OTHER");
+  });
+
+  it("step 3: a SECTION stem with descendants never promotes", () => {
+    const s = skeleton();
+    const sec = node("SECTION", "7.05", "Asset Sales", 5100, 8900, s.neg.nodeId);
+    const clause = node("SUBSECTION", "7.05(a)", "", 5200, 6000, sec.nodeId);
+    const a = analyze(
+      [...s.all, sec, clause],
+      sec,
+      ["UNKNOWN", "ASSET_SALES"],
+      "Section 7.05. Asset Sales. The Borrower shall not Dispose of any of its assets except as permitted by this Section.",
+    );
+    expect(a.category).toBe("OTHER");
+  });
+
+  it("step 3: a guaranty-article waiver with a unanimous GUARANTEES family promotes via the neutral path", () => {
+    seq = 0;
+    const g1 = node("ARTICLE", "I", "The Guaranty", 0, 9000);
+    const sec = node("SECTION", "1.05", "Waiver of Notice", 100, 8000, g1.nodeId);
+    const item = node("SUBSECTION", "1.05(b)", "", 200, 1000, sec.nodeId);
+    const a = analyze(
+      [g1, sec, item],
+      item,
+      ["UNKNOWN", "GUARANTEES"],
+      "(b) Each Guarantor waives presentment, demand, protest and notice of dishonor and agrees that its obligations hereunder shall not be affected by any extension or renewal.",
+    );
+    expect(a.category).toBe("GUARANTEES");
+  });
+
+  it("step 3: competing categories under a neutral section stay unresolved", () => {
+    seq = 0;
+    const g1 = node("ARTICLE", "I", "The Guaranty", 0, 9000);
+    const sec = node("SECTION", "1.11", "Keepwell", 100, 8000, g1.nodeId);
+    const item = node("SUBSECTION", "1.11(a)", "", 200, 1000, sec.nodeId);
+    const a = analyze(
+      [g1, sec, item],
+      item,
+      ["UNKNOWN", "LIENS", "GUARANTEES"],
+      "(a) Each Qualified ECP Guarantor agrees to guarantee, and to keep well each other Loan Party in respect of its Swap Obligations.",
+    );
+    expect(a.category).toBe("OTHER");
+  });
+
   it("grantTypesForItem mints nothing for a NON_COVENANT item", () => {
     const item = {
       category: "NON_COVENANT",

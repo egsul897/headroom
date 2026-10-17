@@ -300,6 +300,21 @@ function structuralPositionOf(
 const OPERATIVE_VERB =
   /\b(shall|will|may|must|agree|waiv|deliver|furnish|maintain|permit|represent|warrant|covenant|undertak|pay|giv|provid|notif|incur|creat|enter)/i;
 
+/** Strict title-only test: after stripping the section marker
+ * and the heading, nothing substantive remains. Used by step 3,
+ * where the wider chapeau test would also catch operative
+ * verb-less basket prongs. */
+function isTitleOnlyStem(excerpt: string, heading: string): boolean {
+  const norm = excerpt.replace(/\s+/g, " ").trim();
+  let rest = norm
+    .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+    .replace(/^[0-9]+(?:\.[0-9]+)*[.\s]+/, "");
+  const h = heading.replace(/\s+/g, " ").trim().toLowerCase();
+  if (h.length > 3 && rest.toLowerCase().startsWith(h)) rest = rest.slice(h.length);
+  rest = rest.replace(/^[\s.:;—–-]+/, "").trim();
+  return rest.length <= 30;
+}
+
 function isChapeauOnlyExcerpt(excerpt: string, heading: string): boolean {
   const norm = excerpt.replace(/\s+/g, " ").trim();
   let rest = norm
@@ -544,7 +559,7 @@ const OBLIGATION_LEAD =
 /** "Shall cause X to become / execute / deliver / enter into"
  * (joinder and control-agreement shapes) — a bare "will cause
  * each Subsidiary to" causative frame is not one. */
-const CAUSE_LEAD = /\b(shall|will)\s+cause\b[^.;]{0,80}\b(become|execute|deliver|enter into|comply|agree)\b/i;
+const CAUSE_LEAD = /\b(shall|will)\s+cause\b[^;]{0,80}\b(become|execute|deliver|enter into|comply|agree|dissolv)\w*\b/i;
 
 /** A delivery FRAME: the section's chapeau sentence that only
  * says deliveries go to the Agent/Lenders — WHAT is delivered
@@ -623,7 +638,7 @@ function affirmativeKindFor(sectionHeading: string | undefined): AffirmativeKind
  * obligation-verb shape, and it has no prohibition lead.
  */
 const AFFIRMATIVE_SECTION_SUBJECT =
-  /\b(financial statements|financial reporting|certificates|other information|notices|existence|taxes|properties|insurance|compliance|books|records|inspection|further assurances|additional guarantors|maintenance|reporting)\b/i;
+  /\b(financial statements|financial reporting|certificates|other information|notices|existence|taxes|properties|insurance|compliance|material contracts|books|records|inspection|further assurances|additional guarantors|maintenance|reporting)\b/i;
 
 function classifyAffirmative(params: {
   excerpt: string;
@@ -637,24 +652,28 @@ function classifyAffirmative(params: {
   const { excerpt, heading, families, primary, isEod, position } = params;
   if (isEod) return null;
   if (primary === "FINANCIAL_MAINTENANCE_COVENANTS" || families[0] === "EVENTS_OF_DEFAULT") return null;
-  if (isChapeauOnlyExcerpt(excerpt, heading)) {
-    // Fragment inheritance: a verb-less CLAUSE fragment under
-    // an affirmative-subject section of an affirmative article
-    // ("(a) the occurrence of any Default" under §Notices) is
-    // part of that section's covenant — its operative stem is
-    // the section's own item. SECTION stems themselves never
-    // inherit (they are the stem, separately accounted).
-    if (
-      position.positionClass === "AFFIRMATIVE" &&
-      params.candidateNodeType !== undefined &&
-      params.candidateNodeType !== "SECTION" &&
-      params.candidateNodeType !== "ARTICLE" &&
-      AFFIRMATIVE_SECTION_SUBJECT.test(despaceHeadingText(position.sectionHeading ?? ""))
-    ) {
-      return affirmativeKindFor(position.sectionHeading);
-    }
-    return null;
+  // Fragment inheritance: a CLAUSE fragment under an
+  // affirmative-subject section of an affirmative article is
+  // part of that section's covenant — its operative stem is
+  // the section's own item ("(a) the occurrence of any
+  // Default" under §Notices; a bare infinitive prong
+  // "Perform its obligations under material agreements..."
+  // whose "shall" lives in the stem). SECTION stems
+  // themselves never inherit (they are the stem, separately
+  // accounted). The fragment shapes are: chapeau-only text,
+  // or a lead carrying no shall/will at all.
+  const leadHasNoModal = !/\b(shall|will)\b/i.test(excerpt.replace(/\s+/g, " ").slice(0, 200));
+  if (
+    position.positionClass === "AFFIRMATIVE" &&
+    params.candidateNodeType !== undefined &&
+    params.candidateNodeType !== "SECTION" &&
+    params.candidateNodeType !== "ARTICLE" &&
+    (isChapeauOnlyExcerpt(excerpt, heading) || leadHasNoModal) &&
+    AFFIRMATIVE_SECTION_SUBJECT.test(despaceHeadingText(position.sectionHeading ?? ""))
+  ) {
+    return affirmativeKindFor(position.sectionHeading);
   }
+  if (isChapeauOnlyExcerpt(excerpt, heading)) return null;
   if (isDeliveryFrame(excerpt, heading, position.sectionHeading)) return null;
   if (hasProhibitionLead(excerpt, heading)) return null;
   // A business-scope section is a restriction by subject,
@@ -1685,6 +1704,102 @@ export function analyzeProvision(params: {
         candidateNodeType: params.structuralNodes.find((n) => n.nodeId === params.candidate.nodeId)
           ?.nodeType,
       });
+  // Classification census step 3: covenant-gated primary
+  // selection (masking). When an item IS a covenant item —
+  // steps 1–2 did not claim it, it is not EoD-shaped, not
+  // administrative, and not a title-only stem — and its
+  // position-0 family maps to no covenant category (UNKNOWN /
+  // RESTRICTED_SUBSIDIARIES / UNRESTRICTED_SUBSIDIARIES /
+  // DESIGNATIONS), a MAPPABLE family in its detected list can
+  // still win the category — under arbitration, never by list
+  // position alone. Steps 1–2 running first is what makes this
+  // safe: the census hand-verified that of 493 OTHER items
+  // with a mappable family beyond position 0, only 81 are true
+  // masking — the rest are incidental mentions inside
+  // definitions, representations, CP items, and mechanics,
+  // which steps 1–2 have already classified. Promotion changes
+  // ONLY the category outcome (posture and permission
+  // extraction read the full family list and the operative
+  // text, unchanged).
+  const promotedFamily = ((): string | null => {
+    if (nonCovenantSubtype || affirmativeKind) return null;
+    if (isEod || isAdministrativeProvision(heading, excerpt)) return null;
+    if ((FAMILY_TO_CATEGORY[primary] ?? "OTHER") !== "OTHER") return null;
+    // Title-only stems never promote. NOTE the STRICT title
+    // test (nothing left after the title), not the wider
+    // chapeau test — basket prongs are verb-less noun phrases
+    // by drafting convention ("Dispositions of Accounts in
+    // connection with the compromise or settlement thereof")
+    // and are operative clauses, not titles. The
+    // SECTION-with-descendants stem guard below covers the
+    // prohibition-chapeau stems.
+    if (isTitleOnlyStem(excerpt, heading)) return null;
+    // No article context at all: the item's position is
+    // unresolved (EoD fragments and residue land here) — never
+    // promote on keyword evidence alone.
+    if (!articleHeading) return null;
+    if (/\bevents of default\b/i.test(articleHeading)) return null;
+    // Stem guard: a SECTION item with structural descendants
+    // is a stem — its clauses are separate items and carry the
+    // substance. (A leaf section — a single-paragraph financial
+    // covenant — still promotes.)
+    if (
+      candidateNode?.nodeType === "SECTION" &&
+      params.structuralNodes.some((n) => n.parentNodeId === candidateNode.nodeId)
+    ) {
+      return null;
+    }
+    const mappable = params.candidate.families.slice(1).filter((f) => {
+      const cat = FAMILY_TO_CATEGORY[f];
+      return cat && cat !== "OTHER" && cat !== "BASKETS_EXCEPTIONS_CONDITIONS";
+    });
+    if (mappable.length === 0) return null;
+    // Section–family agreement: the enclosing section's own
+    // subject (the agreement's organization) arbitrates among
+    // the detected families. If the section names a covenant
+    // subject, ONLY a detected family of that subject promotes
+    // — a mismatch means the detected families are incidental
+    // mentions or the item's own family went undetected, and
+    // the item stays unresolved rather than taking a wrong
+    // label. (This is also what picks INVESTMENTS over an
+    // incidental ratio-test family inside §Investments, and
+    // ASSET_SALES over INVESTMENTS inside §Dispositions.)
+    const section = despaceHeadingText(structuralPos.sectionHeading ?? "");
+    const sectionCats: CovenantCategoryKey[] = [];
+    const SUBJECT: Array<[RegExp, CovenantCategoryKey]> = [
+      [/\bindebtedness\b|\bincremental\b|\bincrease\b|\bpriority\b|\bprepayments?\b/i, "DEBT_INCURRENCE"],
+      [/\bliens\b|\bsecured debt\b/i, "LIENS_SECURED_DEBT"],
+      [/\brestricted\b|\binvestments\b/i, "RESTRICTED_PAYMENTS_INVESTMENTS"],
+      [/\basset sales\b|\bdispositions\b|\basset\b|\bip rights\b|\bintellectual property\b/i, "ASSET_SALES"],
+      [/\bguarantee\b|\bguaranty\b/i, "GUARANTEES"],
+      [/\baffiliate/i, "AFFILIATE_TRANSACTIONS"],
+      [/\bfundamental\b|\bmergers\b|\bconsolidation\b/i, "MERGERS_FUNDAMENTAL_CHANGES"],
+      [/\bfinancial\b/i, "FINANCIAL_MAINTENANCE"],
+    ];
+    for (const [re, cat] of SUBJECT) if (re.test(section)) sectionCats.push(cat);
+    if (sectionCats.length > 0) {
+      return mappable.find((f) => sectionCats.includes(FAMILY_TO_CATEGORY[f]!)) ?? null;
+    }
+    // Subject-neutral section: promote only an UNANIMOUS
+    // detected category, and only outside the covenant and
+    // facility articles — inside them a neutral heading means
+    // the item's own covenant type is one the family vocabulary
+    // does not cover (restrictive agreements, swap covenants,
+    // bespoke restrictions), where a detected family is a
+    // mention by construction. Guaranty-article waivers and
+    // obligations clauses are the population this path serves.
+    const distinctCats = new Set(mappable.map((f) => FAMILY_TO_CATEGORY[f]!));
+    if (distinctCats.size !== 1) return null;
+    const cls = structuralPos.positionClass;
+    if (cls === "NEGATIVE" || cls === "AFFIRMATIVE" || cls === "COVENANTS" || cls === "CREDITS") {
+      return null;
+    }
+    if (/\bletters?\b|\bpayments\b|\bbreak funding\b|\bcomput|\binterest\b|\bborrowing/i.test(section)) {
+      return null;
+    }
+    return mappable[0] ?? null;
+  })();
+  const effectivePrimary = promotedFamily ?? primary;
   // Category follows substance, not just the first family tag: an EoD
   // trigger stays EVENTS_OF_DEFAULT even if the classifier also tagged a
   // subject family, and an administrative provision is OTHER.
@@ -1696,7 +1811,7 @@ export function analyzeProvision(params: {
         ? "OTHER"
         : isEod
           ? "EVENTS_OF_DEFAULT"
-          : (FAMILY_TO_CATEGORY[primary] ?? "OTHER");
+          : (FAMILY_TO_CATEGORY[effectivePrimary] ?? "OTHER");
   const categoryLabel = CATEGORY_LABELS[category];
   // A NON_COVENANT item has no covenant posture: UNRESOLVED is
   // the honest determinate statement (it is not a prohibition,
