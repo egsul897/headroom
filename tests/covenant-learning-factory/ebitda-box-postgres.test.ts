@@ -117,4 +117,19 @@ describe.skipIf(!url)("EBITDA box on real Postgres (transactions, advisory lock,
     await expect(prisma.customerEbitdaConfirmation.create({ data: { ...base, kind: "BOGUS", value: "5", idempotencyKey: `bogus-${run}` } })).rejects.toThrow(/check constraint|violates/i);
     await expect(prisma.customerEbitdaConfirmation.create({ data: { ...base, inputKey: "METRIC:NETINCOME", kind: "BASE_METRIC", value: "-5", idempotencyKey: `bmneg-${run}` } })).rejects.toThrow(/check constraint|violates/i);
   });
+
+  it("migration 20261017090000 is one atomic statement: replay keeps exactly one kind check; down refuses while BASE_METRIC rows exist", async () => {
+    const { readFileSync } = await import("node:fs");
+    const dir = "prisma/migrations/20261017090000_customer_ebitda_base_metric";
+    const kindChecks = () => prisma.$queryRawUnsafe<Array<{ def: string }>>(`SELECT pg_get_constraintdef(oid) AS def FROM pg_constraint WHERE conrelid = '"customer_ebitda_confirmations"'::regclass AND conname = 'customer_ebitda_confirmations_kind_check'`);
+    await prisma.$executeRawUnsafe(readFileSync(`${dir}/migration.sql`, "utf8")); // idempotent replay
+    let defs = await kindChecks();
+    expect(defs).toHaveLength(1);
+    expect(defs[0]!.def).toMatch(/BASE_METRIC/);
+    // BASE_METRIC rows exist (previous test): the rollback raises and leaves the widened check in place.
+    await expect(prisma.$executeRawUnsafe(readFileSync(`${dir}/down.sql`, "utf8"))).rejects.toThrow(/refusing to narrow/);
+    defs = await kindChecks();
+    expect(defs).toHaveLength(1);
+    expect(defs[0]!.def).toMatch(/BASE_METRIC/);
+  });
 });

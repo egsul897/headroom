@@ -4,6 +4,7 @@
  * BASE_METRIC confirm that resolves NEEDS_BASE. Every ERP figure here is a TEST FIXTURE; production has no ERP source
  * until ERP-1 registers one.
  */
+import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { admitErpFact, admitErpFacts, erpEvidenceSource, NO_ERP_EVIDENCE, registerErpEvidenceSource, type ErpEvidenceFact } from "@/lib/covenant-learning-factory/erp/contract";
 import { reconcileErpWithFilings, sumOverWindow } from "@/lib/covenant-learning-factory/erp/reconcile";
@@ -285,5 +286,24 @@ describe("EBITDA box integration", () => {
     registerErpEvidenceSource({ listPeriodFacts: async () => { throw new Error("NetSuite 503"); } });
     expect(await companyErpFacts(C)).toBeNull(); // ERP outage → no evidence, box still computed from filings
     expect(e.suggestions.find((s) => s.metric === "revenue")?.status).toBe("NEEDS_INPUT");
+  });
+});
+
+describe("migration 20261017090000 (kind check widened with no window lacking a kind check)", () => {
+  const dir = "prisma/migrations/20261017090000_customer_ebitda_base_metric";
+  const sqlOf = (f: string) => readFileSync(`${dir}/${f}`, "utf8").split("\n").filter((l) => !/^\s*--/.test(l)).join("\n").trim();
+  it("up: exactly one statement, an ALTER TABLE whose subcommands drop and re-add the kind check", () => {
+    const sql = sqlOf("migration.sql");
+    const statements = sql.split(";").map((x) => x.trim()).filter(Boolean);
+    expect(statements).toHaveLength(1);
+    expect(statements[0]).toMatch(/^ALTER TABLE "customer_ebitda_confirmations"\s+DROP CONSTRAINT IF EXISTS "customer_ebitda_confirmations_kind_check",\s+ADD CONSTRAINT "customer_ebitda_confirmations_kind_check" CHECK \("kind" IN \('AMOUNT', 'LENDER_APPROVAL', 'BASE_METRIC'\)\) NOT VALID$/);
+  });
+  it("down: one DO block that locks, refuses if BASE_METRIC rows exist, then swaps in a single ALTER", () => {
+    const sql = sqlOf("down.sql");
+    expect(sql.startsWith("DO $$") && sql.endsWith("END $$;")).toBe(true);
+    const body = sql.slice(5, -7);
+    expect(body.indexOf("LOCK TABLE")).toBeLessThan(body.indexOf("RAISE EXCEPTION"));
+    expect(body).toMatch(/ALTER TABLE "customer_ebitda_confirmations"\s+DROP CONSTRAINT IF EXISTS "customer_ebitda_confirmations_kind_check",\s+ADD CONSTRAINT "customer_ebitda_confirmations_kind_check" CHECK \("kind" IN \('AMOUNT', 'LENDER_APPROVAL'\)\) NOT VALID;/);
+    expect(body.match(/ALTER TABLE/g)).toHaveLength(1);
   });
 });
