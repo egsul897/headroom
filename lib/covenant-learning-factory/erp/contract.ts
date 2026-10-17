@@ -2,9 +2,9 @@
  * ERP evidence contract for the EBITDA box (product side of the ERP link).
  *
  * The box never reads a provider payload. It reads ErpEvidenceFact: one figure for one Headroom metric over one posted
- * period, produced by ERP-1's canonical mapping from the ERP-3 adapter's normalized facts (PR #406,
+ * period, produced by ERP-1's canonical mapping from the ERP-3 adapter's normalized facts (PR 406,
  * lib/connectors/erp/types.ts ErpFinancialFact: provenance + amount + currency + period). This file only declares the
- * shape the box consumes plus the seam ERP-1 implements (ErpEvidenceSource); it imports nothing from #406 so it compiles
+ * shape the box consumes plus the seam ERP-1 implements (ErpEvidenceSource); it imports nothing from PR 406 so it compiles
  * before ERP-1/2 land. Until a source is registered, production has NO ERP facts (NO_ERP_EVIDENCE) — nothing is ever
  * synthesized here.
  *
