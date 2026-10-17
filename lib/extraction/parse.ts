@@ -28,11 +28,15 @@
  * rationale as lib/extraction/chunk.ts's own segmenter), not a full HTML/DOM
  * parser - strips <script>/<style> blocks, turns block-level tags into
  * paragraph breaks, decodes the small set of entities SEC filings actually
- * use, and drops every remaining tag.
+ * use, and drops every remaining tag. Struck (redline-deleted) elements
+ * are handled by lib/extraction/html-hardening.ts: matched ones are
+ * dropped as deleted text; unmatched ones are preserved and recorded
+ * as redlineAmbiguities on the ParsedDocument.
  */
 
 import { extractText, getDocumentProxy } from "unpdf";
 import mammoth from "mammoth";
+import { analyzeStruckHtml, locateTextSpan } from "./html-hardening";
 
 export interface ParsedPage {
   /** 1-indexed. Always 1 for formats with no real page concept (DOCX, TXT). */
@@ -40,10 +44,34 @@ export interface ParsedPage {
   text: string;
 }
 
+/**
+ * A span of extracted text whose operative status is AMBIGUOUS
+ * because it follows an unmatched struck-through (redline deletion)
+ * element: the element's close tag never appears, so the span may be
+ * text the parties deleted — or live text after a stray tag. The
+ * text is preserved in the document (evidence is never destroyed on
+ * a guess); this record is how the uncertainty propagates: items
+ * whose source intersects the span are flagged, and authoritative
+ * conclusions (compiled formulas, capacity) must not rest on it.
+ * Ported from the PR #428 mechanism (grok/extraction-hardening).
+ */
+export interface RedlineAmbiguity {
+  reason: "UNMATCHED_REDLINE_ELEMENT";
+  /** Tag name of the unmatched element ("strike" | "s" | "del" | styled element's tag). */
+  tagName: string;
+  /** The ambiguous span's plain text, as it appears in the document text ("" when it carried no text). */
+  text: string;
+  /** Offsets into ParsedDocument.fullText; -1 when the span text could not be located verbatim. */
+  start: number;
+  end: number;
+}
+
 export interface ParsedDocument {
   pages: ParsedPage[];
   /** pages' text joined with "\n\n" - what lib/extraction/chunk.ts actually segments. */
   fullText: string;
+  /** Redline-ambiguous spans found during HTML extraction (HTML inputs only). */
+  redlineAmbiguities?: RedlineAmbiguity[];
 }
 
 const PDF_CONTENT_TYPES = new Set(["application/pdf"]);
@@ -80,14 +108,11 @@ function decodeHtmlEntities(text: string): string {
 }
 
 function stripHtmlToText(html: string): string {
-  const withoutNonContent = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
-  // Blackline/amendment exhibits mark DELETED text with <strike>, <s> or
-  // <del>. Struck text is not operative: keeping it made the engine
-  // compute a deleted basket cap as if it were live (Grok
-  // independent accuracy check, 2026-10-17). Drop the element AND its
-  // contents before tag stripping, like script/style above.
-  const withoutStruck = withoutNonContent.replace(/<(strike|s|del)\b[^>]*>[\s\S]*?<\/\1>/gi, " ");
-  const withBreaks = withoutStruck.replace(/<\/(p|div|tr|h[1-6]|li|br)>/gi, "\n").replace(/<br\s*\/?>/gi, "\n");
+  // Callers pass HTML whose script/style blocks and struck elements
+  // are already handled (parseHtml, via html-hardening): this stage
+  // only turns block structure into line breaks and strips the
+  // remaining tags.
+  const withBreaks = html.replace(/<\/(p|div|tr|h[1-6]|li|br)>/gi, "\n").replace(/<br\s*\/?>/gi, "\n");
   const stripped = withBreaks.replace(/<[^>]+>/g, " ");
   const decoded = decodeHtmlEntities(stripped);
   return decoded
@@ -99,8 +124,43 @@ function stripHtmlToText(html: string): string {
 }
 
 function parseHtml(data: Buffer): ParsedDocument {
-  const pages: ParsedPage[] = [{ pageNumber: 1, text: stripHtmlToText(data.toString("utf-8")) }];
-  return { pages, fullText: joinPages(pages) };
+  const rawHtml = data.toString("utf-8");
+  const withoutNonContent = rawHtml.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
+  // Blackline/amendment exhibits mark DELETED text with <strike>, <s>,
+  // <del> or a line-through style. Struck text is not operative:
+  // keeping it made the engine compute a deleted basket cap as if it
+  // were live (Grok independent accuracy check, 2026-10-17; PR #427
+  // dropped matched elements with a regex). analyzeStruckHtml drops
+  // every PROPERLY MATCHED struck element (balanced closes, styled
+  // elements included — the #427 regex handled neither nesting nor
+  // styles) and RECORDS each unmatched one: its span stays in the
+  // text as evidence, flagged ambiguous, instead of passing as
+  // clean operative text.
+  const { html: withoutStruck, unmatched } = analyzeStruckHtml(withoutNonContent);
+  const text = stripHtmlToText(withoutStruck);
+  const pages: ParsedPage[] = [{ pageNumber: 1, text }];
+  const fullText = joinPages(pages);
+  // Record every unmatched struck element's span in fullText
+  // coordinates. The span text is produced by running the span's own
+  // HTML fragment through the same strip pipeline, then located in
+  // the document text; when it cannot be located verbatim the record
+  // keeps the text with start/end = -1 (consumers fall back to text
+  // containment — the uncertainty is never dropped).
+  const redlineAmbiguities: RedlineAmbiguity[] = unmatched.map((span) => {
+    const spanText = stripHtmlToText(withoutStruck.slice(span.htmlStart, span.htmlEnd));
+    if (!spanText) {
+      return { reason: "UNMATCHED_REDLINE_ELEMENT" as const, tagName: span.tagName, text: "", start: fullText.length, end: fullText.length };
+    }
+    const located = locateTextSpan(fullText, spanText);
+    return {
+      reason: "UNMATCHED_REDLINE_ELEMENT" as const,
+      tagName: span.tagName,
+      text: spanText,
+      start: located?.start ?? -1,
+      end: located?.end ?? -1,
+    };
+  });
+  return { pages, fullText, redlineAmbiguities };
 }
 
 function joinPages(pages: ParsedPage[]): string {

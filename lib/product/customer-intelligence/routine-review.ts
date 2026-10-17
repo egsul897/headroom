@@ -65,6 +65,12 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
   // would certify an invented or uncertain structural
   // relationship as a SYSTEM decision with no human review.
   if (item.structuralUnresolved === true) return false;
+  // Redline port (from PR #428): a redline-ambiguous item (its text
+  // intersects a span following an unmatched struck-through element
+  // — possibly text the parties deleted) is NEVER routine, for the
+  // same reason: auto-accepting it would certify possibly-deleted
+  // text as a SYSTEM decision with no human review.
+  if (item.redlineAmbiguous === true) return false;
   // Formula representation (step 3): a section stem is never
   // routine. Its "decision" has no capacity effect of its own —
   // the section's operative clauses are separate items and are

@@ -37,6 +37,34 @@ export interface ParsedFormula {
 }
 
 export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
+  // Redline port (from PR #428), the Rule 192 pattern applied to
+  // redline ambiguity: the item's text intersects a span following
+  // an unmatched struck-through (redline deletion) element, so the
+  // span may be text the parties deleted. A formula parsed from it
+  // would mint contractual authority from possibly-deleted text.
+  // Fail closed: no formula from a redline-ambiguous item. EDITED
+  // items are exempt — counsel supplied the controlling text, so
+  // the ambiguous extraction is not what the formula parses.
+  // Placement (release-line adaptation): this gate precedes BOTH
+  // pre-scan branches below — the section-stem branch can price a
+  // stem's own text and the Rule 192 branch can resolve reference
+  // legs — because neither may mint from redline-ambiguous text
+  // either. On the #428 tree the gate sat after the truncated
+  // check, which was that tree's first branch; the invariant is
+  // the same: the gate precedes every minting path.
+  if (item.redlineAmbiguous && item.reviewerDecision !== "EDITED") {
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: 0,
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        "Redline ambiguity: this provision's text intersects a span following an unmatched struck-through (redline deletion) element — the span may be deleted text. No formula minted from redline-ambiguous text.",
+      ],
+      modelingStatus: "KNOWN_NOT_MODELED",
+      missingFields: ["thresholdValue", "formulaType", "redlineAmbiguous"],
+    };
+  }
   // Formula representation (step 3): a section stem whose operative
   // sub-clauses are separately present as items is determinate as
   // a stem — its clauses carry the terms with per-clause
