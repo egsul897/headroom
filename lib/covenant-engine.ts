@@ -243,6 +243,18 @@ export interface DocumentInput {
   name: string;
   type: DocumentType;
   governs?: string | null;
+  /**
+   * True when this document's analysis carries restriction-bearing
+   * summary items (baskets / conditions / permissions) with no
+   * reviewer decision yet. An AMENDMENT with unresolved restrictions
+   * must not be skipped by Fix 8 — its effect is unknown, so the
+   * package capacity stays NOT_DETERMINABLE (fail-closed) until
+   * counsel reviews those items. Computed by
+   * loadCompanyCovenantData from the KnowledgeSource metadata.
+   * Absent (unknown) is treated as unresolved by
+   * isNonCapacityAmendment only for AMENDMENT documents.
+   */
+  hasUnresolvedRestrictions?: boolean;
   capacityFormulas?: CapacityFormulas | null;
   rpWaterfall?: RpWaterfallConfig | null;
   assetSale?: AssetSaleConfig | null;
@@ -621,6 +633,8 @@ export interface DocumentCapacityResult {
   documentName: string;
   /** The Document row's declared type — drives Fix 8's amendment skip. */
   documentType: DocumentType;
+  /** Mirrors DocumentInput.hasUnresolvedRestrictions for the position. */
+  hasUnresolvedRestrictions: boolean;
 
   securedStatus: EvaluationStatus;
   securedCapacity?: number;
@@ -694,7 +708,48 @@ export interface CovenantPosition {
  * never skips (fail-closed).
  */
 export function isNonCapacityAmendment(d: DocumentCapacityResult): boolean {
+  // An amendment with unresolved restrictions is never a
+  // non-capacity amendment: its effect is unknown, so excluding it
+  // would silently drop restrictions that may tighten the base.
+  // It stays in the aggregation as NOT_DETERMINABLE (fail-closed)
+  // until counsel reviews its restriction-bearing items.
+  if (d.hasUnresolvedRestrictions) return false;
   return d.documentType === "AMENDMENT" && d.securedStatus !== "modeled" && d.unsecuredStatus !== "modeled";
+}
+
+/**
+ * Pure helper for the Issue 5 flag: does this analysis carry a
+ * restriction-bearing summary item with no reviewer decision?
+ * Restriction-bearing = has a basket/threshold, a condition/
+ * proviso, or a permission string — the signals that the item may
+ * constrain capacity. A pure boilerplate item (none of these) is
+ * not a restriction. Decisions match on (sectionRef, category)
+ * (Fix 6 isolation); a decision for another category does not
+ * resolve this item.
+ */
+export function hasUnresolvedRestrictionsForSource(
+  items: Array<{
+    sectionRef: string;
+    category: string;
+    materialBasketsThresholds?: unknown;
+    conditions?: unknown;
+    permissions?: unknown;
+  }>,
+  approvals: Array<{ sectionRef?: unknown; category?: unknown }>,
+): boolean {
+  const decided = new Set(
+    approvals
+      .filter((a) => typeof a.sectionRef === "string")
+      .map((a) => `${a.sectionRef as string}::${typeof a.category === "string" ? a.category : ""}`),
+  );
+  return items.some((item) => {
+    const restrictionBearing =
+      (Array.isArray(item.materialBasketsThresholds) && item.materialBasketsThresholds.length > 0) ||
+      (Array.isArray(item.conditions) && item.conditions.length > 0) ||
+      (Array.isArray(item.permissions) && item.permissions.length > 0);
+    if (!restrictionBearing) return false;
+    return !decided.has(`${item.sectionRef}::${item.category ?? ""}`);
+  });
 }
 
 function combineCrossDocument(documents: DocumentCapacityResult[], side: "secured" | "unsecured"): CrossDocumentCapacity {
@@ -749,19 +804,29 @@ export function computeCovenantPosition(data: CompanyCovenantData): CovenantPosi
     const secured = evaluateDocumentSide(doc.capacityFormulas?.secured, scoped, "secured", doc.name);
     const unsecured = evaluateDocumentSide(doc.capacityFormulas?.unsecured, scoped, "unsecured", doc.name);
 
+    // An amendment with unresolved restrictions keeps its
+    // NOT_DETERMINABLE reasons honest: the exclusion is not
+    // trusted until counsel reviews the restriction-bearing
+    // items, so the reason must say why the document is not
+    // contributing capacity.
+    const unresolvedNote =
+      doc.type === "AMENDMENT" && doc.hasUnresolvedRestrictions
+        ? " Amendment has unresolved restrictions (restriction-bearing summary items with no reviewer decision) — counsel review required before its exclusion can be trusted."
+        : "";
     return {
       documentId: doc.id,
       documentName: doc.name,
       documentType: doc.type,
+      hasUnresolvedRestrictions: doc.hasUnresolvedRestrictions ?? false,
       securedStatus: secured.status,
       securedCapacity: secured.capacity,
-      securedReason: secured.reason,
+      securedReason: `${secured.reason ?? ""}${unresolvedNote}`.trim() || undefined,
       securedBindingCode: secured.bindingCode,
       securedBindingProvision: secured.bindingProvision,
       securedLabeledSubtotals: secured.labeled,
       unsecuredStatus: unsecured.status,
       unsecuredCapacity: unsecured.capacity,
-      unsecuredReason: unsecured.reason,
+      unsecuredReason: `${unsecured.reason ?? ""}${unresolvedNote}`.trim() || undefined,
       unsecuredBindingCode: unsecured.bindingCode,
       unsecuredBindingProvision: unsecured.bindingProvision,
       unsecuredLabeledSubtotals: unsecured.labeled,
@@ -1170,7 +1235,20 @@ export function runSolverForDocument(
     collateralScopes: ctx.collateralScopes.filter((s) => eligibleIds.has(s.permissionId)),
     ruleActivationConditions: ctx.ruleActivationConditions,
     financials: fin,
-    ratioProvisions: ctx.ratioProvisions.filter((r) => r.documentId === documentId),
+    // Cross-document ratios (company-level, matching Rule 190's legacy
+    // ceiling): a maintenance ratio in ANY document of the package
+    // constrains TOTAL debt, so it caps every document's solver-native
+    // capacity — not just its own document's. The previous per-document
+    // filter silently dropped a ratio carried by a document with no
+    // modeled debt baskets of its own (e.g. an amendment that
+    // tightens the leverage ratio, or a ratio-only schedule), so the
+    // package's solver-native capacity ignored it. Ratios are
+    // evaluated against company financials (total debt), so applying
+    // all of them here is the same company-level semantics the
+    // legacy ceiling already uses. Over-application (a
+    // subsidiary-scoped ratio capping an unrelated document) can
+    // only understate capacity, never overstate it — fail-closed.
+    ratioProvisions: ctx.ratioProvisions,
     transaction: buildLiveTransaction(amount, secured, ctx),
     entityClasses: ctx.entityClasses,
     activationState: ctx.activationState,
@@ -1886,6 +1964,8 @@ export interface CovenantEnginePrismaClient {
   ledgerEntry: { findMany(args: any): Promise<DbLedgerRow[]> };
   /** Optional: used to resolve Consolidated Total Assets for Total-Assets growers. */
   financialState?: { findMany(args: any): Promise<Array<{ asOfDate: Date; balanceSheetFacts: unknown }>> };
+  /** Optional: used to compute hasUnresolvedRestrictions per document (Issue 5). */
+  knowledgeSource?: { findMany(args: any): Promise<Array<{ documentId: string | null; sourceId: string; metadata: unknown }>> };
 }
 
 interface DecimalLike {
@@ -1965,7 +2045,7 @@ export async function loadCompanyCovenantData(
   asOfDate: Date = new Date()
 ): Promise<CompanyCovenantData> {
   const dateFilter = effectiveDateFilter(asOfDate);
-  const [documents, provisions, snapshotResolution, ledger, financialStates] = await Promise.all([
+  const [documents, provisions, snapshotResolution, ledger, financialStates, knowledgeSources] = await Promise.all([
     prisma.document.findMany({ where: { companyId, ...dateFilter } }),
     prisma.covenantProvision.findMany({ where: { companyId, ...dateFilter } }),
     resolveCanonicalFinancialIdentity<DbSnapshotRow>(
@@ -1983,6 +2063,9 @@ export async function loadCompanyCovenantData(
           take: 5,
         })
       : Promise.resolve([] as Array<{ asOfDate: Date; balanceSheetFacts: unknown }>),
+    prisma.knowledgeSource
+      ? prisma.knowledgeSource.findMany({ where: { companyId } })
+      : Promise.resolve([] as Array<{ documentId: string | null; sourceId: string; metadata: unknown }>),
   ]);
 
   if (snapshotResolution.status === "AMBIGUOUS") {
@@ -1999,6 +2082,37 @@ export async function loadCompanyCovenantData(
   const totalAssets = extractTotalAssetsFromStates(financialStates);
   const netWorth = extractNetWorthFromStates(financialStates);
 
+  // Issue 5: per-document unresolved-restrictions flag, from the
+  // KnowledgeSource metadata (summary items + reviewer decisions).
+  // Per analysis row (a document's rows share its documentId but
+  // carry distinct sourceIds; decisions are per-source, so match
+  // approvals to items within the same row). A document with no
+  // KnowledgeSource row has no analysis — its restrictions are
+  // unknown, so the flag is true (fail-closed: an amendment with
+  // no analysis is never silently skipped).
+  const unresolvedByDocumentId = new Map<string, boolean>();
+  for (const row of knowledgeSources) {
+    if (!row.documentId) continue;
+    const meta =
+      row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+        ? (row.metadata as Record<string, unknown>)
+        : {};
+    const summary = meta.covenantSummary as { items?: Array<Record<string, unknown>> } | undefined;
+    const items = (Array.isArray(summary?.items) ? summary.items : []).map((i) => ({
+      sectionRef: typeof i.sectionRef === "string" ? i.sectionRef : "",
+      category: typeof i.category === "string" ? i.category : "",
+      materialBasketsThresholds: i.materialBasketsThresholds,
+      conditions: i.conditions,
+      permissions: i.permissions,
+    }));
+    const approvals = (Array.isArray(meta.reviewerApprovals) ? meta.reviewerApprovals : []).filter(
+      (a): a is { sectionRef?: unknown; category?: unknown } =>
+        !!a && typeof a === "object" && (a as { sourceId?: unknown }).sourceId === row.sourceId,
+    );
+    const unresolved = hasUnresolvedRestrictionsForSource(items, approvals as never);
+    unresolvedByDocumentId.set(row.documentId, (unresolvedByDocumentId.get(row.documentId) ?? false) || unresolved);
+  }
+
   return {
     companyId,
     documents: documents.map((d) => ({
@@ -2006,6 +2120,8 @@ export async function loadCompanyCovenantData(
       name: d.name,
       type: d.type,
       governs: d.governs,
+      // No KnowledgeSource row = no analysis = restrictions unknown.
+      hasUnresolvedRestrictions: unresolvedByDocumentId.get(d.id) ?? true,
       capacityFormulas: d.capacityFormulas as CapacityFormulas | null,
       rpWaterfall: d.rpWaterfall as RpWaterfallConfig | null,
       assetSale: d.assetSale as AssetSaleConfig | null,

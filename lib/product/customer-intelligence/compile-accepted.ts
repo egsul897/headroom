@@ -388,7 +388,7 @@ export async function compileAcceptedInterpretation(params: {
     // Rule 59: the prefix MUST use the same sanitization as
     // permissionCode — a raw prefix never matches codes minted
     // from section refs with parens (e.g. "6.01(a)").
-    const prefix = permissionCodePrefix(params.sourceId, params.sectionRef);
+    const prefix = permissionCodePrefix(params.sourceId, params.sectionRef, params.category);
     const existing = await prisma.permission.findMany({
       where: { companyId: params.companyId, code: { startsWith: prefix } },
     });
@@ -422,13 +422,20 @@ export async function compileAcceptedInterpretation(params: {
     // Rule 177: a rejected section's dual-grant link dies with its
     // Permissions (both endpoints are superseded above; the link
     // would never be traversed, but leaving it is stale state).
-    await prisma.permissionRelationship.deleteMany({
-      where: {
-        companyId: params.companyId,
-        sourceSectionRef: params.sectionRef,
-        relationshipType: "AUTOMATIC_LINKED_PERMISSION",
-      },
-    });
+    // Delete by the superseded Permissions' ids, NOT by bare
+    // sectionRef: two items can share a ref (different categories)
+    // with their own dual-grant links, and a ref-wide delete would
+    // kill the other item's link (counsel-review isolation).
+    if (existing.length) {
+      const supersededIds = existing.map((p) => p.id);
+      await prisma.permissionRelationship.deleteMany({
+        where: {
+          companyId: params.companyId,
+          relationshipType: "AUTOMATIC_LINKED_PERMISSION",
+          OR: [{ fromPermissionId: { in: supersededIds } }, { toPermissionId: { in: supersededIds } }],
+        },
+      });
+    }
     // Rule 180: a rejected section's maintenance ratio provision
     // is superseded too (it has no Permission, so the loop above
     // never touches it — without this a rejected ratio test would
@@ -436,7 +443,7 @@ export async function compileAcceptedInterpretation(params: {
     await prisma.covenantProvision.updateMany({
       where: {
         companyId: params.companyId,
-        code: permissionCode(params.sourceId, params.sectionRef, "RATIO"),
+        code: permissionCode(params.sourceId, params.sectionRef, "RATIO", params.category),
         effectiveTo: null,
       },
       data: { effectiveTo: now },
@@ -496,7 +503,7 @@ export async function compileAcceptedInterpretation(params: {
           },
         ];
       }
-      const ratioCode = permissionCode(params.sourceId, params.sectionRef, "RATIO");
+      const ratioCode = permissionCode(params.sourceId, params.sectionRef, "RATIO", params.category);
       const existingRatio = await prisma.covenantProvision.findFirst({
         where: { companyId: params.companyId, documentId, code: ratioCode, effectiveTo: null },
       });
@@ -574,7 +581,7 @@ export async function compileAcceptedInterpretation(params: {
   // ruleActivationConditionId: the solver still fails it closed to
   // UNKNOWN, but now with the real condition text in the message.
   for (const grantType of grants) {
-    const code = permissionCode(params.sourceId, params.sectionRef, grantType);
+    const code = permissionCode(params.sourceId, params.sectionRef, grantType, params.category);
     const notes = [
       ...parsed.notes,
       `Counsel ${params.decision} ${new Date().toISOString()}`,
@@ -895,8 +902,26 @@ async function supersedeCounselPermissionsOnAmendedDocs(
 
 /** Pure helper for tests — parse without DB. */
 /** Rule 206: true when a condition text merely restates the modeled cap. */
+/**
+ * Independent (non-monetary) requirements that must never be
+ * dropped as "cap restatements": a condition that ALSO carries one
+ * of these is not a pure cap restatement, even if it names the
+ * Permission's own cap amount. The condition extractor emits one
+ * string per proviso window (up to 280 chars), so a mixed proviso
+ * ("provided that no Default has occurred and the aggregate amount
+ * shall not exceed $5,000,000") arrives as a single condition —
+ * dropping it would silently delete the no-default requirement.
+ * Fail-closed: any independent-requirement signal keeps the whole
+ * condition (it stays UNKNOWN until counsel resolves it).
+ */
+const INDEPENDENT_REQUIREMENT_RE =
+  /\bno\s+(?:default|event\s+of\s+default)\b|\bpro\s+forma\s+compliance\b|\brepresentation|\bwarrant|\bsolvency|\bsolvent\b|\bno\s+(?:breach|violation)\b|\bcompliance\s+with\s+(?:the\s+)?(?:covenants?|terms|provisions)/i;
+
 export function isCapRestatementCondition(text: string, thresholdValue: number | null): boolean {
   if (thresholdValue == null) return false;
+  // Rule 206 tightening: a mixed condition (cap + an independent
+  // requirement) is not a pure cap restatement — keep it.
+  if (INDEPENDENT_REQUIREMENT_RE.test(text)) return false;
   const capVerb = /\b(?:not\s+exceed(?:ing)?|does\s+not\s+exceed|shall\s+not\s+exceed|up\s+to\s+\$|maximum\b[^.]{0,40}\$|no\s+more\s+than\s+\$|capped\s+at\s+\$)/i.test(text);
   if (!capVerb) return false;
   const amounts = text.match(/\$\s*[\d,]+(?:\.\d+)?/g) ?? [];

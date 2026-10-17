@@ -140,6 +140,41 @@ describe("Rule 185: solver-native ratio tests", () => {
     expect(res.status).toBe("blocked");
     expect(res.solverResult!.constraintsEvaluated.ratioTests[0]!.provisionId).toBe("r1");
   });
+
+  it("cross-document ratios: a ratio in doc-2 caps doc-1's solver-native capacity", async () => {
+    // The genuine gap: runSolverForDocument filtered ratioProvisions
+    // to its own document, so a ratio carried by a document with no
+    // modeled debt baskets of its own (an amendment tightening the
+    // leverage ratio, a ratio-only schedule) silently dropped out of
+    // the package's solver-native capacity. Ratios constrain TOTAL
+    // debt, so they are company-level (matching Rule 190's legacy
+    // ceiling). Doc-1 has a $5000 debt basket (the $1000 sim would
+    // clear on baskets alone); doc-2 carries only the 4.00x leverage
+    // test. (1200 + 1000 - 100) / 500 = 4.2 > 4.00, so the sim
+    // must block on doc-2's ratio.
+    const fakePrisma = {
+      permission: { findMany: async () => [{ id: "p1", documentId: "doc-1", companyId: "co-1", code: "doc-1:6.16:DEBT", grantType: "DEBT_INCURRENCE", amountKind: "FIXED", action: "perm", entityScope: [], formulaType: "FLAT_AMOUNT", thresholdValue: 5000, eligibilityConditions: [], termConditions: [], measurementBasis: "CUMULATIVE_INCURRED", sectionRef: "6.16", definedTermRefs: [], effectiveFrom: null, effectiveTo: null, modelingStatus: "MODELED" }] },
+      permissionRelationship: { findMany: async () => [] },
+      sharedCapacityConstraint: { findMany: async () => [] },
+      sharedCapacityConstraintMember: { findMany: async () => [] },
+      permissionCollateralScope: { findMany: async () => [] },
+      ruleActivationCondition: { findMany: async () => [] },
+      solverCoverageDeclaration: { findMany: async () => [] },
+      covenantProvision: {
+        findMany: async () => [{ id: "r2", documentId: "doc-2", code: "doc-2:6.14:RATIO", basketName: "Leverage (maintenance)", sectionRef: "6.14", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 4.0, params: { debtBasis: "total" }, notes: null }],
+      },
+    };
+    const staticData: SolverNativeStaticData = await loadCompanySolverStaticData(fakePrisma as never, "co-1", new Date("2026-10-16"));
+    expect(staticData.ratioProvisions).toHaveLength(1);
+    expect(staticData.ratioProvisions[0]!.documentId).toBe("doc-2");
+    const ctx = toSolverNativeCompanyContext({
+      staticData, activationState, asOfDate: new Date("2026-10-16"), entityClasses: [],
+      incurringEntity: { id: "borrower", name: "Borrower" }, guarantorStatus: "GUARANTOR", collateralPools: [], requestedLienPriority: [],
+    });
+    const res = runSolverForDocument("doc-1", "doc", FIN, 1000, false, ctx, { status: "SOLVER_NATIVE", reason: "test", permissions: [{ id: "p1", modelingStatus: "MODELED" }] } as never);
+    expect(res.status).toBe("blocked");
+    expect(res.solverResult!.constraintsEvaluated.ratioTests[0]!.provisionId).toBe("r2");
+  });
 });
 
 describe("Rule 189: maximumCapacity is capped by the maintenance-ratio ceiling", () => {

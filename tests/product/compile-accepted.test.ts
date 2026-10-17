@@ -249,6 +249,28 @@ describe("Rule 206: a condition that restates the modeled cap is not an eligibil
     ).toBe(false);
   });
 
+  it("keeps a MIXED proviso (no-default + the cap amount) — the independent requirement is not a cap restatement", () => {
+    // The genuine gap: the condition extractor emits one string per
+    // proviso window, so a mixed proviso arrives as a single
+    // condition. Dropping it would silently delete the no-default
+    // requirement along with the redundant cap language.
+    expect(
+      isCapRestatementCondition(
+        "provided_that: provided that no Default or Event of Default has occurred and is continuing and the aggregate amount of all such Indebtedness shall not exceed $5,000,000",
+        5,
+      ),
+    ).toBe(false);
+  });
+
+  it("keeps a MIXED proviso (pro forma compliance + the cap amount)", () => {
+    expect(
+      isCapRestatementCondition(
+        "provided_that: provided that the Borrower shall be in pro forma compliance with the financial covenants and the aggregate amount shall not exceed $5,000,000",
+        5,
+      ),
+    ).toBe(false);
+  });
+
   it("keeps a proviso naming a DIFFERENT amount than the threshold", () => {
     expect(
       isCapRestatementCondition("provided that the aggregate amount shall not exceed $10,000,000", 5),

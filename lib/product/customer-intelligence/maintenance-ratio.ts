@@ -54,7 +54,21 @@ export function parseMaintenanceRatio(item: CovenantSummaryItem): MaintenanceRat
 
   // The full text must agree: a ratio the baskets missed (or a
   // second ratio outside the baskets) means the item is not the
-  // single clean test this rule requires.
+  // single clean test this rule requires. parseRatio returns only
+  // the FIRST ratio, so a stepped schedule whose baskets list one
+  // threshold (e.g. the analyzer captured only the first leg,
+  // "4.50 to 1.00", while the text also carries "4.25 to 1.00",
+  // "4.00 to 1.00") would pass that check and compile flat at the
+  // first leg — silently testing the wrong threshold for every
+  // other period. Count EVERY distinct ratio in the text instead:
+  // more than one distinct value is a stepped schedule (or an
+  // ambiguous item) and must not compile to a single flat test.
+  // A single-test item that merely mentions a second ratio in
+  // passing is genuinely ambiguous for single-threshold
+  // compilation, so fail-closed (null — counsel splits it) is the
+  // correct outcome for it too.
+  const allRatios = [...new Set([...text.matchAll(/(\d+(?:\.\d+)?)\s*(?:to|:)\s*1(?:\.0+)?/gi)].map((m) => Number(m[1])))].filter(Number.isFinite);
+  if (allRatios.length !== 1 || allRatios[0] !== threshold) return null;
   if (parseRatio(text) !== threshold) return null;
 
   const coverageWords = /\binterest coverage\b|\bfixed charge coverage\b|\bEBITDA to\b.{0,40}\binterest\b|\bcoverage ratio\b/i.test(text);

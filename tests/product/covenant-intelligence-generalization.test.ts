@@ -765,6 +765,24 @@ describe("generalization: rule 180 — maintenance ratio provisions", () => {
     ).toBeNull();
   });
 
+  it("refuses a stepped schedule even when the baskets list only the first leg", async () => {
+    // The genuine gap: parseRatio returned only the FIRST ratio, so a
+    // stepped schedule whose baskets captured one threshold passed the
+    // agreement check and compiled flat at the first leg. The text
+    // carries all three legs, so the all-ratios check must refuse it.
+    const { parseMaintenanceRatio } = await import(
+      "../../lib/product/customer-intelligence/maintenance-ratio"
+    );
+    expect(
+      parseMaintenanceRatio(
+        ratioItem(
+          "Leverage Ratio shall not exceed 4.75 to 1.00, then 4.50 to 1.00, then 4.25 to 1.00.",
+          ["Ratio threshold: 4.75 to 1.00"],
+        ),
+      ),
+    ).toBeNull();
+  });
+
   it("refuses conflated tests (leverage + coverage in one item)", async () => {
     const { parseMaintenanceRatio } = await import(
       "../../lib/product/customer-intelligence/maintenance-ratio"
