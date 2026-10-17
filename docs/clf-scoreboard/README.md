@@ -63,3 +63,28 @@ whenever `--baseline` is given. Tests: `tests/covenant-learning-factory/scoreboa
 rejected by GitHub: `refusing to allow an OAuth App to create or update workflow .github/workflows/clf-scoreboard-gate.yml
 without workflow scope`. The workflow stays parked in this folder; the gate runs only when invoked locally until a
 token with `workflow` scope installs it and it has run green at the exact PR tip.
+
+## Self-credit guard and the no-learned-rules score (owner directive, 2026-10-17)
+
+Learned PHRASE_PATTERN rules are synthesized from the scoreboard's own precedent items: the pattern is an item's opening
+text and the family is its label. Matching that item again re-finds memorized text, so it is not discovery. The 2026-10-17
+bisect (4878ed02) showed that 2272 of 2316 candidates credited only by learned captures were matched by a rule built from
+that same candidate.
+
+- **Seed provenance** (`scoreboard/rule-seed-provenance.json`, written by `scoreboard/derive-seed-provenance.ts`): for each
+  learned capture rule, the precedent items (candidates, conditions, definitions) whose excerpt *begins with* the rule
+  pattern, and their documents (sourceId and contentSha256). The file is bound to the ruleset sha256 and the
+  whole-snapshot sha256. Regenerate it whenever either changes.
+- **Guard (always on; identity `scorerConfig` ends in `selfCredit=guard-v1`)**: a `learned-*` basket earns no match credit
+  (candidate, definition or condition) in any of its seed documents, or in a byte-identical copy of one. A rule with
+  several seed documents is refused in all of them. Refused baskets still run every sanity check, including
+  UNSUPPORTED_SEMANTICS.
+- **Fail closed**: a capture rule with no derivable seed, or a provenance file that is missing or bound to another
+  ruleset or snapshot, gets no learned credit anywhere. `--neon` mode has no whole-input identity, so it is always
+  unbound. Reports carry `selfCredit.rulesWithoutProvenance`, `selfCredit.unboundReason` and refused counts by split and
+  reason (`SELF_SEEDED`, `NO_PROVENANCE`).
+- **No-learned-rules score**: every source is also scored with an empty ruleset. Each report and merged shard carries
+  `noRulesTotals`, the CLI prints `NO-RULES` lines, and the gate JSON shows `noRules` before and after. It is report-only
+  and never gates; it bounds how much of the number comes from learned rules at all.
+- The sweep, the rule-promotion replay gate and the product never pass the guard, so their behaviour is unchanged.
+  Follow-up: the replay gate (`learned-rules/replay-gate.ts`) still accepts a rule because it re-finds its own seed.
