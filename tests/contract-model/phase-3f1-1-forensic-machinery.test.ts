@@ -125,11 +125,19 @@ describe("Phase 3F.1.1 forensic machinery - historical/production integrity", ()
 
 describe("Phase 3F.1.1 forensic machinery - no Phase 3F.2 package contamination", () => {
   it("no new package directory was created under tests/fixtures/unseen-packages/ beyond the existing DSGR/FWRG/LSB/CONMED fixtures and this phase's own forensic output", () => {
+    // The sanctioned package set is pinned exactly by the seal manifest
+    // (tests/fixtures/unseen-packages.seal.json): the directory must
+    // contain exactly the sealed entries — no additions and no
+    // removals. This replaces the previous prefix allowlist, which was
+    // stale (it predated sanctioned packages such as
+    // an-2020-2026-credit-facility) and admitted any new entry
+    // starting with a known prefix.
+    const seal = JSON.parse(readFileSync("tests/fixtures/unseen-packages.seal.json", "utf8")) as { entries: string[] };
     const entries = readdirSync("tests/fixtures/unseen-packages");
-    const allowedPrefixes = ["conmed-", "dsgr-", "fwrg-", "lsb-", "phase-2f-", "phase-3b-", "phase-3b1-", "phase-3d-", "phase-3e-", "phase-3f-", "phase-3f1-"];
-    for (const entry of entries) {
-      expect(allowedPrefixes.some((p) => entry.startsWith(p)), `unexpected new entry under tests/fixtures/unseen-packages/: ${entry}`).toBe(true);
-    }
+    const unexpected = entries.filter((e) => !seal.entries.includes(e));
+    const missing = seal.entries.filter((e) => !entries.includes(e));
+    expect(unexpected, `unexpected new entries under tests/fixtures/unseen-packages/: ${unexpected.join(", ")}`).toEqual([]);
+    expect(missing, `sealed packages missing from tests/fixtures/unseen-packages/: ${missing.join(", ")}`).toEqual([]);
   });
 });
 

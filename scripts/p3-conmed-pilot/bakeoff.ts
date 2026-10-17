@@ -6,6 +6,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { buildDeterministicStages, sealedPopulation, rehydrateNodeIds, operativeTextFor } from "./pipeline";
 import { dedupExact } from "./dedup";
 import { estimatedCostPerCandidate, isPremiumById, VIABILITY_CEILING_USD_PER_CANDIDATE, PREFERRED_CEILING_USD_PER_CANDIDATE } from "./premium-lock";
@@ -39,7 +40,17 @@ export function capabilityFloor(m: GatewayModel): { ok: boolean; reason: string 
   return { ok: true, reason: null };
 }
 
-export function discoverModels(cataloguePath = "/tmp/claude-0/pilot/models-bakeoff.json"): BakeoffCandidateModel[] {
+/**
+ * Default catalogue / prior-tier-1 inputs: the committed synthetic test
+ * fixtures (the originals were operator scratch files under
+ * /tmp/claude-0/pilot/ and did not survive). CONMED_BAKEOFF_CATALOGUE_PATH
+ * and CONMED_TIER1_PATH point the harness at live operator copies.
+ */
+const FIXTURE_DIR = fileURLToPath(new URL("../../tests/phase-3-conmed-pilot/fixtures/", import.meta.url));
+export const DEFAULT_BAKEOFF_CATALOGUE_PATH = process.env.CONMED_BAKEOFF_CATALOGUE_PATH ?? path.join(FIXTURE_DIR, "models-bakeoff.json");
+export const DEFAULT_TIER1_PATH = process.env.CONMED_TIER1_PATH ?? path.join(FIXTURE_DIR, "03-tier1.json");
+
+export function discoverModels(cataloguePath = DEFAULT_BAKEOFF_CATALOGUE_PATH): BakeoffCandidateModel[] {
   const data = JSON.parse(fs.readFileSync(cataloguePath, "utf8")).data as GatewayModel[];
   return data
     .map((m): BakeoffCandidateModel => {
@@ -111,7 +122,7 @@ export interface ProbeSlot {
   priorOutcome: string;
 }
 
-export function buildProbeSet(priorTier1Path = "/tmp/claude-0/pilot/run/03-tier1.json"): ProbeSlot[] {
+export function buildProbeSet(priorTier1Path = DEFAULT_TIER1_PATH): ProbeSlot[] {
   const stages = buildDeterministicStages();
   const { rehydrated } = rehydrateNodeIds(sealedPopulation().eligible, stages.index);
   const { keep } = dedupExact(rehydrated, (c) => operativeTextFor(c, stages.index));
