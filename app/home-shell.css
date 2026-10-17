@@ -2502,8 +2502,10 @@ button.ebitda-signin-button:disabled:hover {
 }
 
 .home-chart-card .sample-plot svg {
+  display: block;
   width: 100%;
   height: 196px;
+  overflow: visible;
 }
 
 .home-chart-card .sample-legend {
@@ -2519,14 +2521,15 @@ button.ebitda-signin-button:disabled:hover {
 }
 
 .sample-ring-lg {
-  width: 104px;
-  height: 104px;
+  width: 88px;
+  height: 88px;
 }
 
 .sample-ring-lg i {
-  width: 68px;
-  height: 68px;
-  font-size: 12px;
+  width: 56px;
+  height: 56px;
+  font-size: 11px;
+  line-height: 1.15;
 }
 
 .home-capacity {
@@ -2662,10 +2665,22 @@ button.ebitda-signin-button:disabled:hover {
   color: var(--status-stop);
 }
 
+.sample-facilities {
+  width: 100%;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) max-content max-content;
+  column-gap: 8px;
+  align-items: center;
+}
+
 .sample-facilities li {
-  grid-template-columns: 8px minmax(72px, 1fr) 96px 40px;
-  gap: 8px;
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  column-gap: 8px;
   white-space: nowrap;
+  min-width: 0;
 }
 
 .facility-name {
@@ -2676,6 +2691,7 @@ button.ebitda-signin-button:disabled:hover {
 
 .facility-amt,
 .facility-pct {
+  min-width: max-content;
   color: var(--shell-muted);
   font-size: 13px;
   font-weight: 450;
@@ -2737,4 +2753,18 @@ button.ebitda-signin-button:disabled:hover {
 
 .sample-facilities li {
   padding: 6px 0;
+}
+
+.home-kpis > .home-card {
+  container-type: inline-size;
+}
+
+@container (max-width: 190px) {
+  .home-kpis .home-kpi-value,
+  .home-kpis .home-kpi-value-hero,
+  .home-kpis .home-kpi-value-sm,
+  .home-kpi .home-kpi-value,
+  .ebitda-kpi .home-kpi-value {
+    font-size: 26px;
+  }
 }

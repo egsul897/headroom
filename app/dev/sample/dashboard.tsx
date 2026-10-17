@@ -375,8 +375,8 @@ function Plot() {
   const [hover, setHover] = useState<number | null>(null);
   const width = 640;
   const height = 200;
-  const left = 40;
-  const right = 8;
+  const left = 44;
+  const right = 36;
   const top = 10;
   const bottom = 26;
   const innerW = width - left - right;
