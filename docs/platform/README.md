@@ -34,11 +34,11 @@ An empty `HEADROOM_ERROR_DSN` counts as unset and falls through to `SENTRY_DSN`.
 
 ## PR gate
 
-`.github/workflows/pr-gate.yml` is live on this branch (full vitest on the base
-tip vs the PR merged into the base; fails only on new regressions or hidden
-base failures). `docs/platform/pr-gate.workflow.yml` is its next revision,
-waiting for a workflow-scoped push (this branch's token has no `workflow`
-scope). It adds:
+`.github/workflows/pr-gate.yml` is live on this branch since 31cda2de (full vitest
+on the base tip vs the PR merged into the base; fails only on new regressions or
+hidden base failures). `docs/platform/pr-gate.workflow.yml` is a byte-for-byte
+mirror of it under a short header (tests/platform/pr-gate-workflow-doc.test.ts
+fails on drift). Workflow changes need a workflow-scoped push. The gate has:
 
 - **Gate tools from the BASE ref.** `pr-gate-compare.mjs`, `pr-gate-reporter.mjs`,
   `protected-paths.mjs` and `clean-tree.mjs` are read with
@@ -47,9 +47,15 @@ scope). It adds:
   `pr-gate bootstrap` warning. (The workflow file itself still comes from the
   PR under `pull_request`; making it tamper-proof needs a branch-protection
   required workflow, which is a repo setting.)
-- **Protected paths.** Any added/modified/deleted/renamed path matching
-  held-out / holdout / blind / frozen / ground-truth / baseline(s) / sealed / unit-dumps
-  fails the gate unless the PR has the label `owner-approved-protected-paths`.
+- **Protected paths.** Any added/modified/deleted/renamed path that is frozen
+  evidence fails the gate unless the PR has the label `owner-approved-protected-paths`.
+  Evidence is (1) the explicit list `PROTECTED_PATHS` in `protected-paths.mjs`
+  (`tests/contract-model/certified/`, `docs/phase-3-reliability-stratified-certification/`,
+  the scoreboard's baseline/baselines/snapshot/ruleset/fresh-tunable/held-out and other
+  data files), and (2) token rules for held-out / holdout / blind / frozen / ground-truth /
+  baseline(s) / sealed / unit-dump(s): a token directory protects everything under it;
+  a token-named file is protected unless it is source code (.ts/.mjs/.sh/...), which is
+  only listed as a warning (e.g. `scripts/p3-conmed-pilot/recovery-preflight-baseline.ts`).
   The job re-runs on `labeled` / `unlabeled`.
 - **Clean tree.** After the PR test run, `git status --porcelain` must be empty.
   Tests and the scripts they spawn write generated artifacts through
@@ -58,9 +64,9 @@ scope). It adds:
   An intentional regeneration run (plain `npx tsx scripts/...`) still writes the
   committed copy.
 
-### Postgres in the gate (proposed revision)
+### Postgres in the gate
 
-The proposed workflow adds a `postgres:17` service. For each run (base, then PR) a template
+The workflow has a `postgres:17` service. For each run (base, then PR) a template
 database is migrated and seeded from that run's own checkout: `prisma migrate deploy`,
 `prisma/seed.ts`, then `scripts/populate-coherent-financial-core.ts` (coherent's FinancialState,
 re-expressed verbatim from its seeded snapshot). `scripts/platform/pg-workers.mjs` clones the

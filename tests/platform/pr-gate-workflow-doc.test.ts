@@ -5,7 +5,15 @@ import { describe, expect, it } from "vitest";
 const ROOT = path.resolve(__dirname, "../..");
 const doc = fs.readFileSync(path.join(ROOT, "docs/platform/pr-gate.workflow.yml"), "utf8");
 
-describe("docs/platform/pr-gate.workflow.yml (proposed pr-gate revision)", () => {
+describe("docs/platform/pr-gate.workflow.yml (mirror of the live pr-gate workflow)", () => {
+  it("below its header is byte-for-byte the live .github/workflows/pr-gate.yml, and the header says it is the live mirror", () => {
+    const live = fs.readFileSync(path.join(ROOT, ".github/workflows/pr-gate.yml"), "utf8");
+    expect(doc.endsWith(live)).toBe(true);
+    const header = doc.slice(0, doc.length - live.length);
+    expect(header.split("\n").slice(0, -1).every((l) => l.startsWith("#"))).toBe(true);
+    expect(header).toMatch(/Mirror of the LIVE pr-gate workflow/);
+    expect(header).not.toMatch(/proposed|next revision|must copy this file/i);
+  });
   it("is not marked inactive", () => {
     expect(doc).not.toMatch(/NOT ACTIVE/);
   });

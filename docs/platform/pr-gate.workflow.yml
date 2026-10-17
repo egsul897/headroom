@@ -1,14 +1,11 @@
-# Mirror of the pr-gate workflow proposed for .github/workflows/pr-gate.yml.
+# Mirror of the LIVE pr-gate workflow, .github/workflows/pr-gate.yml.
 #
-# The LIVE workflow (.github/workflows/pr-gate.yml, added on this branch by a
-# workflow-scoped push) is the one GitHub runs. This file is the next revision
-# of it: gate tools read from the BASE ref, protected-path label check, and a
-# dirty-tree check after the PR test run. The branch's pushing token has no
-# `workflow` scope, so a workflow-scoped push must copy this file to
-# .github/workflows/pr-gate.yml verbatim (everything below this header block).
-# tests/platform/pr-gate-workflow-doc.test.ts keeps the two in sync on the
-# parts that matter until that copy lands.
-#
+# The workflow landed on this branch in 31cda2de (workflow-scoped push by the
+# cloud agent); that file is the one GitHub runs. Everything below this header
+# block is a byte-for-byte copy of it, kept here so the gate is reviewable and
+# testable from docs. tests/platform/pr-gate-workflow-doc.test.ts fails if the
+# two drift. A change to the gate is made in .github/workflows/pr-gate.yml
+# (workflow-scoped push) and copied here in the same PR.
 # Every pull_request. No path filters. No secrets.
 #
 # canonical-compiler only runs typecheck for a path list, so a PR that
@@ -29,7 +26,7 @@
 # taken from the PR with a bootstrap warning.
 #
 # The job also fails when:
-#   - the PR touches held-out / blind / baseline / frozen / ground-truth / sealed
+#   - the PR touches held-out / blind / baseline / frozen / ground-truth / sealed / unit-dumps
 #     paths without the owner label "owner-approved-protected-paths";
 #   - the test run on the PR leaves `git status --porcelain` non-empty (a test
 #     rewrote a committed file or left output in the repo).
