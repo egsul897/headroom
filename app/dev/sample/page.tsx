@@ -32,7 +32,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
   const teal = searchParams.teal === "1" || searchParams.teal === "2" || searchParams.teal === "3" ? searchParams.teal : undefined;
   const light = searchParams.light === "a" || searchParams.light === "b" || searchParams.light === "c" ? searchParams.light : undefined;
   const palette = searchParams.palette === "1" || searchParams.palette === "2" || searchParams.palette === "3" || searchParams.palette === "4" ? searchParams.palette : undefined;
-  const viz = searchParams.viz === "A" || searchParams.viz === "B" || searchParams.viz === "C" ? searchParams.viz : undefined;
+  const viz = searchParams.viz === "A" || searchParams.viz === "B" || searchParams.viz === "C" || searchParams.viz === "D" || searchParams.viz === "E" || searchParams.viz === "F" ? searchParams.viz : undefined;
 
   if (screen === "portfolio") {
     return (

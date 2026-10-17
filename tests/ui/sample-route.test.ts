@@ -28,10 +28,11 @@ describe("dev sample route", () => {
     expect(page).toContain('searchParams.viz === "A"');
     const vizCss = source("app/dev/sample/viz.css");
     const vizTs = source("app/dev/sample/viz.ts");
-    for (const id of ["A", "B", "C"]) {
+    for (const id of ["A", "B", "C", "D", "E", "F"]) {
       expect(vizCss).toContain(`[data-viz="${id}"]`);
     }
-    for (const hex of ["#588cad", "#9a835d", "#918a85", "#886f89", "#9d7267", "#497e91", "#978d7d", "#608e91", "#926c7d", "#7f766c", "#4e7e8d", "#ae7a67", "#73787c", "#75939e", "#778b7c"]) {
+    expect(page).toContain('searchParams.viz === "F"');
+    for (const hex of ["#588cad", "#9a835d", "#918a85", "#886f89", "#9d7267", "#497e91", "#978d7d", "#608e91", "#926c7d", "#7f766c", "#4e7e8d", "#ae7a67", "#73787c", "#75939e", "#778b7c", "#98627b", "#a98094", "#bd9daf", "#9b8261", "#c9aec1", "#9a687f", "#9e8564", "#bbaea3", "#61869d", "#d2b3c2", "#aa7a7a", "#bea88b", "#868d8f", "#cdadbb"]) {
       expect(vizCss).toContain(hex);
       expect(vizTs).toContain(hex);
     }
