@@ -5,7 +5,7 @@
 
 import { createHash } from "node:crypto";
 import { execSync } from "node:child_process";
-import { mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import {
   compileFrozenDebtPackage,
@@ -15,7 +15,6 @@ import { evaluateCompileIndependently } from "./evaluation";
 import { proposeBoundedImprovements } from "./improvement-loop";
 import { loadPackageDocuments } from "./package-registry";
 import { defaultHonestyClaims, assertAutomatedKnowledgeState } from "./promotion-guards";
-import { artifactPath, isTestRun } from "../platform/artifact-output";
 import { LearningFileStore } from "./store/file-store";
 import { persistPackageManifestToNeon } from "./store/neon-store";
 import {
@@ -79,19 +78,44 @@ export interface ProcessPackageOptions {
 /** Cohorts whose committed artifacts are frozen: never regenerated in place. */
 export const PROTECTED_COHORTS: ReadonlySet<string> = new Set(["HELD_OUT", "BLIND"]);
 export const COMMITTED_UNIT_DUMP_DIR = "docs/covenant-learning-factory/unit-dumps";
+/** Cohort label normalized for comparison: case, whitespace, '_' and '-' ignored ("held out", "Held-Out" → "HELDOUT"). */
+const cohortKey = (c: unknown) => String(c ?? "").trim().toUpperCase().replace(/[\s_-]+/g, "");
+/** Only these cohorts may write into the committed dump directory; anything else (HELD_OUT, BLIND, unknown) may not. */
+const WRITABLE_COMMITTED_COHORTS: ReadonlySet<string> = new Set(["TRAINDEV"]);
+const SAFE_PACKAGE_KEY = /^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$/;
+
+/** realpath of the nearest existing ancestor of `p`, with the not-yet-existing remainder appended, so a symlinked
+ *  directory (or a symlinked dump file) anywhere on the path cannot hide where a write really lands. */
+function realish(p: string): string {
+  let cur = path.resolve(p);
+  const rest: string[] = [];
+  for (;;) {
+    try { return path.join(realpathSync(cur), ...rest); } catch {
+      const parent = path.dirname(cur);
+      if (parent === cur) return path.join(cur, ...rest);
+      rest.unshift(path.basename(cur));
+      cur = parent;
+    }
+  }
+}
 
 /**
  * Where the unit dump for `spec` goes, or null to skip it. Default: the committed dump directory under `repoRoot`.
- * A protected cohort (HELD_OUT/BLIND) is refused anywhere inside the committed dump directory, whether by default or by an
- * explicit unitDumpDir that resolves there; it is written only to an explicit directory elsewhere (e.g. a temp dir).
+ * Only TRAIN_DEV packages may write into the committed dump directory. HELD_OUT, BLIND or any unrecognised cohort is
+ * refused there, by default or through an explicit unitDumpDir. Paths are compared after resolving symlinks. Cohort
+ * labels are normalized (case, whitespace, '_' and '-'). A packageKey that is not a plain file-name token ('../x', '/x',
+ * 'a/b') throws.
  */
 export function unitDumpTarget(spec: Pick<LearningPackageSpec, "packageKey" | "cohort">, repoRoot: string, unitDumpDir?: string | null): string | null {
+  if (typeof spec.packageKey !== "string" || !SAFE_PACKAGE_KEY.test(spec.packageKey) || spec.packageKey.includes("..")) {
+    throw new Error(`unsafe packageKey for a unit dump: ${JSON.stringify(String(spec.packageKey).slice(0, 80))}`);
+  }
   if (unitDumpDir === null) return null;
-  const committed = path.resolve(repoRoot, COMMITTED_UNIT_DUMP_DIR);
-  const dir = path.resolve(unitDumpDir ?? committed);
-  const target = path.join(dir, `${spec.packageKey}.units.json`);
-  const inCommitted = target === committed || target.startsWith(committed + path.sep);
-  if (PROTECTED_COHORTS.has(String(spec.cohort)) && inCommitted) return null;
+  const committed = realish(path.resolve(repoRoot, COMMITTED_UNIT_DUMP_DIR));
+  const target = path.join(path.resolve(unitDumpDir ?? path.resolve(repoRoot, COMMITTED_UNIT_DUMP_DIR)), `${spec.packageKey}.units.json`);
+  const real = realish(target);
+  const inCommitted = real === committed || real.startsWith(committed + path.sep);
+  if (inCommitted && !WRITABLE_COMMITTED_COHORTS.has(cohortKey(spec.cohort))) return null;
   return target;
 }
 
@@ -276,10 +300,7 @@ export async function processLearningPackage(
 
     // Persist unit dump for refusal audits. HELD_OUT dumps are never written into the committed dump directory (the
     // held-out evidence is frozen); see unitDumpTarget.
-    // Under a test runner the default goes to the temp artifact dir (lib/platform/artifact-output), so a test run never
-    // rewrites ANY committed dump (held-out or not); an explicit unitDumpDir (or null) is honoured as given.
-    const dumpDir = options.unitDumpDir !== undefined ? options.unitDumpDir : isTestRun() ? artifactPath(repoRoot, COMMITTED_UNIT_DUMP_DIR) : undefined;
-    const dumpPath = unitDumpTarget(spec, repoRoot, dumpDir);
+    const dumpPath = unitDumpTarget(spec, repoRoot, options.unitDumpDir);
     if (dumpPath) mkdirSync(path.dirname(dumpPath), { recursive: true });
     if (dumpPath) writeFileSync(
       dumpPath,
