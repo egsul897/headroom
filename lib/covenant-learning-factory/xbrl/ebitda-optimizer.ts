@@ -13,8 +13,9 @@
  */
 import { borrowerInput, type IssuerFinancials } from "./companyfacts";
 import { solveCapLp } from "./cap-lp";
-import { CAP_ADVERB } from "./cap-verb";
-import { CAPPED, COST_LIKE, HEADER, QUALIFIED, STOP, TWO_SIDED, definitionSegments, markers, evaluateDefinition, mapEbitdaItem, type DefinitionEvaluation } from "./definition-items";
+import { CAP_ADVERB, IN_NO_EVENT, isInNoEventSubject } from "./cap-verb";
+import { nonUsdCurrency } from "@/lib/contract-model/covenant-computation/currency";
+import { CAPPED, COST_LIKE, HEADER, labelStyle, QUALIFIED, STOP, TWO_SIDED, definitionSegments, markers, evaluateDefinition, mapEbitdaItem, type DefinitionEvaluation } from "./definition-items";
 
 export type AddBackCategory = "INTEREST" | "TAXES" | "D&A" | "STOCK_COMP" | "IMPAIRMENT" | "RESTRUCTURING" | "SEVERANCE" | "TRANSACTION_COSTS" | "INTEGRATION"
   | "DEBT_EXTINGUISHMENT" | "RUN_RATE_SYNERGIES" | "NON_RECURRING" | "NON_CASH" | "OTHER";
@@ -95,16 +96,17 @@ export function categorize(t: string): AddBackCategory {
   return "OTHER";
 }
 
-const CAP_RE = new RegExp(String.raw`\b(?:(?:shall|may|does|do|will)\s+)?not\s+(?:to\s+)?${CAP_ADVERB}exceed(?:ing)?\b|` + /\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not\s+(?:in\s+excess\s+of|to\s+exceed)|up\s+to)\b|\bcapped\s+at\b|\bmaximum\s+of\b/.source, "i");
+const CAP_RE = new RegExp(String.raw`${IN_NO_EVENT}|\b(?:(?:shall|may|does|do|will)\s+)?not\s*(?:to\s+)?${CAP_ADVERB}exceed(?:ing)?\b|` + /\bin\s+an\s+(?:aggregate\s+)?amount\s+(?:not\s+(?:in\s+excess\s+of|to\s+exceed)|up\s+to)\b|\bcapped\s+at\b|\bmaximum\s+of\b/.source, "i");
 /**
  * Clause-reference grammar shared by every cap scope: label paths ("(b)(vii)"), lists joined by commas / and / or,
  * repeated "clause" words ("clause (b)(ix) and clause (b)(x)") and ranges ("(A) through (F)", "(d)–(f)", "(d) to (f)").
  */
 const REF_LABEL = String.raw`\([ivxlA-Za-z\d]{1,5}\)`;
 const REF_RUN = String.raw`(?:${REF_LABEL})+`;
-const REF_SEP = String.raw`\s*(?:,\s*(?:and\s+|or\s+)?|and\/or\s+|and\s+|or\s+|through\s+|to\s+|[–—-]\s*)(?:(?:sub-?)?clauses?\s+)?`;
+const CLAUSE_WORD = String.raw`(?:sub-?)?(?:clauses?|paragraphs?)`;
+const REF_SEP = String.raw`\s*(?:,\s*(?:and\s+|or\s+)?|and\/or\s+|and\s+|or\s+|through\s+|to\s+|[–—-]\s*)(?:${CLAUSE_WORD}\s+)?`;
 export const REF_LIST_SOURCE = String.raw`${REF_RUN}(?:${REF_SEP}${REF_RUN})*`;
-const LABEL_LIST = new RegExp(String.raw`\b(?:sub-?)?clauses?\s+(${REF_LIST_SOURCE})`, "gi");
+const LABEL_LIST = new RegExp(String.raw`\b${CLAUSE_WORD}\s+(${REF_LIST_SOURCE})`, "gi");
 
 const ROMAN_SEQ = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx", "xxi", "xxii", "xxiii", "xxiv", "xxv", "xxvi", "xxvii", "xxviii", "xxix", "xxx", "xxxi", "xxxii", "xxxiii", "xxxiv", "xxxv"];
 /**
@@ -224,18 +226,22 @@ function parseCap0(t: string, from = 0): CapSpec | null {
   if (!m0) return null;
   const m = Object.assign([...m0], { index: m0.index + from }) as unknown as RegExpExecArray;
   const pre = t.slice(Math.max(0, m.index - 300), m.index);
-  let w = t.slice(m.index, m.index + 450);
+  // "in no event shall <subject> exceed X": the amount follows the verb; the subject stays in the cap text (it is the
+  // cap's scope, never part of what the clause adds back).
+  const verbAt = isInNoEventSubject(m[0]) ? m[0].toLowerCase().lastIndexOf("exceed") : 0;
+  let w = t.slice(m.index, m.index + verbAt + 450);
   w = w.slice(0, (/;|\.\s+[A-Z]|,\s*\((?:[ivxl]{1,5}|[a-z]{1,2}|\d{1,2})\)\s/.exec(w.slice(m[0].length))?.index ?? w.length) + m[0].length);
   const sharedWith: string[] = [];
   const scope = `${/(?:pursuant\s+to|under|in\s+reliance\s+on)\s+(?:this\s+)?clauses?[^;]*$/i.exec(pre)?.[0] ?? ""} ${/together\s+with[^,;]{0,200}/i.exec(w)?.[0] ?? ""}`;
   for (const lm of scope.matchAll(LABEL_LIST)) for (const p of clauseRefPaths(lm[1]!).paths) sharedWith.push(p.at(-1)!);
-  const body = w.replace(/together\s+with[^,;]{0,200}?,/i, " ");
+  const body = w.slice(verbAt).replace(/together\s+with[^,;]{0,200}?,/i, " ");
   const giving: CapSpec["giving"] = /after\s+giving\s+effect/i.test(w) ? "AFTER" : /(?:before|prior\s+to|without)\s+giving\s+effect/i.test(w) ? "BEFORE" : "UNSTATED";
   const limbs = (s: string) => {
     const d = dollars(s), p = percentOfEbitda(s);
     return { dollars: d != null ? [d] : [], percents: p ? [p] : [], known: d != null || !!p };
   };
   const go = /the\s+(greater|lesser)\s+of\s+(.*)/i.exec(body);
+  if (go && nonUsdCurrency(body)) return { text: w, kind: "UNKNOWN", dollars: [], percents: [], giving, sharedWith };
   if (go) {
     const parts = go[2]!.split(/\s+and\s+(?=\(?(?:ii|b|2|y)\)|\$|\d)/i).slice(0, 2).map(limbs);
     const kind = go[1]!.toLowerCase() === "greater" ? "GREATER_OF" : "LESSER_OF";
@@ -243,6 +249,8 @@ function parseCap0(t: string, from = 0): CapSpec | null {
     return { text: w, kind, dollars: parts.flatMap((p) => p.dollars), percents: parts.flatMap((p) => p.percents), giving, sharedWith };
   }
   const l = limbs(body);
+  // A cap stated in another currency ("A$5.0 million", "€4,000,000") is held: it is never read as US dollars.
+  if (nonUsdCurrency(body)) return { text: w, kind: "UNKNOWN", dollars: [], percents: [], giving, sharedWith };
   if (/\[\s*\*+\s*\]/.test(body) || !l.known) return { text: w, kind: "UNKNOWN", dollars: [], percents: [], giving, sharedWith };
   return { text: w, kind: l.dollars.length ? "FIXED" : "PERCENT", ...l, giving, sharedWith };
 }
@@ -252,20 +260,25 @@ export interface CapCondition { spec: CapSpec; labels: string[]; withHost: boole
   /** The raw clause-reference lists the condition names ("(d) through (f)", "(b)(ix) and clause (b)(x)"), resolved against the definition's lines by the optimizer. */
   refLists?: string[];
   /** Same lists, flagged when written deictically ("this clause (i)"): the reference is to the clause that contains the statement. */
-  refs?: Array<{ list: string; deictic: boolean }> }
-const SCOPE_RE = new RegExp(String.raw`(?:pursuant\s+to|under|in\s+reliance\s+on|in\s+respect\s+of|made\s+under|by\s+reference\s+to|in\s+accordance\s+with)\s+(this\s+|such\s+|the\s+foregoing\s+|each\s+of\s+)?(?:sub-?)?clauses?\s+(${REF_LIST_SOURCE})`, "gi");
+  refs?: Array<{ list: string; deictic: boolean }>;
+  /** References into another definition or section named alongside this definition's clauses: the cap is shared with amounts outside this definition. */
+  externalShare?: string[] }
+const SCOPE_RE = new RegExp(String.raw`(?:pursuant\s+to|under|in\s+reliance\s+on|in\s+respect\s+of|made\s+under|by\s+reference\s+to|in\s+accordance\s+with|(?:described|set\s+forth|referred\s+to|specified|listed)\s+in|contemplated\s+by|permitted\s+by)\s+(this\s+|such\s+|the\s+foregoing\s+|each\s+of\s+)?${CLAUSE_WORD}\s+(${REF_LIST_SOURCE})`, "gi");
+/** A reference into another definition, section or document ("clause (4) of the definition of 'Permitted Debt'", "clause (c) of Section 6.02"): never a line of this definition. */
+const EXTERNAL_TAIL = /^\s*(?:above|below|hereof)?\s*,?\s*(?:of|in|under|contained\s+in|set\s+forth\s+in)\s+(?:the\s+)?(?:definition\s+of\b(?!\s*(?:the\s+)?[“"'‘]?(?:Consolidated\s+|Adjusted\s+)*EBITDA[”"'’]?)|defined\s+term\b|Sections?\s+\d|Articles?\s+[\dIVXL]|Schedules?\b|Exhibits?\b|[“"'‘])/i;
 /**
  * Cumulative cap over the life of the agreement: "during the term of this Agreement", "over the life of the facility",
  * "for all periods", "in the aggregate since the Closing Date". Its per-period room depends on prior usage.
  */
 export const PER_PERIOD_CAP = /\b(?:for|in|during|with\s+respect\s+to)\s+(?:any|each|such|the\s+applicable|a\s+single)\s+(?:such\s+)?(?:(?:four|4)[- ](?:consecutive\s+)?(?:fiscal\s+)?quarters?\s+)?(?:Test\s+|Measurement\s+|Reference\s+|Calculation\s+|Relevant\s+)?(?:period|fiscal\s+(?:year|quarter)|year|quarter)s?\b|\bper\s+(?:fiscal\s+)?(?:year|annum|quarter|period)\b|\bin\s+any\s+(?:fiscal\s+)?year\b/i;
-export const LIFETIME_CAP = /\b(?:during|over|throughout)\s+the\s+(?:term|life)\s+of\s+(?:this|the)\s+(?:Agreement|Facility|Facilities|Credit\s+Facilit(?:y|ies))\b|\bfor\s+all\s+(?:Test\s+|fiscal\s+|Measurement\s+)?periods\b|\bin\s+the\s+aggregate\s+(?:since|after|from)\s+the\s+(?:Closing|Effective|Restatement|Amendment)\s+(?:Effective\s+)?Date\b|\bcumulative(?:ly)?\b(?=[^.;]{0,80}\b(?:shall\s+not|not\s+to)\s+exceed)|\bnot\s+(?:to\s+)?cumulatively\s+exceed\b/i;
+export const LIFETIME_CAP = /\b(?:during|over|throughout)\s+the\s+(?:term|life)\s+(?:hereof\b|of\s+(?:this|the)\s+(?:(?:Credit|Loan)\s+)?(?:Agreement|Facility|Facilities|Credit\s+Facilit(?:y|ies)|Loans?|Term\s+Loans?|Commitments?)\b)|\bfor\s+all\s+(?:such\s+)?(?:Test\s+|fiscal\s+|Measurement\s+)?periods\b|\bfrom\s+and\s+after\s+the\s+(?:Closing|Effective|Restatement|Amendment)\s+(?:Effective\s+)?Date\b|\bin\s+the\s+aggregate\s+(?:since|after|from)\s+the\s+(?:Closing|Effective|Restatement|Amendment)\s+(?:Effective\s+)?Date\b|\bcumulative(?:ly)?\b(?=[^.;]{0,80}\b(?:shall\s+not|not\s+to)\s+exceed)|\bnot\s+(?:to\s+)?cumulatively\s+exceed\b/i;
 /**
  * Every cap condition in a clause, each extracted on its own wherever it is written ("… clauses (d) and (e) shall not
  * exceed $100M and … clauses (e) and (f) shall not exceed $50M"). A condition's scope is the "pursuant to clauses …"
  * phrase written since the previous condition; "together with amounts under clause (e)" adds (e) to the stating clause;
  * no named clause means the stating clause itself.
  */
+const MEASURE_PAREN = /\((?:[^()]|\([^()]*\))*?\b(?:giving\s+effect|calculated|determined|computed|measured|before|prior\s+to|after)\b(?:[^()]|\([^()]*\))*\)/gi;
 export function extractCaps(full: string, ownLabel: string): CapCondition[] {
   const out: CapCondition[] = [];
   const g = new RegExp(CAP_RE.source, "gi");
@@ -274,18 +287,39 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
     const spec = parseCap(full, m.index);
     if (!spec) break;
     let seg = full.slice(prevEnd, m.index);
-    seg = seg.slice(seg.lastIndexOf(";") + 1).slice(-400);
-    // The scope is the cap's subject. A parenthetical describing how the cap base is measured ("(determined prior to
-    // giving effect to all amounts that increase Consolidated EBITDA pursuant to this clause (b))") names no scope.
-    seg = seg.replace(/\((?:[^()]|\([^()]*\))*?\b(?:giving\s+effect|calculated|determined|computed|measured|before|prior\s+to|after)\b(?:[^()]|\([^()]*\))*\)/gi, (x) => " ".repeat(x.length));
+    const clauseSeg = seg.slice(seg.lastIndexOf(";") + 1);
+    seg = clauseSeg.slice(-300);
+    // The deictic self-reference ("this clause (c)(ix) (other than … a long carve-out …) … shall not exceed") is never
+    // dropped by the window: the last one in the condition, however far back, is kept (blanked out of the window copy).
+    const farSelf = clauseSeg.length > 300 ? [...clauseSeg.slice(0, -300).matchAll(new RegExp(SCOPE_RE.source, "gi"))].filter((sm) => /^this\b/i.test(sm[1] ?? "")).pop() : undefined;
+    // The scope is the cap's subject. A parenthetical that only says how the cap base is measured (a "computed before
+    // / after giving effect to …" aside, even one that mentions a clause) names no scope.
+    seg = seg.replace(MEASURE_PAREN, (x) => " ".repeat(x.length));
+    // A carve-out names what the cap does not cover ("(other than amounts under clause (k), which do not count against
+    // the limit)"): never the cap's scope.
+    seg = seg.replace(/\((?:other\s+than|excluding|not\s+including|except)\b[^()]*(?:\([^()]*\)[^()]*)*\)/gi, (x) => " ".repeat(x.length));
     // Every scope phrase since the previous condition ("pursuant to this clause (1)(l), together with … pursuant to clauses
     // (1)(k) and (1)(q)"). "clause (b)(viii)" is one path: keep the innermost label of each adjacent run.
-    const refs = [...seg.matchAll(SCOPE_RE)].map((sm) => ({ list: sm[2]!, deictic: /^this\b/i.test(sm[1] ?? "") }));
+    const found: Array<{ list: string; deictic: boolean; external: boolean; at?: number }> = [...seg.matchAll(SCOPE_RE)].map((sm) => ({ list: sm[2]!, deictic: /^this\b/i.test(sm[1] ?? ""), external: EXTERNAL_TAIL.test(seg.slice(sm.index! + sm[0].length)), at: sm.index! }));
+    if (farSelf && !found.some((r) => r.deictic)) found.unshift({ list: farSelf[2]!, deictic: true, external: false, at: 0 });
+    // "in no event shall <subject> exceed": every clause list in the subject is the scope, whatever word introduces it.
+    if (isInNoEventSubject(m[0])) {
+      const subj = m[0].replace(MEASURE_PAREN, (x) => " ".repeat(x.length));
+      for (const lm of subj.matchAll(new RegExp(String.raw`(this\s+|such\s+)?\b${CLAUSE_WORD}\s+(${REF_LIST_SOURCE})`, "gi"))) found.push({ list: lm[2]!, deictic: /^this\b/i.test(lm[1] ?? ""), external: EXTERNAL_TAIL.test(subj.slice(lm.index! + lm[0].length)), at: seg.length });
+    }
+    // A reference into another definition or section is not a line here. Alone it names what the line adds back, so the
+    // cap is the stating line's own; next to references to this definition's clauses it means the cap is shared with
+    // amounts outside this definition, so the room left here is not determinable (capped-unknown).
+    // Only an outside reference inside the cap condition itself (after its "provided that") shares the cap; one in the
+    // text describing what the line adds back ("as described in clause (4) of the definition of …") does not.
+    const lead = Math.max(seg.search(/provided(?:,\s*however,?)?\s+(?:further\s+)?that(?![\s\S]*provided)/i), 0);
+    const external = found.filter((r) => r.external && (r.at ?? 0) >= lead).map((r) => r.list);
+    const refs = found.filter((r) => !r.external).map(({ list, deictic }) => ({ list, deictic }));
     const refLists = refs.map((r) => r.list);
     let labels = refLists.flatMap((l) => clauseRefPaths(l).paths.map((p) => p.at(-1)!));
     let withHost = !labels.length;
     const tw = /together\s+with[^,;]{0,200}/i.exec(full.slice(m.index, m.index + 450));
-    if (tw) { for (const lm of tw[0].matchAll(LABEL_LIST)) { refLists.push(lm[1]!); refs.push({ list: lm[1]!, deictic: false }); for (const p of clauseRefPaths(lm[1]!).paths) labels.push(p.at(-1)!); } withHost = true; }
+    if (tw) { for (const lm of tw[0].matchAll(LABEL_LIST)) { if (EXTERNAL_TAIL.test(tw[0].slice(lm.index! + lm[0].length))) { external.push(lm[1]!); continue; } refLists.push(lm[1]!); refs.push({ list: lm[1]!, deictic: false }); for (const p of clauseRefPaths(lm[1]!).paths) labels.push(p.at(-1)!); } withHost = true; }
     if (labels.some((l) => l.toUpperCase() === ownLabel.toUpperCase())) withHost = true;
     labels = [...new Set(labels.filter((l) => l.toUpperCase() !== ownLabel.toUpperCase()))];
     // Lifetime language in the scope phrase or the cap itself ("… pursuant to this clause (v) during the term of this
@@ -294,7 +328,7 @@ export function extractCaps(full: string, ownLabel: string): CapCondition[] {
     // "… $15.0 million for any such period during the term of this Agreement" is a per-period cap: a per-period phrase
     // in the same condition wins.
     const lifetime = LIFETIME_CAP.test(window) && !PER_PERIOD_CAP.test(window);
-    out.push({ spec: { ...spec, sharedWith: labels, ...(lifetime ? { lifetime: true } : {}) }, labels, withHost, at: m.index, refLists, refs });
+    out.push({ spec: { ...spec, sharedWith: labels, ...(lifetime ? { lifetime: true } : {}) }, labels, withHost, at: m.index, refLists, refs, ...(external.length && (refs.length || tw) ? { externalShare: external } : {}) });
     prevEnd = m.index + m[0].length;
   }
   return out;
@@ -322,11 +356,27 @@ export function agreementFiscalYear(text: string, periodEnd: string | null): num
   return periodEnd.slice(5) <= endMd ? y : y + 1;
 }
 
-export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | null = null, fiscalYear: number | null = null): { amount: bigint | null; note: string } {
-  // Unresolved scope or a cumulative (life-of-agreement) cap: bounded by an amount the text alone cannot give — capped,
-  // unknown room; never treated as uncapped.
-  if (c.unresolved?.length) return { amount: null, note: `cap scope unresolved (${c.unresolved.join(", ")} not bound to exactly one clause): capped by an undetermined amount` };
-  if (c.lifetime) return { amount: null, note: "cumulative cap over the term of the agreement: remaining room depends on amounts added back in prior periods (needs input)" };
+const ROMAN = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx", "xxi", "xxii", "xxiii", "xxiv", "xxv"];
+/** Position of an enumerator in its own sequence ("(c)" 3, "(iv)" 4, "(12)" 12); -1 when unreadable. */
+function ordinalOf(label: string): number {
+  const x = label.slice(1, -1).toLowerCase();
+  if (/^\d+$/.test(x)) return +x;
+  if (ROMAN.includes(x)) return ROMAN.indexOf(x) + 1;
+  return /^[a-z]$/.test(x) ? x.charCodeAt(0) - 96 : /^([a-z])\1$/.test(x) ? x.charCodeAt(0) - 70 : -1;
+}
+
+export function capAmount(c: CapSpec, e0: bigint | null, periodEnd: string | null = null, fiscalYear: number | null = null): { amount: bigint | null; note: string; ceiling?: bigint } {
+  // Unresolved scope or a cumulative (life-of-agreement) cap: the room needs an input the text does not give (usage under
+  // the other clauses, or in prior periods), so it is never counted. The stated amount is still read and shown as the
+  // ceiling: room is at most that amount, less the missing usage.
+  if (c.unresolved?.length || c.lifetime) {
+    const inner = capAmount({ ...c, unresolved: undefined, lifetime: undefined }, e0, periodEnd, fiscalYear).amount;
+    const at = inner != null ? `at most $${inner.toLocaleString("en-US")}, ` : "";
+    const why = c.unresolved?.length
+      ? `less any usage under ${c.unresolved.join(", ")} (cap scope unresolved: not bound to exactly one clause of this definition; needs input)`
+      : "less amounts added back in prior periods (cumulative cap over the term of the agreement; needs input)";
+    return { amount: null, note: `${at}${why}`, ...(inner != null ? { ceiling: inner } : {}) };
+  }
   // Date-tiered cap: the tier covering the measured period end; unknown period end → the lowest tier (safe).
   // Escalating cap: base amount in the base fiscal year plus the step for each later fiscal year. The fiscal year is the
   // filer's XBRL fiscal-year focus for the measured period, else one derived from the agreement's Fiscal Year definition;
@@ -664,7 +714,7 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   const sameLabel = (a: string, b: string) => a === b || (!caseSignificant && a.toUpperCase() === b.toUpperCase());
   const parentTop = (o: Ln): string | null => { for (let j = lines.indexOf(o); j >= 0; j--) if (isTop.get(lines[j]!)) return lines[j]!.label; return null; };
   const isTopLabel = (lab: string) => lines.some((o) => isTop.get(o) && sameLabel(o.label, lab));
-  // A heading-only enumerator ("(x) (A) restructuring … (F) casualty events; (y) (A) signing bonuses …") is not a line of
+  // A heading-only enumerator ("(m) (P) <item> … (R) <item>; (n) (P) <item> …") is not a line of
   // its own: a reference to it is a reference to every line under it, up to its next sibling or a higher-level label.
   const childrenOf = (lab: string, deictic: boolean, boundary: number): Ln[] | null => {
     const heads = raw.map((r, k) => ({ r, k })).filter((x) => sameLabel(x.r.it.label, lab) && x.r.full.trim().length < 3);
@@ -672,6 +722,15 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     const lineAt = (k: number) => lines.find((o) => lineRaw.get(o) === raw[k]);
     const kids = heads.map(({ k }) => {
       const out: Ln[] = [];
+      // Sub-items in the heading's own style restart the count ("(vi) (i) … (ii) …" inside a roman list): they run while
+      // the count climbs from one, and end at the label that continues the heading's sequence.
+      const lab = (j: number) => raw[j]!.it.label.slice(1, -1).toLowerCase();
+      const ordOfLab = (x: string) => ordinalOf(`(${x})`);
+      const restart = k + 1 < raw.length && ordOfLab(lab(k + 1)) === 1 && ordOfLab(lab(k)) > 1 && labelStyle(raw[k + 1]!.it.label) === labelStyle(raw[k]!.it.label);
+      if (restart) {
+        for (let j = k + 1, n = 1; j < raw.length && ordOfLab(lab(j)) === n && labelStyle(raw[j]!.it.label) === labelStyle(raw[k]!.it.label); j++, n++) { const o = lineAt(j); if (o) out.push(o); }
+        return out;
+      }
       for (let j = k + 1; j < raw.length; j++) {
         const st = meta.get(raw[j]!)?.st;
         if (st === meta.get(raw[k]!)?.st || st === top) break;
@@ -709,10 +768,43 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
     // "clause (d)(i)" where (i) is inside line (d) (not a line of its own): the cap binds part of (d); bounding the whole
     // line by it can only under-count.
     if (path.length > 1) { const outer = path.at(-2)!; const oc = lines.filter((o) => o !== l && sameLabel(o.label, outer) && escRe(lab).test(o.full)); if (oc.length === 1) return { line: oc[0]! }; }
+    // The label exists only as a sub-clause folded into other lines: the cap binds every line that carries it, and since
+    // which part is meant cannot be told, it is capped-unknown on each.
+    const folded = lines.filter((o) => o !== l && escRe(lab).test(o.full.replace(new RegExp(LABEL_LIST.source, "gi"), (x) => " ".repeat(x.length))));
+    if (folded.length) return { lines: folded, ambiguous: true };
     return null;
   };
   // "pursuant to this clause (b)(vi)" written in line (vi): the stating line itself, unless the outer label names a
   // different item-level clause than the one the stating line sits under.
+  // Is `inner` inside the clause that starts at line `outer`? True when every line between them is lower in the
+  // enumeration than `outer` (no sibling or higher label of `outer` intervenes).
+  const within = (outer: Ln, inner: Ln): boolean => {
+    const a0 = lines.indexOf(outer), b0 = lines.indexOf(inner), st = labelStyle(outer.label);
+    if (a0 < 0 || b0 <= a0) return false;
+    // Lines in another style are sub-items; lines in outer's own style are sub-items only as a run restarting at one
+    // ("(vi) (i) … (ii) …"). Outer's next sibling ends the clause.
+    let n = 0;
+    for (let j = a0 + 1; j <= b0; j++) {
+      const o = lines[j]!;
+      if (labelStyle(o.label) !== st) continue;
+      const k = ordinalOf(o.label);
+      if (k === n + 1) { n = k; continue; }
+      return false;
+    }
+    return true;
+  };
+  const subItems = (o: Ln): Ln[] => {
+    const out: Ln[] = [], st = labelStyle(o.label);
+    for (let j = lines.indexOf(o) + 1; j > 0 && j < lines.length; j++) {
+      const x = lines[j]!;
+      if (isTop.get(x) || labelStyle(x.label) === st) break;
+      // Sub-clauses start their own count at one; "(c)" right after a clause continues an outer list instead.
+      if (!out.length && ordinalOf(x.label) !== 1) break;
+      if (out.length && labelStyle(x.label) === labelStyle(out[0]!.label) && ordinalOf(x.label) !== ordinalOf(out.at(-1)!.label) + 1) break;
+      out.push(x);
+    }
+    return out;
+  };
   const selfRef = (path: string[], l: Ln): boolean => {
     if (!sameLabel(path.at(-1)!, l.label)) return false;
     if (path.length === 1) return true;
@@ -722,6 +814,9 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   };
   const unboundCaps: string[] = [];
   const bindCondition = (c: CapCondition, l: Ln | null, boundary: number, hostFull: string) => {
+    // The stating line is bound unless the cap names only other clauses and every one of them resolves (a trailing
+    // proviso on the last item that limits earlier items). A self-reference that does not resolve elsewhere ("this
+    // clause …", even a parent path such as "this clause (b)(vii)") or any unresolved reference binds it.
     const set = new Set<Ln>(c.withHost && l ? [l] : []);
     const unresolved: string[] = [];
     let subOf: string | null = null, subText: string | null = null, subN = 0;
@@ -735,12 +830,22 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
       for (const path of paths) {
         if (l && selfRef(path, l)) { set.add(l); continue; }
         const res = resolveRef(path, r.deictic, l, boundary, hostText);
-        if (!res) { unresolved.push(path.join("")); continue; }
+        // "this clause …" that names nothing findable is the statement's own clause: the stating line, already bound.
+        if (!res) { if (r.deictic && l) set.add(l); else unresolved.push(path.join("")); continue; }
         if ("lines" in res) { for (const o of res.lines) set.add(o); if (res.ambiguous) unresolved.push(path.join("")); continue; }
         if ("host" in res) { subN++; subOf = res.host; const k = escRe(res.host).exec(hostText)!.index; subText = hostFull.slice(k + res.host.length, c.at); set.add(l!); continue; }
         set.add(res.line);
+        // A reference to a clause includes its sub-clauses split out as lines ("clause (b)(1)" covers (1)(A) and (1)(B)).
+        for (const o of subItems(res.line)) set.add(o);
+        // "this clause (a)(vi)(y)" written in a later line: the statement sits inside the clause it names, so every line
+        // from the named clause through the stating line is part of it (the sub-items split out under it included).
+        if (r.deictic && l) { const a0 = lines.indexOf(res.line), b0 = lines.indexOf(l); if (a0 >= 0 && b0 > a0 && within(res.line, l)) for (let j = a0 + 1; j <= b0; j++) set.add(lines[j]!); }
       }
     }
+    if (l && unresolved.length) set.add(l);
+    // A share with clauses outside this definition does not implicate the line the sentence sits in; it only makes the
+    // room here depend on usage out there.
+    if (c.externalShare?.length) unresolved.push(...c.externalShare.map((x) => `${x} (outside this definition)`));
     if (!set.size && l) set.add(l);
     if (!set.size) { unboundCaps.push(`cap "${c.spec.text.slice(0, 80)}" names ${unresolved.join(", ") || "clauses"} not found in the definition`); return; }
     const spec = unresolved.length ? { ...c.spec, unresolved: [...new Set(unresolved)] } : c.spec;
@@ -760,7 +865,9 @@ export function optimizeConsolidatedEbitda(term: string, text: string, fin: Issu
   }
   // A clause that only states a cap on other clauses ("(d) the aggregate amount of add-backs pursuant to clauses (e) and
   // (f) below, which shall not exceed $100M") adds nothing itself.
-  const capOnly = new Set(lines.filter((l) => l.caps.length && capRaw.filter((c) => c.owner === l).every((c) => !c.members.includes(l)) && /^\W*(?:the\s+)?(?:aggregate\s+)?amount\s+of\s+(?:[\w-]+\s+){0,4}?(?:add-?backs|adjustments|added(?:\s+back)?\s+pursuant)\b/i.test(l.full)));
+  // (The stating line is always a member of its own caps, so this is read from the text: every cap names other clauses
+  // and none refers to the stating clause itself.)
+  const capOnly = new Set(lines.filter((l) => l.caps.length && l.caps.every((c) => (c.refs?.length ?? 0) > 0 && !c.refs!.some((r) => r.deictic) && !c.labels.some((x) => sameLabel(x, l.label))) && /^\W*(?:in\s+no\s+event\s+(?:shall|will|may)\s+)?(?:the\s+)?(?:aggregate\s+)?amount\s+of\s+(?:[\w-]+\s+){0,4}?(?:add-?backs|adjustments|added(?:\s+back)?\s+pursuant)\b/i.test(l.full)));
   for (const l of capOnly) { l.claimed = "0"; l.status = "CLAIMED"; l.coverage = "FULL"; l.evid = 0n; l.note = "states a cap on other clauses; no add-back of its own"; }
   const inCap = new Set(capRaw.flatMap((c) => c.members).filter((l) => !capOnly.has(l)));
   const uncapped = lines.filter((l) => !inCap.has(l) && !capOnly.has(l));
