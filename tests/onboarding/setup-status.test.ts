@@ -49,6 +49,8 @@ function base(over: Partial<CompanySetupStatus> = {}): CompanySetupStatus {
     deterministicAnalyzed: 0,
     deterministicItems: 0,
     deterministicDecisions: 0,
+    deterministicExceptions: 0,
+    deterministicExceptionDecisions: 0,
     rulebookStage: "DISCOVERED",
     rulebookExecutablePermissions: 0,
     dashboardReady: false,
@@ -123,15 +125,23 @@ describe("nextSetupStep", () => {
     expect(base().capacityCertified).toBe(false);
   });
 
-  it("routes deterministic (no-LLM) review through the Rulebook, not the LLM queue", () => {
-    // Uploaded + analyzed deterministically, no LLM extraction, items unreviewed
+  it("routes deterministic (no-LLM) exception review through the Rulebook, not the LLM queue", () => {
+    // Uploaded + analyzed deterministically, no LLM extraction, exceptions unreviewed
     // -> the Rulebook (the review path that works with no LLM credential).
+    // Routine items are system-accepted; only exceptions need counsel.
     expect(
       nextSetupStep(
-        base({ documentsUploaded: 1, deterministicAnalyzed: 1, deterministicItems: 120, deterministicDecisions: 0 }),
+        base({
+          documentsUploaded: 1,
+          deterministicAnalyzed: 1,
+          deterministicItems: 120,
+          deterministicDecisions: 90,
+          deterministicExceptions: 30,
+          deterministicExceptionDecisions: 0,
+        }),
       ).label,
-    ).toBe("Review interpretations");
-    // All deterministic items reviewed -> past review (financials next).
+    ).toBe("Review exceptions");
+    // All exception items reviewed -> past review (financials next).
     expect(
       nextSetupStep(
         base({
@@ -139,6 +149,8 @@ describe("nextSetupStep", () => {
           deterministicAnalyzed: 1,
           deterministicItems: 120,
           deterministicDecisions: 120,
+          deterministicExceptions: 30,
+          deterministicExceptionDecisions: 30,
           financialSnapshots: 0,
         }),
       ).label,

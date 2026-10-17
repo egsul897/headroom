@@ -5,7 +5,8 @@ describe("deterministicActivationGate", () => {
   const base = {
     rulebookStage: "REVIEWED" as const,
     discoveredSummaries: 120,
-    decisions: 120,
+    exceptions: 30,
+    exceptionDecisions: 30,
     financialSnapshots: 1,
     declarationsComplete: true,
   };
@@ -23,15 +24,15 @@ describe("deterministicActivationGate", () => {
     );
   });
 
-  it("refuses when review is incomplete, naming the missing decisions", () => {
-    const gate = deterministicActivationGate({ ...base, decisions: 40 });
+  it("refuses when exception review is incomplete, naming the missing exception decisions", () => {
+    const gate = deterministicActivationGate({ ...base, exceptionDecisions: 10 });
     expect(gate.ready).toBe(false);
-    expect(gate.blockers.join(" ")).toContain("40 reviewed");
-    expect(gate.blockers.join(" ")).toContain("120");
+    expect(gate.blockers.join(" ")).toContain("10 reviewed");
+    expect(gate.blockers.join(" ")).toContain("30");
   });
 
-  it("activates from EXECUTABLE even when the decision count lags the item count (ladder already verified review)", () => {
-    const gate = deterministicActivationGate({ ...base, rulebookStage: "EXECUTABLE", decisions: 0 });
+  it("activates from EXECUTABLE even when the exception decision count lags (ladder already verified review)", () => {
+    const gate = deterministicActivationGate({ ...base, rulebookStage: "EXECUTABLE", exceptionDecisions: 0 });
     expect(gate.ready).toBe(true);
   });
 
@@ -39,7 +40,8 @@ describe("deterministicActivationGate", () => {
     const gate = deterministicActivationGate({
       rulebookStage: "DISCOVERED",
       discoveredSummaries: 0,
-      decisions: 0,
+      exceptions: 0,
+      exceptionDecisions: 0,
       financialSnapshots: 0,
       declarationsComplete: false,
     });

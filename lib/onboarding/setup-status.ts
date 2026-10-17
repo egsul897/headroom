@@ -47,6 +47,10 @@ export interface CompanySetupStatus {
   deterministicAnalyzed: number;
   deterministicItems: number;
   deterministicDecisions: number;
+  /** Exception-based review: summary units needing a counsel decision (non-routine). */
+  deterministicExceptions: number;
+  /** Exception units with a counsel decision. */
+  deterministicExceptionDecisions: number;
   rulebookStage: RulebookStage;
   rulebookExecutablePermissions: number;
   /**
@@ -101,9 +105,7 @@ export async function getCompanySetupStatus(companyId: string): Promise<CompanyS
   // EXECUTABLE, or every discovered item has a reviewer decision).
   // The old form required analysis.ready (LLM-only), so the home
   // page's setup CTA nagged forever on the deterministic path.
-  const deterministicReady =
-    rulebook?.stage === "EXECUTABLE" ||
-    ((rulebook?.discoveredSummaries ?? 0) > 0 && approvals.length >= (rulebook?.discoveredSummaries ?? 0));
+  const deterministicReady = rulebook?.stage === "EXECUTABLE" || rulebook?.reviewComplete === true;
   const dashboardReady =
     (company.onboardingStatus === "ACTIVE" || company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS") &&
     financialSnapshots > 0 &&
@@ -130,6 +132,8 @@ export async function getCompanySetupStatus(companyId: string): Promise<CompanyS
     deterministicAnalyzed: intelligence.filter((i) => i.analysisOk).length,
     deterministicItems: rulebook?.discoveredSummaries ?? 0,
     deterministicDecisions: approvals.length,
+    deterministicExceptions: rulebook?.exceptionItems ?? 0,
+    deterministicExceptionDecisions: rulebook?.exceptionDecisions ?? 0,
     rulebookStage: rulebook?.stage ?? "DISCOVERED",
     rulebookExecutablePermissions: rulebook?.executablePermissions ?? 0,
     dashboardReady,
@@ -164,15 +168,17 @@ export function nextSetupStep(status: CompanySetupStatus): {
         : `No successful analysis yet (${status.analysisReason}). Re-analyze the uploaded documents from the Documents page; LLM extraction is optional.`,
     };
   }
-  // Deterministic counsel review: the Rulebook. Fires when the
-  // deterministic analysis produced summary items that still lack
-  // reviewer decisions. This is the review path that works with no
-  // LLM credential — decisions here compile executable Permissions.
-  if (status.deterministicItems > 0 && status.deterministicDecisions < status.deterministicItems) {
+  // Exception-based deterministic counsel review: the Rulebook.
+  // Fires when exception items (non-routine) still lack a counsel
+  // decision. Routine supported interpretations auto-accept as
+  // system-accepted (never counsel-verified) and do not need
+  // individual approval. This is the review path that works with
+  // no LLM credential — decisions here compile executable Permissions.
+  if (status.deterministicExceptions > 0 && status.deterministicExceptionDecisions < status.deterministicExceptions) {
     return {
       href: `/${id}/rulebook`,
-      label: "Review interpretations",
-      detail: `${status.deterministicDecisions} of ${status.deterministicItems} AI interpretations reviewed. Accept, edit, or reject each one — reviewed interpretations compile the executable rulebook.`,
+      label: "Review exceptions",
+      detail: `${status.deterministicExceptionDecisions} of ${status.deterministicExceptions} exception items reviewed. Routine interpretations are already system-accepted — accept, edit, or reject the exceptions to complete the executable rulebook.`,
     };
   }
   // LLM extraction-candidate review: only when the LLM analysis is

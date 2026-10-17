@@ -9,10 +9,10 @@
  * would stay ONBOARDING forever (home nav keeps routing it to the
  * wizard, the home page keeps showing a setup CTA).
  *
- * This gate is the deterministic equivalent: counsel review is
- * complete (every discovered summary item has a reviewer decision,
- * or the rulebook ladder already reports EXECUTABLE) and financials
- * exist. The onboarding status mirrors the LLM path's
+ * This gate is the deterministic equivalent: exception-based review
+ * is complete (every exception item has a counsel decision — routine
+ * items are system-accepted — or the rulebook ladder already
+ * reports EXECUTABLE) and financials exist. The onboarding status mirrors the LLM path's
  * evaluatePostPromotionCoverage verdict: ACTIVE only when every
  * solver-coverage declaration is complete (Rule 171 maintains those
  * declarations from counsel decisions); otherwise
@@ -25,8 +25,10 @@ export interface DeterministicActivationInput {
   rulebookStage: RulebookStage;
   /** Discovered summary items (loadRulebookReadiness.discoveredSummaries). */
   discoveredSummaries: number;
-  /** Reviewer decisions recorded via the Rulebook. */
-  decisions: number;
+  /** Exception summary units needing a counsel decision (loadRulebookReadiness.exceptionItems). */
+  exceptions: number;
+  /** Counsel decisions recorded on exception units (loadRulebookReadiness.exceptionDecisions). */
+  exceptionDecisions: number;
   /** Manual financial snapshots on file. */
   financialSnapshots: number;
   /** True when at least one coverage declaration exists and every one is complete. */
@@ -44,9 +46,9 @@ export function deterministicActivationGate(input: DeterministicActivationInput)
   const blockers: string[] = [];
   if (input.discoveredSummaries === 0) {
     blockers.push("No deterministic covenant summaries yet — upload and analyze financing documents first.");
-  } else if (input.rulebookStage !== "EXECUTABLE" && input.decisions < input.discoveredSummaries) {
+  } else if (input.rulebookStage !== "EXECUTABLE" && input.exceptionDecisions < input.exceptions) {
     blockers.push(
-      `Review all ${input.discoveredSummaries} AI interpretations in the Rulebook (${input.decisions} reviewed) — counsel decisions compile the executable rulebook.`,
+      `Review all ${input.exceptions} exception items in the Rulebook (${input.exceptionDecisions} reviewed) — routine interpretations are already system-accepted; counsel decisions on the exceptions compile the executable rulebook.`,
     );
   }
   if (input.financialSnapshots === 0) {

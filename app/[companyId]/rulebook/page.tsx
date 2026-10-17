@@ -189,6 +189,9 @@ export default async function RulebookPage({
                           ) : (
                             <Chip tone="idle">AI DRAFT</Chip>
                           )}{" "}
+                          {c.decision?.reviewerKind === "SYSTEM" && (
+                            <Chip tone="idle">System-accepted — not counsel-verified</Chip>
+                          )}
                           {c.posture && <Chip tone="navy">{c.posture}</Chip>}
                           {c.typeMismatch && <Chip tone="tight">TYPE MISMATCH — {c.typeMismatch}</Chip>}
                         </div>

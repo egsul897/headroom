@@ -7,7 +7,6 @@ import { onboardingStatusLabel } from "@/lib/status-labels";
 import { promoteAction, generateGoldenTestsAction, activateDeterministicAction } from "./actions";
 import { getAnalysisReadinessForCompany } from "@/lib/contract-model/analysis";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
-import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
 import { deterministicActivationGate } from "@/lib/onboarding/deterministic-activation";
 
 export const metadata = { title: "Headroom — Activate company" };
@@ -19,14 +18,13 @@ const STATUS_LABEL: Record<string, string> = { SOLVER_NATIVE: "Solver-native", L
 
 export default async function ActivatePage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [company, progress, goldenTests, readiness, rulebook, approvals, financialSnapshots, declarations] =
+  const [company, progress, goldenTests, readiness, rulebook, financialSnapshots, declarations] =
     await Promise.all([
       prisma.company.findUniqueOrThrow({ where: { id: companyId } }),
       getReviewProgress(companyId),
       prisma.goldenTest.findMany({ where: { companyId } }),
       getAnalysisReadinessForCompany(companyId).catch(() => ({ ready: false, reason: "READINESS_CHECK_FAILED" })),
       loadRulebookReadiness(companyId).catch(() => null),
-      listReviewerApprovals(companyId).catch(() => []),
       prisma.financialState.count({ where: { companyId } }),
       prisma.solverCoverageDeclaration.findMany({ where: { companyId }, select: { isComplete: true } }).catch(() => []),
     ]);
@@ -39,7 +37,8 @@ export default async function ActivatePage({ params }: { params: Promise<{ compa
   const detGate = deterministicActivationGate({
     rulebookStage: rulebook?.stage ?? "DISCOVERED",
     discoveredSummaries: rulebook?.discoveredSummaries ?? 0,
-    decisions: approvals.length,
+    exceptions: rulebook?.exceptionItems ?? 0,
+    exceptionDecisions: rulebook?.exceptionDecisions ?? 0,
     financialSnapshots,
     declarationsComplete: declarations.length > 0 && declarations.every((d) => d.isComplete),
   });
@@ -55,8 +54,8 @@ export default async function ActivatePage({ params }: { params: Promise<{ compa
           rulebook; activation marks the workspace live.
         </div>
         <div className="row-note">
-          Rulebook: {rulebook?.stage ?? "DISCOVERED"} · {approvals.length} of {rulebook?.discoveredSummaries ?? 0}{" "}
-          interpretations reviewed · {rulebook?.executablePermissions ?? 0} executable permission(s) ·{" "}
+          Rulebook: {rulebook?.stage ?? "DISCOVERED"} · {rulebook?.exceptionDecisions ?? 0} of {rulebook?.exceptionItems ?? 0}{" "}
+          exception items reviewed (routine items system-accepted) · {rulebook?.executablePermissions ?? 0} executable permission(s) ·{" "}
           {financialSnapshots} financial snapshot(s).
         </div>
         {!detGate.ready &&

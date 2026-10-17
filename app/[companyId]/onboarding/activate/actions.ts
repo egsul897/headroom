@@ -6,7 +6,6 @@ import { promoteCompanyCandidates } from "@/lib/onboarding/promotion";
 import { getAnalysisReadinessForCompany } from "@/lib/contract-model/analysis";
 import { generateGoldenTestProposals } from "@/lib/onboarding/golden-tests";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
-import { listReviewerApprovals } from "@/lib/product/customer-intelligence/reviewer-approvals";
 import { deterministicActivationGate } from "@/lib/onboarding/deterministic-activation";
 import { prisma } from "@/lib/prisma";
 
@@ -40,16 +39,16 @@ export async function promoteAction(companyId: string) {
  */
 export async function activateDeterministicAction(companyId: string) {
   await requireTenantAction(companyId);
-  const [rulebook, approvals, financialSnapshots, declarations] = await Promise.all([
+  const [rulebook, financialSnapshots, declarations] = await Promise.all([
     loadRulebookReadiness(companyId),
-    listReviewerApprovals(companyId),
     prisma.financialState.count({ where: { companyId } }),
     prisma.solverCoverageDeclaration.findMany({ where: { companyId }, select: { isComplete: true } }),
   ]);
   const gate = deterministicActivationGate({
     rulebookStage: rulebook.stage,
     discoveredSummaries: rulebook.discoveredSummaries,
-    decisions: approvals.length,
+    exceptions: rulebook?.exceptionItems ?? 0,
+    exceptionDecisions: rulebook?.exceptionDecisions ?? 0,
     financialSnapshots,
     declarationsComplete: declarations.length > 0 && declarations.every((d) => d.isComplete),
   });

@@ -20,6 +20,13 @@ export interface ReviewerApproval {
   sectionRef: string;
   category: string;
   decision: ReviewDecision;
+  /**
+   * Who made the decision. COUNSEL = a human reviewer (recordReviewerDecision).
+   * SYSTEM = exception-based auto-accept of a routine supported interpretation
+   * (autoAcceptRoutineInterpretations). Absent = COUNSEL (legacy rows).
+   * SYSTEM decisions are NEVER labeled counsel-verified anywhere.
+   */
+  reviewerKind?: "SYSTEM" | "COUNSEL";
   editedPlainEnglish?: string;
   /** Prior AI plain English when counsel edits/replaces. */
   priorPlainEnglish?: string;
@@ -232,4 +239,108 @@ export async function recordReviewerDecision(params: {
     approvalCount: filtered.filter((a) => a.decision !== "REJECTED").length,
     compileResults,
   };
+}
+
+
+/**
+ * Exception-based review: auto-accept every routine supported
+ * interpretation in a document's summary as a SYSTEM decision and
+ * compile it (creating its Permission / ratio provision). Counsel
+ * decisions are required only for EXCEPTIONS; counsel can still
+ * inspect, edit, or reject any item — a later counsel decision
+ * supersedes the system acceptance (recordReviewerDecision
+ * overwrites the approval row and re-compiles).
+ *
+ * Idempotent: items with an existing decision (SYSTEM or COUNSEL)
+ * are skipped. Never throws: a per-item failure is skipped and
+ * the item stays an exception for counsel. Callers wrap in
+ * try/catch too — auto-accept must never fail an upload.
+ */
+export async function autoAcceptRoutineInterpretations(params: {
+  companyId: string;
+  sourceId: string;
+}): Promise<{ accepted: number; skipped: number }> {
+  const { isRoutineItem } = await import("./routine-review");
+  const { compileAcceptedInterpretation } = await import("./compile-accepted");
+  const row = await prisma.knowledgeSource.findFirst({
+    where: { companyId: params.companyId, sourceId: params.sourceId },
+  });
+  if (!row) return { accepted: 0, skipped: 0 };
+  const meta =
+    row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+      ? ({ ...(row.metadata as Record<string, unknown>) } as Record<string, unknown>)
+      : {};
+  const summary = summarizeFromStoredMetadata(meta);
+  if (!summary) return { accepted: 0, skipped: 0 };
+  const prior = Array.isArray(meta.reviewerApprovals)
+    ? ([...meta.reviewerApprovals] as ReviewerApproval[])
+    : [];
+  const decided = new Set(prior.map((a) => `${a.sectionRef}::${a.category}`));
+  let accepted = 0;
+  let skipped = 0;
+  const approvals = [...prior];
+  for (const item of summary.items) {
+    if (!isRoutineItem(item)) {
+      skipped += 1;
+      continue;
+    }
+    // True duplicates (same ref + category, two items) share one
+    // decision key — the second unit is already decided. Count it
+    // as skipped so accepted + skipped === items.length.
+    if (decided.has(`${item.sectionRef}::${item.category}`)) {
+      skipped += 1;
+      continue;
+    }
+    const next: ReviewerApproval = {
+      sourceId: params.sourceId,
+      sectionRef: item.sectionRef,
+      category: item.category,
+      decision: "ACCEPTED",
+      reviewerKind: "SYSTEM",
+      note: "System auto-accepted — routine supported interpretation, not counsel-verified.",
+      reviewedAt: new Date().toISOString(),
+      reviewerLabel: "system:auto-accept",
+      version: 1,
+    };
+    approvals.push(next);
+    decided.add(`${item.sectionRef}::${item.category}`);
+    // Persist the approval row BEFORE compiling so the compile
+    // reads a summary whose decisions include this acceptance.
+    meta.reviewerApprovals = approvals;
+    await prisma.knowledgeSource.update({
+      where: { sourceId: params.sourceId },
+      data: { metadata: JSON.parse(JSON.stringify(meta)) },
+    });
+    try {
+      await compileAcceptedInterpretation({
+        companyId: params.companyId,
+        sourceId: params.sourceId,
+        sectionRef: item.sectionRef,
+        category: item.category,
+        decision: "ACCEPTED",
+        reviewerKind: "SYSTEM",
+      });
+      accepted += 1;
+    } catch {
+      // Per-item failure stays an exception for counsel (the
+      // approval row already exists — it is removed so the item
+      // is not wrongly marked decided).
+      const idx = approvals.findIndex(
+        (a) => a.sectionRef === item.sectionRef && a.category === item.category && a.reviewerKind === "SYSTEM",
+      );
+      if (idx >= 0) approvals.splice(idx, 1);
+      decided.delete(`${item.sectionRef}::${item.category}`);
+      meta.reviewerApprovals = approvals;
+      try {
+        await prisma.knowledgeSource.update({
+          where: { sourceId: params.sourceId },
+          data: { metadata: JSON.parse(JSON.stringify(meta)) },
+        });
+      } catch {
+        // Best effort — the row will be overwritten on the next run.
+      }
+      skipped += 1;
+    }
+  }
+  return { accepted, skipped };
 }

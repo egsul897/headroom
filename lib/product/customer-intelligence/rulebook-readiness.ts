@@ -8,6 +8,7 @@ import { listCustomerDocumentIntelligence, getLatestAmendmentPackage } from "./l
 import { loadCapacityReadiness } from "./capacity-readiness";
 import { listReviewerApprovals } from "./reviewer-approvals";
 import { verifiedPermissionCount } from "./rulebook-permission-counts";
+import { isRoutineItem } from "./routine-review";
 
 export type RulebookStage = "DISCOVERED" | "INTERPRETED" | "REVIEWED" | "EXECUTABLE";
 
@@ -21,6 +22,12 @@ export interface RulebookReadiness {
   reviewedPermissions: number;
   executablePermissions: number;
   provisionRows: number;
+  /** Exception-based review: summary units needing a counsel decision (non-routine). */
+  exceptionItems: number;
+  /** Exception units with a counsel decision. */
+  exceptionDecisions: number;
+  /** True when every discovered unit is decided (routine via system, exceptions via counsel). */
+  reviewComplete: boolean;
   blockers: string[];
   headline: string;
   note: string;
@@ -72,8 +79,30 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
       .filter((i) => i.plainEnglish && !/appears to address/i.test(i.plainEnglish)),
   );
 
+  // Exception-based review: dedup units by (ref, category) keeping
+  // the first item per key (same unit the Rulebook queue uses),
+  // classify each unit, and count decisions on exception units.
+  const unitMap = new Map<string, unknown>();
+  for (const d of docs) {
+    for (const item of d.summary?.items ?? []) {
+      const key = unitKey(item);
+      if (!unitMap.has(key)) unitMap.set(key, item);
+    }
+  }
+  const exceptionKeys = new Set(
+    [...unitMap.entries()].filter(([, item]) => !isRoutineItem(item as never)).map(([key]) => key),
+  );
+  const exceptionItems = exceptionKeys.size;
+  const decisionKeys = new Set(
+    counselApprovals.map((a) => `${a.sectionRef}::${a.category}`).filter((k) => unitMap.has(k)),
+  );
+  const exceptionDecisions = [...decisionKeys].filter((k) => exceptionKeys.has(k)).length;
+  const reviewComplete = unitMap.size > 0 && decisionKeys.size >= unitMap.size;
+
+  // Counsel decisions only: SYSTEM auto-accepts (decision ACCEPTED,
+  // reviewerKind SYSTEM) are not counsel review evidence.
   const counselReviewed = counselApprovals.filter(
-    (a) => a.decision === "ACCEPTED" || a.decision === "EDITED",
+    (a) => (a.decision === "ACCEPTED" || a.decision === "EDITED") && a.reviewerKind !== "SYSTEM",
   ).length;
   // Rule 47: only VERIFIED Permission rows count as reviewed /
   // executable. The old /VERIFIED|REVIEWED|APPROVED/i regex
@@ -92,7 +121,7 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
   if (interpretedProvisions === 0) blockers.push("No substantive interpretations persisted.");
   if (counselReviewed === 0 && executablePermissions === 0) {
     blockers.push(
-      "No workspace counsel accept/edit decisions yet — AI interpretations are available for review on /rulebook.",
+      "No counsel decisions and no compiled permissions yet — exception items are available for review on /rulebook (routine interpretations auto-accept).",
     );
   }
   if (executablePermissions === 0) {
@@ -120,8 +149,13 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
 
   let stage: RulebookStage = "DISCOVERED";
   if (interpretedProvisions > 0) stage = "INTERPRETED";
-  if (reviewedPermissions > 0) stage = "REVIEWED";
-  if (capacity.canEvaluateExecutableCapacity && executablePermissions > 0 && reviewedPermissions > 0 && !precedenceUnresolved) {
+  // Exception-based review: REVIEWED = every unit decided (routine
+  // via system auto-accept, exceptions via counsel). EXECUTABLE no
+  // longer requires reviewedPermissions > 0 — that was the
+  // mandatory-approval bottleneck (routine items needed no counsel
+  // decision but the gate demanded one anyway).
+  if (reviewComplete) stage = "REVIEWED";
+  if (capacity.canEvaluateExecutableCapacity && executablePermissions > 0 && reviewComplete && !precedenceUnresolved) {
     stage = "EXECUTABLE";
   }
 
@@ -129,7 +163,7 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
     stage === "EXECUTABLE"
       ? "Executable rulebook path available for supported permissions only."
       : stage === "REVIEWED"
-        ? "Workspace counsel has accepted/edited AI interpretations; compiler Permission rows may still be needed for capacity."
+        ? "All interpretations decided — routine items system-accepted, exception items counsel-decided; compiler Permission rows may still be needed for capacity."
         : stage === "INTERPRETED"
           ? "AI interpretations ready for customer counsel review — not blocked on external legal verification."
           : "Only discovery (or empty) state — no interpreted rulebook yet.";
@@ -144,8 +178,11 @@ export async function loadRulebookReadiness(companyId: string): Promise<Rulebook
     reviewedPermissions,
     executablePermissions,
     provisionRows: provisions,
+    exceptionItems,
+    exceptionDecisions,
+    reviewComplete,
     blockers,
     headline,
-    note: "DISCOVERED → INTERPRETED → REVIEWED → EXECUTABLE. Headroom never auto-promotes discovery text into executable permissions.",
+    note: "DISCOVERED → INTERPRETED → REVIEWED → EXECUTABLE. Routine supported interpretations auto-compile as system-accepted (never labeled counsel-verified); exception items require a counsel decision.",
   };
 }

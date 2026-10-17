@@ -10,8 +10,8 @@ function fakeDb(opts: {
   items: string[];
   decided: string[];
   modeledGrants: string[];
-}): { db: CounselCoverageDb; upserts: { side: string; grantType: string; isComplete: boolean }[] } {
-  const upserts: { side: string; grantType: string; isComplete: boolean }[] = [];
+}): { db: CounselCoverageDb; upserts: { side: string; grantType: string; isComplete: boolean; notes: string }[] } {
+  const upserts: { side: string; grantType: string; isComplete: boolean; notes: string }[] = [];
   const db: CounselCoverageDb = {
     knowledgeSource: {
       findUnique: async () => ({
@@ -26,8 +26,8 @@ function fakeDb(opts: {
       findMany: async () => opts.modeledGrants.map((grantType) => ({ grantType })),
     },
     solverCoverageDeclaration: {
-      upsert: async (args: { create: { side: string; grantType: string; isComplete: boolean } }) => {
-        upserts.push({ side: args.create.side, grantType: args.create.grantType, isComplete: args.create.isComplete });
+      upsert: async (args: { create: { side: string; grantType: string; isComplete: boolean; notes: string } }) => {
+        upserts.push({ side: args.create.side, grantType: args.create.grantType, isComplete: args.create.isComplete, notes: args.create.notes });
         return {};
       },
     },
@@ -75,6 +75,21 @@ describe("rule 171: counsel coverage", () => {
     const res = await evaluateCounselCoverage(db, { companyId: "co-1", sourceId: "src-1" });
     expect(res.reviewComplete).toBe(true);
     expect(upserts).toHaveLength(0);
+  });
+
+  it("a SYSTEM auto-accept counts as decided; the complete note says exception-based (never counsel-verified)", async () => {
+    const { db, upserts } = fakeDb({ items: ["6.01(e)"], decided: [], modeledGrants: ["DEBT_INCURRENCE"] });
+    db.knowledgeSource.findUnique = async () => ({
+      documentId: "doc-1",
+      metadata: {
+        covenantSummary: { items: [{ sectionRef: "6.01(e)" }] },
+        reviewerApprovals: [{ sectionRef: "6.01(e)", decision: "ACCEPTED", reviewerKind: "SYSTEM", reviewerLabel: "system:auto-accept" }],
+      },
+    });
+    const res = await evaluateCounselCoverage(db, { companyId: "co-1", sourceId: "src-1" });
+    expect(res.reviewComplete).toBe(true);
+    expect(upserts[0].notes).toContain("exception-based review");
+    expect(upserts[0].notes).toContain("not counsel-verified");
   });
 
   it("complete declaration + MODELED permissions -> SOLVER_NATIVE at the gate", async () => {

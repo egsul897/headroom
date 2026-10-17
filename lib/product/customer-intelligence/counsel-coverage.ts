@@ -13,10 +13,13 @@
  *
  * This module closes that gap with the SAME attestation semantics as
  * promotion: a scope is complete iff every summary item for the
- * document has a counsel decision (accepted / edited / rejected).
- * A rejected item counts as decided — counsel explicitly decided it
- * grants nothing. An item that compiles INCOMPLETE (fail-closed, no
- * Permission) still counts as decided: counsel reviewed it, and it
+ * document has a decision. Under exception-based review, routine
+ * supported interpretations carry a SYSTEM decision (auto-accepted,
+ * never labeled counsel-verified) and exception items carry a
+ * COUNSEL decision (accepted / edited / rejected). A rejected item
+ * counts as decided — counsel explicitly decided it grants
+ * nothing. An item that compiles INCOMPLETE (fail-closed, no
+ * Permission) still counts as decided: it was reviewed, and it
  * contributes no Permission to the scope. Completeness is about the
  * review, not about how many Permissions compiled.
  *
@@ -117,14 +120,14 @@ export async function evaluateCounselCoverage(
           grantType,
           isComplete: reviewComplete,
           notes: reviewComplete
-            ? "Declared complete by counsel review — every summary item for this document has a counsel decision (accepted/edited/rejected)."
-            : `Declared INCOMPLETE by counsel review — ${items.length - decidedCount} of ${items.length} summary items still await a counsel decision.`,
+            ? "Declared complete by exception-based review — routine interpretations system-accepted (not counsel-verified); exception items counsel-decided (accepted/edited/rejected)."
+            : `Declared INCOMPLETE by exception-based review — ${items.length - decidedCount} of ${items.length} summary items still await a decision (exception items need counsel; routine items auto-accept on analysis).`,
         },
         update: {
           isComplete: reviewComplete,
           notes: reviewComplete
-            ? "Declared complete by counsel review (re-evaluated)."
-            : `Declared INCOMPLETE by counsel review (re-evaluated) — ${items.length - decidedCount} of ${items.length} summary items still await a counsel decision.`,
+            ? "Declared complete by exception-based review (re-evaluated) — routine interpretations system-accepted (not counsel-verified); exception items counsel-decided."
+            : `Declared INCOMPLETE by exception-based review (re-evaluated) — ${items.length - decidedCount} of ${items.length} summary items still await a decision (exception items need counsel; routine items auto-accept on analysis).`,
         },
       });
     }

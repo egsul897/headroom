@@ -711,6 +711,23 @@ export async function analyzeCustomerDocument(params: {
       // Coverage evaluation must not fail the upload.
     }
 
+    // Exception-based review: auto-accept routine supported
+    // interpretations as SYSTEM decisions (never labeled
+    // counsel-verified) and compile them. Counsel decisions are
+    // required only for exceptions; counsel can still inspect,
+    // edit, or reject any item. Must never fail the upload —
+    // auto-accept is idempotent and safe to re-run on re-analysis.
+    try {
+      const { autoAcceptRoutineInterpretations } = await import("./reviewer-approvals");
+      await autoAcceptRoutineInterpretations({ companyId: params.companyId, sourceId });
+      // Auto-accepts change the decided set — re-evaluate coverage
+      // so declarations reflect the system-accepted items.
+      const { evaluateCounselCoverage } = await import("./counsel-coverage");
+      await evaluateCounselCoverage(prisma, { companyId: params.companyId, sourceId });
+    } catch {
+      // Auto-accept must not fail the upload.
+    }
+
     const analysisSucceeded =
       (processed.source.extractionStatus === "CANDIDATES_DISCOVERED" ||
         processed.source.extractionStatus === "TEXT_EXTRACTED" ||
