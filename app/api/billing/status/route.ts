@@ -17,7 +17,15 @@ export async function GET() {
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
   const config = getBillingConfig();
   const gate = await checkWorkspacePlan(user.companyId);
-  const sub = config.enabled ? await loadWorkspaceSubscription(prisma, user.companyId).catch(() => null) : null;
+  let sub: Awaited<ReturnType<typeof loadWorkspaceSubscription>> = null;
+  if (config.enabled) {
+    try {
+      sub = await loadWorkspaceSubscription(prisma, user.companyId);
+    } catch {
+      // A store failure is "unknown", never "no subscription".
+      return NextResponse.json({ error: "BILLING_STORE_UNAVAILABLE", billingEnabled: true, subscription: null, gate }, { status: 503 });
+    }
+  }
   return NextResponse.json({
     billingEnabled: config.enabled,
     enforced: config.enforce,

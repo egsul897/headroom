@@ -28,6 +28,8 @@ export type PlanGateDecision =
       reason:
         | "BILLING_NOT_CONFIGURED"
         | "NO_SUBSCRIPTION"
+        /** The subscription store could not be read: unknown, denied while enforcing. */
+        | "STORE_UNAVAILABLE"
         | "SUBSCRIPTION_INACTIVE"
         | "PERIOD_ENDED"
         | "PLAN_NOT_ELIGIBLE";

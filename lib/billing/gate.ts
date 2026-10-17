@@ -18,7 +18,7 @@ export async function checkWorkspacePlan(companyId: string, opts: { requiredPlan
     sub = await loadWorkspaceSubscription(prisma, companyId);
   } catch {
     // Infrastructure error while enforcing: deny, never open the gate.
-    return { allowed: false, reason: "NO_SUBSCRIPTION", plan: null };
+    return { allowed: false, reason: "STORE_UNAVAILABLE", plan: null };
   }
   return evaluatePlanGate(
     sub ? { plan: sub.plan, status: sub.status, currentPeriodEnd: sub.currentPeriodEnd } : null,
