@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui";
+import { PendingSubmitButton } from "@/components/PendingSubmitButton";
 import { prisma } from "@/lib/prisma";
 import { fmtDate, fmtM } from "@/lib/format";
 import { submitFinancialsAction } from "./actions";
@@ -88,9 +89,7 @@ export default async function OnboardingFinancialsPage({ params }: { params: Pro
               />
             </div>
           </div>
-          <button type="submit" className="button-primary" style={{ width: "fit-content" }}>
-            Save financial state
-          </button>
+          <PendingSubmitButton label="Save financial state" pendingLabel="Saving…" />
         </form>
       </Card>
 
