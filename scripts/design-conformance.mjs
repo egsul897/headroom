@@ -5,44 +5,28 @@
  * PR/merge gate: new UI must use the design tokens and StatusBadge —
  * no ad-hoc colors, no retired font stacks.
  *
- * Rules:
- * 1. The token file (app/design-tokens.css) must define the Graphite
- *    Ledger palette (canvas/card/ink/muted/rail/oxblood + the three
- *    status pairs + info/unknown pairs).
- * 2. Added lines in the PR diff must not introduce hex color literals
- *    or retired font stacks in CONSUMER files (pages/components that
- *    use the system). Foundation files that DEFINE the system are
- *    exempt (token files, the shell, StatusBadge/presentation, the
- *    dev sample route, docs, tests).
+ * Ownership boundary: Headroom Designer owns the visual layer on
+ * draft PR #392 (branch cursor/cfo-visual-system-7768) — app/globals.css,
+ * app/home-shell.css, components/shell/*, StatusBadge/Select/ActionMenu,
+ * docs/DESIGN_SYSTEM.md. This script does NOT check token presence
+ * (tokens live in #392, not in this branch) and does NOT edit those
+ * files. It only checks that ADDED lines in consumer files (pages /
+ * components that use the system) introduce no ad-hoc hex colors or
+ * retired font stacks. Foundation files that DEFINE the system are
+ * exempt.
  *
  * Usage: node scripts/design-conformance.mjs [base-ref]
  *   base-ref defaults to origin/cursor/clf-release-1. In CI the
  *   workflow passes the PR base ref.
  */
 import { execSync } from "node:child_process";
-import { readFileSync, existsSync } from "node:fs";
 
-const REQUIRED_TOKENS = [
-  "#f3f0eb", // canvas
-  "#fffcf8", // card
-  "#1a1816", // ink
-  "#5e5852", // muted
-  "#2a2c2e", // rail
-  "#54243c", // primary oxblood
-  "#6b3050", // primary hover
-  "#0e6b43", // status green
-  "#e5f4ec", // green soft
-  "#7c4a00", // status amber
-  "#fbf3df", // amber soft
-  "#9d2c24", // status red
-  "#fdeceb", // red soft
-  "#e6e1da", // info soft
-  "#e8e3dc", // unknown soft
-];
+const HEX_RE = /#[0-9a-fA-F]{3,8}\b/;
+const RETIRED_FONT_RE = /Newsreader|Spline_Sans_Mono|Spline Sans|Public_Sans|Public Sans|Georgia|Times New Roman/;
 
-// Files that DEFINE the system (or are docs/tests/sample) — exempt.
+// Files that DEFINE the system (Designer-owned, PR #392) or are
+// docs/tests/sample — exempt.
 const EXEMPT = [
-  "app/design-tokens.css",
   "app/globals.css",
   "app/home-shell.css",
   "components/StatusBadge.tsx",
@@ -58,25 +42,10 @@ const EXEMPT = [
 ];
 const isExempt = (f) => EXEMPT.some((e) => (e.endsWith("/") ? f.startsWith(e) : f === e));
 
-const HEX_RE = /#[0-9a-fA-F]{3,8}\b/;
-const RETIRED_FONT_RE = /Newsreader|Spline_Sans_Mono|Spline Sans|Public_Sans|Public Sans|Georgia|Times New Roman/;
-
 const failures = [];
 
-// Rule 1: token file defines the palette.
-const tokenPath = "app/design-tokens.css";
-if (!existsSync(tokenPath)) {
-  failures.push(`${tokenPath} is missing — the Graphite Ledger token file must exist.`);
-} else {
-  const tokens = readFileSync(tokenPath, "utf8");
-  for (const hex of REQUIRED_TOKENS) {
-    if (!tokens.toLowerCase().includes(hex)) {
-      failures.push(`${tokenPath} is missing required token ${hex}.`);
-    }
-  }
-}
-
-// Rule 2: no ad-hoc colors / retired fonts in added lines of consumer files.
+// Added lines in consumer files must not introduce ad-hoc colors or
+// retired font stacks.
 const base = process.argv[2] || "origin/cursor/clf-release-1";
 function sh(cmd) {
   return execSync(cmd, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });

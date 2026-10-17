@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
-import { Inter, Newsreader, Public_Sans, Spline_Sans_Mono } from "next/font/google";
+import { Newsreader, Public_Sans, Spline_Sans_Mono } from "next/font/google";
 import "./globals.css";
-import "./design-tokens.css";
 
 export const metadata = {
   title: "Headroom",
@@ -20,12 +19,6 @@ export const metadata = {
 const newsreader = Newsreader({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-serif-src", display: "swap" });
 const splineSansMono = Spline_Sans_Mono({ subsets: ["latin"], variable: "--font-mono-src", display: "swap" });
 const publicSans = Public_Sans({ subsets: ["latin"], variable: "--font-sans-src", display: "swap" });
-// Design system (Graphite Ledger): Inter is the product face. The
-// three prototype loaders above stay for now so legacy var()
-// consumers keep resolving; design-tokens.css points --font-serif /
-// --font-mono / --font-sans at this Inter variable. PR #392 removes
-// the retired loaders.
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter-src", display: "swap" });
 
 // Every page reads live from Postgres - always render fresh rather than
 // serving a build-time snapshot.
@@ -43,7 +36,7 @@ export const dynamic = "force-dynamic";
  */
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${newsreader.variable} ${splineSansMono.variable} ${publicSans.variable} ${inter.variable}`}>
+    <html lang="en" className={`${newsreader.variable} ${splineSansMono.variable} ${publicSans.variable}`}>
       <body>
         <main>{children}</main>
       </body>

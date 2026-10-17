@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Card, Chip } from "@/components/ui";
-import { StatusBadge } from "@/components/StatusBadge";
 import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
@@ -235,15 +234,16 @@ export default async function RulebookPage({
                         </div>
                         <div className="row-value">
                           {c.decision ? (
-                            <StatusBadge code={c.decision.decision}>
+                            <Chip tone={c.decision.decision === "REJECTED" ? "tight" : "pass"}>
                               {c.decision.decision}
                               {c.decision.version ? ` v${c.decision.version}` : ""}
-                            </StatusBadge>
+                            </Chip>
                           ) : (
-                            <StatusBadge code="AI_DRAFT" />
+                            <Chip tone="idle">AI DRAFT</Chip>
                           )}{" "}
-                          {c.decision?.reviewerKind === "SYSTEM" && <StatusBadge code="SYSTEM_ACCEPTED" />}
-                          {c.decision?.reviewerKind === "COUNSEL" && <StatusBadge code="COUNSEL_DECIDED" />}
+                          {c.decision?.reviewerKind === "SYSTEM" && (
+                            <Chip tone="idle">System-accepted — not counsel-verified</Chip>
+                          )}
                           {c.posture && <Chip tone="navy">{c.posture}</Chip>}
                           {c.typeMismatch && <Chip tone="tight">TYPE MISMATCH — {c.typeMismatch}</Chip>}
                         </div>
