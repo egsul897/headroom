@@ -1,5 +1,14 @@
 import { createHash } from "node:crypto";
 import { parseDocument } from "../../extraction/parse";
+import { locateTextSpan } from "../../extraction/html-hardening";
+
+/** A redline-ambiguous span re-located into normalized-text coordinates (charStart/charEnd -1 when unlocatable). */
+export interface RedlineSpanInText {
+  charStart: number;
+  charEnd: number;
+  tagName: string;
+  text: string;
+}
 
 export function extractTextFromBytes(bytes: Buffer, mimeHint?: string, filename?: string): { text: string; mimeType: string } {
   const ext = (filename ?? "").toLowerCase().split(".").pop() ?? "";
@@ -25,12 +34,28 @@ export function extractTextFromBytes(bytes: Buffer, mimeHint?: string, filename?
   return { text: "", mimeType };
 }
 
-export async function extractTextAsync(bytes: Buffer, filename?: string): Promise<{ text: string; mimeType: string; normalizedTextHash: string }> {
+export async function extractTextAsync(bytes: Buffer, filename?: string): Promise<{ text: string; mimeType: string; normalizedTextHash: string; redlineAmbiguities: RedlineSpanInText[] }> {
   const { mimeType } = extractTextFromBytes(bytes, undefined, filename);
   try {
     const parsed = await parseDocument(bytes, mimeType);
     const text = normalizeText(parsed.fullText);
-    return { text, mimeType, normalizedTextHash: hashText(text) };
+    // Re-locate each redline-ambiguous span in the normalized text
+    // (normalization collapses blank lines and non-breaking spaces,
+    // so parse-level offsets do not carry over verbatim). A span
+    // that cannot be located keeps its text with -1 offsets —
+    // consumers fall back to text containment; the record itself is
+    // never dropped.
+    const redlineAmbiguities: RedlineSpanInText[] = (parsed.redlineAmbiguities ?? []).map((span) => {
+      if (!span.text) return { charStart: text.length, charEnd: text.length, tagName: span.tagName, text: "" };
+      const located = locateTextSpan(text, span.text);
+      return {
+        charStart: located?.start ?? -1,
+        charEnd: located?.end ?? -1,
+        tagName: span.tagName,
+        text: span.text,
+      };
+    });
+    return { text, mimeType, normalizedTextHash: hashText(text), redlineAmbiguities };
   } catch {
     // Unsupported / failed parse — never surface raw bytes as "text". A PDF
     // that fails to parse is binary (starts "%PDF", contains NULs); dumping
@@ -38,10 +63,10 @@ export async function extractTextAsync(bytes: Buffer, filename?: string): Promis
     // plus compressed binary gibberish. Return empty so callers show an
     // honest "extraction unavailable" state instead of fake text.
     if (looksBinary(bytes)) {
-      return { text: "", mimeType, normalizedTextHash: hashText("") };
+      return { text: "", mimeType, normalizedTextHash: hashText(""), redlineAmbiguities: [] };
     }
     const text = normalizeText(bytes.toString("utf8"));
-    return { text, mimeType, normalizedTextHash: hashText(text) };
+    return { text, mimeType, normalizedTextHash: hashText(text), redlineAmbiguities: [] };
   }
 }
 

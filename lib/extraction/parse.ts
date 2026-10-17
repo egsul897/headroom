@@ -33,7 +33,7 @@
 
 import { extractText, getDocumentProxy } from "unpdf";
 import mammoth from "mammoth";
-import { decodeNumericEntities, dropStruckHtml } from "./html-hardening";
+import { analyzeStruckHtml, decodeNumericEntities, dropStruckHtml, locateTextSpan } from "./html-hardening";
 
 export interface ParsedPage {
   /** 1-indexed. Always 1 for formats with no real page concept (DOCX, TXT). */
@@ -41,10 +41,33 @@ export interface ParsedPage {
   text: string;
 }
 
+/**
+ * A span of extracted text whose operative status is AMBIGUOUS
+ * because it follows an unmatched struck-through (redline deletion)
+ * element: the element's close tag never appears, so the span may be
+ * text the parties deleted — or live text after a stray tag. The
+ * text is preserved in the document (evidence is never destroyed on
+ * a guess); this record is how the uncertainty propagates: items
+ * whose source intersects the span are flagged, and authoritative
+ * conclusions (compiled formulas, capacity) must not rest on it.
+ */
+export interface RedlineAmbiguity {
+  reason: "UNMATCHED_REDLINE_ELEMENT";
+  /** Tag name of the unmatched element ("strike" | "s" | "del" | styled element's tag). */
+  tagName: string;
+  /** The ambiguous span's plain text, as it appears in the document text ("" when it carried no text). */
+  text: string;
+  /** Offsets into ParsedDocument.fullText; -1 when the span text could not be located verbatim. */
+  start: number;
+  end: number;
+}
+
 export interface ParsedDocument {
   pages: ParsedPage[];
   /** pages' text joined with "\n\n" - what lib/extraction/chunk.ts actually segments. */
   fullText: string;
+  /** Redline-ambiguous spans found during HTML extraction (HTML inputs only). */
+  redlineAmbiguities?: RedlineAmbiguity[];
 }
 
 const PDF_CONTENT_TYPES = new Set(["application/pdf"]);
@@ -101,8 +124,33 @@ function stripHtmlToText(html: string): string {
 }
 
 function parseHtml(data: Buffer): ParsedDocument {
-  const pages: ParsedPage[] = [{ pageNumber: 1, text: stripHtmlToText(data.toString("utf-8")) }];
-  return { pages, fullText: joinPages(pages) };
+  const rawHtml = data.toString("utf-8");
+  const withoutNonContent = rawHtml.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
+  const { html: withoutStruck, unmatched } = analyzeStruckHtml(withoutNonContent);
+  const text = stripHtmlToText(withoutStruck);
+  const pages: ParsedPage[] = [{ pageNumber: 1, text }];
+  const fullText = joinPages(pages);
+  // Record every unmatched struck element's span in fullText
+  // coordinates. The span text is produced by running the span's own
+  // HTML fragment through the same strip pipeline, then located in
+  // the document text; when it cannot be located verbatim the record
+  // keeps the text with start/end = -1 (consumers fall back to text
+  // containment — the uncertainty is never dropped).
+  const redlineAmbiguities: RedlineAmbiguity[] = unmatched.map((span) => {
+    const spanText = stripHtmlToText(withoutStruck.slice(span.htmlStart, span.htmlEnd));
+    if (!spanText) {
+      return { reason: "UNMATCHED_REDLINE_ELEMENT" as const, tagName: span.tagName, text: "", start: fullText.length, end: fullText.length };
+    }
+    const located = locateTextSpan(fullText, spanText);
+    return {
+      reason: "UNMATCHED_REDLINE_ELEMENT" as const,
+      tagName: span.tagName,
+      text: spanText,
+      start: located?.start ?? -1,
+      end: located?.end ?? -1,
+    };
+  });
+  return { pages, fullText, redlineAmbiguities };
 }
 
 function joinPages(pages: ParsedPage[]): string {

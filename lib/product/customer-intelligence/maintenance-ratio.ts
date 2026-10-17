@@ -34,6 +34,10 @@ export function parseMaintenanceRatio(item: CovenantSummaryItem): MaintenanceRat
   // tail hides others — no single-test provision from a partial
   // excerpt. EDITED items are exempt (counsel-supplied text).
   if (item.operativeExcerptTruncated && item.reviewerDecision !== "EDITED") return null;
+  // P1 (PR #428): redline-ambiguous text may be text the parties
+  // deleted — no maintenance ratio from it. EDITED items are
+  // exempt (counsel-supplied text), as under Rule 192.
+  if (item.redlineAmbiguous && item.reviewerDecision !== "EDITED") return null;
   // Exactly one distinct ratio threshold across the item's baskets.
   const basketRatios = [...new Set(
     (item.materialBasketsThresholds ?? [])
