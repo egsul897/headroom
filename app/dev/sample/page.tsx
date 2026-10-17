@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { StatusBadge } from "@/components/StatusBadge";
 import { CompanyOverview } from "@/components/home/Overview";
 import { AppShell } from "@/components/shell/AppShell";
 import { BrandMark } from "@/components/home/icons";
@@ -153,37 +152,13 @@ function CovenantsSample({ brand, initialDetail = false }: { brand?: string; ini
         <div>
           <p className="page-kicker">Covenants</p>
           <h1 className="page-question">What do the documents restrict?</h1>
-          <p className="page-answer">Counsel starts at the clause and the redline. This text is sample language, not an agreement.</p>
+          <p className="page-answer">The clause is the answer. The redline opens beside it. This is sample language, not an agreement.</p>
         </div>
         <Link className="button button-quiet" href={sampleHref("overview", brand)}>
           Back to sample summary
         </Link>
       </header>
-      <Card>
-        <div className="card-title">Redline</div>
-        <div className="card-subtitle">Base beside amendment. Sample discovery — not counsel approval.</div>
-        <article className="clause">
-          <div className="clause-head">
-            <div className="clause-sec">§6.04</div>
-            <StatusBadge status="DISCOVERED" />
-          </div>
-          <div className="redline">
-            <div className="redline-col redline-base">
-              <span className="redline-label">Base document</span>
-              <div>The sample borrower shall not incur additional debt except as this sample section permits.</div>
-            </div>
-            <div className="redline-col redline-amend">
-              <span className="redline-label">Amendment</span>
-              <div>The sample borrower may incur incremental debt under a sample basket, subject to a sample ratio test.</div>
-            </div>
-          </div>
-        </article>
-      </Card>
-      <Card>
-        <div className="card-title">Indebtedness</div>
-        <div className="card-subtitle">Two sample provisions. Open one without leaving the page.</div>
-        <SampleClauses initialDetail={initialDetail} />
-      </Card>
+      <SampleClauses initialDetail={initialDetail} />
     </div>
   );
 }
@@ -195,36 +170,19 @@ function CapacitySample() {
         <div>
           <p className="page-kicker">Capacity</p>
           <h1 className="page-question">How much capacity can we rely on?</h1>
-          <p className="page-answer">A treasurer or lender reads the authority before the figure. This figure is an illustration.</p>
+          <p className="page-answer">The figure is only as good as its authority. This one is an illustration.</p>
         </div>
       </header>
-      <div className="home-split">
-        <SampleKpi label="Secured, sample" value="$40 million" caption="Illustrative remaining. Not a certified path." />
-        <SampleKpi label="Unsecured, sample" value="Not evaluated" caption="No sample path. Not zero and not unlimited." />
+      <div className="home-answer">
+        <div className="home-hero">
+          <SampleKpi label="Secured, sample" value="$40 million" caption="Illustrative remaining. Not a certified path." />
+        </div>
+        <div className="home-facts">
+          <SampleKpi label="Unsecured, sample" value="Not evaluated" caption="No sample path. Not zero and not unlimited." />
+          <SampleKpi label="Authority" value="Legacy engine" caption="A production number appears only when an executable path returns one." />
+          <SampleKpi label="Citation" value="§4.09" caption="Sample secured notes. Snapshot sample-snapshot-001, March 31, 2024." />
+        </div>
       </div>
-      <Card>
-        <div className="card-title">Provenance</div>
-        <div className="card-subtitle">What the illustration pretends to rest on, so the real screen’s shape is visible.</div>
-        <div className="row">
-          <div className="row-label">Authority</div>
-          <div className="row-value">
-            <StatusBadge status="LEGACY_ENGINE" />
-          </div>
-        </div>
-        <div className="row">
-          <div className="row-label">Snapshot</div>
-          <div className="row-value">sample-snapshot-001 · March 31, 2024</div>
-        </div>
-        <div className="row">
-          <div className="row-label">Ledger</div>
-          <div className="row-value">3 sample usages</div>
-        </div>
-        <div className="row">
-          <div className="row-label">Binding citation</div>
-          <div className="row-value">Sample secured notes §4.09</div>
-        </div>
-        <div className="row-note">A production number appears only when an executable path returns one. This row does not.</div>
-      </Card>
     </div>
   );
 }

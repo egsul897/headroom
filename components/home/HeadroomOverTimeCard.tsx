@@ -3,19 +3,17 @@ import { EmptyCopy, LoadedList, RegionCard } from "./RegionCard";
 
 export function HeadroomOverTimeCard({ state = UNKNOWN_STATE }: { state?: ListLoadState<"headroomOverTime"> }) {
   const presented = presentList(state, "headroomOverTime");
+  if (presented.kind !== "VERIFIED_POPULATED") {
+    return (
+      <RegionCard region="headroom-over-time" eyebrow="Headroom over time">
+        <EmptyCopy slot="headroomOverTime" state={presented} />
+      </RegionCard>
+    );
+  }
+
   return (
-    <RegionCard
-      region="headroom-over-time"
-      eyebrow="Headroom over time"
-      toolbar={
-        <select className="home-period" disabled aria-disabled="true" title="History is not loaded" defaultValue="unloaded">
-          <option value="unloaded">Period not loaded</option>
-        </select>
-      }
-    >
-      <div className="home-chart-well" aria-hidden="false">
-        {presented.kind === "VERIFIED_POPULATED" ? <LoadedList rows={presented.rows} /> : <EmptyCopy slot="headroomOverTime" state={presented} />}
-      </div>
+    <RegionCard region="headroom-over-time" eyebrow="Headroom over time">
+      <LoadedList rows={presented.rows} />
     </RegionCard>
   );
 }

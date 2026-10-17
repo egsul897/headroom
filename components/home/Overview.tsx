@@ -97,25 +97,23 @@ export function CompanyOverview({
         </section>
       ) : null}
 
-      <div className="home-regions">
-        <div className="home-kpis">
+      <div className="home-answer">
+        <div className="home-hero">
           <TotalHeadroomCard state={slots.totalHeadroom} />
+        </div>
+        <div className="home-facts">
           <UtilizationCard state={slots.utilization} />
           <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
           <NextTestCard state={slots.nextTest} />
         </div>
-        <div className="home-split">
-          <HeadroomOverTimeCard state={slots.headroomOverTime} />
-          <CapacitySummaryCard state={slots.capacitySummary} />
-        </div>
-        <div className="home-split">
-          <StatusTable state={slots.statusTable} />
-          <DriversCard state={slots.drivers} />
-        </div>
-        <div className="home-pair">
-          <AlertsCard state={alerts} />
-          <TransactionsCard state={slots.transactions} />
-        </div>
+      </div>
+      <div className="home-rest">
+        <HeadroomOverTimeCard state={slots.headroomOverTime} />
+        <CapacitySummaryCard state={slots.capacitySummary} />
+        <StatusTable state={slots.statusTable} />
+        <DriversCard state={slots.drivers} />
+        <AlertsCard state={alerts} />
+        <TransactionsCard state={slots.transactions} />
       </div>
       {authorityNote ? (
         <p className="home-authority-note" data-authority-note>

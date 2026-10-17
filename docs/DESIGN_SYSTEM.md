@@ -48,7 +48,7 @@ They need the same portfolio list, with customer companies kept apart from evalu
 
 ### Color
 
-The product default is **Graphite Ledger**: stone field `#f3f0eb`, graphite rail `#2a2c2e`, oxblood action `#54243c`. Earlier cool and navy trials are sample-only.
+The product default is **Graphite Ledger**: stone field `#f3f0eb`, graphite rail `#2a2c2e`, oxblood action `#54243c`. Earlier cool and navy trials are sample-only. What to take from other products, and what to leave there, is in `docs/design/INSPIRATION.md`.
 
 | Option | Field | Why it did or did not ship |
 | --- | --- | --- |

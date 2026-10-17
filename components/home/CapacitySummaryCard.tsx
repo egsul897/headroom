@@ -37,9 +37,7 @@ export function CapacitySummaryCard({ state = UNKNOWN_STATE }: { state?: FigureL
   if (presented.kind !== "VERIFIED_POPULATED") {
     return (
       <RegionCard region="capacity-summary" eyebrow="Capacity summary">
-        <div className="home-chart-well">
-          <EmptyCopy slot="capacitySummary" state={presented} />
-        </div>
+        <EmptyCopy slot="capacitySummary" state={presented} />
       </RegionCard>
     );
   }

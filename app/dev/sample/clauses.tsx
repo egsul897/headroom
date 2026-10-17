@@ -44,8 +44,8 @@ export function SampleClauses({ initialDetail = false }: { initialDetail?: boole
           </div>
           <p className="row-note">{item.reading}</p>
           <div className="clause-actions">
-            <button type="button" className="button" onClick={() => setOpen(index)}>
-              Open detail
+            <button type="button" className={index === 0 ? "button button-primary" : "button button-quiet"} onClick={() => setOpen(index)}>
+              {index === 0 ? "Open the redline" : "Open detail"}
             </button>
           </div>
         </article>
@@ -54,6 +54,18 @@ export function SampleClauses({ initialDetail = false }: { initialDetail?: boole
         {clause ? (
           <>
             <p className="drawer-note">{clause.reading}</p>
+            {clause.section === "§6.04" ? (
+              <div className="redline">
+                <div className="redline-col redline-base">
+                  <span className="redline-label">Base document</span>
+                  <div>The sample borrower shall not incur additional debt except as this sample section permits.</div>
+                </div>
+                <div className="redline-col redline-amend">
+                  <span className="redline-label">Amendment</span>
+                  <div>The sample borrower may incur incremental debt under a sample basket, subject to a sample ratio test.</div>
+                </div>
+              </div>
+            ) : null}
             <dl className="drawer-facts">
               <div>
                 <dt>Citation</dt>

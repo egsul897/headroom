@@ -14,6 +14,14 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const open = openIndex == null ? null : rows[openIndex] ?? null;
 
+  if (presented.kind !== "VERIFIED_POPULATED") {
+    return (
+      <RegionCard region="headroom-status" eyebrow="Headroom status">
+        <EmptyCopy slot="statusTable" state={presented} />
+      </RegionCard>
+    );
+  }
+
   return (
     <RegionCard region="headroom-status" eyebrow="Headroom status">
       <div className="home-table-wrap">
@@ -28,30 +36,22 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
             </tr>
           </thead>
           <tbody>
-            {presented.kind === "VERIFIED_POPULATED" ? (
-              rows.map((row, index) => (
-                <tr key={`${row.covenant}-${row.facility}-${row.headroom}`} data-load-kind="VERIFIED_POPULATED">
-                  <td>
-                    <button type="button" className="row-detail" onClick={() => setOpenIndex(index)}>
-                      {row.covenant}
-                    </button>
-                  </td>
-                  <td>{row.facility}</td>
-                  <td>
-                    <StatusBadge status={row.status} />
-                  </td>
-                  <td className="num">{row.headroom}</td>
-                  <td className="home-trend-cell">{row.trend && row.trend !== "—" ? row.trend : "Unknown"}</td>
-                  <td>{row.nextTest}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={COLUMNS.length}>
-                  <EmptyCopy slot="statusTable" state={presented} />
+            {rows.map((row, index) => (
+              <tr key={`${row.covenant}-${row.facility}-${row.headroom}`} data-load-kind="VERIFIED_POPULATED">
+                <td>
+                  <button type="button" className="row-detail" onClick={() => setOpenIndex(index)}>
+                    {row.covenant}
+                  </button>
                 </td>
+                <td>{row.facility}</td>
+                <td>
+                  <StatusBadge status={row.status} />
+                </td>
+                <td className="num">{row.headroom}</td>
+                <td className="home-trend-cell">{row.trend && row.trend !== "—" ? row.trend : "Unknown"}</td>
+                <td>{row.nextTest}</td>
               </tr>
-            )}
+            ))}
           </tbody>
         </table>
       </div>

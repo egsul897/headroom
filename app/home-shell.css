@@ -245,8 +245,88 @@ main:has(.app-shell) {
 
 .home-overview {
   display: grid;
+  gap: 40px;
+  max-width: 960px;
+}
+
+.home-answer {
+  display: grid;
   gap: 28px;
-  max-width: 1120px;
+}
+
+.home-hero .home-card {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  min-height: 0;
+}
+
+.home-hero .home-eyebrow {
+  margin-bottom: 8px;
+}
+
+.home-hero .home-kpi-value-hero,
+.home-hero .home-headline {
+  font-size: 56px;
+  font-weight: 560;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+}
+
+.home-hero .home-detail,
+.home-hero .home-kpi-caption {
+  max-width: 36rem;
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.home-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--shell-line);
+}
+
+.home-facts .home-card {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  min-height: 0;
+}
+
+.home-rest {
+  display: grid;
+}
+
+.home-rest .home-card:has(.home-empty) {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) minmax(0, 1fr);
+  gap: 8px 24px;
+  align-items: baseline;
+  border: none;
+  border-bottom: 1px solid var(--shell-line);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 18px 0;
+  min-height: 0;
+}
+
+.home-rest .home-card:has(.home-empty) .home-card-head {
+  margin: 0;
+}
+
+.home-rest .home-card:has(.home-empty) .home-empty .home-headline {
+  font-size: 15px;
+  font-weight: 560;
+}
+
+.home-rest .home-card:has(.home-empty) .home-detail {
+  margin-top: 2px;
 }
 
 .home-top {
@@ -715,10 +795,10 @@ main:has(.app-shell) {
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
-  margin-top: 10px;
-  max-width: 280px;
+  margin-top: 16px;
+  max-width: 36rem;
   text-decoration: none;
-  color: inherit;
+  color: var(--shell-muted);
 }
 
 .home-chart-well {
@@ -866,9 +946,17 @@ main:has(.app-shell) {
   .home-top,
   .home-split,
   .home-pair,
-  .home-kpis {
+  .home-kpis,
+  .home-facts,
+  .home-rest .home-card:has(.home-empty) {
     grid-template-columns: 1fr;
     display: grid;
+  }
+
+  .home-hero .home-kpi-value-hero,
+  .home-hero .home-headline,
+  .home-hero .sample-figure {
+    font-size: 40px;
   }
 
   .home-top {
@@ -1366,6 +1454,13 @@ main:has(.app-shell) {
   .card:hover {
     transform: translateY(-3px);
     box-shadow: 0 14px 32px rgba(26, 24, 22, 0.08);
+  }
+
+  .home-hero .home-card:hover,
+  .home-facts .home-card:hover,
+  .home-rest .home-card:has(.home-empty):hover {
+    transform: none;
+    box-shadow: none;
   }
 
   .skeleton-bar,
