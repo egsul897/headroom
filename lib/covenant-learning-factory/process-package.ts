@@ -70,6 +70,28 @@ export interface ProcessPackageOptions {
    * write it to Neon without recompiling (re-persist skipped packages).
    */
   rePersistNeon?: boolean;
+  /** Directory for the unit dump (default: the committed docs dump dir); null skips the dump. HELD_OUT/BLIND packages
+   *  are never written into the committed dump dir (see unitDumpTarget). */
+  unitDumpDir?: string | null;
+}
+
+/** Cohorts whose committed artifacts are frozen: never regenerated in place. */
+export const PROTECTED_COHORTS: ReadonlySet<string> = new Set(["HELD_OUT", "BLIND"]);
+export const COMMITTED_UNIT_DUMP_DIR = "docs/covenant-learning-factory/unit-dumps";
+
+/**
+ * Where the unit dump for `spec` goes, or null to skip it. Default: the committed dump directory under `repoRoot`.
+ * A protected cohort (HELD_OUT/BLIND) is refused anywhere inside the committed dump directory, whether by default or by an
+ * explicit unitDumpDir that resolves there; it is written only to an explicit directory elsewhere (e.g. a temp dir).
+ */
+export function unitDumpTarget(spec: Pick<LearningPackageSpec, "packageKey" | "cohort">, repoRoot: string, unitDumpDir?: string | null): string | null {
+  if (unitDumpDir === null) return null;
+  const committed = path.resolve(repoRoot, COMMITTED_UNIT_DUMP_DIR);
+  const dir = path.resolve(unitDumpDir ?? committed);
+  const target = path.join(dir, `${spec.packageKey}.units.json`);
+  const inCommitted = target === committed || target.startsWith(committed + path.sep);
+  if (PROTECTED_COHORTS.has(String(spec.cohort)) && inCommitted) return null;
+  return target;
 }
 
 export interface ProcessPackageResult {
@@ -251,11 +273,12 @@ export async function processLearningPackage(
       paidInferenceUsed: result.paidInferenceUsed,
     };
 
-    // Persist unit dump for refusal audits (git-safe under docs/).
-    const dumpDir = path.join(repoRoot, "docs/covenant-learning-factory/unit-dumps");
-    mkdirSync(dumpDir, { recursive: true });
-    writeFileSync(
-      path.join(dumpDir, `${spec.packageKey}.units.json`),
+    // Persist unit dump for refusal audits. HELD_OUT dumps are never written into the committed dump directory (the
+    // held-out evidence is frozen); see unitDumpTarget.
+    const dumpPath = unitDumpTarget(spec, repoRoot, options.unitDumpDir);
+    if (dumpPath) mkdirSync(path.dirname(dumpPath), { recursive: true });
+    if (dumpPath) writeFileSync(
+      dumpPath,
       JSON.stringify(
         {
           packageKey: spec.packageKey,
