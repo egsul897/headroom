@@ -6,7 +6,9 @@ type Ctx = { params: Promise<{ companyId: string; documentId: string }> };
 
 /**
  * CFO confirms an add-back (authenticated; confirmedBy is the session principal):
- * { inputKey, value (non-negative integer USD), source, kind?: "AMOUNT" | "LENDER_APPROVAL", idempotencyKey? }
+ * { inputKey, value (non-negative integer USD), source, kind?: "AMOUNT" | "LENDER_APPROVAL" | "BASE_METRIC", idempotencyKey? }
+ * BASE_METRIC: inputKey METRIC:REVENUE, a revenue figure the filings lack, accepted only against the box's ERP evidence
+ * (source = the suggestion's erp:… reference with its exact value, or another document within 10x of it).
  * (or an Idempotency-Key header). Appended to Neon; the box is recomputed and returned with this item's gain.
  */
 export async function POST(req: Request, ctx: Ctx) {
