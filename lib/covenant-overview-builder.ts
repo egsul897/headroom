@@ -21,6 +21,7 @@ import {
   computeCovenantPosition,
   computeRemainingCapacityAfterDebtIncurrence,
   evaluateProvision,
+  readStructuralProvenanceFlags,
   resolveDocumentSideCoverage,
   type CapacityExpr,
   type CompanyCovenantData,
@@ -83,6 +84,13 @@ export interface CapacityRow {
   entityScope: string[];
   tier: RowTier;
   reason?: string;
+  /**
+   * Phase E provenance: the compiled Permission behind this row was minted
+   * from a source provision whose structural relationship (parentage /
+   * placement in the document tree) is unresolved. Display-only marker —
+   * it never alters any figure, status, or gate on the row.
+   */
+  structuralUnresolved?: boolean;
 }
 
 export interface RatioRow {
@@ -272,6 +280,9 @@ function buildCapacityRowFromPermission(
   bindingKeys: Set<string>,
   attributed?: AttributedUtilizationIndex | null,
 ): CapacityRow {
+  // Phase E provenance lives on the Permission's params JSON (not in
+  // FormulaParams' typed fields) — read it defensively, surface verbatim.
+  const structuralUnresolved = readStructuralProvenanceFlags(p.params).structuralUnresolved || undefined;
   if (p.modelingStatus === "KNOWN_NOT_MODELED") {
     return {
       kind: "CAPACITY",
@@ -293,6 +304,7 @@ function buildCapacityRowFromPermission(
       entityScope: p.entityScope,
       tier: "EXCEPTION",
       reason: p.notes ?? "Acknowledged as a real, applicable provision that has not been modeled yet.",
+      structuralUnresolved,
     };
   }
 
@@ -332,6 +344,7 @@ function buildCapacityRowFromPermission(
     entityScope: p.entityScope,
     tier: "CONDITIONAL",
     reason: evaluated.reason,
+    structuralUnresolved,
   };
 }
 
