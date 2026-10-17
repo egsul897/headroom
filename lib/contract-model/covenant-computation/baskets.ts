@@ -7,6 +7,7 @@
  * unless the clause states that conversion (it does not, here).
  */
 
+import { nonUsdCurrency } from "./currency";
 import { xbrlInUnit } from "@/lib/covenant-learning-factory/xbrl/bind";
 import { FORMULA_TAXONOMY } from "@/lib/basket-formula-corpus";
 import type { FormulaKind } from "@/lib/basket-formula-corpus";
@@ -127,8 +128,18 @@ export function evaluateBasket(
                         note: "Reclassification is named. No election record is bound, so no amount is transferred.",
                       }
                     : numericButOpen(clause);
+  const fx = nonUsdCurrency(clause.operativeText);
+  if (fx && (partial.capCanonical != null || partial.capCurrency === "USD")) {
+    return present(clause, {
+      ...base,
+      ...partial,
+      ...capShell("NEEDS_INPUT", "NONE", null, null, [`currency conversion ${fx} to USD (sourced rate)`], null),
+      note: `The cap is stated in ${fx}, not US dollars. It is held until it is converted at a sourced rate; the figure is never read as USD.`,
+    });
+  }
   return present(clause, { ...base, ...partial });
 }
+
 
 /**
  * "The Company will not permit, as of the end of any fiscal quarter, X to have an aggregate of over 25% of Total
