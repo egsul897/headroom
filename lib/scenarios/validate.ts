@@ -1,5 +1,5 @@
 /**
- * Saved Simulate scenarios — #414 `SavedScenario {id, name, savedAt, lines: {label, value}[]}`.
+ * Saved Simulate scenarios — PR 414 `SavedScenario {id, name, savedAt, lines: {label, value}[]}`.
  * Lines are saved DISPLAY values (strings) exactly as the CFO saw them; the server never
  * parses them into figures or recomputes them. Bounded input; anything else is rejected.
  */

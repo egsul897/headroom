@@ -4733,7 +4733,7 @@ model CustomerTreeChecklist {
   @@map("customer_tree_checklist")
 }
 
-/// Saved Simulate scenarios (#414 SavedScenario). Lines are the display values the CFO saw
+/// Saved Simulate scenarios (PR 414 SavedScenario). Lines are the display values the CFO saw
 /// when saving ({label, value} strings), stored verbatim — never re-computed or treated as
 /// engine output. Scoped to a workspace (Company).
 model SavedScenario {

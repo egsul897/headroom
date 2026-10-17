@@ -1,4 +1,4 @@
--- Grok: saved Simulate scenarios (#414 SavedScenario). Additive only.
+-- Grok: saved Simulate scenarios (PR 414 SavedScenario). Additive only.
 -- NOT applied to Neon by this PR; Egzon applies migrations.
 -- CreateTable
 CREATE TABLE "saved_scenarios" (
