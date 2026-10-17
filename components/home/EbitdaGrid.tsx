@@ -88,7 +88,7 @@ export function CouldntCompute({
   return (
     <div className="ebitda-failed">
       <p className="ebitda-failed-line">
-        <span>Couldn't compute</span>
+        <span>Couldn&rsquo;t compute</span>
         {updated ? <span>{updated}</span> : null}
       </p>
       <p>{reason}</p>
