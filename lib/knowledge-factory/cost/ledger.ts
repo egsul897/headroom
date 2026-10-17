@@ -133,6 +133,8 @@ export function emptyStats(): CorpusManifestStats {
     unsupportedFormats: 0,
     duplicateRate: 0,
     errors: 0,
+    structuralHealthErrors: 0,
+    structuralViolationNodes: 0,
     measuredProcessingMs: 0,
     actualPaidSpendUsd: 0,
   };

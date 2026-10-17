@@ -38,6 +38,15 @@ export interface ProcessDocumentResult {
   crossReferenceCount: number;
   conditionExceptionCount: number;
   ambiguousCount: number;
+  /**
+   * D12: structural-index health ERROR count computed by
+   * extractStructure for this document. Wired through from the
+   * extraction result (previously computed and dropped here);
+   * 0 on paths where no structure was extracted.
+   */
+  structuralHealthErrors: number;
+  /** D12: nodes carrying ≥1 structural-integrity violation. */
+  structuralViolationNodes: number;
   processingMs: number;
   wasDuplicate: boolean;
 }
@@ -66,6 +75,10 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       crossReferenceCount: store.loadCrossReferences(existingByHash.sourceId).length,
       conditionExceptionCount: store.loadConditions(existingByHash.sourceId).length,
       ambiguousCount: store.loadStructuralNodes(existingByHash.sourceId).filter((n) => n.ambiguous).length,
+      structuralHealthErrors: existingByHash.structuralHealthErrors ?? 0,
+      structuralViolationNodes: store
+        .loadStructuralNodes(existingByHash.sourceId)
+        .filter((n) => (n.structuralViolations?.length ?? 0) > 0).length,
       processingMs: Date.now() - started,
       wasDuplicate: true,
     };
@@ -132,6 +145,8 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       crossReferenceCount: 0,
       conditionExceptionCount: 0,
       ambiguousCount: 0,
+      structuralHealthErrors: 0,
+      structuralViolationNodes: 0,
       processingMs: Date.now() - started,
       wasDuplicate: false,
     };
@@ -148,6 +163,8 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       crossReferenceCount: 0,
       conditionExceptionCount: 0,
       ambiguousCount: 0,
+      structuralHealthErrors: 0,
+      structuralViolationNodes: 0,
       processingMs: Date.now() - started,
       wasDuplicate: false,
     };
@@ -183,6 +200,7 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
     extractionStatus: "CANDIDATES_DISCOVERED",
     representationLevel: candidates.length > 0 ? "DISCOVERED_CANDIDATE" : "STRUCTURALLY_INDEXED",
     normalizedTextHash,
+    structuralHealthErrors: structural.structuralHealthErrors,
   };
   source = attachInstrumentIdentity(source);
   assertRepresentationCannotApproveCapacity(source.representationLevel);
@@ -201,6 +219,8 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
     crossReferenceCount: structural.crossReferences.length,
     conditionExceptionCount: conditions.length,
     ambiguousCount: structural.ambiguousCount,
+    structuralHealthErrors: structural.structuralHealthErrors,
+    structuralViolationNodes: structural.nodes.filter((n) => (n.structuralViolations?.length ?? 0) > 0).length,
     processingMs,
     wasDuplicate: false,
   };
@@ -345,6 +365,15 @@ export function finalizeCorpusIndex(store: CorpusStore): CorpusManifestStats {
   stats.unsupportedFormats = sources.filter((s) => s.extractionStatus === "UNSUPPORTED_FORMAT").length;
   stats.duplicateRate = sources.length === 0 ? 0 : dups.length / sources.length;
   stats.errors = sources.filter((s) => s.extractionStatus === "FAILED").length;
+  // D12: surface the structural health the pipeline computed per
+  // document — health ERRORs persisted on each source record at
+  // process time (absent on legacy records, counted as 0) and
+  // violation-bearing nodes counted from the persisted nodes.
+  stats.structuralHealthErrors = sources.reduce((n, s) => n + (s.structuralHealthErrors ?? 0), 0);
+  stats.structuralViolationNodes = sources.reduce(
+    (n, s) => n + (nodesBySource.get(s.sourceId) ?? []).filter((node) => (node.structuralViolations?.length ?? 0) > 0).length,
+    0,
+  );
   stats.measuredProcessingMs = costs.parsingMs;
   stats.actualPaidSpendUsd = costs.actualPaidUsd;
 
