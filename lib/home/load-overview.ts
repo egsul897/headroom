@@ -34,6 +34,8 @@ import {
   type StatusRow,
 } from "@/lib/home/load-state";
 import { getCompanySetupStatus, nextSetupStep, type CompanySetupStatus } from "@/lib/onboarding/setup-status";
+import { keyRatiosFromPosition } from "@/lib/home/key-ratios";
+import { UNLOADED_KEY_RATIOS, type KeyRatioModel } from "@/lib/ux/present";
 
 export interface CompanyOverviewBundle {
   companyId: string;
@@ -43,6 +45,7 @@ export interface CompanyOverviewBundle {
   authorityNote: string;
   setup: CompanySetupStatus | null;
   setupCta: { href: string; label: string; detail: string } | null;
+  keyRatios: readonly KeyRatioModel[];
 }
 
 function formatLedgerRow(entry: {
@@ -199,8 +202,10 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
   const setupCta = setup && !setup.dashboardReady ? nextSetupStep(setup) : null;
 
   if (!readiness?.canEvaluateExecutableCapacity) {
-    return { companyId, identityName, load, readinessHeadline, authorityNote, setup, setupCta };
+    return { companyId, identityName, load, readinessHeadline, authorityNote, setup, setupCta, keyRatios: UNLOADED_KEY_RATIOS };
   }
+
+  let keyRatios: readonly KeyRatioModel[] = UNLOADED_KEY_RATIOS;
 
   try {
     const [dashboard, covenantOverview] = await Promise.all([
@@ -252,6 +257,8 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
             display: `${fmtM(commitmentTotal)} total · ${facilityParts.join(" · ")}`,
           })
         : capacitySummaryStateFromQuery({ outcome: "failed" });
+
+    keyRatios = keyRatiosFromPosition(dashboard.financialPosition.metrics, covenantOverview ? collectRatioRows(covenantOverview) : []);
 
     const rows: StatusRow[] = covenantOverview ? statusRowsFromOverview(covenantOverview) : [];
     if (rows.length === 0) {
@@ -310,5 +317,5 @@ export async function loadCompanyOverview(companyId: string): Promise<CompanyOve
     load.statusTable = statusTableStateFromQuery({ outcome: "failed" });
   }
 
-  return { companyId, identityName, load, readinessHeadline, authorityNote, setup, setupCta };
+  return { companyId, identityName, load, readinessHeadline, authorityNote, setup, setupCta, keyRatios };
 }

@@ -22,6 +22,7 @@ import type {
 import { CERTIFICATION, COVENANT_COMPUTATION_VERSION } from "./types";
 import { citedIn } from "./text";
 import { verifyComputation } from "./verify";
+import type { MetricInput } from "../runtime/types";
 
 export interface RunCovenantComputationOptions {
   corrections?: readonly ComputationCorrection[];
@@ -29,13 +30,20 @@ export interface RunCovenantComputationOptions {
   createdAt?: string;
   /** Runtime-loaded learned rules from learned-rules/vN.json or Neon. */
   rules?: LearnedRuleSet;
+  /**
+   * Filing-derived inputs (SEC XBRL) already bound to contract metric names by their definitions
+   * (lib/covenant-learning-factory/xbrl/bind.ts). Package-document inputs win on a name clash.
+   */
+  externalMetrics?: readonly MetricInput[];
 }
 
 export function runCovenantComputation(
   pkg: ComputationPackage,
   options: RunCovenantComputationOptions = {},
 ): ComputationResult {
-  const bound = bindFinancialInputs(pkg.documents);
+  const docBound = bindFinancialInputs(pkg.documents);
+  const have = new Set(docBound.metrics.map((m) => m.metricKey.toLowerCase()));
+  const bound = { ...docBound, metrics: [...docBound.metrics, ...(options.externalMetrics ?? []).filter((m) => !have.has(m.metricKey.toLowerCase()))] };
   const ratios = computeRatios(pkg, bound);
   const baskets = evaluateBaskets(pkg, bound.metrics, ratios, options.rules);
   const { applied, refused } = applyCorrections(pkg, baskets, options.corrections ?? [], options.rules);

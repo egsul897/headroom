@@ -1,4 +1,7 @@
+import { CountUp } from "@/components/motion/CountUp";
+import { ProofTrigger } from "@/components/ux/ProofDrawer";
 import { UNKNOWN_STATE, presentFigure, type FigureLoadState } from "@/lib/home/load-state";
+import { FIGURE_INPUTS, unloadedProof } from "@/lib/ux/present";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
 function parseUtilization(display: string): { pct: number | null; detail: string } {
@@ -14,6 +17,7 @@ export function UtilizationCard({ state = UNKNOWN_STATE }: { state?: FigureLoadS
     return (
       <RegionCard region="utilization" eyebrow="Utilization">
         <EmptyCopy slot="utilization" state={presented} />
+        <ProofTrigger proof={unloadedProof("Utilization", null, FIGURE_INPUTS.utilization)}>How we got this</ProofTrigger>
       </RegionCard>
     );
   }
@@ -24,19 +28,23 @@ export function UtilizationCard({ state = UNKNOWN_STATE }: { state?: FigureLoadS
   return (
     <RegionCard region="utilization" eyebrow="Utilization">
       <div className="home-util" data-load-kind="VERIFIED_POPULATED" data-slot="utilization">
-        {pct !== null ? (
-          <div
-            className="home-util-ring"
-            style={{ background: `conic-gradient(#c47a3a 0deg ${deg}deg, #e8e2d6 ${deg}deg 360deg)` }}
-            aria-hidden="true"
-          >
-            <div className="home-util-ring-hole">
-              <span className="home-util-pct">{pct.toFixed(1)}%</span>
+        <ProofTrigger className="figure-hit" proof={unloadedProof("Utilization", presented.display, FIGURE_INPUTS.utilization)}>
+          {pct !== null ? (
+            <div
+              className="home-util-ring"
+              style={{ background: `conic-gradient(var(--chart-1) 0deg ${deg}deg, var(--chart-track) ${deg}deg 360deg)` }}
+              aria-hidden="true"
+            >
+              <div className="home-util-ring-hole">
+                <span className="home-util-pct">
+                  <CountUp text={`${pct.toFixed(1)}%`} />
+                </span>
+              </div>
             </div>
-          </div>
-        ) : (
-          <p className="home-kpi-value home-kpi-value-sm">{presented.display}</p>
-        )}
+          ) : (
+            <p className="home-kpi-value home-kpi-value-sm">{presented.display}</p>
+          )}
+        </ProofTrigger>
         <p className="home-kpi-caption">{detail || "Facility utilization"}</p>
       </div>
     </RegionCard>

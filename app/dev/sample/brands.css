@@ -1,0 +1,305 @@
+/*
+ * Dev-only brand directions for /dev/sample?brand=
+ * Product default (mid slate rail, cool field) is not changed.
+ * Each family tints only its own rail. Accents stay on the button,
+ * a thin active mark, and the sample chart stroke.
+ */
+
+[data-brand="navy"] .app-shell,
+[data-brand="navy"].app-shell,
+[data-brand="olive"] .app-shell,
+[data-brand="olive"].app-shell,
+[data-brand="teal"] .app-shell,
+[data-brand="teal"].app-shell {
+  --shell-sidebar-line: rgba(255, 255, 255, 0.1);
+}
+
+[data-brand] .button-primary {
+  background: var(--sample-brand);
+  border-color: var(--sample-brand);
+  color: #fff;
+}
+
+[data-brand] .button-primary:hover {
+  background: var(--sample-brand-hover);
+  border-color: var(--sample-brand-hover);
+  color: #fff;
+}
+
+[data-brand] .app-nav-link.active {
+  box-shadow: inset 3px 0 0 var(--sample-brand-signal);
+}
+
+.sample-chart {
+  color: var(--sample-brand, var(--navy));
+}
+
+.sample-chart svg {
+  width: 100%;
+  height: 36px;
+  display: block;
+}
+
+.sample-exec-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.sample-portfolio .chooser {
+  min-height: 0;
+  padding-bottom: 0;
+}
+
+[data-brand="navy"] .app-shell,
+[data-brand="navy"].app-shell {
+  /* Lighter-dark navy slate. Muted text #b7c2ce is 6.34:1. Wordmark #f4f6f8 is 10.57:1. */
+  --shell-sidebar: #2c3a52;
+  --shell-sidebar-ink: #f4f6f8;
+  --shell-sidebar-muted: #b7c2ce;
+  --shell-sidebar-hover: #354764;
+  --shell-sidebar-active: #3a4c68;
+  --shell-sidebar-card: #243246;
+  --sample-brand: #12315a;
+  --sample-brand-hover: #0e2444;
+  --sample-brand-signal: #c5d0e0;
+}
+
+[data-brand="navy"] .app-sidebar {
+  border-right-color: #243044;
+}
+
+[data-brand="olive"] .app-shell,
+[data-brand="olive"].app-shell {
+  /* Earthy stone rail, not a green. Muted #c8c6b8 on #4a4c3e is 5.11:1.
+     Wordmark #f3f1ea is 7.76:1. Content shifts to a warm grey so the field
+     is not the cool canvas and not a green wash. Status green is untouched. */
+  --paper: #f3f1ec;
+  --ink: #1c1b17;
+  --muted: #5c574e;
+  --line: #e3dfd6;
+  --idle-soft: #ebe7df;
+  --input-bg: #fffcf8;
+  --shell-canvas: #f3f1ec;
+  --shell-sidebar: #4a4c3e;
+  --shell-sidebar-ink: #f3f1ea;
+  --shell-sidebar-muted: #c8c6b8;
+  --shell-sidebar-hover: #4e5044;
+  --shell-sidebar-active: #5c5e48;
+  --shell-sidebar-card: #3e4034;
+  --sample-brand: #6b6f4a;
+  --sample-brand-hover: #5c6040;
+  --sample-brand-signal: #e4e0cc;
+}
+
+[data-brand="olive"] .app-sidebar {
+  border-right-color: #3c3e32;
+}
+
+[data-brand="olive"] .data-table tbody tr:nth-child(even) {
+  background: #f7f5f0;
+}
+
+[data-brand="olive"] .data-table tbody tr:hover {
+  background: #efece4;
+}
+
+[data-brand="teal"] .app-shell,
+[data-brand="teal"].app-shell {
+  /* Matches the pale product rail so ?brand=teal does not restore a darker bar. */
+  --shell-sidebar: #dcebed;
+  --shell-sidebar-ink: #12151a;
+  --shell-sidebar-muted: #3e555c;
+  --shell-sidebar-hover: #cfe3e6;
+  --shell-sidebar-active: #3a8a98;
+  --shell-sidebar-card: #f7fbfb;
+  --sample-brand: #3a8a98;
+  --sample-brand-hover: #49a3b0;
+  --sample-brand-signal: #f4fbfb;
+}
+
+[data-brand="teal"] .app-sidebar {
+  border-right-color: #b7d0d6;
+}
+
+[data-brand="teal"] .button-primary,
+[data-brand="teal"] .button-primary:hover {
+  color: #12151a;
+}
+
+/*
+ * Lighter teal studies. /dev/sample?teal=1|2|3
+ * Each block sets the rail and a matching petrol button. White button
+ * labels and sidebar text are AA. Status green stays #0e6b43 (hue 154°).
+ * These do not run unless the sample route sets data-teal.
+ */
+
+[data-teal] .button-primary {
+  background: var(--teal-accent);
+  border-color: var(--teal-accent);
+  color: #fff;
+}
+
+[data-teal] .button-primary:hover {
+  background: var(--teal-accent-hover);
+  border-color: var(--teal-accent-hover);
+  color: #fff;
+}
+
+[data-teal] .app-nav-link.active {
+  box-shadow: inset 3px 0 0 var(--teal-signal);
+}
+
+[data-teal] .sample-chart {
+  color: var(--teal-accent);
+}
+
+[data-teal="1"] .app-shell {
+  /* Rail #2f5a64. Muted #c9dce0 is 5.35:1. Wordmark #f4f7f8 is 7.05:1.
+     Active chip #3d7080 keeps the wordmark at 5.10:1. Hover #346170 keeps
+     muted text at 4.79:1. Button #2a6e7c, white label 5.80:1. */
+  --shell-sidebar: #2f5a64;
+  --shell-sidebar-ink: #f4f7f8;
+  --shell-sidebar-muted: #c9dce0;
+  --shell-sidebar-hover: #346170;
+  --shell-sidebar-active: #3d7080;
+  --shell-sidebar-card: #264e57;
+  --teal-accent: #2a6e7c;
+  --teal-accent-hover: #215f6c;
+  --teal-signal: #e8f4f6;
+}
+
+[data-teal="1"] .app-sidebar {
+  border-right-color: #264e57;
+}
+
+[data-teal="2"] .app-shell {
+  /* Rail #3a6a74. Muted #e7f1f3 is 5.23:1 on the rail and 4.65:1 on hover
+     #42727c. Wordmark #f4f7f8 is 5.58:1, and 4.68:1 on the active chip
+     #447684. Button #2f7482, white label 5.33:1. */
+  --shell-sidebar: #3a6a74;
+  --shell-sidebar-ink: #f4f7f8;
+  --shell-sidebar-muted: #e7f1f3;
+  --shell-sidebar-hover: #42727c;
+  --shell-sidebar-active: #447684;
+  --shell-sidebar-card: #2f5c66;
+  --teal-accent: #2f7482;
+  --teal-accent-hover: #266876;
+  --teal-signal: #e7f3f5;
+}
+
+[data-teal="2"] .app-sidebar {
+  border-right-color: #2f5c66;
+}
+
+[data-teal="3"] .app-shell {
+  /* Rail #4a7a83. Only near-white text clears AA: #ffffff is 4.77:1,
+     muted #f7fbfb is 4.58:1. Hover cannot go lighter, so #4b7a83 holds
+     muted text at 4.57:1. The active chip steps darker (#3e6d77, white
+     5.74:1) so the label survives. Button #347a88, white label 4.90:1. */
+  --shell-sidebar: #4a7a83;
+  --shell-sidebar-ink: #ffffff;
+  --shell-sidebar-muted: #f7fbfb;
+  --shell-sidebar-hover: #4b7a83;
+  --shell-sidebar-active: #3e6d77;
+  --shell-sidebar-card: #3a6670;
+  --teal-accent: #347a88;
+  --teal-accent-hover: #2f7482;
+  --teal-signal: #e7f3f5;
+}
+
+[data-teal="3"] .app-sidebar {
+  border-right-color: #3a6670;
+}
+
+/*
+ * Lighter-than-variant-2 studies. /dev/sample?light=a|b|c
+ * The button is #3a8a98 on every option. White on that button is 3.99:1
+ * (fails AA), so the label is #12151a (4.59:1). Status green stays #0e6b43.
+ */
+
+[data-light] .button-primary {
+  background: var(--light-accent);
+  border-color: var(--light-accent);
+  color: var(--light-accent-ink);
+}
+
+[data-light] .button-primary:hover {
+  background: var(--light-accent-hover);
+  border-color: var(--light-accent-hover);
+  color: var(--light-accent-ink);
+}
+
+[data-light] .app-nav-link.active {
+  box-shadow: inset 3px 0 0 var(--light-signal);
+}
+
+[data-light] .app-nav-label {
+  color: var(--shell-sidebar-muted);
+}
+
+[data-light] .sample-chart {
+  color: var(--light-accent);
+}
+
+[data-light="a"] .app-shell {
+  /* White on #5f8f98 is 3.58:1. Muted #eef7f8 is 3.29:1. Both fail AA.
+     Dark ink #12151a would pass at 5.11:1; this study keeps the white. */
+  --shell-sidebar: #5f8f98;
+  --shell-sidebar-ink: #ffffff;
+  --shell-sidebar-muted: #eef7f8;
+  --shell-sidebar-hover: #6a9aa3;
+  --shell-sidebar-active: #548691;
+  --shell-sidebar-card: #4f848e;
+  --light-accent: #3a8a98;
+  --light-accent-hover: #49a3b0;
+  --light-accent-ink: #12151a;
+  --light-signal: #ffffff;
+}
+
+[data-light="a"] .app-sidebar {
+  border-right-color: #4a7e88;
+}
+
+[data-light="b"] .app-shell {
+  /* Pale rail. Ink #12151a is 14.94:1. Muted #3e555c is 6.45:1 on the rail
+     and 5.94:1 on hover #cfe3e6. Active chip #3a8a98 keeps that ink at 4.59:1. */
+  --shell-sidebar: #dcebed;
+  --shell-sidebar-ink: #12151a;
+  --shell-sidebar-muted: #3e555c;
+  --shell-sidebar-hover: #cfe3e6;
+  --shell-sidebar-active: #3a8a98;
+  --shell-sidebar-card: #f7fbfb;
+  --light-accent: #3a8a98;
+  --light-accent-hover: #49a3b0;
+  --light-accent-ink: #12151a;
+  --light-signal: #f4fbfb;
+}
+
+[data-light="b"] .app-sidebar {
+  border-right-color: #b7d0d6;
+}
+
+[data-light="c"] .app-shell {
+  /* Near the canvas. Ink #12151a is 16.20:1. Muted #3e555c is 6.99:1.
+     The active row is a whisper tint; the stripe #3a8a98 is 3.53:1 on it. */
+  --shell-sidebar: #e9f3f4;
+  --shell-sidebar-ink: #12151a;
+  --shell-sidebar-muted: #3e555c;
+  --shell-sidebar-hover: #dcebed;
+  --shell-sidebar-active: #d7eef0;
+  --shell-sidebar-card: #ffffff;
+  --light-accent: #3a8a98;
+  --light-accent-hover: #49a3b0;
+  --light-accent-ink: #12151a;
+  --light-signal: #3a8a98;
+}
+
+[data-light="c"] .app-sidebar {
+  border-right-color: #c5dde2;
+}
+
+[data-light="c"] .app-nav-link.active {
+  box-shadow: inset 3px 0 0 var(--light-signal);
+}

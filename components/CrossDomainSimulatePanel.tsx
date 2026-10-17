@@ -75,7 +75,7 @@ export function CrossDomainSimulatePanel({
           style={{
             marginTop: 10,
             paddingTop: 8,
-            borderTop: "1px solid var(--border, #e5e5e5)",
+            borderTop: "1px solid var(--line)",
           }}
         >
           <div className="row">

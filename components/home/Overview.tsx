@@ -12,10 +12,14 @@ import { AlertsCard } from "./AlertsCard";
 import { CapacitySummaryCard } from "./CapacitySummaryCard";
 import { CovenantsAtRiskCard } from "./CovenantsAtRiskCard";
 import { DriversCard } from "./DriversCard";
+import { EbitdaTile } from "./EbitdaTile";
 import { HeadroomOverTimeCard } from "./HeadroomOverTimeCard";
 import { BellIcon, ExportIcon } from "./icons";
 import { NextTestCard } from "./NextTestCard";
 import { StatusTable } from "./StatusTable";
+import { KeyRatios } from "@/components/ux/KeyRatios";
+import { MorningBrief } from "@/components/ux/MorningBrief";
+import { UNLOADED_BRIEF, UNLOADED_KEY_RATIOS, type KeyRatioModel, type MorningBriefModel } from "@/lib/ux/present";
 import { TotalHeadroomCard } from "./TotalHeadroomCard";
 import { TransactionsCard } from "./TransactionsCard";
 import { UtilizationCard } from "./UtilizationCard";
@@ -32,6 +36,10 @@ export function CompanyOverview({
   readinessHeadline = null,
   authorityNote = null,
   setupCta = null,
+  documents = null,
+  preparingIds = null,
+  brief = UNLOADED_BRIEF,
+  ratios = UNLOADED_KEY_RATIOS,
 }: {
   companyId: string;
   identityName?: string | null;
@@ -39,6 +47,12 @@ export function CompanyOverview({
   readinessHeadline?: string | null;
   authorityNote?: string | null;
   setupCta?: { href: string; label: string; detail: string } | null;
+  documents?: readonly { id: string; name: string }[] | null;
+  preparingIds?: readonly string[] | null;
+  /** Change feed, needs-you count, and next test. Default is unloaded. */
+  brief?: MorningBriefModel;
+  /** Position ratios. Missing cells stay "Missing input". */
+  ratios?: readonly KeyRatioModel[];
 }) {
   const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
   const alerts = presentAlerts(slots.alerts);
@@ -56,15 +70,12 @@ export function CompanyOverview({
               {readinessHeadline}
             </p>
           ) : null}
-        </div>
-        <div className="home-top-actions">
-          <Link className="button button-primary" href={`/${companyId}/intelligence`}>
-            Debt intelligence
-          </Link>
-          <Link className="home-ask-hero" href={`/${companyId}/ask`} data-ask-hero>
+          <Link className="home-ask-link" href={`/${companyId}/ask`} data-ask-hero>
             <span className="home-ask-hero-label">Ask</span>
             <span className="home-ask-hero-note">{ASK_CASES.NOT_AVAILABLE_ON_DEAL.headline}</span>
           </Link>
+        </div>
+        <div className="home-top-actions">
           <a className="home-icon-button" href="#home-alerts" aria-label="Alerts">
             <BellIcon />
             {badge != null ? (
@@ -82,9 +93,14 @@ export function CompanyOverview({
           >
             <ExportIcon />
             Export
+            <span className="home-export-chevron" aria-hidden="true">
+              ▾
+            </span>
           </button>
         </div>
       </header>
+
+      <MorningBrief model={brief} />
 
       {setupCta ? (
         <section className="home-card home-setup-banner" data-region="setup">
@@ -97,24 +113,29 @@ export function CompanyOverview({
         </section>
       ) : null}
 
-      <div className="home-regions">
+      <div className="home-hero">
+        <TotalHeadroomCard state={slots.totalHeadroom} />
+      </div>
+      <div className="home-board">
         <div className="home-kpis">
           <TotalHeadroomCard state={slots.totalHeadroom} />
           <UtilizationCard state={slots.utilization} />
           <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
           <NextTestCard state={slots.nextTest} />
+          <EbitdaTile companyId={companyId} documents={documents} preparingIds={preparingIds} />
         </div>
+        <KeyRatios ratios={ratios} />
         <div className="home-split">
           <HeadroomOverTimeCard state={slots.headroomOverTime} />
           <CapacitySummaryCard state={slots.capacitySummary} />
         </div>
         <div className="home-split">
-          <StatusTable state={slots.statusTable} />
+          <StatusTable state={slots.statusTable} viewAllHref={`/${companyId}/covenants`} />
           <DriversCard state={slots.drivers} />
         </div>
         <div className="home-pair">
-          <AlertsCard state={alerts} />
-          <TransactionsCard state={slots.transactions} />
+          <AlertsCard state={alerts} viewAllHref={`/${companyId}/alerts`} />
+          <TransactionsCard state={slots.transactions} viewAllHref={`/${companyId}/ledger`} />
         </div>
       </div>
       {authorityNote ? (

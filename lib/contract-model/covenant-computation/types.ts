@@ -26,13 +26,17 @@ export type RatioKey =
   | "INTEREST_COVERAGE"
   | "LEVERAGE"
   | "SENIOR_LEVERAGE"
-  | "NET_LEVERAGE";
+  | "NET_LEVERAGE"
+  /** A ratio defined in the agreement itself ("“X Ratio” means the ratio of …"), keyed by its own name. */
+  | `DEFINED:${string}`;
 
 export type RatioDirection = "MAX" | "MIN";
 
 export type BasketCategory =
   | "FIXED_DOLLAR"
   | "GROWER_GREATER_OF"
+  /** "the lesser of $X and Y% of M": the cap is at most the smallest known limb. */
+  | "LESSER_OF"
   | "PCT_OF_METRIC"
   | "MULTIPLE_OF_METRIC"
   | "LESSER_OF"
@@ -45,6 +49,9 @@ export type BasketCategory =
   /** Dollar figure is an operand of stated arithmetic ("$550,000,000 divided by …"): NEEDS_INPUT for the other operands. */
   | "FORMULA_AMOUNT"
   | "RECLASS"
+  /** A maintenance limit on a stated measure ("will not permit … Subsidiaries to have over 25% of Total Assets"): a
+   * test, not capacity to incur, pay or invest. No basket cap is computed from it. */
+  | "MAINTENANCE_LIMIT"
   | "UNKNOWN";
 
 export type BasketScope = "GENERAL" | "PURPOSE_SPECIFIC";
@@ -145,6 +152,8 @@ export interface ComputedBasket {
   /** Gross cap in contract units. Null for ratio tests, unlimited, and unknowns. */
   capCanonical: string | null;
   capCurrency: string | null;
+  /** Set when capCanonical is a bound, not the cap: AT_LEAST (greater-of with an unknown limb) or AT_MOST (lesser-of). */
+  capBound?: "AT_LEAST" | "AT_MOST";
   capKind: "AMOUNT" | "UNLIMITED" | "RATIO_TEST" | "NONE";
   /** Dollar room under a ratio test is separate and stays NEEDS_INPUT unless the clause states a conversion. */
   dollarRoomStatus: ComputationStatus;

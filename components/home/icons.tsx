@@ -3,7 +3,7 @@ export function BrandMark() {
     <svg className="app-brand-mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.6" />
       <path d="M12 5.5 14.2 12 12 18.5 9.8 12Z" fill="currentColor" />
-      <circle cx="12" cy="12" r="1.3" fill="#f7f6f2" />
+      <circle cx="12" cy="12" r="1.3" fill="var(--card)" />
     </svg>
   );
 }
@@ -101,4 +101,13 @@ export function SimulateIcon() {
 
 export function EvidenceIcon() {
   return strokeIcon("M8 4h6l3 3v13H8zM10 12h5M10 15h3M11 8h.01");
+}
+
+export function LockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <rect x="5" y="10.5" width="14" height="9" rx="1.6" fill="none" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
 }

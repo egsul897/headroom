@@ -1,5 +1,8 @@
-import { HOME_RISK_NEEDS_REVIEW, HOME_VERIFIED_EMPTY } from "@/lib/home/copy";
+import { CountUp } from "@/components/motion/CountUp";
+import { ProofTrigger } from "@/components/ux/ProofDrawer";
+import { HOME_RISK_NEEDS_REVIEW } from "@/lib/home/copy";
 import { UNKNOWN_STATE, presentRisk, type RiskLoadState } from "@/lib/home/load-state";
+import { FIGURE_INPUTS, unloadedProof } from "@/lib/ux/present";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
 export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoadState }) {
@@ -10,6 +13,7 @@ export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoa
         <div className="home-empty" data-load-kind="VERIFIED_POPULATED" data-slot="covenantsAtRisk">
           <p className="home-headline">{HOME_RISK_NEEDS_REVIEW.headline}</p>
           <p className="home-detail">{HOME_RISK_NEEDS_REVIEW.detail}</p>
+          <ProofTrigger proof={unloadedProof("Covenants at risk", null, FIGURE_INPUTS.covenantsAtRisk)}>How we got this</ProofTrigger>
         </div>
       </RegionCard>
     );
@@ -22,7 +26,14 @@ export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoa
     return (
       <RegionCard region="covenants-at-risk" eyebrow="Covenants at risk">
         <div className="home-kpi-figure" data-load-kind="VERIFIED_POPULATED" data-slot="covenantsAtRisk">
-          <p className="home-kpi-value home-kpi-value-hero">{Number.isFinite(n) ? String(n) : count}</p>
+          <ProofTrigger
+            className="figure-hit"
+            proof={unloadedProof("Covenants at risk", Number.isFinite(n) ? String(n) : (count ?? null), FIGURE_INPUTS.covenantsAtRisk)}
+          >
+            <p className="home-kpi-value home-kpi-value-hero">
+              <CountUp text={Number.isFinite(n) ? String(n) : (count ?? "")} />
+            </p>
+          </ProofTrigger>
           <p className="home-kpi-caption">
             {high > 0 ? `${high} high risk` : null}
             {high > 0 && mod > 0 ? ", " : null}
@@ -41,16 +52,15 @@ export function CovenantsAtRiskCard({ state = UNKNOWN_STATE }: { state?: RiskLoa
   if (presented.kind === "VERIFIED_EMPTY") {
     return (
       <RegionCard region="covenants-at-risk" eyebrow="Covenants at risk">
-        <div className="home-kpi-figure" data-load-kind="VERIFIED_EMPTY" data-slot="covenantsAtRisk">
-          <p className="home-kpi-value home-kpi-value-hero">0</p>
-          <p className="home-kpi-caption">{HOME_VERIFIED_EMPTY.covenantsAtRisk.detail}</p>
-        </div>
+        <EmptyCopy slot="covenantsAtRisk" state={presented} />
+        <ProofTrigger proof={unloadedProof("Covenants at risk", null, FIGURE_INPUTS.covenantsAtRisk)}>How we got this</ProofTrigger>
       </RegionCard>
     );
   }
   return (
     <RegionCard region="covenants-at-risk" eyebrow="Covenants at risk">
       <EmptyCopy slot="covenantsAtRisk" state={presented} />
+      <ProofTrigger proof={unloadedProof("Covenants at risk", null, FIGURE_INPUTS.covenantsAtRisk)}>How we got this</ProofTrigger>
     </RegionCard>
   );
 }

@@ -1,0 +1,122 @@
+# Every pull_request. No path filters. No secrets.
+#
+# canonical-compiler only runs typecheck for a path list, so a PR that
+# touches prisma, package.json, or docs otherwise gets no test signal.
+# package.json is also a vitest forceRerunTrigger: `--changed` then reruns
+# the whole suite and fails on tests that already fail on the base.
+#
+# This job regenerates that baseline by running the full suite on the base
+# tip in this job. The failure list is not committed and is not hand-edited.
+# It then runs the same suite on the merge of the PR into that base. The
+# job fails when a test fails there and did not fail on the base, or when a
+# base failure is skipped or deleted. Pre-existing failures stay in the log
+# and the job summary.
+name: pr-gate
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: pr-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    name: typecheck + no new test regressions (provider-free)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      AI_GATEWAY_API_KEY: ""
+      ANTHROPIC_API_KEY: ""
+      DATABASE_URL: ""
+      STRIPE_SECRET_KEY: ""
+      HEADROOM_ERROR_DSN: ""
+      SENTRY_DSN: ""
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: save comparator
+        run: |
+          cp scripts/platform/pr-gate-compare.mjs "$RUNNER_TEMP/pr-gate-compare.mjs"
+          cp scripts/platform/pr-gate-reporter.mjs "$RUNNER_TEMP/pr-gate-reporter.mjs"
+
+      - name: full vitest on base tip
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            REF_NAME="$BASE_REF"
+          else
+            REF_NAME="$DEFAULT_BRANCH"
+          fi
+          git fetch --no-tags origin "$REF_NAME"
+          git checkout --force --detach "origin/$REF_NAME"
+          echo "origin/$REF_NAME $(git rev-parse HEAD)" | tee "$RUNNER_TEMP/pr-gate-base-label"
+          npm ci
+          set +e
+          PR_GATE_REPORT="$RUNNER_TEMP/pr-gate-base.json" npx vitest run --reporter=default --reporter="$RUNNER_TEMP/pr-gate-reporter.mjs"
+          code=$?
+          set -e
+          if [ ! -s "$RUNNER_TEMP/pr-gate-base.json" ]; then
+            echo "base vitest wrote no JSON report (exit $code)"
+            exit 1
+          fi
+          echo "base vitest exit $code (failures are recorded, not ignored)"
+
+      - name: typecheck and vitest on PR merged into base
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            REF_NAME="$BASE_REF"
+            HEAD_REV="$PR_HEAD_SHA"
+          else
+            REF_NAME="$DEFAULT_BRANCH"
+            HEAD_REV="$GITHUB_SHA"
+          fi
+          BASE="origin/$REF_NAME"
+          git checkout --force --detach "$HEAD_REV"
+          if git merge-base --is-ancestor "$BASE" HEAD; then
+            echo "head already contains $BASE"
+          else
+            GIT_MERGE_AUTOEDIT=no git -c user.email="pr-gate@users.noreply.github.com" -c user.name="pr-gate" merge --no-edit "$BASE"
+          fi
+          echo "merged $(git rev-parse HEAD)" | tee "$RUNNER_TEMP/pr-gate-head-label"
+          npm ci
+          DATABASE_URL="postgresql://ci:ci@localhost:5432/ci" npx prisma validate
+          npx tsc --noEmit -p .
+          set +e
+          PR_GATE_REPORT="$RUNNER_TEMP/pr-gate-head.json" npx vitest run --reporter=default --reporter="$RUNNER_TEMP/pr-gate-reporter.mjs"
+          code=$?
+          set -e
+          if [ ! -s "$RUNNER_TEMP/pr-gate-head.json" ]; then
+            echo "merged vitest wrote no JSON report (exit $code)"
+            exit 1
+          fi
+          echo "merged vitest exit $code (failures are recorded, not ignored)"
+
+      - name: fail on new regressions and report base failures
+        run: |
+          node "$RUNNER_TEMP/pr-gate-compare.mjs" \
+            --base "$RUNNER_TEMP/pr-gate-base.json" \
+            --head "$RUNNER_TEMP/pr-gate-head.json" \
+            --base-label "$(cat "$RUNNER_TEMP/pr-gate-base-label")" \
+            --head-label "$(cat "$RUNNER_TEMP/pr-gate-head-label")"

@@ -159,7 +159,10 @@ model Company {
   // --- NS-4 financial sync outbox (promotion → approved-snapshot reliability) ---
   // Additive only. Records PENDING/FAILED NS-4 writes after legacy financial
   // promotion so recoverable failures cannot strand NS-4 behind legacy state.
-  ns4FinancialSyncs Ns4FinancialSync[]
+  ns4FinancialSyncs   Ns4FinancialSync[]
+  ebitdaBoxes         CustomerEbitdaBox[]
+  ebitdaConfirmations CustomerEbitdaConfirmation[]
+  ebitdaProposals     CustomerEbitdaProposal[]
 
   // --- SaaS accounts (auth) ---
   // Additive only. Each user belongs to exactly one company — the tenant
@@ -364,8 +367,12 @@ model Document {
   compilerRunDocuments ContractCompilerRunDocument[]
 
   // --- Phase 2C debt package graph (docs/phase-2c-debt-package-graph.md) ---
-  amendmentEffectsTargetingMe AmendmentEffect[] @relation("AmendmentEffectTargetDocument")
+  amendmentEffectsTargetingMe AmendmentEffect[]            @relation("AmendmentEffectTargetDocument")
+  ebitdaBoxes                 CustomerEbitdaBox[]
+  ebitdaConfirmations         CustomerEbitdaConfirmation[]
+  ebitdaProposals             CustomerEbitdaProposal[]
 
+  @@unique([id, companyId])
   @@map("documents")
 }
 
@@ -4907,4 +4914,201 @@ model CustomerTreeChecklist {
 
   @@id([runId, family])
   @@map("customer_tree_checklist")
+}
+
+/// Dashboard EBITDA box snapshots (lib/covenant-learning-factory/pipeline/ebitda-box.ts), scoped by company + document.
+/// Append-only: each upload analysis or CFO confirmation writes a new snapshot; the latest is served.
+model CustomerEbitdaBox {
+  id         String   @id @default(cuid())
+  companyId  String
+  documentId String
+  status     String
+  version    String
+  payload    Json
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  /// DB-assigned monotonic sequence (migration 20261017070000): "latest box" and the box generation sort by it.
+  seq        BigInt   @unique @default(autoincrement())
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  /// Composite FK: the document must belong to the same company.
+  document   Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Cascade)
+
+  @@index([companyId, documentId, createdAt])
+  @@index([companyId, documentId, seq])
+  @@map("customer_ebitda_boxes")
+}
+
+/// CFO-confirmed, sourced add-back figures and lender-approval confirmations. APPEND-ONLY: rows are never updated or
+/// deleted; the latest row per (companyId, documentId, inputKey, kind) is current, earlier rows are the history.
+/// Check constraints (migrations 20261017050000, 20261017090000): kind in (AMOUNT, LENDER_APPROVAL, BASE_METRIC), value a non-negative integer
+/// <= 1e12 ("1" for LENDER_APPROVAL), non-empty source, inputKey without whitespace.
+model CustomerEbitdaConfirmation {
+  id             String   @id @default(cuid())
+  companyId      String
+  documentId     String
+  inputKey       String
+  /// AMOUNT | LENDER_APPROVAL | BASE_METRIC
+  kind           String   @default("AMOUNT")
+  /// Whole USD as a decimal string (exact; never estimated). "1" for LENDER_APPROVAL.
+  value          String
+  source         String
+  /// Evidence kind behind the figure (migration 20261017090000): SEC_FILING | OFFICERS_CERTIFICATE | ERP |
+  /// CFO_ENTERED. Null on rows written before the column existed (read as CFO_ENTERED).
+  sourceKind     String?
+  /// Reference for the evidence: filing accession, certificate date/period, ERP reference.
+  sourceRef      String?
+  /// Server-side session principal id.
+  confirmedBy    String?
+  idempotencyKey String
+  /// Original response ({ boxId, gain }) returned verbatim on an idempotent replay.
+  response       Json?
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(6)
+  /// DB-assigned monotonic sequence (migration 20261017070000): "latest row per key" sorts by it.
+  seq            BigInt   @unique @default(autoincrement())
+  /// RESTRICT (delete and update): confirmation history is an audit trail; its company/document cannot be deleted, and a
+  /// document cannot move to another company, while history refers to it.
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  /// Composite FK: the document must belong to the same company.
+  document       Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([companyId, documentId, idempotencyKey])
+  @@index([companyId, documentId, inputKey, createdAt])
+  @@index([companyId, documentId, seq])
+  @@map("customer_ebitda_confirmations")
+}
+
+/// CFO-proposed add-back items (migration 20261017090000). APPEND-ONLY: rows are never updated or deleted; the
+/// latest row per (companyId, documentId, label) is current (re-proposing a label is the edit). A proposal is NOT
+/// a confirmation: it never counts toward EBITDA. It counts only after its label is matched to a permitted
+/// category in the agreement's own EBITDA definition and its amount is confirmed via CustomerEbitdaConfirmation.
+model CustomerEbitdaProposal {
+  id             String   @id @default(cuid())
+  companyId      String
+  documentId     String
+  /// The CFO's name for the add-back (clause label, category, or the clause's opening words).
+  label          String
+  /// Proposed whole USD as a decimal string (exact; never estimated). Never counted without a confirmation.
+  amount         String
+  source         String
+  /// SEC_FILING | OFFICERS_CERTIFICATE | ERP | CFO_ENTERED
+  sourceKind     String
+  sourceRef      String?
+  /// Server-side session principal id.
+  proposedBy     String?
+  idempotencyKey String
+  /// Original response ({ boxId }) returned verbatim on an idempotent replay.
+  response       Json?
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(6)
+  seq            BigInt   @unique @default(autoincrement())
+  /// RESTRICT, like confirmations: proposal history is part of the audit trail.
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  /// Composite FK: the document must belong to the same company.
+  document       Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([companyId, documentId, idempotencyKey])
+  @@index([companyId, documentId, seq])
+  @@map("customer_ebitda_proposals")
+}
+
+// --- Monitoring + CFO alerts (Grok lane 2, docs/monitoring/README.md) ---
+// Additive only. Plain companyId columns (no Prisma relation) so the Company
+// model is untouched. Written only by the monitoring sweep and the tenant-gated
+// threshold/notification routes.
+
+/// SEC filings the monitor has already seen for a tracked company (dedupe by accession).
+model MonitoredFiling {
+  id              String   @id @default(cuid())
+  companyId       String
+  cik             String
+  accessionNumber String
+  form            String
+  filingDate      String
+  detectedAt      DateTime @default(now())
+
+  @@unique([companyId, accessionNumber])
+  @@index([companyId, detectedAt])
+  @@map("monitored_filings")
+}
+
+/// CFO-set band cutoffs per covenant, on the ratio's own scale (no product default exists).
+/// lower-is-safer (max test): healthyUntil < moderateUntil <= limit; higher-is-safer: healthyUntil > moderateUntil >= limit.
+model CovenantBandThreshold {
+  id            String   @id @default(cuid())
+  companyId     String
+  covenantKey   String
+  healthyUntil  Float
+  moderateUntil Float
+  updatedBy     String
+  updatedAt     DateTime @updatedAt
+  createdAt     DateTime @default(now())
+
+  @@unique([companyId, covenantKey])
+  @@map("covenant_band_thresholds")
+}
+
+/// Append-only band history per covenant. toBand: Healthy | Moderate | Danger | NOT_EVALUATED.
+model CovenantBandEvent {
+  id            String   @id @default(cuid())
+  companyId     String
+  covenantKey   String
+  covenantName  String
+  documentName  String
+  sectionRef    String
+  fromBand      String?
+  toBand        String
+  actual        Float?
+  limitValue    Float
+  healthyUntil  Float?
+  moderateUntil Float?
+  direction     String
+  asOfDate      String
+  observedAt    DateTime @default(now())
+
+  @@index([companyId, observedAt])
+  @@index([companyId, covenantKey, observedAt])
+  @@map("covenant_band_events")
+}
+
+/// Last time a user opened the workspace brief (morning brief "since your last visit").
+model WorkspaceVisit {
+  id          String   @id @default(cuid())
+  companyId   String
+  userId      String
+  lastVisitAt DateTime
+
+  @@unique([companyId, userId])
+  @@map("workspace_visits")
+}
+
+/// In-app notification for a workspace. dedupeKey makes every producer idempotent.
+model WorkspaceNotification {
+  id          String    @id @default(cuid())
+  companyId   String
+  kind        String
+  title       String
+  body        String
+  link        String?
+  dedupeKey   String    @unique
+  createdAt   DateTime  @default(now())
+  readAt      DateTime?
+  emailStatus String    @default("NOT_SENT_DISABLED")
+
+  @@index([companyId, createdAt])
+  @@map("workspace_notifications")
+}
+
+/// Saved Simulate scenarios (PR 414 SavedScenario). Lines are the display values the CFO saw
+/// when saving ({label, value} strings), stored verbatim — never re-computed or treated as
+/// engine output. Scoped to a workspace (Company).
+model SavedScenario {
+  id        String   @id @default(cuid())
+  companyId String
+  createdBy String
+  name      String
+  lines     Json
+  savedAt   DateTime @default(now())
+
+  @@index([companyId, savedAt])
+  @@map("saved_scenarios")
 }

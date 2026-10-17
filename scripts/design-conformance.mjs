@@ -48,7 +48,7 @@ const failures = [];
 // retired font stacks.
 const base = process.argv[2] || "origin/cursor/clf-release-1";
 function sh(cmd) {
-  return execSync(cmd, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+  return execSync(cmd, { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 512 * 1024 * 1024 });
 }
 let mergeBase;
 try {
@@ -72,7 +72,9 @@ for (const line of diff.split("\n")) {
   // Hex: ignore PR/issue references like "PR #392" (all digits, short)
   // — real palette hex always carries a-f letters or is 6 digits.
   const hexMatch = HEX_RE.exec(added);
-  if (hexMatch && !(/^#\d{1,4}$/.test(hexMatch[0]) && /(PR|issue) #\d/.test(added))) {
+  // Also: an all-digit short "#NNN" on a comment line is a PR reference, never a color.
+  const isComment = /^\s*(\/\/|\*|\/\*|\{\/\*)/.test(added);
+  if (hexMatch && !(/^#\d{1,4}$/.test(hexMatch[0]) && (/(PR|issue) #\d/.test(added) || isComment))) {
     failures.push(`${currentFile}: ad-hoc hex color in added line — use a design token: ${added.trim().slice(0, 120)}`);
   }
   // Retired fonts: ignore lines that also mention Inter — those are
