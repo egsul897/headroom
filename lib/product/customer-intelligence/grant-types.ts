@@ -248,19 +248,32 @@ export function isResidualLienBasket(item: { plainEnglish?: string; operativeLan
  * (null). The first "means" in the definition excerpt is the
  * definition's own; a later definition's amount in the same
  * excerpt is never borrowed.
+ *
+ * H3 honesty: an entry the summary marks `resolved: false` never
+ * supplies a cap — under the honest flag that means the document
+ * does not define the term here, defines it ambiguously
+ * (differing duplicates), or defines it in text the extractor
+ * could not back with a source occurrence. Entries with NO flag
+ * (legacy stored summaries and pinned fixtures) stay eligible, as
+ * before. If several eligible entries carry the term with
+ * DIFFERING excerpts, the term is ambiguous and also fails
+ * closed — a cap is never picked from competing definitions.
  */
 export function resolveDefinedTermCap(item: {
   operativeLanguageExcerpt?: string | null;
-  applicableDefinitions?: Array<{ term: string; excerpt: string }> | null;
+  applicableDefinitions?: Array<{ term: string; excerpt: string; resolved?: boolean }> | null;
 }): number | null {
   const excerpt = item.operativeLanguageExcerpt ?? "";
   const capMatch = excerpt.match(/\bnot\s+(?:to\s+)?exceed(?:ing)?\s+(?:the\s+)?([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+)+)/);
   if (!capMatch) return null;
   const term = capMatch[1]!.replace(/\s+/g, " ").trim().toLowerCase();
-  const def = (item.applicableDefinitions ?? []).find(
-    (d) => d.term.replace(/\s+/g, " ").trim().toLowerCase() === term,
+  const eligible = (item.applicableDefinitions ?? []).filter(
+    (d) =>
+      d.term.replace(/\s+/g, " ").trim().toLowerCase() === term && d.resolved !== false,
   );
-  if (!def) return null;
+  if (eligible.length === 0) return null;
+  if (new Set(eligible.map((d) => (d.excerpt ?? "").trim())).size > 1) return null;
+  const def = eligible[0]!;
   const meansIdx = def.excerpt.search(/\bmeans\b/i);
   if (meansIdx < 0) return null;
   const afterMeans = def.excerpt.slice(meansIdx);
@@ -334,14 +347,44 @@ function isLienSecuredObligation(text: string): boolean {
  * live elsewhere is simply not covered (the guard is
  * incomplete, not wrong).
  */
-function isDefinitionsArticleItem(item: CovenantSummaryItem): boolean {
-  if (/^1\.01(?![0-9])/.test(item.sectionRef ?? "")) return true;
+export function isDefinitionsArticleItem(item: CovenantSummaryItem): boolean {
+  const heading = item.articleHeading ?? "";
   // Phase C: a whole Definitions article grants nothing, whatever
   // its number. The articleHeading comes from the parser's
   // validated parent chain (D6), so this is a structural fact,
   // not a label guess. Tenable 1.02(d) ("dividends" in the
   // Definitions article) minted a false RP grant without it.
-  return /\bDefinitions?\b|\bDefined\s+Terms\b/i.test(item.articleHeading ?? "");
+  if (/\bDefinitions?\b|\bDefined\s+Terms\b/i.test(heading)) return true;
+  // D17 narrowing: the §1.01 number rule is a FALLBACK for items
+  // with no structural article evidence, not an override of it.
+  // When the validated parent chain attributes the item to an
+  // article whose heading carries a title, that title is
+  // affirmative structural evidence about which article the item
+  // sits in; a titled heading that does not say Definitions means
+  // the item is not in the definitions article, whatever its
+  // section number — an operative §1.01 (e.g. the operative
+  // provisions of an instrument whose definitions live in §1.02
+  // or another article) must not lose its grants purely by
+  // numbering convention. A bare designator ("ARTICLE I" with no
+  // title) carries no title evidence, so the number rule still
+  // decides there, exactly as it does when no heading was
+  // attributed at all (the Asure case this rule was written for).
+  if (articleHeadingTitle(heading).length > 0) return false;
+  return /^1\.01(?![0-9])/.test(item.sectionRef ?? "");
+}
+
+/**
+ * The title portion of an article heading: a leading article
+ * designator ("ARTICLE I", "Article 2", "ARTICLE VII —") is
+ * stripped, and what remains is the heading's title — or "" when
+ * the heading is absent or is only a designator.
+ */
+function articleHeadingTitle(heading: string): string {
+  const withoutDesignator = heading.replace(
+    /^\s*ARTICLE\s+(?:[IVXLC]+|\d+|One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve)\b/i,
+    "",
+  );
+  return withoutDesignator.replace(/^[^A-Za-z0-9]+/, "").trim();
 }
 
 /**

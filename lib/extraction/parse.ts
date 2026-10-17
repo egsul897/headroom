@@ -68,12 +68,26 @@ const HTML_ENTITIES: Record<string, string> = {
 };
 
 function decodeHtmlEntities(text: string): string {
-  return text.replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(Number(dec))).replace(/&[a-zA-Z#0-9]+;/g, (entity) => HTML_ENTITIES[entity] ?? entity);
+  return text
+    .replace(/&#[xX]([0-9a-fA-F]+);/g, (entity, hex) => {
+      const code = parseInt(hex, 16);
+      // Out-of-range code points are not decodable; leave the entity
+      // untouched rather than throwing or inventing a character.
+      return code <= 0x10ffff ? String.fromCodePoint(code) : entity;
+    })
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(Number(dec)))
+    .replace(/&[a-zA-Z#0-9]+;/g, (entity) => HTML_ENTITIES[entity] ?? entity);
 }
 
 function stripHtmlToText(html: string): string {
   const withoutNonContent = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
-  const withBreaks = withoutNonContent.replace(/<\/(p|div|tr|h[1-6]|li|br)>/gi, "\n").replace(/<br\s*\/?>/gi, "\n");
+  // Blackline/amendment exhibits mark DELETED text with <strike>, <s> or
+  // <del>. Struck text is not operative: keeping it made the engine
+  // compute a deleted $75M basket cap as if it were live (Grok
+  // independent accuracy check, 2026-10-17). Drop the element AND its
+  // contents before tag stripping, like script/style above.
+  const withoutStruck = withoutNonContent.replace(/<(strike|s|del)\b[^>]*>[\s\S]*?<\/\1>/gi, " ");
+  const withBreaks = withoutStruck.replace(/<\/(p|div|tr|h[1-6]|li|br)>/gi, "\n").replace(/<br\s*\/?>/gi, "\n");
   const stripped = withBreaks.replace(/<[^>]+>/g, " ");
   const decoded = decodeHtmlEntities(stripped);
   return decoded

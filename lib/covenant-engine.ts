@@ -167,6 +167,66 @@ export function readProvisionLegalConditionFlags(raw: unknown): ProvisionLegalCo
   };
 }
 
+/**
+ * Structural provenance stamped onto a compiled Permission's params JSON by
+ * the compile step (Phase E / D11, lib/product/customer-intelligence/
+ * compile-accepted.ts): the structural node the source provision anchored
+ * to, the article heading that anchor resolved under, and whether that
+ * structural relationship was UNRESOLVED — the provision's parentage /
+ * placement in the document tree could not be established deterministically
+ * (parent pointer missing, dangling, or non-containing). Like
+ * {@link ProvisionLegalConditionFlags}, these are NOT numerical formula
+ * inputs: they are provenance about how much the permission's placement
+ * can be trusted. Read them via {@link readStructuralProvenanceFlags};
+ * display surfaces surface `structuralUnresolved` verbatim — the flag is
+ * never folded into a figure, a status, or a gate.
+ */
+export interface StructuralProvenanceFlags {
+  structuralNodeId: string | null;
+  structuralArticleHeading: string | null;
+  structuralUnresolved: boolean;
+}
+
+/** Extract structural provenance flags from raw permission params JSON. */
+export function readStructuralProvenanceFlags(raw: unknown): StructuralProvenanceFlags {
+  if (raw == null || typeof raw !== "object" || Array.isArray(raw)) {
+    return { structuralNodeId: null, structuralArticleHeading: null, structuralUnresolved: false };
+  }
+  const o = raw as Record<string, unknown>;
+  return {
+    structuralNodeId: typeof o.structuralNodeId === "string" ? o.structuralNodeId : null,
+    structuralArticleHeading: typeof o.structuralArticleHeading === "string" ? o.structuralArticleHeading : null,
+    // The compile step writes `true` or omits the key entirely — only an
+    // exact boolean true counts; a truthy string/number is not evidence.
+    structuralUnresolved: o.structuralUnresolved === true,
+  };
+}
+
+/** Plain-words marker shown wherever a structurally unresolved permission is displayed. Display only. */
+export const STRUCTURAL_UNRESOLVED_NOTICE =
+  "Structural relationship unresolved — treat this permission's placement in the document structure as uncertain.";
+
+/**
+ * `${documentId}:${code}` keys (the same identity `computeCovenantPosition`
+ * keys evaluated provisions by) of every permission whose params carry
+ * structuralUnresolved. Lets a display that renders the provision
+ * representation of a permission (Simulate traces, RP waterfall steps)
+ * flag the exact permission it is showing. Permissions without a code
+ * cannot be joined and are skipped — never fuzzy-matched by section label.
+ */
+export function structuralUnresolvedProvisionKeys(
+  permissions: readonly { documentId: string; code?: string | null; params?: unknown }[],
+): Set<string> {
+  const keys = new Set<string>();
+  for (const p of permissions) {
+    if (!p.code) continue;
+    if (readStructuralProvenanceFlags(p.params).structuralUnresolved) {
+      keys.add(`${p.documentId}:${p.code}`);
+    }
+  }
+  return keys;
+}
+
 /** One line item inside a composite basket's total (currently: BUILDER_BASKET). */
 export interface EvaluatedProvisionComponent {
   label: string;

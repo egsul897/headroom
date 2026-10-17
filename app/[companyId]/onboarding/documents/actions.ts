@@ -143,6 +143,25 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
   if (documentId) revalidatePath(`/${companyId}/documents/${documentId}`);
 }
 
+/**
+ * P0 repair action: re-run the auto-accept convergence sweep over
+ * every analyzed document in the workspace. Operator-triggered
+ * repair (e.g. after a routine-class widening ships) that does
+ * not require re-uploading or re-analyzing any document. The
+ * sweep is idempotent — already-decided items are untouched.
+ */
+export async function sweepAutoAcceptAction(companyId: string) {
+  await requireTenantAction(companyId);
+  const { sweepAutoAcceptForWorkspace } = await import(
+    "@/lib/product/customer-intelligence/reviewer-approvals"
+  );
+  await sweepAutoAcceptForWorkspace({ companyId });
+  revalidatePath(`/${companyId}/onboarding/documents`);
+  revalidatePath(`/${companyId}/documents`);
+  revalidatePath(`/${companyId}/covenants`);
+  revalidatePath(`/${companyId}/rulebook`);
+}
+
 export async function retryCustomerAnalysisAction(companyId: string, documentId: string) {
   await requireTenantAction(companyId);
   const { reanalyzeCustomerDocumentFromStorage } = await import(
