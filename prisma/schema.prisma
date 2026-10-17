@@ -4732,3 +4732,18 @@ model CustomerTreeChecklist {
   @@id([runId, family])
   @@map("customer_tree_checklist")
 }
+
+/// Saved Simulate scenarios (#414 SavedScenario). Lines are the display values the CFO saw
+/// when saving ({label, value} strings), stored verbatim — never re-computed or treated as
+/// engine output. Scoped to a workspace (Company).
+model SavedScenario {
+  id        String   @id @default(cuid())
+  companyId String
+  createdBy String
+  name      String
+  lines     Json
+  savedAt   DateTime @default(now())
+
+  @@index([companyId, savedAt])
+  @@map("saved_scenarios")
+}
