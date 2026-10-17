@@ -107,9 +107,21 @@ const SLOTS: ReadonlyArray<{ id: string; re: RegExp; pattern: string }> = [
     pattern: String.raw`\d{1,2}(?:\.\d{1,2})?\s*(?:to|:)\s*1(?:\.0{1,2})?\b`,
   },
 ];
-const TERM_PATTERN = String.raw`[A-Z][A-Za-z0-9'’&-]*(?:\s+(?:of\s+|and\s+|to\s+)?[A-Z][A-Za-z0-9'’&-]*){0,5}`;
-/** Between tokens: punctuation, enumerators and bare numbers (page furniture, list labels) are skipped. */
-export const GAP = String.raw`(?:[^A-Za-z0-9$%]|${ENUM}|\d{1,4}(?:\.\d{1,3})*){1,12}?`;
+/** Defined term: one capitalised run, matched atomically (lookahead + backreference) so it never backtracks. */
+const TERM_BODY = String.raw`[A-Z][A-Za-z0-9'’&-]*(?:\s+(?:of\s+|and\s+|to\s+)?[A-Z][A-Za-z0-9'’&-]*){0,5}`;
+const TERM_REF = "@@TERM_REF@@";
+const TERM_PATTERN = String.raw`(?=(${TERM_BODY}))` + TERM_REF;
+/** Number each atomic defined-term group's backreference (the only capturing groups in a rule pattern). */
+function numberTermRefs(pattern: string): string {
+  let n = 0;
+  return pattern.split(TERM_REF).reduce((acc, part, i) => (i === 0 ? part : `${acc}\\${++n}${part}`), "");
+}
+/**
+ * Between tokens: punctuation, then optionally up to two list labels or bare numbers (page furniture), each
+ * followed by punctuation. Single character classes keep matching linear (no nested ambiguous quantifiers).
+ */
+const PUNCT = String.raw`[^A-Za-z0-9$%]{1,8}`;
+export const GAP = String.raw`${PUNCT}(?:(?:${ENUM}|\d{1,4}(?:\.\d{1,3})?)${PUNCT}){0,2}`;
 
 function esc(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -170,7 +182,7 @@ export function skeleton(text: string, maxTokens = 16): SkeletonToken[] {
 }
 
 export function skeletonPattern(tokens: readonly SkeletonToken[]): string {
-  return String.raw`(?<![A-Za-z])` + tokens.map((t) => t.pattern).join(GAP);
+  return numberTermRefs(String.raw`(?<![A-Za-z])` + tokens.map((t) => t.pattern).join(GAP));
 }
 
 /** A skeleton is specific enough when it has ≥ minContent non-stopword literal words. */
@@ -232,7 +244,7 @@ const LOOSE_GAP = (n: number) => String.raw`(?:${GAP}[A-Za-z][A-Za-z'’-]*){0,$
 const CLAUSE_START = String.raw`(?<=(?:^|[.;:!?\n]|\((?:[a-z]{1,3}|[ivxl]{1,6}|\d{1,2})\))[\s"“]{0,4})`;
 
 export function stepsPattern(steps: readonly Step[], maxGapWords: number): string {
-  return CLAUSE_START + steps.map((st, i) => (i === 0 ? "" : st.loose ? LOOSE_GAP(maxGapWords) : GAP) + st.tok.pattern).join("");
+  return numberTermRefs(CLAUSE_START + steps.map((st, i) => (i === 0 ? "" : st.loose ? LOOSE_GAP(maxGapWords) : GAP) + st.tok.pattern).join(""));
 }
 export const stepsSignature = (steps: readonly Step[]) => steps.map((st, i) => (i > 0 && st.loose ? "~" : "") + st.tok.id).join(">");
 
@@ -270,7 +282,7 @@ export function alignSkeletons(a: readonly SkeletonToken[], b: readonly Skeleton
   let cur = end;
   while (cur) {
     const [i, j] = cur;
-    const p = prev[i]![j];
+    const p = prev[i]![j] ?? null;
     out.unshift({ tok: a[i]!, loose: p ? i - p[0] > 1 || j - p[1] > 1 : false });
     cur = p;
   }

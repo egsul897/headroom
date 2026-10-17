@@ -74,13 +74,25 @@ if (process.argv.includes("--synth-only")) {
   for (const c of all.slice(0, 400)) console.log(c.issuers.join("+"), c.support.length, c.signature);
   process.exit(0);
 }
+// Performance gate: a rule must scan the largest DEV document quickly (no catastrophic backtracking).
+const largest = [...dev].sort((a, b) => (b.documentText?.length ?? 0) - (a.documentText?.length ?? 0))[0]?.documentText ?? "";
+const slow = new Set<string>();
+const perfCheck = (rules: LearnedRule[]) => {
+  for (const r of rules) {
+    if (slow.has(r.ruleId)) continue;
+    const t = Date.now();
+    new RegExp(r.pattern, r.flags ?? "").test(largest);
+    if (Date.now() - t > 250) slow.add(r.ruleId);
+  }
+};
 // 2. Leave-one-issuer-out: rules from the other issuers, scored on the held-out issuer.
 const issuers = [...new Set(dev.map((i) => issuerKey(i.source, aliases)))].sort();
 const stats: Record<string, HeldOutRuleStats> = {};
 const folds: unknown[] = [];
 for (const g of issuers) {
   const cands = synthesizeIssuerGeneralized(units.filter((u) => u.issuer !== g), opts);
-  const rules: LearnedRule[] = cands.map((c) => ({ ...c.rule, state: "MECHANICALLY_REPLAYED" }));
+  perfCheck(cands.map((c) => c.rule));
+  const rules: LearnedRule[] = cands.filter((c) => !slow.has(c.rule.ruleId)).map((c) => ({ ...c.rule, state: "MECHANICALLY_REPLAYED" }));
   const support = new Map(cands.map((c) => [c.rule.ruleId, new Set(c.support.map((u) => u.sourceId))] as const));
   const rs = rulesetOf(rules, 1);
   let withRules = 0;
@@ -108,8 +120,9 @@ for (const g of issuers) {
 
 // 3. Final rules from all DEV gaps; keep only those accepted on held-out issuers.
 const final = synthesizeIssuerGeneralized(units, opts);
+perfCheck(final.map((c) => c.rule));
 const decisions = final.map((c) => {
-  const d = heldOutAcceptance(stats[c.rule.ruleId], DEFAULT_ACCEPTANCE);
+  const d = slow.has(c.rule.ruleId) ? { accepted: false, reason: "regex too slow on the largest DEV document (>250 ms)" } : heldOutAcceptance(stats[c.rule.ruleId], DEFAULT_ACCEPTANCE);
   return { ruleId: c.rule.ruleId, signature: c.signature, issuers: c.issuers, support: c.support.length, pattern: c.rule.pattern, stats: stats[c.rule.ruleId] ?? null, ...d };
 });
 const accepted: LearnedRule[] = final
@@ -123,6 +136,12 @@ const accepted: LearnedRule[] = final
     };
   });
 const ruleset = rulesetOf(accepted, 3);
+// Diagnostic only (never loaded by default, never used for acceptance): every proposed rule, to measure transfer of the
+// generalization itself. Acceptance above is final before this file is ever scored.
+writeFileSync(
+  `${outDir}/proposed-diagnostic.json`,
+  JSON.stringify(rulesetOf(final.filter((c) => !slow.has(c.rule.ruleId)).map((c) => ({ ...c.rule, state: "MECHANICALLY_REPLAYED" as const })), 3), null, 2) + "\n",
+);
 writeFileSync(`${outDir}/ruleset-generalized.json`, JSON.stringify(ruleset, null, 2) + "\n");
 writeFileSync(
   `${outDir}/learn-report.json`,

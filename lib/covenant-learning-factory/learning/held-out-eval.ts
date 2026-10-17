@@ -26,7 +26,7 @@ export interface RuleAttribution {
 
 export interface AttributedScore {
   total: number;
-  counts: Record<string, number>;
+  counts: { COVERAGE_GAP: number; DISCOVERY_GAP: number; UNSUPPORTED_SEMANTICS: number };
   perRule: Record<string, RuleAttribution>;
   /** DISCOVERY_GAP candidate ids and COVERAGE_GAP condition ids (the learning signal). */
   gapCandidateIds: string[];
@@ -68,12 +68,13 @@ export function scoreWithAttribution(
     if (r) at(r).baskets += 1;
   }
   for (const [r, n] of Object.entries(credited)) at(r).credited += n;
-  const counts: Record<string, number> = { COVERAGE_GAP: 0, DISCOVERY_GAP: 0, UNSUPPORTED_SEMANTICS: 0 };
+  const counts = { COVERAGE_GAP: 0, DISCOVERY_GAP: 0, UNSUPPORTED_SEMANTICS: 0 };
+  type Cls = keyof typeof counts;
   const gapCandidateIds: string[] = [];
   const gapConditionIds: string[] = [];
   for (const e of errors) {
     if (!(e.class in counts)) continue;
-    counts[e.class] += 1;
+    counts[e.class as Cls] += 1;
     const ev = (e.evidence ?? {}) as Record<string, unknown>;
     if (e.class === "UNSUPPORTED_SEMANTICS" && typeof ev.stableKey === "string") {
       const r = ruleOf(ev.stableKey);
