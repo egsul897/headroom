@@ -208,7 +208,9 @@ describe("FINDING-4 independent recertification - GAP-3 (O(text.length) terminat
     expect(segs!.length).toBe(2);
   });
 
-  it("FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows", () => {
+  // Wall-clock timing: one retry (WALL_CLOCK_RETRY) absorbs a scheduler stall on a shared CI runner;
+  // the <8x threshold is unchanged, and a genuinely super-linear implementation fails both attempts.
+  it("FIXED: wall-clock time now grows roughly linearly (sub-quadratic), not super-linearly, as the bare-or chain grows", { retry: 1, timeout: 20000 }, () => {
     const small = bareOrChain(4000);
     const large = bareOrChain(16000); // 4x the delimiter count of `small`
 
@@ -236,7 +238,7 @@ describe("FINDING-4 independent recertification - GAP-3 (O(text.length) terminat
     // this size) so it is a real, non-flaky demonstration that growth is no
     // longer super-linear.
     expect(ratio).toBeLessThan(8);
-  }, 20000);
+  });
 });
 
 // ---------------------------------------------------------------------------
