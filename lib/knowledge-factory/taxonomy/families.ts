@@ -221,6 +221,46 @@ export function isAdministrativeProvision(heading = "", _text = ""): boolean {
   return ADMINISTRATIVE_HEADING.test(heading) || ADMINISTRATIVE_HEADING_PREFIX.test(heading);
 }
 
+/**
+ * Recover a section's full title from its excerpt lead when the
+ * structural node's heading is a truncated fragment of it. EDGAR
+ * segmentation routinely splits a title across lines and the
+ * parser keeps only the first fragment ("Transactions" for
+ * "Transactions with Affiliates", "Sale" for "Sale and Leaseback
+ * Transactions", "Increase" for "Increase in Aggregate
+ * Commitments"). The excerpt itself opens with the full title
+ * ("Section 6.07 Limitation on Transactions with Affiliates .
+ * The Borrower will not ...").
+ *
+ * Conservative by construction: a title is recovered only when
+ * the excerpt lead — after a leading section marker — begins
+ * with the node heading as a strict prefix and continues with
+ * more title text before the first sentence terminator. The
+ * recovered title is advisory classification evidence (family
+ * heading tests, section-subject arbitration); it never
+ * rewrites the node's stored heading.
+ */
+export function recoverSectionTitle(excerpt: string, heading: string): string | undefined {
+  const norm = (excerpt ?? "").replace(/\s+/g, " ").trim();
+  if (!norm) return undefined;
+  const marker = norm.match(/^(?:section|§)?\s*[0-9]+(?:\.[0-9]+)*[a-z]?(?:\s*\([a-z0-9]+\))?\.?\s+/i);
+  if (!marker) return undefined;
+  const rest = norm.slice(marker[0].length);
+  let end = rest.search(/\s\.\s/);
+  if (end < 0) {
+    const m2 = rest.match(/^.{3,120}?\.\s+(?=[A-Z(])/);
+    end = m2 ? m2[0].length - 2 : -1;
+  }
+  if (end < 0) return undefined;
+  const title = rest.slice(0, end).replace(/\s+/g, " ").trim();
+  const h = (heading ?? "").replace(/\s+/g, " ").trim().toLowerCase();
+  if (h.length < 3) return undefined;
+  if (!title.toLowerCase().startsWith(h)) return undefined;
+  if (title.length <= h.length + 2) return undefined;
+  if (title.length > 140) return undefined;
+  return title;
+}
+
 
 export function isEventOfDefaultTrigger(heading = "", text = ""): boolean {
   return EOD_TRIGGER.test(text) || EOD_BE_TRIGGER.test(text) || EOD_TITLE.test(heading);

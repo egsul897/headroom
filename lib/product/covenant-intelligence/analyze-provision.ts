@@ -88,6 +88,7 @@ type StructuralArticleClass =
   | "NEGATIVE"
   | "AFFIRMATIVE"
   | "COVENANTS"
+  | "EOD"
   | "OTHER_ARTICLE";
 
 /** EDGAR split-letter repair for article headings, generalized
@@ -130,6 +131,7 @@ function structuralArticleClass(heading: string | undefined): StructuralArticleC
   }
   if (has(/\bAMENDMENTS\b/) || has(/\bWAIVERS\b/)) return "AMENDMENTS";
   if (has(/\bMISCELLANEOUS\b/)) return "MISCELLANEOUS";
+  if (has(/\bEVENTS OF DEFAULT\b/)) return "EOD";
   if (has(/\bNEGATIVE\b/)) return "NEGATIVE";
   if (has(/\bAFFIRMATIVE\b/)) return "AFFIRMATIVE";
   if (has(/\bCOVENANTS\b/)) return "COVENANTS";
@@ -472,8 +474,6 @@ function classifyNonCovenant(params: {
       return "BOILERPLATE";
     }
     case "CREDITS":
-      if (hasMappableSubstantiveFamily(families)) return null;
-      if (isMandatoryPrepaymentShape(excerpt)) return null;
       if (isChapeauOnlyExcerpt(excerpt, heading)) return null;
       // Incremental-facility clauses are the operative terms of
       // a debt permission, not facility mechanics — when the
@@ -487,7 +487,67 @@ function classifyNonCovenant(params: {
       ) {
         return null;
       }
+      // Census step 4 (mechanics shapes): three closed
+      // facility-mechanics shapes inside THE CREDITS state
+      // mechanics even when their text carries a mappable
+      // family keyword — they apply or protect facility
+      // economics and grant no basket: (i) application-of-
+      // proceeds waterfalls ("shall be applied as follows /
+      // to prepay ... in accordance with"), (ii) break-funding
+      // compensation (Interest Period + compensation/loss
+      // language), (iii) letter-of-credit absolute-obligation
+      // waiver enumerations (exchange/release/non-perfection
+      // of Collateral + waiver of or consent to departure
+      // from the Security Agreement / guaranty — the applicant's
+      // reimbursement duty is unconditional; "guarantee" there
+      // is the OBJECT of a waiver, not a guarantee grant).
+      const flat = excerpt.replace(/\s+/g, " ");
+      if (
+        /\bshall be applied\b[^.]{0,60}\b(as follows|to prepay|in accordance|in the following order)\b/i.test(
+          flat,
+        ) ||
+        /\bapplication of (the )?proceeds\b/i.test(flat)
+      ) {
+        return "MECHANICS";
+      }
+      if (
+        /\bInterest (Period|Payment Date)\b/.test(flat) &&
+        /\bcompensat\w*\b|\bfunding losses?\b|\bbreakage\b|\bloss, cost or expense\b/i.test(flat)
+      ) {
+        return "MECHANICS";
+      }
+      if (
+        /\b(exchange|release|non-?perfection)\b[^.]{0,80}\bCollateral\b/i.test(flat) &&
+        /\bwaiver of or consent to departure from\b/i.test(flat)
+      ) {
+        return "MECHANICS";
+      }
+      // The mandatory-prepayment guard runs AFTER the three
+      // shapes above: its vetted patterns detect prepayment
+      // vocabulary anywhere in an excerpt, and application /
+      // break-funding clauses mention prepayment incidentally
+      // — the shapes identify what the clause DOES, the guard
+      // protects the actual prepayment provisions (the trigger
+      // clauses that order prepayment, whose text matches none
+      // of the three mechanics shapes).
+      if (isMandatoryPrepaymentShape(excerpt)) return null;
+      if (hasMappableSubstantiveFamily(families)) return null;
       return "MECHANICS";
+    case "EOD": {
+      // Census step 4 (article context): inside an Events of
+      // Default article, only the trigger section states
+      // operative default events — the remedies, application,
+      // and interpretive sections are post-default machinery
+      // (the census's K3A remedies population). The trigger
+      // section is the one whose heading IS the EoD title;
+      // trigger-shaped items never reach this switch (the
+      // isEod guard above returns null for them, and the
+      // category step classifies position-evidenced triggers
+      // as EVENTS_OF_DEFAULT).
+      const sec = despaceHeadingText(position.sectionHeading ?? "");
+      if (/\bevents of default\b/i.test(sec) && !/\bremedies\b/i.test(sec)) return null;
+      return "MECHANICS";
+    }
     default:
       break;
   }
@@ -527,7 +587,13 @@ function classifyNonCovenant(params: {
  * An affirmative covenant never opens with its prohibition. */
 function hasProhibitionLead(excerpt: string, heading: string): boolean {
   const hay = `${heading}\n${excerpt.replace(/\s+/g, " ").trim()}`;
-  if (PROHIBITION_STEM.test(hay)) return true;
+  // Census step 4 (frame scoping): the bare-stem test reads the
+  // provision's LEAD only. A stem is a chapeau frame — it opens
+  // the section. Scanning the whole excerpt inverted real
+  // affirmative covenants whose subordinate tail carries a stem
+  // phrase (a post-closing dissolution directive ending "...or
+  // make any investments in such entity" read as an RP stem).
+  if (PROHIBITION_STEM.test(hay.slice(0, 240))) return true;
   // A "shall/will not" is the provision's frame only when it
   // LEADS — before any affirmative obligation shape. A
   // post-closing directive ("shall cause X to be dissolved
@@ -769,7 +835,7 @@ export interface ProvisionAnalysis {
   interpretationNote: string;
 }
 
-const FAMILY_TO_CATEGORY: Record<string, CovenantCategoryKey> = {
+export const FAMILY_TO_CATEGORY: Record<string, CovenantCategoryKey> = {
   INDEBTEDNESS: "DEBT_INCURRENCE",
   INCREMENTAL_DEBT_AND_FACILITIES: "DEBT_INCURRENCE",
   RATIO_BASED_PERMISSIONS: "DEBT_INCURRENCE",
@@ -1653,6 +1719,14 @@ export function analyzeProvision(params: {
   crossReferences?: CrossReferenceRecord[];
   /** Parent chapeau text (text before the first sub-clause marker in the parent candidate's excerpt) — powers chapeau inheritance in detectPosture. Optional; absent → existing behavior. */
   parentChapeau?: string;
+  /** Per-SECTION-node context (classification census step 4),
+   * computed by the summarize pass: the section's covenant
+   * subject (from its stem candidate's families, or a strict
+   * majority of its clause candidates' families) and its
+   * recovered full title when the node heading is a truncated
+   * fragment. Keyed by SECTION nodeId. Optional; absent →
+   * heading/title arbitration only. */
+  sectionContext?: Map<string, { subjectCategory?: CovenantCategoryKey; title?: string }>;
 }): ProvisionAnalysis {
   const { sectionRef, heading } = sectionForNode(params.candidate.nodeId, params.structuralNodes);
   // Enclosing ARTICLE heading: powers the representations guard.
@@ -1744,9 +1818,155 @@ export function analyzeProvision(params: {
   // ONLY the category outcome (posture and permission
   // extraction read the full family list and the operative
   // text, unchanged).
+  // ---- Classification census step 4: parent-section / article
+  // context. Steps 1–3 classified from the item's own text and
+  // article position; the census's largest remaining failure
+  // classes are exactly the ones whose evidence lives in the
+  // ENCLOSING section (a clause's covenant is its section's
+  // covenant) or the enclosing article (EoD trigger fragments
+  // whose trigger frame is the section chapeau). The context
+  // computed here — the section's subject and the clause's own
+  // operative lead subject — arbitrates; it never overrides
+  // steps 1–2 and never fires on keyword evidence alone.
+  const sectionNode = structuralPos.chain.find((n) => n.nodeType === "SECTION");
+  const sectionCtx = sectionNode ? params.sectionContext?.get(sectionNode.nodeId) : undefined;
+  const sectionText = despaceHeadingText(sectionCtx?.title ?? structuralPos.sectionHeading ?? "");
+  const SECTION_SUBJECTS: Array<[RegExp, CovenantCategoryKey]> = [
+    [/\bindebtedness\b|\bincremental\b|\bincrease\b|\bpriority\b|\bprepayments?\b/i, "DEBT_INCURRENCE"],
+    [/\bliens\b|\bsecured debt\b/i, "LIENS_SECURED_DEBT"],
+    [/\brestricted\b|\binvestments\b/i, "RESTRICTED_PAYMENTS_INVESTMENTS"],
+    [/\basset sales\b|\bdispositions\b|\basset\b|\bip rights\b|\bintellectual property\b/i, "ASSET_SALES"],
+    [/\bguarantee\b|\bguaranty\b/i, "GUARANTEES"],
+    [/\baffiliate/i, "AFFILIATE_TRANSACTIONS"],
+    [/\bfundamental\b|\bmergers\b|\bconsolidation\b/i, "MERGERS_FUNDAMENTAL_CHANGES"],
+    [/\bfinancial\b/i, "FINANCIAL_MAINTENANCE"],
+  ];
+  const sectionCats: CovenantCategoryKey[] = [];
+  for (const [re, cat] of SECTION_SUBJECTS) if (re.test(sectionText)) sectionCats.push(cat);
+  if (sectionCtx?.subjectCategory && !sectionCats.includes(sectionCtx.subjectCategory)) {
+    sectionCats.push(sectionCtx.subjectCategory);
+  }
+  // The clause's own operative lead subject: the first covenant
+  // subject named in its opening words, with cross-reference
+  // mentions ("permitted by Section 7.02") stripped — a pointer
+  // to another section's permission is not the clause's subject.
+  const LEAD_SUBJECTS: Array<[RegExp, CovenantCategoryKey]> = [
+    [/\bindebtedness\b|\bincremental\b/i, "DEBT_INCURRENCE"],
+    [/\bobligations\b[^.;]{0,80}\b(?:incurred|assumed)\b/i, "DEBT_INCURRENCE"],
+    [/\bliens?\b|\bencumbrances?\b/i, "LIENS_SECURED_DEBT"],
+    [/\brestricted payments?\b|\bdividends?\b|\bdistributions?\b|\brepurchas\w*\b|\bbuybacks?\b/i, "RESTRICTED_PAYMENTS_INVESTMENTS"],
+    [/\binvestments?\b/i, "RESTRICTED_PAYMENTS_INVESTMENTS"],
+    [/\bdispositions?\b|\basset sales?\b|\bmaterial ip\b|\bintellectual property\b/i, "ASSET_SALES"],
+    [/\baffiliate\b/i, "AFFILIATE_TRANSACTIONS"],
+    [/\bguarantee\b|\bguaranty\b|\bguarantees\b|\bkeepwell\b/i, "GUARANTEES"],
+    [/\bmergers?\b|\bmerge\b|\bconsolidat\w*\b|\bfundamental\b/i, "MERGERS_FUNDAMENTAL_CHANGES"],
+    [/\bfinancial covenants?\b|\bleverage ratio\b|\bcoverage ratio\b/i, "FINANCIAL_MAINTENANCE"],
+  ];
+  const leadText = excerpt
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+    .replace(/^\([a-z0-9]{1,3}\)\s*/i, "")
+    .slice(0, 260)
+    // Strip the cross-reference itself (the pointer phrase and
+    // the section ref token) — NOT a fixed tail of following
+    // text: the words after the ref are the clause's own
+    // operative continuation ("permitted under Section 7.02, to
+    // the extent any such Investment is deemed to be a
+    // Disposition" — the Disposition is the clause's frame).
+    .replace(/\bpermitted\s+(?:by|under|pursuant\s+to)\s+(?:Section|§|Sections)\s*[0-9A-Za-z().-]*/gi, " ");
+  const leadSubject = ((): CovenantCategoryKey | null => {
+    // Frame guards: leads that name a frame, not a subject.
+    // (i) A restrictions frame ("customary restrictions in
+    // leases...", "restrictions imposed by...") — the provision
+    // IS a restrictive-agreements item; the nouns after it are
+    // the objects restrictions attach to, not its covenant.
+    if (/^(customary\s+)?restrictions\b/i.test(leadText)) return null;
+    // (ii) A compliance-state condition ("the Successor
+    // Borrower shall be in Pro Forma Financial Covenant
+    // Compliance") — a condition of the host covenant naming
+    // another covenant's test as its state.
+    if (/\bshall be in\b[^.;]{0,70}\bCompliance\b/i.test(leadText)) return null;
+    // (iii) A mandatory-prepayment shape in the lead: the
+    // operative verb is "shall prepay" — the provision is a
+    // prepayment provision whatever event (a Disposition, an
+    // asset sale) triggers it.
+    if (isMandatoryPrepaymentShape(excerpt.replace(/\s+/g, " ").slice(0, 500))) {
+      return "DEBT_INCURRENCE";
+    }
+    let best: { idx: number; cat: CovenantCategoryKey } | null = null;
+    for (const [re, cat] of LEAD_SUBJECTS) {
+      const m = re.exec(leadText);
+      if (!m) continue;
+      // A subject word inside a regulatory regime's defined
+      // name ("Outbound Investment Rule(s)") names the regime,
+      // not the provision's covenant.
+      if (/^\s+Rules?\b/.test(leadText.slice(m.index + m[0].length, m.index + m[0].length + 8))) {
+        continue;
+      }
+      if (best === null || m.index < best.idx) best = { idx: m.index, cat };
+    }
+    return best?.cat ?? null;
+  })();
+  // A pure cross-reference pointer: the item's whole operative
+  // content is "X permitted by Section Y" — it grants and
+  // restricts nothing itself. The test is strict about what
+  // precedes the pointer: only the pointed subject's own noun
+  // phrase ("Guarantees", "the making of Restricted Payments",
+  // "any Restricted Payment"). A clause with its own object
+  // qualified by a pointer ("non-cash consideration RECEIVED
+  // IN CONNECTION WITH any Disposition expressly permitted by
+  // Section 7.05") is a substantive prong whose permission
+  // operates on its own object — not a pointer.
+  const isPureCrossReference = ((): boolean => {
+    const norm = excerpt.replace(/\s+/g, " ").trim();
+    if (norm.length > 220) return false;
+    const m = norm.match(/\bpermitted\s+(?:by|under|pursuant\s+to)\s+(?:Section|§)\b/i);
+    if (!m) return false;
+    const before = norm
+      .slice(0, m.index)
+      .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+      .replace(/^\([a-z0-9]{1,3}\)\s*/i, "")
+      .trim();
+    if (before.length > 45) return false;
+    if (/\b(received|arising|incurred|in connection with|entered into|made pursuant)\b/i.test(before)) {
+      return false;
+    }
+    const sans = norm.replace(
+      /\b[\w\s]{0,40}?\bpermitted\s+(?:by|under|pursuant\s+to)\s+(?:Section|§)\b[^.;]*/i,
+      "",
+    );
+    if (/\b(shall|will|may|must)\b/i.test(sans)) return false;
+    return true;
+  })();
+  // EoD by position: a clause of the EoD trigger section whose
+  // own text carries no trigger phrasing (the chapeau carries
+  // the frame — the census's K4a population), and EoD by span
+  // containment for fragments whose parentage/refs are broken
+  // but which sit inside an EoD-titled article's span with no
+  // covenant family of their own and no remedies lead.
+  const sectionHeadingD = despaceHeadingText(structuralPos.sectionHeading ?? "");
+  const isEodByPosition =
+    structuralPos.positionClass === "EOD" &&
+    /\bevents of default\b/i.test(sectionHeadingD) &&
+    !/\bremedies\b/i.test(sectionHeadingD);
+  const isEodByContainment = ((): boolean => {
+    if (isEod || isEodByPosition || articleHeading) return false;
+    const ca = structuralPos.containedArticle;
+    if (!ca) return false;
+    if (!/\bevents of default\b/i.test(despaceHeadingText(ca.heading ?? ""))) return false;
+    if (hasMappableSubstantiveFamily(params.candidate.families)) return false;
+    if (/\bremedies\b/i.test(excerpt.replace(/\s+/g, " ").slice(0, 300))) return false;
+    return true;
+  })();
+  const eodPosition = isEodByPosition || isEodByContainment;
+
   const promotedFamily = ((): string | null => {
     if (nonCovenantSubtype || affirmativeKind) return null;
-    if (isEod || isAdministrativeProvision(heading, excerpt)) return null;
+    if (isEod || eodPosition || isAdministrativeProvision(heading, excerpt)) return null;
+    // Schedule/exhibit indexes stay explicitly unresolved by
+    // design (step 1) — no step-4 arbitration over them.
+    if (isScheduleIndexText(excerpt)) return null;
     if ((FAMILY_TO_CATEGORY[primary] ?? "OTHER") !== "OTHER") return null;
     // Title-only stems never promote. NOTE the STRICT title
     // test (nothing left after the title), not the wider
@@ -1759,9 +1979,16 @@ export function analyzeProvision(params: {
     if (isTitleOnlyStem(excerpt, heading)) return null;
     // No article context at all: the item's position is
     // unresolved (EoD fragments and residue land here) — never
-    // promote on keyword evidence alone.
-    if (!articleHeading) return null;
-    if (/\bevents of default\b/i.test(articleHeading)) return null;
+    // promote on keyword evidence alone. Step 4 admits the
+    // containment-validated position article as context (the
+    // parentage walk misses items whose refs were misread,
+    // but span containment + ref-numeral agreement is itself
+    // structural evidence).
+    if (!articleHeading && !structuralPos.positionArticle) return null;
+    const articleText = despaceHeadingText(
+      articleHeading ?? structuralPos.positionArticle?.heading ?? "",
+    );
+    if (/\bevents of default\b/i.test(articleText)) return null;
     // Stem guard: a SECTION item with structural descendants
     // is a stem — its clauses are separate items and carry the
     // substance. (A leaf section — a single-paragraph financial
@@ -1777,29 +2004,70 @@ export function analyzeProvision(params: {
       return cat && cat !== "OTHER" && cat !== "BASKETS_EXCEPTIONS_CONDITIONS";
     });
     if (mappable.length === 0) return null;
-    // Section–family agreement: the enclosing section's own
-    // subject (the agreement's organization) arbitrates among
-    // the detected families. If the section names a covenant
-    // subject, ONLY a detected family of that subject promotes
-    // — a mismatch means the detected families are incidental
-    // mentions or the item's own family went undetected, and
-    // the item stays unresolved rather than taking a wrong
-    // label. (This is also what picks INVESTMENTS over an
-    // incidental ratio-test family inside §Investments, and
-    // ASSET_SALES over INVESTMENTS inside §Dispositions.)
-    const section = despaceHeadingText(structuralPos.sectionHeading ?? "");
-    const sectionCats: CovenantCategoryKey[] = [];
-    const SUBJECT: Array<[RegExp, CovenantCategoryKey]> = [
-      [/\bindebtedness\b|\bincremental\b|\bincrease\b|\bpriority\b|\bprepayments?\b/i, "DEBT_INCURRENCE"],
-      [/\bliens\b|\bsecured debt\b/i, "LIENS_SECURED_DEBT"],
-      [/\brestricted\b|\binvestments\b/i, "RESTRICTED_PAYMENTS_INVESTMENTS"],
-      [/\basset sales\b|\bdispositions\b|\basset\b|\bip rights\b|\bintellectual property\b/i, "ASSET_SALES"],
-      [/\bguarantee\b|\bguaranty\b/i, "GUARANTEES"],
-      [/\baffiliate/i, "AFFILIATE_TRANSACTIONS"],
-      [/\bfundamental\b|\bmergers\b|\bconsolidation\b/i, "MERGERS_FUNDAMENTAL_CHANGES"],
-      [/\bfinancial\b/i, "FINANCIAL_MAINTENANCE"],
-    ];
-    for (const [re, cat] of SUBJECT) if (re.test(section)) sectionCats.push(cat);
+    // Arbitration order (step 4 completes step 3's):
+    // (1) The section's subject, when the clause's own lead
+    //     CORROBORATES it — when the lead names both the
+    //     section's covenant and another subject, the section's
+    //     frame governs and the other subject is the object the
+    //     frame operates on (a deemed-disposition prong of
+    //     §Dispositions whose lead says "Investments"; a
+    //     ratio-debt prong of §Indebtedness whose lead also
+    //     says "junior lien").
+    if (sectionCats.length > 0 && !isPureCrossReference) {
+      for (const cat of sectionCats) {
+        const named = LEAD_SUBJECTS.some(([re, c]) => c === cat && re.test(leadText));
+        if (!named) continue;
+        const f = mappable.find((f) => FAMILY_TO_CATEGORY[f] === cat);
+        if (f) return f;
+      }
+    }
+    // (2) The clause's own operative lead subject, when a
+    //     detected family carries it — the clause's own words
+    //     outrank its section (a guarantee prong inside an
+    //     Investments section IS a guarantee clause). Two
+    //     guards: a pure cross-reference pointer is exempt (its
+    //     lead names another section's permission); and when
+    //     the lead subject CONFLICTS with the section's subject,
+    //     the lead wins only if the prong does not SPEAK its
+    //     section frame's vocabulary — a prong whose own text
+    //     carries the frame's signature terms (an affiliate
+    //     exception conditioned on arm's-length terms) is an
+    //     instance of the frame taking another form, and stays
+    //     with it; a prong whose text never speaks the frame's
+    //     language (guarantee obligations inside an Investments
+    //     list, with no investment vocabulary anywhere in it)
+    //     is an independent basket housed in the list.
+    if (leadSubject && !isPureCrossReference) {
+      const conflictsSection = sectionCats.length > 0 && !sectionCats.includes(leadSubject);
+      const textHead = excerpt.replace(/\s+/g, " ").slice(0, 500);
+      const speaksFrame = sectionCats.some(
+        (cat) =>
+          LEAD_SUBJECTS.some(([re, c]) => c === cat && re.test(textHead)) ||
+          // The affiliate frame's signature condition is the
+          // arm's-length standard — a prong conditioned on it
+          // speaks the frame even without the word "Affiliate".
+          (cat === "AFFILIATE_TRANSACTIONS" && /\barms?\W{0,2}length\b/i.test(textHead)),
+      );
+      const exitPhrase =
+        /\bin reliance on\b|\bpermitted\s+(?:by|under|pursuant\s+to)\s+(?:Section|§)/i.test(
+          textHead,
+        );
+      if (!conflictsSection || exitPhrase || !speaksFrame) {
+        const f = mappable.find((f) => FAMILY_TO_CATEGORY[f] === leadSubject);
+        if (f) return f;
+      }
+    }
+    // (3) Section–family agreement: the enclosing section's own
+    //     subject (the agreement's organization) arbitrates
+    //     among the detected families. If the section names a
+    //     covenant subject, ONLY a detected family of that
+    //     subject promotes — a mismatch means the detected
+    //     families are incidental mentions or the item's own
+    //     family went undetected, and the item stays unresolved
+    //     rather than taking a wrong label. (This is also what
+    //     picks INVESTMENTS over an incidental ratio-test family
+    //     inside §Investments, and ASSET_SALES over INVESTMENTS
+    //     inside §Dispositions.)
     if (sectionCats.length > 0) {
       return mappable.find((f) => sectionCats.includes(FAMILY_TO_CATEGORY[f]!)) ?? null;
     }
@@ -1817,11 +2085,113 @@ export function analyzeProvision(params: {
     if (cls === "NEGATIVE" || cls === "AFFIRMATIVE" || cls === "COVENANTS" || cls === "CREDITS") {
       return null;
     }
-    if (/\bletters?\b|\bpayments\b|\bbreak funding\b|\bcomput|\binterest\b|\bborrowing/i.test(section)) {
+    if (
+      /\bletters?\b|\bpayments\b|\bbreak funding\b|\bcomput|\binterest\b|\bborrowing/i.test(sectionText)
+    ) {
       return null;
     }
     return mappable[0] ?? null;
   })();
+  // Section-category inheritance (step 4): a clause with NO
+  // mappable family of its own, inside a section whose subject
+  // is unique, whose own lead does not name a different
+  // operative subject, takes its section's category. Easement
+  // and zoning prongs of a Liens covenant, a rabbi-trust prong
+  // of an Investments covenant, an ASR prong of a Restricted
+  // Payments covenant: the family vocabulary has no word for
+  // the prong's noun, but the provision's covenant identity is
+  // its section's — that is how the agreement itself organizes
+  // it, and how a reader classifies it.
+  const inheritedCategory = ((): CovenantCategoryKey | null => {
+    if (promotedFamily || nonCovenantSubtype || affirmativeKind) return null;
+    if (isEod || eodPosition || isAdministrativeProvision(heading, excerpt)) return null;
+    if (isScheduleIndexText(excerpt)) return null;
+    if ((FAMILY_TO_CATEGORY[primary] ?? "OTHER") !== "OTHER") return null;
+    if (isPureCrossReference) return null;
+    const hasMappable = params.candidate.families.some((f) => {
+      const c = FAMILY_TO_CATEGORY[f];
+      return c && c !== "OTHER" && c !== "BASKETS_EXCEPTIONS_CONDITIONS";
+    });
+    if (hasMappable) return null;
+    const nodeType = candidateNode?.nodeType;
+    if (nodeType !== "CLAUSE" && nodeType !== "SUBCLAUSE" && nodeType !== "SUBSECTION") {
+      return null;
+    }
+    if (isTitleOnlyStem(excerpt, heading)) return null;
+    const subjects = [...new Set(sectionCats)];
+    if (subjects.length !== 1) return null;
+    const subject = subjects[0]!;
+    if (subject === "EVENTS_OF_DEFAULT" || subject === "BASKETS_EXCEPTIONS_CONDITIONS") {
+      return null;
+    }
+    // Contradiction guard: the clause's own lead names a
+    // DIFFERENT operative subject (a distributions-for-taxes
+    // clause mis-segmented under a debt section is an RP
+    // provision, not a debt provision — it waits for its own
+    // vocabulary, it does not inherit).
+    if (leadSubject && leadSubject !== subject) return null;
+    if (!articleHeading && !structuralPos.positionArticle) return null;
+    const articleText = despaceHeadingText(
+      articleHeading ?? structuralPos.positionArticle?.heading ?? "",
+    );
+    if (/\bevents of default\b/i.test(articleText)) return null;
+    return subject;
+  })();
+  // Demotion (step 4): the primary family maps, but stronger
+  // structural evidence contradicts it.
+  const demotedCategory = ((): CovenantCategoryKey | null => {
+    if (nonCovenantSubtype || affirmativeKind || isEod || eodPosition) return null;
+    if (isScheduleIndexText(excerpt)) return null;
+    const primaryCat = FAMILY_TO_CATEGORY[primary];
+    if (!primaryCat || primaryCat === "OTHER" || primaryCat === "BASKETS_EXCEPTIONS_CONDITIONS") {
+      return null;
+    }
+    // (a) A pure cross-reference pointer is classified by the
+    // subject it points at (its lead), not by the family its
+    // enclosing section's vocabulary tagged first ("Guarantees
+    // permitted by Section 7.02" inside §Investments is a
+    // guarantees pointer, not an investments provision).
+    if (isPureCrossReference && leadSubject && leadSubject !== primaryCat) return leadSubject;
+    // (b) Section-subject demotion: the enclosing section's
+    // unique subject is a different covenant, that covenant's
+    // family IS detected on the item, and the item's own lead
+    // does not corroborate the primary family (an incremental
+    // facility clause tagged INVESTMENTS by an incidental
+    // "Permitted Investments" mention is a debt provision).
+    const subjects = [...new Set(sectionCats)];
+    if (subjects.length === 1 && subjects[0] !== primaryCat) {
+      const present = params.candidate.families.some(
+        (f) => FAMILY_TO_CATEGORY[f] === subjects[0],
+      );
+      if (present && leadSubject !== primaryCat) return subjects[0];
+    }
+    return null;
+  })();
+  // Position-unresolved fragment demotion (step 4): an item
+  // with NO article context at all (parentage and containment
+  // both unresolved) whose text carries no operative modal is
+  // an enumeration fragment of something larger — typically a
+  // defined term's limb list, mis-segmented. Its family tags
+  // are body-keyword hits inside a noun-phrase list; they do
+  // not support a determinate covenant category. Demote to
+  // OTHER (honest unresolved) rather than keep a label the
+  // evidence cannot carry.
+  const fragmentDemoted =
+    !nonCovenantSubtype &&
+    !affirmativeKind &&
+    !isEod &&
+    !eodPosition &&
+    !articleHeading &&
+    structuralPos.positionArticle === null &&
+    candidateNode?.nodeType !== "SECTION" &&
+    candidateNode?.nodeType !== "ARTICLE" &&
+    (FAMILY_TO_CATEGORY[primary] ?? "OTHER") !== "OTHER" &&
+    !/\b(shall|will|may|must)\b/i.test(excerpt.replace(/\s+/g, " ").slice(0, 500)) &&
+    // A present-tense operative act ("the undersigned hereby
+    // guarantees...", "hereby confirms...") is operative text,
+    // not a noun-phrase limb — joinder and supplement grants
+    // speak this way and carry no article parentage.
+    !/\bhereby\b/i.test(excerpt.replace(/\s+/g, " ").slice(0, 500));
   const effectivePrimary = promotedFamily ?? primary;
   // Category follows substance, not just the first family tag: an EoD
   // trigger stays EVENTS_OF_DEFAULT even if the classifier also tagged a
@@ -1832,9 +2202,13 @@ export function analyzeProvision(params: {
       ? "AFFIRMATIVE"
       : isAdministrativeProvision(heading, excerpt)
         ? "OTHER"
-        : isEod
+        : isEod || eodPosition
           ? "EVENTS_OF_DEFAULT"
-          : (FAMILY_TO_CATEGORY[effectivePrimary] ?? "OTHER");
+          : fragmentDemoted
+            ? "OTHER"
+            : (demotedCategory ??
+              inheritedCategory ??
+              (FAMILY_TO_CATEGORY[effectivePrimary] ?? "OTHER"));
   const categoryLabel = CATEGORY_LABELS[category];
   // A NON_COVENANT item has no covenant posture: UNRESOLVED is
   // the honest determinate statement (it is not a prohibition,
