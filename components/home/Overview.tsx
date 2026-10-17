@@ -33,6 +33,8 @@ export function CompanyOverview({
   readinessHeadline = null,
   authorityNote = null,
   setupCta = null,
+  documents = null,
+  preparingIds = null,
 }: {
   companyId: string;
   identityName?: string | null;
@@ -40,6 +42,8 @@ export function CompanyOverview({
   readinessHeadline?: string | null;
   authorityNote?: string | null;
   setupCta?: { href: string; label: string; detail: string } | null;
+  documents?: readonly { id: string; name: string }[] | null;
+  preparingIds?: readonly string[] | null;
 }) {
   const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
   const alerts = presentAlerts(slots.alerts);
@@ -107,21 +111,19 @@ export function CompanyOverview({
           <UtilizationCard state={slots.utilization} />
           <CovenantsAtRiskCard state={slots.covenantsAtRisk} />
           <NextTestCard state={slots.nextTest} />
+          <EbitdaTile companyId={companyId} documents={documents} preparingIds={preparingIds} />
         </div>
         <div className="home-split">
           <HeadroomOverTimeCard state={slots.headroomOverTime} />
           <CapacitySummaryCard state={slots.capacitySummary} />
         </div>
         <div className="home-split">
-          <StatusTable state={slots.statusTable} />
-          <div className="home-stack">
-            <EbitdaTile />
-            <DriversCard state={slots.drivers} />
-          </div>
+          <StatusTable state={slots.statusTable} viewAllHref={`/${companyId}/covenants`} />
+          <DriversCard state={slots.drivers} />
         </div>
         <div className="home-pair">
-          <AlertsCard state={alerts} />
-          <TransactionsCard state={slots.transactions} />
+          <AlertsCard state={alerts} viewAllHref={`/${companyId}/alerts`} />
+          <TransactionsCard state={slots.transactions} viewAllHref={`/${companyId}/ledger`} />
         </div>
       </div>
       {authorityNote ? (

@@ -22,6 +22,21 @@ describe("status presentation", () => {
     expect(view.label).toBe("Review required");
   });
 
+  it("maps EBITDA and basket statuses without a second green", () => {
+    expect(presentUiStatus("CONFIRMED").tone).toBe("clear");
+    expect(presentUiStatus("EVIDENCED").tone).toBe("info");
+    expect(presentUiStatus("PENDING").tone).toBe("attention");
+    expect(presentUiStatus("CONDITIONAL").tone).toBe("attention");
+    expect(presentUiStatus("NEEDS_INPUT").tone).toBe("attention");
+    expect(presentUiStatus("NOT_IDENTIFIED").tone).toBe("unknown");
+    expect(presentUiStatus("DETECTED").tone).toBe("unknown");
+    expect(presentUiStatus("CAPPED").tone).toBe("info");
+    expect(presentUiStatus("NOT_IDENTIFIED").hint).toMatch(/no such basket/i);
+    for (const code of ["EVIDENCED", "PENDING", "CONDITIONAL", "NEEDS_INPUT", "NOT_IDENTIFIED", "DETECTED", "CAPPED"]) {
+      expect(presentUiStatus(code).tone).not.toBe("clear");
+    }
+  });
+
   it("does not invent a meaning for an unknown code", () => {
     const view = presentUiStatus("NOT_A_REAL_STATUS_CODE");
     expect(view.code).toBe("NOT_A_REAL_STATUS_CODE");

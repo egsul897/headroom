@@ -1,214 +1,273 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
 import { LiveFigure } from "@/components/motion/LiveFigure";
 import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
 import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
 import { fmtM, fmtX } from "@/lib/format";
 import {
-  computeRemainingCapacityAfterDebtIncurrence,
-  simulateDebtIncurrence,
+  simulateDebtIncurrenceByBasket,
+  type CapacityBound,
   type CompanyCovenantData,
   type CovenantPosition,
-  type DebtIncurrenceSimulation,
-  type PostTransactionCapacitySimulation,
-  type SolverNativeCompanyContext,
+  type DebtBasketAllocation,
+  type DebtBasketKind,
+  type DebtIncurrenceByBasketSimulation,
 } from "@/lib/covenant-engine";
 
-/**
- * Debt categories the simulate API does not accept as their own amount.
- * Secured and unsecured are the only sides `simulateDebtIncurrence` takes.
- */
-export const DEBT_ENGINE_GAPS = [
-  {
-    id: "incremental",
-    label: "Incremental facility",
-    note: "Needs engine support. simulateDebtIncurrence takes one amount and a secured flag. It has no incremental-facility amount.",
-  },
-  {
-    id: "general",
-    label: "General debt basket",
-    note: "Needs engine support. A general basket is inside a document capacity formula. No API proposes an amount against that basket alone.",
-  },
-  {
-    id: "ratio-debt",
-    label: "Ratio debt",
-    note: "Needs engine support as its own amount. Ratio tests are outputs of the secured or unsecured call. A separate ratio-debt amount is not an engine input.",
-  },
-] as const;
-
-const SIDES = [
-  { id: "secured" as const, label: "Secured debt", secured: true },
-  { id: "unsecured" as const, label: "Unsecured debt", secured: false },
+const KINDS: { id: DebtBasketKind; label: string }[] = [
+  { id: "INCREMENTAL", label: "Incremental facility" },
+  { id: "GENERAL", label: "General debt basket" },
+  { id: "RATIO_DEBT", label: "Ratio debt" },
 ];
+
+type SideAmounts = { secured: number; unsecured: number };
+type Amounts = Record<DebtBasketKind, SideAmounts>;
+type BasketMode = "secured" | "unsecured" | "combined";
+
+const NO_BASKET = "This agreement has no such basket";
+const KIND_WORD: Record<DebtBasketKind, string> = {
+  INCREMENTAL: "the incremental facility",
+  GENERAL: "the general debt basket",
+  RATIO_DEBT: "ratio debt",
+};
+
+export function boundText(bound: CapacityBound | undefined, value: number | undefined): string {
+  if (bound === "UNLIMITED") return "No cap";
+  if (value === undefined || !Number.isFinite(value)) return "Not evaluated";
+  if (bound === "AT_LEAST") return `at least ${fmtM(value)}`;
+  return fmtM(value);
+}
+
+function sliderSlot(kind: DebtBasketKind, side: "secured" | "unsecured", mode: BasketMode): number {
+  let index = 0;
+  for (const row of KINDS) {
+    if (mode !== "unsecured") {
+      if (row.id === kind && side === "secured") return index;
+      index += 1;
+    }
+    if (mode !== "secured") {
+      if (row.id === kind && side === "unsecured") return index;
+      index += 1;
+    }
+  }
+  return -1;
+}
+
+function ratioText(value: number | null): string {
+  if (value == null || !Number.isFinite(value)) return "Not evaluated";
+  return fmtX(value);
+}
+
+function allocationsFor(amounts: Amounts, mode: BasketMode): DebtBasketAllocation[] {
+  const rows: DebtBasketAllocation[] = [];
+  for (const kind of KINDS) {
+    const row = amounts[kind.id];
+    if (mode !== "unsecured") rows.push({ kind: kind.id, amount: row.secured, secured: true });
+    if (mode !== "secured") rows.push({ kind: kind.id, amount: row.unsecured, secured: false });
+  }
+  return rows;
+}
 
 export function DebtBasketBoard({
   data,
   position,
-  solverContext,
-  securedAmount,
-  unsecuredAmount,
-  onSecuredAmount,
-  onUnsecuredAmount,
+  initial,
+  onCombined,
 }: {
   data: CompanyCovenantData;
   position: CovenantPosition;
-  solverContext?: SolverNativeCompanyContext;
-  securedAmount: number;
-  unsecuredAmount: number;
-  onSecuredAmount: (amount: number) => void;
-  onUnsecuredAmount: (amount: number) => void;
+  initial?: Partial<Amounts> & { mode?: BasketMode };
+  onCombined?: (secured: number, unsecured: number) => void;
 }) {
+  const [mode, setMode] = useState<BasketMode>(initial?.mode ?? "combined");
+  const [amounts, setAmounts] = useState<Amounts>({
+    INCREMENTAL: initial?.INCREMENTAL ?? { secured: 100, unsecured: 50 },
+    GENERAL: initial?.GENERAL ?? { secured: 80, unsecured: 40 },
+    RATIO_DEBT: initial?.RATIO_DEBT ?? { secured: 60, unsecured: 25 },
+  });
+
+  const allocations = useMemo(() => allocationsFor(amounts, mode), [amounts, mode]);
+  const sim: DebtIncurrenceByBasketSimulation = useMemo(
+    () => simulateDebtIncurrenceByBasket(data, position, allocations),
+    [data, position, allocations],
+  );
+  const blocked = sim.invalidAllocations.length > 0;
+
+  function setSide(kind: DebtBasketKind, side: "secured" | "unsecured", amount: number) {
+    const next = {
+      ...amounts,
+      [kind]: { ...amounts[kind], [side]: amount },
+    };
+    setAmounts(next);
+    const sent = allocationsFor(next, mode);
+    const secured = sent.filter((row) => row.secured).reduce((sum, row) => sum + row.amount, 0);
+    const unsecured = sent.filter((row) => !row.secured).reduce((sum, row) => sum + row.amount, 0);
+    onCombined?.(secured, unsecured);
+  }
+
   return (
     <div className="basket-board">
-      {SIDES.map((side) => {
-        const amount = side.secured ? securedAmount : unsecuredAmount;
-        const onAmount = side.secured ? onSecuredAmount : onUnsecuredAmount;
+      <div className="button-row" role="group" aria-label="Secured and unsecured">
+        {(
+          [
+            ["secured", "Secured"],
+            ["unsecured", "Unsecured"],
+            ["combined", "Combined"],
+          ] as const
+        ).map(([id, label]) => (
+          <button key={id} type="button" className={`button ${mode === id ? "active" : ""}`} onClick={() => setMode(id)}>
+            {label}
+          </button>
+        ))}
+      </div>
+      {blocked ? null : (
+      <section className="home-card basket-slider" aria-label="Combined result">
+        <div className="basket-slider-head">
+          <h3 className="home-eyebrow">Combined</h3>
+          <StatusBadge status={sim.status} />
+        </div>
+        <dl className="basket-figures">
+          <div>
+            <dt>Total net leverage</dt>
+            <dd>
+              <LiveFigure text={ratioText(sim.proForma.totalNetLeverage)} />
+            </dd>
+          </div>
+          <div>
+            <dt>Senior secured net leverage</dt>
+            <dd>
+              <LiveFigure text={ratioText(sim.proForma.seniorSecuredNetLeverage)} />
+            </dd>
+          </div>
+          <div>
+            <dt>Fixed charge coverage</dt>
+            <dd>
+              <LiveFigure text={ratioText(sim.proForma.fixedChargeCoverage)} />
+            </dd>
+          </div>
+          <div>
+            <dt>Proposed</dt>
+            <dd>
+              <LiveFigure text={fmtM(sim.totals.amount)} />
+            </dd>
+          </div>
+        </dl>
+        {sim.reasons.map((reason) => (
+          <p key={reason} className="home-detail">
+            {reason}
+          </p>
+        ))}
+      </section>
+      )}
+      {KINDS.map((kind) => {
+        const basket = sim.baskets.find((row) => row.kind === kind.id);
+        const row = amounts[kind.id];
+        const securedError = sim.invalidAllocations.find((item) => item.index === sliderSlot(kind.id, "secured", mode))?.reason;
+        const unsecuredError = sim.invalidAllocations.find((item) => item.index === sliderSlot(kind.id, "unsecured", mode))?.reason;
+        const kindBlocked = Boolean(securedError || unsecuredError);
         return (
-          <EngineSide
-            key={side.id}
-            label={side.label}
-            secured={side.secured}
-            amount={amount}
-            onAmount={onAmount}
-            data={data}
-            position={position}
-            solverContext={solverContext}
-          />
+          <section key={kind.id} className="home-card basket-slider" aria-label={kind.label}>
+            <div className="basket-slider-head">
+              <h3 className="home-eyebrow">{kind.label}</h3>
+              {kindBlocked ? null : basket ? <StatusBadge status={basket.status} /> : <StatusBadge status="NEEDS_INPUT" />}
+            </div>
+            {mode !== "unsecured" ? (
+              <Slider
+                label={`${kind.label} secured`}
+                amount={row.secured}
+                error={securedError}
+                onChange={(amount) => setSide(kind.id, "secured", amount)}
+              />
+            ) : null}
+            {mode !== "secured" ? (
+              <Slider
+                label={`${kind.label} unsecured`}
+                amount={row.unsecured}
+                error={unsecuredError}
+                onChange={(amount) => setSide(kind.id, "unsecured", amount)}
+              />
+            ) : null}
+            {kindBlocked ? null : (
+            <ul className="basket-covenants">
+              {(basket?.documents ?? []).map((doc) => (
+                <li key={doc.documentId}>
+                  <div>
+                    <span className="basket-covenant-name">{doc.documentName}</span>
+                    {doc.status === "NOT_IDENTIFIED" ? (
+                      <span className="ebitda-caption">{NO_BASKET}</span>
+                    ) : (
+                      <span className="ebitda-caption">
+                        {doc.provision ? `${doc.provision.sectionRef} · ${doc.provision.basketName}` : doc.reason ?? "No clause on this result"}
+                      </span>
+                    )}
+                  </div>
+                  {doc.status === "NOT_IDENTIFIED" ? (
+                    <StatusBadge status="NOT_IDENTIFIED" />
+                  ) : (
+                    <>
+                      <LiveFigure text={boundText(doc.bound, doc.remaining)} />
+                      <StatusBadge status={doc.status} />
+                      {doc.provision ? (
+                        <OpenProvenanceButton
+                          className="button button-quiet basket-clause-chip"
+                          title={doc.provision.basketName}
+                          source={doc.documentName || UNLOADED_SOURCE}
+                          clause={
+                            doc.provision.sectionRef
+                              ? `Section ${doc.provision.sectionRef}. Clause text is not loaded on this step.`
+                              : UNLOADED_CLAUSE
+                          }
+                          history={UNLOADED_HISTORY}
+                          note={
+                            doc.sharedWith && doc.sharedWith.length > 0
+                              ? `Shared with ${doc.sharedWith.map((item) => KIND_WORD[item]).join(", ")}.`
+                              : "Capacity, used, and remaining are the basket simulation. Nothing was recalculated here."
+                          }
+                        >
+                          {doc.provisionUsed !== undefined && Number.isFinite(doc.provisionUsed) ? fmtM(doc.provisionUsed) : doc.provision.sectionRef}
+                        </OpenProvenanceButton>
+                      ) : null}
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+            )}
+          </section>
         );
       })}
-      {DEBT_ENGINE_GAPS.map((gap) => (
-        <section key={gap.id} className="home-card basket-slider is-disabled" aria-disabled="true">
-          <h3 className="home-eyebrow">{gap.label}</h3>
-          <input type="range" min={0} max={1000} value={0} disabled aria-disabled="true" />
-          <p className="home-detail">{gap.note}</p>
-        </section>
-      ))}
     </div>
   );
 }
 
-function EngineSide({
+function Slider({
   label,
-  secured,
   amount,
-  onAmount,
-  data,
-  position,
-  solverContext,
+  error,
+  onChange,
 }: {
   label: string;
-  secured: boolean;
   amount: number;
-  onAmount: (amount: number) => void;
-  data: CompanyCovenantData;
-  position: CovenantPosition;
-  solverContext?: SolverNativeCompanyContext;
+  error?: string;
+  onChange: (amount: number) => void;
 }) {
-  const sim: DebtIncurrenceSimulation = useMemo(
-    () => simulateDebtIncurrence(data, position, amount, secured, solverContext),
-    [data, position, amount, secured, solverContext],
-  );
-  const remaining: PostTransactionCapacitySimulation = useMemo(
-    () => computeRemainingCapacityAfterDebtIncurrence(data, position, amount, secured, solverContext),
-    [data, position, amount, secured, solverContext],
-  );
-
   return (
-    <section className="home-card basket-slider" aria-label={label}>
-      <div className="basket-slider-head">
-        <h3 className="home-eyebrow">{label}</h3>
-        <StatusBadge status={sim.status} />
-      </div>
-      <div className="basket-amount">
-        <LiveFigure text={fmtM(amount)} />
-      </div>
+    <label className="basket-amount-field">
+      <span>{label}</span>
+      <LiveFigure text={Number.isFinite(amount) ? fmtM(amount) : "Not a number"} />
       <input
         type="range"
-        min={0}
+        min={Math.min(0, Number.isFinite(amount) ? amount : 0)}
         max={2000}
-        step={50}
-        value={amount}
-        aria-label={`${label} amount`}
-        onChange={(event) => onAmount(Number(event.target.value))}
+        step={10}
+        value={Number.isFinite(amount) ? amount : 0}
+        aria-label={label}
+        aria-invalid={error ? true : undefined}
+        onChange={(event) => onChange(Number(event.target.value))}
       />
-      <dl className="basket-figures">
-        <div>
-          <dt>Total net leverage</dt>
-          <dd>
-            <LiveFigure text={fmtX(sim.proForma.totalNetLeverage)} />
-          </dd>
-        </div>
-        <div>
-          <dt>Senior secured net leverage</dt>
-          <dd>
-            <LiveFigure text={fmtX(sim.proForma.seniorSecuredNetLeverage)} />
-          </dd>
-        </div>
-        <div>
-          <dt>Fixed charge coverage</dt>
-          <dd>
-            <LiveFigure text={fmtX(sim.proForma.fixedChargeCoverage)} />
-          </dd>
-        </div>
-        <div>
-          <dt>Capacity left</dt>
-          <dd>
-            <LiveFigure text={remaining.remainingCapacity === undefined ? "Not evaluated" : fmtM(remaining.remainingCapacity)} />
-          </dd>
-        </div>
-      </dl>
-      {sim.reason ? <p className="home-detail">{sim.reason}</p> : null}
-      <ul className="basket-covenants">
-        {sim.ratioTests.map((test) => (
-          <li key={test.provisionId}>
-            <div>
-              <span className="basket-covenant-name">{test.basketName}</span>
-              <span className="ebitda-caption">
-                {test.sectionRef}
-                {test.applies ? "" : " · Does not apply to this side"}
-              </span>
-            </div>
-            <LiveFigure text={test.postTransactionRatio === undefined ? "Not evaluated" : fmtX(test.postTransactionRatio)} />
-            <StatusBadge status={test.status} />
-            <OpenProvenanceButton
-              className="button button-quiet"
-              title={test.basketName}
-              source={test.documentName || UNLOADED_SOURCE}
-              clause={test.sectionRef ? `Section ${test.sectionRef}. Clause text is not loaded on this step.` : UNLOADED_CLAUSE}
-              history={UNLOADED_HISTORY}
-              note="This clause reference is the one the engine returned with the ratio test."
-            >
-              Clause
-            </OpenProvenanceButton>
-          </li>
-        ))}
-        {sim.perDocument.map((doc) => {
-          const left = remaining.perDocument.find((row) => row.documentId === doc.documentId);
-          return (
-            <li key={doc.documentId}>
-              <div>
-                <span className="basket-covenant-name">{doc.documentName}</span>
-                <span className="ebitda-caption">{doc.bindingProvision ? doc.bindingProvision.sectionRef : "No binding clause on this result"}</span>
-              </div>
-              <LiveFigure text={left?.remainingCapacity === undefined ? "Not evaluated" : fmtM(left.remainingCapacity)} />
-              <StatusBadge status={doc.status} />
-              {doc.bindingProvision ? (
-                <OpenProvenanceButton
-                  className="button button-quiet"
-                  title={doc.bindingProvision.basketName}
-                  source={doc.documentName}
-                  clause={`Section ${doc.bindingProvision.sectionRef}. Clause text is not loaded on this step.`}
-                  history={UNLOADED_HISTORY}
-                >
-                  Clause
-                </OpenProvenanceButton>
-              ) : null}
-            </li>
-          );
-        })}
-      </ul>
-    </section>
+      {error ? <p className="ebitda-inline-error">{error}</p> : null}
+    </label>
   );
 }

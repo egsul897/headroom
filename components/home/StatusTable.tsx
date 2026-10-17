@@ -7,11 +7,10 @@ import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components
 import { UNKNOWN_STATE, presentStatus, type StatusLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
-const COLUMNS = ["Covenant", "Facility / Document", "Status", "Headroom", "Trend", "Next test"] as const;
-
-export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState }) {
+export function StatusTable({ state = UNKNOWN_STATE, viewAllHref = null }: { state?: StatusLoadState; viewAllHref?: string | null }) {
   const presented = presentStatus(state);
   const rows = presented.kind === "VERIFIED_POPULATED" ? presented.rows : [];
+  const visible = rows.slice(0, 5);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const open = openIndex == null ? null : rows[openIndex] ?? null;
 
@@ -26,34 +25,38 @@ export function StatusTable({ state = UNKNOWN_STATE }: { state?: StatusLoadState
     );
   }
 
-  return (
-    <RegionCard region="headroom-status" eyebrow="Headroom status">
+    return (
+      <RegionCard
+        region="headroom-status"
+        eyebrow="Headroom status"
+        toolbar={viewAllHref ? <a className="home-view-all" href={viewAllHref}>View all</a> : null}
+      >
       <div className="home-table-wrap">
         <table className="home-table">
           <thead>
             <tr>
-              {COLUMNS.map((column) => (
-                <th key={column} scope="col" className={column === "Headroom" ? "num" : undefined}>
-                  {column}
-                </th>
-              ))}
+              <th scope="col">Covenant</th>
+              <th scope="col">Status</th>
+              <th scope="col" className="num">
+                Headroom
+              </th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, index) => (
+            {visible.map((row, index) => (
               <tr key={`${row.covenant}-${row.facility}-${row.headroom}`} data-load-kind="VERIFIED_POPULATED">
-                <td>
-                  <button type="button" className="row-detail" onClick={() => setOpenIndex(index)}>
+                <td className="covenant-cell">
+                  <button type="button" className="covenant-name" title={row.covenant} onClick={() => setOpenIndex(index)}>
                     {row.covenant}
                   </button>
+                  <span className="covenant-meta" title={row.facility}>
+                    {row.facility}
+                  </span>
                 </td>
-                <td>{row.facility}</td>
                 <td>
                   <StatusBadge status={row.status} />
                 </td>
                 <td className="num">{row.headroom}</td>
-                <td className="home-trend-cell">{row.trend && row.trend !== "—" ? row.trend : "Unknown"}</td>
-                <td>{row.nextTest}</td>
               </tr>
             ))}
           </tbody>

@@ -10,7 +10,7 @@ export function DriversCard({ state = UNKNOWN_STATE }: { state?: ListLoadState<"
     <RegionCard region="drivers" eyebrow="Top headroom drivers">
       {presented.kind === "VERIFIED_POPULATED" ? (
         <ul className="home-loaded" data-load-kind="VERIFIED_POPULATED">
-          {presented.rows.map((row, index) => (
+          {presented.rows.slice(0, 5).map((row, index) => (
             <li key={`${index}-${row}`}>
               <OpenProvenanceButton className="row-detail" title={row} note={NOTE}>
                 {row}

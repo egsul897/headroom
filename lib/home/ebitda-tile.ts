@@ -49,6 +49,18 @@ export function formatUsd(value: string | null | undefined): string | null {
   return `${negative ? "−" : ""}$${grouped}`;
 }
 
+/** KPI-row figure. A whole number of millions reads like the other boxes. */
+export function formatKpiUsd(value: string | null | undefined): string | null {
+  if (!isIntegerAmount(value)) return null;
+  const amount = BigInt(value);
+  const abs = amount < 0n ? -amount : amount;
+  if (abs >= 1_000_000n && abs % 1_000_000n === 0n) {
+    const millions = (abs / 1_000_000n).toString();
+    return `${amount < 0n ? "−" : ""}$${millions} million`;
+  }
+  return formatUsd(value);
+}
+
 /** One badge on the list. The sheet shows the flag and the line separately. */
 export function listBadge(item: EbitdaAddBack): AddBackFlagStatus | AddBackLineStatus {
   if (item.flagStatus === "CONDITIONAL") return "CONDITIONAL";
@@ -59,6 +71,15 @@ export function listBadge(item: EbitdaAddBack): AddBackFlagStatus | AddBackLineS
 /** Confirm only when the flag has an integer amount and a source filing. */
 export function canConfirm(item: EbitdaAddBack): boolean {
   return isIntegerAmount(item.amount) && item.source != null;
+}
+
+/** Sum of confirmed integer add-backs. Unconfirmed and unsourced lines add nothing. */
+export function confirmedAddBackTotal(items: readonly EbitdaAddBack[], confirmed: ReadonlySet<string>): string {
+  let total = 0n;
+  for (const item of items) {
+    if (confirmed.has(item.id) && isIntegerAmount(item.amount)) total += BigInt(item.amount);
+  }
+  return total.toString();
 }
 
 export function ebitdaTotals(base: string, items: readonly EbitdaAddBack[], confirmed: ReadonlySet<string>) {
