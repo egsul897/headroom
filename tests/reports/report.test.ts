@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { buildComplianceReport, notDeterminableReport, toCertificateModel } from "@/lib/reports/build";
-import { buildKeyRatios } from "@/lib/reports/key-ratios";
+import { buildComplianceReport, notDeterminableReport } from "@/lib/reports/build";
 import { csvField, renderComplianceCsv } from "@/lib/reports/render-csv";
 import { renderComplianceReportPdf, reportTextLines, wrap } from "@/lib/reports/render-pdf";
+import { buildCovenantCalendar } from "@/lib/reports/calendar";
 import { parseAsOf } from "@/lib/reports/params";
 import { overview } from "./fixtures";
 
@@ -27,22 +27,14 @@ describe("compliance report — every number sourced, NEEDS_INPUT honest", () =>
   });
   it("unmodeled rows stay UNMODELED; their notes are never shown as a formula", () => {
     expect(line("d1:UNM:capacity")).toMatchObject({ status: "UNMODELED", value: null });
-    expect(line("d1:UNM:capacity").formula).toBeNull();
-    expect(line("d1:UNM:capacity").proof.inputs.find((i) => i.label === "Capacity formula")!.value).toBeNull();
+    expect(line("d1:UNM:capacity").proof.formula).toBeNull();
   });
   it("remaining is a number only when the engine publishes SUPPORTED_REMAINING", () => {
     expect(line("d1:GEN:remaining")).toMatchObject({ value: null, status: "NEEDS_INPUT" });
     expect(line("d1:SUP:remaining")).toMatchObject({ value: 6_000_000, status: "COMPUTED" });
   });
-  it("proof is the PR 414 FigureProof: sourced inputs, unexposed inputs value null, no clause/page invented", () => {
-    const p = line("d1:GEN:capacity").proof;
-    expect(p).toMatchObject({ figure: "General debt basket — contractual capacity", value: "$62,500,000", clause: null, page: null, review: "UNVERIFIED" });
-    expect(p.inputs[0]).toEqual({ label: "Capacity formula", value: "greater of $50,000,000 and 25% of Consolidated EBITDA", source: "Credit Agreement §7.03(o)" });
-    const ratio = line("d1:LEV:actual").proof;
-    expect(ratio.value).toBe("3.10x");
-    expect(ratio.inputs.filter((i) => i.value === null).map((i) => i.label)).toEqual(["Numerator", "Denominator"]);
-    expect(ratio.inputs[2]).toEqual({ label: "Covenant limit", value: "4.50x max", source: "Credit Agreement §7.11(a)" });
-    for (const l of r.lines) expect(l.proof.review).not.toBe("VERIFIED");
+  it("proof payload carries formula+citation; steps/inputs are NEEDS_INPUT, never reconstructed", () => {
+    expect(line("d1:GEN:capacity").proof).toMatchObject({ formula: "greater of $50,000,000 and 25% of Consolidated EBITDA", steps: "NEEDS_INPUT", inputs: "NEEDS_INPUT" });
   });
   it("authority is system-computed, never counsel-verified", () => {
     expect(r.authority).toBe("SYSTEM_COMPUTED_NOT_COUNSEL_VERIFIED");
@@ -105,41 +97,19 @@ describe("PDF", () => {
   });
 });
 
-describe("PR 414 CertificateModel", () => {
-  const m = toCertificateModel(r);
-  const ln = (n: string) => m.lines.find((l) => l.name === n)!;
-  it("period = engine as-of date; required/actual/headroom as strings; PASS/FAIL only when evaluated", () => {
-    expect(m.period).toBe(r.asOfDate);
-    expect(ln("Max total net leverage")).toEqual({ name: "Max total net leverage", required: "4.50x max", actual: "3.10x", headroom: "1.40x", evaluated: "PASS", citation: "Credit Agreement §7.11(a)" });
-    expect(ln("Min interest coverage")).toMatchObject({ required: "2.50x min", evaluated: "FAIL" });
+describe("calendar (read-only from persisted obligations)", () => {
+  it("empty ⇒ NEEDS_INPUT, never 'nothing due'", () => {
+    expect(buildCovenantCalendar("co_1", [])).toMatchObject({ status: "NEEDS_INPUT", entries: [] });
   });
-  it("no computed actual ⇒ evaluated null (renders NOT EVALUATED)", () => {
-    expect(ln("Springing FCCR")).toMatchObject({ actual: null, headroom: null, evaluated: null, citation: "Credit Agreement §7.11(c)" });
-  });
-});
-
-describe("PR 414 KeyRatioModel[]", () => {
-  const rows = overview.covenantFamilies.flatMap((f) => f.rows).filter((x) => x.kind === "RATIO") as Parameters<typeof buildKeyRatios>[1];
-  const metrics = { genericGrossLeverage: { status: "OK", value: 3.4 }, genericNetLeverage: { status: "OK", value: 2.9 }, genericSecuredLeverage: { status: "UNAVAILABLE_MISSING_INPUT", value: null }, genericInterestCoverage: { status: "OK", value: 5.1 } };
-  const k = buildKeyRatios(metrics, rows);
-  const by = (id: string) => k.find((x) => x.id === id)!;
-  it("agreement-defined covenant ratio wins, with its limit and clause", () => {
-    expect(by("net")).toMatchObject({ value: 3.1, limitLabel: "4.50x max", clause: "Credit Agreement §7.11(a)", thresholds: null });
-    expect(by("interest")).toMatchObject({ value: 2.0, limitLabel: "2.50x min" });
-  });
-  it("generic fallback is labelled generic and never paired with a covenant limit", () => {
-    expect(by("gross")).toMatchObject({ value: 3.4, limitLabel: null, clause: null });
-    expect(by("gross").source).toMatch(/Generic position metric/);
-    expect(by("secured")).toMatchObject({ value: null, source: null });
-  });
-  it("FCCR: only the agreement's modeled definition, else NOT DETERMINABLE (no generic fallback)", () => {
-    expect(by("fccr")).toMatchObject({ value: null, limitLabel: null });
-    expect(by("fccr").source).toMatch(/^NOT DETERMINABLE/);
-    const modeled = buildKeyRatios(null, [{ name: "Minimum Fixed Charge Coverage Ratio", documentName: "CA", sectionRef: "§7.11(c)", status: "MODELED", currentRatio: 1.4, ratioLimit: 1.1, comparisonDirection: "at_or_above" }]);
-    expect(modeled.find((x) => x.id === "fccr")).toMatchObject({ value: 1.4, limitLabel: "1.10x min", clause: "CA §7.11(c)" });
-  });
-  it("bands never defaulted here", () => {
-    for (const x of k) expect(x.thresholds).toBeNull();
+  it("dated vs relative vs unrepresented", () => {
+    const c = buildCovenantCalendar("co_1", [
+      { stableKey: "a", eventType: "FISCAL_QUARTER_END", conditionDescription: null, deadlineKind: "DAYS_AFTER_EVENT", deadlineDays: 45, deadlineDate: null, requiredAction: "Deliver quarterly financial statements and compliance certificate", satisfactionState: "PENDING", sourceSectionRef: "§6.01(b)", reviewStatus: "PENDING" },
+      { stableKey: "b", eventType: "MATURITY", conditionDescription: null, deadlineKind: "FIXED_DATE", deadlineDays: null, deadlineDate: new Date("2029-03-31T00:00:00Z"), requiredAction: "Repay term loans", satisfactionState: "PENDING", sourceSectionRef: "§2.07", reviewStatus: "PENDING" },
+      { stableKey: "c", eventType: "EVENT_OF_DEFAULT", conditionDescription: "cure right", deadlineKind: "PERIODIC", deadlineDays: null, deadlineDate: null, requiredAction: "Equity cure", satisfactionState: "PENDING", sourceSectionRef: "§8.04", reviewStatus: "PENDING" },
+    ]);
+    expect(c.entries[0]).toMatchObject({ key: "b", date: "2029-03-31", dateStatus: "DATED" });
+    expect(c.entries.find((e) => e.key === "a")).toMatchObject({ date: null, dateStatus: "NEEDS_INPUT", relativeRule: "45 days after fiscal quarter end", kind: "REPORTING_DEADLINE" });
+    expect(c.entries.find((e) => e.key === "c")).toMatchObject({ kind: "CURE_PERIOD", dateStatus: "NEEDS_INPUT" });
   });
 });
 

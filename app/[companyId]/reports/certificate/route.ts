@@ -1,12 +1,11 @@
 /**
  * GET /{companyId}/reports/certificate[?asOf=YYYY-MM-DD]
- * Certificate payload (PR 414 CertificateModel): period, required vs actual, headroom, PASS/FAIL else NOT EVALUATED, citation.
+ * Certificate payload: required vs actual per tested covenant, with citations.
  * Tenant gate first; 403 with no data on failure.
  */
 import { NextResponse } from "next/server";
 import { requireTenantAction } from "@/lib/auth/guard";
 import { loadComplianceReport } from "@/lib/reports/load";
-import { toCertificateModel } from "@/lib/reports/build";
 import { parseAsOf } from "@/lib/reports/params";
 
 export const runtime = "nodejs";
@@ -31,9 +30,6 @@ export async function GET(req: Request, ctx: { params: Promise<{ companyId: stri
       blocker: r.blocker,
       authority: r.authority,
       disclaimer: r.disclaimer,
-      /** PR 414 CertificateModel (strings, evaluated PASS/FAIL/null). */
-      certificate: toCertificateModel(r),
-      /** Numeric rows with status/reviewState/reason for audit. */
       rows: r.certificate,
     },
     { headers: { "Cache-Control": "no-store" } },
