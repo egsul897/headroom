@@ -21,8 +21,9 @@
  *       empty; adding an entry is a change to this file, which the gate reads from the BASE
  *       ref, so a PR cannot allowlist itself. tests/ and docs/ entries are refused.
  * Renames contribute both the old and the new path, so moving or deleting a protected file fails.
- * A symlink added or changed by the PR is protected when its target is protected, or when the
- * target is absolute or escapes the repository (fail closed).
+ * A symlink added or changed by the PR is protected when its target is protected, is the repo
+ * root or a directory containing evidence, or is absolute / escapes the repository (fail closed).
+ * All git output is read NUL-separated (-z), so unusual characters in names cannot hide a path.
  *
  * CLI:  node protected-paths.mjs --base <ref> [--head <ref>]
  *       labels come from env PR_LABELS (JSON array of names, as from toJSON(...labels.*.name)).
@@ -136,20 +137,26 @@ export function resolveLinkTarget(link, target) {
  * directory) is protected, or when the target cannot be resolved inside the repo.
  * @param {{ link: string; target: string }} s
  */
-export function symlinkIsProtected(s) {
+export function symlinkIsProtected(s, protectedTracked = []) {
   const resolved = resolveLinkTarget(s.link, s.target);
   if (resolved === null) return true;
-  return isProtectedPath(resolved) || isProtectedPath(`${resolved}/x`);
+  // the repo root, or any directory that contains evidence (a listed entry or a tracked protected file)
+  if (resolved === "" || resolved === ".") return true;
+  if (isProtectedPath(resolved) || isProtectedPath(`${resolved}/x`)) return true;
+  const prefix = `${resolved.toLowerCase()}/`;
+  if (PROTECTED_PATHS.some((e) => e.toLowerCase().startsWith(prefix))) return true;
+  return protectedTracked.some((f) => normalise(f).toLowerCase().startsWith(prefix));
 }
 
 /**
  * @param {readonly string[]} changedPaths
  * @param {readonly string[]} labels
  * @param {readonly { link: string; target: string }[]} [symlinks] symlinks added or changed by the PR
+ * @param {readonly string[]} [protectedTracked] protected files tracked at head (for links to their parent dirs)
  */
-export function checkProtectedPaths(changedPaths, labels, symlinks = []) {
+export function checkProtectedPaths(changedPaths, labels, symlinks = [], protectedTracked = []) {
   const unique = [...new Set(changedPaths.filter(Boolean))].sort();
-  const linkHits = new Set(symlinks.filter(symlinkIsProtected).map((s) => normalise(s.link)));
+  const linkHits = new Set(symlinks.filter((l) => symlinkIsProtected(l, protectedTracked)).map((s) => normalise(s.link)));
   const protectedChanged = unique.filter((p) => classifyPath(p).status === "protected" || linkHits.has(normalise(p)));
   for (const l of linkHits) if (!protectedChanged.includes(l)) protectedChanged.push(l);
   protectedChanged.sort();
@@ -166,23 +173,58 @@ export function parseLabels(raw) {
   return parsed.map((l) => (typeof l === "string" ? l : String(l?.name ?? ""))).filter(Boolean);
 }
 
+/**
+ * Parse `git diff --raw -z` output. Paths are NUL-terminated and never quoted, so non-ASCII,
+ * quote, backslash, tab or newline characters in a name survive intact (the default
+ * core.quotePath output would hand back a C-quoted string that no path rule matches).
+ * Rename/copy entries (R/C) carry two paths, source then destination; both are returned.
+ * @param {string} out
+ * @returns {{ srcMode: string; dstMode: string; dstSha: string; status: string; paths: string[] }[]}
+ */
+export function parseRawZ(out) {
+  if (out === "") return [];
+  const parts = (out.endsWith("\0") ? out.slice(0, -1) : out).split("\0");
+  const entries = [];
+  let i = 0;
+  while (i < parts.length) {
+    const head = parts[i];
+    const m = /^:(\d{6}) (\d{6}) ([0-9a-f]+) ([0-9a-f]+) ([A-Z])(\d*)$/.exec(head);
+    if (!m) throw new Error(`unexpected git diff --raw -z record: ${JSON.stringify(head.slice(0, 80))}`);
+    const status = m[5];
+    const n = status === "R" || status === "C" ? 2 : 1;
+    const paths = parts.slice(i + 1, i + 1 + n);
+    if (paths.length !== n || paths.some((p) => !p)) throw new Error("truncated git diff --raw -z output");
+    entries.push({ srcMode: m[1], dstMode: m[2], dstSha: m[4], status, paths });
+    i += 1 + n;
+  }
+  return entries;
+}
+
+/** @param {string} base @param {string} head @param {string} cwd */
+function rawDiff(base, head, cwd) {
+  return parseRawZ(execFileSync("git", ["diff", "--raw", "-z", "--no-renames", "--no-abbrev", `${base}...${head}`], { cwd, encoding: "utf8", maxBuffer: 256 * 1024 * 1024 }));
+}
+
 /** Symlinks (mode 120000) that the PR adds or changes, with their link text at head. */
 export function symlinksBetween(base, head = "HEAD", cwd = process.cwd()) {
-  const out = execFileSync("git", ["diff", "--raw", "--no-renames", "--no-abbrev", `${base}...${head}`], { cwd, encoding: "utf8" });
   const links = [];
-  for (const line of out.split("\n")) {
-    const m = /^:(\d{6}) (\d{6}) [0-9a-f]+ ([0-9a-f]+) ([A-Z])\d*\t(.+)$/.exec(line);
-    if (!m || m[2] !== "120000" || m[4] === "D") continue;
-    const target = execFileSync("git", ["cat-file", "blob", m[3]], { cwd, encoding: "utf8" });
-    links.push({ link: m[5], target });
+  for (const e of rawDiff(base, head, cwd)) {
+    if (e.dstMode !== "120000" || e.status === "D") continue;
+    const target = execFileSync("git", ["cat-file", "blob", e.dstSha], { cwd, encoding: "utf8" });
+    links.push({ link: e.paths[e.paths.length - 1], target });
   }
   return links;
 }
 
 /** Every path touched between base and head; renames contribute both sides (--no-renames). */
 export function changedPathsBetween(base, head = "HEAD", cwd = process.cwd()) {
-  const out = execFileSync("git", ["diff", "--name-only", "--no-renames", `${base}...${head}`], { cwd, encoding: "utf8" });
-  return out.split("\n").map((s) => s.trim()).filter(Boolean);
+  return [...new Set(rawDiff(base, head, cwd).flatMap((e) => e.paths))].filter(Boolean);
+}
+
+/** Protected files tracked at `head` (NUL-safe), so a symlink to a parent directory of evidence is caught. */
+export function protectedTrackedAt(head = "HEAD", cwd = process.cwd()) {
+  const out = execFileSync("git", ["ls-tree", "-r", "-z", "--name-only", head], { cwd, encoding: "utf8", maxBuffer: 256 * 1024 * 1024 });
+  return out.split("\0").filter((p) => p && isProtectedPath(p));
 }
 
 function main() {
@@ -199,7 +241,7 @@ function main() {
   }
   let result;
   try {
-    result = checkProtectedPaths(changedPathsBetween(base, head), parseLabels(process.env.PR_LABELS), symlinksBetween(base, head));
+    result = checkProtectedPaths(changedPathsBetween(base, head), parseLabels(process.env.PR_LABELS), symlinksBetween(base, head), protectedTrackedAt(head));
   } catch (err) {
     console.error(`protected-path check could not run: ${err instanceof Error ? err.message : String(err)}`);
     process.exit(2);

@@ -59,7 +59,9 @@ fails on drift). Workflow changes need a workflow-scoped push. The gate has:
   directory protects everything under it, and a token-named file is protected whatever its
   extension. Only an exact entry in `SOURCE_WARN_ALLOWLIST` (source under `scripts/`, empty
   by default) downgrades a token-named file to a warning. A symlink the PR adds or changes is
-  protected when its target is protected or lies outside the repo.
+  protected when its target is protected, is the repo root or a directory containing evidence,
+  or lies outside the repo. Git output is read NUL-separated (`-z`), so names with non-ASCII or
+  quote characters cannot slip past the rules.
 - **Clean tree.** After the PR test run, `git status --porcelain` must be empty.
   Tests and the scripts they spawn write generated artifacts through
   `lib/platform/artifact-output.ts`, which redirects to

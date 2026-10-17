@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { changedPathsBetween, checkProtectedPaths, classifyPath, isProtectedPath, OWNER_LABEL, parseLabels, PROTECTED_PATHS, resolveLinkTarget, SOURCE_WARN_ALLOWLIST, symlinkIsProtected, symlinksBetween } from "../../scripts/platform/protected-paths.mjs";
+import { changedPathsBetween, checkProtectedPaths, classifyPath, isProtectedPath, OWNER_LABEL, parseLabels, PROTECTED_PATHS, parseRawZ, protectedTrackedAt, resolveLinkTarget, SOURCE_WARN_ALLOWLIST, symlinkIsProtected, symlinksBetween } from "../../scripts/platform/protected-paths.mjs";
 
 describe("pr-gate protected-path check", () => {
   it("flags held-out / blind / baseline / frozen / ground-truth / sealed paths", () => {
@@ -201,5 +201,61 @@ describe("pr-gate protected-path check", () => {
     const deleted = tryChange("delete", () => git("rm", "-q", "scripts/covenant-learning-factory/scoreboard/ruleset.json"));
     expect(deleted.ok).toBe(false);
     expect(deleted.protectedChanged).toEqual(["scripts/covenant-learning-factory/scoreboard/ruleset.json"]);
+  });
+  it("names with non-ASCII, quote or backslash characters inside protected dirs are seen exactly (git -z, no quotePath)", () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "pp-z-"));
+    const git = (...a: string[]) => execFileSync("git", ["-c", "user.email=t@t", "-c", "user.name=t", ...a], { cwd: dir, encoding: "utf8" });
+    git("init", "-q", "-b", "main");
+    git("config", "core.quotePath", "true");
+    fs.writeFileSync(path.join(dir, "keep.txt"), "x\n");
+    git("add", "-A");
+    git("commit", "-qm", "base");
+    git("checkout", "-qb", "pr");
+    const names = [
+      "tests/contract-model/certified/\u00e9.test.ts",
+      "docs/phase-3-reliability-stratified-certification/\u00f1.md",
+      'tests/contract-model/certified/a\\"b.ts',
+    ];
+    for (const n of names) {
+      fs.mkdirSync(path.join(dir, path.dirname(n)), { recursive: true });
+      fs.writeFileSync(path.join(dir, n), "x\n");
+    }
+    git("add", "-A");
+    git("commit", "-qm", "odd names");
+    // the default (quoted) output really does mangle these names
+    expect(git("diff", "--name-only", "main...HEAD")).toMatch(/"tests\/contract-model\/certified\/\\303\\251/);
+    const changed = changedPathsBetween("main", "HEAD", dir);
+    expect(changed.sort()).toEqual([...names].sort());
+    for (const n of names) expect(isProtectedPath(n), n).toBe(true);
+    const r = checkProtectedPaths(changed, [], symlinksBetween("main", "HEAD", dir), protectedTrackedAt("HEAD", dir));
+    expect(r.ok).toBe(false);
+    expect([...r.protectedChanged].sort()).toEqual([...names].sort());
+  });
+  it("parseRawZ keeps both sides of a rename/copy pair and refuses malformed output", () => {
+    const z = (...p: string[]) => p.join("\0") + "\0";
+    const out = z(
+      ":100644 100644 aaaa bbbb M", "lib/a.ts",
+      ":100644 100644 aaaa bbbb R087", "tests/contract-model/certified/old\u00e9.ts", "lib/new name.ts",
+      ":000000 120000 0000 cccc A", "lib/link",
+      ":100644 000000 aaaa 0000 D", "docs/x\ty.md",
+    );
+    const e = parseRawZ(out);
+    expect(e.map((x) => x.paths)).toEqual([["lib/a.ts"], ["tests/contract-model/certified/old\u00e9.ts", "lib/new name.ts"], ["lib/link"], ["docs/x\ty.md"]]);
+    expect(e[2]).toMatchObject({ dstMode: "120000", dstSha: "cccc", status: "A" });
+    expect(() => parseRawZ("garbage\0")).toThrow(/unexpected/);
+    expect(() => parseRawZ(":100644 100644 aaaa bbbb R100\0only-one\0")).toThrow(/truncated/);
+  });
+  it("a symlink to the repo root or to any directory that contains evidence is protected", () => {
+    const tracked = ["tests/fixtures/unseen-packages/x/human-ground-truth.ts", "docs/covenant-learning-factory/unit-dumps/a.json"];
+    expect(symlinkIsProtected({ link: "lib/root", target: ".." }, tracked)).toBe(true);
+    expect(symlinkIsProtected({ link: "root", target: "." }, tracked)).toBe(true);
+    expect(symlinkIsProtected({ link: "lib/fx", target: "../tests/fixtures" }, tracked)).toBe(true);
+    expect(symlinkIsProtected({ link: "lib/t", target: "../tests" }, tracked)).toBe(true);
+    // a parent of a listed entry, even with no tracked list
+    expect(symlinkIsProtected({ link: "lib/cm", target: "../tests/contract-model" })).toBe(true);
+    expect(symlinkIsProtected({ link: "lib/sc", target: "../scripts/covenant-learning-factory" })).toBe(true);
+    // a directory with no evidence under it is fine
+    expect(symlinkIsProtected({ link: "lib/u", target: "./util" }, tracked)).toBe(false);
+    expect(symlinkIsProtected({ link: "lib/c", target: "../components" }, tracked)).toBe(false);
   });
 });
