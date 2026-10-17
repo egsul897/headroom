@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Headroom — EBITDA card (sample)</title>
+<style>
+  :root {
+    --paper: #f3f0eb;
+    --card: #fffcf8;
+    --ink: #1a1816;
+    --muted: #5e5852;
+    --line: #e3ddd4;
+    --green: #0e6b43;
+    --green-soft: #e5f4ec;
+    --red: #9d2c24;
+    --red-soft: #fdeceb;
+    --amber: #7c4a00;
+    --amber-soft: #fbf3df;
+    --navy: #2a2c2e;
+    --navy-soft: #e6e1da;
+    --accent: #54243c;
+    --accent-hover: #6b3050;
+    --accent-ink: #ffffff;
+    --accent-signal: #f4f1ec;
+    --idle-soft: #e8e3dc;
+    --status-unknown: #5e5852;
+    --status-unknown-soft: #e8e3dc;
+    --shadow-rest: 0 1px 2px rgba(26, 24, 22, 0.06);
+    --shadow-lift: 0 10px 28px rgba(26, 24, 22, 0.07);
+    --radius: 12px;
+    --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --shell-sidebar: #2a2c2e;
+    --shell-sidebar-ink: #f4f1ec;
+    --shell-sidebar-muted: #c8c4be;
+    --shell-sidebar-hover: #3a3c3f;
+    --shell-sidebar-card: #222426;
+    --shell-sidebar-line: #1c1e20;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.45;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  button, input { font-family: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .skip {
+    position: absolute; left: 12px; top: -40px; background: var(--card); padding: 8px 12px; z-index: 80;
+  }
+  .skip:focus { top: 12px; }
+
+  .app-shell {
+    display: grid;
+    grid-template-columns: 228px minmax(0, 1fr);
+    min-height: 100vh;
+  }
+  .app-sidebar {
+    display: flex; flex-direction: column; gap: 16px;
+    min-height: 100vh; padding: 18px 12px 14px;
+    background: var(--shell-sidebar); color: var(--shell-sidebar-muted);
+    position: sticky; top: 0; height: 100vh;
+  }
+  .app-brand { display: flex; align-items: center; gap: 8px; color: var(--shell-sidebar-ink); padding: 0 8px; text-decoration: none; }
+  .app-brand-mark {
+    width: 22px; height: 22px; border-radius: 6px; background: var(--accent-signal); color: var(--shell-sidebar);
+    display: grid; place-items: center; font-weight: 650; font-size: 13px;
+  }
+  .app-brand-word { font-size: 15px; font-weight: 640; letter-spacing: -0.03em; }
+  .app-nav { display: grid; gap: 2px; }
+  .app-nav-link {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px;
+    color: var(--shell-sidebar-muted); text-decoration: none; font-size: 13.5px; font-weight: 520;
+  }
+  .app-nav-link svg { flex-shrink: 0; }
+  .app-nav-link.active {
+    background: var(--accent); color: #fff; font-weight: 620; box-shadow: inset 3px 0 0 var(--accent-signal);
+  }
+  .app-nav-link:hover { background: var(--shell-sidebar-hover); }
+  .app-nav-link.active:hover { background: var(--accent); }
+  .app-sidebar-foot { margin-top: auto; display: grid; gap: 10px; }
+  .app-company-card, .app-user-card {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    border: 1px solid var(--shell-sidebar-line); border-radius: 8px; background: var(--shell-sidebar-card); color: var(--shell-sidebar-ink);
+  }
+  .app-company-icon, .app-user-mark {
+    width: 32px; height: 32px; display: grid; place-items: center; flex-shrink: 0; font-weight: 650; font-size: 13px;
+  }
+  .app-company-icon { border-radius: 8px; background: var(--accent); color: #fff; }
+  .app-user-mark { border-radius: 999px; background: var(--accent-signal); color: var(--shell-sidebar); }
+  .app-company-copy { display: grid; min-width: 0; }
+  .app-company-name { font-size: 13px; font-weight: 640; color: var(--shell-sidebar-ink); }
+  .app-company-ticker { font-size: 11px; color: var(--shell-sidebar-muted); }
+  .app-tagline { margin: 0; padding: 2px 4px 0; font-size: 11px; color: var(--shell-sidebar-muted); }
+
+  .app-main { min-width: 0; display: flex; flex-direction: column; }
+  .app-topbar {
+    position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 8px;
+    height: 56px; padding: 0 20px 0 16px; background: rgba(255, 252, 248, 0.9);
+    border-bottom: 1px solid var(--line); backdrop-filter: blur(12px);
+  }
+  .app-search {
+    flex: 1; max-width: 440px; display: flex; align-items: center; gap: 8px; height: 36px;
+    padding: 0 10px 0 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--paper);
+    color: var(--muted); font-size: 13px;
+  }
+  .app-search kbd {
+    margin-left: auto; font-family: inherit; font-size: 11px; font-weight: 600; color: var(--muted);
+    border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; background: var(--card);
+  }
+  .sample-pill {
+    margin-left: auto; font-size: 11px; font-weight: 680; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 4px 8px; background: var(--card);
+  }
+  .app-icon-button {
+    width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 9px; border: 0; background: transparent; color: var(--ink);
+  }
+
+  .app-content { width: 100%; max-width: 1180px; margin: 0 auto; padding: 28px 32px 72px; }
+  .home-overview { display: grid; gap: 16px; }
+  .home-greeting { margin: 0; font-size: 28px; font-weight: 560; letter-spacing: -0.03em; line-height: 1.2; }
+  .home-regions { display: grid; gap: 28px; }
+  .home-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  .home-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 18px 18px; box-shadow: var(--shadow-rest); min-width: 0;
+  }
+  .home-kpis .home-card { min-height: 148px; }
+  .home-eyebrow {
+    margin: 0 0 12px; font-size: 11px; font-weight: 680; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .home-headline { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.02em; }
+  .home-detail { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+
+  .ebitda-card { padding: 0; transition: transform 180ms ease, box-shadow 180ms ease; }
+  .ebitda-card.is-collapsed:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .ebitda-card.is-empty .ebitda-toggle { cursor: default; }
+  .ebitda-toggle {
+    display: block; width: 100%; text-align: left; background: transparent; border: 0; color: inherit;
+    padding: 32px 32px 28px; cursor: pointer; border-radius: var(--radius);
+  }
+  .ebitda-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .ebitda-kicker { display: flex; align-items: center; gap: 12px; }
+  .ebitda-kicker .home-eyebrow { margin: 0; }
+  .need-chip {
+    display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px;
+    background: var(--amber-soft); color: var(--amber); font-size: 12px; font-weight: 650; letter-spacing: 0;
+  }
+  .ebitda-hero-row {
+    display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(180px, 0.8fr);
+    gap: 32px; align-items: end; margin-top: 28px;
+  }
+  .ebitda-hero, .ebitda-secondary-value {
+    margin: 0; font-size: 40px; font-weight: 560; letter-spacing: -0.035em; line-height: 1.05;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .ebitda-secondary-value { font-size: 28px; }
+  .is-missing { color: var(--muted); font-size: 28px; letter-spacing: -0.02em; }
+  .ebitda-caption { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+  .ebitda-secondary { text-align: right; }
+  .ebitda-empty-copy { margin: 12px 0 0; max-width: 36rem; color: var(--muted); font-size: 15px; }
+  .button-primary {
+    margin-top: 24px; height: 40px; padding: 0 16px; border: 0; border-radius: 8px;
+    background: var(--accent); color: var(--accent-ink); font-size: 14px; font-weight: 620; cursor: pointer;
+  }
+  .button-primary:hover { background: var(--accent-hover); }
+
+  .ebitda-reveal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 320ms cubic-bezier(.2, .7, .2, 1); }
+  .ebitda-card.is-open .ebitda-reveal { grid-template-rows: 1fr; }
+  .ebitda-reveal-inner { overflow: hidden; }
+  .ebitda-more { padding: 0 32px 32px; }
+  .ebitda-capacity {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+    margin: 0; padding: 8px 8px 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px;
+  }
+  .ebitda-capacity strong {
+    color: var(--ink); font-size: 18px; font-weight: 560; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .ebitda-list { list-style: none; margin: 0; padding: 0; }
+  .ebitda-row {
+    display: grid; grid-template-columns: minmax(0, 1fr) 9.5rem 7.75rem 5.25rem;
+    gap: 16px; align-items: center; padding: 20px 8px; border-top: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .ebitda-row:hover { background: color-mix(in srgb, var(--ink) 4%, var(--card)); }
+  .row-open {
+    background: none; border: 0; padding: 0; text-align: left; cursor: pointer; color: var(--ink);
+    font-size: 15px; font-weight: 560; letter-spacing: -0.01em;
+  }
+  .row-open:hover { color: var(--accent); }
+  .row-sub { display: block; margin-top: 4px; font-size: 12px; font-weight: 450; color: var(--muted); letter-spacing: 0; }
+  .row-amt { font-size: 15px; font-weight: 560; font-variant-numeric: tabular-nums; text-align: right; }
+  .row-amt.is-missing, .sheet-figure.is-missing { color: var(--muted); font-weight: 500; }
+  .row-confirm {
+    height: 32px; padding: 0 4px; border: 0; background: transparent; color: var(--accent);
+    font-size: 13px; font-weight: 650; cursor: pointer; border-radius: 8px;
+  }
+  .row-confirm:hover { background: #f6eef2; }
+  .row-confirm:active { transform: translateY(1px); }
+  .row-confirm[hidden] { display: none; }
+
+  .status-badge {
+    display: inline-flex; align-items: center; max-width: 100%; padding: 2px 8px; border-radius: 999px;
+    border: 1px solid transparent; font-size: 12px; font-weight: 600; line-height: 1.4; white-space: nowrap;
+  }
+  .status-badge-clear { background: var(--green-soft); color: var(--green); }
+  .status-badge-attention { background: var(--amber-soft); color: var(--amber); }
+  .status-badge-stop { background: var(--red-soft); color: var(--red); }
+  .status-badge-info { background: var(--navy-soft); color: var(--navy); }
+  .status-badge-unknown { background: var(--status-unknown-soft); color: var(--status-unknown); }
+
+  .skel { height: 12px; border-radius: 6px; background: var(--idle-soft); margin-top: 16px; }
+  .skel.w1 { width: 46%; height: 28px; }
+  .skel.w2 { width: 28%; }
+  .skel.w3 { width: 62%; }
+
+  .scrim {
+    position: fixed; inset: 0; z-index: 40; background: rgba(26, 24, 22, 0.18);
+    opacity: 0; pointer-events: none; transition: opacity 200ms ease;
+  }
+  .scrim.is-on { opacity: 1; pointer-events: auto; }
+  .sheet {
+    position: fixed; top: 0; right: 0; z-index: 50; width: min(440px, 100%); height: 100%;
+    background: var(--card); border-left: 1px solid var(--line);
+    box-shadow: -16px 0 48px rgba(26, 24, 22, 0.08);
+    transform: translateX(100%); transition: transform 340ms cubic-bezier(.2, .8, .2, 1);
+    display: flex; flex-direction: column; padding: 28px 32px 32px;
+  }
+  .sheet.is-on { transform: translateX(0); }
+  .sheet-close {
+    position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border: 0; border-radius: 9px;
+    background: transparent; color: var(--ink); cursor: pointer;
+  }
+  .sheet-close:hover { background: var(--idle-soft); }
+  .sheet-kicker { margin: 0; font-size: 12px; color: var(--muted); }
+  .sheet h2 { margin: 8px 48px 0 0; font-size: 22px; font-weight: 560; letter-spacing: -0.03em; }
+  .sheet-figure { margin: 16px 0 0; font-size: 32px; font-weight: 560; letter-spacing: -0.03em; }
+  .sheet-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .sheet-note { margin: 12px 0 0; color: var(--muted); font-size: 13px; max-width: 34rem; }
+  .sheet-label {
+    margin: 32px 0 8px; font-size: 11px; font-weight: 680; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  }
+  .sheet-value { margin: 0; font-size: 15px; }
+  .sheet-meta { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+  .clause {
+    margin: 0; padding: 0 0 0 14px; border-left: 2px solid var(--navy); font-size: 15px; line-height: 1.5;
+  }
+  .clause-label { margin: 0 0 6px; font-weight: 600; }
+  .sheet-action { margin-top: 32px; }
+  .sheet-action .button-primary, .sheet-undo {
+    width: 100%; height: 44px; border-radius: 10px; font-size: 15px; font-weight: 620; cursor: pointer;
+  }
+  .sheet-undo {
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  }
+  .sheet-undo:hover { background: var(--idle-soft); }
+  .sheet-keys { margin: 12px 0 0; text-align: center; color: var(--muted); font-size: 12px; }
+  .sheet-foot { margin: 16px 0 0; color: var(--muted); font-size: 12px; }
+
+  .toast {
+    position: fixed; left: 50%; bottom: 28px; z-index: 60; display: flex; align-items: center; gap: 16px;
+    padding: 12px 12px 12px 16px; background: var(--navy); color: var(--accent-signal);
+    border-radius: 999px; box-shadow: 0 12px 32px rgba(26, 24, 22, 0.18);
+    transform: translateX(-50%) translateY(12px); opacity: 0; pointer-events: none;
+    transition: transform 220ms ease, opacity 220ms ease;
+  }
+  .toast.is-on { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
+  .toast button {
+    height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent;
+    color: var(--accent-signal); font-weight: 650; cursor: pointer;
+  }
+  .toast button:hover { background: rgba(255, 255, 255, 0.08); }
+
+  .keys {
+    position: fixed; left: 50%; top: 50%; z-index: 70; width: min(420px, calc(100% - 32px));
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-lift);
+    padding: 24px 24px 20px; transform: translate(-50%, -46%); opacity: 0; pointer-events: none;
+    transition: opacity 180ms ease;
+  }
+  .keys.is-on { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%); }
+  .keys h2 { margin: 0 0 16px; font-size: 16px; font-weight: 600; }
+  .keys li { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 13px; }
+  .keys kbd {
+    font-family: inherit; font-weight: 650; border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; background: var(--paper);
+  }
+
+  @media (max-width: 860px) {
+    .app-shell { grid-template-columns: 1fr; }
+    .app-sidebar { display: none; }
+    .home-kpis, .ebitda-hero-row, .ebitda-row { grid-template-columns: 1fr; }
+    .ebitda-secondary, .ebitda-capacity { text-align: left; }
+    .app-content { padding: 20px 16px 48px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    .ebitda-card.is-collapsed:hover { transform: none; }
+    .toast { transform: translateX(-50%); }
+    .toast.is-on { transform: translateX(-50%); }
+    .sheet { transform: none; visibility: hidden; }
+    .sheet.is-on { visibility: visible; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#ebitda">Skip to EBITDA</a>
+<div class="app-shell">
+  <aside class="app-sidebar" aria-label="Primary">
+    <a class="app-brand" href="#collapsed"><span class="app-brand-mark">H</span><span class="app-brand-word">Headroom</span></a>
+    <nav class="app-nav" aria-label="Company">
+      <a class="app-nav-link active" href="#collapsed" aria-current="page">Overview</a>
+      <a class="app-nav-link" href="#covenants">Covenants</a>
+      <a class="app-nav-link" href="#capacity">Capacity</a>
+      <a class="app-nav-link" href="#simulate">Simulate</a>
+      <a class="app-nav-link" href="#ask">Ask</a>
+    </nav>
+    <div class="app-sidebar-foot">
+      <div class="app-company-card">
+        <span class="app-company-icon" aria-hidden="true">S</span>
+        <span class="app-company-copy">
+          <span class="app-company-name">Sample package</span>
+          <span class="app-company-ticker">Not a customer</span>
+        </span>
+      </div>
+      <div class="app-user-card">
+        <span class="app-user-mark" aria-hidden="true">S</span>
+        <span class="app-company-copy">
+          <span class="app-company-name">Sample user</span>
+          <span class="app-company-ticker">CFO view</span>
+        </span>
+      </div>
+      <p class="app-tagline">Clarity. Control. Confidence.</p>
+    </div>
+  </aside>
+  <div class="app-main">
+    <header class="app-topbar">
+      <div class="app-search" aria-hidden="true"><span>Jump to</span><kbd>⌘K</kbd></div>
+      <span class="sample-pill">Sample data</span>
+      <button class="app-icon-button" type="button" aria-label="Alerts">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
+      </button>
+    </header>
+    <div class="app-content">
+      <div class="home-overview">
+        <h1 class="home-greeting">Here’s your headroom overview.</h1>
+        <div class="home-regions">
+          <div class="home-kpis">
+            <section class="home-card" aria-label="Total Headroom"><h2 class="home-eyebrow">Total Headroom</h2><p class="home-headline">Headroom</p><p class="home-detail">Not available yet — we won’t invent a total.</p></section>
+            <section class="home-card" aria-label="Utilization"><h2 class="home-eyebrow">Utilization</h2><p class="home-headline">Utilization</p><p class="home-detail">Not available yet. Used and capacity stay blank until certified figures exist.</p></section>
+            <section class="home-card" aria-label="Covenants at risk"><h2 class="home-eyebrow">Covenants at risk</h2><p class="home-headline">Covenants at risk</p><p class="home-detail">Risk assessment not available yet.</p></section>
+            <section class="home-card" aria-label="Next test"><h2 class="home-eyebrow">Next test</h2><p class="home-headline">Next test</p><p class="home-detail">Next test not available yet.</p></section>
+          </div>
+
+          <section class="home-card ebitda-card is-collapsed" id="ebitda" data-region="ebitda" aria-label="Consolidated EBITDA">
+            <button class="ebitda-toggle" id="ebitda-toggle" type="button" aria-expanded="false" aria-controls="ebitda-panel">
+              <div class="ebitda-top">
+                <div class="ebitda-kicker">
+                  <h2 class="home-eyebrow" id="ebitda-kicker">Consolidated EBITDA</h2>
+                </div>
+                <span class="need-chip" id="need-chip" hidden>4 items need you</span>
+              </div>
+              <div id="ebitda-ready">
+                <div class="ebitda-hero-row">
+                  <div>
+                    <p class="ebitda-hero" id="ebitda-total">Needs input</p>
+                    <p class="ebitda-caption" id="ebitda-total-caption">Base plus confirmed add-backs</p>
+                  </div>
+                  <div class="ebitda-secondary" id="ebitda-secondary">
+                    <p class="ebitda-secondary-value" id="ebitda-additional">Needs input</p>
+                    <p class="ebitda-caption">Additional available</p>
+                  </div>
+                </div>
+              </div>
+              <div id="ebitda-empty">
+                <p class="ebitda-hero is-missing">Needs input</p>
+                <p class="ebitda-empty-copy">The credit agreement has not been read yet.</p>
+              </div>
+              <div id="ebitda-processing" hidden>
+                <div class="skel w1"></div><div class="skel w2"></div><div class="skel w3"></div>
+              </div>
+            </button>
+            <div class="ebitda-reveal" id="ebitda-panel">
+              <div class="ebitda-reveal-inner">
+                <div class="ebitda-more">
+                  <p class="ebitda-capacity"><span>Leverage capacity · sample · 4.50× this total − debt</span><strong id="ebitda-capacity">Needs input</strong></p>
+                  <ul class="ebitda-list" id="ebitda-list"></ul>
+                </div>
+              </div>
+            </div>
+            <div id="ebitda-load-wrap" style="padding: 0 32px 32px;">
+              <button class="button-primary" id="load-sample" type="button">Use sample package</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+  <button class="sheet-close" id="sheet-close" type="button" aria-label="Close">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <p class="sheet-kicker" id="sheet-kicker"></p>
+  <h2 id="sheet-title"></h2>
+  <p class="sheet-figure" id="sheet-amount"></p>
+  <div class="sheet-badges" id="sheet-badges"></div>
+  <p class="sheet-note" id="sheet-note"></p>
+  <h3 class="sheet-label">Source filing</h3>
+  <div id="sheet-source"></div>
+  <h3 class="sheet-label">Clause</h3>
+  <div id="sheet-clause"></div>
+  <h3 class="sheet-label">Cap</h3>
+  <div id="sheet-cap"></div>
+  <h3 class="sheet-label">Capacity impact</h3>
+  <p class="sheet-figure" id="sheet-impact"></p>
+  <p class="sheet-meta" id="sheet-impact-note"></p>
+  <div class="sheet-action" id="sheet-action"></div>
+  <p class="sheet-foot" id="sheet-foot"></p>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span id="toast-text"></span>
+  <button type="button" id="toast-undo">Undo</button>
+</div>
+<div class="sr-only" id="live" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></div>
+
+<div class="keys" id="keys" role="dialog" aria-modal="true" aria-labelledby="keys-title" hidden>
+  <h2 id="keys-title">Keyboard</h2>
+  <ul>
+    <li><span>Expand or collapse</span><kbd>E</kbd></li>
+    <li><span>Move through the list</span><kbd>↑</kbd><kbd>↓</kbd></li>
+    <li><span>Open the focused row</span><kbd>Enter</kbd></li>
+    <li><span>Confirm</span><kbd>C</kbd></li>
+    <li><span>Undo</span><kbd>U</kbd></li>
+    <li><span>Close</span><kbd>Esc</kbd></li>
+  </ul>
+</div>
+
+<script>
+(function () {
+  const BASE = 150000000n;
+  const DEBT = 620000000n;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const motionOk = () => !reduce.matches;
+
+  const MAPPED = {
+    CONDITIONAL: ["attention", "Conditional", "Conditional. Read the condition before relying on it."]
+  };
+  function presentUiStatus(raw) {
+    const code = String(raw ?? "").trim();
+    if (!code) return { code: "", label: "Unknown", tone: "unknown", hint: "No status was provided. Nothing was invented in its place." };
+    if (MAPPED[code]) {
+      const [tone, label, hint] = MAPPED[code];
+      return { code, tone, label, hint };
+    }
+    let label = code;
+    if (/^[A-Z0-9_]+$/.test(code)) {
+      const lower = code.replace(/_/g, " ").toLowerCase();
+      label = lower.charAt(0).toUpperCase() + lower.slice(1);
+    }
+    return { code, label, tone: "unknown", hint: "Unmapped status. Shown as written, with no success or failure implied." };
+  }
+  function badge(code) {
+    const view = presentUiStatus(code);
+    const el = document.createElement("span");
+    el.className = "status-badge status-badge-" + view.tone;
+    el.dataset.status = view.code;
+    el.title = view.hint;
+    el.textContent = view.label;
+    return el;
+  }
+  function money(n) {
+    const v = typeof n === "bigint" ? n : BigInt(Math.round(Number(n)));
+    const neg = v < 0n;
+    const digits = (neg ? -v : v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return (neg ? "−$" : "$") + digits;
+  }
+  function capacityOf(total) {
+    return (450n * total) / 100n - DEBT;
+  }
+
+  const ITEMS = [
+    {
+      id: "a", name: "Restructuring charges", category: "RESTRUCTURING",
+      flagStatus: "DETECTED", lineStatus: "CLAIMED",
+      amount: 18000000n,
+      source: { concept: "RestructuringCharges", current: "18000000", prior: "11000000", currentPeriodEnd: "2025-12-31", priorPeriodEnd: "2024-12-31" },
+      clause: { label: "(a)", text: "cash restructuring charges, which shall not exceed $25,000,000 in any Test Period" },
+      cap: { text: "shall not exceed $25,000,000", amount: "25000000" },
+      capHeadroom: "7000000",
+      confidence: "HIGH",
+      note: "exact filed figure",
+      inputKey: "ADDBACK:(a)",
+      bindingTier: "LOWER_CONFIDENCE",
+      conditional: null
+    },
+    {
+      id: "b", name: "Stock compensation", category: "STOCK_COMP",
+      flagStatus: "DETECTED", lineStatus: "CAPPED",
+      amount: 12000000n,
+      source: { concept: "ShareBasedCompensation", current: "12000000", prior: "9000000", currentPeriodEnd: "2025-12-31", priorPeriodEnd: "2024-12-31" },
+      clause: { label: "(b)", text: "non-cash stock-based compensation expense, in an aggregate amount not to exceed $12,000,000" },
+      cap: { text: "not to exceed $12,000,000", amount: "12000000" },
+      capHeadroom: "0",
+      confidence: "HIGH",
+      note: "exact filed figure; cap applied",
+      inputKey: "ADDBACK:(b)",
+      bindingTier: "LOWER_CONFIDENCE",
+      conditional: null
+    },
+    {
+      id: "c", name: "Run-rate synergies", category: "RUN_RATE_SYNERGIES",
+      flagStatus: "NEEDS_INPUT", lineStatus: "NEEDS_INPUT",
+      amount: null, source: null,
+      clause: { label: "(c)", text: "the amount of run-rate cost savings and synergies projected by the Borrower, which shall not exceed [***]" },
+      cap: { text: "shall not exceed [***]", amount: null },
+      capHeadroom: null,
+      confidence: "LOW",
+      note: "permitted by the definition; no filed movement detected — available, check with CFO",
+      inputKey: "ADDBACK:(c)",
+      bindingTier: "LOWER_CONFIDENCE",
+      conditional: null
+    },
+    {
+      id: "d", name: "Severance", category: "SEVERANCE",
+      flagStatus: "CONDITIONAL", lineStatus: "NEEDS_INPUT",
+      amount: null, source: null,
+      clause: { label: "(d)", text: "extraordinary severance costs, subject to the prior written consent of the Administrative Agent, not to exceed $10,000,000 for any period ending on or prior to December 31, 2025 and $20,000,000 thereafter" },
+      cap: { text: "$10,000,000 for any period ending on or prior to December 31, 2025 and $20,000,000 thereafter", amount: "10000000" },
+      capHeadroom: "10000000",
+      confidence: "LOW",
+      note: "permitted by the definition; no filed movement detected — available, check with CFO",
+      inputKey: "ADDBACK:(d)",
+      bindingTier: "LOWER_CONFIDENCE",
+      conditional: "LENDER_APPROVAL"
+    }
+  ];
+
+  function rowStatus(item) {
+    if (item.flagStatus === "CONDITIONAL") return "CONDITIONAL";
+    if (item.lineStatus === "CAPPED") return "CAPPED";
+    return item.flagStatus;
+  }
+  function canConfirm(item) {
+    return item.amount != null && item.source != null;
+  }
+
+  const confirmed = new Set();
+  let phase = "empty";
+  let expanded = false;
+  let openId = null;
+  let focusIndex = 0;
+  let toastTimer = 0;
+  let toastId = null;
+  let tweenToken = 0;
+  const shown = { total: BASE, additional: 30000000n, capacity: capacityOf(BASE) };
+
+  const card = document.getElementById("ebitda");
+  const toggle = document.getElementById("ebitda-toggle");
+  const list = document.getElementById("ebitda-list");
+  const totalEl = document.getElementById("ebitda-total");
+  const addEl = document.getElementById("ebitda-additional");
+  const capEl = document.getElementById("ebitda-capacity");
+  const chip = document.getElementById("need-chip");
+  const ready = document.getElementById("ebitda-ready");
+  const empty = document.getElementById("ebitda-empty");
+  const processing = document.getElementById("ebitda-processing");
+  const loadWrap = document.getElementById("ebitda-load-wrap");
+  const kicker = document.getElementById("ebitda-kicker");
+  const sheet = document.getElementById("sheet");
+  const scrim = document.getElementById("scrim");
+  const toast = document.getElementById("toast");
+  const keys = document.getElementById("keys");
+  let opener = null;
+
+  function totals() {
+    let total = BASE;
+    let additional = 0n;
+    let known = 0;
+    for (const item of ITEMS) {
+      if (item.amount == null) continue;
+      if (confirmed.has(item.id)) total += item.amount;
+      else { additional += item.amount; known += 1; }
+    }
+    return { total, additional: known ? additional : null, capacity: capacityOf(total) };
+  }
+  function needCount() {
+    return ITEMS.filter((item) => !confirmed.has(item.id)).length;
+  }
+
+  function paintFigure(el, value, big) {
+    if (value == null) {
+      el.textContent = "Needs input";
+      el.classList.add("is-missing");
+      if (big) el.classList.remove("ebitda-hero");
+      return;
+    }
+    el.classList.remove("is-missing");
+    el.textContent = money(value);
+  }
+
+  function applyFigures(next, animate) {
+    const token = ++tweenToken;
+    const jobs = [
+      [totalEl, shown.total, next.total, true],
+      [addEl, shown.additional, next.additional, false],
+      [capEl, shown.capacity, next.capacity, false]
+    ];
+    if (!animate || !motionOk()) {
+      paintFigure(totalEl, next.total, true);
+      paintFigure(addEl, next.additional, false);
+      paintFigure(capEl, next.capacity, false);
+      shown.total = next.total;
+      shown.additional = next.additional;
+      shown.capacity = next.capacity;
+      document.getElementById("live").textContent = "Total EBITDA " + (next.total == null ? "Needs input" : money(next.total));
+      return;
+    }
+    const fromT = Number(shown.total);
+    const toT = Number(next.total);
+    const fromA = shown.additional == null ? null : Number(shown.additional);
+    const toA = next.additional == null ? null : Number(next.additional);
+    const fromC = Number(shown.capacity);
+    const toC = Number(next.capacity);
+    const start = performance.now();
+    const dur = 520;
+    function frame(now) {
+      if (token !== tweenToken) return;
+      const t = Math.min(1, (now - start) / dur);
+      const e = 1 - Math.pow(1 - t, 3);
+      totalEl.classList.remove("is-missing");
+      totalEl.textContent = money(BigInt(Math.round(fromT + (toT - fromT) * e)));
+      if (fromA != null && toA != null) {
+        addEl.classList.remove("is-missing");
+        addEl.textContent = money(BigInt(Math.round(fromA + (toA - fromA) * e)));
+      }
+      capEl.classList.remove("is-missing");
+      capEl.textContent = money(BigInt(Math.round(fromC + (toC - fromC) * e)));
+      if (t < 1) requestAnimationFrame(frame);
+      else {
+        paintFigure(totalEl, next.total, true);
+        paintFigure(addEl, next.additional, false);
+        paintFigure(capEl, next.capacity, false);
+        shown.total = next.total;
+        shown.additional = next.additional;
+        shown.capacity = next.capacity;
+        document.getElementById("live").textContent = "Total EBITDA " + money(next.total);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function renderChrome() {
+    const populated = phase === "ready";
+    card.classList.toggle("is-collapsed", populated && !expanded);
+    card.classList.toggle("is-open", populated && expanded);
+    card.setAttribute("aria-busy", phase === "processing" ? "true" : "false");
+    toggle.setAttribute("aria-expanded", populated && expanded ? "true" : "false");
+    card.classList.toggle("is-empty", phase !== "ready");
+    ready.hidden = phase !== "ready";
+    empty.hidden = phase !== "empty";
+    processing.hidden = phase !== "processing";
+    loadWrap.hidden = phase !== "empty";
+    kicker.textContent = phase === "processing" ? "Reading the agreement" : "Consolidated EBITDA";
+    const n = needCount();
+    chip.hidden = !populated || n === 0;
+    chip.textContent = n === 1 ? "1 item needs you" : n + " items need you";
+    if (populated) {
+      const t = totals();
+      if (!card.dataset.painted) {
+        paintFigure(totalEl, t.total, true);
+        paintFigure(addEl, t.additional, false);
+        paintFigure(capEl, t.capacity, false);
+        shown.total = t.total;
+        shown.additional = t.additional == null ? 0n : t.additional;
+        shown.capacity = t.capacity;
+        card.dataset.painted = "1";
+      }
+    } else {
+      card.dataset.painted = "";
+      totalEl.textContent = "Needs input";
+      totalEl.classList.add("is-missing");
+    }
+  }
+
+  function renderList() {
+    list.innerHTML = "";
+    ITEMS.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.className = "ebitda-row";
+      li.dataset.id = item.id;
+      const open = document.createElement("button");
+      open.type = "button";
+      open.className = "row-open";
+      open.dataset.index = String(index);
+      open.innerHTML = item.name + (confirmed.has(item.id) ? '<span class="row-sub">In the total</span>' : "");
+      open.addEventListener("click", () => openSheet(item.id, open));
+      const amt = document.createElement("span");
+      amt.className = "row-amt" + (item.amount == null ? " is-missing" : "");
+      amt.textContent = item.amount == null ? "Needs input" : money(item.amount);
+      const status = badge(rowStatus(item));
+      const confirm = document.createElement("button");
+      confirm.type = "button";
+      confirm.className = "row-confirm";
+      confirm.textContent = "Confirm";
+      confirm.hidden = !canConfirm(item) || confirmed.has(item.id);
+      confirm.addEventListener("click", () => confirmItem(item.id));
+      li.append(open, amt, status, confirm);
+      list.append(li);
+    });
+  }
+
+  function showToast(item) {
+    toastId = item.id;
+    document.getElementById("toast-text").textContent = item.name + " added to the total";
+    toast.hidden = false;
+    toast.classList.add("is-on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(hideToast, 6000);
+  }
+  function hideToast() {
+    toast.classList.remove("is-on");
+    toastId = null;
+    clearTimeout(toastTimer);
+  }
+
+  function confirmItem(id) {
+    const item = ITEMS.find((x) => x.id === id);
+    if (!item || !canConfirm(item) || confirmed.has(id)) return;
+    confirmed.add(id);
+    renderChrome();
+    applyFigures(totals(), true);
+    renderList();
+    chip.hidden = needCount() === 0;
+    chip.textContent = (needCount() === 1 ? "1 item needs you" : needCount() + " items need you");
+    if (openId === id) fillSheet(item);
+    showToast(item);
+  }
+  function undoItem(id) {
+    if (!confirmed.has(id)) return;
+    confirmed.delete(id);
+    renderChrome();
+    applyFigures(totals(), true);
+    renderList();
+    const n = needCount();
+    chip.hidden = n === 0;
+    chip.textContent = n === 1 ? "1 item needs you" : n + " items need you";
+    hideToast();
+    if (openId === id) fillSheet(ITEMS.find((x) => x.id === id));
+  }
+
+  function missingBlock(text) {
+    const p = document.createElement("p");
+    p.className = "sheet-value is-missing";
+    p.textContent = text || "Needs input";
+    return p;
+  }
+
+  function fillSheet(item) {
+    document.getElementById("sheet-kicker").textContent = item.category + " · " + item.inputKey;
+    document.getElementById("sheet-title").textContent = item.name;
+    const amount = document.getElementById("sheet-amount");
+    if (item.amount == null) {
+      amount.textContent = "Needs input";
+      amount.classList.add("is-missing");
+    } else {
+      amount.textContent = money(item.amount);
+      amount.classList.remove("is-missing");
+    }
+    const badges = document.getElementById("sheet-badges");
+    badges.innerHTML = "";
+    badges.append(badge(rowStatus(item)));
+    if (rowStatus(item) !== item.flagStatus) badges.append(badge(item.flagStatus));
+    if (item.conditional) badges.append(badge(item.conditional));
+    badges.append(badge(item.bindingTier));
+    document.getElementById("sheet-note").textContent = item.note + " · Confidence " + item.confidence.charAt(0) + item.confidence.slice(1).toLowerCase();
+
+    const source = document.getElementById("sheet-source");
+    source.innerHTML = "";
+    if (!item.source) source.append(missingBlock("Needs input"));
+    else {
+      const name = document.createElement("p");
+      name.className = "sheet-value";
+      name.textContent = item.source.concept;
+      const cur = document.createElement("p");
+      cur.className = "sheet-meta";
+      cur.textContent = "Current " + money(BigInt(item.source.current)) + " · period ended " + item.source.currentPeriodEnd;
+      const pri = document.createElement("p");
+      pri.className = "sheet-meta";
+      pri.textContent = item.source.prior == null ? "Prior period Needs input" : "Prior " + money(BigInt(item.source.prior)) + " · period ended " + item.source.priorPeriodEnd;
+      source.append(name, cur, pri);
+    }
+
+    const clause = document.getElementById("sheet-clause");
+    clause.innerHTML = "";
+    const q = document.createElement("blockquote");
+    q.className = "clause";
+    const lab = document.createElement("p");
+    lab.className = "clause-label";
+    lab.textContent = item.clause.label;
+    const tx = document.createElement("p");
+    tx.style.margin = "0";
+    tx.textContent = item.clause.text;
+    q.append(lab, tx);
+    clause.append(q);
+
+    const cap = document.getElementById("sheet-cap");
+    cap.innerHTML = "";
+    if (!item.cap) cap.append(missingBlock("Needs input"));
+    else {
+      const text = document.createElement("p");
+      text.className = "sheet-value";
+      text.textContent = item.cap.text;
+      const amt = document.createElement("p");
+      amt.className = "sheet-meta";
+      amt.textContent = "Cap amount " + (item.cap.amount == null ? "Needs input" : money(BigInt(item.cap.amount)));
+      const room = document.createElement("p");
+      room.className = "sheet-meta";
+      room.textContent = "Remaining cap " + (item.capHeadroom == null ? "Needs input" : money(BigInt(item.capHeadroom)));
+      cap.append(text, amt, room);
+    }
+
+    const impact = document.getElementById("sheet-impact");
+    const impactNote = document.getElementById("sheet-impact-note");
+    if (item.amount == null) {
+      impact.textContent = "Needs input";
+      impact.classList.add("is-missing");
+      impactNote.textContent = "A sourced amount has to be on this item before capacity can move.";
+    } else {
+      impact.textContent = money(capacityOf(item.amount) + DEBT);
+      impact.classList.remove("is-missing");
+      impactNote.textContent = item.lineStatus === "CAPPED"
+        ? "4.50× the capped figure, if you confirm it. The cap is already applied."
+        : "4.50× the filed amount, if you confirm it. The remaining cap is not added.";
+    }
+
+    const action = document.getElementById("sheet-action");
+    action.innerHTML = "";
+    if (confirmed.has(item.id)) {
+      const undo = document.createElement("button");
+      undo.type = "button";
+      undo.className = "sheet-undo";
+      undo.textContent = "Undo";
+      undo.addEventListener("click", () => undoItem(item.id));
+      action.append(undo);
+    } else if (canConfirm(item)) {
+      const go = document.createElement("button");
+      go.type = "button";
+      go.className = "button-primary";
+      go.textContent = "Confirm";
+      go.addEventListener("click", () => confirmItem(item.id));
+      action.append(go);
+    } else {
+      const p = document.createElement("p");
+      p.className = "sheet-meta";
+      p.textContent = "Needs input. Confirm stays off until a sourced amount is on this item.";
+      action.append(p);
+    }
+    document.getElementById("sheet-foot").textContent = "Sample data · " + item.inputKey;
+  }
+
+  function openSheet(id, from) {
+    openId = id;
+    opener = from || document.activeElement;
+    fillSheet(ITEMS.find((x) => x.id === id));
+    scrim.hidden = false;
+    sheet.hidden = false;
+    scrim.classList.add("is-on");
+    sheet.classList.add("is-on");
+    document.getElementById("sheet-close").focus();
+  }
+  function closeSheet() {
+    sheet.classList.remove("is-on");
+    scrim.classList.remove("is-on");
+    const done = () => {
+      if (sheet.classList.contains("is-on")) return;
+      sheet.hidden = true;
+      scrim.hidden = true;
+      openId = null;
+      if (opener && opener.focus) opener.focus();
+    };
+    if (!motionOk()) done();
+    else setTimeout(done, 340);
+  }
+
+  function setExpanded(next) {
+    if (phase !== "ready") return;
+    expanded = next;
+    renderChrome();
+    if (expanded) {
+      const rows = list.querySelectorAll(".row-open");
+      if (rows[focusIndex]) rows[focusIndex].focus();
+    }
+  }
+
+  toggle.addEventListener("click", () => {
+    if (phase === "ready") setExpanded(!expanded);
+  });
+  document.getElementById("load-sample").addEventListener("click", () => {
+    phase = "processing";
+    expanded = false;
+    renderChrome();
+    setTimeout(() => {
+      phase = "ready";
+      confirmed.clear();
+      const t = totals();
+      shown.total = t.total;
+      shown.additional = t.additional;
+      shown.capacity = t.capacity;
+      renderList();
+      renderChrome();
+      card.dataset.painted = "1";
+      paintFigure(totalEl, t.total, true);
+      paintFigure(addEl, t.additional, false);
+      paintFigure(capEl, t.capacity, false);
+    }, motionOk() ? 1100 : 0);
+  });
+  document.getElementById("sheet-close").addEventListener("click", closeSheet);
+  scrim.addEventListener("click", closeSheet);
+  document.getElementById("toast-undo").addEventListener("click", () => { if (toastId) undoItem(toastId); });
+
+  function rowButtons() { return [...list.querySelectorAll(".row-open")]; }
+
+  document.addEventListener("keydown", (event) => {
+    const tag = (event.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    if (event.key === "?" ) {
+      event.preventDefault();
+      const on = keys.classList.toggle("is-on");
+      keys.hidden = !on;
+      return;
+    }
+    if (event.key === "Escape") {
+      if (keys.classList.contains("is-on")) { keys.classList.remove("is-on"); keys.hidden = true; return; }
+      if (openId) { closeSheet(); return; }
+      if (expanded) setExpanded(false);
+      return;
+    }
+    if (keys.classList.contains("is-on")) return;
+    const k = event.key.toLowerCase();
+    if (k === "e" && !openId) { event.preventDefault(); setExpanded(!expanded); return; }
+    if ((event.key === "ArrowDown" || event.key === "ArrowUp") && expanded && !openId) {
+      event.preventDefault();
+      const rows = rowButtons();
+      if (!rows.length) return;
+      focusIndex = event.key === "ArrowDown" ? Math.min(rows.length - 1, focusIndex + 1) : Math.max(0, focusIndex - 1);
+      rows[focusIndex].focus();
+      return;
+    }
+    if (k === "c") {
+      const id = openId || (document.activeElement && document.activeElement.dataset.index != null ? ITEMS[Number(document.activeElement.dataset.index)]?.id : ITEMS[focusIndex]?.id);
+      if (id) { event.preventDefault(); confirmItem(id); }
+      return;
+    }
+    if (k === "u") {
+      if (toastId) { event.preventDefault(); undoItem(toastId); return; }
+      if (openId && confirmed.has(openId)) { event.preventDefault(); undoItem(openId); }
+    }
+  });
+
+  function boot(hash) {
+    confirmed.clear();
+    openId = null;
+    hideToast();
+    sheet.classList.remove("is-on");
+    scrim.classList.remove("is-on");
+    sheet.hidden = true;
+    scrim.hidden = true;
+    if (hash === "#empty") {
+      phase = "empty"; expanded = false; renderChrome(); return;
+    }
+    phase = "ready";
+    renderList();
+    if (hash === "#expanded") { expanded = true; renderChrome(); return; }
+    if (hash === "#item") {
+      expanded = true; renderChrome();
+      const btn = list.querySelector('.row-open');
+      openSheet("a", btn);
+      return;
+    }
+    if (hash === "#confirmed") {
+      confirmed.add("a");
+      expanded = true;
+      renderList();
+      renderChrome();
+      const t = totals();
+      paintFigure(totalEl, t.total, true);
+      paintFigure(addEl, t.additional, false);
+      paintFigure(capEl, t.capacity, false);
+      shown.total = t.total; shown.additional = t.additional; shown.capacity = t.capacity;
+      card.dataset.painted = "1";
+      showToast(ITEMS[0]);
+      clearTimeout(toastTimer);
+      return;
+    }
+    expanded = false;
+    renderChrome();
+    const t = totals();
+    paintFigure(totalEl, t.total, true);
+    paintFigure(addEl, t.additional, false);
+    paintFigure(capEl, t.capacity, false);
+    shown.total = t.total; shown.additional = t.additional; shown.capacity = t.capacity;
+    card.dataset.painted = "1";
+  }
+
+  const hash = location.hash || "#collapsed";
+  boot(hash);
+  window.addEventListener("hashchange", () => boot(location.hash || "#collapsed"));
+})();
+</script>
+</body>
+</html>
