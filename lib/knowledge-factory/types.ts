@@ -159,6 +159,13 @@ export interface KnowledgeSourceRecord {
    * existed (aggregates treat absent as 0).
    */
   structuralHealthErrors?: number;
+  /**
+   * P1 (PR #428): count of redline-ambiguous spans in this document
+   * (unmatched struck-through elements — see RedlineAmbiguityRecord),
+   * persisted at process time like structuralHealthErrors. Absent on
+   * records processed before the field existed (treated as 0).
+   */
+  redlineAmbiguousSpanCount?: number;
   byteSize?: number;
   storagePath?: string;
   companyId?: string;
@@ -199,6 +206,29 @@ export interface StructuralNodeRecord {
    * treat such a node as structurally unresolved.
    */
   structuralViolations?: string[];
+}
+
+/**
+ * P1 (PR #428): a span of the document's normalized text whose
+ * operative status is ambiguous because it follows an unmatched
+ * struck-through (redline deletion) element — the element's close
+ * tag never appears, so the span may be text the parties deleted.
+ * The text is preserved in the document as evidence; this record
+ * propagates the uncertainty so provisions intersecting the span
+ * are flagged and no authoritative conclusion (compiled formula,
+ * capacity) rests on them. charStart/charEnd are offsets into the
+ * pipeline's normalized text; -1 when the span text could not be
+ * located verbatim (consumers then match by text containment).
+ */
+export interface RedlineAmbiguityRecord {
+  sourceId: string;
+  charStart: number;
+  charEnd: number;
+  /** Tag name of the unmatched element ("strike" | "s" | "del" | styled element's tag). */
+  tagName: string;
+  reason: "UNMATCHED_REDLINE_ELEMENT";
+  /** The ambiguous span's text, preserved as evidence. */
+  text: string;
 }
 
 export interface CovenantCandidateRecord {

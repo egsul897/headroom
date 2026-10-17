@@ -55,8 +55,7 @@ describe("an 'unlimited' basket never takes an adjacent figure", () => {
       const dollars = (b: (typeof r.computedBaskets)[number]) => JSON.stringify({ ...b, citationExcerpt: undefined }).match(/50000000|20000000/g) ?? [];
       for (const lead of [/^\(c\) other Indebtedness of the Borrower in an unlimited amount/, /^\(e\) Indebtedness of Subsidiaries in an unlimited amount/]) {
         const hits = r.computedBaskets.filter((b) => lead.test(b.citationExcerpt.trim()));
-        // Semicolon lists split per clause; a comma-run list is not split by the extractor (reported separately).
-        if (join === ";") expect(hits.length).toBeGreaterThan(0);
+        expect(hits.length).toBeGreaterThan(0);
         for (const b of hits) {
           expect(b.citationExcerpt).not.toMatch(/\$50,000,000|\$20,000,000/);
           expect(b.category).not.toBe("FIXED_DOLLAR");
@@ -65,7 +64,7 @@ describe("an 'unlimited' basket never takes an adjacent figure", () => {
       }
       // No basket that cites an unlimited clause carries a neighbour's figure as its cap.
       for (const b of r.computedBaskets) if (/unlimited amount/.test(b.citationExcerpt) && !/\$50,000,000|\$20,000,000/.test(b.citationExcerpt)) expect(dollars(b)).toEqual([]);
-      if (join === ";") expect(r.computedBaskets.some((b) => /purchase money/.test(b.citationExcerpt) && JSON.stringify(b).includes("50000000"))).toBe(true);
+      expect(r.computedBaskets.some((b) => /purchase money/.test(b.citationExcerpt) && JSON.stringify(b).includes("50000000"))).toBe(true);
     });
   }
 });

@@ -7,6 +7,7 @@ import type {
   CovenantCandidateRecord,
   CrossReferenceRecord,
   DefinitionRecord,
+  RedlineAmbiguityRecord,
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
 import {
@@ -82,6 +83,19 @@ export interface CovenantSummaryItem {
    * must not mint a formula from it (except when counsel EDITED
    * the item, supplying the controlling text). */
   operativeExcerptTruncated?: boolean;
+  /**
+   * P1 (PR #428): the item's source span intersects a
+   * redline-ambiguous span — text following an unmatched
+   * struck-through (redline deletion) element whose close tag
+   * never appears, so the span may be text the parties deleted.
+   * The text is preserved as evidence, but the item NEVER
+   * auto-accepts as SYSTEM and the compiler must not mint a
+   * formula from it (except when counsel EDITED the item,
+   * supplying the controlling text — the Rule 192 exception).
+   * Absent on summaries built before the field existed or from
+   * documents with no unmatched redline elements.
+   */
+  redlineAmbiguous?: boolean;
   /** Heading of the enclosing ARTICLE node, if any (powers the representations guard in grant-types). */
   articleHeading?: string;
   sourceCitation: string;
@@ -146,6 +160,15 @@ export interface DocumentCovenantSummary {
   promotedToLegalTruth: 0;
   note: string;
   countsByCategory: Record<string, number>;
+  /**
+   * P1 (PR #428): the document's redline-ambiguous spans recorded
+   * at extraction (unmatched struck-through elements), carried on
+   * the summary so the uncertainty and the preserved evidence text
+   * travel with the analysis. Absent on summaries built before the
+   * field existed; items intersecting a span are flagged
+   * `redlineAmbiguous` individually.
+   */
+  redlineAmbiguities?: RedlineAmbiguityRecord[];
   items: CovenantSummaryItem[];
   definedTermsSample: Array<{ term: string; excerpt: string }>;
   /**
@@ -206,15 +229,20 @@ function entityScopeFromAnalysis(a: ProvisionAnalysis): CovenantSummaryItem["ent
   };
 }
 
+const REDLINE_AMBIGUITY_QUESTION =
+  "Redline ambiguity (unmatched struck-through element): this provision's text intersects a span that follows a struck-through (redline deletion) element whose closing tag is missing, so the span may be text the parties deleted — or live text after a stray tag. The text is preserved as evidence, but it is not treated as certified operative text: the item does not auto-accept and no formula is compiled from it. Confirm against the executed agreement / redline before relying on it.";
+
 function itemFromAnalysis(
   analysis: ProvisionAnalysis,
   governingAgreement: string,
   nodeId?: string,
   structuralUnresolved?: boolean,
+  redlineAmbiguous?: boolean,
 ): CovenantSummaryItem {
   return {
     nodeId,
     structuralUnresolved,
+    redlineAmbiguous: redlineAmbiguous || undefined,
     category: analysis.category,
     categoryLabel: analysis.categoryLabel,
     sectionRef: analysis.sectionRef,
@@ -247,17 +275,58 @@ function itemFromAnalysis(
     // Phase E: structural uncertainty is preserved through every
     // layer — it surfaces in unresolvedQuestions (read by the
     // Rulebook, Ask, and counsel review), never silently dropped.
-    unresolvedQuestions: structuralUnresolved
-      ? [
-          ...analysis.unresolved,
-          "Structural relationship unresolved: this provision's parent/article could not be established deterministically from span containment + ref-consistency. Its excerpt is real text, but its placement in the hierarchy is not certified — confirm the governing article/section before relying on it.",
-        ]
-      : analysis.unresolved,
+    // P1 (PR #428): redline ambiguity is preserved the same way.
+    unresolvedQuestions: [
+      ...analysis.unresolved,
+      ...(structuralUnresolved
+        ? [
+            "Structural relationship unresolved: this provision's parent/article could not be established deterministically from span containment + ref-consistency. Its excerpt is real text, but its placement in the hierarchy is not certified — confirm the governing article/section before relying on it.",
+          ]
+        : []),
+      ...(redlineAmbiguous ? [REDLINE_AMBIGUITY_QUESTION] : []),
+    ],
     alternativeInterpretations: analysis.alternativeInterpretations,
     assumptions: analysis.assumptions,
     judgmentCalls: analysis.judgmentCalls,
     analysis,
   };
+}
+
+const collapseWs = (s: string): string => s.replace(/\s+/g, " ").trim();
+
+/**
+ * P1 (PR #428): does a candidate's source intersect a
+ * redline-ambiguous span? Two independent signals, either suffices:
+ * (1) coordinate overlap — the candidate's structural node span
+ * intersects a located span range (both in normalized document
+ * text coordinates); (2) text containment — the candidate's
+ * excerpt carries a distinctive slice of the span's preserved
+ * text (the fallback when a span could not be located verbatim).
+ * An empty span (unmatched element at end of document) taints
+ * nothing: it carried no text anyone could rely on.
+ */
+function candidateIntersectsRedlineSpan(
+  candidate: CovenantCandidateRecord,
+  node: StructuralNodeRecord | undefined,
+  spans: RedlineAmbiguityRecord[],
+): boolean {
+  const excerptNorm = collapseWs(candidate.excerpt ?? "");
+  for (const span of spans) {
+    if (span.charStart >= 0 && span.charEnd > span.charStart && node) {
+      if (node.charStart < span.charEnd && span.charStart < node.charEnd) return true;
+    }
+    const spanNorm = collapseWs(span.text ?? "");
+    if (spanNorm.length >= 16 && excerptNorm.length >= 16) {
+      if (
+        excerptNorm.includes(spanNorm.slice(0, 64)) ||
+        excerptNorm.includes(spanNorm.slice(-64)) ||
+        spanNorm.includes(excerptNorm.slice(0, 64))
+      ) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 export function buildDocumentCovenantSummary(params: {
@@ -270,6 +339,8 @@ export function buildDocumentCovenantSummary(params: {
   definitions: DefinitionRecord[];
   structuralNodes: StructuralNodeRecord[];
   crossReferences?: CrossReferenceRecord[];
+  /** P1 (PR #428): redline-ambiguous spans recorded at extraction for this source, if any. */
+  redlineAmbiguities?: RedlineAmbiguityRecord[];
 }): DocumentCovenantSummary {
   const items: CovenantSummaryItem[] = [];
   const countsByCategory: Record<string, number> = {};
@@ -392,6 +463,9 @@ export function buildDocumentCovenantSummary(params: {
         params.documentTitle,
         c.nodeId,
         itemNode ? itemNode.ambiguous === true || (itemNode.structuralViolations?.length ?? 0) > 0 : undefined,
+        params.redlineAmbiguities && params.redlineAmbiguities.length > 0
+          ? candidateIntersectsRedlineSpan(c, itemNode, params.redlineAmbiguities)
+          : undefined,
       ),
     );
   }
@@ -429,6 +503,9 @@ export function buildDocumentCovenantSummary(params: {
     promotedToLegalTruth: 0,
     note: "AI-first interpretations for customer counsel review. DISCOVERED ≠ counsel-approved. SOURCE_BACKED ≠ LEGALLY_EXECUTABLE capacity. PRECEDENT ≠ OPERATIVE AUTHORITY. Summaries and Ask share the same persisted analysis objects.",
     countsByCategory,
+    ...(params.redlineAmbiguities && params.redlineAmbiguities.length > 0
+      ? { redlineAmbiguities: params.redlineAmbiguities }
+      : {}),
     items: capped,
     totalItemsBeforeCap,
     truncated,

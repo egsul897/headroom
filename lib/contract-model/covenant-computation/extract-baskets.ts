@@ -619,7 +619,7 @@ interface Part {
 
 /** (a) then (i) then (A), capped so a citation cannot recurse through the whole section. */
 function splitEnumerated(body: string): Part[] {
-  return deepenParts(splitOneLevel(body), 0);
+  return deepenParts(splitOneLevel(body, true), 0);
 }
 
 function deepenParts(parts: Part[], depth: number): Part[] {
@@ -652,8 +652,8 @@ function deepenPart(part: Part, depth: number): Part[] {
   return out.length ? out : [part];
 }
 
-function splitOneLevel(body: string): Part[] {
-  const candidates = markerCandidates(body);
+function splitOneLevel(body: string, commaRuns = false): Part[] {
+  const candidates = markerCandidates(body, commaRuns);
   if (candidates.length === 0) return [{ marker: "", text: body.trim() }];
   const groups: { marker: string; pos: number }[][] = [];
   let current: { marker: string; pos: number; style: Marker["style"]; order: number }[] = [];
@@ -723,29 +723,102 @@ const ROMAN: Record<string, number> = {
   xii: 12,
 };
 
-function markerCandidates(body: string): Marker[] {
+/** `commaRuns`: also accept comma-run list members (top level of a covenant's clause list only). */
+function markerCandidates(body: string, commaRuns = false): Marker[] {
   const out: Marker[] = [];
+  const commaLed: Marker[] = [];
+  const raw: Marker[] = [];
   for (const match of body.matchAll(/\(([0-9]{1,3}|[a-z]{1,6}|[A-Z])\)/g)) {
     if (match.index == null || !match[1]) continue;
+    const any = toMarker(match.index, match[1]);
+    if (any) raw.push(any);
     const pre = body.slice(Math.max(0, match.index - 80), match.index);
-    if (!preOk(pre)) continue;
-    const raw = match[1];
-    if (/^\d+$/.test(raw)) {
-      out.push({ pos: match.index, raw, marker: raw, style: "num", order: Number(raw) });
-      continue;
-    }
-    if (/^[A-Z]$/.test(raw)) {
-      out.push({ pos: match.index, raw, marker: raw, style: "upper", order: raw.charCodeAt(0) - 64 });
-      continue;
-    }
-    if (/^[a-z]$/.test(raw)) {
-      out.push({ pos: match.index, raw, marker: raw, style: "letter", order: raw.charCodeAt(0) - 96 });
-      continue;
-    }
-    const roman = ROMAN[raw];
-    if (roman) out.push({ pos: match.index, raw, marker: raw, style: "roman", order: roman });
+    if (refListMember(body, match.index, pre)) continue;
+    const strong = preOk(pre);
+    if (!strong && !(commaRuns && COMMA_LEAD.test(pre))) continue;
+    const marker = toMarker(match.index, match[1]);
+    if (marker) (strong ? out : commaLed).push(marker);
   }
-  return out;
+  if (commaLed.length) out.push(...commaRunMembers(body, out, commaLed, raw));
+  return out.sort((a, b) => a.pos - b.pos);
+}
+
+/**
+ * A member of a cross-reference list ("under clauses (a), (b) and (c) of Section 7.3", "paragraphs (2) or (3) above"):
+ * never a clause opener. Either a clause word introduces it, or it follows another enumerator with only a list separator
+ * between them and the list was introduced by a clause word or goes on to name its target ("of Section …", "above").
+ */
+function refListMember(body: string, pos: number, pre: string): boolean {
+  const CLAUSE_WORD = /\b(?:clauses?|paragraphs?|sub-?clauses?|sub-?sections?|subparagraphs?|items?)\s*$/i;
+  if (CLAUSE_WORD.test(pre)) return true;
+  const SEP = /\((?:[0-9]{1,3}|[a-z]{1,6}|[A-Z])\)\s*(?:,\s*)?(?:and\s+|or\s+|and\/or\s+|through\s+|to\s+)?$/;
+  if (!SEP.test(pre)) return false;
+  let head = pre;
+  for (let k = 0; k < 12; k++) {
+    const m = SEP.exec(head);
+    if (!m) break;
+    head = head.slice(0, m.index);
+  }
+  if (CLAUSE_WORD.test(head)) return true;
+  const after = body.slice(pos, pos + 60).replace(/^\([^)]*\)/, "");
+  return /^\s*(?:of|in|under)\s+(?:this\s+)?(?:Section|Article|the\s+definition)\b|^\s*(?:above|below|hereof)\b/i.test(after);
+}
+
+/** "…, (c) " / "…, and (c) " — a comma-led enumerator, structural only inside a comma-run list (commaRunMembers). */
+const COMMA_LEAD = /,\s*(?:and\s+|or\s+)?$/;
+
+/** Text of the item that starts at `pos` (marker included) up to `end`, reduced to its words. */
+function itemWords(body: string, pos: number, end: number): number {
+  const t = body.slice(pos, end).replace(/^\([^)]*\)/, "");
+  return (t.match(/[A-Za-z]{2,}/g) ?? []).length;
+}
+
+/**
+ * Comma-led enumerators that belong to a comma-run list ("except: (a) Indebtedness under the Loan Documents, (b) …,
+ * (c) …"). A comma-led marker opens a clause only when (1) it is the next ordinal of a marker of the same style just
+ * before it, (2) the run is at least three items long (a predecessor's predecessor or a successor exists), (3) it sits at
+ * parenthesis depth 0 relative to its predecessor, and (4) both its predecessor's item and its own item read as clauses
+ * (at least three words each), so amount limbs ("(x) $10,000,000, (y) 5% …") and inline references stay inside their
+ * clause, and (5) the run reaches back to a first item "(a)" / "(1)" at a structural position. Applied only at the
+ * top level of a covenant's clause list. Members are accepted in order, so one accepted member can confirm the next.
+ */
+function commaRunMembers(body: string, strong: Marker[], commaLed: Marker[], raw: Marker[] = []): Marker[] {
+  const accepted: Marker[] = [];
+  const all = [...strong, ...commaLed].sort((a, b) => a.pos - b.pos);
+  const pool = () => [...strong, ...accepted];
+  const findPrev = (m: Marker, from: Marker[]) =>
+    from.filter((x) => x.style === m.style && x.order === m.order - 1 && x.pos < m.pos).sort((a, b) => b.pos - a.pos)[0];
+  const nextPos = (m: Marker) => all.find((x) => x.pos > m.pos)?.pos ?? Math.min(body.length, m.pos + 400);
+  for (const m of commaLed) {
+    const prev = findPrev(m, pool());
+    if (!prev) continue;
+    // A closer, non-structural predecessor ("received from (a) …, (b) …") means m continues an inline list inside a
+    // clause, not the covenant's clause list.
+    if (raw.some((x) => x.style === m.style && x.order === m.order - 1 && x.pos > prev.pos && x.pos < m.pos)) continue;
+    const between = body.slice(prev.pos + prev.raw.length + 2, m.pos);
+    const depth = (between.match(/\(/g) ?? []).length - (between.match(/\)/g) ?? []).length;
+    if (depth !== 0) continue;
+    if (itemWords(body, prev.pos, m.pos) < 3 || itemWords(body, m.pos, nextPos(m)) < 3) continue;
+    const prevPrev = findPrev(prev, pool());
+    const next = all.find((x) => x.style === m.style && x.order === m.order + 1 && x.pos > m.pos);
+    if (!prevPrev && !next) continue;
+    // The run is a clause list from its first item: walk back through accepted/strong predecessors to an "(a)" / "(1)".
+    let head: Marker | undefined = prev;
+    for (let k = 0; head && head.order > 1 && k < 60; k++) head = findPrev(head, pool());
+    if (!head || head.order !== 1 || !strong.includes(head)) continue;
+    accepted.push(m);
+  }
+  return accepted;
+}
+
+function toMarker(pos: number, raw: string): Marker | null {
+  {
+    if (/^\d+$/.test(raw)) return { pos, raw, marker: raw, style: "num", order: Number(raw) };
+    if (/^[A-Z]$/.test(raw)) return { pos, raw, marker: raw, style: "upper", order: raw.charCodeAt(0) - 64 };
+    if (/^[a-z]$/.test(raw)) return { pos, raw, marker: raw, style: "letter", order: raw.charCodeAt(0) - 96 };
+    const roman = ROMAN[raw];
+    return roman ? { pos, raw, marker: raw, style: "roman", order: roman } : null;
+  }
 }
 
 const EXCEPTION_INTRO =

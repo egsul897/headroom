@@ -69,12 +69,14 @@ export interface CrossRef {
   targetNodeId: string | null;
 }
 
-const DEF_RE = /[“"]\s*([A-Z][A-Za-z0-9’'\-&/ ,.()]{1,80}?)\s*[”"]\s+(?:means|shall mean|has the meaning|shall have the meaning)/g;
+// "Term" means ... and the colon convention "Term": ... (a quoted, capitalized term closed by a colon and a space).
+const DEF_RE = /[“"]\s*([A-Z][A-Za-z0-9’'\-&/ ,.()]{1,80}?)\s*[”"](?:\s+(?:means|shall mean|has the meaning|shall have the meaning)|\s*:(?=\s))/g;
 
 export function definedTerms(tree: SectionTree, text: string): DefinedTerm[] {
   const out: DefinedTerm[] = [];
   const seen = new Set<string>();
   for (const m of text.matchAll(DEF_RE)) {
+    if (/:$/.test(m[0]) && !colonEntry(text, m.index!, m.index! + m[0].length)) continue;
     const term = m[1]!.trim();
     if (seen.has(term)) continue;
     seen.add(term);
@@ -83,6 +85,18 @@ export function definedTerms(tree: SectionTree, text: string): DefinedTerm[] {
     out.push({ term, start, end: start + m[0].length, nodeId: node?.id ?? null });
   }
   return out;
+}
+
+/**
+ * A colon-convention definition opens an entry: it starts a line or follows a sentence end, is not inside a parenthesis
+ * ('(the "Agent"): ' is not a definition), and has a prose body (not a heading, page number or table-of-contents run).
+ */
+function colonEntry(text: string, start: number, end: number): boolean {
+  const pre = text.slice(Math.max(0, start - 6), start);
+  if (!(start === 0 || /(?:^|[\n.;:])\s*$/.test(pre))) return false;
+  const body = text.slice(end, end + 200).trim();
+  if (body.length < 30 || /^(?:\d{1,4}|[ivxl]{1,6})\b/i.test(body) || /^[“"][^”"]{1,80}[”"]\s*:/.test(body)) return false;
+  return /[a-z]{3,}\s+[a-z]{2,}\s+[a-z]{2,}/i.test(body);
 }
 
 function deepestAt(tree: SectionTree, at: number): TreeNode | null {

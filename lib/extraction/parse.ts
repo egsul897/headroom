@@ -33,6 +33,7 @@
 
 import { extractText, getDocumentProxy } from "unpdf";
 import mammoth from "mammoth";
+import { analyzeStruckHtml, decodeNumericEntities, dropStruckHtml, locateTextSpan } from "./html-hardening";
 
 export interface ParsedPage {
   /** 1-indexed. Always 1 for formats with no real page concept (DOCX, TXT). */
@@ -40,10 +41,33 @@ export interface ParsedPage {
   text: string;
 }
 
+/**
+ * A span of extracted text whose operative status is AMBIGUOUS
+ * because it follows an unmatched struck-through (redline deletion)
+ * element: the element's close tag never appears, so the span may be
+ * text the parties deleted — or live text after a stray tag. The
+ * text is preserved in the document (evidence is never destroyed on
+ * a guess); this record is how the uncertainty propagates: items
+ * whose source intersects the span are flagged, and authoritative
+ * conclusions (compiled formulas, capacity) must not rest on it.
+ */
+export interface RedlineAmbiguity {
+  reason: "UNMATCHED_REDLINE_ELEMENT";
+  /** Tag name of the unmatched element ("strike" | "s" | "del" | styled element's tag). */
+  tagName: string;
+  /** The ambiguous span's plain text, as it appears in the document text ("" when it carried no text). */
+  text: string;
+  /** Offsets into ParsedDocument.fullText; -1 when the span text could not be located verbatim. */
+  start: number;
+  end: number;
+}
+
 export interface ParsedDocument {
   pages: ParsedPage[];
   /** pages' text joined with "\n\n" - what lib/extraction/chunk.ts actually segments. */
   fullText: string;
+  /** Redline-ambiguous spans found during HTML extraction (HTML inputs only). */
+  redlineAmbiguities?: RedlineAmbiguity[];
 }
 
 const PDF_CONTENT_TYPES = new Set(["application/pdf"]);
@@ -65,28 +89,29 @@ const HTML_ENTITIES: Record<string, string> = {
   "&lsquo;": "‘",
   "&rdquo;": "”",
   "&ldquo;": "“",
+  "&sect;": "§",
+  "&hellip;": "…",
+  "&bull;": "•",
+  "&middot;": "·",
+  "&shy;": "",
+  "&ensp;": " ",
+  "&emsp;": " ",
+  "&thinsp;": " ",
 };
 
 function decodeHtmlEntities(text: string): string {
-  return text
-    .replace(/&#[xX]([0-9a-fA-F]+);/g, (entity, hex) => {
-      const code = parseInt(hex, 16);
-      // Out-of-range code points are not decodable; leave the entity
-      // untouched rather than throwing or inventing a character.
-      return code <= 0x10ffff ? String.fromCodePoint(code) : entity;
-    })
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(Number(dec)))
-    .replace(/&[a-zA-Z#0-9]+;/g, (entity) => HTML_ENTITIES[entity] ?? entity);
+  // Numeric references, hex (&#x24;) and decimal (&#36;), decode to code points (lib/extraction/html-hardening.ts).
+  return decodeNumericEntities(text).replace(/&[a-zA-Z0-9]+;/g, (entity) => HTML_ENTITIES[entity] ?? HTML_ENTITIES[entity.toLowerCase()] ?? entity);
 }
 
 function stripHtmlToText(html: string): string {
   const withoutNonContent = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
   // Blackline/amendment exhibits mark DELETED text with <strike>, <s> or
-  // <del>. Struck text is not operative: keeping it made the engine
-  // compute a deleted $75M basket cap as if it were live (Grok
-  // independent accuracy check, 2026-10-17). Drop the element AND its
-  // contents before tag stripping, like script/style above.
-  const withoutStruck = withoutNonContent.replace(/<(strike|s|del)\b[^>]*>[\s\S]*?<\/\1>/gi, " ");
+  // <del>, or with a `text-decoration: line-through` style. Struck text is not
+  // operative: keeping it made the engine compute a deleted basket cap as if
+  // it were live. Drop the element AND its contents (nested markup included)
+  // before tag stripping, like script/style above (lib/extraction/html-hardening.ts).
+  const withoutStruck = dropStruckHtml(withoutNonContent);
   const withBreaks = withoutStruck.replace(/<\/(p|div|tr|h[1-6]|li|br)>/gi, "\n").replace(/<br\s*\/?>/gi, "\n");
   const stripped = withBreaks.replace(/<[^>]+>/g, " ");
   const decoded = decodeHtmlEntities(stripped);
@@ -99,8 +124,33 @@ function stripHtmlToText(html: string): string {
 }
 
 function parseHtml(data: Buffer): ParsedDocument {
-  const pages: ParsedPage[] = [{ pageNumber: 1, text: stripHtmlToText(data.toString("utf-8")) }];
-  return { pages, fullText: joinPages(pages) };
+  const rawHtml = data.toString("utf-8");
+  const withoutNonContent = rawHtml.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
+  const { html: withoutStruck, unmatched } = analyzeStruckHtml(withoutNonContent);
+  const text = stripHtmlToText(withoutStruck);
+  const pages: ParsedPage[] = [{ pageNumber: 1, text }];
+  const fullText = joinPages(pages);
+  // Record every unmatched struck element's span in fullText
+  // coordinates. The span text is produced by running the span's own
+  // HTML fragment through the same strip pipeline, then located in
+  // the document text; when it cannot be located verbatim the record
+  // keeps the text with start/end = -1 (consumers fall back to text
+  // containment — the uncertainty is never dropped).
+  const redlineAmbiguities: RedlineAmbiguity[] = unmatched.map((span) => {
+    const spanText = stripHtmlToText(withoutStruck.slice(span.htmlStart, span.htmlEnd));
+    if (!spanText) {
+      return { reason: "UNMATCHED_REDLINE_ELEMENT" as const, tagName: span.tagName, text: "", start: fullText.length, end: fullText.length };
+    }
+    const located = locateTextSpan(fullText, spanText);
+    return {
+      reason: "UNMATCHED_REDLINE_ELEMENT" as const,
+      tagName: span.tagName,
+      text: spanText,
+      start: located?.start ?? -1,
+      end: located?.end ?? -1,
+    };
+  });
+  return { pages, fullText, redlineAmbiguities };
 }
 
 function joinPages(pages: ParsedPage[]): string {
