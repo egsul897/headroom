@@ -71,18 +71,28 @@ text and the family is its label. Matching that item again re-finds memorized te
 bisect (4878ed02) showed that 2272 of 2316 candidates credited only by learned captures were matched by a rule built from
 that same candidate.
 
-- **Seed provenance** (`scoreboard/rule-seed-provenance.json`, written by `scoreboard/derive-seed-provenance.ts`): for each
-  learned capture rule, the precedent items (candidates, conditions, definitions) whose excerpt *begins with* the rule
-  pattern, and their documents (sourceId and contentSha256). The file is bound to the ruleset sha256 and the
-  whole-snapshot sha256. Regenerate it whenever either changes.
+- **Seed provenance** (`scoreboard/rule-seed-provenance.json`, schema `clf-rule-seed-provenance/v2`, written by
+  `scoreboard/derive-seed-provenance.ts`) uses exact text, not a regex. Each learned capture rule records its seed:
+  `provenance.packageKeys` when the rule has them (`RECORDED_PACKAGE_KEYS`). Otherwise the seed is the `seed="..."` text
+  in the synthesizer note: the first 60 characters of the seed excerpt, whitespace collapsed. The seed items are the
+  precedent items (candidates, conditions, definitions) whose collapsed excerpt starts with that exact string
+  (`EXACT_SEED_TEXT_ITEM`). If no item matches, the seed is any document whose collapsed text contains it
+  (`EXACT_SEED_TEXT_DOCUMENT`). For each rule the file records the seed documents (sourceId, contentSha256, issuer CIK)
+  and the seed items. The file is bound to the ruleset sha256 and the whole-snapshot sha256. Regenerate it whenever
+  either changes. On the committed ruleset all 2675 capture rules resolve at `EXACT_SEED_TEXT_ITEM`, and none is
+  incomplete. In 498 rules the identical seed text occurs in more than one document, and all of those documents count
+  as seeds.
 - **Guard (always on; identity `scorerConfig` ends in `selfCredit=guard-v1`)**: a `learned-*` basket earns no match credit
-  (candidate, definition or condition) in any of its seed documents, or in a byte-identical copy of one. A rule with
-  several seed documents is refused in all of them. Refused baskets still run every sanity check, including
-  UNSUPPORTED_SEMANTICS.
-- **Fail closed**: a capture rule with no derivable seed, or a provenance file that is missing or bound to another
-  ruleset or snapshot, gets no learned credit anywhere. `--neon` mode has no whole-input identity, so it is always
-  unbound. Reports carry `selfCredit.rulesWithoutProvenance`, `selfCredit.unboundReason` and refused counts by split and
-  reason (`SELF_SEEDED`, `NO_PROVENANCE`).
+  (candidate, definition or condition) in any of its seed documents, or in a byte-identical copy of one (`SELF_SEEDED`).
+  Refused baskets still run every sanity check, including UNSUPPORTED_SEMANTICS. Credit in any other document is
+  kept. It is reported by split as `LEARNED_CROSS_ISSUER` (a different issuer CIK from every seed document),
+  `LEARNED_SAME_ISSUER_OTHER_DOCUMENT` or `LEARNED_OTHER_DOCUMENT_ISSUER_UNKNOWN`. This makes legitimate
+  generalization credit visible rather than dropping it.
+- **Fail closed**: a capture rule gets no learned credit anywhere (`NO_PROVENANCE`) if it has no derivable seed, or
+  fewer exact seed items than its recorded cluster size. The same applies to every rule when the provenance file is
+  missing, has an old schema, or is bound to another ruleset or snapshot. `--neon` mode has no whole-input identity,
+  so it is always unbound. Reports carry `selfCredit.rulesWithoutProvenance`, `selfCredit.unboundReason`, refused
+  counts by split and reason, and kept (`credited`) counts by split and tag.
 - **No-learned-rules score**: every source is also scored with an empty ruleset. Each report and merged shard carries
   `noRulesTotals`, the CLI prints `NO-RULES` lines, and the gate JSON shows `noRules` before and after. It is report-only
   and never gates; it bounds how much of the number comes from learned rules at all.
