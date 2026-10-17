@@ -4,15 +4,17 @@ export type EbitdaCallError = {
   status: number;
   text: string;
   refetch: boolean;
+  /** 401 is the calm sign-in state, not an inline error. */
+  signIn: boolean;
 };
 
-/** Quiet copy for the panel. Never a success message. */
+/** Quiet copy for the panel. A 401 is the sign-in state. Never a success message. */
 export function ebitdaCallError(status: number, message: string | undefined): EbitdaCallError {
-  if (status === 401) return { status, text: "Sign-in is needed to confirm this.", refetch: false };
-  if (status === 404) return { status, text: "The EBITDA box or this document was not found.", refetch: false };
-  if (status === 409) return { status, text: message?.trim() || "This confirmation conflicts with the current box.", refetch: true };
-  if (status === 422) return { status, text: message?.trim() || "That figure was refused.", refetch: false };
-  return { status, text: message?.trim() || "Confirm was refused.", refetch: false };
+  if (status === 401) return { status, text: "Sign in to confirm", refetch: false, signIn: true };
+  if (status === 404) return { status, text: "The EBITDA box or this document was not found.", refetch: false, signIn: false };
+  if (status === 409) return { status, text: message?.trim() || "This confirmation conflicts with the current box.", refetch: true, signIn: false };
+  if (status === 422) return { status, text: message?.trim() || "That figure was refused.", refetch: false, signIn: false };
+  return { status, text: message?.trim() || "Confirm was refused.", refetch: false, signIn: false };
 }
 
 export function isPreparingMiss(status: number, message: string | undefined): boolean {

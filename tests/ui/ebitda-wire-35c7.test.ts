@@ -15,8 +15,9 @@ describe("EBITDA confirm wiring", () => {
   it("maps 401, 404, 409, and 422 to quiet panel copy", () => {
     expect(ebitdaCallError(401, "authentication required")).toEqual({
       status: 401,
-      text: "Sign-in is needed to confirm this.",
+      text: "Sign in to confirm",
       refetch: false,
+      signIn: true,
     });
     expect(ebitdaCallError(404, "document not found for this company").text).toMatch(/not found/i);
     expect(ebitdaCallError(409, "idempotency key reused with a different payload")).toMatchObject({
@@ -58,6 +59,8 @@ describe("EBITDA confirm wiring", () => {
     expect(tile).not.toContain("confirmedBy");
     expect(tile).toContain("keys.finish");
     expect(tile).toContain("Preparing EBITDA…");
+    expect(tile).toContain("Sign in to confirm");
+    expect(tile).toContain("LockIcon");
     const session = readFileSync(path.join(root, "lib/capacity/identity/browser-session.ts"), "utf8");
     expect(session).toContain('meta[name="headroom-session-handle"]');
     expect(session).not.toMatch(/Bearer [A-Za-z0-9._-]{8,}/);

@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
+import { LockIcon } from "@/components/home/icons";
 import { DetailDrawer } from "@/components/motion/DetailDrawer";
 import { useToast } from "@/components/motion/Toast";
-import { sessionAuthorizationHeaders } from "@/lib/capacity/identity/browser-session";
+import { readSessionHandle, sessionAuthorizationHeaders } from "@/lib/capacity/identity/browser-session";
 import { createConfirmKeys, ebitdaCallError, isPreparingMiss, type ConfirmKind } from "@/lib/home/ebitda-confirm";
 import {
   canConfirm,
@@ -16,6 +17,26 @@ import {
 } from "@/lib/home/ebitda-tile";
 
 const CONFIDENCE_WORD = { HIGH: "High", MEDIUM: "Medium", LOW: "Low" } as const;
+
+/** False until the host meta tag is read. A missing handle is not a token. */
+function useHasSession() {
+  const [hasSession, setHasSession] = useState(false);
+  useEffect(() => {
+    setHasSession(readSessionHandle() != null);
+  }, []);
+  return hasSession;
+}
+
+function SignInToConfirm() {
+  return (
+    <div className="ebitda-signin">
+      <button type="button" className="button ebitda-signin-button" disabled>
+        <LockIcon />
+        Sign in to confirm
+      </button>
+    </div>
+  );
+}
 
 /**
  * One dashboard tile. A loaded package shows total EBITDA, additional available,
@@ -60,6 +81,7 @@ function EbitdaLocalTile({
   inlineError?: string | null;
 }) {
   const loaded = base != null && items != null;
+  const hasSession = useHasSession();
   const [confirmed, setConfirmed] = useState<ReadonlySet<string>>(() => new Set());
   const [view, setView] = useState<string | null>(initialView);
   const pushToast = useToast();
@@ -76,7 +98,7 @@ function EbitdaLocalTile({
   }, [loaded, attention]);
 
   function confirm(item: EbitdaAddBack) {
-    if (!canConfirm(item) || confirmed.has(item.id)) return;
+    if (!readSessionHandle() || !canConfirm(item) || confirmed.has(item.id)) return;
     setConfirmed((current) => new Set(current).add(item.id));
     pushToast(`${item.name} added to the total`, () => {
       setConfirmed((current) => {
@@ -128,6 +150,7 @@ function EbitdaLocalTile({
             item={openItem}
             confirmed={confirmed.has(openItem.id)}
             sample={sample}
+            signIn={!hasSession}
             onBack={() => setView("list")}
             onConfirm={() => confirm(openItem)}
             onUndo={() => undo(openItem)}
@@ -192,6 +215,9 @@ function EbitdaApiTile({
   const [documentId, setDocumentId] = useState(documents[0]?.id ?? "");
   const [box, setBox] = useState<EbitdaBoxPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [rejected, setRejected] = useState(false);
+  const hasSession = useHasSession();
+  const needsSignIn = !hasSession || rejected;
   const [preparing, setPreparing] = useState(preparingIds.includes(documents[0]?.id ?? ""));
   const [view, setView] = useState<string | null>(initialView);
   const [pending, setPending] = useState(false);
@@ -225,8 +251,14 @@ function EbitdaApiTile({
             timer = window.setTimeout(() => load(attempt + 1), 2000);
             return;
           }
+          const failure = ebitdaCallError(res.status, body.error);
           setPreparing(false);
-          setError(ebitdaCallError(res.status, body.error).text);
+          if (failure.signIn) {
+            setRejected(true);
+            setError(null);
+            return;
+          }
+          setError(failure.text);
           return;
         }
         setPreparing(false);
@@ -249,6 +281,11 @@ function EbitdaApiTile({
   const openItem = box?.items.find((item) => item.inputKey === view) ?? null;
 
   async function confirm(item: EbitdaBoxItem) {
+    if (!readSessionHandle()) {
+      setRejected(true);
+      setError(null);
+      return;
+    }
     const source = item.source[0]?.ref ?? "";
     const kind: ConfirmKind = item.status === "CONDITIONAL" ? "LENDER_APPROVAL" : "AMOUNT";
     if (kind === "AMOUNT" && !isIntegerAmount(item.amount)) return;
@@ -268,6 +305,11 @@ function EbitdaApiTile({
         }),
       });
       const body = (await res.json()) as { error?: string; box?: EbitdaBoxPayload; replayed?: boolean };
+      if (res.status === 401) {
+        setRejected(true);
+        setError(null);
+        return;
+      }
       if (res.status === 409) {
         const fresh = await fetch(`/api/companies/${companyId}/documents/${documentId}/ebitda`, {
           headers: sessionAuthorizationHeaders(),
@@ -329,12 +371,13 @@ function EbitdaApiTile({
       {error && view == null ? <p className="ebitda-inline-error">{error}</p> : null}
       <DetailDrawer open={view != null} title={openItem?.label ?? "Add-backs"} onClose={() => setView(null)}>
         {error ? <p className="ebitda-inline-error">{error}</p> : null}
+        {needsSignIn && !openItem ? <SignInToConfirm /> : null}
         {preparing ? (
           <p className="ebitda-skeleton">Preparing EBITDA…</p>
         ) : !box ? (
           <p className="drawer-note">{error ?? "Loading the EBITDA box."}</p>
         ) : openItem ? (
-          <ApiItem item={openItem} pending={pending} onBack={() => setView("list")} onConfirm={() => confirm(openItem)} />
+          <ApiItem item={openItem} pending={pending} signIn={needsSignIn} onBack={() => setView("list")} onConfirm={() => confirm(openItem)} />
         ) : (
           <ul className="ebitda-list">
             {box.status !== "READY" ? <li className="drawer-note">{box.reason}</li> : null}
@@ -364,11 +407,13 @@ function EbitdaApiTile({
 function ApiItem({
   item,
   pending,
+  signIn,
   onBack,
   onConfirm,
 }: {
   item: EbitdaBoxItem;
   pending: boolean;
+  signIn: boolean;
   onBack: () => void;
   onConfirm: () => void;
 }) {
@@ -380,6 +425,7 @@ function ApiItem({
         All add-backs
       </button>
       <p className={formatUsd(item.amount) ? "ebitda-hero" : "ebitda-hero is-missing"}>{formatUsd(item.amount) ?? "Needs input"}</p>
+      {signIn && (allowed || item.status === "CONFIRMED") ? <SignInToConfirm /> : null}
       <div className="ebitda-badges">
         <StatusBadge status={item.status} />
       </div>
@@ -397,7 +443,7 @@ function ApiItem({
         {formatUsd(item.potentialDebtCapacity) ?? "Needs input"}
       </p>
       <div className="ebitda-action">
-        {allowed ? (
+        {signIn ? null : allowed ? (
           <button type="button" className="button button-primary" disabled={pending} onClick={onConfirm}>
             {pending ? "Confirming…" : "Confirm"}
           </button>
@@ -413,6 +459,7 @@ function ItemSheet({
   item,
   confirmed,
   sample,
+  signIn,
   onBack,
   onConfirm,
   onUndo,
@@ -420,6 +467,7 @@ function ItemSheet({
   item: EbitdaAddBack;
   confirmed: boolean;
   sample: boolean;
+  signIn: boolean;
   onBack: () => void;
   onConfirm: () => void;
   onUndo: () => void;
@@ -436,6 +484,7 @@ function ItemSheet({
         All add-backs
       </button>
       <p className={amount ? "ebitda-hero" : "ebitda-hero is-missing"}>{amount ?? "Needs input"}</p>
+      {signIn && (allowed || confirmed) ? <SignInToConfirm /> : null}
       <div className="ebitda-badges">
         <StatusBadge status={item.flagStatus} />
         <StatusBadge status={item.lineStatus} />
@@ -470,7 +519,7 @@ function ItemSheet({
       <h3 className="sheet-label">Capacity impact</h3>
       <p className={impact ? "ebitda-hero" : "ebitda-hero is-missing"}>{impact ?? "Needs input"}</p>
       <div className="ebitda-action">
-        {confirmed ? (
+        {signIn ? null : confirmed ? (
           <button type="button" className="button button-quiet" onClick={onUndo}>
             Undo
           </button>

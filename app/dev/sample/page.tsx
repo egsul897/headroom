@@ -134,8 +134,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
         ) : (
           <SampleDashboard
             initialDetail={searchParams.detail === "1"}
-            initialEbitda={searchParams.ebitda === "1" || searchParams.ebitda === "error" ? "list" : searchParams.ebitda ?? null}
-            ebitdaError={searchParams.ebitda === "error" ? "Sign-in is needed to confirm this." : null}
+            initialEbitda={searchParams.ebitda === "1" ? "list" : searchParams.ebitda === "error" ? "a" : searchParams.ebitda ?? null}
           />
         )}
       </AppShell>

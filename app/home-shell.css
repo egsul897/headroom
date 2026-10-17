@@ -1015,6 +1015,33 @@ main:has(.app-shell) {
   line-height: 1.4;
 }
 
+.ebitda-signin {
+  margin: 12px 0 4px;
+}
+
+.ebitda-signin-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  font-weight: 560;
+}
+
+button.ebitda-signin-button:disabled,
+button.ebitda-signin-button:disabled:hover {
+  opacity: 1;
+  cursor: not-allowed;
+  color: var(--ink);
+  background: var(--card);
+  border-color: var(--line);
+}
+
+.ebitda-signin-button svg {
+  color: var(--muted);
+}
+
 .ebitda-skeleton {
   display: block;
   margin: 10px 0 6px;
