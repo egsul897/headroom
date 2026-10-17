@@ -248,19 +248,32 @@ export function isResidualLienBasket(item: { plainEnglish?: string; operativeLan
  * (null). The first "means" in the definition excerpt is the
  * definition's own; a later definition's amount in the same
  * excerpt is never borrowed.
+ *
+ * H3 honesty: an entry the summary marks `resolved: false` never
+ * supplies a cap — under the honest flag that means the document
+ * does not define the term here, defines it ambiguously
+ * (differing duplicates), or defines it in text the extractor
+ * could not back with a source occurrence. Entries with NO flag
+ * (legacy stored summaries and pinned fixtures) stay eligible, as
+ * before. If several eligible entries carry the term with
+ * DIFFERING excerpts, the term is ambiguous and also fails
+ * closed — a cap is never picked from competing definitions.
  */
 export function resolveDefinedTermCap(item: {
   operativeLanguageExcerpt?: string | null;
-  applicableDefinitions?: Array<{ term: string; excerpt: string }> | null;
+  applicableDefinitions?: Array<{ term: string; excerpt: string; resolved?: boolean }> | null;
 }): number | null {
   const excerpt = item.operativeLanguageExcerpt ?? "";
   const capMatch = excerpt.match(/\bnot\s+(?:to\s+)?exceed(?:ing)?\s+(?:the\s+)?([A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+)+)/);
   if (!capMatch) return null;
   const term = capMatch[1]!.replace(/\s+/g, " ").trim().toLowerCase();
-  const def = (item.applicableDefinitions ?? []).find(
-    (d) => d.term.replace(/\s+/g, " ").trim().toLowerCase() === term,
+  const eligible = (item.applicableDefinitions ?? []).filter(
+    (d) =>
+      d.term.replace(/\s+/g, " ").trim().toLowerCase() === term && d.resolved !== false,
   );
-  if (!def) return null;
+  if (eligible.length === 0) return null;
+  if (new Set(eligible.map((d) => (d.excerpt ?? "").trim())).size > 1) return null;
+  const def = eligible[0]!;
   const meansIdx = def.excerpt.search(/\bmeans\b/i);
   if (meansIdx < 0) return null;
   const afterMeans = def.excerpt.slice(meansIdx);

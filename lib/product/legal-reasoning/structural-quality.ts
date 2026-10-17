@@ -167,6 +167,7 @@ export function assessStructuralQuality(sources: SourceMeta[]): StructuralQualit
       "Report reads persisted KnowledgeSource metadata — does not rewrite document hashes or operative versions.",
       "UNKNOWN/OTHER provisions remain queued for counsel; they are not force-classified.",
       "Amendment linkage depends on existing amendmentPackage / relationship discovery.",
+      "Definition resolution: a term counts as resolved only when a detected definition occurrence in the same document backs it, and terms a provision uses but the document does not define count as unresolved (current-build summaries). Summaries stored by older builds set the same flag by excerpt length — a proxy — and are not restated, so rates mixing old and new summaries are not comparable.",
     ],
   };
 }

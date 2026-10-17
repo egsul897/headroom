@@ -25,6 +25,41 @@ export type ProvisionPosture =
   | "OBLIGATION"
   | "UNRESOLVED";
 
+/**
+ * A defined term attached to a provision. `resolved` is an identity
+ * claim, not a text-length claim: true only when a detected
+ * definition OCCURRENCE in the same document backs the entry (a
+ * DefinitionRecord carrying the definition's own text). A term the provision uses but the document does not define
+ * is attached with `resolved: false` and an empty excerpt — visible,
+ * never silently absent. `ambiguous` marks the distinct failure
+ * where the document carries two or more DIFFERING definitions for
+ * the term: unresolved because picking one would be a guess.
+ */
+export interface ApplicableDefinition {
+  term: string;
+  excerpt: string;
+  resolved: boolean;
+  ambiguous?: boolean;
+}
+
+/**
+ * Structural resolution of one cross-reference, carried additively
+ * alongside the legacy `crossReferences: string[]`. Semantics are
+ * the structural layer's: `resolved` means a UNIQUE same-document
+ * target (targetNodeId set). Ambiguous targets and unresolvable
+ * references stay unresolved with a machine-readable reason —
+ * resolution never guesses, and a resolved edge is a SYSTEM
+ * structural fact, not counsel verification or legal authority.
+ */
+export interface CrossReferenceResolution {
+  ref: string;
+  resolved: boolean;
+  targetNodeId?: string;
+  targetSectionRef?: string;
+  ambiguous?: boolean;
+  reason?: string;
+}
+
 export interface ProvisionAnalysis {
   /** Rule 192: the candidate excerpt is a prefix of a longer
    * operative span (4000-char cap) — tail clauses are missing. */
@@ -47,8 +82,17 @@ export interface ProvisionAnalysis {
   conditions: string[];
   basketsAndThresholds: string[];
   draftingPatterns: string[];
-  applicableDefinitions: Array<{ term: string; excerpt: string; resolved: boolean }>;
+  applicableDefinitions: ApplicableDefinition[];
   crossReferences: string[];
+  /** Additive: structural resolution per cross-reference (see
+   * CrossReferenceResolution). The string[] above stays for
+   * compatibility and is derived from these entries. */
+  crossReferenceResolutions?: CrossReferenceResolution[];
+  /** Additive disclosure (Rule 159 pattern): true when the
+   * provision references more defined terms than the per-provision
+   * listing bound; the omitted mentions are unresolved, not absent. */
+  definitionCoverageIncomplete?: boolean;
+  definitionMentionsOmitted?: number;
   dependencies: string[];
   operativeLanguageExcerpt: string;
   sourceCitation: string;
@@ -486,44 +530,291 @@ function splitLetterClauses(excerpt: string): string[] {
   return out;
 }
 
+/** Per-provision listing bound for attached definition entries.
+ * A resource bound, NOT a scan cap: matching runs over ALL of the
+ * document's definitions. If a pathological provision references
+ * more distinct terms than the bound, the excess mentions are
+ * counted and disclosed as INCOMPLETE coverage on the item (Rule
+ * 159 pattern — silent truncation is a lie) and the affected terms
+ * are treated as unresolved, never as absent. */
+export const MAX_DEFINITION_ENTRIES_PER_PROVISION = 100;
+
+/** Term normalization shared by the definition index and mention
+ * detection: case-folded, whitespace-collapsed, surrounding quotes
+ * and punctuation trimmed — the same discipline Rule 197 applies
+ * when it looks a term up, so producer and consumers agree on term
+ * identity. Grammatical VARIANTS are never unified here:
+ * exact-on-normalized matching only (the structural index's
+ * getDefinition discipline; findDefinedTermVariant is barred from
+ * silent matching). */
+export function normalizeDefinedTermKey(term: string): string {
+  return term
+    .replace(/[“”"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^[.,;:]+|[.,;:]+$/g, "")
+    .toLowerCase();
+}
+
+/** A DefinitionRecord backs an entry only when it carries the
+ * definition's own detected text — a record IS a detected
+ * definition occurrence (span + text from the definitions
+ * article), so a non-empty excerpt is the occurrence's text.
+ * (Before this fix, `resolved` was `excerpt.length > 20` — a
+ * length proxy that certified any long fallback window and
+ * failed short genuine definitions.) */
+function definitionRecordBacks(d: DefinitionRecord): boolean {
+  return (d.excerpt ?? "").trim().length > 0;
+}
+
+interface DefinitionMatchResult {
+  entries: ApplicableDefinition[];
+  coverageIncomplete: boolean;
+  omittedMentions: number;
+}
+
+/**
+ * Attach definitions for a provision, honestly:
+ *
+ * Pass 1 — every definition in the document whose term the excerpt
+ * USES. Matching semantics are Rule 199, unchanged: match the term
+ * as a whole word/phrase, not a substring (the old `includes`
+ * matched "SEC" inside "unsecured"); lookarounds require a
+ * non-alphanumeric on both sides; internal whitespace is `\s+` so a
+ * term split across a line break still matches; case-insensitive.
+ * What changes is COVERAGE and the meaning of `resolved`: the scan
+ * runs over an index of ALL definitions (the old code read only
+ * `defs.slice(0, 300)` and stopped at 10 hits, so on a syndicated
+ * §1.01 with 300+ terms, later terms were silently unmatchable
+ * depending on detector ordering). A token prefilter — a term can
+ * whole-phrase match only when one of its tokens occurs in the
+ * excerpt — keeps the full index affordable without a scan cap.
+ * Duplicate records for one term: identical definitions collapse
+ * to one resolved entry; DIFFERING definitions make the entry
+ * ambiguous (unresolved — picking one would be a guess).
+ *
+ * Pass 2 — defined-term-shaped mentions (quoted terms; capitalized
+ * multi-word phrases in definitional use position) with NO record
+ * in the document become explicit `resolved: false` entries, so
+ * "used but not defined here" is visible and feeds the
+ * unresolved-question and structural-quality rates instead of
+ * producing no entry at all.
+ */
 function relatedDefinitions(
   excerpt: string,
   defs: DefinitionRecord[],
-): Array<{ term: string; excerpt: string; resolved: boolean }> {
-  const hits: Array<{ term: string; excerpt: string; resolved: boolean }> = [];
-  for (const d of defs.slice(0, 300)) {
-    if (d.term.length < 3) continue;
-    // Rule 199: match the term as a whole word/phrase, not a
-    // substring. The old `includes` matched "SEC" inside
-    // "unsecured" and attached a noise definition ("Controlling
-    // defined terms: SEC") to every unsecured-debt item. The
-    // lookarounds require a non-alphanumeric on both sides (a
-    // word-boundary regex would fail on terms with punctuation
-    // edges); internal whitespace is `\s+` so a term split
-    // across a line break in the excerpt still matches.
-    const escaped = d.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
-    if (!new RegExp(`(?<![A-Za-z0-9])${escaped}(?![A-Za-z0-9])`, "i").test(excerpt)) continue;
-    hits.push({
-      term: d.term,
-      excerpt: clip(d.excerpt ?? "", 220),
-      resolved: Boolean(d.excerpt && d.excerpt.length > 20),
-    });
-    if (hits.length >= 10) break;
+): DefinitionMatchResult {
+  const byKey = new Map<string, DefinitionRecord[]>();
+  for (const d of defs) {
+    const key = normalizeDefinedTermKey(d.term);
+    if (key.length < 3) continue;
+    const arr = byKey.get(key);
+    if (arr) arr.push(d);
+    else byKey.set(key, [d]);
   }
-  return hits;
+
+  // Prefilter tokens: alphanumeric runs of the excerpt. A term
+  // whose every token is absent cannot whole-phrase match, so
+  // skipping it discards nothing that could have hit.
+  const excerptTokens = new Set(
+    excerpt.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean),
+  );
+  const termMayMatch = (key: string): boolean =>
+    key
+      .split(/[^a-z0-9]+/)
+      .filter((t) => t.length >= 2)
+      .some((t) => excerptTokens.has(t));
+
+  const matched: Array<{ key: string; index: number }> = [];
+  for (const [key, records] of byKey) {
+    if (!termMayMatch(key)) continue;
+    const term = records[0]!.term;
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+    const m = new RegExp(`(?<![A-Za-z0-9])${escaped}(?![A-Za-z0-9])`, "i").exec(excerpt);
+    if (m) matched.push({ key, index: m.index });
+  }
+  matched.sort(
+    (a, b) => a.index - b.index || b.key.length - a.key.length || (a.key < b.key ? -1 : 1),
+  );
+
+  const positioned: Array<ApplicableDefinition & { position: number }> = [];
+  const matchedKeys = new Set<string>();
+  for (const { key, index } of matched) {
+    matchedKeys.add(key);
+    const records = byKey.get(key)!;
+    const backing = records.filter(definitionRecordBacks);
+    const distinctExcerpts = new Set(backing.map((d) => (d.excerpt ?? "").trim()));
+    if (backing.length > 0 && distinctExcerpts.size === 1) {
+      positioned.push({
+        term: records[0]!.term,
+        excerpt: clip(backing[0]!.excerpt, 220),
+        resolved: true,
+        position: index,
+      });
+    } else if (backing.length > 0) {
+      positioned.push({
+        term: records[0]!.term,
+        excerpt: "",
+        resolved: false,
+        ambiguous: true,
+        position: index,
+      });
+    } else {
+      positioned.push({
+        term: records[0]!.term,
+        excerpt: "",
+        resolved: false,
+        position: index,
+      });
+    }
+  }
+
+  // Pass 2: used-but-undefined mentions.
+  const candidates: Array<{ display: string; key: string; index: number; quoted: boolean }> = [];
+  const quotedRe = /[“"]([^“”"]{2,80})[”"]|"([^"]{2,80})"/g;
+  let qm: RegExpExecArray | null;
+  while ((qm = quotedRe.exec(excerpt)) !== null) {
+    const raw = (qm[1] ?? qm[2] ?? "").trim();
+    if (raw) {
+      candidates.push({ display: raw, key: normalizeDefinedTermKey(raw), index: qm.index, quoted: true });
+    }
+  }
+  const phraseRe = /\b[A-Z][A-Za-z0-9]*(?:[ \t]+(?:[A-Z][A-Za-z0-9]*|of|the|and|for|&))+/g;
+  let pm: RegExpExecArray | null;
+  while ((pm = phraseRe.exec(excerpt)) !== null) {
+    const words = pm[0].split(/[ \t]+/);
+    if (words.filter((w) => /^[A-Z]/.test(w)).length < 2) continue;
+    // "The Borrower" is the term "Borrower" in use position.
+    const display = pm[0].replace(/^(?:The|A|An)[ \t]+/, "");
+    candidates.push({ display, key: normalizeDefinedTermKey(display), index: pm.index, quoted: false });
+  }
+  const USE_PREFIX =
+    /(?:the|any|each|such|a|an|of|under|than|per|in|to|for|with|without|by|as)[ \t]+$/i;
+  candidates.sort((a, b) => a.index - b.index);
+  const seenMention = new Set<string>(matchedKeys);
+  for (const c of candidates) {
+    if (c.key.length < 3 || seenMention.has(c.key)) continue;
+    if (/^(section|article|clause|schedule|exhibit)\b/.test(c.key)) continue;
+    // A term the document DOES define is pass 1's business — never
+    // report it undefined over a mention-shape mismatch.
+    if (byKey.has(c.key)) continue;
+    // A mention immediately followed by its own definition
+    // statement (“X” means …) is defined by this very text.
+    const after = excerpt.slice(c.index + c.display.length, c.index + c.display.length + 24);
+    if (/^[”"]?\s*(?:means|shall mean|has the meaning)/.test(after)) continue;
+    // Unquoted phrases count only in definitional use position
+    // (preceded by a determiner/preposition); a bare capitalized
+    // phrase is as often a party name as a term. Quoted mentions
+    // are unambiguous term signals and skip this guard.
+    if (!c.quoted) {
+      const before = excerpt.slice(Math.max(0, c.index - 12), c.index);
+      if (!USE_PREFIX.test(before)) continue;
+    }
+    seenMention.add(c.key);
+    positioned.push({ term: c.display, excerpt: "", resolved: false, position: c.index });
+  }
+
+  // Listing bound: keep resolved entries preferentially (they feed
+  // executable consumers like Rule 197), count the rest, disclose.
+  let omittedMentions = 0;
+  let kept = positioned;
+  if (positioned.length > MAX_DEFINITION_ENTRIES_PER_PROVISION) {
+    const byPriority = [...positioned].sort(
+      (a, b) => Number(b.resolved) - Number(a.resolved) || a.position - b.position,
+    );
+    kept = byPriority.slice(0, MAX_DEFINITION_ENTRIES_PER_PROVISION);
+    omittedMentions = positioned.length - kept.length;
+  }
+  kept.sort((a, b) => a.position - b.position);
+  return {
+    entries: kept.map(({ position: _position, ...rest }) => rest),
+    coverageIncomplete: omittedMentions > 0,
+    omittedMentions,
+  };
 }
 
-function crossRefsFor(
+/** Cross-reference dedupe key: the designator ("Section",
+ * "Article", "§") and spacing differ between detector records and
+ * raw text for the SAME reference; identity is the reference body. */
+function crossRefKey(ref: string): string {
+  return normalizeWs(ref)
+    .replace(/^(?:section|article|§)\s*/i, "")
+    .toLowerCase();
+}
+
+/**
+ * Structured cross-reference resolutions for one provision, from
+ * the CrossReferenceRecords the upload path already loads.
+ * Semantics are the structural layer's, never upgraded: a ref is
+ * resolved only when a record resolves it to a UNIQUE target node
+ * (targetNodeId). Conflicting records or an ambiguity flag make
+ * it ambiguous; text-only mentions (no structural record) stay
+ * unresolved with a reason — schedules/exhibits and
+ * cross-document references are unresolved by design upstream
+ * and keep their upstream reason here.
+ */
+function crossReferenceResolutionsFor(
   nodeId: string | undefined,
   excerpt: string,
   xrefs: CrossReferenceRecord[],
-): string[] {
-  const fromNode = nodeId
-    ? xrefs.filter((x) => x.fromNodeId === nodeId).map((x) => x.rawReference)
-    : [];
+): CrossReferenceResolution[] {
+  const out: CrossReferenceResolution[] = [];
+  const covered = new Set<string>();
+  if (nodeId) {
+    const groups = new Map<string, CrossReferenceRecord[]>();
+    for (const x of xrefs) {
+      if (x.fromNodeId !== nodeId) continue;
+      const arr = groups.get(x.rawReference);
+      if (arr) arr.push(x);
+      else groups.set(x.rawReference, [x]);
+    }
+    for (const [ref, records] of groups) {
+      covered.add(crossRefKey(ref));
+      const targets = new Map<string, CrossReferenceRecord>();
+      let ambiguousRecord: CrossReferenceRecord | undefined;
+      for (const r of records) {
+        if (r.targetAmbiguous === true && !ambiguousRecord) ambiguousRecord = r;
+        if (r.resolved === true && r.targetNodeId) targets.set(r.targetNodeId, r);
+      }
+      if (ambiguousRecord || targets.size > 1) {
+        out.push({
+          ref,
+          resolved: false,
+          ambiguous: true,
+          targetSectionRef: (ambiguousRecord ?? records[0])?.targetSectionRef ?? undefined,
+          reason: ambiguousRecord?.unresolvedReason ?? "AMBIGUOUS_TARGET",
+        });
+      } else if (targets.size === 1) {
+        const [targetNodeId, rec] = [...targets.entries()][0]!;
+        out.push({
+          ref,
+          resolved: true,
+          targetNodeId,
+          targetSectionRef: rec.targetSectionRef ?? undefined,
+        });
+      } else {
+        const resolvedNoTarget = records.find((r) => r.resolved === true);
+        const rec = resolvedNoTarget ?? records[0]!;
+        out.push({
+          ref,
+          resolved: false,
+          targetSectionRef: rec.targetSectionRef ?? undefined,
+          reason:
+            rec.unresolvedReason ??
+            (resolvedNoTarget ? "RESOLVED_WITHOUT_TARGET" : "TARGET_NOT_FOUND"),
+        });
+      }
+    }
+  }
   const fromText =
     excerpt.match(/\b(?:Section|Article|§)\s*[\dA-Za-z.()-]+/g)?.map((s) => normalizeWs(s)) ?? [];
-  return Array.from(new Set([...fromNode, ...fromText])).slice(0, 12);
+  for (const ref of fromText) {
+    const key = crossRefKey(ref);
+    if (covered.has(key)) continue;
+    covered.add(key);
+    out.push({ ref, resolved: false, reason: "NO_STRUCTURAL_RECORD" });
+  }
+  return out;
 }
 
 function buildPlainEnglish(params: {
@@ -615,7 +906,7 @@ function buildPlainEnglish(params: {
   const unresolvedDefs = params.definitions.filter((d) => !d.resolved).map((d) => d.term);
   const resolvedDefs = params.definitions.filter((d) => d.resolved).map((d) => d.term);
   if (resolvedDefs.length > 0) {
-    parts.push(`Controlling defined terms (excerpt-matched): ${resolvedDefs.slice(0, 5).join(", ")}.`);
+    parts.push(`Controlling defined terms (definition located in this document): ${resolvedDefs.slice(0, 5).join(", ")}.`);
   }
   if (unresolvedDefs.length > 0) {
     parts.push(`Defined terms referenced but not resolved in-package: ${unresolvedDefs.slice(0, 4).join(", ")}.`);
@@ -754,12 +1045,17 @@ export function analyzeProvision(params: {
   const patternIds = detectPatternsInText(`${heading}\n${excerpt}`);
   const draftingPatterns = patternIds.map((id) => getPattern(id)?.name ?? id);
 
-  const applicableDefinitions = relatedDefinitions(excerpt, params.definitions);
-  const crossReferences = crossRefsFor(
+  const definitionResult = relatedDefinitions(excerpt, params.definitions);
+  const applicableDefinitions = definitionResult.entries;
+  const crossReferenceResolutions = crossReferenceResolutionsFor(
     params.candidate.nodeId,
     excerpt,
     params.crossReferences ?? [],
   );
+  // The legacy string[] is derived from the structured resolutions
+  // (record-backed refs in record order, then text-only refs),
+  // preserving its historical contents and cap.
+  const crossReferences = crossReferenceResolutions.map((r) => r.ref).slice(0, 12);
   const dependencies: string[] = [];
   for (const ref of crossReferences.slice(0, 6)) {
     dependencies.push(`Depends on / references ${ref}`);
@@ -821,6 +1117,15 @@ export function analyzeProvision(params: {
       "Operative excerpt truncated at 4000 characters — clauses beyond the cap are not in this summary; verify the full section before relying on this item",
     );
   }
+  // Definition-coverage disclosure (Rule 159 pattern): the
+  // provision references more defined terms than the listing
+  // bound. The unlisted mentions are unresolved, not absent —
+  // say so wherever the summary is read.
+  if (definitionResult.coverageIncomplete) {
+    unresolved.push(
+      `Definition coverage incomplete: this provision references more defined terms than the per-provision listing bound (${MAX_DEFINITION_ENTRIES_PER_PROVISION}); ${definitionResult.omittedMentions} mention(s) are not listed and are treated as unresolved, not absent`,
+    );
+  }
 
   const plainEnglish = buildPlainEnglish({
     sectionRef,
@@ -868,6 +1173,9 @@ export function analyzeProvision(params: {
     draftingPatterns,
     applicableDefinitions,
     crossReferences,
+    crossReferenceResolutions,
+    definitionCoverageIncomplete: definitionResult.coverageIncomplete || undefined,
+    definitionMentionsOmitted: definitionResult.omittedMentions || undefined,
     dependencies,
     operativeLanguageExcerpt: excerpt.slice(0, 700),
     sourceCitation: `${params.sourceId} · ${sectionRef}`,

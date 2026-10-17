@@ -46,6 +46,28 @@ describe("parseDocument", () => {
     expect(parsed.fullText).toBe("SECTION 6.01. Indebtedness.\nplain text body");
   });
 
+  it("decodes hex numeric HTML entities (&#x…;) in EDGAR HTML, not just decimal ones", async () => {
+    // Grok accuracy check 2026-10-17: filings encode quoted defined
+    // terms as &#x201C;…&#x201D;; undecoded, the quotes never match and
+    // ratio definitions come back "not in bound texts".
+    const html = "<html><body><p>&#x201C;Consolidated EBITDA&#x201D; means, for any period, &#x2026;</p></body></html>";
+    const parsed = await parseDocument(Buffer.from(html, "utf-8"), "text/html");
+    expect(parsed.fullText).toContain("“Consolidated EBITDA”");
+    expect(parsed.fullText).not.toContain("&#x");
+  });
+
+  it("drops struck (blackline-deleted) text from EDGAR HTML instead of treating it as operative", async () => {
+    // The deleted $75,000,000 is not the operative cap; $127,500,000 is.
+    const html =
+      "<html><body><p>China Facility basket shall not exceed <strike>$75,000,000</strike> $127,500,000</p>" +
+      "<p><del>removed clause</del> <s>also removed</s> surviving clause</p></body></html>";
+    const parsed = await parseDocument(Buffer.from(html, "utf-8"), "text/html");
+    expect(parsed.fullText).toContain("$127,500,000");
+    expect(parsed.fullText).not.toContain("75,000,000");
+    expect(parsed.fullText).not.toContain("removed clause");
+    expect(parsed.fullText).toContain("surviving clause");
+  });
+
   it("throws loudly on an unsupported content type instead of silently returning empty text", async () => {
     await expect(parseDocument(Buffer.from("whatever"), "application/x-unknown")).rejects.toThrow(/unsupported contentType/);
   });

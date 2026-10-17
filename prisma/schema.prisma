@@ -108,6 +108,8 @@ model Company {
   // pre-existing ExtractionCandidate/CandidateReviewEvent machinery rather
   // than a parallel one.
   sourceConnections   CompanySourceConnection[]
+  erpSyncEvents       ErpSyncEvent[]
+  erpFinancialFacts   ErpFinancialFact[]
   sourceArtifacts     SourceArtifact[]
   ingestionJobs       IngestionJob[]
   sourcePriorityRules SourcePriorityRule[]
@@ -1894,6 +1896,11 @@ enum ConnectorType {
   EDGAR
   CSV_FINANCIAL
   DOCUMENT_UPLOAD
+  // ERP (lib/erp/**): a company's accounting/ERP system pushing financial
+  // facts in real time. The provider kind (NETSUITE/SAP/ORACLE/DYNAMICS/
+  // GENERIC) is DATA on CompanySourceConnection.provider + config, never a
+  // new enum value per vendor - see lib/erp/types.ts's ERP_PROVIDER_KINDS.
+  ERP
 
   @@map("connector_type")
 }
@@ -1944,12 +1951,28 @@ model CompanySourceConnection {
   // Connector-specific NON-SECRET config, e.g. EDGAR's { ticker, cik }.
   config               Json?
 
+  // --- ERP ingestion foundation (lib/erp/**) - null for every other
+  // connector type. `externalAccountRef` is the provider-side account /
+  // tenant identifier (e.g. a NetSuite account id) - reference data, not a
+  // credential. `inboundSecretHash` is the sha256 hex of this connection's
+  // inbound ingestion token: the raw token is shown ONCE at provisioning
+  // (lib/erp/connections.ts) and never stored anywhere; verification hashes
+  // the presented token and compares (lib/erp/secret.ts). `createdBy` /
+  // `updatedBy` carry the provisioning user's id - recorded only when a
+  // real session identity exists, never fabricated.
+  externalAccountRef String?
+  inboundSecretHash  String?
+  createdBy          String?
+  updatedBy          String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   company         Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
   sourceArtifacts SourceArtifact[]
   ingestionJobs   IngestionJob[]
+  erpSyncEvents   ErpSyncEvent[]
+  erpFacts        ErpFinancialFact[]
 
   @@unique([companyId, connectorType])
   @@index([companyId])
@@ -2105,6 +2128,159 @@ model IngestionJobStage {
 
   @@unique([ingestionJobId, stage])
   @@map("ingestion_job_stages")
+}
+
+enum ErpSyncEventOutcome {
+  APPLIED
+  PARTIALLY_APPLIED
+  NEEDS_ATTENTION
+  WITHHELD
+  DUPLICATE
+  REFUSED_AUTH
+  REFUSED_VALIDATION
+  REFUSED_IDEMPOTENCY_MISMATCH
+
+  @@map("erp_sync_event_outcome")
+}
+
+// One row per inbound ERP delivery ATTEMPT (lib/erp/ingest.ts) - the
+// append-only sync audit for the push path. Rows are never updated or
+// deleted; a fact's later status changes live on ErpFinancialFact, and each
+// event records what THAT delivery did, so the full history (including
+// refused and duplicate deliveries) is reconstructable from this table
+// alone.
+//
+// Idempotency: @@unique([connectionId, idempotencyKey]) with a NULLABLE key
+// is the enforcement - Postgres treats NULL keys as distinct, so exactly
+// ONE event per (connection, key) carries the key (the delivery that was
+// actually processed); every re-delivery is still audited, as its own row
+// with idempotencyKey NULL, duplicateOfEventId pointing at the processed
+// original, and outcome DUPLICATE (same payload hash) or
+// REFUSED_IDEMPOTENCY_MISMATCH (same key, different payload - the original
+// stands, the mismatch applies nothing).
+model ErpSyncEvent {
+  id               String             @id @default(cuid())
+  companyId        String
+  connectionId     String
+  // Provider kind snapshot (CompanySourceConnection.provider at receipt
+  // time, e.g. "NETSUITE") - a snapshot, not a join, so the audit stays
+  // accurate even if the connection is later reconfigured.
+  provider         String
+  externalEventId  String?
+  idempotencyKey   String?
+  duplicateOfEventId String?
+  // sha256 hex of the raw request body (lib/connectors/dedup.ts's
+  // computeContentHash) - the delivery's content identity.
+  payloadHash      String
+  // The parsed payload, retained verbatim for audit and so unmapped facts
+  // are queryable later (same retention choice as SourceArtifact.rawPayload).
+  payload          Json?
+  receivedAt       DateTime           @default(now())
+  outcome          ErpSyncEventOutcome
+  detail           String?
+  needsAttention   Boolean            @default(false)
+  appliedCount     Int                @default(0)
+  conflictCount    Int                @default(0)
+  unmappedCount    Int                @default(0)
+  withheldCount    Int                @default(0)
+
+  company    Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  connection CompanySourceConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  facts      ErpFinancialFact[]
+
+  @@unique([connectionId, idempotencyKey])
+  @@index([companyId])
+  @@index([connectionId])
+  @@map("erp_sync_events")
+}
+
+enum ErpFactStatus {
+  // The fact's value IS the canonical value for its field/date - written by
+  // this ingestion, or corroborated against the existing canonical row.
+  APPLIED
+  // The value disagrees with the canonical row or with another staged fact
+  // for the same field/date. Fail closed (lib/onboarding/financial.ts's
+  // CONFLICTING_FINANCIAL_FACTS rule): no winner is picked; a human resolves.
+  CONFLICT
+  // Mapped and promotable, but the (company, asOfDate) fact set does not yet
+  // cover every required canonical field and no same-date canonical row
+  // exists. Retried (as part of the union of pending facts for that date) on
+  // the next delivery for the same connection + date.
+  WITHHELD_INCOMPLETE
+  // The source key resolves to no canonical metric - not via the canonical
+  // vocabulary and not via the connection's explicit config.metricKeyMap.
+  // Stored verbatim, surfaced on the event + this row, NEVER guessed into a
+  // canonical field.
+  UNMAPPED
+  // Resolved to a recognized metric that deliberately has no canonical
+  // FinancialSnapshot/FinancialState field (gaap_ebitda - see
+  // lib/connectors/units.ts). Stored and surfaced; never promoted.
+  NOT_PROMOTABLE
+  // Hard validation failure (non-finite value, or a declared unit
+  // incompatible with the resolved metric's canonical unit). Stored with the
+  // reason in `detail`; never promoted.
+  REFUSED
+
+  @@map("erp_fact_status")
+}
+
+// One row per financial fact ever received over an ERP connection - the
+// per-fact provenance ledger for the push path (the role ExtractionCandidate
+// plays for connector-discovered facts on the pull path). Provenance is
+// structural, not a note: source = this row's connection (provider on the
+// parent ErpSyncEvent), connection id, the ERP-side external id when the
+// source supplied one, and the verbatim source key - all recorded for EVERY
+// fact, including unmapped and refused ones. Status may advance
+// (WITHHELD_INCOMPLETE -> APPLIED/CONFLICT) as later deliveries complete or
+// contradict a date's fact set; the ErpSyncEvent ledger preserves what each
+// individual delivery did.
+model ErpFinancialFact {
+  id               String        @id @default(cuid())
+  companyId        String
+  connectionId     String
+  syncEventId      String
+  // ERP-side stable id for this fact (journal/line id) when provided.
+  externalId       String?
+  // The ERP-side line-item/account key, VERBATIM. Never renamed.
+  sourceKey        String
+  sourceLabel      String?
+  // The fact's period - every fact in one delivery shares the delivery's
+  // asOfDate (lib/erp/types.ts's payload contract).
+  asOfDate         DateTime
+  // Declared unit, verbatim (one of lib/connectors/units.ts's
+  // FINANCIAL_UNITS) - required by the payload contract, never inferred.
+  declaredUnit     String
+  declaredValue    Decimal       @db.Decimal(24, 6)
+  // Resolution outcome: the canonical metric this source key mapped to via
+  // the canonical vocabulary or the connection's explicit metricKeyMap -
+  // null when UNMAPPED. canonicalField is FINANCIAL_METRIC_FIELD_MAP's
+  // target field for that metric - null when the metric is not promotable.
+  canonicalMetric  String?
+  canonicalField   String?
+  // declaredValue converted into the metric's canonical unit
+  // (lib/connectors/units.ts's normalizeFinancialValue) - null for UNMAPPED
+  // and REFUSED facts (no honest conversion exists for either).
+  normalizedValue  Decimal?      @db.Decimal(24, 6)
+  status           ErpFactStatus
+  detail           String?
+  // Set when status is APPLIED: the canonical rows this fact's value lives
+  // in (ids only - the rows themselves stay owned by
+  // lib/onboarding/financial.ts's writer).
+  financialSnapshotId String?
+  financialStateId    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company    Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  connection CompanySourceConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  syncEvent  ErpSyncEvent          @relation(fields: [syncEventId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([connectionId])
+  @@index([syncEventId])
+  @@index([connectionId, asOfDate, status])
+  @@map("erp_financial_facts")
 }
 
 // Phase B reads this to decide, per metric, which connector's figure wins

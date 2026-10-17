@@ -296,7 +296,15 @@ export default async function DocumentSourcePage({
               {item.applicableDefinitions?.length > 0 && (
                 <div className="row-note">
                   Definitions:{" "}
-                  {item.applicableDefinitions.map((d) => d.term).join(", ")}
+                  {item.applicableDefinitions
+                    .map((d) =>
+                      d.resolved === false
+                        ? d.ambiguous
+                          ? `${d.term} (defined inconsistently in this document)`
+                          : `${d.term} (not defined in this document)`
+                        : d.term,
+                    )
+                    .join(", ")}
                 </div>
               )}
               {item.crossReferences?.length > 0 && (
