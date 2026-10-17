@@ -69,7 +69,12 @@ export function reportTextLines(r: ComplianceReport): string[] {
   if (!r.certificate.length) push("No tested financial covenant with a cited limit is on file.", "  ");
   for (const c of r.certificate) {
     push(`${c.covenant} (${c.documentName} ${c.sectionRef})`, "  ");
-    push(`Required ${c.comparison === "at_or_below" ? "<=" : ">="} ${c.required.toFixed(2)}x | Actual ${c.actual === null ? c.status.replace(/_/g, " ") : `${c.actual.toFixed(2)}x`} | ${c.result.replace(/_/g, " ")} | Review: ${c.reviewState}${c.reason ? ` | ${c.reason}` : ""}`, "    ");
+    push(
+      c.testKind === "MAINTENANCE"
+        ? `Required ${c.comparison === "at_or_below" ? "<=" : ">="} ${c.required!.toFixed(2)}x | Actual ${c.actual === null ? "NOT EVALUATED" : `${c.actual.toFixed(2)}x`} | ${c.result.replace(/_/g, " ")} | Review: ${c.reviewState}${c.reason ? ` | ${c.reason}` : ""}`
+        : `NOT EVALUATED | ${c.reason ?? ""}`,
+      "    ",
+    );
   }
   L.push("");
   let section = "";

@@ -33,6 +33,8 @@ export async function GET(req: Request, ctx: { params: Promise<{ companyId: stri
       disclaimer: r.disclaimer,
       /** PR 414 CertificateModel (strings, evaluated PASS/FAIL/null). */
       certificate: toCertificateModel(r),
+      /** false ⇒ every line is NOT EVALUATED: the engine does not yet flag maintenance covenants or supply verdicts. */
+      maintenanceFlagAvailable: r.certificate.some((c) => c.testKind === "MAINTENANCE"),
       /** Numeric rows with status/reviewState/reason for audit. */
       rows: r.certificate,
     },

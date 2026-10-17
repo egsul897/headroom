@@ -2,7 +2,7 @@
  * Pure builder: CovenantOverview-shaped engine output ⇒ ComplianceReport.
  * Structural input type so the builder is testable without Prisma.
  */
-import { REPORT_DISCLAIMER, type CertificateRow, type ComplianceReport, type FigureProof, type LineStatus, type ReportLine, type SourceRef } from "./types";
+import { NOT_FLAGGED_REASON, REPORT_DISCLAIMER, type CertificateRow, type ComplianceReport, type FigureProof, type LineStatus, type ReportLine, type SourceRef } from "./types";
 import type { CertificateModel, ProofInput } from "./ux-contract";
 
 export interface OverviewCapacityRowLike {
@@ -37,6 +37,13 @@ export interface OverviewRatioRowLike {
   status: string;
   reviewState: string;
   reason?: string;
+  /**
+   * Engine-supplied classification, read verbatim. Not on the overview RatioRow today,
+   * so every row is NOT_FLAGGED and the certificate fails closed. Never inferred by name.
+   */
+  testKind?: "MAINTENANCE" | "INCURRENCE";
+  /** Engine-supplied compliance verdict for a maintenance covenant at the as-of date. */
+  complianceVerdict?: "IN_COMPLIANCE" | "NOT_IN_COMPLIANCE";
 }
 
 export interface OverviewLike {
@@ -168,27 +175,31 @@ export function buildComplianceReport(
             row.reviewState,
           ),
         });
-        if (cite && finite(row.ratioLimit)) {
-          const actual = actualOk ? row.currentRatio : null;
-          let result: CertificateRow["result"] = "NOT_DETERMINABLE";
-          if (actual !== null) {
-            const pass = row.comparisonDirection === "at_or_below" ? actual <= row.ratioLimit : actual >= row.ratioLimit;
-            result = pass ? "IN_COMPLIANCE" : "NOT_IN_COMPLIANCE";
-          }
+        if (cite && finite(row.ratioLimit) && row.testKind !== "INCURRENCE") {
+          const maintenance = row.testKind === "MAINTENANCE";
+          const actual = maintenance && actualOk ? row.currentRatio : null;
+          const verdict = maintenance && actualOk ? row.complianceVerdict : undefined;
           certificate.push({
             key: row.stableKey,
             covenant: row.name,
             documentName: row.documentName,
             sectionRef: row.sectionRef,
+            testKind: maintenance ? "MAINTENANCE" : "NOT_FLAGGED",
             comparison: row.comparisonDirection,
-            required: row.ratioLimit,
+            required: maintenance ? row.ratioLimit : null,
             actual,
             headroom: actual !== null && finite(row.ratioHeadroom) ? row.ratioHeadroom : null,
-            result,
+            result: verdict ?? "NOT_EVALUATED",
             status,
             reviewState: row.reviewState,
             citation: cite,
-            reason: actual === null ? (row.reason ?? "Actual ratio not computed.") : null,
+            reason: !maintenance
+              ? NOT_FLAGGED_REASON
+              : actual === null
+                ? (row.reason ?? "Actual ratio not computed.")
+                : verdict
+                  ? null
+                  : "Not evaluated: the engine supplied no compliance verdict for this covenant.",
           });
         }
       }
@@ -238,8 +249,8 @@ export function notDeterminableReport(companyId: string, blocker: string, opts: 
 }
 
 /**
- * PR 414 CertificateModel. evaluated is PASS/FAIL only when the engine computed the
- * actual (MODELED, cited); otherwise null ⇒ presentVerdict renders NOT EVALUATED.
+ * PR 414 CertificateModel. evaluated is PASS/FAIL only from the engine's own verdict on a
+ * row the engine flags as a maintenance covenant; otherwise null ⇒ NOT EVALUATED.
  * period = the engine's as-of date (test date), never a guessed fiscal period.
  */
 export function toCertificateModel(r: ComplianceReport): CertificateModel {
@@ -248,7 +259,7 @@ export function toCertificateModel(r: ComplianceReport): CertificateModel {
     period: r.asOfDate,
     lines: r.certificate.map((c) => ({
       name: c.covenant,
-      required: limitText(c.required, c.comparison),
+      required: c.required === null ? null : limitText(c.required, c.comparison),
       actual: c.actual === null ? null : ratioText(c.actual),
       headroom: c.headroom === null ? null : ratioText(c.headroom),
       evaluated: c.result === "IN_COMPLIANCE" ? "PASS" : c.result === "NOT_IN_COMPLIANCE" ? "FAIL" : null,

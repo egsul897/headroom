@@ -54,14 +54,23 @@ describe("compliance report — every number sourced, NEEDS_INPUT honest", () =>
   });
 });
 
-describe("certificate payload — required vs actual per covenant", () => {
+describe("certificate payload — fail closed without an engine maintenance flag (R2)", () => {
   const cert = (k: string) => r.certificate.find((c) => c.key === k)!;
-  it("compares actual to the cited limit in the covenant's own direction", () => {
-    expect(cert("d1:LEV")).toMatchObject({ required: 4.5, actual: 3.1, result: "IN_COMPLIANCE", sectionRef: "§7.11(a)" });
-    expect(cert("d1:ICR")).toMatchObject({ required: 2.5, actual: 2.0, result: "NOT_IN_COMPLIANCE" });
+  it("unflagged rows are NOT_EVALUATED with no required/actual, never PASS/FAIL", () => {
+    expect(cert("d1:LEV")).toMatchObject({ testKind: "NOT_FLAGGED", required: null, actual: null, result: "NOT_EVALUATED" });
+    expect(cert("d1:ICR")).toMatchObject({ result: "NOT_EVALUATED" });
+    expect(cert("d1:LEV").reason).toMatch(/does not mark this test as a maintenance financial covenant/);
   });
-  it("missing actual ⇒ NOT_DETERMINABLE, never a pass", () => {
-    expect(cert("d1:FCCR")).toMatchObject({ actual: null, result: "NOT_DETERMINABLE", reason: "Fixed charges not on file" });
+  it("flagged MAINTENANCE: engine verdict passed through; no verdict ⇒ NOT_EVALUATED; INCURRENCE excluded", () => {
+    const flag = (k: string, extra: object) => ({ ...overview, covenantFamilies: overview.covenantFamilies.map((f) => ({ ...f, rows: f.rows.map((row) => (row.stableKey === k ? { ...row, ...extra } : row)) })) });
+    const a = buildComplianceReport("co_1", flag("d1:LEV", { testKind: "MAINTENANCE", complianceVerdict: "IN_COMPLIANCE" }), { now });
+    expect(a.certificate.find((c) => c.key === "d1:LEV")).toMatchObject({ testKind: "MAINTENANCE", required: 4.5, actual: 3.1, headroom: 1.4, result: "IN_COMPLIANCE", reason: null });
+    const b = buildComplianceReport("co_1", flag("d1:ICR", { testKind: "MAINTENANCE" }), { now });
+    expect(b.certificate.find((c) => c.key === "d1:ICR")).toMatchObject({ actual: 2.0, result: "NOT_EVALUATED" });
+    const c = buildComplianceReport("co_1", flag("d1:ICR", { testKind: "INCURRENCE" }), { now });
+    expect(c.certificate.find((x) => x.key === "d1:ICR")).toBeUndefined();
+    const d = buildComplianceReport("co_1", flag("d1:FCCR", { testKind: "MAINTENANCE", complianceVerdict: "IN_COMPLIANCE" }), { now });
+    expect(d.certificate.find((x) => x.key === "d1:FCCR")).toMatchObject({ actual: null, result: "NOT_EVALUATED", reason: "Fixed charges not on file" });
   });
 });
 
@@ -106,37 +115,34 @@ describe("PDF", () => {
 });
 
 describe("PR 414 CertificateModel", () => {
-  const m = toCertificateModel(r);
-  const ln = (n: string) => m.lines.find((l) => l.name === n)!;
-  it("period = engine as-of date; required/actual/headroom as strings; PASS/FAIL only when evaluated", () => {
+  it("period = engine as-of date; unflagged lines carry only name + citation (NOT EVALUATED)", () => {
+    const m = toCertificateModel(r);
     expect(m.period).toBe(r.asOfDate);
-    expect(ln("Max total net leverage")).toEqual({ name: "Max total net leverage", required: "4.50x max", actual: "3.10x", headroom: "1.40x", evaluated: "PASS", citation: "Credit Agreement §7.11(a)" });
-    expect(ln("Min interest coverage")).toMatchObject({ required: "2.50x min", evaluated: "FAIL" });
+    expect(m.lines.find((l) => l.name === "Max total net leverage")).toEqual({ name: "Max total net leverage", required: null, actual: null, headroom: null, evaluated: null, citation: "Credit Agreement §7.11(a)" });
   });
-  it("no computed actual ⇒ evaluated null (renders NOT EVALUATED)", () => {
-    expect(ln("Springing FCCR")).toMatchObject({ actual: null, headroom: null, evaluated: null, citation: "Credit Agreement §7.11(c)" });
+  it("flagged maintenance + engine verdict ⇒ strings and PASS/FAIL", () => {
+    const flagged = { ...overview, covenantFamilies: overview.covenantFamilies.map((f) => ({ ...f, rows: f.rows.map((row) => (row.stableKey === "d1:ICR" ? { ...row, testKind: "MAINTENANCE" as const, complianceVerdict: "NOT_IN_COMPLIANCE" as const } : row)) })) };
+    const m = toCertificateModel(buildComplianceReport("co_1", flagged, { now }));
+    expect(m.lines.find((l) => l.name === "Min interest coverage")).toMatchObject({ required: "2.50x min", actual: "2.00x", evaluated: "FAIL" });
   });
 });
 
-describe("PR 414 KeyRatioModel[]", () => {
+describe("PR 414 KeyRatioModel[] (fixture rows; engine-backed probes are in engine-rows.test.ts)", () => {
   const rows = overview.covenantFamilies.flatMap((f) => f.rows).filter((x) => x.kind === "RATIO") as Parameters<typeof buildKeyRatios>[1];
   const metrics = { genericGrossLeverage: { status: "OK", value: 3.4 }, genericNetLeverage: { status: "OK", value: 2.9 }, genericSecuredLeverage: { status: "UNAVAILABLE_MISSING_INPUT", value: null }, genericInterestCoverage: { status: "OK", value: 5.1 } };
   const k = buildKeyRatios(metrics, rows);
   const by = (id: string) => k.find((x) => x.id === id)!;
-  it("agreement-defined covenant ratio wins, with its limit and clause", () => {
-    expect(by("net")).toMatchObject({ value: 3.1, limitLabel: "4.50x max", clause: "Credit Agreement §7.11(a)", thresholds: null });
-    expect(by("interest")).toMatchObject({ value: 2.0, limitLabel: "2.50x min" });
-  });
-  it("generic fallback is labelled generic and never paired with a covenant limit", () => {
-    expect(by("gross")).toMatchObject({ value: 3.4, limitLabel: null, clause: null });
+  it("rows matched only by name are never used: generic value, no limit", () => {
+    expect(by("net")).toMatchObject({ value: 2.9, limitLabel: null, clause: null });
     expect(by("gross").source).toMatch(/Generic position metric/);
     expect(by("secured")).toMatchObject({ value: null, source: null });
   });
-  it("FCCR: only the agreement's modeled definition, else NOT DETERMINABLE (no generic fallback)", () => {
+  it("FCCR: NOT DETERMINABLE unless the engine flags the agreement's own definition", () => {
     expect(by("fccr")).toMatchObject({ value: null, limitLabel: null });
     expect(by("fccr").source).toMatch(/^NOT DETERMINABLE/);
-    const modeled = buildKeyRatios(null, [{ name: "Minimum Fixed Charge Coverage Ratio", documentName: "CA", sectionRef: "§7.11(c)", status: "MODELED", currentRatio: 1.4, ratioLimit: 1.1, comparisonDirection: "at_or_above" }]);
-    expect(modeled.find((x) => x.id === "fccr")).toMatchObject({ value: 1.4, limitLabel: "1.10x min", clause: "CA §7.11(c)" });
+    const named = { name: "Minimum Fixed Charge Coverage Ratio", documentName: "CA", sectionRef: "§7.11(c)", status: "MODELED", currentRatio: 1.4, ratioLimit: 1.1, comparisonDirection: "at_or_above" as const };
+    expect(buildKeyRatios(null, [named]).find((x) => x.id === "fccr")!.value).toBeNull();
+    expect(buildKeyRatios(null, [{ ...named, testKind: "MAINTENANCE", agreementDefinedMetric: "FIXED_CHARGE_COVERAGE" }]).find((x) => x.id === "fccr")).toMatchObject({ value: 1.4, limitLabel: "1.10x min", clause: "CA §7.11(c)" });
   });
   it("bands never defaulted here", () => {
     for (const x of k) expect(x.thresholds).toBeNull();

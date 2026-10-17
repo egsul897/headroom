@@ -27,9 +27,9 @@ export function renderComplianceCsv(r: ComplianceReport): string {
   if (r.blocker) out.push(row(["Report status", r.status, r.blocker]));
   out.push("");
   out.push(row(["CERTIFICATE — required vs actual"]));
-  out.push(row(["Covenant", "Document", "Section", "Test", "Required", "Actual", "Headroom", "Result", "Review state", "Reason"]));
+  out.push(row(["Covenant", "Document", "Section", "Test kind", "Test", "Required", "Actual", "Headroom", "Result", "Review state", "Reason"]));
   for (const c of r.certificate) {
-    out.push(row([c.covenant, c.documentName, c.sectionRef, c.comparison === "at_or_below" ? "<=" : ">=", c.required, c.actual ?? c.status.replace(/_/g, " "), c.headroom ?? "", c.result.replace(/_/g, " "), c.reviewState, c.reason ?? ""]));
+    out.push(row([c.covenant, c.documentName, c.sectionRef, c.testKind.replace(/_/g, " "), c.comparison === "at_or_below" ? "<=" : ">=", c.required ?? "NOT EVALUATED", c.actual ?? "NOT EVALUATED", c.headroom ?? "", c.result.replace(/_/g, " "), c.reviewState, c.reason ?? ""]));
   }
   out.push("");
   out.push(row(["CAPACITY & COVENANT LINES"]));

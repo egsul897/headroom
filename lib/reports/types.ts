@@ -41,23 +41,35 @@ export interface ReportLine {
   proof: FigureProof;
 }
 
-/** Certificate payload: required vs actual per tested covenant. */
+/**
+ * Certificate payload. A compliance result is shown ONLY for a row the engine itself flags
+ * as a maintenance financial covenant (testKind "MAINTENANCE") and only with the engine's
+ * own verdict. Rows the engine flags INCURRENCE (ratio-basket / RP gate tests) are excluded.
+ * Rows without the flag (today: all of them; the overview has no such field) are listed as
+ * NOT_EVALUATED with no required/actual, so an incurrence test can never read as a covenant
+ * PASS/FAIL. The report never re-derives a verdict by comparing numbers itself.
+ */
 export interface CertificateRow {
   key: string;
   covenant: string;
   documentName: string;
   sectionRef: string;
+  testKind: "MAINTENANCE" | "NOT_FLAGGED";
   comparison: "at_or_below" | "at_or_above";
-  required: number;
+  /** Covenant level; null unless testKind is MAINTENANCE. */
+  required: number | null;
   actual: number | null;
   headroom: number | null;
-  /** IN_COMPLIANCE / NOT_IN_COMPLIANCE only when actual is computed; otherwise NOT_DETERMINABLE. */
-  result: "IN_COMPLIANCE" | "NOT_IN_COMPLIANCE" | "NOT_DETERMINABLE";
+  /** Engine verdict passthrough; NOT_EVALUATED otherwise. */
+  result: "IN_COMPLIANCE" | "NOT_IN_COMPLIANCE" | "NOT_EVALUATED";
   status: LineStatus;
   reviewState: string;
   citation: SourceRef;
   reason: string | null;
 }
+
+export const NOT_FLAGGED_REASON =
+  "Not evaluated: the covenant engine does not mark this test as a maintenance financial covenant (it may be an incurrence test such as a ratio debt basket or restricted-payment gate).";
 
 export interface ComplianceReport {
   reportVersion: 1;
