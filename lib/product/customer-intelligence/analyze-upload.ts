@@ -500,14 +500,18 @@ export async function analyzeCustomerDocument(params: {
         const known = { text: agreementText as string, sourceId };
         const { runAfterResponse } = await import("../../covenant-learning-factory/pipeline/after-response");
         const scope = { companyId: params.companyId, documentId: params.documentId };
+        let generation: string | null = null;
         runAfterResponse(async () => {
-          const { refreshEbitdaBox } = await import("../../covenant-learning-factory/pipeline/ebitda-box-server");
+          const [{ boxGeneration }, { refreshEbitdaBox, ebitdaBoxStore }] = await Promise.all([import("../../covenant-learning-factory/pipeline/ebitda-box"), import("../../covenant-learning-factory/pipeline/ebitda-box-server")]);
+          generation = await boxGeneration(ebitdaBoxStore(), scope);
+          // Load/compute failures (SEC outage, storage) are recorded as FAILED inside refreshEbitdaBox.
           if (!(await refreshEbitdaBox(scope.companyId, scope.documentId, known))) throw new Error("agreement text not available for this document");
         }, async (err) => {
-          // Persisted as a FAILED box so GET /ebitda surfaces the reason (best effort; never throws into the upload).
+          // Persisted as a FAILED box (locked, and only if no newer box was saved since this run started) so GET /ebitda
+          // surfaces the reason. Best effort; never throws into the upload.
           console.warn(`[ebitda-box] ${scope.companyId}/${scope.documentId}: ${err instanceof Error ? err.message : String(err)}`);
           const [{ recordEbitdaBoxFailure }, { ebitdaBoxStore }] = await Promise.all([import("../../covenant-learning-factory/pipeline/ebitda-box"), import("../../covenant-learning-factory/pipeline/ebitda-box-server")]);
-          await recordEbitdaBoxFailure(ebitdaBoxStore(), scope, err);
+          await recordEbitdaBoxFailure(ebitdaBoxStore(), scope, err, { generation });
         });
         agreementPipeline = { ...agreementPipeline, ebitdaBox: { status: "SCHEDULED" } };
       }
