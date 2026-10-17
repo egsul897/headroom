@@ -118,7 +118,11 @@ export default async function ReviewPage({ params }: { params: Promise<{ company
         {review.approvals.length === 0 ? (
           <div className="row-note">No reviewer decisions recorded.</div>
         ) : (
-          review.approvals.slice(0, 20).map((a, i) => (
+          <>
+          {review.approvals.length > 20 && (
+            <div className="row-note">Showing first 20 of {review.approvals.length} reviewer decisions.</div>
+          )}
+          {review.approvals.slice(0, 20).map((a, i) => (
             <div className="row" key={`${a.sectionRef}-${i}`}>
               <div>
                 <div className="row-label">{a.sectionRef}</div>
@@ -135,7 +139,8 @@ export default async function ReviewPage({ params }: { params: Promise<{ company
                 )}
               </div>
             </div>
-          ))
+          ))}
+          </>
         )}
       </Card>
 

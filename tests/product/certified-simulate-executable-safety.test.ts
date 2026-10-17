@@ -54,6 +54,8 @@ function stubCertified(over: Partial<CertifiedTransactionAttempt> = {}): Certifi
     cutoffState: "RESOLVED",
     reportingPeriodKey: "2026Q2",
     approvedSnapshotId: "snap-1",
+    cutoffSnapshotId: "snap-1",
+    cutoffSnapshotStatus: "APPROVED",
     ledgerUsageCount: 0,
     verifiedPackagePresent: true,
     capacity: { outcome: "EXECUTED" } as CertifiedTransactionAttempt["capacity"],
@@ -282,6 +284,38 @@ describe("isAffirmativelyExecutable — capacity EXECUTED ≠ permission", () =>
     ).toBe(false);
   });
 
+  it("input blockers prevent EXECUTABLE even when everything else passes (rule 83)", () => {
+    const passing = {
+      verifiedPackage: stubPkg,
+      selectedPathId: "path:rule-a",
+      selectedPath: built.selectedPath,
+      transaction: built.transaction,
+      certified: stubCertified({
+        simulation: {
+          outcome: "EXECUTED",
+          policy: "REQUIRE",
+          packageHash: "h",
+          envelope: {} as never,
+          coverage: {} as never,
+          capacity: {} as never,
+          simulation: {
+            simulationStatus: "SIMULATED",
+            selectedPathResult: "SATISFIED",
+            commitPlan: { committable: true },
+          } as never,
+        },
+      }),
+      pathSelectionError: null,
+    };
+    expect(isAffirmativelyExecutable(passing)).toBe(true);
+    expect(
+      isAffirmativelyExecutable({
+        ...passing,
+        inputBlockers: ["INVALID_AMOUNT_NEGATIVE"],
+      }),
+    ).toBe(false);
+  });
+
   it("outstanding blockers prevent EXECUTABLE", () => {
     expect(
       isAffirmativelyExecutable({
@@ -420,8 +454,23 @@ describe("attemptVerifiedSimulate integration (provider-free refusals)", () => {
     expect(r.transaction).toBeNull();
   });
 
-  it("invalid amount refuses before constructing a transaction", async () => {
+  it("VEP bound to another company refuses before enumeration (no foreign paths)", async () => {
+    const foreignPkg = { companyId: "other-co", instrumentKey: "inst" } as VerifiedExecutionPackage;
     const r = await attemptVerifiedSimulate({
+      companyId: "co",
+      evaluationDate: "2026-06-30",
+      amountMillions: 50,
+      kind: "SECURED_DEBT",
+      secured: true,
+      verifiedPackage: foreignPkg,
+    });
+    expect(r.executable).toBe(false);
+    expect(r.refusalSummary).toContain("VEP_COMPANY_MISMATCH");
+    expect(r.transaction).toBeNull();
+    expect(r.pathEnumeration.paths).toEqual([]);
+  });
+
+  it("invalid amount refuses before constructing a transaction", async () => {    const r = await attemptVerifiedSimulate({
       companyId: "co",
       evaluationDate: "2026-06-30",
       amountMillions: NaN,

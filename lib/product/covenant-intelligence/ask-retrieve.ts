@@ -9,9 +9,13 @@
  */
 
 import { prisma } from "../../prisma";
-import { summarizeFromStoredMetadata, type CovenantSummaryItem, type DocumentCovenantSummary } from "./summarize";
+import { isSummaryStale, summarizeFromStoredMetadata, type CovenantSummaryItem, type DocumentCovenantSummary } from "./summarize";
 import type { AmendmentPackageView } from "../customer-intelligence/amendment-package";
 import { isSubstantiveFinancingPrecedent } from "./corpus-quality";
+import { retrievalTruncationNote } from "./retrieval-truncation-note";
+import { staleAnalysisNote, typeMismatchNote } from "./ask-stale-note";
+import { matchingProvisionsTruncationNote } from "./ask-truncation-note";
+import { parseProposedAmount } from "./parse-proposed-amount";
 
 export interface AskCitation {
   sourceId: string;
@@ -303,18 +307,8 @@ function amendmentFromMetadata(metadata: unknown): AmendmentPackageView | null {
   return ap as AmendmentPackageView;
 }
 
-function parseProposedAmount(question: string): string | null {
-  const m =
-    question.match(/\$\s*([\d,]+(?:\.\d+)?)\s*(million|billion)?/i) ||
-    question.match(/\b([\d,]+(?:\.\d+)?)\s*(million|billion)\s+(?:of\s+)?(?:secured\s+)?debt\b/i);
-  if (!m) return null;
-  const n = Number((m[1] ?? "").replace(/,/g, ""));
-  if (!Number.isFinite(n)) return null;
-  const unit = (m[2] ?? "").toLowerCase();
-  if (unit === "billion") return `$${n} billion`;
-  if (unit === "million") return `$${n} million`;
-  return `$${n.toLocaleString("en-US")}`;
-}
+/** Proposed-amount parsing lives in a prisma-free module so it is unit-testable. */
+export { parseProposedAmount };
 
 function composeAnswer(params: {
   question: string;
@@ -322,6 +316,8 @@ function composeAnswer(params: {
   items: Array<CovenantSummaryItem & { sourceId: string; score: number }>;
   researchOnly: boolean;
   amendmentNote?: string;
+  /** Pre-cap count of matching provisions (rule 56 disclosure). */
+  totalMatchedBeforeCap?: number;
 }): AskRetrieveAnswer {
   const top = params.items.slice(0, 6);
   const proposedAmount = parseProposedAmount(params.question);
@@ -477,6 +473,10 @@ function composeAnswer(params: {
     (i) => i.reviewerDecision === "ACCEPTED" || i.reviewerDecision === "EDITED",
   );
 
+  // Rule 56: disclose when matching provisions beyond the top
+  // shown were omitted from the composed answer.
+  const truncationNote = matchingProvisionsTruncationNote(top.length, params.totalMatchedBeforeCap ?? top.length);
+
   return {
     kind: "answered",
     headline: counselTouched
@@ -495,6 +495,7 @@ function composeAnswer(params: {
         : "Workspace-isolated — public corpus language is not substituted for this package",
       "Missing financial inputs yield conditional analysis, not invented numbers",
       "promotedToLegalTruth remains 0 until counsel/compiler promotion",
+      ...(truncationNote ? [truncationNote] : []),
     ],
     amendmentNote: params.amendmentNote,
     promotedToLegalTruth: 0,
@@ -557,6 +558,7 @@ export function answerFromSummaryItems(params: {
     items: scored.slice(0, params.limit ?? 6),
     researchOnly: params.researchOnly ?? true,
     amendmentNote: params.amendmentNote,
+    totalMatchedBeforeCap: scored.length,
   });
 }
 
@@ -590,11 +592,15 @@ export async function answerFromCorpus(params: {
       ? { storageRef: { not: null }, companyId: null as string | null }
       : { storageRef: { not: null }, companyId: params.companyId };
 
-  const rows = await prisma.knowledgeSource.findMany({
-    where,
-    take: params.sourceId ? 1 : 120,
-    orderBy: { filingDate: "desc" },
-  });
+  const take = params.sourceId ? 1 : 120;
+  const [rows, totalCount] = await Promise.all([
+    prisma.knowledgeSource.findMany({
+      where,
+      take,
+      orderBy: { filingDate: "desc" },
+    }),
+    prisma.knowledgeSource.count({ where }),
+  ]);
 
   const scoped = researchOnly
     ? rows.filter((r) => r.companyId == null && isSubstantiveFinancingPrecedent(r))
@@ -612,9 +618,24 @@ export async function answerFromCorpus(params: {
   }
 
   const items: Array<CovenantSummaryItem & { sourceId: string }> = [];
+  const staleTitles: string[] = [];
+  const mismatchTitles: string[] = [];
   for (const row of scoped) {
     const summary = summarizeFromStoredMetadata(row.metadata);
     if (!summary) continue;
+    // Rule 55: Ask must disclose stale analyses it relied on.
+    if (isSummaryStale(summary)) staleTitles.push(row.documentTitle);
+    // Rule 124: same pattern for declared-vs-classified mismatch —
+    // the answer cites this document, so the answer must carry
+    // the signal. declaredType lives in row metadata (rule 118).
+    const rowMeta =
+      row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+        ? (row.metadata as Record<string, unknown>)
+        : {};
+    const declared = typeof rowMeta.declaredType === "string" ? rowMeta.declaredType : null;
+    if (declared && row.documentClass && row.documentClass !== declared) {
+      mismatchTitles.push(`${row.documentTitle} (declared ${declared}, analyzed as ${row.documentClass})`);
+    }
     const meta =
       row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
         ? (row.metadata as Record<string, unknown>)
@@ -623,7 +644,7 @@ export async function answerFromCorpus(params: {
       ? (meta.reviewerApprovals as import("../customer-intelligence/reviewer-approvals").ReviewerApproval[])
       : [];
     const { applyReviewerOverlayToItems } = await import(
-      "../customer-intelligence/reviewer-approvals"
+      "../customer-intelligence/reviewer-overlay"
     );
     const overlaid = researchOnly
       ? summary.items
@@ -647,7 +668,21 @@ export async function answerFromCorpus(params: {
     transactionDescription: q,
     limit: params.limit ?? 6,
   });
-  return excellence.bridged.ask;
+  const ask = excellence.bridged.ask;
+  // The 120-row fetch cap silently excluded older documents before;
+  // disclose the truncation on the final answer (rule 37).
+  // Stale analyses relied on are disclosed the same way (rule 55).
+  const extraNotes = [
+    !params.sourceId ? retrievalTruncationNote({ totalCount, searchedCount: rows.length }) : null,
+    staleAnalysisNote(staleTitles),
+    typeMismatchNote(mismatchTitles),
+  ].filter((n): n is string => n != null);
+  if (extraNotes.length === 0) return ask;
+  return {
+    ...ask,
+    detail: `${ask.detail}\n\n${extraNotes.join("\n\n")}`,
+    limitations: [...ask.limitations, ...extraNotes],
+  };
 }
 
 export async function listSummariesInNeon(limit = 50): Promise<

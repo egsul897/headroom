@@ -107,8 +107,24 @@ describe("proposeFromCertificate → approveCertificateProposal (happy path)", (
     ).toBe(true);
 
     expect(proposeFromCertificate(store, INVENTED_TABULAR_RESTATEMENT, ledger).ok).toBe(true);
-    expect(store.getSnapshot(INVENTED_TABULAR_CERT.snapshotId)!.status).toBe("SUPERSEDED");
+    // A restatement DRAFT must not displace the APPROVED predecessor — supersession
+    // happens only when the successor is attributable-approved (slice-1 contract).
+    expect(store.getSnapshot(INVENTED_TABULAR_CERT.snapshotId)!.status).toBe("APPROVED");
     expect(store.getSnapshot(INVENTED_TABULAR_RESTATEMENT.snapshotId)!.status).toBe("DRAFT");
+
+    const restatedApproval = approveCertificateProposal(store, {
+      snapshotId: INVENTED_TABULAR_RESTATEMENT.snapshotId,
+      reviewedBy: "carol",
+      reviewedAt: "2026-10-06T21:00:00Z",
+      approvalRef: "apr-invented-restatement-1",
+      sourceDocumentId: INVENTED_TABULAR_RESTATEMENT.documentId,
+      sourceVersionHash: INVENTED_TABULAR_RESTATEMENT.versionHash,
+      proposerKind: "human",
+    });
+    expect(restatedApproval.ok).toBe(true);
+    // Approving the successor supersedes the predecessor explicitly.
+    expect(store.getSnapshot(INVENTED_TABULAR_CERT.snapshotId)!.status).toBe("SUPERSEDED");
+    expect(store.getSnapshot(INVENTED_TABULAR_RESTATEMENT.snapshotId)!.status).toBe("APPROVED");
 
     const restated = store.getSnapshot(INVENTED_TABULAR_RESTATEMENT.snapshotId)!;
     const ebitda = restated.inputs.find((i) => i.identity.key === "Adjusted EBITDA")!;

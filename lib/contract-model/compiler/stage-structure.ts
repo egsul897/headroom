@@ -24,6 +24,7 @@ import { hashParts } from "./hashing";
 import { computeStableKey } from "../stable-keys";
 import { buildClauseTree } from "./clause-hierarchy";
 import { findTopLevelDefinitionStarts } from "./structural-definitions";
+import { isRefDescendant } from "./structural-integrity";
 import { STRUCTURAL_INDEX_VERSION, type CompilerDocumentInput, type StageRunResult, type StructuralNode } from "./types";
 
 /**
@@ -194,6 +195,45 @@ const SECTION_PATTERNS = [
   // common in HTML→text extracts (e.g. " 7.01    Liens .") and must not zero out
   // the structural index for an otherwise well-formed agreement.
   /^[ \t\u00a0\u202f]*(\d+\.\d+)(?![A-Za-z])[\t \u00a0\u202f]+([A-Z][^\n]*)$/gm,
+  // Mid-line bare decimal (Rule 167, audit-driven): EDGAR HTML to text
+  // often loses the line break before a bare-numbered heading, so the
+  // line-anchored bare pattern above goes blind on a real heading
+  // sitting mid-line ("...regulation. 6.14. Financial Covenants (a)
+  // Consolidated Adjusted EBITDA ... . The Parent will maintain ...")
+  // - the same class of defect this file's own doc-comments describe
+  // for line-anchored patterns, now in the bare-numbered shape. The
+  // lookbehind requires a sentence-terminal boundary (or line start)
+  // before the number, and the title must be Title-Case and end in
+  // its own terminal period or first subsection marker - so ordinary
+  // prose decimals ("4.50 to 1.00", "6.14(b) shall ...", "see 6.14.")
+  // cannot match. Triage/plausibility still gate every candidate
+  // this pattern finds. Number-to-title gap is BOUNDED_GAP (same as
+  // the keyword patterns): EDGAR puts the number and title on
+  // adjacent lines ("6.16.\n Indebtedness ."), never separated by a
+  // blank line — a bare paragraph break would be a TOC entry, not a
+  // heading.
+  // Rule 192: the title may span the chapeau's CONTINUATION lines
+  // to reach its terminator. Real negative covenants glue heading
+  // + chapeau + "except:" across lines: Aon 6.11 is "6.11. Liens
+  // The Parent will not, ... except:\n(a) Liens for taxes ..."
+  // (the (a) is two lines down), and 6.9's first terminal period
+  // is 635 chars out. The old single-line 90-char title went blind
+  // on all of Article VI except the sections whose terminator
+  // happened to sit on the first line (6.2/6.4/6.14/6.15/6.16) —
+  // 6.1/6.3/6.5-6.13/6.17 produced no node at all. The title is
+  // still lazy (stops at the FIRST terminator), still capped (650
+  // chars, the longest chapeau in the real evidence plus margin),
+  // and still may not cross a BLANK line (single newlines only:
+  // `\\n(?!\\n)`) — a paragraph break means the section's own
+  // text ended, and swallowing the next paragraph to find a
+  // terminator would overrun the section. Long body-glued titles
+  // route AMBIGUOUS via the seam check (ABSORBED_SENTENCE), where
+  // Rule 188's body-start truncation recovers the real heading —
+  // the same path 6.4 already takes. The lookbehind, the [A-Z]
+  // title start, and TOC suppression still bound the prose
+  // false-positive surface (a ratio "4.50 to 1.00" fails on the
+  // lowercase "to"; "Section 6.14." fails the lookbehind).
+  new RegExp(`(?<=^|[.:;!?]\\s)(\\d+\\.\\d+)\\.?(?![A-Za-z])${BOUNDED_GAP}([A-Z](?:[^\\n]|\\n(?!\\n)){0,650}?)(?:\\s*\\.(?!\\d)|\\s*\\([a-z]\\)(?=\\s))`, "gm"),
 ];
 
 /**
@@ -987,6 +1027,33 @@ function extractTitleLikeSpan(rawTitle: string): string {
   return (rawTitle.match(/^[A-Za-z ,&';-]*/)?.[0] ?? "").trim();
 }
 
+/**
+ * Rule 188: a captured SECTION title that runs into its own body
+ * text. EDGAR HTML often underlines the heading (`<U>Conduct of
+ * Business</U>`) with the body on the same line, and tag
+ * stripping erases the boundary — so the parser captured
+ * "Conduct of Business The Parent will, and will cause each
+ * Subsidiary to, (a)" as the §6.4 heading. Section titles are
+ * noun phrases; body text begins with a party subject + a
+ * modal/verb ("The Parent will", "No Loan Party shall",
+ * "Each Lender agrees"). Truncate the title at the first such
+ * body-start. Case-sensitive by design: body modals are
+ * lowercase ("will", "shall"), title words are capitalized,
+ * so a title legitimately containing "Guarantor
+ * Representations" or "Notices to the Borrower" (no modal
+ * follows) never matches. A title that IS entirely body text
+ * (body-start at position 0) is left untouched — truncating
+ * it to empty would be worse than the pollution.
+ */
+const BODY_START_RE =
+  /\b(?:The|Each|No|Any|All|Such)\s+(?:Parent|Borrower|Company|Loan Party|Loan Parties|Guarantor|Guarantors|Lender|Lenders|Administrative Agent|Agent|Collateral Agent|Subsidiary|Subsidiaries|Borrowers|Obligor|Obligors|Issuer)\b\s+(?:will|shall|may|must|agrees?|represents?|covenants?|acknowledges?|consents?|undertakes?|hereby)\b/;
+function truncateTitleAtBodyStart(title: string): string {
+  const m = BODY_START_RE.exec(title);
+  if (!m || m.index === 0) return title;
+  const truncated = title.slice(0, m.index).trim().replace(/[.:;]+$/, "").trim();
+  return truncated.length > 0 ? truncated : title;
+}
+
 function bestMatches(text: string, patterns: RegExp[]): RegExpExecArray[] {
   let best: RegExpExecArray[] = [];
   for (const pattern of patterns) {
@@ -1077,6 +1144,8 @@ interface RawNode {
   parentSectionRef: string | null;
   /** Stack rank for ownership/parentage; see RANK comment above. */
   nestRank: number;
+  /** True when this raw came from an AMBIGUOUS (not confident) heading match. */
+  ambiguous?: boolean;
 }
 
 /**
@@ -1219,6 +1288,7 @@ function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleM
   // both paths converge, never a special case bolted onto signal (C).
   const isPlausible = (m: RegExpExecArray) => {
     const matchEnd = m.index + m[0].length;
+    if (!titleStartsLikeHeading(m[0], m[1] ?? "")) return false;
     if (!titleBodySeparationHolds(doc.text, m.index, matchEnd)) return false;
     if (isContentsListingMatch(doc.text, m)) return false; // IPV-11: TOC rows are never headings
     return isPlausibleByPositionalSignals(doc.text, m.index, matchEnd) || isImmediatelyAfterPlausibleArticle(doc.text, m.index, plausibleArticleEnds);
@@ -1278,7 +1348,45 @@ function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleM
  * `applyStructuralAmbiguityOverrides` below) can reuse this exact,
  * already-certified mechanical construction instead of duplicating it.
  */
-function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, articleMatches: RegExpExecArray[], sectionMatches: RegExpExecArray[]): StructuralNode[] {
+function buildStructuralNodesFromAcceptedMatches(
+  doc: CompilerDocumentInput,
+  articleMatches: RegExpExecArray[],
+  sectionMatches: RegExpExecArray[],
+  opts?: {
+    /** Extra clause-region bounds: charStarts of heading-like matches
+     * that are NOT confident nodes (ambiguous candidates). Without
+     * them a confident section's clause region swallows the next
+     * ambiguous section's text (Rule 194). */
+    regionBoundStarts?: readonly number[];
+    /** Heading-like SECTION matches that are NOT confident nodes
+     * (ambiguous candidates): their clauses are still split, with
+     * correct refs, so the clauses belong to the ambiguous section
+     * instead of nesting under the previous confident section's
+     * last clause. The ambiguous section itself is NOT added as a
+     * node here — the triage path adds it separately. */
+    clauseSectionMatches?: readonly RegExpExecArray[];
+    /**
+     * Phase C: AMBIGUOUS article-heading matches. An ambiguous
+     * article is a real boundary (Rule 194) — its sections need
+     * it as a parent anchor, or they all go parentless (the
+     * Tenable CA Articles V–VII failure). These become ARTICLE
+     * nodes with ambiguous=true: real nodes for parentage and
+     * spans, but flagged so downstream never treats them (or
+     * their subtree) as structurally confident.
+     */
+    ambiguousArticleMatches?: readonly RegExpExecArray[];
+    /**
+     * Phase C: AMBIGUOUS section-heading matches (same rationale as
+     * ambiguousArticleMatches). An ambiguous section is a real
+     * boundary whose clauses need it as a parent anchor — without
+     * it, §7.01(a) falls through to Article VII. Its clauses are
+     * still split via clauseSectionMatches (below), not via
+     * topLevel, so promoting the section node never
+     * double-splits its clauses.
+     */
+    ambiguousSectionMatches?: readonly RegExpExecArray[];
+  },
+): StructuralNode[] {
   const raws: RawNode[] = [];
   for (const m of articleMatches) {
     raws.push({
@@ -1290,15 +1398,42 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
       nestRank: RANK.ARTICLE,
     });
   }
-  for (const m of sectionMatches) {
-    const sectionRef = normalizeOcrSectionNumber((m[1] ?? "").trim());
-    const parentArticle = [...articleMatches].reverse().find((a) => a.index < m.index);
+  for (const m of opts?.ambiguousArticleMatches ?? []) {
+    raws.push({
+      nodeType: "ARTICLE",
+      heading: extractTitleLikeSpan(m[2] ?? ""),
+      sectionRef: (m[1] ?? "").trim(),
+      charStart: m.index,
+      parentSectionRef: null,
+      nestRank: RANK.ARTICLE,
+      ambiguous: true,
+    });
+  }
+  for (const m of opts?.ambiguousSectionMatches ?? []) {
     raws.push({
       nodeType: "SECTION",
-      heading: (m[2] ?? "").trim(),
+      heading: truncateTitleAtBodyStart((m[2] ?? "").trim()),
+      sectionRef: normalizeOcrSectionNumber((m[1] ?? "").trim()),
+      charStart: m.index,
+      parentSectionRef: null,
+      nestRank: RANK.SECTION,
+      ambiguous: true,
+    });
+  }
+  for (const m of sectionMatches) {
+    const sectionRef = normalizeOcrSectionNumber((m[1] ?? "").trim());
+    // Phase C: parentSectionRef is DERIVED from the validated
+    // parent assignment below (containment + ref-consistency),
+    // never from the nearest preceding ARTICLE match (D2). A
+    // section whose article cannot be established
+    // deterministically gets parent null — unresolved, not
+    // re-parented to the previous article.
+    raws.push({
+      nodeType: "SECTION",
+      heading: truncateTitleAtBodyStart((m[2] ?? "").trim()),
       sectionRef,
       charStart: m.index,
-      parentSectionRef: parentArticle ? (parentArticle[1] ?? "").trim() : null,
+      parentSectionRef: null,
       nestRank: RANK.SECTION,
     });
   }
@@ -1307,23 +1442,38 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
   // Parse nested SUBSECTION/CLAUSE/SUBCLAUSE markers within each SECTION's
   // own raw region (up to the next top-level node, or document end).
   // Definitions sections are segmented by top-level defined-term declarations.
+  // Rule 194: the region is bounded by the next HEADING-LIKE match,
+  // not just the next confident node. An AMBIGUOUS section heading
+  // (e.g. Strata 6.03 "Fundamental", truncated title + body glued
+  // on one line) is a real section boundary: without the bound,
+  // the preceding confident section's clause tree swallows the
+  // ambiguous section's text and nests its clauses under the
+  // previous section's last clause (the real 6.02(l)(a)-(n) nodes
+  // were §§6.03-6.08 clauses mislabeled as 6.02(l) children).
   const topLevel = raws.slice();
+  const bounds = [...(opts?.regionBoundStarts ?? []), ...topLevel.map((n) => n.charStart)].sort((a, b) => a - b);
+  const regionEndAfter = (charStart: number): number => {
+    for (const b of bounds) if (b > charStart) return b;
+    return doc.text.length;
+  };
   for (let i = 0; i < topLevel.length; i++) {
     const node = topLevel[i]!;
     if (node.nodeType !== "SECTION") continue;
-    const regionEnd = topLevel[i + 1]?.charStart ?? doc.text.length;
-    appendClauseRawsForSection(doc, node, regionEnd, raws);
+    appendClauseRawsForSection(doc, node, regionEndAfter(node.charStart), raws);
   }
+  // Phase C: the old Rule-194 second-half loop (split clauses for
+  // AMBIGUOUS section headings via a synthetic section) is
+  // REMOVED — ambiguous sections are now real nodes in topLevel
+  // (ambiguousSectionMatches above), so their clauses are split
+  // by the topLevel loop. Keeping the synthetic loop double-split
+  // the same section's clauses, minting empty-span duplicate
+  // clause nodes (Aon 6.16(l) twice at one charStart) that the
+  // integrity contract then correctly flagged.
   raws.sort((a, b) => a.charStart - b.charStart);
 
-  // Sibling ordinal - position among nodes sharing the same direct parent, in document order (never a global index across the whole document).
-  const ordinalByParent = new Map<string, number>();
-  const ordinals = raws.map((r) => {
-    const key = r.parentSectionRef ?? " ROOT";
-    const ord = ordinalByParent.get(key) ?? 0;
-    ordinalByParent.set(key, ord + 1);
-    return ord;
-  });
+  // Phase C — parent assignment is computed AFTER spans (below),
+  // by containment + ref-consistency. Ordinals are keyed by
+  // parent OCCURRENCE (parentNodeId), never by parent label (D5).
 
   // Phase 3F.1.2 - the unique PHYSICAL SOURCE OCCURRENCE identity for each raw
   // node, computed up front from documentId + nodeType + charStart (the
@@ -1338,21 +1488,78 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
   // overlapping matches into the same candidate set).
   const nodeIds = raws.map((r) => computeStableKey("structural-node", doc.documentId, r.nodeType, String(r.charStart)));
 
-  // Owned text span (own text + every descendant) AND the true physical
-  // parent occurrence via one nestRank-based stack pass - O(n), no per-node
-  // rescanning. nestRank (not clamped nodeType RANK) keeps depth > 3
-  // SUBCLAUSE nodes as children of their depth-3 parents for ownership.
+  // Owned text span (own text + every descendant) via one nestRank-based
+  // stack pass - O(n), no per-node rescanning. nestRank (not clamped
+  // nodeType RANK) keeps depth > 3 SUBCLAUSE nodes as children of their
+  // depth-3 parents for ownership. NOTE: this pass computes SPANS only.
+  // Parentage is assigned separately below (containment + ref-consistency),
+  // never by stack order (D3): rank + charStart order is not nesting, and
+  // a dropped heading must not re-parent everything after it.
   const charEndByIndex = new Map<number, number>();
-  const parentIndexByIndex = new Map<number, number>();
   const stack: number[] = [];
   raws.forEach((r, i) => {
     while (stack.length > 0 && raws[stack[stack.length - 1]!]!.nestRank >= r.nestRank) {
       charEndByIndex.set(stack.pop()!, r.charStart);
     }
-    if (stack.length > 0) parentIndexByIndex.set(i, stack[stack.length - 1]!);
     stack.push(i);
   });
   while (stack.length > 0) charEndByIndex.set(stack.pop()!, doc.text.length);
+
+  // Phase C — parent assignment by CONTAINMENT + REF-CONSISTENCY
+  // (Hardening Initiative, D2/D3/D4). For each non-ARTICLE node, the
+  // parent is the deepest node (scanning backward from the child,
+  // the first container is the deepest, because containers nest)
+  // whose span contains the child's span AND whose sectionRef is
+  // a valid ancestor of the child's ref (isRefDescendant: article
+  // numeral matches section major; child ref = parent ref + a
+  // valid continuation segment). If no such node exists, the
+  // parent is NULL — structurally unresolved (the Phase B validator
+  // flags ROOT_VALIDITY), never repaired to the nearest preceding
+  // heading. A bled span (a missed heading extending the previous
+  // node's span) cannot mis-parent, because the ref check fails:
+  // §7.01 inside a bled Article VI span is unresolved, not
+  // Article VI's child. parentSectionRef is DERIVED from the
+  // assigned parent (single authoritative parent, D4) — never
+  // computed independently.
+  const parentIndexByIndex = new Map<number, number>();
+  const parentSectionRefByIndex = new Map<number, string | null>();
+  raws.forEach((r, i) => {
+    if (r.nodeType === "ARTICLE") {
+      parentSectionRefByIndex.set(i, null);
+      return;
+    }
+    const childStart = r.charStart;
+    const childEnd = charEndByIndex.get(i) ?? doc.text.length;
+    let parentIdx: number | null = null;
+    for (let j = i - 1; j >= 0; j--) {
+      const cand = raws[j]!;
+      const candEnd = charEndByIndex.get(j) ?? doc.text.length;
+      if (cand.charStart > childStart || candEnd < childEnd) continue;
+      if (cand.charStart === childStart && candEnd === childEnd) continue; // identical span: not a parent
+      if (isRefDescendant(cand.sectionRef, cand.nodeType, r.sectionRef) !== true) continue;
+      parentIdx = j;
+      break; // backward scan: first containing + ref-consistent node is the deepest
+    }
+    if (parentIdx !== null) {
+      parentIndexByIndex.set(i, parentIdx);
+      parentSectionRefByIndex.set(i, raws[parentIdx]!.sectionRef);
+    } else {
+      parentSectionRefByIndex.set(i, null);
+    }
+  });
+
+  // Sibling ordinal - position among nodes sharing the same direct
+  // parent OCCURRENCE (parentNodeId), in document order (never a
+  // global index, never keyed by the parent label, D5: two physical
+  // §5.01 occurrences in different instruments must not share an
+  // ordinal namespace).
+  const ordinalByParent = new Map<string, number>();
+  const ordinals = raws.map((r, i) => {
+    const key = parentIndexByIndex.has(i) ? nodeIds[parentIndexByIndex.get(i)!]! : "ROOT";
+    const ord = ordinalByParent.get(key) ?? 0;
+    ordinalByParent.set(key, ord + 1);
+    return ord;
+  });
 
   // Explicit definition-boundary intervals keyed to each physical definitions
   // SECTION span [section.charStart, regionEnd). Includes the preamble gap
@@ -1405,10 +1612,11 @@ function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, art
         sectionRef: r.sectionRef,
         nodeKey: `${doc.documentId}::${r.sectionRef.replace(/\s+/g, "")}`,
         nodeId: nodeIds[i]!,
+        ambiguous: r.ambiguous ?? false,
         charStart: r.charStart,
         charEnd,
         ordinal: ordinals[i]!,
-        parentSectionRef: r.parentSectionRef,
+        parentSectionRef: parentSectionRefByIndex.get(i) ?? null,
         parentNodeId: parentIndexByIndex.has(i) ? nodeIds[parentIndexByIndex.get(i)!]! : null,
       };
     })
@@ -1549,6 +1757,27 @@ export interface StructuralCandidateTriageResult {
  * mid-title sentence break unless the numbering's own period is excluded
  * first).
  */
+/**
+ * Rule 165 (audit-driven, two real agreements): a heading's own title
+ * never starts with punctuation or a lowercase word. An in-text
+ * citation whose "title" is sentence continuation ("Section 6.14 ,
+ * provided that in the event of ...", "Section 6.14 provided that
+ * ...") sits at a line start after a sentence boundary, so the
+ * positional gate alone cannot tell it from a real heading — and
+ * the triage seam logic routes it AMBIGUOUS, which the candidate
+ * pipeline then admits as a real section (candidates.ts admits
+ * ambiguous nodes with a usable sectionRef). From there it becomes
+ * a summary item and, with a dollar amount nearby, an executable
+ * Permission for a provision that does not exist. General
+ * typographic rule, no agreement-specific content: a title starts
+ * with an uppercase letter, a digit, or an opening bracket/paren.
+ */
+function titleStartsLikeHeading(matchText: string, candidateNumber: string): boolean {
+  const title = extractTitlePortionForSeamCheck(matchText, candidateNumber).trim();
+  if (!title) return false;
+  return /^[A-Z0-9\(\[]/.test(title);
+}
+
 function extractTitlePortionForSeamCheck(matchText: string, candidateNumber: string): string {
   if (!candidateNumber) return matchText;
   const numIdx = matchText.indexOf(candidateNumber);
@@ -1757,6 +1986,9 @@ function evaluateStructuralCandidateTriage(text: string, matchIndex: number, mat
     continuationShape: classifyContinuationShapeForTriage(text, seam.continuationOffset),
   };
 
+  if (!titleStartsLikeHeading(matchText, candidateNumber)) {
+    return { decision: "CONFIDENT_PROSE_REFERENCE", reason: "the candidate's own title portion starts with punctuation or a lowercase word — sentence continuation, not a heading title.", signals };
+  }
   if (signals.seamValidation !== "VALIDATED_TERMINATED") {
     // Checked BEFORE the lowercase-continuation check below, deliberately:
     // when the seam itself is not validated, `continuationShape` was read at
@@ -1813,6 +2045,14 @@ export interface AmbiguousStructuralCandidate {
   /** The regex-captured number/label (e.g. "6.09", "VI") - real, already-visible text, never a parser judgment. */
   candidateNumber: string;
   candidateText: string;
+  /**
+   * Rule 188: the candidate's TITLE (group 2), cleaned the same way
+   * confident nodes' headings are (body-start truncation for
+   * SECTIONs, title-like span for ARTICLEs) — for DISPLAY as a
+   * node heading. candidateText (the full match) is untouched:
+   * it stays the classifier's source evidence.
+   */
+  candidateTitle: string;
   charStart: number;
   charEnd: number;
   precedingWindow: string;
@@ -1914,6 +2154,10 @@ function buildAmbiguousCandidateRecord(doc: CompilerDocumentInput, candidate: Tr
     candidateKey: structuralCandidateKey(candidateType, charStart),
     candidateNumber: (match[1] ?? "").trim(),
     candidateText: match[0],
+    candidateTitle:
+      candidateType === "SECTION"
+        ? truncateTitleAtBodyStart((match[2] ?? "").trim())
+        : extractTitleLikeSpan(match[2] ?? ""),
     charStart,
     charEnd,
     precedingWindow: doc.text.slice(Math.max(0, charStart - TRIAGE_WINDOW_CHARS), charStart),
@@ -1941,7 +2185,22 @@ export function parseDocumentStructureWithTriage(doc: CompilerDocumentInput): St
   const candidates = decideRawStructuralCandidates(doc);
   const confidentArticles = candidates.filter((c) => c.candidateType === "ARTICLE" && c.triage.decision === "CONFIDENT_HEADING").map((c) => c.match);
   const confidentSections = candidates.filter((c) => c.candidateType === "SECTION" && c.triage.decision === "CONFIDENT_HEADING").map((c) => c.match);
-  const nodes = buildStructuralNodesFromAcceptedMatches(doc, confidentArticles, confidentSections);
+  // Rule 194: ambiguous heading-like matches bound clause regions
+  // and get their own clause splitting (they are real section
+  // boundaries even though they are not confident nodes).
+  const headingLike = candidates.filter((c) => c.triage.decision === "CONFIDENT_HEADING" || c.triage.decision === "AMBIGUOUS");
+  const nodes = buildStructuralNodesFromAcceptedMatches(doc, confidentArticles, confidentSections, {
+    regionBoundStarts: headingLike.map((c) => c.match.index),
+    clauseSectionMatches: candidates
+      .filter((c) => c.candidateType === "SECTION" && c.triage.decision === "AMBIGUOUS")
+      .map((c) => c.match),
+    ambiguousArticleMatches: candidates
+      .filter((c) => c.candidateType === "ARTICLE" && c.triage.decision === "AMBIGUOUS")
+      .map((c) => c.match),
+    ambiguousSectionMatches: candidates
+      .filter((c) => c.candidateType === "SECTION" && c.triage.decision === "AMBIGUOUS")
+      .map((c) => c.match),
+  });
 
   const confidentHeadingsSorted = candidates
     .filter((c) => c.triage.decision === "CONFIDENT_HEADING")
@@ -1984,5 +2243,12 @@ export function applyStructuralAmbiguityOverrides(doc: CompilerDocumentInput, ov
   };
   const acceptedArticles = candidates.filter((c) => c.candidateType === "ARTICLE" && isAccepted(c)).map((c) => c.match);
   const acceptedSections = candidates.filter((c) => c.candidateType === "SECTION" && isAccepted(c)).map((c) => c.match);
-  return buildStructuralNodesFromAcceptedMatches(doc, acceptedArticles, acceptedSections);
+  // Rule 194: unresolved ambiguous headings still bound clause
+  // regions (fail-closed: they might be real); rejected ones
+  // (prose) do not. Accepted ambiguous sections are already in
+  // acceptedSections, so no extra clause splitting is needed.
+  const regionBoundStarts = candidates
+    .filter((c) => c.triage.decision === "CONFIDENT_HEADING" || (c.triage.decision === "AMBIGUOUS" && overrides.get(structuralCandidateKey(c.candidateType, c.match.index)) !== false))
+    .map((c) => c.match.index);
+  return buildStructuralNodesFromAcceptedMatches(doc, acceptedArticles, acceptedSections, { regionBoundStarts });
 }

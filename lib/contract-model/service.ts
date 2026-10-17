@@ -261,39 +261,45 @@ export async function getInstruments(companyId: string): Promise<DebtInstrument[
 }
 
 /** getDocumentsForInstrument (task §13). */
-export async function getDocumentsForInstrument(instrumentId: string): Promise<Document[]> {
-  return prisma.document.findMany({ where: { instrumentId }, orderBy: { createdAt: "asc" } });
+/** getDocumentsForInstrument — documents grouped under an instrument. Rule 146: previously took only instrumentId, so a caller holding another company's instrument id got its documents. The company is now a required parameter and the query is scoped to it. */
+export async function getDocumentsForInstrument(instrumentId: string, companyId: string): Promise<Document[]> {
+  return prisma.document.findMany({ where: { instrumentId, companyId }, orderBy: { createdAt: "asc" } });
 }
 
 /** getBaseDocuments (task §13) - every document that is either a resolved instrument's own base document, or has no instrument grouping at all (an ungrouped document is trivially its own base - no evidence exists that it amends/supplements anything else). */
 export async function getBaseDocuments(companyId: string): Promise<Document[]> {
   const [instruments, ungrouped] = await Promise.all([prisma.debtInstrument.findMany({ where: { companyId }, select: { baseDocumentId: true } }), prisma.document.findMany({ where: { companyId, instrumentId: null } })]);
   const baseIds = instruments.map((i) => i.baseDocumentId).filter((id): id is string => !!id);
-  const baseDocs = baseIds.length > 0 ? await prisma.document.findMany({ where: { id: { in: baseIds } } }) : [];
+  // Rule 145: the ID-list load had no company filter — a
+  // misattributed instrument row (baseDocumentId pointing at
+  // another company's document) would pull that foreign document
+  // into this company's base set. Scope the load to the company.
+  const baseDocs = baseIds.length > 0 ? await prisma.document.findMany({ where: { id: { in: baseIds }, companyId } }) : [];
   const byId = new Map([...baseDocs, ...ungrouped].map((d) => [d.id, d] as const));
   return [...byId.values()];
 }
 
-/** getAmendmentsForDocument (task §13) - every AMENDS/RESTATES (the real enum's own name for an "amends and restates" relationship - see package-graph/types.ts's PackageRelationshipType comment) edge whose TARGET is this document, i.e. every document that amends it. */
-export async function getAmendmentsForDocument(documentId: string): Promise<DocumentRelationshipEdge[]> {
-  return prisma.documentRelationshipEdge.findMany({ where: { targetDocumentId: documentId, relationshipType: { in: ["AMENDS", "RESTATES"] } }, orderBy: { createdAt: "asc" } });
+/** getAmendmentsForDocument (task §13) - every AMENDS/RESTATES (the real enum's own name for an "amends and restates" relationship - see package-graph/types.ts's PackageRelationshipType comment) edge whose TARGET is this document, i.e. every document that amends it. Rule 146: the edge query previously took only the document id; the company is now required and the query is scoped to it, so a foreign document id cannot surface another company's edges. */
+export async function getAmendmentsForDocument(documentId: string, companyId: string): Promise<DocumentRelationshipEdge[]> {
+  return prisma.documentRelationshipEdge.findMany({ where: { targetDocumentId: documentId, companyId, relationshipType: { in: ["AMENDS", "RESTATES"] } }, orderBy: { createdAt: "asc" } });
 }
 
 /** getSupplementsForDocument (task §13). */
-export async function getSupplementsForDocument(documentId: string): Promise<DocumentRelationshipEdge[]> {
-  return prisma.documentRelationshipEdge.findMany({ where: { targetDocumentId: documentId, relationshipType: "SUPPLEMENTS" }, orderBy: { createdAt: "asc" } });
+/** getSupplementsForDocument — Rule 147: the edge query previously took only the document id; the company is now required and the query is scoped to it. */
+export async function getSupplementsForDocument(documentId: string, companyId: string): Promise<DocumentRelationshipEdge[]> {
+  return prisma.documentRelationshipEdge.findMany({ where: { targetDocumentId: documentId, companyId, relationshipType: "SUPPLEMENTS" }, orderBy: { createdAt: "asc" } });
 }
 
-/** getRelatedDocuments (task §13) - every document connected to this one by ANY relationship edge, in either direction, regardless of type. */
-export async function getRelatedDocuments(documentId: string): Promise<Document[]> {
-  const edges = await prisma.documentRelationshipEdge.findMany({ where: { OR: [{ sourceDocumentId: documentId }, { targetDocumentId: documentId }] } });
+/** getRelatedDocuments (task §13) - every document connected to this one by ANY relationship edge, in either direction, regardless of type. Rule 147: both the edge query and the ID-list document load previously had no company filter; both are now scoped to the required company. */
+export async function getRelatedDocuments(documentId: string, companyId: string): Promise<Document[]> {
+  const edges = await prisma.documentRelationshipEdge.findMany({ where: { companyId, OR: [{ sourceDocumentId: documentId }, { targetDocumentId: documentId }] } });
   const relatedIds = new Set<string>();
   for (const e of edges) {
     if (e.sourceDocumentId !== documentId) relatedIds.add(e.sourceDocumentId);
     if (e.targetDocumentId && e.targetDocumentId !== documentId) relatedIds.add(e.targetDocumentId);
   }
   if (relatedIds.size === 0) return [];
-  return prisma.document.findMany({ where: { id: { in: [...relatedIds] } } });
+  return prisma.document.findMany({ where: { id: { in: [...relatedIds] }, companyId } });
 }
 
 /** getDocumentRelationships (task §13) - the raw edge rows, optionally scoped to one document (as source or target); every edge for the company otherwise. */
@@ -301,15 +307,15 @@ export async function getDocumentRelationships(companyId: string, documentId?: s
   return prisma.documentRelationshipEdge.findMany({ where: { companyId, ...(documentId ? { OR: [{ sourceDocumentId: documentId }, { targetDocumentId: documentId }] } : {}) }, orderBy: { createdAt: "asc" } });
 }
 
-/** getModificationCandidates (task §13) - AmendmentEffect rows persisted as pre-application candidates (reviewStatus REVIEW_REQUIRED, resolutionMethod "DETERMINISTIC_AMENDMENT_STATEMENT") for one amendment-like document, per lib/contract-model/compiler/package-graph/persistence.ts. */
-export async function getModificationCandidates(documentId: string): Promise<AmendmentEffect[]> {
-  return prisma.amendmentEffect.findMany({ where: { amendmentDocumentId: documentId }, orderBy: { createdAt: "asc" } });
+/** getModificationCandidates (task §13) - AmendmentEffect rows persisted as pre-application candidates (reviewStatus REVIEW_REQUIRED, resolutionMethod "DETERMINISTIC_AMENDMENT_STATEMENT") for one amendment-like document, per lib/contract-model/compiler/package-graph/persistence.ts. Rule 147: the query previously took only the document id; the company is now required and the query is scoped to it. */
+export async function getModificationCandidates(documentId: string, companyId: string): Promise<AmendmentEffect[]> {
+  return prisma.amendmentEffect.findMany({ where: { amendmentDocumentId: documentId, companyId }, orderBy: { createdAt: "asc" } });
 }
 
-/** findDocumentsReferencing (task §13) - every document with a persisted relationship edge pointing AT the given target document (i.e. every document that references/amends/supplements/governs/etc it). */
-export async function findDocumentsReferencing(targetDocumentId: string): Promise<Document[]> {
-  const edges = await prisma.documentRelationshipEdge.findMany({ where: { targetDocumentId } });
+/** findDocumentsReferencing (task §13) - every document with a persisted relationship edge pointing AT the given target document (i.e. every document that references/amends/supplements/governs/etc it). Rule 147: both the edge query and the ID-list document load previously had no company filter; both are now scoped to the required company. */
+export async function findDocumentsReferencing(targetDocumentId: string, companyId: string): Promise<Document[]> {
+  const edges = await prisma.documentRelationshipEdge.findMany({ where: { targetDocumentId, companyId } });
   const sourceIds = [...new Set(edges.map((e) => e.sourceDocumentId))];
   if (sourceIds.length === 0) return [];
-  return prisma.document.findMany({ where: { id: { in: sourceIds } } });
+  return prisma.document.findMany({ where: { id: { in: sourceIds }, companyId } });
 }

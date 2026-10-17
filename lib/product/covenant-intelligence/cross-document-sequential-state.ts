@@ -27,7 +27,19 @@ export interface SequentialPackageState {
   securedDebtUsd: number;
   totalDebtUsd: number;
   rpCapacityUsd: number;
+  /** Remaining lien general-basket capacity (USD). */
   lienGeneralBasketUsd: number;
+  /**
+   * SectionRef whose basketRemainingUsd entry IS the lien
+   * general basket (when set). Rule 72: without this tie, a
+   * secured-debt step reduced only this scalar while the next
+   * step's evaluation read basketRemainingUsd — the lien
+   * consumption was invisible to later evaluations (fail-open),
+   * and a caller ALSO passing consumeBaskets for the lien
+   * section double-counted it. When set, the scalar mirrors
+   * basketRemainingUsd[lienBasketSectionRef] — one track.
+   */
+  lienBasketSectionRef?: string;
   entityNotes: string[];
   utilizationHistoryStatus: ReturnType<typeof classifyUtilizationHistory>;
 }
@@ -63,6 +75,7 @@ function cloneState(s: SequentialPackageState): SequentialPackageState {
     totalDebtUsd: s.totalDebtUsd,
     rpCapacityUsd: s.rpCapacityUsd,
     lienGeneralBasketUsd: s.lienGeneralBasketUsd,
+    lienBasketSectionRef: s.lienBasketSectionRef,
     entityNotes: [...s.entityNotes],
     utilizationHistoryStatus: s.utilizationHistoryStatus,
   };
@@ -85,7 +98,23 @@ function applyHypotheticalEffects(
     if (txn.secured === true || txn.kind === "SECURED_DEBT") {
       post.securedDebtUsd += txn.amountUsd;
       post.financials.securedDebt = (post.financials.securedDebt ?? 0) + amountM;
-      post.lienGeneralBasketUsd = Math.max(0, post.lienGeneralBasketUsd - txn.amountUsd);
+      // Rule 72: lien consumption must hit the track the next
+      // evaluation reads (basketRemainingUsd), not only the
+      // parallel lienGeneralBasketUsd scalar. When the lien
+      // basket is tied to a sectionRef, consume it there (unless
+      // consumeBaskets already covers it — no double count) and
+      // mirror the scalar from the basket track below. Without
+      // the tie, keep the legacy scalar-only deduction.
+      const lienRef = pre.lienBasketSectionRef;
+      if (lienRef) {
+        const coveredByConsume = (consume ?? []).some((c) => c.sectionRef === lienRef);
+        if (!coveredByConsume) {
+          const prev = post.basketRemainingUsd[lienRef] ?? post.lienGeneralBasketUsd;
+          post.basketRemainingUsd[lienRef] = Math.max(0, prev - txn.amountUsd);
+        }
+      } else {
+        post.lienGeneralBasketUsd = Math.max(0, post.lienGeneralBasketUsd - txn.amountUsd);
+      }
     }
   }
   if (txn.kind === "RESTRICTED_PAYMENT") {
@@ -98,6 +127,15 @@ function applyHypotheticalEffects(
   for (const c of consume ?? []) {
     const prev = post.basketRemainingUsd[c.sectionRef] ?? 0;
     post.basketRemainingUsd[c.sectionRef] = Math.max(0, prev - c.amountUsd);
+  }
+  // Rule 72: when the lien basket is tied to a sectionRef, the
+  // scalar is a mirror of that basket entry — not a second
+  // deduction. This keeps the two views consistent whether the
+  // consumption came from the secured-debt effect above or from
+  // an explicit consumeBaskets entry.
+  if (pre.lienBasketSectionRef) {
+    post.lienGeneralBasketUsd =
+      post.basketRemainingUsd[pre.lienBasketSectionRef] ?? post.lienGeneralBasketUsd;
   }
   if (entityDelta?.length) post.entityNotes.push(...entityDelta);
   // After a successful hypothetical step we still lack ledger affirmation.

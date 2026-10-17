@@ -1,25 +1,20 @@
 import { Card } from "@/components/ui";
 import { GlobalBrand } from "@/components/GlobalBrand";
+import { requireAdminOrRedirect } from "@/lib/auth/guard";
 import { createCompanyAction } from "./actions";
 
 export const metadata = { title: "Headroom — New company" };
 export const dynamic = "force-dynamic";
 
 /**
- * Onboarding wizard step 0 (docs/company-onboarding-v1-implementation.md,
- * deliverable 8): the ONLY way a company enters Headroom without an
- * engineer writing a company-specific population script. Creates a Company
- * row with onboardingStatus: ONBOARDING and hands off to
- * /[companyId]/onboarding.
- *
- * One shared form serves two real callers (docs/headroom-master-product-architecture.md
- * §B/§D): a real customer's first-time "Connect your company" workspace
- * provisioning (no ?tenantKind - defaults to CUSTOMER, Company.tenantKind's
- * own schema default), and /admin's "+ New" link for creating another
- * EVALUATION-tenant fixture (?tenantKind=EVALUATION). The tenantKind is
- * carried as a plain hidden field rather than forked into two pages/actions.
+ * Admin-only company provisioning form. In the SaaS model there is no
+ * self-serve "create a company" for customers — companies are provisioned
+ * by Egzon's team (provision script or this admin form). The page AND its
+ * server action both require ADMIN; the page gate alone would not stop a
+ * direct action POST.
  */
 export default async function NewCompanyPage({ searchParams }: { searchParams: Promise<{ tenantKind?: string }> }) {
+  await requireAdminOrRedirect();
   const { tenantKind } = await searchParams;
   const isEvaluation = tenantKind === "EVALUATION";
   return (

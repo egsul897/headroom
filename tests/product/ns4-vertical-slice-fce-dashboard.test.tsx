@@ -83,6 +83,7 @@ function renderDash(companyId: string, ns4: Awaited<ReturnType<typeof loadNs4Das
     collateralScopes: [],
     ruleActivationConditions: [],
     coverageDeclarations: [],
+    ratioProvisions: [],
     activationState: {
       asOfDate: asOf,
       series: {},

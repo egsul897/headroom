@@ -20,6 +20,8 @@ function methodLabel(method: PerDocumentRemainingCapacity["method"]): string {
       return "Solver clamped to legacy ceiling (fail-closed)";
     case "NOT_DETERMINABLE":
       return "Not determinable";
+    case "SKIPPED_AMENDMENT":
+      return "Amendment — no standalone capacity (effect via base)";
   }
 }
 
@@ -128,7 +130,9 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
       <div className="row-note" style={{ marginTop: 8 }}>
         Cutoff: {authoritative.cutoff.state}
         {authoritative.cutoff.reportingPeriodKey ? ` · ${authoritative.cutoff.reportingPeriodKey}` : ""}
-        {authoritative.cutoff.approvedSnapshotId ? ` · snapshot ${authoritative.cutoff.approvedSnapshotId}` : ""} ·
+        {authoritative.cutoff.cutoffSnapshotId
+          ? ` · snapshot ${authoritative.cutoff.cutoffSnapshotId} (${authoritative.cutoff.cutoffSnapshotStatus})`
+          : ""} ·
         APPROVED snapshots: {authoritative.approvedSnapshotCount} · Active 4C usages:{" "}
         {authoritative.activeLedgerUsageCount}
       </div>

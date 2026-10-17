@@ -1,40 +1,37 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 import { Card } from "@/components/ui";
 import { GlobalBrand } from "@/components/GlobalBrand";
 import { PROTECTED_COMPANY_IDS } from "@/lib/coherent";
 import { listCompanies } from "@/lib/dashboard-service";
 import { companyOpenHref } from "@/lib/home/nav";
+import { authOptions } from "@/lib/auth/options";
 
 export const metadata = { title: "Headroom" };
 export const dynamic = "force-dynamic";
 
 /**
- * Fresh-start landing (task "RESET ON OPEN" - "opening Headroom starts a
- * fresh session every time. No persisted 'current company,' no
- * auto-resolution into whatever tenant exists"). This page NEVER redirects
- * based on how many companies exist or which one was viewed last - it is a
- * stateless read on every request, always rendering the same choice: load
- * a known company, or connect a new one. There is no session/cookie of any
- * kind establishing a "current company" anywhere in this app; every other
- * page's context comes entirely from its own `[companyId]` URL segment.
+ * SaaS root: there is no public company chooser in the authenticated
+ * product. A signed-in user goes straight to THEIR company's dashboard
+ * (their account is bound to exactly one company). An unsigned visitor
+ * goes to /login.
  *
- * This product has no real multi-tenant auth yet (see
- * docs/headroom-master-product-architecture.md's own "Known limitations"),
- * so - per explicit instruction from the person operating this instance -
- * this landing surfaces every company that exists, not only CUSTOMER-tenant
- * ones: a real customer deployment with real auth would instead resolve
- * straight to that customer's own workspace and would never show this
- * company-selection screen at all (nor a name-your-eval-companies picker).
- * This is deliberately kept as the founder/dev test-company chooser (task
- * "UNIVERSAL HEADROOM PRODUCT EXPERIENCE" §1 - "keep the landing page that
- * allows us to select among test/evaluation companies... this must remain
- * architecturally separate from the eventual customer experience"); a real
- * customer workspace is a future, auth-gated build, not this page.
- * A "Delete" link sits next to every entry (task: "give me a way to delete
- * a test company entirely, so evaluation mistakes don't persist") - see
- * app/companies/[companyId]/delete/page.tsx for the confirmation step.
+ * The old founder/dev test-company chooser survives ONLY behind the
+ * explicit dev flag HEADROOM_DEV_CHOOSER=1 and only outside production
+ * (NODE_ENV !== "production"). It is never reachable in the production
+ * authenticated path, and it never lists companies to a signed-in
+ * customer — the dev chooser is for local evaluation work only.
  */
 export default async function Home() {
+  const devChooser =
+    process.env.HEADROOM_DEV_CHOOSER === "1" && process.env.NODE_ENV !== "production";
+  if (!devChooser) {
+    const session = await getServerSession(authOptions);
+    if (!session?.user?.companyId) redirect("/login");
+    redirect(`/${session.user.companyId}/dashboard`);
+  }
+
   const companies = await listCompanies();
   const customer = companies.filter((c) => c.tenantKind === "CUSTOMER");
   const evaluation = companies.filter((c) => c.tenantKind === "EVALUATION");
@@ -46,7 +43,9 @@ export default async function Home() {
       <GlobalBrand />
       <div className="stack">
         <Card>
-          <div className="card-subtitle">Choose a company to open, or connect a new one - nothing is remembered between visits.</div>
+          <div className="card-subtitle">
+            DEV ONLY — founder/dev test-company chooser (HEADROOM_DEV_CHOOSER=1, non-production). Not part of the customer product.
+          </div>
         </Card>
 
         {customer.length > 0 && (

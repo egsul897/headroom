@@ -115,7 +115,10 @@ function clausesFromLearnedPatterns(
     if (!match || match.index == null || !match[0]) continue;
     const window = captureWindow(text, match.index, match[0].length);
     if (window.length < 24) continue;
-    const family = rule.effect.family ?? rule.effect.sectionFamily ?? "OTHER";
+    // The family comes from the captured clause itself, never from the rule's (precedent-derived) label: a
+    // learned capture whose own words state no covenant family, or a different one, is not a basket.
+    const family = learnedClauseFamily(window) ?? enclosingSectionFamily(text, match.index);
+    if (!family) continue;
     out.push({
       stableKey: `learned-${rule.ruleId}`,
       sectionRef: `learned:${rule.kind}:${rule.ruleId}`,
@@ -128,6 +131,67 @@ function clausesFromLearnedPatterns(
   return out;
 }
 
+/** Covenant family stated by a captured clause's own heading and lead-in (null when it states none). */
+export function learnedClauseFamily(window: string): CovenantFamily | null {
+  const h = /^\s*(?:SECTION|Section)\s+\d{1,2}\.\d{1,3}\.?\s+([^.]{2,90}?)\s*\.\s+/.exec(window);
+  const title = h ? h[1]!.trim() : null;
+  const leadIn = h ? window.slice(h[0].length) : window;
+  const v = classifyCovenantFamily({ title, leadIn }).family;
+  if (v) return v;
+  // An enumerated permitted item headed by one family's defined term ("(c) Liens arising out of ...", "(f) Indebtedness
+  // in respect of ...") belongs to that family.
+  const item = /^\s*\((?:[a-z]{1,3}|[ivxl]{1,6}|\d{1,2})\)\s+(?:(?:any|other|additional|unsecured|secured|purchase money)\s+)*/i.exec(leadIn);
+  if (item) {
+    const head = leadIn.slice(item[0].length, item[0].length + 40);
+    const hit = CAPPED_TERMS.filter(([f, re]) => f !== "AFFILIATE_TRANSACTIONS" && new RegExp(`^(?:${re.source})`).test(head)).map(([f]) => f);
+    if (hit.length === 1) return hit[0]!;
+  }
+  // A capped permission ("may make ... Restricted Payments not to exceed $5,000,000") that names exactly one covenant
+  // family's defined term is a basket of that family.
+  if (!/\$\s*[\d,]|\d+(?:\.\d+)?\s*%/.test(leadIn) || !/\b(?:not\s+(?:to\s+)?exceed|in an aggregate (?:principal )?amount|up to)\b/i.test(leadIn)) return null;
+  const named = CAPPED_TERMS.filter(([, re]) => re.test(leadIn)).map(([f]) => f);
+  return named.length === 1 ? named[0]! : null;
+}
+const CAPPED_TERMS: [CovenantFamily, RegExp][] = [
+  ["RESTRICTED_PAYMENTS", /\bRestricted Payments?\b/],
+  ["DEBT", /\bIndebtedness\b/],
+  ["LIENS", /\bLiens?\b/],
+  ["INVESTMENTS", /\bInvestments?\b/],
+  ["ASSET_SALES", /\b(?:Asset Sales?|Asset Dispositions?|Dispositions?)\b/],
+  ["AFFILIATE_TRANSACTIONS", /\bAffiliates?\b/],
+];
+
+/**
+ * Family of the section enclosing a position: the nearest preceding section heading ("Section 7.02 Liens .",
+ * "7.02 Liens .") with its own lead-in (the parent clause / negative stem), classified the same way as any section.
+ * Null when there is no heading within reach or the section states no covenant family.
+ */
+export function enclosingSectionFamily(text: string, at: number): string | null {
+  const from = Math.max(0, at - 20000);
+  const pre = text.slice(from, at);
+  const HEAD = /(?:^|[.;:]\s+|\n)\s*(?:(?:SECTION|Section)\s+)?(\d{1,2}\.\d{1,3})\.?\s+([A-Z][A-Za-z,;'’&\- ]{2,90}?)\s*\.\s+/g;
+  let last: RegExpExecArray | null = null;
+  for (const m of pre.matchAll(HEAD)) last = m as RegExpExecArray;
+  if (!last || last.index == null) return null;
+  const title = last[2]!.trim();
+  const leadIn = pre.slice(last.index + last[0].length) + text.slice(at, at + 200);
+  const fam = classifyCovenantFamily({ title, leadIn: leadIn.slice(0, 1500) }).family;
+  if (fam) return fam;
+  // Families outside the negative-covenant classifier, read from the enclosing section or article heading only.
+  // Section title only (an Events of Default article also holds remedies and payment waterfalls), and never a clause
+  // whose actor is a creditor ("The Lenders hereby authorize ... the Collateral Agent to release ...").
+  const clauseLead = text.slice(Math.max(0, at - 40), at + 160);
+  if (CREDITOR_LEAD.test(clauseLead)) return null;
+  for (const [f, re] of HEADING_FAMILIES) if (re.test(title)) return f;
+  return null;
+}
+const CREDITOR_LEAD = /(?:^|[;:.]\s*|\)\s*)(?:the\s+|each\s+)?(?:Required\s+)?(?:Lenders?|Holders?|Secured Parties|(?:Administrative|Collateral)\s+Agents?|Agents?|Trustees?|Noteholders?)\s+(?:hereby\s+)?(?:authorize|agree|acknowledge|may|shall|will|direct|consent)/i;
+const HEADING_FAMILIES: Array<[string, RegExp]> = [
+  ["GUARANTEES", /\bguarant(?:y|ee|ees|ies|ors?)\b/i],
+  ["INCREMENTAL_DEBT_AND_FACILITIES", /\bincremental\b/i],
+  ["EVENTS_OF_DEFAULT", /\bevents?\s+of\s+default\b|^\s*defaults?\s*$/i],
+];
+
 /** Expand a regex match to a nearby clause-sized window still inside `text`. */
 function captureWindow(text: string, index: number, matchLen: number): string {
   const matchEnd = index + matchLen;
@@ -139,6 +203,15 @@ function captureWindow(text: string, index: number, matchLen: number): string {
   const boundary = pre.search(/[.;:]\s+[A-Z(]/);
   if (boundary >= 0) start = start + boundary + 1;
   while (start < index && /\s/.test(text[start]!)) start += 1;
+  // A window straddling a section heading ("... thereof. Section 3.06 Funding Losses . With respect ...") cites
+  // two sections: start it at the last heading that still leaves >= 24 chars of the match after it.
+  const HEADING = /(?:^|[.;:]\s+|\n)\s*((?:SECTION|Section)\s+\d{1,2}\.\d{1,3}\b|ARTICLE\s+[IVXLC\d]+\b)/g;
+  let cut = -1;
+  for (const h of text.slice(start, matchEnd).matchAll(HEADING)) {
+    const at = start + h.index! + h[0].indexOf(h[1]!);
+    if (at > start && matchEnd - at >= 24) cut = at;
+  }
+  if (cut > start) start = cut;
   let window = text.slice(start, end).trim();
   // Ensure the matched span is present; if trimming ate it, fall back to exact match pad.
   if (!window.toLowerCase().includes(text.slice(index, matchEnd).toLowerCase().slice(0, 20))) {
@@ -387,7 +460,15 @@ function findRegions(text: string, rules?: LearnedRuleSet): Region[] {
     // number differs ("7.2 …" must not absorb "11.23 Incremental Revolving Credit Commitments").
     if (start.sectionNumber) {
       const major = start.sectionNumber.split(".")[0];
-      const other = bare.find((h) => h.at > start.at + 20 && h.major !== major);
+      // Nor into the next sibling section of the same article ("6.12 Liens … (j) …$100,000,000. 6.13 Affiliates . …").
+      const num = (x: string) => x.split(".").map((p) => Number(p) || 0);
+      const [smaj, smin] = num(start.sectionNumber);
+      const other = bare.find((h) => {
+        if (h.at <= start.at + 20) return false;
+        if (h.major !== major) return true;
+        const [hmaj, hmin] = num(h.number);
+        return hmaj === smaj && hmin === (smin ?? 0) + 1;
+      });
       if (other && other.at < nextBoundary) nextBoundary = other.at;
     }
     let end = nextBoundary;
@@ -424,12 +505,12 @@ function definitionBoundaries(text: string): number[] {
  * Bare-numbered headings ("… Lender. 11.23 Incremental Revolving Credit Commitments . (a) IBM …"). The text is
  * whitespace-normalized, so a heading is: sentence end, number, Title-Case words, period.
  */
-function bareHeadings(text: string): Array<{ at: number; major: string }> {
-  const out: Array<{ at: number; major: string }> = [];
+function bareHeadings(text: string): Array<{ at: number; major: string; number: string }> {
+  const out: Array<{ at: number; major: string; number: string }> = [];
   const bare = new RegExp(String.raw`(?:[.;:)]\s+)(${SECTION_NUMBER})\.?\s+([A-Z][A-Za-z'’&,;\- ]{2,140}?)\s*\.\s`, "g");
   for (const match of text.matchAll(bare)) {
     if (match.index == null || !isTitleCase(match[2] ?? "")) continue;
-    out.push({ at: match.index + match[0].indexOf(match[1]!), major: match[1]!.split(".")[0]! });
+    out.push({ at: match.index + match[0].indexOf(match[1]!), major: match[1]!.split(".")[0]!, number: match[1]! });
   }
   return out;
 }

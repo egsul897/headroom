@@ -29,8 +29,9 @@ import { dollarAmountIsMillions, dollarToken, millionsToUsd, norm } from "./text
 const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKind> = {
   FIXED_DOLLAR: "FIXED_DOLLAR_CEILING",
   GROWER_GREATER_OF: "GREATER_OF_FIXED_OR_PCT_METRIC",
-  LESSER_OF: "OTHER_SOURCE_STATED",
   PCT_OF_METRIC: "PCT_OF_METRIC_ONLY",
+  MULTIPLE_OF_METRIC: "MULTIPLE_OF_METRIC",
+  LESSER_OF: "LESSER_OF_FIXED_AND_MULTIPLE",
   RATIO_BASED: "RATIO_INCURRENCE_ROOM",
   BUILDER_AVAILABLE_AMOUNT: "BUILDER_SUM_COMPONENTS",
   UNLIMITED: "UNLIMITED_SUBJECT_TO_GATE",
@@ -80,9 +81,11 @@ export function evaluateBasket(
       ? evalFixed(pkg, clause, metrics)
       : category === "GROWER_GREATER_OF"
         ? evalGrower(pkg, clause, metrics)
-      : category === "LESSER_OF"
-        ? evalLesser(clause)
-        : category === "PCT_OF_METRIC"
+        : category === "LESSER_OF"
+          ? evalLesserCombined(pkg, clause, metrics)
+          : category === "MULTIPLE_OF_METRIC"
+            ? evalMultiple(pkg, clause, metrics)
+            : category === "PCT_OF_METRIC"
           ? evalPercentOfMetric(pkg, clause, metrics)
           : category === "RATIO_BASED"
             ? evalRatioBasket(pkg, clause, metrics, ratios)
@@ -143,6 +146,7 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   if (
     /\b(available amount|builder basket|cumulative credit|available restricted payments amount)\b/i.test(text) ||
     (/\bsum of\b/i.test(text) && /\d+(?:\.\d+)?\s*%\s+of\b/i.test(text)) ||
+    namedSumLimbs(text).length > 0 ||
     (/\bsum\b/i.test(text) && /\d+(?:\.\d+)?\s*%\s+of\b/i.test(text) && /\bshall not exceed the sum\b/i.test(text)) ||
     (/\bmay be increased by\b/i.test(text) && /\$\s*[\d,]+/.test(text)) ||
     // "(x) $200,000,000 plus (y) 50% of Consolidated Net Income plus (z) 100% of Net Proceeds": a sum with a
@@ -158,10 +162,17 @@ export function categorize(operativeText: string, rules?: LearnedRuleSet): Baske
   // Both extremes in the cap expression (nested max/min): neither bound direction holds without reading the nesting.
   if (lesserCap >= 0 && greaterAt >= 0 && Math.abs(greaterAt - lesserCap) < 300) return "UNKNOWN";
   if (/\bgreater\s+of\b/i.test(text)) return "GROWER_GREATER_OF";
+  // Merge of #398 and release-1: a lesser-of counts only when it is the cap (#398 capExtremeAt guard);
+  // evaluation then tries release-1's exact min(fixed, metric limb) and falls back to #398's AT_MOST bound.
   if (lesserCap >= 0 && /\$\s*[\d,]+/.test(text)) return "LESSER_OF";
   const ratio = classifyRatioIncurrencePermission(text);
   if (ratio.class !== "NOT_RATIO_INCURRENCE") return "RATIO_BASED";
+  // A maintenance test ("shall not permit the Leverage Ratio to exceed 4.50x") is not a basket; checked before the
+  // multiple-of-metric amount cap so a ratio limit is never read as "4.50x Consolidated EBITDA" of dollars.
   if (isMaintenanceLimit(text)) return "MAINTENANCE_LIMIT";
+  // An amount cap stated as a multiple of a metric ("not to exceed 3.0x Consolidated EBITDA").
+  // Ratio tests already returned above, so a multiple here is an incurrence amount, not a maintenance threshold.
+  if (parseMultipleCap(text) != null) return "MULTIPLE_OF_METRIC";
   if (percentOfMetric(text) && !/\$\s*[\d,]+/.test(text)) return "PCT_OF_METRIC";
   const unlimited = isCapacityUnlimited(text);
   const dollarCap = soleFixedDollar(text) != null;
@@ -221,14 +232,26 @@ const UNLIMITED_CONDITION = /^[^.;]{0,40}?\b(?:if|so\s+long\s+as|provided\s+that
 /** Negated unlimited ("nothing herein shall permit ... in an unlimited amount", "shall not ... unlimited"). */
 const UNLIMITED_NEGATION = /\b(?:nothing\s+(?:herein|in\s+this\s+\w+|contained\s+herein)[^.;]{0,160}?\b(?:shall|will|may)\s+(?:be\s+(?:deemed|construed)\s+to\s+)?(?:permit|allow|authorize)|(?:shall|will|may)\s+not\b|\bno\b)[^.;]{0,160}$/i;
 
+/** "so long as no ...", "provided that no ...", "if no ...", "unless ..." up to the clause's comma: a condition, not a negation. */
+const CONDITION_NO = /\b(?:so\s+long\s+as|provided(?:,?\s+however,?)?\s+that|if|when|unless|(?:immediately\s+)?after\s+giving\s+effect[^,;]{0,80}?,)\s+(?:no|not)\b[^,;]{0,160}/gi;
+/** A defined set of gating conditions ("Payment Conditions", "RP Conditions", "Payment Condition") or satisfied tests. */
+const DEFINED_CONDITIONS = /\b(?:[A-Z][A-Za-z]*\s+)+Conditions?\b|\bconditions?\s+(?:set\s+forth|specified|described)\b|\b(?:is|are)\s+satisfied\b/;
+const LEAD_CONDITION = /\b(?:if|so\s+long\s+as|provided\s+that|subject\s+to)\b/i;
+
 export function unlimitedCapacityMatch(text: string): { kind: "NONE" | "UNCONDITIONAL" | "CONDITIONAL" | "NEGATED" } {
   const m = UNLIMITED_CAPACITY_PHRASE.exec(text);
   if (!m) return { kind: "NONE" };
   const before = text.slice(Math.max(0, m.index - 240), m.index);
-  if (UNLIMITED_NEGATION.test(before)) return { kind: "NEGATED" };
-  // Only a financial-test condition turns the grant into a ratio permission; "so long as no Default exists" does not.
+  // A condition's own "no" ("so long as no Default or Event of Default exists, ...") gates the grant; it does not negate it.
+  // Only a condition that closes ("..., ") before the grant is stripped. A "provided that no ..." that runs straight into
+  // the grant ("provided that no Restricted Payments may be made in an unlimited amount") is the grant's own negation.
+  const beforeGrant = before.replace(CONDITION_NO, (span, at: number) => (/^\s*[,;]/.test(before.slice(at + span.length)) ? " " : span));
+  if (UNLIMITED_NEGATION.test(beforeGrant)) return { kind: "NEGATED" };
+  // A financial-test condition, or a defined gating condition set ("so long as the Payment Conditions are satisfied"),
+  // makes the grant conditional; "so long as no Default exists" alone does not.
   const after = text.slice(m.index + m[0].length);
-  if (UNLIMITED_CONDITION.test(after) && RATIO_CONDITION.test(after)) return { kind: "CONDITIONAL" };
+  if (UNLIMITED_CONDITION.test(after) && (RATIO_CONDITION.test(after) || DEFINED_CONDITIONS.test(after))) return { kind: "CONDITIONAL" };
+  if (LEAD_CONDITION.test(before) && DEFINED_CONDITIONS.test(before)) return { kind: "CONDITIONAL" };
   return { kind: "UNCONDITIONAL" };
 }
 
@@ -239,12 +262,14 @@ export function isCapacityUnlimited(text: string): boolean {
 
 
 function hasNumeric(text: string): boolean {
-  return /\$\s*[\d,]+|\d+(?:\.\d+)?\s*%|\d+(?:\.\d+)?\s+to\s+\d+(?:\.\d+)?/.test(text);
+  return /\$\s*[\d,]+|\d+(?:\.\d+)?\s*%|\d+(?:\.\d+)?\s+to\s+\d+(?:\.\d+)?|\d+(?:\.\d+)?\s*(?:x|times)\s+(?:the\s+)?[A-Z]/.test(text);
 }
 
 function hasClosedCap(text: string): boolean {
   return (
     /\bgreater\s+of\b/i.test(text) ||
+    /\blesser\s+of\b/i.test(text) ||
+    parseMultipleCap(text) != null ||
     soleFixedDollar(text) != null ||
     (classifyRatioIncurrencePermission(text).thresholdNumerator != null &&
       classifyRatioIncurrencePermission(text).class !== "NOT_RATIO_INCURRENCE")
@@ -567,6 +592,15 @@ function evalBuilder(
       note: "Builder named. Components are not a closed sum in the text, so no partial Available Amount is returned.",
     };
   }
+  // A limb that is neither a dollar figure nor "N% of <Metric>" ("(B) the Cumulative Credit", "the Available Amount")
+  // has no stated value: the sum is not computable, and the dollar limb alone is never the cap.
+  const named = namedSumLimbs(text);
+  if (named.length > 0) {
+    return {
+      ...capShell("NEEDS_INPUT", "NONE", null, null, [...named, "prior usage"], null),
+      note: "A builder component has no stated value. The starter dollar is not presented as Available Amount.",
+    };
+  }
   const missing = metricNames.filter((name) => !metrics.some((m) => m.metricKey.toLowerCase() === name.toLowerCase()));
   if (missing.length > 0) {
     return sumLowerBound(clause.operativeText) ?? {
@@ -667,9 +701,12 @@ const ARITHMETIC_ON_AMOUNT = /\b(?:quotient|divided\s+by|multiplied\s+by|product
 
 function soleFixedDollar(text: string): string | null {
   const normed = norm(text);
-  if (/\bgreater\s+of\b/i.test(normed) || /\d+(?:\.\d+)?\s*%/.test(normed) || /\bmay be increased by\b/i.test(normed)) return null;
+  if (/\bgreater\s+of\b/i.test(normed) || /\blesser\s+of\b/i.test(normed) || /\d+(?:\.\d+)?\s*%/.test(normed) || /\bmay be increased by\b/i.test(normed)) return null;
   // A dollar figure inside arithmetic ("the quotient of $550 million divided by the rate") is an operand, not the cap.
   if (/\b(?:quotient|divided\s+by|multiplied\s+by|product\s+of)\b/i.test(normed)) return null;
+  // A dollar figure beside a multiple cap ("not to exceed $100,000,000 and 3.0x EBITDA", no lesser/greater) states
+  // two caps. Neither limb alone is the cap, so the dollar is not a lone fixed dollar.
+  if (hasMultipleCapPattern(normed)) return null;
   const tokens = [...normed.matchAll(/\$\s*([\d,]+(?:\.\d+)?)/g)].map((m) => m[1]!.replace(/,/g, ""));
   const distinct = [...new Set(tokens)];
   if (distinct.length !== 1) return null;
@@ -681,8 +718,295 @@ function soleFixedDollar(text: string): string | null {
     // "shall not at any one time exceed $X", "do not ... in excess of $X": a negated ceiling directly on the one dollar figure.
     /\b(?:shall|will|does|do|to)\s+not\s+(?:[\w’',]+\s+){0,6}?exceed\s+\$\s*[\d,]+/i.test(normed) ||
     /\bnot\s+(?:[\w’',]+\s+){0,16}?in\s+excess\s+of\s+\$\s*[\d,]+/i.test(normed) ||
-    /\bexceeds\s+\$\s*[\d,]+(?:\.\d+)?\s+million\b/i.test(normed);
+    /\bexceeds\s+\$\s*[\d,]+(?:\.\d+)?\s+million\b/i.test(normed) ||
+    // Bare "up to $X", "capped at $X", "maximum ... $X", "not exceeding $X": a ceiling directly on the one dollar figure.
+    /\bup\s+to\s+\$\s*[\d,]+/i.test(normed) ||
+    /\bcapped\s+at\s+\$\s*[\d,]+/i.test(normed) ||
+    /\bmaximum\s+(?:aggregate\s+)?(?:principal\s+)?(?:amount\s+)?(?:of\s+)?\$\s*[\d,]+/i.test(normed) ||
+    /\bnot\s+exceeding\s+\$\s*[\d,]+/i.test(normed);
   return capRole ? distinct[0]! : null;
+}
+
+/** Ceiling language that makes a number a cap rather than a stated amount. */
+const CAP_ROLE_WORDS =
+  /\b(?:not\s+to\s+exceed|shall\s+not\s+exceed|does\s+not\s+exceed|will\s+not\s+exceed|not\s+in\s+excess\s+of|in\s+excess\s+of|up\s+to|capped\s+at|maximum|not\s+exceeding|lesser\s+of|greater\s+of)\b/i;
+/** A ratio name near a multiple means the multiple is a ratio threshold, not an amount cap. */
+const RATIO_NAME_NEAR = /\b(?:leverage|coverage|fixed\s+charge\s+coverage|interest\s+coverage|senior\s+secured\s+leverage|total\s+leverage|secured\s+leverage|first\s+lien\s+leverage)\s+ratio\b/i;
+/** An amount noun near a multiple means the multiple caps an amount, not a ratio. */
+const AMOUNT_NOUN = /\b(?:indebtedness|amount|principal|debt|borrowings?|loans?|notes?|obligations?)\b/i;
+
+export interface MultipleCap {
+  /** The stated multiple (e.g. 3.0 for "3.0x Consolidated EBITDA"). */
+  multiple: number;
+  /** Metric phrase as written in the clause (e.g. "Consolidated EBITDA"). */
+  metricName: string;
+}
+
+/**
+ * A standalone multiple amount cap ("not to exceed 3.0x Consolidated EBITDA").
+ * Null unless: exactly one multiple, no dollar token, no percent token, ceiling
+ * language present, an amount noun nearby, no ratio name nearby, no arithmetic,
+ * and the multiple is in (0, 100]. Two multiples, or a multiple beside a dollar
+ * or percent cap, is ambiguous -> null (NEEDS_INPUT downstream, never a guess).
+ */
+export function parseMultipleCap(text: string): MultipleCap | null {
+  const t = norm(text);
+  if (/\b(?:quotient|divided\s+by|multiplied\s+by|product\s+of)\b/i.test(t)) return null;
+  if (/\$\s*[\d,]+/.test(t) || /\d+(?:\.\d+)?\s*%/.test(t)) return null;
+  if (!CAP_ROLE_WORDS.test(t)) return null;
+  if (!hasMultipleCapPattern(t)) return null;
+  const matches = [...t.matchAll(/(\d+(?:\.\d+)?)\s*(?:x|times)\s+(?:the\s+)?([^.;]{3,120})/gi)];
+  if (matches.length !== 1) return null;
+  const m = matches[0]!;
+  const multiple = Number(m[1]);
+  if (!Number.isFinite(multiple) || multiple <= 0 || multiple > 100) return null;
+  const before = t.slice(0, m.index ?? 0);
+  if (RATIO_NAME_NEAR.test(before.slice(-120))) return null;
+  if (!AMOUNT_NOUN.test(before.slice(-200))) return null;
+  const metricName = metricPhrase(m[2] ?? "");
+  if (metricName.length < 3) return null;
+  return { multiple, metricName };
+}
+
+/**
+ * A multiple-cap shape is present ("N.N x|times <Metric>") with ceiling language,
+ * an amount noun nearby, and no ratio name nearby — regardless of whether other
+ * numbers (dollar, percent) are also present. Used by soleFixedDollar to refuse
+ * a lone-dollar read when a multiple cap also binds. parseMultipleCap adds the
+ * standalone exclusions (no $/%, exactly one multiple) on top of this shape.
+ */
+export function hasMultipleCapPattern(text: string): boolean {
+  const t = norm(text);
+  if (/\b(?:quotient|divided\s+by|multiplied\s+by|product\s+of)\b/i.test(t)) return false;
+  if (!CAP_ROLE_WORDS.test(t)) return false;
+  for (const m of t.matchAll(/(\d+(?:\.\d+)?)\s*(?:x|times)\s+(?:the\s+)?([^.;]{3,120})/gi)) {
+    if (m.index == null) continue;
+    const multiple = Number(m[1]);
+    if (!Number.isFinite(multiple) || multiple <= 0 || multiple > 100) continue;
+    const before = t.slice(0, m.index);
+    if (RATIO_NAME_NEAR.test(before.slice(-120))) continue;
+    if (!AMOUNT_NOUN.test(before.slice(-200))) continue;
+    if (metricPhrase(m[2] ?? "").length < 3) continue;
+    return true;
+  }
+  return false;
+}
+
+export interface LesserOfCap {
+  fixedToken: string;
+  /** Second limb: a multiple cap, or a percent-of-metric limb (percent + metric name). */
+  limb: { kind: "MULTIPLE"; multiple: number; metricName: string } | { kind: "PERCENT"; percent: number; metricName: string };
+}
+
+/**
+ * An explicit "lesser of (a) $X and (b) N x Metric | N% of Metric" cap (either limb order).
+ * Null unless exactly one dollar token and exactly one metric limb are inside the lesser-of span.
+ * A bare "dollar and multiple" pair without the words "lesser of" is NOT a lesser-of: it stays
+ * unparsed (NEEDS_INPUT) rather than assuming the conjunction is conjunctive.
+ */
+export function parseLesserOf(text: string): LesserOfCap | null {
+  const t = norm(text);
+  const m = t.match(/\blesser\s+of\b[\s\S]{0,400}/i);
+  if (!m || m.index == null) return null;
+  const span = m[0];
+  if (/\b(?:quotient|divided\s+by|multiplied\s+by|product\s+of)\b/i.test(span)) return null;
+  const dollars = [...span.matchAll(/\$\s*([\d,]+(?:\.\d+)?)/g)].map((x) => x[1]!.replace(/,/g, ""));
+  if (new Set(dollars).size !== 1) return null;
+  const multiples = [...span.matchAll(/(\d+(?:\.\d+)?)\s*(?:x|times)\s+(?:the\s+)?([^.;)]{3,120})/gi)];
+  const percents = [...span.matchAll(/(\d+(?:\.\d+)?)\s*%\s+of\s+(?:the\s+)?([^.;)]{3,120})/gi)];
+  if (multiples.length === 1 && percents.length === 0) {
+    const multiple = Number(multiples[0]![1]);
+    if (!Number.isFinite(multiple) || multiple <= 0 || multiple > 100) return null;
+    const metricName = metricPhrase(multiples[0]![2] ?? "");
+    if (metricName.length < 3) return null;
+    return { fixedToken: dollars[0]!, limb: { kind: "MULTIPLE", multiple, metricName } };
+  }
+  if (percents.length === 1 && multiples.length === 0) {
+    const percent = Number(percents[0]![1]);
+    if (!Number.isFinite(percent) || percent <= 0 || percent > 100) return null;
+    const metricName = metricPhrase(percents[0]![2] ?? "");
+    if (metricName.length < 3) return null;
+    return { fixedToken: dollars[0]!, limb: { kind: "PERCENT", percent, metricName } };
+  }
+  return null;
+}
+
+function evalMultiple(
+  pkg: ComputationPackage,
+  clause: BasketClause,
+  metrics: readonly MetricInput[],
+): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
+  const parsed = parseMultipleCap(clause.operativeText);
+  if (!parsed) {
+    return {
+      ...capShell("NEEDS_INPUT", "NONE", null, null, ["multiple-of-metric cap"], null),
+      note: "A multiple is present. It could not be read as a single amount cap, so no product was returned.",
+    };
+  }
+  const metric = metrics.find((item) => item.metricKey.toLowerCase() === parsed.metricName.toLowerCase());
+  if (!metric || metric.value.type !== "MONEY") {
+    return {
+      ...capShell("NEEDS_INPUT", "NONE", null, null, [parsed.metricName], null),
+      note: `Multiple of ${parsed.metricName} is not a bound metric. No other base was substituted.`,
+    };
+  }
+  const p = prov(clause);
+  const expression: IRExpression = {
+    kind: "MULTIPLY",
+    type: "MONEY",
+    exprId: `cc:${clause.stableKey}:multiple-metric`,
+    provenance: p,
+    operands: [
+      { kind: "NUMBER", type: "NUMBER", value: parsed.multiple, exprId: `cc:${clause.stableKey}:multiple-lit`, provenance: p },
+      {
+        kind: "METRIC_REFERENCE",
+        type: "MONEY",
+        metricName: metric.metricKey,
+        companyId: pkg.companyId,
+        instrumentKey: pkg.instrumentKey,
+        resolvedDefinitionId: null,
+        exprId: `cc:${clause.stableKey}:metric`,
+        provenance: p,
+      },
+    ],
+  };
+  const evaluated = run(pkg, expression, metrics);
+  const canonical = canonicalOf(evaluated.value);
+  if (evaluated.status !== "EXECUTABLE" || !canonical) {
+    return {
+      ...capShell("NEEDS_INPUT", "NONE", null, null, [parsed.metricName], null),
+      note: "Multiple-of-metric expression did not evaluate.",
+    };
+  }
+  return {
+    ...capShell("COMPUTED", "AMOUNT", canonical, metric.value.currency, [], null),
+    remainingStatus: "NEEDS_INPUT",
+    missingInputs: ["ledger usage"],
+    note: "Multiple of a bound metric from evaluateExpression. A ratio test was not converted: the multiple caps an amount. Remaining usage is not bound.",
+  };
+}
+
+/**
+ * Lesser-of cap (merge of #398 and release-1). The exact release-1 evaluation is used only when the
+ * lesser-of it parses is the same one #398's guard identified as the cap and it COMPUTED; otherwise the
+ * #398 fixed-limb AT_MOST bound (or its NEEDS_INPUT) applies. Never a fixed limb reported as the exact cap.
+ */
+function evalLesserCombined(
+  pkg: ComputationPackage,
+  clause: BasketClause,
+  metrics: readonly MetricInput[],
+): BasketPartial {
+  const text = clause.operativeText;
+  const capAt = capExtremeAt(text, "lesser");
+  const firstAt = norm(text).search(/\blesser\s+of\b/i);
+  if (capAt >= 0 && capAt === firstAt) {
+    const exact = evalLesserOf(pkg, clause, metrics);
+    if (exact.capStatus === "COMPUTED") return exact as BasketPartial;
+  }
+  return evalLesser(clause);
+}
+
+function evalLesserOf(
+  pkg: ComputationPackage,
+  clause: BasketClause,
+  metrics: readonly MetricInput[],
+): Omit<ComputedBasket, "stableKey" | "sectionRef" | "covenantFamily" | "sourceDocumentId" | "citationExcerpt" | "category" | "formulaKind" | "certification" | "scope" | "capFormula"> {
+  const parsed = parseLesserOf(clause.operativeText);
+  if (!parsed) {
+    return {
+      ...capShell("NEEDS_INPUT", "NONE", null, null, ["lesser-of limbs"], null),
+      note: "Lesser-of language is present. A limb could not be read from the text, so neither limb is used alone.",
+    };
+  }
+  const metricName = parsed.limb.metricName;
+  const metric = metrics.find((item) => item.metricKey.toLowerCase() === metricName.toLowerCase());
+  if (!metric || metric.value.type !== "MONEY") {
+    return {
+      ...capShell("NEEDS_INPUT", "NONE", null, null, [metricName], null),
+      note: "Lesser-of metric is not bound. The fixed limb is not reported as the cap.",
+    };
+  }
+  const statedMillions = dollarAmountIsMillions(clause.operativeText, parsed.fixedToken);
+  const aligned =
+    (statedMillions && metric.value.currency === "USD_MILLIONS") ||
+    (!statedMillions && metric.value.currency === "USD");
+  if (!aligned) {
+    return {
+      ...capShell("NEEDS_INPUT", "NONE", null, null, ["currency alignment between the fixed-dollar limb (USD) and the metric"], null),
+      note: "Fixed dollars and the metric are in different units. No scale factor was assumed.",
+    };
+  }
+  const currency = metric.value.currency;
+  const p = prov(clause);
+  const fixedOperand: IRExpression = {
+    kind: "MONEY",
+    type: "MONEY",
+    amount: Number(parsed.fixedToken),
+    currency,
+    exprId: `cc:${clause.stableKey}:fixed`,
+    provenance: p,
+  };
+  const metricOperand: IRExpression =
+    parsed.limb.kind === "MULTIPLE"
+      ? {
+          kind: "MULTIPLY",
+          type: "MONEY",
+          exprId: `cc:${clause.stableKey}:multiple`,
+          provenance: p,
+          operands: [
+            { kind: "NUMBER", type: "NUMBER", value: parsed.limb.multiple, exprId: `cc:${clause.stableKey}:multiple-lit`, provenance: p },
+            {
+              kind: "METRIC_REFERENCE",
+              type: "MONEY",
+              metricName: metric.metricKey,
+              companyId: pkg.companyId,
+              instrumentKey: pkg.instrumentKey,
+              resolvedDefinitionId: null,
+              exprId: `cc:${clause.stableKey}:metric`,
+              provenance: p,
+            },
+          ],
+        }
+      : {
+          kind: "MULTIPLY",
+          type: "MONEY",
+          exprId: `cc:${clause.stableKey}:pct`,
+          provenance: p,
+          operands: [
+            { kind: "PERCENT", type: "PERCENT", value: parsed.limb.percent / 100, exprId: `cc:${clause.stableKey}:pct-lit`, provenance: p },
+            {
+              kind: "METRIC_REFERENCE",
+              type: "MONEY",
+              metricName: metric.metricKey,
+              companyId: pkg.companyId,
+              instrumentKey: pkg.instrumentKey,
+              resolvedDefinitionId: null,
+              exprId: `cc:${clause.stableKey}:metric`,
+              provenance: p,
+            },
+          ],
+        };
+  const expression: IRExpression = {
+    kind: "MIN",
+    type: "MONEY",
+    exprId: `cc:${clause.stableKey}:lesser`,
+    provenance: p,
+    operands: [fixedOperand, metricOperand],
+  };
+  const evaluated = run(pkg, expression, metrics);
+  const canonical = canonicalOf(evaluated.value);
+  if (evaluated.status !== "EXECUTABLE" || !canonical) {
+    return {
+      ...capShell("NEEDS_INPUT", "NONE", null, null, [metricName], null),
+      note: "Lesser-of expression did not evaluate. No limb was substituted.",
+    };
+  }
+  return {
+    ...capShell("COMPUTED", "AMOUNT", canonical, currency, [], null),
+    remainingStatus: "NEEDS_INPUT",
+    missingInputs: ["ledger usage"],
+    note: "Lesser-of cap from evaluateExpression: both limbs bind, the smaller governs. Remaining usage is not bound.",
+  };
 }
 
 function evalPercentOfMetric(
@@ -817,6 +1141,14 @@ function capFormulaOf(category: BasketCategory, text: string): string | null {
   if (category === "PCT_OF_METRIC") {
     const match = t.match(/(?:\d+(?:\.\d+)?\s*%|[a-z]+\s+percent\s*\([^)]+\))\s+of\s+(?:the\s+)?[^.;]{3,100}/i);
     return match?.[0] ?? null;
+  }
+  if (category === "MULTIPLE_OF_METRIC") {
+    const match = t.match(/\d+(?:\.\d+)?\s*(?:x|times)\s+(?:the\s+)?[^.;]{3,100}/i);
+    return match?.[0] ?? null;
+  }
+  if (category === "LESSER_OF") {
+    const match = t.match(/lesser\s+of\s+\(?[a-z0-9]+\)?\s+\$\s*[\d,]+(?:\.\d+)?(?:\s+million)?\s+(?:and|or)\s+\(?[a-z0-9]+\)?\s+(?:\d+(?:\.\d+)?\s*(?:x|times)\s+(?:the\s+)?[^.;]{3,80}|\d+(?:\.\d+)?\s*%\s+of\s+(?:the\s+)?[^.;]{3,80})/i);
+    return match?.[0] ?? "lesser of fixed dollar and multiple / percent of metric";
   }
   if (category === "RATIO_BASED") {
     const classified = classifyRatioIncurrencePermission(t);
@@ -973,4 +1305,17 @@ export function greaterOfMissingInputs(text: string): string[] {
     if (limbs.length === 2) return limbs;
   }
   return ["greater-of fixed limb", "percent limb", "metric"];
+}
+
+/** Limbs of the first "sum of" that are neither a dollar figure nor a percentage of a metric (named balances). */
+export function namedSumLimbs(text: string): string[] {
+  const m = /\bsum of\b\s*:?/i.exec(text);
+  if (!m) return [];
+  const rest = text.slice(m.index + m[0].length).split(/[;.](?:\s|$)/)[0]!;
+  const limbs = rest.split(/\s*(?:\((?:[a-z]|[ivx]{1,4}|[A-Z]|\d{1,2})\)|,?\s+\bplus\b|,?\s+\band\b(?=\s+(?:\([A-Za-z0-9]{1,4}\)|the\b|\$|\d)))\s*/).map((x) => x.trim().replace(/^[,\s]+|[,\s]+$/g, "")).filter((x) => x.length > 2);
+  if (limbs.length < 2) return [];
+  return limbs
+    .filter((x) => !/\$\s?[\d,]/.test(x) && !/\d+(?:\.\d+)?\s*%\s+of\b/i.test(x))
+    // Structural: every additive limb that states no dollar figure and no percentage of a metric is valueless here.
+    .map((x) => x.slice(0, 80));
 }

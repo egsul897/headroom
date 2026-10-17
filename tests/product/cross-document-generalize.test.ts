@@ -13,7 +13,7 @@ import { runAllAdversarialScenarios } from "@/lib/product/covenant-intelligence/
 import { runConmedDsgrCompletenessAudit } from "@/lib/product/covenant-intelligence/cross-document-completeness-audit";
 import { projectPermissionLayers } from "@/lib/product/covenant-intelligence/cross-document-permission-layers";
 import { attachNumericalCapacity } from "@/lib/product/covenant-intelligence/cross-document-capacity";
-import { buildConmedSequentialDemo } from "@/lib/product/covenant-intelligence/cross-document-sequential-state";
+import { buildConmedSequentialDemo, runCrossDocumentSequentialState } from "@/lib/product/covenant-intelligence/cross-document-sequential-state";
 import { analyzeContemplatedTransaction } from "@/lib/product/north-star-workflow/transaction-analysis";
 import { classifyUtilizationHistory } from "@/lib/product/north-star-workflow/utilization-history";
 
@@ -184,9 +184,145 @@ describe("P1 — sequential state integration (hypothetical isolation)", () => {
     expect(t3.layers.certificationStatus.legacyIsCertifiedPackagePermission).toBe(false);
     expect(t3.numerical.postsToLedger).toBe(false);
   });
+
+  it("secured-debt step consumes the tied lien basket in the evaluated track (rule 72)", () => {
+    const base = AUTHENTIC_PACKAGE_SCENARIOS.find(
+      (s) => s.scenarioId === "auth-conmed-secured-without-lien-path",
+    )!;
+    const initial = {
+      financials: { ...base.financials },
+      basketRemainingUsd: { "7.2(o)": 60_000_000, "7.3": 50_000_000 },
+      securedDebtUsd: (base.financials.securedDebt ?? 0) * 1_000_000,
+      totalDebtUsd: (base.financials.totalDebt ?? 0) * 1_000_000,
+      rpCapacityUsd: 40_000_000,
+      lienGeneralBasketUsd: 50_000_000,
+      lienBasketSectionRef: "7.3",
+      entityNotes: [] as string[],
+      utilizationHistoryStatus: classifyUtilizationHistory({
+        ledgerCount: 0,
+        utilizationAffirmedComplete: false,
+      }),
+    };
+    const secured30 = (stepId: string) => ({
+      stepId,
+      label: "Incur $30M secured debt",
+      transaction: {
+        description: "Incur $30,000,000 of secured Indebtedness.",
+        kind: "SECURED_DEBT" as const,
+        amountUsd: 30_000_000,
+        secured: true,
+        asOfDate: "2026-06-30",
+        knownFacts: { noDefault: true },
+      },
+    });
+    const seq = runCrossDocumentSequentialState({
+      provisions: base.provisions,
+      initial,
+      advanceOn: ["PERMITTED", "CONDITIONALLY_PERMITTED"],
+      steps: [secured30("s1"), secured30("s2")],
+    });
+    const s1 = seq.steps[0]!;
+    expect(s1.advanced).toBe(true);
+    // The lien consumption must land in basketRemainingUsd (the
+    // track the next evaluation reads), not only in the scalar.
+    expect(s1.post.basketRemainingUsd["7.3"]).toBe(20_000_000);
+    expect(s1.post.lienGeneralBasketUsd).toBe(20_000_000);
+    const s2 = seq.steps[1]!;
+    expect(s2.pre.basketRemainingUsd["7.3"]).toBe(20_000_000);
+    expect(s2.pre.lienGeneralBasketUsd).toBe(20_000_000);
+  });
+
+  it("explicit consumeBaskets for the tied lien section does not double-count (rule 72)", () => {
+    const base = AUTHENTIC_PACKAGE_SCENARIOS.find(
+      (s) => s.scenarioId === "auth-conmed-secured-without-lien-path",
+    )!;
+    const seq = runCrossDocumentSequentialState({
+      provisions: base.provisions,
+      initial: {
+        financials: { ...base.financials },
+        basketRemainingUsd: { "7.2(o)": 60_000_000, "7.3": 50_000_000 },
+        securedDebtUsd: (base.financials.securedDebt ?? 0) * 1_000_000,
+        totalDebtUsd: (base.financials.totalDebt ?? 0) * 1_000_000,
+        rpCapacityUsd: 40_000_000,
+        lienGeneralBasketUsd: 50_000_000,
+        lienBasketSectionRef: "7.3",
+        entityNotes: [] as string[],
+        utilizationHistoryStatus: classifyUtilizationHistory({
+          ledgerCount: 0,
+          utilizationAffirmedComplete: false,
+        }),
+      },
+      advanceOn: ["PERMITTED", "CONDITIONALLY_PERMITTED"],
+      steps: [
+        {
+          stepId: "s1",
+          label: "Incur $30M secured debt with explicit $10M lien-basket consumption",
+          transaction: {
+            description: "Incur $30,000,000 of secured Indebtedness.",
+            kind: "SECURED_DEBT" as const,
+            amountUsd: 30_000_000,
+            secured: true,
+            asOfDate: "2026-06-30",
+            knownFacts: { noDefault: true },
+          },
+          consumeBaskets: [{ sectionRef: "7.3", amountUsd: 10_000_000 }],
+        },
+      ],
+    });
+    const s1 = seq.steps[0]!;
+    expect(s1.advanced).toBe(true);
+    // One deduction (the explicit $10M), scalar mirrors the basket.
+    expect(s1.post.basketRemainingUsd["7.3"]).toBe(40_000_000);
+    expect(s1.post.lienGeneralBasketUsd).toBe(40_000_000);
+  });
 });
 
 describe("P2 — canonical product integration", () => {
+  it("same-ref provisions get distinct codes and correct family filtering (rule 73)", () => {
+    const scenario = AUTHENTIC_PACKAGE_SCENARIOS.find(
+      (s) => s.scenarioId === "auth-gibraltar-general-debt-basket",
+    )!;
+    const run = runAuthenticPackageScenario(scenario);
+    const fact = (
+      family: "DEBT_INCURRENCE" | "LIENS" | "INVESTMENTS",
+      capacityUsd: number,
+    ): import("@/lib/product/covenant-intelligence/cross-document-covenant").OperativeProvisionFact => ({
+      documentId: "doc-1",
+      documentLabel: "Test Credit Agreement",
+      documentRole: "CREDIT_AGREEMENT",
+      sectionRef: "7.2",
+      family,
+      posture: "PERMISSION",
+      statement: `${family} permission under §7.2.`,
+      excerpt: "Test excerpt.",
+      capacityUsd,
+      conditions: [],
+      definitionRefs: [],
+      crossDocumentTargets: [],
+    });
+    // Two permissions under the SAME sectionRef: the old code
+    // mapped both to code "7_2", so the engine's (documentId,
+    // code) Map kept only the second (40M) and MAX(60, 40)
+    // collapsed to 40M.
+    const numerical = attachNumericalCapacity({
+      verdict: run.verdict,
+      provisions: [fact("DEBT_INCURRENCE", 60_000_000), fact("LIENS", 40_000_000)],
+      financials: scenario.financials,
+    });
+    expect(numerical.documentSummaries).toHaveLength(1);
+    expect(numerical.documentSummaries[0]!.unsecuredCapacityMillions).toBe(60);
+    // Family lookup half: the FIRST same-ref fact is INVESTMENTS
+    // (not a debt family). The old re-lookup by (sectionRef,
+    // documentId) returned it for BOTH provisions, excluding the
+    // LIENS permission from the debt formula entirely.
+    const numerical2 = attachNumericalCapacity({
+      verdict: run.verdict,
+      provisions: [fact("INVESTMENTS", 100_000_000), fact("LIENS", 40_000_000)],
+      financials: scenario.financials,
+    });
+    expect(numerical2.documentSummaries[0]!.unsecuredCapacityMillions).toBe(40);
+  });
+
   it("numerical attach remains postsToLedger=false and conditionsSeparatelyEvaluated", () => {
     const scenario = AUTHENTIC_PACKAGE_SCENARIOS.find((s) => s.scenarioId === "auth-gibraltar-general-debt-basket")!;
     const run = runAuthenticPackageScenario(scenario);

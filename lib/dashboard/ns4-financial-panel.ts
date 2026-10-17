@@ -18,6 +18,10 @@ import {
   type RuntimeValue,
 } from "@/lib/contract-model/north-star-bridge";
 import { loadTransactionWorkflowReadiness } from "@/lib/product/north-star-workflow/transaction-readiness";
+import {
+  labelCutoffSnapshot,
+  type CutoffSnapshotStatus,
+} from "@/lib/product/north-star-workflow/cutoff-snapshot-label";
 import { NS4_PRODUCT_CUTOFF_SELECTOR } from "@/lib/product/north-star-workflow/approved-financial-inputs";
 import {
   computeNs4ContractualNetLeverage,
@@ -27,7 +31,8 @@ import {
 export type Ns4DashboardFinancialStatus =
   | "NEEDS_INPUT"
   | "APPROVED_INVENTORY"
-  | "APPROVED_BOUND";
+  | "APPROVED_BOUND"
+  | "SUPERSEDED_BOUND";
 
 export interface Ns4DashboardFact {
   key: string;
@@ -50,9 +55,14 @@ export interface Ns4DashboardFinancialState {
     reportingPeriodKey: string | null;
     asOf: string | null;
     approvedSnapshotId: string | null;
+    /** Raw cutoff-bound snapshot id — APPROVED or SUPERSEDED (see rule 78). */
+    cutoffSnapshotId: string | null;
+    cutoffSnapshotStatus: CutoffSnapshotStatus;
   };
   boundSnapshot: {
     snapshotId: string;
+    /** Actual status of the bound snapshot — may be SUPERSEDED (rule 78). */
+    status: "APPROVED" | "SUPERSEDED";
     reportingPeriod: string | null;
     asOf: string | null;
     approvalRef: string | null;
@@ -158,11 +168,17 @@ export async function loadNs4DashboardFinancialState(args: {
   const legacyNote =
     "LEGACY_ENGINE covenant/financial figures elsewhere on this Dashboard are not NS-4 APPROVED certificate facts and are not certified Phase 4A–4E capacity.";
 
+  const cutoffLabel = labelCutoffSnapshot(
+    readiness.cutoff?.snapshotId ?? null,
+    approved.map((s) => s.snapshotId),
+  );
   const cutoff = {
     state: readiness.cutoff?.state ?? "NEEDS_INPUT",
     reportingPeriodKey: readiness.cutoff?.reportingPeriodKey ?? null,
     asOf: readiness.cutoff?.asOf ?? null,
-    approvedSnapshotId: readiness.cutoff?.snapshotId ?? null,
+    approvedSnapshotId: cutoffLabel.approvedSnapshotId,
+    cutoffSnapshotId: cutoffLabel.cutoffSnapshotId,
+    cutoffSnapshotStatus: cutoffLabel.cutoffSnapshotStatus,
   };
 
   const inventory = inventoryFrom(approved);
@@ -202,8 +218,13 @@ export async function loadNs4DashboardFinancialState(args: {
   if (bound) {
     const facts = factsFromSnapshot(bound);
     const leverageIr = computeNs4ContractualNetLeverage({ companyId, boundSnapshot: bound });
+    // Rule 78: a SUPERSEDED bound snapshot (historical delivery
+    // binding) must never be labeled APPROVED_BOUND / NS4_APPROVED.
+    const boundIsApproved = bound.status === "APPROVED";
     evidence.push(
-      `Cutoff-bound snapshot ${bound.snapshotId} (${bound.reportingPeriod ?? "no-period"} asOf ${bound.asOf ?? "—"}) with ${facts.length} fact(s).`,
+      boundIsApproved
+        ? `Cutoff-bound snapshot ${bound.snapshotId} (${bound.reportingPeriod ?? "no-period"} asOf ${bound.asOf ?? "—"}) with ${facts.length} fact(s).`
+        : `Cutoff-bound SUPERSEDED snapshot ${bound.snapshotId} (${bound.reportingPeriod ?? "no-period"} asOf ${bound.asOf ?? "—"}) with ${facts.length} fact(s) — historical delivery binding; NOT current approved facts.`,
     );
     evidence.push(...leverageIr.evidence);
     const mergedMissing = [
@@ -212,13 +233,14 @@ export async function loadNs4DashboardFinancialState(args: {
     ];
     return {
       companyId,
-      status: "APPROVED_BOUND",
-      authority: "NS4_APPROVED",
+      status: boundIsApproved ? "APPROVED_BOUND" : "SUPERSEDED_BOUND",
+      authority: boundIsApproved ? "NS4_APPROVED" : "NONE",
       approvedSnapshotCount: approved.length,
       evaluationDate: args.evaluationDate ?? null,
       cutoff,
       boundSnapshot: {
         snapshotId: bound.snapshotId,
+        status: bound.status === "APPROVED" ? "APPROVED" : "SUPERSEDED",
         reportingPeriod: bound.reportingPeriod,
         asOf: bound.asOf,
         approvalRef: bound.review.approvalRef,

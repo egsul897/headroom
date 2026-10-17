@@ -79,12 +79,21 @@ export function renderCovenantReviewMarkdown(review: CovenantReviewWorkspace): s
         lines.push("");
       }
       if ((item.dependencies?.length ?? 0) > 0) {
-        lines.push(`**Dependencies:** ${item.dependencies!.slice(0, 6).join("; ")}`);
+        // Rule 100: the export must not silently drop
+        // dependencies past the cap while closing with
+        // "End of report" (implying completeness).
+        const deps = item.dependencies!;
+        lines.push(
+          `**Dependencies:** ${deps.slice(0, 6).join("; ")}${deps.length > 6 ? ` (+${deps.length - 6} more)` : ""}`,
+        );
         lines.push("");
       }
       if ((item.unresolvedQuestions?.length ?? 0) > 0) {
         lines.push(`**Unresolved:**`);
         for (const u of item.unresolvedQuestions!.slice(0, 4)) lines.push(`- ${u}`);
+        if (item.unresolvedQuestions!.length > 4) {
+          lines.push(`- (+${item.unresolvedQuestions!.length - 4} more unresolved questions)`);
+        }
         lines.push("");
       }
     }

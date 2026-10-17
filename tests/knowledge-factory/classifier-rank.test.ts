@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { classifyDebtDocument, stripIdentityTokens } from "../../lib/knowledge-factory/classify/debt-document";
 import { scoreDiscoveryPotential } from "../../lib/knowledge-factory/rank/discovery-score";
-import { classifyFamiliesFromText } from "../../lib/knowledge-factory/taxonomy/families";
+import { classifyFamiliesFromText, stripCatchAllFallback } from "../../lib/knowledge-factory/taxonomy/families";
+import { discoverCovenantCandidates } from "../../lib/knowledge-factory/pipeline/candidates";
+import type { StructuralNodeRecord } from "../../lib/knowledge-factory/types";
 import { detectPatternsInText } from "../../lib/knowledge-factory/patterns/library";
 import {
   assertKnowledgeFactoryCannotWriteCapacity,
@@ -30,6 +32,33 @@ describe("debt-document classifier", () => {
   it("preserves UNKNOWN for non-debt amendment false positives", () => {
     const r = classifyDebtDocument({ title: "Tax Benefit Preservation Plan Amendment", description: "Amendment No. 5 to Tax Benefit Preservation Plan" });
     expect(r.documentClass).toBe("UNKNOWN");
+  });
+
+  it("classifies an amendment by its own title line when metadata is a bare filename (rule 181)", () => {
+    // Real failure: a customer upload named "EX-10.1.htm" whose
+    // document titles itself "AMENDMENT NO. 1" classified as
+    // CREDIT_AGREEMENT (its body quotes the base agreement), so a
+    // base+amendment package saw two bases and zero amendments.
+    const r = classifyDebtDocument({
+      title: "expand-ex10-1.htm",
+      description: "expand-ex10-1.htm",
+      filename: "expand-ex10-1.htm",
+      exhibitType: "EX-10.1",
+      textSample:
+        "EXHIBIT 10.1\n\nExecution Version\n\nAMENDMENT NO. 1\n\nThis AMENDMENT NO. 1 (this \"Agreement\") dated as of October 6, 2026, is among EXPAND ENERGY CORPORATION, as Borrower, and JPMORGAN CHASE BANK, N.A., as Administrative Agent.\n\nRecitals\n\nA. WHEREAS, the Borrower, the Lenders and the Administrative Agent are parties to that certain Amended and Restated Credit Agreement dated as of September 30, 2025.\n\nSection 1.01 of the Existing Credit Agreement is hereby amended as follows.",
+    });
+    expect(r.documentClass).toBe("AMENDMENT");
+  });
+
+  it("does not treat a base agreement's opening-sentence mention of a prior amendment as an amendment (rule 181)", () => {
+    const r = classifyDebtDocument({
+      title: "Credit Agreement",
+      description: "Credit Agreement",
+      filename: "credit-agreement.htm",
+      textSample:
+        "CREDIT AGREEMENT dated as of January 1, 2024, among ACME CORP, as Borrower, as amended by Amendment No. 1 dated as of June 1, 2024, and the Lenders party hereto.\n\nARTICLE I\n\nSection 1.01 Defined Terms.",
+    });
+    expect(r.documentClass).toBe("CREDIT_AGREEMENT");
   });
 
   it("classifies numbered omnibus amendments as AMENDMENT", () => {
@@ -74,6 +103,58 @@ describe("discovery ranking + taxonomy + patterns", () => {
     expect(patterns).toContain("greater-of-basket");
     expect(patterns).toContain("builder-basket");
     expect(patterns).toContain("no-default-condition");
+  });
+});
+
+describe("rule 155: catch-all family is a fallback, never a co-label", () => {
+  it("drops the catch-all when a specific family matched via the heading", () => {
+    // "Conditions to Borrowing" trips the catch-all heading pattern
+    // /\bConditions?\b/i, but the body is Indebtedness language.
+    const families = classifyFamiliesFromText(
+      "The Borrower shall not incur Indebtedness except Permitted Indebtedness.",
+      "Section 4.01 Conditions to Borrowing",
+    );
+    expect(families).toContain("INDEBTEDNESS");
+    expect(families).not.toContain("GENERAL_CONDITIONS_AND_EXCEPTIONS");
+  });
+
+  it("keeps the catch-all when nothing specific matched", () => {
+    const families = classifyFamiliesFromText(
+      "The obligations are subject to the following conditions precedent: delivery of certificates.",
+      "Section 3.01 Conditions Precedent",
+    );
+    expect(families).toEqual(["GENERAL_CONDITIONS_AND_EXCEPTIONS"]);
+  });
+
+  it("stripCatchAllFallback keeps UNKNOWN-only lists untouched", () => {
+    expect(stripCatchAllFallback(["UNKNOWN"])).toEqual(["UNKNOWN"]);
+    expect(stripCatchAllFallback(["GENERAL_CONDITIONS_AND_EXCEPTIONS", "UNKNOWN"])).toEqual([
+      "GENERAL_CONDITIONS_AND_EXCEPTIONS",
+      "UNKNOWN",
+    ]);
+  });
+
+  it("candidate merge drops the ranker re-injected catch-all", () => {
+    // The ranker's amendments_cross_refs signal matches any bare
+    // "Section X.Y", so without the rule this candidate would carry
+    // GENERAL_CONDITIONS_AND_EXCEPTIONS alongside INDEBTEDNESS.
+    const text =
+      "Section 7.01 Indebtedness. The Borrower shall not incur Indebtedness except Permitted Indebtedness, including the greater of $50,000,000 and 10% of Consolidated EBITDA. See Section 7.02.";
+    const nodes: StructuralNodeRecord[] = [
+      {
+        nodeId: "n1",
+        sourceId: "src-1",
+        nodeType: "SECTION",
+        sectionRef: "7.01",
+        heading: "Section 7.01 Indebtedness",
+        charStart: 0,
+        charEnd: text.length,
+      },
+    ];
+    const candidates = discoverCovenantCandidates("src-1", text, nodes);
+    expect(candidates).toHaveLength(1);
+    expect(candidates[0]!.families).toContain("INDEBTEDNESS");
+    expect(candidates[0]!.families).not.toContain("GENERAL_CONDITIONS_AND_EXCEPTIONS");
   });
 });
 

@@ -67,7 +67,7 @@ export function evaluationIdentity(
   return {
     rulesetVersion: ruleset.rulesetVersion,
     rulesetSha256: ruleset.rulesetSha256,
-    snapshotSha256: sha256(canonicalJson(pairs)),
+    snapshotSha256: snapshotIdentitySha256(pairs),
     sourceHashes: Object.fromEntries(pairs),
     ...(scorerConfig ? { scorerConfig } : {}),
   };
@@ -328,4 +328,45 @@ export function verifyHistory(
   }
   if (latest?.legacy) reasons.push("latest baseline history entry is legacy (no evaluation identity): gate cannot compare");
   return { reasons, thresholds: latest?.thresholds ?? DEFAULT_THRESHOLDS, latest };
+}
+
+/** Snapshot identity: sha256 over the sorted (sourceId, inputSha256) pairs. Shards record it for the WHOLE snapshot. */
+export function snapshotIdentitySha256(pairs: readonly (readonly [string, string])[]): string {
+  return sha256(canonicalJson([...pairs].sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0))));
+}
+
+/** What a --shard=i/n run records about the whole snapshot it was cut from. */
+export interface ShardInfo {
+  index: number;
+  count: number;
+  /** Identity of the FULL snapshot (all sources), the same formula as EvaluationIdentity.snapshotSha256. */
+  snapshotSha256: string;
+  snapshotSourceIds: string[];
+}
+
+/**
+ * Check a shard set before merging: same ruleset/scorer identity, same full-snapshot identity, every shard index
+ * 0..n-1 exactly once, no source in two shards, and no snapshot source missing. The merged report's own identity must
+ * then equal the recorded full-snapshot identity. Throws on any violation.
+ */
+export function verifyShardSet(reports: readonly { rulesetVersion: number; mode: string; identity?: EvaluationIdentity | null; shard?: ShardInfo | null; perSource: { sourceId: string }[] }[]): ShardInfo {
+  if (reports.length === 0) throw new Error("no shards");
+  const ids = new Set(reports.map((r) => JSON.stringify([r.rulesetVersion, r.identity?.rulesetSha256 ?? null, r.identity?.scorerConfig ?? null, r.mode])));
+  if (ids.size !== 1) throw new Error(`shards disagree on ruleset/scorer identity: ${[...ids].join(" | ")}`);
+  if (reports.some((r) => !r.shard)) throw new Error("shard report without shard/snapshot identity (re-run with a current scoreboard)");
+  const snaps = new Set(reports.map((r) => `${r.shard!.snapshotSha256}/${r.shard!.count}`));
+  if (snaps.size !== 1) throw new Error(`shards come from different snapshots or shard counts: ${[...snaps].join(" | ")}`);
+  const info = reports[0]!.shard!;
+  const idx = reports.map((r) => r.shard!.index).sort((a, b) => a - b);
+  if (idx.length !== info.count || idx.some((v, i) => v !== i)) throw new Error(`shard set incomplete or duplicated: have [${idx.join(",")}] of ${info.count}`);
+  const seen = new Set<string>();
+  for (const r of reports) for (const s of r.perSource) {
+    if (seen.has(s.sourceId)) throw new Error(`source scored in two shards: ${s.sourceId}`);
+    seen.add(s.sourceId);
+  }
+  const missing = info.snapshotSourceIds.filter((id) => !seen.has(id));
+  if (missing.length) throw new Error(`${missing.length} snapshot source(s) missing from the shards: ${missing.slice(0, 5).join(", ")}${missing.length > 5 ? ", ..." : ""}`);
+  const extra = [...seen].filter((id) => !info.snapshotSourceIds.includes(id));
+  if (extra.length) throw new Error(`${extra.length} source(s) not in the snapshot: ${extra.slice(0, 5).join(", ")}`);
+  return info;
 }

@@ -108,6 +108,9 @@ function metricRef(
 
 /**
  * Build and evaluate Total Net Leverage IR against one APPROVED bound snapshot.
+ * A non-APPROVED bound snapshot (e.g. SUPERSEDED via historical delivery
+ * binding) is refused — the result is labeled "from APPROVED NS-4 money
+ * facts", so computing it from superseded facts would be a false claim.
  */
 export function computeNs4ContractualNetLeverage(args: {
   companyId: string;
@@ -142,6 +145,34 @@ export function computeNs4ContractualNetLeverage(args: {
   }
 
   const snap = args.boundSnapshot;
+  // Rule 80: the leverage IR is labeled "from APPROVED NS-4 money
+  // facts". A SUPERSEDED (or otherwise non-APPROVED) bound snapshot
+  // — possible via historical delivery binding — must never be
+  // computed-and-labeled as APPROVED. Refuse, like the null case.
+  if (snap.status !== "APPROVED") {
+    return {
+      status: "NOT_BOUND",
+      computedRatio: null,
+      formula,
+      components: {
+        ebitdaKey: null,
+        ebitdaDisplay: null,
+        debtKey: null,
+        debtDisplay: null,
+        cashKey: null,
+        cashDisplay: null,
+      },
+      reportedRatioDisplay: null,
+      missingInputs: ["cutoff_bound_APPROVED_snapshot"],
+      evidence: [
+        `Bound snapshot ${snap.snapshotId} has status ${snap.status}, not APPROVED — leverage IR not evaluated from non-approved facts.`,
+      ],
+      calculationSteps: [],
+      capacitySeparationNote,
+      runtimeStatus: null,
+    };
+  }
+
   const ebitda = findMoney(snap, EBITDA_KEYS);
   const debt = findMoney(snap, DEBT_KEYS);
   const cash = findMoney(snap, CASH_KEYS);

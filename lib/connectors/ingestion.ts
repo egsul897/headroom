@@ -32,7 +32,7 @@
 
 import { type CompanySourceConnection, type IngestionJob, type IngestionJobKind, type IngestionJobStage, type IngestionStageKind, Prisma } from "@prisma/client";
 import { prisma } from "../prisma";
-import { getDocumentStorageProvider } from "../document-storage";
+import { getDocumentStorageProvider, getDocumentStorageProviderForRef } from "../document-storage";
 import { chunkDocument } from "../extraction/chunk";
 import { parseDocument } from "../extraction/parse";
 import { persistDocumentChunks } from "../extraction/persist-chunks";
@@ -125,7 +125,7 @@ async function buildConnector(connection: CompanySourceConnection, discoverOutpu
     if (typeof inputStorageRef !== "string") {
       throw new Error(`buildConnector: CSV_FINANCIAL connection ${connection.id} has no inputStorageRef on its DISCOVER stage output - was createIngestionJob called with rawInput?`);
     }
-    const bytes = await getDocumentStorageProvider().retrieve(inputStorageRef);
+    const bytes = await getDocumentStorageProviderForRef(inputStorageRef).retrieve(inputStorageRef);
     const connector = new CsvFinancialConnector({ rawCsv: bytes, sourceLabel: connection.id });
     await connector.discover({}); // hydrate internal parse state deterministically from the same persisted bytes
     return connector;

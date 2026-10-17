@@ -32,15 +32,27 @@
  * occurrence when more than one node shares the requested reference).
  */
 import type { StructuralNode } from "./types";
+import { validateStructuralIntegrity } from "./structural-integrity";
 import type { DetectedDefinition } from "./structural-definitions";
 import type { DetectedReference } from "./structural-references";
 
 export type TextMode = "OWN" | "DESCENDANTS";
 
 /** Cardinality-aware legal-reference resolution result (task §6B/I13/I14) - never collapses AMBIGUOUS to a silent pick. */
-export type RefResolution = { status: "UNIQUE"; node: StructuralNode } | { status: "NOT_FOUND" } | { status: "AMBIGUOUS"; candidates: StructuralNode[] };
+export type RefResolution =
+  | { status: "UNIQUE"; node: StructuralNode }
+  | { status: "NOT_FOUND" }
+  | { status: "AMBIGUOUS"; candidates: StructuralNode[] }
+  /** Phase C (D14): the citation could not be normalized into a
+   * canonical ref at all (empty, or no ref-shaped content) —
+   * distinct from NOT_FOUND (a well-formed ref with no matching
+   * node). Callers must not treat an unnormalizable citation as
+   * evidence that the section does not exist. */
+  | { status: "UNRESOLVABLE"; rawRef: string };
 
 export type StructuralHealthFindingCode =
+  /** Phase B: a structural-integrity contract violation (see structural-integrity.ts). */
+  | "STRUCTURAL_INTEGRITY"
   | "DUPLICATE_OCCURRENCE_ID"
   | "IMPOSSIBLE_PARENT"
   /**
@@ -228,8 +240,40 @@ export interface StructuralIndex {
   getDocumentText(documentId: string): string | undefined;
 }
 
-function normalizeRef(ref: string): string {
-  return ref.replace(/\s+/g, "");
+/**
+ * Phase C (D14): canonical ref normalization. A citation and a
+ * node match when they denote the same ref, whatever surface
+ * form the citation used: "Section 6.01" == "§6.01" == "6.01";
+ * article "VI" == "6"; OCR "7.0l" == "7.01". Returns null when
+ * the input has no ref-shaped content (empty, or no digits /
+ * roman numeral) — the caller reports UNRESOLVABLE, never
+ * NOT_FOUND, so a lookup miss is distinguishable from genuine
+ * absence.
+ */
+export function normalizeRef(ref: string): string | null {
+  let s = ref.replace(/\s+/g, "");
+  s = s.replace(/^(?:Section|Sections|Article|Articles|§|Sec\.?|Art\.?)/i, "");
+  if (!s) return null;
+  // OCR digit recovery (same closed set as the parser's
+  // normalizeOcrSectionNumber): l/I -> 1, O -> 0, S -> 5, B -> 8,
+  // only in digit positions.
+  s = s.replace(/[lI]/g, "1").replace(/O/g, "0").replace(/S/g, "5").replace(/B/g, "8");
+  // Roman article numeral -> arabic, so "VI" and "6" key alike.
+  // Only when the whole ref is a bare roman numeral (an article
+  // ref); dotted refs ("6.01") already start with arabic digits.
+  if (/^[IVXLC]+$/i.test(s)) {
+    const values: Record<string, number> = { I: 1, V: 5, X: 10, L: 50, C: 100 };
+    let total = 0;
+    let prev = 0;
+    for (let i = s.length - 1; i >= 0; i--) {
+      const v = values[s[i]!.toUpperCase()] ?? 0;
+      total = v < prev ? total - v : total + v;
+      prev = v;
+    }
+    return String(total);
+  }
+  if (!/[0-9]/.test(s)) return null;
+  return s;
 }
 
 /**
@@ -258,7 +302,23 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
   // ---- Legal-reference / label multimaps (I2/I3/I15) - always many-valued, never a singleton overwrite ----
   const nodesByLegalRefKey = new Map<string, StructuralNode[]>(); // `${documentId}::${normalizedSectionRef}` -> ALL matching physical occurrences
 
-  for (const [documentId, { nodes }] of nodesByDocument) {
+  for (const [documentId, { nodes, text }] of nodesByDocument) {
+    // Phase B (D12/D15): enforce the structural-integrity contract
+    // at the index boundary. The validator runs on the input AS
+    // GIVEN (pre-sort) so SORTED violations can actually fire —
+    // sorting first would hide unsorted input. Violations become
+    // ERROR health diagnostics (visible, never silent), and the
+    // index still builds (fail-closed downstream, not a crash).
+    const integrity = validateStructuralIntegrity(nodes, text.length);
+    for (const v of integrity.violations) {
+      health.push({
+        code: "STRUCTURAL_INTEGRITY",
+        severity: "ERROR",
+        documentId,
+        nodeId: v.nodeId ?? undefined,
+        message: `[${v.invariant}] ${v.diagnostic}`,
+      });
+    }
     const sorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
     for (const n of sorted) {
       // I1/I5 - duplicate occurrence id is a hard-fail health finding, never a silent overwrite. Should be
@@ -271,10 +331,16 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
       nodesById.set(n.nodeId, n);
       allNodesSorted.push(n);
 
-      const legalRefKey = `${documentId}::${normalizeRef(n.sectionRef)}`;
-      const list = nodesByLegalRefKey.get(legalRefKey) ?? [];
-      list.push(n);
-      nodesByLegalRefKey.set(legalRefKey, list);
+      const legalRefKey = normalizeRef(n.sectionRef);
+      if (legalRefKey !== null) {
+        const key = `${documentId}::${legalRefKey}`;
+        const list = nodesByLegalRefKey.get(key) ?? [];
+        list.push(n);
+        nodesByLegalRefKey.set(key, list);
+      }
+      // A node whose ref does not normalize (e.g. "AMBIGUOUS")
+      // is not indexed by ref — it is still in nodesById and
+      // reachable by occurrence, just not by label lookup.
 
       if (n.parentNodeId) {
         const kids = childrenByParentId.get(n.parentNodeId) ?? [];
@@ -569,14 +635,18 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
   }
 
   function resolveUniqueNodeByRef(documentId: string, sectionRef: string): RefResolution {
-    const matches = nodesByLegalRefKey.get(`${documentId}::${normalizeRef(sectionRef)}`) ?? [];
+    const norm = normalizeRef(sectionRef);
+    if (norm === null) return { status: "UNRESOLVABLE", rawRef: sectionRef };
+    const matches = nodesByLegalRefKey.get(`${documentId}::${norm}`) ?? [];
     if (matches.length === 0) return { status: "NOT_FOUND" };
     if (matches.length === 1) return { status: "UNIQUE", node: matches[0]! };
     return { status: "AMBIGUOUS", candidates: [...matches] };
   }
 
   function findNodesByRef(documentId: string, sectionRef: string): StructuralNode[] {
-    return [...(nodesByLegalRefKey.get(`${documentId}::${normalizeRef(sectionRef)}`) ?? [])];
+    const norm = normalizeRef(sectionRef);
+    if (norm === null) return [];
+    return [...(nodesByLegalRefKey.get(`${documentId}::${norm}`) ?? [])];
   }
 
   const rootsList = allNodesSorted.filter((n) => n.parentNodeId === null);

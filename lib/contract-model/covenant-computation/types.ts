@@ -38,6 +38,8 @@ export type BasketCategory =
   /** "the lesser of $X and Y% of M": the cap is at most the smallest known limb. */
   | "LESSER_OF"
   | "PCT_OF_METRIC"
+  | "MULTIPLE_OF_METRIC"
+  | "LESSER_OF"
   | "RATIO_BASED"
   | "BUILDER_AVAILABLE_AMOUNT"
   | "UNLIMITED"

@@ -24,6 +24,7 @@ import {
   type OperativeResolutionView,
 } from "./operative-resolution";
 import type { KnowledgeSourceRecord } from "../../knowledge-factory/types";
+import { executiveUnresolved } from "./executive-unresolved";
 
 export interface CovenantReviewCategoryBlock {
   category: CovenantCategoryKey;
@@ -37,6 +38,14 @@ export interface CovenantReviewWorkspace {
   analyzedOkCount: number;
   failedCount: number;
   totalSummaries: number;
+  /** Total discovered items across all documents (pre-cap) — every
+   * discovered item is accounted for, even ones beyond the summary
+   * cap. Awaiting items are NOT reviewed, NOT rejected, NOT
+   * irrelevant — they are unanalyzed and capacity must disclose
+   * that incompleteness. */
+  totalDiscovered: number;
+  /** Discovered items beyond the summary cap: awaiting analysis. */
+  awaitingAnalysis: number;
   executive: {
     headline: string;
     materialRestrictions: string[];
@@ -86,11 +95,25 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
 
   const byCategory = new Map<CovenantCategoryKey, CovenantReviewCategoryBlock>();
   let totalSummaries = 0;
+  let totalDiscovered = 0;
+  // Phase C (D11): the queue is the review surface — one row
+  // per compilable unit (sourceId, sectionRef, category, nodeId).
+  // Two items sharing (ref, category) are distinct occurrences
+  // (CA §5.01 vs Guaranty §5.01) with distinct decisions and
+  // distinct compiles — both rows appear, keyed by nodeId.
+  const seenQueueKeys = new Set<string>();
 
   for (const doc of documents) {
     if (!doc.summary) continue;
+    // Account for every discovered item, including ones beyond
+    // the summary cap — they are awaiting analysis, never silently
+    // dropped and never labeled reviewed/rejected/irrelevant.
+    totalDiscovered += doc.summary.totalItemsBeforeCap ?? doc.summary.items.length;
     for (const item of doc.summary.items) {
       totalSummaries += 1;
+      const queueKey = `${doc.sourceId}|${item.sectionRef}|${item.category}|${item.nodeId ?? ""}`;
+      if (seenQueueKeys.has(queueKey)) continue;
+      seenQueueKeys.add(queueKey);
       const cat = item.category;
       let block = byCategory.get(cat);
       if (!block) {
@@ -116,17 +139,13 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
     .map((c) => byCategory.get(c)!)
     .map((block) => ({
       ...block,
-      items: [...block.items].sort((a, b) => a.sectionRef.localeCompare(b.sectionRef)),
+      items: [...block.items].sort((a, b) => a.sectionRef.localeCompare(b.sectionRef, undefined, { numeric: true })),
     }));
 
   const allItems = categories.flatMap((c) => c.items);
   const materialRestrictions = pickMaterial(allItems, 8);
   const materialPermissions = pickPermissions(allItems, 8);
-  const unresolved = Array.from(
-    new Set(
-      allItems.flatMap((i) => (i.unresolvedQuestions ?? []).slice(0, 1).map((u) => `§${i.sectionRef}: ${u}`)),
-    ),
-  ).slice(0, 8);
+  const unresolved = executiveUnresolved(allItems);
 
   const headline =
     analyzedOkCount === 0
@@ -193,6 +212,8 @@ export async function loadCovenantReviewWorkspace(companyId: string): Promise<Co
     analyzedOkCount,
     failedCount,
     totalSummaries,
+    totalDiscovered,
+    awaitingAnalysis: Math.max(0, totalDiscovered - totalSummaries),
     executive: {
       headline,
       materialRestrictions,

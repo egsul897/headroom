@@ -19,6 +19,7 @@
 import {
   computeLeverageMetrics,
   evaluateProvision,
+  readProvisionLegalConditionFlags,
   type CovenantProvisionInput,
   type FinancialSnapshotInput,
   type LeverageMetrics,
@@ -97,6 +98,31 @@ function isCombinable(relType: ReturnType<typeof relationshipTypeBetween>): bool
  * 2^n search, per task §14's explicit "never silently return a partial
  * positive answer."
  */
+/**
+ * Rule 196: a DEBT Permission and a LIEN Permission with NO explicit
+ * relationship are still combinable in one election when the LIEN
+ * is a residual ("other Liens") basket in the SAME document (the
+ * compile-time pairableWithDebt flag). A secured transaction needs
+ * both a debt leg and a lien leg; independent debt + lien baskets
+ * (Aon 6.16(l) + 6.11(t)) are the normal way agreements permit
+ * secured debt, and requiring a dual-grant LINK edge for every
+ * secured election false-BLOCKED them. Specific-purpose lien
+ * baskets (no flag) still never pair. Combinability only admits
+ * the election — the coverage check (lien capacity >= allocation,
+ * entity scope, eligibility) still gates it, and the lien's
+ * capacity is a shared pool (never double-counted across legs).
+ */
+function isPairableResidualLienPair(graph: PermissionGraph, aId: string, bId: string): boolean {
+  const a = graph.permissionsById.get(aId);
+  const b = graph.permissionsById.get(bId);
+  if (!a || !b) return false;
+  const debt = a.grantType === "DEBT_INCURRENCE" && b.grantType === "LIEN" ? a : a.grantType === "LIEN" && b.grantType === "DEBT_INCURRENCE" ? b : null;
+  const lien = a.grantType === "DEBT_INCURRENCE" && b.grantType === "LIEN" ? b : a.grantType === "LIEN" && b.grantType === "DEBT_INCURRENCE" ? a : null;
+  if (!debt || !lien) return false;
+  if (debt.documentId !== lien.documentId) return false;
+  return readProvisionLegalConditionFlags(lien.params).pairableWithDebt === true;
+}
+
 export function enumerateElections(eligiblePermissions: Permission[], graph: PermissionGraph, maxPermissionsPerSide = 20): EnumerationResult {
   const n = eligiblePermissions.length;
   if (n === 0) return { elections: [], candidateElections: 0, prunedElections: 0, limitExceeded: false };
@@ -118,7 +144,7 @@ export function enumerateElections(eligiblePermissions: Permission[], graph: Per
     for (let x = 0; valid && x < memberIdx.length; x++) {
       for (let y = x + 1; valid && y < memberIdx.length; y++) {
         const relType = relationshipTypeBetween(graph, ids[memberIdx[x]!]!, ids[memberIdx[y]!]!);
-        if (memberIdx.length > 1 && !isCombinable(relType)) valid = false;
+        if (memberIdx.length > 1 && !isCombinable(relType) && !isPairableResidualLienPair(graph, ids[memberIdx[x]!]!, ids[memberIdx[y]!]!)) valid = false;
       }
     }
     if (!valid) {

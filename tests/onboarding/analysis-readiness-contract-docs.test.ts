@@ -98,10 +98,10 @@ describe("analysis readiness ignores non-contract Document rows", () => {
     });
 
     await expect(
-      reviewCandidate({ candidateId: fact.id, action: "APPROVE", reviewedBy: "tester@headroom.app" }),
+      reviewCandidate({ companyId: COMPANY_ID, candidateId: fact.id, action: "APPROVE", reviewedBy: "tester@headroom.app" }),
     ).resolves.toBeTruthy();
     await expect(
-      reviewCandidate({ candidateId: permission.id, action: "APPROVE", reviewedBy: "tester@headroom.app" }),
+      reviewCandidate({ companyId: COMPANY_ID, candidateId: permission.id, action: "APPROVE", reviewedBy: "tester@headroom.app" }),
     ).rejects.toThrow(/contract analysis is ready/);
   });
 });

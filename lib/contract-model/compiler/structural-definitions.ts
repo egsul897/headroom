@@ -19,7 +19,14 @@ import type { StructuralNode } from "./types";
 
 export interface DetectedDefinition {
   documentId: string;
-  /** Exact term text as it appears between the quotes, untrimmed of internal formatting beyond outer whitespace. */
+  /** Term text as it appears between the quotes, with internal
+   * whitespace (including line breaks — a term split across two
+   * lines in the source, e.g. "Threshold\nAmount") collapsed to
+   * single spaces. The term is one phrase; a line break inside it
+   * is a layout artifact, not part of the term. Rule 197: without
+   * this, the store term "Threshold\nAmount" never matches the
+   * clause text "Threshold Amount", so the definition never
+   * attaches to the clause that uses it. */
   exactTerm: string;
   /** Lowercased, whitespace-collapsed - the same normalization persistDefinedTerms already uses for termName, so both paths converge on one identity. */
   normalizedTerm: string;
@@ -253,7 +260,10 @@ export function detectStructuralDefinitions(documentId: string, text: string, no
   const quotedColonSet = new Set(quotedColonMatches);
   const unquotedColonSet = new Set(unquotedColonMatches);
   for (const m of merged) {
-    const exactTerm = (m[1] ?? "").trim();
+    // Rule 197: collapse internal whitespace (a term split across
+    // two source lines is one phrase — "Threshold\nAmount" is
+    // "Threshold Amount").
+    const exactTerm = (m[1] ?? "").trim().replace(/\s+/g, " ");
     if (exactTerm.length === 0) continue;
     const charStart = m.index;
     const charEnd = m.index + m[0].length;

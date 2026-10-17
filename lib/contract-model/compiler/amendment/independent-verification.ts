@@ -122,10 +122,17 @@ export function verifyAmendmentEffectsIndependently(effects: AmendmentEffectCand
       // an AMBIGUOUS (2+ candidate) match must FAIL this check, exactly
       // like a NOT_FOUND one, never pass merely because something exists.
       const resolution = index.resolveUniqueNodeByRef(effect.target.targetDocumentId, effect.target.targetSectionRef);
-      targetResolutionStatus = resolution.status;
+      // Phase C (D14): UNRESOLVABLE (the citation could not be
+      // normalized into a ref at all) is NOT NOT_FOUND (a
+      // well-formed ref with no matching node). It still fails
+      // this check (fail-closed), but the issue names the
+      // distinction so a malformed citation is never mistaken
+      // for an absent section.
+      targetResolutionStatus = resolution.status === "UNRESOLVABLE" ? "NOT_FOUND" : resolution.status;
       targetSectionOrDefinitionExists = resolution.status === "UNIQUE";
       if (resolution.status === "AMBIGUOUS") issues.push(`Cited section "${effect.target.targetSectionRef}" is AMBIGUOUS in document "${effect.target.targetDocumentId}"'s own structural index (${resolution.candidates.length} distinct physical occurrences share this legal reference) - not safely attachable to a single provision.`);
       else if (resolution.status === "NOT_FOUND") issues.push(`Cited section "${effect.target.targetSectionRef}" does not resolve in document "${effect.target.targetDocumentId}"'s own structural index.`);
+      else if (resolution.status === "UNRESOLVABLE") issues.push(`Cited section "${effect.target.targetSectionRef}" could not be normalized into a canonical ref (UNRESOLVABLE) - the citation itself is malformed, which is distinct from the section being absent.`);
     } else if (effect.target.targetDocumentId && effect.target.targetDefinedTermRef) {
       targetResolutionStatus = resolveDefinitionIndependently(index, effect.target.targetDocumentId, effect.target.targetDefinedTermRef);
       // Phase 3F.1.4 §6A/§6C parity with operative-state.ts's own

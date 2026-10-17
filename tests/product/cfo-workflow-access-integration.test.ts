@@ -61,15 +61,19 @@ const emptyReadiness = (companyId: string): CapacityReadiness => ({
   capacityAuthority: "NONE",
   analyzedDocumentCount: 0,
   summaryCount: 0,
+  discoveredCount: 0,
+  awaitingAnalysisCount: 0,
   permissionCount: 0,
   unverifiedPermissionCount: 0,
   provisionCount: 0,
   hasFinancialSnapshot: false,
+  financialSnapshotStatus: "UNKNOWN",
   ns4ApprovedSnapshotCount: 0,
   approvedNorthStarSnapshotCount: 0,
   contractLedgerActiveCount: 0,
   phase3TrustedUnitCount: 0,
   phase3TrustedRuleCount: 0,
+  staleAnalyzedDocumentCount: 0,
   headline: "test",
   blockers: ["No financing documents"],
   guidance: "fail closed",
@@ -83,6 +87,10 @@ const emptyRulebook = (companyId: string): RulebookReadiness => ({
   reviewedPermissions: 0,
   executablePermissions: 0,
   provisionRows: 0,
+  staleDiscoveredSummaries: 0,
+  exceptionItems: 0,
+  exceptionDecisions: 0,
+  reviewComplete: false,
   blockers: ["No counsel-reviewed permissions"],
   headline: "test",
   note: "test",
@@ -137,6 +145,8 @@ function stubLoaders(counters: { n: number }) {
           reportingPeriodKey: null,
           asOf: null,
           approvedSnapshotId: null,
+          cutoffSnapshotId: null,
+          cutoffSnapshotStatus: null,
         },
         approvedSnapshotCount: 0,
         activeLedgerUsageCount: 0,
@@ -364,8 +374,43 @@ describe("P0 — assembler access gating (injectable identity; Neon unreachable 
     expect(counters.n).toBeGreaterThan(0);
   });
 
-  it("authenticated customer workspace read succeeds in-scope", async () => {
-    const principal = await mintScopedPrincipal(CUSTOMER_CO, [
+  it("review/approvals load failures are flagged, not silently treated as empty", async () => {
+    const counters = { n: 0 };
+    const loaders = stubLoaders(counters);
+    const failing = {
+      ...loaders,
+      loadCovenantReviewWorkspace: async (): Promise<never> => {
+        throw new Error("review workspace DB failure");
+      },
+      listReviewerApprovals: async (): Promise<never> => {
+        throw new Error("approvals DB failure");
+      },
+    };
+    const allowed = await assembleCfoWorkflow({
+      companyId: EVAL_CO,
+      companyIdentityLoader: identityLoader,
+      loaders: failing,
+    });
+    expect(allowed.ok).toBe(true);
+    if (!allowed.ok) return;
+    expect(allowed.reviewLoadFailed).toBe(true);
+    expect(allowed.approvalsLoadFailed).toBe(true);
+  });
+
+  it("review/approvals load successes report no failure", async () => {
+    const counters = { n: 0 };
+    const allowed = await assembleCfoWorkflow({
+      companyId: EVAL_CO,
+      companyIdentityLoader: identityLoader,
+      loaders: stubLoaders(counters),
+    });
+    expect(allowed.ok).toBe(true);
+    if (!allowed.ok) return;
+    expect(allowed.reviewLoadFailed).toBe(false);
+    expect(allowed.approvalsLoadFailed).toBe(false);
+  });
+
+  it("authenticated customer workspace read succeeds in-scope", async () => {    const principal = await mintScopedPrincipal(CUSTOMER_CO, [
       ...PERMISSION_BUNDLES.EVIDENCE_REVIEWER,
     ]);
     const counters = { n: 0 };

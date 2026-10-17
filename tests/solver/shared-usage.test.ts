@@ -235,6 +235,7 @@ describe("shared-usage helpers — completeness-certificate authority", () => {
       permissionCollateralScope: { findMany: async () => [] },
       ruleActivationCondition: { findMany: async () => [] },
       solverCoverageDeclaration: { findMany: async () => [] },
+      covenantProvision: { findMany: async () => [] },
     };
     const data = await loadCompanySolverStaticData(prisma as never, "co-1");
     expect(data.sharedConstraints).toHaveLength(1);

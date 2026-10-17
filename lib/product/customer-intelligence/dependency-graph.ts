@@ -33,18 +33,9 @@ export interface CovenantDependencyGraph {
 
 type ItemRef = CovenantSummaryItem & { sourceId: string; documentTitle: string };
 
-function sectionKey(item: ItemRef): string {
-  return `${item.sourceId}::${item.sectionRef}`;
-}
-
 /** Build edges among analyzed provisions in one workspace. */
 export function buildCovenantDependencyGraph(items: ItemRef[]): CovenantDependencyGraph {
   const edges: CovenantDependencyEdge[] = [];
-  const bySection = new Map<string, ItemRef>();
-  for (const item of items) {
-    bySection.set(item.sectionRef.toLowerCase(), item);
-    bySection.set(sectionKey(item).toLowerCase(), item);
-  }
 
   const debt = items.filter((i) => i.category === "DEBT_INCURRENCE");
   const liens = items.filter((i) => i.category === "LIENS_SECURED_DEBT");
@@ -93,11 +84,17 @@ export function buildCovenantDependencyGraph(items: ItemRef[]): CovenantDependen
       const m = ref.match(/(?:section|§)\s*([0-9]+(?:\.[0-9]+)?[a-z0-9().-]*)/i);
       if (!m) continue;
       const targetRef = m[1]!;
+      // Rule 49: section refs are document-scoped (rule 27 class).
+      // A bare "Section 6.02" in Doc A refers to Doc A's §6.02 —
+      // resolving across all documents let the first item in
+      // array order win, linking Doc A's reference to Doc B's
+      // §6.02. Same-document only; no same-doc target → no edge.
       const target = items.find(
         (t) =>
-          t.sectionRef === targetRef ||
-          t.sectionRef.startsWith(targetRef) ||
-          targetRef.startsWith(t.sectionRef),
+          t.sourceId === item.sourceId &&
+          (t.sectionRef === targetRef ||
+            t.sectionRef.startsWith(targetRef) ||
+            targetRef.startsWith(t.sectionRef)),
       );
       if (!target || target === item) continue;
       edges.push({
@@ -115,7 +112,11 @@ export function buildCovenantDependencyGraph(items: ItemRef[]): CovenantDependen
       const m = dep.match(/(?:section|§)\s*([0-9]+(?:\.[0-9]+)?[a-z0-9().-]*)/i);
       if (!m) continue;
       const targetRef = m[1]!;
-      const target = items.find((t) => t.sectionRef === targetRef || t.sectionRef.startsWith(targetRef));
+      const target = items.find(
+        (t) =>
+          t.sourceId === item.sourceId &&
+          (t.sectionRef === targetRef || t.sectionRef.startsWith(targetRef)),
+      );
       if (!target || target === item) continue;
       edges.push({
         kind: "CROSS_REFERENCE",
@@ -173,20 +174,34 @@ export function buildCovenantDependencyGraph(items: ItemRef[]): CovenantDependen
 }
 
 function detectSimpleCycles(edges: CovenantDependencyEdge[]): string[] {
-  const adj = new Map<string, string[]>();
+  // Document-scoped keys (rule 49): bare section refs collide
+  // across documents, so a "cycle" A→B→A spanning two docs is
+  // not a cycle. Title+ref is the doc identity edges carry.
+  const key = (title: string, ref: string) => `${title}::${ref}`;
+  const label = (title: string, ref: string) => `${ref} (${title})`;
+  const adj = new Map<string, Array<{ to: string; title: string; ref: string }>>();
+  const nodes = new Map<string, { title: string; ref: string }>();
+  const node = (title: string, ref: string) => {
+    const k = key(title, ref);
+    if (!nodes.has(k)) nodes.set(k, { title, ref });
+    return k;
+  };
   for (const e of edges) {
-    if (e.fromSectionRef === e.toSectionRef) continue;
-    const list = adj.get(e.fromSectionRef) ?? [];
-    list.push(e.toSectionRef);
-    adj.set(e.fromSectionRef, list);
+    if (e.fromSectionRef === e.toSectionRef && e.fromDocumentTitle === e.toDocumentTitle) continue;
+    const from = node(e.fromDocumentTitle, e.fromSectionRef);
+    const to = node(e.toDocumentTitle, e.toSectionRef);
+    const list = adj.get(from) ?? [];
+    list.push({ to, title: e.toDocumentTitle, ref: e.toSectionRef });
+    adj.set(from, list);
   }
   const cycles: string[] = [];
   for (const [start, neighbors] of adj) {
+    const startNode = nodes.get(start)!;
     for (const mid of neighbors) {
-      const next = adj.get(mid) ?? [];
-      if (next.includes(start)) {
-        const label = [start, mid, start].join(" → ");
-        if (!cycles.includes(label) && cycles.length < 8) cycles.push(label);
+      const next = adj.get(mid.to) ?? [];
+      if (next.some((n) => n.to === start)) {
+        const cycleLabel = [label(startNode.title, startNode.ref), label(mid.title, mid.ref), label(startNode.title, startNode.ref)].join(" → ");
+        if (!cycles.includes(cycleLabel) && cycles.length < 8) cycles.push(cycleLabel);
       }
     }
   }

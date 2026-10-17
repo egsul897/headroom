@@ -28,10 +28,36 @@ const SIGNALS: RankSignal[] = [
   { name: "available_amount", family: "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS", weight: 4, re: /\bAvailable\s+Amount\b|\bbuilder\s+basket\b/i },
   { name: "incremental_facilities", family: "INCREMENTAL_DEBT_AND_FACILITIES", weight: 3.5, re: /\bIncremental\s+(?:Facility|Equivalent|Commitments?)\b/i },
   { name: "shared_baskets", family: "SHARED_CAPACITY_PROVISIONS", weight: 4, re: /\b(?:shared|aggregate(?:d)?)\s+(?:basket|capacity|amount)\b|\bcombined\s+with\b/i },
-  { name: "amendments_cross_refs", family: "GENERAL_CONDITIONS_AND_EXCEPTIONS", weight: 2, re: /\b(?:Amendment|amends|Section\s+\d+\.\d+)\b/i },
+  { name: "amendments_cross_refs", family: "GENERAL_CONDITIONS_AND_EXCEPTIONS", weight: 2, re: /\b(?:Amendment|amends|hereby amended|amended and restated|Section\s+\d+\.\d+)\b/i },
   { name: "unrestricted_subsidiaries", family: "UNRESTRICTED_SUBSIDIARIES", weight: 2.5, re: /\bUnrestricted\s+Subsidiar/i },
-  { name: "events_of_default", family: "EVENTS_OF_DEFAULT", weight: 2, re: /\bEvents?\s+of\s+Default\b/i },
+  // No family: a bare "Event of Default" MENTION (cross-reference —
+  // "not constituting an Event of Default under Section 8.01(h)")
+  // is not a trigger, and injecting EVENTS_OF_DEFAULT here made
+  // the candidate non-operative (a liens exception became
+  // UNRESOLVED). The classifier assigns EVENTS_OF_DEFAULT only
+  // on trigger phrasing / an EoD title; this signal still boosts
+  // discovery score for EoD content.
+  { name: "events_of_default", weight: 2, re: /\bEvents?\s+of\s+Default\b/i },
   { name: "mandatory_prepayments", family: "MANDATORY_PREPAYMENTS", weight: 2.5, re: /\bMandatory\s+Prepayments?\b/i },
+  // Rule 193: a cap expressed through a DEFINED TERM ("not
+  // exceeding the Threshold Amount", "not to exceed the
+  // Available Amount") is a real basket clause even though it
+  // carries no dollar amount — without this signal the clause
+  // scores 0 and the summary's 120-item cap drops it (the
+  // real Strata 6.01(k) was invisible for exactly this reason).
+  // Two or more Capitalized words after the cap frame: a single
+  // Capitalized word is usually a party ("not exceed the
+  // Borrower"), not a defined-term cap. No family: a cap frame
+  // is generic (debt, lien, or RP) — the classifier/inheritance
+  // assigns the family, not this signal.
+  { name: "defined_term_cap", weight: 3, re: /\bnot\s+(?:to\s+)?exceed(?:ing)?\b[^.]{0,80}?\b(?:[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+)\b/ },
+  // Rule 195: a cap through a DOLLAR amount ("not to exceed
+  // $20,000,000") is a real basket clause. Without it the clause
+  // scores 0 and the summary's 120-item cap drops it (the real
+  // Strata 6.01(j) $20M basket was invisible for exactly this
+  // reason after Rule 194 added more candidates). No family: a
+  // cap frame is generic — the classifier/inheritance assigns it.
+  { name: "amount_cap", weight: 3, re: /\bnot\s+(?:to\s+)?exceed(?:ing)?\b[^.]{0,40}?\$\s*[\d,]+/ },
 ];
 
 export function scoreDiscoveryPotential(text: string, metaHaystack = ""): DiscoveryRankResult {
