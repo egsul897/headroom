@@ -6,7 +6,7 @@
  */
 import { PrismaClient } from "@prisma/client";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { boxGeneration, computeEbitdaBox, confirmEbitdaItem, latestEbitdaBox, loadConfirmations, recordEbitdaBoxFailure, refreshBoxCommitted, type EbitdaBoxStore } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
+import { boxGeneration, canonicalInputKey, computeEbitdaBox, confirmEbitdaItem, latestEbitdaBox, loadConfirmations, recordEbitdaBoxFailure, refreshBoxCommitted, type EbitdaBox, type EbitdaBoxStore } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
 import { M, args } from "./ebitda-box-fixture";
 
 const url = process.env.EBITDA_PG_TEST_URL ?? "";
@@ -16,7 +16,9 @@ if (process.env.EBITDA_PG_TEST_REQUIRED === "1" && !url) throw new Error("EBITDA
 if (url && !local) throw new Error("EBITDA_PG_TEST_URL must point at a local, ephemeral Postgres (refusing a remote host)");
 
 describe.skipIf(!url)("EBITDA box on real Postgres (transactions, advisory lock, sequence, constraints)", () => {
-  const prisma = new PrismaClient({ datasources: { db: { url } } });
+  // Enough pool connections for the concurrent writers (each waits on the lock inside its own transaction).
+  const pooled = url && !/connection_limit=/.test(url) ? `${url}${url.includes("?") ? "&" : "?"}connection_limit=40` : url;
+  const prisma = new PrismaClient({ datasources: { db: { url: pooled } } });
   const db = prisma as unknown as EbitdaBoxStore;
   const run = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
   const scope = { companyId: `ebx-pg-c-${run}`, documentId: `ebx-pg-d-${run}` };
@@ -28,26 +30,55 @@ describe.skipIf(!url)("EBITDA box on real Postgres (transactions, advisory lock,
   });
   afterAll(async () => { await prisma.$disconnect(); });
 
-  it("concurrent confirmations serialise on the advisory lock: every row lands, seq is strictly increasing, the latest box reflects the last committed row per key", async () => {
+  it("lock-dependent: 12 concurrent confirms on each of 3 documents — each box saw exactly the rows committed before it, and the latest box is the last committed row's", async () => {
+    // Without pg_advisory_xact_lock two transactions read the committed rows at the same time, each misses the other's
+    // row, and a box is saved that did not see the row committed just before it. This test fails in that case
+    // (verified by swapping the lock for a no-op); with the lock every box sees exactly rows 0..i by seq.
     const e = keyOf("(e)"), d = keyOf("(d)");
-    const writes = [1, 2, 3, 4, 5].map((n) => confirmEbitdaItem(db, scope, { ...args, sourceId: scope.documentId }, { inputKey: n % 2 ? e : d, value: String(n * M), source: `cfo-${n}`, confirmedBy: "cfo" }));
-    const out = await Promise.all(writes);
+    const N = 12;
+    const docs = await Promise.all([0, 1, 2].map(async (j) => {
+      const s = { companyId: scope.companyId, documentId: `${scope.documentId}-c${j}` };
+      await prisma.document.create({ data: { id: s.documentId, companyId: s.companyId, name: `agreement ${j}`, type: "CREDIT_AGREEMENT" } });
+      return s;
+    }));
+    // Values stay under the (e) line's $5,000,000 cap so the counted amount equals the confirmed value; all distinct.
+    const out = await Promise.all(docs.flatMap((s, j) => Array.from({ length: N }, (_, n) => confirmEbitdaItem(db, s, { ...args, sourceId: s.documentId }, {
+      inputKey: n % 2 ? d : e, value: String((n + 1) * 300_000 + j * 1_000), source: `cfo-${j}-${n}`, confirmedBy: "cfo",
+    }))));
+    expect(out.filter((o) => !o.ok)).toEqual([]);
+    for (const s of docs) {
+      const rows = await prisma.customerEbitdaConfirmation.findMany({ where: s, orderBy: { seq: "asc" } });
+      const boxes = await prisma.customerEbitdaBox.findMany({ where: s, orderBy: { seq: "asc" } });
+      expect(rows).toHaveLength(N);
+      expect(boxes).toHaveLength(N);
+      const boxById = new Map(boxes.map((b) => [b.id, b]));
+      const seen = new Map<string, string>();
+      let prevBoxSeq = -1n;
+      for (const r of rows) {
+        seen.set(canonicalInputKey(r.inputKey), r.value);
+        const box = boxById.get((r.response as { boxId: string }).boxId);
+        expect(box, `box for row ${r.seq}`).toBeDefined();
+        expect(box!.seq > prevBoxSeq).toBe(true); // boxes were committed in row order
+        prevBoxSeq = box!.seq;
+        const saw = Object.fromEntries(((box!.payload as unknown as EbitdaBox).confirmations ?? []).map((c) => [canonicalInputKey(c.key), c.value]));
+        expect(saw, `box for row seq ${r.seq} saw exactly the rows up to it`).toEqual(Object.fromEntries(seen));
+      }
+      const last = rows.at(-1)!;
+      expect(await boxGeneration(db, s)).toBe((last.response as { boxId: string }).boxId);
+      const latest = await latestEbitdaBox(db, s);
+      expect(latest?.status).toBe("READY");
+      expect(latest?.items.find((i) => i.label === "(e)")?.counted).toBe(rows.filter((r) => r.inputKey === e).at(-1)!.value);
+      expect(Object.fromEntries((await loadConfirmations(db, s)).map((c) => [canonicalInputKey(c.key), c.value]))).toEqual(Object.fromEntries(seen));
+    }
+  }, 120_000);
+
+  it("concurrent confirms on one document: every row lands with a strictly increasing seq", async () => {
+    const e = keyOf("(e)");
+    const out = await Promise.all([1, 2, 3, 4, 5].map((n) => confirmEbitdaItem(db, scope, { ...args, sourceId: scope.documentId }, { inputKey: e, value: String(n * M / 2), source: `cfo-${n}`, confirmedBy: "cfo" })));
     expect(out.every((o) => o.ok)).toBe(true);
     const rows = await prisma.customerEbitdaConfirmation.findMany({ where: scope, orderBy: { seq: "asc" } });
     expect(rows).toHaveLength(5);
-    const boxes = await prisma.customerEbitdaBox.findMany({ where: scope, orderBy: { seq: "asc" } });
-    expect(boxes).toHaveLength(5);
-    for (let i = 1; i < 5; i++) { expect(rows[i]!.seq > rows[i - 1]!.seq).toBe(true); expect(boxes[i]!.seq > boxes[i - 1]!.seq).toBe(true); }
-    // Each box was computed from exactly the rows committed before it plus its own: box i sees rows 0..i.
-    const latest = await latestEbitdaBox(db, scope);
-    expect(latest?.status).toBe("READY");
-    const current = await loadConfirmations(db, scope);
-    expect(current).toHaveLength(2);
-    const lastE = rows.filter((r) => r.inputKey === e).at(-1)!, lastD = rows.filter((r) => r.inputKey === d).at(-1)!;
-    expect(current.find((c) => c.key === e)?.value).toBe(lastE.value);
-    expect(current.find((c) => c.key === d)?.value).toBe(lastD.value);
-    expect(latest?.items.find((i) => i.label === "(e)")?.counted).toBe(lastE.value);
-    expect(await boxGeneration(db, scope)).toBe(boxes.at(-1)!.id);
+    expect((await latestEbitdaBox(db, scope))?.items.find((i) => i.label === "(e)")?.counted).toBe(rows.at(-1)!.value);
   });
 
   it("a failure inside the transaction rolls back the confirmation row too (nothing half-written)", async () => {
