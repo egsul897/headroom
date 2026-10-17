@@ -53,7 +53,8 @@ export const SAMPLE_COVENANT_DATA: CompanyCovenantData = {
     { id: "s2", documentId: "sample-credit", code: "coverage", basketName: "Sample coverage", sectionRef: "§5.1(b)", formulaType: "COVERAGE_RATIO_ROOM", thresholdValue: 2 },
     { id: "s3", documentId: "sample-notes", code: "flat", basketName: "Sample credit facilities basket", sectionRef: "§2.1(a)", formulaType: "FLAT_NET_OF_DEBT", thresholdValue: 1500, params: { netOfBasis: "secured" } },
     { id: "s4", documentId: "sample-notes", code: "general", basketName: "Sample general debt basket", sectionRef: "§2.1(b)", formulaType: "GREATER_OF_FLAT_OR_PCT_EBITDA", thresholdValue: 300, params: { pctEbitda: 0.5 } },
-    { id: "s5", documentId: "sample-notes", code: "secured-prong", basketName: "Sample secured prong", sectionRef: "§2.1(c)", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 2.5, params: { debtBasis: "secured" } },
+    { id: "s5", documentId: "sample-notes", code: "secured-prong", basketName: "Sample ratio debt", sectionRef: "§2.1(c)", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 2.5, params: { debtBasis: "secured" } },
+    { id: "s7", documentId: "sample-notes", code: "incremental", basketName: "Sample incremental facility", sectionRef: "§2.1(e)", formulaType: "FLAT_AMOUNT", thresholdValue: 400 },
     { id: "s6", documentId: "sample-notes", code: "unsecured-prong", basketName: "Sample unsecured prong", sectionRef: "§2.1(d)", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 4.5, params: { debtBasis: "total" } },
   ],
 };

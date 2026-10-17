@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
 import { DetailDrawer } from "@/components/motion/DetailDrawer";
 import { useToast } from "@/components/motion/Toast";
@@ -19,6 +19,27 @@ const CONFIDENCE_WORD = { HIGH: "High", MEDIUM: "Medium", LOW: "Low" } as const;
  * and how many add-backs still need a person. An unread package shows Needs input.
  */
 export function EbitdaTile({
+  base = null,
+  items = null,
+  sample = false,
+  initialView = null,
+  companyId = null,
+  documents = null,
+}: {
+  base?: string | null;
+  items?: readonly EbitdaAddBack[] | null;
+  sample?: boolean;
+  initialView?: string | null;
+  companyId?: string | null;
+  documents?: readonly { id: string; name: string }[] | null;
+}) {
+  if (!sample && base == null && companyId && documents && documents.length > 0) {
+    return <EbitdaApiTile companyId={companyId} documents={documents} initialView={initialView} />;
+  }
+  return <EbitdaLocalTile base={base} items={items} sample={sample} initialView={initialView} />;
+}
+
+function EbitdaLocalTile({
   base = null,
   items = null,
   sample = false,
@@ -123,6 +144,201 @@ export function EbitdaTile({
         )}
       </DetailDrawer>
     </section>
+  );
+}
+
+type EbitdaBoxItem = {
+  inputKey: string;
+  label: string;
+  clause: string;
+  status: string;
+  amount: string | null;
+  counted: string;
+  source: Array<{ kind: string; ref: string; value: string }>;
+  cap: { text: string; amount: string | null; headroom: string | null } | null;
+  potentialDebtCapacity: string | null;
+  note: string;
+};
+
+type EbitdaBoxPayload = {
+  status: string;
+  totalEbitda: string | null;
+  extraAvailableIfConfirmed: string;
+  reason: string;
+  items: EbitdaBoxItem[];
+};
+
+function EbitdaApiTile({
+  companyId,
+  documents,
+  initialView,
+}: {
+  companyId: string;
+  documents: readonly { id: string; name: string }[];
+  initialView?: string | null;
+}) {
+  const [documentId, setDocumentId] = useState(documents[0]?.id ?? "");
+  const [box, setBox] = useState<EbitdaBoxPayload | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [view, setView] = useState<string | null>(initialView);
+  const [pending, setPending] = useState(false);
+  const document = documents.find((row) => row.id === documentId) ?? documents[0];
+
+  useEffect(() => {
+    let cancel = false;
+    setBox(null);
+    setError(null);
+    fetch(`/api/companies/${companyId}/documents/${documentId}/ebitda`)
+      .then(async (res) => {
+        const body = (await res.json()) as EbitdaBoxPayload & { error?: string };
+        if (cancel) return;
+        if (!res.ok) {
+          setError(body.error ?? "No EBITDA box for this document.");
+          return;
+        }
+        setBox(body);
+      })
+      .catch(() => {
+        if (!cancel) setError("The EBITDA box could not be loaded.");
+      });
+    return () => {
+      cancel = true;
+    };
+  }, [companyId, documentId]);
+
+  const attention = box?.items.filter((item) => item.status === "PENDING" || item.status === "CONDITIONAL").length ?? 0;
+  const openItem = box?.items.find((item) => item.inputKey === view) ?? null;
+
+  async function confirm(item: EbitdaBoxItem) {
+    const source = item.source[0]?.ref;
+    if (!isIntegerAmount(item.amount) || !source) return;
+    setPending(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/companies/${companyId}/documents/${documentId}/ebitda/confirm`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ inputKey: item.inputKey, value: item.amount, source }),
+      });
+      const body = (await res.json()) as { error?: string; box?: EbitdaBoxPayload };
+      if (!res.ok || !body.box) {
+        setError(body.error ?? "Confirm was refused.");
+        return;
+      }
+      setBox(body.box);
+      setView("list");
+    } catch {
+      setError("Confirm was refused.");
+    } finally {
+      setPending(false);
+    }
+  }
+
+  return (
+    <section className="home-card ebitda-tile" data-region="ebitda" aria-label="Consolidated EBITDA">
+      <button type="button" className="ebitda-toggle" onClick={() => setView("list")}>
+        <span className="ebitda-top">
+          <span className="home-eyebrow">Consolidated EBITDA</span>
+          {attention > 0 ? <span className="need-chip">{attention === 1 ? "1 item needs you" : `${attention} items need you`}</span> : null}
+        </span>
+        <span className={box?.totalEbitda ? "ebitda-hero" : "ebitda-hero is-missing"}>{formatUsd(box?.totalEbitda) ?? "Needs input"}</span>
+        <span className="ebitda-caption">{document?.name ?? "Agreement"}</span>
+        <span className="ebitda-secondary">
+          <span className={box && formatUsd(box.extraAvailableIfConfirmed) ? undefined : "is-missing"}>
+            {box ? formatUsd(box.extraAvailableIfConfirmed) ?? "Needs input" : "Needs input"}
+          </span>
+          <span className="ebitda-caption">Additional available</span>
+        </span>
+      </button>
+      {documents.length > 1 ? (
+        <label className="ebitda-caption">
+          Agreement
+          <select value={documentId} onChange={(event) => setDocumentId(event.target.value)}>
+            {documents.map((row) => (
+              <option key={row.id} value={row.id}>
+                {row.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      ) : null}
+      {error ? <p className="drawer-note">{error}</p> : null}
+      <DetailDrawer open={view != null} title={openItem?.label ?? "Add-backs"} onClose={() => setView(null)}>
+        {!box ? (
+          <p className="drawer-note">{error ?? "Loading the EBITDA box."}</p>
+        ) : openItem ? (
+          <ApiItem item={openItem} pending={pending} onBack={() => setView("list")} onConfirm={() => confirm(openItem)} />
+        ) : (
+          <ul className="ebitda-list">
+            {box.status !== "READY" ? <li className="drawer-note">{box.reason}</li> : null}
+            {box.items.map((item) => (
+              <li key={item.inputKey}>
+                <button type="button" className="ebitda-row" onClick={() => setView(item.inputKey)}>
+                  {item.status === "PENDING" || item.status === "CONDITIONAL" || item.status === "NEEDS_INPUT" ? (
+                    <span className="need-dot" title="Needs you" />
+                  ) : (
+                    <span className="need-dot is-quiet" aria-hidden="true" />
+                  )}
+                  <span className="ebitda-row-name">
+                    {item.label}
+                    <span className="ebitda-row-amount">{formatUsd(item.amount) ?? "Needs input"}</span>
+                  </span>
+                  <StatusBadge status={item.status} />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </DetailDrawer>
+    </section>
+  );
+}
+
+function ApiItem({
+  item,
+  pending,
+  onBack,
+  onConfirm,
+}: {
+  item: EbitdaBoxItem;
+  pending: boolean;
+  onBack: () => void;
+  onConfirm: () => void;
+}) {
+  const source = item.source[0];
+  const allowed = item.status !== "CONFIRMED" && isIntegerAmount(item.amount) && Boolean(source?.ref);
+  return (
+    <div className="ebitda-sheet">
+      <button type="button" className="button button-quiet" onClick={onBack}>
+        All add-backs
+      </button>
+      <p className={formatUsd(item.amount) ? "ebitda-hero" : "ebitda-hero is-missing"}>{formatUsd(item.amount) ?? "Needs input"}</p>
+      <div className="ebitda-badges">
+        <StatusBadge status={item.status} />
+      </div>
+      <p className="drawer-note">{item.note}</p>
+      <h3 className="sheet-label">Source</h3>
+      <p>{source ? `${source.kind} · ${source.ref}${formatUsd(source.value) ? ` · ${formatUsd(source.value)}` : ""}` : "Needs input"}</p>
+      <h3 className="sheet-label">Clause</h3>
+      <blockquote className="ebitda-clause">{item.clause || "Needs input"}</blockquote>
+      <h3 className="sheet-label">Cap</h3>
+      <p>{item.cap?.text ?? "Needs input"}</p>
+      <p className="ebitda-caption">Cap amount {formatUsd(item.cap?.amount) ?? "Needs input"}</p>
+      <p className="ebitda-caption">Remaining {formatUsd(item.cap?.headroom) ?? "Needs input"}</p>
+      <h3 className="sheet-label">Capacity impact</h3>
+      <p className={formatUsd(item.potentialDebtCapacity) ? "ebitda-hero" : "ebitda-hero is-missing"}>
+        {formatUsd(item.potentialDebtCapacity) ?? "Needs input"}
+      </p>
+      <div className="ebitda-action">
+        {allowed ? (
+          <button type="button" className="button button-primary" disabled={pending} onClick={onConfirm}>
+            {pending ? "Confirming…" : "Confirm"}
+          </button>
+        ) : (
+          <p className="drawer-note">{item.status === "CONFIRMED" ? "Confirmed from the EBITDA box." : "No sourced amount is on this item."}</p>
+        )}
+      </div>
+    </div>
   );
 }
 

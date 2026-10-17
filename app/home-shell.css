@@ -1830,6 +1830,8 @@ main:has(.app-shell) {
 }
 .basket-slider-head { justify-content: space-between; }
 .basket-amount { font-size: 32px; letter-spacing: -0.03em; margin: 8px 0; }
+.basket-amount-field { display: grid; gap: 4px; margin-top: 10px; }
+.basket-amount-field span { color: var(--muted); font-size: 12px; }
 .basket-figures {
   display: grid;
   grid-template-columns: 1fr 1fr;

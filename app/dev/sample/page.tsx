@@ -24,7 +24,7 @@ export const metadata = { title: "Headroom — sample data" };
  * Development illustration. Production builds take notFound().
  * This module does not import Prisma, Neon, or the dashboard service.
  */
-export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string; detail?: string; ebitda?: string; amt?: string } }) {
+export default function SamplePreview({ searchParams }: { searchParams: { screen?: string; rail?: string; brand?: string; teal?: string; light?: string; palette?: string; detail?: string; ebitda?: string; amt?: string; inc?: string; gen?: string; ratio?: string } }) {
   if (process.env.NODE_ENV === "production" || process.env.VERCEL_ENV === "production") notFound();
   const screen = searchParams.screen ?? "overview";
   const brand = searchParams.brand === "navy" || searchParams.brand === "olive" || searchParams.brand === "teal" ? searchParams.brand : undefined;
@@ -107,8 +107,9 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
   }
 
   const path = screen === "covenants" ? "/sample/covenants" : screen === "capacity" ? "/sample/capacity" : screen === "simulate" ? "/sample/simulate" : screen === "ask" ? "/sample/ask" : "/sample";
-  const securedAmount = Number(searchParams.amt);
-  const initialSecured = Number.isFinite(securedAmount) ? securedAmount : 200;
+  const incremental = numberOr(searchParams.inc, 100);
+  const general = numberOr(searchParams.gen, 80);
+  const ratio = numberOr(searchParams.ratio, 60);
   const rail = searchParams.rail === "deep" || searchParams.rail === "mid" || searchParams.rail === "soft" ? searchParams.rail : undefined;
 
   return (
@@ -127,7 +128,7 @@ export default function SamplePreview({ searchParams }: { searchParams: { screen
         ) : screen === "capacity" ? (
           <CapacitySample />
         ) : screen === "simulate" ? (
-          <SampleSimulate initialSecured={initialSecured} />
+          <SampleSimulate incremental={incremental} general={general} ratio={ratio} />
         ) : screen === "ask" ? (
           <SampleAsk />
         ) : (
@@ -258,6 +259,11 @@ function SampleKpi({
       </OpenProvenanceButton>
     </section>
   );
+}
+
+function numberOr(value: string | undefined, fallback: number): number {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 const PORTFOLIO = [

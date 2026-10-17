@@ -102,7 +102,13 @@ const ROWS: Row[] = [
   ["FAILED", "stop", "Failed", "This requirement or step failed."],
   ["OK", "clear", "Ok", "This step completed."],
   ["PASS", "clear", "Pass", "Recorded pass for this check. It is not a capacity figure by itself."],
-  ["PENDING", "unknown", "Pending", "Not started."],
+  ["PENDING", "attention", "Pending", "Needs a person or has not started. Not a pass."],
+  ["CONFIRMED", "clear", "Confirmed", "A person confirmed this sourced figure."],
+  ["EVIDENCED", "info", "Evidenced", "A filing supports this figure. It is not a confirmation."],
+  ["DETECTED", "unknown", "Detected", "Found in the documents. Not confirmed."],
+  ["CAPPED", "info", "Capped", "A cap applies to this amount."],
+  ["NOT_IDENTIFIED", "unknown", "Not identified", "This agreement has no such basket."],
+  ["NEEDS_INPUT", "attention", "Needs input", "Required input is missing. The figure stays closed."],
   ["RUNNING", "info", "Running", "In progress."],
   ["SKIPPED", "unknown", "Skipped", "Skipped."],
   ["CONDITIONAL", "attention", "Conditional", "Conditional. Read the condition before relying on it."],
@@ -160,6 +166,20 @@ export function presentUiStatus(raw: string | null | undefined): StatusPresentat
       tone: "unknown",
       hint: "No status was provided. Nothing was invented in its place.",
     };
+  }
+
+  const presentationFirst = EXTRA[code];
+  if (
+    presentationFirst &&
+    (code === "CONFIRMED" ||
+      code === "EVIDENCED" ||
+      code === "PENDING" ||
+      code === "CONDITIONAL" ||
+      code === "NOT_IDENTIFIED" ||
+      code === "DETECTED" ||
+      code === "CAPPED")
+  ) {
+    return { code, ...presentationFirst };
   }
 
   if ((allCustomerStatusCodes() as string[]).includes(code)) {

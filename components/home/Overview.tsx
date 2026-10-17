@@ -33,6 +33,7 @@ export function CompanyOverview({
   readinessHeadline = null,
   authorityNote = null,
   setupCta = null,
+  documents = null,
 }: {
   companyId: string;
   identityName?: string | null;
@@ -40,6 +41,7 @@ export function CompanyOverview({
   readinessHeadline?: string | null;
   authorityNote?: string | null;
   setupCta?: { href: string; label: string; detail: string } | null;
+  documents?: readonly { id: string; name: string }[] | null;
 }) {
   const slots: OverviewLoad = { ...UNWIRED_OVERVIEW_LOAD, ...load };
   const alerts = presentAlerts(slots.alerts);
@@ -115,7 +117,7 @@ export function CompanyOverview({
         <div className="home-split">
           <StatusTable state={slots.statusTable} />
           <div className="home-stack">
-            <EbitdaTile />
+            <EbitdaTile companyId={companyId} documents={documents} />
             <DriversCard state={slots.drivers} />
           </div>
         </div>
