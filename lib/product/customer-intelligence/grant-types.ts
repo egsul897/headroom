@@ -335,13 +335,43 @@ function isLienSecuredObligation(text: string): boolean {
  * incomplete, not wrong).
  */
 function isDefinitionsArticleItem(item: CovenantSummaryItem): boolean {
-  if (/^1\.01(?![0-9])/.test(item.sectionRef ?? "")) return true;
+  const heading = item.articleHeading ?? "";
   // Phase C: a whole Definitions article grants nothing, whatever
   // its number. The articleHeading comes from the parser's
   // validated parent chain (D6), so this is a structural fact,
   // not a label guess. Tenable 1.02(d) ("dividends" in the
   // Definitions article) minted a false RP grant without it.
-  return /\bDefinitions?\b|\bDefined\s+Terms\b/i.test(item.articleHeading ?? "");
+  if (/\bDefinitions?\b|\bDefined\s+Terms\b/i.test(heading)) return true;
+  // D17 narrowing: the §1.01 number rule is a FALLBACK for items
+  // with no structural article evidence, not an override of it.
+  // When the validated parent chain attributes the item to an
+  // article whose heading carries a title, that title is
+  // affirmative structural evidence about which article the item
+  // sits in; a titled heading that does not say Definitions means
+  // the item is not in the definitions article, whatever its
+  // section number — an operative §1.01 (e.g. the operative
+  // provisions of an instrument whose definitions live in §1.02
+  // or another article) must not lose its grants purely by
+  // numbering convention. A bare designator ("ARTICLE I" with no
+  // title) carries no title evidence, so the number rule still
+  // decides there, exactly as it does when no heading was
+  // attributed at all (the Asure case this rule was written for).
+  if (articleHeadingTitle(heading).length > 0) return false;
+  return /^1\.01(?![0-9])/.test(item.sectionRef ?? "");
+}
+
+/**
+ * The title portion of an article heading: a leading article
+ * designator ("ARTICLE I", "Article 2", "ARTICLE VII —") is
+ * stripped, and what remains is the heading's title — or "" when
+ * the heading is absent or is only a designator.
+ */
+function articleHeadingTitle(heading: string): string {
+  const withoutDesignator = heading.replace(
+    /^\s*ARTICLE\s+(?:[IVXLC]+|\d+|One|Two|Three|Four|Five|Six|Seven|Eight|Nine|Ten|Eleven|Twelve)\b/i,
+    "",
+  );
+  return withoutDesignator.replace(/^[^A-Za-z0-9]+/, "").trim();
 }
 
 /**
