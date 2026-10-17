@@ -4,7 +4,7 @@
  * BASE_METRIC confirm that resolves NEEDS_BASE. Every ERP figure here is a TEST FIXTURE; production has no ERP source
  * until ERP-1 registers one.
  */
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { admitErpFact, admitErpFacts, erpEvidenceSource, NO_ERP_EVIDENCE, registerErpEvidenceSource, type ErpEvidenceFact } from "@/lib/covenant-learning-factory/erp/contract";
 import { reconcileErpWithFilings, sumOverWindow } from "@/lib/covenant-learning-factory/erp/reconcile";
 import { erpEvidenceForBox, ltmWindow } from "@/lib/covenant-learning-factory/erp/suggest";
@@ -230,6 +230,27 @@ describe("EBITDA box integration", () => {
     expect(r?.box.erpEvidence).toBeUndefined();
     expect(db.boxes.every((b) => !(b.payload as { erpEvidence?: unknown }).erpEvidence)).toBe(true);
     expect((await refreshBoxCommitted(db, scope, async () => a(ERP())))?.box.erpEvidence?.status).toBe("READY");
+  });
+  it("(5) companyErpFacts: non-array → null; hung source → null after the timeout; logs carry no raw error text", async () => {
+    const logged: unknown[][] = [];
+    const spy = vi.spyOn(console, "error").mockImplementation((...x: unknown[]) => { logged.push(x); });
+    try {
+      for (const bad of [{ facts: [] }, "x", null, 42]) {
+        registerErpEvidenceSource({ listPeriodFacts: async () => bad as never });
+        expect(await companyErpFacts(C)).toBeNull();
+      }
+      registerErpEvidenceSource({ listPeriodFacts: () => new Promise(() => {}) });
+      const t0 = Date.now();
+      expect(await companyErpFacts(C, { timeoutMs: 20 })).toBeNull();
+      expect(Date.now() - t0).toBeLessThan(2_000);
+      registerErpEvidenceSource({ listPeriodFacts: async () => { throw new Error("https://acct-123.suitetalk.api.netsuite.com token=SECRET"); } });
+      expect(await companyErpFacts(C)).toBeNull();
+      registerErpEvidenceSource({ listPeriodFacts: () => { throw new Error("sync SECRET"); } });
+      expect(await companyErpFacts(C)).toBeNull();
+      const text = JSON.stringify(logged);
+      expect(text).not.toMatch(/SECRET|netsuite\.com|acct-123/);
+      expect(text).toMatch(/invalid_shape/); expect(text).toMatch(/timeout/); expect(text).toMatch(/"reason":"error"/);
+    } finally { spy.mockRestore(); }
   });
   it("(6) a BASE_METRIC revenue of 0 is NEEDS_INPUT (422) and writes nothing", async () => {
     const db = fakeStore();

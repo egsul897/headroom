@@ -4,7 +4,7 @@
  */
 import { prisma } from "../../prisma";
 import type { IssuerFinancials } from "../xbrl/companyfacts";
-import { erpEvidenceSource } from "../erp/contract";
+import { erpEvidenceSource, type ErpEvidenceFact } from "../erp/contract";
 import { financialsForCik, refreshBoxCommitted, type BoxArgs, type EbitdaBox, type EbitdaBoxStore } from "./ebitda-box";
 
 const store = () => prisma as unknown as EbitdaBoxStore;
@@ -30,14 +30,25 @@ export async function documentText(companyId: string, documentId: string): Promi
 
 /** ERP period facts for the company from the registered source (none until ERP-1 registers one; never synthesized).
  *  ERP is evidence only, so an ERP outage must not fail the box computed from filings: the box is built without ERP
- *  evidence (and a BASE_METRIC confirm then answers NEEDS_ERP_EVIDENCE). Detail is logged server-side only. */
-export async function companyErpFacts(companyId: string): Promise<BoxArgs["erp"]> {
-  let facts: Awaited<ReturnType<ReturnType<typeof erpEvidenceSource>["listPeriodFacts"]>>;
-  try { facts = await erpEvidenceSource().listPeriodFacts(companyId); } catch (err) {
-    console.error("[ebitda-box] ERP evidence unavailable", { companyId, detail: err instanceof Error ? err.message : String(err) });
+ *  evidence (and a BASE_METRIC confirm then answers NEEDS_ERP_EVIDENCE). Fail-closed on shape: anything but an array is
+ *  dropped (each element is still admitted fact-by-fact downstream). Bounded by a timeout so a hung connector cannot
+ *  hold the upload pipeline. The log carries the company and a reason class only: never the error text, which can hold
+ *  connector URLs, account ids or credential hints. */
+export const ERP_EVIDENCE_TIMEOUT_MS = 10_000;
+export async function companyErpFacts(companyId: string, opts: { timeoutMs?: number } = {}): Promise<BoxArgs["erp"]> {
+  const timeoutMs = opts.timeoutMs ?? ERP_EVIDENCE_TIMEOUT_MS;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<"timeout">((resolve) => { timer = setTimeout(() => resolve("timeout"), timeoutMs); });
+  let facts: unknown;
+  try {
+    facts = await Promise.race([Promise.resolve().then(() => erpEvidenceSource().listPeriodFacts(companyId)), timeout]);
+  } catch (err) {
+    console.error("[ebitda-box] ERP evidence unavailable", { companyId, reason: "error", errorName: err instanceof Error ? err.name : typeof err });
     return null;
-  }
-  return facts.length ? { companyId, facts } : null;
+  } finally { clearTimeout(timer); }
+  if (facts === "timeout") { console.error("[ebitda-box] ERP evidence unavailable", { companyId, reason: "timeout", timeoutMs }); return null; }
+  if (!Array.isArray(facts)) { console.error("[ebitda-box] ERP evidence unavailable", { companyId, reason: "invalid_shape" }); return null; }
+  return facts.length ? { companyId, facts: facts as ErpEvidenceFact[] } : null;
 }
 
 export async function pipelineArgsFor(companyId: string, documentId: string, known?: { text: string; sourceId: string }): Promise<BoxArgs | null> {
