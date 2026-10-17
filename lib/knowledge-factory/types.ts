@@ -176,7 +176,12 @@ export interface StructuralNodeRecord {
   heading: string;
   charStart: number;
   charEnd: number;
-  parentNodeId?: string;
+  // P0 correction: null is a valid value (the parser emits null
+  // for roots; StructuralNode.parentNodeId is string | null).
+  // The old string-only type could not represent a root and
+  // forced null-carrying records into a lie. Both null and
+  // undefined mean "no parent" (unresolved).
+  parentNodeId?: string | null;
   ambiguous?: boolean;
   /**
    * Phase B structural-integrity violations (see
