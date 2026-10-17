@@ -6,9 +6,53 @@ import type { PerDocumentRemainingCapacity } from "@/lib/covenant-engine";
 import { FinancialIdentityError } from "@/lib/financial-identity";
 import { loadCapacityReadiness } from "@/lib/product/customer-intelligence/capacity-readiness";
 import { loadRulebookReadiness } from "@/lib/product/customer-intelligence/rulebook-readiness";
-import { loadAuthoritativeCapacity } from "@/lib/product/north-star-workflow";
+import { loadAuthoritativeCapacity, type AuthoritativeCapacityResult } from "@/lib/product/north-star-workflow";
 
 export const metadata = { title: "Headroom — Capacity" };
+
+/**
+ * The North-Star authoritative read must never take the whole page down
+ * behind the generic error boundary, and must never be replaced with
+ * invented figures either: on failure the card renders NEEDS_INPUT with
+ * the load failure disclosed as evidence, and the readiness / rulebook
+ * sections below still render from their own loaders. Certified capacity
+ * is unavailable — never zero, never unlimited.
+ */
+function unavailableAuthoritativeCapacity(companyId: string, err: unknown): AuthoritativeCapacityResult {
+  const message = err instanceof Error ? err.message : String(err);
+  return {
+    companyId,
+    evaluationDate: null,
+    status: "NEEDS_INPUT",
+    authority: "NOT_CERTIFIED_4E",
+    cutoff: {
+      state: "UNAVAILABLE",
+      reportingPeriodKey: null,
+      asOf: null,
+      approvedSnapshotId: null,
+      cutoffSnapshotId: null,
+      cutoffSnapshotStatus: null,
+    },
+    approvedSnapshotCount: 0,
+    activeLedgerUsageCount: 0,
+    ledgerUsages: [],
+    snapshotFactKeys: [],
+    certified: {
+      packagePresent: false,
+      capacityOutcome: null,
+      blockers: ["AUTHORITATIVE_CAPACITY_LOAD_FAILED"],
+      authorityNote:
+        "Authoritative capacity could not be loaded, so no certified capacity is asserted. The load failure is disclosed below; treat certified capacity as unavailable, not as zero.",
+    },
+    legacy: {
+      capacityAuthority: "NONE",
+      canEvaluateExecutableCapacity: false,
+      note: "Authoritative capacity loader failed; no North-Star capacity conclusion is drawn from this card.",
+    },
+    missingInputs: ["authoritative_capacity_load"],
+    evidence: [`loadAuthoritativeCapacity failed: ${message}`],
+  };
+}
 
 function methodLabel(method: PerDocumentRemainingCapacity["method"]): string {
   switch (method) {
@@ -107,7 +151,7 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
   const [readiness, rulebook, authoritative] = await Promise.all([
     loadCapacityReadiness(companyId),
     loadRulebookReadiness(companyId),
-    loadAuthoritativeCapacity({ companyId }),
+    loadAuthoritativeCapacity({ companyId }).catch((err) => unavailableAuthoritativeCapacity(companyId, err)),
   ]);
 
   const northStarCard = (
