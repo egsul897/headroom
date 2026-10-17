@@ -26,6 +26,11 @@ export type ProvisionPosture =
   | "UNRESOLVED";
 
 export interface ProvisionAnalysis {
+  /** Rule 192: the candidate excerpt is a prefix of a longer
+   * operative span (4000-char cap) — tail clauses are missing. */
+  operativeExcerptTruncated?: boolean;
+  /** Heading of the enclosing ARTICLE node (walked via parentNodeId), if any. Powers the representations guard: a section in a pure Representations article states facts, it does not grant capacity. */
+  articleHeading?: string;
   sectionRef: string;
   heading: string;
   category: CovenantCategoryKey;
@@ -101,9 +106,14 @@ function sectionForNode(
 ): { sectionRef: string; heading: string } {
   if (!nodeId) return { sectionRef: "n/a", heading: "Document body" };
   const n = nodes.find((x) => x.nodeId === nodeId);
+  // Rule 200: a heading split across two source lines carries a
+  // literal newline (Aon 6.17 rendered "Additional\nGuarantors").
+  // A heading is one line — collapse internal whitespace. The
+  // sectionRef fallback gets the same treatment (a missing
+  // sectionRef must not become a multi-line ref).
   return {
-    sectionRef: n?.sectionRef || n?.heading || nodeId,
-    heading: n?.heading || n?.sectionRef || "Untitled provision",
+    sectionRef: normalizeWs(n?.sectionRef || n?.heading || nodeId),
+    heading: normalizeWs(n?.heading || n?.sectionRef || "Untitled provision"),
   };
 }
 
@@ -116,8 +126,35 @@ function clip(s: string, n: number): string {
   return t.length > n ? `${t.slice(0, n)}…` : t;
 }
 
+/** True when an ARTICLE heading is a PURE Representations article ("Representations [and Warranties]" — no "Covenants"). Mixed articles and headings with extra words do NOT match (fail-closed). */
+export function isRepresentationArticle(heading: string | undefined): boolean {
+  if (!heading) return false;
+  // EDGAR HTML extraction splits words into a single letter + rest
+  // ("R EPRESENTATIONS AND W ARRANTIES"). Join a lone capital
+  // letter to a following all-caps word before testing — applied
+  // only here, only for this test.
+  const despace = heading.replace(/\b([A-Z])\s+([A-Z]{2,})\b/g, "$1$2");
+  return /^\s*(?:ARTICLE|Article|SECTION|Section|§)?\s*(?:[IVXLC\d.]+\s*(?:[-:–—]\s*)?)?Representations?(?:\s+and\s+Warranties?)?\s*$/i.test(
+    despace,
+  );
+}
+
 /** Interpretation language ("shall not be construed …") is not a covenant. */
 const CONSTRUED_RE = /\bshall\s+not\s+be\s+(?:construed|deemed|interpreted)\b/i;
+
+/**
+ * Bare negative-covenant stems: the chapeau states the prohibited
+ * act without a "shall not" (the "shall not" lives in the Article
+ * chapeau). "Create, incur [or assume] [or suffer to exist]" (liens
+ * / debt), "Make any Restricted Payment" (RP), "Make any
+ * Investment(s)" (investments), "Enter into or suffer to exist"
+ * (misc.). Shared by the GENERAL_PROHIBITION rule and the chapeau
+ * frame test — the two must agree on what counts as a prohibition
+ * frame, or a chapeau the analyzer calls a prohibition would not
+ * frame its sub-clauses as permissions.
+ */
+const PROHIBITION_STEM =
+  /\bCreate,\s*incur(?:\s*,?\s*(?:or\s+)?assume)?(?:\s+or\s+suffer\s+to\s+exist)?\b|\bMake\s+any\s+(?:Restricted\s+Payments?|Investments?)\b|\bEnter\s+into\s+or\s+suffer\s+to\s+exist\b/i;
 
 /**
  * True when a provision must not be presented as a prohibition, permission,
@@ -135,7 +172,7 @@ function isNonOperative(excerpt: string, heading: string, families: string[]): b
   );
 }
 
-function detectPosture(excerpt: string, heading: string, families: string[]): ProvisionPosture {
+function detectPosture(excerpt: string, heading: string, families: string[], parentChapeau?: string): ProvisionPosture {
   const hay = `${heading}\n${excerpt}`;
   // Never invert a trigger / administrative provision into a permission or
   // prohibition. §8.01(j) cross-default starts with "(j)" — without this
@@ -143,9 +180,7 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
   if (isNonOperative(excerpt, heading, families)) return "UNRESOLVED";
   // Classic negative-covenant stem (shall-not often lives in the Article chapeau).
   if (
-    /\bCreate,\s*incur,\s*assume or suffer to exist\b/i.test(hay) ||
-    /\bMake any Restricted Payment\b/i.test(hay) ||
-    /\bEnter into or suffer to exist\b/i.test(hay) ||
+    PROHIBITION_STEM.test(hay) ||
     (/\bLimitation on\b/i.test(heading) && /\bexcept\s*:/i.test(hay))
   ) {
     return "GENERAL_PROHIBITION";
@@ -187,6 +222,50 @@ function detectPosture(excerpt: string, heading: string, families: string[]): Pr
       : "ENUMERATED_PERMISSION";
   }
   if (/\bshall\b/i.test(hay) && !/\bshall\s+not\b/i.test(hay)) return "OBLIGATION";
+  // Chapeau inheritance: a bare sub-clause with NO posture signal of
+  // its own (no shall-not, no may, no shall, no cap) under a
+  // prohibition-with-except chapeau ("shall not ... except:") IS an
+  // enumerated permission — it is one of the chapeau's exceptions.
+  // This is the universal negative-covenant structure (chapeau
+  // prohibition + excepted sub-clauses), not a document pattern:
+  // Solaris 7.01(a)-(m) (bare "(a) Liens for taxes...") all fell
+  // through to UNRESOLVED because the sub-clause excerpt carries no
+  // frame of its own. The parent chapeau supplies it. Fail-closed:
+  // requires a real prohibition+except frame in the chapeau, a
+  // sub-clause with no own prohibition language, and a non-operative
+  // guard that already ran. A sub-clause with its own "shall not"
+  // or "shall" is caught by the rules above and never reaches here.
+  if (parentChapeau) {
+    // A cross-reference ("permitted by Section 7.02(aa)") is a
+    // pointer to another section's permission, not an own
+    // permission signal. Strip xref-framed "permitted" before
+    // the own-signal test (Tenable 7.01(kk) "permitted by Section
+    // 7.02(aa)" is a cross-reference, not an own signal). A
+    // genuine own "permitted" frame ("permitted to incur") is
+    // untouched — the strip only fires on "permitted by/under/
+    // pursuant to Section/§".
+    const excerptSansXref = excerpt.replace(
+      /\bpermitted\s+(?:by|under|pursuant\s+to)\s+(?:Section|§|Sections)\b[^.;]{0,40}/gi,
+      "",
+    );
+    const ownSignal = /\b(?:shall|will|may)\s+not\b|\bneither\b|\bmay\b|\bpermitted\b|\bentitled\b|\ballowed\b|\bnot\s+to\s+exceed\b|\bgreater\s+of\b/i.test(excerptSansXref);
+    // Prohibition-with-except frame: either an explicit "shall not ...
+    // except/other than" or a bare negative-covenant stem (see
+    // PROHIBITION_STEM) whose "shall not" lives in the Article
+    // chapeau (Solaris 7.01 "Create, incur or assume ... other
+    // than"; Solaris 7.02 "Make any Investments, except:"). Both
+    // are the universal chapeau-prohibition + excepted-sub-clauses
+    // structure.
+    const chapeauProhibitsWithExcept =
+      (/\b(?:shall|will|may)\s+not\b/i.test(parentChapeau) ||
+        PROHIBITION_STEM.test(parentChapeau)) &&
+      /\bexcept\b|\bother\s+than\b/i.test(parentChapeau);
+    if (!ownSignal && chapeauProhibitsWithExcept) {
+      return /\bprovided\s+that\b|\bso\s+long\s+as\b|\bno\s+Default\b|\bpro\s+forma\b/i.test(excerpt)
+        ? "CONDITIONAL_PERMISSION"
+        : "ENUMERATED_PERMISSION";
+    }
+  }
   return "UNRESOLVED";
 }
 
@@ -226,7 +305,17 @@ function extractBaskets(excerpt: string): string[] {
     ...excerpt.matchAll(
       // Limb markers vary by drafter: (x)/(y), (i)/(ii), (1)/(2).
       // The old regex hard-coded x/y and silently dropped the rest.
-      /greater of\s*\(?(?:[a-z0-9]{1,3}\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|,)\s*\(?(?:[a-z0-9]{1,3}\)\s*)?([\d.]+)\s*%\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
+      // Rule 191: the old regex also required the limb separator
+      // to be "and"/"," and the percent to be a bare numeral —
+      // real drafting is "greater of $1B or ten percent (10%) of
+      // Consolidated Net Worth". The "or" separator and the
+      // words + parenthesized-numeral percent ("ten percent
+      // (10%)") are the standard forms; missing them dropped the
+      // grower leg and the compiler minted a flat amount for a
+      // greater-of basket (Aon 6.16(l) compiled to FLAT $1B).
+      // Words-only percents ("ten percent" with no numeral) are
+      // still not parsed — a known gap, not silently assumed.
+      /greater of\s*\(?(?:[a-z0-9]{1,3}\)\s*)?\$?\s*([\d,]+(?:\.\d+)?)\s*(million|billion|thousand)?\s*(?:and|or|,)\s*\(?(?:[a-z0-9]{1,3}\)\s*)?(?:[A-Za-z]+\s+percent\s*)?\(?\s*([\d.]+)\s*%\s*\)?\s*of\s+([A-Za-z][A-Za-z0-9\s]+?)(?:\s*\(|,|;|\.| at )/gi,
     ),
   ];
   const greaterOf = greaterOfMatches.slice(0, 16);
@@ -244,7 +333,10 @@ function extractBaskets(excerpt: string): string[] {
     // $150,000,000 limb, not a $150.0 limb. Dropping "million" understated
     // the basket a million-fold in the live Quila output.
     const unit = m[2] ? ` ${m[2]}` : "";
-    out.push(`Greater-of basket: $${m[1]}${unit} and ${m[3]}% of ${normalizeWs(m[4] ?? "")}`);
+    // "Greater of" with a SPACE: the compiler's greater-of
+    // branch matches /greater of/i on the baskets text, and
+    // "Greater-of" (hyphen) does not contain "greater of".
+    out.push(`Greater of basket: $${m[1]}${unit} and ${m[3]}% of ${normalizeWs(m[4] ?? "")}`);
   }
   // Preserve the unit on every dollar amount: "$150.0 million" stays
   // "$150.0 million", never bare "$150.0".
@@ -322,8 +414,14 @@ function extractPermissions(
       perms.push(clause);
     }
     if (perms.length === 0 && /\bexcept\b/i.test(excerpt)) {
-      const after = excerpt.split(/\bexcept\b/i)[1];
-      if (after) perms.push(clip(`Except: ${after}`, 280));
+      // Rule 187: a chapeau excerpt often ENDS with "except:" — the
+      // letter clauses live in child items, not in this excerpt.
+      // Minting "Except: :" from the bare colon (or "Except: (a)"
+      // from a bare pointer) is junk, not a permission. Require
+      // substantive words after the "except" before minting.
+      const after = excerpt.split(/\bexcept\b/i)[1] ?? "";
+      const rest = after.replace(/^[\s:;,.\u2014\u2013-]+/, "").trim();
+      if (rest && /[A-Za-z]{3,}/.test(rest)) perms.push(clip(`Except: ${rest}`, 280));
     }
   }
   return perms.slice(0, 12);
@@ -395,7 +493,16 @@ function relatedDefinitions(
   const hits: Array<{ term: string; excerpt: string; resolved: boolean }> = [];
   for (const d of defs.slice(0, 300)) {
     if (d.term.length < 3) continue;
-    if (!excerpt.toLowerCase().includes(d.term.toLowerCase())) continue;
+    // Rule 199: match the term as a whole word/phrase, not a
+    // substring. The old `includes` matched "SEC" inside
+    // "unsecured" and attached a noise definition ("Controlling
+    // defined terms: SEC") to every unsecured-debt item. The
+    // lookarounds require a non-alphanumeric on both sides (a
+    // word-boundary regex would fail on terms with punctuation
+    // edges); internal whitespace is `\s+` so a term split
+    // across a line break in the excerpt still matches.
+    const escaped = d.term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+    if (!new RegExp(`(?<![A-Za-z0-9])${escaped}(?![A-Za-z0-9])`, "i").test(excerpt)) continue;
     hits.push({
       term: d.term,
       excerpt: clip(d.excerpt ?? "", 220),
@@ -583,8 +690,38 @@ export function analyzeProvision(params: {
   definitions: DefinitionRecord[];
   structuralNodes: StructuralNodeRecord[];
   crossReferences?: CrossReferenceRecord[];
+  /** Parent chapeau text (text before the first sub-clause marker in the parent candidate's excerpt) — powers chapeau inheritance in detectPosture. Optional; absent → existing behavior. */
+  parentChapeau?: string;
 }): ProvisionAnalysis {
   const { sectionRef, heading } = sectionForNode(params.candidate.nodeId, params.structuralNodes);
+  // Enclosing ARTICLE heading: powers the representations guard.
+  // A section in a pure Representations article (Solaris Art. V:
+  // 5.07 title, 5.12 margin-stock, 5.24 outbound-investment)
+  // states facts — it does not grant capacity, and counsel
+  // accepting it must not mint a Permission from its incidental
+  // "Liens"/"Investment" words.
+  //
+  // Phase C (Hardening Initiative, D6): articleHeading comes ONLY
+  // from the parser's validated parent chain (containment +
+  // ref-consistency, stage-structure.ts). The old dotted-ref
+  // numbering fallback (first-match ARTICLE by label) is removed:
+  // in a bundled document with two Article Vs it returns the
+  // wrong instrument's heading, defeating the Representations
+  // guard in the wrong direction (Tenable 5.07). With the fixed
+  // parser, Aon 6.16(l) parents to Article VI by containment +
+  // ref, so the fallback is no longer needed. No ARTICLE
+  // ancestor → undefined (unresolved), never a label guess.
+  const articleHeading = (() => {
+    const byId = new Map(params.structuralNodes.map((n) => [n.nodeId, n]));
+    const seen = new Set<string>();
+    let node = params.candidate.nodeId ? byId.get(params.candidate.nodeId) : undefined;
+    while (node?.parentNodeId && !seen.has(node.nodeId)) {
+      seen.add(node.nodeId);
+      node = byId.get(node.parentNodeId);
+      if (node?.nodeType === "ARTICLE") return node.heading;
+    }
+    return undefined;
+  })();
   const excerpt = params.candidate.excerpt || "";
   const primary = params.candidate.families[0] ?? "UNKNOWN";
   const nonOperative = isNonOperative(excerpt, heading, params.candidate.families);
@@ -600,7 +737,7 @@ export function analyzeProvision(params: {
       ? "EVENTS_OF_DEFAULT"
       : (FAMILY_TO_CATEGORY[primary] ?? "OTHER");
   const categoryLabel = CATEGORY_LABELS[category];
-  const posture = detectPosture(excerpt, heading, params.candidate.families);
+  const posture = detectPosture(excerpt, heading, params.candidate.families, params.parentChapeau);
   const { coveredEntities, entityScopeNotes } = extractEntities(excerpt, heading);
   const basketsAndThresholds = extractBaskets(excerpt);
   const restriction = extractRestriction(excerpt, heading, posture, categoryLabel);
@@ -639,6 +776,13 @@ export function analyzeProvision(params: {
   }
 
   const unresolved: string[] = [...entityScopeNotes.filter((n) => /unresolved/i.test(n))];
+  // Representations note: a section in a pure Representations
+  // article states facts — counsel sees why it grants nothing.
+  if (isRepresentationArticle(articleHeading)) {
+    unresolved.push(
+      "Section sits in the Representations article — a statement of fact, not a grant of capacity; it mints no Permission even when accepted.",
+    );
+  }
   if (!restriction && posture === "UNRESOLVED") {
     unresolved.push("Could not determine whether the provision is a prohibition, permission, or maintenance test");
   }
@@ -653,6 +797,30 @@ export function analyzeProvision(params: {
   }
   unresolved.push("Whether this provision is currently operative after amendments is unresolved");
   unresolved.push("Numerical capacity/utilization is unresolved without approved financial inputs and ledger");
+  // Rule 157: a summary built from an ambiguous structural node must say
+  // so. Phase-2 precedent aggregates showed 6,913 of 37,790 structural
+  // nodes (~18%) flagged ambiguous, and candidate discovery deliberately
+  // keeps ambiguous sections when they carry a usable sectionRef — but
+  // nothing downstream disclosed that the section boundaries and
+  // attribution came from ambiguous structure. The disclosure rides on
+  // `unresolved`, which the document page renders and Ask surfaces, so
+  // counsel sees it wherever the summary is read.
+  const sourceNode = params.candidate.nodeId
+    ? params.structuralNodes.find((n) => n.nodeId === params.candidate.nodeId)
+    : undefined;
+  if (sourceNode?.ambiguous) {
+    unresolved.push(
+      "Source structure for this section was flagged ambiguous during parsing — verify section boundaries and attribution before relying on this summary",
+    );
+  }
+  // Rule 192: disclose a PREFIX excerpt — the operative span ran
+  // past the 4000-char cap, so clauses beyond the cap (which may
+  // carry their own baskets) are not in this summary.
+  if (params.candidate.excerptTruncated) {
+    unresolved.push(
+      "Operative excerpt truncated at 4000 characters — clauses beyond the cap are not in this summary; verify the full section before relying on this item",
+    );
+  }
 
   const plainEnglish = buildPlainEnglish({
     sectionRef,
@@ -681,6 +849,8 @@ export function analyzeProvision(params: {
   });
 
   return {
+    operativeExcerptTruncated: params.candidate.excerptTruncated,
+    articleHeading,
     sectionRef,
     heading,
     category,

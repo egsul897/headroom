@@ -29,13 +29,24 @@ export default async function OnboardingWizardPage({ params }: { params: Promise
       done: status.documentsUploaded > 0 && status.extractedDocuments > 0,
     },
     {
-      href: `/${companyId}/onboarding/review`,
-      label: "2. Review what Headroom found",
+      // Integration fix: the deterministic counsel-review path is the
+      // Rulebook — it works with no LLM credential, and its decisions
+      // compile executable Permissions. The LLM extraction-candidate
+      // queue (onboarding/review) is an optional second review surface
+      // (see the Optional links below), not the wizard's review step.
+      href: `/${companyId}/rulebook`,
+      label: "2. Review AI interpretations (Rulebook)",
       detail:
-        status.pendingReview > 0
-          ? `${status.pendingReview} waiting for review`
-          : `${status.readyToPromote} ready to promote · ${status.promoted} promoted`,
-      done: status.promoted > 0 || (status.readyToPromote > 0 && status.pendingReview === 0),
+        status.deterministicItems > 0
+          ? `${status.deterministicDecisions} of ${status.deterministicItems} interpretations reviewed · ${status.rulebookExecutablePermissions} executable permission(s)`
+          : status.pendingReview > 0
+            ? `${status.pendingReview} waiting for review`
+            : `${status.readyToPromote} ready to promote · ${status.promoted} promoted`,
+      done:
+        (status.deterministicItems > 0 && status.deterministicDecisions >= status.deterministicItems) ||
+        status.rulebookStage === "EXECUTABLE" ||
+        status.promoted > 0 ||
+        (status.readyToPromote > 0 && status.pendingReview === 0),
     },
     {
       href: `/${companyId}/onboarding/financials`,
@@ -89,6 +100,8 @@ export default async function OnboardingWizardPage({ params }: { params: Promise
           Optional: <Link href={`/${companyId}/onboarding/sources`}>EDGAR or additional CSV sources</Link>
           {" · "}
           <Link href={`/${companyId}/onboarding/facilities`}>map facilities</Link>
+          {" · "}
+          <Link href={`/${companyId}/onboarding/review`}>extraction-candidate review (LLM pipeline — requires an LLM credential)</Link>
         </div>
       </Card>
 

@@ -29,6 +29,14 @@ export interface AmendmentCompareView {
    */
   totalRowsBeforeCap: number;
   truncated: boolean;
+  /**
+   * Amendment-internal scaffolding articles (normalized arabic),
+   * derived from the FULL pre-cap row list (Rule 183c). The
+   * resolver needs articles whose rows sit past the 40-row cap
+   * (e.g. article IV "Closing Conditions" with subsections
+   * 4.1(a)) — deriving from the capped rows misses them.
+   */
+  scaffoldingArticles: string[];
 }
 
 type ItemWithDoc = CovenantSummaryItem & { sourceId: string; documentTitle: string };
@@ -46,6 +54,7 @@ export function compareAmendmentSummaries(params: {
       note: "Upload a base agreement and an amendment to enable before/after comparison.",
       totalRowsBeforeCap: 0,
       truncated: false,
+      scaffoldingArticles: [],
     };
   }
 
@@ -138,10 +147,56 @@ export function compareAmendmentSummaries(params: {
 
   return {
     operativeResolution: ap.operativeResolution,
+    scaffoldingArticles: deriveScaffoldingArticles(rows),
     rows: rows.slice(0, 40),
     unresolvedReasons: ap.unresolvedReasons,
     note: "Before/after rows are discovery comparisons of persisted analyses. UNRESOLVED_PRECEDENCE means Headroom will not select the operative version.",
     totalRowsBeforeCap: rows.length,
     truncated: rows.length > 40,
   };
+}
+
+/** Roman-numeral articles ("IV") and arabic subsection refs ("4.1(a)") name the same article. */
+function romanToArabic(t: string): string {
+  const ROMAN: Record<string, string> = { I: "1", II: "2", III: "3", IV: "4", V: "5", VI: "6", VII: "7", VIII: "8", IX: "9", X: "10", XI: "11", XII: "12", XIII: "13", XIV: "14", XV: "15" };
+  return ROMAN[t.toUpperCase()] ?? t;
+}
+export function articleOf(ref: string): string {
+  return romanToArabic(ref.split(/[.(]/)[0] ?? ref);
+}
+
+/**
+ * Amendment-internal scaffolding articles (Rule 183c): an
+ * amendment document's sections are instructions or
+ * amendment-internal scaffolding unless they demonstrably restate
+ * a base section. Scaffolding articles are derived from the
+ * amendment's own article-level items (e.g. an amendment item
+ * [3] headed "Conditions Precedent" makes Article 3 scaffolding,
+ * so [3.4] — a condition-precedent subsection — is scaffolding
+ * too). The "Amendments" instruction container applies at ANY
+ * level (an amendment numbers its articles as sections — §3.1
+ * "Amendments" is the container, not operative content).
+ * Headings carry newlines and can truncate mid-phrase, so
+ * heading + excerpt are normalized before matching.
+ */
+export function deriveScaffoldingArticles(rows: AmendmentCompareRow[]): string[] {
+  const out = new Set<string>();
+  for (const r of rows) {
+    if (r.changeKind !== "ADDED_IN_AMENDMENT") continue;
+    const headingOnly = (r.amendmentHeading ?? "").replace(/\s+/g, " ").trim();
+    const headingNorm = `${r.amendmentHeading ?? ""} ${r.amendmentExcerpt ?? ""}`.replace(/\s+/g, " ").trim();
+    if (/^\s*(?:Section\s+\S+\s+)?amendments?\s*$/i.test(headingOnly)) {
+      out.add(articleOf(r.sectionRef));
+      continue;
+    }
+    if (/[.(]/.test(r.sectionRef)) continue; // article-level only
+    if (
+      /\bconditions precedent\b|\bclosing conditions\b|\brepresentations and warranties\b|\bmiscellaneous\b|\beffectiveness\b|\bgeneral provisions\b|\bcounterparts\b|\bgoverning law\b|\bnotices\b|\bdefined terms\b/i.test(
+        headingNorm,
+      )
+    ) {
+      out.add(articleOf(r.sectionRef));
+    }
+  }
+  return [...out];
 }

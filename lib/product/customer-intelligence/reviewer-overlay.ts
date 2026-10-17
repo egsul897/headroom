@@ -19,9 +19,16 @@ export function applyReviewerOverlayToItems(
       // §6.01 of Doc A would then apply to (or REJECT-filter) §6.01
       // of Doc B. Section refs are only unique within a document.
       // Sourceless items keep the legacy sectionRef-only match.
+      // Fix 6: match on category too — an EDITED decision on the
+      // EVENTS_OF_DEFAULT reading of a section must not overwrite the
+      // OTHER reading's plainEnglish. A missing category on either side
+      // (synthetic / legacy items) is a wildcard so the Rule 27
+      // legacy sectionRef match keeps working; in production both
+      // sides always carry a category, so the match is strict there.
       const approval = approvals.find(
         (a) =>
           a.sectionRef === item.sectionRef &&
+          (!item.category || !a.category || a.category === item.category) &&
           (!item.sourceId || a.sourceId === item.sourceId),
       );
       if (!approval) return item;

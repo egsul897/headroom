@@ -13,7 +13,7 @@
  */
 
 import { LocalFilesystemStorageProvider } from "./local-fs-provider";
-import { PostgresDocumentStorageProvider } from "./postgres-bytea-provider";
+import { PostgresDocumentStorageProvider, POSTGRES_BYTEA_REF_PREFIX } from "./postgres-bytea-provider";
 import { VercelBlobStorageProvider } from "./vercel-blob-provider";
 import type { DocumentStorageProvider } from "./types";
 
@@ -89,4 +89,29 @@ export function getDocumentStorageProvider(): DocumentStorageProvider {
     throw new MissingBlobStorageConfigError();
   }
   return new LocalFilesystemStorageProvider();
+}
+
+/**
+ * Resolve the provider that OWNS a given storageRef, by the ref's
+ * own scheme — NOT by current env.
+ *
+ * The env-default factory is correct for STORING (new bytes go to
+ * the currently configured backend), but RETRIEVAL must go to
+ * wherever the bytes actually live. A document uploaded when the
+ * backend was Postgres (ref `pgbytea:v1:<hash>`) still lives in
+ * Postgres even if BLOB_READ_WRITE_TOKEN is set later; retrieving
+ * it through the env-default Vercel Blob provider fails with
+ * "blob not found" (Strata re-analysis, 2026-10-16). Same for Blob
+ * URLs: they live in Vercel Blob regardless of the current
+ * DOCUMENT_STORAGE_BACKEND. Unknown/unrecognized refs fall back
+ * to the env default (legacy refs predate the scheme).
+ */
+export function getDocumentStorageProviderForRef(storageRef: string): DocumentStorageProvider {
+  if (storageRef.startsWith(POSTGRES_BYTEA_REF_PREFIX)) {
+    return new PostgresDocumentStorageProvider();
+  }
+  if (storageRef.startsWith("https://") || storageRef.startsWith("http://")) {
+    return new VercelBlobStorageProvider();
+  }
+  return getDocumentStorageProvider();
 }

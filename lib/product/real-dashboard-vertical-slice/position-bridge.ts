@@ -79,6 +79,9 @@ function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
     capacityAuthority: "LEGACY_ENGINE",
     analyzedDocumentCount: 2,
     summaryCount: slice.covenants.length,
+    // Restricted fixture slice: summaries are the whole discovered set — nothing beyond the cap.
+    discoveredCount: slice.covenants.length,
+    awaitingAnalysisCount: 0,
     permissionCount: 0,
     unverifiedPermissionCount: 0,
     provisionCount: slice.covenants.length,
@@ -89,6 +92,8 @@ function readinessFromSlice(slice: VerticalSliceEvaluation): CapacityReadiness {
     contractLedgerActiveCount: 0,
     phase3TrustedUnitCount: 0,
     phase3TrustedRuleCount: 0,
+    // Restricted fixture slice: no stored analyses in scope, so none can be stale.
+    staleAnalyzedDocumentCount: 0,
     headline: "Authentic Matthews evidence — modeled/gross fixture capacity (not production-executable)",
     blockers: [
       "No NS-4 APPROVED financial snapshot — production remaining unavailable.",
@@ -112,6 +117,10 @@ function rulebookFromSlice(slice: VerticalSliceEvaluation): RulebookReadiness {
     reviewedPermissions: 0,
     executablePermissions: 0,
     provisionRows: slice.covenants.length,
+    staleDiscoveredSummaries: 0,
+    exceptionItems: 0,
+    exceptionDecisions: 0,
+    reviewComplete: false,
     blockers: [
       "No counsel REVIEWED permissions — leaf evaluateProvision path only.",
       "Phase-3 certified executable IR not bound for this package.",

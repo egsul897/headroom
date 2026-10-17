@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Card, Chip, type ChipTone } from "@/components/ui";
+import { PendingSubmitButton } from "@/components/PendingSubmitButton";
 import { getDocumentsWithExtractionStatus } from "@/lib/onboarding/documents";
 import { getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailureLogsForCompany } from "@/lib/contract-model/analysis";
 import { listCustomerDocumentIntelligence } from "@/lib/product/customer-intelligence/load";
@@ -113,8 +114,8 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
       <Card>
         <div className="card-title">Upload a financing document</div>
         <div className="card-subtitle">
-          Credit agreements, indentures, amendments, and compliance certificates. PDF, HTML, DOCX, or TXT. After upload,
-          click &ldquo;Run extraction&rdquo; so Headroom can read covenants and propose financial figures. Failures are shown
+          Credit agreements, indentures, amendments, and compliance certificates. PDF, HTML, DOCX, or TXT. Analysis runs
+          automatically on upload — Headroom reads covenants and proposes interpretations for review. Failures are shown
           honestly — Headroom never claims analysis succeeded when extraction failed.
         </div>
         <form action={upload} className="stack" style={{ gap: 10 }}>
@@ -148,9 +149,7 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
               <input type="text" name="governs" />
             </div>
           </div>
-          <button type="submit" className="button-primary" style={{ width: "fit-content" }}>
-            Upload &amp; analyze
-          </button>
+          <PendingSubmitButton label="Upload & analyze" pendingLabel="Uploading & analyzing…" />
         </form>
       </Card>
 
@@ -168,9 +167,7 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
               <input type="file" name="file" accept=".csv,text/csv" required />
             </div>
           </div>
-          <button type="submit" className="button" style={{ width: "fit-content" }}>
-            Upload financial CSV
-          </button>
+          <PendingSubmitButton label="Upload financial CSV" pendingLabel="Uploading…" className="button" />
         </form>
       </Card>
 
@@ -192,6 +189,18 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
                 </Chip>
                 <Chip tone="idle">{intel.covenantItemCount} covenant summaries</Chip>
                 <Chip tone="idle">{intel.extractionStatus}</Chip>
+                {(() => {
+                  // Every discovered item is accounted for: items
+                  // beyond the summary cap are awaiting analysis —
+                  // never labeled reviewed, rejected, or irrelevant.
+                  const discovered = intel.summary?.totalItemsBeforeCap ?? intel.covenantItemCount;
+                  const awaiting = discovered - intel.covenantItemCount;
+                  return awaiting > 0 ? (
+                    <Chip tone="tight">
+                      {awaiting} discovered, awaiting analysis — not reviewed, not rejected
+                    </Chip>
+                  ) : null;
+                })()}
               </>
             ) : (
               <Chip tone="idle">Intelligence: pending / not run</Chip>
@@ -210,6 +219,13 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
           {d.latestRun ? (
             <>
               <div className="row-note" style={{ marginBottom: 4 }}>
+                {/* Deterministic analysis (the Intelligence status
+                    above) is the source of truth and already ran.
+                    These LLM extraction stages are optional and
+                    never block: a stuck LLM run must not read as
+                    "analysis not ready" when Headroom has already
+                    analyzed the document. */}
+                Optional LLM extraction (not required — deterministic analysis above is the source of truth) ·
                 provider: {d.latestRun.provider} · model: {d.latestRun.model}
               </div>
               <div className="button-row" style={{ marginBottom: 8 }}>
@@ -230,11 +246,17 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
           ) : (
             <div className="row-note" style={{ marginBottom: 8 }}>No extraction run yet.</div>
           )}
-          <form action={runExtractionAction.bind(null, companyId, d.id)}>
-            <button type="submit" className="button">
-              {d.latestRun ? "Re-run pending/failed stages" : "Run extraction"}
-            </button>
-          </form>
+          {intel?.analysisOk ? (
+            <div className="row-note" style={{ marginBottom: 8 }}>
+              Deterministic analysis complete — LLM extraction not required.
+            </div>
+          ) : (
+            <form action={runExtractionAction.bind(null, companyId, d.id)}>
+              <button type="submit" className="button">
+                {d.latestRun ? "Re-run pending/failed stages" : "Run extraction"}
+              </button>
+            </form>
+          )}
         </Card>
         );
       })}
@@ -243,8 +265,8 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
 
       <Card>
         <div className="button-row">
-          <Link href={`/${companyId}/onboarding/review`} className="button button-primary" style={{ textDecoration: "none" }}>
-            Continue to Review
+          <Link href={`/${companyId}/rulebook`} className="button button-primary" style={{ textDecoration: "none" }}>
+            Continue to Review (Rulebook)
           </Link>
           <Link href={`/${companyId}/onboarding`} className="button" style={{ textDecoration: "none" }}>
             Back to onboarding wizard

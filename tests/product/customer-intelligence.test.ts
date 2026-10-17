@@ -350,6 +350,8 @@ describe("export formats", () => {
       analyzedOkCount: 1,
       failedCount: 0,
       totalSummaries: 1,
+      totalDiscovered: 1,
+      awaitingAnalysis: 0,
       executive: {
         headline: "1 document analyzed.",
         materialRestrictions: ["§7.01: No Indebtedness except baskets."],
@@ -366,6 +368,7 @@ describe("export formats", () => {
         unresolvedReasons: [],
         totalRowsBeforeCap: 0,
         truncated: false,
+        scaffoldingArticles: [],
         note: "n/a",
       },
       operativeResolution: null,
@@ -389,6 +392,8 @@ describe("covenant review markdown export", () => {
       analyzedOkCount: 1,
       failedCount: 0,
       totalSummaries: 1,
+      totalDiscovered: 1,
+      awaitingAnalysis: 0,
       executive: {
         headline: "1 document(s) analyzed with 1 source-backed covenant summaries.",
         materialRestrictions: ["§7.01: No Indebtedness except enumerated baskets."],
@@ -410,6 +415,7 @@ describe("covenant review markdown export", () => {
         unresolvedReasons: [],
         totalRowsBeforeCap: 0,
         truncated: false,
+        scaffoldingArticles: [],
         note: "Upload a base agreement and an amendment to enable before/after comparison.",
       },
       operativeResolution: null,

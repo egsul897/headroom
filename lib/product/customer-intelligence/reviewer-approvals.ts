@@ -19,14 +19,30 @@ export interface ReviewerApproval {
   sourceId: string;
   sectionRef: string;
   category: string;
+  /**
+   * Phase C (D11): the structural node's occurrence identity.
+   * The decision key is (sourceId, sectionRef, category, nodeId)
+   * — two occurrences sharing a label (CA §5.01 vs Guaranty
+   * §5.01) hold separate decisions, and compile matches the
+   * exact item. Legacy rows without nodeId match only legacy
+   * decisions without nodeId.
+   */
+  nodeId?: string;
   decision: ReviewDecision;
+  /**
+   * Who made the decision. COUNSEL = a human reviewer (recordReviewerDecision).
+   * SYSTEM = exception-based auto-accept of a routine supported interpretation
+   * (autoAcceptRoutineInterpretations). Absent = COUNSEL (legacy rows).
+   * SYSTEM decisions are NEVER labeled counsel-verified anywhere.
+   */
+  reviewerKind?: "SYSTEM" | "COUNSEL";
   editedPlainEnglish?: string;
   /** Prior AI plain English when counsel edits/replaces. */
   priorPlainEnglish?: string;
   note?: string;
   reviewedAt: string;
   reviewerLabel: string;
-  /** Monotonic version within (sourceId, sectionRef). */
+  /** Monotonic version within (sourceId, sectionRef, category). */
   version: number;
 }
 
@@ -57,6 +73,7 @@ export async function recordReviewerDecision(params: {
   sourceId: string;
   sectionRef: string;
   category: string;
+  nodeId?: string;
   decision: ReviewDecision;
   editedPlainEnglish?: string;
   note?: string;
@@ -84,11 +101,21 @@ export async function recordReviewerDecision(params: {
     ? ([...meta.reviewerDecisionHistory] as ReviewerApproval[])
     : [];
 
+  // Integration fix (Fix 6): decisions key on (sourceId, sectionRef,
+  // CATEGORY). The old key ignored category, so two summary items
+  // sharing a sectionRef (e.g. 1.01(g)(c)(c) as EVENTS_OF_DEFAULT and
+  // as OTHER) overwrote each other's decisions — counsel could never
+  // complete review of a doc with duplicate refs, and the wizard's
+  // decisions < items gate never cleared.
+  // Phase C (D11): decision key includes nodeId (occurrence).
+  const sameOccurrence = (aNodeId?: string) => (aNodeId ?? undefined) === (params.nodeId ?? undefined);
   const existing = prior.find(
-    (a) => a.sectionRef === params.sectionRef && a.sourceId === params.sourceId,
+    (a) => a.sectionRef === params.sectionRef && a.sourceId === params.sourceId && a.category === params.category && sameOccurrence(a.nodeId),
   );
   const summary = summarizeFromStoredMetadata(meta);
-  const currentItem = summary?.items.find((i) => i.sectionRef === params.sectionRef);
+  const currentItem = summary?.items.find(
+    (i) => i.sectionRef === params.sectionRef && i.category === params.category && (params.nodeId ? i.nodeId === params.nodeId : true),
+  );
   // Rule 112: compile already refuses a section with no summary
   // item — but the decision row was still recorded, leaving a
   // phantom approval that matches nothing. Refuse up front so no
@@ -120,6 +147,7 @@ export async function recordReviewerDecision(params: {
     sourceId: params.sourceId,
     sectionRef: params.sectionRef,
     category: params.category,
+    nodeId: params.nodeId ?? undefined,
     decision: params.decision,
     editedPlainEnglish: params.editedPlainEnglish?.trim() || undefined,
     priorPlainEnglish: currentItem?.plainEnglish,
@@ -131,7 +159,7 @@ export async function recordReviewerDecision(params: {
 
   if (existing) history.push(existing);
   const filtered = prior.filter(
-    (a) => !(a.sectionRef === next.sectionRef && a.sourceId === next.sourceId),
+    (a) => !(a.sectionRef === next.sectionRef && a.sourceId === next.sourceId && a.category === next.category && (a.nodeId ?? undefined) === (next.nodeId ?? undefined)),
   );
   filtered.push(next);
 
@@ -141,7 +169,11 @@ export async function recordReviewerDecision(params: {
     summary
   ) {
     const items = summary.items.map((item) => {
-      if (item.sectionRef !== params.sectionRef) return item;
+      // Category isolation: an edit/accept on one reading of a
+      // section must not patch the other reading's plainEnglish /
+      // reviewerDecision (two items can share a sectionRef with
+      // different categories).
+      if (item.sectionRef !== params.sectionRef || item.category !== params.category || (params.nodeId ? item.nodeId !== params.nodeId : false)) return item;
       const plain =
         params.decision === "EDITED" && params.editedPlainEnglish?.trim()
           ? params.editedPlainEnglish.trim()
@@ -163,7 +195,9 @@ export async function recordReviewerDecision(params: {
 
   if (params.decision === "REJECTED" && summary) {
     const items = summary.items.map((item) => {
-      if (item.sectionRef !== params.sectionRef) return item;
+      // Category isolation (same as the accept/edit patch above):
+      // a rejection of one reading must not reject the other.
+      if (item.sectionRef !== params.sectionRef || item.category !== params.category || (params.nodeId ? item.nodeId !== params.nodeId : false)) return item;
       return { ...item, reviewerDecision: "REJECTED" as const };
     });
     meta.covenantSummary = { ...summary, items };
@@ -185,17 +219,28 @@ export async function recordReviewerDecision(params: {
     sourceId: params.sourceId,
     sectionRef: params.sectionRef,
     category: params.category,
+    nodeId: params.nodeId ?? undefined,
     decision: params.decision,
     approvalNote: params.note,
   });
   meta.counselCompileResults = [
     ...(Array.isArray(meta.counselCompileResults) ? (meta.counselCompileResults as unknown[]) : []),
-    { at: next.reviewedAt, sectionRef: params.sectionRef, decision: params.decision, results: compileResults },
+    { at: next.reviewedAt, sectionRef: params.sectionRef, category: params.category, decision: params.decision, results: compileResults },
   ].slice(-100);
   await prisma.knowledgeSource.update({
     where: { sourceId: params.sourceId },
     data: { metadata: JSON.parse(JSON.stringify(meta)) },
   });
+
+  // Rule 171: counsel-review completion attests coverage. Runs after
+  // compile so scopes reflect the post-decision Permission set. Must
+  // never block counsel Persist / compile (same pattern as feedback).
+  try {
+    const { evaluateCounselCoverage } = await import("./counsel-coverage");
+    await evaluateCounselCoverage(prisma, { companyId: params.companyId, sourceId: params.sourceId });
+  } catch {
+    // Coverage evaluation must not block counsel Persist / compile.
+  }
 
   // Workspace-scoped reusable feedback (never cross-customer auto-transfer).
   try {
@@ -214,4 +259,132 @@ export async function recordReviewerDecision(params: {
     approvalCount: filtered.filter((a) => a.decision !== "REJECTED").length,
     compileResults,
   };
+}
+
+
+/**
+ * Exception-based review: auto-accept every routine supported
+ * interpretation in a document's summary as a SYSTEM decision and
+ * compile it (creating its Permission / ratio provision). Counsel
+ * decisions are required only for EXCEPTIONS; counsel can still
+ * inspect, edit, or reject any item — a later counsel decision
+ * supersedes the system acceptance (recordReviewerDecision
+ * overwrites the approval row and re-compiles).
+ *
+ * Idempotent: items with an existing decision (SYSTEM or COUNSEL)
+ * are skipped. Never throws: a per-item failure is skipped and
+ * the item stays an exception for counsel. Callers wrap in
+ * try/catch too — auto-accept must never fail an upload.
+ */
+export async function autoAcceptRoutineInterpretations(params: {
+  companyId: string;
+  sourceId: string;
+}): Promise<{ accepted: number; skipped: number }> {
+  const { isRoutineItem } = await import("./routine-review");
+  const { compileAcceptedInterpretation } = await import("./compile-accepted");
+  const { grantTypesForItem } = await import("./grant-types");
+  const row = await prisma.knowledgeSource.findFirst({
+    where: { companyId: params.companyId, sourceId: params.sourceId },
+  });
+  if (!row) return { accepted: 0, skipped: 0 };
+  const meta =
+    row.metadata && typeof row.metadata === "object" && !Array.isArray(row.metadata)
+      ? ({ ...(row.metadata as Record<string, unknown>) } as Record<string, unknown>)
+      : {};
+  const summary = summarizeFromStoredMetadata(meta);
+  if (!summary) return { accepted: 0, skipped: 0 };
+  const prior = Array.isArray(meta.reviewerApprovals)
+    ? ([...meta.reviewerApprovals] as ReviewerApproval[])
+    : [];
+  // Phase C (D11): decision key includes nodeId (occurrence).
+  const decided = new Set(prior.map((a) => `${a.sectionRef}::${a.category}::${a.nodeId ?? ""}`));
+  let accepted = 0;
+  let skipped = 0;
+  const approvals = [...prior];
+  for (const item of summary.items) {
+    if (!isRoutineItem(item)) {
+      skipped += 1;
+      continue;
+    }
+    // Phase C (D11): two items sharing (ref, category) are
+    // distinct occurrences with distinct decisions (keyed by
+    // nodeId). The second is NOT already decided.
+    if (decided.has(`${item.sectionRef}::${item.category}::${item.nodeId ?? ""}`)) {
+      skipped += 1;
+      continue;
+    }
+    const next: ReviewerApproval = {
+      sourceId: params.sourceId,
+      sectionRef: item.sectionRef,
+      category: item.category,
+      nodeId: item.nodeId ?? undefined,
+      decision: "ACCEPTED",
+      reviewerKind: "SYSTEM",
+      note: "System auto-accepted — routine supported interpretation, not counsel-verified.",
+      reviewedAt: new Date().toISOString(),
+      reviewerLabel: "system:auto-accept",
+      version: 1,
+    };
+    approvals.push(next);
+    decided.add(`${item.sectionRef}::${item.category}::${item.nodeId ?? ""}`);
+    // Persist the approval row BEFORE compiling so the compile
+    // reads a summary whose decisions include this acceptance.
+    meta.reviewerApprovals = approvals;
+    await prisma.knowledgeSource.update({
+      where: { sourceId: params.sourceId },
+      data: { metadata: JSON.parse(JSON.stringify(meta)) },
+    });
+    try {
+      const results = await compileAcceptedInterpretation({
+        companyId: params.companyId,
+        sourceId: params.sourceId,
+        sectionRef: item.sectionRef,
+        category: item.category,
+        // Phase C (D11): compile the exact item, not first-match
+        // by (ref, category) — duplicate occurrences would fail
+        // closed without the nodeId.
+        nodeId: item.nodeId ?? undefined,
+        decision: "ACCEPTED",
+        reviewerKind: "SYSTEM",
+      });
+      // Non-throwing failures are still failures: a routine item
+      // whose compile returns INCOMPLETE/FAILED (classification
+      // and compile disagree, or a transient fault) is NOT
+      // successfully auto-compiled — it stays unresolved for
+      // counsel. Grant items need a COMPILED/UPDATED Permission per
+      // grant. No-grant items (boilerplate: nothing to mint;
+      // ratio: a provision) succeed on any non-FAILED result —
+      // INCOMPLETE there means "nothing to compile", not a miss.
+      const grants = grantTypesForItem(item);
+      const compiled =
+        results.length > 0 &&
+        results.every((r) =>
+          grants.length > 0
+            ? r.status === "COMPILED" || r.status === "UPDATED"
+            : r.status !== "FAILED",
+        );
+      if (!compiled) throw new Error(`Auto-accept compile did not produce an executable artifact for ${item.sectionRef} (${item.category}): ${results.map((r) => r.status).join(",")}`);
+      accepted += 1;
+    } catch {
+      // Per-item failure stays an exception for counsel (the
+      // approval row already exists — it is removed so the item
+      // is not wrongly marked decided).
+      const idx = approvals.findIndex(
+        (a) => a.sectionRef === item.sectionRef && a.category === item.category && a.reviewerKind === "SYSTEM",
+      );
+      if (idx >= 0) approvals.splice(idx, 1);
+      decided.delete(`${item.sectionRef}::${item.category}`);
+      meta.reviewerApprovals = approvals;
+      try {
+        await prisma.knowledgeSource.update({
+          where: { sourceId: params.sourceId },
+          data: { metadata: JSON.parse(JSON.stringify(meta)) },
+        });
+      } catch {
+        // Best effort — the row will be overwritten on the next run.
+      }
+      skipped += 1;
+    }
+  }
+  return { accepted, skipped };
 }

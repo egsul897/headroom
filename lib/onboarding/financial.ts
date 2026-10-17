@@ -70,6 +70,12 @@ export interface ManualFinancialStateInput {
   fixedCharges?: number;
   /** Relevant assets for grower baskets ($M). */
   totalAssets?: number;
+  /**
+   * Covenant-defined Consolidated Net Worth ($M) for greater-of
+   * flat / % Net Worth growers (Rule 186). The agreement's
+   * defined term — NOT GAAP total equity.
+   */
+  netWorth?: number;
   /** First-lien / senior secured debt principal ($M) — not assumed equal to all secured debt. */
   firstLienDebtPrincipal?: number;
   /** Restricted-group / contractual Consolidated EBITDA when distinct from headline EBITDA ($M). */
@@ -279,6 +285,11 @@ function financialStateFactsFromInput(input: ManualFinancialStateInput, prior?: 
             asOfDate,
             covenantPrior?.ebitdaAdjustmentsAmount,
           ),
+        }
+      : {}),
+    ...(input.netWorth !== undefined
+      ? {
+          netWorth: factCarryingPrior(input.netWorth, asOfDate, covenantPrior?.netWorth),
         }
       : {}),
     ...(input.contractualEbitdaTerm

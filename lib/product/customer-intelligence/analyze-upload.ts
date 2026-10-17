@@ -289,8 +289,8 @@ export async function reanalyzeCustomerDocumentFromStorage(params: {
   }
   if (row) await markCustomerProcessingStatus({ sourceId: row.sourceId, status: "ANALYZING" });
   try {
-    const { getDocumentStorageProvider } = await import("../../document-storage");
-    const bytes = await getDocumentStorageProvider().retrieve(storageRef);
+    const { getDocumentStorageProviderForRef } = await import("../../document-storage");
+    const bytes = await getDocumentStorageProviderForRef(storageRef).retrieve(storageRef);
     const result = await analyzeCustomerDocument({
       companyId: params.companyId,
       documentId: params.documentId,
@@ -700,6 +700,33 @@ export async function analyzeCustomerDocument(params: {
         metadata,
       },
     });
+
+    // Rule 171: re-analysis can add undecided items, which must flip
+    // a previously-complete coverage declaration back to incomplete.
+    // Must never fail the upload (same pattern as feedback capture).
+    try {
+      const { evaluateCounselCoverage } = await import("./counsel-coverage");
+      await evaluateCounselCoverage(prisma, { companyId: params.companyId, sourceId });
+    } catch {
+      // Coverage evaluation must not fail the upload.
+    }
+
+    // Exception-based review: auto-accept routine supported
+    // interpretations as SYSTEM decisions (never labeled
+    // counsel-verified) and compile them. Counsel decisions are
+    // required only for exceptions; counsel can still inspect,
+    // edit, or reject any item. Must never fail the upload —
+    // auto-accept is idempotent and safe to re-run on re-analysis.
+    try {
+      const { autoAcceptRoutineInterpretations } = await import("./reviewer-approvals");
+      await autoAcceptRoutineInterpretations({ companyId: params.companyId, sourceId });
+      // Auto-accepts change the decided set — re-evaluate coverage
+      // so declarations reflect the system-accepted items.
+      const { evaluateCounselCoverage } = await import("./counsel-coverage");
+      await evaluateCounselCoverage(prisma, { companyId: params.companyId, sourceId });
+    } catch {
+      // Auto-accept must not fail the upload.
+    }
 
     const analysisSucceeded =
       (processed.source.extractionStatus === "CANDIDATES_DISCOVERED" ||

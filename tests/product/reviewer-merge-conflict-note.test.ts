@@ -51,6 +51,21 @@ describe("mergePreservedReviewerDecisions conflict notes", () => {
     expect(merged.summary.items[1]?.interpretationNote ?? "").not.toContain("AI text may have changed");
   });
 
+  it("a preserved decision for one category does not re-apply to the other reading of the same section", () => {
+    const merged = mergePreservedReviewerDecisions({
+      summary: summary([
+        { sectionRef: "1.01(g)(c)(c)", category: "EVENTS_OF_DEFAULT", plainEnglish: "Default reading text." },
+        { sectionRef: "1.01(g)(c)(c)", category: "OTHER", plainEnglish: "Other reading text." },
+      ]),
+      priorApprovals: [
+        approval({ sectionRef: "1.01(g)(c)(c)", category: "EVENTS_OF_DEFAULT", priorPlainEnglish: "Default reading text." }),
+      ],
+    });
+    expect(merged.summary.items[0]?.reviewerDecision).toBe("ACCEPTED");
+    expect(merged.summary.items[1]?.reviewerDecision).toBeUndefined();
+    expect(merged.summary.items[1]?.interpretationNote ?? "").not.toContain("Prior counsel acceptance");
+  });
+
   it("stamps no conflict note when nothing drifted", () => {
     const merged = mergePreservedReviewerDecisions({
       summary: summary([{ sectionRef: "6.01", plainEnglish: "Same text." }]),

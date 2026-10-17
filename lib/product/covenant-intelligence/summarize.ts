@@ -42,6 +42,24 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
 export interface CovenantSummaryItem {
   category: CovenantCategoryKey;
   categoryLabel: string;
+  /**
+   * Phase C (D11): the structural node's occurrence identity
+   * (nodeId), carried so compile matches the EXACT item the
+   * decision refers to — never first-match by (ref, category),
+   * which merges distinct occurrences sharing a label (CA §5.01
+   * vs Guaranty §5.01). Optional for backward compat with
+   * stored summaries minted before this field existed.
+   */
+  nodeId?: string;
+  /**
+   * Phase E (D10): true when the item's own structural node is
+   * unresolved — its heading triaged AMBIGUOUS or it violates
+   * the structural-integrity contract. Such an item NEVER
+   * auto-accepts as SYSTEM; it is a counsel exception. The
+   * item's own node is what matters (an ambiguous parent
+   * section does not taint its confident sub-clauses).
+   */
+  structuralUnresolved?: boolean;
   sectionRef: string;
   heading: string;
   posture: ProvisionPosture;
@@ -54,6 +72,13 @@ export interface CovenantSummaryItem {
   materialBasketsThresholds: string[];
   draftingPatterns: string[];
   operativeLanguageExcerpt: string;
+  /** Rule 192: the analyzer's excerpt is a prefix of a longer
+   * operative span — tail clauses are missing. The compiler
+   * must not mint a formula from it (except when counsel EDITED
+   * the item, supplying the controlling text). */
+  operativeExcerptTruncated?: boolean;
+  /** Heading of the enclosing ARTICLE node, if any (powers the representations guard in grant-types). */
+  articleHeading?: string;
   sourceCitation: string;
   governingAgreement: string;
   families: string[];
@@ -103,13 +128,49 @@ export interface DocumentCovenantSummary {
   definedTermsSample: Array<{ term: string; excerpt: string }>;
   /**
    * General rule: silent truncation is a lie. countsByCategory counts
-   * EVERY candidate, but items is capped at 120 — without these fields
-   * the counts and the listed items disagreed with no explanation.
-   * totalItemsBeforeCap is the pre-cap item count; truncated is true
-   * when the cap dropped items.
+   * EVERY candidate, but items is capped at SUMMARY_ITEM_CAP —
+   * without these fields the counts and the listed items disagreed
+   * with no explanation. totalItemsBeforeCap is the pre-cap item
+   * count; truncated is true when the cap dropped items.
    */
   totalItemsBeforeCap: number;
   truncated: boolean;
+}
+
+/**
+ * Summary item cap. analyzeProvision already runs for EVERY
+ * candidate (the loop below), so the cap is a keep/drop bound,
+ * not an analysis bound. 1000 covers every real agreement
+ * observed (Strata 218; the old 120 cap silently dropped 98
+ * Strata provisions from the Rulebook and capacity). The cap
+ * now exists only to bound pathological inputs; the ranking
+ * (basket-shaped first, peripheral last) still protects
+ * operative provisions if a pathological document exceeds it.
+ * The accounting (totalDiscovered / awaitingAnalysis) still
+ * covers anything beyond the cap.
+ */
+export const SUMMARY_ITEM_CAP = 1000;
+
+/**
+ * Rule 159: user-facing cap disclosure for a covenant summary. The
+ * summary object has carried truncated + totalItemsBeforeCap, but no
+ * page read them — a 150-item document showed "first 40 of 120" and
+ * the 30 dropped items were invisible. Returns the disclosure string
+ * when the cap dropped items, else null. Category counts reflect ALL
+ * items; only the listed items are capped — the note says both.
+ */
+export function summaryCapDisclosure(summary: {
+  truncated: boolean;
+  totalItemsBeforeCap: number;
+  items: unknown[];
+}): string | null {
+  if (!summary.truncated) return null;
+  const dropped = summary.totalItemsBeforeCap - summary.items.length;
+  return (
+    `Summary capped at ${summary.items.length} of ${summary.totalItemsBeforeCap} covenant items — ` +
+    `${dropped} items were not included in the list below. ` +
+    `Category counts above reflect all ${summary.totalItemsBeforeCap} items.`
+  );
 }
 
 function entityScopeFromAnalysis(a: ProvisionAnalysis): CovenantSummaryItem["entityScope"] {
@@ -126,8 +187,12 @@ function entityScopeFromAnalysis(a: ProvisionAnalysis): CovenantSummaryItem["ent
 function itemFromAnalysis(
   analysis: ProvisionAnalysis,
   governingAgreement: string,
+  nodeId?: string,
+  structuralUnresolved?: boolean,
 ): CovenantSummaryItem {
   return {
+    nodeId,
+    structuralUnresolved,
     category: analysis.category,
     categoryLabel: analysis.categoryLabel,
     sectionRef: analysis.sectionRef,
@@ -142,6 +207,8 @@ function itemFromAnalysis(
     materialBasketsThresholds: analysis.basketsAndThresholds,
     draftingPatterns: analysis.draftingPatterns,
     operativeLanguageExcerpt: analysis.operativeLanguageExcerpt,
+    operativeExcerptTruncated: analysis.operativeExcerptTruncated,
+    articleHeading: analysis.articleHeading,
     sourceCitation: analysis.sourceCitation,
     governingAgreement,
     families: analysis.families,
@@ -152,7 +219,15 @@ function itemFromAnalysis(
     dependencies: analysis.dependencies,
     epistemicStatus: analysis.epistemicStatus,
     interpretationNote: analysis.interpretationNote,
-    unresolvedQuestions: analysis.unresolved,
+    // Phase E: structural uncertainty is preserved through every
+    // layer — it surfaces in unresolvedQuestions (read by the
+    // Rulebook, Ask, and counsel review), never silently dropped.
+    unresolvedQuestions: structuralUnresolved
+      ? [
+          ...analysis.unresolved,
+          "Structural relationship unresolved: this provision's parent/article could not be established deterministically from span containment + ref-consistency. Its excerpt is real text, but its placement in the hierarchy is not certified — confirm the governing article/section before relying on it.",
+        ]
+      : analysis.unresolved,
     alternativeInterpretations: analysis.alternativeInterpretations,
     assumptions: analysis.assumptions,
     judgmentCalls: analysis.judgmentCalls,
@@ -189,12 +264,91 @@ export function buildDocumentCovenantSummary(params: {
   const headingOf = (c: (typeof params.candidates)[number]): string =>
     (c.nodeId ? (headingByNodeId.get(c.nodeId) ?? "") : "");
 
+  // Rule 205: basket-shaped candidates rank FIRST, before the
+  // peripheral demotion and the discovery score. Asure 7.02(f)
+  // — "Indebtedness of any Person that becomes a Subsidiary
+  // ... not to exceed ... $5,000,000", a genuine $5M acquired-
+  // subsidiary debt basket — scored only 3 (amount_cap alone)
+  // and lost the 120-cap to higher-scored noise, understating
+  // debt capacity by $5M. A candidate with a dollar amount +
+  // a cap frame + a covenant family IS an operative basket;
+  // the cap must never drop one while noise survives. The
+  // predicate is deliberately narrow (a $ amount AND a cap
+  // frame AND a basket family) — a definition condition with
+  // a $ cap also matches, but it occupies an item slot without
+  // minting a grant (Rule 204), so it cannot corrupt capacity.
+  const BASKET_FAMILIES = new Set([
+    "INDEBTEDNESS",
+    "LIENS",
+    "RESTRICTED_PAYMENTS",
+    "INVESTMENTS",
+    "ASSET_SALES",
+    "INCREMENTAL_DEBT_AND_FACILITIES",
+    "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
+    "RATIO_BASED_PERMISSIONS",
+    "SHARED_CAPACITY_PROVISIONS",
+    "FINANCIAL_MAINTENANCE_COVENANTS",
+    "JUNIOR_DEBT_PREPAYMENTS",
+    "MANDATORY_PREPAYMENTS",
+  ]);
+  const isBasketShaped = (c: (typeof params.candidates)[number]): boolean => {
+    const ex = c.excerpt ?? "";
+    return (
+      /\$\s*[\d,]+/.test(ex) &&
+      /\bnot\s+(?:to\s+)?exceed(?:ing)?\b|\bup\s+to\s+\$/i.test(ex) &&
+      c.families.some((f) => BASKET_FAMILIES.has(f))
+    );
+  };
   const ranked = [...params.candidates].sort((a, b) => {
+    const ab = isBasketShaped(a) ? 0 : 1;
+    const bb = isBasketShaped(b) ? 0 : 1;
+    if (ab !== bb) return ab - bb; // baskets before everything — the cap must not drop one
     const ap = peripheralHeading.test(headingOf(a)) ? 1 : 0;
     const bp = peripheralHeading.test(headingOf(b)) ? 1 : 0;
     if (ap !== bp) return ap - bp; // primary covenants before peripheral
     return b.discoveryScore - a.discoveryScore;
   });
+  // Chapeau inheritance: map nodeId -> candidate excerpt, so a
+  // sub-clause candidate can inherit its parent chapeau's
+  // prohibition-with-except frame (see detectPosture). The chapeau
+  // is the parent excerpt's text before the first sub-clause
+  // marker; when the parent candidate IS the chapeau alone (its
+  // excerpt ends at the colon, no sub-clauses inside), the whole
+  // parent excerpt is the chapeau. Capped at 1500 chars — a
+  // chapeau is a short opening frame; the frame test in
+  // detectPosture (shall-not + except, or bare stem + other than)
+  // is the real guard.
+  const excerptByNodeId = new Map(params.candidates.map((c) => [c.nodeId, c.excerpt ?? ""]));
+  const nodeById = new Map(params.structuralNodes.map((n) => [n.nodeId, n]));
+  const parentChapeauOf = (c: (typeof params.candidates)[number]): string | undefined => {
+    const node = c.nodeId ? nodeById.get(c.nodeId) : undefined;
+    const parentId = node?.parentNodeId;
+    if (!parentId || parentId === c.nodeId) return undefined;
+    // Phase C (D7): the parent excerpt IS the parent section's own
+    // span (the candidate excerpt is sliced from the parent node's
+    // span), so reading it is reading the section's own chapeau —
+    // not a parent pointer's guess. The gate that matters is
+    // structural confidence: never inherit a chapeau through an
+    // ambiguous parent (its heading/identity is uncertain) or a
+    // parent with integrity violations (its parentage is
+    // unresolved). With the fixed parser the parentNodeId is
+    // containment + ref validated; the old failure mode (a
+    // mis-parented clause inheriting another section's frame)
+    // is closed at the parser, and this gate closes the
+    // ambiguous-parent variant.
+    const parentNode = nodeById.get(parentId);
+    if (!parentNode) return undefined;
+    // Gate on parentage validity, not on the parent's heading
+    // confidence: an ambiguous heading (inline, uncorroborated)
+    // still has a validated span + ref-consistent parentage, and
+    // its excerpt is real text from that span. A parent with
+    // integrity violations has unresolved parentage — never
+    // inherit through it.
+    if ((parentNode.structuralViolations?.length ?? 0) > 0) return undefined;
+    const parentExcerpt = excerptByNodeId.get(parentId);
+    if (!parentExcerpt) return undefined;
+    return (parentExcerpt.split(/\n\s*\([a-z0-9]{1,3}\)\s/)[0] ?? parentExcerpt).slice(0, 1500);
+  };
   for (const c of ranked) {
     const analysis = analyzeProvision({
       sourceId: params.sourceId,
@@ -203,9 +357,18 @@ export function buildDocumentCovenantSummary(params: {
       definitions: params.definitions,
       structuralNodes: params.structuralNodes,
       crossReferences: params.crossReferences,
+      parentChapeau: parentChapeauOf(c),
     });
     countsByCategory[analysis.category] = (countsByCategory[analysis.category] ?? 0) + 1;
-    items.push(itemFromAnalysis(analysis, params.documentTitle));
+    const itemNode = c.nodeId ? nodeById.get(c.nodeId) : undefined;
+    items.push(
+      itemFromAnalysis(
+        analysis,
+        params.documentTitle,
+        c.nodeId,
+        itemNode ? itemNode.ambiguous === true || (itemNode.structuralViolations?.length ?? 0) > 0 : undefined,
+      ),
+    );
   }
 
   const preferredOrder = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];
@@ -218,8 +381,8 @@ export function buildDocumentCovenantSummary(params: {
   // regardless of score or peripherality. Cap first, then sort
   // the survivors for display.
   const totalItemsBeforeCap = items.length;
-  const truncated = items.length > 120;
-  const capped = items.slice(0, 120);
+  const truncated = items.length > SUMMARY_ITEM_CAP;
+  const capped = items.slice(0, SUMMARY_ITEM_CAP);
   capped.sort((a, b) => {
     const ai = preferredOrder.indexOf(a.category);
     const bi = preferredOrder.indexOf(b.category);

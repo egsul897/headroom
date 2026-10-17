@@ -692,3 +692,30 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
     });
   });
 });
+
+describe("rule 196: residual lien baskets pair with independent debt baskets", () => {
+  function lien(id: string, overrides: Partial<Permission> = {}) {
+    return permission(id, { grantType: "LIEN", ...overrides });
+  }
+  it("a DEBT + residual-LIEN pair (no relationship) forms an election", () => {
+    const debt = permission("debt");
+    const lienP = lien("lien", { params: { pairableWithDebt: true } as any });
+    const graph = buildPermissionGraph([debt, lienP], []);
+    const result = enumerateElections([debt, lienP], graph);
+    expect(result.elections.map((e) => e.memberPermissionIds.sort().join("+"))).toContain("debt+lien");
+  });
+  it("a DEBT + specific-purpose LIEN pair (no flag) is pruned", () => {
+    const debt = permission("debt");
+    const lienP = lien("lien");
+    const graph = buildPermissionGraph([debt, lienP], []);
+    const result = enumerateElections([debt, lienP], graph);
+    expect(result.elections.map((e) => e.memberPermissionIds.sort().join("+"))).not.toContain("debt+lien");
+  });
+  it("a residual LIEN in a DIFFERENT document does not pair", () => {
+    const debt = permission("debt");
+    const lienP = lien("lien", { documentId: "doc-2", sourceProvision: { documentId: "doc-2", sectionRef: "§lien" }, params: { pairableWithDebt: true } as any });
+    const graph = buildPermissionGraph([debt, lienP], []);
+    const result = enumerateElections([debt, lienP], graph);
+    expect(result.elections.map((e) => e.memberPermissionIds.sort().join("+"))).not.toContain("debt+lien");
+  });
+});

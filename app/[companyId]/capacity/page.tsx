@@ -20,6 +20,8 @@ function methodLabel(method: PerDocumentRemainingCapacity["method"]): string {
       return "Solver clamped to legacy ceiling (fail-closed)";
     case "NOT_DETERMINABLE":
       return "Not determinable";
+    case "SKIPPED_AMENDMENT":
+      return "Amendment — no standalone capacity (effect via base)";
   }
 }
 

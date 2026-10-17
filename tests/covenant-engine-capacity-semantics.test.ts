@@ -100,6 +100,7 @@ function fixtureSolverContext(): SolverNativeCompanyContext {
     collateralScopes: [],
     ruleActivationConditions: [],
     coverageDeclarations: [{ documentId: DOC, side: "secured", grantType: "DEBT_INCURRENCE", isComplete: true }],
+    ratioProvisions: [],
     activationState,
     asOfDate: AS_OF,
     entityClasses: ["BORROWER"],

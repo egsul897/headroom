@@ -166,7 +166,7 @@ async function main() {
   ];
   const activationState: ActivationState = { asOfDate: AS_OF, series: {}, events: [], usageCounts: {}, unknownKeys: new Set() };
   const solverContext = toSolverNativeCompanyContext({
-    staticData: { permissions: permissionRows, relationships: [], sharedConstraints: [], collateralScopes: [], ruleActivationConditions: [], coverageDeclarations: [{ documentId: DOC_ID, side: "unsecured", grantType: "DEBT_INCURRENCE", isComplete: true }] },
+    staticData: { permissions: permissionRows, relationships: [], sharedConstraints: [], collateralScopes: [], ruleActivationConditions: [], coverageDeclarations: [{ documentId: DOC_ID, side: "unsecured", grantType: "DEBT_INCURRENCE", isComplete: true }], ratioProvisions: [] },
     activationState,
     asOfDate: AS_OF,
     entityClasses: ["BORROWER"],

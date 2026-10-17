@@ -34,6 +34,33 @@ describe("debt-document classifier", () => {
     expect(r.documentClass).toBe("UNKNOWN");
   });
 
+  it("classifies an amendment by its own title line when metadata is a bare filename (rule 181)", () => {
+    // Real failure: a customer upload named "EX-10.1.htm" whose
+    // document titles itself "AMENDMENT NO. 1" classified as
+    // CREDIT_AGREEMENT (its body quotes the base agreement), so a
+    // base+amendment package saw two bases and zero amendments.
+    const r = classifyDebtDocument({
+      title: "expand-ex10-1.htm",
+      description: "expand-ex10-1.htm",
+      filename: "expand-ex10-1.htm",
+      exhibitType: "EX-10.1",
+      textSample:
+        "EXHIBIT 10.1\n\nExecution Version\n\nAMENDMENT NO. 1\n\nThis AMENDMENT NO. 1 (this \"Agreement\") dated as of October 6, 2026, is among EXPAND ENERGY CORPORATION, as Borrower, and JPMORGAN CHASE BANK, N.A., as Administrative Agent.\n\nRecitals\n\nA. WHEREAS, the Borrower, the Lenders and the Administrative Agent are parties to that certain Amended and Restated Credit Agreement dated as of September 30, 2025.\n\nSection 1.01 of the Existing Credit Agreement is hereby amended as follows.",
+    });
+    expect(r.documentClass).toBe("AMENDMENT");
+  });
+
+  it("does not treat a base agreement's opening-sentence mention of a prior amendment as an amendment (rule 181)", () => {
+    const r = classifyDebtDocument({
+      title: "Credit Agreement",
+      description: "Credit Agreement",
+      filename: "credit-agreement.htm",
+      textSample:
+        "CREDIT AGREEMENT dated as of January 1, 2024, among ACME CORP, as Borrower, as amended by Amendment No. 1 dated as of June 1, 2024, and the Lenders party hereto.\n\nARTICLE I\n\nSection 1.01 Defined Terms.",
+    });
+    expect(r.documentClass).toBe("CREDIT_AGREEMENT");
+  });
+
   it("classifies numbered omnibus amendments as AMENDMENT", () => {
     const r = classifyDebtDocument({ title: "First Omnibus Amendment", description: "First Omnibus Amendment to the Credit Agreement" });
     expect(r.documentClass).toBe("AMENDMENT");

@@ -99,3 +99,31 @@ describe("operative resolution fail-closed gates", () => {
     expect(op.operativeDocumentSourceId).toBe("restated");
   });
 });
+
+describe("rules 182-183: amendment instructions and scaffolding never bind their own ref", () => {
+  it("an A&R base does not restate itself; the amendment binds its TARGET section, not its own refs", () => {
+    const sources = [
+      src("expand-base", "CREDIT_AGREEMENT", "Amended and Restated Credit Agreement dated as of September 30, 2025", "2025-09-30"),
+      src("expand-amd1", "AMENDMENT", "Amendment No. 1 dated as of October 6, 2026", "2026-10-06"),
+    ];
+    const ap = analyzeAmendmentPackage({ companyId: "co", sources, relationships: [] });
+    const items: any[] = [
+      { sectionRef: "2.01", heading: "Section 2.01 Commitments", category: "OTHER", plainEnglish: "", operativeLanguageExcerpt: "Each Lender agrees to make Loans.", materialBasketsThresholds: [], sourceId: "expand-base", documentTitle: "base" },
+      { sectionRef: "2.1", heading: "2.1 Amendments to Section 1.01", category: "OTHER", plainEnglish: "", operativeLanguageExcerpt: "Section 1.01 of the Existing Credit Agreement is hereby amended as follows:", materialBasketsThresholds: [], sourceId: "expand-amd1", documentTitle: "amd1" },
+      { sectionRef: "3", heading: "Section 3. Conditions Precedent", category: "OTHER", plainEnglish: "", operativeLanguageExcerpt: "This Agreement shall become effective on the date conditions are satisfied.", materialBasketsThresholds: [], sourceId: "expand-amd1", documentTitle: "amd1" },
+      { sectionRef: "3.4", heading: "3.4 No Default", category: "OTHER", plainEnglish: "", operativeLanguageExcerpt: "No Default shall exist as of the Amendment Effective Date.", materialBasketsThresholds: [], sourceId: "expand-amd1", documentTitle: "amd1" },
+    ];
+    const compare = compareAmendmentSummaries({ amendmentPackage: ap, items });
+    const op = resolveOperativePrecedence({ sources, amendmentPackage: ap, compare, asOfDate: "2026-10-16" });
+    // Rule 182: not the self-restatement RESOLVED (base as its own operative doc).
+    expect(op.operativeDocumentSourceId).toBe("expand-amd1");
+    expect(op.status).toBe("RESOLVED_PARTIAL");
+    const bound = op.bindings.map((b) => b.sectionRef);
+    // Rule 183: the REAL change (target §1.01) is bound; the
+    // instruction (§2.1) and scaffolding (§3, §3.4) are not.
+    expect(bound).toContain("1.01");
+    expect(bound).not.toContain("2.1");
+    expect(bound).not.toContain("3");
+    expect(bound).not.toContain("3.4");
+  });
+});

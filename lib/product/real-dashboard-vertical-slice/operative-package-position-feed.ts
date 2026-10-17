@@ -98,6 +98,9 @@ function readiness(companyId: string, n: number): CapacityReadiness {
     capacityAuthority: "LEGACY_ENGINE",
     analyzedDocumentCount: 1,
     summaryCount: n,
+    // VE/fixture compile: summaries are the whole discovered set — nothing beyond the cap.
+    discoveredCount: n,
+    awaitingAnalysisCount: 0,
     permissionCount: 0,
     unverifiedPermissionCount: 0,
     provisionCount: n,
@@ -108,6 +111,8 @@ function readiness(companyId: string, n: number): CapacityReadiness {
     contractLedgerActiveCount: 0,
     phase3TrustedUnitCount: 0,
     phase3TrustedRuleCount: 0,
+    // VE/fixture compile: no stored analyses in scope, so none can be stale.
+    staleAnalyzedDocumentCount: 0,
     headline: "Operative package VE → Position (GROSS/MODELED only)",
     blockers: [
       "No NS-4 APPROVED financial snapshot on this feed.",
@@ -127,6 +132,10 @@ function rulebook(companyId: string, n: number): RulebookReadiness {
     reviewedPermissions: 0,
     executablePermissions: 0,
     provisionRows: n,
+    staleDiscoveredSummaries: 0,
+    exceptionItems: 0,
+    exceptionDecisions: 0,
+    reviewComplete: false,
     blockers: ["No counsel REVIEWED permissions on VE Position feed."],
     headline: "Generic operative package compile (not counsel-reviewed)",
     note: "PROVISIONAL — GROSS/MODELED only.",

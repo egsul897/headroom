@@ -9,6 +9,7 @@ export async function reviewProvisionAction(companyId: string, formData: FormDat
   const sourceId = String(formData.get("sourceId") ?? "");
   const sectionRef = String(formData.get("sectionRef") ?? "");
   const category = String(formData.get("category") ?? "");
+  const nodeId = String(formData.get("nodeId") ?? "") || undefined;
   const decision = String(formData.get("decision") ?? "") as ReviewDecision;
   const editedPlainEnglish = String(formData.get("editedPlainEnglish") ?? "") || undefined;
   const note = String(formData.get("note") ?? "") || undefined;
@@ -24,6 +25,7 @@ export async function reviewProvisionAction(companyId: string, formData: FormDat
     sourceId,
     sectionRef,
     category,
+    nodeId,
     decision,
     editedPlainEnglish,
     note,

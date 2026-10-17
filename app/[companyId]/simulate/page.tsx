@@ -19,8 +19,6 @@ import { SeparatedCapacityPanel } from "@/components/customer-workflow/Separated
 import { CrossDomainSimulatePanel } from "@/components/CrossDomainSimulatePanel";
 import { evaluateSimulateCrossDomainAcquisition } from "@/lib/product/cross-domain-simulate";
 import { loadSharedNs4FinancialIdentity } from "@/lib/product/ns4-shared-financial-identity";
-import {
-} from "@/lib/customer-workflow/cfo-secured-debt-entry";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
@@ -168,6 +166,61 @@ export default async function SimulatePage({
             Review
           </Link>
         </div>
+      </Card>
+
+      <Card>
+        <div className="card-title">Model a transaction</div>
+        <div className="card-subtitle">
+          Enter what you want to do — Headroom checks it against your capacity and shows the answer with sources. The
+          result below updates when you check a transaction.
+        </div>
+        <form method="get" action={`/${companyId}/simulate`} className="stack" style={{ gap: 10, marginTop: 10 }}>
+          <div className="field">
+            <div className="field-label">Transaction</div>
+            <div className="field-control">
+              <select
+                name="action"
+                defaultValue={handoff.action === "rp" || handoff.action === "investment" ? handoff.action : "debt"}
+              >
+                <option value="debt">Borrow</option>
+                <option value="rp">Pay a dividend / distribution (restricted payment)</option>
+                <option value="investment">Make an investment</option>
+              </select>
+            </div>
+          </div>
+          <div className="field">
+            <div className="field-label">Amount ($M)</div>
+            <div className="field-control">
+              <input
+                type="number"
+                name="amount"
+                step="0.01"
+                min="0"
+                defaultValue={amountMillions > 0 ? amountMillions : ""}
+                placeholder="e.g. 50"
+                required
+              />
+            </div>
+          </div>
+          <div className="field">
+            <div className="field-label">Security (borrowing only)</div>
+            <div className="field-control">
+              <select name="secured" defaultValue={handoff.secured === false ? "0" : "1"}>
+                <option value="1">Secured</option>
+                <option value="0">Unsecured</option>
+              </select>
+            </div>
+          </div>
+          <div className="field">
+            <div className="field-label">As-of date (optional)</div>
+            <div className="field-control">
+              <input type="date" name="asOf" defaultValue={handoff.evaluationDate ?? ""} />
+            </div>
+          </div>
+          <button type="submit" className="button-primary" style={{ width: "fit-content" }}>
+            Check this transaction
+          </button>
+        </form>
       </Card>
 
       <Card>

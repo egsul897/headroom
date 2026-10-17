@@ -41,6 +41,7 @@ export async function submitFinancialsAction(companyId: string, formData: FormDa
     assumedNewDebtRatePct: num(formData, "assumedNewDebtRatePct"),
     fixedCharges: optionalNum(formData, "fixedCharges"),
     totalAssets: optionalNum(formData, "totalAssets"),
+    netWorth: optionalNum(formData, "netWorth"),
     firstLienDebtPrincipal: optionalNum(formData, "firstLienDebtPrincipal"),
     restrictedGroupEbitda: optionalNum(formData, "restrictedGroupEbitda"),
     ebitdaAdjustmentsAmount: optionalNum(formData, "ebitdaAdjustmentsAmount"),

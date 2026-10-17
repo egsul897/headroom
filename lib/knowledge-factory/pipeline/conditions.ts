@@ -47,7 +47,17 @@ export function extractConditionsAndExceptions(
       const key = `${p.kind}:${charStart}`;
       if (seen.has(key)) continue;
       seen.add(key);
-      const node = nodes.find((n) => !n.ambiguous && n.charStart <= charStart && charStart < n.charEnd);
+      // Phase C (D19): attribute to the DEEPEST containing node
+      // (smallest span containing the offset), not the first
+      // containing node. Nodes are charStart-sorted, so find()
+      // returned the outermost SECTION even when the condition
+      // sits inside a nested CLAUSE — mis-attributing the
+      // condition to the wrong granularity.
+      const containing = nodes.filter((n) => !n.ambiguous && n.charStart <= charStart && charStart < n.charEnd);
+      const node = containing.reduce(
+        (best, n) => (!best || n.charEnd - n.charStart < best.charEnd - best.charStart ? n : best),
+        undefined as (typeof nodes)[number] | undefined,
+      );
       out.push({
         id: createHash("sha256").update(`${sourceId}|${key}`).digest("hex").slice(0, 20),
         sourceId,

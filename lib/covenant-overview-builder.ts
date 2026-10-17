@@ -187,6 +187,7 @@ function collectRefCodes(expr: CapacityExpr | undefined, seen: Set<string>): voi
     seen.add(expr.code);
     return;
   }
+  if (expr.op === "CONST") return; // literal group cap — no provision ref
   for (const item of expr.items) collectRefCodes(item, seen);
 }
 

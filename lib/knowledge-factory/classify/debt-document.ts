@@ -20,6 +20,38 @@ interface ClassifyContext {
   filename: string;
   headingSample: string;
   textSample: string;
+  /** The document's own title line (first substantial line of its text). */
+  selfTitle: string;
+}
+
+/**
+ * The document's own title line: the first substantial line of its
+ * text, with leading EDGAR/exhibit labels stripped. Only the first
+ * ~60 chars count as the title — the opening sentence follows the
+ * title on the same line in collapsed text, and a base agreement's
+ * opening sentence may mention a prior amendment ("as amended by
+ * Amendment No. 1") without BEING an amendment.
+ */
+function extractSelfTitle(text: string): string {
+  // Leading debris tokens, stripped repeatedly: EDGAR headers
+  // collapse into one line ("EX-10.1 2 tm2627119d1_ex10-1.htm
+  // EXHIBIT 10.1 Exhibit 10.1 Execution Version AMENDMENT NO. 1
+  // ...") and the page number / filename push the real title past
+  // any fixed window if they are not all removed.
+  const DEBRIS =
+    /^(?:EX-?\s?\d+[\w.\-]*|EXHIBIT\s+\d+(?:\.\d+)?|Execution Version|Conformed Submission|Table of Contents|\d+|[A-Za-z0-9_.\-]+\.htm[l]?(?=\s|$))(?:\s+|$)/i;
+  for (const raw of text.slice(0, 2000).split(/\n+/)) {
+    let line = raw.replace(/\s+/g, " ").trim();
+    let prev = "";
+    while (prev !== line) {
+      prev = line;
+      line = line.replace(DEBRIS, "").trim();
+    }
+    if (line.length < 8) continue;
+    if (/^\d+$/.test(line)) continue;
+    return line.slice(0, 160);
+  }
+  return "";
 }
 
 const RULES: Rule[] = [
@@ -124,7 +156,17 @@ const RULES: Rule[] = [
     weight: 0.75,
     signal: "amendment",
     test: (c) => {
-      const hay = `${c.title} ${c.description}`;
+      // Rule 181: the document's own title line is an amendment
+      // signal. A customer upload named "EX-10.1.htm" carries no
+      // "amendment" in its metadata, but the document titles itself
+      // "AMENDMENT NO. 1" — without this the amendment classified as
+      // CREDIT_AGREEMENT (its body quotes the base agreement) and
+      // the whole base+amendment package saw two bases, zero
+      // amendments. Only the first 60 chars of the title line
+      // count (a base agreement's opening sentence may mention a
+      // prior amendment without being one).
+      const titleLine = c.selfTitle.slice(0, 60);
+      const hay = `${c.title} ${c.description} ${titleLine}`;
       if (!/\bamendment\b/i.test(hay)) return false;
       // Exclude common non-debt "amendment" false positives (corporate governance).
       if (/\b(?:tax\s+benefit|rights\s+plan|stockholder|shareholder|bylaw|certificate\s+of\s+incorporation|employment)\b/i.test(hay)) {
@@ -221,6 +263,7 @@ export function classifyDebtDocument(input: ClassifyDebtDocumentInput): Classifi
     filename: input.filename ?? "",
     headingSample,
     textSample: textSample.slice(0, 8000),
+    selfTitle: extractSelfTitle(textSample),
   };
 
   const combinedMeta = `${ctx.title} ${ctx.description} ${ctx.filename} ${ctx.exhibitType}`.trim();
@@ -253,7 +296,7 @@ export function classifyDebtDocument(input: ClassifyDebtDocumentInput): Classifi
       // Title-level amendment/restatement/waiver signals outrank body-only
       // "credit agreement" mentions (amendment bodies quote the base agreement).
       let score = rule.weight;
-      const titleHay = `${ctx.title} ${ctx.description}`;
+      const titleHay = `${ctx.title} ${ctx.description} ${ctx.selfTitle.slice(0, 60)}`;
       if (rule.documentClass === "AMENDMENT" && /\bamendment\b/i.test(titleHay)) score += 0.2;
       if (rule.documentClass === "RESTATEMENT" && /\bamended\s+and\s+restated\b/i.test(titleHay)) score += 0.15;
       if (

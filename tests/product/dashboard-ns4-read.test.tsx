@@ -167,6 +167,7 @@ describeDb("Dashboard NS-4 Neon financial band", () => {
       collateralScopes: [],
       ruleActivationConditions: [],
       coverageDeclarations: [],
+      ratioProvisions: [],
       activationState: {
         asOfDate: asOf,
         series: {},
@@ -265,6 +266,7 @@ describeDb("Dashboard NS-4 Neon financial band", () => {
       collateralScopes: [],
       ruleActivationConditions: [],
       coverageDeclarations: [],
+      ratioProvisions: [],
       activationState: {
         asOfDate: asOf,
         series: {},

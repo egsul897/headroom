@@ -6,6 +6,7 @@
 import type { KnowledgeSourceRecord } from "../../knowledge-factory/types";
 import type { AmendmentPackageView } from "./amendment-package";
 import type { AmendmentCompareRow, AmendmentCompareView } from "./amendment-compare";
+import { articleOf } from "./amendment-compare";
 import { isRestatementTitle } from "./restatement-title";
 import { isValidIsoDate } from "../iso-date";
 
@@ -100,7 +101,12 @@ export function extractEffectiveDateHint(text: string): string | null {
 
 export function extractAmendedSectionRefs(text: string): string[] {
   const out = new Set<string>();
-  const ofThe = String.raw`(?:of\s+the\s+(?:20\d{2}\s+)?(?:Credit\s+Agreement|Indenture)\s+)?`;
+  // "of the Existing Credit Agreement" is the standard amendment
+  // phrasing — the bridge must admit the adjectives drafters put
+  // between "the" and the instrument noun, or explicit amendatory
+  // language ("Section 1.01 of the Existing Credit Agreement is
+  // hereby amended") is never detected.
+  const ofThe = String.raw`(?:of\s+the\s+(?:Existing\s+|Amended\s+and\s+Restated\s+)?(?:20\d{2}\s+)?(?:Credit\s+Agreement|Indenture)\s+)?`;
   let m: RegExpExecArray | null;
   // Specific patterns first: the general singular regex would
   // otherwise grab the SECOND ref of a repeated/plural clause
@@ -136,6 +142,34 @@ export function extractAmendedSectionRefs(text: string): string[] {
   while ((m = re.exec(text)) !== null) out.add(m[1]!);
   const re2 = /\bSection\s+(\d+(?:\.\d+)*)\s+is\s+amended\s+to\s+read/gi;
   while ((m = re2.exec(text)) !== null) out.add(m[1]!);
+  // Rule 184: the amendatory family is wider than "hereby
+  // amended". Real amendments write "the definition of X in
+  // Section 1.01 is amended by deleting ...", "the second
+  // sentence in Section 2.14(a) is replaced in its entirety",
+  // "Section 1.01 is amended by deleting ..." — all without
+  // "hereby". Without these, a pair like Solaris binds fourteen
+  // instruction refs and zero real targets (1.01, 2.14(a)).
+  const reBare = new RegExp(
+    String.raw`\bSection\s+(\d+(?:\.\d+)*(?:\([a-z0-9]+\))?)\s+is\s+(?:hereby\s+)?(?:amended|replaced|deleted|restated)\b`,
+    "gi",
+  );
+  while ((m = reBare.exec(text)) !== null) out.add(m[1]!);
+  const reIn = new RegExp(
+    String.raw`\bin\s+Section\s+(\d+(?:\.\d+)*(?:\([a-z0-9]+\))?)\s+is\s+(?:hereby\s+)?(?:amended|replaced|deleted|restated)\b`,
+    "gi",
+  );
+  while ((m = reIn.exec(text)) !== null) out.add(m[1]!);
+  // Definitions added TO a section ("The following definitions
+  // are added in alphabetical order to Section 1.01") amend that
+  // section. The tempered token excludes "pursuant to Section"
+  // authority cites ("Commitments are added pursuant to Section
+  // 2.14" names the authority, not an amended section).
+  const reAdded = /(?:are\s+)?added\b(?:(?!pursuant)[^.]){0,80}?\bto\s+Section\s+(\d+(?:\.\d+)*(?:\([a-z0-9]+\))?)/gi;
+  while ((m = reAdded.exec(text)) !== null) out.add(m[1]!);
+  // Schedules are amended too ("Schedule 2.01 ... is hereby
+  // amended and restated") — return them as "Schedule N" targets.
+  const reSched = /\bSchedule\s+(\d+(?:\.\d+)*)\b[^.]{0,80}\bis\s+(?:hereby\s+)?(?:amended|restated|replaced)\b/gi;
+  while ((m = reSched.exec(text)) !== null) out.add(`Schedule ${m[1]!}`);
   return [...out];
 }
 
@@ -199,7 +233,16 @@ export function resolveOperativePrecedence(params: {
   }
 
   // Full restatement / amended-and-restated supersession (RESTATEMENT is also a "base" class)
-  if (restatementSources.length === 1 && nonRestatementBases.length === 1) {
+  // Rule 182: the restatement and the base must be DIFFERENT
+  // documents. An Amended and Restated base agreement matches
+  // isRestatementTitle on its own title — without the sourceId
+  // check it "superseded itself" and the resolver returned
+  // RESOLVED with the base as its own operative document.
+  if (
+    restatementSources.length === 1 &&
+    nonRestatementBases.length === 1 &&
+    restatementSources[0]!.sourceId !== nonRestatementBases[0]!.sourceId
+  ) {
     const baseId = nonRestatementBases[0]!.sourceId;
     const restatement = restatementSources[0]!;
     const baseSource = params.sources.find((x) => x.sourceId === baseId);
@@ -442,8 +485,32 @@ export function resolveOperativePrecedence(params: {
     };
   }
 
+  // Rule 183: an amendment document's sections are instructions
+  // or amendment-internal scaffolding unless they demonstrably
+  // restate a base section. Binding an ADDED row's own ref would
+  // install the instruction/scaffolding as the operative section:
+  // amendment §2.1 ("Section 1.01 ... is hereby amended") is NOT
+  // the operative §2.1 (Commitments), and amendment §3 (Conditions
+  // Precedent to the amendment's effectiveness) is NOT the
+  // operative Article III (Representations). The REAL change is
+  // bound via explicitSecs below (the TARGET section, §1.01).
+  // Scaffolding articles come from the compare (derived from the
+  // FULL pre-cap row list — the resolver only sees capped rows).
+  const scaffoldingArticles = new Set<string>(params.compare.scaffoldingArticles ?? []);
+  const isInstructionRow = (row: (typeof changed)[number]): boolean => {
+    const excerpt = row.amendmentExcerpt ?? "";
+    if (extractAmendedSectionRefs(excerpt).length > 0) return true;
+    // Defined-term amendment: "The defined term "Maturity Date" is
+    // amended and restated in its entirety..." (no Section ref).
+    if (/\bdefined term\b[^.]{0,80}\bis\s+amended\b/i.test(excerpt)) return true;
+    return false;
+  };
   const bindings: OperativeSectionBinding[] = [];
   for (const row of changed) {
+    if (row.changeKind === "ADDED_IN_AMENDMENT" && isInstructionRow(row)) continue;
+    if (row.changeKind === "ADDED_IN_AMENDMENT") {
+      if (scaffoldingArticles.has(articleOf(row.sectionRef))) continue;
+    }
     bindings.push({
       sectionRef: row.sectionRef,
       operativeSourceId: amd.sourceId,
@@ -461,7 +528,7 @@ export function resolveOperativePrecedence(params: {
       baseSourceId: baseId,
       changeKind: "THRESHOLD_OR_TEXT_SHIFT",
       effectiveDate: eff,
-      rationale: `Explicit amendatory language naming Section ${sec}.`,
+      rationale: `Explicit amendatory language naming ${sec}.`,
     });
   }
 

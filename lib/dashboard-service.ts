@@ -277,6 +277,9 @@ export interface DocumentDetail extends DocumentSummary {
   provisionCount: number;
   permissionCount: number;
   permissionsVerified: number;
+  /** The Document row's own durable storageRef — the retry action falls
+   * back to it when no KnowledgeSource row exists yet (Fix 7). */
+  storageRef: string | null;
 }
 
 /**
@@ -305,6 +308,7 @@ export async function getDocumentDetails(companyId: string): Promise<DocumentDet
       provisionCount: provisions.filter((p) => p.documentId === d.id).length,
       permissionCount: docPermissions.length,
       permissionsVerified: docPermissions.filter((p) => hasCompletedQualifiedLegalReview(p.reviewStatus)).length,
+      storageRef: d.storageRef ?? null,
     };
   });
 }
