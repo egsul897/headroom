@@ -1,4 +1,5 @@
 #!/usr/bin/env tsx
+// @ts-nocheck -- this harness targets the #398 API (financials / xbrl / computedRatios); it is typechecked on #398, not on release-1.
 /**
  * Independent accuracy check — MEASUREMENT-ONLY. Runs the #398 agreement pipeline WITH the issuer's SEC XBRL
  * companyfacts (read-only fetch, cached) so the EBITDA optimizer / add-back tracker / ratio capacity are exercised
