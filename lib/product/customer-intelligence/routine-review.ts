@@ -38,7 +38,7 @@
  */
 import type { CovenantSummaryItem } from "../covenant-intelligence/summarize";
 import { parseFormulaFromItem, remainingConditionsForItem } from "./formula-parse";
-import { grantTypesForItem } from "./grant-types";
+import { grantTypesForItem, isDefinitionsArticleItem } from "./grant-types";
 import { parseMaintenanceRatio } from "./maintenance-ratio";
 
 /** True when the item compiles to a MODELED Permission or a testable ratio provision. */
@@ -77,9 +77,26 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
     // No capacity signal. Routine only when the item carries no
     // basket/condition signal at all — a basket-shaped item the
     // classifier missed is an exception (it may constrain capacity).
-    const basketShaped =
-      (item.materialBasketsThresholds?.length ?? 0) > 0 ||
-      (item.conditions?.length ?? 0) > 0;
+    // P2: two classes can NEVER hold a grant, by construction —
+    // definitions-article items (Rule 204: grant-minting refuses
+    // them) and EVENTS_OF_DEFAULT items (Rule 166: never mint).
+    // A plain dollar threshold on such an item is a defined-term
+    // amount or a cross-default trigger level, not a missed
+    // basket, so it does not make the item basket-shaped for
+    // queue purposes — UNLESS the thresholds carry a greater-of
+    // entry or a builder marker, which ARE basket structures and
+    // keep the item an exception. The conditions prong is
+    // unchanged: any condition still makes it an exception.
+    const thresholds = item.materialBasketsThresholds ?? [];
+    const hasBasketStructure = thresholds.some((t) => {
+      const s = String(t);
+      return /^greater of basket:/i.test(s) || /\bbuilder\b|available amount/i.test(s);
+    });
+    const impossibleGrantClass =
+      isDefinitionsArticleItem(item) || item.category === "EVENTS_OF_DEFAULT";
+    const thresholdSignal =
+      thresholds.length > 0 && !(impossibleGrantClass && !hasBasketStructure);
+    const basketShaped = thresholdSignal || (item.conditions?.length ?? 0) > 0;
     if (basketShaped) return false;
     return true;
   }

@@ -334,7 +334,7 @@ function isLienSecuredObligation(text: string): boolean {
  * live elsewhere is simply not covered (the guard is
  * incomplete, not wrong).
  */
-function isDefinitionsArticleItem(item: CovenantSummaryItem): boolean {
+export function isDefinitionsArticleItem(item: CovenantSummaryItem): boolean {
   if (/^1\.01(?![0-9])/.test(item.sectionRef ?? "")) return true;
   // Phase C: a whole Definitions article grants nothing, whatever
   // its number. The articleHeading comes from the parser's

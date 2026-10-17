@@ -5,6 +5,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { isRoutineItem, compilesCleanly } from "../../lib/product/customer-intelligence/routine-review";
+import { grantTypesForItem } from "../../lib/product/customer-intelligence/grant-types";
 import type { CovenantSummaryItem } from "../../lib/product/covenant-intelligence/summarize";
 
 function item(overrides: Partial<CovenantSummaryItem> = {}): CovenantSummaryItem {
@@ -188,6 +189,112 @@ describe("isRoutineItem", () => {
         }),
       ),
     ).toBe(true);
+  });
+
+  it("P2: a definitions-article item carrying a $ amount is routine (it can never hold a grant)", () => {
+    const defItem = item({
+      category: "OTHER",
+      sectionRef: "1.01",
+      heading: "1.01 Defined Terms",
+      articleHeading: "ARTICLE I Definitions",
+      plainEnglish: "“Threshold Amount” means $750,000.",
+      materialBasketsThresholds: ["Amount/threshold: $750,000"],
+      operativeLanguageExcerpt: "“Threshold Amount” means $750,000.",
+    });
+    expect(grantTypesForItem(defItem)).toEqual([]);
+    expect(isRoutineItem(defItem)).toBe(true);
+  });
+
+  it("P2: an EVENTS_OF_DEFAULT item with a cross-default $ threshold is routine", () => {
+    const eodItem = item({
+      category: "EVENTS_OF_DEFAULT",
+      sectionRef: "7.01(f)",
+      heading: "7.01 Events of Default",
+      plainEnglish:
+        "An Event of Default occurs if the Borrower or any Subsidiary defaults in the payment of Indebtedness in an aggregate amount exceeding $25,000,000.",
+      materialBasketsThresholds: ["Amount/threshold: $25,000,000"],
+      operativeLanguageExcerpt:
+        "default in the payment of Indebtedness in an aggregate amount exceeding $25,000,000.",
+    });
+    expect(grantTypesForItem(eodItem)).toEqual([]);
+    expect(isRoutineItem(eodItem)).toBe(true);
+  });
+
+  it("P2: the G-1 structural gate stays first — structurally unresolved definitions/EoD items are exceptions", () => {
+    expect(
+      isRoutineItem(
+        item({
+          category: "OTHER",
+          sectionRef: "1.01",
+          heading: "1.01 Defined Terms",
+          articleHeading: "ARTICLE I Definitions",
+          plainEnglish: "“Threshold Amount” means $750,000.",
+          materialBasketsThresholds: ["Amount/threshold: $750,000"],
+          operativeLanguageExcerpt: "“Threshold Amount” means $750,000.",
+          structuralUnresolved: true,
+        }),
+      ),
+    ).toBe(false);
+    expect(
+      isRoutineItem(
+        item({
+          category: "EVENTS_OF_DEFAULT",
+          sectionRef: "7.01(f)",
+          heading: "7.01 Events of Default",
+          plainEnglish: "An Event of Default occurs upon a default in Indebtedness exceeding $25,000,000.",
+          materialBasketsThresholds: ["Amount/threshold: $25,000,000"],
+          operativeLanguageExcerpt: "default in Indebtedness exceeding $25,000,000.",
+          structuralUnresolved: true,
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it("P2: a definitions or EoD item carrying a greater-of basket entry is still an exception", () => {
+    expect(
+      isRoutineItem(
+        item({
+          category: "OTHER",
+          sectionRef: "1.01",
+          heading: "1.01 Defined Terms",
+          articleHeading: "ARTICLE I Definitions",
+          plainEnglish: "“General Basket” means the greater of $50 million and 10% of Consolidated EBITDA.",
+          materialBasketsThresholds: ["Greater of basket: $50 million and 10% of Consolidated EBITDA"],
+          operativeLanguageExcerpt: "the greater of $50 million and 10% of Consolidated EBITDA",
+        }),
+      ),
+    ).toBe(false);
+    expect(
+      isRoutineItem(
+        item({
+          category: "EVENTS_OF_DEFAULT",
+          sectionRef: "7.01(f)",
+          heading: "7.01 Events of Default",
+          plainEnglish: "An Event of Default occurs upon a default in Indebtedness exceeding the greater of $25 million and 1% of Total Assets.",
+          materialBasketsThresholds: ["Greater of basket: $25 million and 1% of Total Assets"],
+          operativeLanguageExcerpt: "exceeding the greater of $25 million and 1% of Total Assets.",
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it("P2: a definitions item carrying a builder marker is still an exception", () => {
+    expect(
+      isRoutineItem(
+        item({
+          category: "OTHER",
+          sectionRef: "1.01",
+          heading: "1.01 Defined Terms",
+          articleHeading: "ARTICLE I Definitions",
+          plainEnglish: "“Available Amount” means an amount initially equal to $10,000,000, as increased by the builder components.",
+          materialBasketsThresholds: [
+            "Amount/threshold: $10,000,000",
+            "Builder / Available Amount construct referenced.",
+          ],
+          operativeLanguageExcerpt: "“Available Amount” means an amount initially equal to $10,000,000.",
+        }),
+      ),
+    ).toBe(false);
   });
 
   it("a clean testable maintenance-ratio item is routine", () => {
