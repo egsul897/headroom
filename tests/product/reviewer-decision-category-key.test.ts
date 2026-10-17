@@ -47,12 +47,13 @@ describe("reviewer decision category key (Fix 6)", () => {
     expect(s).toContain("${doc.sourceId}|${item.sectionRef}|${item.category}");
   });
 
-  it("rulebook readiness counts unique (sectionRef, category) units", () => {
+  it("rulebook readiness counts unique (sectionRef, category, nodeId) units", () => {
     const s = source("lib/product/customer-intelligence/rulebook-readiness.ts");
     expect(s).toContain("uniqueUnits");
-    // Review identity is (sourceId, sectionRef, category): two
-    // documents sharing a section reference are separate units.
-    expect(s).toContain("`${sourceId}::${i.sectionRef}::${i.category}`");
-    expect(s).toContain('`${a.sourceId ?? ""}::${a.sectionRef}::${a.category}`');
+    // Phase C (D11): review identity is (sourceId, sectionRef,
+    // category, nodeId) — two items sharing (ref, category) are
+    // distinct occurrences with distinct decisions.
+    expect(s).toContain("`${sourceId}::${i.sectionRef}::${i.category}::${i.nodeId ?? \"\"}`");
+    expect(s).toContain('`${a.sourceId ?? ""}::${a.sectionRef}::${a.category}::${(a as { nodeId?: string }).nodeId ?? ""}`');
   });
 });
