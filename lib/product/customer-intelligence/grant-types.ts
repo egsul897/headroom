@@ -376,7 +376,7 @@ function excerptHasSubClauses(excerpt: string, sectionRef: string): boolean {
  */
 function isIncrementalFacilityItem(item: CovenantSummaryItem): boolean {
   if (item.category !== "OTHER") return false;
-  const text = `${item.heading ?? ""} ${item.plainEnglish ?? ""} ${item.operativeExcerpt ?? ""}`;
+  const text = `${item.heading ?? ""} ${item.plainEnglish ?? ""} ${item.operativeLanguageExcerpt ?? ""}`;
   if (/\bINCREMENTAL\s+INCREASE\b/i.test(text)) return true;
   if (
     /\bINCREMENTAL\s+(AGREEMENT|TERM|REVOLVING|FACILIT(?:Y|IES)|COMMITMENT|LOAN)\b/i.test(text) &&
