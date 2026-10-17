@@ -15,7 +15,8 @@ import {
   type GreaterOfAssetsClassification,
 } from "./classify";
 
-export const GREATER_OF_ASSETS_COMPILER_VERSION = "greater-of-assets-basket.v1";
+/** v1.1: adds PERCENT_OF_ASSETS_SOLE_CAP (no fixed limb) beside greater-of. */
+export const GREATER_OF_ASSETS_COMPILER_VERSION = "greater-of-assets-basket.v1.1";
 
 function emptyContextBundle(): CovenantContextBundle {
   return {
@@ -106,11 +107,91 @@ function dollarExcerptFromSource(text: string, amount: number): string {
   return `$${amount}`;
 }
 
+function isPercentOfAssetsSoleCap(classification: GreaterOfAssetsClassification): boolean {
+  return (
+    classification.class === "PERCENT_OF_ASSETS_SOLE_CAP" ||
+    classification.class === "PERCENT_OF_ASSETS_SOLE_CAP_WITH_QUALITATIVE_GATES"
+  );
+}
+
+function wrapResiduals(
+  expr: WireExpression,
+  classification: GreaterOfAssetsClassification,
+  citation: string,
+): WireExpression {
+  let out = expr;
+  for (const residual of [...classification.residuals].reverse()) {
+    out = {
+      kind: "IF",
+      condition: gateExpr(residual.gateInputName, citation, residual.excerpt),
+      then: out,
+      else: { kind: "MONEY", amount: 0, currency: "USD", citation, excerpt: null },
+      citation,
+      excerpt: residual.excerpt,
+    };
+  }
+  return out;
+}
+
+function percentOfAssetsSoleCapacity(
+  classification: GreaterOfAssetsClassification,
+  citation: string,
+  operativeSourceText: string,
+): WireExpression | null {
+  if (
+    !isPercentOfAssetsSoleCap(classification) ||
+    classification.percentFraction == null ||
+    !classification.metricName ||
+    !classification.metricExcerpt
+  ) {
+    return null;
+  }
+  const compact = operativeSourceText.replace(/\s+/g, " ");
+  const percentExcerpt =
+    compact.match(/(?:ten|five|fifteen|twenty|\d+(?:\.\d+)?)\s*percent\s*\(\d+(?:\.\d+)?%\)/i)?.[0] ??
+    compact.match(/\d+(?:\.\d+)?\s*%/)?.[0] ??
+    classification.percentRaw;
+  const metricExcerptInWindow =
+    compact.match(/Consolidated\s+Total\s+Assets|Total\s+Consolidated\s+Assets|Total\s+Assets/i)?.[0] ??
+    classification.metricName;
+  const multiplyExcerpt =
+    compact.match(
+      /\d+(?:\.\d+)?\s*%\s+of\s+(?:the\s+)?(?:Total\s+Consolidated\s+Assets|Consolidated\s+Total\s+Assets|Total\s+Assets)/i,
+    )?.[0] ??
+    compact.match(
+      /(?:ten|five|fifteen|twenty|\d+(?:\.\d+)?)\s*percent\s*\(\d+(?:\.\d+)?%\)\s+of\s+(?:the\s+)?(?:Total\s+Consolidated\s+Assets|Consolidated\s+Total\s+Assets|Total\s+Assets)/i,
+    )?.[0] ??
+    classification.metricExcerpt;
+  const percent: WireExpression = {
+    kind: "PERCENT",
+    value: classification.percentFraction,
+    citation,
+    excerpt: percentExcerpt,
+  };
+  const metric: WireExpression = {
+    kind: "METRIC_REFERENCE",
+    metricName: classification.metricName,
+    valueType: "MONEY",
+    citation,
+    excerpt: metricExcerptInWindow,
+  };
+  const multiplied: WireExpression = {
+    kind: "MULTIPLY",
+    operands: [percent, metric],
+    citation,
+    excerpt: multiplyExcerpt,
+  };
+  return wrapResiduals(multiplied, classification, citation);
+}
+
 function greaterOfCapacity(
   classification: GreaterOfAssetsClassification,
   citation: string,
   operativeSourceText: string,
 ): WireExpression | null {
+  if (isPercentOfAssetsSoleCap(classification)) {
+    return percentOfAssetsSoleCapacity(classification, citation, operativeSourceText);
+  }
   if (
     classification.fixedAmountUsd == null ||
     classification.percentFraction == null ||
@@ -173,17 +254,7 @@ function greaterOfCapacity(
     citation,
     excerpt: greaterOfExcerpt,
   };
-  for (const residual of [...classification.residuals].reverse()) {
-    expr = {
-      kind: "IF",
-      condition: gateExpr(residual.gateInputName, citation, residual.excerpt),
-      then: expr,
-      else: { kind: "MONEY", amount: 0, currency: "USD", citation, excerpt: null },
-      citation,
-      excerpt: residual.excerpt,
-    };
-  }
-  return expr;
+  return wrapResiduals(expr, classification, citation);
 }
 
 function inferAction(text: string, explicit?: GreaterOfCompileArgs["action"]): "INCUR_DEBT" | "CREATE_LIEN" {
@@ -257,7 +328,9 @@ function wireRule(args: {
     dependsOn: [] as [],
     sufficiency: "COMPLETE" as const,
     sufficiencyReasons: [
-      "deterministic_greater_of_fixed_or_pct_total_assets",
+      isPercentOfAssetsSoleCap(args.classification)
+        ? "deterministic_percent_of_assets_sole_cap"
+        : "deterministic_greater_of_fixed_or_pct_total_assets",
       ...(args.classification.residuals.length
         ? ["qualitative_residuals_encoded_as_transaction_input_gates"]
         : ["no_residual_gates"]),
@@ -275,10 +348,11 @@ export function compileGreaterOfAssetsBasket(args: GreaterOfCompileArgs): Greate
     .slice(0, 32);
   const warnings: string[] = [...classification.reasons];
 
+  const solePercent = isPercentOfAssetsSoleCap(classification);
   if (
     classification.class === "NOT_GREATER_OF_ASSETS" ||
-    classification.fixedAmountUsd == null ||
-    classification.percentFraction == null
+    classification.percentFraction == null ||
+    (!solePercent && classification.fixedAmountUsd == null)
   ) {
     return {
       classification,

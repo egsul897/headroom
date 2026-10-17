@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -156,7 +157,9 @@ model Company {
   // --- NS-4 financial sync outbox (promotion → approved-snapshot reliability) ---
   // Additive only. Records PENDING/FAILED NS-4 writes after legacy financial
   // promotion so recoverable failures cannot strand NS-4 behind legacy state.
-  ns4FinancialSyncs Ns4FinancialSync[]
+  ns4FinancialSyncs   Ns4FinancialSync[]
+  ebitdaBoxes         CustomerEbitdaBox[]
+  ebitdaConfirmations CustomerEbitdaConfirmation[]
 
   @@map("companies")
 }
@@ -328,8 +331,11 @@ model Document {
   compilerRunDocuments ContractCompilerRunDocument[]
 
   // --- Phase 2C debt package graph (docs/phase-2c-debt-package-graph.md) ---
-  amendmentEffectsTargetingMe AmendmentEffect[] @relation("AmendmentEffectTargetDocument")
+  amendmentEffectsTargetingMe AmendmentEffect[]            @relation("AmendmentEffectTargetDocument")
+  ebitdaBoxes                 CustomerEbitdaBox[]
+  ebitdaConfirmations         CustomerEbitdaConfirmation[]
 
+  @@unique([id, companyId])
   @@map("documents")
 }
 
@@ -513,15 +519,15 @@ enum LedgerEntryStatus {
 // and does not write a reversing entry. No self-FK — company cascade must
 // keep deleting these rows with the company.
 model LedgerEntry {
-  id          String          @id @default(cuid())
-  companyId   String
-  documentId  String?
-  date        DateTime
-  description String
-  basket      LedgerBasket
-  amount      Decimal         @db.Decimal(18, 6)
-  direction   LedgerDirection
-  source      String?
+  id             String            @id @default(cuid())
+  companyId      String
+  documentId     String?
+  date           DateTime
+  description    String
+  basket         LedgerBasket
+  amount         Decimal           @db.Decimal(18, 6)
+  direction      LedgerDirection
+  source         String?
   status         LedgerEntryStatus @default(ACTIVE)
   supersededAt   DateTime?
   supersededById String?
@@ -3783,39 +3789,39 @@ enum KnowledgeRelationshipEvidenceStatus {
 
 /// Canonical source registry for the knowledge factory corpus.
 model KnowledgeSource {
-  id                       String                       @id @default(cuid())
-  sourceId                 String                       @unique
-  companyId                String?
-  documentId               String?
-  sourceArtifactId         String?
-  issuerCik                String
-  issuerTicker             String?
-  issuerName               String?
-  accessionNumber          String
-  exhibitFilename          String
-  sourceUrl                String
-  filingDate               DateTime
-  formType                 String
-  documentTitle            String
-  documentClass            KnowledgeDebtDocumentClass   @default(UNKNOWN)
-  instrumentIdentity       String?
-  originalBytesHash        String
-  normalizedTextHash       String?
-  acquisitionTimestamp     DateTime
-  parserVersion            String
-  extractionStatus         KnowledgeExtractionStatus    @default(PENDING)
-  representationLevel      KnowledgeRepresentationLevel @default(SOURCE_ONLY)
-  provenance               String
-  usageRightsReviewStatus  KnowledgeUsageRightsStatus   @default(UNREVIEWED)
-  discoveryScore           Float?
-  byteSize                 Int?
-  storageRef               String?
-  metadata                 Json?
+  id                      String                       @id @default(cuid())
+  sourceId                String                       @unique
+  companyId               String?
+  documentId              String?
+  sourceArtifactId        String?
+  issuerCik               String
+  issuerTicker            String?
+  issuerName              String?
+  accessionNumber         String
+  exhibitFilename         String
+  sourceUrl               String
+  filingDate              DateTime
+  formType                String
+  documentTitle           String
+  documentClass           KnowledgeDebtDocumentClass   @default(UNKNOWN)
+  instrumentIdentity      String?
+  originalBytesHash       String
+  normalizedTextHash      String?
+  acquisitionTimestamp    DateTime
+  parserVersion           String
+  extractionStatus        KnowledgeExtractionStatus    @default(PENDING)
+  representationLevel     KnowledgeRepresentationLevel @default(SOURCE_ONLY)
+  provenance              String
+  usageRightsReviewStatus KnowledgeUsageRightsStatus   @default(UNREVIEWED)
+  discoveryScore          Float?
+  byteSize                Int?
+  storageRef              String?
+  metadata                Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  company       Company?                   @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  company       Company?                    @relation(fields: [companyId], references: [id], onDelete: SetNull)
   relationships KnowledgeRelationshipEdge[]
 
   @@index([issuerCik])
@@ -3865,17 +3871,17 @@ model KnowledgeCostLedgerEntry {
 // =============================================================================
 
 model DocumentByteObject {
-  id           String   @id @default(cuid())
+  id          String   @id @default(cuid())
   /// SHA-256 hex of `bytes` — content-addressed identity (no silent overwrite).
-  contentHash  String   @unique
-  byteSize     Int
-  contentType  String
+  contentHash String   @unique
+  byteSize    Int
+  contentType String
   /// Caller namespace (e.g. companyId or kf-corpus). Informational; identity is contentHash.
-  namespace    String
-  filename     String
-  bytes        Bytes
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  namespace   String
+  filename    String
+  bytes       Bytes
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([namespace])
   @@index([byteSize])
@@ -3887,22 +3893,22 @@ model DocumentByteObject {
 // =============================================================================
 
 model KnowledgeImportBatch {
-  id             String    @id @default(cuid())
-  batchKey       String    @unique
-  mode           String
-  status         String
-  family         String
-  plannedCount   Int       @default(0)
-  insertedCount  Int       @default(0)
-  reusedCount    Int       @default(0)
-  conflictCount  Int       @default(0)
-  errorCount     Int       @default(0)
-  checkpoint     Json?
-  errorSummary   String?
-  startedAt      DateTime  @default(now())
-  finishedAt     DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id            String    @id @default(cuid())
+  batchKey      String    @unique
+  mode          String
+  status        String
+  family        String
+  plannedCount  Int       @default(0)
+  insertedCount Int       @default(0)
+  reusedCount   Int       @default(0)
+  conflictCount Int       @default(0)
+  errorCount    Int       @default(0)
+  checkpoint    Json?
+  errorSummary  String?
+  startedAt     DateTime  @default(now())
+  finishedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   @@index([status])
   @@index([family])
@@ -4015,27 +4021,26 @@ model Ns4FinancialSync {
   @@map("ns4_financial_syncs")
 }
 
-
 // =============================================================================
 // Phase 4C — append-only contract ledger (capacity usage). Distinct from legacy
 // ledger_entries. Corrections supersede; rows are never hard-deleted for history.
 // =============================================================================
 
 model ContractLedgerUsage {
-  id                   String  @id @default(cuid())
-  usageId              String  @unique
-  companyId            String
-  instrumentKey        String
-  effectiveAsOf        String
-  amount               String
-  currency             String
-  capacityPathJson     Json
-  transactionRef       String?
-  status               String // RECORDED | PENDING | REVERSED | SUPERSEDED
-  supersededByUsageId  String?
-  provenanceJson       Json
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+  id                  String   @id @default(cuid())
+  usageId             String   @unique
+  companyId           String
+  instrumentKey       String
+  effectiveAsOf       String
+  amount              String
+  currency            String
+  capacityPathJson    Json
+  transactionRef      String?
+  status              String // RECORDED | PENDING | REVERSED | SUPERSEDED
+  supersededByUsageId String?
+  provenanceJson      Json
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   @@index([companyId, status])
   @@index([companyId, effectiveAsOf])
@@ -4057,3 +4062,682 @@ model ContractLedgerUsageEvent {
   @@map("contract_ledger_usage_events")
 }
 
+// =============================================================================
+// Covenant Learning Factory — versioned precedent knowledge + evaluation ledger
+// Additive only. Automated writers may set PROPOSED / REVIEW_REQUIRED only.
+// VERIFIED / REJECTED / SUPERSEDED require attributable reviewer transitions.
+// Never auto-promotes production Permission / ledger / APPROVED snapshot authority.
+// =============================================================================
+
+enum LearningKnowledgeState {
+  PROPOSED
+  REVIEW_REQUIRED
+  VERIFIED
+  REJECTED
+  SUPERSEDED
+
+  @@map("learning_knowledge_state")
+}
+
+enum LearningCohort {
+  TRAIN_DEV
+  HELD_OUT
+
+  @@map("learning_cohort")
+}
+
+model LearningPackage {
+  id             String         @id @default(cuid())
+  packageKey     String         @unique
+  companyId      String
+  issuerCik      String
+  issuerTicker   String?
+  issuerName     String?
+  cohort         LearningCohort
+  provenance     String
+  usageRights    String
+  evaluationOnly Boolean        @default(false)
+  metadata       Json?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  runs LearningRun[]
+
+  @@index([issuerCik])
+  @@index([cohort])
+  @@map("learning_packages")
+}
+
+model LearningRun {
+  id              String    @id @default(cuid())
+  runId           String    @unique
+  packageKey      String
+  status          String
+  codeSha         String
+  factoryVersion  String
+  compilerVersion String
+  startedAt       DateTime
+  finishedAt      DateTime?
+  manifestJson    Json
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  package LearningPackage @relation(fields: [packageKey], references: [packageKey], onDelete: Cascade)
+
+  @@index([packageKey])
+  @@index([status])
+  @@map("learning_runs")
+}
+
+model LearningArtifact {
+  id                   String                 @id @default(cuid())
+  artifactId           String                 @unique
+  packageKey           String
+  runId                String
+  kind                 String
+  state                LearningKnowledgeState
+  family               String?
+  sourceRefsJson       Json
+  payloadJson          Json
+  compilerVersion      String
+  modelOrPromptVersion String?
+  supersedesArtifactId String?
+  reviewedBy           String?
+  reviewedAt           DateTime?
+  createdAt            DateTime               @default(now())
+
+  @@index([packageKey, state])
+  @@index([runId])
+  @@index([kind])
+  @@map("learning_artifacts")
+}
+
+model LearningErrorLedgerEntry {
+  id                    String   @id @default(cuid())
+  errorId               String   @unique
+  packageKey            String
+  runId                 String
+  class                 String
+  severity              String
+  message               String
+  stage                 String
+  evidenceJson          Json?
+  correctiveHistoryJson Json
+  createdAt             DateTime @default(now())
+
+  @@index([packageKey])
+  @@index([class])
+  @@index([runId])
+  @@map("learning_error_ledger_entries")
+}
+
+model LearningEvaluationOutcome {
+  id                      String         @id @default(cuid())
+  evaluationId            String         @unique
+  packageKey              String
+  runId                   String
+  cohort                  LearningCohort
+  sourceFidelityPass      Boolean?
+  coverageScore           Float?
+  calculationCorrectness  Boolean?
+  dangerousOmissionCount  Int            @default(0)
+  abstentionCount         Int            @default(0)
+  supportedStructureUnits Int            @default(0)
+  verifiedExecutableUnits Int            @default(0)
+  unsupportedUnits        Int            @default(0)
+  refusedExecutableUnits  Int            @default(0)
+  independent             Boolean        @default(true)
+  notesJson               Json
+  createdAt               DateTime       @default(now())
+
+  @@index([packageKey])
+  @@index([cohort])
+  @@map("learning_evaluation_outcomes")
+}
+
+model LearningImprovementProposal {
+  id                 String   @id @default(cuid())
+  proposalId         String   @unique
+  packageKey         String
+  runId              String
+  lever              String
+  summary            String
+  bounded            Boolean  @default(true)
+  autoApply          Boolean  @default(false)
+  evidenceJson       Json
+  state              String   @default("PROPOSED")
+  /// PROPOSED | MECHANICALLY_REPLAYED | INDEPENDENTLY_VERIFIED | REJECTED | SUPERSEDED
+  adjudicationStatus String   @default("PROPOSED")
+  /// Errors removed on train packages the rule was built from. Null on legacy rows.
+  trainFixed         Int?
+  /// Errors removed on held-out packages the rule was not built from.
+  heldoutFixed       Int?
+  /// Distinct train packages supporting the rule.
+  sourcesSpanned     Int?
+  createdAt          DateTime @default(now())
+
+  @@index([packageKey])
+  @@index([state])
+  @@index([adjudicationStatus])
+  @@map("learning_improvement_proposals")
+}
+
+// =============================================================================
+// Knowledge-factory precedent export shards (COMPUTED_NOT_CERTIFIED).
+// Populated by neon:https-precedent-import over HTTPS. Never ContractRule.
+// =============================================================================
+
+model KfPrecedentStructuralNode {
+  nodeId          String   @id
+  sourceId        String
+  nodeType        String?
+  sectionRef      String?
+  heading         String?
+  charStart       Int?
+  charEnd         Int?
+  ambiguous       Boolean?
+  authorityStatus String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson     Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_structural_nodes")
+}
+
+model KfPrecedentCovenantCandidate {
+  candidateId         String   @id
+  sourceId            String
+  nodeId              String?
+  familiesJson        Json
+  signalsJson         Json
+  excerpt             String?
+  discoveryScore      Float?
+  representationLevel String?
+  authorityStatus     String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson         Json
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_covenant_candidates")
+}
+
+model KfPrecedentDefinition {
+  id              String   @id
+  sourceId        String
+  term            String
+  charStart       Int?
+  charEnd         Int?
+  excerpt         String?
+  authorityStatus String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson     Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([sourceId, term])
+  @@index([sourceId])
+  @@map("kf_precedent_definitions")
+}
+
+model KfPrecedentDependencyEdge {
+  edgeId          String   @id
+  sourceId        String
+  kind            String
+  rawReference    String?
+  resolution      String?
+  legalTruth      String?
+  charStart       Int?
+  charEnd         Int?
+  authorityStatus String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson     Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_dependency_edges")
+}
+
+model KfPrecedentConditionException {
+  id                  String   @id
+  sourceId            String
+  kind                String
+  nodeId              String?
+  excerpt             String?
+  signalsJson         Json?
+  representationLevel String?
+  charStart           Int?
+  charEnd             Int?
+  authorityStatus     String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson         Json
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_conditions_exceptions")
+}
+
+model KfPrecedentDocumentRelationship {
+  id              String   @id
+  sourceId        String
+  targetId        String
+  kind            String
+  evidenceStatus  String?
+  rationale       String?
+  confidence      Float?
+  authorityStatus String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson     Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([sourceId])
+  @@index([targetId])
+  @@map("kf_precedent_document_relationships")
+}
+
+model KfPrecedentUnresolvedUncertainty {
+  id                  String   @id
+  sourceId            String
+  candidateId         String?
+  nodeId              String?
+  reasonsJson         Json?
+  excerpt             String?
+  reviewerTask        String?
+  suggestedRegression String?
+  authorityStatus     String   @default("COMPUTED_NOT_CERTIFIED")
+  payloadJson         Json
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([sourceId])
+  @@map("kf_precedent_unresolved_uncertainties")
+}
+
+model KfPrecedentImportCheckpoint {
+  batchKey   String
+  stage      String
+  cursor     String?
+  status     String
+  countsJson Json
+  updatedAt  DateTime @default(now())
+
+  @@id([batchKey, stage])
+  @@map("kf_precedent_import_checkpoints")
+}
+
+// =============================================================================
+// Standalone flywheel — Neon source-of-record for learned rules + ops
+// =============================================================================
+
+model LearningRuleset {
+  id                         String   @id @default(cuid())
+  rulesetVersion             Int      @unique
+  authorityStatus            String   @default("COMPUTED_NOT_CERTIFIED")
+  schemaVersion              String
+  payloadJson                Json
+  /// Legacy count of loadable rules (mechanical + independently verified).
+  acceptedCount              Int      @default(0)
+  mechanicallyReplayedCount  Int      @default(0)
+  independentlyVerifiedCount Int      @default(0)
+  writtenFromEpoch           Int?
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+
+  @@index([updatedAt])
+  @@map("learning_rulesets")
+}
+
+model LearningRulesetPartialAccept {
+  id                   String   @id @default(cuid())
+  targetRulesetVersion Int
+  ruleId               String
+  candidateIndex       Int
+  epoch                Int
+  epochRunId           String
+  payloadJson          Json
+  createdAt            DateTime @default(now())
+
+  @@unique([targetRulesetVersion, ruleId])
+  @@index([targetRulesetVersion])
+  @@map("learning_ruleset_partial_accepts")
+}
+
+model FlywheelLock {
+  lockName    String   @id
+  holderId    String
+  acquiredAt  DateTime
+  expiresAt   DateTime
+  heartbeatAt DateTime
+  metaJson    Json?
+
+  @@map("flywheel_locks")
+}
+
+model FlywheelRun {
+  id                            String    @id @default(cuid())
+  runId                         String    @unique
+  slice                         String
+  status                        String
+  startedAt                     DateTime
+  finishedAt                    DateTime?
+  epoch                         Int?
+  sourcesProcessed              Int       @default(0)
+  candidatesEvaluated           Int       @default(0)
+  /// Legacy name — means mechanically replayed (not independently verified).
+  proposalsAccepted             Int       @default(0)
+  proposalsMechanicallyReplayed Int       @default(0)
+  proposalsRejected             Int       @default(0)
+  errorRateByClassJson          Json?
+  detailJson                    Json?
+  errorMessage                  String?
+  createdAt                     DateTime  @default(now())
+
+  @@index([startedAt])
+  @@index([status])
+  @@index([slice])
+  @@map("flywheel_runs")
+}
+
+model FlywheelAlert {
+  id         String    @id @default(cuid())
+  alertId    String    @unique
+  severity   String
+  kind       String
+  message    String
+  runId      String?
+  detailJson Json?
+  ackedAt    DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([createdAt])
+  @@index([kind])
+  @@map("flywheel_alerts")
+}
+
+// ---------------------------------------------------------------------------
+// Section-tree knowledge (deterministic agreement pipeline). Additive only.
+// Public/research corpus: keyed by text sha256 + parser version (idempotent).
+// Customer uploads: NEVER in the kf_* corpus tables; scoped by companyId + documentId (isolation key).
+// ---------------------------------------------------------------------------
+
+model KfTreeParse {
+  textSha256     String
+  parserVersion  String
+  sourceId       String
+  basis          String
+  verification   String?
+  textLength     Int
+  nodeCount      Int
+  xrefCount      Int
+  checklistCount Int
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+
+  @@id([textSha256, parserVersion])
+  @@index([sourceId], map: "kf_tree_parses_source")
+  @@map("kf_tree_parses")
+}
+
+model KfTreeNode {
+  textSha256    String
+  parserVersion String
+  nodeId        String
+  parentId      String?
+  kind          String
+  label         String?
+  path          String?
+  sectionNumber String?
+  title         String?
+  level         String?
+  start         Int
+  headingEnd    Int
+  end           Int
+  depth         Int
+  status        String
+  role          String?
+  issues        Json    @default("[]")
+
+  @@id([textSha256, parserVersion, nodeId])
+  @@map("kf_tree_nodes")
+}
+
+/// Superseded by kf_tree_xref_spans (content-keyed). Kept: additive schema, never dropped.
+model KfTreeXref {
+  textSha256    String
+  parserVersion String
+  ord           Int
+  fromNodeId    String
+  at            Int
+  raw           String
+  target        String
+  status        String
+  targetNodeId  String?
+
+  @@id([textSha256, parserVersion, ord])
+  @@map("kf_tree_xrefs")
+}
+
+/// Cross-references keyed by content: span (start,end) + sha256 of the span text, not list position.
+model KfTreeXrefSpan {
+  textSha256    String
+  parserVersion String
+  spanStart     Int
+  spanEnd       Int
+  spanSha256    String
+  fromNodeId    String
+  raw           String
+  target        String
+  status        String
+  targetNodeId  String?
+
+  @@id([textSha256, parserVersion, spanStart, spanEnd, spanSha256])
+  @@map("kf_tree_xref_spans")
+}
+
+model KfTreeChecklist {
+  textSha256    String
+  parserVersion String
+  family        String
+  status        String
+  sectionPaths  Json
+  parts         Json
+  needsInputs   Json
+  note          String?
+
+  @@id([textSha256, parserVersion, family])
+  @@map("kf_tree_checklist")
+}
+
+model KfAgreementPipelineResult {
+  textSha256      String
+  parserVersion   String
+  pipelineVersion String
+  sourceId        String
+  companyId       String?
+  documentId      String?
+  stats           Json
+  families        Json
+  createdAt       DateTime @default(now()) @db.Timestamptz(6)
+
+  @@id([textSha256, parserVersion, pipelineVersion, sourceId])
+  @@map("kf_agreement_pipeline_results")
+}
+
+model KfScoreboardRun {
+  runId          String   @id
+  gitCommit      String
+  rulesLabel     String
+  rulesetVersion String?
+  tree           Boolean
+  snapshotSha256 String
+  totals         Json
+  findingCount   Int
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+
+  @@map("kf_scoreboard_runs")
+}
+
+/// Superseded by kf_scoreboard_finding_items (content-keyed). Kept: additive schema, never dropped.
+model KfScoreboardFinding {
+  runId      String
+  sourceId   String
+  ord        Int
+  textSha256 String?
+  split      String
+  class      String
+  key        String?
+  family     String?
+  sectionRef String?
+  excerpt    String?
+  message    String?
+
+  @@id([runId, sourceId, ord])
+  @@map("kf_scoreboard_findings")
+}
+
+/// Findings keyed by content: sha256(class|key|family|sectionRef|excerpt) + occurrence among identical content.
+model KfScoreboardFindingItem {
+  runId      String
+  sourceId   String
+  findingSha String
+  occurrence Int
+  textSha256 String?
+  split      String
+  class      String
+  key        String?
+  family     String?
+  sectionRef String?
+  excerpt    String?
+  message    String?
+
+  @@id([runId, sourceId, findingSha, occurrence])
+  @@map("kf_scoreboard_finding_items")
+}
+
+/// One pipeline run over one customer upload. Isolation key: (companyId, documentId).
+/// status OK | FAILED; a FAILED run records the error and never blocks the upload.
+model CustomerAgreementRun {
+  id              String   @id @default(cuid())
+  companyId       String
+  documentId      String
+  sourceId        String
+  /// sha256(companyId|documentId|textSha256|parserVersion|pipelineVersion): one run per re-analysis key.
+  runKey          String?  @unique
+  textSha256      String?
+  parserVersion   String
+  pipelineVersion String
+  status          String
+  error           String?
+  stats           Json?
+  families        Json?
+  createdAt       DateTime @default(now()) @db.Timestamptz(6)
+
+  nodes     CustomerTreeNode[]
+  xrefs     CustomerTreeXref[]
+  checklist CustomerTreeChecklist[]
+
+  @@index([companyId, documentId])
+  @@map("customer_agreement_runs")
+}
+
+model CustomerTreeNode {
+  runId         String
+  nodeId        String
+  parentId      String?
+  kind          String
+  label         String?
+  path          String?
+  sectionNumber String?
+  title         String?
+  level         String?
+  start         Int
+  headingEnd    Int
+  end           Int
+  depth         Int
+  status        String
+  role          String?
+  issues        Json                 @default("[]")
+  run           CustomerAgreementRun @relation(fields: [runId], references: [id])
+
+  @@id([runId, nodeId])
+  @@map("customer_tree_nodes")
+}
+
+model CustomerTreeXref {
+  runId        String
+  spanStart    Int
+  spanEnd      Int
+  spanSha256   String
+  fromNodeId   String
+  raw          String
+  target       String
+  status       String
+  targetNodeId String?
+  run          CustomerAgreementRun @relation(fields: [runId], references: [id])
+
+  @@id([runId, spanStart, spanEnd, spanSha256])
+  @@map("customer_tree_xrefs")
+}
+
+model CustomerTreeChecklist {
+  runId        String
+  family       String
+  status       String
+  sectionPaths Json
+  parts        Json
+  needsInputs  Json
+  note         String?
+  run          CustomerAgreementRun @relation(fields: [runId], references: [id])
+
+  @@id([runId, family])
+  @@map("customer_tree_checklist")
+}
+
+/// Dashboard EBITDA box snapshots (lib/covenant-learning-factory/pipeline/ebitda-box.ts), scoped by company + document.
+/// Append-only: each upload analysis or CFO confirmation writes a new snapshot; the latest is served.
+model CustomerEbitdaBox {
+  id         String   @id @default(cuid())
+  companyId  String
+  documentId String
+  status     String
+  version    String
+  payload    Json
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  /// Composite FK: the document must belong to the same company.
+  document   Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Cascade)
+
+  @@index([companyId, documentId, createdAt])
+  @@map("customer_ebitda_boxes")
+}
+
+/// CFO-confirmed, sourced add-back figures and lender-approval confirmations. APPEND-ONLY: rows are never updated or
+/// deleted; the latest row per (companyId, documentId, inputKey, kind) is current, earlier rows are the history.
+/// Check constraints (migration 20261017050000): kind in (AMOUNT, LENDER_APPROVAL), value a non-negative integer
+/// <= 1e12 ("1" for LENDER_APPROVAL), non-empty source, inputKey without whitespace.
+model CustomerEbitdaConfirmation {
+  id             String   @id @default(cuid())
+  companyId      String
+  documentId     String
+  inputKey       String
+  /// AMOUNT | LENDER_APPROVAL
+  kind           String   @default("AMOUNT")
+  /// Whole USD as a decimal string (exact; never estimated). "1" for LENDER_APPROVAL.
+  value          String
+  source         String
+  /// Server-side session principal id.
+  confirmedBy    String?
+  idempotencyKey String
+  /// Original response ({ boxId, gain }) returned verbatim on an idempotent replay.
+  response       Json?
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(6)
+  /// RESTRICT (delete and update): confirmation history is an audit trail; its company/document cannot be deleted, and a
+  /// document cannot move to another company, while history refers to it.
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  /// Composite FK: the document must belong to the same company.
+  document       Document @relation(fields: [documentId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([companyId, documentId, idempotencyKey])
+  @@index([companyId, documentId, inputKey, createdAt])
+  @@map("customer_ebitda_confirmations")
+}

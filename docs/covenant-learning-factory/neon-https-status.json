@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "covenant-learning-factory.neon-https.v1",
+  "generatedAt": "2026-10-13T19:54:33.371Z",
+  "transport": "https",
+  "httpsReachableToAuth": true,
+  "live": false,
+  "class": "auth_failed",
+  "detail": "HTTPS Neon API reachable; password authentication failed for user 'neondb_owner'",
+  "migrationApply": "blocked_on_auth",
+  "packages": [
+    "@neondatabase/serverless@0.10.4",
+    "@prisma/adapter-neon@5.22.0",
+    "ws"
+  ],
+  "envSwitch": "NEON_TRANSPORT=https",
+  "secretRefreshRequired": true
+}

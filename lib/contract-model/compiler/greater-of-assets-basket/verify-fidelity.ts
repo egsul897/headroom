@@ -95,22 +95,42 @@ function collectInputGates(expr: IRExpression | null | undefined, out: Set<strin
   }
 }
 
+function isPercentOfAssetsSoleCap(classification: GreaterOfAssetsClassification): boolean {
+  return (
+    classification.class === "PERCENT_OF_ASSETS_SOLE_CAP" ||
+    classification.class === "PERCENT_OF_ASSETS_SOLE_CAP_WITH_QUALITATIVE_GATES"
+  );
+}
+
+function hasMultiply(expr: IRExpression | null | undefined): boolean {
+  if (!expr) return false;
+  if (expr.kind === "MULTIPLY") return true;
+  if (expr.kind === "IF") {
+    return hasMultiply(expr.then as IRExpression) || hasMultiply(expr.else as IRExpression | null);
+  }
+  if ("operands" in expr && Array.isArray((expr as { operands?: IRExpression[] }).operands)) {
+    return (expr as { operands: IRExpression[] }).operands.some((o) => hasMultiply(o));
+  }
+  return false;
+}
+
 export function verifyGreaterOfLegalFidelity(args: {
   operativeSourceText: string;
   rule: IRRule;
 }): GreaterOfFidelityResult {
   const findings: FidelityFinding[] = [];
   const classification = classifyGreaterOfAssetsBasket(args.operativeSourceText);
+  const solePercent = isPercentOfAssetsSoleCap(classification);
 
   if (
     classification.class === "NOT_GREATER_OF_ASSETS" ||
-    classification.fixedAmountUsd == null ||
     classification.percentFraction == null ||
-    !classification.metricName
+    !classification.metricName ||
+    (!solePercent && classification.fixedAmountUsd == null)
   ) {
     findings.push({
-      code: "NOT_GREATER_OF_ASSETS_SOURCE",
-      detail: classification.reasons.join(",") || "source is not a greater-of assets basket",
+      code: solePercent ? "NOT_PERCENT_OF_ASSETS_SOURCE" : "NOT_GREATER_OF_ASSETS_SOURCE",
+      detail: classification.reasons.join(",") || "source is not a supported assets-basket structure",
       severity: "MATERIAL",
     });
     return { verdict: "FAIL", findings, classification };
@@ -123,15 +143,46 @@ export function verifyGreaterOfLegalFidelity(args: {
     findings.push({ code: "SUFFICIENCY_NOT_USABLE", detail: String(args.rule.sufficiency), severity: "MATERIAL" });
   }
 
-  const amounts: number[] = [];
-  collectMoneyAmounts(args.rule.capacityExpression as IRExpression | null, amounts);
-  const positive = amounts.filter((a) => a > 0);
-  if (!positive.includes(classification.fixedAmountUsd)) {
-    findings.push({
-      code: "FIXED_LIMB_MISMATCH",
-      detail: `source=${classification.fixedAmountUsd} ir_positive_amounts=${JSON.stringify(positive)}`,
-      severity: "MATERIAL",
-    });
+  if (!solePercent) {
+    const amounts: number[] = [];
+    collectMoneyAmounts(args.rule.capacityExpression as IRExpression | null, amounts);
+    const positive = amounts.filter((a) => a > 0);
+    if (!positive.includes(classification.fixedAmountUsd!)) {
+      findings.push({
+        code: "FIXED_LIMB_MISMATCH",
+        detail: `source=${classification.fixedAmountUsd} ir_positive_amounts=${JSON.stringify(positive)}`,
+        severity: "MATERIAL",
+      });
+    }
+    if (!hasMax(args.rule.capacityExpression as IRExpression | null)) {
+      findings.push({ code: "MISSING_MAX", detail: "capacityExpression lacks MAX of limbs", severity: "MATERIAL" });
+    }
+  } else {
+    // Sole percent: must NOT invent a fixed-dollar limb.
+    const amounts: number[] = [];
+    collectMoneyAmounts(args.rule.capacityExpression as IRExpression | null, amounts);
+    const positive = amounts.filter((a) => a > 0);
+    if (positive.length > 0) {
+      findings.push({
+        code: "UNEXPECTED_FIXED_LIMB",
+        detail: `sole percent-of-assets IR must not embed positive MONEY limbs; found=${JSON.stringify(positive)}`,
+        severity: "MATERIAL",
+      });
+    }
+    if (hasMax(args.rule.capacityExpression as IRExpression | null)) {
+      findings.push({
+        code: "UNEXPECTED_MAX",
+        detail: "sole percent-of-assets capacity must not use MAX(fixed, pct)",
+        severity: "MATERIAL",
+      });
+    }
+    if (!hasMultiply(args.rule.capacityExpression as IRExpression | null)) {
+      findings.push({
+        code: "MISSING_MULTIPLY",
+        detail: "sole percent-of-assets capacity lacks MULTIPLY(PERCENT, METRIC)",
+        severity: "MATERIAL",
+      });
+    }
   }
 
   const percents: number[] = [];
@@ -152,10 +203,6 @@ export function verifyGreaterOfLegalFidelity(args: {
       detail: `source=${classification.metricName} ir_metrics=${JSON.stringify([...metrics])}`,
       severity: "MATERIAL",
     });
-  }
-
-  if (!hasMax(args.rule.capacityExpression as IRExpression | null)) {
-    findings.push({ code: "MISSING_MAX", detail: "capacityExpression lacks MAX of limbs", severity: "MATERIAL" });
   }
 
   const gates = new Set<string>();

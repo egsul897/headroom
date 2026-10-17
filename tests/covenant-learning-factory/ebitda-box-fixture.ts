@@ -1,0 +1,72 @@
+/** Shared fixture for the EBITDA box tests: a small agreement, issuer financials, and an in-memory append-only store. */
+import type { ConfirmationRow, EbitdaBoxStore } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
+import type { IssuerFinancials } from "@/lib/covenant-learning-factory/xbrl/companyfacts";
+
+export const M = 1_000_000;
+const row = (concept: string, v: number) => ({ metric: "item" as const, concept, periodType: "TTM" as const, periodStart: "2025-07-01", periodEnd: "2026-06-30", value: String(v), unit: "USD" as const, accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test" });
+export const fin: IssuerFinancials = { cik: "0000000001", entityName: "T", missing: [], anchor: "2026-06-30", fiscalYear: 2026, values: Object.entries({ NetIncomeLoss: 100 * M, IncomeTaxExpenseBenefit: 20 * M, InterestExpense: 30 * M, DepreciationDepletionAndAmortization: 50 * M, RestructuringCharges: 8 * M }).map(([c, v]) => row(c, v)) };
+export const TEXT = `ARTICLE I DEFINITIONS
+"Consolidated Net Income" means the net income of the Borrower and its Subsidiaries determined on a consolidated basis in accordance with GAAP.
+"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in calculating Consolidated Net Income: (a) provision for taxes based on income; plus (b) interest expense; plus (c) depreciation and amortization expense; plus (d) restructuring charges; plus (e) costs of new systems implementation in an aggregate amount not to exceed $5,000,000 for any period; plus (f) other non-recurring costs approved in writing by the Administrative Agent.
+`;
+export const args = { sourceId: "s1", text: TEXT, issuerCik: "1", financials: fin };
+
+export type FakeStore = EbitdaBoxStore & {
+  boxes: Array<{ id: string; status?: string; payload: unknown }>; rows: ConfirmationRow[]; updates: number; transactions: number; locks: string[];
+  beforeCreate?: (data: Omit<ConfirmationRow, "id" | "createdAt">) => void | Promise<void>;
+  /** Throw from the next box write (simulates a connection reset mid-transaction). */
+  failBoxWrite?: Error | null;
+  /** Runs when the per-document lock is acquired (simulates work committed while waiting for the lock). */
+  onLock?: () => void | Promise<void>;
+};
+
+/** In-memory store. Implements the append-only API; a legacy `upsert` (pre-hardening code) is also provided and counted
+ *  as an in-place update so tests can assert that history is never overwritten. */
+export function fakeStore(): FakeStore {
+  const boxes: Array<{ id: string; companyId: string; documentId: string; status?: string; payload: unknown; createdAt: Date }> = [];
+  const rows: ConfirmationRow[] = [];
+  let t = 0;
+  let chain: Promise<void> = Promise.resolve();
+  const s = {
+    boxes, rows, updates: 0, transactions: 0, locks: [],
+    customerEbitdaBox: {
+      create: async ({ data }) => {
+        if (s.failBoxWrite) { const e = s.failBoxWrite; s.failBoxWrite = null; throw e; }
+        const r = { id: `b${boxes.length}`, ...data, createdAt: new Date(++t * 1000) }; boxes.push(r); return { id: r.id };
+      },
+      findFirst: async ({ where }: { where: { companyId: string; documentId: string; status?: { not: string } } }) => [...boxes].reverse().find((b) => b.companyId === where.companyId && b.documentId === where.documentId && (!where.status || b.status !== where.status.not)) ?? null,
+      findUnique: async ({ where }) => boxes.find((b) => b.id === where.id) ?? null,
+    },
+    customerEbitdaConfirmation: {
+      create: async ({ data }) => {
+        await s.beforeCreate?.(data);
+        if (rows.some((r) => r.companyId === data.companyId && r.documentId === data.documentId && r.idempotencyKey === data.idempotencyKey)) throw Object.assign(new Error("Unique constraint failed on the fields: (`companyId`,`documentId`,`idempotencyKey`)"), { code: "P2002" });
+        const r: ConfirmationRow = { id: `r${String(rows.length).padStart(4, "0")}`, ...data, createdAt: new Date(++t * 1000) };
+        rows.push(r); return { id: r.id };
+      },
+      findMany: async ({ where }) => rows.filter((r) => r.companyId === where.companyId && r.documentId === where.documentId).map((r) => ({ ...r, updatedAt: r.createdAt })),
+      findFirst: async ({ where }) => rows.find((r) => r.companyId === where.companyId && r.documentId === where.documentId && r.idempotencyKey === where.idempotencyKey) ?? null,
+      // legacy (pre-hardening) API
+      upsert: async ({ where, create, update }: { where: { companyId_documentId_inputKey: { companyId: string; documentId: string; inputKey: string } }; create: Record<string, unknown>; update: Record<string, unknown> }) => {
+        const w = where.companyId_documentId_inputKey;
+        const prev = rows.find((r) => r.companyId === w.companyId && r.documentId === w.documentId && r.inputKey === w.inputKey);
+        if (prev) { Object.assign(prev, update, { createdAt: new Date(++t * 1000) }); s.updates++; return { id: prev.id }; }
+        const r = { id: `r${String(rows.length).padStart(4, "0")}`, kind: "AMOUNT", idempotencyKey: "", confirmedBy: null, ...(create as object), createdAt: new Date(++t * 1000) } as ConfirmationRow;
+        rows.push(r); return { id: r.id };
+      },
+    } as EbitdaBoxStore["customerEbitdaConfirmation"],
+    // Interactive transaction: serialised (like the per-document advisory lock) and rolled back on throw. The store is
+    // append-only, so rollback = truncate to the lengths at BEGIN.
+    $transaction: async <T,>(fn: (tx: EbitdaBoxStore) => Promise<T>) => {
+      const prev = chain;
+      let release!: () => void;
+      chain = new Promise<void>((r) => (release = r));
+      await prev;
+      s.transactions++;
+      const nb = boxes.length, nr = rows.length;
+      try { return await fn(s); } catch (e) { boxes.length = nb; rows.length = nr; throw e; } finally { release(); }
+    },
+    $queryRawUnsafe: async (_sql: string, ...v: unknown[]) => { s.locks.push(String(v[0])); await s.onLock?.(); return [{ "?column?": 1 }]; },
+  } as FakeStore;
+  return s;
+}

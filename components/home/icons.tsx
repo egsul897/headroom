@@ -102,3 +102,12 @@ export function SimulateIcon() {
 export function EvidenceIcon() {
   return strokeIcon("M8 4h6l3 3v13H8zM10 12h5M10 15h3M11 8h.01");
 }
+
+export function LockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+      <rect x="5" y="10.5" width="14" height="9" rx="1.6" fill="none" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 import { StatusBadge } from "@/components/StatusBadge";
 import { CountUp } from "@/components/motion/CountUp";
 import { ProvenanceDrawer } from "@/components/motion/ProvenanceDrawer";
@@ -35,9 +35,9 @@ const SAMPLE_ROWS = [
 ] as const;
 
 const DRIVERS = [
-  { name: "Sample EBITDA move", note: "Made-up part of the sample figure.", amount: "+ $40 million sample" },
-  { name: "Sample paydown", note: "Made-up part of the sample figure.", amount: "+ $28 million sample" },
-  { name: "Sample cash", note: "Made-up part of the sample figure.", amount: "+ $18 million sample" },
+  { name: "Sample EBITDA move", note: "Made-up part of the sample figure.", amount: "+$40 million" },
+  { name: "Sample paydown", note: "Made-up part of the sample figure.", amount: "+$28 million" },
+  { name: "Sample cash", note: "Made-up part of the sample figure.", amount: "+$18 million" },
 ] as const;
 
 const ALERTS = [
@@ -74,163 +74,128 @@ function rowPanel(item: (typeof SAMPLE_ROWS)[number]): Panel {
 export function SampleDashboard({
   initialDetail = false,
   initialEbitda = null,
+  failedReason = null,
+  staleSince = null,
 }: {
   initialDetail?: boolean;
   initialEbitda?: string | null;
+  failedReason?: string | null;
+  staleSince?: string | null;
 }) {
   const [panel, setPanel] = useState<Panel | null>(initialDetail ? rowPanel(SAMPLE_ROWS[0]) : null);
+
+  function openHeadroom() {
+    setPanel({
+      title: "Total headroom",
+      source: "Sample illustration. No source document is attached.",
+      clause: "Sample agreement §6.04. Sample language, not an operative clause.",
+      history: "Sample spark from a made-up prior period. Not a loaded history.",
+    });
+  }
 
   return (
     <div className="home-overview">
       <header className="home-top">
         <div className="home-greeting-block">
-          <p className="page-kicker">Sample</p>
           <h1 className="home-greeting">How much headroom can we rely on?</h1>
         </div>
-        <a className="button button-primary" href="/dev/sample?screen=covenants">
+        <a className="home-quiet-link" href="/dev/sample?screen=covenants">
           Read the clause
         </a>
       </header>
 
-      <div className="home-hero">
-        <section className="home-card" aria-label="Total Headroom">
-          <h2 className="home-eyebrow">Headroom</h2>
-          <p className="home-kpi-value home-kpi-value-hero">
-            <CountUp text="$86 million" />
-          </p>
-          <p className="home-kpi-caption">Sample incremental. Not a certified path, and not from the engine.</p>
-          <p className="home-source">Source: sample illustration. Not a company snapshot.</p>
-          <button
-            type="button"
-            className="button button-quiet detail-open"
+      <div className="home-board">
+        <div className="home-kpis">
+          <section className="home-card home-kpi" aria-label="Total Headroom" onClick={openHeadroom}>
+            <h2 className="home-eyebrow">Total headroom</h2>
+            <p className="home-kpi-value">
+              <CountUp text="$86 million" />
+            </p>
+            <p className="home-kpi-caption">Not from the engine.</p>
+          </section>
+          <section
+            className="home-card home-kpi"
+            aria-label="Utilization"
             onClick={() =>
               setPanel({
-                title: "Headroom",
+                title: "Utilization",
                 source: "Sample illustration. No source document is attached.",
-                clause: "Sample agreement §6.04. Sample language, not an operative clause.",
-                history: "Sample spark from a made-up prior period. Not a loaded history.",
+                clause: "No clause is loaded for this sample figure.",
+                history: "History has not been loaded.",
               })
             }
           >
-            Open detail
-          </button>
-        </section>
-      </div>
-
-      <div className="home-board">
-        <div className="home-kpis">
-          <section className="home-card" aria-label="Total Headroom">
-            <h2 className="home-eyebrow">Total headroom</h2>
-            <div className="sample-kpi-row">
-              <p className="home-kpi-value">
-                <CountUp text="$86 million" />
-              </p>
-              <Spark />
-            </div>
-            <p className="home-kpi-caption">Sample change versus a made-up prior period.</p>
-            <button
-              type="button"
-              className="button button-quiet detail-open"
-              onClick={() =>
-                setPanel({
-                  title: "Total headroom",
-                  source: "Sample illustration. No source document is attached.",
-                  clause: "Sample agreement §6.04. Sample language, not an operative clause.",
-                  history: "Sample spark from a made-up prior period. Not a loaded history.",
-                })
-              }
-            >
-              Open detail
-            </button>
-          </section>
-          <section className="home-card" aria-label="Utilization">
             <h2 className="home-eyebrow">Utilization</h2>
-            <div className="sample-kpi-row">
-              <p className="home-kpi-value">
-                <CountUp text="57%" />
-              </p>
-              <span className="sample-ring" aria-hidden="true">
-                <i />
-              </span>
-            </div>
-            <p className="home-kpi-caption">$114 million sample used against a $200 million sample cap.</p>
-            <button
-              type="button"
-              className="button button-quiet detail-open"
-              onClick={() =>
-                setPanel({
-                  title: "Utilization",
-                  source: "Sample illustration. No source document is attached.",
-                  clause: "No clause is loaded for this sample figure.",
-                  history: "History has not been loaded.",
-                })
-              }
-            >
-              Open detail
-            </button>
+            <p className="home-kpi-value">
+              <CountUp text="57%" />
+            </p>
+            <span className="sample-ring" aria-hidden="true">
+              <i />
+            </span>
+            <p className="home-kpi-caption">$114 million used</p>
           </section>
-          <section className="home-card" aria-label="Covenants at risk">
+          <section
+            className="home-card home-kpi"
+            aria-label="Covenants at risk"
+            onClick={() =>
+              setPanel({
+                title: "Covenants at risk",
+                source: "Sample agreement. No source document is attached.",
+                clause: "Sample agreement §6.08. Sample language, not an operative clause.",
+                history: "History has not been loaded.",
+              })
+            }
+          >
             <h2 className="home-eyebrow">Covenants at risk</h2>
             <p className="home-kpi-value">
               <CountUp text="1" />
             </p>
             <p className="home-kpi-caption">
-              <StatusBadge status="REVIEW_REQUIRED" /> One sample clause still needs a person.
+              <StatusBadge status="REVIEW_REQUIRED" />
             </p>
-            <button
-              type="button"
-              className="button button-quiet detail-open"
-              onClick={() =>
-                setPanel({
-                  title: "Covenants at risk",
-                  source: "Sample agreement. No source document is attached.",
-                  clause: "Sample agreement §6.08. Sample language, not an operative clause.",
-                  history: "History has not been loaded.",
-                })
-              }
-            >
-              Open detail
-            </button>
           </section>
-          <section className="home-card" aria-label="Next test">
+          <section
+            className="home-card home-kpi"
+            aria-label="Next test"
+            onClick={() =>
+              setPanel({
+                title: "Next test",
+                source: "No source document is attached.",
+                clause: "Sample agreement §7.01. Sample language, not an operative clause.",
+                history: "Sample date Dec 31, 2024. Not a loaded history.",
+              })
+            }
+          >
             <h2 className="home-eyebrow">Next test</h2>
-            <p className="home-kpi-value home-kpi-value-sm">Dec 31, 2024</p>
-            <p className="home-kpi-caption">Sample date. Not a calendar.</p>
-            <button
-              type="button"
-              className="button button-quiet detail-open"
-              onClick={() =>
-                setPanel({
-                  title: "Next test",
-                  source: "No source document is attached.",
-                  clause: "Sample agreement §7.01. Sample language, not an operative clause.",
-                  history: "Sample date Dec 31, 2024. Not a loaded history.",
-                })
-              }
-            >
-              Open detail
-            </button>
+            <p className="home-kpi-value">Dec 31</p>
+            <p className="home-kpi-caption">2024 · sample date</p>
           </section>
+          <EbitdaTile
+            base={SAMPLE_EBITDA_BASE}
+            items={SAMPLE_ADD_BACKS}
+            sample
+            initialView={initialEbitda}
+            failedReason={failedReason}
+            staleSince={staleSince}
+          />
         </div>
 
         <div className="home-split">
-          <section className="home-card" aria-label="Headroom over time">
+          <section className="home-card home-chart-card" aria-label="Headroom over time">
             <div className="home-card-head">
               <h2 className="home-eyebrow">Headroom over time</h2>
-              <p className="sample-window">Sample · 6 months</p>
+              <ul className="sample-legend">
+                <li>
+                  <span className="sample-swatch" /> Headroom
+                </li>
+                <li>
+                  <span className="sample-swatch sample-swatch-2" /> Utilization
+                </li>
+              </ul>
             </div>
             <Plot />
-            <ul className="sample-legend">
-              <li>
-                <span className="sample-swatch" /> Sample headroom
-              </li>
-              <li>
-                <span className="sample-swatch sample-swatch-2" /> Sample utilization
-              </li>
-            </ul>
-            <p className="home-kpi-caption">Sample lines. Not a history load.</p>
           </section>
-          <section className="home-card" aria-label="Capacity summary">
+          <section className="home-card home-chart-card" aria-label="Capacity summary">
             <h2 className="home-eyebrow">Capacity summary</h2>
             <div className="sample-capacity">
               <span className="sample-ring sample-ring-lg" aria-hidden="true">
@@ -243,57 +208,61 @@ export function SampleDashboard({
               <ul className="sample-facilities">
                 <li>
                   <span className="sample-dot" />
-                  <span>Sample revolver</span>
-                  <strong>$100 million · 50%</strong>
+                  <span className="facility-name">Revolver</span>
+                  <span className="facility-amt">$100 million</span>
+                  <span className="facility-pct">50%</span>
                 </li>
                 <li>
                   <span className="sample-dot" style={{ background: "var(--chart-2)" }} />
-                  <span>Sample term loan</span>
-                  <strong>$70 million · 35%</strong>
+                  <span className="facility-name">Term loan</span>
+                  <span className="facility-amt">$70 million</span>
+                  <span className="facility-pct">35%</span>
                 </li>
                 <li>
                   <span className="sample-dot" style={{ background: "var(--chart-3)" }} />
-                  <span>Sample other</span>
-                  <strong>$30 million · 15%</strong>
+                  <span className="facility-name">Other</span>
+                  <span className="facility-amt">$30 million</span>
+                  <span className="facility-pct">15%</span>
                 </li>
               </ul>
             </div>
-            <p className="home-kpi-caption">Sample facility split. Not tied to a source.</p>
           </section>
         </div>
 
         <div className="home-split">
           <section className="home-card" aria-label="Headroom status">
-            <h2 className="home-eyebrow">Headroom status</h2>
+            <div className="home-card-head">
+              <h2 className="home-eyebrow">Headroom status</h2>
+              <a className="home-view-all" href="/dev/sample?screen=covenants">
+                View all
+              </a>
+            </div>
             <div className="home-table-wrap">
               <table className="home-table">
                 <thead>
                   <tr>
                     <th scope="col">Covenant</th>
-                    <th scope="col">Facility / document</th>
                     <th scope="col">Status</th>
                     <th scope="col" className="num">
                       Headroom
                     </th>
-                    <th scope="col">Trend</th>
-                    <th scope="col">Next test</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {SAMPLE_ROWS.map((item, index) => (
+                  {SAMPLE_ROWS.slice(0, 5).map((item) => (
                     <tr key={item.covenant}>
-                      <td>
-                    <button type="button" className="row-detail" onClick={() => setPanel(rowPanel(item))}>
-                      {item.covenant}
-                    </button>
+                      <td className="covenant-cell">
+                        <button type="button" className="covenant-name" title={item.covenant} onClick={() => setPanel(rowPanel(item))}>
+                          {item.covenant}
+                        </button>
+                        <span className="covenant-meta" title={item.facility}>
+                          {item.facility}
+                        </span>
                       </td>
-                      <td>{item.facility}</td>
                       <td>
                         <StatusBadge status={item.status} />
                       </td>
                       <td className="num">{item.headroom}</td>
-                      <td>{item.trend}</td>
-                      <td>{item.next}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -301,90 +270,86 @@ export function SampleDashboard({
             </div>
           </section>
           <div className="home-stack">
-            <EbitdaTile base={SAMPLE_EBITDA_BASE} items={SAMPLE_ADD_BACKS} sample initialView={initialEbitda} />
           <section className="home-card" aria-label="Top headroom drivers">
             <h2 className="home-eyebrow">Top headroom drivers</h2>
-            <ul className="sample-feed">
-              {DRIVERS.map((item) => (
+            <ul className="driver-feed">
+              {DRIVERS.slice(0, 5).map((item) => (
                 <li key={item.name}>
-                  <span className="sample-dot" />
-                  <span>
-                    <button
-                      type="button"
-                      className="row-detail"
-                      onClick={() =>
-                        setPanel({
-                          title: item.name,
-                          source: "Sample illustration. No source document is attached.",
-                          clause: "No clause is loaded for this sample driver.",
-                          history: "History has not been loaded.",
-                          note: `${item.note} ${item.amount}. No company result.`,
-                        })
-                      }
-                    >
-                      {item.name}
-                    </button>
-                    <p>{item.note}</p>
-                  </span>
-                  <strong>{item.amount}</strong>
+                  <button
+                    type="button"
+                    className="row-detail"
+                    onClick={() =>
+                      setPanel({
+                        title: item.name,
+                        source: "Sample illustration. No source document is attached.",
+                        clause: "No clause is loaded for this sample driver.",
+                        history: "History has not been loaded.",
+                        note: `${item.note} ${item.amount}. No company result.`,
+                      })
+                    }
+                  >
+                    {item.name}
+                  </button>
+                  <span className="driver-amt">{item.amount}</span>
                 </li>
               ))}
             </ul>
-            <p className="home-kpi-caption">Not explained capacity moves.</p>
           </section>
           </div>
         </div>
 
         <div className="home-pair">
           <section className="home-card" aria-label="Recent alerts">
-            <h2 className="home-eyebrow">Recent alerts</h2>
+            <div className="home-card-head">
+              <h2 className="home-eyebrow">Recent alerts</h2>
+              <a className="home-view-all" href="/dev/sample?screen=covenants">
+                View all
+              </a>
+            </div>
             <ul className="sample-feed">
-              {ALERTS.map((item) => (
+              {ALERTS.slice(0, 5).map((item) => (
                 <li key={item.name}>
                   <span className="sample-dot" style={{ background: item.tone }} />
-                  <span>
-                    <button
-                      type="button"
-                      className="row-detail"
-                      onClick={() =>
-                        setPanel({
-                          title: item.name,
-                          source: "Sample agreement. No source document is attached.",
-                          clause: item.clause,
-                          history: "History has not been loaded.",
-                          note: `${item.note} No company result.`,
-                        })
-                      }
-                    >
-                      {item.name}
-                    </button>
-                    <p>{item.note}</p>
-                  </span>
-                  <span>Sample</span>
+                  <button
+                    type="button"
+                    className="row-detail"
+                    onClick={() =>
+                      setPanel({
+                        title: item.name,
+                        source: "Sample agreement. No source document is attached.",
+                        clause: item.clause,
+                        history: "History has not been loaded.",
+                        note: `${item.note} No company result.`,
+                      })
+                    }
+                  >
+                    {item.name}
+                  </button>
+                  <span className="sample-aside">{item.note}</span>
                 </li>
               ))}
             </ul>
           </section>
           <section className="home-card" aria-label="Recent transactions">
-            <h2 className="home-eyebrow">Recent transactions</h2>
+            <div className="home-card-head">
+              <h2 className="home-eyebrow">Recent transactions</h2>
+              <a className="home-view-all" href="/dev/sample?screen=covenants">
+                View all
+              </a>
+            </div>
             <ul className="sample-feed">
               <li>
                 <span className="sample-dot" />
-                <span>
-                  Sample revolver draw
-                  <p>Not on the ledger.</p>
-                </span>
-                <strong>$25 million sample</strong>
+                <span>Sample revolver draw</span>
+                <strong>$25 million</strong>
               </li>
               <li>
                 <span className="sample-dot" style={{ background: "var(--chart-2)" }} />
-                <span>
-                  Sample paydown
-                  <p>Not on the ledger.</p>
-                </span>
-                <strong>$15 million sample</strong>
+                <span>Sample paydown</span>
+                <strong>$15 million</strong>
               </li>
             </ul>
+            <p className="home-kpi-caption">Not on the ledger.</p>
           </section>
         </div>
       </div>
@@ -402,51 +367,73 @@ export function SampleDashboard({
   );
 }
 
-function Spark() {
-  return (
-    <span className="sample-spark" aria-hidden="true">
-      <svg viewBox="0 0 96 36" fill="none">
-        <polyline
-          points="2,28 18,26 34,22 50,24 66,16 82,12 94,8"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-      </svg>
-    </span>
-  );
-}
+const MONTHS = ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
+const HEADROOM_M = [48, 54, 52, 66, 74, 86] as const;
+const UTIL_PCT = [44, 48, 50, 52, 55, 57] as const;
 
 function Plot() {
+  const [hover, setHover] = useState<number | null>(null);
+  const width = 640;
+  const height = 200;
+  const left = 44;
+  const right = 36;
+  const top = 10;
+  const bottom = 26;
+  const innerW = width - left - right;
+  const innerH = height - top - bottom;
+  const yMin = 40;
+  const yMax = 100;
+  const yOf = (value: number) => top + ((yMax - value) / (yMax - yMin)) * innerH;
+  const xOf = (index: number) => left + (index / (MONTHS.length - 1)) * innerW;
+  const headroom = HEADROOM_M.map((value, index) => `${xOf(index)},${yOf(value)}`).join(" ");
+  const utilization = UTIL_PCT.map((value, index) => `${xOf(index)},${yOf(value)}`).join(" ");
+  const baseline = yOf(yMin);
+
+  function hoverAt(event: MouseEvent<SVGRectElement>) {
+    const svg = event.currentTarget.ownerSVGElement;
+    const matrix = svg?.getScreenCTM();
+    if (!svg || !matrix) return;
+    const point = svg.createSVGPoint();
+    point.x = event.clientX;
+    point.y = event.clientY;
+    const local = point.matrixTransform(matrix.inverse());
+    const index = Math.round(((local.x - left) / innerW) * (MONTHS.length - 1));
+    setHover(Math.max(0, Math.min(MONTHS.length - 1, index)));
+  }
+
   return (
-    <div className="sample-plot">
-      <svg viewBox="0 0 640 220" role="img" aria-label="Sample headroom and utilization lines">
-        {[40, 80, 120, 160].map((y) => (
-          <line key={y} x1="36" x2="624" y1={y} y2={y} stroke="var(--chart-track)" strokeWidth="1" />
+    <div className="sample-plot" onMouseLeave={() => setHover(null)}>
+      <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Sample headroom and utilization lines">
+        {[100, 80, 60, 40].map((tick) => (
+          <g key={tick}>
+            <line x1={left} x2={width - right} y1={yOf(tick)} y2={yOf(tick)} stroke="var(--chart-track)" strokeWidth="1" />
+            <text x={left - 8} y={yOf(tick) + 3} textAnchor="end" fill="var(--shell-muted)" fontSize="11">
+              ${tick}
+            </text>
+          </g>
         ))}
-        <polyline
-          points="48,150 144,138 240,142 336,118 432,108 528,86 616,62"
-          fill="none"
-          stroke="var(--chart-1)"
-          strokeWidth="2.25"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-        <polyline
-          points="48,168 144,164 240,160 336,156 432,150 528,146 616,140"
-          fill="none"
-          stroke="var(--chart-4)"
-          strokeWidth="2.25"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
-        {["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map((label, index) => (
-          <text key={label} x={48 + index * 96} y="208" fill="var(--shell-muted)" fontSize="11">
-            {label}
+        <line x1={left} x2={width - right} y1={baseline} y2={baseline} stroke="var(--shell-line)" strokeWidth="1.25" />
+        <polyline points={utilization} fill="none" stroke="var(--chart-4)" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
+        <polyline points={headroom} fill="none" stroke="var(--chart-1)" strokeWidth="2.25" strokeLinejoin="round" strokeLinecap="round" />
+        {MONTHS.map((month, index) => (
+          <text key={month} x={xOf(index)} y={height - 6} textAnchor="middle" fill="var(--shell-muted)" fontSize="11">
+            {month}
           </text>
         ))}
+        {hover != null ? <line x1={xOf(hover)} x2={xOf(hover)} y1={top} y2={baseline} stroke="var(--shell-line)" strokeWidth="1" /> : null}
+        <rect x={left} y={top} width={innerW} height={innerH} fill="transparent" onMouseMove={hoverAt} />
       </svg>
+      {hover != null ? (
+        <p
+          className="chart-tip"
+          style={{
+            left: `${(xOf(hover) / width) * 100}%`,
+            transform: hover >= MONTHS.length - 2 ? "translateX(-100%)" : hover === 0 ? "translateX(0)" : "translateX(-50%)",
+          }}
+        >
+          {MONTHS[hover]} · Headroom ${HEADROOM_M[hover]} million · Utilization {UTIL_PCT[hover]}%
+        </p>
+      ) : null}
     </div>
   );
 }

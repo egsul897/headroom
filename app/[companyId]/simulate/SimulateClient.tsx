@@ -332,20 +332,17 @@ function DebtPanel({
         <DebtBasketBoard
           data={data}
           position={position}
-          solverContext={solverContext}
-          securedAmount={securedAmt}
-          unsecuredAmount={unsecuredAmt}
-          onSecuredAmount={(amount) => {
-            setSecuredAmt(amount);
-            setFocusSecured(true);
-            setSimAmt(amount);
-            setSimSecured(true);
+          initial={{
+            GENERAL: { secured: simSecured ? simAmt : 80, unsecured: simSecured ? 40 : simAmt },
+            mode: "combined",
           }}
-          onUnsecuredAmount={(amount) => {
-            setUnsecuredAmt(amount);
-            setFocusSecured(false);
-            setSimAmt(amount);
-            setSimSecured(false);
+          onCombined={(secured, unsecured) => {
+            const focusSecuredNext = secured > 0 || unsecured === 0;
+            setFocusSecured(focusSecuredNext);
+            setSecuredAmt(secured);
+            setUnsecuredAmt(unsecured);
+            setSimAmt(focusSecuredNext ? secured : unsecured);
+            setSimSecured(focusSecuredNext);
           }}
         />
       </Card>

@@ -469,6 +469,54 @@ export async function analyzeCustomerDocument(params: {
       /* non-blocking */
     }
 
+    // Deterministic agreement pipeline (text → section tree → roles/xrefs → checklist → baskets/compute).
+    // Persisted ONLY to customer_* tables scoped by (companyId, documentId) — never the shared kf_* corpus.
+    // Tables come from migrations (no DDL here). A failure is recorded as a FAILED run (status + error) and
+    // surfaced in metadata.agreementPipeline; it never fails the upload. Disable with CLF_AGREEMENT_PIPELINE=0.
+    let agreementPipeline: Record<string, unknown> | null = null;
+    if (process.env.CLF_AGREEMENT_PIPELINE !== "0") {
+      const { runAgreementPipeline, persistCustomerAgreementRun } = await import(
+        "../../covenant-learning-factory/pipeline/agreement-pipeline"
+      );
+      const { extractTextAsync } = await import("../../knowledge-factory/pipeline/text");
+      let summary: { stats: unknown; families: unknown } | null = null;
+      let agreementText: string | null = null;
+      const outcome = await persistCustomerAgreementRun(
+        prisma as never,
+        { companyId: params.companyId, documentId: params.documentId, sourceId },
+        async () => {
+          const text = (await extractTextAsync(params.bytes, params.filename)).text;
+          agreementText = text;
+          const r = runAgreementPipeline({ sourceId, text });
+          summary = { stats: r.stats, families: r.families };
+          return r;
+        },
+      );
+      agreementPipeline = { ...outcome, ...(outcome.status === "OK" && summary ? summary : {}) };
+      // Dashboard EBITDA box (definition × company filings × CFO confirmations), persisted to customer_ebitda_boxes.
+      // Runs after the upload response (non-blocking; SEC fetches never delay or fail the upload). Disable with
+      // CLF_EBITDA_BOX=0. The box is read back from GET /api/companies/:companyId/documents/:documentId/ebitda.
+      if (outcome.status === "OK" && agreementText && process.env.CLF_EBITDA_BOX !== "0") {
+        const known = { text: agreementText as string, sourceId };
+        const { runAfterResponse } = await import("../../covenant-learning-factory/pipeline/after-response");
+        const scope = { companyId: params.companyId, documentId: params.documentId };
+        let generation: string | null = null;
+        runAfterResponse(async () => {
+          const [{ boxGeneration }, { refreshEbitdaBox, ebitdaBoxStore }] = await Promise.all([import("../../covenant-learning-factory/pipeline/ebitda-box"), import("../../covenant-learning-factory/pipeline/ebitda-box-server")]);
+          generation = await boxGeneration(ebitdaBoxStore(), scope);
+          // Load/compute failures (SEC outage, storage) are recorded as FAILED inside refreshEbitdaBox.
+          if (!(await refreshEbitdaBox(scope.companyId, scope.documentId, known))) throw new Error("agreement text not available for this document");
+        }, async (err) => {
+          // Persisted as a FAILED box (locked, and only if no newer box was saved since this run started) so GET /ebitda
+          // surfaces the reason. Best effort; never throws into the upload.
+          console.warn(`[ebitda-box] ${scope.companyId}/${scope.documentId}: ${err instanceof Error ? err.message : String(err)}`);
+          const [{ recordEbitdaBoxFailure }, { ebitdaBoxStore }] = await Promise.all([import("../../covenant-learning-factory/pipeline/ebitda-box"), import("../../covenant-learning-factory/pipeline/ebitda-box-server")]);
+          await recordEbitdaBoxFailure(ebitdaBoxStore(), scope, err, { generation });
+        });
+        agreementPipeline = { ...agreementPipeline, ebitdaBox: { status: "SCHEDULED" } };
+      }
+    }
+
     // Preserve counsel decisions across reanalysis; flag conflicts when AI text drifts.
     const priorRow = await prisma.knowledgeSource.findUnique({ where: { sourceId } });
     const priorMeta =
@@ -498,6 +546,7 @@ export async function analyzeCustomerDocument(params: {
         },
         covenantSummary: merged.summary,
         amendmentPackage: amendment,
+        agreementPipeline,
         storageProvider: stored.provider,
         processingStatus: "ANALYZED",
         promotedToLegalTruth: 0,

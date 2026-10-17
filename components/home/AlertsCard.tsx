@@ -4,10 +4,15 @@ import { EmptyCopy, RegionCard } from "./RegionCard";
 
 const NOTE = "The alert line on the card is already shown. This panel did not load a source, a clause, or a history.";
 
-export function AlertsCard({ state = UNKNOWN_STATE }: { state?: AlertLoadState }) {
+export function AlertsCard({ state = UNKNOWN_STATE, viewAllHref = null }: { state?: AlertLoadState; viewAllHref?: string | null }) {
   const presented = presentAlerts(state);
   return (
-    <RegionCard region="alerts" eyebrow="Recent alerts" id="home-alerts">
+    <RegionCard
+      region="alerts"
+      eyebrow="Recent alerts"
+      id="home-alerts"
+      toolbar={viewAllHref && presented.kind === "VERIFIED_POPULATED" ? <a className="home-view-all" href={viewAllHref}>View all</a> : null}
+    >
       {presented.kind === "VERIFIED_POPULATED" ? (
         <div className="home-empty" data-load-kind="VERIFIED_POPULATED" data-slot="alerts">
           <p className="home-headline">Alerts</p>
