@@ -1,0 +1,150 @@
+/**
+ * Learn issuer-generalized capture rules from DEV only, accepted by leave-one-issuer-out validation on DEV.
+ *   npx tsx scripts/covenant-learning-factory/learning/learn-generalized.ts [--out-dir=DIR] [--min-issuers=2]
+ * Writes DIR/ruleset-generalized.json (accepted rules, MECHANICALLY_REPLAYED) and DIR/learn-report.json.
+ * HELDOUT sources are never read for seeding or acceptance (they are filtered out before anything is scored).
+ */
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { readSnapshot, splitFor, type DevManifest, type ScoreboardSourceInput } from "../../../lib/covenant-learning-factory/scoreboard";
+import {
+  DEFAULT_ACCEPTANCE,
+  DEFAULT_GENERALIZE_OPTIONS,
+  heldOutAcceptance,
+  issuerAliases,
+  fixtureSlug,
+  issuerKey,
+  rulesetOf,
+  synthesizeIssuerGeneralized,
+  type HeldOutRuleStats,
+  type SeedUnit,
+} from "../../../lib/covenant-learning-factory/learned-rules/issuer-generalize";
+import { scoreWithAttribution } from "../../../lib/covenant-learning-factory/learning/held-out-eval";
+import type { LearnedRule } from "../../../lib/covenant-learning-factory/learned-rules/types";
+
+const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
+const dir = "scripts/covenant-learning-factory/scoreboard";
+const outDir = resolve(arg("out-dir") ?? "scripts/covenant-learning-factory/learning");
+mkdirSync(outDir, { recursive: true });
+const manifest = JSON.parse(readFileSync(`${dir}/dev-manifest.json`, "utf8")) as DevManifest;
+const num = (n: string, d: number) => (arg(n) != null ? Number(arg(n)) : d);
+const opts = {
+  ...DEFAULT_GENERALIZE_OPTIONS,
+  minIssuers: num("min-issuers", DEFAULT_GENERALIZE_OPTIONS.minIssuers),
+  minTokens: num("min-tokens", DEFAULT_GENERALIZE_OPTIONS.minTokens),
+  maxTokens: num("max-tokens", DEFAULT_GENERALIZE_OPTIONS.maxTokens),
+  minContentWords: num("min-content", DEFAULT_GENERALIZE_OPTIONS.minContentWords),
+};
+const snap = readSnapshot(resolve(`${dir}/snapshot.json.gz`));
+const aliases = issuerAliases(manifest.devIssuerCiks ?? [], snap.sources.map((x) => fixtureSlug(x.source.sourceId)).filter((x): x is string => Boolean(x)));
+const dev: ScoreboardSourceInput[] = snap.sources.filter(
+  (i) => splitFor(i.source.sourceId, manifest, i.source.issuerCik) === "DEV" && !manifest.duplicates?.some((d) => d.sourceId === i.source.sourceId),
+);
+const log = (...a: unknown[]) => console.log(new Date().toISOString().slice(11, 19), ...a);
+log(`DEV sources ${dev.length}`);
+
+// 1. No-rules DEV score → the gaps to learn from.
+const none = rulesetOf([], 0);
+// --cache=FILE reuses the (deterministic) no-rules DEV scores between runs.
+const cache = arg("cache");
+type NR = ReturnType<typeof scoreWithAttribution>;
+const noRules: Map<string, NR> =
+  cache && existsSync(cache)
+    ? new Map(Object.entries(JSON.parse(readFileSync(cache, "utf8")) as Record<string, NR>))
+    : new Map(dev.map((i) => [i.source.sourceId, scoreWithAttribution(i, none, () => new Set())] as const));
+if (cache && !existsSync(cache)) writeFileSync(cache, JSON.stringify(Object.fromEntries(noRules)));
+if (process.argv.includes("--synth-only")) {
+  // fall through to synthesis statistics only (no held-out scoring)
+}
+const units: SeedUnit[] = [];
+for (const i of dev) {
+  const s = noRules.get(i.source.sourceId)!;
+  const issuer = issuerKey(i.source, aliases);
+  const gc = new Set(s.gapCandidateIds);
+  const gk = new Set(s.gapConditionIds);
+  for (const c of i.candidates) if (gc.has(c.candidateId) && c.excerpt) units.push({ sourceId: i.source.sourceId, issuer, itemId: c.candidateId, kind: "candidate", family: c.family ?? null, text: c.excerpt });
+  for (const c of i.conditions) if (gk.has(c.conditionId) && c.excerpt) units.push({ sourceId: i.source.sourceId, issuer, itemId: c.conditionId, kind: "condition", family: null, text: c.excerpt });
+}
+const noRulesTotal = [...noRules.values()].reduce((a, s) => a + s.total, 0);
+log(`no-rules DEV total ${noRulesTotal}; seed units (gaps) ${units.length} from ${new Set(units.map((u) => u.issuer)).size} issuers`);
+
+if (process.argv.includes("--synth-only")) {
+  const all = synthesizeIssuerGeneralized(units, opts);
+  console.log(JSON.stringify({ proposed: all.length, byIssuers: all.reduce((a: Record<number, number>, c) => ((a[c.issuers.length] = (a[c.issuers.length] ?? 0) + 1), a), {}) }));
+  for (const c of all.slice(0, 400)) console.log(c.issuers.join("+"), c.support.length, c.signature);
+  process.exit(0);
+}
+// Performance gate: a rule must scan the largest DEV document quickly (no catastrophic backtracking).
+const largest = [...dev].sort((a, b) => (b.documentText?.length ?? 0) - (a.documentText?.length ?? 0))[0]?.documentText ?? "";
+const slow = new Set<string>();
+const perfCheck = (rules: LearnedRule[]) => {
+  for (const r of rules) {
+    if (slow.has(r.ruleId)) continue;
+    const t = Date.now();
+    new RegExp(r.pattern, r.flags ?? "").test(largest);
+    if (Date.now() - t > 250) slow.add(r.ruleId);
+  }
+};
+// 2. Leave-one-issuer-out: rules from the other issuers, scored on the held-out issuer.
+const issuers = [...new Set(dev.map((i) => issuerKey(i.source, aliases)))].sort();
+const stats: Record<string, HeldOutRuleStats> = {};
+const folds: unknown[] = [];
+for (const g of issuers) {
+  const cands = synthesizeIssuerGeneralized(units.filter((u) => u.issuer !== g), opts);
+  perfCheck(cands.map((c) => c.rule));
+  const rules: LearnedRule[] = cands.filter((c) => !slow.has(c.rule.ruleId)).map((c) => ({ ...c.rule, state: "MECHANICALLY_REPLAYED" }));
+  const support = new Map(cands.map((c) => [c.rule.ruleId, new Set(c.support.map((u) => u.sourceId))] as const));
+  const rs = rulesetOf(rules, 1);
+  let withRules = 0;
+  let base = 0;
+  const foldRule: Record<string, { credited: number; unsupported: number; baskets: number }> = {};
+  for (const i of dev.filter((x) => issuerKey(x.source, aliases) === g)) {
+    const s = scoreWithAttribution(i, rs, (r) => support.get(r) ?? new Set());
+    withRules += s.total;
+    base += noRules.get(i.source.sourceId)!.total;
+    for (const [r, a] of Object.entries(s.perRule)) {
+      const f = (foldRule[r] ??= { credited: 0, unsupported: 0, baskets: 0 });
+      f.credited += a.credited; f.unsupported += a.unsupported; f.baskets += a.baskets;
+    }
+  }
+  for (const r of rules) {
+    const st = (stats[r.ruleId] ??= { credited: 0, unsupported: 0, baskets: 0, idle: 0, heldOutIssuers: 0 });
+    const f = foldRule[r.ruleId] ?? { credited: 0, unsupported: 0, baskets: 0 };
+    st.credited += f.credited; st.unsupported += f.unsupported; st.baskets += f.baskets;
+    st.idle += Math.max(0, f.baskets - f.credited);
+    st.heldOutIssuers += 1;
+  }
+  folds.push({ heldOutIssuer: g, rules: rules.length, noRules: base, withRules });
+  log(`fold ${g}: ${rules.length} rules; held-out errors ${base} → ${withRules}`);
+}
+
+// 3. Final rules from all DEV gaps; keep only those accepted on held-out issuers.
+const final = synthesizeIssuerGeneralized(units, opts);
+perfCheck(final.map((c) => c.rule));
+const decisions = final.map((c) => {
+  const d = slow.has(c.rule.ruleId) ? { accepted: false, reason: "regex too slow on the largest DEV document (>250 ms)" } : heldOutAcceptance(stats[c.rule.ruleId], DEFAULT_ACCEPTANCE);
+  return { ruleId: c.rule.ruleId, signature: c.signature, issuers: c.issuers, support: c.support.length, pattern: c.rule.pattern, stats: stats[c.rule.ruleId] ?? null, ...d };
+});
+const accepted: LearnedRule[] = final
+  .filter((c, k) => decisions[k]!.accepted)
+  .map((c) => {
+    const st = stats[c.rule.ruleId]!;
+    return {
+      ...c.rule,
+      state: "MECHANICALLY_REPLAYED" as const,
+      metrics: { errorsBefore: 0, errorsAfter: 0, sourcesReplayed: st.heldOutIssuers, goldenOk: true, adjudicationClass: "MECHANICAL_REPLAY" as const, heldoutFixed: st.credited, sourcesSpanned: c.rule.provenance.sourcesSpanned },
+    };
+  });
+const ruleset = rulesetOf(accepted, 3);
+// Diagnostic only (never loaded by default, never used for acceptance): every proposed rule, to measure transfer of the
+// generalization itself. Acceptance above is final before this file is ever scored.
+writeFileSync(
+  `${outDir}/proposed-diagnostic.json`,
+  JSON.stringify(rulesetOf(final.filter((c) => !slow.has(c.rule.ruleId)).map((c) => ({ ...c.rule, state: "MECHANICALLY_REPLAYED" as const })), 3), null, 2) + "\n",
+);
+writeFileSync(`${outDir}/ruleset-generalized.json`, JSON.stringify(ruleset, null, 2) + "\n");
+writeFileSync(
+  `${outDir}/learn-report.json`,
+  JSON.stringify({ options: opts, acceptance: DEFAULT_ACCEPTANCE, devSources: dev.length, issuers, seedUnits: units.length, noRulesDevTotal: noRulesTotal, folds, proposed: final.length, accepted: accepted.length, decisions }, null, 1) + "\n",
+);
+log(`proposed ${final.length}, accepted ${accepted.length} → ${outDir}/ruleset-generalized.json`);
