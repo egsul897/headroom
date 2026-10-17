@@ -69,8 +69,14 @@ describe("compound clause references bind the cap", () => {
   it("'this clause (1)(l)' binds (l) and its sub-parts (no split at the inner label)", () => {
     const o = optimizeConsolidatedEbitda("Consolidated EBITDA", L("in the aggregate $5,000,000"), fin(X));
     const l = o.addBacks.find((x) => x.label === "(l)")!;
-    expect(l.cap?.amount).toBe(String(5 * M));
-    expect(Number(l.claimed)).toBeLessThanOrEqual(5 * M);
+    // The cap binds (l) (no split at the inner label). It also names clause (1)(q), which is not in this definition, so
+    // the room left for (l) cannot be known: capped by an undetermined amount, never uncapped and never the full $5M
+    // (grok/ebitda-cap-binding: an unresolved reference makes the cap capped-unknown).
+    expect(l.cap).not.toBeNull();
+    expect(l.cap?.amount).toBeNull();
+    expect(l.cap?.note ?? l.note).toMatch(/unresolved/);
+    expect(l.claimed).toBe("0");
+    expect(l.status).toBe("NEEDS_INPUT");
     expect(o.addBacks.some((x) => x.label === "(q)")).toBe(false);
   });
   it("an indeterminate cap is never unlimited: claim 0, NEEDS_INPUT", () => {

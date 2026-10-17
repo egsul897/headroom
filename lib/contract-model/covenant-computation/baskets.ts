@@ -7,6 +7,7 @@
  * unless the clause states that conversion (it does not, here).
  */
 
+import { nonUsdCurrency } from "./currency";
 import { xbrlInUnit } from "@/lib/covenant-learning-factory/xbrl/bind";
 import { FORMULA_TAXONOMY } from "@/lib/basket-formula-corpus";
 import type { FormulaKind } from "@/lib/basket-formula-corpus";
@@ -25,6 +26,7 @@ import { canonicalOf, namesEqual } from "./ratios";
 import { clauseRatioTerm, clauseRatioThreshold } from "./ratio-terms";
 export { clauseRatioTerm, clauseRatioThreshold } from "./ratio-terms";
 import { dollarAmountIsMillions, dollarToken, millionsToUsd, norm } from "./text";
+import { splitSiblingClauses } from "./sibling-split";
 
 const FORMULA_BY_CATEGORY: Record<Exclude<BasketCategory, "UNKNOWN">, FormulaKind> = {
   FIXED_DOLLAR: "FIXED_DOLLAR_CEILING",
@@ -48,7 +50,20 @@ export function evaluateBaskets(
   ratios: readonly ComputedRatio[],
   rules?: LearnedRuleSet,
 ): ComputedBasket[] {
-  return pkg.baskets.map((clause) => evaluateBasket(pkg, clause, metrics, ratios, rules));
+  return pkg.baskets.flatMap((clause) => {
+    // A span carrying several sibling clauses is evaluated clause by clause, so no clause takes a neighbour's figure.
+    const parts = splitSiblingClauses(clause.operativeText);
+    if (!parts) return [evaluateBasket(pkg, clause, metrics, ratios, rules)];
+    const others = pkg.baskets.filter((b) => b !== clause).map((b) => norm(b.operativeText));
+    const relabel = (ref: string, label: string) => (/\([^()]{1,6}\)\s*$/.test(ref) ? ref.replace(/\([^()]{1,6}\)\s*$/, label) : `${ref}${label}`);
+    const slug = (label: string) => label.replace(/[^A-Za-z0-9]/g, "").toLowerCase();
+    return parts
+      // A later sibling that already has its own basket clause is not evaluated twice.
+      .filter((p, k) => k === 0 || !others.some((o) => o.startsWith(norm(p.text).slice(0, 60)) || norm(p.text).startsWith(o.slice(0, 60))))
+      .map((p, k) => evaluateBasket(pkg, k === 0
+        ? { ...clause, operativeText: p.text }
+        : { ...clause, operativeText: p.text, stableKey: `${clause.stableKey}-sib-${slug(p.label)}`, sectionRef: relabel(clause.sectionRef, p.label) }, metrics, ratios, rules));
+  });
 }
 
 export function evaluateBasket(
@@ -113,8 +128,18 @@ export function evaluateBasket(
                         note: "Reclassification is named. No election record is bound, so no amount is transferred.",
                       }
                     : numericButOpen(clause);
+  const fx = nonUsdCurrency(clause.operativeText);
+  if (fx && (partial.capCanonical != null || partial.capCurrency === "USD")) {
+    return present(clause, {
+      ...base,
+      ...partial,
+      ...capShell("NEEDS_INPUT", "NONE", null, null, [`currency conversion ${fx} to USD (sourced rate)`], null),
+      note: `The cap is stated in ${fx}, not US dollars. It is held until it is converted at a sourced rate; the figure is never read as USD.`,
+    });
+  }
   return present(clause, { ...base, ...partial });
 }
+
 
 /**
  * "The Company will not permit, as of the end of any fiscal quarter, X to have an aggregate of over 25% of Total
