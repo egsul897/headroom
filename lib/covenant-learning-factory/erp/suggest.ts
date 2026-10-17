@@ -98,6 +98,7 @@ export function suggestLtm(admitted: readonly AdmittedErpFact[], reconciliation:
   const s = sumOverWindow(admitted, metric, w.start, w.end);
   if (!s.ok) return none("NEEDS_INPUT", s.reason);
   const anchors = reconciliation.filter((r) => r.status === "RECONCILED" && overlaps(r.periodStart, r.periodEnd, w.start, w.end));
+  if (confirmable && s.value <= 0n) return none("NEEDS_INPUT", `ERP LTM ${metric} is ${s.value}; a non-positive ${metric} is not a confirmable base (and cannot bound add-backs)`);
   if (confirmable) {
     // A confirmable figure needs a reconciled anchor: at least one filed flow overlapping the window that the same ERP
     // ledger matched. Without one, nothing ties this ERP's units, scope or sign to the filer's.
@@ -108,7 +109,7 @@ export function suggestLtm(admitted: readonly AdmittedErpFact[], reconciliation:
     for (const r of anchors) {
       const days = BigInt(epochDay(r.periodEnd)! - epochDay(r.periodStart)! + 1);
       const scaled = (abs(BigInt(r.filing.value)) * ltmDays) / days;
-      if (s.value > 0n && scaled > s.value * REVENUE_RATIO_LIMIT) return none("NEEDS_INPUT", `ratio check failed: filed ${r.metric} ${r.periodStart}..${r.periodEnd} (${scaled} over 12 months) exceeds ${REVENUE_RATIO_LIMIT}x the ERP LTM ${metric} (${s.value})`);
+      if (scaled > s.value * REVENUE_RATIO_LIMIT) return none("NEEDS_INPUT", `ratio check failed: filed ${r.metric} ${r.periodStart}..${r.periodEnd} (${scaled} over 12 months) exceeds ${REVENUE_RATIO_LIMIT}x the ERP LTM ${metric} (${s.value})`);
     }
   }
   const rec = anchors.length > 0;

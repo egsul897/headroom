@@ -137,6 +137,13 @@ describe("LTM suggestions", () => {
     expect(e2.reconciliation[0]?.status).toBe("RECONCILED");
     expect(e2.suggestions.find((s) => s.metric === "revenue")?.status).toBe("NEEDS_INPUT");
   });
+  it("(6) ERP LTM revenue <= 0 → NEEDS_INPUT, never a suggestion", () => {
+    for (const amt of [0, -25 * M]) {
+      const r = ev([...monthly("revenue", amt), ...monthly("netIncome", -1 * M)], anchored).suggestions.find((s) => s.metric === "revenue");
+      expect(r).toMatchObject({ status: "NEEDS_INPUT", value: null, confirmable: false });
+      expect(r?.reason).toMatch(/non-positive/);
+    }
+  });
   it("(1) ratio check: a reconciled filed flow above 10x the ERP revenue (12-month scaled) → NEEDS_INPUT", () => {
     // revenue accounts read at 1/1000 (thousands as dollars) while net income reconciles: $300k revenue vs $12M NI.
     const e = ev([...monthly("revenue", 25_000), ...monthly("netIncome", -1 * M)], anchored);
@@ -200,6 +207,11 @@ describe("EBITDA box integration", () => {
     const x = a(ERP());
     expect((await confirmEbitdaItem(fakeStore(), scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(290 * M), source: "FY audited statements", confirmedBy: "cfo" })).ok).toBe(true);
     expect(await confirmEbitdaItem(fakeStore(), scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(3001 * M), source: "FY audited statements", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "OUT_OF_RANGE" });
+  });
+  it("(6) a BASE_METRIC revenue of 0 is NEEDS_INPUT (422) and writes nothing", async () => {
+    const db = fakeStore();
+    expect(await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: "0", source: "doc", confirmedBy: "cfo" })).toMatchObject({ ok: false, status: 422, code: "NEEDS_INPUT" });
+    expect(db.rows).toHaveLength(0);
   });
   it("refused: filings already report revenue; no ERP; unreconciled ERP; non-revenue metric; nothing persisted", async () => {
     const db = fakeStore();

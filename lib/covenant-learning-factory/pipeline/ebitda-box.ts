@@ -242,7 +242,7 @@ export async function loadConfirmations(db: EbitdaBoxStore, scope: { companyId: 
 
 export type ConfirmOutcome =
   | { ok: true; box: EbitdaBox; gain: CfoGain["gain"]; boxId: string; replayed?: boolean }
-  | { ok: false; status: 400 | 404 | 409 | 422; error: string; code?: "NEEDS_BASE" | "IDEMPOTENCY_CONFLICT" | "OUT_OF_RANGE" | "FILING_PRESENT" | "NEEDS_ERP_EVIDENCE" | "ERP_EVIDENCE_MISMATCH" };
+  | { ok: false; status: 400 | 404 | 409 | 422; error: string; code?: "NEEDS_BASE" | "IDEMPOTENCY_CONFLICT" | "OUT_OF_RANGE" | "FILING_PRESENT" | "NEEDS_ERP_EVIDENCE" | "ERP_EVIDENCE_MISMATCH" | "NEEDS_INPUT" };
 
 /** Hard ceiling for any confirmed amount (USD); also bounded by 10× the reported base EBITDA when that is known. */
 export const MAX_CONFIRMED_USD = 10n ** 12n;
@@ -370,6 +370,7 @@ function confirmedRevenue(cs: readonly ConfirmationView[]): bigint | null {
  */
 function checkBaseMetric(boxArgs: BoxArgs, base: AgreementPipelineResult, metric: NonNullable<ReturnType<typeof metricOfInputKey>>, value: string, source: string): ConfirmOutcome | null {
   const fin = boxArgs.financials!;
+  if (BigInt(value) <= 0n) return { ok: false, status: 422, code: "NEEDS_INPUT", error: `${metric} must be positive; a zero ${metric} is not a confirmable base` };
   if (fin.values.some((v) => v.metric === metric && /^-?\d+$/.test(v.value))) return { ok: false, status: 422, code: "FILING_PRESENT", error: `the filings report ${metric} for this period; ERP figures are reconciled against filings, never substituted for them` };
   const opt = (base.xbrl as Xbrl | null)?.ebitda;
   const ev = erpEvidenceFor(boxArgs, { periodEnd: opt?.periodEnd ?? fin.anchor ?? null, base: opt?.base ?? null });
