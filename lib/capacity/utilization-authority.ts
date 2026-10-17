@@ -209,9 +209,33 @@ export function evaluateCompletenessForRemainingClaim(args: {
     };
   }
   const production = productionAuthorityOk(cert, args.trustedIssuerAuth);
+  if (production.ok) {
+    return {
+      supportsRemainingClaim: true,
+      productionAuthoritative: true,
+      demoSynthetic: false,
+      blockers: [],
+    };
+  }
+  if (args.allowSyntheticRemaining === true) {
+    // Demo / hypothetical context (allowSyntheticRemaining is never set by
+    // production loaders): an APPROVED, AUTHENTIC certificate supports the
+    // hypothetical remaining claim even when production authority is not
+    // established — AUTHENTIC evidence can never do worse in the same
+    // context than SYNTHETIC_LABELED evidence, which supports the claim
+    // above. Production authority stays refused; the production blockers
+    // are not publication blockers here, they are the reason
+    // productionAuthoritative is false.
+    return {
+      supportsRemainingClaim: true,
+      productionAuthoritative: false,
+      demoSynthetic: false,
+      blockers: [],
+    };
+  }
   return {
-    supportsRemainingClaim: production.ok,
-    productionAuthoritative: production.ok,
+    supportsRemainingClaim: false,
+    productionAuthoritative: false,
     demoSynthetic: false,
     blockers: production.blockers,
   };
