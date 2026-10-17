@@ -115,7 +115,7 @@ export function segments(body: string): Array<{ label: string; text: string; lea
   const hits: Array<{ at: number; label: string }> = [];
   for (const m of body.matchAll(ENUM)) {
     const before = body.slice(Math.max(0, m.index! - 60), m.index!);
-    if (/(?:\b(?:clauses?|Sections?|Articles?|paragraphs?)\s*(?:\d[\d.]*)?\s*(?:\([^)]{1,5}\)\s*(?:,|and|or|through|to)?\s*)*|\d)$/i.test(before)) continue;
+    if (/(?:\b(?:clauses?|Sections?|Articles?|paragraphs?)\s*(?:\d[\d.]*)?\s*(?:\([^)]{1,5}\)\s*(?:,|and|or|through|to|[–—-]|(?:and|or)\s+(?:sub-?)?clauses?)?\s*)*|\d)$/i.test(before)) continue;
     hits.push({ at: m.index!, label: m[0] });
   }
   const lead = body.slice(0, hits[0]?.at ?? body.length);
