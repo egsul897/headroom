@@ -28,9 +28,15 @@ export async function documentText(companyId: string, documentId: string): Promi
   return { text, sourceId: row?.sourceId ?? documentId };
 }
 
-/** ERP period facts for the company from the registered source (none until ERP-1 registers one; never synthesized). */
+/** ERP period facts for the company from the registered source (none until ERP-1 registers one; never synthesized).
+ *  ERP is evidence only, so an ERP outage must not fail the box computed from filings: the box is built without ERP
+ *  evidence (and a BASE_METRIC confirm then answers NEEDS_ERP_EVIDENCE). Detail is logged server-side only. */
 export async function companyErpFacts(companyId: string): Promise<BoxArgs["erp"]> {
-  const facts = await erpEvidenceSource().listPeriodFacts(companyId);
+  let facts: Awaited<ReturnType<ReturnType<typeof erpEvidenceSource>["listPeriodFacts"]>>;
+  try { facts = await erpEvidenceSource().listPeriodFacts(companyId); } catch (err) {
+    console.error("[ebitda-box] ERP evidence unavailable", { companyId, detail: err instanceof Error ? err.message : String(err) });
+    return null;
+  }
   return facts.length ? { companyId, facts } : null;
 }
 

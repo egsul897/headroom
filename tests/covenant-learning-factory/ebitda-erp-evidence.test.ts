@@ -78,6 +78,11 @@ describe("exact window sums", () => {
     expect(sumOverWindow(adm([...monthly("revenue", 20 * M), q(String(60 * M))]), "revenue", "2025-07-01", "2026-06-30")).toMatchObject({ ok: true, value: BigInt(240 * M) });
     expect(sumOverWindow(adm([...monthly("revenue", 20 * M), q(String(61 * M))]), "revenue", "2025-07-01", "2026-06-30")).toMatchObject({ ok: false, code: "AMBIGUOUS_OVERLAP" });
   });
+  it("pathological overlaps answer AMBIGUOUS within a bounded search", () => {
+    const days: ErpEvidenceFact[] = [];
+    for (let d = 1; d <= 28; d++) for (const len of [0, 1]) if (d + len <= 31) days.push(fact({ externalId: `d${d}-${len}`, periodStart: `2025-07-${String(d).padStart(2, "0")}`, periodEnd: `2025-07-${String(d + len).padStart(2, "0")}`, amount: String(d) }));
+    expect(sumOverWindow(adm(days), "revenue", "2025-07-01", "2025-07-31")).toMatchObject({ ok: false });
+  });
   it("never adds two connections together", () => {
     const s = sumOverWindow(adm([...monthly("revenue", 20 * M), ...monthly("revenue", 20 * M, "4000", { connectionId: "conn2" })]), "revenue", "2025-07-01", "2026-06-30");
     expect(s).toMatchObject({ ok: false, code: "MULTIPLE_CONNECTIONS" });
@@ -189,6 +194,8 @@ describe("EBITDA box integration", () => {
     expect((await companyErpFacts(C))?.facts).toHaveLength(12);
     const e = erpEvidenceForBox({ companyId: C, facts: monthly("revenue", 25 * M, "4000", { companyId: "other" }), financials: fin, periodEnd: "2026-06-30", baseNeedsEvidence: false });
     expect(e.rejectedCount).toBe(12);
+    registerErpEvidenceSource({ listPeriodFacts: async () => { throw new Error("NetSuite 503"); } });
+    expect(await companyErpFacts(C)).toBeNull(); // ERP outage → no evidence, box still computed from filings
     expect(e.suggestions.find((s) => s.metric === "revenue")?.status).toBe("NEEDS_INPUT");
   });
 });

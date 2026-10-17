@@ -20,6 +20,8 @@ export type WindowSum =
   | { ok: false; code: "NO_ERP_FACTS" | "MULTIPLE_CONNECTIONS" | "DO_NOT_TILE" | "AMBIGUOUS_OVERLAP"; reason: string };
 
 const MAX_TILINGS = 256;
+/** Search budget (bucket visits) so pathological overlaps answer AMBIGUOUS instead of exploring exponentially. */
+const MAX_STEPS = 20_000;
 
 /** Exact sum of `metric` over [startIso, endIso] (inclusive) from admitted facts, or why it cannot be formed. */
 export function sumOverWindow(facts: readonly AdmittedErpFact[], metric: ErpEvidenceMetric, startIso: string, endIso: string): WindowSum {
@@ -39,13 +41,14 @@ export function sumOverWindow(facts: readonly AdmittedErpFact[], metric: ErpEvid
   const byStart = new Map<number, Array<{ s: number; e: number; sum: bigint; refs: string[] }>>();
   for (const b of buckets.values()) byStart.set(b.s, [...(byStart.get(b.s) ?? []), b]);
   const tilings: Array<{ sum: bigint; refs: string[] }> = [];
-  let truncated = false;
+  let truncated = false, steps = 0;
   const walk = (at: number, sum: bigint, refs: string[]) => {
-    if (tilings.length >= MAX_TILINGS) { truncated = true; return; }
+    if (tilings.length >= MAX_TILINGS || ++steps > MAX_STEPS) { truncated = true; return; }
     if (at === end + 1) { tilings.push({ sum, refs }); return; }
     for (const b of (byStart.get(at) ?? []).sort((x, y) => y.e - x.e)) walk(b.e + 1, sum + b.sum, [...refs, ...b.refs]);
   };
   walk(start, 0n, []);
+  if (truncated) return { ok: false, code: "AMBIGUOUS_OVERLAP", reason: `too many overlapping ERP ${metric} periods to resolve ${startIso}..${endIso} exactly` };
   if (!tilings.length) {
     const covered = new Set<number>();
     for (const b of buckets.values()) for (let d = b.s; d <= b.e; d++) covered.add(d);
@@ -53,7 +56,7 @@ export function sumOverWindow(facts: readonly AdmittedErpFact[], metric: ErpEvid
     return { ok: false, code: "DO_NOT_TILE", reason: `ERP ${metric} periods do not cover ${startIso}..${endIso} contiguously${gap <= end ? ` (first uncovered day ${isoOfDay(gap)})` : ""}` };
   }
   const sums = new Set(tilings.map((t) => t.sum.toString()));
-  if (sums.size > 1 || truncated) return { ok: false, code: "AMBIGUOUS_OVERLAP", reason: `overlapping ERP ${metric} periods give different totals for ${startIso}..${endIso}` };
+  if (sums.size > 1) return { ok: false, code: "AMBIGUOUS_OVERLAP", reason: `overlapping ERP ${metric} periods give different totals for ${startIso}..${endIso}` };
   return { ok: true, value: tilings[0]!.sum, refs: [...new Set(tilings[0]!.refs)].sort(), provider: inside[0]!.fact.provider, connectionId: inside[0]!.fact.connectionId };
 }
 
