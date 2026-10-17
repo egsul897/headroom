@@ -88,8 +88,8 @@ describe("rule 171: counsel coverage", () => {
     });
     const res = await evaluateCounselCoverage(db, { companyId: "co-1", sourceId: "src-1" });
     expect(res.reviewComplete).toBe(true);
-    expect(upserts[0].notes).toContain("exception-based review");
-    expect(upserts[0].notes).toContain("not counsel-verified");
+    expect(upserts[0]?.notes).toContain("exception-based review");
+    expect(upserts[0]?.notes).toContain("not counsel-verified");
   });
 
   it("complete declaration + MODELED permissions -> SOLVER_NATIVE at the gate", async () => {

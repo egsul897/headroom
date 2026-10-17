@@ -115,6 +115,9 @@ function rulebookFromSlice(slice: VerticalSliceEvaluation): RulebookReadiness {
     executablePermissions: 0,
     provisionRows: slice.covenants.length,
     staleDiscoveredSummaries: 0,
+    exceptionItems: 0,
+    exceptionDecisions: 0,
+    reviewComplete: false,
     blockers: [
       "No counsel REVIEWED permissions — leaf evaluateProvision path only.",
       "Phase-3 certified executable IR not bound for this package.",

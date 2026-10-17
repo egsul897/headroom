@@ -88,6 +88,9 @@ function rulebookVeOnly(companyId: string, feedingCount: number): RulebookReadin
     executablePermissions: 0,
     provisionRows: feedingCount,
     staleDiscoveredSummaries: 0,
+    exceptionItems: 0,
+    exceptionDecisions: 0,
+    reviewComplete: false,
     blockers: [
       "No counsel REVIEWED permissions.",
       "VE fixed-dollar IR only — ratio/complex structures unsupported on this feed.",
