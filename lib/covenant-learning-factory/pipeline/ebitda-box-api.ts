@@ -9,7 +9,7 @@
 import { authorizeDecision } from "@/lib/capacity/identity/authorize-decision";
 import { verifyAndMintPrincipal, type IdentityCredentialHandle, type VerifiedServerPrincipal } from "@/lib/capacity/identity/provider-contract";
 import { gateWorkspaceAccess, type WorkspaceCompanyIdentityLoader } from "@/lib/customer-workflow/workspace-access";
-import { confirmEbitdaItem, latestEbitdaBox, type ConfirmationKind, type EbitdaBox, type EbitdaBoxStore, type PipelineArgs } from "./ebitda-box";
+import { confirmEbitdaItem, latestEbitdaBox, SecUnavailableError, type ConfirmationKind, type EbitdaBox, type EbitdaBoxStore, type PipelineArgs } from "./ebitda-box";
 
 type Json = { status: number; body: unknown };
 const NOT_FOUND: Json = { status: 404, body: { error: "not found" } };
@@ -75,7 +75,11 @@ export async function handleEbitdaConfirm(deps: EbitdaApiDeps, req: Request, p: 
   const v = body.value;
   const value = typeof v === "number" ? (Number.isSafeInteger(v) ? String(v) : "x") : typeof v === "string" ? v : v == null ? "" : "x";
   const idem = req.headers.get("idempotency-key") ?? (typeof body.idempotencyKey === "string" ? body.idempotencyKey : null);
-  const args = await deps.pipelineArgsFor(p.companyId, p.documentId);
+  let args: PipelineArgs | null;
+  try { args = await deps.pipelineArgsFor(p.companyId, p.documentId); } catch (err) {
+    if (err instanceof SecUnavailableError) return { status: 503, body: { error: `SEC data unavailable: ${err.message}`, code: "SEC_UNAVAILABLE" } };
+    throw err;
+  }
   if (!args) return { status: 404, body: { error: "document not found for this company" } };
   const out = await confirmEbitdaItem(deps.store(), p, args, {
     inputKey: typeof body.inputKey === "string" ? body.inputKey : "",
