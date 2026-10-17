@@ -8,7 +8,7 @@
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { deriveSeedProvenance, readSnapshot, rulesetIdentity, snapshotIdentitySha256, sourceInputSha256 } from "../../../lib/covenant-learning-factory/scoreboard";
+import { deriveSeedProvenance, serializeSeedProvenance, readSnapshot, rulesetIdentity, snapshotIdentitySha256, sourceInputSha256 } from "../../../lib/covenant-learning-factory/scoreboard";
 import { normalizeLearnedRuleSet } from "../../../lib/covenant-learning-factory/learned-rules/types";
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
@@ -20,5 +20,5 @@ const rules = normalizeLearnedRuleSet(JSON.parse(readFileSync(resolve(rulesPath)
 const snap = readSnapshot(resolve(snapshotPath));
 const snapshotSha256 = snapshotIdentitySha256(snap.sources.map((s) => [s.source.sourceId, sourceInputSha256(s)] as const));
 const prov = deriveSeedProvenance(rules, snap.sources, { rulesetSha256: rulesetIdentity(rules).rulesetSha256, snapshotSha256 });
-writeFileSync(resolve(out), JSON.stringify(prov, null, 1) + "\n");
+writeFileSync(resolve(out), serializeSeedProvenance(prov));
 console.log(JSON.stringify({ out, rulesetSha256: prov.rulesetSha256, snapshotSha256, ...prov.summary }));

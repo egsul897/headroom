@@ -50,6 +50,8 @@ import {
   readSnapshot,
   scoreSource,
   selfCreditGuard,
+  deriveSeedProvenance,
+  verifyCommittedProvenance,
   provenanceSha256,
   type SeedProvenanceFile,
   snapshotIdentitySha256,
@@ -114,7 +116,8 @@ function scorerConfig(): string {
   const tree = process.env.CLF_SCOREBOARD_TREE === "0" ? "off" : "on";
   const mode = process.env.CLF_SCOREBOARD_TREE_MODE === "override" ? "override" : "agree";
   // The self-credit guard is always on and changes results, so it is part of the evaluation identity.
-  return (tree === "off" ? "tree=off" : `tree=on;mode=${mode}`) + ";selfCredit=guard-v1";
+  // guard-v2: verified (re-derived) provenance, identity completeness, same-issuer refusal.
+  return (tree === "off" ? "tree=off" : `tree=on;mode=${mode}`) + ";selfCredit=guard-v2";
 }
 
 function printSummary(report: ScoreboardReport): void {
@@ -186,15 +189,29 @@ async function main(): Promise<void> {
   const perSource: SourceScore[] = [];
   let shardInfo: ShardInfo | null = null;
   const provPath = resolve(argStr("seed-provenance") ?? "scripts/covenant-learning-factory/scoreboard/rule-seed-provenance.json");
-  const provenance = existsSync(provPath) ? (JSON.parse(readFileSync(provPath, "utf8")) as SeedProvenanceFile) : null;
+  // Raw text only: the committed file is never trusted as data. Snapshot mode re-derives provenance and accepts the
+  // file only when it is byte-identical to the re-derivation (tampered / stale / corrupt → fail closed, reported).
+  const provText = existsSync(provPath) ? readFileSync(provPath, "utf8") : null;
+  let provenance: SeedProvenanceFile | null = null;
+  let provError: string | null = null;
   const rulesetSha = rulesetIdentity(rules).rulesetSha256;
   // Neon mode streams sources, so there is no whole-input identity to bind provenance to: the guard fails closed there.
-  let guard = selfCreditGuard(rules, provenance, { rulesetSha256: rulesetSha, snapshotSha256: null });
+  let guard = selfCreditGuard(rules, null, { rulesetSha256: rulesetSha, snapshotSha256: null, unboundReason: "neon mode: no whole-input identity to bind seed provenance to" });
   const scoreOpts = () => ({ guard, noRules: true });
   if (snapshotPath) {
     const snap = readSnapshot(resolve(snapshotPath));
     const fullSnapshotSha = snapshotIdentitySha256(snap.sources.map((input) => [input.source.sourceId, sourceInputSha256(input)] as const));
-    guard = selfCreditGuard(rules, provenance, { rulesetSha256: rulesetSha, snapshotSha256: fullSnapshotSha });
+    const derived = deriveSeedProvenance(rules, snap.sources, { rulesetSha256: rulesetSha, snapshotSha256: fullSnapshotSha });
+    const verified = verifyCommittedProvenance(provText, derived);
+    provenance = verified.provenance;
+    provError = verified.unboundReason;
+    if (provError) console.error(`ERROR: seed provenance unusable (${provError}); every learned capture rule counts as NO_PROVENANCE (fail closed). The no-rules score is still reported.`);
+    guard = selfCreditGuard(rules, provenance, {
+      rulesetSha256: rulesetSha,
+      snapshotSha256: fullSnapshotSha,
+      unboundReason: provError,
+      knownSources: new Map(snap.sources.map((i) => [i.source.sourceId, i.source] as const)),
+    });
     // --shard=i/n: score only sources with index % n === i (parallel offline replay; merge reports after).
     const shard = argStr("shard");
     const [si, sn] = shard ? shard.split("/").map(Number) : [0, 1];
@@ -258,6 +275,8 @@ async function main(): Promise<void> {
   );
   const out = argStr("write-report");
   if (out) writeFileSync(out, JSON.stringify(report, null, 2) + "\n");
+  // Unusable committed provenance in snapshot mode is an error (after everything, including NO-RULES, was printed).
+  if (provError) process.exitCode = 4;
 
   const baselinePath = argStr("baseline");
   if (baselinePath) {

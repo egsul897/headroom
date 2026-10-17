@@ -8,11 +8,13 @@ import { describe, expect, it } from "vitest";
 import {
   aggregate,
   CREDIT_CROSS_ISSUER,
-  CREDIT_SAME_ISSUER_OTHER_DOC,
   CREDIT_ISSUER_UNKNOWN,
   deriveSeedProvenance,
   REFUSED_NO_PROVENANCE,
+  REFUSED_SAME_ISSUER,
   REFUSED_SELF_SEEDED,
+  serializeSeedProvenance,
+  verifyCommittedProvenance,
   scoreSource,
   selfCreditGuard,
   type DevManifest,
@@ -25,9 +27,9 @@ const CLAUSE =
   "Holdings may make Restricted Payments to its equity holders in an aggregate amount not to exceed $7,500,000 in any fiscal year, so long as the proceeds are applied within ninety days.";
 const DOC = `ARTICLE IX MISCELLANEOUS\n\nSection 9.17 Tax Distributions. ${CLAUSE}\n\nSection 9.18 Counterparts. This Agreement may be executed in counterparts.`;
 
-function input(sourceId: string, contentSha256: string, withCandidate = true, opts: { issuerCik?: string; excerpt?: string; doc?: string } = {}): ScoreboardSourceInput {
+function input(sourceId: string, contentSha256: string, withCandidate = true, opts: { issuerCik?: string; ticker?: string; excerpt?: string; doc?: string } = {}): ScoreboardSourceInput {
   return {
-    source: { sourceId, contentSha256, issuerCik: opts.issuerCik ?? null } as ScoreboardSourceInput["source"],
+    source: { sourceId, contentSha256, issuerCik: opts.issuerCik ?? null, ticker: opts.ticker ?? null } as ScoreboardSourceInput["source"],
     documentText: opts.doc ?? DOC,
     candidates: withCandidate ? [{ candidateId: `${sourceId}#c1`, sourceId, family: "RESTRICTED_PAYMENTS", sectionRef: null, excerpt: opts.excerpt ?? CLAUSE }] : [],
     definitions: [],
@@ -82,6 +84,68 @@ describe("scoreboard self-credit guard", () => {
     expect(p.rules["lr:test-seed"]!.sourceIds).toEqual(["edgar:a"]);
   });
 
+  it("B2: recorded packageKeys that name no scored source make the rule incomplete (no credit anywhere)", () => {
+    const r = ruleSet(SEED_NOTE, { packageKeys: ["clf-sweep:edgar:z", "clf-sweep:edgar:missing"] });
+    const p = deriveSeedProvenance(r, [input("edgar:a", "sha-a"), input("edgar:z", "sha-z")], ids);
+    expect(p.rules["lr:test-seed"]).toMatchObject({ basis: "RECORDED_PACKAGE_KEYS", complete: false, sourceIds: ["edgar:z"], unresolved: ["edgar:missing"] });
+    const g = selfCreditGuard(r, p, ids);
+    expect(g.refusal({ stableKey: "learned-lr:test-seed" }, { sourceId: "edgar:a" })).toBe(REFUSED_NO_PROVENANCE);
+  });
+
+  it("completeness is an identity check: two matches inside ONE document do not stand in for a second cluster member", () => {
+    const two = { ...input("edgar:a", "sha-a"), candidates: [0, 1].map((k) => ({ candidateId: `edgar:a#c${k}`, sourceId: "edgar:a", family: "RESTRICTED_PAYMENTS", sectionRef: null, excerpt: CLAUSE })) } as ScoreboardSourceInput;
+    const r = ruleSet('cluster size 2; seed="Holdings may make Restricted Payments to its equity holders in a"');
+    const p = deriveSeedProvenance(r, [two], ids);
+    expect(p.rules["lr:test-seed"]!.items).toHaveLength(2);
+    expect(p.rules["lr:test-seed"]).toMatchObject({ requiredDocuments: 2, sourceIds: ["edgar:a"], complete: false });
+    const r2 = ruleSet('cluster size 2; sourcesSpanned=1; seed="Holdings may make Restricted Payments to its equity holders in a"');
+    expect(deriveSeedProvenance(r2, [two], ids).rules["lr:test-seed"]).toMatchObject({ requiredDocuments: 1, complete: true });
+  });
+
+  it("falls back to the document text when no precedent item starts with the seed text", () => {
+    const noItem = input("edgar:d", "sha-d", false);
+    const p = seededIn(noItem, input("edgar:b", "sha-b", false, { doc: OTHER_DOC }));
+    expect(p.rules["lr:test-seed"]).toMatchObject({ basis: "EXACT_SEED_TEXT_DOCUMENT", complete: true, sourceIds: ["edgar:d"] });
+    expect(p.rules["lr:test-seed"]!.items).toEqual([{ sourceId: "edgar:d", kind: "document", itemId: "edgar:d" }]);
+    const g = selfCreditGuard(rules, p, ids);
+    expect(g.refusal({ stableKey: "learned-lr:test-seed" }, { sourceId: "edgar:d" })).toBe(REFUSED_SELF_SEEDED);
+    expect(g.refusal({ stableKey: "learned-lr:test-seed" }, { sourceId: "edgar:b" })).toBeNull();
+  });
+
+  it("B1: a provenance file whose seeds point outside the scored inputs, or that claims complete:true, is not trusted", () => {
+    const a = input("edgar:a", "sha-a");
+    const known = new Map([["edgar:a", a.source], ["edgar:o", input("edgar:o", "sha-o").source]]);
+    const honest = seededIn(a);
+    const tampered = structuredClone(honest);
+    tampered.rules["lr:test-seed"]!.sourceIds = ["edgar:nowhere"];
+    tampered.rules["lr:test-seed"]!.contentSha256s = [];
+    const g = selfCreditGuard(rules, tampered, { ...ids, knownSources: known });
+    expect(g.rulesWithoutProvenance).toBe(1);
+    expect(g.refusal({ stableKey: "learned-lr:test-seed" }, { sourceId: "edgar:a", contentSha256: "sha-a" })).toBe(REFUSED_NO_PROVENANCE);
+    // complete:true is recomputed, not trusted (cluster of 2 with one seed document).
+    const r = ruleSet('cluster size 2; seed="Holdings may make Restricted Payments to its equity holders in a"');
+    const lying = deriveSeedProvenance(r, [a], ids);
+    lying.rules["lr:test-seed"]!.complete = true;
+    expect(selfCreditGuard(r, lying, { ...ids, knownSources: known }).rulesWithoutProvenance).toBe(1);
+    // Seed identities come from the scored sources, not the file.
+    const shaless = structuredClone(honest);
+    shaless.rules["lr:test-seed"]!.contentSha256s = [];
+    const g2 = selfCreditGuard(rules, shaless, { ...ids, knownSources: known });
+    expect(g2.refusal({ stableKey: "learned-lr:test-seed" }, { sourceId: "edgar:copy", contentSha256: "sha-a" })).toBe(REFUSED_SELF_SEEDED);
+  });
+
+  it("B1: the committed file must be byte-identical to the re-derivation; corrupt JSON fails closed without throwing", () => {
+    const derived = seededIn(input("edgar:a", "sha-a"));
+    expect(verifyCommittedProvenance(serializeSeedProvenance(derived), derived)).toEqual({ provenance: derived, unboundReason: null });
+    const edited = serializeSeedProvenance(derived).replace('"edgar:a"', '"edgar:elsewhere"');
+    expect(verifyCommittedProvenance(edited, derived).unboundReason).toMatch(/differs from provenance re-derived/);
+    expect(verifyCommittedProvenance("{not json", derived)).toMatchObject({ provenance: null, unboundReason: expect.stringMatching(/not valid JSON/) });
+    expect(verifyCommittedProvenance(null, derived).provenance).toBeNull();
+    const g = selfCreditGuard(rules, null, { ...ids, unboundReason: "seed provenance file is not valid JSON" });
+    expect(g.unboundReason).toMatch(/not valid JSON/);
+    expect(g.refusal({ stableKey: "learned-lr:test-seed" }, { sourceId: "edgar:o" })).toBe(REFUSED_NO_PROVENANCE);
+  });
+
   it("uses recorded packageKeys exactly when the rule carries them", () => {
     const r = ruleSet(SEED_NOTE, { packageKeys: ["clf-sweep:edgar:z"] });
     const p = deriveSeedProvenance(r, [input("edgar:a", "sha-a"), input("edgar:z", "sha-z")], ids);
@@ -100,14 +164,17 @@ describe("scoreboard self-credit guard", () => {
     expect(g.refusal({ stableKey: "learned-lr:test-seed" }, { sourceId: "edgar:other" })).toBe(REFUSED_NO_PROVENANCE);
   });
 
-  it("keeps cross-issuer generalization credit and labels it by issuer relation", () => {
-    const guard = selfCreditGuard(rules, seededIn(input("edgar:a", "sha-a", true, { issuerCik: "111" })), ids);
+  it("keeps cross-issuer generalization credit; refuses another filing of the seed issuer (CIK or ticker)", () => {
+    const guard = selfCreditGuard(rules, seededIn(input("edgar:a", "sha-a", true, { issuerCik: "111", ticker: "ZQX" })), ids);
     const cross = scoreSource(input("edgar:x", "sha-x", true, { issuerCik: "222" }), rules, manifest, undefined, { guard });
     expect(cross.counts.DISCOVERY_GAP).toBe(0);
     expect(cross.learnedCredit).toEqual({ [CREDIT_CROSS_ISSUER]: 1 });
+    // An earlier filing of the same company (different document, same CIK) repeats its own drafting: refused.
     const same = scoreSource(input("edgar:y", "sha-y", true, { issuerCik: "0000111" }), rules, manifest, undefined, { guard });
-    expect(same.counts.DISCOVERY_GAP).toBe(0);
-    expect(same.learnedCredit).toEqual({ [CREDIT_SAME_ISSUER_OTHER_DOC]: 1 });
+    expect(same.counts.DISCOVERY_GAP).toBe(1);
+    expect(same.selfCredit).toEqual({ [REFUSED_SAME_ISSUER]: 1 });
+    const byTicker = scoreSource(input("edgar:t", "sha-t", true, { ticker: "zqx_alt" }), rules, manifest, undefined, { guard });
+    expect(byTicker.selfCredit).toEqual({ [REFUSED_SAME_ISSUER]: 1 });
   });
 
   it("refuses credit in the seed document and counts it", () => {
