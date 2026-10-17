@@ -50,19 +50,31 @@ export function emptyCovenantData(companyId: string): CompanyCovenantData {
 }
 
 /**
- * `loadCompanyCovenantData` throws when a company has no legacy
- * `FinancialSnapshot` row at all (real for any customer onboarded through the
- * current wizard, or a solver-native-only company like Matthews). Exported so
- * any page needing a real `CompanyCovenantData` (e.g. the Simulate tab) can
- * share this one guard instead of re-deriving it.
+ * `loadCompanyCovenantData` throws `FinancialIdentityError` UNKNOWN when a
+ * company has no legacy `FinancialSnapshot` row at all (real for any customer
+ * onboarded through the current wizard, or a solver-native-only company like
+ * Matthews). ONLY that case is an empty dataset. Exported so any page needing
+ * a real `CompanyCovenantData` (e.g. the Simulate tab) can share this one
+ * guard instead of re-deriving it.
+ *
+ * Every other failure must surface, never substitute empty data:
+ * - AMBIGUOUS (duplicate snapshots claim one identity) is a data conflict,
+ *   not emptiness.
+ * - Database / schema-drift / runtime errors (e.g. a Prisma P2022 for a
+ *   column a migration has not applied yet) mean the real dataset could not
+ *   be read. Substituting `emptyCovenantData` there presented fallback
+ *   figures (a $0 total-debt headline from the facilities ledger) and
+ *   empty-provision simulations ("no document imposes a finite capacity
+ *   limit") as if they were real. Fail-closed means the failure is visible.
  */
 export async function loadCovenantDataOrEmpty(companyId: string, asOfDate: Date): Promise<CompanyCovenantData> {
   try {
     return await loadCompanyCovenantData(prisma, companyId, asOfDate);
   } catch (err) {
-    // Duplicate stored snapshots are not an empty legacy dataset.
-    if (err instanceof FinancialIdentityError && err.code === "AMBIGUOUS") throw err;
-    return emptyCovenantData(companyId);
+    if (err instanceof FinancialIdentityError && err.code === "UNKNOWN") {
+      return emptyCovenantData(companyId);
+    }
+    throw err;
   }
 }
 
