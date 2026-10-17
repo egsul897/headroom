@@ -94,13 +94,25 @@ function stripClassificationLead(plainEnglish: string): string {
   return plainEnglish.slice(closeQuote + 2 + sentenceEnd + 2);
 }
 
+function stripPostureMeta(text: string): string {
+  return text.replace(/\b(?:prohibition\/permission\s+)?posture could not be determined[^.]*\.?/gi, "");
+}
+
 function operativeText(plainEnglish: string): string {
   let end = plainEnglish.length;
   for (const marker of BOILERPLATE_MARKERS) {
     const idx = plainEnglish.indexOf(marker);
     if (idx !== -1 && idx < end) end = idx;
   }
-  return plainEnglish.slice(0, end);
+  // Rule 208 (revised): strip the analyzer's posture meta-phrase
+  // ("prohibition/permission posture could not be determined") from
+  // the haystack — its word "permission" launders into modal
+  // permission evidence for DEBT on posture-indeterminate items
+  // (Expand 6.02(bb)). The phrase is uncertainty boilerplate,
+  // never operative language. Applied here so every haystack built
+  // from plainEnglish gets it; EDITED items (counsel's words) never
+  // carry the phrase, so the strip is a no-op for them.
+  return stripPostureMeta(plainEnglish.slice(0, end));
 }
 
 /**
@@ -346,6 +358,35 @@ function excerptHasSubClauses(excerpt: string, sectionRef: string): boolean {
   return /\(\s*(?:[a-zA-Z]|[ivxlcdmIVXLCDM]+|[0-9]+)\s*\)/.test(rest);
 }
 
+/**
+ * Rule 207: an incremental-facility provision (Article 2 mechanic —
+ * the borrower requests additional commitments from lenders) is not
+ * an incurrence basket. Expand §2.19(b) ("Incremental Increase",
+ * notice to the Administrative Agent, Applicable Rate, Additional
+ * Lender) minted a spurious DEBT $5M Permission from a fee/minimum
+ * amount inside the facility mechanics. Guard: category OTHER (a
+ * covenant-category item mentioning an incremental facility is a
+ * basket referencing it, not the facility itself) AND the text is
+ * ABOUT the facility mechanic — "Incremental Increase" itself, or
+ * an incremental-facility noun plus a second mechanic signal
+ * (Administrative Agent / Applicable Rate / Additional Lender /
+ * Increasing Lender). A basket merely referencing an incremental
+ * facility ("Indebtedness incurred pursuant to an Incremental
+ * Agreement") has no mechanic signal and survives.
+ */
+function isIncrementalFacilityItem(item: CovenantSummaryItem): boolean {
+  if (item.category !== "OTHER") return false;
+  const text = `${item.heading ?? ""} ${item.plainEnglish ?? ""} ${item.operativeExcerpt ?? ""}`;
+  if (/\bINCREMENTAL\s+INCREASE\b/i.test(text)) return true;
+  if (
+    /\bINCREMENTAL\s+(AGREEMENT|TERM|REVOLVING|FACILIT(?:Y|IES)|COMMITMENT|LOAN)\b/i.test(text) &&
+    /\b(ADMINISTRATIVE\s+AGENT|APPLICABLE\s+RATE|ADDITIONAL\s+LENDER|INCREASING\s+LENDER)\b/i.test(text)
+  ) {
+    return true;
+  }
+  return false;
+}
+
 export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[] {
   // Rule 166: an event-of-default trigger is a consequence, never a
   // grant of capacity. A Defaults article genuinely contains the
@@ -388,6 +429,9 @@ export function grantTypesForItem(item: CovenantSummaryItem): CounselGrantType[]
   // provision's words (Rule 60), so its first sentence is kept.
   // Rule 204: the definitions article never grants capacity.
   if (isDefinitionsArticleItem(item)) return [];
+
+  // Rule 207: an incremental-facility provision never grants capacity.
+  if (isIncrementalFacilityItem(item)) return [];
 
   const sourceText =
     item.reviewerDecision === "EDITED"

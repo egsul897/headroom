@@ -619,6 +619,8 @@ function evalExpr(
 export interface DocumentCapacityResult {
   documentId: string;
   documentName: string;
+  /** The Document row's declared type — drives Fix 8's amendment skip. */
+  documentType: DocumentType;
 
   securedStatus: EvaluationStatus;
   securedCapacity?: number;
@@ -681,10 +683,26 @@ export interface CovenantPosition {
   crossDocumentUnsecured: CrossDocumentCapacity;
 }
 
+/**
+ * Fix 8: an AMENDMENT document that contributes no capacity constraint
+ * (neither side modeled — it amends the base but carries no basket of
+ * its own) must not poison the package's capacity. Its effect flows
+ * through the operative bindings on the base, not through a standalone
+ * capacity figure. An amendment WITH a modeled side (it added a basket)
+ * still participates. A restatement (AMENDED_AND_RESTATED_AGREEMENT)
+ * is never skipped — it IS the full agreement. Unknown/missing type
+ * never skips (fail-closed).
+ */
+export function isNonCapacityAmendment(d: DocumentCapacityResult): boolean {
+  return d.documentType === "AMENDMENT" && d.securedStatus !== "modeled" && d.unsecuredStatus !== "modeled";
+}
+
 function combineCrossDocument(documents: DocumentCapacityResult[], side: "secured" | "unsecured"): CrossDocumentCapacity {
-  if (documents.length === 0) {
+  const governing = documents.filter((d) => !isNonCapacityAmendment(d));
+  if (governing.length === 0) {
     return { status: "not_tested", reason: "No governing documents are modeled for this company." };
   }
+  documents = governing;
   const statuses = documents.map((d) => (side === "secured" ? d.securedStatus : d.unsecuredStatus));
   const worst = worstStatus(statuses);
   if (worst !== "modeled") {
@@ -734,6 +752,7 @@ export function computeCovenantPosition(data: CompanyCovenantData): CovenantPosi
     return {
       documentId: doc.id,
       documentName: doc.name,
+      documentType: doc.type,
       securedStatus: secured.status,
       securedCapacity: secured.capacity,
       securedReason: secured.reason,
@@ -1304,7 +1323,8 @@ export interface PerDocumentRemainingCapacity {
     | "SOLVER_NATIVE_RECOMPUTED"
     | "LEGACY_DECLARED_MINUS_TESTED_AMOUNT"
     | "SOLVER_CLAMPED_TO_LEGACY"
-    | "NOT_DETERMINABLE";
+    | "NOT_DETERMINABLE"
+    | "SKIPPED_AMENDMENT";
   /** This document/side's remaining capacity AFTER giving effect to the tested transaction. Undefined - never fabricated as 0 - when not determinable. */
   remainingCapacity?: number;
   /** Present only for SOLVER_NATIVE_RECOMPUTED - the full post-transaction MaxCapacityResult `remainingCapacity` was read from (design doc §O). */
@@ -1469,6 +1489,16 @@ export function computeRemainingCapacityAfterDebtIncurrence(
   const ratioCeiling = computeLegacyRatioCeiling(data, position, secured, Math.max(0, ...legacyCaps));
 
   const perDocument: PerDocumentRemainingCapacity[] = position.documents.map((d) => {
+    // Fix 8: a non-capacity amendment is disclosed as skipped, not
+    // NOT_DETERMINABLE — it must not poison the package binding.
+    if (isNonCapacityAmendment(d)) {
+      return {
+        documentId: d.documentId,
+        documentName: d.documentName,
+        method: "SKIPPED_AMENDMENT" as const,
+        reason: `${d.documentName} is an amendment with no modeled capacity of its own — its effect flows through the operative bindings on the base agreement, not a standalone capacity figure.`,
+      };
+    }
     const status = secured ? d.securedStatus : d.unsecuredStatus;
     const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
     const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;

@@ -372,3 +372,71 @@ describe("rule 201 gap: long-gap lien-secured clause still suppresses DEBT", () 
     expect(grants).toEqual(["LIEN"]);
   });
 });
+
+describe("Rule 207: incremental-facility provisions never grant capacity", () => {
+  it("Expand 2.19(b)-shaped incremental-facility item mints nothing", () => {
+    expect(
+      grantTypesForItem(
+        item(
+          "2.19(b)",
+          "OTHER",
+          "Incremental Increase: subject to notice to the Administrative Agent, the Borrower may request an Incremental Increase. The Applicable Rate may be increased. An Additional Lender may provide the increase. Amount: $5,000,000.",
+        ),
+      ),
+    ).toEqual([]);
+  });
+
+  it("a covenant-category basket merely referencing an incremental facility keeps DEBT", () => {
+    expect(
+      grantTypesForItem(
+        item(
+          "Limitation on Indebtedness",
+          "INDEBTEDNESS",
+          "Indebtedness incurred pursuant to an Incremental Agreement, in an aggregate principal amount not to exceed $50,000,000.",
+        ),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+  });
+
+  it("an OTHER item mentioning an incremental facility WITHOUT a mechanic signal keeps its grants", () => {
+    expect(
+      grantTypesForItem(
+        item(
+          "Miscellaneous",
+          "OTHER",
+          "Indebtedness incurred pursuant to an Incremental Agreement, in an aggregate principal amount not to exceed $50,000,000.",
+        ),
+      ),
+    ).toEqual(["DEBT_INCURRENCE"]);
+  });
+});
+
+describe("Rule 208 (revised): the analyzer's posture meta-phrase is not permission evidence", () => {
+  it("Expand 6.02(bb)-shaped item (meta-phrase + lien cap) mints LIEN only", () => {
+    // The real 6.02(bb) plainEnglish carries "prohibition/permission
+    // posture could not be determined" — the word "permission" in
+    // that meta-phrase laundered into modal DEBT evidence. Stripping
+    // the phrase leaves the LIEN signal ("liens and secured debt")
+    // + the $60M cap, so the item mints LIEN only.
+    expect(
+      grantTypesForItem(
+        item(
+          "6.02(bb)",
+          "LIENS_SECURED_DEBT",
+          'Section 6.02(bb) ("6.02(bb)") relates to liens and secured debt, but its prohibition/permission posture could not be determined from the excerpt. Material baskets/thresholds identified: Amount/threshold: $60,000,000.',
+        ),
+      ),
+    ).toEqual(["LIEN"]);
+  });
+
+  it("a genuine permission ('Secured Indebtedness and Liens permitted') still mints DEBT+LIEN", () => {
+    // No meta-phrase here — "permitted" is operative language, not
+    // analyzer boilerplate. (The first version of Rule 208 suppressed
+    // DEBT for the whole LIENS_SECURED_DEBT category and broke this
+    // test; the category guard was reverted in favor of the
+    // meta-phrase strip.)
+    expect(
+      grantTypesForItem(item("Limitation on Liens", "LIENS_SECURED_DEBT", "Secured Indebtedness and Liens permitted.")),
+    ).toEqual(["DEBT_INCURRENCE", "LIEN"]);
+  });
+});
