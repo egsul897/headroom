@@ -151,6 +151,15 @@ export interface SequentialWorld {
   state: CapacityState;
   companyId: string;
   instrumentKey: string;
+  /**
+   * The caller attests the world's ledger is the COMPLETE utilization
+   * history for this scenario. The attestation is what licenses the
+   * verified boundary to read unrecorded usage as zero (PAI-04
+   * VERIFIED_EMPTY); without it every evaluation withholds remaining.
+   * It travels with the world so reopening / advancing a world never
+   * silently drops — or invents — the attestation.
+   */
+  utilizationAffirmedComplete: boolean;
 }
 
 export type RunnerMode = "HYPOTHETICAL" | "COMPLETED";
@@ -259,13 +268,19 @@ export function openVerifiedSequentialWorld(args: {
   inputs: InputResolver;
   ledger?: readonly LedgerUsageRecord[];
   asOf?: string | null;
+  utilizationAffirmedComplete?: boolean;
 }): SequentialWorld {
   const ledger = cloneLedger(args.ledger ?? []);
+  const utilizationAffirmedComplete = args.utilizationAffirmedComplete ?? false;
   const capacity = evaluateVerifiedCapacity({
     package: args.package,
     inputs: args.inputs,
     ledger,
     asOf: args.asOf ?? null,
+    // Forward the caller's completeness attestation (PAI-04): an affirmed
+    // ledger is the scenario's whole utilization history, so unrecorded
+    // usage is zero. Unaffirmed stays UNKNOWN — remaining withheld.
+    utilizationCompleteness: utilizationAffirmedComplete ? "VERIFIED_EMPTY" : undefined,
   });
   if (capacity.outcome !== "EXECUTED") {
     throw new Error(
@@ -281,6 +296,7 @@ export function openVerifiedSequentialWorld(args: {
     state: capacity.state,
     companyId: args.package.companyId,
     instrumentKey: args.package.instrumentKey,
+    utilizationAffirmedComplete,
   };
 }
 
@@ -300,6 +316,7 @@ export function advanceWorld(w: SequentialWorld, r: TransactionSimulationResult)
     inputs: chained.resolver,
     ledger,
     asOf: w.asOf,
+    utilizationAffirmedComplete: w.utilizationAffirmedComplete,
   });
 }
 
@@ -312,6 +329,7 @@ function independentRecompute(
     inputs: w.inputs,
     ledger: w.ledger,
     asOf: w.asOf,
+    utilizationCompleteness: w.utilizationAffirmedComplete ? "VERIFIED_EMPTY" : undefined,
   });
   if (capacity.outcome !== "EXECUTED") {
     throw new Error(
@@ -341,7 +359,12 @@ export function runSequentialTransactions(args: {
 }): SequentialRunResult {
   const originalLedger = args.world.ledger;
   const originalLedgerClone = cloneLedger(originalLedger);
-  const affirmed = args.utilizationAffirmedComplete ?? false;
+  // The run's attestation: an explicit runner argument wins; otherwise the
+  // attestation the world was opened with governs. It is stamped onto the
+  // working world so advanceWorld / independentRecompute evaluate every
+  // step under the same completeness the steps are simulated under.
+  const affirmed =
+    args.utilizationAffirmedComplete ?? args.world.utilizationAffirmedComplete ?? false;
   const initialUtilization = classifyUtilizationHistory({
     ledgerCount: originalLedger.length,
     utilizationAffirmedComplete: affirmed,
@@ -350,6 +373,7 @@ export function runSequentialTransactions(args: {
   let world: SequentialWorld = {
     ...args.world,
     ledger: cloneLedger(originalLedger),
+    utilizationAffirmedComplete: affirmed,
   };
 
   const stepsOut: SequentialStepResult[] = [];
@@ -406,6 +430,11 @@ export function runSequentialTransactions(args: {
       asOf: world.asOf,
       transaction: step.transaction,
       selectedPath: step.selectedPath,
+      // Same attestation as the capacity evaluations (PAI-04): without it
+      // the simulation measures every draw against withheld remaining and
+      // can only answer INDETERMINATE, even when the caller has affirmed
+      // the ledger is the complete utilization history.
+      utilizationCompleteness: affirmed ? "VERIFIED_EMPTY" : undefined,
     });
 
     if (verified.outcome === "REFUSED") {
@@ -795,6 +824,7 @@ function worldFrom(
   ledger: LedgerUsageRecord[] = [],
   snapshotId = "seq-demo-snap",
   source = "sequential demo",
+  utilizationAffirmedComplete = false,
 ): SequentialWorld {
   const stampedRules = rules.map(stampRule);
   const stampedShared = sharedCapacities.map(stampShared);
@@ -811,11 +841,14 @@ function worldFrom(
     inputs,
     ledger,
     asOf: RATIO_DEMO_AS_OF,
+    utilizationAffirmedComplete,
   });
 }
 
 /** Flat multi-basket world (no leverage gate) for the five-step happy-path demo. */
-export function buildFlatSequentialWorld(): SequentialWorld {
+export function buildFlatSequentialWorld(opts?: {
+  utilizationAffirmedComplete?: boolean;
+}): SequentialWorld {
   const mk = (
     ruleId: string,
     amount: number,
@@ -868,6 +901,7 @@ export function buildFlatSequentialWorld(): SequentialWorld {
     [],
     "flat-demo-snap",
     "flat sequential demo",
+    opts?.utilizationAffirmedComplete ?? false,
   );
 }
 
@@ -893,7 +927,7 @@ export const RATIO_DEMO_INDEPENDENT_EXPECTATION = {
   },
 } as const;
 
-export function buildRatioGatedSequentialWorld(_opts?: {
+export function buildRatioGatedSequentialWorld(opts?: {
   utilizationAffirmedComplete?: boolean;
 }): SequentialWorld {
   const debtRule: IRRule = {
@@ -1019,7 +1053,6 @@ export function buildRatioGatedSequentialWorld(_opts?: {
     sourceContentVersion: DEMO_STRONG.sourceContentVersion,
   };
 
-  void _opts;
   return worldFrom(
     [debtRule, rpRule, builderRule],
     [
@@ -1032,11 +1065,14 @@ export function buildRatioGatedSequentialWorld(_opts?: {
     [],
     "ratio-demo-snap",
     "ratio sequential demo",
+    opts?.utilizationAffirmedComplete ?? false,
   );
 }
 
 /** Shared-capacity world: two members under one quantified pool. */
-export function buildSharedCapacitySequentialWorld(): SequentialWorld {
+export function buildSharedCapacitySequentialWorld(opts?: {
+  utilizationAffirmedComplete?: boolean;
+}): SequentialWorld {
   const member = (ruleId: string): IRRule => ({
     ruleId,
     irSchemaVersion: DEMO_STRONG.irSchemaVersion,
@@ -1084,6 +1120,7 @@ export function buildSharedCapacitySequentialWorld(): SequentialWorld {
     [],
     "shared-demo-snap",
     "shared demo",
+    opts?.utilizationAffirmedComplete ?? false,
   );
 }
 
@@ -1098,6 +1135,7 @@ export function buildVerifiedSequentialWorldForRules(args: {
   companyId?: string;
   instrumentKey?: string;
   asOf?: string;
+  utilizationAffirmedComplete?: boolean;
 }): SequentialWorld {
   const companyId = args.companyId ?? RATIO_DEMO_ORG;
   const instrumentKey = args.instrumentKey ?? RATIO_DEMO_FACILITY;
@@ -1127,5 +1165,6 @@ export function buildVerifiedSequentialWorldForRules(args: {
     inputs: resolver,
     ledger: args.ledger ?? [],
     asOf,
+    utilizationAffirmedComplete: args.utilizationAffirmedComplete ?? false,
   });
 }

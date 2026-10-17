@@ -85,6 +85,15 @@ function buildConsumeTransaction(args: {
     companyId: args.companyId,
     instrumentKey: args.instrumentKey,
     effectiveAsOf: args.evaluationDate,
+    // A unified request is, by construction, the company's own act under its
+    // own instrument: the acting entity class is the BORROWER. Naming it is
+    // what lets Phase 4D check the act against each rule's declared entity
+    // scope instead of refusing every scoped path for naming no entity
+    // (PAI-07). A future request shape that acts through another entity
+    // class must state that class explicitly on the request; until then the
+    // runtime's scope check still refuses paths whose scope excludes or
+    // does not declare the borrower.
+    entities: ["BORROWER"],
     category: null,
     label: args.label,
     intendedAmount: {
@@ -509,6 +518,17 @@ export async function executeUnifiedVerifiedTransaction(
     refs: [request.utilization.capacityRuleId || ruleClaim.ruleId],
   });
 
+  // Thread the gate's conclusion into the runtime. The capacity state and the
+  // simulation must see the SAME utilization knowledge the gate established:
+  // a VERIFIED_ZERO resolution under a completeness certificate the gate
+  // accepted is the runtime's VERIFIED_EMPTY attestation. Anything else stays
+  // UNKNOWN — an empty ledger is never promoted to zero usage by this
+  // orchestrator; only the certificate the gate evaluated can do that.
+  const runtimeUtilizationCompleteness: "UNKNOWN" | "VERIFIED_EMPTY" =
+    util.supportsRemainingClaim && util.resolution?.knowledge === "VERIFIED_ZERO"
+      ? "VERIFIED_EMPTY"
+      : "UNKNOWN";
+
   // --- Reviewer authorization (#268/#279 trusted-issuer) --------------------
   let reviewerOk = true;
   if (request.reviewerAuthorization.required) {
@@ -601,6 +621,7 @@ export async function executeUnifiedVerifiedTransaction(
       inputs: request.inputs,
       ledger: request.ledger,
       asOf: request.transaction.date,
+      utilizationCompleteness: runtimeUtilizationCompleteness,
     });
     if (capacity.outcome === "REFUSED") {
       blockers.push(
@@ -650,6 +671,7 @@ export async function executeUnifiedVerifiedTransaction(
         asOf: request.transaction.date,
         transaction,
         selectedPath,
+        utilizationCompleteness: runtimeUtilizationCompleteness,
       });
       if (simulation.outcome === "REFUSED") {
         blockers.push(
