@@ -112,5 +112,9 @@ describe.skipIf(!url)("EBITDA box on real Postgres (transactions, advisory lock,
     const base = { ...scope, inputKey: "ADDBACK:X", kind: "AMOUNT", source: "s", confirmedBy: "cfo" };
     await expect(prisma.customerEbitdaConfirmation.create({ data: { ...base, value: "-5", idempotencyKey: `neg-${run}` } })).rejects.toThrow(/check constraint|violates/i);
     await expect(prisma.customerEbitdaConfirmation.create({ data: { ...base, inputKey: "ADDBACK: X", value: "5", idempotencyKey: `ws-${run}` } })).rejects.toThrow(/check constraint|violates/i);
+    // 20261017090000: BASE_METRIC is an allowed kind (still a non-negative integer); unknown kinds are refused.
+    await expect(prisma.customerEbitdaConfirmation.create({ data: { ...base, inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: "300000000", idempotencyKey: `bm-${run}` } })).resolves.toBeTruthy();
+    await expect(prisma.customerEbitdaConfirmation.create({ data: { ...base, kind: "BOGUS", value: "5", idempotencyKey: `bogus-${run}` } })).rejects.toThrow(/check constraint|violates/i);
+    await expect(prisma.customerEbitdaConfirmation.create({ data: { ...base, inputKey: "METRIC:NETINCOME", kind: "BASE_METRIC", value: "-5", idempotencyKey: `bmneg-${run}` } })).rejects.toThrow(/check constraint|violates/i);
   });
 });

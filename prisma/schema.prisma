@@ -4715,14 +4715,14 @@ model CustomerEbitdaBox {
 
 /// CFO-confirmed, sourced add-back figures and lender-approval confirmations. APPEND-ONLY: rows are never updated or
 /// deleted; the latest row per (companyId, documentId, inputKey, kind) is current, earlier rows are the history.
-/// Check constraints (migration 20261017050000): kind in (AMOUNT, LENDER_APPROVAL), value a non-negative integer
+/// Check constraints (migrations 20261017050000, 20261017090000): kind in (AMOUNT, LENDER_APPROVAL, BASE_METRIC), value a non-negative integer
 /// <= 1e12 ("1" for LENDER_APPROVAL), non-empty source, inputKey without whitespace.
 model CustomerEbitdaConfirmation {
   id             String   @id @default(cuid())
   companyId      String
   documentId     String
   inputKey       String
-  /// AMOUNT | LENDER_APPROVAL
+  /// AMOUNT | LENDER_APPROVAL | BASE_METRIC
   kind           String   @default("AMOUNT")
   /// Whole USD as a decimal string (exact; never estimated). "1" for LENDER_APPROVAL.
   value          String
