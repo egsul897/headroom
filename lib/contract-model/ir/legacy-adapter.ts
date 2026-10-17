@@ -46,7 +46,17 @@ function provenanceFor(companyId: string, documentId: string, sectionRef: string
  * FLAT_AMOUNT, GREATER_OF_*, FLAT_NET_OF_DEBT, LEVERAGE_RATIO_ROOM,
  * COVERAGE_RATIO_ROOM (when rate metric is representable), RATIO_GATE,
  * BUILDER_BASKET (sectionRef params are citation labels, not cross-rule
- * lookups — confirmed against evaluateProvision).
+ * lookups — confirmed against evaluateProvision), NONE_UNCAPPED (the IR's
+ * own UNLIMITED_CAPACITY form — see that case below).
+ *
+ * The remaining representation-vocabulary shapes are REFUSED, each for a
+ * named reason: PCT_OF_CNTA / GREATER_OF_FLAT_OR_PCT_CNTA (no Consolidated
+ * Net Tangible Assets metric exists in the IR layer — the leaf engine
+ * itself marks them review_required for that missing input), PCT_OF_COST /
+ * PCT_OF_CONSIDERATION (caps on per-transaction inputs no snapshot metric
+ * can reference), UTILIZATION_GATE (a percentage test, not a cap, on a
+ * Utilization Percentage the snapshot does not carry), VALUE_CAP (a
+ * non-numeric cap no MONEY tree can state without fabricating a number).
  *
  * Still PARTIAL / compilerVersion null — never a certification bypass.
  * Refuses only when params are incomplete or mechanics are not representable.
@@ -276,6 +286,66 @@ export function adaptLegacyCovenantProvision(provision: CovenantProvisionInput, 
           : withExpressionId({ kind: "ADD", type: "MONEY", operands, provenance });
       reasons.push("IR tree matches leaf BUILDER_BASKET; PARTIAL until Phase 3B certification");
       return { rule: baseRule(capacity, reasons), refusalReason: null };
+    }
+    case "NONE_UNCAPPED": {
+      // Leaf: modeled, capacity Infinity - the clause AFFIRMATIVELY grants
+      // with no finite cap in its own text (parseFormulaFromItem mints
+      // NONE_UNCAPPED only from that affirmative determination, never as
+      // a default for a missing threshold). The IR's UnlimitedCapacity is
+      // exactly this shape - "never represented as MONEY(Infinity) or a
+      // missing/null threshold that could be confused with 'not yet
+      // determined'" (lib/contract-model/ir/types.ts) - so this maps 1:1,
+      // gatedBy null: the clause carries no formula gate. Its qualitative
+      // conditions are eligibility conditions this adapter does not
+      // translate for ANY shape (baseRule always emits conditions: []).
+      const capacity: IRCapacityExpression = { kind: "UNLIMITED_CAPACITY", type: "CAPACITY", gatedBy: null, provenance };
+      return {
+        rule: baseRule(capacity, [
+          `basketName "${provision.basketName}"`,
+          "clause affirmatively grants with no finite cap in its own text (NONE_UNCAPPED asserts the uncapped result; it is not a missing threshold) - IR UnlimitedCapacity is the faithful representation",
+          "the provision's qualitative eligibility conditions are not translated by this adapter (true of every shape it maps); sufficiency stays PARTIAL",
+        ]),
+        refusalReason: null,
+      };
+    }
+    case "PCT_OF_CNTA":
+      return {
+        rule: null,
+        refusalReason: `FormulaType PCT_OF_CNTA is capped at a percentage of Consolidated Net Tangible Assets, but no CNTA metric exists in the IR metric layer (the leaf engine itself marks this shape review_required because the financial snapshot carries no CNTA input) - refusing rather than referencing a metric nothing downstream can resolve`,
+      };
+    case "GREATER_OF_FLAT_OR_PCT_CNTA":
+      return {
+        rule: null,
+        refusalReason: `FormulaType GREATER_OF_FLAT_OR_PCT_CNTA's grower leg is a percentage of Consolidated Net Tangible Assets, but no CNTA metric exists in the IR metric layer (the leaf engine itself marks this shape review_required because the financial snapshot carries no CNTA input) - refusing the whole shape rather than translating only the flat leg and understating the cap`,
+      };
+    case "PCT_OF_COST":
+      return {
+        rule: null,
+        refusalReason: `FormulaType PCT_OF_COST is capped at a percentage of the cost of the specific assets being financed - a per-transaction input, not a snapshot metric the IR can reference - refusing rather than inventing a metric for it`,
+      };
+    case "PCT_OF_CONSIDERATION":
+      return {
+        rule: null,
+        refusalReason: `FormulaType PCT_OF_CONSIDERATION is capped at a percentage of the aggregate consideration of the specific transaction - a per-transaction input, not a snapshot metric the IR can reference - refusing rather than inventing a metric for it`,
+      };
+    case "UTILIZATION_GATE":
+      return {
+        rule: null,
+        refusalReason: `FormulaType UTILIZATION_GATE is a utilization-percentage test, not a basket cap, and no Utilization Percentage metric exists in the IR metric layer (the financial snapshot carries none) - refusing rather than building a gate on a metric nothing downstream can resolve`,
+      };
+    case "VALUE_CAP": {
+      const basis =
+        provision.params?.capBasis === "FAIR_MARKET_VALUE"
+          ? "fair market value"
+          : provision.params?.capBasis === "PURCHASE_PRICE"
+            ? "purchase price"
+            : provision.params?.capBasis === "COST_OR_FAIR_MARKET_VALUE"
+              ? "cost or fair market value"
+              : "cost";
+      return {
+        rule: null,
+        refusalReason: `FormulaType VALUE_CAP caps the amount at the ${basis} of the financed property - a non-numeric cap with no fixed dollar amount; no MONEY expression can represent it without fabricating a number - refusing`,
+      };
     }
   }
 }
