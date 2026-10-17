@@ -467,7 +467,10 @@ describe("Cycle 6 integration gate — dual-path $15M accounting + debt-only ≠
       companyId: pkg.companyId,
       instrumentKey: pkg.instrumentKey,
     });
-    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs, ledger: [], asOf: AS_OF });
+    // PAI-04 attestation: the committed fixture package carries no
+    // utilization records anywhere, so the empty ledger is the complete
+    // ledger of this fixture world by construction.
+    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs, ledger: [], asOf: AS_OF, utilizationCompleteness: "VERIFIED_EMPTY" });
     expect(capacity.outcome).toBe("EXECUTED");
     if (capacity.outcome !== "EXECUTED") throw new Error("expected EXECUTED");
     const debtCap = capacity.state.capacities.find((c) => c.ruleId === debt.ruleId)!;
@@ -480,6 +483,9 @@ describe("Cycle 6 integration gate — dual-path $15M accounting + debt-only ≠
       inputs,
       ledger: [],
       asOf: AS_OF,
+      // Same PAI-04 attestation: the sim's internal capacity evaluation
+      // sees the same complete empty ledger.
+      utilizationCompleteness: "VERIFIED_EMPTY",
       transaction: {
         transactionId: "gate-secured-15m",
         companyId: pkg.companyId,
@@ -487,6 +493,10 @@ describe("Cycle 6 integration gate — dual-path $15M accounting + debt-only ≠
         effectiveAsOf: AS_OF,
         category: "INCUR_DEBT",
         label: "SYNTHETIC $15M secured principal — dual-basket draws (not $30M new debt)",
+        // PAI-07: the actor is the borrower itself incurring secured debt
+        // under its own §7.01(b)/§7.02(b) baskets (both scopes include
+        // BORROWER).
+        entities: ["BORROWER"],
         effects: [
           { effectId: "e-debt", kind: "CONSUME_CAPACITY", capacityNodeId: debtCap.capacityNodeId, amount: { type: "MONEY", amount: "15000000", currency: "USD" } },
           { effectId: "e-lien", kind: "CONSUME_CAPACITY", capacityNodeId: lienCap.capacityNodeId, amount: { type: "MONEY", amount: "15000000", currency: "USD" } },
@@ -537,7 +547,8 @@ describe("Cycle 6 integration gate — dual-path $15M accounting + debt-only ≠
       companyId: pkg.companyId,
       instrumentKey: pkg.instrumentKey,
     });
-    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs, ledger: [], asOf: AS_OF });
+    // PAI-04 attestation: same complete-by-construction empty fixture ledger.
+    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs, ledger: [], asOf: AS_OF, utilizationCompleteness: "VERIFIED_EMPTY" });
     if (capacity.outcome !== "EXECUTED") throw new Error("expected EXECUTED");
     const debtCap = capacity.state.capacities.find((c) => c.ruleId === debt.ruleId)!;
 
@@ -546,6 +557,8 @@ describe("Cycle 6 integration gate — dual-path $15M accounting + debt-only ≠
       inputs,
       ledger: [],
       asOf: AS_OF,
+      // Same PAI-04 attestation for the sim's internal capacity evaluation.
+      utilizationCompleteness: "VERIFIED_EMPTY",
       transaction: {
         transactionId: "gate-debt-only",
         companyId: pkg.companyId,
@@ -553,6 +566,9 @@ describe("Cycle 6 integration gate — dual-path $15M accounting + debt-only ≠
         effectiveAsOf: AS_OF,
         category: "INCUR_DEBT",
         label: "debt-only — not secured",
+        // PAI-07: the actor is the borrower itself under its own §7.01(b)
+        // basket (the rule's scope includes BORROWER).
+        entities: ["BORROWER"],
         effects: [{ effectId: "e1", kind: "CONSUME_CAPACITY", capacityNodeId: debtCap.capacityNodeId, amount: { type: "MONEY", amount: "15000000", currency: "USD" } }],
         intendedAmount: { type: "MONEY", amount: "15000000", currency: "USD" },
         unallocatedAmount: null,
