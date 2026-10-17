@@ -26,13 +26,14 @@ export const DEMO_ORG = RATIO_DEMO_ORG;
 export const DEMO_FACILITY = RATIO_DEMO_FACILITY;
 export const DEMO_AS_OF = RATIO_DEMO_AS_OF;
 
-export function buildSequentialDemoWorld(_opts?: { utilizationAffirmedComplete?: boolean }): {
+export function buildSequentialDemoWorld(opts?: { utilizationAffirmedComplete?: boolean }): {
   world: SequentialWorld;
   utilizationAffirmedComplete: boolean;
 } {
+  const utilizationAffirmedComplete = opts?.utilizationAffirmedComplete ?? true;
   return {
-    world: buildFlatSequentialWorld(),
-    utilizationAffirmedComplete: _opts?.utilizationAffirmedComplete ?? true,
+    world: buildFlatSequentialWorld({ utilizationAffirmedComplete }),
+    utilizationAffirmedComplete,
   };
 }
 
