@@ -1,0 +1,677 @@
+[
+ {
+  "id": "AAMI",
+  "check": "FIN_COVENANT",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer: 7.10/(a)/(b) FINANCIAL_MAINTENANCE, no thresholds; FINANCIAL_RATIOS (a)/(b) RATIO_BASED NEEDS_INPUT, no threshold; computedRatios thresholds empty",
+  "clause": "\u00a77.10(a) Consolidated Net Leverage Ratio 'to be greater than 2.50:1.00'; (b) ICR 'to be less than 4.00:1.00'",
+  "note": "Colon ratio form 'X.XX:1.00' still not read (level format)."
+ },
+ {
+  "id": "AAMI",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "9 add-back lines (i)-(ix); (viii) and (ix) each carry their own 10%-of-EBITDA cap (amount held: needs determinable EBITDA); others uncapped",
+  "clause": "(viii) restructuring/business optimization 'not to exceed 10% of Consolidated EBITDA ... this clause (viii)'; (ix) non-recurring 'not to exceed 10% ... this clause (ix)'",
+  "note": "Two separate per-clause caps, correctly not merged."
+ },
+ {
+  "id": "AAMI",
+  "check": "RATIO_BASKET",
+  "cls": "N/A",
+  "mechanism": "",
+  "engine": "none reported",
+  "clause": "no ratio-conditioned debt or RP basket",
+  "note": ""
+ },
+ {
+  "id": "AAMI",
+  "check": "GENERAL_BASKET",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "\u00a77.02(i) GROWER_GREATER_OF COMPUTED floor 30,000,000 (limitBound AT_LEAST)",
+  "clause": "\u00a77.02(i) 'other Indebtedness of Covered Subsidiaries ... not to exceed the greater of (i) $30,000,000 and (ii) 15% of TTM Consolidated EBITDA'",
+  "note": "(k) uncapped unsecured Borrower debt held CONDITIONS_LIMITED/NEEDS_INPUT (conservative, not scored)."
+ },
+ {
+  "id": "AAMI",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "(viii)/(ix) 10% caps: amount null, 'needs a determinable EBITDA'",
+  "clause": "percentage-of-EBITDA caps",
+  "note": ""
+ },
+ {
+  "id": "TEL",
+  "check": "FIN_COVENANT",
+  "cls": "WRONG",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a75.09 category OTHER (not FINANCIAL_MAINTENANCE) 'Ratio threshold: 3.75 to 1.00'; FINANCIAL_RATIOS \u00a75.09 RATIO_BASED NEEDS_INPUT 'contract ratio definition'; ratio layer TOTAL_GROSS_LEVERAGE no threshold",
+  "clause": "\u00a75.09 Financial Covenant: Consolidated Total Debt to Consolidated EBITDA 'to exceed 3.75 to 1.00' (steps up .50 to 4.25 for four quarters after a Qualified Acquisition)",
+  "note": "Level right in the customer layer but the maintenance covenant is filed as OTHER and the inline (un-named) ratio is not bound."
+ },
+ {
+  "id": "TEL",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "8 add-backs (a)-(h), no caps; supported figure from filings, 6 lines NEEDS_INPUT",
+  "clause": "Consolidated EBITDA (a)-(h) add, (i)-(iv) deduct; no caps",
+  "note": ""
+ },
+ {
+  "id": "TEL",
+  "check": "RATIO_BASKET",
+  "cls": "N/A",
+  "mechanism": "",
+  "engine": "none",
+  "clause": "investment-grade: no ratio basket",
+  "note": ""
+ },
+ {
+  "id": "TEL",
+  "check": "GENERAL_BASKET",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M9_SECTION_RECOGNITION",
+  "engine": "DEBT family: only 'definition: Permitted Acquired Debt' CONDITIONS_LIMITED; \u00a75.13 not a debt basket (customer shows \u00a75.13 as OTHER with 'Amount/threshold: $750,000,000')",
+  "clause": "\u00a75.13 Subsidiary Debt: Debt of Consolidated Subsidiaries not to exceed $750,000,000 (carve-outs (i)-(vi))",
+  "note": "Plain cap reaches the customer card as an untyped amount but not the debt-capacity layer."
+ },
+ {
+  "id": "TEL",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "EBITDA NEEDS_INPUT: (d),(e),(f),(g),(h) not evidenced in filings; supported figure only",
+  "clause": "(h) 'any other nonrecurring or non-cash charges'",
+  "note": ""
+ },
+ {
+  "id": "H",
+  "check": "FIN_COVENANT",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a75.9 'Leverage Ratio' filed DEBT_INCURRENCE, no threshold; FINANCIAL_RATIOS family empty; LEVERAGE ratio no threshold",
+  "clause": "\u00a75.9 'maintain a Leverage Ratio ... of not more than 4.50 to 1.0' (5.50 to 1.0 for four Measurement Dates after a Qualified Acquisition)",
+  "note": "'maintain ... not more than X to 1.0' (affirmative phrasing + single-zero) not read as a maintenance level."
+ },
+ {
+  "id": "H",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "6 add-backs (i)-(vi), uncapped; base held NEEDS_INPUT (CNI exclusion not in filings)",
+  "clause": "Consolidated EBITDA (b)(i)-(vi), no caps",
+  "note": ""
+ },
+ {
+  "id": "H",
+  "check": "RATIO_BASKET",
+  "cls": "N/A",
+  "mechanism": "",
+  "engine": "(pricing-grid fragment '(B)' shown as RATIO_BASED under DEBT)",
+  "clause": "no ratio basket (investment-grade revolver; no debt covenant)",
+  "note": ""
+ },
+ {
+  "id": "H",
+  "check": "GENERAL_BASKET",
+  "cls": "WRONG",
+  "mechanism": "M9_SECTION_RECOGNITION",
+  "engine": "DEBT checklist ABSENT_VERIFIED (right) but DEBT family CAP_COMPUTED with 70 rows under '\u00a73.1 Indebtedness Schedule 3' (a table-of-contents schedule line), incl. '(aa)' FIXED_DOLLAR COMPUTED $1,000,000,000 and '(m)(e)' $15,000,000",
+  "clause": "No debt covenant (negative covenants are 6.1 Liens .. 6.6 RP). 'Permitted Liens' (aa) 'other Liens ... securing Indebtedness ... not to exceed $1,000,000,000'",
+  "note": "Lien baskets from the Permitted Liens definition are attributed to a phantom 'Indebtedness' section; LIENS family left MISSING. Figures are lien caps, not debt caps."
+ },
+ {
+  "id": "H",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "EBITDA NEEDS_INPUT: CNI exclusion of extraordinary items not in filings",
+  "clause": "CNI '(x) shall exclude extraordinary ... gains and losses'",
+  "note": ""
+ },
+ {
+  "id": "DXPE",
+  "check": "FIN_COVENANT",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "FIXED_CHARGE_COVERAGE NEEDS_INPUT, no threshold; FINANCIAL_RATIOS family empty; no customer FINANCIAL_MAINTENANCE item",
+  "clause": "\u00a710.3.1 'Have a Fixed Charge Coverage Ratio ... of at least 1.00 to 1.00 while a Covenant Trigger Period is in effect'",
+  "note": "Affirmative 'Have a ... Ratio of at least X' springing form not recognised."
+ },
+ {
+  "id": "DXPE",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "colon-style 'EBITDA': definition found; 7 add-backs; (vii) capped 'lesser of (A) 10% of EBITDA and (B) $5,000,000' (amount held pending EBITDA)",
+  "clause": "\u201cEBITDA\u201d: (b)(i)-(vii); (vii) integration/severance 'not to exceed the lesser of (A) 10% of EBITDA ... and (B) $5,000,000', FCCR only",
+  "note": "Colon definition now recognised (fix #428). Borderline: a $5M upper bound is determinable but the cap is not shown as uncapped."
+ },
+ {
+  "id": "DXPE",
+  "check": "RATIO_BASKET",
+  "cls": "WRONG",
+  "mechanism": "M5_COMPOSITE_CAP_LIMBS",
+  "engine": "\u00a710.2.1(g) FIXED_DOLLAR COMPUTED 860,000,000; ratio limbs not surfaced; SECURED/TOTAL leverage NEEDS_INPUT",
+  "clause": "(g) Term Loans '$860,000,000 ... plus (2) additional Incremental Term Loans ... not exceed the Incremental Debt Cap' = $100,000,000 + ratio debt at Secured Leverage <= 3.75x / Total Leverage <= 4.00x (as defined in the Term Loan Credit Agreement)",
+  "note": "Composite 'plus' cap reported as the first limb only (conservative direction)."
+ },
+ {
+  "id": "DXPE",
+  "check": "GENERAL_BASKET",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "\u00a710.2.1(q) FIXED_DOLLAR COMPUTED 35,000,000",
+  "clause": "(q) 'Debt ... not otherwise permitted ... not to exceed $35,000,000'",
+  "note": ""
+ },
+ {
+  "id": "DXPE",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "TOTAL/SECURED leverage NEEDS_INPUT 'no means-the-ratio definition in the bound texts'",
+  "clause": "ratios 'as defined by the Term Loan Credit Agreement' (another document)",
+  "note": ""
+ },
+ {
+  "id": "PAYC",
+  "check": "FIN_COVENANT",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "customer \u00a76.11(a) FINANCIAL_MAINTENANCE 'Ratio threshold: 3.50 to 1.00'; \u00a76.11(b) 'Ratio threshold: 3.00 to 1.00'",
+  "clause": "\u00a76.11(a) Consolidated Leverage Ratio 'to exceed 3.50 to 1.00'; (b) ICR 'to be less than 3.00 to 1.00'",
+  "note": "Ratio layer still has no thresholds (customer layer right)."
+ },
+ {
+  "id": "PAYC",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "FALSE-CONFIDENT",
+  "mechanism": "M1_CAP_SCOPE_ATTRIBUTION",
+  "engine": "10 add-backs; (vi), (vii), (viii) run-rate synergies, (x) all cap=null, tracker potential basis UNCAPPED_NEEDS_INPUT; no capGroup",
+  "clause": "'Notwithstanding the foregoing, (i) in no event shall the aggregate amount of the addbacks in clauses (b)(vi) , (b)(vii) , (b)(viii ) and (b)(x) , above for any such period exceed 10% of Consolidated EBITDA'",
+  "note": "Trailing shared cap in 'in no event shall ... exceed' form (with spaced labels '(b)(viii )') never attached; run-rate synergies shown uncapped. (vii) restructuring labelled STOCK_COMP."
+ },
+ {
+  "id": "PAYC",
+  "check": "RATIO_BASKET",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M10_ENUMERATION_COVERAGE",
+  "engine": "\u00a76.02(m) ratio debt absent from DEBT family (only (c), (k), (l)); RP \u00a76.06(c) RATIO_BASED NEEDS_INPUT without threshold",
+  "clause": "\u00a76.02(m)(I) debt 'provided that ... the Consolidated Leverage Ratio ... shall not exceed (A) 3.00 to 1.00 if ... secured and (B) 3.50 to 1.00 if ... unsecured'",
+  "note": "Last list item with a mixed '(m) (I)' enumerator dropped."
+ },
+ {
+  "id": "PAYC",
+  "check": "GENERAL_BASKET",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "\u00a76.2(l) FIXED_DOLLAR COMPUTED 20,000,000",
+  "clause": "(l) 'other Indebtedness ... not to exceed $20,000,000'",
+  "note": ""
+ },
+ {
+  "id": "PAYC",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "\u00a76.11(c) Additional Financial Covenants: FINANCIAL_MAINTENANCE item, no threshold",
+  "clause": "\u00a76.11(c) MFN: more restrictive covenants in Ratio Debt deemed incorporated",
+  "note": ""
+ },
+ {
+  "id": "HUBS",
+  "check": "FIN_COVENANT",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a78.11/(a) FINANCIAL_MAINTENANCE with no threshold, plus \u00a71.03(a)-(e) accounting-terms items tagged FINANCIAL_MAINTENANCE; ratio layer no thresholds",
+  "clause": "\u00a78.11(a) during any Non-Investment Grade Period, Consolidated Leverage Ratio 'to be greater than 3.75:1.0' (+0.50:1.0 Leverage Increase Period)",
+  "note": "Colon form 'X.XX:1.0' not read; definitional \u00a71.03 items mis-tagged as maintenance covenants."
+ },
+ {
+  "id": "HUBS",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "11 add-backs; (vi) and (vii) share one 20%-of-EBITDA cap ('shared with (vii)'/'shared with (vi)')",
+  "clause": "(vi) run-rate synergies 'combined with ... clause (vii) below, shall not exceed 20% of Consolidated EBITDA'; (vii) mirror proviso",
+  "note": "Category labels cosmetic: (vii) non-recurring labelled RUN_RATE_SYNERGIES, (v) non-cash labelled TAXES."
+ },
+ {
+  "id": "HUBS",
+  "check": "RATIO_BASKET",
+  "cls": "WRONG",
+  "mechanism": "M1_CAP_SCOPE_ATTRIBUTION",
+  "engine": "\u00a78.03(g) GROWER_GREATER_OF NEEDS_INPUT 'Consolidated Total Assets'",
+  "clause": "\u00a78.03(g)(i) Non-IG Period debt of Borrower/Domestic Subs if pro forma in compliance with \u00a78.11 (3.75:1.0); the greater-of $300M/7.5% CTA belongs to (p), which merely references 8.03(g)",
+  "note": "Cross-reference in a later clause pulls its cap type onto the referenced ratio basket (held, not computed)."
+ },
+ {
+  "id": "HUBS",
+  "check": "GENERAL_BASKET",
+  "cls": "WRONG",
+  "mechanism": "M11_CLAUSE_TYPING",
+  "engine": "\u00a78.03(q) RECLASS NEEDS_INPUT 'source basket unused'; (p) GROWER_GREATER_OF NEEDS_INPUT (no $300M floor); a Liens (gg) $235M/30% clause shown as '\u00a78.03 Indebtedness (i)'",
+  "clause": "\u00a78.03(q) IG Period 'other Indebtedness ... not to exceed 15% of Consolidated Net Tangible Assets' followed by the section's reclassification sentence",
+  "note": "Trailing reclassification paragraph re-types the general basket; lien clause leaks into the debt list."
+ },
+ {
+  "id": "HUBS",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "leverage covenant and baskets held NEEDS_INPUT; nothing computed across the IG / Non-IG regime switch",
+  "clause": "covenants and several baskets apply only 'During any Non-Investment Grade Period'",
+  "note": ""
+ },
+ {
+  "id": "ASIX",
+  "check": "FIN_COVENANT",
+  "cls": "WRONG",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a77.10(b) FINANCIAL_MAINTENANCE 'Amount/threshold: $50,000,000' (acquisition trigger) as the only figure; \u00a77.10(a) no threshold; \u00a77.10(b) typed BUILDER_AVAILABLE_AMOUNT; ratio layer no thresholds",
+  "clause": "\u00a77.10(a) ICR 'to be less than 3.00:1.00'; (b) Consolidated Leverage Ratio 'to be greater than 3.75:1.00' (+0.50 to 4.25 for four quarters after an Acquisition > $50,000,000)",
+  "note": "Colon form not read; the acquisition-size trigger surfaces instead of the level (same pattern as GOLF in #422)."
+ },
+ {
+  "id": "ASIX",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "FALSE-CONFIDENT",
+  "mechanism": "M12_PROVISO_SUBLIST_AS_ADDBACKS",
+  "engine": "(x) run-rate synergies cap=null; its proviso items (i), (ii), (iii) emitted as three extra add-back lines (the (iii) cap sentence itself is an 'OTHER' add-back)",
+  "clause": "(x) run-rate synergies; 'provided that ... (iii) the aggregate amount added pursuant to this clause (b)(x) ... shall in no event exceed 20.0% of Consolidated EBITDA'",
+  "note": "Cap inside a proviso sub-list ('shall in no event exceed') not bound; proviso enumerators parsed as add-back lines."
+ },
+ {
+  "id": "ASIX",
+  "check": "RATIO_BASKET",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "\u00a77.02(d) RATIO_BASED NEEDS_INPUT, no threshold",
+  "clause": "\u00a77.02(d) unsecured debt if pro forma Consolidated Leverage Ratio is '0.25:1.00 less than the maximum then applicable ratio set forth in Section 7.10(b)' (= 3.50:1.00)",
+  "note": "Relative level (covenant minus a cushion) plus colon form."
+ },
+ {
+  "id": "ASIX",
+  "check": "GENERAL_BASKET",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "\u00a77.02(j) GROWER_GREATER_OF floor 50,000,000 (AT_LEAST)",
+  "clause": "(j) 'not to exceed the greater of (x) $50,000,000 and (y) 40.0% of Consolidated EBITDA'",
+  "note": "Greater-of floors now surfaced."
+ },
+ {
+  "id": "ASIX",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "Consolidated Senior Secured Leverage Ratio refused: 'not one numerator over one denominator'",
+  "clause": "definition with multi-part numerator",
+  "note": ""
+ },
+ {
+  "id": "WLK",
+  "check": "FIN_COVENANT",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "customer \u00a76.09 FINANCIAL_MAINTENANCE 'Ratio threshold: 3.50 to 1.00'; leverageCapacity maxLeverage 3.5 (NEEDS_INPUT)",
+  "clause": "\u00a76.09 Total Leverage Ratio 'to exceed 3.50 to 1.00' (4.00:1.00 for four quarters after an elected Material Acquisition)",
+  "note": "Step-up not shown (event-conditional; base level governs). \u00a76.03 fragment also tagged FINANCIAL_MAINTENANCE (noise)."
+ },
+ {
+  "id": "WLK",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "11 add-backs; (vi) cap $125,000,000; (x) cap 5.0% of EBITDA (held); (vii) run-rate uncapped",
+  "clause": "(vi) 'addbacks ... pursuant to this clause (a)(vi) shall not exceed $125,000,000'; (x) LACC EBITDA 'shall not exceed 5.0% of Consolidated EBITDA'; (vii) no cap",
+  "note": ""
+ },
+ {
+  "id": "WLK",
+  "check": "RATIO_BASKET",
+  "cls": "N/A",
+  "mechanism": "",
+  "engine": "none",
+  "clause": "no ratio basket",
+  "note": ""
+ },
+ {
+  "id": "WLK",
+  "check": "GENERAL_BASKET",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "\u00a76.01(j) PCT_OF_METRIC NEEDS_INPUT 'Consolidated Net Tangible Assets'",
+  "clause": "\u00a76.01(j) Restricted Subsidiary debt (plus 6.02(f) secured) 'does not exceed ... 25.0% of Consolidated Net Tangible Assets'",
+  "note": ""
+ },
+ {
+  "id": "WLK",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "leverageCapacity maxLeverage 3.5, NEEDS_INPUT 'EBITDA operand not derivable'",
+  "clause": "Consolidated EBITDA requires non-filed adjustments (pro forma, LACC EBITDA)",
+  "note": ""
+ },
+ {
+  "id": "DELL",
+  "check": "FIN_COVENANT",
+  "cls": "WRONG",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "INTEREST_COVERAGE threshold 3 cited to \u00a72.17(a) (Commitment Increase condition '3.00:1.00'); \u00a77.03 covenant absent from customer items and FINANCIAL_RATIOS family",
+  "clause": "\u00a77.03 'Permit the Consolidated Interest Coverage Ratio ... to be less than 3.00 to 1.00'",
+  "note": "Level matches only because the incremental condition uses the same number; the maintenance covenant itself is not recognised."
+ },
+ {
+  "id": "DELL",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "WRONG",
+  "mechanism": "M12_PROVISO_SUBLIST_AS_ADDBACKS",
+  "engine": "16 lines: run-rate (b) plus its proviso conditions (A), (B), (C) each emitted as RUN_RATE_SYNERGIES add-back lines; (viii) fees labelled D&A, (x) stock comp labelled TAXES",
+  "clause": "(b) run-rate savings 'provided that (A) ... quantifiable ..., (B) no ... duplicative ..., and (C) the share ... with respect to a joint venture ... shall not exceed ...'; no dollar or % cap",
+  "note": "Proviso enumerators parsed as add-back lines (no cap invented; held NEEDS_INPUT)."
+ },
+ {
+  "id": "DELL",
+  "check": "RATIO_BASKET",
+  "cls": "N/A",
+  "mechanism": "",
+  "engine": "none",
+  "clause": "no debt covenant; only a commitment-increase ICR condition",
+  "note": ""
+ },
+ {
+  "id": "DELL",
+  "check": "GENERAL_BASKET",
+  "cls": "N/A",
+  "mechanism": "",
+  "engine": "DEBT ABSENT_VERIFIED",
+  "clause": "negative covenants are 7.01 Liens, 7.02 Fundamental Changes, 7.03 ICR only",
+  "note": "Absence correct."
+ },
+ {
+  "id": "DELL",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "EBITDA NEEDS_INPUT: CNI exclusions not in filings",
+  "clause": "'there shall be excluded from Consolidated Net Income ...'",
+  "note": ""
+ },
+ {
+  "id": "BVS",
+  "check": "FIN_COVENANT",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a79.13 FINANCIAL_MAINTENANCE (and \u00a71.10(d)) with no threshold; FINANCIAL_RATIOS rows RATIO_BASED NEEDS_INPUT; ratio layer thresholds only from RP/Investments incurrence tests",
+  "clause": "\u00a79.13(a) TNLR maximum by table: 4.00 to 1.00 through Q4 2025, 3.50 to 1.00 from Q1 2026 (governing on 2026-10-17); +0.50 Leverage Ratio Increase after > $25M acquisition; (b) ICR",
+  "note": "Period/level table (step-down schedule) not parsed."
+ },
+ {
+  "id": "BVS",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "FALSE-CONFIDENT",
+  "mechanism": "M12_PROVISO_SUBLIST_AS_ADDBACKS",
+  "engine": "(vii) unusual/non-recurring + run-rate cap=null; proviso items (i), (ii), (iii) emitted as extra add-back lines",
+  "clause": "(vii) '(A) other unusual and non-recurring cash expenses ... and (B) ... \"run rate\" synergies ...; provided that ... (iii) the aggregate amount added pursuant to this clause (b)(vii) ... shall in no event exceed 25% of Consolidated EBITDA'",
+  "note": "Same pattern as ASIX: cap in a proviso sub-list, 'shall in no event exceed'."
+ },
+ {
+  "id": "BVS",
+  "check": "RATIO_BASKET",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "TOTAL_NET_LEVERAGE threshold 2.0 MAX cited \u00a79.6 Restricted Payments (h)",
+  "clause": "\u00a79.6(h) RP if pro forma TNLR 'is less than or equal to 2.00 to 1:00'",
+  "note": ""
+ },
+ {
+  "id": "BVS",
+  "check": "GENERAL_BASKET",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "\u00a79.1(o) GROWER_GREATER_OF floor 20,000,000 (AT_LEAST)",
+  "clause": "\u00a79.1(o) 'not to exceed the greater of (i) $20,000,000 and (ii) ... 20% of Consolidated EBITDA'",
+  "note": ""
+ },
+ {
+  "id": "BVS",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "EBITDA base NEEDS_INPUT (equity-method exclusion not in filings); (s)(x) Non-Guarantor aggregate greater-of held NEEDS_INPUT",
+  "clause": "CNI excludes equity-method income; \u00a79.1 proviso (x) $26M / 26% cap across clauses",
+  "note": ""
+ },
+ {
+  "id": "EXPE",
+  "check": "FIN_COVENANT",
+  "cls": "WRONG",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a76.06 'Leverage Ratio' filed DEBT_INCURRENCE with 'Ratio threshold: 4.00 / 4.50 / 4.00 to 1.00'; FINANCIAL_RATIOS family empty; leverageCapacity maxLeverage 4 cited to '\u00a76.04 Fundamental Changes (c)(b)'",
+  "clause": "\u00a76.06 Leverage Ratio 'will not permit ... the Leverage Ratio to exceed 4.00 to 1.00' (4.50 for four Test Periods after an elected Qualified Material Acquisition)",
+  "note": "Levels right, but the maintenance covenant is classified as debt incurrence and its citation is mis-sectioned."
+ },
+ {
+  "id": "EXPE",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "10 add-backs; (vi) restructuring/non-recurring capped at 15% of EBITDA (held pending EBITDA)",
+  "clause": "(vi) 'together with the aggregate amount of all other Capped Adjustments ... shall not exceed 15% of Consolidated EBITDA'; Capped Adjustments = (a)(vi) + \u00a71.04(b)(ii) pro forma synergies",
+  "note": "The cap's other member sits in \u00a71.04(b)(ii) (pro forma synergies, not an add-back line), so it is not shown as shared."
+ },
+ {
+  "id": "EXPE",
+  "check": "RATIO_BASKET",
+  "cls": "N/A",
+  "mechanism": "",
+  "engine": "none",
+  "clause": "no ratio basket",
+  "note": ""
+ },
+ {
+  "id": "EXPE",
+  "check": "GENERAL_BASKET",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M5_COMPOSITE_CAP_LIMBS",
+  "engine": "\u00a76.01(m) GROWER_GREATER_OF NEEDS_INPUT 'greater-of fixed limb' (no floor)",
+  "clause": "\u00a76.01(m) other Indebtedness (with 6.02(g) secured and 6.03(h) Attributable Debt) 'shall not exceed the greater of (i) US$1,400,000,000 and (ii) 10.0% of Consolidated Adjusted Total Assets'",
+  "note": "Fixed limb written 'US$1,400,000,000' not read, so the floor is withheld (other greater-of floors are computed)."
+ },
+ {
+  "id": "EXPE",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "leverageCapacity NEEDS_INPUT 'EBITDA operand not derivable'",
+  "clause": "CNI exclusions not in filings",
+  "note": ""
+ },
+ {
+  "id": "BYRN",
+  "check": "FIN_COVENANT",
+  "cls": "WRONG",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a79.1 'Leverage Ratio' filed DEBT_INCURRENCE ('Ratio threshold: 1.50 / 1.75 to 1.00', 'Amount/threshold: $5,000,000'); \u00a79.2 FCCR FINANCIAL_MAINTENANCE 1.25 (right); ratio layer no maintenance thresholds",
+  "clause": "Art. 9 FINANCIAL COVENANTS: \u00a79.1 Leverage Ratio (inline-defined) 'to be greater than 1.50 to 1.00' (1.75 in an elected Acquisition Holiday Period); \u00a79.2 FCCR 'less than 1.25 to 1.00'",
+  "note": "Levels right; leverage covenant classified as debt incurrence (inline-defined ratio)."
+ },
+ {
+  "id": "BYRN",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "WRONG",
+  "mechanism": "M6_EBITDA_MEASURE_LAYER",
+  "engine": "CNI exclusions (x)/(y) and deduction (c)(iii) 'non-recurring, non-cash items increasing net income' emitted as add-back lines (tracker basis UNCAPPED_NEEDS_INPUT); (vi) $375,000 shown as per-period CAP_HEADROOM; (viii) 10% cap bound, CONDITIONAL",
+  "clause": "EBITDA = net income (excluding (x),(y)) + (b)(i)-(viii) - (c)(i)-(iii); (vi) closing-date transaction costs 'incurred on or prior to the Closing Date not to exceed $375,000 in the aggregate'; (viii) lender-approved, 10% cap",
+  "note": "Exclusions/deductions offered as add-back potential (wrong sign); one-time closing cap treated as recurring headroom."
+ },
+ {
+  "id": "BYRN",
+  "check": "RATIO_BASKET",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M10_ENUMERATION_COVERAGE",
+  "engine": "DEBT family: \u00a78.1 found, 0 baskets; LEVERAGE thresholds only from RP \u00a78.4(c) (1.00)",
+  "clause": "\u00a78.1(d) Subordinated Debt if pro forma Leverage Ratio 'is not greater than 2.00 to 1.00'",
+  "note": "Run-in list inside one sentence '(a) ..., (b) ..., (c) ... $5,000,000, (d) ...; (e) ...' yields no baskets."
+ },
+ {
+  "id": "BYRN",
+  "check": "GENERAL_BASKET",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M10_ENUMERATION_COVERAGE",
+  "engine": "no basket (DEBT NEEDS_INPUT, n=0)",
+  "clause": "\u00a78.1(e) 'other Debt not to exceed $500,000 in the aggregate'",
+  "note": "Same run-in list."
+ },
+ {
+  "id": "BYRN",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "(viii) lender-approved add-backs CONDITIONAL, CAP_UNKNOWN, not counted",
+  "clause": "(viii) 'approved by Lender in its reasonable discretion'",
+  "note": ""
+ },
+ {
+  "id": "ZETA",
+  "check": "FIN_COVENANT",
+  "cls": "FALSE-CONFIDENT",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a77.11(a) FINANCIAL_MAINTENANCE 'Ratio threshold: 0.50 to 1.00'; \u00a77.11(b) 1.25 (right); ratio layer no thresholds",
+  "clause": "\u00a77.11(a) Consolidated Net Leverage Ratio 'to be greater than 3.25:1.00' (+0.50 to 1.00 for an elected Elevated Covenant Period); (b) FCCR 'less than 1.25 to 1.00'",
+  "note": "Colon base level unread; the '0.50 to 1.00' step-up increment is presented as the leverage covenant level."
+ },
+ {
+  "id": "ZETA",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "FALSE-CONFIDENT",
+  "mechanism": "M1_CAP_SCOPE_ATTRIBUTION",
+  "engine": "(b)(i) restructuring cap=null, tracker basis UNCAPPED_NEEDS_INPUT; (b)(ii) run-rate 'cap scope unresolved ((b) not bound to exactly one clause): capped by an undetermined amount'",
+  "clause": "clause (b) = (i) restructuring + (ii) run-rate; 'the aggregate amount permitted to be added back pursuant to this clause (b) ... when combined with ... Section 1.03(c) shall not exceed 20.0% of pro forma Consolidated EBITDA'",
+  "note": "Cap on a parent clause (b) is half-bound: the run-rate child is held capped-unknown (fix #432 behaviour) but the restructuring sibling stays uncapped."
+ },
+ {
+  "id": "ZETA",
+  "check": "RATIO_BASKET",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "\u00a77.02(r) UNLIMITED, formulaKind UNLIMITED_SUBJECT_TO_GATE, dollar room NEEDS_INPUT ('Unlimited is not a certified capacity grant')",
+  "clause": "\u00a77.02(r) 'other unsecured Indebtedness in an unlimited amount, provided that after giving pro forma effect ... in compliance with ... Section 7.11(a)'",
+  "note": "Gate kept; no adjacent figure taken. Gate level (3.25x via 7.11(a)) not surfaced."
+ },
+ {
+  "id": "ZETA",
+  "check": "GENERAL_BASKET",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "\u00a77.02(l) FIXED_DOLLAR COMPUTED 18,000,000",
+  "clause": "(l) 'other Indebtedness ... not to exceed $18,000,000'",
+  "note": ""
+ },
+ {
+  "id": "ZETA",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "(b)(ii) run-rate CAP_UNKNOWN (scope unresolved -> capped by an undetermined amount), never uncapped",
+  "clause": "shared cap with Section 1.03(c) pro forma amounts",
+  "note": ""
+ },
+ {
+  "id": "CDW",
+  "check": "FIN_COVENANT",
+  "cls": "WRONG",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a76.06 'Leverage Ratio' filed DEBT_INCURRENCE with 'Ratio threshold: 4.00 to 1.00'; FINANCIAL_RATIOS family has no \u00a76.06 row; LEVERAGE threshold 4 cited to '\u00a76.04 Fundamental Changes (b)(2)'",
+  "clause": "\u00a76.06 'will not permit the Leverage Ratio ... to exceed, 4.00 to 1.00' (4.50 for four quarters after a Qualified Acquisition Election)",
+  "note": "Level right; covenant classified as debt incurrence and threshold cited to the wrong section (proviso text)."
+ },
+ {
+  "id": "CDW",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "WRONG",
+  "mechanism": "M12_PROVISO_SUBLIST_AS_ADDBACKS",
+  "engine": "(viii) QoE adjustments and (ix) run-rate synergies share a greater-of cap, amount 260,000,000 (fixed limb, 'cap may be higher') - right; but insurance proviso conditions '(A) not denied by the applicable carrier ...' and '(B) in fact reimbursed ...' emitted as add-back lines; a CNI hedging item emitted as '(i) OTHER' add-back",
+  "clause": "(viii)+(ix) 'shall not exceed ... the greater of (x) $260,000,000 and (y) 15% of Consolidated EBITDA'; (xi) insurance-reimbursable expenses 'so long as ... (A) not denied ... and (B) in fact reimbursed ...'",
+  "note": "Shared greater-of cap bound correctly (fix #432); proviso conditions become phantom add-back lines (same as DELL)."
+ },
+ {
+  "id": "CDW",
+  "check": "RATIO_BASKET",
+  "cls": "N/A",
+  "mechanism": "",
+  "engine": "none",
+  "clause": "no ratio basket (non-guarantor debt limitation only)",
+  "note": ""
+ },
+ {
+  "id": "CDW",
+  "check": "GENERAL_BASKET",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "\u00a76.01(b)(xxi) GROWER_GREATER_OF floor 1,500,000,000 (AT_LEAST)",
+  "clause": "(xxi) other Non-Guarantor Indebtedness (with 6.02(k) liens and sale/leasebacks) 'does not exceed the greater of $1,500,000,000 and 10% of Total Assets'",
+  "note": ""
+ },
+ {
+  "id": "CDW",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "(viii)/(ix) cap held at the $260M fixed limb with 'cap may be higher'; EBITDA base NEEDS_INPUT",
+  "clause": "greater-of cap whose % limb needs EBITDA",
+  "note": ""
+ },
+ {
+  "id": "BR",
+  "check": "FIN_COVENANT",
+  "cls": "WRONG",
+  "mechanism": "M2_FIN_COVENANT_CLASSIFICATION_AND_LEVEL",
+  "engine": "customer \u00a76.07 'Leverage Ratio' filed DEBT_INCURRENCE with 'Ratio threshold: 3.50 / 4.00 / 3.50'; FINANCIAL_RATIOS family empty; leverageCapacity maxLeverage 3.5 (NEEDS_INPUT)",
+  "clause": "\u00a76.07 'will not permit the Leverage Ratio ... to exceed 3.50 to 1.00' (4.00 after an elected Material Specified Acquisition)",
+  "note": "Levels right; maintenance covenant classified as debt incurrence."
+ },
+ {
+  "id": "BR",
+  "check": "EBITDA_ADDBACKS",
+  "cls": "CORRECT",
+  "mechanism": "",
+  "engine": "6 add-backs, uncapped",
+  "clause": "Consolidated EBITDA (i)-(vi), no caps",
+  "note": ""
+ },
+ {
+  "id": "BR",
+  "check": "RATIO_BASKET",
+  "cls": "N/A",
+  "mechanism": "",
+  "engine": "none",
+  "clause": "no ratio basket",
+  "note": ""
+ },
+ {
+  "id": "BR",
+  "check": "GENERAL_BASKET",
+  "cls": "FAIL-CLOSED-OVERCAUTIOUS",
+  "mechanism": "M10_ENUMERATION_COVERAGE",
+  "engine": "DEBT family \u00a76.2 found but 0 baskets",
+  "clause": "\u00a76.02(n) other Subsidiary Indebtedness/preferred (with 6.01(n) liens and 6.03(b) Attributable Debt) 'shall not at any time exceed the greater of (y) US$200,000,000 and (z) 18% of Consolidated EBITDA'",
+  "note": "Whole \u00a76.02 list (a)-(n) yields no rows; fixed limb also written 'US$'."
+ },
+ {
+  "id": "BR",
+  "check": "FAIL_CLOSED",
+  "cls": "FAIL-CLOSED-OK",
+  "mechanism": "",
+  "engine": "leverageCapacity NEEDS_INPUT 'EBITDA operand not derivable'",
+  "clause": "CNI exclusions not in filings",
+  "note": ""
+ }
+]

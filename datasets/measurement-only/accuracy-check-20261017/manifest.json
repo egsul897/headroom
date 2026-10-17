@@ -1,0 +1,236 @@
+{
+ "schemaVersion": "grok.accuracy-check.manifest.v1",
+ "purpose": "MEASUREMENT_ONLY",
+ "doNotTune": true,
+ "statement": "Independent verification sample (Grok). MEASUREMENT-ONLY: never use these documents, their text, or their scores to tune, fix, regression-pin, or calibrate any engine rule. Fixes must be justified by the root-cause mechanism on other documents and re-measured here.",
+ "createdAt": "2026-10-17",
+ "selection": "EDGAR full-text search (efts) for 8-K/10-Q EX-10 credit agreements filed 2025-06..2026-10; excluded every CIK and accession found in the repo (release-1, #398, main), local EDGAR-expand corpus/discovery manifests (hr356/hr358/hr-dg/hr-rd/hr-ebitda .local-knowledge-corpus), xbrl-cache, base-docs, scoreboard snapshot/HELDOUT/BLIND/dev manifests, and the 507-issuer edgar-expand run log.",
+ "exclusionCounts": {
+  "ciks": 12451,
+  "accessions": 1343895
+ },
+ "sample": [
+  {
+   "id": "EB",
+   "cik": "1475115",
+   "issuer": "Eventbrite, Inc.  (EB)  (CIK 0001475115)",
+   "accession": "0001475115-25-000105",
+   "exhibit": "creditagreementdatedaugust.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2025-08-07",
+   "url": "https://www.sec.gov/Archives/edgar/data/1475115/000147511525000105/creditagreementdatedaugust.htm"
+  },
+  {
+   "id": "LMB",
+   "cik": "1606163",
+   "issuer": "Limbach Holdings, Inc.  (LMB)  (CIK 0001606163)",
+   "accession": "0001628280-26-061042",
+   "exhibit": "pnccreditagreement-limbach.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-09-09",
+   "url": "https://www.sec.gov/Archives/edgar/data/1606163/000162828026061042/pnccreditagreement-limbach.htm"
+  },
+  {
+   "id": "IIIV",
+   "cik": "1728688",
+   "issuer": "i3 Verticals, Inc.  (IIIV)  (CIK 0001728688)",
+   "accession": "0001728688-26-000048",
+   "exhibit": "i3jpm-arcreditagreement.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-10-09",
+   "url": "https://www.sec.gov/Archives/edgar/data/1728688/000172868826000048/i3jpm-arcreditagreement.htm"
+  },
+  {
+   "id": "RXO",
+   "cik": "1929561",
+   "issuer": "RXO, Inc.  (RXO)  (CIK 0001929561)",
+   "accession": "0001929561-26-000006",
+   "exhibit": "ex101-rxoablcreditagreemen.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-02-06",
+   "url": "https://www.sec.gov/Archives/edgar/data/1929561/000192956126000006/ex101-rxoablcreditagreemen.htm"
+  },
+  {
+   "id": "CVNA",
+   "cik": "1690820",
+   "issuer": "CARVANA CO.  (CVNA)  (CIK 0001690820)",
+   "accession": "0001690820-26-000059",
+   "exhibit": "ex_101cvnatlb-creditagre.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-08-14",
+   "url": "https://www.sec.gov/Archives/edgar/data/1690820/000169082026000059/ex_101cvnatlb-creditagre.htm"
+  },
+  {
+   "id": "ACCV",
+   "cik": "2141406",
+   "issuer": "Accelevation Holdings Corp.  (ACCV)  (CIK 0002141406)",
+   "accession": "0001628280-26-065600",
+   "exhibit": "ex101-accelevationcreditag.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-10-13",
+   "url": "https://www.sec.gov/Archives/edgar/data/2141406/000162828026065600/ex101-accelevationcreditag.htm"
+  },
+  {
+   "id": "AVO",
+   "cik": "1802974",
+   "issuer": "Mission Produce, Inc.  (AVO)  (CIK 0001802974)",
+   "accession": "0001193125-26-138164",
+   "exhibit": "d278137dex101.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-04-01",
+   "url": "https://www.sec.gov/Archives/edgar/data/1802974/000119312526138164/d278137dex101.htm"
+  },
+  {
+   "id": "UTI",
+   "cik": "1261654",
+   "issuer": "UNIVERSAL TECHNICAL INSTITUTE INC  (UTI)  (CIK 0001261654)",
+   "accession": "0001193125-26-354799",
+   "exhibit": "d404364dex101.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-08-18",
+   "url": "https://www.sec.gov/Archives/edgar/data/1261654/000119312526354799/d404364dex101.htm"
+  },
+  {
+   "id": "CHH",
+   "cik": "1046311",
+   "issuer": "CHOICE HOTELS INTERNATIONAL INC /DE  (CHH)  (CIK 0001046311)",
+   "accession": "0001193125-26-374377",
+   "exhibit": "d110369dex101.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-08-28",
+   "url": "https://www.sec.gov/Archives/edgar/data/1046311/000119312526374377/d110369dex101.htm"
+  },
+  {
+   "id": "RGP",
+   "cik": "1084765",
+   "issuer": "RESOURCES CONNECTION, INC.  (RGP)  (CIK 0001084765)",
+   "accession": "0001084765-25-000085",
+   "exhibit": "finalrgp-boaamendedandrest.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2025-07-07",
+   "url": "https://www.sec.gov/Archives/edgar/data/1084765/000108476525000085/finalrgp-boaamendedandrest.htm"
+  },
+  {
+   "id": "CDNL",
+   "cik": "2079999",
+   "issuer": "Cardinal Infrastructure Group Inc.  (CDNL)  (CIK 0002079999)",
+   "accession": "0001193125-26-389363",
+   "exhibit": "cdnl-ex10_1.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-09-11",
+   "url": "https://www.sec.gov/Archives/edgar/data/2079999/000119312526389363/cdnl-ex10_1.htm"
+  },
+  {
+   "id": "LINC",
+   "cik": "1286613",
+   "issuer": "LINCOLN EDUCATIONAL SERVICES CORP  (LINC)  (CIK 0001286613)",
+   "accession": "0001140361-26-028230",
+   "exhibit": "ef20077785_ex10-1.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-07-10",
+   "url": "https://www.sec.gov/Archives/edgar/data/1286613/000114036126028230/ef20077785_ex10-1.htm"
+  },
+  {
+   "id": "GOLF",
+   "cik": "1672013",
+   "issuer": "Acushnet Holdings Corp.  (GOLF)  (CIK 0001672013)",
+   "accession": "0001193125-25-297330",
+   "exhibit": "d914058dex101.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2025-11-25",
+   "url": "https://www.sec.gov/Archives/edgar/data/1672013/000119312525297330/d914058dex101.htm"
+  },
+  {
+   "id": "VRRM",
+   "cik": "1682745",
+   "issuer": "VERRA MOBILITY Corp  (VRRM)  (CIK 0001682745)",
+   "accession": "0001193125-25-242530",
+   "exhibit": "vrrm-ex10_1.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2025-10-17",
+   "url": "https://www.sec.gov/Archives/edgar/data/1682745/000119312525242530/vrrm-ex10_1.htm"
+  },
+  {
+   "id": "RYI",
+   "cik": "1481582",
+   "issuer": "Ryerson Holding Corp  (RYI)  (CIK 0001481582)",
+   "accession": "0001193125-26-051335",
+   "exhibit": "d29973dex101.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-02-13",
+   "url": "https://www.sec.gov/Archives/edgar/data/1481582/000119312526051335/d29973dex101.htm"
+  }
+ ],
+ "reserve_unscored": [
+  {
+   "id": "PHR",
+   "cik": "1412408",
+   "issuer": "Phreesia, Inc.  (PHR)  (CIK 0001412408)",
+   "accession": "0001412408-25-000114",
+   "exhibit": "ex102-capitaloneagreement.htm",
+   "exhibitType": "EX-10.2",
+   "form": "8-K",
+   "filed": "2025-11-12",
+   "url": "https://www.sec.gov/Archives/edgar/data/1412408/000141240825000114/ex102-capitaloneagreement.htm"
+  },
+  {
+   "id": "ALOT",
+   "cik": "8146",
+   "issuer": "AstroNova, Inc.  (ALOT)  (CIK 0000008146)",
+   "accession": "0001193125-25-269982",
+   "exhibit": "d32176dex101.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2025-11-06",
+   "url": "https://www.sec.gov/Archives/edgar/data/8146/000119312525269982/d32176dex101.htm"
+  },
+  {
+   "id": "RVLV",
+   "cik": "1746618",
+   "issuer": "Revolve Group, Inc.  (RVLV)  (CIK 0001746618)",
+   "accession": "0001193125-26-037611",
+   "exhibit": "rvlv-ex10_1.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2026-02-04",
+   "url": "https://www.sec.gov/Archives/edgar/data/1746618/000119312526037611/rvlv-ex10_1.htm"
+  },
+  {
+   "id": "TH",
+   "cik": "1712189",
+   "issuer": "Target Hospitality Corp.  (TH)  (CIK 0001712189)",
+   "accession": "0001104659-25-124455",
+   "exhibit": "tm2534169d1_ex10-1.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2025-12-29",
+   "url": "https://www.sec.gov/Archives/edgar/data/1712189/000110465925124455/tm2534169d1_ex10-1.htm"
+  },
+  {
+   "id": "CTRI",
+   "cik": "1981599",
+   "issuer": "Centuri Holdings, Inc.  (CTRI)  (CIK 0001981599)",
+   "accession": "0001981599-25-000038",
+   "exhibit": "exhibit101.htm",
+   "exhibitType": "EX-10.1",
+   "form": "8-K",
+   "filed": "2025-07-14",
+   "url": "https://www.sec.gov/Archives/edgar/data/1981599/000198159925000038/exhibit101.htm"
+  }
+ ]
+}
