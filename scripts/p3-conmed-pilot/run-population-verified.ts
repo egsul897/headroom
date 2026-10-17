@@ -38,10 +38,11 @@ import { persistCandidate, VerifiedUnitManifestWriter } from "./evidence";
 import { detectCreditExhaustionInError, GatewayResponseSentinel, type CreditExhaustionSignal } from "./gateway-credit";
 import { compileReservationUsd, compileShape, MAX_FIRST_TURN_INPUT_TOKENS_REEXPORT, outputTokensCap, verifyReservationUsd, verifyShape, MAX_RESERVED_CONVERSATIONS, TURNS_PER_CONVERSATION } from "./reservation-policy";
 import { runCandidateLoop, type AttemptStatus, type CompileExecution, type VerifyExecution, type VerifyOutcome } from "./population-loop";
+import { pilotPath } from "./pilot-paths";
 export type { AttemptStatus, VerifyOutcome } from "./population-loop";
 
 /** Output directory. CONMED_RUN_OUT lets a continuation write beside, never over, the original run. */
-export const OUT = process.env.CONMED_RUN_OUT ?? "/tmp/claude-0/pilot/population-verified";
+export const OUT = process.env.CONMED_RUN_OUT ?? pilotPath("population-verified");
 export const LOCKED_MODEL = "deepseek/deepseek-v4-flash";
 export const FORBIDDEN_MODEL_SUFFIX = "-0731";
 /** From docs/phase-3-conmed-resume/01-calibration.json: HARD_WORST_AUTHORIZED $3.29 rounded up to the next $0.25. */

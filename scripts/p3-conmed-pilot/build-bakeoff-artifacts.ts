@@ -24,9 +24,10 @@ import {
 import type { ProbeSlot } from "./bakeoff";
 import { quarantineRows } from "./gateway-health";
 import type { CandidateRecord } from "./compile-run";
+import { pilotPath } from "./pilot-paths";
 
 const ROOT = process.cwd();
-const RUN = "/tmp/claude-0/pilot/bakeoff";
+const RUN = pilotPath("bakeoff");
 const OUT = "docs/phase-3-cheap-model-bakeoff";
 export const EVIDENCE_LABEL = "LOW_COST_DIAGNOSTIC_PIPELINE";
 /** The full sealed CONMED population after exact dedup, as the pilot measured it. */
@@ -158,7 +159,7 @@ export function subCentCompletion(results: ModelBakeoffResult[], probes: ProbeSl
  * back out here. This is a SECONDARY source, used only where the frozen record has no
  * latency of its own, and it is labelled as such wherever it is consumed.
  */
-export function latencyFromLog(logPath = "/tmp/claude-0/pilot/bakeoff.log"): Map<string, Map<string, number>> {
+export function latencyFromLog(logPath = pilotPath("bakeoff.log")): Map<string, Map<string, number>> {
   const byModel = new Map<string, Map<string, number>>();
   if (!fs.existsSync(logPath)) return byModel;
   let current: string | null = null;

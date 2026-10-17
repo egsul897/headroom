@@ -27,6 +27,7 @@ import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/disc
 import { COMPANY_ID, INSTRUMENT_KEY, buildDeterministicStages, contextBundlesFor, operativeTextFor, rehydrateNodeIds, sealedPopulation, sha256 } from "./pipeline";
 import { blendedPricePerMtok, loadCatalogue, type GatewayModel } from "./probe-models";
 import { DEFAULT_CANDIDATE_TIMEOUT_MS, assertAllowedTimeout } from "./timeout-policy";
+import { PILOT_DIR, gatewayCataloguePath } from "./pilot-paths";
 
 /**
  * §2 — the ONLY conditions that justify moving a candidate to a more expensive model.
@@ -188,7 +189,7 @@ export async function runPool<T, R>(items: T[], concurrency: number, fn: (item: 
   return out;
 }
 
-export function loadModel(id: string, cataloguePath = "/tmp/claude-0/pilot/models.json"): GatewayModel {
+export function loadModel(id: string, cataloguePath = gatewayCataloguePath()): GatewayModel {
   const m = loadCatalogue(cataloguePath).find((x) => x.id === id);
   if (!m) throw new Error(`model ${id} not in the gateway catalogue`);
   return m;
@@ -235,7 +236,7 @@ if (process.argv[1]?.endsWith("compile-run.ts")) {
         `${id.padEnd(40)} blended $${blendedPricePerMtok(m).toFixed(3)}/Mtok  ok ${ok}/${recs.length}  rules ${recs.reduce((s, r) => s + r.rules, 0)}  tools ${recs.reduce((s, r) => s + r.toolCalls, 0)}  cost $${cost.toFixed(5)}  statuses ${recs.map((r) => r.status).join("/")}  fails ${JSON.stringify(recs.flatMap((r) => r.failureReasons))}`,
       );
     }
-    fs.mkdirSync("/tmp/claude-0/pilot", { recursive: true });
-    fs.writeFileSync(path.join("/tmp/claude-0/pilot", `compiler-probe-${modelIds.join("_").replace(/[^a-zA-Z0-9]/g, "_")}.json`), JSON.stringify(results, null, 2));
+    fs.mkdirSync(PILOT_DIR, { recursive: true });
+    fs.writeFileSync(path.join(PILOT_DIR, `compiler-probe-${modelIds.join("_").replace(/[^a-zA-Z0-9]/g, "_")}.json`), JSON.stringify(results, null, 2));
   })();
 }

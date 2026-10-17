@@ -40,6 +40,7 @@ import { detectCreditExhaustionInError, GatewayResponseSentinel, type CreditExha
 import { compileReservationUsd, compileShape, MAX_FIRST_TURN_INPUT_TOKENS_REEXPORT, outputTokensCap, verifyReservationUsd, verifyShape, candidateMaxReservationUsd } from "./reservation-policy";
 import { runCandidateLoop, type AttemptStatus, type CompileExecution, type LoopCandidate, type LoopState, type VerifyExecution, type VerifyOutcome } from "./population-loop";
 import { plan, LOCKED_MODEL, FORBIDDEN_MODEL_SUFFIX, CONCURRENCY, AUTO_RETRY, FALLBACK_MODEL } from "./run-population-verified";
+import { pilotPath } from "./pilot-paths";
 
 export const EVIDENCE_LABEL = "BENCHMARK_RECOVERY" as const;
 export const TARGET_REFS = ["7.1", "7.2", "7.10", "7.2(c)", "7.13", "7.14", "7.16", "7.17"] as const;
@@ -48,7 +49,9 @@ export const TARGET_COUNT = 8;
 export const RECOVERY_CEILING_USD = 15.0;
 export const RECOVERY_STOP_AT_USD = 14.9;
 export const MAX_ATTEMPTS_PER_CASE = 2;
-export const OUT = process.env.CONMED_RECOVERY_OUT ?? "/tmp/claude-0/pilot/benchmark-recovery";
+/** Historical scratch prefix recorded in preserved segment files (provenance, not a path this code reads). */
+export const HISTORICAL_SCRATCH_PREFIX = "/tmp/claude-0/pilot/benchmark-recovery";
+export const OUT = process.env.CONMED_RECOVERY_OUT ?? pilotPath("benchmark-recovery");
 
 export type RecoveryOutcome = "RECOVERED" | "TIMEOUT" | "SCHEMA_FAILURE" | "PROVIDER_FAILURE" | "OTHER_EXECUTION_FAILURE" | "VERIFICATION_FAILURE" | "PERSISTENCE_INCOMPLETE" | "CREDIT_EXHAUSTED";
 
@@ -150,7 +153,9 @@ export function deriveResumeState(segmentDir: string, model: ReturnType<typeof l
   // a segment may be resumed after a harness death (no manifest) or after the shape guard stopped it
   // (RESERVATION_SHAPE_EXCEEDED, recalibrated since); never after COMPLETED, a budget stop or a 402
   if (manifest && manifest.stopReason !== "RESERVATION_SHAPE_EXCEEDED") throw new Error(`resume: the earlier segment ended ${manifest.stopReason}; nothing to resume`);
-  const scratchPrefix = sPlan.scratchDir ?? "/tmp/claude-0/pilot/benchmark-recovery";
+  // Segments recorded before plans carried scratchDir ran under this historical prefix; it is only used to
+  // rewrite the paths recorded in those preserved segments (never read from).
+  const scratchPrefix = sPlan.scratchDir ?? HISTORICAL_SCRATCH_PREFIX;
   const relocate = (f: string | null) => (f ? f.replace(scratchPrefix, segmentDir) : f);
   const accountingCorrections: ResumeState["accountingCorrections"] = [];
   const priorAttempts = sAttempts.map((a) => {

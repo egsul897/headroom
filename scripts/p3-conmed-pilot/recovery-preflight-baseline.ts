@@ -18,6 +18,7 @@ import { accountForRequest, BudgetLedger, DEFAULT_CANDIDATE_TIMEOUT_MS, OBSERVED
 import { OBSERVED_INPUT_TOKENS_PER_CANDIDATE } from "./premium-lock";
 import type { CandidateRecord } from "./compile-run";
 import type { GatewayModel } from "./probe-models";
+import { gatewayCataloguePath } from "./pilot-paths";
 
 const DOCS = "docs/phase-3-conmed-population-verified";
 const OUT = "docs/phase-3-conmed-benchmark-recovery-preflight";
@@ -69,7 +70,7 @@ export function p7RedBaseline(model: GatewayModel) {
 }
 
 if (process.argv[1]?.endsWith("recovery-preflight-baseline.ts")) {
-  const model = JSON.parse(fs.readFileSync("/tmp/claude-0/pilot/models.json", "utf8")).data.find((m: GatewayModel) => m.id === "deepseek/deepseek-v4-flash") as GatewayModel;
+  const model = JSON.parse(fs.readFileSync(gatewayCataloguePath(), "utf8")).data.find((m: GatewayModel) => m.id === "deepseek/deepseek-v4-flash") as GatewayModel;
   const sha = process.argv[2] ?? null;
   const out = { recordedAt: new Date().toISOString(), harnessSha: sha, harnessSourceReadFrom: sha ? `git show ${sha}:<file>` : "working tree", p6: p6RedBaseline(sha), p7: p7RedBaseline(model) };
   fs.mkdirSync(OUT, { recursive: true });

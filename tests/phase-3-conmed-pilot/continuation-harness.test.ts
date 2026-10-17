@@ -5,8 +5,12 @@
  */
 delete process.env.AI_GATEWAY_API_KEY;
 delete process.env.ANTHROPIC_API_KEY;
-process.env.CONMED_RUN_OUT = "/tmp/claude-0/pilot/population-continuation-test";
+// Scratch under the OS temp dir (was a hard-coded /tmp/claude-0/pilot path that exists only in one container).
+const TEST_SCRATCH = path.join(os.tmpdir(), "headroom-pilot-tests", "population-continuation-test");
+process.env.CONMED_RUN_OUT = TEST_SCRATCH;
 
+import os from "node:os";
+import path from "node:path";
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { continuationScratchDir, deriveContinuationSet, ORIGINAL_RUN_DIR, ORIGINAL_SCRATCH_DIR, preservedContinuationSegments } from "../../scripts/p3-conmed-pilot/run-population-continuation";
@@ -56,7 +60,7 @@ describe("the continuation runner (same runner, harness durability only)", () =>
     expect(LOCKED_MODEL).toBe("deepseek/deepseek-v4-flash");
     expect(AUTO_RETRY).toBe(false); expect(FALLBACK_MODEL).toBeNull(); expect(CONCURRENCY).toBe(1); expect(PREMIUM_MODEL_BUDGET_USD).toBe(0);
     expect(SPEND_CEILING_USD).toBe(3.5); expect(SPEND_STOP_AT_USD).toBe(3.450577);
-    expect(OUT).toBe("/tmp/claude-0/pilot/population-continuation-test");
+    expect(OUT).toBe(TEST_SCRATCH);
     for (const n of [1, 2, 3]) expect(continuationScratchDir(n)).not.toBe(ORIGINAL_SCRATCH_DIR);
     expect(new Set([1, 2, 3].map(continuationScratchDir)).size).toBe(3);
   });

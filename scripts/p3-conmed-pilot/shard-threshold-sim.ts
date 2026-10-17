@@ -23,6 +23,7 @@ import { DEFAULT_TOOL_BUDGET, SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMP
 import { operativeTextFor, COMPANY_ID, INSTRUMENT_KEY, sha256 } from "./pipeline";
 import { dedupExact } from "./dedup";
 import { buildInput, prepare } from "./compile-run";
+import { pilotPath } from "./pilot-paths";
 
 const OUT = "docs/phase-3-shard-threshold-simulation";
 export const THRESHOLDS = [12_000, 10_000, 9_000, 8_000, 7_000, 6_000, 5_000, 4_000] as const;
@@ -87,7 +88,7 @@ async function main() {
   const { keep } = dedupExact(rehydrated, (c) => operativeTextFor(c, stages.index));
 
   // Tier 1: real frozen inventories from the pilot's frozen responses, keyed by discoveryId.
-  const frozenPath = "/tmp/claude-0/pilot/run/06-frozen-responses.json";
+  const frozenPath = pilotPath("run/06-frozen-responses.json");
   const realInv = new Map<string, FrozenSemanticInventory>();
   if (fs.existsSync(frozenPath)) {
     for (const e of JSON.parse(fs.readFileSync(frozenPath, "utf8")) as { discoveryId: string; result?: { frozenInventory?: FrozenSemanticInventory } }[]) {

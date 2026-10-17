@@ -57,3 +57,24 @@ scope). It adds:
   `$TMPDIR/headroom-test-artifacts/` under vitest (or to `HEADROOM_ARTIFACT_DIR`).
   An intentional regeneration run (plain `npx tsx scripts/...`) still writes the
   committed copy.
+
+### Postgres in the gate (proposed revision)
+
+The proposed workflow adds a `postgres:17` service. For each run (base, then PR) a template
+database is migrated and seeded from that run's own checkout: `prisma migrate deploy`,
+`prisma/seed.ts`, then `scripts/populate-coherent-financial-core.ts` (coherent's FinancialState,
+re-expressed verbatim from its seeded snapshot). `scripts/platform/pg-workers.mjs` clones the
+template once per vitest worker (`<template>_w<VITEST_POOL_ID>`) through a wrapper config written
+to `node_modules/.pr-gate/` (gitignored), so the repo's `vitest.config.ts` is not edited and DB
+suites no longer share one database. Without `HEADROOM_TEST_PG_TEMPLATE_URL` nothing changes.
+Not seeded (no committed source to seed from): the `matthews` company and the live-database
+permission rows some DB suites were written against; those tests still fail, honestly, on base and PR.
+
+### Pilot scratch paths
+
+The CONMED pilot scripts no longer hard-code `/tmp/claude-0/pilot`
+(`scripts/p3-conmed-pilot/pilot-paths.ts`): scratch goes to `HEADROOM_PILOT_DIR` or
+`$TMPDIR/headroom-pilot`; the gateway catalogue defaults to the committed public snapshot
+`tests/fixtures/ai-gateway/models-catalogue.json` (`HEADROOM_GATEWAY_CATALOGUE` overrides); prior
+Tier-1 records come from the committed `docs/phase-3-conmed-low-cost-pilot/05-tier1-records.json`.
+Historical paths quoted in committed docs stay as provenance.

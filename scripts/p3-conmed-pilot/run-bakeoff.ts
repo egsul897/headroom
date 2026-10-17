@@ -22,8 +22,9 @@ import { discoverModels, buildProbeSet, type BakeoffCandidateModel } from "./bak
 import { assertNotPremium, classifyFailureCategory, OBSERVED_INPUT_TOKENS_PER_CANDIDATE } from "./premium-lock";
 import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest, classifyTimeout, mayAutomaticallyRetry, NO_PROGRESS, type CostRecord, type ProgressEvidence, type TimeoutClassification } from "./timeout-policy";
 import type { GatewayModel } from "./probe-models";
+import { gatewayCataloguePath, pilotPath } from "./pilot-paths";
 
-const OUT = "/tmp/claude-0/pilot/bakeoff";
+const OUT = pilotPath("bakeoff");
 const SPEND_CEILING_USD = 5;
 const SPEND_STOP_AT_USD = 4.5;
 
@@ -88,7 +89,7 @@ export function evaluateGate(r: Omit<ModelBakeoffResult, "passesGate" | "gateRea
 
 async function main() {
   const catalogueModels = discoverModels();
-  const rawCatalogue = JSON.parse(fs.readFileSync("/tmp/claude-0/pilot/models-bakeoff.json", "utf8")).data as GatewayModel[];
+  const rawCatalogue = JSON.parse(fs.readFileSync(gatewayCataloguePath(), "utf8")).data as GatewayModel[];
   const rawById = new Map(rawCatalogue.map((m) => [m.id, m]));
 
   const explicit = process.argv.slice(2).filter((a) => !a.startsWith("--"));

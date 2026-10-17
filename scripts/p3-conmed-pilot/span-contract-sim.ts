@@ -22,6 +22,7 @@ import { prepare, buildInput } from "./compile-run";
 import { dedupExact } from "./dedup";
 import { budgetFor, emptyInventory } from "./shard-threshold-sim";
 import { preChangeOperativeText } from "./pre-change-span";
+import { pilotPath } from "./pilot-paths";
 
 const OUT = "docs/phase-3-candidate-span-remediation";
 const INVENTORY_BATCH_CHARS = 6000, INVENTORY_PASSES = 2, MAX_TOOL_CALLS = 8, MAX_TURN_OVERHEAD = 4;
@@ -57,7 +58,7 @@ async function main() {
   // the session scratch directory, so a reclaimed container leaves every candidate on the structural-only
   // path. The planner consumes the inventory ONLY for ownership/must-link, so operative-span measurements
   // are identical either way; the tier is recorded so the provenance of the shard counts is never implied.
-  const frozenPath = "/tmp/claude-0/pilot/run/06-frozen-responses.json";
+  const frozenPath = pilotPath("run/06-frozen-responses.json");
   const realInv = new Map<string, FrozenSemanticInventory>();
   if (fs.existsSync(frozenPath)) for (const e of JSON.parse(fs.readFileSync(frozenPath, "utf8")) as { discoveryId: string; result?: { frozenInventory?: FrozenSemanticInventory } }[]) {
     const inv = e.result?.frozenInventory; if (inv && inv.items.length > 0 && !realInv.has(e.discoveryId)) realInv.set(e.discoveryId, inv);

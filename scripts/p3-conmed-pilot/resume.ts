@@ -26,9 +26,10 @@ import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/disc
 import { INSTRUMENT_KEY, operativeTextFor, sha256 } from "./pipeline";
 import { dedupExact } from "./dedup";
 import { PER_CANDIDATE_TIMEOUT_MS, buildInput, callerFor, loadModel, maxTokensFor, prepare, record, runPool, shouldEscalate, withTimeout, type CandidateRecord } from "./compile-run";
+import { pilotPath } from "./pilot-paths";
 
-const PRIOR = "/tmp/claude-0/pilot/run";
-const OUT = "/tmp/claude-0/pilot/resume";
+const PRIOR = pilotPath("run");
+const OUT = pilotPath("resume");
 const CEILING_USD = 10;
 const STOP_AT_USD = 9;
 

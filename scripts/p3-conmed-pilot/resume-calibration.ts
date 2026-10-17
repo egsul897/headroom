@@ -27,6 +27,7 @@ import { dedupExact } from "./dedup";
 import { COMPANY_ID, INSTRUMENT_KEY, operativeTextFor } from "./pipeline";
 import { OBSERVED_INPUT_TOKENS_PER_CANDIDATE, PREMIUM_MODEL_BUDGET_USD } from "./premium-lock";
 import { DEFAULT_CANDIDATE_TIMEOUT_MS } from "./timeout-policy";
+import { gatewayCataloguePath } from "./pilot-paths";
 /** The output rate in force when this calibration was frozen (2026-09-24). timeout-policy.ts has since been recalibrated to 200 tok/s (benchmark recovery, 7.16); this document is a historical snapshot and keeps its own figure. */
 const OBSERVED_OUTPUT_TOKENS_PER_SECOND = 125;
 
@@ -192,7 +193,7 @@ export function benchmarkCases(rows: CandidateRow[]) {
 
 if (process.argv[1]?.endsWith("resume-calibration.ts")) {
   void (async () => {
-    const catalogue = JSON.parse(fs.readFileSync("/tmp/claude-0/pilot/models.json", "utf8"));
+    const catalogue = JSON.parse(fs.readFileSync(gatewayCataloguePath(), "utf8"));
     const m = (catalogue.data ?? catalogue).find((x: { id: string }) => x.id === LOCKED_MODEL);
     if (!m || Number(m.pricing.input) !== PRICE.input || Number(m.pricing.output) !== PRICE.output) throw new Error("locked model price in the catalogue does not match the calibration constants");
     const den = await denominator();

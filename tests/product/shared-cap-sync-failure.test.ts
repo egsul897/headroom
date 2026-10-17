@@ -10,13 +10,18 @@
  */
 import { describe, expect, it, vi } from "vitest";
 
-const calls = { documentUpdate: [] as unknown[] };
-const fakePrisma = {
-  permission: { findMany: async () => [] as unknown[] },
-  sharedCapacityConstraint: { findMany: async () => [] as unknown[] },
-  sharedCapacityConstraintMember: { findMany: async () => [] as unknown[] },
-  document: { update: async (args: unknown) => { calls.documentUpdate.push(args); return {}; } },
-};
+// vi.mock is hoisted above every top-level statement, so the fake it returns must be created with
+// vi.hoisted (a plain top-level const is still in its TDZ when the mocked module is first imported).
+const { calls, fakePrisma } = vi.hoisted(() => {
+  const calls = { documentUpdate: [] as unknown[] };
+  const fakePrisma = {
+    permission: { findMany: async () => [] as unknown[] },
+    sharedCapacityConstraint: { findMany: async () => [] as unknown[] },
+    sharedCapacityConstraintMember: { findMany: async () => [] as unknown[] },
+    document: { update: async (args: unknown) => { calls.documentUpdate.push(args); return {}; } },
+  };
+  return { calls, fakePrisma };
+});
 vi.mock("@/lib/prisma", () => ({ prisma: fakePrisma }));
 
 import { syncDocumentCapacityFormulas } from "../../lib/product/customer-intelligence/compile-accepted";

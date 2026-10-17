@@ -22,8 +22,9 @@ import { assertNotPremium, OBSERVED_INPUT_TOKENS_PER_CANDIDATE } from "./premium
 import { BudgetLedger, OBSERVED_OUTPUT_TOKENS_PER_SECOND, accountForRequest, type CostRecord } from "./timeout-policy";
 import { persistCandidate, VerifiedUnitManifestWriter } from "./evidence";
 import type { GatewayModel } from "./probe-models";
+import { gatewayCataloguePath, pilotPath } from "./pilot-paths";
 
-const OUT = "/tmp/claude-0/pilot/population";
+const OUT = pilotPath("population");
 export const LOCKED_MODEL = "deepseek/deepseek-v4-flash";
 export const FORBIDDEN_MODEL = "deepseek/deepseek-v4-flash-0731";
 export const SPEND_CEILING_USD = 5;
@@ -56,7 +57,7 @@ function save(name: string, body: unknown) {
 }
 
 async function main() {
-  const catalogue = JSON.parse(fs.readFileSync("/tmp/claude-0/pilot/models-bakeoff.json", "utf8")).data as GatewayModel[];
+  const catalogue = JSON.parse(fs.readFileSync(gatewayCataloguePath(), "utf8")).data as GatewayModel[];
   const raw = catalogue.find((m) => m.id === LOCKED_MODEL)!;
   if (raw.id === FORBIDDEN_MODEL) throw new Error("the excluded -0731 model must never be dispatched to");
   assertNotPremium(raw.id, raw.pricing);
