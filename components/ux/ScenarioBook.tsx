@@ -158,7 +158,7 @@ export function ScenarioBook({
                     const value = column.lines.find((line) => line.label === label)?.value ?? "Needs input";
                     const base = columns[0]?.lines.find((line) => line.label === label)?.value ?? "";
                     const delta = index === 0 ? null : scenarioDelta(base, value);
-                    const changed = delta != null && delta !== "0";
+                    const changed = index > 0 && value !== base;
                     return (
                       <td key={column.id} className={changed ? "is-delta" : undefined}>
                         {value}

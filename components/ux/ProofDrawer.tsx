@@ -2,10 +2,9 @@
 
 import { useState, type ReactNode } from "react";
 import { DetailDrawer } from "@/components/motion/DetailDrawer";
-import { missingInputLabels, type FigureProof } from "@/lib/ux/present";
+import type { FigureProof } from "@/lib/ux/present";
 
 export function ProofDrawer({ open, proof, onClose }: { open: boolean; proof: FigureProof | null; onClose: () => void }) {
-  const missing = proof ? missingInputLabels(proof) : [];
   return (
     <DetailDrawer open={open && proof != null} title="How we got this" onClose={onClose}>
       {proof ? (
@@ -31,7 +30,6 @@ export function ProofDrawer({ open, proof, onClose }: { open: boolean; proof: Fi
               })}
             </ol>
           )}
-          {missing.length > 0 ? <p className="proof-missing">Missing: {missing.join(", ")}.</p> : null}
           <div className="proof-meta">
             <span className="proof-chip">{proof.clause?.trim() ? proof.clause : "Clause is not loaded"}</span>
             <span>{proof.page?.trim() ? proof.page : "Page is not loaded"}</span>
