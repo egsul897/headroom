@@ -73,6 +73,30 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   const builder = /Available Amount|builder basket|Cumulative Credit/i.test(basketText);
   const outstanding = /outstanding amount at any time|currently outstanding/i.test(basketText);
 
+  // P4 (Egzon ruling, 2026-10-17): no real basket is below
+  // $1,000 — a parsed money threshold under $1,000 is a UNIT
+  // MISREAD (a dropped scale: "$30 million" / "$30,000,000" read
+  // as $30), never a real basket. Fail closed: model nothing
+  // from it and name the suspected cause, so the item surfaces
+  // to counsel as NEEDS_INPUT instead of minting a $30
+  // Permission or auto-accepting. A ratio-driven item is exempt
+  // — its threshold is the ratio, and an incidental small
+  // amount in its text is not its threshold.
+  const ratioDriven = ratio != null && /leverage|incurrence|ratio debt|pro forma/i.test(basketText);
+  if (money != null && money > 0 && money < 0.001 && !ratioDriven) {
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: 0,
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        `Suspected unit misread: the parsed amount of $${Number((money * 1_000_000).toFixed(2)).toLocaleString("en-US")} is below $1,000 — no real basket is that small (a dropped scale, e.g. "$30 million" read as $30, is the likely cause). Not modeled; counsel to confirm the amount from the source text.`,
+      ],
+      modelingStatus: "KNOWN_NOT_MODELED",
+      missingFields: ["thresholdValue"],
+    };
+  }
+
   if (builder && money != null) {
     const cniMentioned = /net income|CNI/i.test(basketText);
     const cniShare = parsePctOf(basketText, "CNI");
@@ -209,6 +233,21 @@ export function parseFormulaFromItem(item: CovenantSummaryItem): ParsedFormula {
   // Resolve it to a FLAT_AMOUNT. A formula/conditional
   // definition does not resolve — fail closed below.
   const definedCap = resolveDefinedTermCap(item);
+  if (definedCap != null && definedCap > 0 && definedCap < 0.001) {
+    // P4: same unit-misread floor for a defined-term cap — a
+    // "Threshold Amount" of $750 is a dropped scale, not a cap.
+    return {
+      formulaType: "FLAT_AMOUNT",
+      thresholdValue: 0,
+      amountKind: "FIXED",
+      measurementBasis: "CUMULATIVE_INCURRED",
+      notes: [
+        `Suspected unit misread: the defined-term cap of $${Number((definedCap * 1_000_000).toFixed(2)).toLocaleString("en-US")} is below $1,000 — no real basket is that small (a dropped scale is the likely cause). Not modeled; counsel to confirm the amount from the source text.`,
+      ],
+      modelingStatus: "KNOWN_NOT_MODELED",
+      missingFields: ["thresholdValue"],
+    };
+  }
   if (definedCap != null) {
     return {
       formulaType: "FLAT_AMOUNT",

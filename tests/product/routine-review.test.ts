@@ -334,6 +334,30 @@ describe("isRoutineItem", () => {
     ).toBe(false);
   });
 
+  it("P4: a $30 million basket is routine-eligible (scale carried into the threshold)", () => {
+    expect(
+      isRoutineItem(
+        item({
+          plainEnglish: "The Borrower may incur Indebtedness in an aggregate principal amount not to exceed $30 million.",
+          materialBasketsThresholds: ["Amount/threshold: $30 million"],
+          operativeLanguageExcerpt: "The Borrower may incur Indebtedness not to exceed $30 million.",
+        }),
+      ),
+    ).toBe(true);
+  });
+
+  it("P4: a bare $30 basket (no scale evidence) is NEVER routine — unit misread, fail closed", () => {
+    expect(
+      isRoutineItem(
+        item({
+          plainEnglish: "The Borrower may incur Indebtedness in an aggregate principal amount not to exceed $30.",
+          materialBasketsThresholds: ["Amount/threshold: $30"],
+          operativeLanguageExcerpt: "The Borrower may incur Indebtedness not to exceed $30.",
+        }),
+      ),
+    ).toBe(false);
+  });
+
   it("a clean testable maintenance-ratio item is routine", () => {
     expect(
       isRoutineItem(

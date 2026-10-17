@@ -115,7 +115,7 @@ describe("proposeReviewDecision", () => {
     expect(p.needsAttention).toBe(true);
   });
 
-  it("an implausibly small parsed threshold proposes NEEDS_INPUT, never ACCEPT", () => {
+  it("P4: a sub-$1,000 parsed threshold proposes NEEDS_INPUT naming the unit misread, never ACCEPT", () => {
     const p = proposeReviewDecision(
       item({
         plainEnglish: "The Borrower may incur Indebtedness not to exceed $30.",
@@ -125,7 +125,8 @@ describe("proposeReviewDecision", () => {
     );
     expect(p.decision).toBe("NEEDS_INPUT");
     expect(p.needsAttention).toBe(true);
-    expect(p.reason).toMatch(/implausibly small|parsing artifact/i);
+    expect(p.reason).toMatch(/unit misread/i);
+    expect(p.reason).toMatch(/confirm the amount from the source text/i);
   });
 
   it("P1: a complete no-Default proviso does not block an ACCEPT (gate and proposer in lockstep)", () => {

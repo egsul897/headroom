@@ -102,6 +102,24 @@ describe("autoAcceptRoutineInterpretations compile verification", () => {
   });
 });
 
+describe("P4 unit-misread gate", () => {
+  it("a bare $30 basket is never SYSTEM-accepted — auto-accept records nothing", async () => {
+    const smallItem = {
+      ...routineGrantItem(),
+      plainEnglish: "The Borrower may incur Indebtedness in an aggregate principal amount not to exceed $30.",
+      materialBasketsThresholds: ["Amount/threshold: $30"],
+      operativeLanguageExcerpt: "The Borrower may incur Indebtedness not to exceed $30.",
+    };
+    stored.metadata = { covenantSummary: { items: [smallItem], sourceId: "src-1" } };
+    compileMock.mockResolvedValue([{ status: "COMPILED", missingFields: [] }]);
+    const res = await autoAcceptRoutineInterpretations({ companyId: "co-1", sourceId: "src-1" });
+    expect(res).toEqual({ accepted: 0, skipped: 1 });
+    expect(compileMock).not.toHaveBeenCalled();
+    const approvals = (stored.metadata as { reviewerApprovals?: unknown[] }).reviewerApprovals;
+    expect(approvals ?? []).toHaveLength(0);
+  });
+});
+
 describe("P0 recording integrity: per-item persistence isolation", () => {
   function twoRoutineItems() {
     const a = routineGrantItem();

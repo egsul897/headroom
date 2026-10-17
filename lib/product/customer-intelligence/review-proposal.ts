@@ -85,18 +85,19 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
   if (isRoutineItem(item)) {
     const grants = grantTypesForItem(item);
     const terms = compiledTerms(item);
-    // A parsed basket threshold below $1,000 is not a real basket
-    // in any financing document — it is a parsing artifact (e.g.
-    // a day-count or section number read as money, like "$30").
-    // Never propose ACCEPT for one; flag it for counsel instead.
-    // The $1,000 floor is a sanity bound, not a business rule:
-    // no operative basket in leveraged finance is under $1,000.
+    // P4 (Egzon ruling, 2026-10-17): a parsed basket threshold
+    // below $1,000 is not a real basket in any financing
+    // document — it is a UNIT MISREAD (a dropped scale, e.g.
+    // "$30 million" read as $30). Never propose ACCEPT for one;
+    // flag it for counsel with the suspected cause named. The
+    // parse layer fails closed on this shape, so this branch is
+    // the proposer's lockstep guard, mirroring isRoutineItem.
     if (grants.length > 0) {
       const parsed = parseFormulaFromItem(item);
       if (parsed.modelingStatus === "MODELED" && parsed.thresholdValue > 0 && parsed.thresholdValue < 0.001) {
         return {
           decision: "NEEDS_INPUT",
-          reason: `Parsed basket threshold ($${parsed.thresholdValue}M) is implausibly small — likely a parsing artifact, not a real basket. Counsel to confirm the true terms or reject it.`,
+          reason: `Parsed basket threshold of $${Math.round(parsed.thresholdValue * 1_000_000).toLocaleString("en-US")} is below $1,000 — no real basket is that small, so this is likely a unit misread (a dropped scale, e.g. "$30 million" read as $30). Counsel to confirm the amount from the source text.`,
           terms: null,
           needsAttention: true,
         };
@@ -185,6 +186,17 @@ export function proposeReviewDecision(item: CovenantSummaryItem): ReviewProposal
   }
   if (grants.length > 0) {
     const parsed = parseFormulaFromItem(item);
+    // P4: the parse layer failed closed on a suspected unit
+    // misread — name that cause, not a generic parse failure.
+    if (parsed.notes.some((n) => /unit misread/i.test(n))) {
+      return {
+        decision: "NEEDS_INPUT",
+        reason:
+          "A parsed amount in this provision is below $1,000 — no real basket is that small, so it is likely a unit misread (a dropped scale, e.g. \"$30 million\" read as $30). Counsel to confirm the amount from the source text.",
+        terms: null,
+        needsAttention: true,
+      };
+    }
     const missing = parsed.missingFields.length > 0 ? parsed.missingFields.join(", ") : "threshold / formula";
     return {
       decision: "NEEDS_INPUT",

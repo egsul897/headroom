@@ -101,6 +101,23 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
     return true;
   }
   if (!compilesCleanly(item)) return false;
+  // P4 unit-misread floor (lockstep with the proposer): a
+  // grant-bearing item whose MODELED money threshold is below
+  // $1,000 (0.001 in $M units) is NEVER routine — no real basket
+  // is that small; the figure is a dropped scale. The parse
+  // layer already fails closed on this shape, so this gate is
+  // defense in depth for any future parse path. Ratio formulas
+  // are exempt: their thresholdValue is a multiple, not dollars.
+  const parsedForGate = parseFormulaFromItem(item);
+  if (
+    parsedForGate.modelingStatus === "MODELED" &&
+    parsedForGate.formulaType !== "RATIO_GATE" &&
+    parsedForGate.formulaType !== "LEVERAGE_RATIO_ROOM" &&
+    parsedForGate.thresholdValue > 0 &&
+    parsedForGate.thresholdValue < 0.001
+  ) {
+    return false;
+  }
   // Category/grant agreement: the category classifier and the grant
   // classifier are independent signals. When they disagree — a DEBT
   // grant on a MERGERS/OTHER-category item (e.g. a Successors clause
