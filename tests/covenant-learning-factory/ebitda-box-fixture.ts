@@ -11,7 +11,7 @@ export const TEXT = `ARTICLE I DEFINITIONS
 `;
 export const args = { sourceId: "s1", text: TEXT, issuerCik: "1", financials: fin };
 
-export type FakeStore = EbitdaBoxStore & { boxes: unknown[]; rows: ConfirmationRow[]; updates: number };
+export type FakeStore = EbitdaBoxStore & { boxes: Array<{ id: string; payload: unknown }>; rows: ConfirmationRow[]; updates: number; beforeCreate?: (data: Omit<ConfirmationRow, "id" | "createdAt">) => void };
 
 /** In-memory store. Implements the append-only API; a legacy `upsert` (pre-hardening code) is also provided and counted
  *  as an in-place update so tests can assert that history is never overwritten. */
@@ -24,10 +24,12 @@ export function fakeStore(): FakeStore {
     customerEbitdaBox: {
       create: async ({ data }) => { const r = { id: `b${boxes.length}`, ...data, createdAt: new Date(++t * 1000) }; boxes.push(r); return { id: r.id }; },
       findFirst: async ({ where }) => [...boxes].reverse().find((b) => b.companyId === where.companyId && b.documentId === where.documentId) ?? null,
+      findUnique: async ({ where }) => boxes.find((b) => b.id === where.id) ?? null,
     },
     customerEbitdaConfirmation: {
       create: async ({ data }) => {
-        if (rows.some((r) => r.companyId === data.companyId && r.documentId === data.documentId && r.idempotencyKey === data.idempotencyKey)) throw new Error("unique violation: idempotencyKey");
+        s.beforeCreate?.(data);
+        if (rows.some((r) => r.companyId === data.companyId && r.documentId === data.documentId && r.idempotencyKey === data.idempotencyKey)) throw Object.assign(new Error("Unique constraint failed on the fields: (`companyId`,`documentId`,`idempotencyKey`)"), { code: "P2002" });
         const r: ConfirmationRow = { id: `r${String(rows.length).padStart(4, "0")}`, ...data, createdAt: new Date(++t * 1000) };
         rows.push(r); return { id: r.id };
       },

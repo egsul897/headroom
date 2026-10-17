@@ -39,7 +39,8 @@ export interface EbitdaBoxItem {
 
 export interface EbitdaBox {
   version: typeof EBITDA_BOX_VERSION;
-  status: "READY" | "NEEDS_FINANCIALS" | "NO_EBITDA_DEFINITION";
+  /** FAILED: the last (background) computation failed; `reason` says why. Earlier boxes stay in history. */
+  status: "READY" | "NEEDS_FINANCIALS" | "NO_EBITDA_DEFINITION" | "FAILED";
   term: string | null; periodEnd: string | null; cik: string | null;
   /** Supported Consolidated EBITDA now: base + deductions + counted add-backs (null when the base is not derivable). */
   totalEbitda: string | null;
@@ -151,12 +152,15 @@ export const canonicalInputKey = (k: string) => k.replace(/\s+/g, "").toUpperCas
 export interface ConfirmationRow {
   id: string; companyId: string; documentId: string; inputKey: string; kind: string; value: string; source: string;
   confirmedBy: string | null; idempotencyKey: string; createdAt: Date;
+  /** The original response ({ boxId, gain }) written with the row, returned verbatim on an idempotent replay. */
+  response?: unknown;
 }
 
 export interface EbitdaBoxStore {
   customerEbitdaBox: {
     create(args: { data: { companyId: string; documentId: string; status: string; version: string; payload: unknown } }): Promise<{ id: string }>;
     findFirst(args: { where: { companyId: string; documentId: string }; orderBy: { createdAt: "desc" } }): Promise<{ id: string; payload: unknown; createdAt: Date } | null>;
+    findUnique(args: { where: { id: string } }): Promise<{ id: string; companyId: string; documentId: string; payload: unknown; createdAt: Date } | null>;
   };
   /** Append-only: rows are only created, never updated or deleted; the latest row per (key, kind) is current. */
   customerEbitdaConfirmation: {
@@ -189,7 +193,7 @@ export async function loadConfirmations(db: EbitdaBoxStore, scope: { companyId: 
 
 export type ConfirmOutcome =
   | { ok: true; box: EbitdaBox; gain: CfoGain["gain"]; boxId: string; replayed?: boolean }
-  | { ok: false; status: 400 | 404 | 409 | 422; error: string };
+  | { ok: false; status: 400 | 404 | 409 | 422; error: string; code?: "NEEDS_BASE" | "IDEMPOTENCY_CONFLICT" | "OUT_OF_RANGE" };
 
 /** Hard ceiling for any confirmed amount (USD); also bounded by 10× the reported base EBITDA when that is known. */
 export const MAX_CONFIRMED_USD = 10n ** 12n;
@@ -246,23 +250,16 @@ export async function confirmEbitdaItem(
 
   if (idem) {
     const seen = await db.customerEbitdaConfirmation.findFirst({ where: { ...scope, idempotencyKey: idem } });
-    if (seen) {
-      const same = canonicalInputKey(seen.inputKey) === canonicalInputKey(inputKey) && seen.kind === kind && seen.value === value && seen.source === input.source.trim();
-      if (!same) return { ok: false, status: 409, error: "idempotencyKey was already used for a different confirmation" };
-      const box = computeEbitdaBox(args, prior);
-      const latest = await db.customerEbitdaBox.findFirst({ where: scope, orderBy: { createdAt: "desc" } });
-      return { ok: true, box, gain: null, boxId: latest?.id ?? "", replayed: true };
-    }
+    if (seen) return replayOf(db, scope, seen, { inputKey, kind, value, source: input.source.trim(), confirmedBy: input.confirmedBy });
   }
 
   const others = prior.filter((c) => !(canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === kind));
   const priorArgs: PipelineArgs = { ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...others.map(asBorrowerInput)] } };
   let gain: CfoGain["gain"];
   if (kind === "AMOUNT") {
-    const opt = (base.xbrl as Xbrl | null)?.ebitda;
-    const b = opt?.base?.value && /^-?\d+$/.test(opt.base.value) ? BigInt(opt.base.value) : null;
-    const bound = b != null && b > 0n && 10n * b < MAX_CONFIRMED_USD ? 10n * b : MAX_CONFIRMED_USD;
-    if (BigInt(value) > bound) return { ok: false, status: 422, error: `value exceeds the plausible maximum (${bound === MAX_CONFIRMED_USD ? "1e12 USD" : "10x the reported base EBITDA"})` };
+    const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, flag);
+    if (!lim.ok) return { ok: false, status: 422, code: "NEEDS_BASE", error: lim.error };
+    if (BigInt(value) > lim.bound) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value exceeds the plausible maximum (${lim.basis})` };
     const check = cfoRecompute(priorArgs, [{ key: inputKey, value, source: input.source.trim() }]);
     const res = check.results[0]!;
     if (!res.accepted) return { ok: false, status: /no tracker flag|ambiguous/.test(res.reason) ? 404 : 400, error: res.reason };
@@ -276,9 +273,65 @@ export async function confirmEbitdaItem(
     const withApproval = { ...priorArgs, financials: { ...priorArgs.financials!, borrowerInputs: [...(priorArgs.financials!.borrowerInputs ?? []), asBorrowerInput({ key: inputKey, value, source: input.source.trim(), kind })] } };
     gain = gainOf(capacitySnapshot(runAgreementPipeline(priorArgs)), capacitySnapshot(runAgreementPipeline(withApproval)));
   }
-  await db.customerEbitdaConfirmation.create({ data: { ...scope, inputKey, kind, value, source: input.source.trim(), confirmedBy: input.confirmedBy, idempotencyKey: idem ?? newIdempotencyKey() } });
-  const all = await loadConfirmations(db, scope);
-  const box = computeEbitdaBox(args, all);
+  // The box (with this confirmation applied) is saved first so the row can carry its original response; the row
+  // insert is the commit point. A concurrent insert with the same idempotency key loses on the unique index and
+  // answers with the winner's stored response (same principal + payload) or 409 — never a 500.
+  const box = computeEbitdaBox(args, [...prior.filter((c) => !(canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === kind)), { key: inputKey, value, source: input.source.trim(), kind, confirmedBy: input.confirmedBy, confirmedAt: new Date().toISOString() }]);
   const { id } = await saveEbitdaBox(db, scope, box);
+  const key = idem ?? newIdempotencyKey();
+  try {
+    await db.customerEbitdaConfirmation.create({ data: { ...scope, inputKey, kind, value, source: input.source.trim(), confirmedBy: input.confirmedBy, idempotencyKey: key, response: { boxId: id, gain } } });
+  } catch (err) {
+    if (!isUniqueViolation(err)) throw err;
+    const seen = await db.customerEbitdaConfirmation.findFirst({ where: { ...scope, idempotencyKey: key } });
+    if (!seen) throw err;
+    return replayOf(db, scope, seen, { inputKey, kind, value, source: input.source.trim(), confirmedBy: input.confirmedBy });
+  }
   return { ok: true, box, gain, boxId: id };
+}
+
+const isUniqueViolation = (err: unknown) => (err as { code?: string })?.code === "P2002" || /unique/i.test(err instanceof Error ? err.message : String(err));
+
+/** Idempotent replay: same principal and same payload → the stored original response; anything else → 409. */
+async function replayOf(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, seen: ConfirmationRow, now: { inputKey: string; kind: ConfirmationKind; value: string; source: string; confirmedBy: string }): Promise<ConfirmOutcome> {
+  const conflict = (why: string): ConfirmOutcome => ({ ok: false, status: 409, code: "IDEMPOTENCY_CONFLICT", error: `idempotencyKey was already used ${why}` });
+  if ((seen.confirmedBy ?? "") !== now.confirmedBy) return conflict("by a different principal");
+  const same = canonicalInputKey(seen.inputKey) === canonicalInputKey(now.inputKey) && seen.kind === now.kind && seen.value === now.value && seen.source === now.source;
+  if (!same) return conflict("for a different confirmation");
+  const r = (seen.response ?? null) as { boxId?: string; gain?: CfoGain["gain"] } | null;
+  const row = r?.boxId ? await db.customerEbitdaBox.findUnique({ where: { id: r.boxId } }) : null;
+  if (!row || row.companyId !== scope.companyId || row.documentId !== scope.documentId) return conflict("but its original response is not available");
+  return { ok: true, box: row.payload as EbitdaBox, gain: r!.gain ?? null, boxId: row.id, replayed: true };
+}
+
+/**
+ * Plausible maximum for a CFO amount, from a sourced figure only: 10× the reported base EBITDA when positive; else the
+ * issuer's reported revenue (an add-back cannot exceed revenue); else, for a line with a known dollar cap, 10× that cap
+ * (only the capped amount is ever counted). Otherwise there is nothing to bound it by: NEEDS_BASE. 1e12 is only an
+ * absolute ceiling on top of a sourced bound, never the bound itself.
+ */
+function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: AddBackFlag | undefined): { ok: true; bound: bigint; basis: string } | { ok: false; error: string } {
+  const int = (v: string | null | undefined) => (v != null && /^-?\d+$/.test(v) ? BigInt(v) : null);
+  const cap = (b: bigint) => (b < MAX_CONFIRMED_USD ? b : MAX_CONFIRMED_USD);
+  const base = int(baseValue);
+  if (base != null && base > 0n) return { ok: true, bound: cap(10n * base), basis: "10x the reported base EBITDA" };
+  const rev = int(fin.values.find((v) => v.metric === "revenue")?.value);
+  if (rev != null && rev > 0n) return { ok: true, bound: cap(rev), basis: "the issuer's reported revenue" };
+  const c = int(flag?.cap?.amount ?? null);
+  if (c != null && c > 0n) return { ok: true, bound: cap(10n * c), basis: "10x the clause's dollar cap" };
+  return { ok: false, error: "NEEDS_BASE: base EBITDA is missing or not positive and no other sourced figure (revenue, a dollar cap) bounds this line; the figure cannot be checked for plausibility" };
+}
+
+/** Persist a FAILED box (e.g. a background refresh error) so GET surfaces it with its reason. */
+export async function recordEbitdaBoxFailure(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, err: unknown): Promise<{ id: string }> {
+  const reason = (err instanceof Error ? err.message : String(err)).slice(0, 500) || "unknown error";
+  return saveEbitdaBox(db, scope, failedEbitdaBox(`EBITDA box computation failed: ${reason}`));
+}
+
+export function failedEbitdaBox(reason: string): EbitdaBox {
+  return {
+    version: EBITDA_BOX_VERSION, status: "FAILED", term: null, periodEnd: null, cik: null, totalEbitda: null, maximum: null, base: null, deductions: null,
+    confirmedAddBacks: "0", extraAvailableIfConfirmed: "0", pendingUnbounded: 0, pendingConditional: 0,
+    capacityImpact: { maxLeverage: null, leverageCapacity: null, leverageBound: null, extraDebtCapacityIfConfirmed: null }, items: [], confirmations: [], reason,
+  };
 }

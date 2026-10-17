@@ -83,6 +83,6 @@ export async function handleEbitdaConfirm(deps: EbitdaApiDeps, req: Request, p: 
     kind: (body.kind ?? "AMOUNT") as ConfirmationKind,
     confirmedBy: principal.principalId, idempotencyKey: idem,
   });
-  if (!out.ok) return { status: out.status, body: { error: out.error } };
+  if (!out.ok) return { status: out.status, body: { error: out.error, ...(out.code ? { code: out.code } : {}) } };
   return { status: 200, body: { id: out.boxId, box: out.box, gain: out.gain, ...(out.replayed ? { replayed: true } : {}) } };
 }
