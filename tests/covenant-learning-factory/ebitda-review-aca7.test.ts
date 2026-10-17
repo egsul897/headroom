@@ -10,13 +10,15 @@ const S = (tail: string, pre = "") => `${pre}${CNI}"Consolidated EBITDA" means, 
 const ESC = "; plus (d) non-cash compensation expenses arising from the grant of stock-based awards not to exceed $2.0 million during the 2024 Fiscal Year and increasing by $200,000 for each Fiscal Year thereafter";
 const capOf = (f: IssuerFinancials, pre = "") => optimizeConsolidatedEbitda("Consolidated EBITDA", S(ESC, pre), f).addBacks.find((l) => l.label === "(d)")!.cap?.amount;
 const cfOf = (...rows: Array<{ end: string; fy: number; form: string; filed: string; accn: string; start?: string }>) => ({ cik: 1, entityName: "T", facts: { "us-gaap": { NetIncomeLoss: { units: { USD: rows.map((r) => ({ start: r.start ?? "2024-01-01", val: 1, fp: "FY", ...r })) } } } } });
-const fyOf = (cf: unknown) => extractFinancials(cf as never, "0000000001").fiscalYear;
+// Report dates as SEC submissions would give them: each filing's own latest period end.
+const rd = (cf: { facts: { "us-gaap": { NetIncomeLoss: { units: { USD: Array<{ accn: string; end: string }> } } } } }) => { const m = new Map<string, string>(); for (const r of cf.facts["us-gaap"].NetIncomeLoss.units.USD) if (!m.has(r.accn) || r.end > m.get(r.accn)!) m.set(r.accn, r.end); return m; };
+const fyOf = (cf: unknown) => extractFinancials(cf as never, "0000000001", { reportDates: rd(cf as never) }).fiscalYear;
 
 describe("XBRL fiscal year: only the filing whose own current period is the measured period", () => {
   it("a later comparative's fy is ignored even if filed first in the data", () => {
     // accn b's own period ends 2025-12-31; its 2024-12-31 comparative must not supply the fy for a 2024-12-31 anchor.
     const cf = cfOf({ end: "2024-12-31", fy: 2024, form: "10-K", filed: "2025-02-20", accn: "a" }, { end: "2024-12-31", fy: 2025, form: "10-K", filed: "2026-02-20", accn: "b" });
-    expect(extractFinancials(cf as never, "0000000001", { asOf: "2025-06-30" }).fiscalYear).toBe(2024);
+    expect(extractFinancials(cf as never, "0000000001", { asOf: "2025-06-30", reportDates: rd(cf as never) }).fiscalYear).toBe(2024);
   });
   it("only a comparative reports the period: no XBRL fy", () => {
     const cf = cfOf({ end: "2024-12-31", fy: 2025, form: "10-K", filed: "2026-02-20", accn: "b", start: "2024-01-01" }, { end: "2025-12-31", fy: 2025, form: "10-K", filed: "2026-02-20", accn: "b", start: "2025-01-01" }, { end: "2024-12-31", fy: 2025, form: "10-K", filed: "2026-02-20", accn: "c", start: "2024-01-01" }, { end: "2025-06-30", fy: 2025, form: "10-K", filed: "2026-02-20", accn: "c", start: "2025-01-01" });

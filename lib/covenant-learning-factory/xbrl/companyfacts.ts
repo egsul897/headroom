@@ -134,7 +134,10 @@ function latestEnd(facts: XbrlFact[], instant: boolean): string | null {
 
 const lastFiled = (parts: XbrlFact[]) => parts.reduce((a, b) => (b.filed > a.filed ? b : a));
 
-export function extractFinancials(cf: CompanyFacts, cikPadded: string, opts: { asOf?: string | null } = {}): IssuerFinancials {
+/** Accession number → report period end (DocumentPeriodEndDate, as `reportDate` in the SEC submissions index). */
+export type ReportDates = ReadonlyMap<string, string>;
+
+export function extractFinancials(cf: CompanyFacts, cikPadded: string, opts: { asOf?: string | null; reportDates?: ReportDates | null } = {}): IssuerFinancials {
   const U = (c: string) => usd(cf, c, opts.asOf);
   const values: FinancialValue[] = [];
   const missing: IssuerFinancials["missing"] = [];
@@ -217,7 +220,7 @@ export function extractFinancials(cf: CompanyFacts, cikPadded: string, opts: { a
   }
   const prem = inst("DebtInstrumentUnamortizedPremium");
   if (prem) pushInst("debtPremium", "DebtInstrumentUnamortizedPremium", [prem]);
-  // Fiscal-year focus of a filing whose own current period ends at the anchor (its latest reported period end); a later
+  // Fiscal-year focus (fy) of a filing whose DocumentPeriodEndDate and own current period are the anchor (its latest reported period end); a later
   // filing repeating the period as a comparative does not count. Mis-tag guard: a 10-K's fiscal year cannot be later than
   // the calendar year its period ends in, a 10-Q's not more than one year later; across qualifying filings the lowest wins.
   let fiscalYear: number | null = null;
@@ -227,7 +230,9 @@ export function extractFinancials(cf: CompanyFacts, cikPadded: string, opts: { a
     for (const f of rows) if (!ownEnd.has(f.accn) || f.end > ownEnd.get(f.accn)!) ownEnd.set(f.accn, f.end);
     const y = +anchor.slice(0, 4);
     for (const f of rows) {
-      if (f.fy == null || f.end !== anchor || ownEnd.get(f.accn) !== anchor) continue;
+      // The filing's DocumentPeriodEndDate must be the measured period: a comparative row in a later filing carries that
+      // later filing's fy. Without report dates no fy is accepted (the caller falls back safely).
+      if (f.fy == null || f.end !== anchor || ownEnd.get(f.accn) !== anchor || opts.reportDates?.get(f.accn) !== anchor) continue;
       const fy = Math.min(f.fy, /^10-K/.test(f.form) ? y : y + 1);
       fiscalYear = fiscalYear == null ? fy : Math.min(fiscalYear, fy);
     }
@@ -261,7 +266,19 @@ export const pad10 = (cik: string | number) => String(cik).replace(/\D/g, "").pa
 export const companyFactsUrl = (cik: string) => `https://data.sec.gov/api/xbrl/companyfacts/CIK${pad10(cik)}.json`;
 export const companyConceptUrl = (cik: string, concept: string) => `https://data.sec.gov/api/xbrl/companyconcept/CIK${pad10(cik)}/us-gaap/${concept}.json`;
 
+export const submissionsUrl = (cik: string) => `https://data.sec.gov/submissions/CIK${pad10(cik)}.json`;
+
+/** Report dates per accession from the SEC submissions index (recent filings). */
+export function reportDatesFromSubmissions(sub: { filings?: { recent?: { accessionNumber?: string[]; reportDate?: string[] } } } | null): Map<string, string> {
+  const m = new Map<string, string>();
+  const r = sub?.filings?.recent;
+  r?.accessionNumber?.forEach((a, i) => { const d = r.reportDate?.[i]; if (d) m.set(a, d); });
+  return m;
+}
+
 export async function fetchIssuerFinancials(cik: string, fetchImpl?: typeof fetch, asOf?: string | null): Promise<IssuerFinancials | null> {
   const cf = await fetchSecJson<CompanyFacts>(companyFactsUrl(cik), fetchImpl);
-  return cf ? extractFinancials(cf, pad10(cik), { asOf }) : null;
+  if (!cf) return null;
+  const sub = await fetchSecJson<Parameters<typeof reportDatesFromSubmissions>[0]>(submissionsUrl(cik), fetchImpl).catch(() => null);
+  return extractFinancials(cf, pad10(cik), { asOf, reportDates: reportDatesFromSubmissions(sub) });
 }

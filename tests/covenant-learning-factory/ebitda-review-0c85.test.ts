@@ -22,7 +22,7 @@ describe("XBRL fiscal year comes from the first filing reporting the period", ()
   it("earliest 10-Q's fy wins over a later comparative", () => {
     const f = (fy: number, filed: string, accn: string) => ({ start: "2024-04-29", end: "2025-01-05", val: 1, accn, fy, fp: "Q3", form: "10-Q", filed });
     const cf = { cik: 1, entityName: "T", facts: { "us-gaap": { NetIncomeLoss: { units: { USD: [f(2026, "2026-02-18", "b"), f(2025, "2025-02-19", "a")] } } } } };
-    expect(extractFinancials(cf as never, "0000000001").fiscalYear).toBe(2025);
+    expect(extractFinancials(cf as never, "0000000001", { reportDates: new Map([["a", "2025-01-05"], ["b", "2026-01-04"]]) }).fiscalYear).toBe(2025);
   });
 });
 
