@@ -9,7 +9,7 @@
 import { authorizeDecision } from "@/lib/capacity/identity/authorize-decision";
 import { verifyAndMintPrincipal, type IdentityCredentialHandle, type VerifiedServerPrincipal } from "@/lib/capacity/identity/provider-contract";
 import { gateWorkspaceAccess, type WorkspaceCompanyIdentityLoader } from "@/lib/customer-workflow/workspace-access";
-import { confirmEbitdaItem, latestEbitdaBox, SecUnavailableError, type ConfirmationKind, type EbitdaBox, type EbitdaBoxStore, type PipelineArgs } from "./ebitda-box";
+import { confirmEbitdaItem, latestEbitdaBox, SEC_UNAVAILABLE_MESSAGE, SecUnavailableError, type ConfirmationKind, type EbitdaBox, type EbitdaBoxStore, type PipelineArgs } from "./ebitda-box";
 
 type Json = { status: number; body: unknown };
 const NOT_FOUND: Json = { status: 404, body: { error: "not found" } };
@@ -77,7 +77,11 @@ export async function handleEbitdaConfirm(deps: EbitdaApiDeps, req: Request, p: 
   const idem = req.headers.get("idempotency-key") ?? (typeof body.idempotencyKey === "string" ? body.idempotencyKey : null);
   let args: PipelineArgs | null;
   try { args = await deps.pipelineArgsFor(p.companyId, p.documentId); } catch (err) {
-    if (err instanceof SecUnavailableError) return { status: 503, body: { error: `SEC data unavailable: ${err.message}`, code: "SEC_UNAVAILABLE" } };
+    if (err instanceof SecUnavailableError) {
+      // Detail (identity env names, URLs, CIKs) stays in the server log; the client gets a generic body.
+      console.error("[ebitda-confirm] SEC data unavailable", { ...p, detail: err.message });
+      return { status: 503, body: { error: SEC_UNAVAILABLE_MESSAGE, code: "SEC_UNAVAILABLE" } };
+    }
     throw err;
   }
   if (!args) return { status: 404, body: { error: "document not found for this company" } };

@@ -155,6 +155,9 @@ export const canonicalInputKey = (k: string) => k.replace(/\s+/g, "").toUpperCas
 export interface ConfirmationRow {
   id: string; companyId: string; documentId: string; inputKey: string; kind: string; value: string; source: string;
   confirmedBy: string | null; idempotencyKey: string; createdAt: Date;
+  /** DB-assigned monotonic sequence (BIGSERIAL): the order rows were written in (writes are serialised per document by
+   *  the advisory lock, so this is commit order). createdAt can tie; seq cannot. */
+  seq?: bigint | number;
   /** The original response ({ boxId, gain }) written with the row, returned verbatim on an idempotent replay. */
   response?: unknown;
 }
@@ -162,13 +165,13 @@ export interface ConfirmationRow {
 export interface EbitdaBoxStore {
   customerEbitdaBox: {
     create(args: { data: { id?: string; companyId: string; documentId: string; status: string; version: string; payload: unknown } }): Promise<{ id: string }>;
-    findFirst(args: { where: { companyId: string; documentId: string; status?: { not: string } }; orderBy: { createdAt: "desc" } }): Promise<{ id: string; payload: unknown; createdAt: Date } | null>;
+    findFirst(args: { where: { companyId: string; documentId: string; status?: { not: string } }; orderBy: { seq: "desc" } }): Promise<{ id: string; payload: unknown; createdAt: Date; seq?: bigint | number } | null>;
     findUnique(args: { where: { id: string } }): Promise<{ id: string; companyId: string; documentId: string; payload: unknown; createdAt: Date } | null>;
   };
   /** Append-only: rows are only created, never updated or deleted; the latest row per (key, kind) is current. */
   customerEbitdaConfirmation: {
     create(args: { data: Omit<ConfirmationRow, "id" | "createdAt"> }): Promise<{ id: string }>;
-    findMany(args: { where: { companyId: string; documentId: string }; orderBy: Array<{ createdAt: "asc" } | { id: "asc" }> }): Promise<ConfirmationRow[]>;
+    findMany(args: { where: { companyId: string; documentId: string }; orderBy: Array<{ seq: "asc" }> }): Promise<ConfirmationRow[]>;
     findFirst(args: { where: { companyId: string; documentId: string; idempotencyKey: string } }): Promise<ConfirmationRow | null>;
   };
   /** Interactive transaction (Prisma). Writes are made inside one so a box is never visible without its row. */
@@ -195,13 +198,13 @@ export async function saveEbitdaBox(db: EbitdaBoxStore, scope: { companyId: stri
 }
 
 export async function latestEbitdaBox(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }): Promise<(EbitdaBox & { savedAt: string }) | null> {
-  const row = await db.customerEbitdaBox.findFirst({ where: scope, orderBy: { createdAt: "desc" } });
+  const row = await db.customerEbitdaBox.findFirst({ where: scope, orderBy: { seq: "desc" } });
   return row ? { ...(row.payload as EbitdaBox), savedAt: row.createdAt.toISOString() } : null;
 }
 
 /** Every confirmation row ever written for the document, oldest first (full audit history). */
 export async function confirmationHistory(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }): Promise<ConfirmationRow[]> {
-  return db.customerEbitdaConfirmation.findMany({ where: scope, orderBy: [{ createdAt: "asc" }, { id: "asc" }] });
+  return db.customerEbitdaConfirmation.findMany({ where: scope, orderBy: [{ seq: "asc" }] });
 }
 
 /** Current confirmations: the latest row per canonical (inputKey, kind) wins. */
@@ -337,6 +340,9 @@ export async function financialsForCik(cik: string | null, fetchImpl?: typeof fe
   }
 }
 
+/** Generic, client-safe description of an SEC outage (no env names, URLs or CIKs). */
+export const SEC_UNAVAILABLE_MESSAGE = "SEC data is temporarily unavailable; try again later";
+
 /** SEC data could not be fetched: missing/placeholder SEC identity, network error, non-404 error status, retries exhausted. */
 export class SecUnavailableError extends Error {
   readonly code = "SEC_UNAVAILABLE" as const;
@@ -346,9 +352,9 @@ export class SecUnavailableError extends Error {
   }
 }
 
-/** Generation of a document's box stream: the id of the latest saved box (null when none). */
+/** Generation of a document's box stream: the id of the latest saved box by DB sequence (null when none). */
 export async function boxGeneration(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }): Promise<string | null> {
-  return (await db.customerEbitdaBox.findFirst({ where: scope, orderBy: { createdAt: "desc" } }))?.id ?? null;
+  return (await db.customerEbitdaBox.findFirst({ where: scope, orderBy: { seq: "desc" } }))?.id ?? null;
 }
 
 /**
@@ -417,11 +423,13 @@ function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: Add
  * (lastGoodBoxId, staleSince) and the currently committed confirmations.
  */
 export async function recordEbitdaBoxFailure(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, err: unknown, opts: { generation: string | null }): Promise<{ box: EbitdaBox; id: string; skipped?: boolean }> {
-  const reason = (err instanceof Error ? err.message : String(err)).slice(0, 500) || "unknown error";
+  // SEC failures carry environment detail (identity env names, URLs, CIKs): log it server-side, surface a generic reason.
+  if (err instanceof SecUnavailableError) console.error("[ebitda-box] SEC data unavailable", { ...scope, detail: err.message });
+  const reason = err instanceof SecUnavailableError ? SEC_UNAVAILABLE_MESSAGE : (err instanceof Error ? err.message : String(err)).slice(0, 500) || "unknown error";
   return withDocumentTransaction(db, scope, async (tx) => {
-    const latest = await tx.customerEbitdaBox.findFirst({ where: scope, orderBy: { createdAt: "desc" } });
+    const latest = await tx.customerEbitdaBox.findFirst({ where: scope, orderBy: { seq: "desc" } });
     if ((latest?.id ?? null) !== opts.generation && latest) return { box: latest.payload as EbitdaBox, id: latest.id, skipped: true };
-    const last = await tx.customerEbitdaBox.findFirst({ where: { ...scope, status: { not: "FAILED" } }, orderBy: { createdAt: "desc" } });
+    const last = await tx.customerEbitdaBox.findFirst({ where: { ...scope, status: { not: "FAILED" } }, orderBy: { seq: "desc" } });
     const confirmations = await loadConfirmations(tx, scope);
     const prev = (last?.payload ?? null) as EbitdaBox | null;
     const box: EbitdaBox = {
