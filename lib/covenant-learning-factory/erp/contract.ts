@@ -47,7 +47,8 @@ export interface ErpEvidenceFact {
 
 /** The seam ERP-1 implements: period facts for one company (already tenant-scoped by the caller's server context). */
 export interface ErpEvidenceSource {
-  listPeriodFacts(companyId: string): Promise<readonly ErpEvidenceFact[]>;
+  /** `signal` aborts when the caller gives up (timeout): implementations should pass it to their HTTP calls. */
+  listPeriodFacts(companyId: string, opts?: { signal?: AbortSignal }): Promise<readonly ErpEvidenceFact[]>;
 }
 
 /** Production default until ERP-1 registers a source: no facts, so the box carries no ERP evidence at all. */

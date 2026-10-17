@@ -167,12 +167,22 @@ export function suggestLtm(admitted: readonly AdmittedErpFact[], reconciliation:
   };
 }
 
+const INSTANT = /^(\d{4}-\d{2}-\d{2})T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(\.\d{1,3})?(Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/;
+/** A strict ISO 8601 instant, normalized to UTC; an impossible calendar date (2026-02-30) or anything else → null. */
+export function strictInstant(v: unknown): string | null {
+  if (typeof v !== "string") return null;
+  const m = INSTANT.exec(v);
+  if (!m || epochDay(m[1]!) == null) return null;
+  const t = Date.parse(v);
+  return Number.isFinite(t) ? new Date(t).toISOString() : null;
+}
+
 /** Build the box's ERP evidence. With no facts there is nothing to say: callers omit the field. */
 export function erpEvidenceForBox(input: ErpEvidenceInput): ErpEvidence {
   const { admitted, rejected } = admitErpFacts(input.facts, input.companyId);
   const reconciliation = reconcileErpWithFilings(admitted, [input.financials, input.priorFinancials], input.options);
   const unreconciledPeriods = reconciliation.filter((r) => r.status === "UNRECONCILED").length;
-  const fetchedAt = typeof input.fetchedAt === "string" && /^\d{4}-\d{2}-\d{2}T/.test(input.fetchedAt) && Number.isFinite(Date.parse(input.fetchedAt)) ? new Date(Date.parse(input.fetchedAt)).toISOString() : null;
+  const fetchedAt = strictInstant(input.fetchedAt);
   const common = { fetchedAt, reconciliation, unreconciledPeriods, rejected: rejected.slice(0, 50), rejectedCount: rejected.length };
   if (!input.periodEnd || epochDay(input.periodEnd) == null) {
     return { status: "NO_PERIOD", asOf: null, suggestions: [], ...common, note: "no filing period to anchor an LTM window; ERP figures are shown only as reconciliation" };

@@ -286,6 +286,8 @@ export async function confirmEbitdaItem(
   if (typeof input.inputKey !== "string" || !input.inputKey.trim()) return { ok: false, status: 400, error: "inputKey is required" };
   if (typeof input.source !== "string" || !input.source.trim()) return { ok: false, status: 400, error: "source (the document the figure comes from) is required" };
   if (!input.confirmedBy?.trim()) return { ok: false, status: 400, error: "confirmedBy (authenticated principal) is required" };
+  // A base figure is quoted exactly (it may have to equal an ERP suggestion byte-for-byte): no trimming, no whitespace.
+  if (kind === "BASE_METRIC" && typeof input.value === "string" && /\s/.test(input.value)) return { ok: false, status: 400, error: "a BASE_METRIC value must not contain whitespace" };
   const rawValue = kind === "LENDER_APPROVAL" ? "1" : String(input.value ?? "").trim();
   if (kind !== "LENDER_APPROVAL") {
     if (/^-\d+$/.test(rawValue)) return { ok: false, status: 422, error: "value must not be negative" };
@@ -318,7 +320,7 @@ export async function confirmEbitdaItem(
     const refused = checkBaseMetric(boxArgs, base, baseMetric!, value, input.source.trim());
     if (refused) return refused;
   } else if (kind === "AMOUNT") {
-    const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, flag, confirmedRevenue(prior));
+    const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, flag, revenueBound(confirmedRevenue(prior), boxArgs, base));
     if (!lim.ok) return { ok: false, status: 422, code: "NEEDS_BASE", error: lim.error };
     if (BigInt(value) > lim.bound) return { ok: false, status: 422, code: "OUT_OF_RANGE", error: `value exceeds the plausible maximum (${lim.basis})` };
     const check = cfoRecompute(priorArgs, [{ key: inputKey, value, source: input.source.trim() }]);
@@ -360,6 +362,16 @@ export async function confirmEbitdaItem(
     return replayOf(db, scope, seen, { inputKey, kind, value, source: input.source.trim(), confirmedBy: input.confirmedBy });
   }
   return { ok: true, box, gain, boxId };
+}
+
+/** The revenue that bounds add-backs: the CFO-confirmed figure, lowered to the current ERP suggestion when that is
+ *  smaller (ERP evidence can only tighten the bound, never widen it). */
+function revenueBound(confirmed: bigint | null, boxArgs: BoxArgs, base: AgreementPipelineResult): bigint | null {
+  if (confirmed == null) return null;
+  const opt = (base.xbrl as Xbrl | null)?.ebitda;
+  const s = erpEvidenceFor(boxArgs, { periodEnd: opt?.periodEnd ?? boxArgs.financials?.anchor ?? null, base: opt?.base ?? null })?.suggestions.find((x) => x.metric === "revenue" && x.status === "SUGGESTED");
+  const e = s?.value != null ? BigInt(s.value) : null;
+  return e != null && e > 0n && e < confirmed ? e : confirmed;
 }
 
 /** Latest CFO-confirmed revenue (BASE_METRIC METRIC:REVENUE), if any. */

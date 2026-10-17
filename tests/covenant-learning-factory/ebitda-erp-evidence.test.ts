@@ -313,6 +313,38 @@ describe("EBITDA box integration", () => {
     expect(["OUT_OF_RANGE", "NEEDS_BASE"]).toContain((addBack as { code?: string }).code);
     expect(db.rows.filter((r) => r.kind === "AMOUNT")).toHaveLength(0);
   });
+  it("(minor) fetchedAt: impossible calendar dates and malformed instants are rejected (null), not normalized", () => {
+    const at = (f: unknown) => computeEbitdaBox({ ...a(null), erp: { companyId: C, facts: ERP(), fetchedAt: f as never } }).erpEvidence?.fetchedAt;
+    for (const bad of ["2026-02-30T00:00:00Z", "2026-02-29T12:00:00Z", "2026-04-31T00:00:00Z", "2026-10-17T24:00:00Z", "2026-10-17T10:60:00Z", "2026-10-17T10:00:00", "2026-10-17", "2026-10-17T10:00:00Zjunk"]) expect(at(bad)).toBeNull();
+    expect(at("2028-02-29T12:00:00Z")).toBe("2028-02-29T12:00:00.000Z");
+    expect(at("2026-10-17T12:00:00+02:00")).toBe("2026-10-17T10:00:00.000Z");
+  });
+  it("(minor) the timeout aborts the ERP call through the AbortSignal", async () => {
+    let seen: AbortSignal | undefined;
+    registerErpEvidenceSource({ listPeriodFacts: (_id, opts) => new Promise((_, reject) => { seen = opts?.signal; opts?.signal?.addEventListener("abort", () => reject(Object.assign(new Error("aborted"), { name: "AbortError" }))); }) });
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      expect(await companyErpFacts(C, { timeoutMs: 20 })).toBeNull();
+      expect(seen?.aborted).toBe(true);
+    } finally { spy.mockRestore(); }
+    registerErpEvidenceSource({ listPeriodFacts: async (_id, opts) => { seen = opts?.signal; return ERP(); } });
+    expect((await companyErpFacts(C))?.facts).toHaveLength(24);
+    expect(seen?.aborted).toBe(false);
+  });
+  it("(minor) BASE_METRIC values with whitespace are refused (400), nothing written", async () => {
+    const db = fakeStore();
+    for (const v of [" 300000000", "300000000 ", " 5 ", "300000000\n", "300 000 000"]) {
+      expect(await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: v, source: "doc", confirmedBy: "cfo" })).toMatchObject({ ok: false, status: 400 });
+    }
+    expect(db.rows).toHaveLength(0);
+  });
+  it("(optional) plausibleMax uses min(confirmed revenue, current ERP suggestion)", async () => {
+    const db = fakeStore();
+    // A document figure 2% above ERP is accepted ($306M); the add-back bound is then 50% of the ERP $300M, not $306M.
+    expect((await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(306 * M), source: "FY audited statements", confirmedBy: "cfo" })).ok).toBe(true);
+    expect(await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: keyOf("(f)"), value: String(150 * M + 1), source: "x", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "OUT_OF_RANGE" });
+    expect((await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: keyOf("(f)"), value: String(150 * M), source: "x", confirmedBy: "cfo" })).ok).toBe(true);
+  });
   it("(6) a BASE_METRIC revenue of 0 is NEEDS_INPUT (422) and writes nothing", async () => {
     const db = fakeStore();
     expect(await confirmEbitdaItem(db, scope, a(ERP()), { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: "0", source: "doc", confirmedBy: "cfo" })).toMatchObject({ ok: false, status: 422, code: "NEEDS_INPUT" });

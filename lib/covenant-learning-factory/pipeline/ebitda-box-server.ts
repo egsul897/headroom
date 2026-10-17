@@ -38,10 +38,14 @@ export const ERP_EVIDENCE_TIMEOUT_MS = 10_000;
 export async function companyErpFacts(companyId: string, opts: { timeoutMs?: number } = {}): Promise<BoxArgs["erp"]> {
   const timeoutMs = opts.timeoutMs ?? ERP_EVIDENCE_TIMEOUT_MS;
   let timer: ReturnType<typeof setTimeout> | undefined;
-  const timeout = new Promise<"timeout">((resolve) => { timer = setTimeout(() => resolve("timeout"), timeoutMs); });
+  const abort = new AbortController();
+  // On timeout the ERP call is cancelled (the signal is handed to the source), not just abandoned.
+  const timeout = new Promise<"timeout">((resolve) => { timer = setTimeout(() => { abort.abort(); resolve("timeout"); }, timeoutMs); });
   let facts: unknown;
   try {
-    facts = await Promise.race([Promise.resolve().then(() => erpEvidenceSource().listPeriodFacts(companyId)), timeout]);
+    const call = Promise.resolve().then(() => erpEvidenceSource().listPeriodFacts(companyId, { signal: abort.signal }));
+    call.catch(() => {}); // a late rejection after the timeout (e.g. AbortError) is expected, not unhandled
+    facts = await Promise.race([call, timeout]);
   } catch (err) {
     console.error("[ebitda-box] ERP evidence unavailable", { companyId, reason: "error", errorName: err instanceof Error ? err.name : typeof err });
     return null;
