@@ -38,7 +38,8 @@ export interface ErpSuggestion {
   sourceRef: string | null;
   /** Every ERP record the figure sums (erp:<PROVIDER>:<connectionId>:<externalId>@<periodEnd>). */
   refs: string[];
-  /** RECONCILED when a filing figure for the same metric and window matched; NOT_COMPARED otherwise. */
+  /** RECONCILED when at least one filed flow overlapping the window reconciled with this ERP; NOT_COMPARED otherwise.
+   *  A confirmable suggestion is SUGGESTED only when RECONCILED (and the ratio check passes). */
   reconciliation: "RECONCILED" | "NOT_COMPARED";
   confirmable: boolean;
   reason: string;
@@ -66,6 +67,10 @@ export function ltmWindow(endIso: string): { start: string; end: string } | null
   return { start: isoOfDay(prior + 1), end: endIso };
 }
 
+/** A reconciled filed flow (scaled to 12 months) larger than this multiple of the ERP revenue fails the ratio check. */
+export const REVENUE_RATIO_LIMIT = 10n;
+const abs = (x: bigint) => (x < 0n ? -x : x);
+
 const digest = (parts: string[]) => createHash("sha256").update(parts.join("\n")).digest("hex").slice(0, 16);
 
 export interface ErpEvidenceInput {
@@ -92,7 +97,21 @@ export function suggestLtm(admitted: readonly AdmittedErpFact[], reconciliation:
   if (bad.length) return none("BLOCKED_UNRECONCILED", `ERP figures for this window do not reconcile with the filings: ${bad.map((b) => `${b.metric} ${b.periodStart}..${b.periodEnd} ${b.code}`).join("; ")}`);
   const s = sumOverWindow(admitted, metric, w.start, w.end);
   if (!s.ok) return none("NEEDS_INPUT", s.reason);
-  const rec = reconciliation.some((r) => r.status === "RECONCILED" && r.metric === metric && r.periodStart === w.start && r.periodEnd === w.end);
+  const anchors = reconciliation.filter((r) => r.status === "RECONCILED" && overlaps(r.periodStart, r.periodEnd, w.start, w.end));
+  if (confirmable) {
+    // A confirmable figure needs a reconciled anchor: at least one filed flow overlapping the window that the same ERP
+    // ledger matched. Without one, nothing ties this ERP's units, scope or sign to the filer's.
+    if (!anchors.length) return none("NEEDS_INPUT", `no filed figure overlapping ${w.start}..${w.end} reconciles with this ERP; an ERP ${metric} is confirmable only against a reconciled filing anchor`);
+    // Ratio sanity: no reconciled filed flow, scaled to the LTM length, may exceed RATIO_LIMIT x the ERP revenue (a
+    // units slip on the revenue accounts alone would otherwise pass, since the anchor reconciled on other accounts).
+    const ltmDays = BigInt(epochDay(w.end)! - epochDay(w.start)! + 1);
+    for (const r of anchors) {
+      const days = BigInt(epochDay(r.periodEnd)! - epochDay(r.periodStart)! + 1);
+      const scaled = (abs(BigInt(r.filing.value)) * ltmDays) / days;
+      if (s.value > 0n && scaled > s.value * REVENUE_RATIO_LIMIT) return none("NEEDS_INPUT", `ratio check failed: filed ${r.metric} ${r.periodStart}..${r.periodEnd} (${scaled} over 12 months) exceeds ${REVENUE_RATIO_LIMIT}x the ERP LTM ${metric} (${s.value})`);
+    }
+  }
+  const rec = anchors.length > 0;
   const value = s.value.toString();
   return {
     ...base, status: "SUGGESTED", value,

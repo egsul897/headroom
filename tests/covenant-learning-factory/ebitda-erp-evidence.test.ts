@@ -117,14 +117,33 @@ describe("LTM suggestions", () => {
     expect(ltmWindow("2028-02-29")).toEqual({ start: "2027-03-01", end: "2028-02-29" });
   });
   const ev = (facts: ErpEvidenceFact[], f: IssuerFinancials = fin, baseNeedsEvidence = true) => erpEvidenceForBox({ companyId: C, facts, financials: f, periodEnd: "2026-06-30", baseNeedsEvidence });
+  // A reconciled anchor: filed TTM net income −$12M matched by ERP net income −$1M/month.
+  const anchored = withFin({ values: [...fin.values, flow("netIncome", -12 * M)] });
   it("suggests revenue only when the filings lack it; components are evidence-only", () => {
-    const e = ev([...monthly("revenue", 25 * M), ...monthly("netIncome", -1 * M)]);
+    const e = ev([...monthly("revenue", 25 * M), ...monthly("netIncome", -1 * M)], anchored);
     const rev = e.suggestions.find((s) => s.metric === "revenue")!;
     expect(rev).toMatchObject({ status: "SUGGESTED", value: String(300 * M), confirmable: true, inputKey: "METRIC:REVENUE" });
     expect(rev.sourceRef).toMatch(/^erp:NETSUITE:conn1:ltm\.revenue\.[0-9a-f]{16}@2026-06-30$/);
     expect(e.suggestions.find((s) => s.metric === "netIncome")).toMatchObject({ status: "SUGGESTED", confirmable: false, inputKey: null });
     expect(e.suggestions.find((s) => s.metric === "interestExpense")).toMatchObject({ status: "NEEDS_INPUT", value: null });
     expect(ev(monthly("revenue", 25 * M), withFin({ values: [...fin.values, flow("revenue", 300 * M)] })).suggestions.some((s) => s.metric === "revenue")).toBe(false);
+  });
+  it("(1) revenue is not confirmable without a RECONCILED filed flow overlapping the window", () => {
+    const e = ev([...monthly("revenue", 25 * M), ...monthly("netIncome", -1 * M)]); // no filed flow at all
+    expect(e.suggestions.find((s) => s.metric === "revenue")).toMatchObject({ status: "NEEDS_INPUT", value: null, confirmable: false });
+    expect(e.suggestions.find((s) => s.metric === "revenue")?.reason).toMatch(/reconciled filing anchor/);
+    const notOverlapping = withFin({ values: [...fin.values, flow("netIncome", -1 * M, "2024-07-01", "2024-07-31")] });
+    const e2 = ev([...monthly("revenue", 25 * M), fact({ metric: "netIncome", externalId: "ni-2024-07", periodStart: "2024-07-01", periodEnd: "2024-07-31", amount: String(-1 * M) })], notOverlapping);
+    expect(e2.reconciliation[0]?.status).toBe("RECONCILED");
+    expect(e2.suggestions.find((s) => s.metric === "revenue")?.status).toBe("NEEDS_INPUT");
+  });
+  it("(1) ratio check: a reconciled filed flow above 10x the ERP revenue (12-month scaled) → NEEDS_INPUT", () => {
+    // revenue accounts read at 1/1000 (thousands as dollars) while net income reconciles: $300k revenue vs $12M NI.
+    const e = ev([...monthly("revenue", 25_000), ...monthly("netIncome", -1 * M)], anchored);
+    expect(e.reconciliation.find((r) => r.metric === "netIncome")?.status).toBe("RECONCILED");
+    expect(e.suggestions.find((s) => s.metric === "revenue")).toMatchObject({ status: "NEEDS_INPUT", value: null });
+    expect(e.suggestions.find((s) => s.metric === "revenue")?.reason).toMatch(/ratio check failed/);
+    expect(ev([...monthly("revenue", 25 * M), ...monthly("netIncome", -1 * M)], anchored).suggestions.find((s) => s.metric === "revenue")?.status).toBe("SUGGESTED");
   });
   it("an UNRECONCILED overlapping period blocks every suggestion", () => {
     const e = ev([...monthly("revenue", 25 * M), ...monthly("netIncome", -1000 * M)], withFin({ values: [...fin.values, flow("netIncome", -12 * M)] }));
@@ -140,7 +159,9 @@ describe("LTM suggestions", () => {
 describe("EBITDA box integration", () => {
   afterEach(() => registerErpEvidenceSource(null));
   // No positive base and no filed revenue: an uncapped add-back confirm is NEEDS_BASE (ebitda-review-35c7).
-  const noBaseFin = withFin({ values: fin.values.map((v) => (v.concept === "NetIncomeLoss" ? { ...v, value: String(-10 * M) } : v)) });
+  const noBaseFin = withFin({ values: [...fin.values.map((v) => (v.concept === "NetIncomeLoss" ? { ...v, value: String(-10 * M) } : v)), flow("netIncome", -12 * M)] });
+  /** ERP revenue $25M/month plus the net income that reconciles with the filed −$12M anchor. */
+  const ERP = () => [...monthly("revenue", 25 * M), ...monthly("netIncome", -1 * M)];
   const erp = (facts: ErpEvidenceFact[]) => ({ companyId: C, facts });
   const a = (facts: ErpEvidenceFact[] | null, f: IssuerFinancials = noBaseFin): BoxArgs => ({ ...args, financials: f, erp: facts ? erp(facts) : null });
   const keyOf = (label: string) => computeEbitdaBox(a(null)).items.find((i) => i.label === label)!.inputKey;
@@ -151,12 +172,12 @@ describe("EBITDA box integration", () => {
     expect("erpEvidence" in computeEbitdaBox(a([]))).toBe(false);
   });
   it("ERP evidence never changes the totals", () => {
-    const plain = computeEbitdaBox(a(null)), withErp = computeEbitdaBox(a(monthly("revenue", 25 * M)));
+    const plain = computeEbitdaBox(a(null)), withErp = computeEbitdaBox(a(ERP()));
     expect(withErp.erpEvidence?.status).toBe("READY");
     expect({ ...withErp, erpEvidence: undefined }).toEqual({ ...plain, erpEvidence: undefined });
   });
   it("NEEDS_BASE → CFO confirms ERP LTM revenue (exact ref + value) → the add-back is bounded by 50% of it", async () => {
-    const x = a(monthly("revenue", 25 * M));
+    const x = a(ERP());
     const db = fakeStore();
     expect(await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(2 * M), source: "x", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "NEEDS_BASE" });
     const s = revSuggestion(x);
@@ -170,23 +191,23 @@ describe("EBITDA box integration", () => {
     expect((await confirmEbitdaItem(db, scope, x, { inputKey: keyOf("(f)"), value: String(2 * M), source: "x", confirmedBy: "cfo" })).ok).toBe(true);
   });
   it("an erp: source must quote the current suggestion exactly", async () => {
-    const x = a(monthly("revenue", 25 * M)), s = revSuggestion(x), db = fakeStore();
+    const x = a(ERP()), s = revSuggestion(x), db = fakeStore();
     expect(await confirmEbitdaItem(db, scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(300 * M + 1), source: s.sourceRef!, confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "ERP_EVIDENCE_MISMATCH" });
     expect(await confirmEbitdaItem(db, scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: s.value!, source: "erp:NETSUITE:conn1:made-up@2026-06-30", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "ERP_EVIDENCE_MISMATCH" });
     expect(db.rows).toHaveLength(0);
   });
   it("another document's figure must be within 10x of the ERP figure", async () => {
-    const x = a(monthly("revenue", 25 * M));
+    const x = a(ERP());
     expect((await confirmEbitdaItem(fakeStore(), scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(290 * M), source: "FY audited statements", confirmedBy: "cfo" })).ok).toBe(true);
     expect(await confirmEbitdaItem(fakeStore(), scope, x, { inputKey: "METRIC:REVENUE", kind: "BASE_METRIC", value: String(3001 * M), source: "FY audited statements", confirmedBy: "cfo" })).toMatchObject({ ok: false, code: "OUT_OF_RANGE" });
   });
   it("refused: filings already report revenue; no ERP; unreconciled ERP; non-revenue metric; nothing persisted", async () => {
     const db = fakeStore();
     const c = (x: BoxArgs, inputKey = "METRIC:REVENUE") => confirmEbitdaItem(db, scope, x, { inputKey, kind: "BASE_METRIC", value: String(300 * M), source: "doc", confirmedBy: "cfo" });
-    expect(await c(a(monthly("revenue", 25 * M), withFin({ values: [...noBaseFin.values, flow("revenue", 300 * M)] })))).toMatchObject({ ok: false, code: "FILING_PRESENT" });
+    expect(await c(a(ERP(), withFin({ values: [...noBaseFin.values, flow("revenue", 300 * M)] })))).toMatchObject({ ok: false, code: "FILING_PRESENT" });
     expect(await c(a(null))).toMatchObject({ ok: false, code: "NEEDS_ERP_EVIDENCE" });
-    expect(await c(a([...monthly("revenue", 25 * M), ...monthly("netIncome", -1_000 * M)], withFin({ values: [...noBaseFin.values, flow("netIncome", -12 * M)] })))).toMatchObject({ ok: false, code: "NEEDS_ERP_EVIDENCE" });
-    expect(await c(a(monthly("revenue", 25 * M)), "METRIC:NETINCOME")).toMatchObject({ ok: false, status: 400 });
+    expect(await c(a([...monthly("revenue", 25 * M), ...monthly("netIncome", -1_000 * M)]))).toMatchObject({ ok: false, code: "NEEDS_ERP_EVIDENCE" });
+    expect(await c(a(ERP()), "METRIC:NETINCOME")).toMatchObject({ ok: false, status: 400 });
     expect(db.rows).toHaveLength(0);
   });
   it("a registered source feeds the server's args; another company's facts are refused at admission", async () => {
