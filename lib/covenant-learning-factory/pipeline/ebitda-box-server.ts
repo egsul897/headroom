@@ -3,21 +3,15 @@
  * the box, and persists to Neon. Used by the upload pipeline (auto-run) and the EBITDA API routes.
  */
 import { prisma } from "../../prisma";
-import { fetchIssuerFinancials, type IssuerFinancials } from "../xbrl/companyfacts";
-import { priorAsOf } from "../xbrl/addback-tracker";
-import { computeEbitdaBox, loadConfirmations, saveEbitdaBox, type EbitdaBox, type EbitdaBoxStore, type PipelineArgs } from "./ebitda-box";
+import type { IssuerFinancials } from "../xbrl/companyfacts";
+import { financialsForCik, refreshBoxCommitted, type EbitdaBox, type EbitdaBoxStore, type PipelineArgs } from "./ebitda-box";
 
 const store = () => prisma as unknown as EbitdaBoxStore;
 
-/** Company CIK → current and prior-year financials (SEC companyfacts + submissions); null when no CIK or no data. */
+/** Company CIK → current and prior-year financials; SEC errors other than 404 throw (recorded as a FAILED box). */
 export async function companyFinancials(companyId: string): Promise<{ financials: IssuerFinancials | null; priorFinancials: IssuerFinancials | null; cik: string | null }> {
   const company = await prisma.company.findUnique({ where: { id: companyId }, select: { cik: true } });
-  const cik = company?.cik?.replace(/\D/g, "") || null;
-  if (!cik || /^0+$/.test(cik)) return { financials: null, priorFinancials: null, cik: null };
-  const financials = await fetchIssuerFinancials(cik).catch(() => null);
-  const pa = financials ? priorAsOf(financials.anchor) : null;
-  const priorFinancials = pa ? await fetchIssuerFinancials(cik, undefined, pa).catch(() => null) : null;
-  return { financials, priorFinancials, cik };
+  return financialsForCik(company?.cik ?? null);
 }
 
 /** Agreement text of an uploaded document (from durable storage). */
@@ -40,14 +34,10 @@ export async function pipelineArgsFor(companyId: string, documentId: string, kno
   return { sourceId: t.sourceId, text: t.text, issuerCik: cik, financials, priorFinancials };
 }
 
-/** Compute and persist the box for one uploaded agreement (applies stored CFO confirmations). */
+/** Compute and persist the box for one uploaded agreement from committed CFO confirmations (one locked transaction);
+ *  load or compute failures (e.g. SEC outage) are saved as a FAILED box that keeps the last committed figures. */
 export async function refreshEbitdaBox(companyId: string, documentId: string, known?: { text: string; sourceId: string }): Promise<{ box: EbitdaBox; id: string } | null> {
-  const args = await pipelineArgsFor(companyId, documentId, known);
-  if (!args) return null;
-  const scope = { companyId, documentId };
-  const box = computeEbitdaBox(args, await loadConfirmations(store(), scope));
-  const { id } = await saveEbitdaBox(store(), scope, box);
-  return { box, id };
+  return refreshBoxCommitted(store(), { companyId, documentId }, () => pipelineArgsFor(companyId, documentId, known));
 }
 
 export { store as ebitdaBoxStore };

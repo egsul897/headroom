@@ -116,7 +116,7 @@ describe("(5) migration: idempotent up/down, same-company document, RESTRICT his
     const schema = readFileSync("prisma/schema.prisma", "utf8");
     const conf = schema.slice(schema.indexOf("model CustomerEbitdaConfirmation {"), schema.indexOf("\n}", schema.indexOf("model CustomerEbitdaConfirmation {")));
     expect(conf).toMatch(/fields: \[documentId, companyId\], references: \[id, companyId\], onDelete: Restrict/);
-    expect(conf).toMatch(/company\s+Company\s+@relation\(fields: \[companyId\], references: \[id\], onDelete: Restrict\)/);
+    expect(conf).toMatch(/company\s+Company\s+@relation\(fields: \[companyId\], references: \[id\], onDelete: Restrict(, onUpdate: Restrict)?\)/);
     expect(up).toMatch(/'FAILED'/);
   });
 });
