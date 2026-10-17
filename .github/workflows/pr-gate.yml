@@ -11,10 +11,27 @@
 # job fails when a test fails there and did not fail on the base, or when a
 # base failure is skipped or deleted. Pre-existing failures stay in the log
 # and the job summary.
+#
+# The gate's own tools (comparator, reporter, protected-path and dirty-tree
+# checks) are read from the BASE ref, never from the PR, so a PR cannot loosen
+# the gate by editing scripts/platform/*. Until a tool exists on the base it is
+# taken from the PR with a bootstrap warning.
+#
+# The job also fails when:
+#   - the PR touches held-out / blind / baseline / frozen / ground-truth / sealed / unit-dumps
+#     paths without the owner label "owner-approved-protected-paths";
+#   - the test run on the PR leaves `git status --porcelain` non-empty (a test
+#     rewrote a committed file or left output in the repo).
+#
+# Both runs use a Postgres service: a template database is migrated and seeded
+# (prisma/seed.ts + the coherent financial-core populator, which gives coherent
+# its FinancialState) from that run's own checkout, and every vitest worker
+# gets its own clone of it, so DB suites cannot interfere with each other.
 name: pr-gate
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
   workflow_dispatch:
 
 concurrency:
@@ -28,7 +45,21 @@ jobs:
   gate:
     name: typecheck + no new test regressions (provider-free)
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
     env:
       AI_GATEWAY_API_KEY: ""
       ANTHROPIC_API_KEY: ""
@@ -37,6 +68,12 @@ jobs:
       HEADROOM_ERROR_DSN: ""
       SENTRY_DSN: ""
       CI: "true"
+      BASE_REF: ${{ github.base_ref }}
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      PG_SERVER: postgresql://ci:ci@localhost:5432
+      PGPASSWORD: ci
+      VITEST_WORKERS: "4"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,28 +85,61 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: save comparator
-        run: |
-          cp scripts/platform/pr-gate-compare.mjs "$RUNNER_TEMP/pr-gate-compare.mjs"
-          cp scripts/platform/pr-gate-reporter.mjs "$RUNNER_TEMP/pr-gate-reporter.mjs"
-
-      - name: full vitest on base tip
-        env:
-          BASE_REF: ${{ github.base_ref }}
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      - name: resolve base ref
         run: |
           set -euo pipefail
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
-            REF_NAME="$BASE_REF"
+            REF_NAME="$BASE_REF"; HEAD_REV="$PR_HEAD_SHA"
           else
-            REF_NAME="$DEFAULT_BRANCH"
+            REF_NAME="$DEFAULT_BRANCH"; HEAD_REV="$GITHUB_SHA"
           fi
+          echo "REF_NAME=$REF_NAME" >> "$GITHUB_ENV"
+          echo "HEAD_REV=$HEAD_REV" >> "$GITHUB_ENV"
           git fetch --no-tags origin "$REF_NAME"
+
+      - name: load gate tools from the base ref
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/gate"
+          for f in pr-gate-compare.mjs pr-gate-reporter.mjs protected-paths.mjs clean-tree.mjs pg-workers.mjs vitest-pg-global-setup.mjs vitest-pg-worker-setup.mjs; do
+            if git cat-file -e "origin/$REF_NAME:scripts/platform/$f" 2>/dev/null; then
+              git show "origin/$REF_NAME:scripts/platform/$f" > "$RUNNER_TEMP/gate/$f"
+              echo "$f: from origin/$REF_NAME"
+            elif [ -f "scripts/platform/$f" ]; then
+              cp "scripts/platform/$f" "$RUNNER_TEMP/gate/$f"
+              echo "::warning title=pr-gate bootstrap::$f is not on origin/$REF_NAME yet; using this PR's copy (not trusted until it is merged into the base)"
+            else
+              echo "::error title=pr-gate::$f is missing from origin/$REF_NAME and from this PR"
+              exit 1
+            fi
+          done
+
+      - name: protected paths need the owner label
+        if: github.event_name == 'pull_request'
+        env:
+          PR_LABELS: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: node "$RUNNER_TEMP/gate/protected-paths.mjs" --base "origin/$REF_NAME" --head "$HEAD_REV"
+
+      - name: full vitest on base tip
+        id: base
+        run: |
+          set -euo pipefail
           git checkout --force --detach "origin/$REF_NAME"
           echo "origin/$REF_NAME $(git rev-parse HEAD)" | tee "$RUNNER_TEMP/pr-gate-base-label"
           npm ci
+          seed_template() {
+            # $1 = template database name. Migrated and seeded from THIS checkout.
+            psql -h localhost -U ci -d postgres -v ON_ERROR_STOP=1 -qc "DROP DATABASE IF EXISTS $1 WITH (FORCE)" -c "CREATE DATABASE $1"
+            DATABASE_URL="$PG_SERVER/$1" npx prisma migrate deploy
+            DATABASE_URL="$PG_SERVER/$1" npx tsx prisma/seed.ts
+            DATABASE_URL="$PG_SERVER/$1" npx tsx scripts/populate-coherent-financial-core.ts
+          }
+          seed_template hr_base
+          CFG=$(node "$RUNNER_TEMP/gate/pg-workers.mjs" write-config "$RUNNER_TEMP/gate")
           set +e
-          PR_GATE_REPORT="$RUNNER_TEMP/pr-gate-base.json" npx vitest run --reporter=default --reporter="$RUNNER_TEMP/pr-gate-reporter.mjs"
+          HEADROOM_TEST_PG_TEMPLATE_URL="$PG_SERVER/hr_base" HEADROOM_TEST_PG_WORKERS="$VITEST_WORKERS" \
+            PR_GATE_REPORT="$RUNNER_TEMP/pr-gate-base.json" npx vitest run --config "$CFG" --maxWorkers="$VITEST_WORKERS" --minWorkers=1 \
+            --reporter=default --reporter="$RUNNER_TEMP/gate/pr-gate-reporter.mjs"
           code=$?
           set -e
           if [ ! -s "$RUNNER_TEMP/pr-gate-base.json" ]; then
@@ -77,23 +147,17 @@ jobs:
             exit 1
           fi
           echo "base vitest exit $code (failures are recorded, not ignored)"
+          # The base run may have written into the checkout; discard it before the PR run.
+          git reset --hard --quiet
+          git clean -fdq
 
       - name: typecheck and vitest on PR merged into base
-        env:
-          BASE_REF: ${{ github.base_ref }}
-          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        id: head
         run: |
           set -euo pipefail
-          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
-            REF_NAME="$BASE_REF"
-            HEAD_REV="$PR_HEAD_SHA"
-          else
-            REF_NAME="$DEFAULT_BRANCH"
-            HEAD_REV="$GITHUB_SHA"
-          fi
           BASE="origin/$REF_NAME"
           git checkout --force --detach "$HEAD_REV"
+          git clean -fdq
           if git merge-base --is-ancestor "$BASE" HEAD; then
             echo "head already contains $BASE"
           else
@@ -103,8 +167,21 @@ jobs:
           npm ci
           DATABASE_URL="postgresql://ci:ci@localhost:5432/ci" npx prisma validate
           npx tsc --noEmit -p .
+          node "$RUNNER_TEMP/gate/clean-tree.mjs" --label "install + typecheck"
+          seed_template() {
+            # $1 = template database name. Migrated and seeded from THIS checkout.
+            psql -h localhost -U ci -d postgres -v ON_ERROR_STOP=1 -qc "DROP DATABASE IF EXISTS $1 WITH (FORCE)" -c "CREATE DATABASE $1"
+            DATABASE_URL="$PG_SERVER/$1" npx prisma migrate deploy
+            DATABASE_URL="$PG_SERVER/$1" npx tsx prisma/seed.ts
+            DATABASE_URL="$PG_SERVER/$1" npx tsx scripts/populate-coherent-financial-core.ts
+          }
+          seed_template hr_head
+          node "$RUNNER_TEMP/gate/clean-tree.mjs" --label "migrate + seed"
+          CFG=$(node "$RUNNER_TEMP/gate/pg-workers.mjs" write-config "$RUNNER_TEMP/gate")
           set +e
-          PR_GATE_REPORT="$RUNNER_TEMP/pr-gate-head.json" npx vitest run --reporter=default --reporter="$RUNNER_TEMP/pr-gate-reporter.mjs"
+          HEADROOM_TEST_PG_TEMPLATE_URL="$PG_SERVER/hr_head" HEADROOM_TEST_PG_WORKERS="$VITEST_WORKERS" \
+            PR_GATE_REPORT="$RUNNER_TEMP/pr-gate-head.json" npx vitest run --config "$CFG" --maxWorkers="$VITEST_WORKERS" --minWorkers=1 \
+            --reporter=default --reporter="$RUNNER_TEMP/gate/pr-gate-reporter.mjs"
           code=$?
           set -e
           if [ ! -s "$RUNNER_TEMP/pr-gate-head.json" ]; then
@@ -113,9 +190,16 @@ jobs:
           fi
           echo "merged vitest exit $code (failures are recorded, not ignored)"
 
-      - name: fail on new regressions and report base failures
+      - name: tests must not modify the checkout
+        if: ${{ !cancelled() && steps.head.outcome == 'success' }}
         run: |
-          node "$RUNNER_TEMP/pr-gate-compare.mjs" \
+          git status --porcelain --untracked-files=all
+          node "$RUNNER_TEMP/gate/clean-tree.mjs" --label "the PR test run"
+
+      - name: fail on new regressions and report base failures
+        if: ${{ !cancelled() && steps.base.outcome == 'success' && steps.head.outcome == 'success' }}
+        run: |
+          node "$RUNNER_TEMP/gate/pr-gate-compare.mjs" \
             --base "$RUNNER_TEMP/pr-gate-base.json" \
             --head "$RUNNER_TEMP/pr-gate-head.json" \
             --base-label "$(cat "$RUNNER_TEMP/pr-gate-base-label")" \
