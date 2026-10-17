@@ -15,7 +15,7 @@ import type {
   DefinitionRecord,
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
-import type { CovenantCategoryKey, NonCovenantSubtype } from "./summarize";
+import type { AffirmativeKind, CovenantCategoryKey, NonCovenantSubtype } from "./summarize";
 
 export type ProvisionPosture =
   | "GENERAL_PROHIBITION"
@@ -85,6 +85,8 @@ type StructuralArticleClass =
   | "AMENDMENTS"
   | "MISCELLANEOUS"
   | "NEGATIVE"
+  | "AFFIRMATIVE"
+  | "COVENANTS"
   | "OTHER_ARTICLE";
 
 /** EDGAR split-letter repair for article headings, generalized
@@ -128,6 +130,8 @@ function structuralArticleClass(heading: string | undefined): StructuralArticleC
   if (has(/\bAMENDMENTS\b/) || has(/\bWAIVERS\b/)) return "AMENDMENTS";
   if (has(/\bMISCELLANEOUS\b/)) return "MISCELLANEOUS";
   if (has(/\bNEGATIVE\b/)) return "NEGATIVE";
+  if (has(/\bAFFIRMATIVE\b/)) return "AFFIRMATIVE";
+  if (has(/\bCOVENANTS\b/)) return "COVENANTS";
   return "OTHER_ARTICLE";
 }
 
@@ -323,7 +327,7 @@ function isReservedPlaceholder(excerpt: string, heading: string): boolean {
     // Clause-marker prefixes: "(j) [Reserved]." / "(d) Reserved ."
     .replace(/^\([a-z0-9]{1,3}\)\s*/i, "")
     .trim();
-  return /^\[?reserved\]?\.?$/i.test(body) || /\[reserved\]/i.test(heading);
+  return /^\[?reserved\]?[.;]?$/i.test(body) || /\[reserved\]/i.test(heading);
 }
 
 /** Families that make an item covenant-mappable for the masking
@@ -502,6 +506,179 @@ function classifyNonCovenant(params: {
   return null;
 }
 
+/** Prohibition frame in the provision's own lead: a bare
+ * prohibition stem, or a "shall/will not" in the opening text.
+ * An affirmative covenant never opens with its prohibition. */
+function hasProhibitionLead(excerpt: string, heading: string): boolean {
+  const hay = `${heading}\n${excerpt.replace(/\s+/g, " ").trim()}`;
+  if (PROHIBITION_STEM.test(hay)) return true;
+  // A "shall/will not" is the provision's frame only when it
+  // LEADS — before any affirmative obligation shape. A
+  // post-closing directive ("shall cause X to be dissolved
+  // and, until so dissolved, such entity shall not conduct...")
+  // carries a subordinate interim restriction, not a
+  // prohibition lead.
+  const lead = hay.slice(0, 400);
+  const notIdx = lead.search(/\b(shall|will)\s+not\b/i);
+  if (notIdx >= 0) {
+    const obligationIdx = Math.min(
+      ...[OBLIGATION_LEAD.exec(lead)?.index ?? Infinity, CAUSE_LEAD.exec(lead)?.index ?? Infinity],
+    );
+    if (obligationIdx === Infinity || notIdx < obligationIdx) return true;
+  }
+  // Line-of-business frame: "will engage only in lines of
+  // business substantially similar to ..." is a RESTRICTION
+  // (the borrower may not enter other lines), however the
+  // agreement files it — including inside an affirmative
+  // article.
+  return /\b(engage|conduct|carry on)\b[^.;]{0,80}\bonly\b/i.test(hay);
+}
+
+/** Tight obligation-verb shapes that open an affirmative
+ * covenant ("shall deliver", "shall maintain", "shall permit
+ * inspection", "will furnish"...). Used only inside a MIXED
+ * covenants article, where article position alone cannot
+ * distinguish affirmative from negative covenants. */
+const OBLIGATION_LEAD =
+  /\b(shall|will)\s+(deliver|furnish|provide|maintain|keep|permit|give|file|pay|promptly\s+(deliver|furnish|provide|give|notify))\b/i;
+/** "Shall cause X to become / execute / deliver / enter into"
+ * (joinder and control-agreement shapes) — a bare "will cause
+ * each Subsidiary to" causative frame is not one. */
+const CAUSE_LEAD = /\b(shall|will)\s+cause\b[^.;]{0,80}\b(become|execute|deliver|enter into|comply|agree)\b/i;
+
+/** A delivery FRAME: the section's chapeau sentence that only
+ * says deliveries go to the Agent/Lenders — WHAT is delivered
+ * lives in the enumerated descendant clauses (separate items).
+ * Shape: after the title, a short single frame whose verb is
+ * deliver/furnish/provide and which names no delivered object. */
+function isDeliveryFrame(excerpt: string, heading: string, sectionHeading?: string): boolean {
+  void heading;
+  void sectionHeading;
+  const rest = excerpt
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^(?:section|§)\s+[0-9a-zA-Z().-]+\.?\s*/i, "")
+    .replace(/^[0-9]+(?:\.[0-9]+)*[.\s]+/, "");
+  // Anchor on the first delivery verb. Everything before it
+  // must be title/subject matter (no second operative verb);
+  // everything from it onward is the frame tail, which must be
+  // short and name no delivered object. (The section TITLE
+  // names the objects — "Financial Statements; ... Information"
+  // — so object words are only disqualifying in the tail; a
+  // tail mention of "sufficient copies" is copy count, not
+  // content, and is not an object word here.)
+  const m = /\b(deliver|furnish|provide|supply)\b/i.exec(rest);
+  if (!m || m.index > 160) return false;
+  const head = rest.slice(0, m.index);
+  if (/\b(deliver|furnish|provid|suppl|maintain|permit|represent|warrant|agree|incur|prepay|redeem)\w*\b/i.test(head)) {
+    return false;
+  }
+  const tail = rest.slice(m.index);
+  if (tail.length > 220) return false;
+  return !/\b(financial statements|certificates?|reports?|information|notices?|documents|budgets?|computations?)\b/i.test(
+    tail,
+  );
+}
+
+/** Obligation kind from the enclosing section's heading — the
+ * agreement's own organization of its affirmative covenants. */
+function affirmativeKindFor(sectionHeading: string | undefined): AffirmativeKind {
+  const h = despaceHeadingText(sectionHeading ?? "");
+  if (/\bbooks\b|\brecords\b|\binspection\b|\bvisitation\b/i.test(h)) return "BOOKS_INSPECTION";
+  if (/\bexistence\b|\bqualification\b/i.test(h)) return "EXISTENCE";
+  if (/\btaxes\b|\bpayment of obligations\b/i.test(h)) return "TAXES";
+  if (/\bproperties\b|\binsurance\b/i.test(h)) return "PROPERTIES_INSURANCE";
+  if (
+    /\bfurther assurances\b|\badditional (guarantors|collateral)\b|\bjoinder\b|\bcovenant to guarantee\b|\bguarantee obligations\b/i.test(
+      h,
+    )
+  ) {
+    return "FURTHER_ASSURANCES";
+  }
+  if (/\bcompliance\b|\bmaterial contracts\b|\benvironmental\b/i.test(h)) return "COMPLIANCE";
+  if (/\bnotices?\b/i.test(h)) return "NOTICE";
+  if (/\bfinancial statements\b|\bcertificates?\b|\breports?\b|\breporting\b|\binformation\b|\bbudgets?\b/i.test(h)) {
+    return "REPORTING";
+  }
+  return "OTHER_AFFIRMATIVE";
+}
+
+/**
+ * Step 2: the AFFIRMATIVE classification. Operative affirmative
+ * covenants ARE covenants — they stay in the pipeline — but
+ * they are not negative covenants or basket grants, and OTHER
+ * mislabels them.
+ *
+ * Gate A (pure Affirmative article): article position is the
+ * agreement's own organization — every operative item in it is
+ * an affirmative covenant. Guards (fail-closed): chapeau-only
+ * stems (their clauses are separate items), prohibition leads,
+ * financial-maintenance primaries, EoD-shaped items, and
+ * anything step 1 already classified are never claimed.
+ *
+ * Gate B (mixed "Covenants" article — affirmative and negative
+ * covenants under one article title): position alone cannot
+ * separate them, so an item is claimed only when its section
+ * names an affirmative subject OR its lead carries a tight
+ * obligation-verb shape, and it has no prohibition lead.
+ */
+const AFFIRMATIVE_SECTION_SUBJECT =
+  /\b(financial statements|financial reporting|certificates|other information|notices|existence|taxes|properties|insurance|compliance|books|records|inspection|further assurances|additional guarantors|maintenance|reporting)\b/i;
+
+function classifyAffirmative(params: {
+  excerpt: string;
+  heading: string;
+  families: string[];
+  primary: string;
+  isEod: boolean;
+  position: StructuralPosition;
+  candidateNodeType?: string;
+}): AffirmativeKind | null {
+  const { excerpt, heading, families, primary, isEod, position } = params;
+  if (isEod) return null;
+  if (primary === "FINANCIAL_MAINTENANCE_COVENANTS" || families[0] === "EVENTS_OF_DEFAULT") return null;
+  if (isChapeauOnlyExcerpt(excerpt, heading)) {
+    // Fragment inheritance: a verb-less CLAUSE fragment under
+    // an affirmative-subject section of an affirmative article
+    // ("(a) the occurrence of any Default" under §Notices) is
+    // part of that section's covenant — its operative stem is
+    // the section's own item. SECTION stems themselves never
+    // inherit (they are the stem, separately accounted).
+    if (
+      position.positionClass === "AFFIRMATIVE" &&
+      params.candidateNodeType !== undefined &&
+      params.candidateNodeType !== "SECTION" &&
+      params.candidateNodeType !== "ARTICLE" &&
+      AFFIRMATIVE_SECTION_SUBJECT.test(despaceHeadingText(position.sectionHeading ?? ""))
+    ) {
+      return affirmativeKindFor(position.sectionHeading);
+    }
+    return null;
+  }
+  if (isDeliveryFrame(excerpt, heading, position.sectionHeading)) return null;
+  if (hasProhibitionLead(excerpt, heading)) return null;
+  // A business-scope section is a restriction by subject,
+  // whichever article files it.
+  if (/\b(nature of business|conduct of business|lines? of business|business activities)\b/i.test(
+    despaceHeadingText(position.sectionHeading ?? ""),
+  )) {
+    return null;
+  }
+  const cls = position.positionClass;
+  if (cls === "AFFIRMATIVE") {
+    return affirmativeKindFor(position.sectionHeading);
+  }
+  if (cls === "COVENANTS") {
+    const section = despaceHeadingText(position.sectionHeading ?? "");
+    const affirmativeSubject = AFFIRMATIVE_SECTION_SUBJECT.test(section);
+    const lead = excerpt.replace(/\s+/g, " ").slice(0, 400);
+    if (affirmativeSubject || OBLIGATION_LEAD.test(lead) || CAUSE_LEAD.test(lead)) {
+      return affirmativeKindFor(position.sectionHeading);
+    }
+  }
+  return null;
+}
+
 export interface ProvisionAnalysis {
   /** Rule 192: the candidate excerpt is a prefix of a longer
    * operative span (4000-char cap) — tail clauses are missing. */
@@ -516,6 +693,9 @@ export interface ProvisionAnalysis {
    * structural reason the item is not an operative covenant.
    * Absent for covenant items. */
   nonCovenantSubtype?: NonCovenantSubtype;
+  /** Classification census step 2: for AFFIRMATIVE items, the
+   * obligation kind. Absent for non-affirmative items. */
+  affirmativeKind?: AffirmativeKind;
   families: string[];
   posture: ProvisionPosture;
   /** Genuine plain-English explanation of operative substance. */
@@ -588,6 +768,7 @@ const CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   EVENTS_OF_DEFAULT: "Events of default",
   BASKETS_EXCEPTIONS_CONDITIONS: "Relevant baskets, exceptions, conditions and defined terms",
   NON_COVENANT: "Non-covenant provision",
+  AFFIRMATIVE: "Affirmative covenants",
   OTHER: "Other provisions",
 };
 
@@ -1484,16 +1665,38 @@ export function analyzeProvision(params: {
     isEod,
     position: structuralPos,
   });
+  // Classification census step 2: AFFIRMATIVE classification —
+  // operative affirmative covenants (reporting, notices,
+  // existence, taxes, maintenance, compliance, books/inspection,
+  // further assurances) get their real category instead of OTHER
+  // or a subject-keyword label. Runs after step 1 (a designation
+  // mechanics clause or [reserved] placeholder inside an
+  // affirmative article is NON_COVENANT, not an affirmative
+  // covenant) and before family mapping.
+  const affirmativeKind = nonCovenantSubtype
+    ? null
+    : classifyAffirmative({
+        excerpt,
+        heading,
+        families: params.candidate.families,
+        primary,
+        isEod,
+        position: structuralPos,
+        candidateNodeType: params.structuralNodes.find((n) => n.nodeId === params.candidate.nodeId)
+          ?.nodeType,
+      });
   // Category follows substance, not just the first family tag: an EoD
   // trigger stays EVENTS_OF_DEFAULT even if the classifier also tagged a
   // subject family, and an administrative provision is OTHER.
   const category: CovenantCategoryKey = nonCovenantSubtype
     ? "NON_COVENANT"
-    : isAdministrativeProvision(heading, excerpt)
-      ? "OTHER"
-      : isEod
-        ? "EVENTS_OF_DEFAULT"
-        : (FAMILY_TO_CATEGORY[primary] ?? "OTHER");
+    : affirmativeKind
+      ? "AFFIRMATIVE"
+      : isAdministrativeProvision(heading, excerpt)
+        ? "OTHER"
+        : isEod
+          ? "EVENTS_OF_DEFAULT"
+          : (FAMILY_TO_CATEGORY[primary] ?? "OTHER");
   const categoryLabel = CATEGORY_LABELS[category];
   // A NON_COVENANT item has no covenant posture: UNRESOLVED is
   // the honest determinate statement (it is not a prohibition,
@@ -1645,6 +1848,7 @@ export function analyzeProvision(params: {
     category,
     categoryLabel,
     nonCovenantSubtype: nonCovenantSubtype ?? undefined,
+    affirmativeKind: affirmativeKind ?? undefined,
     families: params.candidate.families,
     posture,
     plainEnglish,

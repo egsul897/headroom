@@ -286,6 +286,85 @@ describe("step 1 — NON_COVENANT structural classification", () => {
     expect(a.category).toBe("OTHER");
   });
 
+  it("a reporting covenant in an affirmative article is AFFIRMATIVE/REPORTING and mints no grants", () => {
+    const s = skeleton();
+    const sec = node("SECTION", "6.01", "Financial Statements", 4100, 4900, s.aff.nodeId);
+    const item = node("SUBSECTION", "6.01(a)", "", 4200, 4800, sec.nodeId);
+    const a = analyze(
+      [...s.all, sec, item],
+      item,
+      ["UNKNOWN"],
+      "(a) The Borrower shall deliver to the Administrative Agent annual financial statements within ninety days after fiscal year end.",
+    );
+    expect(a.category).toBe("AFFIRMATIVE");
+    expect(a.affirmativeKind).toBe("REPORTING");
+    expect(a.permissions).toEqual([]);
+  });
+
+  it("a delivery-frame stem is NOT claimed as an affirmative covenant", () => {
+    const s = skeleton();
+    const sec = node("SECTION", "6.01", "Financial Statements", 4100, 4900, s.aff.nodeId);
+    const a = analyze(
+      [...s.all, sec],
+      sec,
+      ["RESTRICTED_SUBSIDIARIES"],
+      "Section 6.01. Financial Statements. Deliver to the Administrative Agent for prompt further distribution to each Lender:",
+    );
+    expect(a.category).toBe("OTHER");
+  });
+
+  it("a verb-less fragment under a Notices section inherits the affirmative classification", () => {
+    const s = skeleton();
+    const sec = node("SECTION", "6.02", "Notices", 4100, 4900, s.aff.nodeId);
+    const item = node("SUBSECTION", "6.02(a)", "", 4200, 4800, sec.nodeId);
+    const a = analyze([...s.all, sec, item], item, ["UNKNOWN"], "(a) the occurrence of any Default or Event of Default;");
+    expect(a.category).toBe("AFFIRMATIVE");
+    expect(a.affirmativeKind).toBe("NOTICE");
+  });
+
+  it("a [reserved] clause inside an affirmative article is NON_COVENANT/RESERVED, not affirmative", () => {
+    const s = skeleton();
+    const sec = node("SECTION", "6.02", "Certificates; Other Information", 4100, 4900, s.aff.nodeId);
+    const item = node("SUBSECTION", "6.02(b)", "", 4200, 4800, sec.nodeId);
+    const a = analyze([...s.all, sec, item], item, ["UNKNOWN"], "(b) [reserved];");
+    expect(a.category).toBe("NON_COVENANT");
+    expect(a.nonCovenantSubtype).toBe("RESERVED");
+  });
+
+  it("a nature-of-business clause in an affirmative article is a restriction, not an affirmative covenant", () => {
+    const s = skeleton();
+    const sec = node("SECTION", "6.15", "Nature of Business", 4100, 4900, s.aff.nodeId);
+    const a = analyze(
+      [...s.all, sec],
+      sec,
+      ["RESTRICTED_SUBSIDIARIES"],
+      "Section 6.15. Nature of Business. The Borrower and its Restricted Subsidiaries will engage only in material lines of business substantially similar to those conducted on the Effective Date.",
+    );
+    expect(a.category).not.toBe("AFFIRMATIVE");
+  });
+
+  it("mixed Covenants article: a reporting clause is AFFIRMATIVE, a debt prohibition is not", () => {
+    seq = 0;
+    const cov = node("ARTICLE", "VI", "Covenants", 0, 9000);
+    const fin = node("SECTION", "6.1", "Financial Reporting", 100, 4000, cov.nodeId);
+    const clause = node("SUBSECTION", "6.1(c)", "", 200, 1000, fin.nodeId);
+    const debt = node("SECTION", "6.9", "Indebtedness", 4100, 8900, cov.nodeId);
+    const reporting = analyze(
+      [cov, fin, clause],
+      clause,
+      ["UNKNOWN", "GENERAL_CONDITIONS_AND_EXCEPTIONS"],
+      "(c) Together with the financial statements required above, a Compliance Certificate signed by its chief financial officer showing the required calculations.",
+    );
+    expect(reporting.category).toBe("AFFIRMATIVE");
+    const prohibition = analyze(
+      [cov, fin, clause, debt],
+      debt,
+      ["INDEBTEDNESS"],
+      "Section 6.9. Indebtedness. The Parent will not permit any Subsidiary to incur any Indebtedness other than Permitted Indebtedness.",
+    );
+    expect(prohibition.category).toBe("DEBT_INCURRENCE");
+  });
+
   it("grantTypesForItem mints nothing for a NON_COVENANT item", () => {
     const item = {
       category: "NON_COVENANT",
