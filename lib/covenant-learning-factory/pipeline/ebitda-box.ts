@@ -6,8 +6,8 @@
  * carry null (never an estimate); "extra available" counts only known cap room on pending items, and the box says when
  * more could exist beyond it (pending items without a known bound).
  */
-import type { BorrowerInput, IssuerFinancials } from "../xbrl/companyfacts";
-import { capRoomTotal, rankFlags, type AddBackFlag } from "../xbrl/addback-tracker";
+import { fetchIssuerFinancials, type BorrowerInput, type IssuerFinancials } from "../xbrl/companyfacts";
+import { capRoomTotal, priorAsOf, rankFlags, type AddBackFlag } from "../xbrl/addback-tracker";
 import type { EbitdaOptimization, LeverageCapacity } from "../xbrl/ebitda-optimizer";
 import { runAgreementPipeline, type AgreementPipelineResult } from "./agreement-pipeline";
 import { capacitySnapshot, cfoRecompute, gainOf, type CfoGain } from "./cfo-loop";
@@ -64,6 +64,9 @@ export interface EbitdaBox {
   /** Current (latest per key and kind) CFO confirmations applied. kind/confirmedBy are optional additions (ebitda-box-1 compatible). */
   confirmations: Array<ConfirmationView>;
   reason: string;
+  /** FAILED only: the box shown is the last good one (lastGoodBoxId), computed at staleSince; null when none exists. */
+  staleSince?: string | null;
+  lastGoodBoxId?: string | null;
 }
 
 export type ConfirmationKind = "AMOUNT" | "LENDER_APPROVAL";
@@ -158,8 +161,8 @@ export interface ConfirmationRow {
 
 export interface EbitdaBoxStore {
   customerEbitdaBox: {
-    create(args: { data: { companyId: string; documentId: string; status: string; version: string; payload: unknown } }): Promise<{ id: string }>;
-    findFirst(args: { where: { companyId: string; documentId: string }; orderBy: { createdAt: "desc" } }): Promise<{ id: string; payload: unknown; createdAt: Date } | null>;
+    create(args: { data: { id?: string; companyId: string; documentId: string; status: string; version: string; payload: unknown } }): Promise<{ id: string }>;
+    findFirst(args: { where: { companyId: string; documentId: string; status?: { not: string } }; orderBy: { createdAt: "desc" } }): Promise<{ id: string; payload: unknown; createdAt: Date } | null>;
     findUnique(args: { where: { id: string } }): Promise<{ id: string; companyId: string; documentId: string; payload: unknown; createdAt: Date } | null>;
   };
   /** Append-only: rows are only created, never updated or deleted; the latest row per (key, kind) is current. */
@@ -168,10 +171,27 @@ export interface EbitdaBoxStore {
     findMany(args: { where: { companyId: string; documentId: string }; orderBy: Array<{ createdAt: "asc" } | { id: "asc" }> }): Promise<ConfirmationRow[]>;
     findFirst(args: { where: { companyId: string; documentId: string; idempotencyKey: string } }): Promise<ConfirmationRow | null>;
   };
+  /** Interactive transaction (Prisma). Writes are made inside one so a box is never visible without its row. */
+  $transaction?<T>(fn: (tx: EbitdaBoxStore) => Promise<T>, opts?: { maxWait?: number; timeout?: number }): Promise<T>;
+  $queryRawUnsafe?(sql: string, ...values: unknown[]): Promise<unknown>;
 }
 
-export async function saveEbitdaBox(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, box: EbitdaBox): Promise<{ id: string }> {
-  return db.customerEbitdaBox.create({ data: { ...scope, status: box.status, version: box.version, payload: JSON.parse(JSON.stringify(box)) } });
+/**
+ * Run `fn` in one transaction holding a per-document advisory lock, so confirmations and box writes for a document are
+ * serialised: each box is computed from the rows committed before it plus the row written in the same transaction, and
+ * a failure anywhere (unique violation, insert error, connection reset) rolls back both — nothing is half-written.
+ */
+export async function withDocumentTransaction<T>(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, fn: (tx: EbitdaBoxStore) => Promise<T>): Promise<T> {
+  if (!db.$transaction) throw new Error("EBITDA box store has no transaction support; refusing a non-atomic write");
+  return db.$transaction(async (tx) => {
+    if (!tx.$queryRawUnsafe) throw new Error("EBITDA box store cannot take the per-document advisory lock ($queryRawUnsafe missing); refusing an unserialised write");
+    await tx.$queryRawUnsafe("SELECT 1 FROM pg_advisory_xact_lock(hashtextextended($1, 0))", `ebitda-box:${scope.companyId}:${scope.documentId}`);
+    return fn(tx);
+  }, { maxWait: 30_000, timeout: 60_000 });
+}
+
+export async function saveEbitdaBox(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, box: EbitdaBox, id?: string): Promise<{ id: string }> {
+  return db.customerEbitdaBox.create({ data: { ...(id ? { id } : {}), ...scope, status: box.status, version: box.version, payload: JSON.parse(JSON.stringify(box)) } });
 }
 
 export async function latestEbitdaBox(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }): Promise<(EbitdaBox & { savedAt: string }) | null> {
@@ -255,7 +275,6 @@ export async function confirmEbitdaItem(
 
   const others = prior.filter((c) => !(canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === kind));
   const priorArgs: PipelineArgs = { ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...others.map(asBorrowerInput)] } };
-  let gain: CfoGain["gain"];
   if (kind === "AMOUNT") {
     const lim = plausibleMax((base.xbrl as Xbrl | null)?.ebitda?.base?.value ?? null, args.financials, flag);
     if (!lim.ok) return { ok: false, status: 422, code: "NEEDS_BASE", error: lim.error };
@@ -263,31 +282,92 @@ export async function confirmEbitdaItem(
     const check = cfoRecompute(priorArgs, [{ key: inputKey, value, source: input.source.trim() }]);
     const res = check.results[0]!;
     if (!res.accepted) return { ok: false, status: /no tracker flag|ambiguous/.test(res.reason) ? 404 : 400, error: res.reason };
-    gain = res.gain;
   } else {
     if (!flag) {
       const check = cfoRecompute(priorArgs, [{ key: inputKey, value: "0", source: input.source.trim() }]);
       return { ok: false, status: 404, error: check.results[0]?.reason ?? `no tracker flag names input key ${input.inputKey}` };
     }
     if (flag.status !== "CONDITIONAL" && !flag.conditional) return { ok: false, status: 422, error: `${inputKey} does not require lender approval` };
-    const withApproval = { ...priorArgs, financials: { ...priorArgs.financials!, borrowerInputs: [...(priorArgs.financials!.borrowerInputs ?? []), asBorrowerInput({ key: inputKey, value, source: input.source.trim(), kind })] } };
-    gain = gainOf(capacitySnapshot(runAgreementPipeline(priorArgs)), capacitySnapshot(runAgreementPipeline(withApproval)));
   }
-  // The box (with this confirmation applied) is saved first so the row can carry its original response; the row
-  // insert is the commit point. A concurrent insert with the same idempotency key loses on the unique index and
-  // answers with the winner's stored response (same principal + payload) or 409 — never a 500.
-  const box = computeEbitdaBox(args, [...prior.filter((c) => !(canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === kind)), { key: inputKey, value, source: input.source.trim(), kind, confirmedBy: input.confirmedBy, confirmedAt: new Date().toISOString() }]);
-  const { id } = await saveEbitdaBox(db, scope, box);
+  // One short transaction under the per-document lock (inputs, including SEC financials, were loaded before it):
+  // read the committed rows, compute the gain and the box from them plus this confirmation, insert the row (carrying
+  // its response for idempotent replay), then save the box. Any failure rolls back both. A concurrent insert with the
+  // same idempotency key loses on the unique index (its transaction wrote nothing) and answers with the winner's
+  // stored response (same principal + payload) or 409 — never a 500.
+  const boxId = newBoxId();
   const key = idem ?? newIdempotencyKey();
+  const mine: ConfirmationView = { key: inputKey, value, source: input.source.trim(), kind, confirmedBy: input.confirmedBy, confirmedAt: new Date().toISOString() };
+  let box: EbitdaBox, gain: CfoGain["gain"];
   try {
-    await db.customerEbitdaConfirmation.create({ data: { ...scope, inputKey, kind, value, source: input.source.trim(), confirmedBy: input.confirmedBy, idempotencyKey: key, response: { boxId: id, gain } } });
+    ({ box, gain } = await withDocumentTransaction(db, scope, async (tx) => {
+      const committed = await loadConfirmations(tx, scope);
+      const rest = committed.filter((c) => !(canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === kind));
+      const withInputs = (cs: readonly ConfirmationView[]): PipelineArgs => ({ ...args, financials: { ...args.financials!, borrowerInputs: [...(args.financials!.borrowerInputs ?? []), ...cs.map(asBorrowerInput)] } });
+      const before = runAgreementPipeline(withInputs(rest));
+      const after = runAgreementPipeline(withInputs([...rest, mine]));
+      const g = gainOf(capacitySnapshot(before), capacitySnapshot(after));
+      const b = ebitdaBoxFromResult(after, [...rest, mine]);
+      await tx.customerEbitdaConfirmation.create({ data: { ...scope, inputKey, kind, value, source: mine.source, confirmedBy: input.confirmedBy, idempotencyKey: key, response: { boxId, gain: g } } });
+      await saveEbitdaBox(tx, scope, b, boxId);
+      return { box: b, gain: g };
+    }));
   } catch (err) {
     if (!isUniqueViolation(err)) throw err;
     const seen = await db.customerEbitdaConfirmation.findFirst({ where: { ...scope, idempotencyKey: key } });
     if (!seen) throw err;
     return replayOf(db, scope, seen, { inputKey, kind, value, source: input.source.trim(), confirmedBy: input.confirmedBy });
   }
-  return { ok: true, box, gain, boxId: id };
+  return { ok: true, box, gain, boxId };
+}
+
+const newBoxId = () => `ebx_${globalThis.crypto.randomUUID().replace(/-/g, "")}`;
+
+/** Company CIK → current and prior-year financials. SEC 404 (no XBRL filings) → null financials; any other fetch error
+ *  throws (the caller records a FAILED box — an outage is not "needs financials"). */
+export async function financialsForCik(cik: string | null, fetchImpl?: typeof fetch): Promise<{ financials: IssuerFinancials | null; priorFinancials: IssuerFinancials | null; cik: string | null }> {
+  const c = cik?.replace(/\D/g, "") || null;
+  if (!c || /^0+$/.test(c)) return { financials: null, priorFinancials: null, cik: null };
+  try {
+    const financials = await fetchIssuerFinancials(c, fetchImpl);
+    const pa = financials ? priorAsOf(financials.anchor) : null;
+    const priorFinancials = pa ? await fetchIssuerFinancials(c, fetchImpl, pa) : null;
+    return { financials, priorFinancials, cik: c };
+  } catch (err) {
+    throw new SecUnavailableError(err);
+  }
+}
+
+/** SEC data could not be fetched: missing/placeholder SEC identity, network error, non-404 error status, retries exhausted. */
+export class SecUnavailableError extends Error {
+  readonly code = "SEC_UNAVAILABLE" as const;
+  constructor(readonly cause: unknown) {
+    super(cause instanceof Error ? cause.message : String(cause));
+    this.name = "SecUnavailableError";
+  }
+}
+
+/** Generation of a document's box stream: the id of the latest saved box (null when none). */
+export async function boxGeneration(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }): Promise<string | null> {
+  return (await db.customerEbitdaBox.findFirst({ where: scope, orderBy: { createdAt: "desc" } }))?.id ?? null;
+}
+
+/**
+ * Recompute and save the box from committed confirmations (one locked transaction). Loading the inputs (agreement text,
+ * SEC filings) or computing may fail: that is recorded as a FAILED box (last committed figures kept) and returned.
+ */
+export async function refreshBoxCommitted(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, load: () => Promise<PipelineArgs | null>): Promise<{ box: EbitdaBox; id: string } | null> {
+  const generation = await boxGeneration(db, scope);
+  let args: PipelineArgs | null;
+  try { args = await load(); } catch (err) { return recordEbitdaBoxFailure(db, scope, err, { generation }); }
+  if (!args) return null;
+  const a = args;
+  try {
+    return await withDocumentTransaction(db, scope, async (tx) => {
+      const box = computeEbitdaBox(a, await loadConfirmations(tx, scope));
+      const { id } = await saveEbitdaBox(tx, scope, box);
+      return { box, id };
+    });
+  } catch (err) { return recordEbitdaBoxFailure(db, scope, err, { generation }); }
 }
 
 const isUniqueViolation = (err: unknown) => (err as { code?: string })?.code === "P2002" || /unique/i.test(err instanceof Error ? err.message : String(err));
@@ -305,27 +385,56 @@ async function replayOf(db: EbitdaBoxStore, scope: { companyId: string; document
 }
 
 /**
- * Plausible maximum for a CFO amount, from a sourced figure only: 10× the reported base EBITDA when positive; else the
- * issuer's reported revenue (an add-back cannot exceed revenue); else, for a line with a known dollar cap, 10× that cap
- * (only the capped amount is ever counted). Otherwise there is nothing to bound it by: NEEDS_BASE. 1e12 is only an
- * absolute ceiling on top of a sourced bound, never the bound itself.
+ * Plausible maximum for a CFO amount, from a sourced figure only:
+ *  - 10× the reported base EBITDA when it is positive;
+ *  - else, for a line with a known dollar cap, 10× that cap (only the capped amount is ever counted; 10× catches unit
+ *    slips such as thousands entered as dollars);
+ *  - else 50% of the issuer's reported revenue. An add-back is a cost already deducted from net income; one adjustment
+ *    line larger than half of all sales would mean a single category of non-operating/non-recurring cost consumed most
+ *    of revenue — implausible for a filer with a negative or missing base and the typical signature of a units error.
+ *    Half (not all) of revenue leaves room for genuine large one-offs (impairments, restructurings) while refusing
+ *    figures that would make adjusted EBITDA exceed revenue on their own.
+ *  - otherwise nothing bounds it: NEEDS_BASE.
+ * 1e12 is only an outer ceiling on top of a sourced bound, never the bound itself; the message names whichever applied.
  */
 function plausibleMax(baseValue: string | null, fin: IssuerFinancials, flag: AddBackFlag | undefined): { ok: true; bound: bigint; basis: string } | { ok: false; error: string } {
   const int = (v: string | null | undefined) => (v != null && /^-?\d+$/.test(v) ? BigInt(v) : null);
-  const cap = (b: bigint) => (b < MAX_CONFIRMED_USD ? b : MAX_CONFIRMED_USD);
+  const within = (b: bigint, basis: string) => (b < MAX_CONFIRMED_USD ? { ok: true as const, bound: b, basis } : { ok: true as const, bound: MAX_CONFIRMED_USD, basis: "the 1e12 USD absolute ceiling" });
   const base = int(baseValue);
-  if (base != null && base > 0n) return { ok: true, bound: cap(10n * base), basis: "10x the reported base EBITDA" };
-  const rev = int(fin.values.find((v) => v.metric === "revenue")?.value);
-  if (rev != null && rev > 0n) return { ok: true, bound: cap(rev), basis: "the issuer's reported revenue" };
+  if (base != null && base > 0n) return within(10n * base, "10x the reported base EBITDA");
   const c = int(flag?.cap?.amount ?? null);
-  if (c != null && c > 0n) return { ok: true, bound: cap(10n * c), basis: "10x the clause's dollar cap" };
-  return { ok: false, error: "NEEDS_BASE: base EBITDA is missing or not positive and no other sourced figure (revenue, a dollar cap) bounds this line; the figure cannot be checked for plausibility" };
+  if (c != null && c > 0n) return within(10n * c, "10x the clause's dollar cap");
+  const rev = int(fin.values.find((v) => v.metric === "revenue")?.value);
+  if (rev != null && rev > 0n) return within(rev / 2n, "50% of the issuer's reported revenue");
+  return { ok: false, error: "NEEDS_BASE: base EBITDA is missing or not positive and no other sourced figure (a dollar cap, revenue) bounds this line; the figure cannot be checked for plausibility" };
 }
 
-/** Persist a FAILED box (e.g. a background refresh error) so GET surfaces it with its reason. */
-export async function recordEbitdaBoxFailure(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, err: unknown): Promise<{ id: string }> {
+/**
+ * Persist a FAILED box (e.g. a background refresh or SEC error) so GET surfaces it with its reason — under the same
+ * per-document lock and transaction as every other box write. `generation` is the latest box id when the failed run
+ * started: if a newer box was saved since, the failure is stale and nothing is written (a newer READY box is never
+ * shadowed). The FAILED box keeps the last committed state visible: the figures of the latest non-FAILED box
+ * (lastGoodBoxId, staleSince) and the currently committed confirmations.
+ */
+export async function recordEbitdaBoxFailure(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }, err: unknown, opts: { generation: string | null }): Promise<{ box: EbitdaBox; id: string; skipped?: boolean }> {
   const reason = (err instanceof Error ? err.message : String(err)).slice(0, 500) || "unknown error";
-  return saveEbitdaBox(db, scope, failedEbitdaBox(`EBITDA box computation failed: ${reason}`));
+  return withDocumentTransaction(db, scope, async (tx) => {
+    const latest = await tx.customerEbitdaBox.findFirst({ where: scope, orderBy: { createdAt: "desc" } });
+    if ((latest?.id ?? null) !== opts.generation && latest) return { box: latest.payload as EbitdaBox, id: latest.id, skipped: true };
+    const last = await tx.customerEbitdaBox.findFirst({ where: { ...scope, status: { not: "FAILED" } }, orderBy: { createdAt: "desc" } });
+    const confirmations = await loadConfirmations(tx, scope);
+    const prev = (last?.payload ?? null) as EbitdaBox | null;
+    const box: EbitdaBox = {
+      ...(prev ?? failedEbitdaBox("")),
+      status: "FAILED",
+      reason: `EBITDA box computation failed: ${reason}${prev && last ? ` (showing the last computed box from ${last.createdAt.toISOString()})` : ""}`,
+      confirmations,
+      staleSince: last ? last.createdAt.toISOString() : null,
+      lastGoodBoxId: last?.id ?? null,
+    };
+    const { id } = await saveEbitdaBox(tx, scope, box);
+    return { box, id };
+  });
 }
 
 export function failedEbitdaBox(reason: string): EbitdaBox {
