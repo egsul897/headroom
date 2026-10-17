@@ -10,7 +10,7 @@ import type { BorrowerInput, IssuerFinancials } from "../xbrl/companyfacts";
 import { capRoomTotal, rankFlags, type AddBackFlag } from "../xbrl/addback-tracker";
 import type { EbitdaOptimization, LeverageCapacity } from "../xbrl/ebitda-optimizer";
 import { runAgreementPipeline, type AgreementPipelineResult } from "./agreement-pipeline";
-import { cfoRecompute, type CfoGain } from "./cfo-loop";
+import { capacitySnapshot, cfoRecompute, gainOf, type CfoGain } from "./cfo-loop";
 
 export const EBITDA_BOX_VERSION = "ebitda-box-1";
 
@@ -60,16 +60,20 @@ export interface EbitdaBox {
     extraDebtCapacityIfConfirmed: string | null;
   };
   items: EbitdaBoxItem[];
-  confirmations: Array<BorrowerInput & { confirmedAt?: string | null }>;
+  /** Current (latest per key and kind) CFO confirmations applied. kind/confirmedBy are optional additions (ebitda-box-1 compatible). */
+  confirmations: Array<ConfirmationView>;
   reason: string;
 }
+
+export type ConfirmationKind = "AMOUNT" | "LENDER_APPROVAL";
+export type ConfirmationView = BorrowerInput & { confirmedAt?: string | null; kind?: ConfirmationKind; confirmedBy?: string | null };
 
 type Xbrl = NonNullable<AgreementPipelineResult["xbrl"]> & { ebitda?: EbitdaOptimization; leverageCapacity?: LeverageCapacity; addBackTracker?: AddBackFlag[] };
 
 const sum = (xs: Array<string | null>) => xs.reduce((a, x) => a + (x && /^-?\d+$/.test(x) ? BigInt(x) : 0n), 0n);
 
 /** Build the box from a pipeline result (pure). */
-export function ebitdaBoxFromResult(r: AgreementPipelineResult, confirmations: readonly (BorrowerInput & { confirmedAt?: string | null })[] = []): EbitdaBox {
+export function ebitdaBoxFromResult(r: AgreementPipelineResult, confirmations: readonly ConfirmationView[] = []): EbitdaBox {
   const x = (r.xbrl ?? null) as Xbrl | null;
   const empty = (status: EbitdaBox["status"], reason: string): EbitdaBox => ({
     version: EBITDA_BOX_VERSION, status, term: null, periodEnd: null, cik: x?.cik ?? null, totalEbitda: null, maximum: null, base: null, deductions: null,
@@ -129,21 +133,36 @@ function mulFloor(lev: string, n: bigint): string {
 export type PipelineArgs = Parameters<typeof runAgreementPipeline>[0];
 
 /** Run the pipeline with the confirmed figures applied and build the box. */
-export function computeEbitdaBox(args: PipelineArgs, confirmations: readonly (BorrowerInput & { confirmedAt?: string | null })[] = []): EbitdaBox {
-  const fin: IssuerFinancials | null | undefined = args.financials ? { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...confirmations.map(({ key, value, source }) => ({ key, value, source }))] } : args.financials;
+export function computeEbitdaBox(args: PipelineArgs, confirmations: readonly ConfirmationView[] = []): EbitdaBox {
+  const fin: IssuerFinancials | null | undefined = args.financials ? { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...confirmations.map(asBorrowerInput)] } : args.financials;
   return ebitdaBoxFromResult(runAgreementPipeline({ ...args, financials: fin }), confirmations);
 }
 
 // ---------------- persistence (Neon via Prisma) ----------------
+
+/** A lender-approval confirmation is passed to the optimizer as APPROVAL:<label…> with value "1". */
+export function asBorrowerInput(c: ConfirmationView): BorrowerInput {
+  return c.kind === "LENDER_APPROVAL" ? { key: c.key.replace(/^ADDBACK:/i, "APPROVAL:"), value: "1", source: c.source } : { key: c.key, value: c.value, source: c.source };
+}
+
+/** Canonical form of an input key for comparison: no whitespace, upper case. The stored key is the tracker's own key. */
+export const canonicalInputKey = (k: string) => k.replace(/\s+/g, "").toUpperCase();
+
+export interface ConfirmationRow {
+  id: string; companyId: string; documentId: string; inputKey: string; kind: string; value: string; source: string;
+  confirmedBy: string | null; idempotencyKey: string; createdAt: Date;
+}
 
 export interface EbitdaBoxStore {
   customerEbitdaBox: {
     create(args: { data: { companyId: string; documentId: string; status: string; version: string; payload: unknown } }): Promise<{ id: string }>;
     findFirst(args: { where: { companyId: string; documentId: string }; orderBy: { createdAt: "desc" } }): Promise<{ id: string; payload: unknown; createdAt: Date } | null>;
   };
+  /** Append-only: rows are only created, never updated or deleted; the latest row per (key, kind) is current. */
   customerEbitdaConfirmation: {
-    upsert(args: { where: { companyId_documentId_inputKey: { companyId: string; documentId: string; inputKey: string } }; create: Record<string, unknown>; update: Record<string, unknown> }): Promise<{ id: string }>;
-    findMany(args: { where: { companyId: string; documentId: string }; orderBy: { updatedAt: "asc" } }): Promise<Array<{ inputKey: string; value: string; source: string; updatedAt: Date }>>;
+    create(args: { data: Omit<ConfirmationRow, "id" | "createdAt"> }): Promise<{ id: string }>;
+    findMany(args: { where: { companyId: string; documentId: string }; orderBy: Array<{ createdAt: "asc" } | { id: "asc" }> }): Promise<ConfirmationRow[]>;
+    findFirst(args: { where: { companyId: string; documentId: string; idempotencyKey: string } }): Promise<ConfirmationRow | null>;
   };
 }
 
@@ -156,39 +175,110 @@ export async function latestEbitdaBox(db: EbitdaBoxStore, scope: { companyId: st
   return row ? { ...(row.payload as EbitdaBox), savedAt: row.createdAt.toISOString() } : null;
 }
 
-export async function loadConfirmations(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }): Promise<Array<BorrowerInput & { confirmedAt: string }>> {
-  const rows = await db.customerEbitdaConfirmation.findMany({ where: scope, orderBy: { updatedAt: "asc" } });
-  return rows.map((r) => ({ key: r.inputKey, value: String(r.value), source: r.source, confirmedAt: r.updatedAt.toISOString() }));
+/** Every confirmation row ever written for the document, oldest first (full audit history). */
+export async function confirmationHistory(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }): Promise<ConfirmationRow[]> {
+  return db.customerEbitdaConfirmation.findMany({ where: scope, orderBy: [{ createdAt: "asc" }, { id: "asc" }] });
+}
+
+/** Current confirmations: the latest row per canonical (inputKey, kind) wins. */
+export async function loadConfirmations(db: EbitdaBoxStore, scope: { companyId: string; documentId: string }): Promise<Array<ConfirmationView & { confirmedAt: string }>> {
+  const latest = new Map<string, ConfirmationRow>();
+  for (const r of await confirmationHistory(db, scope)) latest.set(`${canonicalInputKey(r.inputKey)}|${r.kind}`, r);
+  return [...latest.values()].map((r) => ({ key: r.inputKey, value: String(r.value), source: r.source, confirmedAt: r.createdAt.toISOString(), kind: r.kind === "LENDER_APPROVAL" ? "LENDER_APPROVAL" : "AMOUNT", confirmedBy: r.confirmedBy }));
 }
 
 export type ConfirmOutcome =
-  | { ok: true; box: EbitdaBox; gain: CfoGain["gain"]; boxId: string }
-  | { ok: false; status: 400 | 404 | 422; error: string };
+  | { ok: true; box: EbitdaBox; gain: CfoGain["gain"]; boxId: string; replayed?: boolean }
+  | { ok: false; status: 400 | 404 | 409 | 422; error: string };
+
+/** Hard ceiling for any confirmed amount (USD); also bounded by 10× the reported base EBITDA when that is known. */
+export const MAX_CONFIRMED_USD = 10n ** 12n;
+
+export interface ConfirmInput {
+  inputKey: string;
+  /** Whole USD (AMOUNT). Ignored for LENDER_APPROVAL. */
+  value?: string;
+  source: string;
+  /** AMOUNT (default): the figure. LENDER_APPROVAL: the lender/agent approval required by the clause has been obtained. */
+  kind?: ConfirmationKind;
+  /** Server-side principal id (never from the request body). */
+  confirmedBy: string;
+  /** Repeat-safe key: the same key with the same payload replays; with a different payload it is refused (409). */
+  idempotencyKey?: string | null;
+}
+
+const newIdempotencyKey = () => `srv-${globalThis.crypto.randomUUID()}`;
 
 /**
- * CFO confirms one item: validated against a fresh pipeline run (key must name a tracker flag, value an integer, source
- * named), persisted (latest figure per key wins), then the box is recomputed with all confirmations and saved.
+ * CFO confirms one item, validated against a fresh pipeline run: the key must name a tracker flag (matched canonically:
+ * case and whitespace insensitive; stored as the tracker's key), an AMOUNT must be a non-negative integer within sane
+ * bounds, a LENDER_APPROVAL only applies to a CONDITIONAL item, and the source is named. Rows are appended (history kept);
+ * the latest per key and kind is current. A CONDITIONAL item counts only once both its amount and its approval are
+ * confirmed. The box is then recomputed with all current confirmations and saved.
  */
 export async function confirmEbitdaItem(
   db: EbitdaBoxStore,
   scope: { companyId: string; documentId: string },
   args: PipelineArgs,
-  input: { inputKey: string; value: string; source: string; confirmedBy?: string | null },
+  input: ConfirmInput,
 ): Promise<ConfirmOutcome> {
-  if (!input.inputKey?.trim()) return { ok: false, status: 400, error: "inputKey is required" };
-  if (!/^-?\d+$/.test(String(input.value ?? ""))) return { ok: false, status: 400, error: "value must be an integer USD amount" };
-  if (!input.source?.trim()) return { ok: false, status: 400, error: "source (the document the figure comes from) is required" };
+  const kind: ConfirmationKind = input.kind ?? "AMOUNT";
+  if (kind !== "AMOUNT" && kind !== "LENDER_APPROVAL") return { ok: false, status: 400, error: "kind must be AMOUNT or LENDER_APPROVAL" };
+  if (typeof input.inputKey !== "string" || !input.inputKey.trim()) return { ok: false, status: 400, error: "inputKey is required" };
+  if (typeof input.source !== "string" || !input.source.trim()) return { ok: false, status: 400, error: "source (the document the figure comes from) is required" };
+  if (!input.confirmedBy?.trim()) return { ok: false, status: 400, error: "confirmedBy (authenticated principal) is required" };
+  const rawValue = kind === "LENDER_APPROVAL" ? "1" : String(input.value ?? "").trim();
+  if (kind === "AMOUNT") {
+    if (/^-\d+$/.test(rawValue)) return { ok: false, status: 422, error: "value must not be negative" };
+    if (!/^\d+$/.test(rawValue)) return { ok: false, status: 400, error: "value must be an integer USD amount" };
+  }
+  const value = kind === "AMOUNT" ? BigInt(rawValue).toString() : "1";
   if (!args.financials) return { ok: false, status: 422, error: "no issuer financials for this company (set the company CIK)" };
+  const idem = input.idempotencyKey?.trim() || null;
+  if (idem && idem.length > 200) return { ok: false, status: 400, error: "idempotencyKey is too long (max 200)" };
+
   const prior = await loadConfirmations(db, scope);
-  const others = prior.filter((c) => c.key.toUpperCase() !== input.inputKey.toUpperCase());
-  const priorArgs = { ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...others.map(({ key, value, source }) => ({ key, value, source }))] } };
-  const check = cfoRecompute(priorArgs, [{ key: input.inputKey, value: String(input.value), source: input.source }]);
-  const res = check.results[0]!;
-  if (!res.accepted) return { ok: false, status: /no tracker flag|ambiguous/.test(res.reason) ? 404 : 400, error: res.reason };
-  const data = { value: String(input.value), source: input.source, confirmedBy: input.confirmedBy ?? null };
-  await db.customerEbitdaConfirmation.upsert({ where: { companyId_documentId_inputKey: { ...scope, inputKey: input.inputKey } }, create: { ...scope, inputKey: input.inputKey, ...data }, update: data });
+  const base = runAgreementPipeline({ ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...prior.map(asBorrowerInput)] } });
+  const flags = ((base.xbrl as Xbrl | null)?.addBackTracker ?? []) as AddBackFlag[];
+  const want = canonicalInputKey(input.inputKey);
+  const flag = flags.find((f) => canonicalInputKey(f.inputKey) === want);
+  const inputKey = flag?.inputKey ?? want;
+
+  if (idem) {
+    const seen = await db.customerEbitdaConfirmation.findFirst({ where: { ...scope, idempotencyKey: idem } });
+    if (seen) {
+      const same = canonicalInputKey(seen.inputKey) === canonicalInputKey(inputKey) && seen.kind === kind && seen.value === value && seen.source === input.source.trim();
+      if (!same) return { ok: false, status: 409, error: "idempotencyKey was already used for a different confirmation" };
+      const box = computeEbitdaBox(args, prior);
+      const latest = await db.customerEbitdaBox.findFirst({ where: scope, orderBy: { createdAt: "desc" } });
+      return { ok: true, box, gain: null, boxId: latest?.id ?? "", replayed: true };
+    }
+  }
+
+  const others = prior.filter((c) => !(canonicalInputKey(c.key) === canonicalInputKey(inputKey) && (c.kind ?? "AMOUNT") === kind));
+  const priorArgs: PipelineArgs = { ...args, financials: { ...args.financials, borrowerInputs: [...(args.financials.borrowerInputs ?? []), ...others.map(asBorrowerInput)] } };
+  let gain: CfoGain["gain"];
+  if (kind === "AMOUNT") {
+    const opt = (base.xbrl as Xbrl | null)?.ebitda;
+    const b = opt?.base?.value && /^-?\d+$/.test(opt.base.value) ? BigInt(opt.base.value) : null;
+    const bound = b != null && b > 0n && 10n * b < MAX_CONFIRMED_USD ? 10n * b : MAX_CONFIRMED_USD;
+    if (BigInt(value) > bound) return { ok: false, status: 422, error: `value exceeds the plausible maximum (${bound === MAX_CONFIRMED_USD ? "1e12 USD" : "10x the reported base EBITDA"})` };
+    const check = cfoRecompute(priorArgs, [{ key: inputKey, value, source: input.source.trim() }]);
+    const res = check.results[0]!;
+    if (!res.accepted) return { ok: false, status: /no tracker flag|ambiguous/.test(res.reason) ? 404 : 400, error: res.reason };
+    gain = res.gain;
+  } else {
+    if (!flag) {
+      const check = cfoRecompute(priorArgs, [{ key: inputKey, value: "0", source: input.source.trim() }]);
+      return { ok: false, status: 404, error: check.results[0]?.reason ?? `no tracker flag names input key ${input.inputKey}` };
+    }
+    if (flag.status !== "CONDITIONAL" && !flag.conditional) return { ok: false, status: 422, error: `${inputKey} does not require lender approval` };
+    const withApproval = { ...priorArgs, financials: { ...priorArgs.financials!, borrowerInputs: [...(priorArgs.financials!.borrowerInputs ?? []), asBorrowerInput({ key: inputKey, value, source: input.source.trim(), kind })] } };
+    gain = gainOf(capacitySnapshot(runAgreementPipeline(priorArgs)), capacitySnapshot(runAgreementPipeline(withApproval)));
+  }
+  await db.customerEbitdaConfirmation.create({ data: { ...scope, inputKey, kind, value, source: input.source.trim(), confirmedBy: input.confirmedBy, idempotencyKey: idem ?? newIdempotencyKey() } });
   const all = await loadConfirmations(db, scope);
   const box = computeEbitdaBox(args, all);
   const { id } = await saveEbitdaBox(db, scope, box);
-  return { ok: true, box, gain: res.gain, boxId: id };
+  return { ok: true, box, gain, boxId: id };
 }

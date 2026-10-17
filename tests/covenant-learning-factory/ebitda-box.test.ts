@@ -1,32 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { computeEbitdaBox, confirmEbitdaItem, latestEbitdaBox, type EbitdaBoxStore } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
-import type { IssuerFinancials } from "@/lib/covenant-learning-factory/xbrl/companyfacts";
+import { computeEbitdaBox, confirmEbitdaItem, latestEbitdaBox } from "@/lib/covenant-learning-factory/pipeline/ebitda-box";
 
-const M = 1_000_000;
-const row = (concept: string, v: number) => ({ metric: "item" as const, concept, periodType: "TTM" as const, periodStart: "2025-07-01", periodEnd: "2026-06-30", value: String(v), unit: "USD" as const, accession: "x", form: "10-Q", filed: "2026-08-01", derivation: "test" });
-const fin: IssuerFinancials = { cik: "0000000001", entityName: "T", missing: [], anchor: "2026-06-30", fiscalYear: 2026, values: Object.entries({ NetIncomeLoss: 100 * M, IncomeTaxExpenseBenefit: 20 * M, InterestExpense: 30 * M, DepreciationDepletionAndAmortization: 50 * M, RestructuringCharges: 8 * M }).map(([c, v]) => row(c, v)) };
-const TEXT = `ARTICLE I DEFINITIONS
-"Consolidated Net Income" means the net income of the Borrower and its Subsidiaries determined on a consolidated basis in accordance with GAAP.
-"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in calculating Consolidated Net Income: (a) provision for taxes based on income; plus (b) interest expense; plus (c) depreciation and amortization expense; plus (d) restructuring charges; plus (e) costs of new systems implementation in an aggregate amount not to exceed $5,000,000 for any period; plus (f) other non-recurring costs approved in writing by the Administrative Agent.
-`;
-const args = { sourceId: "s1", text: TEXT, issuerCik: "1", financials: fin };
-
-function fakeStore(): EbitdaBoxStore & { boxes: unknown[]; conf: Map<string, { inputKey: string; value: string; source: string; updatedAt: Date }> } {
-  const boxes: Array<{ id: string; companyId: string; documentId: string; payload: unknown; createdAt: Date }> = [];
-  const conf = new Map<string, { inputKey: string; value: string; source: string; updatedAt: Date }>();
-  let t = 0;
-  return {
-    boxes, conf,
-    customerEbitdaBox: {
-      create: async ({ data }) => { const r = { id: `b${boxes.length}`, ...data, createdAt: new Date(++t * 1000) }; boxes.push(r); return { id: r.id }; },
-      findFirst: async ({ where }) => [...boxes].reverse().find((b) => b.companyId === where.companyId && b.documentId === where.documentId) ?? null,
-    },
-    customerEbitdaConfirmation: {
-      upsert: async ({ where, create, update }) => { const k = `${where.companyId_documentId_inputKey.companyId}|${where.companyId_documentId_inputKey.documentId}|${where.companyId_documentId_inputKey.inputKey}`; const prev = conf.get(k); conf.set(k, { ...(prev ?? (create as never)), ...(prev ? (update as never) : {}), updatedAt: new Date(++t * 1000) }); return { id: k }; },
-      findMany: async ({ where }) => [...conf.entries()].filter(([k]) => k.startsWith(`${where.companyId}|${where.documentId}|`)).map(([, v]) => v),
-    },
-  };
-}
+import { M, args, fakeStore } from "./ebitda-box-fixture";
 
 describe("EBITDA box data shape", () => {
   const box = computeEbitdaBox(args);
@@ -70,29 +45,30 @@ describe("CFO confirm flow (persisted, recomputed)", () => {
     expect(e).toMatchObject({ status: "CONFIRMED", counted: String(5 * M), amount: String(7 * M) });
     expect(e.source[0]).toMatchObject({ kind: "CFO" });
     expect(out.box.totalEbitda).toBe(String(213 * M));
-    expect(db.conf.size).toBe(1);
+    expect(db.rows.length).toBe(1);
     expect((await latestEbitdaBox(db, scope))?.totalEbitda).toBe(String(213 * M));
   });
-  it("conditional item counts only once the CFO confirms it", async () => {
+  it("conditional item counts only once the CFO confirms the amount AND the lender approval", async () => {
     const db = fakeStore();
     const key = computeEbitdaBox(args).items.find((i) => i.label === "(f)")!.inputKey;
-    const out = await confirmEbitdaItem(db, scope, args, { inputKey: key, value: String(2 * M), source: "Agent approval letter 2026-07-15" });
+    await confirmEbitdaItem(db, scope, args, { inputKey: key, value: String(2 * M), source: "Q2 management accounts", confirmedBy: "cfo@x" });
+    const out = await confirmEbitdaItem(db, scope, args, { inputKey: key, kind: "LENDER_APPROVAL", source: "Agent approval letter 2026-07-15", confirmedBy: "cfo@x" });
     expect(out.ok && out.box.items.find((i) => i.label === "(f)")!.status).toBe("CONFIRMED");
   });
   it("refuses: no source, non-integer, unknown key; nothing persisted", async () => {
     const db = fakeStore();
-    expect(await confirmEbitdaItem(db, scope, args, { inputKey: "ADDBACK:(e)", value: "100", source: " " })).toMatchObject({ ok: false, status: 400 });
-    expect(await confirmEbitdaItem(db, scope, args, { inputKey: "ADDBACK:(e)", value: "1.5", source: "x" })).toMatchObject({ ok: false, status: 400 });
-    expect(await confirmEbitdaItem(db, scope, args, { inputKey: "ADDBACK:(zz)", value: "100", source: "x" })).toMatchObject({ ok: false, status: 404 });
-    expect(db.conf.size).toBe(0);
+    expect(await confirmEbitdaItem(db, scope, args, { inputKey: "ADDBACK:(e)", value: "100", source: " ", confirmedBy: "cfo@x" })).toMatchObject({ ok: false, status: 400 });
+    expect(await confirmEbitdaItem(db, scope, args, { inputKey: "ADDBACK:(e)", value: "1.5", source: "x", confirmedBy: "cfo@x" })).toMatchObject({ ok: false, status: 400 });
+    expect(await confirmEbitdaItem(db, scope, args, { inputKey: "ADDBACK:(zz)", value: "100", source: "x", confirmedBy: "cfo@x" })).toMatchObject({ ok: false, status: 404 });
+    expect(db.rows.length).toBe(0);
     expect(db.boxes.length).toBe(0);
   });
-  it("re-confirming a key replaces the figure (latest wins)", async () => {
+  it("re-confirming a key appends a row; the latest figure wins", async () => {
     const db = fakeStore();
     const key = computeEbitdaBox(args).items.find((i) => i.label === "(e)")!.inputKey;
-    await confirmEbitdaItem(db, scope, args, { inputKey: key, value: String(1 * M), source: "a" });
-    const out = await confirmEbitdaItem(db, scope, args, { inputKey: key, value: String(2 * M), source: "b" });
-    expect(db.conf.size).toBe(1);
+    await confirmEbitdaItem(db, scope, args, { inputKey: key, value: String(1 * M), source: "a", confirmedBy: "cfo@x" });
+    const out = await confirmEbitdaItem(db, scope, args, { inputKey: key, value: String(2 * M), source: "b", confirmedBy: "cfo@x" });
+    expect(db.rows.length).toBe(2);
     expect(out.ok && out.box.items.find((i) => i.label === "(e)")!.counted).toBe(String(2 * M));
   });
 });

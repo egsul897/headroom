@@ -494,15 +494,16 @@ export async function analyzeCustomerDocument(params: {
       );
       agreementPipeline = { ...outcome, ...(outcome.status === "OK" && summary ? summary : {}) };
       // Dashboard EBITDA box (definition × company filings × CFO confirmations), persisted to customer_ebitda_boxes.
-      // Needs the company CIK for filings; never fails the upload. Disable with CLF_EBITDA_BOX=0.
+      // Runs after the upload response (non-blocking; SEC fetches never delay or fail the upload). Disable with
+      // CLF_EBITDA_BOX=0. The box is read back from GET /api/companies/:companyId/documents/:documentId/ebitda.
       if (outcome.status === "OK" && agreementText && process.env.CLF_EBITDA_BOX !== "0") {
-        try {
+        const known = { text: agreementText as string, sourceId };
+        const { runAfterResponse } = await import("../../covenant-learning-factory/pipeline/after-response");
+        runAfterResponse(async () => {
           const { refreshEbitdaBox } = await import("../../covenant-learning-factory/pipeline/ebitda-box-server");
-          const r = await refreshEbitdaBox(params.companyId, params.documentId, { text: agreementText, sourceId });
-          if (r) agreementPipeline = { ...agreementPipeline, ebitdaBox: { id: r.id, status: r.box.status, totalEbitda: r.box.totalEbitda } };
-        } catch (err) {
-          agreementPipeline = { ...agreementPipeline, ebitdaBox: { status: "FAILED", error: err instanceof Error ? err.message : String(err) } };
-        }
+          await refreshEbitdaBox(params.companyId, params.documentId, known);
+        }, (err) => console.warn(`[ebitda-box] ${params.companyId}/${params.documentId}: ${err instanceof Error ? err.message : String(err)}`));
+        agreementPipeline = { ...agreementPipeline, ebitdaBox: { status: "SCHEDULED" } };
       }
     }
 

@@ -157,7 +157,9 @@ model Company {
   // --- NS-4 financial sync outbox (promotion → approved-snapshot reliability) ---
   // Additive only. Records PENDING/FAILED NS-4 writes after legacy financial
   // promotion so recoverable failures cannot strand NS-4 behind legacy state.
-  ns4FinancialSyncs Ns4FinancialSync[]
+  ns4FinancialSyncs   Ns4FinancialSync[]
+  ebitdaBoxes         CustomerEbitdaBox[]
+  ebitdaConfirmations CustomerEbitdaConfirmation[]
 
   @@map("companies")
 }
@@ -329,7 +331,9 @@ model Document {
   compilerRunDocuments ContractCompilerRunDocument[]
 
   // --- Phase 2C debt package graph (docs/phase-2c-debt-package-graph.md) ---
-  amendmentEffectsTargetingMe AmendmentEffect[] @relation("AmendmentEffectTargetDocument")
+  amendmentEffectsTargetingMe AmendmentEffect[]            @relation("AmendmentEffectTargetDocument")
+  ebitdaBoxes                 CustomerEbitdaBox[]
+  ebitdaConfirmations         CustomerEbitdaConfirmation[]
 
   @@map("documents")
 }
@@ -4697,24 +4701,36 @@ model CustomerEbitdaBox {
   version    String
   payload    Json
   createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  company    Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
   @@index([companyId, documentId, createdAt])
   @@map("customer_ebitda_boxes")
 }
 
-/// CFO-confirmed, sourced add-back figures (one current figure per company + document + input key).
+/// CFO-confirmed, sourced add-back figures and lender-approval confirmations. APPEND-ONLY: rows are never updated or
+/// deleted; the latest row per (companyId, documentId, inputKey, kind) is current, earlier rows are the history.
+/// Check constraints (migration 20261017050000): kind in (AMOUNT, LENDER_APPROVAL), value a non-negative integer
+/// <= 1e12 ("1" for LENDER_APPROVAL), non-empty source, inputKey without whitespace.
 model CustomerEbitdaConfirmation {
-  id          String   @id @default(cuid())
-  companyId   String
-  documentId  String
-  inputKey    String
-  /// Whole USD as a decimal string (exact; never estimated).
-  value       String
-  source      String
-  confirmedBy String?
-  createdAt   DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
+  id             String   @id @default(cuid())
+  companyId      String
+  documentId     String
+  inputKey       String
+  /// AMOUNT | LENDER_APPROVAL
+  kind           String   @default("AMOUNT")
+  /// Whole USD as a decimal string (exact; never estimated). "1" for LENDER_APPROVAL.
+  value          String
+  source         String
+  /// Server-side session principal id.
+  confirmedBy    String?
+  idempotencyKey String
+  createdAt      DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(6)
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document       Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
-  @@unique([companyId, documentId, inputKey])
+  @@unique([companyId, documentId, idempotencyKey])
+  @@index([companyId, documentId, inputKey, createdAt])
   @@map("customer_ebitda_confirmations")
 }
