@@ -118,11 +118,9 @@ export function CompanyOverview({
         </div>
         <div className="home-split">
           <StatusTable state={slots.statusTable} />
-          <div className="home-stack">
-            <EbitdaTile companyId={companyId} documents={documents} preparingIds={preparingIds} />
-            <DriversCard state={slots.drivers} />
-          </div>
+          <DriversCard state={slots.drivers} />
         </div>
+        <EbitdaTile companyId={companyId} documents={documents} preparingIds={preparingIds} />
         <div className="home-pair">
           <AlertsCard state={alerts} />
           <TransactionsCard state={slots.transactions} />

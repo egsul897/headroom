@@ -61,6 +61,15 @@ export function canConfirm(item: EbitdaAddBack): boolean {
   return isIntegerAmount(item.amount) && item.source != null;
 }
 
+/** Sum of confirmed integer add-backs. Unconfirmed and unsourced lines add nothing. */
+export function confirmedAddBackTotal(items: readonly EbitdaAddBack[], confirmed: ReadonlySet<string>): string {
+  let total = 0n;
+  for (const item of items) {
+    if (confirmed.has(item.id) && isIntegerAmount(item.amount)) total += BigInt(item.amount);
+  }
+  return total.toString();
+}
+
 export function ebitdaTotals(base: string, items: readonly EbitdaAddBack[], confirmed: ReadonlySet<string>) {
   if (!isIntegerAmount(base)) return null;
   let total = BigInt(base);

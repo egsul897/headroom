@@ -8,11 +8,22 @@ export type EbitdaCallError = {
   signIn: boolean;
 };
 
+/** The allowed-range sentence from an OUT_OF_RANGE body, or the server message. */
+export function outOfRangeText(message: string | undefined): string {
+  const basis = message?.match(/plausible maximum \((.+)\)/i)?.[1]?.trim();
+  if (basis) return `Allowed up to ${basis}.`;
+  return message?.trim() || "That figure is outside the allowed range.";
+}
+
 /** Quiet copy for the panel. A 401 is the sign-in state. Never a success message. */
-export function ebitdaCallError(status: number, message: string | undefined): EbitdaCallError {
+export function ebitdaCallError(status: number, message: string | undefined, code?: string | null): EbitdaCallError {
   if (status === 401) return { status, text: "Sign in to confirm", refetch: false, signIn: true };
+  if (code === "NEEDS_BASE") return { status, text: "Needs base EBITDA first", refetch: false, signIn: false };
+  if (code === "OUT_OF_RANGE") return { status, text: outOfRangeText(message), refetch: false, signIn: false };
+  if (code === "IDEMPOTENCY_CONFLICT" || status === 409) {
+    return { status: status === 409 ? 409 : status, text: message?.trim() || "This confirmation conflicts with the current box.", refetch: true, signIn: false };
+  }
   if (status === 404) return { status, text: "The EBITDA box or this document was not found.", refetch: false, signIn: false };
-  if (status === 409) return { status, text: message?.trim() || "This confirmation conflicts with the current box.", refetch: true, signIn: false };
   if (status === 422) return { status, text: message?.trim() || "That figure was refused.", refetch: false, signIn: false };
   return { status, text: message?.trim() || "Confirm was refused.", refetch: false, signIn: false };
 }

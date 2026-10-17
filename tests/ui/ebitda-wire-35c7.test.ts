@@ -25,6 +25,14 @@ describe("EBITDA confirm wiring", () => {
       text: "idempotency key reused with a different payload",
     });
     expect(ebitdaCallError(422, "value exceeds the cap").text).toBe("value exceeds the cap");
+    expect(ebitdaCallError(422, "NEEDS_BASE: base EBITDA is missing", "NEEDS_BASE").text).toBe("Needs base EBITDA first");
+    expect(ebitdaCallError(422, "value exceeds the plausible maximum (10x the reported base EBITDA)", "OUT_OF_RANGE").text).toBe(
+      "Allowed up to 10x the reported base EBITDA.",
+    );
+    expect(ebitdaCallError(409, "idempotencyKey was already used for a different confirmation", "IDEMPOTENCY_CONFLICT")).toMatchObject({
+      refetch: true,
+      text: "idempotencyKey was already used for a different confirmation",
+    });
     expect(isPreparingMiss(404, "no EBITDA box yet for this document")).toBe(true);
     expect(isPreparingMiss(404, "document not found for this company")).toBe(false);
   });
@@ -52,7 +60,7 @@ describe("EBITDA confirm wiring", () => {
   it("sends a bearer only from the host session meta, and never confirmedBy", () => {
     expect(readSessionHandle()).toBeNull();
     expect(sessionAuthorizationHeaders()).toEqual({});
-    const tile = readFileSync(path.join(root, "components/home/EbitdaTile.tsx"), "utf8");
+    const tile = readFileSync(path.join(root, "components/home/EbitdaTile.tsx"), "utf8") + readFileSync(path.join(root, "components/home/EbitdaGrid.tsx"), "utf8");
     expect(tile).toContain("sessionAuthorizationHeaders()");
     expect(tile).toContain('"LENDER_APPROVAL"');
     expect(tile).toContain("idempotencyKey");
@@ -61,6 +69,8 @@ describe("EBITDA confirm wiring", () => {
     expect(tile).toContain("Preparing EBITDA…");
     expect(tile).toContain("Sign in to confirm");
     expect(tile).toContain("LockIcon");
+    expect(tile).toContain("?refresh=1");
+    expect(tile).not.toContain("body.gain");
     const session = readFileSync(path.join(root, "lib/capacity/identity/browser-session.ts"), "utf8");
     expect(session).toContain('meta[name="headroom-session-handle"]');
     expect(session).not.toMatch(/Bearer [A-Za-z0-9._-]{8,}/);

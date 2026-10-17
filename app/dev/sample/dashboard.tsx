@@ -74,9 +74,11 @@ function rowPanel(item: (typeof SAMPLE_ROWS)[number]): Panel {
 export function SampleDashboard({
   initialDetail = false,
   initialEbitda = null,
+  failedReason = null,
 }: {
   initialDetail?: boolean;
   initialEbitda?: string | null;
+  failedReason?: string | null;
 }) {
   const [panel, setPanel] = useState<Panel | null>(initialDetail ? rowPanel(SAMPLE_ROWS[0]) : null);
 
@@ -301,7 +303,6 @@ export function SampleDashboard({
             </div>
           </section>
           <div className="home-stack">
-            <EbitdaTile base={SAMPLE_EBITDA_BASE} items={SAMPLE_ADD_BACKS} sample initialView={initialEbitda} />
           <section className="home-card" aria-label="Top headroom drivers">
             <h2 className="home-eyebrow">Top headroom drivers</h2>
             <ul className="sample-feed">
@@ -334,6 +335,8 @@ export function SampleDashboard({
           </section>
           </div>
         </div>
+
+        <EbitdaTile base={SAMPLE_EBITDA_BASE} items={SAMPLE_ADD_BACKS} sample initialView={initialEbitda} failedReason={failedReason} />
 
         <div className="home-pair">
           <section className="home-card" aria-label="Recent alerts">
