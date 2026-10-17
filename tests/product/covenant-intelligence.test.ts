@@ -65,7 +65,7 @@ describe("rule 159: capped summaries disclose the cap", () => {
     expect(note).toMatch(/counts .* reflect all 150/i);
   });
 
-  it("a 130-candidate document produces a disclosable capped summary", () => {
+  it("a 130-candidate document is fully analyzed (no cap)", () => {
     const candidates = Array.from({ length: 130 }, (_, i) => ({
       candidateId: `c${i}`,
       sourceId: "test:doc",
@@ -94,10 +94,45 @@ describe("rule 159: capped summaries disclose the cap", () => {
       definitions: [],
       structuralNodes,
     });
-    expect(summary.truncated).toBe(true);
+    expect(summary.truncated).toBe(false);
     expect(summary.totalItemsBeforeCap).toBe(130);
-    expect(summary.items).toHaveLength(120);
-    expect(summaryCapDisclosure(summary)).toMatch(/capped at 120 of 130/i);
+    expect(summary.items).toHaveLength(130);
+    expect(summaryCapDisclosure(summary)).toBeNull();
+  });
+
+  it("a document beyond the cap is capped and discloses it", () => {
+    const candidates = Array.from({ length: 1005 }, (_, i) => ({
+      candidateId: `c${i}`,
+      sourceId: "test:doc",
+      nodeId: `n${i}`,
+      families: ["RESTRICTED_PAYMENTS" as const],
+      signals: [] as string[],
+      excerpt: "The Borrower shall not declare or pay any Restricted Payment...",
+      representationLevel: "DISCOVERED_CANDIDATE" as const,
+      discoveryScore: 8,
+    }));
+    const structuralNodes = candidates.map((c, i) => ({
+      nodeId: `n${i}`,
+      sourceId: "test:doc",
+      nodeType: "SECTION",
+      sectionRef: `§7.${String(i + 1).padStart(3, "0")}`,
+      heading: "Restricted Payments",
+      charStart: 0,
+      charEnd: 200,
+    }));
+    const summary = buildDocumentCovenantSummary({
+      sourceId: "test:doc",
+      documentTitle: "Test Credit Agreement",
+      issuerCik: "0000000001",
+      documentClass: "CREDIT_AGREEMENT",
+      candidates,
+      definitions: [],
+      structuralNodes,
+    });
+    expect(summary.truncated).toBe(true);
+    expect(summary.totalItemsBeforeCap).toBe(1005);
+    expect(summary.items).toHaveLength(1000);
+    expect(summaryCapDisclosure(summary)).toMatch(/capped at 1000 of 1005/i);
   });
 });
 

@@ -108,14 +108,28 @@ export interface DocumentCovenantSummary {
   definedTermsSample: Array<{ term: string; excerpt: string }>;
   /**
    * General rule: silent truncation is a lie. countsByCategory counts
-   * EVERY candidate, but items is capped at 120 — without these fields
-   * the counts and the listed items disagreed with no explanation.
-   * totalItemsBeforeCap is the pre-cap item count; truncated is true
-   * when the cap dropped items.
+   * EVERY candidate, but items is capped at SUMMARY_ITEM_CAP —
+   * without these fields the counts and the listed items disagreed
+   * with no explanation. totalItemsBeforeCap is the pre-cap item
+   * count; truncated is true when the cap dropped items.
    */
   totalItemsBeforeCap: number;
   truncated: boolean;
 }
+
+/**
+ * Summary item cap. analyzeProvision already runs for EVERY
+ * candidate (the loop below), so the cap is a keep/drop bound,
+ * not an analysis bound. 1000 covers every real agreement
+ * observed (Strata 218; the old 120 cap silently dropped 98
+ * Strata provisions from the Rulebook and capacity). The cap
+ * now exists only to bound pathological inputs; the ranking
+ * (basket-shaped first, peripheral last) still protects
+ * operative provisions if a pathological document exceeds it.
+ * The accounting (totalDiscovered / awaitingAnalysis) still
+ * covers anything beyond the cap.
+ */
+export const SUMMARY_ITEM_CAP = 1000;
 
 /**
  * Rule 159: user-facing cap disclosure for a covenant summary. The
@@ -284,8 +298,8 @@ export function buildDocumentCovenantSummary(params: {
   // regardless of score or peripherality. Cap first, then sort
   // the survivors for display.
   const totalItemsBeforeCap = items.length;
-  const truncated = items.length > 120;
-  const capped = items.slice(0, 120);
+  const truncated = items.length > SUMMARY_ITEM_CAP;
+  const capped = items.slice(0, SUMMARY_ITEM_CAP);
   capped.sort((a, b) => {
     const ai = preferredOrder.indexOf(a.category);
     const bi = preferredOrder.indexOf(b.category);

@@ -74,6 +74,28 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
     return true;
   }
   if (!compilesCleanly(item)) return false;
+  // Category/grant agreement: the category classifier and the grant
+  // classifier are independent signals. When they disagree — a DEBT
+  // grant on a MERGERS/OTHER-category item (e.g. a Successors clause
+  // whose "assume Indebtedness" language minted DEBT, or Letters of
+  // Credit mechanics minting DEBT) — which classifier is right is a
+  // judgment call for counsel. The item is NOT suppressed (it still
+  // appears, still compiles on counsel's decision) — it just does
+  // not auto-accept. At least one grant must agree with the
+  // category: Rule 177 dual-grants (DEBT + linked LIEN in a debt
+  // section) stay routine because the DEBT grant agrees. The
+  // BASKETS bucket is family-agnostic by definition, so any grant
+  // there agrees.
+  const GRANT_CATEGORIES: Record<string, string[]> = {
+    DEBT_INCURRENCE: ["DEBT_INCURRENCE"],
+    LIEN: ["LIENS_SECURED_DEBT"],
+    RESTRICTED_PAYMENT: ["RESTRICTED_PAYMENTS_INVESTMENTS"],
+    INVESTMENT: ["RESTRICTED_PAYMENTS_INVESTMENTS"],
+  };
+  const categoryAgrees =
+    item.category === "BASKETS_EXCEPTIONS_CONDITIONS" ||
+    grants.some((g) => (GRANT_CATEGORIES[g] ?? []).includes(item.category));
+  if (!categoryAgrees) return false;
   // MODELED with a remaining (UNKNOWN) condition still needs counsel.
   const parsed = parseFormulaFromItem(item);
   const remainingConditions = (item.conditions ?? []).filter(

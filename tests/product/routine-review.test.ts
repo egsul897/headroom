@@ -11,7 +11,7 @@ function item(overrides: Partial<CovenantSummaryItem> = {}): CovenantSummaryItem
   return {
     heading: "6.01(a)",
     sectionRef: "6.01(a)",
-    category: "INDEBTEDNESS",
+    category: "DEBT_INCURRENCE",
     posture: "ENUMERATED_PERMISSION",
     plainEnglish: "The Borrower may incur Indebtedness in an aggregate principal amount not to exceed $50,000,000.",
     restriction: null,
@@ -54,6 +54,36 @@ describe("isRoutineItem", () => {
 
   it("a MODELED basket with UNRESOLVED posture is an exception", () => {
     expect(isRoutineItem(item({ posture: "UNRESOLVED" }))).toBe(false);
+  });
+
+  it("a DEBT grant on a MERGERS-category item (classifier disagreement) is an exception", () => {
+    // Successors-clause shape: "successor shall assume Indebtedness"
+    // mints a DEBT grant, but the section is a merger provision, not
+    // a debt covenant. Counsel decides — the item is not suppressed.
+    expect(
+      isRoutineItem(
+        item({
+          category: "MERGERS_FUNDAMENTAL_CHANGES",
+          heading: "9.04 Successors",
+          sectionRef: "9.04",
+          plainEnglish: "The successor corporation shall assume all Indebtedness of the Borrower in an aggregate principal amount not to exceed $50,000,000.",
+          operativeLanguageExcerpt: "The successor shall assume Indebtedness not to exceed $50,000,000.",
+        }),
+      ),
+    ).toBe(false);
+  });
+
+  it("a dual-grant (DEBT + linked LIEN) item in a debt section stays routine", () => {
+    // Rule 177: the linked LIEN does not make the item an exception
+    // when the DEBT grant agrees with the category.
+    expect(
+      isRoutineItem(
+        item({
+          plainEnglish: "The Borrower may incur Indebtedness and grant Liens securing such Indebtedness in an aggregate principal amount not to exceed $50,000,000.",
+          operativeLanguageExcerpt: "The Borrower may incur Indebtedness and grant Liens securing such Indebtedness not to exceed $50,000,000.",
+        }),
+      ),
+    ).toBe(true);
   });
 
   it("a basket-shaped item the grant classifier missed (no grants, has baskets) is an exception", () => {
