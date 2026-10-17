@@ -37,7 +37,7 @@ export interface ReportLine {
   reason: string | null;
   /** Engine's formula description (capacity rows), verbatim; null when not modeled. */
   formula: string | null;
-  /** #414 FigureProof. Inputs the engine does not expose are listed with value null (never reconstructed). */
+  /** PR 414 FigureProof. Inputs the engine does not expose are listed with value null (never reconstructed). */
   proof: FigureProof;
 }
 

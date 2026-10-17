@@ -34,7 +34,7 @@ describe("compliance report — every number sourced, NEEDS_INPUT honest", () =>
     expect(line("d1:GEN:remaining")).toMatchObject({ value: null, status: "NEEDS_INPUT" });
     expect(line("d1:SUP:remaining")).toMatchObject({ value: 6_000_000, status: "COMPUTED" });
   });
-  it("proof is the #414 FigureProof: sourced inputs, unexposed inputs value null, no clause/page invented", () => {
+  it("proof is the PR 414 FigureProof: sourced inputs, unexposed inputs value null, no clause/page invented", () => {
     const p = line("d1:GEN:capacity").proof;
     expect(p).toMatchObject({ figure: "General debt basket — contractual capacity", value: "$62,500,000", clause: null, page: null, review: "UNVERIFIED" });
     expect(p.inputs[0]).toEqual({ label: "Capacity formula", value: "greater of $50,000,000 and 25% of Consolidated EBITDA", source: "Credit Agreement §7.03(o)" });
@@ -105,7 +105,7 @@ describe("PDF", () => {
   });
 });
 
-describe("#414 CertificateModel", () => {
+describe("PR 414 CertificateModel", () => {
   const m = toCertificateModel(r);
   const ln = (n: string) => m.lines.find((l) => l.name === n)!;
   it("period = engine as-of date; required/actual/headroom as strings; PASS/FAIL only when evaluated", () => {
@@ -118,7 +118,7 @@ describe("#414 CertificateModel", () => {
   });
 });
 
-describe("#414 KeyRatioModel[]", () => {
+describe("PR 414 KeyRatioModel[]", () => {
   const rows = overview.covenantFamilies.flatMap((f) => f.rows).filter((x) => x.kind === "RATIO") as Parameters<typeof buildKeyRatios>[1];
   const metrics = { genericGrossLeverage: { status: "OK", value: 3.4 }, genericNetLeverage: { status: "OK", value: 2.9 }, genericSecuredLeverage: { status: "UNAVAILABLE_MISSING_INPUT", value: null }, genericInterestCoverage: { status: "OK", value: 5.1 } };
   const k = buildKeyRatios(metrics, rows);

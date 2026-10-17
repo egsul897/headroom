@@ -1,5 +1,5 @@
 /**
- * #414 KeyRatioModel[] — gross / net / secured / interest / fccr.
+ * PR 414 KeyRatioModel[] — gross / net / secured / interest / fccr.
  *
  * Trust rules (stricter than a name match against generic metrics):
  * - If a MODELED covenant ratio row computed under the agreement's own definition
@@ -10,7 +10,7 @@
  * - FCCR has no generic fallback: only the agreement-defined modeled row, else
  *   value null + source "NOT DETERMINABLE: …".
  * - thresholds are always null here: band cutoffs come only from the CFO's settings
- *   (monitoring lane, #420), never defaulted.
+ *   (monitoring lane, PR 420), never defaulted.
  */
 import { limitText } from "./build";
 import type { KeyRatioId, KeyRatioModel } from "./ux-contract";

@@ -61,7 +61,7 @@ export const limitText = (limit: number, dir: "at_or_below" | "at_or_above") => 
 const ENGINE = "Headroom covenant engine (covenant overview)";
 
 /**
- * #414 FigureProof from what the engine row already carries. Inputs the engine
+ * PR 414 FigureProof from what the engine row already carries. Inputs the engine
  * does not expose per figure (numerator/denominator, usage evidence) are listed
  * with value null so `missingInputLabels` reports them; nothing is reconstructed.
  * clause text and page are not on engine rows today ⇒ null. review = engine reviewState verbatim.
@@ -238,7 +238,7 @@ export function notDeterminableReport(companyId: string, blocker: string, opts: 
 }
 
 /**
- * #414 CertificateModel. evaluated is PASS/FAIL only when the engine computed the
+ * PR 414 CertificateModel. evaluated is PASS/FAIL only when the engine computed the
  * actual (MODELED, cited); otherwise null ⇒ presentVerdict renders NOT EVALUATED.
  * period = the engine's as-of date (test date), never a guessed fiscal period.
  */

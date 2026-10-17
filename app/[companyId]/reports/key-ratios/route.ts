@@ -1,4 +1,4 @@
-/** GET /{companyId}/reports/key-ratios[?asOf=YYYY-MM-DD] — #414 KeyRatioModel[]. Tenant gate first. */
+/** GET /{companyId}/reports/key-ratios[?asOf=YYYY-MM-DD] — PR 414 KeyRatioModel[]. Tenant gate first. */
 import { NextResponse } from "next/server";
 import { requireTenantAction } from "@/lib/auth/guard";
 import { parseAsOf } from "@/lib/reports/params";

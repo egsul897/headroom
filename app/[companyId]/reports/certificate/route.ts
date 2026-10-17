@@ -1,6 +1,6 @@
 /**
  * GET /{companyId}/reports/certificate[?asOf=YYYY-MM-DD]
- * Certificate payload (#414 CertificateModel): period, required vs actual, headroom, PASS/FAIL else NOT EVALUATED, citation.
+ * Certificate payload (PR 414 CertificateModel): period, required vs actual, headroom, PASS/FAIL else NOT EVALUATED, citation.
  * Tenant gate first; 403 with no data on failure.
  */
 import { NextResponse } from "next/server";
@@ -31,7 +31,7 @@ export async function GET(req: Request, ctx: { params: Promise<{ companyId: stri
       blocker: r.blocker,
       authority: r.authority,
       disclaimer: r.disclaimer,
-      /** #414 CertificateModel (strings, evaluated PASS/FAIL/null). */
+      /** PR 414 CertificateModel (strings, evaluated PASS/FAIL/null). */
       certificate: toCertificateModel(r),
       /** Numeric rows with status/reviewState/reason for audit. */
       rows: r.certificate,

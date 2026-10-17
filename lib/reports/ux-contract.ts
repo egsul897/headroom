@@ -1,8 +1,8 @@
 /**
- * Payload shapes matching Designer PR #414 `lib/ux/present.ts` exactly
+ * Payload shapes matching Designer PR PR 414 `lib/ux/present.ts` exactly
  * (ProofInput, FigureProof, CertificateLine, CertificateModel, KeyRatioModel, BandCutoffs).
- * Declared structurally here so this lane does not depend on #414 landing first;
- * when #414 merges these can be replaced by `import type … from "@/lib/ux/present"`.
+ * Declared structurally here so this lane does not depend on PR 414 landing first;
+ * when PR 414 merges these can be replaced by `import type … from "@/lib/ux/present"`.
  */
 export type ProofInput = { label: string; value: string | null; source: string | null };
 
