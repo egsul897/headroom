@@ -435,7 +435,7 @@ export default async function DebtIntelligencePage({
           <div className="row-note">Enter financials and accept/compile a debt basket to populate pro forma effects.</div>
         ) : (
           (d.proForma ?? []).map((p) => (
-            <div key={p.metricId} style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}>
+            <div key={p.metricId} style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--line)" }}>
               <MetricRow
                 label={p.scenario}
                 value={p.proFormaTotalLeverage ?? p.status}
@@ -467,7 +467,7 @@ export default async function DebtIntelligencePage({
           <div className="row-note">Analyze a financing package to enumerate pathways.</div>
         ) : (
           (d.multiPath ?? []).map((mp) => (
-            <div key={mp.transaction.label} style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}>
+            <div key={mp.transaction.label} style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--line)" }}>
               <div className="row-label">{mp.transaction.label}</div>
               <div className="row-note">{mp.narrative}</div>
               <div className="row-note" style={{ marginTop: 6 }}>
@@ -503,7 +503,7 @@ export default async function DebtIntelligencePage({
           path is ready. Pro forma ratios stay conditional without executable rules and inputs.
         </div>
         {d.transactions.map((t) => (
-          <div key={t.metricId} style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}>
+          <div key={t.metricId} style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--line)" }}>
             <MetricRow
               label={t.scenario}
               value={t.status}

@@ -1,7 +1,7 @@
 import { UNKNOWN_STATE, presentFigure, type FigureLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
 
-const SEGMENT_COLORS = ["#2f4a5e", "#c47a3a", "#c9a227", "#8a8578", "#5c7a6e"];
+const SEGMENT_COLORS = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)", "var(--chart-1)"];
 
 function parseCapacity(display: string): { total: string; segments: { name: string; amount: string; pct: number }[] } {
   const parts = display.split(" · ").map((p) => p.trim()).filter(Boolean);
@@ -37,9 +37,7 @@ export function CapacitySummaryCard({ state = UNKNOWN_STATE }: { state?: FigureL
   if (presented.kind !== "VERIFIED_POPULATED") {
     return (
       <RegionCard region="capacity-summary" eyebrow="Capacity summary">
-        <div className="home-chart-well">
-          <EmptyCopy slot="capacitySummary" state={presented} />
-        </div>
+        <EmptyCopy slot="capacitySummary" state={presented} />
       </RegionCard>
     );
   }
@@ -58,10 +56,7 @@ export function CapacitySummaryCard({ state = UNKNOWN_STATE }: { state?: FigureL
         <div
           className="home-capacity-donut"
           style={{
-            background:
-              stops.length > 0
-                ? `conic-gradient(${stops.join(", ")})`
-                : "conic-gradient(#e8e2d6 0% 100%)",
+            background: stops.length > 0 ? `conic-gradient(${stops.join(", ")})` : "var(--chart-track)",
           }}
           aria-hidden="true"
         >

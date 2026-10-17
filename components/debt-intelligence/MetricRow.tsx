@@ -24,7 +24,7 @@ export function MetricRow({
 }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--border, #e5e7eb)" }}>
+    <div style={{ marginTop: 12, paddingTop: 8, borderTop: "1px solid var(--line)" }}>
       <div className="row">
         <div className="row-label">{label}</div>
         <div className="row-value" style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>

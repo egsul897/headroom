@@ -1,5 +1,9 @@
+import { CountUp } from "@/components/motion/CountUp";
+import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
 import { UNKNOWN_STATE, presentFigure, type FigureLoadState } from "@/lib/home/load-state";
 import { EmptyCopy, RegionCard } from "./RegionCard";
+
+const NOTE = "The figure on the card is already shown. This panel did not load a source, a clause, or a history.";
 
 function parseUtilization(display: string): { pct: number | null; detail: string } {
   const match = display.match(/^([\d.]+)%\s*[·•-]?\s*(.*)$/);
@@ -14,6 +18,9 @@ export function UtilizationCard({ state = UNKNOWN_STATE }: { state?: FigureLoadS
     return (
       <RegionCard region="utilization" eyebrow="Utilization">
         <EmptyCopy slot="utilization" state={presented} />
+        <OpenProvenanceButton title="Utilization" note={NOTE}>
+          Open detail
+        </OpenProvenanceButton>
       </RegionCard>
     );
   }
@@ -27,17 +34,22 @@ export function UtilizationCard({ state = UNKNOWN_STATE }: { state?: FigureLoadS
         {pct !== null ? (
           <div
             className="home-util-ring"
-            style={{ background: `conic-gradient(#c47a3a 0deg ${deg}deg, #e8e2d6 ${deg}deg 360deg)` }}
+            style={{ background: `conic-gradient(var(--chart-1) 0deg ${deg}deg, var(--chart-track) ${deg}deg 360deg)` }}
             aria-hidden="true"
           >
             <div className="home-util-ring-hole">
-              <span className="home-util-pct">{pct.toFixed(1)}%</span>
+              <span className="home-util-pct">
+                <CountUp text={`${pct.toFixed(1)}%`} />
+              </span>
             </div>
           </div>
         ) : (
           <p className="home-kpi-value home-kpi-value-sm">{presented.display}</p>
         )}
         <p className="home-kpi-caption">{detail || "Facility utilization"}</p>
+        <OpenProvenanceButton title="Utilization" note={NOTE}>
+          Open detail
+        </OpenProvenanceButton>
       </div>
     </RegionCard>
   );

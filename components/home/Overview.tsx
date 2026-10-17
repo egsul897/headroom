@@ -12,6 +12,7 @@ import { AlertsCard } from "./AlertsCard";
 import { CapacitySummaryCard } from "./CapacitySummaryCard";
 import { CovenantsAtRiskCard } from "./CovenantsAtRiskCard";
 import { DriversCard } from "./DriversCard";
+import { EbitdaTile } from "./EbitdaTile";
 import { HeadroomOverTimeCard } from "./HeadroomOverTimeCard";
 import { BellIcon, ExportIcon } from "./icons";
 import { NextTestCard } from "./NextTestCard";
@@ -56,15 +57,12 @@ export function CompanyOverview({
               {readinessHeadline}
             </p>
           ) : null}
-        </div>
-        <div className="home-top-actions">
-          <Link className="button button-primary" href={`/${companyId}/intelligence`}>
-            Debt intelligence
-          </Link>
-          <Link className="home-ask-hero" href={`/${companyId}/ask`} data-ask-hero>
+          <Link className="home-ask-link" href={`/${companyId}/ask`} data-ask-hero>
             <span className="home-ask-hero-label">Ask</span>
             <span className="home-ask-hero-note">{ASK_CASES.NOT_AVAILABLE_ON_DEAL.headline}</span>
           </Link>
+        </div>
+        <div className="home-top-actions">
           <a className="home-icon-button" href="#home-alerts" aria-label="Alerts">
             <BellIcon />
             {badge != null ? (
@@ -82,6 +80,9 @@ export function CompanyOverview({
           >
             <ExportIcon />
             Export
+            <span className="home-export-chevron" aria-hidden="true">
+              ▾
+            </span>
           </button>
         </div>
       </header>
@@ -97,7 +98,10 @@ export function CompanyOverview({
         </section>
       ) : null}
 
-      <div className="home-regions">
+      <div className="home-hero">
+        <TotalHeadroomCard state={slots.totalHeadroom} />
+      </div>
+      <div className="home-board">
         <div className="home-kpis">
           <TotalHeadroomCard state={slots.totalHeadroom} />
           <UtilizationCard state={slots.utilization} />
@@ -110,7 +114,10 @@ export function CompanyOverview({
         </div>
         <div className="home-split">
           <StatusTable state={slots.statusTable} />
-          <DriversCard state={slots.drivers} />
+          <div className="home-stack">
+            <EbitdaTile />
+            <DriversCard state={slots.drivers} />
+          </div>
         </div>
         <div className="home-pair">
           <AlertsCard state={alerts} />

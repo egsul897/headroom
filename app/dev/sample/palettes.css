@@ -1,0 +1,137 @@
+/*
+ * Sample institutional palettes for /dev/sample?palette=1|2|3|4.
+ * Status green, amber, and red are not redefined.
+ * Palette 2 matches the product default.
+ */
+
+[data-palette] .app-sidebar {
+  border-right-color: var(--shell-sidebar-line);
+}
+
+[data-palette="1"] .app-shell {
+  /* Oxford navy + brass + ivory. Analogous steel steps, one brass note at hue ~50°.
+     Ivory on the rail is 12.98:1. Muted #c4bfb4 is 8.13:1. */
+  --paper: #f6f3ec;
+  --card: #fffdf9;
+  --ink: #1c1914;
+  --muted: #5c564c;
+  --line: #e4ddd0;
+  --shell-canvas: #f6f3ec;
+  --shell-card: #fffdf9;
+  --shell-ink: #1c1914;
+  --shell-muted: #5c564c;
+  --shell-line: #e4ddd0;
+  --shell-sidebar: #1c2838;
+  --shell-sidebar-ink: #f3efe6;
+  --shell-sidebar-muted: #c4bfb4;
+  --shell-sidebar-hover: #243246;
+  --shell-sidebar-active: #2c3c52;
+  --shell-sidebar-active-ink: #f3efe6;
+  --shell-sidebar-card: #16202e;
+  --shell-sidebar-line: #121c2a;
+  --accent: #1c2838;
+  --accent-hover: #2c3c52;
+  --accent-ink: #f6f3ec;
+  --accent-signal: #c0ae58;
+  --chart-1: #1c2838;
+  --chart-2: #4a5c72;
+  --chart-3: #8ea0b4;
+  --chart-4: #c0ae58;
+  --chart-track: #e4ddd0;
+}
+
+[data-palette="2"] .app-shell {
+  /* Graphite + oxblood + warm stone. Neutral steps, one wine note at hue 330°.
+     Stone on the rail is 12.44:1. White on oxblood #54243c is 12.39:1. */
+  --paper: #f3f0eb;
+  --card: #fffcf8;
+  --ink: #1a1816;
+  --muted: #5e5852;
+  --line: #e3ddd4;
+  --shell-canvas: #f3f0eb;
+  --shell-card: #fffcf8;
+  --shell-ink: #1a1816;
+  --shell-muted: #5e5852;
+  --shell-line: #e3ddd4;
+  --shell-sidebar: #2a2c2e;
+  --shell-sidebar-ink: #f4f1ec;
+  --shell-sidebar-muted: #c8c4be;
+  --shell-sidebar-hover: #3a3c3f;
+  --shell-sidebar-active: #54243c;
+  --shell-sidebar-active-ink: #ffffff;
+  --shell-sidebar-card: #222426;
+  --shell-sidebar-line: #1c1e20;
+  --accent: #54243c;
+  --accent-hover: #6b3050;
+  --accent-ink: #ffffff;
+  --accent-signal: #f4f1ec;
+  --chart-1: #2a2c2e;
+  --chart-2: #5e5854;
+  --chart-3: #a39c94;
+  --chart-4: #54243c;
+  --chart-track: #e6e1da;
+}
+
+[data-palette="3"] .app-shell {
+  /* Near-black ink (saturation 0.04, not a green) + champagne + slate.
+     Ivory on the rail is 15.19:1. White on slate #3e474e is 9.48:1. */
+  --paper: #f6f3ee;
+  --card: #fffdf8;
+  --ink: #1a1916;
+  --muted: #5c5852;
+  --line: #e5dfd4;
+  --shell-canvas: #f6f3ee;
+  --shell-card: #fffdf8;
+  --shell-ink: #1a1916;
+  --shell-muted: #5c5852;
+  --shell-line: #e5dfd4;
+  --shell-sidebar: #1a1c1b;
+  --shell-sidebar-ink: #f4f1ea;
+  --shell-sidebar-muted: #c2beb6;
+  --shell-sidebar-hover: #242826;
+  --shell-sidebar-active: #3e474e;
+  --shell-sidebar-active-ink: #ffffff;
+  --shell-sidebar-card: #141615;
+  --shell-sidebar-line: #101211;
+  --accent: #3e474e;
+  --accent-hover: #4d565e;
+  --accent-ink: #ffffff;
+  --accent-signal: #d2c398;
+  --chart-1: #1a1c1b;
+  --chart-2: #3e474e;
+  --chart-3: #8d9390;
+  --chart-4: #d2c398;
+  --chart-track: #e5dfd4;
+}
+
+[data-palette="4"] .app-shell {
+  /* Midnight blue + steel + soft copper. Analogous steel steps, one copper note at hue ~21°.
+     Cool white on the rail is 15.69:1. White on steel #3d4754 is 9.43:1. */
+  --paper: #f2f3f5;
+  --card: #ffffff;
+  --ink: #14181f;
+  --muted: #4e5660;
+  --line: #e1e4e8;
+  --shell-canvas: #f2f3f5;
+  --shell-card: #ffffff;
+  --shell-ink: #14181f;
+  --shell-muted: #4e5660;
+  --shell-line: #e1e4e8;
+  --shell-sidebar: #141a26;
+  --shell-sidebar-ink: #f2f3f5;
+  --shell-sidebar-muted: #c5c9d0;
+  --shell-sidebar-hover: #1e2736;
+  --shell-sidebar-active: #3d4754;
+  --shell-sidebar-active-ink: #ffffff;
+  --shell-sidebar-card: #10151f;
+  --shell-sidebar-line: #0d121c;
+  --accent: #3d4754;
+  --accent-hover: #4e5968;
+  --accent-ink: #ffffff;
+  --accent-signal: #c49a84;
+  --chart-1: #141a26;
+  --chart-2: #3d4754;
+  --chart-3: #8b95a3;
+  --chart-4: #c49a84;
+  --chart-track: #e1e4e8;
+}

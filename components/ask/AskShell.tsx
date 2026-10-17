@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Select } from "@/components/Select";
 import Link from "next/link";
 import type { AskShellResult } from "@/lib/ask/shell-runner";
 import { WorkflowJourney } from "@/components/customer-workflow/WorkflowJourney";
@@ -11,6 +12,21 @@ import {
 } from "@/lib/customer-workflow/ask-view";
 
 type AskMode = "corpus" | "transaction";
+
+const SUGGESTED_QUERIES = [
+  "Can we incur secured debt, and which clause limits it?",
+  "What restricts a dividend or a buyback?",
+  "Which leverage test is still unknown?",
+  "What would leave this answer as review required?",
+];
+
+type AskThread = {
+  id: string;
+  title: string;
+  question: string;
+  result: AskShellResult;
+  presentation: AskAnswerPresentation | null;
+};
 
 /**
  * Ask page — corpus retrieval (/api/ask) or structured transaction analysis (/api/ask/transaction).
@@ -30,26 +46,88 @@ export function AskShell({
   const [simulateHref, setSimulateHref] = useState<string | null>(null);
   const [askPresentation, setAskPresentation] = useState<AskAnswerPresentation | null>(null);
   const [pending, setPending] = useState(false);
+  const [threads, setThreads] = useState<AskThread[]>([
+    { id: "opening", title: initial.headline, question: "", result: initial, presentation: null },
+  ]);
+  const [activeThread, setActiveThread] = useState("opening");
+  const [citeIndex, setCiteIndex] = useState(0);
+
+  function remember(nextQuestion: string, next: AskShellResult, presentation: AskAnswerPresentation | null) {
+    const id = `thread-${threads.length + 1}`;
+    setThreads((current) => [
+      ...current,
+      { id, title: nextQuestion.trim() || next.headline, question: nextQuestion, result: next, presentation },
+    ]);
+    setActiveThread(id);
+    setCiteIndex(0);
+  }
+
+  function openThread(thread: AskThread) {
+    setActiveThread(thread.id);
+    setQuestion(thread.question);
+    setResult(thread.result);
+    setAskPresentation(thread.presentation);
+    setCiteIndex(0);
+  }
+
+  const recordThread = useRef(false);
+  useEffect(() => {
+    if (!recordThread.current || pending) return;
+    recordThread.current = false;
+    const id = `thread-${Date.now()}`;
+    setThreads((current) => [
+      ...current,
+      { id, title: question.trim() || result.headline, question, result, presentation: askPresentation },
+    ]);
+    setActiveThread(id);
+    setCiteIndex(0);
+  }, [pending, question, result, askPresentation]);
+
+  const citations = result.citations ?? [];
+  const activeCitation = citations[citeIndex] ?? null;
+  const refusal = result.kind === "empty" || result.kind === "refused" || result.kind === "insufficient_evidence";
 
   return (
-    <div className="home-overview">
-      <header className="home-top">
-        <div className="home-greeting-block">
-          <h1 className="home-greeting">Ask Headroom</h1>
-        </div>
-        <Link className="home-export home-export-link" href={`/${companyId}`}>
+    <div className="ask-harvey">
+      <aside className="ask-threads">
+        <p className="home-eyebrow">Threads</p>
+        <ul>
+          {threads.map((thread) => (
+            <li key={thread.id}>
+              <button
+                type="button"
+                className={thread.id === activeThread ? "is-active" : ""}
+                onClick={() => openThread(thread)}
+              >
+                {thread.title}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <Link className="home-detail" href={`/${companyId}`}>
           Back to overview
         </Link>
+      </aside>
+
+      <div className="ask-stage">
+      <header className="ask-intro">
+        <h1>Ask Headroom</h1>
+        <p>Questions stay tied to this workspace. A refusal is an answer.</p>
       </header>
 
-      <div style={{ marginBottom: 12 }}>
+      <div className="ask-journey">
         <WorkflowJourney companyId={companyId} current="review" />
       </div>
 
-      <section className="home-card ask-card" data-ask-case={result.caseId}>
+      <section className={`ask-document ${refusal ? "is-refusal" : ""}`} data-ask-case={result.caseId}>
         <h2 className="home-headline">{result.headline}</h2>
-        <p className="home-detail" style={{ whiteSpace: "pre-wrap" }}>
+        <p className="ask-prose">
           {result.detail}
+          {citations.map((citation, index) => (
+            <button key={`${citation.sourceId}-${index}`} type="button" className="cite-mark" onClick={() => setCiteIndex(index)}>
+              {index + 1}
+            </button>
+          ))}
         </p>
         {askPresentation && (
           <div style={{ marginTop: 12 }} data-ask-status={askPresentation.answerStatus}>
@@ -241,9 +319,10 @@ export function AskShell({
       )}
 
       <form
-        className="home-card ask-form"
+        className="ask-composer"
         onSubmit={async (event) => {
           event.preventDefault();
+          recordThread.current = true;
           setPending(true);
           setTxnJson(null);
           setSimulateHref(null);
@@ -392,17 +471,17 @@ export function AskShell({
         <label className="home-eyebrow" htmlFor="ask-mode">
           Mode
         </label>
-        <select
+        <Select
           id="ask-mode"
+          ariaLabel="Mode"
           value={mode}
-          onChange={(e) => setMode(e.target.value as AskMode)}
+          onValueChange={(next) => setMode(next as AskMode)}
           disabled={pending}
-          className="input"
-          style={{ maxWidth: 280, marginBottom: 8 }}
-        >
-          <option value="transaction">Transaction analysis (North Star gated)</option>
-          <option value="corpus">Corpus research (citations only)</option>
-        </select>
+          options={[
+            { value: "transaction", label: "Transaction analysis (North Star gated)" },
+            { value: "corpus", label: "Corpus research (citations only)" },
+          ]}
+        />
         <label className="home-eyebrow" htmlFor="ask-question">
           Question about this workspace’s financing documents
         </label>
@@ -419,7 +498,7 @@ export function AskShell({
         </button>
         <p className="home-detail" style={{ marginTop: 8 }}>
           Transaction mode uses APPROVED NS-4 snapshots, cutoff resolution, and attributed ledger — never invents
-          capacity. Certified 4E enumeration requires a VerifiedExecutionPackage.{" "}
+          capacity. This is not legal verification. Certified 4E enumeration requires a VerifiedExecutionPackage.{" "}
           <Link href={`/${companyId}/certificates`}>Certificates</Link>
           {" · "}
           <Link href={`/${companyId}/documents`}>Documents</Link>
@@ -427,6 +506,32 @@ export function AskShell({
           <Link href="/research/ask">Research corpus Ask</Link>
         </p>
       </form>
+      <div className="ask-suggestions" aria-label="Suggested queries">
+        {SUGGESTED_QUERIES.map((query) => (
+          <button key={query} type="button" onClick={() => setQuestion(query)}>
+            {query}
+          </button>
+        ))}
+      </div>
+      </div>
+
+      <aside className="ask-source" aria-label="Source">
+        <p className="home-eyebrow">Source</p>
+        {activeCitation ? (
+          <>
+            <h2>{activeCitation.governingAgreement}</h2>
+            <p className="ask-clause">{activeCitation.sectionRef}</p>
+            <p className="ask-passage">“{activeCitation.excerpt}”</p>
+            <p className="ebitda-caption">
+              {activeCitation.epistemicStatus}
+              {activeCitation.posture ? ` · ${activeCitation.posture}` : ""}
+              {" · "}Page was not returned with this citation.
+            </p>
+          </>
+        ) : (
+          <p className="ask-passage">No cited passage yet. A refusal does not invent a source.</p>
+        )}
+      </aside>
     </div>
   );
 }

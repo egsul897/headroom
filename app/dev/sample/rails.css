@@ -1,0 +1,33 @@
+/*
+ * Dev-only sidebar comparisons for /dev/sample?rail=
+ * The shipped rail is the mid slate on .app-shell. These overrides exist
+ * so the three shades can be photographed. They do not load in production
+ * pages.
+ */
+
+[data-rail="deep"] .app-shell {
+  --shell-sidebar: #2b3644;
+  --shell-sidebar-ink: #f4f6f8;
+  --shell-sidebar-muted: #b7c2ce; /* 6.78:1 on the rail */
+  --shell-sidebar-hover: #334050;
+  --shell-sidebar-active: #3d4c60; /* active text 8.07:1, not a status hue */
+  --shell-sidebar-card: #243140;
+}
+
+[data-rail="mid"] .app-shell {
+  --shell-sidebar: #3a4656;
+  --shell-sidebar-ink: #f4f6f8;
+  --shell-sidebar-muted: #b7c2ce; /* 5.31:1 */
+  --shell-sidebar-hover: #3f4c5c;
+  --shell-sidebar-active: #4c5c70; /* active text 6.31:1 */
+  --shell-sidebar-card: #314052;
+}
+
+[data-rail="soft"] .app-shell {
+  --shell-sidebar: #4a5668;
+  --shell-sidebar-ink: #f4f6f8;
+  --shell-sidebar-muted: #c5ced8; /* 4.68:1 — as muted as AA allows here */
+  --shell-sidebar-hover: #556478;
+  --shell-sidebar-active: #5c6b80; /* active text 5.01:1 */
+  --shell-sidebar-card: #3d4b5c;
+}

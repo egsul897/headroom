@@ -2,8 +2,11 @@
 
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { Select } from "@/components/Select";
 import { Banner, Card, Chip, ProgressBar, SectionRef, type ChipTone } from "@/components/ui";
 import { ProvisionTrace } from "@/components/ProvisionTrace";
+import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
+import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
 import { StatusChip } from "@/components/customer-workflow/StatusChip";
 import { fmtCapacity, fmtM, fmtX } from "@/lib/format";
 import type { DefinedTermLite } from "@/lib/coherent";
@@ -27,6 +30,7 @@ import {
 } from "@/lib/covenant-engine";
 import { mapSimulateStatusToCustomerStatus } from "@/lib/customer-workflow/status-contract";
 import { commitRestrictedPayment } from "../ledger/actions";
+import { DebtBasketBoard } from "@/components/simulate/DebtBasketBoard";
 
 type ActionType = "debt" | "rp" | "investment" | "assetSale";
 type DefinedTermsMap = Record<string, DefinedTermLite[]>;
@@ -35,6 +39,37 @@ type DocumentRow = { id: string; name: string; notes: string | null };
 
 interface SerializableSolverContext extends Omit<SolverNativeCompanyContext, "activationState"> {
   activationState: Omit<SolverNativeCompanyContext["activationState"], "unknownKeys"> & { unknownKeysArray: string[] };
+}
+
+function basketClause(sectionRef?: string | null, basketName?: string | null): string {
+  const section = sectionRef?.trim();
+  if (!section) return UNLOADED_CLAUSE;
+  const name = basketName?.trim();
+  return `Section ${section}${name ? ` · ${name}` : ""}. Clause text is not loaded on this step.`;
+}
+
+function BasketDetail({
+  title,
+  source,
+  sectionRef,
+  basketName,
+}: {
+  title: string;
+  source?: string | null;
+  sectionRef?: string | null;
+  basketName?: string | null;
+}) {
+  return (
+    <OpenProvenanceButton
+      title={title}
+      source={source?.trim() ? source : UNLOADED_SOURCE}
+      clause={basketClause(sectionRef, basketName)}
+      history={UNLOADED_HISTORY}
+      note="This is the basket already on the step. Nothing new was loaded."
+    >
+      Open detail
+    </OpenProvenanceButton>
+  );
 }
 
 const RESULT_TONE: Record<TransactionStatus, "ok" | "blocked" | "review"> = {
@@ -312,7 +347,11 @@ function DebtPanel({
   // client-side ratio-consistency recheck: `sim.status` is the sole verdict.
   // `solverContext` lets a solver-native document (no legacy capacity
   // formula) be evaluated too, not just legacy-formula documents.
-  const sim: DebtIncurrenceSimulation = simulateDebtIncurrence(data, position, simAmt, simSecured, solverContext);
+  const [securedAmt, setSecuredAmt] = useState(simSecured ? simAmt : 500);
+  const [unsecuredAmt, setUnsecuredAmt] = useState(simSecured ? 200 : simAmt);
+  const [focusSecured, setFocusSecured] = useState(simSecured);
+  const focusAmt = focusSecured ? securedAmt : unsecuredAmt;
+  const sim: DebtIncurrenceSimulation = simulateDebtIncurrence(data, position, focusAmt, focusSecured, solverContext);
   const tone = RESULT_TONE[sim.status];
   const blockedRatioTests = sim.ratioTests.filter((r) => r.applies && r.status === "blocked");
   const customerStatus = mapSimulateStatusToCustomerStatus(sim.status, {
@@ -328,35 +367,25 @@ function DebtPanel({
           Tested pro forma against every governing document and every applicable ratio test. Results are{" "}
           <StatusChip code="HYPOTHETICAL" compact /> — not production-authoritative capacity.
         </div>
-        <div style={{ marginTop: 14 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-            <span className="field-label">Amount</span>
-            <span className="mono" style={{ fontSize: 20, fontWeight: 600 }}>{fmtM(simAmt)}</span>
-          </div>
-          <input
-            type="range"
-            min={0}
-            max={8000}
-            step={100}
-            value={simAmt}
-            onChange={(e) => setSimAmt(Number(e.target.value))}
-          />
-        </div>
-        <div className="button-row" style={{ marginTop: 12 }}>
-          {[
-            ["Secured", true],
-            ["Unsecured", false],
-          ].map(([label, val]) => (
-            <button
-              key={String(val)}
-              type="button"
-              className={`button ${simSecured === val ? "active" : ""}`}
-              onClick={() => setSimSecured(val as boolean)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <DebtBasketBoard
+          data={data}
+          position={position}
+          solverContext={solverContext}
+          securedAmount={securedAmt}
+          unsecuredAmount={unsecuredAmt}
+          onSecuredAmount={(amount) => {
+            setSecuredAmt(amount);
+            setFocusSecured(true);
+            setSimAmt(amount);
+            setSimSecured(true);
+          }}
+          onUnsecuredAmount={(amount) => {
+            setUnsecuredAmt(amount);
+            setFocusSecured(false);
+            setSimAmt(amount);
+            setSimSecured(false);
+          }}
+        />
       </Card>
 
       <div className={`result-panel ${tone === "ok" ? "ok" : tone === "blocked" ? "blocked" : ""}`} style={tone === "review" ? { background: "var(--amber-soft)", borderColor: "var(--amber)" } : undefined} data-simulate-status={customerStatus}>
@@ -405,8 +434,16 @@ function DebtPanel({
         {provisionStructurallyUnresolved(structuralUnresolvedKeys, sim.binding?.bindingProvision) && (
           <StructuralUnresolvedNote />
         )}
+        {sim.binding?.bindingProvision ? (
+          <BasketDetail
+            title={sim.binding.bindingProvision.basketName}
+            source={sim.binding.documentName}
+            sectionRef={sim.binding.bindingProvision.sectionRef}
+            basketName={sim.binding.bindingProvision.basketName}
+          />
+        ) : null}
         {sim.status === "blocked" && sim.binding && sim.next && (sim.next.capacity ?? Infinity) > (sim.binding.capacity ?? 0) && (
-          <div style={{ marginTop: 10, background: "#fff", border: "1px solid var(--line)", borderRadius: 6, padding: "10px 12px", fontSize: 13 }}>
+          <div style={{ marginTop: 10, background: "var(--card)", border: "1px solid var(--line)", borderRadius: 6, padding: "10px 12px", fontSize: 13 }}>
             <b>Amendment unlock:</b> relaxing the binding covenant in {sim.binding.documentName} would raise
             capacity to <span className="mono" style={{ fontWeight: 600 }}>{fmtM(sim.next.capacity!)}</span>, where{" "}
             {sim.next.documentName} becomes the constraint.
@@ -436,6 +473,12 @@ function DebtPanel({
                 {provisionStructurallyUnresolved(structuralUnresolvedKeys, d.bindingProvision) && (
                   <StructuralUnresolvedNote />
                 )}
+                <BasketDetail
+                  title={d.bindingProvision.basketName}
+                  source={d.documentName}
+                  sectionRef={d.bindingProvision.sectionRef}
+                  basketName={d.bindingProvision.basketName}
+                />
               </>
             ) : (
               <div className="row-note" style={{ marginTop: 6 }}>
@@ -478,6 +521,12 @@ function DebtPanel({
                 {provisionStructurallyUnresolved(structuralUnresolvedKeys, r.provision) && (
                   <StructuralUnresolvedNote />
                 )}
+                <BasketDetail
+                  title={r.basketName}
+                  source={r.documentName}
+                  sectionRef={r.sectionRef}
+                  basketName={r.basketName}
+                />
               </div>
             );
           })}
@@ -525,6 +574,7 @@ function RpPanel({
         <Banner tone="red">
           Not tested here: no document for this company has a restricted-payment basket configuration entered.
         </Banner>
+        <BasketDetail title={title} />
       </Card>
     );
   }
@@ -540,11 +590,12 @@ function RpPanel({
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
           <div className="card-title" style={{ marginBottom: 0 }}>{title}</div>
           {candidates.length > 1 && (
-            <select value={doc.id} onChange={(e) => setSelectedId(e.target.value)}>
-              {candidates.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
+            <Select
+              ariaLabel="Document"
+              value={doc.id}
+              onValueChange={setSelectedId}
+              options={candidates.map((c) => ({ value: c.id, label: c.name }))}
+            />
           )}
         </div>
         <div className="card-subtitle" style={{ marginBottom: 0 }}>
@@ -634,6 +685,7 @@ function RpPanel({
                   <span className="mono" style={{ float: "right" }}>{fmtM(s.allocated)}</span>
                 </div>
               )}
+              <BasketDetail title={s.basketName} source={doc.name} sectionRef={s.sectionRef} basketName={s.basketName} />
               <div style={{ height: 6, background: "rgba(0,0,0,0.06)", borderRadius: 2, marginBottom: 10, overflow: "hidden" }}>
                 <div style={{ width: `${Math.min(100, (s.allocated / Math.max(1, amount)) * 100)}%`, height: "100%", background: "var(--green)" }} />
               </div>
@@ -686,6 +738,7 @@ function AssetSalePanel({
         <Banner tone="red">
           Not tested here: no document for this company has an asset-sale threshold configuration entered.
         </Banner>
+        <BasketDetail title="Asset sale" />
       </Card>
     );
   }
@@ -699,11 +752,12 @@ function AssetSalePanel({
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
           <div className="card-title" style={{ marginBottom: 0 }}>Test an asset sale</div>
           {candidates.length > 1 && (
-            <select value={doc.id} onChange={(e) => setSelectedId(e.target.value)}>
-              {candidates.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
+            <Select
+              ariaLabel="Document"
+              value={doc.id}
+              onValueChange={setSelectedId}
+              options={candidates.map((c) => ({ value: c.id, label: c.name }))}
+            />
           )}
         </div>
         <div className="card-subtitle" style={{ marginBottom: 0 }}>
@@ -756,11 +810,19 @@ function AssetSalePanel({
             )}
           </div>
           {thresholdProvision && (
-            <ProvisionTrace
-              provision={thresholdProvision}
-              definedTerms={definedTermsByProvision[`${doc.id}:${doc.assetSale?.thresholdCode}`] ?? []}
-              value={fmtM(sim.excessProceedsThreshold ?? 0)}
-            />
+            <>
+              <ProvisionTrace
+                provision={thresholdProvision}
+                definedTerms={definedTermsByProvision[`${doc.id}:${doc.assetSale?.thresholdCode}`] ?? []}
+                value={fmtM(sim.excessProceedsThreshold ?? 0)}
+              />
+              <BasketDetail
+                title={thresholdProvision.basketName}
+                source={doc.name}
+                sectionRef={thresholdProvision.sectionRef}
+                basketName={thresholdProvision.basketName}
+              />
+            </>
           )}
           {provisionStructurallyUnresolved(structuralUnresolvedKeys, thresholdProvision) && (
             <StructuralUnresolvedNote />

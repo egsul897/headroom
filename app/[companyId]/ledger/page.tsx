@@ -247,7 +247,7 @@ export default async function LedgerPage({ params }: { params: Promise<{ company
           </div>
         </div>
         <Disclosure closedLabel="Generate draft" openLabel="Hide draft">
-          <div style={{ border: "1px solid var(--line)", borderRadius: 4, background: "#fffefb", padding: "22px 20px" }}>
+          <div style={{ border: "1px solid var(--line)", borderRadius: 4, background: "var(--card)", padding: "22px 20px" }}>
             <div className="serif" style={{ textAlign: "center", fontSize: 16, fontWeight: 600, letterSpacing: "0.04em" }}>
               OFFICER&apos;S COMPLIANCE CERTIFICATE (ILLUSTRATIVE)
             </div>

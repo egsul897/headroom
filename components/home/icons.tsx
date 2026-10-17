@@ -3,7 +3,7 @@ export function BrandMark() {
     <svg className="app-brand-mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.6" />
       <path d="M12 5.5 14.2 12 12 18.5 9.8 12Z" fill="currentColor" />
-      <circle cx="12" cy="12" r="1.3" fill="#f7f6f2" />
+      <circle cx="12" cy="12" r="1.3" fill="var(--card)" />
     </svg>
   );
 }

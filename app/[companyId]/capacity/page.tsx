@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { ActionMenu } from "@/components/ActionMenu";
+import { StatusBadge } from "@/components/StatusBadge";
+import { OpenProvenanceButton } from "@/components/motion/ProvenanceDrawer";
+import { UNLOADED_CLAUSE, UNLOADED_HISTORY, UNLOADED_SOURCE } from "@/components/motion/provenance-copy";
 import { Card, Chip } from "@/components/ui";
 import { getCompanyDashboard } from "@/lib/dashboard-service";
 import { fmtM, maxCapacityDetail } from "@/lib/format";
@@ -70,6 +74,14 @@ function methodLabel(method: PerDocumentRemainingCapacity["method"]): string {
   }
 }
 
+function capacityClause(d: PerDocumentRemainingCapacity): string {
+  const cites = (d.bindingConstraint ?? [])
+    .map((c) => `${c.sectionRef}${c.permissionId ? ` (${c.permissionId})` : ""}`)
+    .filter((cite) => cite.trim().length > 0);
+  if (cites.length === 0) return UNLOADED_CLAUSE;
+  return `${cites.join("; ")}. Clause text is not loaded.`;
+}
+
 function DocumentCapacityRow({
   d,
   structuralUnresolvedIds,
@@ -99,34 +111,41 @@ function DocumentCapacityRow({
         )}
         {bindingStructurallyUnresolved && <div className="row-note">{STRUCTURAL_UNRESOLVED_NOTICE}</div>}
         {maxCapacityDetail(d.maximumCapacity) && <div className="row-note">{maxCapacityDetail(d.maximumCapacity)}</div>}
+        <OpenProvenanceButton
+          title={d.documentName || "Capacity"}
+          source={d.documentName?.trim() ? d.documentName : UNLOADED_SOURCE}
+          clause={capacityClause(d)}
+          history={UNLOADED_HISTORY}
+          note="The remaining figure on this row is unchanged. Nothing new was loaded."
+        >
+          Open detail
+        </OpenProvenanceButton>
       </div>
-      <div className="row-value">{d.remainingCapacity !== undefined ? fmtM(d.remainingCapacity) : "Not evaluated"}</div>
+      <div className="row-value num">{d.remainingCapacity !== undefined ? fmtM(d.remainingCapacity) : "Not evaluated"}</div>
     </div>
   );
 }
 
 function ReadinessBanner({
-  companyId,
   readiness,
 }: {
-  companyId: string;
   readiness: Awaited<ReturnType<typeof loadCapacityReadiness>>;
 }) {
   return (
     <Card>
       <div className="card-title">Capacity determination status</div>
-      <div className="card-subtitle">{readiness.headline}</div>
       <div className="row" style={{ marginTop: 8 }}>
         <div className="row-label">Status</div>
         <div className="row-value">
-          <Chip tone={readiness.canEvaluateExecutableCapacity ? "pass" : "tight"}>{readiness.status}</Chip>
+          <StatusBadge status={readiness.status} />
         </div>
       </div>
       <div className="row-note" style={{ marginTop: 8 }}>
         Analyzed documents: {readiness.analyzedDocumentCount} · Summaries: {readiness.summaryCount} · Permissions:{" "}
         {readiness.permissionCount} · Provisions: {readiness.provisionCount} · Legacy FinancialState:{" "}
         {readiness.hasFinancialSnapshot ? "yes" : "no"} · NS-4 APPROVED: {readiness.approvedNorthStarSnapshotCount} ·
-        4C ledger active: {readiness.contractLedgerActiveCount} · Authority: {readiness.capacityAuthority}
+        4C ledger active: {readiness.contractLedgerActiveCount} · Authority:{" "}
+        <StatusBadge status={readiness.capacityAuthority} />
       </div>
       {readiness.blockers.map((b, i) => (
         <div key={i} className="row-note">
@@ -135,20 +154,6 @@ function ReadinessBanner({
       ))}
       <div className="row-note" style={{ marginTop: 8 }}>
         {readiness.guidance}
-      </div>
-      <div className="button-row" style={{ marginTop: 12 }}>
-        <Link className="button" href={`/${companyId}/covenants`}>
-          Covenant review
-        </Link>
-        <Link className="button" href={`/${companyId}/certificates`}>
-          Certificates
-        </Link>
-        <Link className="button" href={`/${companyId}/ask`}>
-          Ask Headroom
-        </Link>
-        <Link className="button" href={`/${companyId}/onboarding/documents`}>
-          Upload documents
-        </Link>
       </div>
     </Card>
   );
@@ -168,20 +173,22 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
 
   const northStarCard = (
     <Card>
-      <div className="card-title">North-Star authoritative capacity</div>
+      <div className="card-title">Provenance</div>
       <div className="card-subtitle">
-        Certified path uses APPROVED NS-4 snapshots + attributed 4C ledger + verified-execution REQUIRE. Legacy engine
-        figures below stay labeled separately.
+        What this number is allowed to rest on: an APPROVED snapshot, an attributed ledger, and a verified path. Legacy
+        engine figures stay labeled separately and are not the same claim.
       </div>
       <div className="row" style={{ marginTop: 8 }}>
         <div className="row-label">Status</div>
         <div className="row-value">
-          <Chip tone={authoritative.status === "CERTIFIED_EXECUTED" ? "pass" : "tight"}>{authoritative.status}</Chip>
+          <StatusBadge status={authoritative.status} />
         </div>
       </div>
       <div className="row">
         <div className="row-label">Authority</div>
-        <div className="row-value">{authoritative.authority}</div>
+        <div className="row-value">
+          <StatusBadge status={authoritative.authority} />
+        </div>
       </div>
       <div className="row-note" style={{ marginTop: 8 }}>
         Cutoff: {authoritative.cutoff.state}
@@ -206,32 +213,46 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
         {authoritative.certified.authorityNote}
       </div>
       <div className="row-note">{authoritative.legacy.note}</div>
-      <div className="button-row" style={{ marginTop: 12 }}>
-        <Link className="button" href={`/${companyId}/certificates`}>
-          Certificates
-        </Link>
-        <Link className="button" href={`/${companyId}/ledger`}>
-          Ledger
-        </Link>
-        <Link className="button" href={`/${companyId}/ask`}>
-          Ask transaction
-        </Link>
-      </div>
     </Card>
+  );
+
+  const toolbar = (
+    <header className="page-head">
+      <div>
+        <p className="page-kicker">Capacity</p>
+        <h1 className="page-question">How much capacity can we rely on?</h1>
+        <p className="page-answer">{readiness.headline}</p>
+      </div>
+      <div className="page-toolbar">
+        <Link className="button button-primary" href={`/${companyId}/covenants`}>
+          Covenant review
+        </Link>
+        <ActionMenu
+          label="More actions"
+          items={[
+            { href: `/${companyId}/certificates`, label: "Certificates" },
+            { href: `/${companyId}/ledger`, label: "Ledger" },
+            { href: `/${companyId}/ask`, label: "Ask Headroom" },
+            { href: `/${companyId}/onboarding/documents`, label: "Upload documents" },
+          ]}
+        />
+      </div>
+    </header>
   );
 
   if (!readiness.canEvaluateExecutableCapacity) {
     return (
-      <div className="stack">
+      <div className="page-frame">
+        {toolbar}
         {northStarCard}
-        <ReadinessBanner companyId={companyId} readiness={readiness} />
+        <ReadinessBanner readiness={readiness} />
         <Card>
           <div className="card-title">Legal rulebook stage</div>
           <div className="card-subtitle">{rulebook.headline}</div>
           <div className="row">
             <div className="row-label">Stage</div>
             <div className="row-value">
-              <Chip tone={rulebook.stage === "EXECUTABLE" ? "pass" : "tight"}>{rulebook.stage}</Chip>
+              <StatusBadge status={rulebook.stage} />
             </div>
           </div>
           <div className="row-note" style={{ marginTop: 8 }}>
@@ -251,8 +272,11 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
         <Card>
           <div className="card-title">Secured / unsecured debt capacity</div>
           <div className="card-subtitle">
-            <Chip tone="tight">NOT DETERMINABLE</Chip> — no executable capacity evaluation for this workspace.
+            <StatusBadge status="NOT DETERMINABLE" /> — no executable capacity evaluation for this workspace.
           </div>
+          <OpenProvenanceButton title="Secured / unsecured debt capacity" note="Capacity is not determinable. This panel did not load a source, a clause, or a history.">
+            Open detail
+          </OpenProvenanceButton>
           <div className="row-note" style={{ marginTop: 8 }}>
             Discovery-level covenant summaries (if any) explain restrictions and baskets in text; they do not establish
             remaining contractual headroom. Required for a supported capacity figure: (1) operative amendment resolution,
@@ -270,9 +294,9 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
   } catch (err) {
     if (err instanceof FinancialIdentityError) {
       return (
-        <div className="stack">
+        <div className="page-frame">
+          {toolbar}
           <ReadinessBanner
-            companyId={companyId}
             readiness={{
               ...readiness,
               canEvaluateExecutableCapacity: false,
@@ -283,7 +307,7 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
           />
           <Card>
             <div className="card-subtitle">
-              <Chip tone="tight">NOT DETERMINABLE</Chip> — {err.message}
+              <StatusBadge status="NOT DETERMINABLE" /> — {err.message}
             </div>
           </Card>
         </div>
@@ -298,9 +322,10 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
   const structuralUnresolvedIds = await loadStructuralUnresolvedPermissionIds(companyId);
 
   return (
-    <div className="stack">
+    <div className="page-frame">
+      {toolbar}
       {northStarCard}
-      <ReadinessBanner companyId={companyId} readiness={readiness} />
+      <ReadinessBanner readiness={readiness} />
       <Card>
         <div className="card-title">Legacy engine capacity (LEGACY_ENGINE · NOT_CERTIFIED_4E)</div>
         <div className="card-subtitle">
@@ -316,6 +341,15 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
           {capacity.secured.remainingCapacity !== undefined ? fmtM(capacity.secured.remainingCapacity) : "Not evaluated"}{" "}
           {capacity.secured.binding && <Chip tone="navy">binding: {capacity.secured.binding.documentName}</Chip>}
         </div>
+        <OpenProvenanceButton
+          title="Secured debt capacity"
+          source={capacity.secured.binding?.documentName?.trim() ? capacity.secured.binding.documentName : UNLOADED_SOURCE}
+          clause={UNLOADED_CLAUSE}
+          history={UNLOADED_HISTORY}
+          note="The overall figure on this card is unchanged. Nothing new was loaded."
+        >
+          Open detail
+        </OpenProvenanceButton>
         {capacity.secured.perDocument.map((d) => (
           <DocumentCapacityRow key={d.documentId} d={d} structuralUnresolvedIds={structuralUnresolvedIds} />
         ))}
@@ -330,6 +364,15 @@ export default async function CapacityPage({ params }: { params: Promise<{ compa
             : "Not evaluated"}{" "}
           {capacity.unsecured.binding && <Chip tone="navy">binding: {capacity.unsecured.binding.documentName}</Chip>}
         </div>
+        <OpenProvenanceButton
+          title="Unsecured debt capacity"
+          source={capacity.unsecured.binding?.documentName?.trim() ? capacity.unsecured.binding.documentName : UNLOADED_SOURCE}
+          clause={UNLOADED_CLAUSE}
+          history={UNLOADED_HISTORY}
+          note="The overall figure on this card is unchanged. Nothing new was loaded."
+        >
+          Open detail
+        </OpenProvenanceButton>
         {capacity.unsecured.perDocument.map((d) => (
           <DocumentCapacityRow key={d.documentId} d={d} structuralUnresolvedIds={structuralUnresolvedIds} />
         ))}

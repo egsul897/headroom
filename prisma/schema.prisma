@@ -4833,6 +4833,7 @@ model CustomerEbitdaProposal {
   @@unique([companyId, documentId, idempotencyKey])
   @@index([companyId, documentId, seq])
   @@map("customer_ebitda_proposals")
+}
 
 // --- Billing (Grok lane 1, docs/billing/README.md) ---
 // Additive only. One subscription row per workspace (Company = the tenant

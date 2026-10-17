@@ -36,7 +36,7 @@ export function ContractualMetricsPanel({ view }: { view: ContractualMetricsView
       </div>
 
       {view.metrics.map((m) => (
-        <div key={m.metricKey} style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid var(--line, #e5e2dc)" }}>
+        <div key={m.metricKey} style={{ marginTop: 14, paddingTop: 12, borderTop: "1px solid var(--line)" }}>
           <div className="row" style={{ borderBottom: "none" }}>
             <div>
               <div className="row-label">{m.displayName}</div>
