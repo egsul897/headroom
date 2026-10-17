@@ -19,6 +19,7 @@ import type {
   DefinitionRecord,
   KnowledgeRelationshipRecord,
   KnowledgeSourceRecord,
+  RedlineAmbiguityRecord,
   StructuralNodeRecord,
 } from "../types";
 import type { ConditionExceptionRecord } from "../pipeline/conditions";
@@ -172,6 +173,14 @@ export class CorpusStore {
 
   loadConditions(sourceId: string): ConditionExceptionRecord[] {
     return this.readJson<ConditionExceptionRecord[]>(`conditions/${sanitize(sourceId)}.json`) ?? [];
+  }
+
+  saveRedlineAmbiguities(sourceId: string, rows: RedlineAmbiguityRecord[]): void {
+    this.writeJson(`redline/${sanitize(sourceId)}.json`, rows);
+  }
+
+  loadRedlineAmbiguities(sourceId: string): RedlineAmbiguityRecord[] {
+    return this.readJson<RedlineAmbiguityRecord[]>(`redline/${sanitize(sourceId)}.json`) ?? [];
   }
 
   /** Exact-byte dedupe across the local durable corpus (all issuers). */

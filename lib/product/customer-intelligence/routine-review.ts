@@ -59,6 +59,12 @@ export function isRoutineItem(item: CovenantSummaryItem): boolean {
   // would certify an invented or uncertain structural
   // relationship as a SYSTEM decision with no human review.
   if (item.structuralUnresolved === true) return false;
+  // P1 (PR #428): a redline-ambiguous item (its text intersects a
+  // span following an unmatched struck-through element — possibly
+  // text the parties deleted) is NEVER routine, for the same
+  // reason: auto-accepting it would certify possibly-deleted text
+  // as a SYSTEM decision with no human review.
+  if (item.redlineAmbiguous === true) return false;
   const grants = grantTypesForItem(item);
   if (grants.length === 0) {
     // No grants: a maintenance-ratio item still compiles (to a

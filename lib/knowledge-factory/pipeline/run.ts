@@ -3,13 +3,13 @@
  * Stages 1–11 without LLM. Paid semantic compilation remains disabled.
  */
 
-import { KNOWLEDGE_FACTORY_VERSION, type CorpusManifestStats, type CrossReferenceRecord, type DiscoveredFilingDocument, type KnowledgeSourceRecord } from "../types";
+import { KNOWLEDGE_FACTORY_VERSION, type CorpusManifestStats, type CrossReferenceRecord, type DiscoveredFilingDocument, type KnowledgeSourceRecord, type RedlineAmbiguityRecord } from "../types";
 import { CorpusStore } from "../store/corpus-store";
 import { EdgarKnowledgeClient } from "../edgar/client";
 import { validateSourceUrl } from "../edgar/client";
 import { classifyDebtDocument } from "../classify/debt-document";
 import { scoreDiscoveryPotential } from "../rank/discovery-score";
-import { extractTextAsync, hashBytes } from "./text";
+import { extractTextAsync, hashBytes, type RedlineSpanInText } from "./text";
 import { extractStructure } from "./structural";
 import { discoverCovenantCandidates } from "./candidates";
 import { extractConditionsAndExceptions } from "./conditions";
@@ -58,6 +58,13 @@ export interface ProcessDocumentResult {
   structuralHealthErrors: number;
   /** D12: nodes carrying ≥1 structural-integrity violation. */
   structuralViolationNodes: number;
+  /**
+   * P1 (PR #428): redline-ambiguous spans recorded at extraction
+   * (unmatched struck-through elements). The spans' text stays in
+   * the document as evidence; provisions intersecting them are
+   * flagged downstream and mint no authoritative conclusions.
+   */
+  redlineAmbiguousSpanCount: number;
   processingMs: number;
   wasDuplicate: boolean;
 }
@@ -115,6 +122,7 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       structuralViolationNodes: store
         .loadStructuralNodes(existingByHash.sourceId)
         .filter((n) => (n.structuralViolations?.length ?? 0) > 0).length,
+      redlineAmbiguousSpanCount: store.loadRedlineAmbiguities(existingByHash.sourceId).length,
       processingMs: Date.now() - started,
       wasDuplicate: true,
     };
@@ -160,10 +168,12 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
   // Text extraction
   let text: string;
   let normalizedTextHash: string;
+  let redlineSpans: RedlineSpanInText[] = [];
   try {
     const extracted = await extractTextAsync(bytes, discovered.exhibit.filename);
     text = extracted.text;
     normalizedTextHash = extracted.normalizedTextHash;
+    redlineSpans = extracted.redlineAmbiguities;
     source = {
       ...source,
       normalizedTextHash,
@@ -186,6 +196,7 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       ambiguousCount: 0,
       structuralHealthErrors: 0,
       structuralViolationNodes: 0,
+      redlineAmbiguousSpanCount: 0,
       processingMs: Date.now() - started,
       wasDuplicate: false,
     };
@@ -207,6 +218,7 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
       ambiguousCount: 0,
       structuralHealthErrors: 0,
       structuralViolationNodes: 0,
+      redlineAmbiguousSpanCount: 0,
       processingMs: Date.now() - started,
       wasDuplicate: false,
     };
@@ -235,6 +247,19 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
   const conditions = extractConditionsAndExceptions(discovered.sourceId, text, structural.nodes);
   store.saveConditions(discovered.sourceId, conditions);
 
+  // P1 (PR #428): persist the redline-ambiguity records produced at
+  // extraction, so the summary build (and any later consumer) can
+  // flag provisions whose source intersects an ambiguous span.
+  const redlineRecords: RedlineAmbiguityRecord[] = redlineSpans.map((s) => ({
+    sourceId: discovered.sourceId,
+    charStart: s.charStart,
+    charEnd: s.charEnd,
+    tagName: s.tagName,
+    reason: "UNMATCHED_REDLINE_ELEMENT",
+    text: s.text,
+  }));
+  store.saveRedlineAmbiguities(discovered.sourceId, redlineRecords);
+
   source = {
     ...source,
     documentClass: classified.documentClass,
@@ -243,6 +268,7 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
     representationLevel: candidates.length > 0 ? "DISCOVERED_CANDIDATE" : "STRUCTURALLY_INDEXED",
     normalizedTextHash,
     structuralHealthErrors: structural.structuralHealthErrors,
+    redlineAmbiguousSpanCount: redlineRecords.length,
   };
   source = attachInstrumentIdentity(source);
   assertRepresentationCannotApproveCapacity(source.representationLevel);
@@ -267,6 +293,7 @@ export async function processAcquiredDocument(store: CorpusStore, input: Process
     ambiguousCount: structural.ambiguousCount,
     structuralHealthErrors: structural.structuralHealthErrors,
     structuralViolationNodes: structural.nodes.filter((n) => (n.structuralViolations?.length ?? 0) > 0).length,
+    redlineAmbiguousSpanCount: redlineRecords.length,
     processingMs,
     wasDuplicate: false,
   };
