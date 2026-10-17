@@ -56,7 +56,10 @@ describe("Stage D companion-REQUIRES discharge", () => {
       companyId: pkg.companyId,
       instrumentKey: pkg.instrumentKey,
     });
-    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs, ledger: [], asOf: AS_OF });
+    // PAI-04 attestation: the committed fixture package carries no
+    // utilization records anywhere, so the empty ledger is the complete
+    // ledger of this fixture world by construction.
+    const capacity = evaluateVerifiedCapacity({ package: pkg, inputs, ledger: [], asOf: AS_OF, utilizationCompleteness: "VERIFIED_EMPTY" });
     expect(capacity.outcome).toBe("EXECUTED");
     if (capacity.outcome !== "EXECUTED") throw new Error("expected EXECUTED");
     const debtCap = capacity.state.capacities.find((c) => c.ruleId === debt.ruleId)!;
@@ -69,6 +72,9 @@ describe("Stage D companion-REQUIRES discharge", () => {
       inputs,
       ledger: [],
       asOf: AS_OF,
+      // Same PAI-04 attestation as the capacity call above: the sim's
+      // internal capacity evaluation sees the same complete empty ledger.
+      utilizationCompleteness: "VERIFIED_EMPTY",
       transaction: {
         transactionId: "test-stage-d-15m",
         companyId: pkg.companyId,
@@ -76,6 +82,9 @@ describe("Stage D companion-REQUIRES discharge", () => {
         effectiveAsOf: AS_OF,
         category: "INCUR_DEBT",
         label: "test",
+        // PAI-07: the scenario's actor is the borrower itself incurring debt
+        // under its own §7.01(b) basket (the rule's scope includes BORROWER).
+        entities: ["BORROWER"],
         effects: [
           {
             effectId: "e1",

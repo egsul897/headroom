@@ -1100,6 +1100,12 @@ describe("Scope F — unified transaction execution", () => {
       inputs: req.inputs,
       ledger: [],
       asOf: WHEN,
+      // PAI-04 attestation: the orchestrated side's utilization gate accepts
+      // the request's completeness certificate over records: [] and forwards
+      // VERIFIED_EMPTY into the boundary. The direct call's ledger is the
+      // same empty record set, so the same attested conclusion is supplied
+      // here — the two calls then differ by no input.
+      utilizationCompleteness: "VERIFIED_EMPTY",
     });
     expect(orch.verified.capacity?.outcome).toBe("EXECUTED");
     expect(direct.outcome).toBe("EXECUTED");
