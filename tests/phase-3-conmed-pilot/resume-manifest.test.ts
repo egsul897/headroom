@@ -122,6 +122,14 @@ describe("empirical cost table and scenarios", () => {
     expect(manifest.budget.stopAtUsd).toBeCloseTo(SPEND_STOP_AT_USD, 6);
     expect(calibrationFile.calibration.recommended.hardCeilingUsd).toBe(SPEND_CEILING_USD);
   }, 120_000);
+  it("the recorded price source names the catalogue the script actually reads, never a container-only /tmp path", async () => {
+    const cal = calibrate(await denominator(), table);
+    expect(cal.price.source).not.toMatch(/\/tmp\/claude-0/);
+    expect(cal.price.source.startsWith("tests/fixtures/ai-gateway/models-catalogue.json ")).toBe(true);
+    const catalogue = JSON.parse(fs.readFileSync("tests/fixtures/ai-gateway/models-catalogue.json", "utf8"));
+    const m = (catalogue.data ?? catalogue).find((x: { id: string }) => x.id === CAL_MODEL);
+    expect([Number(m.pricing.input) * 1e6, Number(m.pricing.output) * 1e6]).toEqual([cal.price.inputPerMtok, cal.price.outputPerMtok]);
+  }, 120_000);
 });
 
 describe("benchmark cases in the population", () => {

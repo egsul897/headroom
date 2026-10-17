@@ -154,7 +154,8 @@ export function calibrate(den: Awaited<ReturnType<typeof denominator>>, table: R
   const stopAt = r6(ceiling - (reservation + verifyConservative) * 2);
 
   return {
-    price: { inputPerMtok: 0.13, outputPerMtok: 0.26, source: "/tmp/claude-0/pilot/models.json (gateway catalogue), reconciled against every EXACT row" },
+    // the catalogue the direct-run branch actually checks these prices against (pilot-paths; the committed 01-calibration.json keeps the path it was recorded with)
+    price: { inputPerMtok: 0.13, outputPerMtok: 0.26, source: `${path.relative(process.cwd(), gatewayCataloguePath()) || gatewayCataloguePath()} (gateway catalogue), reconciled against every EXACT row` },
     compileCost: { all: compileAll, shortBand: compileShort, midLongBand: compileMidLong, exactRows: compileExact.length, timeoutRows: compileTimeouts.length, observedTimeoutRate: r6(timeoutRateObserved), shortBandElapsedMs: elapsedShort },
     verifyCost: { layer2Review: verifyStats, calls: verify.length, typicalPerCandidateUsd: r6(verifyTypical), conservativePerCandidateUsd: r6(verifyConservative), note: "the condition-suspicion classifier was not invoked in either observed verification (deterministic evidence forced review), so its cost is bounded by the review call's maximum rather than measured" },
     oneTime,
