@@ -42,7 +42,7 @@ export interface RatioRowInput {
    * Engine-supplied classification, read verbatim (never inferred by name). Bands and band
    * alerts run ONLY on rows the engine flags MAINTENANCE: an incurrence ratio-basket or RP
    * gate test is not a covenant that can be "in Danger". The overview RatioRow does not
-   * carry this flag yet, so today every row is NOT_EVALUATED (Reviewer #420 N1).
+   * carry this flag yet, so today every row is NOT_EVALUATED (Reviewer, PR 420 N1).
    */
   testKind?: "MAINTENANCE" | "INCURRENCE";
 }
