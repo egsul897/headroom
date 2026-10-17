@@ -14,7 +14,7 @@
 import { borrowerInput, type IssuerFinancials } from "./companyfacts";
 import { solveCapLp } from "./cap-lp";
 import { CAP_ADVERB, IN_NO_EVENT, isInNoEventSubject } from "./cap-verb";
-import { nonUsdCurrency } from "@/lib/contract-model/covenant-computation/currency";
+import { nonUsdCurrency } from "../../contract-model/covenant-computation/currency";
 import { CAPPED, COST_LIKE, HEADER, labelStyle, QUALIFIED, STOP, TWO_SIDED, definitionSegments, markers, evaluateDefinition, mapEbitdaItem, type DefinitionEvaluation } from "./definition-items";
 
 export type AddBackCategory = "INTEREST" | "TAXES" | "D&A" | "STOCK_COMP" | "IMPAIRMENT" | "RESTRUCTURING" | "SEVERANCE" | "TRANSACTION_COSTS" | "INTEGRATION"
