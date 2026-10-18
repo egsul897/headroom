@@ -35,7 +35,7 @@ import { classifySourceAction, assessActionCompatibility } from "./action-ontolo
 import { classifyEmittedReferences, statedReferencesFor, SOURCE_REFERENCE_FIDELITY_VERSION } from "./source-reference-fidelity";
 import { resolveProvenanceExcerpt, type AdmissibleSourceText } from "./provenance-binding";
 import { applyUnlimitedCarveOutQualitativeGates } from "./unlimited-carveout-honesty";
-import { classifyFigureRoleInText, oppositeRatioOperator, sourceRatioOperatorNear } from "./figure-role-guard";
+import { classifyFigureRoleInText, figureGovernedByProhibitionCeiling, oppositeRatioOperator, sourceRatioOperatorNear } from "./figure-role-guard";
 
 const IR_VALUE_TYPES: readonly IRValueType[] = ["MONEY", "NUMBER", "PERCENT", "RATIO", "BOOLEAN", "DATE", "DURATION", "PERIOD", "ENTITY_SET", "CAPACITY"];
 const SUFFICIENCY_VALUES: readonly RepresentationSufficiency[] = ["COMPLETE", "PARTIAL", "AMBIGUOUS", "UNSUPPORTED", "MISSING_CONTEXT", "CONFLICTED"];
@@ -981,8 +981,13 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     // Exception: a PROHIBITION / QUANTITATIVE_RESTRICTION ("shall not … in excess of
     // $X") uses that figure as the permitted ceiling — stripping it would erase the
     // quantitative bound of the prohibition (pkg-G duplicate 7.01 "$35,000,000").
+    // The exception is keyed on the SOURCE clause's own prohibition frame as
+    // well as the claimed posture: "shall not incur … in excess of $X" makes
+    // $X the permitted ceiling however the submission labels its rule, and a
+    // claimed PROHIBITION cannot launder a floor figure ("shall not permit …
+    // less than $X") through the posture label alone.
     const cap = guarded.capacityExpression;
-    const prohibitionCeiling = guarded.posture === "PROHIBITION";
+    const prohibitionCeiling = guarded.posture === "PROHIBITION" || (cap && cap.kind === "MONEY" && typeof (cap as { amount?: unknown }).amount === "number" && figureGovernedByProhibitionCeiling(String((cap as { amount: number }).amount), input.operativeSourceText));
     if (cap && cap.kind === "MONEY" && typeof (cap as { amount?: unknown }).amount === "number" && !prohibitionCeiling) {
       const amount = (cap as { amount: number; excerpt?: string | null }).amount;
       const excerpt = (cap as { excerpt?: string | null }).excerpt ?? String(amount);

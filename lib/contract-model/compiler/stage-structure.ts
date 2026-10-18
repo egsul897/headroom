@@ -1288,7 +1288,15 @@ function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleM
   // both paths converge, never a special case bolted onto signal (C).
   const isPlausible = (m: RegExpExecArray) => {
     const matchEnd = m.index + m[0].length;
-    if (!titleStartsLikeHeading(m[0], m[1] ?? "")) return false;
+    if (!titleStartsLikeHeading(m[0], m[1] ?? "")) {
+      // Same Part 4 demotion as the triage path: a lowercase title
+      // start is one signal, not a veto - a genuine paragraph break
+      // (signal A) is sufficient positional evidence on its own,
+      // independent of the casing of what follows on the line
+      // (lowercase-styled agreements write real headings this way).
+      const beforeRaw = doc.text.slice(Math.max(0, m.index - 200), m.index);
+      if (!precededByParagraphBreak(stripTrailingTypographicNoise(beforeRaw))) return false;
+    }
     if (!titleBodySeparationHolds(doc.text, m.index, matchEnd)) return false;
     if (isContentsListingMatch(doc.text, m)) return false; // IPV-11: TOC rows are never headings
     return isPlausibleByPositionalSignals(doc.text, m.index, matchEnd) || isImmediatelyAfterPlausibleArticle(doc.text, m.index, plausibleArticleEnds);
@@ -1536,7 +1544,20 @@ function buildStructuralNodesFromAcceptedMatches(
       const candEnd = charEndByIndex.get(j) ?? doc.text.length;
       if (cand.charStart > childStart || candEnd < childEnd) continue;
       if (cand.charStart === childStart && candEnd === childEnd) continue; // identical span: not a parent
-      if (isRefDescendant(cand.sectionRef, cand.nodeType, r.sectionRef) !== true) continue;
+      const refVerdict = isRefDescendant(cand.sectionRef, cand.nodeType, r.sectionRef);
+      if (refVerdict !== true) {
+        // The one null-verdict shape decidable by containment alone:
+        // a bare-integer SECTION ("Section 1") inside an ARTICLE.
+        // Its ref encodes no article major (restarted numbering is
+        // article-relative - see isRefDescendant), so strict span
+        // containment, already established by this scan, is the only
+        // evidence available; the deepest containing article is the
+        // parent. Dotted refs keep the hard ref-consistency gate:
+        // a bled span still cannot mis-parent a "7.01".
+        const bareIntegerSectionInArticle =
+          refVerdict === null && cand.nodeType === "ARTICLE" && r.nodeType === "SECTION" && /^\d+$/.test(r.sectionRef.trim());
+        if (!bareIntegerSectionInArticle) continue;
+      }
       parentIdx = j;
       break; // backward scan: first containing + ref-consistent node is the deepest
     }
@@ -1986,7 +2007,17 @@ function evaluateStructuralCandidateTriage(text: string, matchIndex: number, mat
     continuationShape: classifyContinuationShapeForTriage(text, seam.continuationOffset),
   };
 
-  if (!titleStartsLikeHeading(matchText, candidateNumber)) {
+  // The lowercase/punctuation title-start check is ONE signal, not a
+  // universal veto (the Part 4 demotion): a document styled in
+  // lowercase ("article ix miscellaneous", "section 9.01
+  // counterparts.") writes genuine headings with lowercase titles,
+  // and strong positional isolation - document start, an immediately
+  // preceding confident ARTICLE, or a genuine paragraph break -
+  // outweighs the casing signal. Without any strong isolation the
+  // veto stands exactly as before.
+  const hasStrongIsolation = signals.isDocumentOrRegionStart || signals.isImmediatelyAfterConfidentArticle || signals.hasParagraphBreak;
+  const casingDemoted = !titleStartsLikeHeading(matchText, candidateNumber);
+  if (casingDemoted && !hasStrongIsolation) {
     return { decision: "CONFIDENT_PROSE_REFERENCE", reason: "the candidate's own title portion starts with punctuation or a lowercase word — sentence continuation, not a heading title.", signals };
   }
   if (signals.seamValidation !== "VALIDATED_TERMINATED") {
@@ -2004,17 +2035,34 @@ function evaluateStructuralCandidateTriage(text: string, matchIndex: number, mat
         : "the candidate's own matched text never reaches its own terminal punctuation at all - typography cannot confirm whether this is a legitimately wrapped title or a fragment that already bled into ordinary prose.";
     return { decision: "AMBIGUOUS", reason, signals };
   }
-  if (signals.continuationShape === "LOWERCASE_ORDINARY") {
+  // The lowercase-continuation veto yields ONLY inside a consistently
+  // lowercase-styled document - where the candidate's own title start
+  // is itself prose-shaped (casingDemoted: "article ix miscellaneous",
+  // "section 9.01 counterparts. this agreement..."). There, strong
+  // positional isolation CAPS the outcome at AMBIGUOUS: the candidate
+  // survives flagged, never confident. In a normally-cased document a
+  // capitalized title followed by an ordinary lowercase run-on ("...
+  // Section 7.09 Limitation on Investments in Unrestricted
+  // Subsidiaries. is only an illustrative cross-reference...") is the
+  // classic in-prose citation: the veto stands at full strength,
+  // ahead of every isolation branch.
+  if (signals.continuationShape === "LOWERCASE_ORDINARY" && !casingDemoted) {
     return { decision: "CONFIDENT_PROSE_REFERENCE", reason: "an ordinary lowercase word immediately continues past the candidate's own validated title-ending seam - the sentence it sits inside of never really ended here.", signals };
   }
   if (signals.isDocumentOrRegionStart) {
+    if (casingDemoted) return { decision: "AMBIGUOUS", reason: "candidate sits at the true start of the document/region, but its own title start is prose-shaped (lowercase-styled drafting) - strong isolation keeps it a genuine candidate, unresolved, never confident on casing alone.", signals };
     return { decision: "CONFIDENT_HEADING", reason: "candidate sits at the true start of the document/region - nothing precedes it for it to be the citation object of.", signals };
   }
   if (signals.isImmediatelyAfterConfidentArticle) {
+    if (casingDemoted) return { decision: "AMBIGUOUS", reason: "candidate immediately follows an already-confident ARTICLE heading, but its own title start is prose-shaped (lowercase-styled drafting) - unresolved.", signals };
     return { decision: "CONFIDENT_HEADING", reason: "candidate immediately follows (whitespace only) an already-confident ARTICLE heading.", signals };
   }
   if (signals.hasParagraphBreak) {
+    if (casingDemoted) return { decision: "AMBIGUOUS", reason: "a genuine paragraph break isolates the candidate, but its own title start is prose-shaped (lowercase-styled drafting) - the break and the casing point opposite ways, so typography alone cannot resolve it.", signals };
     return { decision: "CONFIDENT_HEADING", reason: "a genuine paragraph break isolates the candidate - real, strong visual/structural separation on the preceding side, corroborated by a validated, non-lowercase-continuing seam.", signals };
+  }
+  if (signals.continuationShape === "LOWERCASE_ORDINARY") {
+    return { decision: "CONFIDENT_PROSE_REFERENCE", reason: "an ordinary lowercase word immediately continues past the candidate's own validated title-ending seam - the sentence it sits inside of never really ended here.", signals };
   }
   if (signals.continuationShape === "IMMEDIATE_KEYWORD") {
     return { decision: "CONFIDENT_HEADING", reason: "candidate is immediately (whitespace only, no intervening prose) followed by another recognized structural heading keyword.", signals };

@@ -220,7 +220,7 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     if (!withinBudget(state, targetText.length)) return;
 
     const itemType = classifyReferencedProvision(targetText);
-    const targetEvidenceState = resolveSectionEvidenceState(state, targetNode.documentId, { nodeId: targetNode.nodeId, sectionRef: targetNode.sectionRef });
+    const targetEvidenceState = resolveSectionEvidenceState(state, index, targetNode.documentId, { nodeId: targetNode.nodeId, sectionRef: targetNode.sectionRef });
     const item = addItem(state, makeItemInput(itemType, documentId, targetNode.nodeKey, targetNodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Explicitly cross-referenced by "${ref.referenceText}".${expansion.includedNodeIds.length > 0 ? ` Expanded to include ${expansion.includedNodeIds.length} descendant clause(s) whose own text carried real operative content.` : ""}`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1, targetEvidenceState));
     addEdge(state, parentItemId, item.itemId, "REFERENCES", `"${ref.referenceText}"`);
 
@@ -376,7 +376,7 @@ export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState,
     if (targetText.trim().length === 0) continue;
     if (!withinBudget(state, targetText.length)) return;
     const itemType = classifyReferencedProvision(targetText);
-    const targetEvidenceState = resolveSectionEvidenceState(state, targetNode.documentId, { nodeId: targetNode.nodeId, sectionRef: targetNode.sectionRef });
+    const targetEvidenceState = resolveSectionEvidenceState(state, index, targetNode.documentId, { nodeId: targetNode.nodeId, sectionRef: targetNode.sectionRef });
     const item = addItem(state, makeItemInput(itemType, documentId, targetNode.nodeKey, targetNode.nodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Referenced within a definition's own text ("${mention.referenceText}").`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1, targetEvidenceState));
     addEdge(state, parentItemId, item.itemId, "REFERENCES", `"${mention.referenceText}" inside a definition.`);
     if (packageGraph) {
@@ -424,7 +424,7 @@ export function retrieveInboundOverrideReferences(
       if (!withinBudget(state, text.length)) return;
 
       seenSourceSections.add(sourceSection.nodeId);
-      const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: sourceSection.nodeId, sectionRef: sourceSection.sectionRef });
+      const evidenceState = resolveSectionEvidenceState(state, index, documentId, { nodeId: sourceSection.nodeId, sectionRef: sourceSection.sectionRef });
       const item = addItem(
         state,
         makeItemInput(

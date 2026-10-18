@@ -279,9 +279,17 @@ export async function compileBoundedComposition(callerInput: SemanticCompilerInp
     // REVIEW_REQUIRED regardless of the model's own self-reported
     // sufficiency, exactly mirroring the pre-existing toolCallLog-derived
     // check this is threaded alongside (never instead of).
+    // The stale-definition re-check also covers definitions the model
+    // submitted that normalization QUARANTINED as context-only emissions:
+    // the attempt still tried to rest on that term, and quarantining the
+    // unit must not launder the signal away - otherwise a submission whose
+    // only definition is a foreign-owned one over a CONFLICTED term reports
+    // a bare PARTIAL_COMPILATION with no trace of the operative-state
+    // problem that actually makes it untrustworthy.
+    const quarantinedDefinitions = (normalized.contextOnlyEmissions ?? []).filter((e) => e.kind === "DEFINITION").map((e) => e.unit as IRDefinition);
     if (
       !failureReasons.includes("OPERATIVE_STATE_UNRESOLVED") &&
-      (callResult.toolCallLog.some((entry) => entry.evidenceUnresolved) || evidenceFlags.inputHasUnresolvedOperativeEvidence || hasStaleReferencedDefinition(input, normalized.definitions))
+      (callResult.toolCallLog.some((entry) => entry.evidenceUnresolved) || evidenceFlags.inputHasUnresolvedOperativeEvidence || hasStaleReferencedDefinition(input, [...normalized.definitions, ...quarantinedDefinitions]))
     )
       failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
 

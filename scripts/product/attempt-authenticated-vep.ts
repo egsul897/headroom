@@ -5,6 +5,10 @@
  * Uses certifiedMapToVerifiedExecutionPackage. Never calls paid providers.
  * Never invents FIXTURE_IR. Never treats PINNED_OFFLINE, REVIEW_REQUIRED,
  * population verified-units, or product-acceptance mocked CERTIFIED as credit.
+ * A stored CERTIFIED label is credit only when the packet's own record does
+ * not contradict it (see certificationContradictions): a label stamped over a
+ * session record that discloses an unresolved operative state is disclosed
+ * uncertainty wearing a CERTIFIED stamp, and is counted REVIEW_REQUIRED.
  *
  * When DERIVED: also enumerates Phase 4E paths and invokes evaluateVerifiedCapacity
  * (REQUIRE) over an empty 4B snapshot set — no invented APPROVED financials.
@@ -34,7 +38,13 @@ export const AUTHENTICATED_VEP_SCAN_SCHEMA = "authenticated-vep-offline-scan.v1"
 export interface ScannedCertificationRecord {
   path: string;
   candidateRef: string | null;
+  /** The status the packet can honestly claim after the authenticity check below - never an upgrade of the stored label, only a downgrade when the packet's own record contradicts it. */
   status: string | null;
+  /** The status exactly as stored in 10-certification.json, preserved for audit. */
+  claimedStatus: string | null;
+  /** UNCONTRADICTED: nothing in the packet disputes its stored label. CONTRADICTED_BY_OWN_RECORD: the packet's own session record discloses a state certifyCandidate could never have certified over. */
+  authenticity: "UNCONTRADICTED" | "CONTRADICTED_BY_OWN_RECORD";
+  authenticityReasons: string[];
   blockerCodes: string[];
   hasSiblingVerifiedUnits: boolean;
   siblingVerifiedUnitsPath: string | null;
@@ -74,6 +84,51 @@ function asCertification(raw: unknown): CandidateCertification | null {
   return inner as unknown as CandidateCertification;
 }
 
+const OK_VERIFICATION_STATUSES = new Set(["VERIFIED_NO_MATERIAL_GAP_FOUND", "VERIFIED_WITH_NON_MATERIAL_FINDINGS"]);
+
+/**
+ * Authenticity of a stored CERTIFIED label, judged ONLY from the packet's own record - never
+ * from an outside opinion of the session, and never by rewriting the stored files.
+ *
+ * A certification record is the output of certifyCandidate, whose decision is a pure function
+ * of disclosed state: it can return CERTIFIED only when every unit is COMPLETE, identities are
+ * STRONG, compilation COMPLETED, verification clean and - decisively - the operative state is
+ * RESOLVED (an unresolved operative state is the OPERATIVE_STATE_UNACCEPTABLE blocker). A
+ * packet whose own files disclose a state on the wrong side of any of those lines while
+ * claiming CERTIFIED is internally contradictory: the label was stamped by something other
+ * than the certification decision (e.g. an offline recompute script), and treating it as
+ * execution authority would convert disclosed uncertainty into certified authority. Such a
+ * packet's honest effective status is REVIEW_REQUIRED - the status its own disclosed state
+ * supports. Non-CERTIFIED labels are never upgraded by this check.
+ */
+function certificationContradictions(cert: CandidateCertification, sessionMeta: Record<string, unknown> | null): string[] {
+  if (cert.status !== "CERTIFIED") return [];
+  const reasons: string[] = [];
+  if (cert.blockers.length > 0) reasons.push(`the certification record itself carries ${cert.blockers.length} blocker(s) (${cert.blockers.map((b) => b.code).sort().join(", ")}); certifyCandidate returns CERTIFIED only with zero blockers`);
+  if (cert.sourceIdentityStrength !== "STRONG" || cert.semanticSourceIdentityStrength !== "STRONG") reasons.push(`the certification record's identity strengths are ${cert.sourceIdentityStrength}/${cert.semanticSourceIdentityStrength}; a WEAK identity is a BLOCKING blocker, never CERTIFIED`);
+  if (cert.unitIds.length === 0) reasons.push("the certification record names no certified units; there is nothing the CERTIFIED label could attach to");
+  if (sessionMeta) {
+    const operativeStateStatus = sessionMeta.operativeStateStatus;
+    if (typeof operativeStateStatus === "string" && operativeStateStatus !== "OPERATIVE_STATE_RESOLVED") reasons.push(`the packet's own session record (00-meta.json) discloses operativeStateStatus ${operativeStateStatus}; certifyCandidate blocks any non-RESOLVED operative state as OPERATIVE_STATE_UNACCEPTABLE`);
+    const compilationStatus = sessionMeta.compilationStatus;
+    if (typeof compilationStatus === "string" && compilationStatus !== "COMPLETED") reasons.push(`the packet's own session record (00-meta.json) discloses compilationStatus ${compilationStatus}; certifyCandidate blocks a non-COMPLETED compilation`);
+    const verificationStatus = sessionMeta.verificationStatus;
+    if (typeof verificationStatus === "string" && !OK_VERIFICATION_STATUSES.has(verificationStatus)) reasons.push(`the packet's own session record (00-meta.json) discloses verificationStatus ${verificationStatus}; certifyCandidate blocks a verification that is not clean`);
+  }
+  return reasons;
+}
+
+function readSessionMeta(dir: string): Record<string, unknown> | null {
+  const metaPath = path.join(dir, "00-meta.json");
+  if (!fs.existsSync(metaPath)) return null;
+  try {
+    const parsed: unknown = JSON.parse(fs.readFileSync(metaPath, "utf8"));
+    return parsed && typeof parsed === "object" ? (parsed as Record<string, unknown>) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function scanAuthenticCandidateCertifications(repoRoot = process.cwd()): ScannedCertificationRecord[] {
   const files: string[] = [];
   for (const root of AUTHENTIC_EVIDENCE_ROOTS) walkJsonFiles(path.join(repoRoot, root), files);
@@ -90,10 +145,15 @@ export function scanAuthenticCandidateCertifications(repoRoot = process.cwd()): 
     const dir = path.dirname(file);
     const sibling = path.join(dir, "09-verified-units.json");
     const hasSibling = fs.existsSync(sibling);
+    const claimedStatus = cert?.status ?? null;
+    const contradictions = cert ? certificationContradictions(cert, readSessionMeta(dir)) : [];
     records.push({
       path: path.relative(repoRoot, file),
       candidateRef: cert?.candidateRef ?? null,
-      status: cert?.status ?? null,
+      status: contradictions.length > 0 ? "REVIEW_REQUIRED" : claimedStatus,
+      claimedStatus,
+      authenticity: contradictions.length > 0 ? "CONTRADICTED_BY_OWN_RECORD" : "UNCONTRADICTED",
+      authenticityReasons: contradictions,
       blockerCodes: (cert?.blockers ?? []).map((b) => b.code).sort(),
       hasSiblingVerifiedUnits: hasSibling,
       siblingVerifiedUnitsPath: hasSibling ? path.relative(repoRoot, sibling) : null,

@@ -23,7 +23,7 @@ import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
 import { createRetrievalState, operativeDefinitionText, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
 import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext, retrieveArticleOverrideLeads } from "./structural-context";
-import { isAdministrativeTerm, phraseMatchesDeclaredTerm, retrieveDirectDefinitions } from "./definition-graph";
+import { isAdministrativeTerm, phraseMatchesDeclaredTerm, retrieveDirectDefinitions, termSurfaceForms } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText, retrieveInboundOverrideReferences } from "./reference-context";
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
 import { addEdge, addItem, makeItemInput, withinBudget } from "./state";
@@ -50,9 +50,12 @@ const HEADING_NOISE = /^(?:SECTION|ARTICLE|SCHEDULE|EXHIBIT)\b|\b(?:SECTION|ARTI
 
 /**
  * High-confidence financial / covenant defined-term morphology (IPV-10).
- * Nested undefined phrases matching this shape degrade sufficiency to REVIEW_REQUIRED;
- * weaker Title-Case noise is disclosed at LOW so certified golden paths are not
- * refused for ordinary document names ("Security Documents") or heading fragments.
+ * Undefined phrases matching this shape degrade sufficiency to REVIEW_REQUIRED,
+ * whether they surface inside a retrieved definition (NESTED) or in the
+ * covenant's own operative text (OPERATIVE) - an undefined governing term is
+ * material in both places. Weaker Title-Case noise is disclosed at LOW so
+ * certified golden paths are not refused for ordinary document names
+ * ("Security Documents") or heading fragments.
  */
 const HIGH_CONFIDENCE_UNDEFINED_TERM =
   /^(?:Consolidated|Fixed|Total|Available|Adjusted|Excess|Interest|Net|Senior|Junior|Permitted|Restricted|Unrestricted|Pro Forma|Closing|Incremental|Equivalent)\b/i;
@@ -97,7 +100,7 @@ function extractCandidatePhrases(text: string): string[] {
   return [...out];
 }
 
-function unresolvedSeverityForNestedPhrase(phrase: string): "LOW" | "MEDIUM" {
+function unresolvedSeverityForPhrase(phrase: string): "LOW" | "MEDIUM" {
   return HIGH_CONFIDENCE_UNDEFINED_TERM.test(phrase) ? "MEDIUM" : "LOW";
 }
 
@@ -211,9 +214,31 @@ function retrieveCrossDocumentDefinitionFallback(
         const own = access.index.getNodeText(n.nodeId, "OWN");
         const headingLine = (own.split(/\n/)[0] ?? own).trim();
         const caption = headingLine.replace(/^(?:SECTION|ARTICLE)\s+\S+\s+/i, "").split(".")[0] ?? "";
-        return new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(caption);
+        // Inflection-symmetric (IPV-09's own convention): the caption
+        // names the category in whatever number the heading uses
+        // ("Restricted Payments") while operative text uses the other
+        // ("any Restricted Payment") - a raw \b regex on one surface
+        // form missed the demotion for the singular form entirely, so
+        // the category phrase was escalated as an undefined governing
+        // term and refused a faithful submission (xref §7.05).
+        const forms = new Set<string>(termSurfaceForms(phrase));
+        if (/ies$/i.test(phrase)) forms.add(phrase.replace(/ies$/i, "y"));
+        else if (/s$/i.test(phrase)) forms.add(phrase.replace(/s$/i, ""));
+        return [...forms].some((form) => new RegExp(`\\b${form.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(caption));
       });
-      let unresolvedSeverity: "LOW" | "MEDIUM" = scanMode === "NESTED" ? unresolvedSeverityForNestedPhrase(phrase) : "LOW";
+      // The morphology classification applies to OPERATIVE text exactly as
+      // it does to NESTED (definition-body) text: an undeclared phrase with
+      // high-confidence defined-term morphology in the covenant's OWN
+      // operative text ("Permitted Refinancing Indebtedness" governing a
+      // refinancing permission) is the rule's governing term, not prose
+      // noise - at LOW it was invisible to every downstream gate (bundle
+      // sufficiency stayed SUFFICIENT, certifyCandidate only blocks HIGH),
+      // so a submission could claim that permission COMPLETE with
+      // UNLIMITED_CAPACITY and certify (product-acceptance G-P4). Weaker
+      // Title-Case phrases (party names, document names like "Security
+      // Documents") stay LOW, and the administrative/section-caption
+      // demotions immediately below are unchanged.
+      let unresolvedSeverity: "LOW" | "MEDIUM" = unresolvedSeverityForPhrase(phrase);
       if (isAdministrativeTerm(normalized) || sectionCaption) unresolvedSeverity = "LOW";
       state.unresolved.push({
         originatingNodeKey: null,
@@ -222,7 +247,9 @@ function retrieveCrossDocumentDefinitionFallback(
         attemptedResolution: "Checked documents amending/supplementing this one, the same instrument, and explicitly cross-referenced documents.",
         reason:
           unresolvedSeverity === "MEDIUM"
-            ? "Nested high-confidence defined-term morphology inside a retrieved definition is not declared in this document or any related package document (IPV-10) — bundle cannot claim SUFFICIENT."
+            ? scanMode === "NESTED"
+              ? "Nested high-confidence defined-term morphology inside a retrieved definition is not declared in this document or any related package document (IPV-10) — bundle cannot claim SUFFICIENT."
+              : "High-confidence defined-term morphology in the operative text is not declared in this document or any related package document — the covenant's governing term is undefined, so the bundle cannot claim SUFFICIENT."
             : isAdministrativeTerm(normalized)
               ? "Administrative/boilerplate Title-Case phrase is not declared; disclosed at LOW severity (does not materially affect covenant analysis)."
             : scanMode === "NESTED"

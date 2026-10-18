@@ -214,7 +214,7 @@ function resolveProvisionRequest(req: RetrievalRequest, index: StructuralIndex, 
   if (hits.length === 0) return { ok: false, documentId: null, reason: `section "${req.requestKey}" did not resolve to any section within this instrument's documents` };
   if (hits.length > 1) return { ok: false, documentId: null, reason: `section "${req.requestKey}" resolves in ${hits.length} documents of this instrument (${hits.map((h) => h.documentId).join(", ")}) - not uniquely resolvable` };
   const { documentId, node } = hits[0]!;
-  const res = resolveOperativeSectionEvidence({ operativeState: toolAccess.operativeState, documentId, node, supersessionIndex });
+  const res = resolveOperativeSectionEvidence({ operativeState: toolAccess.operativeState, documentId, node, supersessionIndex, index });
   if (res.outcome !== "FOUND") return { ok: false, documentId, reason: res.reason };
   if (res.source === "amended") {
     if (res.text === null) return { ok: false, documentId, reason: `section "${req.requestKey}" has recorded amendment activity but no confirmable current text (status ${res.status})` };

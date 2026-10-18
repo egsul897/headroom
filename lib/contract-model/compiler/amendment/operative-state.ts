@@ -280,6 +280,9 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
 
 const DELETE_OPERATIONS = new Set(["DELETE_TEXT", "DELETE_DEFINITION", "REMOVE_COVENANT", "REMOVE_EXCEPTION"]);
 
+/** Operations that purport to CHANGE the provision's existing text/terms (as opposed to adding alongside it, reaffirming it, or attaching an unclassified override): when one applies but its resulting text could not be captured, the prior text is displaced-but-unknown, never still-governing. */
+const TEXT_DISPLACING_OPERATIONS = new Set(["REPLACE_TEXT", "REPLACE_DEFINITION", "MODIFY_THRESHOLD", "MODIFY_DEFINITION", "MODIFY_ENTITY_SCOPE", "MODIFY_PROVISION", "MODIFY_SCHEDULE", "RESTATE_AGREEMENT"]);
+
 function isUnclassifiedOverride(effect: AmendmentEffectCandidate): boolean {
   return (effect.unresolvedReason ?? "").startsWith("UNCLASSIFIED_OVERRIDE:");
 }
@@ -344,6 +347,19 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
       // not be reported RESOLVED, but the last authoritative text (base or prior
       // amendment) stays visible for review — never wiped to null merely because
       // the override's own wording was not extractable as newText.
+      //
+      // That visibility rule holds only when the effect does not purport to
+      // REPLACE the existing text. A text-displacing operation (REPLACE_TEXT
+      // and kin) that applies with no capturable resulting text has displaced
+      // the prior text by an unknown successor: keeping the superseded text
+      // in currentText would serve it as the text of record (the open2
+      // direct-patch matrix's REVIEW_REQUIRED + null case — a bare threshold
+      // reference with no quoted replacement). There the honest value is
+      // null, exactly as for a RESOLVED effect in the same shape below.
+      if (TEXT_DISPLACING_OPERATIONS.has(effect.operation)) {
+        currentText = null;
+        attemptedText = null;
+      }
       lastAppliedWasCleanDeletion = false;
     } else {
       // Effect genuinely applies (real evidence, resolved target, real effective date) but did not supply capturable resulting text (e.g. a threshold change or a bare "is hereby amended" with no quoted replacement) - the FACT that this effect governs is known; the resulting TEXT is honestly not safely renderable, never fabricated.
@@ -532,6 +548,29 @@ function sectionViewsAfterDefinitionReplacements(provisions: OperativeProvisionV
     const sourceView = involved[0];
     if (!sourceView) continue;
     if (failures.length > 0) {
+      // When NOTHING was actually applied (no resolved replacement to
+      // reconstruct from), every involved definition view is itself
+      // unresolved, AND each amendment's TARGET is uniquely resolved -
+      // the definition views already carry the full state: the dispute
+      // is entirely inside the definition (conflicting effects, an
+      // effect with no capturable text), and minting a synthetic
+      // SECTION record for it double-counts the provision (one real
+      // DEFINITION record plus a fabricated SECTION record for the
+      // same amendment activity). Section-level resolution stays
+      // fail-closed without it: resolveOperativeSectionEvidence
+      // independently taints a section whose housed definitions carry
+      // unresolved amendment state.
+      //
+      // The derived view is still minted whenever the section's TEXT
+      // itself is what cannot be settled: a resolved replacement
+      // exists but its span could not be placed, or an involved
+      // amendment's target resolution is not UNIQUE (the definition
+      // occurs more than once in the base document, so which
+      // occurrence the amendment governs is unknown and the base
+      // section - still carrying the pre-amendment text - must be
+      // withheld as a whole; resolveOperativeSource keys exactly on
+      // this record for that case).
+      if (replacements.length === 0 && involved.every((v) => v.status !== "OPERATIVE_STATE_RESOLVED" && v.targetResolutionStatus === "UNIQUE")) continue;
       derived.push(derivedSectionView(sourceView, section, baseDocumentId, null, involved, "OPERATIVE_STATE_REVIEW_REQUIRED", failures));
       continue;
     }
@@ -1172,6 +1211,19 @@ export interface ResolveOperativeSectionEvidenceInput {
   node: { nodeId: string; sectionRef: string };
   /** Optional - when supplied, a section with no recorded amendment activity of its own whose physical occurrence this index independently knows to be superseded (e.g. its enclosing section was independently replaced) is labeled KNOWN_SUPERSEDED rather than CURRENT. Omitting this (or passing EMPTY_SUPERSESSION_INDEX) degrades to the pre-existing "never amended, never checked against wider supersession evidence" default of CURRENT. */
   supersessionIndex?: NodeSupersessionIndex;
+  /** Optional - when supplied, a section whose HOUSED definitions carry unresolved amendment state (a CONFLICTED/PARTIAL/review-required DEFINITION provision whose defining node sits inside this section's subtree) is tainted OPERATIVE_STATE_UNRESOLVED even when the section has no amendment of its own: the section's base text embeds the definition's unsettled text, so it cannot be served as settled current truth. This replaces the synthetic derived SECTION provision computeOperativeContractState used to mint for exactly this case. Omitting it degrades to the pre-existing behavior. */
+  index?: StructuralIndex | null;
+}
+
+/** DEFINITION provisions with unresolved amendment state whose defining node is housed inside the given section node's subtree. */
+function housedDefinitionTaint(operativeState: OperativeContractState | null | undefined, index: StructuralIndex | null | undefined, documentId: string, sectionNodeId: string): OperativeProvisionView[] {
+  if (!operativeState || !index) return [];
+  return operativeState.provisions.filter((p) => {
+    if (p.kind !== "DEFINITION" || p.status === "OPERATIVE_STATE_RESOLVED" || !p.definedTermRef) return false;
+    const def = index.getDefinition(p.definedTermRef, documentId);
+    if (!def?.sourceNodeId) return false;
+    return def.sourceNodeId === sectionNodeId || index.getAncestors(def.sourceNodeId).some((a) => a.nodeId === sectionNodeId);
+  });
 }
 
 /**
@@ -1227,6 +1279,10 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
       if (nested.length > 0) {
         return { outcome: "FOUND", status: "OPERATIVE_STATE_UNRESOLVED", text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: nested.flatMap((p) => p.unresolvedIssues), legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED" };
       }
+      const tainted = housedDefinitionTaint(operativeState, input.index, documentId, node.nodeId);
+      if (tainted.length > 0) {
+        return { outcome: "FOUND", status: "OPERATIVE_STATE_UNRESOLVED", text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: tainted.flatMap((p) => p.unresolvedIssues), legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED" };
+      }
     }
     return { outcome: "FOUND", status, text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: status === "CURRENT", unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
   }
@@ -1245,6 +1301,24 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
       source: "amended",
       isCurrentTruth: false,
       unresolvedIssues: nestedUnresolved.flatMap((p) => p.unresolvedIssues),
+      legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED",
+    };
+  }
+
+  // Same discipline for a definition HOUSED in this section: its amendment
+  // state may be CONFLICTED/PARTIAL while the section itself was never
+  // amended. The section's base text embeds the definition's unsettled
+  // text, so the section cannot be reported CURRENT either.
+  const taintedNoView = housedDefinitionTaint(operativeState, input.index, documentId, node.nodeId);
+  if (taintedNoView.length > 0) {
+    return {
+      outcome: "FOUND",
+      status: "OPERATIVE_STATE_UNRESOLVED",
+      text: null,
+      documentId,
+      source: "amended",
+      isCurrentTruth: false,
+      unresolvedIssues: taintedNoView.flatMap((p) => p.unresolvedIssues),
       legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED",
     };
   }

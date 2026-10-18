@@ -57,7 +57,8 @@ export interface StructuralViolation {
   /** Affected node, or null for a document-level violation (e.g. SORTED). */
   nodeId: string | null;
   invariant: StructuralInvariantCode;
-  severity: "ERROR";
+  /** ERROR = the occurrence's own geometry/provenance is untrustworthy. WARNING = disclosed structural unresolvedness that does not corrupt the node's own span or text (currently only clause-class ROOT_VALIDITY). */
+  severity: "ERROR" | "WARNING";
   /** Human-readable diagnostic with provenance (refs + offsets). */
   diagnostic: string;
 }
@@ -113,6 +114,16 @@ export function isRefDescendant(
     // An article never parents another article.
     const parentNum = /^\d+$/.test(p) ? Number(p) : romanToArabic(p);
     if (parentNum === null) return null;
+    // A BARE integer child ref ("Section 1", "Section 12") encodes
+    // no article major at all: in restarted-numbering drafting the
+    // ordinal is article-relative, so "1" under ARTICLE II is as
+    // legitimate as "1" under ARTICLE I. Consistency is undecidable
+    // from the refs alone (null) - the parent-assignment pass may
+    // then rely on strict span containment, the only signal the
+    // document actually offers for this shape. (Returning false
+    // here made every restarted "Section 1" after the first article
+    // permanently parentless even when perfectly contained.)
+    if (!c.includes(".")) return null;
     const childMajor = /^(\d+)\b/.exec(c)?.[1];
     if (!childMajor) return null;
     return Number(childMajor) === parentNum;
@@ -224,7 +235,18 @@ export function validateStructuralIntegrity(
         violations.push({
           nodeId: n.nodeId,
           invariant: "ROOT_VALIDITY",
-          severity: "ERROR",
+          // WARNING, not ERROR: an unparented clause-class node's HIERARCHY
+          // is unresolved (disclosed here, never repaired to a guessed
+          // parent), but its own span and text are not thereby corrupted -
+          // unlike the SECTION case below, where a missing article heading
+          // mis-attributes the section's governing article. Treating bare
+          // orphanhood as occurrence corruption (ERROR) made every
+          // definition whose declaring clause the parser honestly left
+          // unparented permanently untrustworthy at the operative-state
+          // health gate even with a perfectly valid span (section9
+          // negative control: a healthy lone definition clause could never
+          // reach STRUCTURAL_HEALTH_SUFFICIENT).
+          severity: "WARNING",
           diagnostic: `Node ${n.nodeType} ${n.sectionRef} has no parent but is not a top-level node; a clause without a parent section is structurally unresolved.`,
         });
       } else if (n.nodeType === "SECTION" && hasArticle) {
@@ -257,5 +279,5 @@ export function validateStructuralIntegrity(
     }
   }
 
-  return { violations, valid: violations.length === 0 };
+  return { violations, valid: violations.every((v) => v.severity !== "ERROR") };
 }
