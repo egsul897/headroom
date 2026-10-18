@@ -2035,27 +2035,30 @@ function evaluateStructuralCandidateTriage(text: string, matchIndex: number, mat
         : "the candidate's own matched text never reaches its own terminal punctuation at all - typography cannot confirm whether this is a legitimately wrapped title or a fragment that already bled into ordinary prose.";
     return { decision: "AMBIGUOUS", reason, signals };
   }
-  // The demoted lowercase signals (prose-shaped title start, or an
-  // ordinary lowercase continuation past the seam) CAP strong-isolation
-  // branches at AMBIGUOUS instead of vetoing them outright: in
-  // lowercase-styled drafting ("article ix miscellaneous", "section
-  // 9.01 counterparts. this agreement...") a genuine heading carries
-  // exactly these casing shapes, so the candidate survives - flagged,
-  // never confident - while a merely artifact-isolated citation with
-  // a lowercase run-on ("...described here\n47\nSection 6.09 ... is
-  // only an illustrative cross-reference") is likewise never laundered
-  // into CONFIDENT_HEADING by the break alone.
-  const lowercaseCapped = casingDemoted || signals.continuationShape === "LOWERCASE_ORDINARY";
+  // The lowercase-continuation veto yields ONLY inside a consistently
+  // lowercase-styled document - where the candidate's own title start
+  // is itself prose-shaped (casingDemoted: "article ix miscellaneous",
+  // "section 9.01 counterparts. this agreement..."). There, strong
+  // positional isolation CAPS the outcome at AMBIGUOUS: the candidate
+  // survives flagged, never confident. In a normally-cased document a
+  // capitalized title followed by an ordinary lowercase run-on ("...
+  // Section 7.09 Limitation on Investments in Unrestricted
+  // Subsidiaries. is only an illustrative cross-reference...") is the
+  // classic in-prose citation: the veto stands at full strength,
+  // ahead of every isolation branch.
+  if (signals.continuationShape === "LOWERCASE_ORDINARY" && !casingDemoted) {
+    return { decision: "CONFIDENT_PROSE_REFERENCE", reason: "an ordinary lowercase word immediately continues past the candidate's own validated title-ending seam - the sentence it sits inside of never really ended here.", signals };
+  }
   if (signals.isDocumentOrRegionStart) {
-    if (lowercaseCapped) return { decision: "AMBIGUOUS", reason: "candidate sits at the true start of the document/region, but a demoted lowercase signal (prose-shaped title start or lowercase continuation) contradicts confident acceptance - strong isolation keeps it a genuine candidate, unresolved.", signals };
+    if (casingDemoted) return { decision: "AMBIGUOUS", reason: "candidate sits at the true start of the document/region, but its own title start is prose-shaped (lowercase-styled drafting) - strong isolation keeps it a genuine candidate, unresolved, never confident on casing alone.", signals };
     return { decision: "CONFIDENT_HEADING", reason: "candidate sits at the true start of the document/region - nothing precedes it for it to be the citation object of.", signals };
   }
   if (signals.isImmediatelyAfterConfidentArticle) {
-    if (lowercaseCapped) return { decision: "AMBIGUOUS", reason: "candidate immediately follows an already-confident ARTICLE heading, but a demoted lowercase signal contradicts confident acceptance - unresolved.", signals };
+    if (casingDemoted) return { decision: "AMBIGUOUS", reason: "candidate immediately follows an already-confident ARTICLE heading, but its own title start is prose-shaped (lowercase-styled drafting) - unresolved.", signals };
     return { decision: "CONFIDENT_HEADING", reason: "candidate immediately follows (whitespace only) an already-confident ARTICLE heading.", signals };
   }
   if (signals.hasParagraphBreak) {
-    if (lowercaseCapped) return { decision: "AMBIGUOUS", reason: "a genuine paragraph break isolates the candidate, but a demoted lowercase signal (prose-shaped title start or an ordinary lowercase continuation past the seam) contradicts confident acceptance - the break and the casing point opposite ways, so typography alone cannot resolve it.", signals };
+    if (casingDemoted) return { decision: "AMBIGUOUS", reason: "a genuine paragraph break isolates the candidate, but its own title start is prose-shaped (lowercase-styled drafting) - the break and the casing point opposite ways, so typography alone cannot resolve it.", signals };
     return { decision: "CONFIDENT_HEADING", reason: "a genuine paragraph break isolates the candidate - real, strong visual/structural separation on the preceding side, corroborated by a validated, non-lowercase-continuing seam.", signals };
   }
   if (signals.continuationShape === "LOWERCASE_ORDINARY") {
