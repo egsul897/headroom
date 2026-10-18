@@ -280,6 +280,9 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
 
 const DELETE_OPERATIONS = new Set(["DELETE_TEXT", "DELETE_DEFINITION", "REMOVE_COVENANT", "REMOVE_EXCEPTION"]);
 
+/** Operations that purport to CHANGE the provision's existing text/terms (as opposed to adding alongside it, reaffirming it, or attaching an unclassified override): when one applies but its resulting text could not be captured, the prior text is displaced-but-unknown, never still-governing. */
+const TEXT_DISPLACING_OPERATIONS = new Set(["REPLACE_TEXT", "REPLACE_DEFINITION", "MODIFY_THRESHOLD", "MODIFY_DEFINITION", "MODIFY_ENTITY_SCOPE", "MODIFY_PROVISION", "MODIFY_SCHEDULE", "RESTATE_AGREEMENT"]);
+
 function isUnclassifiedOverride(effect: AmendmentEffectCandidate): boolean {
   return (effect.unresolvedReason ?? "").startsWith("UNCLASSIFIED_OVERRIDE:");
 }
@@ -344,6 +347,19 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
       // not be reported RESOLVED, but the last authoritative text (base or prior
       // amendment) stays visible for review — never wiped to null merely because
       // the override's own wording was not extractable as newText.
+      //
+      // That visibility rule holds only when the effect does not purport to
+      // REPLACE the existing text. A text-displacing operation (REPLACE_TEXT
+      // and kin) that applies with no capturable resulting text has displaced
+      // the prior text by an unknown successor: keeping the superseded text
+      // in currentText would serve it as the text of record (the open2
+      // direct-patch matrix's REVIEW_REQUIRED + null case — a bare threshold
+      // reference with no quoted replacement). There the honest value is
+      // null, exactly as for a RESOLVED effect in the same shape below.
+      if (TEXT_DISPLACING_OPERATIONS.has(effect.operation)) {
+        currentText = null;
+        attemptedText = null;
+      }
       lastAppliedWasCleanDeletion = false;
     } else {
       // Effect genuinely applies (real evidence, resolved target, real effective date) but did not supply capturable resulting text (e.g. a threshold change or a bare "is hereby amended" with no quoted replacement) - the FACT that this effect governs is known; the resulting TEXT is honestly not safely renderable, never fabricated.
