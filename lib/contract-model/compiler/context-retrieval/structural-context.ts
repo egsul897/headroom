@@ -164,7 +164,7 @@ export function retrieveArticleOverrideLeads(state: RetrievalState, index: Struc
     const text = index.getNodeText(n.nodeId, "DESCENDANTS");
     if (!overrideRe.test(text)) continue;
     if (!withinBudget(state, text.length)) return;
-    const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: n.nodeId, sectionRef: n.sectionRef });
+    const evidenceState = resolveSectionEvidenceState(state, index, documentId, { nodeId: n.nodeId, sectionRef: n.sectionRef });
     const item = addItem(
       state,
       makeItemInput(
@@ -211,7 +211,7 @@ function operativeExcerpt(state: RetrievalState, index: StructuralIndex, documen
       },
     };
   }
-  let evidenceState = resolveSectionEvidenceState(state, documentId, node);
+  let evidenceState = resolveSectionEvidenceState(state, index, documentId, node);
   // IPV-16: a parent section whose descendant clause carries an unresolved
   // side-letter / override must not present the whole DESCENDANTS span as
   // confirmed-current truth (the overridden clause's dollars would otherwise
@@ -266,7 +266,7 @@ export function retrieveLinkedStructuralContext(state: RetrievalState, index: St
   const node = index.getNodeById(nodeId);
   if (!node) return null;
   const text = index.getNodeText(nodeId, "DESCENDANTS");
-  const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId, sectionRef: node.sectionRef });
+  const evidenceState = resolveSectionEvidenceState(state, index, documentId, { nodeId, sectionRef: node.sectionRef });
   const type = isAncestor ? "PARENT_SCOPE" : "SIBLING_CONTEXT";
   const reason = isAncestor
     ? `Enclosing scope for Section ${node.sectionRef}, linked to this candidate by neighborhood expansion - it governs how the candidate's own clause is read, but its text is NOT this candidate's operative source.`
@@ -283,7 +283,7 @@ export function retrieveParentScope(state: RetrievalState, index: StructuralInde
     const text = index.getNodeText(ancestor.nodeId, "OWN");
     if (text.trim().length === 0) continue;
     if (!withinBudget(state, text.length)) return;
-    const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: ancestor.nodeId, sectionRef: ancestor.sectionRef });
+    const evidenceState = resolveSectionEvidenceState(state, index, documentId, { nodeId: ancestor.nodeId, sectionRef: ancestor.sectionRef });
     const item = addItem(state, makeItemInput("PARENT_SCOPE", documentId, ancestor.nodeKey, ancestor.nodeId, ancestor.sectionRef, `Section ${ancestor.sectionRef}`, text, `Enclosing scope for Section ${ancestor.sectionRef} - the operative prohibition/permission language a nested exception or basket depends on.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
     addEdge(state, item.itemId, operativeItemId, "PARENT_OF", "Encloses the operative provision.");
   }
@@ -362,7 +362,7 @@ export function retrieveSiblingContext(state: RetrievalState, index: StructuralI
     // from elsewhere.
     const siblingEvidenceText = index.getNodeText(sibling.nodeId, "DESCENDANTS");
     const assessment = assessSiblingRelevance(candidateText, candidateSectionRef, siblingEvidenceText);
-    const siblingEvidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: sibling.nodeId, sectionRef: sibling.sectionRef });
+    const siblingEvidenceState = resolveSectionEvidenceState(state, index, documentId, { nodeId: sibling.nodeId, sectionRef: sibling.sectionRef });
     const sharedByCorrespondence = !classification && aggregateDisclosure && assessment.relevant;
     const typed = classification && assessment.relevant ? classification : sharedByCorrespondence ? { type: "SHARED_CAP" as const, signal: "aggregate ceiling tied to another permission" } : null;
     if (typed) {

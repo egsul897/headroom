@@ -532,6 +532,20 @@ function sectionViewsAfterDefinitionReplacements(provisions: OperativeProvisionV
     const sourceView = involved[0];
     if (!sourceView) continue;
     if (failures.length > 0) {
+      // When NOTHING was actually applied (no resolved replacement to
+      // reconstruct from) and every involved definition view is itself
+      // unresolved, the definition views already carry the full state -
+      // minting a synthetic SECTION record for a provision nobody amended
+      // double-counts the provision (one real DEFINITION record plus a
+      // fabricated SECTION record for the same amendment activity).
+      // Section-level resolution stays fail-closed without it:
+      // resolveOperativeSectionEvidence independently taints a section
+      // whose housed definitions carry unresolved amendment state. A
+      // derived view is still minted whenever a reconstruction was
+      // genuinely attempted - a resolved replacement exists, or a
+      // resolved definition's own span could not be placed - because
+      // then the section's text itself is what cannot be settled.
+      if (replacements.length === 0 && involved.every((v) => v.status !== "OPERATIVE_STATE_RESOLVED")) continue;
       derived.push(derivedSectionView(sourceView, section, baseDocumentId, null, involved, "OPERATIVE_STATE_REVIEW_REQUIRED", failures));
       continue;
     }
@@ -1172,6 +1186,19 @@ export interface ResolveOperativeSectionEvidenceInput {
   node: { nodeId: string; sectionRef: string };
   /** Optional - when supplied, a section with no recorded amendment activity of its own whose physical occurrence this index independently knows to be superseded (e.g. its enclosing section was independently replaced) is labeled KNOWN_SUPERSEDED rather than CURRENT. Omitting this (or passing EMPTY_SUPERSESSION_INDEX) degrades to the pre-existing "never amended, never checked against wider supersession evidence" default of CURRENT. */
   supersessionIndex?: NodeSupersessionIndex;
+  /** Optional - when supplied, a section whose HOUSED definitions carry unresolved amendment state (a CONFLICTED/PARTIAL/review-required DEFINITION provision whose defining node sits inside this section's subtree) is tainted OPERATIVE_STATE_UNRESOLVED even when the section has no amendment of its own: the section's base text embeds the definition's unsettled text, so it cannot be served as settled current truth. This replaces the synthetic derived SECTION provision computeOperativeContractState used to mint for exactly this case. Omitting it degrades to the pre-existing behavior. */
+  index?: StructuralIndex | null;
+}
+
+/** DEFINITION provisions with unresolved amendment state whose defining node is housed inside the given section node's subtree. */
+function housedDefinitionTaint(operativeState: OperativeContractState | null | undefined, index: StructuralIndex | null | undefined, documentId: string, sectionNodeId: string): OperativeProvisionView[] {
+  if (!operativeState || !index) return [];
+  return operativeState.provisions.filter((p) => {
+    if (p.kind !== "DEFINITION" || p.status === "OPERATIVE_STATE_RESOLVED" || !p.definedTermRef) return false;
+    const def = index.getDefinition(p.definedTermRef, documentId);
+    if (!def?.sourceNodeId) return false;
+    return def.sourceNodeId === sectionNodeId || index.getAncestors(def.sourceNodeId).some((a) => a.nodeId === sectionNodeId);
+  });
 }
 
 /**
@@ -1227,6 +1254,10 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
       if (nested.length > 0) {
         return { outcome: "FOUND", status: "OPERATIVE_STATE_UNRESOLVED", text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: nested.flatMap((p) => p.unresolvedIssues), legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED" };
       }
+      const tainted = housedDefinitionTaint(operativeState, input.index, documentId, node.nodeId);
+      if (tainted.length > 0) {
+        return { outcome: "FOUND", status: "OPERATIVE_STATE_UNRESOLVED", text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: tainted.flatMap((p) => p.unresolvedIssues), legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED" };
+      }
     }
     return { outcome: "FOUND", status, text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: status === "CURRENT", unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
   }
@@ -1245,6 +1276,24 @@ export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEv
       source: "amended",
       isCurrentTruth: false,
       unresolvedIssues: nestedUnresolved.flatMap((p) => p.unresolvedIssues),
+      legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED",
+    };
+  }
+
+  // Same discipline for a definition HOUSED in this section: its amendment
+  // state may be CONFLICTED/PARTIAL while the section itself was never
+  // amended. The section's base text embeds the definition's unsettled
+  // text, so the section cannot be reported CURRENT either.
+  const taintedNoView = housedDefinitionTaint(operativeState, input.index, documentId, node.nodeId);
+  if (taintedNoView.length > 0) {
+    return {
+      outcome: "FOUND",
+      status: "OPERATIVE_STATE_UNRESOLVED",
+      text: null,
+      documentId,
+      source: "amended",
+      isCurrentTruth: false,
+      unresolvedIssues: taintedNoView.flatMap((p) => p.unresolvedIssues),
       legacyStatus: "OPERATIVE_STATE_REVIEW_REQUIRED",
     };
   }

@@ -89,8 +89,8 @@ function evidenceStateFromResolution(resolution: DefinitionEvidenceResolution): 
  * retrieval pass in this module already holds (never re-resolved from a bare
  * ref string - see resolveOperativeSectionEvidence's own header comment).
  */
-export function resolveSectionEvidenceState(state: RetrievalState, documentId: string, node: { nodeId: string; sectionRef: string }): ContextItemEvidenceState {
-  return evidenceStateFromResolution(resolveOperativeSectionEvidence({ operativeState: state.operativeState, documentId, node, supersessionIndex: state.supersessionIndex }));
+export function resolveSectionEvidenceState(state: RetrievalState, index: StructuralIndex, documentId: string, node: { nodeId: string; sectionRef: string }): ContextItemEvidenceState {
+  return evidenceStateFromResolution(resolveOperativeSectionEvidence({ operativeState: state.operativeState, documentId, node, supersessionIndex: state.supersessionIndex, index }));
 }
 
 /** Phase 3F.1 FIX-2 - resolves a DEFINITION-kind context item's own operative trust state via amendment/operative-state.ts's own canonical resolveOperativeDefinitionEvidence (the SAME primitive semantic/tools.ts's getDefinition already relies on) - never a second, parallel definition-access discipline. */
