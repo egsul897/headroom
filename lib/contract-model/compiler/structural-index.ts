@@ -148,7 +148,7 @@ export type StructuralHealthFindingCode =
  */
 export interface StructuralHealthFinding {
   code: StructuralHealthFindingCode;
-  severity: "INFO" | "ERROR";
+  severity: "INFO" | "WARNING" | "ERROR";
   documentId: string;
   nodeId?: string;
   message: string;
@@ -311,9 +311,17 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
     // index still builds (fail-closed downstream, not a crash).
     const integrity = validateStructuralIntegrity(nodes, text.length);
     for (const v of integrity.violations) {
+      // OFFSETS_VALID is the same predicate this index checks itself a few
+      // lines below (0 <= charStart < charEnd, charEnd <= text length) and
+      // reports there with the specific INVALID_SOURCE_SPAN code. Mapping
+      // it here too would report one span defect twice, with the generic
+      // STRUCTURAL_INTEGRITY code shadowing the specific one in every
+      // first-match consumer. One defect, one (specific) code; the
+      // validator's own standalone result still carries OFFSETS_VALID.
+      if (v.invariant === "OFFSETS_VALID") continue;
       health.push({
         code: "STRUCTURAL_INTEGRITY",
-        severity: "ERROR",
+        severity: v.severity,
         documentId,
         nodeId: v.nodeId ?? undefined,
         message: `[${v.invariant}] ${v.diagnostic}`,
