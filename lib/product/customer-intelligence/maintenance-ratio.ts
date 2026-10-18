@@ -27,7 +27,7 @@ import {
   parseCovenantLevel,
   type CovenantLevelMetric,
 } from "../../contract-model/covenant-computation/covenant-levels";
-import { rationalFromString, toCanonicalString } from "../../contract-model/runtime/decimal";
+import { rationalFromString, toCanonicalString } from "../../contract-model/north-star-bridge";
 
 export interface MaintenanceRatio {
   formulaType: "LEVERAGE_RATIO_ROOM" | "COVERAGE_RATIO_ROOM";
