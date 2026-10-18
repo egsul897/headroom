@@ -549,19 +549,28 @@ function sectionViewsAfterDefinitionReplacements(provisions: OperativeProvisionV
     if (!sourceView) continue;
     if (failures.length > 0) {
       // When NOTHING was actually applied (no resolved replacement to
-      // reconstruct from) and every involved definition view is itself
-      // unresolved, the definition views already carry the full state -
-      // minting a synthetic SECTION record for a provision nobody amended
-      // double-counts the provision (one real DEFINITION record plus a
-      // fabricated SECTION record for the same amendment activity).
-      // Section-level resolution stays fail-closed without it:
-      // resolveOperativeSectionEvidence independently taints a section
-      // whose housed definitions carry unresolved amendment state. A
-      // derived view is still minted whenever a reconstruction was
-      // genuinely attempted - a resolved replacement exists, or a
-      // resolved definition's own span could not be placed - because
-      // then the section's text itself is what cannot be settled.
-      if (replacements.length === 0 && involved.every((v) => v.status !== "OPERATIVE_STATE_RESOLVED")) continue;
+      // reconstruct from), every involved definition view is itself
+      // unresolved, AND each amendment's TARGET is uniquely resolved -
+      // the definition views already carry the full state: the dispute
+      // is entirely inside the definition (conflicting effects, an
+      // effect with no capturable text), and minting a synthetic
+      // SECTION record for it double-counts the provision (one real
+      // DEFINITION record plus a fabricated SECTION record for the
+      // same amendment activity). Section-level resolution stays
+      // fail-closed without it: resolveOperativeSectionEvidence
+      // independently taints a section whose housed definitions carry
+      // unresolved amendment state.
+      //
+      // The derived view is still minted whenever the section's TEXT
+      // itself is what cannot be settled: a resolved replacement
+      // exists but its span could not be placed, or an involved
+      // amendment's target resolution is not UNIQUE (the definition
+      // occurs more than once in the base document, so which
+      // occurrence the amendment governs is unknown and the base
+      // section - still carrying the pre-amendment text - must be
+      // withheld as a whole; resolveOperativeSource keys exactly on
+      // this record for that case).
+      if (replacements.length === 0 && involved.every((v) => v.status !== "OPERATIVE_STATE_RESOLVED" && v.targetResolutionStatus === "UNIQUE")) continue;
       derived.push(derivedSectionView(sourceView, section, baseDocumentId, null, involved, "OPERATIVE_STATE_REVIEW_REQUIRED", failures));
       continue;
     }

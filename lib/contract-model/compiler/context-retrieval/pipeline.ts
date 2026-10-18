@@ -23,7 +23,7 @@ import type { PackageGraphResult } from "../package-graph/types";
 import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
 import { createRetrievalState, operativeDefinitionText, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
 import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext, retrieveLinkedStructuralContext, retrieveArticleOverrideLeads } from "./structural-context";
-import { isAdministrativeTerm, phraseMatchesDeclaredTerm, retrieveDirectDefinitions } from "./definition-graph";
+import { isAdministrativeTerm, phraseMatchesDeclaredTerm, retrieveDirectDefinitions, termSurfaceForms } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText, retrieveInboundOverrideReferences } from "./reference-context";
 import { retrieveAmendmentLeadsForSection, retrieveAmendmentLeadsForDefinition, retrieveCrossDocumentReferenceLeads, resolveCrossDocumentDefinition, type PackageDocumentAccess } from "./cross-document-context";
 import { addEdge, addItem, makeItemInput, withinBudget } from "./state";
@@ -214,7 +214,17 @@ function retrieveCrossDocumentDefinitionFallback(
         const own = access.index.getNodeText(n.nodeId, "OWN");
         const headingLine = (own.split(/\n/)[0] ?? own).trim();
         const caption = headingLine.replace(/^(?:SECTION|ARTICLE)\s+\S+\s+/i, "").split(".")[0] ?? "";
-        return new RegExp(`\\b${phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(caption);
+        // Inflection-symmetric (IPV-09's own convention): the caption
+        // names the category in whatever number the heading uses
+        // ("Restricted Payments") while operative text uses the other
+        // ("any Restricted Payment") - a raw \b regex on one surface
+        // form missed the demotion for the singular form entirely, so
+        // the category phrase was escalated as an undefined governing
+        // term and refused a faithful submission (xref §7.05).
+        const forms = new Set<string>(termSurfaceForms(phrase));
+        if (/ies$/i.test(phrase)) forms.add(phrase.replace(/ies$/i, "y"));
+        else if (/s$/i.test(phrase)) forms.add(phrase.replace(/s$/i, ""));
+        return [...forms].some((form) => new RegExp(`\\b${form.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(caption));
       });
       // The morphology classification applies to OPERATIVE text exactly as
       // it does to NESTED (definition-body) text: an undeclared phrase with
