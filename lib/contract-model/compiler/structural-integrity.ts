@@ -114,6 +114,16 @@ export function isRefDescendant(
     // An article never parents another article.
     const parentNum = /^\d+$/.test(p) ? Number(p) : romanToArabic(p);
     if (parentNum === null) return null;
+    // A BARE integer child ref ("Section 1", "Section 12") encodes
+    // no article major at all: in restarted-numbering drafting the
+    // ordinal is article-relative, so "1" under ARTICLE II is as
+    // legitimate as "1" under ARTICLE I. Consistency is undecidable
+    // from the refs alone (null) - the parent-assignment pass may
+    // then rely on strict span containment, the only signal the
+    // document actually offers for this shape. (Returning false
+    // here made every restarted "Section 1" after the first article
+    // permanently parentless even when perfectly contained.)
+    if (!c.includes(".")) return null;
     const childMajor = /^(\d+)\b/.exec(c)?.[1];
     if (!childMajor) return null;
     return Number(childMajor) === parentNum;
