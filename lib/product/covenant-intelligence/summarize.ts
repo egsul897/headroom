@@ -10,8 +10,10 @@ import type {
   RedlineAmbiguityRecord,
   StructuralNodeRecord,
 } from "../../knowledge-factory/types";
+import { recoverSectionTitle } from "../../knowledge-factory/taxonomy/families";
 import {
   analyzeProvision,
+  FAMILY_TO_CATEGORY,
   type CrossReferenceResolution,
   type ProvisionAnalysis,
   type ProvisionPosture,
@@ -23,6 +25,7 @@ export type CovenantCategoryKey =
   | "RESTRICTED_PAYMENTS_INVESTMENTS"
   | "ASSET_SALES"
   | "AFFILIATE_TRANSACTIONS"
+  | "RESTRICTIVE_AGREEMENTS"
   | "GUARANTEES"
   | "MERGERS_FUNDAMENTAL_CHANGES"
   | "FINANCIAL_MAINTENANCE"
@@ -75,6 +78,7 @@ export const COVENANT_CATEGORY_LABELS: Record<CovenantCategoryKey, string> = {
   RESTRICTED_PAYMENTS_INVESTMENTS: "Restricted payments and investments",
   ASSET_SALES: "Asset sales",
   AFFILIATE_TRANSACTIONS: "Affiliate transactions",
+  RESTRICTIVE_AGREEMENTS: "Restrictive agreements",
   GUARANTEES: "Guarantees",
   MERGERS_FUNDAMENTAL_CHANGES: "Mergers and fundamental changes",
   FINANCIAL_MAINTENANCE: "Financial maintenance covenants",
@@ -516,8 +520,89 @@ export function buildDocumentCovenantSummary(params: {
     if (!parentExcerpt) return undefined;
     return (parentExcerpt.split(/\n\s*\([a-z0-9]{1,3}\)\s/)[0] ?? parentExcerpt).slice(0, 1500);
   };
-  for (const c of ranked) {
-    const analysis = analyzeProvision({
+  // Section context (classification census step 4): for each
+  // SECTION node, its covenant subject and recovered title.
+  // The subject comes from the section stem candidate's own
+  // families (heading families lead its list) or, when the stem
+  // carries no mappable family, from the family category
+  // carried by a strict majority of the section's clause
+  // candidates — the agreement's own organization, measured
+  // from the section's population rather than guessed from a
+  // garbled heading. The title is recovered from the stem
+  // excerpt when the node heading is a truncated fragment.
+  const sectionContext = new Map<
+    string,
+    { subjectCategory?: CovenantCategoryKey; title?: string }
+  >();
+  {
+    const sectionOf = (nodeId: string | undefined): StructuralNodeRecord | undefined => {
+      let node = nodeId ? nodeById.get(nodeId) : undefined;
+      const seen = new Set<string>();
+      while (node && !seen.has(node.nodeId)) {
+        seen.add(node.nodeId);
+        if (node.nodeType === "SECTION") return node;
+        node = node.parentNodeId ? nodeById.get(node.parentNodeId) : undefined;
+      }
+      return undefined;
+    };
+    const stemBySection = new Map<string, (typeof params.candidates)[number]>();
+    const clauseStats = new Map<string, { total: number; byCat: Map<string, number> }>();
+    for (const c of params.candidates) {
+      const sec = sectionOf(c.nodeId);
+      if (!sec) continue;
+      if (c.nodeId === sec.nodeId) {
+        stemBySection.set(sec.nodeId, c);
+        continue;
+      }
+      const st = clauseStats.get(sec.nodeId) ?? { total: 0, byCat: new Map<string, number>() };
+      st.total += 1;
+      const cats = new Set<string>();
+      for (const f of c.families) {
+        const cat = FAMILY_TO_CATEGORY[f];
+        if (cat && cat !== "OTHER" && cat !== "BASKETS_EXCEPTIONS_CONDITIONS") cats.add(cat);
+      }
+      for (const cat of cats) st.byCat.set(cat, (st.byCat.get(cat) ?? 0) + 1);
+      clauseStats.set(sec.nodeId, st);
+    }
+    const sectionIds = new Set([...stemBySection.keys(), ...clauseStats.keys()]);
+    for (const sectionId of sectionIds) {
+      const secNode = nodeById.get(sectionId);
+      const stem = stemBySection.get(sectionId);
+      const title =
+        stem && secNode
+          ? recoverSectionTitle(stem.excerpt ?? "", secNode.heading ?? "")
+          : undefined;
+      let subject: CovenantCategoryKey | undefined;
+      if (stem) {
+        const cat = FAMILY_TO_CATEGORY[stem.families[0] ?? ""];
+        if (cat && cat !== "OTHER" && cat !== "BASKETS_EXCEPTIONS_CONDITIONS") subject = cat;
+      }
+      if (!subject && !title) {
+        // Population subject — last resort, and held to a high
+        // bar: the section's own title (when recoverable) and
+        // its stem's families outrank the population, and the
+        // population must be near-unanimous (a strict two-thirds
+        // of at least three clause candidates). Exception lists
+        // of a bespoke covenant (restrictive agreements) name a
+        // different object per prong — a bare majority there
+        // manufactures a subject the section does not have; a
+        // true single-covenant section (an Investments section's
+        // prongs) is homogeneous by construction.
+        const st = clauseStats.get(sectionId);
+        if (st && st.total >= 3) {
+          let best: [string, number] | null = null;
+          for (const [cat, n] of st.byCat) if (!best || n > best[1]) best = [cat, n];
+          if (best && best[1] * 3 > st.total * 2) subject = best[0] as CovenantCategoryKey;
+        }
+      }
+      if (subject || title) sectionContext.set(sectionId, { subjectCategory: subject, title });
+    }
+  }
+  const runAnalysis = (
+    c: (typeof params.candidates)[number],
+    rollup?: { category: CovenantCategoryKey; nonCovenantSubtype?: NonCovenantSubtype },
+  ) =>
+    analyzeProvision({
       sourceId: params.sourceId,
       documentTitle: params.documentTitle,
       candidate: c,
@@ -525,8 +610,94 @@ export function buildDocumentCovenantSummary(params: {
       structuralNodes: params.structuralNodes,
       crossReferences: params.crossReferences,
       parentChapeau: parentChapeauOf(c),
+      sectionContext,
+      rollup,
+      documentClass: params.documentClass,
     });
-    countsByCategory[analysis.category] = (countsByCategory[analysis.category] ?? 0) + 1;
+  const pass1 = ranked.map((c) => runAnalysis(c));
+  // Step 7: stem rollup. A SECTION or ARTICLE stem whose own
+  // text is only a title / chapeau (its operative content lives
+  // in separately-classified descendants) takes a determinate
+  // category from exactly two sources: (A) for an ARTICLE item,
+  // the article's own title identity (a definitions article IS
+  // definitions; an events-of-default article IS events of
+  // default — the title is the determination, its descendants
+  // are triggers, grace periods, and remedies by design); or
+  // (B) UNANIMOUS determinate descendants — every classified
+  // descendant item agrees on one category. A mixed descendant
+  // population (a negative-covenants article chapeau above
+  // debt, liens, RP, and merger sections) determines nothing
+  // and the stem stays OTHER.
+  const rollupByNodeId = new Map<
+    string,
+    { category: CovenantCategoryKey; nonCovenantSubtype?: NonCovenantSubtype }
+  >();
+  {
+    const catByNodeId = new Map(ranked.map((c, i) => [c.nodeId ?? "", pass1[i]?.category ?? "OTHER"]));
+    const isDescendantOf = (nodeId: string, ancestorId: string): boolean => {
+      let node = nodeById.get(nodeId);
+      const seen = new Set<string>();
+      while (node?.parentNodeId && !seen.has(node.nodeId)) {
+        seen.add(node.nodeId);
+        if (node.parentNodeId === ancestorId) return true;
+        node = nodeById.get(node.parentNodeId);
+      }
+      return false;
+    };
+    ranked.forEach((c, i) => {
+      if (pass1[i]?.category !== "OTHER" || !c.nodeId) return;
+      const node = nodeById.get(c.nodeId);
+      if (!node || (node.nodeType !== "SECTION" && node.nodeType !== "ARTICLE")) return;
+      if (node.nodeType === "ARTICLE") {
+        const title =
+          recoverSectionTitle(c.excerpt ?? "", node.heading ?? "") ?? node.heading ?? "";
+        const despaced = `${title} ${(c.excerpt ?? "").slice(0, 160)}`
+          .replace(/\s+/g, "")
+          .toUpperCase();
+        if (despaced.includes("EVENTSOFDEFAULT")) {
+          rollupByNodeId.set(c.nodeId, { category: "EVENTS_OF_DEFAULT" });
+          return;
+        }
+        if (despaced.includes("DEFINITIONS")) {
+          rollupByNodeId.set(c.nodeId, {
+            category: "NON_COVENANT",
+            nonCovenantSubtype: "DEFINITION",
+          });
+          return;
+        }
+        if (despaced.includes("REPRESENTATIONS")) {
+          rollupByNodeId.set(c.nodeId, {
+            category: "NON_COVENANT",
+            nonCovenantSubtype: "REPRESENTATION",
+          });
+          return;
+        }
+        if (despaced.includes("AFFIRMATIVECOVENANTS")) {
+          rollupByNodeId.set(c.nodeId, { category: "AFFIRMATIVE" });
+          return;
+        }
+      }
+      const descCats = new Set<CovenantCategoryKey>();
+      let determinate = 0;
+      for (const o of ranked) {
+        if (!o.nodeId || o.nodeId === c.nodeId) continue;
+        if (!isDescendantOf(o.nodeId, c.nodeId)) continue;
+        const cat = catByNodeId.get(o.nodeId);
+        if (cat && cat !== "OTHER") {
+          descCats.add(cat);
+          determinate += 1;
+        }
+      }
+      const minimum = node.nodeType === "ARTICLE" ? 3 : 1;
+      const onlyCat = [...descCats][0];
+      if (determinate >= minimum && descCats.size === 1 && onlyCat) {
+        rollupByNodeId.set(c.nodeId, { category: onlyCat });
+      }
+    });
+  }
+  ranked.forEach((c, i) => {
+    const rollup = c.nodeId ? rollupByNodeId.get(c.nodeId) : undefined;
+    const analysis = rollup ? runAnalysis(c, rollup) : pass1[i]!;
     const itemNode = c.nodeId ? nodeById.get(c.nodeId) : undefined;
     items.push(
       itemFromAnalysis(
@@ -539,7 +710,8 @@ export function buildDocumentCovenantSummary(params: {
           : undefined,
       ),
     );
-  }
+  });
+  for (const it of items) countsByCategory[it.category] = (countsByCategory[it.category] ?? 0) + 1;
 
   const preferredOrder = Object.keys(COVENANT_CATEGORY_LABELS) as CovenantCategoryKey[];
   // Rule 68 (second half): the cap must apply in RANKED order

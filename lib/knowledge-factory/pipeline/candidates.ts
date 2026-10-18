@@ -3,7 +3,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { classifyFamiliesFromText, isAdministrativeProvision, stripCatchAllFallback } from "../taxonomy/families";
+import { classifyFamiliesFromText, isAdministrativeProvision, recoverSectionTitle, stripCatchAllFallback } from "../taxonomy/families";
 import { scoreDiscoveryPotential } from "../rank/discovery-score";
 import { detectPatternsInText } from "../patterns/library";
 import type { CovenantCandidateRecord, KnowledgeTaxonomyFamily, StructuralNodeRecord } from "../types";
@@ -374,7 +374,15 @@ export function discoverCovenantCandidates(
     // even though their headings name covenant families.
     if (isTableOfContentsSpan(node, excerpt, text)) continue;
     if (isAdministrativeProvision(node.heading, excerpt)) continue;
-    let families = classifyFamiliesFromText(excerpt, node.heading);
+    // Census step 5: classify against the section's RECOVERED
+    // title when the node heading is a truncated fragment of
+    // it ("Transactions" for "Transactions with Affiliates",
+    // "Sale" for "Sale and Leaseback Transactions"). The
+    // recovery is prefix-verified against the excerpt lead and
+    // advisory only — the stored heading is never rewritten.
+    const effectiveHeading =
+      recoverSectionTitle(excerpt, node.heading ?? "") ?? node.heading;
+    let families = classifyFamiliesFromText(excerpt, effectiveHeading);
     // Rule 193: a node whose own text classifies UNKNOWN
     // inherits its parent section's families — the node is part
     // of that section's covenant, and its bare marker heading

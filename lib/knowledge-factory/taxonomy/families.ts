@@ -74,7 +74,18 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     label: "Restricted payments",
     aliases: ["dividends", "rp"],
     headingPatterns: [/\bRestricted\s+Payments?\b/i],
-    bodyPatterns: [/\bdeclare\s+or\s+pay.{0,40}dividend\b/i],
+    bodyPatterns: [
+      /\bdeclare\s+or\s+pay.{0,40}dividend\b/i,
+      // Tax distributions: pass-through borrowers distribute
+      // cash for members'/partners' tax on the borrower's
+      // taxable income — an RP species with no other RP word
+      // in the clause (census step 5). (A bare "pay dividends"
+      // pattern is NOT used: restrictive-agreement chapeaus
+      // enumerate dividend-paying as the restricted act, and
+      // the pattern minted RP for that whole population.)
+      /\bdistributions?\b[^.;]{0,80}\btaxable income\b/i,
+      /\btax distributions?\b/i,
+    ],
   },
   {
     family: "INVESTMENTS",
@@ -87,29 +98,101 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     family: "ASSET_SALES",
     label: "Asset sales",
     aliases: ["dispositions"],
-    headingPatterns: [/\bAsset\s+Sales?\b/i, /\bDispositions?\b/i],
-    bodyPatterns: [/\breinvestment\b/i],
+    headingPatterns: [/\bAsset\s+Sales?\b/i, /\bDispositions?\b/i, /\bSale\s+and\s+Leaseback\b/i, /\bSale-Leaseback\b/i],
+    bodyPatterns: [
+      /\breinvestment\b/i,
+      /\bsale\s+and\s+leaseback\b/i,
+      /\bsale-leaseback\b/i,
+      // The canonical operative disposition frame — a prong
+      // permitting disposition of all or substantially all
+      // assets is an asset-sale permission even when a later
+      // limb of the same prong also permits a merger.
+      /\bdispose\s+of\s+all\s+or\s+substantially\s+all\b/i,
+    ],
   },
   {
     family: "AFFILIATE_TRANSACTIONS",
     label: "Affiliate transactions",
     aliases: [],
-    headingPatterns: [/\bAffiliate\s+Transactions?\b/i],
-    bodyPatterns: [/\barm'?s[-\s]?length\b/i],
+    // Sections are titled both ways ("Affiliate Transactions"
+    // and "Transactions with Affiliates" / "Limitation on
+    // Transactions with Affiliates") — the census's K4h items
+    // carried the second form verbatim and matched nothing.
+    headingPatterns: [/\bAffiliate\s+Transactions?\b/i, /\bTransactions?\s+with\s+Affiliates?\b/i],
+    // Operative shapes only (census step 5): a transaction
+    // WITH an Affiliate. The old bare arm's-length pattern
+    // minted this family as PRIMARY for any clause reciting
+    // the standard (an employee-loans prong of an Investments
+    // section was the corpus's only AFFILIATE primary) — the
+    // arm's-length recital is the covenant's CONDITION, not
+    // its detection signal.
+    bodyPatterns: [
+      /\btransactions?\b[^.;]{0,60}\bwith\s+(?:any\s+)?Affiliates?\b/i,
+      /\bAffiliate\s+Transactions?\b/i,
+    ],
+  },
+  {
+    // Census step 6: the restrictive-agreements covenant (the
+    // "burdensome agreements" / subsidiary-distributions
+    // covenant) had NO family: its stem and its exception
+    // clauses carried only mention families, so the whole
+    // covenant population sat in OTHER across agreements.
+    // Titles as drafted: "Restrictive Agreements",
+    // "Burdensome Agreements", and the functional title
+    // "Subsidiary Distributions" (the covenant restricts
+    // agreements that block subsidiaries' distributions,
+    // loans, and transfers to the borrower).
+    family: "RESTRICTIVE_AGREEMENTS",
+    label: "Restrictive agreements",
+    aliases: ["burdensome agreements", "subsidiary distributions"],
+    headingPatterns: [
+      /\bRestrictive\s+Agreements?\b/i,
+      /\bBurdensome\s+Agreements?\b/i,
+      /\bSubsidiary\s+Distributions?\b/i,
+    ],
+    bodyPatterns: [
+      // The chapeau shape: entering into any agreement that
+      // prohibits or limits a subsidiary's ability to pay
+      // dividends / make distributions / transfer assets.
+      /\benter into\b[^.;]{0,90}\b(?:prohibits?|limits?|restricts?)\b[^.;]{0,50}\bability\b/i,
+      /\bprohibits?\s+or\s+limits?\b[^.;]{0,60}\bability\b/i,
+    ],
   },
   {
     family: "FUNDAMENTAL_CHANGES",
     label: "Fundamental changes",
     aliases: ["mergers", "consolidations"],
     headingPatterns: [/\bFundamental\s+Changes?\b/i, /\bMergers?\b/i],
-    bodyPatterns: [/\bmerge\s+or\s+consolidate\b/i],
+    bodyPatterns: [
+      /\bmerge\s+or\s+consolidate\b/i,
+      // Verb chains as actually drafted (census step 5):
+      // "merge, amalgamate or consolidate", "merge into or
+      // consolidate with", "merge with or consolidate into".
+      // Every chain requires a consolidation word — a bare
+      // "consolidated" (Consolidated EBITDA / Total Assets)
+      // never matches.
+      /\bmerge,?\s+amalgamate\s+or\s+consolidate\b/i,
+      /\bmerge\s+into\s+or\s+consolidate\s+with\b/i,
+      // Post-2017 LSTA fundamental-changes drafting includes
+      // consummating a Division (the J.Crew-era defined term).
+      /\bconsummate\s+a\s+Division\b/i,
+    ],
   },
   {
     family: "JUNIOR_DEBT_PREPAYMENTS",
     label: "Junior-debt prepayments",
     aliases: ["restricted debt payments", "subordinated prepayments"],
-    headingPatterns: [/\b(?:Junior|Subordinated|Restricted\s+Debt)\b/i],
-    bodyPatterns: [/\bprepay.{0,40}(?:Junior|Subordinated)\b/i],
+    headingPatterns: [
+      /\b(?:Junior|Subordinated|Restricted\s+Debt)\b/i,
+      // The same covenant species titled by its function:
+      // "Payments of Certain Indebtedness" (the restricted
+      // debt payments section where the title names no junior
+      // class).
+      /\bPayments?\s+of\s+(?:Certain\s+)?Indebtedness\b/i,
+    ],
+    bodyPatterns: [
+      /\bprepay.{0,40}(?:Junior|Subordinated)\b/i,
+    ],
   },
   {
     family: "FINANCIAL_MAINTENANCE_COVENANTS",
@@ -122,8 +205,13 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     family: "GUARANTEES",
     label: "Guarantees",
     aliases: ["guaranties"],
-    headingPatterns: [/\bGuarant(?:y|ee|ees)\b/i],
-    bodyPatterns: [/\bGuarantee\s+Obligation\b/i],
+    headingPatterns: [/\bGuarant(?:y|ee|ees)\b/i, /\bKeepwell\b/i],
+    // No bare "keepwell" body pattern: keepwell sections are
+    // titled "Keepwell" (the heading pattern carries them, and
+    // the operative clause names the Qualified ECP Guarantor);
+    // a body pattern also fires on schedule-merged items whose
+    // text merely lists the section head.
+    bodyPatterns: [/\bGuarantee\s+Obligation\b/i, /\bQualified\s+ECP\s+Guarantor\b/i],
   },
   {
     family: "RESTRICTED_SUBSIDIARIES",
@@ -159,14 +247,32 @@ export const TAXONOMY_FAMILIES: TaxonomyFamilyDef[] = [
     label: "Mandatory prepayments",
     aliases: ["ecf", "excess cash flow"],
     headingPatterns: [/\bMandatory\s+Prepayments?\b/i],
-    bodyPatterns: [/\bExcess\s+Cash\s+Flow\b/i],
+    // The operative shape only: "shall prepay". Optional
+    // prepayments are drafted "may prepay" / "shall have the
+    // right to prepay" — neither matches. (The comma-adjunct
+    // form used by isMandatoryPrepaymentShape is NOT a family
+    // pattern: as a positive signal it matches notice and
+    // termination text — "shall notify ... in the case of
+    // prepayment of" — and mints the family for mechanics.
+    // There it only ever BLOCKS a mechanics gate, the
+    // fail-closed direction; here it would mint.)
+    bodyPatterns: [
+      /\bExcess\s+Cash\s+Flow\b/i,
+      /\bshall\s+prepay\b/i,
+    ],
   },
   {
     family: "INCREMENTAL_DEBT_AND_FACILITIES",
     label: "Incremental debt and facilities",
     aliases: ["incremental equivalent debt"],
     headingPatterns: [/\bIncremental\b/i],
-    bodyPatterns: [/\bIncremental\s+(?:Facility|Equivalent)\b/i],
+    // The defined-term regime's full surface (census step 5):
+    // clauses work the "Incremental Increase" / "Incremental
+    // Agreements" / "Incremental Extensions" terms far more
+    // often than the literal "Incremental Facility".
+    bodyPatterns: [
+      /\bIncremental\s+(?:Facility|Equivalent|Increase|Agreements?|Extensions?|Loans?|Commitments?|Term Loans?|Revolving)\b/i,
+    ],
   },
   {
     family: "AVAILABLE_AMOUNT_AND_BUILDER_BASKETS",
@@ -219,6 +325,56 @@ const ADMINISTRATIVE_HEADING_PREFIX = /^\s*No\s+.*\b(?:interpretation|constructi
 
 export function isAdministrativeProvision(heading = "", _text = ""): boolean {
   return ADMINISTRATIVE_HEADING.test(heading) || ADMINISTRATIVE_HEADING_PREFIX.test(heading);
+}
+
+/**
+ * Recover a section's full title from its excerpt lead when the
+ * structural node's heading is a truncated fragment of it. EDGAR
+ * segmentation routinely splits a title across lines and the
+ * parser keeps only the first fragment ("Transactions" for
+ * "Transactions with Affiliates", "Sale" for "Sale and Leaseback
+ * Transactions", "Increase" for "Increase in Aggregate
+ * Commitments"). The excerpt itself opens with the full title
+ * ("Section 6.07 Limitation on Transactions with Affiliates .
+ * The Borrower will not ...").
+ *
+ * Conservative by construction: a title is recovered only when
+ * the excerpt lead — after a leading section marker — begins
+ * with the node heading as a strict prefix and continues with
+ * more title text before the first sentence terminator. The
+ * recovered title is advisory classification evidence (family
+ * heading tests, section-subject arbitration); it never
+ * rewrites the node's stored heading.
+ */
+export function recoverSectionTitle(excerpt: string, heading: string): string | undefined {
+  const norm = (excerpt ?? "").replace(/\s+/g, " ").trim();
+  if (!norm) return undefined;
+  const marker = norm.match(/^(?:section|§)?\s*[0-9]+(?:\.[0-9]+)*[a-z]?(?:\s*\([a-z0-9]+\))?\.?\s+/i);
+  if (!marker) return undefined;
+  const rest = norm.slice(marker[0].length);
+  let end = rest.search(/\s\.\s/);
+  if (end < 0) {
+    const m2 = rest.match(/^.{3,120}?\.\s+(?=[A-Z(])/);
+    end = m2 ? m2[0].length - 2 : -1;
+  }
+  if (end < 0) return undefined;
+  const title = rest.slice(0, end).replace(/\s+/g, " ").trim();
+  const h = (heading ?? "").replace(/\s+/g, " ").trim().toLowerCase();
+  if (h.length < 3) return undefined;
+  if (!title.toLowerCase().startsWith(h)) return undefined;
+  if (title.length <= h.length + 2) return undefined;
+  if (title.length > 140) return undefined;
+  // Two title shapes name something OTHER than the section's
+  // operative subject and must not drive classification:
+  // "Amendment of Indebtedness" is a meta-covenant (it restricts
+  // amending debt documents — the Indebtedness is its OBJECT,
+  // not a debt permission), and a title ending in "Rule(s)"
+  // names an external regulatory regime ("Outbound Investment
+  // Rule" — the Investment is the regime's name, not an
+  // investments covenant).
+  if (/^Amendment\b/i.test(title)) return undefined;
+  if (/\bRules?$/i.test(title)) return undefined;
+  return title;
 }
 
 
