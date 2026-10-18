@@ -164,23 +164,50 @@ export function computeOperativeDocument(
   }
 
   const asOf = options.asOfDate ?? null;
+  // EffectiveDateResult.date is the date AS EXTRACTED from document text -
+  // a human-format string ("August 9, 2022") from the real detector, ISO
+  // only in hand-built fixtures. Every sibling consumer parses it before
+  // comparing (buildProvisionChain's sort, buildProvisionView's
+  // applied-chain filter both use `new Date(...)`); comparing it against
+  // an ISO as-of date as a raw string is lexicographic nonsense
+  // ("August 9, 2022" > "2026-01-01" as strings) that silently discarded
+  // every real restatement edge as "future-dated" and collapsed RESOLVED
+  // chains to NOT_APPLICABLE - no restatement was ever recognized once an
+  // as-of date was supplied. Parse both sides. A non-null date string
+  // that cannot be parsed at all is treated exactly like a missing date:
+  // it cannot be placed on a timeline, so it fails closed below.
+  const parseDateMs = (d: string | null | undefined): number | null => {
+    if (!d) return null;
+    const ms = new Date(d).getTime();
+    return Number.isNaN(ms) ? null : ms;
+  };
+  const asOfMs = asOf ? parseDateMs(asOf) : null;
+  if (asOf && asOfMs === null) {
+    return {
+      status: "REVIEW_REQUIRED",
+      operativeDocumentId: null,
+      predecessorDocumentIds: [],
+      relationshipChain: [],
+      reviewReason: `The as-of date supplied for this operative-document query ("${asOf}") could not be parsed as a date - restatement edges cannot be placed relative to it, so no whole document can be safely designated as currently operative.`,
+    };
+  }
   // PAI-01: only edges effective on or before asOf participate when asOf is supplied.
-  // Undated edges with asOf supplied cannot be placed on a timeline — fail closed.
+  // Undated/unparseable edges with asOf supplied cannot be placed on a timeline — fail closed.
   const datedForAsOf = restatementEffects.filter((e) => {
     if (!asOf) return true;
-    const d = e.effectiveDate.date;
-    if (!d) return false;
-    return d <= asOf;
+    const ms = parseDateMs(e.effectiveDate.date);
+    if (ms === null) return false;
+    return ms <= asOfMs!;
   });
   if (asOf) {
-    const undated = restatementEffects.filter((e) => !e.effectiveDate.date);
+    const undated = restatementEffects.filter((e) => parseDateMs(e.effectiveDate.date) === null);
     if (undated.length > 0) {
       return {
         status: "REVIEW_REQUIRED",
         operativeDocumentId: null,
         predecessorDocumentIds: [],
         relationshipChain: [],
-        reviewReason: `${undated.length} restatement effect(s) lack an effective date and cannot be placed relative to as-of ${asOf} (effect(s): ${undated.map((e) => e.effectId).join(", ")}).`,
+        reviewReason: `${undated.length} restatement effect(s) lack a usable effective date and cannot be placed relative to as-of ${asOf} (effect(s): ${undated.map((e) => e.effectId).join(", ")}).`,
       };
     }
     if (datedForAsOf.length === 0) {
