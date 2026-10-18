@@ -68,6 +68,41 @@ function roleAround(text: string, index: number, len: number): SourceFigureRole 
   return "AMBIGUOUS";
 }
 
+const CEILING_INTRODUCERS = /\b(?:in\s+excess\s+of|exceeding|exceeds|exceed|greater\s+than|more\s+than|above)\b/gi;
+const FLOOR_INTRODUCERS = /\b(?:less\s+than|at\s+least|not\s+less\s+than|no\s+less\s+than|below|under)\b/gi;
+const PROHIBITION_FRAME = /\b(?:shall\s+not|will\s+not|may\s+not|must\s+not|shall\s+never|may\s+never)\b/i;
+
+/**
+ * True when the figure is the ceiling of a prohibition stated in the SOURCE
+ * clause itself ("The Borrower shall not incur Indebtedness in excess of
+ * $5,000,000"): the clause's own frame makes the figure the permitted
+ * ceiling, regardless of the posture label a submission claims for its
+ * rule. roleAround() alone classifies such a figure THRESHOLD (its window
+ * sees "in excess of"), and an exception keyed on the model's claimed
+ * posture is both over- and under-inclusive: it refuses a faithful
+ * PERMISSION-over-ceiling compilation (open-2 attack matrix case 1) while
+ * letting a claimed-PROHIBITION rule keep a floor figure ("shall not
+ * permit the ratio to be less than 2.50" is a floor, never a ceiling).
+ * The closest comparator phrase before the figure decides: a floor phrase
+ * ("less than", "at least", "below") is never a prohibition ceiling.
+ */
+export function figureGovernedByProhibitionCeiling(figureRaw: string, text: string): boolean {
+  const digits = figureDigits(figureRaw);
+  if (!digits) return false;
+  const m = moneyFigureRe(digits).exec(text);
+  if (!m) return false;
+  const prefix = text.slice(Math.max(0, m.index - 160), m.index);
+  const lastIndex = (re: RegExp): number => {
+    let idx = -1;
+    for (const match of prefix.matchAll(re)) idx = match.index ?? idx;
+    return idx;
+  };
+  const ceilingAt = lastIndex(CEILING_INTRODUCERS);
+  if (ceilingAt < 0) return false;
+  if (lastIndex(FLOOR_INTRODUCERS) > ceilingAt) return false;
+  return PROHIBITION_FRAME.test(prefix.slice(0, ceilingAt));
+}
+
 /**
  * Map source ratio comparator phrasing near a ratio figure to the IR COMPARE
  * operator that represents the *satisfied* covenant test (not the surface
